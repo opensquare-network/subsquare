@@ -1,4 +1,4 @@
-import SummaryItems from "next-common/components/summary/summaryItems";
+import Summary from "next-common/components/summary";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPercentage, toPrecision } from "next-common/utils";
@@ -12,7 +12,7 @@ export default function ReferendaDelegationCardSummary({
   const { delegatorsCount, trackAverageVotes, participationRate } = delegate;
 
   return (
-    <SummaryItems
+    <Summary
       className={className}
       items={[
         {
