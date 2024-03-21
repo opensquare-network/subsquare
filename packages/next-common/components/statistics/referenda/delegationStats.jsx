@@ -33,8 +33,7 @@ export default function ReferendaDelegationStats({
         <div className="flex items-center text16Bold text-textPrimary">
           Delegation
         </div>
-        <div className="flex gap-[8px] items-center">
-          <span className="text12Medium text-textPrimary">Event</span>
+        <div className="flex items-center">
           <TrackSelect
             selectedTrackId={selectedTrackId}
             setSelectedTrackId={setSelectedTrackId}
