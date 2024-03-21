@@ -1,12 +1,13 @@
 import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
+import { isNil } from "lodash-es";
 
 export default function useSubAddressTrackDelegating(address, trackId) {
   const api = useContextApi();
   const [delegating, setDelegating] = useState(null);
 
   useEffect(() => {
-    if (!api) {
+    if (!api || !address || isNil(trackId)) {
       return;
     }
 
@@ -29,7 +30,7 @@ export default function useSubAddressTrackDelegating(address, trackId) {
         unsub();
       }
     };
-  }, [api]);
+  }, [api, trackId, address]);
 
   return delegating;
 }

@@ -46,6 +46,12 @@ if (
     value: "delegation",
     name: "Delegation",
     pathname: "/delegation",
+    extraMatchNavMenuActivePathnames: [
+      "/delegation/statistics",
+      "/delegation/mine",
+      "/delegation/mine/received",
+      "/delegation/mine/delegations",
+    ],
     icon: <MenuDelegation />,
   });
 }
