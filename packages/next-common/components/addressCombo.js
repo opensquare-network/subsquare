@@ -127,19 +127,12 @@ export default function AddressCombo({
   const shortEvmAddr = addressEllipsis(maybeEvmAddress);
   const { identity } = useChainSettings();
   const [identities, setIdentities] = useState({});
-  const [isValidAddress, setIsValidAddress] = useState(!allowInvalidAddress);
 
-  useEffect(() => {
-    if (allowInvalidAddress) {
-      setIsValidAddress(true);
-    } else if (isAddress(address) || normalizeAddress(address)) {
-      setIsValidAddress(true);
-    } else if (isEthereumAddress(address)) {
-      setIsValidAddress(true);
-    } else {
-      setIsValidAddress(false);
-    }
-  }, [address, allowInvalidAddress]);
+  const isValidAddress = allowInvalidAddress
+    ? true
+    : isAddress(address) ||
+      normalizeAddress(address) ||
+      isEthereumAddress(address);
 
   const fetchAddressIdentity = useCallback(
     (address) => {
