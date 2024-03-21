@@ -88,6 +88,9 @@ const centrifuge = {
   hasDotreasury: true,
   hasMultisig: true,
   multisigApiPrefix: "cfg",
+  modules: {
+    democracy: true,
+  },
   cssVarsLight: {
     theme100: "rgba(18,83,255,0.10)",
     theme300: "rgba(18,83,255,0.40)",

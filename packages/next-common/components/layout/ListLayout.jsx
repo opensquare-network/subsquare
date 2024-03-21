@@ -12,9 +12,10 @@ import { isNil } from "lodash-es";
  * @typedef {{
  *  label: string
  *  url?: string
+ *  root?: string
  *  active?: boolean
  *  onClick?(): void
- *  extraMatchTabActivePathnames?: string[]
+ *  urls?: string[]
  * }} Tab
  */
 
@@ -128,13 +129,11 @@ function Tabs({ tabs = [] }) {
         let active = tab.active;
         if (isNil(active)) {
           if (tab.exactMatch === false) {
-            active = routePath.startsWith(tab.url);
+            active = routePath.startsWith(tab.root || tab.url);
           } else {
-            const urls = [
-              tab.url,
-              ...(tab.extraMatchTabActivePathnames ?? []),
-              ...(tab.urls || []),
-            ];
+            const urls = [tab.url, tab.root, ...(tab.urls || [])].filter(
+              Boolean,
+            );
             active = urls.includes(routePath);
           }
         }

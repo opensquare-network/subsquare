@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext } from "react";
 import Tab from "next-common/components/tab";
 import styled from "styled-components";
 import { useRouter } from "next/router";
@@ -43,49 +43,65 @@ export function ModuleTabProvider({
   defaultTab,
   children,
   queryName = "type",
+  shallow = true,
 }) {
   const router = useRouter();
+
   const qTab = availableTabs.find(
-    (tab) => tab.tabId === router.query?.[queryName],
+    (tab) =>
+      tab.tabId.toLowerCase() === router.query?.[queryName]?.toLowerCase(),
   )?.tabId;
-  const [selectedTabId, setSelectedTabId] = React.useState(
-    qTab || defaultTab || availableTabs[0]?.tabId,
+  const selectedTabId = qTab || defaultTab || availableTabs[0]?.tabId;
+
+  const getTabUrl = useCallback(
+    (tabId) => {
+      const lowerTabId = tabId?.toLowerCase();
+
+      const [urlPath, urlQuery] = router.asPath.split("?");
+      const isFirstTab = availableTabs[0]?.tabId?.toLowerCase() === lowerTabId;
+      const noAvailableTabs = availableTabs.length === 0;
+
+      const urlSearch = new URLSearchParams(urlQuery);
+      if (
+        isFirstTab &&
+        urlSearch.has(queryName) &&
+        urlSearch.get(queryName)?.toLowerCase() !== lowerTabId
+      ) {
+        urlSearch.delete(queryName);
+      } else if (
+        !isFirstTab &&
+        !noAvailableTabs &&
+        urlSearch.get(queryName)?.toLowerCase() !== lowerTabId
+      ) {
+        urlSearch.set(queryName, lowerTabId);
+      }
+
+      const newQuery = urlSearch.size > 0 ? `?${urlSearch.toString()}` : "";
+
+      return urlPath + newQuery;
+    },
+    [router, queryName, availableTabs],
   );
-  const isFirstTab = availableTabs[0]?.tabId === selectedTabId;
-  const noAvailableTabs = availableTabs.length === 0;
 
-  useEffect(() => {
-    let [urlPath, urlQuery] = router.asPath.split("?");
-    let needUpdate = false;
-
-    const urlSearch = new URLSearchParams(urlQuery);
-    if (
-      isFirstTab &&
-      urlSearch.has(queryName) &&
-      urlSearch.get(queryName) !== selectedTabId
-    ) {
-      urlSearch.delete(queryName);
-      needUpdate = true;
-    } else if (
-      !isFirstTab &&
-      !noAvailableTabs &&
-      urlSearch.get(queryName) !== selectedTabId
-    ) {
-      urlSearch.set(queryName, selectedTabId);
-      needUpdate = true;
-    }
-
-    if (needUpdate) {
-      urlQuery = urlSearch.size > 0 ? `?${urlSearch.toString()}` : "";
-      router.push(urlPath + urlQuery, undefined, {
-        shallow: true,
-      });
-    }
-  }, [router, isFirstTab, noAvailableTabs, selectedTabId]);
+  const navigateToTab = useCallback(
+    (tabId) => {
+      const newUrl = getTabUrl(tabId);
+      if (newUrl !== router.asPath) {
+        router.push(newUrl, undefined, {
+          shallow,
+        });
+      }
+    },
+    [router, getTabUrl, shallow],
+  );
 
   return (
     <ModuleTabContext.Provider
-      value={{ availableTabs, selectedTabId, setSelectedTabId }}
+      value={{
+        availableTabs,
+        selectedTabId,
+        setSelectedTabId: navigateToTab,
+      }}
     >
       {children}
     </ModuleTabContext.Provider>

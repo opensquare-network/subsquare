@@ -83,6 +83,9 @@ const kintsugi = {
   useVoteCall: true,
   hasTreasuryModule: false,
   hasTipsModule: false,
+  modules: {
+    democracy: true,
+  },
   cssVarsLight: {
     theme100: "rgba(247,205,69,0.10)",
     theme300: "rgba(247,205,69,0.40)",

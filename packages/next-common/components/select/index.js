@@ -142,23 +142,28 @@ function Select({
           ) : (
             <div
               className={cn(
-                maxDisplayItem && "scrollbar-pretty overflow-y-scroll",
+                maxDisplayItem &&
+                  "scrollbar-hidden overflow-x-hidden overflow-y-scroll",
               )}
               style={{
                 maxHeight: maxDisplayItem && theItemHeight * maxDisplayItem,
               }}
             >
-              {filteredOptions.map((option) => (
-                <Option
-                  key={option.value}
-                  active={value === option.value}
-                  ref={value === option.value ? selectedOptionRef : undefined}
-                  onClick={() => onChange(option)}
-                  height={theItemHeight}
-                >
-                  {option.label || option.text}
-                </Option>
-              ))}
+              {filteredOptions.map((option, index) =>
+                option.divider ? (
+                  <Divider key={index} className="my-[8px]" />
+                ) : (
+                  <Option
+                    key={option.value}
+                    active={value === option.value}
+                    ref={value === option.value ? selectedOptionRef : undefined}
+                    onClick={() => onChange(option)}
+                    height={theItemHeight}
+                  >
+                    {option.label || option.text}
+                  </Option>
+                ),
+              )}
             </div>
           )}
         </OptionsWrapper>

@@ -6,6 +6,7 @@ import makeBlockie from "ethereum-blockies-base64";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { useAddressAvatarMap } from "next-common/context/avatar";
 
 const StyledIdenticon = styled(Identicon)`
   circle:first-child {
@@ -33,9 +34,24 @@ export default function Avatar({ address, size = 24 }) {
 
   const maybeEvmAddress = tryConvertToEvmAddress(address);
 
-  if (isEthereumAddress(maybeEvmAddress)) {
-    const imgSize = (size / 10) * 8;
+  const addressAvatarMap = useAddressAvatarMap();
+  const image = addressAvatarMap?.get(maybeEvmAddress);
+  const imgSize = (size / 10) * 8;
+  if (image) {
+    return (
+      <Wrapper size={size}>
+        <ImgWrapper
+          size={imgSize}
+          src={image}
+          width={imgSize}
+          height={imgSize}
+          alt={maybeEvmAddress}
+        />
+      </Wrapper>
+    );
+  }
 
+  if (isEthereumAddress(maybeEvmAddress)) {
     return (
       <Wrapper size={size}>
         <ImgWrapper

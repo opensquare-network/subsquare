@@ -87,6 +87,10 @@ const vara = {
   multisigApiPrefix: "vara",
   description:
     "Vara is an ultra-fast and scalable Layer-1 decentralized network powered by the Gear Protocol.",
+  modules: {
+    referenda: true,
+    fellowship: true,
+  },
   cssVarsLight: {
     theme100: "rgba(11,234,179,0.10)",
     theme300: "rgba(11,234,179,0.40)",

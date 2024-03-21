@@ -1,4 +1,4 @@
-const { default: tw } = require("tailwind-styled-components");
+import tw from "tailwind-styled-components";
 
 export const TabContentWrapper = tw.div`
   flex

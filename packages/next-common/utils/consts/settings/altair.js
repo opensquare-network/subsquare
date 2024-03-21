@@ -58,6 +58,9 @@ const altair = {
   hasTipsModule: false,
   description:
     "The home for financing assets on Kusama. Powered by Centrifuge.",
+  modules: {
+    democracy: true,
+  },
   cssVarsLight: {
     theme100: "rgba(255,192,18,0.10)",
     theme300: "rgba(255,192,18,0.40)",

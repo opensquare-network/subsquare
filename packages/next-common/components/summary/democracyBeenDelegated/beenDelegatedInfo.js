@@ -19,7 +19,7 @@ export default function BeenDelegatedInfo({ delegations, addressesCount }) {
   const { decimals, symbol } = useChainSettings();
 
   return (
-    <GreyInfoPanel className="overflow-x-auto !flex-nowrap whitespace-nowrap scrollbar-hidden">
+    <GreyInfoPanel className="overflow-x-auto !flex-nowrap whitespace-nowrap scrollbar-hidden !rounded">
       <Item>
         <span>Been delegated</span>
         <ValueDisplay

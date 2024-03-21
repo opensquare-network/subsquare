@@ -107,3 +107,11 @@ export const overviewApi = {
   treasuryCouncilMotions: "overview/motions",
   openTCMotions: "overview/open-tc-motion",
 };
+
+// delegation
+// referenda
+export const delegationReferendaDelegatesAddressApi = (address) =>
+  `delegation/referenda/delegates/${address}`;
+// democracy
+export const delegationDemocracyDelegatesAddressApi = (address) =>
+  `delegation/democracy/delegates/${address}`;

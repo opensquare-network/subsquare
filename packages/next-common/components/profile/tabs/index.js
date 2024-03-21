@@ -55,6 +55,7 @@ export default function useProfileTabs() {
     tabs.push({
       label: "Delegation",
       url: `${prefix}delegation/received`,
+      root: `${prefix}delegation`,
       exactMatch: false,
     });
   }

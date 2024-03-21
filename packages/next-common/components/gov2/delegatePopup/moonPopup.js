@@ -119,14 +119,21 @@ async function submitExtrinsic({
   }
 }
 
-export default function MoonDelegatePopup(props) {
+export default function MoonDelegatePopup({
+  defaultTargetAddress,
+  targetDisabled,
+  ...props
+}) {
   return (
     <PopupWithSigner
       title="Delegate"
       submitExtrinsic={submitExtrinsic}
       {...props}
     >
-      <PopupContent />
+      <PopupContent
+        defaultTargetAddress={defaultTargetAddress}
+        targetDisabled={targetDisabled}
+      />
     </PopupWithSigner>
   );
 }

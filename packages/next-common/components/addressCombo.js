@@ -127,6 +127,9 @@ export default function AddressCombo({
   const { identity } = useChainSettings();
   const [identities, setIdentities] = useState({});
 
+  const isValidAddress =
+    !allowInvalidAddress && (isAddress(address) || normalizeAddress(address));
+
   const fetchAddressIdentity = useCallback(
     (address) => {
       const identityAddress = encodeAddressToChain(address, identity);
@@ -291,6 +294,12 @@ export default function AddressCombo({
         )}
       </Select>
       {show && (accounts || []).length > 0 && listOptions}
+
+      {!isValidAddress && (
+        <div className="mt-2 text-red500 text12Medium">
+          Please fill a valid address
+        </div>
+      )}
     </Wrapper>
   );
 }

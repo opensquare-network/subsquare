@@ -1,8 +1,13 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Pagination from "next-common/components/pagination/index";
+import { useRouter } from "next/router";
 
 export default function usePaginationComponent(total, pageSize = 10) {
-  const [page, setPage] = useState(1);
+  const router = useRouter();
+  const [page, setPage] = useState(parseInt(router.query.page || 1));
+  useEffect(() => {
+    setPage(parseInt(router.query.page || 1));
+  }, [router.query.page]);
 
   const onPageChange = useCallback((e, page) => {
     e.preventDefault();
@@ -19,5 +24,5 @@ export default function usePaginationComponent(total, pageSize = 10) {
     />
   );
 
-  return { page, component };
+  return { page, setPage, component };
 }

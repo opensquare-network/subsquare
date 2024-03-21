@@ -119,6 +119,9 @@ const polkadot = {
   hideNewTreasuryProposalButton: true,
   noDemocracyModule: true,
   ...polkadotThemeVars,
+  modules: {
+    referenda: true,
+  },
 };
 
 export default polkadot;
