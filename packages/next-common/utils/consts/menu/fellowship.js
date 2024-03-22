@@ -27,6 +27,10 @@ function getFellowshipCoreMenu() {
     value: "fellowship-core",
     name: Names.core,
     pathname: "/fellowship/core",
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship/core/params",
+      "/fellowship/core/feeds",
+    ],
   };
 }
 
@@ -40,6 +44,10 @@ function getFellowshipSalaryMenu() {
     value: "fellowship-salary",
     name: Names.salary,
     pathname: "/fellowship/salary",
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship/salary/feeds",
+      "/fellowship/salary/cycles/[...params]",
+    ],
   };
 }
 
