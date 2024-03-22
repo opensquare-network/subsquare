@@ -49,10 +49,16 @@ export function checkIfShouldConvertToEvmAddress(address) {
   if (!isCentrifuge() || !isPolkadotAddress(address)) {
     return false;
   }
-  const decodedBytes = decodeAddress(address);
-  const addressHex = Buffer.from(decodedBytes).toString("hex");
-  if (addressHex.endsWith(suffixBytes.toString("hex"))) {
-    return true;
+
+  try {
+    const decodedBytes = decodeAddress(address);
+    const addressHex = Buffer.from(decodedBytes).toString("hex");
+    if (addressHex.endsWith(suffixBytes.toString("hex"))) {
+      return true;
+    }
+  } catch (e) {
+    // ignore
   }
+
   return false;
 }
