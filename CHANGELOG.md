@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.9.0
+
+date: 2024-03-22
+
+- [Big] Add delegation UI. Show delegates with their announcements.
+- [Big] Implement polkadot fellowship salary cycle detail page.
+- Support Centrifuge EVM.
+- Add transfers and identity tab on profile page for polkadot/kusama.
+- Fix EVM address profile url.
+- Disable batch removing votes when votes >= 10 for HydraDX.
+- Refactor council members page and improve the way to query data.
+- Add `ApiContext` to host api instance.
+- Pass params via context for various popups.
+- Remove outdated props for multiple select components.
+- Only council members can call `TipNew`.
+- Enable dotreasury for Centrifuge.
+- Fix styles and code refactor.
+
 ### 3.8.8
 
 date: 2024-03-04
