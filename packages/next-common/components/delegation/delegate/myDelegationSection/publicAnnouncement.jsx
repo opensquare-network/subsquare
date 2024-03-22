@@ -12,7 +12,7 @@ export default function PublicAnnouncement() {
         </div>
         <div className="flex flex-col grow">
           <span className="text16Bold text-textPrimary">
-            Publish my announcement
+            Publish delegation announcement
           </span>
           <span className="text14Medium text-textTertiary">
             Make a statement to get more delegators.
