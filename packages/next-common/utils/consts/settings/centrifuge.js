@@ -9,6 +9,7 @@ import {
   ProjectLogoCentrifugeDark,
   ProjectLogoCentrifugeLight,
 } from "@osn/icons/subsquare";
+import ChainTypes from "../chainTypes";
 
 const name = Chains.centrifuge;
 
@@ -46,6 +47,17 @@ const links = [
     url: "https://github.com/centrifuge/",
   },
 ];
+
+const ethereumNetwork = {
+  chainId: "0x7ef",
+  chainName: "Centrifuge",
+  rpcUrls: ["https://fullnode.parachain.centrifuge.io/"],
+  blockExplorerUrls: ["https://centrifuge.subscan.io/"],
+  nativeCurrency: {
+    symbol: "CFG",
+    decimals: 18,
+  },
+};
 
 const centrifuge = {
   value: name,
@@ -95,6 +107,8 @@ const centrifuge = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  chainType: ChainTypes.MIXED,
+  ethereumNetwork,
 };
 
 export default centrifuge;

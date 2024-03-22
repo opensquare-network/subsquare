@@ -2,7 +2,7 @@ import React from "react";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import { addressEllipsis } from "next-common/utils";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { usePageProps } from "next-common/context/page";
 
 export default function ProfileBreadcrumbs() {

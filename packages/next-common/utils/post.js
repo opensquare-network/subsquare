@@ -10,7 +10,7 @@ import { encodeAddressToChain } from "../services/address";
 import { uniqBy } from "lodash-es";
 import getChainSettings from "./consts/settings";
 import { getIdentityDisplay } from "./identity";
-import { tryConvertToEvmAddress } from "./hydradxUtil";
+import { tryConvertToEvmAddress } from "./mixedChainUtil";
 
 export function getTitle(item) {
   return `${item?.title ?? "--"}`;

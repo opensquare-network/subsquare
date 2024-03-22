@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { profileActiveMultisigsCountSelector } from "next-common/store/reducers/profile/multisig";
 import useDepositsCount from "next-common/hooks/profile/deposit/useDepositsCount";
 import { usePageProps } from "next-common/context/page";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 export default function useProfileTabs() {
   const { id } = usePageProps();

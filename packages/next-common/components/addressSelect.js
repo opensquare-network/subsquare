@@ -13,7 +13,7 @@ import { addressEllipsis } from "../utils";
 import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
 import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address.js";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil.js";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 const Wrapper = Relative;
 

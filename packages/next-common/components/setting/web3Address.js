@@ -4,7 +4,7 @@ import { addressEllipsis } from "../../utils";
 import Avatar from "../avatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import Identity from "../Identity";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 const AddressWrapper = styled.div`
   display: flex;

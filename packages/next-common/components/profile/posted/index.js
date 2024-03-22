@@ -6,7 +6,7 @@ import List from "./list";
 import Categories from "./categories";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { usePageProps } from "next-common/context/page";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 const getCategoryByRoute = (route, categories = []) => {
   let category;

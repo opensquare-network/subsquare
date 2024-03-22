@@ -19,7 +19,7 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import { isKintsugiChain } from "next-common/utils/chain";
 import Link from "next/link";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import AccountDelegationPrompt from "./components/delegationPrompt";
 
 const DisplayUserAvatar = () => {

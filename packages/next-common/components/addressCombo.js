@@ -17,7 +17,7 @@ import IdentityIcon from "./Identity/identityIcon.js";
 import {
   getAddressHint,
   tryConvertToEvmAddress,
-} from "next-common/utils/hydradxUtil.js";
+} from "next-common/utils/mixedChainUtil";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 
 const Wrapper = Relative;

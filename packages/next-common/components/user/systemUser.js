@@ -8,7 +8,7 @@ import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
-import { tryConvertToEvmAddress } from "next-common/utils/hydradxUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
 function SystemUser({
   user,
