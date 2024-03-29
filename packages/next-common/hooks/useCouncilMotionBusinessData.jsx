@@ -4,6 +4,7 @@ import Flex from "next-common/components/styled/flex";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";
+import Proposal from "next-common/components/proposal";
 
 export function useCouncilMotionBusinessData() {
   const motion = usePostOnChainData();
@@ -99,6 +100,13 @@ export function useCouncilMotionBusinessData() {
         ],
         ["Hash", <Copyable key="hash">{external.proposalHash}</Copyable>],
         ["Threshold", external.voteThreshold],
+        [
+          <Proposal
+            key="call"
+            call={external.preImage.call}
+            preImageHash={external.preImage.hash}
+          />,
+        ],
       ]);
     });
   }
