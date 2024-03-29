@@ -18,6 +18,7 @@ import Tooltip from "../tooltip";
 import CommentItemTemplate from "./itemTemplate";
 import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
+import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -174,18 +175,22 @@ function CommentItemImpl({
           setIsEdit={setIsEdit}
         />
       }
-      renderReplyItem={(reply) => (
-        <CommentItem
-          key={reply._id}
-          data={reply}
-          replyToCommentId={replyToCommentId}
-          isSecondLevel
-          updateTopLevelComment={updateTopLevelComment || updateComment}
-          scrollToTopLevelCommentBottom={
-            scrollToTopLevelCommentBottom || scrollToCommentBottom
-          }
-        />
-      )}
+      renderReplyItem={(reply) =>
+        reply.comment_source === "polkassembly" ? (
+          <PolkassemblyCommentItem key={reply.id} data={reply} isSecondLevel />
+        ) : (
+          <CommentItem
+            key={reply._id}
+            data={reply}
+            replyToCommentId={replyToCommentId}
+            isSecondLevel
+            updateTopLevelComment={updateTopLevelComment || updateComment}
+            scrollToTopLevelCommentBottom={
+              scrollToTopLevelCommentBottom || scrollToCommentBottom
+            }
+          />
+        )
+      }
     />
   );
 }
