@@ -151,10 +151,7 @@ export default function MotionDetail() {
       <DetailMultiTabs
         call={
           post?.onchainData?.proposal && (
-            <CollectiveCall
-              call={post.onchainData.proposal}
-              externalProposals={post.onchainData?.externalProposals}
-            />
+            <CollectiveCall call={post.onchainData.proposal} />
           )
         }
         business={
