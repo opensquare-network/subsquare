@@ -16,7 +16,7 @@ const Input = styled(InputOrigin)`
     border-color: var(--neutral400) !important;
   }
 
-  &[data-focus="true"] {
+  &:has([data-focus="true"]) {
     background-color: var(--neutral100) !important;
     border-color: var(--neutral500) !important;
   }
