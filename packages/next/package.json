@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@next/env": "^13.3.0",
-    "@osn/icons": "^1.80.0",
+    "@osn/icons": "^1.83.0",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
     "clsx": "^1.2.1",

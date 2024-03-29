@@ -18,15 +18,23 @@ import {
 import { sendTx } from "next-common/utils/sendTx";
 import PopupLabel from "next-common/components/popup/label";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useUser } from "next-common/context/user";
+import Checkbox from "next-common/components/checkbox";
+import {
+  ProjectLogoSimaSpecDark,
+  ProjectLogoSimaSpecLight,
+} from "@osn/icons/subsquare";
+import { cn } from "next-common/utils";
 
 export default function AnnouncementPublishPopup({
-  title = "Publish",
+  title = "Publish Announcement",
   onClose,
-  address,
 }) {
+  const user = useUser();
+  const address = user?.address;
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
-  const [isOrganization] = useState(false);
+  const [isOrganization, setIsOrganization] = useState(false);
   const [, setLoading] = useState(false);
   const isMounted = useIsMounted();
   const signMessage = useSignMessage();
@@ -108,6 +116,7 @@ export default function AnnouncementPublishPopup({
 
   return (
     <SignerPopup
+      confirmText="Submit & Publish"
       className="w-[800px] max-w-full"
       title={title}
       onClose={onClose}
@@ -131,7 +140,35 @@ export default function AnnouncementPublishPopup({
         />
       </div>
       <div>
-        <PopupLabel text="Long description" />
+        <PopupLabel text="isOrganization" />
+        <div
+          className={cn(
+            "flex justify-between items-center",
+            "py-[10px] pl-[16px]",
+            "text-textPrimary bg-neutral100",
+            "rounded-[8px] border border-neutral400 ",
+          )}
+        >
+          <span>{"I'm a member of an organization"}</span>
+          <Checkbox
+            className={"mr-[10px]"}
+            checked={isOrganization}
+            onClick={() => setIsOrganization(!isOrganization)}
+          />
+        </div>
+      </div>
+      <div className="flex px-[16px] py-[10px] gap-[16px] bg-neutral200">
+        <div>
+          <ProjectLogoSimaSpecDark className="hidden dark:inline-block" />
+          <ProjectLogoSimaSpecLight className="dark:hidden" />
+        </div>
+        <div className="flex flex-col">
+          <span className="text14Medium text-textSecondary">
+            You will submit a system#remark transaction to publish
+            announcements.
+          </span>
+          <span className="text14Medium text-[#F7574F]">Check Sima Spec</span>
+        </div>
       </div>
     </SignerPopup>
   );
