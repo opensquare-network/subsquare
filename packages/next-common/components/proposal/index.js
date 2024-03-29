@@ -255,7 +255,7 @@ export default function Proposal({
   return (
     <Wrapper>
       <HeaderWrapper>
-        <Header className="text-textPrimary">{title}</Header>
+        <Header className="text-textSecondary">{title}</Header>
         <TagWrapper>
           <span className="inline-flex gap-x-1">
             <ThemedTag>{call?.section}</ThemedTag>

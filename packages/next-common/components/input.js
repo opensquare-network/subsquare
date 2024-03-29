@@ -23,7 +23,8 @@ const Wrapper = styled.div`
   input[type="number"] {
     -moz-appearance: textfield;
   }
-  border: 1px solid var(--neutral400);
+  border: 1px solid;
+  border-color: inherit;
   width: inherit;
   height: inherit;
   border-radius: inherit;
@@ -61,7 +62,7 @@ const InputWrapper = styled.input`
   padding: 10px 16px;
   font-size: 14px;
   color: var(--textPrimary);
-  background: transparent !important;
+  background-color: inherit;
   ::placeholder {
     color: var(--textDisabled);
   }
@@ -154,7 +155,14 @@ function Input(
   }
 
   return (
-    <div className={cn("overflow-hidden", "rounded-lg", className)}>
+    <div
+      className={cn(
+        "overflow-hidden",
+        "rounded-lg",
+        "border-neutral400",
+        className,
+      )}
+    >
       <Wrapper
         focus={focus}
         data-focus={focus}
