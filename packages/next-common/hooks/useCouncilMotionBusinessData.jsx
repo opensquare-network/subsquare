@@ -100,14 +100,19 @@ export function useCouncilMotionBusinessData() {
         ],
         ["Hash", <Copyable key="hash">{external.proposalHash}</Copyable>],
         ["Threshold", external.voteThreshold],
-        [
-          <Proposal
-            key="call"
-            call={external.preImage.call}
-            preImageHash={external.preImage.hash}
-          />,
-        ],
       ]);
+
+      if (external.preImage) {
+        business.push([
+          [
+            <Proposal
+              key="call"
+              call={external.preImage.call}
+              preImageHash={external.preImage.hash}
+            />,
+          ],
+        ]);
+      }
     });
   }
 
