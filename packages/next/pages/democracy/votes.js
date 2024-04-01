@@ -8,6 +8,7 @@ import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { ReferendaVoteLayout } from "pages/referenda/votes";
 
 export default function DemocracyVotes({ summary }) {
   const user = useUser();
@@ -30,7 +31,9 @@ export default function DemocracyVotes({ summary }) {
       summaryData={summary}
     >
       <ModuleTabProvider defaultTab={Democracy}>
-        <ModuleVotes />
+        <ReferendaVoteLayout>
+          <ModuleVotes />
+        </ReferendaVoteLayout>
       </ModuleTabProvider>
     </DemocracyReferendaLayout>
   );
