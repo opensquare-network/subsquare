@@ -1,13 +1,11 @@
 import ValueDisplay from "next-common/components/valueDisplay";
-import { cn, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
-import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Summary from "next-common/components/summary";
 import BigNumber from "bignumber.js";
 import PriorInfo from "./prior";
 import LoadableContent from "next-common/components/common/loadableContent";
-import AccountSubTabs from "next-common/components/overview/account/subTabs";
 
 function CountSummaryContent({ count }) {
   return <span>{(count || 0).toLocaleString()}</span>;
@@ -84,19 +82,8 @@ export default function ReferendaVoteSummary({
   ].filter(Boolean);
 
   return (
-    <>
-      <div
-        className={cn(
-          "flex justify-between items-center gap-3 mx-6",
-          "max-sm:block max-sm:space-y-3",
-        )}
-      >
-        <AccountSubTabs />
-        <ModuleTab />
-      </div>
-      <SecondaryCard>
-        <Summary items={items} />
-      </SecondaryCard>
-    </>
+    <SecondaryCard>
+      <Summary items={items} />
+    </SecondaryCard>
   );
 }
