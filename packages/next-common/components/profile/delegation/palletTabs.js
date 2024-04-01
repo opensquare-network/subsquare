@@ -6,13 +6,15 @@ import {
 } from "../votingHistory/common";
 
 export default function PalletTabs({ shallow, children }) {
-  const { hasReferenda, noDemocracyModule } = useChainSettings();
+  const {
+    modules: { referenda: hasReferenda, democracy: hasDemocracyModule },
+  } = useChainSettings();
 
   const availableTabs = [];
   if (hasReferenda) {
     availableTabs.push({ tabId: Referenda, tabTitle: "OpenGov" });
   }
-  if (!noDemocracyModule) {
+  if (hasDemocracyModule) {
     availableTabs.push({ tabId: Democracy, tabTitle: Democracy });
   }
 

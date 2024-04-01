@@ -13,13 +13,15 @@ import AccountSubTabs from "next-common/components/overview/account/subTabs";
 import ModuleVotes from "components/myvotes/moduleVotes";
 
 function MyVoteLayout({ children }) {
-  const { hasReferenda, noDemocracyModule } = useChainSettings();
+  const {
+    modules: { referenda: hasReferenda, democracy: hasDemocracyModule },
+  } = useChainSettings();
 
   const availableTabs = [];
   if (hasReferenda) {
     availableTabs.push({ tabId: Referenda, tabTitle: Referenda });
   }
-  if (!noDemocracyModule) {
+  if (hasDemocracyModule) {
     availableTabs.push({ tabId: Democracy, tabTitle: Democracy });
   }
 
