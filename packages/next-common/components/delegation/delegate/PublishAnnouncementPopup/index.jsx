@@ -23,8 +23,18 @@ import Checkbox from "next-common/components/checkbox";
 import {
   ProjectLogoSimaSpecDark,
   ProjectLogoSimaSpecLight,
+  SystemLoading,
 } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
+
+function LoadingButtonContent({ text }) {
+  return (
+    <div className="flex items-center justify-center gap-[8px]">
+      <SystemLoading className="w-4 h-4" />
+      <span>{text}</span>
+    </div>
+  );
+}
 
 export default function AnnouncementPublishPopup({
   title = "Publish Announcement",
@@ -35,12 +45,13 @@ export default function AnnouncementPublishPopup({
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
   const [isOrganization, setIsOrganization] = useState(false);
-  const [, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const isMounted = useIsMounted();
   const signMessage = useSignMessage();
   const dispatch = useDispatch();
   const tab = useModuleTab();
   const module = tab === Referenda ? "referenda" : "democracy";
+  const [confirmText, setConfirmText] = useState("Submit & Publish");
 
   const triggerUpdate = useCallback(() => {
     if (module === "referenda") {
@@ -57,6 +68,9 @@ export default function AnnouncementPublishPopup({
       }
 
       try {
+        setLoading(true);
+        setConfirmText(<LoadingButtonContent text="Saving..." />);
+
         const data = {
           isOrganization,
           shortDescription,
@@ -73,6 +87,8 @@ export default function AnnouncementPublishPopup({
 
         const { cid } = result;
 
+        setConfirmText(<LoadingButtonContent text="Signing..." />);
+
         const delegation = "D";
         const version = 1;
         const publish = "P";
@@ -83,23 +99,22 @@ export default function AnnouncementPublishPopup({
         await sendTx({
           tx,
           dispatch,
-          setLoading,
           onInBlock: () => {
-            // getMyVoteAndShowSuccessful();
+            dispatch(newSuccessToast("Announcement published successfully"));
+            triggerUpdate();
           },
           signerAccount,
           isMounted,
           onClose,
         });
-
-        dispatch(newSuccessToast("Announcement published successfully"));
-        triggerUpdate();
-        onClose();
       } catch (e) {
         if (e.message === "Cancelled") {
           return;
         }
         dispatch(newErrorToast(e.message));
+      } finally {
+        setLoading(false);
+        setConfirmText("Submit & Publish");
       }
     },
     [
@@ -116,7 +131,8 @@ export default function AnnouncementPublishPopup({
 
   return (
     <SignerPopup
-      confirmText="Submit & Publish"
+      disabled={isLoading}
+      confirmText={confirmText}
       className="w-[800px] max-w-full"
       title={title}
       onClose={onClose}
