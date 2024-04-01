@@ -14,6 +14,10 @@ export default function Gov2Summary({ summary }) {
           content: <span>{summary.decidingCount || 0}</span>,
         },
         {
+          title: "Preparing",
+          content: <span>{summary.preparingCount || 0}</span>,
+        },
+        {
           title: "Active",
           content: (
             <span>
