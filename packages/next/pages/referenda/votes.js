@@ -15,22 +15,20 @@ import { cn } from "next-common/utils";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
 import { Title } from "components/myvotes/styled";
 
-function ReferendaVoteLayout({ children }) {
+export function ReferendaVoteLayout({ children }) {
   return (
-    <ModuleTabProvider defaultTab={Referenda}>
-      <div className="flex flex-col gap-[16px]">
-        <div
-          className={cn(
-            "flex justify-between items-center gap-3 mx-6",
-            "max-sm:block max-sm:space-y-3",
-          )}
-        >
-          <Title>My Votes</Title>
-          <ModuleTab />
-        </div>
-        {children}
+    <div className="flex flex-col gap-[16px]">
+      <div
+        className={cn(
+          "flex justify-between items-center gap-3 mx-6",
+          "max-sm:block max-sm:space-y-3",
+        )}
+      >
+        <Title>My Votes</Title>
+        <ModuleTab />
       </div>
-    </ModuleTabProvider>
+      {children}
+    </div>
   );
 }
 
@@ -54,9 +52,11 @@ export default function ReferendaVotesPage({ referendaSummary }) {
       title={title}
       summaryData={referendaSummary}
     >
-      <ReferendaVoteLayout>
-        <ModuleVotes />
-      </ReferendaVoteLayout>
+      <ModuleTabProvider defaultTab={Referenda}>
+        <ReferendaVoteLayout>
+          <ModuleVotes />
+        </ReferendaVoteLayout>
+      </ModuleTabProvider>
     </ReferendaLayout>
   );
 }
