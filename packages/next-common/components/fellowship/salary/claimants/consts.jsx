@@ -36,7 +36,7 @@ export const claimantListColumns = [
     width: 160,
   },
   {
-    name: "Status",
+    name: <span>Status</span>,
     className: "text-right",
     width: 160,
   },
