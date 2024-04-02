@@ -51,36 +51,34 @@ export default function FellowshipSalaryClaimants() {
 
   const rows = filteredClaimants?.map((claimant) => {
     const address = claimant?.address;
-    const status = claimant?.status;
-    const cycleIndex = status.lastActive;
 
     return [
       <FellowshipRank key={`rank-${address}`} rank={claimant.rank} />,
       <AddressUser key={`address-${address}`} add={address} />,
       <FellowshipSalaryMemberIsRegistered
         key={`isRegistered-${address}`}
-        status={status?.status}
+        status={claimant?.status?.status}
       />,
       <Link
         key={`lastActive-${address}`}
-        href={`/fellowship/salary/cycles/${cycleIndex}`}
+        href={`/fellowship/salary/cycles/${claimant?.status?.lastActive}`}
         className="text14Medium text-theme500"
       >
-        #{cycleIndex}
+        #{claimant?.status?.lastActive}
       </Link>,
       <ValueDisplay
         key={`active-salary-${address}`}
-        value={toPrecision(activeSalary[rank - 1] || 0, decimals)}
+        value={toPrecision(activeSalary[claimant.rank - 1] || 0, decimals)}
         symbol={symbol}
       />,
       <ValueDisplay
         key={`passive-salary-${address}`}
-        value={toPrecision(passiveSalary[rank - 1] || 0, decimals)}
+        value={toPrecision(passiveSalary[claimant.rank - 1] || 0, decimals)}
         symbol={symbol}
       />,
       <FellowshipSalaryMemberStatus
         key={`status-${address}`}
-        status={status?.status}
+        status={claimant?.status?.status}
       />,
     ];
   });
