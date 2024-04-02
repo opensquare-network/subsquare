@@ -1,4 +1,6 @@
 import ListLayout from "next-common/components/layout/ListLayout";
+import FellowshipSalarySummary from "./summary";
+import FellowshipSummaryActions from "../core/summary/actions";
 
 export default function FellowshipSalaryCommon({ children, ...props }) {
   const title = "Fellowship Salary";
@@ -11,6 +13,8 @@ export default function FellowshipSalaryCommon({ children, ...props }) {
       seoInfo={seoInfo}
       title={title}
       description={seoInfo.desc}
+      summary={<FellowshipSalarySummary />}
+      summaryFooter={<FellowshipSummaryActions />}
       tabs={[
         {
           label: "Cycles",
