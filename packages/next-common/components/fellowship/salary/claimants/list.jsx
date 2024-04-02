@@ -85,13 +85,13 @@ export default function FellowshipSalaryClaimants() {
 
   return (
     <div>
-      <TitleContainer>
-        <span>
+      <TitleContainer className="gap-3">
+        <div>
           List
           <span className="text-textTertiary text14Medium ml-1">
             {filteredClaimants.length}
           </span>
-        </span>
+        </div>
         <div className="flex items-center gap-x-4">
           {rankFilterComponent}
           {statusFilterComponent}
