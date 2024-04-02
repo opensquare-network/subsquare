@@ -14,7 +14,7 @@ export default function FellowshipSalaryPage() {
 }
 
 export const getServerSideProps = withFellowshipSalaryCommonProps(async () => {
-  const { result: historyCycles = {} } = nextApi.fetch(
+  const { result: historyCycles = {} } = await nextApi.fetch(
     "fellowship/salary/history_cycles",
   );
 
