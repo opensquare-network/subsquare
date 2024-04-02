@@ -18,6 +18,11 @@ export default function FellowshipSalaryCommon({ children, ...props }) {
           exactMatch: true,
         },
         {
+          label: "Claimants",
+          url: "/fellowship/salary/claimants",
+          exactMatch: true,
+        },
+        {
           label: "Feeds",
           url: "/fellowship/salary/feeds",
           exactMatch: true,

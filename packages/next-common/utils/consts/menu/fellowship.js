@@ -46,6 +46,7 @@ function getFellowshipSalaryMenu() {
     pathname: "/fellowship/salary",
     extraMatchNavMenuActivePathnames: [
       "/fellowship/salary/feeds",
+      "/fellowship/salary/claimants",
       "/fellowship/salary/cycles/[...params]",
     ],
   };
