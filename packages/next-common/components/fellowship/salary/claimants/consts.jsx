@@ -1,7 +1,7 @@
 const CLAIM_STATS = {
+  Registered: "Registered",
   Nothing: "Nothing",
   Attempted: "Attempted",
-  Registered: "Registered",
 };
 
 export const claimStatsValues = Object.values(CLAIM_STATS);
