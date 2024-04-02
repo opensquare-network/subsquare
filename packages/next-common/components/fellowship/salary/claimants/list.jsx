@@ -13,42 +13,7 @@ import FellowshipSalaryMemberStatus from "./status";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useFellowshipSalaryMemberStatusFilter } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStatusFilter";
-
-const columns = [
-  {
-    name: "Rank",
-    width: 80,
-  },
-  {
-    name: "Claimant",
-    className: "min-w-[200px]",
-  },
-  {
-    name: "isRegistered",
-    className: "text-right",
-    width: 160,
-  },
-  {
-    name: "Last Active At",
-    className: "text-right",
-    width: 160,
-  },
-  {
-    name: "Active Salary",
-    className: "text-right",
-    width: 160,
-  },
-  {
-    name: "Passive Salary",
-    className: "text-right",
-    width: 160,
-  },
-  {
-    name: "Status",
-    className: "text-right",
-    width: 160,
-  },
-];
+import { claimStatsValues, claimantListColumns } from "./consts";
 
 export default function FellowshipSalaryClaimants() {
   const { fellowshipParams, fellowshipMembers, fellowshipSalaryClaimants } =
@@ -69,9 +34,8 @@ export default function FellowshipSalaryClaimants() {
   const ranks = [...new Set(fellowshipMembers.map((m) => m.rank))];
   const { rank, component: rankFilterComponent } = useRankFilter(ranks);
 
-  const statusValues = ["attempted", "registered", "nothing"];
   const { status, component: statusFilterComponent } =
-    useFellowshipSalaryMemberStatusFilter(statusValues);
+    useFellowshipSalaryMemberStatusFilter(claimStatsValues);
 
   const filteredClaimants =
     isNil(rank) && isNil(status)
@@ -139,7 +103,7 @@ export default function FellowshipSalaryClaimants() {
       <SecondaryCard className="mt-4">
         <DataList
           className="text14Medium"
-          columns={columns}
+          columns={claimantListColumns}
           noDataText="No Claimants"
           rows={rows}
         />

@@ -1,4 +1,4 @@
-import { upperFirst } from "lodash-es";
+import { lowerFirst } from "lodash-es";
 import Select from "next-common/components/select";
 import { useState } from "react";
 
@@ -10,8 +10,8 @@ export function useFellowshipSalaryMemberStatusFilter(statusValues = []) {
     },
     ...statusValues.map((value) => {
       return {
-        label: upperFirst(value),
-        value,
+        label: value,
+        value: lowerFirst(value),
       };
     }),
   ];
