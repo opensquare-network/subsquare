@@ -12,7 +12,10 @@ import ReferendaDelegateeDetailPopup from "./detailPopup";
 import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "./avatar";
 
-export default function ReferendaDelegateCard({ delegate = {} }) {
+export default function ReferendaDelegateCard({
+  delegate = {},
+  showDelegateButton = true,
+}) {
   const { address, manifesto, shortBio } = delegate;
 
   const shortDescription = shortBio || manifesto?.shortDescription;
@@ -25,7 +28,9 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
         <DelegateAvatar address={address} />
 
         <div className="space-x-2">
-          <NewDelegateButton defaultTargetAddress={address} />
+          {showDelegateButton && (
+            <NewDelegateButton defaultTargetAddress={address} />
+          )}
           <SecondaryButton
             className="w-7 h-7 p-0"
             size="small"
