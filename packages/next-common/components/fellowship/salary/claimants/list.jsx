@@ -19,7 +19,7 @@ import { useFellowSalaryClaimantsData } from "next-common/hooks/fellowship/salar
 export default function FellowshipSalaryClaimants() {
   const { fellowshipParams, fellowshipMembers } = usePageProps();
   const { symbol, decimals } = useSalaryAsset();
-  const [fellowshipSalaryClaimants] = useFellowSalaryClaimantsData();
+  const fellowshipSalaryClaimants = useFellowSalaryClaimantsData();
 
   const ranks = [...new Set(fellowshipMembers.map((m) => m.rank))];
   const { rank, component: rankFilterComponent } = useRankFilter(ranks);

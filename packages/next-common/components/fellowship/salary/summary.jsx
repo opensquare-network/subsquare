@@ -5,7 +5,7 @@ import { useFellowSalaryClaimantsData } from "next-common/hooks/fellowship/salar
 
 export default function FellowshipSalarySummary() {
   const { fellowshipMembers } = usePageProps();
-  const [fellowshipSalaryClaimants] = useFellowSalaryClaimantsData();
+  const fellowshipSalaryClaimants = useFellowSalaryClaimantsData();
 
   const [registeredClaimants] = partition(
     fellowshipSalaryClaimants,
