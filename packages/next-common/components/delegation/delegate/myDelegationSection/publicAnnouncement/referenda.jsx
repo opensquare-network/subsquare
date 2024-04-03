@@ -1,33 +1,41 @@
-import { useEffect, useState } from "react";
-import Announcement from "./announcement";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { AvatarContextProvider } from "next-common/context/avatar";
 import nextApi from "next-common/services/nextApi";
 import { delegationReferendaDelegatesAddressApi } from "next-common/services/url";
-import ReferendaDelegateCard from "../../referenda/card";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useAsync } from "react-use";
 import MemberCardListContainer from "../../common/cardListContainer";
-import { AvatarContextProvider } from "next-common/context/avatar";
+import ReferendaDelegateCard from "../../referenda/card";
+import Announcement from "./announcement";
 
 export default function ReferendaAnnouncement() {
-  const [data, setData] = useState();
   const realAddress = useRealAddress();
 
-  useEffect(() => {
-    nextApi
+  const state = useAsync(async () => {
+    return await nextApi
       .fetch(delegationReferendaDelegatesAddressApi(realAddress))
       .then((resp) => {
         if (resp.result) {
-          setData(resp.result);
+          return resp.result;
         }
       });
   }, [realAddress]);
 
-  const addressAvatarMap = new Map([[data?.address, data?.manifesto?.image]]);
+  const addressAvatarMap = new Map([
+    [state.value?.address, state.value?.manifesto?.image],
+  ]);
 
-  if (data) {
+  if (state.loading) {
+    return null;
+  }
+
+  if (state.value) {
     return (
       <AvatarContextProvider addressAvatarMap={addressAvatarMap}>
         <MemberCardListContainer>
-          <ReferendaDelegateCard delegate={data} showDelegateButton={false} />
+          <ReferendaDelegateCard
+            delegate={state.value}
+            showDelegateButton={false}
+          />
         </MemberCardListContainer>
       </AvatarContextProvider>
     );
