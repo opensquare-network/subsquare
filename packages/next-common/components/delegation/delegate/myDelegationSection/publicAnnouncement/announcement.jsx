@@ -3,7 +3,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import Tooltip from "next-common/components/tooltip";
 import PrimaryButton from "next-common/lib/button/primary";
 
-export default function PublicAnnouncement() {
+export default function Announcement() {
   return (
     <SecondaryCard className="flex flex-row gap-[16px] max-sm:flex-col">
       <div className="flex grow gap-[16px] sm:items-center max-sm:gap-[12px] max-sm:flex-col">
