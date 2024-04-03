@@ -11,11 +11,15 @@ import NewDelegateButton from "next-common/components/summary/allDelegation/newD
 import ReferendaDelegateeDetailPopup from "./detailPopup";
 import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "./avatar";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function ReferendaDelegateCard({ delegate = {} }) {
   const { address, manifesto, shortBio } = delegate;
 
+  const realAddress = useRealAddress();
   const shortDescription = shortBio || manifesto?.shortDescription;
+
+  const isDelegatee = realAddress === address;
 
   const [detailOpen, setDetailOpen] = useState(false);
 
@@ -25,7 +29,7 @@ export default function ReferendaDelegateCard({ delegate = {} }) {
         <DelegateAvatar address={address} />
 
         <div className="space-x-2">
-          <NewDelegateButton defaultTargetAddress={address} />
+          {!isDelegatee && <NewDelegateButton defaultTargetAddress={address} />}
           <SecondaryButton
             className="w-7 h-7 p-0"
             size="small"
