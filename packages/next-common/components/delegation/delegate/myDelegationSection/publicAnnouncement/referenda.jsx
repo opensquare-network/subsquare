@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import Delegates from "../../referenda/members";
 import Announcement from "./announcement";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import nextApi from "next-common/services/nextApi";
 import { delegationReferendaDelegatesAddressApi } from "next-common/services/url";
+import ReferendaDelegateCard from "../../referenda/card";
+import MemberCardListContainer from "../../common/cardListContainer";
+import { AvatarContextProvider } from "next-common/context/avatar";
 
 export default function ReferendaAnnouncement() {
   const [data, setData] = useState();
@@ -19,8 +21,16 @@ export default function ReferendaAnnouncement() {
       });
   }, [realAddress]);
 
+  const addressAvatarMap = new Map([[data?.address, data?.manifesto?.image]]);
+
   if (data) {
-    return <Delegates delegates={[data]} />;
+    return (
+      <AvatarContextProvider addressAvatarMap={addressAvatarMap}>
+        <MemberCardListContainer>
+          <ReferendaDelegateCard delegate={data} showDelegateButton={false} />
+        </MemberCardListContainer>
+      </AvatarContextProvider>
+    );
   }
 
   return <Announcement />;
