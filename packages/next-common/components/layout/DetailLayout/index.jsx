@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
+import ScrollToTopButton from "next-common/components/layout/DetailLayout/ScrollToTopButton";
 
 export default function DetailLayout({
   seoInfo,
@@ -42,6 +43,9 @@ export default function DetailLayout({
           )}
         >
           <Breadcrumbs breadcrumbs={breadcrumbs} hasSidebar={hasSidebar} />
+
+          {/*点击滑至顶部的浮窗*/}
+          <ScrollToTopButton />
 
           {/* set relative for right side(vote) component */}
           <div className="flex gap-x-6 max-w-full relative">
