@@ -62,7 +62,7 @@ export default function PostContent({ post = {} }) {
           )}
         >
           <SecondaryButton
-            small
+            size="small"
             onClick={() => {
               setPostContentCollapsed(!postContentCollapsed);
             }}
