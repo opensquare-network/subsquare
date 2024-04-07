@@ -8,7 +8,7 @@ export default function useRankFilter(ranks = []) {
   }));
 
   options.unshift({
-    label: "-",
+    label: "All",
     value: null,
   });
 

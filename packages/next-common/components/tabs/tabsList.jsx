@@ -62,13 +62,15 @@ export default function TabsList({
 
           return {
             ...tab,
-            render() {
+            render(ctx) {
               return (
                 <Tooltip content={tab.tooltip}>
                   <div
                     className={cn(
                       itemClassName,
-                      active ? itemActiveClassName : "border-transparent",
+                      ctx?.active || active
+                        ? itemActiveClassName
+                        : "border-transparent",
                     )}
                   >
                     {tab.label}

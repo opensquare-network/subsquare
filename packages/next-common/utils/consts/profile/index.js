@@ -5,12 +5,14 @@ import gov2Category from "./categories/gov2";
 import allianceCategory from "./categories/alliance";
 
 export function getProfileCategories(chain) {
-  const categories = [...commonCategories];
+  const categories = [];
 
   const settings = getChainSettings(chain);
   if (settings.hasReferenda || settings.hasFellowship) {
     categories.push(gov2Category);
   }
+
+  categories.push(...commonCategories);
 
   if (isCollectivesChain(chain)) {
     categories.push(allianceCategory);

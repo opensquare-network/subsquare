@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.9.1
+
+date: 2024-04-06
+
+- Add fellowship salary claimants page.
+- Add members summary for fellowship salary module.
+- Show my delegate card in a separate section.
+- Add preparing referenda number on referenda list summary.
+- Set OpenGov as the default tab of posted tab on profile page.
+- Remove useless tabs on referenda my votes page.
+- Fix styles and update dependencies.
+
 ### 3.9.0
 
 date: 2024-03-22

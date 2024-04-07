@@ -7,9 +7,36 @@ import dayjs from "dayjs";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { PolkassemblyChains } from "next-common/utils/polkassembly";
+import { cloneDeep } from "lodash-es";
 
 function getShouldReadPolkassemblyComments(chain) {
   return PolkassemblyChains.includes(chain);
+}
+
+function mergeComments(polkassemblyComments, subsquareComments) {
+  const filteredPolkassemblyComments = [];
+  const newSubsquareComments = cloneDeep(subsquareComments);
+  for (const polkaItem of polkassemblyComments ?? []) {
+    const subsquareItem = newSubsquareComments.find(
+      (item) => item._id === polkaItem.id,
+    );
+    if (subsquareItem) {
+      subsquareItem.replies = subsquareItem.replies || [];
+      subsquareItem.replies.push(
+        ...polkaItem.replies.map((r) => ({
+          ...r,
+          comment_source: "polkassembly",
+        })),
+      );
+    } else {
+      filteredPolkassemblyComments.push(polkaItem);
+    }
+  }
+
+  return [
+    ...(filteredPolkassemblyComments ?? []),
+    ...(newSubsquareComments ?? []),
+  ].sort((a, b) => dayjs(a.createdAt).unix() - dayjs(b.createdAt).unix());
 }
 
 export function usePostCommentsData() {
@@ -27,10 +54,10 @@ export function usePostCommentsData() {
       if (!polkassemblyPostData.loadingComments) {
         const data = { ...comments };
 
-        data.items = [
-          ...(polkassemblyPostData.comments ?? []),
-          ...(comments.items ?? []),
-        ].sort((a, b) => dayjs(a.createdAt).unix() - dayjs(b.createdAt).unix());
+        data.items = mergeComments(
+          polkassemblyPostData.comments,
+          comments.items,
+        );
 
         setCommentsData(data);
       }

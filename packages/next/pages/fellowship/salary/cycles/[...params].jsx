@@ -1,5 +1,3 @@
-import { withCommonProps } from "next-common/lib";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salary/cycles/layout";
 import FellowshipSalaryCycleDetailTabsList from "next-common/components/fellowship/salary/cycles/tabsList";
 import FellowshipSalaryCycleDetailInfo from "next-common/components/fellowship/salary/cycles/info";
@@ -12,6 +10,7 @@ import {
   fellowshipSalaryCycleRegisteredPaymentsApi,
   fellowshipSalaryCycleUnregisteredPaymentsApi,
 } from "next-common/services/url";
+import { withFellowshipSalaryCommonProps } from "next-common/services/serverSide/fellowship/common";
 
 export default function FellowshipSalaryCyclePage({ cycle }) {
   return (
@@ -28,56 +27,54 @@ export default function FellowshipSalaryCyclePage({ cycle }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const {
-    params: [id],
-    page,
-  } = context.query;
+export const getServerSideProps = withFellowshipSalaryCommonProps(
+  async (context) => {
+    const {
+      params: [id],
+      page,
+    } = context.query;
 
-  const [tracksProps, { result: cycle }] = await Promise.all([
-    fetchOpenGovTracksProps(),
-    nextApi.fetch(fellowshipSalaryCycleApi(id)),
-  ]);
+    const { result: cycle } = await nextApi.fetch(fellowshipSalaryCycleApi(id));
 
-  let registrations;
-  let registeredPayments;
-  let unRegisteredPayments;
-  let feeds;
+    let registrations;
+    let registeredPayments;
+    let unRegisteredPayments;
+    let feeds;
 
-  if (cycle) {
-    const [
-      { result: registrationsResult },
-      { result: registeredPaymentsResult },
-      { result: unRegisteredPaymentsResult },
-      { result: feedsResult },
-    ] = await Promise.all([
-      nextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id), { page }),
-      nextApi.fetch(fellowshipSalaryCycleRegisteredPaymentsApi(id), {
-        page,
-      }),
-      nextApi.fetch(fellowshipSalaryCycleUnregisteredPaymentsApi(id), {
-        page,
-      }),
-      nextApi.fetch(fellowshipSalaryCycleFeedsApi(id), {
-        page,
-      }),
-    ]);
+    if (cycle) {
+      const [
+        { result: registrationsResult },
+        { result: registeredPaymentsResult },
+        { result: unRegisteredPaymentsResult },
+        { result: feedsResult },
+      ] = await Promise.all([
+        nextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id), { page }),
+        nextApi.fetch(fellowshipSalaryCycleRegisteredPaymentsApi(id), {
+          page,
+        }),
+        nextApi.fetch(fellowshipSalaryCycleUnregisteredPaymentsApi(id), {
+          page,
+        }),
+        nextApi.fetch(fellowshipSalaryCycleFeedsApi(id), {
+          page,
+        }),
+      ]);
 
-    registrations = registrationsResult;
-    registeredPayments = registeredPaymentsResult;
-    unRegisteredPayments = unRegisteredPaymentsResult;
-    feeds = feedsResult;
-  }
+      registrations = registrationsResult;
+      registeredPayments = registeredPaymentsResult;
+      unRegisteredPayments = unRegisteredPaymentsResult;
+      feeds = feedsResult;
+    }
 
-  return {
-    props: {
-      ...tracksProps,
-      id,
-      cycle: cycle || null,
-      registrations: registrations || {},
-      registeredPayments: registeredPayments || {},
-      unRegisteredPayments: unRegisteredPayments || {},
-      feeds: feeds || {},
-    },
-  };
-});
+    return {
+      props: {
+        id,
+        cycle: cycle || null,
+        registrations: registrations || {},
+        registeredPayments: registeredPayments || {},
+        unRegisteredPayments: unRegisteredPayments || {},
+        feeds: feeds || {},
+      },
+    };
+  },
+);

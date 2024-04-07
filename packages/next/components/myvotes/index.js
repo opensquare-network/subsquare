@@ -1,12 +1,15 @@
 import {
   Democracy,
+  ModuleTab,
   ModuleTabProvider,
   Referenda,
 } from "next-common/components/profile/votingHistory/common";
 import { useChainSettings } from "next-common/context/chain";
 import ModuleVotes from "./moduleVotes";
+import { cn } from "next-common/utils";
+import AccountSubTabs from "next-common/components/overview/account/subTabs";
 
-export default function MyVotes() {
+function MyVoteLayout({ children }) {
   const { hasReferenda, noDemocracyModule } = useChainSettings();
 
   const availableTabs = [];
@@ -25,10 +28,29 @@ export default function MyVotes() {
   }
 
   return (
+    <ModuleTabProvider availableTabs={availableTabs} defaultTab={defaultTab}>
+      <div className="flex flex-col gap-[16px]">
+        <div
+          className={cn(
+            "flex justify-between items-center gap-3 mx-6",
+            "max-sm:block max-sm:space-y-3",
+          )}
+        >
+          <AccountSubTabs />
+          <ModuleTab />
+        </div>
+        {children}
+      </div>
+    </ModuleTabProvider>
+  );
+}
+
+export default function MyVotes() {
+  return (
     <div>
-      <ModuleTabProvider availableTabs={availableTabs} defaultTab={defaultTab}>
+      <MyVoteLayout>
         <ModuleVotes />
-      </ModuleTabProvider>
+      </MyVoteLayout>
     </div>
   );
 }
