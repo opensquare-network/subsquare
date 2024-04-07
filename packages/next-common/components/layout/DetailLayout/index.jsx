@@ -44,7 +44,7 @@ export default function DetailLayout({
         >
           <Breadcrumbs breadcrumbs={breadcrumbs} hasSidebar={hasSidebar} />
 
-          {/*点击滑至顶部的浮窗*/}
+          {/*Click the floating window button and slide to the top of the browser*/}
           <ScrollToTopButton />
 
           {/* set relative for right side(vote) component */}
