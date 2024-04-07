@@ -2,10 +2,20 @@ import dayjs from "dayjs";
 import Descriptions from "next-common/components/Descriptions";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
 import { cn, toPrecision } from "next-common/utils";
+import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 
 const subColumns = [
+  {
+    name: "id",
+    cellRender(data) {
+      if (!data?.paymentId) {
+        return null;
+      }
+
+      return data.paymentId;
+    },
+  },
   {
     name: "beneficiary",
     cellRender(data) {
@@ -26,9 +36,8 @@ const subColumns = [
       return <AmountValue data={data} />;
     },
   },
-  // FIXME: cycle, registrations paymentID
   {
-    name: "indexer",
+    name: "time",
     cellRender(data) {
       if (!data?.paidIndexer) {
         return null;
@@ -92,7 +101,7 @@ function BeneficiaryValue({ data }) {
 }
 
 function AmountValue({ data }) {
-  const { decimals, symbol } = useChainSettings();
+  const { decimals, symbol } = useSalaryAsset();
 
   return (
     <ValueDisplay value={toPrecision(data?.amount, decimals)} symbol={symbol} />
