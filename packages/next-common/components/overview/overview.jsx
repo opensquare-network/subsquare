@@ -16,9 +16,7 @@ export default function Overview() {
         <TreasuryStats />
       </WithPallet>
 
-      <WithPallet pallet="fellowshipSalary">
-        <FellowshipSalaryOverview />
-      </WithPallet>
+      <FellowshipSalaryOverview />
 
       <div>
         <RecentProposals />
