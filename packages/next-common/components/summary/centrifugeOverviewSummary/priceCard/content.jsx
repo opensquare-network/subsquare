@@ -85,21 +85,13 @@ export default function PriceCardContent({
       </div>
 
       <div className={cn("relative", "mt-2")}>
-        {loading && (
-          <div
-            className={cn(
-              "absolute inset-0",
-              "flex items-center justify-center",
-            )}
-          >
+        {loading ? (
+          <div className={cn("h-[144px]", "flex items-center justify-center")}>
             <Loading size={24} />
           </div>
+        ) : (
+          <PriceCardContentChart data={data} chartOptions={chartOptions} />
         )}
-
-        <PriceCardContentChart
-          data={loading ? [] : data}
-          chartOptions={chartOptions}
-        />
       </div>
     </div>
   );
