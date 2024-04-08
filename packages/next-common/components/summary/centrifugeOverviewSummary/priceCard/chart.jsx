@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { noop, merge } from "lodash-es";
 import { useWindowSize } from "react-use";
 import { useThemeSetting } from "next-common/context/theme";
-import { formatBN } from "next-common/utils/bn";
+import { bnToLocaleString } from "next-common/utils/bn";
 
 export default function PriceCardContentChart({
   data,
@@ -67,7 +67,7 @@ export default function PriceCardContentChart({
               );
             },
             label(tooltipItem) {
-              return `$${formatBN(tooltipItem.raw, 3)}`;
+              return `$${bnToLocaleString(tooltipItem.raw, 3)}`;
             },
           },
           itemSort(a, b) {

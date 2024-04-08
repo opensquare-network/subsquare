@@ -2,7 +2,7 @@ import CardHeader from "./cardHeader";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { DetailList, DetailRow } from "./detailRow";
 import { useBasicData } from "next-common/context/centrifuge/basicData";
-import { formatBN } from "next-common/utils/bn";
+import { bnToLocaleString } from "next-common/utils/bn";
 import Tooltip from "next-common/components/tooltip";
 
 export default function TokenHoldersCard() {
@@ -27,11 +27,11 @@ export default function TokenHoldersCard() {
               />
             </div>
           }
-          value={formatBN(all)}
+          value={bnToLocaleString(all)}
         />
         <DetailList>
-          <DetailRow title="Whales" value={formatBN(whales)} />
-          <DetailRow title="Dolphins" value={formatBN(dolphins)} />
+          <DetailRow title="Whales" value={bnToLocaleString(whales)} />
+          <DetailRow title="Dolphins" value={bnToLocaleString(dolphins)} />
         </DetailList>
       </div>
     </SecondaryCard>

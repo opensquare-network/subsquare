@@ -19,7 +19,7 @@ import {
 } from "next-common/components/overview/centrifugeStats/detailRow";
 import { useBasicData } from "next-common/context/centrifuge/basicData";
 import BigNumber from "bignumber.js";
-import { formatBN } from "next-common/utils/bn";
+import { bnToLocaleString } from "next-common/utils/bn";
 import TokenValue from "next-common/components/overview/centrifugeStats/tokenValue";
 import PriceCard from "./priceCard";
 
@@ -183,20 +183,22 @@ function Supply() {
     <div className="flex flex-col gap-[16px] md:min-w-[252px] md:w-[252px] max-md:grow">
       <CardHeader
         title="Total Supply"
-        value={<TokenValue value={formatBN(total)} />}
+        value={<TokenValue value={bnToLocaleString(total)} />}
       />
       <DetailList>
         <DetailRow
           title="Native"
           value={
             <TokenValue
-              value={formatBN(new BigNumber(total).minus(wrapped).toFixed())}
+              value={bnToLocaleString(
+                new BigNumber(total).minus(wrapped).toFixed(),
+              )}
             />
           }
         />
         <DetailRow
           title="Wrapped"
-          value={<TokenValue value={formatBN(wrapped)} />}
+          value={<TokenValue value={bnToLocaleString(wrapped)} />}
         />
       </DetailList>
     </div>

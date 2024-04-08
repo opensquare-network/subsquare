@@ -3,7 +3,7 @@ import PriceCardContentChart from "./chart";
 import CardHeader from "next-common/components/overview/centrifugeStats/cardHeader";
 import { cn } from "next-common/utils";
 import { useBasicData } from "next-common/context/centrifuge/basicData";
-import { formatBN } from "next-common/utils/bn";
+import { bnToLocaleString } from "next-common/utils/bn";
 import { LinkCoinmarketcap, LinkCoingecko } from "@osn/icons/subsquare";
 import Loading from "next-common/components/loading";
 
@@ -53,7 +53,7 @@ export default function PriceCardContent({
       <div className="flex flex-col gap-[8px]">
         <CardHeader
           title="Token price"
-          value={`$${formatBN(cfgPrice || 0, 3)}`}
+          value={`$${bnToLocaleString(cfgPrice || 0, 3)}`}
         />
 
         <div className="flex justify-between items-center">

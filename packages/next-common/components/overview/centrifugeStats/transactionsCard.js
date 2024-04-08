@@ -4,7 +4,7 @@ import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import { useBasicData } from "next-common/context/centrifuge/basicData";
 import { useDailyExtrinsics } from "next-common/context/centrifuge/DailyExtrinsics";
-import { formatBN } from "next-common/utils/bn";
+import { bnToLocaleString } from "next-common/utils/bn";
 import dayjs from "dayjs";
 import Loading from "next-common/components/loading";
 import { useThemeSetting } from "next-common/context/theme";
@@ -86,7 +86,7 @@ export default function TransactionsCard() {
       <div className="flex flex-col gap-[16px] h-full">
         <CardHeader
           title="Transactions"
-          value={formatBN(signedExtrinsicCount)}
+          value={bnToLocaleString(signedExtrinsicCount)}
         />
         {isLoading ? loadingContent : chartContent}
       </div>
