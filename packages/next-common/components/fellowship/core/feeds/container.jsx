@@ -22,7 +22,7 @@ const EVENT_CONTENTS = {
 
 export default function FellowshipCoreFeedsContainer({feeds = {}}) {
     const router = useRouter();
-    const {who:queryWho,event:queryEvent} = router.query
+    const { who:queryWho, event:queryEvent} = router.query
     const [searchValue,setSearchValue] = useState(queryWho || '')
     const [loading,setLoading] = useState(false)
     const {event, component} = useEventFilter(Object.values(EVENT_CONTENTS),queryEvent);
