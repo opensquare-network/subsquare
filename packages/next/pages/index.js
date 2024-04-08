@@ -1,9 +1,10 @@
 import { withCommonProps } from "next-common/lib";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { isCollectivesChain } from "next-common/utils/chain";
+import { isCentrifugeChain, isCollectivesChain } from "next-common/utils/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
+import CentrifugeOverviewSummary from "next-common/components/summary/centrifugeOverviewSummary";
 import { useUser } from "next-common/context/user";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import Bounties from "next-common/components/summary/externalInfo/bounties";
@@ -21,6 +22,8 @@ import {
   fetchForumCategories,
   fetchForumLatestTopics,
 } from "next-common/services/serverSide/forum";
+import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
+import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 
 export default function HomePage() {
   const chain = useChain();
@@ -28,9 +31,12 @@ export default function HomePage() {
   const user = useUser();
   const url = useAccountUrl();
 
-  const SummaryComponent = isCollectivesChain(chain)
-    ? AllianceOverviewSummary
-    : OverviewSummary;
+  let summary = <OverviewSummary />;
+  if (isCollectivesChain(chain)) {
+    summary = <AllianceOverviewSummary />;
+  } else if (isCentrifugeChain(chain)) {
+    summary = <CentrifugeOverviewSummary />;
+  }
 
   const tabs = [
     {
@@ -57,20 +63,30 @@ export default function HomePage() {
     );
   }
 
-  return (
+  const content = (
     <ListLayout
       title={chainSettings.name}
       titleExtra={<TitleExtra />}
       seoInfo={{ title: "" }}
       description={chainSettings.description}
       headContent={<HeadContent />}
-      summary={<SummaryComponent />}
+      summary={summary}
       summaryFooter={externalInfo}
       tabs={tabs}
     >
       <Overview />
     </ListLayout>
   );
+
+  if (isCentrifugeChain(chain)) {
+    return (
+      <BasicDataProvider>
+        <DailyExtrinsicsProvider>{content}</DailyExtrinsicsProvider>
+      </BasicDataProvider>
+    );
+  }
+
+  return content;
 }
 
 export const getServerSideProps = withCommonProps(async () => {
