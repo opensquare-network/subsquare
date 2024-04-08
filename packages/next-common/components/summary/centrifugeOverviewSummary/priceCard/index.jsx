@@ -69,23 +69,6 @@ const OPTIONS = [
       },
     },
   },
-  // all
-  /* {
-    label: "All",
-    value: "All",
-    chartOptions: {
-      scales: {
-        x: {
-          time: {
-            unit: "month",
-          },
-          ticks: {
-            stepSize: 2,
-          },
-        },
-      },
-    },
-  }, */
 ];
 
 export default function PriceCard() {

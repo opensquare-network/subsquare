@@ -6,6 +6,7 @@ import { useBasicData } from "next-common/context/centrifuge/basicData";
 import { useDailyExtrinsics } from "next-common/context/centrifuge/DailyExtrinsics";
 import { formatBN } from "next-common/utils/bn";
 import dayjs from "dayjs";
+import Loading from "next-common/components/loading";
 
 function BarChart({ data }) {
   const options = {
@@ -35,46 +36,57 @@ function BarChart({ data }) {
 
 export default function TransactionsCard() {
   const { data: { signedExtrinsicCount = 0 } = {} } = useBasicData();
-  const { data: dailyExtrinsics = [] } = useDailyExtrinsics();
+  const { data: dailyExtrinsics = [], loading: isLoading } =
+    useDailyExtrinsics();
+
+  const chartContent = (
+    <div className="relative h-[72px]">
+      <BarChart
+        data={{
+          labels: dailyExtrinsics.map((extrinsic, index) => {
+            const label = dayjs(extrinsic.startTime * 1000).format(
+              "YYYY-MM-DD HH:mm",
+            );
+
+            if (index === dailyExtrinsics.length - 1) {
+              return label + " ~ now";
+            } else {
+              return (
+                label +
+                " ~ " +
+                dayjs(dailyExtrinsics[index + 1].startTime * 1000).format(
+                  "YYYY-MM-DD HH:mm",
+                )
+              );
+            }
+          }),
+          datasets: [
+            {
+              label: "Signed extrinsics",
+              data: dailyExtrinsics.map((extrinsic) => extrinsic.count),
+              backgroundColor: "#1253FF",
+              barPercentage: 0.5,
+            },
+          ],
+        }}
+      />
+    </div>
+  );
+
+  const loadingContent = (
+    <div className="flex justify-center items-center grow w-full">
+      <Loading size={24} />
+    </div>
+  );
 
   return (
     <SecondaryCard>
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-[16px] h-full">
         <CardHeader
           title="Transaction"
           value={formatBN(signedExtrinsicCount)}
         />
-        <div className="relative h-[72px]">
-          <BarChart
-            data={{
-              labels: dailyExtrinsics.map((extrinsic, index) => {
-                const label = dayjs(extrinsic.startTime * 1000).format(
-                  "YYYY-MM-DD HH:mm",
-                );
-
-                if (index === dailyExtrinsics.length - 1) {
-                  return label + " ~ now";
-                } else {
-                  return (
-                    label +
-                    " ~ " +
-                    dayjs(dailyExtrinsics[index + 1].startTime * 1000).format(
-                      "YYYY-MM-DD HH:mm",
-                    )
-                  );
-                }
-              }),
-              datasets: [
-                {
-                  label: "Signed extrinsics",
-                  data: dailyExtrinsics.map((extrinsic) => extrinsic.count),
-                  backgroundColor: "#1253FF",
-                  barPercentage: 0.5,
-                },
-              ],
-            }}
-          />
-        </div>
+        {isLoading ? loadingContent : chartContent}
       </div>
     </SecondaryCard>
   );

@@ -1,11 +1,24 @@
-// import { SystemLoading, SystemPrice } from "../../icons";
-// import SocialIconLink from "../../socialIcon";
 import { find, noop } from "lodash-es";
 import PriceCardContentChart from "./chart";
 import CardHeader from "next-common/components/overview/centrifugeStats/cardHeader";
 import { cn } from "next-common/utils";
 import { useBasicData } from "next-common/context/centrifuge/basicData";
 import { formatBN } from "next-common/utils/bn";
+import { LinkCoinmarketcap, LinkCoingecko } from "@osn/icons/subsquare";
+import Loading from "next-common/components/loading";
+
+function LinkIcon({ href, icon }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="[&_svg_path]:fill-textTertiary [&_svg_path]:hover:fill-textSecondary"
+    >
+      {icon}
+    </a>
+  );
+}
 
 function DateItem({ selected, onClick, children }) {
   return (
@@ -42,8 +55,14 @@ export default function PriceCardContent({
 
         <div className="flex justify-between items-center">
           <div className="flex gap-[12px]">
-            {/* <SocialIconLink href="https://coinmarketcap.com/currencies/centrifuge/" />
-            <SocialIconLink href="https://www.coingecko.com/en/coins/centrifuge" /> */}
+            <LinkIcon
+              href="https://coinmarketcap.com/currencies/centrifuge/"
+              icon={<LinkCoinmarketcap />}
+            />
+            <LinkIcon
+              href="https://www.coingecko.com/en/coins/centrifuge/"
+              icon={<LinkCoingecko />}
+            />
           </div>
 
           <div className="flex gap-[8px]">
@@ -71,7 +90,7 @@ export default function PriceCardContent({
               "bg-fillCard",
             )}
           >
-            {/* <SystemLoading /> */}
+            <Loading size={24} />
           </div>
         )}
 
