@@ -90,14 +90,16 @@ export default function PriceCardContent({
             className={cn(
               "absolute inset-0",
               "flex items-center justify-center",
-              "bg-fillCard",
             )}
           >
             <Loading size={24} />
           </div>
         )}
 
-        <PriceCardContentChart data={data} chartOptions={chartOptions} />
+        <PriceCardContentChart
+          data={loading ? [] : data}
+          chartOptions={chartOptions}
+        />
       </div>
     </div>
   );
