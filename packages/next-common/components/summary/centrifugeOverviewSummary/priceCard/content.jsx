@@ -44,7 +44,7 @@ export default function PriceCardContent({
   setRange = noop,
   options = [],
 }) {
-  const { cfgPrice = 0 } = useBasicData();
+  const { data: { cfgPrice = 0 } = {} } = useBasicData();
 
   const { chartOptions = {} } = find(options, { value: range }) || {};
 
