@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
-import ActiveValue from "./activeValue";
+import ActiveValue from "../overviewSummary/activeValue";
 import {
   useMenuHasCouncil,
   useMenuHasDemocracyExternal,
@@ -21,6 +21,7 @@ import { useBasicData } from "next-common/context/centrifuge/basicData";
 import BigNumber from "bignumber.js";
 import { formatBN } from "next-common/utils/bn";
 import TokenValue from "next-common/components/overview/centrifugeStats/tokenValue";
+import PriceCard from "./priceCard";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -154,9 +155,17 @@ function CouncilGroupContent() {
 }
 
 function ProposalSummary() {
+  const { summary } = usePageProps();
+  const all =
+    (summary?.referenda?.active || 0) +
+    (summary?.publicProposals?.active || 0) +
+    (summary?.externalProposals?.active || 0) +
+    (summary?.treasuryProposals?.active || 0) +
+    (summary?.motions?.active || 0);
+
   return (
-    <div className="flex flex-col gap-[16px]">
-      <CardHeader title="All Proposals" value={0} />
+    <div className="flex flex-col gap-[16px] md:min-w-[252px] md:w-[252px] max-md:grow">
+      <CardHeader title="All Proposals" value={all} />
       <DetailList>
         <DetailRow title="Democracy" value={<DemocracyGroupContent />} />
         <DetailRow title="Treasury" value={<TreasuryGroupContent />} />
@@ -171,7 +180,7 @@ function Supply() {
   const { total = 0, wrapped = 0 } = supply;
 
   return (
-    <div className="flex flex-col gap-[16px]">
+    <div className="flex flex-col gap-[16px] md:min-w-[252px] md:w-[252px] max-md:grow">
       <CardHeader
         title="Total Supply"
         value={<TokenValue value={formatBN(total)} />}
@@ -196,9 +205,12 @@ function Supply() {
 
 export default function CentrifugeOverviewSummary() {
   return (
-    <div className="grid grid-cols-3 gap-[48px]">
-      <ProposalSummary />
-      <Supply />
+    <div className="flex gap-[48px] max-md:flex-col-reverse max-md:gap-[24px]">
+      <div className="flex gap-[48px] max-md:flex-col-reverse max-md:gap-[24px] max-md:py-[16px]">
+        <ProposalSummary />
+        <Supply />
+      </div>
+      <PriceCard />
     </div>
   );
 }

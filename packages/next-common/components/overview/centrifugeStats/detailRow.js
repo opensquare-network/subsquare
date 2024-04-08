@@ -3,9 +3,9 @@ import tw from "tailwind-styled-components";
 export const DetailList = tw.div`
   flex
   flex-col
-  [&_div]:border-b
-  [&_div]:border-dashed
-  [&_div]:border-neutral300
+  [&>div]:border-b
+  [&>div]:border-dashed
+  [&>div]:border-neutral300
 `;
 
 export function DetailRow({ title, value }) {

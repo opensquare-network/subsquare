@@ -3496,6 +3496,7 @@ __metadata:
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
+    chartjs-plugin-gradient: ^0.6.1
     clsx: ^1.2.1
     cookies: ^0.8.0
     dayjs: ^1.10.7
@@ -4806,6 +4807,15 @@ __metadata:
   peerDependencies:
     chart.js: ">=3.7.0"
   checksum: 443582b13779105c8f147638253e56e30d72c4cf28abab2da30a9f2637ccb068f5fade81ec6a9d78c03d10722107057ab9cc93042bb3951da63bc3edf79322a3
+  languageName: node
+  linkType: hard
+
+"chartjs-plugin-gradient@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "chartjs-plugin-gradient@npm:0.6.1"
+  peerDependencies:
+    chart.js: ">=2.6.0"
+  checksum: 27c72c040708bd1e25316cc096a2f622d4d8ccd3f75fbce21d832728c8b95cca865b26bc884b012000a2e67aa303d258e20c225ac9ecc767299aac9ab5114dca
   languageName: node
   linkType: hard
 
