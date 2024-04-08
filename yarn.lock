@@ -2184,10 +2184,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.80.0":
-  version: 1.80.0
-  resolution: "@osn/icons@npm:1.80.0"
-  checksum: f59a0971fd5975dd9ef17615e977b1648b75ed7cfc207149bb3ed2d2d1531dddb92d4ed822a952f1965719c4d0b176cdde9f14e0b5a5ca24e320a2aef4046d81
+"@osn/icons@npm:^1.85.0":
+  version: 1.85.0
+  resolution: "@osn/icons@npm:1.85.0"
+  checksum: a5c02eac95bb4ba1a514aa6585591a3ed07770effdd99870c43349786a77eb33358c7e77e781ef66dddb47eb01d74b8c0717a4e1af97309c6cc2f22b64da7df6
   languageName: node
   linkType: hard
 
@@ -3458,7 +3458,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.80.0
+    "@osn/icons": ^1.85.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -3492,10 +3492,11 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.80.0
+    "@osn/icons": ^1.85.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
+    chartjs-plugin-gradient: ^0.6.1
     clsx: ^1.2.1
     cookies: ^0.8.0
     dayjs: ^1.10.7
@@ -4806,6 +4807,15 @@ __metadata:
   peerDependencies:
     chart.js: ">=3.7.0"
   checksum: 443582b13779105c8f147638253e56e30d72c4cf28abab2da30a9f2637ccb068f5fade81ec6a9d78c03d10722107057ab9cc93042bb3951da63bc3edf79322a3
+  languageName: node
+  linkType: hard
+
+"chartjs-plugin-gradient@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "chartjs-plugin-gradient@npm:0.6.1"
+  peerDependencies:
+    chart.js: ">=2.6.0"
+  checksum: 27c72c040708bd1e25316cc096a2f622d4d8ccd3f75fbce21d832728c8b95cca865b26bc884b012000a2e67aa303d258e20c225ac9ecc767299aac9ab5114dca
   languageName: node
   linkType: hard
 
@@ -8596,7 +8606,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.2.0
     "@mimirdev/apps-sdk": ^0.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.80.0
+    "@osn/icons": ^1.85.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.3.5
     "@osn/provider-options": 1.1.0
