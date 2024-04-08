@@ -85,7 +85,7 @@ export default function TransactionsCard() {
     <SecondaryCard>
       <div className="flex flex-col gap-[16px] h-full">
         <CardHeader
-          title="Transaction"
+          title="Transactions"
           value={formatBN(signedExtrinsicCount)}
         />
         {isLoading ? loadingContent : chartContent}
