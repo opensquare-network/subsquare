@@ -13,7 +13,10 @@ function LinkIcon({ href, icon }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="[&_svg_path]:fill-textTertiary [&_svg_path]:hover:fill-textSecondary"
+      className={cn(
+        "[&_svg_path]:fill-textTertiary [&_svg_path]:hover:fill-textSecondary",
+        "[&_svg]:w-[20px] [&_svg]:h-[20px]",
+      )}
     >
       {icon}
     </a>
