@@ -7,6 +7,7 @@ import { useDailyExtrinsics } from "next-common/context/centrifuge/DailyExtrinsi
 import { formatBN } from "next-common/utils/bn";
 import dayjs from "dayjs";
 import Loading from "next-common/components/loading";
+import { useThemeSetting } from "next-common/context/theme";
 
 function BarChart({ data }) {
   const options = {
@@ -38,6 +39,7 @@ export default function TransactionsCard() {
   const { data: { signedExtrinsicCount = 0 } = {} } = useBasicData();
   const { data: dailyExtrinsics = [], loading: isLoading } =
     useDailyExtrinsics();
+  const themeSettings = useThemeSetting();
 
   const chartContent = (
     <div className="relative h-[72px]">
@@ -64,7 +66,7 @@ export default function TransactionsCard() {
             {
               label: "Signed extrinsics",
               data: dailyExtrinsics.map((extrinsic) => extrinsic.count),
-              backgroundColor: "#1253FF",
+              backgroundColor: themeSettings.theme500,
               barPercentage: 0.5,
             },
           ],

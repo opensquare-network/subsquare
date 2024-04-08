@@ -35,8 +35,8 @@ export default function PriceCardContentChart({
           backgroundColor: {
             axis: "y",
             colors: {
-              0: "rgba(18, 83, 255, 0)",
-              100: "rgba(18, 83, 255, 0.5)",
+              0: themeSettings.theme100,
+              100: themeSettings.theme300,
             },
           },
         },
