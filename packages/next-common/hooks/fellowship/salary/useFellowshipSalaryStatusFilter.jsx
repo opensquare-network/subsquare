@@ -9,8 +9,9 @@ export function useFellowshipSalaryMemberStatusFilter(statusValues = []) {
       value: null,
     },
     ...statusValues.map((value) => {
+      const label = value === "Attempted" ? "Paid" : value;
       return {
-        label: value,
+        label,
         value: lowerFirst(value),
       };
     }),
