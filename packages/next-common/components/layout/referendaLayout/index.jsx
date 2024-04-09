@@ -29,6 +29,7 @@ export default function ReferendaLayout({ summaryData, ...props }) {
         { label: "Referenda", url: "/referenda" },
         user?.address && { label: "My Votes", url: "/referenda/votes" },
         { label: "Statistics", url: "/referenda/statistics" },
+        { label: "Whales", url: "/referenda/whales" },
       ].filter(Boolean)}
       {...props}
     >
