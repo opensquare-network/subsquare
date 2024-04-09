@@ -6,7 +6,7 @@ import { useBasicData } from "next-common/context/centrifuge/basicData";
 import { bnToLocaleString } from "next-common/utils/bn";
 
 export default function BlockRewardsCard() {
-  const { data = {} } = useBasicData();
+  const { data = {}, loading: isLoading } = useBasicData();
   const { rewards = {} } = data;
   const { total = 0, collator = 0, treasury = 0 } = rewards;
 
@@ -15,16 +15,28 @@ export default function BlockRewardsCard() {
       <div className="flex flex-col gap-[16px]">
         <CardHeader
           title="Block Rewards"
-          value={<TokenValue value={bnToLocaleString(total)} />}
+          value={
+            <TokenValue value={bnToLocaleString(total)} isLoading={isLoading} />
+          }
         />
         <DetailList>
           <DetailRow
             title="Collator"
-            value={<TokenValue value={bnToLocaleString(collator)} />}
+            value={
+              <TokenValue
+                value={bnToLocaleString(collator)}
+                isLoading={isLoading}
+              />
+            }
           />
           <DetailRow
             title="Treasury"
-            value={<TokenValue value={bnToLocaleString(treasury)} />}
+            value={
+              <TokenValue
+                value={bnToLocaleString(treasury)}
+                isLoading={isLoading}
+              />
+            }
           />
         </DetailList>
       </div>

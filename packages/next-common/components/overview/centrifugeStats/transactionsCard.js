@@ -8,6 +8,7 @@ import { bnToLocaleString } from "next-common/utils/bn";
 import dayjs from "dayjs";
 import Loading from "next-common/components/loading";
 import { useThemeSetting } from "next-common/context/theme";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 function BarChart({ data }) {
   const options = {
@@ -36,7 +37,10 @@ function BarChart({ data }) {
 }
 
 export default function TransactionsCard() {
-  const { data: { signedExtrinsicCount = 0 } = {} } = useBasicData();
+  const {
+    data: { signedExtrinsicCount = 0 } = {},
+    loading: isLoadingBasicData,
+  } = useBasicData();
   const { data: dailyExtrinsics = [], loading: isLoading } =
     useDailyExtrinsics();
   const themeSettings = useThemeSetting();
@@ -86,7 +90,11 @@ export default function TransactionsCard() {
       <div className="flex flex-col gap-[16px] h-full">
         <CardHeader
           title="Transactions"
-          value={bnToLocaleString(signedExtrinsicCount)}
+          value={
+            <LoadableContent isLoading={isLoadingBasicData}>
+              {bnToLocaleString(signedExtrinsicCount)}
+            </LoadableContent>
+          }
         />
         {isLoading ? loadingContent : chartContent}
       </div>

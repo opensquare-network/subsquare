@@ -4,9 +4,10 @@ import { DetailList, DetailRow } from "./detailRow";
 import { useBasicData } from "next-common/context/centrifuge/basicData";
 import { bnToLocaleString } from "next-common/utils/bn";
 import Tooltip from "next-common/components/tooltip";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 export default function TokenHoldersCard() {
-  const { data = {} } = useBasicData();
+  const { data = {}, loading: isLoading } = useBasicData();
   const { holders = {} } = data;
   const { all = 0, whales = 0, dolphins = 0 } = holders;
 
@@ -27,11 +28,29 @@ export default function TokenHoldersCard() {
               />
             </div>
           }
-          value={bnToLocaleString(all)}
+          value={
+            <LoadableContent isLoading={isLoading}>
+              {bnToLocaleString(all)}
+            </LoadableContent>
+          }
         />
         <DetailList>
-          <DetailRow title="Whales" value={bnToLocaleString(whales)} />
-          <DetailRow title="Dolphins" value={bnToLocaleString(dolphins)} />
+          <DetailRow
+            title="Whales"
+            value={
+              <LoadableContent isLoading={isLoading}>
+                {bnToLocaleString(whales)}
+              </LoadableContent>
+            }
+          />
+          <DetailRow
+            title="Dolphins"
+            value={
+              <LoadableContent isLoading={isLoading}>
+                {bnToLocaleString(dolphins)}
+              </LoadableContent>
+            }
+          />
         </DetailList>
       </div>
     </SecondaryCard>

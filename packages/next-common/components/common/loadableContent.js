@@ -1,9 +1,9 @@
-import FieldLoading from "next-common/components/icons/fieldLoading";
 import React from "react";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
-export default function LoadableContent({ isLoading = false, children }) {
+export default function LoadableContent({ isLoading = false, size, children }) {
   if (isLoading) {
-    return <FieldLoading />;
+    return <FieldLoading size={size} />;
   }
 
   return <>{children}</>;
