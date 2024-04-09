@@ -2,7 +2,7 @@ import DataList from "next-common/components/dataList";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import FellowshipRank from "../../rank";
 import { usePageProps } from "next-common/context/page";
-import { find, has, isNil, orderBy } from "lodash-es";
+import { has, isNil } from "lodash-es";
 import AddressUser from "next-common/components/user/addressUser";
 import FellowshipSalaryMemberIsRegistered from "./isRegistered";
 import Link from "next/link";
@@ -14,26 +14,12 @@ import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useFellowshipSalaryMemberStatusFilter } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStatusFilter";
 import { claimStatsValues, claimantListColumns } from "./consts";
+import { useFellowSalaryClaimantsData } from "next-common/hooks/fellowship/salary/useFellowshipSalaryClaimantsData";
 
 export default function FellowshipSalaryClaimants() {
-  const { fellowshipParams, fellowshipMembers, fellowshipSalaryClaimants } =
-    usePageProps();
+  const { fellowshipParams, fellowshipMembers } = usePageProps();
   const { symbol, decimals } = useSalaryAsset();
-
-  const resolvedClaimants = orderBy(
-    fellowshipSalaryClaimants.map((claimant) => {
-      const address = claimant?.address;
-      const member = find(fellowshipMembers, { address });
-      const rank = member?.rank;
-
-      return {
-        rank,
-        ...claimant,
-      };
-    }),
-    "rank",
-    "desc",
-  );
+  const fellowshipSalaryClaimants = useFellowSalaryClaimantsData();
 
   const ranks = [...new Set(fellowshipMembers.map((m) => m.rank))];
   const { rank, component: rankFilterComponent } = useRankFilter(ranks);
@@ -43,8 +29,8 @@ export default function FellowshipSalaryClaimants() {
 
   const filteredClaimants =
     isNil(rank) && isNil(status)
-      ? resolvedClaimants
-      : resolvedClaimants.filter((claimant) => {
+      ? fellowshipSalaryClaimants
+      : fellowshipSalaryClaimants.filter((claimant) => {
           return (
             (isNil(rank) || claimant.rank === rank) &&
             (isNil(status) || has(claimant?.status?.status, status))
