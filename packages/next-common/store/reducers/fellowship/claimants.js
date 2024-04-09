@@ -5,7 +5,7 @@ const name = "fellowshipSalaryClaimants";
 const fellowshipSalaryClaimantsSlice = createSlice({
   name,
   initialState: {
-    claimants: [],
+    claimants: null,
     isLoading: false,
     trigger: 0,
   },
@@ -16,7 +16,7 @@ const fellowshipSalaryClaimantsSlice = createSlice({
     setLoading(state, { payload }) {
       state.isLoading = payload;
     },
-    setTriggerUpdate(state) {
+    incTrigger(state) {
       state.trigger = state.trigger + 1;
     },
   },
@@ -25,7 +25,7 @@ const fellowshipSalaryClaimantsSlice = createSlice({
 export const {
   setClaimants: setFellowshipSalaryClaimants,
   setLoading: setFellowshipSalaryClaimantsLoading,
-  setTriggerUpdate: setFellowshipSalaryClaimantsTriggerUpdate,
+  incTrigger: incFellowshipSalaryClaimantsTrigger,
 } = fellowshipSalaryClaimantsSlice.actions;
 
 export const fetchFellowshipSalaryClaimants = (api) => {
@@ -51,7 +51,7 @@ export const fetchFellowshipSalaryClaimants = (api) => {
 
 export const fellowshipSalaryClaimantsSelector = (state) =>
   state[name].claimants;
-export const fellowshipSalaryClaimantsTriggerUpdateSelector = (state) =>
+export const fellowshipSalaryClaimantsTriggerSelector = (state) =>
   state[name].trigger;
 
 export default fellowshipSalaryClaimantsSlice.reducer;

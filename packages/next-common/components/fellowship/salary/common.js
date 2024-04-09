@@ -1,11 +1,13 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import FellowshipSalarySummary from "./summary";
+import useFetchFellowshipSalaryClaimants from "next-common/hooks/fellowship/salary/useFetchFellowshipSalaryClaimants";
 
 export default function FellowshipSalaryCommon({ children, ...props }) {
   const title = "Fellowship Salary";
   const desc =
     "The salary pallet controls the periodic process of salary payments and members registration.";
   const seoInfo = { title, desc };
+  useFetchFellowshipSalaryClaimants();
 
   return (
     <ListLayout
