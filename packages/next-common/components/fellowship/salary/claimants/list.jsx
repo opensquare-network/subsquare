@@ -45,6 +45,16 @@ export default function FellowshipSalaryClaimants() {
     return [
       <FellowshipRank key={`rank-${address}`} rank={claimant.rank} />,
       <AddressUser key={`address-${address}`} add={address} />,
+      <ValueDisplay
+        key={`active-salary-${address}`}
+        value={toPrecision(activeSalary[claimant.rank - 1] || 0, decimals)}
+        symbol={symbol}
+      />,
+      <ValueDisplay
+        key={`passive-salary-${address}`}
+        value={toPrecision(passiveSalary[claimant.rank - 1] || 0, decimals)}
+        symbol={symbol}
+      />,
       <FellowshipSalaryMemberIsRegistered
         key={`isRegistered-${address}`}
         status={claimant?.status?.status}
@@ -56,16 +66,6 @@ export default function FellowshipSalaryClaimants() {
       >
         #{claimant?.status?.lastActive}
       </Link>,
-      <ValueDisplay
-        key={`active-salary-${address}`}
-        value={toPrecision(activeSalary[claimant.rank - 1] || 0, decimals)}
-        symbol={symbol}
-      />,
-      <ValueDisplay
-        key={`passive-salary-${address}`}
-        value={toPrecision(passiveSalary[claimant.rank - 1] || 0, decimals)}
-        symbol={symbol}
-      />,
       <FellowshipSalaryMemberStatus
         key={`status-${address}`}
         status={claimant?.status?.status}
