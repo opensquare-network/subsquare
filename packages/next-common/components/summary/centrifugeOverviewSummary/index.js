@@ -234,7 +234,9 @@ export default function CentrifugeOverviewSummary() {
       <div
         className={cn(
           "flex gap-[48px]",
-          "max-sm:flex-col-reverse max-sm:gap-[24px] max-sm:py-[16px]",
+          collapsed
+            ? "max-sm:flex-col-reverse max-sm:gap-[24px] max-sm:py-[16px]"
+            : "max-md:flex-col-reverse max-md:gap-[24px] max-md:py-[16px]",
         )}
       >
         <ProposalSummary />
