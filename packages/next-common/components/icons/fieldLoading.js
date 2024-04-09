@@ -7,10 +7,10 @@ const Loading = styled(SystemLoadingDots)`
   }
 `;
 
-export default function FieldLoading() {
+export default function FieldLoading({ size = 24 }) {
   return (
     <div className="inline-flex">
-      <Loading />
+      <Loading width={size} height={size} />
     </div>
   );
 }

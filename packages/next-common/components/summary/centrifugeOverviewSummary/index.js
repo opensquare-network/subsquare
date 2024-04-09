@@ -185,7 +185,7 @@ function ProposalSummary() {
 
 function Supply() {
   const [collapsed] = useNavCollapsed();
-  const { data: { supply = {} } = {} } = useBasicData();
+  const { data: { supply = {} } = {}, loading: isLoading } = useBasicData();
   const { total = 0, wrapped = 0 } = supply;
 
   return (
@@ -197,7 +197,9 @@ function Supply() {
     >
       <CardHeader
         title="Total Supply"
-        value={<TokenValue value={bnToLocaleString(total)} />}
+        value={
+          <TokenValue value={bnToLocaleString(total)} isLoading={isLoading} />
+        }
       />
       <DetailList>
         <DetailRow
@@ -207,12 +209,18 @@ function Supply() {
               value={bnToLocaleString(
                 new BigNumber(total).minus(wrapped).toFixed(),
               )}
+              isLoading={isLoading}
             />
           }
         />
         <DetailRow
           title="Wrapped"
-          value={<TokenValue value={bnToLocaleString(wrapped)} />}
+          value={
+            <TokenValue
+              value={bnToLocaleString(wrapped)}
+              isLoading={isLoading}
+            />
+          }
         />
       </DetailList>
     </div>

@@ -7,7 +7,7 @@ import { bnToLocaleString } from "next-common/utils/bn";
 import Tooltip from "next-common/components/tooltip";
 
 export default function GovernanceCard() {
-  const { data = {} } = useBasicData();
+  const { data = {}, loading: isLoading } = useBasicData();
   const { governanceToken = {} } = data;
   const { onChain = 0, offChain = 0 } = governanceToken;
 
@@ -21,16 +21,31 @@ export default function GovernanceCard() {
               <Tooltip content="Average turnout of the latest 10 proposals" />
             </div>
           }
-          value={<TokenValue value={bnToLocaleString(onChain)} />}
+          value={
+            <TokenValue
+              value={bnToLocaleString(onChain)}
+              isLoading={isLoading}
+            />
+          }
         />
         <DetailList>
           <DetailRow
             title="On chain"
-            value={<TokenValue value={bnToLocaleString(onChain)} />}
+            value={
+              <TokenValue
+                value={bnToLocaleString(onChain)}
+                isLoading={isLoading}
+              />
+            }
           />
           <DetailRow
             title="Off chain"
-            value={<TokenValue value={bnToLocaleString(offChain)} />}
+            value={
+              <TokenValue
+                value={bnToLocaleString(offChain)}
+                isLoading={isLoading}
+              />
+            }
           />
         </DetailList>
       </div>

@@ -11,8 +11,8 @@ export const DetailList = tw.div`
 export function DetailRow({ title, value }) {
   return (
     <div className="flex items-center justify-between py-[8px] text14Medium">
-      <div className="text-textSecondary">{title}</div>
-      <div className="text-textPrimary">{value}</div>
+      <div className="flex text-textSecondary">{title}</div>
+      <div className="flex text-textPrimary">{value}</div>
     </div>
   );
 }

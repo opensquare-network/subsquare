@@ -6,6 +6,7 @@ import { useBasicData } from "next-common/context/centrifuge/basicData";
 import { bnToLocaleString } from "next-common/utils/bn";
 import { LinkCoinmarketcap, LinkCoingecko } from "@osn/icons/subsquare";
 import Loading from "next-common/components/loading";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 function LinkIcon({ href, icon }) {
   return (
@@ -44,7 +45,7 @@ export default function PriceCardContent({
   setRange = noop,
   options = [],
 }) {
-  const { data: { cfgPrice = 0 } = {} } = useBasicData();
+  const { data: { cfgPrice = 0 } = {}, loading: isLoading } = useBasicData();
 
   const { chartOptions = {} } = find(options, { value: range }) || {};
 
@@ -53,7 +54,12 @@ export default function PriceCardContent({
       <div className="flex flex-col gap-[8px]">
         <CardHeader
           title="Token price"
-          value={`$${bnToLocaleString(cfgPrice || 0, 3)}`}
+          value={
+            <LoadableContent isLoading={isLoading}>{`$${bnToLocaleString(
+              cfgPrice || 0,
+              3,
+            )}`}</LoadableContent>
+          }
         />
 
         <div className="flex justify-between items-center">
