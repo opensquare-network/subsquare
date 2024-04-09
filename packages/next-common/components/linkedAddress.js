@@ -305,7 +305,7 @@ export default function LinkedAddress() {
       </div>
       {showSelectWallet && (
         <Popup
-          className="w-[640px]"
+          className="w-[640px] p-[48px]"
           title="Select wallet"
           onClose={() => setShowSelectWallet(false)}
         >

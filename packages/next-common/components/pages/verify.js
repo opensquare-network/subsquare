@@ -5,8 +5,7 @@ import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import NextHead from "next-common/components/nextHead";
-import { InfoWrapper, Redirect } from "next-common/components/login/styled";
-import { PageTitleContainer } from "../styled/containers/titleContainer";
+import { Info, Redirect } from "next-common/components/login/styled";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { LoginCard } from "../styled/containers/loginCard";
 import {
@@ -69,15 +68,15 @@ export default function Verify() {
       <LoginCard className="mt-[12vh] mx-auto">
         {!success && (
           <>
-            <PageTitleContainer>Verify Email</PageTitleContainer>
-            {loading && <InfoWrapper>Please wait for a moment...</InfoWrapper>}
+            <div className="text20Bold text-textPrimary">Verify Email</div>
+            {loading && <Info>Please wait for a moment...</Info>}
             {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
           </>
         )}
         {success && (
           <>
-            <PageTitleContainer>Congrats</PageTitleContainer>
-            <InfoWrapper>Your email has been verified.</InfoWrapper>
+            <div className="text20Bold text-textPrimary">Congrats</div>
+            <Info>Your email has been verified.</Info>
             <SecondaryButton
               className="w-full"
               onClick={() => router.replace("/")}

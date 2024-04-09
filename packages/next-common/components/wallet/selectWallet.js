@@ -162,7 +162,7 @@ export default function SelectWallet({
   );
 
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-2">
       {(wallets || []).map((wallet, index) => {
         const selected = wallet.extensionName === selectedWallet;
         const loading = wallet.extensionName === waitingPermissionWallet;

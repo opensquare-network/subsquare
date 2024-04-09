@@ -9,13 +9,12 @@ import NextHead from "next-common/components/nextHead";
 import {
   FormInputsWrapper,
   FormWrapper,
-  InfoWrapper,
+  Info,
   Label,
   Redirect,
 } from "next-common/components/login/styled";
 import useForm from "../../utils/hooks/useForm";
 import PrimaryButton from "next-common/lib/button/primary";
-import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { LoginCard } from "../styled/containers/loginCard";
 
 const Reset = () => {
@@ -64,7 +63,10 @@ const Reset = () => {
       <LoginCard className="mt-[12vh] mx-auto">
         {!success && (
           <>
-            <PageTitleContainer>Reset Password</PageTitleContainer>
+            <div className="text20Bold text-textPrimary">
+              <span>{"Reset "}</span>
+              <span className="text-theme500">Password</span>
+            </div>
             <FormWrapper onSubmit={handleSubmit}>
               <FormInputsWrapper>
                 <Label>New Password</Label>
@@ -90,8 +92,8 @@ const Reset = () => {
         )}
         {success && (
           <>
-            <PageTitleContainer>Congrats</PageTitleContainer>
-            <InfoWrapper>Your password has been reset.</InfoWrapper>
+            <div className="text20Bold text-textPrimary">Congrats</div>
+            <Info>Your password has been reset.</Info>
             <PrimaryButton
               className="w-full"
               secondary
