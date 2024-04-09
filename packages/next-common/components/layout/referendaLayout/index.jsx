@@ -3,6 +3,7 @@ import ListLayout from "../ListLayout";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
 import Gov2SummaryFooter from "next-common/components/summary/gov2SummaryFooter";
 import { useUser } from "next-common/context/user";
+import { ThemedTag } from "next-common/components/tags/state/styled";
 
 function HeadContent() {
   return (
@@ -29,7 +30,11 @@ export default function ReferendaLayout({ summaryData, ...props }) {
         { label: "Referenda", url: "/referenda" },
         user?.address && { label: "My Votes", url: "/referenda/votes" },
         { label: "Statistics", url: "/referenda/statistics" },
-        { label: "Whales", url: "/referenda/whales" },
+        {
+          label: "Whales",
+          labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
+          url: "/referenda/whales",
+        },
       ].filter(Boolean)}
       {...props}
     >
