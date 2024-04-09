@@ -99,7 +99,7 @@ const Reset = () => {
               secondary
               onClick={() => router.replace("/")}
             >
-              Back to Overview
+              Got it
             </PrimaryButton>
             <Redirect>
               The page will be re-directed in

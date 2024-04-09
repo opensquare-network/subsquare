@@ -81,7 +81,7 @@ export default function Verify() {
               className="w-full"
               onClick={() => router.replace("/")}
             >
-              Back to Overview
+              Got it
             </SecondaryButton>
             <Redirect>
               The page will be re-directed in
