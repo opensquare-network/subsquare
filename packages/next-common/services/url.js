@@ -23,8 +23,8 @@ export const gov2ReferendumsCommentApi = (id) =>
   gov2ReferendumsApi + `/${id}/comments`;
 export const gov2ReferendumsSummaryApi = "gov2/referendums/summary";
 
-export const gov2ReferendaWhales = "gov2/referenda/whales";
-export const gov2ReferendaHistoryWhales = "gov2/referenda/history-whales";
+export const gov2ReferendaWhalesApi = "gov2/referenda/whales";
+export const gov2ReferendaHistoryWhalesApi = "gov2/referenda/history-whales";
 
 // fellowship
 export const fellowshipReferenda = "fellowship/referenda/";
