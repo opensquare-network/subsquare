@@ -29,7 +29,7 @@ const Wrapper = styled.div`
   background: var(--neutral100);
 `;
 
-export default function SearchBox({ value, setValue,placeholder = 'Search hash' }) {
+export default function SearchBox({ value, setValue,placeholder = "Search hash" }) {
   return (
     <Wrapper className="max-md:!w-full">
       <div>

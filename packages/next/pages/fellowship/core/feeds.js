@@ -19,16 +19,16 @@ export default function FellowshipCoreFeedsPage({ fellowshipCoreFeeds }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const { page = 0,event = null , who = null  } = context.query;
+  const { page = 0, event = null , who = null  } = context.query;
   const query = {
     page,
     page_size: defaultPageSize,
-  }
+  };
   if(event){
-    Object.assign(query, {event})
+    Object.assign(query, { event });
   }
   if(who){
-    Object.assign(query, {who})
+    Object.assign(query, { who });
   }
   const [tracksProps, { result: fellowshipCoreFeeds }] = await Promise.all([
     fetchOpenGovTracksProps(),

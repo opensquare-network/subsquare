@@ -22,4 +22,4 @@ export function objectToQueryString(obj){
     }
   });
   return searchParams.toString();
-};
+}
