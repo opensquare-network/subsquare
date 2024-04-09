@@ -1,6 +1,16 @@
 import styled from "styled-components";
 import { GreyPanel } from "./greyPanel";
 
+export const FilterContainer = styled.div`
+  display: flex;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--textPrimary);
+  padding-left: 24px;
+  padding-right: 24px;
+`;
+
 // used for card titles, list page titles
 export const TitleContainer = styled.div`
   display: flex;
