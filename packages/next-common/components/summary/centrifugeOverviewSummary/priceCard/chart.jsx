@@ -110,7 +110,7 @@ export default function PriceCardContentChart({
   );
 
   return (
-    <div className="w-full h-[144px]">
+    <div className="w-full h-[144px] overflow-hidden">
       <Line key={width} options={chartOptions} data={chartData} />
     </div>
   );

@@ -22,6 +22,8 @@ import BigNumber from "bignumber.js";
 import { bnToLocaleString } from "next-common/utils/bn";
 import TokenValue from "next-common/components/overview/centrifugeStats/tokenValue";
 import PriceCard from "./priceCard";
+import { useNavCollapsed } from "next-common/context/nav";
+import { cn } from "next-common/utils";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -155,6 +157,7 @@ function CouncilGroupContent() {
 }
 
 function ProposalSummary() {
+  const [collapsed] = useNavCollapsed();
   const { summary } = usePageProps();
   const all =
     (summary?.referenda?.active || 0) +
@@ -164,7 +167,12 @@ function ProposalSummary() {
     (summary?.motions?.active || 0);
 
   return (
-    <div className="flex flex-col gap-[16px] md:min-w-[252px] md:w-[252px] max-md:grow">
+    <div
+      className={cn(
+        "flex flex-col gap-[16px] grow min-w-[252px]",
+        collapsed && "lg:w-[252px]",
+      )}
+    >
       <CardHeader title="All Proposals" value={all} />
       <DetailList>
         <DetailRow title="Democracy" value={<DemocracyGroupContent />} />
@@ -176,11 +184,17 @@ function ProposalSummary() {
 }
 
 function Supply() {
+  const [collapsed] = useNavCollapsed();
   const { data: { supply = {} } = {} } = useBasicData();
   const { total = 0, wrapped = 0 } = supply;
 
   return (
-    <div className="flex flex-col gap-[16px] md:min-w-[252px] md:w-[252px] max-md:grow">
+    <div
+      className={cn(
+        "flex flex-col gap-[16px] grow min-w-[252px]",
+        collapsed && "lg:w-[252px]",
+      )}
+    >
       <CardHeader
         title="Total Supply"
         value={<TokenValue value={bnToLocaleString(total)} />}
@@ -206,9 +220,23 @@ function Supply() {
 }
 
 export default function CentrifugeOverviewSummary() {
+  const [collapsed] = useNavCollapsed();
+
   return (
-    <div className="flex gap-[48px] max-md:flex-col-reverse max-md:gap-[24px]">
-      <div className="flex gap-[48px] max-md:flex-col-reverse max-md:gap-[24px] max-md:py-[16px]">
+    <div
+      className={cn(
+        "flex gap-[48px] max-w-full overflow-x-hidden",
+        collapsed
+          ? "max-md:flex-col-reverse max-md:gap-[24px]"
+          : "max-lg:flex-col-reverse max-lg:gap-[24px]",
+      )}
+    >
+      <div
+        className={cn(
+          "flex gap-[48px]",
+          "max-sm:flex-col-reverse max-sm:gap-[24px] max-sm:py-[16px]",
+        )}
+      >
         <ProposalSummary />
         <Supply />
       </div>

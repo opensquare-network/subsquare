@@ -49,7 +49,7 @@ export default function PriceCardContent({
   const { chartOptions = {} } = find(options, { value: range }) || {};
 
   return (
-    <div className="grow">
+    <div className="grow overflow-hidden">
       <div className="flex flex-col gap-[8px]">
         <CardHeader
           title="Token price"
