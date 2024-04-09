@@ -12,7 +12,7 @@ export default function FellowshipSalaryPaidFeed({ feed = {} }) {
     <>
       <AddressUser key={who} add={who} noTooltip />
       <span>
-        &nbsp;was
+        &nbsp;was&nbsp;
         <FellowshipFeedEventLabel>Paid</FellowshipFeedEventLabel>
         &nbsp;
         <FellowshipFeedEventLabel>
