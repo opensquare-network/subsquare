@@ -23,6 +23,10 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import {
+  getMultiSigWallets,
+  getSingleSigWallets,
+} from "next-common/utils/consts/connect";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -300,13 +304,32 @@ export default function LinkedAddress() {
         </AddressWrapper>
       </div>
       {showSelectWallet && (
-        <Popup title="Select wallet" onClose={() => setShowSelectWallet(false)}>
-          <SelectWallet
-            selectedWallet={selectedWallet}
-            setSelectWallet={setSelectWallet}
-            setAccounts={setAccounts}
-            onSelect={() => setShowSelectWallet(false)}
-          />
+        <Popup
+          className="w-[640px]"
+          title="Select wallet"
+          onClose={() => setShowSelectWallet(false)}
+        >
+          <div className="flex flex-col gap-[8px]">
+            <div className="text14Bold text-textPrimary">Single-Sig Wallet</div>
+            <SelectWallet
+              wallets={getSingleSigWallets()}
+              selectedWallet={selectedWallet}
+              setSelectWallet={setSelectWallet}
+              setAccounts={setAccounts}
+              onSelect={() => setShowSelectWallet(false)}
+            />
+          </div>
+
+          <div className="flex flex-col gap-[8px]">
+            <div className="text14Bold text-textPrimary">Multi-Sig Wallet</div>
+            <SelectWallet
+              wallets={getMultiSigWallets()}
+              selectedWallet={selectedWallet}
+              setSelectWallet={setSelectWallet}
+              setAccounts={setAccounts}
+              onSelect={() => setShowSelectWallet(false)}
+            />
+          </div>
         </Popup>
       )}
     </NeutralPanel>

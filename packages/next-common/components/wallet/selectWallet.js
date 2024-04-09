@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from "react";
-import { getWallets } from "../../utils/consts/connect";
 import useIsMounted from "../../utils/hooks/useIsMounted";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "../../store/reducers/toastSlice";
@@ -22,6 +21,7 @@ import { noop } from "lodash-es";
 import { normalizeAddress } from "next-common/utils/address";
 
 export default function SelectWallet({
+  wallets,
   selectedWallet,
   setSelectWallet,
   setAccounts,
@@ -162,8 +162,8 @@ export default function SelectWallet({
   );
 
   return (
-    <div className="space-y-2">
-      {getWallets().map((wallet, index) => {
+    <div className="grid grid-cols-2 gap-2">
+      {(wallets || []).map((wallet, index) => {
         const selected = wallet.extensionName === selectedWallet;
         const loading = wallet.extensionName === waitingPermissionWallet;
 

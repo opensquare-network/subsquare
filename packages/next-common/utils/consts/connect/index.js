@@ -82,3 +82,20 @@ export function getWallets() {
     return [polkadotJs, subWalletJs, talisman, polkagate, nova, mimir];
   }
 }
+
+export function getSingleSigWallets() {
+  if (isEvmChain()) {
+    return [talisman, metamask, nova];
+  } else if (isMixedChain()) {
+    return [metamask, polkadotJs, subWalletJs, talisman, polkagate, nova];
+  } else {
+    return [polkadotJs, subWalletJs, talisman, polkagate, nova];
+  }
+}
+
+export function getMultiSigWallets() {
+  if (isEvmChain()) {
+    return [];
+  }
+  return [mimir];
+}

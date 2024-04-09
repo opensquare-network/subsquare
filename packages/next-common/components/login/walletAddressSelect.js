@@ -3,7 +3,11 @@ import styled from "styled-components";
 import AddressSelect from "../addressSelect";
 import ErrorText from "../ErrorText";
 import SelectWallet from "../wallet/selectWallet";
-import { getWallets } from "../../utils/consts/connect";
+import {
+  getMultiSigWallets,
+  getSingleSigWallets,
+  getWallets,
+} from "../../utils/consts/connect";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
 import { noop } from "lodash-es";
@@ -72,12 +76,27 @@ export default function WalletAddressSelect({
 
   return (
     <>
-      <SelectWallet
-        selectedWallet={selectedWallet}
-        setSelectWallet={setSelectWallet}
-        setAccounts={setAccounts}
-        setWallet={setWallet}
-      />
+      <div className="flex flex-col gap-[8px]">
+        <div className="text14Bold text-textPrimary">Single-Sig Wallet</div>
+        <SelectWallet
+          wallets={getSingleSigWallets()}
+          selectedWallet={selectedWallet}
+          setSelectWallet={setSelectWallet}
+          setAccounts={setAccounts}
+          setWallet={setWallet}
+        />
+      </div>
+
+      <div className="flex flex-col gap-[8px]">
+        <div className="text14Bold text-textPrimary">Multi-Sig Wallet</div>
+        <SelectWallet
+          wallets={getMultiSigWallets()}
+          selectedWallet={selectedWallet}
+          setSelectWallet={setSelectWallet}
+          setAccounts={setAccounts}
+          setWallet={setWallet}
+        />
+      </div>
 
       {wallet && accounts?.length === 0 && (
         <ErrorMessage>
