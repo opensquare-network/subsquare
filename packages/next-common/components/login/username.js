@@ -1,13 +1,11 @@
 import React from "react";
 import Input from "../input";
-import {
-  Label,
-} from "./styled";
+import { Label } from "./styled";
 
 export default function Username({ value, error, onChange }) {
   return (
     <>
-      <Label>Username</Label>
+      <Label>Account</Label>
       <Input
         placeholder="Please fill your name or email"
         name="usernameOrEmail"

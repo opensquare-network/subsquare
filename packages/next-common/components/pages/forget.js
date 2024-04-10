@@ -9,12 +9,11 @@ import NextHead from "next-common/components/nextHead";
 import {
   FormInputsWrapper,
   FormWrapper,
-  InfoWrapper,
+  Info,
   Label,
 } from "next-common/components/login/styled";
 import useForm from "../../utils/hooks/useForm";
 import PrimaryButton from "next-common/lib/button/primary";
-import { PageTitleContainer } from "../styled/containers/titleContainer";
 import { LoginCard } from "../styled/containers/loginCard";
 
 const Forget = () => {
@@ -53,12 +52,16 @@ const Forget = () => {
     <>
       <NextHead title={"Forget password"} desc={"Forget password"} />
       <LoginCard className="mt-[12vh] mx-auto">
+        <h3 className="text20Bold text-textPrimary">
+          <span>{"Reset "}</span>
+          <span className="text-theme500">Password</span>
+        </h3>
         {!success && (
           <>
-            <PageTitleContainer>Reset Password</PageTitleContainer>
+            <Info>Verify your email to set a new password</Info>
             <FormWrapper onSubmit={handleSubmit}>
               <FormInputsWrapper>
-                <Label>Email</Label>
+                <Label>Account</Label>
                 <Input
                   placeholder="Please fill email"
                   name="email"
@@ -80,11 +83,10 @@ const Forget = () => {
         )}
         {success && (
           <>
-            <PageTitleContainer>Reset Password</PageTitleContainer>
-            <InfoWrapper>
+            <Info>
               The reset password link was sent to this email, if it exists in
               our database.
-            </InfoWrapper>
+            </Info>
             <PrimaryButton
               className="w-full"
               onClick={() => router.replace("/")}
