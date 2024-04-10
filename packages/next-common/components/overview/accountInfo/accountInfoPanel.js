@@ -81,11 +81,12 @@ function ProxyTip() {
   if (!proxyAddress) {
     return null;
   }
+
   return (
     <div className="flex max-md:flex-col md:flex-row rounded-[8px] bg-neutral200 py-[10px] px-[16px] grow text-textPrimary md:gap-1">
       <div className="flex gap-1">
         <span className="text14Medium text-textSecondary">
-          Current proxy to
+          Set as a proxy to
         </span>
         <AddressUser add={proxyAddress} fontSize={14} />
       </div>
