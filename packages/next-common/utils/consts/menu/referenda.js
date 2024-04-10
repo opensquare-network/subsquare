@@ -40,6 +40,7 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
         extraMatchNavMenuActivePathnames: [
           "/referenda/statistics",
           "/referenda/whales",
+          "/referenda/whales/history",
         ],
         excludeToSumActives: true,
       },
