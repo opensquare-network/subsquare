@@ -1,11 +1,22 @@
 import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
+import { useEffect, useState, useRef } from "react";
 
 /**
  * @param {ButtonProps} props
  * @private
  */
 export default function _Button(props) {
+  const [buttonWidth, setButtonWidth] = useState("");
+  const myElementRef = useRef(null); // 创建ref来引用DOM元素
+  useEffect(() => {
+    // 获取盒子元素
+    if (myElementRef.current) {
+      const elementWidth = myElementRef.current.offsetWidth;
+      setButtonWidth(elementWidth);
+    }
+  }, []);
+
   const {
     size,
     loading,
@@ -16,12 +27,12 @@ export default function _Button(props) {
     iconRight,
     ...attrs
   } = props ?? {};
-
   const smallSize = size === "small";
   const iconSize = size === "icon" || loading;
 
   return (
     <button
+      ref={myElementRef}
       {...attrs}
       disabled={disabled || loading}
       className={cn(
@@ -49,6 +60,7 @@ export default function _Button(props) {
         "rounded-lg",
         smallSize && "rounded",
         className,
+        buttonWidth && `w-[${buttonWidth}px]`,
       )}
     >
       {loading ? (
