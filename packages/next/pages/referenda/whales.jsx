@@ -5,6 +5,7 @@ import {
   gov2ReferendaHistoryWhalesApi,
   gov2ReferendaWhalesApi,
 } from "next-common/services/url";
+import WhalesContainer from "next-common/components/whales/container";
 
 export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
   const seoInfo = { title, desc: title };
@@ -15,7 +16,7 @@ export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
       seoInfo={seoInfo}
       summaryData={gov2ReferendaSummary}
     >
-      <div>whales</div>
+      <WhalesContainer />
     </ReferendaLayout>
   );
 }
