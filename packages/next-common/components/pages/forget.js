@@ -52,10 +52,10 @@ const Forget = () => {
     <>
       <NextHead title={"Forget password"} desc={"Forget password"} />
       <LoginCard className="mt-[12vh] mx-auto">
-        <div className="text20Bold text-textPrimary">
+        <h3 className="text20Bold text-textPrimary">
           <span>{"Reset "}</span>
           <span className="text-theme500">Password</span>
-        </div>
+        </h3>
         {!success && (
           <>
             <Info>Verify your email to set a new password</Info>

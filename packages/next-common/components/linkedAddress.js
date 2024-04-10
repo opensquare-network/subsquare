@@ -23,10 +23,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import {
-  getMultiSigWallets,
-  getSingleSigWallets,
-} from "next-common/utils/consts/connect";
+import { getSingleSigWallets } from "next-common/utils/consts/connect";
 import Terms from "./login/terms";
 
 const InfoWrapper = styled.div`
@@ -309,32 +306,18 @@ export default function LinkedAddress() {
           className="w-[640px] p-[48px]"
           onClose={() => setShowSelectWallet(false)}
         >
-          <div className="text20Bold text-textPrimary">
+          <h3 className="text20Bold text-textPrimary">
             <span>{"Select "}</span>
             <span className="text-theme500">Wallet</span>
-          </div>
+          </h3>
 
-          <div className="flex flex-col gap-[8px]">
-            <div className="text14Bold text-textPrimary">Single-Sig Wallet</div>
-            <SelectWallet
-              wallets={getSingleSigWallets()}
-              selectedWallet={selectedWallet}
-              setSelectWallet={setSelectWallet}
-              setAccounts={setAccounts}
-              onSelect={() => setShowSelectWallet(false)}
-            />
-          </div>
-
-          <div className="flex flex-col gap-[8px]">
-            <div className="text14Bold text-textPrimary">Multi-Sig Wallet</div>
-            <SelectWallet
-              wallets={getMultiSigWallets()}
-              selectedWallet={selectedWallet}
-              setSelectWallet={setSelectWallet}
-              setAccounts={setAccounts}
-              onSelect={() => setShowSelectWallet(false)}
-            />
-          </div>
+          <SelectWallet
+            wallets={getSingleSigWallets()}
+            selectedWallet={selectedWallet}
+            setSelectWallet={setSelectWallet}
+            setAccounts={setAccounts}
+            onSelect={() => setShowSelectWallet(false)}
+          />
 
           <Terms />
         </Popup>

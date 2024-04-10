@@ -16,11 +16,11 @@ export default function WalletOption({ selected, installed, ...props }) {
         "rounded-lg border",
         installed
           ? "cursor-pointer border-neutral400 hover:bg-neutral300 hover:border-neutral300"
-          : "bg-neutral200 border-neutral200 cursor-not-allowed pointer-events-none select-none text-textTertiary", // disabled
+          : "bg-neutral200 border-neutral200 select-none text-textTertiary", // disabled
         selected && "bg-neutral300 border-neutral300",
 
         // wallet logo svg
-        "[&_svg]:w-10 [&_svg]:h-10",
+        "[&_svg]:w-[24px] [&_svg]:h-[24px]",
         "[&_span.wallet-not-installed]:text12Medium",
 
         props.className,

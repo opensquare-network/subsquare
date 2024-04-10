@@ -63,10 +63,10 @@ const Reset = () => {
       <LoginCard className="mt-[12vh] mx-auto">
         {!success && (
           <>
-            <div className="text20Bold text-textPrimary">
+            <h3 className="text20Bold text-textPrimary">
               <span>{"Reset "}</span>
               <span className="text-theme500">Password</span>
-            </div>
+            </h3>
             <FormWrapper onSubmit={handleSubmit}>
               <FormInputsWrapper>
                 <Label>New Password</Label>
@@ -92,7 +92,7 @@ const Reset = () => {
         )}
         {success && (
           <>
-            <div className="text20Bold text-textPrimary">Congrats</div>
+            <h3 className="text20Bold text-textPrimary">Congrats</h3>
             <Info>Your password has been reset.</Info>
             <PrimaryButton
               className="w-full"

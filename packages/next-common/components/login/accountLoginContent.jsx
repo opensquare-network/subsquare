@@ -3,10 +3,10 @@ import MailLogin from "./mailLogin";
 export default function LoginAccountLoginContent({ setView }) {
   return (
     <div className="space-y-6">
-      <div className="text20Bold text-textPrimary">
+      <h3 className="text20Bold text-textPrimary">
         <span>{"Connect with "}</span>
         <span className="text-theme500">Account</span>
-      </div>
+      </h3>
 
       <MailLogin setView={setView} />
     </div>

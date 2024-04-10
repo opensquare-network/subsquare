@@ -68,14 +68,14 @@ export default function Verify() {
       <LoginCard className="mt-[12vh] mx-auto">
         {!success && (
           <>
-            <div className="text20Bold text-textPrimary">Verify Email</div>
+            <h3 className="text20Bold text-textPrimary">Verify Email</h3>
             {loading && <Info>Please wait for a moment...</Info>}
             {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
           </>
         )}
         {success && (
           <>
-            <div className="text20Bold text-textPrimary">Congrats</div>
+            <h3 className="text20Bold text-textPrimary">Congrats</h3>
             <Info>Your email has been verified.</Info>
             <SecondaryButton
               className="w-full"
