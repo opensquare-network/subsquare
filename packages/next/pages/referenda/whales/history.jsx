@@ -25,11 +25,13 @@ export default function ReferendaWhalesHistoryPage({
 }
 
 export const getServerSideProps = withReferendaCommonProps(async () => {
-  const { result: whales } = await nextApi.fetch(gov2ReferendaHistoryWhalesApi);
+  const { result: historyWhales } = await nextApi.fetch(
+    gov2ReferendaHistoryWhalesApi,
+  );
 
   return {
     props: {
-      whales,
+      historyWhales,
     },
   };
 });
