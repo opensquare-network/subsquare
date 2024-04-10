@@ -66,7 +66,7 @@ export default function FellowshipCoreFeedsContainer({ feeds = {} }) {
             placeholder={"Search address"}
           />
           <FilterButton
-            className={"max-md:w-full"}
+            className="max-md:w-full md:w-[67px]"
             loading={loading}
             size="small"
             onClick={onFilter}
