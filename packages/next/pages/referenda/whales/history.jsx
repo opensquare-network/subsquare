@@ -1,13 +1,14 @@
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import nextApi from "next-common/services/nextApi";
 import { withReferendaCommonProps } from "next-common/services/serverSide/referenda/common";
-import {
-  gov2ReferendaHistoryWhalesApi,
-  gov2ReferendaWhalesApi,
-} from "next-common/services/url";
+import { gov2ReferendaHistoryWhalesApi } from "next-common/services/url";
 import WhalesContainer from "next-common/components/whales/container";
+import WhalesHistoryList from "next-common/components/whales/historyList";
 
-export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
+export default function ReferendaWhalesHistoryPage({
+  title,
+  gov2ReferendaSummary,
+}) {
   const seoInfo = { title, desc: title };
 
   return (
@@ -16,21 +17,19 @@ export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
       seoInfo={seoInfo}
       summaryData={gov2ReferendaSummary}
     >
-      <WhalesContainer />
+      <WhalesContainer>
+        <WhalesHistoryList />
+      </WhalesContainer>
     </ReferendaLayout>
   );
 }
 
 export const getServerSideProps = withReferendaCommonProps(async () => {
-  const [{ result: whales }, { result: historyWhales }] = await Promise.all([
-    nextApi.fetch(gov2ReferendaWhalesApi),
-    nextApi.fetch(gov2ReferendaHistoryWhalesApi),
-  ]);
+  const { result: whales } = await nextApi.fetch(gov2ReferendaHistoryWhalesApi);
 
   return {
     props: {
       whales,
-      historyWhales,
     },
   };
 });

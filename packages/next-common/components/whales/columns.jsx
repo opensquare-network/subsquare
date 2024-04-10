@@ -9,6 +9,7 @@ import Tooltip from "../tooltip";
 
 export const addressCol = {
   name: "Address",
+  className: "min-w-[160px]",
   cellRender(data) {
     return <AddressUser linkToVotesPage add={data.address} />;
   },
@@ -23,6 +24,7 @@ export const votesPowerCol = {
 
     return (
       <ValueDisplay
+        showTooltip={false}
         value={toPrecision(data.maxVotes, decimals)}
         symbol={symbol}
       />
@@ -76,7 +78,11 @@ export const participationCol = {
   width: 120,
   className: "text-right",
   cellRender(data) {
-    return toPercentage(1 - data.participationRate, 1).toFixed(1) + "%";
+    return (
+      <Tooltip content={"Participation/Total: "} className="hover:underline">
+        {toPercentage(1 - data.participationRate, 1).toFixed(1)}%
+      </Tooltip>
+    );
   },
 };
 

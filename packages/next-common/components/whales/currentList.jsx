@@ -9,6 +9,8 @@ import {
   votesPowerCol,
   winRateCol,
 } from "./columns";
+import { SecondaryCard } from "../styled/containers/secondaryCard";
+import { TitleContainer } from "../styled/containers/titleContainer";
 
 export default function WhalesCurrentList() {
   const { whales } = usePageProps();
@@ -27,5 +29,13 @@ export default function WhalesCurrentList() {
     return columns.map((col) => col.cellRender(whale));
   });
 
-  return <DataList columns={columns} rows={rows} />;
+  return (
+    <div className="space-y-4">
+      <TitleContainer>List</TitleContainer>
+
+      <SecondaryCard className="!p-6">
+        <DataList columns={columns} rows={rows} />
+      </SecondaryCard>
+    </div>
+  );
 }
