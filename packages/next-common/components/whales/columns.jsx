@@ -9,7 +9,7 @@ import { cn } from "next-common/utils";
 export const addressCol = {
   name: "Address",
   cellRender(data) {
-    return <AddressUser add={data.address} />;
+    return <AddressUser linkToVotesPage add={data.address} />;
   },
 };
 
