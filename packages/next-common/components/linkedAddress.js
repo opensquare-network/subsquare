@@ -27,6 +27,7 @@ import {
   getMultiSigWallets,
   getSingleSigWallets,
 } from "next-common/utils/consts/connect";
+import Terms from "./login/terms";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -306,9 +307,13 @@ export default function LinkedAddress() {
       {showSelectWallet && (
         <Popup
           className="w-[640px] p-[48px]"
-          title="Select wallet"
           onClose={() => setShowSelectWallet(false)}
         >
+          <div className="text20Bold text-textPrimary">
+            <span>{"Select "}</span>
+            <span className="text-theme500">Wallet</span>
+          </div>
+
           <div className="flex flex-col gap-[8px]">
             <div className="text14Bold text-textPrimary">Single-Sig Wallet</div>
             <SelectWallet
@@ -330,6 +335,8 @@ export default function LinkedAddress() {
               onSelect={() => setShowSelectWallet(false)}
             />
           </div>
+
+          <Terms />
         </Popup>
       )}
     </NeutralPanel>
