@@ -11,7 +11,9 @@ export default function ValueDisplay({
 }) {
   const tooltipContent = `${value} ${symbol}`;
   const symbolContent = (
-    <span className="value-display-symbol text-textTertiary">{symbol}</span>
+    <span className={cn("value-display-symbol text-textTertiary", className)}>
+      {symbol}
+    </span>
   );
 
   let content = (
