@@ -39,14 +39,11 @@ const ScrollY = styled.div`
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #888;
+    background: var(--neutral500);
     border-radius: 10px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
   }
 `;
 export const ColorFontSpan = tw(ColorSpan)`
@@ -102,7 +99,7 @@ export default function DVDetailPopup({ closeFunc }) {
     >
       <div className="flex flex-col gap-3 !mt-9">
         <RowItem
-          icon={<InfoUsers className="w-5 h-5" />}
+          icon={<InfoUsers className="w-5 h-5 text-textPrimary" />}
           msg={"Decentralized Voices"}
           percentage={"24.72%"}
           M={2}
