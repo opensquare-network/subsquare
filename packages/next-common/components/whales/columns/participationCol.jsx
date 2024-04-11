@@ -7,7 +7,11 @@ function Participation({ data }) {
 
   return (
     <Tooltip
-      content={`Participation/Total: ${data.votesCount}/${gov2ReferendaSummary.total}`}
+      content={
+        <span className="text12Medium">
+          Participation/Total: {data.votesCount}/{gov2ReferendaSummary.total}
+        </span>
+      }
       className="hover:underline"
     >
       {toPercentage(data.participationRate, 1).toFixed(1)}%

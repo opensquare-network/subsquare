@@ -25,7 +25,7 @@ export const votesPowerCol = {
     return (
       <Tooltip
         content={
-          <div>
+          <div className="text12Medium">
             <div>
               Balance:{" "}
               <ValueDisplay

@@ -12,7 +12,13 @@ export const winRateCol = {
     const p = toPercentage(winVotes / votesCount, 1);
 
     return (
-      <Tooltip content={`Win/Participate: ${winVotes}/${votesCount}`}>
+      <Tooltip
+        content={
+          <span className="text12Medium">
+            Win/Participate: {winVotes}/{votesCount}
+          </span>
+        }
+      >
         <span
           className={cn(
             p <= 33 && "text-red500",
