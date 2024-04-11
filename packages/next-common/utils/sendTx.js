@@ -15,6 +15,7 @@ import isMixedChain from "./isMixedChain";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { tryConvertToEvmAddress } from "./mixedChainUtil";
 import { getLatestApi } from "next-common/context/api";
+import { maybeSendSignetTx } from "./signet";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -215,6 +216,25 @@ export async function sendTx({
   const isMimirWallet = signerAccount?.meta?.source === WalletTypes.MIMIR;
   if (isMimirWallet) {
     const handled = await maybeSendMimirTx({
+      tx,
+      dispatch,
+      setLoading,
+      onInBlock,
+      onSubmitted,
+      onFinalized,
+      onClose,
+      signerAccount,
+      section: sectionName,
+      method: methodName,
+    });
+    if (handled) {
+      return;
+    }
+  }
+
+  const isSignetWallet = signerAccount?.meta?.source === WalletTypes.SIGNET;
+  if (isSignetWallet) {
+    const handled = await maybeSendSignetTx({
       tx,
       dispatch,
       setLoading,

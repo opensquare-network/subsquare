@@ -8,6 +8,7 @@ import {
   WalletPolkagate,
   WalletSubwallet,
   WalletTailsman,
+  WalletSignet,
 } from "@osn/icons/subsquare";
 import isMixedChain from "next-common/utils/isMixedChain";
 
@@ -65,6 +66,13 @@ const mimir = {
   logo: WalletMimir,
 };
 
+const signet = {
+  extensionName: WalletTypes.SIGNET,
+  title: "Signet",
+  installUrl: "https://signet.talisman.xyz/",
+  logo: WalletSignet,
+};
+
 export function getWallets() {
   if (isEvmChain()) {
     return [talisman, metamask, nova];
@@ -97,5 +105,5 @@ export function getMultiSigWallets() {
   if (isEvmChain()) {
     return [];
   }
-  return [mimir];
+  return [mimir, signet];
 }

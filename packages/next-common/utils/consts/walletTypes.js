@@ -6,6 +6,7 @@ const WalletTypes = {
   POLKAGATE: "polkagate",
   NOVA: "nova",
   MIMIR: "mimir",
+  SIGNET: "signet",
 };
 
 export default WalletTypes;
