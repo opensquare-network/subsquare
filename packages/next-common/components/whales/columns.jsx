@@ -116,7 +116,7 @@ export const participationCol = {
   cellRender(data) {
     return (
       <Tooltip content={"Participation/Total: "} className="hover:underline">
-        {toPercentage(1 - data.participationRate, 1).toFixed(1)}%
+        {toPercentage(data.participationRate, 1).toFixed(1)}%
       </Tooltip>
     );
   },
