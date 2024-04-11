@@ -11,9 +11,18 @@ import {
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import WhalesTabs from "./tabs";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import Pagination from "../pagination";
+import { useUpdateEffect } from "react-use";
+import { getReferendaWhalesHistory } from "next-common/services/serverSide/referenda/whales";
 
 export default function WhalesHistoryList() {
   const { historyWhales } = usePageProps();
+  const [data, setData] = useState(historyWhales);
+  const router = useRouter();
+
+  const page = Number(router.query.page) || 1;
 
   const columns = [
     addressCol,
@@ -24,9 +33,17 @@ export default function WhalesHistoryList() {
     winRateCol,
   ];
 
-  const rows = historyWhales.items.map((whale) => {
+  const rows = data.items.map((whale) => {
     return columns.map((col) => col.cellRender(whale));
   });
+
+  useUpdateEffect(() => {
+    getReferendaWhalesHistory(page).then((resp) => {
+      if (resp.result) {
+        setData(resp.result);
+      }
+    });
+  }, [page]);
 
   return (
     <div className="space-y-4">
@@ -36,6 +53,13 @@ export default function WhalesHistoryList() {
         <WhalesTabs />
 
         <DataList columns={columns} rows={rows} />
+
+        <Pagination
+          shallow
+          page={page}
+          pageSize={data.pageSize}
+          total={data.total}
+        />
       </SecondaryCard>
     </div>
   );
