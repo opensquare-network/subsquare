@@ -121,6 +121,7 @@ const polkadot = {
   ...polkadotThemeVars,
   modules: {
     referenda: true,
+    whales: true,
   },
 };
 
