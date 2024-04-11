@@ -1,22 +1,20 @@
 import { usePageProps } from "next-common/context/page";
+import { getReferendaWhales } from "next-common/services/serverSide/referenda/whales";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useUpdateEffect } from "react-use";
 import DataList from "../dataList";
-import {
-  addressCol,
-  ayeNayCol,
-  maxVotedCol,
-  participationCol,
-  tracksCol,
-  votesPowerCol,
-  winRateCol,
-} from "./columns";
+import Pagination from "../pagination";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { TitleContainer } from "../styled/containers/titleContainer";
-import Pagination from "../pagination";
+import { addressCol } from "./columns/addressCol";
+import { ayeNayCol } from "./columns/ayeNayCol";
+import { maxVotedCol } from "./columns/maxVotedCol";
+import { participationCol } from "./columns/participationCol";
+import { tracksCol } from "./columns/tracksCol";
+import { votesPowerCol } from "./columns/votesPowerCol";
+import { winRateCol } from "./columns/winRateCol";
 import WhalesTabs from "./tabs";
-import { useRouter } from "next/router";
-import { useUpdateEffect } from "react-use";
-import { useState } from "react";
-import { getReferendaWhales } from "next-common/services/serverSide/referenda/whales";
 
 export default function WhalesCurrentList() {
   const { whales } = usePageProps();
