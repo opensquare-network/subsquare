@@ -9,13 +9,15 @@ const Background = tw.span`
   text-textSecondary text12Medium
 `;
 
-export default function Track({ id }) {
+export default function Track({ id, className = "" }) {
   const { tracks } = usePageProps();
   const track = tracks.find((track) => track.id === id);
   if (!track) {
-    return <Background>{`[${id}]`}</Background>;
+    return <Background className={className}>{`[${id}]`}</Background>;
   }
 
   const trackName = startCase(track.name);
-  return <Background>{`[${id}] ${trackName}`}</Background>;
+  return (
+    <Background className={className}>{`[${id}] ${trackName}`}</Background>
+  );
 }
