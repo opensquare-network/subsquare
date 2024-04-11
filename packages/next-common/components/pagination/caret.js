@@ -24,6 +24,7 @@ export default function PageCaret({
   return (
     <Link
       shallow={shallow}
+      scroll={!shallow}
       href={`${url}?${urlParams}`}
       passHref
       legacyBehavior
