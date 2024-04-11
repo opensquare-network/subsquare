@@ -38,7 +38,7 @@ export default function WhalesCurrentList() {
   });
 
   useUpdateEffect(() => {
-    getReferendaWhales(page).then((resp) => {
+    getReferendaWhales(page, 25).then((resp) => {
       if (resp.result) {
         setData(resp.result);
       }

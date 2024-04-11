@@ -9,7 +9,7 @@ function Participation({ data }) {
     <Tooltip
       content={
         <span className="text12Medium">
-          Participation/Total: {data.votesCount}/{gov2ReferendaSummary.total}
+          {data.votesCount}/{gov2ReferendaSummary.total}
         </span>
       }
       className="hover:underline"
