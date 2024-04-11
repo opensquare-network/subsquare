@@ -16,8 +16,8 @@ export function SignetWallet({
   return (
     <WalletOption
       selected={selected}
-      onClick={() => true && onClick(wallet)} //TODO:
-      installed={true} //TODO:
+      onClick={() => installed && onClick(wallet)}
+      installed={installed}
     >
       <Flex>
         <Logo className={wallet.title} alt={wallet.title} />

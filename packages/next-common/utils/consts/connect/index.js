@@ -74,21 +74,7 @@ const signet = {
 };
 
 export function getWallets() {
-  if (isEvmChain()) {
-    return [talisman, metamask, nova];
-  } else if (isMixedChain()) {
-    return [
-      metamask,
-      polkadotJs,
-      subWalletJs,
-      talisman,
-      polkagate,
-      nova,
-      mimir,
-    ];
-  } else {
-    return [polkadotJs, subWalletJs, talisman, polkagate, nova, mimir];
-  }
+  return [...getSingleSigWallets(), ...getMultiSigWallets()];
 }
 
 export function getSingleSigWallets() {

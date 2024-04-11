@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { SignetSdk } from "@talismn/signet-apps-sdk";
 import { useAsync } from "react-use";
+import { normalizedSignetAccount } from "next-common/utils/signet";
 
 const SignetContext = React.createContext();
 
@@ -31,20 +32,29 @@ export function useSignetSdk() {
   return useContext(SignetContext);
 }
 
-export function useSignetVault() {
+export function useSignetAccounts() {
   const { sdk, inSignet } = useSignetSdk();
-  const [injectedVault, setInjectedVault] = useState();
+  const [accounts, setAccounts] = useState([]);
 
   const getVault = useCallback(async () => {
+    if (!sdk) {
+      return;
+    }
     const vault = await sdk.getAccount();
-    setInjectedVault(vault);
-  }, []);
+    if (!vault) {
+      return;
+    }
+    const normalizedAccount = normalizedSignetAccount(vault);
+    setAccounts([normalizedAccount]);
+  }, [sdk]);
 
   useEffect(() => {
-    if (inSignet) getVault();
+    if (inSignet) {
+      getVault();
+    }
   }, [inSignet, getVault]);
 
-  return injectedVault;
+  return accounts;
 }
 
 export function getSignetSdk() {

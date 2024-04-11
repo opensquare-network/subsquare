@@ -238,13 +238,7 @@ export async function sendTx({
       tx,
       dispatch,
       setLoading,
-      onInBlock,
-      onSubmitted,
-      onFinalized,
       onClose,
-      signerAccount,
-      section: sectionName,
-      method: methodName,
     });
     if (handled) {
       return;

@@ -20,8 +20,7 @@ import isEvmChain from "next-common/utils/isEvmChain";
 import { noop } from "lodash-es";
 import { normalizeAddress } from "next-common/utils/address";
 import { SignetWallet } from "./signetWallet";
-import { useSignetSdk } from "next-common/context/signet";
-import { normalizedSignetAccount } from "next-common/utils/signet";
+import { useSignetAccounts } from "next-common/context/signet";
 
 export default function SelectWallet({
   wallets,
@@ -37,7 +36,7 @@ export default function SelectWallet({
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();
   const { chainType, ethereumNetwork } = useChainSettings();
-  const { sdk: signetSdk } = useSignetSdk();
+  const signetAccounts = useSignetAccounts();
 
   const loadPolkadotAccounts = useCallback(
     async (selectedWallet) => {
@@ -171,25 +170,11 @@ export default function SelectWallet({
 
   const loadSignetVault = useCallback(
     (wallet) => {
-      if (!signetSdk) {
-        return;
-      }
-      // const account = signetSdk.getAccount(); //TODO: signetSdk.getAccount() is not a function
-      const account = {
-        name: "Test Account",
-        address: "ChymdbUffABny3jUssPKvWpxyN6vMgrDS8mDCDamNtVR2B9",
-      };
-      const normalizedAccount = normalizedSignetAccount(account);
-      // console.log({
-      //   account,
-      //   normalizedAccount,
-      // });
-
       setSelectWallet(wallet);
       setWallet(wallet);
-      setAccounts([normalizedAccount]);
+      setAccounts(signetAccounts);
     },
-    [signetSdk, setAccounts],
+    [signetAccounts, setAccounts],
   );
 
   return (
