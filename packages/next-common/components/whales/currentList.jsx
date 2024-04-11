@@ -11,6 +11,7 @@ import {
 } from "./columns";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { TitleContainer } from "../styled/containers/titleContainer";
+import WhalesTabs from "./tabs";
 
 export default function WhalesCurrentList() {
   const { whales } = usePageProps();
@@ -34,6 +35,8 @@ export default function WhalesCurrentList() {
       <TitleContainer>List</TitleContainer>
 
       <SecondaryCard className="!p-6">
+        <WhalesTabs />
+
         <DataList columns={columns} rows={rows} />
       </SecondaryCard>
     </div>

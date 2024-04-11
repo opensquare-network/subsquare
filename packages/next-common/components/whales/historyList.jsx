@@ -10,6 +10,7 @@ import {
 } from "./columns";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
 import { TitleContainer } from "../styled/containers/titleContainer";
+import WhalesTabs from "./tabs";
 
 export default function WhalesHistoryList() {
   const { historyWhales } = usePageProps();
@@ -32,6 +33,8 @@ export default function WhalesHistoryList() {
       <TitleContainer>List</TitleContainer>
 
       <SecondaryCard className="!p-6">
+        <WhalesTabs />
+
         <DataList columns={columns} rows={rows} />
       </SecondaryCard>
     </div>
