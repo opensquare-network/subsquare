@@ -30,14 +30,26 @@ const Item = styled.a`
     `}
 `;
 
-export default function PageItem({ page, now, onPageChange = null }) {
+export default function PageItem({
+  page,
+  now,
+  onPageChange = null,
+  shallow = false,
+}) {
   const router = useRouter();
   const [url, query] = router.asPath.split("?");
   const urlParams = new URLSearchParams(query);
   urlParams.set("page", page);
 
   return (
-    <Link key={page} href={`${url}?${urlParams}`} passHref legacyBehavior>
+    <Link
+      shallow={shallow}
+      scroll={!shallow}
+      key={page}
+      href={`${url}?${urlParams}`}
+      passHref
+      legacyBehavior
+    >
       <Item
         active={now === page}
         onClick={(e) => {
