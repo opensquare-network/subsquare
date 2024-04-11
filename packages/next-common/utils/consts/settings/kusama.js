@@ -115,6 +115,7 @@ const kusama = {
   modules: {
     referenda: true,
     fellowship: true,
+    whales: true,
   },
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",
