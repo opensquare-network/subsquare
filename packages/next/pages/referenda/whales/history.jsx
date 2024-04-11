@@ -31,7 +31,7 @@ export const getServerSideProps = withReferendaCommonProps(async (ctx) => {
 
   const [{ result: whales }, { result: historyWhales }] = await Promise.all([
     getReferendaWhales(1, 1),
-    getReferendaWhalesHistory(page),
+    getReferendaWhalesHistory(page, 25),
   ]);
 
   return {

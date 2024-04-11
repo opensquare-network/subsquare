@@ -36,7 +36,7 @@ export default function WhalesHistoryList() {
   });
 
   useUpdateEffect(() => {
-    getReferendaWhalesHistory(page).then((resp) => {
+    getReferendaWhalesHistory(page, 25).then((resp) => {
       if (resp.result) {
         setData(resp.result);
       }
