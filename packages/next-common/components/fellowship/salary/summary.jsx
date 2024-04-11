@@ -1,9 +1,11 @@
 import { has, partition } from "lodash-es";
 import Summary from "next-common/components/summary";
 import { usePageProps } from "next-common/context/page";
+import { useFellowSalaryClaimantsData } from "next-common/hooks/fellowship/salary/useFellowshipSalaryClaimantsData";
 
 export default function FellowshipSalarySummary() {
-  const { fellowshipMembers, fellowshipSalaryClaimants } = usePageProps();
+  const { fellowshipMembers } = usePageProps();
+  const fellowshipSalaryClaimants = useFellowSalaryClaimantsData();
 
   const [registeredClaimants] = partition(
     fellowshipSalaryClaimants,

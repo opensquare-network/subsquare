@@ -34,7 +34,7 @@ export function NovaWallet({
   return (
     <WalletOption
       selected={selected}
-      onClick={() => onClick(wallet)}
+      onClick={() => installed && onClick(wallet)}
       installed={installed}
     >
       <Flex>

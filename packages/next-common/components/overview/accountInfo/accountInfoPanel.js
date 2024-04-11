@@ -75,6 +75,29 @@ const IconButton = tw.div`
   bg-neutral200
 `;
 
+function ProxyTip() {
+  const user = useUser();
+  const proxyAddress = user?.proxyAddress;
+  if (!proxyAddress) {
+    return null;
+  }
+
+  return (
+    <div className="flex max-md:flex-col md:flex-row rounded-[8px] bg-neutral200 py-[10px] px-[16px] grow text-textPrimary md:gap-1">
+      <div className="flex gap-1">
+        <span className="text14Medium text-textSecondary">
+          Set as a proxy to
+        </span>
+        <AddressUser add={proxyAddress} fontSize={14} />
+      </div>
+      <span className="text14Medium text-textSecondary">
+        , all your transactions will be submitted on behalf of this proxy
+        address.
+      </span>
+    </div>
+  );
+}
+
 function AccountHead() {
   const router = useRouter();
   const user = useUser();
@@ -134,6 +157,7 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
 
   return (
     <NeutralPanel className="p-6 space-y-4">
+      <ProxyTip />
       <AccountHead />
       <Divider />
 

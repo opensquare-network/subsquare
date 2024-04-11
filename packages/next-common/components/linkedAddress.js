@@ -23,6 +23,8 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { getSingleSigWallets } from "next-common/utils/consts/connect";
+import Terms from "./login/terms";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -300,13 +302,24 @@ export default function LinkedAddress() {
         </AddressWrapper>
       </div>
       {showSelectWallet && (
-        <Popup title="Select wallet" onClose={() => setShowSelectWallet(false)}>
+        <Popup
+          className="w-[640px] p-[48px]"
+          onClose={() => setShowSelectWallet(false)}
+        >
+          <h3 className="text20Bold text-textPrimary">
+            <span>{"Select "}</span>
+            <span className="text-theme500">Wallet</span>
+          </h3>
+
           <SelectWallet
+            wallets={getSingleSigWallets()}
             selectedWallet={selectedWallet}
             setSelectWallet={setSelectWallet}
             setAccounts={setAccounts}
             onSelect={() => setShowSelectWallet(false)}
           />
+
+          <Terms />
         </Popup>
       )}
     </NeutralPanel>

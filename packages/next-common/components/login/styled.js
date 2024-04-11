@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import tw from "tailwind-styled-components";
 
 export const LinkWrapper = styled.div`
   font-size: 14px;
@@ -37,11 +38,20 @@ export const Label = styled.div`
 `;
 
 export const InfoWrapper = styled.div`
-  padding: 12px 16px;
+  padding: 10px 16px;
   background: var(--neutral200);
   border-radius: 4px;
   line-height: 150%;
   color: var(--textSecondary);
+`;
+
+export const Info = tw.div`
+  rounded-[8px]
+  py-[10px]
+  px-[16px]
+  text14Medium
+  text-textSecondary
+  bg-neutral200
 `;
 
 export const Redirect = styled.div`

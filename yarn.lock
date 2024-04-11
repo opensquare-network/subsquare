@@ -2184,10 +2184,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.83.0":
-  version: 1.83.0
-  resolution: "@osn/icons@npm:1.83.0"
-  checksum: 4f4c628dd5f5ec6aed303a57fd64597f739b1325f126f872b6423e676b9fab1a28dcd0ecb097ec51a5b6ea938ddde74800535088c47d3f036c80914441622f19
+"@osn/icons@npm:^1.86.0":
+  version: 1.86.0
+  resolution: "@osn/icons@npm:1.86.0"
+  checksum: b3135d42cfd6ca0cf7b873343c8e2ec3fefc9b5a4f1017a792f9afa182a1e368940144970e2d5a1487c7bd241aa529a56ab71647cbee496dd9783b652db0c5ce
   languageName: node
   linkType: hard
 
@@ -3458,7 +3458,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.83.0
+    "@osn/icons": ^1.86.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -3492,10 +3492,11 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.83.0
+    "@osn/icons": ^1.86.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
+    chartjs-plugin-gradient: ^0.6.1
     clsx: ^1.2.1
     cookies: ^0.8.0
     dayjs: ^1.10.7
@@ -4806,6 +4807,15 @@ __metadata:
   peerDependencies:
     chart.js: ">=3.7.0"
   checksum: 443582b13779105c8f147638253e56e30d72c4cf28abab2da30a9f2637ccb068f5fade81ec6a9d78c03d10722107057ab9cc93042bb3951da63bc3edf79322a3
+  languageName: node
+  linkType: hard
+
+"chartjs-plugin-gradient@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "chartjs-plugin-gradient@npm:0.6.1"
+  peerDependencies:
+    chart.js: ">=2.6.0"
+  checksum: 27c72c040708bd1e25316cc096a2f622d4d8ccd3f75fbce21d832728c8b95cca865b26bc884b012000a2e67aa303d258e20c225ac9ecc767299aac9ab5114dca
   languageName: node
   linkType: hard
 
@@ -8118,6 +8128,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.throttle@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "lodash.throttle@npm:4.1.1"
+  checksum: 129c0a28cee48b348aef146f638ef8a8b197944d4e9ec26c1890c19d9bf5a5690fe11b655c77a4551268819b32d27f4206343e30c78961f60b561b8608c8c805
+  languageName: node
+  linkType: hard
+
 "lodash@npm:^4.17.15, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
@@ -8589,7 +8606,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.2.0
     "@mimirdev/apps-sdk": ^0.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.83.0
+    "@osn/icons": ^1.86.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.3.5
     "@osn/provider-options": 1.1.0
@@ -8633,6 +8650,7 @@ __metadata:
     react-dropzone: ^14.2.3
     react-json-view: ^1.21.3
     react-redux: ^8.0.5
+    react-scroll: ^1.9.0
     react-slider: ^2.0.4
     react-use: ^17.4.0
     solarlunar: ^2.0.7
@@ -9769,6 +9787,19 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 2c7fe9cbd766f5e54beb4bec2e2efb2de3583037b23fef8fa511ab426ed7f1ae992382db5acd8ab5bfb030a4b93a06a2ebca41377d6eeaf0e6791bb0a59616a4
+  languageName: node
+  linkType: hard
+
+"react-scroll@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "react-scroll@npm:1.9.0"
+  dependencies:
+    lodash.throttle: ^4.1.1
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: b84427d090600d9107adb57b93c8c059f9e36dcb4919660cd7d0547a6ce816b179bc54bc2941ff7d2497b2295f1a3e92dd0974c0dcedfde2fa5c93966441271e
   languageName: node
   linkType: hard
 

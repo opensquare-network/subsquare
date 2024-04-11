@@ -12,6 +12,7 @@ import {
   LoginResult,
   setLoginResult,
 } from "next-common/store/reducers/userSlice";
+import Terms from "./terms";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -92,6 +93,7 @@ export default function AddressLogin({ setView }) {
           </span>
         </div>
       </ButtonWrapper>
+      <Terms />
     </div>
   );
 }

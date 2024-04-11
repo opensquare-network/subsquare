@@ -134,7 +134,7 @@ function Account({ account }) {
           </>
         ) : (
           <>
-            <div>{account?.name}</div>
+            <div>{account?.name || shortAddr}</div>
             <div>{shortAddr ?? "--"}</div>
           </>
         )}

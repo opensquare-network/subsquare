@@ -22,6 +22,7 @@ import {
   LoginResult,
   setLoginResult,
 } from "next-common/store/reducers/userSlice";
+import Terms from "./terms";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -100,6 +101,7 @@ export default function MailLogin({ setView }) {
           Sign up
         </Link>
       </div>
+      <Terms />
     </FormWrapper>
   );
 }
