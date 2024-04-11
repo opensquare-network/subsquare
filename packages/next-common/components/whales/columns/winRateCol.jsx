@@ -7,10 +7,12 @@ export const winRateCol = {
   width: 120,
   className: "text-right",
   cellRender(data) {
-    const p = toPercentage(data.winVotes / data.votesCount, 1);
+    const winVotes = data.winVotes;
+    const votesCount = data.votesCount;
+    const p = toPercentage(winVotes / votesCount, 1);
 
     return (
-      <Tooltip content={`Win/Participate: ${p}/100`}>
+      <Tooltip content={`Win/Participate: ${winVotes}/${votesCount}`}>
         <span
           className={cn(
             p <= 33 && "text-red500",
