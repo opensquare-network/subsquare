@@ -6,6 +6,11 @@ import AddressUser from "../user/addressUser";
 import ValueDisplay from "../valueDisplay";
 import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
+import { Conviction } from "next-common/utils/referendumCommon";
+import BigNumber from "bignumber.js";
+import { map, max } from "lodash-es";
+
+const LOCK = Math.max(...Object.values(Conviction));
 
 export const addressCol = {
   name: "Address",
@@ -22,12 +27,43 @@ export const votesPowerCol = {
   cellRender(data) {
     const { symbol, decimals } = getChainSettings(CHAIN);
 
+    const tracksDelegations = data.tracksDelegations || [];
+    const delegations = map(tracksDelegations, "delegationVotes");
+    const delegation = max(delegations);
+
+    const balance = BigNumber(data.balance).multipliedBy(LOCK).toNumber();
+
     return (
-      <ValueDisplay
-        showTooltip={false}
-        value={toPrecision(data.maxVotes, decimals)}
-        symbol={symbol}
-      />
+      <Tooltip
+        content={
+          <div>
+            <div>
+              Balance:{" "}
+              <ValueDisplay
+                className="[&_.value-display-symbol]:text-inherit"
+                showTooltip={false}
+                value={toPrecision(balance, decimals)}
+                symbol={symbol}
+              />
+            </div>
+            <div>
+              Delegations:{" "}
+              <ValueDisplay
+                className="[&_.value-display-symbol]:text-inherit"
+                showTooltip={false}
+                value={toPrecision(delegation, decimals)}
+                symbol={symbol}
+              />
+            </div>
+          </div>
+        }
+      >
+        <ValueDisplay
+          showTooltip={false}
+          value={toPrecision(data.maxVotes, decimals)}
+          symbol={symbol}
+        />
+      </Tooltip>
     );
   },
 };
