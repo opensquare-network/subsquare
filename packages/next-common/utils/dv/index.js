@@ -1,7 +1,7 @@
 import chainDvDelegates from "next-common/utils/dv/delegates";
 import { isNil } from "lodash-es";
 
-export default function findDvAddresses(chain, trackId, voteFinishedHeight) {
+export default function getDvAddresses(chain, trackId, voteFinishedHeight) {
   if (!Object.keys(chainDvDelegates).includes(chain)) {
     return [];
   }
