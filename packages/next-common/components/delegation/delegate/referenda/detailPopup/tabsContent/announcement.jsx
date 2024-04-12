@@ -14,6 +14,7 @@ export default function ReferendaDelegateeDetailPopupAnnouncement({
   } else {
     switch (manifesto?.source) {
       case "nova":
+      case "announcement":
         content = manifesto?.longDescription || "";
         break;
       case "parity":

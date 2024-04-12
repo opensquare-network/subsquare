@@ -11,30 +11,15 @@ import { useSignMessage } from "next-common/hooks/useSignMessage";
 import nextApi from "next-common/services/nextApi";
 import { setDemocracyDelegatesTriggerUpdate } from "next-common/store/reducers/democracy/delegates";
 import { setReferendaDelegatesTriggerUpdate } from "next-common/store/reducers/referenda/delegates";
-import {
-  newErrorToast,
-  newSuccessToast,
-} from "next-common/store/reducers/toastSlice";
-import { sendTx } from "next-common/utils/sendTx";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import PopupLabel from "next-common/components/popup/label";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useUser } from "next-common/context/user";
 import Checkbox from "next-common/components/checkbox";
 import {
   ProjectLogoSimaSpecDark,
   ProjectLogoSimaSpecLight,
-  SystemLoading,
 } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-
-function LoadingButtonContent({ text }) {
-  return (
-    <div className="flex items-center justify-center gap-[8px]">
-      <SystemLoading className="w-4 h-4" />
-      <span>{text}</span>
-    </div>
-  );
-}
 
 export default function AnnouncementPublishPopup({
   title = "Publish Announcement",
@@ -46,12 +31,10 @@ export default function AnnouncementPublishPopup({
   const [longDescription, setLongDescription] = useState("");
   const [isOrganization, setIsOrganization] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const isMounted = useIsMounted();
   const signMessage = useSignMessage();
   const dispatch = useDispatch();
   const tab = useModuleTab();
   const module = tab === Referenda ? "referenda" : "democracy";
-  const [confirmText, setConfirmText] = useState("Submit & Publish");
 
   const triggerUpdate = useCallback(() => {
     if (module === "referenda") {
@@ -63,62 +46,41 @@ export default function AnnouncementPublishPopup({
 
   const handleSubmit = useCallback(
     async (api, signerAccount) => {
-      if (!api) {
-        return;
-      }
-
       try {
         setLoading(true);
-        setConfirmText(<LoadingButtonContent text="Saving..." />);
 
-        const data = {
+        const entity = {
           isOrganization,
           shortDescription,
           longDescription,
+          timestamp: Date.now(),
         };
-        const { result, error } = await nextApi.post(
-          "delegation/publish-announcement",
-          data,
+        const signerWallet = signerAccount.meta.source;
+        const signature = await signMessage(
+          JSON.stringify(entity),
+          address,
+          signerWallet,
         );
+        const data = {
+          entity,
+          address,
+          signature,
+          signerWallet,
+        };
+        const { error } = await nextApi.post("delegation/announcement", data);
         if (error) {
           dispatch(newErrorToast(error.message));
           return;
         }
-
-        const { cid } = result;
-
-        setConfirmText(<LoadingButtonContent text="Signing..." />);
-
-        const delegation = "D";
-        const version = 1;
-        const publish = "P";
-        const tx = api.tx.system.remark(
-          `SIMA:${delegation}:${version}:${publish}:${cid}`,
-        );
-
-        await sendTx({
-          tx,
-          dispatch,
-          onInBlock: () => {
-            dispatch(newSuccessToast("Announcement published successfully"));
-            triggerUpdate();
-          },
-          signerAccount,
-          isMounted,
-          onClose,
-        });
+        triggerUpdate();
+        onClose();
       } catch (e) {
-        if (e.message === "Cancelled") {
-          return;
-        }
         dispatch(newErrorToast(e.message));
       } finally {
         setLoading(false);
-        setConfirmText("Submit & Publish");
       }
     },
     [
-      module,
       address,
       shortDescription,
       longDescription,
@@ -131,8 +93,7 @@ export default function AnnouncementPublishPopup({
 
   return (
     <SignerPopup
-      disabled={isLoading}
-      confirmText={confirmText}
+      isLoading={isLoading}
       className="w-[800px] max-w-full"
       title={title}
       onClose={onClose}
@@ -165,7 +126,9 @@ export default function AnnouncementPublishPopup({
             "rounded-[8px] border border-neutral400 ",
           )}
         >
-          <span>{"I'm a member of an organization"}</span>
+          <span className="text-text14Medium">
+            {"I'm a member of an organization"}
+          </span>
           <Checkbox
             className={"mr-[10px]"}
             checked={isOrganization}
