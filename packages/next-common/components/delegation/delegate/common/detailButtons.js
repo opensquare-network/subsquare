@@ -1,39 +1,52 @@
 import SecondaryButton from "next-common/lib/button/secondary";
-import { SystemEdit2, SystemSubtract } from "@osn/icons/subsquare";
-import { useState } from "react";
-import AnnouncementEditPopup from "../AnnouncementEditPopup";
+import { SystemSubtract } from "@osn/icons/subsquare";
+// import { useState } from "react";
+// import AnnouncementEditPopup from "../AnnouncementEditPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useState } from "react";
+import RevokePopup from "./revokePopup";
 
-export function EditButton({ address }) {
-  const [showEdit, setShowEdit] = useState(false);
+// export function EditButton({ address }) {
+//   const [showEdit, setShowEdit] = useState(false);
+//   return (
+//     <>
+//       <SecondaryButton
+//         size="small"
+//         iconLeft={<SystemEdit2 className="w-4 h-4" />}
+//         onClick={() => setShowEdit(true)}
+//       >
+//         Edit
+//       </SecondaryButton>
+//       {showEdit && (
+//         <AnnouncementEditPopup
+//           title="Edit"
+//           onClose={() => setShowEdit(false)}
+//           address={address}
+//         />
+//       )}
+//     </>
+//   );
+// }
+
+export function RevokeButton({ address }) {
+  const [showRevotePopup, setShowRevotePopup] = useState(false);
+
   return (
     <>
       <SecondaryButton
         size="small"
-        iconLeft={<SystemEdit2 className="w-4 h-4" />}
-        onClick={() => setShowEdit(true)}
+        iconLeft={<SystemSubtract className="w-4 h-4" />}
+        onClick={() => setShowRevotePopup(true)}
       >
-        Edit
+        Revoke
       </SecondaryButton>
-      {showEdit && (
-        <AnnouncementEditPopup
-          title="Edit"
-          onClose={() => setShowEdit(false)}
+      {showRevotePopup && (
+        <RevokePopup
           address={address}
+          onClose={() => setShowRevotePopup(false)}
         />
       )}
     </>
-  );
-}
-
-export function RevokeButton() {
-  return (
-    <SecondaryButton
-      size="small"
-      iconLeft={<SystemSubtract className="w-4 h-4" />}
-    >
-      Revoke
-    </SecondaryButton>
   );
 }
 
@@ -44,8 +57,8 @@ export default function DetailButtons({ address }) {
   return (
     isMyDelegate && (
       <div className="flex gap-[8px]">
-        <EditButton address={address} />
-        <RevokeButton />
+        {/* <EditButton address={address} /> */}
+        <RevokeButton address={address} />
       </div>
     )
   );
