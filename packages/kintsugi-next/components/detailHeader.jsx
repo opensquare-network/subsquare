@@ -8,6 +8,7 @@ import ReferendumVoteEndCountDown from "next-common/components/democracy/referen
 import { useDetailType } from "next-common/context/page";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
+import DemocracyPreimageWarning from "next-common/components/detail/Democracy/referendum/preimageWraning";
 
 export default function DetailHeader() {
   const type = useDetailType();
@@ -18,7 +19,10 @@ export default function DetailHeader() {
       {!isEditing && (
         <>
           {type === detailPageCategory.DEMOCRACY_REFERENDUM && (
-            <ReferendumVoteEndCountDown />
+            <>
+              <DemocracyPreimageWarning />
+              <ReferendumVoteEndCountDown />
+            </>
           )}
           {type === detailPageCategory.DEMOCRACY_PROPOSAL && (
             <KintsugiDemocracyProposalNavigation />
