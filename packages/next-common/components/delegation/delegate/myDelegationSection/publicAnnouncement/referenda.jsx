@@ -6,9 +6,12 @@ import { useAsync } from "react-use";
 import MemberCardListContainer from "../../common/cardListContainer";
 import ReferendaDelegateCard from "../../referenda/card";
 import Announcement from "./announcement";
+import { useSelector } from "react-redux";
+import { referendaDelegatesTriggerUpdateSelector } from "next-common/store/reducers/referenda/delegates";
 
 export default function ReferendaAnnouncement() {
   const realAddress = useRealAddress();
+  const triggerUpdate = useSelector(referendaDelegatesTriggerUpdateSelector);
 
   const state = useAsync(async () => {
     return await nextApi
@@ -18,7 +21,7 @@ export default function ReferendaAnnouncement() {
           return resp.result;
         }
       });
-  }, [realAddress]);
+  }, [realAddress, triggerUpdate]);
 
   const addressAvatarMap = new Map([
     [state.value?.address, state.value?.manifesto?.image],

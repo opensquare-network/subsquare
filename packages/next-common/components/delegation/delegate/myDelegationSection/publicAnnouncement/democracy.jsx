@@ -6,9 +6,12 @@ import { useAsync } from "react-use";
 import MemberCardListContainer from "../../common/cardListContainer";
 import DemocracyDelegateCard from "../../democracy/card";
 import Announcement from "./announcement";
+import { useSelector } from "react-redux";
+import { democracyDelegatesTriggerUpdateSelector } from "next-common/store/reducers/democracy/delegates";
 
 export default function DemocracyAnnouncement() {
   const realAddress = useRealAddress();
+  const triggerUpdate = useSelector(democracyDelegatesTriggerUpdateSelector);
 
   const state = useAsync(async () => {
     return await nextApi
@@ -18,7 +21,7 @@ export default function DemocracyAnnouncement() {
           return resp.result;
         }
       });
-  }, [realAddress]);
+  }, [realAddress, triggerUpdate]);
 
   const addressAvatarMap = new Map([
     [state.value?.address, state.value?.manifesto?.image],
