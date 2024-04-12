@@ -1,8 +1,10 @@
+import { isNil } from "lodash-es";
 import AddressUser from "next-common/components/user/addressUser";
-import { cn } from "next-common/utils";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { useChainSettings } from "next-common/context/chain";
+import { cn, toPrecision } from "next-common/utils";
 
-// TODO: unvote
-export default function DVDelegateCard({ address, type = "" }) {
+function Container({ children, className = "" }) {
   return (
     <div
       className={cn(
@@ -11,18 +13,58 @@ export default function DVDelegateCard({ address, type = "" }) {
         "text14Medium",
         "w-full rounded-lg",
         "py-2.5 px-4",
-        type === "aye" && "bg-green100 text-green500",
-        type === "nay" && "bg-red100 text-red500",
-        type === "abstain" && "bg-neutral200 text-textSecondary",
-        type === "unvote" && "bg-neutral200 text-textDisabled",
+        className,
       )}
     >
-      <AddressUser add={address} />
+      {children}
+    </div>
+  );
+}
+
+export default function DVDelegateCard({ data }) {
+  const { decimals, symbol } = useChainSettings();
+
+  const aye = data?.aye;
+  const nay = data?.aye === false;
+  const abstain = data?.isAbstain;
+  const votes = data?.votes;
+  const unvoted = isNil(votes);
+
+  const user = <AddressUser add={data.account} maxWidth={220} />;
+
+  let ratio;
+  if (aye) {
+    ratio = "aye";
+  } else if (nay) {
+    ratio = "nay";
+  } else if (abstain) {
+    ratio = "abstain";
+  } else if (unvoted) {
+    ratio = "unvote";
+  }
+
+  return (
+    <Container
+      className={cn(
+        aye && "bg-green100 text-green500",
+        nay && "bg-red100 text-red500",
+        abstain && "bg-neutral200 text-textSecondary",
+        unvoted && "bg-neutral200 text-textDisabled",
+      )}
+    >
+      {user}
 
       <div className="flex justify-between">
-        <span className="capitalize">{type} (12%)</span>
-        <span>TODO</span>
+        <div className="capitalize">{ratio}(TODO)</div>
+
+        {!isNil(votes) && (
+          <ValueDisplay
+            className="text-inherit"
+            value={toPrecision(data.votes, decimals)}
+            symbol={symbol}
+          />
+        )}
       </div>
-    </div>
+    </Container>
   );
 }

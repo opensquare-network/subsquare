@@ -1,41 +1,35 @@
+import { has, partition } from "lodash-es";
+import { useDecentralizedVoicesVotes } from "next-common/hooks/referenda/useDecentralizedVoicesVotes";
 import DVDelegateCard from "./card";
 
 export default function DVDetailDelegates() {
+  const dvVotes = useDecentralizedVoicesVotes();
+
+  const [voted, unvoted] = partition(dvVotes, (v) => {
+    return has(v, "votes");
+  });
+
   return (
     <div className="space-y-4 text-textPrimary">
       <div className="text14Bold mt-6 mb-4">
         Delegates
-        <span className="text14Medium text-textTertiary ml-1">7</span>
+        {!!dvVotes.length && (
+          <span className="text14Medium text-textTertiary ml-1">
+            {dvVotes.length}
+          </span>
+        )}
       </div>
 
       <div className="max-h-[400px] scrollbar-pretty overflow-y-scroll space-y-2">
-        <DVDelegateCard
-          type="aye"
-          address="1ZSPR3zNg5Po3obkhXTPR95DepNBzBZ3CyomHXGHK9Uvx6w"
-        />
-        <DVDelegateCard
-          type="nay"
-          address="1ZSPR3zNg5Po3obkhXTPR95DepNBzBZ3CyomHXGHK9Uvx6w"
-        />
-        <DVDelegateCard
-          type="abstain"
-          address="1ZSPR3zNg5Po3obkhXTPR95DepNBzBZ3CyomHXGHK9Uvx6w"
-        />
-        <DVDelegateCard
-          type="aye"
-          address="1ZSPR3zNg5Po3obkhXTPR95DepNBzBZ3CyomHXGHK9Uvx6w"
-        />
+        {voted.map((data) => (
+          <DVDelegateCard key={data.account} data={data} />
+        ))}
 
-        <hr className="!my-4" />
+        {!!voted.length && !!unvoted.length && <hr className="!my-4" />}
 
-        <DVDelegateCard
-          type="unvote"
-          address="1ZSPR3zNg5Po3obkhXTPR95DepNBzBZ3CyomHXGHK9Uvx6w"
-        />
-        <DVDelegateCard
-          type="unvote"
-          address="1ZSPR3zNg5Po3obkhXTPR95DepNBzBZ3CyomHXGHK9Uvx6w"
-        />
+        {unvoted.map((data) => (
+          <DVDelegateCard key={data.account} data={data} />
+        ))}
       </div>
     </div>
   );
