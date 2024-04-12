@@ -4,6 +4,6 @@ export const addressCol = {
   name: "Address",
   className: "min-w-[160px]",
   cellRender(data) {
-    return <AddressUser linkToVotesPage add={data.address} />;
+    return <AddressUser maxWidth={160} linkToVotesPage add={data.address} />;
   },
 };
