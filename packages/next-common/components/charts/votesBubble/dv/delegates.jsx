@@ -6,7 +6,7 @@ export default function DVDetailDelegates() {
   const dvVotes = useDecentralizedVoicesVotes();
 
   const [voted, unvoted] = partition(dvVotes, (v) => {
-    return has(v, "votes");
+    return has(v, "totalVotes") || has(v, "votes");
   });
 
   return (

@@ -1,4 +1,5 @@
 import { isNil } from "lodash-es";
+import Tooltip from "next-common/components/tooltip";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
@@ -58,11 +59,19 @@ export default function DVDelegateCard({ data }) {
         <div className="capitalize">{ratio}(TODO)</div>
 
         {!isNil(votes) && (
-          <ValueDisplay
-            className="text-inherit"
-            value={toPrecision(data.votes, decimals)}
-            symbol={symbol}
-          />
+          <Tooltip
+            content={
+              !!data?.directVoterDelegations?.length &&
+              `Delegators: ${data?.directVoterDelegations?.length}`
+            }
+          >
+            <ValueDisplay
+              className="text-inherit"
+              showTooltip={false}
+              value={toPrecision(data.totalVotes, decimals)}
+              symbol={symbol}
+            />
+          </Tooltip>
         )}
       </div>
     </Container>
