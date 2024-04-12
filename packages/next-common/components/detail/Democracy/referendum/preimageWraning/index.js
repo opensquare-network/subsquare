@@ -1,8 +1,7 @@
 import { useOnchainData, usePostState } from "next-common/context/post";
+import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import Malicious from "next-common/components/detail/malicious";
-import { gov2State } from "next-common/utils/consts/state";
-import { useContextApi } from "next-common/context/api";
 import { isNil } from "lodash-es";
 import {
   getLenFromOldRequestStatus,
@@ -10,12 +9,14 @@ import {
 } from "next-common/components/detail/common/preimage/len";
 
 function Warning() {
-  const { proposalHash, info } = useOnchainData();
+  const { hash, meta, info, status: onChainStatus } = useOnchainData();
+  const proposalHash = hash || meta?.proposalHash;
   const api = useContextApi();
   const [status] = useCall(api?.query?.preimage?.statusFor, [proposalHash]);
   const [requestStatus] = useCall(api?.query?.preimage?.requestStatusFor, [
     proposalHash,
   ]);
+  const proposal = info?.ongoing?.proposal || onChainStatus?.proposal;
 
   let lenFromStatus;
   if (requestStatus?.isSome) {
@@ -28,8 +29,8 @@ function Warning() {
     return <Malicious>Preimage not found on chain</Malicious>;
   } else if (
     !isNil(lenFromStatus) &&
-    info.proposal?.lookup &&
-    info.proposal?.lookup?.len !== lenFromStatus
+    proposal?.lookup &&
+    proposal?.lookup?.len !== lenFromStatus
   ) {
     return <Malicious>Proposal len is invalid</Malicious>;
   }
@@ -37,20 +38,9 @@ function Warning() {
   return null;
 }
 
-export default function PreimageWarning() {
+export default function DemocracyPreimageWarning() {
   const state = usePostState();
-  const onchainData = useOnchainData();
-  const { proposalHash, proposal, inlineCall } = onchainData;
-
-  const inFinalState = [
-    gov2State.Rejected,
-    gov2State.Approved,
-    gov2State.TimedOut,
-    gov2State.Killed,
-    gov2State.Cancelled,
-    gov2State.Executed,
-  ].includes(state);
-  if (inFinalState || !proposalHash || proposal?.inline || inlineCall) {
+  if ("Started" !== state) {
     return null;
   }
 
