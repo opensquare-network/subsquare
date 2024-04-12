@@ -6,30 +6,41 @@ import { AddressUser } from "next-common/components/user";
 import tw from "tailwind-styled-components";
 import SymbolValue from "@subsquare/next/components/gov2/sidebar/tally/values/symbolValue";
 import { cn } from "next-common/utils";
-const FlexAcDiv = styled.div`
-  display: flex;
-  align-items: center;
+const FlexAcDiv = tw.div`
+  flex
+  items-center
 `;
-const CardDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 10px 16px;
-  height: 68px;
-  box-sizing: border-box;
-  gap: 8px;
-  align-self: stretch;
-  border-radius: 8px;
-  background: ${(p) =>
-    p.AyeOrNay === "Aye"
-      ? "var(--color-green100, rgba(76, 175, 80, 0.1))"
-      : "var(--color-red100, rgba(244, 67, 54, 0.10))"};
+const voteTypeConfig = {
+  Aye: {
+    color: "text-green500",
+    bg: "bg-green100",
+  },
+  Nay: {
+    color: "text-red500",
+    bg: "bg-red100",
+  },
+  Abstain: {
+    color: "text-textSecondary",
+    bg: "bg-neutral200",
+  },
+  Unvote: {
+    color: "text-textDisabled",
+    bg: "bg-neutral200",
+  },
+};
+const CardDiv = tw.div`
+  flex
+  max-md:flex-col
+  md:flex-row
+  w-full
+  py-2.5
+  px-4
+  rounded-[8px]
+  max-md:gap-2
+  ${(p) => voteTypeConfig[p.voteType]?.bg};
 `;
-
-const ColorSpan = styled.span`
-  color: ${(p) =>
-    p.AyeOrNay === "Aye"
-      ? "var(--color-green500, #4CAF50)"
-      : "var(--color-red500, #F44336)"};
+const ColorSpan = tw.span`
+   ${(p) => voteTypeConfig[p.voteType]?.color};
 `;
 const ScrollY = styled.div`
   max-height: 400px;
@@ -46,6 +57,21 @@ const ScrollY = styled.div`
     border-radius: 10px;
   }
 `;
+// const ScrollY = tw.div`
+//   max-h-100
+//   overflow-y-auto
+//   &::-webkit-scrollbar {
+//     w-1
+//     h-1.5
+//   }
+//   &::-webkit-scrollbar-track {
+//     bg-transparent
+//   }
+//   &::-webkit-scrollbar-thumb {
+//     bg-neutral500
+//     rounded-[10px]
+//   }
+// `;
 export const ColorFontSpan = tw(ColorSpan)`
   text14Medium
 `;
@@ -67,25 +93,33 @@ function RowItem({ icon, msg, percentage, M }) {
   );
 }
 
-function Card({ AyeOrNay, address, percentage, M }) {
+function Card({ voteType, address, percentage, M }) {
   return (
-    <CardDiv AyeOrNay={AyeOrNay}>
-      <AddressUser add={address} fontSize={14} />
-      <div className="flex justify-between">
-        <FlexAcDiv className="gap-1">
-          <ColorFontSpan AyeOrNay={AyeOrNay}>Votes</ColorFontSpan>
-          <ColorFontSpan AyeOrNay={AyeOrNay}>({percentage})</ColorFontSpan>
-        </FlexAcDiv>
-        <FlexAcDiv className="gap-1">
-          <SymbolValue
-            value={M}
-            className={cn(
-              "text14Medium",
-              AyeOrNay === "Aye" ? "text-green500" : "text-red500",
-            )}
-          />
-        </FlexAcDiv>
+    <CardDiv
+      voteType={voteType}
+      className={cn(voteType === "Unvote" && "justify-between")}
+    >
+      <div className="md:flex-1">
+        <AddressUser add={address} fontSize={14} />
       </div>
+      {voteType === "Unvote" ? (
+        <span className={cn("text14Medium", voteTypeConfig[voteType]?.color)}>
+          {voteType}
+        </span>
+      ) : (
+        <div className="flex justify-between max-md:w-full md:flex-1">
+          <FlexAcDiv className="gap-1">
+            <ColorFontSpan voteType={voteType}>{voteType}</ColorFontSpan>
+            <ColorFontSpan voteType={voteType}>({percentage})</ColorFontSpan>
+          </FlexAcDiv>
+          <FlexAcDiv className="gap-1">
+            <SymbolValue
+              value={M}
+              className={cn("text14Medium", voteTypeConfig[voteType]?.color)}
+            />
+          </FlexAcDiv>
+        </div>
+      )}
     </CardDiv>
   );
 }
@@ -124,16 +158,17 @@ export default function DVDetailPopup({ closeFunc }) {
         <span className="text14Bold text-textPrimary">Delegates</span>
         <span className="text14Medium text-textTertiary">7</span>
       </FlexAcDiv>
-      <ScrollY className="flex gap-2 max-md:flex-col md:flex-row md:gap-4">
-        <div className="flex flex-col flex-1 gap-2">
-          <Card AyeOrNay="Aye" percentage={"6.36%"} M={2343423} />
-          <Card AyeOrNay="Aye" percentage={"6.36%"} M={2343423} />
-          <Card AyeOrNay="Aye" percentage={"6.36%"} M={2343423} />
-          <Card AyeOrNay="Aye" percentage={"6.36%"} M={2343423} />
+      <ScrollY className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <Card voteType="Aye" percentage={"6.36%"} M={2343423} />
+          <Card voteType="Nay" percentage={"6.36%"} M={2343423} />
+          <Card voteType="Abstain" percentage={"6.36%"} M={2343423} />
+          <Card voteType="Aye" percentage={"6.36%"} M={2343423} />
         </div>
-        <div className="flex flex-col flex-1 gap-2">
-          <Card AyeOrNay="Nay" percentage={"6.36%"} M={345345} />
-          <Card AyeOrNay="Nay" percentage={"6.36%"} M={345345} />
+        <Divider />
+        <div className="flex flex-col gap-2">
+          <Card voteType="Unvote" />
+          <Card voteType="Unvote" />
         </div>
       </ScrollY>
     </Popup>

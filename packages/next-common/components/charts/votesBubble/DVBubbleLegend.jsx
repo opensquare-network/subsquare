@@ -1,21 +1,19 @@
 import { SystemMenu } from "@osn/icons/subsquare";
 import SecondaryButton from "next-common/lib/button/secondary";
-import styled from "styled-components";
 import tw from "tailwind-styled-components";
 import { cn } from "next-common/utils";
 import { useState, useEffect } from "react";
 import DVDetailPopup from "./DVDetailPopup";
-export const DivContainer = styled.div`
-  flex: 1;
-  padding: 6px 12px;
-  border-radius: 4px;
-  background: var(--neutral200);
-`;
-export const DivWrapper = tw(DivContainer)`
+export const DivWrapper = tw.div`
+  flex
+  flex-1
+  py-1.5
+  px-3
   gap-1
   mr-2
   flex
   flex-col
+  bg-neutral200
   md:flex-row
 `;
 export default function DVBubbleLegend({ className, allAye, allNay }) {
