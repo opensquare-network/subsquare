@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { useDecentralizedVoicesVotes } from "./useDecentralizedVoicesVotes";
 
 function bnSumTotalVotes(votes = []) {
+  votes = filter(votes, "totalVotes");
+
   let res = BigNumber(0);
   const sum = BigNumber.sum(...map(votes, "totalVotes"));
 
@@ -29,7 +31,7 @@ function bnToPercentage(numerator, denominator) {
 
 export function useDecentralizedVoices() {
   const dvVotes = useDecentralizedVoicesVotes();
-  const allDvVotes = bnSumTotalVotes(filter(dvVotes, "totalVotes"));
+  const allDvVotes = bnSumTotalVotes(dvVotes);
 
   const { allAye, allNay, allAbstain } = useSelector(allNestedVotesSelector);
   const allNestedVotes = useMemo(
