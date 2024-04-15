@@ -13,6 +13,7 @@ export const TIME_RANGE = {
   DAY_30: "DAY_30",
   DAY_90: "DAY_90",
   DAY_365: "DAY_365",
+  DAY_ALL: "DAY_ALL",
 };
 
 function parsePricesDataType(price) {
