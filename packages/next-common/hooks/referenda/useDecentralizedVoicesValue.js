@@ -3,8 +3,7 @@ import { bnSumBy } from "next-common/utils/bn";
 import { useDecentralizedVoicesVotes } from "./useDecentralizedVoicesVotes";
 
 function bnSumTotalVotes(votes = []) {
-  const VOTES_KEY = "totalVotes";
-  return bnSumBy(votes, VOTES_KEY);
+  return bnSumBy(votes, "totalVotes");
 }
 
 export function useDecentralizedVoicesValue() {
