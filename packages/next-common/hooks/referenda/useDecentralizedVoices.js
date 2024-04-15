@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { filter, flatten, map } from "lodash-es";
 import { partition } from "lodash-es";
 import { allNestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import { bnToPercentage } from "next-common/utils/bn";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useDecentralizedVoicesVotes } from "./useDecentralizedVoicesVotes";
@@ -18,16 +19,6 @@ function bnSumTotalVotes(votes = []) {
   }
 
   return res;
-}
-
-/**
- * @param {BigNumber} numerator
- * @param {BigNumber} denominator
- */
-function bnToPercentage(numerator, denominator) {
-  return denominator.isZero()
-    ? 0
-    : numerator.div(denominator).times(100).toNumber();
 }
 
 export function useDecentralizedVoices() {
