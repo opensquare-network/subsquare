@@ -1,37 +1,19 @@
-import BigNumber from "bignumber.js";
-import { filter, flatten, map } from "lodash-es";
 import { partition } from "lodash-es";
-import { allNestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
-import { bnToPercentage } from "next-common/utils/bn";
-import { useMemo } from "react";
+import { nestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import { bnSumBy, bnToPercentage } from "next-common/utils/bn";
 import { useSelector } from "react-redux";
 import { useDecentralizedVoicesVotes } from "./useDecentralizedVoicesVotes";
 
 function bnSumTotalVotes(votes = []) {
   const VOTES_KEY = "totalVotes";
-  const validVotes = filter(votes, VOTES_KEY);
-
-  let res = BigNumber(0);
-  const sum = BigNumber.sum(...map(validVotes, VOTES_KEY));
-
-  if (!sum.isNaN()) {
-    res = BigNumber(sum);
-  }
-
-  return res;
+  return bnSumBy(votes, VOTES_KEY);
 }
 
 export function useDecentralizedVoices() {
   const dvVotes = useDecentralizedVoicesVotes();
-  const allDvVotes = bnSumTotalVotes(dvVotes);
-
-  const { allAye, allNay, allAbstain } = useSelector(allNestedVotesSelector);
-  const allNestedVotes = useMemo(
-    () => flatten([allAye, allNay, allAbstain]),
-    [allAye, allNay, allAbstain],
-  );
-
-  const allTotalVotes = bnSumTotalVotes(allNestedVotes);
+  const dvTotalVotesValue = bnSumTotalVotes(dvVotes);
+  const nestedVotes = useSelector(nestedVotesSelector);
+  const nestedTotalVotesValue = bnSumTotalVotes(nestedVotes);
 
   const [abstains, rest] = partition(dvVotes, (v) => v?.isAbstain);
   const [ayes, nays] = partition(rest, (v) => v?.aye);
@@ -40,13 +22,13 @@ export function useDecentralizedVoices() {
   const nayVotes = bnSumTotalVotes(nays);
   const abstainVotes = bnSumTotalVotes(abstains);
 
-  const dvPercentage = bnToPercentage(allDvVotes, allTotalVotes);
-  const ayePercentage = bnToPercentage(ayeVotes, allTotalVotes);
-  const nayPercentage = bnToPercentage(nayVotes, allTotalVotes);
-  const abstainPercentage = bnToPercentage(abstainVotes, allTotalVotes);
+  const dvPercentage = bnToPercentage(dvTotalVotesValue, nestedTotalVotesValue);
+  const ayePercentage = bnToPercentage(ayeVotes, nestedTotalVotesValue);
+  const nayPercentage = bnToPercentage(nayVotes, nestedTotalVotesValue);
+  const abstainPercentage = bnToPercentage(abstainVotes, nestedTotalVotesValue);
 
   return {
-    dvVotesValue: allDvVotes.toString(),
+    dvVotesValue: dvTotalVotesValue.toString(),
     dvPercentage,
     ayeVotesValue: ayeVotes.toString(),
     ayePercentage,
