@@ -1,13 +1,11 @@
-import { has, partition } from "lodash-es";
+import { isNil, partition } from "lodash-es";
 import { useDecentralizedVoicesVotes } from "next-common/hooks/referenda/useDecentralizedVoicesVotes";
 import DVDelegateCard from "./card";
 
 export default function DVDetailDelegates() {
   const dvVotes = useDecentralizedVoicesVotes();
 
-  const [voted, unvoted] = partition(dvVotes, (v) => {
-    return has(v, "totalVotes") || has(v, "votes");
-  });
+  const [voted, unvoted] = partition(dvVotes, (v) => !isNil(v?.totalVotes));
 
   return (
     <div className="space-y-4 text-textPrimary">
