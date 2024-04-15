@@ -4,9 +4,10 @@ import { cn, toPrecision } from "next-common/utils";
 import { useState } from "react";
 import DVDetailPopup from "./DVDetailPopup";
 import { useDecentralizedVoicesVotes } from "next-common/hooks/referenda/useDecentralizedVoicesVotes";
-import { useDecentralizedVoices } from "next-common/hooks/referenda/useDecentralizedVoices";
+import { useDecentralizedVoicesValue } from "next-common/hooks/referenda/useDecentralizedVoicesValue";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
+import { useDecentralizedVoicesPercentage } from "next-common/hooks/referenda/useDecentralizedVoicesPercentage";
 
 function Item({ label = "", value, percentage }) {
   const { decimals } = useChainSettings();
@@ -28,14 +29,10 @@ function Item({ label = "", value, percentage }) {
 }
 
 export default function DVBubbleLegend({ className }) {
-  const {
-    dvVotesValue,
-    dvPercentage,
-    ayeVotesValue,
-    ayePercentage,
-    nayVotesValue,
-    nayPercentage,
-  } = useDecentralizedVoices();
+  const { dvVotesValue, ayeVotesValue, nayVotesValue } =
+    useDecentralizedVoicesValue();
+  const { dvPercentage, ayePercentage, nayPercentage } =
+    useDecentralizedVoicesPercentage();
   const dvVotes = useDecentralizedVoicesVotes();
 
   const [showDetailPopup, setShowDetailPopup] = useState(false);
