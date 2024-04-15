@@ -1,10 +1,8 @@
 import Descriptions from "next-common/components/Descriptions";
 import { InfoUsers, SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
-import { useDecentralizedVoicesValue } from "next-common/hooks/referenda/useDecentralizedVoicesValue";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import { useDecentralizedVoicesPercentage } from "next-common/hooks/referenda/useDecentralizedVoicesPercentage";
 
 function Label({ icon, label, percentage }) {
   return (
@@ -19,13 +17,15 @@ function Label({ icon, label, percentage }) {
   );
 }
 
-export default function DVDetailInfo() {
+export default function DVDetailInfo({
+  dvVotesValue,
+  dvPercentage,
+  ayeVotesValue,
+  ayePercentage,
+  nayVotesValue,
+  nayPercentage,
+}) {
   const { decimals, symbol } = useChainSettings();
-
-  const { dvVotesValue, ayeVotesValue, nayVotesValue } =
-    useDecentralizedVoicesValue();
-  const { dvPercentage, ayePercentage, nayPercentage } =
-    useDecentralizedVoicesPercentage();
 
   const descriptionsItems = [
     {

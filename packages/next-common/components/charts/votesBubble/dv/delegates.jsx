@@ -1,19 +1,16 @@
 import { isNil, partition } from "lodash-es";
-import { useDecentralizedVoicesVotes } from "next-common/hooks/referenda/useDecentralizedVoicesVotes";
 import DVDelegateCard from "./card";
 
-export default function DVDetailDelegates() {
-  const dvVotes = useDecentralizedVoicesVotes();
-
-  const [voted, unvoted] = partition(dvVotes, (v) => !isNil(v?.totalVotes));
+export default function DVDetailDelegates({ votes = [] }) {
+  const [voted, noVoted] = partition(votes, (v) => !isNil(v?.totalVotes));
 
   return (
     <div className="space-y-4 text-textPrimary">
       <div className="text14Bold mt-6 mb-4">
         Delegates
-        {!!dvVotes.length && (
+        {!!votes.length && (
           <span className="text14Medium text-textTertiary ml-1">
-            {dvVotes.length}
+            {votes.length}
           </span>
         )}
       </div>
@@ -23,9 +20,9 @@ export default function DVDetailDelegates() {
           <DVDelegateCard key={data.account} data={data} />
         ))}
 
-        {!!voted.length && !!unvoted.length && <hr className="!my-4" />}
+        {!!voted.length && !!noVoted.length && <hr className="!my-4" />}
 
-        {unvoted.map((data) => (
+        {noVoted.map((data) => (
           <DVDelegateCard key={data.account} data={data} />
         ))}
       </div>

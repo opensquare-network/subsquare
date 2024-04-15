@@ -74,7 +74,16 @@ export default function DVBubbleLegend({ className }) {
       </div>
 
       {showDetailPopup && (
-        <DVDetailPopup closeFunc={() => setShowDetailPopup(false)} />
+        <DVDetailPopup
+          closeFunc={() => setShowDetailPopup(false)}
+          dvVotes={dvVotes}
+          dvVotesValue={dvVotesValue}
+          dvPercentage={dvPercentage}
+          ayeVotesValue={ayeVotesValue}
+          ayePercentage={ayePercentage}
+          nayVotesValue={nayVotesValue}
+          nayPercentage={nayPercentage}
+        />
       )}
     </>
   );
