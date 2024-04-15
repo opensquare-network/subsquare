@@ -35,7 +35,7 @@ export default function DVDelegateCard({ data }) {
   const nay = data?.aye === false;
   const abstain = data?.isAbstain;
   const totalVotes = data?.totalVotes;
-  const unvoted = isNil(totalVotes);
+  const noVoted = isNil(totalVotes);
   const delegators = data?.directVoterDelegations;
 
   const user = (
@@ -54,8 +54,8 @@ export default function DVDelegateCard({ data }) {
     voteStats = `nay (${percentage})`;
   } else if (abstain) {
     voteStats = `abstain (${percentage})`;
-  } else if (unvoted) {
-    voteStats = "unvote";
+  } else if (noVoted) {
+    voteStats = "-";
   }
 
   return (
@@ -64,7 +64,7 @@ export default function DVDelegateCard({ data }) {
         aye && "bg-green100 text-green500",
         nay && "bg-red100 text-red500",
         abstain && "bg-neutral200 text-textSecondary",
-        unvoted && "bg-neutral200 text-textDisabled",
+        noVoted && "bg-neutral200 text-textDisabled",
       )}
     >
       {user}
