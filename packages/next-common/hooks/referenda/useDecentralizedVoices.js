@@ -7,10 +7,11 @@ import { useSelector } from "react-redux";
 import { useDecentralizedVoicesVotes } from "./useDecentralizedVoicesVotes";
 
 function bnSumTotalVotes(votes = []) {
-  votes = filter(votes, "totalVotes");
+  const VOTES_KEY = "totalVotes";
+  const validVotes = filter(votes, VOTES_KEY);
 
   let res = BigNumber(0);
-  const sum = BigNumber.sum(...map(votes, "totalVotes"));
+  const sum = BigNumber.sum(...map(validVotes, VOTES_KEY));
 
   if (!sum.isNaN()) {
     res = BigNumber(sum);
