@@ -11,7 +11,7 @@ import StandardVoteTooltipContent from "./standardVoteTooltipContent";
 import { cn } from "next-common/utils";
 import { useMemo } from "react";
 
-function TagWrapper({ className, tooltipContent, children }) {
+export function TagWrapper({ className, tooltipContent, children }) {
   return (
     <Tooltip content={tooltipContent}>
       <div
