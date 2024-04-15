@@ -1,22 +1,41 @@
 import { SystemMenu } from "@osn/icons/subsquare";
 import SecondaryButton from "next-common/lib/button/secondary";
-import tw from "tailwind-styled-components";
-import { cn } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
 import { useState } from "react";
 import DVDetailPopup from "./DVDetailPopup";
 import { useDecentralizedVoicesVotes } from "next-common/hooks/referenda/useDecentralizedVoicesVotes";
-export const DivWrapper = tw.div`
-  flex
-  flex-1
-  py-1.5
-  px-3
-  gap-1
-  mr-2
-  flex-col
-  bg-neutral200
-  md:flex-row
-`;
+import { useDecentralizedVoices } from "next-common/hooks/referenda/useDecentralizedVoices";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { useChainSettings } from "next-common/context/chain";
+
+function Item({ label = "", value, percentage }) {
+  const { decimals } = useChainSettings();
+
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-x-1 text12Medium text-textTertiary",
+        "before:content-['·'] before:mx-1 before:first:hidden",
+      )}
+    >
+      <div className="whitespace-nowrap">{label}</div>
+      <div className="text-textSecondary flex whitespace-nowrap items-center">
+        {(percentage || 0).toFixed(2)}% (
+        <ValueDisplay value={toPrecision(value, decimals)} />)
+      </div>
+    </div>
+  );
+}
+
 export default function DVBubbleLegend({ className }) {
+  const {
+    dvVotesValue,
+    dvPercentage,
+    ayeVotesValue,
+    ayePercentage,
+    nayVotesValue,
+    nayPercentage,
+  } = useDecentralizedVoices();
   const dvVotes = useDecentralizedVoicesVotes();
 
   const [showDetailPopup, setShowDetailPopup] = useState(false);
@@ -27,29 +46,26 @@ export default function DVBubbleLegend({ className }) {
 
   return (
     <>
-      <div className={cn(className, "flex")}>
-        <DivWrapper>
-          <div className="flex gap-1">
-            <span className="text12Medium text-textTertiary">
-              Decentralized Voices
-            </span>
-            <span className="text12Medium text-textSecondary">
-              24.72%(≈42.21M)
-            </span>
-            <span className="text12Medium text-textTertiary">·</span>
-          </div>
-          <div className="flex gap-1">
-            <span className="text12Medium text-textTertiary">Aye</span>
-            <span className="text12Medium text-textSecondary">
-              18.36%(≈31.12M)
-            </span>
-            <span className="text12Medium text-textTertiary">·</span>
-            <span className="text12Medium text-textTertiary">Nay</span>
-            <span className="text12Medium text-textSecondary">
-              6.36%(≈11.12M)
-            </span>
-          </div>
-        </DivWrapper>
+      <div className={cn("flex gap-x-2", className)}>
+        <div
+          className={cn(
+            "w-full",
+            "flex gap-x-1",
+            "py-1.5 px-3 rounded",
+            "max-sm:flex-wrap",
+            "bg-neutral200",
+            "scrollbar-hidden overflow-x-scroll",
+          )}
+        >
+          <Item
+            label="Decentralized Voices"
+            value={dvVotesValue}
+            percentage={dvPercentage}
+          />
+          <Item label="Aye" value={ayeVotesValue} percentage={ayePercentage} />
+          <Item label="Nay" value={nayVotesValue} percentage={nayPercentage} />
+        </div>
+
         <SecondaryButton
           key={"detail"}
           size="small"
