@@ -27,7 +27,7 @@ export const votesPowerCol = {
         content={
           <div className="text12Medium">
             <div>
-              Balance:{" "}
+              By Balance:&nbsp;
               <ValueDisplay
                 className="[&_.value-display-symbol]:text-inherit"
                 showTooltip={false}
@@ -36,7 +36,7 @@ export const votesPowerCol = {
               />
             </div>
             <div>
-              Delegations:{" "}
+              By Delegations:&nbsp;
               <ValueDisplay
                 className="[&_.value-display-symbol]:text-inherit"
                 showTooltip={false}
