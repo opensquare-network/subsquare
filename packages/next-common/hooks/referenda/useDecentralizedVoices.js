@@ -17,6 +17,10 @@ function bnSumTotalVotes(votes = []) {
   return res;
 }
 
+/**
+ * @param {BigNumber} numerator
+ * @param {BigNumber} denominator
+ */
 function bnToPercentage(numerator, denominator) {
   return denominator.isZero()
     ? 0
