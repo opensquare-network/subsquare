@@ -1,78 +1,89 @@
 import { SystemMenu } from "@osn/icons/subsquare";
 import SecondaryButton from "next-common/lib/button/secondary";
-import tw from "tailwind-styled-components";
-import { cn } from "next-common/utils";
-import { useState, useEffect } from "react";
+import { cn, toPrecision } from "next-common/utils";
+import { useState } from "react";
 import DVDetailPopup from "./DVDetailPopup";
-export const DivWrapper = tw.div`
-  flex
-  flex-1
-  py-1.5
-  px-3
-  gap-1
-  mr-2
-  flex
-  flex-col
-  bg-neutral200
-  md:flex-row
-`;
-export default function DVBubbleLegend({ className, allAye, allNay }) {
-  const [isShow, setIsShow] = useState(false);
+import { useDecentralizedVoicesVotes } from "next-common/hooks/referenda/useDecentralizedVoicesVotes";
+import { useDecentralizedVoicesValue } from "next-common/hooks/referenda/useDecentralizedVoicesValue";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { useChainSettings } from "next-common/context/chain";
+import { useDecentralizedVoicesPercentage } from "next-common/hooks/referenda/useDecentralizedVoicesPercentage";
+
+function Item({ label = "", value, percentage }) {
+  const { decimals } = useChainSettings();
+
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-x-1 text12Medium text-textTertiary",
+        "before:content-['·'] before:mx-1 before:first:hidden",
+      )}
+    >
+      <div className="whitespace-nowrap">{label}</div>
+      <div className="text-textSecondary flex whitespace-nowrap items-center">
+        {(percentage || 0).toFixed(2)}% (
+        <ValueDisplay value={toPrecision(value, decimals)} />)
+      </div>
+    </div>
+  );
+}
+
+export default function DVBubbleLegend({ className }) {
+  const { dvVotesValue, ayeVotesValue, nayVotesValue } =
+    useDecentralizedVoicesValue();
+  const { dvPercentage, ayePercentage, nayPercentage } =
+    useDecentralizedVoicesPercentage();
+  const dvVotes = useDecentralizedVoicesVotes();
+
   const [showDetailPopup, setShowDetailPopup] = useState(false);
-  useEffect(() => {
-    let isExistAry = allAye.some((i) => addressArr.includes(i.account));
-    let isExistNays = allNay.some((i) => addressArr.includes(i.account));
-    if (isExistAry || isExistNays) {
-      setIsShow(true);
-    } else {
-      setIsShow(false);
-    }
-  }, [allAye, allNay]);
-  const addressArr = [
-    "1ZSPR3zNg5Po3obkhXTPR95DepNBzBZ3CyomHXGHK9Uvx6w",
-    "13EyMuuDHwtq5RD6w3psCJ9WvJFZzDDion6Fd2FVAqxz1g7K",
-    "12s6UMSSfE2bNxtYrJc6eeuZ7UxQnRpUzaAh1gPQrGNFnE8h",
-    "15fTH34bbKGMUjF1bLmTqxPYgpg481imThwhWcQfCyktyBzL",
-  ];
+
+  if (!dvVotes.length) {
+    return null;
+  }
+
   return (
     <>
-      {isShow && (
-        <div className={cn(className, "flex")}>
-          <DivWrapper>
-            <div className="flex gap-1">
-              <span className="text12Medium text-textTertiary">
-                Decentralized Voices
-              </span>
-              <span className="text12Medium text-textSecondary">
-                24.72%(≈42.21M)
-              </span>
-              <span className="text12Medium text-textTertiary">·</span>
-            </div>
-            <div className="flex gap-1">
-              <span className="text12Medium text-textTertiary">Aye</span>
-              <span className="text12Medium text-textSecondary">
-                18.36%(≈31.12M)
-              </span>
-              <span className="text12Medium text-textTertiary">·</span>
-              <span className="text12Medium text-textTertiary">Nay</span>
-              <span className="text12Medium text-textSecondary">
-                6.36%(≈11.12M)
-              </span>
-            </div>
-          </DivWrapper>
-          <SecondaryButton
-            key={"detail"}
-            size="small"
-            className="w-7 p-0"
-            onClick={() => setShowDetailPopup(true)}
-          >
-            <SystemMenu className="w-4 h-4" />
-          </SecondaryButton>
+      <div className={cn("flex gap-x-2", className)}>
+        <div
+          className={cn(
+            "w-full",
+            "flex gap-x-1",
+            "py-1.5 px-3 rounded",
+            "max-sm:flex-wrap",
+            "bg-neutral200",
+            "scrollbar-hidden overflow-x-scroll",
+          )}
+        >
+          <Item
+            label="Decentralized Voices"
+            value={dvVotesValue}
+            percentage={dvPercentage}
+          />
+          <Item label="Aye" value={ayeVotesValue} percentage={ayePercentage} />
+          <Item label="Nay" value={nayVotesValue} percentage={nayPercentage} />
         </div>
-      )}
+
+        <SecondaryButton
+          key={"detail"}
+          size="small"
+          className="w-7 p-0"
+          onClick={() => setShowDetailPopup(true)}
+        >
+          <SystemMenu className="w-4 h-4" />
+        </SecondaryButton>
+      </div>
 
       {showDetailPopup && (
-        <DVDetailPopup closeFunc={() => setShowDetailPopup(false)} />
+        <DVDetailPopup
+          closeFunc={() => setShowDetailPopup(false)}
+          dvVotes={dvVotes}
+          dvVotesValue={dvVotesValue}
+          dvPercentage={dvPercentage}
+          ayeVotesValue={ayeVotesValue}
+          ayePercentage={ayePercentage}
+          nayVotesValue={nayVotesValue}
+          nayPercentage={nayPercentage}
+        />
       )}
     </>
   );

@@ -9,8 +9,8 @@ export default function ValueDisplay({
   showApproximationSymbol = true,
   className,
 }) {
-  const tooltipContent = `${value} ${symbol}`;
-  const symbolContent = (
+  const tooltipContent = `${value}${symbol ? " " + symbol : ""}`;
+  const symbolContent = symbol && (
     <span className={cn("value-display-symbol text-textTertiary", className)}>
       {symbol}
     </span>

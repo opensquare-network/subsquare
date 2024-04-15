@@ -1,6 +1,7 @@
 import { name } from "../consts";
 import { createSelector } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
+import { flatten } from "lodash-es";
 
 export const votesTriggerSelector = (state) => state[name].votesTrigger;
 export const allVotesSelector = (state) => state[name].allVotes;
@@ -91,6 +92,11 @@ export const allNestedVotesSelector = createSelector(
       allAbstain,
     };
   },
+);
+
+export const nestedVotesSelector = createSelector(
+  allNestedVotesSelector,
+  ({ allAye, allNay, allAbstain }) => flatten([allAye, allNay, allAbstain]),
 );
 
 export const flattenVotesSelector = createSelector(
