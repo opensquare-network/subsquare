@@ -6,8 +6,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import { useChain } from "next-common/context/chain";
 import getDvAddresses from "next-common/utils/dv";
 
-const WIKI_PAGE =
-  "https://wiki.polkadot.network/docs/decentralized-voices#:~:text=The%20Decentralized%20Voices%20program%20for,Million%20DOT%20of%20voting%20power.";
+const WIKI_PAGE = "https://wiki.polkadot.network/docs/decentralized-voices";
 
 function Address({ data }) {
   const chain = useChain();
