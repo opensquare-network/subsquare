@@ -8,6 +8,7 @@ import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import VoteForCell from "./common/voteForCell";
 import SelfVotesCell from "./common/selfVotesCell";
+import TotalVotesCell from "./common/totalVotes";
 
 export default function VotesList({
   data,
@@ -65,7 +66,7 @@ export default function VotesList({
       />,
       <VoteForCell key={"voteFor"} vote={item} />,
       <SelfVotesCell key={"selfVotes"} vote={item} />,
-      "",
+      <TotalVotesCell key={"totalVotes"} vote={item} />,
       <ReferendumTag key="tag" proposal={item.proposal} />,
     ];
 
