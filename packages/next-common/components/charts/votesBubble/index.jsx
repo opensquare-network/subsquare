@@ -10,6 +10,7 @@ import VotesBubbleLegend from "./legend";
 import DVBubbleLegend from "./DVBubbleLegend";
 import NoData from "next-common/components/noData";
 import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
 export default function VotesBubble({
   allAye,
@@ -112,7 +113,7 @@ export default function VotesBubble({
           setShowVotes={setShowVotes}
         />
 
-        {(chain === "kusama " || chain === "polkadot") &&
+        {[Chains.polkadot, Chains.kusama].includes(chain) &&
           sizeField === "totalVotes" && (
             <DVBubbleLegend className="mt-6" allAye={allAye} allNay={allNay} />
           )}
