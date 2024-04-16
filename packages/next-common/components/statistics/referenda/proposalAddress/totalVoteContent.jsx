@@ -119,12 +119,12 @@ function TotalVoteContent() {
     },
     {
       title: "Total Capital",
-      numberRender: <SymbolValue value={0} />,
+      numberRender: <SymbolValue value={0} className="text16Bold" />,
       chartRender: <VoteChart data={dataCapital} symbol="DOT" />,
     },
     {
       title: "Total Votes",
-      numberRender: <SymbolValue value={54653453} />,
+      numberRender: <SymbolValue value={54653453} className="text16Bold" />,
       chartRender: <VoteChart data={dataVotes} symbol="DOT" />,
     },
   ];
