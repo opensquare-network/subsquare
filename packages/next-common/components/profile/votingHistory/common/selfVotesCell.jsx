@@ -1,6 +1,6 @@
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { toPrecision } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
 import { getVoteType } from "next-common/utils/democracy/getVoteType";
 
 function VoteValueDisplay({ votesValue, vote }) {
@@ -8,13 +8,13 @@ function VoteValueDisplay({ votesValue, vote }) {
   const [, voteTypeFlag] = getVoteType(vote);
 
   return (
-    <div className="flex items-center justify-end relative">
+    <div className={cn("flex items-center justify-end", "sm:relative")}>
       <ValueDisplay
         value={toPrecision(votesValue, decimals)}
         symbol={voteSymbol || symbol}
       />
       {!!voteTypeFlag && (
-        <div className="absolute left-full text-textTertiary">
+        <div className={cn("text-textTertiary", "sm:absolute sm:left-full")}>
           /{voteTypeFlag}
         </div>
       )}

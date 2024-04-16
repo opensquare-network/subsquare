@@ -15,5 +15,7 @@ export default function VoteForCell({ vote }) {
     ];
   }
 
-  return !!types.length && <div>{types}</div>;
+  return (
+    !!types.length && <div className="[&>*]:max-sm:justify-end">{types}</div>
+  );
 }

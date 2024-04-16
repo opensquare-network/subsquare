@@ -60,6 +60,7 @@ export default function VotesList({
   const rows = (data?.items || []).map((item) => {
     const data = [
       <PostTitle
+        className={"max-sm:whitespace-pre-wrap"}
         key="proposal"
         referendumIndex={item.referendumIndex}
         title={item.proposal?.title}
@@ -72,7 +73,9 @@ export default function VotesList({
 
     if (!isKintsugi) {
       data.push(
-        <DetailButton key="detail" onClick={() => setShowVoteDetail(item)} />,
+        <div className="max-sm:self-start">
+          <DetailButton key="detail" onClick={() => setShowVoteDetail(item)} />
+        </div>,
       );
     }
 
