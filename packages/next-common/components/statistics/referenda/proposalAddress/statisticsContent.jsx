@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import TotalVoteContent from "./totalVoteContent";
 import AccountsConvictionUsedContent from "./accountsConvictionUsedContent";
+import AccountsVotesContent from "./accountsVotesContent";
 import { StatisticsDiv } from "./style";
 import Divider from "next-common/components/styled/layout/divider";
 function StatisticsContent() {
@@ -9,6 +10,8 @@ function StatisticsContent() {
       <TotalVoteContent />
       <Divider />
       <AccountsConvictionUsedContent />
+      <Divider />
+      <AccountsVotesContent />
     </StatisticsDiv>
   );
 }

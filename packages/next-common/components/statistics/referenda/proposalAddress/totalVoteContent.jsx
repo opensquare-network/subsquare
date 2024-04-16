@@ -8,7 +8,6 @@ import { useTheme } from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 
 const processData = (data, decimals) => {
-  // 数据处理逻辑
   return data.map((value) => Number(toPrecision(value || 0, decimals)));
 };
 function TotalVoteItem({ className, title, numberRender, chartRender }) {
@@ -32,29 +31,28 @@ function TotalVoteContent() {
   const categoryPercentage = 1;
   const barPercentage = 0.1;
   const dataAccounts = {
-    labels: ["Delegated", "Individual"],
+    labels: ["Delegated", "Casted"],
     datasets: [
       {
         label: "Aye",
         data: [0, 3002323],
         backgroundColor: theme.green300,
-        // 设定bar宽度的关键参数
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
       {
         label: "Nay",
         data: [0, 804334],
         backgroundColor: theme.red300,
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
       {
         label: "Abstain",
         data: [0, 504552],
         backgroundColor: theme.neutral400,
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
     ],
   };
@@ -65,23 +63,22 @@ function TotalVoteContent() {
         label: "Aye",
         data: processData([1234567890, 9876543210], decimals),
         backgroundColor: theme.green300,
-        // 设定bar宽度的关键参数
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
       {
         label: "Nay",
         data: processData([1234567890, 9876543210], decimals),
         backgroundColor: theme.red300,
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
       {
         label: "Abstain",
         data: processData([1234567890, 9876543210], decimals),
         backgroundColor: theme.neutral400,
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
     ],
   };
@@ -92,23 +89,22 @@ function TotalVoteContent() {
         label: "Aye",
         data: processData([1234567890, 4876543210], decimals),
         backgroundColor: theme.green300,
-        // 设定bar宽度的关键参数
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
       {
         label: "Nay",
         data: processData([223456789, 3876543210], decimals),
         backgroundColor: theme.red300,
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
       {
         label: "Abstain",
         data: processData([3234567890, 5876543210], decimals),
         backgroundColor: theme.neutral400,
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
     ],
   };
