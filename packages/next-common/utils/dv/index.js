@@ -11,7 +11,7 @@ export default function getDvAddresses(chain, trackId, voteFinishedHeight) {
     .filter((candidate) => {
       const { slots = [] } = candidate;
       return slots.some(({ start, end, trackIds = [] }) => {
-        if (!trackIds.includes(trackId)) {
+        if (!isNil(trackId) && !trackIds.includes(trackId)) {
           return false;
         }
 
