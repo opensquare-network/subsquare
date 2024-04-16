@@ -7,7 +7,9 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { useEventListener } from "usehooks-ts";
 import VoteBubbleContent from "./bubbleContent";
 import VotesBubbleLegend from "./legend";
+import DVBubbleLegend from "./DVBubbleLegend";
 import NoData from "next-common/components/noData";
+import { useChain } from "next-common/context/chain";
 
 export default function VotesBubble({
   allAye,
@@ -22,6 +24,7 @@ export default function VotesBubble({
     allAbstain?.length,
   ].filter(Boolean).length;
 
+  const chain = useChain();
   const [showVotes, setShowVotes] = useState({
     aye: true,
     nay: true,
@@ -108,6 +111,11 @@ export default function VotesBubble({
           showVotes={showVotes}
           setShowVotes={setShowVotes}
         />
+
+        {(chain === "kusama " || chain === "polkadot") &&
+          sizeField === "totalVotes" && (
+            <DVBubbleLegend className="mt-6" allAye={allAye} allNay={allNay} />
+          )}
       </div>
     </>
   );

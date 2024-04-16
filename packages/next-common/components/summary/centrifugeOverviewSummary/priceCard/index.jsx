@@ -4,70 +4,46 @@ import {
 } from "next-common/context/centrifuge/tokenPrices";
 import PriceCardContent from "./content";
 
+function getChartOptions(stepSize) {
+  return {
+    scales: {
+      x: {
+        time: {
+          unit: "day",
+        },
+        ticks: {
+          stepSize,
+        },
+      },
+    },
+  };
+}
+
 const OPTIONS = [
   {
     label: "7d",
     value: TIME_RANGE.DAY_7,
-    chartOptions: {
-      scales: {
-        x: {
-          time: {
-            unit: "day",
-          },
-          ticks: {
-            stepSize: 1,
-          },
-        },
-      },
-    },
+    chartOptions: getChartOptions(1),
   },
   {
     label: "1M",
     value: TIME_RANGE.DAY_30,
-    chartOptions: {
-      scales: {
-        x: {
-          time: {
-            unit: "day",
-          },
-          ticks: {
-            stepSize: 2,
-          },
-        },
-      },
-    },
+    chartOptions: getChartOptions(2),
   },
   {
     label: "3M",
     value: TIME_RANGE.DAY_90,
-    chartOptions: {
-      scales: {
-        x: {
-          time: {
-            unit: "day",
-          },
-          ticks: {
-            stepSize: 5,
-          },
-        },
-      },
-    },
+    chartOptions: getChartOptions(5),
   },
   {
     label: "1Y",
     value: TIME_RANGE.DAY_365,
-    chartOptions: {
-      scales: {
-        x: {
-          time: {
-            unit: "day",
-          },
-          ticks: {
-            stepSize: 22,
-          },
-        },
-      },
-    },
+    chartOptions: getChartOptions(22),
+  },
+  {
+    label: "All",
+    value: TIME_RANGE.DAY_ALL,
+    chartOptions: getChartOptions(60),
   },
 ];
 
