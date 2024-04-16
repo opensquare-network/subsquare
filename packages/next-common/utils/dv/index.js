@@ -15,11 +15,20 @@ export default function getDvAddresses(chain, trackId, voteFinishedHeight) {
           return false;
         }
 
-        if (isNil(voteFinishedHeight) && !isNil(start) && !isNil(end)) {
-          return false;
+        if (!isNil(voteFinishedHeight)) {
+          // if referendum votes finished, then finished height should be between start and end
+          return (
+            voteFinishedHeight >= start &&
+            (isNil(end) || end > voteFinishedHeight)
+          );
         }
 
-        return !(voteFinishedHeight < start || voteFinishedHeight > end);
+        if (isNil(end)) {
+          // referendum ongoing and DV ongoing
+          return true;
+        }
+
+        return voteFinishedHeight >= start && voteFinishedHeight < end;
       });
     })
     .map((candidate) => candidate.address);
