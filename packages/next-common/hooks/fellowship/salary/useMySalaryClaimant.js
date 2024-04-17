@@ -6,6 +6,7 @@ export default function useMySalaryClaimant() {
   const address = useRealAddress();
   const api = useContextApi();
   const [claimant, setClaimant] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!address || !api?.query?.fellowshipSalary?.claimant) {
@@ -22,7 +23,8 @@ export default function useMySalaryClaimant() {
         const json = rawOptional.unwrap().toJSON();
         setClaimant(json);
       })
-      .then((result) => (unsub = result));
+      .then((result) => (unsub = result))
+      .finally(() => setLoading(false));
 
     return () => {
       if (unsub) {
@@ -31,5 +33,5 @@ export default function useMySalaryClaimant() {
     };
   }, [address, api]);
 
-  return claimant;
+  return { isLoading: loading, claimant };
 }

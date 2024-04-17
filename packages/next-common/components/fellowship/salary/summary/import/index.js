@@ -4,20 +4,31 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
 import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
+import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function Import() {
   const [disabled, setDisabled] = useState(true);
   const stats = useSelector(fellowshipSalaryStatusSelector);
-  const claimant = useMySalaryClaimant();
-  // todo: 2. save members to redux, check if login user is a member, and set disabled if not
+  const { isLoading: isLoadingClaimant, claimant } = useMySalaryClaimant();
+
+  const address = useRealAddress();
+  const members = useFellowshipCollectiveMembers();
+  const memberAddrs = (members || []).map((item) => item.address);
+
   useEffect(() => {
     if (
-      !stats ||
+      !stats || // Salary cycle not started
+      isLoadingClaimant ||
       claimant // it means login address is already imported
     ) {
+      setDisabled(true);
+    }
+
+    if (memberAddrs.includes(address)) {
       setDisabled(false);
     }
-  }, [stats]);
+  }, [stats, isLoadingClaimant, claimant, address, memberAddrs]);
 
   return (
     <>

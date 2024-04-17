@@ -3,6 +3,7 @@ import FellowshipSalarySummary from "./summary";
 import useFetchFellowshipSalaryClaimants from "next-common/hooks/fellowship/salary/useFetchFellowshipSalaryClaimants";
 import FellowshipSalarySummaryActions from "next-common/components/fellowship/salary/summary/actions";
 import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
+import useFetchFellowshipMembers from "next-common/hooks/fellowship/collective/useFetchFellowshipMembers";
 
 export default function FellowshipSalaryCommon({ children, ...props }) {
   const title = "Fellowship Salary";
@@ -11,6 +12,7 @@ export default function FellowshipSalaryCommon({ children, ...props }) {
   const seoInfo = { title, desc };
   useFetchFellowshipSalaryClaimants();
   useSubFellowshipSalaryStats();
+  useFetchFellowshipMembers();
 
   return (
     <ListLayout
