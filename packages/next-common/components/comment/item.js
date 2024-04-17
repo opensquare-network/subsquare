@@ -19,6 +19,7 @@ import CommentItemTemplate from "./itemTemplate";
 import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
+import CommentDVTag from "./dvTag";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -113,7 +114,12 @@ function CommentItemImpl({
       setShowReplies={setShowReplies}
       id={comment.height}
       highlight={highlight}
-      user={<SystemUser user={comment.author} />}
+      user={
+        <>
+          <SystemUser user={comment.author} />
+          <CommentDVTag />
+        </>
+      }
       commentSource={
         isUniversalComments && (
           <Tooltip content="Comment from SubSquare" className="ml-2">
