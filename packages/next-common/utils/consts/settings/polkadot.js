@@ -100,7 +100,6 @@ const polkadot = {
   group: MenuGroups.PolkadotAndParachains,
   links,
   postLabels: defaultPostLabels,
-  hasReferenda: true,
   hasStatescan: true,
   hasIdentityTimeline: true,
   hasSubscan: true,
@@ -117,7 +116,6 @@ const polkadot = {
   description:
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
   hideNewTreasuryProposalButton: true,
-  noDemocracyModule: true,
   ...polkadotThemeVars,
   modules: {
     referenda: true,

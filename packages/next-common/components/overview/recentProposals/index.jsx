@@ -37,9 +37,12 @@ export default function RecentProposals() {
   const treasuryCouncil = useRecentProposalTreasuryCouncil();
   const openTechComm = useRecentProposalOpenTechComm();
 
+  const {
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
+  } = chainSettings;
   const sections = [
-    chainSettings.hasReferenda && referenda,
-    chainSettings.hasFellowship && fellowship,
+    hasReferenda && referenda,
+    hasFellowship && fellowship,
     democracy,
     treasury,
     !isPolkadotChain && council,

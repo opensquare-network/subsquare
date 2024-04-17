@@ -40,10 +40,12 @@ export default function useFetchMyDemocracyDeposits() {
   const realAddress = useRealAddress();
   const api = useContextApi();
   const dispatch = useDispatch();
-  const { noDemocracyModule } = useChainSettings();
+  const {
+    modules: { democracy: hasDemocracyModule },
+  } = useChainSettings();
 
   useEffect(() => {
-    if (!api || !realAddress || !api.query?.democracy || noDemocracyModule) {
+    if (!api || !realAddress || !api.query?.democracy || !hasDemocracyModule) {
       return;
     }
 
