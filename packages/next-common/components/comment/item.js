@@ -12,14 +12,13 @@ import { prettyHTML } from "../../utils/viewfuncs";
 import CommentActions from "../actions/commentActions";
 import useCommentsAnchor from "../../utils/hooks/useCommentsAnchor";
 import { useComments, useSetComments } from "next-common/context/post/comments";
-import SystemUser from "../user/systemUser";
 import { LinkSubsquare } from "@osn/icons/subsquare";
 import Tooltip from "../tooltip";
 import CommentItemTemplate from "./itemTemplate";
 import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
-import CommentDVTag from "./dvTag";
+import CommentUser from "./user";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -114,12 +113,7 @@ function CommentItemImpl({
       setShowReplies={setShowReplies}
       id={comment.height}
       highlight={highlight}
-      user={
-        <>
-          <SystemUser user={comment.author} />
-          <CommentDVTag />
-        </>
-      }
+      user={<CommentUser author={comment.author} />}
       commentSource={
         isUniversalComments && (
           <Tooltip content="Comment from SubSquare" className="ml-2">
