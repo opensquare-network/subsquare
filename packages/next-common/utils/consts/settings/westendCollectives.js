@@ -52,7 +52,6 @@ const westendCollectives = {
   hasStatescan: true,
   hasFellowship: true,
   hasTechComm: false,
-  hasDemocracy: false,
   hasTreasury: false,
   hasTreasuryModule: false,
   noIdentityModule: true,
