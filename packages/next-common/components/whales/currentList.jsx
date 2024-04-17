@@ -49,17 +49,21 @@ export default function WhalesCurrentList() {
     <div className="space-y-4">
       <TitleContainer>List</TitleContainer>
 
-      <SecondaryCard className="!p-6 space-y-4">
+      <SecondaryCard className="!p-6">
         <WhalesTabs />
 
-        <DataList columns={columns} rows={rows} />
+        <hr />
 
-        <Pagination
-          shallow
-          page={page}
-          pageSize={data.pageSize}
-          total={data.total}
-        />
+        <DataList className="mt-4" columns={columns} rows={rows} />
+
+        <div className="mt-2">
+          <Pagination
+            shallow
+            page={page}
+            pageSize={data.pageSize}
+            total={data.total}
+          />
+        </div>
       </SecondaryCard>
     </div>
   );
