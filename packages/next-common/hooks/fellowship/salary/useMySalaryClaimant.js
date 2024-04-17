@@ -8,7 +8,7 @@ export default function useMySalaryClaimant() {
   const [claimant, setClaimant] = useState(null);
 
   useEffect(() => {
-    if (!address || !api.query?.fellowshipSalary?.claimant) {
+    if (!address || !api?.query?.fellowshipSalary?.claimant) {
       return;
     }
 
