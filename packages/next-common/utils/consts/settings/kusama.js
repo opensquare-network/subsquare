@@ -90,7 +90,6 @@ const kusama = {
   navPreferDark: true,
   group: MenuGroups.KusamaAndParachains,
   links,
-  hasFellowship: true,
   hasStatescan: true,
   hasIdentityTimeline: true,
   hasSubscan: true,

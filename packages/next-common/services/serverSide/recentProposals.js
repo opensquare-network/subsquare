@@ -59,14 +59,14 @@ export async function fetchRecentProposalsProps(summary = {}) {
 
   // referenda
   const {
-    modules: { referenda: hasReferenda },
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
   } = chainSettings;
   if (hasReferenda) {
     recentProposalsData.referenda = await fetcher(overviewApi.referenda);
   }
 
   // fellowship
-  if (chainSettings.hasFellowship) {
+  if (hasFellowship) {
     recentProposalsData.fellowship = await fetcher(overviewApi.fellowship);
   }
 

@@ -25,8 +25,7 @@ export function useDepositSections(
 
   return useMemo(() => {
     const {
-      modules: { referenda: hasReferenda },
-      hasFellowship,
+      modules: { referenda: hasReferenda, fellowship: hasFellowship },
       hasTreasuryModule,
       noDemocracyModule,
       noIdentityModule,

@@ -38,11 +38,11 @@ export default function RecentProposals() {
   const openTechComm = useRecentProposalOpenTechComm();
 
   const {
-    modules: { referenda: hasReferenda },
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
   } = chainSettings;
   const sections = [
     hasReferenda && referenda,
-    chainSettings.hasFellowship && fellowship,
+    hasFellowship && fellowship,
     democracy,
     treasury,
     !isPolkadotChain && council,

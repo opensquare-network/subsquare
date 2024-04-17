@@ -5,8 +5,7 @@ import { useChainSettings } from "next-common/context/chain";
 
 export default function VotingHistory() {
   const {
-    modules: { referenda: hasReferenda },
-    hasFellowship,
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
     noDemocracy,
   } = useChainSettings();
 

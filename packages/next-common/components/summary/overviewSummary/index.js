@@ -41,8 +41,7 @@ function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
 function OpenGovGroupContent() {
   const { summary } = usePageProps();
   const {
-    hasFellowship,
-    modules: { referenda: hasReferenda },
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
   } = useChainSettings();
   const { gov2Referenda, fellowshipReferenda } = summary ?? {};
 
@@ -180,8 +179,7 @@ export default function OverviewSummary() {
   const showCouncil = useMenuHasCouncil();
   const showTC = useMenuHasTechComm();
   const {
-    hasFellowship,
-    modules: { referenda: hasReferenda },
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
     noDemocracyModule,
   } = useChainSettings();
 

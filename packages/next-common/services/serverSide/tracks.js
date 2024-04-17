@@ -26,8 +26,7 @@ export async function fetchOpenGovTracksProps() {
   const summary = await fetchSummary();
 
   const {
-    modules: { referenda: hasReferenda },
-    hasFellowship,
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
   } = getChainSettings(process.env.CHAIN);
   if (hasReferenda && hasFellowship) {
     const result = await fetchAll();

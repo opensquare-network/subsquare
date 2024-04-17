@@ -44,7 +44,6 @@ const rococo = {
   links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasFellowship: true,
   hasTipsModule: false,
   noDemocracyModule: true,
   hasSubscan: true,
