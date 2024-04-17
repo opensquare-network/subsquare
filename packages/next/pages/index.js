@@ -26,12 +26,14 @@ import {
 import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
+import useLoadOverviewPageData from "next-common/hooks/overview/useLoadOverviewPageData";
 
 export default function HomePage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
   const url = useAccountUrl();
+  useLoadOverviewPageData();
 
   const tabs = [
     {

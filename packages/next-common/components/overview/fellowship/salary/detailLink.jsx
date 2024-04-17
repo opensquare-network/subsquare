@@ -1,9 +1,9 @@
-import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
 
 export default function FellowshipSalaryStatsDetailLink() {
-  const stats = useSubFellowshipSalaryStats();
-
+  const stats = useSelector(fellowshipSalaryStatusSelector);
   if (!stats?.cycleIndex) {
     return null;
   }
