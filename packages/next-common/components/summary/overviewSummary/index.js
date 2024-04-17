@@ -179,8 +179,11 @@ export default function OverviewSummary() {
   const showCouncil = useMenuHasCouncil();
   const showTC = useMenuHasTechComm();
   const {
-    modules: { referenda: hasReferenda, fellowship: hasFellowship },
-    noDemocracyModule,
+    modules: {
+      referenda: hasReferenda,
+      fellowship: hasFellowship,
+      democracy: hasDemocracyModule,
+    },
   } = useChainSettings();
 
   const items = [];
@@ -191,7 +194,7 @@ export default function OverviewSummary() {
     });
   }
 
-  if (!noDemocracyModule) {
+  if (hasDemocracyModule) {
     items.push({
       title: "Democracy",
       content: <DemocracyGroupContent />,
@@ -203,7 +206,7 @@ export default function OverviewSummary() {
     content: <TreasuryGroupContent />,
   });
 
-  if (!noDemocracyModule) {
+  if (hasDemocracyModule) {
     items.push({
       title: `${showCouncil ? "Council" : ""}${
         showTC && showCouncil ? " / " : ""

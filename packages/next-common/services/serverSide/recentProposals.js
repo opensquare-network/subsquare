@@ -40,6 +40,9 @@ async function fetcher(url) {
 
 export async function fetchRecentProposalsProps(summary = {}) {
   const chainSettings = getChainSettings(CHAIN);
+  const {
+    modules: { democracy: hasDemocracyModule },
+  } = chainSettings;
 
   const recentProposalsData = {};
 
@@ -73,7 +76,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
   // democracy
   const democracyMenu = getDemocracyMenu(summary);
   const hasDemocracy =
-    chainSettings.hasDemocracy !== false ||
+    hasDemocracyModule ||
     !democracyMenu.excludeToChains.includes(CHAIN) ||
     !democracyMenu.archivedToChains.includes(CHAIN);
   if (hasDemocracy) {

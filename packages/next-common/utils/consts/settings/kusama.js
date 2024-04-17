@@ -94,8 +94,6 @@ const kusama = {
   hasIdentityTimeline: true,
   hasSubscan: true,
   postLabels: defaultPostLabels,
-  hasDemocracy: false,
-  noDemocracyModule: true,
   useVoteCall: true,
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,
