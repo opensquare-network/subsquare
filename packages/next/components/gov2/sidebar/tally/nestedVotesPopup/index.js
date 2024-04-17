@@ -15,7 +15,7 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import voteTabs from "../common/voteTabs";
 import filterTabs from "../common/filterTabs";
 import DataList from "next-common/components/dataList";
-import AddressUserWithDVTag from "next-common/components/user/addressUserWithDV";
+import AccountCell from "./accountCell";
 
 export default function NestedVotesPopup({
   setShowVoteList,
@@ -144,14 +144,7 @@ function VotesList({ items = [], loading }) {
 
   const rows = items.map((item) => {
     const row = [
-      <AddressUserWithDVTag
-        key={item.account}
-        add={item.account}
-        noTooltip
-        maxWidth={296}
-        linkToVotesPage
-        showDVTooltip={false}
-      />,
+      <AccountCell key={item.account} item={item} />,
       (item.directVoterDelegations || []).length,
       <ValueDisplay
         key="value"
