@@ -25,9 +25,11 @@ export default function AccountDelegationPrompt() {
     setValue(false, { expires: 15 });
   }
 
+  const {
+    modules: { referenda: hasReferenda },
+  } = chainSettings;
   const hasDelegation =
-    (chainSettings.hasReferenda || !chainSettings.noDemocracy) &&
-    !isKintsugiChain(chain);
+    (hasReferenda || !chainSettings.noDemocracy) && !isKintsugiChain(chain);
 
   if (!hasDelegation || !visible) {
     return null;

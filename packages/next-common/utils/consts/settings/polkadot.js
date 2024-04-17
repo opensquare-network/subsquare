@@ -100,7 +100,6 @@ const polkadot = {
   group: MenuGroups.PolkadotAndParachains,
   links,
   postLabels: defaultPostLabels,
-  hasReferenda: true,
   hasStatescan: true,
   hasIdentityTimeline: true,
   hasSubscan: true,

@@ -75,7 +75,6 @@ const bifrost = {
   subscanDomain: "bifrost-kusama",
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  hasReferenda: true,
   hasFellowship: true,
   showReferendaReferendumDelegationPercentage: true,
   description:

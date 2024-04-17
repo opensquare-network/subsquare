@@ -45,7 +45,6 @@ const moonriver = {
   hasSubscan: true,
   showReferendaReferendumDelegationPercentage: true,
   subscanDomain: "moonriver",
-  hasReferenda: true,
   hasTipsModule: false,
   hasPolkassemblyDiscussions: true,
   // hideActionButtons: true,

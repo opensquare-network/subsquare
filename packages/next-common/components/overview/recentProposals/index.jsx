@@ -37,8 +37,11 @@ export default function RecentProposals() {
   const treasuryCouncil = useRecentProposalTreasuryCouncil();
   const openTechComm = useRecentProposalOpenTechComm();
 
+  const {
+    modules: { referenda: hasReferenda },
+  } = chainSettings;
   const sections = [
-    chainSettings.hasReferenda && referenda,
+    hasReferenda && referenda,
     chainSettings.hasFellowship && fellowship,
     democracy,
     treasury,

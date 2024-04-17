@@ -10,7 +10,10 @@ import { cn } from "next-common/utils";
 import AccountSubTabs from "next-common/components/overview/account/subTabs";
 
 function MyVoteLayout({ children }) {
-  const { hasReferenda, noDemocracyModule } = useChainSettings();
+  const {
+    modules: { referenda: hasReferenda },
+    noDemocracyModule,
+  } = useChainSettings();
 
   const availableTabs = [];
   if (hasReferenda) {

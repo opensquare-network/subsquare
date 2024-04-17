@@ -8,7 +8,10 @@ export function getProfileCategories(chain) {
   const categories = [];
 
   const settings = getChainSettings(chain);
-  if (settings.hasReferenda || settings.hasFellowship) {
+  const {
+    modules: { referenda: hasReferenda },
+  } = settings;
+  if (hasReferenda || settings.hasFellowship) {
     categories.push(gov2Category);
   }
 

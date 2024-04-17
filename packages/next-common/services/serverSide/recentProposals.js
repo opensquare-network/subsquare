@@ -58,7 +58,10 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // referenda
-  if (chainSettings.hasReferenda) {
+  const {
+    modules: { referenda: hasReferenda },
+  } = chainSettings;
+  if (hasReferenda) {
     recentProposalsData.referenda = await fetcher(overviewApi.referenda);
   }
 
