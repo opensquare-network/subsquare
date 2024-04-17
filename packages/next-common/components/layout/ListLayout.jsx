@@ -40,6 +40,7 @@ export default function ListLayout({
   description,
   headContent,
   summary,
+  button,
   summaryFooter,
   tabs = [],
   header,
@@ -68,6 +69,12 @@ export default function ListLayout({
         <>
           <Divider className="my-4" />
           {summary}
+        </>
+      )}
+      {button && (
+        <>
+          <Divider className="my-4" />
+          <div className="flex justify-end">{button}</div>
         </>
       )}
 
