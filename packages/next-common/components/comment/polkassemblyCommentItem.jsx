@@ -5,7 +5,6 @@ import {
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import PolkassemblyActions from "../polkassembly/actions";
 import { cn } from "next-common/utils";
-import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 import { LinkPolkassembly } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
@@ -16,6 +15,7 @@ import CommentItemTemplate from "next-common/components/comment/itemTemplate";
 import { useState } from "react";
 import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
+import PolkassemblyCommentUser from "./polkassemblyUser";
 
 function PolkassemblyCommentItemImpl({ isSecondLevel }) {
   const comment = useComment();
@@ -29,7 +29,7 @@ function PolkassemblyCommentItemImpl({ isSecondLevel }) {
       isSecondLevel={isSecondLevel}
       showReplies={showReplies}
       setShowReplies={setShowReplies}
-      user={<PolkassemblyUser user={comment.author} />}
+      user={<PolkassemblyCommentUser user={comment.author} />}
       commentSource={
         isUniversalComments && (
           <Tooltip content="Comment from Polkassembly" className="ml-2">
