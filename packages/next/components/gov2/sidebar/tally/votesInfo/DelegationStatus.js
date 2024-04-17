@@ -1,5 +1,5 @@
 import { useOnchainData } from "next-common/context/post";
-import usePercentageBarData from "./usePercentageBarData";
+import useTallyPercentageBarData from "../../../../../../next-common/hooks/referenda/useTallyPercentageBarData";
 import PercentageBar from "next-common/components/percentageBar";
 import { Tooltip } from "../../status/styled";
 import PercentageTooltip from "./percentageTooltip";
@@ -16,7 +16,7 @@ export default function DelegationStatus() {
     delegatedCapitalPercentage,
     directVotesPercentage,
     delegatedVotesPercentage,
-  } = usePercentageBarData();
+  } = useTallyPercentageBarData();
 
   let capitalBar = (
     <Tooltip
