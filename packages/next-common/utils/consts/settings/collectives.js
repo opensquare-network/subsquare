@@ -77,7 +77,6 @@ const collectives = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
-  hasFellowship: true,
   hasFellowshipParams: true,
   hasFellowshipCore: true,
   hasPolkassemblyDiscussions: false,

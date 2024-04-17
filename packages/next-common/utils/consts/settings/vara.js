@@ -72,8 +72,6 @@ const vara = {
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   noDemocracyModule: true,
-  hasReferenda: true,
-  hasFellowship: true,
   hasDemocracy: false,
   hasTipsModule: false,
   hasStatescan: false,

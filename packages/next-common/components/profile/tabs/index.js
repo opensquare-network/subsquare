@@ -8,8 +8,7 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 export default function useProfileTabs() {
   const { id } = usePageProps();
   const {
-    hasReferenda,
-    hasFellowship,
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
     noDemocracy,
     noDemocracyModule,
     hasMultisig,

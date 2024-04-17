@@ -48,8 +48,6 @@ const bifrostPolkadot = {
   postLabels: defaultPostLabels,
   hasSubscan: true,
   useVoteCall: true,
-  hasReferenda: true,
-  hasFellowship: true,
   hasMultisig: true,
   multisigApiPrefix: "pbnc",
   description:

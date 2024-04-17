@@ -79,7 +79,6 @@ const darwinia2 = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  hasReferenda: true,
   subscanDomain: "darwinia",
   chainType: ChainTypes.ETHEREUM,
   ethereumNetwork: {
