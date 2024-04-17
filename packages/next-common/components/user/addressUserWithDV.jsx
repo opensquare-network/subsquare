@@ -5,14 +5,17 @@ import AddressUser from "./addressUser";
 import AddressDVTag from "./dvTag";
 
 /**
- * @param {Parameters<typeof AddressUser>[0]} props
+ * @param {{showDVTooltip?: boolean} & Parameters<typeof AddressUser>[0]} props
  */
-export default function AddressUserWithDVTag(props = {}) {
+export default function AddressUserWithDVTag({
+  showDVTooltip = true,
+  ...props
+}) {
   const chain = useChain();
   const dvAddresses = getDvAddresses(chain);
-  const isDV = includes(dvAddresses, props.add);
+  const isDV = includes(dvAddresses, props?.add);
 
-  let { maxWidth } = props;
+  let maxWidth = props?.maxWidth;
   if (isDV) {
     if (maxWidth) {
       // icon(20) + gap(8)
@@ -23,7 +26,7 @@ export default function AddressUserWithDVTag(props = {}) {
   return (
     <div className="flex items-center gap-x-2">
       <AddressUser {...props} maxWidth={maxWidth} />
-      {isDV && <AddressDVTag />}
+      {isDV && <AddressDVTag showTooltip={showDVTooltip} />}
     </div>
   );
 }

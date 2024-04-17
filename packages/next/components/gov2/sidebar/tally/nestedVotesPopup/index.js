@@ -150,6 +150,7 @@ function VotesList({ items = [], loading }) {
         noTooltip
         maxWidth={296}
         linkToVotesPage
+        showDVTooltip={false}
       />,
       (item.directVoterDelegations || []).length,
       <ValueDisplay
