@@ -1,8 +1,7 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import FellowshipSalarySummary from "./summary";
-import DisabledTipButton from "next-common/components/extendButton/disabledTipButton";
 import useFetchFellowshipSalaryClaimants from "next-common/hooks/fellowship/salary/useFetchFellowshipSalaryClaimants";
-import { SystemPlus } from "@osn/icons/subsquare";
+import FellowshipSalarySummaryActions from "next-common/components/fellowship/salary/summary/actions";
 
 export default function FellowshipSalaryCommon({ children, ...props }) {
   const title = "Fellowship Salary";
@@ -17,17 +16,7 @@ export default function FellowshipSalaryCommon({ children, ...props }) {
       title={title}
       description={seoInfo.desc}
       summary={<FellowshipSalarySummary />}
-      button={
-        <DisabledTipButton
-          typeStyle="secondary"
-          tipMsg="Only members can induct"
-          size="small"
-          iconLeft={<SystemPlus className="w-4 h-4" />}
-          disabled={true}
-        >
-          Induct
-        </DisabledTipButton>
-      }
+      summaryFooter={<FellowshipSalarySummaryActions />}
       tabs={[
         {
           label: "Cycles",
