@@ -45,7 +45,6 @@ const rococo = {
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasTipsModule: false,
-  noDemocracyModule: true,
   hasSubscan: true,
   hasDiscussionsForumTopics: true,
   discourseForumLink: "https://forum.polkadot.network",

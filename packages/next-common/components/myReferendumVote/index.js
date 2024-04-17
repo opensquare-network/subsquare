@@ -34,10 +34,9 @@ export default function MyVoteCommon({
   setShowRemoveVotePopup,
 }) {
   const {
-    modules: { referenda: hasReferenda },
-    noDemocracyModule,
+    modules: { referenda: hasReferenda, democracy: hasDemocracyModule },
   } = useChainSettings();
-  const hasVotesManagement = hasReferenda || !noDemocracyModule;
+  const hasVotesManagement = hasReferenda || hasDemocracyModule;
   const isProxySet = useIsProxySet();
 
   if (!votes || votes.length === 0) {

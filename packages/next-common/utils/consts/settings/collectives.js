@@ -86,7 +86,6 @@ const collectives = {
   hasTipsModule: false,
   hasDiscussionsRFCs: true,
   noDemocracy: true,
-  noDemocracyModule: true,
   noIdentityModule: true,
   showAchainableLabels: true,
   description:

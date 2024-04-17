@@ -56,7 +56,6 @@ const westendCollectives = {
   hasTreasury: false,
   hasTreasuryModule: false,
   noIdentityModule: true,
-  noDemocracyModule: true,
   modules: {
     fellowship: true,
   },

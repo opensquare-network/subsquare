@@ -8,9 +8,12 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 export default function useProfileTabs() {
   const { id } = usePageProps();
   const {
-    modules: { referenda: hasReferenda, fellowship: hasFellowship },
+    modules: {
+      referenda: hasReferenda,
+      fellowship: hasFellowship,
+      democracy: hasDemocracyModule,
+    },
     noDemocracy,
-    noDemocracyModule,
     hasMultisig,
     hasStatescan,
     hasIdentityTimeline,
@@ -50,7 +53,7 @@ export default function useProfileTabs() {
     });
   }
 
-  if (hasReferenda || !noDemocracyModule) {
+  if (hasReferenda || hasDemocracyModule) {
     tabs.push({
       label: "Delegation",
       url: `${prefix}delegation/received`,
