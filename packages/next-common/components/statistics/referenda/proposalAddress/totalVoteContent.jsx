@@ -50,7 +50,7 @@ function TotalVoteContent() {
   ).toString();
 
   const theme = useTheme();
-  const { decimals } = useChainSettings();
+  const { decimals, voteSymbol, symbol } = useChainSettings();
   const categoryPercentage = 1;
   const barPercentage = 0.1;
   const dataAccounts = {
@@ -184,12 +184,14 @@ function TotalVoteContent() {
     {
       title: "Total Capital",
       numberRender: <SymbolValue value={totalCapital} className="text16Bold" />,
-      chartRender: <VoteChart data={dataCapital} symbol="DOT" />,
+      chartRender: (
+        <VoteChart data={dataCapital} symbol={voteSymbol || symbol} />
+      ),
     },
     {
       title: "Total Votes",
       numberRender: <SymbolValue value={totalVotes} className="text16Bold" />,
-      chartRender: <VoteChart data={dataVotes} symbol="DOT" />,
+      chartRender: <VoteChart data={dataVotes} symbol={voteSymbol || symbol} />,
     },
   ];
 
