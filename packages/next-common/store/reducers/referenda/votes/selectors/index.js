@@ -18,15 +18,57 @@ export const allAyeSelector = (state) => {
   return allVotes.filter((v) => v.aye);
 };
 
+export const allAyeDelegationVotesSelector = createSelector(
+  allAyeSelector,
+  (votes) => {
+    return votes.filter((v) => v.isDelegating);
+  },
+);
+
+export const allAyeDirectVotesSelector = createSelector(
+  allAyeSelector,
+  (votes) => {
+    return votes.filter((v) => !v.isDelegating);
+  },
+);
+
 export const allNaySelector = (state) => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter((v) => v.aye === false);
 };
 
+export const allNayDelegationVotesSelector = createSelector(
+  allNaySelector,
+  (votes) => {
+    return votes.filter((v) => v.isDelegating);
+  },
+);
+
+export const allNayDirectVotesSelector = createSelector(
+  allNaySelector,
+  (votes) => {
+    return votes.filter((v) => !v.isDelegating);
+  },
+);
+
 export const allAbstainSelector = (state) => {
   const allVotes = state[name].allVotes || [];
   return allVotes.filter((v) => v.isAbstain);
 };
+
+export const allAbstainDelegationVotesSelector = createSelector(
+  allAbstainSelector,
+  (votes) => {
+    return votes.filter((v) => v.isDelegating);
+  },
+);
+
+export const allAbstainDirectVotesSelector = createSelector(
+  allAbstainSelector,
+  (votes) => {
+    return votes.filter((v) => !v.isDelegating);
+  },
+);
 
 export const allDirectVotesSelector = (state) => {
   const allVotes = state[name].allVotes || [];
