@@ -40,11 +40,18 @@ export async function maybeSendSignetTx({
     if (!sdk) {
       throw new Error("Signet SDK is initialized.");
     }
-    await sdk.send(tx.method.toHex());
+    const res = await sdk.send(tx.method.toHex());
 
-    dispatch(newSuccessToast("Multisig transaction submitted"));
+    if (res.ok) {
+      dispatch(newSuccessToast("Multisig transaction submitted"));
+      onClose();
+    } else {
+      if (res.error !== "Cancelled") {
+        dispatch(newErrorToast(res.error));
+      }
+    }
 
-    onClose();
+    return true;
   } catch (e) {
     if (e.message === "Cancelled") {
       dispatch(newWarningToast(e.message));
