@@ -10,7 +10,8 @@ export function SignetWallet({
   selected = false,
   loading = false,
 }) {
-  const { isSignet: installed } = useSignetSdk();
+  const data = useSignetSdk();
+  const { inSignet: installed } = data;
   const Logo = wallet.logo;
 
   return (

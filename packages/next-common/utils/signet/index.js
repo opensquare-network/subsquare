@@ -5,6 +5,7 @@ import { emptyFunction } from "..";
 import {
   newErrorToast,
   newPendingToast,
+  newSuccessToast,
   newToastId,
   newWarningToast,
   removeToast,
@@ -40,6 +41,8 @@ export async function maybeSendSignetTx({
       throw new Error("Signet SDK is initialized.");
     }
     await sdk.send(tx.method.toHex());
+
+    dispatch(newSuccessToast("Multisig transaction submitted"));
 
     onClose();
   } catch (e) {

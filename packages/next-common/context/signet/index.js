@@ -16,10 +16,12 @@ export function SignetContextProvider({ children }) {
     setSdk(signetSdk);
   }, []);
 
-  const { value: inSignet, loading } = useAsync(
-    async () => sdk && sdk.init(),
-    [sdk],
-  );
+  const { value: inSignet, loading } = useAsync(async () => {
+    if (sdk) {
+      return sdk.init();
+    }
+    return false;
+  }, [sdk]);
 
   return (
     <SignetContext.Provider value={{ inSignet, loading, sdk }}>
@@ -29,7 +31,7 @@ export function SignetContextProvider({ children }) {
 }
 
 export function useSignetSdk() {
-  return useContext(SignetContext);
+  return useContext(SignetContext) || {};
 }
 
 export function useSignetAccounts() {
@@ -44,7 +46,12 @@ export function useSignetAccounts() {
     if (!vault) {
       return;
     }
-    const normalizedAccount = normalizedSignetAccount(vault);
+
+    const normalizedAccount = normalizedSignetAccount({
+      ...vault,
+      address: vault.vaultAddress,
+    });
+
     setAccounts([normalizedAccount]);
   }, [sdk]);
 
