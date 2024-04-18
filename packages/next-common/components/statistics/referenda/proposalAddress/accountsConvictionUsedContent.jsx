@@ -33,23 +33,22 @@ export default function AccountsConvictionUsedContent() {
         label: "Aye",
         data: resolveChartDatasetData(allAyeVotes),
         backgroundColor: theme.green300,
-        // 设定bar宽度的关键参数
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
       {
         label: "Nay",
         data: resolveChartDatasetData(allNayVotes),
         backgroundColor: theme.red300,
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
       {
         label: "Abstain",
         data: resolveChartDatasetData(allAbstainVotes),
         backgroundColor: theme.neutral400,
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
     ],
   };
