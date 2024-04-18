@@ -10,7 +10,7 @@ import {
 } from "next-common/store/reducers/referenda/votes/selectors";
 import { useSelector } from "react-redux";
 
-function resolve(delegationVotes = [], directVotes = []) {
+function resolveData(delegationVotes = [], directVotes = []) {
   const delegatedCapitalValue = BigNumber.sum(
     ...map(delegationVotes, "balance"),
     0,
@@ -43,19 +43,19 @@ export function useAyesVotesData() {
   const delegationVotes = useSelector(allAyeDelegationVotesSelector);
   const directVotes = useSelector(allAyeDirectVotesSelector);
 
-  return resolve(delegationVotes, directVotes);
+  return resolveData(delegationVotes, directVotes);
 }
 
 export function useNaysVotesData() {
   const delegationVotes = useSelector(allNayDelegationVotesSelector);
   const directVotes = useSelector(allNayDirectVotesSelector);
 
-  return resolve(delegationVotes, directVotes);
+  return resolveData(delegationVotes, directVotes);
 }
 
 export function useAbstainVotesData() {
   const delegationVotes = useSelector(allAbstainDelegationVotesSelector);
   const directVotes = useSelector(allAbstainDirectVotesSelector);
 
-  return resolve(delegationVotes, directVotes);
+  return resolveData(delegationVotes, directVotes);
 }
