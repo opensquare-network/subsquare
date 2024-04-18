@@ -11,7 +11,7 @@ function calcPercentage(numerator, denominator) {
     : numerator.div(denominator).times(100).toNumber();
 }
 
-export default function useTallyPercentageBarData() {
+export default function usePercentageBarData() {
   const { voteStats } = usePageProps();
   const allVotes = useSelector(allVotesSelector);
 
