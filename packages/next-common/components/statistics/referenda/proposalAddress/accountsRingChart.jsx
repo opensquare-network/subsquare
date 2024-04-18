@@ -1,6 +1,21 @@
 import { Doughnut } from "react-chartjs-2";
-import React from "react";
 import { cn, formatNum } from "next-common/utils";
+import { useSelector } from "react-redux";
+import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import { ConvictionSupport } from "next-common/utils/referendumCommon";
+import { groupBy } from "lodash-es";
+
+const convictions = Object.values(ConvictionSupport);
+
+const colors = [
+  "#EB558999",
+  "#785DF399",
+  "#E47E5299",
+  "#4CAF9199",
+  "#0F6FFF99",
+  "#FF980080",
+  "#2196F399",
+];
 
 function RowItem({ bgColor, label, percentage }) {
   return (
@@ -8,7 +23,7 @@ function RowItem({ bgColor, label, percentage }) {
       <span
         className={cn("w-[12px] h-[12px] rounded-[2px]")}
         style={{ backgroundColor: bgColor }}
-      ></span>
+      />
       <span className="w-[48px] text-textSecondary text12Medium ">{label}</span>
       <span className="text12Medium text-textTertiary">{percentage}</span>
     </div>
@@ -42,44 +57,20 @@ const options = {
 };
 
 export default function AccountsRingChart({ className }) {
-  const labelDatas = [
-    {
-      label: "0.1x",
-      bgColor: "#F29CBA",
-      count: 20,
-      percent: 0.2,
-    },
-    {
-      label: "1x",
-      bgColor: "#EAACEC",
-      count: 20,
-      percent: 0.2,
-    },
-    {
-      label: "2x",
-      bgColor: "#A6EEDD",
-      count: 20,
-      percent: 0.2,
-    },
-    {
-      label: "3x",
-      bgColor: "#C5BAFA",
-      count: 20,
-      percent: 0.2,
-    },
-    {
-      label: "4x",
-      bgColor: "#A6D5FA",
-      count: 10,
-      percent: 0.1,
-    },
-    {
-      label: "5x",
-      bgColor: "#FFD699",
-      count: 10,
-      percent: 0.1,
-    },
-  ];
+  const allVotes = useSelector(allVotesSelector);
+  const totalVotesCount = allVotes?.length || 0;
+  const groupedConviction = groupBy(allVotes, "conviction");
+
+  const labelDatas = convictions.map((c, idx) => {
+    const count = groupedConviction[idx]?.length || 0;
+    return {
+      label: `${c}x`,
+      bgColor: colors[idx],
+      count,
+      percent: count / totalVotesCount,
+    };
+  });
+
   const data = {
     labels: labelDatas.map((i) => i.label),
     datasets: [
@@ -116,7 +107,9 @@ export default function AccountsRingChart({ className }) {
       <div className="w-[174px] h-[174px] relative">
         <Doughnut data={data} options={options} />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1">
-          <span className="text-textPrimary text16Bold">{formatNum(1965)}</span>
+          <span className="text-textPrimary text16Bold">
+            {formatNum(totalVotesCount)}
+          </span>
           <span className="text-textTertiary text12Medium whitespace-nowrap">
             Total Vote Accounts
           </span>

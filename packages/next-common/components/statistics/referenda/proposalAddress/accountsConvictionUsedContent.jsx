@@ -2,34 +2,53 @@ import { StatisticsItemDiv } from "./style";
 import VoteChart from "next-common/components/statistics/referenda/proposalAddress/voteChart";
 import AccountsRingChart from "./accountsRingChart";
 import { useTheme } from "styled-components";
+import { useSelector } from "react-redux";
+import {
+  allAbstainSelector,
+  allAyeSelector,
+  allNaySelector,
+} from "next-common/store/reducers/referenda/votes/selectors";
+import { groupBy } from "lodash-es";
+import { ConvictionSupport } from "next-common/utils/referendumCommon";
+
+const convictions = Object.values(ConvictionSupport);
+
+function resolveChartDatasetData(votes = []) {
+  const groupedConviction = groupBy(votes, "conviction");
+  return convictions.map((_, idx) => groupedConviction[idx]?.length || 0);
+}
+
 export default function AccountsConvictionUsedContent() {
+  const allAyeVotes = useSelector(allAyeSelector);
+  const allNayVotes = useSelector(allNaySelector);
+  const allAbstainVotes = useSelector(allAbstainSelector);
+
   const theme = useTheme();
   const categoryPercentage = 0.2;
   const barPercentage = 1;
   const dataAccounts = {
-    labels: ["0.1x", "1x", "2x", "3x", "4x", "5x"],
+    labels: convictions.map((c) => `${c}x`),
     datasets: [
       {
         label: "Aye",
-        data: [100, 300, 200, 234, 344, 78],
+        data: resolveChartDatasetData(allAyeVotes),
         backgroundColor: theme.green300,
-        // 设定bar宽度的关键参数
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
       {
         label: "Nay",
-        data: [10, 80, 23, 67, 89, 34],
+        data: resolveChartDatasetData(allNayVotes),
         backgroundColor: theme.red300,
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
       {
         label: "Abstain",
-        data: [5, 8, 3, 5, 9, 5],
+        data: resolveChartDatasetData(allAbstainVotes),
         backgroundColor: theme.neutral400,
-        categoryPercentage, // 用于控制条形图的宽度
-        barPercentage, // 可以是0.1到1之间的任何值，代表条形宽度
+        categoryPercentage,
+        barPercentage,
       },
     ],
   };
