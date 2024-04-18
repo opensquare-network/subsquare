@@ -9,17 +9,17 @@ export default function ReferendaDelegationCardSummary({
 }) {
   const { decimals, symbol } = useChainSettings();
 
-  const { delegatorsCount, trackAverageVotes, participationRate } = delegate;
+  const { delegatorsCount, maxTrackDelegations, participationRate } = delegate;
 
   return (
     <Summary
       className={className}
       items={[
         {
-          title: "Delegated Votes",
+          title: "Max Delegated",
           content: (
             <ValueDisplay
-              value={toPrecision(trackAverageVotes, decimals)}
+              value={toPrecision(maxTrackDelegations, decimals)}
               symbol={symbol}
             />
           ),

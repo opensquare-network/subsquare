@@ -90,14 +90,10 @@ const kusama = {
   navPreferDark: true,
   group: MenuGroups.KusamaAndParachains,
   links,
-  hasReferenda: true,
-  hasFellowship: true,
   hasStatescan: true,
   hasIdentityTimeline: true,
   hasSubscan: true,
   postLabels: defaultPostLabels,
-  hasDemocracy: false,
-  noDemocracyModule: true,
   useVoteCall: true,
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,
@@ -115,6 +111,7 @@ const kusama = {
   modules: {
     referenda: true,
     fellowship: true,
+    whales: true,
   },
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",

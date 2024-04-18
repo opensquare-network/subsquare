@@ -8,19 +8,23 @@ import { useUser } from "next-common/context/user";
 export default function DemocracyReferendaLayout({ summaryData, ...props }) {
   const chain = useChain();
   const chainSettings = useChainSettings();
-  const hasDemocracy = chainSettings.hasDemocracy !== false;
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
   const user = useUser();
+  const {
+    modules: { democracy: hasDemocracyModule },
+  } = chainSettings;
 
   return (
     <ListLayout
       description="Democracy uses public proposal, external proposal and referenda to mange the governance process."
       summary={<DemocracySummary summary={summaryData} />}
-      summaryFooter={hasDemocracy && !isKintsugi && <DemocracySummaryFooter />}
+      summaryFooter={
+        hasDemocracyModule && !isKintsugi && <DemocracySummaryFooter />
+      }
       tabs={[
         { label: "Referenda", url: "/democracy/referenda" },
         !isKintsugi &&
-          !chainSettings.noDemocracyModule &&
+          hasDemocracyModule &&
           user?.address && {
             label: "My Votes",
             url: "/democracy/votes",

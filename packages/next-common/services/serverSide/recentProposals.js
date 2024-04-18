@@ -40,6 +40,9 @@ async function fetcher(url) {
 
 export async function fetchRecentProposalsProps(summary = {}) {
   const chainSettings = getChainSettings(CHAIN);
+  const {
+    modules: { democracy: hasDemocracyModule },
+  } = chainSettings;
 
   const recentProposalsData = {};
 
@@ -58,19 +61,22 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // referenda
-  if (chainSettings.hasReferenda) {
+  const {
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
+  } = chainSettings;
+  if (hasReferenda) {
     recentProposalsData.referenda = await fetcher(overviewApi.referenda);
   }
 
   // fellowship
-  if (chainSettings.hasFellowship) {
+  if (hasFellowship) {
     recentProposalsData.fellowship = await fetcher(overviewApi.fellowship);
   }
 
   // democracy
   const democracyMenu = getDemocracyMenu(summary);
   const hasDemocracy =
-    chainSettings.hasDemocracy !== false ||
+    hasDemocracyModule ||
     !democracyMenu.excludeToChains.includes(CHAIN) ||
     !democracyMenu.archivedToChains.includes(CHAIN);
   if (hasDemocracy) {

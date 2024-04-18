@@ -11,14 +11,16 @@ export default function useFetchProfileDemocracyDeposits() {
   const address = useProfileAddress();
   const api = useContextApi();
   const dispatch = useDispatch();
-  const { noDemocracyModule } = useChainSettings();
+  const {
+    modules: { democracy: hasDemocracyModule },
+  } = useChainSettings();
 
   useEffect(() => {
     if (!api) {
       return;
     }
 
-    if (!isAddress(address) || !api.query?.democracy || noDemocracyModule) {
+    if (!isAddress(address) || !api.query?.democracy || !hasDemocracyModule) {
       dispatch(setProfileDemocracyDeposits([]));
       return;
     }

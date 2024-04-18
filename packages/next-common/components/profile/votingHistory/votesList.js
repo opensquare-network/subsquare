@@ -1,11 +1,14 @@
 import useColumns from "next-common/components/styledList/useColumns";
 import Pagination from "next-common/components/pagination";
 import DetailButton from "next-common/components/detailButton";
-import { PostTitle, ReferendumTag, VoteItem } from "./common";
+import { PostTitle, ReferendumTag } from "./common";
 import { useChain } from "next-common/context/chain";
 import { isKintsugiChain } from "next-common/utils/chain";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
+import VoteForCell from "./common/voteForCell";
+import SelfVotesCell from "./common/selfVotesCell";
+import TotalVotesCell from "./common/totalVotes";
 
 export default function VotesList({
   data,
@@ -26,8 +29,18 @@ export default function VotesList({
       },
     },
     {
-      name: "Vote",
-      style: { textAlign: "left", width: "264px", minWidth: "264px" },
+      name: "Vote for",
+      width: 80,
+    },
+    {
+      name: "Self Votes",
+      width: 160,
+      className: "text-right",
+    },
+    {
+      name: "Total Votes",
+      width: 120,
+      className: "text-right",
     },
     {
       name: "Status",
@@ -47,17 +60,22 @@ export default function VotesList({
   const rows = (data?.items || []).map((item) => {
     const data = [
       <PostTitle
+        className={"max-sm:whitespace-pre-wrap"}
         key="proposal"
         referendumIndex={item.referendumIndex}
         title={item.proposal?.title}
       />,
-      <VoteItem key="vote" vote={item} />,
+      <VoteForCell key={"voteFor"} vote={item} />,
+      <SelfVotesCell key={"selfVotes"} vote={item} />,
+      <TotalVotesCell key={"totalVotes"} vote={item} />,
       <ReferendumTag key="tag" proposal={item.proposal} />,
     ];
 
     if (!isKintsugi) {
       data.push(
-        <DetailButton key="detail" onClick={() => setShowVoteDetail(item)} />,
+        <div className="max-sm:self-start">
+          <DetailButton key="detail" onClick={() => setShowVoteDetail(item)} />
+        </div>,
       );
     }
 

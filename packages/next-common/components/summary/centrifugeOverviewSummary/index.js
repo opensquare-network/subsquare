@@ -3,6 +3,7 @@ import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "../overviewSummary/activeValue";
 import {
+  useChainSettings,
   useMenuHasCouncil,
   useMenuHasDemocracyExternal,
   useMenuHasTechComm,
@@ -19,11 +20,11 @@ import {
 } from "next-common/components/overview/centrifugeStats/detailRow";
 import { useBasicData } from "next-common/context/centrifuge/basicData";
 import BigNumber from "bignumber.js";
-import { bnToLocaleString } from "next-common/utils/bn";
 import TokenValue from "next-common/components/overview/centrifugeStats/tokenValue";
 import PriceCard from "./priceCard";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -187,6 +188,7 @@ function Supply() {
   const [collapsed] = useNavCollapsed();
   const { data: { supply = {} } = {}, loading: isLoading } = useBasicData();
   const { total = 0, wrapped = 0 } = supply;
+  const { symbol } = useChainSettings();
 
   return (
     <div
@@ -198,7 +200,10 @@ function Supply() {
       <CardHeader
         title="Total Supply"
         value={
-          <TokenValue value={bnToLocaleString(total)} isLoading={isLoading} />
+          <TokenValue
+            value={<ValueDisplay value={total} symbol={symbol} />}
+            isLoading={isLoading}
+          />
         }
       />
       <DetailList>
@@ -206,9 +211,12 @@ function Supply() {
           title="Native"
           value={
             <TokenValue
-              value={bnToLocaleString(
-                new BigNumber(total).minus(wrapped).toFixed(),
-              )}
+              value={
+                <ValueDisplay
+                  value={new BigNumber(total).minus(wrapped).toFixed()}
+                  symbol={symbol}
+                />
+              }
               isLoading={isLoading}
             />
           }
@@ -217,7 +225,7 @@ function Supply() {
           title="Wrapped"
           value={
             <TokenValue
-              value={bnToLocaleString(wrapped)}
+              value={<ValueDisplay value={wrapped} symbol={symbol} />}
               isLoading={isLoading}
             />
           }

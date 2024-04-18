@@ -8,6 +8,12 @@ import { toPrecision } from "next-common/utils";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import Period from "next-common/components/fellowship/params/period";
 import { isNil } from "lodash-es";
+import { useNavCollapsed } from "next-common/context/nav";
+
+function AddressCol({ address }) {
+  const [navCollapsed] = useNavCollapsed();
+  return <AddressUser maxWidth={navCollapsed ? 360 : 160} add={address} />;
+}
 
 export default function FellowshipCollectiveMembers({ members }) {
   const { fellowshipParams } = usePageProps();
@@ -23,7 +29,7 @@ export default function FellowshipCollectiveMembers({ members }) {
   const rows = (members || []).map(({ address, rank }, idx) => {
     return [
       <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
-      <AddressUser key={`address-row-${idx}`} add={address} />,
+      <AddressCol key={`address-row-${idx}`} address={address} />,
       <ValueDisplay
         key={`active-salary-${idx}`}
         value={toPrecision(activeSalary[rank - 1] || 0, decimals)}

@@ -9,7 +9,12 @@ const Ellipsis = styled.div`
   color: var(--textSecondary);
 `;
 
-export default function Items({ total = 1, page, onPageChange = null }) {
+export default function Items({
+  total = 1,
+  page,
+  onPageChange = null,
+  shallow = false,
+}) {
   let key = 0;
   const items = [];
   const groups = constructGroups(total - 1, page - 1);
@@ -18,6 +23,7 @@ export default function Items({ total = 1, page, onPageChange = null }) {
     for (let j = 0; j < group.length; j++) {
       items.push(
         <PageItem
+          shallow={shallow}
           now={page}
           page={group[j] + 1}
           key={key++}

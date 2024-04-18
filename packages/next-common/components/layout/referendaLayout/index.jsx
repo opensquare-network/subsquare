@@ -3,6 +3,9 @@ import ListLayout from "../ListLayout";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
 import Gov2SummaryFooter from "next-common/components/summary/gov2SummaryFooter";
 import { useUser } from "next-common/context/user";
+import { ThemedTag } from "next-common/components/tags/state/styled";
+import { useRouter } from "next/router";
+import { useChainSettings } from "next-common/context/chain";
 
 function HeadContent() {
   return (
@@ -18,6 +21,9 @@ function HeadContent() {
  */
 export default function ReferendaLayout({ summaryData, ...props }) {
   const user = useUser();
+  const router = useRouter();
+  const { modules } = useChainSettings();
+
   return (
     <ListLayout
       titleExtra={<TitleExtra />}
@@ -29,6 +35,12 @@ export default function ReferendaLayout({ summaryData, ...props }) {
         { label: "Referenda", url: "/referenda" },
         user?.address && { label: "My Votes", url: "/referenda/votes" },
         { label: "Statistics", url: "/referenda/statistics" },
+        modules.whales && {
+          label: "Whales",
+          labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
+          url: "/referenda/whales",
+          active: router.pathname.startsWith("/referenda/whales"),
+        },
       ].filter(Boolean)}
       {...props}
     >

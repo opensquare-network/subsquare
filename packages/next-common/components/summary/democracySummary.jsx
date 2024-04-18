@@ -22,13 +22,15 @@ import { useContextApi } from "next-common/context/api";
 export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
   const chainSettings = useChainSettings();
-  const hasDemocracy = chainSettings.hasDemocracy !== false;
+  const {
+    modules: { democracy: hasDemocracyModule },
+  } = chainSettings;
   const summaryData = useDemocracySummaryData(summary);
 
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
   const progress = useLaunchProgress();
   const api = useContextApi();
-  const showLaunchPeriod = !isKintsugi && hasDemocracy && api;
+  const showLaunchPeriod = !isKintsugi && hasDemocracyModule && api;
 
   return (
     <Summary

@@ -8,6 +8,7 @@ import DemocracyReferendumMeta from "next-common/components/detail/Democracy/ref
 import ExecutionCountdown from "next-common/components/detail/Democracy/referendum/executionCountdown";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
+import DemocracyPreimageWarning from "next-common/components/detail/Democracy/referendum/preimageWraning";
 
 export default function DemocracyReferendaDetail() {
   const setIsEdit = useSetEdit();
@@ -18,6 +19,7 @@ export default function DemocracyReferendaDetail() {
       head={
         !isEditing && (
           <>
+            <DemocracyPreimageWarning />
             <ExecutionCountdown />
             <ReferendumVoteEndCountDown />
             <ReferendumNavigation />
