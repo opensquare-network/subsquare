@@ -67,7 +67,7 @@ export default function AnnouncementPublishPopup({
           signature,
           signerWallet,
         };
-        const { error } = await nextApi.post("delegation/announcement", data);
+        const { error } = await nextApi.post("delegation/announcements", data);
         if (error) {
           dispatch(newErrorToast(error.message));
           return;

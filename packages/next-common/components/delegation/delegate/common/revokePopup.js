@@ -57,7 +57,7 @@ function PopupContent({ children }) {
         signerWallet,
       };
       const { error } = await nextApi.post(
-        "delegation/announcement/unset",
+        "delegation/announcements/unset",
         data,
       );
       if (error) {
