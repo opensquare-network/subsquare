@@ -1,6 +1,5 @@
 import { StatisticsItemDiv } from "./style";
 import VoteChart from "next-common/components/statistics/referenda/proposalAddress/voteChart";
-import React from "react";
 import AccountsRingChart from "./accountsRingChart";
 import { useTheme } from "styled-components";
 export default function AccountsConvictionUsedContent() {
@@ -38,7 +37,7 @@ export default function AccountsConvictionUsedContent() {
     <StatisticsItemDiv>
       <div className="flex gap-2 mb-4">
         <span className="text14Bold text-textPrimary">Accounts</span>
-        <span className="text14Bold text-textTertiary">Conviction Used</span>
+        <span className="text14Medium text-textTertiary">Conviction Used</span>
       </div>
       <div className="flex max-md:flex-col gap-6 overflow-x-auto overflow-y-hidden scrollbar-pretty">
         <VoteChart data={dataAccounts} className="h-[184px] grow" />

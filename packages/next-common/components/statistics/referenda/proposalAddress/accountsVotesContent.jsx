@@ -36,7 +36,7 @@ export default function AccountsVotesContent() {
     <StatisticsItemDiv>
       <div className="flex gap-2 mb-4">
         <span className="text14Bold text-textPrimary">Accounts</span>
-        <span className="text14Bold text-textTertiary">Votes</span>
+        <span className="text14Medium text-textTertiary">Votes</span>
       </div>
       <AccountsVotesChart data={dataVotes} />
     </StatisticsItemDiv>
