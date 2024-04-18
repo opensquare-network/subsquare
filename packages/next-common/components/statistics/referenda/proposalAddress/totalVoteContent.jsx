@@ -6,6 +6,14 @@ import SymbolValue from "@subsquare/next/components/gov2/sidebar/tally/values/sy
 import VoteChart from "./voteChart";
 import { useTheme } from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
+import {
+  useAbstainVotesData,
+  useAyesVotesData,
+  useNaysVotesData,
+} from "next-common/hooks/referenda/useVotesData";
+import BigNumber from "bignumber.js";
+import { useSelector } from "react-redux";
+import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 
 const processData = (data, decimals) => {
   return data.map((value) => Number(toPrecision(value || 0, decimals)));
@@ -26,30 +34,54 @@ function TotalVoteItem({ className, title, numberRender, chartRender }) {
   );
 }
 function TotalVoteContent() {
+  const allVotes = useSelector(allVotesSelector);
+  const ayeVotesData = useAyesVotesData();
+  const nayVotesData = useNaysVotesData();
+  const abstainVotesData = useAbstainVotesData();
+  const totalCapital = BigNumber.sum(
+    abstainVotesData.totalCapitalValue,
+    ayeVotesData.totalCapitalValue,
+    nayVotesData.totalCapitalValue,
+  ).toString();
+  const totalVotes = BigNumber.sum(
+    abstainVotesData.totalVotesValue,
+    ayeVotesData.totalVotesValue,
+    nayVotesData.totalVotesValue,
+  ).toString();
+
   const theme = useTheme();
   const { decimals } = useChainSettings();
   const categoryPercentage = 1;
   const barPercentage = 0.1;
   const dataAccounts = {
-    labels: ["Delegated", "Casted"],
+    labels: ["Delegated", "Directly"],
     datasets: [
       {
         label: "Aye",
-        data: [0, 3002323],
+        data: [
+          ayeVotesData.delegationVotes.length,
+          ayeVotesData.directVotes.length,
+        ],
         backgroundColor: theme.green300,
         categoryPercentage,
         barPercentage,
       },
       {
         label: "Nay",
-        data: [0, 804334],
+        data: [
+          nayVotesData.delegationVotes.length,
+          nayVotesData.directVotes.length,
+        ],
         backgroundColor: theme.red300,
         categoryPercentage,
         barPercentage,
       },
       {
         label: "Abstain",
-        data: [0, 504552],
+        data: [
+          abstainVotesData.delegationVotes.length,
+          abstainVotesData.directVotes.length,
+        ],
         backgroundColor: theme.neutral400,
         categoryPercentage,
         barPercentage,
@@ -61,21 +93,39 @@ function TotalVoteContent() {
     datasets: [
       {
         label: "Aye",
-        data: processData([1234567890, 9876543210], decimals),
+        data: processData(
+          [
+            ayeVotesData.delegationCapitalValue,
+            ayeVotesData.directCapitalValue,
+          ],
+          decimals,
+        ),
         backgroundColor: theme.green300,
         categoryPercentage,
         barPercentage,
       },
       {
         label: "Nay",
-        data: processData([1234567890, 9876543210], decimals),
+        data: processData(
+          [
+            nayVotesData.delegationCapitalValue,
+            nayVotesData.directCapitalValue,
+          ],
+          decimals,
+        ),
         backgroundColor: theme.red300,
         categoryPercentage,
         barPercentage,
       },
       {
         label: "Abstain",
-        data: processData([1234567890, 9876543210], decimals),
+        data: processData(
+          [
+            abstainVotesData.delegationCapitalValue,
+            abstainVotesData.directCapitalValue,
+          ],
+          decimals,
+        ),
         backgroundColor: theme.neutral400,
         categoryPercentage,
         barPercentage,
@@ -87,21 +137,33 @@ function TotalVoteContent() {
     datasets: [
       {
         label: "Aye",
-        data: processData([1234567890, 4876543210], decimals),
+        data: processData(
+          [ayeVotesData.delegationCapitalValue, ayeVotesData.directVotesValue],
+          decimals,
+        ),
         backgroundColor: theme.green300,
         categoryPercentage,
         barPercentage,
       },
       {
         label: "Nay",
-        data: processData([223456789, 3876543210], decimals),
+        data: processData(
+          [nayVotesData.delegationVotesValue, nayVotesData.directVotesValue],
+          decimals,
+        ),
         backgroundColor: theme.red300,
         categoryPercentage,
         barPercentage,
       },
       {
         label: "Abstain",
-        data: processData([3234567890, 5876543210], decimals),
+        data: processData(
+          [
+            abstainVotesData.delegationVotesValue,
+            abstainVotesData.directVotesValue,
+          ],
+          decimals,
+        ),
         backgroundColor: theme.neutral400,
         categoryPercentage,
         barPercentage,
@@ -113,18 +175,20 @@ function TotalVoteContent() {
     {
       title: "Total Vote Accounts",
       numberRender: (
-        <span className="text-textPrimary text16Bold">{formatNum(19684)}</span>
+        <span className="text-textPrimary text16Bold">
+          {formatNum(allVotes?.length || 0)}
+        </span>
       ),
       chartRender: <VoteChart data={dataAccounts} />,
     },
     {
       title: "Total Capital",
-      numberRender: <SymbolValue value={0} className="text16Bold" />,
+      numberRender: <SymbolValue value={totalCapital} className="text16Bold" />,
       chartRender: <VoteChart data={dataCapital} symbol="DOT" />,
     },
     {
       title: "Total Votes",
-      numberRender: <SymbolValue value={54653453} className="text16Bold" />,
+      numberRender: <SymbolValue value={totalVotes} className="text16Bold" />,
       chartRender: <VoteChart data={dataVotes} symbol="DOT" />,
     },
   ];
