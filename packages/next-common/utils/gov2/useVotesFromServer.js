@@ -1,7 +1,6 @@
 import nextApi from "next-common/services/nextApi";
 import { useEffect, useState } from "react";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
-import BigNumber from "bignumber.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllVotes } from "next-common/store/reducers/referenda/votes";
 import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
@@ -46,7 +45,7 @@ function extractSplitAbstainVotes(vote = {}) {
     isSplitAbstain: true,
   };
 
-  return [
+  const result = [
     {
       ...common,
       balance: abstainBalance,
@@ -54,21 +53,28 @@ function extractSplitAbstainVotes(vote = {}) {
       conviction: 0,
       votes: abstainVotes,
     },
-    {
+  ];
+
+  if (BigInt(ayeBalance) > 0) {
+    result.push({
       ...common,
       balance: ayeBalance,
       aye: true,
       conviction: 0,
       votes: ayeVotes,
-    },
-    {
+    });
+  }
+  if (BigInt(nayBalance) > 0) {
+    result.push({
       ...common,
       balance: nayBalance,
       aye: false,
       conviction: 0,
       votes: nayVotes,
-    },
-  ];
+    });
+  }
+
+  return result;
 }
 
 export default function useVotesFromServer(referendumIndex) {
@@ -89,16 +95,14 @@ export default function useVotesFromServer(referendumIndex) {
       return;
     }
 
-    const allVotes = (votes || [])
-      .reduce((result, vote) => {
-        if (vote.isSplit) {
-          return [...result, ...extractSplitVotes(vote)];
-        } else if (vote.isSplitAbstain) {
-          return [...result, ...extractSplitAbstainVotes(vote)];
-        }
-        return [...result, vote];
-      }, [])
-      .filter((v) => new BigNumber(v.balance).gt(0));
+    const allVotes = (votes || []).reduce((result, vote) => {
+      if (vote.isSplit) {
+        return [...result, ...extractSplitVotes(vote)];
+      } else if (vote.isSplitAbstain) {
+        return [...result, ...extractSplitAbstainVotes(vote)];
+      }
+      return [...result, vote];
+    }, []);
 
     dispatch(setAllVotes(sortVotes(allVotes)));
   }, [votes, reduxVotes]);
