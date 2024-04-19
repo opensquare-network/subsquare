@@ -10,6 +10,10 @@ export default function AccountsVotesContent() {
   const { ayes, nays, abstains } = useVotesCount();
   const chain = useChain();
   const range = VOTES_RANGE[chain];
+  if (!range) {
+    return null;
+  }
+
   const labels = toRangeLabels(range);
 
   const categoryPercentage = 1;
