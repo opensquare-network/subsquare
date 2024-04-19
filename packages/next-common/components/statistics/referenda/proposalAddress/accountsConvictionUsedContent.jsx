@@ -74,6 +74,7 @@ export default function AccountsConvictionUsedContent() {
           "flex flex-col gap-6",
           "overflow-x-auto overflow-y-hidden",
           "scrollbar-pretty",
+          "[&>*]:w-full",
           navCollapsed
             ? "max-lg:flex-col min-[1281px]:flex-row"
             : "min-[1482px]:flex-row",
@@ -82,9 +83,9 @@ export default function AccountsConvictionUsedContent() {
         <VoteChart
           key={barChartKey}
           data={dataAccounts}
-          className="h-[184px] grow"
+          className="h-[184px] w-full"
         />
-        <AccountsRingChart className="shrink-0" />
+        <AccountsRingChart className="grow" />
       </div>
     </StatisticsItemDiv>
   );

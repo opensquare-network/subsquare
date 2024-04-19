@@ -95,7 +95,7 @@ export default function AccountsRingChart({ className }) {
         className,
       )}
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 w-[120px]">
         {labelDatas.map((i) => (
           <RowItem
             key={i.label}
