@@ -173,7 +173,7 @@ function TotalVoteContent() {
 
   const dataList = [
     {
-      title: "Total Vote Accounts",
+      title: "Total Accounts",
       numberRender: (
         <span className="text-textPrimary text16Bold">
           {formatNum(allVotes?.length || 0)}

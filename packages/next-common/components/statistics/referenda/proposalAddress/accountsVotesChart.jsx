@@ -69,8 +69,6 @@ export default function AccountsVotesChart({ data, className, symbol }) {
     },
   };
 
-  // console.log(data);
-
   return (
     <div className={cn("h-[184px]", className)}>
       <Bar data={data} options={options} />
