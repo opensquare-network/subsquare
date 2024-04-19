@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { animateScroll as scroll } from "react-scroll";
-import SystemTop from "next-common/assets/imgs/icons/systemTop.svg";
+import { SystemTop } from "@osn/icons/subsquare";
 import styled from "styled-components";
 
 const ScrollToTopDiv = styled.div`
@@ -13,8 +13,6 @@ const ScrollToTopDiv = styled.div`
   right: 24px;
   z-index: 1000;
   border-radius: 8px;
-  border: 1px solid var(--color-neutral400, #e0e4eb);
-  background: var(--color-neutral100, #fff);
   box-shadow:
     0px 6px 7px 0px rgba(30, 33, 52, 0.02),
     0px 1.34px 1.564px 0px rgba(30, 33, 52, 0.01),
@@ -38,8 +36,11 @@ export default function ScrollToTopButton({ scrollYShowPX = 800 }) {
 
   return (
     showButton && (
-      <ScrollToTopDiv className={"w-10 h-10"} onClick={handleClick}>
-        <SystemTop />
+      <ScrollToTopDiv
+        className={"w-10 h-10 bg-neutral100 border-neutral400 border"}
+        onClick={handleClick}
+      >
+        <SystemTop className="text-textPrimary" />
       </ScrollToTopDiv>
     )
   );
