@@ -11,6 +11,7 @@ import {
   WalletSignet,
 } from "@osn/icons/subsquare";
 import isMixedChain from "next-common/utils/isMixedChain";
+import getChainSettings from "../settings";
 
 const polkadotJs = {
   extensionName: WalletTypes.POLKADOT_JS,
@@ -88,8 +89,18 @@ export function getSingleSigWallets() {
 }
 
 export function getMultiSigWallets() {
+  let result = [];
   if (isEvmChain()) {
-    return [];
+    return result;
   }
-  return [mimir, signet];
+
+  const chainSetting = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (chainSetting?.multisigWallets?.signet) {
+    result.push(signet);
+  }
+  if (chainSetting?.multisigWallets?.mimir) {
+    result.push(mimir);
+  }
+
+  return result;
 }

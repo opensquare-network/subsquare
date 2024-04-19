@@ -121,6 +121,10 @@ const polkadot = {
     referenda: true,
     whales: true,
   },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
+  },
 };
 
 export default polkadot;

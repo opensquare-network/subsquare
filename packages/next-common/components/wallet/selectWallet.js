@@ -130,6 +130,15 @@ export default function SelectWallet({
     ],
   );
 
+  const loadSignetVault = useCallback(
+    (wallet) => {
+      setSelectWallet(wallet);
+      setWallet(wallet);
+      setAccounts(signetAccounts);
+    },
+    [signetAccounts, setAccounts],
+  );
+
   const loadWalletAccounts = useCallback(
     async (wallet) => {
       if (!wallet) {
@@ -165,16 +174,7 @@ export default function SelectWallet({
         }
       }
     },
-    [loadPolkadotAccounts, loadMetaMaskAccounts],
-  );
-
-  const loadSignetVault = useCallback(
-    (wallet) => {
-      setSelectWallet(wallet);
-      setWallet(wallet);
-      setAccounts(signetAccounts);
-    },
-    [signetAccounts, setAccounts],
+    [loadPolkadotAccounts, loadMetaMaskAccounts, loadSignetVault],
   );
 
   return (
