@@ -95,10 +95,10 @@ export function getMultiSigWallets() {
   }
 
   const chainSetting = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-  if (chainSetting?.allowMultisig?.signet) {
+  if (chainSetting?.multisigWallets?.signet) {
     result.push(signet);
   }
-  if (chainSetting?.allowMultisig?.mimir) {
+  if (chainSetting?.multisigWallets?.mimir) {
     result.push(mimir);
   }
 

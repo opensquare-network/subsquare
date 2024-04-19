@@ -121,7 +121,7 @@ const polkadot = {
     referenda: true,
     whales: true,
   },
-  allowMultisig: {
+  multisigWallets: {
     signet: true,
     mimir: true,
   },

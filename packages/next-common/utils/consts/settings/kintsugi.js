@@ -105,7 +105,7 @@ const kintsugi = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
-  allowMultisig: {
+  multisigWallets: {
     signet: true,
   },
 };

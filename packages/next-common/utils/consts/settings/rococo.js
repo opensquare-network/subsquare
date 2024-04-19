@@ -54,7 +54,7 @@ const rococo = {
     referenda: true,
     fellowship: true,
   },
-  allowMultisig: {
+  multisigWallets: {
     signet: true,
     mimir: true,
   },
