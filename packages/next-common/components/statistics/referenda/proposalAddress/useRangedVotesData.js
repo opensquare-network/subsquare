@@ -18,6 +18,13 @@ const VOTES_RANGE = {
     [1000001, 5000000],
     [5000001],
   ],
+  [Chains.kusama]: [
+    [0, 5000],
+    [5001, 10000],
+    [10001, 100000],
+    [50001, 1000000],
+    [1000001],
+  ],
 };
 
 function distribute(votesValues = [], range = []) {
