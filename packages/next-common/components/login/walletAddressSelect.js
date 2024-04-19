@@ -79,7 +79,7 @@ export default function WalletAddressSelect({
   return (
     <>
       <div className="flex flex-col gap-[8px]">
-        <div className="text14Bold text-textPrimary">Single-Sig Wallet</div>
+        <div className="text14Bold text-textPrimary">SingleSig Wallet</div>
         <SelectWallet
           wallets={getSingleSigWallets()}
           selectedWallet={selectedWallet}
@@ -91,7 +91,7 @@ export default function WalletAddressSelect({
 
       {multisigWallets?.length > 0 && (
         <div className="flex flex-col gap-[8px]">
-          <div className="text14Bold text-textPrimary">Multi-Sig Wallet</div>
+          <div className="text14Bold text-textPrimary">MultiSig Wallet</div>
           <SelectWallet
             wallets={multisigWallets}
             selectedWallet={selectedWallet}
