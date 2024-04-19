@@ -56,6 +56,7 @@ export default function TabsList({
             "block whitespace-nowrap pb-3",
             "text14Bold border-b-4 text-textPrimary",
             "hover:text-theme500",
+            "flex items-center",
           );
           const itemActiveClassName = "border-theme500 text-theme500";
           const active = tab.active ?? activeTabLabel === tab.label;
@@ -74,6 +75,7 @@ export default function TabsList({
                     )}
                   >
                     {tab.label}
+                    {tab.tagRender && tab.tagRender}
                     {!!tab.activeCount && (
                       <span className="ml-1 text-textTertiary text14Medium">
                         {tab.activeCount}

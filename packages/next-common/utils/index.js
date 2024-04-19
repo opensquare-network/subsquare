@@ -11,6 +11,7 @@ import { twMerge } from "tailwind-merge";
 import { isHex } from "@polkadot/util";
 import { camelCase } from "lodash-es";
 import { upperFirst } from "lodash-es";
+import { getEffectiveNumbers } from "next-common/utils/viewfuncs";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -319,4 +320,22 @@ export function upperFirstCamelCase(str) {
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
+}
+
+export function formatNum(value) {
+  let content = Number(value)?.toLocaleString();
+  if (Number(value) >= 100000 || getEffectiveNumbers(value)?.length >= 11) {
+    const abbreviated = abbreviateBigNumber(value, 2);
+    content = abbreviated;
+    if (getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)) {
+      content = "≈" + content;
+    }
+  } else if (String(value).includes(".")) {
+    const [int, decimal] = String(value).split(".");
+    if (decimal?.length > 5) {
+      const shortDecimal = decimal.substring(0, 5);
+      content = "≈" + int + "." + shortDecimal;
+    }
+  }
+  return content;
 }

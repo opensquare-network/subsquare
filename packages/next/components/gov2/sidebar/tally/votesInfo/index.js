@@ -1,20 +1,14 @@
 import FlattenedVotes from "../flattenedVotes";
 import CallsVotes from "../callsVotes";
 import NestedVotes from "../nestedVotes";
-import DelegationStatus from "./DelegationStatus";
 import {
   VotesGroup,
   VotesGroupItems,
   VotesGroupLabel,
   VotesInfoLine,
 } from "./styled";
-import { useChainSettings } from "next-common/context/chain";
 
 export default function VotesInfo() {
-  const {
-    showReferendaReferendumDelegationPercentage: showDelegationPercentage,
-  } = useChainSettings();
-
   return (
     <VotesGroup>
       <VotesInfoLine>
@@ -25,7 +19,6 @@ export default function VotesInfo() {
           <CallsVotes />
         </VotesGroupItems>
       </VotesInfoLine>
-      {showDelegationPercentage && <DelegationStatus />}
     </VotesGroup>
   );
 }

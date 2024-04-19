@@ -5,6 +5,7 @@ import VotesBubbleViewTabs from "./votesBubbleViewTabs";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import TimelineModeTabs from "./timelineModeTabs";
+import { TagWrapper } from "next-common/components/comment/voteTag/referendaVoteTag";
 
 export default function DetailMultiTabs({
   defaultActiveTabLabel = "",
@@ -16,6 +17,7 @@ export default function DetailMultiTabs({
   timeline,
   timelineCount,
   votesBubble,
+  statistics,
 }) {
   const timelineData = useTimelineData();
   const chain = useChain();
@@ -48,10 +50,17 @@ export default function DetailMultiTabs({
       content: (
         <div className="space-y-4">
           {hasVotesViewTabs && <VotesBubbleViewTabs />}
-
           {votesBubble}
         </div>
       ),
+    },
+    statistics && {
+      // lazy: true,
+      label: "Statistics",
+      tagRender: (
+        <TagWrapper className="bg-theme100 text-theme500 ml-2">New</TagWrapper>
+      ),
+      content: <div className="space-y-4">{statistics}</div>,
     },
   ].filter(Boolean);
 
