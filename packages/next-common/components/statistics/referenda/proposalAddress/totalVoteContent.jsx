@@ -138,7 +138,7 @@ function TotalVoteContent() {
       {
         label: "Aye",
         data: processData(
-          [ayeVotesData.delegationCapitalValue, ayeVotesData.directVotesValue],
+          [ayeVotesData.delegationVotesValue, ayeVotesData.directVotesValue],
           decimals,
         ),
         backgroundColor: theme.green300,
