@@ -24,9 +24,9 @@ export default function AccountsVotesChart({ data, className, symbol }) {
           title: () => "",
           label(item) {
             const name = item.dataset.label;
-            const votes = item.dataset.data;
-            const values = votes[item.dataIndex];
-            return `${name}: ${abbreviateBigNumber(values)} ${
+            const votesCount = item.dataset.data;
+            const count = votesCount[item.dataIndex];
+            return `${name}: ${abbreviateBigNumber(count)} ${
               (symbol && symbol) || ""
             }`;
           },
@@ -52,7 +52,6 @@ export default function AccountsVotesChart({ data, className, symbol }) {
         },
       },
       y: {
-        // beginAtZero: true,
         stacked: true,
         grid: {
           display: false,
@@ -62,7 +61,7 @@ export default function AccountsVotesChart({ data, className, symbol }) {
           color: theme.neutral300,
         },
         ticks: {
-          // stepSize: 500,
+          stepSize: 100,
           color: theme.textTertiary,
         },
       },
