@@ -14,7 +14,7 @@ function generateSlots(joints = []) {
     if (idx <= 0) {
       return [[0, joint]];
     } else if (idx === joints.length - 1) {
-      return [...result, [joint + 1]];
+      return [...result, [joints[idx - 1] + 1, joints[idx]], [joint + 1]];
     } else {
       return [...result, [joints[idx - 1] + 1, joints[idx]]];
     }
