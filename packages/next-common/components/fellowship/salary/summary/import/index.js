@@ -6,8 +6,10 @@ import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fello
 import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
 import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import FellowshipSalaryImportPopup from "next-common/components/fellowship/salary/summary/import/popup";
 
 export default function Import() {
+  const [showPopup, setShowPopup] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const stats = useSelector(fellowshipSalaryStatusSelector);
   const { isLoading: isLoadingClaimant, claimant } = useMySalaryClaimant();
@@ -38,9 +40,13 @@ export default function Import() {
         iconLeft={
           <SystemImportMember className="inline-flex w-4 h-4 [&_path]:stroke-current [&_path]:stroke-2" />
         }
+        onClick={() => setShowPopup(true)}
       >
         Import me
       </PrimaryButton>
+      {showPopup && (
+        <FellowshipSalaryImportPopup onClose={() => setShowPopup(false)} />
+      )}
     </>
   );
 }
