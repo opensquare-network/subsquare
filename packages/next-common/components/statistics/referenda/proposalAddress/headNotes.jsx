@@ -1,5 +1,6 @@
-import React, { memo, useMemo } from "react";
+import React, { memo } from "react";
 import { cn } from "next-common/utils";
+
 function Tips({ label, bgColor }) {
   return (
     <div className="flex items-center gap-2">
@@ -8,23 +9,23 @@ function Tips({ label, bgColor }) {
     </div>
   );
 }
+
+const listMap = [
+  {
+    label: "Aye",
+    bgColor: "green300",
+  },
+  {
+    label: "Nay",
+    bgColor: "red300",
+  },
+  {
+    label: "Abstain",
+    bgColor: "neutral400",
+  },
+];
+
 function HeadNotes() {
-  const listMap = useMemo(() => {
-    return [
-      {
-        label: "Aye",
-        bgColor: "green300",
-      },
-      {
-        label: "Nay",
-        bgColor: "red300",
-      },
-      {
-        label: "Abstain",
-        bgColor: "neutral400",
-      },
-    ];
-  }, []);
   return (
     <div className="flex items-center justify-between">
       <span className="text-textPrimary text14Bold">Statistics</span>
@@ -36,4 +37,5 @@ function HeadNotes() {
     </div>
   );
 }
+
 export default memo(HeadNotes);

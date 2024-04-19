@@ -21,10 +21,10 @@ function resolveData(delegationVotes = [], directVotes = []) {
   );
 
   const directCapitalValue = BigNumber.sum(...map(directVotes, "balance"), 0);
-  const directVotesvalue = BigNumber.sum(...map(directVotes, "votes"), 0);
+  const directVotesValue = BigNumber.sum(...map(directVotes, "votes"), 0);
 
   const totalCapitalValue = directCapitalValue.plus(delegatedCapitalValue);
-  const totalVotesValue = directVotesvalue.plus(delegatedVotesValue);
+  const totalVotesValue = directVotesValue.plus(delegatedVotesValue);
 
   return {
     delegationVotes,
@@ -33,7 +33,7 @@ function resolveData(delegationVotes = [], directVotes = []) {
     delegationCapitalValue: delegatedCapitalValue.toString(),
     delegationVotesValue: delegatedVotesValue.toString(),
     directCapitalValue: directCapitalValue.toString(),
-    directVotesValue: directVotesvalue.toString(),
+    directVotesValue: directVotesValue.toString(),
     totalCapitalValue: totalCapitalValue.toString(),
     totalVotesValue: totalVotesValue.toString(),
   };

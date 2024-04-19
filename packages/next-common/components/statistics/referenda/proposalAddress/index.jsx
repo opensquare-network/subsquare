@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import HeadNotes from "./headNotes";
 import StatisticsContent from "./statisticsContent";
 
-function ProposalAddress() {
+function ReferendumStatistics() {
   return (
     <>
       <HeadNotes />
@@ -10,4 +10,4 @@ function ProposalAddress() {
     </>
   );
 }
-export default memo(ProposalAddress);
+export default memo(ReferendumStatistics);

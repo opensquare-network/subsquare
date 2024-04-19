@@ -4,6 +4,7 @@ import AccountsConvictionUsedContent from "./accountsConvictionUsedContent";
 import AccountsVotesContent from "./accountsVotesContent";
 import { StatisticsDiv } from "./style";
 import Divider from "next-common/components/styled/layout/divider";
+
 function StatisticsContent() {
   return (
     <StatisticsDiv className="flex flex-col">
