@@ -106,6 +106,9 @@ const hydradx = {
   },
   chainType: ChainTypes.MIXED,
   ethereumNetwork,
+  allowMultisig: {
+    signet: true,
+  },
 };
 
 export default hydradx;

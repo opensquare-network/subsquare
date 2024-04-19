@@ -106,6 +106,9 @@ const acala = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  allowMultisig: {
+    signet: true,
+  },
 };
 
 export default acala;

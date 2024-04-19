@@ -74,6 +74,8 @@ export default function WalletAddressSelect({
     [selectedWallet, chain],
   );
 
+  const multisigWallets = getMultiSigWallets();
+
   return (
     <>
       <div className="flex flex-col gap-[8px]">
@@ -87,16 +89,18 @@ export default function WalletAddressSelect({
         />
       </div>
 
-      <div className="flex flex-col gap-[8px]">
-        <div className="text14Bold text-textPrimary">Multi-Sig Wallet</div>
-        <SelectWallet
-          wallets={getMultiSigWallets()}
-          selectedWallet={selectedWallet}
-          setSelectWallet={setSelectWallet}
-          setAccounts={setAccounts}
-          setWallet={setWallet}
-        />
-      </div>
+      {multisigWallets?.length > 0 && (
+        <div className="flex flex-col gap-[8px]">
+          <div className="text14Bold text-textPrimary">Multi-Sig Wallet</div>
+          <SelectWallet
+            wallets={multisigWallets}
+            selectedWallet={selectedWallet}
+            setSelectWallet={setSelectWallet}
+            setAccounts={setAccounts}
+            setWallet={setWallet}
+          />
+        </div>
+      )}
 
       {wallet && accounts?.length === 0 && (
         <ErrorMessage>

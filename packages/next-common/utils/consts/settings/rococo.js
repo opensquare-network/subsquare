@@ -54,6 +54,10 @@ const rococo = {
     referenda: true,
     fellowship: true,
   },
+  allowMultisig: {
+    signet: true,
+    mimir: true,
+  },
 };
 
 export default rococo;

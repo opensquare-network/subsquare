@@ -3494,7 +3494,6 @@ __metadata:
     "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.93.0
     "@svgr/webpack": ^7.0.0
-    "@talismn/signet-apps-sdk": ^0.0.7
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
     chartjs-plugin-gradient: ^0.6.1
@@ -8628,6 +8627,7 @@ __metadata:
     "@radix-ui/react-hover-card": ^1.0.6
     "@radix-ui/react-tooltip": ^1.0.5
     "@reduxjs/toolkit": ^1.9.3
+    "@talismn/signet-apps-sdk": ^0.0.7
     "@types/lodash-es": ^4.17.12
     "@types/marked": ^6.0.0
     bignumber.js: ^9.0.2

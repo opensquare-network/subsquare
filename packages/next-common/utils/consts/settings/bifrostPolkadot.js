@@ -76,6 +76,10 @@ const bifrostPolkadot = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  allowMultisig: {
+    signet: true,
+    mimir: true,
+  },
 };
 
 export default bifrostPolkadot;
