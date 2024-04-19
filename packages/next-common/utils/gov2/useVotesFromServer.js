@@ -13,20 +13,25 @@ function extractSplitVotes(vote = {}) {
     isSplit: true,
     conviction: 0,
   };
-  return [
-    {
+
+  let result = [];
+  if (BigInt(ayeBalance) > 0) {
+    result.push({
       ...common,
       balance: ayeBalance,
       aye: true,
       votes: ayeVotes,
-    },
-    {
+    });
+  }
+  if (BigInt(nayBalance) > 0) {
+    result.push({
       ...common,
       balance: nayBalance,
       aye: false,
       votes: nayVotes,
-    },
-  ];
+    });
+  }
+  return result;
 }
 
 function extractSplitAbstainVotes(vote = {}) {
