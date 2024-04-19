@@ -1,17 +1,15 @@
 import React from "react";
 import { noop } from "lodash-es";
-import { usePageProps } from "../../../context/page";
 import { startCase } from "lodash-es";
 import Select from "../../select";
 import PopupLabel from "../label";
 
-export default function DetailedTrack({
+export default function CommonDetailedTrack({
   title = "Track",
   trackId,
   setTrackId = noop,
+  trackList = [],
 }) {
-  const { tracks, tracksDetail } = usePageProps();
-  const trackList = tracksDetail || tracks;
   const options = trackList?.map((track) => {
     return {
       label: (

@@ -1,4 +1,3 @@
-import DetailedTrack from "next-common/components/popup/fields/DetailedTrackField";
 import SignerPopup from "next-common/components/signerPopup";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import PreimageField from "./preimageField";
@@ -12,12 +11,15 @@ import { usePageProps } from "next-common/context/page";
 import SubmissionDeposit from "./submissionDeposit";
 import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
+import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
+import DetailedFellowshipTrack from "next-common/components/popup/fields/detailedFellowshipTrackField";
 
 export default function NewProposalPopup({
   track: _track,
   onClose,
   preimageHash: _preimageHash,
   preimageLength: _preimageLength,
+  module = "referenda",
 }) {
   const { tracksDetail } = usePageProps();
   const dispatch = useDispatch();
@@ -62,7 +64,7 @@ export default function NewProposalPopup({
         proposalOrigin = { Origins: upperFirstCamelCase(track?.name) };
       }
 
-      let tx = api.tx.referenda.submit(
+      let tx = api.tx[module].submit(
         proposalOrigin,
         {
           Lookup: {
@@ -89,9 +91,13 @@ export default function NewProposalPopup({
             return;
           }
           const [referendumIndex] = eventData;
-          router.push(`/referenda/${referendumIndex}`);
+          if (module === "referenda") {
+            router.push(`/referenda/${referendumIndex}`);
+          } else if (module === "fellowshipReferenda") {
+            router.push(`/fellowship/referenda/${referendumIndex}`);
+          }
         },
-        section: "referenda",
+        section: module,
         method: "Submitted",
         onClose,
       });
@@ -105,8 +111,22 @@ export default function NewProposalPopup({
       preimageHash,
       preimageLength,
       onClose,
+      module,
     ],
   );
+
+  let trackSelect = null;
+  if (module === "referenda") {
+    trackSelect = <DetailedTrack trackId={trackId} setTrackId={setTrackId} />;
+  } else if (module === "fellowshipReferenda") {
+    trackSelect = (
+      <DetailedFellowshipTrack
+        title="Track"
+        trackId={trackId}
+        setTrackId={setTrackId}
+      />
+    );
+  }
 
   return (
     <SignerPopup
@@ -117,7 +137,7 @@ export default function NewProposalPopup({
       disabled={disabled}
       isLoading={isLoading}
     >
-      <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
+      {trackSelect}
       <PreimageField
         preimageHash={preimageHash}
         preimageLength={preimageLength}
