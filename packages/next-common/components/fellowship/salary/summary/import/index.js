@@ -31,9 +31,7 @@ export default function Import() {
       claimant // it means login address is already imported
     ) {
       setDisabled(true);
-    }
-
-    if (memberAddrs.includes(address)) {
+    } else if (memberAddrs.includes(address)) {
       setDisabled(false);
     }
   }, [stats, isLoadingClaimant, claimant, address, memberAddrs]);
