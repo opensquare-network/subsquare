@@ -12,6 +12,7 @@
     "@next/env": "^13.3.0",
     "@osn/icons": "^1.93.0",
     "@svgr/webpack": "^7.0.0",
+    "@talismn/signet-apps-sdk": "^0.0.7",
     "bignumber.js": "^9.0.2",
     "chartjs-plugin-gradient": "^0.6.1",
     "clsx": "^1.2.1",

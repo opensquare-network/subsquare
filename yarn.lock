@@ -3494,6 +3494,7 @@ __metadata:
     "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.93.0
     "@svgr/webpack": ^7.0.0
+    "@talismn/signet-apps-sdk": ^0.0.7
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
     chartjs-plugin-gradient: ^0.6.1
@@ -3707,6 +3708,15 @@ __metadata:
   dependencies:
     tslib: ^2.4.0
   checksum: 51d7e3d8bd56818c49d6bfbd715f0dbeedc13cf723af41166e45c03e37f109336bbcb57a1f2020f4015957721aeb21e1a7fff281233d797ff7d3dd1f447fa258
+  languageName: node
+  linkType: hard
+
+"@talismn/signet-apps-sdk@npm:^0.0.7":
+  version: 0.0.7
+  resolution: "@talismn/signet-apps-sdk@npm:0.0.7"
+  dependencies:
+    react: ^18.2.0
+  checksum: 9b4495fb4d2eda6e468b21371a054156f753d36625066846f23e72854646bc0be03da4745c34464d39c3f948e8f38df8fc01ddad5ee7d164278bdba12a0deb14
   languageName: node
   linkType: hard
 
