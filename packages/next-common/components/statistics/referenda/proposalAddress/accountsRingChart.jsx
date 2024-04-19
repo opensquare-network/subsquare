@@ -90,7 +90,7 @@ export default function AccountsRingChart({ className }) {
   return (
     <div
       className={cn(
-        "flex max-md:flex-col md:flex-row items-center gap-6",
+        "flex max-md:flex-col md:flex-row items-center justify-center gap-6",
         className,
       )}
     >

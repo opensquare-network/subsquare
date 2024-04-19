@@ -10,6 +10,10 @@ import {
 } from "next-common/store/reducers/referenda/votes/selectors";
 import { groupBy } from "lodash-es";
 import { ConvictionSupport } from "next-common/utils/referendumCommon";
+import { useNavCollapsed } from "next-common/context/nav";
+import { cn } from "next-common/utils";
+import { useWindowSize } from "react-use";
+import { useEffect, useState } from "react";
 
 const convictions = Object.values(ConvictionSupport);
 
@@ -22,6 +26,13 @@ export default function AccountsConvictionUsedContent() {
   const allAyeVotes = useSelector(allAyeSelector);
   const allNayVotes = useSelector(allNaySelector);
   const allAbstainVotes = useSelector(allAbstainSelector);
+  const [navCollapsed] = useNavCollapsed();
+  const { width } = useWindowSize();
+  const [barChartKey, setBarChartKey] = useState(0);
+
+  useEffect(() => {
+    setBarChartKey(barChartKey + 1);
+  }, [width, navCollapsed]);
 
   const theme = useTheme();
   const categoryPercentage = 0.2;
@@ -58,8 +69,21 @@ export default function AccountsConvictionUsedContent() {
         <span className="text14Bold text-textPrimary">Accounts</span>
         <span className="text14Medium text-textTertiary">Conviction Used</span>
       </div>
-      <div className="flex max-md:flex-col gap-6 overflow-x-auto overflow-y-hidden scrollbar-pretty">
-        <VoteChart data={dataAccounts} className="h-[184px] grow" />
+      <div
+        className={cn(
+          "flex flex-col gap-6",
+          "overflow-x-auto overflow-y-hidden",
+          "scrollbar-pretty",
+          navCollapsed
+            ? "max-lg:flex-col min-[1281px]:flex-row"
+            : "min-[1482px]:flex-row",
+        )}
+      >
+        <VoteChart
+          key={barChartKey}
+          data={dataAccounts}
+          className="h-[184px] grow"
+        />
         <AccountsRingChart className="shrink-0" />
       </div>
     </StatisticsItemDiv>
