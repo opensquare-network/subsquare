@@ -1,4 +1,3 @@
-import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { useMemo } from "react";
@@ -10,7 +9,6 @@ import FellowshipCoreMemberCard from "next-common/components/fellowship/core/mem
 import FellowshipMembersEmpty from "./empty";
 
 export default function FellowshipCandidatesPage() {
-  useFetchFellowshipCoreMembers();
   const members = useSelector(fellowshipCoreMembersSelector);
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank <= 0),

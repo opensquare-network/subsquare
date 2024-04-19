@@ -1,4 +1,3 @@
-import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
 import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
 import Summary from "next-common/components/summary";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
@@ -14,10 +13,12 @@ import getCycleTotalPeriodSummaryItem from "next-common/components/fellowship/sa
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
 import getCycleRemainSummaryItem from "next-common/components/fellowship/salary/cycles/summary/remain";
 import { useFellowshipSalaryCycleData } from "next-common/hooks/fellowship/salary/useFellowshipSalaryCycleData";
+import { useSelector } from "react-redux";
+import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
 
 export default function FellowshipSalaryStats() {
   const [navCollapsed] = useNavCollapsed();
-  const stats = useSubFellowshipSalaryStats();
+  const stats = useSelector(fellowshipSalaryStatusSelector);
   const cycleData = useFellowshipSalaryCycleData(stats?.cycleIndex);
   const { registrationPeriod, payoutPeriod } = useFellowshipSalaryPeriods();
   const { decimals, symbol } = useSalaryAsset();
