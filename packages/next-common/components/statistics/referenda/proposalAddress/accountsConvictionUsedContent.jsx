@@ -83,9 +83,9 @@ export default function AccountsConvictionUsedContent() {
         <VoteChart
           key={barChartKey}
           data={dataAccounts}
-          className="h-[184px] w-full"
+          className="h-[184px]"
         />
-        <AccountsRingChart className="grow" />
+        <AccountsRingChart />
       </div>
     </StatisticsItemDiv>
   );
