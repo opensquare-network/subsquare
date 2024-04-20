@@ -82,3 +82,11 @@ export const BlockTooltip = styled(Tooltip)`
 export const InlineBlockTooltip = styled(Tooltip)`
   display: inline-block;
 `;
+
+export function MaybeTooltip({ tooltip, children }) {
+  if (tooltip) {
+    return <Tooltip content={tooltip}>{children}</Tooltip>;
+  }
+
+  return children;
+}
