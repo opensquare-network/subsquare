@@ -10,6 +10,7 @@ export default function useMySalaryClaimant() {
 
   useEffect(() => {
     if (!address || !api?.query?.fellowshipSalary?.claimant) {
+      setLoading(false);
       return;
     }
 
