@@ -1,5 +1,5 @@
 import SecondaryButton from "next-common/lib/button/secondary";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
 import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
@@ -8,6 +8,7 @@ import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fello
 import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { isNil } from "lodash-es";
+import FellowshipSalaryRegisterPopup from "next-common/components/fellowship/salary/actions/register/popup";
 
 function useIsInRegistrationPeriod() {
   const stats = useSelector(fellowshipSalaryStatusSelector);
@@ -30,6 +31,7 @@ export default function FellowshipSalaryRegister() {
   const { claimant } = useMySalaryClaimant();
   const stats = useSelector(fellowshipSalaryStatusSelector);
   const isRegistrationPeriod = useIsInRegistrationPeriod();
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     if (
@@ -44,8 +46,17 @@ export default function FellowshipSalaryRegister() {
   }, [isRegistrationPeriod, address, memberAddrs]);
 
   return (
-    <SecondaryButton size="small" disabled={disabled}>
-      Register
-    </SecondaryButton>
+    <>
+      <SecondaryButton
+        size="small"
+        disabled={disabled}
+        onClick={() => setShowPopup(true)}
+      >
+        Register
+      </SecondaryButton>
+      {showPopup && (
+        <FellowshipSalaryRegisterPopup onClose={() => setShowPopup(false)} />
+      )}
+    </>
   );
 }

@@ -13,7 +13,7 @@ function Content() {
 
   const getTxFunc = useCallback(() => {
     if (api) {
-      return api.tx.fellowshipSalary.induct();
+      return api.tx.fellowshipSalary.register();
     }
   }, [api]);
 
@@ -32,9 +32,9 @@ function Content() {
   );
 }
 
-export default function FellowshipSalaryImportPopup(props) {
+export default function FellowshipSalaryRegisterPopup(props) {
   return (
-    <PopupWithSigner title="Induct myself" {...props}>
+    <PopupWithSigner title="Register" {...props}>
       <Content />
     </PopupWithSigner>
   );
