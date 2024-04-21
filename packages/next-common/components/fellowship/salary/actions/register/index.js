@@ -1,5 +1,5 @@
 import SecondaryButton from "next-common/lib/button/secondary";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
 import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
@@ -9,6 +9,7 @@ import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useF
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { isNil } from "lodash-es";
 import FellowshipSalaryRegisterPopup from "next-common/components/fellowship/salary/actions/register/popup";
+import { MaybeTooltip } from "next-common/components/tooltip";
 
 function useIsInRegistrationPeriod() {
   const stats = useSelector(fellowshipSalaryStatusSelector);
@@ -45,15 +46,29 @@ export default function FellowshipSalaryRegister() {
     }
   }, [isRegistrationPeriod, address, memberAddrs]);
 
+  const tooltipText = useMemo(() => {
+    if (isRegistrationPeriod) {
+      return "Not in registration period";
+    } else if (!address) {
+      return "Connect your address please";
+    } else if (!memberAddrs.includes(address)) {
+      return "Not a collective member";
+    }
+
+    return null;
+  }, [isRegistrationPeriod, address, memberAddrs]);
+
   return (
     <>
-      <SecondaryButton
-        size="small"
-        disabled={disabled}
-        onClick={() => setShowPopup(true)}
-      >
-        Register
-      </SecondaryButton>
+      <MaybeTooltip tooltip={tooltipText}>
+        <SecondaryButton
+          size="small"
+          disabled={disabled}
+          onClick={() => setShowPopup(true)}
+        >
+          Register
+        </SecondaryButton>
+      </MaybeTooltip>
       {showPopup && (
         <FellowshipSalaryRegisterPopup onClose={() => setShowPopup(false)} />
       )}
