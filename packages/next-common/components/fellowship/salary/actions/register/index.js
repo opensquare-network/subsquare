@@ -47,7 +47,7 @@ export default function FellowshipSalaryRegister() {
   }, [isRegistrationPeriod, address, memberAddrs]);
 
   const tooltipText = useMemo(() => {
-    if (isRegistrationPeriod) {
+    if (!isRegistrationPeriod) {
       return "Not in registration period";
     } else if (!address) {
       return "Connect your address please";
