@@ -1,10 +1,15 @@
+import { cn } from "next-common/utils";
 import Link from "next/link";
 
-export default function FellowshipSalaryStatsDetailLink({ index, children }) {
+export default function FellowshipSalaryStatsDetailLink({
+  index,
+  children,
+  className = "",
+}) {
   return (
     <Link
       href={`/fellowship/salary/cycles/${index}`}
-      className="text14Medium text-theme500"
+      className={cn("text14Medium text-theme500", className)}
     >
       {children}
     </Link>
