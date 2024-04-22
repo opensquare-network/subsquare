@@ -13,8 +13,8 @@ import getCycleRemainSummaryItem from "../summary/remain";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import FellowshipCycleProgress from "./progress";
+import FellowshipSalaryRegister from "next-common/components/fellowship/salary/actions/register";
 import FellowshipSalaryMyStatus from "../myStatus";
-import FellowshipSalaryRegister from "../../actions/register";
 
 export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
   const { decimals, symbol } = useSalaryAsset();
