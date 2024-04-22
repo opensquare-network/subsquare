@@ -3,7 +3,7 @@ import NewProposalPopup from "../newProposalPopup";
 import { usePageProps } from "next-common/context/page";
 import SubmitProposalPopupCommon from "./common";
 
-export default function SubmitProposalPopup({ onClose, module = "referenda" }) {
+export default function SubmitProposalPopup({ onClose }) {
   const { period } = usePageProps();
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
@@ -19,7 +19,6 @@ export default function SubmitProposalPopup({ onClose, module = "referenda" }) {
           onClose={onClose}
           preimageHash={preimageHash}
           preimageLength={preimageLength}
-          module={module}
         />
       }
     />

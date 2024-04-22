@@ -12,7 +12,7 @@ import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/no
 import businessCategory from "next-common/utils/consts/business/category";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import NewProposalButton from "next-common/components/summary/newProposalButton";
+import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 
 export default function FellowshipPage({
   posts,
@@ -36,7 +36,7 @@ export default function FellowshipPage({
       <PostList
         title="List"
         titleCount={posts.total}
-        titleExtra={<NewProposalButton module="fellowshipReferenda" />}
+        titleExtra={<NewFellowshipProposalButton />}
         category={businessCategory.fellowship}
         items={items}
         pagination={{
