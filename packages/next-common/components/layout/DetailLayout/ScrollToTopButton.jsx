@@ -21,7 +21,7 @@ export default function ScrollToTopButton({ scrollYShowPX = 800 }) {
     showButton && (
       <div
         className={
-          "flex items-center justify-center fixed cursor-pointer bottom-[96px] right-[24px] z-50 rounded-lg w-10 h-10 bg-neutral100 border-neutral400 border shadow-100"
+          "flex items-center justify-center fixed cursor-pointer bottom-[96px] right-[24px] z-50 rounded-lg w-10 h-10 bg-neutral100 border-neutral400 border shadow-shadow100"
         }
         onClick={handleClick}
       >
