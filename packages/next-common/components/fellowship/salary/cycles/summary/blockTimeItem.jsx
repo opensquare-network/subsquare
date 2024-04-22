@@ -1,18 +1,15 @@
-// start time
-// end time
-
 import dayjs from "dayjs";
 import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
+import SummaryItem from "next-common/components/summary/layout/item";
 
-export default function getCycleBlockTimeSummaryItem(
+export default function SalaryStatsBlockTimeItem({
   title,
   blockTime,
   blockHeight,
-) {
-  return {
-    title,
-    content: (
+}) {
+  return (
+    <SummaryItem title={title}>
       <LoadableContent isLoading={isNil(blockTime)}>
         <div>
           {dayjs(blockTime).format("YYYY-MM-DD")}{" "}
@@ -26,6 +23,6 @@ export default function getCycleBlockTimeSummaryItem(
           </div>
         )}
       </LoadableContent>
-    ),
-  };
+    </SummaryItem>
+  );
 }
