@@ -3,6 +3,7 @@ import Flex from "../styled/flex";
 import Loading from "../loading";
 import WalletOption from "./walletOption";
 import { useSignetSdk } from "next-common/context/signet";
+import { SystemLink } from "@osn/icons/subsquare";
 
 export function SignetWallet({
   wallet,
@@ -25,7 +26,13 @@ export function SignetWallet({
         <span className="wallet-title">{wallet.title}</span>
       </Flex>
       {installed === false && (
-        <span className="wallet-not-installed">Not installed</span>
+        <a
+          href="https://www.talisman.xyz/signet"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <SystemLink className="[&_path]:fill-theme500 !w-[20px] !h-[20px]" />
+        </a>
       )}
       {(loading || installed === null) && <Loading />}
     </WalletOption>
