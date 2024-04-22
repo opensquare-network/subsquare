@@ -71,8 +71,6 @@ export const fellowshipSalaryCycleFeedsApi = (index) =>
 
 export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
 
-export const fellowshipSalaryFeedsApi = "fellowship/salary/feeds";
-
 // calender events
 /**
  * param `begin_time`, `end_time`
