@@ -14,6 +14,7 @@ import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import FellowshipCycleProgress from "./progress";
 import FellowshipSalaryMyStatus from "../myStatus";
+import FellowshipSalaryRegister from "../../actions/register";
 
 export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
   const { decimals, symbol } = useSalaryAsset();
@@ -135,6 +136,9 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
 
       <div className="space-y-2">
         <FellowshipSalaryMyStatus />
+        <div className="flex items-center justify-end gap-4">
+          <FellowshipSalaryRegister />
+        </div>
       </div>
     </PrimaryCard>
   );
