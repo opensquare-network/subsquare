@@ -23,7 +23,7 @@ export default function FellowshipSalaryMyStatus() {
     <div className="bg-neutral200 rounded py-1.5 px-3 text12Medium flex items-center">
       <div className="text12Bold text-textPrimary">My Status</div>
       <div className="ml-4 text-textTertiary inline-flex items-center gap-x-1">
-        Last Activity{" "}
+        Last Active{" "}
         <LoadableContent size={12} isLoading={isLoading}>
           <FellowshipSalaryStatsDetailLink
             className="text12Medium"
@@ -34,9 +34,7 @@ export default function FellowshipSalaryMyStatus() {
         </LoadableContent>
       </div>
 
-      <div>
-        <DotSplitter />
-      </div>
+      <DotSplitter />
 
       <div className="text-textTertiary inline-flex items-center gap-x-1">
         Status{" "}
