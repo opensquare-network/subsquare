@@ -30,37 +30,39 @@ export default function FellowshipSalaryMyStatus() {
   const index = status.value?.index;
   const event = status.value?.event || "Nothing";
 
+  if (!realAddress) {
+    return null;
+  }
+
   return (
-    realAddress && (
-      <div className="bg-neutral200 rounded py-1.5 px-3 text12Medium flex items-center">
-        <div className="text12Bold text-textPrimary">My Status</div>
-        <div className="ml-4 text-textTertiary inline-flex items-center gap-x-1">
-          Last Activity{" "}
-          <LoadableContent size={12} isLoading={status.loading}>
-            {index ? (
-              <FellowshipSalaryStatsDetailLink
-                className="text12Medium"
-                index={index}
-              >
-                #{index}
-              </FellowshipSalaryStatsDetailLink>
-            ) : (
-              <div className="text-textSecondary">-</div>
-            )}
-          </LoadableContent>
-        </div>
-
-        <div>
-          <DotSplitter />
-        </div>
-
-        <div className="text-textTertiary inline-flex items-center gap-x-1">
-          Status{" "}
-          <LoadableContent size={12} isLoading={status.loading}>
-            <div className="text-textSecondary">{event}</div>
-          </LoadableContent>
-        </div>
+    <div className="bg-neutral200 rounded py-1.5 px-3 text12Medium flex items-center">
+      <div className="text12Bold text-textPrimary">My Status</div>
+      <div className="ml-4 text-textTertiary inline-flex items-center gap-x-1">
+        Last Activity{" "}
+        <LoadableContent size={12} isLoading={status.loading}>
+          {index ? (
+            <FellowshipSalaryStatsDetailLink
+              className="text12Medium"
+              index={index}
+            >
+              #{index}
+            </FellowshipSalaryStatsDetailLink>
+          ) : (
+            <div className="text-textSecondary">-</div>
+          )}
+        </LoadableContent>
       </div>
-    )
+
+      <div>
+        <DotSplitter />
+      </div>
+
+      <div className="text-textTertiary inline-flex items-center gap-x-1">
+        Status{" "}
+        <LoadableContent size={12} isLoading={status.loading}>
+          <div className="text-textSecondary">{event}</div>
+        </LoadableContent>
+      </div>
+    </div>
   );
 }
