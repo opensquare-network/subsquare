@@ -9,7 +9,7 @@ export default function FellowshipSalaryStatsDetailLink({
   return (
     <Link
       href={`/fellowship/salary/cycles/${index}`}
-      className={cn("text14Medium text-theme500", className)}
+      className={cn("text-theme500", className)}
     >
       {children}
     </Link>

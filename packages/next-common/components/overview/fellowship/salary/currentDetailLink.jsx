@@ -10,7 +10,10 @@ export default function FellowshipSalaryStatsCurrentDetailLink() {
   }
 
   return (
-    <FellowshipSalaryStatsDetailLink index={stats?.cycleIndex}>
+    <FellowshipSalaryStatsDetailLink
+      index={stats?.cycleIndex}
+      className="text14Medium"
+    >
       View Detail
     </FellowshipSalaryStatsDetailLink>
   );
