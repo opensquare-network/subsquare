@@ -2,13 +2,13 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import DotSplitter from "next-common/components/dotSplitter";
 import FellowshipSalaryStatsDetailLink from "next-common/components/overview/fellowship/salary/detailLink";
 import LoadableContent from "next-common/components/common/loadableContent";
-import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
 import { toClaimStatusLabel } from "../claimants/utils";
 import { upperFirst } from "lodash-es";
+import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
 
 export default function FellowshipSalaryMyStatus() {
   const realAddress = useRealAddress();
-  const { isLoading, claimant } = useMySalaryClaimant();
+  const { isLoading, claimant } = useMySalaryClaimantFromContext();
 
   if (!realAddress || !claimant) {
     return null;

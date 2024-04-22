@@ -6,18 +6,19 @@ import {
   fellowshipSalaryStatusSelector,
   salaryStatusLoadedSelector,
 } from "next-common/store/reducers/fellowship/salary";
-import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
 import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import FellowshipSalaryImportPopup from "next-common/components/fellowship/salary/summary/import/popup";
 import { MaybeTooltip } from "next-common/components/tooltip";
+import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const stats = useSelector(fellowshipSalaryStatusSelector);
   const statusLoaded = useSelector(salaryStatusLoadedSelector);
-  const { isLoading: isLoadingClaimant, claimant } = useMySalaryClaimant();
+  const { isLoading: isLoadingClaimant, claimant } =
+    useMySalaryClaimantFromContext();
 
   const address = useRealAddress();
   const members = useFellowshipCollectiveMembers();
