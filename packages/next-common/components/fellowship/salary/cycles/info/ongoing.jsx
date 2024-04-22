@@ -13,8 +13,8 @@ import getCycleRemainSummaryItem from "../summary/remain";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import FellowshipCycleProgress from "./progress";
-import Divider from "next-common/components/styled/layout/divider";
 import FellowshipSalaryRegister from "next-common/components/fellowship/salary/actions/register";
+import FellowshipSalaryMyStatus from "../myStatus";
 
 export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
   const { decimals, symbol } = useSalaryAsset();
@@ -131,9 +131,14 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
       <div className="mt-4">
         <FellowshipCycleProgress cycle={cycle} />
       </div>
-      <Divider className="mt-4" />
-      <div className="mt-4 flex items-center justify-end gap-4">
-        <FellowshipSalaryRegister />
+
+      <hr className="my-4" />
+
+      <div className="space-y-2">
+        <FellowshipSalaryMyStatus />
+        <div className="flex items-center justify-end gap-4">
+          <FellowshipSalaryRegister />
+        </div>
       </div>
     </PrimaryCard>
   );

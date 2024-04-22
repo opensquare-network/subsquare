@@ -6,6 +6,10 @@ const CLAIM_STATS = {
 
 export const claimStatsValues = Object.values(CLAIM_STATS);
 
+export function toClaimStatusLabel(status) {
+  return status === CLAIM_STATS.Attempted ? "Paid" : status;
+}
+
 export const claimantListColumns = [
   {
     name: "Rank",

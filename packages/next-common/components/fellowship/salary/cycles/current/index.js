@@ -1,9 +1,9 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import FellowshipSalaryStats from "next-common/components/overview/fellowship/salary/stats";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import FellowshipSalaryStatsDetailLink from "next-common/components/overview/fellowship/salary/detailLink";
+import FellowshipSalaryStatsActiveCycleDetailLink from "next-common/components/overview/fellowship/salary/detailLink/activeCycle";
 import FellowshipSalaryRegister from "next-common/components/fellowship/salary/actions/register";
-import Divider from "next-common/components/styled/layout/divider";
+import FellowshipSalaryMyStatus from "../myStatus";
 
 export default function FellowshipSalaryActiveCycle() {
   return (
@@ -12,10 +12,16 @@ export default function FellowshipSalaryActiveCycle() {
 
       <SecondaryCard>
         <FellowshipSalaryStats />
-        <Divider className="mt-4" />
-        <div className="mt-4 flex items-center justify-end gap-4">
-          <FellowshipSalaryStatsDetailLink />
-          <FellowshipSalaryRegister />
+
+        <hr className="my-4" />
+
+        <div className="space-y-2">
+          <FellowshipSalaryMyStatus />
+
+          <div className="flex items-center justify-end gap-4">
+            <FellowshipSalaryStatsActiveCycleDetailLink />
+            <FellowshipSalaryRegister />
+          </div>
         </div>
       </SecondaryCard>
     </>
