@@ -18,13 +18,13 @@ export default function SalaryStatsTimeRemainItem() {
   const payoutPeriodData = useCalcPeriodBlocks(payoutPeriod, payoutStart);
 
   return (
-    <SummaryItem title="Total Unregistered Paid">
+    <SummaryItem>
       <div className="space-y-1">
         <RemainLabel
           percentage={registrationPeriodData.gonePercentage}
           label={"Registration"}
           remain={registrationPeriodData.remainBlocks}
-          time={registrationPeriod}
+          time={registrationPeriodData.totalPeriodTime.split(" ")}
         />
         <RemainLabel
           percentage={payoutPeriodData.gonePercentage}
