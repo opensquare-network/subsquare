@@ -9,10 +9,11 @@ import { isNil } from "lodash-es";
 import { useRouter } from "next/router";
 import { usePageProps } from "next-common/context/page";
 import SubmissionDeposit from "./submissionDeposit";
-import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
+import { isValidPreimageHash } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
 import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
 import DetailedFellowshipTrack from "next-common/components/popup/fields/detailedFellowshipTrackField";
+// import { getTypeDef } from "@polkadot/types/create";
 
 export default function NewProposalPopup({
   track: _track,
@@ -58,17 +59,22 @@ export default function NewProposalPopup({
       }
 
       // console.log({ api });
+      // const { name, type, typeName } =
+      //   api.tx.fellowshipReferenda.submit.meta.args[0];
+      // console.log({ name, type, typeName });
+      // const typeDef = getTypeDef("StagingKusamaRuntimeOriginCaller");
+      // console.log(typeDef);
 
-      let proposalOrigin = null;
-      if (track?.name === "root") {
-        proposalOrigin = { system: "Root" };
-      } else {
-        proposalOrigin = { Origins: upperFirstCamelCase(track?.name) };
-      }
+      // let proposalOrigin = null;
+      // if (track?.name === "root") {
+      //   proposalOrigin = { system: "Root" };
+      // } else {
+      //   proposalOrigin = { Origins: upperFirstCamelCase(track?.name) };
+      // }
 
       let tx = api.tx[module].submit(
-        proposalOrigin,
-        // { system: "Root" },
+        // proposalOrigin,
+        { system: "Root" },
         {
           Lookup: {
             hash: preimageHash,
