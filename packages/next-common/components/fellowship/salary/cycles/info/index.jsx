@@ -13,7 +13,12 @@ export default function FellowshipSalaryCycleDetailInfo() {
     if (cycle.isFinal) {
       return false;
     }
-    return stats && stats.cycleIndex === cycle.index;
+
+    if (!stats) {
+      return !cycle.isFinal;
+    }
+
+    return stats.cycleIndex === cycle.index;
   }, [cycle, stats]);
 
   return isActive ? (

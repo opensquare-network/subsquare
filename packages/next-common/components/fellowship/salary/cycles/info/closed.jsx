@@ -61,8 +61,8 @@ export default function FellowshipSalaryCycleDetailInfoClosed({ cycle = {} }) {
 
   const endTimeItem = getCycleBlockTimeSummaryItem(
     "End Time",
-    endIndexer.blockTime,
-    endIndexer.blockHeight,
+    endIndexer?.blockTime,
+    endIndexer?.blockHeight,
   );
 
   const items = [
@@ -71,8 +71,8 @@ export default function FellowshipSalaryCycleDetailInfoClosed({ cycle = {} }) {
     totalUnregisteredPaidItem,
     totalDurationItem,
     startTimeItem,
-    endTimeItem,
-  ];
+    endIndexer ? endTimeItem : null,
+  ].filter(Boolean);
 
   return (
     <PrimaryCard>
