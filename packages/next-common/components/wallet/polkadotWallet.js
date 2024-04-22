@@ -13,7 +13,6 @@ function isMultiSigWallet(wallet) {
 function MultiSigWalletUnavailable() {
   return (
     <div className="flex items-center">
-      <span className="wallet-not-installed">Unavailable</span>
       <a href="https://mimir.global/" target="_blank" rel="noreferrer">
         <SystemLink className="[&_path]:fill-theme500 !w-[20px] !h-[20px]" />
       </a>
