@@ -57,6 +57,8 @@ export default function NewProposalPopup({
         return;
       }
 
+      // console.log({ api });
+
       let proposalOrigin = null;
       if (track?.name === "root") {
         proposalOrigin = { system: "Root" };
@@ -66,6 +68,7 @@ export default function NewProposalPopup({
 
       let tx = api.tx[module].submit(
         proposalOrigin,
+        // { system: "Root" },
         {
           Lookup: {
             hash: preimageHash,
