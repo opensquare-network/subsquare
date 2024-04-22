@@ -30,7 +30,6 @@ export default function FellowshipSalaryRegister() {
   const members = useFellowshipCollectiveMembers();
   const memberAddrs = (members || []).map((item) => item.address);
   const { claimant } = useMySalaryClaimant();
-  const stats = useSelector(fellowshipSalaryStatusSelector);
   const isRegistrationPeriod = useIsInRegistrationPeriod();
   const [showPopup, setShowPopup] = useState(false);
 
@@ -38,7 +37,8 @@ export default function FellowshipSalaryRegister() {
     if (
       !memberAddrs.includes(address) ||
       !isRegistrationPeriod ||
-      claimant?.lastActive >= stats?.cycleIndex
+      !claimant
+      // todo: salary must > 0
     ) {
       setDisabled(true);
     } else {
@@ -49,6 +49,8 @@ export default function FellowshipSalaryRegister() {
   const tooltipText = useMemo(() => {
     if (!isRegistrationPeriod) {
       return "Not in registration period";
+    } else if (!claimant) {
+      return "Please import yourself first";
     } else if (!address) {
       return "Connect your address please";
     } else if (!memberAddrs.includes(address)) {
