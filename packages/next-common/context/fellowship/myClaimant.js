@@ -1,14 +1,22 @@
 import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
+import useSubMyCoreMember from "next-common/hooks/fellowship/core/useSubMyCoreMember";
 
 const { createContext, useContext } = require("react");
 
 const MySalaryClaimantContext = createContext(null);
 
 export function MySalaryClaimantProvider({ children }) {
-  const { claimant, isLoading } = useMySalaryClaimant();
+  const { claimant, isLoading: isLoadingClaimant } = useMySalaryClaimant();
+  const { member, isLoading: isLoadingMember } = useSubMyCoreMember();
 
   return (
-    <MySalaryClaimantContext.Provider value={{ claimant, isLoading }}>
+    <MySalaryClaimantContext.Provider
+      value={{
+        claimant,
+        member,
+        isLoading: isLoadingClaimant || isLoadingMember,
+      }}
+    >
       {children}
     </MySalaryClaimantContext.Provider>
   );
