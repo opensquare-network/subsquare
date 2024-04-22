@@ -2,7 +2,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import FellowshipSalaryStats from "next-common/components/overview/fellowship/salary/stats";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Link from "next/link";
-import FellowshipSalaryStatsCurrentDetailLink from "./currentDetailLink";
+import FellowshipSalaryStatsActiveCycleDetailLink from "./detailLink/activeCycle";
 
 export default function FellowshipSalaryOverview() {
   return (
@@ -20,7 +20,7 @@ export default function FellowshipSalaryOverview() {
             All Cycles
           </Link>
 
-          <FellowshipSalaryStatsCurrentDetailLink />
+          <FellowshipSalaryStatsActiveCycleDetailLink />
         </div>
       </SecondaryCard>
     </>

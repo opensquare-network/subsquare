@@ -1,7 +1,7 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import FellowshipSalaryStats from "next-common/components/overview/fellowship/salary/stats";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import FellowshipSalaryStatsCurrentDetailLink from "next-common/components/overview/fellowship/salary/currentDetailLink";
+import FellowshipSalaryStatsActiveCycleDetailLink from "next-common/components/overview/fellowship/salary/detailLink/activeCycle";
 import FellowshipSalaryRegister from "next-common/components/fellowship/salary/actions/register";
 import FellowshipSalaryMyStatus from "../myStatus";
 
@@ -19,7 +19,7 @@ export default function FellowshipSalaryActiveCycle() {
           <FellowshipSalaryMyStatus />
 
           <div className="flex items-center justify-end gap-4">
-            <FellowshipSalaryStatsCurrentDetailLink />
+            <FellowshipSalaryStatsActiveCycleDetailLink />
             <FellowshipSalaryRegister />
           </div>
         </div>
