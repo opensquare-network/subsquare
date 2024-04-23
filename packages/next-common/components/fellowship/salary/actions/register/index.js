@@ -89,7 +89,7 @@ export default function FellowshipSalaryRegister() {
 
   return (
     <>
-      <Tooltip tooltip={tooltipText}>
+      <Tooltip content={tooltipText}>
         <SecondaryButton
           size="small"
           disabled={disabled}

@@ -56,7 +56,7 @@ export default function Import() {
 
   return (
     <>
-      <Tooltip tooltip={tooltipText}>
+      <Tooltip content={tooltipText}>
         <PrimaryButton
           size="small"
           disabled={disabled}
