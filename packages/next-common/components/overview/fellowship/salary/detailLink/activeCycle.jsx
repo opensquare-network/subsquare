@@ -1,20 +1,20 @@
-import Link from "next/link";
 import { useSelector } from "react-redux";
 import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
 import { isNil } from "lodash-es";
+import FellowshipSalaryStatsDetailLink from ".";
 
-export default function FellowshipSalaryStatsDetailLink() {
+export default function FellowshipSalaryStatsActiveCycleDetailLink() {
   const stats = useSelector(fellowshipSalaryStatusSelector);
   if (isNil(stats?.cycleIndex)) {
     return null;
   }
 
   return (
-    <Link
-      href={`/fellowship/salary/cycles/${stats?.cycleIndex}`}
-      className="text14Medium text-theme500"
+    <FellowshipSalaryStatsDetailLink
+      index={stats?.cycleIndex}
+      className="text14Medium"
     >
       View Detail
-    </Link>
+    </FellowshipSalaryStatsDetailLink>
   );
 }

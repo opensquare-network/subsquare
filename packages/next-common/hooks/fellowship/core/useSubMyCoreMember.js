@@ -1,28 +1,25 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
+import { useEffect, useState } from "react";
 
-export default function useMySalaryClaimant() {
+export default function useSubMyCoreMember() {
   const address = useRealAddress();
   const api = useContextApi();
-  const [claimant, setClaimant] = useState(null);
+  const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!address || !api?.query?.fellowshipSalary?.claimant) {
+    if (!address || !api?.query?.fellowshipCore?.member) {
       setLoading(false);
       return;
     }
 
     let unsub;
-    api.query.fellowshipSalary
-      .claimant(address, (rawOptional) => {
-        if (rawOptional.isNone) {
-          return;
+    api.query.fellowshipCore
+      .member(address, (rawOptional) => {
+        if (rawOptional.isSome) {
+          setMember(rawOptional.unwrap().toJSON());
         }
-
-        const json = rawOptional.unwrap().toJSON();
-        setClaimant(json);
       })
       .then((result) => (unsub = result))
       .finally(() => setLoading(false));
@@ -34,5 +31,5 @@ export default function useMySalaryClaimant() {
     };
   }, [address, api]);
 
-  return { isLoading: loading, claimant };
+  return { isLoading: loading, member };
 }

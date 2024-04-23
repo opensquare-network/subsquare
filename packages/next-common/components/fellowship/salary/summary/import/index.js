@@ -1,24 +1,24 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { SystemImportMember } from "@osn/icons/subsquare";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   fellowshipSalaryStatusSelector,
   salaryStatusLoadedSelector,
 } from "next-common/store/reducers/fellowship/salary";
-import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
 import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import FellowshipSalaryImportPopup from "next-common/components/fellowship/salary/summary/import/popup";
 import Tooltip from "next-common/components/tooltip";
+import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const stats = useSelector(fellowshipSalaryStatusSelector);
   const statusLoaded = useSelector(salaryStatusLoadedSelector);
-  const { isLoading: isLoadingClaimant, claimant } = useMySalaryClaimant();
+  const { isLoading: isLoadingClaimant, claimant } =
+    useMySalaryClaimantFromContext();
 
   const address = useRealAddress();
   const members = useFellowshipCollectiveMembers();
@@ -45,6 +45,8 @@ export default function Import() {
       return "Checking claimant status";
     } else if (claimant) {
       return "Already inducted";
+    } else if (!address) {
+      return "Connect your address please";
     } else if (!memberAddrs.includes(address)) {
       return "Not a collective member";
     }
@@ -52,11 +54,9 @@ export default function Import() {
     return null;
   }, [stats, statusLoaded, isLoadingClaimant, claimant, address, memberAddrs]);
 
-  const MaybeTooltip = tooltipText ? Tooltip : React.Fragment;
-
   return (
     <>
-      <MaybeTooltip content={tooltipText}>
+      <Tooltip content={tooltipText}>
         <PrimaryButton
           size="small"
           disabled={disabled}
@@ -67,7 +67,7 @@ export default function Import() {
         >
           Import me
         </PrimaryButton>
-      </MaybeTooltip>
+      </Tooltip>
       {showPopup && (
         <FellowshipSalaryImportPopup onClose={() => setShowPopup(false)} />
       )}
