@@ -1,7 +1,9 @@
-import { SystemInduct, SystemPlus } from "@osn/icons/subsquare";
-import DisabledTipButton from "next-common/components/extendButton/disabledTipButton";
+import { SystemInduct } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import Induct from "next-common/components/fellowship/core/summary/induct";
+import Tooltip from "next-common/components/tooltip";
+
 export default function MembersInduction({ className }) {
   return (
     <SecondaryCard
@@ -19,15 +21,10 @@ export default function MembersInduction({ className }) {
           </span>
         </div>
       </div>
-      <DisabledTipButton
-        typeStyle="secondary"
-        tipMsg="Only available to the members with rank >= 3"
-        size="small"
-        iconLeft={<SystemPlus className="w-4 h-4" />}
-        disabled={true}
-      >
-        Induct
-      </DisabledTipButton>
+
+      <Tooltip content="Only available to the members with rank >= 3">
+        <Induct size="large" />
+      </Tooltip>
     </SecondaryCard>
   );
 }
