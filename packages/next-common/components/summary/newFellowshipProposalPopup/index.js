@@ -1,5 +1,5 @@
 import SignerPopup from "next-common/components/signerPopup";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
@@ -7,15 +7,14 @@ import { isNil } from "lodash-es";
 import { useRouter } from "next/router";
 import { isValidPreimageHash } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
-import { getTypeDef } from "@polkadot/types/create";
-import { useContextApi } from "next-common/context/api";
-import Param from "next-common/components/extrinsic/params/param";
-import { getExtrinsicValues } from "next-common/components/extrinsic";
 import SubmissionDeposit from "../newProposalPopup/submissionDeposit";
 import PreimageField from "../newProposalPopup/preimageField";
 import EnactmentBlocks from "../newProposalPopup/enactmentBlocks";
+import DetailedFellowshipTrack from "next-common/components/popup/fields/detailedFellowshipTrackField";
+import { getProposalOrigin } from "./getProposalOrigin";
 
 export default function NewFellowshipProposalPopup({
+  track: _track,
   onClose,
   preimageHash: _preimageHash,
   preimageLength: _preimageLength,
@@ -29,20 +28,10 @@ export default function NewFellowshipProposalPopup({
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
 
-  const [proposalOrigin, setProposalOrigin] = useState({ system: "Root" });
-
-  const api = useContextApi();
-  const { proposalOriginName, proposalOriginTypeDef } = useMemo(() => {
-    if (!api) {
-      return {};
-    }
-    const { name, type } = api.tx.fellowshipReferenda.submit.meta.args[0];
-    const typeDef = getTypeDef(type.toString());
-    return { proposalOriginName: name, proposalOriginTypeDef: typeDef };
-  }, [api]);
+  const [trackId, setTrackId] = useState(_track?.id);
 
   const disabled =
-    isNil(proposalOrigin) ||
+    isNil(trackId) ||
     isNil(enactment) ||
     !preimageHash ||
     !isValidPreimageHash(preimageHash) ||
@@ -61,7 +50,7 @@ export default function NewFellowshipProposalPopup({
         return;
       }
 
-      const proposalOriginValue = getExtrinsicValues(proposalOrigin);
+      const proposalOriginValue = getProposalOrigin(trackId);
       let tx = api.tx.fellowshipReferenda.submit(
         proposalOriginValue,
         {
@@ -104,7 +93,7 @@ export default function NewFellowshipProposalPopup({
       preimageHash,
       preimageLength,
       onClose,
-      proposalOrigin,
+      trackId,
     ],
   );
 
@@ -117,12 +106,7 @@ export default function NewFellowshipProposalPopup({
       disabled={disabled}
       isLoading={isLoading}
     >
-      <Param
-        name={proposalOriginName}
-        def={proposalOriginTypeDef}
-        value={proposalOrigin}
-        setValue={setProposalOrigin}
-      />
+      <DetailedFellowshipTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField
         preimageHash={preimageHash}
         preimageLength={preimageLength}
