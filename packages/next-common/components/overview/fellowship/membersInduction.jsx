@@ -13,9 +13,19 @@ export default function MembersInduction({ className }) {
 
   return (
     <SecondaryCard
-      className={cn("flex items-center justify-between", className)}
+      className={cn(
+        "flex items-center justify-between gap-4",
+        "max-md:flex-col",
+        className,
+      )}
     >
-      <div className="flex items-center gap-3">
+      <div
+        className={cn(
+          "w-full",
+          "flex items-center gap-3",
+          "max-md:flex-col max-md:items-start",
+        )}
+      >
         <SystemInduct className="w-10 h-10 text-textTertiary" />
         <div className="flex flex-col">
           <span className="text-textPrimary text14Bold">
@@ -28,7 +38,9 @@ export default function MembersInduction({ className }) {
         </div>
       </div>
 
-      <Induct size="large" />
+      <div className="self-end">
+        <Induct size="large" />
+      </div>
     </SecondaryCard>
   );
 }
