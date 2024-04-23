@@ -32,13 +32,13 @@ function useMySalary() {
   const member = members.find((m) => m.address === address);
   const { fellowshipParams } = usePageProps();
   const { member: coreMember, isLoading } = useMySalaryClaimantFromContext();
-  if (!member || isLoading) {
+  if (!member || !coreMember || isLoading) {
     return 0;
   }
 
   const { activeSalary = [], passiveSalary = [] } = fellowshipParams || {};
   const rank = member.rank;
-  const { isActive } = coreMember;
+  const { isActive } = coreMember || {};
   const salaryArray = isActive ? activeSalary : passiveSalary;
   return salaryArray[rankToIndex(rank)];
 }
@@ -72,12 +72,12 @@ export default function FellowshipSalaryRegister() {
   const tooltipText = useMemo(() => {
     if (!isRegistrationPeriod) {
       return "Not in registration period";
-    } else if (!claimant) {
-      return "Please import yourself first";
     } else if (!address) {
       return "Connect your address please";
     } else if (!memberAddrs.includes(address)) {
       return "Not a collective member";
+    } else if (!claimant) {
+      return "Please import yourself first";
     } else if (mySalary <= 0) {
       return "No salary to claim";
     } else if (claimant.lastActive >= status?.cycleIndex) {
