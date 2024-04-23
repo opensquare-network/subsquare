@@ -3,6 +3,7 @@ import NewFellowshipProposalPopup from "../newFellowshipProposalPopup";
 import SubmitProposalPopupCommon from "../newProposalButton/common";
 import { ArrowRight } from "@osn/icons/subsquare";
 import { cn } from "../../../utils";
+import { usePageProps } from "next-common/context/page";
 
 function QuickStartButton({ title, onClick }) {
   return (
@@ -26,6 +27,7 @@ function QuickStartButton({ title, onClick }) {
 }
 
 export default function SubmitFellowshipProposalPopup({ onClose }) {
+  const { period } = usePageProps();
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
 
@@ -36,6 +38,7 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
       onClose={onClose}
       newProposalPopup={
         <NewFellowshipProposalPopup
+          track={period}
           onClose={onClose}
           preimageHash={preimageHash}
           preimageLength={preimageLength}
