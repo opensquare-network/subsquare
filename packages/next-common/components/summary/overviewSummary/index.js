@@ -40,7 +40,9 @@ function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
 
 function OpenGovGroupContent() {
   const { summary } = usePageProps();
-  const { hasFellowship, hasReferenda } = useChainSettings();
+  const {
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
+  } = useChainSettings();
   const { gov2Referenda, fellowshipReferenda } = summary ?? {};
 
   return (
@@ -176,7 +178,13 @@ function CouncilGroupContent() {
 export default function OverviewSummary() {
   const showCouncil = useMenuHasCouncil();
   const showTC = useMenuHasTechComm();
-  const { hasFellowship, hasReferenda, noDemocracyModule } = useChainSettings();
+  const {
+    modules: {
+      referenda: hasReferenda,
+      fellowship: hasFellowship,
+      democracy: hasDemocracyModule,
+    },
+  } = useChainSettings();
 
   const items = [];
   if (hasReferenda || hasFellowship) {
@@ -186,7 +194,7 @@ export default function OverviewSummary() {
     });
   }
 
-  if (!noDemocracyModule) {
+  if (hasDemocracyModule) {
     items.push({
       title: "Democracy",
       content: <DemocracyGroupContent />,
@@ -198,7 +206,7 @@ export default function OverviewSummary() {
     content: <TreasuryGroupContent />,
   });
 
-  if (!noDemocracyModule) {
+  if (hasDemocracyModule) {
     items.push({
       title: `${showCouncil ? "Council" : ""}${
         showTC && showCouncil ? " / " : ""

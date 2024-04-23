@@ -12,7 +12,9 @@ import Chains from "next-common/utils/consts/chains";
 import NewDemocracyProposalButton from "next-common/components/summary/newDemocracyProposalButton";
 
 export default function DemocracyProposalsPage({ proposals, summary }) {
-  const { noDemocracyModule } = useChainSettings();
+  const {
+    modules: { democracy: hasDemocracyModule },
+  } = useChainSettings();
   const chain = useChain();
   const noProposeButton = [Chains.crust].includes(chain);
 
@@ -35,7 +37,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
         title="List"
         titleCount={proposals.total}
         titleExtra={
-          !noDemocracyModule &&
+          hasDemocracyModule &&
           !noProposeButton && <NewDemocracyProposalButton />
         }
         items={items}

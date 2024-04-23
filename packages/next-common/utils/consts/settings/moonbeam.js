@@ -40,7 +40,6 @@ const moonbeam = {
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
   subscanDomain: "moonbeam",
-  hasReferenda: true,
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
   noDispatchPrecompile: true,
@@ -79,6 +78,9 @@ const moonbeam = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
+  },
+  multisigWallets: {
+    signet: true,
   },
 };
 

@@ -5,7 +5,9 @@ import AccordionCard from "next-common/components/styled/containers/accordionCar
 import { Options } from "next-common/components/setting/notification/styled";
 
 export default function OpenGovSubscription() {
-  const { hasFellowship, hasReferenda } = useChainSettings();
+  const {
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
+  } = useChainSettings();
 
   if (!hasFellowship && !hasReferenda) {
     return null;

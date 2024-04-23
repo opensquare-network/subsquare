@@ -46,7 +46,9 @@ export default function DelegationStatsPage() {
 
 export const getServerSideProps = withCommonProps(async (ctx) => {
   const { type } = ctx.query;
-  const { hasReferenda } = getChainSettings(process.env.CHAIN);
+  const {
+    modules: { referenda: hasReferenda },
+  } = getChainSettings(process.env.CHAIN);
   const defaultType = hasReferenda ? Referenda : Democracy;
 
   const tracksProps = await fetchOpenGovTracksProps();

@@ -8,8 +8,10 @@ import {
   WalletPolkagate,
   WalletSubwallet,
   WalletTailsman,
+  WalletSignet,
 } from "@osn/icons/subsquare";
 import isMixedChain from "next-common/utils/isMixedChain";
+import getChainSettings from "../settings";
 
 const polkadotJs = {
   extensionName: WalletTypes.POLKADOT_JS,
@@ -65,22 +67,15 @@ const mimir = {
   logo: WalletMimir,
 };
 
+const signet = {
+  extensionName: WalletTypes.SIGNET,
+  title: "Signet",
+  installUrl: "https://signet.talisman.xyz/",
+  logo: WalletSignet,
+};
+
 export function getWallets() {
-  if (isEvmChain()) {
-    return [talisman, metamask, nova];
-  } else if (isMixedChain()) {
-    return [
-      metamask,
-      polkadotJs,
-      subWalletJs,
-      talisman,
-      polkagate,
-      nova,
-      mimir,
-    ];
-  } else {
-    return [polkadotJs, subWalletJs, talisman, polkagate, nova, mimir];
-  }
+  return [...getSingleSigWallets(), ...getMultiSigWallets()];
 }
 
 export function getSingleSigWallets() {
@@ -94,8 +89,18 @@ export function getSingleSigWallets() {
 }
 
 export function getMultiSigWallets() {
+  let result = [];
   if (isEvmChain()) {
-    return [];
+    return result;
   }
-  return [mimir];
+
+  const chainSetting = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (chainSetting?.multisigWallets?.signet) {
+    result.push(signet);
+  }
+  if (chainSetting?.multisigWallets?.mimir) {
+    result.push(mimir);
+  }
+
+  return result;
 }

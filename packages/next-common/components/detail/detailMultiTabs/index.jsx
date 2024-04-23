@@ -1,13 +1,14 @@
-import { useState } from "react";
 import Tabs from "../../tabs";
 import { useTimelineData } from "next-common/context/post";
 import VotesBubbleViewTabs from "./votesBubbleViewTabs";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import TimelineModeTabs from "./timelineModeTabs";
+import { TagWrapper } from "next-common/components/comment/voteTag/referendaVoteTag";
+import { useRouter } from "next/router";
+import { snakeCase, startCase } from "lodash-es";
 
 export default function DetailMultiTabs({
-  defaultActiveTabLabel = "",
   call,
   childBounties,
   childBountiesCount,
@@ -16,7 +17,9 @@ export default function DetailMultiTabs({
   timeline,
   timelineCount,
   votesBubble,
+  statistics,
 }) {
+  const router = useRouter();
   const timelineData = useTimelineData();
   const chain = useChain();
   const hasVotesViewTabs = ![Chains.kintsugi, Chains.interlay].includes(chain);
@@ -48,22 +51,40 @@ export default function DetailMultiTabs({
       content: (
         <div className="space-y-4">
           {hasVotesViewTabs && <VotesBubbleViewTabs />}
-
           {votesBubble}
         </div>
       ),
     },
+    statistics && {
+      // lazy: true,
+      label: "Statistics",
+      tagRender: (
+        <TagWrapper className="bg-theme100 text-theme500 ml-2">New</TagWrapper>
+      ),
+      content: <div className="space-y-4">{statistics}</div>,
+    },
   ].filter(Boolean);
 
-  const [activeTabLabel, setActiveTabLabel] = useState(
-    defaultActiveTabLabel || tabs[0].label,
-  );
+  const activeTabLabel = startCase(router.query.tab) || tabs[0].label;
+
+  function handleTabClick(tab) {
+    router.replace(
+      {
+        query: {
+          id: router.query.id,
+          tab: snakeCase(tab.label),
+        },
+      },
+      null,
+      { shallow: true },
+    );
+  }
 
   return (
     <div>
       <Tabs
         activeTabLabel={activeTabLabel}
-        onTabClick={(tab) => setActiveTabLabel(tab.label)}
+        onTabClick={handleTabClick}
         tabs={tabs}
       />
     </div>

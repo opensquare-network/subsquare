@@ -7,7 +7,7 @@ import FellowshipMemberInfoTitle from "next-common/components/fellowship/core/me
 import { useMemo } from "react";
 import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";
-import { BlockTooltip } from "next-common/components/tooltip";
+import Tooltip from "next-common/components/tooltip";
 
 export default function FellowshipMemberPromotionPeriod({
   lastPromotion,
@@ -46,7 +46,8 @@ export default function FellowshipMemberPromotionPeriod({
   return (
     <FellowshipMemberInfoWrapper>
       <FellowshipMemberInfoTitle>Promotion Period</FellowshipMemberInfoTitle>
-      <BlockTooltip
+      <Tooltip
+        className="block"
         content={
           <Remaining blocks={remainingBlocks} percentage={percentageValue} />
         }
@@ -57,7 +58,7 @@ export default function FellowshipMemberPromotionPeriod({
           bg="var(--theme100)"
           fg="var(--theme500)"
         />
-      </BlockTooltip>
+      </Tooltip>
     </FellowshipMemberInfoWrapper>
   );
 }

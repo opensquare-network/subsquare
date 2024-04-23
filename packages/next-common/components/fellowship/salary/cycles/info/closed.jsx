@@ -1,90 +1,26 @@
 import { PrimaryCard } from "next-common/components/styled/containers/primaryCard";
-import Summary from "next-common/components/summary";
 import { ClosedTag } from "next-common/components/tags/state/styled";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
-import getCycleBudgetSummaryItem from "../summary/budget";
-import getCycleRegistrationSummaryItem from "../summary/registration";
-import getCycleUnregisteredPaidSummaryItem from "../summary/unregisteredPaid";
-import getCycleBlockTimeSummaryItem from "../summary/blockTime";
-import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
-import { chunk } from "lodash-es";
-import getCycleTotalDurationSummaryItem from "../summary/totalDuration";
 import FellowshipCycleProgress from "./progress";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SalaryStatsIndexItem from "../summary/indexItem";
+import SalaryStatsBudgetItem from "../summary/budgetItem";
+import SalaryStatsRegistrationItem from "../summary/registrationItem";
+import SalaryStatsUnregisteredItem from "../summary/unregisteredItem";
+import SalaryStatsBlockTimeItem from "../summary/blockTimeItem";
+import SalaryStatsTotalDurationSummaryItem from "../summary/totalDurationItem";
 
 export default function FellowshipSalaryCycleDetailInfoClosed({ cycle = {} }) {
-  const { decimals, symbol } = useSalaryAsset();
+  const { startIndexer, endIndexer } = cycle;
 
-  const {
-    registeredCount,
-    unRegisteredPaidCount,
-    registrationPeriod,
-    payoutPeriod,
-    startIndexer,
-    endIndexer,
-  } = cycle;
-
-  const { budget, totalRegistrations, totalUnregisteredPaid, cycleStart } =
-    cycle.status;
-
-  const totalCyclePeriod = registrationPeriod + payoutPeriod || null;
-  const cycleStartAt = cycleStart || null;
-
-  const cyclePeriodData = useCalcPeriodBlocks(totalCyclePeriod, cycleStartAt);
-  const [totalPeriodDay] = chunk(cyclePeriodData.totalPeriodTime.split(" "), 2);
-
-  const budgetItem = getCycleBudgetSummaryItem(budget, decimals, symbol);
-
-  const totalRegistrationsItem = getCycleRegistrationSummaryItem(
-    totalRegistrations,
-    decimals,
-    symbol,
-    registeredCount,
-  );
-
-  const totalUnregisteredPaidItem = getCycleUnregisteredPaidSummaryItem(
-    totalUnregisteredPaid,
-    decimals,
-    symbol,
-    unRegisteredPaidCount,
-  );
-
-  const totalDurationItem = getCycleTotalDurationSummaryItem(
-    totalCyclePeriod,
-    totalPeriodDay,
-  );
-
-  const startTimeItem = getCycleBlockTimeSummaryItem(
-    "Start Time",
-    startIndexer.blockTime,
-    startIndexer.blockHeight,
-  );
-
-  const endTimeItem = getCycleBlockTimeSummaryItem(
-    "End Time",
-    endIndexer.blockTime,
-    endIndexer.blockHeight,
-  );
-
-  const items = [
-    budgetItem,
-    totalRegistrationsItem,
-    totalUnregisteredPaidItem,
-    totalDurationItem,
-    startTimeItem,
-    endTimeItem,
-  ];
+  const { budget } = cycle.status;
 
   return (
     <PrimaryCard>
       <div className="flex justify-between gap-x-4">
-        <Summary
-          items={[
-            {
-              title: "Cycle",
-              content: cycle.index,
-            },
-          ]}
-        />
+        <SummaryLayout>
+          <SalaryStatsIndexItem index={cycle.index} />
+        </SummaryLayout>
+
         <div className="flex items-start">
           <ClosedTag>Closed</ClosedTag>
         </div>
@@ -92,7 +28,24 @@ export default function FellowshipSalaryCycleDetailInfoClosed({ cycle = {} }) {
 
       <hr className="my-4" />
 
-      <Summary items={items} />
+      <SummaryLayout>
+        <SalaryStatsBudgetItem budget={budget} />
+        <SalaryStatsRegistrationItem cycleData={cycle} />
+        <SalaryStatsUnregisteredItem cycleData={cycle} />
+        <SalaryStatsTotalDurationSummaryItem cycleData={cycle} />
+        <SalaryStatsBlockTimeItem
+          title="Start Time"
+          blockHeight={startIndexer?.blockHeight}
+          blockTime={startIndexer?.blockTime}
+        />
+        {endIndexer && (
+          <SalaryStatsBlockTimeItem
+            title="End Time"
+            blockHeight={endIndexer?.blockHeight}
+            blockTime={endIndexer?.blockTime}
+          />
+        )}
+      </SummaryLayout>
 
       <div className="mt-4">
         <FellowshipCycleProgress cycle={cycle} />

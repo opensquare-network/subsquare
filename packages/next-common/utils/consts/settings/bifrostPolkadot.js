@@ -48,8 +48,6 @@ const bifrostPolkadot = {
   postLabels: defaultPostLabels,
   hasSubscan: true,
   useVoteCall: true,
-  hasReferenda: true,
-  hasFellowship: true,
   hasMultisig: true,
   multisigApiPrefix: "pbnc",
   description:
@@ -77,6 +75,10 @@ const bifrostPolkadot = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
+  },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
   },
 };
 

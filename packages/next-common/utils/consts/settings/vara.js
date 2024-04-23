@@ -71,17 +71,11 @@ const vara = {
   navPreferDark: true,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  noDemocracyModule: true,
-  hasReferenda: true,
-  hasFellowship: true,
-  hasDemocracy: false,
   hasTipsModule: false,
   hasStatescan: false,
   hasSubscan: true,
   hasDotreasury: false,
   hasTechComm: false,
-  // used to control whether to show votes delegation percentage on referendum detail page.
-  showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "vara",
@@ -109,6 +103,10 @@ const vara = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
+  },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
   },
 };
 

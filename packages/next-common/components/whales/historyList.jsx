@@ -1,5 +1,5 @@
 import { usePageProps } from "next-common/context/page";
-import { getReferendaWhalesHistory } from "next-common/services/serverSide/referenda/whales";
+import { fetchReferendaWhalesHistory } from "next-common/services/serverSide/referenda/whales";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useUpdateEffect } from "react-use";
@@ -36,7 +36,7 @@ export default function WhalesHistoryList() {
   });
 
   useUpdateEffect(() => {
-    getReferendaWhalesHistory(page, 25).then((resp) => {
+    fetchReferendaWhalesHistory(page, 25).then((resp) => {
       if (resp.result) {
         setData(resp.result);
       }
@@ -50,14 +50,18 @@ export default function WhalesHistoryList() {
       <SecondaryCard className="!p-6">
         <WhalesTabs />
 
-        <DataList columns={columns} rows={rows} />
+        <hr />
 
-        <Pagination
-          shallow
-          page={page}
-          pageSize={data.pageSize}
-          total={data.total}
-        />
+        <DataList className="mt-4" columns={columns} rows={rows} />
+
+        <div className="mt-2">
+          <Pagination
+            shallow
+            page={page}
+            pageSize={data.pageSize}
+            total={data.total}
+          />
+        </div>
       </SecondaryCard>
     </div>
   );

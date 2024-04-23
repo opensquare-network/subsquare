@@ -6,13 +6,11 @@ import { useMemo } from "react";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import FellowshipMembersLoadable from "next-common/components/pages/fellowship/loadable";
 import FellowshipMemberCommon from "next-common/components/pages/fellowship/common";
-import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import FellowshipMembersEmpty from "./empty";
 
 export default function FellowshipMembersPage() {
-  useFetchFellowshipCoreMembers();
   const members = useSelector(fellowshipCoreMembersSelector);
   const candidates = (members || []).filter((member) => member.rank <= 0);
   const pageMembers = useMemo(
