@@ -29,11 +29,10 @@ export default function MembersInduction({ className }) {
         <SystemInduct className="w-10 h-10 text-textTertiary" />
         <div className="flex flex-col">
           <span className="text-textPrimary text14Bold">
-            New Members Induction
+            New Member Induction
           </span>
           <span className="text-textTertiary text14Medium">
-            Inducting active account into the Polkadot Technical Fellowship
-            starting with rank 0
+            Induct a member starting with rank 0
           </span>
         </div>
       </div>

@@ -26,7 +26,7 @@ export default function Induct(props = {}) {
   return (
     <>
       <Tooltip
-        content={!canInduct && "Only available to the members with rank >= 3"}
+        content={!canInduct && "Only available to members with rank >= 3"}
       >
         <SecondaryButton
           size="small"
