@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useContextApi } from "next-common/context/api";
+import { useDispatch } from "react-redux";
+import { setFellowshipSalaryStatus } from "next-common/store/reducers/fellowship/salary";
 
 export default function useSubFellowshipSalaryStats() {
   const api = useContextApi();
-  const [stats, setStats] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!api || !api.query?.fellowshipSalary?.status) {
@@ -17,7 +19,8 @@ export default function useSubFellowshipSalaryStats() {
           return;
         }
 
-        setStats(rawOptional.unwrap().toJSON());
+        const json = rawOptional.unwrap().toJSON();
+        dispatch(setFellowshipSalaryStatus(json));
       })
       .then((result) => (unsub = result));
 
@@ -27,6 +30,4 @@ export default function useSubFellowshipSalaryStats() {
       }
     };
   }, [api]);
-
-  return stats;
 }

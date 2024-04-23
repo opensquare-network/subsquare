@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.0
+
+date: 2024-04-19
+
+- [Big] Show OpenGov voting whales.
+- [Big] Show referendum statistics on detail page.
+- [Big] Implement centrifuge dashboard on overview page.
+- [Medium] Show decentralized voices status and DV tags on detail page.
+- [Medium] Support self induction to polkadot fellowship salary system for fellowship members.
+- [Medium] Refactor connect wallet popup and support signet multisig wallet.
+- Show self and total votes on profile votes page.
+- Add filter to polkadot fellowship core/salary feeds.
+- Improve polkadot fellowship salary claimants fetch source, so we can update it in time.
+- Add a tooltip component on overview page to warn user they are performing as a proxy.
+- Show preimage missing warning for democracy referenda.
+- Refactor module fields in chain settings.
+- Fix styles and code refactor.
+
 ### 3.9.1
 
 date: 2024-04-06

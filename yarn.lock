@@ -2184,10 +2184,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.86.0":
-  version: 1.86.0
-  resolution: "@osn/icons@npm:1.86.0"
-  checksum: b3135d42cfd6ca0cf7b873343c8e2ec3fefc9b5a4f1017a792f9afa182a1e368940144970e2d5a1487c7bd241aa529a56ab71647cbee496dd9783b652db0c5ce
+"@osn/icons@npm:^1.93.0":
+  version: 1.93.0
+  resolution: "@osn/icons@npm:1.93.0"
+  checksum: 9d5fdda4023bab66bb8b47191c07bdec652adb9d3132296482842cd1d7f53a56bfe8f696a45a022506fd7d3917d4e6ed06b87052b4d759605940a4665bdd23e3
   languageName: node
   linkType: hard
 
@@ -3458,7 +3458,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.86.0
+    "@osn/icons": ^1.93.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -3492,7 +3492,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.86.0
+    "@osn/icons": ^1.93.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -3707,6 +3707,15 @@ __metadata:
   dependencies:
     tslib: ^2.4.0
   checksum: 51d7e3d8bd56818c49d6bfbd715f0dbeedc13cf723af41166e45c03e37f109336bbcb57a1f2020f4015957721aeb21e1a7fff281233d797ff7d3dd1f447fa258
+  languageName: node
+  linkType: hard
+
+"@talismn/signet-apps-sdk@npm:^0.0.7":
+  version: 0.0.7
+  resolution: "@talismn/signet-apps-sdk@npm:0.0.7"
+  dependencies:
+    react: ^18.2.0
+  checksum: 9b4495fb4d2eda6e468b21371a054156f753d36625066846f23e72854646bc0be03da4745c34464d39c3f948e8f38df8fc01ddad5ee7d164278bdba12a0deb14
   languageName: node
   linkType: hard
 
@@ -4807,6 +4816,15 @@ __metadata:
   peerDependencies:
     chart.js: ">=3.7.0"
   checksum: 443582b13779105c8f147638253e56e30d72c4cf28abab2da30a9f2637ccb068f5fade81ec6a9d78c03d10722107057ab9cc93042bb3951da63bc3edf79322a3
+  languageName: node
+  linkType: hard
+
+"chartjs-plugin-datalabels@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "chartjs-plugin-datalabels@npm:2.2.0"
+  peerDependencies:
+    chart.js: ">=3.0.0"
+  checksum: 26086a908a8e88507959b7aaf798b2d9794ea95f7a5889b8bb9f6b9f3437a7e2fdf18952d3ba403b2ff78e5b70452439fb323bd0dfe76e9d7d1dae1328dacb99
   languageName: node
   linkType: hard
 
@@ -8431,10 +8449,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^4.0.0":
-  version: 4.2.5
-  resolution: "minipass@npm:4.2.5"
-  checksum: 4f9c19af23a5d4a9e7156feefc9110634b178a8cff8f8271af16ec5ebf7e221725a97429952c856f5b17b30c2065ebd24c81722d90c93d2122611d75b952b48f
+"minipass@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "minipass@npm:5.0.0"
+  checksum: 425dab288738853fded43da3314a0b5c035844d6f3097a8e3b5b29b328da8f3c1af6fc70618b32c29ff906284cf6406b6841376f21caaadd0793c1d5a6a620ea
   languageName: node
   linkType: hard
 
@@ -8606,7 +8624,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.2.0
     "@mimirdev/apps-sdk": ^0.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.86.0
+    "@osn/icons": ^1.93.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.3.5
     "@osn/provider-options": 1.1.0
@@ -8618,11 +8636,13 @@ __metadata:
     "@radix-ui/react-hover-card": ^1.0.6
     "@radix-ui/react-tooltip": ^1.0.5
     "@reduxjs/toolkit": ^1.9.3
+    "@talismn/signet-apps-sdk": ^0.0.7
     "@types/lodash-es": ^4.17.12
     "@types/marked": ^6.0.0
     bignumber.js: ^9.0.2
     chart.js: ^4.1.1
     chartjs-plugin-annotation: ^2.1.0
+    chartjs-plugin-datalabels: ^2.2.0
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.2
     d3: ^7.8.5
@@ -11082,16 +11102,16 @@ __metadata:
   linkType: hard
 
 "tar@npm:^6.1.11, tar@npm:^6.1.2":
-  version: 6.1.13
-  resolution: "tar@npm:6.1.13"
+  version: 6.2.1
+  resolution: "tar@npm:6.2.1"
   dependencies:
     chownr: ^2.0.0
     fs-minipass: ^2.0.0
-    minipass: ^4.0.0
+    minipass: ^5.0.0
     minizlib: ^2.1.1
     mkdirp: ^1.0.3
     yallist: ^4.0.0
-  checksum: 8a278bed123aa9f53549b256a36b719e317c8b96fe86a63406f3c62887f78267cea9b22dc6f7007009738509800d4a4dccc444abd71d762287c90f35b002eb1c
+  checksum: f1322768c9741a25356c11373bce918483f40fa9a25c69c59410c8a1247632487edef5fe76c5f12ac51a6356d2f1829e96d2bc34098668a2fc34d76050ac2b6c
   languageName: node
   linkType: hard
 

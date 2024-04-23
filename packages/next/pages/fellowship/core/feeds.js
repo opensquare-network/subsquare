@@ -1,4 +1,3 @@
-import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
 import FellowshipCoreCommon from "next-common/components/fellowship/core/common";
 import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -8,8 +7,6 @@ import FellowshipCoreFeedsContainer from "next-common/components/fellowship/core
 import { defaultPageSize } from "next-common/utils/constants";
 
 export default function FellowshipCoreFeedsPage({ fellowshipCoreFeeds }) {
-  useFetchFellowshipCoreMembers();
-
   return (
     <FellowshipCoreCommon>
       <FellowshipCoreFeedsContainer feeds={fellowshipCoreFeeds} />

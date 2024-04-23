@@ -24,7 +24,6 @@ import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { getSingleSigWallets } from "next-common/utils/consts/connect";
-import Terms from "./login/terms";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -318,8 +317,6 @@ export default function LinkedAddress() {
             setAccounts={setAccounts}
             onSelect={() => setShowSelectWallet(false)}
           />
-
-          <Terms />
         </Popup>
       )}
     </NeutralPanel>

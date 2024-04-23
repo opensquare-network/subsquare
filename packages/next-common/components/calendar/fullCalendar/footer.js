@@ -16,7 +16,9 @@ import {
 } from "./consts";
 
 export default function FullCalendarFooter() {
-  const { hasReferenda, hasFellowship } = useChainSettings();
+  const {
+    modules: { referenda: hasReferenda, fellowship: hasFellowship },
+  } = useChainSettings();
   const hasGov2 = hasReferenda || hasFellowship;
 
   const categories = useMemo(

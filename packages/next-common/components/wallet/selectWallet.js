@@ -19,6 +19,8 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
 import { noop } from "lodash-es";
 import { normalizeAddress } from "next-common/utils/address";
+import { SignetWallet } from "./signetWallet";
+import { useSignetAccounts } from "next-common/context/signet";
 
 export default function SelectWallet({
   wallets,
@@ -34,6 +36,7 @@ export default function SelectWallet({
   const [waitingPermissionWallet, setWaitingPermissionWallet] = useState(null);
   const { injectedWeb3 } = useInjectedWeb3();
   const { chainType, ethereumNetwork } = useChainSettings();
+  const signetAccounts = useSignetAccounts();
 
   const loadPolkadotAccounts = useCallback(
     async (selectedWallet) => {
@@ -127,6 +130,15 @@ export default function SelectWallet({
     ],
   );
 
+  const loadSignetVault = useCallback(
+    (wallet) => {
+      setSelectWallet(wallet);
+      setWallet(wallet);
+      setAccounts(signetAccounts);
+    },
+    [signetAccounts, setAccounts],
+  );
+
   const loadWalletAccounts = useCallback(
     async (wallet) => {
       if (!wallet) {
@@ -144,6 +156,10 @@ export default function SelectWallet({
           await loadPolkadotAccounts(wallet);
           break;
         }
+        case WalletTypes.SIGNET: {
+          await loadSignetVault(wallet);
+          break;
+        }
         case WalletTypes.METAMASK: {
           await loadMetaMaskAccounts(wallet);
           break;
@@ -158,7 +174,7 @@ export default function SelectWallet({
         }
       }
     },
-    [loadPolkadotAccounts, loadMetaMaskAccounts],
+    [loadPolkadotAccounts, loadMetaMaskAccounts, loadSignetVault],
   );
 
   return (
@@ -185,6 +201,21 @@ export default function SelectWallet({
         if (wallet.extensionName === WalletTypes.NOVA) {
           return (
             <NovaWallet
+              key={index}
+              wallet={wallet}
+              onClick={async () => {
+                await loadWalletAccounts(wallet.extensionName);
+                onSelect();
+              }}
+              selected={selected}
+              loading={loading}
+            />
+          );
+        }
+
+        if (wallet.extensionName === WalletTypes.SIGNET) {
+          return (
+            <SignetWallet
               key={index}
               wallet={wallet}
               onClick={async () => {

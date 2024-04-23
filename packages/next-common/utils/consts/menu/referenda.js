@@ -37,7 +37,11 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
         name: Names.all,
         pathname: "/referenda",
         activeCount: totalActiveCount,
-        extraMatchNavMenuActivePathnames: ["/referenda/statistics"],
+        extraMatchNavMenuActivePathnames: [
+          "/referenda/statistics",
+          "/referenda/whales",
+          "/referenda/whales/history",
+        ],
         excludeToSumActives: true,
       },
     ],

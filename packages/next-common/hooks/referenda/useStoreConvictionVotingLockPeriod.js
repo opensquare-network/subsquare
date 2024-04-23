@@ -7,7 +7,9 @@ import { useContextApi } from "next-common/context/api";
 export default function useStoreConvictionVotingLockPeriod() {
   const dispatch = useDispatch();
   const api = useContextApi();
-  const { hasReferenda } = useChainSettings();
+  const {
+    modules: { referenda: hasReferenda },
+  } = useChainSettings();
 
   useEffect(() => {
     if (api && api.consts?.convictionVoting && hasReferenda) {

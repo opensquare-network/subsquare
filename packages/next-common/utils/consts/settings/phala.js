@@ -95,6 +95,9 @@ const phala = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "rgba(39,42,58,1)",
   },
+  multisigWallets: {
+    signet: true,
+  },
 };
 
 export default phala;

@@ -25,10 +25,12 @@ export function useDepositSections(
 
   return useMemo(() => {
     const {
-      hasReferenda,
-      hasFellowship,
+      modules: {
+        referenda: hasReferenda,
+        fellowship: hasFellowship,
+        democracy: hasDemocracyModule,
+      },
       hasTreasuryModule,
-      noDemocracyModule,
       noIdentityModule,
     } = chainSettings;
 
@@ -41,7 +43,7 @@ export function useDepositSections(
         activeCount: fellowship.activeCount,
         content: <DepositTemplate key="fellowship" {...fellowship} />,
       },
-      !noDemocracyModule && {
+      hasDemocracyModule && {
         activeCount: democracy.activeCount,
         content: <DepositTemplate key="democracy" {...democracy} />,
       },

@@ -44,10 +44,7 @@ const rococo = {
   links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasReferenda: true,
-  hasFellowship: true,
   hasTipsModule: false,
-  noDemocracyModule: true,
   hasSubscan: true,
   hasDiscussionsForumTopics: true,
   discourseForumLink: "https://forum.polkadot.network",
@@ -56,6 +53,10 @@ const rococo = {
   modules: {
     referenda: true,
     fellowship: true,
+  },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
   },
 };
 

@@ -20,7 +20,9 @@ export default function DemocracyStatisticsPage({
   turnout,
   summary,
 }) {
-  const { hasDemocracy } = useChainSettings();
+  const {
+    modules: { democracy: hasDemocracyModule },
+  } = useChainSettings();
 
   const title = "Democracy Statistics";
   const seoInfo = { title, desc: title };
@@ -51,7 +53,7 @@ export default function DemocracyStatisticsPage({
           </div>
         </div>
 
-        {hasDemocracy !== false && (
+        {hasDemocracyModule && (
           <div>
             <Header className="px-6 mb-4">Delegation</Header>
             <div className="mt-4">

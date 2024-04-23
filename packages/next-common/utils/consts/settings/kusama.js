@@ -90,14 +90,10 @@ const kusama = {
   navPreferDark: true,
   group: MenuGroups.KusamaAndParachains,
   links,
-  hasReferenda: true,
-  hasFellowship: true,
   hasStatescan: true,
   hasIdentityTimeline: true,
   hasSubscan: true,
   postLabels: defaultPostLabels,
-  hasDemocracy: false,
-  noDemocracyModule: true,
   useVoteCall: true,
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,
@@ -106,8 +102,6 @@ const kusama = {
   hasMultisig: true,
   hasTipsModule: false,
   multisigApiPrefix: "kusama",
-  // used to control whether to show votes delegation percentage on referendum detail page.
-  showReferendaReferendumDelegationPercentage: true,
   showAchainableLabels: true,
   description:
     "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
@@ -115,6 +109,7 @@ const kusama = {
   modules: {
     referenda: true,
     fellowship: true,
+    whales: true,
   },
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",
@@ -134,6 +129,10 @@ const kusama = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
+  },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
   },
 };
 

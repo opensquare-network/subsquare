@@ -5,7 +5,6 @@ import { ListCard } from "./styled";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import VoteDetailPopup from "./voteDetailPopup";
 import VotesList from "./votesList";
-import MobileVotesList from "./mobile/votesList";
 import MobileFellowshipVotesList from "./mobile/fellowshipVotesList";
 import { isNil } from "lodash-es";
 import { useIsFellowship, useModuleName } from "./common";
@@ -57,31 +56,38 @@ export default function ResponsiveVotes() {
   }
 
   const VotesListComponent = isFellowship ? FellowshipVotesList : VotesList;
-  const MobileVotesListComponent = isFellowship
-    ? MobileFellowshipVotesList
-    : MobileVotesList;
 
-  return (
-    <>
-      {width > 1024 ? (
-        <ListCard>
-          <VotesListComponent
-            data={data}
-            isLoading={isLoading}
-            fetchData={fetchData}
-            setShowVoteDetail={setShowVoteDetail}
-            page={page}
-          />
-        </ListCard>
+  let listContent = (
+    <ListCard>
+      <VotesListComponent
+        data={data}
+        isLoading={isLoading}
+        fetchData={fetchData}
+        setShowVoteDetail={setShowVoteDetail}
+        page={page}
+      />
+    </ListCard>
+  );
+
+  if (isFellowship) {
+    listContent =
+      width > 1024 ? (
+        listContent
       ) : (
-        <MobileVotesListComponent
+        <MobileFellowshipVotesList
           data={data}
           isLoading={isLoading}
           fetchData={fetchData}
           setShowVoteDetail={setShowVoteDetail}
           page={page}
         />
-      )}
+      );
+  }
+
+  return (
+    <>
+      {listContent}
+
       {showVoteDetail !== null && (
         <VoteDetailPopup
           vote={showVoteDetail}

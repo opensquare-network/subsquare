@@ -100,7 +100,6 @@ const polkadot = {
   group: MenuGroups.PolkadotAndParachains,
   links,
   postLabels: defaultPostLabels,
-  hasReferenda: true,
   hasStatescan: true,
   hasIdentityTimeline: true,
   hasSubscan: true,
@@ -110,17 +109,19 @@ const polkadot = {
   discourseForumLink: "https://forum.polkadot.network",
   hasMultisig: true,
   multisigApiPrefix: "dot",
-  // used to control whether to show votes delegation percentage on referendum detail page.
-  showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,
   showAchainableLabels: false,
   description:
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
   hideNewTreasuryProposalButton: true,
-  noDemocracyModule: true,
   ...polkadotThemeVars,
   modules: {
     referenda: true,
+    whales: true,
+  },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
   },
 };
 

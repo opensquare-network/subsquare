@@ -10,14 +10,25 @@ const LinkInnerWrapper = styled.a`
   align-items: center;
 `;
 
-export default function PageCaret({ isPre = true, page, onPageChange = null }) {
+export default function PageCaret({
+  isPre = true,
+  page,
+  onPageChange = null,
+  shallow = false,
+}) {
   const router = useRouter();
   const [url, query] = router.asPath.split("?");
   const urlParams = new URLSearchParams(query);
   urlParams.set("page", page);
 
   return (
-    <Link href={`${url}?${urlParams}`} passHref legacyBehavior>
+    <Link
+      shallow={shallow}
+      scroll={!shallow}
+      href={`${url}?${urlParams}`}
+      passHref
+      legacyBehavior
+    >
       <LinkInnerWrapper
         onClick={(e) => {
           onPageChange && onPageChange(e, page);
