@@ -1,5 +1,5 @@
 import { usePageProps } from "next-common/context/page";
-import { getReferendaWhales } from "next-common/services/serverSide/referenda/whales";
+import { fetchReferendaWhales } from "next-common/services/serverSide/referenda/whales";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useUpdateEffect } from "react-use";
@@ -38,7 +38,7 @@ export default function WhalesCurrentList() {
   });
 
   useUpdateEffect(() => {
-    getReferendaWhales(page, 25).then((resp) => {
+    fetchReferendaWhales(page, 25).then((resp) => {
       if (resp.result) {
         setData(resp.result);
       }

@@ -1,5 +1,5 @@
 import { usePageProps } from "next-common/context/page";
-import { getReferendaWhalesHistory } from "next-common/services/serverSide/referenda/whales";
+import { fetchReferendaWhalesHistory } from "next-common/services/serverSide/referenda/whales";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useUpdateEffect } from "react-use";
@@ -36,7 +36,7 @@ export default function WhalesHistoryList() {
   });
 
   useUpdateEffect(() => {
-    getReferendaWhalesHistory(page, 25).then((resp) => {
+    fetchReferendaWhalesHistory(page, 25).then((resp) => {
       if (resp.result) {
         setData(resp.result);
       }
