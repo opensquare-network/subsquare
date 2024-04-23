@@ -34,6 +34,7 @@ export default function SubmitProposalPopupCommon({
   setPreimageLength,
   onClose,
   newProposalPopup,
+  children,
 }) {
   const [showNewPreimagePopup, setShowNewPreimagePopup] = useState(false);
   const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
@@ -55,18 +56,21 @@ export default function SubmitProposalPopupCommon({
 
   return (
     <Popup wide title="Submit Proposal" onClose={onClose}>
-      <ChoiceButton
-        icon={<NewPreimageSVG />}
-        name="New preimage"
-        description="Proposals can be submitted with preimage hash-only"
-        onClick={() => setShowNewPreimagePopup(true)}
-      />
-      <ChoiceButton
-        icon={<NewProposalSVG />}
-        name="I already have a preimage"
-        description="Copy preimage hash to continue submitting a proposal"
-        onClick={() => setShowNewProposalPopup(true)}
-      />
+      <div className="flex flex-col !mt-[24px] gap-[16px]">
+        <ChoiceButton
+          icon={<NewPreimageSVG />}
+          name="New preimage"
+          description="Proposals can be submitted with preimage hash-only"
+          onClick={() => setShowNewPreimagePopup(true)}
+        />
+        <ChoiceButton
+          icon={<NewProposalSVG />}
+          name="I already have a preimage"
+          description="Copy preimage hash to continue submitting a proposal"
+          onClick={() => setShowNewProposalPopup(true)}
+        />
+      </div>
+      {children}
     </Popup>
   );
 }
