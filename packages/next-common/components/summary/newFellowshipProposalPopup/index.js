@@ -34,7 +34,7 @@ export default function NewFellowshipProposalPopup({
   const api = useContextApi();
   const { proposalOriginName, proposalOriginTypeDef } = useMemo(() => {
     if (!api) {
-      return;
+      return {};
     }
     const { name, type } = api.tx.fellowshipReferenda.submit.meta.args[0];
     const typeDef = getTypeDef(type.toString());
