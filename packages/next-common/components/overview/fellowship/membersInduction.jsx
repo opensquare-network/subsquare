@@ -3,11 +3,13 @@ import { cn } from "next-common/utils";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Induct from "next-common/components/fellowship/core/summary/induct";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useFellowshipCanInductMember } from "next-common/hooks/fellowship/useFellowshipCanInductMember";
 
 export default function MembersInduction({ className }) {
   const realAddress = useRealAddress();
+  const canInductMember = useFellowshipCanInductMember();
 
-  if (!realAddress) {
+  if (!realAddress || !canInductMember) {
     return null;
   }
 
