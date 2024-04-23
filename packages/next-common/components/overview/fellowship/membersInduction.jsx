@@ -3,8 +3,15 @@ import { cn } from "next-common/utils";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Induct from "next-common/components/fellowship/core/summary/induct";
 import Tooltip from "next-common/components/tooltip";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function MembersInduction({ className }) {
+  const realAddress = useRealAddress();
+
+  if (!realAddress) {
+    return null;
+  }
+
   return (
     <SecondaryCard
       className={cn("flex items-center justify-between", className)}
