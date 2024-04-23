@@ -8,7 +8,7 @@ import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useF
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { isNil } from "lodash-es";
 import FellowshipSalaryRegisterPopup from "next-common/components/fellowship/salary/actions/register/popup";
-import { MaybeTooltip } from "next-common/components/tooltip";
+import Tooltip from "next-common/components/tooltip";
 import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
 import { usePageProps } from "next-common/context/page";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
@@ -89,7 +89,7 @@ export default function FellowshipSalaryRegister() {
 
   return (
     <>
-      <MaybeTooltip tooltip={tooltipText}>
+      <Tooltip tooltip={tooltipText}>
         <SecondaryButton
           size="small"
           disabled={disabled}
@@ -97,7 +97,7 @@ export default function FellowshipSalaryRegister() {
         >
           Register
         </SecondaryButton>
-      </MaybeTooltip>
+      </Tooltip>
       {showPopup && (
         <FellowshipSalaryRegisterPopup onClose={() => setShowPopup(false)} />
       )}

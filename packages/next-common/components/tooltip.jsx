@@ -74,19 +74,3 @@ export default function Tooltip({
     </RadixTooltip.Provider>
   );
 }
-
-export const BlockTooltip = styled(Tooltip)`
-  display: block;
-`;
-
-export const InlineBlockTooltip = styled(Tooltip)`
-  display: inline-block;
-`;
-
-export function MaybeTooltip({ tooltip, children }) {
-  if (tooltip) {
-    return <Tooltip content={tooltip}>{children}</Tooltip>;
-  }
-
-  return children;
-}
