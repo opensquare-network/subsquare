@@ -7,7 +7,10 @@ import { isSameAddress } from "next-common/utils";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemPlus } from "@osn/icons/subsquare";
 
-export default function Induct() {
+/**
+ * @param {ButtonProps} props
+ */
+export default function Induct(props = {}) {
   const [showPopup, setShowPopup] = useState(false);
   const members = useSelector(fellowshipCollectiveMembersSelector);
   const realAddress = useRealAddress();
@@ -25,9 +28,8 @@ export default function Induct() {
         size="small"
         disabled={!canInduct}
         onClick={() => setShowPopup(true)}
-        iconLeft={
-          <SystemPlus className="inline-flex w-4 h-4 [&_path]:fill-current" />
-        }
+        iconLeft={<SystemPlus className="inline-flex w-4 h-4 text-current" />}
+        {...props}
       >
         Induct
       </SecondaryButton>
