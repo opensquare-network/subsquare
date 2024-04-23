@@ -4,14 +4,14 @@ import {
   gov2ReferendaWhalesApi,
 } from "next-common/services/url";
 
-export function getReferendaWhales(page = 1, pageSize = 10) {
+export function fetchReferendaWhales(page = 1, pageSize = 10) {
   return nextApi.fetch(gov2ReferendaWhalesApi, {
     page,
     pageSize,
   });
 }
 
-export function getReferendaWhalesHistory(page = 1, pageSize = 10) {
+export function fetchReferendaWhalesHistory(page = 1, pageSize = 10) {
   return nextApi.fetch(gov2ReferendaHistoryWhalesApi, {
     page,
     pageSize,

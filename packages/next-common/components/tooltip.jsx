@@ -74,11 +74,3 @@ export default function Tooltip({
     </RadixTooltip.Provider>
   );
 }
-
-export const BlockTooltip = styled(Tooltip)`
-  display: block;
-`;
-
-export const InlineBlockTooltip = styled(Tooltip)`
-  display: inline-block;
-`;

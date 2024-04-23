@@ -6,6 +6,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import ContextPopup from "./contextPopup";
+import { useSignetAccounts, useSignetSdk } from "next-common/context/signet";
 
 function usePolkadotAccounts() {
   const [accounts, setAccounts] = useState([]);
@@ -45,13 +46,15 @@ function usePolkadotAccounts() {
 export default function CanBeAnyWalletSigner({ children }) {
   const [metamaskAccounts, isLoadingMetamask] = useMetaMaskAccounts(true);
   const [polkadotAccounts, isLoadingPolkadot] = usePolkadotAccounts(true);
+  const signetAccounts = useSignetAccounts();
+  const { loading: isLoadingSignet } = useSignetSdk();
 
   const combinedAccounts = useMemo(
-    () => [...metamaskAccounts, ...polkadotAccounts],
-    [metamaskAccounts, polkadotAccounts],
+    () => [...metamaskAccounts, ...polkadotAccounts, ...signetAccounts],
+    [metamaskAccounts, polkadotAccounts, signetAccounts],
   );
 
-  if (isLoadingMetamask || isLoadingPolkadot) {
+  if (isLoadingMetamask || isLoadingPolkadot || isLoadingSignet) {
     return null;
   }
 

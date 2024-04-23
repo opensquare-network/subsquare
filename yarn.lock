@@ -3710,6 +3710,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@talismn/signet-apps-sdk@npm:^0.0.7":
+  version: 0.0.7
+  resolution: "@talismn/signet-apps-sdk@npm:0.0.7"
+  dependencies:
+    react: ^18.2.0
+  checksum: 9b4495fb4d2eda6e468b21371a054156f753d36625066846f23e72854646bc0be03da4745c34464d39c3f948e8f38df8fc01ddad5ee7d164278bdba12a0deb14
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^8.0.0":
   version: 8.20.0
   resolution: "@testing-library/dom@npm:8.20.0"
@@ -4807,6 +4816,15 @@ __metadata:
   peerDependencies:
     chart.js: ">=3.7.0"
   checksum: 443582b13779105c8f147638253e56e30d72c4cf28abab2da30a9f2637ccb068f5fade81ec6a9d78c03d10722107057ab9cc93042bb3951da63bc3edf79322a3
+  languageName: node
+  linkType: hard
+
+"chartjs-plugin-datalabels@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "chartjs-plugin-datalabels@npm:2.2.0"
+  peerDependencies:
+    chart.js: ">=3.0.0"
+  checksum: 26086a908a8e88507959b7aaf798b2d9794ea95f7a5889b8bb9f6b9f3437a7e2fdf18952d3ba403b2ff78e5b70452439fb323bd0dfe76e9d7d1dae1328dacb99
   languageName: node
   linkType: hard
 
@@ -8618,11 +8636,13 @@ __metadata:
     "@radix-ui/react-hover-card": ^1.0.6
     "@radix-ui/react-tooltip": ^1.0.5
     "@reduxjs/toolkit": ^1.9.3
+    "@talismn/signet-apps-sdk": ^0.0.7
     "@types/lodash-es": ^4.17.12
     "@types/marked": ^6.0.0
     bignumber.js: ^9.0.2
     chart.js: ^4.1.1
     chartjs-plugin-annotation: ^2.1.0
+    chartjs-plugin-datalabels: ^2.2.0
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.2
     d3: ^7.8.5

@@ -13,7 +13,7 @@ import FellowshipSalaryMemberStatus from "./status";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useFellowshipSalaryMemberStatusFilter } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStatusFilter";
-import { claimStatsValues, claimantListColumns } from "./consts";
+import { claimStatsValues, claimantListColumns } from "./utils";
 import { useFellowSalaryClaimantsData } from "next-common/hooks/fellowship/salary/useFellowshipSalaryClaimantsData";
 
 export default function FellowshipSalaryClaimants() {

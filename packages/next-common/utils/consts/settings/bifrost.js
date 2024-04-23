@@ -75,7 +75,6 @@ const bifrost = {
   subscanDomain: "bifrost-kusama",
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  showReferendaReferendumDelegationPercentage: true,
   description:
     "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
   modules: {
@@ -104,6 +103,10 @@ const bifrost = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
+  },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
   },
 };
 

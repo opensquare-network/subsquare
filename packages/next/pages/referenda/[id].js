@@ -31,6 +31,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/votesBubble";
+import ProposalAddress from "next-common/components/statistics/referenda/proposalAddress";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -66,6 +67,7 @@ function ReferendumContent() {
         metadata={<Gov2ReferendumMetadata info={info} />}
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
         votesBubble={<Gov2ReferendaVotesBubble />}
+        statistics={<ProposalAddress />}
       />
     </ContentWithComment>
   );

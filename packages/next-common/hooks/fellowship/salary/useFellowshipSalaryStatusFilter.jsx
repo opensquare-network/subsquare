@@ -1,4 +1,5 @@
 import { lowerFirst } from "lodash-es";
+import { toClaimStatusLabel } from "next-common/components/fellowship/salary/claimants/utils";
 import Select from "next-common/components/select";
 import { useState } from "react";
 
@@ -9,7 +10,7 @@ export function useFellowshipSalaryMemberStatusFilter(statusValues = []) {
       value: null,
     },
     ...statusValues.map((value) => {
-      const label = value === "Attempted" ? "Paid" : value;
+      const label = toClaimStatusLabel(value);
       return {
         label,
         value: lowerFirst(value),
