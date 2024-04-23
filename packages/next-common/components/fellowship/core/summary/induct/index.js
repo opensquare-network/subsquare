@@ -6,6 +6,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemPlus } from "@osn/icons/subsquare";
+import Tooltip from "next-common/components/tooltip";
 
 /**
  * @param {ButtonProps} props
@@ -24,15 +25,19 @@ export default function Induct(props = {}) {
 
   return (
     <>
-      <SecondaryButton
-        size="small"
-        disabled={!canInduct}
-        onClick={() => setShowPopup(true)}
-        iconLeft={<SystemPlus className="inline-flex w-4 h-4 text-current" />}
-        {...props}
+      <Tooltip
+        content={!canInduct && "Only available to the members with rank >= 3"}
       >
-        Induct
-      </SecondaryButton>
+        <SecondaryButton
+          size="small"
+          disabled={!canInduct}
+          onClick={() => setShowPopup(true)}
+          iconLeft={<SystemPlus className="inline-flex w-4 h-4 text-current" />}
+          {...props}
+        >
+          Induct
+        </SecondaryButton>
+      </Tooltip>
       {showPopup && (
         <FellowshipCoreInductionPopup onClose={() => setShowPopup(false)} />
       )}

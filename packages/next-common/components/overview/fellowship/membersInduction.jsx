@@ -2,7 +2,6 @@ import { SystemInduct } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Induct from "next-common/components/fellowship/core/summary/induct";
-import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function MembersInduction({ className }) {
@@ -29,9 +28,7 @@ export default function MembersInduction({ className }) {
         </div>
       </div>
 
-      <Tooltip content="Only available to the members with rank >= 3">
-        <Induct size="large" />
-      </Tooltip>
+      <Induct size="large" />
     </SecondaryCard>
   );
 }
