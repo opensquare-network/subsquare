@@ -9,7 +9,7 @@ import {
 import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import FellowshipSalaryImportPopup from "next-common/components/fellowship/salary/summary/import/popup";
-import { MaybeTooltip } from "next-common/components/tooltip";
+import Tooltip from "next-common/components/tooltip";
 import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
 
 export default function Import() {
@@ -56,7 +56,7 @@ export default function Import() {
 
   return (
     <>
-      <MaybeTooltip tooltip={tooltipText}>
+      <Tooltip content={tooltipText}>
         <PrimaryButton
           size="small"
           disabled={disabled}
@@ -67,7 +67,7 @@ export default function Import() {
         >
           Import me
         </PrimaryButton>
-      </MaybeTooltip>
+      </Tooltip>
       {showPopup && (
         <FellowshipSalaryImportPopup onClose={() => setShowPopup(false)} />
       )}
