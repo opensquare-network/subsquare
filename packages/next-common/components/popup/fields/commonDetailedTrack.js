@@ -1,8 +1,7 @@
 import React from "react";
 import { noop } from "lodash-es";
 import { startCase } from "lodash-es";
-import Select from "../../select";
-import PopupLabel from "../label";
+import CommonSelectField from "./commonSelectField";
 
 export default function CommonDetailedTrack({
   title = "Track",
@@ -28,15 +27,12 @@ export default function CommonDetailedTrack({
   });
 
   return (
-    <div>
-      {title && <PopupLabel text={title} />}
-      <Select
-        value={trackId}
-        options={options}
-        onChange={(item) => setTrackId(item.value)}
-        maxDisplayItem={7}
-        itemHeight={56}
-      />
-    </div>
+    <CommonSelectField
+      title={title}
+      value={trackId}
+      setValue={setTrackId}
+      options={options}
+      itemHeight={56}
+    />
   );
 }
