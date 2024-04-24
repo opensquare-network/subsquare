@@ -8,12 +8,10 @@ export function useFellowshipCanInductMember() {
   const members = useSelector(fellowshipCollectiveMembersSelector);
   const realAddress = useRealAddress();
 
-  const canInduct = useMemo(() => {
+  return useMemo(() => {
     const found = (members || []).find((m) =>
       isSameAddress(m.address, realAddress),
     );
     return found && found.rank >= 3;
   }, [members, realAddress]);
-
-  return canInduct;
 }
