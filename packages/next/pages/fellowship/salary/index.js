@@ -3,16 +3,13 @@ import FellowshipSalaryCommon from "next-common/components/fellowship/salary/com
 import FellowshipHistoryCyclesSection from "next-common/components/fellowship/salary/cycles/section";
 import FellowshipSalaryActiveCycle from "next-common/components/fellowship/salary/cycles/current";
 import { withFellowshipSalaryCommonProps } from "next-common/services/serverSide/fellowship/common";
-import { MySalaryClaimantProvider } from "next-common/context/fellowship/myClaimant";
 
 export default function FellowshipSalaryPage() {
   return (
-    <MySalaryClaimantProvider>
-      <FellowshipSalaryCommon>
-        <FellowshipSalaryActiveCycle />
-        <FellowshipHistoryCyclesSection />
-      </FellowshipSalaryCommon>
-    </MySalaryClaimantProvider>
+    <FellowshipSalaryCommon>
+      <FellowshipSalaryActiveCycle />
+      <FellowshipHistoryCyclesSection />
+    </FellowshipSalaryCommon>
   );
 }
 
