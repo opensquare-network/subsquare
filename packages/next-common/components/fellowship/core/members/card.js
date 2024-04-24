@@ -11,6 +11,7 @@ import FellowshipMemberInfoWrapper from "next-common/components/fellowship/core/
 import FellowshipMemberSalary from "next-common/components/fellowship/core/members/salary";
 import SignalIndicator from "next-common/components/icons/signalIndicator";
 import Actions from "next-common/components/fellowship/core/members/actions";
+import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
 
 function AvatarAndAddress({ address, isActive }) {
   return (
@@ -34,11 +35,10 @@ function AvatarAndAddress({ address, isActive }) {
 }
 
 export default function FellowshipCoreMemberCard({ member = {} }) {
-  const {
-    address,
-    rank,
-    status: { isActive, lastPromotion, lastProof } = {},
-  } = member;
+  const { address, rank } = member;
+  const { member: statusFromStorage } = useSubFellowshipCoreMember(address);
+  const { isActive, lastPromotion, lastProof } =
+    statusFromStorage || member.status || {};
 
   return (
     <SecondaryCard>
