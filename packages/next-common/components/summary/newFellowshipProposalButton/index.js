@@ -4,7 +4,7 @@ import SubmitFellowshipProposalPopup from "./submitProposalPopup";
 import { useState } from "react";
 import { useChain } from "next-common/context/chain";
 
-export default function NewFellowshipProposalButton({ module }) {
+export default function NewFellowshipProposalButton() {
   const chain = useChain();
   const [showPopup, setShowPopup] = useState(false);
   if (![Chains.kusama, Chains.collectives, Chains.rococo].includes(chain)) {
@@ -15,10 +15,7 @@ export default function NewFellowshipProposalButton({ module }) {
     <>
       <NewButton setShowPopup={setShowPopup} />
       {showPopup && (
-        <SubmitFellowshipProposalPopup
-          onClose={() => setShowPopup(false)}
-          module={module}
-        />
+        <SubmitFellowshipProposalPopup onClose={() => setShowPopup(false)} />
       )}
     </>
   );
