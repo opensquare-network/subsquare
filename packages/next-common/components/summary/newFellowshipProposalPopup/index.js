@@ -11,7 +11,19 @@ import SubmissionDeposit from "../newProposalPopup/submissionDeposit";
 import PreimageField from "../newProposalPopup/preimageField";
 import EnactmentBlocks from "../newProposalPopup/enactmentBlocks";
 import DetailedFellowshipTrack from "next-common/components/popup/fields/detailedFellowshipTrackField";
-import { getProposalOrigin } from "./getProposalOrigin";
+import { usePageProps } from "next-common/context/page";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+
+function useProposalOrigin(trackId) {
+  const { fellowshipTracksDetail } = usePageProps();
+  const origins = (fellowshipTracksDetail || []).find(
+    (track) => track.id === trackId,
+  )?.origins;
+  if (Array.isArray(origins)) {
+    return origins[0];
+  }
+  return origins;
+}
 
 export default function NewFellowshipProposalPopup({
   track: _track,
@@ -29,6 +41,7 @@ export default function NewFellowshipProposalPopup({
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
 
   const [trackId, setTrackId] = useState(_track?.id);
+  const proposalOrigin = useProposalOrigin(trackId);
 
   const disabled =
     isNil(trackId) ||
@@ -50,9 +63,13 @@ export default function NewFellowshipProposalPopup({
         return;
       }
 
-      const proposalOriginValue = getProposalOrigin(trackId);
+      if (!proposalOrigin) {
+        dispatch(newErrorToast("Proposal origin is not set correctly"));
+        return;
+      }
+
       let tx = api.tx.fellowshipReferenda.submit(
-        proposalOriginValue,
+        proposalOrigin,
         {
           Lookup: {
             hash: preimageHash,
@@ -93,7 +110,7 @@ export default function NewFellowshipProposalPopup({
       preimageHash,
       preimageLength,
       onClose,
-      trackId,
+      proposalOrigin,
     ],
   );
 

@@ -13,6 +13,17 @@ import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
 import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
 
+function useProposalOrigin(trackId) {
+  const { tracksDetail } = usePageProps();
+  const origins = (tracksDetail || []).find(
+    (track) => track.id === trackId,
+  )?.origins;
+  if (Array.isArray(origins)) {
+    return origins[0];
+  }
+  return origins;
+}
+
 export default function NewProposalPopup({
   track: _track,
   onClose,
@@ -26,6 +37,8 @@ export default function NewProposalPopup({
   const [isLoading, setIsLoading] = useState(false);
 
   const [trackId, setTrackId] = useState(_track?.id);
+  const proposalOrigin = useProposalOrigin(trackId);
+
   const [enactment, setEnactment] = useState();
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
@@ -55,15 +68,19 @@ export default function NewProposalPopup({
         return;
       }
 
-      let proposalOrigin = null;
-      if (track?.name === "root") {
-        proposalOrigin = { system: "Root" };
-      } else {
-        proposalOrigin = { Origins: upperFirstCamelCase(track?.name) };
+      let proposalOriginValue = proposalOrigin;
+
+      // When proposal origin is not defined in track detail, we use the track name as origin
+      if (!proposalOriginValue) {
+        if (track?.name === "root") {
+          proposalOriginValue = { system: "Root" };
+        } else {
+          proposalOriginValue = { Origins: upperFirstCamelCase(track?.name) };
+        }
       }
 
       let tx = api.tx.referenda.submit(
-        proposalOrigin,
+        proposalOriginValue,
         {
           Lookup: {
             hash: preimageHash,
@@ -101,6 +118,7 @@ export default function NewProposalPopup({
       router,
       isMounted,
       track?.name,
+      proposalOrigin,
       enactment,
       preimageHash,
       preimageLength,
