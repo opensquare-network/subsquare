@@ -24,7 +24,7 @@ const EMPTY_PROPOSAL = {
   storageFee: BN_ZERO,
 };
 
-function getState(api, proposal) {
+export function getState(api, proposal) {
   let encodedHash = EMPTY_HASH;
   let encodedProposal = null;
   let encodedLength = 0;
