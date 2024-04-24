@@ -26,7 +26,7 @@ function getCallState(fn, values = []) {
   };
 }
 
-function getExtrinsicValues(value) {
+export function getExtrinsicValues(value) {
   if (!value) {
     return value;
   }

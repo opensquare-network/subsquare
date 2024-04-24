@@ -4,6 +4,7 @@ import useFetchFellowshipSalaryClaimants from "next-common/hooks/fellowship/sala
 import FellowshipSalarySummaryActions from "next-common/components/fellowship/salary/summary/actions";
 import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
 import useFetchFellowshipMembers from "next-common/hooks/fellowship/collective/useFetchFellowshipMembers";
+import { MySalaryClaimantProvider } from "next-common/context/fellowship/myClaimant";
 
 export default function FellowshipSalaryCommon({ children, ...props }) {
   const title = "Fellowship Salary";
@@ -15,32 +16,34 @@ export default function FellowshipSalaryCommon({ children, ...props }) {
   useFetchFellowshipMembers();
 
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={title}
-      description={seoInfo.desc}
-      summary={<FellowshipSalarySummary />}
-      summaryFooter={<FellowshipSalarySummaryActions />}
-      tabs={[
-        {
-          label: "Cycles",
-          url: "/fellowship/salary",
-          exactMatch: true,
-        },
-        {
-          label: "Claimants",
-          url: "/fellowship/salary/claimants",
-          exactMatch: true,
-        },
-        {
-          label: "Feeds",
-          url: "/fellowship/salary/feeds",
-          exactMatch: true,
-        },
-      ].filter(Boolean)}
-      {...props}
-    >
-      {children}
-    </ListLayout>
+    <MySalaryClaimantProvider>
+      <ListLayout
+        seoInfo={seoInfo}
+        title={title}
+        description={seoInfo.desc}
+        summary={<FellowshipSalarySummary />}
+        summaryFooter={<FellowshipSalarySummaryActions />}
+        tabs={[
+          {
+            label: "Cycles",
+            url: "/fellowship/salary",
+            exactMatch: true,
+          },
+          {
+            label: "Claimants",
+            url: "/fellowship/salary/claimants",
+            exactMatch: true,
+          },
+          {
+            label: "Feeds",
+            url: "/fellowship/salary/feeds",
+            exactMatch: true,
+          },
+        ].filter(Boolean)}
+        {...props}
+      >
+        {children}
+      </ListLayout>
+    </MySalaryClaimantProvider>
   );
 }

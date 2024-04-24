@@ -37,11 +37,7 @@ function getInitNodeUrl(chain) {
   }
 
   const node = (chainNodes || []).find(({ url }) => url === localNodeUrl);
-  if (node) {
-    return node.url;
-  } else {
-    return chainNodes[0].url;
-  }
+  return node?.url;
 }
 
 const nodeSlice = createSlice({

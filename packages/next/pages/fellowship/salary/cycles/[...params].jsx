@@ -14,6 +14,7 @@ import { withFellowshipSalaryCommonProps } from "next-common/services/serverSide
 import useFetchFellowshipMembers from "next-common/hooks/fellowship/collective/useFetchFellowshipMembers";
 import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
 import useFetchFellowshipSalaryClaimants from "next-common/hooks/fellowship/salary/useFetchFellowshipSalaryClaimants";
+import { MySalaryClaimantProvider } from "next-common/context/fellowship/myClaimant";
 
 export default function FellowshipSalaryCyclePage({ cycle }) {
   useFetchFellowshipSalaryClaimants();
@@ -21,16 +22,18 @@ export default function FellowshipSalaryCyclePage({ cycle }) {
   useSubFellowshipSalaryStats();
 
   return (
-    <FellowshipSalaryCycleLayout>
-      {cycle ? (
-        <div className="space-y-6">
-          <FellowshipSalaryCycleDetailInfo />
-          <FellowshipSalaryCycleDetailTabsList />
-        </div>
-      ) : (
-        <FellowshipSalaryCycleDetailNotFound />
-      )}
-    </FellowshipSalaryCycleLayout>
+    <MySalaryClaimantProvider>
+      <FellowshipSalaryCycleLayout>
+        {cycle ? (
+          <div className="space-y-6">
+            <FellowshipSalaryCycleDetailInfo />
+            <FellowshipSalaryCycleDetailTabsList />
+          </div>
+        ) : (
+          <FellowshipSalaryCycleDetailNotFound />
+        )}
+      </FellowshipSalaryCycleLayout>
+    </MySalaryClaimantProvider>
   );
 }
 
