@@ -42,7 +42,7 @@ export default function Promote({ member }) {
 
     return (
       <Tooltip content={tipContent}>
-        <span className="text14Medium text-textDisabled">Promote↗</span>
+        <span className="text14Medium text-textDisabled">Promote</span>
       </Tooltip>
     );
   }
@@ -53,7 +53,7 @@ export default function Promote({ member }) {
         className="text14Medium text-theme500 cursor-pointer"
         onClick={() => setShowPromotePopup(true)}
       >
-        Promote↗
+        Promote
       </span>
       {showPromotePopup && (
         <PromoteFellowshipMemberPopup
