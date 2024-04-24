@@ -3,8 +3,8 @@ import { withReferendaCommonProps } from "next-common/services/serverSide/refere
 import WhalesContainer from "next-common/components/whales/container";
 import WhalesHistoryList from "next-common/components/whales/historyList";
 import {
-  getReferendaWhales,
-  getReferendaWhalesHistory,
+  fetchReferendaWhales,
+  fetchReferendaWhalesHistory,
 } from "next-common/services/serverSide/referenda/whales";
 
 export default function ReferendaWhalesHistoryPage({
@@ -30,8 +30,8 @@ export const getServerSideProps = withReferendaCommonProps(async (ctx) => {
   const page = ctx.query.page || 1;
 
   const [{ result: whales }, { result: historyWhales }] = await Promise.all([
-    getReferendaWhales(1, 1),
-    getReferendaWhalesHistory(page, 25),
+    fetchReferendaWhales(1, 1),
+    fetchReferendaWhalesHistory(page, 25),
   ]);
 
   return {

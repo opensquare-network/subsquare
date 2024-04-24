@@ -3,8 +3,8 @@ import { withReferendaCommonProps } from "next-common/services/serverSide/refere
 import WhalesContainer from "next-common/components/whales/container";
 import WhalesCurrentList from "next-common/components/whales/currentList";
 import {
-  getReferendaWhales,
-  getReferendaWhalesHistory,
+  fetchReferendaWhales,
+  fetchReferendaWhalesHistory,
 } from "next-common/services/serverSide/referenda/whales";
 
 export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
@@ -27,8 +27,8 @@ export const getServerSideProps = withReferendaCommonProps(async (ctx) => {
   const page = ctx.query.page || 1;
 
   const [{ result: whales }, { result: historyWhales }] = await Promise.all([
-    getReferendaWhales(page, 25),
-    getReferendaWhalesHistory(1, 1),
+    fetchReferendaWhales(page, 25),
+    fetchReferendaWhalesHistory(1, 1),
   ]);
 
   return {
