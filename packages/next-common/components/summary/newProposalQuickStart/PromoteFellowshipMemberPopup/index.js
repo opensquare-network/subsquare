@@ -18,7 +18,7 @@ import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import { InfoMessage } from "next-common/components/setting/styled";
-import { textEllipsis } from "next-common/utils";
+import AddressUser from "next-common/components/user/addressUser";
 
 function PopupContent({ member, onClose }) {
   const dispatch = useDispatch();
@@ -102,8 +102,12 @@ function PopupContent({ member, onClose }) {
       <RankField title="To Rank" rank={toRank} setRank={setToRank} />
       <EnactmentBlocks setEnactment={setEnactment} />
       <InfoMessage>
-        Will create a referendum in {trackName} track to promote{" "}
-        {textEllipsis(memberAddress, 4, 4)}
+        <span>
+          Will create a referendum in {trackName} track to promote{" "}
+          <div className="inline-flex relative top-[5px]">
+            <AddressUser add={memberAddress} />
+          </div>
+        </span>
       </InfoMessage>
       <PopupButtonWrapper>
         <PrimaryButton loading={isLoading} onClick={doPromote}>
