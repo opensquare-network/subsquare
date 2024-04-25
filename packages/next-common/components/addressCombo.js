@@ -7,7 +7,7 @@ import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
-import { addressEllipsis } from "../utils";
+import { addressEllipsis, cn } from "../utils";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { fetchIdentity } from "next-common/services/identity.js";
 import { useChainSettings } from "next-common/context/chain.js";
@@ -111,6 +111,7 @@ export default function AddressCombo({
   address,
   setAddress,
   allowInvalidAddress = false,
+  readOnly = false,
 }) {
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -279,6 +280,7 @@ export default function AddressCombo({
   return (
     <Wrapper ref={ref}>
       <Select
+        className={cn(readOnly && "pointer-events-none")}
         onClick={() => {
           setShow(true);
           setEdit(true);
@@ -286,7 +288,7 @@ export default function AddressCombo({
         }}
       >
         {selectContent}
-        {(accounts || []).length > 0 && (
+        {(accounts || []).length > 0 && !readOnly && (
           <span
             onClick={(e) => {
               setShow(!show);
