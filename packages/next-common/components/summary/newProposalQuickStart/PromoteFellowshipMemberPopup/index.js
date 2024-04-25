@@ -17,6 +17,8 @@ import { useDispatch } from "react-redux";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
+import { InfoMessage } from "next-common/components/setting/styled";
+import { textEllipsis } from "next-common/utils";
 
 function PopupContent({ member, onClose }) {
   const dispatch = useDispatch();
@@ -27,6 +29,7 @@ function PopupContent({ member, onClose }) {
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
   const [toRank, setToRank] = useState(member?.rank + 1);
+  const trackName = `PromoteTo${toRank}Dan`;
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,7 +45,7 @@ function PopupContent({ member, onClose }) {
 
     const proposal = api.tx.fellowshipCore.promote(memberAddress, toRank);
     let tx = api.tx.fellowshipReferenda.submit(
-      { FellowshipOrigins: `PromoteTo${toRank}Dan` },
+      { FellowshipOrigins: trackName },
       { Inline: proposal.method.toHex() },
       enactment,
     );
@@ -77,6 +80,7 @@ function PopupContent({ member, onClose }) {
     api,
     onClose,
     toRank,
+    trackName,
     memberAddress,
     enactment,
     signerAccount,
@@ -93,9 +97,14 @@ function PopupContent({ member, onClose }) {
         extensionAccounts={extensionAccounts}
         defaultAddress={memberAddress}
         setAddress={setMemberAddress}
+        readOnly
       />
-      <RankField rank={toRank} setRank={setToRank} />
+      <RankField title="To Rank" rank={toRank} setRank={setToRank} />
       <EnactmentBlocks setEnactment={setEnactment} />
+      <InfoMessage>
+        Will create a referendum in {trackName} track to promote{" "}
+        {textEllipsis(memberAddress, 4, 4)}
+      </InfoMessage>
       <PopupButtonWrapper>
         <PrimaryButton loading={isLoading} onClick={doPromote}>
           Confirm

@@ -24,18 +24,18 @@ export default function Promote({ member }) {
   }
 
   const me = members.find((m) => m.address === address);
-  const higherRank = me && me.rank > rank;
+  const myRankOk = me && me.rank >= 3;
 
   const index = rank > 0 ? rank - 1 : 0;
   const promotionPeriod = fellowshipParams.minPromotionPeriod[index];
   const gone = latestHeight - lastPromotion;
   const promotionPeriodComplete = gone >= promotionPeriod;
-  const canPromote = promotionPeriodComplete && higherRank;
+  const canPromote = promotionPeriodComplete && myRankOk;
   if (!canPromote) {
     let tipContent = "";
 
-    if (!higherRank) {
-      tipContent = `Only available to the members with rank > ${rank}`;
+    if (!myRankOk) {
+      tipContent = "Only available to the members with rank >= 3";
     } else if (!promotionPeriodComplete) {
       tipContent = `Available after ${promotionPeriod - gone} blocks`;
     }
