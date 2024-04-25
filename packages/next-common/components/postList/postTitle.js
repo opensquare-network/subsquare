@@ -2,7 +2,9 @@ import { isNil } from "lodash-es";
 import ReasonLink from "../reasonLink";
 import Link from "next/link";
 import { cn, isExternalLink } from "next-common/utils";
-
+import React from "react";
+import Tooltip from "next-common/components/tooltip";
+import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
 export default function ListPostTitle({
   data = {},
   href,
@@ -15,7 +17,7 @@ export default function ListPostTitle({
     <div
       title={title}
       className={cn(
-        "flex-1 overflow-hidden text-textPrimary text16Medium",
+        "flex-1 overflow-hidden text-textPrimary text16Medium align-middle",
         ellipsis && "flex",
         className,
       )}
@@ -35,6 +37,14 @@ export default function ListPostTitle({
       >
         {title}
       </Link>
+      {data?.isMalicious && (
+        <Tooltip
+          className="align-middle ml-2 mt-[2px]"
+          content="Warning: Malicious proposal!"
+        >
+          <WarningIcon className="align-middle" />
+        </Tooltip>
+      )}
       <ReasonLink text={data.title} hideText={true} />
     </div>
   );
