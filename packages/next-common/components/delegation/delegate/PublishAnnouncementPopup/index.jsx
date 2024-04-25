@@ -89,6 +89,7 @@ export default function AnnouncementPublishPopup({
       title={title}
       onClose={onClose}
       actionCallback={handleSubmit}
+      maskClosable={false}
     >
       <div>
         <PopupLabel text="Short description" />
