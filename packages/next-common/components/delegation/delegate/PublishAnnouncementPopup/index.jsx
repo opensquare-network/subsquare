@@ -14,12 +14,6 @@ import { setReferendaDelegatesTriggerUpdate } from "next-common/store/reducers/r
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import PopupLabel from "next-common/components/popup/label";
 import { useUser } from "next-common/context/user";
-import Checkbox from "next-common/components/checkbox";
-import {
-  ProjectLogoSimaSpecDark,
-  ProjectLogoSimaSpecLight,
-} from "@osn/icons/subsquare";
-import { cn } from "next-common/utils";
 
 export default function AnnouncementPublishPopup({
   title = "Publish Announcement",
@@ -29,7 +23,6 @@ export default function AnnouncementPublishPopup({
   const address = user?.address;
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
-  const [isOrganization, setIsOrganization] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const signMessage = useSignMessage();
   const dispatch = useDispatch();
@@ -50,7 +43,6 @@ export default function AnnouncementPublishPopup({
         setLoading(true);
 
         const entity = {
-          isOrganization,
           shortDescription,
           longDescription,
           timestamp: Date.now(),
@@ -84,7 +76,6 @@ export default function AnnouncementPublishPopup({
       address,
       shortDescription,
       longDescription,
-      isOrganization,
       signMessage,
       onClose,
       triggerUpdate,
@@ -115,39 +106,6 @@ export default function AnnouncementPublishPopup({
           previewerPlugins={[]}
           setQuillRef={() => {}}
         />
-      </div>
-      <div>
-        <PopupLabel text="isOrganization" />
-        <div
-          className={cn(
-            "flex justify-between items-center",
-            "py-[10px] pl-[16px]",
-            "text-textPrimary bg-neutral100",
-            "rounded-[8px] border border-neutral400 ",
-          )}
-        >
-          <span className="text-text14Medium">
-            {"I'm a member of an organization"}
-          </span>
-          <Checkbox
-            className={"mr-[10px]"}
-            checked={isOrganization}
-            onClick={() => setIsOrganization(!isOrganization)}
-          />
-        </div>
-      </div>
-      <div className="flex px-[16px] py-[10px] gap-[16px] bg-neutral200">
-        <div>
-          <ProjectLogoSimaSpecDark className="hidden dark:inline-block" />
-          <ProjectLogoSimaSpecLight className="dark:hidden" />
-        </div>
-        <div className="flex flex-col">
-          <span className="text14Medium text-textSecondary">
-            You will submit a system#remark transaction to publish
-            announcements.
-          </span>
-          <span className="text14Medium text-[#F7574F]">Check Sima Spec</span>
-        </div>
       </div>
     </SignerPopup>
   );
