@@ -8,6 +8,7 @@ import DemocracyDelegateCard from "../../democracy/card";
 import Announcement from "./announcement";
 import { useSelector } from "react-redux";
 import { democracyDelegatesTriggerUpdateSelector } from "next-common/store/reducers/democracy/delegates";
+import { SystemLoading } from "@osn/icons/subsquare";
 
 export default function DemocracyAnnouncement() {
   const realAddress = useRealAddress();
@@ -28,7 +29,9 @@ export default function DemocracyAnnouncement() {
   ]);
 
   if (state.loading) {
-    return null;
+    return (
+      <SystemLoading className="my-6 [&_path]:stroke-textTertiary mx-auto" />
+    );
   }
 
   if (state.value) {

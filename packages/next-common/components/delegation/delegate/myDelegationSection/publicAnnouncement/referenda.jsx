@@ -8,6 +8,7 @@ import ReferendaDelegateCard from "../../referenda/card";
 import Announcement from "./announcement";
 import { useSelector } from "react-redux";
 import { referendaDelegatesTriggerUpdateSelector } from "next-common/store/reducers/referenda/delegates";
+import { SystemLoading } from "@osn/icons/subsquare";
 
 export default function ReferendaAnnouncement() {
   const realAddress = useRealAddress();
@@ -28,7 +29,9 @@ export default function ReferendaAnnouncement() {
   ]);
 
   if (state.loading) {
-    return null;
+    return (
+      <SystemLoading className="my-6 [&_path]:stroke-textTertiary mx-auto" />
+    );
   }
 
   if (state.value) {
