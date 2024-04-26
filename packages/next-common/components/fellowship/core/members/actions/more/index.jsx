@@ -1,5 +1,4 @@
 import { SystemMore } from "@osn/icons/subsquare";
-import SignalIndicator from "next-common/components/icons/signalIndicator";
 import {
   OptionItem,
   OptionWrapper,
@@ -7,23 +6,7 @@ import {
 import { cn } from "next-common/utils";
 import { useRef, useState } from "react";
 import { useClickAway } from "react-use";
-
-function ActivationItem({ member }) {
-  const { isActive } = member.status;
-
-  return (
-    <OptionItem>
-      <div className="flex items-center">
-        <SignalIndicator
-          showTooltip={false}
-          active={!isActive}
-          className="w-6 h-6 mr-2"
-        />
-        {isActive ? "Unactive" : "Active"}
-      </div>
-    </OptionItem>
-  );
-}
+import ActivationItem from "./activationItem";
 
 export default function More({ member }) {
   const [show, setShow] = useState(false);
@@ -47,7 +30,9 @@ export default function More({ member }) {
 
       {show && (
         <OptionWrapper>
-          <ActivationItem member={member} />
+          <OptionItem>
+            <ActivationItem member={member} />
+          </OptionItem>
         </OptionWrapper>
       )}
     </div>
