@@ -10,7 +10,7 @@ import { useContextApi } from "next-common/context/api";
 import { useCallback } from "react";
 
 export default function ActivationPopup(props) {
-  const { who, onClose = noop } = props || {};
+  const { who, onClose = noop, targetActiveValue } = props || {};
 
   const { component } = useSigner();
 
@@ -18,7 +18,7 @@ export default function ActivationPopup(props) {
 
   const getTxFunc = useCallback(() => {
     if (api && who) {
-      return api.tx.fellowshipCore.setActive(who);
+      return api.tx.fellowshipCore.setActive(targetActiveValue);
     }
   }, [api, who]);
 

@@ -6,6 +6,8 @@ export default function ActivationItem({ member, rootRef }) {
   const { isActive } = member.status;
   const [showPopup, setShowPopup] = useState(false);
 
+  const targetActiveValue = !isActive;
+
   return (
     <>
       <div
@@ -17,7 +19,7 @@ export default function ActivationItem({ member, rootRef }) {
       >
         <SignalIndicator
           showTooltip={false}
-          active={!isActive}
+          active={targetActiveValue}
           className="w-6 h-6 mr-2"
         />
         {isActive ? "Inactive" : "Active"}
@@ -27,6 +29,7 @@ export default function ActivationItem({ member, rootRef }) {
         <ActivationPopup
           container={rootRef?.current}
           who={member.address}
+          targetActiveValue={targetActiveValue}
           onClose={() => {
             setShowPopup(false);
           }}
