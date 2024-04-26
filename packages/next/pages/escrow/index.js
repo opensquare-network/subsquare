@@ -19,12 +19,18 @@ import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
+import { useMemo } from "react";
+import { redirect } from "next-common/utils/serverSideUtil";
 
 export default function EscrowPage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
   const url = useAccountUrl();
+
+  const isShowEscrow = useMemo(() => {
+    return chain === "interlay" || chain === "kintsugi";
+  }, [chain]);
 
   const tabs = [
     {
@@ -40,7 +46,7 @@ export default function EscrowPage() {
     });
   }
 
-  if (chain === "interlay" || chain === "kintsugi") {
+  if (isShowEscrow) {
     tabs.push({
       label: "Escrow",
       url: "/escrow",
@@ -103,4 +109,15 @@ export default function EscrowPage() {
   );
 }
 
-export const getServerSideProps = withCommonProps();
+export const getServerSideProps = withCommonProps(async () => {
+  if (
+    process.env.CHAIN &&
+    process.env.CHAIN !== "interlay" &&
+    process.env.CHAIN !== "kintsugi"
+  ) {
+    return redirect("/");
+  }
+  return {
+    props: {},
+  };
+});
