@@ -31,7 +31,7 @@ export default function More({ member }) {
       {show && (
         <OptionWrapper>
           <OptionItem>
-            <ActivationItem member={member} />
+            <ActivationItem member={member} rootRef={ref} />
           </OptionItem>
         </OptionWrapper>
       )}

@@ -2,7 +2,7 @@ import SignalIndicator from "next-common/components/icons/signalIndicator";
 import { useState } from "react";
 import ActivationPopup from "./popup";
 
-export default function ActivationItem({ member }) {
+export default function ActivationItem({ member, rootRef }) {
   const { isActive } = member.status;
   const [showPopup, setShowPopup] = useState(false);
 
@@ -25,6 +25,7 @@ export default function ActivationItem({ member }) {
 
       {showPopup && (
         <ActivationPopup
+          container={rootRef?.current}
           who={member.address}
           onClose={() => {
             setShowPopup(false);
