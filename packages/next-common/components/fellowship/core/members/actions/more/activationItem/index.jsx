@@ -11,7 +11,7 @@ export default function ActivationItem({ member, rootRef }) {
   return (
     <>
       <div
-        className="flex items-center"
+        className="flex items-center grow"
         role="button"
         onClick={() => {
           setShowPopup(true);
