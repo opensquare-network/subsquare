@@ -13,33 +13,23 @@ import {
   hasDefinedOffChainVoting,
 } from "next-common/utils/summaryExternalInfo";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
-import Overview from "next-common/components/overview/overview";
+import Escrow from "next-common/components/escrow/index";
 import CentrifugeOverview from "next-common/components/overview/centrifugeOverview";
-import nextApi from "next-common/services/nextApi";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
-import {
-  fetchForumCategories,
-  fetchForumLatestTopics,
-} from "next-common/services/serverSide/forum";
 import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
-import useLoadOverviewPageData from "next-common/hooks/overview/useLoadOverviewPageData";
 
-export default function HomePage() {
+export default function EscrowPage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
   const url = useAccountUrl();
-  useLoadOverviewPageData();
 
   const tabs = [
     {
       label: "Overview",
       url: "/",
-      exactMatch: false,
     },
   ];
 
@@ -54,6 +44,7 @@ export default function HomePage() {
     tabs.push({
       label: "Escrow",
       url: "/escrow",
+      exactMatch: false,
     });
   }
 
@@ -107,27 +98,9 @@ export default function HomePage() {
       summaryFooter={externalInfo}
       tabs={tabs}
     >
-      <Overview />
+      <Escrow />
     </ListLayout>
   );
 }
 
-export const getServerSideProps = withCommonProps(async () => {
-  const tracksProps = await fetchOpenGovTracksProps();
-  const { result: overviewSummary } = await nextApi.fetch("overview/summary");
-  const recentProposals = await fetchRecentProposalsProps(overviewSummary);
-
-  const forumLatestTopics = await fetchForumLatestTopics();
-  const forumCategories = await fetchForumCategories();
-
-  return {
-    props: {
-      recentProposals,
-      summary: tracksProps.summary,
-      overviewSummary: overviewSummary || {},
-      forumLatestTopics,
-      forumCategories,
-      ...tracksProps,
-    },
-  };
-});
+export const getServerSideProps = withCommonProps();
