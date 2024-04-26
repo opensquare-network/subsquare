@@ -12,16 +12,19 @@ import FellowshipMemberSalary from "next-common/components/fellowship/core/membe
 import SignalIndicator from "next-common/components/icons/signalIndicator";
 import Actions from "next-common/components/fellowship/core/members/actions";
 import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
+import Tooltip from "next-common/components/tooltip";
 
 function AvatarAndAddress({ address, isActive }) {
   return (
     <div className="flex flex-col gap-y-2">
       <div className="relative w-10 h-10">
         <Avatar address={address} size={40} />
-        <SignalIndicator
-          className="absolute right-0 bottom-0"
-          active={isActive}
-        />
+        <Tooltip
+          className={"absolute right-0 bottom-0"}
+          content={isActive ? "Active" : "Inactive"}
+        >
+          <SignalIndicator className="w-4 h-4" active={isActive} />
+        </Tooltip>
       </div>
 
       <AddressUser
