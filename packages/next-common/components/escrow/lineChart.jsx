@@ -72,7 +72,7 @@ export default function PriceCardContentChart({ data = [], onHover = noop }) {
             );
           },
           label(tooltipItem) {
-            return `${bnToLocaleString(tooltipItem.raw, 3)}`;
+            return `${bnToLocaleString(tooltipItem.raw, 0)}`;
           },
         },
         itemSort(a, b) {
