@@ -5,7 +5,7 @@ import { encodeAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { capitalize } from "lodash-es";
+import { capitalize, isNil } from "lodash-es";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 import { isHex } from "@polkadot/util";
@@ -116,8 +116,13 @@ export function timeDurationFromNow(time) {
   return `${ss}s ago`;
 }
 
-export function toPrecision(value, decimals = 0) {
-  return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
+export function toPrecision(value, decimals = 0, fixed) {
+  const normalized = BigNumber(value).dividedBy(Math.pow(10, decimals));
+  if (isNil(fixed)) {
+    return normalized.toString();
+  } else {
+    return normalized.toFixed(fixed);
+  }
 }
 
 export function toPrecisionNumber(value, decimals = 0) {

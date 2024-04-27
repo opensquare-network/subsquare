@@ -1,23 +1,34 @@
 import { cn } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import LineChart from "./lineChart";
-import { Wrap } from "./style";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import styled from "styled-components";
+
+const Title = styled(TitleContainer)`
+  margin-bottom: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 14px;
+  justify-content: flex-start;
+`;
 
 export default function PriceCardContent({
   title,
   data = {},
   loading,
-  className,
   titleSymbol,
 }) {
   return (
-    <Wrap className={cn("flex flex-col overflow-hidden gap-4", className)}>
-      <div className="flex gap-1">
-        <span className="text14Bold text-textPrimary">{title}</span>
+    <SecondaryCard>
+      <Title>
+        {title}
         {titleSymbol && (
-          <span className="text14Bold text-textTertiary">{titleSymbol}</span>
+          <span className="text14Bold text-textTertiary ml-1">
+            {titleSymbol}
+          </span>
         )}
-      </div>
+      </Title>
 
       <div className={cn("relative", "mt-2")}>
         {loading ? (
@@ -28,6 +39,6 @@ export default function PriceCardContent({
           <LineChart className="h-[150px]" data={data} />
         )}
       </div>
-    </Wrap>
+    </SecondaryCard>
   );
 }

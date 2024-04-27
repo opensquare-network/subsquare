@@ -1,48 +1,49 @@
-import { Wrap } from "./style";
-
-function Datatips({ datas }) {
-  return (
-    <Wrap className="grid max-sm:grid-cols-2 max-sm:gap-4 grid-cols-3 md:grid-cols-4">
-      {datas.map((i) => (
-        <div key={i.label} className="flex flex-col gap-1">
-          <span className="text12Medium text-textTertiary">{i.label}</span>
-          {i.content}
-        </div>
-      ))}
-    </Wrap>
-  );
-}
-
-function Value({ num, symbol }) {
-  return (
-    <div className="flex items-center gap-1">
-      <span className="text16Bold text-textPrimary">
-        {Number(num).toLocaleString("en-US")}
-      </span>
-      {symbol && <span className="text-textTertiary text16Bold">{symbol}</span>}
-    </div>
-  );
-}
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import useEscrowTotalSupply from "next-common/hooks/escrow/useEscrowTotalSupply";
+import LoadableContent from "next-common/components/common/loadableContent";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { useChainSettings } from "next-common/context/chain";
+import { toPrecision } from "next-common/utils";
+import { isNil } from "lodash-es";
+import useEscrowLocked from "next-common/hooks/escrow/useEscrowLocked";
 
 export default function Current() {
-  const datas = [
-    {
-      label: "Total Token Supply",
-      content: <Value num={"10424634"} symbol="vINTR" />,
-    },
-    {
-      label: "Total Stacked Balance",
-      content: <Value num={10424634} symbol="vINTR" />,
-    },
-    {
-      label: "Total Staked Accounts",
-      content: <Value num={10424634} />,
-    },
-  ];
+  const supply = useEscrowTotalSupply();
+  const { symbol, voteSymbol, decimals } = useChainSettings();
+  const lockedData = useEscrowLocked();
+  const { totalStaked, totalAccount } = lockedData || {};
+
   return (
-    <div className="flex flex-col gap-[18px]">
-      <span className="text16Bold text-textPrimary ml-6">Current</span>
-      <Datatips datas={datas} />
-    </div>
+    <>
+      <TitleContainer>Current</TitleContainer>
+      <SecondaryCard>
+        <SummaryLayout>
+          <SummaryItem title="Total Supply">
+            <LoadableContent isLoading={isNil(supply)}>
+              <ValueDisplay
+                value={toPrecision(supply, decimals, 0)}
+                symbol={voteSymbol}
+              />
+            </LoadableContent>
+          </SummaryItem>
+          <SummaryItem title="Total Staked">
+            <LoadableContent isLoading={isNil(totalStaked)}>
+              <ValueDisplay
+                value={toPrecision(totalStaked, decimals, 0)}
+                symbol={symbol}
+              />
+            </LoadableContent>
+          </SummaryItem>
+          <SummaryItem title="Total Accounts">
+            <LoadableContent isLoading={isNil(totalAccount)}>
+              <ValueDisplay value={totalAccount} />
+            </LoadableContent>
+          </SummaryItem>
+        </SummaryLayout>
+      </SecondaryCard>
+    </>
   );
 }
