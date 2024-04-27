@@ -29,18 +29,16 @@ export default function History() {
   return (
     <>
       <TitleContainer>History</TitleContainer>
-      <div className="flex flex-col gap-[18px]">
-        <div className="grid max-sm:grid-cols-1 grid-cols-2 gap-4">
-          {list.map((i) => (
-            <EscrowCard
-              key={i.name}
-              title={i.name}
-              data={i.data}
-              loading={loading}
-              titleSymbol={i.titleSymbol}
-            />
-          ))}
-        </div>
+      <div className="grid max-sm:grid-cols-1 grid-cols-2 gap-4">
+        {list.map((i) => (
+          <EscrowCard
+            key={i.name}
+            title={i.name}
+            data={i.data}
+            loading={loading}
+            titleSymbol={i.titleSymbol}
+          />
+        ))}
       </div>
     </>
   );
