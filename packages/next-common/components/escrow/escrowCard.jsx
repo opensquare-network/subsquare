@@ -4,6 +4,7 @@ import LineChart from "./lineChart";
 import { Wrap } from "./style";
 
 export default function PriceCardContent({
+  title,
   data = {},
   loading,
   className,
@@ -12,7 +13,7 @@ export default function PriceCardContent({
   return (
     <Wrap className={cn("flex flex-col overflow-hidden gap-4", className)}>
       <div className="flex gap-1">
-        <span className="text14Bold text-textPrimary">Token Supply</span>
+        <span className="text14Bold text-textPrimary">{title}</span>
         {titleSymbol && (
           <span className="text14Bold text-textTertiary">{titleSymbol}</span>
         )}

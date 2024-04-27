@@ -4,23 +4,23 @@ import { useAsync } from "react-use";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function History() {
-  const { decimals } = useChainSettings();
+  const { decimals, voteSymbol, symbol } = useChainSettings();
   const { value, loading } = useAsync(() => fetchEscrow(decimals), []);
   const { totalSupply, totalStaked, totalAccount } = value || {};
 
   const list = [
     {
-      name: "totalSupply",
+      name: "Total Supply",
       data: totalSupply,
-      titleSymbol: "(vINTR)",
+      titleSymbol: voteSymbol,
     },
     {
-      name: "totalStaked",
+      name: "Total Staked",
       data: totalStaked,
-      titleSymbol: "(vINTR)",
+      titleSymbol: symbol,
     },
     {
-      name: "totalAccount",
+      name: "Total Accounts",
       data: totalAccount,
     },
   ];
@@ -32,6 +32,7 @@ export default function History() {
         {list.map((i) => (
           <EscrowCard
             key={i.name}
+            title={i.name}
             data={i.data}
             loading={loading}
             titleSymbol={i.titleSymbol}
