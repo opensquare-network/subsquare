@@ -5,16 +5,24 @@ import { useRef, useState } from "react";
 import { useClickAway } from "react-use";
 import ActivationItem from "./activationItem";
 import ActivationPopup from "./activationItem/popup";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function More({ member }) {
+  const realAddress = useRealAddress();
   const ref = useRef();
   const [showMenu, setShowMenu] = useState(false);
   const [showActivationPopup, setShowActivationPopup] = useState(false);
+
+  const isMe = member.address === realAddress;
 
   useClickAway(ref, hideMenu);
 
   function hideMenu() {
     setShowMenu(false);
+  }
+
+  if (!isMe) {
+    return null;
   }
 
   return (
