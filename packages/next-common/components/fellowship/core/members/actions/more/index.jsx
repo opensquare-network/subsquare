@@ -30,6 +30,7 @@ export default function More({ member }) {
       <SystemMore
         className={cn(
           "w-5 h-5 text-textTertiary cursor-pointer",
+          "hover:text-textSecondary",
           showMenu && "text-textSecondary",
         )}
         onClick={() => {
