@@ -1,39 +1,63 @@
 import { SystemMore } from "@osn/icons/subsquare";
-import {
-  OptionItem,
-  OptionWrapper,
-} from "next-common/components/internalDropdown/styled";
+import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { cn } from "next-common/utils";
 import { useRef, useState } from "react";
 import { useClickAway } from "react-use";
 import ActivationItem from "./activationItem";
+import ActivationPopup from "./activationItem/popup";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function More({ member }) {
-  const [show, setShow] = useState(false);
+  const realAddress = useRealAddress();
   const ref = useRef();
+  const [showMenu, setShowMenu] = useState(false);
+  const [showActivationPopup, setShowActivationPopup] = useState(false);
 
-  useClickAway(ref, () => {
-    setShow(false);
-  });
+  const isMe = member.address === realAddress;
+
+  useClickAway(ref, hideMenu);
+
+  function hideMenu() {
+    setShowMenu(false);
+  }
+
+  if (!isMe) {
+    return null;
+  }
 
   return (
     <div ref={ref} className="relative">
       <SystemMore
         className={cn(
           "w-5 h-5 text-textTertiary cursor-pointer",
-          show && "text-textSecondary",
+          "hover:text-textSecondary",
+          showMenu && "text-textSecondary",
         )}
         onClick={() => {
-          setShow(true);
+          setShowMenu(true);
         }}
       />
 
-      {show && (
+      {showMenu && (
         <OptionWrapper>
-          <OptionItem>
-            <ActivationItem member={member} />
-          </OptionItem>
+          <ActivationItem
+            member={member}
+            onClick={() => {
+              setShowActivationPopup(true);
+              hideMenu();
+            }}
+          />
         </OptionWrapper>
+      )}
+
+      {showActivationPopup && (
+        <ActivationPopup
+          member={member}
+          who={member.address}
+          onClose={() => {
+            setShowActivationPopup(false);
+          }}
+        />
       )}
     </div>
   );

@@ -91,11 +91,11 @@ export function SignerContextProvider({ children, extensionAccounts }) {
 }
 
 export function useSignerAccount() {
-  const { signerAccount } = useContext(SignerContext);
-  return signerAccount;
+  const value = useContext(SignerContext);
+  return value?.signerAccount;
 }
 
 export function useExtensionAccounts() {
-  const { extensionAccounts } = useContext(SignerContext);
-  return extensionAccounts;
+  const value = useContext(SignerContext);
+  return value?.extensionAccounts;
 }
