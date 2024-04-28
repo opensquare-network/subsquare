@@ -9,8 +9,10 @@ import AddressUser from "next-common/components/user/addressUser";
 import { useContextApi } from "next-common/context/api";
 import { useCallback } from "react";
 
-export default function ActivationPopup(props) {
-  const { who, onClose = noop, targetActiveValue } = props || {};
+export default function ActivationPopup({ member, onClose = noop, ...props }) {
+  const who = member.address;
+  const { isActive } = member.status;
+  const targetActiveValue = !isActive;
 
   const { component } = useSigner();
 
@@ -25,7 +27,7 @@ export default function ActivationPopup(props) {
   const onInBlock = useFellowshipMembersUpdateFunc();
 
   return (
-    <PopupWithSigner title="Activation" {...props}>
+    <PopupWithSigner title="Activation" onClose={onClose} {...props}>
       {component}
       <div>
         <PopupLabel text="Who" />

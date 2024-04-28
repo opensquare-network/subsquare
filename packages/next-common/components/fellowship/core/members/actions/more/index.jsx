@@ -1,39 +1,53 @@
 import { SystemMore } from "@osn/icons/subsquare";
-import {
-  OptionItem,
-  OptionWrapper,
-} from "next-common/components/internalDropdown/styled";
+import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { cn } from "next-common/utils";
 import { useRef, useState } from "react";
 import { useClickAway } from "react-use";
 import ActivationItem from "./activationItem";
+import ActivationPopup from "./activationItem/popup";
 
 export default function More({ member }) {
-  const [show, setShow] = useState(false);
   const ref = useRef();
+  const [showMenu, setShowMenu] = useState(false);
+  const [showActivationPopup, setShowActivationPopup] = useState(false);
 
-  useClickAway(ref, () => {
-    setShow(false);
-  });
+  useClickAway(ref, hideMenu);
+
+  function hideMenu() {
+    setShowMenu(false);
+  }
 
   return (
     <div ref={ref} className="relative">
       <SystemMore
         className={cn(
           "w-5 h-5 text-textTertiary cursor-pointer",
-          show && "text-textSecondary",
+          showMenu && "text-textSecondary",
         )}
         onClick={() => {
-          setShow(true);
+          setShowMenu(true);
         }}
       />
 
-      {show && (
+      {showMenu && (
         <OptionWrapper>
-          <OptionItem>
-            <ActivationItem member={member} rootRef={ref} />
-          </OptionItem>
+          <ActivationItem
+            member={member}
+            onClick={() => {
+              setShowActivationPopup(true);
+              hideMenu();
+            }}
+          />
         </OptionWrapper>
+      )}
+
+      {showActivationPopup && (
+        <ActivationPopup
+          member={member}
+          onClose={() => {
+            setShowActivationPopup(false);
+          }}
+        />
       )}
     </div>
   );
