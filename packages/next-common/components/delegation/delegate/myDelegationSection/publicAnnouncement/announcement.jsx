@@ -4,7 +4,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import PrimaryButton from "next-common/lib/button/primary";
 import AnnouncementPublishPopup from "../../PublishAnnouncementPopup";
 
-export default function Announcement() {
+export default function Announcement({ myDelegation }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   return (
     <SecondaryCard className="flex flex-row gap-[16px] max-sm:flex-col">
@@ -27,7 +27,10 @@ export default function Announcement() {
         </PrimaryButton>
       </div>
       {isPopupOpen && (
-        <AnnouncementPublishPopup onClose={() => setIsPopupOpen(false)} />
+        <AnnouncementPublishPopup
+          onClose={() => setIsPopupOpen(false)}
+          myDelegation={myDelegation}
+        />
       )}
     </SecondaryCard>
   );

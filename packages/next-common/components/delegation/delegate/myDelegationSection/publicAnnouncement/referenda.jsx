@@ -9,7 +9,28 @@ import Announcement from "./announcement";
 import { useSelector } from "react-redux";
 import { referendaDelegatesTriggerUpdateSelector } from "next-common/store/reducers/referenda/delegates";
 
-function MyDelegationCard() {
+function MyDelegationCard({ myDelegation }) {
+  if (!myDelegation) {
+    return null;
+  }
+
+  const addressAvatarMap = new Map([
+    [myDelegation.address, myDelegation.manifesto?.image],
+  ]);
+
+  return (
+    <AvatarContextProvider addressAvatarMap={addressAvatarMap}>
+      <MemberCardListContainer>
+        <ReferendaDelegateCard
+          delegate={myDelegation}
+          showDelegateButton={false}
+        />
+      </MemberCardListContainer>
+    </AvatarContextProvider>
+  );
+}
+
+export default function ReferendaAnnouncement() {
   const realAddress = useRealAddress();
   const triggerUpdate = useSelector(referendaDelegatesTriggerUpdateSelector);
 
@@ -23,31 +44,10 @@ function MyDelegationCard() {
       });
   }, [realAddress, triggerUpdate]);
 
-  if (!state.value) {
-    return null;
-  }
-
-  const addressAvatarMap = new Map([
-    [state.value.address, state.value.manifesto?.image],
-  ]);
-
-  return (
-    <AvatarContextProvider addressAvatarMap={addressAvatarMap}>
-      <MemberCardListContainer>
-        <ReferendaDelegateCard
-          delegate={state.value}
-          showDelegateButton={false}
-        />
-      </MemberCardListContainer>
-    </AvatarContextProvider>
-  );
-}
-
-export default function ReferendaAnnouncement() {
   return (
     <>
-      <MyDelegationCard />
-      <Announcement />
+      <Announcement myDelegation={state.value} />
+      <MyDelegationCard myDelegation={state.value} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Editor from "next-common/components/editor";
 import InputText from "next-common/components/inputText";
@@ -18,6 +18,7 @@ import { useUser } from "next-common/context/user";
 export default function AnnouncementPublishPopup({
   title = "Publish Announcement",
   onClose,
+  myDelegation,
 }) {
   const user = useUser();
   const address = user?.address;
@@ -28,6 +29,23 @@ export default function AnnouncementPublishPopup({
   const dispatch = useDispatch();
   const tab = useModuleTab();
   const module = tab === Referenda ? "referenda" : "democracy";
+
+  useEffect(() => {
+    if (!myDelegation) {
+      return;
+    }
+    switch (myDelegation?.manifesto?.source) {
+      case "nova":
+      case "sima":
+        setShortDescription(myDelegation?.manifesto?.shortDescription || "");
+        setLongDescription(myDelegation?.manifesto?.longDescription || "");
+        break;
+      case "parity":
+        setShortDescription(myDelegation?.manifesto || "");
+        setLongDescription(myDelegation?.manifesto || "");
+        break;
+    }
+  }, [myDelegation]);
 
   const triggerUpdate = useCallback(() => {
     if (module === "referenda") {

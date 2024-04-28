@@ -8,7 +8,27 @@ import DemocracyDelegateCard from "../../democracy/card";
 import Announcement from "./announcement";
 import { useSelector } from "react-redux";
 import { democracyDelegatesTriggerUpdateSelector } from "next-common/store/reducers/democracy/delegates";
-import { SystemLoading } from "@osn/icons/subsquare";
+
+function MyDelegationCard({ myDelegation }) {
+  if (!myDelegation) {
+    return null;
+  }
+
+  const addressAvatarMap = new Map([
+    [myDelegation.address, myDelegation.manifesto?.image],
+  ]);
+
+  return (
+    <AvatarContextProvider addressAvatarMap={addressAvatarMap}>
+      <MemberCardListContainer>
+        <DemocracyDelegateCard
+          delegate={myDelegation}
+          showDelegateButton={false}
+        />
+      </MemberCardListContainer>
+    </AvatarContextProvider>
+  );
+}
 
 export default function DemocracyAnnouncement() {
   const realAddress = useRealAddress();
@@ -24,28 +44,10 @@ export default function DemocracyAnnouncement() {
       });
   }, [realAddress, triggerUpdate]);
 
-  const addressAvatarMap = new Map([
-    [state.value?.address, state.value?.manifesto?.image],
-  ]);
-
-  if (state.loading) {
-    return (
-      <SystemLoading className="my-6 [&_path]:stroke-textTertiary mx-auto" />
-    );
-  }
-
-  if (state.value) {
-    return (
-      <AvatarContextProvider addressAvatarMap={addressAvatarMap}>
-        <MemberCardListContainer>
-          <DemocracyDelegateCard
-            delegate={state.value}
-            showDelegateButton={false}
-          />
-        </MemberCardListContainer>
-      </AvatarContextProvider>
-    );
-  }
-
-  return <Announcement />;
+  return (
+    <>
+      <Announcement myDelegation={state.value} />
+      <MyDelegationCard myDelegation={state.value} />
+    </>
+  );
 }
