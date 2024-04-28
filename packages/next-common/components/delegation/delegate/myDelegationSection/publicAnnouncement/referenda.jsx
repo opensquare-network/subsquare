@@ -8,9 +8,8 @@ import ReferendaDelegateCard from "../../referenda/card";
 import Announcement from "./announcement";
 import { useSelector } from "react-redux";
 import { referendaDelegatesTriggerUpdateSelector } from "next-common/store/reducers/referenda/delegates";
-import { SystemLoading } from "@osn/icons/subsquare";
 
-export default function ReferendaAnnouncement() {
+function MyDelegationCard() {
   const realAddress = useRealAddress();
   const triggerUpdate = useSelector(referendaDelegatesTriggerUpdateSelector);
 
@@ -24,28 +23,31 @@ export default function ReferendaAnnouncement() {
       });
   }, [realAddress, triggerUpdate]);
 
+  if (!state.value) {
+    return null;
+  }
+
   const addressAvatarMap = new Map([
-    [state.value?.address, state.value?.manifesto?.image],
+    [state.value.address, state.value.manifesto?.image],
   ]);
 
-  if (state.loading) {
-    return (
-      <SystemLoading className="my-6 [&_path]:stroke-textTertiary mx-auto" />
-    );
-  }
+  return (
+    <AvatarContextProvider addressAvatarMap={addressAvatarMap}>
+      <MemberCardListContainer>
+        <ReferendaDelegateCard
+          delegate={state.value}
+          showDelegateButton={false}
+        />
+      </MemberCardListContainer>
+    </AvatarContextProvider>
+  );
+}
 
-  if (state.value) {
-    return (
-      <AvatarContextProvider addressAvatarMap={addressAvatarMap}>
-        <MemberCardListContainer>
-          <ReferendaDelegateCard
-            delegate={state.value}
-            showDelegateButton={false}
-          />
-        </MemberCardListContainer>
-      </AvatarContextProvider>
-    );
-  }
-
-  return <Announcement />;
+export default function ReferendaAnnouncement() {
+  return (
+    <>
+      <MyDelegationCard />
+      <Announcement />
+    </>
+  );
 }
