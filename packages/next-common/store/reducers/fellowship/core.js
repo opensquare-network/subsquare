@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { orderBy } from "lodash-es";
-import { isNil } from "lodash-es";
 
 const name = "fellowshipCore";
 
@@ -27,13 +25,6 @@ export const {
 
 export const fellowshipCoreMembersTriggerSelector = (state) =>
   state[name].membersFetchTrigger;
-export const fellowshipCoreMembersSelector = (state) => {
-  const members = state[name].members;
-  if (isNil(members)) {
-    return members;
-  }
-
-  return orderBy(members, ["rank"], ["desc"]);
-};
+export const fellowshipCoreMembersSelector = (state) => state[name].members;
 
 export default fellowshipCoreSlice.reducer;
