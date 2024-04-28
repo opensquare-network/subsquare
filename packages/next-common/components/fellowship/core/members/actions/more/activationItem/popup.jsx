@@ -1,20 +1,19 @@
-import { noop } from "lodash-es";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useSigner from "next-common/components/common/tx/useSigner";
 import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/updateFunc";
 import PopupLabel from "next-common/components/popup/label";
 import PopupWithSigner from "next-common/components/popupWithSigner";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import AddressUser from "next-common/components/user/addressUser";
 import { useContextApi } from "next-common/context/api";
 import { useCallback } from "react";
 
-export default function ActivationPopup({ member, onClose = noop, ...props }) {
-  const who = member.address;
+function Content() {
+  const { onClose, who, member } = usePopupParams();
+  const { component } = useSigner("Origin");
   const { isActive } = member.status;
   const targetActiveValue = !isActive;
-
-  const { component } = useSigner();
 
   const api = useContextApi();
 
@@ -27,7 +26,7 @@ export default function ActivationPopup({ member, onClose = noop, ...props }) {
   const onInBlock = useFellowshipMembersUpdateFunc();
 
   return (
-    <PopupWithSigner title="Activation" onClose={onClose} {...props}>
+    <>
       {component}
       <div>
         <PopupLabel text="Who" />
@@ -41,6 +40,14 @@ export default function ActivationPopup({ member, onClose = noop, ...props }) {
         onInBlock={onInBlock}
         onFinalized={onInBlock}
       />
+    </>
+  );
+}
+
+export default function ActivationPopup(props) {
+  return (
+    <PopupWithSigner title="Activation" {...props}>
+      <Content />
     </PopupWithSigner>
   );
 }

@@ -52,6 +52,7 @@ export default function More({ member }) {
       {showActivationPopup && (
         <ActivationPopup
           member={member}
+          who={member.address}
           onClose={() => {
             setShowActivationPopup(false);
           }}
