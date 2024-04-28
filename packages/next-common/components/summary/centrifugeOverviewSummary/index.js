@@ -3,7 +3,6 @@ import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "../overviewSummary/activeValue";
 import {
-  useChainSettings,
   useMenuHasCouncil,
   useMenuHasDemocracyExternal,
   useMenuHasTechComm,
@@ -188,7 +187,6 @@ function Supply() {
   const [collapsed] = useNavCollapsed();
   const { data: { supply = {} } = {}, loading: isLoading } = useBasicData();
   const { total = 0, wrapped = 0 } = supply;
-  const { symbol } = useChainSettings();
 
   return (
     <div
@@ -201,7 +199,7 @@ function Supply() {
         title="Total Supply"
         value={
           <TokenValue
-            value={<ValueDisplay value={total} symbol={symbol} />}
+            value={<ValueDisplay value={total} />}
             isLoading={isLoading}
           />
         }
@@ -214,7 +212,6 @@ function Supply() {
               value={
                 <ValueDisplay
                   value={new BigNumber(total).minus(wrapped).toFixed()}
-                  symbol={symbol}
                 />
               }
               isLoading={isLoading}
@@ -225,7 +222,7 @@ function Supply() {
           title="Wrapped"
           value={
             <TokenValue
-              value={<ValueDisplay value={wrapped} symbol={symbol} />}
+              value={<ValueDisplay value={wrapped} />}
               isLoading={isLoading}
             />
           }
