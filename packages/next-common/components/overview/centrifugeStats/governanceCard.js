@@ -2,7 +2,6 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import CardHeader from "./cardHeader";
 import { DetailList, DetailRow } from "./detailRow";
 import { useBasicData } from "next-common/context/centrifuge/basicData";
-import { bnToLocaleString } from "next-common/utils/bn";
 import Tooltip from "next-common/components/tooltip";
 import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -26,7 +25,7 @@ export default function GovernanceCard() {
           }
           value={
             <LoadableContent isLoading={isLoading}>
-              <ValueDisplay value={bnToLocaleString(onChain)} symbol={symbol} />
+              <ValueDisplay value={onChain} symbol={symbol} />
             </LoadableContent>
           }
         />
@@ -35,10 +34,7 @@ export default function GovernanceCard() {
             title="On chain"
             value={
               <LoadableContent isLoading={isLoading}>
-                <ValueDisplay
-                  value={bnToLocaleString(onChain)}
-                  symbol={symbol}
-                />
+                <ValueDisplay value={onChain} symbol={symbol} />
               </LoadableContent>
             }
           />
@@ -46,10 +42,7 @@ export default function GovernanceCard() {
             title="Off chain"
             value={
               <LoadableContent isLoading={isLoading}>
-                <ValueDisplay
-                  value={bnToLocaleString(offChain)}
-                  symbol={symbol}
-                />
+                <ValueDisplay value={offChain} symbol={symbol} />
               </LoadableContent>
             }
           />

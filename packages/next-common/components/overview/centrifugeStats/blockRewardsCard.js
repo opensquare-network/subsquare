@@ -2,7 +2,6 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import CardHeader from "./cardHeader";
 import { DetailList, DetailRow } from "./detailRow";
 import { useBasicData } from "next-common/context/centrifuge/basicData";
-import { bnToLocaleString } from "next-common/utils/bn";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import LoadableContent from "next-common/components/common/loadableContent";
@@ -20,7 +19,7 @@ export default function BlockRewardsCard() {
           title="Block Rewards"
           value={
             <LoadableContent isLoading={isLoading}>
-              <ValueDisplay value={bnToLocaleString(total)} symbol={symbol} />
+              <ValueDisplay value={total} symbol={symbol} />
             </LoadableContent>
           }
         />
@@ -29,10 +28,7 @@ export default function BlockRewardsCard() {
             title="Collator"
             value={
               <LoadableContent isLoading={isLoading}>
-                <ValueDisplay
-                  value={bnToLocaleString(collator)}
-                  symbol={symbol}
-                />
+                <ValueDisplay value={collator} symbol={symbol} />
               </LoadableContent>
             }
           />
@@ -40,10 +36,7 @@ export default function BlockRewardsCard() {
             title="Treasury"
             value={
               <LoadableContent isLoading={isLoading}>
-                <ValueDisplay
-                  value={bnToLocaleString(treasury)}
-                  symbol={symbol}
-                />
+                <ValueDisplay value={treasury} symbol={symbol} />
               </LoadableContent>
             }
           />
