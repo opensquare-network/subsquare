@@ -13,7 +13,7 @@ import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
 import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
 
-function useProposalOrigin(trackId) {
+export function useProposalOrigin(trackId) {
   const { tracksDetail } = usePageProps();
   const origins = (tracksDetail || []).find(
     (track) => track.id === trackId,
