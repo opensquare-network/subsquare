@@ -23,18 +23,17 @@ export default function Popup({
   }, []);
 
   return (
-    <Dialog.Root open onOpenChange={onClose}>
+    <Dialog.Root
+      open
+      onOpenChange={() => {
+        if (maskClosable) {
+          onClose();
+        }
+      }}
+    >
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content
-          asChild
-          onEscapeKeyDown={(event) => {
-            if (!maskClosable) {
-              event.preventDefault();
-            }
-          }}
-          onOpenAutoFocus={(e) => e.preventDefault()}
-        >
+        <Dialog.Content asChild onOpenAutoFocus={(e) => e.preventDefault()}>
           <div
             className="fixed inset-0 bg-black/25 flex justify-center items-start overflow-auto overscroll-y-none"
             style={{ zIndex: zOverlay }}
