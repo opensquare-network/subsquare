@@ -4,6 +4,7 @@ import {
   fellowshipReferendumsTrackApi,
   fellowshipReferendumsTracksApi,
   fellowshipReferendumsTracksSummaryApi,
+  fellowshipTracksApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
 import { startCase } from "lodash-es";
@@ -14,6 +15,7 @@ import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 
 export default function TrackPage({
   posts,
@@ -43,6 +45,7 @@ export default function TrackPage({
       <PostList
         title="List"
         titleCount={posts.total}
+        titleExtra={<NewFellowshipProposalButton />}
         category={businessCategory.fellowship}
         items={items}
         pagination={{
@@ -73,6 +76,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: posts },
     { result: trackReferendaSummary },
     { result: period },
+    { result: fellowshipTracksDetail },
   ] = await Promise.all([
     nextApi.fetch(fellowshipReferendumsTrackApi(track?.id), {
       page,
@@ -81,6 +85,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     }),
     nextApi.fetch(fellowshipReferendumsTracksSummaryApi(track?.id)),
     nextApi.fetch(fellowshipReferendumsTracksApi(track?.id)),
+    nextApi.fetch(fellowshipTracksApi),
   ]);
 
   return {
@@ -92,6 +97,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       fellowshipTracks,
       trackReferendaSummary: trackReferendaSummary ?? {},
       period: period ?? {},
+      fellowshipTracksDetail: fellowshipTracksDetail ?? null,
     },
   };
 });

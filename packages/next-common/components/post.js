@@ -37,6 +37,8 @@ import SystemUser from "./user/systemUser";
 import AddressUser from "./user/addressUser";
 import PolkassemblyUser from "./user/polkassemblyUser";
 import tw from "tailwind-styled-components";
+import Tooltip from "next-common/components/tooltip";
+import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -341,6 +343,13 @@ export default function Post({ data, href, type }) {
               <MobileHiddenInfo>
                 <PostLabels labels={data.labels} />
               </MobileHiddenInfo>
+            )}
+            {data?.isMalicious && (
+              <div className="flex items-center">
+                <Tooltip content="Warning: Malicious proposal!">
+                  <WarningIcon />
+                </Tooltip>
+              </div>
             )}
           </Footer>
           {data.status && (

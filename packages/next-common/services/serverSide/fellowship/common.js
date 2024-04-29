@@ -4,6 +4,7 @@ import nextApi from "next-common/services/nextApi";
 import {
   fellowshipMembersApiUri,
   fellowshipParamsApi,
+  fellowshipSalaryActiveCycleApi,
   fellowshipSalaryClaimantsApi,
 } from "next-common/services/url";
 import { merge, noop } from "lodash-es";
@@ -15,11 +16,13 @@ export function withFellowshipSalaryCommonProps(fn = noop) {
       { result: fellowshipMembers },
       { result: fellowshipParams = {} },
       { result: fellowshipSalaryClaimants },
+      { result: activeCycle },
     ] = await Promise.all([
       fetchOpenGovTracksProps(),
       nextApi.fetch(fellowshipMembersApiUri),
       nextApi.fetch(fellowshipParamsApi),
       nextApi.fetch(fellowshipSalaryClaimantsApi),
+      nextApi.fetch(fellowshipSalaryActiveCycleApi),
     ]);
 
     const res = await fn?.(context);
@@ -31,6 +34,7 @@ export function withFellowshipSalaryCommonProps(fn = noop) {
           fellowshipMembers,
           fellowshipParams,
           fellowshipSalaryClaimants,
+          activeCycle,
         },
       },
       res,

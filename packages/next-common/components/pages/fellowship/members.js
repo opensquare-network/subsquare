@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { isNil } from "lodash-es";
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import { useMemo } from "react";
@@ -9,9 +7,10 @@ import FellowshipMemberCommon from "next-common/components/pages/fellowship/comm
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import FellowshipMembersEmpty from "./empty";
+import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCoreMembers";
 
 export default function FellowshipMembersPage() {
-  const members = useSelector(fellowshipCoreMembersSelector);
+  const members = useSortedCoreMembers();
   const candidates = (members || []).filter((member) => member.rank <= 0);
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),

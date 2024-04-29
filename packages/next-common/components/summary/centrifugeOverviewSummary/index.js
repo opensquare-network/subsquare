@@ -20,11 +20,11 @@ import {
 } from "next-common/components/overview/centrifugeStats/detailRow";
 import { useBasicData } from "next-common/context/centrifuge/basicData";
 import BigNumber from "bignumber.js";
-import TokenValue from "next-common/components/overview/centrifugeStats/tokenValue";
 import PriceCard from "./priceCard";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -185,10 +185,11 @@ function ProposalSummary() {
 }
 
 function Supply() {
+  const { symbol } = useChainSettings();
+
   const [collapsed] = useNavCollapsed();
   const { data: { supply = {} } = {}, loading: isLoading } = useBasicData();
   const { total = 0, wrapped = 0 } = supply;
-  const { symbol } = useChainSettings();
 
   return (
     <div
@@ -200,34 +201,29 @@ function Supply() {
       <CardHeader
         title="Total Supply"
         value={
-          <TokenValue
-            value={<ValueDisplay value={total} symbol={symbol} />}
-            isLoading={isLoading}
-          />
+          <LoadableContent isLoading={isLoading}>
+            <ValueDisplay value={total} symbol={symbol} />
+          </LoadableContent>
         }
       />
       <DetailList>
         <DetailRow
           title="Native"
           value={
-            <TokenValue
-              value={
-                <ValueDisplay
-                  value={new BigNumber(total).minus(wrapped).toFixed()}
-                  symbol={symbol}
-                />
-              }
-              isLoading={isLoading}
-            />
+            <LoadableContent isLoading={isLoading}>
+              <ValueDisplay
+                value={new BigNumber(total).minus(wrapped).toFixed()}
+                symbol={symbol}
+              />
+            </LoadableContent>
           }
         />
         <DetailRow
           title="Wrapped"
           value={
-            <TokenValue
-              value={<ValueDisplay value={wrapped} symbol={symbol} />}
-              isLoading={isLoading}
-            />
+            <LoadableContent isLoading={isLoading}>
+              <ValueDisplay value={wrapped} symbol={symbol} />
+            </LoadableContent>
           }
         />
       </DetailList>
