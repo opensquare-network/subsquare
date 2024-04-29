@@ -11,7 +11,7 @@ import {
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import PrimaryButton from "next-common/lib/button/primary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import { isNil } from "lodash-es";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
@@ -49,6 +49,19 @@ function PopupContent() {
   const extensionAccounts = useExtensionAccounts();
   const proposalOrigin = useProposalOrigin(trackId);
   const [enactment, setEnactment] = useState();
+  const { treasuryProposalTracks } = useChainSettings();
+
+  useEffect(() => {
+    if (!treasuryProposalTracks || !inputBalance) {
+      return;
+    }
+    const track = treasuryProposalTracks.find(
+      (track) => track.max >= parseFloat(inputBalance),
+    );
+    if (track) {
+      setTrackId(track?.id);
+    }
+  }, [inputBalance, treasuryProposalTracks]);
 
   const { encodedHash, encodedLength, notePreimageTx } = useMemo(() => {
     if (!api || !inputBalance || !beneficiary) {
