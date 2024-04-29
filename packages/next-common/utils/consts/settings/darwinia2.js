@@ -114,6 +114,18 @@ const darwinia2 = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  treasuryProposalTracks: [
+    {
+      id: 5,
+      name: "Medium Spender",
+      max: 4000000,
+    },
+    {
+      id: 6,
+      name: "Big Spender",
+      max: 20000000,
+    },
+  ],
 };
 
 export default darwinia2;

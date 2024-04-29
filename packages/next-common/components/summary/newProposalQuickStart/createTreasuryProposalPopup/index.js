@@ -75,8 +75,13 @@ function PopupContent() {
       return {};
     }
 
-    const proposal = api.tx.treasury.spendLocal(bnValue.toFixed(), beneficiary);
-    return getState(api, proposal);
+    try {
+      const spend = api.tx.treasury.spendLocal || api.tx.treasury.spend;
+      const proposal = spend(bnValue.toFixed(), beneficiary);
+      return getState(api, proposal);
+    } catch (e) {
+      return {};
+    }
   }, [api, inputBalance, beneficiary]);
 
   const preimages = useCombinedPreimageHashes();
