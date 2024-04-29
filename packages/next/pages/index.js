@@ -50,6 +50,13 @@ export default function HomePage() {
     });
   }
 
+  if (chain === "interlay" || chain === "kintsugi") {
+    tabs.push({
+      label: "Escrow",
+      url: "/escrow",
+    });
+  }
+
   let externalInfo = null;
   if (hasDefinedOffChainVoting() || hasDefinedBounties()) {
     externalInfo = (

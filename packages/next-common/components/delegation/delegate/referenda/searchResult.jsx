@@ -2,7 +2,7 @@ import NoData from "next-common/components/noData";
 import NewDelegateButton from "next-common/components/summary/allDelegation/newDelegateButton";
 import nextApi from "next-common/services/nextApi";
 import { delegationReferendaDelegatesAddressApi } from "next-common/services/url";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDebounce } from "react-use";
 import Delegates from "./members";
 import DelegatesLoadable from "../common/loadable";
@@ -37,7 +37,7 @@ export default function ReferendaDelegationSearchResult({
     [searchAddress],
   );
 
-  if (isNil(result) && !isLoading) {
+  if ((isNil(result) && !isLoading) || !result?.address) {
     return (
       <NoData
         text={

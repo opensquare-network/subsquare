@@ -15,6 +15,7 @@ export default function Popup({
   extra,
   maskClosable = true,
   children,
+  container,
 }) {
   const [zOverlay] = useState(z);
   const [zContent] = useState(z + 1);
@@ -24,7 +25,7 @@ export default function Popup({
 
   return (
     <Dialog.Root open onOpenChange={onClose}>
-      <Dialog.Portal>
+      <Dialog.Portal container={container}>
         <Dialog.Overlay />
         <Dialog.Content
           asChild
