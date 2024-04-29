@@ -12,6 +12,7 @@ import {
   LoginResult,
   setLoginResult,
 } from "next-common/store/reducers/userSlice";
+import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -19,7 +20,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-export default function AddressLogin({ setView }) {
+export default function AddressLogin() {
   const chain = useChain();
   const [isLoading, setIsLoading] = useState(false);
   const [wallet, setWallet] = useState();
@@ -85,7 +86,7 @@ export default function AddressLogin({ setView }) {
             className="text-theme500"
             role="button"
             onClick={() => {
-              setView("account");
+              dispatch(setConnectPopupView("account"));
             }}
           >
             account

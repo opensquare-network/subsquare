@@ -22,6 +22,7 @@ import {
   LoginResult,
   setLoginResult,
 } from "next-common/store/reducers/userSlice";
+import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -29,7 +30,7 @@ const ForgetPassword = styled.div`
   font-size: 12px;
 `;
 
-export default function MailLogin({ setView }) {
+export default function MailLogin() {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
@@ -87,7 +88,7 @@ export default function MailLogin({ setView }) {
           className="w-full"
           onClick={(event) => {
             event.preventDefault();
-            setView("web3");
+            dispatch(setConnectPopupView("web3"));
           }}
         >
           Connect with web3 address

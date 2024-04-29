@@ -1,6 +1,6 @@
 import AddressLogin from "./addressLogin";
 
-export default function LoginWeb3LoginContent({ setView }) {
+export default function LoginWeb3LoginContent() {
   return (
     <div className="space-y-6">
       <h3 className="text20Bold text-textPrimary">
@@ -8,7 +8,7 @@ export default function LoginWeb3LoginContent({ setView }) {
         <span className="text-theme500">Address</span>
       </h3>
 
-      <AddressLogin setView={setView} />
+      <AddressLogin />
     </div>
   );
 }
