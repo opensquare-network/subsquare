@@ -1,6 +1,6 @@
 import MailLogin from "./mailLogin";
 
-export default function LoginAccountLoginContent({ setView }) {
+export default function LoginAccountLoginContent() {
   return (
     <div className="space-y-6">
       <h3 className="text20Bold text-textPrimary">
@@ -8,7 +8,7 @@ export default function LoginAccountLoginContent({ setView }) {
         <span className="text-theme500">Account</span>
       </h3>
 
-      <MailLogin setView={setView} />
+      <MailLogin />
     </div>
   );
 }
