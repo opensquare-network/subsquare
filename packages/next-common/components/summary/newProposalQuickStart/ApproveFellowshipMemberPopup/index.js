@@ -18,6 +18,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import { InfoMessage } from "next-common/components/setting/styled";
 import AddressUser from "next-common/components/user/addressUser";
+import RankField from "next-common/components/popup/fields/rankField";
 
 function PopupContent({ member, onClose }) {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ function PopupContent({ member, onClose }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
-  const atRank = member?.rank;
+  const [atRank, setAtRank] = useState(member?.rank);
   const trackName = `PromoteTo${atRank}Dan`;
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const [isLoading, setIsLoading] = useState(false);
@@ -93,6 +94,7 @@ function PopupContent({ member, onClose }) {
         setAddress={setMemberAddress}
         readOnly
       />
+      <RankField title="At Rank" rank={atRank} setRank={setAtRank} />
       <EnactmentBlocks setEnactment={setEnactment} />
       <InfoMessage>
         <span>
@@ -111,9 +113,9 @@ function PopupContent({ member, onClose }) {
   );
 }
 
-export default function PromoteFellowshipMemberPopup({ member, onClose }) {
+export default function ApproveFellowshipMemberPopup({ member, onClose }) {
   return (
-    <PopupWithSigner title="Promote Fellowship Member" onClose={onClose} wide>
+    <PopupWithSigner title="Approve Fellowship Member" onClose={onClose} wide>
       <PopupContent member={member} onClose={onClose} />
     </PopupWithSigner>
   );

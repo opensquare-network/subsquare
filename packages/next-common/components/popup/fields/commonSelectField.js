@@ -9,6 +9,7 @@ export default function CommonSelectField({
   setValue = noop,
   options = [],
   itemHeight,
+  readOnly = false,
 }) {
   return (
     <div>
@@ -19,6 +20,7 @@ export default function CommonSelectField({
         onChange={(item) => setValue(item.value)}
         maxDisplayItem={7}
         itemHeight={itemHeight}
+        readOnly={readOnly}
       />
     </div>
   );

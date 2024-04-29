@@ -59,6 +59,7 @@ function Select({
   small = false,
   itemHeight,
   search = false,
+  readOnly = false,
 }) {
   const ref = useRef();
   const [searchText, setSearchText] = useState("");
@@ -103,7 +104,7 @@ function Select({
 
   return (
     <SelectWrapper
-      className={className}
+      className={cn(className, readOnly && "pointer-events-none")}
       ref={ref}
       disabled={disabled}
       onClick={handleShowOptions}
@@ -111,15 +112,17 @@ function Select({
     >
       <SelectInner>
         <div className="overflow-hidden">{displayValue}</div>
-        <div>
-          <ArrowDown
-            className={cn(
-              showOptions && "rotate-180",
-              "w-5 h-5",
-              "[&_path]:stroke-textTertiary",
-            )}
-          />
-        </div>
+        {!readOnly && (
+          <div>
+            <ArrowDown
+              className={cn(
+                showOptions && "rotate-180",
+                "w-5 h-5",
+                "[&_path]:stroke-textTertiary",
+              )}
+            />
+          </div>
+        )}
       </SelectInner>
 
       {showOptions && (
