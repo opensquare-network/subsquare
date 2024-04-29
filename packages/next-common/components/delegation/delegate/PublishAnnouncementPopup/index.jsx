@@ -41,8 +41,8 @@ export default function AnnouncementPublishPopup({
         setLongDescription(myDelegation?.manifesto?.longDescription || "");
         break;
       case "parity":
-        setShortDescription(myDelegation?.manifesto || "");
-        setLongDescription(myDelegation?.manifesto || "");
+        setShortDescription(myDelegation?.manifesto?.manifesto || "");
+        setLongDescription(myDelegation?.manifesto?.manifesto || "");
         break;
     }
   }, [myDelegation]);
