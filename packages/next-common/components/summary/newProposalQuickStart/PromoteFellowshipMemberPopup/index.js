@@ -99,7 +99,7 @@ function PopupContent({ member, onClose }) {
         setAddress={setMemberAddress}
         readOnly
       />
-      <RankField title="To Rank" rank={toRank} setRank={setToRank} />
+      <RankField title="To Rank" rank={toRank} setRank={setToRank} readOnly />
       <EnactmentBlocks setEnactment={setEnactment} />
       <InfoMessage>
         <span>

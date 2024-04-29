@@ -94,7 +94,7 @@ function PopupContent({ member, onClose }) {
         setAddress={setMemberAddress}
         readOnly
       />
-      <RankField title="At Rank" rank={atRank} setRank={setAtRank} />
+      <RankField title="At Rank" rank={atRank} setRank={setAtRank} readOnly />
       <EnactmentBlocks setEnactment={setEnactment} />
       <InfoMessage>
         <span>
