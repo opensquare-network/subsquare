@@ -9,7 +9,7 @@ import Beneficiary from "../../common/beneficiary";
 import TipReason from "./tipReason";
 import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
-import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
+import { getEventData, sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useChainSettings } from "../../../../context/chain";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
@@ -149,7 +149,8 @@ function PopupContent() {
       tx,
       dispatch,
       setLoading,
-      onInBlock: (eventData, blockHash) => {
+      onInBlock: (events, blockHash) => {
+        const eventData = getEventData(events, "tips", "NewTip");
         if (!eventData || !blockHash) {
           return;
         }
@@ -162,8 +163,6 @@ function PopupContent() {
       onClose,
       signerAccount,
       isMounted,
-      section: "tips",
-      method: "NewTip",
     });
   };
 

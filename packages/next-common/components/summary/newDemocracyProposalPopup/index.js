@@ -1,6 +1,6 @@
 import SignerPopup from "next-common/components/signerPopup";
 import { useCallback, useEffect, useState } from "react";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import { getEventData, sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useRouter } from "next/router";
@@ -79,15 +79,14 @@ export default function NewDemocracyProposalPopup({
         isMounted,
         signerAccount,
         setLoading: setIsLoading,
-        onInBlock: (eventData) => {
+        onInBlock: (events) => {
+          const eventData = getEventData(events, "democracy", "Proposed");
           if (!eventData) {
             return;
           }
           const [proposalIndex] = eventData;
           router.push(`/democracy/proposals/${proposalIndex}`);
         },
-        section: "democracy",
-        method: "Proposed",
         onClose,
       });
     },
