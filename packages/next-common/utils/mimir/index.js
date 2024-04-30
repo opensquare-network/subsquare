@@ -48,8 +48,6 @@ export async function maybeSendMimirTx({
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
   signerAccount,
-  section: sectionName,
-  method: methodName,
 }) {
   const { web3Enable, web3FromSource } = await import(
     "@polkadot/extension-dapp"
@@ -101,8 +99,6 @@ export async function maybeSendMimirTx({
         setLoading,
         onFinalized,
         onInBlock,
-        section: sectionName,
-        method: methodName,
         totalSteps,
         noWaitForFinalized,
         unsub: () => unsub(),

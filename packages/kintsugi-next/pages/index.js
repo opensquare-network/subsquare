@@ -31,6 +31,10 @@ export default function Home() {
       url: "/",
       exactMatch: false,
     },
+    {
+      label: "Escrow",
+      url: "/escrow",
+    },
   ];
 
   if (user?.address) {

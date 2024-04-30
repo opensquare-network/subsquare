@@ -84,8 +84,6 @@ export function createSendTxEventHandler({
   setLoading = emptyFunction,
   onFinalized = emptyFunction,
   onInBlock = emptyFunction,
-  section: sectionName,
-  method: methodName,
   totalSteps,
   noWaitForFinalized,
   unsub = emptyFunction,
@@ -119,19 +117,7 @@ export function createSendTxEventHandler({
         );
       }
 
-      for (const event of events) {
-        const { section, method, data } = event.event;
-        if (section !== sectionName || method !== methodName) {
-          continue;
-        }
-        const eventData = data.toJSON();
-        onInBlock(eventData, blockHash);
-        break;
-      }
-
-      if (!sectionName || !methodName) {
-        onInBlock(undefined, blockHash);
-      }
+      onInBlock(events, blockHash);
     }
   };
 }
@@ -145,8 +131,6 @@ export async function defaultSendTx({
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
   signerAccount,
-  section: sectionName,
-  method: methodName,
 }) {
   const signerAddress = signerAccount?.address;
 
@@ -173,8 +157,6 @@ export async function defaultSendTx({
         setLoading,
         onFinalized,
         onInBlock,
-        section: sectionName,
-        method: methodName,
         totalSteps,
         noWaitForFinalized,
         unsub: () => unsub(),
@@ -210,8 +192,6 @@ export async function sendTx({
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
   signerAccount,
-  section: sectionName,
-  method: methodName,
 }) {
   const isMimirWallet = signerAccount?.meta?.source === WalletTypes.MIMIR;
   if (isMimirWallet) {
@@ -224,8 +204,6 @@ export async function sendTx({
       onFinalized,
       onClose,
       signerAccount,
-      section: sectionName,
-      method: methodName,
     });
     if (handled) {
       return;
@@ -277,11 +255,19 @@ export async function sendTx({
     onFinalized,
     onClose,
     signerAccount,
-    section: sectionName,
-    method: methodName,
   });
 }
 
 export function wrapWithProxy(api, tx, proxyAddress) {
   return api.tx.proxy.proxy(proxyAddress, null, tx);
+}
+
+export function getEventData(events, sectionName, methodName) {
+  for (const event of events) {
+    const { section, method, data } = event.event;
+    if (section !== sectionName || method !== methodName) {
+      continue;
+    }
+    return data.toJSON();
+  }
 }

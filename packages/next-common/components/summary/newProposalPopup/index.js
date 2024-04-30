@@ -2,7 +2,7 @@ import SignerPopup from "next-common/components/signerPopup";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import PreimageField from "./preimageField";
 import EnactmentBlocks from "./enactmentBlocks";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import { getEventData, sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { isNil } from "lodash-es";
@@ -101,15 +101,14 @@ export default function NewProposalPopup({
         isMounted,
         signerAccount,
         setLoading: setIsLoading,
-        onInBlock: (eventData) => {
+        onInBlock: (events) => {
+          const eventData = getEventData(events, "referenda", "Submitted");
           if (!eventData) {
             return;
           }
           const [referendumIndex] = eventData;
           router.push(`/referenda/${referendumIndex}`);
         },
-        section: "referenda",
-        method: "Submitted",
         onClose,
       });
     },

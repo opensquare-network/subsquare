@@ -3,14 +3,14 @@ import Progress from "next-common/components/progress";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { toPercentage, toPrecision } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
+import bigAdd from "next-common/utils/math/bigAdd";
 
 export default function FellowshipSalaryExpenditure({ cycle = {} }) {
   const { symbol, decimals } = useSalaryAsset();
 
   const { status = {}, registeredPaid, unRegisteredPaid } = cycle || {};
   const { budget } = status;
-
-  const paid = registeredPaid + unRegisteredPaid || 0;
+  const paid = bigAdd(registeredPaid, unRegisteredPaid) || 0;
 
   const percentage = toPercentage(paid / budget);
 
