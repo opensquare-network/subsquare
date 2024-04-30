@@ -1,14 +1,16 @@
-import { useConnect } from "wagmi";
+import { useAccount, useConnect } from "wagmi";
 import { useDispatch } from "react-redux";
 import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
 import PrimaryButton from "next-common/lib/button/primary";
 import WalletOption from "../wallet/walletOption";
+import AddressSelect from "../addressSelect";
+import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
+import { filter } from "lodash-es";
+import { useEffect, useMemo, useState } from "react";
+import WalletTypes from "next-common/utils/consts/walletTypes";
+import { useWeb3Login } from "next-common/hooks/connect/web3Login";
 
 export default function LoginWeb3EVMLoginContent() {
-  const { connectors, connect } = useConnect();
-  connect;
-  connectors;
-
   return (
     <div className="space-y-6">
       <h3 className="text20Bold text-textPrimary">
@@ -23,13 +25,41 @@ export default function LoginWeb3EVMLoginContent() {
 
 function EVMLogin() {
   const dispatch = useDispatch();
-  const { connectors } = useConnect();
+  const { addresses } = useAccount();
+  const { connectors, connect } = useConnect();
+  const [selectedWallet, setSelectedWallet] = useState();
+  const [selectedAccount, setSelectedAccount] = useState();
+  const normalizedAddress = useMemo(
+    () => normalizedMetaMaskAccounts(addresses || []),
+    [addresses],
+  );
+
+  const supportedWalletNames = Object.values(WalletTypes);
+  const supportedConnectors = filter(connectors, (connector) => {
+    return supportedWalletNames.includes(connector.name.toLowerCase());
+  });
+
+  const [web3Login, isLoading] = useWeb3Login();
+
+  useEffect(() => {
+    if (normalizedAddress.length > 0) {
+      setSelectedAccount(normalizedAddress[0]);
+    }
+  }, [normalizedAddress]);
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-2">
-        {connectors.map((connector) => (
-          <WalletOption key={connector.id} installed>
+        {supportedConnectors.map((connector) => (
+          <WalletOption
+            key={connector.id}
+            installed
+            selected={selectedWallet?.id === connector.id}
+            onClick={() => {
+              setSelectedWallet(connector);
+              connect({ connector });
+            }}
+          >
             <div className="flex items-center">
               <img src={connector.icon} className="w-6 h-6" />
               {connector.name}
@@ -38,8 +68,30 @@ function EVMLogin() {
         ))}
       </div>
 
+      {selectedWallet && (
+        <div>
+          <div className="text12Bold text-textPrimary mb-2">
+            Choose linked address
+          </div>
+
+          <AddressSelect
+            accounts={normalizedAddress}
+            onSelect={setSelectedAccount}
+            selectedAccount={selectedAccount}
+          />
+        </div>
+      )}
+
       <div>
-        <PrimaryButton className="w-full" onClick={() => {}}>
+        <PrimaryButton
+          className="w-full"
+          loading={isLoading}
+          onClick={() => {
+            web3Login({
+              account: selectedAccount,
+            });
+          }}
+        >
           Next
         </PrimaryButton>
       </div>
