@@ -16,7 +16,6 @@ export default function TxSubmissionButton({
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
-  inBlockEvent: { section, method } = {},
 }) {
   const [isCalling, setIsCalling] = useState(false);
   const api = useContextApi();
@@ -52,10 +51,8 @@ export default function TxSubmissionButton({
       onSubmitted,
       onInBlock,
       onFinalized,
-      section,
-      method,
     });
-  }, [api, dispatch, signerAccount, getTxFunc, section, method]);
+  }, [api, dispatch, signerAccount, getTxFunc]);
 
   return (
     <div className="flex justify-end">
