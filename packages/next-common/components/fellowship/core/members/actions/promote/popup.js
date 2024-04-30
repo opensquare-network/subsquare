@@ -7,7 +7,7 @@ import { useContextApi } from "next-common/context/api";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
+import EnactmentBlocks from "next-common/components/summary/newProposalPopup/enactmentBlocks";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import { InfoMessage } from "next-common/components/setting/styled";
