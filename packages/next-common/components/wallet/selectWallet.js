@@ -39,7 +39,7 @@ export default function SelectWallet({
   const { injectedWeb3 } = useInjectedWeb3();
   const { chainType, ethereumNetwork } = useChainSettings();
   const signetAccounts = useSignetAccounts();
-  const supportEVM = isEvmChain() || isMixedChain();
+  const showEVMOption = isMixedChain();
 
   const loadPolkadotAccounts = useCallback(
     async (selectedWallet) => {
@@ -245,7 +245,7 @@ export default function SelectWallet({
         );
       })}
 
-      {supportEVM && <EVMWalletOption />}
+      {showEVMOption && <EVMWalletOption />}
     </div>
   );
 }
