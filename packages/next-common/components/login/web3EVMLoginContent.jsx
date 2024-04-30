@@ -25,9 +25,9 @@ export default function LoginWeb3EVMLoginContent() {
 
 function EVMLogin() {
   const dispatch = useDispatch();
-  const { addresses } = useAccount();
+  const { addresses, connector } = useAccount();
   const { connectors, connect } = useConnect();
-  const [selectedWallet, setSelectedWallet] = useState();
+  const [selectedWallet, setSelectedWallet] = useState(connector);
   const [selectedAccount, setSelectedAccount] = useState();
   const normalizedAddress = useMemo(
     () => normalizedMetaMaskAccounts(addresses || []),
@@ -56,8 +56,14 @@ function EVMLogin() {
             installed
             selected={selectedWallet?.id === connector.id}
             onClick={() => {
-              setSelectedWallet(connector);
-              connect({ connector });
+              connect(
+                { connector },
+                {
+                  onSuccess() {
+                    setSelectedWallet(connector);
+                  },
+                },
+              );
             }}
           >
             <div className="flex items-center">
