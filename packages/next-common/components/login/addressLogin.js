@@ -5,7 +5,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import WalletAddressSelect from "./walletAddressSelect";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
-import { useDoWeb3Login } from "next-common/hooks/connect/doWeb3Login";
+import { useWeb3Login } from "next-common/hooks/connect/web3Login";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -20,7 +20,7 @@ export default function AddressLogin() {
   const [web3Error, setWeb3Error] = useState();
   const dispatch = useDispatch();
   const { lastConnectedAccount } = useConnectedAccountContext();
-  const { doWeb3Login, isLoading } = useDoWeb3Login();
+  const [web3Login, isLoading] = useWeb3Login();
 
   return (
     <div className="space-y-6">
@@ -41,7 +41,7 @@ export default function AddressLogin() {
             className="w-full"
             loading={isLoading}
             onClick={() => {
-              doWeb3Login({
+              web3Login({
                 account: selectedAccount,
                 wallet: selectedWallet,
               });

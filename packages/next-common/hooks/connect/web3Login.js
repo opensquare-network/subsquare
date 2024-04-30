@@ -10,13 +10,13 @@ import { useConnectedAccountContext } from "next-common/context/connectedAccount
 import { useAsyncFn } from "react-use";
 import { useChain } from "next-common/context/chain";
 
-export function useDoWeb3Login() {
+export function useWeb3Login() {
   const chain = useChain();
   const dispatch = useDispatch();
   const { closeLoginPopup } = useLoginPopup();
   const { connect: connectAccount } = useConnectedAccountContext();
 
-  const [state, doWeb3Login] = useAsyncFn(
+  const [state, web3Login] = useAsyncFn(
     async ({ account, wallet }) => {
       if (!account?.address) {
         dispatch(newErrorToast("Please select an account"));
@@ -40,8 +40,5 @@ export function useDoWeb3Login() {
     [chain, connectAccount],
   );
 
-  return {
-    isLoading: state.loading,
-    doWeb3Login,
-  };
+  return [web3Login, state.loading];
 }
