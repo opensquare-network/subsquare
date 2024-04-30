@@ -14,9 +14,8 @@ export default function Approve({ member }) {
   const myRankOk = me && me.rank >= 3;
 
   if (!myRankOk) {
-    let tipContent = "Only available to the members with rank >= 3";
     return (
-      <Tooltip content={tipContent}>
+      <Tooltip content="Only available to the members with rank >= 3">
         <span className="text14Medium text-textDisabled">Approve</span>
       </Tooltip>
     );
