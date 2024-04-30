@@ -13,8 +13,8 @@ import { collectiveLinks } from "next-common/utils/consts/settings/common/collec
 const testEndpoints = [
   {
     name: "Subsquare",
-    // url: "wss://tc.subsquare.io",
     url: "ws://127.0.0.1:8000",
+    // url: "wss://tc.subsquare.io",
   },
 ];
 

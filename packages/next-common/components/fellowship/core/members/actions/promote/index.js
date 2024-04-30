@@ -5,7 +5,7 @@ import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellow
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
-import PromoteFellowshipMemberPopup from "next-common/components/summary/newProposalQuickStart/PromoteFellowshipMemberPopup";
+import PromoteFellowshipMemberPopup from "./popup";
 
 export default function Promote({ member }) {
   const [showPromotePopup, setShowPromotePopup] = useState(false);

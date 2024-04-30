@@ -13,7 +13,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
 import { WarningMessage } from "../../../popup/styled";
 import useBond from "../../../../utils/hooks/useBond";
-import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
+import { getEventData, sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useChainSettings } from "../../../../context/chain";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
@@ -94,7 +94,11 @@ function PopupContent() {
       dispatch,
       setLoading,
       onFinalized,
-      onInBlock: (eventData) => {
+      onInBlock: (events) => {
+        const eventData = getEventData(events, "treasury", "Proposed");
+        if (!eventData) {
+          return;
+        }
         const [proposalIndex] = eventData;
         onInBlock(signerAccount?.address, proposalIndex);
       },
@@ -102,8 +106,6 @@ function PopupContent() {
       onClose,
       signerAccount,
       isMounted,
-      section: "treasury",
-      method: "Proposed",
     });
   };
 
