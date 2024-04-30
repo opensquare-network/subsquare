@@ -16,6 +16,7 @@ export default function TxSubmissionButton({
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
+  loading = false,
 }) {
   const [isCalling, setIsCalling] = useState(false);
   const api = useContextApi();
@@ -56,7 +57,11 @@ export default function TxSubmissionButton({
 
   return (
     <div className="flex justify-end">
-      <PrimaryButton loading={isCalling} onClick={onSubmit} disabled={disabled}>
+      <PrimaryButton
+        loading={isCalling || loading}
+        onClick={onSubmit}
+        disabled={disabled}
+      >
         {title}
       </PrimaryButton>
     </div>

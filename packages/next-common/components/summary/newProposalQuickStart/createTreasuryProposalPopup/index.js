@@ -1,24 +1,20 @@
 import AddressComboField from "next-common/components/popup/fields/addressComboField";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import {
   useExtensionAccounts,
   usePopupParams,
-  useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import PrimaryButton from "next-common/lib/button/primary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import { isNil } from "lodash-es";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import { getEventData } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { useChainSettings } from "next-common/context/chain";
@@ -27,6 +23,7 @@ import { usePageProps } from "next-common/context/page";
 import { useProposalOrigin } from "../../newProposalPopup";
 import { useRouter } from "next/router";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -35,12 +32,8 @@ function PopupContent() {
   const { tracks } = usePageProps();
   const api = useContextApi();
   const { decimals } = useChainSettings();
-  const isMounted = useIsMounted();
-  const [isCreatingPreimage, setIsCreatingPreimage] = useState(false);
   const [isReloadingPreimageHashes, setIsReloadingPreimageHashes] =
     useState(false);
-  const [isSubmittingProposal, setIsSubmittingProposal] = useState(false);
-  const signerAccount = useSignerAccount();
   const [inputBalance, setInputBalance] = useState("");
   const [beneficiary, setBeneficiary] = useState("");
   const [trackId, setTrackId] = useState(tracks[0].id);
@@ -56,7 +49,7 @@ function PopupContent() {
       return;
     }
     const track = treasuryProposalTracks.find(
-      (track) => track.max >= parseFloat(inputBalance),
+      (track) => isNil(track.max) || track.max >= parseFloat(inputBalance),
     );
     if (track) {
       setTrackId(track?.id);
@@ -92,30 +85,7 @@ function PopupContent() {
     return preimages.some(({ data: [hash] }) => hash === encodedHash);
   }, [preimages, encodedHash]);
 
-  const createPreimage = async () => {
-    if (!api || !notePreimageTx) {
-      return;
-    }
-
-    let tx = notePreimageTx;
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    await sendTx({
-      tx,
-      setLoading: setIsCreatingPreimage,
-      dispatch,
-      signerAccount,
-      isMounted,
-      onInBlock: () => {
-        setIsReloadingPreimageHashes(true);
-        dispatch(incPreImagesTrigger());
-      },
-    });
-  };
-
-  const submitProposal = () => {
+  const getSubmitReferendaTx = () => {
     if (!api || !encodedHash) {
       return;
     }
@@ -131,7 +101,7 @@ function PopupContent() {
       }
     }
 
-    let tx = api.tx.referenda.submit(
+    return api.tx.referenda.submit(
       proposalOriginValue,
       {
         Lookup: {
@@ -141,29 +111,6 @@ function PopupContent() {
       },
       enactment,
     );
-
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    sendTx({
-      tx,
-      api,
-      dispatch,
-      isMounted,
-      signerAccount,
-      setLoading: setIsSubmittingProposal,
-      onInBlock: (eventData) => {
-        if (!eventData) {
-          return;
-        }
-        const [referendumIndex] = eventData;
-        router.push(`/referenda/${referendumIndex}`);
-      },
-      section: "referenda",
-      method: "Submitted",
-      onClose,
-    });
   };
 
   return (
@@ -183,24 +130,31 @@ function PopupContent() {
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <EnactmentBlocks track={track} setEnactment={setEnactment} />
       <SubmissionDeposit />
-      <PopupButtonWrapper>
-        {preimageExists ? (
-          <PrimaryButton
-            loading={isSubmittingProposal}
-            onClick={submitProposal}
-          >
-            Submit Proposal
-          </PrimaryButton>
-        ) : (
-          <PrimaryButton
-            onClick={createPreimage}
-            disabled={!notePreimageTx}
-            loading={isCreatingPreimage || isReloadingPreimageHashes}
-          >
-            Create Preimage
-          </PrimaryButton>
-        )}
-      </PopupButtonWrapper>
+      {preimageExists ? (
+        <TxSubmissionButton
+          title="Submit Proposal"
+          getTxFunc={getSubmitReferendaTx}
+          onInBlock={(events) => {
+            const eventData = getEventData(events, "referenda", "Submitted");
+            if (!eventData) {
+              return;
+            }
+            const [referendumIndex] = eventData;
+            router.push(`/referenda/${referendumIndex}`);
+          }}
+          onClose={onClose}
+        />
+      ) : (
+        <TxSubmissionButton
+          title="Create Preimage"
+          getTxFunc={() => notePreimageTx}
+          loading={isReloadingPreimageHashes}
+          onInBlock={() => {
+            setIsReloadingPreimageHashes(true);
+            dispatch(incPreImagesTrigger());
+          }}
+        />
+      )}
     </>
   );
 }
