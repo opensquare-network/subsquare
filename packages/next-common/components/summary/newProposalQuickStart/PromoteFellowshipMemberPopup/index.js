@@ -1,17 +1,10 @@
 import AddressComboField from "next-common/components/popup/fields/addressComboField";
 import RankField from "next-common/components/popup/fields/rankField";
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import {
-  useExtensionAccounts,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
-import PrimaryButton from "next-common/lib/button/primary";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
@@ -19,21 +12,39 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import { InfoMessage } from "next-common/components/setting/styled";
 import AddressUser from "next-common/components/user/addressUser";
+import Chains from "next-common/utils/consts/chains";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+
+const CollectivesPromoteTracks = {
+  1: "PromoteTo1Dan",
+  2: "PromoteTo2Dan",
+  3: "PromoteTo3Dan",
+  4: "PromoteTo4Dan",
+  5: "PromoteTo5Dan",
+  6: "PromoteTo6Dan",
+};
+
+function getTrackNameFromRank(rank) {
+  switch (process.env.NEXT_PUBLIC_CHAIN) {
+    case Chains.collectives:
+    case Chains.westendCollectives:
+      return CollectivesPromoteTracks[rank];
+    default:
+      throw new Error("Unsupported chain");
+  }
+}
 
 function PopupContent({ member, onClose }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [enactment, setEnactment] = useState();
-  const isMounted = useIsMounted();
   const api = useContextApi();
-  const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
   const [toRank, setToRank] = useState(member?.rank + 1);
-  const trackName = `PromoteTo${toRank}Dan`;
+  const trackName = getTrackNameFromRank(toRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const doPromote = useCallback(async () => {
+  const getTxFunc = useCallback(async () => {
     if (!api || !memberAddress) {
       return;
     }
@@ -44,50 +55,12 @@ function PopupContent({ member, onClose }) {
     }
 
     const proposal = api.tx.fellowshipCore.promote(memberAddress, toRank);
-    let tx = api.tx.fellowshipReferenda.submit(
+    return api.tx.fellowshipReferenda.submit(
       { FellowshipOrigins: trackName },
       { Inline: proposal.method.toHex() },
       enactment,
     );
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    setIsLoading(true);
-    try {
-      await sendTx({
-        tx,
-        setLoading: setIsLoading,
-        dispatch,
-        signerAccount,
-        isMounted,
-        section: "fellowshipReferenda",
-        method: "Submitted",
-        onInBlock: (eventData) => {
-          if (!eventData) {
-            return;
-          }
-          const [referendumIndex] = eventData;
-          router.push(`/fellowship/referenda/${referendumIndex}`);
-        },
-        onFinalized: () => dispatch(incPreImagesTrigger()),
-      });
-    } catch (error) {
-      dispatch(newErrorToast(error.message));
-      setIsLoading(false);
-    }
-  }, [
-    api,
-    onClose,
-    toRank,
-    trackName,
-    memberAddress,
-    enactment,
-    signerAccount,
-    dispatch,
-    isMounted,
-    router,
-  ]);
+  }, [api, toRank, trackName, memberAddress, enactment, dispatch]);
 
   return (
     <>
@@ -109,11 +82,19 @@ function PopupContent({ member, onClose }) {
           </div>
         </span>
       </InfoMessage>
-      <PopupButtonWrapper>
-        <PrimaryButton loading={isLoading} onClick={doPromote}>
-          Confirm
-        </PrimaryButton>
-      </PopupButtonWrapper>
+      <TxSubmissionButton
+        getTxFunc={getTxFunc}
+        onClose={onClose}
+        inBlockEvent={{ section: "fellowshipReferenda", method: "Submitted" }}
+        onInBlock={(eventData) => {
+          if (!eventData) {
+            return;
+          }
+          const [referendumIndex] = eventData;
+          router.push(`/fellowship/referenda/${referendumIndex}`);
+        }}
+        onFinalized={() => dispatch(incPreImagesTrigger())}
+      />
     </>
   );
 }
