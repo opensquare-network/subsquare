@@ -25,7 +25,7 @@ const CollectivesPromoteTracks = {
   6: "PromoteTo6Dan",
 };
 
-function getTrackNameFromRank(rank) {
+export function getTrackNameFromRank(rank) {
   switch (process.env.NEXT_PUBLIC_CHAIN) {
     case Chains.collectives:
     case Chains.westendCollectives:
