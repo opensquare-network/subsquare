@@ -79,7 +79,7 @@ export default function WalletAddressSelect({
   return (
     <>
       <div className="flex flex-col gap-[8px]">
-        <div className="text14Bold text-textPrimary">SingleSig Wallet</div>
+        <div className="text14Bold text-textPrimary">Wallet</div>
         <SelectWallet
           wallets={getSingleSigWallets()}
           selectedWallet={selectedWallet}
