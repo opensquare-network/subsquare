@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.1
+
+date: 2024-04-30
+
+- [Big] Support user creating new fellowship referenda proposal.
+- [Big] Add an escrow statistics page for interlay/kintsugi.
+- Add an induction panel on fellowship home page.
+- Support shortcut actions for fellowship members to create a member promotion referendum.
+- Support fellowship members to import himself/herself to salary system.
+- Support fellowship members to register a salary cycle.
+- Fix fellowship salary cycle expenditure.
+- Fix induction status and registered number on fellowship salary summary.
+- Add query param on referenda detail page to locate tabs.
+- Improve RPC nodes connection by not setting the first one as default.
+- Add labor day decorations.
+- Add an icon on list page to show malicious posts or proposals.
+- Refactor and fix, improve styles.
+
 ### 4.0.0
 
 date: 2024-04-19
