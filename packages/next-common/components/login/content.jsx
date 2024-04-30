@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import LoginWeb3LoginContent from "./web3LoginContent";
 import LoginAccountLoginContent from "./accountLoginContent";
+import LoginWeb3EVMLoginContent from "./web3EVMLoginContent";
 import { useSelector } from "react-redux";
 import {
   connectPopupViewSelector,
@@ -24,6 +25,8 @@ export default function LoginContent() {
   return (
     <>
       {view === "web3" && <LoginWeb3LoginContent />}
+
+      {view === "web3evm" && <LoginWeb3EVMLoginContent />}
 
       {view === "account" && <LoginAccountLoginContent />}
     </>
