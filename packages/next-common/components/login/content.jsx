@@ -8,6 +8,7 @@ import {
   setConnectPopupView,
 } from "next-common/store/reducers/connectPopupSlice";
 import { useDispatch } from "react-redux";
+import isEvmChain from "next-common/utils/isEvmChain";
 
 /**
  * @description used in login popup and login page
@@ -15,10 +16,11 @@ import { useDispatch } from "react-redux";
 export default function LoginContent() {
   const view = useSelector(connectPopupViewSelector);
   const dispatch = useDispatch();
+  const defaultView = isEvmChain() ? "web3evm" : "web3";
 
   useEffect(() => {
     return () => {
-      dispatch(setConnectPopupView("web3"));
+      dispatch(setConnectPopupView(defaultView));
     };
   }, []);
 

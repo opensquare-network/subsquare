@@ -1,3 +1,5 @@
+import isEvmChain from "next-common/utils/isEvmChain";
+
 const { createSlice } = require("@reduxjs/toolkit");
 
 const name = "connectPopup";
@@ -6,7 +8,7 @@ const connectPopupSlice = createSlice({
   name,
   initialState: {
     // web3, web3evm, account
-    view: "web3",
+    view: isEvmChain() ? "web3evm" : "web3",
   },
   reducers: {
     setConnectPopupView(state, { payload }) {
