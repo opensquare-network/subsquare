@@ -3,7 +3,7 @@ import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellow
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
-import ApproveFellowshipMemberPopup from "next-common/components/summary/newProposalQuickStart/ApproveFellowshipMemberPopup";
+import ApproveFellowshipMemberPopup from "./popup";
 
 export default function Approve({ member }) {
   const [showApprovePopup, setShowApprovePopup] = useState(false);

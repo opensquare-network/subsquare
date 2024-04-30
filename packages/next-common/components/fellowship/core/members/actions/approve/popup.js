@@ -13,7 +13,7 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
+import EnactmentBlocks from "next-common/components/summary/newProposalPopup/enactmentBlocks";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import { InfoMessage } from "next-common/components/setting/styled";
