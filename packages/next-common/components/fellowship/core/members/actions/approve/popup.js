@@ -1,39 +1,19 @@
 import AddressComboField from "next-common/components/popup/fields/addressComboField";
-import RankField from "next-common/components/popup/fields/rankField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
+import { getEventData } from "next-common/utils/sendTx";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import EnactmentBlocks from "next-common/components/summary/newProposalPopup/enactmentBlocks";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import { InfoMessage } from "next-common/components/setting/styled";
 import AddressUser from "next-common/components/user/addressUser";
-import Chains from "next-common/utils/consts/chains";
+import RankField from "next-common/components/popup/fields/rankField";
+import { getTrackNameFromRank } from "../promote/popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { getEventData } from "next-common/utils/sendTx";
-
-const CollectivesPromoteTracks = {
-  1: "PromoteTo1Dan",
-  2: "PromoteTo2Dan",
-  3: "PromoteTo3Dan",
-  4: "PromoteTo4Dan",
-  5: "PromoteTo5Dan",
-  6: "PromoteTo6Dan",
-};
-
-export function getTrackNameFromRank(rank) {
-  switch (process.env.NEXT_PUBLIC_CHAIN) {
-    case Chains.collectives:
-    case Chains.westendCollectives:
-      return CollectivesPromoteTracks[rank];
-    default:
-      throw new Error("Unsupported chain");
-  }
-}
 
 function PopupContent({ member, onClose }) {
   const dispatch = useDispatch();
@@ -41,8 +21,8 @@ function PopupContent({ member, onClose }) {
   const [enactment, setEnactment] = useState();
   const api = useContextApi();
   const extensionAccounts = useExtensionAccounts();
-  const [toRank, setToRank] = useState(member?.rank + 1);
-  const trackName = getTrackNameFromRank(toRank);
+  const [atRank, setAtRank] = useState(member?.rank);
+  const trackName = getTrackNameFromRank(atRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
 
   const getTxFunc = useCallback(async () => {
@@ -50,18 +30,13 @@ function PopupContent({ member, onClose }) {
       return;
     }
 
-    if (toRank > 6) {
-      dispatch(newErrorToast("Invalid rank"));
-      return;
-    }
-
-    const proposal = api.tx.fellowshipCore.promote(memberAddress, toRank);
+    const proposal = api.tx.fellowshipCore.approve(memberAddress, atRank);
     return api.tx.fellowshipReferenda.submit(
       { FellowshipOrigins: trackName },
       { Inline: proposal.method.toHex() },
       enactment,
     );
-  }, [api, toRank, trackName, memberAddress, enactment, dispatch]);
+  }, [api, atRank, trackName, memberAddress, enactment]);
 
   return (
     <>
@@ -73,11 +48,11 @@ function PopupContent({ member, onClose }) {
         setAddress={setMemberAddress}
         readOnly
       />
-      <RankField title="To Rank" rank={toRank} setRank={setToRank} readOnly />
+      <RankField title="At Rank" rank={atRank} setRank={setAtRank} readOnly />
       <EnactmentBlocks setEnactment={setEnactment} />
       <InfoMessage>
         <span>
-          Will create a referendum in {trackName} track to promote{" "}
+          Will create a referendum in {trackName} track to approve{" "}
           <div className="inline-flex relative top-[5px]">
             <AddressUser add={memberAddress} />
           </div>
@@ -104,9 +79,9 @@ function PopupContent({ member, onClose }) {
   );
 }
 
-export default function PromoteFellowshipMemberPopup({ member, onClose }) {
+export default function ApproveFellowshipMemberPopup({ member, onClose }) {
   return (
-    <PopupWithSigner title="Promote Fellowship Member" onClose={onClose} wide>
+    <PopupWithSigner title="Approve Fellowship Member" onClose={onClose} wide>
       <PopupContent member={member} onClose={onClose} />
     </PopupWithSigner>
   );
