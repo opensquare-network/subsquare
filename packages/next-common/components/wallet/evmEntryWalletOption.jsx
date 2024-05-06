@@ -4,7 +4,7 @@ import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlic
 import { ArrowRight, NetworkEthereumLight } from "@osn/icons/subsquare";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 
-export default function EVMWalletOption() {
+export default function EVMEntryWalletOption() {
   const dispatch = useDispatch();
 
   return (

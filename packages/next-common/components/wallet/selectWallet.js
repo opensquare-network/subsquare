@@ -21,7 +21,7 @@ import { noop } from "lodash-es";
 import { normalizeAddress } from "next-common/utils/address";
 import { SignetWallet } from "./signetWallet";
 import { useSignetAccounts } from "next-common/context/signet";
-import EVMWalletOption from "./evmWalletOption";
+import EVMEntryWalletOption from "./evmEntryWalletOption";
 import isMixedChain from "next-common/utils/isMixedChain";
 
 export default function SelectWallet({
@@ -245,7 +245,7 @@ export default function SelectWallet({
         );
       })}
 
-      {showEVMOption && <EVMWalletOption />}
+      {showEVMOption && <EVMEntryWalletOption />}
     </div>
   );
 }
