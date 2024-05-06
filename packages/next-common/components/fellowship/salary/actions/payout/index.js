@@ -1,5 +1,5 @@
-import PrimaryButton from "next-common/lib/button/primary";
 import React, { useState } from "react";
+import PrimaryButton from "next-common/lib/button/primary";
 import FellowshipSalaryPayoutPopup from "next-common/components/fellowship/salary/actions/payout/popup";
 import Tooltip from "next-common/components/tooltip";
 import { useSelector } from "react-redux";

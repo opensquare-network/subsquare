@@ -9,6 +9,8 @@ import {
 } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 const tabs = [
   {
@@ -45,17 +47,22 @@ function SelfPayout() {
 }
 
 function OtherPayout() {
+  const dispatch = useDispatch();
   const { onClose } = usePopupParams();
   const [beneficiary, setBeneficiary] = useState("");
   const extensionAccounts = useExtensionAccounts();
   const api = useContextApi();
 
   const getTxFunc = useCallback(async () => {
-    if (!api && !beneficiary) {
+    if (!api) {
+      return;
+    }
+    if (!beneficiary) {
+      dispatch(newErrorToast("Beneficiary is not specified"));
       return;
     }
     return api.tx.fellowshipSalary?.payoutOther(beneficiary);
-  }, [api, beneficiary]);
+  }, [dispatch, beneficiary]);
 
   return (
     <>
