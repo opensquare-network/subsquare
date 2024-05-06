@@ -9,6 +9,8 @@ import { filter } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useWeb3Login } from "next-common/hooks/connect/web3Login";
+import { useChainSettings } from "next-common/context/chain";
+import ChainTypes from "next-common/utils/consts/chainTypes";
 
 export default function LoginWeb3EVMLoginContent() {
   return (
@@ -24,6 +26,7 @@ export default function LoginWeb3EVMLoginContent() {
 }
 
 function EVMLogin() {
+  const { chainType } = useChainSettings();
   const dispatch = useDispatch();
   const { addresses, connector } = useAccount();
   const { connectors, connect } = useConnect();
@@ -34,11 +37,15 @@ function EVMLogin() {
     [addresses],
   );
 
+  const showTalisman = chainType === ChainTypes.ETHEREUM;
   const supportedWalletNames = Object.values(WalletTypes);
   const supportedConnectors = filter(connectors, (c) => {
+    if (c.name.toLowerCase() === WalletTypes.TALISMAN) {
+      return showTalisman;
+    }
+
     return supportedWalletNames.includes(c.name.toLowerCase());
   });
-
   const [web3Login, isLoading] = useWeb3Login();
 
   useEffect(() => {
