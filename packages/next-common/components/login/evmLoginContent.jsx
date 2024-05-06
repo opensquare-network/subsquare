@@ -27,7 +27,7 @@ function EVMLogin() {
   const dispatch = useDispatch();
   const { addresses, connector } = useAccount();
   const { connect } = useConnect();
-  const [selectedWallet, setSelectedWallet] = useState(connector);
+  const [selectedConnector, setSelectedConnector] = useState(connector);
   const [selectedAccount, setSelectedAccount] = useState();
   const normalizedAddress = useMemo(
     () => normalizedMetaMaskAccounts(addresses || []),
@@ -48,13 +48,13 @@ function EVMLogin() {
     <WalletOption
       key={option.extensionName}
       installed
-      selected={selectedWallet === option.extensionName}
+      selected={selectedConnector?.id === option.connector.id}
       onClick={() => {
         connect(
           { connector: option.connector },
           {
             onSuccess() {
-              setSelectedWallet(option.extensionName);
+              setSelectedConnector(option.connector);
             },
           },
         );
@@ -71,7 +71,7 @@ function EVMLogin() {
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-2">{walletOptions}</div>
 
-      {selectedWallet && (
+      {selectedConnector && (
         <div>
           <div className="text12Bold text-textPrimary mb-2">
             Choose linked address
