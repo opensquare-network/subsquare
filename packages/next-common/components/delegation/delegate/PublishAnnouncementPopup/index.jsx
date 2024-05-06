@@ -57,6 +57,11 @@ export default function AnnouncementPublishPopup({
 
   const handleSubmit = useCallback(
     async (api, signerAccount) => {
+      if (!shortDescription) {
+        dispatch(newErrorToast("Short description is required"));
+        return;
+      }
+
       try {
         setLoading(true);
 
@@ -91,6 +96,7 @@ export default function AnnouncementPublishPopup({
       }
     },
     [
+      dispatch,
       address,
       shortDescription,
       longDescription,
