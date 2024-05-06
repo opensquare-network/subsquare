@@ -1,65 +1,85 @@
-import React, { useState } from "react";
-import Popup from "next-common/components/popup/wrapper/Popup";
+import React, { useCallback, useState } from "react";
 import Tab from "next-common/components/tab";
-import Avatar from "next-common/components/avatar";
-import { useUser } from "next-common/context/user";
-import Input from "next-common/components/input";
-import PrimaryButton from "next-common/lib/button/primary";
+import Signer from "next-common/components/popup/fields/signerField";
+import PopupWithSigner from "next-common/components/popupWithSigner";
+import Beneficiary from "next-common/components/treasury/common/beneficiary";
+import {
+  useExtensionAccounts,
+  usePopupParams,
+} from "next-common/components/popupWithSigner/context";
+import { useContextApi } from "next-common/context/api";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
-export default function DeleteEventModal({ onClose }) {
-  const [tabId, setTabId] = useState("myself");
-  const [inputAddress, setInputAddress] = useState("");
-  const user = useUser();
-  const tabs = [
-    {
-      tabId: "myself",
-      tabTitle: "Myself",
-    },
-    {
-      tabId: "other",
-      tabTitle: "Other",
-    },
-  ];
+const tabs = [
+  {
+    tabId: "myself",
+    tabTitle: "Myself",
+  },
+  {
+    tabId: "other",
+    tabTitle: "Other",
+  },
+];
+
+function SelfPayout() {
+  const { onClose } = usePopupParams();
+  const api = useContextApi();
+
+  const getTxFunc = useCallback(async () => {
+    if (!api) {
+      return;
+    }
+    return api.tx.fellowshipSalary?.payout();
+  }, [api]);
 
   return (
-    <Popup className="w-[592px]" title="Payout to" onClose={onClose}>
-      <Tab
-        selectedTabId={tabId}
-        setSelectedTabId={(id) => {
-          setTabId(id);
-        }}
-        tabs={tabs}
+    <>
+      <Signer title="Origin" />
+      <TxSubmissionButton
+        title="Confirm"
+        getTxFunc={getTxFunc}
+        onClose={onClose}
       />
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <span className="text14Bold text-textPrimary">Origin</span>
-        </div>
-        {tabId === "other" && (
-          <div className="flex flex-col gap-2">
-            <span className="text14Bold text-textPrimary">Beneficiary</span>
-            <Input
-              className="h-[64px]"
-              prefix={
-                <Avatar
-                  className="ml-[4px]"
-                  size={40}
-                  address={user?.address}
-                />
-              }
-              placeholder="Please fill the address..."
-              value={inputAddress}
-              onChange={(e) => {
-                setInputAddress(e.target.value);
-              }}
-            />
-          </div>
-        )}
-        <div className="flex justify-end">
-          <PrimaryButton disabled={tabId === "other" && !inputAddress}>
-            Confirm
-          </PrimaryButton>
-        </div>
-      </div>
-    </Popup>
+    </>
+  );
+}
+
+function OtherPayout() {
+  const { onClose } = usePopupParams();
+  const [beneficiary, setBeneficiary] = useState("");
+  const extensionAccounts = useExtensionAccounts();
+  const api = useContextApi();
+
+  const getTxFunc = useCallback(async () => {
+    if (!api && !beneficiary) {
+      return;
+    }
+    return api.tx.fellowshipSalary?.payoutOther(beneficiary);
+  }, [api, beneficiary]);
+
+  return (
+    <>
+      <Signer title="Origin" />
+      <Beneficiary
+        extensionAccounts={extensionAccounts}
+        setAddress={setBeneficiary}
+      />
+      <TxSubmissionButton
+        title="Confirm"
+        getTxFunc={getTxFunc}
+        onClose={onClose}
+      />
+    </>
+  );
+}
+
+export default function SalaryPayoutModal({ onClose }) {
+  const [tabId, setTabId] = useState("myself");
+
+  return (
+    <PopupWithSigner title="Payout to" onClose={onClose}>
+      <Tab selectedTabId={tabId} setSelectedTabId={setTabId} tabs={tabs} />
+      {tabId === "myself" ? <SelfPayout /> : <OtherPayout />}
+    </PopupWithSigner>
   );
 }
