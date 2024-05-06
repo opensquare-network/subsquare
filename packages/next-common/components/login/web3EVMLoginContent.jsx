@@ -35,8 +35,8 @@ function EVMLogin() {
   );
 
   const supportedWalletNames = Object.values(WalletTypes);
-  const supportedConnectors = filter(connectors, (connector) => {
-    return supportedWalletNames.includes(connector.name.toLowerCase());
+  const supportedConnectors = filter(connectors, (c) => {
+    return supportedWalletNames.includes(c.name.toLowerCase());
   });
 
   const [web3Login, isLoading] = useWeb3Login();
