@@ -10,7 +10,6 @@ import {
   WalletTailsman,
   WalletSignet,
 } from "@osn/icons/subsquare";
-import isMixedChain from "next-common/utils/isMixedChain";
 import getChainSettings from "../settings";
 
 const polkadotJs = {
@@ -74,18 +73,22 @@ const signet = {
   logo: WalletSignet,
 };
 
+export const allWallets = [
+  polkadotJs,
+  subWalletJs,
+  talisman,
+  metamask,
+  nova,
+  mimir,
+  signet,
+];
+
 export function getWallets() {
   return [...getSingleSigWallets(), ...getMultiSigWallets()];
 }
 
 export function getSingleSigWallets() {
-  if (isEvmChain()) {
-    return [talisman, metamask, nova];
-  } else if (isMixedChain()) {
-    return [metamask, polkadotJs, subWalletJs, talisman, polkagate, nova];
-  } else {
-    return [polkadotJs, subWalletJs, talisman, polkagate, nova];
-  }
+  return [polkadotJs, subWalletJs, talisman, polkagate, nova];
 }
 
 export function getMultiSigWallets() {
