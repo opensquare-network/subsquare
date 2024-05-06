@@ -1,6 +1,5 @@
 import useTreasuryFree from "../../../utils/hooks/useTreasuryFree";
 import { useChain } from "../../../context/chain";
-import Summary from "..";
 import TreasurySummaryNextBurn from "./nextBurn";
 import { isKintsugiChain } from "next-common/utils/chain";
 import SpendPeriod from "next-common/components/summary/treasurySummary/spendPeriod";
@@ -17,7 +16,8 @@ import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
 import bifrost from "next-common/utils/consts/settings/bifrost";
 import { find } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
-
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 const GET_TREASURIES = gql`
   query GetTreasuries {
     treasuries {
@@ -44,47 +44,38 @@ export default function TreasurySummary() {
     chain: CHAIN_VALUE_TREASURY_MAP[chain] || chain,
   });
 
-  const spendPeriodsItem = {
-    title: "Spend Period",
-    content: <SpendPeriod summary={summary} />,
-    suffix: <TreasurySummarySpendPeriodCountDown summary={summary} />,
-  };
-
   return (
-    <Summary
-      items={[
-        {
-          title: "Available",
-          content: (
-            <LoadableContent isLoading={isNil(free)}>
-              <TreasurySummaryAvailable
-                free={free}
-                fiatPrice={treasury?.price}
-              />
-            </LoadableContent>
-          ),
-        },
-        !isKintsugiChain(chain) && {
-          title: "To Be Awarded",
-          content: (
-            <LoadableContent isLoading={isNil(toBeAwarded)}>
-              <TreasurySummaryToBeAwarded
-                toBeAwarded={toBeAwarded}
-                fiatPrice={treasury?.price}
-              />
-            </LoadableContent>
-          ),
-        },
-        {
-          title: "Next Burn",
-          content: (
-            <LoadableContent isLoading={isNil(free)}>
-              <TreasurySummaryNextBurn free={free} />
-            </LoadableContent>
-          ),
-        },
-        isKintsugiChain(chain) ? null : spendPeriodsItem,
-      ].filter(Boolean)}
-    />
+    <SummaryLayout>
+      <SummaryItem title="Claimants">
+        <LoadableContent isLoading={isNil(free)}>
+          <TreasurySummaryAvailable free={free} fiatPrice={treasury?.price} />
+        </LoadableContent>
+      </SummaryItem>
+      {!isKintsugiChain(chain) && (
+        <SummaryItem title="To Be Awarded">
+          <LoadableContent isLoading={isNil(toBeAwarded)}>
+            <TreasurySummaryToBeAwarded
+              toBeAwarded={toBeAwarded}
+              fiatPrice={treasury?.price}
+            />
+          </LoadableContent>
+        </SummaryItem>
+      )}
+      <SummaryItem title="Next Burn">
+        <LoadableContent isLoading={isNil(free)}>
+          <TreasurySummaryNextBurn free={free} />
+        </LoadableContent>
+      </SummaryItem>
+      {isKintsugiChain(chain) ? null : (
+        <SummaryItem
+          title="Spend Period"
+          suffix={<TreasurySummarySpendPeriodCountDown summary={summary} />}
+        >
+          <LoadableContent isLoading={isNil(summary)}>
+            <SpendPeriod summary={summary} />
+          </LoadableContent>
+        </SummaryItem>
+      )}
+    </SummaryLayout>
   );
 }
