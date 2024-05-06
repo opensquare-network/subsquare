@@ -5,14 +5,10 @@ import PrimaryButton from "next-common/lib/button/primary";
 import WalletOption from "../wallet/walletOption";
 import AddressSelect from "../addressSelect";
 import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
-import { filter, find, kebabCase } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
-import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useWeb3Login } from "next-common/hooks/connect/web3Login";
-import { useChainSettings } from "next-common/context/chain";
-import ChainTypes from "next-common/utils/consts/chainTypes";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
-import { allWallets } from "next-common/utils/consts/connect";
+import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
 
 export default function LoginEVMLoginContent() {
   return (
@@ -28,10 +24,9 @@ export default function LoginEVMLoginContent() {
 }
 
 function EVMLogin() {
-  const { chainType } = useChainSettings();
   const dispatch = useDispatch();
   const { addresses, connector } = useAccount();
-  const { connectors, connect } = useConnect();
+  const { connect } = useConnect();
   const [selectedWallet, setSelectedWallet] = useState(connector);
   const [selectedAccount, setSelectedAccount] = useState();
   const normalizedAddress = useMemo(
@@ -39,15 +34,6 @@ function EVMLogin() {
     [addresses],
   );
 
-  const showTalisman = chainType === ChainTypes.ETHEREUM;
-  const supportedWalletNames = Object.values(WalletTypes);
-  const supportedConnectors = filter(connectors, (c) => {
-    if (c.name.toLowerCase() === WalletTypes.TALISMAN) {
-      return showTalisman;
-    }
-
-    return supportedWalletNames.includes(c.name.toLowerCase());
-  });
   const [web3Login, isLoading] = useWeb3Login();
 
   useEffect(() => {
@@ -56,35 +42,30 @@ function EVMLogin() {
     }
   }, [normalizedAddress]);
 
-  const walletOptions = supportedConnectors.map((c) => {
-    const foundWallet = find(allWallets, {
-      extensionName: kebabCase(c.name.toLowerCase()),
-    });
-    const Logo = foundWallet?.logo;
+  const evmOptions = useEVMWalletOptions();
 
-    return (
-      <WalletOption
-        key={c.id}
-        installed
-        selected={selectedWallet?.id === c.id}
-        onClick={() => {
-          connect(
-            { connector: c },
-            {
-              onSuccess() {
-                setSelectedWallet(c);
-              },
+  const walletOptions = evmOptions.map((option) => (
+    <WalletOption
+      key={option.extensionName}
+      installed
+      selected={selectedWallet === option.extensionName}
+      onClick={() => {
+        connect(
+          { connector: option.connector },
+          {
+            onSuccess() {
+              setSelectedWallet(option.extensionName);
             },
-          );
-        }}
-      >
-        <div className="flex items-center">
-          {Logo && <Logo className="w-6 h-6" />}
-          {c.name}
-        </div>
-      </WalletOption>
-    );
-  });
+          },
+        );
+      }}
+    >
+      <div className="flex items-center">
+        {option?.logo && <option.logo className="w-6 h-6" />}
+        {option.title}
+      </div>
+    </WalletOption>
+  ));
 
   return (
     <div className="space-y-6">
