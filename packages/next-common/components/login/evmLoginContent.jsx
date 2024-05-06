@@ -5,13 +5,14 @@ import PrimaryButton from "next-common/lib/button/primary";
 import WalletOption from "../wallet/walletOption";
 import AddressSelect from "../addressSelect";
 import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
-import { filter } from "lodash-es";
+import { filter, find, kebabCase } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useWeb3Login } from "next-common/hooks/connect/web3Login";
 import { useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
+import { allWallets } from "next-common/utils/consts/connect";
 
 export default function LoginEVMLoginContent() {
   return (
@@ -55,32 +56,39 @@ function EVMLogin() {
     }
   }, [normalizedAddress]);
 
+  const walletOptions = supportedConnectors.map((c) => {
+    const foundWallet = find(allWallets, {
+      extensionName: kebabCase(c.name.toLowerCase()),
+    });
+    const Logo = foundWallet?.logo;
+
+    return (
+      <WalletOption
+        key={c.id}
+        installed
+        selected={selectedWallet?.id === c.id}
+        onClick={() => {
+          connect(
+            { connector: c },
+            {
+              onSuccess() {
+                setSelectedWallet(c);
+              },
+            },
+          );
+        }}
+      >
+        <div className="flex items-center">
+          {Logo && <Logo className="w-6 h-6" />}
+          {c.name}
+        </div>
+      </WalletOption>
+    );
+  });
+
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-2">
-        {supportedConnectors.map((connector) => (
-          <WalletOption
-            key={connector.id}
-            installed
-            selected={selectedWallet?.id === connector.id}
-            onClick={() => {
-              connect(
-                { connector },
-                {
-                  onSuccess() {
-                    setSelectedWallet(connector);
-                  },
-                },
-              );
-            }}
-          >
-            <div className="flex items-center">
-              <img src={connector.icon} className="w-6 h-6" />
-              {connector.name}
-            </div>
-          </WalletOption>
-        ))}
-      </div>
+      <div className="grid grid-cols-2 gap-2">{walletOptions}</div>
 
       {selectedWallet && (
         <div>
