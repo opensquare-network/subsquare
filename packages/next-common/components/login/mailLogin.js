@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
@@ -23,6 +23,8 @@ import {
   setLoginResult,
 } from "next-common/store/reducers/userSlice";
 import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
+import isEvmChain from "next-common/utils/isEvmChain";
+import { CONNECT_POPUP_DEFAULT_VIEW } from "next-common/utils/constants";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -88,10 +90,10 @@ export default function MailLogin() {
           className="w-full"
           onClick={(event) => {
             event.preventDefault();
-            dispatch(setConnectPopupView("web3"));
+            dispatch(setConnectPopupView(CONNECT_POPUP_DEFAULT_VIEW));
           }}
         >
-          Connect with web3 address
+          Connect with {isEvmChain() ? "EVM" : "web3"} address
         </SecondaryButton>
       </FormButtonsWrapper>
 

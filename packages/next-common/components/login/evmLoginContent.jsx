@@ -11,8 +11,9 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useWeb3Login } from "next-common/hooks/connect/web3Login";
 import { useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
+import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 
-export default function LoginWeb3EVMLoginContent() {
+export default function LoginEVMLoginContent() {
   return (
     <div className="space-y-6">
       <h3 className="text20Bold text-textPrimary">
@@ -115,7 +116,7 @@ function EVMLogin() {
           className="text-theme500"
           role="button"
           onClick={() => {
-            dispatch(setConnectPopupView("account"));
+            dispatch(setConnectPopupView(CONNECT_POPUP_VIEWS.ACCOUNT));
           }}
         >
           account

@@ -1,14 +1,17 @@
 import { useEffect } from "react";
 import LoginWeb3LoginContent from "./web3LoginContent";
 import LoginAccountLoginContent from "./accountLoginContent";
-import LoginWeb3EVMLoginContent from "./web3EVMLoginContent";
+import LoginEVMLoginContent from "./evmLoginContent";
 import { useSelector } from "react-redux";
 import {
   connectPopupViewSelector,
   setConnectPopupView,
 } from "next-common/store/reducers/connectPopupSlice";
 import { useDispatch } from "react-redux";
-import isEvmChain from "next-common/utils/isEvmChain";
+import {
+  CONNECT_POPUP_DEFAULT_VIEW,
+  CONNECT_POPUP_VIEWS,
+} from "next-common/utils/constants";
 
 /**
  * @description used in login popup and login page
@@ -16,21 +19,20 @@ import isEvmChain from "next-common/utils/isEvmChain";
 export default function LoginContent() {
   const view = useSelector(connectPopupViewSelector);
   const dispatch = useDispatch();
-  const defaultView = isEvmChain() ? "web3evm" : "web3";
 
   useEffect(() => {
     return () => {
-      dispatch(setConnectPopupView(defaultView));
+      dispatch(setConnectPopupView(CONNECT_POPUP_DEFAULT_VIEW));
     };
   }, []);
 
   return (
     <>
-      {view === "web3" && <LoginWeb3LoginContent />}
+      {view === CONNECT_POPUP_VIEWS.WEB3 && <LoginWeb3LoginContent />}
 
-      {view === "web3evm" && <LoginWeb3EVMLoginContent />}
+      {view === CONNECT_POPUP_VIEWS.EVM && <LoginEVMLoginContent />}
 
-      {view === "account" && <LoginAccountLoginContent />}
+      {view === CONNECT_POPUP_VIEWS.ACCOUNT && <LoginAccountLoginContent />}
     </>
   );
 }

@@ -6,6 +6,7 @@ import WalletAddressSelect from "./walletAddressSelect";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
 import { useWeb3Login } from "next-common/hooks/connect/web3Login";
+import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -57,7 +58,7 @@ export default function AddressLogin() {
             className="text-theme500"
             role="button"
             onClick={() => {
-              dispatch(setConnectPopupView("account"));
+              dispatch(setConnectPopupView(CONNECT_POPUP_VIEWS.ACCOUNT));
             }}
           >
             account
