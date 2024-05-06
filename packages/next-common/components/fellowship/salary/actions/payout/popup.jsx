@@ -62,7 +62,7 @@ function OtherPayout() {
       return;
     }
     return api.tx.fellowshipSalary?.payoutOther(beneficiary);
-  }, [dispatch, beneficiary]);
+  }, [api, dispatch, beneficiary]);
 
   return (
     <>
