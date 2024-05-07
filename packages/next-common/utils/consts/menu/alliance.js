@@ -35,6 +35,10 @@ export function getAllianceMenu(summary) {
     value: "allianceUnscrupulous",
     name: Names.allianceUnscrupulous,
     pathname: "/alliance/unscrupulous",
+    extraMatchNavMenuActivePathnames: [
+      "/alliance/unscrupulous",
+      "/alliance/unscrupulous/websites",
+    ],
   };
 
   const announcements = {
