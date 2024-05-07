@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import AddressSelect from "../addressSelect";
 import ErrorText from "../ErrorText";
@@ -11,6 +11,9 @@ import {
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
 import { noop } from "lodash-es";
+import isMixedChain from "next-common/utils/isMixedChain";
+import EVMEntryWalletOption from "../wallet/evmEntryWalletOption";
+import { useAccount } from "next-common/hooks/connect/substrate/useAccount";
 
 const Label = styled.div`
   font-weight: bold;
@@ -34,7 +37,7 @@ export default function WalletAddressSelect({
   lastUsedAddress,
 }) {
   const chain = useChain();
-  const [accounts, setAccounts] = useState([]);
+  const { accounts } = useAccount({ wallet: selectedWallet });
 
   useEffect(() => {
     setSelectedAccount();
@@ -84,8 +87,8 @@ export default function WalletAddressSelect({
           wallets={getSingleSigWallets()}
           selectedWallet={selectedWallet}
           setSelectWallet={setSelectWallet}
-          setAccounts={setAccounts}
           setWallet={setWallet}
+          extraWallets={isMixedChain() && <EVMEntryWalletOption />}
         />
       </div>
 
@@ -96,7 +99,6 @@ export default function WalletAddressSelect({
             wallets={multisigWallets}
             selectedWallet={selectedWallet}
             setSelectWallet={setSelectWallet}
-            setAccounts={setAccounts}
             setWallet={setWallet}
           />
         </div>
