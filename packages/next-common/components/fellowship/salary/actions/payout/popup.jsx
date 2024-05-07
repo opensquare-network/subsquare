@@ -2,11 +2,8 @@ import React, { useCallback, useState } from "react";
 import Tab from "next-common/components/tab";
 import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import Beneficiary from "next-common/components/treasury/common/beneficiary";
-import {
-  useExtensionAccounts,
-  usePopupParams,
-} from "next-common/components/popupWithSigner/context";
+import Beneficiary from "next-common/components/popupWithSigner/fields/beneficiary";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
@@ -50,7 +47,6 @@ function OtherPayout() {
   const dispatch = useDispatch();
   const { onClose } = usePopupParams();
   const [beneficiary, setBeneficiary] = useState("");
-  const extensionAccounts = useExtensionAccounts();
   const api = useContextApi();
 
   const getTxFunc = useCallback(async () => {
@@ -67,10 +63,7 @@ function OtherPayout() {
   return (
     <>
       <Signer title="Origin" />
-      <Beneficiary
-        extensionAccounts={extensionAccounts}
-        setAddress={setBeneficiary}
-      />
+      <Beneficiary setAddress={setBeneficiary} />
       <TxSubmissionButton
         title="Confirm"
         getTxFunc={getTxFunc}
@@ -80,7 +73,7 @@ function OtherPayout() {
   );
 }
 
-export default function SalaryPayoutModal({ onClose }) {
+export default function FellowshipSalaryPayoutPopup({ onClose }) {
   const [tabId, setTabId] = useState("myself");
 
   return (

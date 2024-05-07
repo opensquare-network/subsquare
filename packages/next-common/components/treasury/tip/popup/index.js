@@ -5,7 +5,7 @@ import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
 import { checkInputValue, isAddressInGroup } from "../../../../utils";
 import PopupWithSigner from "../../../popupWithSigner";
-import Beneficiary from "../../common/beneficiary";
+import Beneficiary from "next-common/components/popupWithSigner/fields/beneficiary";
 import TipReason from "./tipReason";
 import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
@@ -13,10 +13,7 @@ import { getEventData, sendTx, wrapWithProxy } from "../../../../utils/sendTx";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useChainSettings } from "../../../../context/chain";
 import { PopupButtonWrapper } from "../../../popup/wrapper";
-import {
-  useExtensionAccounts,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useRouter } from "next/router";
 import { useContextApi } from "next-common/context/api";
@@ -25,15 +22,10 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 function TipCommon({ setBeneficiary, setReason }) {
-  const extensionAccounts = useExtensionAccounts();
-
   return (
     <>
       <SignerWithBalance />
-      <Beneficiary
-        extensionAccounts={extensionAccounts}
-        setAddress={setBeneficiary}
-      />
+      <Beneficiary setAddress={setBeneficiary} />
       <TipReason setValue={setReason} />
     </>
   );
