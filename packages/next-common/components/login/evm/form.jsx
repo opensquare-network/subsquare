@@ -68,32 +68,34 @@ export default function LoginEVMForm() {
       <div className="grid grid-cols-2 gap-2">{walletOptions}</div>
 
       {selectedConnector && (
-        <div>
-          <div className="text12Bold text-textPrimary mb-2">
-            Choose linked address
+        <>
+          <div>
+            <div className="text12Bold text-textPrimary mb-2">
+              Choose linked address
+            </div>
+
+            <AddressSelect
+              accounts={normalizedAddress}
+              onSelect={setSelectedAccount}
+              selectedAccount={selectedAccount}
+            />
           </div>
 
-          <AddressSelect
-            accounts={normalizedAddress}
-            onSelect={setSelectedAccount}
-            selectedAccount={selectedAccount}
-          />
-        </div>
+          <div>
+            <PrimaryButton
+              className="w-full"
+              loading={isLoading}
+              onClick={() => {
+                web3Login({
+                  account: selectedAccount,
+                });
+              }}
+            >
+              Next
+            </PrimaryButton>
+          </div>
+        </>
       )}
-
-      <div>
-        <PrimaryButton
-          className="w-full"
-          loading={isLoading}
-          onClick={() => {
-            web3Login({
-              account: selectedAccount,
-            });
-          }}
-        >
-          Next
-        </PrimaryButton>
-      </div>
 
       <div className="text14Medium text-center text-textSecondary">
         Login with{" "}
