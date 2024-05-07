@@ -20,7 +20,7 @@ export default function FellowshipSalaryActiveCycle() {
         <div className="space-y-2">
           <FellowshipSalaryMyStatus />
 
-          <div className="flex items-center justify-end gap-4">
+          <div className="flex items-center justify-end gap-3">
             <FellowshipSalaryStatsActiveCycleDetailLink />
             <FellowshipSalaryBump />
             <FellowshipSalaryRegister />
