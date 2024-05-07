@@ -152,7 +152,7 @@ export default function LinkedAddress() {
   const userContext = useUserContext();
   const signMsg = useSignMessage();
 
-  const { accounts } = useAccount({ wallet: SelectWallet });
+  const { addresses } = useAccount({ wallet: SelectWallet });
 
   useEffect(() => {
     if (typeof window.injectedWeb3 === "undefined") {
@@ -210,10 +210,10 @@ export default function LinkedAddress() {
   };
 
   const mergedAccounts = [
-    ...(accounts ?? []),
+    ...(addresses ?? []),
     ...(user?.address ? [user?.address] : [])
       .filter((item) =>
-        (accounts ?? []).every((acc) => !isSameAddress(acc.address, item)),
+        (addresses ?? []).every((acc) => !isSameAddress(acc.address, item)),
       )
       .map((address) => ({
         address,

@@ -25,11 +25,11 @@ export function useAccount({ wallet, onAccessGranted = noop }) {
   const { chainType, ethereumNetwork } = useChainSettings();
   const signetAccounts = useSignetAccounts();
 
-  const [accounts, setAccounts] = useState([]);
+  const [addresses, setAddresses] = useState([]);
 
   const loadPolkadotAccounts = useCallback(
     async (selectedWallet) => {
-      setAccounts([]);
+      setAddresses([]);
       const extension = injectedWeb3?.[selectedWallet];
       if (!extension) {
         return;
@@ -54,7 +54,7 @@ export function useAccount({ wallet, onAccessGranted = noop }) {
         }
 
         if (isMounted.current) {
-          setAccounts(
+          setAddresses(
             extensionAccounts.map((item) => ({
               ...item,
               address: normalizeAddress(item.address),
@@ -67,7 +67,7 @@ export function useAccount({ wallet, onAccessGranted = noop }) {
         dispatch(newErrorToast(e.message));
       }
     },
-    [injectedWeb3, setAccounts, onAccessGranted, isMounted, chainType],
+    [injectedWeb3, setAddresses, onAccessGranted, isMounted, chainType],
   );
 
   const loadMetaMaskAccounts = useCallback(async () => {
@@ -85,16 +85,16 @@ export function useAccount({ wallet, onAccessGranted = noop }) {
 
       const accounts = await requestAccounts();
       if (isMounted.current) {
-        setAccounts(normalizedMetaMaskAccounts(accounts));
+        setAddresses(normalizedMetaMaskAccounts(accounts));
       }
     } catch (e) {
       dispatch(newErrorToast(e.message));
     }
-  }, [dispatch, isMounted, setAccounts, ethereumNetwork]);
+  }, [dispatch, isMounted, setAddresses, ethereumNetwork]);
 
   const loadSignetVault = useCallback(() => {
-    setAccounts(signetAccounts);
-  }, [signetAccounts, setAccounts]);
+    setAddresses(signetAccounts);
+  }, [signetAccounts, setAddresses]);
 
   const loadWalletAccounts = useCallback(
     async (wallet) => {
@@ -137,6 +137,6 @@ export function useAccount({ wallet, onAccessGranted = noop }) {
   }, [wallet]);
 
   return {
-    accounts,
+    addresses,
   };
 }
