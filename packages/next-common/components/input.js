@@ -115,7 +115,7 @@ const SymbolWrapper = styled.div`
 `;
 
 const Prefix = styled(FlexBetweenCenter)`
-  margin-left: 8px;
+  margin-left: 12px;
 `;
 
 const Suffix = styled(FlexBetweenCenter)`
