@@ -5,7 +5,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import WalletAddressSelect from "./walletAddressSelect";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
-import { useWeb3Login } from "next-common/hooks/connect/web3Login";
+import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 
 const ButtonWrapper = styled.div`

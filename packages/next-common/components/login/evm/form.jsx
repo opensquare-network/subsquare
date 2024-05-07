@@ -6,7 +6,7 @@ import WalletOption from "../../wallet/walletOption";
 import AddressSelect from "../../addressSelect";
 import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
 import { useEffect, useMemo, useState } from "react";
-import { useWeb3Login } from "next-common/hooks/connect/web3Login";
+import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
 
