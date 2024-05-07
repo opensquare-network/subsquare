@@ -12,9 +12,5 @@ const wagmiConfig = createConfig({
 });
 
 export default function WagmiProvider({ children }) {
-  return (
-    <Provider config={wagmiConfig} reconnectOnMount={false}>
-      {children}
-    </Provider>
-  );
+  return <Provider config={wagmiConfig}>{children}</Provider>;
 }
