@@ -4,7 +4,7 @@ import ReferendaDelegationCardSummary from "../summary";
 import AddressUser from "next-common/components/user/addressUser";
 import { DelegateAvatar } from "../avatar";
 import ReferendaDelegateeDetailPopupTabsContent from "./tabsContent";
-// import DetailButtons from "../../common/detailButtons";
+import DetailButtons from "../../common/detailButtons";
 
 export default function ReferendaDelegateeDetailPopup({
   delegate,
@@ -24,7 +24,7 @@ export default function ReferendaDelegateeDetailPopup({
       <div>
         <div className="flex justify-between">
           <DelegateAvatar address={address} />
-          {/* <DetailButtons address={address} /> */}
+          <DetailButtons address={address} />
         </div>
         <div className="mt-3">
           <AddressUser

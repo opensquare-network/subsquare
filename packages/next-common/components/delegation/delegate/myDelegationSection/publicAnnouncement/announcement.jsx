@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { MenuAnnouncement } from "@osn/icons/subsquare";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import Tooltip from "next-common/components/tooltip";
 import PrimaryButton from "next-common/lib/button/primary";
+import AnnouncementPublishPopup from "../../PublishAnnouncementPopup";
 
-export default function Announcement() {
+export default function Announcement({ myDelegation }) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   return (
     <SecondaryCard className="flex flex-row gap-[16px] max-sm:flex-col">
       <div className="flex grow gap-[16px] sm:items-center max-sm:gap-[12px] max-sm:flex-col">
@@ -20,10 +22,16 @@ export default function Announcement() {
         </div>
       </div>
       <div className="flex items-center max-sm:justify-end">
-        <Tooltip content="Coming soon">
-          <PrimaryButton disabled>Publish</PrimaryButton>
-        </Tooltip>
+        <PrimaryButton onClick={() => setIsPopupOpen(true)}>
+          Publish
+        </PrimaryButton>
       </div>
+      {isPopupOpen && (
+        <AnnouncementPublishPopup
+          onClose={() => setIsPopupOpen(false)}
+          myDelegation={myDelegation}
+        />
+      )}
     </SecondaryCard>
   );
 }

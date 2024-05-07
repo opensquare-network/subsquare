@@ -119,6 +119,7 @@ export const overviewApi = {
 // referenda
 export const delegationReferendaDelegatesAddressApi = (address) =>
   `delegation/referenda/delegates/${address}`;
+
 // democracy
 export const delegationDemocracyDelegatesAddressApi = (address) =>
   `delegation/democracy/delegates/${address}`;
