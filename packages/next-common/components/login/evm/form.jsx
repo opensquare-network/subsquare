@@ -64,50 +64,56 @@ export default function LoginEVMForm() {
   });
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-2">{walletOptions}</div>
+    <div>
+      <div className="text14Bold text-textPrimary mb-2">EVM Wallet</div>
 
-      {selectedConnector && (
-        <>
-          <div>
-            <div className="text12Bold text-textPrimary mb-2">
-              Choose linked address
+      <div className="space-y-6">
+        <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
+          {walletOptions}
+        </div>
+
+        {selectedConnector && (
+          <>
+            <div>
+              <div className="text12Bold text-textPrimary mb-2">
+                Choose linked address
+              </div>
+
+              <AddressSelect
+                accounts={normalizedAddress}
+                onSelect={setSelectedAccount}
+                selectedAccount={selectedAccount}
+              />
             </div>
 
-            <AddressSelect
-              accounts={normalizedAddress}
-              onSelect={setSelectedAccount}
-              selectedAccount={selectedAccount}
-            />
-          </div>
+            <div>
+              <PrimaryButton
+                className="w-full"
+                loading={isLoading}
+                onClick={() => {
+                  web3Login({
+                    account: selectedAccount,
+                  });
+                }}
+              >
+                Next
+              </PrimaryButton>
+            </div>
+          </>
+        )}
 
-          <div>
-            <PrimaryButton
-              className="w-full"
-              loading={isLoading}
-              onClick={() => {
-                web3Login({
-                  account: selectedAccount,
-                });
-              }}
-            >
-              Next
-            </PrimaryButton>
-          </div>
-        </>
-      )}
-
-      <div className="text14Medium text-center text-textSecondary">
-        Login with{" "}
-        <span
-          className="text-theme500"
-          role="button"
-          onClick={() => {
-            dispatch(setConnectPopupView(CONNECT_POPUP_VIEWS.ACCOUNT));
-          }}
-        >
-          account
-        </span>
+        <div className="text14Medium text-center text-textSecondary">
+          Login with{" "}
+          <span
+            className="text-theme500"
+            role="button"
+            onClick={() => {
+              dispatch(setConnectPopupView(CONNECT_POPUP_VIEWS.ACCOUNT));
+            }}
+          >
+            account
+          </span>
+        </div>
       </div>
     </div>
   );
