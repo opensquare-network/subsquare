@@ -46,7 +46,7 @@ export default function TreasurySummary() {
 
   return (
     <SummaryLayout>
-      <SummaryItem title="Claimants">
+      <SummaryItem title="Available">
         <LoadableContent isLoading={isNil(free)}>
           <TreasurySummaryAvailable free={free} fiatPrice={treasury?.price} />
         </LoadableContent>
