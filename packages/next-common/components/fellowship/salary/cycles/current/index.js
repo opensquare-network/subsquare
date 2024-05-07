@@ -4,7 +4,6 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import FellowshipSalaryStatsActiveCycleDetailLink from "next-common/components/overview/fellowship/salary/detailLink/activeCycle";
 import FellowshipSalaryRegister from "next-common/components/fellowship/salary/actions/register";
 import FellowshipSalaryPayout from "next-common/components/fellowship/salary/actions/payout";
-import FellowshipSalaryBump from "next-common/components/fellowship/salary/actions/bump";
 import FellowshipSalaryMyStatus from "../myStatus";
 
 export default function FellowshipSalaryActiveCycle() {
@@ -22,7 +21,6 @@ export default function FellowshipSalaryActiveCycle() {
 
           <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
             <FellowshipSalaryStatsActiveCycleDetailLink />
-            <FellowshipSalaryBump />
             <FellowshipSalaryRegister />
             <FellowshipSalaryPayout />
           </div>
