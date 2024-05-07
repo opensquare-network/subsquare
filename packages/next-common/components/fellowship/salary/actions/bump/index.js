@@ -16,7 +16,7 @@ export default function FellowshipSalaryBump() {
   const { cycleStart } = useSelector(fellowshipSalaryStatusSelector) || {};
   const { registrationPeriod, payoutPeriod } = useFellowshipSalaryPeriods();
   const nextCycleStart =
-    cycleStart + registrationPeriod || null + payoutPeriod || null;
+    cycleStart + (registrationPeriod || null) + (payoutPeriod || null);
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const isStarted =
     !isNil(latestHeight) &&

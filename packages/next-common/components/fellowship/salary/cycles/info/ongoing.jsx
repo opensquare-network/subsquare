@@ -77,9 +77,9 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
       <div className="space-y-2">
         <FellowshipSalaryMyStatus />
         <div className="flex items-center justify-end gap-4">
+          <FellowshipSalaryBump />
           <FellowshipSalaryRegister />
           <FellowshipSalaryPayout />
-          <FellowshipSalaryBump />
         </div>
       </div>
     </PrimaryCard>

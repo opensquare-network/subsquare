@@ -22,9 +22,9 @@ export default function FellowshipSalaryActiveCycle() {
 
           <div className="flex items-center justify-end gap-4">
             <FellowshipSalaryStatsActiveCycleDetailLink />
+            <FellowshipSalaryBump />
             <FellowshipSalaryRegister />
             <FellowshipSalaryPayout />
-            <FellowshipSalaryBump />
           </div>
         </div>
       </SecondaryCard>
