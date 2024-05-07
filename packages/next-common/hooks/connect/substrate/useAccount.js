@@ -1,3 +1,4 @@
+import { noop } from "lodash-es";
 import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignetAccounts } from "next-common/context/signet";
@@ -17,7 +18,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export function useAccount({ wallet }) {
+export function useAccount({ wallet, onAccessGranted = noop }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const { injectedWeb3 } = useInjectedWeb3();
@@ -60,11 +61,13 @@ export function useAccount({ wallet }) {
             })),
           );
         }
+
+        onAccessGranted && onAccessGranted();
       } catch (e) {
         dispatch(newErrorToast(e.message));
       }
     },
-    [injectedWeb3, setAccounts, isMounted, chainType],
+    [injectedWeb3, setAccounts, onAccessGranted, isMounted, chainType],
   );
 
   const loadMetaMaskAccounts = useCallback(async () => {
@@ -110,6 +113,10 @@ export function useAccount({ wallet }) {
         }
         case WalletTypes.SIGNET: {
           await loadSignetVault();
+          break;
+        }
+        case WalletTypes.METAMASK: {
+          await loadMetaMaskAccounts(wallet);
           break;
         }
         case WalletTypes.NOVA: {
