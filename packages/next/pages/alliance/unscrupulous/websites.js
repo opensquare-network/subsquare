@@ -4,7 +4,7 @@ import UnscrupulousLayout from "components/alliance/unscrupulousLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import UnscrupulousWebsites from "components/alliance/unscrupulousWebsites";
 
-export default function UnscrupulousPage() {
+export default function UnscrupulousWebsitesPage() {
   const { data: accounts } = useUnscrupulousAccounts();
   const { data: websites, isLoading: isWebsiteLoading } =
     useUnscrupulousWebsites();
