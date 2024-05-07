@@ -24,6 +24,7 @@ import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { getSingleSigWallets } from "next-common/utils/consts/connect";
+import { useAccount } from "next-common/hooks/connect/substrate/useAccount";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -146,11 +147,12 @@ export default function LinkedAddress() {
   const [showSelectWallet, setShowSelectWallet] = useState(false);
   const [selectedWallet, setSelectWallet] = useState("");
   const [hasExtension, setHasExtension] = useState(true);
-  const [accounts, setAccounts] = useState([]);
   const [activeChain, setActiveChain] = useState(chain);
   const dispatch = useDispatch();
   const userContext = useUserContext();
   const signMsg = useSignMessage();
+
+  const { accounts } = useAccount({ wallet: SelectWallet });
 
   useEffect(() => {
     if (typeof window.injectedWeb3 === "undefined") {
@@ -314,7 +316,6 @@ export default function LinkedAddress() {
             wallets={getSingleSigWallets()}
             selectedWallet={selectedWallet}
             setSelectWallet={setSelectWallet}
-            setAccounts={setAccounts}
             onSelect={() => setShowSelectWallet(false)}
           />
         </Popup>
