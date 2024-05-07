@@ -2,28 +2,15 @@ import { useAccount, useConnect } from "wagmi";
 import { useDispatch } from "react-redux";
 import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
 import PrimaryButton from "next-common/lib/button/primary";
-import WalletOption from "../wallet/walletOption";
-import AddressSelect from "../addressSelect";
+import WalletOption from "../../wallet/walletOption";
+import AddressSelect from "../../addressSelect";
 import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
 import { useEffect, useMemo, useState } from "react";
 import { useWeb3Login } from "next-common/hooks/connect/web3Login";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
 
-export default function LoginEVMLoginContent() {
-  return (
-    <div className="space-y-6">
-      <h3 className="text20Bold text-textPrimary">
-        <span>{"Connect with "}</span>
-        <span className="text-theme500">EVM Address</span>
-      </h3>
-
-      <EVMLogin />
-    </div>
-  );
-}
-
-function EVMLogin() {
+export default function LoginEVMForm() {
   const dispatch = useDispatch();
   const { addresses, connector } = useAccount();
   const { connect } = useConnect();
