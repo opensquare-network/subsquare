@@ -1,4 +1,4 @@
-import { useAccount, useConnect, useConnections } from "wagmi";
+import { useAccount, useConnect } from "wagmi";
 import { useDispatch } from "react-redux";
 import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -9,24 +9,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useWeb3Login } from "next-common/hooks/connect/web3Login";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
-import { find } from "lodash-es";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
-  const account = useAccount();
-  const connections = useConnections();
+  const { addresses, connector } = useAccount();
   const { connect } = useConnect();
-  const [selectedConnector, setSelectedConnector] = useState(account.connector);
-  const connection = find(connections, ["connector.id", selectedConnector.id]);
-
-  const addresses = connection?.accounts?.length
-    ? connection?.accounts
-    : account.addresses.length
-    ? account.addresses
-    : [];
-
+  const [selectedConnector, setSelectedConnector] = useState(connector);
   const [selectedAccount, setSelectedAccount] = useState();
-  const normalizedAddresses = useMemo(
+  const normalizedAddress = useMemo(
     () => normalizedMetaMaskAccounts(addresses || []),
     [addresses],
   );
@@ -34,10 +24,10 @@ export default function LoginEVMForm() {
   const [web3Login, isLoading] = useWeb3Login();
 
   useEffect(() => {
-    if (normalizedAddresses.length > 0) {
-      setSelectedAccount(normalizedAddresses[0]);
+    if (normalizedAddress.length > 0) {
+      setSelectedAccount(normalizedAddress[0]);
     }
-  }, [normalizedAddresses]);
+  }, [normalizedAddress]);
 
   const evmOptions = useEVMWalletOptions();
 
@@ -55,18 +45,14 @@ export default function LoginEVMForm() {
         installed
         selected={selectedConnector?.id === option.connector.id}
         onClick={() => {
-          if (connection.accounts.length) {
-            setSelectedConnector(option.connector);
-          } else {
-            connect(
-              { connector: option.connector },
-              {
-                onSuccess() {
-                  setSelectedConnector(option.connector);
-                },
+          connect(
+            { connector: option.connector },
+            {
+              onSuccess() {
+                setSelectedConnector(option.connector);
               },
-            );
-          }
+            },
+          );
         }}
       >
         <div className="flex items-center">
@@ -94,7 +80,7 @@ export default function LoginEVMForm() {
               </div>
 
               <AddressSelect
-                accounts={normalizedAddresses}
+                accounts={normalizedAddress}
                 onSelect={setSelectedAccount}
                 selectedAccount={selectedAccount}
               />
