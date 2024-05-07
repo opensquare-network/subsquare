@@ -54,7 +54,7 @@ const polkagate = {
   logo: WalletPolkagate,
 };
 
-const nova = {
+export const nova = {
   extensionName: WalletTypes.NOVA,
   title: "Nova",
   installUrl: "https://novawallet.io/",

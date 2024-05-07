@@ -9,25 +9,38 @@ import { useEffect, useMemo, useState } from "react";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
+import { NovaWallet } from "next-common/components/wallet/novaWallet";
+import { nova } from "next-common/utils/consts/connect";
+import { useAccount as useSubstrateAccount } from "next-common/hooks/connect/substrate/useAccount";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
-  const { addresses, connector } = useAccount();
+  const [selectedWallet, setSelectedWallet] = useState();
+  const { addresses: substrateAddresses } = useSubstrateAccount({
+    wallet: selectedWallet,
+  });
+  const { addresses: evmAddresses, connector } = useAccount();
   const { connect } = useConnect();
   const [selectedConnector, setSelectedConnector] = useState(connector);
   const [selectedAccount, setSelectedAccount] = useState();
-  const normalizedAddress = useMemo(
-    () => normalizedMetaMaskAccounts(addresses || []),
-    [addresses],
+  const normalizedEVMAddress = useMemo(
+    () => normalizedMetaMaskAccounts(evmAddresses || []),
+    [evmAddresses],
   );
+
+  const addresses = substrateAddresses.length
+    ? substrateAddresses
+    : normalizedEVMAddress;
 
   const [web3Login, isLoading] = useWeb3Login();
 
   useEffect(() => {
-    if (normalizedAddress.length > 0) {
-      setSelectedAccount(normalizedAddress[0]);
+    // TODO: use last connected address
+    if (addresses.length > 0) {
+      setSelectedAccount(addresses[0]);
     }
-  }, [normalizedAddress]);
+  }, [addresses]);
 
   const evmOptions = useEVMWalletOptions();
 
@@ -49,6 +62,7 @@ export default function LoginEVMForm() {
             { connector: option.connector },
             {
               onSuccess() {
+                setSelectedWallet();
                 setSelectedConnector(option.connector);
               },
             },
@@ -70,6 +84,14 @@ export default function LoginEVMForm() {
       <div className="space-y-6">
         <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           {walletOptions}
+          <NovaWallet
+            wallet={nova}
+            selected={selectedWallet === WalletTypes.NOVA}
+            onClick={() => {
+              setSelectedConnector();
+              setSelectedWallet(WalletTypes.NOVA);
+            }}
+          />
         </div>
 
         {selectedConnector && (
@@ -80,7 +102,7 @@ export default function LoginEVMForm() {
               </div>
 
               <AddressSelect
-                accounts={normalizedAddress}
+                accounts={addresses}
                 onSelect={setSelectedAccount}
                 selectedAccount={selectedAccount}
               />
