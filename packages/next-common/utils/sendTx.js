@@ -95,10 +95,12 @@ export function createSendTxEventHandler({
       dispatch(removeToast(toastId));
       onFinalized(blockHash);
       unsub();
+      return;
     }
 
     if (handleExtrinsicFailure(dispatch, status, events, toastId)) {
       unsub();
+      return;
     }
 
     if (status.isInBlock) {
@@ -118,6 +120,7 @@ export function createSendTxEventHandler({
       }
 
       onInBlock(events, blockHash);
+      return;
     }
   };
 }

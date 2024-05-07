@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import { isNil } from "lodash-es";
 import SecondaryButton from "next-common/lib/button/secondary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -8,8 +9,10 @@ import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useF
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import Tooltip from "next-common/components/tooltip";
 import FellowshipSalaryBumpPopup from "./popup";
+import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 
 export default function FellowshipSalaryBump() {
+  const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
   const address = useRealAddress();
 
@@ -31,6 +34,11 @@ export default function FellowshipSalaryBump() {
     tooltipText = "Next cycle is not started";
   }
 
+  const fnWaitSync = useWaitSyncBlock("Bump successful", () =>
+    router.replace(router.asPath),
+  );
+  const onBumpInBlock = (_, blockHash) => blockHash && fnWaitSync(blockHash);
+
   if (disabled) {
     return (
       <Tooltip content={tooltipText}>
@@ -47,7 +55,10 @@ export default function FellowshipSalaryBump() {
         Bump
       </SecondaryButton>
       {showPopup && (
-        <FellowshipSalaryBumpPopup onClose={() => setShowPopup(false)} />
+        <FellowshipSalaryBumpPopup
+          onClose={() => setShowPopup(false)}
+          onInBlock={onBumpInBlock}
+        />
       )}
     </>
   );
