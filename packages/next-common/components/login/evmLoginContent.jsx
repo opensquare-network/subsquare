@@ -44,28 +44,37 @@ function EVMLogin() {
 
   const evmOptions = useEVMWalletOptions();
 
-  const walletOptions = evmOptions.map((option) => (
-    <WalletOption
-      key={option.extensionName}
-      installed
-      selected={selectedConnector?.id === option.connector.id}
-      onClick={() => {
-        connect(
-          { connector: option.connector },
-          {
-            onSuccess() {
-              setSelectedConnector(option.connector);
+  const walletOptions = evmOptions.map((option) => {
+    let icon;
+    if (option.logo) {
+      icon = <option.logo className="w-6 h-6" />;
+    } else if (option.connector.icon) {
+      icon = <img src={option.connector.icon} className="w-6 h-6" />;
+    }
+
+    return (
+      <WalletOption
+        key={option.extensionName}
+        installed
+        selected={selectedConnector?.id === option.connector.id}
+        onClick={() => {
+          connect(
+            { connector: option.connector },
+            {
+              onSuccess() {
+                setSelectedConnector(option.connector);
+              },
             },
-          },
-        );
-      }}
-    >
-      <div className="flex items-center">
-        {option?.logo && <option.logo className="w-6 h-6" />}
-        {option.title}
-      </div>
-    </WalletOption>
-  ));
+          );
+        }}
+      >
+        <div className="flex items-center">
+          {icon}
+          {option.title}
+        </div>
+      </WalletOption>
+    );
+  });
 
   return (
     <div className="space-y-6">

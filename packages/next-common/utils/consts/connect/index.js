@@ -9,6 +9,8 @@ import {
   WalletSubwallet,
   WalletTailsman,
   WalletSignet,
+  WalletPhantom,
+  WalletOkx,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 
@@ -73,6 +75,20 @@ const signet = {
   logo: WalletSignet,
 };
 
+const phantom = {
+  extensionName: WalletTypes.PHANTOM,
+  title: "Phantom",
+  installUrl: "https://phantom.app/",
+  logo: WalletPhantom,
+};
+
+const okxWallet = {
+  extensionName: WalletTypes.OKX_WALLET,
+  title: "OKX Wallet",
+  installUrl: "https://www.okx.com/web3",
+  logo: WalletOkx,
+};
+
 export const allWallets = [
   polkadotJs,
   subWalletJs,
@@ -81,6 +97,8 @@ export const allWallets = [
   nova,
   mimir,
   signet,
+  phantom,
+  okxWallet,
 ];
 
 export function getWallets() {

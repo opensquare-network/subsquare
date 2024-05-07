@@ -10,13 +10,11 @@ export function useEVMWalletOptions() {
   const { chainType } = useChainSettings();
 
   const showTalisman = chainType === ChainTypes.ETHEREUM;
-  const supportedWalletNames = Object.values(WalletTypes);
   const supportedConnectors = filter(connectors, (c) => {
     if (c.name.toLowerCase() === WalletTypes.TALISMAN) {
       return showTalisman;
     }
-
-    return supportedWalletNames.includes(c.name.toLowerCase());
+    return true;
   });
 
   const options = supportedConnectors.map((connector) => {
