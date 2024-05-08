@@ -8,7 +8,7 @@ function CountSummaryContent({ count }) {
   return <span>{(count || 0).toLocaleString()}</span>;
 }
 
-export function GetTracksItem({ isLoading, delegations }) {
+export function TracksItem({ isLoading, delegations }) {
   return (
     <SummaryItem title="Tracks">
       <LoadableContent isLoading={isLoading}>
@@ -25,7 +25,7 @@ export default function OpenGovDelegationSummary() {
   return (
     <SecondaryCard>
       <SummaryLayout>
-        <GetTracksItem isLoading={isLoading} delegations={delegations} />
+        <TracksItem isLoading={isLoading} delegations={delegations} />
       </SummaryLayout>
     </SecondaryCard>
   );

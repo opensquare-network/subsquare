@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import LoadableContent from "next-common/components/common/loadableContent";
-import { GetTracksItem } from "next-common/components/profile/delegation/delegatedVotes/openGovDelegationSummary";
+import { TracksItem } from "next-common/components/profile/delegation/delegatedVotes/openGovDelegationSummary";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
@@ -10,7 +10,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 
-function GetDelegatedVotesItem({ isLoading, delegations, decimals, symbol }) {
+function DelegatedVotesItem({ isLoading, delegations, decimals, symbol }) {
   const totalDelegated = delegations
     ?.reduce((acc, { votes }) => acc.plus(votes), new BigNumber(0))
     .toString();
@@ -35,8 +35,8 @@ export default function OpenGovDelegationSummary() {
   return (
     <SecondaryCard>
       <SummaryLayout>
-        <GetTracksItem isLoading={isLoading} delegations={delegations} />
-        <GetDelegatedVotesItem
+        <TracksItem isLoading={isLoading} delegations={delegations} />
+        <DelegatedVotesItem
           isLoading={isLoading}
           delegations={delegations}
           decimals={decimals}
