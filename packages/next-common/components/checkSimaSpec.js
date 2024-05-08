@@ -3,7 +3,7 @@ import {
   ProjectLogoSimaSpecLight,
 } from "@osn/icons/subsquare";
 
-export default function Info() {
+export default function CheckSimaSpec() {
   return (
     <div className="flex px-[16px] py-[10px] gap-[16px] bg-neutral200">
       <div>

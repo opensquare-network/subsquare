@@ -7,6 +7,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import Copyable from "../copyable";
 import { SystemEdit2 } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
+import PublishAvatarPopup from "./publishAvatarPopup";
 
 function EditAvatar({ setImageFile, setImageDataUrl }) {
   const inputEl = useRef();
@@ -59,7 +60,7 @@ function EditAvatar({ setImageFile, setImageDataUrl }) {
       >
         <SystemEdit2 className="w-[16px] h-[16px]" />
         <input
-          style={{ display: "none" }}
+          className="hidden"
           type="file"
           ref={inputEl}
           accept="image/*"
@@ -71,6 +72,7 @@ function EditAvatar({ setImageFile, setImageDataUrl }) {
 }
 
 function ProfileAvatar({ address }) {
+  const [showPopup, setShowPopup] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
 
@@ -89,14 +91,19 @@ function ProfileAvatar({ address }) {
             <Avatar address={address} size={80} />
           )}
           <EditAvatar
-            imageFile={imageFile}
             setImageFile={setImageFile}
-            imageDataUrl={imageDataUrl}
             setImageDataUrl={setImageDataUrl}
           />
         </div>
       </div>
-      <PrimaryButton size="small">Save & Publish</PrimaryButton>
+      <PrimaryButton
+        size="small"
+        disabled={!imageFile}
+        onClick={() => setShowPopup(true)}
+      >
+        Save & Publish
+      </PrimaryButton>
+      {showPopup && <PublishAvatarPopup onClose={() => setShowPopup(false)} />}
     </div>
   );
 }
