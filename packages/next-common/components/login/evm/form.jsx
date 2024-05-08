@@ -52,6 +52,22 @@ export default function LoginEVMForm() {
       icon = <img src={option.connector.icon} className="w-6 h-6" />;
     }
 
+    const content = (
+      <div className="flex items-center">
+        {icon}
+        {option.title}
+      </div>
+    );
+
+    if (!option.connector) {
+      return (
+        <WalletOption key={option.extensionName} installed={false}>
+          {content}
+          <span className="wallet-not-installed">Not installed</span>
+        </WalletOption>
+      );
+    }
+
     return (
       <WalletOption
         key={option.extensionName}
@@ -69,10 +85,7 @@ export default function LoginEVMForm() {
           );
         }}
       >
-        <div className="flex items-center">
-          {icon}
-          {option.title}
-        </div>
+        {content}
       </WalletOption>
     );
   });
