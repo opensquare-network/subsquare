@@ -37,7 +37,7 @@ export default function FellowshipSalaryBump() {
   const fnWaitSync = useWaitSyncBlock("Bump successful", () =>
     router.replace(router.asPath),
   );
-  const onBumpInBlock = (_, blockHash) => blockHash && fnWaitSync(blockHash);
+  const onBump = (_, blockHash) => blockHash && fnWaitSync(blockHash);
 
   if (disabled) {
     return (
@@ -57,7 +57,7 @@ export default function FellowshipSalaryBump() {
       {showPopup && (
         <FellowshipSalaryBumpPopup
           onClose={() => setShowPopup(false)}
-          onInBlock={onBumpInBlock}
+          onFinalized={onBump}
         />
       )}
     </>

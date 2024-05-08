@@ -93,7 +93,7 @@ export function createSendTxEventHandler({
   return ({ events = [], status }) => {
     if (status.isFinalized) {
       dispatch(removeToast(toastId));
-      onFinalized(blockHash);
+      onFinalized(events, blockHash);
       unsub();
       return;
     }

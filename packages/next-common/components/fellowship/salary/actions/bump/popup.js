@@ -6,7 +6,7 @@ import { useContextApi } from "next-common/context/api";
 import { useCallback } from "react";
 
 function Content() {
-  const { onClose, onInBlock } = usePopupParams();
+  const { onClose, onFinalized } = usePopupParams();
   const api = useContextApi();
 
   const getTxFunc = useCallback(async () => {
@@ -23,15 +23,15 @@ function Content() {
         title="Confirm"
         getTxFunc={getTxFunc}
         onClose={onClose}
-        onInBlock={onInBlock}
+        onFinalized={onFinalized}
       />
     </>
   );
 }
 
-export default function FellowshipSalaryBumpPopup({ onClose, onInBlock }) {
+export default function FellowshipSalaryBumpPopup({ onClose, onFinalized }) {
   return (
-    <PopupWithSigner title="Bump" onClose={onClose} onInBlock={onInBlock}>
+    <PopupWithSigner title="Bump" onClose={onClose} onFinalized={onFinalized}>
       <Content />
     </PopupWithSigner>
   );
