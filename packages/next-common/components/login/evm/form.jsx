@@ -13,10 +13,13 @@ import { NovaWallet } from "next-common/components/wallet/novaWallet";
 import { nova } from "next-common/utils/consts/connect";
 import { useAccount as useSubstrateAccount } from "next-common/hooks/connect/substrate/useAccount";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
+import { find } from "lodash-es";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
   const [selectedWallet, setSelectedWallet] = useState();
+  const { lastConnectedAccount } = useConnectedAccountContext();
   const { addresses: substrateAddresses } = useSubstrateAccount({
     wallet: selectedWallet,
   });
@@ -36,8 +39,13 @@ export default function LoginEVMForm() {
   const [web3Login, isLoading] = useWeb3Login();
 
   useEffect(() => {
-    // TODO: use last connected address
-    if (addresses.length > 0) {
+    const lastUsedAddress = find(addresses, {
+      address: lastConnectedAccount?.address,
+    });
+
+    if (lastUsedAddress) {
+      setSelectedAccount(lastUsedAddress);
+    } else if (addresses.length > 0) {
       setSelectedAccount(addresses[0]);
     }
   }, [addresses]);
