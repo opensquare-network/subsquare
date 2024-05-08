@@ -11,6 +11,7 @@ import {
   WalletSignet,
   WalletPhantom,
   WalletOkx,
+  WalletCoinbase,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 
@@ -89,6 +90,13 @@ const okxWallet = {
   logo: WalletOkx,
 };
 
+const coinbaseWallet = {
+  extensionName: WalletTypes.COINBASE_WALLET,
+  title: "Coinbase Wallet",
+  installUrl: "https://www.coinbase.com/wallet/downloads",
+  logo: WalletCoinbase,
+};
+
 export const allWallets = [
   polkadotJs,
   subWalletJs,
@@ -99,6 +107,7 @@ export const allWallets = [
   signet,
   phantom,
   okxWallet,
+  coinbaseWallet,
 ];
 
 export function getWallets() {

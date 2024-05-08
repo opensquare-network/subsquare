@@ -9,6 +9,7 @@ const WalletTypes = {
   SIGNET: "signet",
   PHANTOM: "phantom",
   OKX_WALLET: "okx wallet",
+  COINBASE_WALLET: "coinbase wallet",
 };
 
 export default WalletTypes;
