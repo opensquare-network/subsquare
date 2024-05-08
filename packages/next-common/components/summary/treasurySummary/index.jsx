@@ -71,9 +71,7 @@ export default function TreasurySummary() {
           title="Spend Period"
           suffix={<TreasurySummarySpendPeriodCountDown summary={summary} />}
         >
-          <LoadableContent isLoading={isNil(summary)}>
-            <SpendPeriod summary={summary} />
-          </LoadableContent>
+          <SpendPeriod summary={summary} />
         </SummaryItem>
       )}
     </SummaryLayout>
