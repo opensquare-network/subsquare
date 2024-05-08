@@ -115,7 +115,7 @@ export default function LoginEVMForm() {
           />
         </div>
 
-        {selectedConnector && (
+        {addresses.length && (
           <>
             <div>
               <div className="text12Bold text-textPrimary mb-2">
