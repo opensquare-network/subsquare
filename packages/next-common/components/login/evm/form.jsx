@@ -10,31 +10,31 @@ import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
 import { NovaWallet } from "next-common/components/wallet/novaWallet";
-import { nova } from "next-common/utils/consts/connect";
-import { useAccount as useSubstrateAccount } from "next-common/hooks/connect/substrate/useAccount";
+import { nova as novaWallet } from "next-common/utils/consts/connect";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { find } from "lodash-es";
+import { SystemLoading } from "@osn/icons/subsquare";
+import { nova } from "next-common/context/wagmi/connectors/nova";
+
+const novaConnector = nova();
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
-  const [selectedWallet, setSelectedWallet] = useState();
   const { lastConnectedAccount } = useConnectedAccountContext();
-  const { addresses: substrateAddresses } = useSubstrateAccount({
-    wallet: selectedWallet,
-  });
-  const { addresses: evmAddresses, connector } = useAccount();
-  const { connect } = useConnect();
+  const {
+    addresses: evmAddresses,
+    connector,
+    isConnecting,
+    isConnected,
+  } = useAccount();
+  const { connect, isError } = useConnect();
   const [selectedConnector, setSelectedConnector] = useState(connector);
   const [selectedAccount, setSelectedAccount] = useState();
-  const normalizedEVMAddress = useMemo(
+  const addresses = useMemo(
     () => normalizedMetaMaskAccounts(evmAddresses || []),
     [evmAddresses],
   );
-
-  const addresses = substrateAddresses.length
-    ? substrateAddresses
-    : normalizedEVMAddress;
 
   const [web3Login, isLoading] = useWeb3Login();
 
@@ -49,6 +49,10 @@ export default function LoginEVMForm() {
       setSelectedAccount(addresses[0]);
     }
   }, [addresses]);
+
+  useEffect(() => {
+    setSelectedConnector(connector);
+  }, [isError]);
 
   const evmOptions = useEVMWalletOptions();
 
@@ -86,7 +90,6 @@ export default function LoginEVMForm() {
             { connector: option.connector },
             {
               onSuccess() {
-                setSelectedWallet();
                 setSelectedConnector(option.connector);
               },
             },
@@ -106,16 +109,22 @@ export default function LoginEVMForm() {
         <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           {walletOptions}
           <NovaWallet
-            wallet={nova}
-            selected={selectedWallet === WalletTypes.NOVA}
+            wallet={novaWallet}
+            selected={selectedConnector?.id === WalletTypes.NOVA}
             onClick={() => {
-              setSelectedConnector();
-              setSelectedWallet(WalletTypes.NOVA);
+              connect({ connector: novaConnector });
+              setSelectedConnector(novaConnector);
             }}
           />
         </div>
 
-        {addresses.length && (
+        {isConnecting && (
+          <div className="flex justify-center">
+            <SystemLoading className="text-textDisabled" />
+          </div>
+        )}
+
+        {isConnected && !!addresses.length && (
           <>
             <div>
               <div className="text12Bold text-textPrimary mb-2">
