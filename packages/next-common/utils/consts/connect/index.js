@@ -39,7 +39,7 @@ const talisman = {
   logo: WalletTailsman,
 };
 
-const metamask = {
+export const metamask = {
   extensionName: WalletTypes.METAMASK,
   title: "MetaMask",
   installUrl:
@@ -90,7 +90,7 @@ const okxWallet = {
   logo: WalletOkx,
 };
 
-const coinbaseWallet = {
+export const coinbaseWallet = {
   extensionName: WalletTypes.COINBASE_WALLET,
   title: "Coinbase Wallet",
   installUrl: "https://www.coinbase.com/wallet/downloads",
