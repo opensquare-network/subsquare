@@ -22,7 +22,7 @@ export default function useWaitSyncBlock(toastMessage, callback) {
     refScanHeight.current = scanHeight;
   }, [scanHeight]);
 
-  const fnWaitSync = useCallback(
+  return useCallback(
     async (blockHash) => {
       dispatch(newSuccessToast(toastMessage, 1000));
 
@@ -55,6 +55,4 @@ export default function useWaitSyncBlock(toastMessage, callback) {
     },
     [dispatch, api, refScanHeight, callback, toastMessage],
   );
-
-  return fnWaitSync;
 }

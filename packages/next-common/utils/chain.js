@@ -1,8 +1,8 @@
 import Chains from "./consts/chains";
 
 export async function getBlockHeightFromHash(api, blockHash) {
-  const block = await api.rpc.chain.getBlock(blockHash);
-  const targetHeight = block.block.header.number.toNumber();
+  const header = await api.rpc.chain.getHeader(blockHash);
+  const targetHeight = header.number.toNumber();
   return targetHeight;
 }
 
