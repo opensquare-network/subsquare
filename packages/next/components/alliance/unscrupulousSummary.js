@@ -1,13 +1,12 @@
 import React from "react";
-import Summary from "next-common/components/summary";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 
 export default function UnscrupulousSummary({ accounts, websites }) {
   return (
-    <Summary
-      items={[
-        { title: "Accounts", content: accounts || 0 },
-        { title: "Websites", content: websites || 0 },
-      ]}
-    />
+    <SummaryLayout>
+      <SummaryItem title="Accounts">{accounts || 0}</SummaryItem>
+      <SummaryItem title="Websites">{websites || 0}</SummaryItem>
+    </SummaryLayout>
   );
 }

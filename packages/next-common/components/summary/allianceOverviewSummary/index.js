@@ -1,6 +1,7 @@
-import Summary from "next-common/components/summary";
 import { usePageProps } from "next-common/context/page";
 import ActiveValue from "../overviewSummary/activeValue";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 
 export default function AllianceOverviewSummary() {
   const { summary } = usePageProps();
@@ -9,39 +10,28 @@ export default function AllianceOverviewSummary() {
     summary ?? {};
 
   return (
-    <Summary
-      items={[
-        {
-          title: "Fellowship Referenda",
-          content: (
-            <ActiveValue
-              href={"/fellowship"}
-              tooltip="Active referenda"
-              value={fellowshipReferenda?.active || 0}
-            />
-          ),
-        },
-        {
-          title: "Alliance Motions",
-          content: (
-            <ActiveValue
-              href={"/alliance/motions"}
-              tooltip="Active motions"
-              value={allianceMotions?.active || 0}
-            />
-          ),
-        },
-        {
-          title: "Alliance Announcements",
-          content: (
-            <ActiveValue
-              href={"/alliance/announcements"}
-              tooltip="Active announcements"
-              value={allianceAnnouncements?.active || 0}
-            />
-          ),
-        },
-      ]}
-    />
+    <SummaryLayout>
+      <SummaryItem title="Fellowship Referenda">
+        <ActiveValue
+          href={"/fellowship"}
+          tooltip="Active referenda"
+          value={fellowshipReferenda?.active || 0}
+        />
+      </SummaryItem>
+      <SummaryItem title="Alliance Motions">
+        <ActiveValue
+          href={"/alliance/motions"}
+          tooltip="Active motions"
+          value={allianceMotions?.active || 0}
+        />
+      </SummaryItem>
+      <SummaryItem title="Alliance Announcements">
+        <ActiveValue
+          href={"/alliance/announcements"}
+          tooltip="Active announcements"
+          value={allianceAnnouncements?.active || 0}
+        />
+      </SummaryItem>
+    </SummaryLayout>
   );
 }

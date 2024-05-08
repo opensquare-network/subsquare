@@ -2,7 +2,6 @@ import { extractTime } from "@polkadot/util";
 import dayjs from "dayjs";
 import CountDown from "next-common/components/summary/countDown";
 import { SummaryGreyText } from "next-common/components/summary/styled";
-import Summary from "next-common/components/summary";
 import Tooltip from "next-common/components/tooltip";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { useDemocracySummaryData } from "next-common/hooks/useDemoracySummaryData";
@@ -18,6 +17,8 @@ import useLaunchProgress from "next-common/hooks/democracy/useLaunchProgress";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { useContextApi } from "next-common/context/api";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 
 export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
@@ -33,45 +34,39 @@ export default function DemocracySummary({ summary = {} }) {
   const showLaunchPeriod = !isKintsugi && hasDemocracyModule && api;
 
   return (
-    <Summary
-      items={[
-        {
-          title: "Referenda",
-          content: (
-            <span>
-              {summaryData.referenda?.active || 0}
-              <SummaryGreyText>
-                {" "}
-                / {summaryData.referenda?.all || 0}
-              </SummaryGreyText>
-            </span>
-          ),
-        },
-        {
-          title: "Proposals",
-          content: (
-            <span>
-              {summaryData.publicProposals?.active || 0}
-              <SummaryGreyText>
-                {" "}
-                / {summaryData.publicProposals?.all || 0}
-              </SummaryGreyText>
-            </span>
-          ),
-        },
-
-        showLaunchPeriod && {
-          title: "Launch Period",
-          content: <LaunchPeriod />,
-          suffix: <CountDown percent={progress ?? 0} />,
-        },
-
-        isKintsugi && {
-          title: "Next Launch Time",
-          content: <NextLaunchTime />,
-        },
-      ].filter(Boolean)}
-    />
+    <SummaryLayout>
+      <SummaryItem title="Referenda">
+        <span>
+          {summaryData.referenda?.active || 0}
+          <SummaryGreyText>
+            {" "}
+            / {summaryData.referenda?.all || 0}
+          </SummaryGreyText>
+        </span>
+      </SummaryItem>
+      <SummaryItem title="Proposals">
+        <span>
+          {summaryData.publicProposals?.active || 0}
+          <SummaryGreyText>
+            {" "}
+            / {summaryData.publicProposals?.all || 0}
+          </SummaryGreyText>
+        </span>
+      </SummaryItem>
+      {showLaunchPeriod && (
+        <SummaryItem
+          title="Launch Period"
+          suffix={<CountDown percent={progress ?? 0} />}
+        >
+          <LaunchPeriod />
+        </SummaryItem>
+      )}
+      {isKintsugi && (
+        <SummaryItem title="Next Launch Time">
+          <NextLaunchTime />
+        </SummaryItem>
+      )}
+    </SummaryLayout>
   );
 }
 

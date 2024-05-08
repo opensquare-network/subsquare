@@ -2,10 +2,11 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import Summary from "next-common/components/summary";
 import BigNumber from "bignumber.js";
 import PriorInfo from "./prior";
 import LoadableContent from "next-common/components/common/loadableContent";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 
 function CountSummaryContent({ count }) {
   return <span>{(count || 0).toLocaleString()}</span>;
@@ -37,53 +38,41 @@ export default function ReferendaVoteSummary({
 }) {
   const { symbol, decimals } = useChainSettings();
 
-  const items = [
-    {
-      title: "All Votes",
-      content: (
-        <LoadableContent isLoading={isLoading}>
-          <CountSummaryContent count={votesLength} />
-        </LoadableContent>
-      ),
-    },
-    {
-      title: "Total Locked",
-      content: (
-        <LoadableContent isLoading={isLoading}>
-          <TokenValueContent value={totalLocked} />
-          <PriorInfo prior={prior} />
-        </LoadableContent>
-      ),
-    },
-    new BigNumber(delegated).gt(0)
-      ? {
-          title: "Delegated",
-          content: <TokenValueContent value={delegated} />,
-        }
-      : null,
-    {
-      title: "Unlockable",
-      content: (
-        <LoadableContent isLoading={isLoading}>
-          <TextSummaryContent
-            value={
-              <div className="flex flex-col">
-                <ValueDisplay
-                  value={toPrecision(unLockable, decimals)}
-                  symbol={symbol}
-                />
-                {actionComponent}
-              </div>
-            }
-          />
-        </LoadableContent>
-      ),
-    },
-  ].filter(Boolean);
-
   return (
     <SecondaryCard>
-      <Summary items={items} />
+      <SummaryLayout>
+        <SummaryItem title="All Votes">
+          <LoadableContent isLoading={isLoading}>
+            <CountSummaryContent count={votesLength} />
+          </LoadableContent>
+        </SummaryItem>
+        <SummaryItem title="Total Locked">
+          <LoadableContent isLoading={isLoading}>
+            <TokenValueContent value={totalLocked} />
+            <PriorInfo prior={prior} />
+          </LoadableContent>
+        </SummaryItem>
+        {new BigNumber(delegated).gt(0) ? (
+          <SummaryItem title="Delegated">
+            <TokenValueContent value={delegated} />
+          </SummaryItem>
+        ) : null}
+        <SummaryItem title="Unlockable">
+          <LoadableContent isLoading={isLoading}>
+            <TextSummaryContent
+              value={
+                <div className="flex flex-col">
+                  <ValueDisplay
+                    value={toPrecision(unLockable, decimals)}
+                    symbol={symbol}
+                  />
+                  {actionComponent}
+                </div>
+              }
+            />
+          </LoadableContent>
+        </SummaryItem>
+      </SummaryLayout>
     </SecondaryCard>
   );
 }
