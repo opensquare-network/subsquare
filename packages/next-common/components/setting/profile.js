@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Avatar from "../avatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import Identity from "../Identity";
@@ -7,10 +7,45 @@ import PrimaryButton from "next-common/lib/button/primary";
 import Copyable from "../copyable";
 import { SystemEdit2 } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import EditAvatarPopup from "./editAvatarPopup";
 
-function EditAvatar() {
-  const [showEditPopup, setShowEditPopup] = useState(false);
+function EditAvatar({ setImageFile, setImageDataUrl }) {
+  const inputEl = useRef();
+
+  const handleSelectFile = () => {
+    inputEl.current.value = "";
+    inputEl.current?.click();
+  };
+
+  const onSelectFile = (e) => {
+    e.preventDefault();
+    const { files } = e.target;
+    uploadImage(files);
+  };
+
+  const uploadImage = (files) => {
+    if (files && files.length) {
+      const image = files[0];
+      if (!/image\/\w+/.exec(image.type)) {
+        return;
+      }
+
+      if (FileReader && files && files.length) {
+        const image = files[0];
+        if (!/image\/\w+/.exec(image.type)) {
+          return;
+        }
+
+        setImageFile(image);
+
+        var fr = new FileReader();
+        fr.onload = function () {
+          setImageDataUrl(fr.result);
+        };
+        fr.readAsDataURL(image);
+      }
+    }
+  };
+
   return (
     <>
       <div
@@ -20,25 +55,45 @@ function EditAvatar() {
           "bg-neutral100 border border-neutral400 rounded-full w-[32px] h-[32px]",
           "cursor-pointer",
         )}
-        onClick={() => setShowEditPopup(true)}
+        onClick={handleSelectFile}
       >
         <SystemEdit2 className="w-[16px] h-[16px]" />
+        <input
+          style={{ display: "none" }}
+          type="file"
+          ref={inputEl}
+          accept="image/*"
+          onChange={onSelectFile}
+        />
       </div>
-      {showEditPopup && (
-        <EditAvatarPopup onClose={() => setShowEditPopup(false)} />
-      )}
     </>
   );
 }
 
 function ProfileAvatar({ address }) {
+  const [imageFile, setImageFile] = useState(null);
+  const [imageDataUrl, setImageDataUrl] = useState(null);
+
   return (
     <div className="flex flex-col gap-4 items-start">
       <div className="flex flex-col gap-3">
         <span className="text14Bold">Avatar</span>
         <div className="inline-flex relative">
-          <Avatar address={address} size={80} />
-          <EditAvatar />
+          {imageDataUrl ? (
+            <img
+              className="rounded-full w-[80px] h-[80px]"
+              src={imageDataUrl}
+              alt=""
+            />
+          ) : (
+            <Avatar address={address} size={80} />
+          )}
+          <EditAvatar
+            imageFile={imageFile}
+            setImageFile={setImageFile}
+            imageDataUrl={imageDataUrl}
+            setImageDataUrl={setImageDataUrl}
+          />
         </div>
       </div>
       <PrimaryButton size="small">Save & Publish</PrimaryButton>
@@ -51,7 +106,7 @@ export default function Profile({ address }) {
   const maybeEvmAddress = tryConvertToEvmAddress(address);
 
   return (
-    <div className="flex gap-[24px]">
+    <div className="flex gap-[24px] text-textPrimary">
       <ProfileAvatar address={address} />
       <div className="w-[1px] bg-neutral300" />
       <div className="flex flex-col gap-3 grow">
