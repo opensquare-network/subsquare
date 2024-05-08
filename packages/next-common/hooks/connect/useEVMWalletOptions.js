@@ -1,4 +1,4 @@
-import { filter, find, kebabCase } from "lodash-es";
+import { filter, find } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { allWallets } from "next-common/utils/consts/connect";
@@ -18,10 +18,13 @@ export function useEVMWalletOptions() {
   });
 
   const options = supportedConnectors.map((connector) => {
-    const matched = find(allWallets, {
-      extensionName: kebabCase(connector.name.toLowerCase()),
+    const found = find(allWallets, (w) => {
+      return (
+        w.title.toLowerCase() === connector.name.toLowerCase() ||
+        w.extensionName.toLowerCase() === connector.name.toLowerCase()
+      );
     });
-    const logo = matched?.logo;
+    const logo = found?.logo;
 
     return {
       title: connector.name,
