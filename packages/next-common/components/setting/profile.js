@@ -1,0 +1,73 @@
+import React, { useState } from "react";
+import Avatar from "../avatar";
+import useIdentityInfo from "next-common/hooks/useIdentityInfo";
+import Identity from "../Identity";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import PrimaryButton from "next-common/lib/button/primary";
+import Copyable from "../copyable";
+import { SystemEdit2 } from "@osn/icons/subsquare";
+import { cn } from "next-common/utils";
+import EditAvatarPopup from "./editAvatarPopup";
+
+function EditAvatar() {
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  return (
+    <>
+      <div
+        className={cn(
+          "absolute bottom-0 right-0",
+          "flex justify-center items-center",
+          "bg-neutral100 border border-neutral400 rounded-full w-[32px] h-[32px]",
+          "cursor-pointer",
+        )}
+        onClick={() => setShowEditPopup(true)}
+      >
+        <SystemEdit2 className="w-[16px] h-[16px]" />
+      </div>
+      {showEditPopup && (
+        <EditAvatarPopup onClose={() => setShowEditPopup(false)} />
+      )}
+    </>
+  );
+}
+
+function ProfileAvatar({ address }) {
+  return (
+    <div className="flex flex-col gap-4 items-start">
+      <div className="flex flex-col gap-3">
+        <span className="text14Bold">Avatar</span>
+        <div className="inline-flex relative">
+          <Avatar address={address} size={80} />
+          <EditAvatar />
+        </div>
+      </div>
+      <PrimaryButton size="small">Save & Publish</PrimaryButton>
+    </div>
+  );
+}
+
+export default function Profile({ address }) {
+  const [identity, hasId] = useIdentityInfo(address);
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
+
+  return (
+    <div className="flex gap-[24px]">
+      <ProfileAvatar address={address} />
+      <div className="w-[1px] bg-neutral300" />
+      <div className="flex flex-col gap-3 grow">
+        <div className="flex flex-col gap-2">
+          <span className="text14Bold">Identity</span>
+          <div className="bg-neutral200 py-[10px] px-[16px] text14Medium rounded-[8px]">
+            {hasId ? <Identity identity={identity} /> : "-"}
+          </div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text14Bold">Address</span>
+          <div className="bg-neutral200 py-[10px] px-[16px] text14Medium rounded-[8px]">
+            <Copyable copyText={maybeEvmAddress}>{maybeEvmAddress}</Copyable>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
