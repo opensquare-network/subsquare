@@ -36,7 +36,7 @@ const links = [
   },
   {
     name: "twitter",
-    url: "https://twitter.com/BifrostFinance",
+    url: "https://twitter.com/Bifrost",
   },
   {
     name: "telegram",
@@ -75,8 +75,7 @@ const bifrost = {
   subscanDomain: "bifrost-kusama",
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  description:
-    "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
+  description: "The Liquid Staking Standard for Any Chain.",
   modules: {
     referenda: true,
     fellowship: true,
