@@ -1,5 +1,5 @@
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { isCollectivesChain } from "next-common/utils/chain";
+import { isCollectivesChain, isKintsugiChain } from "next-common/utils/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
@@ -42,6 +42,14 @@ export default function AccountLayout(props) {
       url: "/",
     },
   ];
+
+  if (isKintsugiChain(chain)) {
+    tabs.push({
+      label: "Escrow",
+      url: "/escrow",
+      exactMatch: false,
+    });
+  }
 
   if (user?.address) {
     const active = router.pathname.startsWith("/account");
