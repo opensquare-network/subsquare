@@ -1,4 +1,5 @@
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import { createConnector } from "wagmi";
 import { injected } from "wagmi/connectors";
 
 /**
@@ -9,12 +10,12 @@ import { injected } from "wagmi/connectors";
 export const nova = (params) => {
   const injectedConnector = injected(params);
 
-  return (config) => {
+  return createConnector((config) => {
     const connector = injectedConnector(config);
     return {
       ...connector,
       id: WalletTypes.NOVA,
       name: "Nova",
     };
-  };
+  });
 };
