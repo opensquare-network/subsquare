@@ -13,7 +13,7 @@ import {
 } from "next-common/utils/consts/connect";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useConnectors } from "wagmi";
-import { useNovaWalletInstalled } from "./useNovaWalletInstalled";
+import { useNovaWalletEvmInstalled } from "./useNovaWalletInstalled";
 
 const fixedWallets = [
   coinbaseWallet,
@@ -29,11 +29,11 @@ export function useEVMWalletOptions() {
   const connectors = useConnectors();
   const { chainType } = useChainSettings();
   const injectedConnector = find(connectors, { id: "injected" });
-  const novaWalletInstalled = useNovaWalletInstalled();
+  const novaWalletInstalled = useNovaWalletEvmInstalled();
 
   // treat injectedConnector as nova connector
   const novaConnector =
-    novaWalletInstalled.evm && injectedConnector
+    novaWalletInstalled && injectedConnector
       ? {
           ...injectedConnector,
           id: nova.extensionName,

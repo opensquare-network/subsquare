@@ -4,12 +4,17 @@ import { isNil } from "lodash-es";
 import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useIsMountedBool } from "next-common/utils/hooks/useIsMounted";
 import { useEffect, useState } from "react";
+import { useDetectEthereum } from "./useDetectEthereum";
 
-export function useNovaWalletInstalled() {
+export function useNovaWalletEvmInstalled() {
+  const ethereum = useDetectEthereum();
+  return ethereum?.isNovaWallet;
+}
+
+export function useNovaWalletSubstrateInstalled() {
   const isMountedBool = useIsMountedBool();
   const { loading, injectedWeb3 } = useInjectedWeb3();
   const [substrateInstalled, setSubstrateInstalled] = useState(false);
-  const [evmInstalled, seEvmInstalled] = useState(false);
 
   useEffect(() => {
     // update if installed changes
@@ -22,15 +27,9 @@ export function useNovaWalletInstalled() {
         !isNil(injectedWeb3?.["polkadot-js"]) &&
         window.walletExtension?.isNovaWallet === true;
 
-      const evmDetected = window.ethereum?.isNovaWallet;
-
       setSubstrateInstalled(substrateDetected);
-      seEvmInstalled(evmDetected);
     }
   }, [isMountedBool, loading, injectedWeb3]);
 
-  return {
-    substrate: substrateInstalled,
-    evm: evmInstalled,
-  };
+  return substrateInstalled;
 }
