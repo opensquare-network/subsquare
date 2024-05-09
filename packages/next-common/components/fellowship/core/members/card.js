@@ -72,7 +72,7 @@ export default function FellowshipCoreMemberCard({ member: _member = {} }) {
             <FellowshipMemberInfoWrapper /> // as a placeholder
           )}
         </FellowshipMemberInfoLine>
-        <FellowshipCoreMemberEvidence />
+        <FellowshipCoreMemberEvidence address={address} />
       </div>
 
       <Divider className="mt-4" />
