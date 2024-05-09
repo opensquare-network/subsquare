@@ -33,6 +33,12 @@ export default function LoginEVMForm() {
   const [web3Login, isLoading] = useWeb3Login();
 
   useEffect(() => {
+    if (connector) {
+      setSelectedConnector(connector);
+    }
+  }, [connector]);
+
+  useEffect(() => {
     const lastUsedAddress = find(addresses, {
       address: lastConnectedAccount?.address,
     });
