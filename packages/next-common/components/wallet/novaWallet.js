@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
 import Flex from "../styled/flex";
-import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
-import useInjectedWeb3 from "./useInjectedWeb3";
 import WalletOption from "./walletOption";
-import { isNil } from "lodash-es";
+import { useNovaWalletInstalled } from "next-common/hooks/connect/useNovaWalletInstalled";
 
 export function NovaWallet({
   wallet,
@@ -12,24 +9,8 @@ export function NovaWallet({
   selected = false,
   loading = false,
 }) {
-  const [installed, setInstalled] = useState(null);
-  const { loading: loadingInjectedWeb3, injectedWeb3 } = useInjectedWeb3();
-  const isMounted = useIsMounted();
+  const installed = useNovaWalletInstalled();
   const Logo = wallet.logo;
-
-  useEffect(() => {
-    // update if installed changes
-    if (loadingInjectedWeb3) {
-      return;
-    }
-
-    if (isMounted.current) {
-      const installed =
-        !isNil(injectedWeb3?.["polkadot-js"]) &&
-        window.walletExtension?.isNovaWallet === true;
-      setInstalled(installed);
-    }
-  }, [loadingInjectedWeb3, injectedWeb3, wallet?.extensionName, isMounted]);
 
   return (
     <WalletOption
