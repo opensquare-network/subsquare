@@ -33,7 +33,7 @@ export function useEVMWalletOptions() {
 
   // treat injectedConnector as nova connector
   const novaConnector =
-    novaWalletInstalled && injectedConnector
+    novaWalletInstalled.evm && injectedConnector
       ? {
           ...injectedConnector,
           id: nova.extensionName,

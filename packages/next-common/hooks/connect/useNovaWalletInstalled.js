@@ -6,9 +6,10 @@ import { useIsMountedBool } from "next-common/utils/hooks/useIsMounted";
 import { useEffect, useState } from "react";
 
 export function useNovaWalletInstalled() {
-  const [installed, setInstalled] = useState(null);
   const isMountedBool = useIsMountedBool();
   const { loading, injectedWeb3 } = useInjectedWeb3();
+  const [substrateInstalled, setSubstrateInstalled] = useState(false);
+  const [evmInstalled, seEvmInstalled] = useState(false);
 
   useEffect(() => {
     // update if installed changes
@@ -23,11 +24,13 @@ export function useNovaWalletInstalled() {
 
       const evmDetected = window.ethereum?.isNovaWallet;
 
-      const detected = substrateDetected || evmDetected;
-
-      setInstalled(detected);
+      setSubstrateInstalled(substrateDetected);
+      seEvmInstalled(evmDetected);
     }
   }, [isMountedBool, loading, injectedWeb3]);
 
-  return installed;
+  return {
+    substrate: substrateInstalled,
+    evm: evmInstalled,
+  };
 }

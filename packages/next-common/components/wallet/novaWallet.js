@@ -9,23 +9,23 @@ export function NovaWallet({
   selected = false,
   loading = false,
 }) {
-  const installed = useNovaWalletInstalled();
+  const novaWalletInstalled = useNovaWalletInstalled();
   const Logo = wallet.logo;
 
   return (
     <WalletOption
       selected={selected}
-      onClick={() => installed && onClick(wallet)}
-      installed={installed}
+      onClick={() => novaWalletInstalled.substrate && onClick(wallet)}
+      installed={novaWalletInstalled.substrate}
     >
       <Flex>
         <Logo className={wallet.title} alt={wallet.title} />
         <span className="wallet-title">{wallet.title}</span>
       </Flex>
-      {installed === false && (
+      {novaWalletInstalled.substrate === false && (
         <span className="wallet-not-installed">Not installed</span>
       )}
-      {(loading || installed === null) && <Loading />}
+      {(loading || novaWalletInstalled.substrate === null) && <Loading />}
     </WalletOption>
   );
 }
