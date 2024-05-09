@@ -6,7 +6,6 @@ import {
   coinbaseWallet,
   metamask,
   nova,
-  nova as novaWallet,
   okxWallet,
   phantom,
   subWallet,
@@ -14,6 +13,7 @@ import {
 } from "next-common/utils/consts/connect";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useConnectors } from "wagmi";
+import { useNovaWalletInstalled } from "./useNovaWalletInstalled";
 
 const fixedWallets = [
   coinbaseWallet,
@@ -29,15 +29,17 @@ export function useEVMWalletOptions() {
   const connectors = useConnectors();
   const { chainType } = useChainSettings();
   const injectedConnector = find(connectors, { id: "injected" });
+  const novaWalletInstalled = useNovaWalletInstalled();
 
   // treat injectedConnector as nova connector
-  const novaConnector = injectedConnector
-    ? {
-        ...injectedConnector,
-        id: novaWallet.extensionName,
-        name: novaWallet.title,
-      }
-    : null;
+  const novaConnector =
+    novaWalletInstalled && injectedConnector
+      ? {
+          ...injectedConnector,
+          id: nova.extensionName,
+          name: nova.title,
+        }
+      : null;
 
   const showTalisman = chainType === ChainTypes.ETHEREUM;
   const supportedConnectors = filter(connectors, (c) => {
@@ -71,7 +73,7 @@ export function useEVMWalletOptions() {
         };
       }),
       {
-        ...novaWallet,
+        ...nova,
         connector: novaConnector,
       },
       ...fixedWallets,
