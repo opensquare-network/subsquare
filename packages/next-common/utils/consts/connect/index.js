@@ -23,7 +23,7 @@ const polkadotJs = {
   logo: WalletPolkadotjs,
 };
 
-const subWallet = {
+export const subWallet = {
   extensionName: WalletTypes.SUBWALLET,
   title: "SubWallet",
   installUrl:
@@ -31,7 +31,7 @@ const subWallet = {
   logo: WalletSubwallet,
 };
 
-const talisman = {
+export const talisman = {
   extensionName: WalletTypes.TALISMAN,
   title: "Talisman",
   installUrl:
@@ -76,14 +76,14 @@ const signet = {
   logo: WalletSignet,
 };
 
-const phantom = {
+export const phantom = {
   extensionName: WalletTypes.PHANTOM,
   title: "Phantom",
   installUrl: "https://phantom.app/",
   logo: WalletPhantom,
 };
 
-const okxWallet = {
+export const okxWallet = {
   extensionName: WalletTypes.OKX_WALLET,
   title: "OKX Wallet",
   installUrl: "https://www.okx.com/web3",
