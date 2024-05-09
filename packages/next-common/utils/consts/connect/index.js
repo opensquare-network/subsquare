@@ -23,8 +23,8 @@ const polkadotJs = {
   logo: WalletPolkadotjs,
 };
 
-const subWalletJs = {
-  extensionName: WalletTypes.SUBWALLET_JS,
+const subWallet = {
+  extensionName: WalletTypes.SUBWALLET,
   title: "SubWallet",
   installUrl:
     "https://chrome.google.com/webstore/detail/subwallet/onhogfjeacnfoofkfgppdlbmlmnplgbn",
@@ -99,7 +99,7 @@ export const coinbaseWallet = {
 
 export const allWallets = [
   polkadotJs,
-  subWalletJs,
+  subWallet,
   talisman,
   metamask,
   nova,
@@ -115,7 +115,7 @@ export function getWallets() {
 }
 
 export function getSingleSigWallets() {
-  return [polkadotJs, subWalletJs, talisman, polkagate, nova];
+  return [polkadotJs, subWallet, talisman, polkagate, nova];
 }
 
 export function getMultiSigWallets() {

@@ -31,7 +31,7 @@ const WalletIcon = ({ wallet }) => {
       {wallet === WalletTypes.TALISMAN && (
         <WalletTailsman width={16} height={16} />
       )}
-      {wallet === WalletTypes.SUBWALLET_JS && (
+      {wallet === WalletTypes.SUBWALLET && (
         <WalletSubwallet width={16} height={16} />
       )}
       {wallet === WalletTypes.POLKAGATE && (
