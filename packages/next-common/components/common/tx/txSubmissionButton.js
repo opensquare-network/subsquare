@@ -9,6 +9,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { useContextApi } from "next-common/context/api";
 
 export default function TxSubmissionButton({
+  loading = false,
   disabled = false,
   getTxFunc = emptyFunction,
   title = "Submit",
@@ -56,7 +57,11 @@ export default function TxSubmissionButton({
 
   return (
     <div className="flex justify-end">
-      <PrimaryButton loading={isCalling} onClick={onSubmit} disabled={disabled}>
+      <PrimaryButton
+        loading={isCalling || loading}
+        onClick={onSubmit}
+        disabled={disabled}
+      >
         {title}
       </PrimaryButton>
     </div>

@@ -10,8 +10,12 @@ import PopupLabel from "next-common/components/popup/label";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { cn } from "next-common/utils";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 
 function WishChoice({ title, description, checked, onClick = noop }) {
   return (
@@ -33,13 +37,28 @@ function WishChoice({ title, description, checked, onClick = noop }) {
 
 function Content() {
   const { onClose } = usePopupParams();
+  const dispatch = useDispatch();
+  const address = useRealAddress();
   const { component } = useSigner("Address");
   const [evidence, setEvidence] = useState("");
   const [wish, setWish] = useState("retention");
+  const { uploading, upload } = useUploadToIpfs();
 
   const api = useContextApi();
 
-  const getTxFunc = useCallback(() => {}, [api]);
+  const getTxFunc = useCallback(async () => {
+    const { error, result } = await upload(
+      new File([evidence], `evidence-${address}-${wish}.txt`, {
+        type: "text/plain",
+      }),
+    );
+    if (error) {
+      dispatch(newErrorToast("Failed to upload evidence to IPFS"));
+      return;
+    }
+    const { cid } = result;
+    return api.tx.fellowshipCore?.submitEvidence(wish, cid);
+  }, [api, address, upload, evidence, wish, dispatch]);
 
   return (
     <>
@@ -75,7 +94,11 @@ function Content() {
         />
       </div>
 
-      <TxSubmissionButton getTxFunc={getTxFunc} onClose={onClose} />
+      <TxSubmissionButton
+        loading={uploading}
+        getTxFunc={getTxFunc}
+        onClose={onClose}
+      />
     </>
   );
 }
