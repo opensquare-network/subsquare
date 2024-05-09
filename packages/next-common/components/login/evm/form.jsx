@@ -58,28 +58,18 @@ export default function LoginEVMForm() {
       icon = <img src={option.connector.icon} className="w-6 h-6" />;
     }
 
-    const content = (
-      <div className="flex items-center">
-        {icon}
-        {option.title}
-      </div>
-    );
-
-    if (!option.connector) {
-      return (
-        <WalletOption key={option.extensionName} installed={false}>
-          {content}
-          <span className="wallet-not-installed">Not installed</span>
-        </WalletOption>
-      );
-    }
+    const installed = !!option.connector;
 
     return (
       <WalletOption
         key={option.extensionName}
-        installed
-        selected={selectedConnector?.id === option.connector.id}
+        installed={installed}
+        selected={selectedConnector?.id === option.connector?.id}
         onClick={() => {
+          if (!installed) {
+            return;
+          }
+
           connect(
             { connector: option.connector },
             {
@@ -90,7 +80,13 @@ export default function LoginEVMForm() {
           );
         }}
       >
-        {content}
+        <div className="flex items-center">
+          {icon}
+          {option.title}
+        </div>
+        {!installed && (
+          <span className="wallet-not-installed">Not installed</span>
+        )}
       </WalletOption>
     );
   });
@@ -102,14 +98,6 @@ export default function LoginEVMForm() {
       <div className="space-y-6">
         <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           {walletOptions}
-          {/* <NovaWallet
-            wallet={novaWallet}
-            selected={selectedConnector?.id === WalletTypes.NOVA}
-            onClick={() => {
-              connect({ connector: novaConnector });
-              setSelectedConnector(novaConnector);
-            }}
-          /> */}
         </div>
 
         {isConnecting && (
