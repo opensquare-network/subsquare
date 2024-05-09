@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { timeDurationFromNow } from "next-common/utils";
+import Duration from "next-common/components/duration";
 
 export default function FellowshipFeedTime({ indexer, className = "" }) {
   const blockTime = indexer?.blockTime;
@@ -10,7 +10,7 @@ export default function FellowshipFeedTime({ indexer, className = "" }) {
   if (day.isBefore(dayjs().subtract(1, "year"))) {
     content = day.format("YYYY-MM-DD HH:mm:ss");
   } else {
-    content = timeDurationFromNow(blockTime);
+    content = <Duration time={blockTime} />;
   }
 
   return <span className={className}>{content}</span>;

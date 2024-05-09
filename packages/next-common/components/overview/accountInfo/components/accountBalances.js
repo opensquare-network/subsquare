@@ -7,7 +7,8 @@ import {
   isLoadingAccountInfoSelector,
 } from "next-common/store/reducers/myOnChainData/account";
 import LoadableItem from "next-common/components/overview/accountInfo/components/loadableItem";
-import Summary from "next-common/components/summary";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 
 export default function AccountBalances() {
   const accountInfo = useSelector(accountInfoSelector);
@@ -16,26 +17,20 @@ export default function AccountBalances() {
   const transferrable = useSelector(accountTransferrableBalanceSelector);
   const locked = useSelector(accountLockedBalanceSelector);
 
-  const items = [
-    {
-      title: "Total Balance",
-      content: <LoadableItem value={totalBalance} isLoading={isLoading} />,
-    },
-    {
-      title: "Transferrable",
-      content: <LoadableItem value={transferrable} isLoading={isLoading} />,
-    },
-    {
-      title: "Reserved",
-      content: (
+  return (
+    <SummaryLayout>
+      <SummaryItem title="Total Balance">
+        <LoadableItem value={totalBalance} isLoading={isLoading} />
+      </SummaryItem>
+      <SummaryItem title="Transferrable">
+        <LoadableItem value={transferrable} isLoading={isLoading} />
+      </SummaryItem>
+      <SummaryItem title="Reserved">
         <LoadableItem value={accountInfo?.reserved} isLoading={isLoading} />
-      ),
-    },
-    {
-      title: "Locked",
-      content: <LoadableItem value={locked} isLoading={isLoading} />,
-    },
-  ];
-
-  return <Summary items={items} />;
+      </SummaryItem>
+      <SummaryItem title="Locked">
+        <LoadableItem value={locked} isLoading={isLoading} />
+      </SummaryItem>
+    </SummaryLayout>
+  );
 }

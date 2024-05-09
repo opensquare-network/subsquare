@@ -1,9 +1,10 @@
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import Summary from "next-common/components/summary";
 import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 
 export default function FellowshipCoreMembersSummary() {
   const fellowshipMembers = useSelector(fellowshipCollectiveMembersSelector);
@@ -13,36 +14,26 @@ export default function FellowshipCoreMembersSummary() {
 
   const isLoading = isNil(coreMembers);
 
-  const items = [
-    {
-      title: "Total",
-      content: <LoadableContent isLoading={isLoading}>{total}</LoadableContent>,
-    },
-    {
-      title: "Members",
-      content: (
+  return (
+    <SummaryLayout>
+      <SummaryItem title="Total">
+        <LoadableContent isLoading={isLoading}>{total}</LoadableContent>
+      </SummaryItem>
+      <SummaryItem title="Members">
         <LoadableContent isLoading={isLoading}>
           {total - candidates.length}
         </LoadableContent>
-      ),
-    },
-    {
-      title: "Candidates",
-      content: (
+      </SummaryItem>
+      <SummaryItem title="Candidates">
         <LoadableContent isLoading={isLoading}>
           {candidates.length}
         </LoadableContent>
-      ),
-    },
-    {
-      title: "Not Inducted",
-      content: (
+      </SummaryItem>
+      <SummaryItem title="Not Inducted">
         <LoadableContent isLoading={isLoading}>
           {fellowshipMembers?.length - total}
         </LoadableContent>
-      ),
-    },
-  ];
-
-  return <Summary items={items} />;
+      </SummaryItem>
+    </SummaryLayout>
+  );
 }

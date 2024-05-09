@@ -1,6 +1,7 @@
 import LoadableContent from "next-common/components/common/loadableContent";
-import SummaryCard from "../common/summaryCard";
-
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 export default function ReferendaBeenDelegatedSummary({
   beenDelegatedList,
   isLoading,
@@ -13,25 +14,19 @@ export default function ReferendaBeenDelegatedSummary({
   }
 
   return (
-    <SummaryCard
-      items={[
-        {
-          title: "Tracks",
-          content: (
-            <LoadableContent isLoading={isLoading}>
-              {beenDelegatedList?.length || 0}
-            </LoadableContent>
-          ),
-        },
-        {
-          title: "Delegators",
-          content: (
-            <LoadableContent isLoading={isLoading}>
-              {delegators?.size || 0}
-            </LoadableContent>
-          ),
-        },
-      ]}
-    />
+    <SecondaryCard>
+      <SummaryLayout>
+        <SummaryItem title="Tracks">
+          <LoadableContent isLoading={isLoading}>
+            {beenDelegatedList?.length || 0}
+          </LoadableContent>
+        </SummaryItem>
+        <SummaryItem title="Delegators">
+          <LoadableContent isLoading={isLoading}>
+            {delegators?.size || 0}
+          </LoadableContent>
+        </SummaryItem>
+      </SummaryLayout>
+    </SecondaryCard>
   );
 }

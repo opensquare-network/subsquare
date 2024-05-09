@@ -188,6 +188,7 @@ function Editor(props, ref) {
       onDrop={onDrop}
       onPaste={onPaste}
       className={cn(
+        "min-h-[182px] max-sm:min-h-[222px]",
         dragging &&
           "[&_.editor-wrapper]:!border-theme500 [&_.toggle-bar-wrapper]:!border-theme500",
       )}
