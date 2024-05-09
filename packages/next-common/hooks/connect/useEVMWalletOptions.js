@@ -5,18 +5,47 @@ import {
   allWallets,
   coinbaseWallet,
   metamask,
+  nova,
+  nova as novaWallet,
+  okxWallet,
+  phantom,
+  subWallet,
+  talisman,
 } from "next-common/utils/consts/connect";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import { useConnect } from "wagmi";
+import { useConnectors } from "wagmi";
 
-const popularWallets = [metamask, coinbaseWallet];
+const fixedWallets = [
+  coinbaseWallet,
+  metamask,
+  talisman,
+  okxWallet,
+  subWallet,
+  phantom,
+  nova,
+];
 
 export function useEVMWalletOptions() {
-  const { connectors } = useConnect();
+  const connectors = useConnectors();
   const { chainType } = useChainSettings();
+  const injectedConnector = find(connectors, { id: "injected" });
+
+  // treat injectedConnector as nova connector
+  const novaConnector = injectedConnector
+    ? {
+        ...injectedConnector,
+        id: novaWallet.extensionName,
+        name: novaWallet.title,
+      }
+    : null;
 
   const showTalisman = chainType === ChainTypes.ETHEREUM;
   const supportedConnectors = filter(connectors, (c) => {
+    // ignore injected connector
+    if (c.id === "injected") {
+      return false;
+    }
+
     if (c.name.toLowerCase() === WalletTypes.TALISMAN) {
       return showTalisman;
     }
@@ -41,7 +70,11 @@ export function useEVMWalletOptions() {
           connector,
         };
       }),
-      ...popularWallets,
+      {
+        ...novaWallet,
+        connector: novaConnector,
+      },
+      ...fixedWallets,
     ],
     "extensionName",
   );

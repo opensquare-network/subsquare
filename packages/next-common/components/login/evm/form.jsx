@@ -9,15 +9,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
-import { NovaWallet } from "next-common/components/wallet/novaWallet";
-import { nova as novaWallet } from "next-common/utils/consts/connect";
-import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { find } from "lodash-es";
 import { SystemLoading } from "@osn/icons/subsquare";
-import { nova } from "next-common/context/wagmi/connectors/nova";
-
-const novaConnector = nova();
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
@@ -108,14 +102,14 @@ export default function LoginEVMForm() {
       <div className="space-y-6">
         <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           {walletOptions}
-          <NovaWallet
+          {/* <NovaWallet
             wallet={novaWallet}
             selected={selectedConnector?.id === WalletTypes.NOVA}
             onClick={() => {
               connect({ connector: novaConnector });
               setSelectedConnector(novaConnector);
             }}
-          />
+          /> */}
         </div>
 
         {isConnecting && (
