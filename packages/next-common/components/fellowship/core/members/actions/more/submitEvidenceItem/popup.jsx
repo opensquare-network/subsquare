@@ -95,6 +95,8 @@ function Content() {
       </div>
 
       <TxSubmissionButton
+        title="Save & Publish"
+        loadingText={uploading ? "Saving..." : "Publishing..."}
         loading={uploading}
         getTxFunc={getTxFunc}
         onClose={onClose}
