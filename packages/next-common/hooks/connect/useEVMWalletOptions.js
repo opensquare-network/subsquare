@@ -44,17 +44,10 @@ export function useEVMWalletOptions() {
   const showTalisman = chainType === ChainTypes.ETHEREUM;
   const supportedConnectors = filter(connectors, (c) => {
     // ignore injected connector
-    if (c.id === "injected") {
-      return false;
-    }
-
-    if (c.name.toLowerCase() === WalletTypes.TALISMAN) {
-      return showTalisman;
-    }
-    return true;
+    return c.id !== "injected";
   });
 
-  const options = uniqBy(
+  const walletConnectors = uniqBy(
     [
       ...supportedConnectors.map((connector) => {
         const found = find(allWallets, (w) => {
@@ -80,6 +73,14 @@ export function useEVMWalletOptions() {
     ],
     "extensionName",
   );
+
+  const options = filter(walletConnectors, (wallet) => {
+    if (wallet.extensionName === WalletTypes.TALISMAN) {
+      return showTalisman;
+    }
+
+    return true;
+  });
 
   return options;
 }
