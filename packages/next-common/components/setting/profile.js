@@ -103,7 +103,12 @@ function ProfileAvatar({ address }) {
       >
         Save & Publish
       </PrimaryButton>
-      {showPopup && <PublishAvatarPopup onClose={() => setShowPopup(false)} />}
+      {showPopup && (
+        <PublishAvatarPopup
+          imageFile={imageFile}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
     </div>
   );
 }

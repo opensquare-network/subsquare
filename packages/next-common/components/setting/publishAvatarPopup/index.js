@@ -1,15 +1,39 @@
 import CheckSimaSpec from "next-common/components/checkSimaSpec";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import PrimaryButton from "next-common/lib/button/primary";
+import { useContextApi } from "next-common/context/api";
+import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
+import { useCallback } from "react";
 
 function Content() {
-  const { onClose } = usePopupParams();
+  const { imageFile, onClose } = usePopupParams();
+  const { uploading, upload } = useUploadToIpfs();
+  const api = useContextApi();
+
+  const getTxFunc = useCallback(async () => {
+    if (!api) {
+      return;
+    }
+    const { error, result } = await upload(imageFile);
+    if (!error) {
+      return;
+    }
+    const { cid } = result;
+    return api.tx.system.remark(`SIMA:A:1:S:${cid}`);
+  }, [api]);
+
   return (
     <>
       <CheckSimaSpec />
       <div className="flex justify-end">
-        <PrimaryButton onClick={onClose}>Confirm</PrimaryButton>
+        <TxSubmissionButton
+          title="Confirm"
+          loading={uploading}
+          loadingText={uploading ? "Saving..." : "Publishing..."}
+          getTxFunc={getTxFunc}
+          onClick={onClose}
+        />
       </div>
     </>
   );
