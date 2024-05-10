@@ -39,7 +39,6 @@ export default function GlobalProvider({
                       <WagmiProvider>
                         <ReactQueryClientProvider>
                           {children}
-                          {/**/}
                         </ReactQueryClientProvider>
                       </WagmiProvider>
                     </SignetContextProvider>
