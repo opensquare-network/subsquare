@@ -1,7 +1,10 @@
+import React, { useEffect, useState } from "react";
 import Flex from "../styled/flex";
+import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
+import useInjectedWeb3 from "./useInjectedWeb3";
 import WalletOption from "./walletOption";
-import { useNovaWalletSubstrateInstalled } from "next-common/hooks/connect/useNovaWalletInstalled";
+import { isNil } from "lodash-es";
 
 export function NovaWallet({
   wallet,
@@ -9,23 +12,39 @@ export function NovaWallet({
   selected = false,
   loading = false,
 }) {
-  const novaWalletInstalled = useNovaWalletSubstrateInstalled();
+  const [installed, setInstalled] = useState(null);
+  const { loading: loadingInjectedWeb3, injectedWeb3 } = useInjectedWeb3();
+  const isMounted = useIsMounted();
   const Logo = wallet.logo;
+
+  useEffect(() => {
+    // update if installed changes
+    if (loadingInjectedWeb3) {
+      return;
+    }
+
+    if (isMounted.current) {
+      const installed =
+        !isNil(injectedWeb3?.["polkadot-js"]) &&
+        window.walletExtension?.isNovaWallet === true;
+      setInstalled(installed);
+    }
+  }, [loadingInjectedWeb3, injectedWeb3, wallet?.extensionName, isMounted]);
 
   return (
     <WalletOption
       selected={selected}
-      onClick={() => novaWalletInstalled && onClick(wallet)}
-      installed={novaWalletInstalled}
+      onClick={() => installed && onClick(wallet)}
+      installed={installed}
     >
       <Flex>
         <Logo className={wallet.title} alt={wallet.title} />
         <span className="wallet-title">{wallet.title}</span>
       </Flex>
-      {novaWalletInstalled === false && (
+      {installed === false && (
         <span className="wallet-not-installed">Not installed</span>
       )}
-      {(loading || novaWalletInstalled === null) && <Loading />}
+      {(loading || installed === null) && <Loading />}
     </WalletOption>
   );
 }
