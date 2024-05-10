@@ -14,6 +14,7 @@ import {
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useConnectors } from "wagmi";
 import { useDetectEthereum } from "./useDetectEthereum";
+import { useIsCoinbaseWallet } from "./useIsCoinbaseWallet";
 
 const fixedWallets = [
   coinbaseWallet,
@@ -52,22 +53,13 @@ export function useEVMWalletOptions() {
   /**
    * coinbase wallet
    */
-  const injectedCoinbaseWalletConnector = find(connectors, {
-    type: "injected",
-    id: "com.coinbase.wallet",
-  });
+  const isCoinbaseWallet = useIsCoinbaseWallet();
   const coinbaseWalletSDKConnector = find(connectors, {
     id: "coinbaseWalletSDK",
   });
-  const hasCoinbaseWallet =
-    // coinbase wallet extension
-    !!injectedCoinbaseWalletConnector ||
-    // coinbase app browser
-    ethereum?.isCoinbaseWallet;
-  const coinbaseWalletConnector = hasCoinbaseWallet
+  const coinbaseWalletConnector = isCoinbaseWallet
     ? coinbaseWalletSDKConnector
     : null;
-  // eslint-disable-next-line no-unused-vars
   const coinbaseWalletOption = {
     ...coinbaseWallet,
     connector: coinbaseWalletConnector,
@@ -82,7 +74,7 @@ export function useEVMWalletOptions() {
     // use coinbase sdk connector instead of injected coinbase wallet
     // to fix not working in coinbase wallet app
     if (c.name === coinbaseWallet.title) {
-      // return false;
+      return false;
     }
 
     return true;
@@ -90,7 +82,7 @@ export function useEVMWalletOptions() {
 
   const supportedWalletOptions = uniqBy(
     [
-      // coinbaseWalletOption,
+      coinbaseWalletOption,
       ...filteredConnectors.map((connector) => {
         const found = find(allWallets, (w) => {
           return (

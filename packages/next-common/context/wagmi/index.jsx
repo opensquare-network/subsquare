@@ -1,15 +1,15 @@
 import { WagmiProvider as Provider } from "wagmi";
 import { http, createConfig } from "wagmi";
 import { mainnet, base } from "wagmi/chains";
-import { injected } from "wagmi/connectors";
+import { coinbaseWallet, injected } from "wagmi/connectors";
 
 const wagmiConfig = createConfig({
   chains: [mainnet, base],
   connectors: [
     injected(),
-    /* coinbaseWallet({
+    coinbaseWallet({
       appName: "subsquare",
-    }), */
+    }),
   ],
   transports: {
     [mainnet.id]: http(),
