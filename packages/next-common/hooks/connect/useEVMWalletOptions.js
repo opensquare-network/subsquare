@@ -14,6 +14,7 @@ import {
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useConnectors } from "wagmi";
 import { useNovaWalletEvmInstalled } from "./useNovaWalletInstalled";
+import { useDetectEthereum } from "./useDetectEthereum";
 
 const fixedWallets = [
   coinbaseWallet,
@@ -27,10 +28,15 @@ const fixedWallets = [
 
 export function useEVMWalletOptions() {
   const connectors = useConnectors();
+  const ethereum = useDetectEthereum();
   const { chainType } = useChainSettings();
-  const injectedConnector = find(connectors, { id: "injected" });
-  const novaWalletInstalled = useNovaWalletEvmInstalled();
+  const showTalisman = chainType === ChainTypes.ETHEREUM;
 
+  /**
+   * nova
+   */
+  const novaWalletInstalled = useNovaWalletEvmInstalled();
+  const injectedConnector = find(connectors, { id: "injected" });
   // treat injectedConnector as nova connector
   const novaConnector =
     novaWalletInstalled && injectedConnector
@@ -40,28 +46,53 @@ export function useEVMWalletOptions() {
           name: nova.title,
         }
       : null;
+  const novaWalletOption = {
+    ...nova,
+    connector: novaConnector,
+  };
 
-  const showTalisman = chainType === ChainTypes.ETHEREUM;
-  const supportedConnectors = filter(connectors, (c) => {
+  /**
+   * coinbase wallet
+   */
+  const injectedCoinbaseWalletConnector = find(connectors, {
+    type: "injected",
+    id: "com.coinbase.wallet",
+  });
+  const coinbaseWalletSDKConnector = find(connectors, {
+    id: "coinbaseWalletSDK",
+  });
+  const hasCoinbaseWallet =
+    // coinbase wallet extension
+    !!injectedCoinbaseWalletConnector ||
+    // coinbase app browser
+    ethereum?.isCoinbaseWallet;
+  const coinbaseWalletConnector = hasCoinbaseWallet
+    ? coinbaseWalletSDKConnector
+    : null;
+  const coinbaseWalletOption = {
+    ...coinbaseWallet,
+    connector: coinbaseWalletConnector,
+  };
+
+  const filteredConnectors = filter(connectors, (c) => {
     // ignore injected connector
     if (c.id === "injected") {
       return false;
     }
 
     // use coinbase sdk connector instead of injected coinbase wallet
-    if (
-      c.type === "injected" &&
-      c.name.toLowerCase() === WalletTypes.COINBASE_WALLET
-    ) {
+    // to fix not working in coinbase wallet app
+    if (c.name === coinbaseWallet.title) {
       return false;
     }
 
     return true;
   });
 
-  const walletConnectors = uniqBy(
+  const supportedWalletOptions = uniqBy(
     [
-      ...supportedConnectors.map((connector) => {
+      coinbaseWalletOption,
+      ...filteredConnectors.map((connector) => {
         const found = find(allWallets, (w) => {
           return (
             w.title.toLowerCase() === connector.name.toLowerCase() ||
@@ -77,16 +108,13 @@ export function useEVMWalletOptions() {
           connector,
         };
       }),
-      {
-        ...nova,
-        connector: novaConnector,
-      },
+      novaWalletOption,
       ...fixedWallets,
     ],
     "extensionName",
   );
 
-  const options = filter(walletConnectors, (wallet) => {
+  const options = filter(supportedWalletOptions, (wallet) => {
     if (wallet.extensionName === WalletTypes.TALISMAN) {
       return showTalisman;
     }
