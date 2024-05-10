@@ -13,7 +13,6 @@ import {
 } from "next-common/utils/consts/connect";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useConnectors } from "wagmi";
-import { useNovaWalletEvmInstalled } from "./useNovaWalletInstalled";
 import { useDetectEthereum } from "./useDetectEthereum";
 
 const fixedWallets = [
@@ -35,11 +34,10 @@ export function useEVMWalletOptions() {
   /**
    * nova
    */
-  const novaWalletInstalled = useNovaWalletEvmInstalled();
   const injectedConnector = find(connectors, { id: "injected" });
   // treat injectedConnector as nova connector
   const novaConnector =
-    novaWalletInstalled && injectedConnector
+    ethereum?.isNovaWallet && injectedConnector
       ? {
           ...injectedConnector,
           id: nova.extensionName,
