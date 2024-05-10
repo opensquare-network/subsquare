@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import { textEllipsis } from "next-common/utils";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import { create as createDigest } from "multiformats/hashes/digest";
+import { CID } from "multiformats";
+import { hexToU8a } from "@polkadot/util";
 
 function useFellowshipCoreMemberEvidence(address) {
   const api = useContextApi();
@@ -51,6 +54,10 @@ export default function FellowshipCoreMemberEvidence({ address }) {
   if (loading) {
     content = <FieldLoading size={16} />;
   } else if (evidence) {
+    const SHA_256_CODE = 0x12;
+    const cid = CID.createV0(createDigest(SHA_256_CODE, hexToU8a(evidence)))
+      .toV1()
+      .toString();
     content = (
       <div className="flex gap-[8px]">
         <span className="capitalize">{wish}</span>
@@ -58,9 +65,9 @@ export default function FellowshipCoreMemberEvidence({ address }) {
           className="cursor-pointer text-sapphire500"
           target="_blank"
           rel="noreferrer"
-          href={getIpfsLink(evidence)}
+          href={getIpfsLink(cid)}
         >
-          {textEllipsis(evidence, 4, 4)}
+          {textEllipsis(cid, 4, 4)}
         </a>
       </div>
     );
