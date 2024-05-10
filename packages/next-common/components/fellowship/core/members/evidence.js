@@ -46,28 +46,32 @@ function useFellowshipCoreMemberEvidence(address) {
 
 export default function FellowshipCoreMemberEvidence({ address }) {
   const { loading, wish, evidence } = useFellowshipCoreMemberEvidence(address);
+
+  let content = null;
+  if (loading) {
+    content = <FieldLoading size={16} />;
+  } else if (evidence) {
+    content = (
+      <div className="flex gap-[8px]">
+        <span className="capitalize">{wish}</span>
+        <a
+          className="cursor-pointer text-sapphire500"
+          target="_blank"
+          rel="noreferrer"
+          href={getIpfsLink(evidence)}
+        >
+          {textEllipsis(evidence, 4, 4)}
+        </a>
+      </div>
+    );
+  } else {
+    content = <span className="text-textTertiary">-</span>;
+  }
+
   return (
     <FellowshipMemberInfoWrapper>
       <FellowshipMemberInfoTitle>Evidence</FellowshipMemberInfoTitle>
-      <div className="flex text12Medium break-all">
-        {loading ? (
-          <FieldLoading size={16} />
-        ) : evidence ? (
-          <div className="flex gap-[8px]">
-            <span className="capitalize">{wish}</span>
-            <a
-              className="cursor-pointer text-sapphire500"
-              target="_blank"
-              rel="noreferrer"
-              href={getIpfsLink(evidence)}
-            >
-              {textEllipsis(evidence, 4, 4)}
-            </a>
-          </div>
-        ) : (
-          <span className="text-textTertiary">-</span>
-        )}
-      </div>
+      <div className="flex text12Medium">{content}</div>
     </FellowshipMemberInfoWrapper>
   );
 }
