@@ -5122,9 +5122,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wagmi/connectors@npm:4.3.5":
-  version: 4.3.5
-  resolution: "@wagmi/connectors@npm:4.3.5"
+"@wagmi/connectors@npm:4.3.6":
+  version: 4.3.6
+  resolution: "@wagmi/connectors@npm:4.3.6"
   dependencies:
     "@coinbase/wallet-sdk": 3.9.1
     "@metamask/sdk": 0.18.6
@@ -5133,19 +5133,19 @@ __metadata:
     "@walletconnect/ethereum-provider": 2.13.0
     "@walletconnect/modal": 2.6.2
   peerDependencies:
-    "@wagmi/core": 2.9.3
+    "@wagmi/core": 2.9.4
     typescript: ">=5.0.4"
     viem: 2.x
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 4959d5e7b19d5a8b163db56c46e6b46c2077a98d28da2803aaab9e9b26dd42d2825c17db97688874197b452d3944a0bba7a34beca1785f04cd00f0e2f26e59a5
+  checksum: aaa26ae9b2ac4531baa787dc05cbefcf4f9b038d0989d165e8281fa69d717122f3371bfac32ab243edc46be3b3d92d3512005eb32ef2afaa9676f48ba5bf785e
   languageName: node
   linkType: hard
 
-"@wagmi/core@npm:2.9.3":
-  version: 2.9.3
-  resolution: "@wagmi/core@npm:2.9.3"
+"@wagmi/core@npm:2.9.4":
+  version: 2.9.4
+  resolution: "@wagmi/core@npm:2.9.4"
   dependencies:
     eventemitter3: 5.0.1
     mipd: 0.0.5
@@ -5159,7 +5159,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 78be9a41678f89ce310cf99a92cb46f1bb412519d12d36baec528eaa577417f8a80159850f8a9bc4717e72e57ecd1db50de11c34b66722b82bd8f3c65ac28ea1
+  checksum: ea6dc673a01aca1723abd14b05eb0691855e9f206f54499cec562dec614667f4ee4a535fec890fff1d9fde820d89a9642a24c89029ca6c6b001c88e5fee8b812
   languageName: node
   linkType: hard
 
@@ -11423,8 +11423,8 @@ __metadata:
     tailwind-merge: ^1.14.0
     tailwind-styled-components: ^2.2.0
     usehooks-ts: ^2.9.1
-    viem: ^2.10.2
-    wagmi: ^2.8.3
+    viem: ^2.10.3
+    wagmi: ^2.8.4
   languageName: unknown
   linkType: soft
 
@@ -15248,9 +15248,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.10.2":
-  version: 2.10.2
-  resolution: "viem@npm:2.10.2"
+"viem@npm:^2.10.3":
+  version: 2.10.3
+  resolution: "viem@npm:2.10.3"
   dependencies:
     "@adraffy/ens-normalize": 1.10.0
     "@noble/curves": 1.2.0
@@ -15265,16 +15265,16 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 45e7e29908659c60e0a8881f28dcee51a8686004874b425785af18641f19a94489cd694406d4377f7e3db18c3a22764c3518af372c6857753aad877d8f251395
+  checksum: 0d307905bda2f320a323117f363475feec3dddba806dfd3f8f9b0f95b85e7b8556550dde5e1e228a432b3135e887e5c3296f9430f85f615b2f8cd101b690a2c9
   languageName: node
   linkType: hard
 
-"wagmi@npm:^2.8.3":
-  version: 2.8.3
-  resolution: "wagmi@npm:2.8.3"
+"wagmi@npm:^2.8.4":
+  version: 2.8.4
+  resolution: "wagmi@npm:2.8.4"
   dependencies:
-    "@wagmi/connectors": 4.3.5
-    "@wagmi/core": 2.9.3
+    "@wagmi/connectors": 4.3.6
+    "@wagmi/core": 2.9.4
     use-sync-external-store: 1.2.0
   peerDependencies:
     "@tanstack/react-query": ">=5.0.0"
@@ -15284,7 +15284,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 7583f973f0cd0e729351b6fd24a73cf7ad158759fc925611022d29025fbfed53e7f06c400b1d122da61184734d32607a2abeaa0270fc0f4ab1e67605208704d1
+  checksum: 9e470a45da6612ce40721db2c405d9a5ebbccb7a1212c16f829ca45bc8f8d23b0f5419bfb00e6ddc18346146916f4773947baf79bcef836557d61e5b9ce66359
   languageName: node
   linkType: hard
 
