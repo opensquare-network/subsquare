@@ -3,10 +3,13 @@ import FellowshipMemberInfoWrapper from "./infoWrapper";
 import FellowshipMemberInfoTitle from "./title";
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
+import { textEllipsis } from "next-common/utils";
+import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 
 function useFellowshipCoreMemberEvidence(address) {
   const api = useContextApi();
-  const [evidence, setEvidence] = useState(null);
+  const [wish, setWish] = useState("");
+  const [evidence, setEvidence] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +18,8 @@ function useFellowshipCoreMemberEvidence(address) {
     }
 
     setLoading(true);
-    setEvidence(null);
+    setEvidence("");
+    setWish("");
 
     api.query.fellowshipCore
       ?.memberEvidence(address)
@@ -24,7 +28,8 @@ function useFellowshipCoreMemberEvidence(address) {
         if (!data) {
           return;
         }
-        const [, text] = data;
+        const [wish, text] = data;
+        setWish(wish);
         setEvidence(text);
       })
       .finally(() => {
@@ -33,13 +38,14 @@ function useFellowshipCoreMemberEvidence(address) {
   }, [api, address]);
 
   return {
+    wish,
     evidence,
     loading,
   };
 }
 
 export default function FellowshipCoreMemberEvidence({ address }) {
-  const { loading, evidence } = useFellowshipCoreMemberEvidence(address);
+  const { loading, wish, evidence } = useFellowshipCoreMemberEvidence(address);
   return (
     <FellowshipMemberInfoWrapper>
       <FellowshipMemberInfoTitle>Evidence</FellowshipMemberInfoTitle>
@@ -47,7 +53,17 @@ export default function FellowshipCoreMemberEvidence({ address }) {
         {loading ? (
           <FieldLoading size={16} />
         ) : evidence ? (
-          <span className="text-textSecondary">{evidence}</span>
+          <div className="flex gap-[8px]">
+            <span className="capitalize">{wish}</span>
+            <a
+              className="cursor-pointer text-sapphire500"
+              target="_blank"
+              rel="noreferrer"
+              href={getIpfsLink(evidence)}
+            >
+              {textEllipsis(evidence, 4, 4)}
+            </a>
+          </div>
         ) : (
           <span className="text-textTertiary">-</span>
         )}
