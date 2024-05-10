@@ -1,4 +1,4 @@
-import { filter, find, uniqBy } from "lodash-es";
+import { filter, find, sortBy, uniqBy } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import {
@@ -113,5 +113,5 @@ export function useEVMWalletOptions() {
     return true;
   });
 
-  return options;
+  return sortBy(options, "connector");
 }
