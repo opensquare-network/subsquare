@@ -44,7 +44,19 @@ export function useEVMWalletOptions() {
   const showTalisman = chainType === ChainTypes.ETHEREUM;
   const supportedConnectors = filter(connectors, (c) => {
     // ignore injected connector
-    return c.id !== "injected";
+    if (c.id === "injected") {
+      return false;
+    }
+
+    // use coinbase sdk connector instead of injected coinbase wallet
+    if (
+      c.type === "injected" &&
+      c.name.toLowerCase() === WalletTypes.COINBASE_WALLET
+    ) {
+      return false;
+    }
+
+    return true;
   });
 
   const walletConnectors = uniqBy(
