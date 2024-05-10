@@ -3,6 +3,7 @@ import {
   SystemRadioButtonOn,
 } from "@osn/icons/subsquare";
 import { noop } from "lodash-es";
+import { CID } from "multiformats";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useSigner from "next-common/components/common/tx/useSigner";
 import Editor from "next-common/components/editor";
@@ -65,7 +66,17 @@ function Content() {
       return;
     }
     const { cid } = result;
-    return api.tx.fellowshipCore?.submitEvidence(wish, cid);
+
+    let digest;
+    try {
+      digest = CID.parse(cid).toV0().multihash.digest;
+    } catch (e) {
+      dispatch(newErrorToast("Failed to parse CID digest"));
+      return;
+    }
+
+    const hexDigest = "0x" + Buffer.from(digest).toString("hex");
+    return api.tx.fellowshipCore?.submitEvidence(wish, hexDigest);
   }, [api, address, upload, evidence, wish, dispatch]);
 
   const fnWaitSync = useWaitSyncBlock("Evidence submitted", () => {
