@@ -88,7 +88,13 @@ function Content() {
     <>
       {component}
       <div>
-        <PopupLabel text="Wish *" />
+        <PopupLabel
+          text={
+            <span>
+              Wish <span className="text-red500">*</span>
+            </span>
+          }
+        />
         <div className="flex gap-[8px]">
           <WishChoice
             title="Retention"
@@ -105,7 +111,13 @@ function Content() {
         </div>
       </div>
       <div>
-        <PopupLabel text="Evidence *" />
+        <PopupLabel
+          text={
+            <span>
+              Evidence <span className="text-red500">*</span>
+            </span>
+          }
+        />
         <Editor
           value={evidence}
           onChange={setEvidence}

@@ -8,6 +8,7 @@ import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { create as createDigest } from "multiformats/hashes/digest";
 import { CID } from "multiformats";
 import { hexToU8a } from "@polkadot/util";
+import Tooltip from "next-common/components/tooltip";
 
 function useFellowshipCoreMemberEvidence(address) {
   const api = useContextApi();
@@ -60,7 +61,9 @@ export default function FellowshipCoreMemberEvidence({ address }) {
       .toString();
     content = (
       <div className="flex gap-[8px]">
-        <span className="capitalize">{wish}</span>
+        <Tooltip content="Wish">
+          <span className="capitalize">{wish}</span>
+        </Tooltip>
         <a
           className="cursor-pointer text-sapphire500"
           target="_blank"
