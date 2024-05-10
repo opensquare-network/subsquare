@@ -67,6 +67,7 @@ export function useEVMWalletOptions() {
   const coinbaseWalletConnector = hasCoinbaseWallet
     ? coinbaseWalletSDKConnector
     : null;
+  // eslint-disable-next-line no-unused-vars
   const coinbaseWalletOption = {
     ...coinbaseWallet,
     connector: coinbaseWalletConnector,
@@ -81,7 +82,7 @@ export function useEVMWalletOptions() {
     // use coinbase sdk connector instead of injected coinbase wallet
     // to fix not working in coinbase wallet app
     if (c.name === coinbaseWallet.title) {
-      return false;
+      // return false;
     }
 
     return true;
@@ -89,7 +90,7 @@ export function useEVMWalletOptions() {
 
   const supportedWalletOptions = uniqBy(
     [
-      coinbaseWalletOption,
+      // coinbaseWalletOption,
       ...filteredConnectors.map((connector) => {
         const found = find(allWallets, (w) => {
           return (
