@@ -11,9 +11,11 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
+import { incFellowshipCoreMembersTrigger } from "next-common/store/reducers/fellowship/core";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -30,7 +32,13 @@ function WishChoice({ title, description, checked, onClick = noop }) {
         <span className="text14Medium text-textPrimary">{title}</span>
         <span className="text12Medium text-textTertiary">{description}</span>
       </div>
-      <div>{checked ? <SystemRadioButtonOn /> : <SystemRadioButtonOff />}</div>
+      <div>
+        {checked ? (
+          <SystemRadioButtonOn className="[&_path]:fill-theme500" />
+        ) : (
+          <SystemRadioButtonOff />
+        )}
+      </div>
     </div>
   );
 }
@@ -59,6 +67,11 @@ function Content() {
     const { cid } = result;
     return api.tx.fellowshipCore?.submitEvidence(wish, cid);
   }, [api, address, upload, evidence, wish, dispatch]);
+
+  const fnWaitSync = useWaitSyncBlock("Evidence submitted", () => {
+    dispatch(incFellowshipCoreMembersTrigger());
+  });
+  const onSubmit = (_, blockHash) => blockHash && fnWaitSync(blockHash);
 
   return (
     <>
@@ -100,6 +113,7 @@ function Content() {
         loading={uploading}
         getTxFunc={getTxFunc}
         onClose={onClose}
+        onFinalized={onSubmit}
       />
     </>
   );
