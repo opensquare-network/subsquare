@@ -51,7 +51,8 @@ function useFellowshipCoreMemberEvidence(address) {
 export default function FellowshipCoreMemberEvidence({ address }) {
   const { loading, wish, evidence } = useFellowshipCoreMemberEvidence(address);
 
-  let content = null;
+  let content = <span className="text-textTertiary">-</span>;
+
   if (loading) {
     content = <FieldLoading size={16} />;
   } else if (evidence) {
@@ -74,8 +75,6 @@ export default function FellowshipCoreMemberEvidence({ address }) {
         </a>
       </div>
     );
-  } else {
-    content = <span className="text-textTertiary">-</span>;
   }
 
   return (
