@@ -125,7 +125,7 @@ function Content() {
 
       <TxSubmissionButton
         title="Save & Publish"
-        loadingText={uploading ? "Saving..." : "Publishing..."}
+        loadingText={uploading ? "Uploading to IPFS..." : "Submitting..."}
         loading={uploading}
         getTxFunc={getTxFunc}
         onClose={onClose}
