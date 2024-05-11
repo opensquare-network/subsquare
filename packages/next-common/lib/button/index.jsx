@@ -9,7 +9,6 @@ export default function _Button(props) {
   const {
     size,
     loading,
-    loadingText,
     className,
     children,
     disabled,
@@ -53,16 +52,7 @@ export default function _Button(props) {
       )}
     >
       {loading ? (
-        loadingText ? (
-          <>
-            <span className="inline-flex mr-1">
-              <SystemLoading className={cn(smallSize && "w-4 h-4")} />
-            </span>
-            {loadingText}
-          </>
-        ) : (
-          <SystemLoading className={cn(smallSize && "w-4 h-4")} />
-        )
+        <SystemLoading className={cn(smallSize && "w-4 h-4")} />
       ) : (
         <>
           {iconLeft && <span className="inline-flex mr-1">{iconLeft}</span>}

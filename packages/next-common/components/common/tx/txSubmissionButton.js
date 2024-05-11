@@ -7,6 +7,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useContextApi } from "next-common/context/api";
+import LoadingButton from "next-common/lib/button/loading";
 
 export default function TxSubmissionButton({
   loading = false,
@@ -58,14 +59,17 @@ export default function TxSubmissionButton({
 
   return (
     <div className="flex justify-end">
-      <PrimaryButton
-        loading={isCalling || loading}
-        loadingText={loadingText}
-        onClick={onSubmit}
-        disabled={disabled}
-      >
-        {title}
-      </PrimaryButton>
+      {(isCalling || loading) && loadingText ? (
+        <LoadingButton>{loadingText}</LoadingButton>
+      ) : (
+        <PrimaryButton
+          loading={isCalling}
+          onClick={onSubmit}
+          disabled={disabled}
+        >
+          {title}
+        </PrimaryButton>
+      )}
     </div>
   );
 }
