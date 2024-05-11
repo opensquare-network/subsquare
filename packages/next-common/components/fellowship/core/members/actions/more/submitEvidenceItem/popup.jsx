@@ -115,11 +115,7 @@ function Content() {
           value={evidence}
           onChange={setEvidence}
           contentType={"markdown"}
-          setContentType={() => {}}
-          loadSuggestions={() => []}
           minHeight={100}
-          previewerPlugins={[]}
-          setQuillRef={() => {}}
         />
       </div>
 
