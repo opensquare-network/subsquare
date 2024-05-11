@@ -12,11 +12,9 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
-import { incFellowshipCoreMembersTrigger } from "next-common/store/reducers/fellowship/core";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -79,11 +77,6 @@ function Content() {
     return api.tx.fellowshipCore?.submitEvidence(wish, hexDigest);
   }, [api, address, upload, evidence, wish, dispatch]);
 
-  const fnWaitSync = useWaitSyncBlock("Evidence submitted", () => {
-    dispatch(incFellowshipCoreMembersTrigger());
-  });
-  const onSubmit = (_, blockHash) => blockHash && fnWaitSync(blockHash);
-
   return (
     <>
       {component}
@@ -136,7 +129,6 @@ function Content() {
         loading={uploading}
         getTxFunc={getTxFunc}
         onClose={onClose}
-        onFinalized={onSubmit}
       />
     </>
   );

@@ -1,55 +1,17 @@
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import FellowshipMemberInfoWrapper from "./infoWrapper";
 import FellowshipMemberInfoTitle from "./title";
-import { useEffect, useState } from "react";
-import { useContextApi } from "next-common/context/api";
 import { textEllipsis } from "next-common/utils";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { create as createDigest } from "multiformats/hashes/digest";
 import { CID } from "multiformats";
 import { hexToU8a } from "@polkadot/util";
 import Tooltip from "next-common/components/tooltip";
-
-function useFellowshipCoreMemberEvidence(address) {
-  const api = useContextApi();
-  const [wish, setWish] = useState("");
-  const [evidence, setEvidence] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!api || !address) {
-      return;
-    }
-
-    setLoading(true);
-    setEvidence("");
-    setWish("");
-
-    api.query.fellowshipCore
-      ?.memberEvidence(address)
-      .then((evidence) => {
-        const data = evidence?.toJSON();
-        if (!data) {
-          return;
-        }
-        const [wish, text] = data;
-        setWish(wish);
-        setEvidence(text);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [api, address]);
-
-  return {
-    wish,
-    evidence,
-    loading,
-  };
-}
+import { useSubFellowshipCoreMemberEvidence } from "next-common/hooks/fellowship/core/useSubFellowshipCoreMemberEvidence";
 
 export default function FellowshipCoreMemberEvidence({ address }) {
-  const { loading, wish, evidence } = useFellowshipCoreMemberEvidence(address);
+  const { loading, wish, evidence } =
+    useSubFellowshipCoreMemberEvidence(address);
 
   let content = <span className="text-textTertiary">-</span>;
 
