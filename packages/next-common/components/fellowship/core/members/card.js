@@ -13,6 +13,7 @@ import SignalIndicator from "next-common/components/icons/signalIndicator";
 import Actions from "next-common/components/fellowship/core/members/actions";
 import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
 import Tooltip from "next-common/components/tooltip";
+import FellowshipCoreMemberEvidence from "next-common/components/fellowship/core/members/evidence";
 
 function AvatarAndAddress({ address, isActive }) {
   return (
@@ -59,17 +60,20 @@ export default function FellowshipCoreMemberCard({ member: _member = {} }) {
         <FellowshipRank rank={rank} />
       </div>
       <Divider className="mt-4" />
-      <FellowshipMemberInfoLine>
-        <FellowshipMemberDemotionPeriod lastProof={lastProof} rank={rank} />
-        {rank > 0 ? (
-          <FellowshipMemberPromotionPeriod
-            lastPromotion={lastPromotion}
-            rank={rank}
-          />
-        ) : (
-          <FellowshipMemberInfoWrapper /> // as a placeholder
-        )}
-      </FellowshipMemberInfoLine>
+      <div className="flex flex-col grow gap-4">
+        <FellowshipMemberInfoLine>
+          <FellowshipMemberDemotionPeriod lastProof={lastProof} rank={rank} />
+          {rank > 0 ? (
+            <FellowshipMemberPromotionPeriod
+              lastPromotion={lastPromotion}
+              rank={rank}
+            />
+          ) : (
+            <FellowshipMemberInfoWrapper /> // as a placeholder
+          )}
+        </FellowshipMemberInfoLine>
+        <FellowshipCoreMemberEvidence address={address} />
+      </div>
 
       <Divider className="mt-4" />
       <FellowshipMemberSalary rank={rank} isActive={isActive} />

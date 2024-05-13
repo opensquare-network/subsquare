@@ -11255,6 +11255,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"multiformats@npm:^13.1.0":
+  version: 13.1.0
+  resolution: "multiformats@npm:13.1.0"
+  checksum: b970e3622a80192a4df8c23378c4854520df8b2d17db773ac8b77c19750019e1c9813cc05e12b0e3b0d03599ff5d073681e847d43b4b273efca5aabbb28eb0e0
+  languageName: node
+  linkType: hard
+
 "multiformats@npm:^9.4.2":
   version: 9.9.0
   resolution: "multiformats@npm:9.9.0"
@@ -11405,6 +11412,7 @@ __metadata:
     marked: ^11.1.1
     md5: ^2.3.0
     moment: ^2.29.4
+    multiformats: ^13.1.0
     quick-lru: ^7.0.0
     react: ^18.2.0
     react-big-calendar: ^1.6.8
