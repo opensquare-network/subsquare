@@ -7,6 +7,7 @@ import Copyable from "next-common/components/copyable";
 import extractRemarkMetaFields from "next-common/components/common/call/remarks";
 import extractWhitelistCallHash from "next-common/components/common/call/whitelist";
 import extractFellowshipPromote from "next-common/components/common/call/fellowshipPromote";
+import extractFellowshipApprove from "next-common/components/common/call/fellowshipApprove";
 
 export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
@@ -51,6 +52,7 @@ export default function Gov2ReferendumCall() {
       ...extractRemarkMetaFields(proposal?.call || inlineCall),
       ...extractWhitelistCallHash(proposal?.call),
       ...extractFellowshipPromote(proposal?.call || inlineCall),
+      ...extractFellowshipApprove(proposal?.call || inlineCall),
     ],
   );
 
