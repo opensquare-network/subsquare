@@ -19,7 +19,6 @@ export default function TxSubmissionButton({
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
-  loading = false,
 }) {
   const [isCalling, setIsCalling] = useState(false);
   const api = useContextApi();
