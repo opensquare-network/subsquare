@@ -1,109 +1,13 @@
-import MenuGroups from "./menuGroups";
-import { defaultPostLabels } from "./common";
+import MenuGroups from "../menuGroups";
+import { defaultPostLabels } from "../common";
 import {
   ProjectIconKusamaDark,
   ProjectIconKusamaLight,
   ProjectLogoKusamaDark,
 } from "@osn/icons/subsquare";
-
-const DEFAULT_KUSAMA_NODES = [
-  {
-    name: "Parity",
-    url: "wss://kusama-rpc.polkadot.io",
-  },
-  {
-    name: "Dwellir",
-    url: "wss://kusama-rpc.dwellir.com",
-  },
-  {
-    name: "IBP-GeoDNS1",
-    url: "wss://rpc.ibp.network/kusama",
-  },
-  {
-    name: "OnFinality",
-    url: "wss://kusama.api.onfinality.io/public-ws",
-  },
-  {
-    name: "Dwellir Tunisia",
-    url: "wss://kusama-rpc-tn.dwellir.com",
-  },
-  {
-    name: "Automata 1RPC",
-    url: "wss://1rpc.io/ksm",
-  },
-  {
-    name: "IBP-GeoDNS2",
-    url: "wss://rpc.dotters.network/kusama",
-  },
-  {
-    name: "RadiumBlock",
-    url: "wss://kusama.public.curie.radiumblock.co/ws",
-  },
-  {
-    name: "Stakeworld",
-    url: "wss://ksm-rpc.stakeworld.io",
-  },
-];
-
-const links = [
-  {
-    name: "website",
-    url: "https://kusama.network/",
-  },
-  {
-    name: "twitter",
-    url: "https://twitter.com/kusamanetwork",
-  },
-  {
-    name: "discord",
-    url: "https://kusa.ma/discord",
-  },
-  {
-    name: "github",
-    url: "https://github.com/paritytech/polkadot-sdk",
-  },
-  {
-    name: "element",
-    url: "https://matrix.to/#/#Kusama-Direction:parity.io",
-  },
-  {
-    name: "telegram",
-    url: "https://t.me/kusamanetworkofficial",
-  },
-];
-
-const treasuryProposalTracks = [
-  {
-    id: 30,
-    name: "Small Tipper",
-    max: 8.3333,
-  },
-  {
-    id: 31,
-    name: "Big Tipper",
-    max: 33.3333,
-  },
-  {
-    id: 32,
-    name: "Small Spender",
-    max: 333.3333,
-  },
-  {
-    id: 33,
-    name: "Medium Spender",
-    max: 3333.3333,
-  },
-  {
-    id: 34,
-    name: "Big Spender",
-    max: 33333.3333,
-  },
-  {
-    id: 11,
-    name: "Treasurer",
-    max: 333333.3333,
-  },
-];
+import defaultKusamaNodes from "next-common/utils/consts/settings/kusama/nodes";
+import kusamaTreasuryTracks from "next-common/utils/consts/settings/kusama/tracks";
+import kusamaLinks from "next-common/utils/consts/settings/kusama/links";
 
 const kusama = {
   value: "kusama",
@@ -115,14 +19,14 @@ const kusama = {
   ss58Format: 2,
   blockTime: 6000,
   snsCoverCid: "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
-  endpoints: DEFAULT_KUSAMA_NODES,
+  endpoints: defaultKusamaNodes,
   avatar: ProjectIconKusamaLight,
   darkAvatar: ProjectIconKusamaDark,
   navLogo: ProjectLogoKusamaDark,
   navLogoDark: ProjectLogoKusamaDark,
   navPreferDark: true,
   group: MenuGroups.KusamaAndParachains,
-  links,
+  links: kusamaLinks,
   hasStatescan: true,
   hasIdentityTimeline: true,
   hasSubscan: true,
@@ -167,7 +71,7 @@ const kusama = {
     signet: true,
     mimir: true,
   },
-  treasuryProposalTracks,
+  treasuryProposalTracks: kusamaTreasuryTracks,
 };
 
 export default kusama;
