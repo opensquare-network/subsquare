@@ -3,7 +3,7 @@ import QuickStartButton from "next-common/components/summary/newProposalButton/t
 import { useState } from "react";
 import CreateTreasuryProposalPopup from "next-common/components/summary/newProposalQuickStart/createTreasuryProposalPopup";
 
-export default function SpendLocalTemplate({ onClose }) {
+export default function SpendLocalTemplate() {
   const settings = useChainSettings();
   const [showCreateTreasuryProposal, setShowCreateTreasuryProposal] =
     useState(false);
@@ -19,9 +19,7 @@ export default function SpendLocalTemplate({ onClose }) {
         title="Create a treasury proposal"
         onClick={() => setShowCreateTreasuryProposal(true)}
       />
-      {showCreateTreasuryProposal && (
-        <CreateTreasuryProposalPopup onClose={onClose} />
-      )}
+      {showCreateTreasuryProposal && <CreateTreasuryProposalPopup />}
     </>
   );
 }

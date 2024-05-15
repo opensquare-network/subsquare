@@ -24,6 +24,7 @@ import { useProposalOrigin } from "../../newProposalPopup";
 import { useRouter } from "next/router";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { usePopupOnClose } from "next-common/context/popup";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -159,7 +160,9 @@ function PopupContent() {
   );
 }
 
-export default function CreateTreasuryProposalPopup({ onClose }) {
+export default function CreateTreasuryProposalPopup() {
+  const onClose = usePopupOnClose();
+
   return (
     <PopupWithSigner title="Create Treasury Proposal" onClose={onClose} wide>
       <PopupContent />
