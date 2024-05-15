@@ -23,7 +23,7 @@ export default function SubmitProposalPopup({ onClose }) {
         />
       }
     >
-      <ReferendumTemplates onClose={onClose} />
+      <ReferendumTemplates />
     </SubmitProposalPopupCommon>
   );
 }
