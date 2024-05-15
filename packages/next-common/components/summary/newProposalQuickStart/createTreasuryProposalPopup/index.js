@@ -139,6 +139,29 @@ function PopupContent() {
     });
 
   const isLoading = isPreimageTxSubmitting || isReferendaTxSubmitting;
+  let submitButton = null;
+
+  if (preimageExists) {
+    if (isLoading) {
+      submitButton = <LoadingButton>Submit Proposal</LoadingButton>;
+    } else {
+      submitButton = (
+        <PrimaryButton onClick={submitReferendaTx}>
+          Submit Proposal
+        </PrimaryButton>
+      );
+    }
+  } else {
+    if (isLoading) {
+      submitButton = <LoadingButton>Create Preimage</LoadingButton>;
+    } else {
+      submitButton = (
+        <PrimaryButton disabled={!notePreimageTx} onClick={submitPreimageTx}>
+          Create Preimage
+        </PrimaryButton>
+      );
+    }
+  }
 
   return (
     <>
@@ -157,23 +180,7 @@ function PopupContent() {
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <EnactmentBlocks track={track} setEnactment={setEnactment} />
       <SubmissionDeposit />
-      <div className="flex justify-end">
-        {preimageExists ? (
-          isLoading ? (
-            <LoadingButton>Submit Proposal</LoadingButton>
-          ) : (
-            <PrimaryButton onClick={submitReferendaTx}>
-              Submit Proposal
-            </PrimaryButton>
-          )
-        ) : isLoading ? (
-          <LoadingButton>Create Preimage</LoadingButton>
-        ) : (
-          <PrimaryButton disabled={!notePreimageTx} onClick={submitPreimageTx}>
-            Create Preimage
-          </PrimaryButton>
-        )}
-      </div>
+      <div className="flex justify-end">{submitButton}</div>
     </>
   );
 }
