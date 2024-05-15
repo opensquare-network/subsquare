@@ -23,7 +23,10 @@ import { usePageProps } from "next-common/context/page";
 import { useProposalOrigin } from "../../newProposalPopup";
 import { useRouter } from "next/router";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
+import PrimaryButton from "next-common/lib/button/primary";
+import LoadingButton from "next-common/lib/button/loading";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -32,8 +35,6 @@ function PopupContent() {
   const { tracks, tracksDetail } = usePageProps();
   const api = useContextApi();
   const { decimals } = useChainSettings();
-  const [isReloadingPreimageHashes, setIsReloadingPreimageHashes] =
-    useState(false);
   const [inputBalance, setInputBalance] = useState("");
   const [beneficiary, setBeneficiary] = useState("");
   const [trackId, setTrackId] = useState(tracks[0].id);
@@ -113,6 +114,32 @@ function PopupContent() {
     );
   };
 
+  const { isSubmitting: isReferendaTxSubmitting, doSubmit: submitReferendaTx } =
+    useTxSubmission({
+      getTxFunc: getSubmitReferendaTx,
+      onInBlock: (events) => {
+        const eventData = getEventData(events, "referenda", "Submitted");
+        if (!eventData) {
+          return;
+        }
+        const [referendumIndex] = eventData;
+        router.push(`/referenda/${referendumIndex}`);
+      },
+      onClose,
+    });
+
+  const { isSubmitting: isPreimageTxSubmitting, doSubmit: submitPreimageTx } =
+    useTxSubmission({
+      getTxFunc: () => notePreimageTx,
+      onInBlock: () => {
+        dispatch(newSuccessToast("Preimage created"));
+        dispatch(incPreImagesTrigger());
+        submitReferendaTx();
+      },
+    });
+
+  const isLoading = isPreimageTxSubmitting || isReferendaTxSubmitting;
+
   return (
     <>
       <SignerWithBalance />
@@ -130,31 +157,23 @@ function PopupContent() {
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <EnactmentBlocks track={track} setEnactment={setEnactment} />
       <SubmissionDeposit />
-      {preimageExists ? (
-        <TxSubmissionButton
-          title="Submit Proposal"
-          getTxFunc={getSubmitReferendaTx}
-          onInBlock={(events) => {
-            const eventData = getEventData(events, "referenda", "Submitted");
-            if (!eventData) {
-              return;
-            }
-            const [referendumIndex] = eventData;
-            router.push(`/referenda/${referendumIndex}`);
-          }}
-          onClose={onClose}
-        />
-      ) : (
-        <TxSubmissionButton
-          title="Create Preimage"
-          getTxFunc={() => notePreimageTx}
-          loading={isReloadingPreimageHashes}
-          onInBlock={() => {
-            setIsReloadingPreimageHashes(true);
-            dispatch(incPreImagesTrigger());
-          }}
-        />
-      )}
+      <div className="flex justify-end">
+        {preimageExists ? (
+          isLoading ? (
+            <LoadingButton>Submit Proposal</LoadingButton>
+          ) : (
+            <PrimaryButton onClick={submitReferendaTx}>
+              Submit Proposal
+            </PrimaryButton>
+          )
+        ) : isLoading ? (
+          <LoadingButton>Create Preimage</LoadingButton>
+        ) : (
+          <PrimaryButton disabled={!notePreimageTx} onClick={submitPreimageTx}>
+            Create Preimage
+          </PrimaryButton>
+        )}
+      </div>
     </>
   );
 }
