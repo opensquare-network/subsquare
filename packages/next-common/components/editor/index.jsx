@@ -10,6 +10,7 @@ import { SystemLoading } from "@osn/icons/subsquare";
 import { useEventListener } from "usehooks-ts";
 import { useDispatch } from "react-redux";
 import { setEditorUploading } from "next-common/store/reducers/editorSlice";
+import { noop } from "lodash-es";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -22,6 +23,16 @@ const Wrapper = styled(EditorWrapper)``;
  * @param {Parameters<UniverseEditor>[0]} props
  */
 function Editor(props, ref) {
+  // Handle default values
+  props = Object.assign(
+    {
+      setContentType: noop,
+      loadSuggestions: () => [],
+      setQuillRef: noop,
+      previewerPlugins: [],
+    },
+    props,
+  );
   const [dragging, setDragging] = useState(false);
   const { uploading, upload } = useUploadToIpfs();
   const inputRef = useRef();
@@ -188,6 +199,7 @@ function Editor(props, ref) {
       onDrop={onDrop}
       onPaste={onPaste}
       className={cn(
+        "min-h-[182px] max-sm:min-h-[222px]",
         dragging &&
           "[&_.editor-wrapper]:!border-theme500 [&_.toggle-bar-wrapper]:!border-theme500",
       )}

@@ -11,9 +11,10 @@ import {
   useMenuHasTreasuryChildBounties,
   useMenuHasTreasuryTips,
 } from "../../../context/chain";
-import Summary from "..";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { usePageProps } from "next-common/context/page";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -186,39 +187,30 @@ export default function OverviewSummary() {
     },
   } = useChainSettings();
 
-  const items = [];
-  if (hasReferenda || hasFellowship) {
-    items.push({
-      title: "Open Gov",
-      content: <OpenGovGroupContent />,
-    });
-  }
-
-  if (hasDemocracyModule) {
-    items.push({
-      title: "Democracy",
-      content: <DemocracyGroupContent />,
-    });
-  }
-
-  items.push({
-    title: "Treasury",
-    content: <TreasuryGroupContent />,
-  });
-
-  if (hasDemocracyModule) {
-    items.push({
-      title: `${showCouncil ? "Council" : ""}${
-        showTC && showCouncil ? " / " : ""
-      }${showTC ? "T.C." : ""}`,
-      content: <CouncilGroupContent />,
-    });
-  }
-
   return (
-    <Summary
-      description="Active proposal numbers of various governance processes."
-      items={items}
-    />
+    <SummaryLayout description="Active proposal numbers of various governance processes.">
+      {(hasReferenda || hasFellowship) && (
+        <SummaryItem title="Open Gov">
+          <OpenGovGroupContent />
+        </SummaryItem>
+      )}
+      {hasDemocracyModule && (
+        <SummaryItem title="Democracy">
+          <DemocracyGroupContent />
+        </SummaryItem>
+      )}
+      <SummaryItem title="Treasury">
+        <TreasuryGroupContent />
+      </SummaryItem>
+      {hasDemocracyModule && (
+        <SummaryItem
+          title={`${showCouncil ? "Council" : ""}${
+            showTC && showCouncil ? " / " : ""
+          }${showTC ? "T.C." : ""}`}
+        >
+          <CouncilGroupContent />
+        </SummaryItem>
+      )}
+    </SummaryLayout>
   );
 }

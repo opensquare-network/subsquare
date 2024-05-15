@@ -6,5 +6,12 @@ export default function UnscrupulousWebsites({ items, loading = false }) {
 
   const rows = items.map((item) => [item.url]);
 
-  return <MemberListTable columns={columns} rows={rows} loading={loading} />;
+  return (
+    <MemberListTable
+      columns={columns}
+      rows={rows}
+      loading={loading}
+      noDataText="No current websites"
+    />
+  );
 }

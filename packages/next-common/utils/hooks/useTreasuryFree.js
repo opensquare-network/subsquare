@@ -60,7 +60,7 @@ export default function useTreasuryFree(api) {
           }
         });
     } else {
-      api?.query.system.account(treasuryAccount).then((accountData) => {
+      api?.query.system.account?.(treasuryAccount).then((accountData) => {
         if (isMounted.current) {
           setFree(accountData ? accountData.data.free.toString() : "0");
         }

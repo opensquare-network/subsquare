@@ -25,7 +25,7 @@ export default function Signer({
   return (
     <div>
       {noSignerBalance ? (
-        <PopupLabel text="Signer Address" />
+        <PopupLabel text={title || "Signer Address"} />
       ) : (
         <PopupLabelWithBalance
           text={title || "Address"}

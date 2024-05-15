@@ -9,5 +9,12 @@ export default function UnscrupulousAccounts({ items, loading = false }) {
     <AddressUser key={item.address} add={item.address} />,
   ]);
 
-  return <MemberListTable columns={columns} rows={rows} loading={loading} />;
+  return (
+    <MemberListTable
+      columns={columns}
+      rows={rows}
+      loading={loading}
+      noDataText="No current accounts"
+    />
+  );
 }
