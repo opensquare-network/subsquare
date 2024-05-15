@@ -159,7 +159,7 @@ function PopupContent() {
   );
 }
 
-export default function CreateTreasuryProposalPopup({ onClose }) {
+export default function NewTreasuryReferendumPopup({ onClose }) {
   return (
     <PopupWithSigner title="Create Treasury Proposal" onClose={onClose} wide>
       <PopupContent />
