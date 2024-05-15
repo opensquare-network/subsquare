@@ -29,7 +29,7 @@ function PopupContent() {
   const { onClose } = usePopupParams();
   const router = useRouter();
   const dispatch = useDispatch();
-  const { tracks } = usePageProps();
+  const { tracks, tracksDetail } = usePageProps();
   const api = useContextApi();
   const { decimals } = useChainSettings();
   const [isReloadingPreimageHashes, setIsReloadingPreimageHashes] =
@@ -37,7 +37,7 @@ function PopupContent() {
   const [inputBalance, setInputBalance] = useState("");
   const [beneficiary, setBeneficiary] = useState("");
   const [trackId, setTrackId] = useState(tracks[0].id);
-  const track = tracks.find((track) => track.id === trackId);
+  const track = tracksDetail.find((track) => track.id === trackId);
   const realAddress = useRealAddress();
   const extensionAccounts = useExtensionAccounts();
   const proposalOrigin = useProposalOrigin(trackId);
