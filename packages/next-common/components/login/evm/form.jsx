@@ -12,6 +12,7 @@ import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptio
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { find } from "lodash-es";
 import { SystemLoading } from "@osn/icons/subsquare";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
@@ -133,6 +134,7 @@ export default function LoginEVMForm() {
                 onClick={() => {
                   web3Login({
                     account: selectedAccount,
+                    wallet: WalletTypes.METAMASK,
                   });
                 }}
               >
