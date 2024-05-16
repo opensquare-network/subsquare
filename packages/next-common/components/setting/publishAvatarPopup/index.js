@@ -5,9 +5,12 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 function Content() {
   const { imageFile, onClose } = usePopupParams();
+  const dispatch = useDispatch();
   const { uploading, upload } = useUploadToIpfs();
   const api = useContextApi();
 
@@ -16,25 +19,24 @@ function Content() {
       return;
     }
     const { error, result } = await upload(imageFile);
-    if (!error) {
+    if (error) {
+      dispatch(newErrorToast("Failed to save avatar to IPFS"));
       return;
     }
     const { cid } = result;
     return api.tx.system.remark(`SIMA:A:1:S:${cid}`);
-  }, [api]);
+  }, [api, dispatch]);
 
   return (
     <>
       <CheckSimaSpec />
-      <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          loading={uploading}
-          loadingText={uploading ? "Saving..." : "Publishing..."}
-          getTxFunc={getTxFunc}
-          onClick={onClose}
-        />
-      </div>
+      <TxSubmissionButton
+        title="Confirm"
+        loading={uploading}
+        loadingText={uploading ? "Saving..." : "Publishing..."}
+        getTxFunc={getTxFunc}
+        onClick={onClose}
+      />
     </>
   );
 }
