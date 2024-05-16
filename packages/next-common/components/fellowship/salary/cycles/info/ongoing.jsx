@@ -15,6 +15,7 @@ import SalaryStatsBlockTimeItem from "../summary/blockTimeItem";
 import { DesktopPlaceHolderItem } from "next-common/components/overview/fellowship/salary/stats";
 import SalaryStatsTimeRemainItem from "../summary/timeRemainItem";
 import FellowshipSalaryPayout from "next-common/components/fellowship/salary/actions/payout";
+import FellowshipSalaryBump from "next-common/components/fellowship/salary/actions/bump";
 
 export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
   const [navCollapsed] = useNavCollapsed();
@@ -75,7 +76,8 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
 
       <div className="space-y-2">
         <FellowshipSalaryMyStatus />
-        <div className="flex items-center justify-end gap-4">
+        <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
+          <FellowshipSalaryBump />
           <FellowshipSalaryRegister />
           <FellowshipSalaryPayout />
         </div>

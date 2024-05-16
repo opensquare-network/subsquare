@@ -4,6 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { noop } from "lodash-es";
 import { cn } from "next-common/utils";
 import { SystemClose } from "@osn/icons/subsquare";
+import CommonPopupProvider from "next-common/context/popup";
 
 let z = 999;
 
@@ -24,59 +25,61 @@ export default function Popup({
   }, []);
 
   return (
-    <Dialog.Root
-      open
-      onOpenChange={() => {
-        if (maskClosable) {
-          onClose();
-        }
-      }}
-    >
-      <Dialog.Portal container={container}>
-        <Dialog.Overlay />
-        <Dialog.Content asChild onOpenAutoFocus={(e) => e.preventDefault()}>
-          <div
-            className="fixed inset-0 bg-black/25 flex justify-center items-start overflow-auto overscroll-y-none"
-            style={{ zIndex: zOverlay }}
-            onMouseDown={(event) => {
-              if (maskClosable && event.target === event.currentTarget) {
-                onClose();
-              }
-            }}
-          >
-            <NeutralPanel
-              className={cn(
-                "relative mt-[12vh] mb-4",
-                "w-[400px] max-w-full",
-                wide && "sm:w-[480px]",
-                "p-6 space-y-4",
-                className,
-              )}
-              style={{
-                zIndex: zContent,
+    <CommonPopupProvider onClose={onClose}>
+      <Dialog.Root
+        open
+        onOpenChange={() => {
+          if (maskClosable) {
+            onClose();
+          }
+        }}
+      >
+        <Dialog.Portal container={container}>
+          <Dialog.Overlay />
+          <Dialog.Content asChild onOpenAutoFocus={(e) => e.preventDefault()}>
+            <div
+              className="fixed inset-0 bg-black/25 flex justify-center items-start overflow-auto overscroll-y-none"
+              style={{ zIndex: zOverlay }}
+              onMouseDown={(event) => {
+                if (maskClosable && event.target === event.currentTarget) {
+                  onClose();
+                }
               }}
             >
-              {title && (
-                <div className="flex items-center justify-between">
-                  <Dialog.Title asChild>
-                    <h3 className="text14Bold text-textPrimary">{title}</h3>
-                  </Dialog.Title>
-                  <div className="flex items-center gap-[12px]">
-                    {extra}
-                    <SystemClose
-                      className="w-[20px] h-[20px] text-textTertiary"
-                      role="button"
-                      onClick={onClose}
-                    />
+              <NeutralPanel
+                className={cn(
+                  "relative mt-[12vh] mb-4",
+                  "w-[400px] max-w-full",
+                  wide && "sm:w-[480px]",
+                  "p-6 space-y-4",
+                  className,
+                )}
+                style={{
+                  zIndex: zContent,
+                }}
+              >
+                {title && (
+                  <div className="flex items-center justify-between">
+                    <Dialog.Title asChild>
+                      <h3 className="text14Bold text-textPrimary">{title}</h3>
+                    </Dialog.Title>
+                    <div className="flex items-center gap-[12px]">
+                      {extra}
+                      <SystemClose
+                        className="w-[20px] h-[20px] text-textTertiary"
+                        role="button"
+                        onClick={onClose}
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {children}
-            </NeutralPanel>
-          </div>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+                {children}
+              </NeutralPanel>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+    </CommonPopupProvider>
   );
 }

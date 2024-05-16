@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.2
+
+date: 2024-05-08
+
+- Add a button for fellowship member to create a referendum to approve a member.
+- Support fellowship member to claim salary.
+- Support fellowship salary bump.
+- Fix symbol color on tooltip.
+- Update dependency to @polkadot/api.
+- Update bifrost settings.
+- Fix collectives alliance unscrupulous page crash.
+- Code refactor.
+
 ### 4.0.1
 
 date: 2024-04-30

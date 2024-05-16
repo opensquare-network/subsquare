@@ -10,7 +10,7 @@ import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
 
-export default function FellowshipSalaryRegister() {
+export default function FellowshipSalaryPayout() {
   const [showPopup, setShowPopup] = useState(false);
   const address = useRealAddress();
   const members = useFellowshipCollectiveMembers();

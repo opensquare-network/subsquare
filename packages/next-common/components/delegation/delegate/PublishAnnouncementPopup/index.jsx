@@ -125,11 +125,7 @@ export default function AnnouncementPublishPopup({
           value={longDescription}
           onChange={setLongDescription}
           contentType={"markdown"}
-          setContentType={() => {}}
-          loadSuggestions={() => []}
           minHeight={100}
-          previewerPlugins={[]}
-          setQuillRef={() => {}}
         />
       </div>
     </SignerPopup>
