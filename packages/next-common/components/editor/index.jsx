@@ -11,6 +11,7 @@ import { useEventListener } from "usehooks-ts";
 import { useDispatch } from "react-redux";
 import { setEditorUploading } from "next-common/store/reducers/editorSlice";
 import { noop } from "lodash-es";
+import LoadingEditor from "./loading";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
@@ -199,11 +200,16 @@ function Editor(props, ref) {
       onDrop={onDrop}
       onPaste={onPaste}
       className={cn(
-        "min-h-[182px] max-sm:min-h-[222px]",
+        "relative",
+        isPreview
+          ? "min-h-[182px] max-sm:min-h-[182px]"
+          : "min-h-[182px] max-sm:min-h-[222px]",
+        "[&_.editor-wrapper]:bg-neutral100",
         dragging &&
           "[&_.editor-wrapper]:!border-theme500 [&_.toggle-bar-wrapper]:!border-theme500",
       )}
     >
+      <LoadingEditor />
       <UniverseEditor
         {...props}
         setTextAreaRef={(textarea) => {
