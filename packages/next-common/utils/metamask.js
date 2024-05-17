@@ -80,6 +80,18 @@ export async function switchNetwork(ethereum, chainId) {
   });
 }
 
+export function normalizeEVMAccount(address, source) {
+  return {
+    name: addressEllipsis(address),
+    address: normalizeAddress(address),
+    type: ChainTypes.ETHEREUM,
+    meta: {
+      source,
+      name: addressEllipsis(address),
+    },
+  };
+}
+
 export function normalizedMetaMaskAccounts(accounts) {
   return accounts.map((item) => ({
     name: addressEllipsis(item),
