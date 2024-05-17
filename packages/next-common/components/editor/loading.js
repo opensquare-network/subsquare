@@ -5,9 +5,9 @@ const Skeleton = styled.div`
   border-radius: 4px;
   background: linear-gradient(
     90deg,
-    rgba(246, 247, 250, 1) 0%,
-    rgba(246, 247, 250, 0.5) 49.5%,
-    rgba(246, 247, 250, 1) 100%
+    var(--neutral200) 0%,
+    var(--neutral200alpha) 49.5%,
+    var(--neutral200) 100%
   );
 `;
 
