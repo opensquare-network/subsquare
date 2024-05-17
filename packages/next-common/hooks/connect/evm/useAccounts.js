@@ -1,8 +1,9 @@
 import { CACHE_KEY } from "next-common/utils/constants";
-import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
+import { normalizeEVMAccount } from "next-common/utils/metamask";
 import { useEffect, useMemo, useState } from "react";
 import { useLocalStorage } from "react-use";
 import { useAccount } from "wagmi";
+import { useLastConnector } from "./useLastConnector";
 
 /**
  * @param {Object} params
@@ -10,6 +11,9 @@ import { useAccount } from "wagmi";
  */
 export function useAccounts({ connector } = {}) {
   const account = useAccount();
+  const lastConnector = useLastConnector();
+  connector = lastConnector || account.connector;
+
   const [lastEVMConnectedAddresses] = useLocalStorage(
     CACHE_KEY.lastEVMConnectedAddresses,
   );
@@ -24,10 +28,11 @@ export function useAccounts({ connector } = {}) {
     }
   }, [connector]);
 
-  const accounts = useMemo(
-    () => normalizedMetaMaskAccounts(addresses || []),
-    [addresses],
-  );
+  const accounts = useMemo(() => {
+    return addresses?.map?.((address) => {
+      return normalizeEVMAccount(address, connector?.name?.toLowerCase());
+    });
+  }, [addresses, connector]);
 
   return accounts;
 }
