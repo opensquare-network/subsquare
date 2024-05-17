@@ -8,6 +8,8 @@ import Copyable from "../copyable";
 import { SystemEdit2 } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import PublishAvatarPopup from "./publishAvatarPopup";
+import { useUser } from "next-common/context/user";
+import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 
 function EditAvatar({ setImageFile, setImageDataUrl }) {
   const inputEl = useRef();
@@ -72,6 +74,7 @@ function EditAvatar({ setImageFile, setImageDataUrl }) {
 }
 
 function ProfileAvatar({ address }) {
+  const user = useUser();
   const [showPopup, setShowPopup] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
@@ -81,10 +84,10 @@ function ProfileAvatar({ address }) {
       <div className="flex flex-col gap-3">
         <span className="text14Bold">Avatar</span>
         <div className="inline-flex relative">
-          {imageDataUrl ? (
+          {imageDataUrl || user.avatarCid ? (
             <img
               className="rounded-full w-[80px] h-[80px]"
-              src={imageDataUrl}
+              src={imageDataUrl || getIpfsLink(user.avatarCid)}
               alt=""
             />
           ) : (
