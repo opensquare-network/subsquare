@@ -24,31 +24,31 @@ export default function GlobalProvider({
   navSubmenuVisible,
 }) {
   return (
-    <ThemeModeProvider defaultThemeMode={themeMode}>
-      <ChainProvider chain={chain}>
-        <UserProvider user={user} userStatus={userStatus}>
-          <ConnectedAccountProvider connectedAccount={connectedAccount}>
-            <AdminProvider admins={admins}>
-              <NavProvider
-                navCollapsed={navCollapsed}
-                navSubmenuVisible={navSubmenuVisible}
-              >
-                <PageProvider pageProperties={pageProperties}>
-                  <ApiProvider>
-                    <SignetContextProvider>
-                      <WagmiProvider>
-                        <ReactQueryClientProvider>
+    <WagmiProvider>
+      <ReactQueryClientProvider>
+        <ThemeModeProvider defaultThemeMode={themeMode}>
+          <ChainProvider chain={chain}>
+            <UserProvider user={user} userStatus={userStatus}>
+              <ConnectedAccountProvider connectedAccount={connectedAccount}>
+                <AdminProvider admins={admins}>
+                  <NavProvider
+                    navCollapsed={navCollapsed}
+                    navSubmenuVisible={navSubmenuVisible}
+                  >
+                    <PageProvider pageProperties={pageProperties}>
+                      <ApiProvider>
+                        <SignetContextProvider>
                           {children}
-                        </ReactQueryClientProvider>
-                      </WagmiProvider>
-                    </SignetContextProvider>
-                  </ApiProvider>
-                </PageProvider>
-              </NavProvider>
-            </AdminProvider>
-          </ConnectedAccountProvider>
-        </UserProvider>
-      </ChainProvider>
-    </ThemeModeProvider>
+                        </SignetContextProvider>
+                      </ApiProvider>
+                    </PageProvider>
+                  </NavProvider>
+                </AdminProvider>
+              </ConnectedAccountProvider>
+            </UserProvider>
+          </ChainProvider>
+        </ThemeModeProvider>
+      </ReactQueryClientProvider>
+    </WagmiProvider>
   );
 }
