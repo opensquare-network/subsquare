@@ -35,6 +35,7 @@ const polkadot = {
   postLabels: defaultPostLabels,
   hasStatescan: true,
   hasIdentityTimeline: true,
+  identityApiSubDomain: "dot-gh-api",
   hasSubscan: true,
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,
