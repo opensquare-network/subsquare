@@ -13,7 +13,7 @@ import ErrorMessage from "../styled/errorMessage";
 import { noop } from "lodash-es";
 import isMixedChain from "next-common/utils/isMixedChain";
 import EVMEntryWalletOption from "../wallet/evmEntryWalletOption";
-import { useAccount } from "next-common/hooks/connect/substrate/useAccount";
+import { useAccounts } from "next-common/hooks/connect/substrate/useAccounts";
 
 const Label = styled.div`
   font-weight: bold;
@@ -37,7 +37,7 @@ export default function WalletAddressSelect({
   lastUsedAddress,
 }) {
   const chain = useChain();
-  const { addresses } = useAccount({ wallet: selectedWallet });
+  const addresses = useAccounts({ wallet: selectedWallet });
 
   useEffect(() => {
     setSelectedAccount();

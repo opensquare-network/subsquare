@@ -18,7 +18,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export function useAccount({ wallet, onAccessGranted = noop }) {
+export function useAccounts({ wallet, onAccessGranted = noop }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const { injectedWeb3 } = useInjectedWeb3();
@@ -136,7 +136,5 @@ export function useAccount({ wallet, onAccessGranted = noop }) {
     loadWalletAccounts(wallet);
   }, [wallet]);
 
-  return {
-    addresses,
-  };
+  return addresses;
 }

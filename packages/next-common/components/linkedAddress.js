@@ -24,7 +24,7 @@ import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { getSingleSigWallets } from "next-common/utils/consts/connect";
-import { useAccount } from "next-common/hooks/connect/substrate/useAccount";
+import { useAccounts } from "next-common/hooks/connect/substrate/useAccounts";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -152,7 +152,7 @@ export default function LinkedAddress() {
   const userContext = useUserContext();
   const signMsg = useSignMessage();
 
-  const { addresses } = useAccount({ wallet: SelectWallet });
+  const addresses = useAccounts({ wallet: SelectWallet });
 
   useEffect(() => {
     if (typeof window.injectedWeb3 === "undefined") {
