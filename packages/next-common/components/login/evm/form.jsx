@@ -21,7 +21,7 @@ export default function LoginEVMForm() {
   const { connect, isError } = useConnect();
   const [selectedConnector, setSelectedConnector] = useState(connector);
   const [selectedAccount, setSelectedAccount] = useState();
-  const addresses = useAccounts();
+  const accounts = useAccounts();
 
   const [web3Login, isLoading] = useWeb3Login();
 
@@ -32,16 +32,16 @@ export default function LoginEVMForm() {
   }, [connector]);
 
   useEffect(() => {
-    const lastUsedAddress = find(addresses, {
+    const lastUsedAddress = find(accounts, {
       address: lastConnectedAccount?.address,
     });
 
     if (lastUsedAddress) {
       setSelectedAccount(lastUsedAddress);
-    } else if (addresses.length > 0) {
-      setSelectedAccount(addresses[0]);
+    } else if (accounts.length > 0) {
+      setSelectedAccount(accounts[0]);
     }
-  }, [addresses]);
+  }, [accounts]);
 
   useEffect(() => {
     setSelectedConnector(connector);
@@ -105,7 +105,7 @@ export default function LoginEVMForm() {
           </div>
         )}
 
-        {isConnected && !!addresses.length && (
+        {isConnected && !!accounts.length && (
           <>
             <div>
               <div className="text12Bold text-textPrimary mb-2">
@@ -113,7 +113,7 @@ export default function LoginEVMForm() {
               </div>
 
               <AddressSelect
-                accounts={addresses}
+                accounts={accounts}
                 onSelect={setSelectedAccount}
                 selectedAccount={selectedAccount}
               />
