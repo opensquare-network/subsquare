@@ -28,7 +28,6 @@ const kusama = {
   group: MenuGroups.KusamaAndParachains,
   links: kusamaLinks,
   hasStatescan: true,
-  hasIdentityTimeline: true,
   hasSubscan: true,
   postLabels: defaultPostLabels,
   useVoteCall: true,
