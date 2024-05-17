@@ -4,8 +4,7 @@ import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlic
 import PrimaryButton from "next-common/lib/button/primary";
 import WalletOption from "../../wallet/walletOption";
 import AddressSelect from "../../addressSelect";
-import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
@@ -13,23 +12,16 @@ import { useConnectedAccountContext } from "next-common/context/connectedAccount
 import { find } from "lodash-es";
 import { SystemLoading } from "@osn/icons/subsquare";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import { useAccounts } from "next-common/hooks/connect/evm/useAccounts";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
   const { lastConnectedAccount } = useConnectedAccountContext();
-  const {
-    addresses: evmAddresses,
-    connector,
-    isConnecting,
-    isConnected,
-  } = useAccount();
+  const { connector, isConnecting, isConnected } = useAccount();
   const { connect, isError } = useConnect();
   const [selectedConnector, setSelectedConnector] = useState(connector);
   const [selectedAccount, setSelectedAccount] = useState();
-  const addresses = useMemo(
-    () => normalizedMetaMaskAccounts(evmAddresses || []),
-    [evmAddresses],
-  );
+  const addresses = useAccounts();
 
   const [web3Login, isLoading] = useWeb3Login();
 
