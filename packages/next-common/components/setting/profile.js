@@ -84,7 +84,7 @@ function ProfileAvatar({ address }) {
       <div className="flex flex-col gap-3">
         <span className="text14Bold">Avatar</span>
         <div className="inline-flex relative">
-          {imageDataUrl || user.avatarCid ? (
+          {imageDataUrl || user?.avatarCid ? (
             <img
               className="rounded-full w-[80px] h-[80px]"
               src={imageDataUrl || getIpfsLink(user.avatarCid)}

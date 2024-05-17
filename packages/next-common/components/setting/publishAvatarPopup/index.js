@@ -1,72 +1,95 @@
 import CheckSimaSpec from "next-common/components/checkSimaSpec";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import PopupWithSigner from "next-common/components/popupWithSigner";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
-import { useCallback, useRef } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import nextApi from "next-common/services/nextApi";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-// import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import LoadingButton from "next-common/lib/button/loading";
+import PrimaryButton from "next-common/lib/button/primary";
+import { useSignMessage } from "next-common/hooks/useSignMessage";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 
 function Content() {
   const { imageFile, onClose } = usePopupParams();
   const dispatch = useDispatch();
   const router = useRouter();
   const { uploading, upload } = useUploadToIpfs();
-  const avatarCidRef = useRef();
-  const api = useContextApi();
-  const { ensureLogin } = useEnsureLogin();
+  const [isLoading, setIsLoading] = useState(false);
+  const signMessage = useSignMessage();
+  const signerAccount = useSignerAccount();
 
-  const getTxFunc = useCallback(async () => {
-    if (!api) {
-      return;
-    }
-    const { error, result } = await upload(imageFile);
-    if (error) {
-      dispatch(newErrorToast("Failed to save avatar to IPFS"));
-      return;
-    }
-    const { cid } = result;
-    avatarCidRef.current = cid;
-    return api.tx.system.remark(`SIMA:A:1:S:${cid}`);
-  }, [api, dispatch, avatarCidRef]);
+  const submitAvatar = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      let { error, result } = await upload(imageFile);
+      if (error) {
+        dispatch(
+          newErrorToast("Failed to save avatar to IPFS: " + error.message),
+        );
+        return;
+      }
+      const { cid } = result;
 
-  const onInBlock = async () => {
-    if (!(await ensureLogin())) {
-      return;
-    }
+      const entity = {
+        avatarCid: cid,
+        timestamp: Date.now(),
+      };
+      const address = signerAccount?.address;
+      const signerWallet = signerAccount?.meta.source;
+      const signature = await signMessage(
+        JSON.stringify(entity),
+        address,
+        signerWallet,
+      );
+      const data = {
+        entity,
+        address,
+        signature,
+        signerWallet,
+      };
 
-    const { error } = await nextApi.post("user/avatar", {
-      avatarCid: avatarCidRef.current,
-    });
-    if (error) {
-      dispatch(newErrorToast("Failed to update user avatar"));
-      return;
-    }
-    router.replace(router.asPath);
-  };
+      ({ error } = await nextApi.post("user/avatar", data));
+      if (error) {
+        dispatch(
+          newErrorToast("Failed to update user avatar: " + error.message),
+        );
+        return;
+      }
 
-  // const fnWaitSync = useWaitSyncBlock("Avatar published", () =>
-  //   router.replace(router.asPath),
-  // );
-  // const onFinalized = (_, blockHash) => blockHash && fnWaitSync(blockHash);
+      dispatch(newSuccessToast("Avatar updated successfully"));
+
+      onClose();
+      router.replace(router.asPath);
+    } catch (e) {
+      if (e.message === "Cancelled") {
+        return;
+      }
+      dispatch(newErrorToast(e.message));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dispatch, onClose, imageFile, router, upload, signMessage]);
 
   return (
     <>
       <CheckSimaSpec />
-      <TxSubmissionButton
-        title="Confirm"
-        loading={uploading}
-        loadingText={uploading ? "Saving..." : "Publishing..."}
-        getTxFunc={getTxFunc}
-        onClose={onClose}
-        onInBlock={onInBlock}
-        // onFinalized={onFinalized}
-      />
+      <div className="flex justify-end">
+        {isLoading ? (
+          <LoadingButton>
+            {uploading ? "Saving..." : "Publishing..."}
+          </LoadingButton>
+        ) : (
+          <PrimaryButton onClick={submitAvatar}>Confirm</PrimaryButton>
+        )}
+      </div>
     </>
   );
 }
