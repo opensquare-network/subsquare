@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import Avatar from "./avatar";
@@ -8,39 +8,19 @@ import Identity from "./Identity";
 import { addressEllipsis } from "../utils";
 import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address";
-import {
-  WalletPolkadotjs,
-  WalletMetamask,
-  WalletTailsman,
-  WalletSubwallet,
-  WalletPolkagate,
-  WalletNova,
-} from "@osn/icons/subsquare";
-import WalletTypes from "next-common/utils/consts/walletTypes";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { allWallets } from "next-common/utils/consts/connect";
+import { find } from "lodash-es";
 
-const WalletIcon = ({ wallet }) => {
+function WalletIcon({ wallet: walletName }) {
+  const wallet = find(allWallets, { extensionName: walletName });
+
   return (
-    <div className="absolute right-0 bottom-0">
-      {wallet === WalletTypes.POLKADOT_JS && (
-        <WalletPolkadotjs width={16} height={16} />
-      )}
-      {wallet === WalletTypes.METAMASK && (
-        <WalletMetamask width={16} height={16} />
-      )}
-      {wallet === WalletTypes.TALISMAN && (
-        <WalletTailsman width={16} height={16} />
-      )}
-      {wallet === WalletTypes.SUBWALLET && (
-        <WalletSubwallet width={16} height={16} />
-      )}
-      {wallet === WalletTypes.POLKAGATE && (
-        <WalletPolkagate width={16} height={16} />
-      )}
-      {wallet === WalletTypes.NOVA && <WalletNova width={16} height={16} />}
-    </div>
+    wallet?.logo && (
+      <wallet.logo className="absolute right-0 bottom-0 w-4 h-4" />
+    )
   );
-};
+}
 
 const AvatarWrapper = styled.div`
   display: flex;
