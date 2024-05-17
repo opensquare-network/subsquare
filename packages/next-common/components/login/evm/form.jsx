@@ -6,30 +6,33 @@ import WalletOption from "../../wallet/walletOption";
 import AddressSelect from "../../addressSelect";
 import { useEffect, useState } from "react";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
-import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
+import { CACHE_KEY, CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { find } from "lodash-es";
 import { SystemLoading } from "@osn/icons/subsquare";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useAccounts } from "next-common/hooks/connect/evm/useAccounts";
+import { useLocalStorage } from "react-use";
+import { useLastConnector } from "next-common/hooks/connect/evm/useLastConnector";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
   const { lastConnectedAccount } = useConnectedAccountContext();
-  const { connector, isConnecting, isConnected } = useAccount();
+  const { addresses, connector, isConnecting, isConnected } = useAccount();
   const { connect, isError } = useConnect();
-  const [selectedConnector, setSelectedConnector] = useState(connector);
+  const lastConnector = useLastConnector();
+  const [selectedConnector, setSelectedConnector] = useState(lastConnector);
   const [selectedAccount, setSelectedAccount] = useState();
-  const accounts = useAccounts();
+  const accounts = useAccounts({ connector: selectedConnector });
+  const [, setLastEVMConnectedAddresses] = useLocalStorage(
+    CACHE_KEY.lastEVMConnectedAddresses,
+  );
+  const [, setLastEVMConnectorID] = useLocalStorage(
+    CACHE_KEY.lastEVMConnectorID,
+  );
 
   const [web3Login, isLoading] = useWeb3Login();
-
-  useEffect(() => {
-    if (connector) {
-      setSelectedConnector(connector);
-    }
-  }, [connector]);
 
   useEffect(() => {
     const lastUsedAddress = find(accounts, {
@@ -46,6 +49,16 @@ export default function LoginEVMForm() {
   useEffect(() => {
     setSelectedConnector(connector);
   }, [isError]);
+
+  function handleConnect() {
+    web3Login({
+      account: selectedAccount,
+      wallet: WalletTypes.METAMASK,
+    }).then(() => {
+      setLastEVMConnectedAddresses(addresses);
+      setLastEVMConnectorID(connector.id);
+    });
+  }
 
   const evmOptions = useEVMWalletOptions();
 
@@ -124,10 +137,7 @@ export default function LoginEVMForm() {
                 className="w-full"
                 loading={isLoading}
                 onClick={() => {
-                  web3Login({
-                    account: selectedAccount,
-                    wallet: WalletTypes.METAMASK,
-                  });
+                  handleConnect();
                 }}
               >
                 Next
