@@ -12,7 +12,6 @@ import {
   getChainId,
   // addNetwork,
   getEthereum,
-  getEthereumProvider,
   isSameChainId,
   requestAccounts,
   switchNetwork,
@@ -38,8 +37,8 @@ export async function sendEvmTx({
   const chainId = getChainId();
   const realSignerAddress = getEvmSignerAddress(signerAddress);
 
-  const ethereumProvider = await getEthereumProvider();
-  const ethereum = getEthereum(signerAccount?.meta.source);
+  const ethereum = await getEthereum();
+
   if (!ethereum) {
     dispatch(newErrorToast("Please install MetaMask"));
     return;
@@ -120,7 +119,7 @@ export async function sendEvmTx({
   try {
     setLoading(true);
 
-    const provider = new ethers.BrowserProvider(ethereumProvider);
+    const provider = new ethers.BrowserProvider(ethereum);
     const signer = await provider.getSigner();
     await dispatchCall({
       to,
