@@ -7,14 +7,6 @@ import { normalizeAddress } from "next-common/utils/address";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import isEvmChain from "next-common/utils/isEvmChain";
-import {
-  addNetwork,
-  getChainId,
-  getMetaMaskEthereum,
-  normalizedMetaMaskAccounts,
-  requestAccounts,
-} from "next-common/utils/metamask";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -22,7 +14,7 @@ export function useAccounts({ wallet, onAccessGranted = noop }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const { injectedWeb3 } = useInjectedWeb3();
-  const { chainType, ethereumNetwork } = useChainSettings();
+  const { chainType } = useChainSettings();
   const signetAccounts = useSignetAccounts();
 
   const [addresses, setAddresses] = useState([]);
@@ -70,28 +62,6 @@ export function useAccounts({ wallet, onAccessGranted = noop }) {
     [injectedWeb3, setAddresses, onAccessGranted, isMounted, chainType],
   );
 
-  const loadMetaMaskAccounts = useCallback(async () => {
-    const ethereum = getMetaMaskEthereum();
-    if (!ethereum) {
-      dispatch(newErrorToast("Please install MetaMask"));
-      return;
-    }
-
-    try {
-      const chainId = await getChainId();
-      if (chainId !== ethereumNetwork.chainId) {
-        await addNetwork(ethereum, ethereumNetwork);
-      }
-
-      const accounts = await requestAccounts();
-      if (isMounted.current) {
-        setAddresses(normalizedMetaMaskAccounts(accounts));
-      }
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-    }
-  }, [dispatch, isMounted, setAddresses, ethereumNetwork]);
-
   const loadSignetVault = useCallback(() => {
     setAddresses(signetAccounts);
   }, [signetAccounts, setAddresses]);
@@ -115,21 +85,13 @@ export function useAccounts({ wallet, onAccessGranted = noop }) {
           await loadSignetVault();
           break;
         }
-        case WalletTypes.METAMASK: {
-          await loadMetaMaskAccounts(wallet);
-          break;
-        }
         case WalletTypes.NOVA: {
-          if (isEvmChain()) {
-            await loadMetaMaskAccounts(WalletTypes.METAMASK);
-          } else {
-            await loadPolkadotAccounts(WalletTypes.POLKADOT_JS);
-          }
+          await loadPolkadotAccounts(WalletTypes.POLKADOT_JS);
           break;
         }
       }
     },
-    [loadPolkadotAccounts, loadMetaMaskAccounts, loadSignetVault],
+    [loadPolkadotAccounts, loadSignetVault],
   );
 
   useEffect(() => {
