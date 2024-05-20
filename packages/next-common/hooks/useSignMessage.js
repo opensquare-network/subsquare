@@ -1,20 +1,21 @@
 import { useCallback } from "react";
 import { stringToHex } from "@polkadot/util";
-import WalletTypes from "next-common/utils/consts/walletTypes";
 import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import {
   getEvmSignerAddress,
   tryConvertToEvmAddress,
 } from "next-common/utils/mixedChainUtil";
 import { useSignMessage as useEVMSignMessage } from "wagmi";
+import useIsUseMetamask from "./useIsUseMetamask";
 
 export function useSignMessage() {
   const { injectedWeb3 } = useInjectedWeb3();
   const { signMessage } = useEVMSignMessage();
+  const isUseMetamask = useIsUseMetamask();
 
   return useCallback(
     async (message, address, walletName) => {
-      if (walletName === WalletTypes.METAMASK) {
+      if (isUseMetamask) {
         const signerAddress = getEvmSignerAddress(address);
         return await new Promise((resolve, reject) => {
           signMessage(
