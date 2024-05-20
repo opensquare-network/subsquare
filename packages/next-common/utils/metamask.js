@@ -90,15 +90,3 @@ export function normalizeEVMAccount(address, source) {
     },
   };
 }
-
-export function normalizedMetaMaskAccounts(accounts) {
-  return accounts.map((item) => ({
-    name: addressEllipsis(item),
-    address: normalizeAddress(item),
-    type: ChainTypes.ETHEREUM,
-    meta: {
-      source: WalletTypes.METAMASK,
-      name: addressEllipsis(item),
-    },
-  }));
-}
