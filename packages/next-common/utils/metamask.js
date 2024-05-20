@@ -20,7 +20,7 @@ export function getChainId() {
 }
 
 export async function requestAccounts() {
-  const ethereum = getEthereum();
+  const ethereum = await getEthereum();
   if (!ethereum) {
     throw new Error("Please install MetaMask");
   }
