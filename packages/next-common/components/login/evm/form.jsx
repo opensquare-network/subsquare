@@ -13,6 +13,7 @@ import { find } from "lodash-es";
 import { SystemLoading } from "@osn/icons/subsquare";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useAccounts } from "next-common/hooks/connect/evm/useAccounts";
+import ErrorMessage from "next-common/components/styled/errorMessage";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
@@ -132,6 +133,12 @@ export default function LoginEVMForm() {
               </PrimaryButton>
             </div>
           </>
+        )}
+
+        {isConnected && !accounts.length && (
+          <ErrorMessage>
+            Address not detected, please create an available address.
+          </ErrorMessage>
         )}
 
         <div className="text14Medium text-center text-textSecondary">
