@@ -6,7 +6,7 @@ export function useAccounts() {
   const { addresses, connector } = useAccount();
 
   const accounts = useMemo(() => {
-    return addresses.map?.((address) => {
+    return addresses?.map?.((address) => {
       return normalizeEVMAccount(address, connector.name?.toLowerCase());
     });
   }, [addresses, connector]);

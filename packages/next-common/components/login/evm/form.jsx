@@ -32,8 +32,8 @@ export default function LoginEVMForm() {
 
     if (lastUsedAddress) {
       setSelectedAccount(lastUsedAddress);
-    } else if (accounts.length > 0) {
-      setSelectedAccount(accounts[0]);
+    } else if (accounts?.length > 0) {
+      setSelectedAccount(accounts?.[0]);
     }
   }, [accounts]);
 

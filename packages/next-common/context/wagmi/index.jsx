@@ -3,8 +3,9 @@ import { http, createConfig } from "wagmi";
 import { mainnet, base } from "wagmi/chains";
 import { coinbaseWallet, injected } from "wagmi/connectors";
 
-const wagmiConfig = createConfig({
+export const wagmiConfig = createConfig({
   chains: [mainnet, base],
+  ssr: true,
   connectors: [
     injected(),
     coinbaseWallet({
