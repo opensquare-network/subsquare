@@ -12,7 +12,7 @@ import { useLastConnector } from "./useLastConnector";
 export function useAccounts({ connector } = {}) {
   const account = useAccount();
   const lastConnector = useLastConnector();
-  connector = lastConnector || account.connector;
+  connector = connector || lastConnector || account.connector;
 
   const [lastEVMConnectedAddresses] = useLocalStorage(
     CACHE_KEY.lastEVMConnectedAddresses,
