@@ -15,7 +15,6 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useAccounts } from "next-common/hooks/connect/evm/useAccounts";
 import { useLocalStorage } from "react-use";
 import { useLastConnector } from "next-common/hooks/connect/evm/useLastConnector";
-import ChainTypes from "next-common/utils/consts/chainTypes";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
@@ -55,7 +54,6 @@ export default function LoginEVMForm() {
     web3Login({
       account: selectedAccount,
       wallet: WalletTypes.METAMASK,
-      type: ChainTypes.ETHEREUM,
     }).then(() => {
       setLastEVMConnectedAddresses(addresses);
       setLastEVMConnectorID(connector.id);

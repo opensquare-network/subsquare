@@ -17,7 +17,7 @@ export function useWeb3Login() {
   const { connect: connectAccount } = useConnectedAccountContext();
 
   const [state, web3Login] = useAsyncFn(
-    async ({ account, wallet, type }) => {
+    async ({ account, wallet }) => {
       if (!account?.address) {
         dispatch(newErrorToast("Please select an account"));
         return;
@@ -28,7 +28,6 @@ export function useWeb3Login() {
         const accountInfo = {
           address,
           wallet,
-          type,
         };
         await connectAccount(accountInfo);
         dispatch(setLoginResult(LoginResult.Connected));
