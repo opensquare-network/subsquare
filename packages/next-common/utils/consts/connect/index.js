@@ -102,6 +102,7 @@ export const allWallets = [
   subWallet,
   talisman,
   metamask,
+  polkagate,
   nova,
   mimir,
   signet,
