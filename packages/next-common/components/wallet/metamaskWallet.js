@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Flex from "../styled/flex";
-import useIsMounted from "../../utils/hooks/useIsMounted";
 import Loading from "../loading";
 import WalletOption from "./walletOption";
-import { getMetaMaskEthereum } from "next-common/utils/metamask";
+import { useIsMetamaskWallet } from "next-common/hooks/connect/useIsMetamask";
 
 export function MetaMaskWallet({
   wallet,
@@ -12,21 +11,18 @@ export function MetaMaskWallet({
   loading = false,
 }) {
   const [installed, setInstalled] = useState(null);
-  const isMounted = useIsMounted();
+  const isMetamask = useIsMetamaskWallet();
   const Logo = wallet.logo;
 
   useEffect(() => {
     setTimeout(() => {
-      if (isMounted.current) {
-        const ethereum = getMetaMaskEthereum();
-        if (ethereum) {
-          setInstalled(true);
-        } else {
-          setInstalled(false);
-        }
+      if (isMetamask) {
+        setInstalled(true);
+      } else {
+        setInstalled(false);
       }
     }, 1000);
-  }, [isMounted]);
+  }, [isMetamask]);
 
   return (
     <WalletOption
