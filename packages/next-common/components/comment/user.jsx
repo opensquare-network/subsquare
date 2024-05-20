@@ -10,7 +10,7 @@ export default function CommentUser({ author }) {
     return (
       <div className="flex items-center gap-x-2">
         <SystemUser user={author} />
-        <DVTag address={author.address} />
+        <DVTag address={author?.address} />
       </div>
     );
   }
