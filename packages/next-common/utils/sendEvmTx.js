@@ -9,8 +9,11 @@ import {
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 import {
+  getChainId,
   // addNetwork,
   getEthereum,
+  getEthereumProvider,
+  isSameChainId,
   requestAccounts,
   switchNetwork,
 } from "./metamask";
@@ -32,8 +35,10 @@ export async function sendEvmTx({
   signerAccount,
 }) {
   const signerAddress = signerAccount?.address;
+  const chainId = getChainId();
   const realSignerAddress = getEvmSignerAddress(signerAddress);
 
+  const ethereumProvider = await getEthereumProvider();
   const ethereum = getEthereum(signerAccount?.meta.source);
   if (!ethereum) {
     dispatch(newErrorToast("Please install MetaMask"));
@@ -56,7 +61,7 @@ export async function sendEvmTx({
   //   }
   // }
 
-  if (ethereum.chainId !== ethereumNetwork.chainId) {
+  if (!isSameChainId()) {
     dispatch(
       newPendingToast(
         toastId,
@@ -64,8 +69,9 @@ export async function sendEvmTx({
       ),
     );
     try {
-      await switchNetwork(ethereum, ethereumNetwork.chainId);
+      await switchNetwork(ethereum, chainId);
     } catch (e) {
+      console.error(e);
       dispatch(
         newErrorToast(
           `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`,
@@ -114,7 +120,7 @@ export async function sendEvmTx({
   try {
     setLoading(true);
 
-    const provider = new ethers.BrowserProvider(ethereum);
+    const provider = new ethers.BrowserProvider(ethereumProvider);
     const signer = await provider.getSigner();
     await dispatchCall({
       to,
