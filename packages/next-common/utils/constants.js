@@ -89,8 +89,6 @@ export const BalanceDecimals = {
 
 export const CACHE_KEY = {
   lastConnectedAccount: "lastConnectedAddress",
-  lastEVMConnectedAddresses: "lastEVMConnectedAddresses",
-  lastEVMConnectorID: "lastEVMConnectorID",
 
   // @deprecated
   // use `lastConnectedAccount` instead

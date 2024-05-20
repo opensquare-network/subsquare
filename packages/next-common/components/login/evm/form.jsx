@@ -6,31 +6,22 @@ import WalletOption from "../../wallet/walletOption";
 import AddressSelect from "../../addressSelect";
 import { useEffect, useState } from "react";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
-import { CACHE_KEY, CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
+import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { find } from "lodash-es";
 import { SystemLoading } from "@osn/icons/subsquare";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useAccounts } from "next-common/hooks/connect/evm/useAccounts";
-import { useLocalStorage } from "react-use";
-import { useLastConnector } from "next-common/hooks/connect/evm/useLastConnector";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
   const { lastConnectedAccount } = useConnectedAccountContext();
-  const { addresses, connector, isConnecting, isConnected } = useAccount();
+  const { connector, isConnecting, isConnected } = useAccount();
   const { connect, isError } = useConnect();
-  const lastConnector = useLastConnector();
-  const [selectedConnector, setSelectedConnector] = useState(lastConnector);
+  const [selectedConnector, setSelectedConnector] = useState(connector);
   const [selectedAccount, setSelectedAccount] = useState();
-  const accounts = useAccounts({ connector: selectedConnector });
-  const [, setLastEVMConnectedAddresses] = useLocalStorage(
-    CACHE_KEY.lastEVMConnectedAddresses,
-  );
-  const [, setLastEVMConnectorID] = useLocalStorage(
-    CACHE_KEY.lastEVMConnectorID,
-  );
+  const accounts = useAccounts();
 
   const [web3Login, isLoading] = useWeb3Login();
 
@@ -54,9 +45,6 @@ export default function LoginEVMForm() {
     web3Login({
       account: selectedAccount,
       wallet: WalletTypes.METAMASK,
-    }).then(() => {
-      setLastEVMConnectedAddresses(addresses);
-      setLastEVMConnectorID(connector.id);
     });
   }
 
