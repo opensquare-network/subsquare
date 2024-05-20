@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useState } from "react";
 import { addressEllipsis } from ".";
 import ChainTypes from "./consts/chainTypes";
 import WalletTypes from "./consts/walletTypes";
@@ -102,40 +101,4 @@ export function normalizedMetaMaskAccounts(accounts) {
       name: addressEllipsis(item),
     },
   }));
-}
-
-export function useMetaMaskAccounts(active) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [accounts, setAccounts] = useState([]);
-
-  const updateAccounts = useCallback((accounts = []) => {
-    setAccounts(normalizedMetaMaskAccounts(accounts));
-  }, []);
-
-  useEffect(() => {
-    if (!active) {
-      setIsLoading(false);
-      return;
-    }
-
-    const ethereum = getMetaMaskEthereum();
-    if (!ethereum) {
-      setIsLoading(false);
-      return;
-    }
-
-    requestAccounts()
-      .then(updateAccounts)
-      .finally(() => {
-        setIsLoading(false);
-      });
-
-    ethereum.on("accountsChanged", updateAccounts);
-
-    return () => {
-      ethereum.removeListener("accountsChanged", updateAccounts);
-    };
-  }, [updateAccounts, active]);
-
-  return [accounts, isLoading];
 }

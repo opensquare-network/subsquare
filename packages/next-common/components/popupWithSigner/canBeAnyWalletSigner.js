@@ -1,12 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
-import { useMetaMaskAccounts } from "../../utils/metamask";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { useChainSettings } from "next-common/context/chain";
 import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import ContextPopup from "./contextPopup";
 import { useSignetAccounts, useSignetSdk } from "next-common/context/signet";
+import { useAccounts } from "next-common/hooks/connect/evm/useAccounts";
+import { useLastConnector } from "next-common/hooks/connect/evm/useLastConnector";
 
 function usePolkadotAccounts() {
   const [accounts, setAccounts] = useState([]);
@@ -44,17 +45,18 @@ function usePolkadotAccounts() {
 }
 
 export default function CanBeAnyWalletSigner({ children }) {
-  const [metamaskAccounts, isLoadingMetamask] = useMetaMaskAccounts(true);
+  const lastConnector = useLastConnector();
+  const evmAccounts = useAccounts({ connector: lastConnector });
   const [polkadotAccounts, isLoadingPolkadot] = usePolkadotAccounts(true);
   const signetAccounts = useSignetAccounts();
   const { loading: isLoadingSignet } = useSignetSdk();
 
   const combinedAccounts = useMemo(
-    () => [...metamaskAccounts, ...polkadotAccounts, ...signetAccounts],
-    [metamaskAccounts, polkadotAccounts, signetAccounts],
+    () => [...evmAccounts, ...polkadotAccounts, ...signetAccounts],
+    [evmAccounts, polkadotAccounts, signetAccounts],
   );
 
-  if (isLoadingMetamask || isLoadingPolkadot || isLoadingSignet) {
+  if (isLoadingPolkadot || isLoadingSignet) {
     return null;
   }
 
