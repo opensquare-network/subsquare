@@ -1,4 +1,4 @@
-import CheckSimaSpec from "next-common/components/checkSimaSpec";
+// import CheckSimaSpec from "next-common/components/checkSimaSpec";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -16,6 +16,7 @@ import {
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import PopupWithSigner from "next-common/components/popupWithSigner";
+import Signer from "next-common/components/popup/fields/signerField";
 
 function Content() {
   const { imageFile, onClose } = usePopupParams();
@@ -89,7 +90,8 @@ function Content() {
 
   return (
     <>
-      <CheckSimaSpec />
+      <Signer title="Signer" />
+      {/* <CheckSimaSpec /> */}
       <div className="flex justify-end">
         {isLoading ? (
           <LoadingButton>
