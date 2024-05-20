@@ -1,6 +1,5 @@
 import { addressEllipsis } from ".";
 import ChainTypes from "./consts/chainTypes";
-import WalletTypes from "./consts/walletTypes";
 import { normalizeAddress } from "./address";
 import { getChainId as getEvmChainId, getAccount } from "@wagmi/core";
 import { wagmiConfig } from "next-common/context/wagmi";
@@ -8,37 +7,9 @@ import getChainSettings from "./consts/settings";
 import { CHAIN } from "./constants";
 import { hexToNumber } from "viem";
 
-export async function getEthereumProvider() {
+export async function getEthereum() {
   const { connector } = getAccount(wagmiConfig);
   return await connector.getProvider();
-}
-
-export function getMetaMaskEthereum() {
-  if (
-    window.ethereum &&
-    window.ethereum.isMetaMask &&
-    !window.ethereum.isTalisman
-  ) {
-    return window.ethereum;
-  }
-
-  return null;
-}
-
-export function getEthereum(wallet) {
-  if (wallet === WalletTypes.TALISMAN) {
-    return window.talismanEth;
-  }
-
-  if (
-    window.ethereum &&
-    window.ethereum.isMetaMask &&
-    !window.ethereum.isTalisman
-  ) {
-    return window.ethereum;
-  }
-
-  return null;
 }
 
 export function getChainId() {
@@ -47,7 +18,7 @@ export function getChainId() {
 }
 
 export async function requestAccounts() {
-  const ethereum = getMetaMaskEthereum();
+  const ethereum = getEthereum();
   if (!ethereum) {
     throw new Error("Please install MetaMask");
   }
