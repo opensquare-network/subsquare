@@ -31,18 +31,6 @@ export function getEthereum(wallet) {
   return null;
 }
 
-export async function personalSign(message, address) {
-  const ethereum = getMetaMaskEthereum();
-  if (!ethereum) {
-    throw new Error("Please install MetaMask");
-  }
-
-  return await ethereum.request({
-    method: "personal_sign",
-    params: [message, address],
-  });
-}
-
 export async function getChainId() {
   const ethereum = getMetaMaskEthereum();
   if (!ethereum) {
