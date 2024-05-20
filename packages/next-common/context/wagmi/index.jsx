@@ -1,10 +1,10 @@
 import { WagmiProvider as Provider } from "wagmi";
 import { http, createConfig } from "wagmi";
-import { mainnet, base } from "wagmi/chains";
+import { mainnet, base, darwinia, moonbeam, moonriver } from "wagmi/chains";
 import { coinbaseWallet, injected } from "wagmi/connectors";
 
 export const wagmiConfig = createConfig({
-  chains: [mainnet, base],
+  chains: [mainnet, base, darwinia, moonbeam, moonriver],
   ssr: true,
   connectors: [
     injected(),
@@ -15,6 +15,9 @@ export const wagmiConfig = createConfig({
   transports: {
     [mainnet.id]: http(),
     [base.id]: http(),
+    [darwinia.id]: http(),
+    [moonbeam.id]: http(),
+    [moonriver.id]: http(),
   },
 });
 
