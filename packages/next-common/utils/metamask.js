@@ -3,17 +3,19 @@ import ChainTypes from "./consts/chainTypes";
 import { normalizeAddress } from "./address";
 import { getChainId as getEvmChainId, getAccount } from "@wagmi/core";
 import { wagmiConfig } from "next-common/context/wagmi";
-import getChainSettings from "./consts/settings";
-import { CHAIN } from "./constants";
-import { hexToNumber } from "viem";
+
+export function getConnector() {
+  const { connector } = getAccount(wagmiConfig);
+  return connector;
+}
 
 export async function getEthereum() {
-  const { connector } = getAccount(wagmiConfig);
+  const connector = getConnector();
   return await connector.getProvider();
 }
 
 export function getChainId() {
-  const { connector } = getAccount(wagmiConfig);
+  const connector = getConnector();
   return getEvmChainId(wagmiConfig, { connector });
 }
 
@@ -59,10 +61,8 @@ export function normalizeEVMAccount(address, source) {
   };
 }
 
-export function isSameChainId() {
+export function isSameChainId(id) {
   const chainId = getChainId();
-  const { ethereumNetwork } = getChainSettings(CHAIN);
-  const chainSettingsId = hexToNumber(ethereumNetwork.chainId);
 
-  return chainId === chainSettingsId;
+  return chainId === id;
 }
