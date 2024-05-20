@@ -29,14 +29,18 @@ function Content() {
   const submitAvatar = useCallback(async () => {
     setIsLoading(true);
     try {
-      let { error, result } = await upload(imageFile);
-      if (error) {
+      const { error: uploadError, result: uploadResult } = await upload(
+        imageFile,
+      );
+      if (uploadError) {
         dispatch(
-          newErrorToast("Failed to save avatar to IPFS: " + error.message),
+          newErrorToast(
+            "Failed to upload avatar to IPFS node: " + uploadError.message,
+          ),
         );
         return;
       }
-      const { cid } = result;
+      const { cid } = uploadResult;
 
       const entity = {
         avatarCid: cid,
@@ -56,10 +60,15 @@ function Content() {
         signerWallet,
       };
 
-      ({ error } = await nextApi.post("user/avatar", data));
-      if (error) {
+      const { error: saveUserAvatarError } = await nextApi.post(
+        "user/avatar",
+        data,
+      );
+      if (saveUserAvatarError) {
         dispatch(
-          newErrorToast("Failed to update user avatar: " + error.message),
+          newErrorToast(
+            "Failed to save user's avatar cid: " + saveUserAvatarError.message,
+          ),
         );
         return;
       }
