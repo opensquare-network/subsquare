@@ -8,8 +8,6 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import nextApi from "next-common/services/nextApi";
-import LoadingButton from "next-common/lib/button/loading";
-import PrimaryButton from "next-common/lib/button/primary";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import {
   usePopupParams,
@@ -17,6 +15,7 @@ import {
 } from "next-common/components/popupWithSigner/context";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import Signer from "next-common/components/popup/fields/signerField";
+import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 
 function Content() {
   const { imageFile, onClose } = usePopupParams();
@@ -93,13 +92,13 @@ function Content() {
       <Signer title="Signer" />
       {/* <CheckSimaSpec /> */}
       <div className="flex justify-end">
-        {isLoading ? (
-          <LoadingButton>
-            {uploading ? "Saving..." : "Publishing..."}
-          </LoadingButton>
-        ) : (
-          <PrimaryButton onClick={submitAvatar}>Confirm</PrimaryButton>
-        )}
+        <LoadingPrimaryButton
+          loading={isLoading}
+          loadingText={uploading ? "Saving..." : "Publishing..."}
+          onClick={submitAvatar}
+        >
+          Confirm
+        </LoadingPrimaryButton>
       </div>
     </>
   );
