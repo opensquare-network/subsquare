@@ -1,4 +1,4 @@
-import { noop } from "lodash-es";
+import { noop, reject } from "lodash-es";
 import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignetAccounts } from "next-common/context/signet";
@@ -29,21 +29,10 @@ export function useAccounts({ wallet, onAccessGranted = noop }) {
 
       try {
         const walletExtension = await extension.enable("subsquare");
-        let extensionAccounts = await walletExtension.accounts?.get();
-        if (chainType === ChainTypes.ETHEREUM) {
-          extensionAccounts = extensionAccounts.filter(
-            (acc) => acc.type === ChainTypes.ETHEREUM,
-          );
-        } else if (
-          !(
-            ChainTypes.MIXED === chainType &&
-            selectedWallet === WalletTypes.TALISMAN
-          )
-        ) {
-          extensionAccounts = extensionAccounts.filter(
-            (acc) => acc.type !== ChainTypes.ETHEREUM,
-          );
-        }
+        const extensionAccounts = reject(
+          await walletExtension.accounts?.get(),
+          { type: ChainTypes.ETHEREUM },
+        );
 
         if (isMounted.current) {
           setAddresses(
