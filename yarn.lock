@@ -4416,7 +4416,6 @@ __metadata:
     clsx: ^1.2.1
     cookies: ^0.8.0
     dayjs: ^1.10.7
-    eruda: ^3.0.1
     eslint: ^8.44.0
     eslint-config-next: ^13.3.0
     http-proxy: ^1.18.1
@@ -8051,13 +8050,6 @@ __metadata:
   dependencies:
     stackframe: ^1.3.4
   checksum: 3b916d2d14c6682f287c8bfa28e14672f47eafe832701080e420e7cdbaebb2c50293868256a95706ac2330fe078cf5664713158b49bc30d7a5f2ac229ded0e18
-  languageName: node
-  linkType: hard
-
-"eruda@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "eruda@npm:3.0.1"
-  checksum: 94ffa1be8ac445bb99347ae6ad8bf432c13016dcf8fc9b2f4eb818c79ee38b4a391dd0e0d9548eea7f7f36f6aa9e094479e949c82d5c28eac25dc412dad9e3c2
   languageName: node
   linkType: hard
 

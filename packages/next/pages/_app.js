@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
@@ -56,13 +56,6 @@ function MyApp({ Component, pageProps }) {
     navSubmenuVisible,
     ...otherProps
   } = pageProps;
-
-  useEffect(() => {
-    import("eruda").then((mod) => {
-      mod.default.init();
-    });
-  }, []);
-
   return (
     <>
       <Head>
