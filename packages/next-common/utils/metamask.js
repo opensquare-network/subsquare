@@ -3,6 +3,7 @@ import ChainTypes from "./consts/chainTypes";
 import { normalizeAddress } from "./address";
 import { getChainId as getEvmChainId, getAccount } from "@wagmi/core";
 import { wagmiConfig } from "next-common/context/wagmi";
+import WalletTypes from "./consts/walletTypes";
 
 export function getConnector() {
   const { connector } = getAccount(wagmiConfig);
@@ -49,16 +50,16 @@ export async function switchNetwork(ethereum, chainId) {
   });
 }
 
-export function normalizeEVMAccount(address, source) {
-  return {
-    name: addressEllipsis(address),
-    address: normalizeAddress(address),
+export function normalizedMetaMaskAccounts(accounts) {
+  return accounts.map((item) => ({
+    name: addressEllipsis(item),
+    address: normalizeAddress(item),
     type: ChainTypes.ETHEREUM,
     meta: {
-      source,
-      name: addressEllipsis(address),
+      source: WalletTypes.METAMASK,
+      name: addressEllipsis(item),
     },
-  };
+  }));
 }
 
 export function isSameChainId(id) {
