@@ -1,7 +1,11 @@
 import { addressEllipsis } from ".";
 import ChainTypes from "./consts/chainTypes";
 import { normalizeAddress } from "./address";
-import { getChainId as getEvmChainId, getAccount } from "@wagmi/core";
+import {
+  getChainId as getEvmChainId,
+  getAccount,
+  switchChain,
+} from "@wagmi/core";
 import { wagmiConfig } from "next-common/context/wagmi";
 import WalletTypes from "./consts/walletTypes";
 
@@ -38,15 +42,9 @@ export async function addNetwork(ethereum, ethereumNetwork) {
   });
 }
 
-export async function switchNetwork(ethereum, chainId) {
-  // const connections = getConnections(wagmiConfig);
-  // return await switchChain(wagmiConfig, {
-  //   chainId,
-  //   // connector: connections[0]?.connector,
-  // });
-  return await ethereum.request({
-    method: "wallet_switchEthereumChain",
-    params: [{ chainId }],
+export async function switchNetwork(chainId) {
+  return await switchChain(wagmiConfig, {
+    chainId,
   });
 }
 

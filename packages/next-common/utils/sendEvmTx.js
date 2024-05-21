@@ -69,7 +69,7 @@ export async function sendEvmTx({
       ),
     );
     try {
-      await switchNetwork(ethereum, hexToNumber(ethereumNetwork.chainId));
+      await switchNetwork(hexToNumber(ethereumNetwork.chainId));
     } catch (e) {
       console.error(e);
       dispatch(
