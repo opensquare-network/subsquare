@@ -50,7 +50,7 @@ export async function switchNetwork(ethereum, chainId) {
   });
 }
 
-export function normalizedMetaMaskAccounts(accounts) {
+export function normalizedMetaMaskAccounts(accounts, connectorId) {
   return accounts.map((item) => ({
     name: addressEllipsis(item),
     address: normalizeAddress(item),
@@ -58,6 +58,7 @@ export function normalizedMetaMaskAccounts(accounts) {
     meta: {
       source: WalletTypes.METAMASK,
       name: addressEllipsis(item),
+      connectorId,
     },
   }));
 }

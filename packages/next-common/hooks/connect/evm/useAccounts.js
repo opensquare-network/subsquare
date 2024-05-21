@@ -3,10 +3,10 @@ import { useMemo } from "react";
 import { useAccount } from "wagmi";
 
 export function useAccounts() {
-  const { addresses } = useAccount();
+  const { addresses, connector } = useAccount();
 
   const accounts = useMemo(() => {
-    return normalizedMetaMaskAccounts(addresses);
+    return normalizedMetaMaskAccounts(addresses, connector.id);
   }, [addresses]);
 
   return accounts;

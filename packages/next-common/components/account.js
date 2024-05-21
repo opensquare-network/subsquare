@@ -11,6 +11,8 @@ import { normalizeAddress } from "next-common/utils/address";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { allWallets } from "next-common/utils/consts/connect";
 import { find } from "lodash-es";
+import ChainTypes from "next-common/utils/consts/chainTypes";
+import { useConnectors } from "wagmi";
 
 function WalletIcon({ wallet: walletName }) {
   const wallet = find(allWallets, { extensionName: walletName });
@@ -20,6 +22,13 @@ function WalletIcon({ wallet: walletName }) {
       <wallet.logo className="absolute right-0 bottom-0 w-4 h-4" />
     )
   );
+}
+
+function EvmWalletIcon({ id }) {
+  const connectors = useConnectors();
+  const connector = find(connectors, { id });
+
+  return <WalletIcon wallet={connector?.name?.toLowerCase?.()} />;
 }
 
 const AvatarWrapper = styled.div`
@@ -50,6 +59,8 @@ export default function Account({ account }) {
   const maybeEvmAddress = tryConvertToEvmAddress(address);
   const wallet = account?.meta?.source;
 
+  const isEthereum = account?.type === ChainTypes.ETHEREUM;
+
   useEffect(() => {
     setIdentity(null);
     if (account?.address) {
@@ -64,7 +75,11 @@ export default function Account({ account }) {
     <>
       <AvatarWrapper>
         <Avatar address={maybeEvmAddress} size={40} />
-        <WalletIcon wallet={wallet} />
+        {isEthereum ? (
+          <EvmWalletIcon id={account?.meta?.connectorId} />
+        ) : (
+          <WalletIcon wallet={wallet} />
+        )}
       </AvatarWrapper>
       <NameWrapper>
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
