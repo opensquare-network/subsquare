@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Avatar from "../avatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import Identity from "../Identity";
@@ -8,8 +8,10 @@ import Copyable from "../copyable";
 import { SystemEdit2 } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import PublishAvatarPopup from "./publishAvatarPopup";
+import UnsetAvatarPopup from "./unsetAvatarPopup";
 import { useUser } from "next-common/context/user";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import SecondaryButton from "next-common/lib/button/secondary";
 
 function EditAvatar({ setImageFile, setImageDataUrl }) {
   const inputEl = useRef();
@@ -75,9 +77,15 @@ function EditAvatar({ setImageFile, setImageDataUrl }) {
 
 function ProfileAvatar({ address }) {
   const user = useUser();
-  const [showPopup, setShowPopup] = useState(false);
+  const [showSavePopup, setShowSavePopup] = useState(false);
+  const [showUnsetPopup, setShowUnsetPopup] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
+
+  useEffect(() => {
+    setImageFile(null);
+    setImageDataUrl(null);
+  }, [user?.avatarCid]);
 
   return (
     <div className="flex flex-col gap-4 items-start">
@@ -99,18 +107,30 @@ function ProfileAvatar({ address }) {
           />
         </div>
       </div>
-      <PrimaryButton
-        size="small"
-        disabled={!imageFile}
-        onClick={() => setShowPopup(true)}
-      >
-        Save & Publish
-      </PrimaryButton>
-      {showPopup && (
+      <div className="flex gap-[10px]">
+        <PrimaryButton
+          size="small"
+          disabled={!imageFile}
+          onClick={() => setShowSavePopup(true)}
+        >
+          Save
+        </PrimaryButton>
+        <SecondaryButton
+          size="small"
+          disabled={!user?.avatarCid}
+          onClick={() => setShowUnsetPopup(true)}
+        >
+          Unset
+        </SecondaryButton>
+      </div>
+      {showSavePopup && (
         <PublishAvatarPopup
           imageFile={imageFile}
-          onClose={() => setShowPopup(false)}
+          onClose={() => setShowSavePopup(false)}
         />
+      )}
+      {showUnsetPopup && (
+        <UnsetAvatarPopup onClose={() => setShowUnsetPopup(false)} />
       )}
     </div>
   );

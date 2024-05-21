@@ -1,5 +1,4 @@
 // import CheckSimaSpec from "next-common/components/checkSimaSpec";
-import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -18,33 +17,18 @@ import Signer from "next-common/components/popup/fields/signerField";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 
 function Content() {
-  const { imageFile, onClose } = usePopupParams();
+  const { onClose } = usePopupParams();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { uploading, upload } = useUploadToIpfs();
   const [isLoading, setIsLoading] = useState(false);
   const signMessage = useSignMessage();
   const signerAccount = useSignerAccount();
 
-  const submitAvatar = useCallback(async () => {
+  const unsetAvatar = useCallback(async () => {
     setIsLoading(true);
     try {
-      const { error: uploadError, result: uploadResult } = await upload(
-        imageFile,
-      );
-      if (uploadError) {
-        dispatch(
-          newErrorToast(
-            "Failed to upload avatar to IPFS node: " + uploadError.message,
-          ),
-        );
-        return;
-      }
-      const { cid } = uploadResult;
-
       const entity = {
-        type: "setAvatar",
-        avatarCid: cid,
+        type: "unsetAvatar",
         timestamp: Date.now(),
       };
       const address = signerAccount?.address;
@@ -61,20 +45,20 @@ function Content() {
         signerWallet,
       };
 
-      const { error: saveUserAvatarError } = await nextApi.post(
-        "user/avatar",
+      const { error: unsetUserAvatarError } = await nextApi.post(
+        "user/avatar/unset",
         data,
       );
-      if (saveUserAvatarError) {
+      if (unsetUserAvatarError) {
         dispatch(
           newErrorToast(
-            "Failed to save user's avatar cid: " + saveUserAvatarError.message,
+            "Failed to remove user's avatar: " + unsetUserAvatarError.message,
           ),
         );
         return;
       }
 
-      dispatch(newSuccessToast("Avatar updated successfully"));
+      dispatch(newSuccessToast("Avatar removed successfully"));
 
       onClose();
       router.replace(router.asPath);
@@ -86,17 +70,16 @@ function Content() {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, onClose, imageFile, router, upload, signMessage]);
+  }, [dispatch, onClose, router, signMessage]);
 
   return (
     <>
       <Signer title="Signer" />
-      {/* <CheckSimaSpec /> */}
       <div className="flex justify-end">
         <LoadingPrimaryButton
           loading={isLoading}
-          loadingText={uploading ? "Saving..." : "Publishing..."}
-          onClick={submitAvatar}
+          loadingText="Saving..."
+          onClick={unsetAvatar}
         >
           Confirm
         </LoadingPrimaryButton>
@@ -105,9 +88,9 @@ function Content() {
   );
 }
 
-export default function PublishAvatarPopup(props) {
+export default function UnsetAvatarPopup(props) {
   return (
-    <PopupWithSigner title="Save & Publish" wide {...props}>
+    <PopupWithSigner title="Unset" wide {...props}>
       <Content />
     </PopupWithSigner>
   );
