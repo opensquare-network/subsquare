@@ -17,6 +17,7 @@
     "clsx": "^1.2.1",
     "cookies": "^0.8.0",
     "dayjs": "^1.10.7",
+    "eruda": "^3.0.1",
     "http-proxy": "^1.18.1",
     "localforage": "^1.10.0",
     "lodash-es": "^4.17.21",
