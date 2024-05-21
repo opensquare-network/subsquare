@@ -94,7 +94,7 @@ function ProfileAvatar({ address }) {
         <div className="inline-flex relative">
           {imageDataUrl || user?.avatarCid ? (
             <img
-              className="rounded-full w-[80px] h-[80px]"
+              className="rounded-full w-[80px] h-[80px] border border-neutral400"
               src={imageDataUrl || getIpfsLink(user.avatarCid)}
               alt=""
             />
