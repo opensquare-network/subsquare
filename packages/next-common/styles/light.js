@@ -40,6 +40,7 @@ const light = {
   neutral100: "rgba(255,255,255,1)",
   "neutral100-80": "rgba(255,255,255,0.8)",
   neutral200: "rgba(246,247,250,1)",
+  neutral200alpha: "rgba(246,247,250,0.5)",
   neutral300: "rgba(235,238,244,1)",
   neutral400: "rgba(224,228,235,1)",
   neutral500: "rgba(194,200,212,1)",

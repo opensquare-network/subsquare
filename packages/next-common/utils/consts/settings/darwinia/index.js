@@ -1,64 +1,17 @@
-import Chains from "../chains";
-import capitalize from "../../capitalize";
-import MenuGroups from "./menuGroups";
-import { defaultPostLabels } from "./common";
-import ChainTypes from "../chainTypes";
+import Chains from "../../chains";
+import capitalize from "../../../capitalize";
+import MenuGroups from "../menuGroups";
+import { defaultPostLabels } from "../common";
+import ChainTypes from "../../chainTypes";
 import {
   ProjectIconDarwinia2Dark,
   ProjectIconDarwinia2Light,
   ProjectLogoDarwinia2Dark,
   ProjectLogoDarwinia2Light,
 } from "@osn/icons/subsquare";
-
-export const DEFAULT_DARWINIA_NODES = [
-  {
-    name: "Darwinia",
-    url: "wss://rpc.darwinia.network",
-  },
-  {
-    name: "Darwinia Community",
-    url: "wss://darwinia-rpc.darwiniacommunitydao.xyz",
-  },
-  {
-    name: "Dwellir",
-    url: "wss://darwinia-rpc.dwellir.com",
-  },
-  {
-    name: "OnFinality",
-    url: "wss://darwinia2.api.onfinality.io/public-ws",
-  },
-];
-
-const links = [
-  {
-    name: "website",
-    url: "https://darwinia.network/",
-  },
-  {
-    name: "twitter",
-    url: "https://twitter.com/DarwiniaNetwork",
-  },
-  {
-    name: "medium",
-    url: "https://medium.com/darwinianetwork",
-  },
-  {
-    name: "telegram",
-    url: "https://t.me/DarwiniaNetwork",
-  },
-  {
-    name: "discord",
-    url: "https://discord.com/invite/aQdK9H4MZS",
-  },
-  {
-    name: "github",
-    url: "https://github.com/darwinia-network",
-  },
-  {
-    name: "element",
-    url: "https://app.element.io/#/room/#darwinia:matrix.org",
-  },
-];
+import darwiniaTreasuryTracks from "next-common/utils/consts/settings/darwinia/tracks";
+import defaultDarwiniaNodes from "next-common/utils/consts/settings/darwinia/nodes";
+import darwiniaLinks from "next-common/utils/consts/settings/darwinia/links";
 
 const darwinia2 = {
   value: Chains.darwinia2,
@@ -70,12 +23,12 @@ const darwinia2 = {
   hasElections: false,
   ss58Format: 18,
   snsCoverCid: "QmePHNth5sm1P55WeKWwMeSXnNNw42LyagzTs7NeU5YN9A",
-  endpoints: DEFAULT_DARWINIA_NODES,
+  endpoints: defaultDarwiniaNodes,
   avatar: ProjectIconDarwinia2Light,
   darkAvatar: ProjectIconDarwinia2Dark,
   navLogo: ProjectLogoDarwinia2Light,
   navLogoDark: ProjectLogoDarwinia2Dark,
-  links,
+  links: darwiniaLinks,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
@@ -114,6 +67,7 @@ const darwinia2 = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  treasuryProposalTracks: darwiniaTreasuryTracks,
 };
 
 export default darwinia2;

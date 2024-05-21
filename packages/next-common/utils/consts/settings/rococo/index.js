@@ -1,7 +1,7 @@
-import capitalize from "../../capitalize";
-import MenuGroups from "./menuGroups";
-import Chains from "../chains";
-import { defaultPostLabels } from "./common";
+import capitalize from "../../../capitalize";
+import MenuGroups from "../menuGroups";
+import Chains from "../../chains";
+import { defaultPostLabels } from "../common";
 import {
   ProjectIconRococoDark,
   ProjectIconRococoLight,
@@ -9,6 +9,7 @@ import {
   ProjectLogoRococoLight,
 } from "@osn/icons/subsquare";
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
+import rococoTreasuryTracks from "next-common/utils/consts/settings/rococo/tracks";
 
 export const defaultRococoNodes = [
   {
@@ -58,6 +59,7 @@ const rococo = {
     signet: true,
     mimir: true,
   },
+  treasuryProposalTracks: rococoTreasuryTracks,
 };
 
 export default rococo;

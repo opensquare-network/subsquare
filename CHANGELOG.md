@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.3
+
+date: 2024-05-20
+
+- Support treasury proposal template for referenda.
+- Support evidence submission for polkadot fellowship members.
+- Upgrade dependency to next.js 14.1.1.
+- Extract call args from `coreFellowshp#approve` call.
+- Add loading effect for editor.
+- Remove identity timeline for kusama, because identity is moved to people chain.
+- Refactor summary component.
+- Fix styles.
+
 ### 4.0.2
 
 date: 2024-05-08

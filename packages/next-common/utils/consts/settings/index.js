@@ -25,7 +25,7 @@ import litentry from "./litentry";
 import westendCollectives from "./westendCollectives";
 import westend from "./westend";
 import collectives from "./collectives";
-import darwinia2 from "./darwinia2";
+import darwinia2 from "./darwinia";
 import moonriver from "./moonriver";
 import moonbeam from "./moonbeam";
 import bifrostPolkadot from "./bifrostPolkadot";

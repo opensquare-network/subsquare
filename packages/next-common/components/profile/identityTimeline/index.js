@@ -1,4 +1,4 @@
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import useProfileAddress from "../useProfileAddress";
 import { useEffect } from "react";
 import IdentityTimeline from "next-common/components/identityTimeline";
@@ -12,15 +12,26 @@ import { useSelector } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import ExternalLink from "next-common/components/externalLink";
 
+function useIdentityUrl() {
+  const chain = useChain();
+  const { identityApiSubDomain } = useChainSettings();
+  if (identityApiSubDomain) {
+    return `https://${identityApiSubDomain}.statescan.io/graphql`;
+  } else {
+    return `https://${chain}-identity-api.statescan.io/graphql`;
+  }
+}
+
 function useIdentityTimeline() {
   const dispatch = useDispatch();
   const address = useProfileAddress();
   const chain = useChain();
   const timeline = useSelector(profileIdentityTimelineSelector);
   const isMounted = useIsMounted();
+  const identityApiUrl = useIdentityUrl();
 
   useEffect(() => {
-    fetch(`https://${chain}-identity-api.statescan.io/graphql`, {
+    fetch(identityApiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
