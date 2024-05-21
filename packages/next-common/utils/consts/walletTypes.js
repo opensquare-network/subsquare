@@ -1,7 +1,7 @@
 const WalletTypes = {
   METAMASK: "metamask",
   POLKADOT_JS: "polkadot-js",
-  SUBWALLET: "subwallet",
+  SUBWALLET_JS: "subwallet-js",
   TALISMAN: "talisman",
   POLKAGATE: "polkagate",
   NOVA: "nova",

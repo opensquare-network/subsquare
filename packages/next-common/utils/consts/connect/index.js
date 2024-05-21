@@ -24,7 +24,7 @@ const polkadotJs = {
 };
 
 export const subWallet = {
-  extensionName: WalletTypes.SUBWALLET,
+  extensionName: WalletTypes.SUBWALLET_JS,
   title: "SubWallet",
   installUrl:
     "https://chrome.google.com/webstore/detail/subwallet/onhogfjeacnfoofkfgppdlbmlmnplgbn",

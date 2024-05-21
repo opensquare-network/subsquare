@@ -64,7 +64,7 @@ export function useAccounts({ wallet, onAccessGranted = noop }) {
       switch (wallet) {
         case WalletTypes.POLKADOT_JS:
         case WalletTypes.POLKAGATE:
-        case WalletTypes.SUBWALLET:
+        case WalletTypes.SUBWALLET_JS:
         case WalletTypes.TALISMAN:
         case WalletTypes.MIMIR: {
           await loadPolkadotAccounts(wallet);
