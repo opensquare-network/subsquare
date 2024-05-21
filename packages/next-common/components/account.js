@@ -24,9 +24,16 @@ function WalletIcon({ wallet: walletName }) {
   );
 }
 
-function EvmWalletIcon({ id }) {
+function EvmWalletIcon({ id, wallet }) {
   const connectors = useConnectors();
-  const connector = find(connectors, { id });
+  let connector = find(connectors, { id });
+  // mixed chain talisman
+  if (!connector) {
+    connector = find(
+      connectors,
+      (c) => c.name.toLowerCase() === wallet?.toLowerCase?.(),
+    );
+  }
 
   return <WalletIcon wallet={connector?.name?.toLowerCase?.()} />;
 }
@@ -76,7 +83,7 @@ export default function Account({ account }) {
       <AvatarWrapper>
         <Avatar address={maybeEvmAddress} size={40} />
         {isEthereum ? (
-          <EvmWalletIcon id={account?.meta?.connectorId} />
+          <EvmWalletIcon id={account?.meta?.connectorId} wallet={wallet} />
         ) : (
           <WalletIcon wallet={wallet} />
         )}
