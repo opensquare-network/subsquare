@@ -1,6 +1,4 @@
 import { filter, find, sortBy, uniqBy } from "lodash-es";
-import { useChainSettings } from "next-common/context/chain";
-import ChainTypes from "next-common/utils/consts/chainTypes";
 import {
   allWallets,
   coinbaseWallet,
@@ -11,7 +9,6 @@ import {
   subWallet,
   talisman,
 } from "next-common/utils/consts/connect";
-import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useConnectors } from "wagmi";
 import { useDetectEthereum } from "./useDetectEthereum";
 import { useIsCoinbaseWallet } from "./useIsCoinbaseWallet";
@@ -29,8 +26,6 @@ const fixedWallets = [
 export function useEVMWalletOptions() {
   const connectors = useConnectors();
   const ethereum = useDetectEthereum();
-  const { chainType } = useChainSettings();
-  const showTalisman = chainType === ChainTypes.ETHEREUM;
 
   /**
    * nova
@@ -105,13 +100,5 @@ export function useEVMWalletOptions() {
     "extensionName",
   );
 
-  const options = filter(supportedWalletOptions, (wallet) => {
-    if (wallet.extensionName === WalletTypes.TALISMAN) {
-      return showTalisman;
-    }
-
-    return true;
-  });
-
-  return sortBy(options, "connector");
+  return sortBy(supportedWalletOptions, "connector");
 }
