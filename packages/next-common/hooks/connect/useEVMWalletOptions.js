@@ -12,13 +12,20 @@ import {
 import { useConnectors } from "wagmi";
 import { useDetectEthereum } from "./useDetectEthereum";
 import { useIsCoinbaseWallet } from "./useIsCoinbaseWallet";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
+// always list wallets
 const fixedWallets = [
   coinbaseWallet,
   metamask,
   talisman,
   okxWallet,
-  subWallet,
+  // in EVM, Subwallet extension name
+  // is "SubWallet", not "subwallet-js"
+  {
+    ...subWallet,
+    extensionName: WalletTypes.SUBWALLET_JS.replace("-js", ""),
+  },
   phantom,
   nova,
 ];
