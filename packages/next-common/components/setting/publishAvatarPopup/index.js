@@ -31,13 +31,11 @@ function Content() {
     try {
       const { error: uploadError, result: uploadResult } = await upload(
         imageFile,
+        {
+          errorMessage: "Failed to upload image to IPFS",
+        },
       );
       if (uploadError) {
-        dispatch(
-          newErrorToast(
-            "Failed to upload avatar to IPFS node: " + uploadError.message,
-          ),
-        );
         return;
       }
       const { cid } = uploadResult;
