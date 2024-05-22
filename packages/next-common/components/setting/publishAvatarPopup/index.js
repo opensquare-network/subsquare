@@ -93,7 +93,7 @@ function Content() {
       <div className="flex justify-end">
         <LoadingPrimaryButton
           loading={isLoading}
-          loadingText={uploading ? "Saving..." : "Publishing..."}
+          loadingText={uploading ? "Uploading..." : "Saving..."}
           onClick={submitAvatar}
         >
           Confirm
@@ -105,7 +105,7 @@ function Content() {
 
 export default function PublishAvatarPopup(props) {
   return (
-    <PopupWithSigner title="Save & Publish" wide {...props}>
+    <PopupWithSigner title="Upload & Save" wide {...props}>
       <Content />
     </PopupWithSigner>
   );
