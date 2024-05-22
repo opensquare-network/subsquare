@@ -34,10 +34,10 @@ const delayQuery = debounce(() => {
         const { resolve } = pending.get(address);
         pending.delete(address);
 
-        const identity = avatars.get(address) || null;
-        cachedAvatars.set(address, identity);
+        const avatar = avatars.get(address) || null;
+        cachedAvatars.set(address, avatar);
         if (resolve) {
-          resolve(identity);
+          resolve(avatar);
         }
       }
     })
@@ -64,7 +64,7 @@ export function fetchAvatar(address) {
 }
 
 /**
- * @description sync, get identity from cache
+ * @description sync, get avatar from cache
  */
 export function getCachedAvatar(address) {
   if (!address) {
