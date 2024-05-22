@@ -80,15 +80,9 @@ export default function LoginEVMForm() {
             },
           );
         }}
-      >
-        <div className="flex items-center">
-          {icon}
-          {option.title}
-        </div>
-        {!installed && (
-          <span className="wallet-not-installed">Not installed</span>
-        )}
-      </WalletOption>
+        logo={icon}
+        title={option.title}
+      />
     );
   });
 

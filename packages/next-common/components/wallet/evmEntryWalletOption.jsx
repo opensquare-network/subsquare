@@ -13,12 +13,9 @@ export default function EVMEntryWalletOption() {
       onClick={() => {
         dispatch(setConnectPopupView(CONNECT_POPUP_VIEWS.EVM));
       }}
-    >
-      <div className="flex items-center gap-2">
-        <NetworkEthereumLight />
-        EVM
-      </div>
-      <ArrowRight className="!w-5 !h-5 text-textSecondary" />
-    </WalletOption>
+      logo={<NetworkEthereumLight />}
+      title="EVM"
+      extraContent={<ArrowRight className="!w-5 !h-5 text-textSecondary" />}
+    />
   );
 }

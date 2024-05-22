@@ -21,16 +21,12 @@ export default function LoginEVMContent() {
         <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           <WalletOption
             installed
-            role="button"
             onClick={() => {
               dispatch(setConnectPopupView(CONNECT_POPUP_VIEWS.WEB3));
             }}
-          >
-            <div className="flex items-center">
-              <ArrowCircleLeft className="text-textSecondary" />
-              Back to Substrate
-            </div>
-          </WalletOption>
+            logo={<ArrowCircleLeft className="text-textSecondary" />}
+            title="Back to Substrate"
+          />
         </div>
       )}
 
