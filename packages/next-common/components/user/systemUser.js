@@ -57,7 +57,7 @@ function SystemUser({
       {showAvatar && (
         <AvatarWrapper fontSize={fontSize}>
           <AvatarDisplay
-            address={address}
+            address={displayAddress}
             emailMd5={user?.emailMd5}
             avatarCid={avatar?.avatarCid}
             size={avatarSize}
