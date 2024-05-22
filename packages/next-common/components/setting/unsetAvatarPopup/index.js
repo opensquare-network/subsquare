@@ -28,7 +28,7 @@ function Content() {
     setIsLoading(true);
     try {
       const entity = {
-        type: "unsetAvatar",
+        action: "unset-avatar",
         timestamp: Date.now(),
       };
       const address = signerAccount?.address;

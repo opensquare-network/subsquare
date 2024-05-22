@@ -43,8 +43,8 @@ function Content() {
       const { cid } = uploadResult;
 
       const entity = {
-        type: "setAvatar",
-        avatarCid: cid,
+        action: "set-avatar",
+        CID: cid,
         timestamp: Date.now(),
       };
       const address = signerAccount?.address;
