@@ -59,7 +59,7 @@ function SystemUser({
           <AvatarDisplay
             address={displayAddress}
             emailMd5={user?.emailMd5}
-            avatarCid={avatar?.avatarCid}
+            avatarCid={avatar}
             size={avatarSize}
           />
         </AvatarWrapper>

@@ -76,7 +76,7 @@ export function AddressUserImpl({
         <AvatarWrapper fontSize={fontSize}>
           <AvatarDisplay
             address={displayAddress}
-            avatarCid={avatar?.avatarCid}
+            avatarCid={avatar}
             size={avatarSize}
           />
         </AvatarWrapper>

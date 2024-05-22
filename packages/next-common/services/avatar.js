@@ -5,7 +5,7 @@ import QuickLRU from "quick-lru";
 const cachedAvatars = new QuickLRU({ maxSize: 1000 });
 let pendingQueries = new Map();
 
-const delayQuery = debounce(() => {
+const delayQuery = debounce(async () => {
   const pending = pendingQueries;
   if (pending.size < 1) {
     return;
@@ -17,31 +17,32 @@ const delayQuery = debounce(() => {
     "content-type": "application/json;charset=UTF-8",
   };
 
-  fetch("/api/avatars", {
-    headers,
-    method: "POST",
-    body: JSON.stringify({ addresses }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      const avatars = new Map(data.map((item) => [item.address, item]));
+  try {
+    const res = await fetch("/api/avatars", {
+      headers,
+      method: "POST",
+      body: JSON.stringify({ addresses }),
+    });
+    const data = await res.json();
+    const avatars = new Map(data.map((item) => [item.address, item.avatarCid]));
 
-      for (const address of addresses) {
-        if (!pending.has(address)) {
-          continue;
-        }
-
-        const { resolve } = pending.get(address);
-        pending.delete(address);
-
-        const avatar = avatars.get(address) || null;
-        cachedAvatars.set(address, avatar);
-        if (resolve) {
-          resolve(avatar);
-        }
+    for (const address of addresses) {
+      if (!pending.has(address)) {
+        continue;
       }
-    })
-    .catch(() => {});
+
+      const { resolve } = pending.get(address);
+      pending.delete(address);
+
+      const avatar = avatars.get(address) || null;
+      cachedAvatars.set(address, avatar);
+      if (resolve) {
+        resolve(avatar);
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
 }, 0);
 
 export function fetchAvatar(address) {
