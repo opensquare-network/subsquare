@@ -88,23 +88,25 @@ function ProfileAvatar({ address }) {
   }, [user?.avatarCid]);
 
   return (
-    <div className="flex flex-col gap-4 items-start">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-3">
         <span className="text14Bold">Avatar</span>
-        <div className="inline-flex relative">
-          {imageDataUrl || user?.avatarCid ? (
-            <img
-              className="rounded-full w-[80px] h-[80px] border border-neutral400"
-              src={imageDataUrl || getIpfsLink(user.avatarCid)}
-              alt=""
+        <div className="flex justify-center">
+          <div className="inline-flex relative">
+            {imageDataUrl || user?.avatarCid ? (
+              <img
+                className="rounded-full w-[80px] h-[80px] border border-neutral400"
+                src={imageDataUrl || getIpfsLink(user.avatarCid)}
+                alt=""
+              />
+            ) : (
+              <Avatar address={address} size={80} />
+            )}
+            <EditAvatar
+              setImageFile={setImageFile}
+              setImageDataUrl={setImageDataUrl}
             />
-          ) : (
-            <Avatar address={address} size={80} />
-          )}
-          <EditAvatar
-            setImageFile={setImageFile}
-            setImageDataUrl={setImageDataUrl}
-          />
+          </div>
         </div>
       </div>
       <div className="flex gap-[10px]">
