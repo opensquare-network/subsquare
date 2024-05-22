@@ -1,5 +1,3 @@
-import Avatar from "next-common/components/avatar";
-import Gravatar from "next-common/components/gravatar";
 import { useIsWeb3User, useUser } from "next-common/context/user";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
@@ -21,13 +19,17 @@ import Link from "next/link";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import AccountDelegationPrompt from "./components/delegationPrompt";
+import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
-  return user?.address ? (
-    <Avatar address={user?.address} size={40} />
-  ) : (
-    <Gravatar emailMd5={user?.emailMd5} size={40} />
+  return (
+    <AvatarDisplay
+      avatarCid={user?.avatarCid}
+      address={user?.address}
+      emailMd5={user?.emailMd5}
+      size={40}
+    />
   );
 };
 

@@ -57,3 +57,12 @@ export const LinkWrapper = styled.a`
     cursor: pointer;
   }
 `;
+
+export const AvatarImg = styled.img`
+  border-radius: 50%;
+  width: ${(p) => p.size}px;
+  height: ${(p) => p.size}px;
+  min-width: ${(p) => p.size}px;
+  min-height: ${(p) => p.size}px;
+  object-fit: cover;
+`;

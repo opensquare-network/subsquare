@@ -4,11 +4,11 @@ import Link from "next/link";
 import DeletedAccount from "./deletedAccount";
 import UserDisplay from "./userDisplay";
 import { AvatarWrapper, LinkWrapper, UserWrapper } from "./styled";
-import Avatar from "../avatar";
-import Gravatar from "../gravatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import useAvatarInfo from "next-common/hooks/useAvatarInfo";
+import { AvatarDisplay } from "./avatarDisplay";
 
 function SystemUser({
   user,
@@ -26,6 +26,7 @@ function SystemUser({
 
   const [identity, hasIdentity] = useIdentityInfo(address);
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
+  const [avatar] = useAvatarInfo(address);
 
   if (!user) {
     return <DeletedAccount fontSize={fontSize} />;
@@ -50,16 +51,18 @@ function SystemUser({
   }
 
   const avatarSize = fontSize * (20 / 14);
-  const avatar = address ? (
-    <Avatar address={displayAddress} size={avatarSize} />
-  ) : (
-    <Gravatar email={user?.email} emailMd5={user?.emailMd5} size={avatarSize} />
-  );
 
   return (
     <UserWrapper noEvent={noEvent} color={color}>
       {showAvatar && (
-        <AvatarWrapper fontSize={fontSize}>{avatar}</AvatarWrapper>
+        <AvatarWrapper fontSize={fontSize}>
+          <AvatarDisplay
+            address={address}
+            emailMd5={user?.emailMd5}
+            avatarCid={avatar?.avatarCid}
+            size={avatarSize}
+          />
+        </AvatarWrapper>
       )}
       <Link href={linkUserPage} passHref legacyBehavior>
         <LinkWrapper color={color} onClick={(e) => e.stopPropagation()}>
