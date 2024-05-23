@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { isPolkadotAddress } from "../../utils/viewfuncs";
-import Avatar from "../avatar";
-import Gravatar from "../gravatar";
 import Flex from "../styled/flex";
 import AccountLinks from "../links/accountLinks";
 import { isEthereumAddress } from "@polkadot/util-crypto";
@@ -15,6 +13,7 @@ import Chains from "next-common/utils/consts/chains";
 import AddressUser from "../user/addressUser";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { AvatarDisplay } from "../user/avatarDisplay";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -50,13 +49,14 @@ const Tertiary = styled.span`
   color: var(--textTertiary);
 `;
 
-const DisplayUserAvatar = ({ address, user }) => {
-  return address ? (
-    <Avatar address={address} size={48} />
-  ) : (
-    <Gravatar emailMd5={user?.emailMd5} size={48} />
-  );
-};
+const DisplayUserAvatar = ({ address, user }) => (
+  <AvatarDisplay
+    avatarCid={user?.avatarCid}
+    address={address}
+    emailMd5={user?.emailMd5}
+    size={48}
+  />
+);
 
 const DisplayUser = ({ id }) => {
   if (isPolkadotAddress(id) || isEthereumAddress(id)) {

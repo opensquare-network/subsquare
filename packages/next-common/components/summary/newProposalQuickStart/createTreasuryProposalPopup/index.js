@@ -24,9 +24,8 @@ import { useProposalOrigin } from "../../newProposalPopup";
 import { useRouter } from "next/router";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
-import PrimaryButton from "next-common/lib/button/primary";
-import LoadingButton from "next-common/lib/button/loading";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -142,25 +141,21 @@ function PopupContent() {
   let submitButton = null;
 
   if (preimageExists) {
-    if (isLoading) {
-      submitButton = <LoadingButton>Submit Proposal</LoadingButton>;
-    } else {
-      submitButton = (
-        <PrimaryButton onClick={submitReferendaTx}>
-          Submit Proposal
-        </PrimaryButton>
-      );
-    }
+    submitButton = (
+      <LoadingPrimaryButton loading={isLoading} onClick={submitReferendaTx}>
+        Submit Proposal
+      </LoadingPrimaryButton>
+    );
   } else {
-    if (isLoading) {
-      submitButton = <LoadingButton>Create Preimage</LoadingButton>;
-    } else {
-      submitButton = (
-        <PrimaryButton disabled={!notePreimageTx} onClick={submitPreimageTx}>
-          Create Preimage
-        </PrimaryButton>
-      );
-    }
+    submitButton = (
+      <LoadingPrimaryButton
+        loading={isLoading}
+        disabled={!notePreimageTx}
+        onClick={submitPreimageTx}
+      >
+        Create Preimage
+      </LoadingPrimaryButton>
+    );
   }
 
   return (

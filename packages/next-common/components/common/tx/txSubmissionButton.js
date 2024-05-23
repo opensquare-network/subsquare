@@ -23,13 +23,15 @@ export default function TxSubmissionButton({
     onClose,
   });
 
+  const isLoading = isSubmitting || loading;
+
   return (
     <div className="flex justify-end">
-      {(isSubmitting || loading) && loadingText ? (
+      {isLoading && loadingText ? (
         <LoadingButton>{loadingText}</LoadingButton>
       ) : (
         <PrimaryButton
-          loading={isSubmitting}
+          loading={isLoading}
           onClick={doSubmit}
           disabled={disabled}
         >

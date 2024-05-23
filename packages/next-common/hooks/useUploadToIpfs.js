@@ -8,7 +8,7 @@ export function useUploadToIpfs() {
   const dispatch = useDispatch();
 
   const upload = useCallback(
-    async (file) => {
+    async (file, options) => {
       if (uploading) {
         const message = "Already uploading";
         dispatch(newErrorToast(message));
@@ -29,7 +29,9 @@ export function useUploadToIpfs() {
         const response = await nextApi.postFormData("ipfs/files", formData);
 
         if (response?.error) {
-          dispatch(newErrorToast(response?.error?.message));
+          dispatch(
+            newErrorToast(options?.errorMessage || response?.error?.message),
+          );
         }
 
         return response;
