@@ -1,5 +1,5 @@
 import { Line } from "react-chartjs-2";
-import "./config";
+import "../../../charts/globalConfig";
 import dayjs from "dayjs";
 import { noop, merge } from "lodash-es";
 import { useWindowSize } from "react-use";
