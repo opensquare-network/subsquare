@@ -145,6 +145,7 @@ export async function sendEvmTx({
       },
     });
   } catch (e) {
+    console.error(e);
     dispatch(removeToast(toastId));
     setLoading(false);
 
