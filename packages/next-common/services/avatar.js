@@ -23,6 +23,9 @@ const delayQuery = debounce(async () => {
       method: "POST",
       body: JSON.stringify({ addresses }),
     });
+    if (!res.ok) {
+      return;
+    }
     const data = await res.json();
     const avatars = new Map(data.map((item) => [item.address, item.avatarCid]));
 
