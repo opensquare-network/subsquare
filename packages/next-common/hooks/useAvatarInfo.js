@@ -6,11 +6,9 @@ import {
 } from "next-common/services/avatar";
 import { isNil } from "lodash-es";
 
-let trigger = 0;
-
 export function refreshAvatar(address) {
   removeCachedAvatar(address);
-  trigger++;
+  fetchAvatar(address);
 }
 
 export default function useAvatarInfo(address) {
@@ -18,11 +16,15 @@ export default function useAvatarInfo(address) {
   const [avatar, setAvatar] = useState(cachedAvatar);
 
   useEffect(() => {
+    setAvatar(cachedAvatar);
+  }, [cachedAvatar]);
+
+  useEffect(() => {
     setAvatar(null);
     if (address) {
       fetchAvatar(address).then((avatar) => setAvatar(avatar));
     }
-  }, [address, trigger]);
+  }, [address]);
 
   return [avatar, !isNil(avatar)];
 }
