@@ -5,19 +5,27 @@ import {
   removeCachedAvatar,
 } from "next-common/services/avatar";
 import { isNil } from "lodash-es";
+import { useSelector } from "react-redux";
+import {
+  avatarTriggerSelector,
+  setAvatarTrigger,
+} from "next-common/store/reducers/avatarSlice";
+import { store } from "next-common/store";
 
 export function refreshAvatar(address) {
   removeCachedAvatar(address);
   fetchAvatar(address);
+  store.dispatch(setAvatarTrigger());
 }
 
 export default function useAvatarInfo(address) {
   const cachedAvatar = getCachedAvatar(address);
   const [avatar, setAvatar] = useState(cachedAvatar);
+  const trigger = useSelector(avatarTriggerSelector);
 
   useEffect(() => {
     setAvatar(cachedAvatar);
-  }, [cachedAvatar]);
+  }, [cachedAvatar, trigger]);
 
   useEffect(() => {
     setAvatar(null);
