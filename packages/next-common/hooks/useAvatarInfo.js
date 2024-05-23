@@ -12,9 +12,9 @@ import {
 } from "next-common/store/reducers/avatarSlice";
 import { store } from "next-common/store";
 
-export function refreshAvatar(address) {
+export async function refreshAvatar(address) {
   removeCachedAvatar(address);
-  fetchAvatar(address);
+  await fetchAvatar(address);
   store.dispatch(setAvatarTrigger());
 }
 
