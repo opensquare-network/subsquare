@@ -15,6 +15,7 @@ import {
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import Signer from "next-common/components/popup/fields/signerField";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
+import { refreshAvatar } from "next-common/hooks/useAvatarInfo";
 
 function Content() {
   const { onClose } = usePopupParams();
@@ -58,6 +59,7 @@ function Content() {
         return;
       }
 
+      refreshAvatar(address);
       dispatch(newSuccessToast("Avatar removed successfully"));
 
       onClose();

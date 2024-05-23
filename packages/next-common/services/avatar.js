@@ -78,4 +78,10 @@ export function getCachedAvatar(address) {
   return cachedAvatars.get(address) || null;
 }
 
+export function removeCachedAvatar(address) {
+  if (cachedAvatars.has(address)) {
+    cachedAvatars.delete(address);
+  }
+}
+
 export const getAvatar = getCachedAvatar;
