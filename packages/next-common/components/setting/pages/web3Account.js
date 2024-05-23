@@ -1,5 +1,4 @@
 import { ContentWrapper } from "next-common/components/setting/styled";
-import Web3Address from "next-common/components/setting/web3Address";
 import Logout from "next-common/components/setting/logout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -9,6 +8,7 @@ import {
 } from "next-common/components/styled/containers/titleContainer";
 import SettingLayout from "next-common/components/layout/settingLayout";
 import { useIsWeb3User, useUser } from "next-common/context/user";
+import Profile from "../profile";
 
 export default function Web3Account() {
   const user = useUser();
@@ -29,9 +29,9 @@ export default function Web3Account() {
   return (
     <SettingLayout>
       <SettingSection>
-        <TitleContainer>Web3 Address</TitleContainer>
+        <TitleContainer>Profile</TitleContainer>
         <ContentWrapper>
-          <Web3Address address={address} />
+          <Profile address={address} />
         </ContentWrapper>
       </SettingSection>
       <SettingSection>

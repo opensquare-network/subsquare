@@ -1,14 +1,6 @@
 import { debounce } from "lodash-es";
+import { Deferred } from "next-common/utils/deferred";
 import QuickLRU from "quick-lru";
-
-class Deferred {
-  constructor() {
-    this.promise = new Promise((resolve, reject) => {
-      this.resolve = resolve;
-      this.reject = reject;
-    });
-  }
-}
 
 const cachedIdentities = new QuickLRU({ maxSize: 1000 });
 let pendingQueries = new Map();

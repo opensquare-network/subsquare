@@ -21,6 +21,7 @@ import multisigSlice from "./multisigSlice";
 import profile from "./profile";
 import editorReducer from "./editorSlice";
 import connectPopupReducer from "./connectPopupSlice";
+import avatarReducer from "./avatarSlice";
 
 export default combineReducers({
   toast: toastReducer,
@@ -44,4 +45,5 @@ export default combineReducers({
   ...profile,
   editor: editorReducer,
   connectPopup: connectPopupReducer,
+  avatar: avatarReducer,
 });

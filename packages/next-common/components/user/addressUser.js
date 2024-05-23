@@ -2,18 +2,20 @@ import React, { memo } from "react";
 import Identity from "../Identity";
 import Link from "next/link";
 import { AvatarWrapper, LinkWrapper, UserWrapper } from "./styled";
-import Avatar from "../avatar";
 import AddressDisplay from "./addressDisplay";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
 import DeletedAccount from "./deletedAccount";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import useAvatarInfo from "next-common/hooks/useAvatarInfo";
+import { AvatarDisplay } from "./avatarDisplay";
 
 export function AddressUserImpl({
   className = "",
   address,
   identity,
   hasIdentity,
+  avatar,
   maxWidth,
   showAvatar = true,
   fontSize = 14,
@@ -72,7 +74,11 @@ export function AddressUserImpl({
     <UserWrapper noEvent={noEvent} color={color} className={className}>
       {showAvatar && (
         <AvatarWrapper fontSize={fontSize}>
-          <Avatar address={displayAddress} size={avatarSize} />
+          <AvatarDisplay
+            address={displayAddress}
+            avatarCid={avatar}
+            size={avatarSize}
+          />
         </AvatarWrapper>
       )}
       {userIdentityLink}
@@ -95,6 +101,7 @@ function AddressUser({
 }) {
   const address = add;
   const [identity, hasIdentity] = useIdentityInfo(address);
+  const [avatar] = useAvatarInfo(address);
 
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
 
@@ -108,6 +115,7 @@ function AddressUser({
       address={address}
       identity={identity}
       hasIdentity={hasIdentity}
+      avatar={avatar}
       maxWidth={maxWidth}
       showAvatar={showAvatar}
       fontSize={fontSize}

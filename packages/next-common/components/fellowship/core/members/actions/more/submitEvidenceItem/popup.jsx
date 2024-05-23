@@ -58,9 +58,11 @@ function Content() {
       new File([evidence], `evidence-${address}-${wish}.txt`, {
         type: "text/plain",
       }),
+      {
+        errorMessage: "Failed to upload evidence to IPFS",
+      },
     );
     if (error) {
-      dispatch(newErrorToast("Failed to upload evidence to IPFS"));
       return;
     }
     const { cid } = result;
