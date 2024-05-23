@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
-import { fetchAvatar, getCachedAvatar } from "next-common/services/avatar";
+import {
+  fetchAvatar,
+  getCachedAvatar,
+  removeCachedAvatar,
+} from "next-common/services/avatar";
 import { isNil } from "lodash-es";
+
+let trigger = 0;
+
+export function refreshAvatar(address) {
+  removeCachedAvatar(address);
+  trigger++;
+}
 
 export default function useAvatarInfo(address) {
   const cachedAvatar = getCachedAvatar(address);
@@ -11,7 +22,7 @@ export default function useAvatarInfo(address) {
     if (address) {
       fetchAvatar(address).then((avatar) => setAvatar(avatar));
     }
-  }, [address]);
+  }, [address, trigger]);
 
   return [avatar, !isNil(avatar)];
 }
