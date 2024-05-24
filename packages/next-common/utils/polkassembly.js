@@ -92,7 +92,7 @@ export const convertPolkassemblyComment = (chain, comment) => {
     content: comment.content,
     createdAt: comment.created_at,
     updatedAt: comment.updated_at,
-    comment_source: comment.comment_source,
+    comment_source: comment.comment_source || "polkassembly",
     author: {
       username: comment.is_custom_username
         ? comment.username
