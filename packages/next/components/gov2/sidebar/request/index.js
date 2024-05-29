@@ -1,4 +1,5 @@
 import { SystemCoins } from "@osn/icons/subsquare";
+import { isNil } from "lodash-es";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -118,6 +119,16 @@ function SpendValues() {
 }
 
 export default function Request() {
+  const onchain = useOnchainData();
+
+  if (
+    !onchain?.isTreasury &&
+    !onchain?.isStableTreasury &&
+    isNil(onchain?.value)
+  ) {
+    return null;
+  }
+
   return (
     <Wrapper>
       <div className="text-textPrimary text14Medium">
