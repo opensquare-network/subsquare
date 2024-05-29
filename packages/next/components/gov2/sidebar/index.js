@@ -15,6 +15,7 @@ import WithAddress from "next-common/components/common/withAddress";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
+import Request from "./request";
 
 const VotePopup = dynamic(() => import("../votePopup"), {
   ssr: false,
@@ -40,6 +41,7 @@ export default function Gov2Sidebar() {
 
   return (
     <RightBarWrapper>
+      <Request />
       <Gov2Status />
       <Gov2Tally />
       <WithAddress>
