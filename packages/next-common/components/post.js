@@ -177,6 +177,49 @@ function PostUser({ data, type }) {
   );
 }
 
+function PostAmount({ amount, decimals, symbol }) {
+  return (
+    <TitleExtra>
+      <TitleExtraValue>
+        <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />
+      </TitleExtraValue>
+    </TitleExtra>
+  );
+}
+
+function PostValueTitle({ data }) {
+  const { decimals, symbol } = useChainSettings();
+  const { onchainData, value } = data;
+  const localTreasurySpendAmount = onchainData?.isTreasury
+    ? onchainData?.treasuryInfo?.amount
+    : value;
+
+  const method = onchainData?.proposal?.method;
+
+  if (!isNil(localTreasurySpendAmount)) {
+    return (
+      <PostAmount
+        amount={localTreasurySpendAmount}
+        decimals={decimals}
+        symbol={symbol}
+      />
+    );
+  }
+
+  if (onchainData?.isStableTreasury) {
+    const { amount, spends = [] } = onchainData?.stableTreasuryInfo || {};
+    const symbolSet = new Set(spends.map((spend) => spend.symbol));
+    const symbol = symbolSet.size > 1 ? "USD" : spends[0].symbol;
+    return <PostAmount amount={amount} decimals={6} symbol={symbol} />;
+  }
+
+  if (method) {
+    return <TitleExtra>{method}</TitleExtra>;
+  }
+
+  return null;
+}
+
 export default function Post({ data, href, type }) {
   const isDemocracyCollective = [
     businessCategory.councilMotions,
@@ -206,8 +249,6 @@ export default function Post({ data, href, type }) {
   }
 
   const duration = useDuration(data.time);
-  const { decimals, symbol } = useChainSettings();
-  const method = data?.onchainData?.proposal?.method;
 
   let elapseIcon = null;
   if (
@@ -260,28 +301,13 @@ export default function Post({ data, href, type }) {
     businessCategory.fellowship,
   ].includes(type);
 
-  const postValue = data.onchainData?.isTreasury
-    ? data.onchainData?.treasuryInfo?.amount
-    : data.value;
-
   return (
     <Wrapper>
       <ContentWrapper>
         <HeadWrapper>
           <ListPostTitle data={data} href={href} />
 
-          {!isNil(postValue) ? (
-            <TitleExtra>
-              <TitleExtraValue>
-                <ValueDisplay
-                  value={toPrecision(postValue, decimals)}
-                  symbol={symbol}
-                />
-              </TitleExtraValue>
-            </TitleExtra>
-          ) : (
-            method && <TitleExtra>{method}</TitleExtra>
-          )}
+          <PostValueTitle data={data} />
         </HeadWrapper>
 
         <Divider margin={12} />
