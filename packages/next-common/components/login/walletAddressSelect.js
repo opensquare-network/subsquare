@@ -14,6 +14,8 @@ import { noop } from "lodash-es";
 import isMixedChain from "next-common/utils/isMixedChain";
 import EVMEntryWalletOption from "../wallet/evmEntryWalletOption";
 import { useAccounts } from "next-common/hooks/connect/substrate/useAccounts";
+import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
+import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupView";
 
 const Label = styled.div`
   font-weight: bold;
@@ -38,6 +40,7 @@ export default function WalletAddressSelect({
 }) {
   const chain = useChain();
   const addresses = useAccounts({ wallet: selectedWallet });
+  const [, setView] = useConnectPopupView();
 
   useEffect(() => {
     setSelectedAccount();
@@ -88,7 +91,15 @@ export default function WalletAddressSelect({
           selectedWallet={selectedWallet}
           setSelectWallet={setSelectWallet}
           setWallet={setWallet}
-          extraWallets={isMixedChain() && <EVMEntryWalletOption />}
+          extraWallets={
+            isMixedChain() && (
+              <EVMEntryWalletOption
+                onClick={() => {
+                  setView(CONNECT_POPUP_VIEWS.EVM);
+                }}
+              />
+            )
+          }
         />
       </div>
 
