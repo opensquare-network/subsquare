@@ -6,6 +6,10 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import { toPrecisionNumber } from "next-common/utils";
+import {
+  SYMBOL_DECIMALS,
+  ASSET_DETAIL_LINKS,
+} from "next-common/utils/consts/asset";
 
 function Wrapper({ children }) {
   return (
@@ -22,16 +26,6 @@ function Wrapper({ children }) {
     </SecondaryCardDetail>
   );
 }
-
-const SYMBOL_DECIMALS = {
-  USDT: 6,
-  USDC: 6,
-};
-
-const ASSET_DETAIL_LINKS = {
-  USDT: "https://statemint.statescan.io/#/assets/1984",
-  USDC: "https://statemint.statescan.io/#/assets/1337",
-};
 
 function SymbolLink({ className, symbol, children }) {
   return (

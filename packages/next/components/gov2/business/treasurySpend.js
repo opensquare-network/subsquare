@@ -1,11 +1,12 @@
-import { toPrecision } from "next-common/utils";
+import { toPrecision, toPrecisionNumber } from "next-common/utils";
 import React from "react";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { isNil } from "lodash-es";
 import Link from "next/link";
 import AddressUser from "next-common/components/user/addressUser";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
-export default function getTreasurySpendBusiness(onchain, decimals, symbol) {
+function getTreasuryBusiness(onchain, decimals, symbol) {
   const {
     amount,
     beneficiary,
@@ -42,6 +43,44 @@ export default function getTreasurySpendBusiness(onchain, decimals, symbol) {
       "Beneficiary",
       <AddressUser key="beneficiary" add={beneficiary} />,
     ]);
+  }
+
+  return business;
+}
+
+function getStableTreasuryBusiness(onchain) {
+  const { spends = [] } = onchain?.stableTreasuryInfo || {};
+
+  const requests = (
+    <div className="flex flex-col">
+      {spends.map((spend, index) => (
+        <div
+          key={index}
+          className="flex gap-[8px] items-center text14Medium text-textPrimary"
+        >
+          <ValueDisplay
+            value={toPrecisionNumber(
+              spend.amount,
+              SYMBOL_DECIMALS[spend.symbol],
+            )}
+            symbol={spend.symbol}
+          />
+          <span className="text-textTertiary">to</span>
+          <AddressUser add={spend.beneficiary} />
+        </div>
+      ))}
+    </div>
+  );
+  return [["Request", requests]];
+}
+
+export default function getTreasurySpendBusiness(onchain, decimals, symbol) {
+  const business = [];
+
+  if (onchain.isTreasury) {
+    business.push(...getTreasuryBusiness(onchain, decimals, symbol));
+  } else if (onchain.isStableTreasury) {
+    business.push(...getStableTreasuryBusiness(onchain));
   }
 
   if (!isNil(onchain.treasuryProposalIndex)) {
