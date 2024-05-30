@@ -152,7 +152,7 @@ export default function LinkedAddress() {
   const userContext = useUserContext();
   const signMsg = useSignMessage();
 
-  const addresses = useAccounts({ wallet: SelectWallet });
+  const addresses = useAccounts({ wallet: selectedWallet });
 
   useEffect(() => {
     if (typeof window.injectedWeb3 === "undefined") {
