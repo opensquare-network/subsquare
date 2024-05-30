@@ -1,13 +1,8 @@
+import BackToSubstrateWalletOption from "next-common/components/wallet/backToSubstrateWalletOption";
 import LoginEVMForm from "./form";
-import { ArrowCircleLeft } from "@osn/icons/subsquare";
-import WalletOption from "next-common/components/wallet/walletOption";
-import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
-import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import isMixedChain from "next-common/utils/isMixedChain";
-import { useDispatch } from "react-redux";
 
 export default function LoginEVMContent() {
-  const dispatch = useDispatch();
   const showBack = isMixedChain();
 
   return (
@@ -19,14 +14,7 @@ export default function LoginEVMContent() {
 
       {showBack && (
         <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
-          <WalletOption
-            installed
-            onClick={() => {
-              dispatch(setConnectPopupView(CONNECT_POPUP_VIEWS.WEB3));
-            }}
-            logo={<ArrowCircleLeft className="text-textSecondary" />}
-            title="Back to Substrate"
-          />
+          <BackToSubstrateWalletOption />
         </div>
       )}
 
