@@ -12,16 +12,21 @@ import { SystemLoading } from "@osn/icons/subsquare";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useAccounts } from "next-common/hooks/connect/evm/useAccounts";
 import ErrorMessage from "next-common/components/styled/errorMessage";
-import EVMWalletOptions from "next-common/components/wallet/evmWalletOptions";
+import SelectWallet from "next-common/components/wallet/selectWallet";
+import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
   const { lastConnectedAccount } = useConnectedAccountContext();
   const { connector, isConnecting, isConnected } = useAccount();
   const { connect, isError } = useConnect();
-  const [selectedConnector, setSelectedConnector] = useState(connector);
   const [selectedAccount, setSelectedAccount] = useState();
   const accounts = useAccounts();
+  const evmWallets = useEVMWalletOptions();
+  const connectedWallet = find(evmWallets, (w) => {
+    return w.connector.id === connector.id;
+  });
+  const [selectedWallet, setSelectedWallet] = useState(connectedWallet);
 
   const [web3Login, isLoading] = useWeb3Login();
 
@@ -38,7 +43,7 @@ export default function LoginEVMForm() {
   }, [accounts]);
 
   useEffect(() => {
-    setSelectedConnector(connector);
+    setSelectedWallet(connectedWallet);
   }, [isError]);
 
   function handleConnect() {
@@ -53,21 +58,20 @@ export default function LoginEVMForm() {
       <div className="text14Bold text-textPrimary mb-2">EVM Wallet</div>
 
       <div className="space-y-6">
-        <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
-          <EVMWalletOptions
-            selectedConnector={selectedConnector}
-            onSelect={(option) => {
-              connect(
-                { connector: option.connector },
-                {
-                  onSuccess() {
-                    setSelectedConnector(option.connector);
-                  },
+        <SelectWallet
+          wallets={evmWallets}
+          selectedWallet={selectedWallet}
+          onSelect={(wallet) => {
+            connect(
+              { connector: wallet.connector },
+              {
+                onSuccess() {
+                  setSelectedWallet(wallet);
                 },
-              );
-            }}
-          />
-        </div>
+              },
+            );
+          }}
+        />
 
         {isConnecting && (
           <div className="flex justify-center">
