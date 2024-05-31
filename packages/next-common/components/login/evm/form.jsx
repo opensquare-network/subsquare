@@ -26,7 +26,18 @@ export default function LoginEVMForm() {
   const connectedWallet = find(evmWallets, (w) => {
     return w?.connector?.id === connector.id;
   });
-  const [selectedWallet, setSelectedWallet] = useState(connectedWallet);
+
+  const [selectedWallet, setSelectedWallet] = useState();
+  useEffect(() => {
+    if (selectedWallet) {
+      return;
+    }
+
+    setSelectedWallet(connectedWallet);
+  }, [connectedWallet]);
+  useEffect(() => {
+    setSelectedWallet(connectedWallet);
+  }, [isError]);
 
   const [web3Login, isLoading] = useWeb3Login();
 
@@ -41,10 +52,6 @@ export default function LoginEVMForm() {
       setSelectedAccount(accounts?.[0]);
     }
   }, [accounts]);
-
-  useEffect(() => {
-    setSelectedWallet(connectedWallet);
-  }, [isError]);
 
   function handleConnect() {
     web3Login({
