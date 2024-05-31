@@ -3,7 +3,10 @@ import WalletOption from "./walletOption";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { ArrowCircleLeft } from "@osn/icons/subsquare";
 
-export default function BackToSubstrateWalletOption() {
+/**
+ * @param {Parameters<WalletOption>[0]} props
+ */
+export default function BackToSubstrateWalletOption(props) {
   const [, setView] = useConnectPopupView();
 
   return (
@@ -14,6 +17,7 @@ export default function BackToSubstrateWalletOption() {
       }}
       logo={<ArrowCircleLeft className="text-textSecondary" />}
       title="Back to Substrate"
+      {...props}
     />
   );
 }
