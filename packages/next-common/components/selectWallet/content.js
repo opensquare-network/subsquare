@@ -16,7 +16,7 @@ const ButtonWrapper = styled.div`
 export default function SelectWalletContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [wallet, setWallet] = useState();
-  const [selectedWallet, setSelectWallet] = useState("");
+  const [selectedWallet, setSelectedWallet] = useState();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const dispatch = useDispatch();
   const { lastConnectedAccount, connect: connectAccount } =
@@ -32,7 +32,7 @@ export default function SelectWalletContent() {
     try {
       await connectAccount({
         address: selectedAccount.address,
-        wallet: selectedAccount.meta?.source || selectedWallet,
+        wallet: selectedAccount.meta?.source || selectedWallet?.extensionName,
       });
     } catch (e) {
       dispatch(newErrorToast(e.message));
@@ -50,7 +50,7 @@ export default function SelectWalletContent() {
           wallet={wallet}
           setWallet={setWallet}
           selectedWallet={selectedWallet}
-          setSelectWallet={setSelectWallet}
+          setSelectedWallet={setSelectedWallet}
           selectedAccount={selectedAccount}
           setSelectedAccount={setSelectedAccount}
           lastUsedAddress={lastConnectedAccount?.address}

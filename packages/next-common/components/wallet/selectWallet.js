@@ -8,7 +8,7 @@ import WalletOption from "./walletOption";
 export default function SelectWallet({
   wallets,
   selectedWallet,
-  setSelectWallet,
+  setSelectedWallet,
   onSelect = noop,
   beforeWallets,
   extraWallets,
@@ -60,7 +60,7 @@ export default function SelectWallet({
               key={index}
               wallet={wallet}
               onClick={async () => {
-                setSelectWallet(wallet?.extensionName);
+                setSelectedWallet(wallet);
                 handleClick(wallet);
               }}
               selected={selected}
@@ -74,7 +74,7 @@ export default function SelectWallet({
               key={index}
               wallet={wallet}
               onClick={async () => {
-                setSelectWallet(wallet?.extensionName);
+                setSelectedWallet(wallet);
                 handleClick(wallet);
               }}
               selected={selected}
@@ -87,7 +87,7 @@ export default function SelectWallet({
             key={index}
             wallet={wallet}
             onClick={async () => {
-              setSelectWallet(wallet?.extensionName);
+              setSelectedWallet(wallet);
               handleClick(wallet);
             }}
             selected={selected}

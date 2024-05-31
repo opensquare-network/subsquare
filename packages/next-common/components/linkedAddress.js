@@ -151,7 +151,7 @@ export default function LinkedAddress() {
   const chain = useChain();
   const user = useUser();
   const [showSelectWallet, setShowSelectWallet] = useState(false);
-  const [selectedWallet, setSelectWallet] = useState("");
+  const [selectedWallet, setSelectedWallet] = useState();
   const { injectedWeb3 } = useInjectedWeb3();
   const [activeChain, setActiveChain] = useState(chain);
   const dispatch = useDispatch();
@@ -195,7 +195,11 @@ export default function LinkedAddress() {
 
     let signature;
     try {
-      signature = await signMsg(result?.challenge, address, selectedWallet);
+      signature = await signMsg(
+        result?.challenge,
+        address,
+        selectedWallet?.extensionName,
+      );
     } catch (e) {
       console.error("Sign request is cancelled", e);
       return;
@@ -203,7 +207,7 @@ export default function LinkedAddress() {
 
     const { error: confirmError, result: confirmResult } = await nextApi.post(
       `user/linkaddr/${result?.attemptId}`,
-      { challengeAnswer: signature, signer: selectedWallet },
+      { challengeAnswer: signature, signer: selectedWallet?.extensionName },
     );
 
     if (confirmResult) {
@@ -313,8 +317,10 @@ export default function LinkedAddress() {
             <SelectWallet
               wallets={getSingleSigWallets()}
               selectedWallet={selectedWallet}
-              setSelectWallet={setSelectWallet}
-              onSelect={() => setShowSelectWallet(false)}
+              setSelectedWallet={setSelectedWallet}
+              onSelect={() => {
+                setShowSelectWallet(false);
+              }}
               extraWallets={
                 isMixedChain() && (
                   <EVMEntryWalletOption
@@ -340,7 +346,7 @@ export default function LinkedAddress() {
               onSelect={(wallet) => {
                 function select() {
                   setShowSelectWallet(false);
-                  setSelectWallet(wallet);
+                  setSelectedWallet(wallet);
                 }
 
                 if (wallet.connector?.id === connector?.id) {

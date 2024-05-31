@@ -16,7 +16,7 @@ const ButtonWrapper = styled.div`
 
 export default function AddressLogin() {
   const [wallet, setWallet] = useState();
-  const [selectedWallet, setSelectWallet] = useState("");
+  const [selectedWallet, setSelectedWallet] = useState();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [web3Error, setWeb3Error] = useState();
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export default function AddressLogin() {
         wallet={wallet}
         setWallet={setWallet}
         selectedWallet={selectedWallet}
-        setSelectWallet={setSelectWallet}
+        setSelectedWallet={setSelectedWallet}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
         web3Error={web3Error}
@@ -44,7 +44,7 @@ export default function AddressLogin() {
             onClick={() => {
               web3Login({
                 account: selectedAccount,
-                wallet: selectedWallet,
+                wallet: selectedWallet?.extensionName,
               });
             }}
             disabled={!selectedAccount}

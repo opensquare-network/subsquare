@@ -20,9 +20,9 @@ export function useSubstrateAccounts({ wallet, onAccessGranted = noop }) {
   const [addresses, setAddresses] = useState([]);
 
   const loadPolkadotAccounts = useCallback(
-    async (selectedWallet) => {
+    async (selectedWalletName) => {
       setAddresses([]);
-      const extension = injectedWeb3?.[selectedWallet];
+      const extension = injectedWeb3?.[selectedWalletName];
       if (!extension) {
         return;
       }
@@ -56,18 +56,18 @@ export function useSubstrateAccounts({ wallet, onAccessGranted = noop }) {
   }, [signetAccounts, setAddresses]);
 
   const loadWalletAccounts = useCallback(
-    async (wallet) => {
-      if (!wallet) {
+    async (selectedWalletName) => {
+      if (!selectedWalletName) {
         return;
       }
 
-      switch (wallet) {
+      switch (selectedWalletName) {
         case WalletTypes.POLKADOT_JS:
         case WalletTypes.POLKAGATE:
         case WalletTypes.SUBWALLET_JS:
         case WalletTypes.TALISMAN:
         case WalletTypes.MIMIR: {
-          await loadPolkadotAccounts(wallet);
+          await loadPolkadotAccounts(selectedWalletName);
           break;
         }
         case WalletTypes.SIGNET: {
@@ -84,8 +84,8 @@ export function useSubstrateAccounts({ wallet, onAccessGranted = noop }) {
   );
 
   useEffect(() => {
-    loadWalletAccounts(wallet);
-  }, [wallet]);
+    loadWalletAccounts(wallet?.extensionName);
+  }, [wallet?.extensionName]);
 
   return addresses;
 }

@@ -33,7 +33,7 @@ export default function WalletAddressSelect({
   wallet,
   setWallet,
   selectedWallet,
-  setSelectWallet,
+  setSelectedWallet,
   selectedAccount,
   setSelectedAccount,
   lastUsedAddress,
@@ -89,8 +89,7 @@ export default function WalletAddressSelect({
         <SelectWallet
           wallets={getSingleSigWallets()}
           selectedWallet={selectedWallet}
-          setSelectWallet={setSelectWallet}
-          setWallet={setWallet}
+          setSelectedWallet={setSelectedWallet}
           extraWallets={
             isMixedChain() && (
               <EVMEntryWalletOption
@@ -109,8 +108,7 @@ export default function WalletAddressSelect({
           <SelectWallet
             wallets={multisigWallets}
             selectedWallet={selectedWallet}
-            setSelectWallet={setSelectWallet}
-            setWallet={setWallet}
+            setSelectedWallet={setSelectedWallet}
           />
         </div>
       )}
