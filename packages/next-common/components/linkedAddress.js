@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch } from "react-redux";
 import nextApi from "../services/nextApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
   newErrorToast,
   newSuccessToast,
@@ -32,6 +31,7 @@ import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupVi
 import BackToSubstrateWalletOption from "./wallet/backToSubstrateWalletOption";
 import { useAccount, useConnect } from "wagmi";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
+import useInjectedWeb3 from "./wallet/useInjectedWeb3";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -149,11 +149,10 @@ const EmptyList = styled.div`
 
 export default function LinkedAddress() {
   const chain = useChain();
-  const isMounted = useIsMounted();
   const user = useUser();
   const [showSelectWallet, setShowSelectWallet] = useState(false);
   const [selectedWallet, setSelectWallet] = useState("");
-  const [hasExtension, setHasExtension] = useState(true);
+  const { injectedWeb3 } = useInjectedWeb3();
   const [activeChain, setActiveChain] = useState(chain);
   const dispatch = useDispatch();
   const userContext = useUserContext();
@@ -171,16 +170,6 @@ export default function LinkedAddress() {
   const substrateAccounts = useSubstrateAccounts({ wallet: selectedWallet });
   const evmAccounts = useEVMAccounts();
   const evmWallets = useEVMWallets();
-
-  useEffect(() => {
-    if (typeof window.injectedWeb3 === "undefined") {
-      setHasExtension(false);
-      return;
-    }
-    if (Object.keys(window.injectedWeb3 ?? {}).length > 0) {
-      setHasExtension(true);
-    }
-  }, [isMounted]);
 
   const showSelectWalletModal = () => setShowSelectWallet(true);
 
@@ -232,7 +221,7 @@ export default function LinkedAddress() {
 
   return (
     <NeutralPanel className="p-6">
-      {hasExtension ? (
+      {injectedWeb3 ? (
         <div>
           <InfoWrapper>
             {
@@ -349,10 +338,13 @@ export default function LinkedAddress() {
                 </>
               }
               onSelect={(wallet) => {
-                setSelectWallet(wallet);
+                function select() {
+                  setShowSelectWallet(false);
+                  setSelectWallet(wallet);
+                }
 
                 if (wallet.connector?.id === connector?.id) {
-                  setShowSelectWallet(false);
+                  select();
                   return;
                 }
 
@@ -360,7 +352,7 @@ export default function LinkedAddress() {
                   { connector: wallet.connector },
                   {
                     onSuccess() {
-                      setShowSelectWallet(false);
+                      select();
                     },
                   },
                 );
