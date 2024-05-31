@@ -21,7 +21,7 @@ import AdvanceSettings from "../common/advanceSettings";
 import BlocksField from "next-common/components/popup/fields/blocksField";
 import TreasuryBalance from "./treasuryBalance";
 import useTreasuryBalance from "next-common/hooks/treasury/useTreasuryBalance";
-import useSymbolPrice from "next-common/hooks/useSymbolPrice";
+import useNativeTokenPrice from "next-common/hooks/useNativeTokenPrice";
 import BigNumber from "bignumber.js";
 
 const Assets = [
@@ -104,7 +104,7 @@ function PopupContent() {
     useTreasuryBalance();
 
   const { loading: isNativeTokenPriceLoading, price: nativeTokenPrice } =
-    useSymbolPrice();
+    useNativeTokenPrice();
   const { decimals } = useChainSettings();
   const usdxTreasuryBalance = new BigNumber(treasuryBalance)
     .div(Math.pow(10, decimals))
