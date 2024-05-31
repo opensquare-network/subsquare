@@ -18,7 +18,7 @@ export default function SpendLocalTemplate() {
     <>
       <QuickStartButton
         key="treasury-proposal"
-        title="Create a treasury proposal"
+        title="Local treasury proposal"
         onClick={() => setShowCreateTreasuryProposal(true)}
       />
       {showCreateTreasuryProposal && (
