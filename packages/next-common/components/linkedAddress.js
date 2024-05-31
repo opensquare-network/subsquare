@@ -24,8 +24,8 @@ import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { getSingleSigWallets } from "next-common/utils/consts/connect";
-import { useAccounts } from "next-common/hooks/connect/substrate/useAccounts";
-import { useAccounts as useEvmAccounts } from "next-common/hooks/connect/evm/useAccounts";
+import { useSubstrateAccounts } from "next-common/hooks/connect/substrate/useAccounts";
+import { useEVMAccounts } from "next-common/hooks/connect/evm/useAccounts";
 import EVMEntryWalletOption from "./wallet/evmEntryWalletOption";
 import isMixedChain from "next-common/utils/isMixedChain";
 import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupView";
@@ -161,13 +161,15 @@ export default function LinkedAddress() {
   const { connector } = useAccount();
   const { connect } = useConnect();
 
+  const isEVMSelected = !!selectedWallet?.connector;
+
   const [view, setView, reset] = useConnectPopupView();
   useEffect(() => {
     reset();
   }, [showSelectWallet]);
 
-  const addresses = useAccounts({ wallet: selectedWallet });
-  const evmAccounts = useEvmAccounts();
+  const substrateAccounts = useSubstrateAccounts({ wallet: selectedWallet });
+  const evmAccounts = useEVMAccounts();
   const evmOptions = useEVMWalletOptions();
 
   useEffect(() => {
@@ -225,19 +227,8 @@ export default function LinkedAddress() {
     }
   };
 
-  const mergedAccounts = [
-    ...(addresses ?? []),
-    ...evmAccounts,
-    ...(user?.address ? [user?.address] : [])
-      .filter((item) =>
-        (addresses ?? []).every((acc) => !isSameAddress(acc.address, item)),
-      )
-      .map((address) => ({
-        address,
-        name: "--",
-      })),
-  ];
-  const availableAccounts = mergedAccounts || [];
+  const extensionAccounts = isEVMSelected ? evmAccounts : substrateAccounts;
+  const availableAccounts = (selectedWallet && extensionAccounts) || [];
 
   return (
     <NeutralPanel className="p-6">
