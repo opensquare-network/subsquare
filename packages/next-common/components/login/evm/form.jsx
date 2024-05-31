@@ -10,7 +10,7 @@ import { useConnectedAccountContext } from "next-common/context/connectedAccount
 import { find } from "lodash-es";
 import { SystemLoading } from "@osn/icons/subsquare";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import { useAccounts } from "next-common/hooks/connect/evm/useAccounts";
+import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
 import ErrorMessage from "next-common/components/styled/errorMessage";
 import SelectWallet from "next-common/components/wallet/selectWallet";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
@@ -21,7 +21,7 @@ export default function LoginEVMForm() {
   const { connector, isConnecting, isConnected } = useAccount();
   const { connect, isError } = useConnect();
   const [selectedAccount, setSelectedAccount] = useState();
-  const accounts = useAccounts();
+  const accounts = useEVMAccounts();
   const evmWallets = useEVMWallets();
   const connectedWallet = find(evmWallets, (w) => {
     return w?.connector?.id === connector.id;

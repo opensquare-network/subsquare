@@ -6,7 +6,7 @@ import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import ContextPopup from "./contextPopup";
 import { useSignetAccounts, useSignetSdk } from "next-common/context/signet";
-import { useAccounts } from "next-common/hooks/connect/evm/useAccounts";
+import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
 
 function usePolkadotAccounts() {
   const [accounts, setAccounts] = useState([]);
@@ -44,7 +44,7 @@ function usePolkadotAccounts() {
 }
 
 export default function CanBeAnyWalletSigner({ children }) {
-  const evmAccounts = useAccounts();
+  const evmAccounts = useEVMAccounts();
   const [polkadotAccounts, isLoadingPolkadot] = usePolkadotAccounts(true);
   const signetAccounts = useSignetAccounts();
   const { loading: isLoadingSignet } = useSignetSdk();

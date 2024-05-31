@@ -2,9 +2,7 @@ import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
 import { useMemo } from "react";
 import { useAccount } from "wagmi";
 
-export const useEVMAccounts = useAccounts;
-
-export function useAccounts() {
+export function useEVMAccounts() {
   const { addresses, connector, isConnected } = useAccount();
 
   const accounts = useMemo(() => {

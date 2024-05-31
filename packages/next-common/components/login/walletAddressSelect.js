@@ -13,7 +13,7 @@ import ErrorMessage from "../styled/errorMessage";
 import { noop } from "lodash-es";
 import isMixedChain from "next-common/utils/isMixedChain";
 import EVMEntryWalletOption from "../wallet/evmEntryWalletOption";
-import { useAccounts } from "next-common/hooks/connect/substrate/useAccounts";
+import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupView";
 
@@ -39,7 +39,7 @@ export default function WalletAddressSelect({
   lastUsedAddress,
 }) {
   const chain = useChain();
-  const addresses = useAccounts({ wallet: selectedWallet });
+  const addresses = useSubstrateAccounts({ wallet: selectedWallet });
   const [, setView] = useConnectPopupView();
 
   useEffect(() => {

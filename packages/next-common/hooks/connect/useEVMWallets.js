@@ -30,7 +30,9 @@ const fixedWallets = [
   nova,
 ];
 
-export function useEVMWallets() {
+export const useEVMWallets = useWallets;
+
+export function useWallets() {
   const connectors = useConnectors();
   const ethereum = useDetectEthereum();
 
