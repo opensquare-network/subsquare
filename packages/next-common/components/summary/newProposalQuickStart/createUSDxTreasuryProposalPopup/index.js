@@ -142,7 +142,7 @@ function PopupContent() {
 
   return (
     <>
-      <SignerWithBalance />
+      <SignerWithBalance title="Origin" />
       <USDxBalanceField
         title="Request"
         inputBalance={inputBalance}

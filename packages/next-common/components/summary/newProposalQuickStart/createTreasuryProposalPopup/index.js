@@ -15,6 +15,7 @@ import { checkInputValue } from "next-common/utils";
 import { usePageProps } from "next-common/context/page";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
+import AdvanceSettings from "../common/advanceSettings";
 
 function PopupContent() {
   const { tracks, tracksDetail } = usePageProps();
@@ -64,7 +65,7 @@ function PopupContent() {
 
   return (
     <>
-      <SignerWithBalance />
+      <SignerWithBalance title="Origin" />
       <BalanceField
         title="Request"
         inputBalance={inputBalance}
@@ -77,8 +78,10 @@ function PopupContent() {
         setAddress={setBeneficiary}
       />
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
-      <EnactmentBlocks track={track} setEnactment={setEnactment} />
-      <SubmissionDeposit />
+      <AdvanceSettings>
+        <EnactmentBlocks track={track} setEnactment={setEnactment} />
+        <SubmissionDeposit />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <CreateProposalSubmitButton
           trackId={trackId}

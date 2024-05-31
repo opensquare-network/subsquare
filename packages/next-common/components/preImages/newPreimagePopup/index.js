@@ -35,7 +35,7 @@ export function getState(api, proposal) {
     encodedProposal = proposal.method.toHex();
     encodedLength = Math.ceil((encodedProposal.length - 2) / 2);
     encodedHash = blake2AsHex(encodedProposal);
-    notePreimageTx = proposal; //api.tx.preimage.notePreimage(encodedProposal);
+    notePreimageTx = api.tx.preimage.notePreimage(encodedProposal);
 
     // we currently don't have a constant exposed, however match to Substrate
     storageFee = (api.consts.preimage?.baseDeposit || BN_ZERO).add(
