@@ -9,11 +9,11 @@ export default function USDxBalanceField({
   symbol,
   setSymbol,
   title = "Balance",
-  titleTooltip = "",
+  status,
 }) {
   return (
     <div>
-      <PopupLabel text={title} tooltip={titleTooltip} />
+      <PopupLabel text={title} status={status} />
       <SymbolSelectInput
         symbolOptions={["USDt", "USDC"]}
         disabled={isLoading}

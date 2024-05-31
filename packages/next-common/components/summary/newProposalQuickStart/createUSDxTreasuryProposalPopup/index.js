@@ -19,6 +19,8 @@ import { addressToPublicKey } from "next-common/utils/address";
 import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
 import BlocksField from "next-common/components/popup/fields/blocksField";
+import TreasuryBalance from "./treasuryBalance";
+import useTreasuryBalance from "next-common/hooks/treasury/useTreasuryBalance";
 
 const Assets = [
   {
@@ -140,6 +142,9 @@ function PopupContent() {
     }
   }, [api, inputBalance, beneficiary, validFrom, symbol]);
 
+  const { balance: treasuryBalance, loading: isTreasuryBalanceLoading } =
+    useTreasuryBalance();
+
   return (
     <>
       <SignerWithBalance title="Origin" />
@@ -149,6 +154,13 @@ function PopupContent() {
         setInputBalance={setInputBalance}
         symbol={symbol}
         setSymbol={setSymbol}
+        status={
+          <TreasuryBalance
+            isLoading={isTreasuryBalanceLoading}
+            symbol={symbol}
+            value={treasuryBalance}
+          />
+        }
       />
       <div className="flex flex-col gap-[8px]">
         <AddressComboField
