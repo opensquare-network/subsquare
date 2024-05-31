@@ -53,7 +53,7 @@ export default function SymbolSelectInput({
       {showOptions && (
         <OptionsWrapper className="left-auto max-w-[160px]">
           {symbolOptions.map((item) => (
-            <Option key={value} onClick={() => onSymbolChange(item)}>
+            <Option key={item} onClick={() => onSymbolChange(item)}>
               {item}
             </Option>
           ))}

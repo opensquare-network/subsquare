@@ -21,6 +21,8 @@ import AdvanceSettings from "../common/advanceSettings";
 import BlocksField from "next-common/components/popup/fields/blocksField";
 import TreasuryBalance from "./treasuryBalance";
 import useTreasuryBalance from "next-common/hooks/treasury/useTreasuryBalance";
+import useSymbolPrice from "next-common/hooks/useSymbolPrice";
+import BigNumber from "bignumber.js";
 
 const Assets = [
   {
@@ -98,17 +100,31 @@ function PopupContent() {
   const [symbol, setSymbol] = useState("USDt");
   const [validFrom, setValidFrom] = useState("");
 
+  const { balance: treasuryBalance, loading: isTreasuryBalanceLoading } =
+    useTreasuryBalance();
+
+  const { loading: isNativeTokenPriceLoading, price: nativeTokenPrice } =
+    useSymbolPrice();
+  const { decimals } = useChainSettings();
+  const usdxTreasuryBalance = new BigNumber(treasuryBalance)
+    .div(Math.pow(10, decimals))
+    .times(nativeTokenPrice)
+    .toFixed();
+
   useEffect(() => {
     if (!treasuryProposalTracks || !inputBalance) {
       return;
     }
     const track = treasuryProposalTracks.find(
-      (track) => isNil(track.max) || track.max >= parseFloat(inputBalance),
+      (track) =>
+        isNil(track.max) ||
+        track.max >=
+          new BigNumber(inputBalance).div(nativeTokenPrice).toNumber(),
     );
     if (track) {
       setTrackId(track?.id);
     }
-  }, [inputBalance, treasuryProposalTracks]);
+  }, [inputBalance, treasuryProposalTracks, nativeTokenPrice]);
 
   const { encodedHash, encodedLength, notePreimageTx } = useMemo(() => {
     if (!api || !inputBalance || !beneficiary) {
@@ -142,9 +158,6 @@ function PopupContent() {
     }
   }, [api, inputBalance, beneficiary, validFrom, symbol]);
 
-  const { balance: treasuryBalance, loading: isTreasuryBalanceLoading } =
-    useTreasuryBalance();
-
   return (
     <>
       <SignerWithBalance title="Origin" />
@@ -156,9 +169,9 @@ function PopupContent() {
         setSymbol={setSymbol}
         status={
           <TreasuryBalance
-            isLoading={isTreasuryBalanceLoading}
+            isLoading={isTreasuryBalanceLoading || isNativeTokenPriceLoading}
             symbol={symbol}
-            value={treasuryBalance}
+            treasuryBalance={usdxTreasuryBalance}
           />
         }
       />
