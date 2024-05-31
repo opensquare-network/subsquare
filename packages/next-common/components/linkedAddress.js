@@ -236,7 +236,7 @@ export default function LinkedAddress() {
         <div>
           <InfoWrapper>
             {
-              "Associate your account with an on-chain address using the Polkadot{.js} extension."
+              "Associate your account with an on-chain address using the Web 3 wallet."
             }
           </InfoWrapper>
           <PrimaryButton onClick={showSelectWalletModal}>
