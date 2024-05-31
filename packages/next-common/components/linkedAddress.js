@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch } from "react-redux";
 import nextApi from "../services/nextApi";
@@ -7,7 +7,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { nodes } from "next-common/utils/constants";
+import { CONNECT_POPUP_VIEWS, nodes } from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
 import { addressEllipsis, isSameAddress } from "../utils";
@@ -25,6 +25,13 @@ import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { getSingleSigWallets } from "next-common/utils/consts/connect";
 import { useAccounts } from "next-common/hooks/connect/substrate/useAccounts";
+import { useAccounts as useEvmAccounts } from "next-common/hooks/connect/evm/useAccounts";
+import EVMEntryWalletOption from "./wallet/evmEntryWalletOption";
+import isMixedChain from "next-common/utils/isMixedChain";
+import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupView";
+import BackToSubstrateWalletOption from "./wallet/backToSubstrateWalletOption";
+import { useAccount, useConnect } from "wagmi";
+import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -151,8 +158,17 @@ export default function LinkedAddress() {
   const dispatch = useDispatch();
   const userContext = useUserContext();
   const signMsg = useSignMessage();
+  const { connector } = useAccount();
+  const { connect } = useConnect();
+
+  const [view, setView, reset] = useConnectPopupView();
+  useEffect(() => {
+    reset();
+  }, [showSelectWallet]);
 
   const addresses = useAccounts({ wallet: selectedWallet });
+  const evmAccounts = useEvmAccounts();
+  const evmOptions = useEVMWalletOptions();
 
   useEffect(() => {
     if (typeof window.injectedWeb3 === "undefined") {
@@ -211,6 +227,7 @@ export default function LinkedAddress() {
 
   const mergedAccounts = [
     ...(addresses ?? []),
+    ...evmAccounts,
     ...(user?.address ? [user?.address] : [])
       .filter((item) =>
         (addresses ?? []).every((acc) => !isSameAddress(acc.address, item)),
@@ -312,12 +329,53 @@ export default function LinkedAddress() {
             <span className="text-theme500">Wallet</span>
           </h3>
 
-          <SelectWallet
-            wallets={getSingleSigWallets()}
-            selectedWallet={selectedWallet}
-            setSelectWallet={setSelectWallet}
-            onSelect={() => setShowSelectWallet(false)}
-          />
+          {view === CONNECT_POPUP_VIEWS.WEB3 && (
+            <SelectWallet
+              wallets={getSingleSigWallets()}
+              selectedWallet={selectedWallet}
+              setSelectWallet={setSelectWallet}
+              onSelect={() => setShowSelectWallet(false)}
+              extraWallets={
+                isMixedChain() && (
+                  <EVMEntryWalletOption
+                    onClick={() => {
+                      setView(CONNECT_POPUP_VIEWS.EVM);
+                    }}
+                  />
+                )
+              }
+            />
+          )}
+
+          {view === CONNECT_POPUP_VIEWS.EVM && (
+            <SelectWallet
+              wallets={evmOptions}
+              selectedWallet={selectedWallet}
+              beforeWallets={
+                <>
+                  <BackToSubstrateWalletOption />
+                  <div />
+                </>
+              }
+              onSelect={(wallet) => {
+                setSelectWallet(wallet);
+
+                if (wallet.connector?.id === connector?.id) {
+                  setShowSelectWallet(false);
+                  return;
+                }
+
+                connect(
+                  { connector: wallet.connector },
+                  {
+                    onSuccess() {
+                      setShowSelectWallet(false);
+                    },
+                  },
+                );
+              }}
+            />
+          )}
         </Popup>
       )}
     </NeutralPanel>
