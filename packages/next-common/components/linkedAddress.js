@@ -31,7 +31,7 @@ import isMixedChain from "next-common/utils/isMixedChain";
 import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupView";
 import BackToSubstrateWalletOption from "./wallet/backToSubstrateWalletOption";
 import { useAccount, useConnect } from "wagmi";
-import { useEVMWalletOptions } from "next-common/hooks/connect/useEVMWalletOptions";
+import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -170,7 +170,7 @@ export default function LinkedAddress() {
 
   const substrateAccounts = useSubstrateAccounts({ wallet: selectedWallet });
   const evmAccounts = useEVMAccounts();
-  const evmOptions = useEVMWalletOptions();
+  const evmWallets = useEVMWallets();
 
   useEffect(() => {
     if (typeof window.injectedWeb3 === "undefined") {
@@ -340,7 +340,7 @@ export default function LinkedAddress() {
 
           {view === CONNECT_POPUP_VIEWS.EVM && (
             <SelectWallet
-              wallets={evmOptions}
+              wallets={evmWallets}
               selectedWallet={selectedWallet}
               beforeWallets={
                 <>

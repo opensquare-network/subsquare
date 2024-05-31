@@ -30,7 +30,7 @@ const fixedWallets = [
   nova,
 ];
 
-export function useEVMWalletOptions() {
+export function useEVMWallets() {
   const connectors = useConnectors();
   const ethereum = useDetectEthereum();
 
@@ -82,7 +82,7 @@ export function useEVMWalletOptions() {
     return true;
   });
 
-  const supportedWalletOptions = uniqBy(
+  const supportedWallets = uniqBy(
     [
       coinbaseWalletOption,
       ...filteredConnectors.map((connector) => {
@@ -107,5 +107,5 @@ export function useEVMWalletOptions() {
     "extensionName",
   );
 
-  return sortBy(supportedWalletOptions, "connector");
+  return sortBy(supportedWallets, "connector");
 }
