@@ -10,6 +10,8 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
+export const useSubstrateAccounts = useAccounts;
+
 export function useAccounts({ wallet, onAccessGranted = noop }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
