@@ -66,6 +66,7 @@ export default function AnnouncementPublishPopup({
         setLoading(true);
 
         const entity = {
+          action: "set-delegation-announcement",
           shortDescription,
           longDescription,
           timestamp: Date.now(),
