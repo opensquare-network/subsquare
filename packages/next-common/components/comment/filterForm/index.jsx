@@ -8,7 +8,7 @@ export default function CommentsFilterForm() {
   return (
     <div className="flex items-center gap-x-2">
       <CommentsFilterFormSorter params={params} onChange={updateParams} />
-      <CommentsFilterFormFilter />
+      <CommentsFilterFormFilter params={params} onChange={updateParams} />
     </div>
   );
 }
