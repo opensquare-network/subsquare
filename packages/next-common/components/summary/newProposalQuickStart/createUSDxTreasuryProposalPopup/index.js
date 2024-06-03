@@ -20,7 +20,6 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
 import BlocksField from "next-common/components/popup/fields/blocksField";
 import TreasuryBalance from "./treasuryBalance";
-import useNativeTokenPrice from "next-common/hooks/useNativeTokenPrice";
 import useAssetHubTreasuryBalance, {
   StatemintAssets,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
@@ -92,8 +91,8 @@ function PopupContent() {
   const { balance: treasuryBalance, loading: isTreasuryBalanceLoading } =
     useAssetHubTreasuryBalance(symbol);
 
-  const { loading: isNativeTokenPriceLoading, price: nativeTokenPrice } =
-    useNativeTokenPrice();
+  // 1 DOT = 10 USDx
+  const nativeTokenPrice = 10;
 
   useEffect(() => {
     if (!treasuryProposalTracks || !inputBalance) {
@@ -153,7 +152,7 @@ function PopupContent() {
         setSymbol={setSymbol}
         status={
           <TreasuryBalance
-            isLoading={isTreasuryBalanceLoading || isNativeTokenPriceLoading}
+            isLoading={isTreasuryBalanceLoading}
             symbol={symbol}
             treasuryBalance={treasuryBalance}
           />
