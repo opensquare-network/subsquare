@@ -8,6 +8,7 @@ import { AdminProvider } from "./admin";
 import { ConnectedAccountProvider } from "./connectedAccount";
 import ApiProvider from "next-common/context/api";
 import { SignetContextProvider } from "./signet";
+import { AssetHubApiProvider } from "./assetHub";
 
 export default function GlobalProvider({
   user,
@@ -33,7 +34,9 @@ export default function GlobalProvider({
               >
                 <PageProvider pageProperties={pageProperties}>
                   <ApiProvider>
-                    <SignetContextProvider>{children}</SignetContextProvider>
+                    <AssetHubApiProvider>
+                      <SignetContextProvider>{children}</SignetContextProvider>
+                    </AssetHubApiProvider>
                   </ApiProvider>
                 </PageProvider>
               </NavProvider>

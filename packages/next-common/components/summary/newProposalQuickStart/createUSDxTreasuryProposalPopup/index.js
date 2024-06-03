@@ -20,22 +20,11 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
 import BlocksField from "next-common/components/popup/fields/blocksField";
 import TreasuryBalance from "./treasuryBalance";
-import useTreasuryBalance from "next-common/hooks/treasury/useTreasuryBalance";
 import useNativeTokenPrice from "next-common/hooks/useNativeTokenPrice";
+import useAssetHubTreasuryBalance, {
+  StatemintAssets,
+} from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import BigNumber from "bignumber.js";
-
-const Assets = [
-  {
-    id: 1984,
-    symbol: "USDt",
-    decimals: 6,
-  },
-  {
-    id: 1337,
-    symbol: "USDC",
-    decimals: 6,
-  },
-];
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -84,7 +73,7 @@ const getBeneficiaryParam = (beneficiary) => {
 };
 
 const getAssetBySymbol = (symbol) =>
-  Assets.find((asset) => asset.symbol === symbol);
+  StatemintAssets.find((asset) => asset.symbol === symbol);
 
 function PopupContent() {
   const { tracks, tracksDetail } = usePageProps();
@@ -101,15 +90,10 @@ function PopupContent() {
   const [validFrom, setValidFrom] = useState("");
 
   const { balance: treasuryBalance, loading: isTreasuryBalanceLoading } =
-    useTreasuryBalance();
+    useAssetHubTreasuryBalance(symbol);
 
   const { loading: isNativeTokenPriceLoading, price: nativeTokenPrice } =
     useNativeTokenPrice();
-  const { decimals } = useChainSettings();
-  const usdxTreasuryBalance = new BigNumber(treasuryBalance)
-    .div(Math.pow(10, decimals))
-    .times(nativeTokenPrice)
-    .toFixed();
 
   useEffect(() => {
     if (!treasuryProposalTracks || !inputBalance) {
@@ -171,7 +155,7 @@ function PopupContent() {
           <TreasuryBalance
             isLoading={isTreasuryBalanceLoading || isNativeTokenPriceLoading}
             symbol={symbol}
-            treasuryBalance={usdxTreasuryBalance}
+            treasuryBalance={treasuryBalance}
           />
         }
       />
