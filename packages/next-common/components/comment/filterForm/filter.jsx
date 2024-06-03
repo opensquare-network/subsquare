@@ -1,14 +1,12 @@
 import { SystemFilter } from "@osn/icons/subsquare";
+import { noop } from "lodash-es";
 import Checkbox from "next-common/components/checkbox";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
-import { usePostCommentsFilterParams } from "next-common/hooks/usePostCommentsFilterParams";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useRef, useState } from "react";
 import { useClickAway } from "react-use";
 
-export default function CommentsFilterFormFilter() {
-  const [params, , updateParams] = usePostCommentsFilterParams();
-
+export default function CommentsFilterFormFilter({ params, onChange = noop }) {
   const [value, setValue] = useState(params);
   const [showFilter, setShowFilter] = useState(false);
   const ref = useRef();
@@ -39,7 +37,7 @@ export default function CommentsFilterFormFilter() {
 
   function handleApply() {
     setShowFilter(false);
-    updateParams(value);
+    onChange(value);
   }
 
   return (

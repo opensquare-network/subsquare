@@ -1,9 +1,7 @@
+import { noop } from "lodash-es";
 import Select from "next-common/components/select";
-import { usePostCommentsFilterParams } from "next-common/hooks/usePostCommentsFilterParams";
 
-export default function CommentsFilterFormSorter() {
-  const [params, , update] = usePostCommentsFilterParams();
-
+export default function CommentsFilterFormSorter({ params, onChange = noop }) {
   const options = [
     {
       label: "Newest",
@@ -37,7 +35,7 @@ export default function CommentsFilterFormSorter() {
         small
         value={params.comments_sortby}
         onChange={(option) => {
-          update({ comments_sortby: option.value });
+          onChange({ comments_sortby: option.value });
         }}
         options={options}
       />
