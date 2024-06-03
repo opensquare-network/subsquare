@@ -14,6 +14,10 @@ export default function SpendUSDxTemplate() {
     return null;
   }
 
+  if (!settings.newProposalQuickStart?.usdxTreasuryProposal) {
+    return null;
+  }
+
   return (
     <>
       <QuickStartButton
