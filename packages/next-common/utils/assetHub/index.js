@@ -10,7 +10,7 @@ export async function getAssetHubApi() {
 
   const wsAssetHubEndpoint = process.env.NEXT_PUBLIC_WS_ASSET_HUB_ENDPOINTS;
   if (!wsAssetHubEndpoint) {
-    throw new Error("NEXT_PUBLIC_WS_ASSET_HUB_ENDPOINTS not set");
+    return null;
   }
 
   const endpoints = wsAssetHubEndpoint.split(";");

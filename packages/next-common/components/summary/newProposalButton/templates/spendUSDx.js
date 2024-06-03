@@ -3,6 +3,7 @@ import QuickStartButton from "next-common/components/summary/newProposalButton/t
 import { useState } from "react";
 import { usePopupOnClose } from "next-common/context/popup";
 import NewUSDxTreasuryReferendumPopup from "../../newProposalQuickStart/createUSDxTreasuryProposalPopup";
+import { AssetHubApiProvider } from "next-common/context/assetHub";
 
 export default function SpendUSDxTemplate() {
   const settings = useChainSettings();
@@ -19,7 +20,7 @@ export default function SpendUSDxTemplate() {
   }
 
   return (
-    <>
+    <AssetHubApiProvider>
       <QuickStartButton
         title="USDx treasury proposal"
         onClick={() => setShowCreateTreasuryProposal(true)}
@@ -27,6 +28,6 @@ export default function SpendUSDxTemplate() {
       {showCreateTreasuryProposal && (
         <NewUSDxTreasuryReferendumPopup onClose={onClose} />
       )}
-    </>
+    </AssetHubApiProvider>
   );
 }
