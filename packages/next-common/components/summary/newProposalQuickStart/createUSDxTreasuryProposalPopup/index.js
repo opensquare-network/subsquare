@@ -1,15 +1,12 @@
 import AddressComboField from "next-common/components/popup/fields/addressComboField";
-import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
-import { isNil } from "lodash-es";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
-import { useChainSettings } from "next-common/context/chain";
 import { checkInputValue } from "next-common/utils";
 import { usePageProps } from "next-common/context/page";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
@@ -25,6 +22,7 @@ import useAssetHubTreasuryBalance, {
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import BigNumber from "bignumber.js";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
+import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -85,7 +83,6 @@ function PopupContent() {
   const realAddress = useRealAddress();
   const extensionAccounts = useExtensionAccounts();
   const [enactment, setEnactment] = useState();
-  const { treasuryProposalTracks } = useChainSettings();
   const [symbol, setSymbol] = useState("USDt");
   const [validFrom, setValidFrom] = useState("");
 
@@ -94,21 +91,9 @@ function PopupContent() {
 
   // 1 DOT = 10 USDx
   const nativeTokenPrice = 10;
-
-  useEffect(() => {
-    if (!treasuryProposalTracks || !inputBalance) {
-      return;
-    }
-    const track = treasuryProposalTracks.find(
-      (track) =>
-        isNil(track.max) ||
-        track.max >=
-          new BigNumber(inputBalance).div(nativeTokenPrice).toNumber(),
-    );
-    if (track) {
-      setTrackId(track?.id);
-    }
-  }, [inputBalance, treasuryProposalTracks, nativeTokenPrice]);
+  const tokenAmount = new BigNumber(inputBalance)
+    .div(nativeTokenPrice)
+    .toNumber();
 
   const { encodedHash, encodedLength, notePreimageTx } = useMemo(() => {
     if (!api || !inputBalance || !beneficiary) {
@@ -168,7 +153,12 @@ function PopupContent() {
         />
         <InfoMessage>Please fill the address from AssetHub</InfoMessage>
       </div>
-      <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
+      <AutoSelectTreasuryTrack
+        requestAmount={tokenAmount}
+        trackId={trackId}
+        setTrackId={setTrackId}
+      />
+
       <AdvanceSettings>
         <BlocksField
           title="Valid From"

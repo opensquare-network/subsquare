@@ -1,13 +1,11 @@
 import AddressComboField from "next-common/components/popup/fields/addressComboField";
 import BalanceField from "next-common/components/popup/fields/balanceField";
-import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
-import { isNil } from "lodash-es";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
@@ -16,6 +14,7 @@ import { usePageProps } from "next-common/context/page";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
+import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
 
 function PopupContent() {
   const { tracks, tracksDetail } = usePageProps();
@@ -28,19 +27,6 @@ function PopupContent() {
   const realAddress = useRealAddress();
   const extensionAccounts = useExtensionAccounts();
   const [enactment, setEnactment] = useState();
-  const { treasuryProposalTracks } = useChainSettings();
-
-  useEffect(() => {
-    if (!treasuryProposalTracks || !inputBalance) {
-      return;
-    }
-    const track = treasuryProposalTracks.find(
-      (track) => isNil(track.max) || track.max >= parseFloat(inputBalance),
-    );
-    if (track) {
-      setTrackId(track?.id);
-    }
-  }, [inputBalance, treasuryProposalTracks]);
 
   const { encodedHash, encodedLength, notePreimageTx } = useMemo(() => {
     if (!api || !inputBalance || !beneficiary) {
@@ -77,7 +63,11 @@ function PopupContent() {
         defaultAddress={realAddress}
         setAddress={setBeneficiary}
       />
-      <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
+      <AutoSelectTreasuryTrack
+        requestAmount={inputBalance}
+        trackId={trackId}
+        setTrackId={setTrackId}
+      />
       <AdvanceSettings>
         <EnactmentBlocks track={track} setEnactment={setEnactment} />
         <SubmissionDeposit />
