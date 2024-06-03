@@ -5,8 +5,6 @@ import { ArrowRight } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { useCallback, useState } from "react";
 import NewPreimagePopup from "next-common/components/preImages/newPreimagePopup";
-import SpendLocalTemplateProvider from "./templates/spendLocal";
-import SpendUSDxTemplateProvider from "./templates/spendUSDx";
 
 function ChoiceButton({ icon, name, description, onClick }) {
   return (
@@ -57,31 +55,27 @@ export default function SubmitProposalPopupCommon({
   }
 
   return (
-    <SpendLocalTemplateProvider onClose={onClose}>
-      <SpendUSDxTemplateProvider onClose={onClose}>
-        <Popup
-          wide
-          className="!w-[640px]"
-          title="Submit Proposal"
-          onClose={onClose}
-        >
-          <div className="flex flex-col !mt-[24px] gap-[16px]">
-            <ChoiceButton
-              icon={<NewPreimageSVG />}
-              name="New preimage"
-              description="Proposals can be submitted with preimage hash-only"
-              onClick={() => setShowNewPreimagePopup(true)}
-            />
-            <ChoiceButton
-              icon={<NewProposalSVG />}
-              name="I already have a preimage"
-              description="Copy preimage hash to continue submitting a proposal"
-              onClick={() => setShowNewProposalPopup(true)}
-            />
-          </div>
-          {children}
-        </Popup>
-      </SpendUSDxTemplateProvider>
-    </SpendLocalTemplateProvider>
+    <Popup
+      wide
+      className="!w-[640px]"
+      title="Submit Proposal"
+      onClose={onClose}
+    >
+      <div className="flex flex-col !mt-[24px] gap-[16px]">
+        <ChoiceButton
+          icon={<NewPreimageSVG />}
+          name="New preimage"
+          description="Proposals can be submitted with preimage hash-only"
+          onClick={() => setShowNewPreimagePopup(true)}
+        />
+        <ChoiceButton
+          icon={<NewProposalSVG />}
+          name="I already have a preimage"
+          description="Copy preimage hash to continue submitting a proposal"
+          onClick={() => setShowNewProposalPopup(true)}
+        />
+      </div>
+      {children}
+    </Popup>
   );
 }
