@@ -24,6 +24,7 @@ import useAssetHubTreasuryBalance, {
   StatemintAssets,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import BigNumber from "bignumber.js";
+import { AssetHubApiProvider } from "next-common/context/assetHub";
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -116,7 +117,7 @@ function PopupContent() {
 
     const asset = getAssetBySymbol(symbol);
     if (!asset) {
-      return {};
+      throw new Error("Invalid asset");
     }
 
     let bnValue;
@@ -193,7 +194,9 @@ function PopupContent() {
 export default function NewUSDxTreasuryReferendumPopup({ onClose }) {
   return (
     <PopupWithSigner title="USDx treasury proposal" onClose={onClose} wide>
-      <PopupContent />
+      <AssetHubApiProvider>
+        <PopupContent />
+      </AssetHubApiProvider>
     </PopupWithSigner>
   );
 }

@@ -1,33 +1,43 @@
 import { useChainSettings } from "next-common/context/chain";
 import QuickStartButton from "next-common/components/summary/newProposalButton/templates/button";
-import { useState } from "react";
-import { usePopupOnClose } from "next-common/context/popup";
+import React, { useState } from "react";
 import NewUSDxTreasuryReferendumPopup from "../../newProposalQuickStart/createUSDxTreasuryProposalPopup";
-import { AssetHubApiProvider } from "next-common/context/assetHub";
 
-export default function SpendUSDxTemplate() {
+const SpendUSDxTemplateContext = React.createContext();
+
+export default function SpendUSDxTemplateProvider({ onClose, children }) {
   const settings = useChainSettings();
   const [showCreateTreasuryProposal, setShowCreateTreasuryProposal] =
     useState(false);
-  const onClose = usePopupOnClose();
 
-  if (!settings.treasuryProposalTracks) {
-    return null;
-  }
+  let button = null;
+  let popup = null;
 
-  if (!settings.newProposalQuickStart?.usdxTreasuryProposal) {
-    return null;
-  }
-
-  return (
-    <AssetHubApiProvider>
+  if (
+    settings.treasuryProposalTracks &&
+    settings.newProposalQuickStart?.usdxTreasuryProposal
+  ) {
+    button = (
       <QuickStartButton
         title="USDx treasury proposal"
         onClick={() => setShowCreateTreasuryProposal(true)}
       />
-      {showCreateTreasuryProposal && (
-        <NewUSDxTreasuryReferendumPopup onClose={onClose} />
-      )}
-    </AssetHubApiProvider>
+    );
+    popup = <NewUSDxTreasuryReferendumPopup onClose={onClose} />;
+  }
+
+  if (showCreateTreasuryProposal) {
+    return popup;
+  }
+
+  return (
+    <SpendUSDxTemplateContext.Provider value={{ button }}>
+      {children}
+    </SpendUSDxTemplateContext.Provider>
   );
+}
+
+export function useSpendUSDxButton() {
+  const { button } = React.useContext(SpendUSDxTemplateContext);
+  return button;
 }
