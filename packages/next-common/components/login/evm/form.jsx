@@ -1,11 +1,8 @@
 import { useAccount, useConnect } from "wagmi";
-import { useDispatch } from "react-redux";
-import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
 import PrimaryButton from "next-common/lib/button/primary";
 import AddressSelect from "../../addressSelect";
 import { useEffect, useState } from "react";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
-import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { find } from "lodash-es";
 import { SystemLoading } from "@osn/icons/subsquare";
@@ -16,7 +13,6 @@ import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import { metamask } from "next-common/utils/consts/connect";
 
 export default function LoginEVMForm() {
-  const dispatch = useDispatch();
   const { lastConnectedAccount } = useConnectedAccountContext();
   const { connector, isConnecting, isConnected } = useAccount();
   const { connect, isError } = useConnect();
@@ -115,19 +111,6 @@ export default function LoginEVMForm() {
             Address not detected, please create an available address.
           </ErrorMessage>
         )}
-
-        <div className="text14Medium text-center text-textSecondary">
-          Login with{" "}
-          <span
-            className="text-theme500"
-            role="button"
-            onClick={() => {
-              dispatch(setConnectPopupView(CONNECT_POPUP_VIEWS.ACCOUNT));
-            }}
-          >
-            account
-          </span>
-        </div>
       </div>
     </div>
   );

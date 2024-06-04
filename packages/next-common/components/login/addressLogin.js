@@ -1,12 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
 import PrimaryButton from "next-common/lib/button/primary";
 import WalletAddressSelect from "./walletAddressSelect";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
-import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
-import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -19,7 +16,6 @@ export default function AddressLogin() {
   const [selectedWallet, setSelectedWallet] = useState();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [web3Error, setWeb3Error] = useState();
-  const dispatch = useDispatch();
   const { lastConnectedAccount } = useConnectedAccountContext();
   const [web3Login, isLoading] = useWeb3Login();
 
@@ -52,18 +48,6 @@ export default function AddressLogin() {
             Next
           </PrimaryButton>
         )}
-        <div className="text14Medium text-center text-textSecondary">
-          Login with{" "}
-          <span
-            className="text-theme500"
-            role="button"
-            onClick={() => {
-              dispatch(setConnectPopupView(CONNECT_POPUP_VIEWS.ACCOUNT));
-            }}
-          >
-            account
-          </span>
-        </div>
       </ButtonWrapper>
     </div>
   );

@@ -96,13 +96,6 @@ export default function MailLogin() {
           Connect with {isEvmChain() ? "EVM" : "web3"} address
         </SecondaryButton>
       </FormButtonsWrapper>
-
-      <div className="text-center text14Medium text-textSecondary">
-        Don't have an account?{" "}
-        <Link href={"/signup"} className="text-theme500">
-          Sign up
-        </Link>
-      </div>
     </FormWrapper>
   );
 }
