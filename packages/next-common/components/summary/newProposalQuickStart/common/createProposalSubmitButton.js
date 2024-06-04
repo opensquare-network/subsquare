@@ -7,12 +7,12 @@ import { useDispatch } from "react-redux";
 import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { upperFirstCamelCase } from "next-common/utils";
-import { usePageProps } from "next-common/context/page";
 import { useProposalOrigin } from "../../newProposalPopup";
 import { useRouter } from "next/router";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
+import useTrackDetail from "../../newProposalPopup/useTrackDetail";
 
 export default function CreateProposalSubmitButton({
   trackId,
@@ -24,9 +24,8 @@ export default function CreateProposalSubmitButton({
   const { onClose } = usePopupParams();
   const router = useRouter();
   const dispatch = useDispatch();
-  const { tracksDetail } = usePageProps();
   const api = useContextApi();
-  const track = tracksDetail.find((track) => track.id === trackId);
+  const track = useTrackDetail(trackId);
   const proposalOrigin = useProposalOrigin(trackId);
 
   const preimages = useCombinedPreimageHashes();
