@@ -1,5 +1,5 @@
 import SignerPopup from "next-common/components/signerPopup";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PreimageField from "./preimageField";
 import EnactmentBlocks from "./enactmentBlocks";
 import { getEventData, sendTx, wrapWithProxy } from "next-common/utils/sendTx";
@@ -7,17 +7,15 @@ import { useDispatch } from "react-redux";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { isNil } from "lodash-es";
 import { useRouter } from "next/router";
-import { usePageProps } from "next-common/context/page";
 import SubmissionDeposit from "./submissionDeposit";
 import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
 import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
+import useTrackDetail from "./useTrackDetail";
 
 export function useProposalOrigin(trackId) {
-  const { tracksDetail } = usePageProps();
-  const origins = (tracksDetail || []).find(
-    (track) => track.id === trackId,
-  )?.origins;
+  const track = useTrackDetail(trackId);
+  const origins = track?.origins;
   if (Array.isArray(origins)) {
     return origins[0];
   }
@@ -30,7 +28,6 @@ export default function NewProposalPopup({
   preimageHash: _preimageHash,
   preimageLength: _preimageLength,
 }) {
-  const { tracksDetail } = usePageProps();
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useIsMounted();
@@ -43,10 +40,7 @@ export default function NewProposalPopup({
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
 
-  const track = useMemo(
-    () => tracksDetail?.find((track) => track.id === trackId),
-    [trackId, tracksDetail],
-  );
+  const track = useTrackDetail(trackId);
 
   const disabled =
     isNil(trackId) ||

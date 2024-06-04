@@ -15,15 +15,16 @@ import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
 import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
+import useTrackDetail from "../../newProposalPopup/useTrackDetail";
 
 function PopupContent() {
-  const { tracks, tracksDetail } = usePageProps();
+  const { tracks } = usePageProps();
   const api = useContextApi();
   const { decimals } = useChainSettings();
   const [inputBalance, setInputBalance] = useState("");
   const [beneficiary, setBeneficiary] = useState("");
   const [trackId, setTrackId] = useState(tracks[0].id);
-  const track = tracksDetail.find((track) => track.id === trackId);
+  const track = useTrackDetail(trackId);
   const realAddress = useRealAddress();
   const extensionAccounts = useExtensionAccounts();
   const [enactment, setEnactment] = useState();

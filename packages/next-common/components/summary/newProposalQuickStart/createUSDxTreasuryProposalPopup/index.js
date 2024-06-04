@@ -23,6 +23,7 @@ import useAssetHubTreasuryBalance, {
 import BigNumber from "bignumber.js";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
+import useTrackDetail from "../../newProposalPopup/useTrackDetail";
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -74,12 +75,12 @@ const getAssetBySymbol = (symbol) =>
   StatemintAssets.find((asset) => asset.symbol === symbol);
 
 function PopupContent() {
-  const { tracks, tracksDetail } = usePageProps();
+  const { tracks } = usePageProps();
   const api = useContextApi();
   const [inputBalance, setInputBalance] = useState("");
   const [beneficiary, setBeneficiary] = useState("");
   const [trackId, setTrackId] = useState(tracks[0].id);
-  const track = tracksDetail.find((track) => track.id === trackId);
+  const track = useTrackDetail(trackId);
   const realAddress = useRealAddress();
   const extensionAccounts = useExtensionAccounts();
   const [enactment, setEnactment] = useState();
