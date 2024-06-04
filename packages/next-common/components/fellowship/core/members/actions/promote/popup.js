@@ -75,7 +75,7 @@ function PopupContent({ member, onClose }) {
       />
       <RankField title="To Rank" rank={toRank} setRank={setToRank} readOnly />
       <EnactmentBlocks setEnactment={setEnactment} />
-      <InfoMessage>
+      <InfoMessage className="mb-4">
         <span>
           Will create a referendum in {trackName} track to promote{" "}
           <div className="inline-flex relative top-[5px]">

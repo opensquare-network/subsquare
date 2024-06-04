@@ -28,7 +28,7 @@ export default function ProxyPage() {
       <SettingSection>
         <TitleContainer>Proxy Address</TitleContainer>
         <ContentWrapper>
-          <InfoMessage>
+          <InfoMessage className="mb-4">
             All your transactions will be submitted on behalf of this proxy
             address.
           </InfoMessage>

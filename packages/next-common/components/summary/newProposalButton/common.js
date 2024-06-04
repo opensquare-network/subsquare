@@ -55,7 +55,12 @@ export default function SubmitProposalPopupCommon({
   }
 
   return (
-    <Popup wide title="Submit Proposal" onClose={onClose}>
+    <Popup
+      wide
+      className="!w-[640px]"
+      title="Submit Proposal"
+      onClose={onClose}
+    >
       <div className="flex flex-col !mt-[24px] gap-[16px]">
         <ChoiceButton
           icon={<NewPreimageSVG />}
