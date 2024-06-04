@@ -35,7 +35,7 @@ export default function SelectWallet({
 
           return (
             <WalletOption
-              key={wallet.extensionName}
+              key={wallet.connector.id}
               installed={installed}
               logo={icon}
               title={wallet.title}
