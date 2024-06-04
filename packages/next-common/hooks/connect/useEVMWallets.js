@@ -12,7 +12,6 @@ import {
 import { useConnectors } from "wagmi";
 import { useDetectEthereum } from "./useDetectEthereum";
 import { useIsCoinbaseWallet } from "./useIsCoinbaseWallet";
-import WalletTypes from "next-common/utils/consts/walletTypes";
 
 // always list wallets
 const fixedWallets = [
@@ -20,12 +19,7 @@ const fixedWallets = [
   metamask,
   talisman,
   okxWallet,
-  // in EVM, Subwallet extension name
-  // is "SubWallet", not "subwallet-js"
-  {
-    ...subWallet,
-    extensionName: WalletTypes.SUBWALLET_JS.replace("-js", ""),
-  },
+  subWallet,
   phantom,
   nova,
 ];
@@ -104,8 +98,15 @@ export function useEVMWallets() {
       novaWalletOption,
       ...fixedWallets,
     ],
-    "extensionName",
+    "connector.id",
   );
 
-  return sortBy(supportedWallets, "connector");
+  const resolvedWallets = supportedWallets.map((w) => {
+    return {
+      ...w,
+      extensionName: metamask.extensionName,
+    };
+  });
+
+  return sortBy(resolvedWallets, "connector");
 }
