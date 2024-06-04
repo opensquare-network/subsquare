@@ -77,6 +77,4 @@ export const InfoMessage = styled(GreyPanel)`
   line-height: 20px;
 
   color: var(--textSecondary);
-
-  margin-bottom: 16px;
 `;
