@@ -9,11 +9,11 @@ import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { find } from "lodash-es";
 import { SystemLoading } from "@osn/icons/subsquare";
-import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
 import ErrorMessage from "next-common/components/styled/errorMessage";
 import SelectWallet from "next-common/components/wallet/selectWallet";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
+import { metamask } from "next-common/utils/consts/connect";
 
 export default function LoginEVMForm() {
   const dispatch = useDispatch();
@@ -52,13 +52,6 @@ export default function LoginEVMForm() {
       setSelectedAccount(accounts?.[0]);
     }
   }, [accounts]);
-
-  function handleConnect() {
-    web3Login({
-      account: selectedAccount,
-      wallet: WalletTypes.METAMASK,
-    });
-  }
 
   return (
     <div>
@@ -105,7 +98,10 @@ export default function LoginEVMForm() {
                 className="w-full"
                 loading={isLoading}
                 onClick={() => {
-                  handleConnect();
+                  web3Login({
+                    account: selectedAccount,
+                    wallet: metamask.extensionName,
+                  });
                 }}
               >
                 Next
