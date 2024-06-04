@@ -6,7 +6,7 @@ import {
   tryConvertToEvmAddress,
 } from "next-common/utils/mixedChainUtil";
 import { useSignMessage as useEVMSignMessage } from "wagmi";
-import { isEthereumAddress } from "@polkadot/util-crypto";
+import { metamask } from "next-common/utils/consts/connect";
 
 export function useSignMessage() {
   const { injectedWeb3 } = useInjectedWeb3();
@@ -14,7 +14,7 @@ export function useSignMessage() {
 
   return useCallback(
     async (message, address, walletName) => {
-      const shouldUseEVMSign = isEthereumAddress(address);
+      const shouldUseEVMSign = walletName === metamask.extensionName;
 
       if (shouldUseEVMSign) {
         const signerAddress = getEvmSignerAddress(address);
