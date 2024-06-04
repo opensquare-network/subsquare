@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.4
+
+date: 2024-05-30
+
+- Support SIMA spec avatar setting/unset.
+- Fix polkassembly comments for collectives.
+- Show USDx treasury spend info on post list and detail page.
+
 ### 4.0.3
 
 date: 2024-05-20

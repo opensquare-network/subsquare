@@ -6,7 +6,7 @@ export default function RequireSignature({ name }) {
   const { ensureLogin } = useEnsureLogin();
   return (
     <ContentWrapper>
-      <InfoMessage>
+      <InfoMessage className="mb-4">
         Please complete your signature before continuing with {name}
         Settings.
       </InfoMessage>

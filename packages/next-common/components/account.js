@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
-import Avatar from "./avatar";
 import { encodeAddressToChain } from "../services/address";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
@@ -13,6 +12,7 @@ import { allWallets } from "next-common/utils/consts/connect";
 import { find } from "lodash-es";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { useConnectors } from "wagmi";
+import AddressAvatar from "./user/addressAvatar";
 
 function WalletIcon({ wallet: walletName }) {
   const wallet = find(allWallets, { extensionName: walletName });
@@ -81,7 +81,7 @@ export default function Account({ account }) {
   return (
     <>
       <AvatarWrapper>
-        <Avatar address={maybeEvmAddress} size={40} />
+        <AddressAvatar address={address} size={40} />
         {isEthereum ? (
           <EvmWalletIcon id={account?.meta?.connectorId} wallet={wallet} />
         ) : (

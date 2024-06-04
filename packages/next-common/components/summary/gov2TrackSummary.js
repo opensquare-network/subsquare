@@ -34,7 +34,7 @@ export default function Gov2TrackSummary({ summary, period }) {
       <SummaryLayout className="!grid-cols-3 max-md:!grid-cols-2 !w-auto grow">
         <SummaryItem title="Capacity">
           <span>
-            {summary.decidingCount || 0}
+            {(summary.decidingCount || 0) + (summary.confirmingCount || 0)}
             <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
           </span>
         </SummaryItem>

@@ -1,0 +1,19 @@
+import Loading from "next-common/components/loading";
+import ValueDisplay from "next-common/components/valueDisplay";
+
+export default function TreasuryBalance({
+  symbol,
+  isLoading,
+  treasuryBalance,
+}) {
+  return (
+    <div className="flex items-center gap-[8px] text12Bold text-textPrimary [&_.value-display-symbol]:text-textPrimary">
+      <span className="text12Medium text-textTertiary">Treasury Balance</span>
+      {isLoading ? (
+        <Loading size={16} />
+      ) : (
+        <ValueDisplay value={treasuryBalance} symbol={symbol} />
+      )}
+    </div>
+  );
+}

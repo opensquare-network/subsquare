@@ -1,29 +1,40 @@
 import { useChainSettings } from "next-common/context/chain";
 import QuickStartButton from "next-common/components/summary/newProposalButton/templates/button";
-import { useState } from "react";
-import { usePopupOnClose } from "next-common/context/popup";
+import React, { useState } from "react";
 import NewTreasuryReferendumPopup from "next-common/components/summary/newProposalQuickStart/createTreasuryProposalPopup";
 
-export default function SpendLocalTemplate() {
+const SpendLocalTemplateContext = React.createContext();
+
+export default function SpendLocalTemplateProvider({ onClose, children }) {
   const settings = useChainSettings();
   const [showCreateTreasuryProposal, setShowCreateTreasuryProposal] =
     useState(false);
-  const onClose = usePopupOnClose();
 
-  if (!settings.treasuryProposalTracks) {
-    return null;
+  let button = null;
+  let popup = null;
+
+  if (settings.treasuryProposalTracks) {
+    button = (
+      <QuickStartButton
+        title="Local treasury proposal"
+        onClick={() => setShowCreateTreasuryProposal(true)}
+      />
+    );
+    popup = <NewTreasuryReferendumPopup onClose={onClose} />;
+  }
+
+  if (showCreateTreasuryProposal) {
+    return popup;
   }
 
   return (
-    <>
-      <QuickStartButton
-        key="treasury-proposal"
-        title="Create a treasury proposal"
-        onClick={() => setShowCreateTreasuryProposal(true)}
-      />
-      {showCreateTreasuryProposal && (
-        <NewTreasuryReferendumPopup onClose={onClose} />
-      )}
-    </>
+    <SpendLocalTemplateContext.Provider value={{ button }}>
+      {children}
+    </SpendLocalTemplateContext.Provider>
   );
+}
+
+export function useSpendLocalButton() {
+  const { button } = React.useContext(SpendLocalTemplateContext);
+  return button;
 }

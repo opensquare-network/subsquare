@@ -12,8 +12,27 @@ import { useRouter } from "next/router";
 import { InfoMessage } from "next-common/components/setting/styled";
 import AddressUser from "next-common/components/user/addressUser";
 import RankField from "next-common/components/popup/fields/rankField";
-import { getTrackNameFromRank } from "../promote/popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import Chains from "next-common/utils/consts/chains";
+
+const CollectivesRetainTracks = {
+  1: "RetainAt1Dan",
+  2: "RetainAt2Dan",
+  3: "RetainAt3Dan",
+  4: "RetainAt4Dan",
+  5: "RetainAt5Dan",
+  6: "RetainAt6Dan",
+};
+
+export function getRetainTrackNameFromRank(rank) {
+  switch (process.env.NEXT_PUBLIC_CHAIN) {
+    case Chains.collectives:
+    case Chains.westendCollectives:
+      return CollectivesRetainTracks[rank];
+    default:
+      throw new Error("Unsupported chain");
+  }
+}
 
 function PopupContent({ member, onClose }) {
   const dispatch = useDispatch();
@@ -22,7 +41,7 @@ function PopupContent({ member, onClose }) {
   const api = useContextApi();
   const extensionAccounts = useExtensionAccounts();
   const [atRank, setAtRank] = useState(member?.rank);
-  const trackName = getTrackNameFromRank(atRank);
+  const trackName = getRetainTrackNameFromRank(atRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
 
   const getTxFunc = useCallback(async () => {
@@ -50,7 +69,7 @@ function PopupContent({ member, onClose }) {
       />
       <RankField title="At Rank" rank={atRank} setRank={setAtRank} readOnly />
       <EnactmentBlocks setEnactment={setEnactment} />
-      <InfoMessage>
+      <InfoMessage className="mb-4">
         <span>
           Will create a referendum in {trackName} track to approve{" "}
           <div className="inline-flex relative top-[5px]">
