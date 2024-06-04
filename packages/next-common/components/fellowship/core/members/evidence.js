@@ -25,7 +25,7 @@ export default function FellowshipCoreMemberEvidence({ address }) {
     content = (
       <div className="flex gap-[8px]">
         <Tooltip content="Wish">
-          <span className="capitalize">{wish}</span>
+          <span className="text-textPrimary capitalize">{wish}</span>
         </Tooltip>
         <a
           className="cursor-pointer text-sapphire500"
