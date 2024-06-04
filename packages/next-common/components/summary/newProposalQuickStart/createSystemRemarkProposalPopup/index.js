@@ -10,14 +10,22 @@ import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
 import useTrackDetail from "../../newProposalPopup/useTrackDetail";
 import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
-import PopupLabel from "next-common/components/popup/label";
-import Editor from "next-common/components/editor";
+import Chains from "next-common/utils/consts/chains";
+import { useChain } from "next-common/context/chain";
+import EditorField from "next-common/components/popup/fields/editorField";
 
 function PopupContent() {
   const { tracks } = usePageProps();
   const api = useContextApi();
   const [remark, setRemark] = useState("");
-  const [trackId, setTrackId] = useState(tracks[0].id);
+
+  let defaultTrackId = tracks[0].id;
+  const chain = useChain();
+  if ([Chains.polkadot, Chains.kusama].includes(chain)) {
+    defaultTrackId = 2; // Wish for Change
+  }
+
+  const [trackId, setTrackId] = useState(defaultTrackId);
   const track = useTrackDetail(trackId);
   const [enactment, setEnactment] = useState();
 
@@ -37,15 +45,7 @@ function PopupContent() {
   return (
     <>
       <SignerWithBalance title="Origin" />
-      <div>
-        <PopupLabel text="Remark" />
-        <Editor
-          value={remark}
-          onChange={setRemark}
-          contentType={"markdown"}
-          minHeight={100}
-        />
-      </div>
+      <EditorField title="Remark" content={remark} setContent={setRemark} />
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <AdvanceSettings>
         <EnactmentBlocks track={track} setEnactment={setEnactment} />
