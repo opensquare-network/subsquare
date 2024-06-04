@@ -338,10 +338,12 @@ export default function LinkedAddress() {
               wallets={evmWallets}
               selectedWallet={selectedWallet}
               beforeWallets={
-                <>
-                  <BackToSubstrateWalletOption />
-                  <div />
-                </>
+                isMixedChain() && (
+                  <>
+                    <BackToSubstrateWalletOption />
+                    <div />
+                  </>
+                )
               }
               onSelect={(wallet) => {
                 function select() {
