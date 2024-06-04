@@ -13,7 +13,7 @@ export default function NewRemarkTemplateProvider({ onClose, children }) {
 
   const button = (
     <QuickStartButton
-      title="Remark proposal"
+      title="Remark"
       onClick={() => setShowNewRemarkPopup(true)}
     />
   );

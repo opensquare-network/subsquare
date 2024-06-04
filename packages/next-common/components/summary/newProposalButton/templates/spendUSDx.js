@@ -19,7 +19,7 @@ export default function SpendUSDxTemplateProvider({ onClose, children }) {
   ) {
     button = (
       <QuickStartButton
-        title="USDx treasury proposal"
+        title="Treasury USDx spend"
         onClick={() => setShowCreateTreasuryProposal(true)}
       />
     );

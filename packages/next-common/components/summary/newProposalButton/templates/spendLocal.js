@@ -16,7 +16,7 @@ export default function SpendLocalTemplateProvider({ onClose, children }) {
   if (settings.treasuryProposalTracks) {
     button = (
       <QuickStartButton
-        title="Local treasury proposal"
+        title="Treasury spend local"
         onClick={() => setShowCreateTreasuryProposal(true)}
       />
     );

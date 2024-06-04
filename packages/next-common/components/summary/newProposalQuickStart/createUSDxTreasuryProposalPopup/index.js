@@ -184,7 +184,11 @@ function PopupContent() {
 
 export default function NewUSDxTreasuryReferendumPopup({ onClose }) {
   return (
-    <PopupWithSigner title="USDx treasury proposal" onClose={onClose} wide>
+    <PopupWithSigner
+      title="Create USDx Treasury Proposal"
+      onClose={onClose}
+      wide
+    >
       <AssetHubApiProvider>
         <PopupContent />
       </AssetHubApiProvider>
