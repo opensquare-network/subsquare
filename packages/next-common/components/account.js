@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
-import Avatar from "./avatar";
 import { encodeAddressToChain } from "../services/address";
 import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
@@ -18,6 +17,7 @@ import {
 } from "@osn/icons/subsquare";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import AddressAvatar from "./user/addressAvatar";
 
 const WalletIcon = ({ wallet }) => {
   return (
@@ -83,7 +83,7 @@ export default function Account({ account }) {
   return (
     <>
       <AvatarWrapper>
-        <Avatar address={maybeEvmAddress} size={40} />
+        <AddressAvatar address={address} size={40} />
         <WalletIcon wallet={wallet} />
       </AvatarWrapper>
       <NameWrapper>
