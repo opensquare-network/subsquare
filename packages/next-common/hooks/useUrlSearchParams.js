@@ -29,7 +29,7 @@ export function useUrlSearchParams({
   function set(query, { shallow = true } = {}) {
     setValue(query);
 
-    let result = { ...value, ...query };
+    let result = { ...query };
 
     entries(result).forEach(([key, value]) => {
       if (removeNullishValues && isNil(value)) {
