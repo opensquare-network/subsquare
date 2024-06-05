@@ -10,7 +10,10 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export function useSubstrateAccounts({ wallet, onAccessGranted = noop }) {
+export function useSubstrateAccounts({
+  wallet = {},
+  onAccessGranted = noop,
+} = {}) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
   const { injectedWeb3 } = useInjectedWeb3();
