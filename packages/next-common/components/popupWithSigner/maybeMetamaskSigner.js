@@ -1,6 +1,5 @@
 import React from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
-import ContextPopup from "./contextPopup";
 import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
 
 export default function MaybeMetamaskSigner({ children }) {
@@ -8,7 +7,7 @@ export default function MaybeMetamaskSigner({ children }) {
 
   return (
     <MaybeSignerConnected extensionAccounts={accounts}>
-      <ContextPopup>{children}</ContextPopup>
+      {children}
     </MaybeSignerConnected>
   );
 }
