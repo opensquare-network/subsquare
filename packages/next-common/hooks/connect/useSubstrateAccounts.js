@@ -10,12 +10,17 @@ import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-export function useSubstrateAccounts({ wallet, onAccessGranted = noop } = {}) {
+export function useSubstrateAccounts({
+  wallet,
+  onAccessGranted = noop,
+  defaultLoading = true,
+} = {}) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
-  const { injectedWeb3, loading } = useInjectedWeb3();
+  const { injectedWeb3 } = useInjectedWeb3();
   const { chainType } = useChainSettings();
   const signetAccounts = useSignetAccounts();
+  const [loading, setLoading] = useState(defaultLoading);
 
   const [accounts, setAccounts] = useState([]);
 
@@ -82,6 +87,8 @@ export function useSubstrateAccounts({ wallet, onAccessGranted = noop } = {}) {
 
   const loadWalletAccounts = useCallback(
     async (selectedWalletName) => {
+      setLoading(true);
+
       switch (selectedWalletName) {
         case WalletTypes.POLKADOT_JS:
         case WalletTypes.POLKAGATE:
@@ -104,6 +111,8 @@ export function useSubstrateAccounts({ wallet, onAccessGranted = noop } = {}) {
           break;
         }
       }
+
+      setLoading(false);
     },
     [loadInjectedAccounts, loadPolkadotAccounts, loadSignetVault],
   );
