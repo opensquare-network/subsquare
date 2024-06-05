@@ -32,6 +32,7 @@ import BackToSubstrateWalletOption from "./wallet/backToSubstrateWalletOption";
 import { useAccount, useConnect } from "wagmi";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import useInjectedWeb3 from "./wallet/useInjectedWeb3";
+import { uniqBy } from "lodash-es";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -221,7 +222,16 @@ export default function LinkedAddress() {
   };
 
   const extensionAccounts = isEVMSelected ? evmAccounts : substrateAccounts;
-  const availableAccounts = (selectedWallet && extensionAccounts) || [];
+
+  const mergedAccounts = uniqBy(
+    [...((selectedWallet && extensionAccounts) || []), user],
+    "address",
+  ).map((account) => {
+    return {
+      ...account,
+      name: account?.name || "--",
+    };
+  });
 
   return (
     <NeutralPanel className="p-6">
@@ -254,11 +264,11 @@ export default function LinkedAddress() {
             ))}
         </NodesWrapper>
         <AddressWrapper>
-          {availableAccounts.length === 0 && (
+          {mergedAccounts.length === 0 && (
             <EmptyList>No available addresses</EmptyList>
           )}
-          {availableAccounts.length > 0 &&
-            availableAccounts.map((item, index) => {
+          {mergedAccounts.length > 0 &&
+            mergedAccounts.map((item, index) => {
               let activeChainAddress = item.address;
               if (isPolkadotAddress(item.address)) {
                 activeChainAddress = encodeAddressToChain(
