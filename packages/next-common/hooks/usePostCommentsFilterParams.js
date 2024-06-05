@@ -1,5 +1,7 @@
 import { keys, pick } from "lodash-es";
 import { useUrlSearchParams } from "./useUrlSearchParams";
+import { createGlobalState } from "react-use";
+import { useEffect, useMemo } from "react";
 
 const defaultValue = {
   // sortby
@@ -11,16 +13,26 @@ const defaultValue = {
   hide_deleted: true,
 };
 
+const useFilterState = createGlobalState(defaultValue);
+
 /**
- * @returns {[p, set, update]}
+ * @returns {[state, set, update]}
  */
 export function usePostCommentsFilterParams() {
+  const [state, setState] = useFilterState();
   const [params, set, update] = useUrlSearchParams({
     removeFalsyValues: true,
     defaultValue,
   });
-  /** @type {defaultValue} */
-  const p = pick(params, keys(defaultValue));
 
-  return [p, set, update];
+  /** @type {defaultValue} */
+  const value = useMemo(() => {
+    return pick(params, keys(defaultValue));
+  }, [params]);
+
+  useEffect(() => {
+    setState(value);
+  }, [value]);
+
+  return [state, set, update];
 }

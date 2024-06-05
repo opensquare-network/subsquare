@@ -1,6 +1,7 @@
 import { entries, isNil } from "lodash-es";
 import { useRouter } from "next/router";
 import queryString from "query-string";
+import { useMemo, useState } from "react";
 
 /**
  * @returns {[typeof router.query, set, update]}
@@ -11,14 +12,24 @@ export function useUrlSearchParams({
   defaultValue = {},
 } = {}) {
   const router = useRouter();
-  const parsed = queryString.parse(router.asPath.split("?")?.[1] || "", {
-    parseBooleans: true,
-    parseNumbers: true,
+  const parsed = useMemo(
+    () =>
+      queryString.parse(router.asPath.split("?")?.[1] || "", {
+        parseBooleans: true,
+        parseNumbers: true,
+      }),
+    [router.asPath],
+  );
+  const [value, setValue] = useState({
+    ...defaultValue,
+    ...router.query,
+    ...parsed,
   });
-  const q = { ...defaultValue, ...router.query, ...parsed };
 
   function set(query, { shallow = true } = {}) {
-    let result = { ...q, ...query };
+    setValue(query);
+
+    let result = { ...value, ...query };
 
     entries(result).forEach(([key, value]) => {
       if (removeNullishValues && isNil(value)) {
@@ -33,8 +44,8 @@ export function useUrlSearchParams({
   }
 
   function update(query, { shallow = true } = {}) {
-    set({ ...q, ...query }, { shallow });
+    set({ ...value, ...query }, { shallow });
   }
 
-  return [q, set, update];
+  return [value, set, update];
 }
