@@ -39,14 +39,16 @@ export default function WalletAddressSelect({
   lastUsedAddress,
 }) {
   const chain = useChain();
-  const addresses = useSubstrateAccounts({ wallet: selectedWallet });
+  const { accounts: accounts } = useSubstrateAccounts({
+    wallet: selectedWallet,
+  });
   const [, setView] = useConnectPopupView();
 
   useEffect(() => {
     setSelectedAccount();
-    if (addresses?.length > 0) {
+    if (accounts?.length > 0) {
       if (lastUsedAddress) {
-        const account = addresses?.find(
+        const account = accounts?.find(
           (item) => item.address === lastUsedAddress,
         );
         if (account) {
@@ -55,10 +57,10 @@ export default function WalletAddressSelect({
         }
       }
 
-      setSelectedAccount(addresses[0]);
+      setSelectedAccount(accounts[0]);
     }
     setWeb3Error();
-  }, [selectedWallet, addresses]);
+  }, [selectedWallet, accounts]);
 
   const onSelectAccount = useCallback(
     async (account) => {
@@ -113,7 +115,7 @@ export default function WalletAddressSelect({
         </div>
       )}
 
-      {wallet && addresses?.length === 0 && (
+      {wallet && accounts?.length === 0 && (
         <ErrorMessage>
           Address not detected, please create an available address.
         </ErrorMessage>
@@ -123,7 +125,7 @@ export default function WalletAddressSelect({
         <div>
           <Label>Choose linked address</Label>
           <AddressSelect
-            accounts={addresses}
+            accounts={accounts}
             selectedAccount={selectedAccount}
             onSelect={onSelectAccount}
           />

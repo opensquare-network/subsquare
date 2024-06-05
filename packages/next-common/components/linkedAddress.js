@@ -168,7 +168,9 @@ export default function LinkedAddress() {
     reset();
   }, [showSelectWallet]);
 
-  const substrateAccounts = useSubstrateAccounts({ wallet: selectedWallet });
+  const { accounts: substrateAccounts } = useSubstrateAccounts({
+    wallet: selectedWallet,
+  });
   const evmAccounts = useEVMAccounts();
   const evmWallets = useEVMWallets();
 
