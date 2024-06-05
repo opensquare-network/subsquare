@@ -1,10 +1,7 @@
-import SignerPopup from "next-common/components/signerPopup";
 import { useCallback, useEffect, useState } from "react";
 import PreimageField from "./preimageField";
 import EnactmentBlocks from "./enactmentBlocks";
-import { getEventData, sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { useDispatch } from "react-redux";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { getEventData } from "next-common/utils/sendTx";
 import { isNil } from "lodash-es";
 import { useRouter } from "next/router";
 import SubmissionDeposit from "./submissionDeposit";
@@ -12,6 +9,11 @@ import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
 import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
 import useTrackDetail from "./useTrackDetail";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useContextApi } from "next-common/context/api";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
 export function useProposalOrigin(trackId) {
   const track = useTrackDetail(trackId);
@@ -22,16 +24,14 @@ export function useProposalOrigin(trackId) {
   return origins;
 }
 
-export default function NewProposalPopup({
+export function NewProposalInnerPopup({
   track: _track,
-  onClose,
   preimageHash: _preimageHash,
   preimageLength: _preimageLength,
 }) {
-  const dispatch = useDispatch();
+  const api = useContextApi();
+  const { onClose } = usePopupParams();
   const router = useRouter();
-  const isMounted = useIsMounted();
-  const [isLoading, setIsLoading] = useState(false);
 
   const [trackId, setTrackId] = useState(_track?.id);
   const proposalOrigin = useProposalOrigin(trackId);
@@ -56,78 +56,44 @@ export default function NewProposalPopup({
     }
   }, [length]);
 
-  const onSubmit = useCallback(
-    (api, signerAccount) => {
-      if (!api || !signerAccount) {
-        return;
+  const getTxFunc = useCallback(() => {
+    if (!api) {
+      return;
+    }
+
+    let proposalOriginValue = proposalOrigin;
+
+    // When proposal origin is not defined in track detail, we use the track name as origin
+    if (!proposalOriginValue) {
+      if (track?.name === "root") {
+        proposalOriginValue = { system: "Root" };
+      } else {
+        proposalOriginValue = { Origins: upperFirstCamelCase(track?.name) };
       }
+    }
 
-      let proposalOriginValue = proposalOrigin;
-
-      // When proposal origin is not defined in track detail, we use the track name as origin
-      if (!proposalOriginValue) {
-        if (track?.name === "root") {
-          proposalOriginValue = { system: "Root" };
-        } else {
-          proposalOriginValue = { Origins: upperFirstCamelCase(track?.name) };
-        }
-      }
-
-      let tx = api.tx.referenda.submit(
-        proposalOriginValue,
-        {
-          Lookup: {
-            hash: preimageHash,
-            len: parseInt(preimageLength),
-          },
+    return api.tx.referenda.submit(
+      proposalOriginValue,
+      {
+        Lookup: {
+          hash: preimageHash,
+          len: parseInt(preimageLength),
         },
-        enactment,
-      );
-
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      sendTx({
-        tx,
-        api,
-        dispatch,
-        isMounted,
-        signerAccount,
-        setLoading: setIsLoading,
-        onInBlock: (events) => {
-          const eventData = getEventData(events, "referenda", "Submitted");
-          if (!eventData) {
-            return;
-          }
-          const [referendumIndex] = eventData;
-          router.push(`/referenda/${referendumIndex}`);
-        },
-        onClose,
-      });
-    },
-    [
-      dispatch,
-      router,
-      isMounted,
-      track?.name,
-      proposalOrigin,
+      },
       enactment,
-      preimageHash,
-      preimageLength,
-      onClose,
-    ],
-  );
+    );
+  }, [
+    api,
+    proposalOrigin,
+    track?.name,
+    preimageHash,
+    preimageLength,
+    enactment,
+  ]);
 
   return (
-    <SignerPopup
-      wide
-      title="New Proposal"
-      onClose={onClose}
-      actionCallback={onSubmit}
-      disabled={disabled}
-      isLoading={isLoading}
-    >
+    <Popup wide title="New Proposal" onClose={onClose}>
+      <SignerWithBalance />
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField
         preimageHash={preimageHash}
@@ -137,6 +103,19 @@ export default function NewProposalPopup({
       />
       <EnactmentBlocks track={track} setEnactment={setEnactment} />
       <SubmissionDeposit />
-    </SignerPopup>
+      <TxSubmissionButton
+        getTxFunc={getTxFunc}
+        onClose={onClose}
+        disabled={disabled}
+        onInBlock={(events) => {
+          const eventData = getEventData(events, "referenda", "Submitted");
+          if (!eventData) {
+            return;
+          }
+          const [referendumIndex] = eventData;
+          router.push(`/referenda/${referendumIndex}`);
+        }}
+      />
+    </Popup>
   );
 }

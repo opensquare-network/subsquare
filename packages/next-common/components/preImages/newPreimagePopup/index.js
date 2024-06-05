@@ -3,7 +3,6 @@ import { blake2AsHex } from "@polkadot/util-crypto";
 import { BN_ZERO } from "@polkadot/util";
 import Extrinsic from "next-common/components/extrinsic";
 import PopupLabel from "next-common/components/popup/label";
-import SignerPopup from "next-common/components/signerPopup";
 import ExtrinsicInfo from "./info";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -13,6 +12,12 @@ import Loading from "next-common/components/loading";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
+import PrimaryButton from "next-common/lib/button/primary";
+import Popup from "next-common/components/popup/wrapper/Popup";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -52,8 +57,9 @@ export function getState(api, proposal) {
   };
 }
 
-export default function NewPreimagePopup({ onClose, onCreated = noop }) {
+export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
   const api = useContextApi();
+  const signerAccount = useSignerAccount();
   const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
     useState(EMPTY_PROPOSAL);
   const disabled = !api || !notePreimageTx;
@@ -121,15 +127,13 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
   );
 
   return (
-    <SignerPopup
+    <Popup
       className="w-[640px]"
       title="New Preimage"
       onClose={onClose}
       maskClosable={false}
-      disabled={disabled}
-      isLoading={isSubmitting}
-      actionCallback={doConfirm}
     >
+      <SignerWithBalance />
       {isLoading ? (
         <div className="flex justify-center">
           <Loading size={20} />
@@ -148,6 +152,23 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
           />
         </div>
       )}
-    </SignerPopup>
+      <PopupButtonWrapper>
+        <PrimaryButton
+          disabled={disabled}
+          loading={isSubmitting}
+          onClick={() => doConfirm(api, signerAccount)}
+        >
+          Confirm
+        </PrimaryButton>
+      </PopupButtonWrapper>
+    </Popup>
+  );
+}
+
+export default function NewPreimagePopup({ onClose, onCreated = noop }) {
+  return (
+    <SignerPopupWrapper onClose={onClose}>
+      <NewPreimageInnerPopup onClose={onClose} onCreated={onCreated} />
+    </SignerPopupWrapper>
   );
 }

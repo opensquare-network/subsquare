@@ -1,7 +1,6 @@
 import React from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
 import { useMetaMaskAccounts } from "../../utils/metamask";
-import ContextPopup from "./contextPopup";
 
 export default function MaybeMetamaskSigner({ children }) {
   const [metamaskAccounts, isLoading] = useMetaMaskAccounts(true);
@@ -12,7 +11,7 @@ export default function MaybeMetamaskSigner({ children }) {
 
   return (
     <MaybeSignerConnected extensionAccounts={metamaskAccounts}>
-      <ContextPopup>{children}</ContextPopup>
+      {children}
     </MaybeSignerConnected>
   );
 }
