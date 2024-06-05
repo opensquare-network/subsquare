@@ -35,9 +35,9 @@ export default function CommentsFilterFormSorter() {
       <Select
         className="w-36 !text12Medium !py-1.5 !px-3 !h-7"
         small
-        value={params.comments_sortby}
+        value={params.comments_sort_by}
         onChange={(option) => {
-          updateParams({ comments_sortby: option.value });
+          updateParams({ comments_sort_by: option.value });
         }}
         options={options}
       />

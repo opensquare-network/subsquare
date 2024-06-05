@@ -9,7 +9,7 @@ import { useClickAway } from "react-use";
 
 export default function CommentsFilterFormFilter() {
   const [params, , updateParams] = usePostCommentsFilterParams();
-  const [value, setValue] = useState(omit(params, "comments_sortby"));
+  const [value, setValue] = useState(omit(params, "comments_sort_by"));
   const [showFilter, setShowFilter] = useState(false);
   const ref = useRef();
   useClickAway(ref, () => {
