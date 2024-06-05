@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
-import ContextPopup from "./contextPopup";
 import { useSignetAccounts, useSignetSdk } from "next-common/context/signet";
 import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
 import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
@@ -22,7 +21,7 @@ export default function CanBeAnyWalletSigner({ children }) {
 
   return (
     <MaybeSignerConnected extensionAccounts={combinedAccounts}>
-      <ContextPopup>{children}</ContextPopup>
+      {children}
     </MaybeSignerConnected>
   );
 }
