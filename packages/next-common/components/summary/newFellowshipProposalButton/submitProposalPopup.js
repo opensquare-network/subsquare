@@ -1,7 +1,8 @@
 import { useState } from "react";
-import NewFellowshipProposalPopup from "../newFellowshipProposalPopup";
+import { NewFellowshipProposalInnerPopup } from "../newFellowshipProposalPopup";
 import SubmitProposalPopupCommon from "../newProposalButton/common";
 import { usePageProps } from "next-common/context/page";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 
 export default function SubmitFellowshipProposalPopup({ onClose }) {
   const { period } = usePageProps();
@@ -9,18 +10,18 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
   const [preimageLength, setPreimageLength] = useState();
 
   return (
-    <SubmitProposalPopupCommon
-      setPreimageHash={setPreimageHash}
-      setPreimageLength={setPreimageLength}
-      onClose={onClose}
-      newProposalPopup={
-        <NewFellowshipProposalPopup
-          track={period}
-          onClose={onClose}
-          preimageHash={preimageHash}
-          preimageLength={preimageLength}
-        />
-      }
-    ></SubmitProposalPopupCommon>
+    <SignerPopupWrapper onClose={onClose}>
+      <SubmitProposalPopupCommon
+        setPreimageHash={setPreimageHash}
+        setPreimageLength={setPreimageLength}
+        newProposalPopup={
+          <NewFellowshipProposalInnerPopup
+            track={period}
+            preimageHash={preimageHash}
+            preimageLength={preimageLength}
+          />
+        }
+      />
+    </SignerPopupWrapper>
   );
 }

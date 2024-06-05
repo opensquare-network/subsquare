@@ -1,4 +1,3 @@
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
@@ -13,6 +12,7 @@ import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import useTrackDetail from "../../newProposalPopup/useTrackDetail";
+import { usePopupOnClose } from "next-common/context/popup";
 
 export default function CreateProposalSubmitButton({
   trackId,
@@ -21,7 +21,7 @@ export default function CreateProposalSubmitButton({
   encodedLength,
   notePreimageTx,
 }) {
-  const { onClose } = usePopupParams();
+  const onClose = usePopupOnClose();
   const router = useRouter();
   const dispatch = useDispatch();
   const api = useContextApi();
