@@ -17,7 +17,7 @@ export default function LoginEVMForm() {
   const { connector, isConnecting, isConnected } = useAccount();
   const { connect, isError } = useConnect();
   const [selectedAccount, setSelectedAccount] = useState();
-  const accounts = useEVMAccounts();
+  const { accounts } = useEVMAccounts();
   const evmWallets = useEVMWallets();
   const connectedWallet = find(evmWallets, ["connector.id", connector?.id]);
 

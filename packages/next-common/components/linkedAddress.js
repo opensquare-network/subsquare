@@ -171,7 +171,7 @@ export default function LinkedAddress() {
   const { accounts: substrateAccounts } = useSubstrateAccounts({
     wallet: selectedWallet,
   });
-  const evmAccounts = useEVMAccounts();
+  const { accounts: evmAccounts } = useEVMAccounts();
   const evmWallets = useEVMWallets();
 
   const showSelectWalletModal = () => setShowSelectWallet(true);

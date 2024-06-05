@@ -7,7 +7,7 @@ import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAcco
 export default function CanBeAnyWalletSigner({ children }) {
   const { accounts: substrateAccounts, loading: isLoadingSubstrate } =
     useSubstrateAccounts();
-  const evmAccounts = useEVMAccounts();
+  const { accounts: evmAccounts, loading: isLoadingEVM } = useEVMAccounts();
   const signetAccounts = useSignetAccounts();
   const { loading: isLoadingSignet } = useSignetSdk();
 
@@ -16,7 +16,7 @@ export default function CanBeAnyWalletSigner({ children }) {
     [evmAccounts, substrateAccounts, signetAccounts],
   );
 
-  if (isLoadingSubstrate || isLoadingSignet) {
+  if (isLoadingSubstrate || isLoadingSignet || isLoadingEVM) {
     return null;
   }
 

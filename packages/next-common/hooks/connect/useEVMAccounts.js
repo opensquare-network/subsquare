@@ -3,7 +3,9 @@ import { useMemo } from "react";
 import { useAccount } from "wagmi";
 
 export function useEVMAccounts() {
-  const { addresses, connector, isConnected } = useAccount();
+  const { addresses, connector, isConnected, isConnecting, isReconnecting } =
+    useAccount();
+  const loading = isConnecting || isReconnecting;
 
   const accounts = useMemo(() => {
     if (isConnected && connector) {
@@ -13,5 +15,5 @@ export function useEVMAccounts() {
     return [];
   }, [addresses, connector, isConnected]);
 
-  return accounts;
+  return { accounts, loading };
 }
