@@ -7,7 +7,8 @@ import dayjs from "dayjs";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { PolkassemblyChains } from "next-common/utils/polkassembly";
-import { cloneDeep } from "lodash-es";
+import { cloneDeep, filter } from "lodash-es";
+import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
 
 function getShouldReadPolkassemblyComments(chain) {
   return PolkassemblyChains.includes(chain);
@@ -39,11 +40,16 @@ function mergeComments(polkassemblyComments, subsquareComments) {
   ].sort((a, b) => dayjs(a.createdAt).unix() - dayjs(b.createdAt).unix());
 }
 
+function isDeletedComment(comment) {
+  return comment?.content?.trim?.() !== "[Deleted]";
+}
+
 export function usePostCommentsData() {
   const comments = useComments();
   const chain = useChain();
   const post = usePost();
   const polkassemblyPostData = usePolkassemblyPostData(post);
+  const [filterParams] = usePostCommentsFilterParams();
 
   const [commentsData, setCommentsData] = useState(comments);
   const shouldReadPolkassemblyComments =
@@ -59,6 +65,18 @@ export function usePostCommentsData() {
           comments.items,
         );
 
+        data.items = filter(data.items, (item) => {
+          if (filterParams.hide_deleted) {
+            if (item.replies?.length) {
+              item.replies = filter(item.replies, isDeletedComment);
+            }
+
+            return isDeletedComment(item);
+          }
+
+          return item;
+        });
+
         setCommentsData(data);
       }
     } else {
@@ -69,6 +87,7 @@ export function usePostCommentsData() {
     polkassemblyPostData.loadingComments,
     polkassemblyPostData.comments,
     shouldReadPolkassemblyComments,
+    filterParams,
   ]);
 
   return {
