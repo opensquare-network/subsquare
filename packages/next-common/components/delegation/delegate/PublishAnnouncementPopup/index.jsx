@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Editor from "next-common/components/editor";
-import InputText from "next-common/components/inputText";
 import {
   Referenda,
   useModuleTab,
@@ -12,8 +10,9 @@ import nextApi from "next-common/services/nextApi";
 import { setDemocracyDelegatesTriggerUpdate } from "next-common/store/reducers/democracy/delegates";
 import { setReferendaDelegatesTriggerUpdate } from "next-common/store/reducers/referenda/delegates";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import PopupLabel from "next-common/components/popup/label";
 import { useUser } from "next-common/context/user";
+import EditorField from "next-common/components/popup/fields/editorField";
+import TextInputField from "next-common/components/popup/fields/textInputField";
 
 export default function AnnouncementPublishPopup({
   title = "Publish Announcement",
@@ -116,19 +115,16 @@ export default function AnnouncementPublishPopup({
       actionCallback={handleSubmit}
       maskClosable={false}
     >
-      <div>
-        <PopupLabel text="Short description" />
-        <InputText value={shortDescription} setValue={setShortDescription} />
-      </div>
-      <div>
-        <PopupLabel text="Long description" />
-        <Editor
-          value={longDescription}
-          onChange={setLongDescription}
-          contentType={"markdown"}
-          minHeight={100}
-        />
-      </div>
+      <TextInputField
+        title="Short description"
+        text={shortDescription}
+        setText={setShortDescription}
+      />
+      <EditorField
+        title="Long description"
+        content={longDescription}
+        setContent={setLongDescription}
+      />
     </SignerPopup>
   );
 }

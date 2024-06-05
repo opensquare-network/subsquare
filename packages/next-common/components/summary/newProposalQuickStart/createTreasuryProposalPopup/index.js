@@ -1,7 +1,9 @@
 import AddressComboField from "next-common/components/popup/fields/addressComboField";
 import BalanceField from "next-common/components/popup/fields/balanceField";
-import PopupWithSigner from "next-common/components/popupWithSigner";
-import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
+import {
+  useExtensionAccounts,
+  usePopupParams,
+} from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo, useState } from "react";
@@ -16,8 +18,10 @@ import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
 import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
 import useTrackDetail from "../../newProposalPopup/useTrackDetail";
+import Popup from "next-common/components/popup/wrapper/Popup";
 
-function PopupContent() {
+export function NewTreasuryReferendumInnerPopup() {
+  const { onClose } = usePopupParams();
   const { tracks } = usePageProps();
   const api = useContextApi();
   const { decimals } = useChainSettings();
@@ -51,7 +55,7 @@ function PopupContent() {
   }, [api, inputBalance, beneficiary]);
 
   return (
-    <>
+    <Popup title="Create Treasury Proposal" onClose={onClose} wide>
       <SignerWithBalance title="Origin" />
       <BalanceField
         title="Request"
@@ -82,14 +86,6 @@ function PopupContent() {
           notePreimageTx={notePreimageTx}
         />
       </div>
-    </>
-  );
-}
-
-export default function NewTreasuryReferendumPopup({ onClose }) {
-  return (
-    <PopupWithSigner title="Create Treasury Proposal" onClose={onClose} wide>
-      <PopupContent />
-    </PopupWithSigner>
+    </Popup>
   );
 }

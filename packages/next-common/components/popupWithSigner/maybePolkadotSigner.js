@@ -9,7 +9,6 @@ import ChainTypes from "next-common/utils/consts/chainTypes";
 import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { usePopupParams } from "./context";
-import ContextPopup from "./contextPopup";
 
 export default function MaybePolkadotSigner({ children }) {
   const dispatch = useDispatch();
@@ -79,7 +78,7 @@ export default function MaybePolkadotSigner({ children }) {
 
   return (
     <MaybeSignerConnected extensionAccounts={polkadotAccounts}>
-      <ContextPopup>{children}</ContextPopup>
+      {children}
     </MaybeSignerConnected>
   );
 }

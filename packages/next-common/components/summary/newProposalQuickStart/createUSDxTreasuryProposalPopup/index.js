@@ -1,6 +1,8 @@
 import AddressComboField from "next-common/components/popup/fields/addressComboField";
-import PopupWithSigner from "next-common/components/popupWithSigner";
-import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
+import {
+  useExtensionAccounts,
+  usePopupParams,
+} from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo, useState } from "react";
@@ -24,6 +26,7 @@ import BigNumber from "bignumber.js";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
 import useTrackDetail from "../../newProposalPopup/useTrackDetail";
+import Popup from "next-common/components/popup/wrapper/Popup";
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -182,12 +185,13 @@ function PopupContent() {
   );
 }
 
-export default function NewUSDxTreasuryReferendumPopup({ onClose }) {
+export function NewUSDxTreasuryReferendumInnerPopup() {
+  const { onClose } = usePopupParams();
   return (
-    <PopupWithSigner title="USDx treasury proposal" onClose={onClose} wide>
+    <Popup title="Create USDx Treasury Proposal" onClose={onClose} wide>
       <AssetHubApiProvider>
         <PopupContent />
       </AssetHubApiProvider>
-    </PopupWithSigner>
+    </Popup>
   );
 }
