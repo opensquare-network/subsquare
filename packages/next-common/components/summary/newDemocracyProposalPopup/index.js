@@ -9,7 +9,6 @@ import { isValidPreimageHash } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
 import PreimageField from "../newProposalPopup/preimageField";
 import { useContextApi } from "next-common/context/api";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
@@ -97,20 +96,5 @@ export function NewDemocracyProposalInnerPopup({
         }}
       />
     </Popup>
-  );
-}
-
-export default function NewDemocracyProposalPopup({
-  onClose,
-  preimageHash: _preimageHash,
-  preimageLength: _preimageLength,
-}) {
-  return (
-    <SignerPopupWrapper onClose={onClose}>
-      <NewDemocracyProposalInnerPopup
-        preimageHash={_preimageHash}
-        preimageLength={_preimageLength}
-      />
-    </SignerPopupWrapper>
   );
 }

@@ -9,7 +9,6 @@ import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
 import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
 import useTrackDetail from "./useTrackDetail";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
@@ -118,22 +117,5 @@ export function NewProposalInnerPopup({
         }}
       />
     </Popup>
-  );
-}
-
-export function NewProposalPopup({
-  track: _track,
-  onClose,
-  preimageHash: _preimageHash,
-  preimageLength: _preimageLength,
-}) {
-  return (
-    <SignerPopupWrapper onClose={onClose}>
-      <NewProposalInnerPopup
-        track={_track}
-        preimageHash={_preimageHash}
-        preimageLength={_preimageLength}
-      />
-    </SignerPopupWrapper>
   );
 }

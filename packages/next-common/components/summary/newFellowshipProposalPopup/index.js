@@ -11,7 +11,6 @@ import EnactmentBlocks from "../newProposalPopup/enactmentBlocks";
 import DetailedFellowshipTrack from "next-common/components/popup/fields/detailedFellowshipTrackField";
 import { usePageProps } from "next-common/context/page";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
@@ -61,6 +60,10 @@ export function NewFellowshipProposalInnerPopup({
   }, [length]);
 
   const getTxFunc = useCallback(() => {
+    if (!api) {
+      return;
+    }
+
     if (!proposalOrigin) {
       dispatch(newErrorToast("Proposal origin is not set correctly"));
       return;
@@ -108,22 +111,5 @@ export function NewFellowshipProposalInnerPopup({
         }}
       />
     </Popup>
-  );
-}
-
-export default function NewFellowshipProposalPopup({
-  track: _track,
-  onClose,
-  preimageHash: _preimageHash,
-  preimageLength: _preimageLength,
-}) {
-  return (
-    <SignerPopupWrapper onClose={onClose}>
-      <NewFellowshipProposalInnerPopup
-        track={_track}
-        preimageHash={_preimageHash}
-        preimageLength={_preimageLength}
-      />
-    </SignerPopupWrapper>
   );
 }
