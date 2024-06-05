@@ -5,19 +5,14 @@ import Extrinsic from "next-common/components/extrinsic";
 import PopupLabel from "next-common/components/popup/label";
 import ExtrinsicInfo from "./info";
 import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import Loading from "next-common/components/loading";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
-import PrimaryButton from "next-common/lib/button/primary";
 import Popup from "next-common/components/popup/wrapper/Popup";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -59,13 +54,10 @@ export function getState(api, proposal) {
 
 export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
   const api = useContextApi();
-  const signerAccount = useSignerAccount();
   const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
     useState(EMPTY_PROPOSAL);
   const disabled = !api || !notePreimageTx;
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const isLoading = !api;
 
   const setProposal = useCallback(
@@ -80,50 +72,6 @@ export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
       setState(state);
     },
     [api],
-  );
-
-  const showErrorToast = useCallback(
-    (message) => dispatch(newErrorToast(message)),
-    [dispatch],
-  );
-
-  const doConfirm = useCallback(
-    async (api, signerAccount) => {
-      if (!api) {
-        return showErrorToast("Chain network is not connected yet");
-      }
-
-      if (!signerAccount) {
-        return showErrorToast("Please login first");
-      }
-
-      let tx = notePreimageTx;
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      await sendTx({
-        tx,
-        setLoading: setIsSubmitting,
-        dispatch,
-        signerAccount,
-        isMounted,
-        onInBlock: () => {
-          onCreated(encodedHash, encodedLength);
-          dispatch(incPreImagesTrigger());
-        },
-        onFinalized: () => dispatch(incPreImagesTrigger()),
-        onClose: onCreated === noop ? onClose : undefined,
-      });
-    },
-    [
-      dispatch,
-      isMounted,
-      showErrorToast,
-      setIsSubmitting,
-      notePreimageTx,
-      onClose,
-    ],
   );
 
   return (
@@ -152,15 +100,16 @@ export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
           />
         </div>
       )}
-      <PopupButtonWrapper>
-        <PrimaryButton
-          disabled={disabled}
-          loading={isSubmitting}
-          onClick={() => doConfirm(api, signerAccount)}
-        >
-          Confirm
-        </PrimaryButton>
-      </PopupButtonWrapper>
+      <TxSubmissionButton
+        disabled={disabled}
+        getTxFunc={() => notePreimageTx}
+        onInBlock={() => {
+          onCreated(encodedHash, encodedLength);
+          dispatch(incPreImagesTrigger());
+        }}
+        onFinalized={() => dispatch(incPreImagesTrigger())}
+        onClose={onCreated === noop ? onClose : undefined}
+      />
     </Popup>
   );
 }
