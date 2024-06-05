@@ -32,7 +32,7 @@ import BackToSubstrateWalletOption from "./wallet/backToSubstrateWalletOption";
 import { useAccount, useConnect } from "wagmi";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import useInjectedWeb3 from "./wallet/useInjectedWeb3";
-import { uniqBy } from "lodash-es";
+import { filter, uniqBy } from "lodash-es";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -223,8 +223,8 @@ export default function LinkedAddress() {
 
   const extensionAccounts = isEVMSelected ? evmAccounts : substrateAccounts;
 
-  const mergedAccounts = uniqBy(
-    [...((selectedWallet && extensionAccounts) || []), user],
+  const mergedAccounts = filter(
+    uniqBy([...((selectedWallet && extensionAccounts) || []), user], "address"),
     "address",
   ).map((account) => {
     return {
