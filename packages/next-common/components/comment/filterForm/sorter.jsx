@@ -33,7 +33,7 @@ export default function CommentsFilterFormSorter() {
       <div className="text-textSecondary w-max">Sort by</div>
 
       <Select
-        className="w-36 !text12Medium !py-1.5 !px-3 !h-7"
+        className="w-[150px] !text12Medium !py-1.5 !px-3 !h-7"
         small
         value={params.comments_sort_by}
         onChange={(option) => {

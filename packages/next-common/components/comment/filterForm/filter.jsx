@@ -1,15 +1,17 @@
 import { SystemFilter } from "@osn/icons/subsquare";
-import { omit } from "lodash-es";
 import Checkbox from "next-common/components/checkbox";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { usePostCommentsFilterParams } from "next-common/hooks/usePostCommentsFilterParams";
 import SecondaryButton from "next-common/lib/button/secondary";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useClickAway } from "react-use";
 
 export default function CommentsFilterFormFilter() {
   const [params, , updateParams] = usePostCommentsFilterParams();
-  const [value, setValue] = useState(omit(params, "comments_sort_by"));
+  const [value, setValue] = useState(params);
+  useEffect(() => {
+    setValue(params);
+  }, [params]);
   const [showFilter, setShowFilter] = useState(false);
   const ref = useRef();
   useClickAway(ref, () => {
