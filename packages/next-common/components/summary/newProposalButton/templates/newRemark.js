@@ -1,14 +1,16 @@
 import QuickStartButton from "next-common/components/summary/newProposalButton/templates/button";
 import React, { useState } from "react";
-import NewRemarkReferendumPopup from "../../newProposalQuickStart/createSystemRemarkProposalPopup";
+import { NewRemarkReferendumInnerPopup } from "../../newProposalQuickStart/createSystemRemarkProposalPopup";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 const NewRemarkTemplateContext = React.createContext();
 
-export default function NewRemarkTemplateProvider({ onClose, children }) {
+export default function NewRemarkTemplateProvider({ children }) {
+  const { onClose } = usePopupParams();
   const [showNewRemarkPopup, setShowNewRemarkPopup] = useState(false);
 
   if (showNewRemarkPopup) {
-    return <NewRemarkReferendumPopup onClose={onClose} />;
+    return <NewRemarkReferendumInnerPopup onClose={onClose} />;
   }
 
   const button = (

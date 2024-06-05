@@ -1,4 +1,3 @@
-import PopupWithSigner from "next-common/components/popupWithSigner";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useMemo, useState } from "react";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
@@ -13,8 +12,11 @@ import DetailedTrack from "next-common/components/popup/fields/detailedTrackFiel
 import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
 import EditorField from "next-common/components/popup/fields/editorField";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
-function PopupContent() {
+export function NewRemarkReferendumInnerPopup() {
+  const { onClose } = usePopupParams();
   const { tracks } = usePageProps();
   const api = useContextApi();
   const [remark, setRemark] = useState("");
@@ -43,7 +45,7 @@ function PopupContent() {
   }, [api, remark]);
 
   return (
-    <>
+    <Popup title="New Remark Proposal" onClose={onClose} wide>
       <SignerWithBalance title="Origin" />
       <EditorField title="Remark" content={remark} setContent={setRemark} />
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
@@ -60,14 +62,6 @@ function PopupContent() {
           notePreimageTx={notePreimageTx}
         />
       </div>
-    </>
-  );
-}
-
-export default function NewRemarkReferendumPopup({ onClose }) {
-  return (
-    <PopupWithSigner title="New Remark Proposal" onClose={onClose} wide>
-      <PopupContent />
-    </PopupWithSigner>
+    </Popup>
   );
 }

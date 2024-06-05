@@ -1,8 +1,6 @@
-import SignerPopup from "next-common/components/signerPopup";
 import { useCallback, useEffect, useState } from "react";
-import { getEventData, sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import { getEventData } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { isNil } from "lodash-es";
 import { useRouter } from "next/router";
 import { isValidPreimageHash } from "next-common/utils";
@@ -13,6 +11,12 @@ import EnactmentBlocks from "../newProposalPopup/enactmentBlocks";
 import DetailedFellowshipTrack from "next-common/components/popup/fields/detailedFellowshipTrackField";
 import { usePageProps } from "next-common/context/page";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useContextApi } from "next-common/context/api";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
 function useProposalOrigin(trackId) {
   const { fellowshipTracksDetail } = usePageProps();
@@ -25,16 +29,15 @@ function useProposalOrigin(trackId) {
   return origins;
 }
 
-export default function NewFellowshipProposalPopup({
+export function NewFellowshipProposalInnerPopup({
   track: _track,
-  onClose,
   preimageHash: _preimageHash,
   preimageLength: _preimageLength,
 }) {
+  const { onClose } = usePopupParams();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const router = useRouter();
-  const isMounted = useIsMounted();
-  const [isLoading, setIsLoading] = useState(false);
 
   const [enactment, setEnactment] = useState();
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
@@ -57,40 +60,41 @@ export default function NewFellowshipProposalPopup({
     }
   }, [length]);
 
-  const onSubmit = useCallback(
-    (api, signerAccount) => {
-      if (!api || !signerAccount) {
-        return;
-      }
+  const getTxFunc = useCallback(() => {
+    if (!proposalOrigin) {
+      dispatch(newErrorToast("Proposal origin is not set correctly"));
+      return;
+    }
 
-      if (!proposalOrigin) {
-        dispatch(newErrorToast("Proposal origin is not set correctly"));
-        return;
-      }
-
-      let tx = api.tx.fellowshipReferenda.submit(
-        proposalOrigin,
-        {
-          Lookup: {
-            hash: preimageHash,
-            len: parseInt(preimageLength),
-          },
+    return api.tx.fellowshipReferenda.submit(
+      proposalOrigin,
+      {
+        Lookup: {
+          hash: preimageHash,
+          len: parseInt(preimageLength),
         },
-        enactment,
-      );
+      },
+      enactment,
+    );
+  }, [dispatch, proposalOrigin, api, preimageHash, preimageLength, enactment]);
 
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      sendTx({
-        tx,
-        api,
-        dispatch,
-        isMounted,
-        signerAccount,
-        setLoading: setIsLoading,
-        onInBlock: (events) => {
+  return (
+    <Popup wide title="New Proposal" onClose={onClose}>
+      <SignerWithBalance />
+      <DetailedFellowshipTrack trackId={trackId} setTrackId={setTrackId} />
+      <PreimageField
+        preimageHash={preimageHash}
+        preimageLength={preimageLength}
+        setPreimageHash={setPreimageHash}
+        setPreimageLength={setPreimageLength}
+      />
+      <EnactmentBlocks setEnactment={setEnactment} />
+      <SubmissionDeposit />
+      <TxSubmissionButton
+        getTxFunc={getTxFunc}
+        onClose={onClose}
+        disabled={disabled}
+        onInBlock={(events) => {
           const eventData = getEventData(
             events,
             "fellowshipReferenda",
@@ -101,40 +105,25 @@ export default function NewFellowshipProposalPopup({
           }
           const [referendumIndex] = eventData;
           router.push(`/fellowship/referenda/${referendumIndex}`);
-        },
-        onClose,
-      });
-    },
-    [
-      dispatch,
-      router,
-      isMounted,
-      enactment,
-      preimageHash,
-      preimageLength,
-      onClose,
-      proposalOrigin,
-    ],
-  );
-
-  return (
-    <SignerPopup
-      wide
-      title="New Proposal"
-      onClose={onClose}
-      actionCallback={onSubmit}
-      disabled={disabled}
-      isLoading={isLoading}
-    >
-      <DetailedFellowshipTrack trackId={trackId} setTrackId={setTrackId} />
-      <PreimageField
-        preimageHash={preimageHash}
-        preimageLength={preimageLength}
-        setPreimageHash={setPreimageHash}
-        setPreimageLength={setPreimageLength}
+        }}
       />
-      <EnactmentBlocks setEnactment={setEnactment} />
-      <SubmissionDeposit />
-    </SignerPopup>
+    </Popup>
+  );
+}
+
+export default function NewFellowshipProposalPopup({
+  track: _track,
+  onClose,
+  preimageHash: _preimageHash,
+  preimageLength: _preimageLength,
+}) {
+  return (
+    <SignerPopupWrapper onClose={onClose}>
+      <NewFellowshipProposalInnerPopup
+        track={_track}
+        preimageHash={_preimageHash}
+        preimageLength={_preimageLength}
+      />
+    </SignerPopupWrapper>
   );
 }

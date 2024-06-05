@@ -5,7 +5,6 @@ import ChainTypes from "next-common/utils/consts/chainTypes";
 import { useChainSettings } from "next-common/context/chain";
 import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import ContextPopup from "./contextPopup";
 import { useSignetAccounts, useSignetSdk } from "next-common/context/signet";
 
 function usePolkadotAccounts() {
@@ -60,7 +59,7 @@ export default function CanBeAnyWalletSigner({ children }) {
 
   return (
     <MaybeSignerConnected extensionAccounts={combinedAccounts}>
-      <ContextPopup>{children}</ContextPopup>
+      {children}
     </MaybeSignerConnected>
   );
 }

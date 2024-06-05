@@ -1,10 +1,11 @@
+import { useCallback, useState } from "react";
 import Popup from "next-common/components/popup/wrapper/Popup";
+import { cn } from "next-common/utils";
 import NewPreimageSVG from "./icons/new-preimage.svg";
 import NewProposalSVG from "./icons/new-proposal.svg";
 import { ArrowRight } from "@osn/icons/subsquare";
-import { cn } from "next-common/utils";
-import { useCallback, useState } from "react";
-import NewPreimagePopup from "next-common/components/preImages/newPreimagePopup";
+import { NewPreimageInnerPopup } from "next-common/components/preImages/newPreimagePopup";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 function ChoiceButton({ icon, name, description, onClick }) {
   return (
@@ -32,10 +33,10 @@ function ChoiceButton({ icon, name, description, onClick }) {
 export default function SubmitProposalPopupCommon({
   setPreimageHash,
   setPreimageLength,
-  onClose,
   newProposalPopup,
   children,
 }) {
+  const { onClose } = usePopupParams();
   const [showNewPreimagePopup, setShowNewPreimagePopup] = useState(false);
   const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
 
@@ -47,7 +48,9 @@ export default function SubmitProposalPopupCommon({
   }, []);
 
   if (showNewPreimagePopup) {
-    return <NewPreimagePopup onClose={onClose} onCreated={onPreimageCreated} />;
+    return (
+      <NewPreimageInnerPopup onClose={onClose} onCreated={onPreimageCreated} />
+    );
   }
 
   if (showNewProposalPopup) {

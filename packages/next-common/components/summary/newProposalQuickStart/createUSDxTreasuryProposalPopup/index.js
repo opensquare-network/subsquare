@@ -1,6 +1,8 @@
 import AddressComboField from "next-common/components/popup/fields/addressComboField";
-import PopupWithSigner from "next-common/components/popupWithSigner";
-import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
+import {
+  useExtensionAccounts,
+  usePopupParams,
+} from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo, useState } from "react";
@@ -24,6 +26,7 @@ import BigNumber from "bignumber.js";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
 import useTrackDetail from "../../newProposalPopup/useTrackDetail";
+import Popup from "next-common/components/popup/wrapper/Popup";
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -74,7 +77,8 @@ const getBeneficiaryParam = (beneficiary) => {
 const getAssetBySymbol = (symbol) =>
   StatemintAssets.find((asset) => asset.symbol === symbol);
 
-function PopupContent() {
+export function NewUSDxTreasuryReferendumInnerPopup() {
+  const { onClose } = usePopupParams();
   const { tracks } = usePageProps();
   const api = useContextApi();
   const [inputBalance, setInputBalance] = useState("");
@@ -129,69 +133,57 @@ function PopupContent() {
   }, [api, inputBalance, beneficiary, validFrom, symbol]);
 
   return (
-    <>
-      <SignerWithBalance title="Origin" />
-      <USDxBalanceField
-        title="Request"
-        inputBalance={inputBalance}
-        setInputBalance={setInputBalance}
-        symbol={symbol}
-        setSymbol={setSymbol}
-        status={
-          <TreasuryBalance
-            isLoading={isTreasuryBalanceLoading}
-            symbol={symbol}
-            treasuryBalance={treasuryBalance}
-          />
-        }
-      />
-      <div className="flex flex-col gap-[8px]">
-        <AddressComboField
-          title="Beneficiary"
-          extensionAccounts={extensionAccounts}
-          defaultAddress={realAddress}
-          setAddress={setBeneficiary}
-        />
-        <InfoMessage>Please fill the address from AssetHub</InfoMessage>
-      </div>
-      <AutoSelectTreasuryTrack
-        requestAmount={tokenAmount}
-        trackId={trackId}
-        setTrackId={setTrackId}
-      />
-
-      <AdvanceSettings>
-        <BlocksField
-          title="Valid From"
-          value={validFrom}
-          setValue={setValidFrom}
-        />
-        <EnactmentBlocks track={track} setEnactment={setEnactment} />
-        <SubmissionDeposit />
-      </AdvanceSettings>
-      <div className="flex justify-end">
-        <CreateProposalSubmitButton
-          trackId={trackId}
-          enactment={enactment}
-          encodedHash={encodedHash}
-          encodedLength={encodedLength}
-          notePreimageTx={notePreimageTx}
-        />
-      </div>
-    </>
-  );
-}
-
-export default function NewUSDxTreasuryReferendumPopup({ onClose }) {
-  return (
-    <PopupWithSigner
-      title="Create USDx Treasury Proposal"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Create USDx Treasury Proposal" onClose={onClose} wide>
       <AssetHubApiProvider>
-        <PopupContent />
+        <SignerWithBalance title="Origin" />
+        <USDxBalanceField
+          title="Request"
+          inputBalance={inputBalance}
+          setInputBalance={setInputBalance}
+          symbol={symbol}
+          setSymbol={setSymbol}
+          status={
+            <TreasuryBalance
+              isLoading={isTreasuryBalanceLoading}
+              symbol={symbol}
+              treasuryBalance={treasuryBalance}
+            />
+          }
+        />
+        <div className="flex flex-col gap-[8px]">
+          <AddressComboField
+            title="Beneficiary"
+            extensionAccounts={extensionAccounts}
+            defaultAddress={realAddress}
+            setAddress={setBeneficiary}
+          />
+          <InfoMessage>Please fill the address from AssetHub</InfoMessage>
+        </div>
+        <AutoSelectTreasuryTrack
+          requestAmount={tokenAmount}
+          trackId={trackId}
+          setTrackId={setTrackId}
+        />
+
+        <AdvanceSettings>
+          <BlocksField
+            title="Valid From"
+            value={validFrom}
+            setValue={setValidFrom}
+          />
+          <EnactmentBlocks track={track} setEnactment={setEnactment} />
+          <SubmissionDeposit />
+        </AdvanceSettings>
+        <div className="flex justify-end">
+          <CreateProposalSubmitButton
+            trackId={trackId}
+            enactment={enactment}
+            encodedHash={encodedHash}
+            encodedLength={encodedLength}
+            notePreimageTx={notePreimageTx}
+          />
+        </div>
       </AssetHubApiProvider>
-    </PopupWithSigner>
+    </Popup>
   );
 }

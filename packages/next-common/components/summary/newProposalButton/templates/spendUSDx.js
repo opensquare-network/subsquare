@@ -1,11 +1,13 @@
 import { useChainSettings } from "next-common/context/chain";
 import QuickStartButton from "next-common/components/summary/newProposalButton/templates/button";
 import React, { useState } from "react";
-import NewUSDxTreasuryReferendumPopup from "../../newProposalQuickStart/createUSDxTreasuryProposalPopup";
+import { NewUSDxTreasuryReferendumInnerPopup } from "../../newProposalQuickStart/createUSDxTreasuryProposalPopup";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 const SpendUSDxTemplateContext = React.createContext();
 
-export default function SpendUSDxTemplateProvider({ onClose, children }) {
+export default function SpendUSDxTemplateProvider({ children }) {
+  const { onClose } = usePopupParams();
   const settings = useChainSettings();
   const [showCreateTreasuryProposal, setShowCreateTreasuryProposal] =
     useState(false);
@@ -23,7 +25,7 @@ export default function SpendUSDxTemplateProvider({ onClose, children }) {
         onClick={() => setShowCreateTreasuryProposal(true)}
       />
     );
-    popup = <NewUSDxTreasuryReferendumPopup onClose={onClose} />;
+    popup = <NewUSDxTreasuryReferendumInnerPopup onClose={onClose} />;
   }
 
   if (showCreateTreasuryProposal) {
