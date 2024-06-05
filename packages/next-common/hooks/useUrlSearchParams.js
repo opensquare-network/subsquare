@@ -8,13 +8,14 @@ import queryString from "query-string";
 export function useUrlSearchParams({
   removeNullishValues = true,
   removeFalsyValues = false,
+  defaultValue = {},
 } = {}) {
   const router = useRouter();
   const parsed = queryString.parse(router.asPath.split("?")?.[1] || "", {
     parseBooleans: true,
     parseNumbers: true,
   });
-  const q = { ...router.query, ...parsed };
+  const q = { ...defaultValue, ...router.query, ...parsed };
 
   function set(query, { shallow = true } = {}) {
     let result = { ...q, ...query };
