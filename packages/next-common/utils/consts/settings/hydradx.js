@@ -59,6 +59,7 @@ const ethereumNetwork = {
 
 const hydradx = {
   value: Chains.hydradx,
+  domain: "hydration",
   name: "Hydration",
   identity: "hydradx",
   symbol: "HDX",
