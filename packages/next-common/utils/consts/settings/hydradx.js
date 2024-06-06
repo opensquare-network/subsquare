@@ -57,8 +57,8 @@ const ethereumNetwork = {
   },
 };
 
-const hydration = {
-  value: Chains.hydration,
+const hydradx = {
+  value: Chains.hydradx,
   name: "Hydration",
   identity: "hydradx",
   symbol: "HDX",
@@ -110,4 +110,4 @@ const hydration = {
   },
 };
 
-export default hydration;
+export default hydradx;

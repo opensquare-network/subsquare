@@ -3,7 +3,7 @@ import { encodeAddress, decodeAddress } from "@polkadot/util-crypto";
 import { getAddress as getEvmAddress } from "ethers";
 import { isPolkadotAddress } from "./viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import isHydrationChain from "./isHydrationChain";
+import isHydradx from "./isHydradx";
 
 const HYDRA_ADDRESS_PREFIX = 63;
 const prefixBytes = Buffer.from("ETH\0");
@@ -49,7 +49,7 @@ export function substrateToEvmAddress(address) {
 }
 
 export function checkIfShouldConvertToEvmAddress(address) {
-  if (!isHydrationChain() || !isPolkadotAddress(address)) {
+  if (!isHydradx() || !isPolkadotAddress(address)) {
     return false;
   }
 

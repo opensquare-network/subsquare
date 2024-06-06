@@ -1,6 +1,6 @@
 import ChainTypes from "../chainTypes";
 import Chains from "../chains";
-import hydration from "./hydration";
+import hydradx from "./hydradx";
 
 const endpoints = [
   {
@@ -21,7 +21,7 @@ const ethereumNetwork = {
 };
 
 const hydradxTestnet = {
-  ...hydration,
+  ...hydradx,
   value: Chains.hydradxTestnet,
   name: "HydraDX Testnet",
   endpoints,

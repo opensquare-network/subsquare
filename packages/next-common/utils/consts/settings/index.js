@@ -17,7 +17,7 @@ import centrifuge from "./centrifuge";
 import litmus from "./litmus";
 import zeitgeist from "./zeitgeist";
 import altair from "./altair";
-import hydration from "./hydration";
+import hydradx from "./hydradx";
 import hydradxTestnet from "./hydradxTestnet";
 import development from "./development";
 import rococo from "./rococo";
@@ -44,7 +44,7 @@ const settingsMap = {
   crab,
   crust,
   darwinia2,
-  hydration,
+  hydradx,
   [hydradxTestnet.value]: hydradxTestnet,
   interlay,
   karura,
