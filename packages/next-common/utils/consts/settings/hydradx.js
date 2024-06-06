@@ -80,7 +80,7 @@ const hydradx = {
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "hydradx",
-  description: "Making finance efficient, simple and unstoppable",
+  description: "Making finance efficient, simple and unstoppable.",
   modules: {
     democracy: true,
   },
