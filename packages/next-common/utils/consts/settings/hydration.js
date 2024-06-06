@@ -37,12 +37,12 @@ const links = [
     url: "https://t.me/hydradx",
   },
   {
-    name: "substack",
-    url: "https://hydration.substack.com/",
-  },
-  {
     name: "github",
     url: "https://github.com/galacticcouncil",
+  },
+  {
+    name: "substack",
+    url: "https://hydration.substack.com/",
   },
 ];
 
