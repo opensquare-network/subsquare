@@ -18,8 +18,10 @@ import { isKintsugiChain } from "next-common/utils/chain";
 import Link from "next/link";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import AccountDelegationPrompt from "./components/delegationPrompt";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
+import ScrollPrompt from "next-common/components/scrollPrompt";
+import useDelegationPrompt from "./components/useDelegationPrompt";
+import useSetAvatarPrompt from "./components/useSetAvatarPrompt";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -156,6 +158,10 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
   const chain = useChain();
   const isKintsugi = isKintsugiChain(chain);
   const link = useAccountUrl();
+  const delegationPrompt = useDelegationPrompt();
+  const setAvatarPrompt = useSetAvatarPrompt();
+
+  const messages = [delegationPrompt, setAvatarPrompt].filter(Boolean);
 
   return (
     <NeutralPanel className="p-6 space-y-4">
@@ -173,7 +179,7 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
         </div>
       )}
 
-      <AccountDelegationPrompt />
+      <ScrollPrompt messages={messages} />
     </NeutralPanel>
   );
 }
