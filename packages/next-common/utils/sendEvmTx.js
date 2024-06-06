@@ -16,7 +16,7 @@ import {
 } from "./metamask";
 import getChainSettings from "./consts/settings";
 import { getEvmSignerAddress } from "./mixedChainUtil";
-import isHydradx from "./isHydradx";
+import isHydrationChain from "./isHydrationChain";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
@@ -172,7 +172,7 @@ async function dispatchCall({
 
   let sentTx = null;
 
-  if (isHydradx()) {
+  if (isHydrationChain()) {
     const [gas, feeData] = await Promise.all([
       provider.estimateGas(tx),
       provider.getFeeData(),

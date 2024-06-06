@@ -2,25 +2,25 @@ import { getAddress as getEvmAddress } from "ethers";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { addressEllipsis } from ".";
 import {
-  checkIfShouldConvertToEvmAddress as hydradxCheckIfShouldConvertToEvmAddress,
-  evmToSubstrateAddress as hydradxEvmToSubstrateAddress,
-  substrateToEvmAddress as hydradxSubstrateToEvmAddress,
-} from "./hydradxUtil";
+  checkIfShouldConvertToEvmAddress as hydrationChainCheckIfShouldConvertToEvmAddress,
+  evmToSubstrateAddress as hydrationChainEvmToSubstrateAddress,
+  substrateToEvmAddress as hydrationChainSubstrateToEvmAddress,
+} from "./hydrationChainUtil";
 import {
   checkIfShouldConvertToEvmAddress as centrifugeCheckIfShouldConvertToEvmAddress,
   evmToSubstrateAddress as centrifugeEvmToSubstrateAddress,
   substrateToEvmAddress as centrifugeSubstrateToEvmAddress,
 } from "./centrifugeUtil";
 import isCentrifuge from "./isCentrifuge";
-import isHydradx from "./isHydradx";
+import isHydrationChain from "./isHydrationChain";
 
 export function tryConvertToEvmAddress(address) {
   if (!address) {
     return address;
   }
-  if (isHydradx()) {
-    if (hydradxCheckIfShouldConvertToEvmAddress(address)) {
-      return hydradxSubstrateToEvmAddress(address);
+  if (isHydrationChain()) {
+    if (hydrationChainCheckIfShouldConvertToEvmAddress(address)) {
+      return hydrationChainSubstrateToEvmAddress(address);
     }
   }
   if (isCentrifuge()) {
@@ -36,8 +36,8 @@ export function tryConvertToSubstrateAddress(address) {
     return address;
   }
   if (isEthereumAddress(address)) {
-    if (isHydradx()) {
-      return hydradxEvmToSubstrateAddress(address);
+    if (isHydrationChain()) {
+      return hydrationChainEvmToSubstrateAddress(address);
     }
     if (isCentrifuge()) {
       return centrifugeEvmToSubstrateAddress(address);
@@ -48,8 +48,8 @@ export function tryConvertToSubstrateAddress(address) {
 }
 
 export function getEvmSignerAddress(address) {
-  if (isHydradx() && !isEthereumAddress(address)) {
-    return hydradxSubstrateToEvmAddress(address);
+  if (isHydrationChain() && !isEthereumAddress(address)) {
+    return hydrationChainSubstrateToEvmAddress(address);
   }
   if (isCentrifuge() && !isEthereumAddress(address)) {
     return centrifugeSubstrateToEvmAddress(address);

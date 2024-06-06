@@ -1,9 +1,9 @@
 import { decodeAddress } from "@polkadot/util-crypto";
 import { encodeAddressToChain } from "next-common/services/address";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import { evmToSubstrateAddress as hydradxEvmToSubstrateAddress } from "./hydradxUtil";
+import { evmToSubstrateAddress as hydrationChainEvmToSubstrateAddress } from "./hydrationChainUtil";
 import { evmToSubstrateAddress as centrifugeEvmToSubstrateAddress } from "./centrifugeUtil";
-import isHydradx from "./isHydradx";
+import isHydrationChain from "./isHydrationChain";
 import isCentrifuge from "./isCentrifuge";
 
 export function addressToPublicKey(address) {
@@ -16,8 +16,8 @@ export function normalizeAddress(address) {
   }
 
   if (isEthereumAddress(address)) {
-    if (isHydradx()) {
-      return hydradxEvmToSubstrateAddress(address);
+    if (isHydrationChain()) {
+      return hydrationChainEvmToSubstrateAddress(address);
     }
     if (isCentrifuge()) {
       return centrifugeEvmToSubstrateAddress(address);

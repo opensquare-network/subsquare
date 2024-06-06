@@ -44,7 +44,7 @@ export function getTreasuryMenu(summary) {
         extraMatchNavMenuActivePathnames: ["/treasury/bounties/[id]"],
         excludeToChains: [
           Chains.basilisk,
-          Chains.hydradx,
+          Chains.hydration,
           Chains.hydradxTestnet,
           Chains.kintsugi,
           Chains.interlay,

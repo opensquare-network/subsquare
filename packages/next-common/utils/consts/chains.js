@@ -9,7 +9,7 @@ const Chains = {
   khala: "khala",
   substrate: "substrate",
   basilisk: "basilisk",
-  hydradx: "hydradx",
+  hydration: "hydration",
   hydradxTestnet: "hydradx-testnet",
   kabocha: "kabocha",
   bifrost: "bifrost",

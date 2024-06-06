@@ -17,7 +17,7 @@ import litentry from "./consts/settings/litentry";
 import zeitgeist from "./consts/settings/zeitgeist";
 import altair from "./consts/settings/altair";
 import basilisk from "./consts/settings/basilisk";
-import hydradx from "./consts/settings/hydradx";
+import hydration from "./consts/settings/hydration";
 import development from "./consts/settings/development";
 import rococo from "./consts/settings/rococo";
 import westendCollectives from "./consts/settings/westendCollectives";
@@ -46,7 +46,7 @@ export const nodes = [
   westendCollectives,
   crust,
   darwinia2,
-  hydradx,
+  hydration,
   interlay,
   // kabocha,
   karura,
