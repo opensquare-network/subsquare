@@ -2,9 +2,9 @@ import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import {
-  ProjectIconHydradxDark,
-  ProjectIconHydradxLight,
-  ProjectLogoHydradxDark,
+  ProjectIconHydrationDark,
+  ProjectIconHydrationLight,
+  ProjectLogoHydrationDark,
 } from "@osn/icons/subsquare";
 import ChainTypes from "../chainTypes";
 
@@ -22,11 +22,11 @@ const endpoints = [
 const links = [
   {
     name: "website",
-    url: "https://hydradx.io/",
+    url: "https://hydration.net/",
   },
   {
     name: "twitter",
-    url: "https://twitter.com/hydra_dx",
+    url: "https://x.com/hydration_net",
   },
   {
     name: "discord",
@@ -37,12 +37,12 @@ const links = [
     url: "https://t.me/hydradx",
   },
   {
-    name: "reddit",
-    url: "https://www.reddit.com/r/hdx/",
-  },
-  {
     name: "github",
     url: "https://github.com/galacticcouncil",
+  },
+  {
+    name: "substack",
+    url: "https://hydration.substack.com/",
   },
 ];
 
@@ -59,18 +59,18 @@ const ethereumNetwork = {
 
 const hydradx = {
   value: Chains.hydradx,
-  name: "HydraDX",
+  name: "Hydration",
   identity: "hydradx",
   symbol: "HDX",
   decimals: 12,
   blockTime: 12000,
   hasElections: true,
   ss58Format: 63,
-  snsCoverCid: "bafybeieqf3lmi5e4e3yqvujn7dd26dsvhy66u55g6gjzgvw2ogjzu2pt4e",
-  avatar: ProjectIconHydradxLight,
-  darkAvatar: ProjectIconHydradxDark,
-  navLogo: ProjectLogoHydradxDark,
-  navLogoDark: ProjectLogoHydradxDark,
+  snsCoverCid: "bafybeict4ooyrtxtja2y5rpzumr6gz4m3dec2pzatqrl652gsbocfwzbte",
+  avatar: ProjectIconHydrationLight,
+  darkAvatar: ProjectIconHydrationDark,
+  navLogo: ProjectLogoHydrationDark,
+  navLogoDark: ProjectLogoHydrationDark,
   navPreferDark: true,
   endpoints,
   links,
@@ -80,29 +80,28 @@ const hydradx = {
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "hydradx",
-  description:
-    "HydraDX is a next-gen DeFi protocol which is designed to bring an ocean of liquidity to Polkadot. Our tool for the job the HydraDX Omnipool - an innovative Automated Market Maker (AMM) which unlocks unparalleled efficiencies by combining all assets in a single trading pool.",
+  description: "Making finance efficient, simple and unstoppable.",
   modules: {
     democracy: true,
   },
   cssVarsLight: {
-    theme100: "rgba(246,41,124,0.10)",
-    theme300: "rgba(246,41,124,0.40)",
-    theme500: "rgba(246,41,124,1)",
+    theme100: "rgba(229,62,118,0.10)",
+    theme300: "rgba(229,62,118,0.40)",
+    theme500: "rgba(229,62,118,1)",
     navigationBg: "rgba(2,6,25,1)",
-    navigationActive: "rgba(255,255,255,0.08)",
-    navigationBorder: "rgba(255,255,255,0.12)",
+    navigationActive: "rgba(255,255,255,0.04)",
+    navigationBorder: "rgba(255,255,255,0.08)",
     navigationText: "var(--textPrimaryContrast)",
     navigationTextTertiary: "var(--textTertiaryContrast)",
     navigationIcon: "var(--textSecondaryContrast)",
   },
   cssVarsDark: {
-    theme100: "rgba(246,41,124,0.10)",
-    theme300: "rgba(246,41,124,0.40)",
-    theme500: "rgba(246,41,124,1)",
+    theme100: "rgba(229,62,118,0.10)",
+    theme300: "rgba(229,62,118,0.40)",
+    theme500: "rgba(229,62,118,1)",
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
-    navigationBorder: "var(--neutral300)",
+    navigationBorder: "rgba(39,42,58,1)",
   },
   chainType: ChainTypes.MIXED,
   ethereumNetwork,

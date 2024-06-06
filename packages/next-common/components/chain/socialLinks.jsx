@@ -9,6 +9,7 @@ import {
   LinkMedium,
   LinkYoutube,
   LinkReddit,
+  LinkSubstack,
 } from "@osn/icons/subsquare";
 import ExternalLink from "../externalLink";
 import { cn } from "next-common/utils";
@@ -23,6 +24,7 @@ const iconMap = {
   medium: LinkMedium,
   youtube: LinkYoutube,
   reddit: LinkReddit,
+  substack: LinkSubstack,
 };
 
 export default function ChainSocialLinks({ className }) {
