@@ -37,8 +37,8 @@ const links = [
     url: "https://t.me/hydradx",
   },
   {
-    name: "reddit",
-    url: "https://www.reddit.com/r/hdx/",
+    name: "substack",
+    url: "https://hydration.substack.com/",
   },
   {
     name: "github",
