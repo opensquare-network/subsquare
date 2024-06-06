@@ -24,6 +24,7 @@ import {
 } from "next-common/components/popupWithSigner/context";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import { normalizeAddress } from "next-common/utils/address";
 
 export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const {
@@ -40,7 +41,7 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const extensionAccounts = useExtensionAccounts();
 
   const [targetAddress, setTargetAddress] = useState(
-    defaultTargetAddress || "",
+    normalizeAddress(defaultTargetAddress) || "",
   );
 
   const api = useContextApi();
