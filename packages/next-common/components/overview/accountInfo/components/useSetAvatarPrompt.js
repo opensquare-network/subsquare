@@ -1,11 +1,9 @@
-import { useUser } from "next-common/context/user";
-import { isKeyRegisteredUser } from "next-common/utils";
+import { useIsWeb3User } from "next-common/context/user";
 import Link from "next/link";
 
 export default function useSetAvatarPrompt() {
-  const user = useUser();
-  const isKeyUser = isKeyRegisteredUser(user);
-  if (!isKeyUser) {
+  const isWeb3User = useIsWeb3User();
+  if (!isWeb3User) {
     return null;
   }
 
