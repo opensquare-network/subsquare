@@ -1,7 +1,7 @@
 import { SystemClose } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useAnimate } from "framer-motion";
 
@@ -19,6 +19,7 @@ export default function ScrollPrompt({
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useCookieValue(promptKey, true);
   const [scope, animate] = useAnimate();
+  const pauseRef = useRef(false);
 
   const shiftMessage = useCallback(() => {
     setScrollingMessages((prev) => {
@@ -37,22 +38,20 @@ export default function ScrollPrompt({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      animate(
-        "li:first-child",
-        { marginTop: "-20px", display: "none" },
-        { duration: 1 },
-      )
+      if (pauseRef.current) {
+        return;
+      }
+      if (scope.current === null) {
+        return;
+      }
+      animate("li:first-child", { marginTop: "-20px" }, { duration: 1 })
         .then(shiftMessage)
         .then(() =>
-          animate(
-            "li:first-child",
-            { marginTop: "0px", display: "block" },
-            { duration: 0 },
-          ),
+          animate("li:first-child", { marginTop: "0px" }, { duration: 0 }),
         );
     }, 6500);
     return () => clearInterval(interval);
-  }, [shiftMessage]);
+  }, [scope, pauseRef, shiftMessage]);
 
   if (!visible) {
     return null;
@@ -71,7 +70,11 @@ export default function ScrollPrompt({
         "bg-theme100 text-theme500",
       )}
     >
-      <ScrollList ref={scope}>
+      <ScrollList
+        ref={scope}
+        onMouseEnter={() => (pauseRef.current = true)}
+        onMouseLeave={() => (pauseRef.current = false)}
+      >
         {scrollingMessages.map((item, index) => (
           <li key={index} className={cn("whitespace-nowrap")}>
             {item}
