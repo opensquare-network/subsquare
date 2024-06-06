@@ -1,10 +1,18 @@
+import hydradx from "next-common/utils/consts/settings/hydradx";
 import { WagmiProvider as Provider } from "wagmi";
 import { http, createConfig } from "wagmi";
 import { mainnet, base, darwinia, moonbeam, moonriver } from "wagmi/chains";
 import { coinbaseWallet, injected } from "wagmi/connectors";
 
 export const wagmiConfig = createConfig({
-  chains: [mainnet, base, darwinia, moonbeam, moonriver],
+  chains: [
+    mainnet,
+    base,
+    darwinia,
+    moonbeam,
+    moonriver,
+    hydradx.wagmiChainConfig,
+  ],
   ssr: true,
   connectors: [
     injected(),

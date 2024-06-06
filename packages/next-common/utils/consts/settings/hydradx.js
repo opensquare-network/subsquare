@@ -7,6 +7,9 @@ import {
   ProjectLogoHydrationDark,
 } from "@osn/icons/subsquare";
 import ChainTypes from "../chainTypes";
+import { defineChain, hexToNumber } from "viem";
+
+const name = "Hydration";
 
 const endpoints = [
   {
@@ -57,10 +60,27 @@ const ethereumNetwork = {
   },
 };
 
+const wagmiChainConfig = defineChain({
+  id: hexToNumber(ethereumNetwork.chainId),
+  name,
+  nativeCurrency: ethereumNetwork.nativeCurrency,
+  rpcUrls: {
+    default: {
+      http: ethereumNetwork.rpcUrls,
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Explorer",
+      url: ethereumNetwork.blockExplorerUrls[0],
+    },
+  },
+});
+
 const hydradx = {
   value: Chains.hydradx,
   domain: "hydration",
-  name: "Hydration",
+  name,
   identity: "hydradx",
   symbol: "HDX",
   decimals: 12,
@@ -109,6 +129,7 @@ const hydradx = {
   multisigWallets: {
     signet: true,
   },
+  wagmiChainConfig,
 };
 
 export default hydradx;
