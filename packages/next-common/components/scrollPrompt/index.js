@@ -1,40 +1,33 @@
 import { SystemClose } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useAnimate } from "framer-motion";
+import { intersectionBy, unionBy } from "lodash-es";
 
-const ScrollList = styled.ul`
+const ScrollList = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
 `;
 
-export default function ScrollPrompt({
-  messages,
-  promptKey = "scroll-prompt-visible",
-}) {
-  const [scrollingMessages, setScrollingMessages] = useState(messages);
-  const [visible, setVisible] = useState(false);
-  const [value, setValue] = useCookieValue(promptKey, true);
+export default function ScrollPrompt({ prompts }) {
+  const [scrollingPrompts, setScrollingPrompts] = useState(prompts);
   const [scope, animate] = useAnimate();
   const pauseRef = useRef(false);
 
+  useEffect(() => {
+    setScrollingPrompts((prev) =>
+      unionBy(intersectionBy(prev, prompts, "key"), prompts, "key"),
+    );
+  }, [prompts]);
+
   const shiftMessage = useCallback(() => {
-    setScrollingMessages((prev) => {
+    setScrollingPrompts((prev) => {
       const [first, ...rest] = prev;
       return [...rest, first];
     });
   }, []);
-
-  useEffect(() => {
-    setVisible(value);
-  }, [value]);
-
-  function close() {
-    setValue(false, { expires: 15 });
-  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,20 +37,19 @@ export default function ScrollPrompt({
       if (scope.current === null) {
         return;
       }
-      animate("li:first-child", { marginTop: "-20px" }, { duration: 1 })
+      if (scope.current.childNodes.length < 2) {
+        return;
+      }
+      animate("&>:first-child", { marginTop: "-20px" }, { duration: 1 })
         .then(shiftMessage)
         .then(() =>
-          animate("li:first-child", { marginTop: "0px" }, { duration: 0 }),
+          animate("&>:first-child", { marginTop: "0px" }, { duration: 0 }),
         );
     }, 6500);
     return () => clearInterval(interval);
   }, [scope, pauseRef, shiftMessage]);
 
-  if (!visible) {
-    return null;
-  }
-
-  if (messages.length === 0) {
+  if (scrollingPrompts.length === 0) {
     return null;
   }
 
@@ -75,13 +67,17 @@ export default function ScrollPrompt({
         onMouseEnter={() => (pauseRef.current = true)}
         onMouseLeave={() => (pauseRef.current = false)}
       >
-        {scrollingMessages.map((item, index) => (
-          <li key={index} className={cn("whitespace-nowrap")}>
-            {item}
-          </li>
+        {scrollingPrompts.map(({ key, message }) => (
+          <div key={key} className="whitespace-nowrap">
+            {message}
+          </div>
         ))}
       </ScrollList>
-      <SystemClose className="w-5 h-5" role="button" onClick={close} />
+      <SystemClose
+        className="w-5 h-5"
+        role="button"
+        onClick={() => scrollingPrompts[0]?.close()}
+      />
     </div>
   );
 }

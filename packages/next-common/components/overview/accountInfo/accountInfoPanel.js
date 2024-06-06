@@ -22,6 +22,8 @@ import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import ScrollPrompt from "next-common/components/scrollPrompt";
 import useDelegationPrompt from "./components/useDelegationPrompt";
 import useSetAvatarPrompt from "./components/useSetAvatarPrompt";
+import { isEmpty } from "lodash-es";
+import { useEffect, useState } from "react";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -161,7 +163,13 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
   const delegationPrompt = useDelegationPrompt();
   const setAvatarPrompt = useSetAvatarPrompt();
 
-  const messages = [delegationPrompt, setAvatarPrompt].filter(Boolean);
+  const [prompts, setPrompts] = useState([]);
+
+  useEffect(() => {
+    setPrompts(
+      [delegationPrompt, setAvatarPrompt].filter((item) => !isEmpty(item)),
+    );
+  }, [delegationPrompt, setAvatarPrompt]);
 
   return (
     <NeutralPanel className="p-6 space-y-4">
@@ -179,7 +187,7 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
         </div>
       )}
 
-      <ScrollPrompt messages={messages} />
+      <ScrollPrompt prompts={prompts} />
     </NeutralPanel>
   );
 }
