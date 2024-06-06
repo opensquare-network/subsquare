@@ -3,24 +3,12 @@ import { cn } from "next-common/utils";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import { useAnimate } from "framer-motion";
 
-const ScrollDiv = styled.div`
+const ScrollList = styled.ul`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-
-  @keyframes scroll-up {
-    from {
-      margin-top: 0;
-    }
-    to {
-      margin-top: -20px;
-    }
-  }
-
-  & > .scroll {
-    animation: scroll-up 1.5s;
-  }
 `;
 
 export default function ScrollPrompt({
@@ -30,7 +18,7 @@ export default function ScrollPrompt({
   const [scrollingMessages, setScrollingMessages] = useState(messages);
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useCookieValue(promptKey, true);
-  const [scrolling, setScrolling] = useState(false);
+  const [scope, animate] = useAnimate();
 
   const shiftMessage = useCallback(() => {
     setScrollingMessages((prev) => {
@@ -47,18 +35,24 @@ export default function ScrollPrompt({
     setValue(false, { expires: 15 });
   }
 
-  function scroll() {
-    setScrolling(true);
-  }
-
-  function cleanScroll() {
-    setScrolling(false);
-  }
-
   useEffect(() => {
-    const interval = setInterval(scroll, 6500);
+    const interval = setInterval(() => {
+      animate(
+        "li:first-child",
+        { marginTop: "-20px", display: "none" },
+        { duration: 1 },
+      )
+        .then(shiftMessage)
+        .then(() =>
+          animate(
+            "li:first-child",
+            { marginTop: "0px", display: "block" },
+            { duration: 0 },
+          ),
+        );
+    }, 6500);
     return () => clearInterval(interval);
-  }, []);
+  }, [shiftMessage]);
 
   if (!visible) {
     return null;
@@ -72,31 +66,18 @@ export default function ScrollPrompt({
     <div
       className={cn(
         "flex justify-between",
-        "h-[40px] rounded-[8px] overflow-hidden",
+        "h-[40px] rounded-[8px]",
         "text14Medium py-2.5 px-4",
         "bg-theme100 text-theme500",
       )}
     >
-      <ScrollDiv>
+      <ScrollList ref={scope}>
         {scrollingMessages.map((item, index) => (
-          <div
-            key={index}
-            className={cn(
-              "whitespace-nowrap",
-              index === 0 &&
-                scrollingMessages.length > 1 &&
-                scrolling &&
-                "scroll",
-            )}
-            onAnimationEnd={() => {
-              shiftMessage();
-              cleanScroll();
-            }}
-          >
+          <li key={index} className={cn("whitespace-nowrap")}>
             {item}
-          </div>
+          </li>
         ))}
-      </ScrollDiv>
+      </ScrollList>
       <SystemClose className="w-5 h-5" role="button" onClick={close} />
     </div>
   );
