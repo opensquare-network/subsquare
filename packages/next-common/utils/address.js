@@ -1,7 +1,7 @@
 import { decodeAddress } from "@polkadot/util-crypto";
 import { encodeAddressToChain } from "next-common/services/address";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import { evmToSubstrateAddress as hydrationChainEvmToSubstrateAddress } from "./hydradxUtil";
+import { evmToSubstrateAddress as hydradxEvmToSubstrateAddress } from "./hydradxUtil";
 import { evmToSubstrateAddress as centrifugeEvmToSubstrateAddress } from "./centrifugeUtil";
 import isHydradx from "./isHydradx";
 import isCentrifuge from "./isCentrifuge";
@@ -17,7 +17,7 @@ export function normalizeAddress(address) {
 
   if (isEthereumAddress(address)) {
     if (isHydradx()) {
-      return hydrationChainEvmToSubstrateAddress(address);
+      return hydradxEvmToSubstrateAddress(address);
     }
     if (isCentrifuge()) {
       return centrifugeEvmToSubstrateAddress(address);
