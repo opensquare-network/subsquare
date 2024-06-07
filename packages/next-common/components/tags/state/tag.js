@@ -2,7 +2,13 @@ import React from "react";
 import businessCategory, {
   detailPageCategory,
 } from "../../../utils/consts/business/category";
-import { TreasuryTag, TipTag, BountyTag, ChildBountyTag } from "./treasury";
+import {
+  TreasuryTag,
+  TipTag,
+  BountyTag,
+  ChildBountyTag,
+  SpendTag,
+} from "./treasury";
 import { ClosedTag, MotionTag } from "./styled";
 import { CollectiveTag } from "./collective";
 import {
@@ -66,6 +72,8 @@ const categoryTagMap = {
 
   [businessCategory.allianceAnnouncements]: AnnouncementTag,
   [detailPageCategory.ALLIANCE_ANNOUNCEMENT]: AnnouncementTag,
+
+  [businessCategory.treasurySpends]: SpendTag,
 };
 
 export default function Tag({ category, state, link, args }) {

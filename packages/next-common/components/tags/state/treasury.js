@@ -68,6 +68,13 @@ const childBountyStateTagMap = {
   Awarded: PositiveTag,
 };
 
+const spendStateTagMap = {
+  Approved: StartTag,
+  Paid: ActiveTag,
+  Processed: PositiveTag,
+  Voided: NegativeTag,
+};
+
 export function TreasuryTag({ state }) {
   const Tag = stateTagMap[state] || ClosedTag;
   return <Tag>{state}</Tag>;
@@ -89,5 +96,10 @@ export function BountyTag({ state }) {
 
 export function ChildBountyTag({ state }) {
   let Tag = childBountyStateTagMap[state] || ClosedTag;
+  return <Tag>{state}</Tag>;
+}
+
+export function SpendTag({ state }) {
+  let Tag = spendStateTagMap[state] || ClosedTag;
   return <Tag>{state}</Tag>;
 }

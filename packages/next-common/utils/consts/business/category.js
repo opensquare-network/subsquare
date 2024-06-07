@@ -1,5 +1,6 @@
 const businessCategory = {
   treasuryProposals: "Treasury Proposals",
+  treasurySpends: "Treasury Spends",
   treasuryTips: "Tips",
   treasuryBounties: "Treasury Bounties",
   treasuryChildBounties: "Treasury Child Bounties",

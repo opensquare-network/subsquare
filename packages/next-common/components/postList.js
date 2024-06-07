@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 `;
 
 export default function PostList({
-  title = "",
+  title = "List",
   titleCount = null,
   titleExtra = null,
   category,
