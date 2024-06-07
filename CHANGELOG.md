@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.5
+
+date: 2024-06-07
+
+- Add USDx treasury spend proposal template for OpenGov referenda.
+- Add `system#remark` proposal template for OpenGov referenda.
+- Fix fellowship core approve referendum template track.
+- Support avatar setting by SIMA spec.
+- Support hydraDX rebranding to hydration.
+- Add dragon boat header decoration which will show near dragon boat festival.
+- Fix delegate search for chains which support both substrate and EVM.
+- Fix styles.
+
 ### 4.0.4
 
 date: 2024-05-30
