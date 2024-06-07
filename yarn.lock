@@ -2191,10 +2191,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.102.0":
-  version: 1.102.0
-  resolution: "@osn/icons@npm:1.102.0"
-  checksum: eabe8466f1567aeed81eb7a0f3e5964e3496fd1916d4f667ee2735942d91f8a1dfb28bc8a86ef5eb1292d529b444c9737c421ca6d759539575ea8bfb89a8e6ed
+"@osn/icons@npm:^1.105.0":
+  version: 1.105.0
+  resolution: "@osn/icons@npm:1.105.0"
+  checksum: 5a18daa8180f32f438583ea88b13c565e1b4b902067ce1d4f79d8e78c05008628b8b4dbee6cea2b5f14788e96cdcc4a51326c61df1a65accd8f5bcdb43d2a052
   languageName: node
   linkType: hard
 
@@ -3536,7 +3536,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.102.0
+    "@osn/icons": ^1.105.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -3570,7 +3570,7 @@ __metadata:
   dependencies:
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.102.0
+    "@osn/icons": ^1.105.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -6921,6 +6921,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framer-motion@npm:^11.2.10":
+  version: 11.2.10
+  resolution: "framer-motion@npm:11.2.10"
+  dependencies:
+    tslib: ^2.4.0
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: d124bba0d59856b5b17db2d55f6a627d8035e7b7728a610669e6f8dd215b8bbe1be1ee4a0d62d7ae365496bc2ebe8761b2bf4cf2e9c4760b4bfd7fdfd47a43f1
+  languageName: node
+  linkType: hard
+
 "fs-constants@npm:^1.0.0":
   version: 1.0.0
   resolution: "fs-constants@npm:1.0.0"
@@ -8757,7 +8777,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.2.0
     "@mimirdev/apps-sdk": ^0.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.102.0
+    "@osn/icons": ^1.105.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.3.5
     "@osn/provider-options": 1.1.0
@@ -8787,6 +8807,7 @@ __metadata:
     eslint-plugin-react: ^7.31.11
     ethereum-blockies-base64: ^1.0.2
     ethers: ^6.3.0
+    framer-motion: ^11.2.10
     graphql: ^16.8.1
     is-ipfs: ^8.0.1
     is-utf8: ^0.2.1

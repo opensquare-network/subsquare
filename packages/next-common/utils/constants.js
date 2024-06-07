@@ -102,6 +102,7 @@ export const CACHE_KEY = {
   navSubmenuVisible: "nav-submenu-visible",
   connectedAccount: "connected-account",
   delegationPromptVisible: "delegation-prompt-visible",
+  setAvatarPromptVisible: "set-avatar-prompt-visible",
 };
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
