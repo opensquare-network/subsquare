@@ -9,6 +9,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { PolkassemblyChains } from "next-common/utils/polkassembly";
 import { cloneDeep, filter, orderBy } from "lodash-es";
 import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
+import { useIsDVAddressFn } from "./useIsDVAddress";
 
 function getShouldReadPolkassemblyComments(chain) {
   return PolkassemblyChains.includes(chain);
@@ -50,6 +51,7 @@ export function usePostCommentsData() {
   const post = usePost();
   const polkassemblyPostData = usePolkassemblyPostData(post);
   const [filterParams] = usePostCommentsFilterParams();
+  const isDVAddress = useIsDVAddressFn();
 
   const [commentsData, setCommentsData] = useState(comments);
   const shouldReadPolkassemblyComments =
@@ -66,15 +68,21 @@ export function usePostCommentsData() {
         );
 
         data.items = filter(data.items, (item) => {
+          let flag = true;
+
           if (filterParams.hide_deleted) {
             if (item.replies?.length) {
               item.replies = filter(item.replies, isDeletedComment);
             }
 
-            return isDeletedComment(item);
+            flag = isDeletedComment(item);
           }
 
-          return item;
+          if (filterParams.show_dv_only) {
+            flag = isDVAddress(item?.author?.address);
+          }
+
+          return flag;
         });
 
         if (filterParams.comments_sort_by === "newest") {
@@ -98,6 +106,7 @@ export function usePostCommentsData() {
     polkassemblyPostData.comments,
     shouldReadPolkassemblyComments,
     filterParams,
+    isDVAddress,
   ]);
 
   return {
