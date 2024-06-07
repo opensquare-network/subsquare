@@ -12,9 +12,9 @@ dayjs.extend(isBetween);
 
 const nowDay = dayjs();
 
-function lunarDateToSolarDate({ y, m, d }) {
+function lunarDateToSolarDate(y, m, d) {
   const { cYear, cMonth, cDay } = solarlunar.lunar2solar(y, m, d);
-  return dayjs(`${cYear}-${cMonth}-${cDay}`);
+  return dayjs(new Date(cYear, cMonth - 1, cDay));
 }
 
 /**
