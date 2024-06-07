@@ -12,6 +12,11 @@ dayjs.extend(isBetween);
 
 const nowDay = dayjs();
 
+function lunarDateToSolarDate({ y, m, d }) {
+  const { cYear, cMonth, cDay } = solarlunar.lunar2solar(y, m, d);
+  return dayjs(`${cYear}-${cMonth}-${cDay}`);
+}
+
 /**
  * Chinese New Year
  */
@@ -40,6 +45,19 @@ const labourDayEvent = {
 };
 
 /**
+ * Dragon Boat Festival
+ */
+const dragonBoatFestivalDay = lunarDateToSolarDate(nowDay.year(), 5, 5);
+const dragonBoatFestivalEveDay = dragonBoatFestivalDay.add(-1, "day");
+const dragonBoatFestivalEvent = {
+  name: "dragon-boat-festival",
+  startMonth: dragonBoatFestivalEveDay.month() + 1,
+  startDate: dragonBoatFestivalEveDay.date(),
+  endMonth: dragonBoatFestivalDay.month() + 1,
+  endDate: dragonBoatFestivalDay.date(),
+};
+
+/**
  * Christmas
  */
 const christmasEvent = {
@@ -50,7 +68,12 @@ const christmasEvent = {
   endDate: 31,
 };
 
-const events = [chineseNewYearEvent, labourDayEvent, christmasEvent];
+const events = [
+  chineseNewYearEvent,
+  labourDayEvent,
+  dragonBoatFestivalEvent,
+  christmasEvent,
+];
 
 export function useNavLogoEventBackgroundSrc() {
   const { navPreferDark } = useChainSettings();
