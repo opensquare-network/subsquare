@@ -74,6 +74,7 @@ const categoryTagMap = {
   [detailPageCategory.ALLIANCE_ANNOUNCEMENT]: AnnouncementTag,
 
   [businessCategory.treasurySpends]: SpendTag,
+  [detailPageCategory.TREASURY_SPEND]: SpendTag,
 };
 
 export default function Tag({ category, state, link, args }) {

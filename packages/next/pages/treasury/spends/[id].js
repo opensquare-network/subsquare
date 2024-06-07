@@ -14,15 +14,31 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import TreasurySpendDetail from "next-common/components/detail/treasury/spend";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import TreasurySpendMetadata from "next-common/components/detail/treasury/spend/metadata";
+import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTreasurySpendTimelineData";
+import Timeline from "next-common/components/timeline";
+import { useSelector } from "react-redux";
+import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 function TreasurySpendContent() {
   const detail = usePost();
+  const timelineData = useTreasurySpendTimelineData(detail?.onchainData);
+  const isTimelineCompact = useSelector(
+    detailMultiTabsIsTimelineCompactModeSelector,
+  );
 
   return (
     <ContentWithComment>
       <TreasurySpendDetail />
       <DetailMultiTabs
         metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
+        timeline={
+          <Timeline
+            data={timelineData}
+            indent={false}
+            compact={isTimelineCompact}
+          />
+        }
+        timelineCount={timelineData.length}
       />
     </ContentWithComment>
   );
