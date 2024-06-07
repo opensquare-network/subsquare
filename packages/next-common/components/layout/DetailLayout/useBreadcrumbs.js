@@ -70,6 +70,15 @@ export default function useBreadcrumbs() {
       },
       getIndexField(post?.proposalIndex, id),
     ];
+  } else if (detailPageCategory.TREASURY_SPEND === type) {
+    return [
+      treasury,
+      {
+        content: "Spends",
+        path: "/treasury/spends",
+      },
+      getIndexField(post?.index, id),
+    ];
   } else if (detailPageCategory.TREASURY_BOUNTY === type) {
     return [
       treasury,

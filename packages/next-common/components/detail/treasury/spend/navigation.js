@@ -1,13 +1,13 @@
-import { useOnchainData } from "../../../context/post";
+import { useOnchainData } from "next-common/context/post";
 import { isNil } from "lodash-es";
-import { NavigationWrapper } from "./navigators";
-import React from "react";
-import TriangleRight from "../../../assets/imgs/icons/arrow-triangle-right.svg";
+import { NavigationWrapper } from "next-common/components/detail/navigation/navigators";
 import ReferendaReferendumLink from "next-common/components/detail/navigation/common/referendaReferendumLink";
+import TriangleRight from "next-common/assets/imgs/icons/arrow-triangle-right.svg";
+import React from "react";
 
-export default function TreasuryProposalNavigation() {
+export default function TreasurySpendNavigation() {
   const onchainData = useOnchainData();
-  const { gov2Referendum, proposalIndex } = onchainData;
+  const { gov2Referendum, index } = onchainData;
   const hasReferendum = !isNil(gov2Referendum);
 
   if (!hasReferendum) {
@@ -20,7 +20,7 @@ export default function TreasuryProposalNavigation() {
       <div>
         <TriangleRight />
       </div>
-      Treasury #{proposalIndex}
+      Treasury Spend #{index}
     </NavigationWrapper>
   );
 }
