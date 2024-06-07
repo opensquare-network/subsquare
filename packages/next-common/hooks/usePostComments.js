@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { PolkassemblyChains } from "next-common/utils/polkassembly";
-import { cloneDeep, filter } from "lodash-es";
+import { cloneDeep, filter, orderBy } from "lodash-es";
 import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
 
 function getShouldReadPolkassemblyComments(chain) {
@@ -76,6 +76,16 @@ export function usePostCommentsData() {
 
           return item;
         });
+
+        if (filterParams.comments_sort_by === "newest") {
+          data.items = orderBy(data.items, "createdAt", "desc");
+        } else if (filterParams.comments_sort_by === "oldest") {
+          data.items = orderBy(data.items, "createdAt", "asc");
+        } else if (filterParams.comments_sort_by === "most_votes") {
+          // TODO: sort votes
+        } else if (filterParams.comments_sort_by === "most_thumbs_up") {
+          data.items = orderBy(data.items, "reactions.length", "desc");
+        }
 
         setCommentsData(data);
       }
