@@ -14,11 +14,16 @@ export const Names = {
 
 export function getTreasuryMenu(summary) {
   const activeTreasuryProposals = summary?.treasuryProposals?.active || 0;
+  const activeTreasurySpends = summary?.treasurySpends?.active || 0;
   const activeBounties = summary?.bounties?.active || 0;
   const activeChildBounties = summary?.childBounties?.active || 0;
   const activeTips = summary?.tips?.active || 0;
   const totalActiveCount =
-    activeTreasuryProposals + activeBounties + activeChildBounties + activeTips;
+    activeTreasuryProposals +
+    activeTreasurySpends +
+    activeBounties +
+    activeChildBounties +
+    activeTips;
 
   return {
     name: Names.treasury,
@@ -37,6 +42,7 @@ export function getTreasuryMenu(summary) {
         pathname: "/treasury/spends",
         extraMatchNavMenuActivePathnames: ["/treasury/spends/[id]"],
         excludeToChains: getExcludeChains([Chains.polkadot]),
+        activeCount: activeTreasurySpends,
       },
       {
         value: "proposals",
