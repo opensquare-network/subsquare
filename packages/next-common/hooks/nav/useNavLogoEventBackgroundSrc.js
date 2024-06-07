@@ -20,8 +20,7 @@ function lunarDateToSolarDate(y, m, d) {
 /**
  * Chinese New Year
  */
-const { cYear, cMonth, cDay } = solarlunar.lunar2solar(nowDay.year(), 1, 1);
-const newYearDay = dayjs(`${cYear}-${cMonth}-${cDay}`);
+const newYearDay = lunarDateToSolarDate(nowDay.year(), 1, 1);
 // new year's eve
 const newYearsEveDay = newYearDay.add(-1, "day");
 const newYearEndDay = newYearDay.add(2, "day");
