@@ -10,6 +10,7 @@ import ReferendaReferendumNavigation from "next-common/components/detail/navigat
 import TimeoutCountdown from "next-common/components/detail/referenda/timeoutCountdown";
 import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
+import ReferendaReferendumTreasurySpendNavigation from "next-common/components/detail/referenda/referendaReferendumTreasurySpendNavigation";
 
 export default function ReferendaDetail() {
   const setIsEdit = useSetEdit();
@@ -26,6 +27,7 @@ export default function ReferendaDetail() {
             </TimeoutGuard>
             <ReferendaWhiteListNavigation />
             <ReferendaReferendumNavigation />
+            <ReferendaReferendumTreasurySpendNavigation />
           </>
         )
       }
