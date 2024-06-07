@@ -5,7 +5,7 @@ import DetailContentBase from "next-common/components/detail/common/detailBase";
 import ArticleContent from "next-common/components/articleContent";
 import PostTitle from "next-common/components/detail/common/Title";
 import TreasurySpendNavigation from "next-common/components/detail/treasury/spend/navigation";
-import TreasurySpendPostMeta from "next-common/components/detail/treasury/spend/meta";
+import TreasurySpendPostMeta from "next-common/components/detail/treasury/spend/headerMeta";
 
 export default function TreasurySpendDetail() {
   const setIsEdit = useSetEdit();

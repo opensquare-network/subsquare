@@ -12,11 +12,18 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 import React from "react";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import TreasurySpendDetail from "next-common/components/detail/treasury/spend";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import TreasurySpendMetadata from "next-common/components/detail/treasury/spend/metadata";
 
 function TreasurySpendContent() {
+  const detail = usePost();
+
   return (
     <ContentWithComment>
       <TreasurySpendDetail />
+      <DetailMultiTabs
+        metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
+      />
     </ContentWithComment>
   );
 }

@@ -1,3 +1,18 @@
+import { isNil } from "lodash-es";
+
+export function isParachain(location) {
+  const { parents, interior } = location || {};
+  return parents === 0 && !isNil(interior?.x1?.parachain);
+}
+
+export function getParachainId(location) {
+  const { parents, interior } = location || {};
+  if (parents !== 0) {
+    return null;
+  }
+  return interior?.x1?.parachain;
+}
+
 function isAssetHub(location = {}) {
   const { parents, interior } = location || {};
   return parents === 0 && interior?.x1?.parachain === 1000;
