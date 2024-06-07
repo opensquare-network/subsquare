@@ -10,6 +10,7 @@ import { PolkassemblyChains } from "next-common/utils/polkassembly";
 import { cloneDeep, filter, orderBy } from "lodash-es";
 import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
 import { useIsDVAddressFn } from "./useIsDVAddress";
+import { useGetAddressVotesDataFn } from "./useAddressVotesData";
 
 function getShouldReadPolkassemblyComments(chain) {
   return PolkassemblyChains.includes(chain);
@@ -52,6 +53,7 @@ export function usePostCommentsData() {
   const polkassemblyPostData = usePolkassemblyPostData(post);
   const [filterParams] = usePostCommentsFilterParams();
   const isDVAddress = useIsDVAddressFn();
+  const getAddressVotesData = useGetAddressVotesDataFn();
 
   const [commentsData, setCommentsData] = useState(comments);
   const shouldReadPolkassemblyComments =
@@ -80,6 +82,10 @@ export function usePostCommentsData() {
 
           if (filterParams.show_dv_only) {
             flag = isDVAddress(item?.author?.address);
+          }
+
+          if (filterParams.show_voters_only) {
+            flag = !!getAddressVotesData(item?.author?.address);
           }
 
           return flag;
