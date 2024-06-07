@@ -15,7 +15,7 @@ export default function useBlockTimestamp(height) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (chainHeight >= height) {
+    if (chainHeight >= height && api) {
       setIsLoading(true);
       getBlockTimeByHeight(api, height)
         .then((v) => setTimestamp(v))

@@ -6,6 +6,7 @@ import { MenuTreasury } from "@osn/icons/subsquare";
 export const Names = {
   treasury: "TREASURY",
   proposals: "Proposals",
+  spends: "Spends",
   bounties: "Bounties",
   childBounties: "Child Bounties",
   tips: "Tips",
@@ -30,6 +31,13 @@ export function getTreasuryMenu(summary) {
     pathname: "/treasury",
     activeCount: totalActiveCount,
     items: [
+      {
+        value: "spends",
+        name: Names.spends,
+        pathname: "/treasury/spends",
+        extraMatchNavMenuActivePathnames: ["/treasury/spends/[id]"],
+        excludeToChains: getExcludeChains([Chains.polkadot]),
+      },
       {
         value: "proposals",
         name: Names.proposals,
