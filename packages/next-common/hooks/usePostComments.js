@@ -77,15 +77,15 @@ export function usePostCommentsData() {
               item.replies = filter(item.replies, isDeletedComment);
             }
 
-            flag = isDeletedComment(item);
+            flag = flag && isDeletedComment(item);
           }
 
           if (filterParams.show_dv_only) {
-            flag = isDVAddress(item?.author?.address);
+            flag = flag && isDVAddress(item?.author?.address);
           }
 
           if (filterParams.show_voters_only) {
-            flag = !!getAddressVotesData(item?.author?.address);
+            flag = flag && !!getAddressVotesData(item?.author?.address);
           }
 
           return flag;
