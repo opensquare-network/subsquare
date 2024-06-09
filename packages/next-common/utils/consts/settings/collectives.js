@@ -20,28 +20,28 @@ const testEndpoints = [
 
 const collectivesEndpoints = [
   {
-    name: "Dewllir",
-    url: "wss://polkadot-collectives-rpc.dwellir.com/",
-  },
-  {
-    name: "Dewllir Tunisia",
-    url: "wss://polkadot-collectives-rpc-tn.dwellir.com/",
-  },
-  {
-    name: "IBP-GeoDNS1",
-    url: "wss://sys.ibp.network/collectives-polkadot",
-  },
-  {
-    name: "IBP-GeoDNS2",
-    url: "wss://sys.dotters.network/collectives-polkadot",
-  },
-  {
     name: "Parity",
     url: "wss://polkadot-collectives-rpc.polkadot.io",
   },
   {
     name: "OnFinality",
     url: "wss://collectives.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Dewllir",
+    url: "wss://polkadot-collectives-rpc.dwellir.com",
+  },
+  {
+    name: "Dewllir Tunisia",
+    url: "wss://polkadot-collectives-rpc-tn.dwellir.com/",
+  },
+  {
+    name: "IBP1",
+    url: "wss://sys.ibp.network/collectives-polkadot",
+  },
+  {
+    name: "IBP2",
+    url: "wss://sys.dotters.network/collectives-polkadot",
   },
   {
     name: "LuckyFriday",

@@ -25,6 +25,10 @@ const DEFAULT_ACALA_NODES = [
     url: "wss://acala-rpc.dwellir.com",
   },
   {
+    name: "LuckyFriday",
+    url: "wss://rpc-acala.luckyfriday.io",
+  },
+  {
     name: "OnFinality",
     url: "wss://acala-polkadot.api.onfinality.io/public-ws",
   },

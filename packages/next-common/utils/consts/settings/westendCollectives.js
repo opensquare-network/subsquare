@@ -12,18 +12,18 @@ import { collectiveLinks } from "next-common/utils/consts/settings/common/collec
 const westendCollectivesEndpoints = [
   {
     name: "Dwellir",
-    url: "wss://westend-collectives-rpc.dwellir.com",
+    url: "wss://collectives-westend-rpc.dwellir.com",
   },
   {
     name: "Dwellir Tunisia",
     url: "wss://westend-collectives-rpc-tn.dwellir.com",
   },
   {
-    name: "IBP-GeoDNS1",
+    name: "IBP1",
     url: "wss://sys.ibp.network/collectives-westend",
   },
   {
-    name: "IBP-GeoDNS2",
+    name: "IBP2",
     url: "wss://sys.dotters.network/collectives-westend",
   },
   {
