@@ -22,10 +22,6 @@ const nodes = [
     url: "wss://vara-mainnet.public.blastapi.io",
   },
   {
-    name: "Gear",
-    url: "wss://rpc.vara.network",
-  },
-  {
     name: "dPRC",
     url: "wss://vara.drpc.org",
   },
