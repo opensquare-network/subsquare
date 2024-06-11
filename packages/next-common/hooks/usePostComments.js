@@ -73,9 +73,7 @@ export function usePostCommentsData() {
         // merge totalVotes
         data.items = map(data.items, (item) => {
           const vote = getAddressVotesData(item?.author?.address) || 0;
-          if (vote) {
-            item.totalVotes = BigNumber(vote.totalVotes || 0).toNumber();
-          }
+          item.totalVotes = BigNumber(vote.totalVotes || 0).toNumber();
 
           return item;
         });
