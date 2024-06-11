@@ -28,16 +28,16 @@ const collectivesEndpoints = [
     url: "wss://collectives.api.onfinality.io/public-ws",
   },
   {
+    name: "IBP1",
+    url: "wss://sys.ibp.network/collectives-polkadot",
+  },
+  {
     name: "Dewllir",
     url: "wss://polkadot-collectives-rpc.dwellir.com",
   },
   {
     name: "Dewllir Tunisia",
     url: "wss://polkadot-collectives-rpc-tn.dwellir.com/",
-  },
-  {
-    name: "IBP1",
-    url: "wss://sys.ibp.network/collectives-polkadot",
   },
   {
     name: "IBP2",

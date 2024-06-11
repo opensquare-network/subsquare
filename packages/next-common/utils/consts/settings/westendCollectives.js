@@ -11,6 +11,14 @@ import { collectiveLinks } from "next-common/utils/consts/settings/common/collec
 
 const westendCollectivesEndpoints = [
   {
+    name: "Parity",
+    url: "wss://westend-collectives-rpc.polkadot.io/",
+  },
+  {
+    name: "IBP1",
+    url: "wss://sys.ibp.network/collectives-westend",
+  },
+  {
     name: "Dwellir",
     url: "wss://collectives-westend-rpc.dwellir.com",
   },
@@ -19,16 +27,8 @@ const westendCollectivesEndpoints = [
     url: "wss://westend-collectives-rpc-tn.dwellir.com",
   },
   {
-    name: "IBP1",
-    url: "wss://sys.ibp.network/collectives-westend",
-  },
-  {
     name: "IBP2",
     url: "wss://sys.dotters.network/collectives-westend",
-  },
-  {
-    name: "Parity",
-    url: "wss://westend-collectives-rpc.polkadot.io/",
   },
 ];
 
