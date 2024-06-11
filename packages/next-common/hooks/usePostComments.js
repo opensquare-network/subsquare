@@ -61,60 +61,58 @@ export function usePostCommentsData() {
     getShouldReadPolkassemblyComments(chain);
 
   useEffect(() => {
+    const data = { ...comments };
+
     if (shouldReadPolkassemblyComments) {
       if (!polkassemblyPostData.loadingComments) {
-        const data = { ...comments };
-
         data.items = mergeComments(
           polkassemblyPostData.comments,
           comments.items,
         );
+      }
+    }
 
-        // merge totalVotes
-        data.items = map(data.items, (item) => {
-          const vote = getAddressVotesData(item?.author?.address) || 0;
-          item.totalVotes = BigNumber(vote.totalVotes || 0).toNumber();
+    // merge totalVotes
+    data.items = map(data.items, (item) => {
+      const vote = getAddressVotesData(item?.author?.address) || 0;
+      item.totalVotes = BigNumber(vote.totalVotes || 0).toNumber();
 
-          return item;
-        });
+      return item;
+    });
 
-        data.items = filter(data.items, (item) => {
-          let flag = true;
+    data.items = filter(data.items, (item) => {
+      let flag = true;
 
-          if (filterParams.hide_deleted) {
-            if (item.replies?.length) {
-              item.replies = filter(item.replies, isDeletedComment);
-            }
-
-            flag = flag && isDeletedComment(item);
-          }
-
-          if (filterParams.show_dv_only) {
-            flag = flag && isDVAddress(item?.author?.address);
-          }
-
-          if (filterParams.show_voters_only) {
-            flag = flag && !!getAddressVotesData(item?.author?.address);
-          }
-
-          return flag;
-        });
-
-        if (filterParams.comments_sort_by === "newest") {
-          data.items = orderBy(data.items, "createdAt", "desc");
-        } else if (filterParams.comments_sort_by === "oldest") {
-          data.items = orderBy(data.items, "createdAt", "asc");
-        } else if (filterParams.comments_sort_by === "most_votes") {
-          data.items = orderBy(data.items, "totalVotes", "desc");
-        } else if (filterParams.comments_sort_by === "most_thumbs_up") {
-          data.items = orderBy(data.items, "reactions.length", "desc");
+      if (filterParams.hide_deleted) {
+        if (item.replies?.length) {
+          item.replies = filter(item.replies, isDeletedComment);
         }
 
-        setCommentsData(data);
+        flag = flag && isDeletedComment(item);
       }
-    } else {
-      setCommentsData(comments);
+
+      if (filterParams.show_dv_only) {
+        flag = flag && isDVAddress(item?.author?.address);
+      }
+
+      if (filterParams.show_voters_only) {
+        flag = flag && !!getAddressVotesData(item?.author?.address);
+      }
+
+      return flag;
+    });
+
+    if (filterParams.comments_sort_by === "newest") {
+      data.items = orderBy(data.items, "createdAt", "desc");
+    } else if (filterParams.comments_sort_by === "oldest") {
+      data.items = orderBy(data.items, "createdAt", "asc");
+    } else if (filterParams.comments_sort_by === "most_votes") {
+      data.items = orderBy(data.items, "totalVotes", "desc");
+    } else if (filterParams.comments_sort_by === "most_thumbs_up") {
+      data.items = orderBy(data.items, "reactions.length", "desc");
     }
+
+    setCommentsData(data);
   }, [
     comments,
     polkassemblyPostData.loadingComments,
