@@ -1,8 +1,11 @@
 import { SystemFilter } from "@osn/icons/subsquare";
 import Checkbox from "next-common/components/checkbox";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
+import Tooltip from "next-common/components/tooltip";
 import { usePostCommentsFilterParams } from "next-common/hooks/usePostCommentsFilterParams";
+import { useVotesLoading } from "next-common/hooks/useVotesLoading";
 import SecondaryButton from "next-common/lib/button/secondary";
+import { cn } from "next-common/utils";
 import { useEffect, useRef, useState } from "react";
 import { useClickAway } from "react-use";
 
@@ -23,16 +26,20 @@ export default function CommentsFilterFormFilter() {
     setShowFilter(false);
   });
 
+  const loading = useVotesLoading();
+
   const counts = Object.values(params).filter((v) => v === true).length;
 
   const items = [
     {
       key: "hide_0",
       name: "Hide 0 balance accounts",
+      disabled: true,
     },
     {
       key: "show_voters_only",
       name: "Show voter's comments only",
+      disabled: loading,
     },
     {
       key: "show_dv_only",
@@ -64,17 +71,27 @@ export default function CommentsFilterFormFilter() {
       {showFilter && (
         <OptionWrapper className="absolute right-0 top-[calc(100%+10px)] bottom-auto text12Medium !w-auto z-10">
           {items.map((item) => (
-            <div
+            <Tooltip
               key={item.key}
-              role="button"
-              className="flex items-center gap-x-1 whitespace-nowrap py-1.5 select-none"
+              content={item.disabled && "Not available"}
+              className={cn(
+                "cursor-pointer flex items-center gap-x-1 whitespace-nowrap py-1.5 select-none",
+                item.disabled && "text-textDisabled cursor-default",
+              )}
               onClick={() => {
+                if (item.disabled) {
+                  return;
+                }
+
                 setValue({ ...value, [item.key]: !value[item.key] });
               }}
             >
-              <Checkbox checked={value[item.key]} className="w-5 h-5" />
-              <div>{item.name}</div>
-            </div>
+              <Checkbox
+                checked={value[item.key]}
+                className="w-5 h-5 cursor-[inherit]"
+              />
+              <div className="cursor-[inherit]">{item.name}</div>
+            </Tooltip>
           ))}
 
           <div className="flex justify-end mt-2">

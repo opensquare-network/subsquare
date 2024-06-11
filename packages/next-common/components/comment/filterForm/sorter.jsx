@@ -1,8 +1,11 @@
 import Select from "next-common/components/select";
+import Tooltip from "next-common/components/tooltip";
 import { usePostCommentsFilterParams } from "next-common/hooks/usePostCommentsFilterParams";
+import { useVotesLoading } from "next-common/hooks/useVotesLoading";
 
 export default function CommentsFilterFormSorter() {
   const [params, , updateParams] = usePostCommentsFilterParams();
+  const loading = useVotesLoading();
 
   const options = [
     {
@@ -16,15 +19,27 @@ export default function CommentsFilterFormSorter() {
     {
       label: "Most votes",
       value: "most_votes",
+      disabled: loading,
     },
     {
       label: "Most Thumbs Up",
       value: "most_thumbs_up",
+      disabled: loading,
     },
   ].map((option) => {
+    let label = <span className="text12Medium">{option.label}</span>;
+    if (option.disabled) {
+      label = (
+        <Tooltip content="Not available" className="text-textDisabled">
+          {label}
+        </Tooltip>
+      );
+    }
+
     return {
-      label: <span className="text12Medium">{option.label}</span>,
+      label,
       value: option.value,
+      disabled: option.disabled,
     };
   });
 
@@ -37,6 +52,10 @@ export default function CommentsFilterFormSorter() {
         small
         value={params.comments_sort_by}
         onChange={(option) => {
+          if (option.disabled) {
+            return;
+          }
+
           updateParams({ comments_sort_by: option.value });
         }}
         options={options}
