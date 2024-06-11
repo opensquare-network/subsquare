@@ -44,7 +44,7 @@ export function useUrlSearchParams({
   }
 
   function update(query, { shallow = true } = {}) {
-    set({ ...value, ...query }, { shallow });
+    set({ ...value, ...parsed, ...query }, { shallow });
   }
 
   return [value, set, update];
