@@ -71,26 +71,26 @@ export default function CommentsFilterFormFilter() {
       {showFilter && (
         <OptionWrapper className="absolute right-0 top-[calc(100%+10px)] bottom-auto text12Medium !w-auto z-10">
           {items.map((item) => (
-            <Tooltip
-              key={item.key}
-              content={item.disabled && "Not available"}
-              className={cn(
-                "cursor-pointer flex items-center gap-x-1 whitespace-nowrap py-1.5 select-none",
-                item.disabled && "text-textDisabled cursor-default",
-              )}
-              onClick={() => {
-                if (item.disabled) {
-                  return;
-                }
+            <Tooltip key={item.key} content={item.disabled && "Not available"}>
+              <div
+                className={cn(
+                  "cursor-pointer flex items-center gap-x-1 whitespace-nowrap py-1.5 select-none",
+                  item.disabled && "text-textDisabled cursor-default",
+                )}
+                onClick={() => {
+                  if (item.disabled) {
+                    return;
+                  }
 
-                setValue({ ...value, [item.key]: !value[item.key] });
-              }}
-            >
-              <Checkbox
-                checked={value[item.key]}
-                className="w-5 h-5 cursor-[inherit]"
-              />
-              <div className="cursor-[inherit]">{item.name}</div>
+                  setValue({ ...value, [item.key]: !value[item.key] });
+                }}
+              >
+                <Checkbox
+                  checked={value[item.key]}
+                  className="w-5 h-5 cursor-[inherit]"
+                />
+                <div className="cursor-[inherit]">{item.name}</div>
+              </div>
             </Tooltip>
           ))}
 
