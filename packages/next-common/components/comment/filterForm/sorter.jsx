@@ -20,6 +20,7 @@ export default function CommentsFilterFormSorter() {
       label: "Most votes",
       value: "most_votes",
       disabled: loading,
+      displayValue: "Most votes",
     },
     {
       label: "Most Thumbs Up",
@@ -36,9 +37,8 @@ export default function CommentsFilterFormSorter() {
     }
 
     return {
+      ...option,
       label,
-      value: option.value,
-      disabled: option.disabled,
     };
   });
 
