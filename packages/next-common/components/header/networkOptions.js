@@ -39,6 +39,11 @@ export default function NetworkOptions({ activeNode, setShow }) {
         setShow={setShow}
       />
       <NetworkOptionGroup
+        groupName={MenuGroups.WestendAndParachains}
+        activeNode={activeNode}
+        setShow={setShow}
+      />
+      <NetworkOptionGroup
         groupName={MenuGroups.Solochain}
         activeNode={activeNode}
         setShow={setShow}

@@ -27,6 +27,7 @@ import darwinia2 from "./consts/settings/darwinia";
 import moonriver from "./consts/settings/moonriver";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
+import westend from "./consts/settings/westend";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -43,6 +44,7 @@ export const nodes = [
   centrifuge,
   collectives,
   // crab,
+  westend,
   westendCollectives,
   crust,
   darwinia2,

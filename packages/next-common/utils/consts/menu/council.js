@@ -27,6 +27,7 @@ export function getCouncilMenu(summary) {
       Chains.westendCollectives,
       Chains.collectives,
       Chains.vara,
+      Chains.westend,
     ],
     archivedToChains: [Chains.kusama, Chains.polkadot, Chains.rococo],
     activeCount: activeMotions,
