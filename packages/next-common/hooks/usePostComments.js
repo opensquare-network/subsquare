@@ -7,10 +7,11 @@ import dayjs from "dayjs";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { PolkassemblyChains } from "next-common/utils/polkassembly";
-import { cloneDeep, filter, orderBy } from "lodash-es";
+import { cloneDeep, filter, map, orderBy } from "lodash-es";
 import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
 import { useIsDVAddressFn } from "./useIsDVAddress";
 import { useGetAddressVotesDataFn } from "./useAddressVotesData";
+import BigNumber from "bignumber.js";
 
 function getShouldReadPolkassemblyComments(chain) {
   return PolkassemblyChains.includes(chain);
@@ -69,6 +70,16 @@ export function usePostCommentsData() {
           comments.items,
         );
 
+        // merge totalVotes
+        data.items = map(data.items, (item) => {
+          const vote = getAddressVotesData(item?.author?.address) || 0;
+          if (vote) {
+            item.totalVotes = BigNumber(vote.totalVotes || 0).toNumber();
+          }
+
+          return item;
+        });
+
         data.items = filter(data.items, (item) => {
           let flag = true;
 
@@ -96,7 +107,7 @@ export function usePostCommentsData() {
         } else if (filterParams.comments_sort_by === "oldest") {
           data.items = orderBy(data.items, "createdAt", "asc");
         } else if (filterParams.comments_sort_by === "most_votes") {
-          // TODO: sort votes
+          data.items = orderBy(data.items, "totalVotes", "desc");
         } else if (filterParams.comments_sort_by === "most_thumbs_up") {
           data.items = orderBy(data.items, "reactions.length", "desc");
         }
@@ -112,7 +123,6 @@ export function usePostCommentsData() {
     polkassemblyPostData.comments,
     shouldReadPolkassemblyComments,
     filterParams,
-    isDVAddress,
   ]);
 
   return {
