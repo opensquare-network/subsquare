@@ -47,7 +47,7 @@ const westendCollectives = {
   darkAvatar: ProjectIconWestendCollectivesDark,
   navLogo: ProjectLogoWestendCollectivesLight,
   navLogoDark: ProjectLogoWestendCollectivesDark,
-  group: MenuGroups.Solochain,
+  group: MenuGroups.WestendAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
   hasFellowship: true,
