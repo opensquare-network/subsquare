@@ -51,6 +51,7 @@ const westendCollectives = {
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
   hasFellowship: true,
+  hasFellowshipCore: true,
   hasTechComm: false,
   hasTreasury: false,
   hasTreasuryModule: false,
