@@ -18,7 +18,7 @@ const westend = {
   value: name,
   name: capitalize(name),
   identity: name,
-  symbol: "DOT",
+  symbol: "WND",
   decimals: 12,
   ss58Format: 42,
   blockTime: 6000,
