@@ -12,7 +12,12 @@ export default function CommentsFilterFormFilter() {
   useEffect(() => {
     setValue(params);
   }, [params]);
+
   const [showFilter, setShowFilter] = useState(false);
+  useEffect(() => {
+    setValue(params);
+  }, [showFilter]);
+
   const ref = useRef();
   useClickAway(ref, () => {
     setShowFilter(false);
