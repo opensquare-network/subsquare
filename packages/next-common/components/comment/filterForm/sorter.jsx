@@ -24,7 +24,6 @@ export default function CommentsFilterFormSorter() {
     {
       label: "Most Thumbs Up",
       value: "most_thumbs_up",
-      disabled: loading,
     },
   ].map((option) => {
     let label = <span className="text12Medium">{option.label}</span>;
