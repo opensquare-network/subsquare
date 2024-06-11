@@ -22,12 +22,19 @@ const itemOptions = {
 };
 
 export function useRecentProposalAdvisoryCommittee() {
-  const { summary, recentProposals } = usePageProps();
+  const { overviewSummary, summary, recentProposals } = usePageProps();
 
   const menu = getAdvisoryCommitteeMenu(summary);
 
   const items = menu.items
     .map((item) => {
+      if (
+        item.value === "advisoryMotions" &&
+        !overviewSummary?.advisoryMotions?.active
+      ) {
+        return;
+      }
+
       const options = itemOptions[item.value];
 
       if (options) {

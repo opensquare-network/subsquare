@@ -9,6 +9,8 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
 import { usePageProps } from "next-common/context/page";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
 const itemOptions = {
   motions: {
@@ -20,12 +22,21 @@ const itemOptions = {
 };
 
 export function useRecentProposalCouncil() {
-  const { summary, recentProposals } = usePageProps();
+  const { overviewSummary, summary, recentProposals } = usePageProps();
+
+  const chain = useChain();
+  if (chain === Chains.polkadot) {
+    return null;
+  }
 
   const menu = getCouncilMenu(summary);
 
   const items = menu.items
     .map((item) => {
+      if (item.value === "motions" && !overviewSummary?.motions?.active) {
+        return;
+      }
+
       const options = itemOptions[item.value];
 
       if (options) {

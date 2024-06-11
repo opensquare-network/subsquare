@@ -12,6 +12,7 @@ import { overviewApi } from "next-common/services/url";
 import normalizeTreasuryCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTreasuryCouncilMotionListItem";
 import { CHAIN } from "next-common/utils/constants";
 import { usePageProps } from "next-common/context/page";
+import isMoonChain from "next-common/utils/isMoonChain";
 
 const itemOptions = {
   motions: {
@@ -23,12 +24,20 @@ const itemOptions = {
 };
 
 export function useRecentProposalTreasuryCouncil() {
-  const { summary, recentProposals } = usePageProps();
+  const { overviewSummary, summary, recentProposals } = usePageProps();
+
+  if (!isMoonChain()) {
+    return null;
+  }
 
   const menu = getTreasuryCouncilMenu(summary);
 
   const items = menu.items
     .map((item) => {
+      if (item.value === "motions" && !overviewSummary?.motions?.active) {
+        return;
+      }
+
       const options = itemOptions[item.value];
 
       if (options) {

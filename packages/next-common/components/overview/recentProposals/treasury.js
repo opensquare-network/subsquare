@@ -53,12 +53,31 @@ const itemOptions = {
 };
 
 export function useRecentProposalTreasury() {
-  const { summary, recentProposals } = usePageProps();
+  const { overviewSummary, summary, recentProposals } = usePageProps();
 
   const menu = getTreasuryMenu(summary);
 
   const items = menu.items
     ?.map((item) => {
+      if (
+        item.value === "proposals" &&
+        !overviewSummary?.treasuryProposals?.active
+      ) {
+        return;
+      }
+      if (item.value === "bounties" && !overviewSummary?.bounties?.active) {
+        return;
+      }
+      if (
+        item.value === "child-bounties" &&
+        !overviewSummary?.childBounties?.active
+      ) {
+        return;
+      }
+      if (item.value === "tips" && !overviewSummary?.treasury?.tips?.active) {
+        return;
+      }
+
       const options = itemOptions[item.value];
 
       const requestColumn = getRequestColumn();

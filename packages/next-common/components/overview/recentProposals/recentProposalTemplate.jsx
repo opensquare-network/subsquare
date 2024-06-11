@@ -1,5 +1,4 @@
 import AccordionCard from "next-common/components/styled/containers/accordionCard";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Tabs from "next-common/components/tabs";
 import { cn } from "next-common/utils";
 import { useEffect, useState } from "react";
@@ -22,9 +21,9 @@ export default function RecentProposalTemplate({
 }) {
   const chain = useChain();
 
-  const activeItems = (items || [])
-    .filter((item) => item.activeCount)
-    .filter((item) => !item.excludeToChains?.includes(chain));
+  const activeItems = (items || []).filter(
+    (item) => !item.excludeToChains?.includes(chain),
+  );
 
   const titleLink =
     first(activeItems)?.pathname ?? first(items)?.pathname ?? pathname;
@@ -74,10 +73,6 @@ export default function RecentProposalTemplate({
       [activeTabLabel]: true,
     });
   }, [activeTabLabel]);
-
-  if (!activeCount) {
-    return <SecondaryCard className="flex">{title}</SecondaryCard>;
-  }
 
   return (
     <AccordionCard title={title} defaultOpen>

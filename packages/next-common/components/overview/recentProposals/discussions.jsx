@@ -31,6 +31,12 @@ export function useRecentProposalDiscussions() {
   const chainSettings = useChainSettings();
   const rfcsData = useRFCsData();
 
+  const hasDiscussions = chainSettings.hasDiscussions !== false;
+  const hasDiscussionsForumTopics = chainSettings.hasDiscussionsForumTopics;
+  if (!hasDiscussions && !hasDiscussionsForumTopics) {
+    return null;
+  }
+
   const subsquare = recentProposals.discussions?.subsquare;
   const polkassembly = recentProposals.discussions?.polkassembly;
 
@@ -41,19 +47,20 @@ export function useRecentProposalDiscussions() {
     (rfcsData?.items?.length || 0);
 
   const items = [
-    chainSettings.hasDiscussionsRFCs && {
-      lazy: false,
-      value: "rfcs",
-      name: "RFC issues",
-      api: {
-        initData: rfcsData,
-        viewAllLink: "https://github.com/polkadot-fellows/RFCs/issues",
+    chainSettings.hasDiscussionsRFCs &&
+      rfcsData?.items?.length && {
+        lazy: false,
+        value: "rfcs",
+        name: "RFC issues",
+        api: {
+          initData: rfcsData,
+          viewAllLink: "https://github.com/polkadot-fellows/RFCs/issues",
+        },
+        activeCount: rfcsData?.items?.length || 0,
+        formatter: (item) => normalizeRFCsListItem(CHAIN, item),
+        columns: discussionsRFCsColumns,
       },
-      activeCount: rfcsData?.items?.length || 0,
-      formatter: (item) => normalizeRFCsListItem(CHAIN, item),
-      columns: discussionsRFCsColumns,
-    },
-    {
+    overviewSummary?.discussions?.active && {
       lazy: false,
       value: "subsquare",
       name: "Subsquare",
@@ -66,31 +73,34 @@ export function useRecentProposalDiscussions() {
       formatter: (item) => normalizeDiscussionListItem(CHAIN, item),
       columns: discussionsColumns,
     },
-    chainSettings.hasDiscussionsForumTopics && {
-      lazy: false,
-      value: "forumTopics",
-      name: "Forum",
-      api: {
-        initData: forumLatestTopics,
-        viewAllLink: chainSettings?.discourseForumLink,
+    chainSettings.hasDiscussionsForumTopics &&
+      forumLatestTopics?.items?.length && {
+        lazy: false,
+        value: "forumTopics",
+        name: "Forum",
+        api: {
+          initData: forumLatestTopics,
+          viewAllLink: chainSettings?.discourseForumLink,
+        },
+        activeCount: forumLatestTopics?.items?.length,
+        formatter: normalizePolkadotForumTopicListItem,
+        columns: discussionsForumTopicsColumns,
       },
-      activeCount: forumLatestTopics?.items?.length,
-      formatter: normalizePolkadotForumTopicListItem,
-      columns: discussionsForumTopicsColumns,
-    },
-    chainSettings.hasPolkassemblyDiscussions && {
-      lazy: false,
-      value: "polkassembly",
-      name: "Polkassembly",
-      pathname: "/polkassembly/discussions",
-      api: {
-        path: overviewApi.polkassemblyDiscussions,
-        initData: polkassembly,
+    chainSettings.hasPolkassemblyDiscussions &&
+      polkassembly?.total && {
+        lazy: false,
+        value: "polkassembly",
+        name: "Polkassembly",
+        pathname: "/polkassembly/discussions",
+        api: {
+          path: overviewApi.polkassemblyDiscussions,
+          initData: polkassembly,
+        },
+        activeCount: polkassembly?.total,
+        formatter: (item) =>
+          normalizePolkassemblyDiscussionListItem(CHAIN, item),
+        columns: discussionsColumns,
       },
-      activeCount: polkassembly?.total,
-      formatter: (item) => normalizePolkassemblyDiscussionListItem(CHAIN, item),
-      columns: discussionsColumns,
-    },
   ].filter(Boolean);
 
   return {
