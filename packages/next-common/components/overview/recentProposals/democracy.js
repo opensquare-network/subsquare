@@ -43,12 +43,29 @@ const itemOptions = {
 };
 
 export function useRecentProposalDemocracy() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { overviewSummary, summary, recentProposals } = usePageProps();
 
   const menu = getDemocracyMenu(summary);
   const items = menu.items
     .map((item) => {
+      if (item.value === "referenda" && !overviewSummary?.referenda?.active) {
+        return;
+      }
+
+      if (
+        item.value === "democracyProposals" &&
+        !overviewSummary?.publicProposals?.active
+      ) {
+        return;
+      }
+
+      if (
+        item.value === "democracyExternals" &&
+        !overviewSummary?.externalProposals?.active
+      ) {
+        return;
+      }
+
       const options = itemOptions[item.value];
 
       if (options) {

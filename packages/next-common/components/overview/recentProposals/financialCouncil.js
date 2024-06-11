@@ -22,13 +22,19 @@ const itemOptions = {
 };
 
 export function useRecentProposalFinancialCouncil() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { overviewSummary, summary, recentProposals } = usePageProps();
 
   const menu = getFinancialCouncilMenu(summary);
 
   const items = menu.items
     .map((item) => {
+      if (
+        item.value === "financialMotions" &&
+        !overviewSummary?.financialMotions?.active
+      ) {
+        return;
+      }
+
       const options = itemOptions[item.value];
 
       if (options) {

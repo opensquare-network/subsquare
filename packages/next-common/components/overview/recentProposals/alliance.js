@@ -28,13 +28,25 @@ const itemOptions = {
 };
 
 export function useRecentProposalAlliance() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { overviewSummary, summary, recentProposals } = usePageProps();
 
   const menu = getAllianceMenu(summary);
 
   const items = menu.items
     .map((item) => {
+      if (
+        item.value === "allianceMotions" &&
+        !overviewSummary?.allianceMotions?.active
+      ) {
+        return;
+      }
+      if (
+        item.value === "allianceAnnouncements" &&
+        !overviewSummary?.allianceAnnouncements?.active
+      ) {
+        return;
+      }
+
       const options = itemOptions[item.value];
 
       if (options) {
