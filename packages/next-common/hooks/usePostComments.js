@@ -12,6 +12,7 @@ import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
 import { useIsDVAddressFn } from "./useIsDVAddress";
 import { useGetAddressVotesDataFn } from "./useAddressVotesData";
 import BigNumber from "bignumber.js";
+import { useVotesLoading } from "./useVotesLoading";
 
 function getShouldReadPolkassemblyComments(chain) {
   return PolkassemblyChains.includes(chain);
@@ -55,6 +56,7 @@ export function usePostCommentsData() {
   const [filterParams] = usePostCommentsFilterParams();
   const isDVAddress = useIsDVAddressFn();
   const getAddressVotesData = useGetAddressVotesDataFn();
+  const votesLoading = useVotesLoading();
 
   const [commentsData, setCommentsData] = useState(comments);
   const shouldReadPolkassemblyComments =
@@ -74,11 +76,27 @@ export function usePostCommentsData() {
 
     // merge totalVotes
     data.items = map(data.items, (item) => {
-      const vote = getAddressVotesData(item?.author?.address) || 0;
-      item.totalVotes = BigNumber(vote.totalVotes || 0).toNumber();
+      const vote = getAddressVotesData(item?.author?.address);
+      item.totalVotes = BigNumber(vote?.totalVotes || 0).toNumber();
 
       return item;
     });
+
+    /**
+     * filter comments
+     */
+    function sortbyNewest() {
+      data.items = orderBy(data.items, "createdAt", "desc");
+    }
+    function sortByOldest() {
+      data.items = orderBy(data.items, "createdAt", "asc");
+    }
+    function sortByMostVotes() {
+      data.items = orderBy(data.items, "totalVotes", "desc");
+    }
+    function sortByMostThumbsUp() {
+      data.items = orderBy(data.items, "reactions.length", "desc");
+    }
 
     data.items = filter(data.items, (item) => {
       let flag = true;
@@ -96,20 +114,28 @@ export function usePostCommentsData() {
       }
 
       if (filterParams.show_voters_only) {
-        flag = flag && !!getAddressVotesData(item?.author?.address);
+        if (votesLoading) {
+          flag = flag || true;
+        } else {
+          flag = flag && !!getAddressVotesData(item?.author?.address);
+        }
       }
 
       return flag;
     });
 
     if (filterParams.comments_sort_by === "newest") {
-      data.items = orderBy(data.items, "createdAt", "desc");
+      sortbyNewest();
     } else if (filterParams.comments_sort_by === "oldest") {
-      data.items = orderBy(data.items, "createdAt", "asc");
+      sortByOldest();
     } else if (filterParams.comments_sort_by === "most_votes") {
-      data.items = orderBy(data.items, "totalVotes", "desc");
+      if (votesLoading) {
+        sortbyNewest();
+      } else {
+        sortByMostVotes();
+      }
     } else if (filterParams.comments_sort_by === "most_thumbs_up") {
-      data.items = orderBy(data.items, "reactions.length", "desc");
+      sortByMostThumbsUp();
     }
 
     setCommentsData(data);
@@ -119,6 +145,7 @@ export function usePostCommentsData() {
     polkassemblyPostData.comments,
     shouldReadPolkassemblyComments,
     filterParams,
+    votesLoading,
   ]);
 
   return {
