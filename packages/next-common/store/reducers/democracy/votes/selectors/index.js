@@ -2,6 +2,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
 import { name } from "../consts";
 
+export const votesLoadingSelector = (state) => state[name].loading;
+
 export const allVotesSelector = (state) => state[name].allVotes;
 export const showVotesNumberSelector = createSelector(
   allVotesSelector,
