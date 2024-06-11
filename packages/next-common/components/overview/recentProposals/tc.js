@@ -21,8 +21,7 @@ const itemOptions = {
 };
 
 export function useRecentProposalTechComm() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { summary, recentProposals } = usePageProps();
 
   const menu = getTechCommMenu(summary);
 

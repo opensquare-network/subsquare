@@ -11,8 +11,7 @@ import { overviewApi } from "next-common/services/url";
 import { usePageProps } from "next-common/context/page";
 
 export function useRecentProposalFellowship() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
+  const { recentProposals, fellowshipTracks } = usePageProps();
 
   const menu = getFellowshipMenu(fellowshipTracks);
 

@@ -43,8 +43,7 @@ const itemOptions = {
 };
 
 export function useRecentProposalDemocracy() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { summary, recentProposals } = usePageProps();
 
   const menu = getDemocracyMenu(summary);
   const items = menu.items

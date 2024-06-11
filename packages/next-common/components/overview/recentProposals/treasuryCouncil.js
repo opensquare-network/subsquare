@@ -23,8 +23,7 @@ const itemOptions = {
 };
 
 export function useRecentProposalTreasuryCouncil() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { summary, recentProposals } = usePageProps();
 
   const menu = getTreasuryCouncilMenu(summary);
 
