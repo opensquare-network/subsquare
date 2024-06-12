@@ -43,7 +43,9 @@ export function usePostCommentsFilteredData() {
           const vote = getAddressVotesData(address);
 
           // merge total votes
-          item.totalVotes = BigNumber(vote?.totalVotes || 0).toNumber();
+          item.totalVotes = BigNumber(
+            vote?.totalVotes || vote?.votes || 0,
+          ).toNumber();
 
           // merge balance
           if (api && address) {
