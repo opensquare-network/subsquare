@@ -191,7 +191,7 @@ function PostAmount({ amount, decimals, symbol }) {
   );
 }
 
-function TreasurySpendAmount({ meta }) {
+export function TreasurySpendAmount({ meta }) {
   let { amount } = meta;
   let symbol = isUsdtByMeta(meta) ? "USDT" : isUsdcByMeta(meta) ? "USDC" : null;
   if (!symbol) {
