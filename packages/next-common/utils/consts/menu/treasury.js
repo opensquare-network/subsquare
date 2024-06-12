@@ -12,6 +12,8 @@ export const Names = {
   tips: "Tips",
 };
 
+export const SpendsSupportingChains = [Chains.polkadot];
+
 export function getTreasuryMenu(summary) {
   const activeTreasuryProposals = summary?.treasuryProposals?.active || 0;
   const activeTreasurySpends = summary?.treasurySpends?.active || 0;
@@ -41,7 +43,7 @@ export function getTreasuryMenu(summary) {
         name: Names.spends,
         pathname: "/treasury/spends",
         extraMatchNavMenuActivePathnames: ["/treasury/spends/[id]"],
-        excludeToChains: getExcludeChains([Chains.polkadot]),
+        excludeToChains: getExcludeChains(SpendsSupportingChains),
         activeCount: activeTreasurySpends,
       },
       {
