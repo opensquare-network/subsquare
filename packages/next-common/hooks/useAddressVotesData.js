@@ -6,12 +6,6 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 
-export function useAddressVotesData(address) {
-  const getAddressVotesData = useGetAddressVotesDataFn();
-
-  return getAddressVotesData(address);
-}
-
 export function useGetAddressVotesDataFn() {
   const detailType = useDetailType();
 
