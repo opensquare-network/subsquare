@@ -42,9 +42,12 @@ export default function ScrollPrompt({ prompts }) {
       }
       animate("&>:first-child", { marginTop: "-20px" }, { duration: 1 })
         .then(shiftMessage)
-        .then(() =>
-          animate("&>:first-child", { marginTop: "0px" }, { duration: 0 }),
-        );
+        .then(() => {
+          if (scope.current === null) {
+            return;
+          }
+          animate("&>:first-child", { marginTop: "0px" }, { duration: 0 });
+        });
     }, 6500);
     return () => clearInterval(interval);
   }, [scope, pauseRef, shiftMessage]);
