@@ -101,6 +101,7 @@ export const overviewApi = {
   democracyPublicProposals: "overview/public-proposals",
   democracyExternalProposals: "overview/externals",
   treasuryProposals: "overview/treasury-proposals",
+  treasurySpends: "overview/treasury-spends",
   treasuryBounties: "overview/bounties",
   treasuryChildBounties: "overview/child-bounties",
   treasuryTips: "overview/tips",

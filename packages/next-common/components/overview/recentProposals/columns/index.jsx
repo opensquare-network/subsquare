@@ -13,6 +13,7 @@ import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
 import { useEffect, useState } from "react";
+import { TreasurySpendAmount } from "next-common/components/post";
 
 export function getReferendumPostTitleColumn() {
   return {
@@ -135,6 +136,20 @@ export function getRequestColumn() {
           value={toPrecision(postValue, decimals)}
           symbol={symbol}
         />
+      ) : (
+        "--"
+      );
+    },
+  };
+}
+
+export function getSpendRequestColumn() {
+  return {
+    name: "Request",
+    className: "w-40 text-left",
+    cellRender(data) {
+      return !isNil(data.meta) ? (
+        <TreasurySpendAmount meta={data.meta} />
       ) : (
         "--"
       );
