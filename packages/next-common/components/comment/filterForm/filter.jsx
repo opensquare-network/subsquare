@@ -2,6 +2,7 @@ import { SystemFilter } from "@osn/icons/subsquare";
 import Checkbox from "next-common/components/checkbox";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import Tooltip from "next-common/components/tooltip";
+import { useContextApi } from "next-common/context/api";
 import { usePostCommentsFilterParams } from "next-common/hooks/usePostCommentsFilterParams";
 import { useVotesLoading } from "next-common/hooks/useVotesLoading";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -10,6 +11,8 @@ import { useEffect, useRef, useState } from "react";
 import { useClickAway } from "react-use";
 
 export default function CommentsFilterFormFilter() {
+  const api = useContextApi();
+
   const [params, , updateParams] = usePostCommentsFilterParams();
   const [value, setValue] = useState(params);
   useEffect(() => {
@@ -34,7 +37,7 @@ export default function CommentsFilterFormFilter() {
     {
       key: "hide_0",
       name: "Hide 0 balance accounts",
-      disabled: true,
+      disabled: !api,
     },
     {
       key: "show_voters_only",
