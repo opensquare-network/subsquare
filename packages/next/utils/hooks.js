@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { getAddressVotingBalance, getAddressVote } from "./referendumUtil";
+import {
+  getAddressVote,
+  getAddressVotingBalance,
+} from "next-common/utils/referendumUtil";
 
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);

@@ -2,9 +2,11 @@ import BigNumber from "bignumber.js";
 import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import { convictionToLockXNumber } from "next-common/utils/referendumCommon";
+import {
+  convictionToLockX,
+  convictionToLockXNumber,
+} from "next-common/utils/referendumCommon";
 import tw from "tailwind-styled-components";
-import { convictionToLockX } from "utils/referendumUtil";
 
 const DelegationInfoPanel = tw.div`
   flex
