@@ -34,7 +34,7 @@ export function usePostCommentsFilteredData() {
     merge();
 
     async function merge() {
-      const merged = await Promise.all(
+      data.items = await Promise.all(
         map(data.items, async (item) => {
           // console.log("🚀 ~ map ~ item:", item);
           item = item instanceof Promise ? await item : item;
@@ -55,8 +55,6 @@ export function usePostCommentsFilteredData() {
           return item;
         }),
       );
-
-      data.items = merged;
 
       setMergedComments(data);
     }

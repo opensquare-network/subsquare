@@ -27,12 +27,10 @@ export function useGetAddressVotesDataFn() {
     }
   }, [detailType, allNestedReferendaVotes, allDemocracyVotes]);
 
-  const getAddressVotesData = useCallback(
+  return useCallback(
     (address) => {
       return find(votes, { account: address });
     },
     [detailType, votes],
   );
-
-  return getAddressVotesData;
 }
