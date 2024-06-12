@@ -146,6 +146,7 @@ export function usePostCommentsData() {
     shouldReadPolkassemblyComments,
     filterParams,
     votesLoading,
+    getAddressVotesData,
   ]);
 
   return {
