@@ -1,7 +1,10 @@
 import { entries, isNil } from "lodash-es";
 import { useRouter } from "next/router";
 import queryString from "query-string";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
+import { createGlobalState } from "react-use";
+
+const useValueState = createGlobalState({});
 
 /**
  * @returns {[typeof router.query, set, update]}
@@ -11,6 +14,8 @@ export function useUrlSearchParams({
   removeFalsyValues = false,
   defaultValue = {},
 } = {}) {
+  const [value, setValue] = useValueState();
+
   const router = useRouter();
   const parsed = useMemo(
     () =>
@@ -20,11 +25,13 @@ export function useUrlSearchParams({
       }),
     [router.asPath],
   );
-  const [value, setValue] = useState({
-    ...defaultValue,
-    ...router.query,
-    ...parsed,
-  });
+  useEffect(() => {
+    setValue({
+      ...defaultValue,
+      ...router.query,
+      ...parsed,
+    });
+  }, [parsed, router.query]);
 
   function set(query, { shallow = true } = {}) {
     setValue(query);
