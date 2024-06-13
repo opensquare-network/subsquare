@@ -17,6 +17,7 @@ import useForm from "next-common/utils/hooks/useForm";
 import { LoginCard } from "next-common/components/styled/containers/loginCard";
 import { useSetUser, useUser } from "next-common/context/user";
 import { withCommonProps } from "next-common/lib";
+import { WarningMessage } from "next-common/components/setting/styled";
 
 const Title = styled.div`
   font-weight: bold;
@@ -162,9 +163,14 @@ export default function Signup() {
           <>
             <Title>Sign up</Title>
             <FormWrapper onSubmit={handleSubmit}>
+              <WarningMessage orange>
+                To align with the goal of web3, registration via email is no
+                longer available. Please use an address to connect SubSquare.
+              </WarningMessage>
               <InputWrapper>
                 <Label>Username</Label>
                 <Input
+                  disabled={true}
                   placeholder="Please fill your name"
                   name="username"
                   value={username}
@@ -175,6 +181,7 @@ export default function Signup() {
                 />
                 <Label>Email</Label>
                 <Input
+                  disabled={true}
                   placeholder="Please fill email"
                   name="email"
                   value={email}
@@ -185,6 +192,7 @@ export default function Signup() {
                 />
                 <Label>Password</Label>
                 <Input
+                  disabled={true}
                   placeholder="Please fill password"
                   type="password"
                   name="password"
@@ -206,6 +214,7 @@ export default function Signup() {
               />
               <ButtonWrapper>
                 <PrimaryButton
+                  disabled={true}
                   className="w-full"
                   type="submit"
                   loading={loading}

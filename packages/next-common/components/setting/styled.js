@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { GreyPanel } from "../styled/containers/greyPanel";
 
 export const Wrapper = styled.div`
@@ -61,8 +61,16 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const WarningMessage = styled.div`
-  color: var(--red500);
-  background: var(--red100);
+  ${(p) =>
+    p.orange
+      ? css`
+          color: var(--orange500);
+          background: var(--orange100);
+        `
+      : css`
+          color: var(--red500);
+          background: var(--red100);
+        `}
   border-radius: 4px;
   padding: 12px 16px;
   font-size: 14px;
