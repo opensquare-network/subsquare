@@ -9,7 +9,7 @@ import {
   getThresholdOfSimplyMajority,
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
-} from "utils/referendumUtil";
+} from "next-common/utils/referendumUtil";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
 import PrimaryButton from "next-common/lib/button/primary";

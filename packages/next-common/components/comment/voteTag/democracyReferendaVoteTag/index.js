@@ -6,11 +6,13 @@ import { useSelector } from "react-redux";
 import { useComment } from "../../context";
 import { useMemo } from "react";
 import { SplitVoteTag, StandardVoteTag } from "../referendaVoteTag";
+import { useGetAddressVotesDataFn } from "next-common/hooks/useAddressVotesData";
 
 export default function DemocracyReferendaVoteTag() {
   const comment = useComment();
   const allVotes = useSelector(allVotesSelector);
   const nestedVotes = useSelector(nestedVotesSelector);
+  const getAddressVotesData = useGetAddressVotesDataFn();
 
   const user = comment?.author;
   const votes = useMemo(
@@ -18,15 +20,15 @@ export default function DemocracyReferendaVoteTag() {
     [allVotes, user?.address],
   );
 
-  if (votes.length === 0) {
+  const votesData = getAddressVotesData(user?.address);
+
+  if (!votesData) {
     return null;
   }
 
-  const firstVoteItem = votes[0];
-
-  if (firstVoteItem.isStandard || firstVoteItem.isDelegating) {
-    return <StandardVoteTag vote={firstVoteItem} nestedVotes={nestedVotes} />;
-  } else if (firstVoteItem.isSplit) {
+  if (votesData.isStandard || votesData.isDelegating) {
+    return <StandardVoteTag vote={votesData} nestedVotes={nestedVotes} />;
+  } else if (votesData.isSplit) {
     return <SplitVoteTag votes={votes} />;
   }
 

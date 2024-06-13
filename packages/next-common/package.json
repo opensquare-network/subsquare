@@ -52,6 +52,7 @@
     "md5": "^2.3.0",
     "moment": "^2.29.4",
     "multiformats": "^13.1.0",
+    "query-string": "^9.0.0",
     "quick-lru": "^7.0.0",
     "react": "^18.2.0",
     "react-big-calendar": "^1.6.8",
