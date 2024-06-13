@@ -1,4 +1,4 @@
-import { find, flatten, values } from "lodash-es";
+import { find } from "lodash-es";
 import { useDetailType } from "next-common/context/page";
 import { allVotesSelector as allDemocracyVotesSelector } from "next-common/store/reducers/democracy/votes/selectors";
 import {
@@ -20,11 +20,11 @@ export function useGetAddressVotesDataFn() {
   return useCallback(
     (address) => {
       if (detailType === detailPageCategory.GOV2_REFERENDUM) {
-        const nestedVoteFound = find(flatten(values(allNestedReferendaVotes)), {
+        const foundNestedVote = find(allNestedReferendaVotes, {
           account: address,
         });
-        if (nestedVoteFound) {
-          return nestedVoteFound;
+        if (foundNestedVote) {
+          return foundNestedVote;
         }
 
         return find(allReferendaVotes, { account: address });
