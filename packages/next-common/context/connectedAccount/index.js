@@ -1,14 +1,8 @@
 import { CACHE_KEY } from "next-common/utils/constants";
 import { clearCookie, setCookie } from "next-common/utils/viewfuncs/cookies";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { fetchAndUpdateUser, logoutUser, useUserContext } from "../user";
-import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
+import { useLocalStorage } from "react-use";
 
 const ConnectedAccountContext = createContext(null);
 
@@ -20,14 +14,9 @@ export function ConnectedAccountProvider({
 }) {
   const userContext = useUserContext();
   const [connectedAccount, setConnectedAccount] = useState(_connectedAccount);
-  const [lastConnectedAccount, setLastConnectedAccount] = useState();
-
-  useEffect(() => {
-    const info = getStorageAddressInfo(CACHE_KEY.lastConnectedAccount);
-    if (info) {
-      setLastConnectedAccount(info);
-    }
-  }, []);
+  const [lastConnectedAccount, setLastConnectedAccount] = useLocalStorage(
+    CACHE_KEY.lastConnectedAccount,
+  );
 
   const saveConnectedAccount = useCallback((account) => {
     setConnectedAccount(account);
@@ -36,10 +25,6 @@ export function ConnectedAccountProvider({
 
   const saveLastConnectedAccount = useCallback((account) => {
     setLastConnectedAccount(account);
-    localStorage.setItem(
-      CACHE_KEY.lastConnectedAccount,
-      JSON.stringify(account),
-    );
   }, []);
 
   const disconnect = useCallback(async () => {

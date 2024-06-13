@@ -4,7 +4,7 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import MaybePolkadotSigner from "./maybePolkadotSigner";
 import MaybeMetamaskSigner from "./maybeMetamaskSigner";
 import MaybeSignetSigner from "./maybeSignetSigner";
-import SelectWalletPopup from "../selectWallet";
+import LoginPopup from "../login/popup";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import CanBeAnyWalletSigner from "./canBeAnyWalletSigner";
 import { isKeyRegisteredUser } from "next-common/utils";
@@ -17,7 +17,7 @@ function PopupImpl({ children }) {
   const { onClose } = usePopupParams();
 
   if (!user) {
-    return <SelectWalletPopup onClose={onClose} />;
+    return <LoginPopup onClose={onClose} showRegister={false} />;
   }
 
   if (!isKeyRegisteredUser(user) && !connectedAccount) {
