@@ -60,6 +60,7 @@ const polkadot = {
   newProposalQuickStart: {
     usdxTreasuryProposal: true,
   },
+  disableWeb2Registration: true,
 };
 
 export default polkadot;
