@@ -84,8 +84,8 @@ export default function Signup() {
   const isMounted = useIsMounted();
   const { countdown, counting: emailSent, startCountdown } = useCountdown(3);
   const setUser = useSetUser();
-  const { web2Registration = true } = useChainSettings();
-  const disabledForm = !web2Registration;
+  const { disableWeb2Registration } = useChainSettings();
+  const disabledForm = !!disableWeb2Registration;
 
   if (emailSent && countdown === 0) {
     router.replace("/");
