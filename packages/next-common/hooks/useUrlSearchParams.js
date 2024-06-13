@@ -28,6 +28,7 @@ export function useUrlSearchParams({
   useEffect(() => {
     setValue({
       ...defaultValue,
+      ...value,
       ...router.query,
       ...parsed,
     });
