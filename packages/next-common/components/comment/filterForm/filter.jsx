@@ -4,7 +4,6 @@ import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import Tooltip from "next-common/components/tooltip";
 import { useContextApi } from "next-common/context/api";
 import { usePostCommentsFilterParams } from "next-common/hooks/usePostCommentsFilterParams";
-import { useVotesReady } from "next-common/hooks/useVotesReady";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { cn } from "next-common/utils";
 import { useEffect, useRef, useState } from "react";
@@ -29,8 +28,6 @@ export default function CommentsFilterFormFilter() {
     setShowFilter(false);
   });
 
-  const ready = useVotesReady();
-
   const counts = Object.values(params).filter((v) => v === true).length;
 
   const items = [
@@ -42,7 +39,6 @@ export default function CommentsFilterFormFilter() {
     {
       key: "show_voters_only",
       name: "Show voter's comments only",
-      disabled: !ready,
     },
     {
       key: "show_dv_only",

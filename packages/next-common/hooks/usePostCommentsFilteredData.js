@@ -8,7 +8,6 @@ import { getAddressVotingBalance } from "next-common/utils/referendumUtil";
 import { filter } from "d3";
 import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
 import { useIsDVAddressFn } from "./useIsDVAddress";
-import { useVotesLoading } from "./useVotesLoading";
 
 function isDeletedComment(comment) {
   return comment?.content?.trim?.() !== "[Deleted]";
@@ -25,7 +24,6 @@ export function usePostCommentsFilteredData() {
   const [filterParams] = usePostCommentsFilterParams();
   const getAddressVotesData = useGetAddressVotesDataFn();
   const isDVAddress = useIsDVAddressFn();
-  const votesLoading = useVotesLoading();
 
   const [mergedComments, setMergedComments] = useState(commentsData);
   useEffect(() => {
@@ -94,11 +92,7 @@ export function usePostCommentsFilteredData() {
       }
 
       if (filterParams.show_voters_only) {
-        if (votesLoading) {
-          flag = flag || true;
-        } else {
-          flag = flag && !!getAddressVotesData(item?.author?.address);
-        }
+        flag = flag && !!getAddressVotesData(item?.author?.address);
       }
 
       if (filterParams.hide_0) {
@@ -113,17 +107,13 @@ export function usePostCommentsFilteredData() {
     } else if (filterParams.comments_sort_by === "oldest") {
       sortByOldest();
     } else if (filterParams.comments_sort_by === "most_votes") {
-      if (votesLoading) {
-        sortbyNewest();
-      } else {
-        sortByMostVotes();
-      }
+      sortByMostVotes();
     } else if (filterParams.comments_sort_by === "most_thumbs_up") {
       sortByMostThumbsUp();
     }
 
     return data;
-  }, [filterParams, mergedComments, votesLoading, getAddressVotesData]);
+  }, [filterParams, mergedComments, getAddressVotesData]);
 
   return {
     commentsData: filteredComments,

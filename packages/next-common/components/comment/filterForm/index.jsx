@@ -1,13 +1,13 @@
-import { useVotesReady } from "next-common/hooks/useVotesReady";
 import CommentsFilterFormFilter from "./filter";
 import CommentsFilterFormSorter from "./sorter";
 import Loading from "next-common/components/loading";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import usePostCommentsFilterLoading from "next-common/hooks/usePostCommentsFilterLoading";
 
 export default function CommentsFilterForm() {
-  const ready = useVotesReady();
   const detailType = useDetailType();
+  const loading = usePostCommentsFilterLoading();
 
   if (
     detailType === detailPageCategory.GOV2_REFERENDUM ||
@@ -15,7 +15,7 @@ export default function CommentsFilterForm() {
   ) {
     return (
       <div className="flex items-center gap-x-2">
-        {!ready && <Loading size={16} />}
+        {loading && <Loading size={16} />}
 
         <CommentsFilterFormSorter />
         <CommentsFilterFormFilter />

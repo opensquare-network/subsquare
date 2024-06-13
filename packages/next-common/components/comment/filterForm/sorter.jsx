@@ -1,11 +1,9 @@
 import Select from "next-common/components/select";
 import Tooltip from "next-common/components/tooltip";
 import { usePostCommentsFilterParams } from "next-common/hooks/usePostCommentsFilterParams";
-import { useVotesReady } from "next-common/hooks/useVotesReady";
 
 export default function CommentsFilterFormSorter() {
   const [params, , updateParams] = usePostCommentsFilterParams();
-  const ready = useVotesReady();
 
   const options = [
     {
@@ -19,7 +17,6 @@ export default function CommentsFilterFormSorter() {
     {
       label: "Most votes",
       value: "most_votes",
-      disabled: !ready,
       displayValue: "Most votes",
     },
     {
