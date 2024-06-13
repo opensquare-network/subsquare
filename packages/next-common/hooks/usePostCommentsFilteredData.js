@@ -1,14 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { usePostCommentsData } from "./usePostComments";
 import { useContextApi } from "next-common/context/api";
-import { cloneDeep, has, map, orderBy } from "lodash-es";
+import { cloneDeep, every, has, map, orderBy, filter } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { useGetAddressVotesDataFn } from "./useAddressVotesData";
 import { getAddressVotingBalance } from "next-common/utils/referendumUtil";
-import { filter } from "d3";
 import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
 import { useIsDVAddressFn } from "./useIsDVAddress";
 import usePostCommentsFilterLoading from "./usePostCommentsFilterLoading";
+import { useShallowCompareEffect } from "react-use";
 
 function isDeletedComment(comment) {
   return comment?.content?.trim?.() !== "[Deleted]";
@@ -23,14 +23,22 @@ export function usePostCommentsFilteredData() {
   const { commentsData, loading: commentsLoading } = usePostCommentsData();
   const filterLoading = usePostCommentsFilterLoading();
 
-  const loading = commentsLoading || filterLoading;
-
   const [filterParams] = usePostCommentsFilterParams();
   const getAddressVotesData = useGetAddressVotesDataFn();
   const isDVAddress = useIsDVAddressFn();
 
   const [mergedComments, setMergedComments] = useState(commentsData);
-  useEffect(() => {
+
+  const [mergingBalance, setMergingBalance] = useState(true);
+  useShallowCompareEffect(() => {
+    setMergingBalance(
+      !every(mergedComments.items, (item) => has(item, "balance")),
+    );
+  }, [mergedComments.items]);
+
+  const loading = mergingBalance || commentsLoading || filterLoading;
+
+  useShallowCompareEffect(() => {
     const data = cloneDeep(commentsData);
 
     merge();
@@ -49,8 +57,12 @@ export function usePostCommentsFilteredData() {
           ).toNumber();
 
           // merge balance
-          if (api && address) {
-            item.balance = (await getAddressVotingBalance(api, address)) || 0;
+          if (api) {
+            if (address) {
+              item.balance = await getAddressVotingBalance(api, address);
+            } else {
+              item.balance = 0;
+            }
           }
 
           return item;
