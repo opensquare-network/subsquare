@@ -11,24 +11,24 @@ import { collectiveLinks } from "next-common/utils/consts/settings/common/collec
 
 const westendCollectivesEndpoints = [
   {
+    name: "Parity",
+    url: "wss://westend-collectives-rpc.polkadot.io/",
+  },
+  {
+    name: "IBP1",
+    url: "wss://sys.ibp.network/collectives-westend",
+  },
+  {
     name: "Dwellir",
-    url: "wss://westend-collectives-rpc.dwellir.com",
+    url: "wss://collectives-westend-rpc.dwellir.com",
   },
   {
     name: "Dwellir Tunisia",
     url: "wss://westend-collectives-rpc-tn.dwellir.com",
   },
   {
-    name: "IBP-GeoDNS1",
-    url: "wss://sys.ibp.network/collectives-westend",
-  },
-  {
-    name: "IBP-GeoDNS2",
+    name: "IBP2",
     url: "wss://sys.dotters.network/collectives-westend",
-  },
-  {
-    name: "Parity",
-    url: "wss://westend-collectives-rpc.polkadot.io/",
   },
 ];
 
@@ -47,10 +47,11 @@ const westendCollectives = {
   darkAvatar: ProjectIconWestendCollectivesDark,
   navLogo: ProjectLogoWestendCollectivesLight,
   navLogoDark: ProjectLogoWestendCollectivesDark,
-  group: MenuGroups.Solochain,
+  group: MenuGroups.WestendAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
   hasFellowship: true,
+  hasFellowshipCore: true,
   hasTechComm: false,
   hasTreasury: false,
   hasTreasuryModule: false,

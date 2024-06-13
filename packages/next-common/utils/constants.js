@@ -27,6 +27,7 @@ import darwinia2 from "./consts/settings/darwinia";
 import moonriver from "./consts/settings/moonriver";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
+import westend from "./consts/settings/westend";
 import isEvmChain from "./isEvmChain";
 
 const optionalNodes =
@@ -44,6 +45,7 @@ export const nodes = [
   centrifuge,
   collectives,
   // crab,
+  westend,
   westendCollectives,
   crust,
   darwinia2,
@@ -103,6 +105,7 @@ export const CACHE_KEY = {
   navSubmenuVisible: "nav-submenu-visible",
   connectedAccount: "connected-account",
   delegationPromptVisible: "delegation-prompt-visible",
+  setAvatarPromptVisible: "set-avatar-prompt-visible",
 };
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
