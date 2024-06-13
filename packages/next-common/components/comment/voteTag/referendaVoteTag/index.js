@@ -1,5 +1,5 @@
 import {
-  allNestedVotesSelector,
+  nestedVotesSelector,
   allVotesSelector,
 } from "next-common/store/reducers/referenda/votes/selectors";
 import { useSelector } from "react-redux";
@@ -56,9 +56,9 @@ export function StandardVoteTagWithTooltipContent({ vote, tooltipContent }) {
   }
 }
 
-export function StandardVoteTag({ vote, allNestedVotes }) {
+export function StandardVoteTag({ vote, nestedVotes }) {
   const tooltipContent = (
-    <StandardVoteTooltipContent vote={vote} allNestedVotes={allNestedVotes} />
+    <StandardVoteTooltipContent vote={vote} nestedVotes={nestedVotes} />
   );
   return (
     <StandardVoteTagWithTooltipContent
@@ -93,7 +93,7 @@ export function SplitAbstainVoteTag({ votes }) {
 export default function ReferendaVoteTag() {
   const comment = useComment();
   const allVotes = useSelector(allVotesSelector);
-  const allNestedVotes = useSelector(allNestedVotesSelector);
+  const nestedVotes = useSelector(nestedVotesSelector);
 
   const user = comment?.author;
   const votes = useMemo(
@@ -108,9 +108,7 @@ export default function ReferendaVoteTag() {
   const firstVoteItem = votes[0];
 
   if (firstVoteItem.isStandard || firstVoteItem.isDelegating) {
-    return (
-      <StandardVoteTag vote={firstVoteItem} allNestedVotes={allNestedVotes} />
-    );
+    return <StandardVoteTag vote={firstVoteItem} nestedVotes={nestedVotes} />;
   } else if (firstVoteItem.isSplit) {
     return <SplitVoteTag votes={votes} />;
   } else if (firstVoteItem.isSplitAbstain) {

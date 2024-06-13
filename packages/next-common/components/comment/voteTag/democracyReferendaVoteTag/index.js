@@ -1,5 +1,5 @@
 import {
-  allNestedVotesSelector,
+  nestedVotesSelector,
   allVotesSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 import { useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import { SplitVoteTag, StandardVoteTag } from "../referendaVoteTag";
 export default function DemocracyReferendaVoteTag() {
   const comment = useComment();
   const allVotes = useSelector(allVotesSelector);
-  const allNestedVotes = useSelector(allNestedVotesSelector);
+  const nestedVotes = useSelector(nestedVotesSelector);
 
   const user = comment?.author;
   const votes = useMemo(
@@ -25,9 +25,7 @@ export default function DemocracyReferendaVoteTag() {
   const firstVoteItem = votes[0];
 
   if (firstVoteItem.isStandard || firstVoteItem.isDelegating) {
-    return (
-      <StandardVoteTag vote={firstVoteItem} allNestedVotes={allNestedVotes} />
-    );
+    return <StandardVoteTag vote={firstVoteItem} nestedVotes={nestedVotes} />;
   } else if (firstVoteItem.isSplit) {
     return <SplitVoteTag votes={votes} />;
   }

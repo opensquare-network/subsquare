@@ -15,7 +15,7 @@ import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nested
 import { sortTotalVotes } from "../../../utils/democracy/votes/passed/common";
 import { useSelector } from "react-redux";
 import {
-  allNestedVotesSelector,
+  nestedVotesSelector,
   showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
@@ -27,7 +27,7 @@ import DataList from "next-common/components/dataList";
 
 export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
-  const { allAye, allNay } = useSelector(allNestedVotesSelector);
+  const { allAye, allNay } = useSelector(nestedVotesSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);
