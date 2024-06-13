@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePostCommentsData } from "./usePostComments";
 import { useContextApi } from "next-common/context/api";
-import { cloneDeep, map, orderBy } from "lodash-es";
+import { cloneDeep, has, map, orderBy } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { useGetAddressVotesDataFn } from "./useAddressVotesData";
 import { getAddressVotingBalance } from "next-common/utils/referendumUtil";
 import { filter } from "d3";
 import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
 import { useIsDVAddressFn } from "./useIsDVAddress";
+import usePostCommentsFilterLoading from "./usePostCommentsFilterLoading";
 
 function isDeletedComment(comment) {
   return comment?.content?.trim?.() !== "[Deleted]";
@@ -19,7 +20,10 @@ function is0Balance(comment) {
 
 export function usePostCommentsFilteredData() {
   const api = useContextApi();
-  const { commentsData, loading } = usePostCommentsData();
+  const { commentsData, loading: commentsLoading } = usePostCommentsData();
+  const filterLoading = usePostCommentsFilterLoading();
+
+  const loading = commentsLoading || filterLoading;
 
   const [filterParams] = usePostCommentsFilterParams();
   const getAddressVotesData = useGetAddressVotesDataFn();
@@ -46,7 +50,7 @@ export function usePostCommentsFilteredData() {
 
           // merge balance
           if (api && address) {
-            item.balance = await getAddressVotingBalance(api, address);
+            item.balance = (await getAddressVotingBalance(api, address)) || 0;
           }
 
           return item;
@@ -96,7 +100,11 @@ export function usePostCommentsFilteredData() {
       }
 
       if (filterParams.hide_0) {
-        flag = flag && !is0Balance(item);
+        if (has(item, "balance")) {
+          flag = flag && !is0Balance(item);
+        } else {
+          flag = flag && true;
+        }
       }
 
       return flag;
