@@ -1,30 +1,39 @@
 import { find, flatten, values } from "lodash-es";
 import { useDetailType } from "next-common/context/page";
 import { allVotesSelector as allDemocracyVotesSelector } from "next-common/store/reducers/democracy/votes/selectors";
-import { allNestedVotesSelector as allReferendaNestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import {
+  allNestedVotesSelector as allReferendaNestedVotesSelector,
+  allVotesSelector as allReferendaVotesSelector,
+} from "next-common/store/reducers/referenda/votes/selectors";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useSelector } from "react-redux";
 
 export function useGetAddressVotesDataFn() {
   const detailType = useDetailType();
 
   const allNestedReferendaVotes = useSelector(allReferendaNestedVotesSelector);
+  const allReferendaVotes = useSelector(allReferendaVotesSelector);
 
   const allDemocracyVotes = useSelector(allDemocracyVotesSelector);
 
-  const votes = useMemo(() => {
-    if (detailType === detailPageCategory.GOV2_REFERENDUM) {
-      return flatten(values(allNestedReferendaVotes));
-    } else if (detailType === detailPageCategory.DEMOCRACY_REFERENDUM) {
-      return allDemocracyVotes;
-    }
-  }, [detailType, allNestedReferendaVotes, allDemocracyVotes]);
-
   return useCallback(
     (address) => {
-      return find(votes, { account: address });
+      if (detailType === detailPageCategory.GOV2_REFERENDUM) {
+        const nestedVoteFound = find(flatten(values(allNestedReferendaVotes)), {
+          account: address,
+        });
+        if (nestedVoteFound) {
+          return nestedVoteFound;
+        }
+
+        return find(allReferendaVotes, { account: address });
+      } else if (detailType === detailPageCategory.DEMOCRACY_REFERENDUM) {
+        return find(allDemocracyVotes, { account: address });
+      }
+
+      return null;
     },
-    [detailType, votes],
+    [detailType, allNestedReferendaVotes, allReferendaVotes, allDemocracyVotes],
   );
 }
