@@ -13,7 +13,10 @@ import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
 import { useEffect, useState } from "react";
-import { TreasurySpendAmount } from "next-common/components/post";
+import {
+  isUsdcByMeta,
+  isUsdtByMeta,
+} from "next-common/utils/treasury/spend/usdCheck";
 
 export function getReferendumPostTitleColumn() {
   return {
@@ -148,11 +151,27 @@ export function getSpendRequestColumn() {
     name: "Request",
     className: "w-40 text-left",
     cellRender(data) {
-      return !isNil(data.meta) ? (
-        <TreasurySpendAmount meta={data.meta} />
-      ) : (
-        "--"
-      );
+      if (!isNil(data.meta)) {
+        let { amount } = data.meta;
+        let symbol = isUsdtByMeta(data.meta)
+          ? "USDT"
+          : isUsdcByMeta(data.meta)
+          ? "USDC"
+          : null;
+
+        if (!symbol) {
+          return "--";
+        }
+
+        return (
+          <ValueDisplay
+            className="text14Medium text-textPrimary"
+            value={toPrecision(amount, 6)}
+            symbol={symbol}
+          />
+        );
+      }
+      return "--";
     },
   };
 }
