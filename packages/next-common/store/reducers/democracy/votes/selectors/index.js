@@ -34,7 +34,7 @@ export const allDelegationVotesSelector = (state) => {
   return allVotes.filter((v) => v.isDelegating);
 };
 
-export const allNestedVotesSelector = createSelector(
+export const nestedVotesSelector = createSelector(
   allDirectVotesSelector,
   allDelegationVotesSelector,
   (directVotes, delegations) => {

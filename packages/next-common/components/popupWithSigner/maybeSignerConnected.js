@@ -1,7 +1,6 @@
-import React from "react";
 import { useUser } from "../../context/user";
 import { isSameAddress } from "../../utils";
-import SelectWalletPopup from "../selectWallet";
+import LoginPopup from "../login/popup";
 import { SignerContextProvider, usePopupParams } from "./context";
 
 export default function MaybeSignerConnected({ children, extensionAccounts }) {
@@ -12,7 +11,7 @@ export default function MaybeSignerConnected({ children, extensionAccounts }) {
     !user?.address ||
     !extensionAccounts?.find((acc) => isSameAddress(acc.address, user?.address))
   ) {
-    return <SelectWalletPopup onClose={onClose} />;
+    return <LoginPopup onClose={onClose} showRegister={false} />;
   }
 
   return (

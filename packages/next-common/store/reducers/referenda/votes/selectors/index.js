@@ -119,7 +119,7 @@ export const normalizedNestedVote = (vote, delegations) => {
   };
 };
 
-export const allNestedVotesSelector = createSelector(
+export const nestedVotesSelector = createSelector(
   allDirectVotesSelector,
   allDelegationVotesSelector,
   (directVotes, delegations) => {
@@ -139,8 +139,8 @@ export const allNestedVotesSelector = createSelector(
   },
 );
 
-export const nestedVotesSelector = createSelector(
-  allNestedVotesSelector,
+export const allNestedVotesSelector = createSelector(
+  nestedVotesSelector,
   ({ allAye, allNay, allAbstain }) => flatten([allAye, allNay, allAbstain]),
 );
 

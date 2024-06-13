@@ -1,4 +1,4 @@
-import { useIsWeb3User } from "next-common/context/user";
+import { useIsWeb3User, useUser } from "next-common/context/user";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import Link from "next/link";
@@ -10,9 +10,11 @@ export default function useSetAvatarPrompt() {
     CACHE_KEY.setAvatarPromptVisible,
     true,
   );
+  const user = useUser();
+  const hasAvatar = !!user?.avatarCid;
 
   return useMemo(() => {
-    if (!isWeb3User || !visible) {
+    if (!isWeb3User || !visible || hasAvatar) {
       return {};
     }
 
@@ -28,5 +30,5 @@ export default function useSetAvatarPrompt() {
       ),
       close: () => setVisible(false, { expires: 15 }),
     };
-  }, [setVisible, isWeb3User, visible]);
+  }, [setVisible, isWeb3User, visible, hasAvatar]);
 }
