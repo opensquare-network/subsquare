@@ -1,6 +1,6 @@
-import PostCreate from "next-common/components/post/postCreate";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import SimaPostCreate from "next-common/components/sima/post/postCreate";
 
 export default function PostCreatePage() {
   const breadcrumbItems = [
@@ -20,7 +20,7 @@ export default function PostCreatePage() {
         title: "Create post",
       }}
     >
-      <PostCreate />
+      <SimaPostCreate />
     </DetailLayout>
   );
 }
