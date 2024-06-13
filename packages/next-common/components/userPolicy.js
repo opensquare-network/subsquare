@@ -54,6 +54,7 @@ function CheckBox({ disabled, checked, setChecked, setAgreeError }) {
 }
 
 export default function UserPolicy({
+  disabled,
   checked,
   setChecked,
   agreeError,
@@ -63,7 +64,7 @@ export default function UserPolicy({
     <Wrapper>
       <ClickWrapper>
         <CheckBox
-          disabled={true}
+          disabled={disabled}
           checked={checked}
           setChecked={setChecked}
           setAgreeError={setAgreeError}
