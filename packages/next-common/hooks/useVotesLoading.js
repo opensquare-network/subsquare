@@ -16,5 +16,7 @@ export function useVotesLoading() {
     } else if (detailType === detailPageCategory.DEMOCRACY_REFERENDUM) {
       return democracyLoading;
     }
+
+    return false;
   }, [detailType, referendaLoading, democracyLoading]);
 }
