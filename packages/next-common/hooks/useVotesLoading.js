@@ -10,13 +10,11 @@ export function useVotesLoading() {
   const referendaLoading = useSelector(referendaVotesLoadingSelector);
   const democracyLoading = useSelector(democracyVotesLoadingSelector);
 
-  const loading = useMemo(() => {
+  return useMemo(() => {
     if (detailType === detailPageCategory.GOV2_REFERENDUM) {
       return referendaLoading;
     } else if (detailType === detailPageCategory.DEMOCRACY_REFERENDUM) {
       return democracyLoading;
     }
   }, [detailType, referendaLoading, democracyLoading]);
-
-  return loading;
 }
