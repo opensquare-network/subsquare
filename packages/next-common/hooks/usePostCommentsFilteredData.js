@@ -36,7 +36,6 @@ export function usePostCommentsFilteredData() {
     async function merge() {
       data.items = await Promise.all(
         map(data.items, async (item) => {
-          // console.log("🚀 ~ map ~ item:", item);
           item = item instanceof Promise ? await item : item;
 
           const address = item?.author?.address;
