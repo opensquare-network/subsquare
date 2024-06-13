@@ -1,9 +1,11 @@
 import { name } from "../consts";
 import { createSelector } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
-import { flatten } from "lodash-es";
+import { flatten, isNil } from "lodash-es";
 
 export const votesLoadingSelector = (state) => state[name].loading;
+export const votesReadySelector = (state) =>
+  !isNil(state[name].allVotes) && !state[name].loading;
 export const votesTriggerSelector = (state) => state[name].votesTrigger;
 export const allVotesSelector = (state) => state[name].allVotes;
 
