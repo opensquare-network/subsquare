@@ -129,15 +129,31 @@ export function getRequestColumn() {
         ? data.onchainData?.treasuryInfo?.amount
         : data.value;
 
-      return !isNil(postValue) ? (
-        <ValueDisplay
-          className="text14Medium text-textPrimary"
-          value={toPrecision(postValue, decimals)}
-          symbol={symbol}
-        />
-      ) : (
-        "--"
-      );
+      if (!isNil(postValue)) {
+        return (
+          <ValueDisplay
+            className="text14Medium text-textPrimary"
+            value={toPrecision(postValue, decimals)}
+            symbol={symbol}
+          />
+        );
+      }
+
+      if (data.onchainData?.isStableTreasury) {
+        const { amount, spends = [] } =
+          data.onchainData?.stableTreasuryInfo || {};
+        const symbolSet = new Set(spends.map((spend) => spend.symbol));
+        const symbol = symbolSet.size > 1 ? "USD" : spends[0].symbol;
+        return (
+          <ValueDisplay
+            className="text14Medium text-textPrimary"
+            value={toPrecision(amount, 6)}
+            symbol={symbol}
+          />
+        );
+      }
+
+      return "--";
     },
   };
 }
