@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import "next-common/components/charts/globalConfig";
 import TotalVoteContent from "./totalVoteContent";
 import AccountsConvictionUsedContent from "./accountsConvictionUsedContent";
 import AccountsVotesContent from "./accountsVotesContent";
