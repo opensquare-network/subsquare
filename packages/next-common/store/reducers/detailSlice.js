@@ -9,6 +9,9 @@ const detailSlice = createSlice({
       // flattened, nested
       votesBubbleView: "nested",
     },
+    comments: {
+      merging: false,
+    },
   },
   reducers: {
     setDetailMultiTabsTimelineMode(state, { payload }) {
@@ -17,12 +20,16 @@ const detailSlice = createSlice({
     setDetailMultiTabsVotesBubbleView(state, { payload }) {
       state.multiTabs.votesBubbleView = payload;
     },
+    setDetailCommentsMerging(state, { payload }) {
+      state.comments.merging = payload;
+    },
   },
 });
 
 export const {
   setDetailMultiTabsTimelineMode,
   setDetailMultiTabsVotesBubbleView,
+  setDetailCommentsMerging,
 } = detailSlice.actions;
 
 export const detailMultiTabsTimelineMode = (state) =>
@@ -32,5 +39,8 @@ export const detailMultiTabsIsTimelineCompactModeSelector = (state) =>
 
 export const detailMultiTabsVotesBubbleView = (state) =>
   state.detail.multiTabs.votesBubbleView;
+
+export const detailCommentsMergingSelector = (state) =>
+  state.detail.comments.merging;
 
 export default detailSlice.reducer;
