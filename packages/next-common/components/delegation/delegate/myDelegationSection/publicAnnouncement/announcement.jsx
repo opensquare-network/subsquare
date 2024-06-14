@@ -2,7 +2,14 @@ import { useState } from "react";
 import { MenuAnnouncement } from "@osn/icons/subsquare";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import PrimaryButton from "next-common/lib/button/primary";
-import AnnouncementPublishPopup from "../../PublishAnnouncementPopup";
+import dynamic from "next/dynamic";
+
+const AnnouncementPublishPopup = dynamic(
+  () => import("../../PublishAnnouncementPopup"),
+  {
+    ssr: false,
+  },
+);
 
 export default function Announcement({ myDelegation }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);

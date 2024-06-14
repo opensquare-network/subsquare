@@ -1,7 +1,7 @@
 import { useUser } from "../../context/user";
 import { isSameAddress } from "../../utils";
-import LoginPopup from "../login/popup";
 import { SignerContextProvider, usePopupParams } from "./context";
+import DynamicLoginPopup from "next-common/components/login/dynamic";
 
 export default function MaybeSignerConnected({ children, extensionAccounts }) {
   const user = useUser();
@@ -11,7 +11,7 @@ export default function MaybeSignerConnected({ children, extensionAccounts }) {
     !user?.address ||
     !extensionAccounts?.find((acc) => isSameAddress(acc.address, user?.address))
   ) {
-    return <LoginPopup onClose={onClose} showRegister={false} />;
+    return <DynamicLoginPopup onClose={onClose} showRegister={false} />;
   }
 
   return (
