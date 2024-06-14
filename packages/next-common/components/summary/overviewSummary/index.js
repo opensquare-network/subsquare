@@ -9,6 +9,7 @@ import {
   useMenuHasTechComm,
   useMenuHasTreasuryBounties,
   useMenuHasTreasuryChildBounties,
+  useMenuHasTreasurySpends,
   useMenuHasTreasuryTips,
 } from "../../../context/chain";
 import isMoonChain from "next-common/utils/isMoonChain";
@@ -105,8 +106,10 @@ function TreasuryGroupContent() {
   const showTreasuryBounties = useMenuHasTreasuryBounties();
   const showChildBounties = useMenuHasTreasuryChildBounties();
   const showTips = useMenuHasTreasuryTips();
+  const showSpends = useMenuHasTreasurySpends();
 
-  const { bounties, childBounties, tips, treasuryProposals } = summary ?? {};
+  const { bounties, childBounties, tips, treasuryProposals, treasurySpends } =
+    summary ?? {};
 
   return (
     <ContentWrapper>
@@ -116,6 +119,14 @@ function TreasuryGroupContent() {
         href="/treasury/proposals"
         value={treasuryProposals?.active || 0}
       />
+      {showSpends && (
+        <SummaryTypeGroup
+          label="S"
+          tooltip="Active spends"
+          href="/treasury/spends"
+          value={treasurySpends?.active || 0}
+        />
+      )}
       {showTreasuryBounties && (
         <SummaryTypeGroup
           label="B"
