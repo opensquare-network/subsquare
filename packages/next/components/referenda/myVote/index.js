@@ -6,14 +6,31 @@ import { normalizeOnchainVote } from "next-common/utils/vote";
 import useSubMyDemocracyVote from "next-common/hooks/democracy/useSubMyVote";
 import { useState } from "react";
 import { usePost } from "next-common/context/post";
-import RemoveDemocracyVotePopup from "next-common/components/myReferendumVote/removeDemocracyVotePopup";
-import MoonRemoveDemocracyVotePopup from "next-common/components/myReferendumVote/removeDemocracyVotePopup/moonPopup";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
 import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Democracy } from "next-common/components/profile/votingHistory/common";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
+import dynamic from "next/dynamic";
+
+const RemoveDemocracyVotePopup = dynamic(
+  () =>
+    import("next-common/components/myReferendumVote/removeDemocracyVotePopup"),
+  {
+    ssr: false,
+  },
+);
+
+const MoonRemoveDemocracyVotePopup = dynamic(
+  () =>
+    import(
+      "next-common/components/myReferendumVote/removeDemocracyVotePopup/moonPopup"
+    ),
+  {
+    ssr: false,
+  },
+);
 
 export default function MyVote() {
   const post = usePost();

@@ -1,10 +1,23 @@
 import React, { useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
-import DelegatePopup from "next-common/components/democracy/delegatePopup";
-import MoonDelegatePopup from "next-common/components/democracy/delegatePopup/moonPopup";
 import { SystemPlus } from "@osn/icons/subsquare";
 import isMoonChain from "next-common/utils/isMoonChain";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
+import dynamic from "next/dynamic";
+
+const DelegatePopup = dynamic(
+  () => import("next-common/components/democracy/delegatePopup"),
+  {
+    ssr: false,
+  },
+);
+
+const MoonDelegatePopup = dynamic(
+  () => import("next-common/components/democracy/delegatePopup/moonPopup"),
+  {
+    ssr: false,
+  },
+);
 
 /**
  * @param {{

@@ -5,8 +5,15 @@ import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { isSameAddress } from "next-common/utils";
-import FellowshipCoreImportPopup from "next-common/components/fellowship/core/summary/import/popup";
 import { SystemImportMember } from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const FellowshipCoreImportPopup = dynamic(
+  () => import("next-common/components/fellowship/core/summary/import/popup"),
+  {
+    ssr: false,
+  },
+);
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);

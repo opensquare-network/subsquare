@@ -3,7 +3,11 @@ import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellow
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
-import ApproveFellowshipMemberPopup from "./popup";
+import dynamic from "next/dynamic";
+
+const ApproveFellowshipMemberPopup = dynamic(() => import("./popup"), {
+  ssr: false,
+});
 
 export default function Approve({ member }) {
   const [showApprovePopup, setShowApprovePopup] = useState(false);

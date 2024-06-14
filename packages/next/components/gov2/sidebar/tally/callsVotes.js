@@ -1,6 +1,13 @@
 import { Button } from "./styled";
 import { useState } from "react";
-import OpenGovCallsVotesPopup from "./openGovCallsVotesPopup";
+import dynamic from "next/dynamic";
+
+const OpenGovCallsVotesPopup = dynamic(
+  () => import("./openGovCallsVotesPopup"),
+  {
+    ssr: false,
+  },
+);
 
 export default function CallsVotes() {
   const [showCallsVotes, setShowCallsVotes] = useState(false);

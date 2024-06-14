@@ -8,8 +8,12 @@ import { useIsPostAuthor } from "../../../context/post/useIsPostAuthor";
 import { GreyPanel } from "../../styled/containers/greyPanel";
 import NoData from "next-common/components/noData";
 import AddressUser from "next-common/components/user/addressUser";
-import PostLinkPopup from "../../linkPost/postLinkPopup";
 import { usePost } from "next-common/context/post";
+import dynamic from "next/dynamic";
+
+const PostLinkPopup = dynamic(() => import("../../linkPost/postLinkPopup"), {
+  ssr: false,
+});
 
 const GreyWrapper = styled(GreyPanel)`
   flex-flow: wrap;

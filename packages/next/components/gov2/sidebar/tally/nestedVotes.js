@@ -1,12 +1,16 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import NestedVotesPopup from "./nestedVotesPopup";
 import { Button } from "./styled";
 import { sortTotalVotes } from "next-common/utils/democracy/votes/passed/common";
 import {
   nestedVotesSelector,
   showVotesNumberSelector,
 } from "next-common/store/reducers/referenda/votes/selectors";
+import dynamic from "next/dynamic";
+
+const NestedVotesPopup = dynamic(() => import("./nestedVotesPopup"), {
+  ssr: false,
+});
 
 export default function NestedVotes() {
   const [showNestedVotes, setShowNestedVotes] = useState(false);
