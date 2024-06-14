@@ -14,17 +14,23 @@ import {
   SystemMore,
   SystemTrash,
 } from "@osn/icons/subsquare";
-import ReportPopup from "./reportPopup";
 import copy from "copy-to-clipboard";
 import { noop } from "lodash-es";
 import { useComment } from "./comment/context";
-import DeletePopup from "./deletePopup";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 import dynamic from "next/dynamic";
+
+const DeletePopup = dynamic(() => import("./deletePopup"), {
+  ssr: false,
+});
+
+const ReportPopup = dynamic(() => import("./reportPopup"), {
+  ssr: false,
+});
 
 const PostLinkPopup = dynamic(() => import("./linkPost/postLinkPopup"), {
   ssr: false,
