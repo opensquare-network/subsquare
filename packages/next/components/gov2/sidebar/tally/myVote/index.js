@@ -6,14 +6,31 @@ import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferenda
 import { usePost } from "next-common/context/post";
 import { normalizeOnchainVote } from "next-common/utils/vote";
 import { useState } from "react";
-import RemoveReferendaVotePopup from "next-common/components/myReferendumVote/removeReferendaVotePopup";
-import MoonRemoveReferendaVotePopup from "next-common/components/myReferendumVote/removeReferendaVotePopup/moonPopup";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Referenda } from "next-common/components/profile/votingHistory/common";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
+import dynamic from "next/dynamic";
+
+const RemoveReferendaVotePopup = dynamic(
+  () =>
+    import("next-common/components/myReferendumVote/removeReferendaVotePopup"),
+  {
+    ssr: false,
+  },
+);
+
+const MoonRemoveReferendaVotePopup = dynamic(
+  () =>
+    import(
+      "next-common/components/myReferendumVote/removeReferendaVotePopup/moonPopup"
+    ),
+  {
+    ssr: false,
+  },
+);
 
 export default function MyVote() {
   const [showRemovePopup, setShowRemoveVotePopup] = useState(false);

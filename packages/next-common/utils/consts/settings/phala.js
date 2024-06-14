@@ -12,12 +12,24 @@ const DEFAULT_PHALA_NODES = [
     url: "wss://phala-rpc.dwellir.com",
   },
   {
-    name: "Phala",
-    url: "wss://api.phala.network/ws",
+    name: "Helikon",
+    url: "wss://rpc.helikon.io/phala",
   },
   {
     name: "OnFinality",
     url: "wss://phala.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Phala",
+    url: "wss://api.phala.network/ws",
+  },
+  {
+    name: "RadiumBlock",
+    url: "wss://phala.public.curie.radiumblock.co/ws",
+  },
+  {
+    name: "Rockx",
+    url: "wss://rockx-phala.w3node.com/polka-public-phala/ws",
   },
 ];
 

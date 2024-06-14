@@ -32,6 +32,10 @@ export const DEFAULT_KARURA_NODES = [
     url: "wss://karura-rpc.dwellir.com",
   },
   {
+    name: "LuckyFriday",
+    url: "wss://rpc-karura.luckyfriday.io",
+  },
+  {
     name: "OnFinality",
     url: "wss://karura.api.onfinality.io/public-ws",
   },

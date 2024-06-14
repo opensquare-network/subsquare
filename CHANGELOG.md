@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.6
+
+date: 2024-06-13
+
+- [Big] Support more EVM wallets with [wagmi](https://wagmi.sh/).
+- [Medium] Support comments filter.
+- Update endpoints.
+- Hide avatar prompt if connected user already set.
+- Support westend testnet.
+- Show core and salary sections for westend collectives.
+- Update decentralized voice cohort 2 delegates for polkadot.
+- Show requested stable coin value in overview request column.
+- Upgrade dependencies.
+
+### 4.0.5
+
+date: 2024-06-07
+
+- Add USDx treasury spend proposal template for OpenGov referenda.
+- Add `system#remark` proposal template for OpenGov referenda.
+- Fix fellowship core approve referendum template track.
+- Support avatar setting by SIMA spec.
+- Support hydraDX rebranding to hydration.
+- Add dragon boat header decoration which will show near dragon boat festival.
+- Fix delegate search for chains which support both substrate and EVM.
+- Fix styles.
+
 ### 4.0.4
 
 date: 2024-05-30

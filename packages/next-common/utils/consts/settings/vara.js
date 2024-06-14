@@ -18,6 +18,14 @@ const nodes = [
     url: "wss://archive-rpc.vara-network.io/",
   },
   {
+    name: "Blast",
+    url: "wss://vara-mainnet.public.blastapi.io",
+  },
+  {
+    name: "dPRC",
+    url: "wss://vara.drpc.org",
+  },
+  {
     name: "Vara3",
     url: "wss://archive.vara-network.io/",
   },

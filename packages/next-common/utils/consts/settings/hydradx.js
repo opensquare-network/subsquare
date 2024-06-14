@@ -17,6 +17,22 @@ const endpoints = [
     name: "Dwellir",
     url: "wss://hydradx-rpc.dwellir.com",
   },
+  {
+    name: "Helikon",
+    url: "wss://rpc.helikon.io/hydradx",
+  },
+  {
+    name: "Helikon",
+    url: "wss://rpc.helikon.io/hydradx",
+  },
+  {
+    name: "IBP1",
+    url: "wss://hydradx.paras.ibp.network",
+  },
+  {
+    name: "IBP2",
+    url: "wss://hydradx.paras.dotters.network",
+  },
 ];
 
 const links = [

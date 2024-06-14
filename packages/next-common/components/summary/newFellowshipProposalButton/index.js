@@ -1,8 +1,15 @@
 import Chains from "next-common/utils/consts/chains";
 import NewButton from "../newProposalButton/newButton";
-import SubmitFellowshipProposalPopup from "./submitProposalPopup";
 import { useState } from "react";
 import { useChain } from "next-common/context/chain";
+import dynamic from "next/dynamic";
+
+const SubmitFellowshipProposalPopup = dynamic(
+  () => import("./submitProposalPopup"),
+  {
+    ssr: false,
+  },
+);
 
 export default function NewFellowshipProposalButton() {
   const chain = useChain();

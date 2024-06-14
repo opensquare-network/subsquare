@@ -1,6 +1,13 @@
 import { useState } from "react";
-import SubmitDemocracyProposalPopup from "./submitDemocracyProposalPopup";
 import NewButton from "../newProposalButton/newButton";
+import dynamic from "next/dynamic";
+
+const SubmitDemocracyProposalPopup = dynamic(
+  () => import("./submitDemocracyProposalPopup"),
+  {
+    ssr: false,
+  },
+);
 
 export default function NewDemocracyProposalButton() {
   const [showPopup, setShowPopup] = useState(false);

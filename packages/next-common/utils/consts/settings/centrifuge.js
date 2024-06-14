@@ -26,6 +26,10 @@ export const defaultNodes = [
     name: "OnFinality",
     url: "wss://centrifuge-parachain.api.onfinality.io/public-ws",
   },
+  {
+    name: "Dwellir",
+    url: "wss://centrifuge-rpc.dwellir.com",
+  },
 ];
 
 // centrifuge network social links

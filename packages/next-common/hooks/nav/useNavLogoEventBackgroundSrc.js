@@ -1,6 +1,6 @@
 // event image file format in `public` folder:
-// - light: project-menu-bg-{event.name}-{light|dark}-light.png
-// - dark:  project-menu-bg-{event.name}-dark.png
+// - light: project-menu-bg-{event.name}-{light|dark}-light.{event.filetype}
+// - dark:  project-menu-bg-{event.name}-dark.{event.filetype}
 
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
@@ -12,16 +12,21 @@ dayjs.extend(isBetween);
 
 const nowDay = dayjs();
 
+function lunarDateToSolarDate(y, m, d) {
+  const { cYear, cMonth, cDay } = solarlunar.lunar2solar(y, m, d);
+  return dayjs(new Date(cYear, cMonth - 1, cDay));
+}
+
 /**
  * Chinese New Year
  */
-const { cYear, cMonth, cDay } = solarlunar.lunar2solar(nowDay.year(), 1, 1);
-const newYearDay = dayjs(`${cYear}-${cMonth}-${cDay}`);
+const newYearDay = lunarDateToSolarDate(nowDay.year(), 1, 1);
 // new year's eve
 const newYearsEveDay = newYearDay.add(-1, "day");
 const newYearEndDay = newYearDay.add(2, "day");
 const chineseNewYearEvent = {
   name: "chinese-new-year",
+  filetype: "png",
   startMonth: newYearsEveDay.month() + 1,
   startDate: newYearsEveDay.date(),
   endMonth: newYearEndDay.month() + 1,
@@ -33,6 +38,7 @@ const chineseNewYearEvent = {
  */
 const labourDayEvent = {
   name: "labour-day",
+  filetype: "png",
   startMonth: 5,
   startDate: 1,
   endMonth: 5,
@@ -40,17 +46,58 @@ const labourDayEvent = {
 };
 
 /**
+ * Dragon Boat Festival
+ */
+const dragonBoatFestivalDay = lunarDateToSolarDate(nowDay.year(), 5, 5);
+const dragonBoatFestivalEveDay = dragonBoatFestivalDay.add(-1, "day");
+const dragonBoatFestivalEvent = {
+  name: "dragon-boat-festival",
+  filetype: "png",
+  startMonth: dragonBoatFestivalEveDay.month() + 1,
+  startDate: dragonBoatFestivalEveDay.date(),
+  endMonth: dragonBoatFestivalDay.month() + 1,
+  endDate: dragonBoatFestivalDay.date(),
+};
+
+/**
+ * father's day
+ */
+const juneFirstDay = dayjs(`${nowDay.year()}-06-01`);
+const juneFirstDayOfWeek = juneFirstDay.day();
+const juneFirstSunday =
+  juneFirstDayOfWeek === 0
+    ? juneFirstDay
+    : juneFirstDay.add(7 - juneFirstDayOfWeek, "day");
+const fathersDay = juneFirstSunday.add(14, "day");
+const fathersDayEveDay = fathersDay.add(-1, "day");
+const fathersDayEvent = {
+  name: "fathers-day",
+  filetype: "webp",
+  startMonth: fathersDayEveDay.month() + 1,
+  startDate: fathersDayEveDay.date(),
+  endMonth: fathersDay.month() + 1,
+  endDate: fathersDay.date(),
+};
+
+/**
  * Christmas
  */
 const christmasEvent = {
   name: "christmas",
+  filetype: "png",
   startMonth: 12,
   startDate: 23,
   endMonth: 12,
   endDate: 31,
 };
 
-const events = [chineseNewYearEvent, labourDayEvent, christmasEvent];
+const events = [
+  chineseNewYearEvent,
+  labourDayEvent,
+  dragonBoatFestivalEvent,
+  fathersDayEvent,
+  christmasEvent,
+];
 
 export function useNavLogoEventBackgroundSrc() {
   const { navPreferDark } = useChainSettings();
@@ -71,7 +118,7 @@ export function useNavLogoEventBackgroundSrc() {
   return {
     light: `/project-menu-bg-${event.name}-${
       navPreferDark ? "dark" : "light"
-    }-light.png`,
-    dark: `/project-menu-bg-${event.name}-dark.png`,
+    }-light.${event.filetype}`,
+    dark: `/project-menu-bg-${event.name}-dark.${event.filetype}`,
   };
 }

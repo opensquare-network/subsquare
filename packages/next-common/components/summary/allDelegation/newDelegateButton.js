@@ -1,14 +1,27 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import SecondaryButton from "next-common/lib/button/secondary";
-import DelegatePopup from "next-common/components/gov2/delegatePopup";
-import MoonDelegatePopup from "next-common/components/gov2/delegatePopup/moonPopup";
 import { SystemPlus } from "@osn/icons/subsquare";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 import { incMyReferendaDelegationsTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import dynamic from "next/dynamic";
+
+const DelegatePopup = dynamic(
+  () => import("next-common/components/gov2/delegatePopup"),
+  {
+    ssr: false,
+  },
+);
+
+const MoonDelegatePopup = dynamic(
+  () => import("next-common/components/gov2/delegatePopup/moonPopup"),
+  {
+    ssr: false,
+  },
+);
 
 /**
  * @param {{

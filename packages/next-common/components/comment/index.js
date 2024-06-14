@@ -7,6 +7,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import Loading from "../loading";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import CommentsFilterForm from "./filterForm";
 
 export default function Comments({ data: commentsData, loading }) {
   const { items } = commentsData;
@@ -43,8 +44,10 @@ export default function Comments({ data: commentsData, loading }) {
   return (
     <div>
       <div className="mb-4">
-        <TitleContainer className={cn("w-full !px-0 mb-4", "!block")}>
+        <TitleContainer className={cn("w-full !px-0")}>
           <div className="text14Bold">Comments</div>
+
+          <CommentsFilterForm />
         </TitleContainer>
       </div>
 

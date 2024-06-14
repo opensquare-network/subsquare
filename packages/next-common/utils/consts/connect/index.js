@@ -9,8 +9,10 @@ import {
   WalletSubwallet,
   WalletTailsman,
   WalletSignet,
+  WalletPhantom,
+  WalletOkx,
+  WalletCoinbase,
 } from "@osn/icons/subsquare";
-import isMixedChain from "next-common/utils/isMixedChain";
 import getChainSettings from "../settings";
 
 const polkadotJs = {
@@ -21,7 +23,7 @@ const polkadotJs = {
   logo: WalletPolkadotjs,
 };
 
-const subWalletJs = {
+export const subWallet = {
   extensionName: WalletTypes.SUBWALLET_JS,
   title: "SubWallet",
   installUrl:
@@ -29,7 +31,7 @@ const subWalletJs = {
   logo: WalletSubwallet,
 };
 
-const talisman = {
+export const talisman = {
   extensionName: WalletTypes.TALISMAN,
   title: "Talisman",
   installUrl:
@@ -37,7 +39,7 @@ const talisman = {
   logo: WalletTailsman,
 };
 
-const metamask = {
+export const metamask = {
   extensionName: WalletTypes.METAMASK,
   title: "MetaMask",
   installUrl:
@@ -53,7 +55,7 @@ const polkagate = {
   logo: WalletPolkagate,
 };
 
-const nova = {
+export const nova = {
   extensionName: WalletTypes.NOVA,
   title: "Nova",
   installUrl: "https://novawallet.io/",
@@ -74,18 +76,47 @@ const signet = {
   logo: WalletSignet,
 };
 
+export const phantom = {
+  extensionName: WalletTypes.PHANTOM,
+  title: "Phantom",
+  installUrl: "https://phantom.app/",
+  logo: WalletPhantom,
+};
+
+export const okxWallet = {
+  extensionName: WalletTypes.OKX_WALLET,
+  title: "OKX Wallet",
+  installUrl: "https://www.okx.com/web3",
+  logo: WalletOkx,
+};
+
+export const coinbaseWallet = {
+  extensionName: WalletTypes.COINBASE_WALLET,
+  title: "Coinbase Wallet",
+  installUrl: "https://www.coinbase.com/wallet/downloads",
+  logo: WalletCoinbase,
+};
+
+export const allWallets = [
+  polkadotJs,
+  subWallet,
+  talisman,
+  metamask,
+  polkagate,
+  nova,
+  mimir,
+  signet,
+  phantom,
+  okxWallet,
+  coinbaseWallet,
+];
+
 export function getWallets() {
   return [...getSingleSigWallets(), ...getMultiSigWallets()];
 }
 
 export function getSingleSigWallets() {
-  if (isEvmChain()) {
-    return [talisman, metamask, nova];
-  } else if (isMixedChain()) {
-    return [metamask, polkadotJs, subWalletJs, talisman, polkagate, nova];
-  } else {
-    return [polkadotJs, subWalletJs, talisman, polkagate, nova];
-  }
+  return [polkadotJs, subWallet, talisman, polkagate, nova];
 }
 
 export function getMultiSigWallets() {

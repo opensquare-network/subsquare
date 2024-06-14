@@ -2,9 +2,16 @@ import HStack from "next-common/components/styled/hStack";
 import ListSVG from "next-common/assets/imgs/icons/list.svg";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
-import AllBeenDelegatedListPopup from "next-common/components/summary/democracyAllBeenDelegatedPopup";
 import { ListButton } from "./styled";
 import AllBeenDelegatedInfo from "./allBeenDelegatedInfo";
+import dynamic from "next/dynamic";
+
+const AllBeenDelegatedListPopup = dynamic(
+  () => import("next-common/components/summary/democracyAllBeenDelegatedPopup"),
+  {
+    ssr: false,
+  },
+);
 
 export default function AllBeenDelegated({ beenDelegatedList }) {
   const [showAllBeenDelegatedPopup, setShowAllBeenDelegatedPopup] =

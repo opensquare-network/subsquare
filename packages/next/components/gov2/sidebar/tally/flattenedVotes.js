@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { Button } from "./styled";
-import FlattenedVotesPopup from "./flattenedVotesPopup";
 import { useSelector } from "react-redux";
-import { flattenVotesSelector, showVotesNumberSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import {
+  flattenVotesSelector,
+  showVotesNumberSelector,
+} from "next-common/store/reducers/referenda/votes/selectors";
+import dynamic from "next/dynamic";
+
+const FlattenedVotesPopup = dynamic(() => import("./flattenedVotesPopup"), {
+  ssr: false,
+});
 
 export default function FlattenedVotes() {
   const [showFlattenedVotes, setShowFlattenedVotes] = useState(false);

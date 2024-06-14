@@ -1,8 +1,15 @@
 import { useState } from "react";
-import AllVotesPopup from "./allVotesPopup";
 import { Button } from "components/gov2/sidebar/tally/styled";
 import { useSelector } from "react-redux";
-import { fellowshipVotesSelector, isLoadingFellowshipVotesSelector } from "next-common/store/reducers/fellowship/votes";
+import {
+  fellowshipVotesSelector,
+  isLoadingFellowshipVotesSelector,
+} from "next-common/store/reducers/fellowship/votes";
+import dynamic from "next/dynamic";
+
+const AllVotesPopup = dynamic(() => import("./allVotesPopup"), {
+  ssr: false,
+});
 
 export default function AllVotes() {
   const [showAllVotes, setShowAllVotes] = useState(false);

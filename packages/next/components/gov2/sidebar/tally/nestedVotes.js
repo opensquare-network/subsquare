@@ -1,9 +1,16 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import NestedVotesPopup from "./nestedVotesPopup";
 import { Button } from "./styled";
 import { sortTotalVotes } from "next-common/utils/democracy/votes/passed/common";
-import { allNestedVotesSelector, showVotesNumberSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import {
+  nestedVotesSelector,
+  showVotesNumberSelector,
+} from "next-common/store/reducers/referenda/votes/selectors";
+import dynamic from "next/dynamic";
+
+const NestedVotesPopup = dynamic(() => import("./nestedVotesPopup"), {
+  ssr: false,
+});
 
 export default function NestedVotes() {
   const [showNestedVotes, setShowNestedVotes] = useState(false);
@@ -13,7 +20,7 @@ export default function NestedVotes() {
     allAye = [],
     allNay = [],
     allAbstain = [],
-  } = useSelector(allNestedVotesSelector);
+  } = useSelector(nestedVotesSelector);
 
   const directAyes = useMemo(
     () => sortTotalVotes(allAye.filter((v) => !v.isDelegating)),

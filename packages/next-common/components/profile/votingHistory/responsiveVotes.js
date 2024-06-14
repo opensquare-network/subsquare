@@ -3,12 +3,16 @@ import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { ListCard } from "./styled";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import VoteDetailPopup from "./voteDetailPopup";
 import VotesList from "./votesList";
 import MobileFellowshipVotesList from "./mobile/fellowshipVotesList";
 import { isNil } from "lodash-es";
 import { useIsFellowship, useModuleName } from "./common";
 import FellowshipVotesList from "./fellowshipVotesList";
+import dynamic from "next/dynamic";
+
+const VoteDetailPopup = dynamic(() => import("./voteDetailPopup"), {
+  ssr: false,
+});
 
 export default function ResponsiveVotes() {
   const { id } = usePageProps();

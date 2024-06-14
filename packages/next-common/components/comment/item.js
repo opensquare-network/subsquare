@@ -89,6 +89,8 @@ function CommentItemImpl({
     }
   }, [comments, setComments, comment._id]);
 
+  const maybeUpdateTopLevelComment = updateTopLevelComment || updateComment;
+
   const scrollToCommentBottom = useCallback(() => {
     if (refCommentTree.current) {
       refCommentTree.current.scrollIntoView({
@@ -151,7 +153,7 @@ function CommentItemImpl({
               editContentType={comment.contentType}
               onFinishedEdit={async (reload) => {
                 if (reload) {
-                  await updateComment();
+                  await maybeUpdateTopLevelComment();
                 }
                 if (isMounted()) {
                   setIsEdit(false);
@@ -167,7 +169,7 @@ function CommentItemImpl({
       actions={
         <CommentActions
           setShowReplies={setShowReplies}
-          updateComment={updateTopLevelComment || updateComment}
+          updateComment={maybeUpdateTopLevelComment}
           scrollToNewReplyComment={
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
@@ -184,7 +186,7 @@ function CommentItemImpl({
             data={reply}
             replyToCommentId={replyToCommentId}
             isSecondLevel
-            updateTopLevelComment={updateTopLevelComment || updateComment}
+            updateTopLevelComment={maybeUpdateTopLevelComment}
             scrollToTopLevelCommentBottom={
               scrollToTopLevelCommentBottom || scrollToCommentBottom
             }

@@ -4,14 +4,12 @@ import CommentEditor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor } from "next-common/utils/post";
 import { useUser } from "../../context/user";
-import { usePostCommentsData } from "next-common/hooks/usePostComments";
 import { usePost } from "next-common/context/post";
 
-export default function useCommentComponent() {
+export default function useCommentComponent({ commentsData, loading }) {
   const user = useUser();
   const post = usePost();
   const postId = post._id;
-  const { commentsData, loading } = usePostCommentsData();
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);

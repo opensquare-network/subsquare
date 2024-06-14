@@ -6,7 +6,8 @@ import { cn } from "next-common/utils";
 export default function Checkbox({ checked, className, onClick = noop }) {
   return (
     <div
-      className="cursor-pointer flex justify-center items-center gap-[10px]"
+      className="flex justify-center items-center gap-[10px]"
+      role="checkbox"
       onClick={onClick}
     >
       {checked ? (

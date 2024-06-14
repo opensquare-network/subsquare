@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch } from "react-redux";
 import nextApi from "../services/nextApi";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { nodes } from "next-common/utils/constants";
+import { CONNECT_POPUP_VIEWS, nodes } from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
 import { addressEllipsis, isSameAddress } from "../utils";
@@ -24,6 +23,16 @@ import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { getSingleSigWallets } from "next-common/utils/consts/connect";
+import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
+import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
+import EVMEntryWalletOption from "./wallet/evmEntryWalletOption";
+import isMixedChain from "next-common/utils/isMixedChain";
+import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupView";
+import BackToSubstrateWalletOption from "./wallet/backToSubstrateWalletOption";
+import { useAccount, useConnect } from "wagmi";
+import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
+import useInjectedWeb3 from "./wallet/useInjectedWeb3";
+import { filter, uniqBy } from "lodash-es";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -141,26 +150,29 @@ const EmptyList = styled.div`
 
 export default function LinkedAddress() {
   const chain = useChain();
-  const isMounted = useIsMounted();
   const user = useUser();
   const [showSelectWallet, setShowSelectWallet] = useState(false);
-  const [selectedWallet, setSelectWallet] = useState("");
-  const [hasExtension, setHasExtension] = useState(true);
-  const [accounts, setAccounts] = useState([]);
+  const [selectedWallet, setSelectedWallet] = useState();
+  const { injectedWeb3 } = useInjectedWeb3();
   const [activeChain, setActiveChain] = useState(chain);
   const dispatch = useDispatch();
   const userContext = useUserContext();
   const signMsg = useSignMessage();
+  const { connector } = useAccount();
+  const { connect } = useConnect();
 
+  const isEVMSelected = !!selectedWallet?.connector;
+
+  const [view, setView, reset] = useConnectPopupView();
   useEffect(() => {
-    if (typeof window.injectedWeb3 === "undefined") {
-      setHasExtension(false);
-      return;
-    }
-    if (Object.keys(window.injectedWeb3 ?? {}).length > 0) {
-      setHasExtension(true);
-    }
-  }, [isMounted]);
+    reset();
+  }, [showSelectWallet]);
+
+  const { accounts: substrateAccounts } = useSubstrateAccounts({
+    wallet: selectedWallet,
+  });
+  const { accounts: evmAccounts } = useEVMAccounts();
+  const evmWallets = useEVMWallets();
 
   const showSelectWalletModal = () => setShowSelectWallet(true);
 
@@ -186,7 +198,11 @@ export default function LinkedAddress() {
 
     let signature;
     try {
-      signature = await signMsg(result?.challenge, address, selectedWallet);
+      signature = await signMsg(
+        result?.challenge,
+        address,
+        selectedWallet?.extensionName,
+      );
     } catch (e) {
       console.error("Sign request is cancelled", e);
       return;
@@ -194,7 +210,7 @@ export default function LinkedAddress() {
 
     const { error: confirmError, result: confirmResult } = await nextApi.post(
       `user/linkaddr/${result?.attemptId}`,
-      { challengeAnswer: signature, signer: selectedWallet },
+      { challengeAnswer: signature, signer: selectedWallet?.extensionName },
     );
 
     if (confirmResult) {
@@ -207,26 +223,25 @@ export default function LinkedAddress() {
     }
   };
 
-  const mergedAccounts = [
-    ...(accounts ?? []),
-    ...(user?.address ? [user?.address] : [])
-      .filter((item) =>
-        (accounts ?? []).every((acc) => !isSameAddress(acc.address, item)),
-      )
-      .map((address) => ({
-        address,
-        name: "--",
-      })),
-  ];
-  const availableAccounts = mergedAccounts || [];
+  const extensionAccounts = isEVMSelected ? evmAccounts : substrateAccounts;
+
+  const mergedAccounts = filter(
+    uniqBy([...((selectedWallet && extensionAccounts) || []), user], "address"),
+    "address",
+  ).map((account) => {
+    return {
+      ...account,
+      name: account?.name || "--",
+    };
+  });
 
   return (
     <NeutralPanel className="p-6">
-      {hasExtension ? (
+      {injectedWeb3 ? (
         <div>
           <InfoWrapper>
             {
-              "Associate your account with an on-chain address using the Polkadot{.js} extension."
+              "Associate your account with an on-chain address using the Web 3 wallet."
             }
           </InfoWrapper>
           <PrimaryButton onClick={showSelectWalletModal}>
@@ -251,11 +266,11 @@ export default function LinkedAddress() {
             ))}
         </NodesWrapper>
         <AddressWrapper>
-          {availableAccounts.length === 0 && (
+          {mergedAccounts.length === 0 && (
             <EmptyList>No available addresses</EmptyList>
           )}
-          {availableAccounts.length > 0 &&
-            availableAccounts.map((item, index) => {
+          {mergedAccounts.length > 0 &&
+            mergedAccounts.map((item, index) => {
               let activeChainAddress = item.address;
               if (isPolkadotAddress(item.address)) {
                 activeChainAddress = encodeAddressToChain(
@@ -310,13 +325,60 @@ export default function LinkedAddress() {
             <span className="text-theme500">Wallet</span>
           </h3>
 
-          <SelectWallet
-            wallets={getSingleSigWallets()}
-            selectedWallet={selectedWallet}
-            setSelectWallet={setSelectWallet}
-            setAccounts={setAccounts}
-            onSelect={() => setShowSelectWallet(false)}
-          />
+          {view === CONNECT_POPUP_VIEWS.WEB3 && (
+            <SelectWallet
+              wallets={getSingleSigWallets()}
+              selectedWallet={selectedWallet}
+              setSelectedWallet={setSelectedWallet}
+              onSelect={() => {
+                setShowSelectWallet(false);
+              }}
+              extraWallets={
+                isMixedChain() && (
+                  <EVMEntryWalletOption
+                    onClick={() => {
+                      setView(CONNECT_POPUP_VIEWS.EVM);
+                    }}
+                  />
+                )
+              }
+            />
+          )}
+
+          {view === CONNECT_POPUP_VIEWS.EVM && (
+            <SelectWallet
+              wallets={evmWallets}
+              selectedWallet={selectedWallet}
+              beforeWallets={
+                isMixedChain() && (
+                  <>
+                    <BackToSubstrateWalletOption />
+                    <div />
+                  </>
+                )
+              }
+              onSelect={(wallet) => {
+                function select() {
+                  setShowSelectWallet(false);
+                  setSelectedWallet(wallet);
+                }
+
+                if (wallet.connector?.id === connector?.id) {
+                  select();
+                  return;
+                }
+
+                connect(
+                  { connector: wallet.connector },
+                  {
+                    onSuccess() {
+                      select();
+                    },
+                  },
+                );
+              }}
+            />
+          )}
         </Popup>
       )}
     </NeutralPanel>

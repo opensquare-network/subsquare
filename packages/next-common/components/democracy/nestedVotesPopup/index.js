@@ -11,11 +11,10 @@ import Flex from "next-common/components/styled/flex";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
-import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
 import { sortTotalVotes } from "../../../utils/democracy/votes/passed/common";
 import { useSelector } from "react-redux";
 import {
-  allNestedVotesSelector,
+  nestedVotesSelector,
   showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
@@ -24,10 +23,18 @@ import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "../common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
+import dynamic from "next/dynamic";
+
+const NestedPopupDelegatedDetailPopup = dynamic(
+  () => import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
+  {
+    ssr: false,
+  },
+);
 
 export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
-  const { allAye, allNay } = useSelector(allNestedVotesSelector);
+  const { allAye, allNay } = useSelector(nestedVotesSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [ayePage, setAyePage] = useState(1);
   const [nayPage, setNayPage] = useState(1);

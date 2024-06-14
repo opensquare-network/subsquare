@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Flex from "../styled/flex";
+import { useEffect, useState } from "react";
 import useIsMounted from "../../utils/hooks/useIsMounted";
-import Loading from "../loading";
 import useInjectedWeb3 from "./useInjectedWeb3";
 import WalletOption from "./walletOption";
 import { SystemLink } from "@osn/icons/subsquare";
@@ -47,18 +45,12 @@ export default function PolkadotWallet({
       selected={selected}
       onClick={() => installed && onClick(wallet)}
       installed={installed}
-    >
-      <Flex>
-        <Logo className={wallet.title} alt={wallet.title} />
-        <span className="wallet-title">{wallet.title}</span>
-      </Flex>
-      {installed === false &&
-        (isMultiSigWallet(wallet) ? (
-          <MultiSigWalletUnavailable />
-        ) : (
-          <span className="wallet-not-installed">Not installed</span>
-        ))}
-      {(loading || installed === null) && <Loading />}
-    </WalletOption>
+      logo={<Logo className={wallet.title} alt={wallet.title} />}
+      title={wallet.title}
+      loading={loading}
+      notInstalledContent={
+        isMultiSigWallet(wallet) && <MultiSigWalletUnavailable />
+      }
+    />
   );
 }

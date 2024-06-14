@@ -1,17 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "../../store/reducers/toastSlice";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useChain } from "../../context/chain";
-import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import WalletAddressSelect from "./walletAddressSelect";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
-import { encodeAddressToChain } from "next-common/services/address";
-import {
-  LoginResult,
-  setLoginResult,
-} from "next-common/store/reducers/userSlice";
+import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 
 const ButtonWrapper = styled.div`
   > :not(:first-child) {
@@ -19,41 +11,13 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-export default function AddressLogin({ setView }) {
-  const chain = useChain();
-  const [isLoading, setIsLoading] = useState(false);
+export default function AddressLogin() {
   const [wallet, setWallet] = useState();
-  const [selectedWallet, setSelectWallet] = useState("");
+  const [selectedWallet, setSelectedWallet] = useState();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [web3Error, setWeb3Error] = useState();
-  const dispatch = useDispatch();
-  const { closeLoginPopup } = useLoginPopup();
-  const { lastConnectedAccount, connect: connectAccount } =
-    useConnectedAccountContext();
-
-  const doWeb3Login = async () => {
-    if (!selectedAccount?.address) {
-      dispatch(newErrorToast("Please select an account"));
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const address = encodeAddressToChain(selectedAccount.address, chain);
-      const accountInfo = {
-        address,
-        wallet: selectedWallet,
-      };
-      await connectAccount(accountInfo);
-      dispatch(setLoginResult(LoginResult.Connected));
-
-      closeLoginPopup();
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { lastConnectedAccount } = useConnectedAccountContext();
+  const [web3Login, isLoading] = useWeb3Login();
 
   return (
     <div className="space-y-6">
@@ -61,7 +25,7 @@ export default function AddressLogin({ setView }) {
         wallet={wallet}
         setWallet={setWallet}
         selectedWallet={selectedWallet}
-        setSelectWallet={setSelectWallet}
+        setSelectedWallet={setSelectedWallet}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
         web3Error={web3Error}
@@ -73,24 +37,17 @@ export default function AddressLogin({ setView }) {
           <PrimaryButton
             className="w-full"
             loading={isLoading}
-            onClick={doWeb3Login}
+            onClick={() => {
+              web3Login({
+                account: selectedAccount,
+                wallet: selectedWallet?.extensionName,
+              });
+            }}
             disabled={!selectedAccount}
           >
             Next
           </PrimaryButton>
         )}
-        <div className="text14Medium text-center text-textSecondary">
-          Login with{" "}
-          <span
-            className="text-theme500"
-            role="button"
-            onClick={() => {
-              setView("account");
-            }}
-          >
-            account
-          </span>
-        </div>
       </ButtonWrapper>
     </div>
   );

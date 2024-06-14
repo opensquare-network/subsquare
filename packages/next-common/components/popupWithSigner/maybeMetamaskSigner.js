@@ -1,16 +1,12 @@
 import React from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
-import { useMetaMaskAccounts } from "../../utils/metamask";
+import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
 
 export default function MaybeMetamaskSigner({ children }) {
-  const [metamaskAccounts, isLoading] = useMetaMaskAccounts(true);
-
-  if (isLoading) {
-    return null;
-  }
+  const { accounts } = useEVMAccounts();
 
   return (
-    <MaybeSignerConnected extensionAccounts={metamaskAccounts}>
+    <MaybeSignerConnected extensionAccounts={accounts}>
       {children}
     </MaybeSignerConnected>
   );
