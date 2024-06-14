@@ -10,7 +10,7 @@ import {
 } from "../../utils/consts/connect";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
-import { noop } from "lodash-es";
+import { noop, some } from "lodash-es";
 import isMixedChain from "next-common/utils/isMixedChain";
 import EVMEntryWalletOption from "../wallet/evmEntryWalletOption";
 import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
@@ -67,9 +67,7 @@ export default function WalletAddressSelect({
       setSelectedAccount(account);
 
       if (
-        !getWallets().some(
-          ({ extensionName }) => extensionName === selectedWallet,
-        )
+        !some(getWallets(), { extensionName: selectedWallet?.extensionName })
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         await extensionDapp.web3Enable("subsquare");
