@@ -10,23 +10,20 @@ export default function NavFeaturedMenu({ collapsed, menu = [] }) {
 
   return (
     <ul>
-      {menu?.map((menu) => (
-        <li key={menu.name}>
-          {menu.name &&
-            (menu.items ? (
+      {menu?.map((item) => (
+        <li key={item.name}>
+          {item.name &&
+            (item.items ? (
               <NavMenuGroup
-                menu={menu}
+                menu={item}
                 collapsed={collapsed}
                 navSubmenuVisible={navSubmenuVisible}
                 setNavSubmenuVisible={setNavSubmenuVisible}
               />
             ) : (
               <NavMenuItem
-                label={menu.name}
-                link={menu.pathname}
-                icon={menu.icon}
-                activeCount={menu.activeCount}
-                active={router.asPath === menu.pathname}
+                item={item}
+                active={router.asPath === item.pathname}
                 collapsed={collapsed}
               />
             ))}

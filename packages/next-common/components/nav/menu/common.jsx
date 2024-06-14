@@ -20,9 +20,7 @@ export default function NavCommonMenu({ collapsed }) {
       {commonMenu?.map?.((item) => (
         <li key={item.value}>
           <NavMenuItem
-            icon={item.icon}
-            label={item.name}
-            link={item.pathname}
+            item={item}
             active={
               item.pathname === routePathname ||
               item?.extraMatchNavMenuActivePathnames?.includes?.(
@@ -36,11 +34,13 @@ export default function NavCommonMenu({ collapsed }) {
       ))}
       <li>
         <NavMenuItem
+          item={{
+            name: "Navigation",
+            icon: <MenuNavigation />,
+          }}
           onClick={() => {
             dispatch(setCmdkPaletteVisible(true));
           }}
-          icon={<MenuNavigation />}
-          label="Navigation"
           collapsed={collapsed}
           extra={
             <span
