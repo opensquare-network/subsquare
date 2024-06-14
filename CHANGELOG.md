@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.7
+
+date: 2024-06-14
+
+- [Big] Support treasury spends.
+- Lazy loading many popup components.
+- Add a foldable referenda menu for fellowship.
+- Show comments immediately after loading from server.
+- Add Father's Day sidebar decoration.
+- Fix connect address error.
+- Fix detail page chart config.
+
 ### 4.0.6
 
 date: 2024-06-13
