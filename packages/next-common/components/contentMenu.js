@@ -14,8 +14,6 @@ import {
   SystemMore,
   SystemTrash,
 } from "@osn/icons/subsquare";
-import PostLinkPopup from "./linkPost/postLinkPopup";
-import PostUnlinkPopup from "./linkPost/postUnlinkPopup";
 import ReportPopup from "./reportPopup";
 import copy from "copy-to-clipboard";
 import { noop } from "lodash-es";
@@ -26,6 +24,15 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
+import dynamic from "next/dynamic";
+
+const PostLinkPopup = dynamic(() => import("./linkPost/postLinkPopup"), {
+  ssr: false,
+});
+
+const PostUnlinkPopup = dynamic(() => import("./linkPost/postUnlinkPopup"), {
+  ssr: false,
+});
 
 const Wrapper = styled.div`
   position: relative;
