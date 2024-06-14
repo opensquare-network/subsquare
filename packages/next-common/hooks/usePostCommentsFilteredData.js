@@ -1,13 +1,12 @@
 import { useMemo, useState } from "react";
 import { usePostCommentsData } from "./usePostComments";
 import { useContextApi } from "next-common/context/api";
-import { cloneDeep, every, has, map, orderBy, filter } from "lodash-es";
+import { cloneDeep, filter, has, map, orderBy } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { useGetAddressVotesDataFn } from "./useAddressVotesData";
 import { getAddressVotingBalance } from "next-common/utils/referendumUtil";
 import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
 import { useIsDVAddressFn } from "./useIsDVAddress";
-import usePostCommentsFilterLoading from "./usePostCommentsFilterLoading";
 import { useShallowCompareEffect } from "react-use";
 
 function isDeletedComment(comment) {
@@ -21,22 +20,12 @@ function is0Balance(comment) {
 export function usePostCommentsFilteredData() {
   const api = useContextApi();
   const { commentsData, loading: commentsLoading } = usePostCommentsData();
-  const filterLoading = usePostCommentsFilterLoading();
 
   const [filterParams] = usePostCommentsFilterParams();
   const getAddressVotesData = useGetAddressVotesDataFn();
   const isDVAddress = useIsDVAddressFn();
 
   const [mergedComments, setMergedComments] = useState(commentsData);
-
-  const [mergingBalance, setMergingBalance] = useState(true);
-  useShallowCompareEffect(() => {
-    setMergingBalance(
-      !every(mergedComments.items, (item) => has(item, "balance")),
-    );
-  }, [mergedComments.items]);
-
-  const loading = mergingBalance || commentsLoading || filterLoading;
 
   useShallowCompareEffect(() => {
     const data = cloneDeep(commentsData);
@@ -137,6 +126,6 @@ export function usePostCommentsFilteredData() {
 
   return {
     commentsData: filteredComments,
-    loading,
+    loading: commentsLoading,
   };
 }

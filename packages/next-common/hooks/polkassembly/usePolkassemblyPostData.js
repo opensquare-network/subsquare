@@ -20,7 +20,7 @@ export function usePolkassemblyPostData({
   const isMounted = useIsMounted();
   const [comments, setComments] = useState([]);
   const [postReactions, setPostReactions] = useState([]);
-  const [loadingComments, setLoadingComments] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(true);
   const [commentsCount, setCommentsCount] = useState(0);
 
   useEffect(() => {
