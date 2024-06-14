@@ -7,11 +7,19 @@ import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fello
 import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { isNil } from "lodash-es";
-import FellowshipSalaryRegisterPopup from "next-common/components/fellowship/salary/actions/register/popup";
 import Tooltip from "next-common/components/tooltip";
 import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
 import { usePageProps } from "next-common/context/page";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
+import dynamic from "next/dynamic";
+
+const FellowshipSalaryRegisterPopup = dynamic(
+  () =>
+    import("next-common/components/fellowship/salary/actions/register/popup"),
+  {
+    ssr: false,
+  },
+);
 
 function useIsInRegistrationPeriod() {
   const stats = useSelector(fellowshipSalaryStatusSelector);

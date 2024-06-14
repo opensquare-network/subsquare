@@ -2,7 +2,11 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemSubtract } from "@osn/icons/subsquare";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useState } from "react";
-import RevokePopup from "./revokePopup";
+import dynamic from "next/dynamic";
+
+const RevokePopup = dynamic(() => import("./revokePopup"), {
+  ssr: false,
+});
 
 export function RevokeButton({ address }) {
   const [showRevotePopup, setShowRevotePopup] = useState(false);

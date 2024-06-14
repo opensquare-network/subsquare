@@ -8,9 +8,13 @@ import AccountLinks from "next-common/components/links/accountLinks";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemMenu } from "@osn/icons/subsquare";
 import NewDelegateButton from "next-common/components/summary/allDelegation/newDelegateButton";
-import ReferendaDelegateeDetailPopup from "./detailPopup";
 import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "./avatar";
+import dynamic from "next/dynamic";
+
+const ReferendaDelegateeDetailPopup = dynamic(() => import("./detailPopup"), {
+  ssr: false,
+});
 
 export default function ReferendaDelegateCard({
   delegate = {},

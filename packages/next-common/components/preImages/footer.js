@@ -2,7 +2,11 @@ import { Button } from "next-common/components/summary/styled";
 import styled from "styled-components";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import { useState } from "react";
-import NewPreimagePopup from "./newPreimagePopup";
+import dynamic from "next/dynamic";
+
+const NewPreimagePopup = dynamic(() => import("./newPreimagePopup"), {
+  ssr: false,
+});
 
 const AddButton = styled(Button)`
   display: flex;

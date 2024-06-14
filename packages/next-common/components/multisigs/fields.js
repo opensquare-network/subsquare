@@ -1,12 +1,16 @@
 import Copyable from "next-common/components/copyable";
 import { cn, textEllipsis } from "next-common/utils";
 import { useState } from "react";
-import CallPopup from "./callPopup";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
 import { useChain } from "next-common/context/chain";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import AddressUser from "next-common/components/user/addressUser";
+import dynamic from "next/dynamic";
+
+const CallPopup = dynamic(() => import("./callPopup"), {
+  ssr: false,
+});
 
 export function When({ height, index }) {
   const chain = useChain();

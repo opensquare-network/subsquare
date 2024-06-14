@@ -1,5 +1,4 @@
 import { memo, useState } from "react";
-import dynamic from "next/dynamic";
 import styled from "styled-components";
 import Loading from "next-common/components/loading";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
@@ -14,7 +13,6 @@ import VoteBar from "next-common/components/referenda/voteBar";
 import TallyInfo from "next-common/components/referenda/tally/info";
 import MyVote from "./myVote";
 import PrimaryButton from "next-common/lib/button/primary";
-import NestedVotesPopup from "next-common/components/democracy/nestedVotesPopup";
 import useIsDemocracyPassing from "next-common/context/post/democracy/referendum/passing";
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
 import useDemocracyThreshold from "next-common/context/post/democracy/referendum/threshold";
@@ -28,6 +26,14 @@ import WithAddress from "next-common/components/common/withAddress";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "components/gov2/votePopup/voteSuccessful";
+import dynamic from "next/dynamic";
+
+const NestedVotesPopup = dynamic(
+  () => import("next-common/components/democracy/nestedVotesPopup"),
+  {
+    ssr: false,
+  },
+);
 
 const VotePopup = dynamic(() => import("components/referenda/popup"), {
   ssr: false,

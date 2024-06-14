@@ -3,7 +3,6 @@ import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import { isLoadingVoteCallsSelector } from "next-common/store/reducers/democracy/voteCalls";
 import Pagination from "next-common/components/pagination";
-import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
@@ -19,6 +18,14 @@ import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "next-common/components/democracy/common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
+import dynamic from "next/dynamic";
+
+const BaseVotesPopup = dynamic(
+  () => import("next-common/components/popup/baseVotesPopup"),
+  {
+    ssr: false,
+  },
+);
 
 const VoteTime = styled.div`
   font-style: normal;
