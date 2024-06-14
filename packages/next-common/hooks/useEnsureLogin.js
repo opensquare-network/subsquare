@@ -102,9 +102,29 @@ export function useEnsureLogin() {
     return false;
   }, [user, isLoggedIn, login, openLoginPopup, waitForClose]);
 
+  const ensureConnect = useCallback(async () => {
+    if (isLoggedIn) {
+      // Already login
+      return true;
+    }
+
+    // Not connect yet
+    openLoginPopup();
+    const loginResult = await waitForClose();
+    if (
+      loginResult === LoginResult.Connected ||
+      loginResult === LoginResult.LoggedIn
+    ) {
+      return true;
+    }
+
+    return false;
+  }, []);
+
   return {
     login,
     ensureLogin,
+    ensureConnect,
     loading,
   };
 }

@@ -2,21 +2,21 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import Input from "../input";
-import nextApi from "../../services/nextApi";
-import ToggleText from "../uploadBanner/toggleText";
-import Uploader from "../uploadBanner/uploader";
-import { Label, LabelWrapper } from "./styled";
+import Input from "../../input";
+import nextApi from "../../../services/nextApi";
+import ToggleText from "../../uploadBanner/toggleText";
+import Uploader from "../../uploadBanner/uploader";
+import { Label, LabelWrapper } from "../../post/styled";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ErrorText from "next-common/components/ErrorText";
 import AdvancedForm from "next-common/components/post/advanced/form";
 import PrimaryButton from "next-common/lib/button/primary";
-import { TitleContainer } from "../styled/containers/titleContainer";
-import { useChain } from "../../context/chain";
-import { useUser } from "../../context/user";
-import { NeutralPanel } from "../styled/containers/neutralPanel";
-import PostLabel from "./postLabel";
-import Editor from "../editor";
+import { TitleContainer } from "../../styled/containers/titleContainer";
+import { useChain } from "../../../context/chain";
+import { useUser } from "../../../context/user";
+import { NeutralPanel } from "../../styled/containers/neutralPanel";
+import PostLabel from "../../post/postLabel";
+import Editor from "../../editor";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { useSelector } from "react-redux";
 import { editorUploadingSelector } from "next-common/store/reducers/editorSlice";
@@ -77,14 +77,14 @@ export default function SimaPostCreate() {
   const [isAdvanced, setIsAdvanced] = useState(false);
   const isEmpty = title === "" || content === "" || content === "<p><br></p>";
   const [selectedLabels, setSelectedLabels] = useState([]);
-  const { ensureLogin } = useEnsureLogin();
+  const { ensureConnect } = useEnsureLogin();
   const editorUploading = useSelector(editorUploadingSelector);
 
   const createPost = async () => {
     setCreating(true);
 
     try {
-      if (!(await ensureLogin())) {
+      if (!(await ensureConnect())) {
         return;
       }
 
