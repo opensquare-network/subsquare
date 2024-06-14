@@ -103,8 +103,8 @@ export function useEnsureLogin() {
   }, [user, isLoggedIn, login, openLoginPopup, waitForClose]);
 
   const ensureConnect = useCallback(async () => {
-    if (isLoggedIn) {
-      // Already login
+    const connectedAccount = getCookieConnectedAccount();
+    if (connectedAccount) {
       return true;
     }
 
@@ -119,7 +119,7 @@ export function useEnsureLogin() {
     }
 
     return false;
-  }, []);
+  }, [openLoginPopup, waitForClose]);
 
   return {
     login,

@@ -1,25 +1,20 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Input from "../../input";
 import nextApi from "../../../services/nextApi";
-import ToggleText from "../../uploadBanner/toggleText";
-import Uploader from "../../uploadBanner/uploader";
 import { Label, LabelWrapper } from "../../post/styled";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ErrorText from "next-common/components/ErrorText";
-import AdvancedForm from "next-common/components/post/advanced/form";
 import PrimaryButton from "next-common/lib/button/primary";
 import { TitleContainer } from "../../styled/containers/titleContainer";
-import { useChain } from "../../../context/chain";
 import { useUser } from "../../../context/user";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
-import PostLabel from "../../post/postLabel";
 import Editor from "../../editor";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { useSelector } from "react-redux";
-import { editorUploadingSelector } from "next-common/store/reducers/editorSlice";
+import { useSignMessage } from "next-common/hooks/useSignMessage";
+import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -56,13 +51,8 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const UploaderWrapper = styled.div`
-  margin-top: 16px;
-`;
-
 export default function SimaPostCreate() {
   const user = useUser();
-  const chain = useChain();
   const router = useRouter();
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
@@ -71,14 +61,9 @@ export default function SimaPostCreate() {
   const [contentType, setContentType] = useState(
     user?.preference?.editor || "markdown",
   );
-  const [bannerCid, setBannerCid] = useState(null);
-  const [formValue, setFormValue] = useState({});
   const [errors, setErrors] = useState();
-  const [isAdvanced, setIsAdvanced] = useState(false);
-  const isEmpty = title === "" || content === "" || content === "<p><br></p>";
-  const [selectedLabels, setSelectedLabels] = useState([]);
   const { ensureConnect } = useEnsureLogin();
-  const editorUploading = useSelector(editorUploadingSelector);
+  const signMessage = useSignMessage();
 
   const createPost = async () => {
     setCreating(true);
@@ -88,20 +73,29 @@ export default function SimaPostCreate() {
         return;
       }
 
-      const { result, error } = await nextApi.post(
-        "posts",
-        {
-          chain,
-          title,
-          content,
-          contentType,
-          bannerCid,
-          labels: selectedLabels,
-          ...formValue,
-        },
-        { credentials: "include" },
+      const connectedAccount = getCookieConnectedAccount();
+      const contentFormat = contentType === "html" ? "HTML" : "subsquare_md";
+      const entity = {
+        action: "new_discussion",
+        title,
+        content,
+        content_format: contentFormat,
+        timestamp: Date.now(),
+      };
+      const address = connectedAccount.address;
+      const signerWallet = connectedAccount.wallet;
+      const signature = await signMessage(
+        JSON.stringify(entity),
+        address,
+        signerWallet,
       );
-
+      const data = {
+        entity,
+        address,
+        signature,
+        signerWallet,
+      };
+      const { result, error } = await nextApi.post("sima/discussions", data);
       if (error) {
         if (error.data) {
           setErrors(error);
@@ -109,42 +103,21 @@ export default function SimaPostCreate() {
           dispatch(newErrorToast(error.message));
         }
       } else {
-        router.push(`/posts/${result}`);
+        const { postUid } = result;
+        router.push(`/posts/${postUid}`);
       }
     } finally {
       setCreating(false);
     }
   };
 
-  const [isSetBanner, setIsSetBanner] = useState(false);
-  useEffect(() => {
-    if (!isSetBanner) {
-      setBannerCid(null);
-    }
-  }, [isSetBanner]);
-
-  const advancedForm = useRef();
-
-  const isDisableCreate = useMemo(() => {
-    let result = true;
-    const validatePass = isAdvanced
-      ? advancedForm.current?.validateForm()
-      : true;
-    result = isEmpty || !validatePass || editorUploading;
-
-    return result;
-  }, [isEmpty, formValue, isAdvanced, editorUploading]);
+  const isDisableCreate = !title || !content;
 
   return (
     <Wrapper>
       <TitleContainer className="!px-0">New Post</TitleContainer>
       <LabelWrapper>
         <Label>Title</Label>
-        <ToggleText
-          disabled={creating}
-          isSetBanner={isSetBanner}
-          setIsSetBanner={setIsSetBanner}
-        />
       </LabelWrapper>
       <Input
         disabled={creating}
@@ -153,20 +126,9 @@ export default function SimaPostCreate() {
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      {isSetBanner && (
-        <UploaderWrapper>
-          <Uploader disabled={creating} onSetImageCid={setBannerCid} />
-        </UploaderWrapper>
-      )}
-
       {errors?.data?.title?.[0] && (
         <ErrorText>{errors?.data?.title?.[0]}</ErrorText>
       )}
-
-      <PostLabel
-        selectedLabels={selectedLabels}
-        setSelectedLabels={setSelectedLabels}
-      />
 
       <LabelWrapper>
         <Label>Issue</Label>
@@ -184,15 +146,6 @@ export default function SimaPostCreate() {
       {errors?.data?.content?.[0] && (
         <ErrorText>{errors?.data?.content?.[0]}</ErrorText>
       )}
-
-      <AdvancedForm
-        isAdvanced={isAdvanced}
-        setIsAdvanced={setIsAdvanced}
-        ref={advancedForm}
-        disabled={creating}
-        formValue={formValue}
-        setFormValue={setFormValue}
-      />
 
       <ButtonWrapper>
         <PrimaryButton
