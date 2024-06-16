@@ -10,6 +10,11 @@ export function useReferendumInfo() {
   return onchain.info || infoOnStore;
 }
 
+export function useDecisionDeposit() {
+  const info = useReferendumInfo();
+  return info?.decisionDeposit;
+}
+
 export function useReferendumTally() {
   const onchain = useOnchainData();
   const infoOnStore = useSelector(referendumInfoSelector);

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import SubLink from "next-common/components/styled/subLink";
-import { useDecisionDeposit } from "next-common/context/post/gov2/referendum";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { useDecisionDeposit } from "next-common/hooks/referenda/useReferendumInfo";
 
 const DepositPopup = dynamic(() => import("./depositPopup"), { ssr: false });
 
@@ -23,18 +23,15 @@ export default function PlaceDecisionDeposit() {
     <>
       <Wrapper>
         <SubLink
-          disabled={ disabled }
-          onClick={
-            disabled ? () => {
-            } : () => setShowDepositPopup(true)
-          }
-        >+ Decision Deposit</SubLink>
+          disabled={disabled}
+          onClick={disabled ? () => {} : () => setShowDepositPopup(true)}
+        >
+          + Decision Deposit
+        </SubLink>
       </Wrapper>
-      {
-        showDepositPopup && (
-          <DepositPopup onClose={() => setShowDepositPopup(false)} />
-        )
-      }
+      {showDepositPopup && (
+        <DepositPopup onClose={() => setShowDepositPopup(false)} />
+      )}
     </>
   );
 }
