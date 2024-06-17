@@ -21,7 +21,17 @@ export function getMentionList(comments) {
     ...(comments?.items ?? []),
     ...flatten((comments?.items ?? []).map((item) => item.replies)),
   ]
-    .map((comment) => comment.author)
+    .map((comment) => {
+      if (comment?.author) {
+        return comment?.author;
+      }
+      if (comment?.proposer) {
+        return {
+          username: addressEllipsis(comment?.proposer),
+          address: comment?.proposer,
+        };
+      }
+    })
     .filter((author) => !!author);
 
   return uniqBy(items, (item) => item.username);

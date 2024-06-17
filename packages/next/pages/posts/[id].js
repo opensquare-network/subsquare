@@ -43,7 +43,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
   if (detail.dataSource === "sima") {
     const { page, page_size: pageSize } = context.query;
 
-    const comments = await nextApi.fetch(
+    const { result: comments } = await nextApi.fetch(
       `sima/discussions/${detail.cid}/comments`,
       {
         page: page ?? "last",
