@@ -1,4 +1,3 @@
-import DetailItem from "components/detailItem";
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -12,7 +11,7 @@ import {
   getPostVotesAndMine,
 } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import PostDetail from "next-common/components/detail/postDetail";
 
 export default function PostDetailPage({ detail }) {
   const desc = getMetaDesc(detail);
@@ -25,9 +24,7 @@ export default function PostDetailPage({ detail }) {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <ContentWithComment>
-          <DetailItem />
-        </ContentWithComment>
+        <PostDetail />
       </DetailLayout>
     </PostProvider>
   );
