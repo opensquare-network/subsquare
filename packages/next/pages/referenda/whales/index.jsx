@@ -1,11 +1,14 @@
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import { withReferendaCommonProps } from "next-common/services/serverSide/referenda/common";
 import WhalesContainer from "next-common/components/whales/container";
-import WhalesCurrentList from "next-common/components/whales/currentList";
-import {
-  fetchReferendaWhales,
-  fetchReferendaWhalesHistory,
-} from "next-common/services/serverSide/referenda/whales";
+import dynamic from "next/dynamic";
+
+const WhalesCurrentList = dynamic(
+  () => import("next-common/components/whales/currentList"),
+  {
+    ssr: false,
+  },
+);
 
 export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
   const seoInfo = { title, desc: title };
@@ -23,18 +26,4 @@ export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
   );
 }
 
-export const getServerSideProps = withReferendaCommonProps(async (ctx) => {
-  const page = ctx.query.page || 1;
-
-  const [{ result: whales }, { result: historyWhales }] = await Promise.all([
-    fetchReferendaWhales(page, 25),
-    fetchReferendaWhalesHistory(1, 1),
-  ]);
-
-  return {
-    props: {
-      whales,
-      historyWhales,
-    },
-  };
-});
+export const getServerSideProps = withReferendaCommonProps();
