@@ -38,13 +38,33 @@ export const getServerSideProps = withCommonProps(async (context) => {
   if (!detail) {
     return to404();
   }
+  const tracksProps = await fetchOpenGovTracksProps();
+
+  if (detail.dataSource === "sima") {
+    const { page, page_size: pageSize } = context.query;
+
+    const comments = await nextApi.fetch(
+      `sima/discussions/${detail.cid}/comments`,
+      {
+        page: page ?? "last",
+        pageSize: Math.min(pageSize ?? 50, 100),
+      },
+    );
+
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        ...tracksProps,
+      },
+    };
+  }
 
   const comments = await fetchDetailComments(
     `posts/${detail._id}/comments`,
     context,
   );
   const { votes, myVote } = await getPostVotesAndMine(detail, context);
-  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
