@@ -22,7 +22,7 @@ export default function CommentActions({
   updateComment = noop,
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
-  replyToCommentId,
+  replyToCommentCid,
 }) {
   const comment = useComment();
   const user = useUser();
@@ -36,7 +36,6 @@ export default function CommentActions({
 
   const chain = useChain();
   const post = usePost();
-  const isSima = post?.dataSource === "sima";
   const editorWrapperRef = useRef();
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
@@ -87,11 +86,11 @@ export default function CommentActions({
 
       if (thumbUp) {
         ({ result, error } = await nextApi.delete(
-          `comments/${comment._id}/reaction`,
+          `sima/comments/${comment.cid}/reaction`,
         ));
       } else {
         ({ result, error } = await nextApi.put(
-          `comments/${comment._id}/reaction`,
+          `sima/comments/${comment.cid}/reaction`,
           { reaction: 1 },
         ));
       }
@@ -122,13 +121,13 @@ export default function CommentActions({
             setShowThumbsUpList={setShowThumbsUpList}
           />
         </Wrapper>
-        <CommentContextMenu editable={!isSima && ownComment} />
+        <CommentContextMenu />
       </div>
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (
         <CommentEditor
           postId={postId}
-          commentId={replyToCommentId}
+          commentCid={replyToCommentCid}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}

@@ -19,7 +19,6 @@ import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentUser from "./user";
-import { addressEllipsis } from "next-common/utils";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -108,11 +107,6 @@ function CommentItemImpl({
     });
   };
 
-  const commentAuthor = comment.author || {
-    username: addressEllipsis(comment.proposer),
-    address: comment.proposer,
-  };
-
   return (
     <CommentItemTemplate
       ref={refCommentTree}
@@ -121,7 +115,7 @@ function CommentItemImpl({
       setShowReplies={setShowReplies}
       id={comment.height}
       highlight={highlight}
-      user={<CommentUser author={commentAuthor} />}
+      user={<CommentUser author={comment.author} />}
       commentSource={
         isUniversalComments && (
           <Tooltip content="Comment from SubSquare" className="ml-2">

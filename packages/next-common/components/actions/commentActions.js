@@ -37,7 +37,6 @@ export default function CommentActions({
 
   const chain = useChain();
   const post = usePost();
-  const isSima = post?.dataSource === "sima";
   const editorWrapperRef = useRef();
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
@@ -123,10 +122,7 @@ export default function CommentActions({
             setShowThumbsUpList={setShowThumbsUpList}
           />
         </Wrapper>
-        <CommentContextMenu
-          editable={!isSima && ownComment}
-          setIsEdit={setIsEdit}
-        />
+        <CommentContextMenu editable={ownComment} setIsEdit={setIsEdit} />
       </div>
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (

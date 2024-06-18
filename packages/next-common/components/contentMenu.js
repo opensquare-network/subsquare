@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function LinkMenuItem({ setShowLinkPopup, setShow }) {
+export function LinkMenuItem({ setShowLinkPopup, setShow }) {
   return (
     <OptionItem
       onClick={() => {
@@ -53,7 +53,7 @@ function LinkMenuItem({ setShowLinkPopup, setShow }) {
   );
 }
 
-function UnlinkMenuItem({ setShowUnlinkPopup, setShow }) {
+export function UnlinkMenuItem({ setShowUnlinkPopup, setShow }) {
   return (
     <OptionItem
       onClick={() => {
@@ -69,7 +69,7 @@ function UnlinkMenuItem({ setShowUnlinkPopup, setShow }) {
   );
 }
 
-function EditMenuItem({ setIsEdit, setShow }) {
+export function EditMenuItem({ setIsEdit, setShow }) {
   return (
     <OptionItem
       onClick={() => {
@@ -85,7 +85,7 @@ function EditMenuItem({ setIsEdit, setShow }) {
   );
 }
 
-function CopyMenuItem({ onCopy = noop }) {
+export function CopyMenuItem({ onCopy = noop }) {
   const [copyState, setCopyState] = useState(false);
 
   useEffect(() => {
@@ -116,7 +116,7 @@ function CopyMenuItem({ onCopy = noop }) {
   );
 }
 
-function ReportMenuItem({ setShowReportPopup, setShow }) {
+export function ReportMenuItem({ setShowReportPopup, setShow }) {
   return (
     <OptionItem
       onClick={() => {
@@ -132,7 +132,7 @@ function ReportMenuItem({ setShowReportPopup, setShow }) {
   );
 }
 
-function DeleteMenuItem({ setShowDeletePopup, setShow }) {
+export function DeleteMenuItem({ setShowDeletePopup, setShow }) {
   return (
     <OptionItem
       onClick={() => {
@@ -175,7 +175,7 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   }, [comment, router]);
 
   return (
-    <Wrapper className="edit" ref={ref}>
+    <Wrapper ref={ref}>
       <SystemMore
         className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
@@ -242,7 +242,7 @@ export function PostContextMenu({ editable, setIsEdit }) {
   }
 
   return (
-    <Wrapper className="edit" ref={ref}>
+    <Wrapper ref={ref}>
       <SystemMore
         className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
