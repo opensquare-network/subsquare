@@ -1,5 +1,5 @@
 import { usePost } from "next-common/context/post";
-import DetailItem from "../polkassembly/detailItem";
+import DetailItem from "next-common/components/detailItem";
 import ContentWithComment from "./common/contentWithComment";
 import SimaPostDetail from "../sima/post/postDetail";
 

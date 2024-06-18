@@ -1,5 +1,5 @@
-import DetailItem from "next-common/components/polkassembly/detailItem";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import DetailItem from "./detailItem";
 
 export default function SimaPostDetail() {
   return (

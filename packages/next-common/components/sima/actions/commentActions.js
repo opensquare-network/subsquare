@@ -26,7 +26,7 @@ export default function CommentActions({
 }) {
   const comment = useComment();
   const user = useUser();
-  const { ensureLogin } = useEnsureLogin();
+  const { ensureConnect } = useEnsureLogin();
   const reactions = comment.reactions;
   const author = comment.author;
   const ownComment = user && author?.username === user.username;
@@ -78,7 +78,7 @@ export default function CommentActions({
 
     setThumbUpLoading(true);
     try {
-      if (!(await ensureLogin())) {
+      if (!(await ensureConnect())) {
         return;
       }
 
