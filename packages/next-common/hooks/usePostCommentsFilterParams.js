@@ -5,7 +5,7 @@ import { useEffect, useMemo } from "react";
 
 const defaultValue = {
   // sortby
-  comments_sort_by: "newest",
+  comments_sort_by: "oldest",
   // filter
   hide_0: false,
   show_voters_only: false,
