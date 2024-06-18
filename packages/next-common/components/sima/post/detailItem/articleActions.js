@@ -3,18 +3,14 @@ import { Wrapper } from "next-common/components/actions/styled";
 import ReplyButton from "next-common/components/actions/replyButton";
 import Share from "next-common/components/shareSNS";
 import {
+  POST_UPDATE_ACTION,
   usePost,
-  //usePostDispatch
+  usePostDispatch,
 } from "next-common/context/post";
-// import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
-// import { useIsThumbUp } from "next-common/context/post/isThumbUp";
 import ThumbsUp from "next-common/components/thumbsUp";
-// import { useUser } from "next-common/context/user";
 import { useFocusEditor } from "next-common/context/post/editor";
 import { useDispatch } from "react-redux";
-// import { useDetailType } from "next-common/context/page";
 import nextApi from "next-common/services/nextApi";
-// import fetchAndUpdatePost from "next-common/context/post/update";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { PostContextMenu } from "../../contentMenu";
@@ -24,21 +20,16 @@ import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedA
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 
 export default function ArticleActions({ setIsEdit, extraActions }) {
-  // const user = useUser();
   const { ensureConnect } = useEnsureLogin();
   const post = usePost();
-  // const isAuthor = useIsPostAuthor();
   const account = useConnectedAccount();
-  // const thumbsUp = useIsThumbUp();
   const focusEditor = useFocusEditor();
 
-  // const postDispatch = usePostDispatch();
+  const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
-  // const type = useDetailType();
-  // const thumbUp = useIsThumbUp();
   const isAuthor = post?.proposer === account?.address;
   const reaction = post?.reactions?.find(
     (r) => r.proposer === account?.address,
@@ -112,8 +103,16 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
       }
 
       if (result) {
-        //TODO: reload post
-        // await fetchAndUpdatePost(postDispatch, type, post._id);
+        const { result: newPost } = await nextApi.fetch(
+          `posts/${post.postUid}`,
+        );
+
+        if (newPost) {
+          postDispatch({
+            type: POST_UPDATE_ACTION,
+            post: newPost,
+          });
+        }
       }
       if (error) {
         dispatch(newErrorToast(error.message));
