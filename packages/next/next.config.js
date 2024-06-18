@@ -1,5 +1,9 @@
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
 /** @type {import('next').NextConfig} */
-module.exports = {
+const config = {
   transpilePackages: ["next-common", "@osn/icons"],
   compiler: {
     styledComponents: {
@@ -29,3 +33,5 @@ module.exports = {
     return config;
   },
 };
+
+module.exports = withBundleAnalyzer(config);

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "node server.mjs",
     "build": "next build",
+    "analyze": "ANALYZE=true next build",
     "start": "NODE_ENV=production node server.mjs",
     "lint": "next lint --dir ."
   },
@@ -20,7 +21,6 @@
     "http-proxy": "^1.18.1",
     "localforage": "^1.10.0",
     "lodash-es": "^4.17.21",
-    "moment": "^2.29.4",
     "next": "^14.2.3",
     "next-common": "workspace:*",
     "nprogress": "^0.2.0",
@@ -37,6 +37,7 @@
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^14.2.4",
     "@osn/eslint-config": "^1.0.2",
     "@types/lodash-es": "^4.17.12",
     "eslint": "^8.44.0",

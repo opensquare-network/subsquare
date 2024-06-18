@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import ReactDatePicker from "react-datepicker";
 import { useEffect, useState } from "react";
-import moment from "moment";
+import dayjs from "dayjs";
 import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
 import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
 import Flex from "./styled/flex";
@@ -194,10 +194,10 @@ export default function DatePicker({
     if (!date || !hour || !minute) return "";
     const datetime = new Date(
       Date.parse(
-        `${moment(date ?? new Date()).format("YYYY-MM-DD")} ${hour}:${minute}`,
+        `${dayjs(date ?? new Date()).format("YYYY-MM-DD")} ${hour}:${minute}`,
       ),
     );
-    return moment(datetime).format("YYYY-MM-DD, HH:mm");
+    return dayjs(datetime).format("YYYY-MM-DD, HH:mm");
   };
 
   return (
@@ -242,13 +242,13 @@ export default function DatePicker({
                         <DateHeader>
                           <CaretLeft
                             disabled={
-                              moment(date).format("YYYY-MM") ===
-                              moment(new Date()).format("YYYY-MM")
+                              dayjs(date).format("YYYY-MM") ===
+                              dayjs(new Date()).format("YYYY-MM")
                             }
                             onClick={decreaseMonth}
                           />
                           <b className="text14Bold">
-                            {moment(date).format("YYYY-MM")}
+                            {dayjs(date).format("YYYY-MM")}
                           </b>
                           <CaretRight onClick={increaseMonth} />
                         </DateHeader>
@@ -309,7 +309,7 @@ export default function DatePicker({
                       }
                       onSelectDatetime(
                         Date.parse(
-                          `${moment(date ?? new Date()).format(
+                          `${dayjs(date ?? new Date()).format(
                             "YYYY-MM-DD",
                           )} ${hour}:${minute}`,
                         ),
