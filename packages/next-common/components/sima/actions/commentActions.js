@@ -15,7 +15,7 @@ import { noop } from "lodash-es";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useComment } from "../comment/context";
+import { useComment } from "next-common/components/comment/context";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 export default function CommentActions({
@@ -23,13 +23,12 @@ export default function CommentActions({
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
   replyToCommentId,
-  setIsEdit,
 }) {
   const comment = useComment();
   const user = useUser();
   const { ensureLogin } = useEnsureLogin();
-  const reactions = comment?.reactions || [];
-  const author = comment?.author || {};
+  const reactions = comment.reactions;
+  const author = comment.author;
   const ownComment = user && author?.username === user.username;
   const thumbUp =
     user &&
@@ -123,10 +122,7 @@ export default function CommentActions({
             setShowThumbsUpList={setShowThumbsUpList}
           />
         </Wrapper>
-        <CommentContextMenu
-          editable={!isSima && ownComment}
-          setIsEdit={setIsEdit}
-        />
+        <CommentContextMenu editable={!isSima && ownComment} />
       </div>
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (

@@ -4,12 +4,12 @@ import { CommentsProvider } from "next-common/context/post/comments";
 import { EditorProvider } from "next-common/context/post/editor";
 
 function ContentWithCommentImpl({ children }) {
-  const { CommentComponent, focusEditor } = useCommentComponent();
+  const { component, focusEditor } = useCommentComponent();
 
   return (
     <EditorProvider focusEditor={focusEditor}>
       {children}
-      {CommentComponent}
+      {component}
     </EditorProvider>
   );
 }
