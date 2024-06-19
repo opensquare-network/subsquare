@@ -4,7 +4,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 /** @type {import('next').NextConfig} */
 const config = {
-  transpilePackages: ["next-common", "@osn/icons"],
+  transpilePackages: ["next-common", "@osn/icons", "@osn/react-cmdk"],
   compiler: {
     styledComponents: {
       ssr: true,
