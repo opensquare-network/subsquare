@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { useUser } from "next-common/context/user";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import MaybePolkadotSigner from "./maybePolkadotSigner";
@@ -15,16 +14,6 @@ function PopupImpl({ children }) {
   const { connectedAccount, lastConnectedAccount } =
     useConnectedAccountContext();
   const { onClose } = usePopupParams();
-
-  useEffect(() => {
-    import("eruda").then((mod) => {
-      mod.default.init();
-    });
-  }, []);
-
-  useEffect(() => {
-    console.info(user, connectedAccount, lastConnectedAccount);
-  }, [user, connectedAccount, lastConnectedAccount]);
 
   if (!user) {
     return <DynamicLoginPopup onClose={onClose} showRegister={false} />;
