@@ -2859,9 +2859,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/react-cmdk@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "@osn/react-cmdk@npm:1.1.3"
+"@osn/react-cmdk@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@osn/react-cmdk@npm:1.2.0"
   dependencies:
     "@headlessui/react": ^1.6.4
     clsx: ^1.2.1
@@ -2869,7 +2869,7 @@ __metadata:
     "@osn/icons": ^1.107.0
     react: ^16.x || ^17.x || ^18.x
     react-dom: ^16.x || ^17.x || ^18.x
-  checksum: c4038d0020b04f9be053373eb7f45bbe0966203de3d3b15cd166b561a3711300c2fdcd823f4d9105a753ff5d72e4e5b15116ad25892dbe6e4addb4c763c07bed
+  checksum: a4f5850cf58b1c137951c4be5390696538ee6e7b6dc7b89528099eea1d96930bdc61c329a286714e5fe4240633e8038671140741dc6294a697e4d01b58d837cf
   languageName: node
   linkType: hard
 
@@ -12046,7 +12046,7 @@ __metadata:
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.3.5
     "@osn/provider-options": 1.1.0
-    "@osn/react-cmdk": ^1.1.3
+    "@osn/react-cmdk": ^1.2.0
     "@osn/rich-text-editor": ^0.6.7
     "@polkadot/api": ^11.2.1
     "@polkadot/extension-dapp": ^0.47.5
