@@ -9,6 +9,7 @@ import ChainTypes from "next-common/utils/consts/chainTypes";
 import { normalizeAddress } from "next-common/utils/address";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { usePopupParams } from "./context";
+import { useIsNovaWallet } from "next-common/hooks/connect/useIsNovaWallet";
 
 export default function MaybePolkadotSigner({ children }) {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ export default function MaybePolkadotSigner({ children }) {
   const { lastConnectedAccount } = useConnectedAccountContext();
   const { chainType } = useChainSettings();
   const { onClose } = usePopupParams();
+  const isNovaWallet = useIsNovaWallet();
 
   useEffect(() => {
     (async () => {
@@ -34,7 +36,12 @@ export default function MaybePolkadotSigner({ children }) {
           return;
         }
 
-        const extension = injectedWeb3?.[lastConnectedAccount?.wallet];
+        let extension;
+        if (isNovaWallet) {
+          extension = injectedWeb3?.["polkadot-js"];
+        } else {
+          extension = injectedWeb3?.[lastConnectedAccount?.wallet];
+        }
 
         if (!extension) {
           return;
@@ -70,7 +77,7 @@ export default function MaybePolkadotSigner({ children }) {
         setDetecting(false);
       }
     })();
-  }, [lastConnectedAccount, injectedWeb3, loading, chainType]);
+  }, [lastConnectedAccount, injectedWeb3, loading, chainType, isNovaWallet]);
 
   if (detecting) {
     return null;
