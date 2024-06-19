@@ -26,9 +26,10 @@ export function getMentionList(comments) {
         return comment?.author;
       }
       if (comment?.proposer) {
+        const maybeEvmAddress = tryConvertToEvmAddress(comment.proposer);
         return {
-          username: addressEllipsis(comment?.proposer),
-          address: comment?.proposer,
+          username: addressEllipsis(maybeEvmAddress),
+          address: maybeEvmAddress,
         };
       }
     })
