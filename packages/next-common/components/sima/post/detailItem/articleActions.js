@@ -72,7 +72,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
         };
 
         ({ result, error } = await nextApi.post(
-          `sima/discussions/${post.cid}/reaction`,
+          `sima/discussions/${post.cid}/reactions`,
           data,
         ));
       } else {
@@ -97,7 +97,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
         };
 
         ({ result, error } = await nextApi.post(
-          `sima/discussions/${post.cid}/reaction`,
+          `sima/discussions/${post.cid}/reactions`,
           data,
         ));
       }

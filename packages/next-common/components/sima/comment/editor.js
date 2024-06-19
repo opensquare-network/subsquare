@@ -74,13 +74,29 @@ function CommentEditor(
 
       const connectedAccount = getCookieConnectedAccount();
       const contentFormat = contentType === "html" ? "HTML" : "subsquare_md";
-      const entity = {
-        action: "comment",
-        cid: postCid,
-        content: contentType === "html" ? prettyHTML(content) : content,
-        content_format: contentFormat,
-        timestamp: Date.now(),
-      };
+
+      let entity;
+      let url;
+
+      if (commentCid) {
+        entity = {
+          action: "comment",
+          cid: commentCid,
+          content: contentType === "html" ? prettyHTML(content) : content,
+          content_format: contentFormat,
+          timestamp: Date.now(),
+        };
+        url = `sima/comments/${commentCid}/replies`;
+      } else {
+        entity = {
+          action: "comment",
+          cid: postCid,
+          content: contentType === "html" ? prettyHTML(content) : content,
+          content_format: contentFormat,
+          timestamp: Date.now(),
+        };
+        url = `sima/discussions/${postCid}/comments`;
+      }
       const address = connectedAccount.address;
       const signerWallet = connectedAccount.wallet;
       const signature = await signMessage(
@@ -94,10 +110,6 @@ function CommentEditor(
         signature,
         signerWallet,
       };
-
-      const url = commentCid
-        ? `sima/discussions/${postCid}/comments/${commentCid}/replies`
-        : `sima/discussions/${postCid}/comments`;
 
       const result = await nextApi.post(url, data);
 

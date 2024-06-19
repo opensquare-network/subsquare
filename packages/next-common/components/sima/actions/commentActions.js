@@ -118,7 +118,7 @@ export default function CommentActions({
         };
 
         ({ result, error } = await nextApi.post(
-          `sima/comments/${comment.cid}/reaction`,
+          `sima/comments/${comment.cid}/reactions`,
           data,
         ));
       } else {
@@ -143,7 +143,7 @@ export default function CommentActions({
         };
 
         ({ result, error } = await nextApi.post(
-          `sima/comments/${comment.cid}/reaction`,
+          `sima/comments/${comment.cid}/reactions`,
           data,
         ));
       }
