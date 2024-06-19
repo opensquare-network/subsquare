@@ -123,6 +123,7 @@ function CommentItemImpl({
           data={reply}
           replyToCommentCid={replyToCommentCid}
           isSecondLevel
+          updateTopLevelComment={maybeUpdateTopLevelComment}
           scrollToTopLevelCommentBottom={
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
