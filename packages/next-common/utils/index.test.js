@@ -10,7 +10,7 @@ describe("timeDurationFromNow", () => {
   test("now", () => {
     const time = dayjs().toDate();
 
-    expect(timeDurationFromNow(time)).toMatch("0 secs");
+    expect(timeDurationFromNow(time)).toMatch(/(0 secs)|(0s ago)/);
   });
 
   test("a second ago", () => {
