@@ -8060,6 +8060,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eruda@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "eruda@npm:3.0.1"
+  checksum: 94ffa1be8ac445bb99347ae6ad8bf432c13016dcf8fc9b2f4eb818c79ee38b4a391dd0e0d9548eea7f7f36f6aa9e094479e949c82d5c28eac25dc412dad9e3c2
+  languageName: node
+  linkType: hard
+
 "es-abstract@npm:^1.19.0, es-abstract@npm:^1.20.4":
   version: 1.21.2
   resolution: "es-abstract@npm:1.21.2"
@@ -11439,6 +11446,7 @@ __metadata:
     d3-shape: ^3.1.0
     dayjs: ^1.10.7
     deepmerge: ^4.3.1
+    eruda: ^3.0.1
     eslint: ^8.44.0
     eslint-plugin-react: ^7.31.11
     ethereum-blockies-base64: ^1.0.2
