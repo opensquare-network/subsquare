@@ -15,8 +15,11 @@ import {
 } from "next-common/components/comment/context";
 import CommentUser from "./user";
 import jumpToAnchor from "next-common/utils/viewfuncs/jumpToAnchor";
+import nextApi from "next-common/services/nextApi";
+import { useComments, useSetComments } from "next-common/context/post/comments";
 
 function CommentItemImpl({
+  updateTopLevelComment,
   replyToCommentCid,
   isSecondLevel,
   scrollToTopLevelCommentBottom,
@@ -26,6 +29,8 @@ function CommentItemImpl({
   const [highlight, setHighlight] = useState(false);
   const { hasAnchor, anchor } = useCommentsAnchor();
   const [showReplies, setShowReplies] = useState(false);
+  const comments = useComments();
+  const setComments = useSetComments();
 
   // Jump to comment when anchor is set
   useEffect(() => {
@@ -51,6 +56,27 @@ function CommentItemImpl({
       });
     }
   }, [refCommentTree]);
+
+  const updateComment = useCallback(async () => {
+    const { result: updatedComment } = await nextApi.fetch(
+      `sima/comments/${comment.cid}`,
+    );
+    if (!updatedComment) {
+      return;
+    }
+    const newComments = {
+      ...comments,
+      items: comments.items.map((item) => {
+        if (item.cid === updatedComment.cid) {
+          return updatedComment;
+        }
+        return item;
+      }),
+    };
+    setComments(newComments);
+  }, [comments, setComments, comment.cid]);
+
+  const maybeUpdateTopLevelComment = updateTopLevelComment || updateComment;
 
   return (
     <CommentItemTemplate
@@ -84,6 +110,7 @@ function CommentItemImpl({
       actions={
         <CommentActions
           setShowReplies={setShowReplies}
+          updateComment={maybeUpdateTopLevelComment}
           scrollToNewReplyComment={
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }

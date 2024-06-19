@@ -17,6 +17,10 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "next-common/components/comment/context";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { useSignMessage } from "next-common/hooks/useSignMessage";
+import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
+import { addressEllipsis } from "next-common/utils";
 
 export default function CommentActions({
   updateComment = noop,
@@ -28,11 +32,10 @@ export default function CommentActions({
   const user = useUser();
   const { ensureConnect } = useEnsureLogin();
   const reactions = comment.reactions;
-  const author = comment.author;
-  const ownComment = user && author?.username === user.username;
-  const thumbUp =
-    user &&
-    reactions?.findIndex((r) => r.user?.username === user.username) > -1;
+  const author = {
+    username: addressEllipsis(comment.proposer),
+    address: comment.proposer,
+  };
 
   const chain = useChain();
   const post = usePost();
@@ -45,7 +48,7 @@ export default function CommentActions({
   const [isReply, setIsReply] = useState(false);
   const { comments } = usePageProps();
 
-  const postId = post?._id;
+  const postCid = post?.cid;
 
   const users = useMentionList(post, comments);
 
@@ -71,6 +74,15 @@ export default function CommentActions({
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
+  const account = useConnectedAccount();
+  const ownComment = comment?.proposer === account?.address;
+  const reaction = comment?.reactions?.find(
+    (r) => r.proposer === account?.address,
+  );
+  const thumbUp = !!reaction;
+
+  const signMessage = useSignMessage();
+
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
       return;
@@ -85,13 +97,54 @@ export default function CommentActions({
       let result, error;
 
       if (thumbUp) {
-        ({ result, error } = await nextApi.delete(
+        const connectedAccount = getCookieConnectedAccount();
+        const entity = {
+          action: "cancel_upvote",
+          cid: reaction.cid,
+          timestamp: Date.now(),
+        };
+        const address = connectedAccount.address;
+        const signerWallet = connectedAccount.wallet;
+        const signature = await signMessage(
+          JSON.stringify(entity),
+          address,
+          signerWallet,
+        );
+        const data = {
+          entity,
+          address,
+          signature,
+          signerWallet,
+        };
+
+        ({ result, error } = await nextApi.post(
           `sima/comments/${comment.cid}/reaction`,
+          data,
         ));
       } else {
-        ({ result, error } = await nextApi.put(
+        const connectedAccount = getCookieConnectedAccount();
+        const entity = {
+          action: "upvote",
+          cid: comment.cid,
+          timestamp: Date.now(),
+        };
+        const address = connectedAccount.address;
+        const signerWallet = connectedAccount.wallet;
+        const signature = await signMessage(
+          JSON.stringify(entity),
+          address,
+          signerWallet,
+        );
+        const data = {
+          entity,
+          address,
+          signature,
+          signerWallet,
+        };
+
+        ({ result, error } = await nextApi.post(
           `sima/comments/${comment.cid}/reaction`,
-          { reaction: 1 },
+          data,
         ));
       }
 
@@ -126,7 +179,7 @@ export default function CommentActions({
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (
         <CommentEditor
-          postId={postId}
+          postCid={postCid}
           commentCid={replyToCommentCid}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
