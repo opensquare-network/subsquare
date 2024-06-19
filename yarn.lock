@@ -2045,15 +2045,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@heroicons/react@npm:^2.0.13":
-  version: 2.0.17
-  resolution: "@heroicons/react@npm:2.0.17"
-  peerDependencies:
-    react: ">= 16"
-  checksum: 31677c9b95de4ea92efa205c7a803c33003d3203b0cebf9ca74522485e5351caff7070cbd898885bf050f181682cab8d4815cbef0e7624c56d3312cdf50d2cb9
-  languageName: node
-  linkType: hard
-
 "@humanwhocodes/config-array@npm:^0.11.10":
   version: 0.11.10
   resolution: "@humanwhocodes/config-array@npm:0.11.10"
@@ -2817,10 +2808,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.105.0":
-  version: 1.105.0
-  resolution: "@osn/icons@npm:1.105.0"
-  checksum: 5a18daa8180f32f438583ea88b13c565e1b4b902067ce1d4f79d8e78c05008628b8b4dbee6cea2b5f14788e96cdcc4a51326c61df1a65accd8f5bcdb43d2a052
+"@osn/icons@npm:^1.107.0":
+  version: 1.107.0
+  resolution: "@osn/icons@npm:1.107.0"
+  checksum: a5afa7716112fef7db287fc99381ac4b428a7e7908fd60161f4db8a99dde65e76b8670c74bcf14b2d2ba77f52b64434813b80ba9750ee22c198f0f9a13589e69
   languageName: node
   linkType: hard
 
@@ -2868,17 +2859,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/react-cmdk@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "@osn/react-cmdk@npm:1.1.2"
+"@osn/react-cmdk@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "@osn/react-cmdk@npm:1.1.3"
   dependencies:
     "@headlessui/react": ^1.6.4
-    "@heroicons/react": ^2.0.13
     clsx: ^1.2.1
   peerDependencies:
+    "@osn/icons": ^1.107.0
     react: ^16.x || ^17.x || ^18.x
     react-dom: ^16.x || ^17.x || ^18.x
-  checksum: d5006950f7693625bfe9a2cc8a3cf134670c054580553015b41328ca318e22b1c593188d95642c47aaa52bf10050e79aae28c03e589a13b0f3f4ebc54c8e3e08
+  checksum: c4038d0020b04f9be053373eb7f45bbe0966203de3d3b15cd166b561a3711300c2fdcd823f4d9105a753ff5d72e4e5b15116ad25892dbe6e4addb4c763c07bed
   languageName: node
   linkType: hard
 
@@ -4679,7 +4670,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.105.0
+    "@osn/icons": ^1.107.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -4714,7 +4705,7 @@ __metadata:
     "@next/bundle-analyzer": ^14.2.4
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.105.0
+    "@osn/icons": ^1.107.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -12051,11 +12042,11 @@ __metadata:
     "@mimirdev/apps-inject": ^0.2.0
     "@mimirdev/apps-sdk": ^0.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.105.0
+    "@osn/icons": ^1.107.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.3.5
     "@osn/provider-options": 1.1.0
-    "@osn/react-cmdk": ^1.1.2
+    "@osn/react-cmdk": ^1.1.3
     "@osn/rich-text-editor": ^0.6.7
     "@polkadot/api": ^11.2.1
     "@polkadot/extension-dapp": ^0.47.5
