@@ -13,13 +13,12 @@ import { useDispatch } from "react-redux";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { PostContextMenu } from "../../contentMenu";
 import ThumbUpList from "../../actions/thumbUpList";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 
-export default function ArticleActions({ setIsEdit, extraActions }) {
+export default function ArticleActions({ extraActions }) {
   const { ensureConnect } = useEnsureLogin();
   const post = usePost();
   const account = useConnectedAccount();
@@ -140,10 +139,6 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
 
           {extraActions}
         </Wrapper>
-
-        {account && (
-          <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />
-        )}
       </div>
 
       {showThumbsUpList && <ThumbUpList reactions={post?.reactions} />}

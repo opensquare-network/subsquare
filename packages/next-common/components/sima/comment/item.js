@@ -40,7 +40,7 @@ function CommentItemImpl({
 
     setShowReplies(true);
 
-    if (anchor === comment.height) {
+    if (anchor === comment.cid) {
       setHighlight(true);
       setTimeout(() => {
         jumpToAnchor(anchor);
@@ -84,7 +84,7 @@ function CommentItemImpl({
       isSecondLevel={isSecondLevel}
       showReplies={showReplies}
       setShowReplies={setShowReplies}
-      id={comment.height}
+      id={comment.cid}
       highlight={highlight}
       user={<CommentUser address={comment.proposer} />}
       content={
