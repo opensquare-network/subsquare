@@ -4,6 +4,10 @@ import { SignerContextProvider, usePopupParams } from "./context";
 import DynamicLoginPopup from "next-common/components/login/dynamic";
 
 export default function MaybeSignerConnected({ children, extensionAccounts }) {
+  console.info(
+    "🚀 ~ MaybeSignerConnected ~ extensionAccounts:",
+    extensionAccounts,
+  );
   const user = useUser();
   const { onClose } = usePopupParams();
 
