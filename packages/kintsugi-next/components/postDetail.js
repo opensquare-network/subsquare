@@ -1,7 +1,7 @@
 import { usePost } from "next-common/context/post";
-import DetailItem from "next-common/components/detailItem";
-import ContentWithComment from "./common/contentWithComment";
-import SimaPostDetail from "../sima/post/postDetail";
+import DetailItem from "components/detailItem";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import SimaPostDetail from "next-common/components/sima/post/postDetail";
 
 export default function PostDetail() {
   const post = usePost();

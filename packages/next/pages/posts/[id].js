@@ -11,7 +11,7 @@ import {
   getPostVotesAndMine,
 } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import PostDetail from "next-common/components/detail/postDetail";
+import PostDetail from "components/postDetail";
 
 export default function PostDetailPage({ detail }) {
   const desc = getMetaDesc(detail);
@@ -38,7 +38,9 @@ export const getServerSideProps = withCommonProps(async (context) => {
   if (!detail) {
     return to404();
   }
+
   const tracksProps = await fetchOpenGovTracksProps();
+  const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
   if (detail.dataSource === "sima") {
     const { page, page_size: pageSize } = context.query;
@@ -55,6 +57,9 @@ export const getServerSideProps = withCommonProps(async (context) => {
       props: {
         detail,
         comments: comments ?? EmptyList,
+        votes,
+        myVote: myVote ?? null,
+
         ...tracksProps,
       },
     };
@@ -64,7 +69,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
     `posts/${detail._id}/comments`,
     context,
   );
-  const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
   return {
     props: {

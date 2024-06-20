@@ -1,4 +1,3 @@
-import DetailItem from "components/detailItem";
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -11,7 +10,7 @@ import {
   fetchDetailComments,
   getPostVotesAndMine,
 } from "next-common/services/detail";
-import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import PostDetail from "components/postDetail";
 
 export default function Post({ detail }) {
   const desc = getMetaDesc(detail);
@@ -24,9 +23,7 @@ export default function Post({ detail }) {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <ContentWithComment>
-          <DetailItem />
-        </ContentWithComment>
+        <PostDetail />
       </DetailLayout>
     </PostProvider>
   );
@@ -43,13 +40,37 @@ export const getServerSideProps = withCommonProps(async (context) => {
     return to404();
   }
 
+  const { votes, myVote } = await getPostVotesAndMine(detail, context);
+
+  const { result: summary } = await nextApi.fetch("summary");
+
+  if (detail.dataSource === "sima") {
+    const { page, page_size: pageSize } = context.query;
+
+    const { result: comments } = await nextApi.fetch(
+      `sima/discussions/${detail.cid}/comments`,
+      {
+        page: page ?? "last",
+        pageSize: Math.min(pageSize ?? 50, 100),
+      },
+    );
+
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        votes,
+        myVote: myVote ?? null,
+        chain,
+        summary: summary ?? {},
+      },
+    };
+  }
+
   const comments = await fetchDetailComments(
     `posts/${detail._id}/comments`,
     context,
   );
-  const { votes, myVote } = await getPostVotesAndMine(detail, context);
-
-  const { result: summary } = await nextApi.fetch("summary");
 
   return {
     props: {
