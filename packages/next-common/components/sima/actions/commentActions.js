@@ -104,21 +104,20 @@ export default function SimaCommentActions({
 
     setThumbUpLoading(true);
     try {
-      let result, error;
+      let result;
 
       if (thumbUp) {
-        ({ result, error } = await cancelUpVote());
+        result = await cancelUpVote();
       } else {
-        ({ result, error } = await upVote());
+        result = await upVote();
       }
 
-      if (result) {
-        await updateComment();
+      if (result.error) {
+        dispatch(newErrorToast(result.error.message));
+        return;
       }
 
-      if (error) {
-        dispatch(newErrorToast(error.message));
-      }
+      await updateComment();
     } finally {
       setThumbUpLoading(false);
     }

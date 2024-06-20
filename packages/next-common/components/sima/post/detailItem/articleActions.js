@@ -62,28 +62,26 @@ export default function ArticleActions({ extraActions, setIsAppend }) {
 
     setThumbUpLoading(true);
     try {
-      let result, error;
+      let result;
 
       if (thumbUp) {
-        ({ result, error } = await cancelUpVote());
+        result = await cancelUpVote();
       } else {
-        ({ result, error } = await upVote());
+        result = await upVote();
       }
 
-      if (result) {
-        const { result: newPost } = await nextApi.fetch(
-          `posts/${post.postUid}`,
-        );
-
-        if (newPost) {
-          postDispatch({
-            type: POST_UPDATE_ACTION,
-            post: newPost,
-          });
-        }
+      if (result.error) {
+        dispatch(newErrorToast(result.error.message));
+        return;
       }
-      if (error) {
-        dispatch(newErrorToast(error.message));
+
+      const { result: newPost } = await nextApi.fetch(`posts/${post.postUid}`);
+
+      if (newPost) {
+        postDispatch({
+          type: POST_UPDATE_ACTION,
+          post: newPost,
+        });
       }
     } finally {
       setThumbUpLoading(false);
