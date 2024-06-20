@@ -24,32 +24,43 @@ export function useSubstrateAccounts({
 
   const [accounts, setAccounts] = useState([]);
 
-  const loadInjectedAccounts = useCallback(async () => {
-    const { web3Enable, web3Accounts } = await import(
-      "@polkadot/extension-dapp"
-    );
+  const loadInjectedAccounts = useCallback(
+    async (targetWallet) => {
+      const { web3Enable, web3Accounts } = await import(
+        "@polkadot/extension-dapp"
+      );
 
-    try {
-      await web3Enable("subsquare");
-      const injectedAccounts = reject(await web3Accounts(), {
-        type: ChainTypes.ETHEREUM,
-      });
+      try {
+        await web3Enable("subsquare");
+        const injectedAccounts = reject(await web3Accounts(), {
+          type: ChainTypes.ETHEREUM,
+        });
 
-      if (isMounted()) {
-        setAccounts(
-          normalizedSubstrateAccounts(injectedAccounts, wallet?.extensionName),
-        );
+        if (isMounted()) {
+          setAccounts(
+            normalizedSubstrateAccounts(
+              injectedAccounts,
+              targetWallet?.extensionName,
+            ),
+          );
+        }
+      } catch (e) {
+        dispatch(newErrorToast(e.message));
       }
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-    }
-  }, [isMounted, dispatch]);
+    },
+    [isMounted, dispatch],
+  );
 
   const loadPolkadotAccounts = useCallback(
-    async (selectedWalletName) => {
+    async (targetWallet) => {
       setAccounts([]);
 
-      const extension = injectedWeb3?.[selectedWalletName];
+      let extension;
+      if (targetWallet.extensionName === WalletTypes.NOVA) {
+        extension = injectedWeb3?.[WalletTypes.POLKADOT_JS];
+      } else {
+        extension = injectedWeb3?.[targetWallet?.extensionName];
+      }
       if (!extension) {
         return;
       }
@@ -63,7 +74,10 @@ export function useSubstrateAccounts({
 
         if (isMounted()) {
           setAccounts(
-            normalizedSubstrateAccounts(extensionAccounts, selectedWalletName),
+            normalizedSubstrateAccounts(
+              extensionAccounts,
+              targetWallet?.extensionName,
+            ),
           );
         }
 
@@ -72,7 +86,7 @@ export function useSubstrateAccounts({
         dispatch(newErrorToast(e.message));
       }
     },
-    [injectedWeb3, setAccounts, onAccessGranted, isMounted, chainType],
+    [injectedWeb3, setAccounts, onAccessGranted, isMounted, chainType, wallet],
   );
 
   const loadSignetVault = useCallback(() => {
@@ -80,28 +94,25 @@ export function useSubstrateAccounts({
   }, [signetAccounts, setAccounts]);
 
   const loadWalletAccounts = useCallback(
-    async (selectedWalletName) => {
+    async (wallet) => {
       setLoading(true);
 
-      switch (selectedWalletName) {
+      switch (wallet.extensionName) {
         case WalletTypes.POLKADOT_JS:
         case WalletTypes.POLKAGATE:
         case WalletTypes.SUBWALLET_JS:
         case WalletTypes.TALISMAN:
-        case WalletTypes.MIMIR: {
-          await loadPolkadotAccounts(selectedWalletName);
+        case WalletTypes.MIMIR:
+        case WalletTypes.NOVA: {
+          await loadPolkadotAccounts(wallet);
           break;
         }
         case WalletTypes.SIGNET: {
           await loadSignetVault();
           break;
         }
-        case WalletTypes.NOVA: {
-          await loadPolkadotAccounts(WalletTypes.POLKADOT_JS);
-          break;
-        }
         default: {
-          await loadInjectedAccounts();
+          await loadInjectedAccounts(wallet);
           break;
         }
       }
@@ -114,10 +125,10 @@ export function useSubstrateAccounts({
   useEffect(() => {
     if (isMounted()) {
       if (!loadingWeb3) {
-        loadWalletAccounts(wallet?.extensionName);
+        loadWalletAccounts(wallet);
       }
     }
-  }, [wallet?.extensionName, isMounted, loadingWeb3]);
+  }, [wallet, isMounted, loadingWeb3]);
 
   return {
     accounts,
