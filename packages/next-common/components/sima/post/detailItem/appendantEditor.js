@@ -9,14 +9,12 @@ import {
   usePost,
   usePostDispatch,
 } from "next-common/context/post";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { useSignMessage } from "next-common/hooks/useSignMessage";
 import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
-import { prettyHTML } from "next-common/utils/viewfuncs";
+import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
+import { getContentField } from "next-common/utils/sima/utils";
 
 export default function AppendantEditor({ setIsAppend }) {
   const dispatch = useDispatch();
@@ -27,8 +25,7 @@ export default function AppendantEditor({ setIsAppend }) {
   const [contentType, setContentType] = useState("markdown");
   const [isAppending, setIsAppending] = useState(false);
   const [errors, setErrors] = useState();
-  const { ensureConnect } = useEnsureLogin();
-  const signMessage = useSignMessage();
+  const signSimaMessage = useSignSimaMessage();
 
   const isEmpty = !content.trim();
 
@@ -37,35 +34,13 @@ export default function AppendantEditor({ setIsAppend }) {
     setErrors();
 
     try {
-      if (!(await ensureConnect())) {
-        return;
-      }
-
-      const connectedAccount = getCookieConnectedAccount();
-
-      const contentFormat = contentType === "html" ? "HTML" : "subsquare_md";
-
       const entity = {
         action: "append_discussion",
-        content: contentType === "html" ? prettyHTML(content) : content,
-        content_format: contentFormat,
         CID: post.cid,
+        ...getContentField(content, contentType),
         timestamp: Date.now(),
       };
-      const address = connectedAccount.address;
-      const signerWallet = connectedAccount.wallet;
-      const signature = await signMessage(
-        JSON.stringify(entity),
-        address,
-        signerWallet,
-      );
-      const data = {
-        entity,
-        address,
-        signature,
-        signerWallet,
-      };
-
+      const data = await signSimaMessage(entity);
       const { result, error } = await nextApi.post(
         `sima/discussions/${post.cid}/appendants`,
         data,
@@ -92,7 +67,15 @@ export default function AppendantEditor({ setIsAppend }) {
     } finally {
       setIsAppending(false);
     }
-  }, [setIsAppend, content, contentType, post, dispatch, postDispatch]);
+  }, [
+    setIsAppend,
+    content,
+    contentType,
+    post,
+    dispatch,
+    postDispatch,
+    signSimaMessage,
+  ]);
 
   return (
     <>

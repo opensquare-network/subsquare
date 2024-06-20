@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { CommentContextMenu } from "../contentMenu";
 import SimaThumbUpList from "./thumbUpList";
 import SimaCommentEditor from "../comment/editor";
@@ -13,14 +13,12 @@ import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "next-common/components/comment/context";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { useSignMessage } from "next-common/hooks/useSignMessage";
-import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
-import { addressEllipsis } from "next-common/utils";
 import ReplyButton from "next-common/components/actions/replyButton";
 import { Wrapper } from "next-common/components/actions/styled";
 import ThumbsUp from "next-common/components/thumbsUp";
+import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
+import { getUserObjFromAddress } from "next-common/utils/sima/utils";
 
 export default function SimaCommentActions({
   updateComment = noop,
@@ -30,12 +28,8 @@ export default function SimaCommentActions({
 }) {
   const comment = useComment();
   const user = useUser();
-  const { ensureConnect } = useEnsureLogin();
   const reactions = comment.reactions;
-  const author = {
-    username: addressEllipsis(comment.proposer),
-    address: comment.proposer,
-  };
+  const author = getUserObjFromAddress(comment.proposer);
 
   const chain = useChain();
   const post = usePost();
@@ -81,7 +75,27 @@ export default function SimaCommentActions({
   );
   const thumbUp = !!reaction;
 
-  const signMessage = useSignMessage();
+  const signSimaMessage = useSignSimaMessage();
+
+  const cancelUpVote = useCallback(async () => {
+    const entity = {
+      action: "cancel_upvote",
+      cid: reaction.cid,
+      timestamp: Date.now(),
+    };
+    const data = await signSimaMessage(entity);
+    return await nextApi.post(`sima/comments/${comment.cid}/reactions`, data);
+  }, [comment.cid, reaction?.cid, signSimaMessage]);
+
+  const upVote = useCallback(async () => {
+    const entity = {
+      action: "upvote",
+      cid: comment.cid,
+      timestamp: Date.now(),
+    };
+    const data = await signSimaMessage(entity);
+    return await nextApi.post(`sima/comments/${comment.cid}/reactions`, data);
+  }, [comment.cid, signSimaMessage]);
 
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
@@ -90,67 +104,18 @@ export default function SimaCommentActions({
 
     setThumbUpLoading(true);
     try {
-      if (!(await ensureConnect())) {
-        return;
-      }
-
       let result, error;
 
       if (thumbUp) {
-        const connectedAccount = getCookieConnectedAccount();
-        const entity = {
-          action: "cancel_upvote",
-          cid: reaction.cid,
-          timestamp: Date.now(),
-        };
-        const address = connectedAccount.address;
-        const signerWallet = connectedAccount.wallet;
-        const signature = await signMessage(
-          JSON.stringify(entity),
-          address,
-          signerWallet,
-        );
-        const data = {
-          entity,
-          address,
-          signature,
-          signerWallet,
-        };
-
-        ({ result, error } = await nextApi.post(
-          `sima/comments/${comment.cid}/reactions`,
-          data,
-        ));
+        ({ result, error } = await cancelUpVote());
       } else {
-        const connectedAccount = getCookieConnectedAccount();
-        const entity = {
-          action: "upvote",
-          cid: comment.cid,
-          timestamp: Date.now(),
-        };
-        const address = connectedAccount.address;
-        const signerWallet = connectedAccount.wallet;
-        const signature = await signMessage(
-          JSON.stringify(entity),
-          address,
-          signerWallet,
-        );
-        const data = {
-          entity,
-          address,
-          signature,
-          signerWallet,
-        };
-
-        ({ result, error } = await nextApi.post(
-          `sima/comments/${comment.cid}/reactions`,
-          data,
-        ));
+        ({ result, error } = await upVote());
       }
 
       if (result) {
         await updateComment();
       }
+
       if (error) {
         dispatch(newErrorToast(error.message));
       }

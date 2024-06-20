@@ -12,9 +12,8 @@ import { TitleContainer } from "../../styled/containers/titleContainer";
 import { useUser } from "../../../context/user";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import Editor from "../../editor";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { useSignMessage } from "next-common/hooks/useSignMessage";
-import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
+import { getContentField } from "next-common/utils/sima/utils";
+import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -62,39 +61,19 @@ export default function SimaPostCreate() {
     user?.preference?.editor || "markdown",
   );
   const [errors, setErrors] = useState();
-  const { ensureConnect } = useEnsureLogin();
-  const signMessage = useSignMessage();
+  const signSimaMessage = useSignSimaMessage();
 
   const createPost = async () => {
     setCreating(true);
 
     try {
-      if (!(await ensureConnect())) {
-        return;
-      }
-
-      const connectedAccount = getCookieConnectedAccount();
-      const contentFormat = contentType === "html" ? "HTML" : "subsquare_md";
       const entity = {
         action: "new_discussion",
         title,
-        content,
-        content_format: contentFormat,
+        ...getContentField(content, contentType),
         timestamp: Date.now(),
       };
-      const address = connectedAccount.address;
-      const signerWallet = connectedAccount.wallet;
-      const signature = await signMessage(
-        JSON.stringify(entity),
-        address,
-        signerWallet,
-      );
-      const data = {
-        entity,
-        address,
-        signature,
-        signerWallet,
-      };
+      const data = await signSimaMessage(entity);
       const { result, error } = await nextApi.post("sima/discussions", data);
       if (error) {
         if (error.data) {

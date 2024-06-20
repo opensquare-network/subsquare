@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Wrapper } from "next-common/components/actions/styled";
 import ReplyButton from "next-common/components/actions/replyButton";
 import Share from "next-common/components/shareSNS";
@@ -12,15 +12,12 @@ import { useFocusEditor } from "next-common/context/post/editor";
 import { useDispatch } from "react-redux";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import ThumbUpList from "../../actions/thumbUpList";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
-import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
-import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { PostContextMenu } from "../../contentMenu";
+import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 
 export default function ArticleActions({ extraActions, setIsAppend }) {
-  const { ensureConnect } = useEnsureLogin();
   const post = usePost();
   const account = useConnectedAccount();
   const focusEditor = useFocusEditor();
@@ -35,7 +32,28 @@ export default function ArticleActions({ extraActions, setIsAppend }) {
     (r) => r.proposer === account?.address,
   );
   const thumbUp = !!reaction;
-  const signMessage = useSignMessage();
+  const signSimaMessage = useSignSimaMessage();
+
+  const cancelUpVote = useCallback(async () => {
+    const entity = {
+      action: "cancel_upvote",
+      cid: reaction.cid,
+      timestamp: Date.now(),
+    };
+    const data = await signSimaMessage(entity);
+
+    return await nextApi.post(`sima/discussions/${post.cid}/reactions`, data);
+  }, [post.cid, reaction?.cid, signSimaMessage]);
+
+  const upVote = useCallback(async () => {
+    const entity = {
+      action: "upvote",
+      cid: post.cid,
+      timestamp: Date.now(),
+    };
+    const data = await signSimaMessage(entity);
+    return await nextApi.post(`sima/discussions/${post.cid}/reactions`, data);
+  }, [post.cid, signSimaMessage]);
 
   const toggleThumbUp = async () => {
     if (!account || isAuthor || thumbUpLoading) {
@@ -44,62 +62,12 @@ export default function ArticleActions({ extraActions, setIsAppend }) {
 
     setThumbUpLoading(true);
     try {
-      if (!(await ensureConnect())) {
-        return;
-      }
-
       let result, error;
 
       if (thumbUp) {
-        const connectedAccount = getCookieConnectedAccount();
-        const entity = {
-          action: "cancel_upvote",
-          cid: reaction.cid,
-          timestamp: Date.now(),
-        };
-        const address = connectedAccount.address;
-        const signerWallet = connectedAccount.wallet;
-        const signature = await signMessage(
-          JSON.stringify(entity),
-          address,
-          signerWallet,
-        );
-        const data = {
-          entity,
-          address,
-          signature,
-          signerWallet,
-        };
-
-        ({ result, error } = await nextApi.post(
-          `sima/discussions/${post.cid}/reactions`,
-          data,
-        ));
+        ({ result, error } = await cancelUpVote());
       } else {
-        const connectedAccount = getCookieConnectedAccount();
-        const entity = {
-          action: "upvote",
-          cid: post.cid,
-          timestamp: Date.now(),
-        };
-        const address = connectedAccount.address;
-        const signerWallet = connectedAccount.wallet;
-        const signature = await signMessage(
-          JSON.stringify(entity),
-          address,
-          signerWallet,
-        );
-        const data = {
-          entity,
-          address,
-          signature,
-          signerWallet,
-        };
-
-        ({ result, error } = await nextApi.post(
-          `sima/discussions/${post.cid}/reactions`,
-          data,
-        ));
+        ({ result, error } = await upVote());
       }
 
       if (result) {
