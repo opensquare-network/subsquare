@@ -6,7 +6,7 @@ import {
   nestedVotesSelector,
   showVotesNumberSelector,
 } from "next-common/store/reducers/referenda/votes/selectors";
-import dynamicPopup from "next-common/lib/dynamicPopup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const NestedVotesPopup = dynamicPopup(() => import("./nestedVotesPopup"));
 

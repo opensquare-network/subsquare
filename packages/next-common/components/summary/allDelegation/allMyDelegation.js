@@ -4,13 +4,10 @@ import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import { ListButton } from "./styled";
 import AllMyDelegationInfo from "./allMyDelegationInfo";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const AllMyDelegationPopup = dynamic(
-  () => import("next-common/components/summary/democracyAllMyDelegationPopup"),
-  {
-    ssr: false,
-  },
+const AllMyDelegationPopup = dynamicPopup(() =>
+  import("next-common/components/summary/democracyAllMyDelegationPopup"),
 );
 
 export default function AllMyDelegation({ delegations }) {

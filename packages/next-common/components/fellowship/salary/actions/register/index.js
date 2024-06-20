@@ -11,14 +11,10 @@ import Tooltip from "next-common/components/tooltip";
 import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
 import { usePageProps } from "next-common/context/page";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipSalaryRegisterPopup = dynamic(
-  () =>
-    import("next-common/components/fellowship/salary/actions/register/popup"),
-  {
-    ssr: false,
-  },
+const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/actions/register/popup"),
 );
 
 function useIsInRegistrationPeriod() {

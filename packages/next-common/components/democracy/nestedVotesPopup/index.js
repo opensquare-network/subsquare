@@ -23,13 +23,10 @@ import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "../common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const NestedPopupDelegatedDetailPopup = dynamic(
-  () => import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
-  {
-    ssr: false,
-  },
+const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
+  import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
 );
 
 export default function NestedVotesPopup({ setShowVoteList = noop }) {

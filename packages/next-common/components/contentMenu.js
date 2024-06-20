@@ -22,23 +22,17 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const DeletePopup = dynamic(() => import("./deletePopup"), {
-  ssr: false,
-});
+const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
-const ReportPopup = dynamic(() => import("./reportPopup"), {
-  ssr: false,
-});
+const ReportPopup = dynamicPopup(() => import("./reportPopup"));
 
-const PostLinkPopup = dynamic(() => import("./linkPost/postLinkPopup"), {
-  ssr: false,
-});
+const PostLinkPopup = dynamicPopup(() => import("./linkPost/postLinkPopup"));
 
-const PostUnlinkPopup = dynamic(() => import("./linkPost/postUnlinkPopup"), {
-  ssr: false,
-});
+const PostUnlinkPopup = dynamicPopup(() =>
+  import("./linkPost/postUnlinkPopup"),
+);
 
 const Wrapper = styled.div`
   position: relative;

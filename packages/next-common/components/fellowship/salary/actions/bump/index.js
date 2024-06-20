@@ -9,11 +9,9 @@ import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useF
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import Tooltip from "next-common/components/tooltip";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipSalaryBumpPopup = dynamic(() => import("./popup"), {
-  ssr: false,
-});
+const FellowshipSalaryBumpPopup = dynamicPopup(() => import("./popup"));
 
 export default function FellowshipSalaryBump() {
   const router = useRouter();

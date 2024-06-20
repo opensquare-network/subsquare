@@ -12,11 +12,9 @@ import FieldLoading from "../icons/fieldLoading";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import { Deposit, Hash, Proposal, Status } from "./fields";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const PreimageDetailPopup = dynamic(() => import("./preImageDetailPopup"), {
-  ssr: false,
-});
+const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
 function createPreimageRow(
   hash,

@@ -9,13 +9,10 @@ import FellowshipCoreFeedsImportedEvent from "./event/imported";
 import FellowshipCoreFeedsInductedEvent from "./event/inducted";
 import FellowshipCoreFeedsActiveEvent from "./event/active";
 import FellowshipCoreFeedsRequestedEvent from "next-common/components/fellowship/core/feeds/event/requested";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipCoreFeedsCompareParamsChangesPopup = dynamic(
-  () => import("./compareParamsChangesPopup"),
-  {
-    ssr: false,
-  },
+const FellowshipCoreFeedsCompareParamsChangesPopup = dynamicPopup(() =>
+  import("./compareParamsChangesPopup"),
 );
 
 export default function FellowshipCoreFeedsListEvent({

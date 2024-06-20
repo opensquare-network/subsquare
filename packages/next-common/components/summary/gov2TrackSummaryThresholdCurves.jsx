@@ -5,13 +5,10 @@ import { ArrowExpend } from "@osn/icons/subsquare";
 import ThresholdCurvesGov2TrackSummaryLegend from "next-common/components/charts/thresholdCurve/legend/gov2TrackSummaryLegend";
 import { SummaryItemTitle } from "next-common/components/summary/styled";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const ThresholdCurvesPopup = dynamic(
-  () => import("next-common/components/charts/thresholdCurve/popup"),
-  {
-    ssr: false,
-  },
+const ThresholdCurvesPopup = dynamicPopup(() =>
+  import("next-common/components/charts/thresholdCurve/popup"),
 );
 
 const SummaryThresholdCurveItem = styled.div`

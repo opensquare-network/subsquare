@@ -21,20 +21,14 @@ import Loading from "../loading";
 import { useNavCollapsed } from "next-common/context/nav";
 import MyDepositUndoButton from "./undoButton";
 import DataList from "../dataList";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const PreimageDetailPopup = dynamic(
-  () => import("next-common/components/preImages/preImageDetailPopup"),
-  {
-    ssr: false,
-  },
+const PreimageDetailPopup = dynamicPopup(() =>
+  import("next-common/components/preImages/preImageDetailPopup"),
 );
 
-const UnnotePopup = dynamic(
-  () => import("next-common/components/preImages/unnotePopup"),
-  {
-    ssr: false,
-  },
+const UnnotePopup = dynamicPopup(() =>
+  import("next-common/components/preImages/unnotePopup"),
 );
 
 function createPreimageRow(

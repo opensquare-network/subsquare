@@ -6,13 +6,10 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { isSameAddress } from "next-common/utils";
 import { SystemImportMember } from "@osn/icons/subsquare";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipCoreImportPopup = dynamic(
-  () => import("next-common/components/fellowship/core/summary/import/popup"),
-  {
-    ssr: false,
-  },
+const FellowshipCoreImportPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/core/summary/import/popup"),
 );
 
 export default function Import() {

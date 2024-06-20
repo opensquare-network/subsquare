@@ -12,11 +12,11 @@ import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "../referenda/avatar";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const ReferendaDelegateeDetailPopup = dynamic(() => import("./detailPopup"), {
-  ssr: false,
-});
+const ReferendaDelegateeDetailPopup = dynamicPopup(() =>
+  import("./detailPopup"),
+);
 
 export default function DemocracyDelegateCard({
   delegate = {},

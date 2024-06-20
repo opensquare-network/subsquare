@@ -1,13 +1,10 @@
 import React from "react";
 import DelegationTabList from "./delegationTabList";
 import DelegationSummary from "./delegationSummary";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const BaseVotesPopup = dynamic(
-  () => import("next-common/components/popup/baseVotesPopup"),
-  {
-    ssr: false,
-  },
+const BaseVotesPopup = dynamicPopup(() =>
+  import("next-common/components/popup/baseVotesPopup"),
 );
 
 export default function BeenDelegatedListPopup({

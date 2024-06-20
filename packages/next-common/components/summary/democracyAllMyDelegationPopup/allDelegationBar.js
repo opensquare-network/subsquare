@@ -11,20 +11,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const UndelegateAllPopup = dynamic(
-  () => import("../delegation/undelegateAllPopup"),
-  {
-    ssr: false,
-  },
+const UndelegateAllPopup = dynamicPopup(() =>
+  import("../delegation/undelegateAllPopup"),
 );
 
-const MoonUndelegateAllPopup = dynamic(
-  () => import("../delegation/undelegateAllPopup/moonPopup"),
-  {
-    ssr: false,
-  },
+const MoonUndelegateAllPopup = dynamicPopup(() =>
+  import("../delegation/undelegateAllPopup/moonPopup"),
 );
 
 const Count = styled.span`

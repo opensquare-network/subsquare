@@ -8,11 +8,9 @@ import MobileFellowshipVotesList from "./mobile/fellowshipVotesList";
 import { isNil } from "lodash-es";
 import { useIsFellowship, useModuleName } from "./common";
 import FellowshipVotesList from "./fellowshipVotesList";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const VoteDetailPopup = dynamic(() => import("./voteDetailPopup"), {
-  ssr: false,
-});
+const VoteDetailPopup = dynamicPopup(() => import("./voteDetailPopup"));
 
 export default function ResponsiveVotes() {
   const { id } = usePageProps();

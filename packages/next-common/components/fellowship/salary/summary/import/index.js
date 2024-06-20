@@ -10,13 +10,10 @@ import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collect
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipSalaryImportPopup = dynamic(
-  () => import("next-common/components/fellowship/salary/summary/import/popup"),
-  {
-    ssr: false,
-  },
+const FellowshipSalaryImportPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/summary/import/popup"),
 );
 
 export default function Import() {
