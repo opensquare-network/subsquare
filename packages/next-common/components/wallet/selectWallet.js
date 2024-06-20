@@ -52,7 +52,7 @@ export default function SelectWallet({
         }
 
         // substrate
-        const selected = wallet.extensionName === selectedWallet;
+        const selected = wallet.extensionName === selectedWallet?.extensionName;
 
         if (wallet.extensionName === WalletTypes.NOVA) {
           return (

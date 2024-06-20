@@ -1,4 +1,3 @@
-import React from "react";
 import { useUser } from "next-common/context/user";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import MaybePolkadotSigner from "./maybePolkadotSigner";
