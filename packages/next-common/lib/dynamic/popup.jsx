@@ -9,7 +9,7 @@ const defaultOptions = {
       <Dialog.Portal>
         <Dialog.Overlay />
         <Dialog.Content asChild>
-          <PopupContainer className="z-50 items-center">
+          <PopupContainer className="z-[9999] items-center">
             <Loading size={40} color="var(--textTertiary)" />
           </PopupContainer>
         </Dialog.Content>
