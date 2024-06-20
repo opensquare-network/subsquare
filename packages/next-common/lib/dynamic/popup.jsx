@@ -1,8 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { isPlainObject, merge } from "lodash-es";
 import Loading from "next-common/components/loading";
 import PopupContainer from "next-common/components/popup/wrapper/container";
-import dynamic from "next/dynamic";
+import dynamicClient from "./client";
 
 const defaultOptions = {
   loading: () => (
@@ -24,9 +23,5 @@ const defaultOptions = {
  * @type {dynamic}
  */
 export default function dynamicPopup(dynamicOptions, options) {
-  if (isPlainObject(dynamicOptions)) {
-    dynamicOptions = merge(defaultOptions, dynamicOptions);
-  }
-
-  return dynamic(dynamicOptions, { ...defaultOptions, ...options });
+  return dynamicClient(dynamicOptions, { ...defaultOptions, ...options });
 }
