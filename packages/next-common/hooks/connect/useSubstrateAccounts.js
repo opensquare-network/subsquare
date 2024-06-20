@@ -97,7 +97,7 @@ export function useSubstrateAccounts({
     async (wallet) => {
       setLoading(true);
 
-      switch (wallet.extensionName) {
+      switch (wallet?.extensionName) {
         case WalletTypes.POLKADOT_JS:
         case WalletTypes.POLKAGATE:
         case WalletTypes.SUBWALLET_JS:
