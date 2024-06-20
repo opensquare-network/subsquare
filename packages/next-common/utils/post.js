@@ -60,6 +60,22 @@ export function getMemberId(user, chain) {
   }
 }
 
+export async function getIdentityDisplayNameFromAddress(address, chain) {
+  const setting = getChainSettings(chain);
+  const identityChain = setting.identity;
+
+  const identityAddress = encodeAddressToChain(address, identityChain);
+  const identity = await fetchIdentity(identityChain, identityAddress);
+  const displayName = getIdentityDisplay(identity);
+
+  return displayName;
+}
+
+export async function getMentionNameFromAddress(address, chain) {
+  const displayName = await getIdentityDisplayNameFromAddress(address, chain);
+  return displayName || addressEllipsis(tryConvertToEvmAddress(address));
+}
+
 export async function getMentionName(user, chain) {
   let address;
   let mentionName;
@@ -75,13 +91,7 @@ export async function getMentionName(user, chain) {
     mentionName = user.username;
   }
 
-  const setting = getChainSettings(chain);
-  const identityChain = setting.identity;
-
-  const identityAddress = encodeAddressToChain(address, identityChain);
-  const identity = await fetchIdentity(identityChain, identityAddress);
-  const displayName = getIdentityDisplay(identity);
-
+  const displayName = getIdentityDisplayNameFromAddress(address);
   return displayName || mentionName;
 }
 

@@ -32,10 +32,6 @@ const ButtonWrapper = styled(Flex)`
   }
 `;
 
-function escapeLinkText(text) {
-  return text.replace(/\\/g, "\\\\").replace(/([[\]])/g, "\\$1");
-}
-
 function SimaCommentEditor(
   {
     postCid,
@@ -127,11 +123,9 @@ function SimaCommentEditor(
     return (users || [])
       .map((user) => ({
         preview: user.name,
-        value: user.isKeyRegistered
-          ? `[@${user.name}](${user.value}-${chain}) `
-          : `[@${escapeLinkText(user.name)}](/user/${user.value}) `,
+        value: `[@${user.name}](${user.value}-${chain}) `,
         address: user.value,
-        isKeyRegistered: user.isKeyRegistered,
+        isKeyRegistered: true,
         chain: chain,
       }))
       .filter((i) => i.preview.toLowerCase().includes(text.toLowerCase()));

@@ -10,6 +10,7 @@ import { usePost } from "next-common/context/post";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import PrimaryButton from "next-common/lib/button/primary";
 import SimaComments from "../sima/comment";
+import useSimaMentionList from "next-common/utils/sima/useSimaMentionList";
 
 function SimaCommentComponent({
   user,
@@ -20,11 +21,12 @@ function SimaCommentComponent({
   setContentType,
   content,
   setContent,
-  users,
   commentsData,
   loading,
 }) {
+  const post = usePost();
   const { ensureConnect } = useEnsureLogin();
+  const users = useSimaMentionList(post, commentsData);
 
   let editor = (
     <div className="flex justify-end mt-4">
@@ -71,12 +73,13 @@ function CommentComponent({
   setContentType,
   content,
   setContent,
-  users,
   postId,
   commentsData,
   loading,
 }) {
+  const post = usePost();
   const { ensureLogin } = useEnsureLogin();
+  const users = useMentionList(post, commentsData);
 
   let editor = (
     <div className="flex justify-end mt-4">
@@ -129,7 +132,6 @@ export default function useCommentComponent() {
   );
   const isSima = post.dataSource === "sima";
   const postCid = post.cid;
-  const users = useMentionList(post, commentsData);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -144,7 +146,6 @@ export default function useCommentComponent() {
         setContentType={setContentType}
         content={content}
         setContent={setContent}
-        users={users}
         commentsData={commentsData}
         loading={loading}
       />
@@ -165,7 +166,6 @@ export default function useCommentComponent() {
       setContentType={setContentType}
       content={content}
       setContent={setContent}
-      users={users}
       postId={postId}
       commentsData={commentsData}
       loading={loading}

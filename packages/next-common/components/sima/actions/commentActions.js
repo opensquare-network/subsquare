@@ -4,7 +4,6 @@ import SimaThumbUpList from "./thumbUpList";
 import SimaCommentEditor from "../comment/editor";
 import { usePost } from "next-common/context/post";
 import { useUser } from "next-common/context/user";
-import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
@@ -19,6 +18,7 @@ import { Wrapper } from "next-common/components/actions/styled";
 import ThumbsUp from "next-common/components/thumbsUp";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { getUserObjFromAddress } from "next-common/utils/sima/utils";
+import useSimaMentionList from "next-common/utils/sima/useSimaMentionList";
 
 export default function SimaCommentActions({
   updateComment = noop,
@@ -44,7 +44,7 @@ export default function SimaCommentActions({
 
   const postCid = post?.cid;
 
-  const users = useMentionList(post, comments);
+  const users = useSimaMentionList(post, comments);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -143,9 +143,9 @@ export default function SimaCommentActions({
       {showThumbsUpList && <SimaThumbUpList reactions={reactions} />}
       {isReply && (
         <SimaCommentEditor
+          ref={editorWrapperRef}
           postCid={postCid}
           commentCid={replyToCommentCid}
-          ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}
           onFinishedEdit={async (reload) => {
