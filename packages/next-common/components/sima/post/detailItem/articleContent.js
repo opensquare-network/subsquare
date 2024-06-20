@@ -2,12 +2,12 @@ import { useState } from "react";
 import styled from "styled-components";
 import ArticleActions from "./articleActions";
 import Divider from "next-common/components/styled/layout/divider";
-import NonEdited from "next-common/components/detail/common/NonEdited";
 import PostContent from "next-common/components/detail/common/PostContent";
 import { usePost } from "next-common/context/post";
 import Tabs from "next-common/components/tabs";
 import ContentSummary from "next-common/components/contentSummary";
 import PostDataSource from "next-common/components/postDataSource";
+import Appendant from "./appendant";
 
 const Wrapper = styled.div`
   :hover {
@@ -17,8 +17,9 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function ArticleContent({ setIsEdit, className = "" }) {
+export default function ArticleContent({ className = "" }) {
   const post = usePost();
+  const [isAppend, setIsAppend] = useState(false);
 
   const tabs = [
     {
@@ -35,33 +36,30 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
 
   return (
     <Wrapper className={className}>
-      {!post.content && (
-        <>
-          <Divider className="mb-4" />
-          <NonEdited setIsEdit={setIsEdit} />
-        </>
-      )}
+      <div className="mt-6">
+        {post.contentSummary?.summary ? (
+          <Tabs
+            activeTabLabel={activeTab}
+            tabs={tabs}
+            onTabClick={(tab) => {
+              setActiveTab(tab.label);
+            }}
+          />
+        ) : (
+          <>
+            <Divider className="mb-4" />
+            <PostContent post={post} />
+          </>
+        )}
+      </div>
 
-      {post.content && (
-        <div className="mt-6">
-          {post.contentSummary?.summary ? (
-            <Tabs
-              activeTabLabel={activeTab}
-              tabs={tabs}
-              onTabClick={(tab) => {
-                setActiveTab(tab.label);
-              }}
-            />
-          ) : (
-            <>
-              <Divider className="mb-4" />
-              <PostContent post={post} />
-            </>
-          )}
-        </div>
+      <Appendant isAppend={isAppend} setIsAppend={setIsAppend} />
+      {!isAppend && (
+        <ArticleActions
+          setIsAppend={setIsAppend}
+          extraActions={<PostDataSource />}
+        />
       )}
-
-      <ArticleActions setIsEdit={setIsEdit} extraActions={<PostDataSource />} />
     </Wrapper>
   );
 }

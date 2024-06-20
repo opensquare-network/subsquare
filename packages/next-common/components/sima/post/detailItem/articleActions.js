@@ -17,8 +17,9 @@ import ThumbUpList from "../../actions/thumbUpList";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
+import { PostContextMenu } from "../../contentMenu";
 
-export default function ArticleActions({ extraActions }) {
+export default function ArticleActions({ extraActions, setIsAppend }) {
   const { ensureConnect } = useEnsureLogin();
   const post = usePost();
   const account = useConnectedAccount();
@@ -139,6 +140,10 @@ export default function ArticleActions({ extraActions }) {
 
           {extraActions}
         </Wrapper>
+
+        {isAuthor && (
+          <PostContextMenu editable={isAuthor} setIsAppend={setIsAppend} />
+        )}
       </div>
 
       {showThumbsUpList && <ThumbUpList reactions={post?.reactions} />}
