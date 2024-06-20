@@ -15,11 +15,11 @@ import Tooltip from "../tooltip";
 import ProposalChildCalls from "./childCalls";
 import usePreImageCallFromHash from "./preImage";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import dynamicClient from "next-common/lib/dynamic/client";
+import dynamicClientOnly from "next-common/lib/dynamic/client";
 
 const CallDetailPopup = dynamicPopup(() => import("../callDetailPopup"));
 
-const LongText = dynamicClient(() => import("../longText"));
+const LongText = dynamicClientOnly(() => import("../longText"));
 
 const Header = styled.div`
   font-style: normal;

@@ -1,7 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import Loading from "next-common/components/loading";
 import PopupContainer from "next-common/components/popup/wrapper/container";
-import dynamicClient from "./client";
+import dynamicClientOnly from "./clientOnly";
 
 const defaultOptions = {
   loading: () => (
@@ -23,5 +23,5 @@ const defaultOptions = {
  * @type {dynamic}
  */
 export default function dynamicPopup(dynamicOptions, options) {
-  return dynamicClient(dynamicOptions, { ...defaultOptions, ...options });
+  return dynamicClientOnly(dynamicOptions, { ...defaultOptions, ...options });
 }
