@@ -3,12 +3,12 @@ import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignetAccounts } from "next-common/context/signet";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { normalizeAddress } from "next-common/utils/address";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { normalizedSubstrateAccounts } from "next-common/utils/substrate";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useMountedState } from "react-use";
 
 export function useSubstrateAccounts({
   wallet,
@@ -16,8 +16,8 @@ export function useSubstrateAccounts({
   defaultLoading = true,
 } = {}) {
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
-  const { injectedWeb3 } = useInjectedWeb3();
+  const isMounted = useMountedState();
+  const { injectedWeb3, loading: loadingWeb3 } = useInjectedWeb3();
   const { chainType } = useChainSettings();
   const signetAccounts = useSignetAccounts();
   const [loading, setLoading] = useState(defaultLoading);
@@ -35,12 +35,9 @@ export function useSubstrateAccounts({
         type: ChainTypes.ETHEREUM,
       });
 
-      if (isMounted.current) {
+      if (isMounted()) {
         setAccounts(
-          injectedAccounts.map((item) => ({
-            ...item,
-            address: normalizeAddress(item.address),
-          })),
+          normalizedSubstrateAccounts(injectedAccounts, wallet?.extensionName),
         );
       }
     } catch (e) {
@@ -64,12 +61,9 @@ export function useSubstrateAccounts({
           { type: ChainTypes.ETHEREUM },
         );
 
-        if (isMounted.current) {
+        if (isMounted()) {
           setAccounts(
-            extensionAccounts.map((item) => ({
-              ...item,
-              address: normalizeAddress(item.address),
-            })),
+            normalizedSubstrateAccounts(extensionAccounts, selectedWalletName),
           );
         }
 
@@ -118,8 +112,15 @@ export function useSubstrateAccounts({
   );
 
   useEffect(() => {
-    loadWalletAccounts(wallet?.extensionName);
-  }, [wallet?.extensionName]);
+    if (isMounted()) {
+      if (!loadingWeb3) {
+        loadWalletAccounts(wallet?.extensionName);
+      }
+    }
+  }, [wallet?.extensionName, isMounted, loadingWeb3]);
 
-  return { accounts, loading };
+  return {
+    accounts,
+    loading: loadingWeb3 || loading,
+  };
 }
