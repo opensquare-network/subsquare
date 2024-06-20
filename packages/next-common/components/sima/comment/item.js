@@ -6,7 +6,7 @@ import {
 } from "@osn/previewer";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import { prettyHTML } from "next-common/utils/viewfuncs";
-import CommentActions from "../actions/commentActions";
+import SimaCommentActions from "../actions/commentActions";
 import useCommentsAnchor from "next-common/utils/hooks/useCommentsAnchor";
 import CommentItemTemplate from "./itemTemplate";
 import {
@@ -108,7 +108,7 @@ function CommentItemImpl({
         </>
       }
       actions={
-        <CommentActions
+        <SimaCommentActions
           setShowReplies={setShowReplies}
           updateComment={maybeUpdateTopLevelComment}
           scrollToNewReplyComment={

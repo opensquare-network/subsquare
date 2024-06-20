@@ -1,10 +1,7 @@
 import React, { useRef, useState } from "react";
 import { CommentContextMenu } from "../contentMenu";
-import ThumbsUp from "../thumbsUp";
-import ReplyButton from "./replyButton";
-import ThumbUpList from "./thumbUpList";
-import { Wrapper } from "./styled";
-import CommentEditor from "../comment/editor";
+import SimaThumbUpList from "./thumbUpList";
+import SimaCommentEditor from "../comment/editor";
 import { usePost } from "next-common/context/post";
 import { useUser } from "next-common/context/user";
 import useMentionList from "next-common/utils/hooks/useMentionList";
@@ -21,8 +18,11 @@ import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { addressEllipsis } from "next-common/utils";
+import ReplyButton from "next-common/components/actions/replyButton";
+import { Wrapper } from "next-common/components/actions/styled";
+import ThumbsUp from "next-common/components/thumbsUp";
 
-export default function CommentActions({
+export default function SimaCommentActions({
   updateComment = noop,
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
@@ -176,9 +176,9 @@ export default function CommentActions({
         </Wrapper>
         <CommentContextMenu />
       </div>
-      {showThumbsUpList && <ThumbUpList reactions={reactions} />}
+      {showThumbsUpList && <SimaThumbUpList reactions={reactions} />}
       {isReply && (
-        <CommentEditor
+        <SimaCommentEditor
           postCid={postCid}
           commentCid={replyToCommentCid}
           ref={editorWrapperRef}

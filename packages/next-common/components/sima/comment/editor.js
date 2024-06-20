@@ -38,7 +38,7 @@ function escapeLinkText(text) {
   return text.replace(/\\/g, "\\\\").replace(/([[\]])/g, "\\$1");
 }
 
-function CommentEditor(
+function SimaCommentEditor(
   {
     postCid,
     commentCid,
@@ -194,4 +194,4 @@ function CommentEditor(
   );
 }
 
-export default React.forwardRef(CommentEditor);
+export default React.forwardRef(SimaCommentEditor);

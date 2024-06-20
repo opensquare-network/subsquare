@@ -1,8 +1,8 @@
 import React from "react";
-import { GreyItem, GreyWrapper } from "./styled";
 import AddressUser from "next-common/components/user/addressUser";
+import { GreyItem, GreyWrapper } from "next-common/components/actions/styled";
 
-export default function ThumbUpList({ reactions }) {
+export default function SimaThumbUpList({ reactions }) {
   if (!reactions || reactions.length == 0) {
     return null;
   }
