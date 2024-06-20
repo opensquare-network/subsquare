@@ -15,7 +15,7 @@ import Tooltip from "../tooltip";
 import ProposalChildCalls from "./childCalls";
 import usePreImageCallFromHash from "./preImage";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import dynamicClientOnly from "next-common/lib/dynamic/client";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const CallDetailPopup = dynamicPopup(() => import("../callDetailPopup"));
 

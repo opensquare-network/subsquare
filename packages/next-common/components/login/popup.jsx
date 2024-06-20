@@ -1,4 +1,4 @@
-import dynamicClientOnly from "next-common/lib/dynamic/client";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const Popup = dynamicPopup(() => import("../popup/wrapper/Popup"));
