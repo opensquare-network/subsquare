@@ -29,7 +29,9 @@ function AppendItem({ index, data }) {
         </span>
       </div>
       <div>
-        <span className="text15MediumContent">{data.content}</span>
+        <span className="text15MediumContent text-textPrimary">
+          {data.content}
+        </span>
       </div>
     </div>
   );
@@ -118,7 +120,7 @@ export default function Appendant({ isAppend, setIsAppend }) {
 
   return (
     <div className="flex flex-col gap-[16px] mt-[16px] pt-[16px] border-t border-neutral300">
-      <span className="text14Bold">Appendant</span>
+      <span className="text14Bold text-textPrimary">Appendant</span>
       <div className="flex flex-col gap-[16px]">
         {appendants.map((item, index) => (
           <AppendItem key={index} index={index} data={item} />
