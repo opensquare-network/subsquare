@@ -1,15 +1,13 @@
 import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
-import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import ClaimedInfo from "./ClaimedInfo";
 import { childBountyStatusSelector } from "next-common/store/reducers/childBountySlice";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const Popup = dynamic(() => import("../popup"), {
-  ssr: false,
-});
+const Popup = dynamicPopup(() => import("../popup"));
 
 export default function Claim() {
   const onChain = useOnchainData();

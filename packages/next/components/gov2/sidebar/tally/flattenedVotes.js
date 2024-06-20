@@ -5,11 +5,9 @@ import {
   flattenVotesSelector,
   showVotesNumberSelector,
 } from "next-common/store/reducers/referenda/votes/selectors";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FlattenedVotesPopup = dynamic(() => import("./flattenedVotesPopup"), {
-  ssr: false,
-});
+const FlattenedVotesPopup = dynamicPopup(() => import("./flattenedVotesPopup"));
 
 export default function FlattenedVotes() {
   const [showFlattenedVotes, setShowFlattenedVotes] = useState(false);

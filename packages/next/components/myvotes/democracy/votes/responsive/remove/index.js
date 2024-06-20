@@ -2,15 +2,11 @@ import { useState } from "react";
 import RemoveButton from "next-common/components/removeButton";
 import isMoonChain from "next-common/utils/isMoonChain";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const ReferendumRemovalPopup = dynamic(() => import("./popup"), {
-  ssr: false,
-});
+const ReferendumRemovalPopup = dynamicPopup(() => import("./popup"));
 
-const MoonReferendumRemovalPopup = dynamic(() => import("./moonPopup"), {
-  ssr: false,
-});
+const MoonReferendumRemovalPopup = dynamicPopup(() => import("./moonPopup"));
 
 export default function RemoveVoteButton({ referendumIndex }) {
   const [showPop, setShowPop] = useState(false);

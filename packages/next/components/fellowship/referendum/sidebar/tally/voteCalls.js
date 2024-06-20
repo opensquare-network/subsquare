@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { Button } from "components/gov2/sidebar/tally/styled";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipCallsVotesPopup = dynamic(
-  () => import("./fellowshipCallsVotesPopup"),
-  {
-    ssr: false,
-  },
+const FellowshipCallsVotesPopup = dynamicPopup(() =>
+  import("./fellowshipCallsVotesPopup"),
 );
 
 export default function Calls() {

@@ -12,24 +12,16 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Referenda } from "next-common/components/profile/votingHistory/common";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const RemoveReferendaVotePopup = dynamic(
-  () =>
-    import("next-common/components/myReferendumVote/removeReferendaVotePopup"),
-  {
-    ssr: false,
-  },
+const RemoveReferendaVotePopup = dynamicPopup(() =>
+  import("next-common/components/myReferendumVote/removeReferendaVotePopup"),
 );
 
-const MoonRemoveReferendaVotePopup = dynamic(
-  () =>
-    import(
-      "next-common/components/myReferendumVote/removeReferendaVotePopup/moonPopup"
-    ),
-  {
-    ssr: false,
-  },
+const MoonRemoveReferendaVotePopup = dynamicPopup(() =>
+  import(
+    "next-common/components/myReferendumVote/removeReferendaVotePopup/moonPopup"
+  ),
 );
 
 export default function MyVote() {
