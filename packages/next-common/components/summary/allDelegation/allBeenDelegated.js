@@ -4,13 +4,10 @@ import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import { ListButton } from "./styled";
 import AllBeenDelegatedInfo from "./allBeenDelegatedInfo";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const AllBeenDelegatedListPopup = dynamic(
-  () => import("next-common/components/summary/democracyAllBeenDelegatedPopup"),
-  {
-    ssr: false,
-  },
+const AllBeenDelegatedListPopup = dynamicPopup(() =>
+  import("next-common/components/summary/democracyAllBeenDelegatedPopup"),
 );
 
 export default function AllBeenDelegated({ beenDelegatedList }) {

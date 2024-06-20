@@ -13,13 +13,10 @@ import {
   incMyReferendaVotesTrigger,
   isLoadingReferendaSummarySelector,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const ClearExpiredReferendaVotePopup = dynamic(
-  () => import("../clearExpiredReferendaVotePopup"),
-  {
-    ssr: false,
-  },
+const ClearExpiredReferendaVotePopup = dynamicPopup(() =>
+  import("../clearExpiredReferendaVotePopup"),
 );
 
 export default function ReferendaSummary() {

@@ -1,5 +1,7 @@
-import Popup from "../popup/wrapper/Popup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 import LoginContent from "./content";
+
+const Popup = dynamicPopup(() => import("../popup/wrapper/Popup"));
 
 /**
  * @param {{showRegister: boolean} & Parameters<Popup>[0]} props

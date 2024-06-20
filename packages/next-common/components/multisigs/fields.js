@@ -6,11 +6,9 @@ import ExternalLink from "next-common/components/externalLink";
 import { useChain } from "next-common/context/chain";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import AddressUser from "next-common/components/user/addressUser";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const CallPopup = dynamic(() => import("./callPopup"), {
-  ssr: false,
-});
+const CallPopup = dynamicPopup(() => import("./callPopup"));
 
 export function When({ height, index }) {
   const chain = useChain();

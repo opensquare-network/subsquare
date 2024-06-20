@@ -12,14 +12,10 @@ import { usePost } from "next-common/context/post";
 import { useState } from "react";
 import { isNil } from "lodash-es";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const RemoveDemocracyVotePopup = dynamic(
-  () =>
-    import("next-common/components/myReferendumVote/removeDemocracyVotePopup"),
-  {
-    ssr: false,
-  },
+const RemoveDemocracyVotePopup = dynamicPopup(() =>
+  import("next-common/components/myReferendumVote/removeDemocracyVotePopup"),
 );
 
 export const Button = tw.div`

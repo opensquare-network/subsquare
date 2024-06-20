@@ -7,20 +7,14 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 import { incMyReferendaDelegationsTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const DelegatePopup = dynamic(
-  () => import("next-common/components/gov2/delegatePopup"),
-  {
-    ssr: false,
-  },
+const DelegatePopup = dynamicPopup(() =>
+  import("next-common/components/gov2/delegatePopup"),
 );
 
-const MoonDelegatePopup = dynamic(
-  () => import("next-common/components/gov2/delegatePopup/moonPopup"),
-  {
-    ssr: false,
-  },
+const MoonDelegatePopup = dynamicPopup(() =>
+  import("next-common/components/gov2/delegatePopup/moonPopup"),
 );
 
 /**

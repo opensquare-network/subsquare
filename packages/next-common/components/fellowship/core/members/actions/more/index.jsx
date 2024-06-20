@@ -6,18 +6,13 @@ import { useClickAway } from "react-use";
 import ActivationItem from "./activationItem";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import SubmitEvidenceItem from "./submitEvidenceItem";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const SubmitEvidencePopup = dynamic(
-  () => import("./submitEvidenceItem/popup"),
-  {
-    ssr: false,
-  },
+const SubmitEvidencePopup = dynamicPopup(() =>
+  import("./submitEvidenceItem/popup"),
 );
 
-const ActivationPopup = dynamic(() => import("./activationItem/popup"), {
-  ssr: false,
-});
+const ActivationPopup = dynamicPopup(() => import("./activationItem/popup"));
 
 export default function More({ member }) {
   const realAddress = useRealAddress();

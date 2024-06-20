@@ -1,12 +1,9 @@
 import { Button } from "./styled";
 import { useState } from "react";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const OpenGovCallsVotesPopup = dynamic(
-  () => import("./openGovCallsVotesPopup"),
-  {
-    ssr: false,
-  },
+const OpenGovCallsVotesPopup = dynamicPopup(() =>
+  import("./openGovCallsVotesPopup"),
 );
 
 export default function CallsVotes() {

@@ -5,6 +5,7 @@ import { noop } from "lodash-es";
 import { cn } from "next-common/utils";
 import { SystemClose } from "@osn/icons/subsquare";
 import CommonPopupProvider from "next-common/context/popup";
+import PopupContainer from "./container";
 
 let z = 999;
 
@@ -37,8 +38,7 @@ export default function Popup({
         <Dialog.Portal container={container}>
           <Dialog.Overlay />
           <Dialog.Content asChild onOpenAutoFocus={(e) => e.preventDefault()}>
-            <div
-              className="fixed inset-0 bg-black/25 flex justify-center items-start overflow-auto overscroll-y-none"
+            <PopupContainer
               style={{ zIndex: zOverlay }}
               onMouseDown={(event) => {
                 if (maskClosable && event.target === event.currentTarget) {
@@ -76,7 +76,7 @@ export default function Popup({
 
                 {children}
               </NeutralPanel>
-            </div>
+            </PopupContainer>
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>

@@ -3,13 +3,10 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemPlus } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import { useFellowshipCanInductMember } from "next-common/hooks/fellowship/useFellowshipCanInductMember";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipCoreInductionPopup = dynamic(
-  () => import("next-common/components/fellowship/core/summary/induct/popup"),
-  {
-    ssr: false,
-  },
+const FellowshipCoreInductionPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/core/summary/induct/popup"),
 );
 
 /**

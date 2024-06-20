@@ -1,28 +1,29 @@
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
 import { useEffect, useState } from "react";
+import { useMountedState } from "react-use";
 
 export default function useInjectedWeb3() {
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [injectedWeb3, setInjectedWeb3] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (window.injectedWeb3) {
-        if (isMounted.current) {
-          setLoading(false);
-          setInjectedWeb3(window.injectedWeb3);
+    function handleWeb3() {
+      setLoading(false);
+      setInjectedWeb3(window.injectedWeb3);
+    }
+
+    if (isMounted()) {
+      if (typeof window !== "undefined") {
+        if (window.injectedWeb3) {
+          handleWeb3();
         }
       } else {
         setTimeout(() => {
-          if (isMounted.current) {
-            setLoading(false);
-            setInjectedWeb3(window.injectedWeb3);
-          }
+          handleWeb3();
         }, 1000);
       }
     }
-  }, []);
+  }, [isMounted]);
 
   return { loading, injectedWeb3 };
 }

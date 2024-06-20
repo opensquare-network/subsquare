@@ -8,13 +8,10 @@ import chainOrScanHeightSelector from "next-common/store/reducers/selectors/heig
 import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipSalaryPayoutPopup = dynamic(
-  () => import("next-common/components/fellowship/salary/actions/payout/popup"),
-  {
-    ssr: false,
-  },
+const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/actions/payout/popup"),
 );
 
 export default function FellowshipSalaryPayout() {

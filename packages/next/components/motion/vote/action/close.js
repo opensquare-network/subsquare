@@ -9,11 +9,9 @@ import useCollectiveProposal from "next-common/utils/hooks/collectives/usePropos
 import useWeight from "next-common/utils/hooks/common/useWeight";
 import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const CloseMotionPopup = dynamic(() => import("./closeMotionPopup"), {
-  ssr: false,
-});
+const CloseMotionPopup = dynamicPopup(() => import("./closeMotionPopup"));
 
 export default function Close() {
   const latestHeight = useSelector(chainOrScanHeightSelector);

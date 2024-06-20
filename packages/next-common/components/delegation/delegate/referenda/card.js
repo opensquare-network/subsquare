@@ -10,11 +10,11 @@ import { SystemMenu } from "@osn/icons/subsquare";
 import NewDelegateButton from "next-common/components/summary/allDelegation/newDelegateButton";
 import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "./avatar";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const ReferendaDelegateeDetailPopup = dynamic(() => import("./detailPopup"), {
-  ssr: false,
-});
+const ReferendaDelegateeDetailPopup = dynamicPopup(() =>
+  import("./detailPopup"),
+);
 
 export default function ReferendaDelegateCard({
   delegate = {},

@@ -9,11 +9,11 @@ import { GreyPanel } from "../../styled/containers/greyPanel";
 import NoData from "next-common/components/noData";
 import AddressUser from "next-common/components/user/addressUser";
 import { usePost } from "next-common/context/post";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const PostLinkPopup = dynamic(() => import("../../linkPost/postLinkPopup"), {
-  ssr: false,
-});
+const PostLinkPopup = dynamicPopup(() =>
+  import("../../linkPost/postLinkPopup"),
+);
 
 const GreyWrapper = styled(GreyPanel)`
   flex-flow: wrap;

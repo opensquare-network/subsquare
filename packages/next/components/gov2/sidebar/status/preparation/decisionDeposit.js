@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import SubLink from "next-common/components/styled/subLink";
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useDecisionDeposit } from "next-common/hooks/referenda/useReferendumInfo";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const DepositPopup = dynamic(() => import("./depositPopup"), { ssr: false });
+const DepositPopup = dynamicPopup(() => import("./depositPopup"));
 
 const Wrapper = styled.div`
   margin-top: 16px;

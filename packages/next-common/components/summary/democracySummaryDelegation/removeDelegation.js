@@ -5,17 +5,12 @@ import styled from "styled-components";
 import Tooltip from "../../tooltip";
 import isMoonChain from "next-common/utils/isMoonChain";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const UndelegatePopup = dynamic(() => import("./undelegatePopup"), {
-  ssr: false,
-});
+const UndelegatePopup = dynamicPopup(() => import("./undelegatePopup"));
 
-const MoonUndelegatePopup = dynamic(
-  () => import("./undelegatePopup/moonPopup"),
-  {
-    ssr: false,
-  },
+const MoonUndelegatePopup = dynamicPopup(() =>
+  import("./undelegatePopup/moonPopup"),
 );
 
 const RemoveButton = styled(Button)`

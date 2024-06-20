@@ -26,31 +26,20 @@ import WithAddress from "next-common/components/common/withAddress";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "components/gov2/votePopup/voteSuccessful";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const NestedVotesPopup = dynamic(
-  () => import("next-common/components/democracy/nestedVotesPopup"),
-  {
-    ssr: false,
-  },
+const NestedVotesPopup = dynamicPopup(() =>
+  import("next-common/components/democracy/nestedVotesPopup"),
 );
 
-const VotePopup = dynamic(() => import("components/referenda/popup"), {
-  ssr: false,
-});
+const VotePopup = dynamicPopup(() => import("components/referenda/popup"));
 
-const MoonVotePopup = dynamic(
-  () => import("components/referenda/popup/moonPopup"),
-  {
-    ssr: false,
-  },
+const MoonVotePopup = dynamicPopup(() =>
+  import("components/referenda/popup/moonPopup"),
 );
 
-const FlattenedVotesPopup = dynamic(
-  () => import("next-common/components/democracy/flattenedVotesPopup"),
-  {
-    ssr: false,
-  },
+const FlattenedVotesPopup = dynamicPopup(() =>
+  import("next-common/components/democracy/flattenedVotesPopup"),
 );
 
 const Title = styled(TitleContainer)`

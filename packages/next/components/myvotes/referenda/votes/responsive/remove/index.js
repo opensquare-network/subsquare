@@ -4,15 +4,11 @@ import { useDispatch } from "react-redux";
 import { incMyReferendaVotesTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const ReferendumRemovalPopup = dynamic(() => import("./popup"), {
-  ssr: false,
-});
+const ReferendumRemovalPopup = dynamicPopup(() => import("./popup"));
 
-const MoonReferendumRemovalPopup = dynamic(() => import("./moonPopup"), {
-  ssr: false,
-});
+const MoonReferendumRemovalPopup = dynamicPopup(() => import("./moonPopup"));
 
 export default function RemoveVoteButton({ vote }) {
   const [showPop, setShowPop] = useState(false);

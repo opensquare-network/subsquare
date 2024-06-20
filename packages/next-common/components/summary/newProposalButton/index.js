@@ -1,10 +1,8 @@
 import NewButton from "./newButton";
 import { useState } from "react";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const SubmitProposalPopup = dynamic(() => import("./submitProposalPopup"), {
-  ssr: false,
-});
+const SubmitProposalPopup = dynamicPopup(() => import("./submitProposalPopup"));
 
 export default function NewProposalButton() {
   const [showPopup, setShowPopup] = useState(false);

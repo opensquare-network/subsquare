@@ -1,7 +1,7 @@
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import DynamicLoginPopup from "next-common/components/login/dynamic";
+import LoginPopup from "next-common/components/login/popup";
 
 export default function LoginGlobalPopup() {
   const { loginPopupOpen, closeLoginPopup } = useLoginPopup();
@@ -11,5 +11,5 @@ export default function LoginGlobalPopup() {
     closeLoginPopup();
   }, [router.pathname]);
 
-  return loginPopupOpen && <DynamicLoginPopup onClose={closeLoginPopup} />;
+  return loginPopupOpen && <LoginPopup onClose={closeLoginPopup} />;
 }

@@ -4,13 +4,10 @@ import {
   convertProposalForTableView,
 } from "next-common/components/proposal";
 import { useChain } from "next-common/context/chain";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const CallDetailPopup = dynamic(
-  () => import("next-common/components/callDetailPopup"),
-  {
-    ssr: false,
-  },
+const CallDetailPopup = dynamicPopup(() =>
+  import("next-common/components/callDetailPopup"),
 );
 
 export default function CallPopup({ call, callHex, blockHeight, setShow }) {

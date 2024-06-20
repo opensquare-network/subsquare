@@ -5,13 +5,10 @@ import {
   useApprovalPercentage,
   useSupportPercentage,
 } from "../../../../context/post/gov2/percentage";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const ThresholdCurvesGov2TallyPopup = dynamic(
-  () => import("../../../charts/thresholdCurve/gov2TallyPopup"),
-  {
-    ssr: false,
-  },
+const ThresholdCurvesGov2TallyPopup = dynamicPopup(() =>
+  import("../../../charts/thresholdCurve/gov2TallyPopup"),
 );
 
 const CurveIcon = styled(CurveIconOrigin)`

@@ -12,11 +12,11 @@ import AddressUser from "next-common/components/user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import DetailButton from "next-common/components/detailButton";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const BeenDelegatedListPopup = dynamic(() => import("../beenDelegatedPopup"), {
-  ssr: false,
-});
+const BeenDelegatedListPopup = dynamicPopup(() =>
+  import("../beenDelegatedPopup"),
+);
 
 const Wrapper = styled.div``;
 

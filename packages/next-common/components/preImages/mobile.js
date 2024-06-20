@@ -11,11 +11,9 @@ import FieldLoading from "../icons/fieldLoading";
 import { Deposit, Hash, Proposal, Status } from "./fields";
 import tw from "tailwind-styled-components";
 import DetailButton from "../detailButton";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const PreimageDetailPopup = dynamic(() => import("./preImageDetailPopup"), {
-  ssr: false,
-});
+const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
 const FieldName = tw.span`text-textTertiary`;
 

@@ -1,12 +1,9 @@
 import SubLink from "next-common/components/styled/subLink";
 import { useState } from "react";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const CheckAllVotesPopup = dynamic(
-  () => import("components/democracy/allVotesPopup"),
-  {
-    ssr: false,
-  },
+const CheckAllVotesPopup = dynamicPopup(() =>
+  import("components/democracy/allVotesPopup"),
 );
 
 export default function Votes() {

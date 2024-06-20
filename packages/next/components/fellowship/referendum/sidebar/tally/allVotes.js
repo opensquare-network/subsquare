@@ -5,11 +5,9 @@ import {
   fellowshipVotesSelector,
   isLoadingFellowshipVotesSelector,
 } from "next-common/store/reducers/fellowship/votes";
-import dynamic from "next/dynamic";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const AllVotesPopup = dynamic(() => import("./allVotesPopup"), {
-  ssr: false,
-});
+const AllVotesPopup = dynamicPopup(() => import("./allVotesPopup"));
 
 export default function AllVotes() {
   const [showAllVotes, setShowAllVotes] = useState(false);
