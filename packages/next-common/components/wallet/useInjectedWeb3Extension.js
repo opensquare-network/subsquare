@@ -11,7 +11,7 @@ export function useInjectedWeb3Extension(walletName) {
     setExtension(getInjectedWeb3Extension(walletName));
   }, [walletName, getInjectedWeb3Extension]);
 
-  return { extension, loading };
+  return { injectedWeb3Extension: extension, loading };
 }
 
 export function useGetInjectedWeb3ExtensionFn() {
