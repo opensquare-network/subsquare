@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ArrowDown } from "@osn/icons/subsquare";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
-import { useUpdateEffect } from "usehooks-ts";
+import { useUpdateEffect } from "react-use";
 import NavMenuItem from "./item";
 import NavMenuDivider from "../divider";
 import { sumBy } from "lodash-es";

@@ -5,7 +5,7 @@ import SearchBox from "./searchBox";
 import { useMemo, useState } from "react";
 import MyDeposit from "./myDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useWindowSize } from "usehooks-ts";
+import { useWindowSize } from "react-use";
 import { isNil } from "lodash-es";
 import { isSameAddress } from "next-common/utils";
 

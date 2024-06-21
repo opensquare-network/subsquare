@@ -4,7 +4,7 @@ import Tooltip from "../tooltip";
 import DefaultTabsList from "../tabsList";
 import UrlTabsList from "../urlTabs";
 import { useEffect, useRef, useState } from "react";
-import { useWindowSize } from "usehooks-ts";
+import { useWindowSize } from "react-use";
 
 const SPACE = 1;
 

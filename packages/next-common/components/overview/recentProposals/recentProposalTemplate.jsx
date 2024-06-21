@@ -8,7 +8,7 @@ import Pagination from "next-common/components/pagination";
 import nextApi from "next-common/services/nextApi";
 import { recentProposalFetchParams } from "next-common/services/serverSide/recentProposals";
 import { isNil } from "lodash-es";
-import { useUpdateEffect } from "usehooks-ts";
+import { useUpdateEffect } from "react-use";
 import { useChain } from "next-common/context/chain";
 import { first } from "lodash-es";
 import DataList from "next-common/components/dataList";
