@@ -7,7 +7,7 @@ import {
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import { prettyHTML } from "next-common/utils/viewfuncs";
 import SimaCommentActions from "../actions/commentActions";
-import useCommentsAnchor from "next-common/utils/hooks/useCommentsAnchor";
+import useSimaCommentsAnchor from "./useSimaCommentAnchor";
 import CommentItemTemplate from "./itemTemplate";
 import {
   CommentProvider,
@@ -27,7 +27,7 @@ function CommentItemImpl({
   const comment = useComment();
   const refCommentTree = useRef();
   const [highlight, setHighlight] = useState(false);
-  const { hasAnchor, anchor } = useCommentsAnchor();
+  const { hasAnchor, anchor } = useSimaCommentsAnchor();
   const [showReplies, setShowReplies] = useState(false);
   const comments = useComments();
   const setComments = useSetComments();
