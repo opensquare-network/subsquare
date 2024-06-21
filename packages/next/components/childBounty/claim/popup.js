@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 
 export default function ClaimPopup({ childBounty, onClose }) {
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [isLoading, setIsLoading] = useState(false);
 
   const showErrorToast = useCallback(

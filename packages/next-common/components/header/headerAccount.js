@@ -6,7 +6,7 @@ import useWindowSize from "../../utils/hooks/useWindowSize.js";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { useIsLoggedIn, useUser } from "../../context/user";
-import useIsMounted from "../../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -67,7 +67,7 @@ export default function HeaderAccount() {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const { openLoginPopup } = useLoginPopup();
   const menu = useAccountMenu();
 
@@ -86,7 +86,7 @@ export default function HeaderAccount() {
       await router.push(item.pathname);
     }
 
-    if (isMounted.current) {
+    if (isMounted()) {
       setShow(false);
     }
   };

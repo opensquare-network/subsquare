@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import SignerPopup from "next-common/components/signerPopup";
 import PopupLabel from "next-common/components/popup/label";
@@ -38,7 +38,7 @@ export default function MoonClearExpiredReferendaVotePopup({
   onClose,
 }) {
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [isLoading, setIsLoading] = useState(false);
 
   const relatedReferenda = Array.from(

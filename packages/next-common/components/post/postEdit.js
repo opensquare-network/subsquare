@@ -4,7 +4,7 @@ import Input from "../input";
 import EditInput from "../editInput";
 import nextApi from "../../services/nextApi";
 import { toApiType } from "../../utils/viewfuncs";
-import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
 import { usePost, usePostTitle } from "../../context/post";
@@ -48,7 +48,7 @@ export default function PostEdit({ setIsEdit, updatePost }) {
     [type, post, bannerCid, title, selectedLabels],
   );
 
-  const isMounted = useIsMountedBool();
+  const isMounted = useMountedState();
 
   return (
     <div>

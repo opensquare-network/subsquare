@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
 import SignerPopup from "next-common/components/signerPopup";
@@ -17,7 +17,7 @@ export default function MoonRemoveReferendaVotePopup({
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [isLoading, setIsLoading] = useState(false);
 
   const showErrorToast = useCallback(

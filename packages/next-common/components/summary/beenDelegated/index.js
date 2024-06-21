@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import BeenDelegatedInfo from "next-common/components/summary/democracyBeenDelegated/beenDelegatedInfo";
 import BeenDelegatedListButton from "next-common/components/summary/democracyBeenDelegated/beenDelegatedListButton";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { isNil } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 
@@ -24,7 +24,7 @@ export default function BeenDelegated({ trackId }) {
   const realAddress = useRealAddress();
   const [delegations, setDelegations] = useState();
   const [beenDelegatedList, setBeenDelegatedList] = useState([]);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   useEffect(() => {
     setDelegations();
@@ -34,13 +34,13 @@ export default function BeenDelegated({ trackId }) {
       return;
     }
     getGov2BeenDelegatedByAddress(api, realAddress, trackId).then((result) => {
-      if (isMounted.current) {
+      if (isMounted()) {
         setDelegations(result);
       }
     });
     getGov2BeenDelegatedListByAddress(api, realAddress, trackId).then(
       (result) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setBeenDelegatedList(result);
         }
       },

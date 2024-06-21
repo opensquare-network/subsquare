@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useIsMounted from "./useIsMounted";
+import { useMountedState } from "react-use";
 import Chains from "../consts/chains";
 import BigNumber from "bignumber.js";
 import { useChain } from "../../context/chain";
@@ -23,7 +23,7 @@ async function querySystemAccountBalance(api, address) {
 
 export default function useAddressBalance(api, address) {
   const chain = useChain();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [balance, setBalance] = useState(0);
   const [loadingBalance, setLoadingBalance] = useState(true);
 
@@ -51,13 +51,13 @@ export default function useAddressBalance(api, address) {
 
     promise
       .then((balance) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setBalance(balance);
           balanceMap.set(address, balance);
         }
       })
       .finally(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setLoadingBalance(false);
         }
       });

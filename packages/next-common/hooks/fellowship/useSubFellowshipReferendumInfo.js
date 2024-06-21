@@ -2,7 +2,7 @@ import { useOnchainData } from "next-common/context/post";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import {
   clearFellowshipReferendumInfo,
   setFellowshipReferendumInfo,
@@ -17,7 +17,7 @@ export default function useSubFellowshipReferendumInfo() {
 
   const dispatch = useDispatch();
   const votingFinishHeight = useReferendumVotingFinishHeight();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   useEffect(() => {
     if (!api || votingFinishHeight || !api.query.fellowshipReferenda) {
@@ -28,7 +28,7 @@ export default function useSubFellowshipReferendumInfo() {
     let unsub;
     api.query.fellowshipReferenda
       .referendumInfoFor(referendumIndex, (optionalInfo) => {
-        if (!isMounted.current || !optionalInfo.isSome) {
+        if (!isMounted() || !optionalInfo.isSome) {
           return;
         }
 

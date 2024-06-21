@@ -7,7 +7,7 @@ import { Conviction } from "next-common/utils/referendumCommon";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePageProps } from "../../../context/page";
 import { getGov2BeenDelegatedListByAddress } from "../../gov2/gov2ReferendumVote";
-import useIsMounted from "../useIsMounted";
+import { useMountedState } from "react-use";
 import useRealAddress from "../useRealAddress";
 import { useContextApi } from "next-common/context/api";
 
@@ -16,7 +16,7 @@ import { useContextApi } from "next-common/context/api";
  */
 export function useAllBeenDelegatedList(address) {
   const api = useContextApi();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const { tracks = [] } = usePageProps();
   const [beenDelegatedList, setBeenDelegatedList] = useState(null);
   const isLoading = useMemo(
@@ -67,7 +67,7 @@ export function useAllBeenDelegatedList(address) {
       })
       .filter((v) => v);
 
-    if (isMounted.current) {
+    if (isMounted()) {
       setBeenDelegatedList(result);
     }
   }, [api, isMounted, address, tracks]);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useIsMounted from "./useIsMounted";
+import { useMountedState } from "react-use";
 
 function isNewDepositors(depositors) {
   return Array.isArray(depositors[0]);
@@ -14,7 +14,7 @@ export default function useDepositOf(
   const [seconds, setSeconds] = useState([]);
   const [depositRequired, setDepositRequired] = useState(0);
   const [isLoadingSeconds, setIsLoadingSeconds] = useState(true);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   useEffect(() => {
     if (!api) {
@@ -34,7 +34,7 @@ export default function useDepositOf(
       })
       .then((api) => api.query.democracy.depositOf(proposalIndex))
       .then((res) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           const deposit = res.toJSON();
           if (deposit) {
             if (isNewDepositors(deposit)) {
@@ -49,7 +49,7 @@ export default function useDepositOf(
       })
       .catch(console.error)
       .finally(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setIsLoadingSeconds(false);
         }
       });

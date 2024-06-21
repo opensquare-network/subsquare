@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { emptyFunction } from "next-common/utils";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
@@ -54,7 +54,7 @@ function VotePanel({
   onClose,
 }) {
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [tabIndex, setTabIndex] = useState(Aye);
 
   const signerAccount = useSignerAccount();
