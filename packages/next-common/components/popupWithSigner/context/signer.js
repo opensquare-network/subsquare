@@ -10,6 +10,7 @@ import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
 import { useContextApi } from "next-common/context/api";
+import { useGetInjectedWeb3ExtensionFn } from "next-common/components/wallet/useInjectedWeb3Extension";
 
 export const SignerContext = createContext();
 
@@ -18,6 +19,7 @@ export default SignerContext;
 function useSetSigner() {
   const api = useContextApi();
   const { injectedWeb3 } = useInjectedWeb3();
+  const getInjectedWeb3Extension = useGetInjectedWeb3ExtensionFn();
 
   return useCallback(
     async (account) => {
@@ -33,7 +35,7 @@ function useSetSigner() {
         return;
       }
 
-      const extension = injectedWeb3?.[account.meta?.source];
+      const extension = getInjectedWeb3Extension(account.meta?.source);
       if (!extension) {
         return;
       }
@@ -43,7 +45,7 @@ function useSetSigner() {
         api?.setSigner(wallet.signer);
       }
     },
-    [injectedWeb3, api],
+    [injectedWeb3, api, getInjectedWeb3Extension],
   );
 }
 
