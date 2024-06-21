@@ -1,5 +1,6 @@
 import { noop, reject } from "lodash-es";
 import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
+import { useGetInjectedWeb3ExtensionFn } from "next-common/components/wallet/useInjectedWeb3Extension";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignetAccounts } from "next-common/context/signet";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -17,7 +18,8 @@ export function useSubstrateAccounts({
 } = {}) {
   const dispatch = useDispatch();
   const isMounted = useMountedState();
-  const { injectedWeb3, loading: loadingWeb3 } = useInjectedWeb3();
+  const { loading: loadingWeb3 } = useInjectedWeb3();
+  const getInjectedWeb3Extension = useGetInjectedWeb3ExtensionFn();
   const { chainType } = useChainSettings();
   const signetAccounts = useSignetAccounts();
   const [loading, setLoading] = useState(defaultLoading);
@@ -55,12 +57,7 @@ export function useSubstrateAccounts({
     async (targetWallet) => {
       setAccounts([]);
 
-      let extension;
-      if (targetWallet.extensionName === WalletTypes.NOVA) {
-        extension = injectedWeb3?.[WalletTypes.POLKADOT_JS];
-      } else {
-        extension = injectedWeb3?.[targetWallet?.extensionName];
-      }
+      const extension = getInjectedWeb3Extension(targetWallet?.extensionName);
       if (!extension) {
         return;
       }
@@ -86,7 +83,14 @@ export function useSubstrateAccounts({
         dispatch(newErrorToast(e.message));
       }
     },
-    [injectedWeb3, setAccounts, onAccessGranted, isMounted, chainType, wallet],
+    [
+      setAccounts,
+      onAccessGranted,
+      isMounted,
+      chainType,
+      wallet,
+      getInjectedWeb3Extension,
+    ],
   );
 
   const loadSignetVault = useCallback(() => {
