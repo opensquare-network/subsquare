@@ -50,8 +50,8 @@ export default function useStandardVote({
     }
 
     if (bnVoteBalance.gt(votingBalance)) {
-      // showErrorToast("Insufficient voting balance");
-      // return;
+      showErrorToast("Insufficient voting balance");
+      return;
     }
 
     return api.tx[module].vote(referendumIndex, {
