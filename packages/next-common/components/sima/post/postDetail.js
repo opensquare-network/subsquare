@@ -1,4 +1,4 @@
-import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import ContentWithComment from "./contentWithComment";
 import DetailItem from "./detailItem";
 
 export default function SimaPostDetail() {
