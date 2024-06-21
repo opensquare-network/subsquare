@@ -9,7 +9,7 @@ import {
   setProfileIdentityTimeline,
 } from "next-common/store/reducers/profile/identityTimeline";
 import { useSelector } from "react-redux";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import ExternalLink from "next-common/components/externalLink";
 
 function useIdentityUrl() {
@@ -27,7 +27,7 @@ function useIdentityTimeline() {
   const address = useProfileAddress();
   const chain = useChain();
   const timeline = useSelector(profileIdentityTimelineSelector);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const identityApiUrl = useIdentityUrl();
 
   useEffect(() => {
@@ -65,7 +65,7 @@ function useIdentityTimeline() {
         return response.json();
       })
       .then((result) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           dispatch(setProfileIdentityTimeline(result.data?.identityTimeline));
         }
       })

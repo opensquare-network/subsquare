@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { emptyFunction } from "next-common/utils";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
@@ -29,7 +29,7 @@ function PopupContent() {
   } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const signerAccount = useSignerAccount();

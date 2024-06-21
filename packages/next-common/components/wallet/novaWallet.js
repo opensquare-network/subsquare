@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "../../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import WalletOption from "./walletOption";
 import { isNil } from "lodash-es";
 import { useInjectedWeb3Extension } from "./useInjectedWeb3Extension";
@@ -12,7 +12,7 @@ export function NovaWallet({
   loading = false,
 }) {
   const [installed, setInstalled] = useState(null);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const Logo = wallet.logo;
   const { injectedWeb3Extension, loading: loadingWeb3Extension } =
     useInjectedWeb3Extension(WalletTypes.POLKADOT_JS);
@@ -23,7 +23,7 @@ export function NovaWallet({
       return;
     }
 
-    if (isMounted.current) {
+    if (isMounted()) {
       const installed =
         !isNil(injectedWeb3Extension) &&
         window.walletExtension?.isNovaWallet === true;

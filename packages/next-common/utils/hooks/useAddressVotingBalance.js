@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 
 export async function getAddressVotingBalance(api, address) {
   const account = await api.query.system.account(address);
@@ -10,18 +10,18 @@ export async function getAddressVotingBalance(api, address) {
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   useEffect(() => {
     if (api && address) {
       setIsLoading(true);
       getAddressVotingBalance(api, address)
         .then((value) => {
-          if (isMounted.current) {
+          if (isMounted()) {
             setBalance(value);
           }
         })
         .finally(() => {
-          if (isMounted.current) {
+          if (isMounted()) {
             setIsLoading(false);
           }
         });

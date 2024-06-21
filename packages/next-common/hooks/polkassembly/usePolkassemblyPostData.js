@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import {
   convertPolkassemblyReaction,
   toPolkassemblyCommentListItem,
@@ -17,7 +17,7 @@ export function usePolkassemblyPostData({
   polkassemblyPostType = "discussion",
 }) {
   const chain = useChain();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [comments, setComments] = useState([]);
   const [postReactions, setPostReactions] = useState([]);
   const [loadingComments, setLoadingComments] = useState(false);
@@ -44,7 +44,7 @@ export function usePolkassemblyPostData({
         postType: polkassemblyPostType,
       })
       .then(({ result }) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           let comments = (result?.comments || [])
             .filter((item) => item.comment_source !== "subsquare")
             .map((item) => toPolkassemblyCommentListItem(chain, item));
@@ -69,7 +69,7 @@ export function usePolkassemblyPostData({
         }
       })
       .finally(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setLoadingComments(false);
         }
       });
