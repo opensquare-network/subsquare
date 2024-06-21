@@ -7,7 +7,7 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { cn } from "next-common/utils";
 import { SystemLoading } from "@osn/icons/subsquare";
-import { useEventListener } from "usehooks-ts";
+import { useEvent } from "react-use";
 import { useDispatch } from "react-redux";
 import { setEditorUploading } from "next-common/store/reducers/editorSlice";
 import { noop } from "lodash-es";
@@ -50,11 +50,7 @@ function Editor(props, ref) {
     }
   }
 
-  useEventListener(
-    "selectionchange",
-    saveLastCaretPosition,
-    textAreaRef.current,
-  );
+  useEvent("selectionchange", saveLastCaretPosition, textAreaRef.current);
 
   useEffect(() => {
     if (!uploading) {
