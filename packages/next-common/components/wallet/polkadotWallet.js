@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "../../utils/hooks/useIsMounted";
-import useInjectedWeb3 from "./useInjectedWeb3";
 import WalletOption from "./walletOption";
 import { SystemLink } from "@osn/icons/subsquare";
+import { useInjectedWeb3Extension } from "./useInjectedWeb3Extension";
+import { useMountedState } from "react-use";
 
 function isMultiSigWallet(wallet) {
   return wallet?.extensionName === "mimir";
@@ -25,20 +25,21 @@ export default function PolkadotWallet({
   loading = false,
 }) {
   const [installed, setInstalled] = useState(null);
-  const { loading: loadingInjectedWeb3, injectedWeb3 } = useInjectedWeb3();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const Logo = wallet.logo;
+  const { injectedWeb3Extension, loading: loadingWeb3Extension } =
+    useInjectedWeb3Extension(wallet?.extensionName);
 
   useEffect(() => {
     // update if installed changes
-    if (loadingInjectedWeb3) {
+    if (loadingWeb3Extension) {
       return;
     }
 
-    if (isMounted.current) {
-      setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
+    if (isMounted()) {
+      setInstalled(!!injectedWeb3Extension);
     }
-  }, [loadingInjectedWeb3, injectedWeb3, wallet?.extensionName, isMounted]);
+  }, [loadingWeb3Extension, isMounted, injectedWeb3Extension]);
 
   return (
     <WalletOption
