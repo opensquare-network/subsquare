@@ -1,15 +1,15 @@
 import { useCallback } from "react";
 import { stringToHex } from "@polkadot/util";
-import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import {
   getEvmSignerAddress,
   tryConvertToEvmAddress,
 } from "next-common/utils/mixedChainUtil";
 import { useSignMessage as useEVMSignMessage } from "wagmi";
 import { metamask } from "next-common/utils/consts/connect";
+import { useGetInjectedWeb3ExtensionFn } from "next-common/components/wallet/useInjectedWeb3Extension";
 
 export function useSignMessage() {
-  const { injectedWeb3 } = useInjectedWeb3();
+  const getInjectedWeb3Extension = useGetInjectedWeb3ExtensionFn();
   const { signMessage } = useEVMSignMessage();
 
   return useCallback(
@@ -26,7 +26,7 @@ export function useSignMessage() {
         });
       }
 
-      const extension = injectedWeb3?.[walletName];
+      const extension = getInjectedWeb3Extension(walletName);
       if (!extension) {
         throw new Error("Wallet not found: " + walletName);
       }
@@ -41,6 +41,6 @@ export function useSignMessage() {
 
       return signature;
     },
-    [injectedWeb3, signMessage],
+    [signMessage, getInjectedWeb3Extension],
   );
 }
