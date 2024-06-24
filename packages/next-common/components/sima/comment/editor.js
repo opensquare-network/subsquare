@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
-import { useIsMountedBool } from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -51,7 +51,7 @@ function SimaCommentEditor(
   const router = useRouter();
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
-  const isMounted = useIsMountedBool();
+  const isMounted = useMountedState();
   const signSimaMessage = useSignSimaMessage();
 
   const createCommentReply = useCallback(async () => {
