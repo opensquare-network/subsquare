@@ -110,6 +110,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
     if (firstTreasuryMenuItem) {
       const initDataApiMap = {
         proposals: overviewApi.treasuryProposals,
+        spends: overviewApi.treasurySpends,
         bounties: overviewApi.treasuryBounties,
         "child-bounties": overviewApi.treasuryChildBounties,
         tips: overviewApi.treasuryTips,

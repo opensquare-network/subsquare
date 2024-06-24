@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "./useIsMounted";
+import { useMountedState } from "react-use";
 import { u8aConcat } from "@polkadot/util";
 import { Kintsugi, Interlay } from "@interlay/monetary-js";
 import Chains from "../consts/chains";
@@ -40,7 +40,7 @@ export function useTreasuryAccount(api) {
 export default function useTreasuryFree(api) {
   const chain = useChain();
   const [free, setFree] = useState(null);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const treasuryAccount = useTreasuryAccount(api);
 
   useEffect(() => {
@@ -55,13 +55,13 @@ export default function useTreasuryFree(api) {
       api.query.tokens
         .accounts(treasuryAccount, { token })
         .then((accountData) => {
-          if (isMounted.current) {
+          if (isMounted()) {
             setFree(accountData ? accountData.free.toString() : "0");
           }
         });
     } else {
       api?.query.system.account?.(treasuryAccount).then((accountData) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setFree(accountData ? accountData.data.free.toString() : "0");
         }
       });

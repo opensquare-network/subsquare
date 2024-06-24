@@ -8,7 +8,6 @@ import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import Flex from "next-common/components/styled/flex";
 import { toPrecision } from "next-common/utils";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
-import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
@@ -16,6 +15,11 @@ import voteTabs from "../common/voteTabs";
 import filterTabs from "../common/filterTabs";
 import DataList from "next-common/components/dataList";
 import AccountCell from "./accountCell";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
+  import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
+);
 
 export default function NestedVotesPopup({
   setShowVoteList,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import useIsMounted from "../../../../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
 import { checkInputValue, isAddressInGroup } from "../../../../utils";
@@ -87,7 +87,7 @@ function NewTipContent({
 function PopupContent() {
   const { onClose } = usePopupParams();
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const signerAccount = useSignerAccount();
   const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);

@@ -1,5 +1,4 @@
 import { memo, useState } from "react";
-import dynamic from "next/dynamic";
 import styled from "styled-components";
 import Loading from "next-common/components/loading";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
@@ -14,7 +13,6 @@ import VoteBar from "next-common/components/referenda/voteBar";
 import TallyInfo from "next-common/components/referenda/tally/info";
 import MyVote from "./myVote";
 import PrimaryButton from "next-common/lib/button/primary";
-import NestedVotesPopup from "next-common/components/democracy/nestedVotesPopup";
 import useIsDemocracyPassing from "next-common/context/post/democracy/referendum/passing";
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
 import useDemocracyThreshold from "next-common/context/post/democracy/referendum/threshold";
@@ -28,23 +26,20 @@ import WithAddress from "next-common/components/common/withAddress";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "components/gov2/votePopup/voteSuccessful";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const VotePopup = dynamic(() => import("components/referenda/popup"), {
-  ssr: false,
-});
-
-const MoonVotePopup = dynamic(
-  () => import("components/referenda/popup/moonPopup"),
-  {
-    ssr: false,
-  },
+const NestedVotesPopup = dynamicPopup(() =>
+  import("next-common/components/democracy/nestedVotesPopup"),
 );
 
-const FlattenedVotesPopup = dynamic(
-  () => import("next-common/components/democracy/flattenedVotesPopup"),
-  {
-    ssr: false,
-  },
+const VotePopup = dynamicPopup(() => import("components/referenda/popup"));
+
+const MoonVotePopup = dynamicPopup(() =>
+  import("components/referenda/popup/moonPopup"),
+);
+
+const FlattenedVotesPopup = dynamicPopup(() =>
+  import("next-common/components/democracy/flattenedVotesPopup"),
 );
 
 const Title = styled(TitleContainer)`

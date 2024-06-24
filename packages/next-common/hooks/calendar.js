@@ -5,7 +5,7 @@ import {
   calendarUserEventsApi,
   calendarUserEventsSummaryApi,
 } from "../services/url";
-import useIsMounted from "../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import nextApi from "../services/nextApi";
 import dayjs from "dayjs";
 
@@ -13,7 +13,7 @@ import dayjs from "dayjs";
  * @param {dayjs.OpUnitType} unit
  */
 function useFetchCalendarEvents(endpoint, date, unit) {
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [loading, setLoading] = useState(false);
   const [cachedEvents, setCachedEvents] = useState({});
 
@@ -33,7 +33,7 @@ function useFetchCalendarEvents(endpoint, date, unit) {
   }, [begin_time, end_time, cachedKey]);
 
   useEffect(() => {
-    if (isMounted.current) {
+    if (isMounted()) {
       setLoading(true);
       refresh().finally(() => {
         setLoading(false);

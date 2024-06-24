@@ -8,8 +8,10 @@ import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fello
 import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import Tooltip from "next-common/components/tooltip";
-import FellowshipSalaryBumpPopup from "./popup";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const FellowshipSalaryBumpPopup = dynamicPopup(() => import("./popup"));
 
 export default function FellowshipSalaryBump() {
   const router = useRouter();

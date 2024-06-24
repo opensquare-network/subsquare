@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import { encodeAddressToChain } from "../services/address";
@@ -7,40 +7,36 @@ import Identity from "./Identity";
 import { addressEllipsis } from "../utils";
 import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address";
-import {
-  WalletPolkadotjs,
-  WalletMetamask,
-  WalletTailsman,
-  WalletSubwallet,
-  WalletPolkagate,
-  WalletNova,
-} from "@osn/icons/subsquare";
-import WalletTypes from "next-common/utils/consts/walletTypes";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { allWallets } from "next-common/utils/consts/connect";
+import { find } from "lodash-es";
+import ChainTypes from "next-common/utils/consts/chainTypes";
+import { useConnectors } from "wagmi";
 import AddressAvatar from "./user/addressAvatar";
 
-const WalletIcon = ({ wallet }) => {
+function WalletIcon({ wallet: walletName }) {
+  const wallet = find(allWallets, { extensionName: walletName });
+
   return (
-    <div className="absolute right-0 bottom-0">
-      {wallet === WalletTypes.POLKADOT_JS && (
-        <WalletPolkadotjs width={16} height={16} />
-      )}
-      {wallet === WalletTypes.METAMASK && (
-        <WalletMetamask width={16} height={16} />
-      )}
-      {wallet === WalletTypes.TALISMAN && (
-        <WalletTailsman width={16} height={16} />
-      )}
-      {wallet === WalletTypes.SUBWALLET_JS && (
-        <WalletSubwallet width={16} height={16} />
-      )}
-      {wallet === WalletTypes.POLKAGATE && (
-        <WalletPolkagate width={16} height={16} />
-      )}
-      {wallet === WalletTypes.NOVA && <WalletNova width={16} height={16} />}
-    </div>
+    wallet?.logo && (
+      <wallet.logo className="absolute right-0 bottom-0 w-4 h-4" />
+    )
   );
-};
+}
+
+function EvmWalletIcon({ id, wallet }) {
+  const connectors = useConnectors();
+  let connector = find(connectors, { id });
+  // mixed chain talisman
+  if (!connector) {
+    connector = find(
+      connectors,
+      (c) => c.name.toLowerCase() === wallet?.toLowerCase?.(),
+    );
+  }
+
+  return <WalletIcon wallet={connector?.name?.toLowerCase?.()} />;
+}
 
 const AvatarWrapper = styled.div`
   display: flex;
@@ -70,6 +66,8 @@ export default function Account({ account }) {
   const maybeEvmAddress = tryConvertToEvmAddress(address);
   const wallet = account?.meta?.source;
 
+  const isEthereum = account?.type === ChainTypes.ETHEREUM;
+
   useEffect(() => {
     setIdentity(null);
     if (account?.address) {
@@ -84,7 +82,11 @@ export default function Account({ account }) {
     <>
       <AvatarWrapper>
         <AddressAvatar address={address} size={40} />
-        <WalletIcon wallet={wallet} />
+        {isEthereum ? (
+          <EvmWalletIcon id={account?.meta?.connectorId} wallet={wallet} />
+        ) : (
+          <WalletIcon wallet={wallet} />
+        )}
       </AvatarWrapper>
       <NameWrapper>
         {/*TODO: use <IdentityOrAddr> after PR merged*/}

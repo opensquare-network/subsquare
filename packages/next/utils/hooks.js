@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { getAddressVotingBalance, getAddressVote } from "./referendumUtil";
+import { useMountedState } from "react-use";
+import {
+  getAddressVote,
+  getAddressVotingBalance,
+} from "next-common/utils/referendumUtil";
 
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   useEffect(() => {
     if (api && address) {
       setIsLoading(true);
       getAddressVotingBalance(api, address)
         .then((value) => {
-          if (isMounted.current) {
+          if (isMounted()) {
             setBalance(value);
           }
         })
         .finally(() => {
-          if (isMounted.current) {
+          if (isMounted()) {
             setIsLoading(false);
           }
         });
@@ -28,7 +31,7 @@ export function useAddressVotingBalance(api, address) {
 export function useAddressVote(api, referendumIndex, address, updateTime) {
   const [vote, setVote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   useEffect(() => {
     if (!api || !address) {
@@ -38,7 +41,7 @@ export function useAddressVote(api, referendumIndex, address, updateTime) {
     setIsLoading(true);
     getAddressVote(api, referendumIndex, address)
       .then((vote) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setVote(vote);
         }
       })

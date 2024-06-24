@@ -3,7 +3,6 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { useState } from "react";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
 import usePreimage from "next-common/hooks/usePreimage";
-import PreimageDetailPopup from "./preImageDetailPopup";
 import { useDispatch, useSelector } from "react-redux";
 import {
   incPreImagesTrigger,
@@ -13,6 +12,9 @@ import FieldLoading from "../icons/fieldLoading";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import { Deposit, Hash, Proposal, Status } from "./fields";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
 function createPreimageRow(
   hash,

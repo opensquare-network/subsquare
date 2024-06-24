@@ -7,11 +7,14 @@ import PrimaryButton from "next-common/lib/button/primary";
 import Copyable from "../copyable";
 import { SystemEdit2 } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import PublishAvatarPopup from "./publishAvatarPopup";
-import UnsetAvatarPopup from "./unsetAvatarPopup";
 import { useUser } from "next-common/context/user";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import SecondaryButton from "next-common/lib/button/secondary";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const PublishAvatarPopup = dynamicPopup(() => import("./publishAvatarPopup"));
+
+const UnsetAvatarPopup = dynamicPopup(() => import("./unsetAvatarPopup"));
 
 function EditAvatar({ setImageFile, setImageDataUrl }) {
   const inputEl = useRef();

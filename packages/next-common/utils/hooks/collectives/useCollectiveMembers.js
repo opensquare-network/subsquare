@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import useIsMounted from "../useIsMounted";
+import { useMountedState } from "react-use";
 import { useContextApi } from "next-common/context/api";
 
 export default function useCollectiveMembers(moduleName = "council") {
   const api = useContextApi();
   const cache = useRef({});
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -15,7 +15,7 @@ export default function useCollectiveMembers(moduleName = "council") {
     }
 
     if (cache.current[moduleName]) {
-      if (isMounted.current) {
+      if (isMounted()) {
         setMembers(cache.current[moduleName]);
       }
       return;
@@ -25,14 +25,14 @@ export default function useCollectiveMembers(moduleName = "council") {
     api.query[moduleName]
       .members()
       .then((members) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           const normalized = members.toJSON();
           setMembers(normalized);
           cache.current[moduleName] = normalized;
         }
       })
       .finally(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setLoading(false);
         }
       });

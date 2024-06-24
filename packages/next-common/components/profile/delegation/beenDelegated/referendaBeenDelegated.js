@@ -6,7 +6,9 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import DataList from "next-common/components/dataList";
 import { toPrecision } from "next-common/utils";
 import DetailButton from "next-common/components/detailButton";
-import BeenDelegatedPopup from "./beenDelegatedPopup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const BeenDelegatedPopup = dynamicPopup(() => import("./beenDelegatedPopup"));
 
 function BeenDelegatedList({ list, isLoading }) {
   const { decimals, symbol } = useChainSettings();

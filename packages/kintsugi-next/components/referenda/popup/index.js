@@ -6,7 +6,7 @@ import { useAddressVotingBalance } from "utils/hooks";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import Signer from "next-common/components/popup/fields/signerField";
 import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
@@ -42,7 +42,7 @@ function PopupContent() {
   const { vote: addressVote, isLoading: addressVoteIsLoading } =
     useSubMyDemocracyVote(referendumIndex, signerAccount?.realAddress);
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   const getMyVoteAndShowSuccessful = useCallback(async () => {
     const addressVote = await getKintDemocracyDirectVote(

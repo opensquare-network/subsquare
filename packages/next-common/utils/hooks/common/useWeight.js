@@ -1,4 +1,4 @@
-import useIsMounted from "../useIsMounted";
+import { useMountedState } from "react-use";
 import { useEffect, useState } from "react";
 import { BN_ZERO, isFunction, nextTick, objectSpread } from "@polkadot/util";
 import { useContextApi } from "next-common/context/api";
@@ -35,7 +35,7 @@ export function convertWeight(weight) {
 
 export default function useWeight(call) {
   const api = useContextApi();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [state, setState] = useState(() =>
     objectSpread(
       {
@@ -57,7 +57,7 @@ export default function useWeight(call) {
           (await api.tx(call).paymentInfo(ZERO_ACCOUNT)).weight,
         );
 
-        isMounted.current &&
+        isMounted() &&
           setState((prev) =>
             objectSpread({}, prev, {
               encodedCallLength: call.encodedLength,

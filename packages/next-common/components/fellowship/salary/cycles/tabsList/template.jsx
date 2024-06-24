@@ -5,7 +5,7 @@ import Pagination from "next-common/components/pagination";
 import Tabs from "next-common/components/tabs";
 import nextApi from "next-common/services/nextApi";
 import { useState } from "react";
-import { useUpdateEffect } from "usehooks-ts";
+import { useUpdateEffect } from "react-use";
 
 export default function FellowshipSalaryCycleDetailListTemplate({
   items = [],

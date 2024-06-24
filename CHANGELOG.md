@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.7
+
+date: 2024-06-14
+
+- [Big] Support treasury spends.
+- Lazy loading many popup components.
+- Add a foldable referenda menu for fellowship.
+- Show comments immediately after loading from server.
+- Add Father's Day sidebar decoration.
+- Fix connect address error.
+- Fix detail page chart config.
+
+### 4.0.6
+
+date: 2024-06-13
+
+- [Big] Support more EVM wallets with [wagmi](https://wagmi.sh/).
+- [Medium] Support comments filter.
+- Update endpoints.
+- Hide avatar prompt if connected user already set.
+- Support westend testnet.
+- Show core and salary sections for westend collectives.
+- Update decentralized voice cohort 2 delegates for polkadot.
+- Show requested stable coin value in overview request column.
+- Upgrade dependencies.
+
 ### 4.0.5
 
 date: 2024-06-07

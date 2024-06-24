@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BigNumber from "bignumber.js";
 import VoteSummary from "./summary";
-import ClearExpiredReferendaVotePopup from "../clearExpiredReferendaVotePopup";
 import { maxTracksLockSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/classLocks";
 import { referendaLockFromOnChainDataSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/totalOnChainLock";
 import { totalReferendaLockRequiredSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/totalLockRequired";
@@ -14,6 +13,11 @@ import {
   incMyReferendaVotesTrigger,
   isLoadingReferendaSummarySelector,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const ClearExpiredReferendaVotePopup = dynamicPopup(() =>
+  import("../clearExpiredReferendaVotePopup"),
+);
 
 export default function ReferendaSummary() {
   const dispatch = useDispatch();

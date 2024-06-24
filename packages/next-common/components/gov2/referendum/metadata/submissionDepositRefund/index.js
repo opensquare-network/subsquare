@@ -1,13 +1,13 @@
 import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import SubLink from "next-common/components/styled/subLink";
-import dynamic from "next/dynamic";
 import useSubReferendumInfo from "next-common/components/myDeposits/referenda/useSubReferendumInfo";
 import { RefundWrapper } from "../styled";
 import { isNil } from "lodash-es";
 import BigNumber from "bignumber.js";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const RefundPopup = dynamic(() => import("./popup"), { ssr: false });
+const RefundPopup = dynamicPopup(() => import("./popup"));
 
 export default function SubmissionDepositRefund({ pallet = "referenda" }) {
   const { referendumIndex } = useOnchainData();

@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import CurveIconOrigin from "../../../icons/curve";
 import { useState } from "react";
-import ThresholdCurvesGov2TallyPopup from "../../../charts/thresholdCurve/gov2TallyPopup";
 import {
   useApprovalPercentage,
   useSupportPercentage,
 } from "../../../../context/post/gov2/percentage";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const ThresholdCurvesGov2TallyPopup = dynamicPopup(() =>
+  import("../../../charts/thresholdCurve/gov2TallyPopup"),
+);
 
 const CurveIcon = styled(CurveIconOrigin)`
   cursor: pointer;

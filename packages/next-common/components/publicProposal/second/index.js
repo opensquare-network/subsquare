@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from "react";
 import styled from "styled-components";
-import dynamic from "next/dynamic";
 import { countBy } from "lodash-es";
 import BigNumber from "bignumber.js";
 import Loading from "../../loading";
@@ -17,14 +16,11 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import AddressUser from "next-common/components/user/addressUser";
 import { useContextApi } from "next-common/context/api";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const SecondPopup = dynamic(() => import("./popup"), {
-  ssr: false,
-});
+const SecondPopup = dynamicPopup(() => import("./popup"));
 
-const MoonSecondPopup = dynamic(() => import("./popup/moonPopup"), {
-  ssr: false,
-});
+const MoonSecondPopup = dynamicPopup(() => import("./popup/moonPopup"));
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;

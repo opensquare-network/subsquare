@@ -4,8 +4,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import BigNumber from "bignumber.js";
 
-function getDelegated(address, allNestedVotes) {
-  const allVotes = [...allNestedVotes.allAye, ...allNestedVotes.allNay];
+function getDelegated(address, nestedVotes) {
+  const allVotes = [...nestedVotes.allAye, ...nestedVotes.allNay];
   const nestedVote = allVotes.find((item) => item.account === address);
 
   const delegationsCount = nestedVote?.directVoterDelegations?.length ?? 0;
@@ -22,12 +22,12 @@ function getDelegated(address, allNestedVotes) {
   };
 }
 
-export default function StandardVoteTooltipContent({ vote, allNestedVotes }) {
+export default function StandardVoteTooltipContent({ vote, nestedVotes }) {
   const { decimals, symbol } = useChainSettings();
   const lockX = convictionToLockX(vote.conviction);
   const { count: delegationsCount, delegations } = getDelegated(
     vote.account,
-    allNestedVotes,
+    nestedVotes,
   );
   const totalVotes = new BigNumber(vote.votes).plus(delegations).toString();
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { emptyFunction } from "next-common/utils";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
@@ -14,7 +14,7 @@ export default function UnnotePopup({
   onInBlock = emptyFunction,
 }) {
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [isLoading, setIsLoading] = useState(false);
 
   const showErrorToast = useCallback(

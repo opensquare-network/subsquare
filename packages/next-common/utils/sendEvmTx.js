@@ -9,14 +9,17 @@ import {
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 import {
+  getConnector,
   // addNetwork,
   getEthereum,
+  isSameChainId,
   requestAccounts,
   switchNetwork,
 } from "./metamask";
 import getChainSettings from "./consts/settings";
 import { getEvmSignerAddress } from "./mixedChainUtil";
 import isHydradx from "./isHydradx";
+import { hexToNumber } from "viem";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
@@ -33,13 +36,15 @@ export async function sendEvmTx({
 }) {
   const signerAddress = signerAccount?.address;
   const realSignerAddress = getEvmSignerAddress(signerAddress);
+  const connector = getConnector();
 
-  const ethereum = getEthereum(signerAccount?.meta.source);
+  const ethereum = await getEthereum();
+
   if (!ethereum) {
     dispatch(newErrorToast("Please install MetaMask"));
     return;
   }
-  const walletName = ethereum?.isTalisman ? "Talisman" : "MetaMask";
+  const walletName = connector.name;
 
   const toastId = newToastId();
 
@@ -56,7 +61,7 @@ export async function sendEvmTx({
   //   }
   // }
 
-  if (ethereum.chainId !== ethereumNetwork.chainId) {
+  if (!isSameChainId(hexToNumber(ethereumNetwork.chainId))) {
     dispatch(
       newPendingToast(
         toastId,
@@ -64,8 +69,9 @@ export async function sendEvmTx({
       ),
     );
     try {
-      await switchNetwork(ethereum, ethereumNetwork.chainId);
+      await switchNetwork(hexToNumber(ethereumNetwork.chainId));
     } catch (e) {
+      console.error(e);
       dispatch(
         newErrorToast(
           `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`,
@@ -139,6 +145,7 @@ export async function sendEvmTx({
       },
     });
   } catch (e) {
+    console.error(e);
     dispatch(removeToast(toastId));
     setLoading(false);
 

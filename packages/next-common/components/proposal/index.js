@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
 import { hexEllipsis, toPrecision } from "../../utils";
@@ -13,13 +12,14 @@ import { ThemedTag } from "../tags/state/styled";
 import { InfoDocs } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
-import CallDetailPopup from "../callDetailPopup";
 import ProposalChildCalls from "./childCalls";
 import usePreImageCallFromHash from "./preImage";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const LongText = dynamic(() => import("../longText"), {
-  ssr: false,
-});
+const CallDetailPopup = dynamicPopup(() => import("../callDetailPopup"));
+
+const LongText = dynamicClientOnly(() => import("../longText"));
 
 const Header = styled.div`
   font-style: normal;

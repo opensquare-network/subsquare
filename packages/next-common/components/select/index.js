@@ -99,7 +99,7 @@ function Select({
 
   const displayValue = useMemo(() => {
     const item = filteredOptions.find((option) => option.value === value);
-    return item?.label || item?.text;
+    return item?.displayValue || item?.label || item?.text;
   }, [filteredOptions, value]);
 
   return (

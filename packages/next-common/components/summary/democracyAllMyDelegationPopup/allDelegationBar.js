@@ -8,12 +8,18 @@ import {
   incMyReferendaDelegationsTrigger,
   myReferendaDelegationsSelector,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
-import UndelegateAllPopup from "../delegation/undelegateAllPopup";
-import MoonUndelegateAllPopup from "../delegation/undelegateAllPopup/moonPopup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const UndelegateAllPopup = dynamicPopup(() =>
+  import("../delegation/undelegateAllPopup"),
+);
+
+const MoonUndelegateAllPopup = dynamicPopup(() =>
+  import("../delegation/undelegateAllPopup/moonPopup"),
+);
 
 const Count = styled.span`
   color: var(--textSecondary);

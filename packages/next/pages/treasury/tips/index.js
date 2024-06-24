@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
-import dynamic from "next/dynamic";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 import { lowerCase } from "lodash-es";
@@ -12,12 +11,10 @@ import TreasurySummary from "next-common/components/summary/treasurySummary";
 import useHasTips from "next-common/hooks/treasury/useHasTips";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const Popup = dynamic(
-  () => import("next-common/components/treasury/tip/popup"),
-  {
-    ssr: false,
-  },
+const Popup = dynamicPopup(() =>
+  import("next-common/components/treasury/tip/popup"),
 );
 
 export default function TipsPage({ tips: ssrTips }) {

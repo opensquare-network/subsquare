@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Flex from "../styled/flex";
-import useIsMounted from "../../utils/hooks/useIsMounted";
-import Loading from "../loading";
-import useInjectedWeb3 from "./useInjectedWeb3";
+import { useEffect, useState } from "react";
 import WalletOption from "./walletOption";
 import { SystemLink } from "@osn/icons/subsquare";
+import { useInjectedWeb3Extension } from "./useInjectedWeb3Extension";
+import { useMountedState } from "react-use";
 
 function isMultiSigWallet(wallet) {
   return wallet?.extensionName === "mimir";
@@ -27,38 +25,33 @@ export default function PolkadotWallet({
   loading = false,
 }) {
   const [installed, setInstalled] = useState(null);
-  const { loading: loadingInjectedWeb3, injectedWeb3 } = useInjectedWeb3();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const Logo = wallet.logo;
+  const { injectedWeb3Extension, loading: loadingWeb3Extension } =
+    useInjectedWeb3Extension(wallet?.extensionName);
 
   useEffect(() => {
     // update if installed changes
-    if (loadingInjectedWeb3) {
+    if (loadingWeb3Extension) {
       return;
     }
 
-    if (isMounted.current) {
-      setInstalled(!!injectedWeb3?.[wallet?.extensionName]);
+    if (isMounted()) {
+      setInstalled(!!injectedWeb3Extension);
     }
-  }, [loadingInjectedWeb3, injectedWeb3, wallet?.extensionName, isMounted]);
+  }, [loadingWeb3Extension, isMounted, injectedWeb3Extension]);
 
   return (
     <WalletOption
       selected={selected}
       onClick={() => installed && onClick(wallet)}
       installed={installed}
-    >
-      <Flex>
-        <Logo className={wallet.title} alt={wallet.title} />
-        <span className="wallet-title">{wallet.title}</span>
-      </Flex>
-      {installed === false &&
-        (isMultiSigWallet(wallet) ? (
-          <MultiSigWalletUnavailable />
-        ) : (
-          <span className="wallet-not-installed">Not installed</span>
-        ))}
-      {(loading || installed === null) && <Loading />}
-    </WalletOption>
+      logo={<Logo className={wallet.title} alt={wallet.title} />}
+      title={wallet.title}
+      loading={loading}
+      notInstalledContent={
+        isMultiSigWallet(wallet) && <MultiSigWalletUnavailable />
+      }
+    />
   );
 }

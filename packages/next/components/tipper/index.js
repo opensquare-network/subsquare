@@ -1,13 +1,10 @@
 import styled from "styled-components";
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import { isSameAddress } from "next-common/utils";
 import PrimaryButton from "next-common/lib/button/primary";
 import TipperList from "./tipperList";
 import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
 import { useDispatch, useSelector } from "react-redux";
-import CloseTipPopup from "./closeTipPopup";
-import RetractTipPopup from "./retractTipPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
 import { useOnchainData } from "next-common/context/post";
@@ -15,10 +12,13 @@ import { useChainSettings } from "next-common/context/chain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { incTipTrigger } from "next-common/store/reducers/treasury/tip";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const EndorsePopup = dynamic(() => import("./endorsePopup"), {
-  ssr: false,
-});
+const CloseTipPopup = dynamicPopup(() => import("./closeTipPopup"));
+
+const RetractTipPopup = dynamicPopup(() => import("./retractTipPopup"));
+
+const EndorsePopup = dynamicPopup(() => import("./endorsePopup"));
 
 const Description = styled.div`
   font-size: 12px;
