@@ -1,22 +1,16 @@
-import { allVotesSelector } from "next-common/store/reducers/democracy/votes/selectors";
-import { useSelector } from "react-redux";
 import { useComment } from "../../context";
-import { useMemo } from "react";
 import StandardVoteTag from "./standardVoteTag";
+import { useGetAddressVotesDataFn } from "next-common/hooks/useAddressVotesData";
 
 export default function KintDemocracyReferendaVoteTag() {
   const comment = useComment();
-  const allVotes = useSelector(allVotesSelector);
+  const getAddressVotesData = useGetAddressVotesDataFn();
 
-  const user = comment?.author;
-  const vote = useMemo(
-    () => (allVotes || []).find((item) => item.account === user?.address),
-    [allVotes, user?.address],
-  );
+  const votesData = getAddressVotesData(comment?.author?.address);
 
-  if (!vote) {
+  if (!votesData) {
     return null;
   }
 
-  return <StandardVoteTag vote={vote} />;
+  return <StandardVoteTag vote={votesData} />;
 }

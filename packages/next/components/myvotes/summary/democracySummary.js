@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import BigNumber from "bignumber.js";
 import VoteSummary from "./summary";
-import ClearExpiredDemocracyVotePopup from "../clearExpiredDemocracyVotePopup";
-import MoonClearExpiredDemocracyVotePopup from "../clearExpiredDemocracyVotePopup/moonPopup";
 import useBalanceDemocracLock from "./democracy/useBalanceDemocracLock";
 import {
   democracyLockFromOnChainDataSelector,
@@ -18,6 +16,15 @@ import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import isMoonChain from "next-common/utils/isMoonChain";
 import Tooltip from "next-common/components/tooltip";
 import isHydradx from "next-common/utils/isHydradx";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const ClearExpiredDemocracyVotePopup = dynamicPopup(() =>
+  import("../clearExpiredDemocracyVotePopup"),
+);
+
+const MoonClearExpiredDemocracyVotePopup = dynamicPopup(() =>
+  import("../clearExpiredDemocracyVotePopup/moonPopup"),
+);
 
 export default function DemocracySummary() {
   const [showClearExpired, setShowClearExpired] = useState(false);

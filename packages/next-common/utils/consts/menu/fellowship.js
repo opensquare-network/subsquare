@@ -1,4 +1,3 @@
-import React from "react";
 import { sumBy } from "lodash-es";
 import Divider from "../../../components/styled/layout/divider";
 import { startCase } from "lodash-es";
@@ -52,6 +51,46 @@ function getFellowshipSalaryMenu() {
   };
 }
 
+function getFellowshipReferendaMenu(
+  fellowshipTracks = [],
+  currentTrackId,
+  totalActiveCount,
+) {
+  const resolveFellowshipTrackItem = (track) => {
+    return {
+      value: track.id,
+      name: startCase(track.name),
+      pathname: `/fellowship/tracks/${track.id}`,
+      activeCount: track.activeCount,
+      icon: `[${track.id}]`,
+      extraMatchNavMenuActivePathnames: [
+        track.id === currentTrackId && "/fellowship/referenda/[id]",
+      ].filter(Boolean),
+    };
+  };
+
+  const trackItems = fellowshipTracks.map(resolveFellowshipTrackItem);
+
+  return {
+    value: "fellowship-referenda",
+    name: "Referenda",
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship",
+      "/fellowship/tracks/[id]",
+    ],
+    items: [
+      {
+        value: "all",
+        name: Names.all,
+        pathname: "/fellowship",
+        activeCount: totalActiveCount,
+        excludeToSumActives: true,
+      },
+      ...trackItems,
+    ],
+  };
+}
+
 export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
 
@@ -89,33 +128,13 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
         ),
         type: "divider",
       },
-      {
-        value: "all",
-        name: Names.all,
-        pathname: "/fellowship",
-        activeCount: totalActiveCount,
-        excludeToSumActives: true,
-      },
+      getFellowshipReferendaMenu(
+        fellowshipTracks,
+        currentTrackId,
+        totalActiveCount,
+      ),
     ].filter(Boolean),
   };
-
-  const resolveFellowshipTrackItem = (track) => {
-    return {
-      value: track.id,
-      name: startCase(track.name),
-      pathname: `/fellowship/tracks/${track.id}`,
-      activeCount: track.activeCount,
-      icon: `[${track.id}]`,
-      extraMatchNavMenuActivePathnames: [
-        track.id === currentTrackId && "/fellowship/referenda/[id]",
-      ].filter(Boolean),
-    };
-  };
-
-  for (let idx = 0; idx < fellowshipTracks.length; idx++) {
-    const track = fellowshipTracks[idx];
-    menu.items.push(resolveFellowshipTrackItem(track));
-  }
 
   return menu;
 }

@@ -8,9 +8,13 @@ import {
 } from "next-common/store/reducers/fellowship/salary";
 import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import FellowshipSalaryImportPopup from "next-common/components/fellowship/salary/summary/import/popup";
 import Tooltip from "next-common/components/tooltip";
 import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const FellowshipSalaryImportPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/summary/import/popup"),
+);
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);

@@ -1,7 +1,5 @@
 import { isNil, sum } from "lodash-es";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import PreimageDetailPopup from "next-common/components/preImages/preImageDetailPopup";
-import UnnotePopup from "next-common/components/preImages/unnotePopup";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import useColumns from "next-common/components/styledList/useColumns";
 import Tooltip from "next-common/components/tooltip";
@@ -23,6 +21,15 @@ import Loading from "../loading";
 import { useNavCollapsed } from "next-common/context/nav";
 import MyDepositUndoButton from "./undoButton";
 import DataList from "../dataList";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const PreimageDetailPopup = dynamicPopup(() =>
+  import("next-common/components/preImages/preImageDetailPopup"),
+);
+
+const UnnotePopup = dynamicPopup(() =>
+  import("next-common/components/preImages/unnotePopup"),
+);
 
 function createPreimageRow(
   hash,

@@ -1,5 +1,7 @@
-import Popup from "./wrapper/Popup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 import { cn } from "next-common/utils";
+
+const Popup = dynamicPopup(() => import("./wrapper/Popup"));
 
 /**
  * @param {Parameters<Popup>[0]} props

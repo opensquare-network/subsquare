@@ -39,6 +39,10 @@ import PolkassemblyUser from "./user/polkassemblyUser";
 import tw from "tailwind-styled-components";
 import Tooltip from "next-common/components/tooltip";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
+import {
+  isUsdcByMeta,
+  isUsdtByMeta,
+} from "next-common/utils/treasury/spend/usdCheck";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -187,12 +191,26 @@ function PostAmount({ amount, decimals, symbol }) {
   );
 }
 
-function PostValueTitle({ data }) {
+export function TreasurySpendAmount({ meta }) {
+  let { amount } = meta;
+  let symbol = isUsdtByMeta(meta) ? "USDT" : isUsdcByMeta(meta) ? "USDC" : null;
+  if (!symbol) {
+    return null;
+  }
+
+  return <PostAmount amount={amount} symbol={symbol} decimals={6} />;
+}
+
+function PostValueTitle({ data, type }) {
   const { decimals, symbol } = useChainSettings();
   const { onchainData, value } = data;
   const localTreasurySpendAmount = onchainData?.isTreasury
     ? onchainData?.treasuryInfo?.amount
     : value;
+
+  if (businessCategory.treasurySpends === type) {
+    return <TreasurySpendAmount meta={data?.meta} />;
+  }
 
   const method = onchainData?.proposal?.method;
 
@@ -307,7 +325,7 @@ export default function Post({ data, href, type }) {
         <HeadWrapper>
           <ListPostTitle data={data} href={href} />
 
-          <PostValueTitle data={data} />
+          <PostValueTitle data={data} type={type} />
         </HeadWrapper>
 
         <Divider margin={12} />

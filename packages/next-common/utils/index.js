@@ -1,10 +1,10 @@
-import moment from "moment";
 import BigNumber from "bignumber.js";
 import { extractTime } from "@polkadot/util";
 import { encodeAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
+import updateLocale from "dayjs/plugin/updateLocale";
 import { capitalize, isNil } from "lodash-es";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -15,6 +15,7 @@ import { getEffectiveNumbers } from "next-common/utils/viewfuncs";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
+dayjs.extend(updateLocale);
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
@@ -53,7 +54,8 @@ export function timeDurationFromNow(time) {
   if (!time) {
     return "Unknown time";
   }
-  moment.updateLocale("en", {
+
+  dayjs.updateLocale("en", {
     relativeTime: {
       future: "in %s",
       past: "%s ",
@@ -71,17 +73,19 @@ export function timeDurationFromNow(time) {
       yy: "%d y",
     },
   });
-  const now = moment();
-  if (moment(time).isSameOrAfter(now)) {
-    return moment(time).fromNow();
+
+  const now = dayjs();
+  if (dayjs(time).isSame(now) || dayjs(time).isAfter(now)) {
+    return dayjs(time).fromNow();
   }
 
-  let ss = now.diff(time, "seconds");
-  let ii = now.diff(time, "minutes");
-  let hh = now.diff(time, "hours");
-  let dd = now.diff(time, "days");
-  let mm = now.diff(time, "months");
-  let yy = now.diff(time, "years");
+  let ss = now.diff(time, "second");
+  let ii = now.diff(time, "minute");
+  let hh = now.diff(time, "hour");
+  let dd = now.diff(time, "day");
+  let mm = now.diff(time, "month");
+  let yy = now.diff(time, "year");
+
   if (yy) {
     mm %= 12;
     if (mm) {
@@ -89,9 +93,11 @@ export function timeDurationFromNow(time) {
     }
     return `${yy}y ago`;
   }
+
   if (mm) {
     return `${mm}mo${mm > 1 ? "s" : ""} ago`;
   }
+
   if (dd) {
     hh %= 24;
     if (hh && dd < 3) {
@@ -99,6 +105,7 @@ export function timeDurationFromNow(time) {
     }
     return `${dd}d ago`;
   }
+
   if (hh) {
     ii %= 60;
     if (ii) {
@@ -106,6 +113,7 @@ export function timeDurationFromNow(time) {
     }
     return `${hh}h${hh > 1 ? "rs" : ""} ago`;
   }
+
   if (ii) {
     ss %= 60;
     if (ss) {
@@ -113,6 +121,7 @@ export function timeDurationFromNow(time) {
     }
     return `${ii}min${ii > 1 ? "s" : ""} ago`;
   }
+
   return `${ss}s ago`;
 }
 

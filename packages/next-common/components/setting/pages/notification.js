@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import { useRouter } from "next/router";
-import { useUpdateEffect } from "usehooks-ts";
+import { useUpdateEffect } from "react-use";
 
 export default function Notification({ children }) {
   const { unsubscribe } = usePageProps();

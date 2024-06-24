@@ -10,11 +10,21 @@ import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/
 import { Header } from "next-common/components/statistics/styled";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
-import VoteTrend from "next-common/components/statistics/track/voteTrend";
-import AddressTrend from "next-common/components/statistics/track/addressTrend";
-import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
-import DemocracyStatistics from "next-common/components/statistics/democracy";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const VoteTrend = dynamicClientOnly(() =>
+  import("next-common/components/statistics/track/voteTrend"),
+);
+const AddressTrend = dynamicClientOnly(() =>
+  import("next-common/components/statistics/track/addressTrend"),
+);
+const TurnoutStatistics = dynamicClientOnly(() =>
+  import("next-common/components/statistics/track/turnoutStatistics"),
+);
+const DemocracyStatistics = dynamicClientOnly(() =>
+  import("next-common/components/statistics/democracy"),
+);
 
 export default function TrackStatisticsPage({
   track,
@@ -41,12 +51,8 @@ export default function TrackStatisticsPage({
           <Header className="px-6 mb-4">Referenda</Header>
           <div
             className={cn(
-              "flex gap-4 flex-wrap",
-              "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-8px)] [&_>_div]:flex-1",
-              !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
-              !navCollapsed
-                ? "[&_>_div]:max-md:max-w-full"
-                : "[&_>_div]:max-sm:max-w-full",
+              "grid grid-cols-2 gap-4",
+              !navCollapsed ? "max-md:grid-cols-1" : "max-sm:grid-cols-1",
             )}
           >
             <VoteTrend turnout={turnout} />

@@ -5,7 +5,7 @@ import {
   getThresholdOfSimplyMajority,
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
-} from "utils/referendumUtil";
+} from "next-common/utils/referendumUtil";
 import Threshold from "../threshold";
 import { isNil } from "lodash-es";
 import VoteBarBarProgress from "./barProgress";

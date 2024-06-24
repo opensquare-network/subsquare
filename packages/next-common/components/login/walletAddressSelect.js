@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import AddressSelect from "../addressSelect";
 import ErrorText from "../ErrorText";
@@ -10,7 +10,12 @@ import {
 } from "../../utils/consts/connect";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
-import { noop } from "lodash-es";
+import { noop, some } from "lodash-es";
+import isMixedChain from "next-common/utils/isMixedChain";
+import EVMEntryWalletOption from "../wallet/evmEntryWalletOption";
+import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
+import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
+import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupView";
 
 const Label = styled.div`
   font-weight: bold;
@@ -28,13 +33,16 @@ export default function WalletAddressSelect({
   wallet,
   setWallet,
   selectedWallet,
-  setSelectWallet,
+  setSelectedWallet,
   selectedAccount,
   setSelectedAccount,
   lastUsedAddress,
 }) {
   const chain = useChain();
-  const [accounts, setAccounts] = useState([]);
+  const { accounts: accounts } = useSubstrateAccounts({
+    wallet: selectedWallet,
+  });
+  const [, setView] = useConnectPopupView();
 
   useEffect(() => {
     setSelectedAccount();
@@ -59,9 +67,7 @@ export default function WalletAddressSelect({
       setSelectedAccount(account);
 
       if (
-        !getWallets().some(
-          ({ extensionName }) => extensionName === selectedWallet,
-        )
+        !some(getWallets(), { extensionName: selectedWallet?.extensionName })
       ) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         await extensionDapp.web3Enable("subsquare");
@@ -83,9 +89,16 @@ export default function WalletAddressSelect({
         <SelectWallet
           wallets={getSingleSigWallets()}
           selectedWallet={selectedWallet}
-          setSelectWallet={setSelectWallet}
-          setAccounts={setAccounts}
-          setWallet={setWallet}
+          setSelectedWallet={setSelectedWallet}
+          extraWallets={
+            isMixedChain() && (
+              <EVMEntryWalletOption
+                onClick={() => {
+                  setView(CONNECT_POPUP_VIEWS.EVM);
+                }}
+              />
+            )
+          }
         />
       </div>
 
@@ -95,9 +108,7 @@ export default function WalletAddressSelect({
           <SelectWallet
             wallets={multisigWallets}
             selectedWallet={selectedWallet}
-            setSelectWallet={setSelectWallet}
-            setAccounts={setAccounts}
-            setWallet={setWallet}
+            setSelectedWallet={setSelectedWallet}
           />
         </div>
       )}

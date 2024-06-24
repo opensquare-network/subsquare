@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "./useIsMounted";
+import { useMountedState } from "react-use";
 
 const callCache = {};
 
@@ -7,7 +7,7 @@ function useCall(fn, params = [], { cacheKey = "", trigger } = {}) {
   const [result, setResult] = useState();
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   useEffect(() => {
     if (!fn) {
       return;
@@ -28,7 +28,7 @@ function useCall(fn, params = [], { cacheKey = "", trigger } = {}) {
         if (cacheKey) {
           callCache[cacheKey] = value;
         }
-        if (isMounted.current) {
+        if (isMounted()) {
           setResult(value);
           setLoaded(true);
         }

@@ -21,7 +21,7 @@ const Wrapper = styled.span`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
   border-radius: ${(props) => props.size / 2}px;
-  background: var(--neutral200);
+  background-color: var(--neutral200);
 `;
 
 const ImgWrapper = styled.img`
@@ -36,7 +36,7 @@ export default function Avatar({ address, size = 24 }) {
 
   const addressAvatarMap = useAddressAvatarMap();
   const image = addressAvatarMap?.get(maybeEvmAddress);
-  const imgSize = (size / 10) * 8;
+  const imgSize = (size / 10) * 9;
   if (image) {
     return (
       <Wrapper size={size}>

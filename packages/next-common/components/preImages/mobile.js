@@ -2,7 +2,6 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { useState } from "react";
 import usePreimage from "next-common/hooks/usePreimage";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
-import PreimageDetailPopup from "./preImageDetailPopup";
 import { useDispatch, useSelector } from "react-redux";
 import {
   incPreImagesTrigger,
@@ -12,6 +11,9 @@ import FieldLoading from "../icons/fieldLoading";
 import { Deposit, Hash, Proposal, Status } from "./fields";
 import tw from "tailwind-styled-components";
 import DetailButton from "../detailButton";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
 const FieldName = tw.span`text-textTertiary`;
 

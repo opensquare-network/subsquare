@@ -3,22 +3,30 @@ import { noop } from "lodash-es";
 import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
+import NavMenuGroup from "./group";
+import { useNavSubmenuVisible } from "next-common/context/nav";
 
 export default function NavMenuItem({
+  item,
   active,
   collapsed,
-  icon,
-  label,
-  activeCount,
   extra,
-  link,
   onClick = noop,
   className = "",
   hoverTooltipLabel = true,
+  items,
 }) {
-  const isExternal = isExternalLink(link);
+  const isExternal = isExternalLink(item?.pathname);
+  const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
 
-  let content = (
+  let content = items?.length ? (
+    <NavMenuGroup
+      menu={item}
+      navSubmenuVisible={navSubmenuVisible}
+      setNavSubmenuVisible={setNavSubmenuVisible}
+      padSubMenuItems={false}
+    />
+  ) : (
     <div
       onClick={onClick}
       className={cn(
@@ -30,7 +38,7 @@ export default function NavMenuItem({
         className,
       )}
     >
-      {icon && (
+      {item?.icon && (
         <span
           className={cn(
             "w-6 h-6",
@@ -40,7 +48,7 @@ export default function NavMenuItem({
             "group-hover/menu-item:[&_svg_path]:fill-theme500",
           )}
         >
-          {icon}
+          {item?.icon}
         </span>
       )}
       <span
@@ -50,10 +58,10 @@ export default function NavMenuItem({
         )}
       >
         <span>
-          {label}{" "}
-          {!!activeCount && (
+          {item?.name}{" "}
+          {!!item?.activeCount && (
             <span className="ml-1 text-navigationTextTertiary">
-              {activeCount}
+              {item?.activeCount}
             </span>
           )}
           {isExternal && (
@@ -65,10 +73,10 @@ export default function NavMenuItem({
     </div>
   );
 
-  if (link) {
+  if (item?.pathname && !items) {
     content = (
       <Link
-        href={link || ""}
+        href={item?.pathname || ""}
         target={isExternal ? "_blank" : "_self"}
         className="w-full"
       >
@@ -81,7 +89,7 @@ export default function NavMenuItem({
     content = (
       <Tooltip
         side="right"
-        content={label}
+        content={item?.name}
         sideOffset={20}
         className="flex w-full"
       >

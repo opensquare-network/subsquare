@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import {
   checkInputValue,
@@ -32,7 +32,7 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
     submitExtrinsic = emptyFunction,
   } = usePopupParams();
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();

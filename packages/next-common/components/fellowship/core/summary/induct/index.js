@@ -1,9 +1,13 @@
-import FellowshipCoreInductionPopup from "next-common/components/fellowship/core/summary/induct/popup";
 import { useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemPlus } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import { useFellowshipCanInductMember } from "next-common/hooks/fellowship/useFellowshipCanInductMember";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const FellowshipCoreInductionPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/core/summary/induct/popup"),
+);
 
 /**
  * @param {ButtonProps} props

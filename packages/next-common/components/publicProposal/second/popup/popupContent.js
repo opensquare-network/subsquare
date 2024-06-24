@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Signer from "next-common/components/popup/fields/signerField";
-import useIsMounted from "../../../../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 import DepositRequired from "./depositRequired";
 import SubmitButton from "./submitButton";
@@ -26,7 +26,7 @@ export default function PopupContent() {
     submitExtrinsic = emptyFunction,
   } = usePopupParams();
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const signerAccount = useSignerAccount();
   const node = useChainSettings();
 

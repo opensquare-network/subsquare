@@ -5,7 +5,7 @@ import Tab from "next-common/components/tab";
 import InnerDataTable from "next-common/components/table/innerDataTable";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
-import { useLocalStorage } from "usehooks-ts";
+import { useLocalStorage } from "react-use";
 
 const JsonView = dynamic(() => import("next-common/components/jsonView"), {
   ssr: false,

@@ -6,18 +6,26 @@ import { MenuTreasury } from "@osn/icons/subsquare";
 export const Names = {
   treasury: "TREASURY",
   proposals: "Proposals",
+  spends: "Spends",
   bounties: "Bounties",
   childBounties: "Child Bounties",
   tips: "Tips",
 };
 
+export const SpendsSupportingChains = [Chains.polkadot];
+
 export function getTreasuryMenu(summary) {
   const activeTreasuryProposals = summary?.treasuryProposals?.active || 0;
+  const activeTreasurySpends = summary?.treasurySpends?.active || 0;
   const activeBounties = summary?.bounties?.active || 0;
   const activeChildBounties = summary?.childBounties?.active || 0;
   const activeTips = summary?.tips?.active || 0;
   const totalActiveCount =
-    activeTreasuryProposals + activeBounties + activeChildBounties + activeTips;
+    activeTreasuryProposals +
+    activeTreasurySpends +
+    activeBounties +
+    activeChildBounties +
+    activeTips;
 
   return {
     name: Names.treasury,
@@ -30,6 +38,14 @@ export function getTreasuryMenu(summary) {
     pathname: "/treasury",
     activeCount: totalActiveCount,
     items: [
+      {
+        value: "spends",
+        name: Names.spends,
+        pathname: "/treasury/spends",
+        extraMatchNavMenuActivePathnames: ["/treasury/spends/[id]"],
+        excludeToChains: getExcludeChains(SpendsSupportingChains),
+        activeCount: activeTreasurySpends,
+      },
       {
         value: "proposals",
         name: Names.proposals,

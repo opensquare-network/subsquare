@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "../useIsMounted";
+import { useMountedState } from "react-use";
 import { getFellowshipVote } from "../../gov2/getFellowshipVote";
 import { useContextApi } from "next-common/context/api";
 
@@ -7,7 +7,7 @@ export default function useFellowshipVote(referendumIndex, address) {
   const api = useContextApi();
   const [vote, setVote] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   useEffect(() => {
     if (!api) {
@@ -20,7 +20,7 @@ export default function useFellowshipVote(referendumIndex, address) {
         setVote(result);
       })
       .finally(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setIsLoading(false);
         }
       });
