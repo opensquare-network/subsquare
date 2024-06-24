@@ -71,8 +71,10 @@ function ArchivedMenu({ collapsed, archivedMenu = [] }) {
       <ul>
         <li>
           <NavMenuItem
-            icon={<ArrowCircleLeft />}
-            label="Back"
+            item={{
+              icon: <ArrowCircleLeft />,
+              name: "Back",
+            }}
             onClick={() => {
               dispatch(setMenuShowMainMenu(true));
             }}
@@ -95,9 +97,11 @@ function ArchivedMenuButton({ collapsed }) {
     <ul>
       <li>
         <NavMenuItem
+          item={{
+            icon: <MenuArchived />,
+            name: "Archived",
+          }}
           collapsed={collapsed}
-          icon={<MenuArchived />}
-          label="Archived"
           onClick={() => {
             dispatch(setMenuShowMainMenu(false));
           }}
