@@ -11,6 +11,7 @@ const democracyVotesSlice = createSlice({
   initialState: {
     allVotes: null,
     votesTrigger: 1,
+    loading: false,
   },
   reducers: {
     setAllVotes(state, { payload }) {
@@ -22,14 +23,14 @@ const democracyVotesSlice = createSlice({
     clearVotersTrigger(state) {
       state.votesTrigger = 1;
     },
+    setLoading(state, { payload }) {
+      state.loading = payload;
+    },
   },
 });
 
-export const {
-  setAllVotes,
-  incVotesTrigger,
-  clearVotersTrigger,
-} = democracyVotesSlice.actions;
+export const { setAllVotes, incVotesTrigger, clearVotersTrigger, setLoading } =
+  democracyVotesSlice.actions;
 
 export const clearVotes = () => async (dispatch) => {
   dispatch(setAllVotes(null));
@@ -38,6 +39,8 @@ export const clearVotes = () => async (dispatch) => {
 
 export const fetchVotes =
   (api, referendumIndex, passedHeight) => async (dispatch) => {
+    dispatch(setLoading(true));
+
     let votes;
     if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
       votes = await getKintsugiReferendumVotes(
@@ -50,6 +53,7 @@ export const fetchVotes =
     }
 
     dispatch(setAllVotes(votes));
+    dispatch(setLoading(false));
   };
 
 export default democracyVotesSlice.reducer;

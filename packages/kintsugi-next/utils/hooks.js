@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { getVotingBalance } from "./escrow/votingBalance";
 import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
@@ -7,7 +7,7 @@ import chainOrScanHeightSelector from "next-common/store/reducers/selectors/heig
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   const refresh = useCallback(() => {
     if (!api || !address) {
@@ -18,12 +18,12 @@ export function useAddressVotingBalance(api, address) {
     setIsLoading(true);
     getVotingBalance(api, address)
       .then((value) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setBalance(value);
         }
       })
       .finally(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setIsLoading(false);
         }
       });

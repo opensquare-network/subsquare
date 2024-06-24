@@ -5,7 +5,7 @@ import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
 import { prettyHTML, toApiType } from "../../utils/viewfuncs";
-import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import IdentityOrAddr from "../IdentityOrAddr";
 import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -58,7 +58,7 @@ function CommentEditor(
   const router = useRouter();
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
-  const isMounted = useIsMountedBool();
+  const isMounted = useMountedState();
   const { ensureLogin } = useEnsureLogin();
 
   const createComment = async () => {

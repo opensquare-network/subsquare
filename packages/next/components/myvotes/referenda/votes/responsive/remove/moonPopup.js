@@ -4,7 +4,7 @@ import { noop } from "lodash-es";
 import RelatedReferenda from "../../../../popupCommon/relatedReferenda";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { encodeRemoveVoteForTrackData } from "next-common/utils/moonPrecompiles/convictionVoting";
 import { encodeProxyData } from "next-common/utils/moonPrecompiles/proxy";
 import { sendEvmTx } from "next-common/utils/sendEvmTx";
@@ -19,7 +19,7 @@ export default function ReferendumRemovalPopup({
     (message) => dispatch(newErrorToast(message)),
     [dispatch],
   );
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [isLoading, setIsLoading] = useState(false);
 
   const doRemoveVote = useCallback(

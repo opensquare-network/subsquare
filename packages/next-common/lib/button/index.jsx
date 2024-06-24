@@ -47,7 +47,7 @@ export default function _Button(props) {
           ),
         // border radius
         "rounded-lg",
-        smallSize && "rounded",
+        smallSize && "rounded-md",
         className,
       )}
     >

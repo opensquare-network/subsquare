@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash-es";
 import ArticleContent from "next-common/components/articleContent";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Vote from "./vote";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import Business from "./business";
 import Metadata from "./metadata";
 import Timeline from "./timeline";
@@ -31,7 +31,7 @@ export default function MotionDetail() {
   const chain = useChain();
   const postDispatch = usePostDispatch();
   const api = useContextApi();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const post = usePost();
   const motionBusinessData = useCouncilMotionBusinessData();
 
@@ -109,7 +109,7 @@ export default function MotionDetail() {
           }
         });
 
-        if (isMounted.current) {
+        if (isMounted()) {
           setVotes(newVotes);
         }
       })

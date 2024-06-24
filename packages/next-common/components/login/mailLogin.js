@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
@@ -22,6 +22,9 @@ import {
   LoginResult,
   setLoginResult,
 } from "next-common/store/reducers/userSlice";
+import { setConnectPopupView } from "next-common/store/reducers/connectPopupSlice";
+import isEvmChain from "next-common/utils/isEvmChain";
+import { CONNECT_POPUP_DEFAULT_VIEW } from "next-common/utils/constants";
 
 const ForgetPassword = styled.div`
   margin-top: 8px;
@@ -29,7 +32,7 @@ const ForgetPassword = styled.div`
   font-size: 12px;
 `;
 
-export default function MailLogin({ setView }) {
+export default function MailLogin() {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
@@ -87,19 +90,12 @@ export default function MailLogin({ setView }) {
           className="w-full"
           onClick={(event) => {
             event.preventDefault();
-            setView("web3");
+            dispatch(setConnectPopupView(CONNECT_POPUP_DEFAULT_VIEW));
           }}
         >
-          Connect with web3 address
+          Connect with {isEvmChain() ? "EVM" : "web3"} address
         </SecondaryButton>
       </FormButtonsWrapper>
-
-      <div className="text-center text14Medium text-textSecondary">
-        Don't have an account?{" "}
-        <Link href={"/signup"} className="text-theme500">
-          Sign up
-        </Link>
-      </div>
     </FormWrapper>
   );
 }

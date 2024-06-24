@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import toApiCouncil from "next-common/utils/toApiCouncil";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
 import { emptyFunction } from "next-common/utils";
@@ -66,7 +66,7 @@ export default function PopupContent() {
     showVoteSuccessful(currentVote);
   }, [refVotes, signerAccount?.realAddress, showVoteSuccessful]);
 
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 

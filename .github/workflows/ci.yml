@@ -7,7 +7,7 @@ on:
     branches: ["main", "release-*"]
 
 jobs:
-  lint:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,25 +29,11 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: lint
-
-  build:
-    runs-on: ubuntu-latest
-    needs: [lint]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup node LTS
-        uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
-          cache: yarn
-          cache-dependency-path: yarn.lock
-
-      - name: Yarn install
+      
+      - name: Run test
         uses: borales/actions-yarn@v4
         with:
-          cmd: install # will run `yarn install` command
+          cmd: test
 
       - name: Build next
         uses: borales/actions-yarn@v4

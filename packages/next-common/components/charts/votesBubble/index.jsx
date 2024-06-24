@@ -4,7 +4,7 @@ import { flatten } from "lodash-es";
 import CirclePacking from "next-common/components/charts/circlePacking";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useLayoutEffect, useRef, useState } from "react";
-import { useEventListener } from "usehooks-ts";
+import { useEvent } from "react-use";
 import VoteBubbleContent from "./bubbleContent";
 import VotesBubbleLegend from "./legend";
 import DVBubbleLegend from "./DVBubbleLegend";
@@ -50,7 +50,7 @@ export default function VotesBubble({
     handleSize();
   }, [navCollapsed, ref.current]);
 
-  useEventListener("resize", handleSize, ref.current);
+  useEvent("resize", handleSize);
 
   function handleSize() {
     if (!ref.current) return;

@@ -1,6 +1,5 @@
 import { cn } from "next-common/utils";
 import { useState } from "react";
-import FellowshipCoreFeedsCompareParamsChangesPopup from "./compareParamsChangesPopup";
 import FellowshipCoreFeedsParamsChangedEvent from "./event/paramsChanged";
 import FellowshipCoreFeedsOffboardedEvent from "./event/offboarded";
 import FellowshipCoreFeedsProvenEvent from "./event/proven";
@@ -10,6 +9,11 @@ import FellowshipCoreFeedsImportedEvent from "./event/imported";
 import FellowshipCoreFeedsInductedEvent from "./event/inducted";
 import FellowshipCoreFeedsActiveEvent from "./event/active";
 import FellowshipCoreFeedsRequestedEvent from "next-common/components/fellowship/core/feeds/event/requested";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const FellowshipCoreFeedsCompareParamsChangesPopup = dynamicPopup(() =>
+  import("./compareParamsChangesPopup"),
+);
 
 export default function FellowshipCoreFeedsListEvent({
   feed = {},

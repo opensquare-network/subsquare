@@ -1,6 +1,6 @@
 import { cn } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
-import { useToggle } from "usehooks-ts";
+import { useToggle } from "react-use";
 import NavMenu from "./menu";
 import tw from "tailwind-styled-components";
 import HeaderDrawer from "../header/drawer";

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { emptyFunction } from "next-common/utils";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
@@ -17,7 +17,7 @@ export default function useTxSubmission({
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const doSubmit = useCallback(async () => {

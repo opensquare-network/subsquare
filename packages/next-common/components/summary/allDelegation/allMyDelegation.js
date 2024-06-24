@@ -2,9 +2,13 @@ import HStack from "next-common/components/styled/hStack";
 import ListSVG from "next-common/assets/imgs/icons/list.svg";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
-import AllMyDelegationPopup from "next-common/components/summary/democracyAllMyDelegationPopup";
 import { ListButton } from "./styled";
 import AllMyDelegationInfo from "./allMyDelegationInfo";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const AllMyDelegationPopup = dynamicPopup(() =>
+  import("next-common/components/summary/democracyAllMyDelegationPopup"),
+);
 
 export default function AllMyDelegation({ delegations }) {
   const [showAllMyDelegationPopup, setShowAllMyDelegationPopup] =

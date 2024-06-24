@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { gov2State } from "next-common/utils/consts/state";
 import { useMemo } from "react";
 import { usePostState } from "next-common/context/post";
-import { useDecisionDeposit } from "next-common/context/post/gov2/referendum";
+import { useDecisionDeposit } from "next-common/hooks/referenda/useReferendumInfo";
 
 const StatusBase = styled.div`
   margin-top: 8px !important;
@@ -34,20 +34,31 @@ const NegativeStatus = styled(StatusBase)`
 export function PrepareStatus() {
   const deposit = useDecisionDeposit();
 
-  return <DecidingStatus>
-    { deposit ? gov2State.Preparing : "Waiting for Decision Deposit" }
-  </DecidingStatus>;
+  return (
+    <DecidingStatus>
+      {deposit ? gov2State.Preparing : "Waiting for Decision Deposit"}
+    </DecidingStatus>
+  );
 }
 
 export default function Status() {
   const state = usePostState();
   // same logic: `show confirming period`
   const isPositiveState = useMemo(
-    () => [gov2State.Confirming, gov2State.Approved, gov2State.Executed].includes(state),
+    () =>
+      [gov2State.Confirming, gov2State.Approved, gov2State.Executed].includes(
+        state,
+      ),
     [state],
   );
-  const isNegativeState = useMemo(() =>
-      [gov2State.Rejected, gov2State.Killed, gov2State.TimedOut, gov2State.Cancelled].includes(state),
+  const isNegativeState = useMemo(
+    () =>
+      [
+        gov2State.Rejected,
+        gov2State.Killed,
+        gov2State.TimedOut,
+        gov2State.Cancelled,
+      ].includes(state),
     [state],
   );
 

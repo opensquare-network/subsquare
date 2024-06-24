@@ -12,7 +12,7 @@
   "dependencies": {
     "@interlay/monetary-js": "^0.5.3",
     "@next/env": "^13.3.0",
-    "@osn/icons": "^1.105.0",
+    "@osn/icons": "^1.107.0",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
     "clsx": "^1.2.1",
@@ -20,7 +20,7 @@
     "dayjs": "^1.10.7",
     "http-proxy": "^1.18.1",
     "lodash-es": "^4.17.21",
-    "next": "^14.1.1",
+    "next": "^14.2.3",
     "next-common": "workspace:*",
     "nprogress": "^0.2.0",
     "react": "^18.2.0",

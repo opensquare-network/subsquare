@@ -1,5 +1,4 @@
 import { gov2VotingState } from "next-common/utils/consts/state";
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import Gov2Status from "./status";
 import Gov2Tally from "./tally";
@@ -16,14 +15,11 @@ import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
 import Request from "./request";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const VotePopup = dynamic(() => import("../votePopup"), {
-  ssr: false,
-});
+const VotePopup = dynamicPopup(() => import("../votePopup"));
 
-const MoonVotePopup = dynamic(() => import("../votePopup/moonPopup"), {
-  ssr: false,
-});
+const MoonVotePopup = dynamicPopup(() => import("../votePopup/moonPopup"));
 
 export default function Gov2Sidebar() {
   const detail = usePost();

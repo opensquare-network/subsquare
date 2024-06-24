@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import EditInput from "next-common/components/editInput";
-import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import {
   HtmlPreviewer,
   MarkdownPreviewer,
@@ -46,7 +46,7 @@ function CommentItemImpl({
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [highlight, setHighlight] = useState(false);
-  const isMounted = useIsMountedBool();
+  const isMounted = useMountedState();
   const { hasAnchor, anchor } = useCommentsAnchor();
   const [showReplies, setShowReplies] = useState(false);
   const comments = useComments();

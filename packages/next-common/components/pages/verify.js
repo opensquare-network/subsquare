@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
@@ -19,7 +19,7 @@ export default function Verify() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { email, token } = router.query;
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const { countdown, counting: success, startCountdown } = useCountdown(3);
   const setUser = useSetUser();
   const userContext = useUserContext();
@@ -44,19 +44,19 @@ export default function Verify() {
       })
       .then(({ result, error }) => {
         if (result) {
-          if (isMounted.current) {
+          if (isMounted()) {
             setUser(result);
             fetchAndUpdateUserStatus(userContext);
             startCountdown();
           }
         } else if (error) {
-          if (isMounted.current) {
+          if (isMounted()) {
             setErrors(error);
           }
         }
       })
       .finally(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setLoading(false);
         }
       });

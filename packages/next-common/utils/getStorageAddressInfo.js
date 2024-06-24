@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import ChainTypes from "./consts/chainTypes";
 import getChainSettings from "./consts/settings";
 import { isPolkadotAddress } from "./viewfuncs";
-import { getWallets } from "./consts/connect";
 
 export default function getStorageAddressInfo(key) {
   const data = localStorage.getItem(key);
@@ -34,10 +33,6 @@ export default function getStorageAddressInfo(key) {
     ) &&
     !isPolkadotAddress(info.address)
   ) {
-    return;
-  }
-
-  if (!getWallets().find((item) => item.extensionName === info.wallet)) {
     return;
   }
 

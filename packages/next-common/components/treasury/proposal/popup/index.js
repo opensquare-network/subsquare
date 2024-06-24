@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
-import useIsMounted from "../../../../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 
 import { checkInputValue, emptyFunction } from "../../../../utils";
@@ -29,7 +29,7 @@ function PopupContent() {
     onSubmitted = emptyFunction,
   } = usePopupParams();
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const signerAccount = useSignerAccount();
 
   const [inputValue, setInputValue] = useState();

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Input from "next-common/components/input";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
@@ -81,7 +81,7 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   const [agreeError, setAgreeError] = useState();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const { countdown, counting: emailSent, startCountdown } = useCountdown(3);
   const setUser = useSetUser();
   const { disableWeb2Registration } = useChainSettings();
@@ -105,17 +105,17 @@ export default function Signup() {
       setLoading(true);
       const res = await nextApi.post("auth/signup", formData);
       if (res.result) {
-        if (isMounted.current) {
+        if (isMounted()) {
           setUser(res.result);
           setSuccess(true);
         }
         sendVerifyEmail();
       } else if (res.error) {
-        if (isMounted.current) {
+        if (isMounted()) {
           setErrors(res.error);
         }
       }
-      if (isMounted.current) {
+      if (isMounted()) {
         setLoading(false);
       }
     },
@@ -130,19 +130,19 @@ export default function Signup() {
       .post("user/resendverifyemail")
       .then(({ result, error }) => {
         if (result) {
-          if (isMounted.current) {
+          if (isMounted()) {
             startCountdown();
           }
           return;
         }
-        if (isMounted.current) {
+        if (isMounted()) {
           showErrorToast(
             error?.message ?? "some error occured when sending an Email",
           );
         }
       })
       .catch(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           showErrorToast("some error occurred when sending an Email");
         }
       });

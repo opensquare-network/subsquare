@@ -1,11 +1,11 @@
 import { cn } from "next-common/utils";
-import { startCase, capitalize } from "lodash-es";
+import { startCase, capitalize, noop, omit } from "lodash-es";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { ArrowDown } from "@osn/icons/subsquare";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
-import { useUpdateEffect } from "usehooks-ts";
+import { useUpdateEffect } from "react-use";
 import NavMenuItem from "./item";
 import NavMenuDivider from "../divider";
 import { sumBy } from "lodash-es";
@@ -14,7 +14,8 @@ export default function NavMenuGroup({
   menu = {},
   collapsed,
   navSubmenuVisible,
-  setNavSubmenuVisible,
+  setNavSubmenuVisible = noop,
+  padSubMenuItems = true,
 }) {
   const { sm } = useScreenSize();
   const router = useRouter();
@@ -23,14 +24,14 @@ export default function NavMenuGroup({
   const [submenuVisible, setSubmenuVisible] = useState(
     collapsed
       ? false
-      : firstPath === menu.pathname || navSubmenuVisible[menu.name],
+      : firstPath === menu.pathname || navSubmenuVisible?.[menu.name],
   );
 
   useUpdateEffect(() => {
     setSubmenuVisible(
       collapsed
         ? false
-        : firstPath === menu.pathname || navSubmenuVisible[menu.name],
+        : firstPath === menu.pathname || navSubmenuVisible?.[menu.name],
     );
   }, [collapsed]);
 
@@ -53,19 +54,25 @@ export default function NavMenuGroup({
         <HoverCard.Root openDelay={0} closeDelay={0}>
           <HoverCard.Trigger>
             <NavMenuItem
+              item={{
+                ...omit(menu, "pathname"),
+                name: startCase(capitalize(menu.name)),
+                activeCount:
+                  sumBy(
+                    (menu?.items || []).filter(
+                      (item) => !item.excludeToSumActives,
+                    ),
+                    "activeCount",
+                  ) ?? menu.activeCount,
+              }}
               onClick={toggleChildMenu}
-              icon={menu.icon}
-              label={startCase(capitalize(menu.name))}
-              activeCount={
-                sumBy(
-                  (menu?.items || []).filter(
-                    (item) => !item.excludeToSumActives,
-                  ),
-                  "activeCount",
-                ) ?? menu.activeCount
-              }
               collapsed={collapsed}
-              active={firstPath === menu.pathname}
+              active={
+                firstPath === menu.pathname ||
+                menu.extraMatchNavMenuActivePathnames?.includes?.(
+                  router.pathname,
+                )
+              }
               extra={
                 <span>
                   <ArrowDown
@@ -85,10 +92,11 @@ export default function NavMenuGroup({
               <div className="pl-6">
                 <div className="py-2.5 px-4 bg-navigationBg w-[268px] rounded-lg max-h-screen overflow-y-scroll scrollbar-pretty border border-navigationBorder">
                   <NavMenuItem
-                    label={startCase(capitalize(menu.name))}
-                    activeCount={
-                      sumBy(menu?.items, "activeCount") ?? menu.activeCount
-                    }
+                    item={{
+                      name: startCase(capitalize(menu.name)),
+                      activeCount:
+                        sumBy(menu?.items, "activeCount") ?? menu.activeCount,
+                    }}
                     className="pointer-events-none"
                   />
                   <NavMenuDivider />
@@ -101,7 +109,10 @@ export default function NavMenuGroup({
       </li>
       {!!menu.items?.length && (
         <SubMenuItems
-          className={cn(submenuVisible ? "block" : "hidden", "pl-9")}
+          className={cn(
+            submenuVisible ? "block" : "hidden",
+            padSubMenuItems && "pl-9",
+          )}
           items={menu.items}
         />
       )}
@@ -131,10 +142,8 @@ function SubMenuItems({ className = "", items = [] }) {
               <NavMenuDivider />
             ) : (
               <NavMenuItem
-                label={item.name}
-                link={item.pathname}
-                icon={item.icon}
-                activeCount={item.activeCount}
+                item={item}
+                items={item.items}
                 active={active}
                 className={active && "bg-transparent"}
               />

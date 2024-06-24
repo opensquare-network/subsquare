@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BN, BN_THOUSAND, BN_TWO, extractTime } from "@polkadot/util";
-import useIsMounted from "./useIsMounted";
+import { useMountedState } from "react-use";
 import { useDispatch, useSelector } from "react-redux";
 import {
   blockTimeSelector,
@@ -43,13 +43,13 @@ export function useBlockTime(api) {
 }
 
 export function useSubscribeChainHead(api) {
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const dispatch = useDispatch();
   useEffect(() => {
     if (api) {
       api.rpc.chain.subscribeNewHeads((header) => {
         const latestUnFinalizedHeight = header.number.toNumber();
-        if (isMounted.current) {
+        if (isMounted()) {
           dispatch(setLatestHeight(latestUnFinalizedHeight));
         }
       });
