@@ -20,9 +20,8 @@ export default function ReferendaDelegationStats({
     <>
       <div
         className={cn(
-          "flex gap-4",
-          "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:flex-1",
-          !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
+          "grid grid-cols-2 gap-4",
+          !navCollapsed ? "max-md:grid-cols-1" : "max-sm:grid-cols-1",
         )}
       >
         <TrackDelegationSummary tracks={tracksStats} />
