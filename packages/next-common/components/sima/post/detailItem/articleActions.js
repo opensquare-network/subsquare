@@ -75,7 +75,9 @@ export default function ArticleActions({ extraActions, setIsAppend }) {
         return;
       }
 
-      const { result: newPost } = await nextApi.fetch(`posts/${post.postUid}`);
+      const { result: newPost } = await nextApi.fetch(
+        `sima/discussions/${post.cid}`,
+      );
 
       if (newPost) {
         postDispatch({

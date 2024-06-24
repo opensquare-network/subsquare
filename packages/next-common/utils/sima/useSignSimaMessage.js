@@ -1,16 +1,15 @@
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { useCallback } from "react";
-import { useConnectedAccount } from "next-common/context/connectedAccount";
 
 export default function useSignSimaMessage() {
   const { ensureConnect } = useEnsureLogin();
   const signMessage = useSignMessage();
-  const connectedAccount = useConnectedAccount();
 
   return useCallback(
     async (entity) => {
-      if (!ensureConnect()) {
+      const connectedAccount = await ensureConnect();
+      if (!connectedAccount) {
         return;
       }
 
@@ -28,6 +27,6 @@ export default function useSignSimaMessage() {
         signerWallet,
       };
     },
-    [connectedAccount, ensureConnect, signMessage],
+    [ensureConnect, signMessage],
   );
 }

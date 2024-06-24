@@ -105,7 +105,7 @@ export function useEnsureLogin() {
   const ensureConnect = useCallback(async () => {
     const connectedAccount = getCookieConnectedAccount();
     if (connectedAccount) {
-      return true;
+      return connectedAccount;
     }
 
     // Not connect yet
@@ -115,10 +115,10 @@ export function useEnsureLogin() {
       loginResult === LoginResult.Connected ||
       loginResult === LoginResult.LoggedIn
     ) {
-      return true;
+      return getCookieConnectedAccount();
     }
 
-    return false;
+    return null;
   }, [openLoginPopup, waitForClose]);
 
   return {

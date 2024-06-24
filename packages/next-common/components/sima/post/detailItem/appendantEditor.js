@@ -47,7 +47,7 @@ export default function AppendantEditor({ setIsAppend }) {
       );
       if (result) {
         const { result: newPost } = await nextApi.fetch(
-          `posts/${post.postUid}`,
+          `sima/discussions/${post.cid}`,
         );
 
         if (newPost) {
