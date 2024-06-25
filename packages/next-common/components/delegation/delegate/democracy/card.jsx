@@ -59,6 +59,7 @@ export default function DemocracyDelegateCard({
           showAvatar={false}
           fontSize={14}
           className="[&_.identity]:!font-semibold"
+          ellipsis
         />
       </div>
 

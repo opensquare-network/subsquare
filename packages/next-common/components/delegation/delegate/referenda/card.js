@@ -52,6 +52,7 @@ export default function ReferendaDelegateCard({
           showAvatar={false}
           fontSize={14}
           className="[&_.identity]:!font-semibold"
+          ellipsis
         />
       </div>
 
