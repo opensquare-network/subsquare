@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useState, useRef } from "react";
 import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
@@ -13,12 +13,12 @@ import { fetchIdentity } from "next-common/services/identity.js";
 import { useChainSettings } from "next-common/context/chain.js";
 import { encodeAddressToChain } from "next-common/services/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
-import IdentityIcon from "./Identity/identityIcon.js";
 import {
   getAddressHint,
   tryConvertToEvmAddress,
 } from "next-common/utils/mixedChainUtil";
 import { isEthereumAddress } from "@polkadot/util-crypto";
+import Identity from "./Identity";
 
 const Wrapper = Relative;
 
@@ -215,11 +215,12 @@ export default function AddressCombo({
         <NameWrapper>
           <IdentityName>
             {identities[selectedAccount.address] && (
-              <IdentityIcon
+              <Identity
                 identity={identities[selectedAccount.address]?.identity}
+                ellipsis
               />
             )}
-            <div>
+            <div className="line-clamp-1">
               {identities[selectedAccount.address]?.displayName ||
                 selectedAccount.name}
             </div>
@@ -234,10 +235,13 @@ export default function AddressCombo({
         <Avatar address={address} />
         <NameWrapper>
           <IdentityName>
-            {identities[address] && (
-              <IdentityIcon identity={identities[address].identity} />
+            {identities[address] ? (
+              <Identity identity={identities[address].identity} ellipsis />
+            ) : (
+              <div className="line-clamp-1">
+                {identities[address]?.displayName || shortEvmAddr}
+              </div>
             )}
-            <div>{identities[address]?.displayName || shortEvmAddr}</div>
           </IdentityName>
           <div>{addressHint}</div>
         </NameWrapper>
@@ -264,10 +268,13 @@ export default function AddressCombo({
             <Avatar address={item.address} />
             <NameWrapper>
               <IdentityName>
-                {identities[item.address] && (
-                  <IdentityIcon identity={identities[item.address].identity} />
+                {identities[item.address] ? (
+                  <Identity identity={identities[item.address].identity} />
+                ) : (
+                  <div className="line-clamp-1">
+                    {identities[item.address]?.displayName || item.name}
+                  </div>
                 )}
-                <div>{identities[item.address]?.displayName || item.name}</div>
               </IdentityName>
               <div>{getAddressHint(ss58Address)}</div>
             </NameWrapper>

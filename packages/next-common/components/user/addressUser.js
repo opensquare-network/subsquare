@@ -29,7 +29,12 @@ export function AddressUserImpl({
   const displayAddress = tryConvertToEvmAddress(address);
 
   const userIdentity = hasIdentity ? (
-    <Identity identity={identity} fontSize={fontSize} maxWidth={maxWidth} />
+    <Identity
+      identity={identity}
+      fontSize={fontSize}
+      maxWidth={maxWidth}
+      ellipsis={ellipsis}
+    />
   ) : (
     <AddressDisplay
       address={displayAddress}
