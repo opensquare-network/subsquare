@@ -6,6 +6,28 @@ import Link from "next/link";
 import { toPrecision } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
 
+function extractReferendaLink(call = {}) {
+  const { section, method, args = [] } = call;
+  if ("referenda" !== section) {
+    return null;
+  }
+  if (!["cancel"].includes(method)) {
+    return null;
+  }
+
+  const referendumId = args[0].value;
+  return [
+    [
+      "Link to",
+      <Link
+        key="referendum-link"
+        href={`/referenda/${referendumId}`}
+        legacyBehavior
+      >{`Referendum #${referendumId}`}</Link>,
+    ],
+  ];
+}
+
 function extractTreasury(call = {}) {
   const { section, method, args = [] } = call;
   if ("treasury" !== section) {
@@ -99,6 +121,11 @@ export default function useReferendaBusinessData() {
   const bountyBusiness = extractBounty(onchain.proposal?.call, chainSettings);
   if (bountyBusiness) {
     return bountyBusiness;
+  }
+
+  const referendaBusiness = extractReferendaLink(onchain.proposal?.call);
+  if (referendaBusiness) {
+    return referendaBusiness;
   }
 
   return null;
