@@ -1,5 +1,3 @@
-import { ApiPromise, WsProvider } from "@polkadot/api";
-
 let provider = null;
 let api = null;
 
@@ -13,7 +11,11 @@ export async function getAssetHubApi() {
     return null;
   }
 
+  const WsProvider = (await import("@polkadot/api")).WsProvider;
+  const ApiPromise = (await import("@polkadot/api")).ApiPromise;
+
   const endpoints = wsAssetHubEndpoint.split(";");
+
   provider = new WsProvider(endpoints, 1000);
 
   api = await ApiPromise.create({ provider });
