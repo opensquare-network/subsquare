@@ -69,6 +69,7 @@ const basilisk = {
     "Snek brings permissionless liquidity to the Kusama ecosystem. Swap tokens, flip NFTs and earn rewards. Help young crypto projects bootstrap liquidity and receive tokens.",
   modules: {
     democracy: true,
+    referenda: true,
   },
   cssVarsLight: {
     theme100: "rgba(63,227,154,0.10)",
