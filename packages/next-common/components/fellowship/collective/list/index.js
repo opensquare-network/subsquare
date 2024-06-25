@@ -46,7 +46,7 @@ export default function FellowshipCollectiveMembers({ members }) {
       />,
       <Period
         key={`min-promotion-period-${idx}`}
-        blocks={minPromotionPeriod[rank - 1] || 0}
+        blocks={minPromotionPeriod[rank] || 0}
       />,
     ];
   });

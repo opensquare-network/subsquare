@@ -18,7 +18,6 @@ export default function LoadingEditor() {
         "flex flex-col",
         "absolute top-0 right-0 bottom-0 left-0",
         "border border-neutral400 rounded-[8px]",
-        "z-[-1]",
       )}
     >
       <div className="flex p-[8px] border-b border-neutral300 gap-[8px] sm:hidden">
