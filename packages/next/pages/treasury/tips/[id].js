@@ -2,8 +2,6 @@ import { withCommonProps } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import nextApi from "next-common/services/nextApi";
-import Timeline from "components/tip/timeline";
-import Metadata from "components/tip/metadata";
 import Tipper from "components/tipper";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
@@ -18,6 +16,11 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const Metadata = dynamicClientOnly(() => import("components/tip/metadata"));
+
+const Timeline = dynamicClientOnly(() => import("components/tip/timeline"));
 
 function TreasuryTipContent() {
   const post = usePost();

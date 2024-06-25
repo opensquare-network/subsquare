@@ -1,8 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Timeline from "components/treasuryProposal/timeline";
-import Metadata from "next-common/components/treasury/proposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
@@ -15,6 +13,14 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const Timeline = dynamicClientOnly(() =>
+  import("components/treasuryProposal/timeline"),
+);
+const Metadata = dynamicClientOnly(() =>
+  import("next-common/components/treasury/proposal/metadata"),
+);
 
 function TreasuryProposalContent() {
   const detail = usePost();

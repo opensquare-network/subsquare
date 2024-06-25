@@ -13,8 +13,6 @@ import {
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import FellowshipBreadcrumb from "next-common/components/fellowship/breadcrumb";
-import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
-import Timeline from "../../../components/gov2/timeline";
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
 import CheckUnFinalized from "components/fellowship/checkUnFinalized";
 import BreadcrumbWrapper, {
@@ -27,12 +25,24 @@ import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFel
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const Gov2ReferendumMetadata = dynamicClientOnly(() =>
+  import("next-common/components/gov2/referendum/metadata"),
+);
+
+const Timeline = dynamicClientOnly(() =>
+  import("../../../components/gov2/timeline"),
+);
+
+const Gov2ReferendumCall = dynamicClientOnly(() =>
+  import("next-common/components/gov2/referendum/call"),
+);
 
 function FellowshipContent() {
   const post = usePost();

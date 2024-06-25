@@ -3,9 +3,6 @@ import ArticleContent from "next-common/components/articleContent";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Vote from "./vote";
 import { useMountedState } from "react-use";
-import Business from "./business";
-import Metadata from "./metadata";
-import Timeline from "./timeline";
 import { isMotionEnded } from "next-common/utils";
 import toApiCouncil from "next-common/utils/toApiCouncil";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
@@ -23,8 +20,18 @@ import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import MotionHead from "./head";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
-import CollectiveCall from "next-common/components/collective/call";
 import { useContextApi } from "next-common/context/api";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const Business = dynamicClientOnly(() => import("./business"));
+
+const Metadata = dynamicClientOnly(() => import("./metadata"));
+
+const Timeline = dynamicClientOnly(() => import("./timeline"));
+
+const CollectiveCall = dynamicClientOnly(() =>
+  import("next-common/components/collective/call"),
+);
 
 export default function MotionDetail() {
   const type = useDetailType();
