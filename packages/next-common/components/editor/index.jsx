@@ -201,6 +201,8 @@ function Editor(props, ref) {
           ? "min-h-[182px] max-sm:min-h-[182px]"
           : "min-h-[182px] max-sm:min-h-[222px]",
         "[&_.editor-wrapper]:bg-neutral100",
+        "[&_.editor-wrapper]:relative",
+        "[&_.editor-wrapper]:z-1",
         dragging &&
           "[&_.editor-wrapper]:!border-theme500 [&_.toggle-bar-wrapper]:!border-theme500",
       )}
