@@ -1,40 +1,34 @@
 import Chains from "next-common/utils/consts/chains";
-import { ApiPromise, WsProvider } from "@polkadot/api";
-import allOptions, {
-  altairOptions,
-  bifrostOptions,
-  crustOptions,
-  karuraOptions,
-  khalaOptions,
-  polkadexOptions,
-  zeitgeistOptions,
-} from "@osn/provider-options";
 import crabOptions from "next-common/services/chain/crab";
 import getMetadata from "next-common/services/chain/apis/metadata";
 
 const apiMap = new Map();
 
 async function getOptions(chain, endpoint) {
+  const WsProvider = (await import("@polkadot/api")).WsProvider;
+
   const provider = new WsProvider(endpoint, 1000);
   let options = { provider };
 
+  const allOptions = (await import("@osn/provider-options")).default;
+
   let customizedOptions;
   if ([Chains.karura, Chains.acala].includes(chain)) {
-    customizedOptions = karuraOptions;
+    customizedOptions = allOptions.karuraOptions;
   } else if ([Chains.khala, Chains.phala].includes(chain)) {
-    customizedOptions = khalaOptions;
+    customizedOptions = allOptions.khalaOptions;
   } else if (chain === Chains.bifrost) {
-    customizedOptions = bifrostOptions;
+    customizedOptions = allOptions.bifrostOptions;
   } else if (chain === Chains.polkadex) {
-    customizedOptions = polkadexOptions;
+    customizedOptions = allOptions.polkadexOptions;
   } else if (chain === Chains.crust) {
-    customizedOptions = crustOptions;
+    customizedOptions = allOptions.crustOptions;
   } else if (chain === Chains.crab) {
     customizedOptions = crabOptions;
   } else if (chain === Chains.zeitgeist) {
-    customizedOptions = zeitgeistOptions;
+    customizedOptions = allOptions.zeitgeistOptions;
   } else if (chain === Chains.altair) {
-    customizedOptions = altairOptions;
+    customizedOptions = allOptions.altairOptions;
   } else {
     customizedOptions = allOptions[chain] || {};
   }
@@ -48,6 +42,8 @@ async function getOptions(chain, endpoint) {
 }
 
 async function newApiPromise(chain, endpoint) {
+  const ApiPromise = (await import("@polkadot/api")).ApiPromise;
+
   const options = await getOptions(chain, endpoint);
   return new ApiPromise(options);
 }
