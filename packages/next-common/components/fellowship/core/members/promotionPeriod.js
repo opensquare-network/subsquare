@@ -15,7 +15,8 @@ export default function FellowshipMemberPromotionPeriod({
 }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { fellowshipParams } = usePageProps();
-  const index = rank > 0 ? rank - 1 : 0;
+  const toRank = rank + 1;
+  const index = toRank > 0 ? toRank - 1 : 0;
   const promotionPeriod = fellowshipParams.minPromotionPeriod[index];
 
   const gone = latestHeight - lastPromotion;
