@@ -24,11 +24,8 @@ export default function Identity({
       <IdentityIcon identity={identity} className="mr-1" />
       <Tooltip
         content={shouldShowTooltip ? displayName : null}
-        className={cn(shouldShowTooltip ? "!line-clamp-1" : "break-all")}
-        style={{
-          fontSize,
-          maxWidth,
-        }}
+        className={cn(shouldShowTooltip && "!line-clamp-1 break-all")}
+        style={{ fontSize, maxWidth }}
       >
         {displayName}
       </Tooltip>
