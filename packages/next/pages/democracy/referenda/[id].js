@@ -4,8 +4,6 @@ import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Vote from "components/referenda/vote";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import Timeline from "components/referenda/timeline";
-import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -18,9 +16,7 @@ import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import { useDispatch, useSelector } from "react-redux";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import ReferendumCall from "next-common/components/democracy/call";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
-import DemocracyReferendaVotesBubble from "next-common/components/democracy/referendum/votesBubble";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -30,6 +26,20 @@ import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubD
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 import { useContextApi } from "next-common/context/api";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const Timeline = dynamicClientOnly(() =>
+  import("components/referenda/timeline"),
+);
+const ReferendumMetadata = dynamicClientOnly(() =>
+  import("next-common/components/democracy/metadata"),
+);
+const ReferendumCall = dynamicClientOnly(() =>
+  import("next-common/components/democracy/call"),
+);
+const DemocracyReferendaVotesBubble = dynamicClientOnly(() =>
+  import("next-common/components/democracy/referendum/votesBubble"),
+);
 
 function ReferendumContent() {
   const post = usePost();

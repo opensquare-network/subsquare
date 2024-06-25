@@ -13,11 +13,18 @@ import React from "react";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import TreasurySpendDetail from "next-common/components/detail/treasury/spend";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import TreasurySpendMetadata from "next-common/components/detail/treasury/spend/metadata";
 import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTreasurySpendTimelineData";
-import Timeline from "next-common/components/timeline";
 import { useSelector } from "react-redux";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const TreasurySpendMetadata = dynamicClientOnly(() =>
+  import("next-common/components/detail/treasury/spend/metadata"),
+);
+
+const Timeline = dynamicClientOnly(() =>
+  import("next-common/components/timeline"),
+);
 
 function TreasurySpendContent() {
   const detail = usePost();

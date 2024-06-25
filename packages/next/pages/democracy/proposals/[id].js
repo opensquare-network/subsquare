@@ -3,9 +3,6 @@ import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import Metadata from "next-common/components/publicProposal/metadata";
-import DemocracyPublicProposalCall from "next-common/components/publicProposal/call";
-import Timeline from "components/publicProposal/timeline";
 import Second from "next-common/components/publicProposal/second";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import { isNil } from "lodash-es";
@@ -21,6 +18,17 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useIsDemocracyProposalFinished from "next-common/hooks/democracy/proposal/useIsDemocracyProposalFinished";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const Metadata = dynamicClientOnly(() =>
+  import("next-common/components/publicProposal/metadata"),
+);
+const DemocracyPublicProposalCall = dynamicClientOnly(() =>
+  import("next-common/components/publicProposal/call"),
+);
+const Timeline = dynamicClientOnly(() =>
+  import("components/publicProposal/timeline"),
+);
 
 function PublicProposalContent() {
   const post = usePost();

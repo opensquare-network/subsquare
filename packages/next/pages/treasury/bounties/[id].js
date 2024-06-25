@@ -2,8 +2,6 @@ import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import Metadata from "next-common/components/treasury/bounty/metadata";
-import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "components/bounty/checkUnFinalized";
@@ -12,7 +10,6 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useBountyTimelineData from "../../../components/bounty/useBountyTimelineData";
-import Timeline from "next-common/components/timeline";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 import { useSelector } from "react-redux";
 import { fetchDetailComments } from "next-common/services/detail";
@@ -21,6 +18,17 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import BountySidebar from "components/bounty/sidebar";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const ChildBountiesTable = dynamicClientOnly(() =>
+  import("../../../components/bounty/childBountiesTable"),
+);
+const Metadata = dynamicClientOnly(() =>
+  import("next-common/components/treasury/bounty/metadata"),
+);
+const Timeline = dynamicClientOnly(() =>
+  import("next-common/components/timeline"),
+);
 
 function BountyContent() {
   const { childBounties } = usePageProps();

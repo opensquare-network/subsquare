@@ -13,8 +13,6 @@ import {
   gov2ReferendumsDetailApi,
   gov2ReferendumsVoteStatsApi,
 } from "next-common/services/url";
-import Timeline from "components/gov2/timeline";
-import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metadata";
 import { useEffect } from "react";
 import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
@@ -29,15 +27,27 @@ import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
-import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/votesBubble";
-import ProposalAddress from "next-common/components/statistics/referenda/proposalAddress";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const Gov2ReferendumCall = dynamicClientOnly(() =>
+  import("next-common/components/gov2/referendum/call"),
+);
+const ProposalAddress = dynamicClientOnly(() =>
+  import("next-common/components/statistics/referenda/proposalAddress"),
+);
+const Gov2ReferendumMetadata = dynamicClientOnly(() =>
+  import("next-common/components/gov2/referendum/metadata"),
+);
+const Timeline = dynamicClientOnly(() => import("components/gov2/timeline"));
+const Gov2ReferendaVotesBubble = dynamicClientOnly(() =>
+  import("next-common/components/gov2/referendum/votesBubble"),
+);
 
 function ReferendumContent() {
   const post = usePost();

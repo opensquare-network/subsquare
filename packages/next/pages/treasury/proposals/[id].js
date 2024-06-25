@@ -1,7 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Metadata from "next-common/components/treasury/proposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
@@ -11,7 +10,6 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useTreasuryTimelineData from "../../../components/treasuryProposal/useTimelineData";
-import Timeline from "next-common/components/timeline";
 import { useSelector } from "react-redux";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 import { fetchDetailComments } from "next-common/services/detail";
@@ -19,6 +17,15 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const Metadata = dynamicClientOnly(() =>
+  import("next-common/components/treasury/proposal/metadata"),
+);
+
+const Timeline = dynamicClientOnly(() =>
+  import("next-common/components/timeline"),
+);
 
 function TreasuryProposalContent() {
   const detail = usePost();
