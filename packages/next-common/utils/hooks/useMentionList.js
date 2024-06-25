@@ -24,6 +24,12 @@ export default function useMentionList(post, comments) {
     let userAppearances = getMentionList(comments);
     if (post.author) {
       userAppearances.push(post.author);
+    } else if (post.proposer) {
+      const maybeEvmAddress = tryConvertToEvmAddress(post.proposer);
+      userAppearances.push({
+        username: addressEllipsis(maybeEvmAddress),
+        address: maybeEvmAddress,
+      });
     }
     userAppearances = uniqBy(userAppearances, (item) => item.username);
     for (const address of post.authors ?? []) {

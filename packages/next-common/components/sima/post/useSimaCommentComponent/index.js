@@ -1,45 +1,46 @@
 import { useRef, useState } from "react";
-import Comments from "next-common/components/comment/index";
-import CommentEditor from "next-common/components/comment/editor";
-import useMentionList from "next-common/utils/hooks/useMentionList";
+import SimaCommentEditor from "next-common/components/sima/comment/editor";
 import { getFocusEditor } from "next-common/utils/post";
-import { useUser } from "../../context/user";
 import { usePost } from "next-common/context/post";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import PrimaryButton from "next-common/lib/button/primary";
+import SimaComments from "next-common/components/sima/comment";
+import useSimaMentionList from "next-common/utils/sima/useSimaMentionList";
+import { useComments } from "next-common/context/post/comments";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
 
-export default function useCommentComponent({ commentsData, loading }) {
-  const user = useUser();
+export default function useSimaCommentComponent() {
+  const connectedAccount = useConnectedAccount();
   const post = usePost();
-  const postId = post._id;
+  const commentsData = useComments();
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
-  const [contentType, setContentType] = useState(
-    user?.preference?.editor || "markdown",
-  );
+  const [contentType, setContentType] = useState("markdown");
+  const postCid = post.cid;
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-  const { ensureLogin } = useEnsureLogin();
-  const users = useMentionList(post, commentsData);
+
+  const { ensureConnect } = useEnsureLogin();
+  const users = useSimaMentionList(post, commentsData);
 
   let editor = (
     <div className="flex justify-end mt-4">
       <PrimaryButton
         onClick={() => {
-          ensureLogin();
+          ensureConnect();
         }}
       >
-        Login
+        Connect
       </PrimaryButton>
     </div>
   );
 
-  if (user) {
+  if (connectedAccount) {
     editor = (
-      <CommentEditor
-        postId={postId}
+      <SimaCommentEditor
+        postCid={postCid}
         ref={editorWrapperRef}
         setQuillRef={setQuillRef}
         {...{
@@ -55,7 +56,7 @@ export default function useCommentComponent({ commentsData, loading }) {
 
   const component = (
     <div>
-      <Comments data={commentsData} loading={loading} />
+      <SimaComments data={commentsData} />
       {editor}
     </div>
   );

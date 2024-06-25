@@ -23,7 +23,7 @@ function CommentsWithFilterContent({ children }) {
 
 function CommentsContent({ children }) {
   const { commentsData, loading } = usePostCommentsData();
-  const { CommentComponent, focusEditor } = useCommentComponent({
+  const { component, focusEditor } = useCommentComponent({
     commentsData,
     loading,
   });
@@ -31,7 +31,7 @@ function CommentsContent({ children }) {
   return (
     <EditorProvider focusEditor={focusEditor}>
       {children}
-      {CommentComponent}
+      {component}
     </EditorProvider>
   );
 }

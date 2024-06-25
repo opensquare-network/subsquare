@@ -1,13 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { CommentContextMenu } from "../contentMenu";
-import ThumbsUp from "../thumbsUp";
-import ReplyButton from "./replyButton";
-import ThumbUpList from "./thumbUpList";
-import { Wrapper } from "./styled";
-import CommentEditor from "../comment/editor";
+import SimaThumbUpList from "./thumbUpList";
+import SimaCommentEditor from "../comment/editor";
 import { usePost } from "next-common/context/post";
 import { useUser } from "next-common/context/user";
-import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
@@ -15,25 +11,25 @@ import { noop } from "lodash-es";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useComment } from "../comment/context";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { useComment } from "next-common/components/comment/context";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
+import ReplyButton from "next-common/components/actions/replyButton";
+import { Wrapper } from "next-common/components/actions/styled";
+import ThumbsUp from "next-common/components/thumbsUp";
+import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
+import { getUserObjFromAddress } from "next-common/utils/sima/utils";
+import useSimaMentionList from "next-common/utils/sima/useSimaMentionList";
 
-export default function CommentActions({
+export default function SimaCommentActions({
   updateComment = noop,
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
-  replyToCommentId,
-  setIsEdit,
+  replyToCommentCid,
 }) {
   const comment = useComment();
   const user = useUser();
-  const { ensureLogin } = useEnsureLogin();
-  const reactions = comment?.reactions || [];
-  const author = comment?.author || {};
-  const ownComment = user && author?.username === user.username;
-  const thumbUp =
-    user &&
-    reactions?.findIndex((r) => r.user?.username === user.username) > -1;
+  const reactions = comment.reactions;
+  const author = getUserObjFromAddress(comment.proposer);
 
   const chain = useChain();
   const post = usePost();
@@ -46,9 +42,9 @@ export default function CommentActions({
   const [isReply, setIsReply] = useState(false);
   const { comments } = usePageProps();
 
-  const postId = post?._id;
+  const postCid = post?.cid;
 
-  const users = useMentionList(post, comments);
+  const users = useSimaMentionList(post, comments);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -72,6 +68,35 @@ export default function CommentActions({
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
+  const account = useConnectedAccount();
+  const ownComment = comment?.proposer === account?.address;
+  const reaction = comment?.reactions?.find(
+    (r) => r.proposer === account?.address,
+  );
+  const thumbUp = !!reaction;
+
+  const signSimaMessage = useSignSimaMessage();
+
+  const cancelUpVote = useCallback(async () => {
+    const entity = {
+      action: "cancel_upvote",
+      cid: reaction.cid,
+      timestamp: Date.now(),
+    };
+    const data = await signSimaMessage(entity);
+    return await nextApi.post(`sima/comments/${comment.cid}/reactions`, data);
+  }, [comment.cid, reaction?.cid, signSimaMessage]);
+
+  const upVote = useCallback(async () => {
+    const entity = {
+      action: "upvote",
+      cid: comment.cid,
+      timestamp: Date.now(),
+    };
+    const data = await signSimaMessage(entity);
+    return await nextApi.post(`sima/comments/${comment.cid}/reactions`, data);
+  }, [comment.cid, signSimaMessage]);
+
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
       return;
@@ -79,29 +104,20 @@ export default function CommentActions({
 
     setThumbUpLoading(true);
     try {
-      if (!(await ensureLogin())) {
+      let result;
+
+      if (thumbUp) {
+        result = await cancelUpVote();
+      } else {
+        result = await upVote();
+      }
+
+      if (result.error) {
+        dispatch(newErrorToast(result.error.message));
         return;
       }
 
-      let result, error;
-
-      if (thumbUp) {
-        ({ result, error } = await nextApi.delete(
-          `comments/${comment._id}/reaction`,
-        ));
-      } else {
-        ({ result, error } = await nextApi.put(
-          `comments/${comment._id}/reaction`,
-          { reaction: 1 },
-        ));
-      }
-
-      if (result) {
-        await updateComment();
-      }
-      if (error) {
-        dispatch(newErrorToast(error.message));
-      }
+      await updateComment();
     } finally {
       setThumbUpLoading(false);
     }
@@ -122,14 +138,14 @@ export default function CommentActions({
             setShowThumbsUpList={setShowThumbsUpList}
           />
         </Wrapper>
-        <CommentContextMenu editable={ownComment} setIsEdit={setIsEdit} />
+        <CommentContextMenu />
       </div>
-      {showThumbsUpList && <ThumbUpList reactions={reactions} />}
+      {showThumbsUpList && <SimaThumbUpList reactions={reactions} />}
       {isReply && (
-        <CommentEditor
-          postId={postId}
-          commentId={replyToCommentId}
+        <SimaCommentEditor
           ref={editorWrapperRef}
+          postCid={postCid}
+          commentCid={replyToCommentCid}
           setQuillRef={setQuillRef}
           isReply={isReply}
           onFinishedEdit={async (reload) => {
