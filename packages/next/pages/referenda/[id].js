@@ -38,6 +38,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
+import SimaReferendumContent from "components/referenda/sima/referendaContent";
 
 function ReferendumContent() {
   const post = usePost();
@@ -120,10 +121,13 @@ function ReferendumNullPage() {
 }
 
 function ReferendumPageWithPost() {
+  const post = usePost();
   return (
     <ReferendumPageCommon
       breadcrumbs={<ReferendaBreadcrumb />}
-      postContent={<ReferendumContent />}
+      postContent={
+        post?.sima ? <SimaReferendumContent /> : <ReferendumContent />
+      }
     />
   );
 }

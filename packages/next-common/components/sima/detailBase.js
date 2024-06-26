@@ -1,14 +1,14 @@
 import { useDetailType } from "next-common/context/page";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import { useCallback } from "react";
-import PostEdit from "next-common/components/post/postEdit";
 import fetchAndUpdatePost from "next-common/context/post/update";
-import MaliciousHead from "next-common/components/detail/maliciousHead";
+import MaliciousHead from "../maliciousHead";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isEditingPostSelector,
   setEditingPost,
 } from "next-common/store/reducers/userSlice";
+import SimaPostEdit from "next-common/components/sima/post/postEdit";
 
 export default function DetailContentBase({ head, title, meta, children }) {
   const type = useDetailType();
@@ -30,7 +30,7 @@ export default function DetailContentBase({ head, title, meta, children }) {
 
   if (isEditing) {
     return (
-      <PostEdit
+      <SimaPostEdit
         setIsEdit={setIsEdit}
         updatePost={() => fetchAndUpdatePost(postDispatch, type, post._id)}
       />
