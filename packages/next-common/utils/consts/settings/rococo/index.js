@@ -1,23 +1,23 @@
-import capitalize from "../../../capitalize";
-import MenuGroups from "../menuGroups";
-import Chains from "../../chains";
-import { defaultPostLabels } from "../common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-
-const ProjectIconRococoDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconRococoDark),
-);
-const ProjectIconRococoLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconRococoLight),
-);
-const ProjectLogoRococoDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoRococoDark),
-);
-const ProjectLogoRococoLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoRococoLight),
-);
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
 import rococoTreasuryTracks from "next-common/utils/consts/settings/rococo/tracks";
+import capitalize from "../../../capitalize";
+import Chains from "../../chains";
+import { defaultPostLabels } from "../common";
+import MenuGroups from "../menuGroups";
+
+const ProjectIconRococoDark = dynamicClientOnly(() =>
+  import("@osn/icons/subsquare/ProjectIconRococoDark"),
+);
+const ProjectIconRococoLight = dynamicClientOnly(() =>
+  import("@osn/icons/subsquare/ProjectIconRococoLight"),
+);
+const ProjectLogoRococoDark = dynamicClientOnly(() =>
+  import("@osn/icons/subsquare/ProjectLogoRococoDark"),
+);
+const ProjectLogoRococoLight = dynamicClientOnly(() =>
+  import("@osn/icons/subsquare/ProjectLogoRococoLight"),
+);
 
 export const defaultRococoNodes = [
   {

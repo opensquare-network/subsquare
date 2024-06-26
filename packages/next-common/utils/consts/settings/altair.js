@@ -6,13 +6,13 @@ import { difference } from "lodash-es";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconAltairDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconAltairDark),
+  import("@osn/icons/subsquare/ProjectIconAltairDark"),
 );
 const ProjectIconAltairLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconAltairLight),
+  import("@osn/icons/subsquare/ProjectIconAltairLight"),
 );
 const ProjectLogoAltairDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoAltairDark),
+  import("@osn/icons/subsquare/ProjectLogoAltairDark"),
 );
 
 const nodes = [

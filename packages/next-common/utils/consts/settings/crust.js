@@ -5,13 +5,13 @@ import { defaultPostLabels } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconCrustDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconCrustDark),
+  import("@osn/icons/subsquare/ProjectIconCrustDark"),
 );
 const ProjectIconCrustLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconCrustLight),
+  import("@osn/icons/subsquare/ProjectIconCrustLight"),
 );
 const ProjectLogoCrustDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoCrustDark),
+  import("@osn/icons/subsquare/ProjectLogoCrustDark"),
 );
 
 const DEFAULT_CRUST_NODES = [

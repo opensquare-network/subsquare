@@ -5,13 +5,13 @@ import { defaultPostLabels, PostLabel } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconZeigeistDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconZeigeistDark),
+  import("@osn/icons/subsquare/ProjectIconZeigeistDark"),
 );
 const ProjectIconZeigeistLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconZeigeistLight),
+  import("@osn/icons/subsquare/ProjectIconZeigeistLight"),
 );
 const ProjectLogoZeigeistDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoZeigeistDark),
+  import("@osn/icons/subsquare/ProjectLogoZeigeistDark"),
 );
 
 const defaultNodes = [

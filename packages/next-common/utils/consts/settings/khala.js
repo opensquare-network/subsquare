@@ -1,17 +1,17 @@
-import MenuGroups from "./menuGroups";
-import { defaultPostLabels } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { defaultPostLabels } from "./common";
+import MenuGroups from "./menuGroups";
+import phala from "./phala";
 
 const ProjectIconKhalaDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKhalaDark),
+  import("@osn/icons/subsquare/ProjectIconKhalaDark"),
 );
 const ProjectIconKhalaLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKhalaLight),
+  import("@osn/icons/subsquare/ProjectIconKhalaLight"),
 );
 const ProjectLogoKhalaDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoKhalaDark),
+  import("@osn/icons/subsquare/ProjectLogoKhalaDark"),
 );
-import phala from "./phala";
 
 const DEFAULT_KHALA_NODES = [
   {

@@ -1,29 +1,21 @@
-import Chains from "../chains";
-import MenuGroups from "./menuGroups";
-import { PostLabel } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
+import Chains from "../chains";
+import { PostLabel } from "./common";
+import MenuGroups from "./menuGroups";
 
 const ProjectIconWestendCollectivesDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectIconWestendCollectivesDark,
-  ),
+  import("@osn/icons/subsquare/ProjectIconWestendCollectivesDark"),
 );
 const ProjectIconWestendCollectivesLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectIconWestendCollectivesLight,
-  ),
+  import("@osn/icons/subsquare/ProjectIconWestendCollectivesLight"),
 );
 const ProjectLogoWestendCollectivesDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectLogoWestendCollectivesDark,
-  ),
+  import("@osn/icons/subsquare/ProjectLogoWestendCollectivesDark"),
 );
 const ProjectLogoWestendCollectivesLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectLogoWestendCollectivesLight,
-  ),
+  import("@osn/icons/subsquare/ProjectLogoWestendCollectivesLight"),
 );
-import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
 
 const westendCollectivesEndpoints = [
   {

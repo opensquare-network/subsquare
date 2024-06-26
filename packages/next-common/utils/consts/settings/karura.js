@@ -3,13 +3,13 @@ import { defaultPostLabels, PostLabel } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconKaruraDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKaruraDark),
+  import("@osn/icons/subsquare/ProjectIconKaruraDark"),
 );
 const ProjectIconKaruraLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKaruraLight),
+  import("@osn/icons/subsquare/ProjectIconKaruraLight"),
 );
 const ProjectLogoKaruraDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoKaruraDark),
+  import("@osn/icons/subsquare/ProjectLogoKaruraDark"),
 );
 
 export const DEFAULT_KARURA_NODES = [

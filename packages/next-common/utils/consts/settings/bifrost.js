@@ -3,19 +3,13 @@ import { defaultPostLabels } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconBifrostKusamaDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectIconBifrostKusamaDark,
-  ),
+  import("@osn/icons/subsquare/ProjectIconBifrostKusamaDark"),
 );
 const ProjectIconBifrostKusamaLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectIconBifrostKusamaLight,
-  ),
+  import("@osn/icons/subsquare/ProjectIconBifrostKusamaLight"),
 );
 const ProjectLogoBifrostKusamaDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectLogoBifrostKusamaDark,
-  ),
+  import("@osn/icons/subsquare/ProjectLogoBifrostKusamaDark"),
 );
 
 const DEFAULT_BIFROST_NODES = [

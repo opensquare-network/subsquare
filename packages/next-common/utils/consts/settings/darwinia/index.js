@@ -1,25 +1,25 @@
-import Chains from "../../chains";
-import capitalize from "../../../capitalize";
-import MenuGroups from "../menuGroups";
-import { defaultPostLabels } from "../common";
-import ChainTypes from "../../chainTypes";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import darwiniaLinks from "next-common/utils/consts/settings/darwinia/links";
+import defaultDarwiniaNodes from "next-common/utils/consts/settings/darwinia/nodes";
+import darwiniaTreasuryTracks from "next-common/utils/consts/settings/darwinia/tracks";
+import capitalize from "../../../capitalize";
+import ChainTypes from "../../chainTypes";
+import Chains from "../../chains";
+import { defaultPostLabels } from "../common";
+import MenuGroups from "../menuGroups";
 
 const ProjectIconDarwinia2Dark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconDarwinia2Dark),
+  import("@osn/icons/subsquare/ProjectIconDarwinia2Dark"),
 );
 const ProjectIconDarwinia2Light = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconDarwinia2Light),
+  import("@osn/icons/subsquare/ProjectIconDarwinia2Light"),
 );
 const ProjectLogoDarwinia2Dark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoDarwinia2Dark),
+  import("@osn/icons/subsquare/ProjectLogoDarwinia2Dark"),
 );
 const ProjectLogoDarwinia2Light = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoDarwinia2Light),
+  import("@osn/icons/subsquare/ProjectLogoDarwinia2Light"),
 );
-import darwiniaTreasuryTracks from "next-common/utils/consts/settings/darwinia/tracks";
-import defaultDarwiniaNodes from "next-common/utils/consts/settings/darwinia/nodes";
-import darwiniaLinks from "next-common/utils/consts/settings/darwinia/links";
 
 const darwinia2 = {
   value: Chains.darwinia2,

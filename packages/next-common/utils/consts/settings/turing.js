@@ -5,13 +5,13 @@ import { defaultPostLabels } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconTuringDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconTuringDark),
+  import("@osn/icons/subsquare/ProjectIconTuringDark"),
 );
 const ProjectIconTuringLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconTuringLight),
+  import("@osn/icons/subsquare/ProjectIconTuringLight"),
 );
 const ProjectLogoTuringDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoTuringDark),
+  import("@osn/icons/subsquare/ProjectLogoTuringDark"),
 );
 
 export const DEFAULT_TURING_NODES = [

@@ -5,13 +5,13 @@ import { defaultPostLabels } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconLitentryDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconLitentryDark),
+  import("@osn/icons/subsquare/ProjectIconLitentryDark"),
 );
 const ProjectIconLitentryLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconLitentryLight),
+  import("@osn/icons/subsquare/ProjectIconLitentryLight"),
 );
 const ProjectLogoLitentryDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoLitentryDark),
+  import("@osn/icons/subsquare/ProjectLogoLitentryDark"),
 );
 
 const DEFAULT_LITENTRY_NODES = [

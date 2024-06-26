@@ -1,19 +1,19 @@
-import MenuGroups from "../menuGroups";
-import { defaultPostLabels } from "../common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-
-const ProjectIconKusamaDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKusamaDark),
-);
-const ProjectIconKusamaLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKusamaLight),
-);
-const ProjectLogoKusamaDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoKusamaDark),
-);
+import kusamaLinks from "next-common/utils/consts/settings/kusama/links";
 import defaultKusamaNodes from "next-common/utils/consts/settings/kusama/nodes";
 import kusamaTreasuryTracks from "next-common/utils/consts/settings/kusama/tracks";
-import kusamaLinks from "next-common/utils/consts/settings/kusama/links";
+import { defaultPostLabels } from "../common";
+import MenuGroups from "../menuGroups";
+
+const ProjectIconKusamaDark = dynamicClientOnly(() =>
+  import("@osn/icons/subsquare/ProjectIconKusamaDark"),
+);
+const ProjectIconKusamaLight = dynamicClientOnly(() =>
+  import("@osn/icons/subsquare/ProjectIconKusamaLight"),
+);
+const ProjectLogoKusamaDark = dynamicClientOnly(() =>
+  import("@osn/icons/subsquare/ProjectLogoKusamaDark"),
+);
 
 const kusama = {
   value: "kusama",

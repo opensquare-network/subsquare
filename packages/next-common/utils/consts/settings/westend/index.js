@@ -1,24 +1,24 @@
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { defaultPostLabels } from "next-common/utils/consts/settings/common";
+import MenuGroups from "next-common/utils/consts/settings/menuGroups";
+import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
+import { westendThemeVars } from "next-common/utils/consts/settings/westend/theme";
 import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import defaultWestendNodes from "./nodes";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconWestendDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconWestendDark),
+  import("@osn/icons/subsquare/ProjectIconWestendDark"),
 );
 const ProjectIconWestendLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconWestendLight),
+  import("@osn/icons/subsquare/ProjectIconWestendLight"),
 );
 const ProjectLogoWestendDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoWestendDark),
+  import("@osn/icons/subsquare/ProjectLogoWestendDark"),
 );
 const ProjectLogoWestendLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoWestendLight),
+  import("@osn/icons/subsquare/ProjectLogoWestendLight"),
 );
-import MenuGroups from "next-common/utils/consts/settings/menuGroups";
-import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
-import { defaultPostLabels } from "next-common/utils/consts/settings/common";
-import { westendThemeVars } from "next-common/utils/consts/settings/westend/theme";
 
 const name = Chains.westend;
 

@@ -5,13 +5,13 @@ import { defaultPostLabels } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconLitmusDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconLitmusDark),
+  import("@osn/icons/subsquare/ProjectIconLitmusDark"),
 );
 const ProjectIconLitmusLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconLitmusLight),
+  import("@osn/icons/subsquare/ProjectIconLitmusLight"),
 );
 const ProjectLogoLitmusLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoLitmusLight),
+  import("@osn/icons/subsquare/ProjectLogoLitmusLight"),
 );
 
 const DEFAULT_LITMUS_NODES = [

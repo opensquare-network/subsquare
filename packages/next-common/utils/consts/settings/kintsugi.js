@@ -4,13 +4,13 @@ import { difference } from "lodash-es";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconKintsugiDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKintsugiDark),
+  import("@osn/icons/subsquare/ProjectIconKintsugiDark"),
 );
 const ProjectIconKintsugiLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKintsugiLight),
+  import("@osn/icons/subsquare/ProjectIconKintsugiLight"),
 );
 const ProjectLogoKintsugiDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoKintsugiDark),
+  import("@osn/icons/subsquare/ProjectLogoKintsugiDark"),
 );
 
 const DEFAULT_KINTSUGI_NODES =

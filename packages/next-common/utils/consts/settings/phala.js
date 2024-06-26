@@ -3,13 +3,13 @@ import { defaultPostLabels } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconPhalaDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconPhalaDark),
+  import("@osn/icons/subsquare/ProjectIconPhalaDark"),
 );
 const ProjectIconPhalaLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconPhalaLight),
+  import("@osn/icons/subsquare/ProjectIconPhalaLight"),
 );
 const ProjectLogoPhalaDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoPhalaDark),
+  import("@osn/icons/subsquare/ProjectLogoPhalaDark"),
 );
 
 const DEFAULT_PHALA_NODES = [

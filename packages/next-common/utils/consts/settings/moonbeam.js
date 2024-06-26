@@ -6,13 +6,13 @@ import ChainTypes from "../chainTypes";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconMoonbeamDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconMoonbeamDark),
+  import("@osn/icons/subsquare/ProjectIconMoonbeamDark"),
 );
 const ProjectIconMoonbeamLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconMoonbeamLight),
+  import("@osn/icons/subsquare/ProjectIconMoonbeamLight"),
 );
 const ProjectLogoMoonbeamDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoMoonbeamDark),
+  import("@osn/icons/subsquare/ProjectLogoMoonbeamDark"),
 );
 
 export const DEFAULT_MOONBEAM_NODES = [

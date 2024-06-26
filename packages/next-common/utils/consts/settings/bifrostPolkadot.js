@@ -1,24 +1,18 @@
-import MenuGroups from "./menuGroups";
-import { defaultPostLabels } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import Chains from "../chains";
+import bifrost from "./bifrost";
+import { defaultPostLabels } from "./common";
+import MenuGroups from "./menuGroups";
 
 const ProjectIconBifrostPolkadotDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectIconBifrostPolkadotDark,
-  ),
+  import("@osn/icons/subsquare/ProjectIconBifrostPolkadotDark"),
 );
 const ProjectIconBifrostPolkadotLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectIconBifrostPolkadotLight,
-  ),
+  import("@osn/icons/subsquare/ProjectIconBifrostPolkadotLight"),
 );
 const ProjectLogoBifrostPolkadotDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectLogoBifrostPolkadotDark,
-  ),
+  import("@osn/icons/subsquare/ProjectLogoBifrostPolkadotDark"),
 );
-import bifrost from "./bifrost";
-import Chains from "../chains";
 
 const DEFAULT_NODES = [
   {

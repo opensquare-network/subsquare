@@ -3,16 +3,16 @@ import { defaultPostLabels, PostLabel } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconAcalaDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconAcalaDark),
+  import("@osn/icons/subsquare/ProjectIconAcalaDark"),
 );
 const ProjectIconAcalaLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconAcalaLight),
+  import("@osn/icons/subsquare/ProjectIconAcalaLight"),
 );
 const ProjectLogoAcalaDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoAcalaDark),
+  import("@osn/icons/subsquare/ProjectLogoAcalaDark"),
 );
 const ProjectLogoAcalaLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoAcalaLight),
+  import("@osn/icons/subsquare/ProjectLogoAcalaLight"),
 );
 
 const DEFAULT_ACALA_NODES = [

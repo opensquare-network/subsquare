@@ -3,13 +3,13 @@ import MenuGroups from "./menuGroups";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconBasiliskDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconBasiliskDark),
+  import("@osn/icons/subsquare/ProjectIconBasiliskDark"),
 );
 const ProjectIconBasiliskLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconBasiliskLight),
+  import("@osn/icons/subsquare/ProjectIconBasiliskLight"),
 );
 const ProjectLogoBasiliskDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoBasiliskDark),
+  import("@osn/icons/subsquare/ProjectLogoBasiliskDark"),
 );
 
 const DEFAULT_BASILISK_NODES = [

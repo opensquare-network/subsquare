@@ -6,13 +6,13 @@ import ChainTypes from "../chainTypes";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconMoonriverDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconMoonriverDark),
+  import("@osn/icons/subsquare/ProjectIconMoonriverDark"),
 );
 const ProjectIconMoonriverLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconMoonriverLight),
+  import("@osn/icons/subsquare/ProjectIconMoonriverLight"),
 );
 const ProjectLogoMoonriverDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoMoonriverDark),
+  import("@osn/icons/subsquare/ProjectLogoMoonriverDark"),
 );
 
 export const DEFAULT_MOONRIVER_NODES = [

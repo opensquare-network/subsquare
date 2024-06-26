@@ -1,23 +1,23 @@
-import Chains from "../chains";
-import capitalize from "../../capitalize";
-import MenuGroups from "./menuGroups";
-import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import capitalize from "../../capitalize";
+import Chains from "../chains";
+import ChainTypes from "../chainTypes";
+import { defaultPostLabels, PostLabel } from "./common";
+import MenuGroups from "./menuGroups";
 
 const ProjectIconCentrifugeDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconCentrifugeDark),
+  import("@osn/icons/subsquare/ProjectIconCentrifugeDark"),
 );
 const ProjectIconCentrifugeLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconCentrifugeLight),
+  import("@osn/icons/subsquare/ProjectIconCentrifugeLight"),
 );
 const ProjectLogoCentrifugeDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoCentrifugeDark),
+  import("@osn/icons/subsquare/ProjectLogoCentrifugeDark"),
 );
 const ProjectLogoCentrifugeLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoCentrifugeLight),
+  import("@osn/icons/subsquare/ProjectLogoCentrifugeLight"),
 );
-import ChainTypes from "../chainTypes";
 
 const name = Chains.centrifuge;
 

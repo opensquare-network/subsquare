@@ -9,16 +9,16 @@ import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import polkadotTreasuryTracks from "next-common/utils/consts/settings/polkadot/tracks";
 
 const ProjectIconPolkadotDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconPolkadotDark),
+  import("@osn/icons/subsquare/ProjectIconPolkadotDark"),
 );
 const ProjectIconPolkadotLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconPolkadotLight),
+  import("@osn/icons/subsquare/ProjectIconPolkadotLight"),
 );
 const ProjectLogoPolkadotDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoPolkadotDark),
+  import("@osn/icons/subsquare/ProjectLogoPolkadotDark"),
 );
 const ProjectLogoPolkadotLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoPolkadotLight),
+  import("@osn/icons/subsquare/ProjectLogoPolkadotLight"),
 );
 
 const name = Chains.polkadot;

@@ -4,16 +4,16 @@ import { difference } from "lodash-es";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const ProjectIconInterlayDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconInterlayDark),
+  import("@osn/icons/subsquare/ProjectIconInterlayDark"),
 );
 const ProjectIconInterlayLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconInterlayLight),
+  import("@osn/icons/subsquare/ProjectIconInterlayLight"),
 );
 const ProjectLogoInterlayDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoInterlayDark),
+  import("@osn/icons/subsquare/ProjectLogoInterlayDark"),
 );
 const ProjectLogoInterlayLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoInterlayLight),
+  import("@osn/icons/subsquare/ProjectLogoInterlayLight"),
 );
 
 const DEFAULT_INTERLAY_NODES = [

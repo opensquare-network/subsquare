@@ -1,18 +1,18 @@
-import Chains from "../chains";
-import MenuGroups from "./menuGroups";
-import { defaultPostLabels } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import ChainTypes from "../chainTypes";
+import Chains from "../chains";
+import { defaultPostLabels } from "./common";
+import MenuGroups from "./menuGroups";
 
 const ProjectIconHydrationDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconHydrationDark),
+  import("@osn/icons/subsquare/ProjectIconHydrationDark"),
 );
 const ProjectIconHydrationLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconHydrationLight),
+  import("@osn/icons/subsquare/ProjectIconHydrationLight"),
 );
 const ProjectLogoHydrationDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoHydrationDark),
+  import("@osn/icons/subsquare/ProjectLogoHydrationDark"),
 );
-import ChainTypes from "../chainTypes";
 
 const endpoints = [
   {

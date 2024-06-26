@@ -1,30 +1,22 @@
-import Chains from "../chains";
-import MenuGroups from "./menuGroups";
-import { PostLabel } from "./common";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
+import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
+import Chains from "../chains";
+import { PostLabel } from "./common";
+import MenuGroups from "./menuGroups";
 
 const ProjectIconPolkadotCollectivesDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectIconPolkadotCollectivesDark,
-  ),
+  import("@osn/icons/subsquare/ProjectIconPolkadotCollectivesDark"),
 );
 const ProjectIconPolkadotCollectivesLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectIconPolkadotCollectivesLight,
-  ),
+  import("@osn/icons/subsquare/ProjectIconPolkadotCollectivesLight"),
 );
 const ProjectLogoPolkadotCollectivesDark = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectLogoPolkadotCollectivesDark,
-  ),
+  import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesDark"),
 );
 const ProjectLogoPolkadotCollectivesLight = dynamicClientOnly(() =>
-  import("@osn/icons/subsquare").then(
-    (mod) => mod.ProjectLogoPolkadotCollectivesLight,
-  ),
+  import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesLight"),
 );
-import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
-import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
 
 const testEndpoints = [
   {
