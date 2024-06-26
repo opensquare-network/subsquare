@@ -15,6 +15,7 @@ const businessCategory = {
   discussions: "Discussions",
   openGovReferenda: "OpenGov Referenda",
   fellowship: "Fellowship",
+  ambassadorReferenda: "Ambassador Referenda",
   financialMotions: "Financial Motions",
   advisoryMotions: "Advisory Motions",
   allianceMotions: "Alliance Motions",

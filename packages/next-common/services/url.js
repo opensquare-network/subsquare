@@ -78,6 +78,10 @@ export const ambassadorParamsApi = "ambassador/params";
 export const ambassadorMembersApiUri = "ambassador/members";
 export const ambassadorCoreFeedsApiUri = "ambassador/core/feeds";
 export const ambassadorTracksApi = "ambassador/tracks";
+export const ambassadorTracksSummaryApi = "ambassador/tracks/summary";
+export const ambassadorReferendumsApi = "ambassador/referenda";
+export const ambassadorReferendumsSummaryApi =
+  ambassadorReferendumsApi + "/summary";
 
 // calender events
 /**

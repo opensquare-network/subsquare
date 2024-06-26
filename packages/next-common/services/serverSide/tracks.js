@@ -1,49 +1,38 @@
 import nextApi from "next-common/services/nextApi";
 import {
+  ambassadorTracksSummaryApi,
   fellowshipTracksSummaryApi,
   gov2TracksSummaryApi,
 } from "next-common/services/url";
 import getChainSettings from "next-common/utils/consts/settings";
 
-export async function fetchSummary() {
-  const { result } = await nextApi.fetch("summary");
-  return result || {};
-}
-
-async function fetchAll() {
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksSummaryApi),
-    nextApi.fetch(fellowshipTracksSummaryApi),
-  ]);
-
-  return {
-    tracks: tracks ?? [],
-    fellowshipTracks: fellowshipTracks ?? [],
-  };
-}
-
 export async function fetchOpenGovTracksProps() {
-  const summary = await fetchSummary();
+  const { result: summary = {} } = await nextApi.fetch("summary");
 
   const {
-    modules: { referenda: hasReferenda, fellowship: hasFellowship },
+    modules: {
+      referenda: hasReferenda,
+      fellowship: hasFellowship,
+      ambassador: hasAmbassador,
+    },
   } = getChainSettings(process.env.CHAIN);
-  if (hasReferenda && hasFellowship) {
-    const result = await fetchAll();
-    return { ...result, summary };
-  }
-
+  const result = { summary };
   if (hasReferenda) {
     const { result: tracks } = await nextApi.fetch(gov2TracksSummaryApi);
-    return { tracks: tracks ?? [], fellowshipTracks: [], summary };
+    Object.assign(result, { tracks: tracks ?? [] });
   }
-
   if (hasFellowship) {
     const { result: fellowshipTracks } = await nextApi.fetch(
       fellowshipTracksSummaryApi,
     );
-    return { tracks: [], fellowshipTracks: fellowshipTracks ?? [], summary };
+    Object.assign(result, { fellowshipTracks: fellowshipTracks ?? [] });
+  }
+  if (hasAmbassador) {
+    const { result: ambassadorTracks } = await nextApi.fetch(
+      ambassadorTracksSummaryApi,
+    );
+    Object.assign(result, { ambassadorTracks: ambassadorTracks ?? [] });
   }
 
-  return { tracks: [], fellowshipTracks: [], summary };
+  return result;
 }

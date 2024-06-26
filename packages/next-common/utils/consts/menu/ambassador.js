@@ -11,7 +11,7 @@ export const Names = {
 };
 
 function getAmbassadorReferendaMenu(
-  fellowshipTracks = [],
+  ambassadorTracks = [],
   currentTrackId,
   totalActiveCount,
 ) {
@@ -28,7 +28,7 @@ function getAmbassadorReferendaMenu(
     };
   };
 
-  const trackItems = fellowshipTracks.map(resolveAmbassadorTrackItem);
+  const trackItems = ambassadorTracks.map(resolveAmbassadorTrackItem);
 
   return {
     value: "ambassador-referenda",
@@ -41,7 +41,7 @@ function getAmbassadorReferendaMenu(
       {
         value: "all",
         name: Names.all,
-        pathname: "/fellowship",
+        pathname: "/ambassador/referenda",
         activeCount: totalActiveCount,
         excludeToSumActives: true,
       },
