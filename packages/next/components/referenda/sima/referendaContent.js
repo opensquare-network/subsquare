@@ -5,7 +5,7 @@ import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metad
 import { useEffect } from "react";
 import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
 import { useDispatch } from "react-redux";
-import ReferendaDetail from "next-common/components/detail/referenda";
+import SimaReferendaDetail from "next-common/components/sima/referenda/detail";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
@@ -35,7 +35,7 @@ export default function SimaReferendumContent() {
 
   return (
     <ContentWithComment>
-      <ReferendaDetail />
+      <SimaReferendaDetail />
 
       <Gov2Sidebar />
 

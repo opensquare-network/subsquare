@@ -2,7 +2,7 @@ import { useDetailType } from "next-common/context/page";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import { useCallback } from "react";
 import fetchAndUpdatePost from "next-common/context/post/update";
-import MaliciousHead from "../maliciousHead";
+import MaliciousHead from "next-common/components/detail/maliciousHead";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isEditingPostSelector,
