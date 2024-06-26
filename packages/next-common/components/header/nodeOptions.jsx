@@ -25,7 +25,7 @@ export default function NodeOptions({
         "mt-1 p-2",
         "text-textPrimary",
         "w-full",
-        "border border-neutral300 rounded-lg",
+        "border border-neutral300 !shadow-200 rounded-lg",
         small && "min-w-[192px] w-auto",
       )}
     >
