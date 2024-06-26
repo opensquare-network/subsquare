@@ -1,15 +1,56 @@
-import { sumBy } from "lodash-es";
+import { startCase, sumBy } from "lodash-es";
 import { getExcludeChains } from "next-common/utils/viewfuncs";
 import Chains from "next-common/utils/consts/chains";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
+import dividerConfig from "next-common/utils/consts/menu/common/divider";
 
 export const Names = {
   ambassador: "AMBASSADOR",
   ...collectivesCommonNames,
 };
 
-export function getAmbassadorMenu(ambassadorTracks = []) {
+function getAmbassadorReferendaMenu(
+  fellowshipTracks = [],
+  currentTrackId,
+  totalActiveCount,
+) {
+  const resolveAmbassadorTrackItem = (track) => {
+    return {
+      value: track.id,
+      name: startCase(track.name),
+      pathname: `/ambassador/tracks/${track.id}`,
+      activeCount: track.activeCount,
+      icon: `[${track.id}]`,
+      extraMatchNavMenuActivePathnames: [
+        track.id === currentTrackId && "/ambassador/referenda/[id]",
+      ].filter(Boolean),
+    };
+  };
+
+  const trackItems = fellowshipTracks.map(resolveAmbassadorTrackItem);
+
+  return {
+    value: "ambassador-referenda",
+    name: "Referenda",
+    extraMatchNavMenuActivePathnames: [
+      "/ambassador",
+      "/ambassador/tracks/[id]",
+    ],
+    items: [
+      {
+        value: "all",
+        name: Names.all,
+        pathname: "/fellowship",
+        activeCount: totalActiveCount,
+        excludeToSumActives: true,
+      },
+      ...trackItems,
+    ],
+  };
+}
+
+export function getAmbassadorMenu(ambassadorTracks = [], currentTrackId) {
   const totalActiveCount = sumBy(ambassadorTracks, (t) => t.activeCount || 0);
 
   return {
@@ -24,6 +65,12 @@ export function getAmbassadorMenu(ambassadorTracks = []) {
         name: Names.members,
         pathname: "/ambassador/members",
       },
+      dividerConfig,
+      getAmbassadorReferendaMenu(
+        ambassadorTracks,
+        currentTrackId,
+        totalActiveCount,
+      ),
     ],
   };
 }

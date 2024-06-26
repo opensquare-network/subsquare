@@ -11,8 +11,12 @@ export default function NavCommonMenu({ collapsed }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const isMacOS = useIsMacOS();
-  const { tracks, fellowshipTracks } = usePageProps();
-  const commonMenu = getCommonMenu({ tracks, fellowshipTracks });
+  const { tracks, fellowshipTracks, ambassadorTracks } = usePageProps();
+  const commonMenu = getCommonMenu({
+    tracks,
+    fellowshipTracks,
+    ambassadorTracks,
+  });
   const routePathname = router.asPath.split("?")[0];
 
   return (

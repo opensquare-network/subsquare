@@ -77,6 +77,7 @@ export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
 export const ambassadorParamsApi = "ambassador/params";
 export const ambassadorMembersApiUri = "ambassador/members";
 export const ambassadorCoreFeedsApiUri = "ambassador/core/feeds";
+export const ambassadorTracksApi = "ambassador/tracks";
 
 // calender events
 /**

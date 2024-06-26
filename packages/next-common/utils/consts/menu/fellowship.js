@@ -1,11 +1,10 @@
-import { sumBy } from "lodash-es";
-import Divider from "../../../components/styled/layout/divider";
-import { startCase } from "lodash-es";
+import { startCase, sumBy } from "lodash-es";
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
+import dividerConfig from "next-common/utils/consts/menu/common/divider";
 
 export const Names = {
   fellowship: "FELLOWSHIP",
@@ -115,15 +114,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
       },
       getFellowshipCoreMenu(),
       getFellowshipSalaryMenu(),
-      {
-        component: (
-          <Divider
-            key="divider"
-            style={{ width: 62, margin: "10px 0 10px 18px" }}
-          />
-        ),
-        type: "divider",
-      },
+      dividerConfig,
       getFellowshipReferendaMenu(
         fellowshipTracks,
         currentTrackId,

@@ -53,8 +53,16 @@ export function getHomeMenu({
   ];
 }
 
-export function getCommonMenu({ tracks = [], fellowshipTracks = [] }) {
-  const [commonMenu] = getHomeMenu({ tracks, fellowshipTracks });
+export function getCommonMenu({
+  tracks = [],
+  fellowshipTracks = [],
+  ambassadorTracks = [],
+}) {
+  const [commonMenu] = getHomeMenu({
+    tracks,
+    fellowshipTracks,
+    ambassadorTracks,
+  });
   commonMenu.items = commonMenu.items.filter(
     (i) => !i?.excludeToChains?.includes?.(CHAIN),
   );
