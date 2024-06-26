@@ -1,17 +1,17 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconAcalaDark = dynamic(() =>
+const ProjectIconAcalaDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconAcalaDark),
 );
-const ProjectIconAcalaLight = dynamic(() =>
+const ProjectIconAcalaLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconAcalaLight),
 );
-const ProjectLogoAcalaDark = dynamic(() =>
+const ProjectLogoAcalaDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoAcalaDark),
 );
-const ProjectLogoAcalaLight = dynamic(() =>
+const ProjectLogoAcalaLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoAcalaLight),
 );
 

@@ -3,18 +3,18 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconCentrifugeDark = dynamic(() =>
+const ProjectIconCentrifugeDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconCentrifugeDark),
 );
-const ProjectIconCentrifugeLight = dynamic(() =>
+const ProjectIconCentrifugeLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconCentrifugeLight),
 );
-const ProjectLogoCentrifugeDark = dynamic(() =>
+const ProjectLogoCentrifugeDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoCentrifugeDark),
 );
-const ProjectLogoCentrifugeLight = dynamic(() =>
+const ProjectLogoCentrifugeLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoCentrifugeLight),
 );
 import ChainTypes from "../chainTypes";

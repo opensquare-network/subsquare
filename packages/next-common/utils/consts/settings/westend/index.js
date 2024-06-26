@@ -1,18 +1,18 @@
 import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import defaultWestendNodes from "./nodes";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconWestendDark = dynamic(() =>
+const ProjectIconWestendDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconWestendDark),
 );
-const ProjectIconWestendLight = dynamic(() =>
+const ProjectIconWestendLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconWestendLight),
 );
-const ProjectLogoWestendDark = dynamic(() =>
+const ProjectLogoWestendDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoWestendDark),
 );
-const ProjectLogoWestendLight = dynamic(() =>
+const ProjectLogoWestendLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoWestendLight),
 );
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";

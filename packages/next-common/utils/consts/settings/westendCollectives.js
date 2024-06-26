@@ -1,24 +1,24 @@
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { PostLabel } from "./common";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconWestendCollectivesDark = dynamic(() =>
+const ProjectIconWestendCollectivesDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectIconWestendCollectivesDark,
   ),
 );
-const ProjectIconWestendCollectivesLight = dynamic(() =>
+const ProjectIconWestendCollectivesLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectIconWestendCollectivesLight,
   ),
 );
-const ProjectLogoWestendCollectivesDark = dynamic(() =>
+const ProjectLogoWestendCollectivesDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectLogoWestendCollectivesDark,
   ),
 );
-const ProjectLogoWestendCollectivesLight = dynamic(() =>
+const ProjectLogoWestendCollectivesLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectLogoWestendCollectivesLight,
   ),

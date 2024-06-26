@@ -3,18 +3,18 @@ import capitalize from "../../../capitalize";
 import MenuGroups from "../menuGroups";
 import { defaultPostLabels } from "../common";
 import ChainTypes from "../../chainTypes";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconDarwinia2Dark = dynamic(() =>
+const ProjectIconDarwinia2Dark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconDarwinia2Dark),
 );
-const ProjectIconDarwinia2Light = dynamic(() =>
+const ProjectIconDarwinia2Light = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconDarwinia2Light),
 );
-const ProjectLogoDarwinia2Dark = dynamic(() =>
+const ProjectLogoDarwinia2Dark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoDarwinia2Dark),
 );
-const ProjectLogoDarwinia2Light = dynamic(() =>
+const ProjectLogoDarwinia2Light = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoDarwinia2Light),
 );
 import darwiniaTreasuryTracks from "next-common/utils/consts/settings/darwinia/tracks";

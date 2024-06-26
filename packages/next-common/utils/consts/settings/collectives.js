@@ -1,24 +1,24 @@
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { PostLabel } from "./common";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconPolkadotCollectivesDark = dynamic(() =>
+const ProjectIconPolkadotCollectivesDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectIconPolkadotCollectivesDark,
   ),
 );
-const ProjectIconPolkadotCollectivesLight = dynamic(() =>
+const ProjectIconPolkadotCollectivesLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectIconPolkadotCollectivesLight,
   ),
 );
-const ProjectLogoPolkadotCollectivesDark = dynamic(() =>
+const ProjectLogoPolkadotCollectivesDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectLogoPolkadotCollectivesDark,
   ),
 );
-const ProjectLogoPolkadotCollectivesLight = dynamic(() =>
+const ProjectLogoPolkadotCollectivesLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectLogoPolkadotCollectivesLight,
   ),

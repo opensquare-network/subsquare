@@ -1,14 +1,14 @@
 import MenuGroups from "../menuGroups";
 import { defaultPostLabels } from "../common";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconKusamaDark = dynamic(() =>
+const ProjectIconKusamaDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKusamaDark),
 );
-const ProjectIconKusamaLight = dynamic(() =>
+const ProjectIconKusamaLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKusamaLight),
 );
-const ProjectLogoKusamaDark = dynamic(() =>
+const ProjectLogoKusamaDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoKusamaDark),
 );
 import defaultKusamaNodes from "next-common/utils/consts/settings/kusama/nodes";

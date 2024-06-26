@@ -1,15 +1,15 @@
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconHydrationDark = dynamic(() =>
+const ProjectIconHydrationDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconHydrationDark),
 );
-const ProjectIconHydrationLight = dynamic(() =>
+const ProjectIconHydrationLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconHydrationLight),
 );
-const ProjectLogoHydrationDark = dynamic(() =>
+const ProjectLogoHydrationDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoHydrationDark),
 );
 import ChainTypes from "../chainTypes";

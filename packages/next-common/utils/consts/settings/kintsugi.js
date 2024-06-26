@@ -1,15 +1,15 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconKintsugiDark = dynamic(() =>
+const ProjectIconKintsugiDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKintsugiDark),
 );
-const ProjectIconKintsugiLight = dynamic(() =>
+const ProjectIconKintsugiLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKintsugiLight),
 );
-const ProjectLogoKintsugiDark = dynamic(() =>
+const ProjectLogoKintsugiDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoKintsugiDark),
 );
 

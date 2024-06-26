@@ -1,14 +1,14 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconKaruraDark = dynamic(() =>
+const ProjectIconKaruraDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKaruraDark),
 );
-const ProjectIconKaruraLight = dynamic(() =>
+const ProjectIconKaruraLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKaruraLight),
 );
-const ProjectLogoKaruraDark = dynamic(() =>
+const ProjectLogoKaruraDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoKaruraDark),
 );
 

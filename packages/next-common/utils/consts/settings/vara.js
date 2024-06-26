@@ -1,14 +1,14 @@
 import Chains from "next-common/utils/consts/chains";
 import capitalize from "next-common/utils/capitalize";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconVaraDark = dynamic(() =>
+const ProjectIconVaraDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconVaraDark),
 );
-const ProjectIconVaraLight = dynamic(() =>
+const ProjectIconVaraLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconVaraLight),
 );
-const ProjectLogoVaraDark = dynamic(() =>
+const ProjectLogoVaraDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoVaraDark),
 );
 import { defaultPostLabels } from "next-common/utils/consts/settings/common";

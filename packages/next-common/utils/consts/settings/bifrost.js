@@ -1,18 +1,18 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconBifrostKusamaDark = dynamic(() =>
+const ProjectIconBifrostKusamaDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectIconBifrostKusamaDark,
   ),
 );
-const ProjectIconBifrostKusamaLight = dynamic(() =>
+const ProjectIconBifrostKusamaLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectIconBifrostKusamaLight,
   ),
 );
-const ProjectLogoBifrostKusamaDark = dynamic(() =>
+const ProjectLogoBifrostKusamaDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then(
     (mod) => mod.ProjectLogoBifrostKusamaDark,
   ),

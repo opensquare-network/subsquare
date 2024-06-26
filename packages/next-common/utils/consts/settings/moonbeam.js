@@ -3,15 +3,15 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const ProjectIconMoonbeamDark = dynamic(() =>
+const ProjectIconMoonbeamDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconMoonbeamDark),
 );
-const ProjectIconMoonbeamLight = dynamic(() =>
+const ProjectIconMoonbeamLight = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectIconMoonbeamLight),
 );
-const ProjectLogoMoonbeamDark = dynamic(() =>
+const ProjectLogoMoonbeamDark = dynamicClientOnly(() =>
   import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoMoonbeamDark),
 );
 
