@@ -6,8 +6,10 @@ import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import ChainIcon from "./chainIcon";
 import { ArrowDown } from "@osn/icons/subsquare";
-import NetworkOptions from "./networkOptions";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const NetworkOptions = dynamicClientOnly(() => import("./networkOptions"));
 
 const Wrapper = styled.div`
   position: relative;
