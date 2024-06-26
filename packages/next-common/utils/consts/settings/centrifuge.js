@@ -1,21 +1,21 @@
 import { difference } from "lodash-es";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 import capitalize from "../../capitalize";
 import Chains from "../chains";
 import ChainTypes from "../chainTypes";
 import { defaultPostLabels, PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
 
-const ProjectIconCentrifugeDark = dynamicClientOnly(() =>
+const ProjectIconCentrifugeDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconCentrifugeDark"),
 );
-const ProjectIconCentrifugeLight = dynamicClientOnly(() =>
+const ProjectIconCentrifugeLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconCentrifugeLight"),
 );
-const ProjectLogoCentrifugeDark = dynamicClientOnly(() =>
+const ProjectLogoCentrifugeDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoCentrifugeDark"),
 );
-const ProjectLogoCentrifugeLight = dynamicClientOnly(() =>
+const ProjectLogoCentrifugeLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoCentrifugeLight"),
 );
 

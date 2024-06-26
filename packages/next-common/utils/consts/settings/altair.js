@@ -3,15 +3,15 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 
-const ProjectIconAltairDark = dynamicClientOnly(() =>
+const ProjectIconAltairDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconAltairDark"),
 );
-const ProjectIconAltairLight = dynamicClientOnly(() =>
+const ProjectIconAltairLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconAltairLight"),
 );
-const ProjectLogoAltairDark = dynamicClientOnly(() =>
+const ProjectLogoAltairDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoAltairDark"),
 );
 

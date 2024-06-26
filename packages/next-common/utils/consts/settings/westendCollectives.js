@@ -1,19 +1,19 @@
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
 import Chains from "../chains";
 import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
 
-const ProjectIconWestendCollectivesDark = dynamicClientOnly(() =>
+const ProjectIconWestendCollectivesDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendCollectivesDark"),
 );
-const ProjectIconWestendCollectivesLight = dynamicClientOnly(() =>
+const ProjectIconWestendCollectivesLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendCollectivesLight"),
 );
-const ProjectLogoWestendCollectivesDark = dynamicClientOnly(() =>
+const ProjectLogoWestendCollectivesDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoWestendCollectivesDark"),
 );
-const ProjectLogoWestendCollectivesLight = dynamicClientOnly(() =>
+const ProjectLogoWestendCollectivesLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoWestendCollectivesLight"),
 );
 

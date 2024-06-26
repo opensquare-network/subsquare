@@ -2,22 +2,22 @@ import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import MenuGroups from "../menuGroups";
 import { defaultPostLabels } from "../common";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
 import defaultPolkadotNodes from "next-common/utils/consts/settings/polkadot/nodes";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import polkadotTreasuryTracks from "next-common/utils/consts/settings/polkadot/tracks";
 
-const ProjectIconPolkadotDark = dynamicClientOnly(() =>
+const ProjectIconPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotDark"),
 );
-const ProjectIconPolkadotLight = dynamicClientOnly(() =>
+const ProjectIconPolkadotLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotLight"),
 );
-const ProjectLogoPolkadotDark = dynamicClientOnly(() =>
+const ProjectLogoPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoPolkadotDark"),
 );
-const ProjectLogoPolkadotLight = dynamicClientOnly(() =>
+const ProjectLogoPolkadotLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoPolkadotLight"),
 );
 

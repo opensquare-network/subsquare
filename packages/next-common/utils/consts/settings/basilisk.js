@@ -1,14 +1,14 @@
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 
-const ProjectIconBasiliskDark = dynamicClientOnly(() =>
+const ProjectIconBasiliskDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBasiliskDark"),
 );
-const ProjectIconBasiliskLight = dynamicClientOnly(() =>
+const ProjectIconBasiliskLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBasiliskLight"),
 );
-const ProjectLogoBasiliskDark = dynamicClientOnly(() =>
+const ProjectLogoBasiliskDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoBasiliskDark"),
 );
 

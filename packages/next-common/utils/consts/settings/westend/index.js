@@ -1,4 +1,4 @@
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 import { defaultPostLabels } from "next-common/utils/consts/settings/common";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
@@ -7,16 +7,16 @@ import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import defaultWestendNodes from "./nodes";
 
-const ProjectIconWestendDark = dynamicClientOnly(() =>
+const ProjectIconWestendDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendDark"),
 );
-const ProjectIconWestendLight = dynamicClientOnly(() =>
+const ProjectIconWestendLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendLight"),
 );
-const ProjectLogoWestendDark = dynamicClientOnly(() =>
+const ProjectLogoWestendDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoWestendDark"),
 );
-const ProjectLogoWestendLight = dynamicClientOnly(() =>
+const ProjectLogoWestendLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoWestendLight"),
 );
 

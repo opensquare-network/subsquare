@@ -1,4 +1,4 @@
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
 import rococoTreasuryTracks from "next-common/utils/consts/settings/rococo/tracks";
 import capitalize from "../../../capitalize";
@@ -6,16 +6,16 @@ import Chains from "../../chains";
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
 
-const ProjectIconRococoDark = dynamicClientOnly(() =>
+const ProjectIconRococoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconRococoDark"),
 );
-const ProjectIconRococoLight = dynamicClientOnly(() =>
+const ProjectIconRococoLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconRococoLight"),
 );
-const ProjectLogoRococoDark = dynamicClientOnly(() =>
+const ProjectLogoRococoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoRococoDark"),
 );
-const ProjectLogoRococoLight = dynamicClientOnly(() =>
+const ProjectLogoRococoLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoRococoLight"),
 );
 

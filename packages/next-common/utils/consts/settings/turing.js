@@ -2,15 +2,15 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 
-const ProjectIconTuringDark = dynamicClientOnly(() =>
+const ProjectIconTuringDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconTuringDark"),
 );
-const ProjectIconTuringLight = dynamicClientOnly(() =>
+const ProjectIconTuringLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconTuringLight"),
 );
-const ProjectLogoTuringDark = dynamicClientOnly(() =>
+const ProjectLogoTuringDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoTuringDark"),
 );
 

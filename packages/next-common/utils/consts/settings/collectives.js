@@ -1,20 +1,20 @@
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
 import Chains from "../chains";
 import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
 
-const ProjectIconPolkadotCollectivesDark = dynamicClientOnly(() =>
+const ProjectIconPolkadotCollectivesDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotCollectivesDark"),
 );
-const ProjectIconPolkadotCollectivesLight = dynamicClientOnly(() =>
+const ProjectIconPolkadotCollectivesLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotCollectivesLight"),
 );
-const ProjectLogoPolkadotCollectivesDark = dynamicClientOnly(() =>
+const ProjectLogoPolkadotCollectivesDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesDark"),
 );
-const ProjectLogoPolkadotCollectivesLight = dynamicClientOnly(() =>
+const ProjectLogoPolkadotCollectivesLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesLight"),
 );
 

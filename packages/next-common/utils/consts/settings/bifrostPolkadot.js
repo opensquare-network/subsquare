@@ -1,16 +1,16 @@
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 import Chains from "../chains";
 import bifrost from "./bifrost";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
 
-const ProjectIconBifrostPolkadotDark = dynamicClientOnly(() =>
+const ProjectIconBifrostPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostPolkadotDark"),
 );
-const ProjectIconBifrostPolkadotLight = dynamicClientOnly(() =>
+const ProjectIconBifrostPolkadotLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostPolkadotLight"),
 );
-const ProjectLogoBifrostPolkadotDark = dynamicClientOnly(() =>
+const ProjectLogoBifrostPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoBifrostPolkadotDark"),
 );
 

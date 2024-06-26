@@ -1,4 +1,4 @@
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 import darwiniaLinks from "next-common/utils/consts/settings/darwinia/links";
 import defaultDarwiniaNodes from "next-common/utils/consts/settings/darwinia/nodes";
 import darwiniaTreasuryTracks from "next-common/utils/consts/settings/darwinia/tracks";
@@ -8,16 +8,16 @@ import Chains from "../../chains";
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
 
-const ProjectIconDarwinia2Dark = dynamicClientOnly(() =>
+const ProjectIconDarwinia2Dark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconDarwinia2Dark"),
 );
-const ProjectIconDarwinia2Light = dynamicClientOnly(() =>
+const ProjectIconDarwinia2Light = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconDarwinia2Light"),
 );
-const ProjectLogoDarwinia2Dark = dynamicClientOnly(() =>
+const ProjectLogoDarwinia2Dark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoDarwinia2Dark"),
 );
-const ProjectLogoDarwinia2Light = dynamicClientOnly(() =>
+const ProjectLogoDarwinia2Light = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoDarwinia2Light"),
 );
 

@@ -1,18 +1,18 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamic from "next/dynamic";
 
-const ProjectIconInterlayDark = dynamicClientOnly(() =>
+const ProjectIconInterlayDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconInterlayDark"),
 );
-const ProjectIconInterlayLight = dynamicClientOnly(() =>
+const ProjectIconInterlayLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconInterlayLight"),
 );
-const ProjectLogoInterlayDark = dynamicClientOnly(() =>
+const ProjectLogoInterlayDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoInterlayDark"),
 );
-const ProjectLogoInterlayLight = dynamicClientOnly(() =>
+const ProjectLogoInterlayLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoInterlayLight"),
 );
 
