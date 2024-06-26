@@ -5,15 +5,11 @@ import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
-
-export const name = "FELLOWSHIP";
+import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
 
 export const Names = {
   fellowship: "FELLOWSHIP",
-  members: "Members",
-  core: "Core",
-  salary: "Salary",
-  all: "All",
+  ...collectivesCommonNames,
 };
 
 function getFellowshipCoreMenu() {
