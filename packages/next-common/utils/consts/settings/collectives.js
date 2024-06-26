@@ -1,14 +1,22 @@
-import Chains from "../chains";
-import MenuGroups from "./menuGroups";
-import { PostLabel } from "./common";
-import {
-  ProjectIconPolkadotCollectivesDark,
-  ProjectIconPolkadotCollectivesLight,
-  ProjectLogoPolkadotCollectivesDark,
-  ProjectLogoPolkadotCollectivesLight,
-} from "@osn/icons/subsquare";
-import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
+import dynamic from "next/dynamic";
 import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
+import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
+import Chains from "../chains";
+import { PostLabel } from "./common";
+import MenuGroups from "./menuGroups";
+
+const ProjectIconPolkadotCollectivesDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPolkadotCollectivesDark"),
+);
+const ProjectIconPolkadotCollectivesLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPolkadotCollectivesLight"),
+);
+const ProjectLogoPolkadotCollectivesDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesDark"),
+);
+const ProjectLogoPolkadotCollectivesLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesLight"),
+);
 
 const testEndpoints = [
   {

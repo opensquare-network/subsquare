@@ -1,12 +1,18 @@
-import Chains from "next-common/utils/consts/chains";
+import dynamic from "next/dynamic";
 import capitalize from "next-common/utils/capitalize";
-import {
-  ProjectIconVaraDark,
-  ProjectIconVaraLight,
-  ProjectLogoVaraDark,
-} from "@osn/icons/subsquare";
+import Chains from "next-common/utils/consts/chains";
 import { defaultPostLabels } from "next-common/utils/consts/settings/common";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
+
+const ProjectIconVaraDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconVaraDark"),
+);
+const ProjectIconVaraLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconVaraLight"),
+);
+const ProjectLogoVaraDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoVaraDark"),
+);
 
 const nodes = [
   {

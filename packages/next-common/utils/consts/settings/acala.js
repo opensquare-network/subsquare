@@ -1,11 +1,19 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import {
-  ProjectIconAcalaDark,
-  ProjectIconAcalaLight,
-  ProjectLogoAcalaDark,
-  ProjectLogoAcalaLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconAcalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconAcalaDark"),
+);
+const ProjectIconAcalaLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconAcalaLight"),
+);
+const ProjectLogoAcalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoAcalaDark"),
+);
+const ProjectLogoAcalaLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoAcalaLight"),
+);
 
 const DEFAULT_ACALA_NODES = [
   {

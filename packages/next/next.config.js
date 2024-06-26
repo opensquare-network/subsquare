@@ -5,6 +5,11 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 /** @type {import('next').NextConfig} */
 const config = {
   transpilePackages: ["next-common", "@osn/icons", "@osn/react-cmdk"],
+  modularizeImports: {
+    "@osn/icons/subsquare": {
+      transform: "@osn/icons/subsquare/{{member}}",
+    },
+  },
   compiler: {
     styledComponents: {
       ssr: true,

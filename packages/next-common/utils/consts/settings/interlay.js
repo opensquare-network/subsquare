@@ -1,12 +1,20 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import {
-  ProjectIconInterlayDark,
-  ProjectIconInterlayLight,
-  ProjectLogoInterlayDark,
-  ProjectLogoInterlayLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconInterlayDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconInterlayDark"),
+);
+const ProjectIconInterlayLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconInterlayLight"),
+);
+const ProjectLogoInterlayDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoInterlayDark"),
+);
+const ProjectLogoInterlayLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoInterlayLight"),
+);
 
 const DEFAULT_INTERLAY_NODES = [
   {

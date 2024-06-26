@@ -1,15 +1,23 @@
-import capitalize from "../../../capitalize";
-import MenuGroups from "../menuGroups";
-import Chains from "../../chains";
-import { defaultPostLabels } from "../common";
-import {
-  ProjectIconRococoDark,
-  ProjectIconRococoLight,
-  ProjectLogoRococoDark,
-  ProjectLogoRococoLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
 import rococoTreasuryTracks from "next-common/utils/consts/settings/rococo/tracks";
+import capitalize from "../../../capitalize";
+import Chains from "../../chains";
+import { defaultPostLabels } from "../common";
+import MenuGroups from "../menuGroups";
+
+const ProjectIconRococoDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconRococoDark"),
+);
+const ProjectIconRococoLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconRococoLight"),
+);
+const ProjectLogoRococoDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoRococoDark"),
+);
+const ProjectLogoRococoLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoRococoLight"),
+);
 
 export const defaultRococoNodes = [
   {
