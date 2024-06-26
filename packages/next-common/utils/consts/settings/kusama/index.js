@@ -1,10 +1,16 @@
 import MenuGroups from "../menuGroups";
 import { defaultPostLabels } from "../common";
-import {
-  ProjectIconKusamaDark,
-  ProjectIconKusamaLight,
-  ProjectLogoKusamaDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconKusamaDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKusamaDark),
+);
+const ProjectIconKusamaLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKusamaLight),
+);
+const ProjectLogoKusamaDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoKusamaDark),
+);
 import defaultKusamaNodes from "next-common/utils/consts/settings/kusama/nodes";
 import kusamaTreasuryTracks from "next-common/utils/consts/settings/kusama/tracks";
 import kusamaLinks from "next-common/utils/consts/settings/kusama/links";

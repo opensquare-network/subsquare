@@ -3,12 +3,20 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import {
-  ProjectIconCentrifugeDark,
-  ProjectIconCentrifugeLight,
-  ProjectLogoCentrifugeDark,
-  ProjectLogoCentrifugeLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconCentrifugeDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconCentrifugeDark),
+);
+const ProjectIconCentrifugeLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconCentrifugeLight),
+);
+const ProjectLogoCentrifugeDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoCentrifugeDark),
+);
+const ProjectLogoCentrifugeLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoCentrifugeLight),
+);
 import ChainTypes from "../chainTypes";
 
 const name = Chains.centrifuge;

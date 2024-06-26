@@ -1,10 +1,22 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconBifrostPolkadotDark,
-  ProjectIconBifrostPolkadotLight,
-  ProjectLogoBifrostPolkadotDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconBifrostPolkadotDark = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectIconBifrostPolkadotDark,
+  ),
+);
+const ProjectIconBifrostPolkadotLight = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectIconBifrostPolkadotLight,
+  ),
+);
+const ProjectLogoBifrostPolkadotDark = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectLogoBifrostPolkadotDark,
+  ),
+);
 import bifrost from "./bifrost";
 import Chains from "../chains";
 

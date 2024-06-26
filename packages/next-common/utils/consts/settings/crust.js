@@ -2,11 +2,17 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconCrustDark,
-  ProjectIconCrustLight,
-  ProjectLogoCrustDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconCrustDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconCrustDark),
+);
+const ProjectIconCrustLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconCrustLight),
+);
+const ProjectLogoCrustDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoCrustDark),
+);
 
 const DEFAULT_CRUST_NODES = [
   {

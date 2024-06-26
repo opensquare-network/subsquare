@@ -3,11 +3,17 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
-import {
-  ProjectIconMoonriverDark,
-  ProjectIconMoonriverLight,
-  ProjectLogoMoonriverDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconMoonriverDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconMoonriverDark),
+);
+const ProjectIconMoonriverLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconMoonriverLight),
+);
+const ProjectLogoMoonriverDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoMoonriverDark),
+);
 
 export const DEFAULT_MOONRIVER_NODES = [
   {

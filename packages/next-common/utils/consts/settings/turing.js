@@ -2,11 +2,17 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconTuringDark,
-  ProjectIconTuringLight,
-  ProjectLogoTuringDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconTuringDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconTuringDark),
+);
+const ProjectIconTuringLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconTuringLight),
+);
+const ProjectLogoTuringDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoTuringDark),
+);
 
 export const DEFAULT_TURING_NODES = [
   {

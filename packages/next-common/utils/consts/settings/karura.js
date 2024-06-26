@@ -1,10 +1,16 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import {
-  ProjectIconKaruraDark,
-  ProjectIconKaruraLight,
-  ProjectLogoKaruraDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconKaruraDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKaruraDark),
+);
+const ProjectIconKaruraLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconKaruraLight),
+);
+const ProjectLogoKaruraDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoKaruraDark),
+);
 
 export const DEFAULT_KARURA_NODES = [
   {

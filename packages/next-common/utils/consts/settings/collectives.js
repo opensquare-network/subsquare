@@ -1,12 +1,28 @@
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { PostLabel } from "./common";
-import {
-  ProjectIconPolkadotCollectivesDark,
-  ProjectIconPolkadotCollectivesLight,
-  ProjectLogoPolkadotCollectivesDark,
-  ProjectLogoPolkadotCollectivesLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconPolkadotCollectivesDark = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectIconPolkadotCollectivesDark,
+  ),
+);
+const ProjectIconPolkadotCollectivesLight = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectIconPolkadotCollectivesLight,
+  ),
+);
+const ProjectLogoPolkadotCollectivesDark = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectLogoPolkadotCollectivesDark,
+  ),
+);
+const ProjectLogoPolkadotCollectivesLight = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectLogoPolkadotCollectivesLight,
+  ),
+);
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
 import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
 

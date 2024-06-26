@@ -2,12 +2,20 @@ import capitalize from "../../../capitalize";
 import MenuGroups from "../menuGroups";
 import Chains from "../../chains";
 import { defaultPostLabels } from "../common";
-import {
-  ProjectIconRococoDark,
-  ProjectIconRococoLight,
-  ProjectLogoRococoDark,
-  ProjectLogoRococoLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconRococoDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconRococoDark),
+);
+const ProjectIconRococoLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconRococoLight),
+);
+const ProjectLogoRococoDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoRococoDark),
+);
+const ProjectLogoRococoLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoRococoLight),
+);
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
 import rococoTreasuryTracks from "next-common/utils/consts/settings/rococo/tracks";
 

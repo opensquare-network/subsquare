@@ -2,11 +2,17 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconLitmusDark,
-  ProjectIconLitmusLight,
-  ProjectLogoLitmusLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconLitmusDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconLitmusDark),
+);
+const ProjectIconLitmusLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconLitmusLight),
+);
+const ProjectLogoLitmusLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoLitmusLight),
+);
 
 const DEFAULT_LITMUS_NODES = [
   {

@@ -3,11 +3,17 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import {
-  ProjectIconAltairDark,
-  ProjectIconAltairLight,
-  ProjectLogoAltairDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconAltairDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconAltairDark),
+);
+const ProjectIconAltairLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconAltairLight),
+);
+const ProjectLogoAltairDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoAltairDark),
+);
 
 const nodes = [
   {

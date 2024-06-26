@@ -1,10 +1,16 @@
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
-import {
-  ProjectIconBasiliskDark,
-  ProjectIconBasiliskLight,
-  ProjectLogoBasiliskDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconBasiliskDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconBasiliskDark),
+);
+const ProjectIconBasiliskLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconBasiliskLight),
+);
+const ProjectLogoBasiliskDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoBasiliskDark),
+);
 
 const DEFAULT_BASILISK_NODES = [
   {

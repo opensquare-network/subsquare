@@ -1,12 +1,20 @@
 import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import defaultWestendNodes from "./nodes";
-import {
-  ProjectIconWestendDark,
-  ProjectIconWestendLight,
-  ProjectLogoWestendDark,
-  ProjectLogoWestendLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconWestendDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconWestendDark),
+);
+const ProjectIconWestendLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectIconWestendLight),
+);
+const ProjectLogoWestendDark = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoWestendDark),
+);
+const ProjectLogoWestendLight = dynamic(() =>
+  import("@osn/icons/subsquare").then((mod) => mod.ProjectLogoWestendLight),
+);
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import { defaultPostLabels } from "next-common/utils/consts/settings/common";

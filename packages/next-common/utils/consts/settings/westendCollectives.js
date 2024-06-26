@@ -1,12 +1,28 @@
 import Chains from "../chains";
 import MenuGroups from "./menuGroups";
 import { PostLabel } from "./common";
-import {
-  ProjectIconWestendCollectivesDark,
-  ProjectIconWestendCollectivesLight,
-  ProjectLogoWestendCollectivesDark,
-  ProjectLogoWestendCollectivesLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconWestendCollectivesDark = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectIconWestendCollectivesDark,
+  ),
+);
+const ProjectIconWestendCollectivesLight = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectIconWestendCollectivesLight,
+  ),
+);
+const ProjectLogoWestendCollectivesDark = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectLogoWestendCollectivesDark,
+  ),
+);
+const ProjectLogoWestendCollectivesLight = dynamic(() =>
+  import("@osn/icons/subsquare").then(
+    (mod) => mod.ProjectLogoWestendCollectivesLight,
+  ),
+);
 import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
 
 const westendCollectivesEndpoints = [
