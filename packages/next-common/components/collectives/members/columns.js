@@ -1,4 +1,4 @@
-const fellowshipCollectiveMemberColumns = [
+const collectivesMemberColumns = [
   {
     name: "Rank",
     width: 80,
@@ -29,4 +29,4 @@ const fellowshipCollectiveMemberColumns = [
   },
 ];
 
-export default fellowshipCollectiveMemberColumns;
+export default collectivesMemberColumns;

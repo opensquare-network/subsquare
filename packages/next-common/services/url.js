@@ -73,6 +73,11 @@ export const fellowshipSalaryCycleFeedsApi = (index) =>
 
 export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
 
+// ambassador
+export const ambassadorParamsApi = "ambassador/params";
+export const ambassadorMembersApiUri = "ambassador/members";
+export const ambassadorCoreFeedsApiUri = "ambassador/core/feeds";
+
 // calender events
 /**
  * param `begin_time`, `end_time`
