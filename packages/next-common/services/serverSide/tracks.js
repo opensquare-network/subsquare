@@ -16,23 +16,32 @@ export async function fetchOpenGovTracksProps() {
       ambassador: hasAmbassador,
     },
   } = getChainSettings(process.env.CHAIN);
-  const result = { summary };
+  let tracks = [],
+    fellowshipTracks = [],
+    ambassadorTracks = [];
   if (hasReferenda) {
-    const { result: tracks } = await nextApi.fetch(gov2TracksSummaryApi);
-    Object.assign(result, { tracks: tracks ?? [] });
+    const { result: referendaTracks } = await nextApi.fetch(
+      gov2TracksSummaryApi,
+    );
+    tracks = referendaTracks;
   }
   if (hasFellowship) {
-    const { result: fellowshipTracks } = await nextApi.fetch(
+    const { result: fellowshipTracksResult } = await nextApi.fetch(
       fellowshipTracksSummaryApi,
     );
-    Object.assign(result, { fellowshipTracks: fellowshipTracks ?? [] });
+    fellowshipTracks = fellowshipTracksResult;
   }
   if (hasAmbassador) {
-    const { result: ambassadorTracks } = await nextApi.fetch(
+    const { result: ambassadorTracksResult } = await nextApi.fetch(
       ambassadorTracksSummaryApi,
     );
-    Object.assign(result, { ambassadorTracks: ambassadorTracks ?? [] });
+    ambassadorTracks = ambassadorTracksResult;
   }
 
-  return result;
+  return {
+    summary,
+    tracks,
+    fellowshipTracks,
+    ambassadorTracks,
+  };
 }

@@ -82,6 +82,12 @@ export const ambassadorTracksSummaryApi = "ambassador/tracks/summary";
 export const ambassadorReferendumsApi = "ambassador/referenda";
 export const ambassadorReferendumsSummaryApi =
   ambassadorReferendumsApi + "/summary";
+export const ambassadorTrackReferendaApi = (trackId) =>
+  ambassadorTracksApi + `/${trackId}/referenda`;
+export const ambassadorTrackReferendaSummaryApi = (trackId) =>
+  ambassadorTracksApi + `/${trackId}/referenda/summary`;
+export const ambassadorTrackApi = (trackId) =>
+  fellowshipTracksApi + `/${trackId}`;
 
 // calender events
 /**

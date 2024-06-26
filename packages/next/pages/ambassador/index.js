@@ -5,5 +5,5 @@ export default function Ambassador() {
 }
 
 export const getServerSideProps = getRedirectServerSideProps(
-  () => "/fellowship/referenda",
+  () => "/ambassador/referenda",
 );

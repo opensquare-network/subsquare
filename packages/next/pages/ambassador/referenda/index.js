@@ -15,7 +15,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 
 export default function AmbassadorReferendaPage({
   posts,
-  fellowshipTracksDetail: detailedTracks,
+  ambassadorTracksDetail: detailedTracks,
   ambassadorSummary,
 }) {
   const title = "Ambassador Referenda";

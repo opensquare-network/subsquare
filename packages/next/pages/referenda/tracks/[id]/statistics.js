@@ -80,7 +80,8 @@ export default function TrackStatisticsPage({
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { tracks, fellowshipTracks, summary } = await fetchOpenGovTracksProps();
+  const tracksProps = await fetchOpenGovTracksProps();
+  const { tracks } = tracksProps;
   let track = tracks.find((trackItem) => trackItem.id === parseInt(id));
   if (!track) {
     track = tracks.find((item) => item.name === id);
@@ -114,15 +115,13 @@ export const getServerSideProps = withCommonProps(async (context) => {
   return {
     props: {
       track: track ?? {},
-      tracks,
-      fellowshipTracks,
       turnout: turnout ?? [],
       delegatee: delegatee ?? EmptyList,
       delegators: delegators ?? EmptyList,
-      summary: summary ?? {},
       trackSummary: trackSummary ?? {},
       trackReferendaSummary: trackReferendaSummary ?? {},
       period: period ?? {},
+      ...tracksProps,
     },
   };
 });
