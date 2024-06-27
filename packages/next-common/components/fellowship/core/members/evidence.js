@@ -1,5 +1,4 @@
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import FellowshipMemberInfoWrapper from "./infoWrapper";
 import FellowshipMemberInfoTitle from "./title";
 import { textEllipsis } from "next-common/utils";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
@@ -8,6 +7,7 @@ import { CID } from "multiformats";
 import { hexToU8a } from "@polkadot/util";
 import Tooltip from "next-common/components/tooltip";
 import { useSubFellowshipCoreMemberEvidence } from "next-common/hooks/fellowship/core/useSubFellowshipCoreMemberEvidence";
+import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 
 export default function FellowshipCoreMemberEvidence({ address }) {
   const { loading, wish, evidence } =
@@ -40,9 +40,9 @@ export default function FellowshipCoreMemberEvidence({ address }) {
   }
 
   return (
-    <FellowshipMemberInfoWrapper>
+    <CoreFellowshipMemberInfoWrapper>
       <FellowshipMemberInfoTitle>Evidence</FellowshipMemberInfoTitle>
       <div className="flex text12Medium">{content}</div>
-    </FellowshipMemberInfoWrapper>
+    </CoreFellowshipMemberInfoWrapper>
   );
 }

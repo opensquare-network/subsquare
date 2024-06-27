@@ -1,23 +1,22 @@
-import { usePageProps } from "next-common/context/page";
-import { isNil } from "lodash-es";
 import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import FellowshipMemberInfoWrapper from "next-common/components/fellowship/core/members/infoWrapper";
-import FellowshipMemberInfoTitle from "next-common/components/fellowship/core/members/title";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
+import { isNil } from "lodash-es";
+import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
+import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
+import Tooltip from "next-common/components/tooltip";
 import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";
-import Tooltip from "next-common/components/tooltip";
 
-export default function FellowshipMemberPromotionPeriod({
+export default function CoreFellowshipMemberPromotionPeriod({
   lastPromotion,
   rank,
+  params = {},
 }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  const { fellowshipParams } = usePageProps();
   const toRank = rank + 1;
   const index = toRank > 0 ? toRank - 1 : 0;
-  const promotionPeriod = fellowshipParams.minPromotionPeriod[index];
+  const promotionPeriod = params.minPromotionPeriod[index];
 
   const gone = latestHeight - lastPromotion;
   const percentageValue = useMemo(() => {
@@ -45,8 +44,10 @@ export default function FellowshipMemberPromotionPeriod({
   }
 
   return (
-    <FellowshipMemberInfoWrapper>
-      <FellowshipMemberInfoTitle>Promotion Period</FellowshipMemberInfoTitle>
+    <CoreFellowshipMemberInfoWrapper>
+      <CoreFellowshipMemberInfoTitle>
+        Promotion Period
+      </CoreFellowshipMemberInfoTitle>
       <Tooltip
         className="block"
         content={
@@ -60,6 +61,6 @@ export default function FellowshipMemberPromotionPeriod({
           fg="var(--theme500)"
         />
       </Tooltip>
-    </FellowshipMemberInfoWrapper>
+    </CoreFellowshipMemberInfoWrapper>
   );
 }

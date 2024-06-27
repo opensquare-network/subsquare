@@ -8,9 +8,11 @@ import FellowshipCoreMemberCardListContainer from "next-common/components/fellow
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import FellowshipMembersEmpty from "./empty";
 import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCoreMembers";
+import { usePageProps } from "next-common/context/page";
 
 export default function FellowshipMembersPage() {
   const members = useSortedCoreMembers();
+  const { fellowshipParams } = usePageProps();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
     [members],
@@ -39,7 +41,11 @@ export default function FellowshipMembersPage() {
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>
             {filteredMembers.map((member) => (
-              <FellowshipCoreMemberCard key={member.address} member={member} />
+              <FellowshipCoreMemberCard
+                key={member.address}
+                member={member}
+                params={fellowshipParams}
+              />
             ))}
           </FellowshipCoreMemberCardListContainer>
         ) : (

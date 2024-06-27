@@ -7,8 +7,11 @@ import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipMembersEmpty from "next-common/components/pages/fellowship/empty";
+import AmbassadorCoreMemberCard from "next-common/components/ambassador/core/members/card";
+import { usePageProps } from "next-common/context/page";
 
 export default function AmbassadorCoreMembersPage() {
+  const { ambassadorParams } = usePageProps();
   const members = useAmbassadorCoreSortedMembers();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
@@ -36,7 +39,13 @@ export default function AmbassadorCoreMembersPage() {
 
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>
-            {filteredMembers.length}
+            {filteredMembers.map((member) => (
+              <AmbassadorCoreMemberCard
+                key={member.address}
+                member={member}
+                params={ambassadorParams}
+              />
+            ))}
           </FellowshipCoreMemberCardListContainer>
         ) : (
           <FellowshipMembersEmpty />

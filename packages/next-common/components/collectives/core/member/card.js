@@ -1,32 +1,14 @@
-import React, { useMemo } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import AvatarAndAddress from "next-common/components/collectives/core/member/avatarAndAddress";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import Divider from "next-common/components/styled/layout/divider";
-import FellowshipMemberSalary from "next-common/components/fellowship/core/members/salary";
-import Actions from "next-common/components/fellowship/core/members/actions";
-import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
-import FellowshipCoreMemberEvidence from "next-common/components/fellowship/core/members/evidence";
-import AvatarAndAddress from "next-common/components/collectives/core/member/avatarAndAddress";
+import React from "react";
 import CoreFellowshipMemberInfoLine from "next-common/components/collectives/core/member/line";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 
-export default function FellowshipCoreMemberCard({
-  member: _member = {},
-  params = {},
-}) {
-  const { member: statusFromStorage } = useSubFellowshipCoreMember(
-    _member.address,
-  );
-
-  const member = useMemo(() => {
-    return {
-      ..._member,
-      status: statusFromStorage || _member.status || {},
-    };
-  }, [_member, statusFromStorage]);
-
+export default function CoreFellowshipMemberCard({ member, params }) {
   const { address, rank } = member;
   const { isActive, lastPromotion, lastProof } = member.status;
 
@@ -54,13 +36,7 @@ export default function FellowshipCoreMemberCard({
             <CoreFellowshipMemberInfoWrapper /> // as a placeholder
           )}
         </CoreFellowshipMemberInfoLine>
-        <FellowshipCoreMemberEvidence address={address} />
       </div>
-
-      <Divider className="mt-4" />
-      <FellowshipMemberSalary rank={rank} isActive={isActive} />
-
-      <Actions member={member} />
     </SecondaryCard>
   );
 }
