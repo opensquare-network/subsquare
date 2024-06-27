@@ -11,7 +11,6 @@ import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCor
 
 export default function FellowshipMembersPage() {
   const members = useSortedCoreMembers();
-  const candidates = (members || []).filter((member) => member.rank <= 0);
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
     [members],
@@ -28,13 +27,12 @@ export default function FellowshipMembersPage() {
       return pageMembers.filter((m) => m.rank === rank);
     }
   }, [pageMembers, rank]);
-  const membersForTabs = [...filteredMembers, ...candidates];
 
   return (
     <FellowshipMembersLoadable>
       <FellowshipMemberCommon>
         <div className="flex items-center justify-between mb-4 pr-6">
-          <FellowshipMemberTabs members={membersForTabs} />
+          <FellowshipMemberTabs members={members} />
           {component}
         </div>
 
