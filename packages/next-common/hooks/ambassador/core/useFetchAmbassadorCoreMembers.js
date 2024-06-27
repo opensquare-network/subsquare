@@ -1,35 +1,35 @@
-import { useEffect } from "react";
+import { useContextApi } from "next-common/context/api";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fellowshipCoreMembersTriggerSelector,
-  setFellowshipCoreMembers,
-} from "next-common/store/reducers/fellowship/core";
-import { isSameAddress } from "next-common/utils";
-import { setFellowshipCollectiveMembers } from "next-common/store/reducers/fellowship/collective";
-import { useContextApi } from "next-common/context/api";
+  ambassadorCoreMembersTriggerSelector,
+  setAmbassadorCoreMembers,
+} from "next-common/store/reducers/ambassador/core";
+import { useEffect } from "react";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
+import { isSameAddress } from "next-common/utils";
+import { setAmbassadorCollectiveMembers } from "next-common/store/reducers/ambassador/collective";
 
-export default function useFetchFellowshipCoreMembers() {
+export default function useFetchAmbassadorCoreMembers() {
   const api = useContextApi();
-  const trigger = useSelector(fellowshipCoreMembersTriggerSelector);
+  const trigger = useSelector(ambassadorCoreMembersTriggerSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (
       !api ||
-      !api.query.fellowshipCore?.member ||
-      !api.query.fellowshipCollective?.members
+      !api.query.ambassadorCore?.member ||
+      !api.query.ambassadorCollective?.members
     ) {
       return;
     }
 
     Promise.all([
-      api.query.fellowshipCollective?.members.entries(),
-      api.query.fellowshipCore.member.entries(),
+      api.query.ambassadorCollective?.members.entries(),
+      api.query.ambassadorCore.member.entries(),
     ]).then(([collectiveEntries, coreEntries]) => {
       const collectiveMembers =
         normalizeRankedCollectiveEntries(collectiveEntries);
-      dispatch(setFellowshipCollectiveMembers(collectiveMembers));
+      dispatch(setAmbassadorCollectiveMembers(collectiveMembers));
 
       const members = coreEntries.map(([storageKey, memberStatus]) => {
         const address = storageKey.args[0].toString();
@@ -41,7 +41,7 @@ export default function useFetchFellowshipCoreMembers() {
         };
       });
 
-      dispatch(setFellowshipCoreMembers(members));
+      dispatch(setAmbassadorCoreMembers(members));
     });
   }, [api, trigger]);
 }
