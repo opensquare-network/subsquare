@@ -90,7 +90,7 @@ export const ambassadorTrackApi = (trackId) =>
   fellowshipTracksApi + `/${trackId}`;
 // ambassador salary
 export const ambassadorSalaryHistoryCycleApi =
-  "ambassador/salary/history_cycle";
+  "ambassador/salary/history_cycles";
 export const ambassadorSalaryActiveCycleApi = "ambassador/salary/active_cycle";
 export const ambassadorSalaryClaimantsApi = "ambassador/salary/claimants";
 
