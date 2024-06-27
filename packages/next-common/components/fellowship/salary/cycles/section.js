@@ -10,7 +10,12 @@ export default function FellowshipHistoryCyclesSection() {
       <TitleContainer className="my-4">History Cycles</TitleContainer>
 
       <div className="space-y-4 mt-4">
-        <FellowshipSalaryCycles historyCycles={historyCycles} />
+        <FellowshipSalaryCycles
+          historyCycles={historyCycles}
+          resolveActionColLink={(data) =>
+            `/fellowship/salary/cycles/${data.index}`
+          }
+        />
       </div>
     </>
   );
