@@ -1,11 +1,17 @@
-import MenuGroups from "./menuGroups";
+import dynamic from "next/dynamic";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconKhalaDark,
-  ProjectIconKhalaLight,
-  ProjectLogoKhalaDark,
-} from "@osn/icons/subsquare";
+import MenuGroups from "./menuGroups";
 import phala from "./phala";
+
+const ProjectIconKhalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKhalaDark"),
+);
+const ProjectIconKhalaLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKhalaLight"),
+);
+const ProjectLogoKhalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoKhalaDark"),
+);
 
 const DEFAULT_KHALA_NODES = [
   {

@@ -1,10 +1,16 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconPhalaDark,
-  ProjectIconPhalaLight,
-  ProjectLogoPhalaDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconPhalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPhalaDark"),
+);
+const ProjectIconPhalaLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPhalaLight"),
+);
+const ProjectLogoPhalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoPhalaDark"),
+);
 
 const DEFAULT_PHALA_NODES = [
   {

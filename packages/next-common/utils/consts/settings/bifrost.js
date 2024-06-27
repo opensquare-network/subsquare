@@ -1,10 +1,16 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconBifrostKusamaDark,
-  ProjectIconBifrostKusamaLight,
-  ProjectLogoBifrostKusamaDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconBifrostKusamaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconBifrostKusamaDark"),
+);
+const ProjectIconBifrostKusamaLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconBifrostKusamaLight"),
+);
+const ProjectLogoBifrostKusamaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoBifrostKusamaDark"),
+);
 
 const DEFAULT_BIFROST_NODES = [
   {

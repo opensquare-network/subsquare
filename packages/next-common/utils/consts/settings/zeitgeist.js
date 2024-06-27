@@ -2,11 +2,17 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import {
-  ProjectIconZeigeistDark,
-  ProjectIconZeigeistLight,
-  ProjectLogoZeigeistDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconZeigeistDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconZeigeistDark"),
+);
+const ProjectIconZeigeistLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconZeigeistLight"),
+);
+const ProjectLogoZeigeistDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoZeigeistDark"),
+);
 
 const defaultNodes = [
   {

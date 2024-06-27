@@ -1,11 +1,17 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import {
-  ProjectIconKintsugiDark,
-  ProjectIconKintsugiLight,
-  ProjectLogoKintsugiDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconKintsugiDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKintsugiDark"),
+);
+const ProjectIconKintsugiLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKintsugiLight"),
+);
+const ProjectLogoKintsugiDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoKintsugiDark"),
+);
 
 const DEFAULT_KINTSUGI_NODES =
   process.env.NEXT_PUBLIC_TEST === "true"
