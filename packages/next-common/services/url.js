@@ -88,6 +88,11 @@ export const ambassadorTrackReferendaSummaryApi = (trackId) =>
   ambassadorTracksApi + `/${trackId}/referenda/summary`;
 export const ambassadorTrackApi = (trackId) =>
   fellowshipTracksApi + `/${trackId}`;
+// ambassador salary
+export const ambassadorSalaryHistoryCycleApi =
+  "ambassador/salary/history_cycle";
+export const ambassadorSalaryActiveCycleApi = "ambassador/salary/active_cycle";
+export const ambassadorSalaryClaimantsApi = "ambassador/salary/claimants";
 
 // calender events
 /**

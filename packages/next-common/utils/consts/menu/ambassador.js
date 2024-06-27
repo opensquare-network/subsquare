@@ -68,6 +68,24 @@ function getAmbassadorCoreMenu() {
   };
 }
 
+function getAmbassadorSalaryMenu() {
+  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!chainSettings.modules.ambassador) {
+    return null;
+  }
+
+  return {
+    value: "ambassador-salary",
+    name: Names.salary,
+    pathname: "/ambassador/salary",
+    extraMatchNavMenuActivePathnames: [
+      "/ambassador/salary/feeds",
+      "/ambassador/salary/claimants",
+      "/ambassador/salary/cycles/[...params]",
+    ],
+  };
+}
+
 export function getAmbassadorMenu(ambassadorTracks = [], currentTrackId) {
   const totalActiveCount = sumBy(ambassadorTracks, (t) => t.activeCount || 0);
 
@@ -84,6 +102,7 @@ export function getAmbassadorMenu(ambassadorTracks = [], currentTrackId) {
         pathname: "/ambassador/members",
       },
       getAmbassadorCoreMenu(),
+      getAmbassadorSalaryMenu(),
       dividerConfig,
       getAmbassadorReferendaMenu(
         ambassadorTracks,
