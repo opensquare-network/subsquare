@@ -17,7 +17,11 @@ import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { PostContextMenu } from "../../contentMenu";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 
-export default function ArticleActions({ extraActions, setIsAppend }) {
+export default function ArticleActions({
+  extraActions,
+  setIsAppend,
+  setIsEdit,
+}) {
   const post = usePost();
   const account = useConnectedAccount();
   const focusEditor = useFocusEditor();
@@ -110,7 +114,11 @@ export default function ArticleActions({ extraActions, setIsAppend }) {
         </Wrapper>
 
         {isAuthor && (
-          <PostContextMenu editable={isAuthor} setIsAppend={setIsAppend} />
+          <PostContextMenu
+            editable={isAuthor}
+            setIsAppend={setIsAppend}
+            setIsEdit={setIsEdit}
+          />
         )}
       </div>
 

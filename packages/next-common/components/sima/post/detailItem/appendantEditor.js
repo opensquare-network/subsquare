@@ -15,6 +15,7 @@ import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { getContentField } from "next-common/utils/sima/utils";
+import useSimaPostApiPath from "../../useSimaPostApiPath";
 
 export default function AppendantEditor({ setIsAppend }) {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export default function AppendantEditor({ setIsAppend }) {
   const [isAppending, setIsAppending] = useState(false);
   const [errors, setErrors] = useState();
   const signSimaMessage = useSignSimaMessage();
+  const apiPath = useSimaPostApiPath();
 
   const isEmpty = !content.trim();
 
@@ -42,12 +44,12 @@ export default function AppendantEditor({ setIsAppend }) {
       };
       const data = await signSimaMessage(entity);
       const { result, error } = await nextApi.post(
-        `sima/discussions/${post.cid}/appendants`,
+        `${apiPath}/${post.cid}/appendants`,
         data,
       );
       if (result) {
         const { result: newPost } = await nextApi.fetch(
-          `sima/discussions/${post.cid}`,
+          `${apiPath}/${post.cid}`,
         );
 
         if (newPost) {
@@ -75,6 +77,7 @@ export default function AppendantEditor({ setIsAppend }) {
     dispatch,
     postDispatch,
     signSimaMessage,
+    apiPath,
   ]);
 
   return (

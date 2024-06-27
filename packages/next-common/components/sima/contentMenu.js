@@ -8,7 +8,8 @@ import {
 import { InfoPlus, SystemMore } from "@osn/icons/subsquare";
 import copy from "copy-to-clipboard";
 import { useComment } from "next-common/components/comment/context";
-import { CopyMenuItem } from "../contentMenu";
+import { CopyMenuItem, EditMenuItem } from "../contentMenu";
+import { usePost } from "next-common/context/post";
 
 const Wrapper = styled.div`
   position: relative;
@@ -64,9 +65,10 @@ export function CommentContextMenu() {
   );
 }
 
-export function PostContextMenu({ editable, setIsAppend }) {
+export function PostContextMenu({ editable, setIsAppend, setIsEdit }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
+  const post = usePost();
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -79,7 +81,13 @@ export function PostContextMenu({ editable, setIsAppend }) {
       {show && (
         <OptionWrapper>
           {editable && (
-            <AppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />
+            <>
+              {post.content ? (
+                <AppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />
+              ) : (
+                <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+              )}
+            </>
           )}
         </OptionWrapper>
       )}
