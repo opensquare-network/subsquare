@@ -6,9 +6,10 @@ export default function AmbassadorCoreMemberCard({
   member: _member = {},
   params = {},
 }) {
+  const pallet = "ambassadorCore";
   const { member: statusFromStorage } = useSubCoreFellowshipMember(
     _member.address,
-    "ambassadorCore",
+    pallet,
   );
   const member = useMemo(() => {
     return {
@@ -17,5 +18,7 @@ export default function AmbassadorCoreMemberCard({
     };
   }, [_member, statusFromStorage]);
 
-  return <CoreFellowshipMemberCard member={member} params={params} />;
+  return (
+    <CoreFellowshipMemberCard member={member} params={params} pallet={pallet} />
+  );
 }

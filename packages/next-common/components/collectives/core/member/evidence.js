@@ -1,17 +1,22 @@
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import FellowshipMemberInfoTitle from "./title";
 import { textEllipsis } from "next-common/utils";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { create as createDigest } from "multiformats/hashes/digest";
 import { CID } from "multiformats";
 import { hexToU8a } from "@polkadot/util";
 import Tooltip from "next-common/components/tooltip";
-import { useSubFellowshipCoreMemberEvidence } from "next-common/hooks/fellowship/core/useSubFellowshipCoreMemberEvidence";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
+import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
+import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 
-export default function FellowshipCoreMemberEvidence({ address }) {
-  const { loading, wish, evidence } =
-    useSubFellowshipCoreMemberEvidence(address);
+export default function CoreFellowshipMemberEvidence({
+  address,
+  pallet = "fellowshipCore",
+}) {
+  const { loading, wish, evidence } = useSubCoreFellowshipEvidence(
+    address,
+    pallet,
+  );
 
   let content = <span className="text-textTertiary">-</span>;
 
@@ -41,7 +46,7 @@ export default function FellowshipCoreMemberEvidence({ address }) {
 
   return (
     <CoreFellowshipMemberInfoWrapper>
-      <FellowshipMemberInfoTitle>Evidence</FellowshipMemberInfoTitle>
+      <CoreFellowshipMemberInfoTitle>Evidence</CoreFellowshipMemberInfoTitle>
       <div className="flex text12Medium">{content}</div>
     </CoreFellowshipMemberInfoWrapper>
   );

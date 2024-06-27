@@ -7,8 +7,9 @@ import CoreFellowshipMemberInfoLine from "next-common/components/collectives/cor
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
+import CoreFellowshipMemberEvidence from "next-common/components/collectives/core/member/evidence";
 
-export default function CoreFellowshipMemberCard({ member, params }) {
+export default function CoreFellowshipMemberCard({ member, params, pallet }) {
   const { address, rank } = member;
   const { isActive, lastPromotion, lastProof } = member.status;
 
@@ -36,6 +37,7 @@ export default function CoreFellowshipMemberCard({ member, params }) {
             <CoreFellowshipMemberInfoWrapper /> // as a placeholder
           )}
         </CoreFellowshipMemberInfoLine>
+        <CoreFellowshipMemberEvidence address={address} pallet={pallet} />
       </div>
     </SecondaryCard>
   );

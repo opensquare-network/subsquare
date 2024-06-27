@@ -5,12 +5,12 @@ import Divider from "next-common/components/styled/layout/divider";
 import FellowshipMemberSalary from "next-common/components/fellowship/core/members/salary";
 import Actions from "next-common/components/fellowship/core/members/actions";
 import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
-import FellowshipCoreMemberEvidence from "next-common/components/fellowship/core/members/evidence";
 import AvatarAndAddress from "next-common/components/collectives/core/member/avatarAndAddress";
 import CoreFellowshipMemberInfoLine from "next-common/components/collectives/core/member/line";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
+import CoreFellowshipMemberEvidence from "next-common/components/collectives/core/member/evidence";
 
 export default function FellowshipCoreMemberCard({
   member: _member = {},
@@ -54,7 +54,10 @@ export default function FellowshipCoreMemberCard({
             <CoreFellowshipMemberInfoWrapper /> // as a placeholder
           )}
         </CoreFellowshipMemberInfoLine>
-        <FellowshipCoreMemberEvidence address={address} />
+        <CoreFellowshipMemberEvidence
+          address={address}
+          pallet="fellowshipCore"
+        />
       </div>
 
       <Divider className="mt-4" />
