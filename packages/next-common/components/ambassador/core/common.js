@@ -25,6 +25,11 @@ export default function AmbassadorCoreCommon({ children, ...props }) {
           exactMatch: true,
         },
         {
+          label: "Params",
+          url: "/ambassador/core/params",
+          exactMatch: true,
+        },
+        {
           label: "Feeds",
           url: "/ambassador/core/feeds",
           exactMatch: true,
