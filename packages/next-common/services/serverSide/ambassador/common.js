@@ -4,8 +4,8 @@ import nextApi from "next-common/services/nextApi";
 import {
   ambassadorMembersApiUri,
   ambassadorParamsApi,
-  // ambassadorSalaryActiveCycleApi,
-  // ambassadorSalaryClaimantsApi,
+  ambassadorSalaryClaimantsApi,
+  ambassadorSalaryActiveCycleApi,
 } from "next-common/services/url";
 import { merge, noop } from "lodash-es";
 
@@ -15,14 +15,14 @@ export function withAmbassadorSalaryCommonProps(fn = noop) {
       tracksProps,
       { result: ambassadorMembers },
       { result: ambassadorParams = {} },
-      // { result: ambassadorSalaryClaimants },
-      // { result: activeCycle },
+      { result: ambassadorSalaryClaimants },
+      { result: activeCycle },
     ] = await Promise.all([
       fetchOpenGovTracksProps(),
       nextApi.fetch(ambassadorMembersApiUri),
       nextApi.fetch(ambassadorParamsApi),
-      // nextApi.fetch(ambassadorSalaryClaimantsApi),
-      // nextApi.fetch(ambassadorSalaryActiveCycleApi),
+      nextApi.fetch(ambassadorSalaryClaimantsApi),
+      nextApi.fetch(ambassadorSalaryActiveCycleApi),
     ]);
 
     const res = await fn?.(context);
@@ -33,8 +33,8 @@ export function withAmbassadorSalaryCommonProps(fn = noop) {
           ...tracksProps,
           ambassadorMembers,
           ambassadorParams,
-          // ambassadorSalaryClaimants,
-          // activeCycle,
+          ambassadorSalaryClaimants,
+          activeCycle: activeCycle || {},
         },
       },
       res,
