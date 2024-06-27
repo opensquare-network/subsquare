@@ -8,6 +8,7 @@ import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectiv
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 import CoreFellowshipMemberEvidence from "next-common/components/collectives/core/member/evidence";
+import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
 
 export default function CoreFellowshipMemberCard({ member, params, pallet }) {
   const { address, rank } = member;
@@ -39,6 +40,13 @@ export default function CoreFellowshipMemberCard({ member, params, pallet }) {
         </CoreFellowshipMemberInfoLine>
         <CoreFellowshipMemberEvidence address={address} pallet={pallet} />
       </div>
+
+      <Divider className="mt-4" />
+      <CoreFellowshipMemberSalary
+        rank={rank}
+        isActive={isActive}
+        params={params}
+      />
     </SecondaryCard>
   );
 }
