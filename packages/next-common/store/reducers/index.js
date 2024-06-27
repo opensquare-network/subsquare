@@ -9,6 +9,7 @@ import cmdkReducer from "./cmdkSlice";
 import userReducer from "./userSlice";
 import childBountyReducer from "./childBountySlice";
 import fellowship from "./fellowship";
+import ambassador from "./ambassador";
 import referenda from "./referenda";
 import navReducer from "./navSlice";
 import democracy from "./democracy";
@@ -34,6 +35,7 @@ export default combineReducers({
   childBounty: childBountyReducer,
   nav: navReducer,
   ...fellowship,
+  ...ambassador,
   ...referenda,
   ...democracy,
   layout: layoutReducer,
