@@ -4,7 +4,7 @@ import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide
 export default function AmbassadorSalaryPage() {
   return (
     <AmbassadorSalaryCommon>
-      <div>content</div>
+      <div></div>
     </AmbassadorSalaryCommon>
   );
 }

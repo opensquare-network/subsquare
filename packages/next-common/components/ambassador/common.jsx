@@ -1,6 +1,6 @@
 import ListLayout from "next-common/components/layout/ListLayout";
-// import AmbassadorSalarySummary from "./summary";
-// import AmbassadorSalarySummaryActions from "next-common/components/ambassador/salary/summary/actions";
+import AmbassadorSalarySummary from "./summary";
+import AmbassadorSalarySummaryActions from "./summary/actions";
 
 export default function AmbassadorSalaryCommon({ children, ...props }) {
   const title = "Ambassador Salary";
@@ -13,8 +13,8 @@ export default function AmbassadorSalaryCommon({ children, ...props }) {
       seoInfo={seoInfo}
       title={title}
       description={seoInfo.desc}
-      // summary={<AmbassadorSalarySummary />}
-      // summaryFooter={<AmbassadorSalarySummaryActions />}
+      summary={<AmbassadorSalarySummary />}
+      summaryFooter={<AmbassadorSalarySummaryActions />}
       tabs={[
         {
           label: "Cycles",
