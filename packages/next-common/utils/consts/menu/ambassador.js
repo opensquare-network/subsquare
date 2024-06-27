@@ -1,7 +1,7 @@
 import { startCase, sumBy } from "lodash-es";
 import { getExcludeChains } from "next-common/utils/viewfuncs";
 import Chains from "next-common/utils/consts/chains";
-import { MenuFellowship } from "@osn/icons/subsquare";
+import { MenuAmbassador } from "@osn/icons/subsquare";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
 import dividerConfig from "next-common/utils/consts/menu/common/divider";
 
@@ -57,7 +57,7 @@ export function getAmbassadorMenu(ambassadorTracks = [], currentTrackId) {
     name: Names.ambassador,
     excludeToChains: getExcludeChains([Chains.collectives]),
     activeCount: totalActiveCount,
-    icon: <MenuFellowship />,
+    icon: <MenuAmbassador />,
     pathname: "/ambassador",
     items: [
       {
