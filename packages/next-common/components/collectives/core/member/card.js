@@ -10,7 +10,12 @@ import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/
 import CoreFellowshipMemberEvidence from "next-common/components/collectives/core/member/evidence";
 import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
 
-export default function CoreFellowshipMemberCard({ member, params, pallet }) {
+export default function CoreFellowshipMemberCard({
+  member,
+  params,
+  pallet,
+  children,
+}) {
   const { address, rank } = member;
   const { isActive, lastPromotion, lastProof } = member.status;
 
@@ -47,6 +52,8 @@ export default function CoreFellowshipMemberCard({ member, params, pallet }) {
         isActive={isActive}
         params={params}
       />
+
+      {children}
     </SecondaryCard>
   );
 }
