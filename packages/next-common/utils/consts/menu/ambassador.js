@@ -65,6 +65,11 @@ export function getAmbassadorMenu(ambassadorTracks = [], currentTrackId) {
         name: Names.members,
         pathname: "/ambassador/members",
       },
+      {
+        value: "ambassador-salary",
+        name: Names.salary,
+        pathname: "/ambassador/salary",
+      },
       dividerConfig,
       getAmbassadorReferendaMenu(
         ambassadorTracks,
