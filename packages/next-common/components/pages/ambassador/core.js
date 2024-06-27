@@ -1,5 +1,4 @@
 import AmbassadorMembersLoadable from "next-common/components/pages/ambassador/loadable";
-import AmbassadorCoreCommon from "next-common/components/ambassador/core/common";
 import useAmbassadorCoreSortedMembers from "next-common/hooks/ambassador/core/useAmbassadorCoreSortedMembers";
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
@@ -9,6 +8,7 @@ import FellowshipCoreMemberCardListContainer from "next-common/components/fellow
 import FellowshipMembersEmpty from "next-common/components/pages/fellowship/empty";
 import AmbassadorCoreMemberCard from "next-common/components/ambassador/core/members/card";
 import { usePageProps } from "next-common/context/page";
+import AmbassadorMemberCommon from "next-common/components/pages/ambassador/common";
 
 export default function AmbassadorCoreMembersPage() {
   const { ambassadorParams } = usePageProps();
@@ -31,7 +31,7 @@ export default function AmbassadorCoreMembersPage() {
 
   return (
     <AmbassadorMembersLoadable>
-      <AmbassadorCoreCommon>
+      <AmbassadorMemberCommon params={ambassadorParams}>
         <div className="flex items-center justify-between mb-4 pr-6">
           <FellowshipMemberTabs members={members} section="ambassador" />
           {component}
@@ -50,7 +50,7 @@ export default function AmbassadorCoreMembersPage() {
         ) : (
           <FellowshipMembersEmpty />
         )}
-      </AmbassadorCoreCommon>
+      </AmbassadorMemberCommon>
     </AmbassadorMembersLoadable>
   );
 }
