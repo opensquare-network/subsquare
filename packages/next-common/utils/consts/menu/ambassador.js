@@ -4,6 +4,7 @@ import Chains from "next-common/utils/consts/chains";
 import { MenuAmbassador } from "@osn/icons/subsquare";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
 import dividerConfig from "next-common/utils/consts/menu/common/divider";
+import getChainSettings from "next-common/utils/consts/settings";
 
 export const Names = {
   ambassador: "AMBASSADOR",
@@ -50,6 +51,23 @@ function getAmbassadorReferendaMenu(
   };
 }
 
+function getAmbassadorCoreMenu() {
+  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!chainSettings.modules.ambassador) {
+    return null;
+  }
+
+  return {
+    value: "ambassador-core",
+    name: Names.core,
+    pathname: "/ambassador/core",
+    extraMatchNavMenuActivePathnames: [
+      "/ambassador/core/params",
+      "/ambassador/core/feeds",
+    ],
+  };
+}
+
 export function getAmbassadorMenu(ambassadorTracks = [], currentTrackId) {
   const totalActiveCount = sumBy(ambassadorTracks, (t) => t.activeCount || 0);
 
@@ -65,6 +83,7 @@ export function getAmbassadorMenu(ambassadorTracks = [], currentTrackId) {
         name: Names.members,
         pathname: "/ambassador/members",
       },
+      getAmbassadorCoreMenu(),
       dividerConfig,
       getAmbassadorReferendaMenu(
         ambassadorTracks,
