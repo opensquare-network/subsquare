@@ -1,8 +1,10 @@
 import { useContextApi } from "next-common/context/api";
 import { useDispatch, useSelector } from "react-redux";
-import { ambassadorCollectiveMembersTriggerSelector } from "next-common/store/reducers/ambassador/collective";
+import {
+  ambassadorCollectiveMembersTriggerSelector,
+  setAmbassadorCollectiveMembers,
+} from "next-common/store/reducers/ambassador/collective";
 import { useEffect } from "react";
-import { setFellowshipCollectiveMembers } from "next-common/store/reducers/fellowship/collective";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
 
 export default function useFetchAmbassadorCollectiveMembers() {
@@ -20,7 +22,7 @@ export default function useFetchAmbassadorCollectiveMembers() {
       .then((collectiveEntries) => {
         const collectiveMembers =
           normalizeRankedCollectiveEntries(collectiveEntries);
-        dispatch(setFellowshipCollectiveMembers(collectiveMembers));
+        dispatch(setAmbassadorCollectiveMembers(collectiveMembers));
       });
   }, [api, trigger]);
 }
