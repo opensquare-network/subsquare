@@ -9,12 +9,27 @@ export default function AmbassadorCoreCommon({ children, ...props }) {
   const seoInfo = { title, desc };
   useFetchAmbassadorCoreMembers();
 
+  const corePath = "/ambassador/core";
+
   return (
     <ListLayout
       seoInfo={seoInfo}
       title={title}
       description={seoInfo.desc}
       summary={<AmbassadorCoreMembersSummary />}
+      tabs={[
+        {
+          label: "Members",
+          url: corePath,
+          urls: [corePath, "/ambassador/core/candidates"],
+          exactMatch: true,
+        },
+        {
+          label: "Feeds",
+          url: "/ambassador/core/feeds",
+          exactMatch: true,
+        },
+      ]}
       {...props}
     >
       {children}
