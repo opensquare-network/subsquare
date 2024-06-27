@@ -2,7 +2,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import { usePageProps } from "next-common/context/page";
 import FellowshipSalaryCycles from "next-common/components/fellowship/salary/cycles/list";
 
-export default function FellowshipHistoryCyclesSection() {
+export default function AmbassadorHistoryCyclesSection() {
   const { historyCycles } = usePageProps();
 
   return (
@@ -13,7 +13,7 @@ export default function FellowshipHistoryCyclesSection() {
         <FellowshipSalaryCycles
           historyCycles={historyCycles}
           resolveActionColLink={(data) =>
-            `/fellowship/salary/cycles/${data.index}`
+            `/ambassador/salary/cycles/${data.index}`
           }
         />
       </div>

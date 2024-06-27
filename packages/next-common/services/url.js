@@ -93,6 +93,8 @@ export const ambassadorSalaryHistoryCyclesApi =
   "ambassador/salary/history_cycles";
 export const ambassadorSalaryActiveCycleApi = "ambassador/salary/active_cycle";
 export const ambassadorSalaryClaimantsApi = "ambassador/salary/claimants";
+export const ambassadorSalaryCycleApi = (index) =>
+  `ambassador/salary/cycles/${index}`;
 
 // calender events
 /**
