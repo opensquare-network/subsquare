@@ -1,21 +1,16 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { Wrapper } from "next-common/components/actions/styled";
 import ReplyButton from "next-common/components/actions/replyButton";
 import Share from "next-common/components/shareSNS";
-import {
-  POST_UPDATE_ACTION,
-  usePost,
-  usePostDispatch,
-} from "next-common/context/post";
+import { usePost } from "next-common/context/post";
 import ThumbsUp from "next-common/components/thumbsUp";
 import { useFocusEditor } from "next-common/context/post/editor";
 import { useDispatch } from "react-redux";
-import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ThumbUpList from "../../actions/thumbUpList";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { PostContextMenu } from "../../contentMenu";
-import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
+import { useArticleActions } from "next-common/sima/context/articleActions";
 
 export default function ArticleActions({
   extraActions,
@@ -26,7 +21,6 @@ export default function ArticleActions({
   const account = useConnectedAccount();
   const focusEditor = useFocusEditor();
 
-  const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
@@ -36,28 +30,7 @@ export default function ArticleActions({
     (r) => r.proposer === account?.address,
   );
   const thumbUp = !!reaction;
-  const signSimaMessage = useSignSimaMessage();
-
-  const cancelUpVote = useCallback(async () => {
-    const entity = {
-      action: "cancel_upvote",
-      cid: reaction.cid,
-      timestamp: Date.now(),
-    };
-    const data = await signSimaMessage(entity);
-
-    return await nextApi.post(`sima/discussions/${post.cid}/reactions`, data);
-  }, [post.cid, reaction?.cid, signSimaMessage]);
-
-  const upVote = useCallback(async () => {
-    const entity = {
-      action: "upvote",
-      cid: post.cid,
-      timestamp: Date.now(),
-    };
-    const data = await signSimaMessage(entity);
-    return await nextApi.post(`sima/discussions/${post.cid}/reactions`, data);
-  }, [post.cid, signSimaMessage]);
+  const { cancelUpVote, upVote, reloadPost } = useArticleActions();
 
   const toggleThumbUp = async () => {
     if (!account || isAuthor || thumbUpLoading) {
@@ -69,9 +42,9 @@ export default function ArticleActions({
       let result;
 
       if (thumbUp) {
-        result = await cancelUpVote();
+        result = await cancelUpVote(post, reaction.cid);
       } else {
-        result = await upVote();
+        result = await upVote(post);
       }
 
       if (result.error) {
@@ -79,16 +52,9 @@ export default function ArticleActions({
         return;
       }
 
-      const { result: newPost } = await nextApi.fetch(
-        `sima/discussions/${post.cid}`,
-      );
-
-      if (newPost) {
-        postDispatch({
-          type: POST_UPDATE_ACTION,
-          post: newPost,
-        });
-      }
+      await reloadPost();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
     } finally {
       setThumbUpLoading(false);
     }

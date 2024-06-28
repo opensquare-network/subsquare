@@ -8,7 +8,7 @@ import {
   isEditingPostSelector,
   setEditingPost,
 } from "next-common/store/reducers/userSlice";
-import SimaPostEdit from "next-common/components/sima/post/postEdit";
+import SimaPostEdit from "next-common/sima/components/post/postEdit";
 
 export default function DetailContentBase({ head, title, meta, children }) {
   const type = useDetailType();

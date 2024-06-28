@@ -8,7 +8,7 @@ import {
 import { InfoPlus, SystemMore } from "@osn/icons/subsquare";
 import copy from "copy-to-clipboard";
 import { useComment } from "next-common/components/comment/context";
-import { CopyMenuItem, EditMenuItem } from "../contentMenu";
+import { CopyMenuItem, EditMenuItem } from "next-common/components/contentMenu";
 import { usePost } from "next-common/context/post";
 
 const Wrapper = styled.div`

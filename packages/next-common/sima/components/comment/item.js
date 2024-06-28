@@ -6,7 +6,7 @@ import {
 } from "@osn/previewer";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import { prettyHTML } from "next-common/utils/viewfuncs";
-import SimaCommentActions from "../actions/commentActions";
+import SimaCommentActions from "./commentActions";
 import useSimaCommentsAnchor from "./useSimaCommentAnchor";
 import CommentItemTemplate from "./itemTemplate";
 import {

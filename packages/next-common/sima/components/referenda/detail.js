@@ -11,6 +11,7 @@ import TimeoutCountdown from "next-common/components/detail/referenda/timeoutCou
 import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 import ReferendaReferendumTreasurySpendNavigation from "next-common/components/detail/referenda/referendaReferendumTreasurySpendNavigation";
+import { ReferendaActionsContextProvider } from "./context/articleActionsProvider";
 
 export default function SimaReferendaDetail() {
   const setIsEdit = useSetEdit();
@@ -34,7 +35,9 @@ export default function SimaReferendaDetail() {
       title={<PostTitle />}
       meta={<ReferendaPostMeta />}
     >
-      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+      <ReferendaActionsContextProvider>
+        <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+      </ReferendaActionsContextProvider>
     </DetailContentBase>
   );
 }

@@ -5,7 +5,7 @@ import Gov2ReferendumMetadata from "next-common/components/gov2/referendum/metad
 import { useEffect } from "react";
 import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
 import { useDispatch } from "react-redux";
-import SimaReferendaDetail from "next-common/components/sima/referenda/detail";
+import SimaReferendaDetail from "next-common/sima/components/referenda/detail";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
@@ -14,7 +14,7 @@ import Gov2ReferendumCall from "next-common/components/gov2/referendum/call";
 import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/votesBubble";
 import ProposalAddress from "next-common/components/statistics/referenda/proposalAddress";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
-import ContentWithComment from "next-common/components/sima/post/contentWithComment";
+import ContentWithComment from "next-common/sima/components/post/contentWithComment";
 
 export default function SimaReferendumContent() {
   const post = usePost();

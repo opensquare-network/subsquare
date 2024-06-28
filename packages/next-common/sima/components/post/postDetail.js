@@ -1,10 +1,13 @@
 import ContentWithComment from "./contentWithComment";
+import { DiscussionActionsContextProvider } from "./context/articleActionsProvider";
 import DetailItem from "./detailItem";
 
 export default function SimaPostDetail() {
   return (
     <ContentWithComment>
-      <DetailItem />
+      <DiscussionActionsContextProvider>
+        <DetailItem />
+      </DiscussionActionsContextProvider>
     </ContentWithComment>
   );
 }
