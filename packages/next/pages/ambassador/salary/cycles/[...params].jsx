@@ -13,6 +13,7 @@ import {
   ambassadorSalaryCycleRegistrationsApi,
   ambassadorSalaryCycleUnregisteredPaymentsApi,
 } from "next-common/services/url";
+import AmbassadorSalaryCycleDetailInfo from "next-common/components/ambassador/salary/cycles/info";
 
 export default function AmbassadorSalaryCyclePage({ cycle }) {
   useFetchAmbassadorSalaryClaimants();
@@ -23,6 +24,7 @@ export default function AmbassadorSalaryCyclePage({ cycle }) {
     <FellowshipSalaryCycleLayout>
       {cycle ? (
         <div className="space-y-6">
+          <AmbassadorSalaryCycleDetailInfo />
           <FellowshipSalaryCycleDetailTabsList />
         </div>
       ) : (
