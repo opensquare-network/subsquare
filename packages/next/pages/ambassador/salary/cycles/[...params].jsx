@@ -1,5 +1,9 @@
 import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salary/cycles/layout";
 import FellowshipSalaryCycleDetailNotFound from "next-common/components/fellowship/salary/cycles/notFound";
+import FellowshipSalaryCycleDetailTabsList from "next-common/components/fellowship/salary/cycles/tabsList";
+import useFetchAmbassadorCollectiveMembers from "next-common/hooks/ambassador/collective/useFetchAmbassadorCollectiveMembers";
+import useFetchAmbassadorSalaryClaimants from "next-common/hooks/ambassador/salary/useFetchAmbassadorSalaryClaimants";
+import useSubAmbassadorSalaryStats from "next-common/hooks/ambassador/salary/useSubAmbassadorSalaryStats";
 import nextApi from "next-common/services/nextApi";
 import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide/ambassador/common";
 import {
@@ -11,10 +15,16 @@ import {
 } from "next-common/services/url";
 
 export default function AmbassadorSalaryCyclePage({ cycle }) {
+  useFetchAmbassadorSalaryClaimants();
+  useFetchAmbassadorCollectiveMembers();
+  useSubAmbassadorSalaryStats();
+
   return (
     <FellowshipSalaryCycleLayout>
       {cycle ? (
-        <div className="space-y-6">{/* TODO: ambassador salary cycle */}</div>
+        <div className="space-y-6">
+          <FellowshipSalaryCycleDetailTabsList />
+        </div>
       ) : (
         <FellowshipSalaryCycleDetailNotFound />
       )}
