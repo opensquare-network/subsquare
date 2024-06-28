@@ -28,6 +28,11 @@ export default function AmbassadorSalaryCommon({ children, ...props }) {
           url: "/ambassador/salary",
           exactMatch: true,
         },
+        {
+          label: "Claimants",
+          url: "/ambassador/salary/claimants",
+          exactMatch: true,
+        },
       ]}
       {...props}
     >
