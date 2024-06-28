@@ -1,4 +1,4 @@
-// import AmbassadorSalaryStatsActiveCycleDetailLink from "next-common/components/overview/ambassador/salary/detailLink/activeCycle";
+import AmbassadorSalaryStatsActiveCycleDetailLink from "next-common/components/overview/ambassador/salary/detailLink/activeCycle";
 import { isNil } from "lodash-es";
 import AmbassadorSalaryStats from "next-common/components/overview/ambassador/salary/stats";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
@@ -20,13 +20,13 @@ export default function AmbassadorSalaryCurrentCycle() {
       <SecondaryCard>
         <AmbassadorSalaryStats />
 
-        {/* <hr className="my-4" />
+        <hr className="my-4" />
 
         <div className="space-y-2">
           <div className="flex flex-wrap items-center justify-end gap-x-4">
             <AmbassadorSalaryStatsActiveCycleDetailLink />
           </div>
-        </div> */}
+        </div>
       </SecondaryCard>
     </div>
   );
