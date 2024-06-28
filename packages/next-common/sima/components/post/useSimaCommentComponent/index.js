@@ -18,7 +18,6 @@ export default function useSimaCommentComponent() {
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState("markdown");
-  const postCid = post.cid;
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -40,7 +39,6 @@ export default function useSimaCommentComponent() {
   if (connectedAccount) {
     editor = (
       <SimaCommentEditor
-        postCid={postCid}
         ref={editorWrapperRef}
         setQuillRef={setQuillRef}
         {...{

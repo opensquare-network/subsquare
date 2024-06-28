@@ -15,6 +15,7 @@ import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/vot
 import ProposalAddress from "next-common/components/statistics/referenda/proposalAddress";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 import ContentWithComment from "next-common/sima/components/post/contentWithComment";
+import { ReferendaCommentActionsContextProvider } from "next-common/sima/components/referenda/context/commentActionsProvider";
 
 export default function SimaReferendumContent() {
   const post = usePost();
@@ -34,18 +35,20 @@ export default function SimaReferendumContent() {
   }, [dispatch]);
 
   return (
-    <ContentWithComment>
-      <SimaReferendaDetail />
+    <ReferendaCommentActionsContextProvider>
+      <ContentWithComment>
+        <SimaReferendaDetail />
 
-      <Gov2Sidebar />
+        <Gov2Sidebar />
 
-      <DetailMultiTabs
-        call={proposal?.call && <Gov2ReferendumCall />}
-        metadata={<Gov2ReferendumMetadata info={info} />}
-        timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
-        votesBubble={<Gov2ReferendaVotesBubble />}
-        statistics={<ProposalAddress />}
-      />
-    </ContentWithComment>
+        <DetailMultiTabs
+          call={proposal?.call && <Gov2ReferendumCall />}
+          metadata={<Gov2ReferendumMetadata info={info} />}
+          timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
+          votesBubble={<Gov2ReferendaVotesBubble />}
+          statistics={<ProposalAddress />}
+        />
+      </ContentWithComment>
+    </ReferendaCommentActionsContextProvider>
   );
 }

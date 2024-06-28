@@ -7,7 +7,7 @@ import nextApi from "next-common/services/nextApi";
 //   gov2ReferendumsCommentApi,
 //   gov2ReferendumsVoteStatsApi,
 // } from "next-common/services/url";
-// import { EmptyList } from "next-common/utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import CheckUnFinalized from "components/gov2/checkUnFinalized";
@@ -104,17 +104,16 @@ export const getServerSideProps = withCommonProps(async (context) => {
   //   gov2ReferendumsVoteStatsApi(id),
   // );
 
-  // const comments = await fetchDetailComments(
-  //   gov2ReferendumsCommentApi(detail?._id),
-  //   context,
-  // );
+  const { result: comments } = await nextApi.fetch(
+    `sima/referenda/${id}/comments`,
+  );
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       detail,
       // voteStats: voteStats ?? {},
-      // comments: comments ?? EmptyList,
+      comments: comments ?? EmptyList,
 
       ...tracksProps,
     },

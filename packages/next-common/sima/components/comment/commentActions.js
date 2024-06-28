@@ -42,8 +42,6 @@ export default function SimaCommentActions({
   const [isReply, setIsReply] = useState(false);
   const { comments } = usePageProps();
 
-  const postCid = post?.cid;
-
   const users = useSimaMentionList(post, comments);
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
@@ -127,7 +125,6 @@ export default function SimaCommentActions({
       {isReply && (
         <SimaCommentEditor
           ref={editorWrapperRef}
-          postCid={postCid}
           commentCid={replyToCommentCid}
           setQuillRef={setQuillRef}
           isReply={isReply}
