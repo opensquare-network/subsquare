@@ -1,6 +1,7 @@
 import useFetchAmbassadorCoreMembers from "next-common/hooks/ambassador/core/useFetchAmbassadorCoreMembers";
 import ListLayout from "next-common/components/layout/ListLayout";
 import AmbassadorCoreMembersSummary from "next-common/components/ambassador/core/members/summary";
+import AmbassadorSummaryActions from "next-common/components/ambassador/core/summary/actions";
 
 export default function AmbassadorCoreCommon({ children, ...props }) {
   const title = "Ambassador Core";
@@ -17,6 +18,7 @@ export default function AmbassadorCoreCommon({ children, ...props }) {
       title={title}
       description={seoInfo.desc}
       summary={<AmbassadorCoreMembersSummary />}
+      summaryFooter={<AmbassadorSummaryActions />}
       tabs={[
         {
           label: "Members",

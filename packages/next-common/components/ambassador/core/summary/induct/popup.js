@@ -1,11 +1,11 @@
-import React, { useCallback } from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import useSigner from "next-common/components/common/tx/useSigner";
-import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/updateFunc";
+import React, { useCallback } from "react";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import useSigner from "next-common/components/common/tx/useSigner";
 import { useContextApi } from "next-common/context/api";
 import useAddressInput from "next-common/components/collectives/core/useAddressInput";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import useAmbassadorMembersUpdateFunc from "next-common/components/ambassador/core/updateFunc";
 
 function Content() {
   const { onClose } = usePopupParams();
@@ -15,11 +15,11 @@ function Content() {
 
   const getTxFunc = useCallback(() => {
     if (api && whoAddress) {
-      return api.tx.fellowshipCore.induct(whoAddress);
+      return api.tx.ambassadorCore.induct(whoAddress);
     }
   }, [api, whoAddress]);
 
-  const onInBlock = useFellowshipMembersUpdateFunc();
+  const onInBlock = useAmbassadorMembersUpdateFunc();
 
   return (
     <>
@@ -35,7 +35,7 @@ function Content() {
   );
 }
 
-export default function FellowshipCoreInductionPopup(props) {
+export default function AmbassadorCoreInductionPopup(props) {
   return (
     <PopupWithSigner title="Induct" {...props}>
       <Content />
