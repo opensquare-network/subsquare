@@ -2,6 +2,7 @@ import { useDetailType } from "next-common/context/page";
 import nextApi from "next-common/services/nextApi";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { useCallback } from "react";
+import useProposalIndexerBuilder from "../hooks/useProposalIndexerBuilder";
 
 function getCancelUpVoteEntity(reactionCid) {
   return {
@@ -23,30 +24,52 @@ export function useDiscussionCancelUpVote() {
   );
 }
 
-export function useCommentCancelUpVote() {
+export function useProposalCancelUpVote() {
   const signSimaMessage = useSignSimaMessage();
+  const type = useDetailType();
+  const getProposalIndexer = useProposalIndexerBuilder();
+
   return useCallback(
-    async (comment, reactionCid) => {
+    async (post, reactionCid) => {
+      const indexer = getProposalIndexer(post);
       const entity = getCancelUpVoteEntity(reactionCid);
       const data = await signSimaMessage(entity);
-      return await nextApi.post(`sima/comments/${comment.cid}/reactions`, data);
+      return await nextApi.post(`sima/${type}/${indexer.id}/reactions`, data);
+    },
+    [type, signSimaMessage, getProposalIndexer],
+  );
+}
+
+export function useDiscussionCommentCancelUpVote() {
+  const signSimaMessage = useSignSimaMessage();
+  return useCallback(
+    async (post, commentCid, reactionCid) => {
+      const entity = getCancelUpVoteEntity(reactionCid);
+      const data = await signSimaMessage(entity);
+      return await nextApi.post(
+        `sima/discussions/${post.cid}/comments/${commentCid}/reactions`,
+        data,
+      );
     },
     [signSimaMessage],
   );
 }
 
-export function useProposalCancelUpVote() {
+export function useProposalCommentCancelUpVote() {
   const signSimaMessage = useSignSimaMessage();
   const type = useDetailType();
+  const getProposalIndexer = useProposalIndexerBuilder();
+
   return useCallback(
-    async (post, reactionCid) => {
+    async (post, commentCid, reactionCid) => {
+      const indexer = getProposalIndexer(post);
       const entity = getCancelUpVoteEntity(reactionCid);
       const data = await signSimaMessage(entity);
       return await nextApi.post(
-        `sima/${type}/${post.indexer.id}/reactions`,
+        `sima/${type}/${indexer.id}/comments/${commentCid}/reactions`,
         data,
       );
     },
-    [type, signSimaMessage],
+    [type, signSimaMessage, getProposalIndexer],
   );
 }

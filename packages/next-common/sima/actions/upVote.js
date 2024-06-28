@@ -32,18 +32,6 @@ export function useDiscussionUpVote() {
   );
 }
 
-export function useCommentUpVote() {
-  const signSimaMessage = useSignSimaMessage();
-  return useCallback(
-    async (comment) => {
-      const entity = getDiscussionUpVoteEntity(comment.cid);
-      const data = await signSimaMessage(entity);
-      return await nextApi.post(`sima/comments/${comment.cid}/reactions`, data);
-    },
-    [signSimaMessage],
-  );
-}
-
 export function useProposalUpVote() {
   const signSimaMessage = useSignSimaMessage();
   const type = useDetailType();
@@ -55,6 +43,40 @@ export function useProposalUpVote() {
       const entity = getProposalUpVoteEntity(indexer);
       const data = await signSimaMessage(entity);
       return await nextApi.post(`sima/${type}/${indexer.id}/reactions`, data);
+    },
+    [type, getProposalIndexer, signSimaMessage],
+  );
+}
+
+export function useDiscussionCommentUpVote() {
+  const signSimaMessage = useSignSimaMessage();
+  return useCallback(
+    async (post, commentCid) => {
+      const entity = getDiscussionUpVoteEntity(commentCid);
+      const data = await signSimaMessage(entity);
+      return await nextApi.post(
+        `sima/discussions/${post.cid}/comments/${commentCid}/reactions`,
+        data,
+      );
+    },
+    [signSimaMessage],
+  );
+}
+
+export function useProposalCommentUpVote() {
+  const signSimaMessage = useSignSimaMessage();
+  const type = useDetailType();
+  const getProposalIndexer = useProposalIndexerBuilder();
+
+  return useCallback(
+    async (post, commentCid) => {
+      const indexer = getProposalIndexer(post);
+      const entity = getDiscussionUpVoteEntity(commentCid);
+      const data = await signSimaMessage(entity);
+      return await nextApi.post(
+        `sima/${type}/${indexer.id}/comments/${commentCid}/reactions`,
+        data,
+      );
     },
     [type, getProposalIndexer, signSimaMessage],
   );

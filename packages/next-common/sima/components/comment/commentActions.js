@@ -17,8 +17,7 @@ import { Wrapper } from "next-common/components/actions/styled";
 import ThumbsUp from "next-common/components/thumbsUp";
 import { getUserObjFromAddress } from "next-common/utils/sima/utils";
 import useSimaMentionList from "next-common/utils/sima/useSimaMentionList";
-import { useCommentUpVote } from "next-common/sima/actions/upVote";
-import { useCommentCancelUpVote } from "next-common/sima/actions/cancelUpVote";
+import { useCommentActions } from "next-common/sima/context/commentActions";
 
 export default function SimaCommentActions({
   updateComment = noop,
@@ -73,8 +72,7 @@ export default function SimaCommentActions({
   );
   const thumbUp = !!reaction;
 
-  const cancelUpVote = useCommentCancelUpVote();
-  const upVote = useCommentUpVote();
+  const { upVoteComment, cancelUpVoteComment } = useCommentActions();
 
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
@@ -86,9 +84,9 @@ export default function SimaCommentActions({
       let result;
 
       if (thumbUp) {
-        result = await cancelUpVote(comment, reaction.cid);
+        result = await cancelUpVoteComment(post, comment.cid, reaction.cid);
       } else {
-        result = await upVote(comment);
+        result = await upVoteComment(post, comment.cid);
       }
 
       if (result.error) {
