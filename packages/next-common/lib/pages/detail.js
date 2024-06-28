@@ -8,9 +8,6 @@ function getTypeProperties(context) {
   }
 
   for (const type of Object.values(detailPageCategory)) {
-    if (url.startsWith("/sima")) {
-      url = url.replace(/^\/sima/, "");
-    }
     if (url.slice(1).startsWith(type)) {
       return {
         isDetail: true,
