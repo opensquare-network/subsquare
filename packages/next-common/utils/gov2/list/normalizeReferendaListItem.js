@@ -14,9 +14,7 @@ export default function normalizeGov2ReferendaListItem(item, tracks = []) {
     status: item.onchainData?.state?.name ?? "Unknown",
     index: item.referendumIndex,
     address: item.proposer,
-    detailLink: item.sima
-      ? `/sima${referendaReferendumBaseUrl}/${item.referendumIndex}`
-      : `${referendaReferendumBaseUrl}/${item.referendumIndex}`,
+    detailLink: `${referendaReferendumBaseUrl}/${item.referendumIndex}`,
     commentsCount: item.commentsCount,
     trackName: track?.name || item.trackInfo?.name,
   };

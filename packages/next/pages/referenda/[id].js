@@ -152,29 +152,54 @@ export default function ReferendumPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: detail } = await nextApi.fetch(gov2ReferendumsDetailApi(id));
 
-  if (!detail) {
-    return getNullDetailProps(id, { voteStats: {} });
+  const { result: simaDetail } = await nextApi.fetch(`sima/referenda/${id}`);
+  if (simaDetail?.sima) {
+    const { result: voteStats } = await nextApi.fetch(
+      gov2ReferendumsVoteStatsApi(id),
+    );
+
+    const { result: comments } = await nextApi.fetch(
+      `sima/referenda/${id}/comments`,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
+
+    return {
+      props: {
+        detail: simaDetail,
+        voteStats: voteStats ?? {},
+        comments: comments ?? EmptyList,
+
+        ...tracksProps,
+      },
+    };
+  } else {
+    const { result: detail } = await nextApi.fetch(
+      gov2ReferendumsDetailApi(id),
+    );
+
+    if (!detail) {
+      return getNullDetailProps(id, { voteStats: {} });
+    }
+
+    const { result: voteStats } = await nextApi.fetch(
+      gov2ReferendumsVoteStatsApi(id),
+    );
+
+    const comments = await fetchDetailComments(
+      gov2ReferendumsCommentApi(detail?._id),
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
+
+    return {
+      props: {
+        detail,
+        voteStats: voteStats ?? {},
+        comments: comments ?? EmptyList,
+
+        ...tracksProps,
+      },
+    };
   }
-
-  const { result: voteStats } = await nextApi.fetch(
-    gov2ReferendumsVoteStatsApi(id),
-  );
-
-  const comments = await fetchDetailComments(
-    gov2ReferendumsCommentApi(detail?._id),
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      detail,
-      voteStats: voteStats ?? {},
-      comments: comments ?? EmptyList,
-
-      ...tracksProps,
-    },
-  };
 });

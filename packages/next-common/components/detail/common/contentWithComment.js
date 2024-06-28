@@ -8,7 +8,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 function CommentsWithFilterContent({ children }) {
   const { commentsData, loading } = usePostCommentsFilteredData();
-  const { CommentComponent, focusEditor } = useCommentComponent({
+  const { component, focusEditor } = useCommentComponent({
     commentsData,
     loading,
   });
@@ -16,7 +16,7 @@ function CommentsWithFilterContent({ children }) {
   return (
     <EditorProvider focusEditor={focusEditor}>
       {children}
-      {CommentComponent}
+      {component}
     </EditorProvider>
   );
 }
