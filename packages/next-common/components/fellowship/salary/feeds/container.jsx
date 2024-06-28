@@ -35,7 +35,7 @@ export default function FellowshipSalaryFeedsContainer({ feeds = {} }) {
       who: searchValue,
     };
     let query = objectToQueryString(queryObject);
-    router.push({ pathname: "/fellowship/salary/feeds", query });
+    router.push({ pathname: router.pathname, query });
     setLoading(true);
   };
 
