@@ -4,6 +4,7 @@ import FellowshipSalaryCycleDetailInfoOngoing from "./ongoing";
 import { useSelector } from "react-redux";
 import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
 import { useMemo } from "react";
+import FellowshipSalaryCycleDetailInfoOngoingFooter from "./ongoingFooter";
 
 export default function FellowshipSalaryCycleDetailInfo() {
   const { cycle } = usePageProps();
@@ -22,7 +23,10 @@ export default function FellowshipSalaryCycleDetailInfo() {
   }, [cycle, stats]);
 
   return isActive ? (
-    <FellowshipSalaryCycleDetailInfoOngoing cycle={cycle} />
+    <FellowshipSalaryCycleDetailInfoOngoing
+      cycle={cycle}
+      footer={<FellowshipSalaryCycleDetailInfoOngoingFooter />}
+    />
   ) : (
     <FellowshipSalaryCycleDetailInfoClosed cycle={cycle} />
   );

@@ -3,8 +3,6 @@ import { ActiveTag } from "next-common/components/tags/state/styled";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import FellowshipCycleProgress from "./progress";
-import FellowshipSalaryRegister from "next-common/components/fellowship/salary/actions/register";
-import FellowshipSalaryMyStatus from "../myStatus";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SalaryStatsIndexItem from "../summary/indexItem";
 import SalaryStatsBudgetItem from "../summary/budgetItem";
@@ -14,10 +12,11 @@ import SalaryStatsTotalPeriodItem from "../summary/totalPeriodItem";
 import SalaryStatsBlockTimeItem from "../summary/blockTimeItem";
 import { DesktopPlaceHolderItem } from "next-common/components/overview/fellowship/salary/stats";
 import SalaryStatsTimeRemainItem from "../summary/timeRemainItem";
-import FellowshipSalaryPayout from "next-common/components/fellowship/salary/actions/payout";
-import FellowshipSalaryBump from "next-common/components/fellowship/salary/actions/bump";
 
-export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
+export default function FellowshipSalaryCycleDetailInfoOngoing({
+  cycle = {},
+  footer,
+}) {
   const [navCollapsed] = useNavCollapsed();
 
   const { startIndexer } = cycle;
@@ -72,16 +71,13 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({ cycle = {} }) {
         <FellowshipCycleProgress cycle={cycle} />
       </div>
 
-      <hr className="my-4" />
+      {footer && (
+        <>
+          <hr className="my-4" />
 
-      <div className="space-y-2">
-        <FellowshipSalaryMyStatus />
-        <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
-          <FellowshipSalaryBump />
-          <FellowshipSalaryRegister />
-          <FellowshipSalaryPayout />
-        </div>
-      </div>
+          {footer}
+        </>
+      )}
     </PrimaryCard>
   );
 }
