@@ -15,7 +15,7 @@ export function withAmbassadorSalaryCommonProps(fn = noop) {
       tracksProps,
       { result: ambassadorMembers },
       { result: ambassadorParams = {} },
-      { result: ambassadorSalaryClaimants },
+      { result: ambassadorSalaryClaimants = [] },
       { result: activeCycle },
     ] = await Promise.all([
       fetchOpenGovTracksProps(),

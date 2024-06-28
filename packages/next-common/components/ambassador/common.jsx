@@ -33,6 +33,11 @@ export default function AmbassadorSalaryCommon({ children, ...props }) {
           url: "/ambassador/salary/claimants",
           exactMatch: true,
         },
+        {
+          label: "Feeds",
+          url: "/ambassador/salary/feeds",
+          exactMatch: true,
+        },
       ]}
       {...props}
     >
