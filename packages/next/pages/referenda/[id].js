@@ -153,53 +153,40 @@ export default function ReferendumPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
+  let detail;
+  let comments;
+
   const { result: simaDetail } = await nextApi.fetch(`sima/referenda/${id}`);
-  if (simaDetail?.sima) {
-    const { result: voteStats } = await nextApi.fetch(
-      gov2ReferendumsVoteStatsApi(id),
-    );
+  if (simaDetail) {
+    const { result } = await nextApi.fetch(`sima/referenda/${id}/comments`);
 
-    const { result: comments } = await nextApi.fetch(
-      `sima/referenda/${id}/comments`,
-    );
-    const tracksProps = await fetchOpenGovTracksProps();
-
-    return {
-      props: {
-        detail: simaDetail,
-        voteStats: voteStats ?? {},
-        comments: comments ?? EmptyList,
-
-        ...tracksProps,
-      },
-    };
+    detail = simaDetail;
+    comments = result;
   } else {
-    const { result: detail } = await nextApi.fetch(
-      gov2ReferendumsDetailApi(id),
-    );
-
-    if (!detail) {
+    const { result } = await nextApi.fetch(gov2ReferendumsDetailApi(id));
+    if (!result) {
       return getNullDetailProps(id, { voteStats: {} });
     }
 
-    const { result: voteStats } = await nextApi.fetch(
-      gov2ReferendumsVoteStatsApi(id),
-    );
-
-    const comments = await fetchDetailComments(
+    detail = result;
+    comments = await fetchDetailComments(
       gov2ReferendumsCommentApi(detail?._id),
       context,
     );
-    const tracksProps = await fetchOpenGovTracksProps();
-
-    return {
-      props: {
-        detail,
-        voteStats: voteStats ?? {},
-        comments: comments ?? EmptyList,
-
-        ...tracksProps,
-      },
-    };
   }
+
+  const { result: voteStats } = await nextApi.fetch(
+    gov2ReferendumsVoteStatsApi(id),
+  );
+  const tracksProps = await fetchOpenGovTracksProps();
+
+  return {
+    props: {
+      detail,
+      voteStats: voteStats ?? {},
+      comments: comments ?? EmptyList,
+
+      ...tracksProps,
+    },
+  };
 });
