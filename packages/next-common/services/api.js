@@ -104,6 +104,10 @@ class Api {
         credentials: "same-origin",
         body: formData,
         redirect: "follow",
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNjhlMjQ2ZDQ2ZTU4MGJlNDIzYjI2NiIsImVtYWlsIjoiamllaGFvQG9wZW5zcXVhcmUubmV0d29yayIsInVzZXJuYW1lIjoicG9sa2Fkb3Qta2V5LTB4N2MwNTQxYzA3YTQ2YTExNjkzMjM3MDU0Y2Y3MzFkYmE4MmFiNmYzOGY5OGIyZDgyYzExNTQ1ODFmMjRjZmQyNCIsImlhdCI6MTY5MTM5OTM1NSwiZXhwIjoxNjkyMDA0MTU1fQ.N-798vkm2C0Ot12jxhOVK6H4yMLT5LnUQ4YXYgfanI4",
+        },
       },
     );
 
