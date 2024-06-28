@@ -96,6 +96,14 @@ export const ambassadorSalaryClaimantsApi = "ambassador/salary/claimants";
 export const ambassadorSalaryCycleApi = (index) =>
   `ambassador/salary/cycles/${index}`;
 export const ambassadorSalaryFeedsApi = "ambassador/salary/feeds";
+export const ambassadorSalaryCycleRegistrationsApi = (index) =>
+  `ambassador/salary/cycles/${index}/registrations`;
+export const ambassadorSalaryCycleRegisteredPaymentsApi = (index) =>
+  `ambassador/salary/cycles/${index}/registered_payments`;
+export const ambassadorSalaryCycleUnregisteredPaymentsApi = (index) =>
+  `ambassador/salary/cycles/${index}/unregistered_payments`;
+export const ambassadorSalaryCycleFeedsApi = (index) =>
+  `ambassador/salary/cycles/${index}/feeds`;
 
 // calender events
 /**
