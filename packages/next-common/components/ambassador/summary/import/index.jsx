@@ -4,6 +4,7 @@ import Tooltip from "next-common/components/tooltip";
 import { useMyAmbassadorSalaryClaimantFromContext } from "next-common/context/ambassador/myClaimant";
 import useAmbassadorCollectiveMembers from "next-common/hooks/ambassador/collective/useAmbassadorCollectiveMembers";
 import PrimaryButton from "next-common/lib/button/primary";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 import {
   ambassadorSalaryStatusSelector,
   salaryStatusLoadedSelector,
@@ -11,6 +12,8 @@ import {
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+
+const AmbassadorSalaryImportPopup = dynamicPopup(() => import("./popup"));
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
@@ -75,7 +78,13 @@ export default function Import() {
           Import me
         </PrimaryButton>
       </Tooltip>
-      {showPopup && null}
+      {showPopup && (
+        <AmbassadorSalaryImportPopup
+          onClose={() => {
+            setShowPopup(false);
+          }}
+        />
+      )}
     </>
   );
 }
