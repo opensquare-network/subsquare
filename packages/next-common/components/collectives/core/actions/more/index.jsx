@@ -1,17 +1,16 @@
-import { SystemMore } from "@osn/icons/subsquare";
-import { OptionWrapper } from "next-common/components/internalDropdown/styled";
-import { cn } from "next-common/utils";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useRef, useState } from "react";
 import { useClickAway } from "react-use";
+import { SystemMore } from "@osn/icons/subsquare";
+import { cn } from "next-common/utils";
+import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import ActivationItem from "./activationItem";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import SubmitEvidenceItem from "./submitEvidenceItem";
-import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const SubmitEvidencePopup = dynamicPopup(() =>
   import("./submitEvidenceItem/popup"),
 );
-
 const ActivationPopup = dynamicPopup(() => import("./activationItem/popup"));
 
 export default function More({ member }) {
@@ -23,11 +22,11 @@ export default function More({ member }) {
 
   const isMe = member.address === realAddress;
 
-  useClickAway(ref, hideMenu);
-
   function hideMenu() {
     setShowMenu(false);
   }
+
+  useClickAway(ref, hideMenu);
 
   if (!isMe) {
     return null;

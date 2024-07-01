@@ -1,7 +1,7 @@
 import Promote from "./promote";
-import More from "./more";
 import Approve from "./approve";
 import CoreFellowshipBump from "next-common/components/collectives/core/actions/bump";
+import More from "next-common/components/collectives/core/actions/more";
 
 export default function Actions({ member }) {
   return (

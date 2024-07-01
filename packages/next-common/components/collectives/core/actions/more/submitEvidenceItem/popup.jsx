@@ -17,6 +17,7 @@ import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 
 function WishChoice({ title, description, checked, onClick = noop }) {
   return (
@@ -52,6 +53,7 @@ function Content() {
   const { uploading, upload } = useUploadToIpfs();
 
   const api = useContextApi();
+  const pallet = useCoreFellowshipPallet();
 
   const getTxFunc = useCallback(async () => {
     const { error, result } = await upload(
@@ -76,7 +78,7 @@ function Content() {
     }
 
     const hexDigest = "0x" + Buffer.from(digest).toString("hex");
-    return api.tx.fellowshipCore?.submitEvidence(wish, hexDigest);
+    return api.tx[pallet]?.submitEvidence(wish, hexDigest);
   }, [api, address, upload, evidence, wish, dispatch]);
 
   return (
