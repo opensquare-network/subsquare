@@ -13,11 +13,11 @@ function Content() {
 
   const getTxFunc = useCallback(() => {
     if (api) {
-      return api.tx.fellowshipSalary.induct();
+      return api.tx.ambassadorSalary.induct();
     }
   }, [api]);
 
-  const onInBlock = useAmbassadorClaimantsUpdateFunc(); // update fellowship salary claimants
+  const onInBlock = useAmbassadorClaimantsUpdateFunc(); // update ambassador salary claimants
 
   return (
     <>
