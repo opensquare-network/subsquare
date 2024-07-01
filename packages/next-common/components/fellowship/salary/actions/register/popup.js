@@ -4,20 +4,26 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import useSigner from "next-common/components/common/tx/useSigner";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import useFellowshipClaimantsUpdateFunc from "next-common/components/fellowship/salary/hooks/useFellowshipClaimantsUpdateFunc";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import useClaimantsFellowshipUpdateFunc from "next-common/hooks/fellowship/salary/useClaimantsUpdateFunc";
 
 function Content() {
   const { onClose } = usePopupParams();
   const { component } = useSigner();
   const api = useContextApi();
+  const { section } = useCollectivesContext();
 
   const getTxFunc = useCallback(() => {
     if (api) {
-      return api.tx.fellowshipSalary.register();
+      if (section === "fellowship") {
+        return api.tx.fellowshipSalary.register();
+      } else if (section === "ambassador") {
+        return api.tx.ambassadorSalary.register();
+      }
     }
-  }, [api]);
+  }, [api, section]);
 
-  const onInBlock = useFellowshipClaimantsUpdateFunc(); // update fellowship salary claimants
+  const onInBlock = useClaimantsFellowshipUpdateFunc();
 
   return (
     <>
