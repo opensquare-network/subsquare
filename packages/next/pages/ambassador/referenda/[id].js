@@ -103,15 +103,15 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const { result: detail } = await nextApi.fetch(
     getAmbassadorReferendumUrl(id),
   );
+  const tracksProps = await fetchOpenGovTracksProps();
   if (!detail) {
-    return getNullDetailProps(id);
+    return getNullDetailProps(id, tracksProps);
   }
 
   const comments = await fetchDetailComments(
     getAmbassadorReferendumCommentsUrl(detail?._id),
     context,
   );
-  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
