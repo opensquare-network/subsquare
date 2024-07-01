@@ -60,6 +60,7 @@ export default function RecentProposalTemplate({
   const tabs = activeItems.map((m) => {
     return {
       label: m.name,
+      value: m.value,
       activeCount: m.activeCount,
       content: (
         <TableTemplate tabTableLoaded={tabTableLoaded} label={m.name} {...m} />
