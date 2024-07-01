@@ -9,6 +9,7 @@ import FellowshipCoreMemberCard from "next-common/components/fellowship/core/mem
 import FellowshipMembersEmpty from "./empty";
 import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCoreMembers";
 import { usePageProps } from "next-common/context/page";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function FellowshipMembersPage() {
   const members = useSortedCoreMembers();
@@ -31,27 +32,29 @@ export default function FellowshipMembersPage() {
   }, [pageMembers, rank]);
 
   return (
-    <FellowshipMembersLoadable>
-      <FellowshipMemberCommon>
-        <div className="flex items-center justify-between mb-4 pr-6">
-          <FellowshipMemberTabs members={members} />
-          {component}
-        </div>
+    <CollectivesProvider params={fellowshipParams} section="fellowship">
+      <FellowshipMembersLoadable>
+        <FellowshipMemberCommon>
+          <div className="flex items-center justify-between mb-4 pr-6">
+            <FellowshipMemberTabs members={members} />
+            {component}
+          </div>
 
-        {hasMembers ? (
-          <FellowshipCoreMemberCardListContainer>
-            {filteredMembers.map((member) => (
-              <FellowshipCoreMemberCard
-                key={member.address}
-                member={member}
-                params={fellowshipParams}
-              />
-            ))}
-          </FellowshipCoreMemberCardListContainer>
-        ) : (
-          <FellowshipMembersEmpty />
-        )}
-      </FellowshipMemberCommon>
-    </FellowshipMembersLoadable>
+          {hasMembers ? (
+            <FellowshipCoreMemberCardListContainer>
+              {filteredMembers.map((member) => (
+                <FellowshipCoreMemberCard
+                  key={member.address}
+                  member={member}
+                  params={fellowshipParams}
+                />
+              ))}
+            </FellowshipCoreMemberCardListContainer>
+          ) : (
+            <FellowshipMembersEmpty />
+          )}
+        </FellowshipMemberCommon>
+      </FellowshipMembersLoadable>
+    </CollectivesProvider>
   );
 }

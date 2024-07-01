@@ -1,19 +1,18 @@
 import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { usePageProps } from "next-common/context/page";
 import { useMemo, useState } from "react";
 import Popup from "./popup";
+import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 
-export default function Bump({ member }) {
+export default function CoreFellowshipBump({ member }) {
   const { address, rank, status: { lastProof } = {} } = member || {};
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  const { fellowshipParams } = usePageProps();
+  const params = useCoreFellowshipParams();
   const demotionPeriod = useMemo(() => {
-    return rank <= 0
-      ? fellowshipParams.offboardTimeout
-      : fellowshipParams.demotionPeriod[rank - 1];
-  }, [rank, fellowshipParams]);
-  const canBump = latestHeight >= lastProof + demotionPeriod;
+    return rank <= 0 ? params.offboardTimeout : params.demotionPeriod[rank - 1];
+  }, [rank, params]);
+  const canBump =
+    latestHeight >= lastProof + demotionPeriod && demotionPeriod > 0;
 
   const [showPopup, setShowPopup] = useState(false);
 
