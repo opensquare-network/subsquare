@@ -18,11 +18,19 @@ import { useTrack } from "next-common/context/post/gov2/track";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 import React from "react";
+import useSubAmbassadorReferendumInfo from "next-common/hooks/ambassador/referenda/useSubAmbassadorReferendumInfo";
+import AmbassadorReferendaDetail from "next-common/components/detail/ambassador";
 
 function AmbassadorContent() {
   // todo: 1. subscribe ambassador referendum info
 
-  return <ContentWithComment></ContentWithComment>;
+  useSubAmbassadorReferendumInfo();
+
+  return (
+    <ContentWithComment>
+      <AmbassadorReferendaDetail />
+    </ContentWithComment>
+  );
 }
 
 function ReferendumPageCommon({ breadcrumbs, postContent }) {
