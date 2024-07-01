@@ -25,7 +25,7 @@ export default function ListPostTitle({
       )}
 
       <Link
-        href={href || ""}
+        href={href}
         target={isExternalLink(href) ? "_blank" : null}
         className={cn(
           "cursor-pointer hover:underline",
