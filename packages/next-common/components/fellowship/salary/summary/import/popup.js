@@ -5,23 +5,19 @@ import useSigner from "next-common/components/common/tx/useSigner";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useClaimantsFellowshipUpdateFunc from "next-common/hooks/fellowship/salary/useClaimantsUpdateFunc";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import { useSalaryFellowshipPallet } from "next-common/context/collectives/collectives";
 
 function Content() {
   const { onClose } = usePopupParams();
   const { component } = useSigner();
   const api = useContextApi();
-  const { section } = useCollectivesContext();
+  const pallet = useSalaryFellowshipPallet();
 
   const getTxFunc = useCallback(() => {
     if (api) {
-      if (section === "fellowship") {
-        return api.tx.fellowshipSalary.induct();
-      } else if (section === "ambassador") {
-        return api.tx.ambassadorSalary.induct();
-      }
+      return api.tx[pallet].induct();
     }
-  }, [api, section]);
+  }, [api, pallet]);
 
   const onInBlock = useClaimantsFellowshipUpdateFunc();
 
