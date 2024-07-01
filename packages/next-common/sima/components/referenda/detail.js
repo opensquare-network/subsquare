@@ -18,26 +18,26 @@ export default function SimaReferendaDetail() {
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <DetailContentBase
-      head={
-        !isEditing && (
-          <>
-            <PreimageWarning />
-            <TimeoutGuard>
-              <TimeoutCountdown />
-            </TimeoutGuard>
-            <ReferendaWhiteListNavigation />
-            <ReferendaReferendumNavigation />
-            <ReferendaReferendumTreasurySpendNavigation />
-          </>
-        )
-      }
-      title={<PostTitle />}
-      meta={<ReferendaPostMeta />}
-    >
-      <ReferendaActionsContextProvider>
+    <ReferendaActionsContextProvider>
+      <DetailContentBase
+        head={
+          !isEditing && (
+            <>
+              <PreimageWarning />
+              <TimeoutGuard>
+                <TimeoutCountdown />
+              </TimeoutGuard>
+              <ReferendaWhiteListNavigation />
+              <ReferendaReferendumNavigation />
+              <ReferendaReferendumTreasurySpendNavigation />
+            </>
+          )
+        }
+        title={<PostTitle />}
+        meta={<ReferendaPostMeta />}
+      >
         <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
-      </ReferendaActionsContextProvider>
-    </DetailContentBase>
+      </DetailContentBase>
+    </ReferendaActionsContextProvider>
   );
 }
