@@ -13,7 +13,9 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
-const AmbassadorSalaryImportPopup = dynamicPopup(() => import("./popup"));
+const FellowshipSalaryImportPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/summary/import/popup"),
+);
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
@@ -79,7 +81,7 @@ export default function Import() {
         </PrimaryButton>
       </Tooltip>
       {showPopup && (
-        <AmbassadorSalaryImportPopup
+        <FellowshipSalaryImportPopup
           onClose={() => {
             setShowPopup(false);
           }}
