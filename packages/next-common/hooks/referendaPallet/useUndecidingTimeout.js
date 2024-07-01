@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 
-export default function useFellowshipUndecidingTimeout() {
+export default function useUndecidingTimeout(pallet = "referenda") {
   const api = useContextApi();
   const [timout, setTimeout] = useState();
 
   useEffect(() => {
-    if (api?.consts?.fellowshipReferenda) {
-      setTimeout(api.consts.fellowshipReferenda.undecidingTimeout.toNumber());
+    if (api?.consts[pallet]) {
+      setTimeout(api.consts[pallet].undecidingTimeout.toNumber());
     }
   }, [api]);
 
