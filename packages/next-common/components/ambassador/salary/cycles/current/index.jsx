@@ -5,6 +5,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
 import { useSelector } from "react-redux";
+import AmbassadorSalaryRegister from "../../actions/register";
 
 export default function AmbassadorSalaryCurrentCycle() {
   const stats = useSelector(ambassadorSalaryStatusSelector);
@@ -25,6 +26,8 @@ export default function AmbassadorSalaryCurrentCycle() {
         <div className="space-y-2">
           <div className="flex flex-wrap items-center justify-end gap-x-4">
             <AmbassadorSalaryStatsActiveCycleDetailLink />
+            <AmbassadorSalaryRegister />
+            {/* payout */}
           </div>
         </div>
       </SecondaryCard>
