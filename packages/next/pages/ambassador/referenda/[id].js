@@ -20,6 +20,7 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 import React from "react";
 import useSubAmbassadorReferendumInfo from "next-common/hooks/ambassador/referenda/useSubAmbassadorReferendumInfo";
 import AmbassadorReferendaDetail from "next-common/components/detail/ambassador";
+import AmbassadorReferendumSideBar from "next-common/components/ambassador/referenda/sidebar";
 
 function AmbassadorContent() {
   // todo: 1. subscribe ambassador referendum info
@@ -29,6 +30,7 @@ function AmbassadorContent() {
   return (
     <ContentWithComment>
       <AmbassadorReferendaDetail />
+      <AmbassadorReferendumSideBar />
     </ContentWithComment>
   );
 }
