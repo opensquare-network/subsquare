@@ -12,14 +12,13 @@ import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
 import { noop } from "lodash-es";
-import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "../comment/context";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { useCommentActions } from "next-common/sima/context/commentActions";
 
 export default function CommentActions({
-  updateComment = noop,
+  reloadComment = noop,
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
   replyToCommentId,
@@ -27,7 +26,6 @@ export default function CommentActions({
 }) {
   const comment = useComment();
   const user = useUser();
-  const { ensureLogin } = useEnsureLogin();
   const reactions = comment?.reactions || [];
   const author = comment?.author || {};
   const ownComment = user && author?.username === user.username;
@@ -45,8 +43,6 @@ export default function CommentActions({
   );
   const [isReply, setIsReply] = useState(false);
   const { comments } = usePageProps();
-
-  const postId = post?._id;
 
   const users = useMentionList(post, comments);
 
@@ -71,6 +67,7 @@ export default function CommentActions({
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
+  const { upVoteComment, cancelUpVoteComment } = useCommentActions();
 
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
@@ -79,25 +76,16 @@ export default function CommentActions({
 
     setThumbUpLoading(true);
     try {
-      if (!(await ensureLogin())) {
-        return;
-      }
-
       let result, error;
 
       if (thumbUp) {
-        ({ result, error } = await nextApi.delete(
-          `comments/${comment._id}/reaction`,
-        ));
+        ({ result, error } = await cancelUpVoteComment(post, comment));
       } else {
-        ({ result, error } = await nextApi.put(
-          `comments/${comment._id}/reaction`,
-          { reaction: 1 },
-        ));
+        ({ result, error } = await upVoteComment(post, comment));
       }
 
       if (result) {
-        await updateComment();
+        await reloadComment();
       }
       if (error) {
         dispatch(newErrorToast(error.message));
@@ -127,7 +115,6 @@ export default function CommentActions({
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (
         <CommentEditor
-          postId={postId}
           commentId={replyToCommentId}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
@@ -136,7 +123,7 @@ export default function CommentActions({
             setIsReply(false);
             if (reload) {
               setShowReplies(true);
-              await updateComment();
+              await reloadComment();
               scrollToNewReplyComment();
             }
           }}

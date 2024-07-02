@@ -1,8 +1,6 @@
-import { useDetailType } from "next-common/context/page";
-import { usePost, usePostDispatch } from "next-common/context/post";
+import { usePost } from "next-common/context/post";
 import { useCallback } from "react";
 import PostEdit from "next-common/components/post/postEdit";
-import fetchAndUpdatePost from "next-common/context/post/update";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,9 +9,6 @@ import {
 } from "next-common/store/reducers/userSlice";
 
 export default function DetailContentBase({ head, title, meta, children }) {
-  const type = useDetailType();
-  const postDispatch = usePostDispatch();
-
   const isEditing = useSelector(isEditingPostSelector);
   const dispatch = useDispatch();
   const setIsEdit = useCallback(
@@ -29,12 +24,7 @@ export default function DetailContentBase({ head, title, meta, children }) {
   }
 
   if (isEditing) {
-    return (
-      <PostEdit
-        setIsEdit={setIsEdit}
-        updatePost={() => fetchAndUpdatePost(postDispatch, type, post._id)}
-      />
-    );
+    return <PostEdit setIsEdit={setIsEdit} />;
   }
 
   return (

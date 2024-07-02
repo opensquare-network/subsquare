@@ -20,7 +20,7 @@ import useSimaMentionList from "next-common/utils/sima/useSimaMentionList";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 
 export default function SimaCommentActions({
-  updateComment = noop,
+  reloadComment = noop,
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
   replyToCommentCid,
@@ -94,7 +94,7 @@ export default function SimaCommentActions({
         return;
       }
 
-      await updateComment();
+      await reloadComment();
     } catch (e) {
       dispatch(newErrorToast(e.message));
     } finally {
@@ -130,7 +130,7 @@ export default function SimaCommentActions({
             setIsReply(false);
             if (reload) {
               setShowReplies(true);
-              await updateComment();
+              await reloadComment();
               scrollToNewReplyComment();
             }
           }}

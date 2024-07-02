@@ -20,7 +20,7 @@ import { useCommentActions } from "next-common/sima/context/commentActions";
 import { usePost } from "next-common/context/post";
 
 function CommentItemImpl({
-  updateTopLevelComment,
+  reloadTopLevelComment,
   replyToCommentCid,
   isSecondLevel,
   scrollToTopLevelCommentBottom,
@@ -60,7 +60,7 @@ function CommentItemImpl({
     }
   }, [refCommentTree]);
 
-  const updateComment = useCallback(async () => {
+  const reloadComment = useCallback(async () => {
     const { result: updatedComment } = await getComment(post, comment.cid);
     if (!updatedComment) {
       return;
@@ -77,7 +77,7 @@ function CommentItemImpl({
     setComments(newComments);
   }, [comments, setComments, post, comment.cid, getComment]);
 
-  const maybeUpdateTopLevelComment = updateTopLevelComment || updateComment;
+  const maybeReloadTopLevelComment = reloadTopLevelComment || reloadComment;
 
   return (
     <CommentItemTemplate
@@ -111,7 +111,7 @@ function CommentItemImpl({
       actions={
         <SimaCommentActions
           setShowReplies={setShowReplies}
-          updateComment={maybeUpdateTopLevelComment}
+          reloadComment={maybeReloadTopLevelComment}
           scrollToNewReplyComment={
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
@@ -124,7 +124,7 @@ function CommentItemImpl({
           data={reply}
           replyToCommentCid={replyToCommentCid}
           isSecondLevel
-          updateTopLevelComment={maybeUpdateTopLevelComment}
+          reloadTopLevelComment={maybeReloadTopLevelComment}
           scrollToTopLevelCommentBottom={
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
@@ -138,7 +138,7 @@ export default function CommentItem({
   data,
   replyToCommentCid,
   isSecondLevel,
-  updateTopLevelComment,
+  reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
   ...props
 }) {
@@ -147,7 +147,7 @@ export default function CommentItem({
       <CommentItemImpl
         replyToCommentCid={replyToCommentCid}
         isSecondLevel={isSecondLevel}
-        updateTopLevelComment={updateTopLevelComment}
+        reloadTopLevelComment={reloadTopLevelComment}
         scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom}
         {...props}
       />
