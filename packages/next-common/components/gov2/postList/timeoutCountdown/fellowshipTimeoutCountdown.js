@@ -1,7 +1,7 @@
 import TimeoutCountDown from "next-common/components/gov2/postList/timeoutCountdown/base";
-import useFellowshipUndecidingTimeout from "next-common/hooks/fellowship/useFellowshipUndecidingTimeout";
+import useUndecidingTimeout from "next-common/hooks/referendaPallet/useUndecidingTimeout";
 
 export default function FellowshipTimeoutCountdown({ detail = {} }) {
-  const timeout = useFellowshipUndecidingTimeout();
+  const timeout = useUndecidingTimeout("fellowshipReferenda");
   return <TimeoutCountDown detail={detail} timeout={timeout} />;
 }

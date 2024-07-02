@@ -6,11 +6,13 @@ import DetailLabels from "../labels";
 import React from "react";
 import ReferendaTrack from "./track";
 
-export default function ReferendaPostMeta({ isFellowship = false }) {
-  return <PostMetaBase state={ <ReferendaState /> }>
-    <ReferendaTrack isFellowship={ isFellowship } />
-    <UpdatedTime />
-    <CommentsMeta />
-    <DetailLabels />
-  </PostMetaBase>;
+export default function ReferendaPostMeta({ section = "referenda" }) {
+  return (
+    <PostMetaBase state={<ReferendaState />}>
+      <ReferendaTrack section={section} />
+      <UpdatedTime />
+      <CommentsMeta />
+      <DetailLabels />
+    </PostMetaBase>
+  );
 }

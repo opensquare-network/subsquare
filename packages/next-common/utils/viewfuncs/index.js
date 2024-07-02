@@ -16,9 +16,10 @@ export function toApiType(type) {
   // Open Gov
   if (type === detailPageCategory.GOV2_REFERENDUM) {
     return "gov2/referendums";
-  }
-  if (type === detailPageCategory.FELLOWSHIP_REFERENDUM) {
+  } else if (type === detailPageCategory.FELLOWSHIP_REFERENDUM) {
     return "fellowship/referenda";
+  } else if (type === detailPageCategory.AMBASSADOR_REFERENDUM) {
+    return "ambassador/referenda";
   }
 
   // Democracy

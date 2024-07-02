@@ -1,17 +1,15 @@
+import { useContextApi } from "next-common/context/api";
 import { useOnchainData } from "next-common/context/post";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useMountedState } from "react-use";
+import { useEffect } from "react";
 import {
-  clearFellowshipReferendumInfo,
-  setFellowshipReferendumInfo,
-} from "next-common/store/reducers/fellowship/info";
-import { useContextApi } from "next-common/context/api";
+  clearAmbassadorReferendumInfo,
+  setAmbassadorReferendumInfo,
+} from "next-common/store/reducers/ambassador/info";
 
-export default function useSubFellowshipReferendumInfo(
-  pallet = "fellowshipReferenda",
-) {
+export default function useSubAmbassadorReferendumInfo() {
   const api = useContextApi();
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
@@ -21,13 +19,13 @@ export default function useSubFellowshipReferendumInfo(
   const isMounted = useMountedState();
 
   useEffect(() => {
-    if (!api || votingFinishHeight || !api.query[pallet]) {
-      dispatch(setFellowshipReferendumInfo(onchain.info));
-      return () => dispatch(clearFellowshipReferendumInfo());
+    if (!api || votingFinishHeight || !api.query.fellowshipReferenda) {
+      dispatch(setAmbassadorReferendumInfo(onchain.info));
+      return () => dispatch(clearAmbassadorReferendumInfo());
     }
 
     let unsub;
-    api.query[pallet]
+    api.query.ambassadorReferenda
       .referendumInfoFor(referendumIndex, (optionalInfo) => {
         if (!isMounted() || !optionalInfo.isSome) {
           return;
@@ -38,7 +36,7 @@ export default function useSubFellowshipReferendumInfo(
           return;
         }
 
-        dispatch(setFellowshipReferendumInfo(info.asOngoing.toJSON()));
+        dispatch(setAmbassadorReferendumInfo(info.asOngoing.toJSON()));
       })
       .then((result) => {
         unsub = result;
@@ -48,7 +46,7 @@ export default function useSubFellowshipReferendumInfo(
       if (unsub) {
         unsub();
       }
-      dispatch(clearFellowshipReferendumInfo());
+      dispatch(clearAmbassadorReferendumInfo());
     };
   }, [api, votingFinishHeight, referendumIndex, isMounted]);
 }
