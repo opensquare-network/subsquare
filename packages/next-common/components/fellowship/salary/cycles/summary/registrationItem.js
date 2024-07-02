@@ -6,9 +6,18 @@ import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
 
 export default function SalaryStatsRegistrationItem({ cycleData }) {
-  const stats = useSelector(fellowshipSalaryStatusSelector);
+  const { section } = useCollectivesContext();
+  const statusSelector =
+    section === "fellowship"
+      ? fellowshipSalaryStatusSelector
+      : ambassadorSalaryStatusSelector;
+
+  const stats = useSelector(statusSelector);
+
   const { totalRegistrations } = stats || {};
   const { decimals, symbol } = useSalaryAsset();
   const { registeredCount } = cycleData || {};

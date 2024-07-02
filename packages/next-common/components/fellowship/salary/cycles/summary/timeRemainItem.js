@@ -4,9 +4,17 @@ import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useF
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
 import SummaryItem from "next-common/components/summary/layout/item";
 import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
+import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 export default function SalaryStatsTimeRemainItem() {
-  const stats = useSelector(fellowshipSalaryStatusSelector);
+  const { section } = useCollectivesContext();
+  const statusSelector =
+    section === "fellowship"
+      ? fellowshipSalaryStatusSelector
+      : ambassadorSalaryStatusSelector;
+
+  const stats = useSelector(statusSelector);
   const { cycleStart } = stats || {};
 
   const { registrationPeriod, payoutPeriod } = useFellowshipSalaryPeriods();
