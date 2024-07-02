@@ -1,13 +1,12 @@
 import { createContext, useContext } from "react";
-import useSubAmbassadorCoreMember from "next-common/hooks/ambassador/core/useSubAmbassadorCoreMember";
-import useMyAmbassadorSalaryClaimant from "next-common/hooks/ambassador/salary/useMyAmbassadorClaimant";
+import useSubMyCoreMember from "next-common/hooks/ambassador/core/useSubMyCoreMember";
+import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
 
 const MyAmbassadorSalaryClaimantContext = createContext(null);
 
 export function MyAmbassadorSalaryClaimantProvider({ children }) {
-  const { claimant, isLoading: isLoadingClaimant } =
-    useMyAmbassadorSalaryClaimant();
-  const { member, isLoading: isLoadingMember } = useSubAmbassadorCoreMember();
+  const { claimant, isLoading: isLoadingClaimant } = useMySalaryClaimant();
+  const { member, isLoading: isLoadingMember } = useSubMyCoreMember();
 
   return (
     <MyAmbassadorSalaryClaimantContext.Provider

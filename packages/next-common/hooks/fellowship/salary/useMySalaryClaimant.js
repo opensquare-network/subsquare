@@ -1,21 +1,23 @@
+import { useContextApi } from "next-common/context/api";
+import { useSalaryFellowshipPallet } from "next-common/context/collectives/collectives";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useState } from "react";
-import { useContextApi } from "next-common/context/api";
 
 export default function useMySalaryClaimant() {
   const address = useRealAddress();
   const api = useContextApi();
   const [claimant, setClaimant] = useState(null);
   const [loading, setLoading] = useState(true);
+  const pallet = useSalaryFellowshipPallet();
 
   useEffect(() => {
-    if (!address || !api?.query?.fellowshipSalary?.claimant) {
+    if (!address || !api?.query?.[pallet]?.claimant) {
       setLoading(false);
       return;
     }
 
     let unsub;
-    api.query.fellowshipSalary
+    api.query[pallet]
       .claimant(address, (rawOptional) => {
         if (rawOptional.isNone) {
           return;
@@ -32,7 +34,7 @@ export default function useMySalaryClaimant() {
         unsub();
       }
     };
-  }, [address, api]);
+  }, [address, api, pallet]);
 
   return { isLoading: loading, claimant };
 }

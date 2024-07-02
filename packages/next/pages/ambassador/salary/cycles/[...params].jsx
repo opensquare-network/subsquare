@@ -15,25 +15,28 @@ import {
 } from "next-common/services/url";
 import AmbassadorSalaryCycleDetailInfo from "next-common/components/ambassador/salary/cycles/info";
 import { MyAmbassadorSalaryClaimantProvider } from "next-common/context/ambassador/myClaimant";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
-export default function AmbassadorSalaryCyclePage({ cycle }) {
+export default function AmbassadorSalaryCyclePage({ cycle, ambassadorParams }) {
   useFetchAmbassadorSalaryClaimants();
   useFetchAmbassadorCollectiveMembers();
   useSubAmbassadorSalaryStats();
 
   return (
-    <MyAmbassadorSalaryClaimantProvider>
-      <FellowshipSalaryCycleLayout>
-        {cycle ? (
-          <div className="space-y-6">
-            <AmbassadorSalaryCycleDetailInfo />
-            <FellowshipSalaryCycleDetailTabsList />
-          </div>
-        ) : (
-          <FellowshipSalaryCycleDetailNotFound />
-        )}
-      </FellowshipSalaryCycleLayout>
-    </MyAmbassadorSalaryClaimantProvider>
+    <CollectivesProvider params={ambassadorParams} section="ambassador">
+      <MyAmbassadorSalaryClaimantProvider>
+        <FellowshipSalaryCycleLayout>
+          {cycle ? (
+            <div className="space-y-6">
+              <AmbassadorSalaryCycleDetailInfo />
+              <FellowshipSalaryCycleDetailTabsList />
+            </div>
+          ) : (
+            <FellowshipSalaryCycleDetailNotFound />
+          )}
+        </FellowshipSalaryCycleLayout>
+      </MyAmbassadorSalaryClaimantProvider>
+    </CollectivesProvider>
   );
 }
 
