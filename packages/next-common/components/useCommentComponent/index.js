@@ -11,7 +11,6 @@ import PrimaryButton from "next-common/lib/button/primary";
 export default function useCommentComponent({ commentsData, loading }) {
   const user = useUser();
   const post = usePost();
-  const postId = post._id;
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
@@ -39,7 +38,6 @@ export default function useCommentComponent({ commentsData, loading }) {
   if (user) {
     editor = (
       <CommentEditor
-        postId={postId}
         ref={editorWrapperRef}
         setQuillRef={setQuillRef}
         {...{

@@ -1,6 +1,6 @@
-import DetailContentBase from "../common/detailBase";
-import ArticleContent from "../../articleContent";
-import useSetEdit from "../common/hooks/useSetEdit";
+import DetailContentBase from "../detailBase";
+import ArticleContent from "../post/detailItem/articleContent";
+import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import PostTitle from "next-common/components/detail/common/Title";
@@ -11,14 +11,14 @@ import TimeoutCountdown from "next-common/components/detail/referenda/timeoutCou
 import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 import ReferendaReferendumTreasurySpendNavigation from "next-common/components/detail/referenda/referendaReferendumTreasurySpendNavigation";
-import { OffChainArticleActionsContextProvider } from "next-common/noSima/context/articleActionsProvider";
+import { ReferendaActionsContextProvider } from "./context/articleActionsProvider";
 
-export default function ReferendaDetail() {
+export default function SimaReferendaDetail() {
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <OffChainArticleActionsContextProvider>
+    <ReferendaActionsContextProvider>
       <DetailContentBase
         head={
           !isEditing && (
@@ -38,6 +38,6 @@ export default function ReferendaDetail() {
       >
         <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
       </DetailContentBase>
-    </OffChainArticleActionsContextProvider>
+    </ReferendaActionsContextProvider>
   );
 }

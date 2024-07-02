@@ -189,12 +189,18 @@ export function CommentContextMenu({ editable, setIsEdit }) {
       />
       {show && (
         <OptionWrapper>
-          {editable && <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />}
-          {(editable || isAdmin) && (
-            <DeleteMenuItem
-              setShowDeletePopup={setShowDeletePopup}
-              setShow={setShow}
-            />
+          {comment?.dataSource !== "sima" && (
+            <>
+              {editable && (
+                <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+              )}
+              {(editable || isAdmin) && (
+                <DeleteMenuItem
+                  setShowDeletePopup={setShowDeletePopup}
+                  setShow={setShow}
+                />
+              )}
+            </>
           )}
           <CopyMenuItem onCopy={onCopy} />
         </OptionWrapper>
@@ -224,6 +230,9 @@ export function PostContextMenu({ editable, setIsEdit }) {
   const isAdmin = useIsAdmin();
 
   const isDiscussionPost = postType === detailPageCategory.POST;
+  const isSimaDiscussion = post.sima;
+  const canDelete =
+    (editable || isAdmin) && isDiscussionPost && !isSimaDiscussion;
 
   useOnClickOutside(ref, () => setShow(false));
 
@@ -262,7 +271,7 @@ export function PostContextMenu({ editable, setIsEdit }) {
               <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
             </>
           )}
-          {(editable || isAdmin) && isDiscussionPost && (
+          {canDelete && (
             <DeleteMenuItem
               setShowDeletePopup={setShowDeletePopup}
               setShow={setShow}

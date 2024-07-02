@@ -4,16 +4,17 @@ import { useRouter } from "next/router";
 import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
-import { prettyHTML, toApiType } from "../../utils/viewfuncs";
+import { prettyHTML } from "../../utils/viewfuncs";
 import { useMountedState } from "react-use";
 import IdentityOrAddr from "../IdentityOrAddr";
 import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useChain } from "../../context/chain";
-import { useDetailType } from "../../context/page";
 import { noop } from "lodash-es";
 import Editor from "../editor";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { usePost } from "next-common/context/post";
+import { useCommentActions } from "next-common/sima/context/commentActions";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -39,7 +40,6 @@ function escapeLinkText(text) {
 
 function CommentEditor(
   {
-    postId,
     isEdit,
     isReply,
     onFinishedEdit = noop,
@@ -53,13 +53,14 @@ function CommentEditor(
   },
   ref,
 ) {
+  const post = usePost();
   const chain = useChain();
-  const type = useDetailType();
   const router = useRouter();
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
   const { ensureLogin } = useEnsureLogin();
+  const { createPostComment, createCommentReply } = useCommentActions();
 
   const createComment = async () => {
     if (!isMounted()) {
@@ -72,18 +73,18 @@ function CommentEditor(
         return;
       }
 
-      const url = commentId
-        ? `${toApiType(type)}/${postId}/comments/${commentId}/replies`
-        : `${toApiType(type)}/${postId}/comments`;
+      let result;
 
-      const result = await nextApi.post(
-        url,
-        {
-          content: contentType === "html" ? prettyHTML(content) : content,
+      if (commentId) {
+        result = await createCommentReply(
+          post,
+          commentId,
+          content,
           contentType,
-        },
-        { credentials: "include" },
-      );
+        );
+      } else {
+        result = await createPostComment(post, content, contentType);
+      }
 
       if (!isMounted()) {
         return;

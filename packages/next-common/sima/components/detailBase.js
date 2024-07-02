@@ -1,12 +1,12 @@
 import { usePost } from "next-common/context/post";
 import { useCallback } from "react";
-import PostEdit from "next-common/components/post/postEdit";
 import MaliciousHead from "next-common/components/detail/maliciousHead";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isEditingPostSelector,
   setEditingPost,
 } from "next-common/store/reducers/userSlice";
+import SimaPostEdit from "next-common/sima/components/post/postEdit";
 
 export default function DetailContentBase({ head, title, meta, children }) {
   const isEditing = useSelector(isEditingPostSelector);
@@ -24,7 +24,7 @@ export default function DetailContentBase({ head, title, meta, children }) {
   }
 
   if (isEditing) {
-    return <PostEdit setIsEdit={setIsEdit} />;
+    return <SimaPostEdit setIsEdit={setIsEdit} />;
   }
 
   return (

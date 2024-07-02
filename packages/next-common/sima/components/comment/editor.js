@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
 import { useMountedState } from "react-use";
@@ -11,8 +10,8 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { useChain } from "next-common/context/chain";
 import { noop } from "lodash-es";
 import Editor from "next-common/components/editor";
-import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
-import { getContentField } from "next-common/utils/sima/utils";
+import { useCommentActions } from "next-common/sima/context/commentActions";
+import { usePost } from "next-common/context/post";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -34,7 +33,6 @@ const ButtonWrapper = styled(Flex)`
 
 function SimaCommentEditor(
   {
-    postCid,
     commentCid,
     isReply,
     onFinishedEdit = noop,
@@ -52,29 +50,9 @@ function SimaCommentEditor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
-  const signSimaMessage = useSignSimaMessage();
+  const post = usePost();
 
-  const createCommentReply = useCallback(async () => {
-    const entity = {
-      action: "comment",
-      cid: commentCid,
-      ...getContentField(content, contentType),
-      timestamp: Date.now(),
-    };
-    const data = await signSimaMessage(entity);
-    return await nextApi.post(`sima/comments/${commentCid}/replies`, data);
-  }, [commentCid, content, contentType, signSimaMessage]);
-
-  const createPostComment = useCallback(async () => {
-    const entity = {
-      action: "comment",
-      cid: postCid,
-      ...getContentField(content, contentType),
-      timestamp: Date.now(),
-    };
-    const data = await signSimaMessage(entity);
-    return await nextApi.post(`sima/discussions/${postCid}/comments`, data);
-  }, [postCid, content, contentType, signSimaMessage]);
+  const { createCommentReply, createPostComment } = useCommentActions();
 
   const createComment = async () => {
     if (!isMounted()) {
@@ -86,9 +64,14 @@ function SimaCommentEditor(
       let result;
 
       if (commentCid) {
-        result = await createCommentReply();
+        result = await createCommentReply(
+          post,
+          commentCid,
+          content,
+          contentType,
+        );
       } else {
-        result = await createPostComment();
+        result = await createPostComment(post, content, contentType);
       }
 
       if (!isMounted()) {

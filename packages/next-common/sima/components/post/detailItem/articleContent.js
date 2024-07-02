@@ -8,6 +8,8 @@ import Tabs from "next-common/components/tabs";
 import ContentSummary from "next-common/components/contentSummary";
 import PostDataSource from "next-common/components/postDataSource";
 import Appendant from "./appendant";
+import NonEdited from "next-common/components/detail/common/NonEdited";
+import { noop } from "lodash-es";
 
 const Wrapper = styled.div`
   :hover {
@@ -17,9 +19,8 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function ArticleContent({ className = "" }) {
+function PostContentTab() {
   const post = usePost();
-  const [isAppend, setIsAppend] = useState(false);
 
   const tabs = [
     {
@@ -32,30 +33,48 @@ export default function ArticleContent({ className = "" }) {
       content: <ContentSummary />,
     },
   ].filter(Boolean);
+
   const [activeTab, setActiveTab] = useState(tabs[0].label);
 
   return (
+    <Tabs
+      activeTabLabel={activeTab}
+      tabs={tabs}
+      onTabClick={(tab) => {
+        setActiveTab(tab.label);
+      }}
+    />
+  );
+}
+
+export default function ArticleContent({ className = "", setIsEdit = noop }) {
+  const post = usePost();
+  const [isAppend, setIsAppend] = useState(false);
+
+  return (
     <Wrapper className={className}>
-      <div className="mt-6">
-        {post.contentSummary?.summary ? (
-          <Tabs
-            activeTabLabel={activeTab}
-            tabs={tabs}
-            onTabClick={(tab) => {
-              setActiveTab(tab.label);
-            }}
-          />
-        ) : (
-          <>
-            <Divider className="mb-4" />
-            <PostContent post={post} />
-          </>
-        )}
-      </div>
+      {post.content ? (
+        <div className="mt-6">
+          {post.contentSummary?.summary ? (
+            <PostContentTab />
+          ) : (
+            <>
+              <Divider className="mb-4" />
+              <PostContent post={post} />
+            </>
+          )}
+        </div>
+      ) : (
+        <>
+          <Divider className="mb-4" />
+          <NonEdited setIsEdit={setIsEdit} />
+        </>
+      )}
 
       <Appendant isAppend={isAppend} setIsAppend={setIsAppend} />
       {!isAppend && (
         <ArticleActions
+          setIsEdit={setIsEdit}
           setIsAppend={setIsAppend}
           extraActions={<PostDataSource />}
         />

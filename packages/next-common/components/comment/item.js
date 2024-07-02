@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import nextApi from "next-common/services/nextApi";
 import EditInput from "next-common/components/editInput";
 import { useMountedState } from "react-use";
 import {
@@ -19,6 +18,8 @@ import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentUser from "./user";
+import { useCommentActions } from "next-common/sima/context/commentActions";
+import { usePost } from "next-common/context/post";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -38,9 +39,10 @@ function jumpToAnchor(anchorId) {
 function CommentItemImpl({
   replyToCommentId,
   isSecondLevel,
-  updateTopLevelComment,
+  reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
 }) {
+  const post = usePost();
   const comment = useComment();
   const refCommentTree = useRef();
   const [isEdit, setIsEdit] = useState(false);
@@ -52,6 +54,7 @@ function CommentItemImpl({
   const comments = useComments();
   const setComments = useSetComments();
   const isUniversalComments = useIsUniversalPostComments();
+  const { getComment, updateComment } = useCommentActions();
 
   // Jump to comment when anchor is set
   useEffect(() => {
@@ -69,12 +72,8 @@ function CommentItemImpl({
     }
   }, [hasAnchor, anchor]);
 
-  const commentId = comment._id;
-
-  const updateComment = useCallback(async () => {
-    const { result: updatedComment } = await nextApi.fetch(
-      `comments/${comment._id}`,
-    );
+  const reloadComment = useCallback(async () => {
+    const { result: updatedComment } = await getComment(post, comment);
     if (updatedComment) {
       const newComments = {
         ...comments,
@@ -89,7 +88,7 @@ function CommentItemImpl({
     }
   }, [comments, setComments, comment._id]);
 
-  const maybeUpdateTopLevelComment = updateTopLevelComment || updateComment;
+  const maybeReloadTopLevelComment = reloadTopLevelComment || reloadComment;
 
   const scrollToCommentBottom = useCallback(() => {
     if (refCommentTree.current) {
@@ -101,10 +100,7 @@ function CommentItemImpl({
   }, [refCommentTree]);
 
   const editComment = async (content, contentType) => {
-    return await nextApi.patch(`comments/${commentId}`, {
-      content: contentType === "html" ? prettyHTML(content) : content,
-      contentType,
-    });
+    return await updateComment(post, comment, content, contentType);
   };
 
   return (
@@ -153,7 +149,7 @@ function CommentItemImpl({
               editContentType={comment.contentType}
               onFinishedEdit={async (reload) => {
                 if (reload) {
-                  await maybeUpdateTopLevelComment();
+                  await maybeReloadTopLevelComment();
                 }
                 if (isMounted()) {
                   setIsEdit(false);
@@ -169,7 +165,7 @@ function CommentItemImpl({
       actions={
         <CommentActions
           setShowReplies={setShowReplies}
-          updateComment={maybeUpdateTopLevelComment}
+          reloadComment={maybeReloadTopLevelComment}
           scrollToNewReplyComment={
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
@@ -186,7 +182,7 @@ function CommentItemImpl({
             data={reply}
             replyToCommentId={replyToCommentId}
             isSecondLevel
-            updateTopLevelComment={maybeUpdateTopLevelComment}
+            reloadTopLevelComment={maybeReloadTopLevelComment}
             scrollToTopLevelCommentBottom={
               scrollToTopLevelCommentBottom || scrollToCommentBottom
             }
@@ -201,7 +197,7 @@ export default function CommentItem({
   data,
   replyToCommentId,
   isSecondLevel,
-  updateTopLevelComment,
+  reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
   ...props
 }) {
@@ -210,7 +206,7 @@ export default function CommentItem({
       <CommentItemImpl
         replyToCommentId={replyToCommentId}
         isSecondLevel={isSecondLevel}
-        updateTopLevelComment={updateTopLevelComment}
+        reloadTopLevelComment={reloadTopLevelComment}
         scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom}
         {...props}
       />
