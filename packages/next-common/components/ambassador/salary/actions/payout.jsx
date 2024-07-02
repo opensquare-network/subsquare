@@ -7,7 +7,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
@@ -29,14 +29,18 @@ export default function AmbassadorSalaryPayout() {
     !isNil(latestHeight) && !isNil(payoutStart) && latestHeight >= payoutStart;
 
   const disabled = !address || !isStarted || !isCollectiveMember;
-  let tooltipText = null;
-  if (!address) {
-    tooltipText = "Connect your address please";
-  } else if (!isCollectiveMember) {
-    tooltipText = "Not a collective member";
-  } else if (!isStarted) {
-    tooltipText = "The payout period is not started";
-  }
+
+  const tooltipText = useMemo(() => {
+    if (!address) {
+      return "Connect your address please";
+    } else if (!isCollectiveMember) {
+      return "Not a collective member";
+    } else if (!isStarted) {
+      return "The payout period is not started";
+    }
+
+    return null;
+  }, [address, isCollectiveMember, isStarted]);
 
   return (
     <>
