@@ -20,7 +20,7 @@ export default function FellowshipMemberDemotionPeriod({ lastProof, rank }) {
 
   const gone = latestHeight - lastProof;
   const percentageValue = useMemo(() => {
-    if (gone <= 0) {
+    if (gone <= 0 || demotionPeriod <= 0) {
       return 0;
     } else if (gone >= demotionPeriod) {
       return 100;

@@ -13,7 +13,8 @@ export default function Bump({ member }) {
       ? fellowshipParams.offboardTimeout
       : fellowshipParams.demotionPeriod[rank - 1];
   }, [rank, fellowshipParams]);
-  const canBump = latestHeight >= lastProof + demotionPeriod;
+  const canBump =
+    demotionPeriod > 0 && latestHeight >= lastProof + demotionPeriod;
 
   const [showPopup, setShowPopup] = useState(false);
 
