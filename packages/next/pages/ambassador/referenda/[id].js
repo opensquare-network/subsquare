@@ -22,12 +22,14 @@ import { useTrack } from "next-common/context/post/gov2/track";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 import React from "react";
-import useSubAmbassadorReferendumInfo from "next-common/hooks/ambassador/referenda/useSubAmbassadorReferendumInfo";
 import AmbassadorReferendaDetail from "next-common/components/detail/ambassador";
-import AmbassadorReferendumSideBar from "next-common/components/ambassador/referenda/sidebar";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import { useAmbassadorReferendumInfo } from "next-common/hooks/ambassador/referenda/useAmbassadorReferendumInfo";
+import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
+import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
+import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
+import CollectivesProvider from "next-common/context/collectives/collectives";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -44,15 +46,18 @@ const Gov2ReferendumCall = dynamicClientOnly(() =>
 function AmbassadorContent() {
   const post = usePost();
 
-  useSubAmbassadorReferendumInfo();
-  const info = useAmbassadorReferendumInfo();
+  useSubFellowshipReferendumInfo("ambassadorReferenda");
+  const info = useFellowshipReferendumInfo();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
+  useSubscribePostDetail(post?.referendumIndex);
 
   return (
     <ContentWithComment>
       <AmbassadorReferendaDetail />
-      <AmbassadorReferendumSideBar />
+      <CollectivesProvider section="ambassador">
+        <FellowshipReferendumSideBar />
+      </CollectivesProvider>
       <DetailMultiTabs
         call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
         metadata={

@@ -31,6 +31,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -57,7 +58,9 @@ function FellowshipContent() {
   return (
     <ContentWithComment>
       <FellowshipReferendaDetail />
-      <FellowshipReferendumSideBar />
+      <CollectivesProvider section="fellowship">
+        <FellowshipReferendumSideBar />
+      </CollectivesProvider>
       <DetailMultiTabs
         call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
         metadata={

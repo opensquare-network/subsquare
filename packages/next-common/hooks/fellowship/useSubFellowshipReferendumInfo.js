@@ -9,7 +9,9 @@ import {
 } from "next-common/store/reducers/fellowship/info";
 import { useContextApi } from "next-common/context/api";
 
-export default function useSubFellowshipReferendumInfo() {
+export default function useSubFellowshipReferendumInfo(
+  pallet = "fellowshipReferenda",
+) {
   const api = useContextApi();
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
@@ -19,13 +21,13 @@ export default function useSubFellowshipReferendumInfo() {
   const isMounted = useMountedState();
 
   useEffect(() => {
-    if (!api || votingFinishHeight || !api.query.fellowshipReferenda) {
+    if (!api || votingFinishHeight || !api.query[pallet]) {
       dispatch(setFellowshipReferendumInfo(onchain.info));
       return () => dispatch(clearFellowshipReferendumInfo());
     }
 
     let unsub;
-    api.query.fellowshipReferenda
+    api.query[pallet]
       .referendumInfoFor(referendumIndex, (optionalInfo) => {
         if (!isMounted() || !optionalInfo.isSome) {
           return;

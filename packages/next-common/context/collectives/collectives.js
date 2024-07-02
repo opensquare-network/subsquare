@@ -29,6 +29,19 @@ export function useCoreFellowshipPallet() {
   }
 }
 
+export function useRankedCollectivePallet() {
+  const { section } = useContext(CollectivesContext);
+  if ("ambassador" === section) {
+    return "ambassadorCollective";
+  } else if ("fellowship" === section) {
+    return "fellowshipCollective";
+  } else {
+    throw new Error(
+      `Can not find ranked collective pallet name by section: ${section}`,
+    );
+  }
+}
+
 export function useSalaryFellowshipPallet() {
   const { section } = useContext(CollectivesContext);
   if ("ambassador" === section) {
