@@ -1,16 +1,16 @@
-import ContentWithComment from "./contentWithComment";
 import { DiscussionActionsContextProvider } from "./context/articleActionsProvider";
 import { DiscussionCommentActionsContextProvider } from "./context/commentActionsProvider";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import DetailItem from "./detailItem";
 
 export default function SimaPostDetail() {
   return (
     <DiscussionCommentActionsContextProvider>
-      <ContentWithComment>
-        <DiscussionActionsContextProvider>
+      <DiscussionActionsContextProvider>
+        <ContentWithComment>
           <DetailItem />
-        </DiscussionActionsContextProvider>
-      </ContentWithComment>
+        </ContentWithComment>
+      </DiscussionActionsContextProvider>
     </DiscussionCommentActionsContextProvider>
   );
 }

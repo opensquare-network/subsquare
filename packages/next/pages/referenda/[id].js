@@ -100,26 +100,22 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
   let detail;
-  let comments;
 
-  const { result: simaDetail } = await nextApi.fetch(`sima/referenda/${id}`);
-  if (simaDetail) {
-    const { result } = await nextApi.fetch(`sima/referenda/${id}/comments`);
-
-    detail = simaDetail;
-    comments = result;
+  const { result } = await nextApi.fetch(`sima/referenda/${id}`);
+  if (result) {
+    detail = result;
   } else {
     const { result } = await nextApi.fetch(gov2ReferendumsDetailApi(id));
     if (!result) {
       return getNullDetailProps(id, { voteStats: {} });
     }
-
     detail = result;
-    comments = await fetchDetailComments(
-      gov2ReferendumsCommentApi(detail?._id),
-      context,
-    );
   }
+
+  const comments = await fetchDetailComments(
+    gov2ReferendumsCommentApi(detail?._id),
+    context,
+  );
 
   const { result: voteStats } = await nextApi.fetch(
     gov2ReferendumsVoteStatsApi(id),
