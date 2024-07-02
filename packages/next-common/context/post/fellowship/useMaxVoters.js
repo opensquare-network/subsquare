@@ -12,18 +12,48 @@ import {
 } from "../../../store/reducers/fellowship/maxVoters";
 import { useContextApi } from "next-common/context/api";
 
-async function queryMaxVoters(api, trackId, votingFinishHeight) {
+function getFellowshipMinRankOfClass(trackId) {
+  if (trackId <= 9) {
+    return trackId;
+  } else if (trackId >= 11 && trackId <= 16) {
+    return trackId - 8;
+  } else if (trackId >= 21 && trackId <= 26) {
+    return trackId - 18;
+  } else {
+    return 6; // max rank
+  }
+}
+
+function getAmbassadorMinRankOfClass(trackId) {
+  return trackId;
+}
+
+async function queryMaxVoters(
+  api,
+  trackId,
+  votingFinishHeight,
+  pallet = "fellowshipCollective",
+) {
   let blockApi = api;
   if (!isNil(votingFinishHeight)) {
     const blockHash = await api.rpc.chain.getBlockHash(votingFinishHeight);
     blockApi = await api.at(blockHash);
   }
 
-  const count = await blockApi.query.fellowshipCollective.memberCount(trackId);
+  let rank;
+  if ("fellowshipCollective" === pallet) {
+    rank = getFellowshipMinRankOfClass(trackId);
+  } else if ("ambassadorCollective" === pallet) {
+    rank = getAmbassadorMinRankOfClass(trackId);
+  } else {
+    throw new Error(`Can not get min rank of class for pallet ${pallet}`);
+  }
+
+  const count = await blockApi.query[pallet].memberCount(rank);
   return count.toNumber();
 }
 
-export default function useFetchMaxVoters() {
+export default function useFetchMaxVoters(pallet = "fellowshipCollective") {
   const { id: trackId } = useTrack();
   const pageType = useDetailType();
   const onchain = useOnchainData();
@@ -41,9 +71,14 @@ export default function useFetchMaxVoters() {
     };
   }, [maxVoters]);
 
-  if (detailPageCategory.FELLOWSHIP_REFERENDUM !== pageType) {
+  if (
+    ![
+      detailPageCategory.FELLOWSHIP_REFERENDUM,
+      detailPageCategory.AMBASSADOR_REFERENDUM,
+    ].includes(pageType)
+  ) {
     throw new Error(
-      "useMaxVoters should be only be used on fellowship referendum detail page",
+      "useMaxVoters should be only be used on fellowship/ambassador referendum detail page",
     );
   }
 
@@ -52,7 +87,7 @@ export default function useFetchMaxVoters() {
       return;
     }
 
-    queryMaxVoters(api, trackId, votingFinishHeight).then((count) =>
+    queryMaxVoters(api, trackId, votingFinishHeight, pallet).then((count) =>
       setMaxVoters(count),
     );
   }, [api, trackId, votingFinishHeight]);

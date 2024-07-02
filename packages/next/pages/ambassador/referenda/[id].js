@@ -1,37 +1,35 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import {
-  getFellowshipReferendumCommentsUrl,
-  getFellowshipReferendumUrl,
+  getAmbassadorReferendumCommentsUrl,
+  getAmbassadorReferendumUrl,
 } from "next-common/services/url";
+import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { fetchDetailComments } from "next-common/services/detail";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { EmptyList } from "next-common/utils/constants";
 import {
   PostProvider,
   useOnchainData,
   usePost,
 } from "next-common/context/post";
-import { getBannerUrl } from "next-common/utils/banner";
+import { usePageProps } from "next-common/context/page";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import FellowshipBreadcrumb from "next-common/components/fellowship/breadcrumb";
-import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
-import CheckUnFinalized from "components/fellowship/checkUnFinalized";
-import BreadcrumbWrapper, {
-  BreadcrumbHideOnMobileText,
-} from "next-common/components/detail/common/BreadcrumbWrapper";
-import Breadcrumb from "next-common/components/_Breadcrumb";
-import FellowshipReferendaDetail from "next-common/components/detail/fellowship";
+import { getBannerUrl } from "next-common/utils/banner";
+import DetailLayout from "next-common/components/layout/DetailLayout";
+import AmbassadorBreadcrumb from "next-common/components/ambassador/breadcrumb";
+import { useTrack } from "next-common/context/post/gov2/track";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
+import React from "react";
+import AmbassadorReferendaDetail from "next-common/components/detail/ambassador";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
 import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
-import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DetailLayout from "next-common/components/layout/DetailLayout";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import { fetchDetailComments } from "next-common/services/detail";
-import { getNullDetailProps } from "next-common/services/detail/nullDetail";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithComment from "next-common/components/detail/common/contentWithComment";
-import { usePageProps } from "next-common/context/page";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -45,20 +43,19 @@ const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
 );
 
-function FellowshipContent() {
+function AmbassadorContent() {
   const post = usePost();
 
-  useSubFellowshipReferendumInfo();
+  useSubFellowshipReferendumInfo("ambassadorReferenda");
   const info = useFellowshipReferendumInfo();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
-
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
     <ContentWithComment>
-      <FellowshipReferendaDetail />
-      <CollectivesProvider section="fellowship">
+      <AmbassadorReferendaDetail />
+      <CollectivesProvider section="ambassador">
         <FellowshipReferendumSideBar />
       </CollectivesProvider>
       <DetailMultiTabs
@@ -69,31 +66,6 @@ function FellowshipContent() {
         timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
       />
     </ContentWithComment>
-  );
-}
-
-function UnFinalizedBreadcrumb({ id }) {
-  return (
-    <BreadcrumbWrapper>
-      <Breadcrumb
-        items={[
-          {
-            path: "/fellowship",
-            content: "Fellowship",
-          },
-          {
-            content: (
-              <>
-                <BreadcrumbHideOnMobileText>
-                  Referendum
-                </BreadcrumbHideOnMobileText>{" "}
-                {`#${id}`}
-              </>
-            ),
-          },
-        ]}
-      />
-    </BreadcrumbWrapper>
   );
 }
 
@@ -113,30 +85,42 @@ function ReferendumPageCommon({ breadcrumbs, postContent }) {
   );
 }
 
-function ReferendumNullPage() {
-  const { id } = usePageProps();
-  return (
-    <ReferendumPageCommon
-      breadcrumbs={<UnFinalizedBreadcrumb id={id} />}
-      postContent={<CheckUnFinalized id={id} />}
-    />
-  );
-}
-
 function ReferendumPageWithPost() {
+  const track = useTrack();
+  const post = usePost();
+
   return (
     <ReferendumPageCommon
-      breadcrumbs={<FellowshipBreadcrumb />}
-      postContent={<FellowshipContent />}
+      breadcrumbs={
+        <AmbassadorBreadcrumb
+          track={track}
+          referendumIndex={post?.referendumIndex}
+        />
+      }
+      postContent={<AmbassadorContent />}
     />
   );
 }
 
 function ReferendumPageImpl() {
   const detail = usePost();
-
+  const { id } = usePageProps();
   if (!detail) {
-    return <ReferendumNullPage />;
+    return (
+      <ReferendumPageCommon
+        breadcrumbs={<AmbassadorBreadcrumb referendumIndex={id} />}
+        postContent={
+          <CheckUnFinalizedBase
+            onChainDataFetcher={async (api) =>
+              api.query.ambassadorReferenda?.referendumInfoFor(id)
+            }
+            serverPostFetcher={() =>
+              nextApi.fetch(getAmbassadorReferendumUrl(id))
+            }
+          />
+        }
+      />
+    );
   }
 
   return <ReferendumPageWithPost />;
@@ -152,25 +136,23 @@ export default function ReferendumPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-
   const { result: detail } = await nextApi.fetch(
-    getFellowshipReferendumUrl(id),
+    getAmbassadorReferendumUrl(id),
   );
+  const tracksProps = await fetchOpenGovTracksProps();
   if (!detail) {
-    return getNullDetailProps(id);
+    return getNullDetailProps(id, tracksProps);
   }
 
   const comments = await fetchDetailComments(
-    getFellowshipReferendumCommentsUrl(detail?._id),
+    getAmbassadorReferendumCommentsUrl(detail?._id),
     context,
   );
-  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
       detail,
       comments: comments ?? EmptyList,
-
       ...tracksProps,
     },
   };

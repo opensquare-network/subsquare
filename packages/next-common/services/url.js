@@ -80,6 +80,11 @@ export const ambassadorCoreFeedsApiUri = "ambassador/core/feeds";
 export const ambassadorTracksApi = "ambassador/tracks";
 export const ambassadorTracksSummaryApi = "ambassador/tracks/summary";
 export const ambassadorReferendumsApi = "ambassador/referenda";
+export const getAmbassadorReferendumUrl = (id) =>
+  `${ambassadorReferendumsApi}/${id}`;
+export const getAmbassadorReferendumCommentsUrl = (id) =>
+  `${getAmbassadorReferendumUrl(id)}/comments`;
+
 export const ambassadorReferendumsSummaryApi =
   ambassadorReferendumsApi + "/summary";
 export const ambassadorTrackReferendaApi = (trackId) =>
