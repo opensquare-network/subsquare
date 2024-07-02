@@ -9,10 +9,12 @@ import { useCollectivesContext } from "next-common/context/collectives/collectiv
 
 export default function SalaryStatsTimeRemainItem() {
   const { section } = useCollectivesContext();
-  const statusSelector =
-    section === "fellowship"
-      ? fellowshipSalaryStatusSelector
-      : ambassadorSalaryStatusSelector;
+  let statusSelector = null;
+  if (section === "fellowship") {
+    statusSelector = fellowshipSalaryStatusSelector;
+  } else if (section === "ambassador") {
+    statusSelector = ambassadorSalaryStatusSelector;
+  }
 
   const stats = useSelector(statusSelector);
   const { cycleStart } = stats || {};

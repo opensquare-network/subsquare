@@ -11,10 +11,12 @@ import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambas
 
 export default function SalaryStatsRegistrationItem({ cycleData }) {
   const { section } = useCollectivesContext();
-  const statusSelector =
-    section === "fellowship"
-      ? fellowshipSalaryStatusSelector
-      : ambassadorSalaryStatusSelector;
+  let statusSelector = null;
+  if (section === "fellowship") {
+    statusSelector = fellowshipSalaryStatusSelector;
+  } else if (section === "ambassador") {
+    statusSelector = ambassadorSalaryStatusSelector;
+  }
 
   const stats = useSelector(statusSelector);
 
