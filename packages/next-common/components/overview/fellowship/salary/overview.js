@@ -3,6 +3,7 @@ import FellowshipSalaryStats from "next-common/components/overview/fellowship/sa
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Link from "next/link";
 import FellowshipSalaryStatsActiveCycleDetailLink from "./detailLink/activeCycle";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function FellowshipSalaryOverview() {
   return (
@@ -10,7 +11,9 @@ export default function FellowshipSalaryOverview() {
       <TitleContainer className="mb-4">Fellowship Salary Cycle</TitleContainer>
 
       <SecondaryCard>
-        <FellowshipSalaryStats />
+        <CollectivesProvider>
+          <FellowshipSalaryStats />
+        </CollectivesProvider>
 
         <div className="mt-2 flex justify-end gap-x-4">
           <Link
