@@ -12,7 +12,7 @@ export default function CoreFellowshipBump({ member }) {
     return rank <= 0 ? params.offboardTimeout : params.demotionPeriod[rank - 1];
   }, [rank, params]);
   const canBump =
-    latestHeight >= lastProof + demotionPeriod && demotionPeriod > 0;
+    demotionPeriod > 0 && latestHeight >= lastProof + demotionPeriod;
 
   const [showPopup, setShowPopup] = useState(false);
 
