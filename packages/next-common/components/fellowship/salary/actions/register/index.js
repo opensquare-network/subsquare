@@ -4,31 +4,16 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
 import { useSelector } from "react-redux";
 import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
-import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { isNil } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
 import { usePageProps } from "next-common/context/page";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
 
 const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
   import("next-common/components/fellowship/salary/actions/register/popup"),
 );
-
-function useIsInRegistrationPeriod() {
-  const stats = useSelector(fellowshipSalaryStatusSelector);
-  const { registrationPeriod } = useFellowshipSalaryPeriods();
-  const latestHeight = useSelector(chainOrScanHeightSelector);
-
-  if (isNil(latestHeight) || isNil(stats) || isNil(registrationPeriod)) {
-    return false;
-  }
-
-  const { cycleStart } = stats;
-  return cycleStart + registrationPeriod > latestHeight;
-}
 
 function useMySalary() {
   const members = useFellowshipCollectiveMembers();
@@ -53,9 +38,9 @@ export default function FellowshipSalaryRegister() {
   const members = useFellowshipCollectiveMembers();
   const memberAddrs = (members || []).map((item) => item.address);
   const { claimant } = useMySalaryClaimantFromContext();
-  const isRegistrationPeriod = useIsInRegistrationPeriod();
   const [showPopup, setShowPopup] = useState(false);
   const status = useSelector(fellowshipSalaryStatusSelector);
+  const isRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
   const mySalary = useMySalary();
 
   useEffect(() => {
