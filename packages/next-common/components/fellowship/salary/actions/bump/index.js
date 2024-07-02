@@ -5,7 +5,7 @@ import { isNil } from "lodash-es";
 import SecondaryButton from "next-common/lib/button/secondary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
-import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
+import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import Tooltip from "next-common/components/tooltip";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
@@ -19,7 +19,7 @@ export default function FellowshipSalaryBump() {
   const address = useRealAddress();
 
   const { cycleStart } = useSelector(fellowshipSalaryStatusSelector) || {};
-  const { registrationPeriod, payoutPeriod } = useFellowshipSalaryPeriods();
+  const { registrationPeriod, payoutPeriod } = useSalaryFellowshipPeriods();
   const nextCycleStart =
     cycleStart + (registrationPeriod || null) + (payoutPeriod || null);
   const latestHeight = useSelector(chainOrScanHeightSelector);

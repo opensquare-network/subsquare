@@ -1,7 +1,7 @@
 import { isNil, map } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import useAmbassadorCollectiveMembers from "next-common/hooks/ambassador/collective/useAmbassadorCollectiveMembers";
-import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
+import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
@@ -22,7 +22,7 @@ export default function AmbassadorSalaryPayout() {
   const isCollectiveMember = memberAddrs.includes(address);
 
   const { cycleStart } = useSelector(ambassadorSalaryStatusSelector) || {};
-  const { registrationPeriod } = useFellowshipSalaryPeriods();
+  const { registrationPeriod } = useSalaryFellowshipPeriods();
   const payoutStart = cycleStart + registrationPeriod || null;
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const isStarted =

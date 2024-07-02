@@ -12,7 +12,7 @@ export default function AmbassadorSalaryCurrentCycle() {
   const stats = useSelector(ambassadorSalaryStatusSelector);
 
   if (isNil(stats)) {
-    return null;
+    // return null;
   }
 
   return (

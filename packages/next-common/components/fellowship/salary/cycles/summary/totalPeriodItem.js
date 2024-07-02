@@ -1,4 +1,4 @@
-import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
+import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { chunk, isNil } from "lodash-es";
@@ -7,7 +7,7 @@ import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
 import FellowshipTotalPeriodCountdown from "next-common/components/fellowship/salary/cycles/summary/totalPeriodCountdown";
 
 export default function SalaryStatsTotalPeriodItem({ cycleStart }) {
-  const { registrationPeriod, payoutPeriod } = useFellowshipSalaryPeriods();
+  const { registrationPeriod, payoutPeriod } = useSalaryFellowshipPeriods();
   const totalCyclePeriod = registrationPeriod + payoutPeriod || null;
   const cyclePeriodData = useCalcPeriodBlocks(totalCyclePeriod, cycleStart);
   const [totalPeriodDay] = chunk(cyclePeriodData.totalPeriodTime.split(" "), 2);

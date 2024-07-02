@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
-import useFellowshipSalaryPeriods from "next-common/hooks/fellowship/salary/useFellowshipSalaryPeriods";
+import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
 import SummaryItem from "next-common/components/summary/layout/item";
 import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
@@ -17,7 +17,7 @@ export default function SalaryStatsTimeRemainItem() {
   const stats = useSelector(statusSelector);
   const { cycleStart } = stats || {};
 
-  const { registrationPeriod, payoutPeriod } = useFellowshipSalaryPeriods();
+  const { registrationPeriod, payoutPeriod } = useSalaryFellowshipPeriods();
   const registrationPeriodData = useCalcPeriodBlocks(
     registrationPeriod,
     cycleStart,

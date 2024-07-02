@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useSalaryFellowshipPallet } from "next-common/context/collectives/collectives";
 
-export default function useFellowshipSalaryPeriods() {
+export default function useSalaryFellowshipPeriods() {
   const api = useContextApi();
   const [registrationPeriod, setRegistrationPeriod] = useState();
   const [payoutPeriod, setPayoutPeriod] = useState();
