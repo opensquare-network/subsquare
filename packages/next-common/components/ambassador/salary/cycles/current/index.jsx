@@ -7,12 +7,13 @@ import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambas
 import { useSelector } from "react-redux";
 import AmbassadorSalaryRegister from "../../actions/register";
 import AmbassadorSalaryPayout from "../../actions/payout";
+import AmbassadorSalaryMyStatus from "../myStatus";
 
 export default function AmbassadorSalaryCurrentCycle() {
   const stats = useSelector(ambassadorSalaryStatusSelector);
 
   if (isNil(stats)) {
-    return null;
+    // return null;
   }
 
   return (
@@ -25,6 +26,8 @@ export default function AmbassadorSalaryCurrentCycle() {
         <hr className="my-4" />
 
         <div className="space-y-2">
+          <AmbassadorSalaryMyStatus />
+
           <div className="flex flex-wrap items-center justify-end gap-x-4">
             <AmbassadorSalaryStatsActiveCycleDetailLink />
             <AmbassadorSalaryRegister />
