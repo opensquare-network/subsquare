@@ -8,6 +8,7 @@ import Pagination from "next-common/components/pagination";
 export function FellowshipFeedItems({ rows = [] }) {
   return (
     <DataList
+      noDataText="No current feeds"
       className={cn(
         "text14Medium",
         "[&_.datalist-head]:hidden [&_.datalist-body]:divide-y-0 [&_.datalist-body]:border-b-0",

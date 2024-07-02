@@ -19,6 +19,7 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
 function PopupContent() {
   const {
@@ -43,11 +44,17 @@ function PopupContent() {
     signerAccount?.realAddress,
   );
 
+  const collectivePallet = useRankedCollectivePallet();
   const getMyVoteAndShowSuccessful = useCallback(async () => {
+    if (!signerAccount?.realAddress) {
+      return null;
+    }
+
     const addressVote = await getFellowshipVote(
       api,
       referendumIndex,
       signerAccount?.realAddress,
+      collectivePallet,
     );
     if (!addressVote) {
       return;
@@ -72,8 +79,7 @@ function PopupContent() {
       return showErrorToast("Chain network is not connected yet");
     }
 
-    let tx = api.tx.fellowshipCollective.vote(referendumIndex, aye);
-
+    let tx = api.tx[collectivePallet].vote(referendumIndex, aye);
     if (signerAccount?.proxyAddress) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }

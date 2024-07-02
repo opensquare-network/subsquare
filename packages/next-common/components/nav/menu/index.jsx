@@ -17,13 +17,15 @@ import {
 import { usePageProps } from "next-common/context/page";
 
 export default function NavMenu({ collapsed }) {
-  const { tracks, fellowshipTracks, summary, detail } = usePageProps();
+  const { tracks, fellowshipTracks, summary, detail, ambassadorTracks } =
+    usePageProps();
   const showMainMenu = useSelector(navMenuShowMainMenuSelector);
   const showArchivedMenu = !showMainMenu;
 
   const { featuredMenu, archivedMenu } = getNavMenu({
     tracks,
     fellowshipTracks,
+    ambassadorTracks,
     summary,
     currentTrackId: detail?.track,
   });

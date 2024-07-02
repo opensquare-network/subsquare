@@ -8,10 +8,12 @@ import FellowshipCoreMemberCardListContainer from "next-common/components/fellow
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import FellowshipMembersEmpty from "./empty";
 import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCoreMembers";
+import { usePageProps } from "next-common/context/page";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function FellowshipMembersPage() {
   const members = useSortedCoreMembers();
-  const candidates = (members || []).filter((member) => member.rank <= 0);
+  const { fellowshipParams } = usePageProps();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
     [members],
@@ -28,26 +30,31 @@ export default function FellowshipMembersPage() {
       return pageMembers.filter((m) => m.rank === rank);
     }
   }, [pageMembers, rank]);
-  const membersForTabs = [...filteredMembers, ...candidates];
 
   return (
-    <FellowshipMembersLoadable>
-      <FellowshipMemberCommon>
-        <div className="flex items-center justify-between mb-4 pr-6">
-          <FellowshipMemberTabs members={membersForTabs} />
-          {component}
-        </div>
+    <CollectivesProvider params={fellowshipParams} section="fellowship">
+      <FellowshipMembersLoadable>
+        <FellowshipMemberCommon>
+          <div className="flex items-center justify-between mb-4 pr-6">
+            <FellowshipMemberTabs members={members} />
+            {component}
+          </div>
 
-        {hasMembers ? (
-          <FellowshipCoreMemberCardListContainer>
-            {filteredMembers.map((member) => (
-              <FellowshipCoreMemberCard key={member.address} member={member} />
-            ))}
-          </FellowshipCoreMemberCardListContainer>
-        ) : (
-          <FellowshipMembersEmpty />
-        )}
-      </FellowshipMemberCommon>
-    </FellowshipMembersLoadable>
+          {hasMembers ? (
+            <FellowshipCoreMemberCardListContainer>
+              {filteredMembers.map((member) => (
+                <FellowshipCoreMemberCard
+                  key={member.address}
+                  member={member}
+                  params={fellowshipParams}
+                />
+              ))}
+            </FellowshipCoreMemberCardListContainer>
+          ) : (
+            <FellowshipMembersEmpty />
+          )}
+        </FellowshipMemberCommon>
+      </FellowshipMembersLoadable>
+    </CollectivesProvider>
   );
 }

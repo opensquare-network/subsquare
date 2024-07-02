@@ -32,16 +32,16 @@ const collectivesEndpoints = [
     url: "wss://polkadot-collectives-rpc.polkadot.io",
   },
   {
-    name: "OnFinality",
-    url: "wss://collectives.api.onfinality.io/public-ws",
-  },
-  {
     name: "IBP1",
     url: "wss://sys.ibp.network/collectives-polkadot",
   },
   {
     name: "Dewllir",
     url: "wss://polkadot-collectives-rpc.dwellir.com",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://collectives.api.onfinality.io/public-ws",
   },
   {
     name: "Dewllir Tunisia",
@@ -100,6 +100,7 @@ const collectives = {
     "Collectives on Polkadot network. Polkadot Collectives Common Good Parachain",
   modules: {
     fellowship: true,
+    ambassador: true,
   },
   ...polkadotThemeVars,
 };

@@ -3,7 +3,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import FellowshipCoreMemberCardListContainer from "./listContainer";
 
-export default function MyFellowshipMemberStatus({ member }) {
+export default function MyFellowshipMemberStatus({ member, params = {} }) {
   return (
     <NotNil value={member}>
       <div className="mb-6">
@@ -12,7 +12,7 @@ export default function MyFellowshipMemberStatus({ member }) {
         </TitleContainer>
 
         <FellowshipCoreMemberCardListContainer>
-          <FellowshipCoreMemberCard member={member} />
+          <FellowshipCoreMemberCard member={member} params={params} />
         </FellowshipCoreMemberCardListContainer>
       </div>
     </NotNil>

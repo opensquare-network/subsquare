@@ -28,7 +28,7 @@ export default function FellowshipReferendaDetail() {
         )
       }
       title={<PostTitle />}
-      meta={<ReferendaPostMeta isFellowship />}
+      meta={<ReferendaPostMeta section="fellowship" />}
     >
       <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>

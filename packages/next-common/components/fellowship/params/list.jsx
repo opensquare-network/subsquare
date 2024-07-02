@@ -1,6 +1,5 @@
 import DataList from "next-common/components/dataList";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { usePageProps } from "next-common/context/page";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { toPrecision } from "next-common/utils";
 import Period from "next-common/components/fellowship/params/period";
@@ -28,14 +27,13 @@ const columns = [
   },
 ];
 
-export default function FellowshipParamsList({ rank }) {
-  const { fellowshipParams } = usePageProps();
+export default function FellowshipParamsList({ rank, params }) {
   const {
     activeSalary = [],
     passiveSalary = [],
     demotionPeriod = [],
     minPromotionPeriod = [],
-  } = fellowshipParams ?? {};
+  } = params ?? {};
 
   const { symbol, decimals } = useSalaryAsset();
 
