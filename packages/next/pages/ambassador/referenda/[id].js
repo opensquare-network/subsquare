@@ -8,7 +8,11 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { EmptyList } from "next-common/utils/constants";
-import { PostProvider, usePost } from "next-common/context/post";
+import {
+  PostProvider,
+  useOnchainData,
+  usePost,
+} from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -21,16 +25,41 @@ import React from "react";
 import useSubAmbassadorReferendumInfo from "next-common/hooks/ambassador/referenda/useSubAmbassadorReferendumInfo";
 import AmbassadorReferendaDetail from "next-common/components/detail/ambassador";
 import AmbassadorReferendumSideBar from "next-common/components/ambassador/referenda/sidebar";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { useAmbassadorReferendumInfo } from "next-common/hooks/ambassador/referenda/useAmbassadorReferendumInfo";
+
+const Gov2ReferendumMetadata = dynamicClientOnly(() =>
+  import("next-common/components/gov2/referendum/metadata"),
+);
+
+const Timeline = dynamicClientOnly(() =>
+  import("../../../components/gov2/timeline"),
+);
+
+const Gov2ReferendumCall = dynamicClientOnly(() =>
+  import("next-common/components/gov2/referendum/call"),
+);
 
 function AmbassadorContent() {
-  // todo: 1. subscribe ambassador referendum info
+  const post = usePost();
 
   useSubAmbassadorReferendumInfo();
+  const info = useAmbassadorReferendumInfo();
+  const onchainData = useOnchainData();
+  const proposal = onchainData?.proposal ?? {};
 
   return (
     <ContentWithComment>
       <AmbassadorReferendaDetail />
       <AmbassadorReferendumSideBar />
+      <DetailMultiTabs
+        call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
+        metadata={
+          <Gov2ReferendumMetadata info={info} pallet="fellowshipReferenda" />
+        }
+        timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
+      />
     </ContentWithComment>
   );
 }
