@@ -99,17 +99,9 @@ export default function ReferendumPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  let detail;
-
-  const { result } = await nextApi.fetch(`sima/referenda/${id}`);
-  if (result) {
-    detail = result;
-  } else {
-    const { result } = await nextApi.fetch(gov2ReferendumsDetailApi(id));
-    if (!result) {
-      return getNullDetailProps(id, { voteStats: {} });
-    }
-    detail = result;
+  const { result: detail } = await nextApi.fetch(gov2ReferendumsDetailApi(id));
+  if (!detail) {
+    return getNullDetailProps(id, { voteStats: {} });
   }
 
   const comments = await fetchDetailComments(

@@ -22,6 +22,7 @@ export default function CommentActions({
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
   replyToCommentId,
+  replyToComment,
   setIsEdit,
 }) {
   const comment = useComment();
@@ -116,6 +117,7 @@ export default function CommentActions({
       {isReply && (
         <CommentEditor
           commentId={replyToCommentId}
+          comment={replyToComment}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}

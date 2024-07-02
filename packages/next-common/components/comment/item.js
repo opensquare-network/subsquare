@@ -19,7 +19,6 @@ import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentUser from "./user";
 import { useCommentActions } from "next-common/sima/context/commentActions";
-import { usePost } from "next-common/context/post";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -38,11 +37,11 @@ function jumpToAnchor(anchorId) {
 
 function CommentItemImpl({
   replyToCommentId,
+  replyToComment,
   isSecondLevel,
   reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
 }) {
-  const post = usePost();
   const comment = useComment();
   const refCommentTree = useRef();
   const [isEdit, setIsEdit] = useState(false);
@@ -73,7 +72,7 @@ function CommentItemImpl({
   }, [hasAnchor, anchor]);
 
   const reloadComment = useCallback(async () => {
-    const { result: updatedComment } = await getComment(post, comment);
+    const { result: updatedComment } = await getComment(comment);
     if (updatedComment) {
       const newComments = {
         ...comments,
@@ -100,7 +99,7 @@ function CommentItemImpl({
   }, [refCommentTree]);
 
   const editComment = async (content, contentType) => {
-    return await updateComment(post, comment, content, contentType);
+    return await updateComment(comment._id, content, contentType);
   };
 
   return (
@@ -170,6 +169,7 @@ function CommentItemImpl({
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
           replyToCommentId={replyToCommentId}
+          replyToComment={replyToComment}
           setIsEdit={setIsEdit}
         />
       }
@@ -181,6 +181,7 @@ function CommentItemImpl({
             key={reply._id}
             data={reply}
             replyToCommentId={replyToCommentId}
+            replyToComment={replyToComment}
             isSecondLevel
             reloadTopLevelComment={maybeReloadTopLevelComment}
             scrollToTopLevelCommentBottom={
@@ -196,6 +197,7 @@ function CommentItemImpl({
 export default function CommentItem({
   data,
   replyToCommentId,
+  replyToComment,
   isSecondLevel,
   reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
@@ -205,6 +207,7 @@ export default function CommentItem({
     <CommentProvider comment={data}>
       <CommentItemImpl
         replyToCommentId={replyToCommentId}
+        replyToComment={replyToComment}
         isSecondLevel={isSecondLevel}
         reloadTopLevelComment={reloadTopLevelComment}
         scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom}

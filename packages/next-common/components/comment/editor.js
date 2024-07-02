@@ -1,10 +1,8 @@
 import styled, { css } from "styled-components";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
-import { prettyHTML } from "../../utils/viewfuncs";
 import { useMountedState } from "react-use";
 import IdentityOrAddr from "../IdentityOrAddr";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -12,7 +10,6 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { useChain } from "../../context/chain";
 import { noop } from "lodash-es";
 import Editor from "../editor";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { usePost } from "next-common/context/post";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 
@@ -44,6 +41,7 @@ function CommentEditor(
     isReply,
     onFinishedEdit = noop,
     commentId,
+    comment,
     content,
     setContent,
     contentType,
@@ -59,8 +57,12 @@ function CommentEditor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
-  const { ensureLogin } = useEnsureLogin();
-  const { createPostComment, createCommentReply } = useCommentActions();
+  const {
+    createPostComment,
+    createCommentReply,
+    createOffChainCommentReply,
+    updateComment,
+  } = useCommentActions();
 
   const createComment = async () => {
     if (!isMounted()) {
@@ -69,19 +71,24 @@ function CommentEditor(
 
     setLoading(true);
     try {
-      if (!(await ensureLogin())) {
-        return;
-      }
-
       let result;
 
-      if (commentId) {
-        result = await createCommentReply(
-          post,
-          commentId,
-          content,
-          contentType,
-        );
+      if (comment) {
+        if (comment.dataSource === "sima") {
+          result = await createCommentReply(
+            post,
+            comment,
+            content,
+            contentType,
+          );
+        } else {
+          result = await createOffChainCommentReply(
+            post,
+            comment,
+            content,
+            contentType,
+          );
+        }
       } else {
         result = await createPostComment(post, content, contentType);
       }
@@ -112,12 +119,13 @@ function CommentEditor(
     }
   };
 
-  const updateComment = async () => {
+  const editComment = async () => {
     setLoading(true);
-    const { result, error } = await nextApi.patch(`comments/${commentId}`, {
-      content: contentType === "html" ? prettyHTML(content) : content,
+    const { result, error } = await updateComment(
+      commentId,
+      content,
       contentType,
-    });
+    );
 
     if (!isMounted()) {
       return;
@@ -175,7 +183,7 @@ function CommentEditor(
         )}
         <PrimaryButton
           loading={loading}
-          onClick={isEdit ? updateComment : createComment}
+          onClick={isEdit ? editComment : createComment}
           disabled={isEmpty}
           title={isEmpty ? "cannot submit empty content" : ""}
         >

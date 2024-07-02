@@ -71,16 +71,16 @@ export function useCreateDiscussionCommentReply() {
   const signSimaMessage = useSignSimaMessage();
 
   return useCallback(
-    async (post, commentCid, content, contentType) => {
+    async (post, comment, content, contentType) => {
       const entity = {
         action: "comment",
-        cid: commentCid,
+        cid: comment.cid,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
       return await nextApi.post(
-        `sima/discussions/${post.cid}/comments/${commentCid}/replies`,
+        `sima/discussions/${post.cid}/comments/${comment.cid}/replies`,
         data,
       );
     },
@@ -94,17 +94,17 @@ export function useCreateProposalCommentReply() {
   const getProposalIndexer = useProposalIndexerBuilder();
 
   return useCallback(
-    async (post, commentCid, content, contentType) => {
+    async (post, comment, content, contentType) => {
       const indexer = getProposalIndexer(post);
       const entity = {
         action: "comment",
-        cid: commentCid,
+        cid: comment.cid,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
       return await nextApi.post(
-        `sima/${type}/${indexer.id}/comments/${commentCid}/replies`,
+        `sima/${type}/${indexer.id}/comments/${comment.cid}/replies`,
         data,
       );
     },

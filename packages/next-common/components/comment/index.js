@@ -1,18 +1,13 @@
 import CommentItem from "./item";
 import NoComment from "./noComment";
 import { TitleContainer } from "../styled/containers/titleContainer";
-import { useUser } from "../../context/user";
 import { cn } from "next-common/utils";
-import PrimaryButton from "next-common/lib/button/primary";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import Loading from "../loading";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import CommentsFilterForm from "./filterForm";
 
 export default function Comments({ data: commentsData, loading }) {
   const { items } = commentsData;
-  const user = useUser();
-  const { ensureLogin } = useEnsureLogin();
 
   let content;
   if (loading) {
@@ -32,6 +27,7 @@ export default function Comments({ data: commentsData, loading }) {
               key={item._id}
               data={item}
               replyToCommentId={item._id}
+              replyToComment={item}
             />
           ),
         )}
@@ -52,12 +48,6 @@ export default function Comments({ data: commentsData, loading }) {
       </div>
 
       {content}
-
-      {!user && (
-        <div className="flex justify-end mt-4">
-          <PrimaryButton onClick={() => ensureLogin()}>Login</PrimaryButton>
-        </div>
-      )}
     </div>
   );
 }
