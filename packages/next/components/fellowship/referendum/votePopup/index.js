@@ -60,7 +60,13 @@ function PopupContent() {
       return;
     }
     showVoteSuccessful(addressVote);
-  }, [api, referendumIndex, signerAccount?.realAddress, showVoteSuccessful]);
+  }, [
+    api,
+    referendumIndex,
+    signerAccount?.realAddress,
+    showVoteSuccessful,
+    collectivePallet,
+  ]);
 
   const doVote = async (aye) => {
     if (
