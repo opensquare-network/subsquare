@@ -31,7 +31,7 @@ function SelfPayout() {
       return;
     }
     return api.tx[pallet]?.payout();
-  }, [api]);
+  }, [api, pallet]);
 
   return (
     <>
@@ -61,7 +61,7 @@ function OtherPayout() {
       return;
     }
     return api.tx[pallet]?.payoutOther(beneficiary);
-  }, [api, dispatch, beneficiary]);
+  }, [api, dispatch, beneficiary, pallet]);
 
   return (
     <>
