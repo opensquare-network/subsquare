@@ -96,8 +96,7 @@ const collectives = {
   noDemocracy: true,
   noIdentityModule: true,
   showAchainableLabels: true,
-  description:
-    "Collectives on Polkadot network. Polkadot Collectives Common Good Parachain",
+  description: "Collectives on Polkadot network.",
   modules: {
     fellowship: true,
     ambassador: true,
