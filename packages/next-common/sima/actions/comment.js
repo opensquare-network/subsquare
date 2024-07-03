@@ -5,29 +5,6 @@ import { getContentField } from "next-common/utils/sima/utils";
 import { useCallback } from "react";
 import useProposalIndexerBuilder from "../hooks/useProposalIndexerBuilder";
 
-export function useGetDiscussionComment() {
-  return useCallback(async (post, commentCid) => {
-    return await nextApi.fetch(
-      `sima/discussions/${post.cid}/comments/${commentCid}`,
-    );
-  }, []);
-}
-
-export function useGetProposalComment() {
-  const type = useDetailType();
-  const getProposalIndexer = useProposalIndexerBuilder();
-
-  return useCallback(
-    async (post, commentCid) => {
-      const indexer = getProposalIndexer(post);
-      return await nextApi.fetch(
-        `sima/${type}/${indexer.id}/comments/${commentCid}`,
-      );
-    },
-    [type, getProposalIndexer],
-  );
-}
-
 export function useCreateDiscussionComment() {
   const signSimaMessage = useSignSimaMessage();
 
