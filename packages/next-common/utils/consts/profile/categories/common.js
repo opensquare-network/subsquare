@@ -48,6 +48,7 @@ const commonCategories = [
         formatter: normalizeProposalListItem,
       },
     ],
+    excludeChains: [Chains.collectives],
   },
   {
     id: "treasury",
@@ -83,6 +84,7 @@ const commonCategories = [
         excludeChains: [Chains.kintsugi, Chains.interlay],
       },
     ],
+    excludeChains: [Chains.collectives],
   },
   {
     id: "collectives",
@@ -144,6 +146,7 @@ const commonCategories = [
           ]
         : []),
     ],
+    excludeChains: [Chains.collectives],
   },
   {
     id: "discussions",
