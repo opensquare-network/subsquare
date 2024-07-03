@@ -12,6 +12,8 @@ import { noop } from "lodash-es";
 import Editor from "../editor";
 import { usePost } from "next-common/context/post";
 import { useCommentActions } from "next-common/sima/context/commentActions";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -51,6 +53,7 @@ function CommentEditor(
   },
   ref,
 ) {
+  const dispatch = useDispatch();
   const post = usePost();
   const chain = useChain();
   const router = useRouter();
@@ -112,6 +115,8 @@ function CommentEditor(
           }, 4);
         }
       }
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
     } finally {
       if (isMounted()) {
         setLoading(false);
