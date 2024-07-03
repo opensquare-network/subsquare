@@ -4,18 +4,13 @@ import { noop } from "lodash-es";
 import ErrorText from "next-common/components/ErrorText";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import Editor from "next-common/components/editor";
-import {
-  POST_UPDATE_ACTION,
-  usePost,
-  usePostDispatch,
-} from "next-common/context/post";
+import { usePost, usePostDispatch } from "next-common/context/post";
 import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
-import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
-import { getContentField } from "next-common/utils/sima/utils";
 import useSimaPostApiPath from "../../useSimaPostApiPath";
+import { useArticleActions } from "next-common/sima/context/articleActions";
 
 export default function AppendantEditor({ setIsAppend }) {
   const dispatch = useDispatch();
@@ -28,6 +23,7 @@ export default function AppendantEditor({ setIsAppend }) {
   const [errors, setErrors] = useState();
   const signSimaMessage = useSignSimaMessage();
   const apiPath = useSimaPostApiPath();
+  const { addAppendant, reloadPost } = useArticleActions();
 
   const isEmpty = !content.trim();
 
@@ -36,30 +32,10 @@ export default function AppendantEditor({ setIsAppend }) {
     setErrors();
 
     try {
-      const entity = {
-        action: "append_discussion",
-        CID: post.cid,
-        ...getContentField(content, contentType),
-        timestamp: Date.now(),
-      };
-      const data = await signSimaMessage(entity);
-      const { result, error } = await nextApi.post(
-        `${apiPath}/${post.cid}/appendants`,
-        data,
-      );
+      const { result, error } = await addAppendant(post, content, contentType);
       if (result) {
-        const { result: newPost } = await nextApi.fetch(
-          `${apiPath}/${post.cid}`,
-        );
-
-        if (newPost) {
-          postDispatch({
-            type: POST_UPDATE_ACTION,
-            post: newPost,
-          });
-        }
-
         setIsAppend(false);
+        await reloadPost();
       }
       if (error) {
         dispatch(newErrorToast(error.message));

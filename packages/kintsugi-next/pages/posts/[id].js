@@ -44,29 +44,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const { result: summary } = await nextApi.fetch("summary");
 
-  if (detail.dataSource === "sima") {
-    const { page, page_size: pageSize } = context.query;
-
-    const { result: comments } = await nextApi.fetch(
-      `sima/discussions/${detail.cid}/comments`,
-      {
-        page: page ?? "last",
-        pageSize: Math.min(pageSize ?? 50, 100),
-      },
-    );
-
-    return {
-      props: {
-        detail,
-        comments: comments ?? EmptyList,
-        votes,
-        myVote: myVote ?? null,
-        chain,
-        summary: summary ?? {},
-      },
-    };
-  }
-
   const comments = await fetchDetailComments(
     `posts/${detail._id}/comments`,
     context,
