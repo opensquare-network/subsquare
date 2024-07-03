@@ -36,7 +36,7 @@ export default function PostEdit({ setIsEdit }) {
 
   const editPost = useCallback(
     async (content, contentType) => {
-      return await provideContext({
+      return await provideContext(post, {
         title,
         content,
         contentType,
@@ -44,7 +44,7 @@ export default function PostEdit({ setIsEdit }) {
         labels: selectedLabels,
       });
     },
-    [type, post, bannerCid, title, selectedLabels],
+    [type, post, bannerCid, title, selectedLabels, provideContext],
   );
 
   const isMounted = useMountedState();

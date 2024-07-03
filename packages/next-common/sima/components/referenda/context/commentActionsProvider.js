@@ -10,7 +10,7 @@ import {
   useGetOffChainComment,
 } from "next-common/noSima/actions/comment";
 
-export function ReferendaCommentActionsContextProvider({ children }) {
+export function ReferendaCommentActionsProvider({ children }) {
   const getComment = useGetOffChainComment();
   const createPostComment = useCreateProposalComment();
   const createCommentReply = useCreateProposalCommentReply();

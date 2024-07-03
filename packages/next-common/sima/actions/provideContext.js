@@ -11,8 +11,8 @@ export function useProvideContext() {
   const getProposalIndexer = useProposalIndexerBuilder();
 
   return useCallback(
-    async (post, title, content, contentType) => {
-      const indexer = getProposalIndexer(post);
+    async (post, { title, content, contentType }) => {
+      const indexer = getProposalIndexer(post.onchainData);
       const entity = {
         action: "provide_context",
         indexer,

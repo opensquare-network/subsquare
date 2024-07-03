@@ -11,33 +11,30 @@ import TimeoutCountdown from "next-common/components/detail/referenda/timeoutCou
 import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 import ReferendaReferendumTreasurySpendNavigation from "next-common/components/detail/referenda/referendaReferendumTreasurySpendNavigation";
-import { OffChainArticleActionsContextProvider } from "next-common/noSima/context/articleActionsProvider";
 
 export default function ReferendaDetail() {
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
-    <OffChainArticleActionsContextProvider>
-      <DetailContentBase
-        head={
-          !isEditing && (
-            <>
-              <PreimageWarning />
-              <TimeoutGuard>
-                <TimeoutCountdown />
-              </TimeoutGuard>
-              <ReferendaWhiteListNavigation />
-              <ReferendaReferendumNavigation />
-              <ReferendaReferendumTreasurySpendNavigation />
-            </>
-          )
-        }
-        title={<PostTitle />}
-        meta={<ReferendaPostMeta />}
-      >
-        <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
-      </DetailContentBase>
-    </OffChainArticleActionsContextProvider>
+    <DetailContentBase
+      head={
+        !isEditing && (
+          <>
+            <PreimageWarning />
+            <TimeoutGuard>
+              <TimeoutCountdown />
+            </TimeoutGuard>
+            <ReferendaWhiteListNavigation />
+            <ReferendaReferendumNavigation />
+            <ReferendaReferendumTreasurySpendNavigation />
+          </>
+        )
+      }
+      title={<PostTitle />}
+      meta={<ReferendaPostMeta />}
+    >
+      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+    </DetailContentBase>
   );
 }

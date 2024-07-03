@@ -8,12 +8,12 @@ export function OffChainArticleActionsContextProvider({ children }) {
   const upVote = useOffChainPostUpVote();
   const cancelUpVote = useOffChainPostCancelUpVote();
   const reloadPost = useReloadOffChainPost();
-  const provideContent = useOffChainProvideContext();
+  const provideContext = useOffChainProvideContext();
 
   return (
     <ArticleActionsContext.Provider
       value={{
-        provideContent,
+        provideContext,
         reloadPost,
         upVote,
         cancelUpVote,
