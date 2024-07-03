@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "../comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
 
 export default function CommentActions({
   reloadComment = noop,
@@ -30,9 +31,14 @@ export default function CommentActions({
   const reactions = comment?.reactions || [];
   const author = comment?.author || {};
   const ownComment = user && author?.username === user.username;
+  const connectedAccount = useConnectedAccount();
   const thumbUp =
-    user &&
-    reactions?.findIndex((r) => r.user?.username === user.username) > -1;
+    (user || connectedAccount) &&
+    reactions?.findIndex(
+      (r) =>
+        r.user?.username === user.username ||
+        r.proposer === connectedAccount.address,
+    ) > -1;
 
   const chain = useChain();
   const post = usePost();

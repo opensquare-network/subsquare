@@ -59,16 +59,25 @@ export function useProposalCancelUpVote() {
 
 export function useDiscussionCommentCancelUpVote() {
   const signSimaMessage = useSignSimaMessage();
+  const connectedAccount = useConnectedAccount();
+
   return useCallback(
-    async (post, commentCid, reactionCid) => {
-      const entity = getCancelUpVoteEntity(reactionCid);
+    async (post, comment) => {
+      const myUpVote = comment.reactions.find(
+        (item) => item.proposer === connectedAccount.address,
+      );
+      if (!myUpVote) {
+        throw new Error("You have not upvoted this post");
+      }
+
+      const entity = getCancelUpVoteEntity(myUpVote.cid);
       const data = await signSimaMessage(entity);
       return await nextApi.post(
-        `sima/discussions/${post.cid}/comments/${commentCid}/reactions`,
+        `sima/discussions/${post.cid}/comments/${comment.cid}/reactions`,
         data,
       );
     },
-    [signSimaMessage],
+    [signSimaMessage, connectedAccount],
   );
 }
 
@@ -76,17 +85,25 @@ export function useProposalCommentCancelUpVote() {
   const signSimaMessage = useSignSimaMessage();
   const type = useDetailType();
   const getProposalIndexer = useProposalIndexerBuilder();
+  const connectedAccount = useConnectedAccount();
 
   return useCallback(
-    async (post, commentCid, reactionCid) => {
+    async (post, comment) => {
+      const myUpVote = comment.reactions.find(
+        (item) => item.proposer === connectedAccount.address,
+      );
+      if (!myUpVote) {
+        throw new Error("You have not upvoted this post");
+      }
+
       const indexer = getProposalIndexer(post);
-      const entity = getCancelUpVoteEntity(reactionCid);
+      const entity = getCancelUpVoteEntity(myUpVote.cid);
       const data = await signSimaMessage(entity);
       return await nextApi.post(
-        `sima/${type}/${indexer.id}/comments/${commentCid}/reactions`,
+        `sima/${type}/${indexer.id}/comments/${comment.cid}/reactions`,
         data,
       );
     },
-    [type, signSimaMessage, getProposalIndexer],
+    [type, signSimaMessage, getProposalIndexer, connectedAccount],
   );
 }
