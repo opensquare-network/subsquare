@@ -20,7 +20,7 @@ export default function AmbassadorCandidatesPage() {
   const hasMembers = !!pageMembers.length;
 
   return (
-    <CollectivesProvider params={ambassadorParams} section="fellowship">
+    <CollectivesProvider params={ambassadorParams} section="ambassador">
       <AmbassadorMembersLoadable>
         <AmbassadorCoreCommon>
           <div className="mb-4 pr-6 leading-8">
