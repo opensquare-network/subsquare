@@ -25,7 +25,6 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
 
-  const thumbUp = useIsThumbUp();
   const { upVote, cancelUpVote, reloadPost } = useArticleActions();
 
   const toggleThumbUp = async () => {
@@ -37,7 +36,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
     try {
       let result, error;
 
-      if (thumbUp) {
+      if (thumbsUp) {
         ({ result, error } = await cancelUpVote(post));
       } else {
         ({ result, error } = await upVote(post));
