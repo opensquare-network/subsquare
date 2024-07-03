@@ -4,7 +4,7 @@ import { useReloadOffChainPost } from "../actions/reloadPost";
 import { useOffChainPostUpVote } from "../actions/upVote";
 import { useOffChainPostCancelUpVote } from "../actions/cancelUpVote";
 
-export function OffChainArticleActionsContextProvider({ children }) {
+export function OffChainArticleActionsProvider({ children }) {
   const upVote = useOffChainPostUpVote();
   const cancelUpVote = useOffChainPostCancelUpVote();
   const reloadPost = useReloadOffChainPost();

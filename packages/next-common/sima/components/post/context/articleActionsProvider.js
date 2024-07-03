@@ -4,7 +4,7 @@ import { useDiscussionCancelUpVote } from "next-common/sima/actions/cancelUpVote
 import { useReloadOffChainPost } from "next-common/noSima/actions/reloadPost";
 import { useAddDiscussionAppendant } from "next-common/sima/actions/appendant";
 
-export function DiscussionActionsContextProvider({ children }) {
+export function DiscussionArticleActionsProvider({ children }) {
   const upVote = useDiscussionUpVote();
   const cancelUpVote = useDiscussionCancelUpVote();
   const reloadPost = useReloadOffChainPost();

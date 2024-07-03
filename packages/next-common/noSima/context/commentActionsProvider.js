@@ -8,7 +8,7 @@ import {
 import { useOffChainCommentUpVote } from "../actions/upVote";
 import { useOffChainCommentCancelUpVote } from "../actions/cancelUpVote";
 
-export function OffChainCommentActionsContextProvider({ children }) {
+export function OffChainCommentActionsProvider({ children }) {
   const getComment = useGetOffChainComment();
   const updateComment = useUpdateOffChainComment();
   const createPostComment = useCreateOffChainComment();

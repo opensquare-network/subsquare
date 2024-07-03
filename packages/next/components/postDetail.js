@@ -1,7 +1,7 @@
 import DetailItem from "components/detailItem";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
-import { OffChainArticleActionsContextProvider } from "next-common/noSima/context/articleActionsProvider";
-import { OffChainCommentActionsContextProvider } from "next-common/noSima/context/commentActionsProvider";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { usePost } from "next-common/context/post";
 import SimaPostDetail from "next-common/sima/components/post/postDetail";
 
@@ -21,10 +21,10 @@ export default function PostDetail() {
   }
 
   return (
-    <OffChainArticleActionsContextProvider>
-      <OffChainCommentActionsContextProvider>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
         <DetailContent />
-      </OffChainCommentActionsContextProvider>
-    </OffChainArticleActionsContextProvider>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }

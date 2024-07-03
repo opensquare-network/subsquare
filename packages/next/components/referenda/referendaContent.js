@@ -15,8 +15,8 @@ import Gov2ReferendaVotesBubble from "next-common/components/gov2/referendum/vot
 import ProposalAddress from "next-common/components/statistics/referenda/proposalAddress";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
-import { OffChainArticleActionsContextProvider } from "next-common/noSima/context/articleActionsProvider";
-import { OffChainCommentActionsContextProvider } from "next-common/noSima/context/commentActionsProvider";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 export function ReferendumDetailMultiTabs() {
   const post = usePost();
@@ -49,14 +49,14 @@ export function ReferendumContent() {
   }, [dispatch]);
 
   return (
-    <OffChainArticleActionsContextProvider>
-      <OffChainCommentActionsContextProvider>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
         <ContentWithComment>
           <ReferendaDetail />
           <Gov2Sidebar />
           <ReferendumDetailMultiTabs />
         </ContentWithComment>
-      </OffChainCommentActionsContextProvider>
-    </OffChainArticleActionsContextProvider>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
