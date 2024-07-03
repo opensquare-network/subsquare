@@ -14,6 +14,7 @@ import { usePost } from "next-common/context/post";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import { useCreateOffChainCommentReply } from "next-common/noSima/actions/comment";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -60,12 +61,9 @@ function CommentEditor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
-  const {
-    createPostComment,
-    createCommentReply,
-    createOffChainCommentReply,
-    updateComment,
-  } = useCommentActions();
+  const { createPostComment, createCommentReply, updateComment } =
+    useCommentActions();
+  const createOffChainCommentReply = useCreateOffChainCommentReply();
 
   const createComment = async () => {
     if (!isMounted()) {

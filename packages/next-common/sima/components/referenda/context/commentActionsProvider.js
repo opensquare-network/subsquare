@@ -5,10 +5,7 @@ import {
 } from "next-common/sima/actions/comment";
 import { useProposalCommentUpVote } from "next-common/sima/actions/upVote";
 import { useProposalCommentCancelUpVote } from "next-common/sima/actions/cancelUpVote";
-import {
-  useCreateOffChainCommentReply,
-  useGetComment,
-} from "next-common/noSima/actions/comment";
+import { useGetComment } from "next-common/noSima/actions/comment";
 
 export function ReferendaCommentActionsProvider({ children }) {
   const getComment = useGetComment();
@@ -16,7 +13,6 @@ export function ReferendaCommentActionsProvider({ children }) {
   const createCommentReply = useCreateProposalCommentReply();
   const upVoteComment = useProposalCommentUpVote();
   const cancelUpVoteComment = useProposalCommentCancelUpVote();
-  const createOffChainCommentReply = useCreateOffChainCommentReply();
 
   return (
     <CommentActionsContext.Provider
@@ -24,7 +20,6 @@ export function ReferendaCommentActionsProvider({ children }) {
         getComment,
         createPostComment,
         createCommentReply,
-        createOffChainCommentReply,
         upVoteComment,
         cancelUpVoteComment,
       }}

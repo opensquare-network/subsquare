@@ -4,7 +4,6 @@ import ReplyButton from "./replyButton";
 import Share from "../shareSNS";
 import { usePost } from "../../context/post";
 import { useIsPostAuthor } from "../../context/post/useIsPostAuthor";
-import { useIsThumbUp } from "../../context/post/isThumbUp";
 import ThumbsUp from "../thumbsUp";
 import { PostContextMenu } from "../contentMenu";
 import ThumbUpList from "./thumbUpList";
@@ -13,12 +12,15 @@ import { useFocusEditor } from "next-common/context/post/editor";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useArticleActions } from "next-common/sima/context/articleActions";
+import { useMyUpVote } from "next-common/context/post/useMyUpVote";
+import { useOffChainPostCancelUpVote } from "next-common/noSima/actions/cancelUpVote";
 
 export default function ArticleActions({ setIsEdit, extraActions }) {
   const user = useUser();
   const post = usePost();
   const isAuthor = useIsPostAuthor();
-  const thumbsUp = useIsThumbUp();
+  const myUpVote = useMyUpVote();
+  const thumbsUp = !!myUpVote;
   const focusEditor = useFocusEditor();
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
@@ -26,6 +28,8 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
 
   const { upVote, cancelUpVote, reloadPost } = useArticleActions();
+
+  const cancelOffChainUpVote = useOffChainPostCancelUpVote();
 
   const toggleThumbUp = async () => {
     if (!user || isAuthor || thumbUpLoading) {
@@ -37,7 +41,11 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
       let result, error;
 
       if (thumbsUp) {
-        ({ result, error } = await cancelUpVote(post));
+        if (myUpVote.dataSource === "sima") {
+          ({ result, error } = await cancelUpVote(post));
+        } else {
+          ({ result, error } = await cancelOffChainUpVote(post));
+        }
       } else {
         ({ result, error } = await upVote(post));
       }

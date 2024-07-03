@@ -17,6 +17,23 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "../comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
+import { useOffChainCommentCancelUpVote } from "next-common/noSima/actions/cancelUpVote";
+import { useOffChainCommentUpVote } from "next-common/noSima/actions/upVote";
+
+function useMyUpVote(reactions) {
+  const user = useUser();
+  const connectedAccount = useConnectedAccount();
+
+  if (!user && !connectedAccount) {
+    return;
+  }
+
+  return reactions?.find(
+    (r) =>
+      r.user?.username === user.username ||
+      r.proposer === connectedAccount.address,
+  );
+}
 
 export default function CommentActions({
   reloadComment = noop,
@@ -31,14 +48,8 @@ export default function CommentActions({
   const reactions = comment?.reactions || [];
   const author = comment?.author || {};
   const ownComment = user && author?.username === user.username;
-  const connectedAccount = useConnectedAccount();
-  const thumbUp =
-    (user || connectedAccount) &&
-    reactions?.findIndex(
-      (r) =>
-        r.user?.username === user.username ||
-        r.proposer === connectedAccount.address,
-    ) > -1;
+  const myUpVote = useMyUpVote(reactions);
+  const thumbUp = !!myUpVote;
 
   const chain = useChain();
   const post = usePost();
@@ -74,7 +85,10 @@ export default function CommentActions({
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
+
   const { upVoteComment, cancelUpVoteComment } = useCommentActions();
+  const cancelUpVoteOffChainComment = useOffChainCommentCancelUpVote();
+  const upVoteOffChainComment = useOffChainCommentUpVote();
 
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
@@ -85,10 +99,21 @@ export default function CommentActions({
     try {
       let result, error;
 
-      if (thumbUp) {
-        ({ result, error } = await cancelUpVoteComment(post, comment));
+      if (myUpVote) {
+        if (myUpVote.dataSource === "sima") {
+          ({ result, error } = await cancelUpVoteComment(post, comment));
+        } else {
+          ({ result, error } = await cancelUpVoteOffChainComment(
+            post,
+            comment,
+          ));
+        }
       } else {
-        ({ result, error } = await upVoteComment(post, comment));
+        if (comment.dataSource === "sima") {
+          ({ result, error } = await upVoteComment(post, comment));
+        } else {
+          ({ result, error } = await upVoteOffChainComment(post, comment));
+        }
       }
 
       if (result) {
@@ -97,6 +122,8 @@ export default function CommentActions({
       if (error) {
         dispatch(newErrorToast(error.message));
       }
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
     } finally {
       setThumbUpLoading(false);
     }

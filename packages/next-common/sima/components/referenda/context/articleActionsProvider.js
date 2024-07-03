@@ -12,7 +12,12 @@ export function ReferendaArticleActionsProvider({ children }) {
 
   return (
     <ArticleActionsContext.Provider
-      value={{ provideContext, upVote, cancelUpVote, reloadPost }}
+      value={{
+        provideContext,
+        upVote,
+        cancelUpVote,
+        reloadPost,
+      }}
     >
       {children}
     </ArticleActionsContext.Provider>
