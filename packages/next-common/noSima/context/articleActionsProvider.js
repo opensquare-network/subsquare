@@ -1,13 +1,13 @@
 import ArticleActionsContext from "next-common/sima/context/articleActions";
 import { useOffChainProvideContext } from "../actions/provideContext";
-import { useReloadOffChainPost } from "../actions/reloadPost";
+import { useReloadPost } from "../actions/reloadPost";
 import { useOffChainPostUpVote } from "../actions/upVote";
 import { useOffChainPostCancelUpVote } from "../actions/cancelUpVote";
 
 export function OffChainArticleActionsProvider({ children }) {
   const upVote = useOffChainPostUpVote();
   const cancelUpVote = useOffChainPostCancelUpVote();
-  const reloadPost = useReloadOffChainPost();
+  const reloadPost = useReloadPost();
   const provideContext = useOffChainProvideContext();
 
   return (

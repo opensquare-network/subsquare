@@ -2,14 +2,14 @@ import CommentActionsContext from "next-common/sima/context/commentActions";
 import {
   useCreateOffChainComment,
   useCreateOffChainCommentReply,
-  useGetOffChainComment,
+  useGetComment,
   useUpdateOffChainComment,
 } from "../actions/comment";
 import { useOffChainCommentUpVote } from "../actions/upVote";
 import { useOffChainCommentCancelUpVote } from "../actions/cancelUpVote";
 
 export function OffChainCommentActionsProvider({ children }) {
-  const getComment = useGetOffChainComment();
+  const getComment = useGetComment();
   const updateComment = useUpdateOffChainComment();
   const createPostComment = useCreateOffChainComment();
   const createCommentReply = useCreateOffChainCommentReply();

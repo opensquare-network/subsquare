@@ -3,7 +3,7 @@ import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
 import { useCallback } from "react";
 
-export function useReloadOffChainPost() {
+export function useReloadPost() {
   const type = useDetailType();
   const postDispatch = usePostDispatch();
   const post = usePost();

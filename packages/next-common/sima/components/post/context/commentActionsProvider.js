@@ -5,10 +5,10 @@ import {
 } from "next-common/sima/actions/comment";
 import { useDiscussionCommentUpVote } from "next-common/sima/actions/upVote";
 import { useDiscussionCommentCancelUpVote } from "next-common/sima/actions/cancelUpVote";
-import { useGetOffChainComment } from "next-common/noSima/actions/comment";
+import { useGetComment } from "next-common/noSima/actions/comment";
 
 export function DiscussionCommentActionsProvider({ children }) {
-  const getComment = useGetOffChainComment();
+  const getComment = useGetComment();
   const createPostComment = useCreateDiscussionComment();
   const createCommentReply = useCreateDiscussionCommentReply();
   const upVoteComment = useDiscussionCommentUpVote();

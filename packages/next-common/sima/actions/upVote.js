@@ -22,6 +22,7 @@ function getProposalUpVoteEntity(indexer) {
 
 export function useDiscussionUpVote() {
   const signSimaMessage = useSignSimaMessage();
+
   return useCallback(
     async (post) => {
       const entity = getDiscussionUpVoteEntity(post.cid);
@@ -50,6 +51,7 @@ export function useProposalUpVote() {
 
 export function useDiscussionCommentUpVote() {
   const signSimaMessage = useSignSimaMessage();
+
   return useCallback(
     async (post, comment) => {
       const entity = getDiscussionUpVoteEntity(comment.cid);

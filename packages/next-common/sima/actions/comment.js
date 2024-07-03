@@ -85,6 +85,6 @@ export function useCreateProposalCommentReply() {
         data,
       );
     },
-    [type, signSimaMessage],
+    [type, signSimaMessage, getProposalIndexer],
   );
 }

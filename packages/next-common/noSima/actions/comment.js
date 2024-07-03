@@ -4,7 +4,7 @@ import nextApi from "next-common/services/nextApi";
 import { prettyHTML, toApiType } from "next-common/utils/viewfuncs";
 import { useCallback } from "react";
 
-export function useGetOffChainComment() {
+export function useGetComment() {
   return useCallback(async (comment) => {
     return await nextApi.fetch(`comments/${comment._id}`);
   }, []);
@@ -13,16 +13,19 @@ export function useGetOffChainComment() {
 export function useUpdateOffChainComment() {
   const { ensureLogin } = useEnsureLogin();
 
-  return useCallback(async (commentId, content, contentType) => {
-    if (!(await ensureLogin())) {
-      throw new Error("Cancelled");
-    }
+  return useCallback(
+    async (commentId, content, contentType) => {
+      if (!(await ensureLogin())) {
+        throw new Error("Cancelled");
+      }
 
-    return await nextApi.patch(`comments/${commentId}`, {
-      content: contentType === "html" ? prettyHTML(content) : content,
-      contentType,
-    });
-  }, []);
+      return await nextApi.patch(`comments/${commentId}`, {
+        content: contentType === "html" ? prettyHTML(content) : content,
+        contentType,
+      });
+    },
+    [ensureLogin],
+  );
 }
 
 export function useCreateOffChainComment() {
@@ -44,7 +47,7 @@ export function useCreateOffChainComment() {
         { credentials: "include" },
       );
     },
-    [type],
+    [type, ensureLogin],
   );
 }
 
@@ -67,6 +70,6 @@ export function useCreateOffChainCommentReply() {
         { credentials: "include" },
       );
     },
-    [type],
+    [type, ensureLogin],
   );
 }
