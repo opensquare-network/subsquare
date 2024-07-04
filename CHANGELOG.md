@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.1.0
+
+date: 2024-07-04
+
+- [Big] Support ambassador related business on collectives.
+- [Big] To improve the next.js hydration time, lazy load various components/pages including quill.js editor, referenda
+  whales page, statistics page, etc.
+- Fix polkadot fellowship demotion period business when it's 0.
+- Introduce `react-use` to simplify hooks.
+- Enable referenda for Basilisk.
+- Update kusama decentralized voices cohort 2 delegates.
+- Take place of moment.js with day.js.
+- Subscribe referenda info decision deposit so UI will update immediately when deposit placed.
+- Code refactor.
+- Upgrade dependencies including cmdk, wagmi, polkadot.js, etc.
+
 ### 4.0.7
 
 date: 2024-06-14
