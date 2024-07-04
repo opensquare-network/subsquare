@@ -16,6 +16,7 @@ import { useDetailType } from "../../../context/page";
 import Input from "../../input";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 import tw from "tailwind-styled-components";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 const Section = styled.div`
   display: flex;
@@ -59,6 +60,7 @@ export default function PostLinkPopup({ setShow = noop }) {
   const post = usePost();
   const postType = useDetailType();
   const router = useRouter();
+  const { ensureLogin } = useEnsureLogin();
 
   useEffect(() => {
     if (!user?.address) {
@@ -105,6 +107,10 @@ export default function PostLinkPopup({ setShow = noop }) {
 
     setIsLoading(true);
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
       const { error } = await nextApi.post(
         `${toApiType(postType)}/${post?._id}/bind`,
         {
@@ -135,7 +141,7 @@ export default function PostLinkPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, postType, post?._id, router, selectedDiscussion]);
+  }, [dispatch, postType, post?._id, router, selectedDiscussion, ensureLogin]);
 
   const onSelectDiscussion = useCallback((discussion) => {
     setSelectedDiscussion(discussion);
