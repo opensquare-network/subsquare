@@ -13,7 +13,7 @@ export function useMyUpVote() {
 
   return post?.reactions?.find(
     (r) =>
-      r.user?.username === user.username ||
+      r.user?.username === user?.username ||
       r.proposer === connectedAccount.address,
   );
 }
