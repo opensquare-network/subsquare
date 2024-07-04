@@ -21,6 +21,8 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import BountySidebar from "components/bounty/sidebar";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 function BountyContent() {
   const { childBounties } = usePageProps();
@@ -34,24 +36,32 @@ function BountyContent() {
   );
 
   return (
-    <ContentWithComment>
-      <BountyDetail />
-      <BountySidebar />
-      <DetailMultiTabs
-        childBounties={
-          !!childBounties.total && <ChildBountiesTable {...{ childBounties }} />
-        }
-        childBountiesCount={childBounties.total}
-        metadata={
-          <Metadata
-            meta={detail.onchainData?.meta}
-            address={detail.onchainData?.address}
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <BountyDetail />
+          <BountySidebar />
+          <DetailMultiTabs
+            childBounties={
+              !!childBounties.total && (
+                <ChildBountiesTable {...{ childBounties }} />
+              )
+            }
+            childBountiesCount={childBounties.total}
+            metadata={
+              <Metadata
+                meta={detail.onchainData?.meta}
+                address={detail.onchainData?.address}
+              />
+            }
+            timeline={
+              <Timeline data={timelineData} compact={isTimelineCompact} />
+            }
+            timelineCount={timelineData.length}
           />
-        }
-        timeline={<Timeline data={timelineData} compact={isTimelineCompact} />}
-        timelineCount={timelineData.length}
-      />
-    </ContentWithComment>
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 
