@@ -11,9 +11,9 @@ export function useMyUpVote() {
     return false;
   }
 
-  return post?.reactions?.find(
-    (r) =>
-      r.user?.username === user?.username ||
-      r.proposer === connectedAccount.address,
+  return post?.reactions?.find((r) =>
+    r.dataSource === "sima"
+      ? r.proposer === connectedAccount?.address
+      : r.user?.username === user?.username,
   );
 }

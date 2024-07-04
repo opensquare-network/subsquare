@@ -28,10 +28,10 @@ function useMyUpVote(reactions) {
     return;
   }
 
-  return reactions?.find(
-    (r) =>
-      r.user?.username === user?.username ||
-      r.proposer === connectedAccount.address,
+  return reactions?.find((r) =>
+    r.dataSource === "sima"
+      ? r.proposer === connectedAccount?.address
+      : r.user?.username === user?.username,
   );
 }
 
