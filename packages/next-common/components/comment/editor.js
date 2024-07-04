@@ -114,7 +114,9 @@ function CommentEditor(
         }
       }
     } catch (e) {
-      dispatch(newErrorToast(e.message));
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
+      }
     } finally {
       if (isMounted()) {
         setLoading(false);

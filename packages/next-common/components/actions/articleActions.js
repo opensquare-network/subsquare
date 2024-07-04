@@ -56,8 +56,10 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
       if (error) {
         dispatch(newErrorToast(error.message));
       }
-    } catch (error) {
-      dispatch(newErrorToast(error.message));
+    } catch (e) {
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
+      }
     } finally {
       setThumbUpLoading(false);
     }

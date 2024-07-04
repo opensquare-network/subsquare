@@ -19,7 +19,7 @@ function AppendItem({ index, data }) {
         </span>
       </div>
       <div>
-        <span className="text15MediumContent text-textPrimary">
+        <span className="text-textPrimary">
           {data.contentType === "markdown" && (
             <MarkdownPreviewer
               content={data.content || ""}

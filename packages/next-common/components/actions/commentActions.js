@@ -123,7 +123,9 @@ export default function CommentActions({
         dispatch(newErrorToast(error.message));
       }
     } catch (e) {
-      dispatch(newErrorToast(e.message));
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
+      }
     } finally {
       setThumbUpLoading(false);
     }

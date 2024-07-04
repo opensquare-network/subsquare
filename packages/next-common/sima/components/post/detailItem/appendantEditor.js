@@ -38,8 +38,10 @@ export default function AppendantEditor({ setIsAppend }) {
       if (error) {
         dispatch(newErrorToast(error.message));
       }
-    } catch (error) {
-      setErrors(error);
+    } catch (e) {
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
+      }
     } finally {
       setIsAppending(false);
     }
