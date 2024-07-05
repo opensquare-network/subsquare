@@ -1,10 +1,5 @@
-import styled from "styled-components";
+import { cn } from "next-common/utils";
 
-const Wrapper = styled.span`
-  color: var(--textTertiary);
-  margin: 0 8px;
-`;
-
-export default function DotSplitter() {
-  return <Wrapper>·</Wrapper>;
+export default function DotSplitter({ className = "" }) {
+  return <span className={cn("text-textTertiary mx-2", className)}>·</span>;
 }
