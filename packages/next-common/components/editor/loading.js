@@ -16,6 +16,7 @@ export default function LoadingEditor({ className = "" }) {
     <div
       className={cn(
         "flex flex-col",
+        "absolute top-0 right-0 bottom-0 left-0",
         "border border-neutral400 rounded-[8px]",
         className,
       )}
