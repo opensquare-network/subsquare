@@ -3,20 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fellowshipCoreMembersTriggerSelector } from "next-common/store/reducers/fellowship/core";
 import { useEffect } from "react";
 import { setFellowshipCollectiveMembers } from "next-common/store/reducers/fellowship/collective";
-
-function normalizeCollectiveMembers(collectiveEntries = []) {
-  let members = [];
-  for (const [storageKey, record] of collectiveEntries) {
-    const address = storageKey.args[0].toString();
-    if (!record.isSome) {
-      continue;
-    }
-    const rank = record.unwrap().rank.toNumber();
-    members.push({ address, rank });
-  }
-
-  return members;
-}
+import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
 
 export default function useFetchFellowshipMembers() {
   const api = useContextApi();
@@ -31,7 +18,8 @@ export default function useFetchFellowshipMembers() {
     api.query.fellowshipCollective.members
       .entries()
       .then((collectiveEntries) => {
-        const collectiveMembers = normalizeCollectiveMembers(collectiveEntries);
+        const collectiveMembers =
+          normalizeRankedCollectiveEntries(collectiveEntries);
         dispatch(setFellowshipCollectiveMembers(collectiveMembers));
       });
   }, [api, trigger]);

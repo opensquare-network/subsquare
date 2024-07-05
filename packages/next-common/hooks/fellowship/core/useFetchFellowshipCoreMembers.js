@@ -7,20 +7,7 @@ import {
 import { isSameAddress } from "next-common/utils";
 import { setFellowshipCollectiveMembers } from "next-common/store/reducers/fellowship/collective";
 import { useContextApi } from "next-common/context/api";
-
-function normalizeCollectiveMembers(collectiveEntries = []) {
-  let members = [];
-  for (const [storageKey, record] of collectiveEntries) {
-    const address = storageKey.args[0].toString();
-    if (!record.isSome) {
-      continue;
-    }
-    const rank = record.unwrap().rank.toNumber();
-    members.push({ address, rank });
-  }
-
-  return members;
-}
+import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
 
 export default function useFetchFellowshipCoreMembers() {
   const api = useContextApi();
@@ -40,7 +27,8 @@ export default function useFetchFellowshipCoreMembers() {
       api.query.fellowshipCollective?.members.entries(),
       api.query.fellowshipCore.member.entries(),
     ]).then(([collectiveEntries, coreEntries]) => {
-      const collectiveMembers = normalizeCollectiveMembers(collectiveEntries);
+      const collectiveMembers =
+        normalizeRankedCollectiveEntries(collectiveEntries);
       dispatch(setFellowshipCollectiveMembers(collectiveMembers));
 
       const members = coreEntries.map(([storageKey, memberStatus]) => {

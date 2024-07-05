@@ -2,8 +2,6 @@ import { withCommonProps } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import nextApi from "next-common/services/nextApi";
-import Timeline from "components/tip/timeline";
-import Metadata from "components/tip/metadata";
 import Tipper from "components/tipper";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
@@ -20,6 +18,11 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const Metadata = dynamicClientOnly(() => import("components/tip/metadata"));
+
+const Timeline = dynamicClientOnly(() => import("components/tip/timeline"));
 
 function TreasuryTipContent() {
   const post = usePost();

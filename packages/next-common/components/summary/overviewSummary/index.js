@@ -16,26 +16,21 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import { usePageProps } from "next-common/context/page";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
+import DotSplitter from "next-common/components/dotSplitter";
 
 const ContentWrapper = styled.div`
   display: flex;
 `;
 const TypeGroup = styled(Flex)`
-  &:not(:last-child) {
-    &::after {
-      content: "${(p) => p.separator || "·"}";
-      display: inline-block;
-      margin: 0 4px;
-      color: var(--textDisabled);
-    }
-  }
+  column-gap: 4px;
 `;
 
 function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
   return (
-    <TypeGroup separator={separator}>
+    <TypeGroup separator={separator} className="group">
       <SummaryGreyText className="text16Bold">{label}</SummaryGreyText>
       <ActiveValue tooltip={tooltip} href={href} value={value} />
+      <DotSplitter className="mx-1 ml-0 group-last:hidden" />
     </TypeGroup>
   );
 }

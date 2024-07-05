@@ -21,5 +21,9 @@ export function getProfileCategories(chain) {
     categories.push(allianceCategory);
   }
 
-  return categories;
+  const includedCategories = categories.filter((c) => {
+    return !c.excludeChains?.includes?.(chain);
+  });
+
+  return includedCategories;
 }

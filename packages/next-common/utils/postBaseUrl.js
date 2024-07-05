@@ -9,6 +9,7 @@ export const democracyExternalBaseUrl = "/democracy/externals";
 export const referendaReferendumBaseUrl = "/referenda";
 export const referendaTrackBaseUrl = "/referenda/tracks";
 export const fellowshipReferendumBaseUrl = "/fellowship/referenda";
+export const ambassadorReferendaBaseUrl = "/ambassador/referenda";
 export const fellowshipTrackBaseUrl = "/fellowship/tracks";
 export const councilMotionBaseUrl = "/council/motions";
 export const techCommMotionBaseUrl = "/techcomm/proposals";

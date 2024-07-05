@@ -2,11 +2,17 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconLitentryDark,
-  ProjectIconLitentryLight,
-  ProjectLogoLitentryDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconLitentryDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconLitentryDark"),
+);
+const ProjectIconLitentryLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconLitentryLight"),
+);
+const ProjectLogoLitentryDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoLitentryDark"),
+);
 
 const DEFAULT_LITENTRY_NODES = [
   {

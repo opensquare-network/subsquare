@@ -1,9 +1,7 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Timeline from "components/childBounty/timeline";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import Metadata from "next-common/components/treasury/bounty/metadata";
 import { getBannerUrl } from "next-common/utils/banner";
 import Claim from "components/childBounty/claim";
 import {
@@ -24,6 +22,15 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const Metadata = dynamicClientOnly(() =>
+  import("next-common/components/treasury/bounty/metadata"),
+);
+
+const Timeline = dynamicClientOnly(() =>
+  import("components/childBounty/timeline"),
+);
 
 function ChildBountyContent() {
   const post = usePost();

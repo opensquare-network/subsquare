@@ -1,16 +1,24 @@
+import dynamic from "next/dynamic";
+import { defaultPostLabels } from "next-common/utils/consts/settings/common";
+import MenuGroups from "next-common/utils/consts/settings/menuGroups";
+import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
+import { westendThemeVars } from "next-common/utils/consts/settings/westend/theme";
 import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import defaultWestendNodes from "./nodes";
-import {
-  ProjectIconWestendDark,
-  ProjectIconWestendLight,
-  ProjectLogoWestendDark,
-  ProjectLogoWestendLight,
-} from "@osn/icons/subsquare";
-import MenuGroups from "next-common/utils/consts/settings/menuGroups";
-import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
-import { defaultPostLabels } from "next-common/utils/consts/settings/common";
-import { westendThemeVars } from "next-common/utils/consts/settings/westend/theme";
+
+const ProjectIconWestendDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconWestendDark"),
+);
+const ProjectIconWestendLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconWestendLight"),
+);
+const ProjectLogoWestendDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoWestendDark"),
+);
+const ProjectLogoWestendLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoWestendLight"),
+);
 
 const name = Chains.westend;
 

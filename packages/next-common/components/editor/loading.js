@@ -11,13 +11,14 @@ const Skeleton = styled.div`
   );
 `;
 
-export default function LoadingEditor() {
+export default function LoadingEditor({ className = "" }) {
   return (
     <div
       className={cn(
         "flex flex-col",
         "absolute top-0 right-0 bottom-0 left-0",
         "border border-neutral400 rounded-[8px]",
+        className,
       )}
     >
       <div className="flex p-[8px] border-b border-neutral300 gap-[8px] sm:hidden">

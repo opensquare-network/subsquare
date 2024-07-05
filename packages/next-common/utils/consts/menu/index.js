@@ -14,11 +14,13 @@ import { CHAIN } from "next-common/utils/constants";
 import isMoonChain from "next-common/utils/isMoonChain";
 import preImages from "./preImages";
 import { partition } from "lodash-es";
+import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
 
 export function getHomeMenu({
   summary = {},
   tracks = [],
   fellowshipTracks = [],
+  ambassadorTracks = [],
   currentTrackId,
 } = {}) {
   if (isMoonChain()) {
@@ -39,6 +41,7 @@ export function getHomeMenu({
     commonMenus,
     getReferendaMenu(tracks, currentTrackId),
     getFellowshipMenu(fellowshipTracks, currentTrackId),
+    getAmbassadorMenu(ambassadorTracks, currentTrackId),
     getDemocracyMenu(summary),
     getTreasuryMenu(summary),
     getCouncilMenu(summary),
@@ -50,8 +53,16 @@ export function getHomeMenu({
   ];
 }
 
-export function getCommonMenu({ tracks = [], fellowshipTracks = [] }) {
-  const [commonMenu] = getHomeMenu({ tracks, fellowshipTracks });
+export function getCommonMenu({
+  tracks = [],
+  fellowshipTracks = [],
+  ambassadorTracks = [],
+}) {
+  const [commonMenu] = getHomeMenu({
+    tracks,
+    fellowshipTracks,
+    ambassadorTracks,
+  });
   commonMenu.items = commonMenu.items.filter(
     (i) => !i?.excludeToChains?.includes?.(CHAIN),
   );
@@ -62,12 +73,14 @@ export function getNavMenu({
   summary = {},
   tracks = [],
   fellowshipTracks = [],
+  ambassadorTracks = [],
   currentTrackId,
 } = {}) {
   const menu = getHomeMenu({
     summary,
     tracks,
     fellowshipTracks,
+    ambassadorTracks,
     currentTrackId,
   });
 

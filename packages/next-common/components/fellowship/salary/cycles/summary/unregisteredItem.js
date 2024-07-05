@@ -6,9 +6,20 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
 
 export default function SalaryStatsUnregisteredItem({ cycleData }) {
-  const stats = useSelector(fellowshipSalaryStatusSelector);
+  const { section } = useCollectivesContext();
+  let statusSelector = null;
+  if (section === "fellowship") {
+    statusSelector = fellowshipSalaryStatusSelector;
+  } else if (section === "ambassador") {
+    statusSelector = ambassadorSalaryStatusSelector;
+  }
+
+  const stats = useSelector(statusSelector);
+
   const { totalUnregisteredPaid } = stats || {};
   const { decimals, symbol } = useSalaryAsset();
   const { unRegisteredPaidCount } = cycleData || {};

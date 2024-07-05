@@ -61,7 +61,8 @@ export default function TrackPage({
 export const getServerSideProps = withCommonProps(async (context) => {
   const { page = 1, page_size: pageSize = 50, id } = context.query;
 
-  const { tracks, fellowshipTracks, summary } = await fetchOpenGovTracksProps();
+  const tracksProps = await fetchOpenGovTracksProps();
+  const { fellowshipTracks, summary } = tracksProps;
   let track = fellowshipTracks.find(
     (trackItem) => trackItem.id === parseInt(id),
   );
@@ -93,8 +94,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       posts: posts ?? EmptyList,
       title: "Fellowship " + startCase(track.name),
       summary: summary ?? {},
-      tracks,
-      fellowshipTracks,
+      ...tracksProps,
       trackReferendaSummary: trackReferendaSummary ?? {},
       period: period ?? {},
       fellowshipTracksDetail: fellowshipTracksDetail ?? null,

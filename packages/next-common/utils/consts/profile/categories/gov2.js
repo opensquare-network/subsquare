@@ -1,6 +1,7 @@
 import businessCategory from "../../business/category";
 import normalizeGov2ReferendaListItem from "../../../gov2/list/normalizeReferendaListItem";
 import normalizeFellowshipReferendaListItem from "../../../gov2/list/normalizeFellowshipReferendaListItem";
+import Chains from "../../chains";
 
 const gov2Category = {
   id: "openGov",
@@ -14,6 +15,7 @@ const gov2Category = {
       routePath: "referenda",
       apiPath: "gov2/referendums",
       formatter: (chain, item) => normalizeGov2ReferendaListItem(item),
+      excludeChains: [Chains.collectives],
     },
     {
       id: "fellowship",

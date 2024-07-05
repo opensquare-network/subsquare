@@ -1,7 +1,7 @@
-import Bump from "next-common/components/fellowship/core/members/actions/bump";
 import Promote from "./promote";
-import More from "./more";
 import Approve from "./approve";
+import CoreFellowshipBump from "next-common/components/collectives/core/actions/bump";
+import More from "next-common/components/collectives/core/actions/more";
 
 export default function Actions({ member }) {
   return (
@@ -9,7 +9,7 @@ export default function Actions({ member }) {
       <div className="text14Medium text-textPrimary">Actions</div>
 
       <div className="flex gap-[16px]">
-        <Bump member={member} />
+        <CoreFellowshipBump member={member} />
         <Promote member={member} />
         <Approve member={member} />
         <More member={member} />

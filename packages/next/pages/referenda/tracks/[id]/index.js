@@ -89,7 +89,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const status = upperFirst(camelCase(statusQuery));
 
-  const { tracks, fellowshipTracks, summary } = await fetchOpenGovTracksProps();
+  const tracksProps = await fetchOpenGovTracksProps();
+  const { tracks } = tracksProps;
   let track = tracks.find((trackItem) => trackItem.id === parseInt(id));
   if (!track) {
     track = tracks.find((item) => item.name === id);
@@ -121,12 +122,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
       tracksDetail: tracksDetail ?? null,
       posts: posts ?? EmptyList,
       title: "Referenda " + startCase(track.name),
-      tracks,
-      fellowshipTracks,
-      summary: summary ?? {},
       trackReferendaSummary: trackReferendaSummary ?? {},
       period: period ?? {},
       status,
+      ...tracksProps,
     },
   };
 });

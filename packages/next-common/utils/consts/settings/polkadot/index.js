@@ -2,16 +2,24 @@ import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import MenuGroups from "../menuGroups";
 import { defaultPostLabels } from "../common";
-import {
-  ProjectIconPolkadotDark,
-  ProjectIconPolkadotLight,
-  ProjectLogoPolkadotDark,
-  ProjectLogoPolkadotLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
 import defaultPolkadotNodes from "next-common/utils/consts/settings/polkadot/nodes";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import polkadotTreasuryTracks from "next-common/utils/consts/settings/polkadot/tracks";
+
+const ProjectIconPolkadotDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPolkadotDark"),
+);
+const ProjectIconPolkadotLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPolkadotLight"),
+);
+const ProjectLogoPolkadotDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoPolkadotDark"),
+);
+const ProjectLogoPolkadotLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoPolkadotLight"),
+);
 
 const name = Chains.polkadot;
 

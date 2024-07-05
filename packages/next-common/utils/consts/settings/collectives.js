@@ -1,14 +1,22 @@
-import Chains from "../chains";
-import MenuGroups from "./menuGroups";
-import { PostLabel } from "./common";
-import {
-  ProjectIconPolkadotCollectivesDark,
-  ProjectIconPolkadotCollectivesLight,
-  ProjectLogoPolkadotCollectivesDark,
-  ProjectLogoPolkadotCollectivesLight,
-} from "@osn/icons/subsquare";
-import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
+import dynamic from "next/dynamic";
 import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
+import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
+import Chains from "../chains";
+import { PostLabel } from "./common";
+import MenuGroups from "./menuGroups";
+
+const ProjectIconPolkadotCollectivesDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPolkadotCollectivesDark"),
+);
+const ProjectIconPolkadotCollectivesLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPolkadotCollectivesLight"),
+);
+const ProjectLogoPolkadotCollectivesDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesDark"),
+);
+const ProjectLogoPolkadotCollectivesLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesLight"),
+);
 
 const testEndpoints = [
   {
@@ -24,16 +32,16 @@ const collectivesEndpoints = [
     url: "wss://polkadot-collectives-rpc.polkadot.io",
   },
   {
-    name: "OnFinality",
-    url: "wss://collectives.api.onfinality.io/public-ws",
-  },
-  {
     name: "IBP1",
     url: "wss://sys.ibp.network/collectives-polkadot",
   },
   {
     name: "Dewllir",
     url: "wss://polkadot-collectives-rpc.dwellir.com",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://collectives.api.onfinality.io/public-ws",
   },
   {
     name: "Dewllir Tunisia",
@@ -88,10 +96,10 @@ const collectives = {
   noDemocracy: true,
   noIdentityModule: true,
   showAchainableLabels: true,
-  description:
-    "Collectives on Polkadot network. Polkadot Collectives Common Good Parachain",
+  description: "Collectives on Polkadot network.",
   modules: {
     fellowship: true,
+    ambassador: true,
   },
   ...polkadotThemeVars,
 };

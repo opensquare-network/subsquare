@@ -8,6 +8,7 @@ import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useSalaryFellowshipPallet } from "next-common/context/collectives/collectives";
 
 const tabs = [
   {
@@ -23,13 +24,14 @@ const tabs = [
 function SelfPayout() {
   const { onClose } = usePopupParams();
   const api = useContextApi();
+  const pallet = useSalaryFellowshipPallet();
 
   const getTxFunc = useCallback(async () => {
     if (!api) {
       return;
     }
-    return api.tx.fellowshipSalary?.payout();
-  }, [api]);
+    return api.tx[pallet]?.payout();
+  }, [api, pallet]);
 
   return (
     <>
@@ -48,6 +50,7 @@ function OtherPayout() {
   const { onClose } = usePopupParams();
   const [beneficiary, setBeneficiary] = useState("");
   const api = useContextApi();
+  const pallet = useSalaryFellowshipPallet();
 
   const getTxFunc = useCallback(async () => {
     if (!api) {
@@ -57,8 +60,8 @@ function OtherPayout() {
       dispatch(newErrorToast("Beneficiary is not specified"));
       return;
     }
-    return api.tx.fellowshipSalary?.payoutOther(beneficiary);
-  }, [api, dispatch, beneficiary]);
+    return api.tx[pallet]?.payoutOther(beneficiary);
+  }, [api, dispatch, beneficiary, pallet]);
 
   return (
     <>

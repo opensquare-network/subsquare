@@ -1,12 +1,18 @@
-import Chains from "../chains";
-import MenuGroups from "./menuGroups";
-import { defaultPostLabels } from "./common";
-import {
-  ProjectIconHydrationDark,
-  ProjectIconHydrationLight,
-  ProjectLogoHydrationDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
 import ChainTypes from "../chainTypes";
+import Chains from "../chains";
+import { defaultPostLabels } from "./common";
+import MenuGroups from "./menuGroups";
+
+const ProjectIconHydrationDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconHydrationDark"),
+);
+const ProjectIconHydrationLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconHydrationLight"),
+);
+const ProjectLogoHydrationDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoHydrationDark"),
+);
 
 const endpoints = [
   {

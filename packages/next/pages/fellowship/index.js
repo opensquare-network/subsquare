@@ -30,7 +30,7 @@ export default function FellowshipPage({
     <ListLayout
       seoInfo={seoInfo}
       title={title}
-      description="All active and history referenda of various tracks."
+      description="All active and history referenda in various tracks."
       summary={<Gov2Summary summary={fellowshipSummary} />}
     >
       <PostList

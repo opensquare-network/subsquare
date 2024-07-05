@@ -37,7 +37,7 @@ export default function FellowshipCoreParamsContainer({ params }) {
         </div>
       </TitleContainer>
       <div className="space-y-4 mt-4">
-        <FellowshipParamsList rank={rank} />
+        <FellowshipParamsList rank={rank} params={params} />
         <FellowshipParamsOffBoardTimeoutCard />
       </div>
     </>

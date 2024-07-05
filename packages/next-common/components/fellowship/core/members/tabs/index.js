@@ -1,6 +1,10 @@
 import UrlTabs from "next-common/components/urlTabs";
 
-export default function FellowshipMemberTabs({ members }) {
+// maybe used for fellowship and ambassador
+export default function FellowshipMemberTabs({
+  members,
+  section = "fellowship",
+}) {
   const membersCount = (members || []).filter(
     (member) => member.rank > 0,
   ).length;
@@ -26,7 +30,7 @@ export default function FellowshipMemberTabs({ members }) {
           </>
         );
       },
-      url: "/fellowship/core",
+      url: `/${section}/core`,
     },
     {
       label: "Candidates",
@@ -46,7 +50,7 @@ export default function FellowshipMemberTabs({ members }) {
           </>
         );
       },
-      url: "/fellowship/core/candidates",
+      url: `/${section}/core/candidates`,
     },
   ];
 

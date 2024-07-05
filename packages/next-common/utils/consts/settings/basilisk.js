@@ -1,10 +1,16 @@
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
-import {
-  ProjectIconBasiliskDark,
-  ProjectIconBasiliskLight,
-  ProjectLogoBasiliskDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const ProjectIconBasiliskDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconBasiliskDark"),
+);
+const ProjectIconBasiliskLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconBasiliskLight"),
+);
+const ProjectLogoBasiliskDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoBasiliskDark"),
+);
 
 const DEFAULT_BASILISK_NODES = [
   {
@@ -69,6 +75,7 @@ const basilisk = {
     "Snek brings permissionless liquidity to the Kusama ecosystem. Swap tokens, flip NFTs and earn rewards. Help young crypto projects bootstrap liquidity and receive tokens.",
   modules: {
     democracy: true,
+    referenda: true,
   },
   cssVarsLight: {
     theme100: "rgba(63,227,154,0.10)",

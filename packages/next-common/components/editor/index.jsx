@@ -15,7 +15,9 @@ import LoadingEditor from "./loading";
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
-  { ssr: false },
+  {
+    ssr: false,
+  },
 );
 
 const Wrapper = styled(EditorWrapper)``;
@@ -203,12 +205,17 @@ function Editor(props, ref) {
         "[&_.editor-wrapper]:bg-neutral100",
         "[&_.editor-wrapper]:relative",
         "[&_.editor-wrapper]:z-1",
+        "[&_.editor-wrapper]:min-h-[inherit] [&_.editor-wrapper]:max-sm:min-h-[inherit]",
+        "[&_.toggle-bar-wrapper]:absolute [&_.toggle-bar-wrapper]:left-0 [&_.toggle-bar-wrapper]:right-0 [&_.toggle-bar-wrapper]:bottom-0",
         dragging &&
           "[&_.editor-wrapper]:!border-theme500 [&_.toggle-bar-wrapper]:!border-theme500",
       )}
     >
       <LoadingEditor />
       <UniverseEditor
+        loadingSkeleton={
+          <LoadingEditor className="border-none min-h-[inherit] max-sm:min-h-[inherit]" />
+        }
         {...props}
         setTextAreaRef={(textarea) => {
           textAreaRef.current = textarea;

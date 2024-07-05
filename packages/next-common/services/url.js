@@ -73,6 +73,43 @@ export const fellowshipSalaryCycleFeedsApi = (index) =>
 
 export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
 
+// ambassador
+export const ambassadorParamsApi = "ambassador/params";
+export const ambassadorMembersApiUri = "ambassador/members";
+export const ambassadorCoreFeedsApiUri = "ambassador/core/feeds";
+export const ambassadorTracksApi = "ambassador/tracks";
+export const ambassadorTracksSummaryApi = "ambassador/tracks/summary";
+export const ambassadorReferendumsApi = "ambassador/referenda";
+export const getAmbassadorReferendumUrl = (id) =>
+  `${ambassadorReferendumsApi}/${id}`;
+export const getAmbassadorReferendumCommentsUrl = (id) =>
+  `${getAmbassadorReferendumUrl(id)}/comments`;
+
+export const ambassadorReferendumsSummaryApi =
+  ambassadorReferendumsApi + "/summary";
+export const ambassadorTrackReferendaApi = (trackId) =>
+  ambassadorTracksApi + `/${trackId}/referenda`;
+export const ambassadorTrackReferendaSummaryApi = (trackId) =>
+  ambassadorTracksApi + `/${trackId}/referenda/summary`;
+export const ambassadorTrackApi = (trackId) =>
+  fellowshipTracksApi + `/${trackId}`;
+// ambassador salary
+export const ambassadorSalaryHistoryCyclesApi =
+  "ambassador/salary/history_cycles";
+export const ambassadorSalaryActiveCycleApi = "ambassador/salary/active_cycle";
+export const ambassadorSalaryClaimantsApi = "ambassador/salary/claimants";
+export const ambassadorSalaryCycleApi = (index) =>
+  `ambassador/salary/cycles/${index}`;
+export const ambassadorSalaryFeedsApi = "ambassador/salary/feeds";
+export const ambassadorSalaryCycleRegistrationsApi = (index) =>
+  `ambassador/salary/cycles/${index}/registrations`;
+export const ambassadorSalaryCycleRegisteredPaymentsApi = (index) =>
+  `ambassador/salary/cycles/${index}/registered_payments`;
+export const ambassadorSalaryCycleUnregisteredPaymentsApi = (index) =>
+  `ambassador/salary/cycles/${index}/unregistered_payments`;
+export const ambassadorSalaryCycleFeedsApi = (index) =>
+  `ambassador/salary/cycles/${index}/feeds`;
+
 // calender events
 /**
  * param `begin_time`, `end_time`
