@@ -6,7 +6,6 @@ import React from "react";
 import CoreFellowshipMemberInfoLine from "next-common/components/collectives/core/member/line";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
-import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 import CoreFellowshipMemberEvidence from "next-common/components/collectives/core/member/evidence";
 import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
 
@@ -33,14 +32,12 @@ export default function CoreFellowshipMemberCard({
             rank={rank}
             params={params}
           />
-          {rank > 0 ? (
+          {rank > 0 && (
             <CoreFellowshipMemberPromotionPeriod
               lastPromotion={lastPromotion}
               rank={rank}
               params={params}
             />
-          ) : (
-            <CoreFellowshipMemberInfoWrapper /> // as a placeholder
           )}
         </CoreFellowshipMemberInfoLine>
         <CoreFellowshipMemberEvidence address={address} pallet={pallet} />
