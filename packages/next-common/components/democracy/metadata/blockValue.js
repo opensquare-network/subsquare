@@ -1,37 +1,28 @@
-import React from "react";
-import styled from "styled-components";
-import useWindowSize from "../../../utils/hooks/useWindowSize";
 import SwitchableTime from "../../time/switchableTime";
-
-const Wrapper = styled.span`
-  line-height: 140%;
-  & > span {
-    margin-left: 16px;
-  }
-`;
-
-const VerticalWrapper = styled.div`
-  line-height: 140%;
-  display: flex;
-  flex-direction: column;
-`;
+import { cn } from "next-common/utils";
 
 export default function BlockValue({ height, time, isEstimated = false }) {
-  const windowSize = useWindowSize();
-
+  let content;
   if (!time) {
-    return <Wrapper>{height}</Wrapper>;
+    content = height;
+  } else {
+    content = (
+      <>
+        {height}
+        <SwitchableTime timestamp={time} isEstimated={isEstimated} />
+      </>
+    );
   }
-  const children = (
-    <>
-      {height}
-      <SwitchableTime timestamp={time} isEstimated={isEstimated} />
-    </>
+
+  return (
+    <div
+      className={cn(
+        "text14Medium",
+        "flex items-center gap-x-4",
+        "max-sm:flex-col max-sm:items-start",
+      )}
+    >
+      {content}
+    </div>
   );
-
-  if (windowSize.width && windowSize.width <= 600) {
-    return <VerticalWrapper>{children}</VerticalWrapper>;
-  }
-
-  return <Wrapper>{children}</Wrapper>;
 }
