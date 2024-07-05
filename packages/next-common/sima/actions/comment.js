@@ -4,7 +4,14 @@ import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { getContentField } from "next-common/utils/sima/utils";
 import { useCallback } from "react";
 import useProposalIndexerBuilder from "../hooks/useProposalIndexerBuilder";
-import { isLinkedToSimaDiscussion } from "./common";
+import {
+  isLinkedToOffChainDiscussion,
+  isLinkedToSimaDiscussion,
+} from "./common";
+import {
+  useCreateOffChainComment,
+  useCreateOffChainCommentReply,
+} from "next-common/noSima/actions/comment";
 
 export function useCreateDiscussionComment() {
   const signSimaMessage = useSignSimaMessage();
@@ -29,9 +36,14 @@ export function useCreateProposalComment() {
   const type = useDetailType();
   const getProposalIndexer = useProposalIndexerBuilder();
   const createDiscussionComment = useCreateDiscussionComment();
+  const createOffChainComment = useCreateOffChainComment();
 
   return useCallback(
     async (post, content, contentType) => {
+      if (isLinkedToOffChainDiscussion(post)) {
+        return await createOffChainComment(post, content, contentType);
+      }
+
       if (isLinkedToSimaDiscussion(post)) {
         return await createDiscussionComment(
           post.refToPost,
@@ -50,7 +62,13 @@ export function useCreateProposalComment() {
       const data = await signSimaMessage(entity);
       return await nextApi.post(`sima/${type}/${indexer.id}/comments`, data);
     },
-    [type, signSimaMessage, getProposalIndexer, createDiscussionComment],
+    [
+      type,
+      signSimaMessage,
+      getProposalIndexer,
+      createDiscussionComment,
+      createOffChainComment,
+    ],
   );
 }
 
@@ -80,9 +98,19 @@ export function useCreateProposalCommentReply() {
   const type = useDetailType();
   const getProposalIndexer = useProposalIndexerBuilder();
   const createDiscussionCommentReply = useCreateDiscussionCommentReply();
+  const createOffChainCommentReply = useCreateOffChainCommentReply();
 
   return useCallback(
     async (post, comment, content, contentType) => {
+      if (isLinkedToOffChainDiscussion(post)) {
+        return await createOffChainCommentReply(
+          post,
+          comment,
+          content,
+          contentType,
+        );
+      }
+
       if (isLinkedToSimaDiscussion(post)) {
         return await createDiscussionCommentReply(
           post.refToPost,
@@ -105,6 +133,12 @@ export function useCreateProposalCommentReply() {
         data,
       );
     },
-    [type, signSimaMessage, getProposalIndexer, createDiscussionCommentReply],
+    [
+      type,
+      signSimaMessage,
+      getProposalIndexer,
+      createDiscussionCommentReply,
+      createOffChainCommentReply,
+    ],
   );
 }
