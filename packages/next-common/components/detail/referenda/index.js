@@ -13,15 +13,12 @@ import PreimageWarning from "next-common/components/detail/referenda/preimageWar
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 import ReferendaReferendumTreasurySpendNavigation from "next-common/components/detail/referenda/referendaReferendumTreasurySpendNavigation";
 import { usePost } from "next-common/context/post";
+import { isLinkedToSimaDiscussion } from "next-common/sima/actions/common";
 
 export default function ReferendaDetail() {
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
-
   const post = usePost();
-  const refToPost = post?.refToPost;
-  const isSimaDiscussion =
-    refToPost?.dataSource === "sima" && refToPost?.postType === "post";
 
   return (
     <DetailContentBase
@@ -41,7 +38,7 @@ export default function ReferendaDetail() {
       title={<PostTitle />}
       meta={<ReferendaPostMeta />}
     >
-      {isSimaDiscussion ? (
+      {isLinkedToSimaDiscussion(post) ? (
         <SimaDiscussionArticleContent className="mt-6" setIsEdit={setIsEdit} />
       ) : (
         <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
