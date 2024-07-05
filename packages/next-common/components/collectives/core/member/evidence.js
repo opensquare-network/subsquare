@@ -46,7 +46,9 @@ export default function CoreFellowshipMemberEvidence({
 
   return (
     <CoreFellowshipMemberInfoWrapper>
-      <CoreFellowshipMemberInfoTitle>Evidence</CoreFellowshipMemberInfoTitle>
+      <CoreFellowshipMemberInfoTitle className="mb-0.5">
+        Evidence
+      </CoreFellowshipMemberInfoTitle>
       <div className="flex text12Medium">{content}</div>
     </CoreFellowshipMemberInfoWrapper>
   );

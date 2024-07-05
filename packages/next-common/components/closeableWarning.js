@@ -8,7 +8,7 @@ const Wrapper = tw.div`
   text-orange500
   bg-orange100
   rounded-[4px]
-  px-[12px]
+  px-[10px]
   py-[16px]
   mb-[16px]
   text14Medium
