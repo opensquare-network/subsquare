@@ -61,6 +61,7 @@ const polkadot = {
     usdxTreasuryProposal: true,
   },
   disableWeb2Registration: true,
+  sima: true,
 };
 
 export default polkadot;

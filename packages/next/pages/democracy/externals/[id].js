@@ -18,6 +18,8 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 function DemocracyExternalContent() {
   const detail = usePost();
@@ -28,24 +30,28 @@ function DemocracyExternalContent() {
   const call = external?.preImage?.call;
 
   return (
-    <ContentWithComment>
-      <DetailItem />
-      <DetailMultiTabs
-        call={
-          call && (
-            <DemocracyExternalProposalCall
-              call={call}
-              shorten={external.preImage.shorten}
-              motionIndex={external.motionIndex}
-              referendumIndex={external.referendumIndex}
-            />
-          )
-        }
-        business={<Business external={detail?.onchainData} />}
-        metadata={<Metadata external={detail?.onchainData} />}
-        timeline={<Timeline />}
-      />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <DetailItem />
+          <DetailMultiTabs
+            call={
+              call && (
+                <DemocracyExternalProposalCall
+                  call={call}
+                  shorten={external.preImage.shorten}
+                  motionIndex={external.motionIndex}
+                  referendumIndex={external.referendumIndex}
+                />
+              )
+            }
+            business={<Business external={detail?.onchainData} />}
+            metadata={<Metadata external={detail?.onchainData} />}
+            timeline={<Timeline />}
+          />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

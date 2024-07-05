@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import Popup from "../../popup/wrapper/Popup";
 import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
-import { useUser } from "../../../context/user";
 import { addToast } from "../../../store/reducers/toastSlice";
 import { toApiType } from "../../../utils/viewfuncs";
 import { usePost } from "../../../context/post";
@@ -16,6 +15,8 @@ import { useDetailType } from "../../../context/page";
 import Input from "../../input";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 import tw from "tailwind-styled-components";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { useArticleActions } from "next-common/sima/context/articleActions";
 
 const Section = styled.div`
   display: flex;
@@ -54,22 +55,18 @@ export default function PostLinkPopup({ setShow = noop }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingList, setIsLoadingList] = useState(false);
   const [postUrl, setPostUrl] = useState("");
-  const user = useUser();
   const dispatch = useDispatch();
   const post = usePost();
   const postType = useDetailType();
   const router = useRouter();
+  const { ensureLogin } = useEnsureLogin();
+  const { getUserDiscussions } = useArticleActions();
 
   useEffect(() => {
-    if (!user?.address) {
-      return;
-    }
-
     setMyDiscussions([]);
 
     setIsLoadingList(true);
-    nextApi
-      .fetch(`users/${user?.address}/all-posts`)
+    getUserDiscussions()
       .then(({ result, error }) => {
         if (error) {
           dispatch(
@@ -86,7 +83,7 @@ export default function PostLinkPopup({ setShow = noop }) {
       .finally(() => {
         setIsLoadingList(false);
       });
-  }, [dispatch, user]);
+  }, [dispatch, getUserDiscussions]);
 
   const bindDiscussion = useCallback(async () => {
     if (!post?._id) {
@@ -105,6 +102,10 @@ export default function PostLinkPopup({ setShow = noop }) {
 
     setIsLoading(true);
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
       const { error } = await nextApi.post(
         `${toApiType(postType)}/${post?._id}/bind`,
         {
@@ -135,7 +136,7 @@ export default function PostLinkPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, postType, post?._id, router, selectedDiscussion]);
+  }, [dispatch, postType, post?._id, router, selectedDiscussion, ensureLogin]);
 
   const onSelectDiscussion = useCallback((discussion) => {
     setSelectedDiscussion(discussion);

@@ -42,29 +42,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const tracksProps = await fetchOpenGovTracksProps();
   const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
-  if (detail.dataSource === "sima") {
-    const { page, page_size: pageSize } = context.query;
-
-    const { result: comments } = await nextApi.fetch(
-      `sima/discussions/${detail.cid}/comments`,
-      {
-        page: page ?? "last",
-        pageSize: Math.min(pageSize ?? 50, 100),
-      },
-    );
-
-    return {
-      props: {
-        detail,
-        comments: comments ?? EmptyList,
-        votes,
-        myVote: myVote ?? null,
-
-        ...tracksProps,
-      },
-    };
-  }
-
   const comments = await fetchDetailComments(
     `posts/${detail._id}/comments`,
     context,

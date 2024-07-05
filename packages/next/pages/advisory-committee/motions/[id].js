@@ -12,6 +12,8 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 function AdvisoryCommitteeMotionContent() {
   const motion = usePost();
@@ -19,9 +21,13 @@ function AdvisoryCommitteeMotionContent() {
   motion.status = motion.state?.state;
 
   return (
-    <ContentWithComment>
-      <MotionDetail />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <MotionDetail />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

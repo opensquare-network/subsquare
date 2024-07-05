@@ -7,11 +7,12 @@ import { useUser } from "../../context/user";
 import { usePost } from "next-common/context/post";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import PrimaryButton from "next-common/lib/button/primary";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function useCommentComponent({ commentsData, loading }) {
   const user = useUser();
   const post = usePost();
-  const postId = post._id;
+  const { sima } = useChainSettings();
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
@@ -21,10 +22,20 @@ export default function useCommentComponent({ commentsData, loading }) {
   );
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-  const { ensureLogin } = useEnsureLogin();
+  const { ensureLogin, ensureConnect } = useEnsureLogin();
   const users = useMentionList(post, commentsData);
 
-  let editor = (
+  let editor = sima ? (
+    <div className="flex justify-end mt-4">
+      <PrimaryButton
+        onClick={() => {
+          ensureConnect();
+        }}
+      >
+        Connect
+      </PrimaryButton>
+    </div>
+  ) : (
     <div className="flex justify-end mt-4">
       <PrimaryButton
         onClick={() => {
@@ -39,7 +50,6 @@ export default function useCommentComponent({ commentsData, loading }) {
   if (user) {
     editor = (
       <CommentEditor
-        postId={postId}
         ref={editorWrapperRef}
         setQuillRef={setQuillRef}
         {...{

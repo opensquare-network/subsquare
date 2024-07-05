@@ -21,6 +21,8 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useIsDemocracyProposalFinished from "next-common/hooks/democracy/proposal/useIsDemocracyProposalFinished";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -44,30 +46,34 @@ function PublicProposalContent() {
   const call = publicProposal?.preImage?.call || publicProposal?.call;
 
   return (
-    <ContentWithComment>
-      <DetailItem />
-      <Second
-        proposalIndex={proposalIndex}
-        hasTurnIntoReferendum={hasTurnIntoReferendum}
-        hasCanceled={hasCanceled}
-        useAddressVotingBalance={useAddressBalance}
-        atBlockHeight={secondsAtBlockHeight}
-      />
-      <DetailMultiTabs
-        call={
-          call && (
-            <DemocracyPublicProposalCall
-              call={call}
-              shorten={publicProposal.preImage?.shorten}
-              proposalIndex={publicProposal.proposalIndex}
-              referendumIndex={publicProposal.referendumIndex}
-            />
-          )
-        }
-        metadata={<Metadata publicProposal={post?.onchainData} />}
-        timeline={<Timeline />}
-      />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <DetailItem />
+          <Second
+            proposalIndex={proposalIndex}
+            hasTurnIntoReferendum={hasTurnIntoReferendum}
+            hasCanceled={hasCanceled}
+            useAddressVotingBalance={useAddressBalance}
+            atBlockHeight={secondsAtBlockHeight}
+          />
+          <DetailMultiTabs
+            call={
+              call && (
+                <DemocracyPublicProposalCall
+                  call={call}
+                  shorten={publicProposal.preImage?.shorten}
+                  proposalIndex={publicProposal.proposalIndex}
+                  referendumIndex={publicProposal.referendumIndex}
+                />
+              )
+            }
+            metadata={<Metadata publicProposal={post?.onchainData} />}
+            timeline={<Timeline />}
+          />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

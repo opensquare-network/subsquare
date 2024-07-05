@@ -1,3 +1,4 @@
+import React from "react";
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
@@ -9,7 +10,6 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import useDetailPageSeoInfo from "next-common/hooks/common/useDetailPageSeoInfo";
 import { usePageProps } from "next-common/context/page";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
-import React from "react";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import TreasurySpendDetail from "next-common/components/detail/treasury/spend";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
@@ -18,6 +18,8 @@ import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTr
 import Timeline from "next-common/components/timeline";
 import { useSelector } from "react-redux";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 function TreasurySpendContent() {
   const detail = usePost();
@@ -27,20 +29,24 @@ function TreasurySpendContent() {
   );
 
   return (
-    <ContentWithComment>
-      <TreasurySpendDetail />
-      <DetailMultiTabs
-        metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
-        timeline={
-          <Timeline
-            data={timelineData}
-            indent={false}
-            compact={isTimelineCompact}
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <TreasurySpendDetail />
+          <DetailMultiTabs
+            metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
+            timeline={
+              <Timeline
+                data={timelineData}
+                indent={false}
+                compact={isTimelineCompact}
+              />
+            }
+            timelineCount={timelineData.length}
           />
-        }
-        timelineCount={timelineData.length}
-      />
-    </ContentWithComment>
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

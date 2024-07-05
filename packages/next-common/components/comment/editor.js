@@ -1,19 +1,20 @@
 import styled, { css } from "styled-components";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import nextApi from "../../services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
-import { prettyHTML, toApiType } from "../../utils/viewfuncs";
 import { useMountedState } from "react-use";
 import IdentityOrAddr from "../IdentityOrAddr";
 import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useChain } from "../../context/chain";
-import { useDetailType } from "../../context/page";
 import { noop } from "lodash-es";
 import Editor from "../editor";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { usePost } from "next-common/context/post";
+import { useCommentActions } from "next-common/sima/context/commentActions";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
+import { useCreateOffChainCommentReply } from "next-common/noSima/actions/comment";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -39,11 +40,11 @@ function escapeLinkText(text) {
 
 function CommentEditor(
   {
-    postId,
     isEdit,
     isReply,
     onFinishedEdit = noop,
     commentId,
+    comment,
     content,
     setContent,
     contentType,
@@ -53,13 +54,16 @@ function CommentEditor(
   },
   ref,
 ) {
+  const dispatch = useDispatch();
+  const post = usePost();
   const chain = useChain();
-  const type = useDetailType();
   const router = useRouter();
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
-  const { ensureLogin } = useEnsureLogin();
+  const { createPostComment, createCommentReply, updateComment } =
+    useCommentActions();
+  const createOffChainCommentReply = useCreateOffChainCommentReply();
 
   const createComment = async () => {
     if (!isMounted()) {
@@ -68,22 +72,27 @@ function CommentEditor(
 
     setLoading(true);
     try {
-      if (!(await ensureLogin())) {
-        return;
+      let result;
+
+      if (comment) {
+        if (comment.dataSource === "sima") {
+          result = await createCommentReply(
+            post,
+            comment,
+            content,
+            contentType,
+          );
+        } else {
+          result = await createOffChainCommentReply(
+            post,
+            comment,
+            content,
+            contentType,
+          );
+        }
+      } else {
+        result = await createPostComment(post, content, contentType);
       }
-
-      const url = commentId
-        ? `${toApiType(type)}/${postId}/comments/${commentId}/replies`
-        : `${toApiType(type)}/${postId}/comments`;
-
-      const result = await nextApi.post(
-        url,
-        {
-          content: contentType === "html" ? prettyHTML(content) : content,
-          contentType,
-        },
-        { credentials: "include" },
-      );
 
       if (!isMounted()) {
         return;
@@ -104,6 +113,10 @@ function CommentEditor(
           }, 4);
         }
       }
+    } catch (e) {
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
+      }
     } finally {
       if (isMounted()) {
         setLoading(false);
@@ -111,12 +124,13 @@ function CommentEditor(
     }
   };
 
-  const updateComment = async () => {
+  const editComment = async () => {
     setLoading(true);
-    const { result, error } = await nextApi.patch(`comments/${commentId}`, {
-      content: contentType === "html" ? prettyHTML(content) : content,
+    const { result, error } = await updateComment(
+      commentId,
+      content,
       contentType,
-    });
+    );
 
     if (!isMounted()) {
       return;
@@ -174,7 +188,7 @@ function CommentEditor(
         )}
         <PrimaryButton
           loading={loading}
-          onClick={isEdit ? updateComment : createComment}
+          onClick={isEdit ? editComment : createComment}
           disabled={isEmpty}
           title={isEmpty ? "cannot submit empty content" : ""}
         >

@@ -12,28 +12,44 @@ import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
 import { noop } from "lodash-es";
-import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "../comment/context";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { useCommentActions } from "next-common/sima/context/commentActions";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
+import { useOffChainCommentCancelUpVote } from "next-common/noSima/actions/cancelUpVote";
+import { useOffChainCommentUpVote } from "next-common/noSima/actions/upVote";
+
+function useMyUpVote(reactions) {
+  const user = useUser();
+  const connectedAccount = useConnectedAccount();
+
+  if (!user && !connectedAccount) {
+    return;
+  }
+
+  return reactions?.find((r) =>
+    r.dataSource === "sima"
+      ? r.proposer === connectedAccount?.address
+      : r.user?.username === user?.username,
+  );
+}
 
 export default function CommentActions({
-  updateComment = noop,
+  reloadComment = noop,
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
   replyToCommentId,
+  replyToComment,
   setIsEdit,
 }) {
   const comment = useComment();
   const user = useUser();
-  const { ensureLogin } = useEnsureLogin();
   const reactions = comment?.reactions || [];
   const author = comment?.author || {};
   const ownComment = user && author?.username === user.username;
-  const thumbUp =
-    user &&
-    reactions?.findIndex((r) => r.user?.username === user.username) > -1;
+  const myUpVote = useMyUpVote(reactions);
+  const thumbUp = !!myUpVote;
 
   const chain = useChain();
   const post = usePost();
@@ -45,8 +61,6 @@ export default function CommentActions({
   );
   const [isReply, setIsReply] = useState(false);
   const { comments } = usePageProps();
-
-  const postId = post?._id;
 
   const users = useMentionList(post, comments);
 
@@ -72,6 +86,10 @@ export default function CommentActions({
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
+  const { upVoteComment, cancelUpVoteComment } = useCommentActions();
+  const cancelUpVoteOffChainComment = useOffChainCommentCancelUpVote();
+  const upVoteOffChainComment = useOffChainCommentUpVote();
+
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
       return;
@@ -79,28 +97,34 @@ export default function CommentActions({
 
     setThumbUpLoading(true);
     try {
-      if (!(await ensureLogin())) {
-        return;
-      }
-
       let result, error;
 
-      if (thumbUp) {
-        ({ result, error } = await nextApi.delete(
-          `comments/${comment._id}/reaction`,
-        ));
+      if (myUpVote) {
+        if (myUpVote.dataSource === "sima") {
+          ({ result, error } = await cancelUpVoteComment(post, comment));
+        } else {
+          ({ result, error } = await cancelUpVoteOffChainComment(
+            post,
+            comment,
+          ));
+        }
       } else {
-        ({ result, error } = await nextApi.put(
-          `comments/${comment._id}/reaction`,
-          { reaction: 1 },
-        ));
+        if (comment.dataSource === "sima") {
+          ({ result, error } = await upVoteComment(post, comment));
+        } else {
+          ({ result, error } = await upVoteOffChainComment(post, comment));
+        }
       }
 
       if (result) {
-        await updateComment();
+        await reloadComment();
       }
       if (error) {
         dispatch(newErrorToast(error.message));
+      }
+    } catch (e) {
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
       }
     } finally {
       setThumbUpLoading(false);
@@ -127,8 +151,8 @@ export default function CommentActions({
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (
         <CommentEditor
-          postId={postId}
           commentId={replyToCommentId}
+          comment={replyToComment}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}
@@ -136,7 +160,7 @@ export default function CommentActions({
             setIsReply(false);
             if (reload) {
               setShowReplies(true);
-              await updateComment();
+              await reloadComment();
               scrollToNewReplyComment();
             }
           }}

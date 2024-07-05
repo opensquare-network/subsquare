@@ -91,7 +91,7 @@ export async function getMentionName(user, chain) {
     mentionName = user.username;
   }
 
-  const displayName = getIdentityDisplayNameFromAddress(address);
+  const displayName = await getIdentityDisplayNameFromAddress(address, chain);
   return displayName || mentionName;
 }
 

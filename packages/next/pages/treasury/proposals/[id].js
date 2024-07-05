@@ -19,6 +19,8 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 function TreasuryProposalContent() {
   const detail = usePost();
@@ -30,20 +32,24 @@ function TreasuryProposalContent() {
   );
 
   return (
-    <ContentWithComment>
-      <TreasuryProposalDetail />
-      <DetailMultiTabs
-        metadata={<Metadata treasuryProposal={detail?.onchainData} />}
-        timeline={
-          <Timeline
-            data={timelineData}
-            indent={false}
-            compact={isTimelineCompact}
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <TreasuryProposalDetail />
+          <DetailMultiTabs
+            metadata={<Metadata treasuryProposal={detail?.onchainData} />}
+            timeline={
+              <Timeline
+                data={timelineData}
+                indent={false}
+                compact={isTimelineCompact}
+              />
+            }
+            timelineCount={timelineData.length}
           />
-        }
-        timelineCount={timelineData.length}
-      />
-    </ContentWithComment>
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

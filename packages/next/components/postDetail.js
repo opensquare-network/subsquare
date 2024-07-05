@@ -1,7 +1,17 @@
-import { usePost } from "next-common/context/post";
 import DetailItem from "components/detailItem";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
-import SimaPostDetail from "next-common/components/sima/post/postDetail";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import { usePost } from "next-common/context/post";
+import SimaPostDetail from "next-common/sima/components/post/postDetail";
+
+function DetailContent() {
+  return (
+    <ContentWithComment>
+      <DetailItem />
+    </ContentWithComment>
+  );
+}
 
 export default function PostDetail() {
   const post = usePost();
@@ -11,8 +21,10 @@ export default function PostDetail() {
   }
 
   return (
-    <ContentWithComment>
-      <DetailItem />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <DetailContent />
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
