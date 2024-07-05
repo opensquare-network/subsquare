@@ -8,8 +8,17 @@ import {
 import { InfoPlus, SystemMore } from "@osn/icons/subsquare";
 import copy from "copy-to-clipboard";
 import { useComment } from "next-common/components/comment/context";
-import { CopyMenuItem, EditMenuItem } from "next-common/components/contentMenu";
+import {
+  CopyMenuItem,
+  EditMenuItem,
+  LinkMenuItem,
+  UnlinkMenuItem,
+} from "next-common/components/contentMenu";
 import { usePost } from "next-common/context/post";
+import PostLinkPopup from "next-common/components/linkPost/postLinkPopup";
+import PostUnlinkPopup from "next-common/components/linkPost/postUnlinkPopup";
+import { useDetailType } from "next-common/context/page";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const Wrapper = styled.div`
   position: relative;
@@ -66,31 +75,53 @@ export function CommentContextMenu() {
 }
 
 export function PostContextMenu({ editable, setIsAppend, setIsEdit }) {
+  const [showLinkPopup, setShowLinkPopup] = useState(false);
+  const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
+
   const [show, setShow] = useState(false);
   const ref = useRef();
   const post = usePost();
+  const type = useDetailType();
+  const isSimaDiscussion = type === detailPageCategory.POST;
 
   useOnClickOutside(ref, () => setShow(false));
 
-  return (
-    <Wrapper ref={ref}>
-      <SystemMore
-        className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
-        onClick={() => setShow(!show)}
+  let linkOrUnlinkMenuItem = (
+    <LinkMenuItem setShowLinkPopup={setShowLinkPopup} setShow={setShow} />
+  );
+  if (post?.isBoundDiscussion) {
+    linkOrUnlinkMenuItem = (
+      <UnlinkMenuItem
+        setShowUnlinkPopup={setShowUnlinkPopup}
+        setShow={setShow}
       />
-      {show && (
-        <OptionWrapper>
-          {editable && (
-            <>
-              {post.content ? (
-                <AppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />
-              ) : (
-                <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
-              )}
-            </>
-          )}
-        </OptionWrapper>
-      )}
-    </Wrapper>
+    );
+  }
+
+  return (
+    <>
+      <Wrapper ref={ref}>
+        <SystemMore
+          className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
+          onClick={() => setShow(!show)}
+        />
+        {show && (
+          <OptionWrapper>
+            {editable && (
+              <>
+                {!isSimaDiscussion && linkOrUnlinkMenuItem}
+                {post.content ? (
+                  <AppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />
+                ) : (
+                  <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+                )}
+              </>
+            )}
+          </OptionWrapper>
+        )}
+      </Wrapper>
+      {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
+      {showUnlinkPopup && <PostUnlinkPopup setShow={setShowUnlinkPopup} />}
+    </>
   );
 }

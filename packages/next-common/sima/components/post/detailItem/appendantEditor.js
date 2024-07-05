@@ -10,6 +10,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { useArticleActions } from "next-common/sima/context/articleActions";
+import { useAddDiscussionAppendant } from "next-common/sima/actions/appendant";
 
 export default function AppendantEditor({ setIsAppend }) {
   const dispatch = useDispatch();
@@ -21,7 +22,8 @@ export default function AppendantEditor({ setIsAppend }) {
   const [isAppending, setIsAppending] = useState(false);
   const [errors, setErrors] = useState();
   const signSimaMessage = useSignSimaMessage();
-  const { addAppendant, reloadPost } = useArticleActions();
+  const { reloadPost } = useArticleActions();
+  const addAppendant = useAddDiscussionAppendant();
 
   const isEmpty = !content.trim();
 
@@ -30,7 +32,12 @@ export default function AppendantEditor({ setIsAppend }) {
     setErrors();
 
     try {
-      const { result, error } = await addAppendant(post, content, contentType);
+      const postCid = post?.refToPost?.cid || post?.cid;
+      const { result, error } = await addAppendant(
+        postCid,
+        content,
+        contentType,
+      );
       if (result) {
         setIsAppend(false);
         await reloadPost();

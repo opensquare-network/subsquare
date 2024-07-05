@@ -1,5 +1,6 @@
 import DetailContentBase from "../common/detailBase";
 import ArticleContent from "../../articleContent";
+import SimaDiscussionArticleContent from "next-common/sima/components/post/detailItem/articleContent";
 import useSetEdit from "../common/hooks/useSetEdit";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
@@ -11,10 +12,16 @@ import TimeoutCountdown from "next-common/components/detail/referenda/timeoutCou
 import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 import ReferendaReferendumTreasurySpendNavigation from "next-common/components/detail/referenda/referendaReferendumTreasurySpendNavigation";
+import { usePost } from "next-common/context/post";
 
 export default function ReferendaDetail() {
   const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
+
+  const post = usePost();
+  const refToPost = post?.refToPost;
+  const isSimaDiscussion =
+    refToPost?.dataSource === "sima" && refToPost?.postType === "post";
 
   return (
     <DetailContentBase
@@ -34,7 +41,11 @@ export default function ReferendaDetail() {
       title={<PostTitle />}
       meta={<ReferendaPostMeta />}
     >
-      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+      {isSimaDiscussion ? (
+        <SimaDiscussionArticleContent className="mt-6" setIsEdit={setIsEdit} />
+      ) : (
+        <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+      )}
     </DetailContentBase>
   );
 }

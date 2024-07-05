@@ -7,18 +7,15 @@ export function useAddDiscussionAppendant() {
   const signSimaMessage = useSignSimaMessage();
 
   return useCallback(
-    async (post, content, contentType) => {
+    async (postCid, content, contentType) => {
       const entity = {
         action: "append_discussion",
-        CID: post.cid,
+        CID: postCid,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
-      return await nextApi.post(
-        `sima/discussions/${post.cid}/appendants`,
-        data,
-      );
+      return await nextApi.post(`sima/discussions/${postCid}/appendants`, data);
     },
     [signSimaMessage],
   );
