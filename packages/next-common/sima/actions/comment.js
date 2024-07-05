@@ -4,6 +4,7 @@ import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { getContentField } from "next-common/utils/sima/utils";
 import { useCallback } from "react";
 import useProposalIndexerBuilder from "../hooks/useProposalIndexerBuilder";
+import { isLinkedToSimaDiscussion } from "./common";
 
 export function useCreateDiscussionComment() {
   const signSimaMessage = useSignSimaMessage();
@@ -27,9 +28,18 @@ export function useCreateProposalComment() {
   const signSimaMessage = useSignSimaMessage();
   const type = useDetailType();
   const getProposalIndexer = useProposalIndexerBuilder();
+  const createDiscussionComment = useCreateDiscussionComment();
 
   return useCallback(
     async (post, content, contentType) => {
+      if (isLinkedToSimaDiscussion(post)) {
+        return await createDiscussionComment(
+          post.refToPost,
+          content,
+          contentType,
+        );
+      }
+
       const indexer = getProposalIndexer(post);
       const entity = {
         action: "comment",
@@ -40,7 +50,7 @@ export function useCreateProposalComment() {
       const data = await signSimaMessage(entity);
       return await nextApi.post(`sima/${type}/${indexer.id}/comments`, data);
     },
-    [type, signSimaMessage, getProposalIndexer],
+    [type, signSimaMessage, getProposalIndexer, createDiscussionComment],
   );
 }
 
@@ -69,9 +79,19 @@ export function useCreateProposalCommentReply() {
   const signSimaMessage = useSignSimaMessage();
   const type = useDetailType();
   const getProposalIndexer = useProposalIndexerBuilder();
+  const createDiscussionCommentReply = useCreateDiscussionCommentReply();
 
   return useCallback(
     async (post, comment, content, contentType) => {
+      if (isLinkedToSimaDiscussion(post)) {
+        return await createDiscussionCommentReply(
+          post.refToPost,
+          comment,
+          content,
+          contentType,
+        );
+      }
+
       const indexer = getProposalIndexer(post);
       const entity = {
         action: "comment",
@@ -85,6 +105,6 @@ export function useCreateProposalCommentReply() {
         data,
       );
     },
-    [type, signSimaMessage, getProposalIndexer],
+    [type, signSimaMessage, getProposalIndexer, createDiscussionCommentReply],
   );
 }
