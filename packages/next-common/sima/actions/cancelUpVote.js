@@ -3,7 +3,16 @@ import nextApi from "next-common/services/nextApi";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { useCallback } from "react";
 import useProposalIndexerBuilder from "../hooks/useProposalIndexerBuilder";
-import { useConnectedAccount } from "next-common/context/connectedAccount";
+import {
+  checkSimaDataSource,
+  isLinkedToOffChainDiscussion,
+  isLinkedToSimaDiscussion,
+  useFindMyUpVote,
+} from "./common";
+import {
+  useOffChainCommentCancelUpVote,
+  useOffChainPostCancelUpVote,
+} from "next-common/noSima/actions/cancelUpVote";
 
 function getCancelUpVoteEntity(reactionCid) {
   return {
@@ -15,21 +24,24 @@ function getCancelUpVoteEntity(reactionCid) {
 
 export function useDiscussionCancelUpVote() {
   const signSimaMessage = useSignSimaMessage();
-  const connectedAccount = useConnectedAccount();
+  const findMyUpVote = useFindMyUpVote();
 
   return useCallback(
     async (post) => {
-      const myUpVote = post.reactions.find(
-        (item) => item.proposer === connectedAccount.address,
-      );
+      checkSimaDataSource(post);
+
+      const myUpVote = findMyUpVote(post?.reactions);
       if (!myUpVote) {
-        throw new Error("You have not upvoted this post");
+        throw new Error("You have no up vote on this post");
       }
+
+      checkSimaDataSource(myUpVote);
+
       const entity = getCancelUpVoteEntity(myUpVote.cid);
       const data = await signSimaMessage(entity);
       return await nextApi.post(`sima/discussions/${post.cid}/reactions`, data);
     },
-    [signSimaMessage, connectedAccount],
+    [signSimaMessage, findMyUpVote],
   );
 }
 
@@ -37,15 +49,30 @@ export function useProposalCancelUpVote() {
   const signSimaMessage = useSignSimaMessage();
   const type = useDetailType();
   const getProposalIndexer = useProposalIndexerBuilder();
-  const connectedAccount = useConnectedAccount();
+  const findMyUpVote = useFindMyUpVote();
+  const cancelOffChainUpVote = useOffChainPostCancelUpVote();
+  const cancelDiscussionUpVote = useDiscussionCancelUpVote();
 
   return useCallback(
     async (post) => {
-      const myUpVote = post.reactions.find(
-        (item) => item.proposer === connectedAccount.address,
-      );
+      if (isLinkedToOffChainDiscussion(post)) {
+        return await cancelOffChainUpVote(post);
+      }
+
+      if (isLinkedToSimaDiscussion(post)) {
+        return await cancelDiscussionUpVote({
+          ...post.refToPost,
+          reactions: post.reactions,
+        });
+      }
+
+      const myUpVote = findMyUpVote(post?.reactions);
       if (!myUpVote) {
-        throw new Error("You have not upvoted this post");
+        throw new Error("You have no up vote on this post");
+      }
+
+      if (myUpVote.dataSource !== "sima") {
+        return await cancelOffChainUpVote(post);
       }
 
       const indexer = getProposalIndexer(post);
@@ -53,22 +80,31 @@ export function useProposalCancelUpVote() {
       const data = await signSimaMessage(entity);
       return await nextApi.post(`sima/${type}/${indexer.id}/reactions`, data);
     },
-    [type, signSimaMessage, getProposalIndexer, connectedAccount],
+    [
+      type,
+      signSimaMessage,
+      getProposalIndexer,
+      findMyUpVote,
+      cancelOffChainUpVote,
+      cancelDiscussionUpVote,
+    ],
   );
 }
 
 export function useDiscussionCommentCancelUpVote() {
   const signSimaMessage = useSignSimaMessage();
-  const connectedAccount = useConnectedAccount();
+  const findMyUpVote = useFindMyUpVote();
 
   return useCallback(
     async (post, comment) => {
-      const myUpVote = comment.reactions.find(
-        (item) => item.proposer === connectedAccount.address,
-      );
+      checkSimaDataSource(comment);
+
+      const myUpVote = findMyUpVote(comment?.reactions);
       if (!myUpVote) {
-        throw new Error("You have not upvoted this post");
+        throw new Error("You have no up vote on this comment");
       }
+
+      checkSimaDataSource(myUpVote);
 
       const entity = getCancelUpVoteEntity(myUpVote.cid);
       const data = await signSimaMessage(entity);
@@ -77,7 +113,7 @@ export function useDiscussionCommentCancelUpVote() {
         data,
       );
     },
-    [signSimaMessage, connectedAccount],
+    [signSimaMessage, findMyUpVote],
   );
 }
 
@@ -85,15 +121,31 @@ export function useProposalCommentCancelUpVote() {
   const signSimaMessage = useSignSimaMessage();
   const type = useDetailType();
   const getProposalIndexer = useProposalIndexerBuilder();
-  const connectedAccount = useConnectedAccount();
+  const findMyUpVote = useFindMyUpVote();
+  const cancelDiscussionCommentUpVote = useDiscussionCommentCancelUpVote();
+  const cancelOffChainCommentUpVote = useOffChainCommentCancelUpVote();
 
   return useCallback(
     async (post, comment) => {
-      const myUpVote = comment.reactions.find(
-        (item) => item.proposer === connectedAccount.address,
-      );
+      if (isLinkedToOffChainDiscussion(post)) {
+        return await cancelOffChainCommentUpVote(post, comment);
+      }
+
+      if (isLinkedToSimaDiscussion(post)) {
+        return await cancelDiscussionCommentUpVote(post.refToPost, comment);
+      }
+
+      if (comment.dataSource !== "sima") {
+        return await cancelOffChainCommentUpVote(post, comment);
+      }
+
+      const myUpVote = findMyUpVote(comment?.reactions);
       if (!myUpVote) {
-        throw new Error("You have not upvoted this post");
+        throw new Error("You have no up vote on this comment");
+      }
+
+      if (myUpVote.dataSource !== "sima") {
+        return await cancelOffChainCommentUpVote(post, comment);
       }
 
       const indexer = getProposalIndexer(post);
@@ -104,6 +156,13 @@ export function useProposalCommentCancelUpVote() {
         data,
       );
     },
-    [type, signSimaMessage, getProposalIndexer, connectedAccount],
+    [
+      type,
+      signSimaMessage,
+      getProposalIndexer,
+      cancelOffChainCommentUpVote,
+      cancelDiscussionCommentUpVote,
+      findMyUpVote,
+    ],
   );
 }

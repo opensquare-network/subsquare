@@ -16,23 +16,11 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "../comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
-import { useConnectedAccount } from "next-common/context/connectedAccount";
-import { useOffChainCommentCancelUpVote } from "next-common/noSima/actions/cancelUpVote";
-import { useOffChainCommentUpVote } from "next-common/noSima/actions/upVote";
+import { useFindMyUpVote } from "next-common/sima/actions/common";
 
 function useMyUpVote(reactions) {
-  const user = useUser();
-  const connectedAccount = useConnectedAccount();
-
-  if (!user && !connectedAccount) {
-    return;
-  }
-
-  return reactions?.find((r) =>
-    r.dataSource === "sima"
-      ? r.proposer === connectedAccount?.address
-      : r.user?.username === user?.username,
-  );
+  const findMyUpVote = useFindMyUpVote();
+  return findMyUpVote(reactions);
 }
 
 export default function CommentActions({
@@ -87,8 +75,6 @@ export default function CommentActions({
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
   const { upVoteComment, cancelUpVoteComment } = useCommentActions();
-  const cancelUpVoteOffChainComment = useOffChainCommentCancelUpVote();
-  const upVoteOffChainComment = useOffChainCommentUpVote();
 
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
@@ -100,20 +86,9 @@ export default function CommentActions({
       let result, error;
 
       if (myUpVote) {
-        if (myUpVote.dataSource === "sima") {
-          ({ result, error } = await cancelUpVoteComment(post, comment));
-        } else {
-          ({ result, error } = await cancelUpVoteOffChainComment(
-            post,
-            comment,
-          ));
-        }
+        ({ result, error } = await cancelUpVoteComment(post, comment));
       } else {
-        if (comment.dataSource === "sima") {
-          ({ result, error } = await upVoteComment(post, comment));
-        } else {
-          ({ result, error } = await upVoteOffChainComment(post, comment));
-        }
+        ({ result, error } = await upVoteComment(post, comment));
       }
 
       if (result) {

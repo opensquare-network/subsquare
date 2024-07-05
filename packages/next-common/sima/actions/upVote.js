@@ -3,7 +3,15 @@ import nextApi from "next-common/services/nextApi";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { useCallback } from "react";
 import useProposalIndexerBuilder from "../hooks/useProposalIndexerBuilder";
-import { isLinkedToSimaDiscussion } from "./common";
+import {
+  checkSimaDataSource,
+  isLinkedToOffChainDiscussion,
+  isLinkedToSimaDiscussion,
+} from "./common";
+import {
+  useOffChainCommentUpVote,
+  useOffChainPostUpVote,
+} from "next-common/noSima/actions/upVote";
 
 function getDiscussionUpVoteEntity(cid) {
   return {
@@ -26,6 +34,8 @@ export function useDiscussionUpVote() {
 
   return useCallback(
     async (post) => {
+      checkSimaDataSource(post);
+
       const entity = getDiscussionUpVoteEntity(post.cid);
       const data = await signSimaMessage(entity);
       return await nextApi.post(`sima/discussions/${post.cid}/reactions`, data);
@@ -39,9 +49,14 @@ export function useProposalUpVote() {
   const type = useDetailType();
   const getProposalIndexer = useProposalIndexerBuilder();
   const upVoteDiscussion = useDiscussionUpVote();
+  const upVoteOffChainPost = useOffChainPostUpVote();
 
   return useCallback(
     async (post) => {
+      if (isLinkedToOffChainDiscussion(post)) {
+        return await upVoteOffChainPost(post);
+      }
+
       if (isLinkedToSimaDiscussion(post)) {
         return await upVoteDiscussion(post.refToPost);
       }
@@ -51,7 +66,13 @@ export function useProposalUpVote() {
       const data = await signSimaMessage(entity);
       return await nextApi.post(`sima/${type}/${indexer.id}/reactions`, data);
     },
-    [type, getProposalIndexer, signSimaMessage, upVoteDiscussion],
+    [
+      type,
+      getProposalIndexer,
+      signSimaMessage,
+      upVoteDiscussion,
+      upVoteOffChainPost,
+    ],
   );
 }
 
@@ -60,6 +81,8 @@ export function useDiscussionCommentUpVote() {
 
   return useCallback(
     async (post, comment) => {
+      checkSimaDataSource(comment);
+
       const entity = getDiscussionUpVoteEntity(comment.cid);
       const data = await signSimaMessage(entity);
       return await nextApi.post(
@@ -76,11 +99,20 @@ export function useProposalCommentUpVote() {
   const type = useDetailType();
   const getProposalIndexer = useProposalIndexerBuilder();
   const upVoteDiscussionComment = useDiscussionCommentUpVote();
+  const upVoteOffChainComment = useOffChainCommentUpVote();
 
   return useCallback(
     async (post, comment) => {
+      if (isLinkedToOffChainDiscussion(post)) {
+        return await upVoteOffChainComment(post, comment);
+      }
+
       if (isLinkedToSimaDiscussion(post)) {
         return await upVoteDiscussionComment(post.refToPost, comment);
+      }
+
+      if (comment.dataSource !== "sima") {
+        return await upVoteOffChainComment(post, comment);
       }
 
       const indexer = getProposalIndexer(post);
@@ -91,6 +123,12 @@ export function useProposalCommentUpVote() {
         data,
       );
     },
-    [type, getProposalIndexer, signSimaMessage, upVoteDiscussionComment],
+    [
+      type,
+      getProposalIndexer,
+      signSimaMessage,
+      upVoteDiscussionComment,
+      upVoteOffChainComment,
+    ],
   );
 }

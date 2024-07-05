@@ -13,7 +13,6 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useArticleActions } from "next-common/sima/context/articleActions";
 import { useMyUpVote } from "next-common/context/post/useMyUpVote";
-import { useOffChainPostCancelUpVote } from "next-common/noSima/actions/cancelUpVote";
 
 export default function ArticleActions({ setIsEdit, extraActions }) {
   const user = useUser();
@@ -29,8 +28,6 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
 
   const { upVote, cancelUpVote, reloadPost } = useArticleActions();
 
-  const cancelOffChainUpVote = useOffChainPostCancelUpVote();
-
   const toggleThumbUp = async () => {
     if (!user || isAuthor || thumbUpLoading) {
       return;
@@ -41,11 +38,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
       let result, error;
 
       if (thumbsUp) {
-        if (myUpVote.dataSource === "sima") {
-          ({ result, error } = await cancelUpVote(post));
-        } else {
-          ({ result, error } = await cancelOffChainUpVote(post));
-        }
+        ({ result, error } = await cancelUpVote(post));
       } else {
         ({ result, error } = await upVote(post));
       }

@@ -5,6 +5,7 @@ import { getContentField } from "next-common/utils/sima/utils";
 import { useCallback } from "react";
 import useProposalIndexerBuilder from "../hooks/useProposalIndexerBuilder";
 import {
+  checkSimaDataSource,
   isLinkedToOffChainDiscussion,
   isLinkedToSimaDiscussion,
 } from "./common";
@@ -18,6 +19,8 @@ export function useCreateDiscussionComment() {
 
   return useCallback(
     async (post, content, contentType) => {
+      checkSimaDataSource(post);
+
       const entity = {
         action: "comment",
         cid: post.cid,
@@ -77,6 +80,8 @@ export function useCreateDiscussionCommentReply() {
 
   return useCallback(
     async (post, comment, content, contentType) => {
+      checkSimaDataSource(comment);
+
       const entity = {
         action: "comment",
         cid: comment.cid,
@@ -114,6 +119,15 @@ export function useCreateProposalCommentReply() {
       if (isLinkedToSimaDiscussion(post)) {
         return await createDiscussionCommentReply(
           post.refToPost,
+          comment,
+          content,
+          contentType,
+        );
+      }
+
+      if (comment.dataSource !== "sima") {
+        return await createOffChainCommentReply(
+          post,
           comment,
           content,
           contentType,
