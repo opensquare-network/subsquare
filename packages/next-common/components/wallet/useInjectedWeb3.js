@@ -6,6 +6,15 @@ export default function useInjectedWeb3() {
   const [injectedWeb3, setInjectedWeb3] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  //Added for supporting PolkaGate Snap
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      import("@polkagate/extension-dapp").then((module) => {
+        module.web3Enable("snaponly");
+      });
+    }
+  }, []);
+
   useEffect(() => {
     function handleWeb3() {
       setLoading(false);
