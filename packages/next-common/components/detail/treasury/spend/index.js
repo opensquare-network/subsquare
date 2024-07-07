@@ -6,6 +6,8 @@ import ArticleContent from "next-common/components/articleContent";
 import PostTitle from "next-common/components/detail/common/Title";
 import TreasurySpendNavigation from "next-common/components/detail/treasury/spend/navigation";
 import TreasurySpendPostMeta from "next-common/components/detail/treasury/spend/headerMeta";
+import TreasurySpendValidCountdown from "next-common/components/detail/treasury/spend/validCountdown";
+import TreasurySpendExpireCountdown from "next-common/components/detail/treasury/spend/expireCountDown";
 
 export default function TreasurySpendDetail() {
   const setIsEdit = useSetEdit();
@@ -17,6 +19,8 @@ export default function TreasurySpendDetail() {
         !isEditing && (
           <>
             <TreasurySpendNavigation />
+            <TreasurySpendValidCountdown />
+            <TreasurySpendExpireCountdown />
           </>
         )
       }
