@@ -44,7 +44,7 @@ export default function PolkadotWallet({
     }
 
     // Added for supporting PolkaGate Snap
-    if (wallet.extensionName === WalletTypes.POLKAGATE_SNAP) {
+    if (wallet?.extensionName === WalletTypes.POLKAGATE_SNAP) {
       setInstalled(isMetaMaskWallet);
     }
   }, [
