@@ -4,6 +4,7 @@ import { SystemLink } from "@osn/icons/subsquare";
 import { useInjectedWeb3Extension } from "./useInjectedWeb3Extension";
 import { useMountedState } from "react-use";
 import WalletTypes from "next-common/utils/consts/walletTypes";
+import { useIsMetamaskWallet } from "next-common/hooks/connect/useIsMetamask";
 
 function isMultiSigWallet(wallet) {
   return wallet?.extensionName === "mimir";
@@ -30,6 +31,7 @@ export default function PolkadotWallet({
   const Logo = wallet.logo;
   const { injectedWeb3Extension, loading: loadingWeb3Extension } =
     useInjectedWeb3Extension(wallet?.extensionName);
+  const isMetaMaskWallet = useIsMetamaskWallet();
 
   useEffect(() => {
     // update if installed changes
@@ -42,10 +44,16 @@ export default function PolkadotWallet({
     }
 
     // Added for supporting PolkaGate Snap
-    if(wallet.extensionName === WalletTypes.POLKAGATE_SNAP) {
-      setInstalled(window?.ethereum?.isMetaMask);
+    if (wallet.extensionName === WalletTypes.POLKAGATE_SNAP) {
+      setInstalled(isMetaMaskWallet);
     }
-  }, [loadingWeb3Extension, isMounted, injectedWeb3Extension]);
+  }, [
+    wallet,
+    loadingWeb3Extension,
+    isMounted,
+    injectedWeb3Extension,
+    isMetaMaskWallet,
+  ]);
 
   return (
     <WalletOption
