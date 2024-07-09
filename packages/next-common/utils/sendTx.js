@@ -153,7 +153,10 @@ export async function defaultSendTx({
 
     const unsub = await tx.signAndSend(
       signerAddress,
-      { nonce: account.nonce },
+      {
+        nonce: account.nonce,
+        withSignedTransaction: true,
+      },
       createSendTxEventHandler({
         toastId,
         dispatch,
