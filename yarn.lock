@@ -2808,13 +2808,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.109.0":
-  version: 1.109.0
-  resolution: "@osn/icons@npm:1.109.0"
-  checksum: 284c1ff3d7ecabd4d974c1c517052299fce8dce3e55b61ad30bc48bd61adb54e1d8957908772b1a35b1481338af22841dd7dd7a00122498394ddedb212a049e4
-  languageName: node
-  linkType: hard
-
 "@osn/icons@npm:^1.115.0":
   version: 1.115.0
   resolution: "@osn/icons@npm:1.115.0"
@@ -4677,7 +4670,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.109.0
+    "@osn/icons": ^1.115.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -4712,7 +4705,7 @@ __metadata:
     "@next/bundle-analyzer": ^14.2.4
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.109.0
+    "@osn/icons": ^1.115.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
