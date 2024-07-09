@@ -33,6 +33,8 @@ import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubD
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 import { useContextApi } from "next-common/context/api";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 function ReferendumContent() {
   const dispatch = useDispatch();
@@ -79,36 +81,42 @@ function ReferendumContent() {
   );
 
   return (
-    <ContentWithComment>
-      <DetailItem />
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <DetailItem />
 
-      <Vote
-        referendumInfo={post?.onchainData?.info}
-        referendumIndex={post?.referendumIndex}
-      />
-
-      <DetailMultiTabs
-        call={
-          (call || inlineCall) && (
-            <ReferendumCall
-              call={call || inlineCall}
-              shorten={post?.onchainData?.preImage?.shorten}
-              onchainData={post?.onchainData}
-            />
-          )
-        }
-        metadata={
-          <ReferendumMetadata
-            proposer={post?.proposer || (post.authors || [])[0]}
-            status={referendumStatus ?? {}}
-            onchainData={post?.onchainData}
+          <Vote
+            referendumInfo={post?.onchainData?.info}
+            referendumIndex={post?.referendumIndex}
           />
-        }
-        timeline={<Timeline data={timelineData} compact={isTimelineCompact} />}
-        timelineCount={timelineData.length}
-        votesBubble={<DemocracyReferendaVotesBubble />}
-      />
-    </ContentWithComment>
+
+          <DetailMultiTabs
+            call={
+              (call || inlineCall) && (
+                <ReferendumCall
+                  call={call || inlineCall}
+                  shorten={post?.onchainData?.preImage?.shorten}
+                  onchainData={post?.onchainData}
+                />
+              )
+            }
+            metadata={
+              <ReferendumMetadata
+                proposer={post?.proposer || (post.authors || [])[0]}
+                status={referendumStatus ?? {}}
+                onchainData={post?.onchainData}
+              />
+            }
+            timeline={
+              <Timeline data={timelineData} compact={isTimelineCompact} />
+            }
+            timelineCount={timelineData.length}
+            votesBubble={<DemocracyReferendaVotesBubble />}
+          />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

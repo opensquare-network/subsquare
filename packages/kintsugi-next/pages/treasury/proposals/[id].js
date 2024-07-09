@@ -14,6 +14,8 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 const Timeline = dynamicClientOnly(() =>
   import("components/treasuryProposal/timeline"),
@@ -28,13 +30,17 @@ function TreasuryProposalContent() {
   useSubscribePostDetail(detail?.proposalIndex);
 
   return (
-    <ContentWithComment>
-      <TreasuryProposalDetail />
-      <DetailMultiTabs
-        metadata={<Metadata treasuryProposal={detail?.onchainData} />}
-        timeline={<Timeline treasuryProposal={detail?.onchainData} />}
-      />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <TreasuryProposalDetail />
+          <DetailMultiTabs
+            metadata={<Metadata treasuryProposal={detail?.onchainData} />}
+            timeline={<Timeline treasuryProposal={detail?.onchainData} />}
+          />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

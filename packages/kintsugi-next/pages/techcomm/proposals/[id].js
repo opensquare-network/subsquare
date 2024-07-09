@@ -12,6 +12,8 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 function TechCommMotionContent() {
   const motion = usePost();
@@ -19,9 +21,13 @@ function TechCommMotionContent() {
   useSubscribePostDetail(`${motion?.height}_${motion?.hash}`);
 
   return (
-    <ContentWithComment>
-      <TechcommMotionDetail motion={motion} />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <TechcommMotionDetail motion={motion} />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 
