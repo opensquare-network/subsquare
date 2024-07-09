@@ -59,8 +59,7 @@ const polkagate = {
 const polkagateSnap = {
   extensionName: WalletTypes.POLKAGATE_SNAP,
   title: "PolkaGate Snap",
-  installUrl:
-    "https://snaps.metamask.io/snap/npm/polkagate/snap/",
+  installUrl: "https://snaps.metamask.io/snap/npm/polkagate/snap/",
   logo: WalletPolkagateSnap,
 };
 
@@ -144,4 +143,12 @@ export function getMultiSigWallets() {
   }
 
   return result;
+}
+
+//Added for supporting PolkaGate Snap
+export async function enablePolkaGateSnap() {
+  if (typeof window !== "undefined") {
+    const { web3Enable } = await import("@polkagate/extension-dapp");
+    web3Enable("snaponly");
+  }
 }
