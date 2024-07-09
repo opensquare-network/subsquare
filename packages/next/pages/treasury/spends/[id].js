@@ -19,6 +19,9 @@ import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
+import { SimaProposalCommentActionsProvider } from "next-common/sima/components/common/context/commentActionsProvider";
+import { useChainSettings } from "next-common/context/chain";
 
 const TreasurySpendMetadata = dynamicClientOnly(() =>
   import("next-common/components/detail/treasury/spend/metadata"),
@@ -36,30 +39,47 @@ function TreasurySpendContent() {
   );
 
   return (
+    <ContentWithComment>
+      <TreasurySpendDetail />
+      <DetailMultiTabs
+        metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
+        timeline={
+          <Timeline
+            data={timelineData}
+            indent={false}
+            compact={isTimelineCompact}
+          />
+        }
+        timelineCount={timelineData.length}
+      />
+    </ContentWithComment>
+  );
+}
+
+function NonSimaTreasurySpendContent() {
+  return (
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
-        <ContentWithComment>
-          <TreasurySpendDetail />
-          <DetailMultiTabs
-            metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
-            timeline={
-              <Timeline
-                data={timelineData}
-                indent={false}
-                compact={isTimelineCompact}
-              />
-            }
-            timelineCount={timelineData.length}
-          />
-        </ContentWithComment>
+        <TreasurySpendContent />
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>
+  );
+}
+
+function SimaTreasurySpendContent() {
+  return (
+    <SimaProposalArticleActionsProvider>
+      <SimaProposalCommentActionsProvider>
+        <TreasurySpendContent />
+      </SimaProposalCommentActionsProvider>
+    </SimaProposalArticleActionsProvider>
   );
 }
 
 function ProposalContentWithNullGuard() {
   const { id } = usePageProps();
   const detail = usePost();
+  const { sima } = useChainSettings();
 
   if (!detail) {
     return (
@@ -70,7 +90,7 @@ function ProposalContentWithNullGuard() {
     );
   }
 
-  return <TreasurySpendContent />;
+  return sima ? <SimaTreasurySpendContent /> : <NonSimaTreasurySpendContent />;
 }
 
 function SpendPageImpl() {
