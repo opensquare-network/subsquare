@@ -7,6 +7,9 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useAddressAvatarMap } from "next-common/context/avatar";
+import useAvatarInfo from "next-common/hooks/useAvatarInfo";
+import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import { AvatarImg } from "./user/styled";
 
 const StyledIdenticon = styled(Identicon)`
   circle:first-child {
@@ -31,20 +34,26 @@ const ImgWrapper = styled.img`
 export default function Avatar({ address, size = 24 }) {
   const themeObj = useThemeSetting();
   const theme = "polkadot";
+  const avatarSize = (size / 10) * 9;
+
+  const [avatarCid] = useAvatarInfo(address);
+
+  if (avatarCid) {
+    return <AvatarImg src={getIpfsLink(avatarCid)} size={size} />;
+  }
 
   const maybeEvmAddress = tryConvertToEvmAddress(address);
 
   const addressAvatarMap = useAddressAvatarMap();
   const image = addressAvatarMap?.get(maybeEvmAddress);
-  const imgSize = (size / 10) * 9;
   if (image) {
     return (
       <Wrapper size={size}>
         <ImgWrapper
-          size={imgSize}
+          size={avatarSize}
           src={image}
-          width={imgSize}
-          height={imgSize}
+          width={avatarSize}
+          height={avatarSize}
           alt={maybeEvmAddress}
         />
       </Wrapper>
@@ -55,10 +64,10 @@ export default function Avatar({ address, size = 24 }) {
     return (
       <Wrapper size={size}>
         <ImgWrapper
-          size={imgSize}
+          size={avatarSize}
           src={makeBlockie(maybeEvmAddress)}
-          width={imgSize}
-          height={imgSize}
+          width={avatarSize}
+          height={avatarSize}
           alt={maybeEvmAddress}
         />
       </Wrapper>
