@@ -1,8 +1,6 @@
-import { useDetailType } from "next-common/context/page";
 import nextApi from "next-common/services/nextApi";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { useCallback } from "react";
-import useProposalIndexerBuilder from "../hooks/useProposalIndexerBuilder";
 import {
   checkSimaDataSource,
   isLinkedToOffChainDiscussion,
@@ -13,6 +11,8 @@ import {
   useOffChainCommentCancelUpVote,
   useOffChainPostCancelUpVote,
 } from "next-common/noSima/actions/cancelUpVote";
+import getProposalIndexer from "../utils/getProposalIndexer";
+import getDetailPageCategory from "../utils/getDetailPageCategoryFromPostType";
 
 function getCancelUpVoteEntity(reactionCid) {
   return {
@@ -47,8 +47,6 @@ export function useDiscussionCancelUpVote() {
 
 export function useProposalCancelUpVote() {
   const signSimaMessage = useSignSimaMessage();
-  const type = useDetailType();
-  const getProposalIndexer = useProposalIndexerBuilder();
   const findMyUpVote = useFindMyUpVote();
   const cancelOffChainUpVote = useOffChainPostCancelUpVote();
   const cancelDiscussionUpVote = useDiscussionCancelUpVote();
@@ -78,12 +76,11 @@ export function useProposalCancelUpVote() {
       const indexer = getProposalIndexer(post);
       const entity = getCancelUpVoteEntity(myUpVote.cid);
       const data = await signSimaMessage(entity);
+      const type = getDetailPageCategory(post);
       return await nextApi.post(`sima/${type}/${indexer.id}/reactions`, data);
     },
     [
-      type,
       signSimaMessage,
-      getProposalIndexer,
       findMyUpVote,
       cancelOffChainUpVote,
       cancelDiscussionUpVote,
@@ -119,8 +116,6 @@ export function useDiscussionCommentCancelUpVote() {
 
 export function useProposalCommentCancelUpVote() {
   const signSimaMessage = useSignSimaMessage();
-  const type = useDetailType();
-  const getProposalIndexer = useProposalIndexerBuilder();
   const findMyUpVote = useFindMyUpVote();
   const cancelDiscussionCommentUpVote = useDiscussionCommentCancelUpVote();
   const cancelOffChainCommentUpVote = useOffChainCommentCancelUpVote();
@@ -151,15 +146,14 @@ export function useProposalCommentCancelUpVote() {
       const indexer = getProposalIndexer(post);
       const entity = getCancelUpVoteEntity(myUpVote.cid);
       const data = await signSimaMessage(entity);
+      const type = getDetailPageCategory(post);
       return await nextApi.post(
         `sima/${type}/${indexer.id}/comments/${comment.cid}/reactions`,
         data,
       );
     },
     [
-      type,
       signSimaMessage,
-      getProposalIndexer,
       cancelOffChainCommentUpVote,
       cancelDiscussionCommentUpVote,
       findMyUpVote,

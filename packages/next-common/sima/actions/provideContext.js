@@ -1,6 +1,4 @@
-import { useDetailType } from "next-common/context/page";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
-import useProposalIndexerBuilder from "../hooks/useProposalIndexerBuilder";
 import { useCallback } from "react";
 import { getContentField } from "next-common/utils/sima/utils";
 import nextApi from "next-common/services/nextApi";
@@ -10,11 +8,11 @@ import {
   isLinkedToSimaDiscussion,
 } from "./common";
 import { useOffChainProvideContext } from "next-common/noSima/actions/provideContext";
+import getProposalIndexer from "../utils/getProposalIndexer";
+import getDetailPageCategory from "../utils/getDetailPageCategoryFromPostType";
 
 export function useProvideContext() {
   const signSimaMessage = useSignSimaMessage();
-  const type = useDetailType();
-  const getProposalIndexer = useProposalIndexerBuilder();
   const offChainDiscussionProvideContext = useOffChainProvideContext();
 
   return useCallback(
@@ -35,7 +33,7 @@ export function useProvideContext() {
 
       checkSimaDataSource(post);
 
-      const indexer = getProposalIndexer(post.onchainData);
+      const indexer = getProposalIndexer(post);
       const entity = {
         action: "provide_context",
         indexer,
@@ -44,13 +42,10 @@ export function useProvideContext() {
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
+
+      const type = getDetailPageCategory(post);
       return await nextApi.post(`sima/${type}`, data);
     },
-    [
-      type,
-      signSimaMessage,
-      getProposalIndexer,
-      offChainDiscussionProvideContext,
-    ],
+    [signSimaMessage, offChainDiscussionProvideContext],
   );
 }

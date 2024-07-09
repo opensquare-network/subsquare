@@ -1,9 +1,7 @@
-import { useDetailType } from "next-common/context/page";
 import nextApi from "next-common/services/nextApi";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { getContentField } from "next-common/utils/sima/utils";
 import { useCallback } from "react";
-import useProposalIndexerBuilder from "../hooks/useProposalIndexerBuilder";
 import {
   checkSimaDataSource,
   isLinkedToOffChainDiscussion,
@@ -13,6 +11,8 @@ import {
   useCreateOffChainComment,
   useCreateOffChainCommentReply,
 } from "next-common/noSima/actions/comment";
+import getProposalIndexer from "../utils/getProposalIndexer";
+import getDetailPageCategory from "../utils/getDetailPageCategoryFromPostType";
 
 export function useCreateDiscussionComment() {
   const signSimaMessage = useSignSimaMessage();
@@ -36,8 +36,6 @@ export function useCreateDiscussionComment() {
 
 export function useCreateProposalComment() {
   const signSimaMessage = useSignSimaMessage();
-  const type = useDetailType();
-  const getProposalIndexer = useProposalIndexerBuilder();
   const createDiscussionComment = useCreateDiscussionComment();
   const createOffChainComment = useCreateOffChainComment();
 
@@ -63,15 +61,11 @@ export function useCreateProposalComment() {
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
+
+      const type = getDetailPageCategory(post);
       return await nextApi.post(`sima/${type}/${indexer.id}/comments`, data);
     },
-    [
-      type,
-      signSimaMessage,
-      getProposalIndexer,
-      createDiscussionComment,
-      createOffChainComment,
-    ],
+    [signSimaMessage, createDiscussionComment, createOffChainComment],
   );
 }
 
@@ -100,8 +94,6 @@ export function useCreateDiscussionCommentReply() {
 
 export function useCreateProposalCommentReply() {
   const signSimaMessage = useSignSimaMessage();
-  const type = useDetailType();
-  const getProposalIndexer = useProposalIndexerBuilder();
   const createDiscussionCommentReply = useCreateDiscussionCommentReply();
   const createOffChainCommentReply = useCreateOffChainCommentReply();
 
@@ -142,13 +134,15 @@ export function useCreateProposalCommentReply() {
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
+
+      const type = getDetailPageCategory(post);
+
       return await nextApi.post(
         `sima/${type}/${indexer.id}/comments/${comment.cid}/replies`,
         data,
       );
     },
     [
-      type,
       signSimaMessage,
       getProposalIndexer,
       createDiscussionCommentReply,

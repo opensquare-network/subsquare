@@ -7,8 +7,8 @@ import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumIn
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
-import { ReferendaCommentActionsProvider } from "next-common/sima/components/referenda/context/commentActionsProvider";
-import { ReferendaArticleActionsProvider } from "next-common/sima/components/referenda/context/articleActionsProvider";
+import { SimaProposalCommentActionsProvider } from "next-common/sima/components/common/context/commentActionsProvider";
+import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
 import Gov2Sidebar from "components/gov2/sidebar";
 import { ReferendumDetailMultiTabs } from "../referendaContent";
 
@@ -26,14 +26,14 @@ export function SimaReferendumContent() {
   }, [dispatch]);
 
   return (
-    <ReferendaArticleActionsProvider>
-      <ReferendaCommentActionsProvider>
+    <SimaProposalArticleActionsProvider>
+      <SimaProposalCommentActionsProvider>
         <ContentWithComment>
           <ReferendaDetail />
           <Gov2Sidebar />
           <ReferendumDetailMultiTabs />
         </ContentWithComment>
-      </ReferendaCommentActionsProvider>
-    </ReferendaArticleActionsProvider>
+      </SimaProposalCommentActionsProvider>
+    </SimaProposalArticleActionsProvider>
   );
 }

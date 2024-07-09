@@ -20,6 +20,9 @@ import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { useChainSettings } from "next-common/context/chain";
+import { SimaProposalCommentActionsProvider } from "next-common/sima/components/common/context/commentActionsProvider";
+import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/proposal/metadata"),
@@ -39,36 +42,57 @@ function TreasuryProposalContent() {
   );
 
   return (
+    <ContentWithComment>
+      <TreasuryProposalDetail />
+      <DetailMultiTabs
+        metadata={<Metadata treasuryProposal={detail?.onchainData} />}
+        timeline={
+          <Timeline
+            data={timelineData}
+            indent={false}
+            compact={isTimelineCompact}
+          />
+        }
+        timelineCount={timelineData.length}
+      />
+    </ContentWithComment>
+  );
+}
+
+function NonSimaTreasuryProposalContent() {
+  return (
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
-        <ContentWithComment>
-          <TreasuryProposalDetail />
-          <DetailMultiTabs
-            metadata={<Metadata treasuryProposal={detail?.onchainData} />}
-            timeline={
-              <Timeline
-                data={timelineData}
-                indent={false}
-                compact={isTimelineCompact}
-              />
-            }
-            timelineCount={timelineData.length}
-          />
-        </ContentWithComment>
+        <TreasuryProposalContent />
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>
+  );
+}
+
+function SimaTreasuryProposalContent() {
+  return (
+    <SimaProposalArticleActionsProvider>
+      <SimaProposalCommentActionsProvider>
+        <TreasuryProposalContent />
+      </SimaProposalCommentActionsProvider>
+    </SimaProposalArticleActionsProvider>
   );
 }
 
 function ProposalContentWithNullGuard() {
   const { id } = usePageProps();
   const detail = usePost();
+  const { sima } = useChainSettings();
 
   if (!detail) {
     return <CheckUnFinalized id={id} />;
   }
 
-  return <TreasuryProposalContent />;
+  return sima ? (
+    <SimaTreasuryProposalContent />
+  ) : (
+    <NonSimaTreasuryProposalContent />
+  );
 }
 
 function ProposalPageImpl() {
