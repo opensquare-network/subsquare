@@ -1,21 +1,18 @@
 import { withCommonProps } from "next-common/lib";
 import { useChainSettings } from "next-common/context/chain";
-import ListLayout from "next-common/components/layout/ListLayout";
-import { HeadContent, TitleExtra } from "next-common/components/overview";
+import usePageTitle from "next-common/hooks/usePageTitle";
+import BaseLayout from "next-common/components/layout/baseLayout";
 import Chains from "next-common/utils/consts/chains";
 
-export default function HomePage() {
+export default function AssetsPage() {
   const chainSettings = useChainSettings();
+  const seoTitle = usePageTitle("AssetHub platform");
+  const seoInfo = {
+    title: "Subsquare | " + seoTitle,
+    desc: chainSettings.description,
+  };
 
-  return (
-    <ListLayout
-      title={chainSettings.name}
-      titleExtra={<TitleExtra />}
-      seoInfo={{ title: "" }}
-      description={chainSettings.description}
-      headContent={<HeadContent />}
-    ></ListLayout>
-  );
+  return <BaseLayout seoInfo={seoInfo}></BaseLayout>;
 }
 
 export const getServerSideProps = withCommonProps(async () => {
