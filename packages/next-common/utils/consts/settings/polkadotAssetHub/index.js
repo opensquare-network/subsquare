@@ -33,6 +33,10 @@ const polkadotAssetHub = {
   hasStatescan: true,
   description: "Assets para-chain of Polkadot",
   ...polkadotAssetHubThemeVars,
+  multisigWallets: {
+    signet: true,
+    mimir: true,
+  },
 };
 
 export default polkadotAssetHub;
