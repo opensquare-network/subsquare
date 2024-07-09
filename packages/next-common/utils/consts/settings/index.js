@@ -30,6 +30,8 @@ import moonriver from "./moonriver";
 import moonbeam from "./moonbeam";
 import bifrostPolkadot from "./bifrostPolkadot";
 import vara from "./vara";
+import polkadotAssetHub from "./polkadotAssetHub";
+import Chains from "next-common/utils/consts/chains";
 
 const settingsMap = {
   polkadot,
@@ -62,6 +64,7 @@ const settingsMap = {
   westend,
   [westendCollectives.value]: westendCollectives,
   [bifrostPolkadot.value]: bifrostPolkadot,
+  [Chains.polkadotAssetHub]: polkadotAssetHub,
   vara,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
