@@ -3,7 +3,6 @@ import { useCallback } from "react";
 import { getContentField } from "next-common/utils/sima/utils";
 import nextApi from "next-common/services/nextApi";
 import {
-  checkSimaDataSource,
   isLinkedToOffChainDiscussion,
   isLinkedToSimaDiscussion,
 } from "./common";
@@ -30,8 +29,6 @@ export function useProvideContext() {
       if (isLinkedToSimaDiscussion(post)) {
         throw new Error("Editing SIMA discussion is not support");
       }
-
-      checkSimaDataSource(post);
 
       const indexer = getProposalIndexer(post);
       const entity = {
