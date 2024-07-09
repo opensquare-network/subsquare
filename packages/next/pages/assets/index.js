@@ -3,13 +3,13 @@ import { useChainSettings } from "next-common/context/chain";
 import usePageTitle from "next-common/hooks/usePageTitle";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import Chains from "next-common/utils/consts/chains";
-import { useConnectedAccount } from "next-common/context/connectedAccount";
 import NoWalletConnected from "components/assets/noWalletConnected";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function AssetsContent() {
-  const connectedAccount = useConnectedAccount();
+  const address = useRealAddress();
 
-  if (!connectedAccount) {
+  if (!address) {
     return <NoWalletConnected />;
   }
 
