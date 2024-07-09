@@ -78,5 +78,8 @@ export default function getChainSettings(chain) {
     throw `can not get chain settings of ${chain}`;
   }
 
-  return settings;
+  return {
+    modules: {},
+    ...settings,
+  };
 }

@@ -14,7 +14,7 @@ export async function fetchOpenGovTracksProps() {
       referenda: hasReferenda,
       fellowship: hasFellowship,
       ambassador: hasAmbassador,
-    },
+    } = {},
   } = getChainSettings(process.env.CHAIN);
   let tracks = [],
     fellowshipTracks = [],

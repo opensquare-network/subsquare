@@ -54,7 +54,7 @@ export function withCommonProps(
     return {
       ...props,
       props: {
-        ...props.props,
+        ...(props?.props || {}),
         chain: process.env.CHAIN,
         user: user ?? null,
         userStatus: userStatus ?? null,
@@ -69,7 +69,7 @@ export function withCommonProps(
           userAgent,
           props: {
             ...getIdProperty(context),
-            ...props.props,
+            ...(props?.props || {}),
           },
         },
       },
