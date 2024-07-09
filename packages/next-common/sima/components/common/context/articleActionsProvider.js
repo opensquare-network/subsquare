@@ -5,7 +5,7 @@ import { useProvideContext } from "next-common/sima/actions/provideContext";
 import { useReloadPost } from "next-common/noSima/actions/reloadPost";
 import { useGetSimaUserDiscussions } from "next-common/sima/actions/linkPost";
 
-export function ReferendaArticleActionsProvider({ children }) {
+export function SimaProposalArticleActionsProvider({ children }) {
   const upVote = useProposalUpVote();
   const cancelUpVote = useProposalCancelUpVote();
   const reloadPost = useReloadPost();
