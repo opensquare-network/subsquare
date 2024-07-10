@@ -1,20 +1,10 @@
 import { withCommonProps } from "next-common/lib";
 import { useChainSettings } from "next-common/context/chain";
 import usePageTitle from "next-common/hooks/usePageTitle";
-import BaseLayout from "next-common/components/layout/baseLayout";
 import Chains from "next-common/utils/consts/chains";
 import NoWalletConnected from "components/assets/noWalletConnected";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-
-function AssetsContent() {
-  const address = useRealAddress();
-
-  if (!address) {
-    return <NoWalletConnected />;
-  }
-
-  return null;
-}
+import WalletAssetList from "components/assets/walletAssetList";
 
 export default function AssetsPage() {
   const chainSettings = useChainSettings();
@@ -23,12 +13,13 @@ export default function AssetsPage() {
     title: "Subsquare | " + seoTitle,
     desc: chainSettings.description,
   };
+  const address = useRealAddress();
 
-  return (
-    <BaseLayout seoInfo={seoInfo}>
-      <AssetsContent />
-    </BaseLayout>
-  );
+  if (!address) {
+    return <NoWalletConnected seoInfo={seoInfo} />;
+  }
+
+  return <WalletAssetList seoInfo={seoInfo} />;
 }
 
 export const getServerSideProps = withCommonProps(async () => {
