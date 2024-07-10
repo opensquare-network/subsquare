@@ -4,12 +4,24 @@ import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import BigNumber from "bignumber.js";
 import ListButton from "next-common/components/styled/listButton";
+import TransferPopup from "./transferPopup";
 
-function TransferButton({ onClick, disabled }) {
+function TransferButton({ asset }) {
+  const [showPopup, setShowPopup] = useState(false);
+
   return (
-    <ListButton disabled={disabled} onClick={onClick}>
-      <SystemTransfer width={16} height={16} />
-    </ListButton>
+    <>
+      <ListButton
+        onClick={() => {
+          setShowPopup(true);
+        }}
+      >
+        <SystemTransfer width={16} height={16} />
+      </ListButton>
+      {showPopup && (
+        <TransferPopup asset={asset} onClose={() => setShowPopup(false)} />
+      )}
+    </>
   );
 }
 
@@ -28,8 +40,6 @@ function formatBalance(balance, decimals) {
 }
 
 export default function AssetsList({ assets }) {
-  const [, setShowPopup] = useState(false);
-
   const columns = [
     {
       name: "Token",
@@ -58,11 +68,7 @@ export default function AssetsList({ assets }) {
       {formatBalance(item.balance || 0, item.decimals)}
     </span>,
     <div key="transfer">
-      <TransferButton
-        onClick={() => {
-          setShowPopup(true);
-        }}
-      />
+      <TransferButton asset={item} />
     </div>,
   ]);
 
