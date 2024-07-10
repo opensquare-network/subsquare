@@ -2,12 +2,12 @@ import { isNil } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { CommonTag } from "../tags/state/styled";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
-import { useAmbassadorMemberRank } from "next-common/hooks/ambassador/useAmbassadorMemberRank";
+import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
 
 function AmbassadorTagInfoImpl({ address }) {
-  const ambassadorRank = useAmbassadorMemberRank(address);
+  const rank = useFellowshipMemberRank(address, "ambassadorCollective");
 
-  if (isNil(ambassadorRank)) {
+  if (isNil(rank)) {
     return null;
   }
 
@@ -16,11 +16,11 @@ function AmbassadorTagInfoImpl({ address }) {
       <CommonTag
         className="py-1"
         style={{
-          color: getRankColor(ambassadorRank),
-          backgroundColor: getRankColor(ambassadorRank, 0.1),
+          color: getRankColor(rank),
+          backgroundColor: getRankColor(rank, 0.1),
         }}
       >
-        Ambassador #{ambassadorRank}
+        Ambassador #{rank}
       </CommonTag>
     </div>
   );

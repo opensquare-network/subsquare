@@ -5,9 +5,9 @@ import { CommonTag } from "../tags/state/styled";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
 
 function FellowshipTagInfoImpl({ address }) {
-  const fellowshipRank = useFellowshipMemberRank(address);
+  const rank = useFellowshipMemberRank(address);
 
-  if (isNil(fellowshipRank)) {
+  if (isNil(rank)) {
     return null;
   }
 
@@ -16,11 +16,11 @@ function FellowshipTagInfoImpl({ address }) {
       <CommonTag
         className="py-1"
         style={{
-          color: getRankColor(fellowshipRank),
-          backgroundColor: getRankColor(fellowshipRank, 0.1),
+          color: getRankColor(rank),
+          backgroundColor: getRankColor(rank, 0.1),
         }}
       >
-        Fellowship #{fellowshipRank}
+        Fellowship #{rank}
       </CommonTag>
     </div>
   );
