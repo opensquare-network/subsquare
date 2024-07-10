@@ -2,14 +2,14 @@ import { AssetIconDed, AssetIconPink, AssetIconUsdc, AssetIconUsdt } from "@osn/
 
 const knownPolkadotAssetHubAssets = [
   {
-    // symbol: "USDC",
-    assetId: 1337,
-    icon: AssetIconUsdc,
-  },
-  {
     // symbol: "USDt",
     assetId: 1984,
     icon: AssetIconUsdt,
+  },
+  {
+    // symbol: "USDC",
+    assetId: 1337,
+    icon: AssetIconUsdc,
   },
   {
     // symbol: "DED",

@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
+import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 
 const PolkadotAssetHubNativeToken = {
   symbol: "DOT",
@@ -101,24 +102,39 @@ export default function useAssets() {
   );
   const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey);
   const nativeBalance = useSubscribeNativeBalance(address);
+  const knownAssetDefs = useKnownAssetHubAssets();
 
   return useMemo(() => {
     if (!allMetadata || !multiAccounts || !nativeBalance) {
       return null;
     }
 
+    const assets = (allMetadata || []).map((item, index) => {
+      const account = multiAccounts[index];
+      const accountValue = account?.toJSON();
+      return {
+        ...item,
+        balance: accountValue?.balance,
+      };
+    });
+
+    const knownAssets = knownAssetDefs.reduce((result, def) => {
+      const find = assets.find(asset => asset.assetId === def.assetId);
+      if (find) {
+        return [...result, find];
+      } else {
+        return result;
+      }
+    }, []);
+    const knownAssetIds = knownAssetDefs.map(def => def.assetId);
+    const otherAssets = assets.filter(asset => !knownAssetIds.includes(asset.assetId));
+
     const tokens = [
       { ...PolkadotAssetHubNativeToken, balance: nativeBalance },
-      ...(allMetadata || []).map((item, index) => {
-        const account = multiAccounts[index];
-        const accountValue = account?.toJSON();
-        return {
-          ...item,
-          balance: accountValue?.balance,
-        };
-      }),
+      ...knownAssets,
+      ...otherAssets,
     ];
 
     return tokens.filter((item) => !new BigNumber(item.balance || 0).isZero());
-  }, [allMetadata, multiAccounts, nativeBalance]);
+  }, [allMetadata, multiAccounts, nativeBalance, knownAssetDefs]);
 }
