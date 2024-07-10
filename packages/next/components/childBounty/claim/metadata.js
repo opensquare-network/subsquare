@@ -10,42 +10,16 @@ import { useChainSettings } from "next-common/context/chain";
 import Anchor from "next-common/components/styled/anchor";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import AddressUser from "next-common/components/user/addressUser";
+import {
+  SideInfoItem,
+  SideInfoItemName,
+  SideInfoItemValue,
+} from "next-common/components/detail/common/sidebar";
 
 const Info = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 16px;
-`;
-
-const InfoItem = styled.div`
-  display: flex;
-  padding: 12px 0;
-  :not(:last-child) {
-    border-bottom: 1px solid var(--neutral300);
-  }
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--textPrimary);
-`;
-
-const InfoItemName = styled.div`
-  font-weight: 500;
-`;
-
-const InfoItemValue = styled.div`
-  display: flex;
-  justify-content: right;
-  flex-grow: 1;
-  font-weight: 400;
-
-  > a {
-    color: var(--sapphire500);
-    font-weight: 500;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 `;
 
 const WRAPPER_WIDTH = 300;
@@ -68,41 +42,41 @@ export default function Meta() {
         </Flex>
       </StatisticTitleContainer>
       <Info>
-        <InfoItem>
-          <InfoItemName>Beneficiary</InfoItemName>
-          <InfoItemValue>
+        <SideInfoItem>
+          <SideInfoItemName>Beneficiary</SideInfoItemName>
+          <SideInfoItemValue>
             <AddressUser
               add={onChain.beneficiary}
               maxWidth={beneficiaryUserMaxWidth}
             />
-          </InfoItemValue>
-        </InfoItem>
-        <InfoItem>
-          <InfoItemName>Value</InfoItemName>
-          <InfoItemValue>
+          </SideInfoItemValue>
+        </SideInfoItem>
+        <SideInfoItem>
+          <SideInfoItemName>Value</SideInfoItemName>
+          <SideInfoItemValue>
             <ValueDisplay
               value={toPrecision(onChain.meta.value ?? 0, decimals)}
               symbol={symbol}
             />
-          </InfoItemValue>
-        </InfoItem>
-        <InfoItem>
-          <InfoItemName>Curator fee</InfoItemName>
-          <InfoItemValue>
+          </SideInfoItemValue>
+        </SideInfoItem>
+        <SideInfoItem>
+          <SideInfoItemName>Curator fee</SideInfoItemName>
+          <SideInfoItemValue>
             <ValueDisplay
               value={toPrecision(onChain.meta.fee ?? 0, decimals)}
               symbol={symbol}
             />
-          </InfoItemValue>
-        </InfoItem>
-        <InfoItem>
-          <InfoItemName>Parent bounty</InfoItemName>
-          <InfoItemValue>
+          </SideInfoItemValue>
+        </SideInfoItem>
+        <SideInfoItem>
+          <SideInfoItemName>Parent bounty</SideInfoItemName>
+          <SideInfoItemValue>
             <Anchor href={`/treasury/bounties/${onChain.parentBountyId}`}>
               {`#${onChain.parentBountyId}`}
             </Anchor>
-          </InfoItemValue>
-        </InfoItem>
+          </SideInfoItemValue>
+        </SideInfoItem>
       </Info>
     </SecondaryCardDetail>
   );
