@@ -39,6 +39,8 @@ function HeadContent() {
   );
 }
 
-export default function WalletAssetList() {
-  return <ListLayout headContent={<HeadContent />}></ListLayout>;
+export default function WalletAssetList({ seoInfo }) {
+  return (
+    <ListLayout seoInfo={seoInfo} headContent={<HeadContent />}></ListLayout>
+  );
 }
