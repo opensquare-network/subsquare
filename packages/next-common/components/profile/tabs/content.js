@@ -6,6 +6,7 @@ import ProfileDelegation from "../delegation";
 import ProfileDeposits from "../deposits";
 import ProfileTransfers from "../transfers";
 import ProfileIdentityTimeline from "../identityTimeline";
+import ProfileAssets from "../assets";
 import { usePathname } from "next/navigation";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
@@ -28,6 +29,8 @@ export default function useProfileTabContent() {
     return <ProfileTransfers />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/identity`)) {
     return <ProfileIdentityTimeline />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
+    return <ProfileAssets />;
   }
 
   return <Posted />;
