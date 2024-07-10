@@ -43,7 +43,7 @@ function HeadContent() {
   );
 }
 
-function Title({ assetsCount }) {
+export function Title({ assetsCount }) {
   return (
     <div className="flex mx-[24px] text16Bold gap-[4px]">
       <span className="text-textPrimary">Assets</span>

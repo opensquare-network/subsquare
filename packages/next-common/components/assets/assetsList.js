@@ -4,7 +4,9 @@ import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import BigNumber from "bignumber.js";
 import ListButton from "next-common/components/styled/listButton";
-import TransferPopup from "./transferPopup";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const TransferPopup = dynamicClientOnly(() => import("./transferPopup"));
 
 function TransferButton({ asset }) {
   const [showPopup, setShowPopup] = useState(false);
@@ -25,7 +27,7 @@ function TransferButton({ asset }) {
   );
 }
 
-function TokenSymbol({ Icon, symbol }) {
+export function TokenSymbol({ Icon, symbol }) {
   return (
     <div className="flex gap-[8px] items-center text14Medium text-textPrimary">
       <Icon width={24} height={24} /> {symbol}
@@ -33,7 +35,7 @@ function TokenSymbol({ Icon, symbol }) {
   );
 }
 
-function formatBalance(balance, decimals) {
+export function formatBalance(balance, decimals) {
   return new BigNumber(balance)
     .div(Math.pow(10, decimals))
     .toFormat({ decimalSeparator: ".", groupSeparator: ",", groupSize: 3 });
@@ -64,7 +66,7 @@ export default function AssetsList({ assets }) {
     <span key="name" className="text14Medium text-textTertiary">
       {item.name}
     </span>,
-    <span key="balance">
+    <span key="balance" className="text14Medium text-textPrimary">
       {formatBalance(item.balance || 0, item.decimals)}
     </span>,
     <div key="transfer">

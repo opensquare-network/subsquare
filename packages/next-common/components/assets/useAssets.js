@@ -108,8 +108,8 @@ export default function useAssets() {
 
     let unsubNativeBalance;
     api.query.system
-      .account(address, ({data}) => {
-        const {free, reserved} = data;
+      .account(address, ({ data }) => {
+        const { free, reserved } = data;
         setNativeBalance((free.toBigInt() + reserved.toBigInt()).toString());
       })
       .then((result) => (unsubNativeBalance = result));
