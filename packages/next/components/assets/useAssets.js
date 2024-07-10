@@ -101,7 +101,7 @@ export default function useAssets() {
 
   return useMemo(() => {
     if (!multiBalances.length || !multiMetadata.length || !nativeBalance) {
-      return [];
+      return null;
     }
 
     const tokens = [

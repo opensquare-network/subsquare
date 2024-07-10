@@ -46,7 +46,9 @@ function Title({ assets }) {
   return (
     <div className="flex mx-[24px] text16Bold gap-[4px]">
       <span className="text-textPrimary">Assets</span>
-      <span className="text-textTertiary">{assets?.length || 0}</span>
+      {assets && (
+        <span className="text-textTertiary">{assets.length || 0}</span>
+      )}
     </div>
   );
 }
