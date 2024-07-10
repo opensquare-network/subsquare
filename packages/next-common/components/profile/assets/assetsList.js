@@ -27,7 +27,7 @@ export default function ProfileAssetsList({ assets }) {
   ];
 
   const rows = (assets || []).map((item) => [
-    <TokenSymbol key="token" Icon={item.icon} symbol={item.symbol} />,
+    <TokenSymbol key="token" type={item.type} assetId={item.assetId} symbol={item.symbol} />,
     <span key="name" className="text14Medium text-textTertiary">
       {item.name}
     </span>,

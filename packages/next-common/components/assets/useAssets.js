@@ -1,54 +1,13 @@
-import {
-  AssetIconDed,
-  AssetIconDot,
-  AssetIconPink,
-  AssetIconPlaceholder,
-  AssetIconUsdc,
-  AssetIconUsdt,
-} from "@osn/icons/subsquare";
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
-
-const PolkadotAssetHubAssets = [
-  {
-    // symbol: "USDC",
-    assetId: 1337,
-    icon: AssetIconUsdc,
-  },
-  {
-    // symbol: "USDt",
-    assetId: 1984,
-    icon: AssetIconUsdt,
-  },
-  {
-    // symbol: "DED",
-    assetId: 30,
-    icon: AssetIconDed,
-  },
-  {
-    // symbol: "DOTA",
-    assetId: 18,
-    icon: AssetIconDed,
-  },
-  {
-    // symbol: "PINK",
-    assetId: 23,
-    icon: AssetIconPink,
-  },
-];
-
-const PolkadotAssetIconMap = new Map(
-  PolkadotAssetHubAssets.map((item) => [item.assetId, item.icon]),
-);
 
 const PolkadotAssetHubNativeToken = {
   symbol: "DOT",
   name: "Polkadot",
   decimals: 10,
   type: "native",
-  icon: AssetIconDot,
 };
 
 function useAllAssetMetadata() {
@@ -134,7 +93,6 @@ export default function useAssets() {
         return {
           ...item,
           balance: balanceValue?.balance,
-          icon: PolkadotAssetIconMap.get(item.assetId) || AssetIconPlaceholder,
         };
       }),
     ];

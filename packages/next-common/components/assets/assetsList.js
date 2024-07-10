@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { SystemTransfer } from "@osn/icons/subsquare";
+import { AssetIconPlaceholder, SystemTransfer } from "@osn/icons/subsquare";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import BigNumber from "bignumber.js";
 import ListButton from "next-common/components/styled/listButton";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import useKnownAssetHubAssetIcon, { useNativeTokenIcon } from "next-common/components/assets/known";
 
 const TransferPopup = dynamicClientOnly(() => import("./transferPopup"));
 
@@ -27,10 +28,17 @@ function TransferButton({ asset }) {
   );
 }
 
-export function TokenSymbol({ Icon, symbol }) {
+export function TokenSymbol({ type, assetId, symbol }) {
+  const NativeAssetIcon = useNativeTokenIcon();
+  const Icon = useKnownAssetHubAssetIcon(assetId);
+  let AssetIcon = NativeAssetIcon;
+  if (type !== "native") {
+    AssetIcon = Icon || AssetIconPlaceholder;
+  }
+
   return (
     <div className="flex gap-[8px] items-center text14Medium text-textPrimary">
-      <Icon width={24} height={24} /> {symbol}
+      <AssetIcon width={24} height={24} /> {symbol}
     </div>
   );
 }
@@ -62,7 +70,7 @@ export default function AssetsList({ assets }) {
   ];
 
   const rows = (assets || []).map((item) => [
-    <TokenSymbol key="token" Icon={item.icon} symbol={item.symbol} />,
+    <TokenSymbol key="token" type={item.type} assetId={item.assetId} symbol={item.symbol} />,
     <span key="name" className="text14Medium text-textTertiary">
       {item.name}
     </span>,
