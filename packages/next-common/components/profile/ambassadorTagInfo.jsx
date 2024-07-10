@@ -4,7 +4,7 @@ import { CommonTag } from "../tags/state/styled";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
 import { useAmbassadorMemberRank } from "next-common/hooks/ambassador/useAmbassadorMemberRank";
 
-function AmbassadorInfoImpl({ address }) {
+function AmbassadorTagInfoImpl({ address }) {
   const ambassadorRank = useAmbassadorMemberRank(address);
 
   if (isNil(ambassadorRank)) {
@@ -26,11 +26,11 @@ function AmbassadorInfoImpl({ address }) {
   );
 }
 
-export default function AmbassadorInfo({ address }) {
+export default function AmbassadorTagInfo({ address }) {
   const { modules } = useChainSettings();
   if (!modules.ambassador) {
     return null;
   }
 
-  return <AmbassadorInfoImpl address={address} />;
+  return <AmbassadorTagInfoImpl address={address} />;
 }

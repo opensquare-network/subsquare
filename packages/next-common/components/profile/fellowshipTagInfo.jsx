@@ -4,7 +4,7 @@ import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellows
 import { CommonTag } from "../tags/state/styled";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
 
-function FellowshipInfoImpl({ address }) {
+function FellowshipTagInfoImpl({ address }) {
   const fellowshipRank = useFellowshipMemberRank(address);
 
   if (isNil(fellowshipRank)) {
@@ -26,11 +26,11 @@ function FellowshipInfoImpl({ address }) {
   );
 }
 
-export default function FellowshipInfo({ address }) {
+export default function FellowshipTagInfo({ address }) {
   const { modules } = useChainSettings();
   if (!modules.fellowship) {
     return null;
   }
 
-  return <FellowshipInfoImpl address={address} />;
+  return <FellowshipTagInfoImpl address={address} />;
 }

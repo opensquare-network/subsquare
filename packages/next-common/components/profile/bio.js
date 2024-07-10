@@ -13,8 +13,8 @@ import AddressUser from "../user/addressUser";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "../user/avatarDisplay";
-import FellowshipInfo from "./fellowshipInfo";
-import AmbassadorInfo from "./ambassadorInfo";
+import FellowshipTagInfo from "./fellowshipTagInfo";
+import AmbassadorTagInfo from "./ambassadorTagInfo";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -108,8 +108,8 @@ export default function Bio() {
         <DisplayUser id={id} />
         <DisplayUserAddress address={address} />
 
-        <FellowshipInfo address={address} />
-        <AmbassadorInfo address={address} />
+        <FellowshipTagInfo address={address} />
+        <AmbassadorTagInfo address={address} />
 
         {isKintsugi ? (
           <KintAssetInfo address={address} />
