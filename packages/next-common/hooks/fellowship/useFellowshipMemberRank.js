@@ -9,7 +9,7 @@ export function useFellowshipMemberRank(
   const api = useContextApi();
 
   useEffect(() => {
-    if (!api || !pallet) {
+    if (!api || !api.query[pallet]) {
       return;
     }
 
