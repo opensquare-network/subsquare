@@ -60,7 +60,11 @@ export default function AssetsList({ assets }) {
       style: { textAlign: "left", minWidth: "160px" },
     },
     {
-      name: "Balance",
+      name: "Total",
+      style: { textAlign: "right", width: "160px", minWidth: "160px" },
+    },
+    {
+      name: "Transferrable",
       style: { textAlign: "right", width: "160px", minWidth: "160px" },
     },
     {
@@ -74,8 +78,11 @@ export default function AssetsList({ assets }) {
     <span key="name" className="text14Medium text-textTertiary">
       {item.name}
     </span>,
-    <span key="balance" className="text14Medium text-textPrimary">
+    <span key="total" className="text14Medium text-textPrimary">
       {formatBalance(item.balance || 0, item.decimals)}
+    </span>,
+    <span key="transferrable" className="text14Medium text-textPrimary">
+      {formatBalance(item.transferrable || 0, item.decimals)}
     </span>,
     <div key="transfer">
       <TransferButton asset={item} />

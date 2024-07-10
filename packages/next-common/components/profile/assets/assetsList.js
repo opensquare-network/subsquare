@@ -17,11 +17,11 @@ export default function ProfileAssetsList({ assets }) {
       style: { textAlign: "left", minWidth: "160px" },
     },
     {
-      name: "Balance",
+      name: "Total",
       style: { textAlign: "right", width: "160px", minWidth: "160px" },
     },
     {
-      name: "Frozen",
+      name: "Transferrable",
       style: { textAlign: "right", width: "160px", minWidth: "160px" },
     },
   ];
@@ -34,15 +34,9 @@ export default function ProfileAssetsList({ assets }) {
     <span key="balance" className="text14Medium text-textPrimary">
       {formatBalance(item.balance || 0, item.decimals)}
     </span>,
-    item.isFrozen ? (
-      <span key="frozen" className="text14Medium text-textPrimary">
-        Frozen
-      </span>
-    ) : (
-      <span key="frozen" className="text14Medium text-textTertiary">
-        -
-      </span>
-    ),
+    <span key="transferrable" className="text14Medium text-textPrimary">
+      {formatBalance(item.transferrable || 0, item.decimals)}
+    </span>,
   ]);
 
   return (
