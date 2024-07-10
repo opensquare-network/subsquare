@@ -84,27 +84,38 @@ function useAllAssetMetadata() {
   return allMetadata;
 }
 
-export default function useAssets() {
+function useSubscribeMultiAssetAccounts(multiAccountKey) {
   const api = useContextApi();
-  const address = useRealAddress();
-  const allMetadata = useAllAssetMetadata();
-  const [multiBalances, setMultiBalances] = useState();
-  const [nativeBalance, setNativeBalance] = useState();
+  const [multiAccounts, setMultiAccounts] = useState();
 
   useEffect(() => {
-    if (!api || !allMetadata || !address) {
+    if (!api || !multiAccountKey) {
       return;
     }
 
     let unsubBalance;
     api.query.assets.account
-      .multi(
-        allMetadata.map((item) => [item.assetId, address]),
-        (data) => {
-          setMultiBalances(data);
-        },
-      )
+      .multi(multiAccountKey, (data) => {
+        setMultiAccounts(data);
+      })
       .then((result) => (unsubBalance = result));
+
+    return () => {
+      unsubBalance();
+    };
+  }, [api, multiAccountKey]);
+
+  return multiAccounts;
+}
+
+function useSubscribeNativeBalance(address) {
+  const api = useContextApi();
+  const [nativeBalance, setNativeBalance] = useState();
+
+  useEffect(() => {
+    if (!api || !address) {
+      return;
+    }
 
     let unsubNativeBalance;
     api.query.system
@@ -115,30 +126,41 @@ export default function useAssets() {
       .then((result) => (unsubNativeBalance = result));
 
     return () => {
-      unsubBalance();
       unsubNativeBalance();
     };
-  }, [api, allMetadata, address]);
+  }, [api, address]);
+
+  return nativeBalance;
+}
+
+export default function useAssets() {
+  const address = useRealAddress();
+  const allMetadata = useAllAssetMetadata();
+  const multiAccountKey = useMemo(
+    () => allMetadata?.map((item) => [item.assetId, address]),
+    [allMetadata, address],
+  );
+  const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey);
+  const nativeBalance = useSubscribeNativeBalance(address);
 
   return useMemo(() => {
-    if (!allMetadata || !multiBalances || !nativeBalance) {
+    if (!allMetadata || !multiAccounts || !nativeBalance) {
       return null;
     }
 
     const tokens = [
       { ...PolkadotAssetHubNativeToken, balance: nativeBalance },
       ...(allMetadata || []).map((item, index) => {
-        const balance = multiBalances[index];
-        const balanceValue = balance?.toJSON();
-
+        const account = multiAccounts[index];
+        const accountValue = account?.toJSON();
         return {
           ...item,
-          balance: balanceValue?.balance,
+          balance: accountValue?.balance,
           icon: PolkadotAssetIconMap.get(item.assetId) || AssetIconPlaceholder,
         };
       }),
     ];
 
     return tokens.filter((item) => !new BigNumber(item.balance || 0).isZero());
-  }, [allMetadata, multiBalances, nativeBalance]);
+  }, [allMetadata, multiAccounts, nativeBalance]);
 }
