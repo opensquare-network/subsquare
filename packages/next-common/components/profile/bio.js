@@ -14,7 +14,6 @@ import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "../user/avatarDisplay";
 import FellowshipTagInfo from "./fellowshipTagInfo";
-import AmbassadorTagInfo from "./ambassadorTagInfo";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -109,7 +108,11 @@ export default function Bio() {
         <DisplayUserAddress address={address} />
 
         <FellowshipTagInfo address={address} />
-        <AmbassadorTagInfo address={address} />
+        <FellowshipTagInfo
+          address={address}
+          pallet="ambassadorCollective"
+          type="ambassador"
+        />
 
         {isKintsugi ? (
           <KintAssetInfo address={address} />

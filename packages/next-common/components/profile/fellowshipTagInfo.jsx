@@ -1,11 +1,11 @@
-import { isNil } from "lodash-es";
+import { isNil, upperFirst } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
 import { CommonTag } from "../tags/state/styled";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
 
-function FellowshipTagInfoImpl({ address }) {
-  const rank = useFellowshipMemberRank(address);
+function FellowshipTagInfoImpl({ address, pallet, type }) {
+  const rank = useFellowshipMemberRank(address, pallet);
 
   if (isNil(rank)) {
     return null;
@@ -20,17 +20,23 @@ function FellowshipTagInfoImpl({ address }) {
           backgroundColor: getRankColor(rank, 0.1),
         }}
       >
-        Fellowship #{rank}
+        {upperFirst(type)} #{rank}
       </CommonTag>
     </div>
   );
 }
 
-export default function FellowshipTagInfo({ address }) {
+export default function FellowshipTagInfo({
+  address,
+  pallet = "fellowshipCollective",
+  type = "fellowship",
+}) {
   const { modules } = useChainSettings();
-  if (!modules.fellowship) {
+  if (!modules[type]) {
     return null;
   }
 
-  return <FellowshipTagInfoImpl address={address} />;
+  return (
+    <FellowshipTagInfoImpl address={address} pallet={pallet} type={type} />
+  );
 }
