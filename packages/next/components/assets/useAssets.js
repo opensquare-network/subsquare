@@ -127,7 +127,7 @@ export default function useAssets() {
 
     const tokens = [
       { ...PolkadotAssetHubNativeToken, balance: nativeBalance },
-      ...allMetadata.map((item, index) => {
+      ...(allMetadata || []).map((item, index) => {
         const balance = multiBalances[index];
         const balanceValue = balance?.toJSON();
 
