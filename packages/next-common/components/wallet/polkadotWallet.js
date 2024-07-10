@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import WalletOption from "./walletOption";
 import { SystemLink } from "@osn/icons/subsquare";
 import { useInjectedWeb3Extension } from "./useInjectedWeb3Extension";
 import { useMountedState } from "react-use";
+import WalletTypes from "next-common/utils/consts/walletTypes";
+import { useIsMetamaskWallet } from "next-common/hooks/connect/useIsMetamask";
+import { enablePolkaGateSnap } from "../../utils/consts/connect";
 
 function isMultiSigWallet(wallet) {
   return wallet?.extensionName === "mimir";
@@ -29,6 +32,7 @@ export default function PolkadotWallet({
   const Logo = wallet.logo;
   const { injectedWeb3Extension, loading: loadingWeb3Extension } =
     useInjectedWeb3Extension(wallet?.extensionName);
+  const isMetaMaskWallet = useIsMetamaskWallet();
 
   useEffect(() => {
     // update if installed changes
@@ -39,12 +43,38 @@ export default function PolkadotWallet({
     if (isMounted()) {
       setInstalled(!!injectedWeb3Extension);
     }
-  }, [loadingWeb3Extension, isMounted, injectedWeb3Extension]);
+
+    // Added for supporting PolkaGate Snap
+    if (wallet?.extensionName === WalletTypes.POLKAGATE_SNAP) {
+      setInstalled(isMetaMaskWallet);
+    }
+  }, [
+    wallet,
+    loadingWeb3Extension,
+    isMounted,
+    injectedWeb3Extension,
+    isMetaMaskWallet,
+  ]);
+
+  const handleClick = useCallback((_wallet) => {
+    if (!installed) {
+      return;
+    }
+
+    // Added for supporting PolkaGate Snap
+    if (_wallet?.extensionName === WalletTypes.POLKAGATE_SNAP) {
+      enablePolkaGateSnap().then(() => onClick(_wallet));
+
+      return;
+    }
+
+    onClick(_wallet);
+  }, [installed, onClick, enablePolkaGateSnap]);
 
   return (
     <WalletOption
       selected={selected}
-      onClick={() => installed && onClick(wallet)}
+      onClick={() => handleClick(wallet)}
       installed={installed}
       logo={<Logo className={wallet.title} alt={wallet.title} />}
       title={wallet.title}

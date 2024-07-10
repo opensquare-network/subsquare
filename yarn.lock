@@ -2422,6 +2422,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@metamask/superstruct@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@metamask/superstruct@npm:3.1.0"
+  checksum: 00e4d0c0aae8b25ccc1885c1db0bb4ed1590010570140c255e4deee3bf8a10c859c8fce5e475b4ae09c8a56316207af87585b91f7f5a5c028d668ccd111f19e3
+  languageName: node
+  linkType: hard
+
 "@metamask/utils@npm:^5.0.1":
   version: 5.0.2
   resolution: "@metamask/utils@npm:5.0.2"
@@ -2449,6 +2456,23 @@ __metadata:
     superstruct: ^1.0.3
     uuid: ^9.0.1
   checksum: b0397e97bac7192f6189a8625a2dfcb56d3c2cf4dd2cb3d4e012a7e9786f04f59f6917805544bc131a6dacd2c8344e237ae43ad47429bb5eb35c6cf1248440b4
+  languageName: node
+  linkType: hard
+
+"@metamask/utils@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@metamask/utils@npm:9.0.0"
+  dependencies:
+    "@ethereumjs/tx": ^4.2.0
+    "@metamask/superstruct": ^3.1.0
+    "@noble/hashes": ^1.3.1
+    "@scure/base": ^1.1.3
+    "@types/debug": ^4.1.7
+    debug: ^4.3.4
+    pony-cause: ^2.1.10
+    semver: ^7.5.4
+    uuid: ^9.0.1
+  checksum: 5dcb9d47c4768c33d451cc74c83207726c68b1340be1d091ca44105564f0ba0703026d357de7996de4459ac41cd420a0eb1f06db32f5ebbeeee581393f45fd44
   languageName: node
   linkType: hard
 
@@ -2808,10 +2832,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.109.0":
-  version: 1.109.0
-  resolution: "@osn/icons@npm:1.109.0"
-  checksum: 284c1ff3d7ecabd4d974c1c517052299fce8dce3e55b61ad30bc48bd61adb54e1d8957908772b1a35b1481338af22841dd7dd7a00122498394ddedb212a049e4
+"@osn/icons@npm:^1.111.0":
+  version: 1.111.0
+  resolution: "@osn/icons@npm:1.111.0"
+  checksum: 3b4dc92523b3a385a6b35decfba959572c968b35f8afeffbdb98627549d313c0d323346be27916f03062c2cc0988d3459426c701322bc56588cdbdcfb5f8b6ed
   languageName: node
   linkType: hard
 
@@ -3561,6 +3585,24 @@ __metadata:
     tslib: ^2.6.2
     ws: ^8.15.1
   checksum: a6bddc7ac81690f222fbc192f87f2d9b951d67414ea31a0377fb20844db8fde05d7771df5291633417aa4616bf968a31005ff22d416b2d4fecda2109f820abf7
+  languageName: node
+  linkType: hard
+
+"@polkagate/extension-dapp@npm:^0.48.2":
+  version: 0.48.2
+  resolution: "@polkagate/extension-dapp@npm:0.48.2"
+  dependencies:
+    "@metamask/utils": ^9.0.0
+    "@polkadot/extension-inject": 0.48.2
+    "@polkadot/types": 12.1.1
+    "@polkadot/util": ^12.6.2
+    "@polkadot/util-crypto": ^12.6.2
+    tslib: ^2.6.2
+  peerDependencies:
+    "@polkadot/api": "*"
+    "@polkadot/util": "*"
+    "@polkadot/util-crypto": "*"
+  checksum: 94be1e09fcd665df1286f7f65c7cf71b6cf01a677e877ad3523e34cca0514915f12c18d0aac7ccecef621852863393182f256c1e183384d1097d1ce078d426b7
   languageName: node
   linkType: hard
 
@@ -4671,7 +4713,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.109.0
+    "@osn/icons": ^1.111.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -4706,7 +4748,7 @@ __metadata:
     "@next/bundle-analyzer": ^14.2.4
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.109.0
+    "@osn/icons": ^1.111.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -12052,7 +12094,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.2.0
     "@mimirdev/apps-sdk": ^0.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.109.0
+    "@osn/icons": ^1.111.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.4.1
     "@osn/provider-options": 1.1.0
@@ -12060,6 +12102,7 @@ __metadata:
     "@osn/rich-text-editor": ^0.7.0
     "@polkadot/api": ^12.1.1
     "@polkadot/extension-dapp": ^0.48.2
+    "@polkagate/extension-dapp": ^0.48.2
     "@radix-ui/react-dialog": ^1.0.4
     "@radix-ui/react-hover-card": ^1.0.6
     "@radix-ui/react-tooltip": ^1.0.5
