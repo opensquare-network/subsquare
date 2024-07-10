@@ -104,6 +104,7 @@ export function useSubstrateAccounts({
       switch (wallet?.extensionName) {
         case WalletTypes.POLKADOT_JS:
         case WalletTypes.POLKAGATE:
+        case WalletTypes.POLKAGATE_SNAP:
         case WalletTypes.SUBWALLET_JS:
         case WalletTypes.TALISMAN:
         case WalletTypes.MIMIR:

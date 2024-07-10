@@ -26,7 +26,7 @@
   }
 
   pre {
-    background-color: var(--neutral200);
+    background-color: var(--neutral200) !important;
   }
 
   /* inline level */

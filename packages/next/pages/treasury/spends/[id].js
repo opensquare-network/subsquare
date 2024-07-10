@@ -17,6 +17,7 @@ import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTr
 import { useSelector } from "react-redux";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
 
 const TreasurySpendMetadata = dynamicClientOnly(() =>
   import("next-common/components/detail/treasury/spend/metadata"),
@@ -36,6 +37,7 @@ function TreasurySpendContent() {
   return (
     <ContentWithComment>
       <TreasurySpendDetail />
+      <TreasurySpendPayout />
       <DetailMultiTabs
         metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
         timeline={
@@ -71,7 +73,7 @@ function SpendPageImpl() {
   const seoInfo = useDetailPageSeoInfo();
 
   return (
-    <DetailLayout seoInfo={seoInfo}>
+    <DetailLayout seoInfo={seoInfo} hasSidebar={true}>
       <ProposalContentWithNullGuard />
     </DetailLayout>
   );

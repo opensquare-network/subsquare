@@ -206,6 +206,7 @@ function Editor(props, ref) {
         "[&_.editor-wrapper]:relative",
         "[&_.editor-wrapper]:z-1",
         "[&_.editor-wrapper]:min-h-[inherit] [&_.editor-wrapper]:max-sm:min-h-[inherit]",
+        "[&_.editor-wrapper]:pb-10",
         "[&_.toggle-bar-wrapper]:absolute [&_.toggle-bar-wrapper]:left-0 [&_.toggle-bar-wrapper]:right-0 [&_.toggle-bar-wrapper]:bottom-0",
         dragging &&
           "[&_.editor-wrapper]:!border-theme500 [&_.toggle-bar-wrapper]:!border-theme500",

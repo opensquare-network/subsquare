@@ -6,6 +6,7 @@ import {
   WalletNova,
   WalletPolkadotjs,
   WalletPolkagate,
+  WalletPolkagateSnap,
   WalletSubwallet,
   WalletTailsman,
   WalletSignet,
@@ -53,6 +54,13 @@ const polkagate = {
   installUrl:
     "https://chrome.google.com/webstore/detail/polkagate-the-gateway-to/ginchbkmljhldofnbjabmeophlhdldgp",
   logo: WalletPolkagate,
+};
+
+const polkagateSnap = {
+  extensionName: WalletTypes.POLKAGATE_SNAP,
+  title: "PolkaGate Snap",
+  installUrl: "https://snaps.metamask.io/snap/npm/polkagate/snap/",
+  logo: WalletPolkagateSnap,
 };
 
 export const nova = {
@@ -103,6 +111,7 @@ export const allWallets = [
   talisman,
   metamask,
   polkagate,
+  polkagateSnap,
   nova,
   mimir,
   signet,
@@ -116,7 +125,7 @@ export function getWallets() {
 }
 
 export function getSingleSigWallets() {
-  return [polkadotJs, subWallet, talisman, polkagate, nova];
+  return [polkadotJs, subWallet, talisman, polkagate, polkagateSnap, nova];
 }
 
 export function getMultiSigWallets() {
@@ -134,4 +143,12 @@ export function getMultiSigWallets() {
   }
 
   return result;
+}
+
+//Added for supporting PolkaGate Snap
+export async function enablePolkaGateSnap() {
+  if (typeof window !== "undefined") {
+    const { web3Enable } = await import("@polkagate/extension-dapp");
+    web3Enable("snaponly");
+  }
 }
