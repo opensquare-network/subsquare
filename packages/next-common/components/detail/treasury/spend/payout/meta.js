@@ -6,41 +6,15 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecisionNumber } from "next-common/utils";
 import React from "react";
 import AddressUser from "next-common/components/user/addressUser";
+import {
+  SideInfoItem,
+  SideInfoItemName,
+  SideInfoItemValue,
+} from "next-common/components/detail/common/sidebar";
 
 const Info = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const InfoItem = styled.div`
-  display: flex;
-  padding: 12px 0;
-  :not(:last-child) {
-    border-bottom: 1px solid var(--neutral300);
-  }
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--textPrimary);
-`;
-
-const InfoItemName = styled.div`
-  font-weight: 500;
-`;
-
-const InfoItemValue = styled.div`
-  display: flex;
-  justify-content: right;
-  flex-grow: 1;
-  font-weight: 400;
-
-  > a {
-    color: var(--sapphire500);
-    font-weight: 500;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 `;
 
 export default function Meta() {
@@ -56,21 +30,21 @@ export default function Meta() {
   return (
     <SecondaryCardDetail>
       <Info>
-        <InfoItem>
-          <InfoItemName>Request</InfoItemName>
-          <InfoItemValue>
+        <SideInfoItem>
+          <SideInfoItemName>Request</SideInfoItemName>
+          <SideInfoItemValue>
             <ValueDisplay
               value={toPrecisionNumber(amount, decimals)}
               symbol={symbol}
             />
-          </InfoItemValue>
-        </InfoItem>
-        <InfoItem>
-          <InfoItemName>Beneficiary</InfoItemName>
-          <InfoItemValue>
+          </SideInfoItemValue>
+        </SideInfoItem>
+        <SideInfoItem>
+          <SideInfoItemName>Beneficiary</SideInfoItemName>
+          <SideInfoItemValue>
             <AddressUser add={beneficiary} />
-          </InfoItemValue>
-        </InfoItem>
+          </SideInfoItemValue>
+        </SideInfoItem>
       </Info>
     </SecondaryCardDetail>
   );
