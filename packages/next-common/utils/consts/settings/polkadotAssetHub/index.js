@@ -22,7 +22,7 @@ const polkadotAssetHub = {
   decimals: 10,
   ss58Format: 0,
   blockTime: 12000,
-  snsCoverCid: "bafybeifsztkok4p4vzjbhacvr2o4dxc5xgb7ynxsgnvmicttpqce34xdwe", // todo: change cover
+  snsCoverCid: "QmSAsmCgU6mQ48jS6bddKww4hhNBv7dxXKsYY81QB8TWKc",
   endpoints: polkadotAssetHubNodes,
   avatar: ProjectIconPolkadotAssetHub,
   darkAvatar: ProjectIconPolkadotAssetHub,
