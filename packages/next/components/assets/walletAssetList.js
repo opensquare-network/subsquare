@@ -7,6 +7,9 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import AccountLinks from "next-common/components/links/accountLinks";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import { addressEllipsis } from "next-common/utils";
+import useAssets from "./useAssets";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import AssetsList from "./assetsList";
 
 function HeadContent() {
   const address = useRealAddress();
@@ -39,8 +42,25 @@ function HeadContent() {
   );
 }
 
-export default function WalletAssetList({ seoInfo }) {
+function Title({ assets }) {
   return (
-    <ListLayout seoInfo={seoInfo} headContent={<HeadContent />}></ListLayout>
+    <div className="flex mx-[24px] text16Bold gap-[4px]">
+      <span className="text-textPrimary">Assets</span>
+      <span className="text-textTertiary">{assets?.length || 0}</span>
+    </div>
+  );
+}
+
+export default function WalletAssetList({ seoInfo }) {
+  const assets = useAssets();
+  return (
+    <ListLayout seoInfo={seoInfo} headContent={<HeadContent />}>
+      <div className="flex flex-col gap-[16px]">
+        <Title assets={assets} />
+        <SecondaryCard>
+          <AssetsList assets={assets} />
+        </SecondaryCard>
+      </div>
+    </ListLayout>
   );
 }
