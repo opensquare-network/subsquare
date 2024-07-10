@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { SystemTransfer } from "@osn/icons/subsquare";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import BigNumber from "bignumber.js";
 import ListButton from "next-common/components/styled/listButton";
-
-const Wrapper = styled.div``;
 
 function TransferButton({ onClick, disabled }) {
   return (
@@ -70,10 +67,8 @@ export default function AssetsList({ assets }) {
   ]);
 
   return (
-    <Wrapper>
-      <ScrollerX>
-        <DataList columns={columns} rows={rows} />
-      </ScrollerX>
-    </Wrapper>
+    <ScrollerX>
+      <DataList columns={columns} rows={rows} />
+    </ScrollerX>
   );
 }
