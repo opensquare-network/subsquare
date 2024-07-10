@@ -2,6 +2,7 @@ import {
   AssetIconDed,
   AssetIconDot,
   AssetIconPink,
+  AssetIconPlaceholder,
   AssetIconUsdc,
   AssetIconUsdt,
 } from "@osn/icons/subsquare";
@@ -12,46 +13,35 @@ import { useEffect, useMemo, useState } from "react";
 
 const PolkadotAssetHubAssets = [
   {
-    symbol: "USDC",
-    name: "USD Coin",
-    decimals: 6,
-    type: "asset",
+    // symbol: "USDC",
     assetId: 1337,
     icon: AssetIconUsdc,
   },
   {
-    symbol: "USDt",
-    name: "Tether USD",
-    decimals: 6,
-    type: "asset",
+    // symbol: "USDt",
     assetId: 1984,
     icon: AssetIconUsdt,
   },
   {
-    symbol: "DED",
-    name: "DED",
-    decimals: 10,
-    type: "asset",
+    // symbol: "DED",
     assetId: 30,
     icon: AssetIconDed,
   },
   {
-    symbol: "DOTA",
-    name: "DOTA",
-    decimals: 4,
-    type: "asset",
+    // symbol: "DOTA",
     assetId: 18,
     icon: AssetIconDed,
   },
   {
-    symbol: "PINK",
-    name: "PINK",
-    decimals: 10,
-    type: "asset",
+    // symbol: "PINK",
     assetId: 23,
     icon: AssetIconPink,
   },
 ];
+
+const PolkadotAssetIconMap = new Map(
+  PolkadotAssetHubAssets.map((item) => [item.assetId, item.icon]),
+);
 
 const PolkadotAssetHubNativeToken = {
   symbol: "DOT",
@@ -61,29 +51,56 @@ const PolkadotAssetHubNativeToken = {
   icon: AssetIconDot,
 };
 
+function useAllAssetMetadata() {
+  const api = useContextApi();
+  const [allMetadata, setAllMetadata] = useState();
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    api.query.assets.metadata.entries().then((data) => {
+      const result = data.map((item) => {
+        const [
+          {
+            args: [id],
+          },
+          metadata,
+        ] = item;
+        const assetId = id.toNumber();
+        return {
+          assetId,
+          symbol: metadata.symbol.toHuman(),
+          name: metadata.name.toHuman(),
+          decimals: metadata.decimals.toNumber(),
+          isFrozen: metadata.isFrozen.toJSON(),
+          icon: PolkadotAssetIconMap.get(assetId) || AssetIconPlaceholder,
+        };
+      });
+      setAllMetadata(result);
+    });
+  }, [api]);
+
+  return allMetadata;
+}
+
 export default function useAssets() {
   const api = useContextApi();
   const address = useRealAddress();
-  const [multiBalances, setMultiBalances] = useState([]);
-  const [multiMetadata, setMultiMetadata] = useState([]);
+  const allMetadata = useAllAssetMetadata();
+  const [multiBalances, setMultiBalances] = useState();
   const [nativeBalance, setNativeBalance] = useState();
 
   useEffect(() => {
-    if (!api || !address) {
+    if (!api || !allMetadata || !address) {
       return;
     }
 
     const unsubBalance = api.query.assets.account.multi(
-      PolkadotAssetHubAssets.map((item) => [item.assetId, address]),
+      allMetadata.map((item) => [item.assetId, address]),
       (data) => {
         setMultiBalances(data);
-      },
-    );
-
-    const unsubMetadata = api.query.assets.metadata.multi(
-      PolkadotAssetHubAssets.map((item) => item.assetId),
-      (data) => {
-        setMultiMetadata(data);
       },
     );
 
@@ -94,34 +111,28 @@ export default function useAssets() {
 
     () => {
       unsubBalance();
-      unsubMetadata();
       unsubNativeBalance();
     };
-  }, [api, address]);
+  }, [api, allMetadata, address]);
 
   return useMemo(() => {
-    if (!multiBalances.length || !multiMetadata.length || !nativeBalance) {
+    if (!allMetadata || !multiBalances || !nativeBalance) {
       return null;
     }
 
     const tokens = [
       { ...PolkadotAssetHubNativeToken, balance: nativeBalance },
-      ...PolkadotAssetHubAssets.map((item, index) => {
+      ...allMetadata.map((item, index) => {
         const balance = multiBalances[index];
-        const metadata = multiMetadata[index];
-        const balanceValue = balance.toJSON();
+        const balanceValue = balance?.toJSON();
 
         return {
           ...item,
-          symbol: metadata.symbol.toHuman(),
-          name: metadata.name.toHuman(),
-          decimals: metadata.decimals.toNumber(),
-          isFrozen: metadata.isFrozen.toJSON(),
           balance: balanceValue?.balance,
         };
       }),
     ];
 
     return tokens.filter((item) => !new BigNumber(item.balance || 0).isZero());
-  }, [multiMetadata, multiBalances, nativeBalance]);
+  }, [allMetadata, multiBalances, nativeBalance]);
 }
