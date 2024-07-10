@@ -6,16 +6,6 @@ import NoWalletConnected from "components/assets/noWalletConnected";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import WalletAssetList from "components/assets/walletAssetList";
 
-function AssetsContent({ seoInfo }) {
-  const address = useRealAddress();
-
-  if (!address) {
-    return <NoWalletConnected seoInfo={seoInfo} />;
-  }
-
-  return <WalletAssetList seoInfo={seoInfo} />;
-}
-
 export default function AssetsPage() {
   const chainSettings = useChainSettings();
   const seoTitle = usePageTitle("AssetHub platform");
@@ -23,8 +13,13 @@ export default function AssetsPage() {
     title: "Subsquare | " + seoTitle,
     desc: chainSettings.description,
   };
+  const address = useRealAddress();
 
-  return <AssetsContent seoInfo={seoInfo} />;
+  if (!address) {
+    return <NoWalletConnected seoInfo={seoInfo} />;
+  }
+
+  return <WalletAssetList seoInfo={seoInfo} />;
 }
 
 export const getServerSideProps = withCommonProps(async () => {
