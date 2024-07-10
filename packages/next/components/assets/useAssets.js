@@ -96,19 +96,25 @@ export default function useAssets() {
       return;
     }
 
-    const unsubBalance = api.query.assets.account.multi(
-      allMetadata.map((item) => [item.assetId, address]),
-      (data) => {
-        setMultiBalances(data);
-      },
-    );
+    let unsubBalance;
+    api.query.assets.account
+      .multi(
+        allMetadata.map((item) => [item.assetId, address]),
+        (data) => {
+          setMultiBalances(data);
+        },
+      )
+      .then((result) => (unsubBalance = result));
 
-    const unsubNativeBalance = api.query.system.account(address, (data) => {
-      const { free, reserved } = data.data.toJSON();
-      setNativeBalance(new BigNumber(free).plus(reserved).toFixed());
-    });
+    let unsubNativeBalance;
+    api.query.system
+      .account(address, (data) => {
+        const { free, reserved } = data.data.toJSON();
+        setNativeBalance(new BigNumber(free).plus(reserved).toFixed());
+      })
+      .then((result) => (unsubNativeBalance = result));
 
-    () => {
+    return () => {
       unsubBalance();
       unsubNativeBalance();
     };
