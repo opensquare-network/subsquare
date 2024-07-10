@@ -53,6 +53,7 @@ function Title({ assets }) {
 
 export default function WalletAssetList({ seoInfo }) {
   const assets = useAssets();
+
   return (
     <ListLayout seoInfo={seoInfo} headContent={<HeadContent />}>
       <div className="flex flex-col gap-[16px]">

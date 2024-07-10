@@ -68,7 +68,7 @@ export default function AssetsList({ assets }) {
 
   return (
     <ScrollerX>
-      <DataList columns={columns} rows={rows} />
+      <DataList columns={columns} rows={rows} loading={assets.length === 0} />
     </ScrollerX>
   );
 }
