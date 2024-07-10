@@ -75,7 +75,6 @@ function useAllAssetMetadata() {
           name: metadata.name.toHuman(),
           decimals: metadata.decimals.toNumber(),
           isFrozen: metadata.isFrozen.toJSON(),
-          icon: PolkadotAssetIconMap.get(assetId) || AssetIconPlaceholder,
         };
       });
       setAllMetadata(result);
@@ -129,6 +128,7 @@ export default function useAssets() {
         return {
           ...item,
           balance: balanceValue?.balance,
+          icon: PolkadotAssetIconMap.get(item.assetId) || AssetIconPlaceholder,
         };
       }),
     ];
