@@ -10,6 +10,7 @@ import { addressEllipsis } from "next-common/utils";
 import useAssets from "./useAssets";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import AssetsList from "./assetsList";
+import { isNil } from "lodash-es";
 
 function HeadContent() {
   const address = useRealAddress();
@@ -42,12 +43,12 @@ function HeadContent() {
   );
 }
 
-function Title({ assets }) {
+function Title({ assetsCount }) {
   return (
     <div className="flex mx-[24px] text16Bold gap-[4px]">
       <span className="text-textPrimary">Assets</span>
-      {assets && (
-        <span className="text-textTertiary">{assets.length || 0}</span>
+      {!isNil(assetsCount) && (
+        <span className="text-textTertiary">{assetsCount || 0}</span>
       )}
     </div>
   );
@@ -59,7 +60,7 @@ export default function WalletAssetList({ seoInfo }) {
   return (
     <ListLayout seoInfo={seoInfo} headContent={<HeadContent />}>
       <div className="flex flex-col gap-[16px]">
-        <Title assets={assets} />
+        <Title assetsCount={assets && assets.length} />
         <SecondaryCard>
           <AssetsList assets={assets} />
         </SecondaryCard>
