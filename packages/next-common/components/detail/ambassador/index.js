@@ -10,6 +10,7 @@ import PostTitle from "next-common/components/detail/common/Title";
 import ReferendaPostMeta from "next-common/components/detail/common/openGov/meta";
 import ArticleContent from "next-common/components/articleContent";
 import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
+import FellowshipReferendaDetailEvidence from "../fellowship/evidence";
 
 export function TimeoutCountdown() {
   const timeout = useUndecidingTimeout("ambassadorReferenda");
@@ -38,6 +39,8 @@ export default function AmbassadorReferendaDetail() {
       meta={<ReferendaPostMeta section="ambassador" />}
     >
       <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+
+      <FellowshipReferendaDetailEvidence pallet="ambassadorCore" />
     </DetailContentBase>
   );
 }
