@@ -35,12 +35,12 @@ function IpfsContent({ cid }) {
   return <MarkdownPreviewer content={value} />;
 }
 
-export default function FellowshipReferendaDetailEvidence() {
+export default function FellowshipReferendaDetailEvidence({ pallet }) {
   const post = usePost();
   const callArgs = post.onchainData?.inlineCall?.call?.args;
   const who = find(callArgs, { name: "who" })?.value;
 
-  const fellowshipEvidence = useSubCoreFellowshipEvidence(who);
+  const fellowshipEvidence = useSubCoreFellowshipEvidence(who, pallet);
   const notFound = !fellowshipEvidence.wish && !fellowshipEvidence.evidence;
 
   const cid = getCidByEvidence(fellowshipEvidence.evidence);
