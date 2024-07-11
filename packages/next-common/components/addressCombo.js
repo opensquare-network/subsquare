@@ -13,12 +13,12 @@ import { fetchIdentity } from "next-common/services/identity.js";
 import { useChainSettings } from "next-common/context/chain.js";
 import { encodeAddressToChain } from "next-common/services/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
+import IdentityIcon from "./Identity/identityIcon.js";
 import {
   getAddressHint,
   tryConvertToEvmAddress,
 } from "next-common/utils/mixedChainUtil";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import Identity from "./Identity";
 
 const Wrapper = Relative;
 
@@ -215,9 +215,8 @@ export default function AddressCombo({
         <NameWrapper>
           <IdentityName>
             {identities[selectedAccount.address] && (
-              <Identity
+              <IdentityIcon
                 identity={identities[selectedAccount.address]?.identity}
-                ellipsis
               />
             )}
             <div className="line-clamp-1">
@@ -235,13 +234,12 @@ export default function AddressCombo({
         <Avatar address={address} />
         <NameWrapper>
           <IdentityName>
-            {identities[address] ? (
-              <Identity identity={identities[address].identity} ellipsis />
-            ) : (
-              <div className="line-clamp-1">
-                {identities[address]?.displayName || shortEvmAddr}
-              </div>
+            {identities[address] && (
+              <IdentityIcon identity={identities[address].identity} />
             )}
+            <div className="line-clamp-1">
+              {identities[address]?.displayName || shortEvmAddr}
+            </div>
           </IdentityName>
           <div>{addressHint}</div>
         </NameWrapper>
@@ -268,13 +266,12 @@ export default function AddressCombo({
             <Avatar address={item.address} />
             <NameWrapper>
               <IdentityName>
-                {identities[item.address] ? (
-                  <Identity identity={identities[item.address].identity} />
-                ) : (
-                  <div className="line-clamp-1">
-                    {identities[item.address]?.displayName || item.name}
-                  </div>
+                {identities[item.address] && (
+                  <IdentityIcon identity={identities[item.address].identity} />
                 )}
+                <div className="line-clamp-1">
+                  {identities[item.address]?.displayName || item.name}
+                </div>
               </IdentityName>
               <div>{getAddressHint(ss58Address)}</div>
             </NameWrapper>
