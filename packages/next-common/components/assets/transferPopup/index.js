@@ -55,10 +55,18 @@ function PopupContent() {
       return;
     }
 
-    return api.tx.balances.transferKeepAlive(
-      transferToAddress,
-      amount.toFixed(),
-    );
+    if (asset.type === "native") {
+      return api.tx.balances.transferKeepAlive(
+        transferToAddress,
+        amount.toFixed(),
+      );
+    } else {
+      return api.tx.assets.transfer(
+        asset.assetId,
+        transferToAddress,
+        amount.toFixed(),
+      );
+    }
   }, [dispatch, api, asset, address, transferToAddress, transferAmount]);
 
   const balanceStatus = (
