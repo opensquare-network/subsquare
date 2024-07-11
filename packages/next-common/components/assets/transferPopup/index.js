@@ -16,8 +16,9 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import BalanceDisplay from "../balanceDisplay";
 import { formatBalance } from "../assetsList";
 
-function PopupContent({ getTransferTx }) {
+function PopupContent() {
   const { asset, onClose } = usePopupParams();
+  const api = useContextApi();
   const address = useRealAddress();
   const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
@@ -54,15 +55,12 @@ function PopupContent({ getTransferTx }) {
       return;
     }
 
-    return getTransferTx(transferToAddress, amount.toFixed());
-  }, [
-    dispatch,
-    asset,
-    address,
-    transferToAddress,
-    transferAmount,
-    getTransferTx,
-  ]);
+    return api.tx.assets.transfer(
+      asset.assetId,
+      transferToAddress,
+      amount.toFixed(),
+    );
+  }, [dispatch, api, asset, address, transferToAddress, transferAmount]);
 
   const balanceStatus = (
     <div className="flex gap-[8px] items-center mb-[8px]">
@@ -104,16 +102,9 @@ function PopupContent({ getTransferTx }) {
 }
 
 export function AssetTransferPopup(props) {
-  const api = useContextApi();
-  const { asset } = props;
-
   return (
     <PopupWithSigner title="Transfer" className="w-[640px]" {...props}>
-      <PopupContent
-        getTransferTx={(address, amount) => {
-          return api.tx.assets.transfer(asset.assetId, address, amount);
-        }}
-      />
+      <PopupContent />
     </PopupWithSigner>
   );
 }
