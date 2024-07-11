@@ -1,9 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import {
+  HtmlPreviewer,
+  MarkdownPreviewer,
+  highlightCodeExtension,
+} from "@osn/previewer";
 import { cn } from "next-common/utils";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
-import { marked } from "marked";
+import { Marked } from "marked";
+
+const marked = new Marked();
+
+marked.use(highlightCodeExtension());
 
 const collapsedHeight = 640;
 const moreLessHeightThreshold = 2000;
@@ -28,13 +36,15 @@ export default function PostContent({ post = {} }) {
     let postContent = post.content;
 
     if (post.dataSource === "polkassembly") {
-      postContent = marked(post.content || "", { breaks: true });
+      postContent = marked.parse(post.content || "", { breaks: true });
 
       // strip all inline attributes
       postContent = sanitizeHtml(postContent || "");
-    }
 
-    content = <MarkdownPreviewer content={postContent} />;
+      content = <HtmlPreviewer content={postContent} />;
+    } else {
+      content = <MarkdownPreviewer content={postContent} />;
+    }
   } else if (post.contentType === "html") {
     content = <HtmlPreviewer content={sanitizeHtml(post.content || "")} />;
   }

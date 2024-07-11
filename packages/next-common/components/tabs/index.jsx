@@ -45,7 +45,7 @@ export default function Tabs({
           (tab, idx) =>
             (lazyRendered[tab.label] || !tab.lazy) && (
               <div
-                key={tab.value || idx}
+                key={tab.value ?? idx}
                 className={cn(
                   "w-full",
                   "hidden",

@@ -22,6 +22,7 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
 import { SimaProposalCommentActionsProvider } from "next-common/sima/components/common/context/commentActionsProvider";
 import { useChainSettings } from "next-common/context/chain";
+import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
 
 const TreasurySpendMetadata = dynamicClientOnly(() =>
   import("next-common/components/detail/treasury/spend/metadata"),
@@ -41,6 +42,7 @@ function TreasurySpendContent() {
   return (
     <ContentWithComment>
       <TreasurySpendDetail />
+      <TreasurySpendPayout />
       <DetailMultiTabs
         metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
         timeline={
@@ -97,7 +99,7 @@ function SpendPageImpl() {
   const seoInfo = useDetailPageSeoInfo();
 
   return (
-    <DetailLayout seoInfo={seoInfo}>
+    <DetailLayout seoInfo={seoInfo} hasSidebar={true}>
       <ProposalContentWithNullGuard />
     </DetailLayout>
   );

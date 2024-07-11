@@ -2422,6 +2422,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@metamask/superstruct@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@metamask/superstruct@npm:3.1.0"
+  checksum: 00e4d0c0aae8b25ccc1885c1db0bb4ed1590010570140c255e4deee3bf8a10c859c8fce5e475b4ae09c8a56316207af87585b91f7f5a5c028d668ccd111f19e3
+  languageName: node
+  linkType: hard
+
 "@metamask/utils@npm:^5.0.1":
   version: 5.0.2
   resolution: "@metamask/utils@npm:5.0.2"
@@ -2449,6 +2456,23 @@ __metadata:
     superstruct: ^1.0.3
     uuid: ^9.0.1
   checksum: b0397e97bac7192f6189a8625a2dfcb56d3c2cf4dd2cb3d4e012a7e9786f04f59f6917805544bc131a6dacd2c8344e237ae43ad47429bb5eb35c6cf1248440b4
+  languageName: node
+  linkType: hard
+
+"@metamask/utils@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@metamask/utils@npm:9.0.0"
+  dependencies:
+    "@ethereumjs/tx": ^4.2.0
+    "@metamask/superstruct": ^3.1.0
+    "@noble/hashes": ^1.3.1
+    "@scure/base": ^1.1.3
+    "@types/debug": ^4.1.7
+    debug: ^4.3.4
+    pony-cause: ^2.1.10
+    semver: ^7.5.4
+    uuid: ^9.0.1
+  checksum: 5dcb9d47c4768c33d451cc74c83207726c68b1340be1d091ca44105564f0ba0703026d357de7996de4459ac41cd420a0eb1f06db32f5ebbeeee581393f45fd44
   languageName: node
   linkType: hard
 
@@ -2808,10 +2832,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.109.0":
-  version: 1.109.0
-  resolution: "@osn/icons@npm:1.109.0"
-  checksum: 284c1ff3d7ecabd4d974c1c517052299fce8dce3e55b61ad30bc48bd61adb54e1d8957908772b1a35b1481338af22841dd7dd7a00122498394ddedb212a049e4
+"@osn/icons@npm:^1.111.0":
+  version: 1.111.0
+  resolution: "@osn/icons@npm:1.111.0"
+  checksum: 3b4dc92523b3a385a6b35decfba959572c968b35f8afeffbdb98627549d313c0d323346be27916f03062c2cc0988d3459426c701322bc56588cdbdcfb5f8b6ed
   languageName: node
   linkType: hard
 
@@ -2837,18 +2861,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/previewer@npm:^1.3.5":
-  version: 1.3.5
-  resolution: "@osn/previewer@npm:1.3.5"
+"@osn/previewer@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "@osn/previewer@npm:1.4.1"
   dependencies:
-    github-markdown-css: ^5.5.0
-    marked: ^4.0.17
+    github-markdown-css: ^5.6.1
+    marked: ^11.1.1
+    marked-highlight: ^2.1.3
     prismjs: ^1.28.0
     sanitize-html: ^2.7.0
   peerDependencies:
     react: ^17.0.2
     react-dom: ^17.0.2
-  checksum: 68e8dadfd2c06fc05b6f7d529316bcf54e17a979a38fc0da3307bb45df59f82d3c198bde1c6d1b1aeff538c36fbd8e14df40978eea9cdd2b40231cae2267142e
+  checksum: 229c233d47b67e1535a23218b7332d8985fba5832afea09184d8ab2082e5c642e99b41420689d547d2ed30de7f768d35b7f63381b339daec2fe20995bda6a70e
   languageName: node
   linkType: hard
 
@@ -3560,6 +3585,24 @@ __metadata:
     tslib: ^2.6.2
     ws: ^8.15.1
   checksum: a6bddc7ac81690f222fbc192f87f2d9b951d67414ea31a0377fb20844db8fde05d7771df5291633417aa4616bf968a31005ff22d416b2d4fecda2109f820abf7
+  languageName: node
+  linkType: hard
+
+"@polkagate/extension-dapp@npm:^0.48.2":
+  version: 0.48.2
+  resolution: "@polkagate/extension-dapp@npm:0.48.2"
+  dependencies:
+    "@metamask/utils": ^9.0.0
+    "@polkadot/extension-inject": 0.48.2
+    "@polkadot/types": 12.1.1
+    "@polkadot/util": ^12.6.2
+    "@polkadot/util-crypto": ^12.6.2
+    tslib: ^2.6.2
+  peerDependencies:
+    "@polkadot/api": "*"
+    "@polkadot/util": "*"
+    "@polkadot/util-crypto": "*"
+  checksum: 94be1e09fcd665df1286f7f65c7cf71b6cf01a677e877ad3523e34cca0514915f12c18d0aac7ccecef621852863393182f256c1e183384d1097d1ce078d426b7
   languageName: node
   linkType: hard
 
@@ -4670,7 +4713,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.109.0
+    "@osn/icons": ^1.111.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -4705,7 +4748,7 @@ __metadata:
     "@next/bundle-analyzer": ^14.2.4
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.109.0
+    "@osn/icons": ^1.111.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -9345,9 +9388,9 @@ __metadata:
   linkType: hard
 
 "fast-loops@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "fast-loops@npm:1.1.3"
-  checksum: b674378ba2ed8364ca1a00768636e88b22201c8d010fa62a8588a4cace04f90bac46714c13cf638be82b03438d2fe813600da32291fb47297a1bd7fa6cef0cee
+  version: 1.1.4
+  resolution: "fast-loops@npm:1.1.4"
+  checksum: 8031a20f465ef35ac4ad98258470250636112d34f7e4efcb4ef21f3ced99df95a1ef1f0d6943df729a1e3e12a9df9319f3019df8cc1a0e0ed5a118bd72e505f9
   languageName: node
   linkType: hard
 
@@ -9800,10 +9843,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"github-markdown-css@npm:^5.5.0":
-  version: 5.5.0
-  resolution: "github-markdown-css@npm:5.5.0"
-  checksum: 58ba14ac87df700fd3a32a1999a6e9a4e36e808a4e1485f14aecb4230a690bfd3df508188c8a4874cae5556a87d23941b09036a22ee0f699fe844455952b1573
+"github-markdown-css@npm:^5.6.1":
+  version: 5.6.1
+  resolution: "github-markdown-css@npm:5.6.1"
+  checksum: 454d32468c64b570b09a4bdfdefaa3c0c6fdbe9277498e8179bce407d2589461935c9fd1cebda505ace19a18b4aa9f1616cf580f7a5996904894dbcbc59d0c54
   languageName: node
   linkType: hard
 
@@ -11524,6 +11567,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"marked-highlight@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "marked-highlight@npm:2.1.3"
+  peerDependencies:
+    marked: ">=4 <14"
+  checksum: b20dcfe75078513f88858489cf4846e4ba9134adfdab75bf58f515d5070e03b94c582f97902a13c924bdf798c0b758dac58f015a2b13bb3f4324b11883d0569a
+  languageName: node
+  linkType: hard
+
 "marked@npm:*, marked@npm:^11.1.1":
   version: 11.1.1
   resolution: "marked@npm:11.1.1"
@@ -11533,7 +11585,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^4.0.15, marked@npm:^4.0.17":
+"marked@npm:^4.0.15":
   version: 4.3.0
   resolution: "marked@npm:4.3.0"
   bin:
@@ -12042,14 +12094,15 @@ __metadata:
     "@mimirdev/apps-inject": ^0.2.0
     "@mimirdev/apps-sdk": ^0.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.109.0
+    "@osn/icons": ^1.111.0
     "@osn/polkadot-react-identicon": ^1.0.8
-    "@osn/previewer": ^1.3.5
+    "@osn/previewer": ^1.4.1
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.2.1
     "@osn/rich-text-editor": ^0.7.0
     "@polkadot/api": ^12.1.1
     "@polkadot/extension-dapp": ^0.48.2
+    "@polkagate/extension-dapp": ^0.48.2
     "@radix-ui/react-dialog": ^1.0.4
     "@radix-ui/react-hover-card": ^1.0.6
     "@radix-ui/react-tooltip": ^1.0.5

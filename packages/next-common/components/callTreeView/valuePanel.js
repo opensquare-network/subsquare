@@ -213,7 +213,7 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
 
   return (
     <div className="flex flex-col px-[16px] py-[8px] bg-neutral200 rounded-[4px]">
-      <span className="text-textTertiary">
+      <span className="text-textTertiary truncate">
         {name ? `${name}: ${type}` : type}
       </span>
       <div>{valueComponent}</div>

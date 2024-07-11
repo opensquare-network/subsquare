@@ -16,6 +16,7 @@ import EVMEntryWalletOption from "../wallet/evmEntryWalletOption";
 import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupView";
+import Loading from "../loading";
 
 const Label = styled.div`
   font-weight: bold;
@@ -39,7 +40,7 @@ export default function WalletAddressSelect({
   lastUsedAddress,
 }) {
   const chain = useChain();
-  const { accounts: accounts } = useSubstrateAccounts({
+  const { accounts: accounts, loading } = useSubstrateAccounts({
     wallet: selectedWallet,
   });
   const [, setView] = useConnectPopupView();
@@ -119,16 +120,22 @@ export default function WalletAddressSelect({
         </ErrorMessage>
       )}
 
-      {selectedWallet && (
-        <div>
-          <Label>Choose linked address</Label>
-          <AddressSelect
-            accounts={accounts}
-            selectedAccount={selectedAccount}
-            onSelect={onSelectAccount}
-          />
-          {web3Error && <ErrorText>{web3Error}</ErrorText>}
+      {loading ? (
+        <div className="flex items-center justify-center w-full">
+          <Loading size={20} />
         </div>
+      ) : (
+        selectedWallet && (
+          <div>
+            <Label>Choose linked address</Label>
+            <AddressSelect
+              accounts={accounts}
+              selectedAccount={selectedAccount}
+              onSelect={onSelectAccount}
+            />
+            {web3Error && <ErrorText>{web3Error}</ErrorText>}
+          </div>
+        )
       )}
     </>
   );
