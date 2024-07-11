@@ -1,7 +1,9 @@
 export function getRankColor(rank, alpha) {
   let color = "#728399";
 
-  if (6 === rank) {
+  if (7 === rank) {
+    color = "#5867EB";
+  } else if (6 === rank) {
     color = "#52C463";
   } else if (5 === rank) {
     color = "#4B97D7";
