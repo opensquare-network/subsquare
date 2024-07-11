@@ -169,7 +169,7 @@ export default function Signup() {
               {disabledForm && (
                 <WarningMessage orange>
                   To align with the goal of web3, registration via email is no
-                  longer available. Please use an address to connect SubSquare.
+                  longer available. Please connect SubSquare with an address.
                 </WarningMessage>
               )}
               <InputWrapper>
