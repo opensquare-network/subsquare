@@ -11,10 +11,19 @@ import useKnownAssetHubAssetIcon, {
 import BalanceDisplay from "./balanceDisplay";
 import { isNil } from "lodash-es";
 
-const TransferPopup = dynamicClientOnly(() => import("./transferPopup"));
+const AssetTransferPopup = dynamicClientOnly(() =>
+  import("./transferPopup").then((module) => module.AssetTransferPopup),
+);
 
 function TransferButton({ asset }) {
   const [showPopup, setShowPopup] = useState(false);
+
+  let popup = null;
+  if (asset.type !== "native") {
+    popup = (
+      <AssetTransferPopup asset={asset} onClose={() => setShowPopup(false)} />
+    );
+  }
 
   return (
     <>
@@ -25,9 +34,7 @@ function TransferButton({ asset }) {
       >
         <SystemTransfer width={16} height={16} />
       </ListButton>
-      {showPopup && (
-        <TransferPopup asset={asset} onClose={() => setShowPopup(false)} />
-      )}
+      {showPopup && popup}
     </>
   );
 }
@@ -114,7 +121,12 @@ export const colTransferrable = {
 export const colTransfer = {
   name: "",
   style: { textAlign: "right", width: "80px", minWidth: "80px" },
-  render: (item) => <TransferButton asset={item} />,
+  render: (item) =>
+    item.type === "native" ? (
+      <span className="text14Medium text-textTertiary">-</span>
+    ) : (
+      <TransferButton asset={item} />
+    ),
 };
 
 const columnsDef = [
