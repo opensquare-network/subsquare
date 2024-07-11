@@ -112,9 +112,9 @@ export default function AddressCombo({
   setAddress,
   allowInvalidAddress = false,
   readOnly = false,
+  placeholder,
 }) {
   const [show, setShow] = useState(false);
-  const [edit, setEdit] = useState(false);
   const [inputAddress, setInputAddress] = useState(
     tryConvertToEvmAddress(address) || "",
   );
@@ -129,11 +129,11 @@ export default function AddressCombo({
   const { identity } = useChainSettings();
   const [identities, setIdentities] = useState({});
 
-  const isValidAddress = allowInvalidAddress
-    ? true
-    : isAddress(address) ||
-      normalizeAddress(address) ||
-      isEthereumAddress(address);
+  const isValidAddress =
+    isAddress(address) ||
+    normalizeAddress(address) ||
+    isEthereumAddress(address);
+  const [edit, setEdit] = useState(!isValidAddress);
 
   const fetchAddressIdentity = useCallback(
     (address) => {
@@ -205,6 +205,7 @@ export default function AddressCombo({
           value={inputAddress}
           onChange={(e) => setInputAddress(e.target.value)}
           onBlur={onBlur}
+          placeholder={placeholder}
         />
       </>
     );
@@ -305,7 +306,7 @@ export default function AddressCombo({
       </Select>
       {show && (accounts || []).length > 0 && listOptions}
 
-      {!isValidAddress && (
+      {address && !isValidAddress && !allowInvalidAddress && (
         <div className="mt-2 text-red500 text12Medium">
           Please fill a valid address
         </div>

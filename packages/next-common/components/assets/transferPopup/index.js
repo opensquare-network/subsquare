@@ -84,8 +84,10 @@ function PopupContent() {
       </div>
       <AddressComboField
         title="To"
+        defaultAddress=""
         extensionAccounts={extensionAccounts}
         setAddress={setTransferToAddress}
+        placeholder="Please fill the address or select another one..."
       />
       <div className="flex justify-end">
         <TxSubmissionButton
@@ -100,7 +102,7 @@ function PopupContent() {
 
 export default function TransferPopup(props) {
   return (
-    <PopupWithSigner title="Send" {...props}>
+    <PopupWithSigner title="Send" className="w-[640px]" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );
