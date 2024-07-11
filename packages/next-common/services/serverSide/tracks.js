@@ -16,9 +16,9 @@ export async function fetchOpenGovTracksProps() {
       ambassador: hasAmbassador,
     },
   } = getChainSettings(process.env.CHAIN);
-  let tracks = [],
-    fellowshipTracks = [],
-    ambassadorTracks = [];
+  let tracks = [];
+  let fellowshipTracks = [];
+  let ambassadorTracks = [];
   if (hasReferenda) {
     const { result: referendaTracks } = await nextApi.fetch(
       gov2TracksSummaryApi,
@@ -40,7 +40,7 @@ export async function fetchOpenGovTracksProps() {
 
   return {
     summary,
-    tracks,
+    tracks: tracks || null,
     fellowshipTracks,
     ambassadorTracks,
   };

@@ -58,9 +58,6 @@ export default function DetailMultiTabs({
     statistics && {
       // lazy: true,
       label: "Statistics",
-      tagRender: (
-        <TagWrapper className="bg-theme100 text-theme500 ml-2">New</TagWrapper>
-      ),
       content: <div className="space-y-4">{statistics}</div>,
     },
   ].filter(Boolean);
