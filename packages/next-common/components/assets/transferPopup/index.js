@@ -108,7 +108,7 @@ export function AssetTransferPopup(props) {
   const { asset } = props;
 
   return (
-    <PopupWithSigner title="Send" className="w-[640px]" {...props}>
+    <PopupWithSigner title="Transfer" className="w-[640px]" {...props}>
       <PopupContent
         getTransferTx={(address, amount) => {
           return api.tx.assets.transfer(asset.assetId, address, amount);
