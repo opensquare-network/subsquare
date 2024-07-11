@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.1.1
+
+date: 2024-07-11
+
+- Support PolkaGate Metamask snap.
+- Add valid and expiration count down for treasury spends.
+- Support payout action for treasury spends.
+- Fix user avatar on comments from polkassembly.
+- Set conviction votes decimal to 1.
+- Improve editor loading effect.
+- Fix code block style on post detail.
+- Add fellowship/ambassador rank tag on profile page.
+- Auto login when link/unlink a post to a proposal.
+- Fix user identity on address input.
+- Add withSignedTransaction to signer options.
+- Fix tabs components key.
+- Fix styles and upgrade dependencies.
+
 ### 4.1.0
 
 date: 2024-07-04
