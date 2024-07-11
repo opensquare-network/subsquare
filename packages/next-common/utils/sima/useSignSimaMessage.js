@@ -10,7 +10,7 @@ export default function useSignSimaMessage() {
     async (entity) => {
       const connectedAccount = await ensureConnect();
       if (!connectedAccount) {
-        return;
+        throw new Error("Cancelled");
       }
 
       const address = connectedAccount.address;

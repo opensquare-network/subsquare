@@ -85,6 +85,10 @@ export default function SimaPostCreate() {
         const { postUid } = result;
         router.push(`/posts/${postUid}`);
       }
+    } catch (e) {
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
+      }
     } finally {
       setCreating(false);
     }
