@@ -60,9 +60,9 @@ function FellowshipReferendaDetailEvidenceImpl({ pallet, call }) {
   } else {
     content = (
       <>
-        <GreyPanel className="justify-center text14Medium text-textPrimary py-2.5 px-4">
-          {cid}
-          <Tooltip content="IPFS Link" className="ml-2">
+        <GreyPanel className="justify-center gap-x-2 text14Medium text-textPrimary py-2.5 px-4 max-w-full">
+          <div className="line-clamp-1 break-all">{cid}</div>
+          <Tooltip content="IPFS Link">
             <ExternalLink
               href={getIpfsLink(cid)}
               externalIcon={false}
