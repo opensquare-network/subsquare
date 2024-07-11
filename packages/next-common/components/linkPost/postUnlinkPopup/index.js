@@ -11,6 +11,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { Info } from "../styled";
 import { useDetailType } from "../../../context/page";
 import { PopupButtonWrapper } from "../../popup/wrapper";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 export default function PostUnlinkPopup({ setShow = noop }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,9 +19,14 @@ export default function PostUnlinkPopup({ setShow = noop }) {
   const post = usePost();
   const postType = useDetailType();
   const router = useRouter();
+  const { ensureLogin } = useEnsureLogin();
 
   const unbindDiscussion = useCallback(async () => {
     if (!post?._id) {
+      return;
+    }
+
+    if (!(await ensureLogin())) {
       return;
     }
 
@@ -53,7 +59,7 @@ export default function PostUnlinkPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, postType, post?._id, router]);
+  }, [dispatch, postType, post?._id, router, ensureLogin]);
 
   return (
     <Popup title="Unlink post" onClose={() => setShow(false)}>
