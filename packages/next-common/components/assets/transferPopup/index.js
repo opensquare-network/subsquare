@@ -102,7 +102,7 @@ function PopupContent() {
 
 export default function TransferPopup(props) {
   return (
-    <PopupWithSigner title="Send" className="w-[640px]" {...props}>
+    <PopupWithSigner title="Transfer" className="w-[640px]" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );
