@@ -6,7 +6,7 @@ import { useDeepCompareEffect, useUpdateEffect } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
-import { isNil } from "lodash-es";
+import { isNil, omit } from "lodash-es";
 
 export default function DataList({
   columns = [],
@@ -140,4 +140,18 @@ export default function DataList({
       </div>
     </div>
   );
+}
+
+export function MapDataList({ data, columnsDef, getRowKey, ...props }) {
+  const colsDef = columnsDef.map((def) =>
+    Array.isArray(def) ? def : [omit(def, "render"), def.render],
+  );
+  const columns = colsDef.map(([def]) => def);
+  const rows = (data || []).map((item, index) => {
+    const row = colsDef.map(([, render]) => render(item));
+    row.key = getRowKey ? getRowKey(item) : index;
+    return row;
+  });
+
+  return <DataList columns={columns} rows={rows} {...props} />;
 }
