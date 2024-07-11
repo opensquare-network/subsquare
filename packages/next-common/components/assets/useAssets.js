@@ -83,7 +83,7 @@ function useSubscribeNativeBalance(address) {
         const { free, reserved, frozen } = data;
         const balance = (free.toBigInt() + reserved.toBigInt()).toString();
         const transferrable = (free.toBigInt() - frozen.toBigInt()).toString();
-        setBalanceObj({balance, transferrable});
+        setBalanceObj({ balance, transferrable });
       })
       .then((result) => (unsubNativeBalance = result));
 
@@ -120,7 +120,7 @@ export default function useAssets() {
       const unwrapped = account.unwrap();
       const balance = unwrapped.balance.toString();
       const transferrable = unwrapped.status.isFrozen ? 0 : balance;
-      return [...result, {...item, balance, transferrable}];
+      return [...result, { ...item, balance, transferrable }];
     }, []);
 
     const knownAssets = knownAssetDefs.reduce((result, def) => {
