@@ -9,6 +9,7 @@ import useKnownAssetHubAssetIcon, {
   useNativeTokenIcon,
 } from "next-common/components/assets/known";
 import BalanceDisplay from "./balanceDisplay";
+import { isNil } from "lodash-es";
 
 const TransferPopup = dynamicClientOnly(() => import("./transferPopup"));
 
@@ -66,6 +67,16 @@ export const colToken = {
   ),
 };
 
+export const colId = {
+  name: "ID",
+  style: { textAlign: "left", width: "160px", minWidth: "160px" },
+  render: (item) => (
+    <span className="text14Medium text-textTertiary">
+      {isNil(item.assetId) ? "-" : `#${item.assetId}`}
+    </span>
+  ),
+};
+
 export const colName = {
   name: "Name",
   style: { textAlign: "left", minWidth: "160px" },
@@ -106,7 +117,14 @@ export const colTransfer = {
   render: (item) => <TransferButton asset={item} />,
 };
 
-const columnsDef = [colToken, colName, colTotal, colTransferrable, colTransfer];
+const columnsDef = [
+  colToken,
+  colId,
+  colName,
+  colTotal,
+  colTransferrable,
+  colTransfer,
+];
 
 export default function AssetsList({ assets }) {
   return (
