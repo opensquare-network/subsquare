@@ -5,7 +5,7 @@ import ExternalLink from "next-common/components/externalLink";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import WarningInfoPanel from "next-common/components/summary/styled/warningInfoPanel";
 import Tooltip from "next-common/components/tooltip";
-import { usePost } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
@@ -35,10 +35,8 @@ function IpfsContent({ cid }) {
   return <MarkdownPreviewer content={value} />;
 }
 
-export default function FellowshipReferendaDetailEvidence({ pallet }) {
-  const post = usePost();
-  const callArgs = post.onchainData?.inlineCall?.call?.args;
-  const who = find(callArgs, { name: "who" })?.value;
+function FellowshipReferendaDetailEvidenceImpl({ pallet, call }) {
+  const who = find(call?.args, { name: "who" })?.value;
 
   const fellowshipEvidence = useSubCoreFellowshipEvidence(who, pallet);
   const notFound = !fellowshipEvidence.wish && !fellowshipEvidence.evidence;
@@ -90,4 +88,20 @@ export default function FellowshipReferendaDetailEvidence({ pallet }) {
       {content}
     </div>
   );
+}
+
+export default function FellowshipReferendaDetailEvidence({
+  pallet = "fellowshipCore",
+}) {
+  const onchainData = useOnchainData();
+  const { call } = onchainData?.inlineCall || {};
+
+  if (
+    call?.section !== pallet &&
+    (call?.method !== "promote" || call?.method !== "approve")
+  ) {
+    return null;
+  }
+
+  return <FellowshipReferendaDetailEvidenceImpl pallet={pallet} call={call} />;
 }
