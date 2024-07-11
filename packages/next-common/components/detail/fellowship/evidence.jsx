@@ -84,7 +84,7 @@ export default function FellowshipReferendaDetailEvidence() {
     <div className="mt-4 space-y-4">
       <hr className="my-4" />
       <div className="text14Bold text-textPrimary">
-        {fellowshipEvidence.wish}/Evidence
+        {fellowshipEvidence.wish && `${fellowshipEvidence.wish}/`}Evidence
       </div>
 
       {content}
