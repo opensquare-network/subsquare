@@ -54,7 +54,7 @@ export default function FellowshipReferendaDetailEvidence() {
   let content;
   if (notFound) {
     content = (
-      <WarningInfoPanel>
+      <WarningInfoPanel className="justify-center">
         <SystemWarning className="w-5 h-5" />
         {"Warning: can't find the evidence on chain."}
       </WarningInfoPanel>
