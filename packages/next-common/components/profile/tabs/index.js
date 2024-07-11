@@ -25,6 +25,16 @@ export default function useProfileTabs() {
   const maybeEvmAddress = tryConvertToEvmAddress(id);
   const prefix = `/user/${maybeEvmAddress}/`;
 
+  if (isAssetHub()) {
+    return [
+      {
+        label: "Assets",
+        url: `${prefix}assets`,
+        exactMatch: false,
+      },
+    ];
+  }
+
   const tabs = [
     {
       label: "Posted",
@@ -77,14 +87,6 @@ export default function useProfileTabs() {
         exactMatch: false,
       });
     }
-  }
-
-  if (isAssetHub()) {
-    tabs.push({
-      label: "Assets",
-      url: `${prefix}assets`,
-      exactMatch: false,
-    });
   }
 
   return tabs;
