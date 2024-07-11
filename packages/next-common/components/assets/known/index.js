@@ -15,7 +15,7 @@ export function useKnownAssetHubAssets() {
 export function useNativeTokenIcon() {
   const chain = useChain();
   if (Chains.polkadotAssetHub === chain) {
-    return AssetIconDot
+    return AssetIconDot;
   } else {
     return null;
   }
@@ -23,6 +23,6 @@ export function useNativeTokenIcon() {
 
 export default function useKnownAssetHubAssetIcon(assetId) {
   const assets = useKnownAssetHubAssets();
-  const targetAsset = (assets || []).find(asset => asset.assetId === assetId);
+  const targetAsset = (assets || []).find((asset) => asset.assetId === assetId);
   return targetAsset?.icon;
 }
