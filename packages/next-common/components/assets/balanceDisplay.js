@@ -3,7 +3,9 @@ export default function BalanceDisplay({ balance }) {
   return (
     <span>
       <span className="text-textPrimary">{integerPart}</span>
-      <span className="text-textTertiary">.{fractionalPart}</span>
+      {fractionalPart && (
+        <span className="text-textTertiary">.{fractionalPart}</span>
+      )}
     </span>
   );
 }
