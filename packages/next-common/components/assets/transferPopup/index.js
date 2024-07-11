@@ -7,13 +7,14 @@ import {
 import { useCallback, useState } from "react";
 import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
-import { toPrecision } from "next-common/utils";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useContextApi } from "next-common/context/api";
 import BigNumber from "bignumber.js";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import BalanceDisplay from "../balanceDisplay";
+import { formatBalance } from "../assetsList";
 
 function PopupContent() {
   const { asset, onClose } = usePopupParams();
@@ -23,7 +24,6 @@ function PopupContent() {
   const extensionAccounts = useExtensionAccounts();
   const [transferToAddress, setTransferToAddress] = useState("");
   const [transferAmount, setTransferAmount] = useState("");
-  const balance = toPrecision(asset.balance || 0, asset.decimals);
 
   const getTxFunc = useCallback(() => {
     if (!transferToAddress) {
@@ -50,7 +50,7 @@ function PopupContent() {
       return;
     }
 
-    if (amount.gt(asset.balance)) {
+    if (amount.gt(asset.transferrable)) {
       dispatch(newErrorToast("Insufficient balance"));
       return;
     }
@@ -61,22 +61,12 @@ function PopupContent() {
     );
   }, [dispatch, api, asset, address, transferToAddress, transferAmount]);
 
-  const setMax = () => {
-    setTransferAmount(balance);
-  };
-
   const balanceStatus = (
     <div className="flex gap-[8px] items-center mb-[8px]">
-      <span className="text12Medium text-textTertiary">Balance</span>
-      <span className="text12Bold text-textPrimary">
-        {balance} {asset.symbol}
-      </span>
-      <span
-        className="cursor-pointer text12Medium text-theme500"
-        onClick={setMax}
-      >
-        MAX
-      </span>
+      <span className="text12Medium text-textTertiary">Transferable</span>
+      <BalanceDisplay
+        balance={formatBalance(asset.transferrable || 0, asset.decimals)}
+      />
     </div>
   );
 

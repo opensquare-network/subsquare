@@ -8,6 +8,7 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import useKnownAssetHubAssetIcon, {
   useNativeTokenIcon,
 } from "next-common/components/assets/known";
+import BalanceDisplay from "./balanceDisplay";
 
 const TransferPopup = dynamicClientOnly(() => import("./transferPopup"));
 
@@ -48,7 +49,7 @@ export function TokenSymbol({ type, assetId, symbol }) {
 export function formatBalance(balance, decimals) {
   return new BigNumber(balance)
     .div(Math.pow(10, decimals))
-    .decimalPlaces(4, BigNumber.ROUND_DOWN)
+    .decimalPlaces(4, BigNumber.ROUND_FLOOR)
     .toFormat({ decimalSeparator: ".", groupSeparator: ",", groupSize: 3 });
 }
 
@@ -80,7 +81,9 @@ export const colTotal = {
   style: { textAlign: "right", width: "160px", minWidth: "160px" },
   render: (item) => (
     <span key="total" className="text14Medium text-textPrimary">
-      {formatBalance(item.balance || 0, item.decimals)}
+      <BalanceDisplay
+        balance={formatBalance(item.balance || 0, item.decimals)}
+      />
     </span>
   ),
 };
@@ -90,7 +93,9 @@ export const colTransferrable = {
   style: { textAlign: "right", width: "160px", minWidth: "160px" },
   render: (item) => (
     <span key="transferrable" className="text14Medium text-textPrimary">
-      {formatBalance(item.transferrable || 0, item.decimals)}
+      <BalanceDisplay
+        balance={formatBalance(item.transferrable || 0, item.decimals)}
+      />
     </span>
   ),
 };
