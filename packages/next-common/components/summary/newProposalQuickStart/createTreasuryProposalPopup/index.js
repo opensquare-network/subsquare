@@ -6,12 +6,8 @@ import {
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
-import { getState } from "next-common/components/preImages/newPreimagePopup";
-import { useContextApi } from "next-common/context/api";
-import { useChainSettings } from "next-common/context/chain";
-import { checkInputValue } from "next-common/utils";
 import { usePageProps } from "next-common/context/page";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
@@ -19,12 +15,11 @@ import AdvanceSettings from "../common/advanceSettings";
 import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
 import useTrackDetail from "../../newProposalPopup/useTrackDetail";
 import Popup from "next-common/components/popup/wrapper/Popup";
+import { useLocalTreasuryNotePreimageTx } from "next-common/components/preImages/submitPreimagePopup/newLocalTreasuryProposalPopup";
 
 export function NewTreasuryReferendumInnerPopup() {
   const { onClose } = usePopupParams();
   const { tracks } = usePageProps();
-  const api = useContextApi();
-  const { decimals } = useChainSettings();
   const [inputBalance, setInputBalance] = useState("");
   const [beneficiary, setBeneficiary] = useState("");
   const [trackId, setTrackId] = useState(tracks[0].id);
@@ -33,26 +28,8 @@ export function NewTreasuryReferendumInnerPopup() {
   const extensionAccounts = useExtensionAccounts();
   const [enactment, setEnactment] = useState();
 
-  const { encodedHash, encodedLength, notePreimageTx } = useMemo(() => {
-    if (!api || !inputBalance || !beneficiary) {
-      return {};
-    }
-
-    let bnValue;
-    try {
-      bnValue = checkInputValue(inputBalance, decimals);
-    } catch (err) {
-      return {};
-    }
-
-    try {
-      const spend = api.tx.treasury.spendLocal || api.tx.treasury.spend;
-      const proposal = spend(bnValue.toFixed(), beneficiary);
-      return getState(api, proposal);
-    } catch (e) {
-      return {};
-    }
-  }, [api, inputBalance, beneficiary]);
+  const { encodedHash, encodedLength, notePreimageTx } =
+    useLocalTreasuryNotePreimageTx(inputBalance, beneficiary);
 
   return (
     <Popup title="Create Treasury Proposal" onClose={onClose} wide>

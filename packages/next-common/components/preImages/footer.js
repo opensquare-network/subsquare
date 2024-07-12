@@ -4,7 +4,7 @@ import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const NewPreimagePopup = dynamicPopup(() => import("./newPreimagePopup"));
+const SubmitPreimagePopup = dynamicPopup(() => import("./submitPreimagePopup"));
 
 const AddButton = styled(Button)`
   display: flex;
@@ -27,7 +27,7 @@ export default function PreImagesFooter() {
         New Preimage
       </AddButton>
       {showNewPreimagePopup && (
-        <NewPreimagePopup onClose={() => setShowNewPreimagePopup(false)} />
+        <SubmitPreimagePopup onClose={() => setShowNewPreimagePopup(false)} />
       )}
     </div>
   );

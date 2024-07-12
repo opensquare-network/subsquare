@@ -1,8 +1,6 @@
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
-import { getState } from "next-common/components/preImages/newPreimagePopup";
-import { useContextApi } from "next-common/context/api";
 import { usePageProps } from "next-common/context/page";
 import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
@@ -14,11 +12,11 @@ import { useChain } from "next-common/context/chain";
 import EditorField from "next-common/components/popup/fields/editorField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import { useRemarkNotePreimageTx } from "next-common/components/preImages/submitPreimagePopup/newRemarkProposalPopup";
 
 export function NewRemarkReferendumInnerPopup() {
   const { onClose } = usePopupParams();
   const { tracks } = usePageProps();
-  const api = useContextApi();
   const [remark, setRemark] = useState("");
 
   let defaultTrackId = tracks[0].id;
@@ -31,18 +29,8 @@ export function NewRemarkReferendumInnerPopup() {
   const track = useTrackDetail(trackId);
   const [enactment, setEnactment] = useState();
 
-  const { encodedHash, encodedLength, notePreimageTx } = useMemo(() => {
-    if (!api || !remark) {
-      return {};
-    }
-
-    try {
-      const proposal = api.tx.system.remark(remark);
-      return getState(api, proposal);
-    } catch (e) {
-      return {};
-    }
-  }, [api, remark]);
+  const { encodedHash, encodedLength, notePreimageTx } =
+    useRemarkNotePreimageTx(remark);
 
   return (
     <Popup title="New Remark Proposal" onClose={onClose} wide>
