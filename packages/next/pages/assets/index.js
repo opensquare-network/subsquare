@@ -27,7 +27,7 @@ export const getServerSideProps = withCommonProps(async () => {
   if (Chains.polkadotAssetHub !== chain) {
     return {
       redirect: {
-        permanent: true,
+        permanent: false,
         destination: "/",
       },
     };

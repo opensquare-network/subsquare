@@ -30,6 +30,8 @@ const polkadotAssetHub = {
   navLogoDark: ProjectLogoPolkadotAssetHub,
   group: MenuGroups.PolkadotAndParachains,
   links: polkadotLinks,
+  hasSubscan: true,
+  subscanDomain: "assethub-polkadot",
   hasStatescan: true,
   description: "Assets para-chain of Polkadot",
   ...polkadotAssetHubThemeVars,
