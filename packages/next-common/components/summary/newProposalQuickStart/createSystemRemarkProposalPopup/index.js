@@ -4,10 +4,10 @@ import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import { useRemarkNotePreimageTx } from "next-common/components/preImages/submitPreimagePopup/newRemarkProposalPopup";
+import { useRemarkNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/newRemarkProposalPopup";
+import useRemarkField from "next-common/components/preImages/createPreimagePopup/fields/useRemarkField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import useTrackField from "../common/useTrackField";
-import useRemarkField from "next-common/components/preImages/submitPreimagePopup/fields/useRemarkField";
 
 export function NewRemarkReferendumInnerPopup() {
   const { onClose } = usePopupParams();

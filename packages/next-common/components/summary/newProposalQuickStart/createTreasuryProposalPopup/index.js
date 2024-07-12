@@ -4,9 +4,9 @@ import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { useLocalTreasuryNotePreimageTx } from "next-common/components/preImages/submitPreimagePopup/newLocalTreasuryProposalPopup";
-import useBalanceField from "next-common/components/preImages/submitPreimagePopup/fields/useBalanceField";
-import useBeneficiaryField from "next-common/components/preImages/submitPreimagePopup/fields/useBeneficiaryField";
+import { useLocalTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/newLocalTreasuryProposalPopup";
+import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
+import useBeneficiaryField from "next-common/components/preImages/createPreimagePopup/fields/useBeneficiaryField";
 import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 

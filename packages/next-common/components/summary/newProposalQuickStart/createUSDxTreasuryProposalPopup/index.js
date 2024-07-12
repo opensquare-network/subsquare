@@ -7,11 +7,11 @@ import AdvanceSettings from "../common/advanceSettings";
 import BigNumber from "bignumber.js";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { useUSDxTreasuryNotePreimageTx } from "next-common/components/preImages/submitPreimagePopup/newUSDxTreasuryProposalPopup";
-import useUSDxBalanceField from "next-common/components/preImages/submitPreimagePopup/fields/useUSDxBalanceField";
-import useBeneficiaryField from "next-common/components/preImages/submitPreimagePopup/fields/useBeneficiaryField";
+import { useUSDxTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/newUSDxTreasuryProposalPopup";
+import useUSDxBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useUSDxBalanceField";
+import useBeneficiaryField from "next-common/components/preImages/createPreimagePopup/fields/useBeneficiaryField";
+import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
 import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
-import useValidFromField from "next-common/components/preImages/submitPreimagePopup/fields/useValidFromField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 
 function getTokenAmount(inputBalance) {
@@ -30,11 +30,11 @@ function PopupContent() {
   } = useUSDxBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
     useBeneficiaryField();
-  const { value: enactment, component: enactmentField } =
-    useEnactmentBlocksField(trackId);
   const { value: validFrom, component: validFromField } = useValidFromField();
   const { value: trackId, component: trackField } =
     useAutoSelectTreasuryTrackField(getTokenAmount(inputBalance));
+  const { value: enactment, component: enactmentField } =
+    useEnactmentBlocksField(trackId);
 
   const { encodedHash, encodedLength, notePreimageTx } =
     useUSDxTreasuryNotePreimageTx(inputBalance, beneficiary, validFrom, symbol);
