@@ -61,7 +61,7 @@ export function withCommonProps(
         connectedAccount: connectedAccount ?? null,
         admins: admins ?? [],
         themeMode: themeMode ?? null,
-        navCollapsed: navCollapsed || false,
+        navCollapsed: navCollapsed || "true",
         navSubmenuVisible: navSubmenuVisible || "{}",
         ...detailPageProperties,
         pageProperties: {
