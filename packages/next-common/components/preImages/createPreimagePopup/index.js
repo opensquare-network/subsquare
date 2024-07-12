@@ -71,7 +71,7 @@ function PopupContent() {
   );
 }
 
-export default function SubmitPreimagePopup({ onClose }) {
+export default function CreatePreimagePopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
       <PopupContent />
