@@ -9,14 +9,11 @@ import NewUSDxTreasuryProposalPopup from "./newUSDxTreasuryProposalPopup";
 import NewRemarkProposalPopup from "./newRemarkProposalPopup";
 import { useChainSettings } from "next-common/context/chain";
 
-function PreimageTemplates({ buttons }) {
-  if (!buttons || buttons.length === 0) {
-    return null;
-  }
+function PreimageTemplates({ children }) {
   return (
     <div className="flex flex-col gap-[8px] mt-[24px]">
       <h6 className="text-textPrimary text14Bold">Quick Start</h6>
-      <div className="flex flex-col flex-wrap gap-[8px]">{buttons}</div>
+      <div className="flex flex-col flex-wrap gap-[8px]">{children}</div>
     </div>
   );
 }
@@ -32,6 +29,23 @@ function PopupContent() {
     treasuryProposalTracks,
     newProposalQuickStart: { usdxTreasuryProposal } = {},
   } = useChainSettings();
+
+  if (showNewPreimage) {
+    return <NewPreimageInnerPopup onClose={onClose} />;
+  }
+
+  if (showLocalTreasuryTemplate) {
+    return <NewLocalTreasuryProposalPopup onClose={onClose} />;
+  }
+
+  if (showUSDxTreasuryTemplate) {
+    return <NewUSDxTreasuryProposalPopup onClose={onClose} />;
+  }
+
+  if (showRemarkTemplate) {
+    return <NewRemarkProposalPopup onClose={onClose} />;
+  }
+
   const hasTreasurySpend = !!treasuryProposalTracks;
   const hasSpendUSDx = hasTreasurySpend && !!usdxTreasuryProposal;
 
@@ -60,25 +74,9 @@ function PopupContent() {
     />,
   ];
 
-  if (showNewPreimage) {
-    return <NewPreimageInnerPopup onClose={onClose} />;
-  }
-
-  if (showLocalTreasuryTemplate) {
-    return <NewLocalTreasuryProposalPopup onClose={onClose} />;
-  }
-
-  if (showUSDxTreasuryTemplate) {
-    return <NewUSDxTreasuryProposalPopup onClose={onClose} />;
-  }
-
-  if (showRemarkTemplate) {
-    return <NewRemarkProposalPopup onClose={onClose} />;
-  }
-
   return (
     <MainPopup setShowNewPreimage={setShowNewPreimage} onClose={onClose}>
-      <PreimageTemplates buttons={buttons} />
+      <PreimageTemplates>{buttons}</PreimageTemplates>
     </MainPopup>
   );
 }
