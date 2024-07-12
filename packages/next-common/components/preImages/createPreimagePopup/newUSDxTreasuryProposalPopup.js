@@ -9,7 +9,7 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import { StatemintAssets } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import NotePreimageButton from "./notePreimageButton";
 import useUSDxBalanceField from "./fields/useUSDxBalanceField";
 import useBeneficiaryField from "./fields/useBeneficiaryField";
 import useValidFromField from "./fields/useValidFromField";
@@ -131,10 +131,7 @@ function PopupContent() {
       </div>
       {validFromField}
       <div className="flex justify-end">
-        <TxSubmissionButton
-          getTxFunc={() => notePreimageTx}
-          onClose={onClose}
-        />
+        <NotePreimageButton notePreimageTx={notePreimageTx} onClose={onClose} />
       </div>
     </>
   );

@@ -7,6 +7,7 @@ import { NewPreimageInnerPopup } from "../newPreimagePopup";
 import NewLocalTreasuryProposalPopup from "./newLocalTreasuryProposalPopup";
 import NewUSDxTreasuryProposalPopup from "./newUSDxTreasuryProposalPopup";
 import NewRemarkProposalPopup from "./newRemarkProposalPopup";
+import { useChainSettings } from "next-common/context/chain";
 
 function PreimageTemplates({ buttons }) {
   if (!buttons || buttons.length === 0) {
@@ -27,19 +28,30 @@ function PopupContent() {
   const [showUSDxTreasuryTemplate, setShowUSDxTreasuryTemplate] = useState();
   const [showRemarkTemplate, setShowRemarkTemplate] = useState();
 
+  const {
+    treasuryProposalTracks,
+    newProposalQuickStart: { usdxTreasuryProposal } = {},
+  } = useChainSettings();
+  const hasTreasurySpend = !!treasuryProposalTracks;
+  const hasSpendUSDx = hasTreasurySpend && !!usdxTreasuryProposal;
+
   const buttons = [
-    <ChoiceButton
-      key="spend-local"
-      name="Treasury proposal local"
-      description="Creating a treasury spend of native token that is locally available"
-      onClick={() => setShowLocalTreasuryTemplate(true)}
-    />,
-    <ChoiceButton
-      key="spend-usdx"
-      name="USDx treasury proposal"
-      description="Creating a treasury spend with assets on AssetHub"
-      onClick={() => setShowUSDxTreasuryTemplate(true)}
-    />,
+    hasTreasurySpend && (
+      <ChoiceButton
+        key="spend-local"
+        name="Treasury proposal local"
+        description="Creating a treasury spend of native token that is locally available"
+        onClick={() => setShowLocalTreasuryTemplate(true)}
+      />
+    ),
+    hasSpendUSDx && (
+      <ChoiceButton
+        key="spend-usdx"
+        name="USDx treasury proposal"
+        description="Creating a treasury spend with assets on AssetHub"
+        onClick={() => setShowUSDxTreasuryTemplate(true)}
+      />
+    ),
     <ChoiceButton
       key="remark"
       name="Remark"

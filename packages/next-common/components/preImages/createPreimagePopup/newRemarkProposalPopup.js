@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import NotePreimageButton from "./notePreimageButton";
 import useRemarkField from "./fields/useRemarkField";
 
 export function useRemarkNotePreimageTx(remark) {
@@ -32,10 +32,7 @@ export default function NewRemarkProposalPopup({ onClose }) {
       <SignerWithBalance title="Origin" />
       {remarkField}
       <div className="flex justify-end">
-        <TxSubmissionButton
-          getTxFunc={() => notePreimageTx}
-          onClose={onClose}
-        />
+        <NotePreimageButton notePreimageTx={notePreimageTx} onClose={onClose} />
       </div>
     </Popup>
   );

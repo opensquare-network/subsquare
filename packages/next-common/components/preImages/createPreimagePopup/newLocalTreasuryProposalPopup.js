@@ -5,7 +5,7 @@ import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { checkInputValue } from "next-common/utils";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import NotePreimageButton from "./notePreimageButton";
 import useBalanceField from "./fields/useBalanceField";
 import useBeneficiaryField from "./fields/useBeneficiaryField";
 
@@ -51,10 +51,7 @@ export default function NewLocalTreasuryProposalPopup({ onClose }) {
       {balanceField}
       {beneficiaryField}
       <div className="flex justify-end">
-        <TxSubmissionButton
-          getTxFunc={() => notePreimageTx}
-          onClose={onClose}
-        />
+        <NotePreimageButton notePreimageTx={notePreimageTx} onClose={onClose} />
       </div>
     </Popup>
   );
