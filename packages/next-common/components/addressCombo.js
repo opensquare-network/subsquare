@@ -7,7 +7,7 @@ import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
-import { addressEllipsis, cn } from "../utils";
+import { cn } from "../utils";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { fetchIdentity } from "next-common/services/identity.js";
 import { useChainSettings } from "next-common/context/chain.js";
@@ -41,7 +41,7 @@ const NameWrapper = styled.div`
     font-size: 14px;
     font-weight: 500;
   }
-  > :last-child {
+  > :nth-child(2) {
     margin-top: 4px;
     font-size: 12px;
     color: var(--textTertiary);
@@ -125,7 +125,6 @@ export default function AddressCombo({
   );
   const maybeEvmAddress = tryConvertToEvmAddress(address);
   const addressHint = getAddressHint(address);
-  const shortEvmAddr = addressEllipsis(maybeEvmAddress);
   const { identity } = useChainSettings();
   const [identities, setIdentities] = useState({});
 
@@ -233,16 +232,16 @@ export default function AddressCombo({
     selectContent = (
       <>
         <Avatar address={address} />
-        <NameWrapper>
-          <IdentityName>
+        <NameWrapper className="truncate">
+          <IdentityName className="truncate">
             {identities[address] && (
               <IdentityIcon identity={identities[address].identity} />
             )}
-            <div className="line-clamp-1">
-              {identities[address]?.displayName || shortEvmAddr}
+            <div className="whitespace-nowrap truncate">
+              {identities[address]?.displayName || maybeEvmAddress}
             </div>
           </IdentityName>
-          <div>{addressHint}</div>
+          {identities[address] && <div>{addressHint}</div>}
         </NameWrapper>
       </>
     );
