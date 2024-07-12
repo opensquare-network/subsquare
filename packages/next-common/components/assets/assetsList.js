@@ -10,6 +10,7 @@ import useKnownAssetHubAssetIcon, {
 } from "next-common/components/assets/known";
 import BalanceDisplay from "./balanceDisplay";
 import { isNil } from "lodash-es";
+import Tooltip from "../tooltip";
 
 const AssetTransferPopup = dynamicClientOnly(() =>
   import("./transferPopup").then((module) => module.AssetTransferPopup),
@@ -27,13 +28,15 @@ function TransferButton({ asset }) {
 
   return (
     <>
-      <ListButton
-        onClick={() => {
-          setShowPopup(true);
-        }}
-      >
-        <SystemTransfer width={16} height={16} />
-      </ListButton>
+      <Tooltip content="Transfer">
+        <ListButton
+          onClick={() => {
+            setShowPopup(true);
+          }}
+        >
+          <SystemTransfer width={16} height={16} />
+        </ListButton>
+      </Tooltip>
       {showPopup && popup}
     </>
   );
