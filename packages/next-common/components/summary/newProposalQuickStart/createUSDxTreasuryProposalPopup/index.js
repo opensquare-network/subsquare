@@ -1,45 +1,40 @@
-import AddressComboField from "next-common/components/popup/fields/addressComboField";
-import {
-  useExtensionAccounts,
-  usePopupParams,
-} from "next-common/components/popupWithSigner/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useState } from "react";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
-import { usePageProps } from "next-common/context/page";
-import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
-import BlocksField from "next-common/components/popup/fields/blocksField";
 import BigNumber from "bignumber.js";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
-import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
-import useTrackDetail from "../../newProposalPopup/useTrackDetail";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import {
-  USDxBalance,
-  useUSDxTreasuryNotePreimageTx,
-} from "next-common/components/preImages/submitPreimagePopup/newUSDxTreasuryProposalPopup";
+import { useUSDxTreasuryNotePreimageTx } from "next-common/components/preImages/submitPreimagePopup/newUSDxTreasuryProposalPopup";
+import useUSDxBalanceField from "next-common/components/preImages/submitPreimagePopup/fields/useUSDxBalanceField";
+import useBeneficiaryField from "next-common/components/preImages/submitPreimagePopup/fields/useBeneficiaryField";
+import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
+import useValidFromField from "next-common/components/preImages/submitPreimagePopup/fields/useValidFromField";
+import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 
-function PopupContent() {
-  const { tracks } = usePageProps();
-  const [inputBalance, setInputBalance] = useState("");
-  const [beneficiary, setBeneficiary] = useState("");
-  const [trackId, setTrackId] = useState(tracks[0].id);
-  const track = useTrackDetail(trackId);
-  const realAddress = useRealAddress();
-  const extensionAccounts = useExtensionAccounts();
-  const [enactment, setEnactment] = useState();
-  const [symbol, setSymbol] = useState("USDt");
-  const [validFrom, setValidFrom] = useState("");
-
+function getTokenAmount(inputBalance) {
   // 1 DOT = 10 USDx
   const nativeTokenPrice = 10;
-  const tokenAmount = new BigNumber(inputBalance)
+  const tokenAmount = new BigNumber(inputBalance || 0)
     .div(nativeTokenPrice)
     .toNumber();
+  return tokenAmount;
+}
+
+function PopupContent() {
+  const {
+    value: [inputBalance, symbol],
+    component: usdxBalanceField,
+  } = useUSDxBalanceField();
+  const { value: beneficiary, component: beneficiaryField } =
+    useBeneficiaryField();
+  const { value: enactment, component: enactmentField } =
+    useEnactmentBlocksField(trackId);
+  const { value: validFrom, component: validFromField } = useValidFromField();
+  const { value: trackId, component: trackField } =
+    useAutoSelectTreasuryTrackField(getTokenAmount(inputBalance));
 
   const { encodedHash, encodedLength, notePreimageTx } =
     useUSDxTreasuryNotePreimageTx(inputBalance, beneficiary, validFrom, symbol);
@@ -47,33 +42,15 @@ function PopupContent() {
   return (
     <>
       <SignerWithBalance title="Origin" />
-      <USDxBalance
-        inputBalance={inputBalance}
-        setInputBalance={setInputBalance}
-        symbol={symbol}
-        setSymbol={setSymbol}
-      />
+      {usdxBalanceField}
       <div className="flex flex-col gap-[8px]">
-        <AddressComboField
-          title="Beneficiary"
-          extensionAccounts={extensionAccounts}
-          defaultAddress={realAddress}
-          setAddress={setBeneficiary}
-        />
+        {beneficiaryField}
         <InfoMessage>Please fill the address from AssetHub</InfoMessage>
       </div>
-      <AutoSelectTreasuryTrack
-        requestAmount={tokenAmount}
-        trackId={trackId}
-        setTrackId={setTrackId}
-      />
+      {trackField}
       <AdvanceSettings>
-        <BlocksField
-          title="Valid From"
-          value={validFrom}
-          setValue={setValidFrom}
-        />
-        <EnactmentBlocks track={track} setEnactment={setEnactment} />
+        {validFromField}
+        {enactmentField}
         <SubmissionDeposit />
       </AdvanceSettings>
       <div className="flex justify-end">

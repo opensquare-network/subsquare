@@ -1,10 +1,10 @@
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
-import EditorField from "next-common/components/popup/fields/editorField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import useRemarkField from "./fields/useRemarkField";
 
 export function useRemarkNotePreimageTx(remark) {
   const api = useContextApi();
@@ -24,13 +24,13 @@ export function useRemarkNotePreimageTx(remark) {
 }
 
 export default function NewRemarkProposalPopup({ onClose }) {
-  const [remark, setRemark] = useState("");
+  const { value: remark, component: remarkField } = useRemarkField();
   const { notePreimageTx } = useRemarkNotePreimageTx(remark);
 
   return (
     <Popup title="New Remark Proposal" onClose={onClose} wide>
       <SignerWithBalance title="Origin" />
-      <EditorField title="Remark" content={remark} setContent={setRemark} />
+      {remarkField}
       <div className="flex justify-end">
         <TxSubmissionButton
           getTxFunc={() => notePreimageTx}
