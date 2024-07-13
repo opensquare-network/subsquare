@@ -14,7 +14,8 @@ export default function useInjectedWeb3() {
 
     if (isMounted()) {
       if (typeof window !== "undefined") {
-        if (window.injectedWeb3) {
+        // Added for supporting PolkaGate Snap, when no wallets are available!
+        if (window.injectedWeb3 || window.ethereum?.isMetaMask) {
           handleWeb3();
         }
       } else {
@@ -23,7 +24,7 @@ export default function useInjectedWeb3() {
         }, 1000);
       }
     }
-  }, [isMounted]);
+  }, [isMounted, window?.injectedWeb3]);
 
   return { loading, injectedWeb3 };
 }
