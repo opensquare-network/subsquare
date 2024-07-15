@@ -25,15 +25,18 @@ export function useReferendumFellowshipCoreEvidence() {
       return;
     }
 
-    blockApi.query[pallet]?.memberEvidence(who).then(optional => {
-      if (optional.isNone) {
-        return;
-      }
+    blockApi.query[pallet]
+      ?.memberEvidence(who)
+      .then((optional) => {
+        if (optional.isNone) {
+          return;
+        }
 
-      const [wish, text] = optional.unwrap().toJSON();
-      setWish(wish);
-      setEvidence(text);
-    }).finally(() => setLoading(false));
+        const [wish, text] = optional.unwrap().toJSON();
+        setWish(wish);
+        setEvidence(text);
+      })
+      .finally(() => setLoading(false));
   }, [blockApi, who, pallet]);
 
   return {
