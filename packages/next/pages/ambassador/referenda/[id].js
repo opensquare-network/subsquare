@@ -30,6 +30,8 @@ import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFel
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -53,19 +55,26 @@ function AmbassadorContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <ContentWithComment>
-      <AmbassadorReferendaDetail />
-      <CollectivesProvider section="ambassador">
-        <FellowshipReferendumSideBar />
-      </CollectivesProvider>
-      <DetailMultiTabs
-        call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
-        metadata={
-          <Gov2ReferendumMetadata info={info} pallet="fellowshipReferenda" />
-        }
-        timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
-      />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <AmbassadorReferendaDetail />
+          <CollectivesProvider section="ambassador">
+            <FellowshipReferendumSideBar />
+          </CollectivesProvider>
+          <DetailMultiTabs
+            call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
+            metadata={
+              <Gov2ReferendumMetadata
+                info={info}
+                pallet="fellowshipReferenda"
+              />
+            }
+            timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
+          />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 
