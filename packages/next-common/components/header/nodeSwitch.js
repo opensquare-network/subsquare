@@ -2,15 +2,12 @@ import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import useWindowSize from "../../utils/hooks/useWindowSize";
-import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
-import {
-  currentNodeSelector,
-  nodesSelector,
-} from "../../store/reducers/nodeSlice";
+import { currentNodeSelector, nodesSelector, } from "../../store/reducers/nodeSlice";
 import Caret from "../icons/caret";
 import { useChainSettings } from "../../context/chain";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import NodeSignalIcon from "./nodeSignalIcon";
+import { useClickAway } from "react-use";
 
 const NodeOptions = dynamicClientOnly(() => import("./nodeOptions"));
 
@@ -68,7 +65,7 @@ export default function NodeSwitch({ small }) {
     chainSettings.endpoints[0],
   );
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   useEffect(() => {
     if (small && windowSize.width && windowSize.width <= 768) {

@@ -1,11 +1,9 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { useState, useRef } from "react";
-import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
-import { isAddress } from "@polkadot/util-crypto";
+import { isAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
 import { cn } from "../utils";
 import { normalizeAddress } from "next-common/utils/address.js";
@@ -14,11 +12,8 @@ import { useChainSettings } from "next-common/context/chain.js";
 import { encodeAddressToChain } from "next-common/services/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
 import IdentityIcon from "./Identity/identityIcon.js";
-import {
-  getAddressHint,
-  tryConvertToEvmAddress,
-} from "next-common/utils/mixedChainUtil";
-import { isEthereumAddress } from "@polkadot/util-crypto";
+import { getAddressHint, tryConvertToEvmAddress, } from "next-common/utils/mixedChainUtil";
+import { useClickAway } from "react-use";
 
 const Wrapper = Relative;
 
@@ -189,7 +184,7 @@ export default function AddressCombo({
     setEdit(false);
   };
 
-  useOnClickOutside(ref, () => {
+  useClickAway(ref, () => {
     setShow(false);
   });
 
