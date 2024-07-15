@@ -34,6 +34,7 @@ const Chains = {
   moonriver: "moonriver",
   moonbeam: "moonbeam",
   bifrostPolkadot: "bifrost-polkadot",
+  polkadotAssetHub: "polkadot-assethub",
   vara,
 };
 

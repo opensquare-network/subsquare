@@ -15,6 +15,8 @@ import isMoonChain from "next-common/utils/isMoonChain";
 import preImages from "./preImages";
 import { partition } from "lodash-es";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
+import isAssetHub from "next-common/utils/isAssetHub";
+import { assetHubMenu } from "./assetHub";
 
 export function getHomeMenu({
   summary = {},
@@ -23,6 +25,10 @@ export function getHomeMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
+  if (isAssetHub()) {
+    return [assetHubMenu];
+  }
+
   if (isMoonChain()) {
     return [
       commonMenus,
