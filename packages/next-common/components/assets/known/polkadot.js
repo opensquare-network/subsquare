@@ -1,9 +1,4 @@
-import {
-  AssetIconDed,
-  AssetIconPink,
-  AssetIconUsdc,
-  AssetIconUsdt,
-} from "@osn/icons/subsquare";
+import { AssetIconDed, AssetIconPink, AssetIconUsdc, AssetIconUsdt } from "@osn/icons/subsquare";
 
 const knownPolkadotAssetHubAssets = [
   {

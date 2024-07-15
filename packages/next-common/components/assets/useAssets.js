@@ -124,17 +124,15 @@ export default function useAssets() {
     }, []);
 
     const knownAssets = knownAssetDefs.reduce((result, def) => {
-      const find = assets.find((asset) => asset.assetId === def.assetId);
+      const find = assets.find(asset => asset.assetId === def.assetId);
       if (find) {
         return [...result, find];
       } else {
         return result;
       }
     }, []);
-    const knownAssetIds = knownAssetDefs.map((def) => def.assetId);
-    const otherAssets = assets.filter(
-      (asset) => !knownAssetIds.includes(asset.assetId),
-    );
+    const knownAssetIds = knownAssetDefs.map(def => def.assetId);
+    const otherAssets = assets.filter(asset => !knownAssetIds.includes(asset.assetId));
 
     const tokens = [
       { ...PolkadotAssetHubNativeToken, ...nativeBalanceObj },
