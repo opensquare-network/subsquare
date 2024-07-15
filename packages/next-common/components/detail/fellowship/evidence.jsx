@@ -89,12 +89,9 @@ function FellowshipReferendaDetailEvidenceImpl() {
 export default function FellowshipReferendaDetailEvidence() {
   const pallet = useCoreFellowshipPallet();
   const onchainData = useOnchainData();
-  const { call } = onchainData?.inlineCall || {};
+  const { call } = onchainData?.inlineCall || onchainData.proposal || {};
 
-  if (
-    call?.section === pallet &&
-    (call?.method === "promote" || call?.method === "approve")
-  ) {
+  if (call?.section === pallet && ["promote", "approve"].includes(call?.method)) {
     return <FellowshipReferendaDetailEvidenceImpl />;
   }
 
