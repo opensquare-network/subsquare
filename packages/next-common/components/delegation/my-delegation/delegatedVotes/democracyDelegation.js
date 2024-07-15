@@ -11,22 +11,20 @@ export default function MyDemocracyDelegation({ delegating, isLoading }) {
   const sharedColumnsDef = useColumnsDef();
   const columnsDef = [
     ...sharedColumnsDef,
-    [
-      {
-        name: "",
-        style: {
-          textAlign: "right",
-          width: 80,
-          minWidth: 80,
-        },
+    {
+      name: "",
+      style: {
+        textAlign: "right",
+        width: 80,
+        minWidth: 80,
       },
-      () => (
+      render: () => (
         <DemocracyRemoveDelegation
           key="action"
           ButtonComponent={RemoveButton}
         />
       ),
-    ],
+    },
   ];
 
   return (

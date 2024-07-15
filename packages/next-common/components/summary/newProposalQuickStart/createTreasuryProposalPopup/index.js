@@ -1,80 +1,36 @@
-import AddressComboField from "next-common/components/popup/fields/addressComboField";
-import BalanceField from "next-common/components/popup/fields/balanceField";
-import {
-  useExtensionAccounts,
-  usePopupParams,
-} from "next-common/components/popupWithSigner/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useMemo, useState } from "react";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
-import { getState } from "next-common/components/preImages/newPreimagePopup";
-import { useContextApi } from "next-common/context/api";
-import { useChainSettings } from "next-common/context/chain";
-import { checkInputValue } from "next-common/utils";
-import { usePageProps } from "next-common/context/page";
-import EnactmentBlocks from "../../newProposalPopup/enactmentBlocks";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
-import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
-import useTrackDetail from "../../newProposalPopup/useTrackDetail";
 import Popup from "next-common/components/popup/wrapper/Popup";
+import { useLocalTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/newLocalTreasuryProposalPopup";
+import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
+import useBeneficiaryField from "next-common/components/preImages/createPreimagePopup/fields/useBeneficiaryField";
+import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
+import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 
 export function NewTreasuryReferendumInnerPopup() {
   const { onClose } = usePopupParams();
-  const { tracks } = usePageProps();
-  const api = useContextApi();
-  const { decimals } = useChainSettings();
-  const [inputBalance, setInputBalance] = useState("");
-  const [beneficiary, setBeneficiary] = useState("");
-  const [trackId, setTrackId] = useState(tracks[0].id);
-  const track = useTrackDetail(trackId);
-  const realAddress = useRealAddress();
-  const extensionAccounts = useExtensionAccounts();
-  const [enactment, setEnactment] = useState();
+  const { value: inputBalance, component: balanceField } = useBalanceField();
+  const { value: beneficiary, component: beneficiaryField } =
+    useBeneficiaryField();
+  const { value: trackId, component: trackField } =
+    useAutoSelectTreasuryTrackField(inputBalance);
+  const { value: enactment, component: enactmentField } =
+    useEnactmentBlocksField(trackId);
 
-  const { encodedHash, encodedLength, notePreimageTx } = useMemo(() => {
-    if (!api || !inputBalance || !beneficiary) {
-      return {};
-    }
-
-    let bnValue;
-    try {
-      bnValue = checkInputValue(inputBalance, decimals);
-    } catch (err) {
-      return {};
-    }
-
-    try {
-      const spend = api.tx.treasury.spendLocal || api.tx.treasury.spend;
-      const proposal = spend(bnValue.toFixed(), beneficiary);
-      return getState(api, proposal);
-    } catch (e) {
-      return {};
-    }
-  }, [api, inputBalance, beneficiary]);
+  const { encodedHash, encodedLength, notePreimageTx } =
+    useLocalTreasuryNotePreimageTx(inputBalance, beneficiary);
 
   return (
     <Popup title="Create Treasury Proposal" onClose={onClose} wide>
       <SignerWithBalance title="Origin" />
-      <BalanceField
-        title="Request"
-        inputBalance={inputBalance}
-        setInputBalance={setInputBalance}
-      />
-      <AddressComboField
-        title="Beneficiary"
-        extensionAccounts={extensionAccounts}
-        defaultAddress={realAddress}
-        setAddress={setBeneficiary}
-      />
-      <AutoSelectTreasuryTrack
-        requestAmount={inputBalance}
-        trackId={trackId}
-        setTrackId={setTrackId}
-      />
+      {balanceField}
+      {beneficiaryField}
+      {trackField}
       <AdvanceSettings>
-        <EnactmentBlocks track={track} setEnactment={setEnactment} />
+        {enactmentField}
         <SubmissionDeposit />
       </AdvanceSettings>
       <div className="flex justify-end">

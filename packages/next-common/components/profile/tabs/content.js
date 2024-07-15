@@ -6,13 +6,19 @@ import ProfileDelegation from "../delegation";
 import ProfileDeposits from "../deposits";
 import ProfileTransfers from "../transfers";
 import ProfileIdentityTimeline from "../identityTimeline";
+import ProfileAssets from "../assets";
 import { usePathname } from "next/navigation";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import isAssetHub from "next-common/utils/isAssetHub";
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
   const pathname = usePathname();
+
+  if (isAssetHub()) {
+    return <ProfileAssets />;
+  }
 
   const maybeEvmAddress = tryConvertToEvmAddress(id);
 
@@ -28,6 +34,10 @@ export default function useProfileTabContent() {
     return <ProfileTransfers />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/identity`)) {
     return <ProfileIdentityTimeline />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
+    return <ProfileAssets />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {
+    return <Posted />;
   }
 
   return <Posted />;

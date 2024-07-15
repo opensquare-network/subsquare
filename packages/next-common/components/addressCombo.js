@@ -7,7 +7,7 @@ import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import { isAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
-import { addressEllipsis, cn } from "../utils";
+import { cn } from "../utils";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { fetchIdentity } from "next-common/services/identity.js";
 import { useChainSettings } from "next-common/context/chain.js";
@@ -41,8 +41,7 @@ const NameWrapper = styled.div`
     font-size: 14px;
     font-weight: 500;
   }
-  > :last-child {
-    margin-top: 4px;
+  > :nth-child(2) {
     font-size: 12px;
     color: var(--textTertiary);
   }
@@ -112,9 +111,9 @@ export default function AddressCombo({
   setAddress,
   allowInvalidAddress = false,
   readOnly = false,
+  placeholder,
 }) {
   const [show, setShow] = useState(false);
-  const [edit, setEdit] = useState(false);
   const [inputAddress, setInputAddress] = useState(
     tryConvertToEvmAddress(address) || "",
   );
@@ -125,15 +124,14 @@ export default function AddressCombo({
   );
   const maybeEvmAddress = tryConvertToEvmAddress(address);
   const addressHint = getAddressHint(address);
-  const shortEvmAddr = addressEllipsis(maybeEvmAddress);
   const { identity } = useChainSettings();
   const [identities, setIdentities] = useState({});
 
-  const isValidAddress = allowInvalidAddress
-    ? true
-    : isAddress(address) ||
-      normalizeAddress(address) ||
-      isEthereumAddress(address);
+  const isValidAddress =
+    isAddress(address) ||
+    normalizeAddress(address) ||
+    isEthereumAddress(address);
+  const [edit, setEdit] = useState(!isValidAddress);
 
   const fetchAddressIdentity = useCallback(
     (address) => {
@@ -200,18 +198,19 @@ export default function AddressCombo({
   if (edit) {
     selectContent = (
       <>
-        <Avatar address={inputAddress} />
+        <Avatar address={inputAddress} size={40} />
         <Input
           value={inputAddress}
           onChange={(e) => setInputAddress(e.target.value)}
           onBlur={onBlur}
+          placeholder={placeholder}
         />
       </>
     );
   } else if (selectedAccount) {
     selectContent = (
       <>
-        <Avatar address={selectedAccount.address} />
+        <Avatar address={selectedAccount.address} size={40} />
         <NameWrapper>
           <IdentityName>
             {identities[selectedAccount.address] && (
@@ -231,17 +230,17 @@ export default function AddressCombo({
   } else {
     selectContent = (
       <>
-        <Avatar address={address} />
-        <NameWrapper>
-          <IdentityName>
+        <Avatar address={address} size={40} />
+        <NameWrapper className="truncate">
+          <IdentityName className="truncate">
             {identities[address] && (
               <IdentityIcon identity={identities[address].identity} />
             )}
-            <div className="line-clamp-1">
-              {identities[address]?.displayName || shortEvmAddr}
+            <div className="whitespace-nowrap truncate">
+              {identities[address]?.displayName || maybeEvmAddress}
             </div>
           </IdentityName>
-          <div>{addressHint}</div>
+          {identities[address] && <div>{addressHint}</div>}
         </NameWrapper>
       </>
     );
@@ -263,7 +262,7 @@ export default function AddressCombo({
             }}
             selected={item.address === address}
           >
-            <Avatar address={item.address} />
+            <Avatar address={item.address} size={40} />
             <NameWrapper>
               <IdentityName>
                 {identities[item.address] && (
@@ -305,7 +304,7 @@ export default function AddressCombo({
       </Select>
       {show && (accounts || []).length > 0 && listOptions}
 
-      {!isValidAddress && (
+      {address && !isValidAddress && !allowInvalidAddress && (
         <div className="mt-2 text-red500 text12Medium">
           Please fill a valid address
         </div>

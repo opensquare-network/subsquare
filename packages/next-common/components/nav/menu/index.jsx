@@ -52,8 +52,12 @@ function MainMenu({ collapsed, featuredMenu = [], hasArchivedMenu = false }) {
     <>
       <NavCommonMenu collapsed={collapsed} />
 
-      <NavMenuDivider />
-      <NavFeaturedMenu collapsed={collapsed} menu={featuredMenu} />
+      {featuredMenu.length > 0 && (
+        <>
+          <NavMenuDivider />
+          <NavFeaturedMenu collapsed={collapsed} menu={featuredMenu} />
+        </>
+      )}
 
       {hasArchivedMenu && (
         <>
