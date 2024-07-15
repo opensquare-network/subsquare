@@ -1,22 +1,46 @@
-import { find } from "lodash-es";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import { find, isNil } from "lodash-es";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import useBlockApi from "next-common/utils/hooks/useBlockApi";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useOnchainData } from "..";
 import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
+import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import { useContextApi } from "next-common/context/api";
+import { getBlockApi } from "next-common/services/chain/api";
+
+function useBlockApi(finishHeight) {
+  const latestHeight = useSelector(latestHeightSelector);
+  const api = useContextApi();
+  const [blockApi, setBlockApi] = useState();
+
+  useEffect(() => {
+    if (isNil(finishHeight) || !api) {
+      return;
+    }
+
+    getBlockApi(api, finishHeight).then(setBlockApi);
+  }, [api, finishHeight]);
+
+  return useMemo(() => {
+    if (isNil(finishHeight)) {
+      return api;
+    }
+
+    if (isNil(latestHeight)) {
+      return;
+    }
+
+    if (latestHeight > finishHeight) {
+      return blockApi;
+    }
+
+    return api;
+  }, [latestHeight, api, blockApi]);
+}
 
 export function useReferendumFellowshipCoreEvidence() {
-  const { section } = useCollectivesContext();
-  let pallet;
-  if (section === "fellowship") {
-    pallet = "fellowshipCore";
-  } else if (section === "ambassador") {
-    pallet = "ambassadorCore";
-  }
+  const pallet = useCoreFellowshipPallet();
 
-  const latestHeight = useSelector(latestHeightSelector);
   const finishHeight = useReferendumVotingFinishHeight();
 
   const onchainData = useOnchainData();
@@ -27,8 +51,7 @@ export function useReferendumFellowshipCoreEvidence() {
   const [evidence, setEvidence] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const isFinished = latestHeight > finishHeight;
-  const blockApi = useBlockApi(isFinished ? finishHeight : null);
+  const blockApi = useBlockApi(finishHeight);
 
   useEffect(() => {
     if (!who || !pallet || !blockApi) {
