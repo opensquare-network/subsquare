@@ -39,7 +39,6 @@ function FellowshipReferendaDetailEvidenceImpl() {
   const { wish, evidence, loading } = useReferendumFellowshipCoreEvidence();
   const notFound = !wish && !evidence;
 
-  // todo: check the validity of evidence(it should be a IPFS CID). If not, show that we can not parse this evidence.
   const cid = getCidByEvidence(evidence);
 
   if (loading) {
@@ -92,7 +91,10 @@ export default function FellowshipReferendaDetailEvidence() {
   const onchainData = useOnchainData();
   const { call } = onchainData?.inlineCall || onchainData.proposal || {};
 
-  if (call?.section === pallet && ["promote", "approve"].includes(call?.method)) {
+  if (
+    call?.section === pallet &&
+    ["promote", "approve"].includes(call?.method)
+  ) {
     return <FellowshipReferendaDetailEvidenceImpl />;
   }
 
