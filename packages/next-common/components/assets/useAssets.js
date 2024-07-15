@@ -53,15 +53,15 @@ function useSubscribeMultiAssetAccounts(multiAccountKey) {
       return;
     }
 
-    let unsubBalance;
+    let unsubFunc;
     api.query.assets.account
       .multi(multiAccountKey, (data) => {
         setMultiAccounts(data);
       })
-      .then((result) => (unsubBalance = result));
+      .then((result) => (unsubFunc = result));
 
     return () => {
-      unsubBalance();
+      unsubFunc();
     };
   }, [api, multiAccountKey]);
 
