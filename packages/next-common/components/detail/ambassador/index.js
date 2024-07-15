@@ -40,7 +40,7 @@ export default function AmbassadorReferendaDetail() {
     >
       <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
 
-      <FellowshipReferendaDetailEvidence pallet="ambassadorCore" />
+      <FellowshipReferendaDetailEvidence />
     </DetailContentBase>
   );
 }
