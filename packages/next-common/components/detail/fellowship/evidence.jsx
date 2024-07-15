@@ -1,12 +1,12 @@
 import { SystemLink, SystemLoading, SystemWarning } from "@osn/icons/subsquare";
 import { MarkdownPreviewer } from "@osn/previewer";
-import { find } from "lodash-es";
 import ExternalLink from "next-common/components/externalLink";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import WarningInfoPanel from "next-common/components/summary/styled/warningInfoPanel";
 import Tooltip from "next-common/components/tooltip";
+import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import { useOnchainData } from "next-common/context/post";
-import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
+import { useReferendumFellowshipCoreEvidence } from "next-common/context/post/fellowship/useReferendumFellowshipCoreEvidence";
 import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
@@ -35,15 +35,11 @@ function IpfsContent({ cid }) {
   return <MarkdownPreviewer content={value} />;
 }
 
-function FellowshipReferendaDetailEvidenceImpl({ pallet, call }) {
-  const who = find(call?.args, { name: "who" })?.value;
+function FellowshipReferendaDetailEvidenceImpl() {
+  const { wish, evidence, loading } = useReferendumFellowshipCoreEvidence();
+  const notFound = !wish && !evidence;
 
-  const fellowshipEvidence = useSubCoreFellowshipEvidence(who, pallet);
-  const notFound = !fellowshipEvidence.wish && !fellowshipEvidence.evidence;
-
-  const cid = getCidByEvidence(fellowshipEvidence.evidence);
-
-  const loading = fellowshipEvidence.loading;
+  const cid = getCidByEvidence(evidence);
 
   if (loading) {
     return null;
@@ -82,7 +78,7 @@ function FellowshipReferendaDetailEvidenceImpl({ pallet, call }) {
     <div className="mt-4 space-y-4">
       <hr className="my-4" />
       <h4 className="text14Bold text-textPrimary">
-        Evidence{fellowshipEvidence.wish && ` for ${fellowshipEvidence.wish}`}
+        Evidence{wish && ` for ${wish}`}
       </h4>
 
       {content}
@@ -90,18 +86,17 @@ function FellowshipReferendaDetailEvidenceImpl({ pallet, call }) {
   );
 }
 
-export default function FellowshipReferendaDetailEvidence({
-  pallet = "fellowshipCore",
-}) {
+export default function FellowshipReferendaDetailEvidence() {
+  const pallet = useCoreFellowshipPallet();
   const onchainData = useOnchainData();
   const { call } = onchainData?.inlineCall || {};
 
   if (
-    call?.section !== pallet &&
-    (call?.method !== "promote" || call?.method !== "approve")
+    call?.section === pallet &&
+    (call?.method === "promote" || call?.method === "approve")
   ) {
-    return null;
+    return <FellowshipReferendaDetailEvidenceImpl />;
   }
 
-  return <FellowshipReferendaDetailEvidenceImpl pallet={pallet} call={call} />;
+  return null;
 }
