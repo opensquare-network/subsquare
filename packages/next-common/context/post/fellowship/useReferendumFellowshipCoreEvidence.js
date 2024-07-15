@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useOnchainData } from "..";
 import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
 
-export function useReferendumCoreFellowshipEvidence() {
+export function useReferendumFellowshipCoreEvidence() {
   const { section } = useCollectivesContext();
   let pallet;
   if (section === "fellowship") {
