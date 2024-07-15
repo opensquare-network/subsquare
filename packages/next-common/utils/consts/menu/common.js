@@ -11,6 +11,13 @@ import { isKintsugiChain } from "next-common/utils/chain";
 
 const chainSettings = getChainSettings(CHAIN);
 
+export const overviewMenu = {
+  value: "overview",
+  name: "Overview",
+  pathname: "/",
+  icon: <MenuOverview />,
+};
+
 export const discussionsMenu = {
   value: "discussions",
   name: "Discussions",
@@ -24,14 +31,7 @@ export const discussionsMenu = {
 };
 
 const commonMenus = {
-  items: [
-    {
-      value: "overview",
-      name: "Overview",
-      pathname: "/",
-      icon: <MenuOverview />,
-    },
-  ],
+  items: [overviewMenu],
 };
 
 if (chainSettings.hasDiscussions !== false) {
