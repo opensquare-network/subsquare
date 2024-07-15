@@ -81,9 +81,9 @@ function FellowshipReferendaDetailEvidenceImpl({ pallet, call }) {
   return (
     <div className="mt-4 space-y-4">
       <hr className="my-4" />
-      <div className="text14Bold text-textPrimary">
-        {fellowshipEvidence.wish && `${fellowshipEvidence.wish}/`}Evidence
-      </div>
+      <h4 className="text14Bold text-textPrimary">
+        Evidence{fellowshipEvidence.wish && ` for ${fellowshipEvidence.wish}`}
+      </h4>
 
       {content}
     </div>
