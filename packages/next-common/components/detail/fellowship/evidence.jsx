@@ -50,7 +50,7 @@ function FellowshipReferendaDetailEvidenceImpl() {
     content = (
       <WarningInfoPanel className="justify-center">
         <SystemWarning className="w-5 h-5" />
-        {"Warning: can't find the evidence on chain."}
+        {"Warning: can't find evidence on chain."}
       </WarningInfoPanel>
     );
   } else {
