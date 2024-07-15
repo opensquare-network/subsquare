@@ -51,7 +51,7 @@ export default function NewLocalTreasuryProposalPopup({ onClose }) {
       {balanceField}
       {beneficiaryField}
       <div className="flex justify-end">
-        <NotePreimageButton notePreimageTx={notePreimageTx} onClose={onClose} />
+        <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>
     </Popup>
   );

@@ -1,4 +1,3 @@
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useMemo } from "react";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
@@ -105,7 +104,6 @@ export function useUSDxTreasuryNotePreimageTx(
 }
 
 function PopupContent() {
-  const { onClose } = usePopupParams();
   const {
     value: [inputBalance, symbol],
     component: usdxBalanceField,
@@ -131,7 +129,7 @@ function PopupContent() {
       </div>
       {validFromField}
       <div className="flex justify-end">
-        <NotePreimageButton notePreimageTx={notePreimageTx} onClose={onClose} />
+        <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>
     </>
   );
