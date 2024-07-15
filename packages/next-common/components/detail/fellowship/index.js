@@ -9,7 +9,11 @@ import FellowshipWhitelistNavigation from "next-common/components/detail/fellows
 import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 import FellowshipTimeoutCountdown from "next-common/components/detail/fellowship/timeoutCountdown";
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
-import FellowshipReferendaDetailEvidence from "./evidence";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const FellowshipReferendaDetailEvidence = dynamicClientOnly(() =>
+  import("./evidence"),
+);
 
 export default function FellowshipReferendaDetail() {
   const setIsEdit = useSetEdit();
