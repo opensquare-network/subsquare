@@ -42,7 +42,6 @@ const NameWrapper = styled.div`
     font-weight: 500;
   }
   > :nth-child(2) {
-    margin-top: 4px;
     font-size: 12px;
     color: var(--textTertiary);
   }
@@ -199,7 +198,7 @@ export default function AddressCombo({
   if (edit) {
     selectContent = (
       <>
-        <Avatar address={inputAddress} />
+        <Avatar address={inputAddress} size={40} />
         <Input
           value={inputAddress}
           onChange={(e) => setInputAddress(e.target.value)}
@@ -211,7 +210,7 @@ export default function AddressCombo({
   } else if (selectedAccount) {
     selectContent = (
       <>
-        <Avatar address={selectedAccount.address} />
+        <Avatar address={selectedAccount.address} size={40} />
         <NameWrapper>
           <IdentityName>
             {identities[selectedAccount.address] && (
@@ -231,7 +230,7 @@ export default function AddressCombo({
   } else {
     selectContent = (
       <>
-        <Avatar address={address} />
+        <Avatar address={address} size={40} />
         <NameWrapper className="truncate">
           <IdentityName className="truncate">
             {identities[address] && (
@@ -263,7 +262,7 @@ export default function AddressCombo({
             }}
             selected={item.address === address}
           >
-            <Avatar address={item.address} />
+            <Avatar address={item.address} size={40} />
             <NameWrapper>
               <IdentityName>
                 {identities[item.address] && (
