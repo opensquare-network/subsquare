@@ -10,6 +10,11 @@ import PostTitle from "next-common/components/detail/common/Title";
 import ReferendaPostMeta from "next-common/components/detail/common/openGov/meta";
 import ArticleContent from "next-common/components/articleContent";
 import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const FellowshipReferendaDetailEvidence = dynamicClientOnly(() =>
+  import("../fellowship/evidence"),
+);
 
 export function TimeoutCountdown() {
   const timeout = useUndecidingTimeout("ambassadorReferenda");
@@ -38,6 +43,8 @@ export default function AmbassadorReferendaDetail() {
       meta={<ReferendaPostMeta section="ambassador" />}
     >
       <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+
+      <FellowshipReferendaDetailEvidence />
     </DetailContentBase>
   );
 }

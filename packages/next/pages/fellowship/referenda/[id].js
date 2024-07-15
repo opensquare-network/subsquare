@@ -56,19 +56,19 @@ function FellowshipContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <ContentWithComment>
-      <FellowshipReferendaDetail />
-      <CollectivesProvider section="fellowship">
+    <CollectivesProvider section="fellowship">
+      <ContentWithComment>
+        <FellowshipReferendaDetail />
         <FellowshipReferendumSideBar />
-      </CollectivesProvider>
-      <DetailMultiTabs
-        call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
-        metadata={
-          <Gov2ReferendumMetadata info={info} pallet="fellowshipReferenda" />
-        }
-        timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
-      />
-    </ContentWithComment>
+        <DetailMultiTabs
+          call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
+          metadata={
+            <Gov2ReferendumMetadata info={info} pallet="fellowshipReferenda" />
+          }
+          timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
+        />
+      </ContentWithComment>
+    </CollectivesProvider>
   );
 }
 
