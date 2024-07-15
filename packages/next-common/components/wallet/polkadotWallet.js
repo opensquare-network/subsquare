@@ -56,20 +56,23 @@ export default function PolkadotWallet({
     isMetaMaskWallet,
   ]);
 
-  const handleClick = useCallback((_wallet) => {
-    if (!installed) {
-      return;
-    }
+  const handleClick = useCallback(
+    (_wallet) => {
+      if (!installed) {
+        return;
+      }
 
-    // Added for supporting PolkaGate Snap
-    if (_wallet?.extensionName === WalletTypes.POLKAGATE_SNAP) {
-      enablePolkaGateSnap().then(() => onClick(_wallet));
+      // Added for supporting PolkaGate Snap
+      if (_wallet?.extensionName === WalletTypes.POLKAGATE_SNAP) {
+        enablePolkaGateSnap().then(() => onClick(_wallet));
 
-      return;
-    }
+        return;
+      }
 
-    onClick(_wallet);
-  }, [installed, onClick, enablePolkaGateSnap]);
+      onClick(_wallet);
+    },
+    [installed, onClick, enablePolkaGateSnap],
+  );
 
   return (
     <WalletOption

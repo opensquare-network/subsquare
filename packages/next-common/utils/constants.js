@@ -29,12 +29,14 @@ import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
 import isEvmChain from "./isEvmChain";
+import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
 
 export const nodes = [
   polkadot,
+  polkadotAssetHub,
   kusama,
   acala,
   altair,
