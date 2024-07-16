@@ -8,8 +8,19 @@ import { useRemarkNotePreimageTx } from "next-common/components/preImages/create
 import useRemarkField from "next-common/components/preImages/createPreimagePopup/fields/useRemarkField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import useTrackField from "../common/useTrackField";
+import { useListPageType } from "next-common/context/page";
+import { listPageCategory } from "next-common/utils/consts/business/category";
 
 export function NewRemarkReferendumInnerPopup() {
+  const listPageType = useListPageType();
+
+  let pallet = "referenda";
+  if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
+    pallet = "fellowshipReferenda";
+  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
+    pallet = "ambassadorReferenda";
+  }
+
   const { onClose } = usePopupParams();
   const { value: remark, component: remarkField } = useRemarkField();
   const { value: trackId, component: trackField } = useTrackField();
@@ -26,7 +37,7 @@ export function NewRemarkReferendumInnerPopup() {
       {trackField}
       <AdvanceSettings>
         {enactmentField}
-        <SubmissionDeposit />
+        <SubmissionDeposit pallet={pallet} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <CreateProposalSubmitButton
