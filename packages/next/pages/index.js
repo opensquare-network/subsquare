@@ -27,8 +27,11 @@ import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
 import useLoadOverviewPageData from "next-common/hooks/overview/useLoadOverviewPageData";
+import Chains from "next-common/utils/consts/chains";
+import isAssetHub from "next-common/utils/isAssetHub";
+import AssetHubOverviewPage from "next-common/components/assets/assetHubOverviewPage";
 
-export default function HomePage() {
+function DefaultOverviewPage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const user = useUser();
@@ -112,7 +115,19 @@ export default function HomePage() {
   );
 }
 
+export default function HomePage() {
+  if (isAssetHub()) {
+    return <AssetHubOverviewPage />;
+  }
+  return <DefaultOverviewPage />;
+}
+
 export const getServerSideProps = withCommonProps(async () => {
+  const chain = process.env.CHAIN;
+  if (Chains.polkadotAssetHub === chain) {
+    return {};
+  }
+
   const tracksProps = await fetchOpenGovTracksProps();
   const { result: overviewSummary } = await nextApi.fetch("overview/summary");
   const recentProposals = await fetchRecentProposalsProps(overviewSummary);

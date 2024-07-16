@@ -5,6 +5,7 @@ import StatescanSVG from "@osn/icons/subsquare/LinkStatescan";
 
 const statescanDomainMap = {
   [Chains.development]: "gov2",
+  [Chains.polkadotAssetHub]: "statemint",
 };
 
 export default function StatescanAccountLink({ address }) {

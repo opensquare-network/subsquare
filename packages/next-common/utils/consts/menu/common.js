@@ -11,6 +11,13 @@ import { isKintsugiChain } from "next-common/utils/chain";
 
 const chainSettings = getChainSettings(CHAIN);
 
+export const overviewMenu = {
+  value: "overview",
+  name: "Overview",
+  pathname: "/",
+  icon: <MenuOverview />,
+};
+
 export const discussionsMenu = {
   value: "discussions",
   name: "Discussions",
@@ -24,23 +31,14 @@ export const discussionsMenu = {
 };
 
 const commonMenus = {
-  items: [
-    {
-      value: "overview",
-      name: "Overview",
-      pathname: "/",
-      icon: <MenuOverview />,
-    },
-  ],
+  items: [overviewMenu],
 };
 
 if (chainSettings.hasDiscussions !== false) {
   commonMenus.items.push(discussionsMenu);
 }
 
-const {
-  modules: { referenda: hasReferenda },
-} = chainSettings;
+const { modules: { referenda: hasReferenda } = {} } = chainSettings;
 if ((hasReferenda || !chainSettings.noDemocracy) && !isKintsugiChain(CHAIN)) {
   commonMenus.items.push({
     value: "delegation",

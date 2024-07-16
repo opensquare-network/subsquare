@@ -1,9 +1,9 @@
 import { ArrowDown, ArrowUp } from "@osn/icons/subsquare";
 import Input from "next-common/components/input";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside";
 import { useRef, useState } from "react";
 import { OptionsWrapper } from "../select/styled";
 import Option from "../select/option";
+import { useClickAway } from "react-use";
 
 export default function SymbolSelectInput({
   symbolOptions,
@@ -15,7 +15,7 @@ export default function SymbolSelectInput({
 }) {
   const ref = useRef();
   const [showOptions, setShowOptions] = useState(false);
-  useOnClickOutside(ref, () =>
+  useClickAway(ref, () =>
     setTimeout(() => {
       setShowOptions(false);
     }, 100),

@@ -7,7 +7,7 @@ import { ArrowRight } from "@osn/icons/subsquare";
 import { NewPreimageInnerPopup } from "next-common/components/preImages/newPreimagePopup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
-function ChoiceButton({ icon, name, description, onClick }) {
+export function ChoiceButton({ icon = null, name, description, onClick }) {
   return (
     <div
       className={cn(
@@ -16,8 +16,12 @@ function ChoiceButton({ icon, name, description, onClick }) {
       )}
       onClick={onClick}
     >
-      <div className="flex items-center grow">
-        <div className="p-[12px]">{icon}</div>
+      <div className="flex items-center grow py-[10px] pr-[16px]">
+        {icon ? (
+          <div className="px-[12px]">{icon}</div>
+        ) : (
+          <div className="w-[16px]" />
+        )}
         <div>
           <div className="text14Medium text-textPrimary">{name}</div>
           <div className="text12Medium text-textTertiary">{description}</div>

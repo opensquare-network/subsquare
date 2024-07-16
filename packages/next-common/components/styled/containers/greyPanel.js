@@ -1,7 +1,7 @@
-import styled from "styled-components";
 import Flex from "../flex";
+import tw from "tailwind-styled-components";
 
-export const GreyPanel = styled(Flex)`
-  background: var(--neutral200);
-  border-radius: 8px;
+export const GreyPanel = tw(Flex)`
+  bg-neutral200
+  rounded-lg
 `;

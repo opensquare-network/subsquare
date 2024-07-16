@@ -18,49 +18,43 @@ export function useColumnsDef() {
   };
 
   return [
-    [
-      {
-        name: "Target",
-        style: {
-          textAlign: "left",
-          minWidth: colWidths.delegatingTo,
-        },
+    {
+      name: "Target",
+      style: {
+        textAlign: "left",
+        minWidth: colWidths.delegatingTo,
       },
-      (item) => (
+      render: (item) => (
         <AddressUser
           key="user"
           add={item?.target}
           maxWidth={colWidths.delegatingTo}
         />
       ),
-    ],
-    [
-      {
-        name: "Capital",
-        style: {
-          textAlign: "right",
-          width: colWidths.capital,
-          minWidth: colWidths.capital,
-        },
+    },
+    {
+      name: "Capital",
+      style: {
+        textAlign: "right",
+        width: colWidths.capital,
+        minWidth: colWidths.capital,
       },
-      (item) => (
+      render: (item) => (
         <CapitalListItem
           key="capital"
           item={item}
           capital={toPrecision(item?.balance || 0, decimals)}
         />
       ),
-    ],
-    [
-      {
-        name: "Votes",
-        style: {
-          textAlign: "right",
-          width: colWidths.votes,
-          minWidth: colWidths.votes,
-        },
+    },
+    {
+      name: "Votes",
+      style: {
+        textAlign: "right",
+        width: colWidths.votes,
+        minWidth: colWidths.votes,
       },
-      (item) => (
+      render: (item) => (
         <ValueDisplay
           key="votes"
           value={toPrecision(
@@ -72,7 +66,7 @@ export function useColumnsDef() {
           symbol={symbol}
         />
       ),
-    ],
+    },
   ];
 }
 
