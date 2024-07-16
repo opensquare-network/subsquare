@@ -5,7 +5,10 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import {
+  useCollectivesContext,
+  useReferendaFellowshipPallet,
+} from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import { useMemo, useState } from "react";
 import { useFellowshipTrackDetail } from "../newFellowshipProposalPopup/useFellowshipTrackDetail";
@@ -20,18 +23,16 @@ export default function NewFellowshipRemarkReferendumInnerPopup() {
   const api = useContextApi();
   const { fellowshipTracks, ambassadorTracks } = usePageProps();
   const [remark, setRemark] = useState("");
+  const pallet = useReferendaFellowshipPallet();
 
   let trackList;
   let defaultTrackId;
-  let submissionDepositPallet;
   if (section === "fellowship") {
     trackList = fellowshipTracks;
     defaultTrackId = 3; // fellows
-    submissionDepositPallet = "fellowshipReferenda";
   } else if (section === "ambassador") {
     trackList = ambassadorTracks;
     defaultTrackId = trackList[0].id;
-    submissionDepositPallet = "ambassadorReferenda";
   }
 
   const [trackId, setTrackId] = useState(defaultTrackId);
@@ -58,7 +59,7 @@ export default function NewFellowshipRemarkReferendumInnerPopup() {
       <DetailedFellowshipTrack trackId={trackId} setTrackId={setTrackId} />
       <AdvanceSettings>
         <EnactmentBlocks track={track} setEnactment={setEnactment} />
-        <SubmissionDeposit pallet={submissionDepositPallet} />
+        <SubmissionDeposit pallet={pallet} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipProposalSubmitButton

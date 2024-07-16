@@ -1,7 +1,10 @@
 import { isNil } from "lodash-es";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { useContextApi } from "next-common/context/api";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import {
+  useCollectivesContext,
+  useReferendaFellowshipPallet,
+} from "next-common/context/collectives/collectives";
 import { usePopupOnClose } from "next-common/context/popup";
 import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
@@ -24,13 +27,7 @@ export default function CreateFellowshipProposalSubmitButton({
   notePreimageTx,
 }) {
   const { section } = useCollectivesContext();
-
-  let pallet;
-  if (section === "fellowship") {
-    pallet = "fellowshipReferenda";
-  } else if (section === "ambassador") {
-    pallet = "ambassadorReferenda";
-  }
+  const pallet = useReferendaFellowshipPallet();
 
   const onClose = usePopupOnClose();
   const router = useRouter();
