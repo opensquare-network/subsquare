@@ -4,10 +4,10 @@ import PopupLabel from "next-common/components/popup/label";
 import { useChainSettings } from "next-common/context/chain";
 import { useContextApi } from "next-common/context/api";
 
-export default function SubmissionDeposit() {
+export default function SubmissionDeposit({ pallet = "referenda" }) {
   const api = useContextApi();
   const { symbol, decimals } = useChainSettings();
-  const deposit = new BigNumber(api?.consts.referenda?.submissionDeposit || 0)
+  const deposit = new BigNumber(api?.consts?.[pallet]?.submissionDeposit || 0)
     .div(Math.pow(10, decimals))
     .toNumber();
 
