@@ -8,10 +8,19 @@ import BackToSubstrateWalletOption from "../wallet/backToSubstrateWalletOption";
 import LoginEVMForm from "./evm/form";
 import MailLogin from "./mailLogin";
 
+function Title({isWeb2 = true}) {
+  return <h3 className="text20Bold text-textPrimary">
+    <span>{isWeb2 ? "Login" : "Connect"} with </span>
+    <span className="text-theme500">
+      {isWeb2 ? "Account" : "Address"}
+    </span>
+  </h3>
+}
+
 /**
  * @description used in login popup and login page
  */
-export default function LoginContent({ showRegister = true } = {}) {
+export default function LoginContent({showRegister = true} = {}) {
   const [view, , reset] = useConnectPopupView();
   const evmShowBack = isMixedChain();
 
@@ -25,19 +34,7 @@ export default function LoginContent({ showRegister = true } = {}) {
 
   return (
     <div className="space-y-6">
-      <h3 className="text20Bold text-textPrimary">
-        <span>Connect with </span>
-        <span className="text-theme500">
-          {isAccountView ? (
-            "Account"
-          ) : (
-            <>
-              {isEVMView && "EVM "}
-              Address
-            </>
-          )}
-        </span>
-      </h3>
+      <Title isWeb2={isAccountView} />
 
       {isWeb3View && <AddressLogin />}
 
