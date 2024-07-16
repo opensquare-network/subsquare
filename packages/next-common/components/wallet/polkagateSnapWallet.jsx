@@ -18,15 +18,21 @@ export default function PolkagateSnapWallet({
   const isMetaMaskWallet = useIsMetamaskWallet();
   const Logo = wallet.logo;
 
+  const installed = isMetaMaskWallet;
+
   return (
     <WalletOption
       selected={selected}
       onClick={() => {
+        if (!installed) {
+          return;
+        }
+
         enablePolkaGateSnap().then(() => {
           onClick?.(wallet);
         });
       }}
-      installed={isMetaMaskWallet}
+      installed={installed}
       logo={<Logo className={wallet.title} alt={wallet.title} />}
       title={wallet.title}
       loading={loading}
