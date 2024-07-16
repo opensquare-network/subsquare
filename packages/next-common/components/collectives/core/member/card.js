@@ -8,6 +8,7 @@ import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectiv
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import CoreFellowshipMemberEvidence from "next-common/components/collectives/core/member/evidence";
 import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
+import CoreFellowshipMemberRelatedReferenda from "./relatedReferenda";
 
 export default function CoreFellowshipMemberCard({
   member,
@@ -40,7 +41,13 @@ export default function CoreFellowshipMemberCard({
             />
           )}
         </CoreFellowshipMemberInfoLine>
-        <CoreFellowshipMemberEvidence address={address} pallet={pallet} />
+        <CoreFellowshipMemberInfoLine>
+          <CoreFellowshipMemberEvidence address={address} pallet={pallet} />
+          <CoreFellowshipMemberRelatedReferenda
+            address={address}
+            pallet={pallet}
+          />
+        </CoreFellowshipMemberInfoLine>
       </div>
 
       <Divider className="mt-4" />

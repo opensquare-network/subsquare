@@ -8,6 +8,7 @@ import FellowshipCoreMemberCardListContainer from "next-common/components/fellow
 import AmbassadorCoreMemberCard from "next-common/components/ambassador/core/members/card";
 import FellowshipMembersEmpty from "next-common/components/pages/fellowship/empty";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 
 export default function AmbassadorCandidatesPage() {
   const { ambassadorParams } = usePageProps();
@@ -21,27 +22,29 @@ export default function AmbassadorCandidatesPage() {
 
   return (
     <CollectivesProvider params={ambassadorParams} section="ambassador">
-      <AmbassadorMembersLoadable>
-        <AmbassadorCoreCommon>
-          <div className="mb-4 pr-6 leading-8">
-            <FellowshipMemberTabs members={members} section="ambassador" />
-          </div>
+      <ActiveReferendaProvider pallet="ambassadorReferenda">
+        <AmbassadorMembersLoadable>
+          <AmbassadorCoreCommon>
+            <div className="mb-4 pr-6 leading-8">
+              <FellowshipMemberTabs members={members} section="ambassador" />
+            </div>
 
-          {hasMembers ? (
-            <FellowshipCoreMemberCardListContainer>
-              {pageMembers.map((member) => (
-                <AmbassadorCoreMemberCard
-                  key={member.address}
-                  member={member}
-                  params={ambassadorParams}
-                />
-              ))}
-            </FellowshipCoreMemberCardListContainer>
-          ) : (
-            <FellowshipMembersEmpty />
-          )}
-        </AmbassadorCoreCommon>
-      </AmbassadorMembersLoadable>
+            {hasMembers ? (
+              <FellowshipCoreMemberCardListContainer>
+                {pageMembers.map((member) => (
+                  <AmbassadorCoreMemberCard
+                    key={member.address}
+                    member={member}
+                    params={ambassadorParams}
+                  />
+                ))}
+              </FellowshipCoreMemberCardListContainer>
+            ) : (
+              <FellowshipMembersEmpty />
+            )}
+          </AmbassadorCoreCommon>
+        </AmbassadorMembersLoadable>
+      </ActiveReferendaProvider>
     </CollectivesProvider>
   );
 }

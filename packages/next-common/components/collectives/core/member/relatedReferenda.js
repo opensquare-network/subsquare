@@ -1,0 +1,70 @@
+import { Fragment, useMemo } from "react";
+import Link from "next/link";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import { useActiveReferenda } from "next-common/context/activeReferenda";
+import CoreFellowshipMemberInfoWrapper from "./infoWrapper";
+import CoreFellowshipMemberInfoTitle from "./title";
+
+function useRelatedReferenda(address, pallet) {
+  const activeReferenda = useActiveReferenda();
+
+  return useMemo(() => {
+    return activeReferenda.filter(({ call }) => {
+      if (!call) {
+        return false;
+      }
+
+      const { section, method } = call;
+      if (section !== pallet) {
+        return false;
+      }
+      if (!["approve", "promote"].includes(method)) {
+        return false;
+      }
+
+      const nameArg = call.args.find(({ name }) => name === "who");
+      if (!nameArg) {
+        return false;
+      }
+      if (nameArg.value !== address) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [activeReferenda, address, pallet]);
+}
+
+export default function CoreFellowshipMemberRelatedReferenda({
+  address,
+  pallet,
+}) {
+  const relatedReferenda = useRelatedReferenda(address, pallet);
+  const { section } = useCollectivesContext();
+
+  if (!relatedReferenda.length) {
+    return null;
+  }
+
+  return (
+    <CoreFellowshipMemberInfoWrapper>
+      <CoreFellowshipMemberInfoTitle className="mb-0.5">
+        Referenda
+      </CoreFellowshipMemberInfoTitle>
+      <div className="flex text12Medium gap-[4px] items-center truncate">
+        {relatedReferenda.map(({ referendumIndex }, index) => (
+          <Fragment key={index}>
+            {index !== 0 && (
+              <span className="text12Medium text-textTertiary">·</span>
+            )}
+            <Link href={`/${section}/referenda/${referendumIndex}`}>
+              <span className="cursor-pointer text-sapphire500 text12Medium">
+                #{referendumIndex}
+              </span>
+            </Link>
+          </Fragment>
+        ))}
+      </div>
+    </CoreFellowshipMemberInfoWrapper>
+  );
+}

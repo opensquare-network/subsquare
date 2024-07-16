@@ -9,6 +9,7 @@ import FellowshipCoreMemberCard from "next-common/components/fellowship/core/mem
 import FellowshipMembersEmpty from "./empty";
 import { usePageProps } from "next-common/context/page";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 
 export default function FellowshipCandidatesPage() {
   const { fellowshipParams } = usePageProps();
@@ -21,27 +22,29 @@ export default function FellowshipCandidatesPage() {
 
   return (
     <CollectivesProvider params={fellowshipParams} section="fellowship">
-      <FellowshipMembersLoadable>
-        <FellowshipMemberCommon>
-          <div className="mb-4 pr-6 leading-8">
-            <FellowshipMemberTabs members={members} />
-          </div>
+      <ActiveReferendaProvider pallet="fellowshipReferenda">
+        <FellowshipMembersLoadable>
+          <FellowshipMemberCommon>
+            <div className="mb-4 pr-6 leading-8">
+              <FellowshipMemberTabs members={members} />
+            </div>
 
-          {hasMembers ? (
-            <FellowshipCoreMemberCardListContainer>
-              {pageMembers.map((member) => (
-                <FellowshipCoreMemberCard
-                  key={member.address}
-                  member={member}
-                  params={fellowshipParams}
-                />
-              ))}
-            </FellowshipCoreMemberCardListContainer>
-          ) : (
-            <FellowshipMembersEmpty />
-          )}
-        </FellowshipMemberCommon>
-      </FellowshipMembersLoadable>
+            {hasMembers ? (
+              <FellowshipCoreMemberCardListContainer>
+                {pageMembers.map((member) => (
+                  <FellowshipCoreMemberCard
+                    key={member.address}
+                    member={member}
+                    params={fellowshipParams}
+                  />
+                ))}
+              </FellowshipCoreMemberCardListContainer>
+            ) : (
+              <FellowshipMembersEmpty />
+            )}
+          </FellowshipMemberCommon>
+        </FellowshipMembersLoadable>
+      </ActiveReferendaProvider>
     </CollectivesProvider>
   );
 }
