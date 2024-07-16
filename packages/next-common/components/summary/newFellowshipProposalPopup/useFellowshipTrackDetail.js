@@ -1,3 +1,4 @@
+import { find } from "lodash-es";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import { useMemo } from "react";
@@ -14,7 +15,7 @@ export function useFellowshipTrackDetail(trackId) {
   }
 
   return useMemo(
-    () => (tracksDetail || []).find((track) => track.id === trackId),
+    () => find(tracksDetail, { id: trackId }),
     [trackId, tracksDetail],
   );
 }
