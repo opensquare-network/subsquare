@@ -15,7 +15,6 @@ export default function AddressLogin() {
   const [unknownWallet, setUnknownWallet] = useState();
   const [selectedWallet, setSelectedWallet] = useState();
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [web3Error, setWeb3Error] = useState();
   const { lastConnectedAccount } = useConnectedAccountContext();
   const [web3Login, isLoading] = useWeb3Login();
 
@@ -28,8 +27,6 @@ export default function AddressLogin() {
         setSelectedWallet={setSelectedWallet}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
-        web3Error={web3Error}
-        setWeb3Error={setWeb3Error}
         lastUsedAddress={lastConnectedAccount?.address}
       />
       <ButtonWrapper>
