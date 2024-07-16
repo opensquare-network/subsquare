@@ -15,10 +15,13 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import { useContextApi } from "next-common/context/api";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import {
+  useCollectivesContext,
+  useReferendaFellowshipPallet,
+} from "next-common/context/collectives/collectives";
 import { useFellowshipTrackDetail } from "./useFellowshipTrackDetail";
 
-export function useFellowshipProposalOrigin(trackId) {
+function useFellowshipProposalOrigin(trackId) {
   const track = useFellowshipTrackDetail(trackId);
 
   const origins = track?.origins;
@@ -38,13 +41,7 @@ export function NewFellowshipProposalInnerPopup({
   const dispatch = useDispatch();
   const router = useRouter();
   const { section } = useCollectivesContext();
-
-  let pallet;
-  if (section === "fellowship") {
-    pallet = "fellowshipReferenda";
-  } else if (section === "ambassador") {
-    pallet = "ambassadorReferenda";
-  }
+  const pallet = useReferendaFellowshipPallet();
 
   const [enactment, setEnactment] = useState();
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
