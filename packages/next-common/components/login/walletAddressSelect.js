@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import AddressSelect from "../addressSelect";
 import SelectWallet from "../wallet/selectWallet";
-import { getMultiSigWallets, getSingleSigWallets, getWallets, } from "../../utils/consts/connect";
+import { getMultiSigWallets, getSingleSigWallets, getWallets } from "../../utils/consts/connect";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
 import { some } from "lodash-es";
