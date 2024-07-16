@@ -19,17 +19,7 @@ import {
   useCollectivesContext,
   useReferendaFellowshipPallet,
 } from "next-common/context/collectives/collectives";
-import { useFellowshipTrackDetail } from "./useFellowshipTrackDetail";
-
-function useFellowshipProposalOrigin(trackId) {
-  const track = useFellowshipTrackDetail(trackId);
-
-  const origins = track?.origins;
-  if (Array.isArray(origins)) {
-    return origins[0];
-  }
-  return origins;
-}
+import { useProposalOrigin } from "../newProposalPopup";
 
 export function NewFellowshipProposalInnerPopup({
   track: _track,
@@ -48,7 +38,7 @@ export function NewFellowshipProposalInnerPopup({
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
 
   const [trackId, setTrackId] = useState(_track?.id);
-  const proposalOrigin = useFellowshipProposalOrigin(trackId);
+  const proposalOrigin = useProposalOrigin(trackId);
   const disabled =
     isNil(trackId) ||
     isNil(enactment) ||
