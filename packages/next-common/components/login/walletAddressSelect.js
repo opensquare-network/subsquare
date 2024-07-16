@@ -1,10 +1,16 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import AddressSelect from "../addressSelect";
 import ErrorText from "../ErrorText";
 import SelectWallet from "../wallet/selectWallet";
-import { getMultiSigWallets, getSingleSigWallets, } from "../../utils/consts/connect";
-import { noop } from "lodash-es";
+import {
+  getMultiSigWallets,
+  getSingleSigWallets,
+  getWallets,
+} from "../../utils/consts/connect";
+import { useChain } from "../../context/chain";
+import ErrorMessage from "../styled/errorMessage";
+import { noop, some } from "lodash-es";
 import isMixedChain from "next-common/utils/isMixedChain";
 import EVMEntryWalletOption from "../wallet/evmEntryWalletOption";
 import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
@@ -25,12 +31,15 @@ const Label = styled.div`
 export default function WalletAddressSelect({
   web3Error,
   setWeb3Error = noop,
+  wallet,
+  setWallet,
   selectedWallet,
   setSelectedWallet,
   selectedAccount,
   setSelectedAccount,
   lastUsedAddress,
 }) {
+  const chain = useChain();
   const { accounts: accounts, loading } = useSubstrateAccounts({
     wallet: selectedWallet,
   });
@@ -53,6 +62,24 @@ export default function WalletAddressSelect({
     }
     setWeb3Error();
   }, [selectedWallet, accounts]);
+
+  const onSelectAccount = useCallback(
+    async (account) => {
+      setSelectedAccount(account);
+
+      if (
+        !some(getWallets(), { extensionName: selectedWallet?.extensionName })
+      ) {
+        const extensionDapp = await import("@polkadot/extension-dapp");
+        await extensionDapp.web3Enable("subsquare");
+        const injector = await extensionDapp.web3FromSource(
+          account.meta?.source,
+        );
+        setWallet(injector);
+      }
+    },
+    [selectedWallet, chain],
+  );
 
   const multisigWallets = getMultiSigWallets();
 
@@ -87,6 +114,12 @@ export default function WalletAddressSelect({
         </div>
       )}
 
+      {wallet && accounts?.length === 0 && (
+        <ErrorMessage>
+          Address not detected, please create an available address.
+        </ErrorMessage>
+      )}
+
       {loading ? (
         <div className="flex items-center justify-center w-full">
           <Loading size={20} />
@@ -98,7 +131,7 @@ export default function WalletAddressSelect({
             <AddressSelect
               accounts={accounts}
               selectedAccount={selectedAccount}
-              onSelect={setSelectedAccount}
+              onSelect={onSelectAccount}
             />
             {web3Error && <ErrorText>{web3Error}</ErrorText>}
           </div>
