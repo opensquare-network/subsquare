@@ -18,7 +18,7 @@ function useRelatedReferenda(address, pallet) {
       if (section !== pallet) {
         return false;
       }
-      if (!["approve", "promote"].includes(method)) {
+      if (!["bump", "approve", "promote"].includes(method)) {
         return false;
       }
 
@@ -42,8 +42,20 @@ export default function CoreFellowshipMemberRelatedReferenda({
   const relatedReferenda = useRelatedReferenda(address, pallet);
   const { section } = useCollectivesContext();
 
-  if (!relatedReferenda.length) {
-    return null;
+  let referendaList = <span className="text-textDisabled text12Medium">-</span>;
+  if (relatedReferenda.length > 0) {
+    referendaList = relatedReferenda.map(({ referendumIndex }, index) => (
+      <Fragment key={index}>
+        {index !== 0 && (
+          <span className="text12Medium text-textTertiary">·</span>
+        )}
+        <Link href={`/${section}/referenda/${referendumIndex}`}>
+          <span className="cursor-pointer text-sapphire500 text12Medium">
+            #{referendumIndex}
+          </span>
+        </Link>
+      </Fragment>
+    ));
   }
 
   return (
@@ -52,18 +64,7 @@ export default function CoreFellowshipMemberRelatedReferenda({
         Referenda
       </CoreFellowshipMemberInfoTitle>
       <div className="flex text12Medium gap-[4px] items-center truncate">
-        {relatedReferenda.map(({ referendumIndex }, index) => (
-          <Fragment key={index}>
-            {index !== 0 && (
-              <span className="text12Medium text-textTertiary">·</span>
-            )}
-            <Link href={`/${section}/referenda/${referendumIndex}`}>
-              <span className="cursor-pointer text-sapphire500 text12Medium">
-                #{referendumIndex}
-              </span>
-            </Link>
-          </Fragment>
-        ))}
+        {referendaList}
       </div>
     </CoreFellowshipMemberInfoWrapper>
   );
