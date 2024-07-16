@@ -99,7 +99,7 @@ export function NewFellowshipProposalInnerPopup({
         setPreimageLength={setPreimageLength}
       />
       <EnactmentBlocks setEnactment={setEnactment} />
-      <SubmissionDeposit />
+      <SubmissionDeposit pallet={pallet} />
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onClose={onClose}
