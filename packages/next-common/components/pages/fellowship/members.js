@@ -10,7 +10,6 @@ import FellowshipMembersEmpty from "./empty";
 import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCoreMembers";
 import { usePageProps } from "next-common/context/page";
 import CollectivesProvider from "next-common/context/collectives/collectives";
-import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 
 export default function FellowshipMembersPage() {
   const members = useSortedCoreMembers();
@@ -34,30 +33,28 @@ export default function FellowshipMembersPage() {
 
   return (
     <CollectivesProvider params={fellowshipParams} section="fellowship">
-      <ActiveReferendaProvider pallet="fellowshipReferenda">
-        <FellowshipMembersLoadable>
-          <FellowshipMemberCommon>
-            <div className="flex items-center justify-between mb-4 pr-6">
-              <FellowshipMemberTabs members={members} />
-              {component}
-            </div>
+      <FellowshipMembersLoadable>
+        <FellowshipMemberCommon>
+          <div className="flex items-center justify-between mb-4 pr-6">
+            <FellowshipMemberTabs members={members} />
+            {component}
+          </div>
 
-            {hasMembers ? (
-              <FellowshipCoreMemberCardListContainer>
-                {filteredMembers.map((member) => (
-                  <FellowshipCoreMemberCard
-                    key={member.address}
-                    member={member}
-                    params={fellowshipParams}
-                  />
-                ))}
-              </FellowshipCoreMemberCardListContainer>
-            ) : (
-              <FellowshipMembersEmpty />
-            )}
-          </FellowshipMemberCommon>
-        </FellowshipMembersLoadable>
-      </ActiveReferendaProvider>
+          {hasMembers ? (
+            <FellowshipCoreMemberCardListContainer>
+              {filteredMembers.map((member) => (
+                <FellowshipCoreMemberCard
+                  key={member.address}
+                  member={member}
+                  params={fellowshipParams}
+                />
+              ))}
+            </FellowshipCoreMemberCardListContainer>
+          ) : (
+            <FellowshipMembersEmpty />
+          )}
+        </FellowshipMemberCommon>
+      </FellowshipMembersLoadable>
     </CollectivesProvider>
   );
 }

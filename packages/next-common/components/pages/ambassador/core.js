@@ -10,7 +10,6 @@ import AmbassadorCoreMemberCard from "next-common/components/ambassador/core/mem
 import { usePageProps } from "next-common/context/page";
 import AmbassadorMemberCommon from "next-common/components/pages/ambassador/common";
 import CollectivesProvider from "next-common/context/collectives/collectives";
-import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 
 export default function AmbassadorCoreMembersPage() {
   const { ambassadorParams } = usePageProps();
@@ -33,30 +32,28 @@ export default function AmbassadorCoreMembersPage() {
 
   return (
     <CollectivesProvider params={ambassadorParams} section="ambassador">
-      <ActiveReferendaProvider pallet="ambassadorReferenda">
-        <AmbassadorMembersLoadable>
-          <AmbassadorMemberCommon params={ambassadorParams}>
-            <div className="flex items-center justify-between mb-4 pr-6">
-              <FellowshipMemberTabs members={members} section="ambassador" />
-              {component}
-            </div>
+      <AmbassadorMembersLoadable>
+        <AmbassadorMemberCommon params={ambassadorParams}>
+          <div className="flex items-center justify-between mb-4 pr-6">
+            <FellowshipMemberTabs members={members} section="ambassador" />
+            {component}
+          </div>
 
-            {hasMembers ? (
-              <FellowshipCoreMemberCardListContainer>
-                {filteredMembers.map((member) => (
-                  <AmbassadorCoreMemberCard
-                    key={member.address}
-                    member={member}
-                    params={ambassadorParams}
-                  />
-                ))}
-              </FellowshipCoreMemberCardListContainer>
-            ) : (
-              <FellowshipMembersEmpty />
-            )}
-          </AmbassadorMemberCommon>
-        </AmbassadorMembersLoadable>
-      </ActiveReferendaProvider>
+          {hasMembers ? (
+            <FellowshipCoreMemberCardListContainer>
+              {filteredMembers.map((member) => (
+                <AmbassadorCoreMemberCard
+                  key={member.address}
+                  member={member}
+                  params={ambassadorParams}
+                />
+              ))}
+            </FellowshipCoreMemberCardListContainer>
+          ) : (
+            <FellowshipMembersEmpty />
+          )}
+        </AmbassadorMemberCommon>
+      </AmbassadorMembersLoadable>
     </CollectivesProvider>
   );
 }

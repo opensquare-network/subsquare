@@ -4,6 +4,7 @@ import { isSameAddress } from "next-common/utils";
 import { ambassadorCoreMembersSelector } from "next-common/store/reducers/ambassador/core";
 import AmbassadorCoreCommon from "next-common/components/ambassador/core/common";
 import MyAmbassadorMemberStatus from "next-common/components/collectives/core/member/myStatus";
+import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 
 export default function AmbassadorMemberCommon({ children, params }) {
   const members = useSelector(ambassadorCoreMembersSelector);
@@ -13,9 +14,11 @@ export default function AmbassadorMemberCommon({ children, params }) {
   );
 
   return (
-    <AmbassadorCoreCommon>
-      <MyAmbassadorMemberStatus member={mine} params={params} />
-      {children}
-    </AmbassadorCoreCommon>
+    <ActiveReferendaProvider pallet="ambassadorReferenda">
+      <AmbassadorCoreCommon>
+        <MyAmbassadorMemberStatus member={mine} params={params} />
+        {children}
+      </AmbassadorCoreCommon>
+    </ActiveReferendaProvider>
   );
 }

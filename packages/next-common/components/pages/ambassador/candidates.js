@@ -22,8 +22,8 @@ export default function AmbassadorCandidatesPage() {
 
   return (
     <CollectivesProvider params={ambassadorParams} section="ambassador">
-      <ActiveReferendaProvider pallet="ambassadorReferenda">
-        <AmbassadorMembersLoadable>
+      <AmbassadorMembersLoadable>
+        <ActiveReferendaProvider pallet="ambassadorReferenda">
           <AmbassadorCoreCommon>
             <div className="mb-4 pr-6 leading-8">
               <FellowshipMemberTabs members={members} section="ambassador" />
@@ -43,8 +43,8 @@ export default function AmbassadorCandidatesPage() {
               <FellowshipMembersEmpty />
             )}
           </AmbassadorCoreCommon>
-        </AmbassadorMembersLoadable>
-      </ActiveReferendaProvider>
+        </ActiveReferendaProvider>
+      </AmbassadorMembersLoadable>
     </CollectivesProvider>
   );
 }
