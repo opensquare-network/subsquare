@@ -12,24 +12,21 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function AddressLogin() {
-  const [wallet, setWallet] = useState();
+  const [unknownWallet, setUnknownWallet] = useState();
   const [selectedWallet, setSelectedWallet] = useState();
   const [selectedAccount, setSelectedAccount] = useState(null);
-  const [web3Error, setWeb3Error] = useState();
   const { lastConnectedAccount } = useConnectedAccountContext();
   const [web3Login, isLoading] = useWeb3Login();
 
   return (
     <div className="space-y-6">
       <WalletAddressSelect
-        wallet={wallet}
-        setWallet={setWallet}
+        unknownWallet={unknownWallet}
+        setUnknownWallet={setUnknownWallet}
         selectedWallet={selectedWallet}
         setSelectedWallet={setSelectedWallet}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
-        web3Error={web3Error}
-        setWeb3Error={setWeb3Error}
         lastUsedAddress={lastConnectedAccount?.address}
       />
       <ButtonWrapper>

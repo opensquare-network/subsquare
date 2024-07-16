@@ -1,16 +1,11 @@
 import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import AddressSelect from "../addressSelect";
-import ErrorText from "../ErrorText";
 import SelectWallet from "../wallet/selectWallet";
-import {
-  getMultiSigWallets,
-  getSingleSigWallets,
-  getWallets,
-} from "../../utils/consts/connect";
+import { getMultiSigWallets, getSingleSigWallets, getWallets } from "../../utils/consts/connect";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
-import { noop, some } from "lodash-es";
+import { some } from "lodash-es";
 import isMixedChain from "next-common/utils/isMixedChain";
 import EVMEntryWalletOption from "../wallet/evmEntryWalletOption";
 import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
@@ -29,10 +24,8 @@ const Label = styled.div`
 `;
 
 export default function WalletAddressSelect({
-  web3Error,
-  setWeb3Error = noop,
-  wallet,
-  setWallet,
+  unknownWallet,
+  setUnknownWallet,
   selectedWallet,
   setSelectedWallet,
   selectedAccount,
@@ -60,7 +53,6 @@ export default function WalletAddressSelect({
 
       setSelectedAccount(accounts[0]);
     }
-    setWeb3Error();
   }, [selectedWallet, accounts]);
 
   const onSelectAccount = useCallback(
@@ -75,7 +67,7 @@ export default function WalletAddressSelect({
         const injector = await extensionDapp.web3FromSource(
           account.meta?.source,
         );
-        setWallet(injector);
+        setUnknownWallet(injector);
       }
     },
     [selectedWallet, chain],
@@ -114,7 +106,7 @@ export default function WalletAddressSelect({
         </div>
       )}
 
-      {wallet && accounts?.length === 0 && (
+      {unknownWallet && accounts?.length === 0 && (
         <ErrorMessage>
           Address not detected, please create an available address.
         </ErrorMessage>
@@ -133,7 +125,6 @@ export default function WalletAddressSelect({
               selectedAccount={selectedAccount}
               onSelect={onSelectAccount}
             />
-            {web3Error && <ErrorText>{web3Error}</ErrorText>}
           </div>
         )
       )}
