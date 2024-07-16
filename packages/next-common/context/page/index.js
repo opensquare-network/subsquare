@@ -1,5 +1,8 @@
 import React, { createContext, useContext } from "react";
-import { detailPageCategory } from "../../utils/consts/business/category";
+import {
+  detailPageCategory,
+  listPageCategory,
+} from "../../utils/consts/business/category";
 
 const PageContext = createContext({});
 
@@ -13,6 +16,19 @@ export default function PageProvider({ pageProperties = {}, children }) {
 
 export function usePageProperties() {
   return useContext(PageContext);
+}
+
+/**
+ * @returns {listPageCategory[keyof typeof listPageCategory]}>
+ */
+export function useListPageType() {
+  const { listPageType } = usePageProperties();
+
+  if (!Object.values(listPageCategory).includes(listPageType)) {
+    throw new Error(`Unknown list page type: ${listPageType}`);
+  }
+
+  return listPageType;
 }
 
 export function useDetailType() {

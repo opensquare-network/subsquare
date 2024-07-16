@@ -23,6 +23,13 @@ const businessCategory = {
   openTechCommitteeProposals: "Open Tech. Comm. Proposals",
 };
 
+// TODO: add more category
+export const listPageCategory = {
+  REFERENDA: "referenda",
+  FELLOWSHIP_REFERENDA: "fellowship",
+  AMBASSADOR_REFERENDA: "ambassador/referenda",
+};
+
 export const detailPageCategory = {
   POST: "posts",
   PA_POST: "polkassembly/posts",

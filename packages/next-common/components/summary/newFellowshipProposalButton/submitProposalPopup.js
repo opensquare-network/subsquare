@@ -4,7 +4,7 @@ import SubmitProposalPopupCommon from "../newProposalButton/common";
 import { usePageProps } from "next-common/context/page";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import QuickStartButton from "../newProposalButton/templates/button";
-import NewFellowshipRemarkReferendumInnerPopup from "../newFellowshipProposalQuickStart/createSystemRemarkProposalPopup";
+import { NewRemarkReferendumInnerPopup } from "../newProposalQuickStart/createSystemRemarkProposalPopup";
 
 export default function SubmitFellowshipProposalPopup({ onClose }) {
   const { period } = usePageProps();
@@ -15,7 +15,7 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
 
   let content;
   if (showNewRemarkPopup) {
-    content = <NewFellowshipRemarkReferendumInnerPopup />;
+    content = <NewRemarkReferendumInnerPopup />;
   } else {
     content = (
       <SubmitProposalPopupCommon
