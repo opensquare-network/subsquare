@@ -4,6 +4,8 @@ import { useCollectivesContext } from "next-common/context/collectives/collectiv
 import { useActiveReferenda } from "next-common/context/activeReferenda";
 import CoreFellowshipMemberInfoWrapper from "./infoWrapper";
 import CoreFellowshipMemberInfoTitle from "./title";
+import useFetch from "next-common/hooks/useFetch";
+import Tooltip from "next-common/components/tooltip";
 
 function useRelatedReferenda(address, pallet) {
   const activeReferenda = useActiveReferenda();
@@ -35,6 +37,19 @@ function useRelatedReferenda(address, pallet) {
   }, [activeReferenda, address, pallet]);
 }
 
+function ReferendumTooltip({ referendumIndex, children }) {
+  const { section } = useCollectivesContext();
+  const { value } = useFetch(`/api/${section}/referenda/${referendumIndex}`);
+  if (!value) {
+    return children;
+  }
+  return (
+    <Tooltip content={`#${referendumIndex} · ${value?.title}`}>
+      {children}
+    </Tooltip>
+  );
+}
+
 export default function CoreFellowshipMemberRelatedReferenda({
   address,
   pallet,
@@ -49,11 +64,13 @@ export default function CoreFellowshipMemberRelatedReferenda({
         {index !== 0 && (
           <span className="text12Medium text-textTertiary">·</span>
         )}
-        <Link href={`/${section}/referenda/${referendumIndex}`}>
-          <span className="cursor-pointer text-sapphire500 text12Medium">
-            #{referendumIndex}
-          </span>
-        </Link>
+        <ReferendumTooltip referendumIndex={referendumIndex}>
+          <Link href={`/${section}/referenda/${referendumIndex}`}>
+            <span className="cursor-pointer text-sapphire500 text12Medium">
+              #{referendumIndex}
+            </span>
+          </Link>
+        </ReferendumTooltip>
       </Fragment>
     ));
   }
