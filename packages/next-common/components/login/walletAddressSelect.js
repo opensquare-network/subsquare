@@ -31,8 +31,8 @@ const Label = styled.div`
 export default function WalletAddressSelect({
   web3Error,
   setWeb3Error = noop,
-  wallet,
-  setWallet,
+  unknownWallet,
+  setUnknownWallet,
   selectedWallet,
   setSelectedWallet,
   selectedAccount,
@@ -75,7 +75,7 @@ export default function WalletAddressSelect({
         const injector = await extensionDapp.web3FromSource(
           account.meta?.source,
         );
-        setWallet(injector);
+        setUnknownWallet(injector);
       }
     },
     [selectedWallet, chain],
@@ -114,7 +114,7 @@ export default function WalletAddressSelect({
         </div>
       )}
 
-      {wallet && accounts?.length === 0 && (
+      {unknownWallet && accounts?.length === 0 && (
         <ErrorMessage>
           Address not detected, please create an available address.
         </ErrorMessage>
