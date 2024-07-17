@@ -11,7 +11,7 @@ import {
 } from "next-common/utils/consts/connect";
 import { useConnectors } from "wagmi";
 import { useDetectEthereum } from "./useDetectEthereum";
-import { useIsCoinbaseWallet } from "./useIsCoinbaseWallet";
+import { useHasCoinbaseWallet } from "./useHasCoinbaseWallet";
 
 // always list wallets
 const fixedWallets = [
@@ -49,11 +49,11 @@ export function useEVMWallets() {
   /**
    * coinbase wallet
    */
-  const isCoinbaseWallet = useIsCoinbaseWallet();
+  const hasCoinbaseWallet = useHasCoinbaseWallet();
   const coinbaseWalletSDKConnector = find(connectors, {
     id: "coinbaseWalletSDK",
   });
-  const coinbaseWalletConnector = isCoinbaseWallet
+  const coinbaseWalletConnector = hasCoinbaseWallet
     ? coinbaseWalletSDKConnector
     : null;
   const coinbaseWalletOption = {
