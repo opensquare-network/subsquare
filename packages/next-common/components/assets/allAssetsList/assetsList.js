@@ -11,7 +11,7 @@ export default function AssetsList({ assets }) {
     return null;
   }
 
-  return width > 1024 ? (
+  return width > 768 ? (
     <PCAssetsList assets={assets} /> // desktop view
   ) : (
     <MobileAssetsList assets={assets} /> // mobile view

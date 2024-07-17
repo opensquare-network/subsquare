@@ -97,11 +97,11 @@ export const colId = {
 
 export const colName = {
   name: "Name",
-  style: { textAlign: "left", minWidth: "160px" },
+  style: { textAlign: "left", minWidth: "256px" },
   render: (item) => (
     <div
       key="name"
-      className="text14Medium text-textTertiary truncate max-w-[240px] pr-[16px]"
+      className="text14Medium text-textTertiary truncate max-w-[240px]"
     >
       {item.name}
     </div>

@@ -5,6 +5,11 @@ import { colId, colName, colToken } from "../assetsList";
 import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
 import { toPrecision } from "next-common/utils";
+import {
+  SystemSignalFrozen,
+  SystemSignalDestroying,
+} from "@osn/icons/subsquare";
+import SignalIndicator from "next-common/components/icons/signalIndicator";
 
 export const colAccounts = {
   name: "Accounts",
@@ -17,12 +22,18 @@ export const colAccounts = {
 };
 
 export const colStatus = {
-  name: "Status",
-  style: { textAlign: "right", width: "60px", minWidth: "60px" },
+  name: "",
+  style: { textAlign: "right", width: "40px", minWidth: "40px" },
   render: (item) => (
-    <span key="status" className="text14Medium text-textPrimary">
-      {item.status}
-    </span>
+    <div key="status" className="flex items-center">
+      {item.status === "Live" ? (
+        <SignalIndicator className="w-[16px] h-[16px]" active={true} />
+      ) : item.status === "Frozen" ? (
+        <SystemSignalFrozen width={16} height={16} />
+      ) : item.status === "Destroying" ? (
+        <SystemSignalDestroying width={16} height={16} />
+      ) : null}
+    </div>
   ),
 };
 
@@ -80,11 +91,11 @@ function useInfoCol() {
 export default function PCAssetsList({ assets }) {
   const colInfo = useInfoCol();
   const columnsDef = [
+    colStatus,
     colToken,
     colId,
     colName,
     colInfo,
-    colStatus,
     colAccounts,
     colSupply,
   ];

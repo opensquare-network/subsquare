@@ -37,9 +37,9 @@ const columnsDef = [
   colOwner,
   colIssuer,
   colFreezer,
-  colStatus,
   colAccounts,
   colSupply,
+  colStatus,
 ];
 
 export default function MobileAssetsList({ assets }) {
