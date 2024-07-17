@@ -1,12 +1,12 @@
 import { some } from "lodash-es";
 import { useDetectEthereum } from "./useDetectEthereum";
 
-const KEY = "isMetaMask";
+const KEY = "isCoinbaseWallet";
 
-export function useHasMetamask() {
+export function useHasCoinbaseWallet() {
   const ethereum = useDetectEthereum();
 
-  // for only metamask installed
+  // for only coinbase wallet installed
   if (ethereum?.[KEY]) {
     return true;
   }
