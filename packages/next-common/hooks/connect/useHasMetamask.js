@@ -7,7 +7,7 @@ export function useHasMetamask() {
   const ethereum = useDetectEthereum();
   const idx = findIndex(
     ethereum?.providers, // window.ethereum will have providers property when multiple evm extensions installed
-    KEY
+    KEY,
   );
 
   return ethereum?.[KEY] || // for only metamask installed
