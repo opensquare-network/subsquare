@@ -10,18 +10,11 @@ export default function useQueryAllAssetDetail() {
       return;
     }
 
-    api.query.assets.asset.entries().then((data) => {
-      const result = data.map((item) => {
-        const [
-          {
-            args: [id],
-          },
-          data,
-        ] = item;
-        const assetId = id.toNumber();
-        const detail = data.unwrap();
+    api.query.assets.asset.entries().then((entries) => {
+      const result = entries.map(([key, optionalStorage]) => {
+        const detail = optionalStorage.unwrap();
         return {
-          assetId,
+          assetId: key.args[0].toNumber(),
           owner: detail.owner.toJSON(),
           issuer: detail.issuer.toJSON(),
           admin: detail.admin.toJSON(),
