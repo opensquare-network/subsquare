@@ -1,4 +1,4 @@
-import { useIsMetamaskWallet } from "next-common/hooks/connect/useIsMetamask";
+import { useHasMetamask } from "next-common/hooks/connect/useHasMetamask";
 import WalletOption from "./walletOption";
 
 // Added for supporting PolkaGate Snap
@@ -15,16 +15,14 @@ export default function PolkagateSnapWallet({
   selected = false,
   loading = false,
 }) {
-  const isMetaMaskWallet = useIsMetamaskWallet();
+  const hasMetamask = useHasMetamask();
   const Logo = wallet.logo;
-
-  const installed = isMetaMaskWallet;
 
   return (
     <WalletOption
       selected={selected}
       onClick={() => {
-        if (!installed) {
+        if (!hasMetamask) { // this option should already be disabled
           return;
         }
 
@@ -32,7 +30,7 @@ export default function PolkagateSnapWallet({
           onClick?.(wallet);
         });
       }}
-      installed={installed}
+      installed={hasMetamask}
       logo={<Logo className={wallet.title} alt={wallet.title} />}
       title={wallet.title}
       loading={loading}
