@@ -23,17 +23,17 @@ export const colOwner = {
   render: (item) => <AddressUser key="owner" add={item.owner} />,
 };
 
-export default function MobileAssetsList({ assets }) {
-  const columnsDef = [
-    colToken,
-    colId,
-    colName,
-    colAdmin,
-    colOwner,
-    colIssuer,
-    colSupply,
-  ];
+const columnsDef = [
+  colToken,
+  colId,
+  colName,
+  colAdmin,
+  colOwner,
+  colIssuer,
+  colSupply,
+];
 
+export default function MobileAssetsList({ assets }) {
   return (
     <ScrollerX>
       <MapDataList
