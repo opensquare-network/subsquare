@@ -18,7 +18,6 @@ export default function useSubCollectiveRank(address, pallet = "fellowshipCollec
 
     let unsub;
     api.query[pallet].members(address, (rawOptional) => {
-      console.log("rawOptional", rawOptional);
       if (rawOptional.isSome) {
         const unwrapped = rawOptional.unwrap();
         setRank(unwrapped.rank.toNumber());
@@ -36,5 +35,5 @@ export default function useSubCollectiveRank(address, pallet = "fellowshipCollec
     };
   }, [address, api]);
 
-  return {rank, loading};
+  return { rank, loading };
 }
