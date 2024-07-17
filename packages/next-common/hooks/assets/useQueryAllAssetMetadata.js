@@ -10,24 +10,17 @@ export default function useQueryAllAssetMetadata() {
       return;
     }
 
-    api.query.assets.metadata.entries().then((data) => {
-      const result = data.map((item) => {
-        const [
-          {
-            args: [id],
-          },
-          metadata,
-        ] = item;
-        const assetId = id.toNumber();
+    api.query.assets.metadata.entries().then((entries) => {
+      const normalizedMetadataArr = entries.map(([key, metadata]) => {
         return {
-          assetId,
+          assetId: key.args[0].toNumber(),
           symbol: metadata.symbol.toHuman(),
           name: metadata.name.toHuman(),
           decimals: metadata.decimals.toNumber(),
           isFrozen: metadata.isFrozen.toJSON(),
         };
       });
-      setAllMetadata(result);
+      setAllMetadata(normalizedMetadataArr);
     });
   }, [api]);
 
