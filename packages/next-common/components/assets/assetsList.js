@@ -87,7 +87,7 @@ export const colToken = {
 
 export const colId = {
   name: "ID",
-  style: { textAlign: "left", width: "160px", minWidth: "160px" },
+  style: { textAlign: "left", width: "120px", minWidth: "120px" },
   render: (item) => (
     <span className="text14Medium text-textTertiary">
       {isNil(item.assetId) ? "-" : `#${item.assetId}`}

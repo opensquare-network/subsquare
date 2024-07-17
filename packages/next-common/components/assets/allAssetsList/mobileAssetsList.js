@@ -37,8 +37,8 @@ const columnsDef = [
   colOwner,
   colIssuer,
   colFreezer,
-  colAccounts,
   colStatus,
+  colAccounts,
   colSupply,
 ];
 
