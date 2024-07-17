@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import FellowshipTally from "./tally";
 import Gov2Status from "../../../gov2/sidebar/status";
@@ -41,9 +41,19 @@ function CollectiveVote({ onClick = noop }) {
   const { rank, loading } = useSubCollectiveRank(address, collectivePallet);
   const minRank = useMinRank();
   const disabled = loading || isNil(rank) || rank < minRank;
-  const tooltipText = !isUndefined(rank) && rank < minRank ?
-    `Only members with rank >= ${minRank} can vote` : null;
   const text = loading ? "Checking permissions" : "Vote";
+
+  const tooltipText = useMemo(() => {
+    if (loading) {
+      return "Checking permissions";
+    }
+
+    if (!isUndefined(rank) && rank < minRank) {
+      return `Only members with rank >= ${minRank} can vote`;
+    }
+
+    return null;
+  }, [loading, rank, minRank]);
 
   return (
     <Tooltip content={tooltipText}>
