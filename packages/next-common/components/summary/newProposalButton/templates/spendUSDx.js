@@ -21,7 +21,6 @@ export default function SpendUSDxTemplateProvider({ children }) {
   ) {
     button = (
       <ChoiceButton
-        key="spend-usdx"
         name="USDx treasury proposal"
         description="Creating a treasury spend with assets on AssetHub"
         onClick={() => setShowCreateTreasuryProposal(true)}
