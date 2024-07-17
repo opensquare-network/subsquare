@@ -23,6 +23,12 @@ export const colOwner = {
   render: (item) => <AddressUser key="owner" add={item.owner} />,
 };
 
+export const colFreezer = {
+  name: "Freezer",
+  style: { textAlign: "left", minWidth: "160px" },
+  render: (item) => <AddressUser key="owner" add={item.freezer} />,
+};
+
 const columnsDef = [
   colToken,
   colId,
@@ -30,6 +36,7 @@ const columnsDef = [
   colAdmin,
   colOwner,
   colIssuer,
+  colFreezer,
   colSupply,
 ];
 

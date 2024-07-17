@@ -28,26 +28,29 @@ function InfoAddressItem({ name, address }) {
 }
 
 function useInfoCol() {
-  const [isBriefInfo, setIsBriefInfo] = useState(true);
+  const [showAllAdmin, setShowAllAdmin] = useState(true);
 
   return {
     name: (
       <div
         className="cursor-pointer text14Medium text-theme500"
-        onClick={() => setIsBriefInfo(!isBriefInfo)}
+        onClick={() => setShowAllAdmin(!showAllAdmin)}
       >
-        {isBriefInfo ? "Brief info" : "Info"}
+        {showAllAdmin ? "All admins" : "Admin"}
       </div>
     ),
     style: { textAlign: "left", width: "240px", minWidth: "240px" },
     render: (item) => (
       <div key="info" className="flex flex-col">
-        <InfoAddressItem name="Admin" address={item.admin} />
-        {isBriefInfo && (
+        {showAllAdmin ? (
           <>
+            <InfoAddressItem name="Admin" address={item.admin} />
             <InfoAddressItem name="Owner" address={item.owner} />
             <InfoAddressItem name="Issuer" address={item.issuer} />
+            <InfoAddressItem name="Freezer" address={item.freezer} />
           </>
+        ) : (
+          <AddressUser add={item.admin} maxWidth={160} />
         )}
       </div>
     ),
