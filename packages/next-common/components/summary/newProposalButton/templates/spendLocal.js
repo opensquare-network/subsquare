@@ -1,8 +1,8 @@
 import { useChainSettings } from "next-common/context/chain";
-import QuickStartButton from "next-common/components/summary/newProposalButton/templates/button";
 import React, { useState } from "react";
 import { NewTreasuryReferendumInnerPopup } from "next-common/components/summary/newProposalQuickStart/createTreasuryProposalPopup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import { ChoiceButton } from "../common";
 
 const SpendLocalTemplateContext = React.createContext();
 
@@ -17,8 +17,10 @@ export default function SpendLocalTemplateProvider({ children }) {
 
   if (settings.treasuryProposalTracks) {
     button = (
-      <QuickStartButton
-        title="Treasury spend local"
+      <ChoiceButton
+        key="spend-local"
+        name="Treasury proposal local"
+        description="Creating a treasury spend of native token that is locally available"
         onClick={() => setShowCreateTreasuryProposal(true)}
       />
     );

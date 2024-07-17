@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { NewFellowshipProposalInnerPopup } from "../newFellowshipProposalPopup";
-import SubmitProposalPopupCommon from "../newProposalButton/common";
+import SubmitProposalPopupCommon, {
+  ChoiceButton,
+} from "../newProposalButton/common";
 import { usePageProps } from "next-common/context/page";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import QuickStartButton from "../newProposalButton/templates/button";
 import { NewRemarkReferendumInnerPopup } from "../newProposalQuickStart/createSystemRemarkProposalPopup";
+import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
 
 export default function SubmitFellowshipProposalPopup({ onClose }) {
   const { period } = usePageProps();
@@ -29,17 +31,14 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
           />
         }
       >
-        <div className="flex flex-col gap-2 mt-6">
-          <h6 className="text-textPrimary text14Bold">Quick Start</h6>
-          <div className="flex flex-wrap gap-2">
-            <QuickStartButton
-              title="Remark"
-              onClick={() => {
-                setShowNewRemarkPopup(true);
-              }}
-            />
-          </div>
-        </div>
+        <QuickStart>
+          <ChoiceButton
+            key="remark"
+            name="Remark"
+            description="Creating a remark proposal"
+            onClick={() => setShowNewRemarkPopup(true)}
+          />
+        </QuickStart>
       </SubmitProposalPopupCommon>
     );
   }
