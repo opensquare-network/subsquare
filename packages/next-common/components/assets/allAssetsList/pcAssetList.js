@@ -6,6 +6,16 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
 import { toPrecision } from "next-common/utils";
 
+export const colAccounts = {
+  name: "Accounts",
+  style: { textAlign: "right", width: "120px", minWidth: "120px" },
+  render: (item) => (
+    <span key="total" className="text14Medium text-textPrimary">
+      {item.accounts.toLocaleString()}
+    </span>
+  ),
+};
+
 export const colSupply = {
   name: "Supply",
   style: { textAlign: "right", width: "240px", minWidth: "240px" },
@@ -28,7 +38,7 @@ function InfoAddressItem({ name, address }) {
 }
 
 function useInfoCol() {
-  const [showAllAdmin, setShowAllAdmin] = useState(true);
+  const [showAllAdmin, setShowAllAdmin] = useState(false);
 
   return {
     name: (
@@ -59,7 +69,14 @@ function useInfoCol() {
 
 export default function PCAssetsList({ assets }) {
   const colInfo = useInfoCol();
-  const columnsDef = [colToken, colId, colName, colInfo, colSupply];
+  const columnsDef = [
+    colToken,
+    colId,
+    colName,
+    colInfo,
+    colAccounts,
+    colSupply,
+  ];
 
   return (
     <ScrollerX>
