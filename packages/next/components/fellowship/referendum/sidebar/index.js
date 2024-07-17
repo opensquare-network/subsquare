@@ -23,7 +23,7 @@ import { useTrack } from "next-common/context/post/gov2/track";
 import Tooltip from "next-common/components/tooltip";
 
 function useMinRank() {
-  const {id: trackId} = useTrack();
+  const { id: trackId } = useTrack();
 
   const collectivePallet = useRankedCollectivePallet();
   if ("fellowshipCollective" === collectivePallet) {
@@ -31,14 +31,14 @@ function useMinRank() {
   } else if ("ambassadorCollective" === collectivePallet) {
     return getAmbassadorMinRankOfClass(trackId);
   } else {
-    throw new Error(`Can not get min rank of class for pallet ${pallet}`);
+    throw new Error(`Can not get min rank of class for pallet ${collectivePallet}`);
   }
 }
 
-function CollectiveVote({onClick = noop}) {
+function CollectiveVote({ onClick = noop }) {
   const address = useRealAddress();
   const collectivePallet = useRankedCollectivePallet();
-  const {rank, loading} = useSubCollectiveRank(address, collectivePallet);
+  const { rank, loading } = useSubCollectiveRank(address, collectivePallet);
   const minRank = useMinRank();
   const disabled = loading || isNil(rank) || rank < minRank;
   const tooltipText = !isUndefined(rank) && rank < minRank ?
@@ -50,19 +50,19 @@ function CollectiveVote({onClick = noop}) {
       <PrimaryButton
         loading={loading}
         disabled={disabled}
-        style={{width: "100%"}}
+        style={{ width: "100%" }}
         onClick={onClick}
       >
         {text}
       </PrimaryButton>
     </Tooltip>
-  )
+  );
 }
 
 export default function FellowshipReferendumSideBar() {
   const post = usePost();
   const [showVote, setShowVote] = useState(false);
-  const {hideActionButtons} = useChainSettings();
+  const { hideActionButtons } = useChainSettings();
   const referendumIndex = post?.referendumIndex;
   const isVoting = gov2VotingState.includes(post?.state?.name);
 
