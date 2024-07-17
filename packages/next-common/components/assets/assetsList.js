@@ -101,7 +101,7 @@ export const colName = {
   render: (item) => (
     <div
       key="name"
-      className="text14Medium text-textTertiary truncate max-w-[240px]"
+      className="text14Medium text-textTertiary truncate max-w-[240px] pr-[16px]"
     >
       {item.name}
     </div>
