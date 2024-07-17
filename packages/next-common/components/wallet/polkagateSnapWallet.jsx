@@ -1,5 +1,6 @@
 import { useHasMetamask } from "next-common/hooks/connect/useHasMetamask";
 import WalletOption from "./walletOption";
+import useInjectedWeb3 from "./useInjectedWeb3";
 
 // Added for supporting PolkaGate Snap
 async function enablePolkaGateSnap() {
@@ -16,17 +17,20 @@ export default function PolkagateSnapWallet({
   loading = false,
 }) {
   const hasMetamask = useHasMetamask();
+  const { setInjectedWeb3 } = useInjectedWeb3();
   const Logo = wallet.logo;
 
   return (
     <WalletOption
       selected={selected}
       onClick={() => {
-        if (!hasMetamask) { // this option should already be disabled
+        if (!hasMetamask) {
+          // this option should already be disabled
           return;
         }
 
         enablePolkaGateSnap().then(() => {
+          setInjectedWeb3(window.injectedWeb3);
           onClick?.(wallet);
         });
       }}
