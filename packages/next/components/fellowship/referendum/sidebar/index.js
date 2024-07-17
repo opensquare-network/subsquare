@@ -11,13 +11,13 @@ import { useChainSettings } from "next-common/context/chain";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
-import { noop, isUndefined, isNull, isNil } from "lodash-es";
+import { isNil, isUndefined, noop } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import {
   getAmbassadorMinRankOfClass,
-  getFellowshipMinRankOfClass
+  getFellowshipMinRankOfClass,
 } from "next-common/context/post/fellowship/useMaxVoters";
 import { useTrack } from "next-common/context/post/gov2/track";
 import Tooltip from "next-common/components/tooltip";
