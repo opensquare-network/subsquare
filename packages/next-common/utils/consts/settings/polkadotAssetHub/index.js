@@ -33,7 +33,8 @@ const polkadotAssetHub = {
   hasSubscan: true,
   subscanDomain: "assethub-polkadot",
   hasStatescan: true,
-  description: "Assets para-chain of Polkadot",
+  description:
+    "System parachain on Polkadot network for creating and sending tokens and NFTs.",
   ...polkadotAssetHubThemeVars,
   multisigWallets: {
     signet: true,

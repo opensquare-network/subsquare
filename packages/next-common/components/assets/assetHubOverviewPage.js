@@ -3,6 +3,7 @@ import usePageTitle from "next-common/hooks/usePageTitle";
 import NoWalletConnected from "next-common/components/assets/noWalletConnected";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import WalletAssetList from "next-common/components/assets/walletAssetList";
+import { AssetMetadataProvider } from "./context/assetMetadata";
 
 export default function AssetHubOverviewPage() {
   const chainSettings = useChainSettings();
@@ -17,5 +18,9 @@ export default function AssetHubOverviewPage() {
     return <NoWalletConnected seoInfo={seoInfo} />;
   }
 
-  return <WalletAssetList seoInfo={seoInfo} />;
+  return (
+    <AssetMetadataProvider>
+      <WalletAssetList seoInfo={seoInfo} />
+    </AssetMetadataProvider>
+  );
 }

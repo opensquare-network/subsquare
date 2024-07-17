@@ -3,6 +3,7 @@ import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
+import { useAllAssetMetadata } from "./context/assetMetadata";
 
 const PolkadotAssetHubNativeToken = {
   symbol: "DOT",
@@ -10,39 +11,6 @@ const PolkadotAssetHubNativeToken = {
   decimals: 10,
   type: "native",
 };
-
-function useAllAssetMetadata() {
-  const api = useContextApi();
-  const [allMetadata, setAllMetadata] = useState();
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    api.query.assets.metadata.entries().then((data) => {
-      const result = data.map((item) => {
-        const [
-          {
-            args: [id],
-          },
-          metadata,
-        ] = item;
-        const assetId = id.toNumber();
-        return {
-          assetId,
-          symbol: metadata.symbol.toHuman(),
-          name: metadata.name.toHuman(),
-          decimals: metadata.decimals.toNumber(),
-          isFrozen: metadata.isFrozen.toJSON(),
-        };
-      });
-      setAllMetadata(result);
-    });
-  }, [api]);
-
-  return allMetadata;
-}
 
 function useSubscribeMultiAssetAccounts(multiAccountKey) {
   const api = useContextApi();
@@ -95,7 +63,7 @@ function useSubscribeNativeBalance(address) {
   return balanceObj;
 }
 
-export default function useAssets() {
+export default function useMyAssets() {
   const address = useRealAddress();
   const allMetadata = useAllAssetMetadata();
   const multiAccountKey = useMemo(
@@ -124,15 +92,17 @@ export default function useAssets() {
     }, []);
 
     const knownAssets = knownAssetDefs.reduce((result, def) => {
-      const find = assets.find(asset => asset.assetId === def.assetId);
+      const find = assets.find((asset) => asset.assetId === def.assetId);
       if (find) {
         return [...result, find];
       } else {
         return result;
       }
     }, []);
-    const knownAssetIds = knownAssetDefs.map(def => def.assetId);
-    const otherAssets = assets.filter(asset => !knownAssetIds.includes(asset.assetId));
+    const knownAssetIds = knownAssetDefs.map((def) => def.assetId);
+    const otherAssets = assets.filter(
+      (asset) => !knownAssetIds.includes(asset.assetId),
+    );
 
     const tokens = [
       { ...PolkadotAssetHubNativeToken, ...nativeBalanceObj },
