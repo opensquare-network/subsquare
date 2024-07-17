@@ -1,27 +1,17 @@
 import React, { useState } from "react";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
-import {
-  colId,
-  colName,
-  colToken,
-  formatBalance,
-  paddingDecimals,
-} from "../assetsList";
-import BalanceDisplay from "../balanceDisplay";
+import { colId, colName, colToken } from "../assetsList";
+import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
+import { toPrecision } from "next-common/utils";
 
 export const colSupply = {
   name: "Supply",
   style: { textAlign: "right", width: "240px", minWidth: "240px" },
   render: (item) => (
     <span key="total" className="text14Medium text-textPrimary">
-      <BalanceDisplay
-        balance={paddingDecimals(
-          formatBalance(item.supply || 0, item.decimals),
-          4,
-        )}
-      />
+      <ValueDisplay value={toPrecision(item.supply || 0, item.decimals)} />
     </span>
   ),
 };

@@ -8,6 +8,8 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 import useAssets from "../useAssets";
+import Pagination from "next-common/components/pagination";
+import { useMemo, useState } from "react";
 
 function Summary({ assetsCount }) {
   return (
@@ -24,6 +26,12 @@ function Summary({ assetsCount }) {
 export default function AllAssetsList({ seoInfo }) {
   const chainSettings = useChainSettings();
   const assets = useAssets();
+  const [page, setPage] = useState(1);
+  const pageSize = 25;
+  const showAssets = useMemo(
+    () => assets?.slice((page - 1) * pageSize, page * pageSize),
+    [assets, page, pageSize],
+  );
 
   return (
     <ListLayout
@@ -35,7 +43,17 @@ export default function AllAssetsList({ seoInfo }) {
       <div className="flex flex-col gap-[16px]">
         <Title assetsCount={assets?.length || 0} />
         <SecondaryCard>
-          <AssetsList assets={assets} />
+          <AssetsList assets={showAssets} />
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            total={assets?.length || 0}
+            onPageChange={(event, page) => {
+              event.preventDefault();
+              event.stopPropagation();
+              setPage(page);
+            }}
+          />
         </SecondaryCard>
       </div>
     </ListLayout>
