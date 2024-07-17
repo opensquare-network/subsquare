@@ -4,6 +4,7 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import { noop } from "lodash-es";
 import { SignetWallet } from "./signetWallet";
 import WalletOption from "./walletOption";
+import PolkagateSnapWallet from "./polkagateSnapWallet";
 
 export default function SelectWallet({
   wallets,
@@ -71,6 +72,20 @@ export default function SelectWallet({
         if (wallet.extensionName === WalletTypes.SIGNET) {
           return (
             <SignetWallet
+              key={index}
+              wallet={wallet}
+              onClick={async () => {
+                setSelectedWallet(wallet);
+                handleClick(wallet);
+              }}
+              selected={selected}
+            />
+          );
+        }
+
+        if (wallet.extensionName === WalletTypes.POLKAGATE_SNAP) {
+          return (
+            <PolkagateSnapWallet
               key={index}
               wallet={wallet}
               onClick={async () => {
