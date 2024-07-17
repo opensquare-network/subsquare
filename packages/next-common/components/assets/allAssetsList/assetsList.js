@@ -1,81 +1,19 @@
-import React, { useState } from "react";
-import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import { MapDataList } from "next-common/components/dataList";
-import {
-  colId,
-  colName,
-  colToken,
-  formatBalance,
-  paddingDecimals,
-} from "../assetsList";
-import BalanceDisplay from "../balanceDisplay";
-import AddressUser from "next-common/components/user/addressUser";
-
-const colSupply = {
-  name: "Supply",
-  style: { textAlign: "right", width: "240px", minWidth: "240px" },
-  render: (item) => (
-    <span key="total" className="text14Medium text-textPrimary">
-      <BalanceDisplay
-        balance={paddingDecimals(
-          formatBalance(item.supply || 0, item.decimals),
-          4,
-        )}
-      />
-    </span>
-  ),
-};
-
-function InfoAddressItem({ name, address }) {
-  return (
-    <div className="flex">
-      <span className="text14Medium text-textTertiary min-w-[80px]">
-        {name}
-      </span>
-      <AddressUser add={address} maxWidth={160} />
-    </div>
-  );
-}
-
-function useInfoCol() {
-  const [isBriefInfo, setIsBriefInfo] = useState(true);
-
-  return {
-    name: (
-      <div
-        className="cursor-pointer text14Medium text-theme500"
-        onClick={() => setIsBriefInfo(!isBriefInfo)}
-      >
-        {isBriefInfo ? "Brief info" : "Info"}
-      </div>
-    ),
-    style: { textAlign: "left", width: "240px", minWidth: "240px" },
-    render: (item) => (
-      <div key="info" className="flex flex-col">
-        <InfoAddressItem name="Admin" address={item.admin} />
-        {isBriefInfo && (
-          <>
-            <InfoAddressItem name="Owner" address={item.owner} />
-            <InfoAddressItem name="Issuer" address={item.issuer} />
-          </>
-        )}
-      </div>
-    ),
-  };
-}
+import React from "react";
+import { isNil } from "lodash-es";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import MobileAssetsList from "./mobileAssetsList";
+import PCAssetsList from "./pcAssetList";
 
 export default function AssetsList({ assets }) {
-  const colInfo = useInfoCol();
-  const columnsDef = [colToken, colId, colName, colInfo, colSupply];
+  const { width } = useWindowSize();
 
-  return (
-    <ScrollerX>
-      <MapDataList
-        columnsDef={columnsDef}
-        data={assets}
-        loading={!assets}
-        noDataText="No current assets"
-      />
-    </ScrollerX>
+  if (isNil(width)) {
+    return null;
+  }
+
+  return width > 1024 ? (
+    <PCAssetsList assets={assets} /> // desktop view
+  ) : (
+    <MobileAssetsList assets={assets} /> // mobile view
   );
 }
