@@ -8,17 +8,27 @@ import { toPrecision } from "next-common/utils";
 
 export const colAccounts = {
   name: "Accounts",
-  style: { textAlign: "right", width: "120px", minWidth: "120px" },
+  style: { textAlign: "right", width: "80px", minWidth: "80px" },
   render: (item) => (
-    <span key="total" className="text14Medium text-textPrimary">
+    <span key="accounts" className="text14Medium text-textPrimary">
       {item.accounts.toLocaleString()}
+    </span>
+  ),
+};
+
+export const colStatus = {
+  name: "Status",
+  style: { textAlign: "right", width: "60px", minWidth: "60px" },
+  render: (item) => (
+    <span key="status" className="text14Medium text-textPrimary">
+      {item.status}
     </span>
   ),
 };
 
 export const colSupply = {
   name: "Supply",
-  style: { textAlign: "right", width: "240px", minWidth: "240px" },
+  style: { textAlign: "right", width: "140px", minWidth: "140px" },
   render: (item) => (
     <span key="total" className="text14Medium text-textPrimary">
       <ValueDisplay value={toPrecision(item.supply || 0, item.decimals)} />
@@ -75,6 +85,7 @@ export default function PCAssetsList({ assets }) {
     colName,
     colInfo,
     colAccounts,
+    colStatus,
     colSupply,
   ];
 

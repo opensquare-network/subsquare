@@ -2,7 +2,7 @@ import React from "react";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
 import { colId, colName, colToken } from "../assetsList";
-import { colAccounts, colSupply } from "./pcAssetList";
+import { colAccounts, colStatus, colSupply } from "./pcAssetList";
 import AddressUser from "next-common/components/user/addressUser";
 
 export const colAdmin = {
@@ -38,6 +38,7 @@ const columnsDef = [
   colIssuer,
   colFreezer,
   colAccounts,
+  colStatus,
   colSupply,
 ];
 
