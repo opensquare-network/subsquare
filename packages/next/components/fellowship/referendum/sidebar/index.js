@@ -24,7 +24,7 @@ import Tooltip from "next-common/components/tooltip";
 import dynamic from "next/dynamic";
 const MyCollectiveVote = dynamic(() => import("next-common/components/collectives/referenda/myCollectiveVote"), {
   ssr: false,
-})
+});
 
 function useMinRank() {
   const { id: trackId } = useTrack();
