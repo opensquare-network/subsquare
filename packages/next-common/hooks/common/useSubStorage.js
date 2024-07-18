@@ -16,8 +16,15 @@ export default function useSubStorage(pallet, storage, params = [], callbackFn =
       return;
     }
 
+    const filteredParams = params.filter(Boolean);
+    const meta = api?.query[pallet]?.[storage].meta;
+    if (meta.type?.isMap && filteredParams.length !== 1) {
+      setLoading(false);
+      return;
+    }
+
     let unsub;
-    api.query[pallet][storage](...params, callbackFn)
+    api.query[pallet][storage](...filteredParams, callbackFn)
       .then((result) => (unsub = result))
       .finally(() => setLoading(false));
 

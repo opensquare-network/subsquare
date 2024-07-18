@@ -44,7 +44,7 @@ function CollectiveVote({ onClick = noop }) {
   const collectivePallet = useRankedCollectivePallet();
   const { rank, loading } = useSubCollectiveRank(address, collectivePallet);
   const minRank = useMinRank();
-  const disabled = loading || isNil(rank) || rank < minRank;
+  const disabled = !address || loading || isNil(rank) || rank < minRank;
   const text = loading ? "Checking permissions" : "Vote";
 
   const tooltipText = useMemo(() => {
@@ -62,7 +62,7 @@ function CollectiveVote({ onClick = noop }) {
   return (
     <Tooltip content={tooltipText}>
       <PrimaryButton
-        loading={loading}
+        loading={address && loading}
         disabled={disabled}
         style={{ width: "100%" }}
         onClick={onClick}
