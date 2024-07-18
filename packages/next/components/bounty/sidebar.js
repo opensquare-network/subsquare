@@ -3,7 +3,7 @@ import Loading from "next-common/components/loading";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
-import { BorderedRow, Header, Value, } from "next-common/components/referenda/tally/styled";
+import { BorderedRow, Header, Value } from "next-common/components/referenda/tally/styled";
 import SymbolValue from "components/gov2/sidebar/tally/values/symbolValue";
 import { useOnchainData } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
