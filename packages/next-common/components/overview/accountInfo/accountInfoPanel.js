@@ -24,6 +24,7 @@ import useDelegationPrompt from "./components/useDelegationPrompt";
 import useSetAvatarPrompt from "./components/useSetAvatarPrompt";
 import { isEmpty } from "lodash-es";
 import { useEffect, useState } from "react";
+import CollectivesAccountInfo from "./components/collectiveAccountInfo";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -158,7 +159,7 @@ function KintAssetInfo() {
 
 function CollectivesAssetInfo() {
   useSubscribeAccount();
-  return <AccountBalances />;
+  return <CollectivesAccountInfo />;
 }
 
 export default function AccountInfoPanel({ hideManageAccountLink }) {
