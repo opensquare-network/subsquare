@@ -5,6 +5,7 @@ import {
   toBrowserIncompatible,
 } from "next-common/utils/serverSideUtil";
 import { CACHE_KEY } from "../utils/constants";
+import getListPageProperties from "./pages/list";
 import getDetailPageProperties, { getIdProperty } from "./pages/detail";
 import fetchProfile from "next-common/lib/fetchProfile";
 import fetchUserStatus from "next-common/lib/fetchUserStatus";
@@ -28,6 +29,7 @@ export function withCommonProps(
     const themeMode = cookies.get(CACHE_KEY.themeMode);
     const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
+    const listPageProperties = getListPageProperties(context);
     const detailPageProperties = getDetailPageProperties(context);
     const connectedAccount = getConnectedAccount(cookies);
 
@@ -54,22 +56,24 @@ export function withCommonProps(
     return {
       ...props,
       props: {
-        ...props.props,
+        ...(props?.props || {}),
         chain: process.env.CHAIN,
         user: user ?? null,
         userStatus: userStatus ?? null,
         connectedAccount: connectedAccount ?? null,
         admins: admins ?? [],
         themeMode: themeMode ?? null,
-        navCollapsed: navCollapsed || false,
+        navCollapsed: navCollapsed || "true",
         navSubmenuVisible: navSubmenuVisible || "{}",
+        ...listPageProperties,
         ...detailPageProperties,
         pageProperties: {
+          ...listPageProperties,
           ...detailPageProperties,
           userAgent,
           props: {
             ...getIdProperty(context),
-            ...props.props,
+            ...(props?.props || {}),
           },
         },
       },

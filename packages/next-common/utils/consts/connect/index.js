@@ -144,11 +144,3 @@ export function getMultiSigWallets() {
 
   return result;
 }
-
-//Added for supporting PolkaGate Snap
-export async function enablePolkaGateSnap() {
-  if (typeof window !== "undefined") {
-    const { web3Enable } = await import("@polkagate/extension-dapp");
-    web3Enable("snaponly");
-  }
-}

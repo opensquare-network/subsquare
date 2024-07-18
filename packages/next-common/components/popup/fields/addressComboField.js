@@ -9,6 +9,7 @@ export default function AddressComboField({
   extensionAccounts,
   setAddress,
   title = "Address",
+  placeholder,
   readOnly = false,
 }) {
   const accounts = extensionAccounts.map((acc) => ({
@@ -16,7 +17,7 @@ export default function AddressComboField({
     name: acc.meta.name,
   }));
 
-  const address = defaultAddress || normalizeAddress(accounts?.[0]?.address);
+  const address = defaultAddress ?? normalizeAddress(accounts?.[0]?.address);
 
   const [targetAddress, setTargetAddress] = useState(address);
 
@@ -32,6 +33,7 @@ export default function AddressComboField({
         setAddress={setTargetAddress}
         accounts={accounts}
         readOnly={readOnly}
+        placeholder={placeholder}
       />
     </div>
   );

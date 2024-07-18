@@ -13,6 +13,8 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import useTrackDetail from "../../newProposalPopup/useTrackDetail";
 import { usePopupOnClose } from "next-common/context/popup";
+import { useListPageType } from "next-common/context/page";
+import { listPageCategory } from "next-common/utils/consts/business/category";
 
 export default function CreateProposalSubmitButton({
   trackId,
@@ -21,6 +23,15 @@ export default function CreateProposalSubmitButton({
   encodedLength,
   notePreimageTx,
 }) {
+  const listPageType = useListPageType();
+
+  let pallet = "referenda";
+  if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
+    pallet = "fellowshipReferenda";
+  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
+    pallet = "ambassadorReferenda";
+  }
+
   const onClose = usePopupOnClose();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -52,7 +63,7 @@ export default function CreateProposalSubmitButton({
       }
     }
 
-    return api.tx.referenda.submit(
+    return api.tx[pallet].submit(
       proposalOriginValue,
       {
         Lookup: {
@@ -68,12 +79,12 @@ export default function CreateProposalSubmitButton({
     useTxSubmission({
       getTxFunc: getSubmitReferendaTx,
       onInBlock: (events) => {
-        const eventData = getEventData(events, "referenda", "Submitted");
+        const eventData = getEventData(events, pallet, "Submitted");
         if (!eventData) {
           return;
         }
         const [referendumIndex] = eventData;
-        router.push(`/referenda/${referendumIndex}`);
+        router.push(`/${listPageType}/${referendumIndex}`);
       },
       onClose,
     });

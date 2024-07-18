@@ -1,6 +1,11 @@
+import { isNil } from "lodash-es";
+
+const DEFAULT_COOKIE_EXPIRES = 45;
+
 const converter = {
   read: function (value) {
-    if (value[0] === "\"") {
+    // eslint-disable-next-line quotes
+    if (value[0] === '"') {
       value = value.slice(1, -1);
     }
     return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
@@ -17,6 +22,9 @@ const converter = {
 
 export function setCookie(key, value, options) {
   let { expires } = options ?? {};
+  if (isNil(expires)) {
+    expires = DEFAULT_COOKIE_EXPIRES;
+  }
   let stringifiedOptions = "";
 
   if (typeof document === "undefined") {

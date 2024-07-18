@@ -1,18 +1,17 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { useIsLoggedIn, useUser } from "../../context/user";
-import { useMountedState } from "react-use";
+import { useClickAway, useMountedState } from "react-use";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemProfile } from "@osn/icons/subsquare";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
-import { SystemUser, AddressUser } from "../user";
+import { AddressUser, SystemUser } from "../user";
 import { useAccountMenu } from "./useAccountMenu.js";
 
 const Wrapper = Relative;
@@ -71,7 +70,7 @@ export default function HeaderAccount() {
   const { openLoginPopup } = useLoginPopup();
   const menu = useAccountMenu();
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   useEffect(() => {
     if (windowSize.width && windowSize.width <= 600) {

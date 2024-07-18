@@ -1,13 +1,14 @@
+import React from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import AvatarAndAddress from "next-common/components/collectives/core/member/avatarAndAddress";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import Divider from "next-common/components/styled/layout/divider";
-import React from "react";
 import CoreFellowshipMemberInfoLine from "next-common/components/collectives/core/member/line";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import CoreFellowshipMemberEvidence from "next-common/components/collectives/core/member/evidence";
 import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
+import CoreFellowshipMemberRelatedReferenda from "./relatedReferenda";
 
 export default function CoreFellowshipMemberCard({
   member,
@@ -40,7 +41,13 @@ export default function CoreFellowshipMemberCard({
             />
           )}
         </CoreFellowshipMemberInfoLine>
-        <CoreFellowshipMemberEvidence address={address} pallet={pallet} />
+        <CoreFellowshipMemberInfoLine>
+          <CoreFellowshipMemberEvidence address={address} pallet={pallet} />
+          <CoreFellowshipMemberRelatedReferenda
+            address={address}
+            pallet={pallet}
+          />
+        </CoreFellowshipMemberInfoLine>
       </div>
 
       <Divider className="mt-4" />

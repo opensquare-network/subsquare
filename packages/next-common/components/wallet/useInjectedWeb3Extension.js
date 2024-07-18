@@ -5,13 +5,12 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 export function useInjectedWeb3Extension(walletName) {
   const [extension, setExtension] = useState(null);
   const getInjectedWeb3Extension = useGetInjectedWeb3ExtensionFn();
-  const { loading } = useInjectedWeb3();
 
   useEffect(() => {
     setExtension(getInjectedWeb3Extension(walletName));
   }, [walletName, getInjectedWeb3Extension]);
 
-  return { injectedWeb3Extension: extension, loading };
+  return { injectedWeb3Extension: extension };
 }
 
 export function useGetInjectedWeb3ExtensionFn() {

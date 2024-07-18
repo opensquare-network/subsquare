@@ -11,13 +11,11 @@ import VoteButton from "next-common/components/popup/voteButton";
 import useFellowshipVote from "next-common/utils/hooks/fellowship/useFellowshipVote";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import CurrentVote from "./currentVote";
-import Rank from "./rank";
 import VStack from "next-common/components/styled/vStack";
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import { usePopupParams, useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
@@ -115,7 +113,6 @@ function PopupContent() {
     <>
       <VStack space={8}>
         <SignerWithBalance />
-        <Rank />
       </VStack>
       <CurrentVote currentVote={vote} isLoadingVote={isLoadingVote} />
       <VoteButton doVote={doVote} loadingState={loadingState} />

@@ -36,12 +36,16 @@ const collectivesEndpoints = [
     url: "wss://sys.ibp.network/collectives-polkadot",
   },
   {
-    name: "Dewllir",
-    url: "wss://polkadot-collectives-rpc.dwellir.com",
+    name: "LuckyFriday",
+    url: "wss://rpc-collectives-polkadot.luckyfriday.io",
   },
   {
     name: "OnFinality",
     url: "wss://collectives.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Dewllir",
+    url: "wss://polkadot-collectives-rpc.dwellir.com",
   },
   {
     name: "Dewllir Tunisia",
@@ -50,10 +54,6 @@ const collectivesEndpoints = [
   {
     name: "IBP2",
     url: "wss://sys.dotters.network/collectives-polkadot",
-  },
-  {
-    name: "LuckyFriday",
-    url: "wss://rpc-collectives-polkadot.luckyfriday.io",
   },
   {
     name: "RadiumBlock",

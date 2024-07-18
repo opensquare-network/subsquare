@@ -2,12 +2,12 @@ import styled from "styled-components";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import Loading from "../loading";
-import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import ChainIcon from "./chainIcon";
 import { ArrowDown } from "@osn/icons/subsquare";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { useClickAway } from "react-use";
 
 const NetworkOptions = dynamicClientOnly(() => import("./networkOptions"));
 
@@ -63,7 +63,7 @@ export default function NetworkSwitch({ activeNode }) {
   const windowSize = useWindowSize();
   const nodesHeight = useSelector(chainOrScanHeightSelector);
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   useEffect(() => {
     if (windowSize.width && windowSize.width <= 768) {

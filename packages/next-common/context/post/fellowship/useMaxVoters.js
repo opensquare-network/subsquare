@@ -12,7 +12,7 @@ import {
 } from "../../../store/reducers/fellowship/maxVoters";
 import { useContextApi } from "next-common/context/api";
 
-function getFellowshipMinRankOfClass(trackId) {
+export function getFellowshipMinRankOfClass(trackId) {
   if (trackId <= 9) {
     return trackId;
   } else if (trackId >= 11 && trackId <= 16) {
@@ -20,11 +20,11 @@ function getFellowshipMinRankOfClass(trackId) {
   } else if (trackId >= 21 && trackId <= 26) {
     return trackId - 18;
   } else {
-    return 6; // max rank
+    return Number.MAX_VALUE; // max rank
   }
 }
 
-function getAmbassadorMinRankOfClass(trackId) {
+export function getAmbassadorMinRankOfClass(trackId) {
   return trackId;
 }
 

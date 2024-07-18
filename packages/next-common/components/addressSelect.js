@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { useState, useRef } from "react";
-import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
@@ -14,6 +12,7 @@ import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
 import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { useClickAway } from "react-use";
 
 const Wrapper = Relative;
 
@@ -174,7 +173,7 @@ export default function AddressSelect({
   const [show, setShow] = useState(false);
   const ref = useRef();
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   return (
     <Wrapper ref={ref}>

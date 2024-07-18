@@ -13,6 +13,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function FellowshipPage({
   posts,
@@ -27,25 +28,27 @@ export default function FellowshipPage({
   );
 
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={title}
-      description="All active and history referenda in various tracks."
-      summary={<Gov2Summary summary={fellowshipSummary} />}
-    >
-      <PostList
-        title="List"
-        titleCount={posts.total}
-        titleExtra={<NewFellowshipProposalButton />}
-        category={businessCategory.fellowship}
-        items={items}
-        pagination={{
-          page: posts.page,
-          pageSize: posts.pageSize,
-          total: posts.total,
-        }}
-      />
-    </ListLayout>
+    <CollectivesProvider>
+      <ListLayout
+        seoInfo={seoInfo}
+        title={title}
+        description="All active and history referenda in various tracks."
+        summary={<Gov2Summary summary={fellowshipSummary} />}
+      >
+        <PostList
+          title="List"
+          titleCount={posts.total}
+          titleExtra={<NewFellowshipProposalButton />}
+          category={businessCategory.fellowship}
+          items={items}
+          pagination={{
+            page: posts.page,
+            pageSize: posts.pageSize,
+            total: posts.total,
+          }}
+        />
+      </ListLayout>
+    </CollectivesProvider>
   );
 }
 

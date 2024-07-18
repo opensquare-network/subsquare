@@ -1,7 +1,7 @@
-import QuickStartButton from "next-common/components/summary/newProposalButton/templates/button";
 import React, { useState } from "react";
 import { NewRemarkReferendumInnerPopup } from "../../newProposalQuickStart/createSystemRemarkProposalPopup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import { ChoiceButton } from "../common";
 
 const NewRemarkTemplateContext = React.createContext();
 
@@ -14,8 +14,9 @@ export default function NewRemarkTemplateProvider({ children }) {
   }
 
   const button = (
-    <QuickStartButton
-      title="Remark"
+    <ChoiceButton
+      name="Remark"
+      description="Creating a remark proposal"
       onClick={() => setShowNewRemarkPopup(true)}
     />
   );
