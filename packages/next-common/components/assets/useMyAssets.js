@@ -29,7 +29,9 @@ function useSubscribeMultiAssetAccounts(multiAccountKey) {
       .then((result) => (unsubFunc = result));
 
     return () => {
-      unsubFunc();
+      if (unsubFunc) {
+        unsubFunc();
+      }
     };
   }, [api, multiAccountKey]);
 
@@ -56,7 +58,9 @@ function useSubscribeNativeBalance(address) {
       .then((result) => (unsubNativeBalance = result));
 
     return () => {
-      unsubNativeBalance();
+      if (unsubNativeBalance) {
+        unsubNativeBalance();
+      }
     };
   }, [api, address]);
 
