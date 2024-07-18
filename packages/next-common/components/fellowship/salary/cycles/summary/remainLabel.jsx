@@ -7,13 +7,12 @@ export default function RemainLabel({ percentage, label, remain, text }) {
       <CountDown
         numerator={percentage}
         denominator={100}
-        tooltipContent={!!remain && <Remaining blocks={remain} />}
+        tooltipContent={<Remaining blocks={remain} percentage={percentage} />}
         backgroundColor="var(--theme100)"
         foregroundColor="var(--theme500)"
       />
       <span className="ml-2">
-        <span className="text-textTertiary">{label}</span>
-        <span>{text}</span>
+        <span className="text-textTertiary">{label}</span> <span>{text}</span>
       </span>
     </div>
   );
