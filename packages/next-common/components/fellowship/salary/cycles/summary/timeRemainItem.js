@@ -34,13 +34,13 @@ export default function SalaryStatsTimeRemainItem() {
           percentage={registrationPeriodData.gonePercentage}
           label={"Registration"}
           remain={registrationPeriodData.remainBlocks}
-          time={registrationPeriodData.totalPeriodTime.split(" ")}
+          text={registrationPeriodData.totalPeriodTime}
         />
         <RemainLabel
           percentage={payoutPeriodData.gonePercentage}
           label={"Payout"}
           remain={payoutPeriodData.remainBlocks}
-          time={payoutPeriodData.totalPeriodTime.split(" ")}
+          text={payoutPeriodData.totalPeriodTime}
         />
       </div>
     </SummaryItem>
