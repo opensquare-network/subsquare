@@ -16,7 +16,7 @@ function normalizeVote(unwrapped) {
   return {
     isAye,
     votes,
-  }
+  };
 }
 
 function useMyVote() {
@@ -40,7 +40,7 @@ function useMyVote() {
           if (optionalStorage.isSome) {
             setVote(normalizeVote(optionalStorage.unwrap()));
           }
-        })
+        });
     }
 
     let unsub;
