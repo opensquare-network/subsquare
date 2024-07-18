@@ -31,7 +31,7 @@ export default function AllAssetsList({ seoInfo }) {
     assets?.length || 0,
     pageSize,
   );
-  const showAssets = useMemo(
+  const pagedAssets = useMemo(
     () => assets?.slice((page - 1) * pageSize, page * pageSize),
     [assets, page, pageSize],
   );
@@ -46,7 +46,7 @@ export default function AllAssetsList({ seoInfo }) {
       <div className="flex flex-col gap-[16px]">
         <Title assetsCount={assets?.length || 0} />
         <SecondaryCard>
-          <AssetsList assets={showAssets} />
+          <AssetsList assets={pagedAssets} />
           {pagination}
         </SecondaryCard>
       </div>
