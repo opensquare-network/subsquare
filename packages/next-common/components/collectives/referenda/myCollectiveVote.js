@@ -9,6 +9,7 @@ import { useOnchainData } from "next-common/context/post";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import { Aye, Nay } from "next-common/components/profile/votingHistory/common";
 import ValueDisplay from "next-common/components/valueDisplay";
+import WithAddress from "next-common/components/common/withAddress";
 
 function normalizeVote(unwrapped) {
   const isAye = unwrapped.isAye;
@@ -60,7 +61,7 @@ function useMyVote() {
   return vote;
 }
 
-export default function MyCollectiveVote() {
+export function MyVote() {
   const vote = useMyVote();
   if (!vote) {
     return null;
@@ -75,5 +76,13 @@ export default function MyCollectiveVote() {
         <ValueDisplay className="text-textPrimary" value={votes} />
       </div>
     </SecondaryCardDetail>
+  );
+}
+
+export default function MyCollectiveVote() {
+  return (
+    <WithAddress>
+      <MyVote />
+    </WithAddress>
   );
 }

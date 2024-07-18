@@ -22,7 +22,6 @@ import {
 import { useTrack } from "next-common/context/post/gov2/track";
 import Tooltip from "next-common/components/tooltip";
 import MyCollectiveVote from "next-common/components/collectives/referenda/myCollectiveVote";
-import WithAddress from "next-common/components/common/withAddress";
 
 function useMinRank() {
   const { id: trackId } = useTrack();
@@ -82,9 +81,7 @@ export default function FellowshipReferendumSideBar() {
     <RightBarWrapper>
       <Gov2Status />
       <FellowshipTally />
-      <WithAddress>
-        <MyCollectiveVote />
-      </WithAddress>
+      <MyCollectiveVote />
       {isVoting && !hideActionButtons && (
         <CollectiveVote onClick={() => setShowVote(true)} />
       )}
