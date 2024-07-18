@@ -10,6 +10,7 @@ import {
   SystemSignalDestroying,
 } from "@osn/icons/subsquare";
 import SignalIndicator from "next-common/components/icons/signalIndicator";
+import Tooltip from "next-common/components/tooltip";
 
 export const colAccounts = {
   name: "Accounts",
@@ -26,13 +27,15 @@ export const colStatus = {
   style: { textAlign: "right", width: "40px", minWidth: "40px" },
   render: (item) => (
     <div key="status" className="flex items-center">
-      {item.status === "Live" ? (
-        <SignalIndicator className="w-[16px] h-[16px]" active={true} />
-      ) : item.status === "Frozen" ? (
-        <SystemSignalFrozen width={16} height={16} />
-      ) : item.status === "Destroying" ? (
-        <SystemSignalDestroying width={16} height={16} />
-      ) : null}
+      <Tooltip content={item.status}>
+        {item.status === "Live" ? (
+          <SignalIndicator className="w-[16px] h-[16px]" active={true} />
+        ) : item.status === "Frozen" ? (
+          <SystemSignalFrozen width={16} height={16} />
+        ) : item.status === "Destroying" ? (
+          <SystemSignalDestroying width={16} height={16} />
+        ) : null}
+      </Tooltip>
     </div>
   ),
 };
