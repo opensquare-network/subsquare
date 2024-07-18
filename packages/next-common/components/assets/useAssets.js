@@ -34,7 +34,7 @@ export default function useAssets() {
       if (bPos >= 0) {
         return 1;
       }
-      return 0;
+      return a.assetId - b.assetId;
     });
 
     return assets;
