@@ -54,11 +54,11 @@ export function Title({ assetsCount }) {
   );
 }
 
-export default function WalletAssetList({ seoInfo }) {
+export default function WalletAssetList() {
   const assets = useMyAssets();
 
   return (
-    <ListLayout seoInfo={seoInfo} headContent={<HeadContent />}>
+    <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
       <div className="flex flex-col gap-[16px]">
         <Title assetsCount={assets && assets.length} />
         <SecondaryCard>

@@ -23,7 +23,7 @@ function Summary({ assetsCount }) {
   );
 }
 
-export default function AllAssetsList({ seoInfo }) {
+export default function AllAssetsList() {
   const chainSettings = useChainSettings();
   const assets = useAssets();
   const pageSize = 25;
@@ -39,7 +39,7 @@ export default function AllAssetsList({ seoInfo }) {
   return (
     <ListLayout
       title={chainSettings.name}
-      seoInfo={seoInfo}
+      seoInfo={{ title: "" }}
       description={chainSettings.description}
       summary={<Summary assetsCount={assets?.length} />}
     >

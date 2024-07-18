@@ -1,10 +1,18 @@
 import { SystemWalletDisconnected } from "@osn/icons/subsquare";
 import BaseLayout from "next-common/components/layout/baseLayout";
+import { useChainSettings } from "next-common/context/chain";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
+import usePageTitle from "next-common/hooks/usePageTitle";
 import PrimaryButton from "next-common/lib/button/primary";
 
-export default function NoWalletConnected({ seoInfo }) {
+export default function NoWalletConnected() {
   const { openLoginPopup } = useLoginPopup();
+  const chainSettings = useChainSettings();
+  const seoTitle = usePageTitle();
+  const seoInfo = {
+    title: "Subsquare | " + seoTitle,
+    desc: chainSettings.description,
+  };
 
   return (
     <BaseLayout seoInfo={seoInfo}>
