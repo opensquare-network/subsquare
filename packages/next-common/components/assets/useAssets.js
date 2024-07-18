@@ -1,145 +1,42 @@
-import BigNumber from "bignumber.js";
-import { useContextApi } from "next-common/context/api";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useEffect, useMemo, useState } from "react";
-import { useKnownAssetHubAssets } from "next-common/components/assets/known";
-
-const PolkadotAssetHubNativeToken = {
-  symbol: "DOT",
-  name: "Polkadot",
-  decimals: 10,
-  type: "native",
-};
-
-function useAllAssetMetadata() {
-  const api = useContextApi();
-  const [allMetadata, setAllMetadata] = useState();
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    api.query.assets.metadata.entries().then((data) => {
-      const result = data.map((item) => {
-        const [
-          {
-            args: [id],
-          },
-          metadata,
-        ] = item;
-        const assetId = id.toNumber();
-        return {
-          assetId,
-          symbol: metadata.symbol.toHuman(),
-          name: metadata.name.toHuman(),
-          decimals: metadata.decimals.toNumber(),
-          isFrozen: metadata.isFrozen.toJSON(),
-        };
-      });
-      setAllMetadata(result);
-    });
-  }, [api]);
-
-  return allMetadata;
-}
-
-function useSubscribeMultiAssetAccounts(multiAccountKey) {
-  const api = useContextApi();
-  const [multiAccounts, setMultiAccounts] = useState();
-
-  useEffect(() => {
-    if (!api || !multiAccountKey) {
-      return;
-    }
-
-    let unsubFunc;
-    api.query.assets.account
-      .multi(multiAccountKey, (data) => {
-        setMultiAccounts(data);
-      })
-      .then((result) => (unsubFunc = result));
-
-    return () => {
-      unsubFunc();
-    };
-  }, [api, multiAccountKey]);
-
-  return multiAccounts;
-}
-
-function useSubscribeNativeBalance(address) {
-  const api = useContextApi();
-  const [balanceObj, setBalanceObj] = useState();
-
-  useEffect(() => {
-    if (!api || !address) {
-      return;
-    }
-
-    let unsubNativeBalance;
-    api.query.system
-      .account(address, ({ data }) => {
-        const { free, reserved, frozen } = data;
-        const balance = (free.toBigInt() + reserved.toBigInt()).toString();
-        const transferrable = (free.toBigInt() - frozen.toBigInt()).toString();
-        setBalanceObj({ balance, transferrable });
-      })
-      .then((result) => (unsubNativeBalance = result));
-
-    return () => {
-      unsubNativeBalance();
-    };
-  }, [api, address]);
-
-  return balanceObj;
-}
+import { useMemo } from "react";
+import useQueryAllAssetDetail from "next-common/hooks/assets/useQueryAllAssetDetail";
+import { useAllAssetMetadata } from "./context/assetMetadata";
+import { useKnownAssetHubAssets } from "./known";
 
 export default function useAssets() {
-  const address = useRealAddress();
-  const allMetadata = useAllAssetMetadata();
-  const multiAccountKey = useMemo(
-    () => allMetadata?.map((item) => [item.assetId, address]),
-    [allMetadata, address],
-  );
-  const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey);
-  const nativeBalanceObj = useSubscribeNativeBalance(address);
+  const metadata = useAllAssetMetadata();
+  const details = useQueryAllAssetDetail();
   const knownAssetDefs = useKnownAssetHubAssets();
 
   return useMemo(() => {
-    if (!allMetadata || !multiAccounts || !nativeBalanceObj) {
-      return null;
+    if (!metadata || !details) {
+      return;
     }
 
-    const assets = (allMetadata || []).reduce((result, item, index) => {
-      const account = multiAccounts[index];
-      if (account.isNone) {
-        return result;
+    const assets = metadata.map((item) => {
+      const detail = details.find((d) => d.assetId === item.assetId);
+      return {
+        ...item,
+        ...detail,
+      };
+    });
+
+    // Sort known asset to the front
+    assets.sort((a, b) => {
+      const aPos = knownAssetDefs.findIndex((def) => def.assetId === a.assetId);
+      const bPos = knownAssetDefs.findIndex((def) => def.assetId === b.assetId);
+      if (aPos >= 0 && bPos >= 0) {
+        return aPos - bPos;
       }
-
-      const unwrapped = account.unwrap();
-      const balance = unwrapped.balance.toString();
-      const transferrable = unwrapped.status.isFrozen ? 0 : balance;
-      return [...result, { ...item, balance, transferrable }];
-    }, []);
-
-    const knownAssets = knownAssetDefs.reduce((result, def) => {
-      const find = assets.find(asset => asset.assetId === def.assetId);
-      if (find) {
-        return [...result, find];
-      } else {
-        return result;
+      if (aPos >= 0) {
+        return -1;
       }
-    }, []);
-    const knownAssetIds = knownAssetDefs.map(def => def.assetId);
-    const otherAssets = assets.filter(asset => !knownAssetIds.includes(asset.assetId));
+      if (bPos >= 0) {
+        return 1;
+      }
+      return 0;
+    });
 
-    const tokens = [
-      { ...PolkadotAssetHubNativeToken, ...nativeBalanceObj },
-      ...knownAssets,
-      ...otherAssets,
-    ];
-
-    return tokens.filter((item) => !new BigNumber(item.balance || 0).isZero());
-  }, [allMetadata, multiAccounts, nativeBalanceObj, knownAssetDefs]);
+    return assets;
+  }, [metadata, details, knownAssetDefs]);
 }
