@@ -21,7 +21,10 @@ import {
 } from "next-common/context/post/fellowship/useMaxVoters";
 import { useTrack } from "next-common/context/post/gov2/track";
 import Tooltip from "next-common/components/tooltip";
-import MyCollectiveVote from "next-common/components/collectives/referenda/myCollectiveVote";
+import dynamic from "next/dynamic";
+const MyCollectiveVote = dynamic(() => import("next-common/components/collectives/referenda/myCollectiveVote"), {
+  ssr: false,
+})
 
 function useMinRank() {
   const { id: trackId } = useTrack();
