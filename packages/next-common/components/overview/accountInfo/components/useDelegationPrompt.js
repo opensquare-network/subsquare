@@ -1,3 +1,4 @@
+import { PromptTypes } from "next-common/components/scrollPrompt";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { CACHE_KEY } from "next-common/utils/constants";
@@ -33,6 +34,7 @@ export default function useDelegationPrompt() {
           </Link>
         </div>
       ),
+      type: PromptTypes.INFO,
       close: () => setVisible(false, { expires: 15 }),
     };
   }, [setVisible, hasDelegation, visible]);
