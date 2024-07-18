@@ -10,27 +10,57 @@ import LoadableItem from "next-common/components/overview/accountInfo/components
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 
-export default function AccountBalances() {
-  const accountInfo = useSelector(accountInfoSelector);
+export function TotalBalance() {
   const isLoading = useSelector(isLoadingAccountInfoSelector);
   const totalBalance = useSelector(accountTotalBalanceSelector);
+
+  return (
+    <SummaryItem title="Total Balance">
+      <LoadableItem value={totalBalance} isLoading={isLoading} />
+    </SummaryItem>
+  );
+}
+
+export function Transferrable() {
+  const isLoading = useSelector(isLoadingAccountInfoSelector);
   const transferrable = useSelector(accountTransferrableBalanceSelector);
+
+  return (
+    <SummaryItem title="Transferrable">
+      <LoadableItem value={transferrable} isLoading={isLoading} />
+    </SummaryItem>
+  );
+}
+
+export function Reserved() {
+  const isLoading = useSelector(isLoadingAccountInfoSelector);
+  const accountInfo = useSelector(accountInfoSelector);
+
+  return (
+    <SummaryItem title="Reserved">
+      <LoadableItem value={accountInfo?.reserved} isLoading={isLoading} />
+    </SummaryItem>
+  );
+}
+
+export function Locked() {
+  const isLoading = useSelector(isLoadingAccountInfoSelector);
   const locked = useSelector(accountLockedBalanceSelector);
 
   return (
+    <SummaryItem title="Locked">
+      <LoadableItem value={locked} isLoading={isLoading} />
+    </SummaryItem>
+  );
+}
+
+export default function AccountBalances() {
+  return (
     <SummaryLayout>
-      <SummaryItem title="Total Balance">
-        <LoadableItem value={totalBalance} isLoading={isLoading} />
-      </SummaryItem>
-      <SummaryItem title="Transferrable">
-        <LoadableItem value={transferrable} isLoading={isLoading} />
-      </SummaryItem>
-      <SummaryItem title="Reserved">
-        <LoadableItem value={accountInfo?.reserved} isLoading={isLoading} />
-      </SummaryItem>
-      <SummaryItem title="Locked">
-        <LoadableItem value={locked} isLoading={isLoading} />
-      </SummaryItem>
+      <TotalBalance />
+      <Transferrable />
+      <Reserved />
+      <Locked />
     </SummaryLayout>
   );
 }

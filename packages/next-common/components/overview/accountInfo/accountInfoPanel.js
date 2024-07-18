@@ -14,7 +14,7 @@ import AccountBalances from "next-common/components/overview/accountInfo/compone
 import useSubKintsugiAccount from "next-common/hooks/account/useSubKintsugiAccount";
 import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import { isKintsugiChain } from "next-common/utils/chain";
+import { isCollectivesChain, isKintsugiChain } from "next-common/utils/chain";
 import Link from "next/link";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
@@ -156,9 +156,15 @@ function KintAssetInfo() {
   return <AccountBalances />;
 }
 
+function CollectivesAssetInfo() {
+  useSubscribeAccount();
+  return <AccountBalances />;
+}
+
 export default function AccountInfoPanel({ hideManageAccountLink }) {
   const chain = useChain();
   const isKintsugi = isKintsugiChain(chain);
+  const isCollectives = isCollectivesChain(chain);
   const link = useAccountUrl();
   const delegationPrompt = useDelegationPrompt();
   const setAvatarPrompt = useSetAvatarPrompt();
@@ -171,13 +177,20 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
     );
   }, [delegationPrompt, setAvatarPrompt]);
 
+  let assetInfo = <AssetInfo />;
+  if (isKintsugi) {
+    assetInfo = <KintAssetInfo />;
+  } else if (isCollectives) {
+    assetInfo = <CollectivesAssetInfo />;
+  }
+
   return (
     <NeutralPanel className="p-6 space-y-4">
       <ProxyTip />
       <AccountHead />
       <Divider />
 
-      {isKintsugi ? <KintAssetInfo /> : <AssetInfo />}
+      {assetInfo}
 
       {!hideManageAccountLink && (
         <div className="flex items-end justify-end !mt-2">
