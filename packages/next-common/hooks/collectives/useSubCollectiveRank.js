@@ -1,39 +1,16 @@
-import { useContextApi } from "next-common/context/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 export default function useSubCollectiveRank(address, pallet = "fellowshipCollective") {
-  const api = useContextApi();
   const [rank, setRank] = useState(undefined);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!api) {
-      return;
+  const { loading } = useSubStorage(pallet, "members", [address], (rawOptional) => {
+    if (rawOptional.isSome) {
+      const unwrapped = rawOptional.unwrap();
+      setRank(unwrapped.rank.toNumber());
+    } else {
+      setRank(null);
     }
-
-    if (!address || !api?.query[pallet]?.members) {
-      setLoading(false);
-      return;
-    }
-
-    let unsub;
-    api.query[pallet].members(address, (rawOptional) => {
-      if (rawOptional.isSome) {
-        const unwrapped = rawOptional.unwrap();
-        setRank(unwrapped.rank.toNumber());
-      } else {
-        setRank(null);
-      }
-    })
-      .then((result) => (unsub = result))
-      .finally(() => setLoading(false));
-
-    return () => {
-      if (unsub) {
-        unsub();
-      }
-    };
-  }, [address, api]);
+  });
 
   return { rank, loading };
 }

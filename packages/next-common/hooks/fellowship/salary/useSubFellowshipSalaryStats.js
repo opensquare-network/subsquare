@@ -1,33 +1,17 @@
-import { useEffect } from "react";
-import { useContextApi } from "next-common/context/api";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { setFellowshipSalaryStatus } from "next-common/store/reducers/fellowship/salary";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 export default function useSubFellowshipSalaryStats() {
-  const api = useContextApi();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!api || !api.query?.fellowshipSalary?.status) {
-      return;
+  const callback = useCallback((rawOptional) => {
+    if (rawOptional.isSome) {
+      const json = rawOptional.unwrap().toJSON();
+      dispatch(setFellowshipSalaryStatus(json));
     }
+  }, [dispatch]);
 
-    let unsub;
-    api.query.fellowshipSalary
-      .status((rawOptional) => {
-        if (rawOptional.isNone) {
-          return;
-        }
-
-        const json = rawOptional.unwrap().toJSON();
-        dispatch(setFellowshipSalaryStatus(json));
-      })
-      .then((result) => (unsub = result));
-
-    return () => {
-      if (unsub) {
-        unsub();
-      }
-    };
-  }, [api]);
+  useSubStorage("fellowshipSalary", "status", [], callback);
 }

@@ -4,6 +4,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import { useAllAssetMetadata } from "./context/assetMetadata";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 const PolkadotAssetHubNativeToken = {
   symbol: "DOT",
@@ -39,30 +40,14 @@ function useSubscribeMultiAssetAccounts(multiAccountKey) {
 }
 
 function useSubscribeNativeBalance(address) {
-  const api = useContextApi();
   const [balanceObj, setBalanceObj] = useState();
 
-  useEffect(() => {
-    if (!api || !address) {
-      return;
-    }
-
-    let unsubNativeBalance;
-    api.query.system
-      .account(address, ({ data }) => {
-        const { free, reserved, frozen } = data;
-        const balance = (free.toBigInt() + reserved.toBigInt()).toString();
-        const transferrable = (free.toBigInt() - frozen.toBigInt()).toString();
-        setBalanceObj({ balance, transferrable });
-      })
-      .then((result) => (unsubNativeBalance = result));
-
-    return () => {
-      if (unsubNativeBalance) {
-        unsubNativeBalance();
-      }
-    };
-  }, [api, address]);
+  useSubStorage("system", "account", [address], ({ data }) => {
+    const { free, reserved, frozen } = data;
+    const balance = (free.toBigInt() + reserved.toBigInt()).toString();
+    const transferrable = (free.toBigInt() - frozen.toBigInt()).toString();
+    setBalanceObj({ balance, transferrable });
+  });
 
   return balanceObj;
 }
