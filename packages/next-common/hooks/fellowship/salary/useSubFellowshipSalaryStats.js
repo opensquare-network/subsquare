@@ -11,7 +11,7 @@ export default function useSubFellowshipSalaryStats() {
       const json = rawOptional.unwrap().toJSON();
       dispatch(setFellowshipSalaryStatus(json));
     }
-  }, [dispatch])
+  }, [dispatch]);
 
   useSubStorage("fellowshipSalary", "status", [], callback);
 }
