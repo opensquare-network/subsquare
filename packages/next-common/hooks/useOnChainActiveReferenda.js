@@ -17,7 +17,12 @@ async function extractActiveReferenda(api, entries) {
         }
         const referendumIndex = id.toNumber();
         const referendum = unwrappedData.asOngoing;
-        const call = await extractReferendumCall(api, referendum);
+        let call;
+        try {
+          call = await extractReferendumCall(api, referendum);
+        } catch (e) {
+          call = null;
+        }
 
         return { referendumIndex, referendum, call };
       },
