@@ -16,7 +16,7 @@ export default function getApiInSeconds(chain, endpoint) {
   return Promise.race([getApi(chain, endpoint), timeoutInSeconds(10)]);
 }
 
-export async function getBlockApi(api, blockHeight) {
+export async function getBlockApiByHeight(api, blockHeight) {
   const instance = await api.rpc.chain
     .getBlockHash(blockHeight)
     .then((blockHash) => api.at(blockHash));
