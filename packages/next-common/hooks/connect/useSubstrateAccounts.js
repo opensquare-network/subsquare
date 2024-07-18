@@ -24,33 +24,6 @@ export function useSubstrateAccounts({
 
   const [accounts, setAccounts] = useState([]);
 
-  const loadInjectedAccounts = useCallback(
-    async (targetWallet) => {
-      const { web3Enable, web3Accounts } = await import(
-        "@polkadot/extension-dapp"
-      );
-
-      try {
-        await web3Enable("subsquare");
-        const injectedAccounts = reject(await web3Accounts(), {
-          type: ChainTypes.ETHEREUM,
-        });
-
-        if (isMounted()) {
-          setAccounts(
-            normalizedSubstrateAccounts(
-              injectedAccounts,
-              targetWallet?.extensionName,
-            ),
-          );
-        }
-      } catch (e) {
-        dispatch(newErrorToast(e.message));
-      }
-    },
-    [isMounted, dispatch],
-  );
-
   const loadPolkadotAccounts = useCallback(
     async (targetWallet) => {
       setAccounts([]);
@@ -115,14 +88,13 @@ export function useSubstrateAccounts({
           break;
         }
         default: {
-          await loadInjectedAccounts(wallet);
           break;
         }
       }
 
       setLoading(false);
     },
-    [loadInjectedAccounts, loadPolkadotAccounts, loadSignetVault],
+    [loadPolkadotAccounts, loadSignetVault],
   );
 
   useEffect(() => {
