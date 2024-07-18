@@ -13,36 +13,28 @@ export function useSubstrateInjectedAccounts({ defaultLoading = true } = {}) {
 
   const [accounts, setAccounts] = useState([]);
 
-  const loadInjectedAccounts = useCallback(
-    async (targetWallet) => {
-      setLoading(true);
+  const loadInjectedAccounts = useCallback(async () => {
+    setLoading(true);
 
-      const { web3Enable, web3Accounts } = await import(
-        "@polkadot/extension-dapp"
-      );
+    const { web3Enable, web3Accounts } = await import(
+      "@polkadot/extension-dapp"
+    );
 
-      try {
-        await web3Enable("subsquare");
-        const injectedAccounts = reject(await web3Accounts(), {
-          type: ChainTypes.ETHEREUM,
-        });
+    try {
+      await web3Enable("subsquare");
+      const injectedAccounts = reject(await web3Accounts(), {
+        type: ChainTypes.ETHEREUM,
+      });
 
-        if (isMounted()) {
-          setAccounts(
-            normalizedSubstrateAccounts(
-              injectedAccounts,
-              targetWallet?.extensionName,
-            ),
-          );
-        }
-      } catch (e) {
-        dispatch(newErrorToast(e.message));
-      } finally {
-        setLoading(false);
+      if (isMounted()) {
+        setAccounts(normalizedSubstrateAccounts(injectedAccounts));
       }
-    },
-    [isMounted, dispatch],
-  );
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+    } finally {
+      setLoading(false);
+    }
+  }, [isMounted, dispatch]);
 
   useEffect(() => {
     if (isMounted()) {
