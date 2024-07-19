@@ -25,6 +25,10 @@ import useSetAvatarPrompt from "./components/useSetAvatarPrompt";
 import { isEmpty } from "lodash-es";
 import { useEffect, useState } from "react";
 import CollectivesAccountInfo from "./components/collectiveAccountInfo";
+import useFellowshipDemotionExpiredPrompt from "./components/useFellowshipDemotionExpiredPrompt";
+import useFellowshipPromotablePrompt from "./components/useFellowshipPromotablePrompt";
+import useAmbassadorDemotionExpiredPrompt from "./components/useAmbassadorDemotionExpiredPrompt";
+import useAmbassadorPromotablePrompt from "./components/useAmbassadorPromotablePrompt";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -169,14 +173,32 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
   const link = useAccountUrl();
   const delegationPrompt = useDelegationPrompt();
   const setAvatarPrompt = useSetAvatarPrompt();
+  const fellowshipDemotionExpiredPrompt = useFellowshipDemotionExpiredPrompt();
+  const fellowshipPromotablePrompt = useFellowshipPromotablePrompt();
+  const ambassadorDemotionExpiredPrompt = useAmbassadorDemotionExpiredPrompt();
+  const ambassadorPromotablePrompt = useAmbassadorPromotablePrompt();
 
   const [prompts, setPrompts] = useState([]);
 
   useEffect(() => {
     setPrompts(
-      [delegationPrompt, setAvatarPrompt].filter((item) => !isEmpty(item)),
+      [
+        ambassadorDemotionExpiredPrompt,
+        ambassadorPromotablePrompt,
+        fellowshipDemotionExpiredPrompt,
+        fellowshipPromotablePrompt,
+        delegationPrompt,
+        setAvatarPrompt,
+      ].filter((item) => !isEmpty(item)),
     );
-  }, [delegationPrompt, setAvatarPrompt]);
+  }, [
+    delegationPrompt,
+    setAvatarPrompt,
+    fellowshipDemotionExpiredPrompt,
+    fellowshipPromotablePrompt,
+    ambassadorDemotionExpiredPrompt,
+    ambassadorPromotablePrompt,
+  ]);
 
   let assetInfo = <AssetInfo />;
   if (isKintsugi) {

@@ -23,6 +23,7 @@ import profile from "./profile";
 import editorReducer from "./editorSlice";
 import connectPopupReducer from "./connectPopupSlice";
 import avatarReducer from "./avatarSlice";
+import userPromptsSlice from "./userPromptsSlice";
 
 export default combineReducers({
   toast: toastReducer,
@@ -48,4 +49,5 @@ export default combineReducers({
   editor: editorReducer,
   connectPopup: connectPopupReducer,
   avatar: avatarReducer,
+  userPrompts: userPromptsSlice,
 });

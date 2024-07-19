@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { isNil } from "lodash-es";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { TotalBalance, Transferrable } from "./accountBalances";
@@ -11,11 +11,19 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import CollectivesProvider, {
+  useCollectivesContext,
   useCoreFellowshipPallet,
   useRankedCollectivePallet,
 } from "next-common/context/collectives/collectives";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
 import { cn } from "next-common/utils";
+import { useDispatch } from "react-redux";
+import {
+  setAmbassadorDemotionExpired,
+  setAmbassadorPromotable,
+  setFellowshipDemotionExpired,
+  setFellowshipPromotable,
+} from "next-common/store/reducers/userPromptsSlice";
 
 const RankLevelNames = [
   "Candidates",
@@ -106,8 +114,19 @@ function Rank({ rank }) {
 }
 
 function Demotion({ lastProof, rank, params }) {
+  const dispatch = useDispatch();
+  const { section } = useCollectivesContext();
   const { percentageValue, remainingBlocks, demotionPeriod } =
     useDemotionPeriod({ rank, lastProof, params });
+
+  useEffect(() => {
+    const isDemotionExpired = percentageValue === 100;
+    if (section === "fellowship") {
+      dispatch(setFellowshipDemotionExpired(isDemotionExpired));
+    } else if (section === "ambassador") {
+      dispatch(setAmbassadorDemotionExpired(isDemotionExpired));
+    }
+  }, [dispatch, section, percentageValue]);
 
   const remaining = useRemainingTime(remainingBlocks);
 
@@ -136,8 +155,19 @@ function Demotion({ lastProof, rank, params }) {
 }
 
 function Promotion({ lastPromotion, rank, params }) {
+  const dispatch = useDispatch();
+  const { section } = useCollectivesContext();
   const { percentageValue, remainingBlocks, promotionPeriod } =
     usePromotionPeriod({ rank, lastPromotion, params });
+
+  useEffect(() => {
+    const isPromotable = percentageValue === 100;
+    if (section === "fellowship") {
+      dispatch(setFellowshipPromotable(isPromotable));
+    } else if (section === "ambassador") {
+      dispatch(setAmbassadorPromotable(isPromotable));
+    }
+  }, [dispatch, section, percentageValue]);
 
   const remaining = useRemainingTime(remainingBlocks);
 

@@ -108,6 +108,10 @@ export const CACHE_KEY = {
   connectedAccount: "connected-account",
   delegationPromptVisible: "delegation-prompt-visible",
   setAvatarPromptVisible: "set-avatar-prompt-visible",
+  fellowshipDemotionExpiredVisible: "fellowship-demotion-expired-visible",
+  fellowshipPromotableVisible: "fellowship-promotable-visible",
+  ambassadorDemotionExpiredVisible: "ambassador-demotion-expired-visible",
+  ambassadorPromotableVisible: "ambassador-promotable-visible",
 };
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
