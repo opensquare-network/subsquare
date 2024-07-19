@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { TotalBalance, Transferrable } from "./accountBalances";
 import SummaryItem from "next-common/components/summary/layout/item";
@@ -85,7 +86,7 @@ function Demotion({ lastProof, rank, params }) {
 
   const remaining = useRemainingTime(remainingBlocks);
 
-  if (!demotionPeriod) {
+  if (isNil(demotionPeriod)) {
     return null;
   }
 
@@ -105,7 +106,7 @@ function Promotion({ lastPromotion, rank, params }) {
 
   const remaining = useRemainingTime(remainingBlocks);
 
-  if (!promotionPeriod) {
+  if (isNil(promotionPeriod)) {
     return null;
   }
 
