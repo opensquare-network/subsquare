@@ -15,6 +15,7 @@ export default function NewRemarkTemplateProvider({ children }) {
 
   const button = (
     <ChoiceButton
+      key="remark"
       name="Remark"
       description="Creating a remark proposal"
       onClick={() => setShowNewRemarkPopup(true)}
