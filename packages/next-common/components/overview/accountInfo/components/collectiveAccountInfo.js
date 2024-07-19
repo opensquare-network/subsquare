@@ -14,6 +14,8 @@ import CollectivesProvider, {
   useCoreFellowshipPallet,
   useRankedCollectivePallet,
 } from "next-common/context/collectives/collectives";
+import { getRankColor } from "next-common/utils/fellowship/getRankColor";
+import { cn } from "next-common/utils";
 
 const RankLevelNames = [
   "Candidates",
@@ -79,9 +81,21 @@ function useMemberData() {
 }
 
 function Rank({ rank }) {
+  const textColor = getRankColor(rank);
+  const bgColor = getRankColor(rank, 0.15);
+
   return (
     <div className="flex items-center gap-[8px] ">
-      <div className="w-[20px] py-[2px] bg-[#B276EA26] rounded-[4px] text-[#B276EA] text12Bold flex items-center justify-center">
+      <div
+        className={cn(
+          "flex items-center justify-center",
+          "w-[20px] py-[2px] rounded-[4px] text12Bold",
+        )}
+        style={{
+          backgroundColor: bgColor,
+          color: textColor,
+        }}
+      >
         {rank}
       </div>
       <span className="text-textPrimary text16Bold">
