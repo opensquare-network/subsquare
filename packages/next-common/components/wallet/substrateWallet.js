@@ -3,7 +3,7 @@ import WalletOption from "./walletOption";
 import { useInjectedWeb3Extension } from "./useInjectedWeb3Extension";
 import { useMountedState } from "react-use";
 
-export default function PolkadotWallet({
+export default function SubstrateWallet({
   wallet,
   onClick,
   selected = false,
