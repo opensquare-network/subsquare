@@ -5,6 +5,7 @@ import { noop } from "lodash-es";
 import { SignetWallet } from "./signetWallet";
 import WalletOption from "./walletOption";
 import PolkagateSnapWallet from "./polkagateSnapWallet";
+import MimirWallet from "./mimirWallet";
 
 export default function SelectWallet({
   wallets,
@@ -89,6 +90,20 @@ export default function SelectWallet({
               key={index}
               wallet={wallet}
               onClick={async () => {
+                setSelectedWallet(wallet);
+                handleClick(wallet);
+              }}
+              selected={selected}
+            />
+          );
+        }
+
+        if (wallet.extensionName === WalletTypes.MIMIR) {
+          return (
+            <MimirWallet
+              key={index}
+              wallet={wallet}
+              onClick={() => {
                 setSelectedWallet(wallet);
                 handleClick(wallet);
               }}
