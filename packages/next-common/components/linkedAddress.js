@@ -22,7 +22,6 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { NeutralPanel } from "./styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import { getSingleSigWallets } from "next-common/utils/consts/connect";
 import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
 import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
 import EVMEntryWalletOption from "./wallet/evmEntryWalletOption";
@@ -33,6 +32,7 @@ import { useAccount, useConnect } from "wagmi";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import useInjectedWeb3 from "../hooks/connect/useInjectedWeb3";
 import { filter, uniqBy } from "lodash-es";
+import { useSubstrateWallets } from "next-common/hooks/connect/useSubstrateWallets";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -168,6 +168,7 @@ export default function LinkedAddress() {
     reset();
   }, [showSelectWallet]);
 
+  const { singleSigWallets } = useSubstrateWallets();
   const { accounts: substrateAccounts } = useSubstrateAccounts({
     wallet: selectedWallet,
   });
@@ -327,7 +328,7 @@ export default function LinkedAddress() {
 
           {view === CONNECT_POPUP_VIEWS.SUBSTRATE && (
             <SelectWallet
-              wallets={getSingleSigWallets()}
+              wallets={singleSigWallets}
               selectedWallet={selectedWallet}
               setSelectedWallet={setSelectedWallet}
               onSelect={() => {
