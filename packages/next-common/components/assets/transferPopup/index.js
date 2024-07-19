@@ -85,7 +85,6 @@ function PopupContent() {
       </div>
       <AddressComboField
         title="To"
-        defaultAddress=""
         extensionAccounts={extensionAccounts}
         setAddress={setTransferToAddress}
         placeholder="Please fill the address or select another one..."
