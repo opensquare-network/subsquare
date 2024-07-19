@@ -1,5 +1,5 @@
 import { merge } from "lodash-es";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createGlobalState, useMountedState } from "react-use";
 
 const useGlobalInjectedWeb3 = createGlobalState(null);
@@ -7,6 +7,7 @@ const useGlobalInjectedWeb3 = createGlobalState(null);
 export default function useInjectedWeb3() {
   const isMounted = useMountedState();
   const [injectedWeb3, _setInjectedWeb3] = useGlobalInjectedWeb3();
+  const [loading, setLoading] = useState(true);
 
   function setInjectedWeb3(value) {
     _setInjectedWeb3(merge(injectedWeb3, value));
@@ -14,6 +15,7 @@ export default function useInjectedWeb3() {
 
   useEffect(() => {
     function handleWeb3() {
+      setLoading(false);
       setInjectedWeb3(window.injectedWeb3);
     }
 
@@ -30,5 +32,5 @@ export default function useInjectedWeb3() {
     }
   }, [isMounted]);
 
-  return { injectedWeb3, setInjectedWeb3 };
+  return { loading, injectedWeb3, setInjectedWeb3 };
 }

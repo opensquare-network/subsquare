@@ -14,18 +14,27 @@ export function NovaWallet({
   const [installed, setInstalled] = useState(null);
   const isMounted = useMountedState();
   const Logo = wallet.logo;
-  const { injectedWeb3Extension } = useInjectedWeb3Extension(
-    WalletTypes.POLKADOT_JS,
-  );
+  const { injectedWeb3Extension, loading: loadingWeb3Extension } =
+    useInjectedWeb3Extension(WalletTypes.POLKADOT_JS);
 
   useEffect(() => {
+    // update if installed changes
+    if (loadingWeb3Extension) {
+      return;
+    }
+
     if (isMounted()) {
       const installed =
         !isNil(injectedWeb3Extension) &&
         window.walletExtension?.isNovaWallet === true;
       setInstalled(installed);
     }
-  }, [injectedWeb3Extension, wallet?.extensionName, isMounted]);
+  }, [
+    loadingWeb3Extension,
+    injectedWeb3Extension,
+    wallet?.extensionName,
+    isMounted,
+  ]);
 
   return (
     <WalletOption

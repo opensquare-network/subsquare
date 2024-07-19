@@ -1,4 +1,5 @@
 import { noop, reject } from "lodash-es";
+import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import { useGetInjectedWeb3ExtensionFn } from "next-common/components/wallet/useInjectedWeb3Extension";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignetAccounts } from "next-common/context/signet";
@@ -17,6 +18,7 @@ export function useSubstrateAccounts({
 } = {}) {
   const dispatch = useDispatch();
   const isMounted = useMountedState();
+  const { loading: loadingWeb3 } = useInjectedWeb3();
   const getInjectedWeb3Extension = useGetInjectedWeb3ExtensionFn();
   const { chainType } = useChainSettings();
   const signetAccounts = useSignetAccounts();
@@ -99,12 +101,14 @@ export function useSubstrateAccounts({
 
   useEffect(() => {
     if (isMounted()) {
-      loadWalletAccounts(wallet);
+      if (!loadingWeb3) {
+        loadWalletAccounts(wallet);
+      }
     }
-  }, [wallet, isMounted]);
+  }, [wallet, isMounted, loadingWeb3]);
 
   return {
     accounts,
-    loading,
+    loading: loadingWeb3 || loading,
   };
 }
