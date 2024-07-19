@@ -1,31 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
-export default function useSubscribe(apiFunc, params = []) {
+export default function useSubscribe(pallet, storage, params = []) {
   const [value, setValue] = useState();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!apiFunc) {
-      return;
-    }
-
-    let unsub = null;
-    apiFunc
-      .apply(null, [
-        ...params,
-        (data) => {
-          setValue(data);
-          setLoading(false);
-        },
-      ])
-      .then((result) => (unsub = result));
-
-    return () => {
-      if (unsub) {
-        unsub();
-      }
-    };
-  }, [apiFunc, params]);
-
+  const { loading } = useSubStorage(pallet, storage, params, (rawOptional) => {
+    setValue(rawOptional);
+  });
   return { value, loading };
 }

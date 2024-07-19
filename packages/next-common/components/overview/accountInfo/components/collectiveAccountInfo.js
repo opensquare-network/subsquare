@@ -1,7 +1,6 @@
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { TotalBalance, Transferrable } from "./accountBalances";
 import SummaryItem from "next-common/components/summary/layout/item";
-import { useContextApi } from "next-common/context/api";
 import useSubscribe from "next-common/utils/hooks/useSubscribe";
 import { useDemotionPeriod } from "next-common/components/collectives/core/member/demotionPeriod";
 import { useRemainingTime } from "next-common/components/remaining";
@@ -9,6 +8,10 @@ import { usePromotionPeriod } from "next-common/components/collectives/core/memb
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import CollectivesProvider, {
+  useCoreFellowshipPallet,
+  useRankedCollectivePallet,
+} from "next-common/context/collectives/collectives";
 
 const RankLevelNames = [
   "Candidates",
@@ -23,28 +26,24 @@ const RankLevelNames = [
   "Grand Master",
 ];
 
-function useMemberData(pallet = "fellowship") {
-  let collectivePallet = "fellowshipCollective";
-  let corePallet = "fellowshipCore";
-
-  if (pallet === "ambassador") {
-    collectivePallet = "ambassadorCollective";
-    corePallet = "ambassadorCore";
-  }
+function useMemberData() {
+  const corePallet = useCoreFellowshipPallet();
+  const collectivePallet = useRankedCollectivePallet();
 
   const address = useRealAddress();
-  const api = useContextApi();
 
   const { value: collectiveMember, loading: isCollectiveMemberLoading } =
-    useSubscribe(api?.query[collectivePallet].members, [address]);
+    useSubscribe(collectivePallet, "members", [address]);
 
   const { value: coreMember, loading: isCoreMemberLoading } = useSubscribe(
-    api?.query[corePallet].member,
+    corePallet,
+    "member",
     [address],
   );
 
   const { value: coreParams, loading: isCoreParamsLoading } = useSubscribe(
-    api?.query[corePallet].params,
+    corePallet,
+    "params",
   );
 
   const isLoading =
@@ -120,7 +119,9 @@ function Promotion({ lastPromotion, rank, params }) {
   );
 }
 
-function MemberInfo({ data, isLoading }) {
+function MemberInfo() {
+  const { data, isLoading } = useMemberData();
+
   if (isLoading) {
     return <FieldLoading />;
   }
@@ -151,19 +152,21 @@ function MemberInfo({ data, isLoading }) {
 }
 
 function FellowshipMember() {
-  const { data, isLoading } = useMemberData("fellowship");
   return (
     <SummaryItem title="Fellowship Member">
-      <MemberInfo data={data} isLoading={isLoading} />
+      <CollectivesProvider section="fellowship">
+        <MemberInfo />
+      </CollectivesProvider>
     </SummaryItem>
   );
 }
 
 function AmbassadorMember() {
-  const { data, isLoading } = useMemberData("ambassador");
   return (
     <SummaryItem title="Ambassador Member">
-      <MemberInfo data={data} isLoading={isLoading} />
+      <CollectivesProvider section="ambassador">
+        <MemberInfo />
+      </CollectivesProvider>
     </SummaryItem>
   );
 }
