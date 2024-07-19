@@ -1,4 +1,4 @@
-import PolkadotWallet from "./polkadotWallet";
+import SubstrateWallet from "./substrateWallet";
 import { NovaWallet } from "./novaWallet";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { noop } from "lodash-es";
@@ -113,7 +113,7 @@ export default function SelectWallet({
         }
 
         return (
-          <PolkadotWallet
+          <SubstrateWallet
             key={index}
             wallet={wallet}
             onClick={async () => {
