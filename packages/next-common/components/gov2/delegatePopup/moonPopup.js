@@ -127,6 +127,7 @@ export default function MoonDelegatePopup({
   return (
     <PopupWithSigner
       title="Delegate"
+      className="!w-[640px]"
       submitExtrinsic={submitExtrinsic}
       {...props}
     >

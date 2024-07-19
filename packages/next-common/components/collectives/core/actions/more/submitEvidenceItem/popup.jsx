@@ -136,7 +136,7 @@ function Content() {
 
 export default function SubmitEvidencePopup(props) {
   return (
-    <PopupWithSigner className="w-[640px]" title="Submit Evidence" {...props}>
+    <PopupWithSigner className="!w-[640px]" title="Submit Evidence" {...props}>
       <Content />
     </PopupWithSigner>
   );
