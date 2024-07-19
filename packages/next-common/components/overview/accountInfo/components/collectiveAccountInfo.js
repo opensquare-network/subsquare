@@ -39,7 +39,7 @@ function useMemberData() {
     collectivePallet,
     "members",
     [address],
-    (rawOptional) => setCollectiveMember(rawOptional),
+    (rawOptional) => setCollectiveMember(rawOptional.toJSON()),
   );
 
   const [coreMember, setCoreMember] = useState();
@@ -47,7 +47,7 @@ function useMemberData() {
     corePallet,
     "member",
     [address],
-    (rawOptional) => setCoreMember(rawOptional),
+    (rawOptional) => setCoreMember(rawOptional.toJSON()),
   );
 
   const [coreParams, setCoreParams] = useState();
@@ -55,7 +55,7 @@ function useMemberData() {
     corePallet,
     "params",
     [],
-    (rawOptional) => setCoreParams(rawOptional),
+    (rawOptional) => setCoreParams(rawOptional.toJSON()),
   );
 
   const isLoading =
@@ -70,9 +70,9 @@ function useMemberData() {
 
   return {
     data: {
-      collectiveMember: collectiveMember?.toJSON(),
-      coreMember: coreMember?.toJSON(),
-      coreParams: coreParams?.toJSON(),
+      collectiveMember,
+      coreMember,
+      coreParams,
     },
     isLoading,
   };
