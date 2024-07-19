@@ -73,7 +73,7 @@ export const nova = {
 const mimir = {
   extensionName: WalletTypes.MIMIR,
   title: "Mimir",
-  installUrl: "https://app.mimir.global/",
+  installUrl: "https://mimir.global/",
   logo: WalletMimir,
 };
 

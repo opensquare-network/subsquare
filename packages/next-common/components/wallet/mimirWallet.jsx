@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { SystemLink } from "@osn/icons/subsquare";
 import WalletOption from "./walletOption";
 import { useInjectedWeb3Extension } from "./useInjectedWeb3Extension";
+import { useEffect, useState } from "react";
 import { useMountedState } from "react-use";
 
-export default function PolkadotWallet({
+export default function MimirWallet({
   wallet,
   onClick,
   selected = false,
@@ -29,11 +30,16 @@ export default function PolkadotWallet({
   return (
     <WalletOption
       selected={selected}
-      onClick={() => installed && onClick(wallet)}
+      onClick={() => onClick?.(wallet)}
       installed={installed}
       logo={<Logo className={wallet.title} alt={wallet.title} />}
       title={wallet.title}
       loading={loading}
+      notInstalledContent={
+        <a href={wallet?.installUrl} target="_blank" rel="noreferrer">
+          <SystemLink className="text-theme500 !w-[20px] !h-[20px]" />
+        </a>
+      }
     />
   );
 }
