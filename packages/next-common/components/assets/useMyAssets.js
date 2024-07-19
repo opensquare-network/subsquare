@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import { useAllAssetMetadata } from "./context/assetMetadata";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
@@ -42,12 +42,17 @@ function useSubscribeMultiAssetAccounts(multiAccountKey) {
 function useSubscribeNativeBalance(address) {
   const [balanceObj, setBalanceObj] = useState();
 
-  useSubStorage("system", "account", [address], ({ data }) => {
-    const { free, reserved, frozen } = data;
-    const balance = (free.toBigInt() + reserved.toBigInt()).toString();
-    const transferrable = (free.toBigInt() - frozen.toBigInt()).toString();
-    setBalanceObj({ balance, transferrable });
-  });
+  useSubStorage(
+    "system",
+    "account",
+    [address],
+    useCallback(({ data }) => {
+      const { free, reserved, frozen } = data;
+      const balance = (free.toBigInt() + reserved.toBigInt()).toString();
+      const transferrable = (free.toBigInt() - frozen.toBigInt()).toString();
+      setBalanceObj({ balance, transferrable });
+    }, []),
+  );
 
   return balanceObj;
 }
