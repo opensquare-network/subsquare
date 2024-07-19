@@ -26,7 +26,7 @@ export function getHomeMenu({
   currentTrackId,
 } = {}) {
   if (isAssetHub()) {
-    return [assetHubMenu];
+    return assetHubMenu;
   }
 
   if (isMoonChain()) {

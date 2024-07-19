@@ -3,6 +3,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { setLayoutDetailSidebarHeight } from "next-common/store/reducers/layoutSlice";
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { useMutationObserver } from "next-common/hooks/useMutationObserver";
 
 /**
  * @param {import("react").HTMLAttributes<HTMLDivElement>} props - The props object containing the properties passed to the function.
@@ -10,9 +11,22 @@ import { useDispatch } from "react-redux";
 export function RightBarWrapper(props) {
   const dispatch = useDispatch();
   const ref = useRef();
-  useEffect(() => {
+
+  function setHeight() {
     dispatch(setLayoutDetailSidebarHeight(ref.current.clientHeight));
+  }
+
+  useEffect(() => {
+    setHeight();
   }, []);
+
+  useMutationObserver(
+    () => {
+      setHeight();
+    },
+    ref,
+    { childList: true },
+  );
 
   const [navCollapsed] = useNavCollapsed();
 

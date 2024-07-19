@@ -7,7 +7,7 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import AccountLinks from "next-common/components/links/accountLinks";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import { addressEllipsis } from "next-common/utils";
-import useAssets from "./useAssets";
+import useMyAssets from "./useMyAssets";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import AssetsList from "./assetsList";
 import { isNil } from "lodash-es";
@@ -54,11 +54,11 @@ export function Title({ assetsCount }) {
   );
 }
 
-export default function WalletAssetList({ seoInfo }) {
-  const assets = useAssets();
+export default function WalletAssetList() {
+  const assets = useMyAssets();
 
   return (
-    <ListLayout seoInfo={seoInfo} headContent={<HeadContent />}>
+    <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
       <div className="flex flex-col gap-[16px]">
         <Title assetsCount={assets && assets.length} />
         <SecondaryCard>

@@ -44,7 +44,7 @@ export function useDetailType() {
  */
 export function usePageProps() {
   const { props } = usePageProperties();
-  return props;
+  return props || {};
 }
 
 /**
