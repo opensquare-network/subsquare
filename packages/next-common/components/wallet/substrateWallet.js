@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import WalletOption from "./walletOption";
-import { useInjectedWeb3Extension } from "./useInjectedWeb3Extension";
+import { useInjectedWeb3Extension } from "../../hooks/connect/useInjectedWeb3Extension";
 import { useMountedState } from "react-use";
 
 export default function SubstrateWallet({
