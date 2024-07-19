@@ -8,11 +8,7 @@ import Tooltip from "next-common/components/tooltip";
 import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";
 
-export default function CoreFellowshipMemberDemotionPeriod({
-  lastProof,
-  rank,
-  params,
-}) {
+export function useDemotionPeriod({ rank, lastProof, params }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const demotionPeriod = useMemo(() => {
     return rank <= 0 ? params.offboardTimeout : params.demotionPeriod[rank - 1];
@@ -38,6 +34,21 @@ export default function CoreFellowshipMemberDemotionPeriod({
 
     return demotionPeriod - gone;
   }, [demotionPeriod, gone]);
+
+  return {
+    percentageValue,
+    remainingBlocks,
+    demotionPeriod,
+  };
+}
+
+export default function CoreFellowshipMemberDemotionPeriod({
+  lastProof,
+  rank,
+  params,
+}) {
+  const { percentageValue, remainingBlocks, demotionPeriod } =
+    useDemotionPeriod({ rank, lastProof, params });
 
   if (isNil(demotionPeriod)) {
     return null;

@@ -1,5 +1,5 @@
-import Chains from "./consts/chains";
+import { isAssetHubChain } from "./chain";
 
 export default function isAssetHub() {
-  return [Chains.polkadotAssetHub].includes(process.env.NEXT_PUBLIC_CHAIN);
+  return isAssetHubChain(process.env.NEXT_PUBLIC_CHAIN);
 }

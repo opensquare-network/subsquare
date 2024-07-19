@@ -17,3 +17,7 @@ export function isCentrifugeChain(chain) {
 export function isKintsugiChain(chain) {
   return [Chains.kintsugi, Chains.interlay].includes(chain);
 }
+
+export function isAssetHubChain(chain) {
+  return [Chains.polkadotAssetHub].includes(chain);
+}

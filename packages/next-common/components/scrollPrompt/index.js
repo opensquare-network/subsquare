@@ -1,15 +1,34 @@
 import { SystemClose } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
 import { useAnimate } from "framer-motion";
 import { intersectionBy, unionBy } from "lodash-es";
 
-const ScrollList = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
+export const PromptTypes = {
+  INFO: "info",
+  WARNING: "warning",
+  ERROR: "error",
+  SUCCESS: "success",
+};
+
+const colorStyle = {
+  [PromptTypes.INFO]: {
+    backgroundColor: "var(--theme100)",
+    color: "var(--theme500)",
+  },
+  [PromptTypes.WARNING]: {
+    backgroundColor: "var(--orange100)",
+    color: "var(--orange500)",
+  },
+  [PromptTypes.ERROR]: {
+    backgroundColor: "var(--red100)",
+    color: "var(--red500)",
+  },
+  [PromptTypes.SUCCESS]: {
+    backgroundColor: "var(--green100)",
+    color: "var(--green500)",
+  },
+};
 
 export default function ScrollPrompt({ prompts }) {
   const [scrollingPrompts, setScrollingPrompts] = useState(prompts);
@@ -34,23 +53,36 @@ export default function ScrollPrompt({ prompts }) {
       if (pauseRef.current) {
         return;
       }
-      if (scope.current === null) {
+      if (!scope.current || !scope.current.firstChild) {
         return;
       }
-      if (scope.current.childNodes.length < 2) {
+      if (scope.current.firstChild.childNodes.length < 2) {
         return;
       }
-      animate("&>:first-child", { marginTop: "-20px" }, { duration: 1 })
+      Promise.all([
+        animate(scope.current, colorStyle[scrollingPrompts[1].type], {
+          duration: 1,
+        }),
+        animate(
+          "&>.scroll-list>:first-child",
+          { marginTop: "-20px" },
+          { duration: 1 },
+        ),
+      ])
         .then(shiftMessage)
         .then(() => {
           if (scope.current === null) {
             return;
           }
-          animate("&>:first-child", { marginTop: "0px" }, { duration: 0 });
+          animate(
+            "&>.scroll-list>:first-child",
+            { marginTop: "0px" },
+            { duration: 0 },
+          );
         });
     }, 6500);
     return () => clearInterval(interval);
-  }, [scope, pauseRef, shiftMessage]);
+  }, [scope, pauseRef, scrollingPrompts, shiftMessage]);
 
   if (scrollingPrompts.length === 0) {
     return null;
@@ -58,15 +90,16 @@ export default function ScrollPrompt({ prompts }) {
 
   return (
     <div
+      ref={scope}
       className={cn(
         "flex justify-between",
         "h-[40px] rounded-[8px]",
         "text14Medium py-2.5 px-4",
-        "bg-theme100 text-theme500",
       )}
+      style={colorStyle[scrollingPrompts[0].type]}
     >
-      <ScrollList
-        ref={scope}
+      <div
+        className="scroll-list flex flex-col overflow-hidden"
         onMouseEnter={() => (pauseRef.current = true)}
         onMouseLeave={() => (pauseRef.current = false)}
       >
@@ -75,7 +108,7 @@ export default function ScrollPrompt({ prompts }) {
             {message}
           </div>
         ))}
-      </ScrollList>
+      </div>
       <SystemClose
         className="w-5 h-5"
         role="button"
