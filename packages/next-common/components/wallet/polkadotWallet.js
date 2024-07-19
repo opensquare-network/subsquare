@@ -27,15 +27,19 @@ export default function PolkadotWallet({
   const [installed, setInstalled] = useState(null);
   const isMounted = useMountedState();
   const Logo = wallet.logo;
-  const { injectedWeb3Extension } = useInjectedWeb3Extension(
-    wallet?.extensionName,
-  );
+  const { injectedWeb3Extension, loading: loadingWeb3Extension } =
+    useInjectedWeb3Extension(wallet?.extensionName);
 
   useEffect(() => {
+    // update if installed changes
+    if (loadingWeb3Extension) {
+      return;
+    }
+
     if (isMounted()) {
       setInstalled(!!injectedWeb3Extension);
     }
-  }, [isMounted, injectedWeb3Extension]);
+  }, [loadingWeb3Extension, isMounted, injectedWeb3Extension]);
 
   return (
     <WalletOption
