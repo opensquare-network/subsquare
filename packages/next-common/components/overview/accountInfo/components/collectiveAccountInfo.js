@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { isNil } from "lodash-es";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { TotalBalance, Transferrable } from "./accountBalances";
 import SummaryItem from "next-common/components/summary/layout/item";
-import useSubscribe from "next-common/utils/hooks/useSubscribe";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { useDemotionPeriod } from "next-common/components/collectives/core/member/demotionPeriod";
 import { useRemainingTime } from "next-common/components/remaining";
 import { usePromotionPeriod } from "next-common/components/collectives/core/member/promotionPeriod";
@@ -33,18 +34,28 @@ function useMemberData() {
 
   const address = useRealAddress();
 
-  const { value: collectiveMember, loading: isCollectiveMemberLoading } =
-    useSubscribe(collectivePallet, "members", [address]);
+  const [collectiveMember, setCollectiveMember] = useState();
+  const { loading: isCollectiveMemberLoading } = useSubStorage(
+    collectivePallet,
+    "members",
+    [address],
+    (rawOptional) => setCollectiveMember(rawOptional),
+  );
 
-  const { value: coreMember, loading: isCoreMemberLoading } = useSubscribe(
+  const [coreMember, setCoreMember] = useState();
+  const { loading: isCoreMemberLoading } = useSubStorage(
     corePallet,
     "member",
     [address],
+    (rawOptional) => setCoreMember(rawOptional),
   );
 
-  const { value: coreParams, loading: isCoreParamsLoading } = useSubscribe(
+  const [coreParams, setCoreParams] = useState();
+  const { loading: isCoreParamsLoading } = useSubStorage(
     corePallet,
     "params",
+    [],
+    (rawOptional) => setCoreParams(rawOptional),
   );
 
   const isLoading =
@@ -154,7 +165,7 @@ function MemberInfo() {
 
 function FellowshipMember() {
   return (
-    <SummaryItem title="Fellowship Member">
+    <SummaryItem title="Fellowship">
       <CollectivesProvider section="fellowship">
         <MemberInfo />
       </CollectivesProvider>
@@ -164,7 +175,7 @@ function FellowshipMember() {
 
 function AmbassadorMember() {
   return (
-    <SummaryItem title="Ambassador Member">
+    <SummaryItem title="Ambassador">
       <CollectivesProvider section="ambassador">
         <MemberInfo />
       </CollectivesProvider>
