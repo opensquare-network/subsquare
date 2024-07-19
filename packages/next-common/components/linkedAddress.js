@@ -325,7 +325,7 @@ export default function LinkedAddress() {
             <span className="text-theme500">Wallet</span>
           </h3>
 
-          {view === CONNECT_POPUP_VIEWS.WEB3 && (
+          {view === CONNECT_POPUP_VIEWS.SUBSTRATE && (
             <SelectWallet
               wallets={getSingleSigWallets()}
               selectedWallet={selectedWallet}

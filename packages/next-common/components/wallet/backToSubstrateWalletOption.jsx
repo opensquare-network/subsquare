@@ -13,7 +13,7 @@ export default function BackToSubstrateWalletOption(props) {
     <WalletOption
       installed
       onClick={() => {
-        setView(CONNECT_POPUP_VIEWS.WEB3);
+        setView(CONNECT_POPUP_VIEWS.SUBSTRATE);
       }}
       logo={<ArrowCircleLeft className="text-textSecondary" />}
       title="Back to Substrate"
