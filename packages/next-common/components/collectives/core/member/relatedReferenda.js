@@ -25,14 +25,7 @@ function useRelatedReferenda(address, pallet) {
       }
 
       const nameArg = call.args.find(({ name }) => name === "who");
-      if (!nameArg) {
-        return false;
-      }
-      if (nameArg.value !== address) {
-        return false;
-      }
-
-      return true;
+      return nameArg?.value === address;
     });
   }, [activeReferenda, address, pallet]);
 }
