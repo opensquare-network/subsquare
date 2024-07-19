@@ -1,6 +1,6 @@
 import { noop, reject } from "lodash-es";
-import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
-import { useGetInjectedWeb3ExtensionFn } from "next-common/components/wallet/useInjectedWeb3Extension";
+import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
+import { useGetInjectedWeb3ExtensionFn } from "next-common/hooks/connect/useInjectedWeb3Extension";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignetAccounts } from "next-common/context/signet";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";

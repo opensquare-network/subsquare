@@ -31,7 +31,7 @@ import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupVi
 import BackToSubstrateWalletOption from "./wallet/backToSubstrateWalletOption";
 import { useAccount, useConnect } from "wagmi";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
-import useInjectedWeb3 from "./wallet/useInjectedWeb3";
+import useInjectedWeb3 from "../hooks/connect/useInjectedWeb3";
 import { filter, uniqBy } from "lodash-es";
 
 const InfoWrapper = styled.div`

@@ -1,6 +1,6 @@
 import { useHasMetamask } from "next-common/hooks/connect/useHasMetamask";
 import WalletOption from "./walletOption";
-import useInjectedWeb3 from "./useInjectedWeb3";
+import useInjectedWeb3 from "../../hooks/connect/useInjectedWeb3";
 
 // Added for supporting PolkaGate Snap
 async function enablePolkaGateSnap() {

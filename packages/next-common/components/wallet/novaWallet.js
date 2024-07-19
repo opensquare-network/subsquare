@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useMountedState } from "react-use";
 import WalletOption from "./walletOption";
 import { isNil } from "lodash-es";
-import { useInjectedWeb3Extension } from "./useInjectedWeb3Extension";
+import { useInjectedWeb3Extension } from "../../hooks/connect/useInjectedWeb3Extension";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 
 export function NovaWallet({

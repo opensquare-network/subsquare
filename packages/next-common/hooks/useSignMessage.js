@@ -6,7 +6,7 @@ import {
 } from "next-common/utils/mixedChainUtil";
 import { useSignMessage as useEVMSignMessage } from "wagmi";
 import { metamask } from "next-common/utils/consts/connect";
-import { useGetInjectedWeb3ExtensionFn } from "next-common/components/wallet/useInjectedWeb3Extension";
+import { useGetInjectedWeb3ExtensionFn } from "next-common/hooks/connect/useInjectedWeb3Extension";
 
 export function useSignMessage() {
   const getInjectedWeb3Extension = useGetInjectedWeb3ExtensionFn();
