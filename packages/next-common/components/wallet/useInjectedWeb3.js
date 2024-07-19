@@ -1,10 +1,17 @@
+import { merge } from "lodash-es";
 import { useEffect, useState } from "react";
-import { useMountedState } from "react-use";
+import { createGlobalState, useMountedState } from "react-use";
+
+const useGlobalInjectedWeb3 = createGlobalState(null);
 
 export default function useInjectedWeb3() {
   const isMounted = useMountedState();
-  const [injectedWeb3, setInjectedWeb3] = useState(null);
+  const [injectedWeb3, _setInjectedWeb3] = useGlobalInjectedWeb3();
   const [loading, setLoading] = useState(true);
+
+  function setInjectedWeb3(value) {
+    _setInjectedWeb3(merge(injectedWeb3, value));
+  }
 
   useEffect(() => {
     function handleWeb3() {
@@ -25,5 +32,5 @@ export default function useInjectedWeb3() {
     }
   }, [isMounted]);
 
-  return { loading, injectedWeb3 };
+  return { loading, injectedWeb3, setInjectedWeb3 };
 }
