@@ -53,10 +53,10 @@ export default function ScrollPrompt({ prompts }) {
       if (pauseRef.current) {
         return;
       }
-      if (!scope.current) {
+      if (!scope.current || !scope.current.firstChild) {
         return;
       }
-      if (scrollingPrompts.length < 2) {
+      if (scope.current.firstChild.childNodes.length < 2) {
         return;
       }
       Promise.all([
