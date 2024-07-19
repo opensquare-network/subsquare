@@ -14,7 +14,7 @@ function Remaining({ totalBlocks = 0, blocks = 0, percentage }) {
     return `${percentage}%, ${remaining}`;
   }
 
-  if (totalBlocks && blocks <= 0) {
+  if (percentage && blocks <= 0) {
     return `${percentage}%, total ${total}`;
   }
 
