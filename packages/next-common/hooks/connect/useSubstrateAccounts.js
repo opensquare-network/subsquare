@@ -3,7 +3,7 @@ import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { useGetInjectedWeb3ExtensionFn } from "next-common/hooks/connect/useInjectedWeb3Extension";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignetAccounts } from "next-common/context/signet";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { newWarningToast } from "next-common/store/reducers/toastSlice";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { normalizedSubstrateAccounts } from "next-common/utils/substrate";
@@ -53,7 +53,7 @@ export function useSubstrateAccounts({
 
         onAccessGranted && onAccessGranted();
       } catch (e) {
-        dispatch(newErrorToast(e.message));
+        dispatch(newWarningToast(e.message));
       }
     },
     [
