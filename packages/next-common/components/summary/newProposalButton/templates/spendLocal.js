@@ -18,6 +18,7 @@ export default function SpendLocalTemplateProvider({ children }) {
   if (settings.treasuryProposalTracks) {
     button = (
       <ChoiceButton
+        key="treasury-local"
         name="Treasury proposal local"
         description="Creating a treasury spend of native token that is locally available"
         onClick={() => setShowCreateTreasuryProposal(true)}

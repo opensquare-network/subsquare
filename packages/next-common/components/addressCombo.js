@@ -12,7 +12,10 @@ import { useChainSettings } from "next-common/context/chain.js";
 import { encodeAddressToChain } from "next-common/services/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
 import IdentityIcon from "./Identity/identityIcon.js";
-import { getAddressHint, tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import {
+  getAddressHint,
+  tryConvertToEvmAddress,
+} from "next-common/utils/mixedChainUtil";
 import { useClickAway } from "react-use";
 
 const Wrapper = Relative;
@@ -106,7 +109,7 @@ export default function AddressCombo({
   setAddress,
   allowInvalidAddress = false,
   readOnly = false,
-  placeholder,
+  placeholder = "Please fill the address or select another one...",
 }) {
   const [show, setShow] = useState(false);
   const [inputAddress, setInputAddress] = useState(

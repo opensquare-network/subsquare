@@ -185,7 +185,7 @@ function PopupContent() {
 
 export default function Popup(props) {
   return (
-    <PopupWithSigner title="New Tip" {...props}>
+    <PopupWithSigner title="New Tip" className="!w-[640px]" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );

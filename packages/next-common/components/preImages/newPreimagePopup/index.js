@@ -76,7 +76,7 @@ export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
 
   return (
     <Popup
-      className="w-[640px]"
+      className="!w-[640px]"
       title="New Preimage"
       onClose={onClose}
       maskClosable={false}

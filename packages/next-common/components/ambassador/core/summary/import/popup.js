@@ -34,7 +34,7 @@ function Content() {
 
 export default function AmbassadorCoreImportPopup(props) {
   return (
-    <PopupWithSigner title="Import" {...props}>
+    <PopupWithSigner title="Import" className="!w-[640px]" {...props}>
       <Content />
     </PopupWithSigner>
   );

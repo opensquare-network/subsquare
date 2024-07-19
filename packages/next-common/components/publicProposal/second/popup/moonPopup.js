@@ -110,6 +110,7 @@ export default function MoonSecondPopup(props) {
   return (
     <PopupWithSigner
       title="Delegate"
+      className="!w-[640px]"
       submitExtrinsic={submitExtrinsic}
       {...props}
     >
