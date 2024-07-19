@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { isNil } from "lodash-es";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { TotalBalance, Transferrable } from "./accountBalances";
@@ -41,7 +41,7 @@ function useMemberData() {
     collectivePallet,
     "members",
     [address],
-    (rawOptional) => setCollectiveMember(rawOptional.toJSON()),
+    useCallback((rawOptional) => setCollectiveMember(rawOptional.toJSON()), []),
   );
 
   const [coreMember, setCoreMember] = useState();
@@ -49,7 +49,7 @@ function useMemberData() {
     corePallet,
     "member",
     [address],
-    (rawOptional) => setCoreMember(rawOptional.toJSON()),
+    useCallback((rawOptional) => setCoreMember(rawOptional.toJSON()), []),
   );
 
   const [coreParams, setCoreParams] = useState();
@@ -57,7 +57,7 @@ function useMemberData() {
     corePallet,
     "params",
     [],
-    (rawOptional) => setCoreParams(rawOptional.toJSON()),
+    useCallback((rawOptional) => setCoreParams(rawOptional.toJSON()), []),
   );
 
   const isLoading =
@@ -115,12 +115,22 @@ function Demotion({ lastProof, rank, params }) {
     return null;
   }
 
+  let text = "";
+  if (demotionPeriod > 0) {
+    if (percentageValue !== 100) {
+      text = remaining;
+    } else {
+      text = "Expired";
+    }
+  }
+
   return (
     <RemainLabel
       percentage={percentageValue}
       label={rank <= 0 ? "Offboard" : "Demotion"}
+      total={demotionPeriod}
       remain={remainingBlocks}
-      text={remainingBlocks > 0 ? remaining : "Expired"}
+      text={text}
     />
   );
 }
@@ -135,12 +145,22 @@ function Promotion({ lastPromotion, rank, params }) {
     return null;
   }
 
+  let text = "";
+  if (promotionPeriod > 0) {
+    if (percentageValue !== 100) {
+      text = remaining;
+    } else {
+      text = "Promotable";
+    }
+  }
+
   return (
     <RemainLabel
       percentage={percentageValue}
       label="Promotion"
+      total={promotionPeriod}
       remain={remainingBlocks}
-      text={remainingBlocks > 0 ? remaining : "Promotable"}
+      text={text}
     />
   );
 }
