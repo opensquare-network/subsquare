@@ -54,3 +54,5 @@ jobs:
           NEXT_PUBLIC_BACKEND_API_END_POINT: http://127.0.0.1:7071/
           CHAIN: kintsugi
           NEXT_PUBLIC_CHAIN: kintsugi
+          
+
