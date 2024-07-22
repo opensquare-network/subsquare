@@ -20,10 +20,19 @@ import { cn } from "next-common/utils";
 import { useDispatch } from "react-redux";
 import {
   setAmbassadorDemotionExpired,
+  setAmbassadorDemotionExpireRemind,
+  setAmbassadorOffboardExpired,
+  setAmbassadorOffboardExpireRemind,
   setAmbassadorPromotable,
   setFellowshipDemotionExpired,
+  setFellowshipDemotionExpireRemind,
+  setFellowshipOffboardExpired,
+  setFellowshipOffboardExpireRemind,
   setFellowshipPromotable,
 } from "next-common/store/reducers/userPromptsSlice";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import BigNumber from "bignumber.js";
 
 const RankLevelNames = [
   "Candidates",
@@ -118,15 +127,32 @@ function Demotion({ lastProof, rank, params }) {
   const { section } = useCollectivesContext();
   const { percentageValue, remainingBlocks, demotionPeriod } =
     useDemotionPeriod({ rank, lastProof, params });
+  const blockTime = useSelector(blockTimeSelector);
 
   useEffect(() => {
     const isDemotionExpired = percentageValue === 100;
+    const daysRemaining = new BigNumber(blockTime)
+      .multipliedBy(remainingBlocks)
+      .div(86400 * 1000)
+      .toNumber();
     if (section === "fellowship") {
-      dispatch(setFellowshipDemotionExpired(isDemotionExpired));
+      if (rank > 0) {
+        dispatch(setFellowshipDemotionExpired(isDemotionExpired));
+        dispatch(setFellowshipDemotionExpireRemind(daysRemaining < 28));
+      } else {
+        dispatch(setFellowshipOffboardExpired(isDemotionExpired));
+        dispatch(setFellowshipOffboardExpireRemind(daysRemaining < 60));
+      }
     } else if (section === "ambassador") {
-      dispatch(setAmbassadorDemotionExpired(isDemotionExpired));
+      if (rank > 0) {
+        dispatch(setAmbassadorDemotionExpired(isDemotionExpired));
+        dispatch(setAmbassadorDemotionExpireRemind(daysRemaining < 28));
+      } else {
+        dispatch(setAmbassadorOffboardExpired(isDemotionExpired));
+        dispatch(setAmbassadorOffboardExpireRemind(daysRemaining < 60));
+      }
     }
-  }, [dispatch, section, percentageValue]);
+  }, [dispatch, section, percentageValue, blockTime, remainingBlocks, rank]);
 
   const remaining = useRemainingTime(remainingBlocks);
 

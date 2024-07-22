@@ -29,6 +29,12 @@ import useFellowshipDemotionExpiredPrompt from "./components/useFellowshipDemoti
 import useFellowshipPromotablePrompt from "./components/useFellowshipPromotablePrompt";
 import useAmbassadorDemotionExpiredPrompt from "./components/useAmbassadorDemotionExpiredPrompt";
 import useAmbassadorPromotablePrompt from "./components/useAmbassadorPromotablePrompt";
+import useFellowshipDemotionExpireRemindPrompt from "./components/useFellowshipDemotionExpireRemindPrompt";
+import useAmbassadorDemotionExpireRemindPrompt from "./components/useAmbassadorDemotionExpireRemindPrompt";
+import useAmbassadorOffboardExpiredPrompt from "./components/useAmbassadorOffboardExpiredPrompt";
+import useFellowshipOffboardExpiredPrompt from "./components/useFellowshipOffboardExpiredPrompt";
+import useAmbassadorOffboardExpireRemindPrompt from "./components/useAmbassadorOffboardExpireRemindPrompt";
+import useFellowshipOffboardExpireRemindPrompt from "./components/useFellowshipOffboardExpireRemindPrompt";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -175,8 +181,19 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
   const setAvatarPrompt = useSetAvatarPrompt();
   const fellowshipDemotionExpiredPrompt = useFellowshipDemotionExpiredPrompt();
   const fellowshipPromotablePrompt = useFellowshipPromotablePrompt();
+  const fellowshipDemotionExpireRemindPrompt =
+    useFellowshipDemotionExpireRemindPrompt();
+  const fellowshipOffboardExpiredPrompt = useFellowshipOffboardExpiredPrompt();
+  const fellowshipOffboardExpireRemindPrompt =
+    useFellowshipOffboardExpireRemindPrompt();
+
   const ambassadorDemotionExpiredPrompt = useAmbassadorDemotionExpiredPrompt();
   const ambassadorPromotablePrompt = useAmbassadorPromotablePrompt();
+  const ambassadorDemotionExpireRemindPrompt =
+    useAmbassadorDemotionExpireRemindPrompt();
+  const ambassadorOffboardExpiredPrompt = useAmbassadorOffboardExpiredPrompt();
+  const ambassadorOffboardExpireRemindPrompt =
+    useAmbassadorOffboardExpireRemindPrompt();
 
   const [prompts, setPrompts] = useState([]);
 
@@ -185,8 +202,14 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
       [
         ambassadorDemotionExpiredPrompt,
         ambassadorPromotablePrompt,
+        ambassadorDemotionExpireRemindPrompt,
+        ambassadorOffboardExpiredPrompt,
+        ambassadorOffboardExpireRemindPrompt,
         fellowshipDemotionExpiredPrompt,
         fellowshipPromotablePrompt,
+        fellowshipDemotionExpireRemindPrompt,
+        fellowshipOffboardExpiredPrompt,
+        fellowshipOffboardExpireRemindPrompt,
         delegationPrompt,
         setAvatarPrompt,
       ].filter((item) => !isEmpty(item)),
@@ -196,8 +219,14 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
     setAvatarPrompt,
     fellowshipDemotionExpiredPrompt,
     fellowshipPromotablePrompt,
+    fellowshipDemotionExpireRemindPrompt,
+    fellowshipOffboardExpiredPrompt,
+    fellowshipOffboardExpireRemindPrompt,
     ambassadorDemotionExpiredPrompt,
     ambassadorPromotablePrompt,
+    ambassadorDemotionExpireRemindPrompt,
+    ambassadorOffboardExpiredPrompt,
+    ambassadorOffboardExpireRemindPrompt,
   ]);
 
   let assetInfo = <AssetInfo />;
