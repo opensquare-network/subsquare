@@ -22,7 +22,7 @@ function DemotionExpiredMessage({ section, rank }) {
   return (
     <Prompt cacheKey={cacheKey} type={PromptTypes.ERROR}>
       The {rank === 0 ? "offboard" : "demotion"} period of {section} member is
-      expired. Manage your member status{" "}
+      expired. Check more details{" "}
       <Link className="underline" href={`/${section}/core`}>
         here
       </Link>
@@ -43,7 +43,7 @@ function DemotionAboutToExpireMessage({ section, rank }) {
   return (
     <Prompt cacheKey={cacheKey} type={PromptTypes.WARNING}>
       The {rank === 0 ? "offboard" : "demotion"} period of {section} member is
-      about to expire. Manage your member status{" "}
+      about to expire. Check more details{" "}
       <Link className="underline" href={`/${section}/core`}>
         here
       </Link>
