@@ -66,11 +66,7 @@ function DemotionPrompt({ section, lastProof, rank, params }) {
     return <DemotionExpiredMessage section={section} rank={rank} />;
   }
 
-  if (rank > 0 && demotionPeriod > 0 && daysRemaining < 28) {
-    return <DemotionAboutToExpireMessage section={section} rank={rank} />;
-  }
-
-  if (rank === 0 && demotionPeriod > 0 && daysRemaining < 60) {
+  if (demotionPeriod > 0 && daysRemaining < 28) {
     return <DemotionAboutToExpireMessage section={section} rank={rank} />;
   }
 }
