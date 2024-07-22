@@ -1,38 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
 import { isNil } from "lodash-es";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { TotalBalance, Transferrable } from "./accountBalances";
 import SummaryItem from "next-common/components/summary/layout/item";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { useDemotionPeriod } from "next-common/components/collectives/core/member/demotionPeriod";
 import { useRemainingTime } from "next-common/components/remaining";
 import { usePromotionPeriod } from "next-common/components/collectives/core/member/promotionPeriod";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import CollectivesProvider, {
-  useCollectivesContext,
-  useCoreFellowshipPallet,
-  useRankedCollectivePallet,
-} from "next-common/context/collectives/collectives";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
 import { cn } from "next-common/utils";
-import { useDispatch } from "react-redux";
-import {
-  setAmbassadorDemotionExpired,
-  setAmbassadorDemotionExpireRemind,
-  setAmbassadorOffboardExpired,
-  setAmbassadorOffboardExpireRemind,
-  setAmbassadorPromotable,
-  setFellowshipDemotionExpired,
-  setFellowshipDemotionExpireRemind,
-  setFellowshipOffboardExpired,
-  setFellowshipOffboardExpireRemind,
-  setFellowshipPromotable,
-} from "next-common/store/reducers/userPromptsSlice";
-import { useSelector } from "react-redux";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import BigNumber from "bignumber.js";
+import { useAmbassadorMemberData } from "../context/ambassadorMemberDataContext";
+import { useFellowshipMemberData } from "../context/fellowshipMemberDataContext";
 
 const RankLevelNames = [
   "Candidates",
@@ -46,56 +24,6 @@ const RankLevelNames = [
   "Master Constant",
   "Grand Master",
 ];
-
-function useMemberData() {
-  const corePallet = useCoreFellowshipPallet();
-  const collectivePallet = useRankedCollectivePallet();
-
-  const address = useRealAddress();
-
-  const [collectiveMember, setCollectiveMember] = useState();
-  const { loading: isCollectiveMemberLoading } = useSubStorage(
-    collectivePallet,
-    "members",
-    [address],
-    useCallback((rawOptional) => setCollectiveMember(rawOptional.toJSON()), []),
-  );
-
-  const [coreMember, setCoreMember] = useState();
-  const { loading: isCoreMemberLoading } = useSubStorage(
-    corePallet,
-    "member",
-    [address],
-    useCallback((rawOptional) => setCoreMember(rawOptional.toJSON()), []),
-  );
-
-  const [coreParams, setCoreParams] = useState();
-  const { loading: isCoreParamsLoading } = useSubStorage(
-    corePallet,
-    "params",
-    [],
-    useCallback((rawOptional) => setCoreParams(rawOptional.toJSON()), []),
-  );
-
-  const isLoading =
-    isCollectiveMemberLoading || isCoreMemberLoading || isCoreParamsLoading;
-
-  if (isLoading) {
-    return {
-      data: null,
-      isLoading: true,
-    };
-  }
-
-  return {
-    data: {
-      collectiveMember,
-      coreMember,
-      coreParams,
-    },
-    isLoading,
-  };
-}
 
 function Rank({ rank }) {
   const textColor = getRankColor(rank);
@@ -123,60 +51,8 @@ function Rank({ rank }) {
 }
 
 function Demotion({ lastProof, rank, params }) {
-  const dispatch = useDispatch();
-  const { section } = useCollectivesContext();
   const { percentageValue, remainingBlocks, demotionPeriod } =
     useDemotionPeriod({ rank, lastProof, params });
-  const blockTime = useSelector(blockTimeSelector);
-
-  useEffect(() => {
-    const isDemotionExpired = percentageValue === 100;
-    const daysRemaining = new BigNumber(blockTime)
-      .multipliedBy(remainingBlocks)
-      .div(86400 * 1000)
-      .toNumber();
-    if (section === "fellowship") {
-      if (rank > 0) {
-        dispatch(setFellowshipDemotionExpired(isDemotionExpired));
-        dispatch(
-          setFellowshipDemotionExpireRemind(
-            demotionPeriod > 0 && daysRemaining < 28,
-          ),
-        );
-      } else {
-        dispatch(setFellowshipOffboardExpired(isDemotionExpired));
-        dispatch(
-          setFellowshipOffboardExpireRemind(
-            demotionPeriod > 0 && daysRemaining < 60,
-          ),
-        );
-      }
-    } else if (section === "ambassador") {
-      if (rank > 0) {
-        dispatch(setAmbassadorDemotionExpired(isDemotionExpired));
-        dispatch(
-          setAmbassadorDemotionExpireRemind(
-            demotionPeriod > 0 && daysRemaining < 28,
-          ),
-        );
-      } else {
-        dispatch(setAmbassadorOffboardExpired(isDemotionExpired));
-        dispatch(
-          setAmbassadorOffboardExpireRemind(
-            demotionPeriod > 0 && daysRemaining < 60,
-          ),
-        );
-      }
-    }
-  }, [
-    dispatch,
-    section,
-    percentageValue,
-    blockTime,
-    remainingBlocks,
-    rank,
-    demotionPeriod,
-  ]);
 
   const remaining = useRemainingTime(remainingBlocks);
 
@@ -205,19 +81,8 @@ function Demotion({ lastProof, rank, params }) {
 }
 
 function Promotion({ lastPromotion, rank, params }) {
-  const dispatch = useDispatch();
-  const { section } = useCollectivesContext();
   const { percentageValue, remainingBlocks, promotionPeriod } =
     usePromotionPeriod({ rank, lastPromotion, params });
-
-  useEffect(() => {
-    const isPromotable = percentageValue === 100;
-    if (section === "fellowship") {
-      dispatch(setFellowshipPromotable(isPromotable));
-    } else if (section === "ambassador") {
-      dispatch(setAmbassadorPromotable(isPromotable));
-    }
-  }, [dispatch, section, percentageValue]);
 
   const remaining = useRemainingTime(remainingBlocks);
 
@@ -245,23 +110,7 @@ function Promotion({ lastPromotion, rank, params }) {
   );
 }
 
-function MemberInfo() {
-  const dispatch = useDispatch();
-  const { data, isLoading } = useMemberData();
-
-  useEffect(() => {
-    dispatch(setFellowshipDemotionExpired(false));
-    dispatch(setFellowshipPromotable(false));
-    dispatch(setFellowshipDemotionExpireRemind(false));
-    dispatch(setFellowshipOffboardExpired(false));
-    dispatch(setFellowshipOffboardExpireRemind(false));
-    dispatch(setAmbassadorDemotionExpired(false));
-    dispatch(setAmbassadorPromotable(false));
-    dispatch(setAmbassadorDemotionExpireRemind(false));
-    dispatch(setAmbassadorOffboardExpired(false));
-    dispatch(setAmbassadorOffboardExpireRemind(false));
-  }, [dispatch]);
-
+function MemberInfo({ data, isLoading }) {
   if (isLoading) {
     return <FieldLoading />;
   }
@@ -292,21 +141,19 @@ function MemberInfo() {
 }
 
 function FellowshipMember() {
+  const { data, isLoading } = useFellowshipMemberData();
   return (
     <SummaryItem title="Fellowship">
-      <CollectivesProvider section="fellowship">
-        <MemberInfo />
-      </CollectivesProvider>
+      <MemberInfo data={data} isLoading={isLoading} />
     </SummaryItem>
   );
 }
 
 function AmbassadorMember() {
+  const { data, isLoading } = useAmbassadorMemberData();
   return (
     <SummaryItem title="Ambassador">
-      <CollectivesProvider section="ambassador">
-        <MemberInfo />
-      </CollectivesProvider>
+      <MemberInfo data={data} isLoading={isLoading} />
     </SummaryItem>
   );
 }

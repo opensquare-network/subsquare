@@ -11,7 +11,7 @@ export const PromptTypes = {
   SUCCESS: "success",
 };
 
-const colorStyle = {
+export const colorStyle = {
   [PromptTypes.INFO]: {
     backgroundColor: "var(--theme100)",
     color: "var(--theme500)",

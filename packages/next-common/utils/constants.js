@@ -109,19 +109,11 @@ export const CACHE_KEY = {
   delegationPromptVisible: "delegation-prompt-visible",
   setAvatarPromptVisible: "set-avatar-prompt-visible",
   fellowshipDemotionExpiredVisible: "fellowship-demotion-expired-visible",
-  fellowshipPromotableVisible: "fellowship-promotable-visible",
   fellowshipDemotionExpireRemindVisible:
     "fellowship-demotion-expire-remind-visible",
-  fellowshipOffboardExpiredVisible: "fellowship-offboard-expired-visible",
-  fellowshipOffboardExpireRemindVisible:
-    "fellowship-offboard-expire-remind-visible",
   ambassadorDemotionExpiredVisible: "ambassador-demotion-expired-visible",
-  ambassadorPromotableVisible: "ambassador-promotable-visible",
   ambassadorDemotionExpireRemindVisible:
     "ambassador-demotion-expire-remind-visible",
-  ambassadorOffboardExpiredVisible: "ambassador-offboard-expired-visible",
-  ambassadorOffboardExpireRemindVisible:
-    "ambassador-offboard-expire-remind-visible",
 };
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;

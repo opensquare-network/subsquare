@@ -25,16 +25,7 @@ import useSetAvatarPrompt from "./components/useSetAvatarPrompt";
 import { isEmpty } from "lodash-es";
 import { useEffect, useState } from "react";
 import CollectivesAccountInfo from "./components/collectiveAccountInfo";
-import useFellowshipDemotionExpiredPrompt from "./components/useFellowshipDemotionExpiredPrompt";
-import useFellowshipPromotablePrompt from "./components/useFellowshipPromotablePrompt";
-import useAmbassadorDemotionExpiredPrompt from "./components/useAmbassadorDemotionExpiredPrompt";
-import useAmbassadorPromotablePrompt from "./components/useAmbassadorPromotablePrompt";
-import useFellowshipDemotionExpireRemindPrompt from "./components/useFellowshipDemotionExpireRemindPrompt";
-import useAmbassadorDemotionExpireRemindPrompt from "./components/useAmbassadorDemotionExpireRemindPrompt";
-import useAmbassadorOffboardExpiredPrompt from "./components/useAmbassadorOffboardExpiredPrompt";
-import useFellowshipOffboardExpiredPrompt from "./components/useFellowshipOffboardExpiredPrompt";
-import useAmbassadorOffboardExpireRemindPrompt from "./components/useAmbassadorOffboardExpireRemindPrompt";
-import useFellowshipOffboardExpireRemindPrompt from "./components/useFellowshipOffboardExpireRemindPrompt";
+import CollectivesDemotionPrompt from "./components/collectivesDemotionPrompt";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -179,55 +170,14 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
   const link = useAccountUrl();
   const delegationPrompt = useDelegationPrompt();
   const setAvatarPrompt = useSetAvatarPrompt();
-  const fellowshipDemotionExpiredPrompt = useFellowshipDemotionExpiredPrompt();
-  const fellowshipPromotablePrompt = useFellowshipPromotablePrompt();
-  const fellowshipDemotionExpireRemindPrompt =
-    useFellowshipDemotionExpireRemindPrompt();
-  const fellowshipOffboardExpiredPrompt = useFellowshipOffboardExpiredPrompt();
-  const fellowshipOffboardExpireRemindPrompt =
-    useFellowshipOffboardExpireRemindPrompt();
-
-  const ambassadorDemotionExpiredPrompt = useAmbassadorDemotionExpiredPrompt();
-  const ambassadorPromotablePrompt = useAmbassadorPromotablePrompt();
-  const ambassadorDemotionExpireRemindPrompt =
-    useAmbassadorDemotionExpireRemindPrompt();
-  const ambassadorOffboardExpiredPrompt = useAmbassadorOffboardExpiredPrompt();
-  const ambassadorOffboardExpireRemindPrompt =
-    useAmbassadorOffboardExpireRemindPrompt();
 
   const [prompts, setPrompts] = useState([]);
 
   useEffect(() => {
     setPrompts(
-      [
-        ambassadorDemotionExpiredPrompt,
-        ambassadorPromotablePrompt,
-        ambassadorDemotionExpireRemindPrompt,
-        ambassadorOffboardExpiredPrompt,
-        ambassadorOffboardExpireRemindPrompt,
-        fellowshipDemotionExpiredPrompt,
-        fellowshipPromotablePrompt,
-        fellowshipDemotionExpireRemindPrompt,
-        fellowshipOffboardExpiredPrompt,
-        fellowshipOffboardExpireRemindPrompt,
-        delegationPrompt,
-        setAvatarPrompt,
-      ].filter((item) => !isEmpty(item)),
+      [delegationPrompt, setAvatarPrompt].filter((item) => !isEmpty(item)),
     );
-  }, [
-    delegationPrompt,
-    setAvatarPrompt,
-    fellowshipDemotionExpiredPrompt,
-    fellowshipPromotablePrompt,
-    fellowshipDemotionExpireRemindPrompt,
-    fellowshipOffboardExpiredPrompt,
-    fellowshipOffboardExpireRemindPrompt,
-    ambassadorDemotionExpiredPrompt,
-    ambassadorPromotablePrompt,
-    ambassadorDemotionExpireRemindPrompt,
-    ambassadorOffboardExpiredPrompt,
-    ambassadorOffboardExpireRemindPrompt,
-  ]);
+  }, [delegationPrompt, setAvatarPrompt]);
 
   let assetInfo = <AssetInfo />;
   if (isKintsugi) {
@@ -253,6 +203,7 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
       )}
 
       <ScrollPrompt prompts={prompts} />
+      {isCollectives && <CollectivesDemotionPrompt />}
     </NeutralPanel>
   );
 }
