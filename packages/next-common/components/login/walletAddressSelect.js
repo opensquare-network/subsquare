@@ -2,7 +2,6 @@ import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import AddressSelect from "../addressSelect";
 import SelectWallet from "../wallet/selectWallet";
-import { getMultiSigWallets, getSingleSigWallets, getWallets } from "../../utils/consts/connect";
 import { useChain } from "../../context/chain";
 import ErrorMessage from "../styled/errorMessage";
 import { some } from "lodash-es";
@@ -12,6 +11,7 @@ import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAcco
 import { CONNECT_POPUP_VIEWS } from "next-common/utils/constants";
 import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupView";
 import Loading from "../loading";
+import { useSubstrateWallets } from "next-common/hooks/connect/useSubstrateWallets";
 
 const Label = styled.div`
   font-weight: bold;
@@ -33,6 +33,8 @@ export default function WalletAddressSelect({
   lastUsedAddress,
 }) {
   const chain = useChain();
+  const { singleSigWallets, multisigWallets, allWallets } =
+    useSubstrateWallets();
   const { accounts: accounts, loading } = useSubstrateAccounts({
     wallet: selectedWallet,
   });
@@ -59,9 +61,7 @@ export default function WalletAddressSelect({
     async (account) => {
       setSelectedAccount(account);
 
-      if (
-        !some(getWallets(), { extensionName: selectedWallet?.extensionName })
-      ) {
+      if (!some(allWallets, { extensionName: selectedWallet?.extensionName })) {
         const extensionDapp = await import("@polkadot/extension-dapp");
         await extensionDapp.web3Enable("subsquare");
         const injector = await extensionDapp.web3FromSource(
@@ -73,14 +73,12 @@ export default function WalletAddressSelect({
     [selectedWallet, chain],
   );
 
-  const multisigWallets = getMultiSigWallets();
-
   return (
     <>
       <div className="flex flex-col gap-[8px]">
         <div className="text14Bold text-textPrimary">SingleSig Wallet</div>
         <SelectWallet
-          wallets={getSingleSigWallets()}
+          wallets={singleSigWallets}
           selectedWallet={selectedWallet}
           setSelectedWallet={setSelectedWallet}
           extraWallets={

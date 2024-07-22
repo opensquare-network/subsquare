@@ -1,5 +1,4 @@
 import WalletTypes from "../walletTypes";
-import isEvmChain from "next-common/utils/isEvmChain";
 import {
   WalletMetamask,
   WalletMimir,
@@ -14,9 +13,8 @@ import {
   WalletOkx,
   WalletCoinbase,
 } from "@osn/icons/subsquare";
-import getChainSettings from "../settings";
 
-const polkadotJs = {
+export const polkadotJs = {
   extensionName: WalletTypes.POLKADOT_JS,
   title: "Polkadot.js",
   installUrl:
@@ -48,7 +46,7 @@ export const metamask = {
   logo: WalletMetamask,
 };
 
-const polkagate = {
+export const polkagate = {
   extensionName: WalletTypes.POLKAGATE,
   title: "PolkaGate",
   installUrl:
@@ -56,7 +54,7 @@ const polkagate = {
   logo: WalletPolkagate,
 };
 
-const polkagateSnap = {
+export const polkagateSnap = {
   extensionName: WalletTypes.POLKAGATE_SNAP,
   title: "PolkaGate Snap",
   installUrl: "https://snaps.metamask.io/snap/npm/polkagate/snap/",
@@ -70,14 +68,14 @@ export const nova = {
   logo: WalletNova,
 };
 
-const mimir = {
+export const mimir = {
   extensionName: WalletTypes.MIMIR,
   title: "Mimir",
   installUrl: "https://mimir.global/",
   logo: WalletMimir,
 };
 
-const signet = {
+export const signet = {
   extensionName: WalletTypes.SIGNET,
   title: "Signet",
   installUrl: "https://signet.talisman.xyz/",
@@ -119,28 +117,3 @@ export const allWallets = [
   okxWallet,
   coinbaseWallet,
 ];
-
-export function getWallets() {
-  return [...getSingleSigWallets(), ...getMultiSigWallets()];
-}
-
-export function getSingleSigWallets() {
-  return [polkadotJs, subWallet, talisman, polkagate, polkagateSnap, nova];
-}
-
-export function getMultiSigWallets() {
-  let result = [];
-  if (isEvmChain()) {
-    return result;
-  }
-
-  const chainSetting = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-  if (chainSetting?.multisigWallets?.signet) {
-    result.push(signet);
-  }
-  if (chainSetting?.multisigWallets?.mimir) {
-    result.push(mimir);
-  }
-
-  return result;
-}
