@@ -138,21 +138,45 @@ function Demotion({ lastProof, rank, params }) {
     if (section === "fellowship") {
       if (rank > 0) {
         dispatch(setFellowshipDemotionExpired(isDemotionExpired));
-        dispatch(setFellowshipDemotionExpireRemind(daysRemaining < 28));
+        dispatch(
+          setFellowshipDemotionExpireRemind(
+            demotionPeriod > 0 && daysRemaining < 28,
+          ),
+        );
       } else {
         dispatch(setFellowshipOffboardExpired(isDemotionExpired));
-        dispatch(setFellowshipOffboardExpireRemind(daysRemaining < 60));
+        dispatch(
+          setFellowshipOffboardExpireRemind(
+            demotionPeriod > 0 && daysRemaining < 60,
+          ),
+        );
       }
     } else if (section === "ambassador") {
       if (rank > 0) {
         dispatch(setAmbassadorDemotionExpired(isDemotionExpired));
-        dispatch(setAmbassadorDemotionExpireRemind(daysRemaining < 28));
+        dispatch(
+          setAmbassadorDemotionExpireRemind(
+            demotionPeriod > 0 && daysRemaining < 28,
+          ),
+        );
       } else {
         dispatch(setAmbassadorOffboardExpired(isDemotionExpired));
-        dispatch(setAmbassadorOffboardExpireRemind(daysRemaining < 60));
+        dispatch(
+          setAmbassadorOffboardExpireRemind(
+            demotionPeriod > 0 && daysRemaining < 60,
+          ),
+        );
       }
     }
-  }, [dispatch, section, percentageValue, blockTime, remainingBlocks, rank]);
+  }, [
+    dispatch,
+    section,
+    percentageValue,
+    blockTime,
+    remainingBlocks,
+    rank,
+    demotionPeriod,
+  ]);
 
   const remaining = useRemainingTime(remainingBlocks);
 
@@ -222,7 +246,21 @@ function Promotion({ lastPromotion, rank, params }) {
 }
 
 function MemberInfo() {
+  const dispatch = useDispatch();
   const { data, isLoading } = useMemberData();
+
+  useEffect(() => {
+    dispatch(setFellowshipDemotionExpired(false));
+    dispatch(setFellowshipPromotable(false));
+    dispatch(setFellowshipDemotionExpireRemind(false));
+    dispatch(setFellowshipOffboardExpired(false));
+    dispatch(setFellowshipOffboardExpireRemind(false));
+    dispatch(setAmbassadorDemotionExpired(false));
+    dispatch(setAmbassadorPromotable(false));
+    dispatch(setAmbassadorDemotionExpireRemind(false));
+    dispatch(setAmbassadorOffboardExpired(false));
+    dispatch(setAmbassadorOffboardExpireRemind(false));
+  }, [dispatch]);
 
   if (isLoading) {
     return <FieldLoading />;
