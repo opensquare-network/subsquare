@@ -7,24 +7,15 @@ import tw from "tailwind-styled-components";
 import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 import { addressEllipsis } from "next-common/utils";
-import { useChain } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
 import AccountBalances from "next-common/components/overview/accountInfo/components/accountBalances";
-import useSubKintsugiAccount from "next-common/hooks/account/useSubKintsugiAccount";
 import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import { isCollectivesChain, isKintsugiChain } from "next-common/utils/chain";
-import Link from "next/link";
-import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
-import ScrollPrompt from "next-common/components/scrollPrompt";
-import useDelegationPrompt from "./components/useDelegationPrompt";
-import useSetAvatarPrompt from "./components/useSetAvatarPrompt";
-import { isEmpty } from "lodash-es";
-import { useEffect, useState } from "react";
-import CollectivesAccountInfo from "./components/collectiveAccountInfo";
+import ManageAccountButton from "./components/manageAccountButton";
+import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -82,7 +73,7 @@ const IconButton = tw.div`
   bg-neutral200
 `;
 
-function ProxyTip() {
+export function ProxyTip() {
   const user = useUser();
   const proxyAddress = user?.proxyAddress;
   if (!proxyAddress) {
@@ -105,7 +96,7 @@ function ProxyTip() {
   );
 }
 
-function AccountHead() {
+export function AccountHead() {
   const router = useRouter();
   const user = useUser();
   const isWeb3User = useIsWeb3User();
@@ -147,61 +138,26 @@ function AccountHead() {
   );
 }
 
-function AssetInfo() {
-  useSubscribeAccount();
-  return <AccountBalances />;
-}
-
-function KintAssetInfo() {
-  useSubKintsugiAccount();
-  return <AccountBalances />;
-}
-
-function CollectivesAssetInfo() {
-  useSubscribeAccount();
-  return <CollectivesAccountInfo />;
-}
-
-export default function AccountInfoPanel({ hideManageAccountLink }) {
-  const chain = useChain();
-  const isKintsugi = isKintsugiChain(chain);
-  const isCollectives = isCollectivesChain(chain);
-  const link = useAccountUrl();
-  const delegationPrompt = useDelegationPrompt();
-  const setAvatarPrompt = useSetAvatarPrompt();
-
-  const [prompts, setPrompts] = useState([]);
-
-  useEffect(() => {
-    setPrompts(
-      [delegationPrompt, setAvatarPrompt].filter((item) => !isEmpty(item)),
-    );
-  }, [delegationPrompt, setAvatarPrompt]);
-
-  let assetInfo = <AssetInfo />;
-  if (isKintsugi) {
-    assetInfo = <KintAssetInfo />;
-  } else if (isCollectives) {
-    assetInfo = <CollectivesAssetInfo />;
-  }
-
+export function CommonAccountInfoPanel({ hideManageAccountLink }) {
   return (
     <NeutralPanel className="p-6 space-y-4">
       <ProxyTip />
       <AccountHead />
       <Divider />
 
-      {assetInfo}
+      <AccountBalances />
 
-      {!hideManageAccountLink && (
-        <div className="flex items-end justify-end !mt-2">
-          <Link href={link} className="text14Medium text-theme500">
-            Manage Account
-          </Link>
-        </div>
-      )}
+      {!hideManageAccountLink && <ManageAccountButton />}
 
-      <ScrollPrompt prompts={prompts} />
+      <AccountPanelScrollPrompt />
     </NeutralPanel>
+  );
+}
+
+export default function AccountInfoPanel({ hideManageAccountLink }) {
+  useSubscribeAccount();
+
+  return (
+    <CommonAccountInfoPanel hideManageAccountLink={hideManageAccountLink} />
   );
 }

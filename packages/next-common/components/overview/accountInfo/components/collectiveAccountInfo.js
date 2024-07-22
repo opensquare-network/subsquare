@@ -1,21 +1,16 @@
-import { useCallback, useState } from "react";
 import { isNil } from "lodash-es";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { TotalBalance, Transferrable } from "./accountBalances";
 import SummaryItem from "next-common/components/summary/layout/item";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { useDemotionPeriod } from "next-common/components/collectives/core/member/demotionPeriod";
 import { useRemainingTime } from "next-common/components/remaining";
 import { usePromotionPeriod } from "next-common/components/collectives/core/member/promotionPeriod";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import CollectivesProvider, {
-  useCoreFellowshipPallet,
-  useRankedCollectivePallet,
-} from "next-common/context/collectives/collectives";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
 import { cn } from "next-common/utils";
+import { useAmbassadorMemberData } from "../context/ambassadorMemberDataContext";
+import { useFellowshipMemberData } from "../context/fellowshipMemberDataContext";
 
 const RankLevelNames = [
   "Candidates",
@@ -29,56 +24,6 @@ const RankLevelNames = [
   "Master Constant",
   "Grand Master",
 ];
-
-function useMemberData() {
-  const corePallet = useCoreFellowshipPallet();
-  const collectivePallet = useRankedCollectivePallet();
-
-  const address = useRealAddress();
-
-  const [collectiveMember, setCollectiveMember] = useState();
-  const { loading: isCollectiveMemberLoading } = useSubStorage(
-    collectivePallet,
-    "members",
-    [address],
-    useCallback((rawOptional) => setCollectiveMember(rawOptional.toJSON()), []),
-  );
-
-  const [coreMember, setCoreMember] = useState();
-  const { loading: isCoreMemberLoading } = useSubStorage(
-    corePallet,
-    "member",
-    [address],
-    useCallback((rawOptional) => setCoreMember(rawOptional.toJSON()), []),
-  );
-
-  const [coreParams, setCoreParams] = useState();
-  const { loading: isCoreParamsLoading } = useSubStorage(
-    corePallet,
-    "params",
-    [],
-    useCallback((rawOptional) => setCoreParams(rawOptional.toJSON()), []),
-  );
-
-  const isLoading =
-    isCollectiveMemberLoading || isCoreMemberLoading || isCoreParamsLoading;
-
-  if (isLoading) {
-    return {
-      data: null,
-      isLoading: true,
-    };
-  }
-
-  return {
-    data: {
-      collectiveMember,
-      coreMember,
-      coreParams,
-    },
-    isLoading,
-  };
-}
 
 function Rank({ rank }) {
   const textColor = getRankColor(rank);
@@ -165,9 +110,7 @@ function Promotion({ lastPromotion, rank, params }) {
   );
 }
 
-function MemberInfo() {
-  const { data, isLoading } = useMemberData();
-
+function MemberInfo({ data, isLoading }) {
   if (isLoading) {
     return <FieldLoading />;
   }
@@ -198,21 +141,19 @@ function MemberInfo() {
 }
 
 function FellowshipMember() {
+  const { data, isLoading } = useFellowshipMemberData();
   return (
     <SummaryItem title="Fellowship">
-      <CollectivesProvider section="fellowship">
-        <MemberInfo />
-      </CollectivesProvider>
+      <MemberInfo data={data} isLoading={isLoading} />
     </SummaryItem>
   );
 }
 
 function AmbassadorMember() {
+  const { data, isLoading } = useAmbassadorMemberData();
   return (
     <SummaryItem title="Ambassador">
-      <CollectivesProvider section="ambassador">
-        <MemberInfo />
-      </CollectivesProvider>
+      <MemberInfo data={data} isLoading={isLoading} />
     </SummaryItem>
   );
 }
