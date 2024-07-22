@@ -9,7 +9,7 @@ export default function EVMEntryWalletOption({ onClick = noop }) {
       onClick={onClick}
       logo={<NetworkEthereumLight />}
       title="EVM"
-      extraContent={<ArrowRight className="!w-5 !h-5 text-textSecondary" />}
+      iconRight={<ArrowRight className="w-5 h-5 text-textTertiary" />}
     />
   );
 }

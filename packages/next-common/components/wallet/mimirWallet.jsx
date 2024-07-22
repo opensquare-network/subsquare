@@ -1,8 +1,8 @@
-import { SystemLink } from "@osn/icons/subsquare";
-import WalletOption from "./walletOption";
-import { useInjectedWeb3Extension } from "../../hooks/connect/useInjectedWeb3Extension";
+import { mimir } from "next-common/utils/consts/connect";
 import { useEffect, useState } from "react";
 import { useMountedState } from "react-use";
+import { useInjectedWeb3Extension } from "../../hooks/connect/useInjectedWeb3Extension";
+import WalletOption from "./walletOption";
 
 export default function MimirWallet({
   wallet,
@@ -35,11 +35,7 @@ export default function MimirWallet({
       logo={<Logo className={wallet.title} alt={wallet.title} />}
       title={wallet.title}
       loading={loading}
-      notInstalledContent={
-        <a href={wallet?.installUrl} target="_blank" rel="noreferrer">
-          <SystemLink className="text-theme500 !w-[20px] !h-[20px]" />
-        </a>
-      }
+      installUrl={mimir.installUrl}
     />
   );
 }

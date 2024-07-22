@@ -78,7 +78,7 @@ export const mimir = {
 export const signet = {
   extensionName: WalletTypes.SIGNET,
   title: "Signet",
-  installUrl: "https://signet.talisman.xyz/",
+  installUrl: "https://www.talisman.xyz/signet",
   logo: WalletSignet,
 };
 

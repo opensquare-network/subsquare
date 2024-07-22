@@ -1,6 +1,6 @@
-import WalletOption from "./walletOption";
 import { useSignetSdk } from "next-common/context/signet";
-import { SystemLink } from "@osn/icons/subsquare";
+import { signet } from "next-common/utils/consts/connect";
+import WalletOption from "./walletOption";
 
 export function SignetWallet({
   wallet,
@@ -20,15 +20,7 @@ export function SignetWallet({
       logo={<Logo className={wallet.title} alt={wallet.title} />}
       title={wallet.title}
       loading={loading}
-      notInstalledContent={
-        <a
-          href="https://www.talisman.xyz/signet"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <SystemLink className="text-theme500 !w-[20px] !h-[20px]" />
-        </a>
-      }
+      installUrl={signet.installUrl}
     />
   );
 }

@@ -55,9 +55,17 @@ export default function _Button(props) {
         <SystemLoading className={cn(smallSize && "w-4 h-4")} />
       ) : (
         <>
-          {iconLeft && <span className="inline-flex mr-1">{iconLeft}</span>}
+          {iconLeft && (
+            <span className="button-icon-left inline-flex mr-1">
+              {iconLeft}
+            </span>
+          )}
           {children}
-          {iconRight && <span className="inline-flex ml-1">{iconRight}</span>}
+          {iconRight && (
+            <span className="button-icon-right inline-flex ml-1">
+              {iconRight}
+            </span>
+          )}
         </>
       )}
     </button>
