@@ -28,7 +28,6 @@ import moonriver from "./consts/settings/moonriver";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
-import isEvmChain from "./isEvmChain";
 import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
 
 const optionalNodes =
@@ -123,12 +122,3 @@ export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
 export const chain = CHAIN;
 
 export const IS_SERVER = typeof window === "undefined";
-
-export const CONNECT_POPUP_VIEWS = {
-  SUBSTRATE: "substrate",
-  EVM: "evm",
-  ACCOUNT: "account",
-};
-export const CONNECT_POPUP_DEFAULT_VIEW = isEvmChain()
-  ? CONNECT_POPUP_VIEWS.EVM
-  : CONNECT_POPUP_VIEWS.SUBSTRATE;
