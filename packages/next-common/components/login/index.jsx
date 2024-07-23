@@ -11,7 +11,7 @@ function Title({ isWeb3 = true }) {
   );
 }
 
-export default function LoginContent() {
+export default function Login() {
   const [isWeb3, setIsWeb3] = useState(true);
 
   return (

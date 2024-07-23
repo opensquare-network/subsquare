@@ -1,5 +1,5 @@
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import LoginContent from "./content";
+import Login from ".";
 
 const Popup = dynamicPopup(() => import("../popup/wrapper/Popup"));
 
@@ -11,7 +11,7 @@ export default function LoginPopup(props = {}) {
 
   return (
     <Popup wide {...rest} className="!p-12 max-sm:!p-6 !w-[640px]">
-      <LoginContent />
+      <Login />
     </Popup>
   );
 }
