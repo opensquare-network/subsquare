@@ -1,13 +1,14 @@
+import { ArrowRight, NetworkEthereumLight } from "@osn/icons/subsquare";
 import { noop } from "lodash-es";
-import EVMEntryWalletOption from "next-common/components/wallet/evmEntryWalletOption";
 import { NovaWallet } from "next-common/components/wallet/novaWallet";
 import PolkagateSnapWallet from "next-common/components/wallet/polkagateSnapWallet";
 import SubstrateWallet from "next-common/components/wallet/substrateWallet";
 import { useSubstrateWallets } from "next-common/hooks/connect/useSubstrateWallets";
+import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import isMixedChain from "next-common/utils/isMixedChain";
+import WalletOption from "../../walletOption";
 import { WalletOptionsWrapper } from "../styled";
-import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 
 export default function WalletSubstrateSingleSigOptions({
   selectedWallet,
@@ -64,7 +65,11 @@ export default function WalletSubstrateSingleSigOptions({
       })}
 
       {isMixedChain() && (
-        <EVMEntryWalletOption
+        <WalletOption
+          installed
+          logo={<NetworkEthereumLight />}
+          title="EVM"
+          iconRight={<ArrowRight className="w-5 h-5 text-textTertiary" />}
           onClick={() => {
             setView("evm");
           }}
