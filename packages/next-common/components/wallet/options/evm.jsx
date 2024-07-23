@@ -4,13 +4,11 @@ import { WalletGroupTitle, WalletOptionsWrapper } from "./styled";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import isMixedChain from "next-common/utils/isMixedChain";
 import BackToSubstrateWalletOption from "../backToSubstrateWalletOption";
+import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 
-export default function WalletEVMOptions({
-  setView = noop,
-  selectedWallet,
-  onSelect = noop,
-}) {
+export default function WalletEVMOptions({ selectedWallet, onSelect = noop }) {
   const wallets = useEVMWallets();
+  const { setView } = useWeb3WalletView();
 
   return (
     <div>

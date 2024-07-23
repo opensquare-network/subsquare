@@ -1,33 +1,34 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch } from "react-redux";
-import nextApi from "../services/nextApi";
+import nextApi from "../../services/nextApi";
 import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { nodes } from "next-common/utils/constants";
-import Avatar from "./avatar";
-import DownloadExtension from "./downloadExtension";
-import { addressEllipsis, isSameAddress } from "../utils";
-import { encodeAddressToChain } from "../services/address";
-import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
-import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
-import Popup from "./popup/wrapper/Popup";
-import { fetchAndUpdateUser, useUser, useUserContext } from "../context/user";
-import { useChain } from "../context/chain";
+import Avatar from "../avatar";
+import DownloadExtension from "../downloadExtension";
+import { addressEllipsis, isSameAddress } from "../../utils";
+import { encodeAddressToChain } from "../../services/address";
+import AddressLinkIcon from "../../assets/imgs/icons/address-link.svg";
+import UnLinkIcon from "../../assets/imgs/icons/unlink.svg";
+import {
+  fetchAndUpdateUser,
+  useUser,
+  useUserContext,
+} from "../../context/user";
+import { useChain } from "../../context/chain";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import PrimaryButton from "next-common/lib/button/primary";
-import { NeutralPanel } from "./styled/containers/neutralPanel";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
 import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
-import { useAccount, useConnect } from "wagmi";
-import useInjectedWeb3 from "../hooks/connect/useInjectedWeb3";
+import useInjectedWeb3 from "../../hooks/connect/useInjectedWeb3";
 import { filter, uniqBy } from "lodash-es";
-import WalletSubstrateSingleSigOptions from "./wallet/options/substrate/singleSig";
-import WalletEVMOptions from "./wallet/options/evm";
+import LinkedAddressSelectWalletPopup from "./popup";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -153,18 +154,8 @@ export default function LinkedAddress() {
   const dispatch = useDispatch();
   const userContext = useUserContext();
   const signMsg = useSignMessage();
-  const { connector } = useAccount();
-  const { connect } = useConnect();
 
   const isEVMSelected = !!selectedWallet?.connector;
-
-  const [view, setView] = useState("substrate");
-  useEffect(() => {
-    setView("substrate");
-  }, [showSelectWallet]);
-
-  const isSubstrate = view === "substrate";
-  const isEVM = view === "evm";
 
   const { accounts: substrateAccounts } = useSubstrateAccounts({
     wallet: selectedWallet,
@@ -312,54 +303,18 @@ export default function LinkedAddress() {
             })}
         </AddressWrapper>
       </div>
+
       {showSelectWallet && (
-        <Popup
-          className="w-[640px] p-[48px]"
-          onClose={() => setShowSelectWallet(false)}
-        >
-          <h3 className="text20Bold text-textPrimary">
-            <span>{"Select "}</span>
-            <span className="text-theme500">Wallet</span>
-          </h3>
-
-          {isSubstrate && (
-            <WalletSubstrateSingleSigOptions
-              setView={setView}
-              selectedWallet={selectedWallet}
-              onSelect={(wallet) => {
-                setSelectedWallet(wallet);
-                setShowSelectWallet(false);
-              }}
-            />
-          )}
-
-          {isEVM && (
-            <WalletEVMOptions
-              setView={setView}
-              selectedWallet={selectedWallet}
-              onSelect={(wallet) => {
-                function select() {
-                  setShowSelectWallet(false);
-                  setSelectedWallet(wallet);
-                }
-
-                if (wallet.connector?.id === connector?.id) {
-                  select();
-                  return;
-                }
-
-                connect(
-                  { connector: wallet.connector },
-                  {
-                    onSuccess() {
-                      select();
-                    },
-                  },
-                );
-              }}
-            />
-          )}
-        </Popup>
+        <LinkedAddressSelectWalletPopup
+          selectedWallet={selectedWallet}
+          onClose={() => {
+            setShowSelectWallet(false);
+          }}
+          onSelect={(wallet) => {
+            setSelectedWallet(wallet);
+            setShowSelectWallet(false);
+          }}
+        />
       )}
     </NeutralPanel>
   );

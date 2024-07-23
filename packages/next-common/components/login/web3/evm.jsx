@@ -1,5 +1,5 @@
 import { SystemLoading } from "@osn/icons/subsquare";
-import { find, noop } from "lodash-es";
+import { find } from "lodash-es";
 import AddressSelect from "next-common/components/addressSelect";
 import WalletEVMOptions from "next-common/components/wallet/options/evm";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
@@ -13,7 +13,7 @@ import { useAccount, useConnect } from "wagmi";
 import LoginAddressNotDetectedMessage from "../addressNotDetectedMessage";
 import { Label } from "../styled";
 
-export default function LoginWeb3EVM({ setView = noop }) {
+export default function LoginWeb3EVM() {
   const { lastConnectedAccount } = useConnectedAccountContext();
   const { connector, isConnecting, isConnected } = useAccount();
   const { connect, isError } = useConnect();
@@ -50,7 +50,6 @@ export default function LoginWeb3EVM({ setView = noop }) {
   return (
     <div className="space-y-6">
       <WalletEVMOptions
-        setView={setView}
         selectedWallet={selectedWallet}
         onSelect={(wallet) => {
           connect(

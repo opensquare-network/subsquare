@@ -7,13 +7,14 @@ import { useSubstrateWallets } from "next-common/hooks/connect/useSubstrateWalle
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import isMixedChain from "next-common/utils/isMixedChain";
 import { WalletOptionsWrapper } from "../styled";
+import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 
 export default function WalletSubstrateSingleSigOptions({
-  setView = noop,
   selectedWallet,
   onSelect = noop,
 }) {
   const { singleSigWallets } = useSubstrateWallets();
+  const { setView } = useWeb3WalletView();
 
   if (!singleSigWallets?.length) {
     return null;

@@ -5,7 +5,6 @@ import WalletSubstrateMultiSigOptions from "./multiSig";
 import { noop } from "lodash-es";
 
 export default function WalletSubstrateOptions({
-  setView = noop,
   selectedWallet,
   onSelect = noop,
 }) {
@@ -19,7 +18,6 @@ export default function WalletSubstrateOptions({
           <WalletSubstrateSingleSigOptions
             selectedWallet={selectedWallet}
             onSelect={onSelect}
-            setView={setView}
           />
         </div>
       )}

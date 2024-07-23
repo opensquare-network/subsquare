@@ -1,25 +1,19 @@
 import { noop } from "lodash-es";
-import LoginWeb3Substrate from "./substrate";
-import { useEffect, useState } from "react";
+import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 import LoginWeb3EVM from "./evm";
+import LoginWeb3Substrate from "./substrate";
+import { useUnmount } from "react-use";
 
 export default function LoginWeb3({ setIsWeb3 = noop }) {
-  const [view, setView] = useState("substrate");
+  const { isSubstrateView, isEVMView, resetView } = useWeb3WalletView();
 
-  const isSubstrate = view === "substrate";
-  const isEVM = view === "evm";
-
-  useEffect(() => {
-    return () => {
-      setView("substrate");
-    };
-  }, []);
+  useUnmount(resetView);
 
   return (
     <div className="space-y-6">
-      {isSubstrate && <LoginWeb3Substrate setView={setView} />}
+      {isSubstrateView && <LoginWeb3Substrate />}
 
-      {isEVM && <LoginWeb3EVM setView={setView} />}
+      {isEVMView && <LoginWeb3EVM />}
 
       <div className="text-center text14Medium text-textSecondary">
         Login with{" "}

@@ -1,5 +1,5 @@
 import { SystemLoading } from "@osn/icons/subsquare";
-import { find, noop, some } from "lodash-es";
+import { find, some } from "lodash-es";
 import AddressSelect from "next-common/components/addressSelect";
 import WalletSubstrateOptions from "next-common/components/wallet/options/substrate";
 import { useChain } from "next-common/context/chain";
@@ -12,7 +12,7 @@ import { useCallback, useEffect, useState } from "react";
 import LoginAddressNotDetectedMessage from "../addressNotDetectedMessage";
 import { Label } from "../styled";
 
-export default function LoginWeb3Substrate({ setView = noop }) {
+export default function LoginWeb3Substrate() {
   const chain = useChain();
   const { allWallets } = useSubstrateWallets();
   const [unknownWallet, setUnknownWallet] = useState();
@@ -64,7 +64,6 @@ export default function LoginWeb3Substrate({ setView = noop }) {
       <WalletSubstrateOptions
         selectedWallet={selectedWallet}
         onSelect={setSelectedWallet}
-        setView={setView}
       />
 
       {loading ? (
