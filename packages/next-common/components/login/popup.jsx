@@ -7,10 +7,8 @@ const Popup = dynamicPopup(() => import("../popup/wrapper/Popup"));
  * @param {Parameters<Popup>[0]} props
  */
 export default function LoginPopup(props = {}) {
-  const { ...rest } = props;
-
   return (
-    <Popup wide {...rest} className="!p-12 max-sm:!p-6 !w-[640px]">
+    <Popup wide {...props} className="!p-12 max-sm:!p-6 !w-[640px]">
       <Login />
     </Popup>
   );
