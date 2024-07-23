@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import WalletSubstrateOptions from "./substrate";
 import WalletEVMOptions from "./evm";
 
-export default function WalletOptions({
-  showMultisig = true,
-  onSelect = noop,
-}) {
+export default function WalletOptions({ onSelect = noop }) {
   const [view, setView] = useState("substrate");
   const [selectedWallet, setSelectedWallet] = useState();
 
@@ -31,7 +28,6 @@ export default function WalletOptions({
     <div className="space-y-6">
       {isSubstrate && (
         <WalletSubstrateOptions
-          showMultisig={showMultisig}
           selectedWallet={selectedWallet}
           onSelect={handleOnSelect}
           setView={setView}
