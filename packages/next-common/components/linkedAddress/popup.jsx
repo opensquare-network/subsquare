@@ -27,9 +27,7 @@ export default function LinkedAddressSelectWalletPopup({
       {isSubstrateView && (
         <WalletSubstrateSingleSigOptions
           selectedWallet={selectedWallet}
-          onSelect={(wallet) => {
-            onSelect(wallet);
-          }}
+          onSelect={onSelect}
         />
       )}
 
