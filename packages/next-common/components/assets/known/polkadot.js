@@ -1,10 +1,18 @@
-import {
-  AssetIconDed,
-  AssetIconDota,
-  AssetIconPink,
-  AssetIconUsdc,
-  AssetIconUsdt,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+
+const AssetIconDed = dynamic(() => import("@osn/icons/subsquare/AssetIconDed"));
+const AssetIconDota = dynamic(() =>
+  import("@osn/icons/subsquare/AssetIconDota"),
+);
+const AssetIconPink = dynamic(() =>
+  import("@osn/icons/subsquare/AssetIconPink"),
+);
+const AssetIconUsdc = dynamic(() =>
+  import("@osn/icons/subsquare/AssetIconUsdc"),
+);
+const AssetIconUsdt = dynamic(() =>
+  import("@osn/icons/subsquare/AssetIconUsdt"),
+);
 
 const knownPolkadotAssetHubAssets = [
   {
