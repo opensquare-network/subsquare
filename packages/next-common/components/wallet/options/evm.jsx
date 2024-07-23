@@ -3,8 +3,8 @@ import WalletOption from "next-common/components/wallet/walletOption";
 import { WalletGroupTitle, WalletOptionsWrapper } from "./styled";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import isMixedChain from "next-common/utils/isMixedChain";
-import BackToSubstrateWalletOption from "../backToSubstrateWalletOption";
 import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
+import { ArrowCircleLeft } from "@osn/icons/subsquare";
 
 export default function WalletEVMOptions({ selectedWallet, onSelect = noop }) {
   const wallets = useEVMWallets();
@@ -14,7 +14,10 @@ export default function WalletEVMOptions({ selectedWallet, onSelect = noop }) {
     <div>
       {isMixedChain() && (
         <WalletOptionsWrapper className="mb-6">
-          <BackToSubstrateWalletOption
+          <WalletOption
+            installed
+            logo={<ArrowCircleLeft className="text-textSecondary" />}
+            title="Back to Substrate"
             onClick={() => {
               setView("substrate");
             }}
