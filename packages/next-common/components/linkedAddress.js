@@ -6,7 +6,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { CONNECT_POPUP_VIEWS, nodes } from "next-common/utils/constants";
+import { nodes } from "next-common/utils/constants";
 import Avatar from "./avatar";
 import DownloadExtension from "./downloadExtension";
 import { addressEllipsis, isSameAddress } from "../utils";
@@ -14,7 +14,6 @@ import { encodeAddressToChain } from "../services/address";
 import AddressLinkIcon from "../assets/imgs/icons/address-link.svg";
 import UnLinkIcon from "../assets/imgs/icons/unlink.svg";
 import Popup from "./popup/wrapper/Popup";
-import SelectWallet from "./wallet/selectWallet";
 import { fetchAndUpdateUser, useUser, useUserContext } from "../context/user";
 import { useChain } from "../context/chain";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
@@ -24,15 +23,11 @@ import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
 import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
-import EVMEntryWalletOption from "./wallet/evmEntryWalletOption";
-import isMixedChain from "next-common/utils/isMixedChain";
-import { useConnectPopupView } from "next-common/hooks/connect/useConnectPopupView";
-import BackToSubstrateWalletOption from "./wallet/backToSubstrateWalletOption";
 import { useAccount, useConnect } from "wagmi";
-import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import useInjectedWeb3 from "../hooks/connect/useInjectedWeb3";
 import { filter, uniqBy } from "lodash-es";
-import { useSubstrateWallets } from "next-common/hooks/connect/useSubstrateWallets";
+import WalletSubstrateSingleSigOptions from "./wallet/options/substrate/singleSig";
+import WalletEVMOptions from "./wallet/options/evm";
 
 const InfoWrapper = styled.div`
   background: var(--neutral200);
@@ -163,17 +158,18 @@ export default function LinkedAddress() {
 
   const isEVMSelected = !!selectedWallet?.connector;
 
-  const [view, setView, reset] = useConnectPopupView();
+  const [view, setView] = useState("substrate");
   useEffect(() => {
-    reset();
+    setView("substrate");
   }, [showSelectWallet]);
 
-  const { singleSigWallets } = useSubstrateWallets();
+  const isSubstrate = view === "substrate";
+  const isEVM = view === "evm";
+
   const { accounts: substrateAccounts } = useSubstrateAccounts({
     wallet: selectedWallet,
   });
   const { accounts: evmAccounts } = useEVMAccounts();
-  const evmWallets = useEVMWallets();
 
   const showSelectWalletModal = () => setShowSelectWallet(true);
 
@@ -326,38 +322,21 @@ export default function LinkedAddress() {
             <span className="text-theme500">Wallet</span>
           </h3>
 
-          {view === CONNECT_POPUP_VIEWS.SUBSTRATE && (
-            <SelectWallet
-              wallets={singleSigWallets}
+          {isSubstrate && (
+            <WalletSubstrateSingleSigOptions
+              setView={setView}
               selectedWallet={selectedWallet}
-              setSelectedWallet={setSelectedWallet}
-              onSelect={() => {
+              onSelect={(wallet) => {
+                setSelectedWallet(wallet);
                 setShowSelectWallet(false);
               }}
-              extraWallets={
-                isMixedChain() && (
-                  <EVMEntryWalletOption
-                    onClick={() => {
-                      setView(CONNECT_POPUP_VIEWS.EVM);
-                    }}
-                  />
-                )
-              }
             />
           )}
 
-          {view === CONNECT_POPUP_VIEWS.EVM && (
-            <SelectWallet
-              wallets={evmWallets}
+          {isEVM && (
+            <WalletEVMOptions
+              setView={setView}
               selectedWallet={selectedWallet}
-              beforeWallets={
-                isMixedChain() && (
-                  <>
-                    <BackToSubstrateWalletOption />
-                    <div />
-                  </>
-                )
-              }
               onSelect={(wallet) => {
                 function select() {
                   setShowSelectWallet(false);
