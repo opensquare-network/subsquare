@@ -13,28 +13,23 @@ export default function useSubAllActiveReferenda() {
       return;
     }
 
-    let unsub = null;
-    api.query[pallet].referendumInfoFor
-      .entries((data) => {
-        const result = data
-          .map((item) => {
-            const [
-              {
-                args: [referendumIndex],
-              },
-              referendum,
-            ] = item;
-            return [referendumIndex.toNumber(), referendum.unwrap()?.isOngoing];
-          })
-          .filter(([, isOngoing]) => isOngoing)
-          .map(([referendumIndex]) => referendumIndex);
+    api.query[pallet].referendumInfoFor.entries().then((data) => {
+      const result = data
+        .map((item) => {
+          const [
+            {
+              args: [referendumIndex],
+            },
+            referendum,
+          ] = item;
+          return [referendumIndex.toNumber(), referendum.unwrap()?.isOngoing];
+        })
+        .filter(([, isOngoing]) => isOngoing)
+        .map(([referendumIndex]) => referendumIndex);
 
-        setActiveReferenda(result);
-        setIsLoading(false);
-      })
-      .then((result) => (unsub = result));
-
-    return () => unsub && unsub();
+      setActiveReferenda(result);
+      setIsLoading(false);
+    });
   }, [api, pallet]);
 
   return { activeReferenda, isLoading };
