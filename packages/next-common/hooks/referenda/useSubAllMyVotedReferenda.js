@@ -15,23 +15,28 @@ export default function useSubAllMyVotedReferenda() {
       return;
     }
 
-    api.query[pallet].voting.entries((data) => {
-      const result = data
-        .map((item) => {
-          const [
-            {
-              args: [referendumIndex, voterAddress],
-            },
-          ] = item;
-          const isMyVote = voterAddress.toJSON() === address;
-          return [referendumIndex.toNumber(), isMyVote];
-        })
-        .filter(([, isMyVote]) => isMyVote)
-        .map(([referendumIndex]) => referendumIndex);
+    let unsub = null;
+    api.query[pallet].voting
+      .entries((data) => {
+        const result = data
+          .map((item) => {
+            const [
+              {
+                args: [referendumIndex, voterAddress],
+              },
+            ] = item;
+            const isMyVote = voterAddress.toJSON() === address;
+            return [referendumIndex.toNumber(), isMyVote];
+          })
+          .filter(([, isMyVote]) => isMyVote)
+          .map(([referendumIndex]) => referendumIndex);
 
-      setMyVotedReferenda(result);
-      setIsLoading(false);
-    });
+        setMyVotedReferenda(result);
+        setIsLoading(false);
+      })
+      .then((result) => (unsub = result));
+
+    return () => unsub && unsub();
   }, [api, pallet, address]);
 
   return { myVotedReferenda, isLoading };

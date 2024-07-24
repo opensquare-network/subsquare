@@ -63,11 +63,13 @@ function CommonPostList({
   setIsShowUnVotedOnly,
   pagination,
 }) {
-  const address = useRealAddress();
   const { fellowshipTracks } = usePageProps();
-  const items = posts.map((item) =>
+  const address = useRealAddress();
+
+  const items = (posts || []).map((item) =>
     normalizeFellowshipReferendaListItem(item, fellowshipTracks),
   );
+
   return (
     <PostList
       title="List"
@@ -92,8 +94,8 @@ function CommonPostList({
 }
 
 function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
-  const { posts: unVotedPosts, isLoading } = useMyUnVotedReferendaPosts();
   const { posts } = usePageProps();
+  const { posts: unVotedPosts, isLoading } = useMyUnVotedReferendaPosts();
 
   if (isLoading) {
     return (
