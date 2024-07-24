@@ -11,11 +11,16 @@ export default function useSubAllMyUnVotedReferenda() {
     useSubAllMyVotedReferenda();
 
   const myUnVotedReferenda = useMemo(() => {
-    if (!activeReferenda || !myVotedReferenda) {
+    if (isLoadingActiveReferenda || isLoadingMyVotes) {
       return;
     }
     return difference(activeReferenda, myVotedReferenda);
-  }, [activeReferenda, myVotedReferenda]);
+  }, [
+    activeReferenda,
+    isLoadingActiveReferenda,
+    myVotedReferenda,
+    isLoadingMyVotes,
+  ]);
 
   return {
     myUnVotedReferenda,

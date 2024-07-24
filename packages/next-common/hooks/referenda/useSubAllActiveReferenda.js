@@ -4,7 +4,7 @@ import { useContextApi } from "next-common/context/api";
 export default function useSubAllActiveReferenda() {
   const api = useContextApi();
   const [activeReferenda, setActiveReferenda] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!api) {
@@ -24,8 +24,9 @@ export default function useSubAllActiveReferenda() {
         })
         .filter(([, isOngoing]) => isOngoing)
         .map(([referendumIndex]) => referendumIndex);
+
       setActiveReferenda(result);
-      setIsLoading(true);
+      setIsLoading(false);
     });
   }, [api]);
 

@@ -6,7 +6,7 @@ export default function useSubAllMyVotedReferenda() {
   const api = useContextApi();
   const address = useRealAddress();
   const [myVotedReferenda, setMyVotedReferenda] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!api) {
@@ -26,8 +26,9 @@ export default function useSubAllMyVotedReferenda() {
         })
         .filter(([, isMyVote]) => isMyVote)
         .map(([referendumIndex]) => referendumIndex);
+
       setMyVotedReferenda(result);
-      setIsLoading(true);
+      setIsLoading(false);
     });
   }, [api, address]);
 

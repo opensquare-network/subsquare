@@ -22,17 +22,31 @@ import { usePageProps } from "next-common/context/page";
 function useMyUnVotedReferendaPosts() {
   const [posts, setPosts] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const { myUnVotedReferenda } = useSubAllMyUnVotedReferenda();
-  // console.log({ myUnVotedReferenda, isLoading });
+  const { myUnVotedReferenda, isLoading: isLoadingMyUnVotedReferenda } =
+    useSubAllMyUnVotedReferenda();
 
   useEffect(() => {
-    if (!myUnVotedReferenda) {
+    if (isLoadingMyUnVotedReferenda) {
       return;
     }
-    //TODO: fetch posts of myUnVotedReferenda
-    setPosts([]);
-    setIsLoading(false);
-  }, [myUnVotedReferenda]);
+
+    nextApi
+      .fetch(
+        `${fellowshipReferendumsApi}?simple=1&referendum_index=${myUnVotedReferenda.join(
+          ",",
+        )}`,
+      )
+      .then(({ result, error }) => {
+        if (error) {
+          setPosts([]);
+          return;
+        }
+        setPosts(result);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [myUnVotedReferenda, isLoadingMyUnVotedReferenda]);
 
   return {
     posts,
@@ -82,7 +96,7 @@ function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
   return (
     <PostList
       title="List"
-      titleCount={unVotedPosts.total}
+      titleCount={unVotedPosts.length}
       titleExtra={
         <div className="flex gap-[12px] items-center">
           <UnVotedOnlyOption
