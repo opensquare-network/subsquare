@@ -6,7 +6,8 @@ export const light = {
   navigationActive: "rgba(255,255,255,0.04)",
   navigationBorder: "rgba(255,255,255,0.08)",
   navigationText: "var(--textPrimaryContrast)",
-  navigationTextTertiary: "var(--textSecondaryContrast)",
+  navigationTextTertiary: "var(--textTertiaryContrast)",
+  navigationIcon: "var(--textSecondaryContrast)",
 };
 
 export const dark = {
@@ -16,7 +17,6 @@ export const dark = {
   navigationBg: "rgba(33,36,51,1)",
   navigationActive: "rgba(38,41,56,1)",
   navigationBorder: "rgba(39,42,58,1)",
-  navigationTextTertiary: "var(--textSecondaryContrast)",
 };
 
 export const polkadotAssetHubThemeVars = {
