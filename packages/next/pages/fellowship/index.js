@@ -16,7 +16,7 @@ import NewFellowshipProposalButton from "next-common/components/summary/newFello
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import UnVotedOnlyOption from "next-common/components/referenda/unVotedOnlyOption";
 import useMyUnVotedCollectiveReferenda from "next-common/hooks/referenda/useMyUnVotedCollectiveReferenda";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
@@ -93,6 +93,38 @@ function WithFilterPostList({
   );
 }
 
+function PagedUnVotedOnlyList({
+  posts,
+  isUnVotedOnlyLoading,
+  isShowUnVotedOnly,
+  setIsShowUnVotedOnly,
+}) {
+  const [page, setPage] = useState(1);
+  const pageSize = 25;
+  const total = posts.length || 0;
+
+  const pagedItems = useMemo(
+    () => posts.slice((page - 1) * pageSize, page * pageSize),
+    [page, pageSize, posts],
+  );
+
+  return (
+    <WithFilterPostList
+      posts={pagedItems}
+      total={total}
+      isUnVotedOnlyLoading={isUnVotedOnlyLoading}
+      isShowUnVotedOnly={isShowUnVotedOnly}
+      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
+      pagination={{
+        page,
+        pageSize,
+        total,
+        onPageChange: (_, page) => setPage(page),
+      }}
+    />
+  );
+}
+
 function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
   const { posts } = usePageProps();
   const { posts: unVotedPosts, isLoading } = useMyUnVotedReferendaPosts();
@@ -115,7 +147,7 @@ function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
   }
 
   return (
-    <WithFilterPostList
+    <PagedUnVotedOnlyList
       posts={unVotedPosts}
       total={unVotedPosts.length}
       isUnVotedOnlyLoading={isLoading}
