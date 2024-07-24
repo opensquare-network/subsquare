@@ -14,18 +14,127 @@ import Gov2Summary from "next-common/components/summary/gov2Summary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import UnVotedOnlyOption from "next-common/components/referenda/unVotedOnlyOption";
+import useSubAllMyUnVotedReferenda from "next-common/hooks/referenda/useSubAllMyUnVotedReferenda";
+import { useEffect, useState } from "react";
+import { usePageProps } from "next-common/context/page";
 
-export default function FellowshipPage({
-  posts,
-  fellowshipTracks,
-  fellowshipSummary,
-}) {
-  const title = "Fellowship Referenda";
-  const seoInfo = { title, desc: title };
+function useMyUnVotedReferendaPosts() {
+  const [posts, setPosts] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const { myUnVotedReferenda } = useSubAllMyUnVotedReferenda();
+  // console.log({ myUnVotedReferenda, isLoading });
+
+  useEffect(() => {
+    if (!myUnVotedReferenda) {
+      return;
+    }
+    //TODO: fetch posts of myUnVotedReferenda
+    setPosts([]);
+    setIsLoading(false);
+  }, [myUnVotedReferenda]);
+
+  return {
+    posts,
+    isLoading,
+  };
+}
+
+function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
+  const { posts, fellowshipTracks } = usePageProps();
+
+  const { posts: unVotedPosts, isLoading } = useMyUnVotedReferendaPosts();
+
+  if (isLoading) {
+    const items = (posts.items || []).map((item) =>
+      normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+    );
+
+    return (
+      <PostList
+        title="List"
+        titleCount={posts.total}
+        titleExtra={
+          <div className="flex gap-[12px] items-center">
+            <UnVotedOnlyOption
+              isLoading={isLoading}
+              isOn={isShowUnVotedOnly}
+              setIsOn={setIsShowUnVotedOnly}
+            />
+            <NewFellowshipProposalButton />
+          </div>
+        }
+        category={businessCategory.fellowship}
+        items={items}
+        pagination={{
+          page: posts.page,
+          pageSize: posts.pageSize,
+          total: posts.total,
+        }}
+      />
+    );
+  }
+
+  const items = (unVotedPosts || []).map((item) =>
+    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+  );
+
+  return (
+    <PostList
+      title="List"
+      titleCount={unVotedPosts.total}
+      titleExtra={
+        <div className="flex gap-[12px] items-center">
+          <UnVotedOnlyOption
+            isLoading={isLoading}
+            isOn={isShowUnVotedOnly}
+            setIsOn={setIsShowUnVotedOnly}
+          />
+          <NewFellowshipProposalButton />
+        </div>
+      }
+      category={businessCategory.fellowship}
+      items={items}
+    />
+  );
+}
+
+function FullList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
+  const { posts, fellowshipTracks } = usePageProps();
 
   const items = (posts.items || []).map((item) =>
     normalizeFellowshipReferendaListItem(item, fellowshipTracks),
   );
+
+  return (
+    <PostList
+      title="List"
+      titleCount={posts.total}
+      titleExtra={
+        <div className="flex gap-[12px] items-center">
+          <UnVotedOnlyOption
+            isOn={isShowUnVotedOnly}
+            setIsOn={setIsShowUnVotedOnly}
+          />
+          <NewFellowshipProposalButton />
+        </div>
+      }
+      category={businessCategory.fellowship}
+      items={items}
+      pagination={{
+        page: posts.page,
+        pageSize: posts.pageSize,
+        total: posts.total,
+      }}
+    />
+  );
+}
+
+export default function FellowshipPage({ fellowshipSummary }) {
+  const title = "Fellowship Referenda";
+  const seoInfo = { title, desc: title };
+
+  const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useState(false);
 
   return (
     <CollectivesProvider>
@@ -35,18 +144,17 @@ export default function FellowshipPage({
         description="All active and history referenda in various tracks."
         summary={<Gov2Summary summary={fellowshipSummary} />}
       >
-        <PostList
-          title="List"
-          titleCount={posts.total}
-          titleExtra={<NewFellowshipProposalButton />}
-          category={businessCategory.fellowship}
-          items={items}
-          pagination={{
-            page: posts.page,
-            pageSize: posts.pageSize,
-            total: posts.total,
-          }}
-        />
+        {isShowUnVotedOnly ? (
+          <UnVotedOnlyList
+            isShowUnVotedOnly={isShowUnVotedOnly}
+            setIsShowUnVotedOnly={setIsShowUnVotedOnly}
+          />
+        ) : (
+          <FullList
+            isShowUnVotedOnly={isShowUnVotedOnly}
+            setIsShowUnVotedOnly={setIsShowUnVotedOnly}
+          />
+        )}
       </ListLayout>
     </CollectivesProvider>
   );
