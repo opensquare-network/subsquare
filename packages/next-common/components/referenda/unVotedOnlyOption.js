@@ -11,7 +11,7 @@ export default function UnVotedOnlyOption({ isLoading, isOn, setIsOn }) {
     <div className="flex items-center text12Medium gap-[8px]">
       <div className="flex items-center gap-[4px]">
         <span className="text-textSecondary">Un-voted Only</span>
-        <Tooltip content={"Only show the referenda that I haven’t voted"} />
+        <Tooltip content={"Only referenda I can but haven't voted"} />
       </div>
       {isLoading ? (
         <Loading size={20} />

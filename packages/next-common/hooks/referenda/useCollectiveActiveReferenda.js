@@ -22,10 +22,19 @@ export default function useCollectiveActiveReferenda() {
             },
             referendum,
           ] = item;
-          return [referendumIndex.toNumber(), referendum.unwrap()?.isOngoing];
+          return {
+            referendumIndex: referendumIndex.toNumber(),
+            unwrappedReferendum: referendum.unwrap(),
+          };
         })
-        .filter(([, isOngoing]) => isOngoing)
-        .map(([referendumIndex]) => referendumIndex);
+        .filter(({ unwrappedReferendum }) => unwrappedReferendum?.isOngoing)
+        .map(({ referendumIndex, unwrappedReferendum }) => {
+          const ongoingReferendum = unwrappedReferendum.asOngoing;
+          return {
+            referendumIndex,
+            trackId: ongoingReferendum?.track?.toNumber(),
+          };
+        });
 
       setActiveReferenda(result);
       setIsLoading(false);

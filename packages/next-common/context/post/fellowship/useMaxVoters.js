@@ -28,6 +28,16 @@ export function getAmbassadorMinRankOfClass(trackId) {
   return trackId;
 }
 
+export function getMinRankOfClass(trackId, pallet) {
+  if ("fellowshipCollective" === pallet) {
+    return getFellowshipMinRankOfClass(trackId);
+  } else if ("ambassadorCollective" === pallet) {
+    return getAmbassadorMinRankOfClass(trackId);
+  } else {
+    throw new Error(`Can not get min rank of class for pallet ${pallet}`);
+  }
+}
+
 async function queryMaxVoters(
   api,
   trackId,
@@ -40,15 +50,7 @@ async function queryMaxVoters(
     blockApi = await api.at(blockHash);
   }
 
-  let rank;
-  if ("fellowshipCollective" === pallet) {
-    rank = getFellowshipMinRankOfClass(trackId);
-  } else if ("ambassadorCollective" === pallet) {
-    rank = getAmbassadorMinRankOfClass(trackId);
-  } else {
-    throw new Error(`Can not get min rank of class for pallet ${pallet}`);
-  }
-
+  const rank = getMinRankOfClass(trackId, pallet);
   const count = await blockApi.query[pallet].memberCount(rank);
   return count.toNumber();
 }
