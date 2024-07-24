@@ -15,7 +15,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import UnVotedOnlyOption from "next-common/components/referenda/unVotedOnlyOption";
-import useSubAllMyUnVotedReferenda from "next-common/hooks/referenda/useSubAllMyUnVotedReferenda";
+import useMyUnVotedCollectiveReferenda from "next-common/hooks/referenda/useMyUnVotedCollectiveReferenda";
 import { useEffect, useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -24,7 +24,7 @@ function useMyUnVotedReferendaPosts() {
   const [posts, setPosts] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const { myUnVotedReferenda, isLoading: isLoadingMyUnVotedReferenda } =
-    useSubAllMyUnVotedReferenda();
+    useMyUnVotedCollectiveReferenda();
 
   useEffect(() => {
     if (isLoadingMyUnVotedReferenda) {
@@ -55,7 +55,7 @@ function useMyUnVotedReferendaPosts() {
   };
 }
 
-function CommonPostList({
+function WithFilterPostList({
   posts,
   total,
   isUnVotedOnlyLoading,
@@ -99,7 +99,7 @@ function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
 
   if (isLoading) {
     return (
-      <CommonPostList
+      <WithFilterPostList
         posts={posts.items}
         total={posts.total}
         isUnVotedOnlyLoading={isLoading}
@@ -115,7 +115,7 @@ function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
   }
 
   return (
-    <CommonPostList
+    <WithFilterPostList
       posts={unVotedPosts}
       total={unVotedPosts.length}
       isUnVotedOnlyLoading={isLoading}
@@ -129,7 +129,7 @@ function FullList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
   const { posts } = usePageProps();
 
   return (
-    <CommonPostList
+    <WithFilterPostList
       posts={posts.items}
       total={posts.total}
       isUnVotedOnlyLoading={false}

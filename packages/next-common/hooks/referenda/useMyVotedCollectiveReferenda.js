@@ -3,7 +3,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
-export default function useSubAllMyVotedReferenda() {
+export default function useMyVotedCollectiveReferenda() {
   const api = useContextApi();
   const address = useRealAddress();
   const [myVotedReferenda, setMyVotedReferenda] = useState();

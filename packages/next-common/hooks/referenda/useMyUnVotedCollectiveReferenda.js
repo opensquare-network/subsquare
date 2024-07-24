@@ -1,14 +1,14 @@
 import { difference } from "lodash-es";
-import useSubAllActiveReferenda from "./useSubAllActiveReferenda";
-import useSubAllMyVotedReferenda from "./useSubAllMyVotedReferenda";
+import useCollectiveActiveReferenda from "./useCollectiveActiveReferenda";
+import useMyVotedCollectiveReferenda from "./useMyVotedCollectiveReferenda";
 import { useMemo } from "react";
 
-export default function useSubAllMyUnVotedReferenda() {
+export default function useMyUnVotedCollectiveReferenda() {
   const { activeReferenda, isLoading: isLoadingActiveReferenda } =
-    useSubAllActiveReferenda();
+    useCollectiveActiveReferenda();
 
   const { myVotedReferenda, isLoading: isLoadingMyVotes } =
-    useSubAllMyVotedReferenda();
+    useMyVotedCollectiveReferenda();
 
   const myUnVotedReferenda = useMemo(() => {
     if (isLoadingActiveReferenda || isLoadingMyVotes) {

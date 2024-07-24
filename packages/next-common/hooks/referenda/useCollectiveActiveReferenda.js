@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 
-export default function useSubAllActiveReferenda() {
+export default function useCollectiveActiveReferenda() {
   const api = useContextApi();
   const [activeReferenda, setActiveReferenda] = useState();
   const [isLoading, setIsLoading] = useState(true);
