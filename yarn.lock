@@ -2476,25 +2476,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mimirdev/apps-inject@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "@mimirdev/apps-inject@npm:0.2.1"
+"@mimirdev/apps-inject@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@mimirdev/apps-inject@npm:0.3.0"
   dependencies:
-    "@mimirdev/apps-sdk": 0.1.1
-  checksum: 445523d9d2b4c162a6c26ceb89dc7bf310a5ccd074dcb2d04479341f7e68e3168c6bd79e45ea846476356c2112b9576149d40a4d7fba593cfc36398b840b56cc
+    "@mimirdev/apps-sdk": 0.2.0
+  checksum: bafd17739c5d67aaf742f93d824bda6af986a28778f34d6a6ac037ac630a512d5941fbbf5f5df4749388dc6a735f85aca7c467c3be8369dfc785989a25c78291
   languageName: node
   linkType: hard
 
-"@mimirdev/apps-sdk@npm:0.1.1, @mimirdev/apps-sdk@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@mimirdev/apps-sdk@npm:0.1.1"
+"@mimirdev/apps-sdk@npm:0.2.0, @mimirdev/apps-sdk@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@mimirdev/apps-sdk@npm:0.2.0"
   dependencies:
-    "@polkadot/util": ^12.6.2
     eventemitter3: ^5.0.1
   peerDependencies:
     "@polkadot/api": "*"
     "@polkadot/types": "*"
-  checksum: 5afe62dfcb78f22fd5dd40829ee846131b503a7a925d49fcf54111550734b029b393cc62c583e31b8ba368c91fc121acff3778d7310bcec0b9d2e85d0427f45a
+    "@polkadot/util": "*"
+  checksum: 661a3dd31d13be0b36ad4a8e532287372d0915a7e934d85e87270a7c059ac8fa640903779bc779abdf1e7cc2593cd74ce2b9e3a3a0d7a5fdefdf0d33e9b25c47
   languageName: node
   linkType: hard
 
@@ -12446,8 +12446,8 @@ __metadata:
   dependencies:
     "@apollo/client": ^3.8.8
     "@interlay/monetary-js": 0.5.4
-    "@mimirdev/apps-inject": ^0.2.1
-    "@mimirdev/apps-sdk": ^0.1.1
+    "@mimirdev/apps-inject": ^0.3.0
+    "@mimirdev/apps-sdk": ^0.2.0
     "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.118.0
     "@osn/polkadot-react-identicon": ^1.0.8
