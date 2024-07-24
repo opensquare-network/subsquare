@@ -28,6 +28,10 @@
     background-color: var(--neutral200) !important;
   }
 
+  img {
+    margin: 1rem 0;
+  }
+
   /* inline level */
   a {
     color: var(--sapphire500);
