@@ -18,6 +18,7 @@ import UnVotedOnlyOption from "next-common/components/referenda/unVotedOnlyOptio
 import useSubAllMyUnVotedReferenda from "next-common/hooks/referenda/useSubAllMyUnVotedReferenda";
 import { useEffect, useState } from "react";
 import { usePageProps } from "next-common/context/page";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function useMyUnVotedReferendaPosts() {
   const [posts, setPosts] = useState();
@@ -62,6 +63,7 @@ function CommonPostList({
   setIsShowUnVotedOnly,
   pagination,
 }) {
+  const address = useRealAddress();
   const { fellowshipTracks } = usePageProps();
   const items = posts.map((item) =>
     normalizeFellowshipReferendaListItem(item, fellowshipTracks),
@@ -72,11 +74,13 @@ function CommonPostList({
       titleCount={total}
       titleExtra={
         <div className="flex gap-[12px] items-center">
-          <UnVotedOnlyOption
-            isLoading={isUnVotedOnlyLoading}
-            isOn={isShowUnVotedOnly}
-            setIsOn={setIsShowUnVotedOnly}
-          />
+          {address && (
+            <UnVotedOnlyOption
+              isLoading={isUnVotedOnlyLoading}
+              isOn={isShowUnVotedOnly}
+              setIsOn={setIsShowUnVotedOnly}
+            />
+          )}
           <NewFellowshipProposalButton />
         </div>
       }
