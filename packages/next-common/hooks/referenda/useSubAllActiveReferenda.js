@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
+import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 
 export default function useSubAllActiveReferenda() {
   const api = useContextApi();
   const [activeReferenda, setActiveReferenda] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const pallet = useReferendaFellowshipPallet();
 
   useEffect(() => {
     if (!api) {
       return;
     }
 
-    api.query.fellowshipReferenda.referendumInfoFor.entries((data) => {
+    api.query[pallet].referendumInfoFor.entries((data) => {
       const result = data
         .map((item) => {
           const [
@@ -28,7 +30,7 @@ export default function useSubAllActiveReferenda() {
       setActiveReferenda(result);
       setIsLoading(false);
     });
-  }, [api]);
+  }, [api, pallet]);
 
   return { activeReferenda, isLoading };
 }
