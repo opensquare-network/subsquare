@@ -24,7 +24,7 @@ function Indicator({ className = "" }) {
     <div
       className={cn(
         "absolute w-full h-full",
-        "w-[40%] h-[40%] rounded-[inherit]",
+        "w-[38%] h-[38%] rounded-[inherit]",
         className,
       )}
     />
