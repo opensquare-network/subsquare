@@ -54,32 +54,51 @@ function useMyUnVotedReferendaPosts() {
   };
 }
 
-function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
-  const { posts, fellowshipTracks } = usePageProps();
+function CommonPostList({
+  posts,
+  total,
+  isUnVotedOnlyLoading,
+  isShowUnVotedOnly,
+  setIsShowUnVotedOnly,
+  pagination,
+}) {
+  const { fellowshipTracks } = usePageProps();
+  const items = posts.map((item) =>
+    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+  );
+  return (
+    <PostList
+      title="List"
+      titleCount={total}
+      titleExtra={
+        <div className="flex gap-[12px] items-center">
+          <UnVotedOnlyOption
+            isLoading={isUnVotedOnlyLoading}
+            isOn={isShowUnVotedOnly}
+            setIsOn={setIsShowUnVotedOnly}
+          />
+          <NewFellowshipProposalButton />
+        </div>
+      }
+      category={businessCategory.fellowship}
+      items={items}
+      pagination={pagination}
+    />
+  );
+}
 
+function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
   const { posts: unVotedPosts, isLoading } = useMyUnVotedReferendaPosts();
+  const { posts } = usePageProps();
 
   if (isLoading) {
-    const items = (posts.items || []).map((item) =>
-      normalizeFellowshipReferendaListItem(item, fellowshipTracks),
-    );
-
     return (
-      <PostList
-        title="List"
-        titleCount={posts.total}
-        titleExtra={
-          <div className="flex gap-[12px] items-center">
-            <UnVotedOnlyOption
-              isLoading={isLoading}
-              isOn={isShowUnVotedOnly}
-              setIsOn={setIsShowUnVotedOnly}
-            />
-            <NewFellowshipProposalButton />
-          </div>
-        }
-        category={businessCategory.fellowship}
-        items={items}
+      <CommonPostList
+        posts={posts.items}
+        total={posts.total}
+        isUnVotedOnlyLoading={isLoading}
+        isShowUnVotedOnly={isShowUnVotedOnly}
+        setIsShowUnVotedOnly={setIsShowUnVotedOnly}
         pagination={{
           page: posts.page,
           pageSize: posts.pageSize,
@@ -89,52 +108,27 @@ function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
     );
   }
 
-  const items = (unVotedPosts || []).map((item) =>
-    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
-  );
-
   return (
-    <PostList
-      title="List"
-      titleCount={unVotedPosts.length}
-      titleExtra={
-        <div className="flex gap-[12px] items-center">
-          <UnVotedOnlyOption
-            isLoading={isLoading}
-            isOn={isShowUnVotedOnly}
-            setIsOn={setIsShowUnVotedOnly}
-          />
-          <NewFellowshipProposalButton />
-        </div>
-      }
-      category={businessCategory.fellowship}
-      items={items}
+    <CommonPostList
+      posts={unVotedPosts}
+      total={unVotedPosts.length}
+      isUnVotedOnlyLoading={isLoading}
+      isShowUnVotedOnly={isShowUnVotedOnly}
+      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
     />
   );
 }
 
 function FullList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
-  const { posts, fellowshipTracks } = usePageProps();
-
-  const items = (posts.items || []).map((item) =>
-    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
-  );
+  const { posts } = usePageProps();
 
   return (
-    <PostList
-      title="List"
-      titleCount={posts.total}
-      titleExtra={
-        <div className="flex gap-[12px] items-center">
-          <UnVotedOnlyOption
-            isOn={isShowUnVotedOnly}
-            setIsOn={setIsShowUnVotedOnly}
-          />
-          <NewFellowshipProposalButton />
-        </div>
-      }
-      category={businessCategory.fellowship}
-      items={items}
+    <CommonPostList
+      posts={posts.items}
+      total={posts.total}
+      isUnVotedOnlyLoading={false}
+      isShowUnVotedOnly={isShowUnVotedOnly}
+      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
       pagination={{
         page: posts.page,
         pageSize: posts.pageSize,
