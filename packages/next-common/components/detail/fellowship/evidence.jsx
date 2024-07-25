@@ -11,16 +11,20 @@ import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 
+function ContentLoading() {
+  return (
+    <div className="flex items-center justify-center gap-x-2 text-textTertiary text14Medium">
+      <SystemLoading className="w-5 h-5" />
+      Fetching...
+    </div>
+  );
+}
+
 function IpfsContent({ cid }) {
   const { value, loading, error } = useIpfsContent(cid);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center gap-x-2 text-textTertiary text14Medium">
-        <SystemLoading className="w-5 h-5" />
-        Fetching...
-      </div>
-    );
+    return <ContentLoading />;
   }
 
   if (error) {
@@ -41,12 +45,10 @@ function FellowshipReferendaDetailEvidenceImpl() {
 
   const cid = getCidByEvidence(evidence);
 
-  if (loading) {
-    return null;
-  }
-
   let content;
-  if (notFound) {
+  if (loading) {
+    content = <ContentLoading />;
+  } else if (notFound) {
     content = (
       <WarningInfoPanel className="justify-center">
         <SystemWarning className="w-5 h-5" />
