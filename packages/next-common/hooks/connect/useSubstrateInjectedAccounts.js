@@ -6,10 +6,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
 
-export function useSubstrateInjectedAccounts({ defaultLoading = true } = {}) {
+export function useSubstrateInjectedAccounts() {
   const dispatch = useDispatch();
   const isMounted = useMountedState();
-  const [loading, setLoading] = useState(defaultLoading);
+  const [loading, setLoading] = useState(false);
 
   const [accounts, setAccounts] = useState([]);
 
