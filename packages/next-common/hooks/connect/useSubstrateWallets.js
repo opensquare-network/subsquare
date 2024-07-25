@@ -22,22 +22,22 @@ export function useSubstrateWallets() {
     polkagateSnap,
     nova,
   ];
-  let multisigWallets = [];
+  let multiSigWallets = [];
 
   if (isEvmChain()) {
-    multisigWallets = [];
+    multiSigWallets = [];
   } else {
-    multisigWallets = [
+    multiSigWallets = [
       chainSettings?.multisigWallets?.signet && signet,
       chainSettings?.multisigWallets?.mimir && mimir,
     ].filter(Boolean);
   }
 
-  const allWallets = [...singleSigWallets, ...multisigWallets];
+  const allWallets = [...singleSigWallets, ...multiSigWallets];
 
   return {
     singleSigWallets,
-    multisigWallets,
+    multiSigWallets,
     allWallets,
   };
 }

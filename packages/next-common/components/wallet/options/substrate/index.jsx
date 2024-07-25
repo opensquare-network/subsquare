@@ -8,7 +8,7 @@ export default function WalletSubstrateOptions({
   selectedWallet,
   onSelect = noop,
 }) {
-  const { singleSigWallets, multisigWallets } = useSubstrateWallets();
+  const { singleSigWallets, multiSigWallets } = useSubstrateWallets();
 
   return (
     <>
@@ -22,7 +22,7 @@ export default function WalletSubstrateOptions({
         </div>
       )}
 
-      {multisigWallets?.length && (
+      {multiSigWallets?.length && (
         <div>
           <WalletGroupTitle>MultiSig Wallets</WalletGroupTitle>
           <WalletSubstrateMultiSigOptions
