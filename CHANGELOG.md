@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.2.0
+
+date: 2024-07-25
+
+- [Big]Support assethub, now features implemented includes assets transfer and all assets metadata list.
+- [Big]Refactor address connect related components.
+- Add templates on preimages page.
+- Fix markdown previewer for code block view and styles.
+- Prevent multiple extensions popup when login.
+- Remove new tag from referenda whales and statistics tab.
+- Set nav menu collapsed as default.
+- Increase cookie expire time.
+- Refactor: take place of useClickOutside with useClickAway.
+- Add remark template to fellowship new referenda popup.
+- Improve the style of new referenda templates.
+- Cache metadata for assethub chain to improve the performance of querying stable coin treasury.  
+- Fix page height by sidebar height on proposal detail page.
+- [Big]Show on-chain evidence for polkadot collectives including fellowship and ambassador.
+- Check permissions for collective(fellowship/ambassador) vote and refactor the vote popup.
+- Make the fellowship induction address input component more obvious.
+- Show un-voted fellowship referenda for members.
+- Refine account panel for collectives to show fellowship and ambassador status.
+- Show related referenda on fellowship core member card.
+- Upgrade the dependence to polkadot api.
+- Extract useSubStorage to simplify storage subscription.
+- Other code refactor and fix styles.
+
 ### 4.1.1
 
 date: 2024-07-11
