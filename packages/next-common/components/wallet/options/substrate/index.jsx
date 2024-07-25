@@ -12,7 +12,7 @@ export default function WalletSubstrateOptions({
 
   return (
     <>
-      {singleSigWallets?.length && (
+      {!!singleSigWallets?.length && (
         <div>
           <WalletGroupTitle>SingleSig Wallets</WalletGroupTitle>
           <WalletSubstrateSingleSigOptions
@@ -22,7 +22,7 @@ export default function WalletSubstrateOptions({
         </div>
       )}
 
-      {multiSigWallets?.length && (
+      {!!multiSigWallets?.length && (
         <div>
           <WalletGroupTitle>MultiSig Wallets</WalletGroupTitle>
           <WalletSubstrateMultiSigOptions
