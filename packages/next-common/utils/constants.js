@@ -122,3 +122,6 @@ export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
 export const chain = CHAIN;
 
 export const IS_SERVER = typeof window === "undefined";
+
+export const WALLET_TIMEOUT_ERROR_TEXT =
+  "The wallet request timed out. Please refresh the page and try again later.";
