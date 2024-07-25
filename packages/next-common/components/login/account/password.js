@@ -1,8 +1,6 @@
 import React from "react";
-import Input from "../input";
-import {
-  Label,
-} from "./styled";
+import Input from "../../input";
+import { Label } from "../styled";
 
 export default function Password({ value, error, onChange }) {
   return (
