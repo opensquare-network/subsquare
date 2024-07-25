@@ -105,7 +105,7 @@ const Item = styled(Flex)`
 `;
 
 function Account({ account }) {
-  const settings = useChainSettings();
+  const { identity: identityChain } = useChainSettings();
   const [identity, setIdentity] = useState(null);
   const normalizedAddr = normalizeAddress(account?.address);
   const maybeEvmAddress = tryConvertToEvmAddress(normalizedAddr);
@@ -115,11 +115,11 @@ function Account({ account }) {
     setIdentity(null);
     if (account?.address) {
       fetchIdentity(
-        settings.identity,
-        encodeAddressToChain(account.address, settings.identity),
+        identityChain,
+        encodeAddressToChain(account.address, identityChain),
       ).then((identity) => setIdentity(identity));
     }
-  }, [account?.address, settings]);
+  }, [account?.address, identityChain]);
 
   return (
     <>
