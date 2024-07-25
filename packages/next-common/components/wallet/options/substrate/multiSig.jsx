@@ -9,15 +9,15 @@ export default function WalletSubstrateMultiSigOptions({
   selectedWallet,
   onSelect = noop,
 }) {
-  const { multisigWallets } = useSubstrateWallets();
+  const { multiSigWallets } = useSubstrateWallets();
 
-  if (!multisigWallets?.length) {
+  if (!multiSigWallets?.length) {
     return null;
   }
 
   return (
     <WalletOptionsWrapper>
-      {(multisigWallets || []).map((wallet) => {
+      {(multiSigWallets || []).map((wallet) => {
         const selected = wallet.extensionName === selectedWallet?.extensionName;
 
         if (wallet.extensionName === WalletTypes.SIGNET) {
