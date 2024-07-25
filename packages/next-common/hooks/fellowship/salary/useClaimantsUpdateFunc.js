@@ -10,10 +10,10 @@ import { useDispatch } from "react-redux";
 export default function useClaimantsFellowshipUpdateFunc() {
   const dispatch = useDispatch();
   const section = useCollectivesContext();
-  const chainSettings = useChainSettings();
+  const { blockTime: settingBlockTime } = useChainSettings();
 
   return useCallback(async () => {
-    const blockTime = chainSettings.blockTime || defaultBlockTime;
+    const blockTime = settingBlockTime || defaultBlockTime;
 
     const timers = [1, 2];
     // eslint-disable-next-line no-unused-vars
@@ -25,5 +25,5 @@ export default function useClaimantsFellowshipUpdateFunc() {
       }
       await sleep(blockTime);
     }
-  }, [dispatch, chainSettings]);
+  }, [dispatch, settingBlockTime]);
 }

@@ -59,7 +59,7 @@ const NameWrapper = styled.div`
 `;
 
 export default function Account({ account }) {
-  const settings = useChainSettings();
+  const { identity: identityChain } = useChainSettings();
   const [identity, setIdentity] = useState(null);
 
   const address = normalizeAddress(account?.address);
@@ -72,11 +72,11 @@ export default function Account({ account }) {
     setIdentity(null);
     if (account?.address) {
       fetchIdentity(
-        settings.identity,
-        encodeAddressToChain(account.address, settings.identity),
+        identityChain,
+        encodeAddressToChain(account.address, identityChain),
       ).then((identity) => setIdentity(identity));
     }
-  }, [account?.address, settings]);
+  }, [account?.address, identityChain]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import getChainSettings from "../utils/consts/settings";
 import democracy from "../utils/consts/menu/democracy";
 import treasury, {
@@ -20,7 +20,7 @@ export function useChain() {
 
 export function useChainSettings() {
   const chain = useChain();
-  return getChainSettings(chain);
+  return useMemo(() => getChainSettings(chain), [chain]);
 }
 
 export function useDecimals() {
