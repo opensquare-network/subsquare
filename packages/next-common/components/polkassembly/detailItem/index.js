@@ -29,7 +29,7 @@ export default function DetailItem({ postReactions }) {
         </PostMetaBase>
       }
     >
-      <ArticleContent postReactions={postReactions} />
+      <ArticleContent className="mt-6" postReactions={postReactions} />
     </DetailContentBase>
   );
 }
