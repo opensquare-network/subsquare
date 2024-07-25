@@ -14,18 +14,173 @@ import Gov2Summary from "next-common/components/summary/gov2Summary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import UnVotedOnlyOption from "next-common/components/referenda/unVotedOnlyOption";
+import useMyUnVotedCollectiveReferenda from "next-common/hooks/referenda/useMyUnVotedCollectiveReferenda";
+import { useEffect, useMemo, useState } from "react";
+import { usePageProps } from "next-common/context/page";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
-export default function FellowshipPage({
+function useMyUnVotedReferendaPosts() {
+  const [posts, setPosts] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const { myUnVotedReferenda, isLoading: isLoadingMyUnVotedReferenda } =
+    useMyUnVotedCollectiveReferenda();
+
+  useEffect(() => {
+    if (isLoadingMyUnVotedReferenda) {
+      return;
+    }
+
+    nextApi
+      .fetch(
+        `${fellowshipReferendumsApi}?simple=1&referendum_index=${myUnVotedReferenda.join(
+          ",",
+        )}`,
+      )
+      .then(({ result, error }) => {
+        if (error) {
+          setPosts([]);
+          return;
+        }
+        setPosts(result);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [myUnVotedReferenda, isLoadingMyUnVotedReferenda]);
+
+  return {
+    posts,
+    isLoading,
+  };
+}
+
+function WithFilterPostList({
   posts,
-  fellowshipTracks,
-  fellowshipSummary,
+  total,
+  isUnVotedOnlyLoading,
+  isShowUnVotedOnly,
+  setIsShowUnVotedOnly,
+  pagination,
 }) {
+  const { fellowshipTracks } = usePageProps();
+  const address = useRealAddress();
+
+  const items = (posts || []).map((item) =>
+    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+  );
+
+  return (
+    <PostList
+      title="List"
+      titleCount={total}
+      titleExtra={
+        <div className="flex gap-[12px] items-center">
+          {address && (
+            <UnVotedOnlyOption
+              isLoading={isUnVotedOnlyLoading}
+              isOn={isShowUnVotedOnly}
+              setIsOn={setIsShowUnVotedOnly}
+            />
+          )}
+          <NewFellowshipProposalButton />
+        </div>
+      }
+      category={businessCategory.fellowship}
+      items={items}
+      pagination={pagination}
+    />
+  );
+}
+
+function PagedUnVotedOnlyList({
+  posts,
+  isUnVotedOnlyLoading,
+  isShowUnVotedOnly,
+  setIsShowUnVotedOnly,
+}) {
+  const [page, setPage] = useState(1);
+  const pageSize = 25;
+  const total = posts.length || 0;
+
+  const pagedItems = useMemo(
+    () => posts.slice((page - 1) * pageSize, page * pageSize),
+    [page, pageSize, posts],
+  );
+
+  return (
+    <WithFilterPostList
+      posts={pagedItems}
+      total={total}
+      isUnVotedOnlyLoading={isUnVotedOnlyLoading}
+      isShowUnVotedOnly={isShowUnVotedOnly}
+      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
+      pagination={{
+        page,
+        pageSize,
+        total,
+        onPageChange: (_, page) => setPage(page),
+      }}
+    />
+  );
+}
+
+function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
+  const { posts } = usePageProps();
+  const { posts: unVotedPosts, isLoading } = useMyUnVotedReferendaPosts();
+
+  if (isLoading) {
+    return (
+      <WithFilterPostList
+        posts={posts.items}
+        total={posts.total}
+        isUnVotedOnlyLoading={isLoading}
+        isShowUnVotedOnly={isShowUnVotedOnly}
+        setIsShowUnVotedOnly={setIsShowUnVotedOnly}
+        pagination={{
+          page: posts.page,
+          pageSize: posts.pageSize,
+          total: posts.total,
+        }}
+      />
+    );
+  }
+
+  return (
+    <PagedUnVotedOnlyList
+      posts={unVotedPosts}
+      total={unVotedPosts.length}
+      isUnVotedOnlyLoading={isLoading}
+      isShowUnVotedOnly={isShowUnVotedOnly}
+      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
+    />
+  );
+}
+
+function FullList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
+  const { posts } = usePageProps();
+
+  return (
+    <WithFilterPostList
+      posts={posts.items}
+      total={posts.total}
+      isUnVotedOnlyLoading={false}
+      isShowUnVotedOnly={isShowUnVotedOnly}
+      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
+      pagination={{
+        page: posts.page,
+        pageSize: posts.pageSize,
+        total: posts.total,
+      }}
+    />
+  );
+}
+
+export default function FellowshipPage({ fellowshipSummary }) {
   const title = "Fellowship Referenda";
   const seoInfo = { title, desc: title };
 
-  const items = (posts.items || []).map((item) =>
-    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
-  );
+  const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useState(false);
 
   return (
     <CollectivesProvider>
@@ -35,18 +190,17 @@ export default function FellowshipPage({
         description="All active and history referenda in various tracks."
         summary={<Gov2Summary summary={fellowshipSummary} />}
       >
-        <PostList
-          title="List"
-          titleCount={posts.total}
-          titleExtra={<NewFellowshipProposalButton />}
-          category={businessCategory.fellowship}
-          items={items}
-          pagination={{
-            page: posts.page,
-            pageSize: posts.pageSize,
-            total: posts.total,
-          }}
-        />
+        {isShowUnVotedOnly ? (
+          <UnVotedOnlyList
+            isShowUnVotedOnly={isShowUnVotedOnly}
+            setIsShowUnVotedOnly={setIsShowUnVotedOnly}
+          />
+        ) : (
+          <FullList
+            isShowUnVotedOnly={isShowUnVotedOnly}
+            setIsShowUnVotedOnly={setIsShowUnVotedOnly}
+          />
+        )}
       </ListLayout>
     </CollectivesProvider>
   );

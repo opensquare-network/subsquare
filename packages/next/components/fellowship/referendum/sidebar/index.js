@@ -15,28 +15,21 @@ import { isNil, isUndefined, noop } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
-import {
-  getAmbassadorMinRankOfClass,
-  getFellowshipMinRankOfClass,
-} from "next-common/context/post/fellowship/useMaxVoters";
+import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
 import { useTrack } from "next-common/context/post/gov2/track";
 import Tooltip from "next-common/components/tooltip";
 import dynamic from "next/dynamic";
-const MyCollectiveVote = dynamic(() => import("next-common/components/collectives/referenda/myCollectiveVote"), {
-  ssr: false,
-});
+const MyCollectiveVote = dynamic(
+  () => import("next-common/components/collectives/referenda/myCollectiveVote"),
+  {
+    ssr: false,
+  },
+);
 
 function useMinRank() {
   const { id: trackId } = useTrack();
-
   const collectivePallet = useRankedCollectivePallet();
-  if ("fellowshipCollective" === collectivePallet) {
-    return getFellowshipMinRankOfClass(trackId);
-  } else if ("ambassadorCollective" === collectivePallet) {
-    return getAmbassadorMinRankOfClass(trackId);
-  } else {
-    throw new Error(`Can not get min rank of class for pallet ${collectivePallet}`);
-  }
+  return getMinRankOfClass(trackId, collectivePallet);
 }
 
 function CollectiveVote({ onClick = noop }) {
