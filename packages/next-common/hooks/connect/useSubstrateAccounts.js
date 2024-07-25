@@ -10,6 +10,8 @@ import { normalizedSubstrateAccounts } from "next-common/utils/substrate";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
+import { withTimeout } from "next-common/utils/withTimeout";
+import { WALLET_TIMEOUT_ERROR_TEXT } from "next-common/utils/constants";
 
 export function useSubstrateAccounts({
   wallet,
@@ -36,24 +38,32 @@ export function useSubstrateAccounts({
       }
 
       try {
-        const walletExtension = await extension.enable("subsquare");
-        const extensionAccounts = reject(
-          await walletExtension.accounts?.get(),
-          { type: ChainTypes.ETHEREUM },
-        );
-
-        if (isMounted()) {
-          setAccounts(
-            normalizedSubstrateAccounts(
-              extensionAccounts,
-              targetWallet?.extensionName,
-            ),
+        await withTimeout(async () => {
+          const walletExtension = await extension.enable("subsquare");
+          const extensionAccounts = reject(
+            await walletExtension.accounts?.get(),
+            { type: ChainTypes.ETHEREUM },
           );
+
+          if (isMounted()) {
+            setAccounts(
+              normalizedSubstrateAccounts(
+                extensionAccounts,
+                targetWallet?.extensionName,
+              ),
+            );
+          }
+
+          onAccessGranted && onAccessGranted();
+        }, 10000);
+      } catch (e) {
+        let message = e.message;
+
+        if (e.name === "TimeoutError") {
+          message = WALLET_TIMEOUT_ERROR_TEXT;
         }
 
-        onAccessGranted && onAccessGranted();
-      } catch (e) {
-        dispatch(newWarningToast(e.message));
+        dispatch(newWarningToast(message));
       }
     },
     [
