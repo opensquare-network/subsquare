@@ -34,6 +34,7 @@ async function extractActiveReferenda(api, entries) {
 export function useOnChainActiveReferenda(pallet) {
   const api = useContextApi();
   const [activeReferenda, setActiveReferenda] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!api) {
@@ -44,8 +45,9 @@ export function useOnChainActiveReferenda(pallet) {
       .then((entries) => extractActiveReferenda(api, entries))
       .then((activeReferenda) => {
         setActiveReferenda(activeReferenda);
+        setIsLoading(false);
       });
   }, [api, pallet]);
 
-  return activeReferenda;
+  return { activeReferenda, isLoading };
 }
