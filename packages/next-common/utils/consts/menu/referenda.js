@@ -29,6 +29,7 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
       Chains.darwinia2,
       Chains.westend,
       Chains.basilisk,
+      Chains.altair,
     ]),
     activeCount: totalActiveCount,
     icon: <MenuReferenda />,

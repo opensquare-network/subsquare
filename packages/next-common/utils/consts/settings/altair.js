@@ -66,6 +66,7 @@ const altair = {
     "The home for financing assets on Kusama. Powered by Centrifuge.",
   modules: {
     democracy: true,
+    referenda: true,
   },
   cssVarsLight: {
     theme100: "rgba(255,192,18,0.10)",
