@@ -16,7 +16,7 @@ function useApproveAndPromoteReferenda() {
     return activeReferenda
       .map(({ referendumIndex, call }) => {
         if (!call) {
-          return false;
+          return;
         }
 
         const { section, method } = call;
