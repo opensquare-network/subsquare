@@ -1,27 +1,19 @@
 import { MenuHorn } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
-import Loading from "next-common/components/loading";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
 
 export default function MemberEvidenceInfo({ className }) {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
+  const totalEvidences = evidences.length || 0;
+  if (isLoading || totalEvidences <= 0) {
+    return null;
+  }
 
-  let content = null;
-
-  if (isLoading) {
-    content = (
-      <div className="flex items-center justify-center">
-        <Loading size={20} />
-      </div>
-    );
-  } else {
-    const totalEvidences = evidences.length || 0;
-    const evidencesToBeHandled =
-      evidences.filter((evidence) => isNil(evidence.referendumIndex)).length ||
-      0;
-
-    content = (
+  const evidencesToBeHandled =
+    (evidences || []).filter((evidence) => isNil(evidence.referendumIndex)).length;
+  return (
+    <SecondaryCard className={className}>
       <div className="flex gap-[16px]">
         <div>
           <div className="bg-theme100 rounded-[8px] p-[8px]">
@@ -41,8 +33,6 @@ export default function MemberEvidenceInfo({ className }) {
           </ul>
         </div>
       </div>
-    );
-  }
-
-  return <SecondaryCard className={className}>{content}</SecondaryCard>;
+    </SecondaryCard>
+  );
 }
