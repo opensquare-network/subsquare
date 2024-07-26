@@ -52,7 +52,7 @@ export default function useEvidencesCombineReferenda() {
 
   const combined = useMemo(() => {
     if (isLoading) {
-      return;
+      return evidences;
     }
 
     return evidences.map((evidence) => {
