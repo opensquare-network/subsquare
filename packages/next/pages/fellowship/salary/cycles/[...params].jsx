@@ -16,6 +16,7 @@ import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/use
 import useFetchFellowshipSalaryClaimants from "next-common/hooks/fellowship/salary/useFetchFellowshipSalaryClaimants";
 import { MySalaryClaimantProvider } from "next-common/context/fellowship/myClaimant";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { defaultPageSize } from "next-common/utils/constants";
 
 export default function FellowshipSalaryCyclePage({ cycle, fellowshipParams }) {
   useFetchFellowshipSalaryClaimants();
@@ -61,15 +62,21 @@ export const getServerSideProps = withFellowshipSalaryCommonProps(
         { result: unRegisteredPaymentsResult },
         { result: feedsResult },
       ] = await Promise.all([
-        nextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id), { page }),
+        nextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id), {
+          page,
+          pageSize: defaultPageSize,
+        }),
         nextApi.fetch(fellowshipSalaryCycleRegisteredPaymentsApi(id), {
           page,
+          pageSize: defaultPageSize,
         }),
         nextApi.fetch(fellowshipSalaryCycleUnregisteredPaymentsApi(id), {
           page,
+          pageSize: defaultPageSize,
         }),
         nextApi.fetch(fellowshipSalaryCycleFeedsApi(id), {
           page,
+          pageSize: defaultPageSize,
         }),
       ]);
 
