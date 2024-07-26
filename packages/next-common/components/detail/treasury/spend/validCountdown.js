@@ -16,6 +16,7 @@ export default function TreasurySpendValidCountdown() {
   if (
     isNil(validFrom) ||
     isNil(indexer?.blockHeight) ||
+    isNil(latestHeight) ||
     latestHeight > validFrom
   ) {
     return null;
