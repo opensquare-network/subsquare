@@ -113,6 +113,7 @@ export const CACHE_KEY = {
   ambassadorDemotionExpiredVisible: "ambassador-demotion-expired-visible",
   ambassadorDemotionExpireRemindVisible:
     "ambassador-demotion-expire-remind-visible",
+  extensionUpdateMetadata: "extensionUpdateMetadata",
 };
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
