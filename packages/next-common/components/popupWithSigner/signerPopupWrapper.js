@@ -16,7 +16,7 @@ function PopupImpl({ children }) {
   const { onClose } = usePopupParams();
 
   if (!user) {
-    return <LoginPopup onClose={onClose} showRegister={false} />;
+    return <LoginPopup onClose={onClose} />;
   }
 
   if (!isKeyRegisteredUser(user) && !connectedAccount) {
