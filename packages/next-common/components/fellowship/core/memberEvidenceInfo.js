@@ -1,26 +1,27 @@
 import { MenuHorn } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
+import Loading from "next-common/components/loading";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
-import styled from "styled-components";
-
-const InfoItem = styled.li`
-  padding-left: 1em;
-`;
 
 export default function MemberEvidenceInfo({ className }) {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
 
+  let content = null;
+
   if (isLoading) {
-    return null;
-  }
+    content = (
+      <div className="flex items-center justify-center">
+        <Loading size={20} />
+      </div>
+    );
+  } else {
+    const totalEvidences = evidences.length || 0;
+    const evidencesToBeHandled =
+      evidences.filter((evidence) => isNil(evidence.referendumIndex)).length ||
+      0;
 
-  const totalEvidences = evidences.length || 0;
-  const evidencesToBeHandled =
-    evidences.filter((evidence) => isNil(evidence.referendumIndex)).length || 0;
-
-  return (
-    <SecondaryCard className={className}>
+    content = (
       <div className="flex gap-[16px]">
         <div>
           <div className="bg-theme100 rounded-[8px] p-[8px]">
@@ -33,17 +34,15 @@ export default function MemberEvidenceInfo({ className }) {
         </div>
         <div className="text-textPrimary text14Medium">
           <ul className="list-disc list-inside [&_li]">
-            <InfoItem>
+            <li className="pl-[1em]">
               {evidencesToBeHandled} evidences to be handled in total{" "}
               {totalEvidences} evidences.
-            </InfoItem>
-            <InfoItem>
-              The demotion period for 12 members is approaching.
-            </InfoItem>
-            <InfoItem>Promotions are available for 3 members.</InfoItem>
+            </li>
           </ul>
         </div>
       </div>
-    </SecondaryCard>
-  );
+    );
+  }
+
+  return <SecondaryCard className={className}>{content}</SecondaryCard>;
 }
