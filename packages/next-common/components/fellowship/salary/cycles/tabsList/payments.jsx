@@ -12,6 +12,7 @@ import { useFellowshipSalaryCycleTimeAgeColumn } from "./columns/timeAge";
 import { useState } from "react";
 import { FellowshipSalaryCycleDetailListTemplateTable } from "./template";
 import CheckableTag from "next-common/components/tags/checkable";
+import { defaultPageSize } from "next-common/utils/constants";
 
 export function useFellowshipSalaryCyclePaymentsTabItem() {
   const { registeredPayments, unRegisteredPayments, id } = usePageProps();
@@ -54,6 +55,9 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
         api={{
           path: fellowshipSalaryCycleRegisteredPaymentsApi(id),
           initData: registeredPayments,
+          params: {
+            pageSize: defaultPageSize,
+          },
         }}
       />
     ),
@@ -68,6 +72,9 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
         api={{
           path: fellowshipSalaryCycleUnregisteredPaymentsApi(id),
           initData: unRegisteredPayments,
+          params: {
+            pageSize: defaultPageSize,
+          },
         }}
       />
     ),
