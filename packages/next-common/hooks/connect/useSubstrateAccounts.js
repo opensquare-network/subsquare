@@ -13,14 +13,18 @@ import { useMountedState } from "react-use";
 import { withTimeout } from "next-common/utils/withTimeout";
 import { WALLET_TIMEOUT_ERROR_TEXT } from "next-common/utils/constants";
 
-export function useSubstrateAccounts({ wallet, onAccessGranted = noop } = {}) {
+export function useSubstrateAccounts({
+  wallet,
+  onAccessGranted = noop,
+  defaultLoading = false,
+} = {}) {
   const dispatch = useDispatch();
   const isMounted = useMountedState();
   const { loading: loadingWeb3 } = useInjectedWeb3();
   const getInjectedWeb3Extension = useGetInjectedWeb3ExtensionFn();
   const { chainType } = useChainSettings();
   const signetAccounts = useSignetAccounts();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(defaultLoading);
 
   const [accounts, setAccounts] = useState([]);
 
