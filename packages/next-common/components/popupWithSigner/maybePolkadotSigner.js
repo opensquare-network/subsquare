@@ -10,7 +10,10 @@ export default function MaybePolkadotSigner({ children }) {
     extensionName: lastConnectedAccount?.wallet,
   });
 
-  const { accounts, loading } = useSubstrateAccounts({ wallet });
+  const { accounts, loading } = useSubstrateAccounts({
+    wallet,
+    defaultLoading: true,
+  });
 
   if (loading) {
     return null;
