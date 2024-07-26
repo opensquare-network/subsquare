@@ -5,7 +5,7 @@ import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineR
 
 export default function MemberEvidenceInfo({ className }) {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
-  const totalEvidences = evidences.length || 0;
+  const totalEvidences = (evidences || []).length || 0;
   if (isLoading || totalEvidences <= 0) {
     return null;
   }
