@@ -12,13 +12,13 @@ import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { find } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
-import { getTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 
 export default function CreateFellowshipCoreMemberProposalSubmitButton({
   enactment,
   who,
   rank,
   action = "",
+  trackName,
 }) {
   useFetchFellowshipCoreMembers();
   const members = useSelector(fellowshipCoreMembersSelector);
@@ -31,7 +31,6 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   const onClose = usePopupOnClose();
   const router = useRouter();
   const listPageType = useListPageType();
-  const trackName = getTrackNameFromRank(rank);
 
   const disabled = !myRankOk || !who || !rank;
 

@@ -6,6 +6,7 @@ import { useState } from "react";
 import AdvanceSettings from "../common/advanceSettings";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import CreateFellowshipCoreMemberProposalSubmitButton from "./createFellowshipCoreMemberProposalSubmitButton";
+import { getTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 
 export default function NewFellowshipCoreMemberReferendumInnerPopup() {
   const { onClose } = usePopupParams();
@@ -16,6 +17,8 @@ export default function NewFellowshipCoreMemberReferendumInnerPopup() {
     useEnactmentBlocksField();
 
   const [toRank, setToRank] = useState();
+
+  const trackName = getTrackNameFromRank(toRank);
 
   return (
     <Popup title="New Promote Proposal" onClose={onClose} wide>
@@ -28,6 +31,7 @@ export default function NewFellowshipCoreMemberReferendumInnerPopup() {
           enactment={enactment}
           rank={toRank}
           action="promote"
+          trackName={trackName}
         />
       </div>
     </Popup>
