@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside";
+import { useClickAway } from "react-use";
 import {
   OptionItem,
   OptionWrapper,
@@ -51,7 +51,7 @@ export function CommentContextMenu() {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   const onCopy = () => {
     copy(
@@ -84,7 +84,7 @@ export function PostContextMenu({ editable, setIsAppend, setIsEdit }) {
   const type = useDetailType();
   const isSimaDiscussion = type === detailPageCategory.POST;
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   let linkOrUnlinkMenuItem = (
     <LinkMenuItem setShowLinkPopup={setShowLinkPopup} setShow={setShow} />
