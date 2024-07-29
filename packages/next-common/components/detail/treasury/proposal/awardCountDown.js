@@ -16,7 +16,7 @@ export default function TreasuryAwardCountDown() {
   const [period, setPeriod] = useState(null);
   const [gone, setGone] = useState(null);
   const estimatedBlocksTime = useEstimateBlocksTime(period - gone);
-  const [rawApprovals] = useCall(api?.query?.treasury?.approvals, []);
+  const { value: rawApprovals } = useCall(api?.query?.treasury?.approvals, []);
   const { proposalIndex } = useOnchainData();
 
   useEffect(() => {

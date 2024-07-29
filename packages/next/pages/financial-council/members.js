@@ -10,7 +10,7 @@ export default function MembersPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useContextApi();
-  const [members] = useCall(api?.query?.financialCouncil?.members, []);
+  const { value: members } = useCall(api?.query?.financialCouncil?.members, []);
   const prime = usePrime();
   useEffect(() => {
     if (members) {

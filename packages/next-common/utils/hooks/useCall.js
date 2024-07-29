@@ -4,10 +4,11 @@ import { useMountedState } from "react-use";
 const callCache = {};
 
 function useCall(fn, params = [], { cacheKey = "", trigger } = {}) {
-  const [result, setResult] = useState();
+  const [value, setValue] = useState();
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const isMounted = useMountedState();
+
   useEffect(() => {
     if (!fn) {
       return;
@@ -16,7 +17,7 @@ function useCall(fn, params = [], { cacheKey = "", trigger } = {}) {
     if (cacheKey) {
       const cache = callCache[cacheKey];
       if (cache) {
-        setResult(cache);
+        setValue(cache);
         setLoaded(true);
         return;
       }
@@ -29,7 +30,7 @@ function useCall(fn, params = [], { cacheKey = "", trigger } = {}) {
           callCache[cacheKey] = value;
         }
         if (isMounted()) {
-          setResult(value);
+          setValue(value);
           setLoaded(true);
         }
       })
@@ -37,7 +38,8 @@ function useCall(fn, params = [], { cacheKey = "", trigger } = {}) {
         setLoading(false);
       });
   }, [fn, cacheKey, trigger, ...params]);
-  return [result, loading, loaded];
+
+  return { value, loading, loaded };
 }
 
 export default useCall;

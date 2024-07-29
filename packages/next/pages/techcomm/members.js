@@ -12,7 +12,7 @@ export default function MembersPage() {
   const type = detailPageCategory.TECH_COMM_MOTION;
   const api = useContextApi();
   const councilName = toApiCouncil(chain, type);
-  const [members, loadingMembers] = useCall(
+  const { value: members, loading: loadingMembers } = useCall(
     api?.query?.[councilName]?.members,
     [],
   );

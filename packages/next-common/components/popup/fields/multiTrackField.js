@@ -21,7 +21,7 @@ export default function MultiTrack({
   const address = signerAccount?.realAddress;
 
   const api = useContextApi();
-  let [myVotingTuple, isLoading] = useCall(
+  let { value: myVotingTuple, loading: isLoading } = useCall(
     api?.query?.convictionVoting?.votingFor.entries,
     [address],
   );
