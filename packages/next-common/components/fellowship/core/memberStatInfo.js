@@ -22,9 +22,13 @@ function useCountOfMembersAboutToDemotionExpire() {
   const blockTime = useSelector(blockTimeSelector);
 
   const countOfMembersAboutToDemotionExpire = useMemo(() => {
-    return coreMembers.filter(coreMember => {
-      const { status: { lastProof }, rank } = coreMember;
-      if (rank <= 0) { // this warning is for members page, so we should filter out candidates
+    return coreMembers.filter((coreMember) => {
+      const {
+        status: { lastProof },
+        rank,
+      } = coreMember;
+      if (rank <= 0) {
+        // this warning is for members page, so we should filter out candidates
         return false;
       }
 
@@ -35,8 +39,10 @@ function useCountOfMembersAboutToDemotionExpire() {
         params,
       });
 
-      return demotionPeriod > 0 &&
-        new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20) // less than 20 days
+      return (
+        demotionPeriod > 0 &&
+        new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20)
+      ); // less than 20 days
     }).length;
   }, [coreMembers, isLoading, latestHeight, blockTime, params]);
 
@@ -103,7 +109,7 @@ export default function MemberStatInfo({ className }) {
             )}
             {countOfMembersAboutToDemotionExpire > 0 && (
               <li className="pl-[1em]">
-                {countOfMembersAboutToDemotionExpire} members' demotion period is about to reached in under 20 days.
+                {`${countOfMembersAboutToDemotionExpire} members' demotion period is about to reached in under 20 days.`}
               </li>
             )}
           </ul>
