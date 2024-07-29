@@ -22,7 +22,7 @@ export default function NewMemberPromotionReferendumInnerPopup() {
   }
 
   const { onClose } = usePopupParams();
-  const { value: who, component: beneficiaryField } = useBeneficiaryField({
+  const { value: who, component: whoField } = useBeneficiaryField({
     title: "Who",
   });
   const { value: trackId } = useTrackField();
@@ -33,7 +33,7 @@ export default function NewMemberPromotionReferendumInnerPopup() {
 
   return (
     <Popup title="New Promote Proposal" onClose={onClose} wide>
-      {beneficiaryField}
+      {whoField}
       <RankField title="To Rank" rank={toRank} setRank={setToRank} />
       <AdvanceSettings>
         {enactmentField}
