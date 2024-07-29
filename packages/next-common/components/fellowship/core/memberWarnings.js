@@ -42,7 +42,7 @@ function useDemotionExpirationCounts() {
       } else {
         return { members, candidates: candidates + 1 };
       }
-    }, {members: 0, candidates: 0});
+    }, { members: 0, candidates: 0 });
   }, [coreMembers, isLoading, latestHeight, blockTime, params]);
 
   return {
