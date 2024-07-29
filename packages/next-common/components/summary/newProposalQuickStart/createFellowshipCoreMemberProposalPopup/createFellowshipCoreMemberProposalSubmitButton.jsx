@@ -17,7 +17,8 @@ import { getTrackNameFromRank } from "next-common/components/fellowship/core/mem
 export default function CreateFellowshipCoreMemberProposalSubmitButton({
   enactment,
   who,
-  toRank,
+  rank,
+  action = "",
 }) {
   useFetchFellowshipCoreMembers();
   const members = useSelector(fellowshipCoreMembersSelector);
@@ -30,9 +31,9 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   const onClose = usePopupOnClose();
   const router = useRouter();
   const listPageType = useListPageType();
-  const trackName = getTrackNameFromRank(toRank);
+  const trackName = getTrackNameFromRank(rank);
 
-  const disabled = !myRankOk || !who || !toRank;
+  const disabled = !myRankOk || !who || !rank;
 
   let corePallet;
   let referendaPallet;
@@ -45,18 +46,17 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   }
 
   const getTxFunc = useCallback(async () => {
-    if (!api || disabled) {
+    if (!api || disabled || !action) {
       return;
     }
 
-    // TODO: fellowship template, promote fn can be retain fn
-    const proposal = api.tx[corePallet].promote(who, toRank);
+    const proposal = api.tx[corePallet][action](who, rank);
     return api.tx[referendaPallet].submit(
       { FellowshipOrigins: trackName },
       { Inline: proposal.method.toHex() },
       enactment,
     );
-  }, [api, disabled, who, toRank, corePallet, referendaPallet, enactment]);
+  }, [api, disabled, who, rank, corePallet, referendaPallet, enactment]);
 
   return (
     <Tooltip
