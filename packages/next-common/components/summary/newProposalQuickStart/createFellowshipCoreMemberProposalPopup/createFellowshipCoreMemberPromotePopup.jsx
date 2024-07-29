@@ -8,7 +8,7 @@ import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import CreateFellowshipCoreMemberProposalSubmitButton from "./createFellowshipCoreMemberProposalSubmitButton";
 import { getTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 
-export default function NewFellowshipCoreMemberReferendumInnerPopup() {
+export default function NewFellowshipCoreMemberPromoteReferendumInnerPopup() {
   const { onClose } = usePopupParams();
   const { value: who, component: whoField } = useBeneficiaryField({
     title: "Who",

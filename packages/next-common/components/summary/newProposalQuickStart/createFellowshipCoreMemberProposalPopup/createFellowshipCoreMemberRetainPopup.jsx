@@ -7,7 +7,7 @@ import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellow
 import { useSelector } from "react-redux";
 import AdvanceSettings from "../common/advanceSettings";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
-import CreateFellowshipCoreMemberProposalSubmitButton from "../createFellowshipCoreMemberProposalPopup/createFellowshipCoreMemberProposalSubmitButton";
+import CreateFellowshipCoreMemberProposalSubmitButton from "./createFellowshipCoreMemberProposalSubmitButton";
 import { find } from "lodash-es";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
 
