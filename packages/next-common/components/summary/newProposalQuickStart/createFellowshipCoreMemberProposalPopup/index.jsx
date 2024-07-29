@@ -26,7 +26,8 @@ export default function NewFellowshipCoreMemberReferendumInnerPopup() {
         <CreateFellowshipCoreMemberProposalSubmitButton
           who={who}
           enactment={enactment}
-          toRank={toRank}
+          rank={toRank}
+          action="promote"
         />
       </div>
     </Popup>
