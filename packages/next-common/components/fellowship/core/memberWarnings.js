@@ -67,7 +67,7 @@ function useEvidencesStat() {
   };
 }
 
-export default function MemberStatInfo({ className }) {
+export default function MemberWarnings({ className }) {
   const {
     countOfMembersAboutToDemotionExpire,
     isLoading: isAboutToDemotionExpireLoading,
