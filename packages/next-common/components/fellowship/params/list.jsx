@@ -64,7 +64,7 @@ export default function FellowshipParamsList({ rank, params }) {
       columns={columns}
       noDataText="No Params"
       rows={rows}
-      highlightedIndexes={[rank]}
+      highlightedIndexes={[rank - 1]}
     />
   );
 }
