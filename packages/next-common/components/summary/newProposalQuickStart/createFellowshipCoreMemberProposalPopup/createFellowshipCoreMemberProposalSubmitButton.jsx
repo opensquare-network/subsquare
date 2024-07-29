@@ -36,9 +36,12 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
 
   const disabled = !myRankOk || !who || !toRank;
 
-  let corePallet = "fellowshipCore";
-  let referendaPallet = "fellowshipReferenda";
-  if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
+  let corePallet;
+  let referendaPallet;
+  if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
+    corePallet = "fellowshipCore";
+    referendaPallet = "fellowshipReferenda";
+  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
     corePallet = "ambassadorCore";
     referendaPallet = "ambassadorReferenda";
   }

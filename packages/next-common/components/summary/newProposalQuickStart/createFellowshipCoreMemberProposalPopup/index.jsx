@@ -14,8 +14,10 @@ import { useState } from "react";
 export default function NewMemberPromotionReferendumInnerPopup() {
   const listPageType = useListPageType();
 
-  let pallet = "fellowshipReferenda";
-  if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
+  let pallet;
+  if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
+    pallet = "fellowshipReferenda";
+  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
     pallet = "ambassadorReferenda";
   }
 
