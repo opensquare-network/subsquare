@@ -14,40 +14,40 @@ import { ONE_DAY } from "next-common/utils/constants";
 
 const days20 = 20 * ONE_DAY;
 
-function useCountOfMembersAboutToDemotionExpire() {
+function useDemotionExpirationCounts() {
   const { members: coreMembers, isLoading } = useCoreMembersWithRank();
   const params = useCoreFellowshipParams();
 
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
 
-  const countOfMembersAboutToDemotionExpire = useMemo(() => {
-    return coreMembers.filter((coreMember) => {
-      const {
-        status: { lastProof },
-        rank,
-      } = coreMember;
-      if (rank <= 0) {
-        // this warning is for members page, so we should filter out candidates
-        return false;
-      }
-
+  const { members: membersCount, candidates: candidatesCount } = useMemo(() => {
+    return coreMembers.reduce((result, coreMember) => {
+      const { status: { lastProof }, rank } = coreMember;
       const { remainingBlocks, demotionPeriod } = calculateDemotionPeriod({
         latestHeight,
         rank,
         lastProof,
         params,
       });
+      const willExpire = demotionPeriod > 0 &&
+        new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20); // less than 20 days
+      if (!willExpire) {
+        return result;
+      }
 
-      return (
-        demotionPeriod > 0 &&
-        new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20)
-      ); // less than 20 days
-    }).length;
+      const { members, candidates } = result;
+      if (rank > 0) {
+        return { members: members + 1, candidates };
+      } else {
+        return { members, candidates: candidates + 1 };
+      }
+    }, {members: 0, candidates: 0});
   }, [coreMembers, isLoading, latestHeight, blockTime, params]);
 
   return {
-    countOfMembersAboutToDemotionExpire,
+    membersCount,
+    candidatesCount,
     isLoading,
   };
 }
@@ -69,9 +69,10 @@ function useEvidencesStat() {
 
 export default function MemberWarnings({ className }) {
   const {
-    countOfMembersAboutToDemotionExpire,
-    isLoading: isAboutToDemotionExpireLoading,
-  } = useCountOfMembersAboutToDemotionExpire();
+    membersCount,
+    candidatesCount,
+    isLoading: isCheckingDemotion,
+  } = useDemotionExpirationCounts();
 
   const {
     totalEvidences,
@@ -81,8 +82,8 @@ export default function MemberWarnings({ className }) {
 
   if (
     isEvidenceLoading ||
-    isAboutToDemotionExpireLoading ||
-    (totalEvidences <= 0 && countOfMembersAboutToDemotionExpire <= 0)
+    isCheckingDemotion ||
+    (totalEvidences <= 0 && membersCount <= 0 && candidatesCount <= 0)
   ) {
     return null;
   }
@@ -107,11 +108,18 @@ export default function MemberWarnings({ className }) {
                 {totalEvidences} evidences.
               </li>
             )}
-            {countOfMembersAboutToDemotionExpire > 0 && (
+            {membersCount > 0 && (
               <li className="pl-[1em]">
-                {`${countOfMembersAboutToDemotionExpire} members' demotion period is about to reached in under 20 days.`}
+                {`${membersCount} members' demotion period is about to reached in under 20 days.`}
               </li>
             )}
+            {
+              candidatesCount > 0 && (
+                <li className="pl-[1em]">
+                  {`${candidatesCount} candidates' offboard period is about to reached in under 20 days.`}
+                </li>
+              )
+            }
           </ul>
         </div>
       </div>
