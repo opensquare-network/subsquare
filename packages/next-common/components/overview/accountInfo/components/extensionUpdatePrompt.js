@@ -87,9 +87,10 @@ export default function ExtensionUpdatePrompt() {
   );
 
   useEffect(() => {
-    if (!api || isLoadingInjectedWeb3Extension) {
+    if (!api || isLoadingInjectedWeb3Extension || !injectedWeb3Extension) {
       return;
     }
+
     injectedWeb3Extension
       .enable("subsquare")
       .then(async (extension) => {
@@ -134,8 +135,7 @@ export default function ExtensionUpdatePrompt() {
       cacheKey={CACHE_KEY.extensionUpdateMetadata}
       type={PromptTypes.WARNING}
     >
-      The extension needs to updated with the latest chain metadata and
-      properties.{" "}
+      The extension can be updated with the latest chain metadata and properties.&nbsp;
       <span
         className="cursor-pointer underline"
         onClick={() => updateMeta(chainInfo)}
