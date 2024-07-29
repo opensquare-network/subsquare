@@ -2,20 +2,21 @@ import { useEffect, useState } from "react";
 import { getSpecTypes } from "@polkadot/types-known";
 import { formatBalance, isNumber } from "@polkadot/util";
 import { base64Encode } from "@polkadot/util-crypto";
-import { defaults as addressDefaults } from "@polkadot/util-crypto/address/defaults";
 import { useContextApi } from "next-common/context/api";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function useChainInfo() {
   const api = useContextApi();
   const [chainInfo, setChainInfo] = useState();
+  const { decimals, ss58Format } = useChainSettings();
 
   useEffect(() => {
     if (!api) {
       return;
     }
 
-    const DEFAULT_DECIMALS = api.registry.createType("u32", 12);
-    const DEFAULT_SS58 = api.registry.createType("u32", addressDefaults.prefix);
+    const DEFAULT_DECIMALS = api.registry.createType("u32", decimals);
+    const DEFAULT_SS58 = api.registry.createType("u32", ss58Format);
     const isEthereum = api.registry.chainIsEthereum;
 
     api.rpc.system.chain().then((systemChain) => {
@@ -44,7 +45,7 @@ export default function useChainInfo() {
 
       setChainInfo(chainInfo);
     });
-  }, [api]);
+  }, [api, decimals, ss58Format]);
 
   return chainInfo;
 }
