@@ -10,11 +10,14 @@ export default function Members({ category }) {
   const [loading, setLoading] = useState(true);
   const api = useContextApi();
   const { hasElections } = useChainSettings();
-  const [electionsInfo, loadingElectionsInfo] = useCall(
+  const { value: electionsInfo, loading: loadingElectionsInfo } = useCall(
     api?.derive?.elections?.info,
     [],
   );
-  const [allVotes, loadingAllVotes] = useCall(api?.derive?.council?.votes, []);
+  const { value: allVotes, loading: loadingAllVotes } = useCall(
+    api?.derive?.council?.votes,
+    [],
+  );
   const prime = usePrime();
 
   useEffect(() => {

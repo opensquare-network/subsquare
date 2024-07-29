@@ -10,7 +10,10 @@ export default function AdvisoryCommitteeMembersPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const api = useContextApi();
-  const [members] = useCall(api?.query?.advisoryCommittee?.members, []);
+  const { value: members } = useCall(
+    api?.query?.advisoryCommittee?.members,
+    [],
+  );
   const prime = usePrime();
   useEffect(() => {
     if (members) {

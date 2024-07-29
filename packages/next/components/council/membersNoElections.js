@@ -7,7 +7,7 @@ import { useContextApi } from "next-common/context/api";
 export default function Members({ category, type }) {
   const api = useContextApi();
   const councilName = useCouncilName(type);
-  const [members, loadingMembers] = useCall(
+  const { value: members, loading: loadingMembers } = useCall(
     api?.query[councilName]?.members,
     [],
   );

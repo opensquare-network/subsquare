@@ -6,7 +6,10 @@ export function useUnscrupulousAccounts() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const api = useContextApi();
-  const [accounts] = useCall(api?.query?.alliance?.unscrupulousAccounts, []);
+  const { value: accounts } = useCall(
+    api?.query?.alliance?.unscrupulousAccounts,
+    [],
+  );
   useEffect(() => {
     if (accounts) {
       setData(accounts.toJSON());
