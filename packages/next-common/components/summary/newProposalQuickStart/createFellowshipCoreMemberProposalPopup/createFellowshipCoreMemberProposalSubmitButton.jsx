@@ -6,16 +6,15 @@ import { listPageCategory } from "next-common/utils/consts/business/category";
 import { getEventData } from "next-common/utils/sendTx";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
-import useTrackDetail from "../../newProposalPopup/useTrackDetail";
 import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useSelector } from "react-redux";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { find } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
+import { getTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 
 export default function CreateFellowshipCoreMemberProposalSubmitButton({
-  trackId,
   enactment,
   who,
   toRank,
@@ -30,9 +29,8 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   const api = useContextApi();
   const onClose = usePopupOnClose();
   const router = useRouter();
-  const track = useTrackDetail(trackId);
   const listPageType = useListPageType();
-  const origin = track?.origin;
+  const trackName = getTrackNameFromRank(toRank);
 
   const disabled = !myRankOk || !who || !toRank;
 
@@ -54,7 +52,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
     // TODO: fellowship template, promote fn can be retain fn
     const proposal = api.tx[corePallet].promote(who, toRank);
     return api.tx[referendaPallet].submit(
-      { FellowshipOrigins: origin },
+      { FellowshipOrigins: trackName },
       { Inline: proposal.method.toHex() },
       enactment,
     );
