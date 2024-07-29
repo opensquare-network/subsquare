@@ -22,7 +22,12 @@ export function usePageProperties() {
  * @returns {listPageCategory[keyof typeof listPageCategory]}>
  */
 export function useListPageType() {
-  const { listPageType } = usePageProperties();
+  let { listPageType } = usePageProperties();
+
+  // treat page `/fellowship` as `fellowship/referenda`
+  if (listPageType === "fellowship") {
+    listPageType = listPageCategory.FELLOWSHIP_REFERENDA;
+  }
 
   if (!Object.values(listPageCategory).includes(listPageType)) {
     throw new Error(`Unknown list page type: ${listPageType}`);
