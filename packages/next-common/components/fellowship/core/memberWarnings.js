@@ -1,4 +1,3 @@
-import { MenuHorn } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
@@ -11,6 +10,9 @@ import BigNumber from "bignumber.js";
 import useCoreMembersWithRank from "next-common/components/collectives/core/useCoreMembersWithRank";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { ONE_DAY } from "next-common/utils/constants";
+import dynamic from "next/dynamic";
+
+const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
 const days20 = 20 * ONE_DAY;
 
@@ -22,27 +24,34 @@ function useDemotionExpirationCounts() {
   const blockTime = useSelector(blockTimeSelector);
 
   const { members: membersCount, candidates: candidatesCount } = useMemo(() => {
-    return coreMembers.reduce((result, coreMember) => {
-      const { status: { lastProof }, rank } = coreMember;
-      const { remainingBlocks, demotionPeriod } = calculateDemotionPeriod({
-        latestHeight,
-        rank,
-        lastProof,
-        params,
-      });
-      const willExpire = demotionPeriod > 0 &&
-        new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20); // less than 20 days
-      if (!willExpire) {
-        return result;
-      }
+    return coreMembers.reduce(
+      (result, coreMember) => {
+        const {
+          status: { lastProof },
+          rank,
+        } = coreMember;
+        const { remainingBlocks, demotionPeriod } = calculateDemotionPeriod({
+          latestHeight,
+          rank,
+          lastProof,
+          params,
+        });
+        const willExpire =
+          demotionPeriod > 0 &&
+          new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20); // less than 20 days
+        if (!willExpire) {
+          return result;
+        }
 
-      const { members, candidates } = result;
-      if (rank > 0) {
-        return { members: members + 1, candidates };
-      } else {
-        return { members, candidates: candidates + 1 };
-      }
-    }, { members: 0, candidates: 0 });
+        const { members, candidates } = result;
+        if (rank > 0) {
+          return { members: members + 1, candidates };
+        } else {
+          return { members, candidates: candidates + 1 };
+        }
+      },
+      { members: 0, candidates: 0 },
+    );
   }, [coreMembers, isLoading, latestHeight, blockTime, params]);
 
   return {
@@ -113,13 +122,11 @@ export default function MemberWarnings({ className }) {
                 {`${membersCount} members' demotion period is about to reached in under 20 days.`}
               </li>
             )}
-            {
-              candidatesCount > 0 && (
-                <li className="pl-[1em]">
-                  {`${candidatesCount} candidates' offboard period is about to reached in under 20 days.`}
-                </li>
-              )
-            }
+            {candidatesCount > 0 && (
+              <li className="pl-[1em]">
+                {`${candidatesCount} candidates' offboard period is about to reached in under 20 days.`}
+              </li>
+            )}
           </ul>
         </div>
       </div>
