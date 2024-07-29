@@ -26,7 +26,7 @@ export default function ChildBountyDetail() {
       title={<PostTitle />}
       meta={<BountyPostMeta isChild />}
     >
-      <ArticleContent setIsEdit={setIsEdit} />
+      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
     </DetailContentBase>
   );
 }

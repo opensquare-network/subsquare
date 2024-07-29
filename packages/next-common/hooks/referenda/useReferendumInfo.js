@@ -7,7 +7,7 @@ export function useReferendumInfo() {
   const onchain = useOnchainData();
   const infoOnStore = useSelector(referendumInfoSelector);
 
-  return onchain.info || infoOnStore;
+  return infoOnStore || onchain.info;
 }
 
 export function useDecisionDeposit() {

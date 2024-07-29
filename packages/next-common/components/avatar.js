@@ -10,6 +10,7 @@ import { useAddressAvatarMap } from "next-common/context/avatar";
 import useAvatarInfo from "next-common/hooks/useAvatarInfo";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { AvatarImg } from "./user/styled";
+import { SystemAvatarDefault } from "@osn/icons/subsquare";
 
 const StyledIdenticon = styled(Identicon)`
   circle:first-child {
@@ -85,5 +86,5 @@ export default function Avatar({ address, size = 24 }) {
     );
   }
 
-  return null;
+  return <SystemAvatarDefault width={size} height={size} />;
 }

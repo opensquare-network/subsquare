@@ -12,6 +12,7 @@ import Gov2Summary from "next-common/components/summary/gov2Summary";
 import normalizeAmbassadorReferendaListItem from "next-common/utils/gov2/list/normalizeAmbassadorReferendaListItem";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function AmbassadorReferendaPage({
   posts,
@@ -26,24 +27,26 @@ export default function AmbassadorReferendaPage({
   );
 
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={title}
-      description="All active and history ambassador referenda in various tracks."
-      summary={<Gov2Summary summary={ambassadorSummary} />}
-    >
-      <PostList
-        title="List"
-        titleCount={posts.total}
-        category={businessCategory.ambassadorReferenda}
-        items={items}
-        pagination={{
-          page: posts.page,
-          pageSize: posts.pageSize,
-          total: posts.total,
-        }}
-      />
-    </ListLayout>
+    <CollectivesProvider section="ambassador">
+      <ListLayout
+        seoInfo={seoInfo}
+        title={title}
+        description="All active and history ambassador referenda in various tracks."
+        summary={<Gov2Summary summary={ambassadorSummary} />}
+      >
+        <PostList
+          title="List"
+          titleCount={posts.total}
+          category={businessCategory.ambassadorReferenda}
+          items={items}
+          pagination={{
+            page: posts.page,
+            pageSize: posts.pageSize,
+            total: posts.total,
+          }}
+        />
+      </ListLayout>
+    </CollectivesProvider>
   );
 }
 

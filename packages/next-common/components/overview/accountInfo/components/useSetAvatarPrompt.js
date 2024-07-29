@@ -1,3 +1,4 @@
+import { PromptTypes } from "next-common/components/scrollPrompt";
 import { useIsWeb3User, useUser } from "next-common/context/user";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
@@ -28,6 +29,7 @@ export default function useSetAvatarPrompt() {
           </Link>
         </div>
       ),
+      type: PromptTypes.INFO,
       close: () => setVisible(false, { expires: 15 }),
     };
   }, [setVisible, isWeb3User, visible, hasAvatar]);

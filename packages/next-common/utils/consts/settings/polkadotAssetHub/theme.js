@@ -6,6 +6,8 @@ export const light = {
   navigationActive: "rgba(255,255,255,0.04)",
   navigationBorder: "rgba(255,255,255,0.08)",
   navigationText: "var(--textPrimaryContrast)",
+  navigationTextTertiary: "var(--textTertiaryContrast)",
+  navigationIcon: "var(--textSecondaryContrast)",
 };
 
 export const dark = {

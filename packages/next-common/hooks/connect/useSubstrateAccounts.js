@@ -1,20 +1,22 @@
 import { noop, reject } from "lodash-es";
-import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
-import { useGetInjectedWeb3ExtensionFn } from "next-common/components/wallet/useInjectedWeb3Extension";
+import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
+import { useGetInjectedWeb3ExtensionFn } from "next-common/hooks/connect/useInjectedWeb3Extension";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignetAccounts } from "next-common/context/signet";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { newWarningToast } from "next-common/store/reducers/toastSlice";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { normalizedSubstrateAccounts } from "next-common/utils/substrate";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
+import { withTimeout } from "next-common/utils/withTimeout";
+import { WALLET_TIMEOUT_ERROR_TEXT } from "next-common/utils/constants";
 
 export function useSubstrateAccounts({
   wallet,
   onAccessGranted = noop,
-  defaultLoading = true,
+  defaultLoading = false,
 } = {}) {
   const dispatch = useDispatch();
   const isMounted = useMountedState();
@@ -26,33 +28,6 @@ export function useSubstrateAccounts({
 
   const [accounts, setAccounts] = useState([]);
 
-  const loadInjectedAccounts = useCallback(
-    async (targetWallet) => {
-      const { web3Enable, web3Accounts } = await import(
-        "@polkadot/extension-dapp"
-      );
-
-      try {
-        await web3Enable("subsquare");
-        const injectedAccounts = reject(await web3Accounts(), {
-          type: ChainTypes.ETHEREUM,
-        });
-
-        if (isMounted()) {
-          setAccounts(
-            normalizedSubstrateAccounts(
-              injectedAccounts,
-              targetWallet?.extensionName,
-            ),
-          );
-        }
-      } catch (e) {
-        dispatch(newErrorToast(e.message));
-      }
-    },
-    [isMounted, dispatch],
-  );
-
   const loadPolkadotAccounts = useCallback(
     async (targetWallet) => {
       setAccounts([]);
@@ -63,24 +38,32 @@ export function useSubstrateAccounts({
       }
 
       try {
-        const walletExtension = await extension.enable("subsquare");
-        const extensionAccounts = reject(
-          await walletExtension.accounts?.get(),
-          { type: ChainTypes.ETHEREUM },
-        );
-
-        if (isMounted()) {
-          setAccounts(
-            normalizedSubstrateAccounts(
-              extensionAccounts,
-              targetWallet?.extensionName,
-            ),
+        await withTimeout(async () => {
+          const walletExtension = await extension.enable("subsquare");
+          const extensionAccounts = reject(
+            await walletExtension.accounts?.get(),
+            { type: ChainTypes.ETHEREUM },
           );
+
+          if (isMounted()) {
+            setAccounts(
+              normalizedSubstrateAccounts(
+                extensionAccounts,
+                targetWallet?.extensionName,
+              ),
+            );
+          }
+
+          onAccessGranted && onAccessGranted();
+        }, 10000);
+      } catch (e) {
+        let message = e.message;
+
+        if (e.name === "TimeoutError") {
+          message = WALLET_TIMEOUT_ERROR_TEXT;
         }
 
-        onAccessGranted && onAccessGranted();
-      } catch (e) {
-        dispatch(newErrorToast(e.message));
+        dispatch(newWarningToast(message));
       }
     },
     [
@@ -117,14 +100,13 @@ export function useSubstrateAccounts({
           break;
         }
         default: {
-          await loadInjectedAccounts(wallet);
           break;
         }
       }
 
       setLoading(false);
     },
-    [loadInjectedAccounts, loadPolkadotAccounts, loadSignetVault],
+    [loadPolkadotAccounts, loadSignetVault],
   );
 
   useEffect(() => {
@@ -137,6 +119,6 @@ export function useSubstrateAccounts({
 
   return {
     accounts,
-    loading: loadingWeb3 || loading,
+    loading,
   };
 }

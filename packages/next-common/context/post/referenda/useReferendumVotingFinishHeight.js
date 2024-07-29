@@ -1,8 +1,7 @@
 import { useTimelineData } from "../index";
 import { gov2State } from "../../../utils/consts/state";
 
-// return the voting finish height if the voting is finished, else `undefined`.
-export default function useReferendumVotingFinishHeight() {
+export function useReferendumVotingFinishIndexer() {
   const timeline = useTimelineData();
   const finishItem = (timeline || []).find((item) =>
     [
@@ -15,5 +14,11 @@ export default function useReferendumVotingFinishHeight() {
     ].includes(item.name),
   );
 
-  return finishItem?.indexer?.blockHeight;
+  return finishItem?.indexer;
+}
+
+// return the voting finish height if the voting is finished, else `undefined`.
+export default function useReferendumVotingFinishHeight() {
+  const indexer = useReferendumVotingFinishIndexer();
+  return indexer?.blockHeight;
 }

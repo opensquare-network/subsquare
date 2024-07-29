@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useDetailType } from "../context/page";
 import { usePost } from "../context/post";
 import { detailPageCategory } from "../utils/consts/business/category";
-import useOnClickOutside from "../utils/hooks/useOnClickOutside";
 import { OptionItem, OptionWrapper } from "./internalDropdown/styled";
 import {
   SystemCopied,
@@ -23,6 +22,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useClickAway } from "react-use";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -164,7 +164,7 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   const router = useRouter();
   const isAdmin = useIsAdmin();
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   const onCopy = () => {
     copy(
@@ -234,7 +234,7 @@ export function PostContextMenu({ editable, setIsEdit }) {
   const canDelete =
     (editable || isAdmin) && isDiscussionPost && !isSimaDiscussion;
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   const deletePost = useCallback(async () => {
     const { error } = await nextApi.delete(`posts/${post._id}`);

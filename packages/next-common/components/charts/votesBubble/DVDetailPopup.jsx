@@ -15,7 +15,7 @@ export default function DVDetailPopup({
   return (
     <Popup
       title="Decentralized Voices Detail"
-      className="w-[640px]"
+      className="!w-[640px]"
       onClose={closeFunc}
     >
       <div>

@@ -1,5 +1,5 @@
 import NextHead from "next-common/components/nextHead";
-import LoginContent from "../login/content";
+import LoginContent from "../login";
 import { LoginCard } from "../styled/containers/loginCard";
 
 const Login = () => {

@@ -45,6 +45,7 @@ export default function DelegatePopup({
   return (
     <PopupWithSigner
       title="Delegate"
+      className="!w-[640px]"
       submitExtrinsic={submitSubstrateExtrinsic}
       {...props}
     >

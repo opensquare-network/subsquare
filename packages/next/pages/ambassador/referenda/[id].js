@@ -57,22 +57,26 @@ function AmbassadorContent() {
   return (
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
-        <ContentWithComment>
-          <AmbassadorReferendaDetail />
-          <CollectivesProvider section="ambassador">
-            <FellowshipReferendumSideBar />
-          </CollectivesProvider>
-          <DetailMultiTabs
-            call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
-            metadata={
-              <Gov2ReferendumMetadata
-                info={info}
-                pallet="fellowshipReferenda"
-              />
-            }
-            timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
-          />
-        </ContentWithComment>
+        <CollectivesProvider section="ambassador">
+          <ContentWithComment>
+            <AmbassadorReferendaDetail />
+            <CollectivesProvider section="ambassador">
+              <FellowshipReferendumSideBar />
+            </CollectivesProvider>
+            <DetailMultiTabs
+              call={
+                (proposal?.call || proposal.inline) && <Gov2ReferendumCall />
+              }
+              metadata={
+                <Gov2ReferendumMetadata
+                  info={info}
+                  pallet="fellowshipReferenda"
+                />
+              }
+              timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
+            />
+          </ContentWithComment>
+        </CollectivesProvider>
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>
   );

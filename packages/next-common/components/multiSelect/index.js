@@ -3,9 +3,9 @@ import SelectedValueBox from "./selectedValueBox";
 import { useRef, useState } from "react";
 import { noop } from "lodash-es";
 import DropDownList from "./dropDownList";
-import useOnClickOutside from "next-common/utils/hooks/useOnClickOutside";
 import { OptionsWrapper } from "../select/styled";
 import { cn } from "next-common/utils";
+import { useClickAway } from "react-use";
 
 const Wrapper = styled.div`
   position: relative;
@@ -24,7 +24,7 @@ export default function MultiSelect({
 }) {
   const [showDropDown, setShowDropDown] = useState(false);
   const ref = useRef();
-  useOnClickOutside(ref, () => setShowDropDown(false));
+  useClickAway(ref, () => setShowDropDown(false));
 
   const itemHeight = small ? 32 : 40;
 

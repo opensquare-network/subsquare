@@ -64,6 +64,14 @@ export function formatBalance(balance, decimals) {
     .toFormat({ decimalSeparator: ".", groupSeparator: ",", groupSize: 3 });
 }
 
+export function paddingDecimals(value, decimals) {
+  const [integerPart, fractionalPart = ""] = value.split(".");
+  if (fractionalPart.length < decimals) {
+    return `${integerPart}.${fractionalPart.padEnd(decimals, "0")}`;
+  }
+  return value;
+}
+
 export const colToken = {
   name: "Token",
   style: { textAlign: "left", width: "160px", minWidth: "160px" },
@@ -79,7 +87,7 @@ export const colToken = {
 
 export const colId = {
   name: "ID",
-  style: { textAlign: "left", width: "160px", minWidth: "160px" },
+  style: { textAlign: "left", width: "120px", minWidth: "120px" },
   render: (item) => (
     <span className="text14Medium text-textTertiary">
       {isNil(item.assetId) ? "-" : `#${item.assetId}`}
@@ -89,11 +97,14 @@ export const colId = {
 
 export const colName = {
   name: "Name",
-  style: { textAlign: "left", minWidth: "160px" },
+  style: { textAlign: "left", minWidth: "256px" },
   render: (item) => (
-    <span key="name" className="text14Medium text-textTertiary">
+    <div
+      key="name"
+      className="text14Medium text-textTertiary truncate max-w-[240px]"
+    >
       {item.name}
-    </span>
+    </div>
   ),
 };
 

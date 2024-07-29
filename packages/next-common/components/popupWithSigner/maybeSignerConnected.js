@@ -11,7 +11,7 @@ export default function MaybeSignerConnected({ children, extensionAccounts }) {
     !user?.address ||
     !extensionAccounts?.find((acc) => isSameAddress(acc.address, user?.address))
   ) {
-    return <LoginPopup onClose={onClose} showRegister={false} />;
+    return <LoginPopup onClose={onClose} />;
   }
 
   return (

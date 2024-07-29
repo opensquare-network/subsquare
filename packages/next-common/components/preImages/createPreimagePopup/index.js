@@ -9,11 +9,11 @@ import NewUSDxTreasuryProposalPopup from "./newUSDxTreasuryProposalPopup";
 import NewRemarkProposalPopup from "./newRemarkProposalPopup";
 import { useChainSettings } from "next-common/context/chain";
 
-function PreimageTemplates({ children }) {
+export function QuickStart({ children }) {
   return (
-    <div className="flex flex-col gap-[8px] mt-[24px]">
+    <div className="flex flex-col gap-[16px] !mt-[24px]">
       <h6 className="text-textPrimary text14Bold">Quick Start</h6>
-      <div className="flex flex-col flex-wrap gap-[8px]">{children}</div>
+      <div className="flex flex-col flex-wrap gap-[16px]">{children}</div>
     </div>
   );
 }
@@ -76,7 +76,7 @@ function PopupContent() {
 
   return (
     <MainPopup setShowNewPreimage={setShowNewPreimage} onClose={onClose}>
-      <PreimageTemplates>{buttons}</PreimageTemplates>
+      <QuickStart>{buttons}</QuickStart>
     </MainPopup>
   );
 }

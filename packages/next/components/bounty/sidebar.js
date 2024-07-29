@@ -12,16 +12,14 @@ import SymbolValue from "components/gov2/sidebar/tally/values/symbolValue";
 import { useOnchainData } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
-import { useContextApi } from "next-common/context/api";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
 `;
 
 function BountySidebar() {
-  const api = useContextApi();
   const { address } = useOnchainData();
-  const { balance, isLoading } = useSubAddressBalance(api, address);
+  const { balance, isLoading } = useSubAddressBalance(address);
   const { childBounties } = usePageProps();
 
   if (!address) {

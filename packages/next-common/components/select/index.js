@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Option from "./option";
-import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { ArrowDown } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { OptionsWrapper } from "./styled";
 import Divider from "../styled/layout/divider";
+import { useClickAway } from "react-use";
 
 const SearchInput = styled.input`
   width: 100%;
@@ -64,7 +64,7 @@ function Select({
   const ref = useRef();
   const [searchText, setSearchText] = useState("");
   const [showOptions, setShowOptions] = useState(false);
-  useOnClickOutside(ref, () => setShowOptions(false));
+  useClickAway(ref, () => setShowOptions(false));
   const selectedOptionRef = useRef();
 
   useEffect(() => {

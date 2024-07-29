@@ -7,21 +7,21 @@ import {
 } from "next-common/services/identity";
 
 export default function useIdentityInfo(address) {
-  const settings = useChainSettings();
+  const { identity: identityChain } = useChainSettings();
   // Render the identity immediately if it's already in cache
-  const encodedAddress = encodeAddressToChain(address, settings.identity);
-  const cachedIdentity = getCachedIdentity(settings.identity, encodedAddress);
+  const encodedAddress = encodeAddressToChain(address, identityChain);
+  const cachedIdentity = getCachedIdentity(identityChain, encodedAddress);
   const [identity, setIdentity] = useState(cachedIdentity);
 
   useEffect(() => {
     setIdentity(null);
     if (address) {
       fetchIdentity(
-        settings.identity,
-        encodeAddressToChain(address, settings.identity),
+        identityChain,
+        encodeAddressToChain(address, identityChain),
       ).then((identity) => setIdentity(identity));
     }
-  }, [address, settings]);
+  }, [address, identityChain]);
 
   return [identity, identity && identity?.info?.status !== "NO_ID"];
 }

@@ -85,7 +85,6 @@ function PopupContent() {
       </div>
       <AddressComboField
         title="To"
-        defaultAddress=""
         extensionAccounts={extensionAccounts}
         setAddress={setTransferToAddress}
         placeholder="Please fill the address or select another one..."
@@ -103,7 +102,7 @@ function PopupContent() {
 
 export function AssetTransferPopup(props) {
   return (
-    <PopupWithSigner title="Transfer" className="w-[640px]" {...props}>
+    <PopupWithSigner title="Transfer" className="!w-[640px]" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );

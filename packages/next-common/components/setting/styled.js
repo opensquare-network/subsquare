@@ -71,6 +71,16 @@ export const WarningMessage = styled.div`
           color: var(--red500);
           background: var(--red100);
         `}
+  ${(p) =>
+    p.danger
+      ? css`
+          color: var(--red500);
+          background: var(--red100);
+        `
+      : css`
+          color: var(--orange500);
+          background: var(--orange100);
+        `}
   border-radius: 4px;
   padding: 12px 16px;
   font-size: 14px;

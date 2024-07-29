@@ -12,7 +12,7 @@ function FellowshipTagInfoImpl({ address, pallet, type }) {
   }
 
   return (
-    <div className="flex items-center my-2">
+    <div className="flex items-center mb-2 mt-4">
       <CommonTag
         className="py-1"
         style={{

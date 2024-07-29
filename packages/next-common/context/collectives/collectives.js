@@ -53,6 +53,17 @@ export function useSalaryFellowshipPallet() {
   }
 }
 
+export function useReferendaFellowshipPallet() {
+  const { section } = useContext(CollectivesContext);
+  if ("ambassador" === section) {
+    return "ambassadorReferenda";
+  } else if ("fellowship" === section) {
+    return "fellowshipReferenda";
+  } else {
+    throw new Error(`Can not find pallet name by section: ${section}`);
+  }
+}
+
 export function useCoreFellowshipParams() {
   const { params } = useContext(CollectivesContext);
   return params;

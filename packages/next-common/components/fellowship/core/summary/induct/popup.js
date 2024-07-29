@@ -37,7 +37,7 @@ function Content() {
 
 export default function FellowshipCoreInductionPopup(props) {
   return (
-    <PopupWithSigner title="Induct" {...props}>
+    <PopupWithSigner title="Induct" className="!w-[640px]" {...props}>
       <Content />
     </PopupWithSigner>
   );

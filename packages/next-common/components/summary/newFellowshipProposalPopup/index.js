@@ -9,24 +9,17 @@ import SubmissionDeposit from "../newProposalPopup/submissionDeposit";
 import PreimageField from "../newProposalPopup/preimageField";
 import EnactmentBlocks from "../newProposalPopup/enactmentBlocks";
 import DetailedFellowshipTrack from "next-common/components/popup/fields/detailedFellowshipTrackField";
-import { usePageProps } from "next-common/context/page";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-
-function useProposalOrigin(trackId) {
-  const { fellowshipTracksDetail } = usePageProps();
-  const origins = (fellowshipTracksDetail || []).find(
-    (track) => track.id === trackId,
-  )?.origins;
-  if (Array.isArray(origins)) {
-    return origins[0];
-  }
-  return origins;
-}
+import {
+  useCollectivesContext,
+  useReferendaFellowshipPallet,
+} from "next-common/context/collectives/collectives";
+import { useProposalOrigin } from "../newProposalPopup";
 
 export function NewFellowshipProposalInnerPopup({
   track: _track,
@@ -37,6 +30,8 @@ export function NewFellowshipProposalInnerPopup({
   const api = useContextApi();
   const dispatch = useDispatch();
   const router = useRouter();
+  const { section } = useCollectivesContext();
+  const pallet = useReferendaFellowshipPallet();
 
   const [enactment, setEnactment] = useState();
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
@@ -44,7 +39,6 @@ export function NewFellowshipProposalInnerPopup({
 
   const [trackId, setTrackId] = useState(_track?.id);
   const proposalOrigin = useProposalOrigin(trackId);
-
   const disabled =
     isNil(trackId) ||
     isNil(enactment) ||
@@ -69,7 +63,7 @@ export function NewFellowshipProposalInnerPopup({
       return;
     }
 
-    return api.tx.fellowshipReferenda.submit(
+    return api.tx[pallet].submit(
       proposalOrigin,
       {
         Lookup: {
@@ -92,22 +86,18 @@ export function NewFellowshipProposalInnerPopup({
         setPreimageLength={setPreimageLength}
       />
       <EnactmentBlocks setEnactment={setEnactment} />
-      <SubmissionDeposit />
+      <SubmissionDeposit pallet={pallet} />
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onClose={onClose}
         disabled={disabled}
         onInBlock={(events) => {
-          const eventData = getEventData(
-            events,
-            "fellowshipReferenda",
-            "Submitted",
-          );
+          const eventData = getEventData(events, pallet, "Submitted");
           if (!eventData) {
             return;
           }
           const [referendumIndex] = eventData;
-          router.push(`/fellowship/referenda/${referendumIndex}`);
+          router.push(`/${section}/referenda/${referendumIndex}`);
         }}
       />
     </Popup>
