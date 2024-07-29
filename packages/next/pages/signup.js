@@ -167,7 +167,7 @@ export default function Signup() {
             <Title>Sign up</Title>
             <FormWrapper onSubmit={handleSubmit}>
               {disabledForm && (
-                <WarningMessage orange>
+                <WarningMessage>
                   To align with the goal of web3, registration via email is no
                   longer available. Please connect SubSquare with an address.
                 </WarningMessage>

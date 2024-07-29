@@ -62,16 +62,6 @@ export const ButtonWrapper = styled.div`
 
 export const WarningMessage = styled.div`
   ${(p) =>
-    p.orange
-      ? css`
-          color: var(--orange500);
-          background: var(--orange100);
-        `
-      : css`
-          color: var(--red500);
-          background: var(--red100);
-        `}
-  ${(p) =>
     p.danger
       ? css`
           color: var(--red500);
