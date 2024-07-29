@@ -11,7 +11,7 @@ import CreateFellowshipCoreMemberProposalSubmitButton from "./createFellowshipCo
 import RankField from "next-common/components/popup/fields/rankField";
 import { useState } from "react";
 
-export default function NewMemberPromotionReferendumInnerPopup() {
+export default function NewFellowshipCoreMemberReferendumInnerPopup() {
   const listPageType = useListPageType();
 
   let pallet;
