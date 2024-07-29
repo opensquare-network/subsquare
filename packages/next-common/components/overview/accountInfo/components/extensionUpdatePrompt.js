@@ -48,8 +48,8 @@ function checkPropertiesChange(api, extension) {
   const property = getCachedProperties(api, extension);
   if (property) {
     if (
-      property.ss58Format !== api.registry.chainSS58 &&
-      property.tokenDecimals !== api.registry.chainDecimals[0] &&
+      property.ss58Format !== api.registry.chainSS58 ||
+      property.tokenDecimals !== api.registry.chainDecimals[0] ||
       property.tokenSymbol !== api.registry.chainTokens[0]
     ) {
       return true;
@@ -79,7 +79,7 @@ export default function ExtensionUpdatePrompt() {
         known.find(({ genesisHash }) => api.genesisHash.eq(genesisHash)) ||
         null;
       return (
-        api.runtimeVersion.specVersion.gtn(current.specVersion) ||
+        api.runtimeVersion.specVersion.gtn(current?.specVersion) ||
         checkPropertiesChange(api, extension)
       );
     },
@@ -90,10 +90,13 @@ export default function ExtensionUpdatePrompt() {
     if (!api || isLoadingInjectedWeb3Extension) {
       return;
     }
-    injectedWeb3Extension.enable("subsquare").then(async (extension) => {
-      const isNeedUpdate = await checkNeedUpdate(api, extension);
-      setIsNeedUpdate(isNeedUpdate);
-    });
+    injectedWeb3Extension
+      .enable("subsquare")
+      .then(async (extension) => {
+        const isNeedUpdate = await checkNeedUpdate(api, extension);
+        setIsNeedUpdate(isNeedUpdate);
+      })
+      .catch(console.error);
   }, [
     api,
     injectedWeb3Extension,
@@ -107,22 +110,17 @@ export default function ExtensionUpdatePrompt() {
         return;
       }
 
-      injectedWeb3Extension.enable("subsquare").then(async (extension) => {
+      try {
+        const extension = await injectedWeb3Extension.enable("subsquare");
         const metadata = extension.metadata;
-        try {
-          const isOk = await metadata.provide(def);
-          if (isOk) {
-            cacheProperties(
-              api,
-              connectedAccount?.wallet,
-              injectedWeb3Extension,
-            );
-            setTriggerCheck((v) => v + 1);
-          }
-        } catch (e) {
-          console.error(e);
+        const isOk = await metadata.provide(def);
+        if (isOk) {
+          cacheProperties(api, connectedAccount?.wallet, injectedWeb3Extension);
+          setTriggerCheck((v) => v + 1);
         }
-      });
+      } catch (e) {
+        console.error(e);
+      }
     },
     [api, injectedWeb3Extension, connectedAccount?.wallet],
   );
