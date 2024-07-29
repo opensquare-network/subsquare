@@ -45,7 +45,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   }
 
   const getTxFunc = useCallback(async () => {
-    if (!api || !toRank) {
+    if (!api || disabled) {
       return;
     }
 
@@ -56,7 +56,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
       { Inline: proposal.method.toHex() },
       enactment,
     );
-  }, [api, who, referendaPallet, toRank]);
+  }, [api, disabled, who, toRank, corePallet, referendaPallet, enactment]);
 
   return (
     <Tooltip
