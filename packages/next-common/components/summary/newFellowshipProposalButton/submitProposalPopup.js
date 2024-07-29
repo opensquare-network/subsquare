@@ -8,6 +8,7 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import { NewRemarkReferendumInnerPopup } from "../newProposalQuickStart/createSystemRemarkProposalPopup";
 import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
 import NewFellowshipCoreMemberReferendumInnerPopup from "../newProposalQuickStart/createFellowshipCoreMemberProposalPopup";
+import NewFellowshipCoreMemberRetainReferendumInnerPopup from "../newProposalQuickStart/createFellowshipCoreMemberRetainPopup";
 
 export default function SubmitFellowshipProposalPopup({ onClose }) {
   const { period } = usePageProps();
@@ -16,11 +17,14 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
 
   const [showMemberPromotionPopup, setShowMemberPromotionPopup] =
     useState(false);
+  const [showRetainPopup, setShowRetainPopup] = useState(false);
   const [showNewRemarkPopup, setShowNewRemarkPopup] = useState(false);
 
   let content;
   if (showMemberPromotionPopup) {
     content = <NewFellowshipCoreMemberReferendumInnerPopup />;
+  } else if (showRetainPopup) {
+    content = <NewFellowshipCoreMemberRetainReferendumInnerPopup />;
   } else if (showNewRemarkPopup) {
     content = <NewRemarkReferendumInnerPopup />;
   } else {
@@ -42,6 +46,13 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
             description="Creating a proposal for getting promoted to a higher rank"
             onClick={() => {
               setShowMemberPromotionPopup(true);
+            }}
+          />
+          <ChoiceButton
+            name="Retain"
+            description="Creating a proposal for retaining current rank"
+            onClick={() => {
+              setShowRetainPopup(true);
             }}
           />
           <ChoiceButton
