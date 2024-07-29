@@ -16,6 +16,7 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
+import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -149,6 +150,7 @@ export function CommonAccountInfoPanel({ hideManageAccountLink }) {
 
       {!hideManageAccountLink && <ManageAccountButton />}
 
+      <ExtensionUpdatePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
