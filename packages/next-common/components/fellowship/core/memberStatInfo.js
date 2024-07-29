@@ -2,54 +2,43 @@ import { MenuHorn } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
-import useAllMemberData from "./useAllMemberData";
 import { useMemo } from "react";
 import { calculateDemotionPeriod } from "next-common/components/collectives/core/member/demotionPeriod";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
+import useCoreMembersWithRank from "next-common/components/collectives/core/useCoreMembersWithRank";
+import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
+import { ONE_DAY } from "next-common/utils/constants";
+
+const days20 = 20 * ONE_DAY;
 
 function useCountOfMembersAboutToDemotionExpire() {
-  const { data: memberData, isLoading } = useAllMemberData();
+  const { members: coreMembers, isLoading } = useCoreMembersWithRank();
+  const params = useCoreFellowshipParams();
 
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
 
   const countOfMembersAboutToDemotionExpire = useMemo(() => {
-    if (isLoading) {
-      return 0;
-    }
-
-    const { data, coreParams } = memberData;
-
-    let countOfMembersAboutToDemotionExpire = 0;
-
-    for (const address in data) {
-      const { rank, lastProof } = data[address];
-      if (isNil(rank) || isNil(lastProof)) {
-        continue;
+    return coreMembers.filter(coreMember => {
+      const { status: { lastProof }, rank } = coreMember;
+      if (rank <= 0) { // this warning is for members page, so we should filter out candidates
+        return false;
       }
 
       const { remainingBlocks, demotionPeriod } = calculateDemotionPeriod({
         latestHeight,
         rank,
         lastProof,
-        params: coreParams,
+        params,
       });
 
-      const daysRemaining = new BigNumber(blockTime)
-        .multipliedBy(remainingBlocks)
-        .div(86400 * 1000)
-        .toNumber();
-
-      if (demotionPeriod > 0 && daysRemaining < 28) {
-        countOfMembersAboutToDemotionExpire++;
-      }
-    }
-
-    return countOfMembersAboutToDemotionExpire;
-  }, [memberData, isLoading, latestHeight, blockTime]);
+      return demotionPeriod > 0 &&
+        new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20) // less than 20 days
+    }).length;
+  }, [coreMembers, isLoading, latestHeight, blockTime, params]);
 
   return {
     countOfMembersAboutToDemotionExpire,
@@ -59,7 +48,6 @@ function useCountOfMembersAboutToDemotionExpire() {
 
 function useEvidencesStat() {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
-
   const totalEvidences = (evidences || []).length || 0;
 
   const evidencesToBeHandled = (evidences || []).filter((evidence) =>
@@ -115,8 +103,7 @@ export default function MemberStatInfo({ className }) {
             )}
             {countOfMembersAboutToDemotionExpire > 0 && (
               <li className="pl-[1em]">
-                The demotion period for {countOfMembersAboutToDemotionExpire}{" "}
-                members is approaching.
+                {countOfMembersAboutToDemotionExpire} members' demotion period is about to reached in under 20 days.
               </li>
             )}
           </ul>
