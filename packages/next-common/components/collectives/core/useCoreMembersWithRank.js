@@ -17,8 +17,8 @@ export default function useCoreMembersWithRank() {
     }
 
     Promise.all([
-      api.query.fellowshipCollective?.members.entries(),
-      api.query.fellowshipCore.member.entries(),
+      api.query[collectivePallet]?.members.entries(),
+      api.query[corePallet].member.entries(),
     ]).then(([collectiveEntries, coreEntries]) => {
       const collectiveMembers =
         normalizeRankedCollectiveEntries(collectiveEntries);
