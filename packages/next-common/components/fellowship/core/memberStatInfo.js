@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 
-function useCountOfMemberState() {
+function useCountOfMembersAboutToDemotionExpire() {
   const { data: memberData, isLoading } = useAllMemberData();
 
   const latestHeight = useSelector(chainOrScanHeightSelector);
@@ -77,7 +77,7 @@ export default function MemberStatInfo({ className }) {
   const {
     countOfMembersAboutToDemotionExpire,
     isLoading: isAboutToDemotionExpireLoading,
-  } = useCountOfMemberState();
+  } = useCountOfMembersAboutToDemotionExpire();
 
   const {
     totalEvidences,
