@@ -73,8 +73,7 @@ export default function ExtensionUpdatePrompt() {
         return false;
       }
 
-      const metadata = extension.metadata;
-      const known = await metadata.get();
+      const known = await extension.metadata.get();
       const current =
         known.find(({ genesisHash }) => api.genesisHash.eq(genesisHash)) ||
         null;
@@ -112,8 +111,7 @@ export default function ExtensionUpdatePrompt() {
 
       try {
         const extension = await injectedWeb3Extension.enable("subsquare");
-        const metadata = extension.metadata;
-        const isOk = await metadata.provide(def);
+        const isOk = await extension.metadata.provide(def);
         if (isOk) {
           cacheProperties(api, connectedAccount?.wallet, injectedWeb3Extension);
           setTriggerCheck((v) => v + 1);
