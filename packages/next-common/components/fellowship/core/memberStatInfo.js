@@ -73,7 +73,7 @@ function useEvidencesStat() {
   };
 }
 
-export default function MemberEvidenceInfo({ className }) {
+export default function MemberStatInfo({ className }) {
   const {
     countOfMembersAboutToDemotionExpire,
     isLoading: isAboutToDemotionExpireLoading,

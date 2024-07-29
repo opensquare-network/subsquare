@@ -10,7 +10,7 @@ import FellowshipMembersEmpty from "./empty";
 import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCoreMembers";
 import { usePageProps } from "next-common/context/page";
 import CollectivesProvider from "next-common/context/collectives/collectives";
-import MemberEvidenceInfo from "next-common/components/fellowship/core/memberEvidenceInfo";
+import MemberStatInfo from "next-common/components/fellowship/core/memberStatInfo";
 
 export default function FellowshipMembersPage() {
   const members = useSortedCoreMembers();
@@ -36,7 +36,7 @@ export default function FellowshipMembersPage() {
     <CollectivesProvider params={fellowshipParams} section="fellowship">
       <FellowshipMembersLoadable>
         <FellowshipMemberCommon>
-          <MemberEvidenceInfo className="mb-[24px]" />
+          <MemberStatInfo className="mb-[24px]" />
 
           <div className="flex items-center justify-between mb-4 pr-6">
             <FellowshipMemberTabs members={members} />
