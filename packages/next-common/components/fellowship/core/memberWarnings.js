@@ -4,7 +4,6 @@ import tw from "tailwind-styled-components";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
 import { useMemo } from "react";
-import { calculateDemotionPeriod } from "next-common/components/collectives/core/member/demotionPeriod";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
@@ -12,7 +11,11 @@ import BigNumber from "bignumber.js";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { ONE_DAY } from "next-common/utils/constants";
 import { useCoreMembersWithRankContext } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
-import { calculatePromotionPeriod } from "next-common/components/collectives/core/member/promotionPeriod";
+import {
+  getDemotionPeriod,
+  getPromotionPeriod,
+  getRemainingBlocks,
+} from "next-common/utils/collective/demotionAndPromotion";
 
 const WarningItem = tw.li`pl-[1em]`;
 
@@ -29,12 +32,10 @@ function useAvailablePromotionCount() {
         status: { lastPromotion },
         rank,
       } = coreMember;
-      const { remainingBlocks, promotionPeriod } = calculatePromotionPeriod({
-        latestHeight,
-        rank,
-        lastPromotion,
-        params,
-      });
+
+      const promotionPeriod = getPromotionPeriod(rank, params);
+      const gone = latestHeight - lastPromotion;
+      const remainingBlocks = getRemainingBlocks(gone, promotionPeriod);
 
       if (promotionPeriod > 0 && remainingBlocks <= 0) {
         return result + 1;
@@ -61,12 +62,11 @@ function useDemotionExpirationCounts() {
           status: { lastProof },
           rank,
         } = coreMember;
-        const { remainingBlocks, demotionPeriod } = calculateDemotionPeriod({
-          latestHeight,
-          rank,
-          lastProof,
-          params,
-        });
+
+        const demotionPeriod = getDemotionPeriod(rank, params);
+        const gone = latestHeight - lastProof;
+        const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);
+
         const willExpire =
           demotionPeriod > 0 &&
           new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20); // less than 20 days

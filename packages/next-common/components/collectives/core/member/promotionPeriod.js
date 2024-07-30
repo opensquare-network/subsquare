@@ -7,51 +7,26 @@ import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/co
 import Tooltip from "next-common/components/tooltip";
 import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";
-
-export function calculatePromotionPeriod({
-  latestHeight,
-  lastPromotion,
-  rank,
-  params,
-}) {
-  const toRank = rank + 1;
-  const index = toRank > 0 ? toRank - 1 : 0;
-  const promotionPeriod = params.minPromotionPeriod[index];
-
-  const gone = latestHeight - lastPromotion;
-
-  let percentageValue;
-  if (gone <= 0) {
-    percentageValue = 0;
-  } else if (gone >= promotionPeriod) {
-    percentageValue = 100;
-  } else {
-    percentageValue = Number((gone / promotionPeriod) * 100).toFixed(2);
-  }
-
-  let remainingBlocks;
-  if (gone <= 0) {
-    remainingBlocks = promotionPeriod;
-  } else if (gone >= promotionPeriod) {
-    remainingBlocks = 0;
-  } else {
-    remainingBlocks = promotionPeriod - gone;
-  }
-
-  return {
-    percentageValue,
-    remainingBlocks,
-    promotionPeriod,
-  };
-}
+import {
+  getGoneBlocksPercentage,
+  getPromotionPeriod,
+  getRemainingBlocks,
+} from "next-common/utils/collective/demotionAndPromotion";
 
 export function usePromotionPeriod({ lastPromotion, rank, params = {} }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  return useMemo(
-    () =>
-      calculatePromotionPeriod({ lastPromotion, rank, params, latestHeight }),
-    [lastPromotion, rank, params, latestHeight],
-  );
+  return useMemo(() => {
+    const promotionPeriod = getPromotionPeriod(rank, params);
+    const gone = latestHeight - lastPromotion;
+    const percentageValue = getGoneBlocksPercentage(gone, promotionPeriod);
+    const remainingBlocks = getRemainingBlocks(gone, promotionPeriod);
+
+    return {
+      percentageValue,
+      remainingBlocks,
+      promotionPeriod,
+    };
+  }, [lastPromotion, rank, params, latestHeight]);
 }
 
 export default function CoreFellowshipMemberPromotionPeriod({
