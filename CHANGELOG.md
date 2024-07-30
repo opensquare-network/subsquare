@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.2.1
+
+date: 2024-07-30
+
+- Fellowship
+  - Add core members management warnings.
+    1. Show how many members' evidences need to be handled.
+    2. Show members' demotion warnings.
+    3. Show members' promotion warnings.
+  - Add referenda templates including members promotion and retain.
+  - Add a panel on fellowship core params to give more explanations.
+  - Set default page size to 25 on salary cycle detail page.
+- Add a notification on account panel to enable connected user to update chain runtime metadata to extension.
+- Use subscribed referendum info by default on referendum detail page.
+- Support referenda for altair chain.
+- Not shown treasury spend valid from count down when no chain height got.
+- Refactor and fix styles.
+
 ### 4.2.0
 
 date: 2024-07-25
