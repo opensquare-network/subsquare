@@ -1,6 +1,6 @@
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
-import MultiPromptPanel from "next-common/components/multiPromptPanel";
+import BillBoardPanel from "next-common/components/billBoardPanel";
 import dynamic from "next/dynamic";
 
 const MenuWhale = dynamic(() => import("@osn/icons/subsquare/MenuWhale"));
@@ -19,7 +19,7 @@ function useWhaleThresholdText() {
 export default function WhalesPrompt() {
   const thresholdText = useWhaleThresholdText();
   return (
-    <MultiPromptPanel
+    <BillBoardPanel
       icon={<MenuWhale className="text-theme500" />}
       items={[
         "Votes power: Balance * 6 + max_track_delegations.",

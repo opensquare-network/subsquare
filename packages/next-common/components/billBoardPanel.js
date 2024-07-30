@@ -1,7 +1,7 @@
 import { cn } from "next-common/utils";
 import { SecondaryCard } from "./styled/containers/secondaryCard";
 
-export default function MultiPromptPanel({ className, icon, items = [] }) {
+export default function BillBoardPanel({ className, icon, items = [] }) {
   if (!items.length) {
     return null;
   }

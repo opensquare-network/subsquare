@@ -14,7 +14,7 @@ import {
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
 import dynamic from "next/dynamic";
-import MultiPromptPanel from "next-common/components/multiPromptPanel";
+import BillBoardPanel from "next-common/components/billBoardPanel";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
@@ -138,7 +138,7 @@ export default function MemberWarnings({ className }) {
   ].filter(Boolean);
 
   return (
-    <MultiPromptPanel
+    <BillBoardPanel
       className={className}
       icon={
         <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
