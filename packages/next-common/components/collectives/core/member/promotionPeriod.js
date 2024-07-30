@@ -7,39 +7,26 @@ import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/co
 import Tooltip from "next-common/components/tooltip";
 import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";
+import {
+  getGoneBlocksPercentage,
+  getPromotionPeriod,
+  getRemainingBlocks,
+} from "next-common/utils/collective/demotionAndPromotion";
 
 export function usePromotionPeriod({ lastPromotion, rank, params = {} }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  const toRank = rank + 1;
-  const index = toRank > 0 ? toRank - 1 : 0;
-  const promotionPeriod = params.minPromotionPeriod[index];
+  return useMemo(() => {
+    const promotionPeriod = getPromotionPeriod(rank, params);
+    const gone = latestHeight - lastPromotion;
+    const percentageValue = getGoneBlocksPercentage(gone, promotionPeriod);
+    const remainingBlocks = getRemainingBlocks(gone, promotionPeriod);
 
-  const gone = latestHeight - lastPromotion;
-  const percentageValue = useMemo(() => {
-    if (gone <= 0) {
-      return 0;
-    } else if (gone >= promotionPeriod) {
-      return 100;
-    }
-
-    return Number((gone / promotionPeriod) * 100).toFixed(2);
-  }, [promotionPeriod, gone]);
-
-  const remainingBlocks = useMemo(() => {
-    if (gone <= 0) {
-      return promotionPeriod;
-    } else if (gone >= promotionPeriod) {
-      return 0;
-    }
-
-    return promotionPeriod - gone;
-  }, [promotionPeriod, gone]);
-
-  return {
-    percentageValue,
-    remainingBlocks,
-    promotionPeriod,
-  };
+    return {
+      percentageValue,
+      remainingBlocks,
+      promotionPeriod,
+    };
+  }, [lastPromotion, rank, params, latestHeight]);
 }
 
 export default function CoreFellowshipMemberPromotionPeriod({

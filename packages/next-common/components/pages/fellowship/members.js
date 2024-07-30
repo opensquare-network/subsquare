@@ -11,6 +11,7 @@ import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCor
 import { usePageProps } from "next-common/context/page";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import MemberWarnings from "next-common/components/fellowship/core/memberWarnings";
+import { CoreMembersWithRankProvider } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
 
 export default function FellowshipMembersPage() {
   const members = useSortedCoreMembers();
@@ -36,7 +37,9 @@ export default function FellowshipMembersPage() {
     <CollectivesProvider params={fellowshipParams} section="fellowship">
       <FellowshipMembersLoadable>
         <FellowshipMemberCommon>
-          <MemberWarnings className="mb-[24px]" />
+          <CoreMembersWithRankProvider>
+            <MemberWarnings className="mb-[24px]" />
+          </CoreMembersWithRankProvider>
 
           <div className="flex items-center justify-between mb-4 pr-6">
             <FellowshipMemberTabs members={members} />

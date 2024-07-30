@@ -7,48 +7,26 @@ import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/co
 import Tooltip from "next-common/components/tooltip";
 import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";
-
-export function calculateDemotionPeriod({
-  latestHeight,
-  rank,
-  lastProof,
-  params,
-}) {
-  const demotionPeriod =
-    rank <= 0 ? params.offboardTimeout : params.demotionPeriod[rank - 1];
-  const gone = latestHeight - lastProof;
-
-  let percentageValue;
-  if (gone <= 0 || demotionPeriod <= 0) {
-    percentageValue = 0;
-  } else if (gone >= demotionPeriod) {
-    percentageValue = 100;
-  } else {
-    percentageValue = Number((gone / demotionPeriod) * 100).toFixed(2);
-  }
-
-  let remainingBlocks;
-  if (gone <= 0) {
-    remainingBlocks = demotionPeriod;
-  } else if (gone >= demotionPeriod) {
-    remainingBlocks = 0;
-  } else {
-    remainingBlocks = demotionPeriod - gone;
-  }
-
-  return {
-    percentageValue,
-    remainingBlocks,
-    demotionPeriod,
-  };
-}
+import {
+  getDemotionPeriod,
+  getGoneBlocksPercentage,
+  getRemainingBlocks,
+} from "next-common/utils/collective/demotionAndPromotion";
 
 export function useDemotionPeriod({ rank, lastProof, params }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  return useMemo(
-    () => calculateDemotionPeriod({ latestHeight, rank, lastProof, params }),
-    [rank, lastProof, params, latestHeight],
-  );
+  return useMemo(() => {
+    const demotionPeriod = getDemotionPeriod(rank, params);
+    const gone = latestHeight - lastProof;
+    const percentageValue = getGoneBlocksPercentage(gone, demotionPeriod);
+    const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);
+
+    return {
+      percentageValue,
+      remainingBlocks,
+      demotionPeriod,
+    };
+  }, [rank, lastProof, params, latestHeight]);
 }
 
 export default function CoreFellowshipMemberDemotionPeriod({

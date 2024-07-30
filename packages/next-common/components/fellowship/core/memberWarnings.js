@@ -1,41 +1,74 @@
 import { isNil } from "lodash-es";
+import tw from "tailwind-styled-components";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
 import { useMemo } from "react";
-import { calculateDemotionPeriod } from "next-common/components/collectives/core/member/demotionPeriod";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
-import useCoreMembersWithRank from "next-common/components/collectives/core/useCoreMembersWithRank";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { ONE_DAY } from "next-common/utils/constants";
+import { useCoreMembersWithRankContext } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
+import {
+  getDemotionPeriod,
+  getPromotionPeriod,
+  getRemainingBlocks,
+} from "next-common/utils/collective/demotionAndPromotion";
 import dynamic from "next/dynamic";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
+const WarningItem = tw.li`pl-[1em]`;
+
 const days20 = 20 * ONE_DAY;
 
+function useAvailablePromotionCount() {
+  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
+  const params = useCoreFellowshipParams();
+
+  const availablePromotionCount = useMemo(() => {
+    return (coreMembers || []).reduce((result, coreMember) => {
+      const {
+        status: { lastPromotion },
+        rank,
+      } = coreMember;
+
+      const promotionPeriod = getPromotionPeriod(rank, params);
+      const gone = latestHeight - lastPromotion;
+      const remainingBlocks = getRemainingBlocks(gone, promotionPeriod);
+
+      if (promotionPeriod > 0 && remainingBlocks <= 0) {
+        return result + 1;
+      }
+
+      return result;
+    }, 0);
+  }, [coreMembers, isLoading, params]);
+
+  return { availablePromotionCount, isLoading };
+}
+
 function useDemotionExpirationCounts() {
-  const { members: coreMembers, isLoading } = useCoreMembersWithRank();
+  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
   const params = useCoreFellowshipParams();
 
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
 
   const { members: membersCount, candidates: candidatesCount } = useMemo(() => {
-    return coreMembers.reduce(
+    return (coreMembers || []).reduce(
       (result, coreMember) => {
         const {
           status: { lastProof },
           rank,
         } = coreMember;
-        const { remainingBlocks, demotionPeriod } = calculateDemotionPeriod({
-          latestHeight,
-          rank,
-          lastProof,
-          params,
-        });
+
+        const demotionPeriod = getDemotionPeriod(rank, params);
+        const gone = latestHeight - lastProof;
+        const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);
+
         const willExpire =
           demotionPeriod > 0 &&
           new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20); // less than 20 days
@@ -83,6 +116,9 @@ export default function MemberWarnings({ className }) {
     isLoading: isCheckingDemotion,
   } = useDemotionExpirationCounts();
 
+  const { availablePromotionCount, isLoading: isPromotionLoading } =
+    useAvailablePromotionCount();
+
   const {
     totalEvidences,
     evidencesToBeHandled,
@@ -92,7 +128,11 @@ export default function MemberWarnings({ className }) {
   if (
     isEvidenceLoading ||
     isCheckingDemotion ||
-    (totalEvidences <= 0 && membersCount <= 0 && candidatesCount <= 0)
+    isPromotionLoading ||
+    (totalEvidences <= 0 &&
+      membersCount <= 0 &&
+      candidatesCount <= 0 &&
+      availablePromotionCount <= 0)
   ) {
     return null;
   }
@@ -112,20 +152,25 @@ export default function MemberWarnings({ className }) {
         <div className="text-textPrimary text14Medium">
           <ul className="list-disc list-inside">
             {totalEvidences > 0 && (
-              <li className="pl-[1em]">
+              <WarningItem>
                 {evidencesToBeHandled} evidences to be handled in total{" "}
                 {totalEvidences} evidences.
-              </li>
+              </WarningItem>
             )}
             {membersCount > 0 && (
-              <li className="pl-[1em]">
+              <WarningItem>
                 {`${membersCount} members' demotion period is about to reached in under 20 days.`}
-              </li>
+              </WarningItem>
             )}
             {candidatesCount > 0 && (
-              <li className="pl-[1em]">
+              <WarningItem>
                 {`${candidatesCount} candidates' offboard period is about to reached in under 20 days.`}
-              </li>
+              </WarningItem>
+            )}
+            {availablePromotionCount > 0 && (
+              <WarningItem>
+                Promotions are available for {availablePromotionCount} members.
+              </WarningItem>
             )}
           </ul>
         </div>
