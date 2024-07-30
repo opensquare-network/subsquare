@@ -128,3 +128,16 @@ export const WALLET_TIMEOUT_ERROR_TEXT =
   "The wallet request timed out. Please refresh the page and try again later.";
 
 export const ONE_DAY = 24 * 60 * 60 * 1000;
+
+export const FELLOWSHIP_RANK_LEVEL_NAMES = [
+  "Candidates",
+  "Member",
+  "Proficient",
+  "Fellow",
+  "Architect",
+  "Architect Adept",
+  "Grand Architect",
+  "Free Master",
+  "Master Constant",
+  "Grand Master",
+];
