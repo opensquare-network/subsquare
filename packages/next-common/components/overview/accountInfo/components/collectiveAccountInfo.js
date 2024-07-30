@@ -7,36 +7,10 @@ import { useRemainingTime } from "next-common/components/remaining";
 import { usePromotionPeriod } from "next-common/components/collectives/core/member/promotionPeriod";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
-import { getRankColor } from "next-common/utils/fellowship/getRankColor";
-import { cn } from "next-common/utils";
 import { useAmbassadorMemberData } from "../context/ambassadorMemberDataContext";
 import { useFellowshipMemberData } from "../context/fellowshipMemberDataContext";
 import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
-
-function Rank({ rank }) {
-  const textColor = getRankColor(rank);
-  const bgColor = getRankColor(rank, 0.15);
-
-  return (
-    <div className="flex items-center gap-[8px] ">
-      <div
-        className={cn(
-          "flex items-center justify-center",
-          "w-[20px] py-[2px] rounded-[4px] text12Bold",
-        )}
-        style={{
-          backgroundColor: bgColor,
-          color: textColor,
-        }}
-      >
-        {rank}
-      </div>
-      <span className="text-textPrimary text16Bold">
-        {FELLOWSHIP_RANK_LEVEL_NAMES[rank]}
-      </span>
-    </div>
-  );
-}
+import FellowshipRank from "next-common/components/fellowship/rank";
 
 function Demotion({ lastProof, rank, params }) {
   const { percentageValue, remainingBlocks, demotionPeriod } =
@@ -111,7 +85,10 @@ function MemberInfo({ data, isLoading }) {
 
   return (
     <div className="flex flex-col gap-[16px] mt-1">
-      <Rank rank={collectiveMember?.rank} />
+      <div className="flex items-center gap-[8px] ">
+        <FellowshipRank rank={collectiveMember?.rank} />
+        {FELLOWSHIP_RANK_LEVEL_NAMES[collectiveMember?.rank]}
+      </div>
       <div className="flex flex-col gap-[4px]">
         <Demotion
           lastProof={coreMember?.lastProof}
