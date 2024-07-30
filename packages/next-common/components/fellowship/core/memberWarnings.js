@@ -1,6 +1,4 @@
 import { isNil } from "lodash-es";
-import tw from "tailwind-styled-components";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
 import { useMemo } from "react";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
@@ -16,10 +14,9 @@ import {
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
 import dynamic from "next/dynamic";
+import MultiPromptPanel from "next-common/components/multiPromptPanel";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
-
-const WarningItem = tw.li`pl-[1em]`;
 
 const days20 = 20 * ONE_DAY;
 
@@ -125,56 +122,28 @@ export default function MemberWarnings({ className }) {
     isLoading: isEvidenceLoading,
   } = useEvidencesStat();
 
-  if (
-    isEvidenceLoading ||
-    isCheckingDemotion ||
-    isPromotionLoading ||
-    (totalEvidences <= 0 &&
-      membersCount <= 0 &&
-      candidatesCount <= 0 &&
-      availablePromotionCount <= 0)
-  ) {
+  if (isEvidenceLoading || isCheckingDemotion || isPromotionLoading) {
     return null;
   }
 
+  const promptItems = [
+    totalEvidences > 0 &&
+      `${evidencesToBeHandled} evidences to be handled in total ${totalEvidences} evidences.`,
+    membersCount > 0 &&
+      `${membersCount} members' demotion period is about to reached in under 20 days.`,
+    candidatesCount > 0 &&
+      `${candidatesCount} candidates' offboard period is about to reached in under 20 days.`,
+    availablePromotionCount > 0 &&
+      `Promotions are available for ${availablePromotionCount} members.`,
+  ].filter(Boolean);
+
   return (
-    <SecondaryCard className={className}>
-      <div className="flex gap-[16px]">
-        <div>
-          <div className="bg-theme100 rounded-[8px] p-[8px]">
-            <MenuHorn
-              className="[&_path]:fill-theme500"
-              width={24}
-              height={24}
-            />
-          </div>
-        </div>
-        <div className="text-textPrimary text14Medium">
-          <ul className="list-disc list-inside">
-            {totalEvidences > 0 && (
-              <WarningItem>
-                {evidencesToBeHandled} evidences to be handled in total{" "}
-                {totalEvidences} evidences.
-              </WarningItem>
-            )}
-            {membersCount > 0 && (
-              <WarningItem>
-                {`${membersCount} members' demotion period is about to reached in under 20 days.`}
-              </WarningItem>
-            )}
-            {candidatesCount > 0 && (
-              <WarningItem>
-                {`${candidatesCount} candidates' offboard period is about to reached in under 20 days.`}
-              </WarningItem>
-            )}
-            {availablePromotionCount > 0 && (
-              <WarningItem>
-                Promotions are available for {availablePromotionCount} members.
-              </WarningItem>
-            )}
-          </ul>
-        </div>
-      </div>
-    </SecondaryCard>
+    <MultiPromptPanel
+      className={className}
+      icon={
+        <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
+      }
+      items={promptItems}
+    />
   );
 }
