@@ -43,21 +43,21 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
         <QuickStart>
           <ChoiceButton
             name="Promote"
-            description="Creating a proposal for getting promoted to a higher rank"
+            description="Promote a member to a higher rank"
             onClick={() => {
               setShowMemberPromotionPopup(true);
             }}
           />
           <ChoiceButton
             name="Retain"
-            description="Creating a proposal for retaining current rank"
+            description="Retain a member at his/her current rank"
             onClick={() => {
               setShowRetainPopup(true);
             }}
           />
           <ChoiceButton
             name="Remark"
-            description="Creating a remark proposal"
+            description="Put remarks on chain"
             onClick={() => setShowNewRemarkPopup(true)}
           />
         </QuickStart>
