@@ -1,76 +1,13 @@
-import { isNil } from "lodash-es";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { TotalBalance, Transferrable } from "./accountBalances";
 import SummaryItem from "next-common/components/summary/layout/item";
-import { useDemotionPeriod } from "next-common/components/collectives/core/member/demotionPeriod";
-import { useRemainingTime } from "next-common/components/remaining";
-import { usePromotionPeriod } from "next-common/components/collectives/core/member/promotionPeriod";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
 import { useAmbassadorMemberData } from "../context/ambassadorMemberDataContext";
 import { useFellowshipMemberData } from "../context/fellowshipMemberDataContext";
 import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
 import FellowshipRank from "next-common/components/fellowship/rank";
-
-function Demotion({ lastProof, rank, params }) {
-  const { percentageValue, remainingBlocks, demotionPeriod } =
-    useDemotionPeriod({ rank, lastProof, params });
-
-  const remaining = useRemainingTime(remainingBlocks);
-
-  if (isNil(demotionPeriod)) {
-    return null;
-  }
-
-  let text = "";
-  if (demotionPeriod > 0) {
-    if (percentageValue !== 100) {
-      text = remaining;
-    } else {
-      text = "Expired";
-    }
-  }
-
-  return (
-    <RemainLabel
-      percentage={percentageValue}
-      label={rank <= 0 ? "Offboard" : "Demotion"}
-      total={demotionPeriod}
-      remain={remainingBlocks}
-      text={text}
-    />
-  );
-}
-
-function Promotion({ lastPromotion, rank, params }) {
-  const { percentageValue, remainingBlocks, promotionPeriod } =
-    usePromotionPeriod({ rank, lastPromotion, params });
-
-  const remaining = useRemainingTime(remainingBlocks);
-
-  if (isNil(promotionPeriod)) {
-    return null;
-  }
-
-  let text = "";
-  if (promotionPeriod > 0) {
-    if (percentageValue !== 100) {
-      text = remaining;
-    } else {
-      text = "Promotable";
-    }
-  }
-
-  return (
-    <RemainLabel
-      percentage={percentageValue}
-      label="Promotion"
-      total={promotionPeriod}
-      remain={remainingBlocks}
-      text={text}
-    />
-  );
-}
+import DemotionRemainLabel from "next-common/components/profile/fellowship/demotionRemainLabel";
+import PromotionRemainLabel from "next-common/components/profile/fellowship/promotionRemainLabel";
 
 function MemberInfo({ data, isLoading }) {
   if (isLoading) {
@@ -90,12 +27,12 @@ function MemberInfo({ data, isLoading }) {
         {FELLOWSHIP_RANK_LEVEL_NAMES[collectiveMember?.rank]}
       </div>
       <div className="flex flex-col gap-[4px]">
-        <Demotion
+        <DemotionRemainLabel
           lastProof={coreMember?.lastProof}
           rank={collectiveMember?.rank}
           params={coreParams}
         />
-        <Promotion
+        <PromotionRemainLabel
           lastPromotion={coreMember?.lastPromotion}
           rank={collectiveMember?.rank}
           params={coreParams}
