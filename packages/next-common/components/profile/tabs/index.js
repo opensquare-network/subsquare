@@ -92,9 +92,7 @@ export default function useProfileTabs() {
     }
   }
 
-  if (collectivesProfileTabs?.length) {
-    tabs.push(...collectivesProfileTabs);
-  }
+  tabs.push(...collectivesProfileTabs);
 
   return tabs;
 }
