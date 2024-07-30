@@ -70,20 +70,20 @@ export default function SummaryPanel() {
           )}
         >
           <SummaryItem
-            title={<StatusTitle status="Preparing" />}
-            content={preparing}
-          />
-          <SummaryItem
-            title={<StatusTitle status="Queueing" />}
-            content={queueing}
+            title={<StatusTitle status="Confirming" />}
+            content={confirming}
           />
           <SummaryItem
             title={<StatusTitle status="Deciding" />}
             content={deciding}
           />
           <SummaryItem
-            title={<StatusTitle status="Confirming" />}
-            content={confirming}
+            title={<StatusTitle status="Preparing" />}
+            content={preparing}
+          />
+          <SummaryItem
+            title={<StatusTitle status="Queueing" />}
+            content={queueing}
           />
         </div>
       </div>
