@@ -118,6 +118,23 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
             <FellowshipRank rank={member.rank} />
             {FELLOWSHIP_RANK_LEVEL_NAMES[member.rank]}
           </div>
+
+          <div className="space-y-1 mt-3">
+            <RemainLabel
+              percentage={demotion.percentageValue}
+              label={"Demotion"}
+              total={demotion.demotionPeriod}
+              remain={demotion.remainingBlocks}
+              text={demotionRemainingText}
+            />
+            <RemainLabel
+              percentage={promotion.percentageValue}
+              label={"Promotion"}
+              total={promotion.promotionPeriod}
+              remain={promotion.remainingBlocks}
+              text={promotionRemainingText}
+            />
+          </div>
         </SummaryItem>
 
         <SummaryItem title="Active Salary">
@@ -136,27 +153,6 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
               symbol={symbol}
             />
           </LoadableContent>
-        </SummaryItem>
-
-        <SummaryItem className="max-sm:hidden"></SummaryItem>
-
-        <SummaryItem>
-          <div className="space-y-1">
-            <RemainLabel
-              percentage={demotion.percentageValue}
-              label={"Demotion"}
-              total={demotion.demotionPeriod}
-              remain={demotion.remainingBlocks}
-              text={demotionRemainingText}
-            />
-            <RemainLabel
-              percentage={promotion.percentageValue}
-              label={"Promotion"}
-              total={promotion.promotionPeriod}
-              remain={promotion.remainingBlocks}
-              text={promotionRemainingText}
-            />
-          </div>
         </SummaryItem>
       </SummaryLayout>
     </NeutralPanel>
