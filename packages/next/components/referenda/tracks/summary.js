@@ -1,4 +1,5 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import { cn } from "next-common/utils";
 
 function getStatusColor(status) {
   switch (status) {
@@ -17,7 +18,7 @@ function getStatusColor(status) {
 
 function SummaryItem({ title, content }) {
   return (
-    <div className="flex flex-col max-sm:w-[calc(50%-8px)] sm:w-[263px] gap-[4px]">
+    <div className="flex flex-col gap-[4px]">
       <div className="text-textTertiary text12Medium">{title}</div>
       <div className="text16Bold text-textPrimary">{content}</div>
     </div>
@@ -51,13 +52,19 @@ function SummaryPanel() {
   return (
     <SecondaryCard>
       <div className="flex gap-[16px] max-sm:flex-col">
-        <div>
+        <div className="basis-1/4 max-md:basis-1/3">
           <SummaryItem
             title="Active"
             content={<ActiveItemContent active={73} total={824} />}
           />
         </div>
-        <div className="flex gap-[16px] grow flex-wrap">
+        <div
+          className={cn(
+            "flex gap-[16px] flex-wrap grow",
+            "[&>*]:basis-[calc((100%/3)-(16px*2/3))] [&>*]:grow",
+            "max-md:[&>*]:basis-[calc((100%/2)-(16px*1/2))]",
+          )}
+        >
           <SummaryItem title={<StatusTitle status="Preparing" />} content="8" />
           <SummaryItem title={<StatusTitle status="Queueing" />} content="0" />
           <SummaryItem title={<StatusTitle status="Deciding" />} content="56" />
