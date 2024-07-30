@@ -89,5 +89,13 @@ export default function useProfileTabs() {
     }
   }
 
+  if (hasFellowship) {
+    tabs.push({
+      label: "Fellowship",
+      url: `${prefix}fellowship`,
+      exactMatch: false,
+    });
+  }
+
   return tabs;
 }

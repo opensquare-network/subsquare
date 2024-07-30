@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import isAssetHub from "next-common/utils/isAssetHub";
+import ProfileFellowship from "../fellowship";
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
@@ -36,6 +37,8 @@ export default function useProfileTabContent() {
     return <ProfileIdentityTimeline />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
     return <ProfileAssets />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/fellowship`)) {
+    return <ProfileFellowship />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {
     return <Posted />;
   }
