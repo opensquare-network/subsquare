@@ -1,11 +1,7 @@
 import { find } from "lodash-es";
-import { useDemotionPeriod } from "next-common/components/collectives/core/member/demotionPeriod";
-import { usePromotionPeriod } from "next-common/components/collectives/core/member/promotionPeriod";
 import LoadableContent from "next-common/components/common/loadableContent";
 import FellowshipRank from "next-common/components/fellowship/rank";
-import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
 import SignalIndicator from "next-common/components/icons/signalIndicator";
-import { useRemainingTime } from "next-common/components/remaining";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
@@ -25,6 +21,8 @@ import { cn, toPrecision } from "next-common/utils";
 import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
 import { useSelector } from "react-redux";
 import { useAsync } from "react-use";
+import DemotionRemainLabel from "./demotionRemainLabel";
+import PromotionRemainLabel from "./promotionRemainLabel";
 
 export default function ProfileFellowshipMemberInfo({
   section = "fellowship",
@@ -92,12 +90,6 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
 
   const { decimals, symbol } = useSalaryAsset();
 
-  const demotion = useDemotionPeriod({ rank, lastProof, params });
-  const demotionRemainingText = useRemainingTime(demotion.remainingBlocks);
-
-  const promotion = usePromotionPeriod({ rank, lastPromotion, params });
-  const promotionRemainingText = useRemainingTime(promotion.remainingBlocks);
-
   return (
     <NeutralPanel className="p-6">
       <SummaryLayout>
@@ -115,25 +107,23 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
 
         <SummaryItem title="Member">
           <div className="flex items-center gap-x-2">
-            <FellowshipRank rank={member.rank} />
-            {FELLOWSHIP_RANK_LEVEL_NAMES[member.rank]}
+            <FellowshipRank rank={rank} />
+            {FELLOWSHIP_RANK_LEVEL_NAMES[rank]}
           </div>
 
           <div className="space-y-1 mt-3">
-            <RemainLabel
-              percentage={demotion.percentageValue}
-              label={"Demotion"}
-              total={demotion.demotionPeriod}
-              remain={demotion.remainingBlocks}
-              text={demotionRemainingText}
-            />
-            <RemainLabel
-              percentage={promotion.percentageValue}
-              label={"Promotion"}
-              total={promotion.promotionPeriod}
-              remain={promotion.remainingBlocks}
-              text={promotionRemainingText}
-            />
+            <LoadableContent isLoading={loading}>
+              <DemotionRemainLabel
+                params={params}
+                rank={rank}
+                lastProof={lastProof}
+              />
+              <PromotionRemainLabel
+                params={params}
+                rank={rank}
+                lastPromotion={lastPromotion}
+              />
+            </LoadableContent>
           </div>
         </SummaryItem>
 
