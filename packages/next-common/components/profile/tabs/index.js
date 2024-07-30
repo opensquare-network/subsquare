@@ -1,12 +1,14 @@
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { useSelector } from "react-redux";
 import { profileActiveMultisigsCountSelector } from "next-common/store/reducers/profile/multisig";
 import useDepositsCount from "next-common/hooks/profile/deposit/useDepositsCount";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import isAssetHub from "next-common/utils/isAssetHub";
+import { isCollectivesChain } from "next-common/utils/chain";
 
 export default function useProfileTabs() {
+  const chain = useChain();
   const { id } = usePageProps();
   const {
     modules: {
@@ -89,7 +91,7 @@ export default function useProfileTabs() {
     }
   }
 
-  if (hasFellowship) {
+  if (isCollectivesChain(chain)) {
     tabs.push({
       label: "Fellowship",
       url: `${prefix}fellowship`,
