@@ -58,7 +58,6 @@ function ProfileFellowshipMemberInfoImpl({ address }) {
 function ProfileFellowshipAmbassadorMemberInfoImpl({ address }) {
   useFetchAmbassadorCoreMembers();
   const members = useSelector(ambassadorCoreMembersSelector);
-
   const member = find(members, { address });
 
   if (!member) {
@@ -74,14 +73,12 @@ function ProfileFellowshipAmbassadorMemberInfoImpl({ address }) {
 }
 
 function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
-  const { value, loading } = useAsync(async () => {
+  const { value: params = {}, loading } = useAsync(async () => {
     const resp = await nextApi.fetch(paramsApi);
     if (resp.result) {
       return resp.result;
     }
   });
-
-  const params = value || {};
 
   const { activeSalary = [], passiveSalary = [] } = params;
 
