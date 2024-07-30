@@ -37,7 +37,10 @@ export default function useProfileTabContent() {
     return <ProfileIdentityTimeline />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
     return <ProfileAssets />;
-  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/fellowship`)) {
+  } else if (
+    pathname.startsWith(`/user/${maybeEvmAddress}/fellowship`) ||
+    pathname.startsWith(`/user/${maybeEvmAddress}/ambassador`)
+  ) {
     return <ProfileFellowship />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {
     return <Posted />;
