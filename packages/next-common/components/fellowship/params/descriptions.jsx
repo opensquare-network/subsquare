@@ -11,18 +11,17 @@ const MenuParameter = dynamic(() =>
   import("@osn/icons/subsquare/MenuParameter"),
 );
 
-const canBePromoteAnytime = "Can be promote to higher rank at anytime";
+const canBePromoteAnytime = "Can be promoted to a higher rank at anytime.";
 
 function getCandidateInfoItems(params) {
   const { offboardTimeout } = params ?? {};
 
   return [
     <Flex key="offboard-period">
-      Offboard period is&nbsp;
-      <Period blocks={offboardTimeout} />
+      Can be offboarded after &nbsp;<Period blocks={offboardTimeout} /> &nbsp;stay at rank 0.
     </Flex>,
     canBePromoteAnytime,
-    "No salary",
+    "No salary.",
   ];
 }
 
@@ -38,19 +37,18 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
 
   return [
     demotionPeriod[idx] === 0 ? (
-      "Cannot be demoted"
+      "Cannot be demoted."
     ) : (
       <Flex key="demotion-period">
-        Demotion period is&nbsp;
-        <Period blocks={demotionPeriod[idx]} />
+        Can be demoted after&nbsp; <Period blocks={demotionPeriod[idx]} /> &nbsp;stay at current rank.
       </Flex>
     ),
-    minPromotionPeriod[idx] === 0 ? (
+    minPromotionPeriod[rank] === 0 ? (
       canBePromoteAnytime
     ) : (
       <Flex key="promotion-period">
-        Promotion period is&nbsp;
-        <Period blocks={minPromotionPeriod[idx]} />
+        Can be promoted to rank {rank + 1} after&nbsp; <Period blocks={minPromotionPeriod[rank]} /> &nbsp;stay at
+        current rank.
       </Flex>
     ),
     <Flex key="active-salary">
@@ -58,14 +56,14 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
       <ValueDisplay
         value={toPrecision(activeSalary[idx], decimals)}
         symbol={symbol}
-      />
+      />.
     </Flex>,
     <Flex key="passive-salary">
       Passive salary is&nbsp;
       <ValueDisplay
         value={toPrecision(passiveSalary[idx], decimals)}
         symbol={symbol}
-      />
+      />.
     </Flex>,
   ];
 }
