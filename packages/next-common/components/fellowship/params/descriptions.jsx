@@ -84,7 +84,7 @@ function useRankInfoItems(rank, params) {
   return getMemberInfoItems({ rank, params, decimals, symbol });
 }
 
-export default function RankInfoPanel({ rank, params }) {
+export default function CollectiveParamsDescriptions({ rank, params }) {
   const infoItems = useRankInfoItems(rank, params);
   return (
     <BillBoardPanel
