@@ -1,4 +1,3 @@
-import { MenuHorn } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import tw from "tailwind-styled-components";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
@@ -16,6 +15,9 @@ import {
   getPromotionPeriod,
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
+import dynamic from "next/dynamic";
+
+const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
 const WarningItem = tw.li`pl-[1em]`;
 
