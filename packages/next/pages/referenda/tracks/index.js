@@ -1,18 +1,17 @@
 import ReferendaTracksSummary from "components/referenda/tracks/summary";
-import BaseLayout from "next-common/components/layout/baseLayout";
+import ReferendaLayout from "next-common/components/layout/referendaLayout";
+import { usePageProps } from "next-common/context/page";
 import { withCommonProps } from "next-common/lib";
+import nextApi from "next-common/services/nextApi";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { cn } from "next-common/utils";
+import { gov2ReferendumsSummaryApi } from "next-common/services/url";
 
 function TracksPageLayout({ children }) {
+  const { gov2ReferendaSummary } = usePageProps();
   return (
-    <BaseLayout seoInfo={{ title: "" }}>
-      <div className="flex-1">
-        <div className={cn("px-6 py-6 mx-auto max-w-[1200px]", "max-sm:px-0")}>
-          {children}
-        </div>
-      </div>
-    </BaseLayout>
+    <ReferendaLayout seoInfo={{ title: "" }} summaryData={gov2ReferendaSummary}>
+      {children}
+    </ReferendaLayout>
   );
 }
 
@@ -30,9 +29,14 @@ export default function TracksPage() {
 export const getServerSideProps = withCommonProps(async (context) => {
   const tracksProps = await fetchOpenGovTracksProps();
 
+  const { result: gov2ReferendaSummary } = await nextApi.fetch(
+    gov2ReferendumsSummaryApi,
+  );
+
   return {
     props: {
       ...tracksProps,
+      gov2ReferendaSummary,
     },
   };
 });
