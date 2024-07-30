@@ -1,14 +1,14 @@
 import { useState } from "react";
 import Select from "next-common/components/select";
 
-export default function useRankFilter(ranks = []) {
+export default function useRankFilter(ranks = [], noneLabel = "All") {
   const options = (ranks || []).map((rank) => ({
     label: String(rank),
     value: rank,
   }));
 
   options.unshift({
-    label: "All",
+    label: noneLabel,
     value: null,
   });
 
