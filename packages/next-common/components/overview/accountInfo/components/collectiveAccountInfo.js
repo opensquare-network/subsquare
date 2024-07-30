@@ -11,19 +11,7 @@ import { getRankColor } from "next-common/utils/fellowship/getRankColor";
 import { cn } from "next-common/utils";
 import { useAmbassadorMemberData } from "../context/ambassadorMemberDataContext";
 import { useFellowshipMemberData } from "../context/fellowshipMemberDataContext";
-
-const RankLevelNames = [
-  "Candidates",
-  "Member",
-  "Proficient",
-  "Fellow",
-  "Architect",
-  "Architect Adept",
-  "Grand Architect",
-  "Free Master",
-  "Master Constant",
-  "Grand Master",
-];
+import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
 
 function Rank({ rank }) {
   const textColor = getRankColor(rank);
@@ -44,7 +32,7 @@ function Rank({ rank }) {
         {rank}
       </div>
       <span className="text-textPrimary text16Bold">
-        {RankLevelNames[rank]}
+        {FELLOWSHIP_RANK_LEVEL_NAMES[rank]}
       </span>
     </div>
   );
