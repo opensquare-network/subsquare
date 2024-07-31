@@ -3,13 +3,35 @@ import { useMeasure } from "react-use";
 import { startCase } from "lodash-es";
 import AddressUser from "next-common/components/user/addressUser";
 import Link from "next/link";
-import useFetch from "next-common/hooks/useFetch";
 import { cn } from "next-common/utils";
+import {
+  BatchProvider,
+  useValueFromBatchResult,
+} from "next-common/context/batch";
+import nextApi from "next-common/services/nextApi";
+import { useCallback } from "react";
+
+export function BucketContext({ children }) {
+  const batchExecFn = useCallback(async (keys) => {
+    const { result } = await nextApi.fetch(
+      `gov2/referendums?simple=1&page_size=${keys.length}&${keys
+        .map((k) => `referendum_index=${k}`)
+        .join("&")}`,
+    );
+    if (!result) {
+      throw new Error("fetch referendums failed");
+    }
+    const referendaMap = Object.fromEntries(
+      result.items.map((item) => [item.referendumIndex, item]),
+    );
+    return keys.map((key) => referendaMap[key]);
+  }, []);
+
+  return <BatchProvider batchExecFn={batchExecFn}>{children}</BatchProvider>;
+}
 
 function ReferendumItemBar({ referendumIndex, color, status }) {
-  const { value: referendumInfo } = useFetch(
-    `/api/gov2/referendums/${referendumIndex}?simple=1`,
-  );
+  const { value: referendumInfo } = useValueFromBatchResult(referendumIndex);
 
   const tooltipContent = (
     <>
