@@ -20,9 +20,7 @@ export default function ProfileFellowshipCoreSectionTimeline() {
       pageSize: defaultPageSize,
     });
 
-    if (resp.result) {
-      return resp.result;
-    }
+    return resp?.result;
   }, [page, address]);
 
   if (loading) {
