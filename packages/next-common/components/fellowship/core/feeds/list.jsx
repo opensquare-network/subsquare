@@ -5,7 +5,7 @@ import FellowshipFeedsPanel from "next-common/components/fellowship/feeds/list";
 
 export function createFellowshipCoreFeedsRows(feeds) {
   const orderedItems = orderBy(
-    feeds?.items || [],
+    feeds || [],
     ["indexer.blockHeight", "indexer.eventIndex"],
     ["desc", "desc"],
   );
