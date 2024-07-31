@@ -8,7 +8,7 @@ import { cn } from "next-common/utils";
 
 function ReferendumItemBar({ referendumIndex, color, status }) {
   const { value: referendumInfo } = useFetch(
-    `/api/gov2/referendums/${referendumIndex}`,
+    `/api/gov2/referendums/${referendumIndex}?simple=1`,
   );
 
   const tooltipContent = (
@@ -48,7 +48,13 @@ function ReferendumItemBar({ referendumIndex, color, status }) {
   );
 }
 
-export default function useBucket({ sections = [], maxSize = 0, expanded }) {
+export default function useBucket({
+  sections = [],
+  maxSize = 0,
+  expanded,
+  idleItemsColor,
+  paddingItemsColor,
+}) {
   const [ref, { width }] = useMeasure();
 
   const bars = [];
@@ -74,7 +80,11 @@ export default function useBucket({ sections = [], maxSize = 0, expanded }) {
     const idleCount = maxSize - referendaCount;
     for (let i = 0; i < idleCount; i++) {
       bars.push(
-        <div key={`idle-${i}`} className="h-[24px] w-[4px] bg-neutral400" />,
+        <div
+          key={`idle-${i}`}
+          className="h-[24px] w-[4px]"
+          style={{ backgroundColor: idleItemsColor || "var(--neutral400)" }}
+        />,
       );
     }
   }
@@ -89,7 +99,11 @@ export default function useBucket({ sections = [], maxSize = 0, expanded }) {
     itemsCount === 0 || remainder > 0 ? maxItemsCountInALine - remainder : 0;
   for (let i = 0; i < paddingCount; i++) {
     bars.push(
-      <div key={`padding-${i}`} className="h-[24px] w-[4px] bg-neutral200" />,
+      <div
+        key={`padding-${i}`}
+        className="h-[24px] w-[4px]"
+        style={{ backgroundColor: paddingItemsColor || "var(--neutral200)" }}
+      />,
     );
   }
 
@@ -98,7 +112,7 @@ export default function useBucket({ sections = [], maxSize = 0, expanded }) {
       ref={ref}
       className={cn(
         "flex flex-row-reverse gap-[4px] flex-wrap",
-        expanded && "max-h-[24px] overflow-y-hidden",
+        !expanded && "max-h-[24px] overflow-y-hidden",
       )}
     >
       {bars}

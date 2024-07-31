@@ -54,6 +54,7 @@ export default function PreparingBucketStatus({
       sections={sections}
       name="Preparing"
       tooltip="Including preparing and queueing status"
+      paddingItemsColor="var(--neutral400)"
       counts={
         <StatusCounts
           counts={{ preparing: preparing.length, queueing: queueing.length }}

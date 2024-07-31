@@ -10,13 +10,21 @@ export default function BucketStatus({
   name,
   tooltip,
   counts,
+  idleItemsColor,
+  paddingItemsColor,
 }) {
   const [viewAll, setViewAll] = useState(false);
   const {
     component: bucket,
     maxItemsCountInALine,
     itemsCount,
-  } = useBucket({ sections, maxSize, expanded: viewAll });
+  } = useBucket({
+    sections,
+    maxSize,
+    expanded: viewAll,
+    idleItemsColor,
+    paddingItemsColor,
+  });
 
   return (
     <div className={cn("flex flex-col gap-[8px]", className)}>

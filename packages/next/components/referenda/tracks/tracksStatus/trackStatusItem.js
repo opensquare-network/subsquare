@@ -8,8 +8,8 @@ const ArrowRight = dynamic(() => import("@osn/icons/subsquare/ArrowRight"));
 
 function Arrow() {
   return (
-    <div className="p-[2px]">
-      <div className="flex items-center justify-center p-[2px] rounded-full bg-neutral200">
+    <div className="p-[2px] text-center">
+      <div className="inline-flex items-center justify-center p-[2px] rounded-full bg-neutral200">
         <ArrowRight
           className="[&_path]:stroke-textTertiary"
           width={16}
@@ -41,9 +41,9 @@ export default function TrackStatusItem({
   return (
     <div className="flex flex-col p-[24px] border-b border-b-neutral300 last:border-b-0">
       <TrackName trackId={trackId} />
-      <div className="flex gap-[16px]">
+      <div className="flex gap-[16px] max-sm:flex-col max-sm:gap-[8px]">
         <PreparingBucketStatus
-          className="max-w-[300px] basis-[28%] shrink-0"
+          className="sm:max-w-[300px] basis-[28%] shrink-0"
           preparing={preparing}
           queueing={queueing}
         />

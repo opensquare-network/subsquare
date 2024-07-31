@@ -45,9 +45,12 @@ export default function useGroupedReferenda() {
 
   return useMemo(() => {
     if (isLoading) {
-      return [];
+      return { tracks: [], isLoading };
     }
 
-    return groupReferenda(referenda);
+    return {
+      tracks: groupReferenda(referenda),
+      isLoading,
+    };
   }, [isLoading, referenda]);
 }
