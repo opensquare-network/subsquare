@@ -11,7 +11,7 @@ import {
 import nextApi from "next-common/services/nextApi";
 import { useCallback } from "react";
 
-export function BucketContext({ children }) {
+export function BucketProvider({ children }) {
   const fetchReferendaList = useCallback(async (keys) => {
     const { result } = await nextApi.fetch(
       `gov2/referendums?simple=1&page_size=${keys.length}&${keys
