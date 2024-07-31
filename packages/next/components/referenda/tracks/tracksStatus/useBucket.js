@@ -75,18 +75,21 @@ function ReferendumItemBar({ referendumIndex, color, status }) {
 function IdleBars({ capacity, referendaCount, idleItemsColor }) {
   let bars = [];
 
-  if (capacity > 0 && capacity > referendaCount) {
-    const idleCount = capacity - referendaCount;
-    for (let i = 0; i < idleCount; i++) {
-      bars.push(
-        <div
-          key={`idle-${i}`}
-          className="h-[24px] w-[4px]"
-          style={{ backgroundColor: idleItemsColor || "var(--neutral400)" }}
-        />,
-      );
-    }
+  if (capacity <= referendaCount) {
+    return null;
   }
+
+  const idleCount = capacity - referendaCount;
+  for (let i = 0; i < idleCount; i++) {
+    bars.push(
+      <div
+        key={`idle-${i}`}
+        className="h-[24px] w-[4px]"
+        style={{ backgroundColor: idleItemsColor || "var(--neutral400)" }}
+      />,
+    );
+  }
+
   return bars;
 }
 
@@ -135,7 +138,7 @@ function ReferendaBars({ sections }) {
 
 export default function useBucket({
   sections = [],
-  capacity = 0,
+  capacity,
   expanded,
   idleItemsColor,
   paddingItemsColor,
@@ -161,11 +164,13 @@ export default function useBucket({
       )}
     >
       <ReferendaBars sections={sections} />
-      <IdleBars
-        capacity={capacity}
-        referendaCount={referendaCount}
-        idleItemsColor={idleItemsColor}
-      />
+      {capacity > 0 && (
+        <IdleBars
+          capacity={capacity}
+          referendaCount={referendaCount}
+          idleItemsColor={idleItemsColor}
+        />
+      )}
       <PaddingBars
         maxItemsCountInALine={maxItemsCountInALine}
         currentItemsCount={currentItemsCount}
