@@ -12,10 +12,13 @@ import {
 function Warning() {
   const { proposalHash, info } = useOnchainData();
   const api = useContextApi();
-  const [status] = useCall(api?.query?.preimage?.statusFor, [proposalHash]);
-  const [requestStatus] = useCall(api?.query?.preimage?.requestStatusFor, [
+  const { value: status } = useCall(api?.query?.preimage?.statusFor, [
     proposalHash,
   ]);
+  const { value: requestStatus } = useCall(
+    api?.query?.preimage?.requestStatusFor,
+    [proposalHash],
+  );
 
   let lenFromStatus;
   if (requestStatus?.isSome) {

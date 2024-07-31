@@ -8,6 +8,7 @@ import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ManageAccountButton from "./components/manageAccountButton";
 import FellowshipMemberDataProvider from "./context/fellowshipMemberDataContext";
 import AmbassadorMemberDataProvider from "./context/ambassadorMemberDataContext";
+import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 
 export default function CollectivesAccountInfoPanel({ hideManageAccountLink }) {
   useSubscribeAccount();
@@ -24,6 +25,7 @@ export default function CollectivesAccountInfoPanel({ hideManageAccountLink }) {
 
           {!hideManageAccountLink && <ManageAccountButton />}
 
+          <ExtensionUpdatePrompt />
           <AccountPanelScrollPrompt />
           <CollectivesDemotionPrompt />
         </NeutralPanel>

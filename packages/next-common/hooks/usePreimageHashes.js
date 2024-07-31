@@ -8,11 +8,13 @@ function usePreimageHashesCommon(method) {
   const trigger = useSelector(preImagesTriggerSelector);
 
   const api = useContextApi();
-  const preimageStatus = useCall(api?.query.preimage?.[method]?.entries, [], {
-    trigger,
-  });
-
-  const [allStatus] = preimageStatus || [];
+  const { value: allStatus } = useCall(
+    api?.query.preimage?.[method]?.entries,
+    [],
+    {
+      trigger,
+    },
+  );
 
   return useMemo(
     () =>

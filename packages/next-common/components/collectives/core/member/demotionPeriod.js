@@ -1,45 +1,32 @@
-import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
 import Tooltip from "next-common/components/tooltip";
 import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";
+import {
+  getDemotionPeriod,
+  getGoneBlocksPercentage,
+  getRemainingBlocks,
+} from "next-common/utils/collective/demotionAndPromotion";
 
 export function useDemotionPeriod({ rank, lastProof, params }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  const demotionPeriod = useMemo(() => {
-    return rank <= 0 ? params.offboardTimeout : params.demotionPeriod[rank - 1];
-  }, [rank, params]);
+  return useMemo(() => {
+    const demotionPeriod = getDemotionPeriod(rank, params);
+    const gone = latestHeight - lastProof;
+    const percentageValue = getGoneBlocksPercentage(gone, demotionPeriod);
+    const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);
 
-  const gone = latestHeight - lastProof;
-  const percentageValue = useMemo(() => {
-    if (gone <= 0 || demotionPeriod <= 0) {
-      return 0;
-    } else if (gone >= demotionPeriod) {
-      return 100;
-    }
-
-    return Number((gone / demotionPeriod) * 100).toFixed(2);
-  }, [demotionPeriod, gone]);
-
-  const remainingBlocks = useMemo(() => {
-    if (gone <= 0) {
-      return demotionPeriod;
-    } else if (gone >= demotionPeriod) {
-      return 0;
-    }
-
-    return demotionPeriod - gone;
-  }, [demotionPeriod, gone]);
-
-  return {
-    percentageValue,
-    remainingBlocks,
-    demotionPeriod,
-  };
+    return {
+      percentageValue,
+      remainingBlocks,
+      demotionPeriod,
+    };
+  }, [rank, lastProof, params, latestHeight]);
 }
 
 export default function CoreFellowshipMemberDemotionPeriod({
