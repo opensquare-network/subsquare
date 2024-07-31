@@ -45,6 +45,7 @@ const westend = {
   modules: {
     referenda: true,
   },
+  sima: true,
 };
 
 export default westend;
