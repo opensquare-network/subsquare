@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useOnChainReferendaContext } from "next-common/context/onchainReferenda";
+import { getOngoingReferendaStatus } from "../common";
 
 function countReferendaByStatus(allReferenda) {
   const counts = {
@@ -19,17 +20,9 @@ function countReferendaByStatus(allReferenda) {
     counts.active++;
 
     const ongoingReferenda = unwrappedReferenda.asOngoing;
-    if (ongoingReferenda.decisionDeposit.isNone) {
-      counts.preparing++;
-    } else if (ongoingReferenda.inQueue.isTrue) {
-      counts.queueing++;
-    } else if (ongoingReferenda.deciding.isSome) {
-      const deciding = ongoingReferenda.deciding.unwrap();
-      if (deciding.confirming.isSome) {
-        counts.confirming++;
-      } else {
-        counts.deciding++;
-      }
+    const status = getOngoingReferendaStatus(ongoingReferenda);
+    if (status) {
+      counts[status]++;
     }
   });
 

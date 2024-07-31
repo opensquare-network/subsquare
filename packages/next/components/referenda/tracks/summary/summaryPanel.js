@@ -1,21 +1,7 @@
 import { cn } from "next-common/utils";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useReferendaCountsByStatus from "./useReferendaCountsByStatus";
-
-function getStatusColor(status) {
-  switch (status) {
-    case "Preparing":
-      return "#2196F3";
-    case "Queueing":
-      return "#FF9800";
-    case "Deciding":
-      return "#0F6FFF";
-    case "Confirming":
-      return "#4CAF50";
-    default:
-      return "";
-  }
-}
+import getStatusColor from "../common";
 
 function SummaryItem({ title, content }) {
   return (
