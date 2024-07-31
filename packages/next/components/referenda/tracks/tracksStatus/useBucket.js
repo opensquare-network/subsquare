@@ -12,7 +12,7 @@ import nextApi from "next-common/services/nextApi";
 import { useCallback } from "react";
 
 export function BucketContext({ children }) {
-  const batchExecFn = useCallback(async (keys) => {
+  const fetchReferendaList = useCallback(async (keys) => {
     const { result } = await nextApi.fetch(
       `gov2/referendums?simple=1&page_size=${keys.length}&${keys
         .map((k) => `referendum_index=${k}`)
@@ -27,7 +27,9 @@ export function BucketContext({ children }) {
     return keys.map((key) => referendaMap[key]);
   }, []);
 
-  return <BatchProvider batchExecFn={batchExecFn}>{children}</BatchProvider>;
+  return (
+    <BatchProvider batchExecFn={fetchReferendaList}>{children}</BatchProvider>
+  );
 }
 
 function ReferendumItemBar({ referendumIndex, color, status }) {
