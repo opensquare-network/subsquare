@@ -1,4 +1,6 @@
-import FellowshipCoreFeedsList from "next-common/components/fellowship/core/feeds/list";
+import { createFellowshipCoreFeedsRows } from "next-common/components/fellowship/core/feeds/list";
+import { FellowshipFeedItems } from "next-common/components/fellowship/feeds/list";
+import Pagination from "next-common/components/pagination";
 import { usePageProps } from "next-common/context/page";
 import { useUrlSearchParams } from "next-common/hooks/useUrlSearchParams";
 import nextApi from "next-common/services/nextApi";
@@ -22,12 +24,16 @@ export default function ProfileFellowshipCoreSectionTimeline() {
     }
   }, [page, address]);
 
+  const rows = createFellowshipCoreFeedsRows(value?.items);
+
   return (
     <div>
-      <FellowshipCoreFeedsList
-        feeds={value}
-        noDataText="No data"
-        bordered={false}
+      <FellowshipFeedItems rows={rows} noDataText="No data" />
+
+      <Pagination
+        page={value?.page}
+        pageSize={value?.pageSize}
+        total={value?.total}
       />
     </div>
   );
