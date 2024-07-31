@@ -65,7 +65,7 @@ export default function OngoingBucketStatus({
     <BucketStatus
       className={className}
       sections={sections}
-      maxSize={trackDetail.maxDeciding}
+      capacity={trackDetail.maxDeciding}
       name="Ongoing"
       tooltip="Including deciding and confirming status"
       counts={

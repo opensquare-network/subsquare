@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function BucketStatus({
   className,
   sections,
-  maxSize,
+  capacity,
   name,
   tooltip,
   counts,
@@ -17,10 +17,10 @@ export default function BucketStatus({
   const {
     component: bucket,
     maxItemsCountInALine,
-    itemsCount,
+    currentItemsCount,
   } = useBucket({
     sections,
-    maxSize,
+    capacity,
     expanded: viewAll,
     idleItemsColor,
     paddingItemsColor,
@@ -35,7 +35,7 @@ export default function BucketStatus({
           <Tooltip content={tooltip} />
           {counts}
         </div>
-        {itemsCount > maxItemsCountInALine && (
+        {currentItemsCount > maxItemsCountInALine && (
           <span
             className="cursor-pointer text12Medium text-theme500"
             onClick={() => setViewAll(!viewAll)}
