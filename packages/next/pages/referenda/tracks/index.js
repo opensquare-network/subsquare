@@ -6,6 +6,8 @@ import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { gov2ReferendumsSummaryApi } from "next-common/services/url";
+import { OnChainReferendaProvider } from "next-common/context/onchainReferenda";
+import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 
 function TracksPageLayout({ children }) {
   const { gov2ReferendaSummary } = usePageProps();
@@ -18,15 +20,19 @@ function TracksPageLayout({ children }) {
 
 export default function TracksPage() {
   return (
-    <TracksPageLayout>
-      <div className="ml-[24px] mb-[16px] text-textPrimary text20Bold">
-        Track Status
-      </div>
-      <div className="flex flex-col gap-[24px]">
-        <ReferendaTracksSummary />
-        <TracksStatus />
-      </div>
-    </TracksPageLayout>
+    <ReferendaPalletProvider pallet="referenda">
+      <OnChainReferendaProvider>
+        <TracksPageLayout>
+          <div className="ml-[24px] mb-[16px] text-textPrimary text20Bold">
+            Track Status
+          </div>
+          <div className="flex flex-col gap-[24px]">
+            <ReferendaTracksSummary />
+            <TracksStatus />
+          </div>
+        </TracksPageLayout>
+      </OnChainReferendaProvider>
+    </ReferendaPalletProvider>
   );
 }
 
