@@ -12,11 +12,11 @@ import nextApi from "next-common/services/nextApi";
 import { useCallback } from "react";
 
 export function BucketProvider({ children }) {
-  const fetchReferendaList = useCallback(async (keys) => {
+  const fetchReferendaList = useCallback(async (referendumIndexes) => {
     const { result } = await nextApi.fetch(
-      `gov2/referendums?simple=1&page_size=${keys.length}&${keys
-        .map((k) => `referendum_index=${k}`)
-        .join("&")}`,
+      `gov2/referendums?simple=1&page_size=${
+        referendumIndexes.length
+      }&${referendumIndexes.map((k) => `referendum_index=${k}`).join("&")}`,
     );
     if (!result) {
       throw new Error("fetch referendums failed");
@@ -24,7 +24,7 @@ export function BucketProvider({ children }) {
     const referendaMap = Object.fromEntries(
       result.items.map((item) => [item.referendumIndex, item]),
     );
-    return keys.map((key) => referendaMap[key]);
+    return referendumIndexes.map((key) => referendaMap[key]);
   }, []);
 
   return (
