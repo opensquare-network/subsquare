@@ -3,7 +3,11 @@ import { orderBy } from "lodash-es";
 import FellowshipFeedSuffix from "next-common/components/fellowship/feeds/suffix";
 import FellowshipFeedsPanel from "next-common/components/fellowship/feeds/list";
 
-export default function FellowshipCoreFeedsList({ feeds = {} }) {
+export default function FellowshipCoreFeedsList({
+  feeds = {},
+  noDataText,
+  bordered,
+}) {
   const orderedItems = orderBy(
     feeds?.items || [],
     ["indexer.blockHeight", "indexer.eventIndex"],
@@ -17,5 +21,12 @@ export default function FellowshipCoreFeedsList({ feeds = {} }) {
     ];
   });
 
-  return <FellowshipFeedsPanel feeds={feeds} rows={rows} />;
+  return (
+    <FellowshipFeedsPanel
+      feeds={feeds}
+      rows={rows}
+      noDataText={noDataText}
+      bordered={bordered}
+    />
+  );
 }

@@ -35,16 +35,27 @@ export function FellowshipFeedItems({
   );
 }
 
-export default function FellowshipFeedsPanel({ feeds = {}, rows }) {
-  return (
-    <SecondaryCard className="!px-0">
-      <FellowshipFeedItems rows={rows} />
+export default function FellowshipFeedsPanel({
+  feeds = {},
+  rows,
+  bordered = true,
+  noDataText,
+}) {
+  const content = (
+    <>
+      <FellowshipFeedItems rows={rows} noDataText={noDataText} />
 
       <Pagination
         page={feeds.page}
         pageSize={feeds.pageSize}
         total={feeds.total}
       />
-    </SecondaryCard>
+    </>
   );
+
+  if (bordered) {
+    return <SecondaryCard className="!px-0">{content}</SecondaryCard>;
+  }
+
+  return content;
 }
