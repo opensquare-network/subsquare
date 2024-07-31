@@ -6,12 +6,15 @@ import useSubStorage from "next-common/hooks/common/useSubStorage";
 export default function useSubFellowshipSalaryStats() {
   const dispatch = useDispatch();
 
-  const callback = useCallback((rawOptional) => {
-    if (rawOptional.isSome) {
-      const json = rawOptional.unwrap().toJSON();
-      dispatch(setFellowshipSalaryStatus(json));
-    }
-  }, [dispatch]);
+  const callback = useCallback(
+    (rawOptional) => {
+      if (rawOptional.isSome) {
+        const json = rawOptional.unwrap().toJSON();
+        dispatch(setFellowshipSalaryStatus(json));
+      }
+    },
+    [dispatch],
+  );
 
   useSubStorage("fellowshipSalary", "status", [], callback);
 }

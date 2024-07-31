@@ -1,4 +1,3 @@
-import DetailItem from "components/detailItem";
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -12,7 +11,7 @@ import {
   getPostVotesAndMine,
 } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import PostDetail from "components/postDetail";
 
 export default function PostDetailPage({ detail }) {
   const desc = getMetaDesc(detail);
@@ -25,9 +24,7 @@ export default function PostDetailPage({ detail }) {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <ContentWithComment>
-          <DetailItem />
-        </ContentWithComment>
+        <PostDetail />
       </DetailLayout>
     </PostProvider>
   );
@@ -42,12 +39,13 @@ export const getServerSideProps = withCommonProps(async (context) => {
     return to404();
   }
 
+  const tracksProps = await fetchOpenGovTracksProps();
+  const { votes, myVote } = await getPostVotesAndMine(detail, context);
+
   const comments = await fetchDetailComments(
     `posts/${detail._id}/comments`,
     context,
   );
-  const { votes, myVote } = await getPostVotesAndMine(detail, context);
-  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {

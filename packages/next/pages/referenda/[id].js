@@ -1,87 +1,26 @@
-import {
-  PostProvider,
-  useOnchainData,
-  usePost,
-} from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import { withCommonProps } from "next-common/lib";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import Gov2Sidebar from "components/gov2/sidebar";
 import nextApi from "next-common/services/nextApi";
 import {
   gov2ReferendumsCommentApi,
   gov2ReferendumsDetailApi,
   gov2ReferendumsVoteStatsApi,
 } from "next-common/services/url";
-import { useEffect } from "react";
 import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
-import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
-import { useDispatch } from "react-redux";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import CheckUnFinalized from "components/gov2/checkUnFinalized";
 import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
-import ReferendaDetail from "next-common/components/detail/referenda";
-import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
-import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
-import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-
-const Gov2ReferendumCall = dynamicClientOnly(() =>
-  import("next-common/components/gov2/referendum/call"),
-);
-const ProposalAddress = dynamicClientOnly(() =>
-  import("next-common/components/statistics/referenda/proposalAddress"),
-);
-const Gov2ReferendumMetadata = dynamicClientOnly(() =>
-  import("next-common/components/gov2/referendum/metadata"),
-);
-const Timeline = dynamicClientOnly(() => import("components/gov2/timeline"));
-const Gov2ReferendaVotesBubble = dynamicClientOnly(() =>
-  import("next-common/components/gov2/referendum/votesBubble"),
-);
-
-function ReferendumContent() {
-  const post = usePost();
-
-  const dispatch = useDispatch();
-  useSubReferendumInfo();
-  const info = useReferendumInfo();
-  const onchainData = useOnchainData();
-  useFetchVotes(onchainData);
-  const proposal = onchainData?.proposal ?? {};
-
-  useEffect(() => {
-    return () => {
-      dispatch(unsetIssuance());
-      dispatch(clearVotes());
-    };
-  }, [dispatch]);
-
-  return (
-    <ContentWithComment>
-      <ReferendaDetail />
-
-      <Gov2Sidebar />
-
-      <DetailMultiTabs
-        call={proposal?.call && <Gov2ReferendumCall />}
-        metadata={<Gov2ReferendumMetadata info={info} />}
-        timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
-        votesBubble={<Gov2ReferendaVotesBubble />}
-        statistics={<ProposalAddress />}
-      />
-    </ContentWithComment>
-  );
-}
+import { SimaReferendumContent } from "components/referenda/sima/referendaContent";
+import { ReferendumContent } from "components/referenda/referendaContent";
+import { useChainSettings } from "next-common/context/chain";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -130,10 +69,11 @@ function ReferendumNullPage() {
 }
 
 function ReferendumPageWithPost() {
+  const { sima } = useChainSettings();
   return (
     <ReferendumPageCommon
       breadcrumbs={<ReferendaBreadcrumb />}
-      postContent={<ReferendumContent />}
+      postContent={sima ? <SimaReferendumContent /> : <ReferendumContent />}
     />
   );
 }
@@ -158,19 +98,19 @@ export default function ReferendumPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: detail } = await nextApi.fetch(gov2ReferendumsDetailApi(id));
 
+  const { result: detail } = await nextApi.fetch(gov2ReferendumsDetailApi(id));
   if (!detail) {
     return getNullDetailProps(id, { voteStats: {} });
   }
 
-  const { result: voteStats } = await nextApi.fetch(
-    gov2ReferendumsVoteStatsApi(id),
-  );
-
   const comments = await fetchDetailComments(
     gov2ReferendumsCommentApi(detail?._id),
     context,
+  );
+
+  const { result: voteStats } = await nextApi.fetch(
+    gov2ReferendumsVoteStatsApi(id),
   );
   const tracksProps = await fetchOpenGovTracksProps();
 

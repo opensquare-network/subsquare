@@ -13,6 +13,8 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const AnnouncementTimeline = dynamicClientOnly(() =>
@@ -25,12 +27,16 @@ function AnnouncementContent() {
   useSubscribePostDetail(`${detail?.height}_${detail?.cid}`);
 
   return (
-    <ContentWithComment>
-      <DetailItem />
-      <DetailMultiTabs
-        timeline={<AnnouncementTimeline data={detail?.onchainData} />}
-      />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <DetailItem />
+          <DetailMultiTabs
+            timeline={<AnnouncementTimeline data={detail?.onchainData} />}
+          />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

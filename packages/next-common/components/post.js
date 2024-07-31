@@ -174,7 +174,7 @@ function PostUser({ data, type }) {
 
   return (
     <AddressUser
-      add={data.address}
+      add={data.address || data.proposer}
       fontSize={userFontSize}
       maxWidth={userMaxWidth}
     />

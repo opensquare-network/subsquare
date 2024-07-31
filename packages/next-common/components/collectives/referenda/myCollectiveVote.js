@@ -13,7 +13,9 @@ import WithAddress from "next-common/components/common/withAddress";
 
 function normalizeVote(unwrapped) {
   const isAye = unwrapped.isAye;
-  const votes = unwrapped.isAye ? unwrapped.asAye.toNumber() : unwrapped.asNay.toNumber();
+  const votes = unwrapped.isAye
+    ? unwrapped.asAye.toNumber()
+    : unwrapped.asNay.toNumber();
   return {
     isAye,
     votes,
@@ -35,9 +37,12 @@ function useMyVote() {
     }
 
     if (!isNil(finishedIndexer)) {
-      api.at(finishedIndexer.blockHash)
-        .then(blockApi => blockApi.query[collectivePallet].voting(referendumIndex, address))
-        .then(optionalStorage => {
+      api
+        .at(finishedIndexer.blockHash)
+        .then((blockApi) =>
+          blockApi.query[collectivePallet].voting(referendumIndex, address),
+        )
+        .then((optionalStorage) => {
           if (optionalStorage.isSome) {
             setVote(normalizeVote(optionalStorage.unwrap()));
           }
@@ -45,11 +50,13 @@ function useMyVote() {
     }
 
     let unsub;
-    api.query[collectivePallet].voting(referendumIndex, address, (optionalStorage) => {
-      if (optionalStorage.isSome) {
-        setVote(normalizeVote(optionalStorage.unwrap()));
-      }
-    }).then((result) => (unsub = result));
+    api.query[collectivePallet]
+      .voting(referendumIndex, address, (optionalStorage) => {
+        if (optionalStorage.isSome) {
+          setVote(normalizeVote(optionalStorage.unwrap()));
+        }
+      })
+      .then((result) => (unsub = result));
 
     return () => {
       if (unsub) {

@@ -133,7 +133,8 @@ export default function ExtensionUpdatePrompt() {
       cacheKey={CACHE_KEY.extensionUpdateMetadata}
       type={PromptTypes.WARNING}
     >
-      The extension can be updated with the latest chain metadata and properties.&nbsp;
+      The extension can be updated with the latest chain metadata and
+      properties.&nbsp;
       <span
         className="cursor-pointer underline"
         onClick={() => updateMeta(chainInfo)}

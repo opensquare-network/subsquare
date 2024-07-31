@@ -68,6 +68,7 @@ const rococo = {
     mimir: true,
   },
   treasuryProposalTracks: rococoTreasuryTracks,
+  sima: true,
 };
 
 export default rococo;

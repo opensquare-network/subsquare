@@ -21,7 +21,18 @@ export function getMentionList(comments) {
     ...(comments?.items ?? []),
     ...flatten((comments?.items ?? []).map((item) => item.replies)),
   ]
-    .map((comment) => comment.author)
+    .map((comment) => {
+      if (comment?.author) {
+        return comment?.author;
+      }
+      if (comment?.proposer) {
+        const maybeEvmAddress = tryConvertToEvmAddress(comment.proposer);
+        return {
+          username: addressEllipsis(maybeEvmAddress),
+          address: maybeEvmAddress,
+        };
+      }
+    })
     .filter((author) => !!author);
 
   return uniqBy(items, (item) => item.username);
@@ -49,6 +60,22 @@ export function getMemberId(user, chain) {
   }
 }
 
+export async function getIdentityDisplayNameFromAddress(address, chain) {
+  const setting = getChainSettings(chain);
+  const identityChain = setting.identity;
+
+  const identityAddress = encodeAddressToChain(address, identityChain);
+  const identity = await fetchIdentity(identityChain, identityAddress);
+  const displayName = getIdentityDisplay(identity);
+
+  return displayName;
+}
+
+export async function getMentionNameFromAddress(address, chain) {
+  const displayName = await getIdentityDisplayNameFromAddress(address, chain);
+  return displayName || addressEllipsis(tryConvertToEvmAddress(address));
+}
+
 export async function getMentionName(user, chain) {
   let address;
   let mentionName;
@@ -64,13 +91,7 @@ export async function getMentionName(user, chain) {
     mentionName = user.username;
   }
 
-  const setting = getChainSettings(chain);
-  const identityChain = setting.identity;
-
-  const identityAddress = encodeAddressToChain(address, identityChain);
-  const identity = await fetchIdentity(identityChain, identityAddress);
-  const displayName = getIdentityDisplay(identity);
-
+  const displayName = await getIdentityDisplayNameFromAddress(address, chain);
   return displayName || mentionName;
 }
 

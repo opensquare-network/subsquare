@@ -76,6 +76,7 @@ const kusama = {
     mimir: true,
   },
   treasuryProposalTracks: kusamaTreasuryTracks,
+  disableWeb2Registration: true,
 };
 
 export default kusama;

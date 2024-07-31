@@ -12,7 +12,10 @@ import useFellowshipVote from "next-common/utils/hooks/fellowship/useFellowshipV
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import CurrentVote from "./currentVote";
 import VStack from "next-common/components/styled/vStack";
-import { usePopupParams, useSignerAccount } from "next-common/components/popupWithSigner/context";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";

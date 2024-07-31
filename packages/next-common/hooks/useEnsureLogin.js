@@ -102,9 +102,29 @@ export function useEnsureLogin() {
     return false;
   }, [user, isLoggedIn, login, openLoginPopup, waitForClose]);
 
+  const ensureConnect = useCallback(async () => {
+    const connectedAccount = getCookieConnectedAccount();
+    if (connectedAccount) {
+      return connectedAccount;
+    }
+
+    // Not connect yet
+    openLoginPopup();
+    const loginResult = await waitForClose();
+    if (
+      loginResult === LoginResult.Connected ||
+      loginResult === LoginResult.LoggedIn
+    ) {
+      return getCookieConnectedAccount();
+    }
+
+    return null;
+  }, [openLoginPopup, waitForClose]);
+
   return {
     login,
     ensureLogin,
+    ensureConnect,
     loading,
   };
 }

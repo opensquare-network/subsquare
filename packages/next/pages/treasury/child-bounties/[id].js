@@ -20,6 +20,8 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const Metadata = dynamicClientOnly(() =>
@@ -39,19 +41,23 @@ function ChildBountyContent() {
   useSubscribePostDetail(post?.index);
 
   return (
-    <ContentWithComment>
-      <ChildBountyDetail />
-      <Claim />
-      <DetailMultiTabs
-        metadata={
-          <Metadata
-            meta={post?.onchainData?.meta}
-            address={post?.onchainData?.address}
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <ChildBountyDetail />
+          <Claim />
+          <DetailMultiTabs
+            metadata={
+              <Metadata
+                meta={post?.onchainData?.meta}
+                address={post?.onchainData?.address}
+              />
+            }
+            timeline={<Timeline onchainData={post?.onchainData} />}
           />
-        }
-        timeline={<Timeline onchainData={post?.onchainData} />}
-      />
-    </ContentWithComment>
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

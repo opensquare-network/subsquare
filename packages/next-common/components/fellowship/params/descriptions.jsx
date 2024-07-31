@@ -18,7 +18,8 @@ function getCandidateInfoItems(params) {
 
   return [
     <Flex key="offboard-period">
-      Can be offboarded after &nbsp;<Period blocks={offboardTimeout} /> &nbsp;stay at rank 0.
+      Can be offboarded after &nbsp;
+      <Period blocks={offboardTimeout} /> &nbsp;stay at rank 0.
     </Flex>,
     canBePromoteAnytime,
     "No salary.",
@@ -40,15 +41,16 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
       "Cannot be demoted."
     ) : (
       <Flex key="demotion-period">
-        Can be demoted after&nbsp; <Period blocks={demotionPeriod[idx]} /> &nbsp;stay at current rank.
+        Can be demoted after&nbsp; <Period blocks={demotionPeriod[idx]} />{" "}
+        &nbsp;stay at current rank.
       </Flex>
     ),
     minPromotionPeriod[rank] === 0 ? (
       canBePromoteAnytime
     ) : (
       <Flex key="promotion-period">
-        Can be promoted to rank {rank + 1} after&nbsp; <Period blocks={minPromotionPeriod[rank]} /> &nbsp;stay at
-        current rank.
+        Can be promoted to rank {rank + 1} after&nbsp;{" "}
+        <Period blocks={minPromotionPeriod[rank]} /> &nbsp;stay at current rank.
       </Flex>
     ),
     <Flex key="active-salary">
@@ -56,14 +58,16 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
       <ValueDisplay
         value={toPrecision(activeSalary[idx], decimals)}
         symbol={symbol}
-      />.
+      />
+      .
     </Flex>,
     <Flex key="passive-salary">
       Passive salary is&nbsp;
       <ValueDisplay
         value={toPrecision(passiveSalary[idx], decimals)}
         symbol={symbol}
-      />.
+      />
+      .
     </Flex>,
   ];
 }

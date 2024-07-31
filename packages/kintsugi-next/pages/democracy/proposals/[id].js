@@ -20,6 +20,8 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -51,40 +53,44 @@ function PublicProposalContent() {
   const call = publicProposal?.preImage?.call || publicProposal?.call;
 
   return (
-    <ContentWithComment>
-      <DetailItem />
-      <Second
-        proposalIndex={proposalIndex}
-        hasTurnIntoReferendum={hasTurnIntoReferendum}
-        hasCanceled={hasCanceled}
-        useAddressVotingBalance={useAddressVotingBalance}
-        atBlockHeight={secondsAtBlockHeight}
-      />
-      <DetailMultiTabs
-        call={
-          call && (
-            <DemocracyPublicProposalCall
-              call={call}
-              shorten={publicProposal.preImage?.shorten}
-              proposalIndex={publicProposal.proposalIndex}
-              referendumIndex={publicProposal.referendumIndex}
-            />
-          )
-        }
-        business={
-          !!treasuryProposals?.length && (
-            <Business treasuryProposals={treasuryProposals} />
-          )
-        }
-        metadata={<Metadata publicProposal={post?.onchainData} />}
-        timeline={
-          <Timeline
-            publicProposalTimeline={post?.onchainData?.timeline}
-            referendumTimeline={referendum?.onchainData?.timeline}
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <DetailItem />
+          <Second
+            proposalIndex={proposalIndex}
+            hasTurnIntoReferendum={hasTurnIntoReferendum}
+            hasCanceled={hasCanceled}
+            useAddressVotingBalance={useAddressVotingBalance}
+            atBlockHeight={secondsAtBlockHeight}
           />
-        }
-      />
-    </ContentWithComment>
+          <DetailMultiTabs
+            call={
+              call && (
+                <DemocracyPublicProposalCall
+                  call={call}
+                  shorten={publicProposal.preImage?.shorten}
+                  proposalIndex={publicProposal.proposalIndex}
+                  referendumIndex={publicProposal.referendumIndex}
+                />
+              )
+            }
+            business={
+              !!treasuryProposals?.length && (
+                <Business treasuryProposals={treasuryProposals} />
+              )
+            }
+            metadata={<Metadata publicProposal={post?.onchainData} />}
+            timeline={
+              <Timeline
+                publicProposalTimeline={post?.onchainData?.timeline}
+                referendumTimeline={referendum?.onchainData?.timeline}
+              />
+            }
+          />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

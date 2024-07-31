@@ -30,6 +30,8 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 
@@ -56,19 +58,30 @@ function FellowshipContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <CollectivesProvider section="fellowship">
-      <ContentWithComment>
-        <FellowshipReferendaDetail />
-        <FellowshipReferendumSideBar />
-        <DetailMultiTabs
-          call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
-          metadata={
-            <Gov2ReferendumMetadata info={info} pallet="fellowshipReferenda" />
-          }
-          timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
-        />
-      </ContentWithComment>
-    </CollectivesProvider>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <CollectivesProvider section="fellowship">
+          <ContentWithComment>
+            <FellowshipReferendaDetail />
+            <CollectivesProvider section="fellowship">
+              <FellowshipReferendumSideBar />
+            </CollectivesProvider>
+            <DetailMultiTabs
+              call={
+                (proposal?.call || proposal.inline) && <Gov2ReferendumCall />
+              }
+              metadata={
+                <Gov2ReferendumMetadata
+                  info={info}
+                  pallet="fellowshipReferenda"
+                />
+              }
+              timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
+            />
+          </ContentWithComment>
+        </CollectivesProvider>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

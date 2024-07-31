@@ -26,12 +26,12 @@ export default function PostUnlinkPopup({ setShow = noop }) {
       return;
     }
 
-    if (!(await ensureLogin())) {
-      return;
-    }
-
     setIsLoading(true);
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
       const { error } = await nextApi.post(
         `${toApiType(postType)}/${post?._id}/unbind`,
       );
@@ -59,7 +59,7 @@ export default function PostUnlinkPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, postType, post?._id, router, ensureLogin]);
+  }, [dispatch, postType, post?._id, router, ensureLogin, setShow]);
 
   return (
     <Popup title="Unlink post" onClose={() => setShow(false)}>

@@ -2,37 +2,31 @@ import React, { useState } from "react";
 import { Wrapper } from "./styled";
 import ReplyButton from "./replyButton";
 import Share from "../shareSNS";
-import { usePost, usePostDispatch } from "../../context/post";
+import { usePost } from "../../context/post";
 import { useIsPostAuthor } from "../../context/post/useIsPostAuthor";
-import { useIsThumbUp } from "../../context/post/isThumbUp";
 import ThumbsUp from "../thumbsUp";
 import { PostContextMenu } from "../contentMenu";
 import ThumbUpList from "./thumbUpList";
 import { useUser } from "../../context/user";
 import { useFocusEditor } from "next-common/context/post/editor";
 import { useDispatch } from "react-redux";
-import { useDetailType } from "next-common/context/page";
-import nextApi from "next-common/services/nextApi";
-import { toApiType } from "next-common/utils/viewfuncs";
-import fetchAndUpdatePost from "next-common/context/post/update";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { useArticleActions } from "next-common/sima/context/articleActions";
+import { useMyUpVote } from "next-common/context/post/useMyUpVote";
 
 export default function ArticleActions({ setIsEdit, extraActions }) {
   const user = useUser();
-  const { ensureLogin } = useEnsureLogin();
   const post = usePost();
   const isAuthor = useIsPostAuthor();
-  const thumbsUp = useIsThumbUp();
+  const myUpVote = useMyUpVote();
+  const thumbsUp = !!myUpVote;
   const focusEditor = useFocusEditor();
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
-  const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
 
-  const type = useDetailType();
-  const thumbUp = useIsThumbUp();
+  const { upVote, cancelUpVote, reloadPost } = useArticleActions();
 
   const toggleThumbUp = async () => {
     if (!user || isAuthor || thumbUpLoading) {
@@ -41,29 +35,23 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
 
     setThumbUpLoading(true);
     try {
-      if (!(await ensureLogin())) {
-        return;
-      }
-
       let result, error;
 
-      if (thumbUp) {
-        ({ result, error } = await nextApi.delete(
-          `${toApiType(type)}/${post._id}/reaction`,
-        ));
+      if (thumbsUp) {
+        ({ result, error } = await cancelUpVote(post));
       } else {
-        ({ result, error } = await nextApi.put(
-          `${toApiType(type)}/${post._id}/reaction`,
-          { reaction: 1 },
-          { credentials: "include" },
-        ));
+        ({ result, error } = await upVote(post));
       }
 
       if (result) {
-        await fetchAndUpdatePost(postDispatch, type, post._id);
+        await reloadPost();
       }
       if (error) {
         dispatch(newErrorToast(error.message));
+      }
+    } catch (e) {
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
       }
     } finally {
       setThumbUpLoading(false);

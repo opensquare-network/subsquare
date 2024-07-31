@@ -16,6 +16,8 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const Metadata = dynamicClientOnly(() => import("components/tip/metadata"));
@@ -27,14 +29,18 @@ function TreasuryTipContent() {
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
   return (
-    <ContentWithComment>
-      <TipDetail />
-      <Tipper />
-      <DetailMultiTabs
-        metadata={<Metadata tip={post?.onchainData} />}
-        timeline={<Timeline tip={post?.onchainData} />}
-      />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <TipDetail />
+          <Tipper />
+          <DetailMultiTabs
+            metadata={<Metadata tip={post?.onchainData} />}
+            timeline={<Timeline tip={post?.onchainData} />}
+          />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 

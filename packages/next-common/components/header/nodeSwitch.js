@@ -2,7 +2,10 @@ import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import useWindowSize from "../../utils/hooks/useWindowSize";
-import { currentNodeSelector, nodesSelector } from "../../store/reducers/nodeSlice";
+import {
+  currentNodeSelector,
+  nodesSelector,
+} from "../../store/reducers/nodeSlice";
 import Caret from "../icons/caret";
 import { useChainSettings } from "../../context/chain";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
