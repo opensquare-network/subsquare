@@ -1,4 +1,5 @@
 import ReferendaTracksSummary from "components/referenda/tracks/summary";
+import TracksStatus from "components/referenda/tracks/tracksStatus";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import { usePageProps } from "next-common/context/page";
 import { withCommonProps } from "next-common/lib";
@@ -21,7 +22,10 @@ export default function TracksPage() {
       <div className="ml-[24px] mb-[16px] text-textPrimary text20Bold">
         Track Status
       </div>
-      <ReferendaTracksSummary />
+      <div className="flex flex-col gap-[24px]">
+        <ReferendaTracksSummary />
+        <TracksStatus />
+      </div>
     </TracksPageLayout>
   );
 }
