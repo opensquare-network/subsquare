@@ -1,23 +1,32 @@
 import { useMemo } from "react";
 import { useOnChainReferendaContext } from "next-common/context/onchainReferenda";
-import { groupReferenda } from "./common";
+import { getOngoingReferendaStatus } from "./common";
 
 function countReferendaByStatus(allReferenda) {
-  const groups = groupReferenda(allReferenda);
-
-  const preparing = groups.preparing.length;
-  const queueing = groups.queueing.length;
-  const deciding = groups.deciding.length;
-  const confirming = groups.confirming.length;
-  const active = preparing + queueing + deciding + confirming;
-
-  return {
-    preparing,
-    queueing,
-    deciding,
-    confirming,
-    active,
+  const counts = {
+    active: 0,
+    preparing: 0,
+    queueing: 0,
+    deciding: 0,
+    confirming: 0,
   };
+
+  allReferenda.forEach(([, referenda]) => {
+    const unwrappedReferenda = referenda.unwrap();
+    if (!unwrappedReferenda.isOngoing) {
+      return;
+    }
+
+    counts.active++;
+
+    const ongoingReferenda = unwrappedReferenda.asOngoing;
+    const status = getOngoingReferendaStatus(ongoingReferenda);
+    if (status) {
+      counts[status]++;
+    }
+  });
+
+  return counts;
 }
 
 export default function useReferendaCountsByStatus() {

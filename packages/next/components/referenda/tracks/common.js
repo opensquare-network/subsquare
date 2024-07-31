@@ -13,34 +13,19 @@ export default function getStatusColor(status) {
   }
 }
 
-export function groupReferenda(allReferenda) {
-  const groups = {
-    preparing: [],
-    queueing: [],
-    deciding: [],
-    confirming: [],
-  };
-
-  allReferenda.forEach(([, referenda]) => {
-    const unwrappedReferenda = referenda.unwrap();
-    if (!unwrappedReferenda.isOngoing) {
-      return;
+export function getOngoingReferendaStatus(ongoingReferenda) {
+  if (ongoingReferenda.decisionDeposit.isNone) {
+    return "preparing";
+  } else if (ongoingReferenda.inQueue.isTrue) {
+    return "queueing";
+  } else if (ongoingReferenda.deciding.isSome) {
+    const deciding = ongoingReferenda.deciding.unwrap();
+    if (deciding.confirming.isSome) {
+      return "confirming";
+    } else {
+      return "deciding";
     }
+  }
 
-    const ongoingReferenda = unwrappedReferenda.asOngoing;
-    if (ongoingReferenda.decisionDeposit.isNone) {
-      groups.preparing.push(ongoingReferenda);
-    } else if (ongoingReferenda.inQueue.isTrue) {
-      groups.queueing.push(ongoingReferenda);
-    } else if (ongoingReferenda.deciding.isSome) {
-      const deciding = ongoingReferenda.deciding.unwrap();
-      if (deciding.confirming.isSome) {
-        groups.confirming.push(ongoingReferenda);
-      } else {
-        groups.deciding.push(ongoingReferenda);
-      }
-    }
-  });
-
-  return groups;
+  return "";
 }
