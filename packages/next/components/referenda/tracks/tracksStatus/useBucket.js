@@ -153,7 +153,7 @@ export default function useBucket({
     1,
     Math.ceil(Math.floor(width / 4) / 2),
   );
-  const currentItemsCount = Math.max(capacity, referendaCount);
+  const currentItemsCount = Math.max(capacity || 0, referendaCount);
 
   const component = (
     <div
