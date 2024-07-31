@@ -10,11 +10,12 @@ export default function ProfileFellowshipCoreSection() {
       label: "Timeline",
       content: <ProfileFellowshipCoreSectionTimeline />,
     },
-    {
+    // TODO: fellowship profile, wait for evidence api ready
+    false && {
       label: "Evidence",
       content: <ProfileFellowshipCoreSectionEvidence />,
     },
-  ];
+  ].filter(Boolean);
 
   const [activeTabLabel, setActiveTabLabel] = useState(tabs[0].label);
 
