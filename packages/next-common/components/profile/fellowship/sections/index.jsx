@@ -3,6 +3,7 @@ import { cn } from "next-common/utils";
 import { useState } from "react";
 import tw from "tailwind-styled-components";
 import ProfileFellowshipCoreSection from "./core";
+import ProfileFellowshipSalarySection from "./salary";
 
 const Label = tw.button`
   text16Bold
@@ -42,6 +43,7 @@ export default function ProfileFellowshipSections() {
       />
 
       {activeTab === "core" && <ProfileFellowshipCoreSection />}
+      {activeTab === "salary" && <ProfileFellowshipSalarySection />}
     </div>
   );
 }

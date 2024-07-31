@@ -1,15 +1,15 @@
 import { SystemLoading } from "@osn/icons/subsquare";
-import { createFellowshipCoreFeedsRows } from "next-common/components/fellowship/core/feeds/list";
 import { FellowshipFeedItems } from "next-common/components/fellowship/feeds/list";
+import { createFellowshipSalaryFeedsRows } from "next-common/components/fellowship/salary/feeds/list";
 import Pagination from "next-common/components/pagination";
 import { usePageProps } from "next-common/context/page";
 import { useUrlSearchParams } from "next-common/hooks/useUrlSearchParams";
 import nextApi from "next-common/services/nextApi";
-import { fellowshipCoreFeedsApiUri } from "next-common/services/url";
+import { fellowshipSalaryFeedsApi } from "next-common/services/url";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useAsync, useUnmount } from "react-use";
 
-export default function ProfileFellowshipCoreSectionTimeline() {
+export default function ProfileFellowshipSalarySectionTimeline() {
   const { id: address } = usePageProps();
   const [{ page }, , updateParams] = useUrlSearchParams();
 
@@ -18,7 +18,7 @@ export default function ProfileFellowshipCoreSectionTimeline() {
   });
 
   const { value = {}, loading } = useAsync(async () => {
-    const resp = await nextApi.fetch(fellowshipCoreFeedsApiUri, {
+    const resp = await nextApi.fetch(fellowshipSalaryFeedsApi, {
       who: address,
       page,
       pageSize: defaultPageSize,
@@ -35,7 +35,7 @@ export default function ProfileFellowshipCoreSectionTimeline() {
     );
   }
 
-  const rows = createFellowshipCoreFeedsRows(value?.items);
+  const rows = createFellowshipSalaryFeedsRows(value?.items);
 
   return (
     <div>
