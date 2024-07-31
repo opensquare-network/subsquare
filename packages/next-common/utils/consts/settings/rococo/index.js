@@ -68,6 +68,7 @@ const rococo = {
     mimir: true,
   },
   treasuryProposalTracks: rococoTreasuryTracks,
+  disableWeb2Registration: true,
   sima: true,
 };
 

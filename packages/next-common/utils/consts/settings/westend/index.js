@@ -45,6 +45,7 @@ const westend = {
   modules: {
     referenda: true,
   },
+  disableWeb2Registration: true,
   sima: true,
 };
 
