@@ -32,7 +32,7 @@ function groupReferenda(allReferenda) {
   });
 
   const result = Object.entries(tracks).map(([trackId, referenda]) => ({
-    trackId,
+    trackId: parseInt(trackId),
     referenda,
   }));
   result.sort((a, b) => a.TrackId - b.TrackId);

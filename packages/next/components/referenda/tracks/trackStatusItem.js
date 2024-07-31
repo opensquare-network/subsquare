@@ -3,6 +3,8 @@ import { cn } from "next-common/utils";
 import dynamic from "next/dynamic";
 import { useMeasure } from "react-use";
 import getStatusColor from "./common";
+import { usePageProps } from "next-common/context/page";
+import { startCase } from "lodash-es";
 
 const ArrowRight = dynamic(() => import("@osn/icons/subsquare/ArrowRight"));
 
@@ -61,6 +63,33 @@ function ProgressStatus({ className, children, sections }) {
   );
 }
 
+function StatusCounts({ counts }) {
+  let content = 0;
+
+  const tooltips = [];
+  const numbers = [];
+  for (const [status, count] of Object.entries(counts)) {
+    if (count > 0) {
+      tooltips.push(`${startCase(status)}: ${count}`);
+      numbers.push(count);
+    }
+  }
+
+  if (numbers.length > 0) {
+    content = (
+      <Tooltip
+        content={tooltips.map((item, i) => (
+          <div key={i}>{item}</div>
+        ))}
+      >
+        {numbers.join("·")}
+      </Tooltip>
+    );
+  }
+
+  return <span className="text-textPrimary ml-[8px]">{content}</span>;
+}
+
 function PrepareStatus({ className, preparing, queueing }) {
   const sections = [
     {
@@ -72,11 +101,14 @@ function PrepareStatus({ className, preparing, queueing }) {
       color: getStatusColor("queueing"),
     },
   ];
+
   return (
     <ProgressStatus className={className} sections={sections}>
       <span className="text-textTertiary mr-[4px]">Preparing</span>
       <Tooltip content="Including preparing and queueing status" />
-      <span className="text-textPrimary ml-[8px]">0</span>
+      <StatusCounts
+        counts={{ preparing: preparing.length, queueing: queueing.length }}
+      />
     </ProgressStatus>
   );
 }
@@ -97,7 +129,9 @@ function OngoingStatus({ className, deciding, confirming }) {
     <ProgressStatus className={className} sections={sections}>
       <span className="text-textTertiary mr-[4px]">Ongoing</span>
       <Tooltip content="Including deciding and confirming status" />
-      <span className="text-textPrimary ml-[8px]">0</span>
+      <StatusCounts
+        counts={{ deciding: deciding.length, confirming: confirming.length }}
+      />
     </ProgressStatus>
   );
 }
@@ -116,6 +150,18 @@ function Arrow() {
   );
 }
 
+function TrackName({ trackId }) {
+  const { tracks } = usePageProps();
+  const trackInfo = tracks.find((track) => track.id === trackId);
+  const trackName = startCase(trackInfo?.name);
+
+  return (
+    <span className="mb-[16px] text14Bold text-textPrimary">
+      [{trackId}] {trackName}
+    </span>
+  );
+}
+
 export default function TrackStatusItem({
   trackId,
   preparing,
@@ -125,9 +171,7 @@ export default function TrackStatusItem({
 }) {
   return (
     <div className="flex flex-col p-[24px] border-b border-b-neutral300 last:border-b-0">
-      <span className="mb-[16px] text14Bold text-textPrimary">
-        [{trackId}] Root
-      </span>
+      <TrackName trackId={trackId} />
       <div className="flex gap-[16px]">
         <PrepareStatus
           className="max-w-[300px] basis-[28%]"
