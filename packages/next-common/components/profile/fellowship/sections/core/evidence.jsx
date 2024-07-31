@@ -1,4 +1,4 @@
-import { SystemBlock } from "@osn/icons/subsquare";
+import { LinkIpfs, LinkSubsquare } from "@osn/icons/subsquare";
 import ExternalLink from "next-common/components/externalLink";
 import Pagination from "next-common/components/pagination";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
@@ -34,11 +34,19 @@ export default function ProfileFellowshipCoreSectionEvidence() {
             </div>
             <div className="mt-4 flex items-center gap-x-2">
               <ExternalLink
+                href={""}
+                externalIcon={false}
+                className="text-textTertiary hover:text-textSecondary"
+              >
+                <LinkSubsquare className="w-5 h-5" />
+              </ExternalLink>
+
+              <ExternalLink
                 href={getIpfsLink(evidence.cid)}
                 externalIcon={false}
                 className="text-textTertiary hover:text-textSecondary"
               >
-                <SystemBlock className="w-5 h-5" />
+                <LinkIpfs className="w-5 h-5" />
               </ExternalLink>
             </div>
           </NeutralPanel>
