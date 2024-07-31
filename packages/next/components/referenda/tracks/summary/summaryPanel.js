@@ -1,7 +1,7 @@
 import { cn } from "next-common/utils";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useReferendaCountsByStatus from "./useReferendaCountsByStatus";
-import getStatusColor from "./common";
+import getStatusColor from "../common";
 
 function SummaryItem({ title, content }) {
   return (

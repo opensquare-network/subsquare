@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useOnChainReferendaContext } from "next-common/context/onchainReferenda";
-import { getOngoingReferendaStatus } from "./common";
+import { getOngoingReferendaStatus } from "../common";
 
 function countReferendaByStatus(allReferenda) {
   const counts = {

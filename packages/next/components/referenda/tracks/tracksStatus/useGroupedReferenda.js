@@ -1,6 +1,6 @@
 import { useOnChainReferendaContext } from "next-common/context/onchainReferenda";
 import { useMemo } from "react";
-import { getOngoingReferendaStatus } from "./common";
+import { getOngoingReferendaStatus } from "../common";
 
 function groupReferenda(allReferenda) {
   const tracks = {};
