@@ -57,7 +57,12 @@ export default function ProfileFellowshipSalarySectionPayments() {
 
   return (
     <div>
-      <DataList loading={loading} columns={columns} rows={rows} />
+      <DataList
+        noDataText="No data"
+        loading={loading}
+        columns={columns}
+        rows={rows}
+      />
 
       <Pagination
         page={value?.page}

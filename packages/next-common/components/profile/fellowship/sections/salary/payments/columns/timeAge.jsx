@@ -11,7 +11,7 @@ export function useProfileFellowshipSalaryPaymentTimeAgeColumn() {
         {isTime ? "Time" : "Age"}
       </button>
     ),
-    minWidth: 160,
+    className: "min-w-[160px]",
     cellRender(data) {
       const time = data?.paidIndexer?.blockTime;
 
