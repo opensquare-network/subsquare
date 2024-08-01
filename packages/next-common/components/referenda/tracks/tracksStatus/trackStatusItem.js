@@ -3,6 +3,7 @@ import { startCase } from "lodash-es";
 import useReferendaTrackDetail from "next-common/hooks/referenda/useReferendaTrackDetail";
 import PreparingBucketStatus from "./preparingBucketStatus";
 import OngoingBucketStatus from "./ongoingBucketStatus";
+import Link from "next/link";
 
 const ArrowRight = dynamic(() => import("@osn/icons/subsquare/ArrowRight"));
 
@@ -21,13 +22,16 @@ function Arrow() {
 }
 
 function TrackName({ trackId }) {
-  const trackDetail = useReferendaTrackDetail(trackId);
+  const { track: trackDetail } = useReferendaTrackDetail(trackId);
   const trackName = startCase(trackDetail?.name);
 
   return (
-    <span className="mb-[16px] text14Bold text-textPrimary">
+    <Link
+      href={`/referenda/tracks/${trackId}`}
+      className="cursor-pointer mb-[16px] text14Bold text-textPrimary"
+    >
       [{trackId}] {trackName}
-    </span>
+    </Link>
   );
 }
 

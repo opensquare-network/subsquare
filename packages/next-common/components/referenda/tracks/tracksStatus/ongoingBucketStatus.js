@@ -4,9 +4,7 @@ import { startCase } from "lodash-es";
 import useReferendaTrackDetail from "next-common/hooks/referenda/useReferendaTrackDetail";
 import BucketStatus from "./bucketStatus";
 
-function StatusCounts({ counts, max }) {
-  let content = 0;
-
+function StatusCounts({ counts, capacity }) {
   const tooltips = [];
   const numbers = [];
   let total = 0;
@@ -18,24 +16,22 @@ function StatusCounts({ counts, max }) {
     }
   }
 
-  if (numbers.length > 0) {
-    content = (
-      <Tooltip
-        content={
-          <>
-            <div>Capacity: {max}</div>
-            {tooltips.map((item, i) => (
-              <div key={i}>{item}</div>
-            ))}
-          </>
-        }
-      >
-        {total}
-        {numbers.length > 1 ? `(${numbers.join("·")})` : ""}
-        <span className="text-textDisabled"> / {max}</span>
-      </Tooltip>
-    );
-  }
+  const content = (
+    <Tooltip
+      content={
+        <>
+          <div>Capacity: {capacity}</div>
+          {tooltips.map((item, i) => (
+            <div key={i}>{item}</div>
+          ))}
+        </>
+      }
+    >
+      {total}
+      {numbers.length > 1 ? `(${numbers.join("·")})` : ""}
+      <span className="text-textDisabled"> / {capacity}</span>
+    </Tooltip>
+  );
 
   return <span className="text-textPrimary ml-[8px]">{content}</span>;
 }
@@ -46,18 +42,18 @@ export default function OngoingBucketStatus({
   deciding,
   confirming,
 }) {
-  const trackDetail = useReferendaTrackDetail(trackId);
+  const { track: trackDetail } = useReferendaTrackDetail(trackId);
 
   const sections = [
-    {
-      referenda: deciding,
-      color: getStatusColor("deciding"),
-      status: "deciding",
-    },
     {
       referenda: confirming,
       color: getStatusColor("confirming"),
       status: "confirming",
+    },
+    {
+      referenda: deciding,
+      color: getStatusColor("deciding"),
+      status: "deciding",
     },
   ];
 
@@ -65,12 +61,12 @@ export default function OngoingBucketStatus({
     <BucketStatus
       className={className}
       sections={sections}
-      capacity={trackDetail.maxDeciding}
+      capacity={trackDetail?.maxDeciding}
       name="Ongoing"
       tooltip="Including deciding and confirming status"
       counts={
         <StatusCounts
-          max={trackDetail.maxDeciding}
+          capacity={trackDetail?.maxDeciding}
           counts={{ deciding: deciding.length, confirming: confirming.length }}
         />
       }
