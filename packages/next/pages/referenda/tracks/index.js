@@ -1,5 +1,5 @@
-import ReferendaTracksSummary from "components/referenda/tracks/summary";
-import TracksStatus from "components/referenda/tracks/tracksStatus";
+import ReferendaTracksSummary from "next-common/components/referenda/tracks/summary";
+import TracksStatus from "next-common/components/referenda/tracks/tracksStatus";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import { usePageProps } from "next-common/context/page";
 import { OnChainReferendaProvider } from "next-common/context/onchainReferenda";

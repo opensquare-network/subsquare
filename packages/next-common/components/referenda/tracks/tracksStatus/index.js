@@ -41,7 +41,7 @@ function useTrackStatusData(hideIdleTracks) {
 
   return {
     tracks,
-    isLoading: false,
+    isLoading,
   };
 }
 

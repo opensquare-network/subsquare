@@ -43,14 +43,15 @@ function groupReferenda(allReferenda) {
 export default function useGroupedReferenda() {
   const { referenda, isLoading } = useOnChainReferendaContext();
 
-  return useMemo(() => {
+  const tracks = useMemo(() => {
     if (isLoading) {
-      return { tracks: [], isLoading };
+      return [];
     }
-
-    return {
-      tracks: groupReferenda(referenda),
-      isLoading,
-    };
+    return groupReferenda(referenda);
   }, [isLoading, referenda]);
+
+  return {
+    tracks,
+    isLoading,
+  };
 }
