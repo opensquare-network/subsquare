@@ -7,6 +7,7 @@ import { useChainSettings } from "next-common/context/chain";
 import Gov2TrackSummaryThresholdCurves from "./gov2TrackSummaryThresholdCurves";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
+import Link from "next/link";
 
 export default function Gov2TrackSummary({ summary, period }) {
   const {
@@ -33,10 +34,20 @@ export default function Gov2TrackSummary({ summary, period }) {
     <div className="flex max-md:flex-col max-md:space-y-4">
       <SummaryLayout className="!grid-cols-3 max-md:!grid-cols-2 !w-auto grow">
         <SummaryItem title="Capacity">
-          <span>
-            {(summary.decidingCount || 0) + (summary.confirmingCount || 0)}
-            <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
-          </span>
+          <div className="flex flex-col">
+            <span>
+              {(summary.decidingCount || 0) + (summary.confirmingCount || 0)}
+              <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
+            </span>
+            <div>
+              <Link
+                className="cursor-pointer text-theme500 text12Medium"
+                href="/referenda/tracks"
+              >
+                Track Status
+              </Link>
+            </div>
+          </div>
         </SummaryItem>
         <SummaryItem title="Confirm Period">
           <span>
