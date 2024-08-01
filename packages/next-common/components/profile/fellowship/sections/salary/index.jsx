@@ -2,9 +2,14 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import ProfileFellowshipSalarySectionTimeline from "./timeline";
 import Tabs from "next-common/components/tabs";
 import { useState } from "react";
+import ProfileFellowshipSalarySectionPayments from "./payments";
 
 export default function ProfileFellowshipSalarySection() {
   const tabs = [
+    {
+      label: "Payments",
+      content: <ProfileFellowshipSalarySectionPayments />,
+    },
     {
       label: "Timeline",
       content: <ProfileFellowshipSalarySectionTimeline />,
