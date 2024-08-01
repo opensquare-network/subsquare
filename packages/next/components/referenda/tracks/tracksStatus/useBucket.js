@@ -10,13 +10,14 @@ import {
 } from "next-common/context/batch";
 import nextApi from "next-common/services/nextApi";
 import { useCallback } from "react";
+import useReferendaTrackDetail from "next-common/hooks/referenda/useReferendaTrackDetail";
 
 export function BucketProvider({ children }) {
   const fetchReferendaList = useCallback(async (referendumIndexes) => {
     const { result } = await nextApi.fetch(
       `gov2/referendums?simple=1&page_size=${
         referendumIndexes.length
-      }&${referendumIndexes.map((k) => `referendum_index=${k}`).join("&")}`,
+      }&${referendumIndexes.map((i) => `referendum_index=${i}`).join("&")}`,
     );
     if (!result) {
       throw new Error("fetch referendums failed");
@@ -24,7 +25,7 @@ export function BucketProvider({ children }) {
     const referendaMap = Object.fromEntries(
       result.items.map((item) => [item.referendumIndex, item]),
     );
-    return referendumIndexes.map((key) => referendaMap[key]);
+    return referendumIndexes.map((i) => referendaMap[i]);
   }, []);
 
   return (
@@ -34,12 +35,15 @@ export function BucketProvider({ children }) {
 
 function ReferendumItemBar({ referendumIndex, color, status }) {
   const { value: referendumInfo } = useValueFromBatchResult(referendumIndex);
+  const { track: trackDetail } = useReferendaTrackDetail(referendumInfo?.track);
 
   const tooltipContent = (
     <>
       {referendumInfo && (
         <div className="max-w-[360px]">
-          Title: {referendumInfo.title || "-"}
+          Title:{" "}
+          {referendumInfo.title ||
+            `[${startCase(trackDetail?.name)}] Referendum #${referendumIndex}`}
         </div>
       )}
       <div>

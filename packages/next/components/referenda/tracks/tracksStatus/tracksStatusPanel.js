@@ -1,12 +1,9 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import TrackStatusItem from "./trackStatusItem";
-import useGroupedReferenda from "./useGroupedReferenda";
 import Loading from "next-common/components/loading";
 import { BucketProvider } from "./useBucket";
 
-export default function TracksStatusPanel() {
-  const { tracks, isLoading } = useGroupedReferenda();
-
+export default function TracksStatusPanel({ tracks, isLoading }) {
   return (
     <SecondaryCard>
       {isLoading ? (

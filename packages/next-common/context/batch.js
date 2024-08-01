@@ -4,10 +4,10 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from "react";
+import { useAsync } from "react-use";
 
 const BatchContext = createContext();
 
@@ -54,15 +54,6 @@ export function BatchProvider({ batchExecFn, children }) {
 }
 
 export function useValueFromBatchResult(key) {
-  const [value, setValue] = useState();
-  const [loading, setLoading] = useState(true);
   const { handleInBatch } = useContext(BatchContext);
-
-  useEffect(() => {
-    handleInBatch(key)
-      .then(setValue)
-      .finally(() => setLoading(false));
-  }, [handleInBatch, key]);
-
-  return { value, loading };
+  return useAsync(() => handleInBatch(key), [handleInBatch, key]);
 }
