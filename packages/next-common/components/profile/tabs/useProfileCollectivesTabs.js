@@ -4,7 +4,7 @@ import { useIsAmbassadorCoreMember } from "next-common/hooks/ambassador/core/use
 import { useIsFellowshipCoreMember } from "next-common/hooks/fellowship/core/useIsFellowshipCoreMember";
 import { isCollectivesChain } from "next-common/utils/chain";
 
-export function useCollectivesProfileTabs() {
+export function useProfileCollectivesTabs() {
   const chain = useChain();
   const { id: address } = usePageProps();
   const isFellowshipCoreMember = useIsFellowshipCoreMember(address);
