@@ -37,14 +37,14 @@ export default function PreparingBucketStatus({
 }) {
   const sections = [
     {
-      referenda: preparing,
-      color: getStatusColor("preparing"),
-      status: "preparing",
-    },
-    {
       referenda: queueing,
       color: getStatusColor("queueing"),
       status: "queueing",
+    },
+    {
+      referenda: preparing,
+      color: getStatusColor("preparing"),
+      status: "preparing",
     },
   ];
 

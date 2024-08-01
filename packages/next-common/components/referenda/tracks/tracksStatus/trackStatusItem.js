@@ -37,6 +37,31 @@ function TrackName({ trackId }) {
   );
 }
 
+export function TrackStatusContent({
+  trackId,
+  preparing,
+  queueing,
+  deciding,
+  confirming,
+}) {
+  return (
+    <div className="flex gap-[16px] max-sm:flex-col max-sm:gap-[8px]">
+      <PreparingBucketStatus
+        className="sm:max-w-[300px] basis-[28%] shrink-0"
+        preparing={preparing}
+        queueing={queueing}
+      />
+      <Arrow />
+      <OngoingBucketStatus
+        className="grow"
+        trackId={trackId}
+        deciding={deciding}
+        confirming={confirming}
+      />
+    </div>
+  );
+}
+
 export default function TrackStatusItem({
   trackId,
   preparing,
@@ -47,20 +72,13 @@ export default function TrackStatusItem({
   return (
     <div className="flex flex-col p-[24px] border-b border-b-neutral300 last:border-b-0">
       <TrackName trackId={trackId} />
-      <div className="flex gap-[16px] max-sm:flex-col max-sm:gap-[8px]">
-        <PreparingBucketStatus
-          className="sm:max-w-[300px] basis-[28%] shrink-0"
-          preparing={preparing}
-          queueing={queueing}
-        />
-        <Arrow />
-        <OngoingBucketStatus
-          className="grow"
-          trackId={trackId}
-          deciding={deciding}
-          confirming={confirming}
-        />
-      </div>
+      <TrackStatusContent
+        trackId={trackId}
+        preparing={preparing}
+        queueing={queueing}
+        deciding={deciding}
+        confirming={confirming}
+      />
     </div>
   );
 }
