@@ -33,17 +33,17 @@ export default function ReferendaLayout({ summaryData, ...props }) {
       description="All active and history referenda of various tracks."
       tabs={[
         { label: "Referenda", url: "/referenda" },
+        {
+          label: "Tracks",
+          labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
+          url: "/referenda/tracks",
+        },
         user?.address && { label: "My Votes", url: "/referenda/votes" },
         { label: "Statistics", url: "/referenda/statistics" },
         modules.whales && {
           label: "Whales",
           url: "/referenda/whales",
           active: router.pathname.startsWith("/referenda/whales"),
-        },
-        {
-          label: "Track Status",
-          labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
-          url: "/referenda/tracks",
         },
       ].filter(Boolean)}
       {...props}
