@@ -27,22 +27,18 @@ export default function ProfileFellowshipCoreSectionTimeline() {
     return resp?.result;
   }, [page, address]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center">
-        <SystemLoading className="text-textDisabled" />
-      </div>
-    );
-  }
-
   const rows = createFellowshipCoreFeedsRows(value?.items);
 
   return (
     <div>
-      <FellowshipFeedItems rows={rows} noDataText="No data" />
+      {loading ? (
+        <SystemLoading className="w-5 h-5 mt-4 mb-2 mx-auto text-textDisabled" />
+      ) : (
+        <FellowshipFeedItems rows={rows} noDataText="No data" />
+      )}
 
       <Pagination
-        page={value?.page}
+        page={page}
         pageSize={value?.pageSize}
         total={value?.total}
         shallow

@@ -69,7 +69,7 @@ export default function ProfileFellowshipSalarySectionPayments({
       />
 
       <Pagination
-        page={value?.page}
+        page={page}
         pageSize={value?.pageSize}
         total={value?.total}
         shallow
