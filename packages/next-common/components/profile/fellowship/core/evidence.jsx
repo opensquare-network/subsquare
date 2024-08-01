@@ -6,7 +6,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 
-export default function ProfileFellowshipCoreSectionEvidence() {
+export default function ProfileFellowshipCoreEvidence() {
   const [navCollapsed] = useNavCollapsed();
 
   const evidences = [
