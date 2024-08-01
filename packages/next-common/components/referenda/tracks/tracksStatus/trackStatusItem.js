@@ -26,12 +26,14 @@ function TrackName({ trackId }) {
   const trackName = startCase(trackDetail?.name);
 
   return (
-    <Link
-      href={`/referenda/tracks/${trackId}`}
-      className="cursor-pointer mb-[16px] text14Bold text-textPrimary"
-    >
-      [{trackId}] {trackName}
-    </Link>
+    <div className="mb-[16px] ">
+      <Link
+        href={`/referenda/tracks/${trackId}`}
+        className="cursor-pointer hover:underline text14Bold text-textPrimary"
+      >
+        [{trackId}] {trackName}
+      </Link>
+    </div>
   );
 }
 
