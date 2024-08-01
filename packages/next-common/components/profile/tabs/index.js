@@ -5,6 +5,7 @@ import useDepositsCount from "next-common/hooks/profile/deposit/useDepositsCount
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import isAssetHub from "next-common/utils/isAssetHub";
+import { useCollectivesProfileTabs } from "./useCollectivesProfileTabs";
 
 export default function useProfileTabs() {
   const { id } = usePageProps();
@@ -24,6 +25,8 @@ export default function useProfileTabs() {
 
   const maybeEvmAddress = tryConvertToEvmAddress(id);
   const prefix = `/user/${maybeEvmAddress}/`;
+
+  const collectivesProfileTabs = useCollectivesProfileTabs();
 
   if (isAssetHub()) {
     return [
@@ -88,6 +91,8 @@ export default function useProfileTabs() {
       });
     }
   }
+
+  tabs.push(...collectivesProfileTabs);
 
   return tabs;
 }

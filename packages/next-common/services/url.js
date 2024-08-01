@@ -72,6 +72,8 @@ export const fellowshipSalaryCycleFeedsApi = (index) =>
   `fellowship/salary/cycles/${index}/feeds`;
 
 export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
+export const fellowshipSalaryFeedsApi = "fellowship/salary/feeds";
+export const fellowshipSalaryPaymentsApi = "fellowship/salary/payments";
 
 // ambassador
 export const ambassadorParamsApi = "ambassador/params";

@@ -11,6 +11,8 @@ import { usePathname } from "next/navigation";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import isAssetHub from "next-common/utils/isAssetHub";
+import ProfileFellowshipCore from "../fellowship/core";
+import ProfileFellowshipSalary from "../fellowship/salary";
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
@@ -36,6 +38,16 @@ export default function useProfileTabContent() {
     return <ProfileIdentityTimeline />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
     return <ProfileAssets />;
+  } else if (
+    pathname === `/user/${maybeEvmAddress}/fellowship` ||
+    pathname === `/user/${maybeEvmAddress}/ambassador`
+  ) {
+    return <ProfileFellowshipCore />;
+  } else if (
+    pathname === `/user/${maybeEvmAddress}/fellowship/salary` ||
+    pathname === `/user/${maybeEvmAddress}/ambassador/salary`
+  ) {
+    return <ProfileFellowshipSalary />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {
     return <Posted />;
   }

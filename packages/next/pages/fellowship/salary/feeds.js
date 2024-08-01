@@ -3,6 +3,7 @@ import { defaultPageSize } from "next-common/utils/constants";
 import FellowshipSalaryCommon from "next-common/components/fellowship/salary/common";
 import FellowshipSalaryFeedsContainer from "next-common/components/fellowship/salary/feeds/container";
 import { withFellowshipSalaryCommonProps } from "next-common/services/serverSide/fellowship/common";
+import { fellowshipSalaryFeedsApi } from "next-common/services/url";
 
 export default function FellowshipSalaryFeedsPage({ fellowshipSalaryFeeds }) {
   return (
@@ -27,7 +28,7 @@ export const getServerSideProps = withFellowshipSalaryCommonProps(
     }
 
     const { result: fellowshipSalaryFeeds } = await nextApi.fetch(
-      "fellowship/salary/feeds",
+      fellowshipSalaryFeedsApi,
       query,
     );
 
