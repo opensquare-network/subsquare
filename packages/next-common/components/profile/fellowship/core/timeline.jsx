@@ -3,19 +3,17 @@ import { createFellowshipCoreFeedsRows } from "next-common/components/fellowship
 import { FellowshipFeedItems } from "next-common/components/fellowship/feeds/list";
 import Pagination from "next-common/components/pagination";
 import { usePageProps } from "next-common/context/page";
-import { useUrlSearchParams } from "next-common/hooks/useUrlSearchParams";
 import nextApi from "next-common/services/nextApi";
 import { fellowshipCoreFeedsApiUri } from "next-common/services/url";
 import { defaultPageSize } from "next-common/utils/constants";
-import { useAsync, useUnmount } from "react-use";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useAsync } from "react-use";
 
-export default function ProfileFellowshipCoreSectionTimeline() {
+export default function ProfileFellowshipCoreTimeline() {
   const { id: address } = usePageProps();
-  const [{ page }, , updateParams] = useUrlSearchParams();
-
-  useUnmount(() => {
-    updateParams({ page: 1 });
-  });
+  const router = useRouter();
+  const [page, setPage] = useState(parseInt(router.query.page || 1));
 
   const { value = {}, loading } = useAsync(async () => {
     const resp = await nextApi.fetch(fellowshipCoreFeedsApiUri, {
@@ -41,6 +39,9 @@ export default function ProfileFellowshipCoreSectionTimeline() {
         page={page}
         pageSize={value?.pageSize}
         total={value?.total}
+        onPageChange={(_, page) => {
+          setPage(page);
+        }}
         shallow
       />
     </div>

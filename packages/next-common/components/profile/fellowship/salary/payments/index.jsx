@@ -1,27 +1,23 @@
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import { usePageProps } from "next-common/context/page";
-import { useUrlSearchParams } from "next-common/hooks/useUrlSearchParams";
 import nextApi from "next-common/services/nextApi";
 import { fellowshipSalaryPaymentsApi } from "next-common/services/url";
 import { defaultPageSize } from "next-common/utils/constants";
-import { useAsync, useUnmount } from "react-use";
+import { useRouter } from "next/router";
+import { useAsync } from "react-use";
 import { useProfileFellowshipSalaryPaymentBeneficiaryColumn } from "./columns/beneficiary";
 import { useProfileFellowshipSalaryPaymentCycleColumn } from "./columns/cycle";
 import { useProfileFellowshipSalaryPaymentIsRegisteredColumn } from "./columns/isRegistered";
 import { useProfileFellowshipSalaryPaymentPaidColumn } from "./columns/paid";
 import { useProfileFellowshipSalaryPaymentRankColumn } from "./columns/rank";
 import { useProfileFellowshipSalaryPaymentTimeAgeColumn } from "./columns/timeAge";
+import { useState } from "react";
 
-export default function ProfileFellowshipSalarySectionPayments({
-  setPaymentsCount,
-}) {
+export default function ProfileFellowshipSalaryPayments({ setPaymentsCount }) {
   const { id: address } = usePageProps();
-  const [{ page }, , updateParams] = useUrlSearchParams();
-
-  useUnmount(() => {
-    updateParams({ page: 1 });
-  });
+  const router = useRouter();
+  const [page, setPage] = useState(parseInt(router.query.page || 1));
 
   const cycleColumn = useProfileFellowshipSalaryPaymentCycleColumn();
   const rankColumn = useProfileFellowshipSalaryPaymentRankColumn();
@@ -72,6 +68,9 @@ export default function ProfileFellowshipSalarySectionPayments({
         page={page}
         pageSize={value?.pageSize}
         total={value?.total}
+        onPageChange={(_, page) => {
+          setPage(page);
+        }}
         shallow
       />
     </div>
