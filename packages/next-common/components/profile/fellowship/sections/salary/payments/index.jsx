@@ -13,7 +13,9 @@ import { useProfileFellowshipSalaryPaymentPaidColumn } from "./columns/paid";
 import { useProfileFellowshipSalaryPaymentRankColumn } from "./columns/rank";
 import { useProfileFellowshipSalaryPaymentTimeAgeColumn } from "./columns/timeAge";
 
-export default function ProfileFellowshipSalarySectionPayments() {
+export default function ProfileFellowshipSalarySectionPayments({
+  setPaymentsCount,
+}) {
   const { id: address } = usePageProps();
   const [{ page }, , updateParams] = useUrlSearchParams();
 
@@ -45,6 +47,8 @@ export default function ProfileFellowshipSalarySectionPayments() {
       page,
       pageSize: defaultPageSize,
     });
+
+    setPaymentsCount(resp?.result?.total);
 
     return resp?.result;
   }, [address, page]);
