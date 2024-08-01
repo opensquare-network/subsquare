@@ -9,7 +9,7 @@ const options = [
     value: SortByTrackIndex,
   },
   {
-    label: "Most Ongoing Referenda",
+    label: "Ongoing Referenda",
     value: SortByMostOngoingReferenda,
   },
 ].map(({ label, value }) => ({
@@ -22,6 +22,7 @@ export default function SortBySelect({ sortBy, setSortBy }) {
     <div className="flex items-center gap-[8px]">
       <span className="text-textSecondary text12Medium">Sort by</span>
       <Select
+        className="w-[165px]"
         small
         value={sortBy}
         options={options}
