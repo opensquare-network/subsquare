@@ -14,7 +14,7 @@ export default function AssetHubManagePrompt() {
   const assets = useAssetHubOnPolkadot();
 
   return useMemo(() => {
-    if (!assets || assets.length === 0 || visible) {
+    if (!assets || assets.length === 0 || !visible) {
       return null;
     }
 
