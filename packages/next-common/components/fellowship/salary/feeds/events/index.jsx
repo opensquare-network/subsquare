@@ -14,6 +14,7 @@ export default function FellowshipSalaryFeed({ feed = {}, className = "" }) {
       <FellowshipRegisteredFeed
         who={feed?.args?.who}
         amount={feed?.args?.amount}
+        index={feed?.index}
       />
     ),
     CycleStarted: <FellowshipCycleStartedFeed index={feed?.index} />,
