@@ -1,8 +1,8 @@
 import { SystemVoteAbstain, SystemVoteAye } from "@osn/icons/subsquare";
 
-export function useProfileFellowshipSalaryPaymentIsRegisteredColumn() {
+export function useProfileFellowshipSalaryPaymentRegistrationColumn() {
   return {
-    name: "isRegistered",
+    name: "Registration",
     width: 160,
     className: "text-right",
     cellRender(data) {

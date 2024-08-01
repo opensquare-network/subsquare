@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useAsync } from "react-use";
 import { useProfileFellowshipSalaryPaymentBeneficiaryColumn } from "./columns/beneficiary";
 import { useProfileFellowshipSalaryPaymentCycleColumn } from "./columns/cycle";
-import { useProfileFellowshipSalaryPaymentIsRegisteredColumn } from "./columns/isRegistered";
+import { useProfileFellowshipSalaryPaymentRegistrationColumn } from "./columns/Registration";
 import { useProfileFellowshipSalaryPaymentPaidColumn } from "./columns/paid";
 import { useProfileFellowshipSalaryPaymentRankColumn } from "./columns/rank";
 import { useProfileFellowshipSalaryPaymentTimeAgeColumn } from "./columns/timeAge";
@@ -25,7 +25,7 @@ export default function ProfileFellowshipSalaryPayments({ setPaymentsCount }) {
     useProfileFellowshipSalaryPaymentBeneficiaryColumn();
   const timeAgeColumn = useProfileFellowshipSalaryPaymentTimeAgeColumn();
   const isRegisteredColumn =
-    useProfileFellowshipSalaryPaymentIsRegisteredColumn();
+    useProfileFellowshipSalaryPaymentRegistrationColumn();
   const paidColumn = useProfileFellowshipSalaryPaymentPaidColumn();
 
   const columns = [
