@@ -1,8 +1,8 @@
 import { isCollectivesChain } from "../../chain";
 import getChainSettings from "../settings";
+import allianceCategory from "./categories/alliance";
 import commonCategories from "./categories/common";
 import gov2Category from "./categories/gov2";
-import allianceCategory from "./categories/alliance";
 
 export function getProfileCategories(chain) {
   const categories = [];
@@ -21,9 +21,21 @@ export function getProfileCategories(chain) {
     categories.push(allianceCategory);
   }
 
-  const includedCategories = categories.filter((c) => {
-    return !c.excludeChains?.includes?.(chain);
-  });
+  function filterExcludeChains(items) {
+    return items?.filter?.((item) => {
+      return !item?.excludeChains?.includes?.(chain);
+    });
+  }
+
+  const includedCategories = filterExcludeChains(
+    categories.map((category) => {
+      if (category.children) {
+        category.children = filterExcludeChains(category.children);
+      }
+
+      return category;
+    }),
+  );
 
   return includedCategories;
 }
