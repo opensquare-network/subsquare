@@ -5,10 +5,17 @@ import { useState } from "react";
 import ProfileFellowshipSalarySectionPayments from "./payments";
 
 export default function ProfileFellowshipSalarySection() {
+  const [paymentsCount, setPaymentsCount] = useState();
+
   const tabs = [
     {
       label: "Payments",
-      content: <ProfileFellowshipSalarySectionPayments />,
+      activeCount: paymentsCount,
+      content: (
+        <ProfileFellowshipSalarySectionPayments
+          setPaymentsCount={setPaymentsCount}
+        />
+      ),
     },
     {
       label: "Timeline",
