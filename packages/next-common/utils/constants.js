@@ -114,6 +114,7 @@ export const CACHE_KEY = {
   ambassadorDemotionExpireRemindVisible:
     "ambassador-demotion-expire-remind-visible",
   extensionUpdateMetadata: "extensionUpdateMetadata",
+  assetHubPromptVisible: "asset-hub-manage-prompt-visible",
 };
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
