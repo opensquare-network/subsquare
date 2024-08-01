@@ -17,7 +17,7 @@ export default function FellowshipRegisteredFeed({ who, amount, index }) {
           href={`/fellowship/salary/cycles/${index}`}
           className="text-textPrimary hover:underline"
         >
-          Cycle #{index}
+          cycle #{index}
         </Link>{" "}
         with salary{" "}
         <FellowshipFeedEventLabel>
