@@ -1,49 +1,12 @@
 import TracksStatusPanel from "./tracksStatusPanel";
-import useGroupedReferenda from "./useGroupedReferenda";
-import { useReferendaTracks } from "next-common/context/referenda/tracks";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Toggle from "next-common/components/toggle";
-
-function useTrackStatusData(hideIdleTracks) {
-  const { tracks: tracksWithReferenda, isLoading: isLoadingGroupedReferenda } =
-    useGroupedReferenda();
-  const { tracks: allTracks, isLoading: isLoadingTracks } =
-    useReferendaTracks();
-  const isLoading = isLoadingGroupedReferenda || isLoadingTracks;
-
-  const tracks = useMemo(() => {
-    if (isLoading) {
-      return [];
-    }
-
-    if (hideIdleTracks) {
-      return tracksWithReferenda;
-    }
-
-    return allTracks.map(({ id }) => {
-      const trackWithReferenda = tracksWithReferenda.find(
-        ({ trackId }) => trackId === id,
-      );
-      if (trackWithReferenda) {
-        return trackWithReferenda;
-      }
-      return {
-        trackId: id,
-        referenda: {
-          preparing: [],
-          queueing: [],
-          deciding: [],
-          confirming: [],
-        },
-      };
-    });
-  }, [tracksWithReferenda, allTracks, isLoading, hideIdleTracks]);
-
-  return {
-    tracks,
-    isLoading,
-  };
-}
+import useTrackStatusData from "./useTrackStatusData";
+import SortBySelect, {
+  SortByMostOngoingReferenda,
+  SortByTrackIndex,
+} from "./sortBySelect";
+import { cn } from "next-common/utils";
 
 function Title({ tracksCount }) {
   return (
@@ -65,17 +28,24 @@ function HideIdleTracksSwitch({ isOn, setIsOn }) {
 
 export default function TracksStatus() {
   const [hideIdleTracks, setHideIdleTracks] = useState(false);
-  const { tracks, isLoading } = useTrackStatusData(hideIdleTracks);
+  const [sortBy, setSortBy] = useState(SortByTrackIndex);
+  const { tracks, isLoading } = useTrackStatusData(
+    hideIdleTracks,
+    sortBy === SortByMostOngoingReferenda,
+  );
 
   return (
     <div className="flex flex-col">
       <div className="flex max-sm:flex-col sm:items-center justify-between mx-[24px] mb-[16px] gap-[12px]">
         <Title tracksCount={tracks?.length} />
-        <div className="flex gap-[24px]">
+        <div
+          className={cn("flex gap-[24px]", "max-sm:flex-col max-sm:gap-[12px]")}
+        >
           <HideIdleTracksSwitch
             isOn={hideIdleTracks}
             setIsOn={setHideIdleTracks}
           />
+          <SortBySelect sortBy={sortBy} setSortBy={setSortBy} />
         </div>
       </div>
       <TracksStatusPanel tracks={tracks} isLoading={isLoading} />
