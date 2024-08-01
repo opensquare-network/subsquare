@@ -26,9 +26,6 @@ export default function TracksPage() {
       <OnChainReferendaTracksProvider>
         <OnChainReferendaProvider>
           <TracksPageLayout>
-            <div className="ml-[24px] mb-[16px] text-textPrimary text20Bold">
-              Track Status
-            </div>
             <div className="flex flex-col gap-[24px]">
               <ReferendaTracksSummary />
               <TracksStatus />
