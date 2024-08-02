@@ -12,6 +12,11 @@ import {
   getGoneBlocksPercentage,
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
+import { ONE_DAY } from "next-common/utils/constants";
+import BigNumber from "bignumber.js";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+
+const days20 = 20 * ONE_DAY;
 
 export function useDemotionPeriod({ rank, lastProof, params }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
@@ -37,6 +42,18 @@ export function useDemotionPeriod({ rank, lastProof, params }) {
   }, [rank, lastProof, params, latestHeight]);
 }
 
+function _getProgressBarColor(remainingBlocks, blockTime, demotionPeriod) {
+  const halfPeriod = demotionPeriod / 2;
+  const remainingTime = new BigNumber(blockTime).multipliedBy(remainingBlocks);
+  if (remainingBlocks >= halfPeriod) {
+    return "var(--green500)";
+  } else if (remainingTime.gt(days20) && remainingBlocks < halfPeriod) {
+    return "var(--orange500)";
+  } else if (remainingTime.lte(days20)) {
+    return "var(--red500)";
+  }
+}
+
 export default function CoreFellowshipMemberDemotionPeriod({
   lastProof,
   rank,
@@ -44,10 +61,15 @@ export default function CoreFellowshipMemberDemotionPeriod({
 }) {
   const { percentageValue, remainingBlocks, demotionPeriod } =
     useDemotionPeriod({ rank, lastProof, params });
+  const blockTime = useSelector(blockTimeSelector);
 
   if (isNil(demotionPeriod)) {
     return null;
   }
+
+  const fgColor = useMemo(() => {
+    return _getProgressBarColor(remainingBlocks, remainingBlocks, demotionPeriod);
+  }, [blockTime, remainingBlocks, demotionPeriod]);
 
   return (
     <CoreFellowshipMemberInfoWrapper>
@@ -65,8 +87,8 @@ export default function CoreFellowshipMemberDemotionPeriod({
         <Progress
           className="h-1"
           percentage={percentageValue}
-          bg="var(--theme100)"
-          fg="var(--theme500)"
+          bg="var(--neutral200)"
+          fg={fgColor}
         />
       </Tooltip>
     </CoreFellowshipMemberInfoWrapper>

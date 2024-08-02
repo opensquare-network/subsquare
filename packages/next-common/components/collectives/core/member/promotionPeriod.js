@@ -41,6 +41,9 @@ export default function CoreFellowshipMemberPromotionPeriod({
     return null;
   }
 
+  const fgColor =
+    percentageValue === 100 ? "var(--green500)" : "var(--neutral500)";
+
   return (
     <CoreFellowshipMemberInfoWrapper>
       <CoreFellowshipMemberInfoTitle>
@@ -55,8 +58,8 @@ export default function CoreFellowshipMemberPromotionPeriod({
         <Progress
           className="h-1"
           percentage={percentageValue}
-          bg="var(--theme100)"
-          fg="var(--theme500)"
+          bg="var(--neutral200)"
+          fg={fgColor}
         />
       </Tooltip>
     </CoreFellowshipMemberInfoWrapper>
