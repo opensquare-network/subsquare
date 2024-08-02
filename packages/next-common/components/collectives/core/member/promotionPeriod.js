@@ -29,6 +29,13 @@ export function usePromotionPeriod({ lastPromotion, rank, params = {} }) {
   }, [lastPromotion, rank, params, latestHeight]);
 }
 
+function _getProgressBarColor(percentageValue) {
+  if (percentageValue === 100) {
+    return "var(--green500)";
+  }
+  return "var(--neutral500)";
+}
+
 export default function CoreFellowshipMemberPromotionPeriod({
   lastPromotion,
   rank,
@@ -40,6 +47,8 @@ export default function CoreFellowshipMemberPromotionPeriod({
   if (isNil(promotionPeriod)) {
     return null;
   }
+
+  const fgColor = _getProgressBarColor(percentageValue);
 
   return (
     <CoreFellowshipMemberInfoWrapper>
@@ -56,7 +65,7 @@ export default function CoreFellowshipMemberPromotionPeriod({
           className="h-1"
           percentage={percentageValue}
           bg="var(--neutral200)"
-          fg="var(--green500)"
+          fg={fgColor}
         />
       </Tooltip>
     </CoreFellowshipMemberInfoWrapper>

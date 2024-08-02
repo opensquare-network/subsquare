@@ -13,6 +13,11 @@ import {
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
 import { useRemainingTime } from "next-common/components/remaining";
+import { ONE_DAY } from "next-common/utils/constants";
+import BigNumber from "bignumber.js";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+
+const days20 = 20 * ONE_DAY;
 
 export function useDemotionPeriod({ rank, lastProof, params }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
@@ -38,23 +43,15 @@ export function useDemotionPeriod({ rank, lastProof, params }) {
   }, [rank, lastProof, params, latestHeight]);
 }
 
-function _getProgressBarColor(
-  remainingTimeObj,
-  remainingBlocks,
-  demotionPeriod,
-) {
-  if (!remainingTimeObj) {
-    return "";
-  }
-  if (remainingBlocks >= demotionPeriod / 2) {
+function _getProgressBarColor(remainingBlocks, demotionPeriod) {
+  const blockTime = useSelector(blockTimeSelector);
+  const halfPeriod = demotionPeriod / 2;
+  const remainingTime = new BigNumber(blockTime).multipliedBy(remainingBlocks);
+  if (remainingBlocks >= halfPeriod) {
     return "var(--green500)";
-  } else if (
-    remainingTimeObj &&
-    remainingTimeObj.days >= 20 &&
-    remainingBlocks < demotionPeriod / 2
-  ) {
+  } else if (remainingTime.gt(days20) && remainingBlocks < halfPeriod) {
     return "var(--orange500)";
-  } else if (remainingTimeObj && remainingTimeObj.days < 20) {
+  } else if (remainingTime.lte(days20)) {
     return "var(--red500)";
   }
 }
@@ -71,13 +68,7 @@ export default function CoreFellowshipMemberDemotionPeriod({
     return null;
   }
 
-  const remainingTimeObj = useRemainingTime(remainingBlocks, true);
-
-  const fgColor = _getProgressBarColor(
-    remainingTimeObj,
-    remainingBlocks,
-    demotionPeriod,
-  );
+  const fgColor = _getProgressBarColor(remainingBlocks, demotionPeriod);
 
   return (
     <CoreFellowshipMemberInfoWrapper>
