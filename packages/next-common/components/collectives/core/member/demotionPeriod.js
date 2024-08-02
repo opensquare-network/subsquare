@@ -12,7 +12,6 @@ import {
   getGoneBlocksPercentage,
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
-import { useRemainingTime } from "next-common/components/remaining";
 import { ONE_DAY } from "next-common/utils/constants";
 import BigNumber from "bignumber.js";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
