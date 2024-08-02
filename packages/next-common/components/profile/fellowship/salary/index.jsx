@@ -5,8 +5,11 @@ import ProfileFellowshipMemberInfo from "../memberInfo";
 import ProfileFellowshipModuleTabs from "../moduleTabs";
 import ProfileFellowshipSalaryPayments from "./payments";
 import ProfileFellowshipSalaryTimeline from "./timeline";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 export default function ProfileFellowshipSalary() {
+  const { section } = useCollectivesContext();
+
   const [paymentsCount, setPaymentsCount] = useState();
 
   const tabs = [
@@ -27,8 +30,7 @@ export default function ProfileFellowshipSalary() {
 
   return (
     <div className="space-y-6">
-      <ProfileFellowshipMemberInfo />
-      <ProfileFellowshipMemberInfo section="ambassador" />
+      <ProfileFellowshipMemberInfo section={section} />
 
       <div className="space-y-4">
         <ProfileFellowshipModuleTabs />

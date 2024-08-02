@@ -111,6 +111,7 @@ export const ambassadorSalaryCycleUnregisteredPaymentsApi = (index) =>
   `ambassador/salary/cycles/${index}/unregistered_payments`;
 export const ambassadorSalaryCycleFeedsApi = (index) =>
   `ambassador/salary/cycles/${index}/feeds`;
+export const ambassadorSalaryPaymentsApi = "ambassador/salary/payments";
 
 // calender events
 /**
