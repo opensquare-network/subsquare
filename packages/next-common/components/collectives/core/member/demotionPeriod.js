@@ -17,6 +17,14 @@ export function useDemotionPeriod({ rank, lastProof, params }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   return useMemo(() => {
     const demotionPeriod = getDemotionPeriod(rank, params);
+    if (demotionPeriod <= 0) {
+      return {
+        percentageValue: 0,
+        remainingBlocks: null,
+        demotionPeriod,
+      };
+    }
+
     const gone = latestHeight - lastProof;
     const percentageValue = getGoneBlocksPercentage(gone, demotionPeriod);
     const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);

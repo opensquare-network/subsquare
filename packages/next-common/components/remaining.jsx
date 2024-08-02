@@ -2,13 +2,18 @@ import { extractTime } from "@polkadot/util";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
+import { isNil } from "lodash-es";
 
 export function useRemainingTime(blocks) {
   const blockTime = useSelector(blockTimeSelector);
   const ms = blockTime * blocks;
   const { days, hours, minutes } = extractTime(ms);
 
-  const remaining = useMemo(() => {
+  if (isNil(blocks)) {
+    return null;
+  }
+
+  return useMemo(() => {
     if (days > 30) {
       return `${days}days remaining`;
     }
@@ -20,8 +25,6 @@ export function useRemainingTime(blocks) {
       "remaining",
     ].join(" ");
   }, [days, hours, minutes]);
-
-  return remaining;
 }
 
 export default function Remaining({ blocks = 0, percentage }) {
