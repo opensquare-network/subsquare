@@ -22,7 +22,7 @@ export function useDemotionPeriod({ rank, lastProof, params }) {
         percentageValue: 0,
         remainingBlocks: null,
         demotionPeriod,
-      }
+      };
     }
 
     const gone = latestHeight - lastProof;
