@@ -29,13 +29,6 @@ export function usePromotionPeriod({ lastPromotion, rank, params = {} }) {
   }, [lastPromotion, rank, params, latestHeight]);
 }
 
-function _getProgressBarColor(percentageValue) {
-  if (percentageValue === 100) {
-    return "var(--green500)";
-  }
-  return "var(--neutral500)";
-}
-
 export default function CoreFellowshipMemberPromotionPeriod({
   lastPromotion,
   rank,
@@ -48,7 +41,8 @@ export default function CoreFellowshipMemberPromotionPeriod({
     return null;
   }
 
-  const fgColor = _getProgressBarColor(percentageValue);
+  const fgColor =
+    percentageValue === 100 ? "var(--green500)" : "var(--neutral500)";
 
   return (
     <CoreFellowshipMemberInfoWrapper>
