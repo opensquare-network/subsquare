@@ -3,41 +3,17 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
 import { useAssetHubOnPolkadotMetadata } from "../context/assetHubOnPolkadotMetadataContext";
 import { useAssetHubApi } from "next-common/context/assetHub";
-
-function useSubscribeMultiAssetAccounts(multiAccountKey) {
-  const api = useAssetHubApi();
-  const [multiAccounts, setMultiAccounts] = useState();
-
-  useEffect(() => {
-    if (!api || !multiAccountKey) {
-      return;
-    }
-
-    let unsubFunc;
-    api.query.assets.account
-      .multi(multiAccountKey, (data) => {
-        setMultiAccounts(data);
-      })
-      .then((result) => (unsubFunc = result));
-
-    return () => {
-      if (unsubFunc) {
-        unsubFunc();
-      }
-    };
-  }, [api, multiAccountKey]);
-
-  return multiAccounts;
-}
+import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
 
 export default function useAssetHubOnPolkadot() {
   const address = useRealAddress();
+  const api = useAssetHubApi();
   const allMetadata = useAssetHubOnPolkadotMetadata();
   const multiAccountKey = useMemo(
     () => allMetadata?.map((item) => [item.assetId, address]),
     [allMetadata, address],
   );
-  const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey);
+  const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey, api);
 
   return useMemo(() => {
     if (!allMetadata || !multiAccounts || !address) {

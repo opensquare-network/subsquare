@@ -3,7 +3,6 @@ import { PromptTypes } from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useMemo } from "react";
 import Link from "next/link";
-import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import useAssetHubOnPolkadot from "../hook/useAssetHubOnPolkadot";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import { AssetHubOnPolkadotMetadataProvider } from "next-common/components/overview/accountInfo/context/assetHubOnPolkadotMetadataContext";
@@ -11,14 +10,10 @@ import Chains from "next-common/utils/consts/chains";
 import OnlyChain from "next-common/components/common/onlyChain";
 
 export function PromptContent() {
-  const [visible, setVisible] = useCookieValue(
-    CACHE_KEY.assetHubPromptVisible,
-    true,
-  );
   const assets = useAssetHubOnPolkadot();
 
   return useMemo(() => {
-    if (!assets || assets.length === 0 || !visible) {
+    if (!assets || assets.length === 0) {
       return null;
     }
 
@@ -38,7 +33,7 @@ export function PromptContent() {
         </Link>
       </Prompt>
     );
-  }, [setVisible, assets, visible]);
+  }, [assets]);
 }
 
 export default function AssetHubManagePrompt() {
