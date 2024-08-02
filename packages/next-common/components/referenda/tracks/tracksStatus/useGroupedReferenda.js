@@ -1,39 +1,45 @@
 import { useOnChainReferendaContext } from "next-common/context/onchainReferenda";
 import { useMemo } from "react";
-import { getOngoingReferendaStatus } from "../common";
+import {
+  eachOngoingReferenda,
+  getOngoingReferendaStatus,
+  QueueingReferenda,
+} from "next-common/utils/referenda";
 
 function groupReferenda(allReferenda) {
   const tracks = {};
 
-  allReferenda.forEach(([key, referenda]) => {
-    const unwrappedReferenda = referenda.unwrap();
-    if (!unwrappedReferenda.isOngoing) {
-      return;
-    }
-
-    const ongoingReferenda = unwrappedReferenda.asOngoing;
+  for (const [referendumIndex, ongoingReferenda] of eachOngoingReferenda(
+    allReferenda,
+  )) {
     const trackId = ongoingReferenda.track.toNumber();
     if (!tracks[trackId]) {
       tracks[trackId] = {
         preparing: [],
-        queueing: [],
+        queueing: new QueueingReferenda(),
         deciding: [],
         confirming: [],
       };
     }
     const status = getOngoingReferendaStatus(ongoingReferenda);
     if (status) {
-      const {
-        args: [id],
-      } = key;
-      const referendumIndex = id.toNumber();
-      tracks[trackId][status].push(referendumIndex);
+      if (status === "queueing") {
+        tracks[trackId].queueing.addReferendum(
+          referendumIndex,
+          ongoingReferenda,
+        );
+      } else {
+        tracks[trackId][status].push(referendumIndex);
+      }
     }
-  });
+  }
 
   const result = Object.entries(tracks).map(([trackId, referenda]) => ({
     trackId: parseInt(trackId),
-    referenda,
+    referenda: {
+      ...referenda,
+      queueing: referenda.queueing.toSortedReferendumIndexes(),
+    },
   }));
   result.sort((a, b) => a.TrackId - b.TrackId);
 

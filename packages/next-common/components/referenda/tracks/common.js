@@ -12,20 +12,3 @@ export default function getStatusColor(status) {
       return "";
   }
 }
-
-export function getOngoingReferendaStatus(ongoingReferenda) {
-  if (ongoingReferenda.decisionDeposit.isNone) {
-    return "preparing";
-  } else if (ongoingReferenda.inQueue.isTrue) {
-    return "queueing";
-  } else if (ongoingReferenda.deciding.isSome) {
-    const deciding = ongoingReferenda.deciding.unwrap();
-    if (deciding.confirming.isSome) {
-      return "confirming";
-    } else {
-      return "deciding";
-    }
-  }
-
-  return "";
-}

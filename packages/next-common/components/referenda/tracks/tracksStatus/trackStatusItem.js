@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const ArrowRight = dynamic(() => import("@osn/icons/subsquare/ArrowRight"));
 
-function Arrow() {
+export function Arrow() {
   return (
     <div className="p-[2px] text-center">
       <div className="inline-flex items-center justify-center p-[2px] rounded-full bg-neutral200">
@@ -48,14 +48,9 @@ export default function TrackStatusItem({
     <div className="flex flex-col p-[24px] border-b border-b-neutral300 last:border-b-0">
       <TrackName trackId={trackId} />
       <div className="flex gap-[16px] max-sm:flex-col max-sm:gap-[8px]">
-        <PreparingBucketStatus
-          className="sm:max-w-[300px] basis-[28%] shrink-0"
-          preparing={preparing}
-          queueing={queueing}
-        />
+        <PreparingBucketStatus preparing={preparing} queueing={queueing} />
         <Arrow />
         <OngoingBucketStatus
-          className="grow"
           trackId={trackId}
           deciding={deciding}
           confirming={confirming}

@@ -2,9 +2,10 @@ import Tooltip from "next-common/components/tooltip";
 import getStatusColor from "../common";
 import { startCase } from "lodash-es";
 import useReferendaTrackDetail from "next-common/hooks/referenda/useReferendaTrackDetail";
-import BucketStatus from "./bucketStatus";
+import useBucketWithViewAllButton from "./useBucketWithViewAllButton";
+import BucketStatusLayout from "./bucketStatusLayout";
 
-function StatusCounts({ counts, capacity }) {
+function OngoingStatusCounts({ counts, capacity }) {
   const tooltips = [];
   const numbers = [];
   let total = 0;
@@ -36,8 +37,7 @@ function StatusCounts({ counts, capacity }) {
   return <span className="text-textPrimary ml-[8px]">{content}</span>;
 }
 
-export default function OngoingBucketStatus({
-  className,
+export function useCommonOngoingBucketStatusProps({
   trackId,
   deciding,
   confirming,
@@ -57,19 +57,40 @@ export default function OngoingBucketStatus({
     },
   ];
 
+  return {
+    className: "grow",
+    sections,
+    capacity: trackDetail?.maxDeciding,
+    name: "Ongoing",
+    tooltip: "Including deciding and confirming status",
+    counts: (
+      <OngoingStatusCounts
+        capacity={trackDetail?.maxDeciding}
+        counts={{ deciding: deciding.length, confirming: confirming.length }}
+      />
+    ),
+  };
+}
+
+export default function OngoingBucketStatus({ trackId, deciding, confirming }) {
+  const { className, sections, capacity, name, tooltip, counts } =
+    useCommonOngoingBucketStatusProps({
+      trackId,
+      deciding,
+      confirming,
+    });
+  const { bucket, viewAllBtn } = useBucketWithViewAllButton({
+    sections,
+    capacity,
+  });
   return (
-    <BucketStatus
+    <BucketStatusLayout
       className={className}
-      sections={sections}
-      capacity={trackDetail?.maxDeciding}
-      name="Ongoing"
-      tooltip="Including deciding and confirming status"
-      counts={
-        <StatusCounts
-          capacity={trackDetail?.maxDeciding}
-          counts={{ deciding: deciding.length, confirming: confirming.length }}
-        />
-      }
+      name={name}
+      tooltip={tooltip}
+      counts={counts}
+      bucket={bucket}
+      action={viewAllBtn}
     />
   );
 }
