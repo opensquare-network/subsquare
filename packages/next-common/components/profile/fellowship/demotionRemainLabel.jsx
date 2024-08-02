@@ -6,7 +6,6 @@ import { useRemainingTime } from "next-common/components/remaining";
 export default function DemotionRemainLabel({ lastProof, rank, params }) {
   const { percentageValue, remainingBlocks, demotionPeriod } =
     useDemotionPeriod({ rank, lastProof, params });
-
   const remaining = useRemainingTime(remainingBlocks);
 
   if (isNil(demotionPeriod)) {
