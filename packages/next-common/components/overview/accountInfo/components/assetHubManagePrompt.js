@@ -6,9 +6,7 @@ import Link from "next/link";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import useAssetHubOnPolkadot from "../hook/useAssetHubOnPolkadot";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
-import {
-  AssetHubOnPolkadotMetadataProvider,
-} from "next-common/components/overview/accountInfo/context/assetHubOnPolkadotMetadataContext";
+import { AssetHubOnPolkadotMetadataProvider } from "next-common/components/overview/accountInfo/context/assetHubOnPolkadotMetadataContext";
 import Chains from "next-common/utils/consts/chains";
 import OnlyChain from "next-common/components/common/onlyChain";
 
