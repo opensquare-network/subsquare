@@ -68,17 +68,20 @@ function TrackStatusItem() {
   return (
     <>
       <div className="border-t border-dashed border-neutral300 my-[16px]" />
-      <div className="flex gap-[16px] max-sm:flex-col max-sm:gap-[8px]">
-        <PreparingBucketStatus
-          queueing={referenda.queueing}
-          preparing={referenda.preparing}
-        />
-        <Arrow />
-        <OngoingBucketStatus
-          trackId={trackId}
-          deciding={referenda.deciding}
-          confirming={referenda.confirming}
-        />
+      <div className="flex flex-col gap-[8px]">
+        <span className="text-textTertiary text12Medium">Track Status</span>
+        <div className="flex gap-[16px] max-sm:flex-col max-sm:gap-[8px]">
+          <PreparingBucketStatus
+            queueing={referenda.queueing}
+            preparing={referenda.preparing}
+          />
+          <Arrow />
+          <OngoingBucketStatus
+            trackId={trackId}
+            deciding={referenda.deciding}
+            confirming={referenda.confirming}
+          />
+        </div>
       </div>
     </>
   );
