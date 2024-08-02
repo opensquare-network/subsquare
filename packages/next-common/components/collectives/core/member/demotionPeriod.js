@@ -52,7 +52,7 @@ export default function CoreFellowshipMemberDemotionPeriod({
 
   const remainingTimeObj = useRemainingTime(remainingBlocks, true);
 
-  // 进度条颜色
+  // Progress bar color
   let fgColor = "";
   if (remainingBlocks >= demotionPeriod / 2) {
     fgColor = "var(--green500)";
