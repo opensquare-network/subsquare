@@ -38,6 +38,27 @@ export function useDemotionPeriod({ rank, lastProof, params }) {
   }, [rank, lastProof, params, latestHeight]);
 }
 
+function _getProgressBarColor(
+  remainingTimeObj,
+  remainingBlocks,
+  demotionPeriod,
+) {
+  if (!remainingTimeObj) {
+    return "";
+  }
+  if (remainingBlocks >= demotionPeriod / 2) {
+    return "var(--green500)";
+  } else if (
+    remainingTimeObj &&
+    remainingTimeObj.days >= 20 &&
+    remainingBlocks < demotionPeriod / 2
+  ) {
+    return "var(--orange500)";
+  } else if (remainingTimeObj && remainingTimeObj.days < 20) {
+    return "var(--red500)";
+  }
+}
+
 export default function CoreFellowshipMemberDemotionPeriod({
   lastProof,
   rank,
@@ -52,19 +73,11 @@ export default function CoreFellowshipMemberDemotionPeriod({
 
   const remainingTimeObj = useRemainingTime(remainingBlocks, true);
 
-  // Progress bar color
-  let fgColor = "";
-  if (remainingBlocks >= demotionPeriod / 2) {
-    fgColor = "var(--green500)";
-  } else if (
-    remainingTimeObj &&
-    remainingTimeObj.days >= 20 &&
-    remainingBlocks < demotionPeriod / 2
-  ) {
-    fgColor = "var(--orange500)";
-  } else if (remainingTimeObj && remainingTimeObj.days < 20) {
-    fgColor = "var(--red500)";
-  }
+  const fgColor = _getProgressBarColor(
+    remainingTimeObj,
+    remainingBlocks,
+    demotionPeriod,
+  );
 
   return (
     <CoreFellowshipMemberInfoWrapper>
