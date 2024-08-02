@@ -2,7 +2,8 @@ import Tooltip from "next-common/components/tooltip";
 import getStatusColor from "../common";
 import { startCase } from "lodash-es";
 import useReferendaTrackDetail from "next-common/hooks/referenda/useReferendaTrackDetail";
-import BucketStatus from "./bucketStatus";
+import useBucketWithViewAllButton from "./useBucketWithViewAllButton";
+import BucketStatusLayout from "./bucketStatusLayout";
 
 function OngoingStatusCounts({ counts, capacity }) {
   const tooltips = [];
@@ -36,11 +37,10 @@ function OngoingStatusCounts({ counts, capacity }) {
   return <span className="text-textPrimary ml-[8px]">{content}</span>;
 }
 
-export function CommonOngoingBucketStatus({
+export function useCommonOngoingBucketStatusProps({
   trackId,
   deciding,
   confirming,
-  LayoutComponent,
 }) {
   const { track: trackDetail } = useReferendaTrackDetail(trackId);
 
@@ -57,30 +57,40 @@ export function CommonOngoingBucketStatus({
     },
   ];
 
-  return (
-    <LayoutComponent
-      className="grow"
-      sections={sections}
-      capacity={trackDetail?.maxDeciding}
-      name="Ongoing"
-      tooltip="Including deciding and confirming status"
-      counts={
-        <OngoingStatusCounts
-          capacity={trackDetail?.maxDeciding}
-          counts={{ deciding: deciding.length, confirming: confirming.length }}
-        />
-      }
-    />
-  );
+  return {
+    className: "grow",
+    sections,
+    capacity: trackDetail?.maxDeciding,
+    name: "Ongoing",
+    tooltip: "Including deciding and confirming status",
+    counts: (
+      <OngoingStatusCounts
+        capacity={trackDetail?.maxDeciding}
+        counts={{ deciding: deciding.length, confirming: confirming.length }}
+      />
+    ),
+  };
 }
 
 export default function OngoingBucketStatus({ trackId, deciding, confirming }) {
+  const { className, sections, capacity, name, tooltip, counts } =
+    useCommonOngoingBucketStatusProps({
+      trackId,
+      deciding,
+      confirming,
+    });
+  const { bucket, viewAllBtn } = useBucketWithViewAllButton({
+    sections,
+    capacity,
+  });
   return (
-    <CommonOngoingBucketStatus
-      trackId={trackId}
-      deciding={deciding}
-      confirming={confirming}
-      LayoutComponent={BucketStatus}
+    <BucketStatusLayout
+      className={className}
+      name={name}
+      tooltip={tooltip}
+      counts={counts}
+      bucket={bucket}
+      action={viewAllBtn}
     />
   );
 }

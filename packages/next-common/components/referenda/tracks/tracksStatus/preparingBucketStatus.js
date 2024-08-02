@@ -1,7 +1,8 @@
 import Tooltip from "next-common/components/tooltip";
 import getStatusColor from "../common";
 import { startCase } from "lodash-es";
-import BucketStatus from "./bucketStatus";
+import BucketStatusLayout from "./bucketStatusLayout";
+import useBucketWithViewAllButton from "./useBucketWithViewAllButton";
 
 function PreparingStatusCounts({ counts }) {
   let content = 0;
@@ -30,11 +31,7 @@ function PreparingStatusCounts({ counts }) {
   return <span className="text-textPrimary ml-[8px]">{content}</span>;
 }
 
-export function CommonPreparingBucketStatus({
-  preparing,
-  queueing,
-  LayoutComponent,
-}) {
+export function useCommonPreparingBucketStatusProps({ preparing, queueing }) {
   const sections = [
     {
       referenda: queueing,
@@ -48,28 +45,35 @@ export function CommonPreparingBucketStatus({
     },
   ];
 
-  return (
-    <LayoutComponent
-      className="sm:max-w-[300px] basis-[28%] shrink-0"
-      sections={sections}
-      name="Preparing"
-      tooltip="Including preparing and queueing status"
-      paddingItemsColor="var(--neutral400)"
-      counts={
-        <PreparingStatusCounts
-          counts={{ preparing: preparing.length, queueing: queueing.length }}
-        />
-      }
-    />
-  );
+  return {
+    className: "sm:max-w-[300px] basis-[28%] shrink-0",
+    sections,
+    name: "Preparing",
+    tooltip: "Including preparing and queueing status",
+    paddingItemsColor: "var(--neutral400)",
+    counts: (
+      <PreparingStatusCounts
+        counts={{ preparing: preparing.length, queueing: queueing.length }}
+      />
+    ),
+  };
 }
 
 export default function PreparingBucketStatus({ preparing, queueing }) {
+  const { className, sections, name, tooltip, paddingItemsColor, counts } =
+    useCommonPreparingBucketStatusProps({ preparing, queueing });
+  const { bucket, viewAllBtn } = useBucketWithViewAllButton({
+    sections,
+    paddingItemsColor,
+  });
   return (
-    <CommonPreparingBucketStatus
-      preparing={preparing}
-      queueing={queueing}
-      LayoutComponent={BucketStatus}
+    <BucketStatusLayout
+      className={className}
+      name={name}
+      tooltip={tooltip}
+      bucket={bucket}
+      counts={counts}
+      action={viewAllBtn}
     />
   );
 }

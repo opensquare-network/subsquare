@@ -5,65 +5,45 @@ import { OnChainReferendaTracksProvider } from "next-common/context/referenda/tr
 import useBucket, {
   BucketProvider,
 } from "next-common/components/referenda/tracks/tracksStatus/useBucket";
-import { CommonPreparingBucketStatus } from "next-common/components/referenda/tracks/tracksStatus/preparingBucketStatus";
-import { CommonOngoingBucketStatus } from "next-common/components/referenda/tracks/tracksStatus/ongoingBucketStatus";
+import { useCommonPreparingBucketStatusProps } from "next-common/components/referenda/tracks/tracksStatus/preparingBucketStatus";
+import { useCommonOngoingBucketStatusProps } from "next-common/components/referenda/tracks/tracksStatus/ongoingBucketStatus";
 import { Arrow } from "next-common/components/referenda/tracks/tracksStatus/trackStatusItem";
-import { BucketStatusLayout } from "next-common/components/referenda/tracks/tracksStatus/bucketStatus";
+import BucketStatusLayout from "next-common/components/referenda/tracks/tracksStatus/bucketStatusLayout";
 import Link from "next/link";
 import useGroupedReferendaInTrack from "./useGroupedReferendaInTrack";
 
-function PreparingBucketStatusLayout({
-  className,
-  sections,
-  capacity,
-  name,
-  tooltip,
-  counts,
-  idleItemsColor,
-  paddingItemsColor,
-}) {
+function PreparingBucketStatus({ preparing, queueing }) {
+  const { className, sections, name, tooltip, paddingItemsColor, counts } =
+    useCommonPreparingBucketStatusProps({ preparing, queueing });
   const { component: bucket } = useBucket({
     sections,
-    capacity,
-    idleItemsColor,
     paddingItemsColor,
   });
-
   return (
     <BucketStatusLayout
       className={className}
-      bucket={bucket}
       name={name}
       tooltip={tooltip}
       counts={counts}
+      bucket={bucket}
     />
   );
 }
 
-function OngoingBucketStatusLayout({
-  className,
-  sections,
-  capacity,
-  name,
-  tooltip,
-  counts,
-  idleItemsColor,
-  paddingItemsColor,
-}) {
+function OngoingBucketStatus({ trackId, deciding, confirming }) {
+  const { className, sections, capacity, name, tooltip, counts } =
+    useCommonOngoingBucketStatusProps({ trackId, deciding, confirming });
   const { component: bucket } = useBucket({
     sections,
     capacity,
-    idleItemsColor,
-    paddingItemsColor,
   });
-
   return (
     <BucketStatusLayout
       className={className}
-      bucket={bucket}
       name={name}
       tooltip={tooltip}
       counts={counts}
+      bucket={bucket}
       action={
         <Link
           className="cursor-pointer text-theme500 text12Medium"
@@ -72,27 +52,6 @@ function OngoingBucketStatusLayout({
           View Track Status
         </Link>
       }
-    />
-  );
-}
-
-function PreparingBucketStatus({ preparing, queueing }) {
-  return (
-    <CommonPreparingBucketStatus
-      preparing={preparing}
-      queueing={queueing}
-      LayoutComponent={PreparingBucketStatusLayout}
-    />
-  );
-}
-
-function OngoingBucketStatus({ trackId, deciding, confirming }) {
-  return (
-    <CommonOngoingBucketStatus
-      trackId={trackId}
-      deciding={deciding}
-      confirming={confirming}
-      LayoutComponent={OngoingBucketStatusLayout}
     />
   );
 }
