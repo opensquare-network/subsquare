@@ -1,12 +1,10 @@
-import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
 
-export default function useQueryAllAssetMetadata() {
-  const api = useContextApi();
+export default function useQueryAllAssetMetadata(api) {
   const [allMetadata, setAllMetadata] = useState();
 
   useEffect(() => {
-    if (!api) {
+    if (!api || !api.query?.assets?.metadata) {
       return;
     }
 
