@@ -19,9 +19,9 @@ export default function AssetHubManagePrompt() {
     }
 
     const assetsAmount = assets.length;
-    let manageContent = `them`;
+    let manageContent = "them";
     if (assetsAmount === 1) {
-      manageContent = `it`;
+      manageContent = "it";
     }
 
     return (
