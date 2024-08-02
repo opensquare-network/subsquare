@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import { useAllAssetMetadata } from "./context/assetMetadata";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
