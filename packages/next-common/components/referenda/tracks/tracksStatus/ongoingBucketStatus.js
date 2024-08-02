@@ -4,7 +4,7 @@ import { startCase } from "lodash-es";
 import useReferendaTrackDetail from "next-common/hooks/referenda/useReferendaTrackDetail";
 import BucketStatus from "./bucketStatus";
 
-function StatusCounts({ counts, capacity }) {
+function OngoingStatusCounts({ counts, capacity }) {
   const tooltips = [];
   const numbers = [];
   let total = 0;
@@ -36,11 +36,11 @@ function StatusCounts({ counts, capacity }) {
   return <span className="text-textPrimary ml-[8px]">{content}</span>;
 }
 
-export default function OngoingBucketStatus({
-  className,
+export function CommonOngoingBucketStatus({
   trackId,
   deciding,
   confirming,
+  LayoutComponent,
 }) {
   const { track: trackDetail } = useReferendaTrackDetail(trackId);
 
@@ -58,18 +58,29 @@ export default function OngoingBucketStatus({
   ];
 
   return (
-    <BucketStatus
-      className={className}
+    <LayoutComponent
+      className="grow"
       sections={sections}
       capacity={trackDetail?.maxDeciding}
       name="Ongoing"
       tooltip="Including deciding and confirming status"
       counts={
-        <StatusCounts
+        <OngoingStatusCounts
           capacity={trackDetail?.maxDeciding}
           counts={{ deciding: deciding.length, confirming: confirming.length }}
         />
       }
+    />
+  );
+}
+
+export default function OngoingBucketStatus({ trackId, deciding, confirming }) {
+  return (
+    <CommonOngoingBucketStatus
+      trackId={trackId}
+      deciding={deciding}
+      confirming={confirming}
+      LayoutComponent={BucketStatus}
     />
   );
 }

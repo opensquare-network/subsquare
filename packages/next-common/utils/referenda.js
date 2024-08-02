@@ -1,3 +1,20 @@
+export function getOngoingReferendaStatus(ongoingReferenda) {
+  if (ongoingReferenda.decisionDeposit.isNone) {
+    return "preparing";
+  } else if (ongoingReferenda.inQueue.isTrue) {
+    return "queueing";
+  } else if (ongoingReferenda.deciding.isSome) {
+    const deciding = ongoingReferenda.deciding.unwrap();
+    if (deciding.confirming.isSome) {
+      return "confirming";
+    } else {
+      return "deciding";
+    }
+  }
+
+  return "";
+}
+
 export function* eachOngoingReferenda(allReferenda) {
   for (const [key, referenda] of allReferenda) {
     const unwrappedReferenda = referenda.unwrap();

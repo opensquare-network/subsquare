@@ -3,7 +3,7 @@ import getStatusColor from "../common";
 import { startCase } from "lodash-es";
 import BucketStatus from "./bucketStatus";
 
-function StatusCounts({ counts }) {
+function PreparingStatusCounts({ counts }) {
   let content = 0;
 
   const tooltips = [];
@@ -30,10 +30,10 @@ function StatusCounts({ counts }) {
   return <span className="text-textPrimary ml-[8px]">{content}</span>;
 }
 
-export default function PreparingBucketStatus({
-  className,
+export function CommonPreparingBucketStatus({
   preparing,
   queueing,
+  LayoutComponent,
 }) {
   const sections = [
     {
@@ -49,17 +49,27 @@ export default function PreparingBucketStatus({
   ];
 
   return (
-    <BucketStatus
-      className={className}
+    <LayoutComponent
+      className="sm:max-w-[300px] basis-[28%] shrink-0"
       sections={sections}
       name="Preparing"
       tooltip="Including preparing and queueing status"
       paddingItemsColor="var(--neutral400)"
       counts={
-        <StatusCounts
+        <PreparingStatusCounts
           counts={{ preparing: preparing.length, queueing: queueing.length }}
         />
       }
+    />
+  );
+}
+
+export default function PreparingBucketStatus({ preparing, queueing }) {
+  return (
+    <CommonPreparingBucketStatus
+      preparing={preparing}
+      queueing={queueing}
+      LayoutComponent={BucketStatus}
     />
   );
 }

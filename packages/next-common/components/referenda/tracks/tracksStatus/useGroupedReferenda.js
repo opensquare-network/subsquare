@@ -1,8 +1,8 @@
 import { useOnChainReferendaContext } from "next-common/context/onchainReferenda";
 import { useMemo } from "react";
-import { getOngoingReferendaStatus } from "../common";
 import {
   eachOngoingReferenda,
+  getOngoingReferendaStatus,
   QueueingReferenda,
 } from "next-common/utils/referenda";
 
