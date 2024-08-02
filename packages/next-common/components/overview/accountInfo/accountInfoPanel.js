@@ -18,10 +18,6 @@ import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
-import { AssetHubOnPolkadotMetadataProvider } from "./context/assetHubOnPolkadotMetadataContext";
-import { AssetHubApiProvider } from "next-common/context/assetHub";
-import OnlyChain from "next-common/components/common/onlyChain";
-import Chains from "next-common/utils/consts/chains";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -144,16 +140,6 @@ export function AccountHead() {
   );
 }
 
-function AssetHubManagePromptJSX() {
-  return (
-    <AssetHubApiProvider>
-      <AssetHubOnPolkadotMetadataProvider>
-        <AssetHubManagePrompt />
-      </AssetHubOnPolkadotMetadataProvider>
-    </AssetHubApiProvider>
-  );
-}
-
 export function CommonAccountInfoPanel({ hideManageAccountLink }) {
   return (
     <NeutralPanel className="p-6 space-y-4">
@@ -163,9 +149,7 @@ export function CommonAccountInfoPanel({ hideManageAccountLink }) {
       <AccountBalances />
       {!hideManageAccountLink && <ManageAccountButton />}
       <ExtensionUpdatePrompt />
-      <OnlyChain chain={Chains.polkadot}>
-        <AssetHubManagePromptJSX />
-      </OnlyChain>
+      <AssetHubManagePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );

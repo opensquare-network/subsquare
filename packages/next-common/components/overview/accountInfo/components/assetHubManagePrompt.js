@@ -5,8 +5,14 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import useAssetHubOnPolkadot from "../hook/useAssetHubOnPolkadot";
+import { AssetHubApiProvider } from "next-common/context/assetHub";
+import {
+  AssetHubOnPolkadotMetadataProvider
+} from "next-common/components/overview/accountInfo/context/assetHubOnPolkadotMetadataContext";
+import Chains from "next-common/utils/consts/chains";
+import OnlyChain from "next-common/components/common/onlyChain";
 
-export default function AssetHubManagePrompt() {
+export function PromptContent() {
   const [visible, setVisible] = useCookieValue(
     CACHE_KEY.assetHubPromptVisible,
     true,
@@ -19,11 +25,7 @@ export default function AssetHubManagePrompt() {
     }
 
     const assetsAmount = assets.length;
-    let manageContent = "them";
-    if (assetsAmount === 1) {
-      manageContent = "it";
-    }
-
+    const manageContent = assetsAmount > 1 ? "them" : "it";
     return (
       <Prompt
         cacheKey={CACHE_KEY.assetHubPromptVisible}
@@ -39,4 +41,16 @@ export default function AssetHubManagePrompt() {
       </Prompt>
     );
   }, [setVisible, assets, visible]);
+}
+
+export default function AssetHubManagePrompt() {
+  return (
+    <OnlyChain chain={Chains.polkadot}>
+      <AssetHubApiProvider>
+        <AssetHubOnPolkadotMetadataProvider>
+          <PromptContent />
+        </AssetHubOnPolkadotMetadataProvider>
+      </AssetHubApiProvider>
+    </OnlyChain>
+  );
 }
