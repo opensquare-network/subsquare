@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
 
-export function useRemainingTime(blocks) {
+export function useRemainingTime(blocks, returnObject = false) {
   const blockTime = useSelector(blockTimeSelector);
   const ms = blockTime * blocks;
   const { days, hours, minutes } = extractTime(ms);
@@ -14,6 +14,10 @@ export function useRemainingTime(blocks) {
   }
 
   return useMemo(() => {
+    if (returnObject) {
+      return { days, hours, minutes };
+    }
+
     if (days > 30) {
       return `${days}days remaining`;
     }

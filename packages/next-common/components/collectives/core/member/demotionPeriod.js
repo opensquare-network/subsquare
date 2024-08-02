@@ -12,6 +12,7 @@ import {
   getGoneBlocksPercentage,
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
+import { useRemainingTime } from "next-common/components/remaining";
 
 export function useDemotionPeriod({ rank, lastProof, params }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
@@ -49,6 +50,22 @@ export default function CoreFellowshipMemberDemotionPeriod({
     return null;
   }
 
+  const remainingTimeObj = useRemainingTime(remainingBlocks, true);
+
+  // 进度条颜色
+  let fgColor = "";
+  if (remainingBlocks >= demotionPeriod / 2) {
+    fgColor = "var(--green500)";
+  } else if (
+    remainingTimeObj &&
+    remainingTimeObj.days >= 20 &&
+    remainingBlocks < demotionPeriod / 2
+  ) {
+    fgColor = "var(--orange500)";
+  } else if (remainingTimeObj && remainingTimeObj.days < 20) {
+    fgColor = "var(--red500)";
+  }
+
   return (
     <CoreFellowshipMemberInfoWrapper>
       <CoreFellowshipMemberInfoTitle>
@@ -65,8 +82,8 @@ export default function CoreFellowshipMemberDemotionPeriod({
         <Progress
           className="h-1"
           percentage={percentageValue}
-          bg="var(--theme100)"
-          fg="var(--theme500)"
+          bg="var(--neutral200)"
+          fg={fgColor}
         />
       </Tooltip>
     </CoreFellowshipMemberInfoWrapper>

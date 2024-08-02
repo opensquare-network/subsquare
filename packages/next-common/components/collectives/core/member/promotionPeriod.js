@@ -55,8 +55,8 @@ export default function CoreFellowshipMemberPromotionPeriod({
         <Progress
           className="h-1"
           percentage={percentageValue}
-          bg="var(--theme100)"
-          fg="var(--theme500)"
+          bg="var(--neutral200)"
+          fg="var(--green500)"
         />
       </Tooltip>
     </CoreFellowshipMemberInfoWrapper>
