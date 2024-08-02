@@ -1,12 +1,11 @@
-import { useOnChainReferendaContext } from "next-common/context/onchainReferenda";
 import { useMemo } from "react";
 import {
-  eachOngoingReferenda,
-  getOngoingReferendaStatus,
+  getOngoingReferendumStatus,
   QueueingReferenda,
 } from "next-common/utils/referenda";
+import useOnChainOngoingReferenda from "next-common/context/onchainReferenda/ongoingReferenda";
 
-function groupOngoingReferendaInTrack(trackId, allReferenda) {
+function groupOngoingReferendaInTrack(trackId, allOngoingReferenda) {
   const groups = {
     preparing: [],
     queueing: new QueueingReferenda(),
@@ -14,18 +13,16 @@ function groupOngoingReferendaInTrack(trackId, allReferenda) {
     confirming: [],
   };
 
-  for (const [referendumIndex, ongoingReferenda] of eachOngoingReferenda(
-    allReferenda,
-  )) {
-    const currTrackId = ongoingReferenda.track.toNumber();
+  for (const [referendumIndex, ongoingReferendum] of allOngoingReferenda) {
+    const currTrackId = ongoingReferendum.track.toNumber();
     if (currTrackId !== trackId) {
       continue;
     }
 
-    const status = getOngoingReferendaStatus(ongoingReferenda);
+    const status = getOngoingReferendumStatus(ongoingReferendum);
     if (status) {
       if (status === "queueing") {
-        groups.queueing.addReferendum(referendumIndex, ongoingReferenda);
+        groups.queueing.addReferendum(referendumIndex, ongoingReferendum);
       } else {
         groups[status].push(referendumIndex);
       }
@@ -39,7 +36,7 @@ function groupOngoingReferendaInTrack(trackId, allReferenda) {
 }
 
 export default function useGroupedReferendaInTrack(trackId) {
-  const { referenda, isLoading } = useOnChainReferendaContext();
+  const { ongoingReferenda, isLoading } = useOnChainOngoingReferenda();
 
   const groups = useMemo(() => {
     if (isLoading) {
@@ -50,8 +47,8 @@ export default function useGroupedReferendaInTrack(trackId) {
         confirming: [],
       };
     }
-    return groupOngoingReferendaInTrack(trackId, referenda);
-  }, [isLoading, referenda, trackId]);
+    return groupOngoingReferendaInTrack(trackId, ongoingReferenda);
+  }, [isLoading, ongoingReferenda, trackId]);
 
   return {
     referenda: groups,

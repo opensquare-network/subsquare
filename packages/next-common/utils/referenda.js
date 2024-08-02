@@ -1,10 +1,10 @@
-export function getOngoingReferendaStatus(ongoingReferenda) {
-  if (ongoingReferenda.decisionDeposit.isNone) {
+export function getOngoingReferendumStatus(ongoingReferendum) {
+  if (ongoingReferendum.decisionDeposit.isNone) {
     return "preparing";
-  } else if (ongoingReferenda.inQueue.isTrue) {
+  } else if (ongoingReferendum.inQueue.isTrue) {
     return "queueing";
-  } else if (ongoingReferenda.deciding.isSome) {
-    const deciding = ongoingReferenda.deciding.unwrap();
+  } else if (ongoingReferendum.deciding.isSome) {
+    const deciding = ongoingReferendum.deciding.unwrap();
     if (deciding.confirming.isSome) {
       return "confirming";
     } else {
@@ -16,15 +16,15 @@ export function getOngoingReferendaStatus(ongoingReferenda) {
 }
 
 export function* eachOngoingReferenda(allReferenda) {
-  for (const [key, referenda] of allReferenda) {
-    const unwrappedReferenda = referenda.unwrap();
-    if (!unwrappedReferenda.isOngoing) {
+  for (const [key, referendum] of allReferenda) {
+    const unwrappedReferendum = referendum.unwrap();
+    if (!unwrappedReferendum.isOngoing) {
       continue;
     }
 
-    const ongoingReferenda = unwrappedReferenda.asOngoing;
+    const ongoingReferendum = unwrappedReferendum.asOngoing;
     const referendumIndex = key.args[0].toNumber();
-    yield [referendumIndex, ongoingReferenda];
+    yield [referendumIndex, ongoingReferendum];
   }
 }
 
@@ -34,11 +34,11 @@ export class QueueingReferenda {
     this.ayes = {};
   }
 
-  addReferendum(referendumIndex, ongoingReferenda) {
+  addReferendum(referendumIndex, ongoingReferendum) {
     this.referendumIndexes.push(referendumIndex);
 
     // Keep track of ayes for queueing referenda
-    const ayes = ongoingReferenda.tally.ayes.toBigInt();
+    const ayes = ongoingReferendum.tally.ayes.toBigInt();
     this.ayes[referendumIndex] = ayes;
   }
 

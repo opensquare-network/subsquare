@@ -1,18 +1,15 @@
-import { useOnChainReferendaContext } from "next-common/context/onchainReferenda";
 import { useMemo } from "react";
 import {
-  eachOngoingReferenda,
-  getOngoingReferendaStatus,
+  getOngoingReferendumStatus,
   QueueingReferenda,
 } from "next-common/utils/referenda";
+import useOnChainOngoingReferenda from "next-common/context/onchainReferenda/ongoingReferenda";
 
-function groupReferenda(allReferenda) {
+function groupReferenda(allOngoingReferenda) {
   const tracks = {};
 
-  for (const [referendumIndex, ongoingReferenda] of eachOngoingReferenda(
-    allReferenda,
-  )) {
-    const trackId = ongoingReferenda.track.toNumber();
+  for (const [referendumIndex, ongoingReferendum] of allOngoingReferenda) {
+    const trackId = ongoingReferendum.track.toNumber();
     if (!tracks[trackId]) {
       tracks[trackId] = {
         preparing: [],
@@ -21,12 +18,12 @@ function groupReferenda(allReferenda) {
         confirming: [],
       };
     }
-    const status = getOngoingReferendaStatus(ongoingReferenda);
+    const status = getOngoingReferendumStatus(ongoingReferendum);
     if (status) {
       if (status === "queueing") {
         tracks[trackId].queueing.addReferendum(
           referendumIndex,
-          ongoingReferenda,
+          ongoingReferendum,
         );
       } else {
         tracks[trackId][status].push(referendumIndex);
@@ -47,14 +44,14 @@ function groupReferenda(allReferenda) {
 }
 
 export default function useGroupedReferenda() {
-  const { referenda, isLoading } = useOnChainReferendaContext();
+  const { ongoingReferenda, isLoading } = useOnChainOngoingReferenda();
 
   const tracks = useMemo(() => {
     if (isLoading) {
       return [];
     }
-    return groupReferenda(referenda);
-  }, [isLoading, referenda]);
+    return groupReferenda(ongoingReferenda);
+  }, [isLoading, ongoingReferenda]);
 
   return {
     tracks,

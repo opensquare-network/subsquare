@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useOnChainReferendaContext } from "next-common/context/onchainReferenda";
 import {
   eachOngoingReferenda,
-  getOngoingReferendaStatus,
+  getOngoingReferendumStatus,
 } from "next-common/utils/referenda";
 
 function countReferendaByStatus(allReferenda) {
@@ -16,7 +16,7 @@ function countReferendaByStatus(allReferenda) {
 
   for (const [, ongoingReferenda] of eachOngoingReferenda(allReferenda)) {
     counts.active++;
-    const status = getOngoingReferendaStatus(ongoingReferenda);
+    const status = getOngoingReferendumStatus(ongoingReferenda);
     if (status) {
       counts[status]++;
     }
