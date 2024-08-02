@@ -56,17 +56,6 @@ export default function useAssetHubOnPolkadot() {
       return [...result, { ...item, balance, transferrable }];
     }, []);
 
-    const knownAssets = knownAssetDefs.reduce((result, def) => {
-      const find = assets.find((asset) => asset.assetId === def.assetId);
-      if (find) {
-        return [...result, find];
-      } else {
-        return result;
-      }
-    }, []);
-
-    return knownAssets.filter(
-      (item) => !new BigNumber(item.balance || 0).isZero(),
-    );
+    return assets.filter((item) => !new BigNumber(item.balance || 0).isZero());
   }, [allMetadata, multiAccounts, address]);
 }

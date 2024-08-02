@@ -20,6 +20,8 @@ import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 import { AssetHubOnPolkadotMetadataProvider } from "./hook/useAssetHubOnPolkadotMetadata";
 
+import { AssetHubApiProvider } from "next-common/context/assetHub";
+
 const DisplayUserAvatar = () => {
   const user = useUser();
   return (
@@ -141,6 +143,16 @@ export function AccountHead() {
   );
 }
 
+function AssetHubManagePromptJSX() {
+  return (
+    <AssetHubApiProvider>
+      <AssetHubOnPolkadotMetadataProvider>
+        <AssetHubManagePrompt />
+      </AssetHubOnPolkadotMetadataProvider>
+    </AssetHubApiProvider>
+  );
+}
+
 export function CommonAccountInfoPanel({ hideManageAccountLink }) {
   return (
     <NeutralPanel className="p-6 space-y-4">
@@ -150,9 +162,7 @@ export function CommonAccountInfoPanel({ hideManageAccountLink }) {
       <AccountBalances />
       {!hideManageAccountLink && <ManageAccountButton />}
       <ExtensionUpdatePrompt />
-      <AssetHubOnPolkadotMetadataProvider>
-        <AssetHubManagePrompt />
-      </AssetHubOnPolkadotMetadataProvider>
+      <AssetHubManagePromptJSX />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
