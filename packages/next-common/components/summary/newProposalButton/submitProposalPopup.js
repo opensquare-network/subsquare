@@ -1,73 +1,19 @@
 import { useState } from "react";
 import { NewProposalInnerPopup } from "../newProposalPopup";
 import { usePageProps } from "next-common/context/page";
-import SubmitProposalPopupCommon, { ChoiceButton } from "./common";
+import SubmitProposalPopupCommon from "./common";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
-import { useChainSettings } from "next-common/context/chain";
 import { NewTreasuryReferendumInnerPopup } from "../newProposalQuickStart/createTreasuryProposalPopup";
 import { NewUSDxTreasuryReferendumInnerPopup } from "../newProposalQuickStart/createUSDxTreasuryProposalPopup";
 import { NewRemarkReferendumInnerPopup } from "../newProposalQuickStart/createSystemRemarkProposalPopup";
-
-function useLocalTreasuryButton() {
-  const [showCreateLocalTreasuryProposal, setShowCreateLocalTreasuryProposal] =
-    useState(false);
-
-  const localTreasuryButton = (
-    <ChoiceButton
-      key="treasury-local"
-      name="Treasury proposal local"
-      description="Creating a treasury spend of native token that is locally available"
-      onClick={() => setShowCreateLocalTreasuryProposal(true)}
-    />
-  );
-
-  return {
-    localTreasuryButton,
-    showCreateLocalTreasuryProposal,
-  };
-}
-
-function useUSDxTreasuryButton() {
-  const [showCreateUSDxTreasuryProposal, setShowCreateUSDxTreasuryProposal] =
-    useState(false);
-  const {
-    treasuryProposalTracks,
-    newProposalQuickStart: { usdxTreasuryProposal } = {},
-  } = useChainSettings();
-
-  const usdxTreasuryButton = treasuryProposalTracks && usdxTreasuryProposal && (
-    <ChoiceButton
-      key="treasury-usdx"
-      name="USDx treasury proposal"
-      description="Creating a treasury spend with assets on AssetHub"
-      onClick={() => setShowCreateUSDxTreasuryProposal(true)}
-    />
-  );
-
-  return {
-    usdxTreasuryButton,
-    showCreateUSDxTreasuryProposal,
-  };
-}
-
-function useRemarkButton() {
-  const [showNewRemarkPopup, setShowNewRemarkPopup] = useState(false);
-
-  const remarkButton = (
-    <ChoiceButton
-      key="remark"
-      name="Remark"
-      description="Creating a remark proposal"
-      onClick={() => setShowNewRemarkPopup(true)}
-    />
-  );
-
-  return {
-    remarkButton,
-    showNewRemarkPopup,
-  };
-}
+import { CancelReferendumInnerPopup } from "../newProposalQuickStart/cancelReferendumInnerPopup";
+import {
+  useCancelReferendumButton,
+  useLocalTreasuryButton,
+  useRemarkButton,
+  useUSDxTreasuryButton,
+} from "next-common/components/preImages/createPreimagePopup/templateButtons";
 
 function SubmitProposalInnerPopup({ onClose }) {
   const { period } = usePageProps();
@@ -79,6 +25,8 @@ function SubmitProposalInnerPopup({ onClose }) {
   const { showCreateUSDxTreasuryProposal, usdxTreasuryButton } =
     useUSDxTreasuryButton(false);
   const { showNewRemarkPopup, remarkButton } = useRemarkButton();
+  const { showCancelReferendumPopup, cancelReferendumButton } =
+    useCancelReferendumButton();
 
   if (showCreateLocalTreasuryProposal) {
     return <NewTreasuryReferendumInnerPopup onClose={onClose} />;
@@ -90,6 +38,10 @@ function SubmitProposalInnerPopup({ onClose }) {
 
   if (showNewRemarkPopup) {
     return <NewRemarkReferendumInnerPopup onClose={onClose} />;
+  }
+
+  if (showCancelReferendumPopup) {
+    return <CancelReferendumInnerPopup onClose={onClose} />;
   }
 
   return (
@@ -105,9 +57,10 @@ function SubmitProposalInnerPopup({ onClose }) {
       }
     >
       <QuickStart>
-        {[localTreasuryButton, usdxTreasuryButton, remarkButton].filter(
-          Boolean,
-        )}
+        {localTreasuryButton}
+        {usdxTreasuryButton}
+        {remarkButton}
+        {cancelReferendumButton}
       </QuickStart>
     </SubmitProposalPopupCommon>
   );
