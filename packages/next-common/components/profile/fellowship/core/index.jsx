@@ -5,8 +5,11 @@ import ProfileFellowshipMemberInfo from "../memberInfo";
 import ProfileFellowshipModuleTabs from "../moduleTabs";
 import ProfileFellowshipCoreEvidence from "./evidence";
 import ProfileFellowshipCoreTimeline from "./timeline";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 export default function ProfileFellowshipCore() {
+  const { section } = useCollectivesContext();
+
   const tabs = [
     {
       label: "Timeline",
@@ -23,8 +26,7 @@ export default function ProfileFellowshipCore() {
 
   return (
     <div className="space-y-6">
-      <ProfileFellowshipMemberInfo />
-      <ProfileFellowshipMemberInfo section="ambassador" />
+      <ProfileFellowshipMemberInfo section={section} />
 
       <div className="space-y-4">
         <ProfileFellowshipModuleTabs />

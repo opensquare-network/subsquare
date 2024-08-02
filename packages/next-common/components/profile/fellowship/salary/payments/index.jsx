@@ -2,7 +2,10 @@ import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import { usePageProps } from "next-common/context/page";
 import nextApi from "next-common/services/nextApi";
-import { fellowshipSalaryPaymentsApi } from "next-common/services/url";
+import {
+  ambassadorSalaryPaymentsApi,
+  fellowshipSalaryPaymentsApi,
+} from "next-common/services/url";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useRouter } from "next/router";
 import { useAsync } from "react-use";
@@ -13,18 +16,27 @@ import { useProfileFellowshipSalaryPaymentPaidColumn } from "./columns/paid";
 import { useProfileFellowshipSalaryPaymentRankColumn } from "./columns/rank";
 import { useProfileFellowshipSalaryPaymentTimeAgeColumn } from "./columns/timeAge";
 import { useState } from "react";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 export default function ProfileFellowshipSalaryPayments({ setPaymentsCount }) {
   const { id: address } = usePageProps();
   const router = useRouter();
   const [page, setPage] = useState(parseInt(router.query.page || 1));
 
+  let paymentsApi;
+  const { section } = useCollectivesContext();
+  if (section === "fellowship") {
+    paymentsApi = fellowshipSalaryPaymentsApi;
+  } else if (section === "ambassador") {
+    paymentsApi = ambassadorSalaryPaymentsApi;
+  }
+
   const cycleColumn = useProfileFellowshipSalaryPaymentCycleColumn();
   const rankColumn = useProfileFellowshipSalaryPaymentRankColumn();
   const beneficiaryColumn =
     useProfileFellowshipSalaryPaymentBeneficiaryColumn();
   const timeAgeColumn = useProfileFellowshipSalaryPaymentTimeAgeColumn();
-  const isRegisteredColumn =
+  const registrationColumn =
     useProfileFellowshipSalaryPaymentRegistrationColumn();
   const paidColumn = useProfileFellowshipSalaryPaymentPaidColumn();
 
@@ -33,12 +45,16 @@ export default function ProfileFellowshipSalaryPayments({ setPaymentsCount }) {
     rankColumn,
     beneficiaryColumn,
     timeAgeColumn,
-    isRegisteredColumn,
+    registrationColumn,
     paidColumn,
   ];
 
   const { value, loading } = useAsync(async () => {
-    const resp = await nextApi.fetch(fellowshipSalaryPaymentsApi, {
+    if (!paymentsApi) {
+      return;
+    }
+
+    const resp = await nextApi.fetch(paymentsApi, {
       who: address,
       page,
       pageSize: defaultPageSize,
@@ -47,7 +63,7 @@ export default function ProfileFellowshipSalaryPayments({ setPaymentsCount }) {
     setPaymentsCount(resp?.result?.total);
 
     return resp?.result;
-  }, [address, page]);
+  }, [address, page, paymentsApi]);
 
   const rows = value?.items?.map?.((item, idx) => {
     return columns.map((col) => {

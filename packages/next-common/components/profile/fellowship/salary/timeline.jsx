@@ -2,9 +2,13 @@ import { SystemLoading } from "@osn/icons/subsquare";
 import { FellowshipFeedItems } from "next-common/components/fellowship/feeds/list";
 import { createFellowshipSalaryFeedsRows } from "next-common/components/fellowship/salary/feeds/list";
 import Pagination from "next-common/components/pagination";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import nextApi from "next-common/services/nextApi";
-import { fellowshipSalaryFeedsApi } from "next-common/services/url";
+import {
+  ambassadorSalaryFeedsApi,
+  fellowshipSalaryFeedsApi,
+} from "next-common/services/url";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -15,15 +19,27 @@ export default function ProfileFellowshipSalaryTimeline() {
   const router = useRouter();
   const [page, setPage] = useState(parseInt(router.query.page || 1));
 
+  let feedsApi;
+  const { section } = useCollectivesContext();
+  if (section === "fellowship") {
+    feedsApi = fellowshipSalaryFeedsApi;
+  } else if (section === "ambassador") {
+    feedsApi = ambassadorSalaryFeedsApi;
+  }
+
   const { value = {}, loading } = useAsync(async () => {
-    const resp = await nextApi.fetch(fellowshipSalaryFeedsApi, {
+    if (!feedsApi) {
+      return;
+    }
+
+    const resp = await nextApi.fetch(feedsApi, {
       who: address,
       page,
       pageSize: defaultPageSize,
     });
 
     return resp?.result;
-  }, [page, address]);
+  }, [page, address, feedsApi]);
 
   const rows = createFellowshipSalaryFeedsRows(value?.items);
 

@@ -4,9 +4,11 @@ import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import Link from "next/link";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 export default function FellowshipRegisteredFeed({ who, amount, index }) {
   const { symbol, decimals } = useSalaryAsset();
+  const { section } = useCollectivesContext();
 
   return (
     <>
@@ -14,7 +16,7 @@ export default function FellowshipRegisteredFeed({ who, amount, index }) {
       <span>
         <FellowshipFeedEventLabel>registered</FellowshipFeedEventLabel> in{" "}
         <Link
-          href={`/fellowship/salary/cycles/${index}`}
+          href={`/${section}/salary/cycles/${index}`}
           className="text-textPrimary hover:underline"
         >
           cycle #{index}

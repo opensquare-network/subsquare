@@ -1,4 +1,5 @@
 import TabsList from "next-common/components/tabsList";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import { cn } from "next-common/utils";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
@@ -14,12 +15,13 @@ const Label = tw.button`
 export default function ProfileFellowshipModuleTabs() {
   const { id } = usePageProps();
   const pathname = usePathname();
+  const { section } = useCollectivesContext();
 
   const maybeEvmAddress = tryConvertToEvmAddress(id);
 
   const urls = {
-    core: `/user/${maybeEvmAddress}/fellowship`,
-    salary: `/user/${maybeEvmAddress}/fellowship/salary`,
+    core: `/user/${maybeEvmAddress}/${section}`,
+    salary: `/user/${maybeEvmAddress}/${section}/salary`,
   };
 
   const tabs = [
