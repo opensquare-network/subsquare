@@ -40,7 +40,7 @@ export default function useAssetHubOnPolkadot() {
   const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey);
 
   return useMemo(() => {
-    if (!allMetadata || !multiAccounts) {
+    if (!allMetadata || !multiAccounts || !address) {
       return null;
     }
 
@@ -68,5 +68,5 @@ export default function useAssetHubOnPolkadot() {
     return knownAssets.filter(
       (item) => !new BigNumber(item.balance || 0).isZero(),
     );
-  }, [allMetadata, multiAccounts]);
+  }, [allMetadata, multiAccounts, address]);
 }
