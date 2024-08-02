@@ -18,7 +18,7 @@ import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
-import { AssetHubOnPolkadotMetadataProvider } from "./hook/useAssetHubOnPolkadotMetadata";
+import { AssetHubOnPolkadotMetadataProvider } from "./context/assetHubOnPolkadotMetadataContext";
 
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 

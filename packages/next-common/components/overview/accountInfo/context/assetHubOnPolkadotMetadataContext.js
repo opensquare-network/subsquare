@@ -1,4 +1,4 @@
-import useQueryAssetHubOnPolkadotMetadata from "../context/queryAssetHubOnPolkadotMetadata";
+import useQueryAssetHubOnPolkadotMetadata from "../hook/useQueryAssetHubOnPolkadotMetadata";
 
 const { createContext, useContext } = require("react");
 
