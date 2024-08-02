@@ -2,20 +2,20 @@ import useQueryAssetHubOnPolkadotMetadata from "../context/queryAssetHubOnPolkad
 
 const { createContext, useContext } = require("react");
 
-const AssetMetadataContext = createContext();
+const AssetHubOnPolkadotMetadataContext = createContext();
 
-export default AssetMetadataContext;
+export default AssetHubOnPolkadotMetadataContext;
 
 export function AssetHubOnPolkadotMetadataProvider({ children }) {
   const allMetadata = useQueryAssetHubOnPolkadotMetadata();
 
   return (
-    <AssetMetadataContext.Provider value={allMetadata}>
+    <AssetHubOnPolkadotMetadataContext.Provider value={allMetadata}>
       {children}
-    </AssetMetadataContext.Provider>
+    </AssetHubOnPolkadotMetadataContext.Provider>
   );
 }
 
 export function useAssetHubOnPolkadotMetadata() {
-  return useContext(AssetMetadataContext);
+  return useContext(AssetHubOnPolkadotMetadataContext);
 }

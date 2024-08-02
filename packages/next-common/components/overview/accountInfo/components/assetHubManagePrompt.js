@@ -18,13 +18,18 @@ export default function AssetHubManagePrompt() {
       return null;
     }
 
+    const assetsAmount = assets.length;
+    let manageContent = `them`;
+    if (assetsAmount === 1) {
+      manageContent = `it`;
+    }
+
     return (
       <Prompt
         cacheKey={CACHE_KEY.assetHubPromptVisible}
         type={PromptTypes.NEUTRAL}
       >
-        You have other {assets && assets.length} assets on AssetHub,
-        manage&nbsp;
+        You have {assetsAmount} assets on AssetHub. Manage {manageContent}&nbsp;
         <Link
           className="underline"
           href={"https://polkadot-assethub.subsquare.io/"}
