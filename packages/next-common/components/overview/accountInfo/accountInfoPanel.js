@@ -17,6 +17,7 @@ import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
+import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -145,12 +146,10 @@ export function CommonAccountInfoPanel({ hideManageAccountLink }) {
       <ProxyTip />
       <AccountHead />
       <Divider />
-
       <AccountBalances />
-
       {!hideManageAccountLink && <ManageAccountButton />}
-
       <ExtensionUpdatePrompt />
+      <AssetHubManagePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );

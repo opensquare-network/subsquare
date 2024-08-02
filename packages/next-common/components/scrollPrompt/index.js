@@ -9,6 +9,7 @@ export const PromptTypes = {
   WARNING: "warning",
   ERROR: "error",
   SUCCESS: "success",
+  NEUTRAL: "neutral",
 };
 
 export const colorStyle = {
@@ -27,6 +28,10 @@ export const colorStyle = {
   [PromptTypes.SUCCESS]: {
     backgroundColor: "var(--green100)",
     color: "var(--green500)",
+  },
+  [PromptTypes.NEUTRAL]: {
+    backgroundColor: "var(--gray100)",
+    color: "var(--gray500)",
   },
 };
 

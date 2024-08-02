@@ -1,10 +1,11 @@
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import { useAllAssetMetadata } from "./context/assetMetadata";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
 
 const PolkadotAssetHubNativeToken = {
   symbol: "DOT",
@@ -12,32 +13,6 @@ const PolkadotAssetHubNativeToken = {
   decimals: 10,
   type: "native",
 };
-
-function useSubscribeMultiAssetAccounts(multiAccountKey) {
-  const api = useContextApi();
-  const [multiAccounts, setMultiAccounts] = useState();
-
-  useEffect(() => {
-    if (!api || !multiAccountKey) {
-      return;
-    }
-
-    let unsubFunc;
-    api.query.assets.account
-      .multi(multiAccountKey, (data) => {
-        setMultiAccounts(data);
-      })
-      .then((result) => (unsubFunc = result));
-
-    return () => {
-      if (unsubFunc) {
-        unsubFunc();
-      }
-    };
-  }, [api, multiAccountKey]);
-
-  return multiAccounts;
-}
 
 function useSubscribeNativeBalance(address) {
   const [balanceObj, setBalanceObj] = useState();
@@ -59,12 +34,13 @@ function useSubscribeNativeBalance(address) {
 
 export default function useMyAssets() {
   const address = useRealAddress();
+  const api = useContextApi();
   const allMetadata = useAllAssetMetadata();
   const multiAccountKey = useMemo(
     () => allMetadata?.map((item) => [item.assetId, address]),
     [allMetadata, address],
   );
-  const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey);
+  const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey, api);
   const nativeBalanceObj = useSubscribeNativeBalance(address);
   const knownAssetDefs = useKnownAssetHubAssets();
 
