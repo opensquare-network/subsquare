@@ -5,6 +5,7 @@ import Gov2SummaryFooter from "next-common/components/summary/gov2SummaryFooter"
 import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useChainSettings } from "next-common/context/chain";
+import { ThemedTag } from "next-common/components/tags/state/styled";
 
 function HeadContent() {
   return (
@@ -32,6 +33,11 @@ export default function ReferendaLayout({ summaryData, ...props }) {
       description="All active and history referenda of various tracks."
       tabs={[
         { label: "Referenda", url: "/referenda" },
+        {
+          label: "Tracks",
+          labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
+          url: "/referenda/tracks",
+        },
         user?.address && { label: "My Votes", url: "/referenda/votes" },
         { label: "Statistics", url: "/referenda/statistics" },
         modules.whales && {
