@@ -18,6 +18,7 @@ import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
+import { AssetHubOnPolkadotMetadataProvider } from "./hook/useAssetHubOnPolkadotMetadata";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -149,7 +150,9 @@ export function CommonAccountInfoPanel({ hideManageAccountLink }) {
       <AccountBalances />
       {!hideManageAccountLink && <ManageAccountButton />}
       <ExtensionUpdatePrompt />
-      <AssetHubManagePrompt />
+      <AssetHubOnPolkadotMetadataProvider>
+        <AssetHubManagePrompt />
+      </AssetHubOnPolkadotMetadataProvider>
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );

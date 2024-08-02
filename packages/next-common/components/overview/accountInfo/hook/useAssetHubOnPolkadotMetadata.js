@@ -6,7 +6,7 @@ const AssetMetadataContext = createContext();
 
 export default AssetMetadataContext;
 
-export function AssetMetadataProvider({ children }) {
+export function AssetHubOnPolkadotMetadataProvider({ children }) {
   const allMetadata = useQueryAssetHubOnPolkadotMetadata();
 
   return (

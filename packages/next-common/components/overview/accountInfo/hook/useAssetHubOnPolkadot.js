@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
-import { useAssetHubOnPolkadotMetadata } from "../hook/useAssetHubOnPolkadotMetadata";
+import { useAssetHubOnPolkadotMetadata } from "./useAssetHubOnPolkadotMetadata";
 import { useAssetHubApi } from "next-common/context/assetHub";
 
 function useSubscribeMultiAssetAccounts(multiAccountKey) {
