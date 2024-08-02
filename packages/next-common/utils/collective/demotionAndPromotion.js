@@ -1,11 +1,11 @@
 export function getDemotionPeriod(rank, params) {
-  return rank <= 0 ? params.offboardTimeout : params.demotionPeriod[rank - 1];
+  return rank <= 0 ? params.offboardTimeout : params.demotionPeriod?.[rank - 1];
 }
 
 export function getPromotionPeriod(rank, params) {
   const toRank = rank + 1;
   const index = toRank > 0 ? toRank - 1 : 0;
-  return params.minPromotionPeriod[index];
+  return params.minPromotionPeriod?.[index];
 }
 
 export function getGoneBlocksPercentage(goneBlocks, totalBlocks) {
