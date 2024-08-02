@@ -42,8 +42,7 @@ export function useDemotionPeriod({ rank, lastProof, params }) {
   }, [rank, lastProof, params, latestHeight]);
 }
 
-function _getProgressBarColor(remainingBlocks, demotionPeriod) {
-  const blockTime = useSelector(blockTimeSelector);
+function _getProgressBarColor(remainingBlocks, blockTime, demotionPeriod) {
   const halfPeriod = demotionPeriod / 2;
   const remainingTime = new BigNumber(blockTime).multipliedBy(remainingBlocks);
   if (remainingBlocks >= halfPeriod) {
@@ -62,12 +61,15 @@ export default function CoreFellowshipMemberDemotionPeriod({
 }) {
   const { percentageValue, remainingBlocks, demotionPeriod } =
     useDemotionPeriod({ rank, lastProof, params });
+  const blockTime = useSelector(blockTimeSelector);
 
   if (isNil(demotionPeriod)) {
     return null;
   }
 
-  const fgColor = _getProgressBarColor(remainingBlocks, demotionPeriod);
+  const fgColor = useMemo(() => {
+    return _getProgressBarColor(remainingBlocks, remainingBlocks, demotionPeriod);
+  }, [blockTime, remainingBlocks, demotionPeriod]);
 
   return (
     <CoreFellowshipMemberInfoWrapper>
