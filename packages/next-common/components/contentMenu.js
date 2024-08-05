@@ -274,7 +274,7 @@ export function PostContextMenu({ editable, setIsEdit }) {
   const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
   const isAdmin = useIsAdmin();
 
-  const { allowActions: { cancelReferendum, killReferendum } = {} } =
+  const { newProposalQuickStart: { cancelReferendum, killReferendum } = {} } =
     useChainSettings();
 
   const isOpenGovReferendumPost =

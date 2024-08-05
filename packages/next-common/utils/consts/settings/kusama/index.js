@@ -76,7 +76,7 @@ const kusama = {
     mimir: true,
   },
   treasuryProposalTracks: kusamaTreasuryTracks,
-  allowActions: {
+  newProposalQuickStart: {
     cancelReferendum: true,
     killReferendum: true,
   },
