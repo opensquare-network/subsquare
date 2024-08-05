@@ -12,7 +12,9 @@ import {
   useSpendLocalTreasuryButton,
   useNewRemarkButton,
   useSpendUSDxTreasuryButton,
+  useKillReferendumButton,
 } from "./templateButtons";
+import KillReferendumPopup from "./killReferendumPopup";
 
 export function QuickStart({ children }) {
   return (
@@ -33,6 +35,8 @@ function PopupContent() {
   const { showNewRemarkPopup, remarkButton } = useNewRemarkButton();
   const { showCancelReferendumPopup, cancelReferendumButton } =
     useCancelReferendumButton();
+  const { showKillReferendumPopup, killReferendumButton } =
+    useKillReferendumButton();
 
   if (showNewPreimage) {
     return <NewPreimageInnerPopup onClose={onClose} />;
@@ -54,6 +58,10 @@ function PopupContent() {
     return <CancelReferendumPopup onClose={onClose} />;
   }
 
+  if (showKillReferendumPopup) {
+    return <KillReferendumPopup onClose={onClose} />;
+  }
+
   return (
     <MainPopup setShowNewPreimage={setShowNewPreimage} onClose={onClose}>
       <QuickStart>
@@ -61,6 +69,7 @@ function PopupContent() {
         {usdxTreasuryButton}
         {remarkButton}
         {cancelReferendumButton}
+        {killReferendumButton}
       </QuickStart>
     </MainPopup>
   );

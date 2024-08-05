@@ -9,23 +9,23 @@ import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import { listPageCategory } from "next-common/utils/consts/business/category";
 import { useListPageType } from "next-common/context/page";
-import { useCancelReferendumNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/cancelReferendumPopup";
+import { useKillReferendumNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/killReferendumPopup";
 
 // Track ID on polkadot and kusama
-const ReferendumCancellerTrackID = 20;
+const ReferendumKillerTrackID = 21;
 
-export function CancelReferendumInnerPopup() {
+export function KillReferendumInnerPopup() {
   const { onClose } = usePopupParams();
   const { value: referendumIndex, component: referendumIndexField } =
     useReferendumIndexField();
   const { value: trackId, component: trackField } = useTrackField(
-    ReferendumCancellerTrackID,
+    ReferendumKillerTrackID,
   );
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);
 
   const { encodedHash, encodedLength, notePreimageTx } =
-    useCancelReferendumNotePreimageTx(referendumIndex);
+    useKillReferendumNotePreimageTx(referendumIndex);
 
   const listPageType = useListPageType();
 
@@ -38,7 +38,7 @@ export function CancelReferendumInnerPopup() {
 
   return (
     <Popup
-      title="Cancel A Referendum"
+      title="Kill A Referendum"
       className="!w-[640px]"
       onClose={onClose}
       wide

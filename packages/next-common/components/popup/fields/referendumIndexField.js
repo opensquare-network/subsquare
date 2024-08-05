@@ -8,6 +8,7 @@ import { StatusWrapper } from "../styled";
 import Loading from "next-common/components/loading";
 import { WarningMessage } from "next-common/components/setting/styled";
 import { usePageProps } from "next-common/context/page";
+import { SystemWarning } from "@osn/icons/subsquare";
 
 const isValidReferendumIndex = (value) =>
   value !== "" && isInteger(Number(value));
@@ -53,7 +54,8 @@ export default function ReferendumIndexField({
   } else if (fetchError) {
     statusBar = (
       <WarningMessage className="flex justify-center">
-        <div className="flex justify-center grow">
+        <div className="flex items-center justify-center gap-[8px] grow">
+          <SystemWarning width={20} height={20} />
           {"Warning: can't find the referendum"}
         </div>
       </WarningMessage>

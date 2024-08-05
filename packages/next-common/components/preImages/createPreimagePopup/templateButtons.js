@@ -63,8 +63,10 @@ export function useNewRemarkButton() {
 export function useCancelReferendumButton() {
   const [showCancelReferendumPopup, setShowCancelReferendumPopup] =
     useState(false);
+  const { newProposalQuickStart: { cancelReferendum } = {} } =
+    useChainSettings();
 
-  const cancelReferendumButton = (
+  const cancelReferendumButton = cancelReferendum && (
     <ChoiceButton
       name="Cancel a referendum"
       description="Canceling an ongoing referendum and returning the deposit"
@@ -75,5 +77,23 @@ export function useCancelReferendumButton() {
   return {
     cancelReferendumButton,
     showCancelReferendumPopup,
+  };
+}
+
+export function useKillReferendumButton() {
+  const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
+  const { newProposalQuickStart: { killReferendum } = {} } = useChainSettings();
+
+  const killReferendumButton = killReferendum && (
+    <ChoiceButton
+      name="Kill a referendum"
+      description="Killing an ongoing referendum and the submission & decision deposits will be slashed"
+      onClick={() => setShowKillReferendumPopup(true)}
+    />
+  );
+
+  return {
+    killReferendumButton,
+    showKillReferendumPopup,
   };
 }
