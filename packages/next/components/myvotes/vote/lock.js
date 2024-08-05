@@ -41,8 +41,8 @@ function LockCountDown({ lockInfo }) {
     return <LockExpired lockEnd={lockEnd} />;
   }
 
-  const shortText = `Lock expired in ${estimatedBlocksTime}`;
-  const tooltip = `Expired at ${lockEnd}, blocks remaining ${
+  const shortText = `Lock expires in ${estimatedBlocksTime}`;
+  const tooltip = `Expires at ${lockEnd}, blocks remaining ${
     lockEnd - blockHeight
   }`;
   return (
