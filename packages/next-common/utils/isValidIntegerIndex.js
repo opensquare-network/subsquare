@@ -5,10 +5,10 @@ export function isValidIntegerIndex(value) {
     return false;
   }
   const numberValue = Number(value);
-  if (numberValue < 0) {
+  if (!isInteger(numberValue)) {
     return false;
   }
-  if (!isInteger(numberValue)) {
+  if (numberValue < 0) {
     return false;
   }
   return true;

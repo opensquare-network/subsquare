@@ -1,8 +1,13 @@
 import ReferendumIndexField from "next-common/components/popup/fields/referendumIndexField";
 import { useState } from "react";
 
-export default function useReferendumIndexField({ title } = {}) {
-  const [referendumIndex, setReferendumIndex] = useState("");
+export default function useReferendumIndexField({
+  title,
+  defaultReferendumIndex = "",
+} = {}) {
+  const [referendumIndex, setReferendumIndex] = useState(
+    defaultReferendumIndex,
+  );
 
   return {
     value: referendumIndex,

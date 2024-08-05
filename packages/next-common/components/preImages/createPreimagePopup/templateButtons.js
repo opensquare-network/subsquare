@@ -63,8 +63,7 @@ export function useNewRemarkButton() {
 export function useCancelReferendumButton() {
   const [showCancelReferendumPopup, setShowCancelReferendumPopup] =
     useState(false);
-  const { newProposalQuickStart: { cancelReferendum } = {} } =
-    useChainSettings();
+  const { allowActions: { cancelReferendum } = {} } = useChainSettings();
 
   const cancelReferendumButton = cancelReferendum && (
     <ChoiceButton
@@ -82,7 +81,7 @@ export function useCancelReferendumButton() {
 
 export function useKillReferendumButton() {
   const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
-  const { newProposalQuickStart: { killReferendum } = {} } = useChainSettings();
+  const { allowActions: { killReferendum } = {} } = useChainSettings();
 
   const killReferendumButton = killReferendum && (
     <ChoiceButton

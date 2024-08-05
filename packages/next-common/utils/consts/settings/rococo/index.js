@@ -68,7 +68,7 @@ const rococo = {
     mimir: true,
   },
   treasuryProposalTracks: rococoTreasuryTracks,
-  newProposalQuickStart: {
+  allowActions: {
     cancelReferendum: true,
     killReferendum: true,
   },

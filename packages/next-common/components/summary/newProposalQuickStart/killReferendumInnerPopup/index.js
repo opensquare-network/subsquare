@@ -10,14 +10,17 @@ import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import { listPageCategory } from "next-common/utils/consts/business/category";
 import { useListPageType } from "next-common/context/page";
 import { useKillReferendumNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/killReferendumPopup";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 
 // Track ID on polkadot and kusama
 const ReferendumKillerTrackID = 21;
 
-export function KillReferendumInnerPopup() {
+export function KillReferendumInnerPopup({
+  referendumIndex: defaultReferendumIndex,
+}) {
   const { onClose } = usePopupParams();
   const { value: referendumIndex, component: referendumIndexField } =
-    useReferendumIndexField();
+    useReferendumIndexField({ defaultReferendumIndex });
   const { value: trackId, component: trackField } = useTrackField(
     ReferendumKillerTrackID,
   );
@@ -60,5 +63,13 @@ export function KillReferendumInnerPopup() {
         />
       </div>
     </Popup>
+  );
+}
+
+export default function KillReferendumPopup({ referendumIndex, onClose }) {
+  return (
+    <SignerPopupWrapper onClose={onClose}>
+      <KillReferendumInnerPopup referendumIndex={referendumIndex} />
+    </SignerPopupWrapper>
   );
 }

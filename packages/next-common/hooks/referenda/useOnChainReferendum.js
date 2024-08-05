@@ -24,9 +24,15 @@ export default function useOnChainReferendum(referendumIndex) {
     }
 
     setIsLoading(true);
+
+    let cancelled = false;
+
     api.query.referenda
       .referendumInfoFor(referendumIndex)
       .then((data) => {
+        if (cancelled) {
+          return;
+        }
         if (data.isNone) {
           setReferendumInfo(null);
         } else {
@@ -35,8 +41,15 @@ export default function useOnChainReferendum(referendumIndex) {
         setIsLoaded(true);
       })
       .finally(() => {
+        if (cancelled) {
+          return;
+        }
         setIsLoading(false);
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [api, referendumIndex]);
 
   return { referendumInfo, isLoading, isLoaded };
