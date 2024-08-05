@@ -10,16 +10,16 @@ export default function useOnChainReferendum(referendumIndex) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (!api) {
-      return;
-    }
-
     setReferendumInfo(null);
     setIsLoading(true);
     setIsLoaded(false);
 
     if (!isValidIntegerIndex(referendumIndex)) {
       setIsLoading(false);
+      return;
+    }
+
+    if (!api) {
       return;
     }
 
