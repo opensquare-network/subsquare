@@ -32,7 +32,7 @@ export default function CancelReferendumPopup({ onClose }) {
 
   return (
     <Popup
-      title="Cancel A Referendum"
+      title="Cancel a referendum"
       className="!w-[640px]"
       onClose={onClose}
       wide

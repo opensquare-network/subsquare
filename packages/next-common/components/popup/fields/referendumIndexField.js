@@ -85,7 +85,18 @@ export default function ReferendumIndexField({
   } else if (isOnchainReferendumLoaded) {
     if (referendumInfo) {
       if (isOngoing) {
-        statusBar = <StatusWrapper>{referendumTitle}</StatusWrapper>;
+        statusBar = (
+          <StatusWrapper>
+            <a
+              className="cursor-pointer hover:underline"
+              target="_blank"
+              href={`/referenda/${value}`}
+              rel="noreferrer"
+            >
+              {referendumTitle}
+            </a>
+          </StatusWrapper>
+        );
       } else {
         statusBar = <WarningStatus text="Warning: not an ongoing referendum" />;
       }

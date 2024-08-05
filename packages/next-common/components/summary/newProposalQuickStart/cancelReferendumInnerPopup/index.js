@@ -41,7 +41,7 @@ export function CancelReferendumInnerPopup({
 
   return (
     <Popup
-      title="Cancel A Referendum"
+      title="Cancel a referendum"
       className="!w-[640px]"
       onClose={onClose}
       wide
