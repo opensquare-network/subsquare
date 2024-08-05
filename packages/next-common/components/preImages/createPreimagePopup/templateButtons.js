@@ -10,7 +10,7 @@ export function useSpendLocalTreasuryButton() {
   const localTreasuryButton = !!treasuryProposalTracks && (
     <ChoiceButton
       name="Treasury proposal local"
-      description="Creating a treasury spend of native token that is locally available"
+      description="Create a treasury spend of native token that is locally available"
       onClick={() => setShowSpendLocalTreasuryPopup(true)}
     />
   );
@@ -32,7 +32,7 @@ export function useSpendUSDxTreasuryButton() {
   const usdxTreasuryButton = treasuryProposalTracks && usdxTreasuryProposal && (
     <ChoiceButton
       name="USDx treasury proposal"
-      description="Creating a treasury spend with assets on AssetHub"
+      description="Create a treasury spend with assets on AssetHub"
       onClick={() => setShowSpendUSDxTreasuryPopup(true)}
     />
   );
@@ -49,7 +49,7 @@ export function useNewRemarkButton() {
   const remarkButton = (
     <ChoiceButton
       name="Remark"
-      description="Creating a remark proposal"
+      description="Create a remark proposal"
       onClick={() => setShowNewRemarkPopup(true)}
     />
   );
@@ -69,7 +69,7 @@ export function useCancelReferendumButton() {
   const cancelReferendumButton = cancelReferendum && (
     <ChoiceButton
       name="Cancel a referendum"
-      description="Canceling an ongoing referendum and returning the deposit"
+      description="Cancel an ongoing referendum and returning the deposit"
       onClick={() => setShowCancelReferendumPopup(true)}
     />
   );
@@ -87,7 +87,7 @@ export function useKillReferendumButton() {
   const killReferendumButton = killReferendum && (
     <ChoiceButton
       name="Kill a referendum"
-      description="Killing an ongoing referendum and the submission & decision deposits will be slashed"
+      description="Kill an ongoing referendum and the submission & decision deposits will be slashed"
       onClick={() => setShowKillReferendumPopup(true)}
     />
   );
