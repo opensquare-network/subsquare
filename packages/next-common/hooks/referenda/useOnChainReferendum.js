@@ -23,8 +23,6 @@ export default function useOnChainReferendum(referendumIndex) {
       return;
     }
 
-    setIsLoading(true);
-
     let cancelled = false;
 
     api.query.referenda
