@@ -17,20 +17,48 @@ export default function ReferendumIndexField({
   value,
   setValue,
 }) {
-  const { value: referendumDetail, loading } = useAsync(async () => {
+  const { value: fetchReferendumResult, loading } = useAsync(async () => {
     if (!isValidReferendumIndex(value)) {
       return null;
     }
-    const { result, error } = await nextApi.fetch(`gov2/referendums/${value}`);
-    if (error) {
-      return null;
-    }
-    return result;
+    return await nextApi.fetch(`gov2/referendums/${value}`);
   }, [value]);
+
+  const referendumDetail = fetchReferendumResult?.result;
+  const fetchError = fetchReferendumResult?.error;
+
   const { tracks } = usePageProps();
   const referendumTrack = tracks.find(
     (track) => track.id === referendumDetail?.track,
   );
+
+  let statusBar = null;
+  if (loading) {
+    statusBar = (
+      <StatusWrapper>
+        <div className="flex justify-center grow">
+          <Loading />
+        </div>
+      </StatusWrapper>
+    );
+  } else if (referendumDetail) {
+    statusBar = (
+      <StatusWrapper>
+        {referendumDetail.title ||
+          `[${startCase(referendumTrack?.name)}] Referendum #${
+            referendumDetail?.referendumIndex
+          }`}
+      </StatusWrapper>
+    );
+  } else if (fetchError) {
+    statusBar = (
+      <WarningMessage className="flex justify-center">
+        <div className="flex justify-center grow">
+          {"Warning: can't find the referendum"}
+        </div>
+      </WarningMessage>
+    );
+  }
 
   return (
     <div>
@@ -41,29 +69,7 @@ export default function ReferendumIndexField({
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <div className="pt-[8px]">
-        {isValidReferendumIndex(value) &&
-          (loading ? (
-            <StatusWrapper>
-              <div className="flex justify-center grow">
-                <Loading />
-              </div>
-            </StatusWrapper>
-          ) : referendumDetail ? (
-            <StatusWrapper>
-              {referendumDetail.title ||
-                `[${startCase(referendumTrack?.name)}] Referendum #${
-                  referendumDetail?.referendumIndex
-                }`}
-            </StatusWrapper>
-          ) : (
-            <WarningMessage className="flex justify-center">
-              <div className="flex justify-center grow">
-                {"Warning: can't find the referendum"}
-              </div>
-            </WarningMessage>
-          ))}
-      </div>
+      <div className="pt-[8px]">{statusBar}</div>
     </div>
   );
 }

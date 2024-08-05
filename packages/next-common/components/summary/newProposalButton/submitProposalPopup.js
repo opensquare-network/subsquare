@@ -10,9 +10,9 @@ import { NewRemarkReferendumInnerPopup } from "../newProposalQuickStart/createSy
 import { CancelReferendumInnerPopup } from "../newProposalQuickStart/cancelReferendumInnerPopup";
 import {
   useCancelReferendumButton,
-  useLocalTreasuryButton,
-  useRemarkButton,
-  useUSDxTreasuryButton,
+  useSpendLocalTreasuryButton,
+  useNewRemarkButton,
+  useSpendUSDxTreasuryButton,
 } from "next-common/components/preImages/createPreimagePopup/templateButtons";
 
 function SubmitProposalInnerPopup({ onClose }) {
@@ -20,19 +20,19 @@ function SubmitProposalInnerPopup({ onClose }) {
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
 
-  const { showCreateLocalTreasuryProposal, localTreasuryButton } =
-    useLocalTreasuryButton(false);
-  const { showCreateUSDxTreasuryProposal, usdxTreasuryButton } =
-    useUSDxTreasuryButton(false);
-  const { showNewRemarkPopup, remarkButton } = useRemarkButton();
+  const { showSpendLocalTreasuryPopup, localTreasuryButton } =
+    useSpendLocalTreasuryButton(false);
+  const { showSpendUSDxTreasuryPopup, usdxTreasuryButton } =
+    useSpendUSDxTreasuryButton(false);
+  const { showNewRemarkPopup, remarkButton } = useNewRemarkButton();
   const { showCancelReferendumPopup, cancelReferendumButton } =
     useCancelReferendumButton();
 
-  if (showCreateLocalTreasuryProposal) {
+  if (showSpendLocalTreasuryPopup) {
     return <NewTreasuryReferendumInnerPopup onClose={onClose} />;
   }
 
-  if (showCreateUSDxTreasuryProposal) {
+  if (showSpendUSDxTreasuryPopup) {
     return <NewUSDxTreasuryReferendumInnerPopup onClose={onClose} />;
   }
 

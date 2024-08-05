@@ -2,8 +2,8 @@ import { ChoiceButton } from "next-common/components/summary/newProposalButton/c
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
 
-export function useLocalTreasuryButton() {
-  const [showCreateLocalTreasuryProposal, setShowCreateLocalTreasuryProposal] =
+export function useSpendLocalTreasuryButton() {
+  const [showSpendLocalTreasuryPopup, setShowSpendLocalTreasuryPopup] =
     useState(false);
   const { treasuryProposalTracks } = useChainSettings();
 
@@ -11,18 +11,18 @@ export function useLocalTreasuryButton() {
     <ChoiceButton
       name="Treasury proposal local"
       description="Creating a treasury spend of native token that is locally available"
-      onClick={() => setShowCreateLocalTreasuryProposal(true)}
+      onClick={() => setShowSpendLocalTreasuryPopup(true)}
     />
   );
 
   return {
     localTreasuryButton,
-    showCreateLocalTreasuryProposal,
+    showSpendLocalTreasuryPopup,
   };
 }
 
-export function useUSDxTreasuryButton() {
-  const [showCreateUSDxTreasuryProposal, setShowCreateUSDxTreasuryProposal] =
+export function useSpendUSDxTreasuryButton() {
+  const [showSpendUSDxTreasuryPopup, setShowSpendUSDxTreasuryPopup] =
     useState(false);
   const {
     treasuryProposalTracks,
@@ -33,17 +33,17 @@ export function useUSDxTreasuryButton() {
     <ChoiceButton
       name="USDx treasury proposal"
       description="Creating a treasury spend with assets on AssetHub"
-      onClick={() => setShowCreateUSDxTreasuryProposal(true)}
+      onClick={() => setShowSpendUSDxTreasuryPopup(true)}
     />
   );
 
   return {
     usdxTreasuryButton,
-    showCreateUSDxTreasuryProposal,
+    showSpendUSDxTreasuryPopup,
   };
 }
 
-export function useRemarkButton() {
+export function useNewRemarkButton() {
   const [showNewRemarkPopup, setShowNewRemarkPopup] = useState(false);
 
   const remarkButton = (

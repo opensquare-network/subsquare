@@ -9,9 +9,9 @@ import NewRemarkProposalPopup from "./newRemarkProposalPopup";
 import CancelReferendumPopup from "./cancelReferendumPopup";
 import {
   useCancelReferendumButton,
-  useLocalTreasuryButton,
-  useRemarkButton,
-  useUSDxTreasuryButton,
+  useSpendLocalTreasuryButton,
+  useNewRemarkButton,
+  useSpendUSDxTreasuryButton,
 } from "./templateButtons";
 
 export function QuickStart({ children }) {
@@ -26,11 +26,11 @@ export function QuickStart({ children }) {
 function PopupContent() {
   const { onClose } = usePopupParams();
   const [showNewPreimage, setShowNewPreimage] = useState();
-  const { showCreateLocalTreasuryProposal, localTreasuryButton } =
-    useLocalTreasuryButton(false);
-  const { showCreateUSDxTreasuryProposal, usdxTreasuryButton } =
-    useUSDxTreasuryButton(false);
-  const { showNewRemarkPopup, remarkButton } = useRemarkButton();
+  const { showSpendLocalTreasuryPopup, localTreasuryButton } =
+    useSpendLocalTreasuryButton(false);
+  const { showSpendUSDxTreasuryPopup, usdxTreasuryButton } =
+    useSpendUSDxTreasuryButton(false);
+  const { showNewRemarkPopup, remarkButton } = useNewRemarkButton();
   const { showCancelReferendumPopup, cancelReferendumButton } =
     useCancelReferendumButton();
 
@@ -38,11 +38,11 @@ function PopupContent() {
     return <NewPreimageInnerPopup onClose={onClose} />;
   }
 
-  if (showCreateLocalTreasuryProposal) {
+  if (showSpendLocalTreasuryPopup) {
     return <NewLocalTreasuryProposalPopup onClose={onClose} />;
   }
 
-  if (showCreateUSDxTreasuryProposal) {
+  if (showSpendUSDxTreasuryPopup) {
     return <NewUSDxTreasuryProposalPopup onClose={onClose} />;
   }
 
