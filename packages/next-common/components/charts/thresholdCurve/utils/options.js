@@ -89,38 +89,32 @@ function getDetailConfig(labels, commonPluginsConfig, labelFunc) {
   };
 }
 
-function getNanValueShow(value) {
-  if (!value) {
-    return "--";
-  }
+const getNanValueShow = (value) =>
+  !value ? "--" : `${Number(value).toFixed(2)}%`;
 
-  return `${Number(value).toFixed(2)}%`;
+function handleTooltipLabel(tooltipItem, labelType, datasets) {
+  const { parsed, dataIndex } = tooltipItem;
+  const threshold = Number(parsed.y).toFixed(2);
+  const dataset = datasets.find(
+    (dataset) => dataset.label === `Current ${labelType}`,
+  );
+  if (dataset) {
+    return `${labelType}: ${getNanValueShow(
+      (dataset.data || [])[dataIndex],
+    )} / ${threshold}%`;
+  }
+  return null;
 }
 
 export default function useDetailPageOptions(labels = [], datasets) {
   const commonPluginsConfig = useCommonPluginsConfig();
   return getDetailConfig(labels, commonPluginsConfig, function (tooltipItem) {
-    const { dataset, parsed, dataIndex } = tooltipItem;
+    const { dataset } = tooltipItem;
     if (dataset.label === "Approval") {
-      const threshold = Number(parsed.y).toFixed(2);
-      const dataset = datasets.find(
-        (dataset) => dataset.label === "Current Approval",
-      );
-
-      return `Approval: ${getNanValueShow(
-        (dataset.data || [])[dataIndex],
-      )} / ${threshold}%`;
+      return handleTooltipLabel(tooltipItem, "Approval", datasets);
     } else if (dataset.label === "Support") {
-      const threshold = Number(parsed.y).toFixed(2);
-      const dataset = datasets.find(
-        (dataset) => dataset.label === "Current Support",
-      );
-
-      return `Support: ${getNanValueShow(
-        (dataset.data || [])[dataIndex],
-      )} / ${threshold}%`;
+      return handleTooltipLabel(tooltipItem, "Support", datasets);
     }
-
     return null;
   });
 }
