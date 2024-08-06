@@ -89,6 +89,10 @@ const bifrostPolkadot = {
     signet: true,
     mimir: true,
   },
+  newProposalQuickStart: {
+    cancelReferendum: true,
+    killReferendum: true,
+  },
 };
 
 export default bifrostPolkadot;

@@ -13,9 +13,25 @@ import { useRouter } from "next/router";
 import { useReferendaProposalOrigin } from "../../newProposalPopup";
 import { useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
+import Chains from "next-common/utils/consts/chains";
+import { useChain } from "next-common/context/chain";
 
-// Track ID on polkadot and kusama
-const ReferendumKillerTrackID = 21;
+function useReferendumKillerTrackID() {
+  const chain = useChain();
+  switch (chain) {
+    case Chains.polkadot:
+    case Chains.kusama:
+    case Chains.altair:
+      return 21;
+    case Chains.basilisk:
+      return 3;
+    case Chains.bifrost:
+    case Chains.bifrostPolkadot:
+      return 4;
+    default:
+      throw new Error("Unsupported chain");
+  }
+}
 
 export function KillReferendumInnerPopup({
   referendumIndex: defaultReferendumIndex,
@@ -25,8 +41,9 @@ export function KillReferendumInnerPopup({
   const { onClose } = usePopupParams();
   const { value: referendumIndex, component: referendumIndexField } =
     useReferendumIndexField({ defaultReferendumIndex });
+  const referendumKillerTrackId = useReferendumKillerTrackID();
   const { value: trackId, component: trackField } = useTrackField(
-    ReferendumKillerTrackID,
+    referendumKillerTrackId,
   );
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);
