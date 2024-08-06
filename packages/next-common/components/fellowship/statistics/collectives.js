@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import SummaryItem from "next-common/components/summary/layout/item";
@@ -18,11 +19,40 @@ function SummaryPanel() {
   );
 }
 
+function RankTableItem({ rank, count, total }) {
+  const precentage = ((count / total) * 100).toFixed(2);
+  return (
+    <div
+      key={`rank-${rank}`}
+      className="flex items-center justify-between text12Medium"
+    >
+      <div className="flex item-center gap-[8px] grow">
+        <div className="p-[2px] w-[10px] h-[10px] rounded-[2px] bg-[#D5D9E2]" />
+        <span className="text-textSecondary">Rank {rank}</span>
+        <span className="text-textTertiary">{count}</span>
+      </div>
+      <span className="text-textTertiary">{precentage}%</span>
+    </div>
+  );
+}
+
 function RankTable() {
-  // const { membersSummary: { rankDistribution } = {} } = usePageProps();
+  const { membersSummary: { totalMembersCount, rankDistribution } = {} } =
+    usePageProps();
+  if (isNil(totalMembersCount) && totalMembersCount === 0) {
+    return null;
+  }
+
   return (
     <div>
-      <div></div>
+      {Object.keys(rankDistribution).map((rank) => (
+        <RankTableItem
+          key={`rank-${rank}`}
+          rank={rank}
+          count={rankDistribution[rank]}
+          total={totalMembersCount}
+        />
+      ))}
     </div>
   );
 }
