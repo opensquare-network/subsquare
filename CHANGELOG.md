@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.2.2
+
+date: 2024-08-06
+
+- [Big] Implement SIMA governance spec for OpenGov referenda and treasury proposal. 
+- [Big] Add referenda tracks visualization page.
+- [Medium] Add referenda templates to cancel/kill a referendum.
+- Collectives
+  - Show fellowship/ambassador member basic info on profile page.
+  - Show fellowship/ambassador member core(management) feeds on profile page.
+  - Show fellowship/ambassador member salary payments and feeds on profile page.
+  - Handle collective member case when demotion period is 0.
+  - Improve demotion/promotion progress bar display with different colors.
+- Add user warnings for assethub assets management.
+- Refactor and improve styles.
+
 ### 4.2.1
 
 date: 2024-07-30
