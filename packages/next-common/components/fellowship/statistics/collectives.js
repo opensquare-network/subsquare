@@ -20,7 +20,7 @@ function SummaryPanel() {
 }
 
 function RankTableItem({ rank, count, total }) {
-  const precentage = ((count / total) * 100).toFixed(2);
+  const percentage = ((count / total) * 100).toFixed(2);
   return (
     <div
       key={`rank-${rank}`}
@@ -31,7 +31,7 @@ function RankTableItem({ rank, count, total }) {
         <span className="text-textSecondary">Rank {rank}</span>
         <span className="text-textTertiary">{count}</span>
       </div>
-      <span className="text-textTertiary">{precentage}%</span>
+      <span className="text-textTertiary">{percentage}%</span>
     </div>
   );
 }
