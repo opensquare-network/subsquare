@@ -5,6 +5,7 @@ import { usePost } from "../context/post";
 import { detailPageCategory } from "../utils/consts/business/category";
 import { OptionItem, OptionWrapper } from "./internalDropdown/styled";
 import {
+  SystemCancel,
   SystemCopied,
   SystemCopy,
   SystemEdit,
@@ -23,6 +24,9 @@ import { useRouter } from "next/router";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useClickAway } from "react-use";
+import CancelReferendumPopup from "./summary/newProposalQuickStart/cancelReferendumInnerPopup";
+import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumInnerPopup";
+import { useChainSettings } from "next-common/context/chain";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -155,6 +159,44 @@ export function DeleteMenuItem({ setShowDeletePopup, setShow }) {
   );
 }
 
+export function CancelReferendumMenuItem({
+  setShowCancelReferendumPopup,
+  setShow,
+}) {
+  return (
+    <OptionItem
+      onClick={() => {
+        setShowCancelReferendumPopup(true);
+        setShow(false);
+      }}
+    >
+      <div className="mr-2">
+        <SystemCancel />
+      </div>
+      <span>Cancel</span>
+    </OptionItem>
+  );
+}
+
+export function KillReferendumMenuItem({
+  setShowKillReferendumPopup,
+  setShow,
+}) {
+  return (
+    <OptionItem
+      onClick={() => {
+        setShowKillReferendumPopup(true);
+        setShow(false);
+      }}
+    >
+      <div className="mr-2">
+        <SystemTrash />
+      </div>
+      <span>Kill</span>
+    </OptionItem>
+  );
+}
+
 export function CommentContextMenu({ editable, setIsEdit }) {
   const dispatch = useDispatch();
   const comment = useComment();
@@ -227,8 +269,16 @@ export function PostContextMenu({ editable, setIsEdit }) {
   const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
   const [showReportPopup, setShowReportPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [showCancelReferendumPopup, setShowCancelReferendumPopup] =
+    useState(false);
+  const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
   const isAdmin = useIsAdmin();
 
+  const { newProposalQuickStart: { cancelReferendum, killReferendum } = {} } =
+    useChainSettings();
+
+  const isOpenGovReferendumPost =
+    postType === detailPageCategory.GOV2_REFERENDUM;
   const isDiscussionPost = postType === detailPageCategory.POST;
   const isSimaDiscussion = post.sima;
   const canDelete =
@@ -281,6 +331,22 @@ export function PostContextMenu({ editable, setIsEdit }) {
             setShowReportPopup={setShowReportPopup}
             setShow={setShow}
           />
+          {isOpenGovReferendumPost && (
+            <>
+              {cancelReferendum && (
+                <CancelReferendumMenuItem
+                  setShowCancelReferendumPopup={setShowCancelReferendumPopup}
+                  setShow={setShow}
+                />
+              )}
+              {killReferendum && (
+                <KillReferendumMenuItem
+                  setShowKillReferendumPopup={setShowKillReferendumPopup}
+                  setShow={setShow}
+                />
+              )}
+            </>
+          )}
         </OptionWrapper>
       )}
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
@@ -291,6 +357,18 @@ export function PostContextMenu({ editable, setIsEdit }) {
           itemName="post"
           setShow={setShowDeletePopup}
           deletePost={deletePost}
+        />
+      )}
+      {showCancelReferendumPopup && (
+        <CancelReferendumPopup
+          referendumIndex={post?.referendumIndex}
+          onClose={() => setShowCancelReferendumPopup(false)}
+        />
+      )}
+      {showKillReferendumPopup && (
+        <KillReferendumPopup
+          referendumIndex={post?.referendumIndex}
+          onClose={() => setShowKillReferendumPopup(false)}
         />
       )}
     </Wrapper>

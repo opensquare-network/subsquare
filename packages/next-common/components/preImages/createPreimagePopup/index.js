@@ -1,13 +1,20 @@
 import { useState } from "react";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import { ChoiceButton } from "next-common/components/summary/newProposalButton/common";
 import MainPopup from "./mainPopup";
 import { NewPreimageInnerPopup } from "../newPreimagePopup";
 import NewLocalTreasuryProposalPopup from "./newLocalTreasuryProposalPopup";
 import NewUSDxTreasuryProposalPopup from "./newUSDxTreasuryProposalPopup";
 import NewRemarkProposalPopup from "./newRemarkProposalPopup";
-import { useChainSettings } from "next-common/context/chain";
+import CancelReferendumPopup from "./cancelReferendumPopup";
+import {
+  useCancelReferendumButton,
+  useSpendLocalTreasuryButton,
+  useNewRemarkButton,
+  useSpendUSDxTreasuryButton,
+  useKillReferendumButton,
+} from "./templateButtons";
+import KillReferendumPopup from "./killReferendumPopup";
 
 export function QuickStart({ children }) {
   return (
@@ -21,62 +28,49 @@ export function QuickStart({ children }) {
 function PopupContent() {
   const { onClose } = usePopupParams();
   const [showNewPreimage, setShowNewPreimage] = useState();
-  const [showLocalTreasuryTemplate, setShowLocalTreasuryTemplate] = useState();
-  const [showUSDxTreasuryTemplate, setShowUSDxTreasuryTemplate] = useState();
-  const [showRemarkTemplate, setShowRemarkTemplate] = useState();
-
-  const {
-    treasuryProposalTracks,
-    newProposalQuickStart: { usdxTreasuryProposal } = {},
-  } = useChainSettings();
+  const { showSpendLocalTreasuryPopup, localTreasuryButton } =
+    useSpendLocalTreasuryButton(false);
+  const { showSpendUSDxTreasuryPopup, usdxTreasuryButton } =
+    useSpendUSDxTreasuryButton(false);
+  const { showNewRemarkPopup, remarkButton } = useNewRemarkButton();
+  const { showCancelReferendumPopup, cancelReferendumButton } =
+    useCancelReferendumButton();
+  const { showKillReferendumPopup, killReferendumButton } =
+    useKillReferendumButton();
 
   if (showNewPreimage) {
     return <NewPreimageInnerPopup onClose={onClose} />;
   }
 
-  if (showLocalTreasuryTemplate) {
+  if (showSpendLocalTreasuryPopup) {
     return <NewLocalTreasuryProposalPopup onClose={onClose} />;
   }
 
-  if (showUSDxTreasuryTemplate) {
+  if (showSpendUSDxTreasuryPopup) {
     return <NewUSDxTreasuryProposalPopup onClose={onClose} />;
   }
 
-  if (showRemarkTemplate) {
+  if (showNewRemarkPopup) {
     return <NewRemarkProposalPopup onClose={onClose} />;
   }
 
-  const hasTreasurySpend = !!treasuryProposalTracks;
-  const hasSpendUSDx = hasTreasurySpend && !!usdxTreasuryProposal;
+  if (showCancelReferendumPopup) {
+    return <CancelReferendumPopup onClose={onClose} />;
+  }
 
-  const buttons = [
-    hasTreasurySpend && (
-      <ChoiceButton
-        key="spend-local"
-        name="Treasury proposal local"
-        description="Creating a treasury spend of native token that is locally available"
-        onClick={() => setShowLocalTreasuryTemplate(true)}
-      />
-    ),
-    hasSpendUSDx && (
-      <ChoiceButton
-        key="spend-usdx"
-        name="USDx treasury proposal"
-        description="Creating a treasury spend with assets on AssetHub"
-        onClick={() => setShowUSDxTreasuryTemplate(true)}
-      />
-    ),
-    <ChoiceButton
-      key="remark"
-      name="Remark"
-      description="Creating a remark proposal"
-      onClick={() => setShowRemarkTemplate(true)}
-    />,
-  ];
+  if (showKillReferendumPopup) {
+    return <KillReferendumPopup onClose={onClose} />;
+  }
 
   return (
     <MainPopup setShowNewPreimage={setShowNewPreimage} onClose={onClose}>
-      <QuickStart>{buttons}</QuickStart>
+      <QuickStart>
+        {localTreasuryButton}
+        {usdxTreasuryButton}
+        {remarkButton}
+        {cancelReferendumButton}
+        {killReferendumButton}
+      </QuickStart>
     </MainPopup>
   );
 }

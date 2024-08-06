@@ -68,6 +68,10 @@ const rococo = {
     mimir: true,
   },
   treasuryProposalTracks: rococoTreasuryTracks,
+  newProposalQuickStart: {
+    cancelReferendum: true,
+    killReferendum: true,
+  },
   disableWeb2Registration: true,
   sima: true,
 };

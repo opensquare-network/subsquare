@@ -7,6 +7,7 @@ import {
   gov2ReferendumsCommentApi,
   gov2ReferendumsDetailApi,
   gov2ReferendumsVoteStatsApi,
+  gov2TracksApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
@@ -112,6 +113,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const { result: voteStats } = await nextApi.fetch(
     gov2ReferendumsVoteStatsApi(id),
   );
+  const { result: tracksDetail } = await nextApi.fetch(gov2TracksApi);
+
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
@@ -119,6 +122,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       detail,
       voteStats: voteStats ?? {},
       comments: comments ?? EmptyList,
+      tracksDetail: tracksDetail ?? null,
 
       ...tracksProps,
     },

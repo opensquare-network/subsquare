@@ -9,7 +9,7 @@ export default function MainPopup({ setShowNewPreimage, onClose, children }) {
         <ChoiceButton
           icon={<NewPreimageSVG />}
           name="New preimage"
-          description="Creating a new preimage"
+          description="Create a new preimage"
           onClick={() => setShowNewPreimage(true)}
         />
       </div>

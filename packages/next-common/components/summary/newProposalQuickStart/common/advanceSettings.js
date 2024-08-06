@@ -13,7 +13,7 @@ export default function AdvanceSettings({ children }) {
           {showAdvanced ? "Cancel" : "Settings"}
         </span>
       </div>
-      {showAdvanced && children}
+      <div className={showAdvanced ? "space-y-4" : "hidden"}>{children}</div>
     </>
   );
 }
