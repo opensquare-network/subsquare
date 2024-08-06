@@ -45,6 +45,10 @@ const westend = {
   modules: {
     referenda: true,
   },
+  newProposalQuickStart: {
+    cancelReferendum: true,
+    killReferendum: true,
+  },
   disableWeb2Registration: true,
   sima: true,
 };
