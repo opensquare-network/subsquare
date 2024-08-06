@@ -13,24 +13,12 @@ import { useRouter } from "next/router";
 import { useReferendaProposalOrigin } from "../../newProposalPopup";
 import { useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
-import Chains from "next-common/utils/consts/chains";
-import { useChain } from "next-common/context/chain";
+import { usePageProps } from "next-common/context/page";
 
 function useReferendumKillerTrackID() {
-  const chain = useChain();
-  switch (chain) {
-    case Chains.polkadot:
-    case Chains.kusama:
-    case Chains.altair:
-      return 21;
-    case Chains.basilisk:
-      return 3;
-    case Chains.bifrost:
-    case Chains.bifrostPolkadot:
-      return 4;
-    default:
-      throw new Error("Unsupported chain");
-  }
+  const { tracks } = usePageProps();
+  const track = tracks.find((item) => item.name === "referendum_killer");
+  return track?.id;
 }
 
 export function KillReferendumInnerPopup({
