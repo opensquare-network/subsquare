@@ -6,11 +6,13 @@ import useTrackField from "../common/useTrackField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import AdvanceSettings from "../common/advanceSettings";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
-import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
-import { listPageCategory } from "next-common/utils/consts/business/category";
-import { useListPageType } from "next-common/context/page";
-import { useKillReferendumNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/killReferendumPopup";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { getEventData } from "next-common/utils/sendTx";
+import { useRouter } from "next/router";
+import { useReferendaProposalOrigin } from "../../newProposalPopup";
+import { useCallback } from "react";
+import { useContextApi } from "next-common/context/api";
 
 // Track ID on polkadot and kusama
 const ReferendumKillerTrackID = 21;
@@ -18,6 +20,8 @@ const ReferendumKillerTrackID = 21;
 export function KillReferendumInnerPopup({
   referendumIndex: defaultReferendumIndex,
 }) {
+  const api = useContextApi();
+  const router = useRouter();
   const { onClose } = usePopupParams();
   const { value: referendumIndex, component: referendumIndexField } =
     useReferendumIndexField({ defaultReferendumIndex });
@@ -27,17 +31,20 @@ export function KillReferendumInnerPopup({
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);
 
-  const { encodedHash, encodedLength, notePreimageTx } =
-    useKillReferendumNotePreimageTx(referendumIndex);
+  const proposalOrigin = useReferendaProposalOrigin(trackId);
 
-  const listPageType = useListPageType();
+  const getTxFunc = useCallback(async () => {
+    if (!api) {
+      return;
+    }
 
-  let pallet = "referenda";
-  if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
-    pallet = "fellowshipReferenda";
-  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
-    pallet = "ambassadorReferenda";
-  }
+    const proposal = api.tx.referenda.cancel(referendumIndex);
+    return api.tx.referenda.submit(
+      proposalOrigin,
+      { Inline: proposal.method.toHex() },
+      enactment,
+    );
+  }, [api, referendumIndex, enactment]);
 
   return (
     <Popup
@@ -51,15 +58,20 @@ export function KillReferendumInnerPopup({
       {trackField}
       <AdvanceSettings>
         {enactmentField}
-        <SubmissionDeposit pallet={pallet} />
+        <SubmissionDeposit />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <CreateProposalSubmitButton
-          trackId={trackId}
-          enactment={enactment}
-          encodedHash={encodedHash}
-          encodedLength={encodedLength}
-          notePreimageTx={notePreimageTx}
+        <TxSubmissionButton
+          getTxFunc={getTxFunc}
+          onClose={onClose}
+          onInBlock={(events) => {
+            const eventData = getEventData(events, "referenda", "Submitted");
+            if (!eventData) {
+              return;
+            }
+            const [referendumIndex] = eventData;
+            router.push(`/referenda/${referendumIndex}`);
+          }}
         />
       </div>
     </Popup>

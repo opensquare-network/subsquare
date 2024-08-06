@@ -5,13 +5,11 @@ import { getEventData } from "next-common/utils/sendTx";
 import { useDispatch } from "react-redux";
 import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
-import { upperFirstCamelCase } from "next-common/utils";
-import { useProposalOrigin } from "../../newProposalPopup";
+import { useReferendaProposalOrigin } from "../../newProposalPopup";
 import { useRouter } from "next/router";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
-import useTrackDetail from "../../newProposalPopup/useTrackDetail";
 import { usePopupOnClose } from "next-common/context/popup";
 import { useListPageType } from "next-common/context/page";
 import { listPageCategory } from "next-common/utils/consts/business/category";
@@ -36,8 +34,7 @@ export default function CreateProposalSubmitButton({
   const router = useRouter();
   const dispatch = useDispatch();
   const api = useContextApi();
-  const track = useTrackDetail(trackId);
-  const proposalOrigin = useProposalOrigin(trackId);
+  const proposalOrigin = useReferendaProposalOrigin(trackId);
 
   const preimages = useCombinedPreimageHashes();
   const preimageExists = useMemo(() => {
@@ -52,19 +49,8 @@ export default function CreateProposalSubmitButton({
       return;
     }
 
-    let proposalOriginValue = proposalOrigin;
-
-    // When proposal origin is not defined in track detail, we use the track name as origin
-    if (!proposalOriginValue) {
-      if (track?.name === "root") {
-        proposalOriginValue = { system: "Root" };
-      } else {
-        proposalOriginValue = { Origins: upperFirstCamelCase(track?.name) };
-      }
-    }
-
     return api.tx[pallet].submit(
-      proposalOriginValue,
+      proposalOrigin,
       {
         Lookup: {
           hash: encodedHash,

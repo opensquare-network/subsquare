@@ -24,6 +24,18 @@ export function useProposalOrigin(trackId) {
   return origins;
 }
 
+export function useReferendaProposalOrigin(trackId) {
+  const track = useTrackDetail(trackId);
+  const origins = useProposalOrigin();
+  if (origins) {
+    return origins;
+  }
+  if (track?.name === "root") {
+    return { system: "Root" };
+  }
+  return { Origins: upperFirstCamelCase(track?.name) };
+}
+
 export function NewProposalInnerPopup({
   track: _track,
   preimageHash: _preimageHash,
@@ -34,7 +46,7 @@ export function NewProposalInnerPopup({
   const router = useRouter();
 
   const [trackId, setTrackId] = useState(_track?.id);
-  const proposalOrigin = useProposalOrigin(trackId);
+  const proposalOrigin = useReferendaProposalOrigin(trackId);
 
   const [enactment, setEnactment] = useState();
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
@@ -61,19 +73,8 @@ export function NewProposalInnerPopup({
       return;
     }
 
-    let proposalOriginValue = proposalOrigin;
-
-    // When proposal origin is not defined in track detail, we use the track name as origin
-    if (!proposalOriginValue) {
-      if (track?.name === "root") {
-        proposalOriginValue = { system: "Root" };
-      } else {
-        proposalOriginValue = { Origins: upperFirstCamelCase(track?.name) };
-      }
-    }
-
     return api.tx.referenda.submit(
-      proposalOriginValue,
+      proposalOrigin,
       {
         Lookup: {
           hash: preimageHash,
