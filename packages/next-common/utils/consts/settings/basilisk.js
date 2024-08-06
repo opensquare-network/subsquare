@@ -88,7 +88,6 @@ const basilisk = {
     navigationTextTertiary: "var(--textTertiaryContrast)",
     navigationIcon: "var(--textSecondaryContrast)",
   },
-
   cssVarsDark: {
     theme100: "rgba(63,227,154,0.10)",
     theme300: "rgba(63,227,154,0.40)",
@@ -96,6 +95,10 @@ const basilisk = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "rgba(39,42,58,1)",
+  },
+  newProposalQuickStart: {
+    cancelReferendum: true,
+    killReferendum: true,
   },
 };
 

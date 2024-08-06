@@ -13,9 +13,16 @@ import { useReferendaProposalOrigin } from "../../newProposalPopup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { getEventData } from "next-common/utils/sendTx";
 import { useRouter } from "next/router";
+import { usePageProps } from "next-common/context/page";
 
-// Track ID on polkadot and kusama
-const ReferendumCancellerTrackID = 20;
+function useReferendumCancellerTrackID() {
+  const { tracks } = usePageProps();
+  const track = tracks.find((item) => item.name === "referendum_canceller");
+  if (!track) {
+    throw new Error("Referendum canceller track not found");
+  }
+  return track.id;
+}
 
 export function CancelReferendumInnerPopup({
   referendumIndex: defaultReferendumIndex,
@@ -25,8 +32,9 @@ export function CancelReferendumInnerPopup({
   const { onClose } = usePopupParams();
   const { value: referendumIndex, component: referendumIndexField } =
     useReferendumIndexField({ defaultReferendumIndex });
+  const referendumCancellerTrackId = useReferendumCancellerTrackID();
   const { value: trackId, component: trackField } = useTrackField(
-    ReferendumCancellerTrackID,
+    referendumCancellerTrackId,
   );
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);

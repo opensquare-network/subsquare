@@ -13,9 +13,16 @@ import { useRouter } from "next/router";
 import { useReferendaProposalOrigin } from "../../newProposalPopup";
 import { useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
+import { usePageProps } from "next-common/context/page";
 
-// Track ID on polkadot and kusama
-const ReferendumKillerTrackID = 21;
+function useReferendumKillerTrackID() {
+  const { tracks } = usePageProps();
+  const track = tracks.find((item) => item.name === "referendum_killer");
+  if (!track) {
+    throw new Error("Referendum killer track not found");
+  }
+  return track.id;
+}
 
 export function KillReferendumInnerPopup({
   referendumIndex: defaultReferendumIndex,
@@ -25,8 +32,9 @@ export function KillReferendumInnerPopup({
   const { onClose } = usePopupParams();
   const { value: referendumIndex, component: referendumIndexField } =
     useReferendumIndexField({ defaultReferendumIndex });
+  const referendumKillerTrackId = useReferendumKillerTrackID();
   const { value: trackId, component: trackField } = useTrackField(
-    ReferendumKillerTrackID,
+    referendumKillerTrackId,
   );
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);

@@ -87,6 +87,10 @@ const altair = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  newProposalQuickStart: {
+    cancelReferendum: true,
+    killReferendum: true,
+  },
 };
 
 export default altair;
