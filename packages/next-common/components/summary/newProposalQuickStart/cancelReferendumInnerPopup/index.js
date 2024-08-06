@@ -18,7 +18,10 @@ import { usePageProps } from "next-common/context/page";
 function useReferendumCancellerTrackID() {
   const { tracks } = usePageProps();
   const track = tracks.find((item) => item.name === "referendum_canceller");
-  return track?.id;
+  if (!track) {
+    throw new Error("Referendum canceller track not found");
+  }
+  return track.id;
 }
 
 export function CancelReferendumInnerPopup({
