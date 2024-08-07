@@ -33,25 +33,32 @@ export default function DoughnutChart() {
   const { membersSummary: { totalMembersCount, rankDistribution } = {} } =
     usePageProps();
 
-  const datasets = Object.keys(rankDistribution).map((rank) => {
+  const rankData = Object.keys(rankDistribution).map((rank) => {
     const count = rankDistribution[rank];
     const name = `Rank ${rank}`;
-    const percentage = ((count / totalMembersCount) * 100).toFixed(2);
+    const percentage = `${((count / totalMembersCount) * 100).toFixed(2)}%`;
     const rankColor = getRankColor(parseInt(rank));
     return {
-      label: "Members Count",
       name,
-      data: count,
+      count,
       percentage,
-      backgroundColor: rankColor,
-      borderColor: rankColor,
-      borderWidth: 0,
+      rankColor,
     };
   });
 
   const data = {
-    labels: datasets.map((item) => item.name),
-    datasets,
+    labels: rankData.map((item) => item.name),
+    datasets: [
+      {
+        label: "Members Count",
+        data: rankData.map((item) => item.count),
+        backgroundColor: rankData.map((item) => item.rankColor),
+        borderColor: rankData.map((item) => item.rankColor),
+        borderWidth: 0,
+        name: rankData.map((item) => item.name),
+        percentage: rankData.map((item) => item.percentage),
+      },
+    ],
   };
 
   return (
