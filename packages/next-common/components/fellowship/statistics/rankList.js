@@ -31,7 +31,7 @@ export default function RankList() {
   }
 
   return (
-    <div className="flex flex-col gap-[8px] min-w-[260px]">
+    <div className="flex flex-col gap-[8px] min-w-[260px] max-sm:grow">
       {Object.keys(rankDistribution).map((rank) => (
         <RankListItem
           key={`rank-${rank}`}

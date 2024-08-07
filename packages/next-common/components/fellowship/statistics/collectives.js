@@ -7,12 +7,15 @@ import DoughnutChart from "./doughnut";
 import RankList from "./rankList";
 
 function SummaryPanel() {
-  const { membersSummary: { totalMembersCount = 0 } = {} } = usePageProps();
+  const { membersSummary: { totalMembersCount = 0, rankDistribution } = {} } =
+    usePageProps();
+  const candidatesCount = rankDistribution[0];
+
   return (
     <SecondaryCard>
       <SummaryLayout>
         <SummaryItem title="Total Members">{totalMembersCount}</SummaryItem>
-        <SummaryItem title="Candidates">{0}</SummaryItem>
+        <SummaryItem title="Candidates">{candidatesCount}</SummaryItem>
         <SummaryItem title="Total Active Salary">{0}</SummaryItem>
         <SummaryItem title="Total Passive Salary">{0}</SummaryItem>
       </SummaryLayout>
@@ -22,8 +25,9 @@ function SummaryPanel() {
 
 function RankDistributionPanel() {
   return (
-    <SecondaryCard>
-      <div className="flex flex-wrap gap-6">
+    <SecondaryCard className="sm:w-1/2">
+      <div className="text14Bold text-textPrimary">Rank Distribution</div>
+      <div className="flex flex-wrap gap-6 mt-[24px]">
         <RankList />
         <DoughnutChart />
       </div>
