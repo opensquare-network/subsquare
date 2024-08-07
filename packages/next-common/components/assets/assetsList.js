@@ -12,35 +12,7 @@ import BalanceDisplay from "./balanceDisplay";
 import { isNil } from "lodash-es";
 import Tooltip from "../tooltip";
 
-const AssetTransferPopup = dynamicClientOnly(() =>
-  import("./transferPopup").then((module) => module.AssetTransferPopup),
-);
-
-function TransferButton({ asset }) {
-  const [showPopup, setShowPopup] = useState(false);
-
-  let popup = null;
-  if (asset.type !== "native") {
-    popup = (
-      <AssetTransferPopup asset={asset} onClose={() => setShowPopup(false)} />
-    );
-  }
-
-  return (
-    <>
-      <Tooltip content="Transfer">
-        <ListButton
-          onClick={() => {
-            setShowPopup(true);
-          }}
-        >
-          <SystemTransfer width={16} height={16} />
-        </ListButton>
-      </Tooltip>
-      {showPopup && popup}
-    </>
-  );
-}
+import { TransferButton, CrossChainButton } from "./assetOperation";
 
 export function TokenSymbol({ type, assetId, symbol }) {
   const NativeAssetIcon = useNativeTokenIcon();
@@ -139,7 +111,10 @@ export const colTransfer = {
     item.type === "native" ? (
       <span className="text14Medium text-textTertiary">-</span>
     ) : (
-      <TransferButton asset={item} />
+      <>
+        <CrossChainButton asset={item} />
+        <TransferButton asset={item} />
+      </>
     ),
 };
 
