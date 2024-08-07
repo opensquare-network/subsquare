@@ -20,7 +20,7 @@ export function useSupportThresholdDatasetConfig(data = []) {
     label: "Support",
     data,
     borderColor: purple500,
-    ...valueCommon,
+    ...thresholdCommon,
   };
 }
 
@@ -30,7 +30,7 @@ export function useApprovalThresholdDatasetConfig(data) {
     label: "Approval",
     data,
     borderColor: green500,
-    ...valueCommon,
+    ...thresholdCommon,
   };
 }
 
@@ -40,7 +40,7 @@ export function useSupportValueDatasetConfig(data = []) {
     label: "Current Support",
     data: [...(data || [])],
     borderColor: purple500,
-    ...thresholdCommon,
+    ...valueCommon,
   };
 }
 
@@ -50,6 +50,6 @@ export function useApprovalValueDatasetConfig(data = []) {
     label: "Current Approval",
     data: [...(data || [])],
     borderColor: green500,
-    ...thresholdCommon,
+    ...valueCommon,
   };
 }
