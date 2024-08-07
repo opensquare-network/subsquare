@@ -65,7 +65,7 @@ const litentry = {
   name: capitalize(Chains.litentry),
   identity: Chains.polkadot,
   symbol: "LIT",
-  decimals: 12,
+  decimals: 18,
   blockTime: 12000,
   hasElections: false,
   ss58Format: 31,

@@ -49,7 +49,7 @@ const litmus = {
   name: capitalize(Chains.litmus),
   identity: Chains.kusama,
   symbol: "LIT",
-  decimals: 12,
+  decimals: 18,
   blockTime: 12000,
   hasElections: false,
   ss58Format: 131,
