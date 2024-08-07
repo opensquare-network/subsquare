@@ -1,18 +1,14 @@
-import React, { useState } from "react";
-import { AssetIconPlaceholder, SystemTransfer } from "@osn/icons/subsquare";
+import React from "react";
+import { AssetIconPlaceholder } from "@osn/icons/subsquare";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
 import BigNumber from "bignumber.js";
-import ListButton from "next-common/components/styled/listButton";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import useKnownAssetHubAssetIcon, {
   useNativeTokenIcon,
 } from "next-common/components/assets/known";
 import BalanceDisplay from "./balanceDisplay";
 import { isNil } from "lodash-es";
-import Tooltip from "../tooltip";
-
-import { TransferButton, CrossChainButton } from "./assetOperation";
+import AssetOperation from "./assetOperation";
 
 export function TokenSymbol({ type, assetId, symbol }) {
   const NativeAssetIcon = useNativeTokenIcon();
@@ -106,16 +102,8 @@ export const colTransferrable = {
 
 export const colTransfer = {
   name: "",
-  style: { textAlign: "right", width: "80px", minWidth: "80px" },
-  render: (item) =>
-    item.type === "native" ? (
-      <span className="text14Medium text-textTertiary">-</span>
-    ) : (
-      <>
-        <CrossChainButton asset={item} />
-        <TransferButton asset={item} />
-      </>
-    ),
+  style: { textAlign: "right", width: "120px", minWidth: "120px" },
+  render: (item) => <AssetOperation asset={item} />,
 };
 
 const columnsDef = [
