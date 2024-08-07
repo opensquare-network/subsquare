@@ -1,21 +1,36 @@
 import styled, { css } from "styled-components";
 import tw from "tailwind-styled-components";
 
-export const OptionsWrapper = tw.div`
+const CommonOptionWrapper = tw.div`
   z-[999999]
   absolute
-  -left-px
-  right-0
   top-[calc(100%+4px)]
   bg-neutral100
   shadow-200
   rounded
   py-2
   px-0
-  w-[calc(100%+2px)]
   text-textPrimary
   dark:border
   dark:border-neutral300
+`;
+
+export const OptionsWrapper = tw(CommonOptionWrapper)`
+  -left-px
+  right-0
+  w-[calc(100%+2px)]
+`;
+
+export const OptionsPadLeftWrapper = tw(CommonOptionWrapper)`
+  -left-px
+  min-w-[calc(100%+2px)]
+  whitespace-nowrap
+`;
+
+export const OptionsPadRightWrapper = tw(CommonOptionWrapper)`
+  right-0
+  min-w-[calc(100%+2px)]
+  whitespace-nowrap
 `;
 
 export const OptionWrapper = styled.div`
