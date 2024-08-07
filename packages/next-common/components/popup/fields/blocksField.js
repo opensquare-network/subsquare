@@ -8,7 +8,7 @@ export default function BlocksField({ title = "Blocks", value, setValue }) {
       <Input
         value={value}
         placeholder="0"
-        symbol="Blocks"
+        symbol="Block Height"
         onChange={(e) => setValue(e.target.value)}
       />
     </div>
