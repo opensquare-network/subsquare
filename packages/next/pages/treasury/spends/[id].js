@@ -23,6 +23,7 @@ import { SimaProposalArticleActionsProvider } from "next-common/sima/components/
 import { SimaProposalCommentActionsProvider } from "next-common/sima/components/common/context/commentActionsProvider";
 import { useChainSettings } from "next-common/context/chain";
 import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
+import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 
 const TreasurySpendMetadata = dynamicClientOnly(() =>
   import("next-common/components/detail/treasury/spend/metadata"),
@@ -82,6 +83,8 @@ function ProposalContentWithNullGuard() {
   const { id } = usePageProps();
   const detail = usePost();
   const { sima } = useChainSettings();
+
+  useSubscribePostDetail(detail?.index);
 
   if (!detail) {
     return (

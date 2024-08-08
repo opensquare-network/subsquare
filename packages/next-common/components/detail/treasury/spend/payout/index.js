@@ -1,12 +1,12 @@
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import Meta from "next-common/components/detail/treasury/spend/payout/meta";
-import TreasurySpendPayOut from "next-common/components/detail/treasury/spend/payout/pay";
+import TreasurySpendPay from "next-common/components/detail/treasury/spend/payout/pay";
 
 export default function TreasurySpendPayout() {
   return (
     <RightBarWrapper>
       <Meta />
-      <TreasurySpendPayOut />
+      <TreasurySpendPay />
     </RightBarWrapper>
   );
 }

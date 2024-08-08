@@ -22,7 +22,11 @@ function Content() {
   return (
     <>
       {component}
-      <TxSubmissionButton getTxFunc={getTxFunc} onClose={onClose} title="Pay" />
+      <TxSubmissionButton
+        title="Pay"
+        getTxFunc={getTxFunc}
+        onClose={onClose}
+      />
     </>
   );
 }
