@@ -15,7 +15,8 @@ const getDate = (row) => {
 const getTitle = (row) => {
   const { wish, rank } = row;
   const adposition = wish === "Retention" ? "at" : "to";
-  return `${wish} ${adposition} Rank ${rank}`;
+  const realRankValue = wish === "Promotion" ? rank + 1 : rank;
+  return `${wish} ${adposition} Rank ${realRankValue}`;
 };
 
 const SubSquareLinks = ({ referenda }) => {
