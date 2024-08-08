@@ -17,15 +17,15 @@ const options = [
     value: All,
   },
   {
-    label: "Demotion expires in 20 days",
+    label: "Demotion closing",
     value: DemotionPeriodAboutToExpire,
   },
   {
-    label: "Demotion period expired",
+    label: "Can be demoted",
     value: DemotionPeriodExpired,
   },
   {
-    label: "Promotable",
+    label: "Can be promoted",
     value: Promotable,
   },
 ].map(({ label, value }) => ({
@@ -40,6 +40,7 @@ function PeriodFilterSelect({ periodFilter, setPeriodFilter }) {
         Period Status
       </span>
       <Select
+        className="w-[170px]"
         optionsPadding="right"
         small
         value={periodFilter}

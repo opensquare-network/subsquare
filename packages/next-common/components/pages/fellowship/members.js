@@ -71,7 +71,7 @@ function useMembersFilter(members) {
   ]);
 
   const component = (
-    <div className="flex items-center gap-[12px]">
+    <div className="flex max-sm:flex-col sm:items-center gap-[12px] max-sm:gap-[8px] ml-[24px]">
       {evidenceOnlySwitch}
       {periodFilterComponent}
       {rankFilterComponent}
@@ -106,7 +106,7 @@ function FellowshipMembersPageInContext() {
       <FellowshipMemberCommon>
         <MemberWarnings className="mb-[24px]" />
 
-        <div className="flex items-center justify-between mb-4 pr-6">
+        <div className="flex max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between mb-4 pr-6">
           <FellowshipMemberTabs
             membersCount={membersCount}
             candidatesCount={candidatesCount}
