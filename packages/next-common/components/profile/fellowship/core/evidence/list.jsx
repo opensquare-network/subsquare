@@ -73,7 +73,7 @@ const EvidenceList = ({ rows }) => {
         )}
       >
         {rows.map((row) => (
-          <EvidenceItem key={row.id} row={row} />
+          <EvidenceItem key={row._id} row={row} />
         ))}
       </div>
     </div>

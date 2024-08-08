@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SystemLoading } from "@osn/icons/subsquare";
 import Pagination from "next-common/components/pagination";
 import { useAsync } from "react-use";
@@ -40,7 +40,12 @@ const ProfileFellowshipCoreEvidence = ({ setEvidenceCount }) => {
   }, [page, address, evidencesApi]);
 
   const rows = value?.items || [];
-  setEvidenceCount(value?.total);
+
+  useEffect(() => {
+    if (value?.total !== undefined) {
+      setEvidenceCount(value?.total);
+    }
+  }, [value?.total, setEvidenceCount]);
 
   return (
     <div>
