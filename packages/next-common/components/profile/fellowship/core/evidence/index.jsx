@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { SystemLoading } from "@osn/icons/subsquare";
-import Pagination from "next-common/components/pagination";
 import { useAsync } from "react-use";
 import nextApi from "next-common/services/nextApi";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
@@ -8,16 +7,19 @@ import {
   ambassadorCoreEvidencesApiUri,
   fellowshipCoreEvidencesApiUri,
 } from "next-common/services/url";
-import { useRouter } from "next/router";
 import EvidenceList from "./list";
 import { usePageProps } from "next-common/context/page";
+import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 
 const DEFAULT_PAGE_SIZE = 24;
 
 const ProfileFellowshipCoreEvidence = ({ setEvidenceCount }) => {
   const { id: address } = usePageProps();
-  const router = useRouter();
-  const [page, setPage] = useState(parseInt(router.query.page || 1));
+  const [total, setTotal] = useState(0);
+  const { page, component: pageComponent } = usePaginationComponent(
+    total,
+    DEFAULT_PAGE_SIZE,
+  );
 
   const { section } = useCollectivesContext();
   const evidencesApi =
@@ -44,6 +46,7 @@ const ProfileFellowshipCoreEvidence = ({ setEvidenceCount }) => {
   useEffect(() => {
     if (value?.total !== undefined) {
       setEvidenceCount(value?.total);
+      setTotal(value?.total);
     }
   }, [value?.total, setEvidenceCount]);
 
@@ -54,15 +57,7 @@ const ProfileFellowshipCoreEvidence = ({ setEvidenceCount }) => {
       ) : (
         <EvidenceList rows={rows} />
       )}
-      <Pagination
-        page={page}
-        pageSize={value?.pageSize}
-        total={value?.total}
-        onPageChange={(_, page) => {
-          setPage(page);
-        }}
-        shallow
-      />
+      {pageComponent}
     </div>
   );
 };
