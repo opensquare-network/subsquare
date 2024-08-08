@@ -46,6 +46,14 @@ function getFellowshipSalaryMenu() {
   };
 }
 
+function getFellowshipStatisticsMenu() {
+  return {
+    value: "fellowship-statistics",
+    name: Names.statistics,
+    pathname: "/fellowship/statistics",
+  };
+}
+
 function getFellowshipReferendaMenu(
   fellowshipTracks = [],
   currentTrackId,
@@ -114,6 +122,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
       },
       getFellowshipCoreMenu(),
       getFellowshipSalaryMenu(),
+      getFellowshipStatisticsMenu(),
       dividerConfig,
       getFellowshipReferendaMenu(
         fellowshipTracks,
