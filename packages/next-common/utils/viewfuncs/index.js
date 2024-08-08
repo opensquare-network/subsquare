@@ -36,15 +36,14 @@ export function toApiType(type) {
   // Treasury
   if (type === detailPageCategory.TREASURY_BOUNTY) {
     return "treasury/bounties";
-  }
-  if (type === detailPageCategory.TREASURY_CHILD_BOUNTY) {
+  } else if (type === detailPageCategory.TREASURY_CHILD_BOUNTY) {
     return "treasury/child-bounties";
-  }
-  if (type === detailPageCategory.TREASURY_PROPOSAL) {
+  } else if (type === detailPageCategory.TREASURY_PROPOSAL) {
     return "treasury/proposals";
-  }
-  if (type === detailPageCategory.TREASURY_TIP) {
+  } else if (type === detailPageCategory.TREASURY_TIP) {
     return "treasury/tips";
+  } else if (type === detailPageCategory.TREASURY_SPEND) {
+    return "treasury/spends";
   }
 
   // Motions
