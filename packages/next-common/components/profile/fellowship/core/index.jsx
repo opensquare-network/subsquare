@@ -9,18 +9,21 @@ import { useCollectivesContext } from "next-common/context/collectives/collectiv
 
 export default function ProfileFellowshipCore() {
   const { section } = useCollectivesContext();
+  const [evidenceCount, setEvidenceCount] = useState();
 
   const tabs = [
     {
       label: "Timeline",
       content: <ProfileFellowshipCoreTimeline />,
     },
-    // TODO: fellowship profile, wait for evidence api ready
-    false && {
+    {
       label: "Evidence",
-      content: <ProfileFellowshipCoreEvidence />,
+      activeCount: evidenceCount,
+      content: (
+        <ProfileFellowshipCoreEvidence setEvidenceCount={setEvidenceCount} />
+      ),
     },
-  ].filter(Boolean);
+  ];
 
   const [activeTabLabel, setActiveTabLabel] = useState(tabs[0].label);
 
