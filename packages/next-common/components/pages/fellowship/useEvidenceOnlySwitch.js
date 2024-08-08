@@ -9,7 +9,9 @@ import { useRouter } from "next/router";
 function EvidenceOnlySwitch({ isOn, setIsOn }) {
   return (
     <div className="flex items-center gap-[8px]">
-      <span className="text-textSecondary text12Medium">Evidence Only</span>
+      <span className="text-textSecondary text12Medium whitespace-nowrap">
+        Evidence Only
+      </span>
       <Toggle size="small" isOn={isOn} onToggle={() => setIsOn(!isOn)} />
     </div>
   );
