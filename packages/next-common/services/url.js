@@ -52,6 +52,7 @@ export const fellowshipReferendumsSummaryApi =
 export const fellowshipParamsApi = "fellowship/params";
 export const fellowshipMembersApiUri = "fellowship/members";
 export const fellowshipCoreFeedsApiUri = "fellowship/core/feeds";
+export const fellowshipCoreEvidencesApiUri = "fellowship/core/evidences";
 
 // fellowship salary
 export const fellowshipSalaryCycleApi = (index) =>
@@ -79,6 +80,7 @@ export const fellowshipSalaryPaymentsApi = "fellowship/salary/payments";
 export const ambassadorParamsApi = "ambassador/params";
 export const ambassadorMembersApiUri = "ambassador/members";
 export const ambassadorCoreFeedsApiUri = "ambassador/core/feeds";
+export const ambassadorCoreEvidencesApiUri = "ambassador/core/evidences";
 export const ambassadorTracksApi = "ambassador/tracks";
 export const ambassadorTracksSummaryApi = "ambassador/tracks/summary";
 export const ambassadorReferendumsApi = "ambassador/referenda";
