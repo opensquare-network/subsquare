@@ -13,23 +13,20 @@ export default function useAllCollectiveMemberEvidence() {
       return;
     }
 
-    api.query[pallet]?.memberEvidence.entries().then(
-      (data) => {
-        const result = data.map(([key, value]) => {
-          const {
-            args: [who],
-          } = key;
-          return {
-            who: who.toJSON(),
-            evidence: value.toHuman(),
-          };
-        });
-        setEvidences(result);
-        setIsLoading(false);
-      },
-      [api, pallet],
-    );
-  }, []);
+    api.query[pallet]?.memberEvidence.entries().then((data) => {
+      const result = data.map(([key, value]) => {
+        const {
+          args: [who],
+        } = key;
+        return {
+          who: who.toJSON(),
+          evidence: value.toHuman(),
+        };
+      });
+      setEvidences(result);
+      setIsLoading(false);
+    });
+  }, [api, pallet]);
 
   return {
     evidences,

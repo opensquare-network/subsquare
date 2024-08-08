@@ -1,7 +1,7 @@
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
-import useAllCollectiveMemberEvidence from "./useAllCollectiveMemberEvidence";
 import { useMemo } from "react";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import { useAllMemberEvidenceContext } from "next-common/components/collectives/core/context/evidenceMemberContext";
 
 function useApproveAndPromoteReferenda() {
   const pallet = useCoreFellowshipPallet();
@@ -43,7 +43,7 @@ function useApproveAndPromoteReferenda() {
 
 export default function useEvidencesCombineReferenda() {
   const { evidences, isLoading: isLoadingEvidences } =
-    useAllCollectiveMemberEvidence();
+    useAllMemberEvidenceContext();
 
   const { referenda, isLoading: isLoadingApproveAndPromoteReferenda } =
     useApproveAndPromoteReferenda();

@@ -4,7 +4,11 @@ import Option from "./option";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { ArrowDown } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import { OptionsWrapper } from "./styled";
+import {
+  OptionsPadLeftWrapper,
+  OptionsPadRightWrapper,
+  OptionsWrapper,
+} from "./styled";
 import Divider from "../styled/layout/divider";
 import { useClickAway } from "react-use";
 
@@ -60,6 +64,7 @@ function Select({
   itemHeight,
   search = false,
   readOnly = false,
+  optionsPadding = "",
 }) {
   const ref = useRef();
   const [searchText, setSearchText] = useState("");
@@ -102,6 +107,13 @@ function Select({
     return item?.displayValue || item?.label || item?.text;
   }, [filteredOptions, value]);
 
+  let DropdownOptionsWrapper = OptionsWrapper;
+  if (optionsPadding === "left") {
+    DropdownOptionsWrapper = OptionsPadLeftWrapper;
+  } else if (optionsPadding === "right") {
+    DropdownOptionsWrapper = OptionsPadRightWrapper;
+  }
+
   return (
     <SelectWrapper
       className={cn(className, readOnly && "pointer-events-none")}
@@ -126,7 +138,7 @@ function Select({
       </SelectInner>
 
       {showOptions && (
-        <OptionsWrapper>
+        <DropdownOptionsWrapper>
           {search && (
             <>
               <SearchInput
@@ -169,7 +181,7 @@ function Select({
               )}
             </div>
           )}
-        </OptionsWrapper>
+        </DropdownOptionsWrapper>
       )}
     </SelectWrapper>
   );

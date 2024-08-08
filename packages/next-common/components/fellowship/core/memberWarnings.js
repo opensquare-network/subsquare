@@ -4,21 +4,20 @@ import { useMemo } from "react";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import BigNumber from "bignumber.js";
-import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
-import { ONE_DAY } from "next-common/utils/constants";
+import {
+  useCollectivesContext,
+  useCoreFellowshipParams,
+} from "next-common/context/collectives/collectives";
 import { useCoreMembersWithRankContext } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
 import {
-  getDemotionPeriod,
-  getPromotionPeriod,
-  getRemainingBlocks,
+  isDemotionAboutToExpire,
+  isPromotable,
 } from "next-common/utils/collective/demotionAndPromotion";
 import dynamic from "next/dynamic";
 import BillBoardPanel from "next-common/components/billBoardPanel";
+import ShallowLink from "next-common/components/shallowLink";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
-
-const days20 = 20 * ONE_DAY;
 
 function useAvailablePromotionCount() {
   const latestHeight = useSelector(chainOrScanHeightSelector);
@@ -32,11 +31,7 @@ function useAvailablePromotionCount() {
         rank,
       } = coreMember;
 
-      const promotionPeriod = getPromotionPeriod(rank, params);
-      const gone = latestHeight - lastPromotion;
-      const remainingBlocks = getRemainingBlocks(gone, promotionPeriod);
-
-      if (promotionPeriod > 0 && remainingBlocks <= 0) {
+      if (isPromotable({ lastPromotion, rank, latestHeight, params })) {
         return result + 1;
       }
 
@@ -62,13 +57,14 @@ function useDemotionExpirationCounts() {
           rank,
         } = coreMember;
 
-        const demotionPeriod = getDemotionPeriod(rank, params);
-        const gone = latestHeight - lastProof;
-        const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);
+        const willExpire = isDemotionAboutToExpire({
+          lastProof,
+          rank,
+          params,
+          blockTime,
+          latestHeight,
+        });
 
-        const willExpire =
-          demotionPeriod > 0 &&
-          new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20); // less than 20 days
         if (!willExpire) {
           return result;
         }
@@ -107,6 +103,7 @@ function useEvidencesStat() {
 }
 
 export default function MemberWarnings({ className }) {
+  const { section } = useCollectivesContext();
   const {
     membersCount,
     candidatesCount,
@@ -127,14 +124,36 @@ export default function MemberWarnings({ className }) {
   }
 
   const promptItems = [
-    totalEvidences > 0 &&
-      `${evidencesToBeHandled} evidences to be handled in total ${totalEvidences} evidences.`,
-    membersCount > 0 &&
-      `${membersCount} members' demotion period is about to reached in under 20 days.`,
+    totalEvidences > 0 && (
+      <>
+        {evidencesToBeHandled} evidences to be handled in total{" "}
+        <ShallowLink href={`/${section}/core?evidence_only=true`}>
+          {totalEvidences} evidences
+        </ShallowLink>
+        .
+      </>
+    ),
+    membersCount > 0 && (
+      <>
+        <ShallowLink
+          href={`/${section}/core?period=demotion_period_about_to_expire`}
+        >
+          {membersCount} members
+        </ShallowLink>
+        {"' demotion period is about to reached in under 20 days."}
+      </>
+    ),
     candidatesCount > 0 &&
       `${candidatesCount} candidates' offboard period is about to reached in under 20 days.`,
-    availablePromotionCount > 0 &&
-      `Promotions are available for ${availablePromotionCount} members.`,
+    availablePromotionCount > 0 && (
+      <>
+        Promotions are available for{" "}
+        <ShallowLink href={`/${section}/core?period=promotable`}>
+          {availablePromotionCount} members
+        </ShallowLink>
+        .
+      </>
+    ),
   ].filter(Boolean);
 
   return (

@@ -1,7 +1,13 @@
 import { useState } from "react";
 import Select from "next-common/components/select";
+import { useRouter } from "next/router";
+import {
+  addRouterQuery,
+  getRouterQuery,
+  removeRouterQuery,
+} from "next-common/utils/router";
 
-export default function useRankFilter(ranks = [], noneLabel = "All") {
+function RankSelect({ ranks, rank, setRank, noneLabel }) {
   const options = (ranks || []).map((rank) => ({
     label: String(rank),
     value: rank,
@@ -12,9 +18,7 @@ export default function useRankFilter(ranks = [], noneLabel = "All") {
     value: null,
   });
 
-  const [rank, setRank] = useState(options[0].value);
-
-  const component = (
+  return (
     <div className="text12Medium text-textPrimary flex items-center gap-x-2">
       <div>Rank</div>
       <Select
@@ -28,9 +32,42 @@ export default function useRankFilter(ranks = [], noneLabel = "All") {
       />
     </div>
   );
+}
+
+export default function useRankFilter(ranks = [], noneLabel = "All") {
+  const [rank, setRank] = useState(null);
 
   return {
     rank,
-    component,
+    component: (
+      <RankSelect
+        ranks={ranks}
+        noneLabel={noneLabel}
+        rank={rank}
+        setRank={setRank}
+      />
+    ),
+  };
+}
+
+export function useRouterRankFilter(ranks = [], noneLabel = "All") {
+  const router = useRouter();
+  const queryRank = getRouterQuery(router, "rank") || null;
+  const rank = queryRank ? parseInt(queryRank) : null;
+
+  return {
+    rank,
+    component: (
+      <RankSelect
+        ranks={ranks}
+        noneLabel={noneLabel}
+        rank={rank}
+        setRank={(rank) => {
+          rank
+            ? addRouterQuery(router, "rank", rank)
+            : removeRouterQuery(router, "rank");
+        }}
+      />
+    ),
   };
 }
