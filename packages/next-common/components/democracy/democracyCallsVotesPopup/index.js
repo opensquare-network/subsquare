@@ -10,7 +10,7 @@ import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import { toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
-import { useOnchainData } from "next-common/context/post";
+import { useOnchainData, usePost } from "next-common/context/post";
 import useDemocracyFetchVoteCalls from "./useDemocracyFetchVoteCalls";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
@@ -124,7 +124,8 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
 }
 
 function VotesList({ items = [], loading }) {
-  const chainSettings = useChainSettings();
+  const post = usePost();
+  const chainSettings = useChainSettings(post.indexer?.blockHeight);
 
   const columns = [
     {
