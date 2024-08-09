@@ -15,35 +15,35 @@ import BigNumber from "bignumber.js";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import BalanceDisplay from "../balanceDisplay";
 import { formatBalance } from "../assetsList";
+import Description from "./description";
+import CrossChain from "./crossChain";
 
-function PopupContent() {
+function PopupContent({ type }) {
   const { asset, onClose } = usePopupParams();
   const api = useContextApi();
   const address = useRealAddress();
   const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
-  const [transferToAddress, setTransferToAddress] = useState("");
-  const [transferAmount, setTransferAmount] = useState("");
+  const [toAddress, setToAddress] = useState("");
+  const [amount, setAmount] = useState("");
 
   const getTxFunc = useCallback(() => {
-    if (!transferToAddress) {
+    if (!toAddress) {
       dispatch(newErrorToast("Please enter the recipient address"));
       return;
     }
 
-    if (transferToAddress === address) {
+    if (toAddress === address) {
       dispatch(newErrorToast("Cannot transfer to self"));
       return;
     }
 
-    if (!transferAmount) {
+    if (!amount) {
       dispatch(newErrorToast("Please enter the amount"));
       return;
     }
 
-    const amount = new BigNumber(transferAmount).times(
-      Math.pow(10, asset.decimals),
-    );
+    const amount = new BigNumber(amount).times(Math.pow(10, asset.decimals));
 
     if (amount.isNaN() || amount.lte(0)) {
       dispatch(newErrorToast("Invalid amount"));
@@ -55,12 +55,8 @@ function PopupContent() {
       return;
     }
 
-    return api.tx.assets.transfer(
-      asset.assetId,
-      transferToAddress,
-      amount.toFixed(),
-    );
-  }, [dispatch, api, asset, address, transferToAddress, transferAmount]);
+    return api.tx.assets.transfer(asset.assetId, toAddress, amount.toFixed());
+  }, [dispatch, api, asset, address, toAddress, amount]);
 
   const balanceStatus = (
     <div className="flex gap-[8px] items-center mb-[8px]">
@@ -74,19 +70,27 @@ function PopupContent() {
   return (
     <>
       <div>
+        <Description type={type} />
+      </div>
+      {type === "crossChain" && (
+        <div>
+          <CrossChain />
+        </div>
+      )}
+      <div>
         <PopupLabel text="Amount" status={balanceStatus} />
         <Input
           type="text"
           placeholder="0.00"
-          value={transferAmount}
-          onChange={(e) => setTransferAmount(e.target.value.replace("。", "."))}
+          value={amount}
+          onChange={(e) => setAmount(e.target.value.replace("。", "."))}
           symbol={asset.symbol}
         />
       </div>
       <AddressComboField
         title="To"
         extensionAccounts={extensionAccounts}
-        setAddress={setTransferToAddress}
+        setAddress={setToAddress}
         placeholder="Please fill the address or select another one..."
       />
       <div className="flex justify-end">
@@ -100,10 +104,16 @@ function PopupContent() {
   );
 }
 
-export function AssetTransferPopup(props) {
+const PopupTitle = (type) => (type === "transfer" ? "Transfer" : "Cross-chain");
+
+export function AssetOperationPopup(props) {
   return (
-    <PopupWithSigner title="Transfer" className="!w-[640px]" {...props}>
-      <PopupContent />
+    <PopupWithSigner
+      title={PopupTitle(props.operationType)}
+      className="!w-[640px]"
+      {...props}
+    >
+      <PopupContent type={props.operationType} />
     </PopupWithSigner>
   );
 }
