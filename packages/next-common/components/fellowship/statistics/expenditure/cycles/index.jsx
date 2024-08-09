@@ -18,7 +18,6 @@ const LoadingContent = (
 );
 
 function BarChartContent({ value = [], loading }) {
-  console.log("::::value:", value);
   return <>{loading ? LoadingContent : <CyclesChart values={value} />}</>;
 }
 
