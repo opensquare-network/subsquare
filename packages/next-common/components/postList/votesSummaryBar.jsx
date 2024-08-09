@@ -33,8 +33,8 @@ const GroupValue = styled(Flex)`
   gap: 4px;
 `;
 
-function TypedValueDisplay({ value, type }) {
-  const chainSettings = useChainSettings();
+function TypedValueDisplay({ value, type, blockHeight }) {
+  const chainSettings = useChainSettings(blockHeight);
   const symbol = chainSettings.symbol;
 
   let valueDisplayProps = {};
@@ -64,12 +64,20 @@ export default function PostListCardVotesSummaryBar({ data, type }) {
         <TooltipContent>
           <GroupTitle>Aye</GroupTitle>
           <GroupValue>
-            <TypedValueDisplay type={type} value={ayes} />
+            <TypedValueDisplay
+              type={type}
+              value={ayes}
+              blockHeight={data.indexer?.blockHeight}
+            />
             <span>({ayesPercent}%)</span>
           </GroupValue>
           <GroupTitle>Nay</GroupTitle>
           <GroupValue>
-            <TypedValueDisplay type={type} value={nays} />
+            <TypedValueDisplay
+              type={type}
+              value={nays}
+              blockHeight={data.indexer?.blockHeight}
+            />
             <span>({naysPercent}%)</span>
           </GroupValue>
         </TooltipContent>

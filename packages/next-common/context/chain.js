@@ -18,9 +18,12 @@ export function useChain() {
   return useContext(ChainContext);
 }
 
-export function useChainSettings() {
+export function useChainSettings(blockHeight) {
   const chain = useChain();
-  return useMemo(() => getChainSettings(chain), [chain]);
+  return useMemo(
+    () => getChainSettings(chain, blockHeight),
+    [chain, blockHeight],
+  );
 }
 
 export function useDecimals() {
