@@ -1,0 +1,34 @@
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import "chart.js/auto";
+import Loading from "next-common/components/loading";
+import CyclesChart from "./cyclesChart";
+
+function BarChartHeader() {
+  return (
+    <div className="flex flex-col gap-[4px]">
+      <div className="flex text16Bold text-textPrimary">Cycles</div>
+    </div>
+  );
+}
+
+const LoadingContent = (
+  <div className="flex justify-center items-center grow w-full">
+    <Loading size={24} />
+  </div>
+);
+
+function BarChartContent({ value = [], loading }) {
+  console.log("::::value:", value);
+  return <>{loading ? LoadingContent : <CyclesChart values={value} />}</>;
+}
+
+export default function StatisticsCycles({ value = [], loading }) {
+  return (
+    <SecondaryCard>
+      <div className="flex flex-col gap-[16px] h-full">
+        <BarChartHeader />
+        <BarChartContent value={value} loading={loading} />
+      </div>
+    </SecondaryCard>
+  );
+}
