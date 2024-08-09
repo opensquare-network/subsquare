@@ -3,6 +3,7 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
+import { litmusBlockHeightSettings } from "./blockHeightSettings/litmus";
 
 const ProjectIconLitmusDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconLitmusDark"),
@@ -94,6 +95,7 @@ const litmus = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  blockHeightSettings: litmusBlockHeightSettings,
 };
 
 export default litmus;
