@@ -76,6 +76,11 @@ export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
 export const fellowshipSalaryFeedsApi = "fellowship/salary/feeds";
 export const fellowshipSalaryPaymentsApi = "fellowship/salary/payments";
 
+export const fellowshipStatisticsCyclesApi =
+  "fellowship/statistics/salary/cycles";
+export const fellowshipStatisticsMembersApi =
+  "fellowship/statistics/salary/members";
+
 // ambassador
 export const ambassadorParamsApi = "ambassador/params";
 export const ambassadorMembersApiUri = "ambassador/members";
