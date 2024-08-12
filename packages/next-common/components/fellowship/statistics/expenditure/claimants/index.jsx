@@ -7,7 +7,7 @@ import { useStatisticsClaimantColumn } from "./columns/claimant";
 import { useStatisticsClaimantsCyclesColumn } from "./columns/cycles";
 import { useStatisticsClaimantsPaidColumn } from "./columns/paid";
 import { useStatisticsClaimantsRankColumn } from "./columns/rank";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useSelector } from "react-redux";
@@ -45,16 +45,12 @@ function StatisticsClaimantsTable() {
   );
   const membersApi = fellowshipStatisticsMembersApi;
 
-  // Using useMemo to ensure columns are stable between renders
-  const columns = useMemo(
-    () => [
-      useStatisticsClaimantsRankColumn(),
-      useStatisticsClaimantColumn(),
-      useStatisticsClaimantsCyclesColumn(),
-      useStatisticsClaimantsPaidColumn(),
-    ],
-    [],
-  );
+  const columns = [
+    useStatisticsClaimantsRankColumn(),
+    useStatisticsClaimantColumn(),
+    useStatisticsClaimantsCyclesColumn(),
+    useStatisticsClaimantsPaidColumn(),
+  ];
   const { value: originalMembers } = useAsync(async () => {
     setTableLoading(true);
     if (!membersApi) {
@@ -70,7 +66,7 @@ function StatisticsClaimantsTable() {
       setTableLoading(false);
       return [];
     }
-  }, [page, membersApi]);
+  }, []);
 
   useEffect(() => {
     if (originalMembers && members) {
@@ -89,7 +85,7 @@ function StatisticsClaimantsTable() {
       );
       setRowData(rows);
     }
-  }, [processedData, page, columns]);
+  }, [processedData, page]);
 
   return (
     <div>
