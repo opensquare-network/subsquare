@@ -6,10 +6,11 @@ import {
 } from "next-common/utils/mixedChainUtil";
 import { useSignMessage as useEVMSignMessage } from "wagmi";
 import { metamask } from "next-common/utils/consts/connect";
-import { useGetInjectedWeb3ExtensionFn } from "next-common/hooks/connect/useInjectedWeb3Extension";
+import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
+import useInjectedWeb3 from "./connect/useInjectedWeb3";
 
 export function useSignMessage() {
-  const getInjectedWeb3Extension = useGetInjectedWeb3ExtensionFn();
+  const { injectedWeb3 } = useInjectedWeb3();
   const { signMessage } = useEVMSignMessage();
 
   return useCallback(
@@ -26,7 +27,7 @@ export function useSignMessage() {
         });
       }
 
-      const extension = getInjectedWeb3Extension(walletName);
+      const extension = findInjectedExtension(walletName, injectedWeb3);
       if (!extension) {
         throw new Error("Wallet not found: " + walletName);
       }
@@ -41,6 +42,6 @@ export function useSignMessage() {
 
       return signature;
     },
-    [signMessage, getInjectedWeb3Extension],
+    [signMessage, injectedWeb3],
   );
 }

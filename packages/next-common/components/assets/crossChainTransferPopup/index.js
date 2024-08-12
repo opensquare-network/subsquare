@@ -19,7 +19,10 @@ import Chains from "next-common/utils/consts/chains";
 import { cn, isSameAddress, toPrecision } from "next-common/utils";
 import { usePolkadotApi } from "next-common/context/polkadotApi";
 import { useChainSettings } from "next-common/context/chain";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import { useMountedState } from "react-use";
 import { sendSubstrateTx } from "next-common/utils/sendSubstrateTx";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -55,7 +58,7 @@ function PopupContent() {
   const api = useContextApi();
 
   const polkadotApi = usePolkadotApi();
-  const setPolkadotApiSigner = useSetSigner(polkadotApi);
+  const setSigner = useSetSigner();
 
   const address = useRealAddress();
   const dispatch = useDispatch();
@@ -152,7 +155,7 @@ function PopupContent() {
     const account = extensionAccounts.find((item) =>
       isSameAddress(item.address, transferFromAddress),
     );
-    setPolkadotApiSigner(account);
+    setSigner(polkadotApi, account);
 
     await sendSubstrateTx({
       api: polkadotApi,
@@ -162,6 +165,9 @@ function PopupContent() {
       signerAddress: transferFromAddress,
       isMounted,
       onClose,
+      onInBlock: () => {
+        dispatch(newSuccessToast("Teleport successful"));
+      },
     });
   }, [
     polkadotApi,
@@ -169,7 +175,7 @@ function PopupContent() {
     extensionAccounts,
     transferFromAddress,
     getTxFunc,
-    setPolkadotApiSigner,
+    setSigner,
   ]);
 
   const balanceStatus = (
