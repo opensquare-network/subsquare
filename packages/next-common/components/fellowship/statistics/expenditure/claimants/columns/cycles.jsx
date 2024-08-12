@@ -1,4 +1,4 @@
-export function useStatisticsClaimantsCycleColumn() {
+export function useStatisticsClaimantsCyclesColumn() {
   return {
     name: "Cycles",
     width: 160,
