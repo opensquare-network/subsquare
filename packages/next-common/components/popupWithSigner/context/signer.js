@@ -16,8 +16,7 @@ export const SignerContext = createContext();
 
 export default SignerContext;
 
-function useSetSigner() {
-  const api = useContextApi();
+export function useSetSigner(api) {
   const { injectedWeb3 } = useInjectedWeb3();
   const getInjectedWeb3Extension = useGetInjectedWeb3ExtensionFn();
 
@@ -54,7 +53,8 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   const user = useUser();
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
-  const setSigner = useSetSigner();
+  const api = useContextApi();
+  const setSigner = useSetSigner(api);
 
   useEffect(() => {
     if (!userAddress) {

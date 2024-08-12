@@ -3,11 +3,11 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import {
   useExtensionAccounts,
   usePopupParams,
+  useSetSigner,
 } from "next-common/components/popupWithSigner/context";
 import { useCallback, useState } from "react";
 import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -16,7 +16,15 @@ import { formatBalance } from "../assetsList";
 import dynamic from "next/dynamic";
 import ChainIcon from "next-common/components/header/chainIcon";
 import Chains from "next-common/utils/consts/chains";
-import { cn } from "next-common/utils";
+import { cn, isSameAddress, toPrecision } from "next-common/utils";
+import { usePolkadotApi } from "next-common/context/polkadotApi";
+import { useChainSettings } from "next-common/context/chain";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useMountedState } from "react-use";
+import { sendSubstrateTx } from "next-common/utils/sendSubstrateTx";
+import PrimaryButton from "next-common/lib/button/primary";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import BigNumber from "bignumber.js";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
@@ -40,18 +48,129 @@ function Chain({ title, chain, name }) {
   );
 }
 
+const AssetHubParaId = 1000;
+
 function PopupContent() {
   const { onClose } = usePopupParams();
   const api = useContextApi();
+
+  const polkadotApi = usePolkadotApi();
+  const setPolkadotApiSigner = useSetSigner(polkadotApi);
+
   const address = useRealAddress();
   const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
+  const [transferFromAddress, setTransferFromAddress] = useState("");
   const [transferToAddress, setTransferToAddress] = useState("");
   const [transferAmount, setTransferAmount] = useState("");
+  const { decimals } = useChainSettings();
 
   const getTxFunc = useCallback(() => {
-    return;
-  }, [dispatch, api, address, transferToAddress, transferAmount]);
+    if (!polkadotApi) {
+      return;
+    }
+
+    if (!transferToAddress) {
+      dispatch(newErrorToast("Please fill the address"));
+      return;
+    }
+
+    if (!transferAmount) {
+      dispatch(newErrorToast("Please fill the amount"));
+      return;
+    }
+
+    const amount = new BigNumber(transferAmount)
+      .times(Math.pow(10, decimals))
+      .toFixed();
+
+    const tx = polkadotApi.tx.xcmPallet.limitedTeleportAssets(
+      {
+        V3: {
+          interior: {
+            X1: {
+              ParaChain: AssetHubParaId,
+            },
+          },
+          parents: 0,
+        },
+      },
+      {
+        V3: {
+          interior: {
+            X1: {
+              AccountId32: {
+                id: api.createType("AccountId32", transferToAddress).toHex(),
+                network: null,
+              },
+            },
+          },
+          parents: 0,
+        },
+      },
+      {
+        V3: [
+          {
+            fun: {
+              Fungible: amount,
+            },
+            id: {
+              Concrete: {
+                interior: "Here",
+                parents: 0,
+              },
+            },
+          },
+        ],
+      },
+      0,
+      { Unlimited: null },
+    );
+
+    return tx;
+  }, [dispatch, polkadotApi, address, transferToAddress, transferAmount]);
+
+  const isMounted = useMountedState();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const doSubmit = useCallback(async () => {
+    if (!api) {
+      dispatch(newErrorToast("Chain network is not connected yet"));
+      return;
+    }
+
+    if (!transferFromAddress) {
+      dispatch(newErrorToast("Signer account is not specified"));
+      return;
+    }
+
+    let tx = await getTxFunc();
+    if (!tx) {
+      return;
+    }
+
+    const account = extensionAccounts.find((item) =>
+      isSameAddress(item.address, transferFromAddress),
+    );
+    setPolkadotApiSigner(account);
+
+    await sendSubstrateTx({
+      api: polkadotApi,
+      tx,
+      dispatch,
+      setLoading: setIsSubmitting,
+      signerAddress: transferFromAddress,
+      isMounted,
+      onClose,
+    });
+  }, [
+    polkadotApi,
+    dispatch,
+    extensionAccounts,
+    transferFromAddress,
+    getTxFunc,
+    setPolkadotApiSigner,
+  ]);
 
   const balanceStatus = (
     <div className="flex gap-[8px] items-center mb-[8px]">
@@ -63,16 +182,12 @@ function PopupContent() {
   return (
     <>
       <div className="flex items-end gap-[12px]">
-        <Chain
-          title="Destination Chain"
-          chain={Chains.polkadot}
-          name="Polkadot"
-        />
+        <Chain title="Source Chain" chain={Chains.polkadot} name="Polkadot" />
         <div className="my-[3px] p-[8px] rounded-[8px] border border-neutral400 bg-neutral100">
           <SystemCrosschain width={24} height={24} />
         </div>
         <Chain
-          title="Source Chain"
+          title="Destination Chain"
           chain={Chains.polkadotAssetHub}
           name="Asset Hub"
         />
@@ -88,21 +203,34 @@ function PopupContent() {
         />
       </div>
       <AddressComboField
+        title="From Address"
+        extensionAccounts={extensionAccounts}
+        setAddress={setTransferFromAddress}
+        placeholder="Please fill the address or select another one..."
+      />
+      <AddressComboField
         title="To Address"
         extensionAccounts={extensionAccounts}
         setAddress={setTransferToAddress}
         placeholder="Please fill the address or select another one..."
       />
-      <div>
-        <PopupLabel text="Existential Deposit" />
-        <Input disabled value="1000" symbol="DOT" />
-      </div>
+      <AdvanceSettings>
+        <div>
+          <PopupLabel text="Existential Deposit" />
+          <Input
+            disabled
+            value={toPrecision(
+              api?.consts.balances?.existentialDeposit || 0,
+              decimals,
+            )}
+            symbol="DOT"
+          />
+        </div>
+      </AdvanceSettings>
       <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          getTxFunc={getTxFunc}
-          onClose={onClose}
-        />
+        <PrimaryButton loading={isSubmitting} onClick={doSubmit}>
+          Submit
+        </PrimaryButton>
       </div>
     </>
   );

@@ -1,6 +1,5 @@
-import getMetadata from "next-common/services/chain/apis/metadata";
+import { getChainApi } from "../getChainApi";
 
-let provider = null;
 let api = null;
 
 export async function getAssetHubApi() {
@@ -13,16 +12,8 @@ export async function getAssetHubApi() {
     return null;
   }
 
-  const WsProvider = (await import("@polkadot/api")).WsProvider;
-  const ApiPromise = (await import("@polkadot/api")).ApiPromise;
-
   const endpoints = wsAssetHubEndpoint.split(";");
-  provider = new WsProvider(endpoints, 1000);
-  const { id, metadata } = await getMetadata(provider);
-  api = await ApiPromise.create({
-    provider,
-    metadata: { [id]: metadata },
-  });
+  api = getChainApi(endpoints);
 
   return api;
 }
