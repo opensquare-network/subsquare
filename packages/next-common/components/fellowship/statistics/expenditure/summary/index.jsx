@@ -18,21 +18,8 @@ function getTotalSpent(data) {
   return new BigNumber(0);
 }
 
-function countCircles(data) {
-  let circles = 0;
-  data.forEach((item) => {
-    const registeredPaid = new BigNumber(item.registeredPaid);
-    const unRegisteredPaid = new BigNumber(item.unRegisteredPaid);
-    const totalPaid = registeredPaid.plus(unRegisteredPaid);
-    if (totalPaid.gt(0)) {
-      circles++;
-    }
-  });
-  return circles;
-}
-
-function SpentCircles({ data }) {
-  return <SummaryItem title="Spent Circles">{countCircles(data)}</SummaryItem>;
+function SpentCycles({ data }) {
+  return <SummaryItem title="Spent Cycles">{data.length}</SummaryItem>;
 }
 
 function TotalSpent({ data }) {
@@ -56,7 +43,7 @@ export default function StatisticsExpenditureSummary({ value = [], loading }) {
     <SecondaryCard>
       <SummaryLayout>
         <TotalSpent data={value} />
-        <SpentCircles data={value} />
+        <SpentCycles data={value} />
       </SummaryLayout>
     </SecondaryCard>
   );
