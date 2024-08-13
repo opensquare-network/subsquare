@@ -3,8 +3,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { toPrecision } from "next-common/utils";
 
-function SalaryValueDisplay(count) {
-  const { decimals, symbol } = useSalaryAsset();
+function SalaryValueDisplay(count, decimals, symbol) {
   return count ? (
     <ValueDisplay value={toPrecision(count, decimals)} symbol={symbol} />
   ) : (
@@ -12,7 +11,15 @@ function SalaryValueDisplay(count) {
   );
 }
 
-function RowItem({ bgColor, label, percentage, count }) {
+function RowItem({
+  bgColor,
+  label,
+  percentage,
+  count,
+  index,
+  decimals,
+  symbol,
+}) {
   return (
     <div className="flex items-center gap-2">
       <span
@@ -21,25 +28,31 @@ function RowItem({ bgColor, label, percentage, count }) {
       />
       <span className="w-[48px] text-textSecondary text12Medium ">{label}</span>
       <span className="text12Medium text-textTertiary">
-        {SalaryValueDisplay(count)}
+        {index === 0
+          ? `0 ${symbol}`
+          : SalaryValueDisplay(count, decimals, symbol)}
       </span>
       <span className="ml-auto text12Medium text-textTertiary">
-        {percentage}
+        {index === 0 ? "0%" : percentage}
       </span>
     </div>
   );
 }
 
 export default function DoughnutChartLabels({ labelDatas }) {
+  const { symbol, decimals } = useSalaryAsset();
   return (
     <div className="flex flex-col gap-2 flex-grow min-w-[220px]">
-      {labelDatas.map((i) => (
+      {labelDatas.map((i, index) => (
         <RowItem
           key={i.label}
           label={i.label}
           bgColor={i.bgColor}
           percentage={i.percent ? `${(i.percent * 100).toFixed(2)}%` : ""}
           count={i.count}
+          index={index}
+          symbol={symbol}
+          decimals={decimals}
         />
       ))}
     </div>
