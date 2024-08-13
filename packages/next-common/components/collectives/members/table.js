@@ -8,6 +8,7 @@ import DataList from "next-common/components/dataList";
 import { isNil } from "lodash-es";
 import collectivesMemberColumns from "next-common/components/collectives/members/columns";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
+import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 
 function AddressCol({ address }) {
   const [navCollapsed] = useNavCollapsed();
@@ -34,17 +35,17 @@ export default function CollectivesMemberTable({
       <AddressCol key={`address-row-${idx}`} address={address} />,
       <ValueDisplay
         key={`active-salary-${idx}`}
-        value={toPrecision(activeSalary[rankToIndex(rank)] || 0, decimals)}
+        value={toPrecision(getRankSalary(activeSalary, rank), decimals)}
         symbol={symbol}
       />,
       <ValueDisplay
         key={`passive-salary-${idx}`}
-        value={toPrecision(passiveSalary[rankToIndex(rank)] || 0, decimals)}
+        value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
         symbol={symbol}
       />,
       <Period
         key={`demotion-period-${idx}`}
-        blocks={demotionPeriod[rank - 1] || offboardTimeout}
+        blocks={demotionPeriod[rankToIndex(rank)] || offboardTimeout}
       />,
       <Period
         key={`min-promotion-period-${idx}`}
