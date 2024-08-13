@@ -10,7 +10,6 @@ import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
 import { useDispatch } from "react-redux";
 import { useContextApi } from "next-common/context/api";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import BalanceDisplay from "../balanceDisplay";
 import { formatBalance } from "../assetsList";
 import dynamic from "next/dynamic";
@@ -30,6 +29,8 @@ import BigNumber from "bignumber.js";
 import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
 import Loading from "next-common/components/loading";
 import { sendSubstrateTx } from "next-common/utils/sendTx";
+import Signer from "next-common/components/popup/fields/signerField";
+import { useUser } from "next-common/context/user";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
@@ -185,10 +186,11 @@ function PopupContent() {
   const polkadotApi = usePolkadotApi();
   const setSigner = useSetSigner();
 
-  const address = useRealAddress();
+  const user = useUser();
+  const address = user?.address;
   const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
-  const [transferFromAddress, setTransferFromAddress] = useState("");
+  const [transferToAddress, setTransferToAddress] = useState("");
   const [transferAmount, setTransferAmount] = useState("");
   const { decimals } = useChainSettings();
 
@@ -208,11 +210,11 @@ function PopupContent() {
 
     const params = getTeleportParams({
       api: polkadotApi,
-      address,
+      transferToAddress,
       amount,
     });
     return polkadotApi.tx.xcmPallet.limitedTeleportAssets(...params);
-  }, [dispatch, polkadotApi, address, transferAmount]);
+  }, [dispatch, polkadotApi, transferToAddress, transferAmount]);
 
   const isMounted = useMountedState();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -223,7 +225,7 @@ function PopupContent() {
       return;
     }
 
-    if (!transferFromAddress) {
+    if (!transferToAddress) {
       dispatch(newErrorToast("Signer account is not specified"));
       return;
     }
@@ -234,7 +236,7 @@ function PopupContent() {
     }
 
     const account = extensionAccounts.find((item) =>
-      isSameAddress(item.address, transferFromAddress),
+      isSameAddress(item.address, address),
     );
     setSigner(polkadotApi, account);
 
@@ -243,36 +245,30 @@ function PopupContent() {
       tx,
       dispatch,
       setLoading: setIsSubmitting,
-      signerAddress: transferFromAddress,
+      signerAddress: address,
       isMounted,
       onClose,
       onInBlock: () => {
         dispatch(newSuccessToast("Transfer successful"));
       },
     });
-  }, [
-    polkadotApi,
-    dispatch,
-    extensionAccounts,
-    transferFromAddress,
-    getTxFunc,
-    setSigner,
-  ]);
+  }, [polkadotApi, dispatch, extensionAccounts, address, getTxFunc, setSigner]);
 
   return (
     <>
+      <Signer title="Origin" />
       <CrossChainDirection />
+      <AddressComboField
+        title="To Address"
+        extensionAccounts={extensionAccounts}
+        setAddress={setTransferToAddress}
+        placeholder="Please fill the address or select another one..."
+      />
       <TransferAmount
         api={polkadotApi}
-        transferFromAddress={transferFromAddress}
+        transferFromAddress={address}
         transferAmount={transferAmount}
         setTransferAmount={setTransferAmount}
-      />
-      <AddressComboField
-        title="From Address"
-        extensionAccounts={extensionAccounts}
-        setAddress={setTransferFromAddress}
-        placeholder="Please fill the address or select another one..."
       />
       <AdvanceSettings>
         <ExistentialDeposit destApi={api} />
