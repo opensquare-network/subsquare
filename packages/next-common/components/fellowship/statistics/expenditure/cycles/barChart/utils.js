@@ -21,7 +21,11 @@ export function useOptions(userOptions) {
     indexAxis: "x",
     responsive: true,
     maintainAspectRatio: false,
+    animation: {
+      duration: 0,
+    },
     interaction: {
+      intersect: false,
       mode: "index",
     },
     plugins: {
@@ -37,9 +41,6 @@ export function useOptions(userOptions) {
     scales: {
       x: {
         stacked: true,
-        border: {
-          display: true,
-        },
         ticks: {
           font: {
             size: 12,
@@ -50,13 +51,20 @@ export function useOptions(userOptions) {
           color: theme.textTertiary,
         },
         grid: {
-          display: false,
+          drawTicks: false,
+          lineWidth: 1,
+          color: theme.neutral300,
+        },
+        border: {
+          dash: [5, 5],
+          color: theme.neutral300,
         },
       },
       y: {
         stacked: true,
         border: {
           display: true,
+          color: theme.neutral300,
         },
         ticks: {
           callback: function (value) {
