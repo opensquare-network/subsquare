@@ -8,9 +8,7 @@ import { useCallback, useState } from "react";
 import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
 import { useDispatch } from "react-redux";
-import { useContextApi } from "next-common/context/api";
 import { isSameAddress, toPrecision } from "next-common/utils";
-import { usePolkadotApi } from "next-common/context/polkadotApi";
 import { useChainSettings } from "next-common/context/chain";
 import {
   newErrorToast,
@@ -25,9 +23,7 @@ import { useUser } from "next-common/context/user";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useCrossChainDirection from "./useCrossChainDirection";
 import useNativeTransferAmount from "./useNativeTransferAmount";
-import Chains from "next-common/utils/consts/chains";
-import teleportFromRelayChainToAssetHub from "./teleportFromRelayChainToAssetHub";
-import teleportFromAssetHubToRelayChain from "./teleportFromAssetHubToRelayChain";
+import useCrossChainApi from "./useCrossChainApi";
 
 function ExistentialDeposit({ destApi }) {
   const { decimals } = useChainSettings();
@@ -48,27 +44,15 @@ function ExistentialDeposit({ destApi }) {
 
 function PopupContent() {
   const { onClose } = usePopupParams();
-  const api = useContextApi();
-  const polkadotApi = usePolkadotApi();
   const {
     sourceChain,
     destinationChain,
     component: crossChainDirection,
   } = useCrossChainDirection();
-
-  let sourceApi = null;
-  if (sourceChain === Chains.polkadot) {
-    sourceApi = polkadotApi;
-  } else if (sourceChain === Chains.polkadotAssetHub) {
-    sourceApi = api;
-  }
-
-  let destApi = null;
-  if (destinationChain === Chains.polkadot) {
-    destApi = polkadotApi;
-  } else if (destinationChain === Chains.polkadotAssetHub) {
-    destApi = api;
-  }
+  const { sourceApi, destinationApi, teleport } = useCrossChainApi({
+    sourceChain,
+    destinationChain,
+  });
 
   const setSigner = useSetSigner();
 
@@ -99,26 +83,8 @@ function PopupContent() {
       return;
     }
 
-    if (
-      sourceChain === Chains.polkadot &&
-      destinationChain === Chains.polkadotAssetHub
-    ) {
-      return teleportFromRelayChainToAssetHub({
-        sourceApi,
-        transferToAddress,
-        amount,
-      });
-    } else if (
-      sourceChain === Chains.polkadotAssetHub &&
-      destinationChain === Chains.polkadot
-    ) {
-      return teleportFromAssetHubToRelayChain({
-        sourceApi,
-        transferToAddress,
-        amount,
-      });
-    }
-  }, [dispatch, sourceApi, transferToAddress, getCheckedTransferAmount]);
+    return teleport(transferToAddress, amount);
+  }, [dispatch, teleport, transferToAddress, getCheckedTransferAmount]);
 
   const isMounted = useMountedState();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -134,7 +100,7 @@ function PopupContent() {
       return;
     }
 
-    const tx = await getTxFunc();
+    const tx = getTxFunc();
     if (!tx) {
       return;
     }
@@ -165,7 +131,7 @@ function PopupContent() {
       {addressComboField}
       {transferAmountField}
       <AdvanceSettings>
-        <ExistentialDeposit destApi={destApi} />
+        <ExistentialDeposit destApi={destinationApi} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <PrimaryButton loading={isSubmitting} onClick={doSubmit}>

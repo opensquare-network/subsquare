@@ -28,13 +28,13 @@ function Chain({ title, chain, name }) {
 }
 
 function getChainName(chain) {
-  let chainName = "";
   if (chain === Chains.polkadot) {
-    chainName = "Polkadot";
+    return "Polkadot";
   } else if (chain === Chains.polkadotAssetHub) {
-    chainName = "Asset Hub";
+    return "Asset Hub";
   }
-  return chainName;
+
+  throw new Error("Unsupported chain");
 }
 
 export default function useCrossChainDirection() {
