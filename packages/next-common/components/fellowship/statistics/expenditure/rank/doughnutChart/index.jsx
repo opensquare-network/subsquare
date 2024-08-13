@@ -13,7 +13,7 @@ import {
   doughnutChartColors as colors,
 } from "next-common/components/fellowship/statistics/expenditure/common.js";
 import DoughnutChartLabels from "./labels";
-// import { useNavCollapsed } from "next-common/context/nav";
+import { useNavCollapsed } from "next-common/context/nav";
 
 function getUniqueRanks(members) {
   const rankSet = new Set();
@@ -60,12 +60,14 @@ const LoadingContent = (
 );
 
 function RankChart({ labelDatas, data }) {
-  // const [navCollapsed] = useNavCollapsed();
+  const [navCollapsed] = useNavCollapsed();
   return (
     <div
       className={cn(
         "flex items-center justify-between gap-6",
-        "max-md:flex-col max-md:items-center",
+        navCollapsed
+          ? "max-md:flex-col max-md:items-center"
+          : "max-[1250px]:flex-col max-[1250px]:items-center",
       )}
     >
       <DoughnutChartLabels labelDatas={labelDatas} />
