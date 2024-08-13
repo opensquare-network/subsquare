@@ -72,7 +72,12 @@ function PopupContent() {
 
   const getTxFunc = useCallback(() => {
     try {
+      if (!transferToAddress) {
+        throw new Error("Transfer to address is not specified");
+      }
+
       const amount = getCheckedTransferAmount();
+
       return getTeleportTx(transferToAddress, amount);
     } catch (e) {
       dispatch(newErrorToast(e.message));
