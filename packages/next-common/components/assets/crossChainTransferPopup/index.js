@@ -49,7 +49,7 @@ function PopupContent() {
     destinationChain,
     component: crossChainDirection,
   } = useCrossChainDirection();
-  const { sourceApi, destinationApi, getTeleportTxFunc } = useCrossChainApi({
+  const { sourceApi, destinationApi, getTeleportTx } = useCrossChainApi({
     sourceChain,
     destinationChain,
   });
@@ -73,16 +73,11 @@ function PopupContent() {
   const getTxFunc = useCallback(() => {
     try {
       const amount = getCheckedTransferAmount();
-      return getTeleportTxFunc(transferToAddress, amount);
+      return getTeleportTx(transferToAddress, amount);
     } catch (e) {
       dispatch(newErrorToast(e.message));
     }
-  }, [
-    dispatch,
-    getTeleportTxFunc,
-    transferToAddress,
-    getCheckedTransferAmount,
-  ]);
+  }, [dispatch, getTeleportTx, transferToAddress, getCheckedTransferAmount]);
 
   const isMounted = useMountedState();
   const [isSubmitting, setIsSubmitting] = useState(false);
