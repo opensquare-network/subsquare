@@ -127,7 +127,7 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
         <SummaryItem title="Active Salary">
           <LoadableContent isLoading={loading}>
             <ValueDisplay
-              value={toPrecision(activeSalary?.[rank - 1], decimals)}
+              value={toPrecision(activeSalary?.[rank - 1] || 0, decimals)}
               symbol={symbol}
             />
           </LoadableContent>
@@ -136,7 +136,7 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
         <SummaryItem title="Passive Salary">
           <LoadableContent isLoading={loading}>
             <ValueDisplay
-              value={toPrecision(passiveSalary?.[rank - 1], decimals)}
+              value={toPrecision(passiveSalary?.[rank - 1] || 0, decimals)}
               symbol={symbol}
             />
           </LoadableContent>
