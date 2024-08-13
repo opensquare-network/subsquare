@@ -24,6 +24,10 @@ export default function useCrossChainApi({ sourceChain, destinationChain }) {
 
   const teleport = useCallback(
     (transferToAddress, amount) => {
+      if (!sourceApi) {
+        throw new Error("Chain network is not connected yet");
+      }
+
       if (
         sourceChain === Chains.polkadot &&
         destinationChain === Chains.polkadotAssetHub

@@ -71,19 +71,12 @@ function PopupContent() {
     useAddressComboField({ title: "To Address", defaultAddress: address });
 
   const getTxFunc = useCallback(() => {
-    if (!sourceApi) {
-      return;
-    }
-
-    let amount;
     try {
-      amount = getCheckedTransferAmount();
+      const amount = getCheckedTransferAmount();
+      return teleport(transferToAddress, amount);
     } catch (e) {
       dispatch(newErrorToast(e.message));
-      return;
     }
-
-    return teleport(transferToAddress, amount);
   }, [dispatch, teleport, transferToAddress, getCheckedTransferAmount]);
 
   const isMounted = useMountedState();
