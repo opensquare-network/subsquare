@@ -57,11 +57,14 @@ function PopupContent() {
   const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
   const { decimals } = useChainSettings();
-  const { value: transferAmount, component: transferAmountField } =
-    useNativeTransferAmount({
-      api: polkadotApi,
-      transferFromAddress: address,
-    });
+  const {
+    value: transferAmount,
+    transferrable,
+    component: transferAmountField,
+  } = useNativeTransferAmount({
+    api: polkadotApi,
+    transferFromAddress: address,
+  });
   const { component: crossChainDirection } = useCrossChainDirection();
   const { value: transferToAddress, component: addressComboField } =
     useAddressComboField({ title: "To Address", defaultAddress: address });
@@ -76,17 +79,23 @@ function PopupContent() {
       return;
     }
 
-    const amount = new BigNumber(transferAmount)
-      .times(Math.pow(10, decimals))
-      .toFixed();
+    const amount = new BigNumber(transferAmount).times(Math.pow(10, decimals));
+    if (amount.isNaN() || amount.lte(0) || !amount.isInteger()) {
+      dispatch(newErrorToast("Invalid amount"));
+      return;
+    }
+    if (transferrable && amount.gt(transferrable)) {
+      dispatch(newErrorToast("Insufficient balance"));
+      return;
+    }
 
     const params = getTeleportParamsFromRelayChainToAssetHub({
       api: polkadotApi,
       transferToAddress,
-      amount,
+      amount: amount.toFixed(),
     });
     return polkadotApi.tx.xcmPallet.limitedTeleportAssets(...params);
-  }, [dispatch, polkadotApi, transferToAddress, transferAmount]);
+  }, [dispatch, polkadotApi, transferToAddress, transferAmount, transferrable]);
 
   const isMounted = useMountedState();
   const [isSubmitting, setIsSubmitting] = useState(false);

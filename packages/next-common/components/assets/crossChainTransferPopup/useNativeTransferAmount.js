@@ -23,6 +23,7 @@ export default function useNativeTransferAmount({ api, transferFromAddress }) {
 
   return {
     value: transferAmount,
+    transferrable,
     component,
   };
 }
