@@ -226,7 +226,7 @@ function PopupContent() {
     }
 
     if (!transferToAddress) {
-      dispatch(newErrorToast("Signer account is not specified"));
+      dispatch(newErrorToast("Transfer to address is not specified"));
       return;
     }
 
