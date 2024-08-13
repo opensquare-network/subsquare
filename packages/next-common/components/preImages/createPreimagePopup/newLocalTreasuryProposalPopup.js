@@ -7,7 +7,7 @@ import { checkInputValue } from "next-common/utils";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "./notePreimageButton";
 import useBalanceField from "./fields/useBalanceField";
-import useBeneficiaryField from "./fields/useBeneficiaryField";
+import useAddressComboField from "./fields/useAddressComboField";
 
 export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
   const api = useContextApi();
@@ -38,7 +38,7 @@ export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
 export default function NewLocalTreasuryProposalPopup({ onClose }) {
   const { value: inputBalance, component: balanceField } = useBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
-    useBeneficiaryField();
+    useAddressComboField();
 
   const { notePreimageTx } = useLocalTreasuryNotePreimageTx(
     inputBalance,
