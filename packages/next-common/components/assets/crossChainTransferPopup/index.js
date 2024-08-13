@@ -19,7 +19,6 @@ import {
 import { useMountedState } from "react-use";
 import PrimaryButton from "next-common/lib/button/primary";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
-import BigNumber from "bignumber.js";
 import { sendSubstrateTx } from "next-common/utils/sendTx";
 import Signer from "next-common/components/popup/fields/signerField";
 import { useUser } from "next-common/context/user";
@@ -56,10 +55,8 @@ function PopupContent() {
   const address = user?.address;
   const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
-  const { decimals } = useChainSettings();
   const {
-    value: transferAmount,
-    transferrable,
+    getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
   } = useNativeTransferAmount({
     api: polkadotApi,
@@ -74,28 +71,21 @@ function PopupContent() {
       return;
     }
 
-    if (!transferAmount) {
-      dispatch(newErrorToast("Please fill the amount"));
-      return;
-    }
-
-    const amount = new BigNumber(transferAmount).times(Math.pow(10, decimals));
-    if (amount.isNaN() || amount.lte(0) || !amount.isInteger()) {
-      dispatch(newErrorToast("Invalid amount"));
-      return;
-    }
-    if (transferrable && amount.gt(transferrable)) {
-      dispatch(newErrorToast("Insufficient balance"));
+    let amount;
+    try {
+      amount = getCheckedTransferAmount();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
       return;
     }
 
     const params = getTeleportParamsFromRelayChainToAssetHub({
       api: polkadotApi,
       transferToAddress,
-      amount: amount.toFixed(),
+      amount,
     });
     return polkadotApi.tx.xcmPallet.limitedTeleportAssets(...params);
-  }, [dispatch, polkadotApi, transferToAddress, transferAmount, transferrable]);
+  }, [dispatch, polkadotApi, transferToAddress, getCheckedTransferAmount]);
 
   const isMounted = useMountedState();
   const [isSubmitting, setIsSubmitting] = useState(false);
