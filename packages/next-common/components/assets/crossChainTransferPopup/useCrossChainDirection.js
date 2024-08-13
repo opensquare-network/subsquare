@@ -31,7 +31,11 @@ export default function useCrossChainDirection() {
     <div className="flex items-end gap-[12px]">
       <Chain title="Source Chain" chain={Chains.polkadot} name="Polkadot" />
       <div className="my-[3px] p-[8px] rounded-[8px] border border-neutral400 bg-neutral100">
-        <SystemCrosschain width={24} height={24} />
+        <SystemCrosschain
+          width={24}
+          height={24}
+          className="[&_path]:fill-textPrimary"
+        />
       </div>
       <Chain
         title="Destination Chain"
