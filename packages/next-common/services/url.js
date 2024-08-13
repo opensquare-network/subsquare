@@ -76,13 +76,13 @@ export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
 export const fellowshipSalaryFeedsApi = "fellowship/salary/feeds";
 export const fellowshipSalaryPaymentsApi = "fellowship/salary/payments";
 
+// fellowship statistics
 export const fellowshipStatisticsCyclesApi =
   "fellowship/statistics/salary/cycles";
 export const fellowshipStatisticsMembersApi =
   "fellowship/statistics/salary/members";
 export const fellowshipStatisticsRanksApi =
   "fellowship/statistics/salary/ranks";
-// fellowship statistics
 export const fellowshipStatisticsUsersApi = (address) =>
   `fellowship/statistics/users/${address}`;
 
