@@ -61,8 +61,8 @@ function PopupContent() {
   return (
     <>
       <Signer />
-      {transferAmountField}
       {transferToAddressField}
+      {transferAmountField}
       <div className="flex justify-end">
         <TxSubmissionButton
           title="Confirm"
