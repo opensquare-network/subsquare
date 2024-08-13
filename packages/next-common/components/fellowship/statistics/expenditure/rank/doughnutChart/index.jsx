@@ -66,8 +66,8 @@ function RankChart({ labelDatas, data }) {
       className={cn(
         "flex items-center justify-between gap-6",
         navCollapsed
-          ? "max-[1140px]:flex-col max-[1140px]:items-center"
-          : "max-[1365px]:flex-col max-[1365px]:items-center",
+          ? "max-sm:flex-col max-sm:items-center"
+          : "max-md:flex-col max-md:items-center",
       )}
     >
       <DoughnutChartLabels labelDatas={labelDatas} />
