@@ -7,6 +7,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
 import { isNil } from "lodash-es";
 import collectivesMemberColumns from "next-common/components/collectives/members/columns";
+import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
 function AddressCol({ address }) {
   const [navCollapsed] = useNavCollapsed();
@@ -33,12 +34,12 @@ export default function CollectivesMemberTable({
       <AddressCol key={`address-row-${idx}`} address={address} />,
       <ValueDisplay
         key={`active-salary-${idx}`}
-        value={toPrecision(activeSalary[rank - 1] || 0, decimals)}
+        value={toPrecision(activeSalary[rankToIndex(rank)] || 0, decimals)}
         symbol={symbol}
       />,
       <ValueDisplay
         key={`passive-salary-${idx}`}
-        value={toPrecision(passiveSalary[rank - 1] || 0, decimals)}
+        value={toPrecision(passiveSalary[rankToIndex(rank)] || 0, decimals)}
         symbol={symbol}
       />,
       <Period
