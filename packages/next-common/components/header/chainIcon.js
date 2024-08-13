@@ -5,13 +5,13 @@ function Img({ src, className = "" }) {
   return <img src={src} alt="" className={cn("logo", className)} />;
 }
 
-export default function ChainIcon({ chain }) {
+export default function ChainIcon({ className, chain }) {
   const chainSetting = getChainSettings(chain);
   let { avatar, darkAvatar } = chainSetting;
   darkAvatar = darkAvatar ?? avatar;
 
   return (
-    <span className="inline-flex items-center w-6 h-6">
+    <div className={cn("inline-flex items-center w-6 h-6", className)}>
       {avatar?.src ? (
         <Img src={avatar.src} className="dark:hidden" />
       ) : (
@@ -22,6 +22,6 @@ export default function ChainIcon({ chain }) {
       ) : (
         <chainSetting.darkAvatar className="logo hidden dark:block" />
       )}
-    </span>
+    </div>
   );
 }

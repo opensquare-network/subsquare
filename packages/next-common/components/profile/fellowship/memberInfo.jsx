@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import { useAsync } from "react-use";
 import DemotionRemainLabel from "./demotionRemainLabel";
 import PromotionRemainLabel from "./promotionRemainLabel";
+import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 
 export default function ProfileFellowshipMemberInfo({
   section = "fellowship",
@@ -127,7 +128,7 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
         <SummaryItem title="Active Salary">
           <LoadableContent isLoading={loading}>
             <ValueDisplay
-              value={toPrecision(activeSalary?.[rank - 1], decimals)}
+              value={toPrecision(getRankSalary(activeSalary, rank), decimals)}
               symbol={symbol}
             />
           </LoadableContent>
@@ -136,7 +137,7 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
         <SummaryItem title="Passive Salary">
           <LoadableContent isLoading={loading}>
             <ValueDisplay
-              value={toPrecision(passiveSalary?.[rank - 1], decimals)}
+              value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
               symbol={symbol}
             />
           </LoadableContent>

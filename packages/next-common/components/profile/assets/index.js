@@ -6,8 +6,9 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { usePageProps } from "next-common/context/page";
+import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 
-export default function ProfileAssets() {
+function ProfileAssetsInContext() {
   const { id } = usePageProps();
   const router = useRouter();
   const maybeEvmAddress = tryConvertToEvmAddress(id);
@@ -31,5 +32,13 @@ export default function ProfileAssets() {
         <ProfileAssetsList assets={assets} />
       </SecondaryCard>
     </div>
+  );
+}
+
+export default function ProfileAssets() {
+  return (
+    <AssetMetadataProvider>
+      <ProfileAssetsInContext />
+    </AssetMetadataProvider>
   );
 }

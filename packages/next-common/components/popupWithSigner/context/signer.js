@@ -10,19 +10,17 @@ import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
 import { useContextApi } from "next-common/context/api";
-import { useGetInjectedWeb3ExtensionFn } from "next-common/hooks/connect/useInjectedWeb3Extension";
+import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
 
 export const SignerContext = createContext();
 
 export default SignerContext;
 
-function useSetSigner() {
-  const api = useContextApi();
+export function useSetSigner() {
   const { injectedWeb3 } = useInjectedWeb3();
-  const getInjectedWeb3Extension = useGetInjectedWeb3ExtensionFn();
 
   return useCallback(
-    async (account) => {
+    async (api, account) => {
       if (!account) {
         return;
       }
@@ -35,7 +33,10 @@ function useSetSigner() {
         return;
       }
 
-      const extension = getInjectedWeb3Extension(account.meta?.source);
+      const extension = findInjectedExtension(
+        account.meta?.source,
+        injectedWeb3,
+      );
       if (!extension) {
         return;
       }
@@ -45,7 +46,7 @@ function useSetSigner() {
         api?.setSigner(wallet.signer);
       }
     },
-    [injectedWeb3, api, getInjectedWeb3Extension],
+    [injectedWeb3],
   );
 }
 
@@ -54,6 +55,7 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   const user = useUser();
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
+  const api = useContextApi();
   const setSigner = useSetSigner();
 
   useEffect(() => {
@@ -70,7 +72,7 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       return;
     }
 
-    setSigner(account);
+    setSigner(api, account);
 
     setSignerAccount({
       ...account,
@@ -78,7 +80,7 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       proxyAddress,
       realAddress: proxyAddress || userAddress,
     });
-  }, [extensionAccounts, userAddress, proxyAddress, setSigner]);
+  }, [api, extensionAccounts, userAddress, proxyAddress, setSigner]);
 
   return (
     <SignerContext.Provider

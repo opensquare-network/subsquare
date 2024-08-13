@@ -11,6 +11,7 @@ import useKnownAssetHubAssetIcon, {
 import BalanceDisplay from "./balanceDisplay";
 import { isNil } from "lodash-es";
 import Tooltip from "../tooltip";
+import CrossChainTransferButton from "./crossChainTransferButton";
 
 const AssetTransferPopup = dynamicClientOnly(() =>
   import("./transferPopup").then((module) => module.AssetTransferPopup),
@@ -137,7 +138,7 @@ export const colTransfer = {
   style: { textAlign: "right", width: "80px", minWidth: "80px" },
   render: (item) =>
     item.type === "native" ? (
-      <span className="text14Medium text-textTertiary">-</span>
+      <CrossChainTransferButton />
     ) : (
       <TransferButton asset={item} />
     ),

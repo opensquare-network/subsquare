@@ -10,7 +10,7 @@ import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "./notePreimageButton";
 import useUSDxBalanceField from "./fields/useUSDxBalanceField";
-import useBeneficiaryField from "./fields/useBeneficiaryField";
+import useAddressComboField from "./fields/useAddressComboField";
 import useValidFromField from "./fields/useValidFromField";
 
 const getAssetKindParam = (assetId) => {
@@ -109,7 +109,7 @@ function PopupContent() {
     component: usdxBalanceField,
   } = useUSDxBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
-    useBeneficiaryField();
+    useAddressComboField();
   const { value: validFrom, component: validFromField } = useValidFromField();
 
   const { notePreimageTx } = useUSDxTreasuryNotePreimageTx(

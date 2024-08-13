@@ -20,6 +20,7 @@ import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "next-common/components/democracy/common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
+import { usePost } from "next-common/context/post";
 
 export default function VotesPopup({ setShowVoteList }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
@@ -106,7 +107,8 @@ export default function VotesPopup({ setShowVoteList }) {
 }
 
 function VotesList({ loading, items = [] }) {
-  const chainSettings = useChainSettings();
+  const post = usePost();
+  const chainSettings = useChainSettings(post.indexer?.blockHeight);
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   const columns = [
