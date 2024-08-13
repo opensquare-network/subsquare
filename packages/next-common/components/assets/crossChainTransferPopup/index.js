@@ -220,7 +220,7 @@ function PopupContent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const doSubmit = useCallback(async () => {
-    if (!api) {
+    if (!polkadotApi) {
       dispatch(newErrorToast("Chain network is not connected yet"));
       return;
     }
