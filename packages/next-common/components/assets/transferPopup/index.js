@@ -5,7 +5,6 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useContextApi } from "next-common/context/api";
-import BigNumber from "bignumber.js";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTransferAmount from "./useTransferAmount";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
@@ -16,8 +15,10 @@ function PopupContent() {
   const api = useContextApi();
   const address = useRealAddress();
   const dispatch = useDispatch();
-  const { value: transferAmount, component: transferAmountField } =
-    useTransferAmount({ asset, transferFromAddress: address });
+  const {
+    getCheckedValue: getCheckedTransferAmount,
+    component: transferAmountField,
+  } = useTransferAmount({ asset, transferFromAddress: address });
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
 
@@ -32,31 +33,23 @@ function PopupContent() {
       return;
     }
 
-    if (!transferAmount) {
-      dispatch(newErrorToast("Please enter the amount"));
+    let amount;
+    try {
+      amount = getCheckedTransferAmount();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
       return;
     }
 
-    const amount = new BigNumber(transferAmount).times(
-      Math.pow(10, asset.decimals),
-    );
-
-    if (amount.isNaN() || amount.lte(0)) {
-      dispatch(newErrorToast("Invalid amount"));
-      return;
-    }
-
-    if (amount.gt(asset.transferrable)) {
-      dispatch(newErrorToast("Insufficient balance"));
-      return;
-    }
-
-    return api.tx.assets.transfer(
-      asset.assetId,
-      transferToAddress,
-      amount.toFixed(),
-    );
-  }, [dispatch, api, asset, address, transferToAddress, transferAmount]);
+    return api.tx.assets.transfer(asset.assetId, transferToAddress, amount);
+  }, [
+    dispatch,
+    api,
+    asset,
+    address,
+    transferToAddress,
+    getCheckedTransferAmount,
+  ]);
 
   return (
     <>

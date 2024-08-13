@@ -1,5 +1,6 @@
 import TransferAmount from "next-common/components/popup/fields/transferAmountField";
-import { useState } from "react";
+import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
+import { useCallback, useState } from "react";
 
 export default function useTransferAmount({ asset, transferFromAddress }) {
   const [transferAmount, setTransferAmount] = useState("");
@@ -15,5 +16,13 @@ export default function useTransferAmount({ asset, transferFromAddress }) {
     />
   );
 
-  return { value: transferAmount, component };
+  const getCheckedValue = useCallback(() => {
+    return checkTransferAmount({
+      transferAmount,
+      decimals: asset.decimals,
+      transferrable: asset.transferrable,
+    });
+  }, [transferAmount, asset.transferrable, asset.decimals]);
+
+  return { value: transferAmount, getCheckedValue, component };
 }
