@@ -76,7 +76,7 @@ function ExistentialDeposit({ destApi }) {
   const { decimals } = useChainSettings();
   return (
     <div>
-      <PopupLabel text="Existential Deposit" />
+      <PopupLabel text="Destination Existential Deposit" />
       <Input
         disabled
         value={toPrecision(
@@ -190,7 +190,7 @@ function PopupContent() {
   const address = user?.address;
   const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
-  const [transferToAddress, setTransferToAddress] = useState("");
+  const [transferToAddress, setTransferToAddress] = useState(address);
   const [transferAmount, setTransferAmount] = useState("");
   const { decimals } = useChainSettings();
 
@@ -261,6 +261,7 @@ function PopupContent() {
       <AddressComboField
         title="To Address"
         extensionAccounts={extensionAccounts}
+        defaultAddress={transferToAddress}
         setAddress={setTransferToAddress}
         placeholder="Please fill the address or select another one..."
       />
