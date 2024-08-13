@@ -76,6 +76,10 @@ export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
 export const fellowshipSalaryFeedsApi = "fellowship/salary/feeds";
 export const fellowshipSalaryPaymentsApi = "fellowship/salary/payments";
 
+// fellowship statistics
+export const fellowshipStatisticsUsersApi = (address) =>
+  `fellowship/statistics/users/${address}`;
+
 // ambassador
 export const ambassadorParamsApi = "ambassador/params";
 export const ambassadorMembersApiUri = "ambassador/members";
@@ -114,6 +118,10 @@ export const ambassadorSalaryCycleUnregisteredPaymentsApi = (index) =>
 export const ambassadorSalaryCycleFeedsApi = (index) =>
   `ambassador/salary/cycles/${index}/feeds`;
 export const ambassadorSalaryPaymentsApi = "ambassador/salary/payments";
+
+// fellowship statistics
+export const ambassadorStatisticsUsersApi = (address) =>
+  `ambassador/statistics/users/${address}`;
 
 // calender events
 /**
