@@ -16,11 +16,11 @@ function Chain({ title, chain, name }) {
       <div
         className={cn(
           "flex border border-neutral400 bg-neutral200 rounded-[8px] overflow-hidden whitespace-nowrap",
-          "p-[10px] items-center gap-[8px]",
+          "items-center",
           "text14Medium text-textPrimary",
         )}
       >
-        <ChainIcon className="w-[24px] h-[24px]" chain={chain} />
+        <ChainIcon className="w-[24px] h-[24px] m-[8px]" chain={chain} />
         <span>{name}</span>
       </div>
     </div>
@@ -51,7 +51,7 @@ export default function useCrossChainDirection() {
         name={getChainName(sourceChain)}
       />
       <div
-        className="cursor-pointer my-[3px] p-[8px] rounded-[8px] border border-neutral400 bg-neutral100"
+        className="cursor-pointer p-[8px] rounded-[8px] border border-neutral400 bg-neutral100"
         onClick={() => {
           setSourceChain(destinationChain);
           setDestinationChain(sourceChain);
