@@ -120,7 +120,7 @@ function PopupContent() {
       isMounted,
       onClose,
       onInBlock: () => {
-        dispatch(newSuccessToast("Transfer successfully"));
+        dispatch(newSuccessToast("Teleport successfully"));
       },
     });
   }, [polkadotApi, dispatch, extensionAccounts, address, getTxFunc, setSigner]);
