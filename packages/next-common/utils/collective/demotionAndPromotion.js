@@ -1,15 +1,18 @@
 import BigNumber from "bignumber.js";
 import { ONE_DAY } from "../constants";
+import rankToIndex from "../fellowship/rankToIndex";
 
 const days20 = 20 * ONE_DAY;
 
 export function getDemotionPeriod(rank, params) {
-  return rank <= 0 ? params.offboardTimeout : params.demotionPeriod?.[rank - 1];
+  return rank <= 0
+    ? params.offboardTimeout
+    : params.demotionPeriod?.[rankToIndex(rank)];
 }
 
 export function getPromotionPeriod(rank, params) {
   const toRank = rank + 1;
-  const index = toRank > 0 ? toRank - 1 : 0;
+  const index = rankToIndex(toRank);
   return params.minPromotionPeriod?.[index];
 }
 

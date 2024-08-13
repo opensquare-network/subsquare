@@ -13,6 +13,7 @@ import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useFellowshipSalaryMemberStatusFilter } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStatusFilter";
 import { claimStatsValues, claimantListColumns } from "./utils";
+import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
 export default function FellowshipSalaryClaimantsList({
   claimants = [],
@@ -47,12 +48,18 @@ export default function FellowshipSalaryClaimantsList({
       <AddressUser key={`address-${address}`} add={address} />,
       <ValueDisplay
         key={`active-salary-${address}`}
-        value={toPrecision(activeSalary[claimant.rank - 1] || 0, decimals)}
+        value={toPrecision(
+          activeSalary[rankToIndex(claimant.rank)] || 0,
+          decimals,
+        )}
         symbol={symbol}
       />,
       <ValueDisplay
         key={`passive-salary-${address}`}
-        value={toPrecision(passiveSalary[claimant.rank - 1] || 0, decimals)}
+        value={toPrecision(
+          passiveSalary[rankToIndex(claimant.rank)] || 0,
+          decimals,
+        )}
         symbol={symbol}
       />,
       <FellowshipSalaryMemberIsRegistered

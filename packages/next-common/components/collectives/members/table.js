@@ -44,7 +44,7 @@ export default function CollectivesMemberTable({
       />,
       <Period
         key={`demotion-period-${idx}`}
-        blocks={demotionPeriod[rank - 1] || offboardTimeout}
+        blocks={demotionPeriod[rankToIndex(rank)] || offboardTimeout}
       />,
       <Period
         key={`min-promotion-period-${idx}`}

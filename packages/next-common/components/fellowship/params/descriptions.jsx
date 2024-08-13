@@ -6,6 +6,7 @@ import { toPrecision } from "next-common/utils";
 import dynamic from "next/dynamic";
 import Period from "./period";
 import Flex from "next-common/components/styled/flex";
+import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
 const MenuParameter = dynamic(() =>
   import("@osn/icons/subsquare/MenuParameter"),
@@ -34,7 +35,7 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
     minPromotionPeriod = [],
   } = params ?? {};
 
-  const idx = rank - 1;
+  const idx = rankToIndex(rank);
 
   return [
     demotionPeriod[idx] === 0 ? (
