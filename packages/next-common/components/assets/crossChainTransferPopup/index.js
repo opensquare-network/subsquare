@@ -247,7 +247,7 @@ function PopupContent() {
       isMounted,
       onClose,
       onInBlock: () => {
-        dispatch(newSuccessToast("Teleport successful"));
+        dispatch(newSuccessToast("Transfer successful"));
       },
     });
   }, [
