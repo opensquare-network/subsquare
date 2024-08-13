@@ -24,14 +24,18 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { useMountedState } from "react-use";
-import { sendSubstrateTx } from "next-common/utils/sendSubstrateTx";
 import PrimaryButton from "next-common/lib/button/primary";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import BigNumber from "bignumber.js";
+import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
+import Loading from "next-common/components/loading";
+import { sendSubstrateTx } from "next-common/utils/sendTx";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
 );
+
+const AssetHubParaId = 1000;
 
 function Chain({ title, chain, name }) {
   return (
@@ -51,7 +55,128 @@ function Chain({ title, chain, name }) {
   );
 }
 
-const AssetHubParaId = 1000;
+function CrossChainDirection() {
+  return (
+    <div className="flex items-end gap-[12px]">
+      <Chain title="Source Chain" chain={Chains.polkadot} name="Polkadot" />
+      <div className="my-[3px] p-[8px] rounded-[8px] border border-neutral400 bg-neutral100">
+        <SystemCrosschain width={24} height={24} />
+      </div>
+      <Chain
+        title="Destination Chain"
+        chain={Chains.polkadotAssetHub}
+        name="Asset Hub"
+      />
+    </div>
+  );
+}
+
+function ExistentialDeposit({ destApi }) {
+  const { decimals } = useChainSettings();
+  return (
+    <div>
+      <PopupLabel text="Existential Deposit" />
+      <Input
+        disabled
+        value={toPrecision(
+          destApi?.consts.balances?.existentialDeposit || 0,
+          decimals,
+        )}
+        symbol="DOT"
+      />
+    </div>
+  );
+}
+
+function TransferrableBalance({ value, isLoading }) {
+  return (
+    <div className="flex gap-[8px] items-center mb-[8px]">
+      <span className="text12Medium text-textTertiary leading-none">
+        Transferrable
+      </span>
+      {isLoading ? (
+        <Loading size={12} />
+      ) : (
+        <BalanceDisplay balance={formatBalance(value, 10)} />
+      )}
+    </div>
+  );
+}
+
+function TransferAmount({
+  api,
+  transferFromAddress,
+  transferAmount,
+  setTransferAmount,
+}) {
+  const { transferrable, isLoading: isLoadingTransferrable } =
+    useAccountTransferrable(api, transferFromAddress);
+
+  const balanceStatus = !!transferFromAddress && (
+    <TransferrableBalance
+      value={transferrable}
+      isLoading={isLoadingTransferrable}
+    />
+  );
+
+  return (
+    <div>
+      <PopupLabel text="Amount" status={balanceStatus} />
+      <Input
+        type="text"
+        placeholder="0.00"
+        value={transferAmount}
+        onChange={(e) => setTransferAmount(e.target.value.replace("。", "."))}
+        symbol={"DOT"}
+      />
+    </div>
+  );
+}
+
+function getTeleportParams({ api, transferToAddress, amount }) {
+  return [
+    {
+      V3: {
+        interior: {
+          X1: {
+            ParaChain: AssetHubParaId,
+          },
+        },
+        parents: 0,
+      },
+    },
+    {
+      V3: {
+        interior: {
+          X1: {
+            AccountId32: {
+              id: api.createType("AccountId32", transferToAddress).toHex(),
+              network: null,
+            },
+          },
+        },
+        parents: 0,
+      },
+    },
+    {
+      V3: [
+        {
+          fun: {
+            Fungible: amount,
+          },
+          id: {
+            Concrete: {
+              interior: "Here",
+              parents: 0,
+            },
+          },
+        },
+      ],
+    },
+    0,
+    { Unlimited: null },
+  ];
+}
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -64,17 +189,11 @@ function PopupContent() {
   const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
   const [transferFromAddress, setTransferFromAddress] = useState("");
-  const [transferToAddress, setTransferToAddress] = useState("");
   const [transferAmount, setTransferAmount] = useState("");
   const { decimals } = useChainSettings();
 
   const getTxFunc = useCallback(() => {
     if (!polkadotApi) {
-      return;
-    }
-
-    if (!transferToAddress) {
-      dispatch(newErrorToast("Please fill the address"));
       return;
     }
 
@@ -87,51 +206,13 @@ function PopupContent() {
       .times(Math.pow(10, decimals))
       .toFixed();
 
-    const tx = polkadotApi.tx.xcmPallet.limitedTeleportAssets(
-      {
-        V3: {
-          interior: {
-            X1: {
-              ParaChain: AssetHubParaId,
-            },
-          },
-          parents: 0,
-        },
-      },
-      {
-        V3: {
-          interior: {
-            X1: {
-              AccountId32: {
-                id: api.createType("AccountId32", transferToAddress).toHex(),
-                network: null,
-              },
-            },
-          },
-          parents: 0,
-        },
-      },
-      {
-        V3: [
-          {
-            fun: {
-              Fungible: amount,
-            },
-            id: {
-              Concrete: {
-                interior: "Here",
-                parents: 0,
-              },
-            },
-          },
-        ],
-      },
-      0,
-      { Unlimited: null },
-    );
-
-    return tx;
-  }, [dispatch, polkadotApi, address, transferToAddress, transferAmount]);
+    const params = getTeleportParams({
+      api: polkadotApi,
+      address,
+      amount,
+    });
+    return polkadotApi.tx.xcmPallet.limitedTeleportAssets(...params);
+  }, [dispatch, polkadotApi, address, transferAmount]);
 
   const isMounted = useMountedState();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -178,60 +259,23 @@ function PopupContent() {
     setSigner,
   ]);
 
-  const balanceStatus = (
-    <div className="flex gap-[8px] items-center mb-[8px]">
-      <span className="text12Medium text-textTertiary">Transferable</span>
-      <BalanceDisplay balance={formatBalance(0, 12)} />
-    </div>
-  );
-
   return (
     <>
-      <div className="flex items-end gap-[12px]">
-        <Chain title="Source Chain" chain={Chains.polkadot} name="Polkadot" />
-        <div className="my-[3px] p-[8px] rounded-[8px] border border-neutral400 bg-neutral100">
-          <SystemCrosschain width={24} height={24} />
-        </div>
-        <Chain
-          title="Destination Chain"
-          chain={Chains.polkadotAssetHub}
-          name="Asset Hub"
-        />
-      </div>
-      <div>
-        <PopupLabel text="Amount" status={balanceStatus} />
-        <Input
-          type="text"
-          placeholder="0.00"
-          value={transferAmount}
-          onChange={(e) => setTransferAmount(e.target.value.replace("。", "."))}
-          symbol={"DOT"}
-        />
-      </div>
+      <CrossChainDirection />
+      <TransferAmount
+        api={polkadotApi}
+        transferFromAddress={transferFromAddress}
+        transferAmount={transferAmount}
+        setTransferAmount={setTransferAmount}
+      />
       <AddressComboField
         title="From Address"
         extensionAccounts={extensionAccounts}
         setAddress={setTransferFromAddress}
         placeholder="Please fill the address or select another one..."
       />
-      <AddressComboField
-        title="To Address"
-        extensionAccounts={extensionAccounts}
-        setAddress={setTransferToAddress}
-        placeholder="Please fill the address or select another one..."
-      />
       <AdvanceSettings>
-        <div>
-          <PopupLabel text="Existential Deposit" />
-          <Input
-            disabled
-            value={toPrecision(
-              api?.consts.balances?.existentialDeposit || 0,
-              decimals,
-            )}
-            symbol="DOT"
-          />
-        </div>
+        <ExistentialDeposit destApi={api} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <PrimaryButton loading={isSubmitting} onClick={doSubmit}>

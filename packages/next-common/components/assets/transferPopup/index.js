@@ -64,7 +64,7 @@ function PopupContent() {
 
   const balanceStatus = (
     <div className="flex gap-[8px] items-center mb-[8px]">
-      <span className="text12Medium text-textTertiary">Transferable</span>
+      <span className="text12Medium text-textTertiary">Transferrable</span>
       <BalanceDisplay
         balance={formatBalance(asset.transferrable || 0, asset.decimals)}
       />
