@@ -1,8 +1,7 @@
 import { useTheme } from "styled-components";
 import deepmerge from "deepmerge";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
-import { toPrecision, abbreviateBigNumber, formatNum } from "next-common/utils";
-import { getEffectiveNumbers } from "next-common/utils/viewfuncs";
+import { toPrecision, formatNum } from "next-common/utils";
 
 export const doughnutChartOptions = {
   responsive: true,
@@ -16,6 +15,7 @@ export const doughnutChartOptions = {
     },
     tooltip: {
       displayColors: false,
+      position: "average",
       callbacks: {
         title: () => "",
         label: (item) => {
