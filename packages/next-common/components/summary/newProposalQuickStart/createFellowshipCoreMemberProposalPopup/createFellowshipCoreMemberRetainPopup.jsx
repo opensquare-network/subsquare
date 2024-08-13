@@ -1,7 +1,7 @@
 import RankField from "next-common/components/popup/fields/rankField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import useBeneficiaryField from "next-common/components/preImages/createPreimagePopup/fields/useBeneficiaryField";
+import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
 import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { useSelector } from "react-redux";
@@ -15,7 +15,7 @@ export default function NewFellowshipCoreMemberRetainReferendumInnerPopup() {
   useFetchFellowshipCoreMembers();
 
   const { onClose } = usePopupParams();
-  const { value: who, component: whoField } = useBeneficiaryField({
+  const { value: who, component: whoField } = useAddressComboField({
     title: "Who",
   });
   const { value: enactment, component: enactmentField } =
