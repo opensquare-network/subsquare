@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useCandidateNodes from "next-common/services/chain/apis/useCandidateNodes";
 import getApiInSeconds, { getApi } from "next-common/services/chain/api";
 
-const ApiContext = createContext(null);
+export const ApiContext = createContext(null);
 
 let latestApi;
 

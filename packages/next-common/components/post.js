@@ -202,7 +202,7 @@ export function TreasurySpendAmount({ meta }) {
 }
 
 function PostValueTitle({ data, type }) {
-  const { decimals, symbol } = useChainSettings();
+  const { decimals, symbol } = useChainSettings(data.indexer?.blockHeight);
   const { onchainData, value } = data;
   const localTreasurySpendAmount = onchainData?.isTreasury
     ? onchainData?.treasuryInfo?.amount

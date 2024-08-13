@@ -3,6 +3,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { toPrecision } from "next-common/utils";
 import Period from "next-common/components/fellowship/params/period";
+import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
 const columns = [
   {
@@ -64,7 +65,7 @@ export default function FellowshipParamsList({ rank, params }) {
       columns={columns}
       noDataText="No Params"
       rows={rows}
-      highlightedIndexes={[rank - 1]}
+      highlightedIndexes={[rankToIndex(rank)]}
     />
   );
 }

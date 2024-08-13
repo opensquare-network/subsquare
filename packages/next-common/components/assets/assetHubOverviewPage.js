@@ -2,6 +2,7 @@ import NoWalletConnected from "next-common/components/assets/noWalletConnected";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import WalletAssetList from "next-common/components/assets/walletAssetList";
 import { AssetMetadataProvider } from "./context/assetMetadata";
+import { PolkadotApiProvider } from "next-common/context/polkadotApi";
 
 export default function AssetHubOverviewPage() {
   const address = useRealAddress();
@@ -12,7 +13,9 @@ export default function AssetHubOverviewPage() {
 
   return (
     <AssetMetadataProvider>
-      <WalletAssetList />
+      <PolkadotApiProvider>
+        <WalletAssetList />
+      </PolkadotApiProvider>
     </AssetMetadataProvider>
   );
 }

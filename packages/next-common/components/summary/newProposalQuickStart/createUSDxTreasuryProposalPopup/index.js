@@ -9,7 +9,7 @@ import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useUSDxTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/newUSDxTreasuryProposalPopup";
 import useUSDxBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useUSDxBalanceField";
-import useBeneficiaryField from "next-common/components/preImages/createPreimagePopup/fields/useBeneficiaryField";
+import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
 import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
@@ -29,7 +29,7 @@ function PopupContent() {
     component: usdxBalanceField,
   } = useUSDxBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
-    useBeneficiaryField();
+    useAddressComboField();
   const { value: validFrom, component: validFromField } = useValidFromField();
   const { value: trackId, component: trackField } =
     useAutoSelectTreasuryTrackField(getTokenAmount(inputBalance));

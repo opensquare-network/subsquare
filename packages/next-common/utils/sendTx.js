@@ -125,7 +125,8 @@ export function createSendTxEventHandler({
   };
 }
 
-export async function defaultSendTx({
+export async function sendSubstrateTx({
+  api,
   tx,
   dispatch,
   setLoading = emptyFunction,
@@ -133,10 +134,8 @@ export async function defaultSendTx({
   onInBlock = emptyFunction,
   onSubmitted = emptyFunction,
   onClose = emptyFunction,
-  signerAccount,
+  signerAddress,
 }) {
-  const signerAddress = signerAccount?.address;
-
   const noWaitForFinalized = onFinalized === emptyFunction;
   const totalSteps = noWaitForFinalized ? 2 : 3;
 
@@ -148,7 +147,6 @@ export async function defaultSendTx({
   try {
     setLoading(true);
 
-    const api = getLatestApi();
     const account = await api.query.system.account(signerAddress);
 
     const unsub = await tx.signAndSend(
@@ -252,7 +250,9 @@ export async function sendTx({
     return;
   }
 
-  await defaultSendTx({
+  const api = getLatestApi();
+  await sendSubstrateTx({
+    api,
     tx,
     dispatch,
     setLoading,
@@ -260,7 +260,7 @@ export async function sendTx({
     onSubmitted,
     onFinalized,
     onClose,
-    signerAccount,
+    signerAddress: signerAccount?.address,
   });
 }
 

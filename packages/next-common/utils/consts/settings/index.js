@@ -32,6 +32,7 @@ import bifrostPolkadot from "./bifrostPolkadot";
 import vara from "./vara";
 import polkadotAssetHub from "./polkadotAssetHub";
 import Chains from "next-common/utils/consts/chains";
+import { isNil } from "lodash-es";
 
 const settingsMap = {
   polkadot,
@@ -72,10 +73,26 @@ const settingsMap = {
 /**
  * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof moonriver & typeof centrifuge & typeof collectives & typeof hydradx}
  */
-export default function getChainSettings(chain) {
-  const settings = settingsMap[chain];
+export default function getChainSettings(chain, blockHeight) {
+  let settings = settingsMap[chain];
   if (!settings) {
     throw `can not get chain settings of ${chain}`;
+  }
+
+  if (settings.blockHeightSettings && !isNil(blockHeight)) {
+    const heights = Object.keys(settings.blockHeightSettings)
+      .map(Number)
+      // descending block heights
+      .sort((a, b) => b - a);
+
+    const blockHeightSettingsPatch =
+      settings.blockHeightSettings[
+        heights.find((height) => blockHeight >= height)
+      ];
+
+    if (blockHeightSettingsPatch) {
+      settings = { ...settings, ...blockHeightSettingsPatch };
+    }
   }
 
   return {

@@ -24,6 +24,7 @@ import filterTabs from "../common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { usePost } from "next-common/context/post";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
@@ -121,7 +122,8 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
 }
 
 function VotesList({ items = [], loading }) {
-  const chainSettings = useChainSettings();
+  const post = usePost();
+  const chainSettings = useChainSettings(post.indexer?.blockHeight);
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   const [showDetail, setShowDetail] = useState(false);
