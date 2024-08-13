@@ -22,7 +22,7 @@ export default function useCrossChainApi({ sourceChain, destinationChain }) {
   const sourceApi = useChainApi(sourceChain);
   const destinationApi = useChainApi(destinationChain);
 
-  const teleport = useCallback(
+  const getTeleportTxFunc = useCallback(
     (transferToAddress, amount) => {
       if (!sourceApi) {
         throw new Error("Chain network is not connected yet");
@@ -56,6 +56,6 @@ export default function useCrossChainApi({ sourceChain, destinationChain }) {
   return {
     sourceApi,
     destinationApi,
-    teleport,
+    getTeleportTxFunc,
   };
 }
