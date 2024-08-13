@@ -28,6 +28,10 @@ export default function useCrossChainApi({ sourceChain, destinationChain }) {
         throw new Error("Chain network is not connected yet");
       }
 
+      if (!transferToAddress) {
+        throw new Error("Transfer to address is not specified");
+      }
+
       if (
         sourceChain === Chains.polkadot &&
         destinationChain === Chains.polkadotAssetHub

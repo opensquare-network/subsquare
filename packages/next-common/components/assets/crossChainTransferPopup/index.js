@@ -88,11 +88,6 @@ function PopupContent() {
       return;
     }
 
-    if (!transferToAddress) {
-      dispatch(newErrorToast("Transfer to address is not specified"));
-      return;
-    }
-
     const tx = getTxFunc();
     if (!tx) {
       return;
