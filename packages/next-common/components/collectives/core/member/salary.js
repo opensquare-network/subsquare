@@ -1,7 +1,7 @@
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import rankToIndex from "next-common/utils/fellowship/rankToIndex";
+import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 
 export default function CoreFellowshipMemberSalary({
   rank,
@@ -10,7 +10,7 @@ export default function CoreFellowshipMemberSalary({
 }) {
   const { activeSalary, passiveSalary } = params;
   const salaryArray = isActive ? activeSalary : passiveSalary;
-  const salary = salaryArray[rankToIndex(rank)];
+  const salary = getRankSalary(salaryArray, rank);
   const { symbol, decimals } = useSalaryAsset();
 
   if (rank <= 0) {

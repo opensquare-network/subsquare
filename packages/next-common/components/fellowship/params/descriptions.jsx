@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import Period from "./period";
 import Flex from "next-common/components/styled/flex";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
+import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 
 const MenuParameter = dynamic(() =>
   import("@osn/icons/subsquare/MenuParameter"),
@@ -57,7 +58,7 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
     <Flex key="active-salary">
       Active salary is&nbsp;
       <ValueDisplay
-        value={toPrecision(activeSalary[idx], decimals)}
+        value={toPrecision(getRankSalary(activeSalary, rank), decimals)}
         symbol={symbol}
       />
       .
@@ -65,7 +66,7 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
     <Flex key="passive-salary">
       Passive salary is&nbsp;
       <ValueDisplay
-        value={toPrecision(passiveSalary[idx], decimals)}
+        value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
         symbol={symbol}
       />
       .
