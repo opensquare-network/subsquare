@@ -2,7 +2,7 @@ import TransferAmount from "next-common/components/popup/fields/transferAmountFi
 import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
 import { useState } from "react";
 
-export default function useTransferAmount({ api, transferFromAddress }) {
+export default function useNativeTransferAmount({ api, transferFromAddress }) {
   const [transferAmount, setTransferAmount] = useState("");
   const { transferrable, isLoading } = useAccountTransferrable(
     api,

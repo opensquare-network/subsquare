@@ -25,8 +25,8 @@ import Signer from "next-common/components/popup/fields/signerField";
 import { useUser } from "next-common/context/user";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useCrossChainDirection from "./useCrossChainDirection";
-import useTransferAmount from "./useTransferAmount";
 import { getTeleportParamsFromRelayChainToAssetHub } from "./teleportParams";
+import useNativeTransferAmount from "./useNativeTransferAmount";
 
 function ExistentialDeposit({ destApi }) {
   const { decimals } = useChainSettings();
@@ -57,10 +57,11 @@ function PopupContent() {
   const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
   const { decimals } = useChainSettings();
-  const { transferAmount, component: transferAmountField } = useTransferAmount({
-    api: polkadotApi,
-    transferFromAddress: address,
-  });
+  const { value: transferAmount, component: transferAmountField } =
+    useNativeTransferAmount({
+      api: polkadotApi,
+      transferFromAddress: address,
+    });
   const { component: crossChainDirection } = useCrossChainDirection();
   const { value: transferToAddress, component: addressComboField } =
     useAddressComboField({ title: "To Address", defaultAddress: address });
