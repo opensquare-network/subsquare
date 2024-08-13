@@ -11,7 +11,7 @@ const SystemCrosschain = dynamic(() =>
 
 function Chain({ title, chain, name }) {
   return (
-    <div className="flex flex-col grow basis-[calc(100%/2-33px)]">
+    <div className="flex flex-col grow basis-[calc(100%/2-33px)] shrink-0">
       <PopupLabel text={title} />
       <div
         className={cn(
