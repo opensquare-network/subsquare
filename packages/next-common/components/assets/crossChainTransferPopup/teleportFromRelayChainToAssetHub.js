@@ -1,6 +1,6 @@
 const AssetHubParaId = 1000;
 
-export function getTeleportParamsFromRelayChainToAssetHub({
+function getTeleportParamsFromRelayChainToAssetHub({
   api,
   transferToAddress,
   amount,
@@ -47,4 +47,17 @@ export function getTeleportParamsFromRelayChainToAssetHub({
     0,
     { Unlimited: null },
   ];
+}
+
+export default function teleportFromRelayChainToAssetHub({
+  sourceApi,
+  transferToAddress,
+  amount,
+}) {
+  const params = getTeleportParamsFromRelayChainToAssetHub({
+    api: sourceApi,
+    transferToAddress,
+    amount,
+  });
+  return sourceApi.tx.xcmPallet.limitedTeleportAssets(...params);
 }
