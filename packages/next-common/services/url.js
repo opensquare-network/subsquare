@@ -80,6 +80,8 @@ export const fellowshipStatisticsCyclesApi =
   "fellowship/statistics/salary/cycles";
 export const fellowshipStatisticsMembersApi =
   "fellowship/statistics/salary/members";
+export const fellowshipStatisticsRanksApi =
+  "fellowship/statistics/salary/ranks";
 
 // ambassador
 export const ambassadorParamsApi = "ambassador/params";

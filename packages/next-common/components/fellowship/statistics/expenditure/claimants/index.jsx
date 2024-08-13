@@ -12,6 +12,7 @@ import usePaginationComponent from "next-common/components/pagination/usePaginat
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useSelector } from "react-redux";
 import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
+import { StatisticsTitle } from "next-common/components/statistics/styled.js";
 
 function handleClaimantsData(originalMembers, members) {
   // Pre-processing membersRank map.
@@ -100,11 +101,7 @@ function StatisticsClaimantsTable() {
 }
 
 function StatisticsClaimantsHeader() {
-  return (
-    <div className="flex flex-col gap-[4px]">
-      <div className="flex text16Bold text-textPrimary">Claimants</div>
-    </div>
-  );
+  return <StatisticsTitle>Claimants</StatisticsTitle>;
 }
 
 export default function StatisticsClaimants() {
