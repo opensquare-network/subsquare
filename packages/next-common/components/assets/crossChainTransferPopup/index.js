@@ -24,8 +24,10 @@ import Signer from "next-common/components/popup/fields/signerField";
 import { useUser } from "next-common/context/user";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useCrossChainDirection from "./useCrossChainDirection";
-import { getTeleportParamsFromRelayChainToAssetHub } from "./teleportParams";
 import useNativeTransferAmount from "./useNativeTransferAmount";
+import Chains from "next-common/utils/consts/chains";
+import teleportFromRelayChainToAssetHub from "./teleportFromRelayChainToAssetHub";
+import teleportFromAssetHubToRelayChain from "./teleportFromAssetHubToRelayChain";
 
 function ExistentialDeposit({ destApi }) {
   const { decimals } = useChainSettings();
@@ -47,8 +49,27 @@ function ExistentialDeposit({ destApi }) {
 function PopupContent() {
   const { onClose } = usePopupParams();
   const api = useContextApi();
-
   const polkadotApi = usePolkadotApi();
+  const {
+    sourceChain,
+    destinationChain,
+    component: crossChainDirection,
+  } = useCrossChainDirection();
+
+  let sourceApi = null;
+  if (sourceChain === Chains.polkadot) {
+    sourceApi = polkadotApi;
+  } else if (sourceChain === Chains.polkadotAssetHub) {
+    sourceApi = api;
+  }
+
+  let destApi = null;
+  if (destinationChain === Chains.polkadot) {
+    destApi = polkadotApi;
+  } else if (destinationChain === Chains.polkadotAssetHub) {
+    destApi = api;
+  }
+
   const setSigner = useSetSigner();
 
   const user = useUser();
@@ -59,15 +80,14 @@ function PopupContent() {
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
   } = useNativeTransferAmount({
-    api: polkadotApi,
+    api: sourceApi,
     transferFromAddress: address,
   });
-  const { component: crossChainDirection } = useCrossChainDirection();
   const { value: transferToAddress, component: addressComboField } =
     useAddressComboField({ title: "To Address", defaultAddress: address });
 
   const getTxFunc = useCallback(() => {
-    if (!polkadotApi) {
+    if (!sourceApi) {
       return;
     }
 
@@ -79,19 +99,32 @@ function PopupContent() {
       return;
     }
 
-    const params = getTeleportParamsFromRelayChainToAssetHub({
-      api: polkadotApi,
-      transferToAddress,
-      amount,
-    });
-    return polkadotApi.tx.xcmPallet.limitedTeleportAssets(...params);
-  }, [dispatch, polkadotApi, transferToAddress, getCheckedTransferAmount]);
+    if (
+      sourceChain === Chains.polkadot &&
+      destinationChain === Chains.polkadotAssetHub
+    ) {
+      return teleportFromRelayChainToAssetHub({
+        sourceApi,
+        transferToAddress,
+        amount,
+      });
+    } else if (
+      sourceChain === Chains.polkadotAssetHub &&
+      destinationChain === Chains.polkadot
+    ) {
+      return teleportFromAssetHubToRelayChain({
+        sourceApi,
+        transferToAddress,
+        amount,
+      });
+    }
+  }, [dispatch, sourceApi, transferToAddress, getCheckedTransferAmount]);
 
   const isMounted = useMountedState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const doSubmit = useCallback(async () => {
-    if (!polkadotApi) {
+    if (!sourceApi) {
       dispatch(newErrorToast("Chain network is not connected yet"));
       return;
     }
@@ -101,7 +134,7 @@ function PopupContent() {
       return;
     }
 
-    let tx = await getTxFunc();
+    const tx = await getTxFunc();
     if (!tx) {
       return;
     }
@@ -109,10 +142,10 @@ function PopupContent() {
     const account = extensionAccounts.find((item) =>
       isSameAddress(item.address, address),
     );
-    setSigner(polkadotApi, account);
+    setSigner(sourceApi, account);
 
     await sendSubstrateTx({
-      api: polkadotApi,
+      api: sourceApi,
       tx,
       dispatch,
       setLoading: setIsSubmitting,
@@ -123,7 +156,7 @@ function PopupContent() {
         dispatch(newSuccessToast("Teleport successfully"));
       },
     });
-  }, [polkadotApi, dispatch, extensionAccounts, address, getTxFunc, setSigner]);
+  }, [sourceApi, dispatch, extensionAccounts, address, getTxFunc, setSigner]);
 
   return (
     <>
@@ -132,7 +165,7 @@ function PopupContent() {
       {addressComboField}
       {transferAmountField}
       <AdvanceSettings>
-        <ExistentialDeposit destApi={api} />
+        <ExistentialDeposit destApi={destApi} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <PrimaryButton loading={isSubmitting} onClick={doSubmit}>
