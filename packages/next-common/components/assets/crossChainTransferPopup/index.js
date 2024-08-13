@@ -249,7 +249,7 @@ function PopupContent() {
       isMounted,
       onClose,
       onInBlock: () => {
-        dispatch(newSuccessToast("Transfer successful"));
+        dispatch(newSuccessToast("Transfer successfully"));
       },
     });
   }, [polkadotApi, dispatch, extensionAccounts, address, getTxFunc, setSigner]);
