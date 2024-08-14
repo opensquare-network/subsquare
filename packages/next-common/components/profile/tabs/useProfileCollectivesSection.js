@@ -1,17 +1,15 @@
 import { usePageProps } from "next-common/context/page";
-import { useFellowshipCollectiveCoreMember } from "next-common/hooks/fellowship/collective/useFellowshipCollectiveCoreMember";
+import { useIsAmbassadorCoreMember } from "next-common/hooks/ambassador/core/useIsAmbassadorCoreMember";
+import { useIsFellowshipCoreMember } from "next-common/hooks/fellowship/core/useIsFellowshipCoreMember";
 
 export function useProfileCollectivesSection() {
   const { id: address } = usePageProps();
-  const fellowshipCoreMember = useFellowshipCollectiveCoreMember(address);
-  const ambassadorCoreMember = useFellowshipCollectiveCoreMember(
-    address,
-    "ambassadorCore",
-  );
+  const isFellowshipCoreMember = useIsFellowshipCoreMember(address);
+  const isAmbassadorCoreMember = useIsAmbassadorCoreMember(address);
 
-  if (fellowshipCoreMember) {
+  if (isFellowshipCoreMember) {
     return "fellowship";
-  } else if (ambassadorCoreMember) {
+  } else if (isAmbassadorCoreMember) {
     return "ambassador";
   }
 
