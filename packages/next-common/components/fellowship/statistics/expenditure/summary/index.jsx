@@ -19,7 +19,7 @@ function getTotalSpent(data) {
 }
 
 function SpentCycles({ data }) {
-  return <SummaryItem title="Spent Cycles">{data.length}</SummaryItem>;
+  return <SummaryItem title="Spend Cycles">{data.length}</SummaryItem>;
 }
 
 function TotalSpent({ data }) {
