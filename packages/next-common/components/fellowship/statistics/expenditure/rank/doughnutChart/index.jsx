@@ -104,12 +104,12 @@ export default function StatisticsExpenditureByRank() {
   }, []);
 
   useEffect(() => {
-    if (members && members.length > 0) {
+    if (members && ranksData) {
       const datas = handleLabelDatas(members, ranksData);
       setLabelDatas(datas);
       setContentLoading(false);
     }
-  }, [members]);
+  }, [members, ranksData]);
 
   const data = {
     labels: labelDatas.map((i) => i.label),
