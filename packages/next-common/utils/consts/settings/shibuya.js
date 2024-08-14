@@ -73,7 +73,7 @@ const shibuya = {
   links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasSubscan: false,
+  hasSubscan: true,
   hasDiscussions: true,
   hasTechComm: true,
   hasTipsModule: false,
