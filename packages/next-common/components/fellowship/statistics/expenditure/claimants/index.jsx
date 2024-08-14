@@ -11,8 +11,8 @@ import { useState, useEffect } from "react";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
+import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
+import { StatisticsTitle } from "next-common/components/statistics/styled.js";
 
 function handleClaimantsData(originalMembers, members) {
   // Pre-processing membersRank map.
@@ -34,7 +34,7 @@ function paginateData(data, page, pageSize) {
 }
 
 function StatisticsClaimantsTable() {
-  const members = useSelector(fellowshipCoreMembersSelector);
+  const members = useSelector(fellowshipCollectiveMembersSelector);
   const [total, setTotal] = useState(0);
   const [processedData, setProcessedData] = useState([]);
   const [rowData, setRowData] = useState([]);
@@ -101,15 +101,10 @@ function StatisticsClaimantsTable() {
 }
 
 function StatisticsClaimantsHeader() {
-  return (
-    <div className="flex flex-col gap-[4px]">
-      <div className="flex text16Bold text-textPrimary">Claimants</div>
-    </div>
-  );
+  return <StatisticsTitle>Claimants</StatisticsTitle>;
 }
 
 export default function StatisticsClaimants() {
-  useFetchFellowshipCoreMembers();
   return (
     <SecondaryCard>
       <div className="flex flex-col gap-[16px] h-full">
