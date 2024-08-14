@@ -15,14 +15,16 @@ import { useCallback, useState } from "react";
 import {
   newErrorToast,
   newPendingToast,
+  newSuccessToast,
   newToastId,
+  newWarningToast,
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 import { usePopupOnClose } from "next-common/context/popup";
 import { noop } from "lodash-es";
 
-export async function usePopupSendTransaction() {
+export function usePopupSendTransaction() {
   const onClose = usePopupOnClose();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -39,9 +41,12 @@ export async function usePopupSendTransaction() {
       const noWaitForFinalized = onFinalized === noop;
       const totalSteps = noWaitForFinalized ? 2 : 3;
       const toastId = newToastId();
-      dispatch(
-        newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`),
-      );
+
+      const onStarted = () => {
+        dispatch(
+          newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`),
+        );
+      };
 
       const _onSubmitted = () => {
         dispatch(
@@ -55,6 +60,7 @@ export async function usePopupSendTransaction() {
       };
 
       const _onInBlock = (data) => {
+        setIsLoading(false);
         if (noWaitForFinalized) {
           dispatch(removeToast(toastId));
         } else {
@@ -74,8 +80,13 @@ export async function usePopupSendTransaction() {
       };
 
       const onError = (e) => {
+        setIsLoading(false);
         dispatch(removeToast(toastId));
-        dispatch(newErrorToast(e.message));
+        if (e.message === "Cancelled") {
+          dispatch(newWarningToast(e.message));
+        } else {
+          dispatch(newErrorToast(e.message));
+        }
       };
 
       setIsLoading(true);
@@ -85,6 +96,7 @@ export async function usePopupSendTransaction() {
         if (isMimirWallet) {
           const handled = await maybeSendMimirTx({
             tx,
+            onStarted,
             onInBlock: _onInBlock,
             onSubmitted: _onSubmitted,
             onFinalized: _onFinalized,
@@ -101,7 +113,19 @@ export async function usePopupSendTransaction() {
         if (isSignetWallet) {
           const handled = await maybeSendSignetTx({
             tx,
-            onSubmitted: _onSubmitted,
+            onStarted: () => {
+              dispatch(newPendingToast(toastId, "Waiting for signing..."));
+            },
+            onSubmitted: () => {
+              dispatch(newSuccessToast("Multisig transaction submitted"));
+              setIsLoading(false);
+              onClose();
+              onSubmitted();
+            },
+            onEnded: () => {
+              dispatch(removeToast(toastId));
+              setIsLoading(false);
+            },
             onError,
           });
           if (handled) {
@@ -122,6 +146,7 @@ export async function usePopupSendTransaction() {
         if (shouldSendEvmTx) {
           await sendEvmTx({
             data: tx.inner.toU8a(),
+            onStarted,
             onInBlock: _onInBlock,
             onSubmitted: _onSubmitted,
             onError,
@@ -133,6 +158,7 @@ export async function usePopupSendTransaction() {
         await sendSubstrateTx({
           api,
           tx,
+          onStarted,
           onInBlock: _onInBlock,
           onSubmitted: _onSubmitted,
           onFinalized: _onFinalized,

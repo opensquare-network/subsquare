@@ -33,6 +33,7 @@ export async function tryInitMimir() {
 
 export async function maybeSendMimirTx({
   tx,
+  onStarted = noop,
   onFinalized = noop,
   onInBlock = noop,
   onSubmitted = noop,
@@ -50,6 +51,8 @@ export async function maybeSendMimirTx({
   if (!isMimir) {
     return false;
   }
+
+  onStarted();
 
   try {
     const result = await injected.signer.signPayload({

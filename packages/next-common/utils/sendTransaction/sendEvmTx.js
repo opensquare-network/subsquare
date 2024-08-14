@@ -5,10 +5,10 @@ import {
   isSameChainId,
   requestAccounts,
   switchNetwork,
-} from "./metamask";
-import getChainSettings from "./consts/settings";
-import { getEvmSignerAddress } from "./mixedChainUtil";
-import isHydradx from "./isHydradx";
+} from "../metamask";
+import getChainSettings from "../consts/settings";
+import { getEvmSignerAddress } from "../mixedChainUtil";
+import isHydradx from "../isHydradx";
 import { hexToNumber } from "viem";
 import { noop } from "lodash-es";
 
@@ -18,6 +18,7 @@ export const DISPATCH_PRECOMPILE_ADDRESS =
 export async function sendEvmTx({
   to,
   data,
+  onStarted = noop,
   onInBlock = noop,
   onSubmitted = noop,
   onError = noop,
@@ -79,6 +80,8 @@ export async function sendEvmTx({
       return;
     }
   }
+
+  onStarted();
 
   try {
     const provider = new ethers.BrowserProvider(ethereum);

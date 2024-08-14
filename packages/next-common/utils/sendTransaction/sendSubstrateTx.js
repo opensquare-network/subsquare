@@ -80,12 +80,15 @@ export function createSendTxEventHandler({
 export async function sendSubstrateTx({
   api,
   tx,
+  onStarted = noop,
   onFinalized = noop,
   onInBlock = noop,
   onSubmitted = noop,
   onError = noop,
   signerAddress,
 }) {
+  onStarted();
+
   try {
     const account = await api.query.system.account(signerAddress);
 
