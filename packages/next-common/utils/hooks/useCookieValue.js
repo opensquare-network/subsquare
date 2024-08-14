@@ -12,8 +12,10 @@ export function useCookieValue(key, defaultValue) {
 
   const set = useCallback(
     (val, options) => {
-      setCookie(key, JSON.stringify(val), options);
       setValue(val);
+      if (key) {
+        setCookie(key, JSON.stringify(val), options);
+      }
     },
     [key],
   );
