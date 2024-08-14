@@ -2,13 +2,10 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import "chart.js/auto";
 import Loading from "next-common/components/loading";
 import CyclesChart from "./cyclesChart";
+import { StatisticsTitle } from "next-common/components/statistics/styled.js";
 
 function BarChartHeader() {
-  return (
-    <div className="flex flex-col gap-[4px]">
-      <div className="flex text16Bold text-textPrimary">Cycles</div>
-    </div>
-  );
+  return <StatisticsTitle>Cycles</StatisticsTitle>;
 }
 
 const LoadingContent = (

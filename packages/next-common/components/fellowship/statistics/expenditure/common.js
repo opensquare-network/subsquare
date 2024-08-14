@@ -1,15 +1,54 @@
 import { useTheme } from "styled-components";
 import deepmerge from "deepmerge";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
-import { toPrecision, abbreviateBigNumber } from "next-common/utils";
+import { toPrecision, formatNum } from "next-common/utils";
+
+export const doughnutChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  animation: {
+    duration: 0,
+  },
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      displayColors: false,
+      position: "average",
+      callbacks: {
+        title: () => "",
+        label: (item) => {
+          const name = item.dataset.name[item.dataIndex];
+          const percentage = item.dataset.percentage[item.dataIndex];
+          const count = item.dataset.data[item.dataIndex];
+          return `${name}: ${getAbbreviateBigNumber(count)} (${percentage})`;
+        },
+      },
+    },
+  },
+  cutout: "80%",
+};
+
+export const doughnutChartColors = [
+  "#D5D9E2",
+  "#CACED8",
+  "#F1CF86",
+  "#F5B089",
+  "#C3B6FF",
+  "#88BEEB",
+  "#95D198",
+  "#8C96EB",
+  "#62D2C9",
+  "#E684B8",
+];
 
 export function getAbbreviateBigNumber(count, showSymbol = true) {
   const { symbol, decimals } = useSalaryAsset();
   const precisionCount = toPrecision(count, decimals);
-  if (!showSymbol) {
-    return abbreviateBigNumber(precisionCount);
-  }
-  return `${abbreviateBigNumber(precisionCount)} ${symbol}`;
+  return showSymbol
+    ? `${formatNum(precisionCount)} ${symbol}`
+    : formatNum(precisionCount);
 }
 
 export function useOptions(userOptions) {

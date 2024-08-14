@@ -81,6 +81,8 @@ export const fellowshipStatisticsCyclesApi =
   "fellowship/statistics/salary/cycles";
 export const fellowshipStatisticsMembersApi =
   "fellowship/statistics/salary/members";
+export const fellowshipStatisticsRanksApi =
+  "fellowship/statistics/salary/ranks";
 export const fellowshipStatisticsUsersApi = (address) =>
   `fellowship/statistics/users/${address}`;
 
