@@ -1,26 +1,28 @@
 import { useChain } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
-import { useIsAmbassadorCoreMember } from "next-common/hooks/ambassador/core/useIsAmbassadorCoreMember";
-import { useIsFellowshipCoreMember } from "next-common/hooks/fellowship/core/useIsFellowshipCoreMember";
+import { useFellowshipCollectiveCoreMember } from "next-common/hooks/fellowship/collective/useFellowshipCollectiveCoreMember";
 import { isCollectivesChain } from "next-common/utils/chain";
 
 export function useProfileCollectivesTabs() {
   const chain = useChain();
   const { id: address } = usePageProps();
-  const isFellowshipCoreMember = useIsFellowshipCoreMember(address);
-  const isAmbassadorCoreMember = useIsAmbassadorCoreMember(address);
+  const fellowshipCoreMember = useFellowshipCollectiveCoreMember(address);
+  const ambassadorCoreMember = useFellowshipCollectiveCoreMember(
+    address,
+    "ambassadorCore",
+  );
 
   if (!isCollectivesChain(chain)) {
     return [];
   }
 
   return [
-    isFellowshipCoreMember && {
+    fellowshipCoreMember && {
       label: "Fellowship",
       url: `/user/${address}/fellowship`,
       exactMatch: false,
     },
-    isAmbassadorCoreMember && {
+    ambassadorCoreMember && {
       label: "Ambassador",
       url: `/user/${address}/ambassador`,
       exactMatch: false,
