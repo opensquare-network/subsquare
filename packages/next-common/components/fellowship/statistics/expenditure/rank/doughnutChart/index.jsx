@@ -1,5 +1,5 @@
 import { Doughnut } from "react-chartjs-2";
-import { cn, formatNum } from "next-common/utils";
+import { cn } from "next-common/utils";
 import { useSelector } from "react-redux";
 import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
 import { useEffect, useState } from "react";
