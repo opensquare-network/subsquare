@@ -6,30 +6,34 @@ import CollectivesDemotionPrompt from "./components/collectivesDemotionPrompt";
 import { AccountHead, ProxyTip } from "./accountInfoPanel";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ManageAccountButton from "./components/manageAccountButton";
-import FellowshipMemberDataProvider from "./context/fellowshipMemberDataContext";
-import AmbassadorMemberDataProvider from "./context/ambassadorMemberDataContext";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
+import useMemberData from "./hook/useMemberData";
+import MemberDataProvider from "./context/memberDataContext";
 
 export default function CollectivesAccountInfoPanel({ hideManageAccountLink }) {
   useSubscribeAccount();
 
+  const fellowshipMemberData = useMemberData();
+  const ambassadorMemberData = useMemberData("ambassador");
+
   return (
-    <FellowshipMemberDataProvider>
-      <AmbassadorMemberDataProvider>
-        <NeutralPanel className="p-6 space-y-4">
-          <ProxyTip />
-          <AccountHead />
-          <Divider />
+    <MemberDataProvider
+      fellowshipMemberData={fellowshipMemberData}
+      ambassadorMemberData={ambassadorMemberData}
+    >
+      <NeutralPanel className="p-6 space-y-4">
+        <ProxyTip />
+        <AccountHead />
+        <Divider />
 
-          <CollectivesAccountInfo />
+        <CollectivesAccountInfo />
 
-          {!hideManageAccountLink && <ManageAccountButton />}
+        {!hideManageAccountLink && <ManageAccountButton />}
 
-          <ExtensionUpdatePrompt />
-          <AccountPanelScrollPrompt />
-          <CollectivesDemotionPrompt />
-        </NeutralPanel>
-      </AmbassadorMemberDataProvider>
-    </FellowshipMemberDataProvider>
+        <ExtensionUpdatePrompt />
+        <AccountPanelScrollPrompt />
+        <CollectivesDemotionPrompt />
+      </NeutralPanel>
+    </MemberDataProvider>
   );
 }

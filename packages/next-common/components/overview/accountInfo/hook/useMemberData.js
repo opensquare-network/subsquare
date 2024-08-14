@@ -1,14 +1,18 @@
 import { useCallback, useState } from "react";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import {
-  useCoreFellowshipPallet,
-  useRankedCollectivePallet,
-} from "next-common/context/collectives/collectives";
 
-export default function useMemberData() {
-  const corePallet = useCoreFellowshipPallet();
-  const collectivePallet = useRankedCollectivePallet();
+export default function useMemberData(section = "fellowship") {
+  let corePallet;
+  let collectivePallet;
+
+  if (section === "fellowship") {
+    corePallet = "fellowshipCore";
+    collectivePallet = "fellowshipCollective";
+  } else if (section === "ambassador") {
+    corePallet = "ambassadorCore";
+    collectivePallet = "ambassadorCollective";
+  }
 
   const address = useRealAddress();
 
