@@ -39,7 +39,7 @@ function handleLabelDatas(members, ranksData) {
   const totalSalary = getTotalSalary(ranksData);
   const ranksDataObj = transformRanksDataToObject(ranksData);
   const datas = rankArr.map((rank, index) => {
-    const count = ranksDataObj[index] || "";
+    const count = ranksDataObj[index] || 0;
     const percent = ranksDataObj[index]
       ? new BigNumber(ranksDataObj[index]).div(totalSalary)
       : "";

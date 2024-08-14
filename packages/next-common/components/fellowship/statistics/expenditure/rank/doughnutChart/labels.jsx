@@ -7,19 +7,15 @@ function SalaryValueDisplay(count, decimals, symbol) {
   return count ? (
     <ValueDisplay value={toPrecision(count, decimals)} symbol={symbol} />
   ) : (
-    ""
+    `0 ${symbol}`
   );
 }
 
-function RowItem({
-  bgColor,
-  label,
-  percentage,
-  count,
-  index,
-  decimals,
-  symbol,
-}) {
+function getPercentageValue(percent) {
+  return percent ? `${(percent * 100).toFixed(2)}%` : "0%";
+}
+
+function RowItem({ bgColor, label, percentage, count, decimals, symbol }) {
   return (
     <div className="flex items-center gap-2">
       <span
@@ -27,13 +23,9 @@ function RowItem({
         style={{ backgroundColor: bgColor }}
       />
       <span className="w-[48px] text-textSecondary text12Medium ">{label}</span>
-      <span className="text12Medium text-textTertiary">
-        {index === 0
-          ? `0 ${symbol}`
-          : SalaryValueDisplay(count, decimals, symbol)}
-      </span>
+      <span className="text12Medium text-textTertiary">{count}</span>
       <span className="ml-auto text12Medium text-textTertiary">
-        {index === 0 ? "0%" : percentage}
+        {percentage}
       </span>
     </div>
   );
@@ -43,14 +35,13 @@ export default function DoughnutChartLabels({ labelDatas }) {
   const { symbol, decimals } = useSalaryAsset();
   return (
     <div className="flex flex-col gap-2 flex-grow min-w-[220px]">
-      {labelDatas.map((i, index) => (
+      {labelDatas.map((i) => (
         <RowItem
           key={i.label}
           label={i.label}
           bgColor={i.bgColor}
-          percentage={i.percent ? `${(i.percent * 100).toFixed(2)}%` : ""}
-          count={i.count}
-          index={index}
+          percentage={getPercentageValue(i.percent)}
+          count={SalaryValueDisplay(i.count, decimals, symbol)}
           symbol={symbol}
           decimals={decimals}
         />
