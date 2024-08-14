@@ -24,7 +24,7 @@ import westendCollectives from "./consts/settings/westendCollectives";
 import collectives from "./consts/settings/collectives";
 import darwinia2 from "./consts/settings/darwinia";
 // import moonbeam from "./consts/settings/moonbeam";
-import moonriver from "./consts/settings/moonriver";
+// import moonriver from "./consts/settings/moonriver";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
@@ -59,7 +59,7 @@ export const nodes = [
   litentry,
   litmus,
   // moonbeam,
-  moonriver,
+  // moonriver,
   phala,
   // polkadex,
   turing,

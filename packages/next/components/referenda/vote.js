@@ -20,10 +20,8 @@ import useIsDemocracyPassed from "next-common/context/post/democracy/referendum/
 import useLatestDemocracyTally from "next-common/hooks/democracy/tally";
 import { useChainSettings } from "next-common/context/chain";
 import Calls from "./voteCalls";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import WithAddress from "next-common/components/common/withAddress";
-import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "components/gov2/votePopup/voteSuccessful";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -33,10 +31,6 @@ const NestedVotesPopup = dynamicPopup(() =>
 );
 
 const VotePopup = dynamicPopup(() => import("components/referenda/popup"));
-
-const MoonVotePopup = dynamicPopup(() =>
-  import("components/referenda/popup/moonPopup"),
-);
 
 const FlattenedVotesPopup = dynamicPopup(() =>
   import("next-common/components/democracy/flattenedVotesPopup"),
@@ -82,12 +76,6 @@ function Vote({ referendumIndex }) {
   const electorate = useSelector(electorateSelector);
 
   const isVoteFinished = useIsDemocracyVoteFinished();
-  const isUseMetamask = useIsUseMetamask();
-
-  let Popup = VotePopup;
-  if (isMoonChain() && isUseMetamask) {
-    Popup = MoonVotePopup;
-  }
 
   let finishedResult;
   if (isVoteFinished) {
@@ -147,7 +135,7 @@ function Vote({ referendumIndex }) {
 
       <VoteSuccessfulProvider VoteSuccessfulPopup={VoteSuccessfulPopup}>
         {showVote && (
-          <Popup
+          <VotePopup
             onClose={() => setShowVote(false)}
             referendumIndex={referendumIndex}
           />

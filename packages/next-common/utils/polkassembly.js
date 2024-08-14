@@ -10,7 +10,6 @@ import Chains from "./consts/chains";
 export const PolkassemblyChains = [
   Chains.kusama,
   Chains.polkadot,
-  Chains.moonriver,
   Chains.collectives,
   Chains.zeitgeist,
 ];

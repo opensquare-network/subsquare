@@ -1,7 +1,5 @@
 import Chains from "../chains";
-import React from "react";
 import { MenuCouncil } from "@osn/icons/subsquare";
-import isMoonChain from "next-common/utils/isMoonChain";
 
 export const Names = {
   council: "COUNCIL",
@@ -10,12 +8,7 @@ export const Names = {
 };
 
 export function getCouncilMenu(summary) {
-  let activeMotions = 0;
-  if (isMoonChain()) {
-    activeMotions = summary?.moonCouncilMotions?.active || 0;
-  } else {
-    activeMotions = summary?.motions?.active || 0;
-  }
+  const activeMotions = summary?.motions?.active || 0;
 
   return {
     name: Names.council,

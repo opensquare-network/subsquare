@@ -11,9 +11,6 @@ import { useRecentProposalTechComm } from "./tc";
 import { useRecentProposalFinancialCouncil } from "./financialCouncil";
 import { useRecentProposalAlliance } from "./alliance";
 import { useRecentProposalAdvisoryCommittee } from "./advisoryCommittee";
-import { useRecentProposalOpenTechComm } from "./openTechComm";
-import isMoonChain from "next-common/utils/isMoonChain";
-import { useRecentProposalTreasuryCouncil } from "./treasuryCouncil";
 import Chains from "next-common/utils/consts/chains";
 import { partition } from "lodash-es";
 import EmptyRecentProposals from "./empty";
@@ -34,8 +31,6 @@ export default function RecentProposals() {
   const financialCouncil = useRecentProposalFinancialCouncil();
   const alliance = useRecentProposalAlliance();
   const advisoryCommittee = useRecentProposalAdvisoryCommittee();
-  const treasuryCouncil = useRecentProposalTreasuryCouncil();
-  const openTechComm = useRecentProposalOpenTechComm();
 
   const {
     modules: { referenda: hasReferenda, fellowship: hasFellowship },
@@ -46,12 +41,10 @@ export default function RecentProposals() {
     democracy,
     treasury,
     !isPolkadotChain && council,
-    isMoonChain() && treasuryCouncil,
     !isPolkadotChain && tc,
     financialCouncil,
     alliance,
     advisoryCommittee,
-    isMoonChain() && openTechComm,
     (hasDiscussions || chainSettings.hasDiscussionsForumTopics) && discussions,
   ]
     .filter(Boolean)

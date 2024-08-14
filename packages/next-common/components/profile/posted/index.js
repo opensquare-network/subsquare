@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { useChain } from "../../../context/chain";
 import List from "./list";
 import Categories from "./categories";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
@@ -40,14 +39,6 @@ export default function Posted() {
       polkassemblyDiscussions: summary?.polkassemblyDiscussions ?? 0,
     },
   };
-
-  if (isMoonChain()) {
-    overview.collectives.treasuryCouncilMotions =
-      overview.collectives.councilMotions ?? 0;
-    overview.collectives.councilMotions = summary?.moonCouncil?.motions ?? 0;
-    overview.collectives.openTechCommProposals =
-      summary?.openTechComm?.proposals ?? 0;
-  }
 
   const chain = useChain();
   const categories = getProfileCategories(chain);

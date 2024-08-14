@@ -28,7 +28,7 @@ export const VOTES_RANGE = {
   [Chains.kusama]: kusamaSlots,
   [Chains.darwinia2]: generateSlots([5 * k10, k100, m1, m10]),
   [Chains.vara]: generateSlots([k100, m1, m10, m100]),
-  [Chains.moonriver]: kusamaSlots,
+  // [Chains.moonriver]: kusamaSlots,
   [Chains.bifrost]: kusamaSlots,
   [Chains.bifrostPolkadot]: kusamaSlots,
   [Chains.rococo]: kusamaSlots,

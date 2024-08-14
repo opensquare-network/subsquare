@@ -6,7 +6,6 @@ import { EmptyList } from "next-common/utils/constants";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
-import Chains from "next-common/utils/consts/chains";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
@@ -70,18 +69,14 @@ export default function MotionPage({ motion }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  let listApi = "motions";
-  if ([Chains.moonbeam, Chains.moonriver].includes(process.env.CHAIN)) {
-    listApi = "moon-council/motions";
-  }
 
-  const { result: motion } = await nextApi.fetch(`${listApi}/${id}`);
+  const { result: motion } = await nextApi.fetch(`motions/${id}`);
   if (!motion) {
     return getNullDetailProps(id, { motion: null });
   }
 
   const comments = await fetchDetailComments(
-    `${listApi}/${motion._id}/comments`,
+    `motions/${motion._id}/comments`,
     context,
   );
   const tracksProps = await fetchOpenGovTracksProps();
