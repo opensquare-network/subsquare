@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
 import { useMountedState } from "react-use";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
 import NoVoteRecord from "components/referenda/popup/noVoteRecord";
@@ -30,11 +30,11 @@ import { useContextApi } from "next-common/context/api";
 
 function VotePanel({
   referendumIndex,
-  onInBlock = emptyFunction,
+  onInBlock = noop,
   useStandardVote,
   useSplitVote,
   useSplitAbstainVote,
-  submitExtrinsic = emptyFunction,
+  submitExtrinsic = noop,
   votingBalance,
   addressVote,
   addressVoteIsLoading,
@@ -177,7 +177,7 @@ export default function PopupContent() {
     useStandardVote,
     useSplitVote,
     useSplitAbstainVote,
-    submitExtrinsic = emptyFunction,
+    submitExtrinsic = noop,
   } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();

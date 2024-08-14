@@ -4,15 +4,11 @@ import { useDispatch } from "react-redux";
 
 import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 
-export default function UnnotePopup({
-  hash,
-  onClose,
-  onInBlock = emptyFunction,
-}) {
+export default function UnnotePopup({ hash, onClose, onInBlock = noop }) {
   const dispatch = useDispatch();
   const isMounted = useMountedState();
   const [isLoading, setIsLoading] = useState(false);

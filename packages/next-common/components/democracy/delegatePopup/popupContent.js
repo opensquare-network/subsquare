@@ -4,11 +4,7 @@ import { useDispatch } from "react-redux";
 import { useAddressVotingBalance } from "utils/hooks";
 import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import {
-  checkInputValue,
-  emptyFunction,
-  isSameAddress,
-} from "next-common/utils";
+import { checkInputValue, isSameAddress } from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import { useChainSettings } from "next-common/context/chain";
@@ -24,12 +20,13 @@ import {
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { normalizeAddress } from "next-common/utils/address";
+import { noop } from "lodash-es";
 
 export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const {
     onClose,
-    onInBlock = emptyFunction,
-    submitExtrinsic = emptyFunction,
+    onInBlock = noop,
+    submitExtrinsic = noop,
   } = usePopupParams();
   const dispatch = useDispatch();
   const isMounted = useMountedState();

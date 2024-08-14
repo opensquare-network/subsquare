@@ -4,16 +4,16 @@ import { useDispatch } from "react-redux";
 
 import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import SignerPopup from "next-common/components/signerPopup";
 
 export default function PopupCommon({
   trackIds,
   onClose,
   isLoading,
-  setIsLoading = emptyFunction,
-  onInBlock = emptyFunction,
-  submitExtrinsic = emptyFunction,
+  setIsLoading = noop,
+  onInBlock = noop,
+  submitExtrinsic = noop,
 }) {
   const dispatch = useDispatch();
   const isMounted = useMountedState();

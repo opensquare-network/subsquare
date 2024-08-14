@@ -2,7 +2,7 @@ import React from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import PopupContent from "./popupContent";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 
 export async function submitSubstrateExtrinsic({
   api,
@@ -11,7 +11,7 @@ export async function submitSubstrateExtrinsic({
   targetAddress,
   dispatch,
   setLoading,
-  onInBlock = emptyFunction,
+  onInBlock = noop,
   onClose,
   signerAccount,
   isMounted,

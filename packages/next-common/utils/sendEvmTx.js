@@ -1,5 +1,4 @@
 import { ethers } from "ethers";
-import { emptyFunction } from ".";
 import {
   newErrorToast,
   newPendingToast,
@@ -20,6 +19,7 @@ import getChainSettings from "./consts/settings";
 import { getEvmSignerAddress } from "./mixedChainUtil";
 import isHydradx from "./isHydradx";
 import { hexToNumber } from "viem";
+import { noop } from "lodash-es";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
@@ -28,10 +28,10 @@ export async function sendEvmTx({
   to,
   data,
   dispatch,
-  setLoading = emptyFunction,
-  onInBlock = emptyFunction,
-  onSubmitted = emptyFunction,
-  onClose = emptyFunction,
+  setLoading = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  onClose = noop,
   signerAccount,
 }) {
   const signerAddress = signerAccount?.address;
@@ -167,8 +167,8 @@ async function dispatchCall({
   signer,
   signerAddress,
   data,
-  onSubmitted = emptyFunction,
-  onInBlock = emptyFunction,
+  onSubmitted = noop,
+  onInBlock = noop,
 }) {
   let tx = {
     from: signerAddress,

@@ -2,17 +2,17 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useMountedState } from "react-use";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import { useContextApi } from "next-common/context/api";
 
 export default function useTxSubmission({
-  getTxFunc = emptyFunction,
-  onFinalized = emptyFunction,
-  onInBlock = emptyFunction,
-  onSubmitted = emptyFunction,
-  onClose = emptyFunction,
+  getTxFunc = noop,
+  onFinalized = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  onClose = noop,
 }) {
   const dispatch = useDispatch();
   const api = useContextApi();

@@ -251,8 +251,6 @@ export function isKeyRegisteredUser(user) {
   return isPolkadotKeyRegisteredUser(user) || isEthereumKeyRegisteredUser(user);
 }
 
-export function emptyFunction() {}
-
 export function checkInputValue(
   inputValue,
   decimals,

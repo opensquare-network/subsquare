@@ -1,5 +1,5 @@
 import React from "react";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import PopupCommon from "./popupCommon";
 
@@ -34,8 +34,8 @@ export default function UndelegatePopup({
   trackId,
   onClose,
   isLoading,
-  setIsLoading = emptyFunction,
-  onInBlock = emptyFunction,
+  setIsLoading = noop,
+  onInBlock = noop,
 }) {
   return (
     <PopupCommon

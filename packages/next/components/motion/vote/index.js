@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import { useDetailType } from "next-common/context/page";
 import Voters from "./voters";
 import Action from "./action";
@@ -18,7 +18,7 @@ export default function Vote({
   motionHash,
   motionIndex,
   isLoadingVote = false,
-  onInBlock = emptyFunction,
+  onInBlock = noop,
 }) {
   const type = useDetailType();
   const [showPopup, setShowPopup] = useState(false);

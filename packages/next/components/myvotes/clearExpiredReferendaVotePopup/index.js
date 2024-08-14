@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import SignerPopup from "next-common/components/signerPopup";
 import PopupLabel from "next-common/components/popup/label";
@@ -31,7 +31,7 @@ export default function ClearExpiredReferendaVotePopup({
   votes = [],
   unlockTracks = [],
   onClose,
-  onInBlock = emptyFunction,
+  onInBlock = noop,
 }) {
   const dispatch = useDispatch();
   const isMounted = useMountedState();

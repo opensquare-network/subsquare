@@ -2,13 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
-import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import {
-  checkInputValue,
-  emptyFunction,
-  isSameAddress,
-} from "next-common/utils";
+import { checkInputValue, isSameAddress } from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";
 
 import { useChainSettings } from "next-common/context/chain";
@@ -25,17 +20,13 @@ import {
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { normalizeAddress } from "next-common/utils/address";
+import { wrapWithProxy } from "next-common/utils/sendTx";
+import { usePopupSendTransaction } from "next-common/hooks/usePopupSendTransaction";
+import { noop } from "lodash-es";
 
 export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
-  const {
-    tracks,
-    onClose,
-    showTrackSelect = true,
-    onInBlock = emptyFunction,
-    submitExtrinsic = emptyFunction,
-  } = usePopupParams();
+  const { tracks, showTrackSelect = true, onInBlock = noop } = usePopupParams();
   const dispatch = useDispatch();
-  const isMounted = useMountedState();
 
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
@@ -47,7 +38,7 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const api = useContextApi();
   const node = useChainSettings();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const { sendTx, isLoading } = usePopupSendTransaction();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
     signerAccount?.realAddress,
@@ -106,19 +97,32 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
       );
     }
 
-    await submitExtrinsic({
-      api,
-      trackIds: selectedTracks,
-      conviction,
-      bnVoteBalance,
-      targetAddress,
-      dispatch,
-      setLoading: setIsLoading,
-      onInBlock,
-      onClose,
-      signerAccount,
-      isMounted,
-    });
+    let tx;
+    if (selectedTracks.length === 1) {
+      tx = api.tx.convictionVoting.delegate(
+        selectedTracks[0],
+        targetAddress,
+        conviction,
+        bnVoteBalance.toString(),
+      );
+    } else {
+      tx = api.tx.utility.batch(
+        selectedTracks.map((trackId) =>
+          api.tx.convictionVoting.delegate(
+            trackId,
+            targetAddress,
+            conviction,
+            bnVoteBalance.toString(),
+          ),
+        ),
+      );
+    }
+
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+    }
+
+    await sendTx({ api, tx, onInBlock });
   };
 
   const disabled = !(selectedTracks?.length > 0);

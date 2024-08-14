@@ -1,5 +1,5 @@
 import React from "react";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
 import PopupCommon from "./popupCommon";
 
@@ -32,8 +32,8 @@ export async function submitSubstrateExtrinsic({
 export default function UndelegatePopup({
   onClose,
   isLoading,
-  setIsLoading = emptyFunction,
-  onInBlock = emptyFunction,
+  setIsLoading = noop,
+  onInBlock = noop,
 }) {
   return (
     <PopupCommon

@@ -1,7 +1,6 @@
 import { normalizeAddress } from "../address";
 import ChainTypes from "../consts/chainTypes";
 import WalletTypes from "../consts/walletTypes";
-import { emptyFunction } from "..";
 import {
   newErrorToast,
   newPendingToast,
@@ -11,6 +10,7 @@ import {
   removeToast,
 } from "next-common/store/reducers/toastSlice";
 import { getSignetSdk } from "next-common/context/signet";
+import { noop } from "lodash-es";
 
 export function normalizedSignetAccount(acc) {
   return {
@@ -27,8 +27,8 @@ export function normalizedSignetAccount(acc) {
 export async function maybeSendSignetTx({
   tx,
   dispatch,
-  setLoading = emptyFunction,
-  onClose = emptyFunction,
+  setLoading = noop,
+  onClose = noop,
 }) {
   const toastId = newToastId();
   dispatch(newPendingToast(toastId, "Waiting for signing..."));

@@ -1,5 +1,4 @@
 import { inject, isMimirReady, MIMIR_REGEXP } from "@mimirdev/apps-inject";
-import { emptyFunction } from "..";
 import {
   newErrorToast,
   newPendingToast,
@@ -11,6 +10,7 @@ import {
 import { createSendTxEventHandler } from "../sendTx";
 import { checkCall } from "@mimirdev/apps-sdk";
 import { getLatestApi } from "next-common/context/api";
+import { noop } from "lodash-es";
 
 export async function tryInitMimir() {
   if (typeof window === "undefined") {
@@ -42,11 +42,11 @@ export async function tryInitMimir() {
 export async function maybeSendMimirTx({
   tx,
   dispatch,
-  setLoading = emptyFunction,
-  onFinalized = emptyFunction,
-  onInBlock = emptyFunction,
-  onSubmitted = emptyFunction,
-  onClose = emptyFunction,
+  setLoading = noop,
+  onFinalized = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  onClose = noop,
   signerAccount,
 }) {
   const { web3Enable, web3FromSource } = await import(
@@ -63,7 +63,7 @@ export async function maybeSendMimirTx({
     return false;
   }
 
-  const noWaitForFinalized = onFinalized === emptyFunction;
+  const noWaitForFinalized = onFinalized === noop;
   const totalSteps = noWaitForFinalized ? 2 : 3;
 
   const toastId = newToastId();

@@ -1,4 +1,3 @@
-import { emptyFunction } from ".";
 import {
   newErrorToast,
   newPendingToast,
@@ -16,6 +15,7 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import { tryConvertToEvmAddress } from "./mixedChainUtil";
 import { getLatestApi } from "next-common/context/api";
 import { maybeSendSignetTx } from "./signet";
+import { noop } from "lodash-es";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
@@ -81,12 +81,12 @@ function handleExtrinsicFailure(dispatch, status, events, toastId) {
 export function createSendTxEventHandler({
   toastId,
   dispatch,
-  setLoading = emptyFunction,
-  onFinalized = emptyFunction,
-  onInBlock = emptyFunction,
+  setLoading = noop,
+  onFinalized = noop,
+  onInBlock = noop,
   totalSteps,
   noWaitForFinalized,
-  unsub = emptyFunction,
+  unsub = noop,
 }) {
   let blockHash = null;
 
@@ -129,14 +129,14 @@ export async function sendSubstrateTx({
   api,
   tx,
   dispatch,
-  setLoading = emptyFunction,
-  onFinalized = emptyFunction,
-  onInBlock = emptyFunction,
-  onSubmitted = emptyFunction,
-  onClose = emptyFunction,
+  setLoading = noop,
+  onFinalized = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  onClose = noop,
   signerAddress,
 }) {
-  const noWaitForFinalized = onFinalized === emptyFunction;
+  const noWaitForFinalized = onFinalized === noop;
   const totalSteps = noWaitForFinalized ? 2 : 3;
 
   const toastId = newToastId();
@@ -190,11 +190,11 @@ export async function sendSubstrateTx({
 export async function sendTx({
   tx,
   dispatch,
-  setLoading = emptyFunction,
-  onFinalized = emptyFunction,
-  onInBlock = emptyFunction,
-  onSubmitted = emptyFunction,
-  onClose = emptyFunction,
+  setLoading = noop,
+  onFinalized = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  onClose = noop,
   signerAccount,
 }) {
   const isMimirWallet = signerAccount?.meta?.source === WalletTypes.MIMIR;

@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
-import { emptyFunction } from "next-common/utils";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import PopupWithSigner from "next-common/components/popupWithSigner";
@@ -21,13 +20,14 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
+import { noop } from "lodash-es";
 
 function PopupContent() {
   const {
     referendumIndex,
     onClose,
-    onSubmitted = emptyFunction,
-    onInBlock = emptyFunction,
+    onSubmitted = noop,
+    onInBlock = noop,
   } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const dispatch = useDispatch();

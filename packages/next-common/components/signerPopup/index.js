@@ -1,15 +1,15 @@
 import React from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import PrimaryButton from "next-common/lib/button/primary";
-import { emptyFunction } from "../../utils";
 import { PopupButtonWrapper } from "../popup/wrapper";
 import { useSignerAccount, usePopupParams } from "../popupWithSigner/context";
 import SignerWithBalance from "./signerWithBalance";
 import { useContextApi } from "next-common/context/api";
+import { noop } from "lodash-es";
 
 function PopupContent({ children }) {
   const {
-    actionCallback = emptyFunction,
+    actionCallback = noop,
     isLoading = false,
     confirmText = "Confirm",
     disabled = false,

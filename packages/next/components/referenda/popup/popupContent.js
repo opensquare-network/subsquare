@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
 import { useMountedState } from "react-use";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
 import NoVoteRecord from "./noVoteRecord";
@@ -42,12 +42,12 @@ export function LoadingPanel() {
 
 function VotePanel({
   referendumIndex,
-  onSubmitted = emptyFunction,
-  onInBlock = emptyFunction,
+  onSubmitted = noop,
+  onInBlock = noop,
   useStandardVote,
   useSplitVote,
   VoteTypeTab,
-  submitExtrinsic = emptyFunction,
+  submitExtrinsic = noop,
   votingBalance,
   addressVote,
   addressVoteIsLoading,
@@ -176,12 +176,12 @@ export default function PopupContent() {
   const {
     referendumIndex,
     onClose,
-    onSubmitted = emptyFunction,
-    onInBlock = emptyFunction,
+    onSubmitted = noop,
+    onInBlock = noop,
     useStandardVote,
     useSplitVote,
     VoteTypeTab,
-    submitExtrinsic = emptyFunction,
+    submitExtrinsic = noop,
   } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();

@@ -1,5 +1,5 @@
 import React from "react";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import PrimaryButton from "next-common/lib/button/primary";
 import LoadingButton from "next-common/lib/button/loading";
 import useTxSubmission from "./useTxSubmission";
@@ -8,12 +8,12 @@ export default function TxSubmissionButton({
   loading = false,
   loadingText,
   disabled = false,
-  getTxFunc = emptyFunction,
+  getTxFunc = noop,
   title = "Submit",
-  onFinalized = emptyFunction,
-  onInBlock = emptyFunction,
-  onSubmitted = emptyFunction,
-  onClose = emptyFunction,
+  onFinalized = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  onClose = noop,
 }) {
   const { isSubmitting, doSubmit } = useTxSubmission({
     getTxFunc,

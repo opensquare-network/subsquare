@@ -5,9 +5,8 @@ import { useMountedState } from "react-use";
 import { newErrorToast } from "../../../../store/reducers/toastSlice";
 import DepositRequired from "./depositRequired";
 import SubmitButton from "./submitButton";
-import { emptyFunction } from "../../../../utils";
 import useDeposit from "./useDeposit";
-import { isNil } from "lodash-es";
+import { isNil, noop } from "lodash-es";
 import SecondPopupInputTimes from "./inputTimes";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useIsLoaded from "next-common/hooks/useIsLoaded";
@@ -21,9 +20,9 @@ export default function PopupContent() {
     depositorUpperBound,
     depositRequired,
     onClose,
-    onInBlock = emptyFunction,
+    onInBlock = noop,
     useAddressVotingBalance,
-    submitExtrinsic = emptyFunction,
+    submitExtrinsic = noop,
   } = usePopupParams();
   const dispatch = useDispatch();
   const isMounted = useMountedState();

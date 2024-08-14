@@ -1,6 +1,6 @@
 import React from "react";
 import Popup from "../../../popup/wrapper/Popup";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import "../../globalConfig";
 import ThresholdCurvesGov2TallyLegend from "../legend/gov2TallyLegend";
 import {
@@ -24,7 +24,7 @@ function PopupChartContent({ isFellowship = false }) {
 }
 
 export default function ThresholdCurvesGov2TallyPopup({
-  closeFunc = emptyFunction,
+  closeFunc = noop,
   supportPerbill = 0,
   supportPercentage = 0,
   approvalPercentage = 0,

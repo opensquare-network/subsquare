@@ -6,7 +6,7 @@ import toApiCouncil from "next-common/utils/toApiCouncil";
 import { useMountedState } from "react-use";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 import { VoteLoadingEnum } from "next-common/utils/voteEnum";
 import { useChain } from "next-common/context/chain";
 import { WarningMessage } from "next-common/components/popup/styled";
@@ -33,9 +33,9 @@ export default function PopupContent() {
     motionHash,
     motionIndex,
     onClose,
-    onInBlock = emptyFunction,
+    onInBlock = noop,
     type,
-    submitExtrinsic = emptyFunction,
+    submitExtrinsic = noop,
   } = usePopupParams();
   const chain = useChain();
   const dispatch = useDispatch();

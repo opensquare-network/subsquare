@@ -1,10 +1,6 @@
 import React, { useCallback, useState } from "react";
 
-import {
-  checkInputValue,
-  emptyFunction,
-  isAddressInGroup,
-} from "next-common/utils";
+import { checkInputValue, isAddressInGroup } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { useChainSettings } from "next-common/context/chain";
@@ -17,9 +13,10 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import { noop } from "lodash-es";
 
 function PopupContent() {
-  const { tipHash, onClose, onInBlock = emptyFunction } = usePopupParams();
+  const { tipHash, onClose, onInBlock = noop } = usePopupParams();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
 
