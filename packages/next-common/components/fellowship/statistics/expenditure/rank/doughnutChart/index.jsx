@@ -11,7 +11,7 @@ import BigNumber from "bignumber.js";
 import {
   doughnutChartOptions as options,
   doughnutChartColors as colors,
-} from "next-common/components/fellowship/statistics/expenditure/common.js";
+} from "next-common/components/fellowship/statistics/common.js";
 import DoughnutChartLabels from "./labels";
 import { useNavCollapsed } from "next-common/context/nav";
 
