@@ -3,13 +3,16 @@ import chainOrScanHeightSelector from "next-common/store/reducers/selectors/heig
 import { useMemo, useState } from "react";
 import Popup from "./popup";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
+import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
 export default function CoreFellowshipBump({ member }) {
   const { address, rank, status: { lastProof } = {} } = member || {};
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const params = useCoreFellowshipParams();
   const demotionPeriod = useMemo(() => {
-    return rank <= 0 ? params.offboardTimeout : params.demotionPeriod[rank - 1];
+    return rank <= 0
+      ? params.offboardTimeout
+      : params.demotionPeriod[rankToIndex(rank)];
   }, [rank, params]);
   const canBump =
     demotionPeriod > 0 && latestHeight >= lastProof + demotionPeriod;

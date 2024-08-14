@@ -6,6 +6,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
 const PromoteFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
 
@@ -28,7 +29,7 @@ export default function Promote({ member }) {
   const me = members.find((m) => m.address === address);
   const myRankOk = me && me.rank >= 3;
 
-  const index = rank > 0 ? rank - 1 : 0;
+  const index = rankToIndex(rank);
   const promotionPeriod = fellowshipParams.minPromotionPeriod[index];
   const gone = latestHeight - lastPromotion;
   const promotionPeriodComplete = gone >= promotionPeriod;

@@ -6,7 +6,7 @@ import AdvanceSettings from "../common/advanceSettings";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useLocalTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/newLocalTreasuryProposalPopup";
 import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
-import useBeneficiaryField from "next-common/components/preImages/createPreimagePopup/fields/useBeneficiaryField";
+import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 
@@ -14,7 +14,7 @@ export function NewTreasuryReferendumInnerPopup() {
   const { onClose } = usePopupParams();
   const { value: inputBalance, component: balanceField } = useBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
-    useBeneficiaryField();
+    useAddressComboField();
   const { value: trackId, component: trackField } =
     useAutoSelectTreasuryTrackField(inputBalance);
   const { value: enactment, component: enactmentField } =

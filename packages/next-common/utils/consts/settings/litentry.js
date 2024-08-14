@@ -3,6 +3,7 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
+import { litentryBlockHeightSettings } from "./blockHeightSettings/litentry";
 
 const ProjectIconLitentryDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconLitentryDark"),
@@ -110,6 +111,7 @@ const litentry = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  blockHeightSettings: litentryBlockHeightSettings,
 };
 
 export default litentry;
