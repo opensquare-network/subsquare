@@ -1,5 +1,3 @@
-const vara = "vara";
-
 const Chains = {
   polkadot: "polkadot",
   kusama: "kusama",
@@ -35,7 +33,8 @@ const Chains = {
   moonbeam: "moonbeam",
   bifrostPolkadot: "bifrost-polkadot",
   polkadotAssetHub: "polkadot-assethub",
-  vara,
+  vara: "vara",
+  shibuya: "shibuya",
 };
 
 export default Chains;
