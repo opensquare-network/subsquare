@@ -3,7 +3,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { toPrecision } from "next-common/utils";
 
-function SalaryValueDisplay(count, decimals, symbol) {
+function getSalaryValue(count, decimals, symbol) {
   return count ? (
     <ValueDisplay value={toPrecision(count, decimals)} symbol={symbol} />
   ) : (
@@ -41,7 +41,7 @@ export default function DoughnutChartLabels({ labelDatas }) {
           label={i.label}
           bgColor={i.bgColor}
           percentage={getPercentageValue(i.percent)}
-          count={SalaryValueDisplay(i.count, decimals, symbol)}
+          count={getSalaryValue(i.count, decimals, symbol)}
           symbol={symbol}
           decimals={decimals}
         />
