@@ -2,7 +2,7 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 import "next-common/components/charts/globalConfig.js";
 import LegendItem from "next-common/components/charts/legend/item.js";
-import { useOptions } from "next-common/components/fellowship/statistics/common.js";
+import { useBarChartOptions as useOptions } from "next-common/components/fellowship/statistics/common.js";
 
 /**
  * @param {Object} props

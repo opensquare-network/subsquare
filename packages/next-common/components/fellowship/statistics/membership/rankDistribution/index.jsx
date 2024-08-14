@@ -1,4 +1,4 @@
-// import DoughnutChart from "./doughnutChart";
+import DoughnutChart from "./doughnutChart";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { StatisticsTitle } from "next-common/components/statistics/styled.js";
 
@@ -11,7 +11,7 @@ export default function StatisticsMembershipByRank() {
     <SecondaryCard>
       <div className="flex flex-col h-full">
         <DoughnutChartHeader />
-        {/* <DoughnutChart /> */}
+        <DoughnutChart />
       </div>
     </SecondaryCard>
   );

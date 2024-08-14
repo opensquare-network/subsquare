@@ -3,49 +3,28 @@ import { cn } from "next-common/utils";
 import { useSelector } from "react-redux";
 import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
 import { useEffect, useState } from "react";
-import { useAsync } from "react-use";
-import nextApi from "next-common/services/nextApi";
-import { fellowshipStatisticsRanksApi } from "next-common/services/url";
 import Loading from "next-common/components/loading";
-import BigNumber from "bignumber.js";
 import {
   useDoughnutChartOptions,
-  expenditureDoughnutChartOptions,
+  distributionDoughnutChartOptions,
   doughnutChartColors as colors,
-  getUniqueRanks,
+  calculateRankStatistics,
 } from "next-common/components/fellowship/statistics/common.js";
 import DoughnutChartLabels from "./labels";
 import { useNavCollapsed } from "next-common/context/nav";
 
-function getTotalSalary(ranksData) {
-  return ranksData.reduce((acc, item) => {
-    return acc.plus(new BigNumber(item.salary));
-  }, new BigNumber(0));
-}
-
-function transformRanksDataToObject(ranksData) {
-  return ranksData.reduce((acc, item) => {
-    acc[item.rank] = new BigNumber(item.salary);
-    return acc;
-  }, {});
-}
-
-function handleLabelDatas(members, ranksData) {
-  const rankArr = getUniqueRanks(members);
-  const totalSalary = getTotalSalary(ranksData);
-  const ranksDataObj = transformRanksDataToObject(ranksData);
-  const datas = rankArr.map((rank, index) => {
-    const count = ranksDataObj[index] || 0;
-    const percent = ranksDataObj[index]
-      ? new BigNumber(ranksDataObj[index]).div(totalSalary)
-      : "";
-    return {
-      label: `Rank ${rank}`,
-      bgColor: colors[index],
-      count,
-      percent,
-    };
-  });
+function handleLabelDatas(members) {
+  const rankArr = calculateRankStatistics(members);
+  const datas = Object.entries(rankArr).map(
+    ([rank, { count, percent }], index) => {
+      return {
+        label: `Rank ${rank}`,
+        bgColor: colors[index],
+        count,
+        percent,
+      };
+    },
+  );
   return datas.reverse();
 }
 
@@ -57,7 +36,7 @@ const LoadingContent = (
 
 function RankChart({ labelDatas, data }) {
   const [navCollapsed] = useNavCollapsed();
-  const options = useDoughnutChartOptions(expenditureDoughnutChartOptions);
+  const options = useDoughnutChartOptions(distributionDoughnutChartOptions);
   return (
     <div
       className={cn(
@@ -79,34 +58,24 @@ function RankChart({ labelDatas, data }) {
   );
 }
 
-export default function StatisticsExpenditureByRank() {
-  const members = useSelector(fellowshipCollectiveMembersSelector);
+export default function StatisticsDoughnutChart() {
+  let members = [];
+  const [contentLoading, setContentLoading] = useState(true);
   const [labelDatas, setLabelDatas] = useState([]);
-  const [contentLoading, setContentLoading] = useState(false);
 
-  const ranksApi = fellowshipStatisticsRanksApi;
-
-  const { value: ranksData } = useAsync(async () => {
-    setContentLoading(true);
-    if (!ranksApi) {
-      return [];
-    }
-    try {
-      const resp = await nextApi.fetch(ranksApi);
-      return resp?.result || [];
-    } catch (error) {
-      setContentLoading(false);
-      return [];
-    }
-  }, []);
+  try {
+    members = useSelector(fellowshipCollectiveMembersSelector);
+  } catch (error) {
+    setContentLoading(false);
+  }
 
   useEffect(() => {
-    if (members && ranksData) {
-      const datas = handleLabelDatas(members, ranksData);
+    if (members) {
+      const datas = handleLabelDatas(members);
       setLabelDatas(datas);
       setContentLoading(false);
     }
-  }, [members, ranksData]);
+  }, [members]);
 
   const data = {
     labels: labelDatas.map((i) => i.label),
