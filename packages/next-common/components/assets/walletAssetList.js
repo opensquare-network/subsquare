@@ -11,6 +11,8 @@ import useMyAssets from "./useMyAssets";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import AssetsList from "./assetsList";
 import { isNil } from "lodash-es";
+import { ProxyTip } from "next-common/components/overview/accountInfo/accountInfoPanel.js";
+import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 
 function HeadContent() {
   const address = useRealAddress();
@@ -39,6 +41,8 @@ function HeadContent() {
           <AccountLinks address={maybeEvmAddress} />
         )}
       </div>
+      <ProxyTip />
+      <ExtensionUpdatePrompt />
     </div>
   );
 }
