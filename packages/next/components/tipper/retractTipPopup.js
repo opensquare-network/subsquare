@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import SignerPopupV2 from "next-common/components/signerPopup/indexV2";
+import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 
 export default function RetractTipPopup({ tipHash, onClose }) {
@@ -10,7 +10,7 @@ export default function RetractTipPopup({ tipHash, onClose }) {
   }, [api, tipHash]);
 
   return (
-    <SignerPopupV2
+    <SimpleTxPopup
       title="Retract Tip"
       getTxFunc={getTxFunc}
       onClose={onClose}

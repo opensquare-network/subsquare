@@ -1,5 +1,5 @@
 import toApiCouncil from "next-common/utils/toApiCouncil";
-import SignerPopupV2 from "next-common/components/signerPopup/indexV2";
+import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 import { useCallback } from "react";
 
@@ -42,7 +42,7 @@ export default function CloseMotionPopup({
   ]);
 
   return (
-    <SignerPopupV2
+    <SimpleTxPopup
       title="Close Motion"
       getTxFunc={getTxFunc}
       onClose={onClose}

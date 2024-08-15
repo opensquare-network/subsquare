@@ -1,7 +1,7 @@
 import React from "react";
 import { useCallback } from "react";
 import { noop } from "lodash-es";
-import SignerPopupV2 from "../signerPopup/indexV2";
+import SimpleTxPopup from "../simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 
 export default function UnnotePopup({ hash, onClose, onInBlock = noop }) {
@@ -12,7 +12,7 @@ export default function UnnotePopup({ hash, onClose, onInBlock = noop }) {
   }, [api, hash]);
 
   return (
-    <SignerPopupV2
+    <SimpleTxPopup
       title="Unnote Preimage"
       getTxFunc={getTxFunc}
       onClose={onClose}

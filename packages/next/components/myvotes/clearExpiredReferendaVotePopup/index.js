@@ -4,7 +4,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
 import PopupLabel from "next-common/components/popup/label";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
-import SignerPopupV2 from "next-common/components/signerPopup/indexV2";
+import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
@@ -66,7 +66,7 @@ export default function ClearExpiredReferendaVotePopup({
   }, [api, realAddress, dispatch, votes, unlockTracks]);
 
   return (
-    <SignerPopupV2
+    <SimpleTxPopup
       title="Clear Expired Votes"
       getTxFunc={getTxFunc}
       onClose={onClose}
@@ -76,6 +76,6 @@ export default function ClearExpiredReferendaVotePopup({
         relatedReferenda={relatedReferenda}
         relatedTracks={unlockTracks}
       />
-    </SignerPopupV2>
+    </SimpleTxPopup>
   );
 }

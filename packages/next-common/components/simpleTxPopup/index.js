@@ -1,6 +1,6 @@
 import React from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import SignerWithBalance from "./signerWithBalance";
+import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { noop } from "lodash-es";
 import TxSubmissionButton from "../common/tx/txSubmissionButton";
 
@@ -27,7 +27,7 @@ function PopupContent({
   );
 }
 
-export default function SignerPopupV2({
+export default function SimpleTxPopup({
   children,
   getTxFunc = noop,
   confirmText = "Confirm",

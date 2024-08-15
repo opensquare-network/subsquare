@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { noop } from "lodash-es";
 import RelatedReferenda from "../../../../popupCommon/relatedReferenda";
-import SignerPopupV2 from "next-common/components/signerPopup/indexV2";
+import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 
 export default function ReferendumRemovalPopup({
@@ -17,13 +17,13 @@ export default function ReferendumRemovalPopup({
   }, [api, trackId, referendumIndex]);
 
   return (
-    <SignerPopupV2
+    <SimpleTxPopup
       title="Remove Vote"
       getTxFunc={getTxFunc}
       onClose={onClose}
       onInBlock={onInBlock}
     >
       <RelatedReferenda relatedReferenda={[referendumIndex]} />
-    </SignerPopupV2>
+    </SimpleTxPopup>
   );
 }

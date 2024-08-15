@@ -1,6 +1,6 @@
 import React from "react";
 import { useCallback } from "react";
-import SignerPopupV2 from "next-common/components/signerPopup/indexV2";
+import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 
 export default function UndelegatePopup({ trackId, onClose }) {
@@ -11,6 +11,6 @@ export default function UndelegatePopup({ trackId, onClose }) {
   }, [api, trackId]);
 
   return (
-    <SignerPopupV2 title="Undelegate" getTxFunc={getTxFunc} onClose={onClose} />
+    <SimpleTxPopup title="Undelegate" getTxFunc={getTxFunc} onClose={onClose} />
   );
 }
