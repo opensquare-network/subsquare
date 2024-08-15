@@ -1,13 +1,11 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-
 import toApiCouncil from "next-common/utils/toApiCouncil";
-import { useMountedState } from "react-use";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
 import { noop } from "lodash-es";
-import { VoteLoadingEnum } from "next-common/utils/voteEnum";
+import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChain } from "next-common/context/chain";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
@@ -18,6 +16,8 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 import Loading from "next-common/components/loading";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import { usePopupSendTransaction } from "next-common/hooks/usePopupSendTransaction";
+import { wrapWithProxy } from "next-common/utils/sendTx";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -35,15 +35,15 @@ export default function PopupContent() {
     onClose,
     onInBlock = noop,
     type,
-    submitExtrinsic = noop,
   } = usePopupParams();
   const chain = useChain();
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
+  const { sendTx, isLoading: isSubmitting } = usePopupSendTransaction();
 
-  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
+  const [loadingState, setLoadingState] = useState();
 
   const { isMember: canVote, loading: isMemberLoading } = useIsCollectiveMember(
     toApiCouncil(chain, type),
@@ -66,12 +66,10 @@ export default function PopupContent() {
     showVoteSuccessful(currentVote);
   }, [refVotes, signerAccount?.realAddress, showVoteSuccessful]);
 
-  const isMounted = useMountedState();
-
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (approve) => {
-    if (loadingState !== VoteLoadingEnum.None) return;
+    if (isSubmitting) return;
 
     if (!motionHash || motionIndex === undefined) {
       return;
@@ -81,30 +79,25 @@ export default function PopupContent() {
       return showErrorToast("Please select an account");
     }
 
-    const setLoading = (loading) => {
-      if (loading) {
-        setLoadingState(approve ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
-      } else {
-        setLoadingState(VoteLoadingEnum.None);
-      }
-    };
+    const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
+    if (!voteMethod) {
+      return showErrorToast("Chain network is not connected yet");
+    }
 
-    await submitExtrinsic({
+    let tx = voteMethod(motionHash, motionIndex, approve);
+    if (signerAccount?.proxyAddress) {
+      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+    }
+
+    setLoadingState(approve ? VoteEnum.Aye : VoteEnum.Nay);
+    await sendTx({
       api,
-      chain,
-      type,
-      motionHash,
-      motionIndex,
-      approve,
-      dispatch,
-      setLoading,
+      tx,
       onInBlock: () => {
         getMyVoteAndShowSuccessful();
         onInBlock();
       },
-      signerAccount,
-      isMounted,
-      onClose,
+      onSubmitted: onClose,
     });
   };
 
@@ -129,6 +122,7 @@ export default function PopupContent() {
         disabled={isMemberLoading || !canVote}
         doVote={doVote}
         loadingState={loadingState}
+        isLoading={isSubmitting}
       />
     </>
   );

@@ -6,13 +6,12 @@ import { useAddressVotingBalance } from "utils/hooks";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { useMountedState } from "react-use";
 import Signer from "next-common/components/popup/fields/signerField";
 import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { VoteLoadingEnum } from "next-common/utils/voteEnum";
+import { wrapWithProxy } from "next-common/utils/sendTx";
+import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSubMyDemocracyVote, {
   getKintDemocracyDirectVote,
@@ -21,6 +20,7 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import { usePopupSendTransaction } from "next-common/hooks/usePopupSendTransaction";
 
 function PopupContent() {
   const { referendumIndex, onClose } = usePopupParams();
@@ -28,8 +28,10 @@ function PopupContent() {
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
 
+  const { sendTx, isLoading: isSubmitting } = usePopupSendTransaction();
+
   const node = useChainSettings();
-  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
+  const [loadingState, setLoadingState] = useState();
   const api = useContextApi();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
@@ -42,7 +44,6 @@ function PopupContent() {
   const { vote: addressVote, isLoading: addressVoteIsLoading } =
     useSubMyDemocracyVote(referendumIndex, signerAccount?.realAddress);
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
-  const isMounted = useMountedState();
 
   const getMyVoteAndShowSuccessful = useCallback(async () => {
     const addressVote = await getKintDemocracyDirectVote(
@@ -59,11 +60,7 @@ function PopupContent() {
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const doVote = async (aye) => {
-    if (
-      loadingState !== VoteLoadingEnum.None ||
-      isNil(referendumIndex) ||
-      !node
-    ) {
+    if (isSubmitting || isNil(referendumIndex) || !node) {
       return;
     }
 
@@ -99,22 +96,14 @@ function PopupContent() {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
+    setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
     await sendTx({
+      api,
       tx,
-      dispatch,
-      setLoading: (loading) => {
-        if (loading) {
-          setLoadingState(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
-        } else {
-          setLoadingState(VoteLoadingEnum.None);
-        }
-      },
       onInBlock: () => {
         getMyVoteAndShowSuccessful();
       },
-      signerAccount,
-      isMounted,
-      onClose,
+      onSubmitted: onClose,
     });
   };
 
@@ -129,7 +118,7 @@ function PopupContent() {
         symbol={node.voteSymbol}
       />
       <VoteBalance
-        isLoading={loadingState !== VoteLoadingEnum.None}
+        isLoading={isSubmitting}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
       />
@@ -137,7 +126,11 @@ function PopupContent() {
         addressVoteIsLoading={addressVoteIsLoading}
         addressVote={addressVote}
       />
-      <VoteButton loadingState={loadingState} doVote={doVote} />
+      <VoteButton
+        loadingState={loadingState}
+        isLoading={isSubmitting}
+        doVote={doVote}
+      />
     </>
   );
 }

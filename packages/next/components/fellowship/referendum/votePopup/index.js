@@ -1,14 +1,12 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { VoteLoadingEnum } from "next-common/utils/voteEnum";
+import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import VoteButton from "next-common/components/popup/voteButton";
 import useFellowshipVote from "next-common/utils/hooks/fellowship/useFellowshipVote";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import { wrapWithProxy } from "next-common/utils/sendTx";
 import CurrentVote from "./currentVote";
 import VStack from "next-common/components/styled/vStack";
 import {
@@ -20,18 +18,16 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
-import { noop } from "lodash-es";
+import { isNil, noop } from "lodash-es";
+import { usePopupSendTransaction } from "next-common/hooks/usePopupSendTransaction";
 
 function PopupContent() {
-  const {
-    referendumIndex,
-    onClose,
-    onSubmitted = noop,
-    onInBlock = noop,
-  } = usePopupParams();
+  const { referendumIndex, onClose, onInBlock = noop } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const dispatch = useDispatch();
-  const isMounted = useMountedState();
+
+  const { sendTx, isLoading: isSubmitting } = usePopupSendTransaction();
+
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
   const signerAccount = useSignerAccount();
@@ -39,7 +35,7 @@ function PopupContent() {
   const api = useContextApi();
   const node = useChainSettings();
 
-  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
+  const [loadingState, setLoadingState] = useState();
   const { vote, isLoading: isLoadingVote } = useFellowshipVote(
     referendumIndex,
     signerAccount?.realAddress,
@@ -70,11 +66,7 @@ function PopupContent() {
   ]);
 
   const doVote = async (aye) => {
-    if (
-      loadingState !== VoteLoadingEnum.None ||
-      referendumIndex == null ||
-      !node
-    ) {
+    if (isSubmitting || isNil(referendumIndex) || !node) {
       return;
     }
 
@@ -91,24 +83,15 @@ function PopupContent() {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
+    setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
     await sendTx({
+      api,
       tx,
-      dispatch,
-      setLoading: (loading) => {
-        if (loading) {
-          setLoadingState(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
-        } else {
-          setLoadingState(VoteLoadingEnum.None);
-        }
-      },
       onInBlock: () => {
         getMyVoteAndShowSuccessful();
         onInBlock();
       },
-      onSubmitted,
-      signerAccount,
-      isMounted,
-      onClose,
+      onSubmitted: onClose,
     });
   };
 
@@ -118,7 +101,11 @@ function PopupContent() {
         <SignerWithBalance />
       </VStack>
       <CurrentVote currentVote={vote} isLoadingVote={isLoadingVote} />
-      <VoteButton doVote={doVote} loadingState={loadingState} />
+      <VoteButton
+        doVote={doVote}
+        isLoading={isSubmitting}
+        loadingState={loadingState}
+      />
     </>
   );
 }
