@@ -185,10 +185,10 @@ export function getPercentageValue(percent) {
   return percent ? `${(percent * 100).toFixed(2)}%` : "0%";
 }
 
-export function LoadingContent(size = 24) {
+export function LoadingContent({ size = 24 }) {
   return (
     <div className="flex justify-center items-center grow w-full h-full">
-      <Loading size={24} />
+      <Loading size={size} />
     </div>
   );
 }
