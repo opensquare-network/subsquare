@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
@@ -18,8 +18,6 @@ export default function useSplitVote({
   const node = useChainSettings();
   const api = useContextApi();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
   const SplitVoteComponent = (
     <SplitVote
       isLoading={isLoading}
@@ -30,7 +28,7 @@ export default function useSplitVote({
     />
   );
 
-  const getSplitVoteTx = () => {
+  const getSplitVoteTx = useCallback(() => {
     let bnAyeVoteBalance;
     try {
       bnAyeVoteBalance = checkInputValue(
@@ -40,7 +38,7 @@ export default function useSplitVote({
         true,
       );
     } catch (err) {
-      showErrorToast(err.message);
+      dispatch(newErrorToast(err.message));
       return;
     }
 
@@ -53,12 +51,12 @@ export default function useSplitVote({
         true,
       );
     } catch (err) {
-      showErrorToast(err.message);
+      dispatch(newErrorToast(err.message));
       return;
     }
 
     if (bnAyeVoteBalance.plus(bnNayVoteBalance).gt(votingBalance)) {
-      showErrorToast("Insufficient voting balance");
+      dispatch(newErrorToast("Insufficient voting balance"));
       return;
     }
 
@@ -68,7 +66,16 @@ export default function useSplitVote({
         nay: bnNayVoteBalance.toString(),
       },
     });
-  };
+  }, [
+    dispatch,
+    api,
+    ayeInputVoteBalance,
+    nayInputVoteBalance,
+    node.decimals,
+    votingBalance,
+    module,
+    referendumIndex,
+  ]);
 
   return { SplitVoteComponent, getSplitVoteTx };
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
@@ -18,8 +18,6 @@ export default function useSplitAbstainVote({
   const node = useChainSettings();
   const api = useContextApi();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
   const SplitAbstainVoteComponent = (
     <SplitAbstainVote
       isLoading={isLoading}
@@ -32,7 +30,7 @@ export default function useSplitAbstainVote({
     />
   );
 
-  const getSplitAbstainVoteTx = () => {
+  const getSplitAbstainVoteTx = useCallback(() => {
     let bnAbstainVoteBalance;
     try {
       bnAbstainVoteBalance = checkInputValue(
@@ -42,7 +40,7 @@ export default function useSplitAbstainVote({
         true,
       );
     } catch (err) {
-      showErrorToast(err.message);
+      dispatch(newErrorToast(err.message));
       return;
     }
 
@@ -55,7 +53,7 @@ export default function useSplitAbstainVote({
         true,
       );
     } catch (err) {
-      showErrorToast(err.message);
+      dispatch(newErrorToast(err.message));
       return;
     }
 
@@ -68,7 +66,7 @@ export default function useSplitAbstainVote({
         true,
       );
     } catch (err) {
-      showErrorToast(err.message);
+      dispatch(newErrorToast(err.message));
       return;
     }
 
@@ -78,7 +76,7 @@ export default function useSplitAbstainVote({
         .plus(bnAbstainVoteBalance)
         .gt(votingBalance)
     ) {
-      showErrorToast("Insufficient voting balance");
+      dispatch(newErrorToast("Insufficient voting balance"));
       return;
     }
 
@@ -89,7 +87,16 @@ export default function useSplitAbstainVote({
         abstain: bnAbstainVoteBalance.toString(),
       },
     });
-  };
+  }, [
+    dispatch,
+    api,
+    ayeInputVoteBalance,
+    nayInputVoteBalance,
+    abstainInputVoteBalance,
+    node.decimals,
+    votingBalance,
+    referendumIndex,
+  ]);
 
   return {
     SplitAbstainVoteComponent,

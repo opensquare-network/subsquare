@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
@@ -20,8 +20,6 @@ export default function useStandardVote({
   const node = useChainSettings();
   const api = useContextApi();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
   const StandardVoteComponent = (
     <DirectVote
       module={module}
@@ -35,7 +33,7 @@ export default function useStandardVote({
     />
   );
 
-  const getStandardVoteTx = () => {
+  const getStandardVoteTx = useCallback(() => {
     let bnVoteBalance;
     try {
       bnVoteBalance = checkInputValue(
@@ -45,12 +43,12 @@ export default function useStandardVote({
         true,
       );
     } catch (err) {
-      showErrorToast(err.message);
+      dispatch(newErrorToast(err.message));
       return;
     }
 
     if (bnVoteBalance.gt(votingBalance)) {
-      showErrorToast("Insufficient voting balance");
+      dispatch(newErrorToast("Insufficient voting balance"));
       return;
     }
 
@@ -63,7 +61,17 @@ export default function useStandardVote({
         },
       },
     });
-  };
+  }, [
+    dispatch,
+    api,
+    inputVoteBalance,
+    node.decimals,
+    votingBalance,
+    module,
+    referendumIndex,
+    isAye,
+    voteLock,
+  ]);
 
   return { StandardVoteComponent, getStandardVoteTx };
 }
