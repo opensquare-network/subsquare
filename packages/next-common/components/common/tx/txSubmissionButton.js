@@ -3,6 +3,7 @@ import { noop } from "lodash-es";
 import PrimaryButton from "next-common/lib/button/primary";
 import LoadingButton from "next-common/lib/button/loading";
 import useTxSubmission from "./useTxSubmission";
+import { usePopupOnClose } from "next-common/context/popup";
 
 export default function TxSubmissionButton({
   loading = false,
@@ -13,14 +14,16 @@ export default function TxSubmissionButton({
   onFinalized = noop,
   onInBlock = noop,
   onSubmitted = noop,
-  onClose = noop,
 }) {
+  const onClose = usePopupOnClose();
   const { isSubmitting, doSubmit } = useTxSubmission({
     getTxFunc,
     onFinalized,
     onInBlock,
-    onSubmitted,
-    onClose,
+    onSubmitted: () => {
+      onClose();
+      onSubmitted();
+    },
   });
 
   const isLoading = isSubmitting || loading;

@@ -21,7 +21,6 @@ import {
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
-import { usePopupOnClose } from "next-common/context/popup";
 import { noop } from "lodash-es";
 
 function isShouldSendEvmTx(signerAccount) {
@@ -52,7 +51,6 @@ function isShouldSendMimirTx(signerAccount) {
 }
 
 export function usePopupSendTransaction() {
-  const onClose = usePopupOnClose();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
@@ -82,7 +80,6 @@ export function usePopupSendTransaction() {
             `(2/${totalSteps}) Submitted, waiting for wrapping...`,
           ),
         );
-        onClose();
         onSubmitted();
       };
 
@@ -143,7 +140,6 @@ export function usePopupSendTransaction() {
             onSubmitted: () => {
               dispatch(newSuccessToast("Multisig transaction submitted"));
               setIsLoading(false);
-              onClose();
               onSubmitted();
             },
             onEnded: () => {
@@ -184,7 +180,7 @@ export function usePopupSendTransaction() {
         setIsLoading(false);
       }
     },
-    [dispatch, signerAccount, onClose],
+    [dispatch, signerAccount],
   );
 
   return {

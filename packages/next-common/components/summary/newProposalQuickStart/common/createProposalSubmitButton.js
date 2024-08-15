@@ -64,6 +64,7 @@ export default function CreateProposalSubmitButton({
   const { isSubmitting: isReferendaTxSubmitting, doSubmit: submitReferendaTx } =
     useTxSubmission({
       getTxFunc: getSubmitReferendaTx,
+      onSubmitted: onClose,
       onInBlock: (events) => {
         const eventData = getEventData(events, pallet, "Submitted");
         if (!eventData) {
@@ -72,7 +73,6 @@ export default function CreateProposalSubmitButton({
         const [referendumIndex] = eventData;
         router.push(`/${listPageType}/${referendumIndex}`);
       },
-      onClose,
     });
 
   const { isSubmitting: isPreimageTxSubmitting, doSubmit: submitPreimageTx } =
