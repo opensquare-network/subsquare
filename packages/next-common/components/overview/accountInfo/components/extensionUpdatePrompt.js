@@ -78,6 +78,7 @@ export default function ExtensionUpdatePrompt() {
         known.find(({ genesisHash }) => api.genesisHash.eq(genesisHash)) ||
         null;
       return (
+        !current ||
         api.runtimeVersion.specVersion.gtn(current?.specVersion) ||
         checkPropertiesChange(api, extension)
       );
