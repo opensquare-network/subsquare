@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAddressVotingBalance } from "utils/hooks";
@@ -10,9 +10,7 @@ import { useChainSettings } from "next-common/context/chain";
 import Conviction from "next-common/components/popup/fields/convictionField";
 import VoteValue from "next-common/components/democracy/delegatePopup/voteValue";
 import Target from "next-common/components/democracy/delegatePopup/target";
-import PrimaryButton from "next-common/lib/button/primary";
 import MultiTrack from "next-common/components/popup/fields/multiTrackField";
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import {
   useExtensionAccounts,
   useSignerAccount,
@@ -20,9 +18,8 @@ import {
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { normalizeAddress } from "next-common/utils/address";
-import { wrapWithProxy } from "next-common/utils/sendTx";
-import { usePopupSendTransaction } from "next-common/hooks/usePopupSendTransaction";
 import { noop } from "lodash-es";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
 export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const { tracks, showTrackSelect = true, onInBlock = noop } = usePopupParams();
@@ -38,7 +35,6 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const api = useContextApi();
   const node = useChainSettings();
 
-  const { sendTx, isLoading } = usePopupSendTransaction();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
     signerAccount?.realAddress,
@@ -55,11 +51,7 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
-  const doDelegate = async () => {
-    if (isLoading) {
-      return;
-    }
-
+  const getTxFunc = useCallback(async () => {
     if (selectedTracks.length === 0) {
       return showErrorToast("Please select at least one track");
     }
@@ -77,10 +69,6 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
 
     if (bnVoteBalance.gt(votingBalance)) {
       return showErrorToast("Insufficient voting balance");
-    }
-
-    if (!signerAccount) {
-      return showErrorToast("Please select an account");
     }
 
     if (!api) {
@@ -118,12 +106,15 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
       );
     }
 
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    await sendTx({ api, tx, onInBlock });
-  };
+    return tx;
+  }, [
+    api,
+    signerAccount,
+    targetAddress,
+    selectedTracks,
+    inputVoteBalance,
+    conviction,
+  ]);
 
   const disabled = !(selectedTracks?.length > 0);
 
@@ -152,7 +143,6 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
       )}
 
       <VoteValue
-        isLoading={isLoading}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
         node={node}
@@ -162,15 +152,11 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
         conviction={conviction}
         setConviction={setConviction}
       />
-      <PopupButtonWrapper>
-        <PrimaryButton
-          loading={isLoading}
-          disabled={disabled}
-          onClick={doDelegate}
-        >
-          Confirm
-        </PrimaryButton>
-      </PopupButtonWrapper>
+      <TxSubmissionButton
+        getTxFunc={getTxFunc}
+        onInBlock={onInBlock}
+        disabled={disabled}
+      />
     </>
   );
 }

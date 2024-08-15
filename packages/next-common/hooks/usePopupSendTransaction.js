@@ -24,6 +24,33 @@ import {
 import { usePopupOnClose } from "next-common/context/popup";
 import { noop } from "lodash-es";
 
+function isShouldSendEvmTx(signerAccount) {
+  if (
+    (isEvmChain() || isMixedChain()) &&
+    signerAccount?.meta?.source === WalletTypes.METAMASK
+  ) {
+    return true;
+  }
+
+  if (
+    isMixedChain() &&
+    isEthereumAddress(tryConvertToEvmAddress(signerAccount?.address)) &&
+    signerAccount?.meta?.source === WalletTypes.TALISMAN
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function isShouldSendSignetTx(signerAccount) {
+  return signerAccount?.meta?.source === WalletTypes.SIGNET;
+}
+
+function isShouldSendMimirTx(signerAccount) {
+  return signerAccount?.meta?.source === WalletTypes.MIMIR;
+}
+
 export function usePopupSendTransaction() {
   const onClose = usePopupOnClose();
   const [isLoading, setIsLoading] = useState(false);
@@ -92,8 +119,7 @@ export function usePopupSendTransaction() {
       setIsLoading(true);
 
       try {
-        const isMimirWallet = signerAccount?.meta?.source === WalletTypes.MIMIR;
-        if (isMimirWallet) {
+        if (isShouldSendMimirTx(signerAccount)) {
           const handled = await maybeSendMimirTx({
             tx,
             onStarted,
@@ -108,9 +134,7 @@ export function usePopupSendTransaction() {
           }
         }
 
-        const isSignetWallet =
-          signerAccount?.meta?.source === WalletTypes.SIGNET;
-        if (isSignetWallet) {
+        if (isShouldSendSignetTx(signerAccount)) {
           const handled = await maybeSendSignetTx({
             tx,
             onStarted: () => {
@@ -133,17 +157,7 @@ export function usePopupSendTransaction() {
           }
         }
 
-        let shouldSendEvmTx =
-          (isEvmChain() || isMixedChain()) &&
-          signerAccount?.meta?.source === WalletTypes.METAMASK;
-
-        shouldSendEvmTx =
-          shouldSendEvmTx ||
-          (isMixedChain() &&
-            isEthereumAddress(tryConvertToEvmAddress(signerAccount?.address)) &&
-            signerAccount?.meta?.source === WalletTypes.TALISMAN);
-
-        if (shouldSendEvmTx) {
+        if (isShouldSendEvmTx(signerAccount)) {
           await sendEvmTx({
             data: tx.inner.toU8a(),
             onStarted,

@@ -1,24 +1,22 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import { useMountedState } from "react-use";
 import { noop } from "lodash-es";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import { wrapWithProxy } from "next-common/utils/sendTx";
 import { useContextApi } from "next-common/context/api";
+import { usePopupSendTransaction } from "next-common/hooks/usePopupSendTransaction";
 
 export default function useTxSubmission({
   getTxFunc = noop,
   onFinalized = noop,
   onInBlock = noop,
   onSubmitted = noop,
-  onClose = noop,
 }) {
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
-  const isMounted = useMountedState();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { sendTx, isLoading } = usePopupSendTransaction();
 
   const doSubmit = useCallback(async () => {
     if (!api) {
@@ -39,20 +37,25 @@ export default function useTxSubmission({
     }
 
     await sendTx({
+      api,
       tx,
-      dispatch,
-      setLoading: setIsSubmitting,
-      signerAccount,
-      isMounted,
-      onClose,
       onSubmitted,
       onInBlock,
       onFinalized,
     });
-  }, [api, dispatch, signerAccount, getTxFunc]);
+  }, [
+    api,
+    dispatch,
+    signerAccount,
+    getTxFunc,
+    sendTx,
+    onSubmitted,
+    onInBlock,
+    onFinalized,
+  ]);
 
   return {
-    isSubmitting,
+    isSubmitting: isLoading,
     doSubmit,
   };
 }
