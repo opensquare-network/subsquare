@@ -17,10 +17,10 @@ function RowItem({ bgColor, label, percentage, count }) {
   );
 }
 
-export default function DoughnutChartLabels({ labelDatas }) {
+export default function DoughnutChartLabels({ labelDataArr }) {
   return (
     <div className="flex flex-col gap-2 flex-grow min-w-[220px]">
-      {labelDatas.map((i) => (
+      {labelDataArr.map((i) => (
         <RowItem
           key={i.label}
           label={i.label}

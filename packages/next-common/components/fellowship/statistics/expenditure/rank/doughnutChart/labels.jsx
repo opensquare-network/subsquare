@@ -28,11 +28,11 @@ function RowItem({ bgColor, label, percentage, count, decimals, symbol }) {
   );
 }
 
-export default function DoughnutChartLabels({ labelDatas }) {
+export default function DoughnutChartLabels({ labelDataArr }) {
   const { symbol, decimals } = useSalaryAsset();
   return (
     <div className="flex flex-col gap-2 flex-grow min-w-[220px]">
-      {labelDatas.map((i) => (
+      {labelDataArr.map((i) => (
         <RowItem
           key={i.label}
           label={i.label}

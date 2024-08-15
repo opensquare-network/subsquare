@@ -2,6 +2,7 @@ import { useTheme } from "styled-components";
 import deepmerge from "deepmerge";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { toPrecision, formatNum } from "next-common/utils";
+import Loading from "next-common/components/loading";
 
 export const expenditureDoughnutChartOptions = {
   plugins: {
@@ -182,4 +183,12 @@ export function translateCollectiveMembersRankData(members) {
 
 export function getPercentageValue(percent) {
   return percent ? `${(percent * 100).toFixed(2)}%` : "0%";
+}
+
+export function LoadingContent(size = 24) {
+  return (
+    <div className="flex justify-center items-center grow w-full h-full">
+      <Loading size={24} />
+    </div>
+  );
 }
