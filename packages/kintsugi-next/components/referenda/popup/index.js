@@ -20,7 +20,7 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
-import { usePopupSendTransaction } from "next-common/hooks/usePopupSendTransaction";
+import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 
 function PopupContent() {
   const { referendumIndex, onClose } = usePopupParams();
@@ -28,7 +28,7 @@ function PopupContent() {
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
 
-  const { sendTx, isLoading: isSubmitting } = usePopupSendTransaction();
+  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
 
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState();

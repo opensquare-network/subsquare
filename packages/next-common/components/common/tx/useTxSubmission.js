@@ -5,7 +5,7 @@ import { noop } from "lodash-es";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { wrapWithProxy } from "next-common/utils/sendTx";
 import { useContextApi } from "next-common/context/api";
-import { usePopupSendTransaction } from "next-common/hooks/usePopupSendTransaction";
+import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 
 export default function useTxSubmission({
   getTxFunc = noop,
@@ -16,7 +16,7 @@ export default function useTxSubmission({
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
-  const { sendTx, isLoading } = usePopupSendTransaction();
+  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
 
   const doSubmit = useCallback(async () => {
     if (!api) {
@@ -55,7 +55,7 @@ export default function useTxSubmission({
   ]);
 
   return {
-    isSubmitting: isLoading,
+    isSubmitting,
     doSubmit,
   };
 }

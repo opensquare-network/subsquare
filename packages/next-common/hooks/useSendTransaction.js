@@ -50,7 +50,7 @@ function isShouldSendMimirTx(signerAccount) {
   return signerAccount?.meta?.source === WalletTypes.MIMIR;
 }
 
-export function usePopupSendTransaction() {
+export function useSendTransaction() {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();

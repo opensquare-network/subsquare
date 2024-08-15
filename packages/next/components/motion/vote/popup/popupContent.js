@@ -16,7 +16,7 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 import Loading from "next-common/components/loading";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
-import { usePopupSendTransaction } from "next-common/hooks/usePopupSendTransaction";
+import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 import { wrapWithProxy } from "next-common/utils/sendTx";
 
 const SignerWrapper = styled.div`
@@ -41,7 +41,7 @@ export default function PopupContent() {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
-  const { sendTx, isLoading: isSubmitting } = usePopupSendTransaction();
+  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
 
   const [loadingState, setLoadingState] = useState();
 

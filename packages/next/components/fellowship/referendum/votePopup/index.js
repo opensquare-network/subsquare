@@ -19,14 +19,14 @@ import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import { isNil, noop } from "lodash-es";
-import { usePopupSendTransaction } from "next-common/hooks/usePopupSendTransaction";
+import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 
 function PopupContent() {
   const { referendumIndex, onClose, onInBlock = noop } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const dispatch = useDispatch();
 
-  const { sendTx, isLoading: isSubmitting } = usePopupSendTransaction();
+  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
 
   const showErrorToast = (message) => dispatch(newErrorToast(message));
 
