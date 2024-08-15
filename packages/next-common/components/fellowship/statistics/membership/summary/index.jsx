@@ -6,7 +6,7 @@ import { fellowshipStatisticsMembershipApi } from "next-common/services/url";
 import Loading from "next-common/components/loading";
 import BigNumber from "bignumber.js";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
-import { useFellowshipMemberParams } from "next-common/hooks/fellowship/useFellowshipMemberParams";
+import { useFellowshipParams } from "next-common/hooks/fellowship/useFellowshipParams";
 import StatisticsMembershipSummaryItems from "./summaryItems";
 import { translateCollectiveMembersRankData } from "next-common/components/fellowship/statistics/common";
 
@@ -39,8 +39,7 @@ const LoadingContent = (
 );
 
 export default function StatisticsMembershipSummary({ members = [] }) {
-  const { isLoading: fellowshipParamsLoading, params } =
-    useFellowshipMemberParams();
+  const { isLoading: fellowshipParamsLoading, params } = useFellowshipParams();
 
   const [summaryData, setSummaryData] = useState(null);
   const membershipApi = fellowshipStatisticsMembershipApi;
