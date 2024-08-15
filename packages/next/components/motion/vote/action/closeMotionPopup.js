@@ -1,11 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-
-import { useMountedState } from "react-use";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import SignerPopup from "next-common/components/signerPopup";
 import toApiCouncil from "next-common/utils/toApiCouncil";
+import SignerPopupV2 from "next-common/components/signerPopup/indexV2";
+import { useContextApi } from "next-common/context/api";
+import { useCallback } from "react";
 
 export default function CloseMotionPopup({
   chain,
@@ -17,26 +13,11 @@ export default function CloseMotionPopup({
   hasFailed,
   onClose,
 }) {
-  const dispatch = useDispatch();
-  const isMounted = useMountedState();
-  const [isLoading, setIsLoading] = useState(false);
+  const api = useContextApi();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
-  const doClose = async (api, signerAccount) => {
-    if (!api) {
-      showErrorToast("Chain network is not connected yet");
-      return;
-    }
-
+  const getTxFunc = useCallback(async () => {
     const closeMethod = api?.tx?.[toApiCouncil(chain, type)]?.close;
     if (!closeMethod) {
-      showErrorToast("Close method is not support");
-      return;
-    }
-
-    if (!signerAccount) {
-      showErrorToast("Please login first");
       return;
     }
 
@@ -48,27 +29,23 @@ export default function CloseMotionPopup({
     } else {
       tx = closeMethod(hash, motionIndex, weight, encodedCallLength);
     }
-
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    await sendTx({
-      tx,
-      setLoading: setIsLoading,
-      dispatch,
-      onClose,
-      signerAccount,
-      isMounted,
-    });
-  };
+    return tx;
+  }, [
+    api,
+    chain,
+    type,
+    hash,
+    motionIndex,
+    weight,
+    encodedCallLength,
+    hasFailed,
+  ]);
 
   return (
-    <SignerPopup
+    <SignerPopupV2
       title="Close Motion"
-      actionCallback={doClose}
+      getTxFunc={getTxFunc}
       onClose={onClose}
-      isLoading={isLoading}
     />
   );
 }

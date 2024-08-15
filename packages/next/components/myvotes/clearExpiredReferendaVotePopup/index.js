@@ -1,13 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-
-import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import SignerPopup from "next-common/components/signerPopup";
 import PopupLabel from "next-common/components/popup/label";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
+import SignerPopupV2 from "next-common/components/signerPopup/indexV2";
+import { useContextApi } from "next-common/context/api";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function ExtraInfo({ relatedReferenda, relatedTracks }) {
   return (
@@ -34,89 +33,49 @@ export default function ClearExpiredReferendaVotePopup({
   onInBlock = noop,
 }) {
   const dispatch = useDispatch();
-  const isMounted = useMountedState();
-  const [isLoading, setIsLoading] = useState(false);
+  const api = useContextApi();
+  const realAddress = useRealAddress();
 
   const relatedReferenda = Array.from(
     new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
   );
   relatedReferenda.sort((a, b) => a - b);
 
-  const showErrorToast = useCallback(
-    (message) => dispatch(newErrorToast(message)),
-    [dispatch],
-  );
+  const getTxFunc = useCallback(async () => {
+    if (!votes?.length && unlockTracks.length <= 0) {
+      dispatch(newErrorToast("No unLockable balance"));
+      return;
+    }
 
-  const doClearExpiredVote = useCallback(
-    async (api, signerAccount) => {
-      if (!api) {
-        showErrorToast("Chain network is not connected yet");
-        return;
-      }
+    let tx;
+    const txsRemoveVote = votes.map(({ trackId, referendumIndex }) =>
+      api.tx.convictionVoting.removeVote(trackId, referendumIndex),
+    );
+    const txsUnlock = unlockTracks.map((trackId) =>
+      api.tx.convictionVoting.unlock(trackId, realAddress),
+    );
 
-      if (!signerAccount) {
-        showErrorToast("Please login first");
-        return;
-      }
+    const allTxs = [...txsRemoveVote, ...txsUnlock];
+    if (allTxs.length === 1) {
+      tx = allTxs[0];
+    } else {
+      tx = api.tx.utility.batch(allTxs);
+    }
 
-      if (!votes?.length && unlockTracks.length <= 0) {
-        showErrorToast("No unLockable balance");
-        return;
-      }
-
-      const realAddress = signerAccount.proxyAddress || signerAccount.address;
-
-      let tx;
-      const txsRemoveVote = votes.map(({ trackId, referendumIndex }) =>
-        api.tx.convictionVoting.removeVote(trackId, referendumIndex),
-      );
-      const txsUnlock = unlockTracks.map((trackId) =>
-        api.tx.convictionVoting.unlock(trackId, realAddress),
-      );
-
-      const allTxs = [...txsRemoveVote, ...txsUnlock];
-      if (allTxs.length === 1) {
-        tx = allTxs[0];
-      } else {
-        tx = api.tx.utility.batch(allTxs);
-      }
-
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      await sendTx({
-        tx,
-        setLoading: setIsLoading,
-        dispatch,
-        onInBlock,
-        onClose,
-        signerAccount,
-        isMounted,
-      });
-    },
-    [
-      dispatch,
-      isMounted,
-      showErrorToast,
-      onInBlock,
-      onClose,
-      votes,
-      unlockTracks,
-    ],
-  );
+    return tx;
+  }, [api, realAddress, dispatch, votes, unlockTracks]);
 
   return (
-    <SignerPopup
+    <SignerPopupV2
       title="Clear Expired Votes"
-      actionCallback={doClearExpiredVote}
+      getTxFunc={getTxFunc}
       onClose={onClose}
-      isLoading={isLoading}
+      onInBlock={onInBlock}
     >
       <ExtraInfo
         relatedReferenda={relatedReferenda}
         relatedTracks={unlockTracks}
       />
-    </SignerPopup>
+    </SignerPopupV2>
   );
 }
