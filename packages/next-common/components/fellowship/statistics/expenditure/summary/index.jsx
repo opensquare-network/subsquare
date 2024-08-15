@@ -18,12 +18,12 @@ function getTotalSpent(data) {
   return new BigNumber(0);
 }
 
-function SpentCycles({ data }) {
-  return <SummaryItem title="Spend Cycles">{data.length}</SummaryItem>;
+function SpentCycles({ count }) {
+  return <SummaryItem title="Spend Cycles">{count}</SummaryItem>;
 }
 
-function TotalSpent({ data }) {
-  const totalSpent = getTotalSpent(data);
+function TotalSpent({ cycles }) {
+  const totalSpent = getTotalSpent(cycles);
   const { symbol, decimals } = useSalaryAsset();
   return (
     <SummaryItem title="Total Spent">
@@ -35,15 +35,16 @@ function TotalSpent({ data }) {
   );
 }
 
-export default function StatisticsExpenditureSummary({ value = [], loading }) {
+export default function StatisticsExpenditureSummary({ cycles = [], loading }) {
   if (loading) {
     return null;
   }
+
   return (
     <SecondaryCard>
       <SummaryLayout>
-        <TotalSpent data={value} />
-        <SpentCycles data={value} />
+        <TotalSpent cycles={cycles} />
+        <SpentCycles count={(cycles || []).length} />
       </SummaryLayout>
     </SecondaryCard>
   );

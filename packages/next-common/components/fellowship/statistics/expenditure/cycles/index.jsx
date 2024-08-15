@@ -8,12 +8,12 @@ function BarChartContent({ value = [], loading }) {
   return <>{loading ? <LoadingContent /> : <CyclesChart values={value} />}</>;
 }
 
-export default function StatisticsCycles({ value = [], loading }) {
+export default function StatisticsCycles({ cycles = [], loading }) {
   return (
     <SecondaryCard>
       <div className="flex flex-col gap-[16px] h-full">
         <StatisticsTitle>Cycles</StatisticsTitle>
-        <BarChartContent value={value} loading={loading} />
+        <BarChartContent value={cycles} loading={loading} />
       </div>
     </SecondaryCard>
   );

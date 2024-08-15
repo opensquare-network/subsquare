@@ -13,7 +13,7 @@ export default function StatisticsExpenditure({ members = [] }) {
   const cyclesApi = fellowshipStatisticsCyclesApi;
   const [navCollapsed] = useNavCollapsed();
 
-  const { value = [], loading } = useAsync(async () => {
+  const { value: cycles = [], loading } = useAsync(async () => {
     if (!cyclesApi) {
       return;
     }
@@ -24,7 +24,7 @@ export default function StatisticsExpenditure({ members = [] }) {
   return (
     <div className="flex flex-col gap-[16px]">
       <TitleContainer>Expenditure</TitleContainer>
-      <StatisticsExpenditureSummary value={value} loading={loading} />
+      <StatisticsExpenditureSummary cycles={cycles} loading={loading} />
       <div
         className={cn(
           "grid grid-cols-2 gap-4",
@@ -33,7 +33,7 @@ export default function StatisticsExpenditure({ members = [] }) {
             : "max-[1365px]:grid-cols-1",
         )}
       >
-        <StatisticsCycles value={value} loading={loading} />
+        <StatisticsCycles cycles={cycles} loading={loading} />
         <StatisticsExpenditureByRank members={members} />
       </div>
       <StatisticsClaimants members={members} />
