@@ -31,7 +31,10 @@ export default function CollectivesClaimPrompt() {
         section={section}
         memberData={memberData}
       />
-      <CollectivesClaimGetPaymentPrompt section={section} />
+      <CollectivesClaimGetPaymentPrompt
+        section={section}
+        memberData={memberData}
+      />
     </>
   );
 }
