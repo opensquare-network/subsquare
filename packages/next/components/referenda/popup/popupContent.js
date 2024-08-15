@@ -134,12 +134,7 @@ function VotePanel({
 }
 
 export default function PopupContent() {
-  const {
-    referendumIndex,
-    onClose,
-    onInBlock = noop,
-    submitExtrinsic = noop,
-  } = usePopupParams();
+  const { referendumIndex, onClose, onInBlock = noop } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();
 
@@ -181,7 +176,6 @@ export default function PopupContent() {
           onInBlock();
         }}
         onClose={onClose}
-        submitExtrinsic={submitExtrinsic}
         votingBalance={votingBalance}
         addressVote={addressVote}
         addressVoteIsLoading={addressVoteIsLoading}
