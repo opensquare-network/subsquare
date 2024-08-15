@@ -1,7 +1,5 @@
 import { Doughnut } from "react-chartjs-2";
 import { cn } from "next-common/utils";
-import { useSelector } from "react-redux";
-import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
 import { useEffect, useState } from "react";
 import Loading from "next-common/components/loading";
 import {
@@ -9,7 +7,7 @@ import {
   distributionDoughnutChartOptions,
   doughnutChartColors as colors,
   calculateRankStatistics,
-} from "next-common/components/fellowship/statistics/common.js";
+} from "next-common/components/fellowship/statistics/common";
 import DoughnutChartLabels from "./labels";
 import { useNavCollapsed } from "next-common/context/nav";
 
@@ -58,16 +56,9 @@ function RankChart({ labelDatas, data }) {
   );
 }
 
-export default function StatisticsDoughnutChart() {
-  let members = [];
+export default function RankDistributionDoughnutChart({ members = [] }) {
   const [contentLoading, setContentLoading] = useState(true);
   const [labelDatas, setLabelDatas] = useState([]);
-
-  try {
-    members = useSelector(fellowshipCollectiveMembersSelector);
-  } catch (error) {
-    setContentLoading(false);
-  }
 
   useEffect(() => {
     if (members) {

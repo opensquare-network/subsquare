@@ -1,10 +1,10 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import StatisticsMembershipSummary from "./summary";
-import StatisticsMembershipByRank from "./rankDistribution";
+import StatisticsMembershipRankDistribution from "./rankDistribution";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 
-export default function StatisticsMembership() {
+export default function StatisticsMembership({ members = [] }) {
   const [navCollapsed] = useNavCollapsed();
 
   return (
@@ -18,8 +18,8 @@ export default function StatisticsMembership() {
             : "max-[1365px]:grid-cols-1",
         )}
       >
-        <StatisticsMembershipByRank />
-        <StatisticsMembershipSummary />
+        <StatisticsMembershipRankDistribution members={members} />
+        <StatisticsMembershipSummary members={members} />
       </div>
     </div>
   );

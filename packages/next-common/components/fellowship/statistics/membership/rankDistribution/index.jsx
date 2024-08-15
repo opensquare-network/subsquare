@@ -1,17 +1,17 @@
-import DoughnutChart from "./doughnutChart";
+import RankDistributionDoughnutChart from "./doughnutChart";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { StatisticsTitle } from "next-common/components/statistics/styled.js";
 
-function DoughnutChartHeader() {
+function RankDistributionDoughnutChartHeader() {
   return <StatisticsTitle>Rank Distribution</StatisticsTitle>;
 }
 
-export default function StatisticsMembershipByRank() {
+export default function StatisticsMembershipRankDistribution({ members = [] }) {
   return (
     <SecondaryCard>
       <div className="flex flex-col h-full">
-        <DoughnutChartHeader />
-        <DoughnutChart />
+        <RankDistributionDoughnutChartHeader />
+        <RankDistributionDoughnutChart members={members} />
       </div>
     </SecondaryCard>
   );

@@ -1,7 +1,5 @@
 import { Doughnut } from "react-chartjs-2";
 import { cn } from "next-common/utils";
-import { useSelector } from "react-redux";
-import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
 import { useEffect, useState } from "react";
 import { useAsync } from "react-use";
 import nextApi from "next-common/services/nextApi";
@@ -79,8 +77,7 @@ function RankChart({ labelDatas, data }) {
   );
 }
 
-export default function StatisticsExpenditureByRank() {
-  const members = useSelector(fellowshipCollectiveMembersSelector);
+export default function RankDoughnutChart({ members = [] }) {
   const [labelDatas, setLabelDatas] = useState([]);
   const [contentLoading, setContentLoading] = useState(false);
 

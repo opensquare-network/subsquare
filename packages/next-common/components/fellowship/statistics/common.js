@@ -58,8 +58,6 @@ export function useDoughnutChartOptions(userOptions = {}) {
   return deepmerge(options, userOptions);
 }
 
-export const doughnutChartOptions = {};
-
 export const doughnutChartColors = [
   "#D5D9E2",
   "#CACED8",

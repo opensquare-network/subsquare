@@ -2,7 +2,6 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import StatisticsExpenditureSummary from "./summary";
 import StatisticsCycles from "./cycles";
 import StatisticsClaimants from "./claimants";
-import "chart.js/auto";
 import { useAsync } from "react-use";
 import nextApi from "next-common/services/nextApi";
 import { fellowshipStatisticsCyclesApi } from "next-common/services/url";
@@ -10,7 +9,7 @@ import StatisticsExpenditureByRank from "./rank";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 
-export default function StatisticsExpenditure() {
+export default function StatisticsExpenditure({ members = [] }) {
   const cyclesApi = fellowshipStatisticsCyclesApi;
   const [navCollapsed] = useNavCollapsed();
 
@@ -35,9 +34,9 @@ export default function StatisticsExpenditure() {
         )}
       >
         <StatisticsCycles value={value} loading={loading} />
-        <StatisticsExpenditureByRank />
+        <StatisticsExpenditureByRank members={members} />
       </div>
-      <StatisticsClaimants />
+      <StatisticsClaimants members={members} />
     </div>
   );
 }
