@@ -19,10 +19,10 @@ function getRankSalaryData(data, members = []) {
 
   Object.entries(rankArr).forEach(([rank, { count }]) => {
     totalActiveSalary = totalActiveSalary.plus(
-      new BigNumber(getRankSalary(activeSalary, rank)).times(count),
+      new BigNumber(getRankSalary(activeSalary, parseInt(rank))).times(count),
     );
     totalPassiveSalary = totalPassiveSalary.plus(
-      new BigNumber(getRankSalary(passiveSalary, rank)).times(count),
+      new BigNumber(getRankSalary(passiveSalary, parseInt(rank))).times(count),
     );
   });
 
