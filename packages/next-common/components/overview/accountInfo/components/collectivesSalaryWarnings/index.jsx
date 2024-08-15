@@ -3,10 +3,10 @@ import {
   useAmbassadorMemberData,
   useFellowshipMemberData,
 } from "../../context/memberDataContext";
-import CollectivesClaimGetPaymentPrompt from "./getPayment";
-import CollectivesClaimRegisterPrompt from "./register";
+import CollectivesSalaryGetPaymentWarning from "./getPayment";
+import CollectivesSalaryRegisterWarning from "./register";
 
-export default function CollectivesClaimPrompt() {
+export default function CollectivesSalaryWarnings() {
   const { data: fellowshipMemberData, isLoading: fellowshipMemberLoading } =
     useFellowshipMemberData();
   const { data: ambassadorMemberData, isLoading: ambassadorMemberLoading } =
@@ -27,11 +27,11 @@ export default function CollectivesClaimPrompt() {
 
   return (
     <>
-      <CollectivesClaimRegisterPrompt
+      <CollectivesSalaryRegisterWarning
         section={section}
         memberData={memberData}
       />
-      <CollectivesClaimGetPaymentPrompt
+      <CollectivesSalaryGetPaymentWarning
         section={section}
         memberData={memberData}
       />

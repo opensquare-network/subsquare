@@ -7,7 +7,7 @@ import { AccountHead, ProxyTip } from "./accountInfoPanel";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ManageAccountButton from "./components/manageAccountButton";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
-import CollectivesClaimPrompt from "./components/collectivesClaimPrompt";
+import CollectivesSalaryWarnings from "./components/collectivesSalaryWarnings";
 import useMemberData from "./hook/useMemberData";
 import MemberDataProvider from "./context/memberDataContext";
 
@@ -34,7 +34,7 @@ export default function CollectivesAccountInfoPanel({ hideManageAccountLink }) {
         <ExtensionUpdatePrompt />
         <AccountPanelScrollPrompt />
         <CollectivesDemotionPrompt />
-        <CollectivesClaimPrompt />
+        <CollectivesSalaryWarnings />
       </NeutralPanel>
     </MemberDataProvider>
   );

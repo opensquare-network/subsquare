@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import Prompt from "../prompt";
 
-export default function CollectivesClaimGetPaymentPrompt({
+export default function CollectivesSalaryGetPaymentWarning({
   section,
   memberData,
 }) {

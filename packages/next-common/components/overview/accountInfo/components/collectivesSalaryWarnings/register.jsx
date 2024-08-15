@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import Prompt from "../prompt";
 import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
 
-export default function CollectivesClaimRegisterPrompt({
+export default function CollectivesSalaryRegisterWarning({
   section,
   memberData,
 }) {
