@@ -66,42 +66,61 @@ export default function PopupContent() {
     showVoteSuccessful(currentVote);
   }, [refVotes, signerAccount?.realAddress, showVoteSuccessful]);
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
 
-  const doVote = async (approve) => {
-    if (isSubmitting) return;
+  const doVote = useCallback(
+    async (approve) => {
+      if (isSubmitting) return;
 
-    if (!motionHash || motionIndex === undefined) {
-      return;
-    }
+      if (!motionHash || motionIndex === undefined) {
+        return;
+      }
 
-    if (!signerAccount) {
-      showErrorToast("Please select an account");
-      return;
-    }
+      if (!signerAccount) {
+        showErrorToast("Please select an account");
+        return;
+      }
 
-    const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
-    if (!voteMethod) {
-      showErrorToast("Chain network is not connected yet");
-      return;
-    }
+      const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
+      if (!voteMethod) {
+        showErrorToast("Chain network is not connected yet");
+        return;
+      }
 
-    let tx = voteMethod(motionHash, motionIndex, approve);
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
+      let tx = voteMethod(motionHash, motionIndex, approve);
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
 
-    setLoadingState(approve ? VoteEnum.Aye : VoteEnum.Nay);
-    await sendTx({
+      setLoadingState(approve ? VoteEnum.Aye : VoteEnum.Nay);
+      await sendTx({
+        api,
+        tx,
+        onInBlock: () => {
+          getMyVoteAndShowSuccessful();
+          onInBlock();
+        },
+        onSubmitted: onClose,
+      });
+    },
+    [
       api,
-      tx,
-      onInBlock: () => {
-        getMyVoteAndShowSuccessful();
-        onInBlock();
-      },
-      onSubmitted: onClose,
-    });
-  };
+      chain,
+      type,
+      motionHash,
+      motionIndex,
+      signerAccount,
+      sendTx,
+      onInBlock,
+      getMyVoteAndShowSuccessful,
+      onClose,
+      isSubmitting,
+      showErrorToast,
+    ],
+  );
 
   return (
     <>

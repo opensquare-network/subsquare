@@ -28,7 +28,10 @@ function PopupContent() {
 
   const { sendTx, isLoading: isSubmitting } = useSendTransaction();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
 
   const signerAccount = useSignerAccount();
 
@@ -65,37 +68,52 @@ function PopupContent() {
     collectivePallet,
   ]);
 
-  const doVote = async (aye) => {
-    if (isSubmitting || isNil(referendumIndex) || !node) {
-      return;
-    }
+  const doVote = useCallback(
+    async (aye) => {
+      if (isSubmitting || isNil(referendumIndex) || !node) {
+        return;
+      }
 
-    if (!signerAccount) {
-      showErrorToast("Please select an account");
-      return;
-    }
+      if (!signerAccount) {
+        showErrorToast("Please select an account");
+        return;
+      }
 
-    if (!api) {
-      showErrorToast("Chain network is not connected yet");
-      return;
-    }
+      if (!api) {
+        showErrorToast("Chain network is not connected yet");
+        return;
+      }
 
-    let tx = api.tx[collectivePallet].vote(referendumIndex, aye);
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
+      let tx = api.tx[collectivePallet].vote(referendumIndex, aye);
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
 
-    setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
-    await sendTx({
+      setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
+      await sendTx({
+        api,
+        tx,
+        onInBlock: () => {
+          getMyVoteAndShowSuccessful();
+          onInBlock();
+        },
+        onSubmitted: onClose,
+      });
+    },
+    [
       api,
-      tx,
-      onInBlock: () => {
-        getMyVoteAndShowSuccessful();
-        onInBlock();
-      },
-      onSubmitted: onClose,
-    });
-  };
+      collectivePallet,
+      referendumIndex,
+      signerAccount,
+      sendTx,
+      onInBlock,
+      getMyVoteAndShowSuccessful,
+      onClose,
+      isSubmitting,
+      showErrorToast,
+      node,
+    ],
+  );
 
   return (
     <>

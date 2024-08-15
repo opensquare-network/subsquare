@@ -57,59 +57,77 @@ function PopupContent() {
     showVoteSuccessful(addressVote);
   }, [api, referendumIndex, signerAccount?.realAddress, showVoteSuccessful]);
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
 
-  const doVote = async (aye) => {
-    if (isSubmitting || isNil(referendumIndex) || !node) {
-      return;
-    }
+  const doVote = useCallback(
+    async (aye) => {
+      if (isSubmitting || isNil(referendumIndex) || !node) {
+        return;
+      }
 
-    let bnVoteBalance;
-    try {
-      bnVoteBalance = checkInputValue(
-        inputVoteBalance,
-        node.decimals,
-        "vote balance",
-      );
-    } catch (err) {
-      showErrorToast(err.message);
-      return;
-    }
+      let bnVoteBalance;
+      try {
+        bnVoteBalance = checkInputValue(
+          inputVoteBalance,
+          node.decimals,
+          "vote balance",
+        );
+      } catch (err) {
+        showErrorToast(err.message);
+        return;
+      }
 
-    if (bnVoteBalance.gt(votingBalance)) {
-      showErrorToast("Insufficient voting balance");
-      return;
-    }
+      if (bnVoteBalance.gt(votingBalance)) {
+        showErrorToast("Insufficient voting balance");
+        return;
+      }
 
-    if (!signerAccount) {
-      showErrorToast("Please select an account");
-      return;
-    }
+      if (!signerAccount) {
+        showErrorToast("Please select an account");
+        return;
+      }
 
-    if (!api) {
-      showErrorToast("Chain network is not connected yet");
-      return;
-    }
+      if (!api) {
+        showErrorToast("Chain network is not connected yet");
+        return;
+      }
 
-    let tx = api.tx.democracy.vote(referendumIndex, {
-      aye,
-      balance: bnVoteBalance.toString(),
-    });
+      let tx = api.tx.democracy.vote(referendumIndex, {
+        aye,
+        balance: bnVoteBalance.toString(),
+      });
 
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
 
-    setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
-    await sendTx({
+      setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
+      await sendTx({
+        api,
+        tx,
+        onInBlock: () => {
+          getMyVoteAndShowSuccessful();
+        },
+        onSubmitted: onClose,
+      });
+    },
+    [
       api,
-      tx,
-      onInBlock: () => {
-        getMyVoteAndShowSuccessful();
-      },
-      onSubmitted: onClose,
-    });
-  };
+      inputVoteBalance,
+      isSubmitting,
+      onClose,
+      referendumIndex,
+      signerAccount,
+      votingBalance,
+      getMyVoteAndShowSuccessful,
+      sendTx,
+      node,
+      showErrorToast,
+    ],
+  );
 
   return (
     <>
