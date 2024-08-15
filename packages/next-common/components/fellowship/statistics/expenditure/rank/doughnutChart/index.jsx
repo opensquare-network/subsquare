@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAsync } from "react-use";
 import nextApi from "next-common/services/nextApi";
 import { fellowshipStatisticsRanksApi } from "next-common/services/url";
-import Loading from "next-common/components/loading";
+import { LoadingContent } from "next-common/components/fellowship/statistics/common";
 import BigNumber from "bignumber.js";
 import {
   useDoughnutChartOptions,
@@ -28,11 +28,11 @@ function transformRanksDataToObject(ranksData) {
   }, {});
 }
 
-function handleLabelDatas(members, ranksData) {
+function handleLabelDataArr(members, ranksData) {
   const rankArr = getUniqueRanks(members);
   const totalSalary = getTotalSalary(ranksData);
   const ranksDataObj = transformRanksDataToObject(ranksData);
-  const datas = rankArr.map((rank, index) => {
+  const dataArr = rankArr.map((rank, index) => {
     const count = ranksDataObj[index] || 0;
     const percent = ranksDataObj[index]
       ? new BigNumber(ranksDataObj[index]).div(totalSalary)
@@ -44,16 +44,10 @@ function handleLabelDatas(members, ranksData) {
       percent,
     };
   });
-  return datas.reverse();
+  return dataArr.reverse();
 }
 
-const LoadingContent = (
-  <div className="flex justify-center items-center grow w-full">
-    <Loading size={24} />
-  </div>
-);
-
-function RankChart({ labelDatas, data }) {
+function RankChart({ labelDataArr, data }) {
   const [navCollapsed] = useNavCollapsed();
   const options = useDoughnutChartOptions(expenditureDoughnutChartOptions);
   return (
@@ -64,7 +58,7 @@ function RankChart({ labelDatas, data }) {
         "grid-cols-2 max-sm:grid-cols-1 max-md:grid-cols-1",
       )}
     >
-      <DoughnutChartLabels labelDatas={labelDatas} className="w-full" />
+      <DoughnutChartLabels labelDataArr={labelDataArr} className="w-full" />
       <div className="w-full flex items-center justify-center">
         <Doughnut
           data={data}
@@ -77,7 +71,7 @@ function RankChart({ labelDatas, data }) {
 }
 
 export default function RankDoughnutChart({ members = [] }) {
-  const [labelDatas, setLabelDatas] = useState([]);
+  const [labelDataArr, setLabelDataArr] = useState([]);
   const [contentLoading, setContentLoading] = useState(false);
 
   const ranksApi = fellowshipStatisticsRanksApi;
@@ -98,22 +92,22 @@ export default function RankDoughnutChart({ members = [] }) {
 
   useEffect(() => {
     if (members && ranksData) {
-      const datas = handleLabelDatas(members, ranksData);
-      setLabelDatas(datas);
+      const dataArr = handleLabelDataArr(members, ranksData);
+      setLabelDataArr(dataArr);
       setContentLoading(false);
     }
   }, [members, ranksData]);
 
   const data = {
-    labels: labelDatas.map((i) => i.label),
+    labels: labelDataArr.map((i) => i.label),
     datasets: [
       {
-        data: labelDatas.map((item) => item.count),
-        backgroundColor: labelDatas.map((item) => item.bgColor),
-        borderColor: labelDatas.map((item) => item.bgColor),
+        data: labelDataArr.map((item) => item.count),
+        backgroundColor: labelDataArr.map((item) => item.bgColor),
+        borderColor: labelDataArr.map((item) => item.bgColor),
         borderWidth: 0,
-        name: labelDatas.map((i) => i.label),
-        percentage: labelDatas.map(
+        name: labelDataArr.map((i) => i.label),
+        percentage: labelDataArr.map(
           (item) => `${(item.percent * 100).toFixed(2)}%`,
         ),
       },
@@ -123,9 +117,9 @@ export default function RankDoughnutChart({ members = [] }) {
   return (
     <>
       {contentLoading ? (
-        LoadingContent
+        <LoadingContent />
       ) : (
-        <RankChart labelDatas={labelDatas} data={data} />
+        <RankChart labelDataArr={labelDataArr} data={data} />
       )}
     </>
   );
