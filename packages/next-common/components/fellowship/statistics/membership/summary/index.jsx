@@ -8,11 +8,11 @@ import BigNumber from "bignumber.js";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 import { useFellowshipMemberParams } from "next-common/hooks/fellowship/useFellowshipMemberParams";
 import StatisticsMembershipSummaryItems from "./summaryItems";
-import { calculateRankStatistics } from "next-common/components/fellowship/statistics/common";
+import { translateCollectiveMembersRankData } from "next-common/components/fellowship/statistics/common";
 
 function getRankSalaryData(data, members = []) {
   const { activeSalary = [], passiveSalary = [] } = data;
-  const rankArr = calculateRankStatistics(members);
+  const rankArr = translateCollectiveMembersRankData(members);
 
   let totalActiveSalary = new BigNumber(0);
   let totalPassiveSalary = new BigNumber(0);

@@ -97,15 +97,11 @@ function StatisticsClaimantsTable({ members = [] }) {
   );
 }
 
-function StatisticsClaimantsHeader() {
-  return <StatisticsTitle>Claimants</StatisticsTitle>;
-}
-
 export default function StatisticsClaimants({ members = [] }) {
   return (
     <SecondaryCard>
       <div className="flex flex-col gap-[16px] h-full">
-        <StatisticsClaimantsHeader />
+        <StatisticsTitle>Claimants</StatisticsTitle>
         <StatisticsClaimantsTable members={members} />
       </div>
     </SecondaryCard>

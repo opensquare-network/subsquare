@@ -161,7 +161,7 @@ export function getUniqueRanks(members) {
   return Array.from(rankSet).sort((a, b) => a - b);
 }
 
-export function calculateRankStatistics(members) {
+export function translateCollectiveMembersRankData(members) {
   const result = {};
   const totalCount = members.length;
 

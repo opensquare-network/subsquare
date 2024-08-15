@@ -6,13 +6,13 @@ import {
   useDoughnutChartOptions,
   distributionDoughnutChartOptions,
   doughnutChartColors as colors,
-  calculateRankStatistics,
+  translateCollectiveMembersRankData,
 } from "next-common/components/fellowship/statistics/common";
 import DoughnutChartLabels from "./labels";
 import { useNavCollapsed } from "next-common/context/nav";
 
 function handleLabelDatas(members) {
-  const rankArr = calculateRankStatistics(members);
+  const rankArr = translateCollectiveMembersRankData(members);
   const datas = Object.entries(rankArr).map(
     ([rank, { count, percent }], index) => {
       return {
