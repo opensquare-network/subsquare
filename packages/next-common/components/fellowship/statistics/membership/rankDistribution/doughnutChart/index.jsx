@@ -35,17 +35,17 @@ const LoadingContent = (
 function RankChart({ labelDatas, data }) {
   const [navCollapsed] = useNavCollapsed();
   const options = useDoughnutChartOptions(distributionDoughnutChartOptions);
+
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-6",
-        navCollapsed
-          ? "max-sm:flex-col max-sm:items-center"
-          : "max-md:flex-col max-md:items-center",
+        "grid gap-6",
+        navCollapsed ? "max-sm:grid-cols-1" : "max-md:grid-cols-1",
+        "grid-cols-2 max-sm:grid-cols-1 max-md:grid-cols-1",
       )}
     >
-      <DoughnutChartLabels labelDatas={labelDatas} />
-      <div className="w-[260px] flex items-center">
+      <DoughnutChartLabels labelDatas={labelDatas} className="w-full" />
+      <div className="w-full flex items-center justify-center">
         <Doughnut
           data={data}
           options={options}
