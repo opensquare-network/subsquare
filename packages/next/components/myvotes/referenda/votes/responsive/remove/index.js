@@ -9,13 +9,15 @@ const ReferendumRemovalPopup = dynamicPopup(() => import("./popup"));
 export default function RemoveVoteButton({ vote }) {
   const [showPop, setShowPop] = useState(false);
   const dispatch = useDispatch();
+  const { trackId, referendumIndex } = vote || {};
 
   return (
     <>
       <RemoveButton onClick={() => setShowPop(true)} />
       {showPop && (
         <ReferendumRemovalPopup
-          vote={vote}
+          trackId={trackId}
+          referendumIndex={referendumIndex}
           onClose={() => setShowPop(false)}
           onInBlock={() => dispatch(incMyReferendaVotesTrigger())}
         />
