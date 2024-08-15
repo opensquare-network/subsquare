@@ -4,7 +4,6 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { PopupButtonWrapper } from "../popup/wrapper";
 import { useSignerAccount, usePopupParams } from "../popupWithSigner/context";
 import SignerWithBalance from "./signerWithBalance";
-import { useContextApi } from "next-common/context/api";
 import { noop } from "lodash-es";
 
 function PopupContent({ children }) {
@@ -14,7 +13,6 @@ function PopupContent({ children }) {
     confirmText = "Confirm",
     disabled = false,
   } = usePopupParams();
-  const api = useContextApi();
   const signerAccount = useSignerAccount();
 
   return (
@@ -25,7 +23,7 @@ function PopupContent({ children }) {
         <PrimaryButton
           disabled={disabled}
           loading={isLoading}
-          onClick={() => actionCallback(api, signerAccount)}
+          onClick={() => actionCallback(signerAccount)}
         >
           {confirmText}
         </PrimaryButton>
