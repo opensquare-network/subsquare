@@ -38,7 +38,7 @@ export default function CollectivesClaimGetPaymentPrompt({
   const { days } = extractTime(ms);
   const displayDays = days > 0 && days <= 3;
 
-  if (!stats || !memberData || !isRegistered || !displayDays) {
+  if (!stats || !memberData?.coreMember || !isRegistered || !displayDays) {
     return null;
   }
 

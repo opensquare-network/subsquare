@@ -36,7 +36,7 @@ export default function CollectivesClaimRegisterPrompt({
   const { days } = extractTime(ms);
   const displayDays = days > 0 && days <= 3;
 
-  if (!stats || !memberData || !notRegistered || !displayDays) {
+  if (!stats || !memberData?.coreMember || !notRegistered || !displayDays) {
     return null;
   }
 
