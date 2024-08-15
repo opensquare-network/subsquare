@@ -1,4 +1,3 @@
-import { extractTime } from "@polkadot/util";
 import { has } from "lodash-es";
 import { PromptTypes } from "next-common/components/scrollPrompt";
 import { useChainSettings } from "next-common/context/chain";
@@ -10,6 +9,7 @@ import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fello
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import Prompt from "../prompt";
+import { ONE_DAY } from "next-common/utils/constants";
 
 export default function CollectivesSalaryGetPaymentWarning({
   section,
@@ -35,10 +35,9 @@ export default function CollectivesSalaryGetPaymentWarning({
   const { remainBlocks } = useCalcPeriodBlocks(payoutPeriod, payoutStart);
 
   const ms = blockTime * remainBlocks;
-  const { days } = extractTime(ms);
-  const displayDays = days > 0 && days <= 3;
+  const isInWarningTime = ms > ONE_DAY && ms <= ONE_DAY * 3;
 
-  if (!stats || !memberData?.coreMember || !isRegistered || !displayDays) {
+  if (!stats || !memberData?.coreMember || !isRegistered || !isInWarningTime) {
     return null;
   }
 
