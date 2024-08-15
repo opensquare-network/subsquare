@@ -57,21 +57,25 @@ function PopupContent({ defaultTargetAddress, targetDisabled }) {
         "vote balance",
       );
     } catch (err) {
-      return showErrorToast(err.message);
+      showErrorToast(err.message);
+      return;
     }
 
     if (bnVoteBalance.gt(votingBalance)) {
-      return showErrorToast("Insufficient voting balance");
+      showErrorToast("Insufficient voting balance");
+      return;
     }
 
     if (!targetAddress) {
-      return showErrorToast("Please input a target address");
+      showErrorToast("Please input a target address");
+      return;
     }
 
     if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
-      return showErrorToast(
+      showErrorToast(
         "Target address cannot be same with the delegator address",
       );
+      return;
     }
 
     return api.tx.democracy.delegate(

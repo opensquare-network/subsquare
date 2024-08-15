@@ -76,12 +76,14 @@ export default function PopupContent() {
     }
 
     if (!signerAccount) {
-      return showErrorToast("Please select an account");
+      showErrorToast("Please select an account");
+      return;
     }
 
     const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
     if (!voteMethod) {
-      return showErrorToast("Chain network is not connected yet");
+      showErrorToast("Chain network is not connected yet");
+      return;
     }
 
     let tx = voteMethod(motionHash, motionIndex, approve);

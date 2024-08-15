@@ -71,11 +71,13 @@ function PopupContent() {
     }
 
     if (!signerAccount) {
-      return showErrorToast("Please select an account");
+      showErrorToast("Please select an account");
+      return;
     }
 
     if (!api) {
-      return showErrorToast("Chain network is not connected yet");
+      showErrorToast("Chain network is not connected yet");
+      return;
     }
 
     let tx = api.tx[collectivePallet].vote(referendumIndex, aye);

@@ -25,16 +25,19 @@ export default function CloseMotionPopup({
 
   const doClose = async (api, signerAccount) => {
     if (!api) {
-      return showErrorToast("Chain network is not connected yet");
+      showErrorToast("Chain network is not connected yet");
+      return;
     }
 
     const closeMethod = api?.tx?.[toApiCouncil(chain, type)]?.close;
     if (!closeMethod) {
-      return showErrorToast("Close method is not support");
+      showErrorToast("Close method is not support");
+      return;
     }
 
     if (!signerAccount) {
-      return showErrorToast("Please login first");
+      showErrorToast("Please login first");
+      return;
     }
 
     let tx;

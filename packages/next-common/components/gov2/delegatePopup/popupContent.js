@@ -53,7 +53,8 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
 
   const getTxFunc = useCallback(async () => {
     if (selectedTracks.length === 0) {
-      return showErrorToast("Please select at least one track");
+      showErrorToast("Please select at least one track");
+      return;
     }
 
     let bnVoteBalance;
@@ -64,25 +65,20 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
         "vote balance",
       );
     } catch (err) {
-      return showErrorToast(err.message);
+      showErrorToast(err.message);
+      return;
     }
 
     if (bnVoteBalance.gt(votingBalance)) {
-      return showErrorToast("Insufficient voting balance");
-    }
-
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
-    }
-
-    if (!targetAddress) {
-      return showErrorToast("Please input a target address");
+      showErrorToast("Insufficient voting balance");
+      return;
     }
 
     if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
-      return showErrorToast(
+      showErrorToast(
         "Target address cannot be same with the delegator address",
       );
+      return;
     }
 
     let tx;

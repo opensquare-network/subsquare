@@ -26,11 +26,13 @@ export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
   const doClearExpiredVote = useCallback(
     async (api, signerAccount) => {
       if (!api) {
-        return showErrorToast("Chain network is not connected yet");
+        showErrorToast("Chain network is not connected yet");
+        return;
       }
 
       if (!signerAccount) {
-        return showErrorToast("Please login first");
+        showErrorToast("Please login first");
+        return;
       }
 
       const realAddress = signerAccount.proxyAddress || signerAccount.address;

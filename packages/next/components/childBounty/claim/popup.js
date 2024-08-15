@@ -19,11 +19,13 @@ export default function ClaimPopup({ childBounty, onClose }) {
   const doClaim = useCallback(
     async (api, signerAccount) => {
       if (!api) {
-        return showErrorToast("Chain network is not connected yet");
+        showErrorToast("Chain network is not connected yet");
+        return;
       }
 
       if (!signerAccount) {
-        return showErrorToast("Please login first");
+        showErrorToast("Please login first");
+        return;
       }
 
       let tx = api.tx.childBounties.claimChildBounty(

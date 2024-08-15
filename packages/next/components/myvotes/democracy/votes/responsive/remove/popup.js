@@ -22,7 +22,8 @@ export default function ReferendumRemovalPopup({
   const doRemoveVote = useCallback(
     async (api, signerAccount) => {
       if (!api) {
-        return showErrorToast("Chain RPC is not connected yet");
+        showErrorToast("Chain RPC is not connected yet");
+        return;
       }
 
       let tx = api.tx.democracy.removeVote(referendumIndex);

@@ -72,19 +72,23 @@ function PopupContent() {
         "vote balance",
       );
     } catch (err) {
-      return showErrorToast(err.message);
+      showErrorToast(err.message);
+      return;
     }
 
     if (bnVoteBalance.gt(votingBalance)) {
-      return showErrorToast("Insufficient voting balance");
+      showErrorToast("Insufficient voting balance");
+      return;
     }
 
     if (!signerAccount) {
-      return showErrorToast("Please select an account");
+      showErrorToast("Please select an account");
+      return;
     }
 
     if (!api) {
-      return showErrorToast("Chain network is not connected yet");
+      showErrorToast("Chain network is not connected yet");
+      return;
     }
 
     let tx = api.tx.democracy.vote(referendumIndex, {
