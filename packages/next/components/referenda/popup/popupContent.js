@@ -1,8 +1,5 @@
-import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-
+import { useCallback, useEffect, useState } from "react";
 import { useAddressVotingBalance } from "utils/hooks";
-import { useMountedState } from "react-use";
 import { noop } from "lodash-es";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
@@ -10,14 +7,11 @@ import NoVoteRecord from "./noVoteRecord";
 import LoadingVoteStatus from "./loadingVoteStatus";
 import Delegating from "./delegating";
 import Signer from "next-common/components/popup/fields/signerField";
-
-import { useChainSettings } from "next-common/context/chain";
 import { Aye, Nay, Split } from "./ayeNaySplitTab";
 import PrimaryButton from "next-common/lib/button/primary";
 import useSubMyDemocracyVote, {
   getDemocracyDirectVote,
 } from "next-common/hooks/democracy/useSubMyVote";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import VStack from "next-common/components/styled/vStack";
 import { WarningMessage } from "next-common/components/popup/styled";
@@ -26,6 +20,10 @@ import { normalizeOnchainVote } from "next-common/utils/vote";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import AyeNaySplitTab from "./ayeNaySplitTab";
+import useStandardVote from "./voteHooks/useStandardVote";
+import useSplitVote from "./voteHooks/useSplitVote";
+import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 
 export function LoadingPanel() {
   return (
@@ -42,30 +40,15 @@ export function LoadingPanel() {
 
 function VotePanel({
   referendumIndex,
-  onSubmitted = noop,
   onInBlock = noop,
-  useStandardVote,
-  useSplitVote,
-  VoteTypeTab,
-  submitExtrinsic = noop,
   votingBalance,
   addressVote,
   addressVoteIsLoading,
   onClose,
 }) {
-  const dispatch = useDispatch();
-  const isMounted = useMountedState();
   const [tabIndex, setTabIndex] = useState(Aye);
-
-  const signerAccount = useSignerAccount();
-
-  const api = useContextApi();
-  const node = useChainSettings();
-
   const [isLoading, setIsLoading] = useState(false);
-
   const votes = normalizeOnchainVote(addressVote);
-
   const addressVoteDelegateVoted = addressVote?.delegating?.voted;
 
   const { StandardVoteComponent, getStandardVoteTx } = useStandardVote({
@@ -93,44 +76,22 @@ function VotePanel({
     getVoteTx = getSplitVoteTx;
   }
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const { doSubmit, isSubmitting } = useTxSubmission({
+    getTxFunc: getVoteTx,
+    onInBlock,
+    onSubmitted: onClose,
+  });
 
-  const doVote = async () => {
-    if (isLoading || referendumIndex == null || !node) {
-      return;
-    }
-
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
-    }
-
-    if (!signerAccount) {
-      return showErrorToast("Please select an account");
-    }
-
-    if (!getVoteTx) {
-      return showErrorToast("Vote component is not ready yet");
-    }
-
-    await submitExtrinsic({
-      api,
-      getVoteTx,
-      dispatch,
-      setLoading: setIsLoading,
-      onInBlock,
-      onSubmitted,
-      signerAccount,
-      isMounted,
-      onClose,
-    });
-  };
+  useEffect(() => {
+    setIsLoading(isSubmitting);
+  }, [isSubmitting]);
 
   return (
     <>
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <>
-          <VoteTypeTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
+          <AyeNaySplitTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
           {voteComponent}
         </>
       )}
@@ -163,7 +124,7 @@ function VotePanel({
       {!addressVote?.delegating && (
         // Address is not allow to vote directly when it is in delegate mode
         <div style={{ textAlign: "right" }}>
-          <PrimaryButton loading={isLoading} onClick={doVote}>
+          <PrimaryButton loading={isLoading} onClick={doSubmit}>
             Confirm
           </PrimaryButton>
         </div>
@@ -176,11 +137,7 @@ export default function PopupContent() {
   const {
     referendumIndex,
     onClose,
-    onSubmitted = noop,
     onInBlock = noop,
-    useStandardVote,
-    useSplitVote,
-    VoteTypeTab,
     submitExtrinsic = noop,
   } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
@@ -219,15 +176,11 @@ export default function PopupContent() {
     content = (
       <VotePanel
         referendumIndex={referendumIndex}
-        onSubmitted={onSubmitted}
         onInBlock={() => {
           getMyVoteAndShowSuccessful();
           onInBlock();
         }}
         onClose={onClose}
-        useStandardVote={useStandardVote}
-        useSplitVote={useSplitVote}
-        VoteTypeTab={VoteTypeTab}
         submitExtrinsic={submitExtrinsic}
         votingBalance={votingBalance}
         addressVote={addressVote}
