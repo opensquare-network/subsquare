@@ -10,8 +10,6 @@ import { useStatisticsClaimantsRankColumn } from "./columns/rank";
 import { useState, useEffect } from "react";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { useSelector } from "react-redux";
-import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
 import { StatisticsTitle } from "next-common/components/statistics/styled.js";
 
 function handleClaimantsData(originalMembers, members) {
@@ -33,8 +31,7 @@ function paginateData(data, page, pageSize) {
   return data.slice(start, end);
 }
 
-function StatisticsClaimantsTable() {
-  const members = useSelector(fellowshipCollectiveMembersSelector);
+function StatisticsClaimantsTable({ members = [] }) {
   const [total, setTotal] = useState(0);
   const [processedData, setProcessedData] = useState([]);
   const [rowData, setRowData] = useState([]);
@@ -100,16 +97,12 @@ function StatisticsClaimantsTable() {
   );
 }
 
-function StatisticsClaimantsHeader() {
-  return <StatisticsTitle>Claimants</StatisticsTitle>;
-}
-
-export default function StatisticsClaimants() {
+export default function StatisticsClaimants({ members = [] }) {
   return (
     <SecondaryCard>
       <div className="flex flex-col gap-[16px] h-full">
-        <StatisticsClaimantsHeader />
-        <StatisticsClaimantsTable />
+        <StatisticsTitle>Claimants</StatisticsTitle>
+        <StatisticsClaimantsTable members={members} />
       </div>
     </SecondaryCard>
   );

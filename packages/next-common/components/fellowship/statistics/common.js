@@ -3,21 +3,10 @@ import deepmerge from "deepmerge";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { toPrecision, formatNum } from "next-common/utils";
 
-export const doughnutChartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  animation: {
-    duration: 0,
-  },
+export const expenditureDoughnutChartOptions = {
   plugins: {
-    legend: {
-      display: false,
-    },
     tooltip: {
-      displayColors: false,
-      position: "average",
       callbacks: {
-        title: () => "",
         label: (item) => {
           const name = item.dataset.name[item.dataIndex];
           const percentage = item.dataset.percentage[item.dataIndex];
@@ -27,8 +16,47 @@ export const doughnutChartOptions = {
       },
     },
   },
-  cutout: "80%",
 };
+
+export const distributionDoughnutChartOptions = {
+  plugins: {
+    tooltip: {
+      callbacks: {
+        label: (item) => {
+          const name = item.dataset.name[item.dataIndex];
+          const percentage = item.dataset.percentage[item.dataIndex];
+          const count = item.dataset.data[item.dataIndex];
+          return `${name}: ${count} (${percentage})`;
+        },
+      },
+    },
+  },
+};
+
+export function useDoughnutChartOptions(userOptions = {}) {
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      duration: 0,
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        displayColors: false,
+        position: "average",
+        callbacks: {
+          title: () => "",
+          label: () => "",
+        },
+      },
+    },
+    cutout: "80%",
+  };
+  return deepmerge(options, userOptions);
+}
 
 export const doughnutChartColors = [
   "#D5D9E2",
@@ -51,7 +79,7 @@ export function getAbbreviateBigNumber(count, showSymbol = true) {
     : formatNum(precisionCount);
 }
 
-export function useOptions(userOptions) {
+export function useBarChartOptions(userOptions) {
   const theme = useTheme();
   /**
    * @type {import("react-chartjs-2").ChartProps}
@@ -125,4 +153,33 @@ export function useOptions(userOptions) {
   };
 
   return deepmerge(options, userOptions);
+}
+
+export function getUniqueRanks(members) {
+  const rankSet = new Set();
+  members.forEach((item) => rankSet.add(item.rank));
+  return Array.from(rankSet).sort((a, b) => a - b);
+}
+
+export function translateCollectiveMembersRankData(members) {
+  const result = {};
+  const totalCount = members.length;
+
+  members.forEach((item) => {
+    const rank = item.rank;
+    if (!result[rank]) {
+      result[rank] = { count: 0, percent: 0 };
+    }
+    result[rank].count += 1;
+  });
+
+  for (const rank in result) {
+    result[rank].percent = result[rank].count / totalCount;
+  }
+
+  return result;
+}
+
+export function getPercentageValue(percent) {
+  return percent ? `${(percent * 100).toFixed(2)}%` : "0%";
 }

@@ -4,10 +4,6 @@ import Loading from "next-common/components/loading";
 import CyclesChart from "./cyclesChart";
 import { StatisticsTitle } from "next-common/components/statistics/styled.js";
 
-function BarChartHeader() {
-  return <StatisticsTitle>Cycles</StatisticsTitle>;
-}
-
 const LoadingContent = (
   <div className="flex justify-center items-center grow w-full">
     <Loading size={24} />
@@ -22,7 +18,7 @@ export default function StatisticsCycles({ value = [], loading }) {
   return (
     <SecondaryCard>
       <div className="flex flex-col gap-[16px] h-full">
-        <BarChartHeader />
+        <StatisticsTitle>Cycles</StatisticsTitle>
         <BarChartContent value={value} loading={loading} />
       </div>
     </SecondaryCard>

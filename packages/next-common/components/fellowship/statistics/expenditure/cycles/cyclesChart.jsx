@@ -2,7 +2,7 @@ import React from "react";
 import BarChart from "./barChart";
 import { startCase } from "lodash-es";
 import BigNumber from "bignumber.js";
-import { getAbbreviateBigNumber } from "next-common/components/fellowship/statistics/expenditure/common.js";
+import { getAbbreviateBigNumber } from "next-common/components/fellowship/statistics/common.js";
 
 function getTooltipTitle(item) {
   const tooltipItem = item[0];
