@@ -28,14 +28,20 @@ export default function CollectivesSalaryRegisterWarning({
   const { claimant } = useMySalaryClaimant();
   const { blockTime } = useChainSettings();
 
-  const notRegistered = has(claimant?.status, "nothing");
+  const isRegisteredOrAttempted =
+    has(claimant?.status, "registered") || has(claimant?.status, "attempted");
 
   const { registrationPeriod } = useSalaryFellowshipPeriods();
   const { remainBlocks } = useCalcPeriodBlocks(registrationPeriod, cycleStart);
   const ms = blockTime * remainBlocks;
   const isInWarningTime = ms > ONE_DAY && ms <= ONE_DAY * 3;
 
-  if (!stats || !memberData?.coreMember || !notRegistered || !isInWarningTime) {
+  if (
+    !stats ||
+    !memberData?.coreMember ||
+    isRegisteredOrAttempted ||
+    !isInWarningTime
+  ) {
     return null;
   }
 
