@@ -1,4 +1,4 @@
-import { getAddress as getEvmAddress } from "ethers";
+import { ethers } from "ethers";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { addressEllipsis } from ".";
 import {
@@ -42,7 +42,7 @@ export function tryConvertToSubstrateAddress(address) {
     if (isCentrifuge()) {
       return centrifugeEvmToSubstrateAddress(address);
     }
-    return getEvmAddress(address);
+    return ethers.utils.getAddress(address);
   }
   return address;
 }

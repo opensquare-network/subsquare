@@ -84,7 +84,7 @@ export async function sendEvmTx({
   onStarted();
 
   try {
-    const provider = new ethers.BrowserProvider(ethereum);
+    const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = await provider.getSigner();
     await dispatchCall({
       to,
@@ -113,25 +113,28 @@ async function dispatchCall({
     from: signerAddress,
     to,
     data: data,
+    value: 0,
   };
   await dryRun(provider, tx);
 
   let sentTx = null;
 
   if (isHydradx()) {
-    const [gas, feeData] = await Promise.all([
-      provider.estimateGas(tx),
-      provider.getFeeData(),
-    ]);
+    const gas = await provider.estimateGas(tx);
+    const gasPrice = await provider.getGasPrice();
+
+    const onePrc = gasPrice.div(100);
+    const gasPricePlus = gasPrice.add(onePrc);
 
     sentTx = await signer.sendTransaction({
-      maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
-      maxFeePerGas: feeData.maxFeePerGas,
-      gasLimit: (gas * 11n) / 10n, // add 10%
+      maxPriorityFeePerGas: gasPricePlus,
+      maxFeePerGas: gasPricePlus,
+      gasLimit: gas.mul(11).div(10), // add 10%
       ...tx,
     });
   } else {
     const gas = await provider.estimateGas(tx);
+
     sentTx = await signer.sendTransaction({
       gasLimit: gas,
       ...tx,

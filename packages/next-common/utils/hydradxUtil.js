@@ -1,6 +1,6 @@
 import { Buffer } from "buffer";
 import { encodeAddress, decodeAddress } from "@polkadot/util-crypto";
-import { getAddress as getEvmAddress } from "ethers";
+import { ethers } from "ethers";
 import { isPolkadotAddress } from "./viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import isHydradx from "./isHydradx";
@@ -11,7 +11,7 @@ const suffixBytes = Buffer.alloc(8);
 
 export function safeConvertAddressH160(value) {
   try {
-    return getEvmAddress(value?.toLowerCase());
+    return ethers.utils.getAddress(value?.toLowerCase());
   } catch {
     return null;
   }
