@@ -1,14 +1,18 @@
 import { useCallback, useState } from "react";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import {
-  useCoreFellowshipPallet,
-  useRankedCollectivePallet,
-} from "next-common/context/collectives/collectives";
 
-export default function useMemberData() {
-  const corePallet = useCoreFellowshipPallet();
-  const collectivePallet = useRankedCollectivePallet();
+export default function useMemberData(section = "fellowship") {
+  let corePallet;
+  let collectivePallet;
+
+  if (section === "fellowship") {
+    corePallet = "fellowshipCore";
+    collectivePallet = "fellowshipCollective";
+  } else if (section === "ambassador") {
+    corePallet = "ambassadorCore";
+    collectivePallet = "ambassadorCollective";
+  }
 
   const address = useRealAddress();
 
@@ -17,7 +21,9 @@ export default function useMemberData() {
     collectivePallet,
     "members",
     [address],
-    useCallback((rawOptional) => setCollectiveMember(rawOptional.toJSON()), []),
+    useCallback((rawOptional) => {
+      setCollectiveMember(rawOptional.toJSON());
+    }, []),
   );
 
   const [coreMember, setCoreMember] = useState();
@@ -25,7 +31,9 @@ export default function useMemberData() {
     corePallet,
     "member",
     [address],
-    useCallback((rawOptional) => setCoreMember(rawOptional.toJSON()), []),
+    useCallback((rawOptional) => {
+      setCoreMember(rawOptional.toJSON());
+    }, []),
   );
 
   const [coreParams, setCoreParams] = useState();
@@ -33,7 +41,9 @@ export default function useMemberData() {
     corePallet,
     "params",
     [],
-    useCallback((rawOptional) => setCoreParams(rawOptional.toJSON()), []),
+    useCallback((rawOptional) => {
+      setCoreParams(rawOptional.toJSON());
+    }, []),
   );
 
   const isLoading =

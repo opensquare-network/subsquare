@@ -2,8 +2,9 @@ import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { SystemClose } from "@osn/icons/subsquare";
 import { colorStyle } from "next-common/components/scrollPrompt";
+import { isNil } from "lodash-es";
 
-export default function Prompt({ cacheKey, type, children }) {
+export default function Prompt({ cacheKey, type, children, expires = 15 }) {
   const [visible, setVisible] = useCookieValue(cacheKey, true);
 
   if (!visible) {
@@ -19,7 +20,14 @@ export default function Prompt({ cacheKey, type, children }) {
       <SystemClose
         className="w-5 h-5"
         role="button"
-        onClick={() => setVisible(false, { expires: 15 })}
+        onClick={() => {
+          const cookieOptions = {};
+          if (!isNil(expires)) {
+            cookieOptions.expires = expires;
+          }
+
+          setVisible(false, cookieOptions);
+        }}
       />
     </GreyPanel>
   );
