@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getEventData } from "next-common/utils/sendTx";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { useDispatch } from "react-redux";
 import { isNil } from "lodash-es";
 import { useRouter } from "next/router";

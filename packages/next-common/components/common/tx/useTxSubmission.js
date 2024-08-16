@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { noop } from "lodash-es";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { wrapWithProxy } from "next-common/utils/sendTx";
+import { wrapWithProxy } from "next-common/utils/sendTransaction";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 

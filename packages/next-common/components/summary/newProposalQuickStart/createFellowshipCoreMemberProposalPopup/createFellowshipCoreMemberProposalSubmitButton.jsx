@@ -3,7 +3,7 @@ import { useContextApi } from "next-common/context/api";
 import { useListPageType } from "next-common/context/page";
 import { usePopupOnClose } from "next-common/context/popup";
 import { listPageCategory } from "next-common/utils/consts/business/category";
-import { getEventData } from "next-common/utils/sendTx";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";

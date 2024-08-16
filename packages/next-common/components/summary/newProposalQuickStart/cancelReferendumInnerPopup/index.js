@@ -11,7 +11,7 @@ import { useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useReferendaProposalOrigin } from "../../newProposalPopup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { getEventData } from "next-common/utils/sendTx";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { usePageProps } from "next-common/context/page";
 

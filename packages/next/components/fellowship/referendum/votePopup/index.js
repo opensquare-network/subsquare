@@ -6,7 +6,7 @@ import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import VoteButton from "next-common/components/popup/voteButton";
 import useFellowshipVote from "next-common/utils/hooks/fellowship/useFellowshipVote";
-import { wrapWithProxy } from "next-common/utils/sendTx";
+import { wrapWithProxy } from "next-common/utils/sendTransaction";
 import CurrentVote from "./currentVote";
 import VStack from "next-common/components/styled/vStack";
 import {

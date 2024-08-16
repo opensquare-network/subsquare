@@ -10,7 +10,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
-import { wrapWithProxy } from "next-common/utils/sendTx";
+import { wrapWithProxy } from "next-common/utils/sendTransaction";
 import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSubMyDemocracyVote, {

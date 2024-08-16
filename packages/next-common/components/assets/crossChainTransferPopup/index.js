@@ -4,7 +4,7 @@ import {
   usePopupParams,
   useSetSigner,
 } from "next-common/components/popupWithSigner/context";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
 import { useDispatch } from "react-redux";
@@ -14,16 +14,15 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { useMountedState } from "react-use";
 import PrimaryButton from "next-common/lib/button/primary";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
-import { sendSubstrateTx } from "next-common/utils/sendTx";
 import Signer from "next-common/components/popup/fields/signerField";
 import { useUser } from "next-common/context/user";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useCrossChainDirection from "./useCrossChainDirection";
 import useNativeTransferAmount from "./useNativeTransferAmount";
 import useCrossChainApi from "./useCrossChainApi";
+import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 
 function ExistentialDeposit({ destApi }) {
   const { decimals } = useChainSettings();
@@ -53,6 +52,7 @@ function PopupContent() {
     sourceChain,
     destinationChain,
   });
+  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
 
   const setSigner = useSetSigner();
 
@@ -84,9 +84,6 @@ function PopupContent() {
     }
   }, [dispatch, getTeleportTx, transferToAddress, getCheckedTransferAmount]);
 
-  const isMounted = useMountedState();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const doSubmit = useCallback(async () => {
     if (!sourceApi) {
       dispatch(newErrorToast("Chain network is not connected yet"));
@@ -103,19 +100,24 @@ function PopupContent() {
     );
     setSigner(sourceApi, account);
 
-    await sendSubstrateTx({
+    await sendTx({
       api: sourceApi,
       tx,
-      dispatch,
-      setLoading: setIsSubmitting,
-      signerAddress: address,
-      isMounted,
-      onClose,
+      onSubmitted: onClose,
       onInBlock: () => {
         dispatch(newSuccessToast("Teleport successfully"));
       },
     });
-  }, [sourceApi, dispatch, extensionAccounts, address, getTxFunc, setSigner]);
+  }, [
+    sourceApi,
+    dispatch,
+    extensionAccounts,
+    address,
+    getTxFunc,
+    setSigner,
+    sendTx,
+    onClose,
+  ]);
 
   return (
     <>

@@ -7,7 +7,7 @@ import Beneficiary from "next-common/components/popupWithSigner/fields/beneficia
 import TipReason from "./tipReason";
 import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
-import { getEventData } from "next-common/utils/sendTx";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";

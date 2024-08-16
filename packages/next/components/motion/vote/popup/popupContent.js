@@ -17,7 +17,7 @@ import Loading from "next-common/components/loading";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
-import { wrapWithProxy } from "next-common/utils/sendTx";
+import { wrapWithProxy } from "next-common/utils/sendTransaction";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {

@@ -8,7 +8,7 @@ import AdvanceSettings from "../common/advanceSettings";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { getEventData } from "next-common/utils/sendTx";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useReferendaProposalOrigin } from "../../newProposalPopup";
 import { useCallback } from "react";
