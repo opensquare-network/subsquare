@@ -12,13 +12,20 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
   const description = desc || DEFAULT_SEO_INFO.desc;
   const settings = useChainSettings();
 
+  const { snsCoverCid, snsCoverSmallCid } = settings;
+
   const images = [
-    {
-      url: ogImage || getIpfsLink(settings.snsCoverCid),
+    snsCoverCid && {
+      url: ogImage || getIpfsLink(snsCoverCid),
       width: 1200,
       height: 628,
     },
-  ];
+    snsCoverSmallCid && {
+      url: ogImage || getIpfsLink(snsCoverSmallCid),
+      width: 600,
+      height: 600,
+    },
+  ].filter(Boolean);
 
   return (
     <NextSeo
@@ -29,12 +36,6 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
         title: title,
         description: desc,
         images,
-      }}
-      twitter={{
-        site: "@OpensquareN",
-        title: title,
-        cardType: "summary_large_image",
-        image: images[0]?.url,
       }}
     />
   );
