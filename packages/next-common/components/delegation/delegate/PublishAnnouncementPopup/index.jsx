@@ -19,13 +19,12 @@ export default function AnnouncementPublishPopup({
   onClose,
   myDelegation,
 }) {
+  const dispatch = useDispatch();
   const user = useUser();
   const address = user?.address;
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
-  const [isLoading, setLoading] = useState(false);
   const signMessage = useSignMessage();
-  const dispatch = useDispatch();
   const tab = useModuleTab();
   const module = tab === Referenda ? "referenda" : "democracy";
 
@@ -62,8 +61,6 @@ export default function AnnouncementPublishPopup({
       }
 
       try {
-        setLoading(true);
-
         const entity = {
           action: "set-delegation-announcement",
           shortDescription,
@@ -91,8 +88,6 @@ export default function AnnouncementPublishPopup({
         onClose();
       } catch (e) {
         dispatch(newErrorToast(e.message));
-      } finally {
-        setLoading(false);
       }
     },
     [
@@ -108,7 +103,6 @@ export default function AnnouncementPublishPopup({
 
   return (
     <SignerPopup
-      isLoading={isLoading}
       className="w-[800px] max-w-full"
       title={title}
       onClose={onClose}
