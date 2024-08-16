@@ -1,4 +1,4 @@
-import { has } from "lodash-es";
+import { has, upperFirst } from "lodash-es";
 import { PromptTypes } from "next-common/components/scrollPrompt";
 import { useChainSettings } from "next-common/context/chain";
 import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
@@ -41,8 +41,8 @@ export default function CollectivesSalaryRegisterWarning({
 
   return (
     <Prompt expires={null} type={PromptTypes.WARNING}>
-      The registration period of current salary cycle is about to expire.
-      Register{" "}
+      The registration period of current {upperFirst(section)} salary cycle is
+      about to expire. Register{" "}
       <Link
         className="underline"
         href={`${section}/salary/cycles/${stats.cycleIndex}`}
