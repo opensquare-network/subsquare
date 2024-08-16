@@ -95,6 +95,18 @@ export default function getChainSettings(chain, blockHeight) {
     }
   }
 
+  if (process.env.NEXT_PUBLIC_LOCAL_CHOPSTICKS === "true") {
+    settings = {
+      ...settings,
+      endpoints: [
+        {
+          name: "Chopsticks",
+          url: "ws://127.0.0.1:8000",
+        },
+      ],
+    };
+  }
+
   return {
     modules: {},
     ...settings,

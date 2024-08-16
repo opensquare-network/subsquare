@@ -16,6 +16,7 @@ import { useContextApi } from "next-common/context/api";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { WarningMessage } from "next-common/components/popup/styled";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 function TipCommon({ setBeneficiary, setReason }) {
   return (
@@ -49,7 +50,7 @@ function NewTipContent({
   onInBlock,
 }) {
   const signerAccount = useSignerAccount();
-  const councilTippers = useCouncilMembers();
+  const councilTippers = useCouncilMembers(detailPageCategory.COUNCIL_MOTION);
   const isTipper = isAddressInGroup(
     signerAccount?.realAddress,
     councilTippers || [],

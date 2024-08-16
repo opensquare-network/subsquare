@@ -1,6 +1,7 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import MembersNoElections from "components/council/membersNoElections";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export default function MembersPage() {
   const category = "Council Members";
@@ -12,7 +13,7 @@ export default function MembersPage() {
       title={category}
       description="Council members"
     >
-      <MembersNoElections />
+      <MembersNoElections type={detailPageCategory.COUNCIL_MOTION} />
     </ListLayout>
   );
 }

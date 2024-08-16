@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { noop } from "lodash-es";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 function PopupContent() {
   const { tipHash, onClose, onInBlock = noop } = usePopupParams();
@@ -22,7 +23,7 @@ function PopupContent() {
 
   const [inputTipValue, setInputTipValue] = useState("");
   const { decimals } = useChainSettings();
-  const councilTippers = useCouncilMembers();
+  const councilTippers = useCouncilMembers(detailPageCategory.COUNCIL_MOTION);
   const isTipper = isAddressInGroup(
     signerAccount?.realAddress,
     councilTippers || [],
