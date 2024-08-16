@@ -118,6 +118,7 @@ export function useSendTransaction() {
       try {
         if (isShouldSendMimirTx(signerAccount)) {
           const handled = await maybeSendMimirTx({
+            api,
             tx,
             onStarted,
             onInBlock: _onInBlock,

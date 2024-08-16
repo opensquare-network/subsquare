@@ -1,6 +1,5 @@
 import { inject, isMimirReady, MIMIR_REGEXP } from "@mimirdev/apps-inject";
 import { checkCall } from "@mimirdev/apps-sdk";
-import { getLatestApi } from "next-common/context/api";
 import { noop } from "lodash-es";
 import { createSendTxEventHandler } from "./sendSubstrateTx";
 
@@ -32,6 +31,7 @@ export async function tryInitMimir() {
 }
 
 export async function maybeSendMimirTx({
+  api,
   tx,
   onStarted = noop,
   onFinalized = noop,
@@ -61,7 +61,6 @@ export async function maybeSendMimirTx({
     });
 
     // Retrieve the method returned by Mimir.
-    const api = getLatestApi();
     const method = api.registry.createType("Call", result.payload.method);
 
     // check the final call is the expect call

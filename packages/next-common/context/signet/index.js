@@ -1,7 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { SignetSdk } from "@talismn/signet-apps-sdk";
 import { useAsync } from "react-use";
-import { normalizedSignetAccount } from "next-common/utils/signet";
+import { normalizeAddress } from "next-common/utils/address";
+import ChainTypes from "next-common/utils/consts/chainTypes";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 const SignetContext = React.createContext();
 
@@ -32,6 +34,18 @@ export function SignetContextProvider({ children }) {
 
 export function useSignetSdk() {
   return useContext(SignetContext) || {};
+}
+
+function normalizedSignetAccount(acc) {
+  return {
+    name: acc.name,
+    address: normalizeAddress(acc.address),
+    type: ChainTypes.SUBSTRATE,
+    meta: {
+      source: WalletTypes.SIGNET,
+      name: acc.name,
+    },
+  };
 }
 
 export function useSignetAccounts() {
