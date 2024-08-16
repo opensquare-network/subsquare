@@ -9,8 +9,10 @@ import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import CollectivesMemberTable from "next-common/components/collectives/members/table";
 import { useSelector } from "react-redux";
 import { ambassadorCoreMembersSelector } from "next-common/store/reducers/ambassador/core";
+import useFetchAmbassadorCoreMembers from "next-common/hooks/ambassador/core/useFetchAmbassadorCoreMembers.js";
 
 export default function MembersPage() {
+  useFetchAmbassadorCoreMembers();
   const { ambassadorMembers, ambassadorParams } = usePageProps();
   const category = "Ambassador Members";
   const seoInfo = { title: category, desc: category };
