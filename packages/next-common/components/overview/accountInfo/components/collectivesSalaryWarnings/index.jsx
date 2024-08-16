@@ -65,6 +65,7 @@ function CollectivesSalaryWarningsImpl() {
 
   const isInRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
   const isInPayoutPeriod = useIsInSalaryPayoutPeriod(status);
+
   return (
     <>
       {isInRegistrationPeriod && (
