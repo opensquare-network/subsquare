@@ -12,3 +12,17 @@ export async function getSigner(signerAddress) {
   const injector = await web3FromAddress(signerAddress);
   return injector.signer;
 }
+
+export function wrapWithProxy(api, tx, proxyAddress) {
+  return api.tx.proxy.proxy(proxyAddress, null, tx);
+}
+
+export function getEventData(events, sectionName, methodName) {
+  for (const event of events) {
+    const { section, method, data } = event.event;
+    if (section !== sectionName || method !== methodName) {
+      continue;
+    }
+    return data.toJSON();
+  }
+}
