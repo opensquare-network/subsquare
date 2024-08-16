@@ -113,7 +113,6 @@ async function dispatchCall({
     from: signerAddress,
     to,
     data: data,
-    value: 0,
   };
   await dryRun(provider, tx);
 
