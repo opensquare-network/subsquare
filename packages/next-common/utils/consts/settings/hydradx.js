@@ -90,6 +90,8 @@ const hydradx = {
   hasElections: true,
   ss58Format: 63,
   snsCoverCid: "bafybeict4ooyrtxtja2y5rpzumr6gz4m3dec2pzatqrl652gsbocfwzbte",
+  snsCoverSmallCid:
+    "bafkreie4qfx2pz3ff2ptiiw42tvgv5l2ksvqtn4ma6vaj7j4uf3c5q26eu",
   avatar: ProjectIconHydrationLight,
   darkAvatar: ProjectIconHydrationDark,
   navLogo: ProjectLogoHydrationDark,
