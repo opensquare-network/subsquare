@@ -6,6 +6,7 @@ import NewProposalSVG from "./icons/new-proposal.svg";
 import { ArrowRight } from "@osn/icons/subsquare";
 import { NewPreimageInnerPopup } from "next-common/components/preImages/newPreimagePopup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import { noop } from "lodash-es";
 
 export function ChoiceButton({ icon = null, name, description, onClick }) {
   return (
@@ -53,7 +54,7 @@ export default function SubmitProposalPopupCommon({
 
   if (showNewPreimagePopup) {
     return (
-      <NewPreimageInnerPopup onClose={onClose} onCreated={onPreimageCreated} />
+      <NewPreimageInnerPopup onClose={noop} onCreated={onPreimageCreated} />
     );
   }
 
