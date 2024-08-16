@@ -33,6 +33,7 @@ export default function CoreFellowshipMemberPromotionPeriod({
   lastPromotion,
   rank,
   params = {},
+  showTitle = true,
 }) {
   const { percentageValue, remainingBlocks, promotionPeriod } =
     usePromotionPeriod({ lastPromotion, rank, params });
@@ -46,9 +47,11 @@ export default function CoreFellowshipMemberPromotionPeriod({
 
   return (
     <CoreFellowshipMemberInfoWrapper>
-      <CoreFellowshipMemberInfoTitle>
-        Promotion Period
-      </CoreFellowshipMemberInfoTitle>
+      {showTitle && (
+        <CoreFellowshipMemberInfoTitle>
+          Promotion Period
+        </CoreFellowshipMemberInfoTitle>
+      )}
       <Tooltip
         className="block"
         content={

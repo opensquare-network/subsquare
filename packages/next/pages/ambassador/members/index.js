@@ -7,6 +7,8 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import CollectivesMemberTable from "next-common/components/collectives/members/table";
+import { useSelector } from "react-redux";
+import { ambassadorCoreMembersSelector } from "next-common/store/reducers/ambassador/core";
 
 export default function MembersPage() {
   const { ambassadorMembers, ambassadorParams } = usePageProps();
@@ -23,6 +25,7 @@ export default function MembersPage() {
     return ambassadorMembers.filter((m) => m.rank === rank);
   }, [ambassadorMembers, rank]);
   const salaryAsset = useSalaryAsset();
+  const coreMembers = useSelector(ambassadorCoreMembersSelector);
 
   return (
     <ListLayout seoInfo={seoInfo} title={category}>
@@ -40,6 +43,7 @@ export default function MembersPage() {
           members={filteredMembers}
           params={ambassadorParams ?? {}}
           salaryAsset={salaryAsset}
+          coreMembers={coreMembers}
         />
       </div>
     </ListLayout>

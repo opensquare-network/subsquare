@@ -9,6 +9,7 @@ import { isNil } from "lodash-es";
 import collectivesMemberColumns from "next-common/components/collectives/members/columns";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
+import MemberPeriodProgress from "next-common/components/collectives/members/periodProgress.jsx";
 
 function AddressCol({ address }) {
   const [navCollapsed] = useNavCollapsed();
@@ -19,6 +20,7 @@ export default function CollectivesMemberTable({
   members = [],
   params = {},
   salaryAsset = {},
+  coreMembers = [],
 }) {
   const {
     activeSalary = [],
@@ -43,14 +45,38 @@ export default function CollectivesMemberTable({
         value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
         symbol={symbol}
       />,
-      <Period
-        key={`demotion-period-${idx}`}
-        blocks={demotionPeriod[rankToIndex(rank)] || offboardTimeout}
-      />,
-      <Period
-        key={`min-promotion-period-${idx}`}
-        blocks={minPromotionPeriod[rank] || 0}
-      />,
+      <div className="max-sm:text-right">
+        <Period
+          key={`demotion-period-${idx}`}
+          blocks={demotionPeriod[rankToIndex(rank)] || offboardTimeout}
+        />
+        <MemberPeriodProgress
+          members={members}
+          address={address}
+          params={params}
+          rank={rank}
+          coreMembers={coreMembers}
+          type="demotion"
+        />
+      </div>,
+      rank === 0 && minPromotionPeriod[rank] <= 0 ? (
+        ""
+      ) : (
+        <div className="max-sm:text-right">
+          <Period
+            key={`min-promotion-period-${idx}`}
+            blocks={minPromotionPeriod[rank] || 0}
+          />
+          <MemberPeriodProgress
+            members={members}
+            address={address}
+            params={params}
+            rank={rank}
+            coreMembers={coreMembers}
+            type="promotion"
+          />
+        </div>
+      ),
     ];
   });
 
