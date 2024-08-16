@@ -14,7 +14,7 @@ function PopupContent({ children, actionCallback, confirmText }) {
     setIsLoading(true);
     try {
       await actionCallback(signerAccount);
-    } catch (e) {
+    } finally {
       setIsLoading(false);
     }
   }, [actionCallback]);
