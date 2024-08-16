@@ -39,7 +39,7 @@ function CollectivesSalaryRegisterWarningImpl({ section, stats }) {
   }
 
   return (
-    <Prompt expires={null} type={PromptTypes.WARNING}>
+    <Prompt expires={1} type={PromptTypes.WARNING}>
       The registration period of current {upperFirst(section)} salary cycle is
       about to expire. Register{" "}
       <Link
