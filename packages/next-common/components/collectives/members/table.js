@@ -30,8 +30,7 @@ export default function CollectivesMemberTable({
   } = params ?? {};
   const { symbol, decimals } = salaryAsset;
 
-  const isLoading =
-    isNil(members) || isNil(params) || isNil(salaryAsset) || isNil(coreMembers);
+  const isLoading = isNil(members) || isNil(coreMembers);
 
   const rows = (members || []).map(({ address, rank }, idx) => {
     return [

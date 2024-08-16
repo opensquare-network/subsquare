@@ -78,7 +78,7 @@ export default function MemberPeriodWithProgress({
   return (
     <div className="max-sm:text-right" key={keyPrefix}>
       <Period key={`${keyPrefix}-${periodKey}`} blocks={blocks} />
-      <div className="py-[4px] max-sm:w-32">
+      <div className="py-[6px] max-sm:w-32">
         <PeriodProgress
           key={`${keyPrefix}-progress-${periodKey}`}
           members={members}
