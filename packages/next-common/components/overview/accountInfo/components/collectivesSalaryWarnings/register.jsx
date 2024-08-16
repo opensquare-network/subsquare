@@ -4,44 +4,37 @@ import { useChainSettings } from "next-common/context/chain";
 import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
 import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
-import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
-import Link from "next/link";
-import { useSelector } from "react-redux";
-import Prompt from "../prompt";
-import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
 import { ONE_DAY } from "next-common/utils/constants";
+import Link from "next/link";
+import Prompt from "../prompt";
 
-export default function CollectivesSalaryRegisterWarning({
-  section,
-  memberData,
-}) {
-  let statusSelector = null;
-  if (section === "fellowship") {
-    statusSelector = fellowshipSalaryStatusSelector;
-  } else if (section === "ambassador") {
-    statusSelector = ambassadorSalaryStatusSelector;
+export default function CollectivesSalaryRegisterWarning({ section, status }) {
+  const { cycleStart } = status || {};
+
+  const { blockTime } = useChainSettings();
+
+  const { registrationPeriod } = useSalaryFellowshipPeriods();
+  const { remainBlocks } = useCalcPeriodBlocks(registrationPeriod, cycleStart);
+
+  const remainMS = blockTime * remainBlocks;
+  const isInWarningTime = remainMS > ONE_DAY && remainMS <= ONE_DAY * 3;
+
+  if (!isInWarningTime) {
+    return null;
   }
 
-  const stats = useSelector(statusSelector);
-  const { cycleStart } = stats || {};
+  return (
+    <CollectivesSalaryRegisterWarningImpl section={section} stats={status} />
+  );
+}
 
+function CollectivesSalaryRegisterWarningImpl({ section, stats }) {
   const { claimant } = useMySalaryClaimant();
-  const { blockTime } = useChainSettings();
 
   const isRegisteredOrAttempted =
     has(claimant?.status, "registered") || has(claimant?.status, "attempted");
 
-  const { registrationPeriod } = useSalaryFellowshipPeriods();
-  const { remainBlocks } = useCalcPeriodBlocks(registrationPeriod, cycleStart);
-  const ms = blockTime * remainBlocks;
-  const isInWarningTime = ms > ONE_DAY && ms <= ONE_DAY * 3;
-
-  if (
-    !stats ||
-    !memberData?.coreMember ||
-    isRegisteredOrAttempted ||
-    !isInWarningTime
-  ) {
+  if (isRegisteredOrAttempted) {
     return null;
   }
 

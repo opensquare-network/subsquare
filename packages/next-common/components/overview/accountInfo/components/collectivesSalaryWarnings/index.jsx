@@ -1,40 +1,78 @@
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import CollectivesProvider, {
+  useCollectivesContext,
+} from "next-common/context/collectives/collectives";
 import {
   useAmbassadorMemberData,
   useFellowshipMemberData,
 } from "../../context/memberDataContext";
 import CollectivesSalaryGetPaymentWarning from "./getPayment";
 import CollectivesSalaryRegisterWarning from "./register";
+import { isNil } from "lodash-es";
+import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
+import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
+import { useSelector } from "react-redux";
+import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
+import { useIsInSalaryPayoutPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryPayoutPeriod";
 
 export default function CollectivesSalaryWarnings() {
-  const { data: fellowshipMemberData, isLoading: fellowshipMemberLoading } =
-    useFellowshipMemberData();
-  const { data: ambassadorMemberData, isLoading: ambassadorMemberLoading } =
-    useAmbassadorMemberData();
+  return (
+    <>
+      <CollectivesSalaryFellowshipWarningsImpl />
+      <CollectivesSalaryAmbassadorWarningsImpl />
+    </>
+  );
+}
 
-  const { section } = useCollectivesContext();
+function CollectivesSalaryFellowshipWarningsImpl() {
+  const { data, isLoading } = useFellowshipMemberData();
 
-  let memberData;
-  if (fellowshipMemberData) {
-    memberData = fellowshipMemberData;
-  } else if (ambassadorMemberData) {
-    memberData = ambassadorMemberData;
-  }
-
-  if (!section || fellowshipMemberLoading || ambassadorMemberLoading) {
+  if (isLoading || isNil(data.coreMember)) {
     return null;
   }
 
   return (
+    <CollectivesProvider section="fellowship">
+      <CollectivesSalaryWarningsImpl />
+    </CollectivesProvider>
+  );
+}
+
+function CollectivesSalaryAmbassadorWarningsImpl() {
+  const { data, isLoading } = useAmbassadorMemberData();
+
+  if (isLoading || isNil(data.coreMember)) {
+    return null;
+  }
+
+  return (
+    <CollectivesProvider section="ambassador">
+      <CollectivesSalaryWarningsImpl />
+    </CollectivesProvider>
+  );
+}
+
+function CollectivesSalaryWarningsImpl() {
+  const { section } = useCollectivesContext();
+
+  let statusSelector;
+  if (section === "fellowship") {
+    statusSelector = fellowshipSalaryStatusSelector;
+  } else if (section === "ambassador") {
+    statusSelector = ambassadorSalaryStatusSelector;
+  }
+
+  const status = useSelector(statusSelector);
+
+  const isInRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
+  const isInPayoutPeriod = useIsInSalaryPayoutPeriod(status);
+  return (
     <>
-      <CollectivesSalaryRegisterWarning
-        section={section}
-        memberData={memberData}
-      />
-      <CollectivesSalaryGetPaymentWarning
-        section={section}
-        memberData={memberData}
-      />
+      {isInRegistrationPeriod && (
+        <CollectivesSalaryRegisterWarning section={section} status={status} />
+      )}
+      {isInPayoutPeriod && (
+        <CollectivesSalaryGetPaymentWarning section={section} status={status} />
+      )}
     </>
   );
 }

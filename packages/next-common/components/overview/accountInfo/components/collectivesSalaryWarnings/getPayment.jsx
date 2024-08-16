@@ -4,40 +4,40 @@ import { useChainSettings } from "next-common/context/chain";
 import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
 import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
-import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
-import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
-import Link from "next/link";
-import { useSelector } from "react-redux";
-import Prompt from "../prompt";
 import { ONE_DAY } from "next-common/utils/constants";
+import Link from "next/link";
+import Prompt from "../prompt";
 
 export default function CollectivesSalaryGetPaymentWarning({
   section,
-  memberData,
+  status,
 }) {
-  let statusSelector = null;
-  if (section === "fellowship") {
-    statusSelector = fellowshipSalaryStatusSelector;
-  } else if (section === "ambassador") {
-    statusSelector = ambassadorSalaryStatusSelector;
-  }
+  const { cycleStart } = status || {};
 
-  const stats = useSelector(statusSelector);
-  const { cycleStart } = stats || {};
-
-  const { claimant } = useMySalaryClaimant();
   const { blockTime } = useChainSettings();
-
-  const isRegistered = has(claimant?.status, "registered");
 
   const { registrationPeriod, payoutPeriod } = useSalaryFellowshipPeriods();
   const payoutStart = cycleStart + registrationPeriod || null;
   const { remainBlocks } = useCalcPeriodBlocks(payoutPeriod, payoutStart);
 
-  const ms = blockTime * remainBlocks;
-  const isInWarningTime = ms > ONE_DAY && ms <= ONE_DAY * 3;
+  const remainMS = blockTime * remainBlocks;
+  const isInWarningTime = remainMS > ONE_DAY && remainMS <= ONE_DAY * 3;
 
-  if (!stats || !memberData?.coreMember || !isRegistered || !isInWarningTime) {
+  if (!isInWarningTime) {
+    return null;
+  }
+
+  return (
+    <CollectivesSalaryGetPaymentWarningImpl section={section} stats={status} />
+  );
+}
+
+function CollectivesSalaryGetPaymentWarningImpl({ section, stats }) {
+  const { claimant } = useMySalaryClaimant();
+
+  const isRegistered = has(claimant?.status, "registered");
+
+  if (!isRegistered) {
     return null;
   }
 
