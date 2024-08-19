@@ -1,13 +1,14 @@
-import React, { useMemo } from "react";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import Tooltip from "next-common/components/tooltip";
 import Progress from "next-common/components/progress";
 import Period from "next-common/components/fellowship/params/period";
 import { isNil } from "lodash-es";
-import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
-import useSubCoreFellowshipMember from "next-common/hooks/collectives/useSubCoreFellowshipMember";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
+import {
+  useCollectivesContext,
+  useCoreFellowshipPallet,
+} from "next-common/context/collectives/collectives";
 
 function NotInCoreManagementSystem() {
   return (
@@ -20,37 +21,6 @@ function NotInCoreManagementSystem() {
       />
     </Tooltip>
   );
-}
-
-function getAbassadorMemberStatus(address) {
-  const pallet = "ambassadorCore";
-  const { member: statusFromStorage, isLoading } = useSubCoreFellowshipMember(
-    address,
-    pallet,
-  );
-
-  const stauts = useMemo(() => {
-    return statusFromStorage || null;
-  }, [statusFromStorage, isLoading]);
-
-  return stauts;
-}
-
-function getFellowshipMemberStatus(address) {
-  const { member: statusFromStorage, isLoading } =
-    useSubFellowshipCoreMember(address);
-
-  const stauts = useMemo(() => {
-    return statusFromStorage || null;
-  }, [statusFromStorage, isLoading]);
-
-  return stauts;
-}
-
-function getMemberStatus(isFellowshipSection, address) {
-  return isFellowshipSection
-    ? getFellowshipMemberStatus(address)
-    : getAbassadorMemberStatus(address);
 }
 
 function DemotionPeriodProgress({ memberStatus, rank }) {
@@ -113,10 +83,13 @@ export function DemotionPeriodWithProgress({
   }
 
   const { section } = useCollectivesContext();
-
   const isFellowshipSection = section === "fellowship";
 
-  const memberStatus = getMemberStatus(isFellowshipSection, address);
+  const corePallet = useCoreFellowshipPallet();
+  const { member: memberStatus } = useSubCoreCollectivesMember(
+    address,
+    corePallet,
+  );
 
   if (isFellowshipSection) {
     return (
@@ -149,7 +122,11 @@ export function PromotionPeriodWithProgress({
     return null;
   }
 
-  const memberStatus = getMemberStatus(isFellowshipSection, address);
+  const corePallet = useCoreFellowshipPallet();
+  const { member: memberStatus } = useSubCoreCollectivesMember(
+    address,
+    corePallet,
+  );
 
   if (isFellowshipSection) {
     return (

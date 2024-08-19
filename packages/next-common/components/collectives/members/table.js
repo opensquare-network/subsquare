@@ -48,6 +48,7 @@ export default function CollectivesMemberTable({ members = [] }) {
         symbol={symbol}
       />,
       <DemotionPeriodWithProgress
+        key={`demotion-${idx}`}
         keyPrefix={`demotion-period-${idx}`}
         periodKey={rankToIndex(rank)}
         address={address}
@@ -55,6 +56,7 @@ export default function CollectivesMemberTable({ members = [] }) {
         blocks={demotionPeriod[rankToIndex(rank)] || offboardTimeout}
       />,
       <PromotionPeriodWithProgress
+        key={`promotion-${idx}`}
         keyPrefix={`promotion-period-${idx}`}
         periodKey={rank}
         address={address}

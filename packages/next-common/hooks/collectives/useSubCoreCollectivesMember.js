@@ -1,7 +1,7 @@
 import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
 
-export default function useSubCoreFellowshipMember(
+export default function useSubCoreCollectivesMember(
   address,
   pallet = "fellowshipCore",
 ) {
