@@ -64,6 +64,7 @@ const shibuya = {
   blockTime: 12000,
   ss58Format: 5,
   snsCoverCid: "Qmbko2xzW6dgRNddmTLymxmfeFTGkX8tqRB4CuFADqWhC8",
+  snsCoverSmallCid: "QmXs3Mig8szGqdU5BGzb4KtCC7zSJFT8ibzfoQqwDnSXay",
   endpoints: nodes,
   avatar: ProjectIconShibuyaLight,
   darkAvatar: ProjectIconShibuyaDark,

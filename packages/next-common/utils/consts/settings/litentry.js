@@ -71,6 +71,7 @@ const litentry = {
   hasElections: false,
   ss58Format: 31,
   snsCoverCid: "bafybeiej7his75nmaf2yhm6n3sqxf3ew2kvkyb7q37pbt37b72jwvs5cu4",
+  snsCoverSmallCid: "Qmam4LQZjeHJePZSU9u4ZaYoLG5Yn8n3Q6pqpdoN9kYUjm",
   endpoints: DEFAULT_LITENTRY_NODES,
   avatar: ProjectIconLitentryLight,
   darkAvatar: ProjectIconLitentryDark,

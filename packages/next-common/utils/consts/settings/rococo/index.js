@@ -45,6 +45,7 @@ const rococo = {
   ss58Format: 42,
   blockTime: 6000,
   snsCoverCid: "bafybeia7np32r7cq2ykeeopfyxfgxhhsi2e4tl4bew4zjwu2zixiw2rx74",
+  snsCoverSmallCid: "QmRgeVewMV3WFwBcwZdKGZy1HCdSTKWdDhW1ExKvTW7h4j",
   endpoints: defaultRococoNodes,
   avatar: ProjectIconRococoLight,
   darkAvatar: ProjectIconRococoDark,

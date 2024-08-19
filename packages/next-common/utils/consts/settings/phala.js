@@ -76,6 +76,7 @@ const phala = {
   hasElections: true,
   ss58Format: 30,
   snsCoverCid: "bafybeibte36v2qk5wg352hk7ewvkuhoke6iwb7l5gvjt7wy446yayxjie4",
+  snsCoverSmallCid: "QmbnPan35dQRyJBe7NRDFq1yW8BJ94HbvpUVTcvm4CuQ6F",
   endpoints: DEFAULT_PHALA_NODES,
   avatar: ProjectIconPhalaLight,
   darkAvatar: ProjectIconPhalaDark,

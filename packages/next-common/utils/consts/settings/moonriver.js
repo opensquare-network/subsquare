@@ -40,6 +40,7 @@ const moonriver = {
   hasElections: false,
   ss58Format: 18,
   snsCoverCid: "QmR2LSfa9e46C1Wc5LTZ2oRm9wkdaxfX4SyhYXVohcsdrB",
+  snsCoverSmallCid: "QmdKccnzemLgG9jnijfyuNZYR6ySi2qY2Ec22TYTGXH5No",
   endpoints: DEFAULT_MOONRIVER_NODES,
   navLogo: ProjectLogoMoonriverDark,
   navLogoDark: ProjectLogoMoonriverDark,

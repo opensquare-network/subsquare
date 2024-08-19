@@ -66,6 +66,7 @@ const turing = {
   hasElections: false,
   ss58Format: 51,
   snsCoverCid: "bafybeidmqvyfi467agi4cum26idgh5h56wmegrjh7jnl5wvtkzbvgucmpm",
+  snsCoverSmallCid: "QmNZRXMC6xAunT1B7AReqAsJNhqbPmRWGvpqVvWaQbFbNM",
   endpoints: DEFAULT_TURING_NODES,
   avatar: ProjectIconTuringLight,
   darkAvatar: ProjectIconTuringDark,

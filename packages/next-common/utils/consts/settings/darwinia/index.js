@@ -31,6 +31,7 @@ const darwinia2 = {
   hasElections: false,
   ss58Format: 18,
   snsCoverCid: "QmePHNth5sm1P55WeKWwMeSXnNNw42LyagzTs7NeU5YN9A",
+  snsCoverSmallCid: "QmSdcMzP5e7x5iZ3FDwVo8LYJjRMeA5N5rrUFrn2SR1rAw",
   endpoints: defaultDarwiniaNodes,
   avatar: ProjectIconDarwinia2Light,
   darkAvatar: ProjectIconDarwinia2Dark,

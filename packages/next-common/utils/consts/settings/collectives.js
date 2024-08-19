@@ -74,6 +74,7 @@ const collectives = {
   blockTime: 12000,
   ss58Format: 0,
   snsCoverCid: "bafybeigyl3p7ikczpt4an4diyynbqsco6oqxza47vf3o2jeinkumm5pwby",
+  snsCoverSmallCid: "QmXeCQ7fnZnCsnrHAvkS4V4biJrcNfxWxmUuv1yTXYYkbS",
   endpoints:
     process.env.NEXT_PUBLIC_TEST === "true"
       ? testEndpoints

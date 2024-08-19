@@ -60,6 +60,7 @@ const basilisk = {
   hasElections: true,
   ss58Format: 10041,
   snsCoverCid: "bafybeicxl7g3sjtq2bflm4itrxwlibbt3jhwybf24fex4hf3hyuwbbeawy",
+  snsCoverSmallCid: "QmcYuex9WCaNTEgLNVgzHF9Bt8n7dU4sSHEo44oNtBwE9B",
   avatar: ProjectIconBasiliskLight,
   darkAvatar: ProjectIconBasiliskDark,
   navLogo: ProjectLogoBasiliskDark,

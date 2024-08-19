@@ -70,6 +70,7 @@ const bifrost = {
   hasElections: false,
   ss58Format: 6,
   snsCoverCid: "bafybeianzspawke2pll23iovv6jarictrqdpmptdp4o2eevmo2hnpe3lea",
+  snsCoverSmallCid: "QmSB4n17ojS9iAaHE6Vsty8atLvLMqKavTzGu8CuSCYbbb",
   endpoints: DEFAULT_BIFROST_NODES,
   avatar: ProjectIconBifrostKusamaLight,
   darkAvatar: ProjectIconBifrostKusamaDark,

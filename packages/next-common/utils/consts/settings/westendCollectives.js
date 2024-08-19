@@ -49,6 +49,7 @@ const westendCollectives = {
   blockTime: 12000,
   ss58Format: 42,
   snsCoverCid: "bafybeibtr7oelilpotm26qrnnp34ztbnde7ouu5fdflcx6f6dj6foyb5eq",
+  snsCoverSmallCid: "QmWWRaQTAEeRKfmhhMz5fAbQpP5gpXf1odHKejh4a1ZqVH",
   endpoints: westendCollectivesEndpoints,
   links: collectiveLinks,
   avatar: ProjectIconWestendCollectivesLight,

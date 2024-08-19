@@ -52,6 +52,7 @@ const khala = {
   hasElections: true,
   ss58Format: 30,
   snsCoverCid: "bafybeifo4hsd3ue5ivsbcrb77fp2uvglxyc2royqvg52eo5eggnppdjxp4",
+  snsCoverSmallCid: "QmafFZaVjrEv24yDF63ZXwTwh2FDzk8hZt2rq8wzovz15D",
   endpoints: DEFAULT_KHALA_NODES,
   avatar: ProjectIconKhalaLight,
   darkAvatar: ProjectIconKhalaDark,
