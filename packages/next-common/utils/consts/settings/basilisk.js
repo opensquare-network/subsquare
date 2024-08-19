@@ -59,7 +59,7 @@ const basilisk = {
   blockTime: 12000,
   hasElections: true,
   ss58Format: 10041,
-  snsCoverCid: "bafybeicxl7g3sjtq2bflm4itrxwlibbt3jhwybf24fex4hf3hyuwbbeawy",
+  snsCoverCid: "QmUgi3VowtMazBYqxpvu7Qhcax2EUbNVnYw1MzRJxEkwGu",
   snsCoverSmallCid: "QmcYuex9WCaNTEgLNVgzHF9Bt8n7dU4sSHEo44oNtBwE9B",
   avatar: ProjectIconBasiliskLight,
   darkAvatar: ProjectIconBasiliskDark,

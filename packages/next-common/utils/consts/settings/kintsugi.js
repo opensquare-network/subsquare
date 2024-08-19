@@ -73,7 +73,7 @@ const kintsugi = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 2092,
-  snsCoverCid: "bafybeifddx4p4ouofy2mj3pt5o62alnpfywbu7w7iedws3shpiu547tszi",
+  snsCoverCid: "QmZATWtRmfzts71bedd5ybnw12dPeQFuirxZHvL3GD8ttB",
   snsCoverSmallCid: "QmZod6FEcun5hVKWJnrF51QLV9Bz8JsPnoydET8WY55Q1d",
   endpoints: DEFAULT_KINTSUGI_NODES,
   avatar: ProjectIconKintsugiLight,

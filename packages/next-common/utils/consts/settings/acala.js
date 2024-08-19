@@ -82,7 +82,7 @@ const acala = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 10,
-  snsCoverCid: "bafybeiafirhri4nsnvxm6usej6fcfyrz4hty5jikupag7fufsniamnyauy",
+  snsCoverCid: "QmeatWghfxZJ9SdYfQyAqTWyrsLSCXuCteBMFeDZgpX55j",
   snsCoverSmallCid: "QmVGsCZ1315FzYfKUWdagJBggpzgeS1ZyF4w12jgd481s5",
   endpoints: DEFAULT_ACALA_NODES,
   avatar: ProjectIconAcalaLight,

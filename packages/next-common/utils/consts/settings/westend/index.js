@@ -30,7 +30,7 @@ const westend = {
   decimals: 12,
   ss58Format: 42,
   blockTime: 6000,
-  snsCoverCid: "bafybeieg5vzoxvc7darffapxi7qx4sb5gljlr7qbgu43lp7patayt6zitq",
+  snsCoverCid: "QmboQeQtdJcQwkoBJ75dMncMH7Hs5tR7QhHa8juDwgWAp3",
   snsCoverSmallCid: "Qma1cgA4WXn4faqmt2J7WePbNbEkXuWohJyXSGcVxNh6JS",
   endpoints: defaultWestendNodes,
   avatar: ProjectIconWestendLight,

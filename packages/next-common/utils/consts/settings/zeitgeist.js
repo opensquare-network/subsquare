@@ -57,7 +57,7 @@ const zeitgeist = {
   hasElections: false,
   ss58Format: 73,
   blockTime: 12000,
-  snsCoverCid: "bafybeifwpcjcbym2df3zuh63p4nowvh53d6hgludiwvlsnusxckyke5sri",
+  snsCoverCid: "QmZL8QJoCk3Px8e1r5NaUo2oVNyVQeasuwMq9r3xxJugpu",
   snsCoverSmallCid: "QmSWMSvcHWqmvmY9wg1cka2jgBBZK9xhVrmSWGKf8h3fzS",
   endpoints: defaultNodes,
   avatar: ProjectIconZeigeistLight,

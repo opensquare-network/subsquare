@@ -32,7 +32,7 @@ const polkadot = {
   hasElections: true,
   ss58Format: 0,
   blockTime: 6000,
-  snsCoverCid: "bafybeifsztkok4p4vzjbhacvr2o4dxc5xgb7ynxsgnvmicttpqce34xdwe",
+  snsCoverCid: "QmbHtRLkAKHw3VTqMcocozEVps2PZEDFNemDcbw2iWVvpL",
   snsCoverSmallCid: "QmRZphqmB93zR1RSixMqWbrAVQUpKBNCjjpFxH1SpFYqf8",
   endpoints: defaultPolkadotNodes,
   avatar: ProjectIconPolkadotLight,

@@ -75,7 +75,7 @@ const phala = {
   blockTime: 12000,
   hasElections: true,
   ss58Format: 30,
-  snsCoverCid: "bafybeibte36v2qk5wg352hk7ewvkuhoke6iwb7l5gvjt7wy446yayxjie4",
+  snsCoverCid: "QmRDLxvKBghh7yMHdcCBFGyPmBjcV6VKjWuq4U3daQQLEq",
   snsCoverSmallCid: "QmbnPan35dQRyJBe7NRDFq1yW8BJ94HbvpUVTcvm4CuQ6F",
   endpoints: DEFAULT_PHALA_NODES,
   avatar: ProjectIconPhalaLight,

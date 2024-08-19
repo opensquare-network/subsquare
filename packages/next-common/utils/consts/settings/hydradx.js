@@ -89,7 +89,7 @@ const hydradx = {
   blockTime: 12000,
   hasElections: true,
   ss58Format: 63,
-  snsCoverCid: "bafybeict4ooyrtxtja2y5rpzumr6gz4m3dec2pzatqrl652gsbocfwzbte",
+  snsCoverCid: "QmezHbm6xPbCtGzyxLBiyoV6izxWpQ1nWTCAR8pHmHa5L5",
   snsCoverSmallCid: "QmPA6XxayeyDNnaYukMkEc6jUTXjGxVz2vLDeYAXvDwvWC",
   avatar: ProjectIconHydrationLight,
   darkAvatar: ProjectIconHydrationDark,

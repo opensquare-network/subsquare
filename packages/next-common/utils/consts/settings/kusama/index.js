@@ -24,7 +24,7 @@ const kusama = {
   hasElections: true,
   ss58Format: 2,
   blockTime: 6000,
-  snsCoverCid: "bafybeifrjrzaajdpfwbxtffsexnxwehsqc3k4ruk5oummlghsxvaityiku",
+  snsCoverCid: "QmaHcZu882h1e8YxKZQFpJ4teCrbnANw59jCYAv6TWB7UB",
   snsCoverSmallCid: "QmYqkhrLNsFdvJvgmHtaEwvMXoHyuVFbfrNAwtWuv8GUBV",
   endpoints: defaultKusamaNodes,
   avatar: ProjectIconKusamaLight,

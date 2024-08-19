@@ -54,7 +54,7 @@ const litmus = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 131,
-  snsCoverCid: "bafybeiexfrkdte6eruqghlc66xpnfoyadkgq5we3ql5elqjwgdzbxmez6q",
+  snsCoverCid: "QmXLUpQXf63p22ZoQtTJjQAHjftR7oSbEtcZLSzXd1DMt7",
   snsCoverSmallCid: "QmZvVSKgvcbPMR4zd6crV1AADyVKzG59eW153zefdQhYKe",
   endpoints: DEFAULT_LITMUS_NODES,
   avatar: ProjectIconLitmusLight,
