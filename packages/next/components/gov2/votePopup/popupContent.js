@@ -39,7 +39,11 @@ function VotePanel({
   const node = useChainSettings();
   const [isLoading, setIsLoading] = useState(false);
   const votes = normalizeOnchainVote(addressVote);
-  const addressVoteDelegateVoted = addressVote?.delegating?.voted;
+  const hasVote =
+    addressVote?.standard || addressVote?.split || addressVote?.splitAbstain;
+  const hasDelegatedVote =
+    addressVote?.delegating && addressVote?.delegating?.voted;
+  const isDelegated = !!addressVote?.delegating;
 
   const { StandardVoteComponent, getStandardVoteTx } = useStandardVote({
     module: "convictionVoting",
@@ -83,7 +87,7 @@ function VotePanel({
 
   return (
     <>
-      {!addressVote?.delegating && (
+      {!isDelegated && (
         // Address is not allow to vote directly when it is in delegate mode
         <>
           <VoteTypeTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
@@ -91,21 +95,15 @@ function VotePanel({
         </>
       )}
 
-      {addressVote?.delegating && (
+      {isDelegated && (
         // If the address has set to delegate mode, show the delegating setting instead
         <Delegating addressVoteDelegate={addressVote?.delegating} node={node} />
       )}
 
-      {!addressVoteIsLoading &&
-        !addressVote?.standard &&
-        !addressVote?.split &&
-        !addressVote?.splitAbstain &&
-        (!addressVote?.delegating || !addressVoteDelegateVoted) && (
-          <NoVoteRecord />
-        )}
-      {(addressVote?.standard ||
-        addressVote?.split ||
-        addressVote?.splitAbstain) && (
+      {!addressVoteIsLoading && !hasVote && !hasDelegatedVote && (
+        <NoVoteRecord />
+      )}
+      {hasVote && (
         <VStack space={8}>
           {addressVote?.standard && <StandardVoteStatus votes={votes} />}
           {addressVote?.split && <SplitVoteStatus votes={votes} />}
@@ -117,12 +115,10 @@ function VotePanel({
           </WarningMessage>
         </VStack>
       )}
-      {addressVote?.delegating && addressVoteDelegateVoted && (
-        <StandardVoteStatus votes={votes} />
-      )}
+      {hasDelegatedVote && <StandardVoteStatus votes={votes} />}
       {addressVoteIsLoading && <LoadingVoteStatus />}
 
-      {!addressVote?.delegating && (
+      {!isDelegated && (
         // Address is not allow to vote directly when it is in delegate mode
         <div style={{ textAlign: "right" }}>
           <PrimaryButton loading={isLoading} onClick={doSubmit}>
