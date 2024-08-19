@@ -24,7 +24,7 @@ function NotInCoreManagementSystem() {
 
 function getAbassadorMemberStatus(address) {
   const pallet = "ambassadorCore";
-  const { member: statusFromStorage } = useSubCoreFellowshipMember(
+  const { member: statusFromStorage, isLoading } = useSubCoreFellowshipMember(
     address,
     pallet,
   );
