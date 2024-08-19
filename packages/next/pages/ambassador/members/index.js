@@ -6,6 +6,7 @@ import { isNil } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import CollectivesMemberTable from "next-common/components/collectives/members/table";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function MembersPage() {
   const { ambassadorMembers, ambassadorParams } = usePageProps();
@@ -34,10 +35,12 @@ export default function MembersPage() {
           </span>
           {component}
         </TitleContainer>
-        <CollectivesMemberTable
-          members={filteredMembers}
+        <CollectivesProvider
+          section="ambassador"
           params={ambassadorParams ?? {}}
-        />
+        >
+          <CollectivesMemberTable members={filteredMembers} />
+        </CollectivesProvider>
       </div>
     </ListLayout>
   );

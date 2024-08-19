@@ -13,13 +13,15 @@ import {
   PromotionPeriodWithProgress,
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 
 function AddressCol({ address }) {
   const [navCollapsed] = useNavCollapsed();
   return <AddressUser maxWidth={navCollapsed ? 360 : 160} add={address} />;
 }
 
-export default function CollectivesMemberTable({ members = [], params = {} }) {
+export default function CollectivesMemberTable({ members = [] }) {
+  const { params = {} } = useCollectivesContext();
   const {
     activeSalary = [],
     passiveSalary = [],
@@ -45,25 +47,20 @@ export default function CollectivesMemberTable({ members = [], params = {} }) {
         value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
         symbol={symbol}
       />,
-
       <DemotionPeriodWithProgress
         keyPrefix={`demotion-period-${idx}`}
         periodKey={rankToIndex(rank)}
         address={address}
-        params={params}
         rank={rank}
         blocks={demotionPeriod[rankToIndex(rank)] || offboardTimeout}
       />,
-      minPromotionPeriod[rank] > 0 && (
-        <PromotionPeriodWithProgress
-          keyPrefix={`promotion-period-${idx}`}
-          periodKey={rank}
-          address={address}
-          params={params}
-          rank={rank}
-          blocks={minPromotionPeriod[rank] || 0}
-        />
-      ),
+      <PromotionPeriodWithProgress
+        keyPrefix={`promotion-period-${idx}`}
+        periodKey={rank}
+        address={address}
+        rank={rank}
+        blocks={minPromotionPeriod[rank] || 0}
+      />,
     ];
   });
 
