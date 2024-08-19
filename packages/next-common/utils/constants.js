@@ -29,6 +29,7 @@ import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
 import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
+import shibuya from "next-common/utils/consts/settings/shibuya";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -62,9 +63,10 @@ export const nodes = [
   // moonriver,
   phala,
   // polkadex,
+  rococo,
+  shibuya,
   turing,
   zeitgeist,
-  rococo,
   vara,
   ...optionalNodes,
 ];

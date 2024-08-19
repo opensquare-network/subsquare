@@ -2,12 +2,14 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import { TotalBalance, Transferrable } from "./accountBalances";
 import SummaryItem from "next-common/components/summary/layout/item";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import { useAmbassadorMemberData } from "../context/ambassadorMemberDataContext";
-import { useFellowshipMemberData } from "../context/fellowshipMemberDataContext";
 import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import DemotionRemainLabel from "next-common/components/profile/fellowship/demotionRemainLabel";
 import PromotionRemainLabel from "next-common/components/profile/fellowship/promotionRemainLabel";
+import {
+  useAmbassadorMemberData,
+  useFellowshipMemberData,
+} from "../context/memberDataContext";
 
 function MemberInfo({ data, isLoading }) {
   if (isLoading) {

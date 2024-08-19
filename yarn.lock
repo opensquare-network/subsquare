@@ -3235,10 +3235,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.123.0":
-  version: 1.123.0
-  resolution: "@osn/icons@npm:1.123.0"
-  checksum: 92d49dd9dc77633b100546528fc3262fcc4548be59b8ce9ff4bbca2a0500709f0bd750be758cd68c0d052ab5d0306415c1e2238009415f2d47c7e4a7f659b4e1
+"@osn/icons@npm:^1.125.0":
+  version: 1.125.0
+  resolution: "@osn/icons@npm:1.125.0"
+  checksum: d346f1fa2d667ea732f6b5b0051441a8364989ae4e3c46ab68726667dff809775dea3920ebc4403f7cca1aeecdb88caa2ce0e887ef66da921c8e258210c8dd6e
   languageName: node
   linkType: hard
 
@@ -3264,9 +3264,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/previewer@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "@osn/previewer@npm:1.4.2"
+"@osn/previewer@npm:^1.4.3":
+  version: 1.4.3
+  resolution: "@osn/previewer@npm:1.4.3"
   dependencies:
     github-markdown-css: ^5.6.1
     marked: ^11.1.1
@@ -3276,7 +3276,7 @@ __metadata:
   peerDependencies:
     react: ^17.0.2
     react-dom: ^17.0.2
-  checksum: 668d03bfc819e3accb3dfb544d0bad2a5e23bbaed7cae149559b82e60aebf55ec3ae4bf58f89ac0dc815624d2d7f7fa956eeefe2e827a95f29e623b91c0d8cbb
+  checksum: 3176ee58ba7f5bfa1032f1e8aa686a4d46b470b6a7d99fd53de1e25605e5240171ee304ec4b56d50458142a745ebe80da0b95a3841d213c987a896eaef553945
   languageName: node
   linkType: hard
 
@@ -5464,7 +5464,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.123.0
+    "@osn/icons": ^1.125.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -5499,7 +5499,7 @@ __metadata:
     "@next/bundle-analyzer": ^14.2.4
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.123.0
+    "@osn/icons": ^1.125.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -12905,9 +12905,9 @@ __metadata:
     "@mimirdev/apps-inject": ^0.3.0
     "@mimirdev/apps-sdk": ^0.2.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.123.0
+    "@osn/icons": ^1.125.0
     "@osn/polkadot-react-identicon": ^1.0.8
-    "@osn/previewer": ^1.4.2
+    "@osn/previewer": ^1.4.3
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.2.1
     "@osn/rich-text-editor": ^0.7.0

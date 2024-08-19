@@ -22,3 +22,4 @@ log
 .yalc/
 yalc.lock
 
+.vscode/settings.json
