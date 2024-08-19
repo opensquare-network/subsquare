@@ -15,13 +15,13 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
   const { snsCoverCid, snsCoverSmallCid } = settings;
 
   const images = [
-    snsCoverCid && {
+    {
       url: ogImage || getIpfsLink(snsCoverCid),
       width: 1200,
       height: 628,
     },
-    snsCoverSmallCid && {
-      url: ogImage || getIpfsLink(snsCoverSmallCid),
+    {
+      url: getIpfsLink(snsCoverSmallCid),
       width: 600,
       height: 600,
     },
@@ -36,6 +36,12 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
         title: title,
         description: desc,
         images,
+      }}
+      twitter={{
+        site: "@OpensquareN",
+        title: title,
+        cardType: "summary",
+        image: images[1]?.url,
       }}
     />
   );
