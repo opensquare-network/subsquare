@@ -5,14 +5,9 @@ import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import CollectivesMemberTable from "next-common/components/collectives/members/table";
-import { useSelector } from "react-redux";
-import { ambassadorCoreMembersSelector } from "next-common/store/reducers/ambassador/core";
-import useFetchAmbassadorCoreMembers from "next-common/hooks/ambassador/core/useFetchAmbassadorCoreMembers.js";
 
 export default function MembersPage() {
-  useFetchAmbassadorCoreMembers();
   const { ambassadorMembers, ambassadorParams } = usePageProps();
   const category = "Ambassador Members";
   const seoInfo = { title: category, desc: category };
@@ -26,8 +21,6 @@ export default function MembersPage() {
 
     return ambassadorMembers.filter((m) => m.rank === rank);
   }, [ambassadorMembers, rank]);
-  const salaryAsset = useSalaryAsset();
-  const coreMembers = useSelector(ambassadorCoreMembersSelector);
 
   return (
     <ListLayout seoInfo={seoInfo} title={category}>
@@ -44,8 +37,6 @@ export default function MembersPage() {
         <CollectivesMemberTable
           members={filteredMembers}
           params={ambassadorParams ?? {}}
-          salaryAsset={salaryAsset}
-          coreMembers={coreMembers}
         />
       </div>
     </ListLayout>

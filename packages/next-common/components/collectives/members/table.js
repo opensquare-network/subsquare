@@ -8,19 +8,18 @@ import { isNil } from "lodash-es";
 import collectivesMemberColumns from "next-common/components/collectives/members/columns";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
-import MemberPeriodWithProgress from "next-common/components/collectives/members/periodWithProgress.jsx";
+import {
+  DemotionPeriodWithProgress,
+  PromotionPeriodWithProgress,
+} from "next-common/components/collectives/members/periodWithProgress.jsx";
+import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 
 function AddressCol({ address }) {
   const [navCollapsed] = useNavCollapsed();
   return <AddressUser maxWidth={navCollapsed ? 360 : 160} add={address} />;
 }
 
-export default function CollectivesMemberTable({
-  members = [],
-  params = {},
-  salaryAsset = {},
-  coreMembers = [],
-}) {
+export default function CollectivesMemberTable({ members = [], params = {} }) {
   const {
     activeSalary = [],
     passiveSalary = [],
@@ -28,9 +27,9 @@ export default function CollectivesMemberTable({
     minPromotionPeriod = [],
     offboardTimeout,
   } = params ?? {};
-  const { symbol, decimals } = salaryAsset;
+  const { symbol, decimals } = useSalaryAsset();
 
-  const isLoading = isNil(members) || isNil(coreMembers);
+  const isLoading = isNil(members);
 
   const rows = (members || []).map(({ address, rank }, idx) => {
     return [
@@ -46,29 +45,22 @@ export default function CollectivesMemberTable({
         value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
         symbol={symbol}
       />,
-      demotionPeriod[rank] > 0 && (
-        <MemberPeriodWithProgress
-          keyPrefix={`demotion-period-${idx}`}
-          periodKey={rankToIndex(rank)}
-          members={members}
-          address={address}
-          params={params}
-          rank={rank}
-          coreMembers={coreMembers}
-          type="demotion"
-          blocks={demotionPeriod[rankToIndex(rank)] || offboardTimeout}
-        />
-      ),
+
+      <DemotionPeriodWithProgress
+        keyPrefix={`demotion-period-${idx}`}
+        periodKey={rankToIndex(rank)}
+        address={address}
+        params={params}
+        rank={rank}
+        blocks={demotionPeriod[rankToIndex(rank)] || offboardTimeout}
+      />,
       minPromotionPeriod[rank] > 0 && (
-        <MemberPeriodWithProgress
+        <PromotionPeriodWithProgress
           keyPrefix={`promotion-period-${idx}`}
           periodKey={rank}
-          members={members}
           address={address}
           params={params}
           rank={rank}
-          coreMembers={coreMembers}
-          type="promotion"
           blocks={minPromotionPeriod[rank] || 0}
         />
       ),

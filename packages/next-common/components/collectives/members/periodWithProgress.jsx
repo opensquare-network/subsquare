@@ -1,13 +1,11 @@
+import React, { useMemo } from "react";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import Tooltip from "next-common/components/tooltip";
 import Progress from "next-common/components/progress";
 import Period from "next-common/components/fellowship/params/period";
 import { isNil } from "lodash-es";
-
-function findCoreMember(coreMembers, address) {
-  return coreMembers.find((member) => member.address === address) || null;
-}
+import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
 
 function NotInCoreManagementSystem() {
   return (
@@ -22,71 +20,105 @@ function NotInCoreManagementSystem() {
   );
 }
 
-function PeriodProgress({
-  members,
-  address,
-  params,
-  rank,
-  coreMembers,
-  type = "demotion",
-}) {
-  if (isNil(members) || isNil(address) || isNil(params) || isNil(coreMembers)) {
+function getFellowshipMemberStatus(address) {
+  const { member: statusFromStorage, isLoading } =
+    useSubFellowshipCoreMember(address);
+
+  const memberStatus = useMemo(() => {
+    return statusFromStorage || null;
+  }, [statusFromStorage, isLoading]);
+
+  return memberStatus;
+}
+
+function DemotionPeriodProgress({ address, params, rank }) {
+  if (isNil(address) || isNil(params)) {
     return null;
   }
-  const memberStatus = findCoreMember(coreMembers, address);
+
+  const memberStatus = getFellowshipMemberStatus(address);
+
+  if (isNil(memberStatus)) {
+    return <NotInCoreManagementSystem />;
+  }
+
+  const { lastProof } = memberStatus;
+
+  return (
+    <CoreFellowshipMemberDemotionPeriod
+      lastProof={lastProof}
+      rank={rank}
+      params={params}
+      showTitle={false}
+    />
+  );
+}
+
+function PromotionPeriodProgress({ address, params, rank }) {
+  if (isNil(address) || isNil(params)) {
+    return null;
+  }
+
+  const memberStatus = getFellowshipMemberStatus(address);
 
   if (!memberStatus) {
     return <NotInCoreManagementSystem />;
   }
 
-  const { status } = memberStatus;
-  const { lastProof, lastPromotion } = status;
-  if (type === "demotion") {
-    return (
-      <CoreFellowshipMemberDemotionPeriod
-        lastProof={lastProof}
+  const { lastPromotion } = memberStatus;
+
+  return (
+    rank > 0 && (
+      <CoreFellowshipMemberPromotionPeriod
+        lastPromotion={lastPromotion}
         rank={rank}
         params={params}
         showTitle={false}
       />
-    );
-  } else {
-    return (
-      rank > 0 && (
-        <CoreFellowshipMemberPromotionPeriod
-          lastPromotion={lastPromotion}
-          rank={rank}
-          params={params}
-          showTitle={false}
-        />
-      )
-    );
-  }
+    )
+  );
 }
 
-export default function MemberPeriodWithProgress({
+export function DemotionPeriodWithProgress({
   keyPrefix,
   periodKey,
-  members,
   address,
   params,
   rank,
-  coreMembers,
-  type,
   blocks,
 }) {
   return (
     <div className="max-sm:text-right" key={keyPrefix}>
       <Period key={`${keyPrefix}-${periodKey}`} blocks={blocks} />
       <div className="py-[6px] max-sm:w-32">
-        <PeriodProgress
+        <DemotionPeriodProgress
           key={`${keyPrefix}-progress-${periodKey}`}
-          members={members}
           address={address}
           params={params}
           rank={rank}
-          coreMembers={coreMembers}
-          type={type}
+        />
+      </div>
+    </div>
+  );
+}
+
+export function PromotionPeriodWithProgress({
+  keyPrefix,
+  periodKey,
+  address,
+  params,
+  rank,
+  blocks,
+}) {
+  return (
+    <div className="max-sm:text-right" key={keyPrefix}>
+      <Period key={`${keyPrefix}-${periodKey}`} blocks={blocks} />
+      <div className="py-[6px] max-sm:w-32">
+        <PromotionPeriodProgress
+          key={`${keyPrefix}-progress-${periodKey}`}
+          address={address}
+          params={params}
+          rank={rank}
         />
       </div>
     </div>
