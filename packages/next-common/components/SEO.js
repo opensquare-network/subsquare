@@ -20,11 +20,11 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
       width: 1200,
       height: 628,
     },
-    {
+    /* {
       url: getIpfsLink(snsCoverSmallCid),
       width: 600,
       height: 600,
-    },
+    }, */
   ].filter(Boolean);
 
   return (
@@ -41,7 +41,7 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
         site: "@OpensquareN",
         title: title,
         cardType: "summary",
-        image: images[1]?.url,
+        image: getIpfsLink(snsCoverSmallCid),
       }}
     />
   );
