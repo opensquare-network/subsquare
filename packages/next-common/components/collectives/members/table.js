@@ -53,7 +53,7 @@ export default function CollectivesMemberTable({ members = [] }) {
         periodKey={rankToIndex(rank)}
         address={address}
         rank={rank}
-        blocks={demotionPeriod[rankToIndex(rank)] || offboardTimeout}
+        blocks={rank <= 0 ? offboardTimeout : demotionPeriod[rankToIndex(rank)]}
       />,
       <PromotionPeriodWithProgress
         key={`promotion-${idx}`}
