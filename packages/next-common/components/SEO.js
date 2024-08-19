@@ -39,7 +39,6 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
         images,
       }}
       twitter={{
-        site: "@OpensquareN",
         title: title,
         cardType: "summary",
         image: getIpfsLink(snsCoverSmallCid),
