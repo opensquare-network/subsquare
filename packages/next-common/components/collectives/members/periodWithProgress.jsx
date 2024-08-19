@@ -46,7 +46,7 @@ function DemotionPeriodProgress({ memberStatus, rank }) {
 
 function PromotionPeriodProgress({ memberStatus, rank }) {
   const { params } = useCollectivesContext();
-  if (isNil(params)) {
+  if (isNil(params) || rank <= 0) {
     return null;
   }
 
@@ -55,11 +55,6 @@ function PromotionPeriodProgress({ memberStatus, rank }) {
   }
 
   const { lastPromotion } = memberStatus;
-
-  if (rank <= 0) {
-    return null;
-  }
-
   return (
     <CoreFellowshipMemberPromotionPeriod
       lastPromotion={lastPromotion}
