@@ -47,7 +47,7 @@ function getFellowshipMemberStatus(address) {
   return stauts;
 }
 
-function getMemberStatus(isFellowshipSection) {
+function getMemberStatus(isFellowshipSection, address) {
   return isFellowshipSection
     ? getFellowshipMemberStatus(address)
     : getAbassadorMemberStatus(address);
@@ -116,7 +116,7 @@ export function DemotionPeriodWithProgress({
 
   const isFellowshipSection = section === "fellowship";
 
-  const memberStatus = getMemberStatus(isFellowshipSection);
+  const memberStatus = getMemberStatus(isFellowshipSection, address);
 
   if (isFellowshipSection) {
     return (
@@ -149,7 +149,7 @@ export function PromotionPeriodWithProgress({
     return null;
   }
 
-  const memberStatus = getMemberStatus(isFellowshipSection);
+  const memberStatus = getMemberStatus(isFellowshipSection, address);
 
   if (isFellowshipSection) {
     return (

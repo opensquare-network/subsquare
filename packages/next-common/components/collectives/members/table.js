@@ -13,7 +13,7 @@ import {
   PromotionPeriodWithProgress,
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
-import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 function AddressCol({ address }) {
   const [navCollapsed] = useNavCollapsed();
