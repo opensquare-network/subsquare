@@ -39,9 +39,13 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
         images,
       }}
       twitter={{
+        site: "@OpensquareN",
         title: title,
         cardType: "summary",
         image: getIpfsLink(snsCoverSmallCid),
+        // eslint-disable-next-line no-dupe-keys
+        image:
+          "https://firebasestorage.googleapis.com/v0/b/polkassembly-backend.appspot.com/o/public%2Fpolkadot-small.png?alt=media",
       }}
     />
   );
