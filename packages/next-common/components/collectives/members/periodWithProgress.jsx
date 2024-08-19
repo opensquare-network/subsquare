@@ -25,7 +25,6 @@ function NotInCoreManagementSystem() {
 
 function DemotionPeriodProgress({ memberStatus, rank }) {
   const { params } = useCollectivesContext();
-
   if (isNil(params)) {
     return null;
   }
@@ -35,7 +34,6 @@ function DemotionPeriodProgress({ memberStatus, rank }) {
   }
 
   const { lastProof } = memberStatus;
-
   return (
     <CoreFellowshipMemberDemotionPeriod
       lastProof={lastProof}
@@ -48,7 +46,6 @@ function DemotionPeriodProgress({ memberStatus, rank }) {
 
 function PromotionPeriodProgress({ memberStatus, rank }) {
   const { params } = useCollectivesContext();
-
   if (isNil(params)) {
     return null;
   }
@@ -59,21 +56,21 @@ function PromotionPeriodProgress({ memberStatus, rank }) {
 
   const { lastPromotion } = memberStatus;
 
+  if (rank <= 0) {
+    return null;
+  }
+
   return (
-    rank > 0 && (
-      <CoreFellowshipMemberPromotionPeriod
-        lastPromotion={lastPromotion}
-        rank={rank}
-        params={params}
-        showTitle={false}
-      />
-    )
+    <CoreFellowshipMemberPromotionPeriod
+      lastPromotion={lastPromotion}
+      rank={rank}
+      params={params}
+      showTitle={false}
+    />
   );
 }
 
-export function DemotionPeriodWithProgress({
-  keyPrefix,
-  periodKey,
+export function FellowshipDemotionPeriodWithProgress({
   address,
   rank,
   blocks,
@@ -82,43 +79,28 @@ export function DemotionPeriodWithProgress({
     return null;
   }
 
-  const { section } = useCollectivesContext();
-  const isFellowshipSection = section === "fellowship";
-
   const corePallet = useCoreFellowshipPallet();
   const { member: memberStatus } = useSubCoreCollectivesMember(
     address,
     corePallet,
   );
 
-  if (isFellowshipSection) {
-    return (
-      <div className="max-sm:text-right" key={keyPrefix}>
-        <Period key={`${keyPrefix}-${periodKey}`} blocks={blocks} />
-        <div className="py-[6px] max-sm:w-32">
-          <DemotionPeriodProgress
-            key={`${keyPrefix}-progress-${periodKey}`}
-            rank={rank}
-            memberStatus={memberStatus}
-          />
-        </div>
+  return (
+    <div className="max-sm:text-right">
+      <Period blocks={blocks} />
+      <div className="py-[6px] max-sm:w-32">
+        <DemotionPeriodProgress rank={rank} memberStatus={memberStatus} />
       </div>
-    );
-  }
-  return <Period key={`${keyPrefix}-${periodKey}`} blocks={blocks} />;
+    </div>
+  );
 }
 
-export function PromotionPeriodWithProgress({
-  keyPrefix,
-  periodKey,
+export function FellowshipPromotionPeriodWithProgress({
   address,
   rank,
   blocks,
 }) {
-  const { section } = useCollectivesContext();
-  const isFellowshipSection = section === "fellowship";
-
-  if ((blocks <= 0 && isFellowshipSection) || isNil(address)) {
+  if (blocks <= 0 || isNil(address)) {
     return null;
   }
 
@@ -128,20 +110,12 @@ export function PromotionPeriodWithProgress({
     corePallet,
   );
 
-  if (isFellowshipSection) {
-    return (
-      <div className="max-sm:text-right" key={keyPrefix}>
-        <Period key={`${keyPrefix}-${periodKey}`} blocks={blocks} />
-        <div className="py-[6px] max-sm:w-32">
-          <PromotionPeriodProgress
-            key={`${keyPrefix}-progress-${periodKey}`}
-            rank={rank}
-            memberStatus={memberStatus}
-          />
-        </div>
+  return (
+    <div className="max-sm:text-right">
+      <Period blocks={blocks} />
+      <div className="py-[6px] max-sm:w-32">
+        <PromotionPeriodProgress rank={rank} memberStatus={memberStatus} />
       </div>
-    );
-  }
-
-  return <Period key={`${keyPrefix}-${periodKey}`} blocks={blocks} />;
+    </div>
+  );
 }

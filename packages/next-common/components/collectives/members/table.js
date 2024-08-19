@@ -9,11 +9,12 @@ import collectivesMemberColumns from "next-common/components/collectives/members
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 import {
-  DemotionPeriodWithProgress,
-  PromotionPeriodWithProgress,
+  FellowshipDemotionPeriodWithProgress,
+  FellowshipPromotionPeriodWithProgress,
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import Period from "next-common/components/fellowship/params/period";
 
 function AddressCol({ address }) {
   const [navCollapsed] = useNavCollapsed();
@@ -21,7 +22,7 @@ function AddressCol({ address }) {
 }
 
 export default function CollectivesMemberTable({ members = [] }) {
-  const { params = {} } = useCollectivesContext();
+  const { params = {}, section } = useCollectivesContext();
   const {
     activeSalary = [],
     passiveSalary = [],
@@ -34,6 +35,9 @@ export default function CollectivesMemberTable({ members = [] }) {
   const isLoading = isNil(members);
 
   const rows = (members || []).map(({ address, rank }, idx) => {
+    const demotionBlocks =
+      rank <= 0 ? offboardTimeout : demotionPeriod[rankToIndex(rank)];
+
     return [
       <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
       <AddressCol key={`address-row-${idx}`} address={address} />,
@@ -47,22 +51,29 @@ export default function CollectivesMemberTable({ members = [] }) {
         value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
         symbol={symbol}
       />,
-      <DemotionPeriodWithProgress
-        key={`demotion-${idx}`}
-        keyPrefix={`demotion-period-${idx}`}
-        periodKey={rankToIndex(rank)}
-        address={address}
-        rank={rank}
-        blocks={rank <= 0 ? offboardTimeout : demotionPeriod[rankToIndex(rank)]}
-      />,
-      <PromotionPeriodWithProgress
-        key={`promotion-${idx}`}
-        keyPrefix={`promotion-period-${idx}`}
-        periodKey={rank}
-        address={address}
-        rank={rank}
-        blocks={minPromotionPeriod[rank] || 0}
-      />,
+      section === "fellowship" ? (
+        <FellowshipDemotionPeriodWithProgress
+          key={`demotion-period-${idx}`}
+          address={address}
+          rank={rank}
+          blocks={demotionBlocks}
+        />
+      ) : (
+        <Period key={`demotion-period-${idx}`} blocks={demotionBlocks} />
+      ),
+      section === "fellowship" ? (
+        <FellowshipPromotionPeriodWithProgress
+          key={`min-promotion-period-${idx}`}
+          address={address}
+          rank={rank}
+          blocks={minPromotionPeriod[rank] || 0}
+        />
+      ) : (
+        <Period
+          key={`min-promotion-period-${idx}`}
+          blocks={minPromotionPeriod[rank] || 0}
+        />
+      ),
     ];
   });
 
