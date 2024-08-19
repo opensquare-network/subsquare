@@ -12,7 +12,7 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
   const description = desc || DEFAULT_SEO_INFO.desc;
   const settings = useChainSettings();
 
-  const { snsCoverCid, snsCoverSmallCid } = settings;
+  const { snsCoverCid } = settings;
 
   const images = [
     {
@@ -35,13 +35,14 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
         url: `${siteUrl}${route.asPath}`,
         title: title,
         description: desc,
+        type: "website",
         images,
       }}
       twitter={{
         site: "@OpensquareN",
         title: title,
-        cardType: "summary",
-        image: getIpfsLink(snsCoverSmallCid),
+        cardType: "summary_large_image",
+        image: images[0]?.url,
       }}
     />
   );
