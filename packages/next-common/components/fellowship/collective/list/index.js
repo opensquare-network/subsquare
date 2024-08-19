@@ -1,16 +1,13 @@
 import { usePageProps } from "next-common/context/page";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import CollectivesMemberTable from "next-common/components/collectives/members/table";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function FellowshipCollectiveMembers({ members }) {
   const { fellowshipParams } = usePageProps();
-  const salaryAsset = useSalaryAsset();
 
   return (
-    <CollectivesMemberTable
-      members={members}
-      params={fellowshipParams ?? {}}
-      salaryAsset={salaryAsset}
-    />
+    <CollectivesProvider section="fellowship" params={fellowshipParams ?? {}}>
+      <CollectivesMemberTable members={members} />
+    </CollectivesProvider>
   );
 }
