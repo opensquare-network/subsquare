@@ -27,7 +27,6 @@ const polkadex = {
   hasElections: true,
   ss58Format: 88,
   blockTime: 6000,
-  snsCoverCid: "bafybeickjkgii2nnhwyypiem6jjj3z75u4dfknwcmedru4ytzv6qddfg5y",
   endpoints: DEFAULT_POLKADEX_NODES,
   avatar: Avatar,
   darkAvatar: DarkAvatar,

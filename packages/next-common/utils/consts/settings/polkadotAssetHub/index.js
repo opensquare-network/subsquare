@@ -22,7 +22,6 @@ const polkadotAssetHub = {
   decimals: 10,
   ss58Format: 0,
   blockTime: 12000,
-  snsCoverCid: "QmSAsmCgU6mQ48jS6bddKww4hhNBv7dxXKsYY81QB8TWKc",
   endpoints: polkadotAssetHubNodes,
   avatar: ProjectIconPolkadotAssetHub,
   darkAvatar: ProjectIconPolkadotAssetHub,
