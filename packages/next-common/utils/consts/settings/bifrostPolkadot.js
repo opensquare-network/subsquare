@@ -45,8 +45,6 @@ const bifrostPolkadot = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 6,
-  snsCoverCid: "QmdcjdBESsZbXcsMjSJp1jWaf7HrZoQ5Ffj5TTU98fFPNk",
-  snsCoverSmallCid: "QmTn37oEqPAm32G35rW5dLhKAtSueh4QgFg2zXqRfMfs9K",
   endpoints: DEFAULT_NODES,
   avatar: ProjectIconBifrostPolkadotLight,
   darkAvatar: ProjectIconBifrostPolkadotDark,

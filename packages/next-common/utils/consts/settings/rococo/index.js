@@ -44,8 +44,6 @@ const rococo = {
   hasElections: true,
   ss58Format: 42,
   blockTime: 6000,
-  snsCoverCid: "QmRFe45xXDVfR1EQ8N5jFMyZ95AKqMERrre5DvbvF6fMRB",
-  snsCoverSmallCid: "QmRgeVewMV3WFwBcwZdKGZy1HCdSTKWdDhW1ExKvTW7h4j",
   endpoints: defaultRococoNodes,
   avatar: ProjectIconRococoLight,
   darkAvatar: ProjectIconRococoDark,

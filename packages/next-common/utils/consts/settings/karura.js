@@ -79,8 +79,6 @@ const karura = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 8,
-  snsCoverCid: "Qme9Dq1EAtcN3bW11xNpntcHYhyqLgujm1mL6s5N7PffvY",
-  snsCoverSmallCid: "QmduxAQJDmq87iyRFUEivPPA6Fk8LP88koZUUZP3t8H5dG",
   endpoints: DEFAULT_KARURA_NODES,
   avatar: ProjectIconKaruraLight,
   darkAvatar: ProjectIconKaruraDark,

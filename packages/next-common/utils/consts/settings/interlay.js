@@ -68,8 +68,6 @@ const interlay = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 2032,
-  snsCoverCid: "QmS7fFXtkaQZQBeabPSKiwTcK9KGy6MAiSKE5ViEFYDwXM",
-  snsCoverSmallCid: "Qmb1gam5P99tQVthNSEjqEUgLLjb7B6Fo8dyiGsDXZ8rbW",
   endpoints: DEFAULT_INTERLAY_NODES,
   avatar: ProjectIconInterlayLight,
   darkAvatar: ProjectIconInterlayDark,

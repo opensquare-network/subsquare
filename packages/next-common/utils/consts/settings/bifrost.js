@@ -69,8 +69,6 @@ const bifrost = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 6,
-  snsCoverCid: "QmYWM57BNUkpVaRvsbetiVhEaZFovT4qhvH8CBdfyDxhaZ",
-  snsCoverSmallCid: "QmSB4n17ojS9iAaHE6Vsty8atLvLMqKavTzGu8CuSCYbbb",
   endpoints: DEFAULT_BIFROST_NODES,
   avatar: ProjectIconBifrostKusamaLight,
   darkAvatar: ProjectIconBifrostKusamaDark,

@@ -80,8 +80,6 @@ const centrifuge = {
   blockTime: 12000,
   hasElections: true,
   ss58Format: 36,
-  snsCoverCid: "QmQshokVKdHNrdZJBFkUpwSg6jMwWemjvrQnLHnLUPjj5F",
-  snsCoverSmallCid: "QmZvH4hL5dq6wa4YSCHWqgsdUgbMyEW57Xn4tkjnKtLcx7",
   endpoints: defaultNodes,
   avatar: ProjectIconCentrifugeLight,
   darkAvatar: ProjectIconCentrifugeDark,

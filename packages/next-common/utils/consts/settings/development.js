@@ -22,7 +22,6 @@ const development = {
   decimals: 12,
   hasElections: false,
   ss58Format: 42,
-  snsCoverCid: "bafybeiatq3vybpj3dyxretnjzmggeukqqk3bc4r4qep2ol7cysctrtjqp4",
   endpoints: defaultNodes,
   avatar: Avatar,
   darkAvatar: DarkAvatar,

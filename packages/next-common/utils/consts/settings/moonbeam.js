@@ -35,7 +35,6 @@ const moonbeam = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 18,
-  snsCoverCid: "QmQ2r48Wf6yu8d9k9VEejvcRoxNDVuiqW12ui7RCiXgWQg",
   endpoints: DEFAULT_MOONBEAM_NODES,
   avatar: ProjectIconMoonbeamLight,
   darkAvatar: ProjectIconMoonbeamDark,

@@ -75,8 +75,6 @@ const vara = {
   hasElections: false,
   ss58Format: 137,
   blockTime: 3000,
-  snsCoverCid: "QmVB4TdgASKJBiALRYMDqmvnqUL1fLAxfVr1UPCE7MKxqh",
-  snsCoverSmallCid: "QmRxKnuzHndy1JorEunrUFjAhD4yaupurFQPdqEPdxYpyB",
   endpoints: nodes,
   links,
   avatar: ProjectIconVaraLight,

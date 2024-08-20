@@ -73,8 +73,6 @@ const collectives = {
   decimals: 10,
   blockTime: 12000,
   ss58Format: 0,
-  snsCoverCid: "Qmd94nPUYjannevPpiadJe2gXsHbJro7RngHVt6RzboFEz",
-  snsCoverSmallCid: "QmXeCQ7fnZnCsnrHAvkS4V4biJrcNfxWxmUuv1yTXYYkbS",
   endpoints:
     process.env.NEXT_PUBLIC_TEST === "true"
       ? testEndpoints
