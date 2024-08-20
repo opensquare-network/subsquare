@@ -60,6 +60,12 @@ export default function ValidFromField({ title = "", value, setValue }) {
     }
   }, [isEditable]);
 
+  useEffect(() => {
+    return () => {
+      setValue("");
+    };
+  }, []);
+
   return (
     <div>
       <div className="flex justify-between items-center mb-[8px]">
