@@ -10,10 +10,10 @@ export default function AdvanceSettings({ children }) {
           className="cursor-pointer text12Medium text-theme500"
           onClick={() => setShowAdvanced(!showAdvanced)}
         >
-          {showAdvanced ? "Cancel" : "Settings"}
+          {showAdvanced ? "Hide" : "Settings"}
         </span>
       </div>
-      {showAdvanced ? <div className="space-y-4">{children}</div> : null}
+      <div className={showAdvanced ? "space-y-4" : "hidden"}>{children}</div>
     </>
   );
 }
