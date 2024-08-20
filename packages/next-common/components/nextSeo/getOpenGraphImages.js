@@ -11,17 +11,20 @@ function resolveCoversRepoFilepathUrl(filename) {
   return `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/covers/${filename}`;
 }
 
+function getCoverFilenames(chainValue) {
+  return (
+    CHAIN_COVER_FILENAMES_MAP[chainValue] || {
+      large: `${chainValue}.jpg`,
+      small: `${chainValue}-small.jpg`,
+    }
+  );
+}
+
 export function getOpenGraphImages(chainValue) {
-  const coverFilenames = CHAIN_COVER_FILENAMES_MAP[chainValue];
-  if (coverFilenames) {
-    return {
-      large: resolveCoversRepoFilepathUrl(coverFilenames.large),
-      small: resolveCoversRepoFilepathUrl(coverFilenames.small),
-    };
-  }
+  const coverFilenames = getCoverFilenames(chainValue);
 
   return {
-    large: resolveCoversRepoFilepathUrl(`${chainValue}.jpg`),
-    small: resolveCoversRepoFilepathUrl(`${chainValue}-small.jpg`),
+    large: resolveCoversRepoFilepathUrl(coverFilenames.large),
+    small: resolveCoversRepoFilepathUrl(coverFilenames.small),
   };
 }
