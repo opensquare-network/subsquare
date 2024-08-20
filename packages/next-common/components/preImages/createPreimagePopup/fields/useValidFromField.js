@@ -1,4 +1,4 @@
-import BlocksField from "next-common/components/popup/fields/blocksField";
+import ValidFromField from "next-common/components/popup/fields/validFromField";
 import { useState } from "react";
 
 export default function useValidFromField() {
@@ -7,7 +7,7 @@ export default function useValidFromField() {
   return {
     value: validFrom,
     component: (
-      <BlocksField
+      <ValidFromField
         title="Valid From"
         value={validFrom}
         setValue={setValidFrom}

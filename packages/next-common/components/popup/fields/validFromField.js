@@ -2,8 +2,17 @@ import Input from "next-common/components/input";
 import PopupLabel from "../label";
 import Toggle from "next-common/components/toggle";
 import { useState } from "react";
+import Link from "next/link";
+import { InfoMessage } from "next-common/components/setting/styled";
 
-function BlocksFieldToggleSwitch({ isEditable, setIsEditable }) {
+const PROMPT_WIKI_LINK =
+  "https://wiki.polkadot.network/docs/learn-guides-treasury#specifying-validfrom-optional";
+const PROMPT_DISABLE_CONTENT =
+  "When the proposal is executed, you can get the funds paid immediately.";
+const PROMPT_EDITABLE_CONTENT =
+  "Get the funds paid at the block height that submitted.";
+
+function ValidFromFieldToggleSwitch({ isEditable, setIsEditable }) {
   return (
     <div className="flex items-center gap-[8px]">
       <span className="text-textSecondary text12Medium whitespace-nowrap">
@@ -18,12 +27,27 @@ function BlocksFieldToggleSwitch({ isEditable, setIsEditable }) {
   );
 }
 
-export default function BlocksField({ title = "Blocks", value, setValue }) {
+function ValidFromFieldPrompt({ isEditable }) {
+  const content = isEditable ? PROMPT_DISABLE_CONTENT : PROMPT_EDITABLE_CONTENT;
+  return (
+    <InfoMessage className="mt-[8px]">
+      <span className="text-textSecondary text14Medium">
+        {content}&nbsp;
+        <Link className="underline" href={PROMPT_WIKI_LINK}>
+          Wiki
+        </Link>
+        ↗
+      </span>
+    </InfoMessage>
+  );
+}
+
+export default function ValidFromField({ title = "", value, setValue }) {
   const [isEditable, setIsEditable] = useState(false);
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
-    setValue(inputValue.trim() ? inputValue : 'None');
+    setValue(inputValue.trim() ? inputValue : "None");
   };
 
   const placeholder = isEditable ? "Please fill a block height..." : "";
@@ -32,7 +56,7 @@ export default function BlocksField({ title = "Blocks", value, setValue }) {
     <div>
       <div className="flex justify-between items-center mb-[8px]">
         <PopupLabel text={title} />
-        <BlocksFieldToggleSwitch
+        <ValidFromFieldToggleSwitch
           isEditable={isEditable}
           setIsEditable={setIsEditable}
         />
@@ -44,6 +68,7 @@ export default function BlocksField({ title = "Blocks", value, setValue }) {
         onChange={handleInputChange}
         disabled={!isEditable}
       />
+      <ValidFromFieldPrompt isEditable={isEditable} />
     </div>
   );
 }
