@@ -5,7 +5,7 @@ export default function useValidFromField() {
   const [validFrom, setValidFrom] = useState("");
 
   return {
-    value: validFrom,
+    value: validFrom || 'None',
     component: (
       <ValidFromField
         title="Valid From"

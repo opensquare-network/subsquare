@@ -1,7 +1,7 @@
 import Input from "next-common/components/input";
 import PopupLabel from "../label";
 import Toggle from "next-common/components/toggle";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { InfoMessage } from "next-common/components/setting/styled";
 
@@ -28,7 +28,7 @@ function ValidFromFieldToggleSwitch({ isEditable, setIsEditable }) {
 }
 
 function ValidFromFieldPrompt({ isEditable }) {
-  const content = isEditable ? PROMPT_DISABLE_CONTENT : PROMPT_EDITABLE_CONTENT;
+  const content = isEditable ? PROMPT_EDITABLE_CONTENT : PROMPT_DISABLE_CONTENT;
   return (
     <InfoMessage className="mt-[8px]">
       <span className="text-textSecondary text14Medium">
@@ -47,10 +47,18 @@ export default function ValidFromField({ title = "", value, setValue }) {
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
-    setValue(inputValue.trim() ? inputValue : "None");
+    setValue(inputValue.trim());
   };
 
   const placeholder = isEditable ? "Please fill a block height..." : "";
+
+  useEffect(() => {
+    if (isEditable) {
+      setValue("");
+    } else {
+      setValue("None");
+    }
+  }, [isEditable]);
 
   return (
     <div>
@@ -62,7 +70,7 @@ export default function ValidFromField({ title = "", value, setValue }) {
         />
       </div>
       <Input
-        value={isEditable ? value : "None"}
+        value={value}
         placeholder={placeholder}
         symbol="Block Height"
         onChange={handleInputChange}
