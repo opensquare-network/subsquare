@@ -5,7 +5,7 @@ import { useContextApi } from "next-common/context/api";
 export default function useCouncilMembers() {
   const api = useContextApi();
   const councilName = useCouncilName();
-  const [councilMembers] = useCall(api?.query[councilName]?.members, []);
+  const { value: councilMembers } = useCall(api?.query[councilName]?.members, []);
 
   return councilMembers?.toJSON();
 }
