@@ -44,22 +44,16 @@ function ValidFromFieldPrompt({ isEditable }) {
 
 export default function ValidFromField({ title = "", value, setValue }) {
   const [isEditable, setIsEditable] = useState(false);
+  useEffect(() => {
+    setValue(isEditable ? "" : "None");
+  }, [isEditable, setValue]);
 
   const handleInputChange = (e) => {
-    const inputValue = e.target.value;
-    setValue(inputValue.trim());
+    const inputValue = e.target.value.trim();
+    setValue(inputValue);
   };
 
   const placeholder = isEditable ? "Please fill a block height..." : "";
-
-  useEffect(() => {
-    if (isEditable) {
-      setValue("");
-    } else {
-      setValue("None");
-    }
-  }, [isEditable]);
-
   return (
     <div>
       <div className="flex justify-between items-center mb-[8px]">
