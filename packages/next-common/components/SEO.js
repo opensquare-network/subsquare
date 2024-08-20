@@ -43,7 +43,7 @@ export default function SEO({ title: titleProp, desc, ogImage }) {
         title: title,
         cardType: "summary_large_image",
         image:
-          "https://typefully.com/cards/card.png" ||
+          "https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/covers/hydration.jpg" ||
           getIpfsLink(snsCoverSmallCid),
       }}
     />
