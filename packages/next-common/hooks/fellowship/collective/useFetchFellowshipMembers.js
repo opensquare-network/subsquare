@@ -1,13 +1,15 @@
 import { useContextApi } from "next-common/context/api";
 import { useDispatch, useSelector } from "react-redux";
-import { fellowshipCoreMembersTriggerSelector } from "next-common/store/reducers/fellowship/core";
 import { useEffect } from "react";
-import { setFellowshipCollectiveMembers } from "next-common/store/reducers/fellowship/collective";
+import {
+  fellowshipCollectiveMembersTriggerSelector,
+  setFellowshipCollectiveMembers,
+} from "next-common/store/reducers/fellowship/collective";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
 
 export default function useFetchFellowshipMembers() {
   const api = useContextApi();
-  const trigger = useSelector(fellowshipCoreMembersTriggerSelector);
+  const trigger = useSelector(fellowshipCollectiveMembersTriggerSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
