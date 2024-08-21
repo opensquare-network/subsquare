@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import ListLayout from "next-common/components/layout/ListLayout";
 import Bio from "./bio";
 import useProfileTabs from "next-common/components/profile/tabs";
@@ -9,18 +9,15 @@ import { useDispatch } from "react-redux";
 import { setProfileTransfers } from "next-common/store/reducers/profile/transfer";
 import { setProfileIdentityTimeline } from "next-common/store/reducers/profile/identityTimeline";
 import useProfileAddress from "./useProfileAddress";
+import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
+import CollectivesProvider from "next-common/context/collectives/collectives";
+import CollectivesMemberProvider from "next-common/context/collectives/member";
 
-export default function ProfilePage() {
-  const tabs = useProfileTabs();
-  const tabContent = useProfileTabContent();
+function ProfilePageImpl() {
   useFetchProfileData();
 
-  const address = useProfileAddress();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setProfileTransfers(null));
-    dispatch(setProfileIdentityTimeline(null));
-  }, [dispatch, address]);
+  const tabs = useProfileTabs();
+  const tabContent = useProfileTabContent();
 
   return (
     <ListLayout
@@ -34,5 +31,39 @@ export default function ProfilePage() {
     >
       {tabContent}
     </ListLayout>
+  );
+}
+
+export default function ProfilePage() {
+  const address = useProfileAddress();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setProfileTransfers(null));
+    dispatch(setProfileIdentityTimeline(null));
+  }, [dispatch, address]);
+
+  const { member: fellowshipMember } = useSubFellowshipCoreMember(address);
+  const { member: ambassadorMember } = useSubFellowshipCoreMember(
+    address,
+    "ambassadorCore",
+  );
+  let section = null;
+  let member = null;
+  if (fellowshipMember) {
+    section = "fellowship";
+    member = fellowshipMember;
+  } else if (ambassadorMember) {
+    section = "ambassador";
+    member = ambassadorMember;
+  }
+
+  const content = <ProfilePageImpl />;
+
+  return (
+    <CollectivesProvider section={section}>
+      <CollectivesMemberProvider member={member}>
+        {content}
+      </CollectivesMemberProvider>
+    </CollectivesProvider>
   );
 }
