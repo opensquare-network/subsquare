@@ -22,6 +22,7 @@ import {
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
+import { useSignetSdk } from "next-common/context/signet";
 
 function isShouldSendEvmTx(signerAccount) {
   if (
@@ -54,6 +55,7 @@ export function useSendTransaction() {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
+  const { sdk: signetSdk } = useSignetSdk();
 
   const sendTx = useCallback(
     async ({
@@ -134,6 +136,7 @@ export function useSendTransaction() {
 
         if (isShouldSendSignetTx(signerAccount)) {
           const handled = await maybeSendSignetTx({
+            sdk: signetSdk,
             tx,
             onStarted: () => {
               dispatch(newPendingToast(toastId, "Waiting for signing..."));
@@ -181,7 +184,7 @@ export function useSendTransaction() {
         setIsLoading(false);
       }
     },
-    [dispatch, signerAccount],
+    [dispatch, signerAccount, signetSdk],
   );
 
   return {

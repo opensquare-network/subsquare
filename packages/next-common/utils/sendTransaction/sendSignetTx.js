@@ -1,16 +1,15 @@
-import { getSignetSdk } from "next-common/context/signet";
 import { noop } from "lodash-es";
 
 export async function maybeSendSignetTx({
+  sdk,
   tx,
   onStarted = noop,
   onSubmitted = noop,
   onEnded = noop,
   onError = noop,
 }) {
-  const sdk = getSignetSdk();
   if (!sdk) {
-    throw new Error("Signet SDK is initialized.");
+    throw new Error("Signet SDK is not initialized.");
   }
 
   try {

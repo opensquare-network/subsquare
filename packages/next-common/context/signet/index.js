@@ -9,12 +9,10 @@ const SignetContext = React.createContext();
 
 export default SignetContext;
 
-let signetSdk = null;
-
 export function SignetContextProvider({ children }) {
   const [sdk, setSdk] = useState();
   useEffect(() => {
-    signetSdk = new SignetSdk();
+    const signetSdk = new SignetSdk();
     setSdk(signetSdk);
   }, []);
 
@@ -76,8 +74,4 @@ export function useSignetAccounts() {
   }, [inSignet, getVault]);
 
   return accounts;
-}
-
-export function getSignetSdk() {
-  return signetSdk;
 }
