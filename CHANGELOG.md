@@ -2,19 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.2.3
+
+date: 2024-08-20
+
+- Polkadot fellowship
+  - [Big] Add polkadot fellowship statistics page.
+  - [Medium] Add more filters on fellowship core page.
+  - Add salary related warnings on overview page to inform members to register and claim salary.
+  - Show demotion/promotion progress bar on fellowship members page.
+- Subscribe treasury spend status on detail page and update post when new update detected.
+- Enable kill/cancel referenda templates for westend.
+- AssetHub
+    - Support assethub cross chain with relay chain.
+    - Support litentry/litmus decimals change.
+    - Fix assethub profile page crash.
+    - Show proxy and extension metadata update warnings on assethub overview page.
+- Support astar test network shibuya.
+- Fix broken post rendered table by markdown [#4580](https://github.com/opensquare-network/subsquare/issues/4580). 
+- Fix open graph social media link.
+- Fix styles and refactor code.
+
 ### 4.2.2
 
 date: 2024-08-06
 
-- [Big] Implement SIMA governance spec for OpenGov referenda and treasury proposal. 
+- [Big] Implement SIMA governance spec for OpenGov referenda and treasury proposal.
 - [Big] Add referenda tracks visualization page.
 - [Medium] Add referenda templates to cancel/kill a referendum.
 - Collectives
-  - Show fellowship/ambassador member basic info on profile page.
-  - Show fellowship/ambassador member core(management) feeds on profile page.
-  - Show fellowship/ambassador member salary payments and feeds on profile page.
-  - Handle collective member case when demotion period is 0.
-  - Improve demotion/promotion progress bar display with different colors.
+    - Show fellowship/ambassador member basic info on profile page.
+    - Show fellowship/ambassador member core(management) feeds on profile page.
+    - Show fellowship/ambassador member salary payments and feeds on profile page.
+    - Handle collective member case when demotion period is 0.
+    - Improve demotion/promotion progress bar display with different colors.
 - Add user warnings for assethub assets management.
 - Refactor and improve styles.
 
@@ -23,13 +44,13 @@ date: 2024-08-06
 date: 2024-07-30
 
 - Fellowship
-  - Add core members management warnings.
-    1. Show how many members' evidences need to be handled.
-    2. Show members' demotion warnings.
-    3. Show members' promotion warnings.
-  - Add referenda templates including members promotion and retain.
-  - Add a panel on fellowship core params to give more explanations.
-  - Set default page size to 25 on salary cycle detail page.
+    - Add core members management warnings.
+        1. Show how many members' evidences need to be handled.
+        2. Show members' demotion warnings.
+        3. Show members' promotion warnings.
+    - Add referenda templates including members promotion and retain.
+    - Add a panel on fellowship core params to give more explanations.
+    - Set default page size to 25 on salary cycle detail page.
 - Add a notification on account panel to enable connected user to update chain runtime metadata to extension.
 - Use subscribed referendum info by default on referendum detail page.
 - Support referenda for altair chain.
@@ -51,7 +72,7 @@ date: 2024-07-25
 - Refactor: take place of useClickOutside with useClickAway.
 - Add remark template to fellowship new referenda popup.
 - Improve the style of new referenda templates.
-- Cache metadata for assethub chain to improve the performance of querying stable coin treasury.  
+- Cache metadata for assethub chain to improve the performance of querying stable coin treasury.
 - Fix page height by sidebar height on proposal detail page.
 - [Big]Show on-chain evidence for polkadot collectives including fellowship and ambassador.
 - Check permissions for collective(fellowship/ambassador) vote and refactor the vote popup.

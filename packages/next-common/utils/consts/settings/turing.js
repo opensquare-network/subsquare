@@ -65,7 +65,6 @@ const turing = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 51,
-  snsCoverCid: "bafybeidmqvyfi467agi4cum26idgh5h56wmegrjh7jnl5wvtkzbvgucmpm",
   endpoints: DEFAULT_TURING_NODES,
   avatar: ProjectIconTuringLight,
   darkAvatar: ProjectIconTuringDark,

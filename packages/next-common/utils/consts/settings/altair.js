@@ -46,7 +46,6 @@ const altair = {
   blockTime: 12000,
   hasElections: true,
   ss58Format: 136,
-  snsCoverCid: "bafybeidmyuzahzhhsxk5yeofehqj3y2yhj5wn5n4xqblx3j4kczytvnvs4",
   endpoints: nodes,
   avatar: ProjectIconAltairLight,
   darkAvatar: ProjectIconAltairDark,

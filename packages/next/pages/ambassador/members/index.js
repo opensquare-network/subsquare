@@ -5,8 +5,8 @@ import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import CollectivesMemberTable from "next-common/components/collectives/members/table";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function MembersPage() {
   const { ambassadorMembers, ambassadorParams } = usePageProps();
@@ -22,7 +22,6 @@ export default function MembersPage() {
 
     return ambassadorMembers.filter((m) => m.rank === rank);
   }, [ambassadorMembers, rank]);
-  const salaryAsset = useSalaryAsset();
 
   return (
     <ListLayout seoInfo={seoInfo} title={category}>
@@ -36,11 +35,12 @@ export default function MembersPage() {
           </span>
           {component}
         </TitleContainer>
-        <CollectivesMemberTable
-          members={filteredMembers}
+        <CollectivesProvider
+          section="ambassador"
           params={ambassadorParams ?? {}}
-          salaryAsset={salaryAsset}
-        />
+        >
+          <CollectivesMemberTable members={filteredMembers} />
+        </CollectivesProvider>
       </div>
     </ListLayout>
   );

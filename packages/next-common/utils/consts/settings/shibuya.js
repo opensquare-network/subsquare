@@ -63,7 +63,6 @@ const shibuya = {
   decimals: 18,
   blockTime: 12000,
   ss58Format: 5,
-  snsCoverCid: "Qmbko2xzW6dgRNddmTLymxmfeFTGkX8tqRB4CuFADqWhC8",
   endpoints: nodes,
   avatar: ProjectIconShibuyaLight,
   darkAvatar: ProjectIconShibuyaDark,
