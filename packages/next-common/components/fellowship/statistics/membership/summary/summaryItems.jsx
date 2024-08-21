@@ -20,21 +20,21 @@ export default function StatisticsMembershipSummaryItems({ summaryData }) {
 
   return (
     <SummaryLayout className="grid grid-cols-2 gap-4">
-      <SummaryItem title="Promotion Times">{promotionTimes}</SummaryItem>
-      <SummaryItem title="Retention Times">{retentionTimes}</SummaryItem>
-      <SummaryItem title="Demotion Times">{demotionTimes}</SummaryItem>
+      <SummaryItem title="Promotion">{promotionTimes}</SummaryItem>
       <SummaryItem title="Total Active Salary">
         <ValueDisplay
           value={toPrecision(totalActiveSalary, decimals)}
           symbol={symbol}
         />
       </SummaryItem>
+      <SummaryItem title="Demotion ">{demotionTimes}</SummaryItem>
       <SummaryItem title="Total Passive Salary">
         <ValueDisplay
           value={toPrecision(totalPassiveSalary, decimals)}
           symbol={symbol}
         />
       </SummaryItem>
+      <SummaryItem title="Retention">{retentionTimes}</SummaryItem>
     </SummaryLayout>
   );
 }
