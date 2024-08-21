@@ -13,6 +13,8 @@ import AssetsList from "./assetsList";
 import { isNil } from "lodash-es";
 import { ProxyTip } from "next-common/components/overview/accountInfo/accountInfoPanel.js";
 import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
+import AssetHubTabs from "./tabs";
+import { useEffect } from "react";
 
 function HeadContent() {
   const address = useRealAddress();
@@ -58,16 +60,50 @@ export function Title({ assetsCount }) {
   );
 }
 
+function AssetsTabContent({ assets, setTotalCount }) {
+  useEffect(() => {
+    if (setTotalCount) {
+      setTotalCount(assets ? assets.length : 0);
+    }
+  }, [assets, setTotalCount]);
+
+  return (
+    <div>
+      <Title assetsCount={assets?.length} />
+      <SecondaryCard>
+        <AssetsList assets={assets} />
+      </SecondaryCard>
+    </div>
+  );
+}
+
+function TransfersTabContent({ assets, setTotalCount }) {
+  useEffect(() => {
+    if (setTotalCount) {
+      setTotalCount(assets ? assets.length : 0);
+    }
+  }, [assets, setTotalCount]);
+
+  return (
+    <div>
+      <Title assetsCount={assets?.length} />
+      <SecondaryCard>
+        <AssetsList assets={assets} />
+      </SecondaryCard>
+    </div>
+  );
+}
+
 export default function WalletAssetList() {
   const assets = useMyAssets();
 
   return (
     <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
       <div className="flex flex-col gap-[16px]">
-        <Title assetsCount={assets && assets.length} />
-        <SecondaryCard>
-          <AssetsList assets={assets} />
-        </SecondaryCard>
+        <AssetHubTabs>
+          <AssetsTabContent assets={assets} />
+          <TransfersTabContent assets={assets} />
+        </AssetHubTabs>
       </div>
     </ListLayout>
   );
