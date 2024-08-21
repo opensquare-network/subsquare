@@ -4,12 +4,18 @@ import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollec
 import { isSameAddress } from "next-common/utils";
 import { find } from "lodash-es";
 import { createGlobalState } from "react-use";
+import {
+  useCoreFellowshipPallet,
+  useRankedCollectivePallet,
+} from "next-common/context/collectives/collectives";
 
 const useLoading = createGlobalState(false);
 const useCachedMembers = createGlobalState(null);
 
-// TODO: refactor fellowship, add pallet or section
 export default function useFellowshipCoreMembers() {
+  const corePallet = useCoreFellowshipPallet();
+  const collectivePallet = useRankedCollectivePallet();
+
   const api = useContextApi();
   const [members, setMembers] = useCachedMembers();
   const [loading, setLoading] = useLoading();
@@ -18,8 +24,8 @@ export default function useFellowshipCoreMembers() {
     if (
       loading ||
       !api ||
-      !api.query.fellowshipCore?.member ||
-      !api.query.fellowshipCollective?.members
+      !api.query[corePallet]?.member ||
+      !api.query[collectivePallet]?.members
     ) {
       return;
     }
@@ -28,8 +34,8 @@ export default function useFellowshipCoreMembers() {
 
     try {
       const [collectiveEntries, coreEntries] = await Promise.all([
-        api.query.fellowshipCollective?.members.entries(),
-        api.query.fellowshipCore.member.entries(),
+        api.query[collectivePallet]?.members.entries(),
+        api.query[corePallet].member.entries(),
       ]);
 
       const collectiveMembers =
@@ -52,7 +58,7 @@ export default function useFellowshipCoreMembers() {
     } finally {
       setLoading(false);
     }
-  }, [api]);
+  }, [api, corePallet, collectivePallet]);
 
   useEffect(() => {
     if (!members) {
