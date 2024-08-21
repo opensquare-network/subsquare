@@ -7,6 +7,7 @@ import { getTitle } from "next-common/utils/post";
 import {
   advisoryCommitteeBaseUrl,
   childBountyBaseUrl,
+  communityMotionBaseUrl,
 } from "next-common/utils/postBaseUrl";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 import { isAddress } from "@polkadot/util-crypto";
@@ -170,6 +171,17 @@ export const toAdvisoryMotionsListItem = (item) => ({
   address: item.proposer,
   status: item.state ?? "Unknown",
   detailLink: `${advisoryCommitteeBaseUrl}/${getMotionId(item)}`,
+  time: getPostLastActivityAt(item),
+});
+
+export const toCommunityMotionsListItem = (item) => ({
+  ...item,
+  index: item.motionIndex,
+  title: getTitle(item),
+  author: item.author,
+  address: item.proposer,
+  status: item.state ?? "Unknown",
+  detailLink: `${communityMotionBaseUrl}/${getMotionId(item)}`,
   time: getPostLastActivityAt(item),
 });
 
