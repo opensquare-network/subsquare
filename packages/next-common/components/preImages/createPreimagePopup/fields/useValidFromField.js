@@ -1,13 +1,15 @@
-import BlocksField from "next-common/components/popup/fields/blocksField";
+import ValidFromField from "next-common/components/popup/fields/validFromField";
 import { useState } from "react";
 
 export default function useValidFromField() {
   const [validFrom, setValidFrom] = useState("");
 
+  const value = validFrom === "None" || validFrom === "" ? null : validFrom;
+
   return {
-    value: validFrom,
+    value,
     component: (
-      <BlocksField
+      <ValidFromField
         title="Valid From"
         value={validFrom}
         setValue={setValidFrom}
