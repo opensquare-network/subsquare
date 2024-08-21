@@ -23,7 +23,7 @@ export default function StatisticsExpenditure({ members = [] }) {
 
   return (
     <div className="flex flex-col gap-[16px]">
-      <TitleContainer>Expenditure</TitleContainer>
+      <TitleContainer>Salary</TitleContainer>
       <StatisticsExpenditureSummary cycles={cycles} loading={loading} />
       <div
         className={cn(

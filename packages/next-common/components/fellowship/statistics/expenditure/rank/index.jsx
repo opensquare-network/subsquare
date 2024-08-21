@@ -6,7 +6,7 @@ export default function StatisticsExpenditureByRank({ members = [] }) {
   return (
     <SecondaryCard>
       <div className="flex flex-col h-full">
-        <StatisticsTitle>Expenditure by Rank</StatisticsTitle>
+        <StatisticsTitle>By Rank</StatisticsTitle>
         <RankDoughnutChart members={members} />
       </div>
     </SecondaryCard>
