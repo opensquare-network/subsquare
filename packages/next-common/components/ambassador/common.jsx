@@ -1,12 +1,12 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import AmbassadorSalarySummary from "./summary";
 import AmbassadorSalarySummaryActions from "./summary/actions";
-import useSubAmbassadorSalaryStats from "next-common/hooks/ambassador/salary/useSubAmbassadorSalaryStats";
 import useFetchAmbassadorCollectiveMembers from "next-common/hooks/ambassador/collective/useFetchAmbassadorCollectiveMembers";
 import useFetchAmbassadorSalaryClaimants from "next-common/hooks/ambassador/salary/useFetchAmbassadorSalaryClaimants";
 import { MyAmbassadorSalaryClaimantProvider } from "next-common/context/ambassador/myClaimant";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
+import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
 
 export default function AmbassadorSalaryCommon({ children, ...props }) {
   const title = "Ambassador Salary";
@@ -17,7 +17,7 @@ export default function AmbassadorSalaryCommon({ children, ...props }) {
   const { ambassadorParams } = usePageProps();
 
   useFetchAmbassadorSalaryClaimants();
-  useSubAmbassadorSalaryStats();
+  useSubFellowshipSalaryStats("ambassadorSalary");
   useFetchAmbassadorCollectiveMembers();
 
   return (

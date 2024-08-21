@@ -1,8 +1,11 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useSubAmbassadorCoreMember from "./useSubAmbassadorCoreMember";
+import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
 
 export default function useSubMyCoreMember() {
   const address = useRealAddress();
-  const { isLoading, member } = useSubAmbassadorCoreMember(address);
-  return { isLoading, member };
+  const { isLoading, member } = useSubFellowshipCoreMember(
+    address,
+    "ambassadorCore",
+  );
+  return { isLoading, member: member };
 }

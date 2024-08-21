@@ -3,7 +3,9 @@ import { useDispatch } from "react-redux";
 import { setFellowshipSalaryStatus } from "next-common/store/reducers/fellowship/salary";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 
-export default function useSubFellowshipSalaryStats() {
+export default function useSubFellowshipSalaryStats(
+  pallet = "fellowshipSalary",
+) {
   const dispatch = useDispatch();
 
   const callback = useCallback(
@@ -16,5 +18,5 @@ export default function useSubFellowshipSalaryStats() {
     [dispatch],
   );
 
-  useSubStorage("fellowshipSalary", "status", [], callback);
+  useSubStorage(pallet, "status", [], callback);
 }
