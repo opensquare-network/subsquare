@@ -8,7 +8,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import useFetchAmbassadorCoreMembers from "next-common/hooks/ambassador/core/useFetchAmbassadorCoreMembers";
-import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import nextApi from "next-common/services/nextApi";
 import {
@@ -16,7 +16,6 @@ import {
   fellowshipParamsApi,
 } from "next-common/services/url";
 import { ambassadorCoreMembersSelector } from "next-common/store/reducers/ambassador/core";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { cn, toPrecision } from "next-common/utils";
 import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
 import { useSelector } from "react-redux";
@@ -40,8 +39,7 @@ export default function ProfileFellowshipMemberInfo({
 }
 
 function ProfileFellowshipMemberInfoImpl({ address }) {
-  useFetchFellowshipCoreMembers();
-  const members = useSelector(fellowshipCoreMembersSelector);
+  const { members } = useFellowshipCoreMembers();
   const member = find(members, { address });
 
   if (!member) {

@@ -1,12 +1,13 @@
 import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { usePageProps } from "next-common/context/page";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import { find } from "lodash-es";
 
 const PromoteFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
 
@@ -15,7 +16,7 @@ export default function Promote({ member }) {
   const address = useRealAddress();
   const { rank, status: { lastPromotion } = {} } = member;
 
-  const members = useSelector(fellowshipCoreMembersSelector);
+  const { members } = useFellowshipCoreMembers();
 
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { fellowshipParams } = usePageProps();
@@ -26,7 +27,7 @@ export default function Promote({ member }) {
     return;
   }
 
-  const me = members.find((m) => m.address === address);
+  const me = find(members, { address });
   const myRankOk = me && me.rank >= 3;
 
   const index = rankToIndex(rank);

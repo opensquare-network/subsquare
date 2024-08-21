@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import { useMemo } from "react";
 import { isNil, orderBy } from "lodash-es";
+import { useMemo } from "react";
+import useFellowshipCoreMembers from "./useFellowshipCoreMembers";
 
 export default function useSortedCoreMembers() {
-  const members = useSelector(fellowshipCoreMembersSelector);
+  const { members } = useFellowshipCoreMembers();
 
   return useMemo(() => {
     if (isNil(members)) {

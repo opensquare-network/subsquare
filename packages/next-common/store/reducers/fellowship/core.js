@@ -25,6 +25,5 @@ export const {
 
 export const fellowshipCoreMembersTriggerSelector = (state) =>
   state[name].membersFetchTrigger;
-export const fellowshipCoreMembersSelector = (state) => state[name].members;
 
 export default fellowshipCoreSlice.reducer;
