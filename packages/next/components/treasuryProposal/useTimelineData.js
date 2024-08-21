@@ -1,4 +1,3 @@
-import isMoonChain from "next-common/utils/isMoonChain";
 import { useEffect, useState } from "react";
 import { flatten } from "lodash-es";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
@@ -50,9 +49,7 @@ function getGov2ReferendumTimeline(timelineItem, treasuryProposal) {
 
 export default function useTreasuryTimelineData(treasuryProposal) {
   const [timelineData, setTimelineData] = useState([]);
-  const motionLink = isMoonChain()
-    ? "/treasury-council/motions"
-    : "/council/motions";
+  const motionLink = "/council/motions";
 
   useEffect(() => {
     const data = flatten(

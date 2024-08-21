@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import EyeIcon from "../assets/imgs/icons/eye.svg";
 import EyeSlashIcon from "../assets/imgs/icons/eye-slash.svg";
-import { cn, emptyFunction } from "../utils";
+import { cn } from "../utils";
 import FlexBetweenCenter from "./styled/flexBetweenCenter";
 import { noop } from "lodash-es";
 
@@ -129,7 +129,7 @@ const Suffix = styled(FlexBetweenCenter)`
  */
 function Input(
   {
-    onChange = emptyFunction,
+    onChange = noop,
     prefix,
     suffix,
     suffixStyle,

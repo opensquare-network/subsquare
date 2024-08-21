@@ -1,6 +1,6 @@
 import { useThemeSetting } from "next-common/context/theme";
 import { formatDays, formatHours } from "next-common/utils/timeFormat";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 
 const commonConfig = {
   clip: false,
@@ -134,7 +134,7 @@ export function useDetailPageOptionsWithoutTallyHistory(labels = []) {
   });
 }
 
-export function useCurveChartOptions(labels = [], labelFunc = emptyFunction) {
+export function useCurveChartOptions(labels = [], labelFunc = noop) {
   const commonPluginsConfig = useCommonPluginsConfig();
   return getDetailConfig(labels, commonPluginsConfig, labelFunc);
 }

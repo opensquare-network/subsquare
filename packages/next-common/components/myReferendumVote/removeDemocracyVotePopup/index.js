@@ -1,61 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
-
-import { useMountedState } from "react-use";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction } from "next-common/utils";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import SignerPopup from "next-common/components/signerPopup";
+import { noop } from "lodash-es";
+import SimpleTxPopup from "next-common/components/simpleTxPopup";
+import { useContextApi } from "next-common/context/api";
 
 export default function RemoveDemocracyVotePopup({
   referendumIndex,
   onClose,
-  onInBlock = emptyFunction,
+  onInBlock = noop,
 }) {
-  const dispatch = useDispatch();
-  const isMounted = useMountedState();
-  const [isLoading, setIsLoading] = useState(false);
+  const api = useContextApi();
 
-  const showErrorToast = useCallback(
-    (message) => dispatch(newErrorToast(message)),
-    [dispatch],
-  );
-
-  const doRemoveVote = useCallback(
-    async (api, signerAccount) => {
-      if (!api) {
-        return showErrorToast("Chain network is not connected yet");
-      }
-
-      if (!signerAccount) {
-        return showErrorToast("Please login first");
-      }
-
-      let tx = api.tx.democracy.removeVote(referendumIndex);
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      await sendTx({
-        tx,
-        setLoading: setIsLoading,
-        dispatch,
-        onInBlock,
-        onClose,
-        signerAccount,
-        isMounted,
-      });
-    },
-    [dispatch, isMounted, showErrorToast, onInBlock, onClose, referendumIndex],
-  );
+  const getTxFunc = useCallback(async () => {
+    return api.tx.democracy.removeVote(referendumIndex);
+  }, [api, referendumIndex]);
 
   return (
-    <SignerPopup
+    <SimpleTxPopup
       title="Remove Vote"
-      actionCallback={doRemoveVote}
+      getTxFunc={getTxFunc}
       onClose={onClose}
-      isLoading={isLoading}
+      onInBlock={onInBlock}
     />
   );
 }

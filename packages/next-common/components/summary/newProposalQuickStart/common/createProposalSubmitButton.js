@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
-import { getEventData } from "next-common/utils/sendTx";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { useDispatch } from "react-redux";
 import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
@@ -72,7 +72,7 @@ export default function CreateProposalSubmitButton({
         const [referendumIndex] = eventData;
         router.push(`/${listPageType}/${referendumIndex}`);
       },
-      onClose,
+      onSubmitted: onClose,
     });
 
   const { isSubmitting: isPreimageTxSubmitting, doSubmit: submitPreimageTx } =

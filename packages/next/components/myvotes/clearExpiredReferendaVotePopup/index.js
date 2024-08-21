@@ -1,13 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-
-import { useMountedState } from "react-use";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { emptyFunction } from "next-common/utils";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import SignerPopup from "next-common/components/signerPopup";
+import { noop } from "lodash-es";
 import PopupLabel from "next-common/components/popup/label";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
+import SimpleTxPopup from "next-common/components/simpleTxPopup";
+import { useContextApi } from "next-common/context/api";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function ExtraInfo({ relatedReferenda, relatedTracks }) {
   return (
@@ -31,89 +30,52 @@ export default function ClearExpiredReferendaVotePopup({
   votes = [],
   unlockTracks = [],
   onClose,
-  onInBlock = emptyFunction,
+  onInBlock = noop,
 }) {
   const dispatch = useDispatch();
-  const isMounted = useMountedState();
-  const [isLoading, setIsLoading] = useState(false);
+  const api = useContextApi();
+  const realAddress = useRealAddress();
 
   const relatedReferenda = Array.from(
     new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
   );
   relatedReferenda.sort((a, b) => a - b);
 
-  const showErrorToast = useCallback(
-    (message) => dispatch(newErrorToast(message)),
-    [dispatch],
-  );
+  const getTxFunc = useCallback(async () => {
+    if (!votes?.length && unlockTracks.length <= 0) {
+      dispatch(newErrorToast("No unLockable balance"));
+      return;
+    }
 
-  const doClearExpiredVote = useCallback(
-    async (api, signerAccount) => {
-      if (!api) {
-        return showErrorToast("Chain network is not connected yet");
-      }
+    let tx;
+    const txsRemoveVote = votes.map(({ trackId, referendumIndex }) =>
+      api.tx.convictionVoting.removeVote(trackId, referendumIndex),
+    );
+    const txsUnlock = unlockTracks.map((trackId) =>
+      api.tx.convictionVoting.unlock(trackId, realAddress),
+    );
 
-      if (!signerAccount) {
-        return showErrorToast("Please login first");
-      }
+    const allTxs = [...txsRemoveVote, ...txsUnlock];
+    if (allTxs.length === 1) {
+      tx = allTxs[0];
+    } else {
+      tx = api.tx.utility.batch(allTxs);
+    }
 
-      if (!votes?.length && unlockTracks.length <= 0) {
-        return showErrorToast("No unLockable balance");
-      }
-
-      const realAddress = signerAccount.proxyAddress || signerAccount.address;
-
-      let tx;
-      const txsRemoveVote = votes.map(({ trackId, referendumIndex }) =>
-        api.tx.convictionVoting.removeVote(trackId, referendumIndex),
-      );
-      const txsUnlock = unlockTracks.map((trackId) =>
-        api.tx.convictionVoting.unlock(trackId, realAddress),
-      );
-
-      const allTxs = [...txsRemoveVote, ...txsUnlock];
-      if (allTxs.length === 1) {
-        tx = allTxs[0];
-      } else {
-        tx = api.tx.utility.batch(allTxs);
-      }
-
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      await sendTx({
-        tx,
-        setLoading: setIsLoading,
-        dispatch,
-        onInBlock,
-        onClose,
-        signerAccount,
-        isMounted,
-      });
-    },
-    [
-      dispatch,
-      isMounted,
-      showErrorToast,
-      onInBlock,
-      onClose,
-      votes,
-      unlockTracks,
-    ],
-  );
+    return tx;
+  }, [api, realAddress, dispatch, votes, unlockTracks]);
 
   return (
-    <SignerPopup
+    <SimpleTxPopup
       title="Clear Expired Votes"
-      actionCallback={doClearExpiredVote}
+      getTxFunc={getTxFunc}
       onClose={onClose}
-      isLoading={isLoading}
+      onInBlock={onInBlock}
     >
       <ExtraInfo
         relatedReferenda={relatedReferenda}
         relatedTracks={unlockTracks}
       />
-    </SignerPopup>
+    </SimpleTxPopup>
   );
 }

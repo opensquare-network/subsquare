@@ -1,50 +1,16 @@
 import React from "react";
-import { emptyFunction } from "next-common/utils";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import PopupCommon from "./popupCommon";
+import { useCallback } from "react";
+import SimpleTxPopup from "next-common/components/simpleTxPopup";
+import { useContextApi } from "next-common/context/api";
 
-export async function submitSubstrateExtrinsic({
-  api,
-  trackId,
-  dispatch,
-  setLoading,
-  onInBlock,
-  signerAccount,
-  isMounted,
-  onClose,
-}) {
-  let tx = api.tx.convictionVoting.undelegate(trackId);
+export default function UndelegatePopup({ trackId, onClose }) {
+  const api = useContextApi();
 
-  if (signerAccount?.proxyAddress) {
-    tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-  }
+  const getTxFunc = useCallback(async () => {
+    return api.tx.convictionVoting.undelegate(trackId);
+  }, [api, trackId]);
 
-  await sendTx({
-    tx,
-    dispatch,
-    setLoading,
-    onInBlock,
-    signerAccount,
-    isMounted,
-    onClose,
-  });
-}
-
-export default function UndelegatePopup({
-  trackId,
-  onClose,
-  isLoading,
-  setIsLoading = emptyFunction,
-  onInBlock = emptyFunction,
-}) {
   return (
-    <PopupCommon
-      trackId={trackId}
-      onClose={onClose}
-      isLoading={isLoading}
-      setIsLoading={setIsLoading}
-      onInBlock={onInBlock}
-      submitExtrinsic={submitSubstrateExtrinsic}
-    />
+    <SimpleTxPopup title="Undelegate" getTxFunc={getTxFunc} onClose={onClose} />
   );
 }

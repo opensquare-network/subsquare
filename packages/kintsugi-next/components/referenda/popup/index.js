@@ -6,13 +6,12 @@ import { useAddressVotingBalance } from "utils/hooks";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { useMountedState } from "react-use";
 import Signer from "next-common/components/popup/fields/signerField";
 import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { VoteLoadingEnum } from "next-common/utils/voteEnum";
+import { wrapWithProxy } from "next-common/utils/sendTransaction";
+import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSubMyDemocracyVote, {
   getKintDemocracyDirectVote,
@@ -21,6 +20,7 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 
 function PopupContent() {
   const { referendumIndex, onClose } = usePopupParams();
@@ -28,8 +28,10 @@ function PopupContent() {
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
 
+  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
+
   const node = useChainSettings();
-  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
+  const [loadingState, setLoadingState] = useState();
   const api = useContextApi();
   const [votingBalance, votingIsLoading] = useAddressVotingBalance(
     api,
@@ -42,7 +44,6 @@ function PopupContent() {
   const { vote: addressVote, isLoading: addressVoteIsLoading } =
     useSubMyDemocracyVote(referendumIndex, signerAccount?.realAddress);
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
-  const isMounted = useMountedState();
 
   const getMyVoteAndShowSuccessful = useCallback(async () => {
     const addressVote = await getKintDemocracyDirectVote(
@@ -56,67 +57,77 @@ function PopupContent() {
     showVoteSuccessful(addressVote);
   }, [api, referendumIndex, signerAccount?.realAddress, showVoteSuccessful]);
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
 
-  const doVote = async (aye) => {
-    if (
-      loadingState !== VoteLoadingEnum.None ||
-      isNil(referendumIndex) ||
-      !node
-    ) {
-      return;
-    }
+  const doVote = useCallback(
+    async (aye) => {
+      if (isSubmitting || isNil(referendumIndex) || !node) {
+        return;
+      }
 
-    let bnVoteBalance;
-    try {
-      bnVoteBalance = checkInputValue(
-        inputVoteBalance,
-        node.decimals,
-        "vote balance",
-      );
-    } catch (err) {
-      return showErrorToast(err.message);
-    }
+      let bnVoteBalance;
+      try {
+        bnVoteBalance = checkInputValue(
+          inputVoteBalance,
+          node.decimals,
+          "vote balance",
+        );
+      } catch (err) {
+        showErrorToast(err.message);
+        return;
+      }
 
-    if (bnVoteBalance.gt(votingBalance)) {
-      return showErrorToast("Insufficient voting balance");
-    }
+      if (bnVoteBalance.gt(votingBalance)) {
+        showErrorToast("Insufficient voting balance");
+        return;
+      }
 
-    if (!signerAccount) {
-      return showErrorToast("Please select an account");
-    }
+      if (!signerAccount) {
+        showErrorToast("Please select an account");
+        return;
+      }
 
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
-    }
+      if (!api) {
+        showErrorToast("Chain network is not connected yet");
+        return;
+      }
 
-    let tx = api.tx.democracy.vote(referendumIndex, {
-      aye,
-      balance: bnVoteBalance.toString(),
-    });
+      let tx = api.tx.democracy.vote(referendumIndex, {
+        aye,
+        balance: bnVoteBalance.toString(),
+      });
 
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
 
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: (loading) => {
-        if (loading) {
-          setLoadingState(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
-        } else {
-          setLoadingState(VoteLoadingEnum.None);
-        }
-      },
-      onInBlock: () => {
-        getMyVoteAndShowSuccessful();
-      },
-      signerAccount,
-      isMounted,
+      setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
+      await sendTx({
+        api,
+        tx,
+        onInBlock: () => {
+          getMyVoteAndShowSuccessful();
+        },
+        onSubmitted: onClose,
+      });
+    },
+    [
+      api,
+      inputVoteBalance,
+      isSubmitting,
       onClose,
-    });
-  };
+      referendumIndex,
+      signerAccount,
+      votingBalance,
+      getMyVoteAndShowSuccessful,
+      sendTx,
+      node,
+      showErrorToast,
+    ],
+  );
 
   return (
     <>
@@ -129,7 +140,7 @@ function PopupContent() {
         symbol={node.voteSymbol}
       />
       <VoteBalance
-        isLoading={loadingState !== VoteLoadingEnum.None}
+        isLoading={isSubmitting}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
       />
@@ -137,7 +148,11 @@ function PopupContent() {
         addressVoteIsLoading={addressVoteIsLoading}
         addressVote={addressVote}
       />
-      <VoteButton loadingState={loadingState} doVote={doVote} />
+      <VoteButton
+        loadingState={loadingState}
+        isLoading={isSubmitting}
+        doVote={doVote}
+      />
     </>
   );
 }

@@ -15,7 +15,6 @@ import { prettyHTML } from "../utils/viewfuncs";
 import useDuration from "../utils/hooks/useDuration";
 import { useChain } from "../context/chain";
 import { hashEllipsis, textEllipsis } from "next-common/utils";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { isNil } from "lodash-es";
 
 const Wrapper = styled(HoverSecondaryCard)`
@@ -116,7 +115,7 @@ const HeadWrapper = styled.div`
   }
 `;
 
-const getCommentSource = (comment, chain) => {
+const getCommentSource = (comment) => {
   if (comment?.financialMotion) {
     const hash = comment?.financialMotion.hash;
     return [
@@ -131,21 +130,11 @@ const getCommentSource = (comment, chain) => {
   }
   if (comment?.motion) {
     const motionId = getMotionId(comment?.motion);
-
-    const isMoon = isMoonChain(chain);
-    if (isMoon) {
-      return [
-        "Treasury Council Motion",
-        comment?.motion.title || `Treasury motion #${motionId}`,
-        `/treasury-council/motions/${motionId}`,
-      ];
-    } else {
-      return [
-        "Council Motions",
-        comment?.motion.title || `Motion #${motionId}`,
-        `/council/motions/${motionId}`,
-      ];
-    }
+    return [
+      "Council Motions",
+      comment?.motion.title || `Motion #${motionId}`,
+      `/council/motions/${motionId}`,
+    ];
   }
   if (comment?.tip) {
     const tipHash = comment?.tip.hash;
@@ -225,14 +214,6 @@ const getCommentSource = (comment, chain) => {
       "OpenGov Fellowships",
       comment?.fellowshipReferendum?.title || `Fellowship #${referendumIndex}`,
       `/fellowship/referenda/${referendumIndex}`,
-    ];
-  }
-  if (comment?.moonCouncil) {
-    const motionId = getMotionId(comment?.moonCouncil);
-    return [
-      "Council Motions",
-      comment?.motion.title || `Motion #${motionId}`,
-      `/council/motions/${motionId}`,
     ];
   }
   if (comment?.advisoryCommitteeMotion) {

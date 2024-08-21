@@ -43,7 +43,7 @@
     "dayjs": "^1.10.7",
     "deepmerge": "^4.3.1",
     "ethereum-blockies-base64": "^1.0.2",
-    "ethers": "^6.3.0",
+    "ethers": "5.7.0",
     "framer-motion": "^11.2.10",
     "graphql": "^16.8.1",
     "is-ipfs": "^8.0.1",

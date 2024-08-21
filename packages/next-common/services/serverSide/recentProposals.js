@@ -16,12 +16,9 @@ import {
   getFinancialCouncilMenu,
   Names as financialCouncilNames,
 } from "next-common/utils/consts/menu/financialCouncil";
-import { Names as openTechCommNames } from "next-common/utils/consts/menu/openTechCommittee";
 import { Names as tcNames } from "next-common/utils/consts/menu/tc";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
-import { Names as treasuryCouncilNames } from "next-common/utils/consts/menu/treasuryCouncil";
 import getChainSettings from "next-common/utils/consts/settings";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { overviewApi } from "../url";
 import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
 
@@ -186,18 +183,6 @@ export async function fetchRecentProposalsProps(summary = {}) {
     recentProposalsData[
       asAdvisoryCommitteeNames.advisoryCommittee
     ].advisoryMotions = await fetcher(overviewApi.advisoryMotions);
-  }
-
-  // moonriver
-  if (isMoonChain()) {
-    recentProposalsData[treasuryCouncilNames.treasuryCouncil] = {};
-    recentProposalsData[treasuryCouncilNames.treasuryCouncil].motions =
-      await fetcher(overviewApi.treasuryCouncilMotions);
-
-    recentProposalsData[openTechCommNames.openTechCommittee] = {};
-    recentProposalsData[
-      openTechCommNames.openTechCommittee
-    ].openTechCommitteeProposals = await fetcher(overviewApi.openTCMotions);
   }
 
   return recentProposalsData;

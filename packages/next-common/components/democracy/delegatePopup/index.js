@@ -1,40 +1,126 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import PopupContent from "./popupContent";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
+import { useDispatch } from "react-redux";
+import { useAddressVotingBalance } from "utils/hooks";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { checkInputValue, isSameAddress } from "next-common/utils";
+import Signer from "next-common/components/popup/fields/signerField";
+import { useChainSettings } from "next-common/context/chain";
+import Conviction from "./conviction";
+import VoteValue from "./voteValue";
+import Target from "./target";
+import {
+  useExtensionAccounts,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import { useContextApi } from "next-common/context/api";
+import { normalizeAddress } from "next-common/utils/address";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
-export async function submitSubstrateExtrinsic({
-  api,
-  conviction,
-  bnVoteBalance,
-  targetAddress,
-  dispatch,
-  setLoading,
-  onInBlock = emptyFunction,
-  onClose,
-  signerAccount,
-  isMounted,
-}) {
-  let tx = api.tx.democracy.delegate(
-    targetAddress,
-    conviction,
-    bnVoteBalance.toString(),
+function PopupContent({ defaultTargetAddress, targetDisabled }) {
+  const { onInBlock = noop } = usePopupParams();
+  const dispatch = useDispatch();
+
+  const signerAccount = useSignerAccount();
+  const extensionAccounts = useExtensionAccounts();
+
+  const [targetAddress, setTargetAddress] = useState(
+    normalizeAddress(defaultTargetAddress) || "",
   );
 
-  if (signerAccount?.proxyAddress) {
-    tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-  }
+  const api = useContextApi();
+  const node = useChainSettings();
 
-  await sendTx({
-    tx,
-    dispatch,
-    setLoading,
-    onInBlock,
-    onClose,
-    signerAccount,
-    isMounted,
-  });
+  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.realAddress,
+  );
+
+  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
+    api,
+    signerAccount?.address,
+  );
+
+  const [inputVoteBalance, setInputVoteBalance] = useState("0");
+  const [conviction, setConviction] = useState(0);
+
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
+
+  const getTxFunc = useCallback(async () => {
+    let bnVoteBalance;
+    try {
+      bnVoteBalance = checkInputValue(
+        inputVoteBalance,
+        node.decimals,
+        "vote balance",
+      );
+    } catch (err) {
+      showErrorToast(err.message);
+      return;
+    }
+
+    if (bnVoteBalance.gt(votingBalance)) {
+      showErrorToast("Insufficient voting balance");
+      return;
+    }
+
+    if (!targetAddress) {
+      showErrorToast("Please input a target address");
+      return;
+    }
+
+    if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
+      showErrorToast(
+        "Target address cannot be same with the delegator address",
+      );
+      return;
+    }
+
+    return api.tx.democracy.delegate(
+      targetAddress,
+      conviction,
+      bnVoteBalance.toString(),
+    );
+  }, [
+    inputVoteBalance,
+    api,
+    conviction,
+    targetAddress,
+    showErrorToast,
+    node.decimals,
+  ]);
+
+  return (
+    <>
+      <Signer
+        balanceName="Voting balance"
+        balance={votingBalance}
+        isBalanceLoading={votingIsLoading}
+        signerBalance={signerBalance}
+        isSignerBalanceLoading={isSignerBalanceLoading}
+        symbol={node.voteSymbol || node.symbol}
+      />
+      <Target
+        disabled={targetDisabled}
+        extensionAccounts={extensionAccounts}
+        defaultAddress={targetAddress}
+        setAddress={setTargetAddress}
+      />
+      <VoteValue
+        inputVoteBalance={inputVoteBalance}
+        setInputVoteBalance={setInputVoteBalance}
+        node={node}
+      />
+      <Conviction
+        balance={inputVoteBalance}
+        conviction={conviction}
+        setConviction={setConviction}
+      />
+      <TxSubmissionButton getTxFunc={getTxFunc} onInBlock={onInBlock} />
+    </>
+  );
 }
 
 export default function DelegatePopup({
@@ -43,12 +129,7 @@ export default function DelegatePopup({
   ...props
 }) {
   return (
-    <PopupWithSigner
-      title="Delegate"
-      className="!w-[640px]"
-      submitExtrinsic={submitSubstrateExtrinsic}
-      {...props}
-    >
+    <PopupWithSigner title="Delegate" className="!w-[640px]" {...props}>
       <PopupContent
         defaultTargetAddress={defaultTargetAddress}
         targetDisabled={targetDisabled}

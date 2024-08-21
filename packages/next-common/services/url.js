@@ -1,5 +1,3 @@
-import isMoonChain from "next-common/utils/isMoonChain";
-
 // gov2
 export const gov2TracksApi = "gov2/tracks";
 export const gov2TracksSummaryApi = gov2TracksApi + "/summary";
@@ -163,15 +161,12 @@ export const overviewApi = {
   treasuryBounties: "overview/bounties",
   treasuryChildBounties: "overview/child-bounties",
   treasuryTips: "overview/tips",
-  councilMotions: isMoonChain() ? "overview/moon-council" : "overview/motions",
+  councilMotions: "overview/motions",
   tcMotions: "overview/tc-motions",
   financialMotions: "overview/financial-motions",
   allianceMotions: "overview/alliance-motions",
   allianceAnnouncements: "overview/alliance-announcements",
   advisoryMotions: "overview/advisory-motions",
-  // moon
-  treasuryCouncilMotions: "overview/motions",
-  openTCMotions: "overview/open-tc-motion",
 };
 
 // delegation

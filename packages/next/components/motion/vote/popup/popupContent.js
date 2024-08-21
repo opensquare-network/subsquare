@@ -1,13 +1,11 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-
 import toApiCouncil from "next-common/utils/toApiCouncil";
-import { useMountedState } from "react-use";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
-import { emptyFunction } from "next-common/utils";
-import { VoteLoadingEnum } from "next-common/utils/voteEnum";
+import { noop } from "lodash-es";
+import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChain } from "next-common/context/chain";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
@@ -18,6 +16,8 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 import Loading from "next-common/components/loading";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import { useSendTransaction } from "next-common/hooks/useSendTransaction";
+import { wrapWithProxy } from "next-common/utils/sendTransaction";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -33,17 +33,17 @@ export default function PopupContent() {
     motionHash,
     motionIndex,
     onClose,
-    onInBlock = emptyFunction,
+    onInBlock = noop,
     type,
-    submitExtrinsic = emptyFunction,
   } = usePopupParams();
   const chain = useChain();
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
+  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
 
-  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
+  const [loadingState, setLoadingState] = useState();
 
   const { isMember: canVote, loading: isMemberLoading } = useIsCollectiveMember(
     toApiCouncil(chain, type),
@@ -66,47 +66,61 @@ export default function PopupContent() {
     showVoteSuccessful(currentVote);
   }, [refVotes, signerAccount?.realAddress, showVoteSuccessful]);
 
-  const isMounted = useMountedState();
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const doVote = useCallback(
+    async (approve) => {
+      if (isSubmitting) return;
 
-  const doVote = async (approve) => {
-    if (loadingState !== VoteLoadingEnum.None) return;
-
-    if (!motionHash || motionIndex === undefined) {
-      return;
-    }
-
-    if (!signerAccount) {
-      return showErrorToast("Please select an account");
-    }
-
-    const setLoading = (loading) => {
-      if (loading) {
-        setLoadingState(approve ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
-      } else {
-        setLoadingState(VoteLoadingEnum.None);
+      if (!motionHash || motionIndex === undefined) {
+        return;
       }
-    };
 
-    await submitExtrinsic({
+      if (!signerAccount) {
+        showErrorToast("Please select an account");
+        return;
+      }
+
+      const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
+      if (!voteMethod) {
+        showErrorToast("Chain network is not connected yet");
+        return;
+      }
+
+      let tx = voteMethod(motionHash, motionIndex, approve);
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
+
+      setLoadingState(approve ? VoteEnum.Aye : VoteEnum.Nay);
+      await sendTx({
+        api,
+        tx,
+        onInBlock: () => {
+          getMyVoteAndShowSuccessful();
+          onInBlock();
+        },
+        onSubmitted: onClose,
+      });
+    },
+    [
       api,
       chain,
       type,
       motionHash,
       motionIndex,
-      approve,
-      dispatch,
-      setLoading,
-      onInBlock: () => {
-        getMyVoteAndShowSuccessful();
-        onInBlock();
-      },
       signerAccount,
-      isMounted,
+      sendTx,
+      onInBlock,
+      getMyVoteAndShowSuccessful,
       onClose,
-    });
-  };
+      isSubmitting,
+      showErrorToast,
+    ],
+  );
 
   return (
     <>
@@ -129,6 +143,7 @@ export default function PopupContent() {
         disabled={isMemberLoading || !canVote}
         doVote={doVote}
         loadingState={loadingState}
+        isLoading={isSubmitting}
       />
     </>
   );

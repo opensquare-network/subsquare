@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import PreimageField from "./preimageField";
 import EnactmentBlocks from "./enactmentBlocks";
-import { getEventData } from "next-common/utils/sendTx";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { isNil } from "lodash-es";
 import { useRouter } from "next/router";
 import SubmissionDeposit from "./submissionDeposit";

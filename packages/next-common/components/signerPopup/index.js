@@ -1,32 +1,30 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import PrimaryButton from "next-common/lib/button/primary";
-import { emptyFunction } from "../../utils";
 import { PopupButtonWrapper } from "../popup/wrapper";
-import { useSignerAccount, usePopupParams } from "../popupWithSigner/context";
+import { useSignerAccount } from "../popupWithSigner/context";
 import SignerWithBalance from "./signerWithBalance";
-import { useContextApi } from "next-common/context/api";
+import { noop } from "lodash-es";
 
-function PopupContent({ children }) {
-  const {
-    actionCallback = emptyFunction,
-    isLoading = false,
-    confirmText = "Confirm",
-    disabled = false,
-  } = usePopupParams();
-  const api = useContextApi();
+function PopupContent({ children, actionCallback, confirmText }) {
+  const [isLoading, setIsLoading] = useState(false);
   const signerAccount = useSignerAccount();
+
+  const onConfirm = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await actionCallback(signerAccount);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [actionCallback]);
 
   return (
     <>
       <SignerWithBalance />
       {children}
       <PopupButtonWrapper>
-        <PrimaryButton
-          disabled={disabled}
-          loading={isLoading}
-          onClick={() => actionCallback(api, signerAccount)}
-        >
+        <PrimaryButton loading={isLoading} onClick={onConfirm}>
           {confirmText}
         </PrimaryButton>
       </PopupButtonWrapper>
@@ -34,10 +32,17 @@ function PopupContent({ children }) {
   );
 }
 
-export default function SignerPopup({ children, ...props }) {
+export default function SignerPopup({
+  children,
+  actionCallback = noop,
+  confirmText = "Confirm",
+  ...props
+}) {
   return (
     <PopupWithSigner {...props}>
-      <PopupContent>{children}</PopupContent>
+      <PopupContent actionCallback={actionCallback} confirmText={confirmText}>
+        {children}
+      </PopupContent>
     </PopupWithSigner>
   );
 }

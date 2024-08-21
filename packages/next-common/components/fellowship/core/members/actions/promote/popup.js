@@ -14,7 +14,7 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import AddressUser from "next-common/components/user/addressUser";
 import Chains from "next-common/utils/consts/chains";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { getEventData } from "next-common/utils/sendTx";
+import { getEventData } from "next-common/utils/sendTransaction";
 
 const CollectivesPromoteTracks = {
   1: "PromoteTo1Dan",

@@ -8,10 +8,7 @@ import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
 import { getAllianceMenu } from "./alliance";
 import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
-import { getTreasuryCouncilMenu } from "./treasuryCouncil";
-import { getOpenTechCommMenu } from "./openTechCommittee";
 import { CHAIN } from "next-common/utils/constants";
-import isMoonChain from "next-common/utils/isMoonChain";
 import preImages from "./preImages";
 import { partition } from "lodash-es";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
@@ -27,20 +24,6 @@ export function getHomeMenu({
 } = {}) {
   if (isAssetHub()) {
     return assetHubMenu;
-  }
-
-  if (isMoonChain()) {
-    return [
-      commonMenus,
-      getReferendaMenu(tracks, currentTrackId),
-      getDemocracyMenu(summary),
-      getTreasuryMenu(summary),
-      getCouncilMenu(summary),
-      getTreasuryCouncilMenu(summary),
-      getTechCommMenu(summary),
-      getOpenTechCommMenu(summary),
-      preImages,
-    ];
   }
 
   return [

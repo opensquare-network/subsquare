@@ -3,7 +3,6 @@ import { withCommonProps } from "next-common/lib";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
-import Chains from "next-common/utils/consts/chains";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 
@@ -36,11 +35,7 @@ export default function MotionsPage({ motions, chain }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  let listApiUrl = "motions";
-  if ([Chains.moonbeam, Chains.moonriver].includes(process.env.CHAIN)) {
-    listApiUrl = "moon-council/motions";
-  }
-  const motions = await fetchList(listApiUrl, context);
+  const motions = await fetchList("motions", context);
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {

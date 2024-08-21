@@ -10,17 +10,13 @@ import { TitleContainer } from "../../styled/containers/titleContainer";
 import SubLink from "../../styled/subLink";
 import { useChainSettings } from "../../../context/chain";
 import useMaxDeposits from "./useMaxDeposits";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
-import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import AddressUser from "next-common/components/user/addressUser";
 import { useContextApi } from "next-common/context/api";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const SecondPopup = dynamicPopup(() => import("./popup"));
-
-const MoonSecondPopup = dynamicPopup(() => import("./popup/moonPopup"));
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -95,12 +91,6 @@ export default function Second({
   const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
   const maxDeposits = useMaxDeposits();
-  const isUseMetamask = useIsUseMetamask();
-
-  let Popup = SecondPopup;
-  if (isMoonChain() && isUseMetamask) {
-    Popup = MoonSecondPopup;
-  }
 
   const api = useContextApi();
   const [triggerUpdate, setTriggerUpdate] = useState(0);
@@ -198,7 +188,7 @@ export default function Second({
         {!node?.hideActionButtons && action}
       </RightBarWrapper>
       {showPopup && (
-        <Popup
+        <SecondPopup
           proposalIndex={proposalIndex}
           depositorUpperBound={seconds.length}
           depositRequired={depositRequired}

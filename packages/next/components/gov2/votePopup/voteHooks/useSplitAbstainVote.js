@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import SplitAbstainVote from "../splitAbstainVote";
-import { encodeVoteSplitAbstainData } from "next-common/utils/moonPrecompiles/convictionVoting";
 import { useContextApi } from "next-common/context/api";
 
 export default function useSplitAbstainVote({
@@ -19,8 +18,6 @@ export default function useSplitAbstainVote({
   const node = useChainSettings();
   const api = useContextApi();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
   const SplitAbstainVoteComponent = (
     <SplitAbstainVote
       isLoading={isLoading}
@@ -33,7 +30,7 @@ export default function useSplitAbstainVote({
     />
   );
 
-  const getSplitAbstainVoteTx = () => {
+  const getSplitAbstainVoteTx = useCallback(() => {
     let bnAbstainVoteBalance;
     try {
       bnAbstainVoteBalance = checkInputValue(
@@ -43,7 +40,7 @@ export default function useSplitAbstainVote({
         true,
       );
     } catch (err) {
-      showErrorToast(err.message);
+      dispatch(newErrorToast(err.message));
       return;
     }
 
@@ -56,7 +53,7 @@ export default function useSplitAbstainVote({
         true,
       );
     } catch (err) {
-      showErrorToast(err.message);
+      dispatch(newErrorToast(err.message));
       return;
     }
 
@@ -69,7 +66,7 @@ export default function useSplitAbstainVote({
         true,
       );
     } catch (err) {
-      showErrorToast(err.message);
+      dispatch(newErrorToast(err.message));
       return;
     }
 
@@ -79,7 +76,7 @@ export default function useSplitAbstainVote({
         .plus(bnAbstainVoteBalance)
         .gt(votingBalance)
     ) {
-      showErrorToast("Insufficient voting balance");
+      dispatch(newErrorToast("Insufficient voting balance"));
       return;
     }
 
@@ -90,69 +87,19 @@ export default function useSplitAbstainVote({
         abstain: bnAbstainVoteBalance.toString(),
       },
     });
-  };
-
-  const getMoonSplitAbstainVoteTx = () => {
-    let bnAbstainVoteBalance;
-    try {
-      bnAbstainVoteBalance = checkInputValue(
-        abstainInputVoteBalance,
-        node.decimals,
-        "abstain vote balance",
-        true,
-      );
-    } catch (err) {
-      showErrorToast(err.message);
-      return;
-    }
-
-    let bnAyeVoteBalance;
-    try {
-      bnAyeVoteBalance = checkInputValue(
-        ayeInputVoteBalance,
-        node.decimals,
-        "aye vote balance",
-        true,
-      );
-    } catch (err) {
-      showErrorToast(err.message);
-      return;
-    }
-
-    let bnNayVoteBalance;
-    try {
-      bnNayVoteBalance = checkInputValue(
-        nayInputVoteBalance,
-        node.decimals,
-        "nay vote balance",
-        true,
-      );
-    } catch (err) {
-      showErrorToast(err.message);
-      return;
-    }
-
-    if (
-      bnAyeVoteBalance
-        .plus(bnNayVoteBalance)
-        .plus(bnAbstainVoteBalance)
-        .gt(votingBalance)
-    ) {
-      showErrorToast("Insufficient voting balance");
-      return;
-    }
-
-    return encodeVoteSplitAbstainData({
-      pollIndex: referendumIndex,
-      aye: BigInt(bnAyeVoteBalance.toString()),
-      nay: BigInt(bnNayVoteBalance.toString()),
-      abstain: BigInt(bnAbstainVoteBalance.toString()),
-    });
-  };
+  }, [
+    dispatch,
+    api,
+    ayeInputVoteBalance,
+    nayInputVoteBalance,
+    abstainInputVoteBalance,
+    node.decimals,
+    votingBalance,
+    referendumIndex,
+  ]);
 
   return {
     SplitAbstainVoteComponent,
     getSplitAbstainVoteTx,
-    getMoonSplitAbstainVoteTx,
   };
 }

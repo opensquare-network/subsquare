@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { useTheme } from "styled-components";
 import ThresholdCurvesChart from ".";
-import { emptyFunction } from "../../../utils";
 import Popup from "../../popup/wrapper/Popup";
 import Flex from "../../styled/flex";
 import ThresholdCurvesGov2TrackSummaryLegend from "./legend/gov2TrackSummaryLegend";
@@ -14,7 +13,7 @@ import {
   StyledTr,
 } from "../../styled/table";
 import Loading from "../../loading";
-import { range } from "lodash-es";
+import { noop, range } from "lodash-es";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
@@ -51,7 +50,7 @@ const Table = styled(StyledTable)`
 `;
 
 export default function ThresholdCurvesPopup({
-  setShow = emptyFunction,
+  setShow = noop,
   loading = false,
   labels = [],
   supportData = [],

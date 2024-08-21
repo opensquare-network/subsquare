@@ -1,15 +1,12 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useMountedState } from "react-use";
-import { emptyFunction } from "next-common/utils";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { VoteLoadingEnum } from "next-common/utils/voteEnum";
+import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import VoteButton from "next-common/components/popup/voteButton";
 import useFellowshipVote from "next-common/utils/hooks/fellowship/useFellowshipVote";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import { wrapWithProxy } from "next-common/utils/sendTransaction";
 import CurrentVote from "./currentVote";
 import VStack from "next-common/components/styled/vStack";
 import {
@@ -21,25 +18,27 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
+import { isNil, noop } from "lodash-es";
+import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 
 function PopupContent() {
-  const {
-    referendumIndex,
-    onClose,
-    onSubmitted = emptyFunction,
-    onInBlock = emptyFunction,
-  } = usePopupParams();
+  const { referendumIndex, onClose, onInBlock = noop } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const dispatch = useDispatch();
-  const isMounted = useMountedState();
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+
+  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
+
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
 
   const signerAccount = useSignerAccount();
 
   const api = useContextApi();
   const node = useChainSettings();
 
-  const [loadingState, setLoadingState] = useState(VoteLoadingEnum.None);
+  const [loadingState, setLoadingState] = useState();
   const { vote, isLoading: isLoadingVote } = useFellowshipVote(
     referendumIndex,
     signerAccount?.realAddress,
@@ -69,48 +68,52 @@ function PopupContent() {
     collectivePallet,
   ]);
 
-  const doVote = async (aye) => {
-    if (
-      loadingState !== VoteLoadingEnum.None ||
-      referendumIndex == null ||
-      !node
-    ) {
-      return;
-    }
+  const doVote = useCallback(
+    async (aye) => {
+      if (isSubmitting || isNil(referendumIndex) || !node) {
+        return;
+      }
 
-    if (!signerAccount) {
-      return showErrorToast("Please select an account");
-    }
+      if (!signerAccount) {
+        showErrorToast("Please select an account");
+        return;
+      }
 
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
-    }
+      if (!api) {
+        showErrorToast("Chain network is not connected yet");
+        return;
+      }
 
-    let tx = api.tx[collectivePallet].vote(referendumIndex, aye);
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
+      let tx = api.tx[collectivePallet].vote(referendumIndex, aye);
+      if (signerAccount?.proxyAddress) {
+        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
+      }
 
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: (loading) => {
-        if (loading) {
-          setLoadingState(aye ? VoteLoadingEnum.Aye : VoteLoadingEnum.Nay);
-        } else {
-          setLoadingState(VoteLoadingEnum.None);
-        }
-      },
-      onInBlock: () => {
-        getMyVoteAndShowSuccessful();
-        onInBlock();
-      },
-      onSubmitted,
+      setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
+      await sendTx({
+        api,
+        tx,
+        onInBlock: () => {
+          getMyVoteAndShowSuccessful();
+          onInBlock();
+        },
+        onSubmitted: onClose,
+      });
+    },
+    [
+      api,
+      collectivePallet,
+      referendumIndex,
       signerAccount,
-      isMounted,
+      sendTx,
+      onInBlock,
+      getMyVoteAndShowSuccessful,
       onClose,
-    });
-  };
+      isSubmitting,
+      showErrorToast,
+      node,
+    ],
+  );
 
   return (
     <>
@@ -118,7 +121,11 @@ function PopupContent() {
         <SignerWithBalance />
       </VStack>
       <CurrentVote currentVote={vote} isLoadingVote={isLoadingVote} />
-      <VoteButton doVote={doVote} loadingState={loadingState} />
+      <VoteButton
+        doVote={doVote}
+        isLoading={isSubmitting}
+        loadingState={loadingState}
+      />
     </>
   );
 }

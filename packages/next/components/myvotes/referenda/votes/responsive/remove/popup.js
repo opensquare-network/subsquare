@@ -1,58 +1,29 @@
-import SignerPopup from "next-common/components/signerPopup";
-import React, { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { noop } from "lodash-es";
 import RelatedReferenda from "../../../../popupCommon/relatedReferenda";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
-import { useMountedState } from "react-use";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import SimpleTxPopup from "next-common/components/simpleTxPopup";
+import { useContextApi } from "next-common/context/api";
 
 export default function ReferendumRemovalPopup({
-  vote,
+  trackId,
+  referendumIndex,
   onClose = noop,
   onInBlock = noop,
 }) {
-  const dispatch = useDispatch();
-  const showErrorToast = useCallback(
-    (message) => dispatch(newErrorToast(message)),
-    [dispatch],
-  );
-  const isMounted = useMountedState();
-  const [isLoading, setIsLoading] = useState(false);
+  const api = useContextApi();
 
-  const doRemoveVote = useCallback(
-    async (api, signerAccount) => {
-      if (!api) {
-        return showErrorToast("Chain RPC is not connected yet");
-      }
-
-      const { trackId, referendumIndex } = vote || {};
-      let tx = api.tx.convictionVoting.removeVote(trackId, referendumIndex);
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      await sendTx({
-        tx,
-        setLoading: setIsLoading,
-        dispatch,
-        onInBlock,
-        onClose,
-        signerAccount,
-        isMounted,
-      });
-    },
-    [dispatch, isMounted, showErrorToast, onInBlock, onClose, vote],
-  );
+  const getTxFunc = useCallback(async () => {
+    return api.tx.convictionVoting.removeVote(trackId, referendumIndex);
+  }, [api, trackId, referendumIndex]);
 
   return (
-    <SignerPopup
+    <SimpleTxPopup
       title="Remove Vote"
-      actionCallback={doRemoveVote}
+      getTxFunc={getTxFunc}
       onClose={onClose}
-      isLoading={isLoading}
+      onInBlock={onInBlock}
     >
-      <RelatedReferenda relatedReferenda={[vote?.referendumIndex]} />
-    </SignerPopup>
+      <RelatedReferenda relatedReferenda={[referendumIndex]} />
+    </SimpleTxPopup>
   );
 }

@@ -2,7 +2,6 @@ import BigNumber from "bignumber.js";
 import Chains from "../consts/chains";
 import { BalanceDecimals } from "../constants";
 import { detailPageCategory } from "../consts/business/category";
-import isMoonChain from "../isMoonChain";
 import { getMotionId } from "next-common/utils/motion";
 import { getTitle } from "next-common/utils/post";
 import {
@@ -48,9 +47,6 @@ export function toApiType(type) {
 
   // Motions
   if (type === detailPageCategory.COUNCIL_MOTION) {
-    if (isMoonChain()) {
-      return "moon-council/motions";
-    }
     return "motions";
   }
   if (type === detailPageCategory.TECH_COMM_MOTION) {
@@ -73,14 +69,6 @@ export function toApiType(type) {
   // Karura
   if (type === detailPageCategory.FINANCIAL_MOTION) {
     return "financial-motions";
-  }
-
-  // Moonbeam / Moonriver
-  if (type === detailPageCategory.OPEN_TECH_COMM_PROPOSAL) {
-    return "open-techcomm/motions";
-  }
-  if (type === detailPageCategory.TREASURY_COUNCIL_MOTION) {
-    return "motions";
   }
 
   // Zeitgeist

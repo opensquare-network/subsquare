@@ -44,23 +44,28 @@ function PopupContent() {
 
   const submit = useCallback(async () => {
     if (!title) {
-      return showErrorToast("Please fill the title.");
+      showErrorToast("Please fill the title.");
+      return;
     }
 
     if (!description) {
-      return showErrorToast("Please fill the description.");
+      showErrorToast("Please fill the description.");
+      return;
     }
 
     if (!startDate) {
-      return showErrorToast("Please select the start date.");
+      showErrorToast("Please select the start date.");
+      return;
     }
 
     if (startDate.getTime() < Date.now()) {
-      return showErrorToast("Start date must be in the future.");
+      showErrorToast("Start date must be in the future.");
+      return;
     }
 
     if (endDate && endDate.getTime() < startDate.getTime()) {
-      return showErrorToast("End date must be after start date.");
+      showErrorToast("End date must be after start date.");
+      return;
     }
 
     setIsLoading(true);
@@ -86,7 +91,8 @@ function PopupContent() {
       );
 
       if (error) {
-        return showErrorToast(error.message);
+        showErrorToast(error.message);
+        return;
       }
 
       if (result) {

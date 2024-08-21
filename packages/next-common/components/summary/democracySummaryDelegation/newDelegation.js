@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemPlus } from "@osn/icons/subsquare";
-import isMoonChain from "next-common/utils/isMoonChain";
-import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const DelegatePopup = dynamicPopup(() =>
   import("next-common/components/democracy/delegatePopup"),
-);
-
-const MoonDelegatePopup = dynamicPopup(() =>
-  import("next-common/components/democracy/delegatePopup/moonPopup"),
 );
 
 /**
@@ -27,12 +21,6 @@ export default function DemocracyNewDelegation({
   ...props
 }) {
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
-  const isUseMetamask = useIsUseMetamask();
-
-  let TheDelegatePopup = DelegatePopup;
-  if (isMoonChain() && isUseMetamask) {
-    TheDelegatePopup = MoonDelegatePopup;
-  }
 
   return (
     <>
@@ -48,7 +36,7 @@ export default function DemocracyNewDelegation({
         {props.children || "Delegate"}
       </SecondaryButton>
       {showDelegatePopup && (
-        <TheDelegatePopup
+        <DelegatePopup
           defaultTargetAddress={defaultTargetAddress}
           targetDisabled={targetDisabled}
           onClose={() => setShowDelegatePopup(false)}

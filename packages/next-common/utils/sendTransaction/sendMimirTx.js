@@ -1,16 +1,7 @@
 import { inject, isMimirReady, MIMIR_REGEXP } from "@mimirdev/apps-inject";
-import { emptyFunction } from "..";
-import {
-  newErrorToast,
-  newPendingToast,
-  newToastId,
-  newWarningToast,
-  removeToast,
-  updatePendingToast,
-} from "next-common/store/reducers/toastSlice";
-import { createSendTxEventHandler } from "../sendTx";
 import { checkCall } from "@mimirdev/apps-sdk";
-import { getLatestApi } from "next-common/context/api";
+import { noop } from "lodash-es";
+import { createSendTxEventHandler } from "./sendSubstrateTx";
 
 export async function tryInitMimir() {
   if (typeof window === "undefined") {
@@ -40,20 +31,18 @@ export async function tryInitMimir() {
 }
 
 export async function maybeSendMimirTx({
+  api,
   tx,
-  dispatch,
-  setLoading = emptyFunction,
-  onFinalized = emptyFunction,
-  onInBlock = emptyFunction,
-  onSubmitted = emptyFunction,
-  onClose = emptyFunction,
-  signerAccount,
+  onStarted = noop,
+  onFinalized = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  onError = noop,
+  signerAddress,
 }) {
   const { web3Enable, web3FromSource } = await import(
     "@polkadot/extension-dapp"
   );
-
-  const signerAddress = signerAccount?.address;
 
   await web3Enable("subsquare");
   const injected = await web3FromSource("mimir");
@@ -63,24 +52,15 @@ export async function maybeSendMimirTx({
     return false;
   }
 
-  const noWaitForFinalized = onFinalized === emptyFunction;
-  const totalSteps = noWaitForFinalized ? 2 : 3;
-
-  const toastId = newToastId();
-  dispatch(
-    newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`),
-  );
+  onStarted();
 
   try {
-    setLoading(true);
-
     const result = await injected.signer.signPayload({
       address: signerAddress,
       method: tx.method.toHex(),
     });
 
     // Retrieve the method returned by Mimir.
-    const api = getLatestApi();
     const method = api.registry.createType("Call", result.payload.method);
 
     // check the final call is the expect call
@@ -94,34 +74,16 @@ export async function maybeSendMimirTx({
 
     const unsub = await multisigTx.send(
       createSendTxEventHandler({
-        toastId,
-        dispatch,
-        setLoading,
         onFinalized,
         onInBlock,
-        totalSteps,
-        noWaitForFinalized,
+        onError,
         unsub: () => unsub(),
       }),
     );
 
-    dispatch(
-      updatePendingToast(
-        toastId,
-        `(2/${totalSteps}) Submitted, waiting for wrapping...`,
-      ),
-    );
-    onSubmitted(signerAddress);
-    onClose();
+    onSubmitted();
   } catch (e) {
-    dispatch(removeToast(toastId));
-    setLoading(false);
-
-    if (e.message === "Cancelled") {
-      dispatch(newWarningToast(e.message));
-    } else {
-      dispatch(newErrorToast(e.message));
-    }
+    onError(e);
   }
 
   return true;

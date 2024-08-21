@@ -11,8 +11,6 @@ import getApiInSeconds, { getApi } from "next-common/services/chain/api";
 
 export const ApiContext = createContext(null);
 
-let latestApi;
-
 export default function ApiProvider({ children }) {
   const chain = useChain();
   const currentEndpoint = useSelector(currentNodeSelector);
@@ -34,7 +32,6 @@ export default function ApiProvider({ children }) {
       getApiInSeconds(chain, currentEndpoint)
         .then((api) => {
           setNowApi(api);
-          latestApi = api;
         })
         .catch(() => {
           if (endpoints.length > 1) {
@@ -46,7 +43,6 @@ export default function ApiProvider({ children }) {
         candidateNodes.map((endpoint) => getApi(chain, endpoint)),
       ).then((api) => {
         setNowApi(api);
-        latestApi = api;
         const endpoint = api._options.provider.endpoint;
         dispatch(setCurrentNode({ url: endpoint, saveLocalStorage: false }));
       });
@@ -58,12 +54,4 @@ export default function ApiProvider({ children }) {
 
 export function useContextApi() {
   return useContext(ApiContext);
-}
-
-export function getLatestApi() {
-  if (!latestApi) {
-    throw new Error("Use getLastApi after api initialized");
-  }
-
-  return latestApi;
 }

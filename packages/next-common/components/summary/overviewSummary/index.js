@@ -12,7 +12,6 @@ import {
   useMenuHasTreasurySpends,
   useMenuHasTreasuryTips,
 } from "../../../context/chain";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { usePageProps } from "next-common/context/page";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
@@ -155,7 +154,7 @@ function CouncilGroupContent() {
   const showCouncil = useMenuHasCouncil();
   const showTc = useMenuHasTechComm();
 
-  const { motions, techCommMotions, moonCouncilMotions } = summary ?? {};
+  const { motions, techCommMotions } = summary ?? {};
 
   return (
     <ContentWrapper>
@@ -165,9 +164,7 @@ function CouncilGroupContent() {
           label="M"
           tooltip="Active council motions"
           href="/council/motions"
-          value={
-            (isMoonChain() ? moonCouncilMotions?.active : motions?.active) || 0
-          }
+          value={motions?.active || 0}
         />
       )}
       {showTc && (
