@@ -57,12 +57,10 @@ export default function ProfilePage() {
     member = ambassadorMember;
   }
 
-  const content = <ProfilePageImpl />;
-
   return (
     <CollectivesProvider section={section}>
       <CollectivesMemberProvider member={member}>
-        {content}
+        <ProfilePageImpl />
       </CollectivesMemberProvider>
     </CollectivesProvider>
   );
