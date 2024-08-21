@@ -4,8 +4,10 @@ import { useState } from "react";
 export default function useValidFromField() {
   const [validFrom, setValidFrom] = useState("");
 
+  const value = validFrom === "None" || validFrom === "" ? null : validFrom;
+
   return {
-    value: validFrom || "None",
+    value,
     component: (
       <ValidFromField
         title="Valid From"
