@@ -101,7 +101,7 @@ export default function StatisticsClaimants({ members = [] }) {
   return (
     <SecondaryCard>
       <div className="flex flex-col gap-[16px] h-full">
-        <StatisticsTitle>Claimants</StatisticsTitle>
+        <StatisticsTitle>Top Claimants</StatisticsTitle>
         <StatisticsClaimantsTable members={members} />
       </div>
     </SecondaryCard>

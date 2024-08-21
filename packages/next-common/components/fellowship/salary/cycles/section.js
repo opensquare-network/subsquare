@@ -7,7 +7,7 @@ export default function FellowshipHistoryCyclesSection() {
 
   return (
     <>
-      <TitleContainer className="my-4">History Cycles</TitleContainer>
+      <TitleContainer className="my-4">History</TitleContainer>
 
       <div className="space-y-4 mt-4">
         <FellowshipSalaryCycles
