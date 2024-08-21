@@ -53,7 +53,7 @@ export default function ValidFromField({ title = "", value, setValue }) {
     setValue(inputValue);
   };
 
-  const placeholder = isEditable ? "Please fill a block height..." : "";
+  const placeholder = isEditable ? "Please input a block height..." : "";
   return (
     <div>
       <div className="flex justify-between items-center mb-[8px]">
