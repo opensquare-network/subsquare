@@ -8,9 +8,9 @@ import { InfoMessage } from "next-common/components/setting/styled";
 const PROMPT_WIKI_LINK =
   "https://wiki.polkadot.network/docs/learn-guides-treasury#specifying-validfrom-optional";
 const PROMPT_DISABLE_CONTENT =
-  "When the proposal is executed, you can get the funds paid immediately.";
+  "The fund can be claimed immediately after proposal execution.";
 const PROMPT_EDITABLE_CONTENT =
-  "Get the funds paid at the block height that submitted.";
+  "The block number from which the spend can be claimed.";
 
 function ValidFromFieldToggleSwitch({ isEditable, setIsEditable }) {
   return (
