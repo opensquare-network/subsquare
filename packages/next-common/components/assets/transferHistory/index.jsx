@@ -25,19 +25,20 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
     timeAgeColumn,
     amountColumn,
   ];
-  const { value: transfersHistoryList, loading } =
-    useAssetHubTransfersHistory();
+  const { value, loading } = useAssetHubTransfersHistory();
 
   useEffect(() => {
-    if (transfersHistoryList) {
-      setTotalCount(transfersHistoryList.items.length);
+    if (value) {
+      setTotalCount(value?.items?.length || 0);
     }
-  }, []);
+  }, [value, loading]);
+
+  const data = value?.items || [];
   return (
     <ScrollerX>
       <MapDataList
         columnsDef={columnsDef}
-        data={transfersHistoryList.items}
+        data={data}
         loading={loading}
         noDataText="No data"
       />
