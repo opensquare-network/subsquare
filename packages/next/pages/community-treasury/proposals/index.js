@@ -5,29 +5,14 @@ import TreasurySummary from "next-common/components/summary/treasurySummary";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
-import { communityTreasuryProposalBaseUrl } from "next-common/utils/postBaseUrl";
-import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
-import getTreasuryProposalTitle from "next-common/utils/viewfuncs/treasury/getTreasuryProposalTitle";
-
-function normalizeTreasuryProposalListItem(chain, item) {
-  return {
-    ...item,
-    title: getTreasuryProposalTitle(item),
-    address: item.proposer,
-    status: item.state ?? "Unknown",
-    time: getPostLastActivityAt(item),
-    detailLink: `${communityTreasuryProposalBaseUrl}/${item.proposalIndex}`,
-    value: item.onchainData?.value,
-    index: item.proposalIndex,
-  };
-}
+import normalizeCommunityTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeCommunityTreasuryProposalListItem";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
 
   const items = (proposals.items || []).map((item) =>
-    normalizeTreasuryProposalListItem(chain, item),
+    normalizeCommunityTreasuryProposalListItem(chain, item),
   );
 
   const category = "Community Treasury Proposals";
