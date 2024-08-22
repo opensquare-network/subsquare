@@ -51,7 +51,7 @@ export function useSendTransaction() {
   const signerAccount = useSignerAccount();
   const { sdk: signetSdk } = useSignetSdk();
 
-  const sendTx = useCallback(
+  const sendTxFunc = useCallback(
     async ({
       api,
       tx,
@@ -182,7 +182,7 @@ export function useSendTransaction() {
   );
 
   return {
-    sendTx,
+    sendTxFunc,
     isLoading,
   };
 }

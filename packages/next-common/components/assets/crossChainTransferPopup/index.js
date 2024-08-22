@@ -52,7 +52,7 @@ function PopupContent() {
     sourceChain,
     destinationChain,
   });
-  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
+  const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
 
   const setSigner = useSetSigner();
 
@@ -100,7 +100,7 @@ function PopupContent() {
     );
     setSigner(sourceApi, account);
 
-    await sendTx({
+    await sendTxFunc({
       api: sourceApi,
       tx,
       onSubmitted: onClose,
@@ -115,7 +115,7 @@ function PopupContent() {
     address,
     getTxFunc,
     setSigner,
-    sendTx,
+    sendTxFunc,
     onClose,
   ]);
 
