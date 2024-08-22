@@ -23,24 +23,18 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
 import { useSignetSdk } from "next-common/context/signet";
+import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 
 function isShouldSendEvmTx(signerAccount) {
-  if (
-    (isEvmChain() || isMixedChain()) &&
-    signerAccount?.meta?.source === WalletTypes.METAMASK
-  ) {
+  const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
+  if ((isEvmChain() || isMixedChain()) && isWalletMetamask) {
     return true;
   }
-
-  if (
-    isMixedChain() &&
-    isEthereumAddress(tryConvertToEvmAddress(signerAccount?.address)) &&
-    signerAccount?.meta?.source === WalletTypes.TALISMAN
-  ) {
-    return true;
-  }
-
-  return false;
+  const isEvmAddr = isEthereumAddress(
+    tryConvertToEvmAddress(signerAccount?.address),
+  );
+  const isWalletTalisman = signerAccount?.meta?.source === WalletTypes.TALISMAN;
+  return isMixedChain() && isEvmAddr && isWalletTalisman;
 }
 
 function isShouldSendSignetTx(signerAccount) {
@@ -65,7 +59,7 @@ export function useSendTransaction() {
       onSubmitted = noop,
       onFinalized = noop,
     }) => {
-      const noWaitForFinalized = onFinalized === noop;
+      const noWaitForFinalized = isEmptyFunc(onFinalized);
       const totalSteps = noWaitForFinalized ? 2 : 3;
       const toastId = newToastId();
 
