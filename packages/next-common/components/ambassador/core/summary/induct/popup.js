@@ -5,7 +5,7 @@ import useSigner from "next-common/components/common/tx/useSigner";
 import { useContextApi } from "next-common/context/api";
 import useAddressInput from "next-common/components/collectives/core/useAddressInput";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import useAmbassadorMembersUpdateFunc from "next-common/components/ambassador/core/updateFunc";
+import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
 
 function Content() {
   const { onClose } = usePopupParams();
@@ -19,7 +19,7 @@ function Content() {
     }
   }, [api, whoAddress]);
 
-  const onInBlock = useAmbassadorMembersUpdateFunc();
+  const onInBlock = useCoreFellowshipUpdateFunc();
 
   return (
     <>

@@ -1,5 +1,3 @@
-import AmbassadorMembersLoadable from "next-common/components/pages/ambassador/loadable";
-import useAmbassadorCoreSortedMembers from "next-common/hooks/ambassador/core/useAmbassadorCoreSortedMembers";
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { useMemo } from "react";
@@ -10,10 +8,12 @@ import AmbassadorCoreMemberCard from "next-common/components/ambassador/core/mem
 import { usePageProps } from "next-common/context/page";
 import AmbassadorMemberCommon from "next-common/components/pages/ambassador/common";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import FellowshipMembersLoadable from "../fellowship/loadable";
+import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCoreMembers";
 
 export default function AmbassadorCoreMembersPage() {
   const { ambassadorParams } = usePageProps();
-  const members = useAmbassadorCoreSortedMembers();
+  const members = useSortedCoreMembers();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
     [members],
@@ -32,7 +32,7 @@ export default function AmbassadorCoreMembersPage() {
 
   return (
     <CollectivesProvider params={ambassadorParams} section="ambassador">
-      <AmbassadorMembersLoadable>
+      <FellowshipMembersLoadable>
         <AmbassadorMemberCommon params={ambassadorParams}>
           <div className="flex items-center justify-between mb-4 pr-6">
             <FellowshipMemberTabs members={members} section="ambassador" />
@@ -53,7 +53,7 @@ export default function AmbassadorCoreMembersPage() {
             <FellowshipMembersEmpty />
           )}
         </AmbassadorMemberCommon>
-      </AmbassadorMembersLoadable>
+      </FellowshipMembersLoadable>
     </CollectivesProvider>
   );
 }
