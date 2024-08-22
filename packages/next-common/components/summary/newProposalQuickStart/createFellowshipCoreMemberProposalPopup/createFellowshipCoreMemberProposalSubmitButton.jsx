@@ -6,10 +6,8 @@ import { listPageCategory } from "next-common/utils/consts/business/category";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
-import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { find } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 
@@ -20,8 +18,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   action = "",
   trackName,
 }) {
-  useFetchFellowshipCoreMembers();
-  const members = useSelector(fellowshipCoreMembersSelector);
+  const { members } = useFellowshipCoreMembers();
   const realAddress = useRealAddress();
   const me = find(members, { address: realAddress });
 

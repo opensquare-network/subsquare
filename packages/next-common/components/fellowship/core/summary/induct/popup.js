@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useSigner from "next-common/components/common/tx/useSigner";
-import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/updateFunc";
+import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import useAddressInput from "next-common/components/collectives/core/useAddressInput";
@@ -19,7 +19,7 @@ function Content() {
     }
   }, [api, whoAddress]);
 
-  const onInBlock = useFellowshipMembersUpdateFunc();
+  const onInBlock = useCoreFellowshipUpdateFunc();
 
   return (
     <>

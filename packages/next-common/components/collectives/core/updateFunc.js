@@ -1,15 +1,13 @@
 import { useCallback } from "react";
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultBlockTime } from "next-common/utils/constants";
-import { incFellowshipCoreMembersTrigger } from "next-common/store/reducers/fellowship/core";
 import { sleep } from "next-common/utils";
 import { useDispatch } from "react-redux";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
-import { incAmbassadorCoreMembersTrigger } from "next-common/store/reducers/ambassador/core";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
 export default function useCoreFellowshipUpdateFunc() {
   const dispatch = useDispatch();
-  const section = useCollectivesContext();
+  const { fetch } = useFellowshipCoreMembers();
 
   return useCallback(async () => {
     const blockTime =
@@ -19,12 +17,8 @@ export default function useCoreFellowshipUpdateFunc() {
     const timers = [1, 2];
     // eslint-disable-next-line no-unused-vars
     for (const timer of timers) {
-      if ("fellowship" === section) {
-        dispatch(incFellowshipCoreMembersTrigger());
-      } else if ("ambassador" === section) {
-        dispatch(incAmbassadorCoreMembersTrigger());
-      }
+      await fetch();
       await sleep(blockTime);
     }
-  }, [dispatch]);
+  }, [dispatch, fetch]);
 }

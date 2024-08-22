@@ -3,8 +3,8 @@ import React, { useCallback } from "react";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import useSigner from "next-common/components/common/tx/useSigner";
 import { useContextApi } from "next-common/context/api";
-import useAmbassadorMembersUpdateFunc from "next-common/components/ambassador/core/updateFunc";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
 
 function Content() {
   const { onClose } = usePopupParams();
@@ -17,7 +17,7 @@ function Content() {
     }
   }, [api]);
 
-  const onInBlock = useAmbassadorMembersUpdateFunc();
+  const onInBlock = useCoreFellowshipUpdateFunc();
 
   return (
     <>
