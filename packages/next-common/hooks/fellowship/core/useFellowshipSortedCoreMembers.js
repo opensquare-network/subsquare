@@ -2,7 +2,7 @@ import { isNil, orderBy } from "lodash-es";
 import { useMemo } from "react";
 import useFellowshipCoreMembers from "./useFellowshipCoreMembers";
 
-export default function useSortedCoreMembers() {
+export default function useFellowshipSortedCoreMembers() {
   const { members } = useFellowshipCoreMembers();
 
   return useMemo(() => {

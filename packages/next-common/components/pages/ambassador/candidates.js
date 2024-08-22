@@ -8,11 +8,11 @@ import FellowshipMembersEmpty from "next-common/components/pages/fellowship/empt
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import FellowshipMembersLoadable from "../fellowship/loadable";
-import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCoreMembers";
+import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
 
 export default function AmbassadorCandidatesPage() {
   const { ambassadorParams } = usePageProps();
-  const members = useSortedCoreMembers();
+  const members = useFellowshipSortedCoreMembers();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank <= 0),
     [members],

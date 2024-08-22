@@ -7,7 +7,7 @@ import FellowshipMemberCommon from "next-common/components/pages/fellowship/comm
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import FellowshipMembersEmpty from "./empty";
-import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCoreMembers";
+import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
 import { usePageProps } from "next-common/context/page";
 import CollectivesProvider, {
   useCoreFellowshipParams,
@@ -85,7 +85,7 @@ function useMembersFilter(members) {
 }
 
 function FellowshipMembersPageInContext() {
-  const members = useSortedCoreMembers();
+  const members = useFellowshipSortedCoreMembers();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
     [members],

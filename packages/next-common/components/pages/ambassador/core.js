@@ -9,11 +9,11 @@ import { usePageProps } from "next-common/context/page";
 import AmbassadorMemberCommon from "next-common/components/pages/ambassador/common";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipMembersLoadable from "../fellowship/loadable";
-import useSortedCoreMembers from "next-common/hooks/fellowship/core/useSortedCoreMembers";
+import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
 
 export default function AmbassadorCoreMembersPage() {
   const { ambassadorParams } = usePageProps();
-  const members = useSortedCoreMembers();
+  const members = useFellowshipSortedCoreMembers();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
     [members],
