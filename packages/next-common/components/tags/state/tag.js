@@ -23,6 +23,9 @@ const categoryTagMap = {
   [businessCategory.treasuryProposals]: TreasuryTag,
   [detailPageCategory.TREASURY_PROPOSAL]: TreasuryTag,
 
+  [businessCategory.communityTreasuryProposals]: TreasuryTag,
+  [detailPageCategory.COMMUNITY_TREASURY_PROPOSAL]: TreasuryTag,
+
   [businessCategory.treasuryTips]: TipTag,
   [detailPageCategory.TREASURY_TIP]: TipTag,
 
@@ -34,6 +37,9 @@ const categoryTagMap = {
 
   [businessCategory.councilMotions]: CollectiveTag,
   [detailPageCategory.COUNCIL_MOTION]: CollectiveTag,
+
+  [businessCategory.communityMotions]: CollectiveTag,
+  [detailPageCategory.COMMUNITY_MOTION]: CollectiveTag,
 
   [businessCategory.tcProposals]: CollectiveTag,
   [detailPageCategory.TECH_COMM_MOTION]: CollectiveTag,
