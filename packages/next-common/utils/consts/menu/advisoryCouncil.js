@@ -1,6 +1,6 @@
+import React from "react";
 import { getExcludeChains } from "../../viewfuncs";
 import Chains from "../chains";
-import React from "react";
 import { MenuAdvisoryCommittee } from "@osn/icons/subsquare";
 
 export const Names = {

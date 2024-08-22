@@ -17,7 +17,6 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
 import Overview from "next-common/components/overview/overview";
 import CentrifugeOverview from "next-common/components/overview/centrifugeOverview";
-import nextApi from "next-common/services/nextApi";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import {
   fetchForumCategories,
@@ -129,7 +128,8 @@ export const getServerSideProps = withCommonProps(async () => {
   }
 
   const tracksProps = await fetchOpenGovTracksProps();
-  const { result: overviewSummary } = await nextApi.fetch("overview/summary");
+
+  const overviewSummary = tracksProps.summary || {};
   const recentProposals = await fetchRecentProposalsProps(overviewSummary);
 
   const forumLatestTopics = await fetchForumLatestTopics();
@@ -138,8 +138,7 @@ export const getServerSideProps = withCommonProps(async () => {
   return {
     props: {
       recentProposals,
-      summary: tracksProps.summary,
-      overviewSummary: overviewSummary || {},
+      overviewSummary: overviewSummary,
       forumLatestTopics,
       forumCategories,
       ...tracksProps,

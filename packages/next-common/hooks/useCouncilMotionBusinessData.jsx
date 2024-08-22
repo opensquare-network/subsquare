@@ -5,9 +5,19 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";
 import Proposal from "next-common/components/proposal";
+import { useDetailType } from "next-common/context/page";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+
+function getTreasuryProposalLink(type, proposalIndex) {
+  if (type === detailPageCategory.COMMUNITY_MOTION) {
+    return `/community-treasury/proposals/${proposalIndex}`;
+  }
+  return `/treasury/proposals/${proposalIndex}`;
+}
 
 export function useCouncilMotionBusinessData() {
   const motion = usePostOnChainData();
+  const type = useDetailType();
 
   const business = [];
 
@@ -21,23 +31,23 @@ export function useCouncilMotionBusinessData() {
           "Link to",
           <Link
             key="proposal-link"
-            href={`/treasury/proposals/${proposal.proposalIndex}`}
+            href={getTreasuryProposalLink(type, proposal.proposalIndex)}
             legacyBehavior
           >{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
         ],
         [
           "Beneficiary",
           <Flex key="proposal-beneficiary">
-            <AddressUser add={proposal.meta.beneficiary} />
+            <AddressUser add={proposal.meta?.beneficiary} />
           </Flex>,
         ],
         [
           "Value",
-          <SymbolBalance key="proposal-value" value={proposal.meta.value} />,
+          <SymbolBalance key="proposal-value" value={proposal.meta?.value} />,
         ],
         [
           "Bond",
-          <SymbolBalance key="proposal-bond" value={proposal.meta.bond} />,
+          <SymbolBalance key="proposal-bond" value={proposal.meta?.bond} />,
         ],
       ]);
     }

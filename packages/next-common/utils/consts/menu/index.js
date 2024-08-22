@@ -8,12 +8,14 @@ import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
 import { getAllianceMenu } from "./alliance";
 import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
+import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
+import { assetHubMenu } from "./assetHub";
+import { getCommunityCouncilMenu } from "./communityCouncil";
 import { CHAIN } from "next-common/utils/constants";
 import preImages from "./preImages";
 import { partition } from "lodash-es";
-import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
 import isAssetHub from "next-common/utils/isAssetHub";
-import { assetHubMenu } from "./assetHub";
+import { getCommunityTreasuryMenu } from "./communityTreasury";
 
 export function getHomeMenu({
   summary = {},
@@ -33,11 +35,13 @@ export function getHomeMenu({
     getAmbassadorMenu(ambassadorTracks, currentTrackId),
     getDemocracyMenu(summary),
     getTreasuryMenu(summary),
+    getCommunityTreasuryMenu(summary),
     getCouncilMenu(summary),
     getTechCommMenu(summary),
     getFinancialCouncilMenu(summary),
     getAdvisoryCommitteeMenu(summary),
     getAllianceMenu(summary),
+    getCommunityCouncilMenu(summary),
     preImages,
   ];
 }

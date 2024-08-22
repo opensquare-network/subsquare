@@ -7,7 +7,7 @@ import {
 import getChainSettings from "next-common/utils/consts/settings";
 
 export async function fetchOpenGovTracksProps() {
-  const { result: summary = {} } = await nextApi.fetch("summary");
+  const { result: summary = {} } = await nextApi.fetch("overview/summary");
 
   const {
     modules: {

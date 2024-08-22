@@ -167,6 +167,8 @@ export const overviewApi = {
   allianceMotions: "overview/alliance-motions",
   allianceAnnouncements: "overview/alliance-announcements",
   advisoryMotions: "overview/advisory-motions",
+  communityMotions: "overview/community-motions",
+  communityTreasuryProposals: "overview/community-treasury-proposals",
 };
 
 // delegation
