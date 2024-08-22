@@ -9,7 +9,8 @@ export const Names = {
 };
 
 export function getCommunityTreasuryMenu(summary) {
-  const activeTreasuryProposals = summary?.treasuryProposals?.active || 0;
+  const activeTreasuryProposals =
+    summary?.communityTreasuryProposals?.active || 0;
   const totalActiveCount = activeTreasuryProposals;
 
   return {
