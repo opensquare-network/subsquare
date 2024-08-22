@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
-import useAssetHubTransfersHistory from "next-common/utils/hooks/useAssetHubTransfersHistory";
+import useTransfersHistory from "next-common/utils/hooks/useTransfersHistory";
 import { useAssetsTransfersHistoryTokenColumn } from "./columns/token";
 import { useAssetsTransfersHistoryIdColumn } from "./columns/id";
 import { useAssetsTransfersHistoryFromColumn } from "./columns/from";
@@ -25,7 +25,7 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
     timeAgeColumn,
     amountColumn,
   ];
-  const { value, loading } = useAssetHubTransfersHistory();
+  const { value, loading } = useTransfersHistory();
 
   useEffect(() => {
     if (value) {

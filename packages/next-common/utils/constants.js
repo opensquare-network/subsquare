@@ -144,3 +144,7 @@ export const FELLOWSHIP_RANK_LEVEL_NAMES = [
   "Master Constant",
   "Grand Master",
 ];
+
+export const STATESCAN_CHAIN_URL_MAP = {
+  "polkadot-assethub": "https://statemint-api.statescan.io",
+};

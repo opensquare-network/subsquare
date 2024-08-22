@@ -94,8 +94,8 @@ export default function WalletAssetList() {
     <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
       <div className="flex flex-col gap-[16px]">
         <AssetHubTabs>
-          <TransfersTabContent />
           <AssetsTabContent />
+          <TransfersTabContent />
         </AssetHubTabs>
       </div>
     </ListLayout>
