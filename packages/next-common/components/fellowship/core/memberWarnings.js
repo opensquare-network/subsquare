@@ -135,12 +135,13 @@ export default function MemberWarnings({ className }) {
     ),
     membersCount > 0 && (
       <>
+        {"The demotion period of "}
         <ShallowLink
           href={`/${section}/core?period=demotion_period_about_to_expire`}
         >
           {membersCount} members
         </ShallowLink>
-        {"' demotion period is about to reached in under 20 days."}
+        {" expires in under 20 days."}
       </>
     ),
     candidatesCount > 0 &&
