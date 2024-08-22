@@ -1,16 +1,19 @@
-import { useContextApi } from "next-common/context/api";
-import { useEffect, useCallback } from "react";
-import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
-import { isSameAddress } from "next-common/utils";
 import { find, set } from "lodash-es";
-import { createGlobalState } from "react-use";
+import { useContextApi } from "next-common/context/api";
 import {
   useCollectivesContext,
   useCoreFellowshipPallet,
   useRankedCollectivePallet,
 } from "next-common/context/collectives/collectives";
+import { isSameAddress } from "next-common/utils";
+import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
+import { useCallback, useEffect } from "react";
+import { createGlobalState } from "react-use";
 
-const useLoading = createGlobalState(false);
+// A flag to ensure only one fetch operation runs at a time.
+let fetching = false;
+
+const useLoading = createGlobalState(fetching);
 const useCachedMembers = createGlobalState({});
 
 export default function useFellowshipCoreMembers() {
@@ -26,7 +29,7 @@ export default function useFellowshipCoreMembers() {
 
   const fetch = useCallback(async () => {
     if (
-      loading ||
+      fetching ||
       !api ||
       !api.query[corePallet]?.member ||
       !api.query[collectivePallet]?.members
@@ -34,7 +37,8 @@ export default function useFellowshipCoreMembers() {
       return;
     }
 
-    setLoading(true);
+    fetching = true;
+    setLoading(fetching);
 
     try {
       const [collectiveEntries, coreEntries] = await Promise.all([
@@ -63,7 +67,8 @@ export default function useFellowshipCoreMembers() {
         return val;
       });
     } finally {
-      setLoading(false);
+      fetching = false;
+      setLoading(fetching);
     }
   }, [api, corePallet, collectivePallet, section]);
 
@@ -71,7 +76,7 @@ export default function useFellowshipCoreMembers() {
     if (!members) {
       fetch();
     }
-  }, [members, fetch, section]);
+  }, [members, fetch]);
 
   return { members, fetch, loading };
 }
