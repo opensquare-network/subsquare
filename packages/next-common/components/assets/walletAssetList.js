@@ -14,8 +14,8 @@ import { isNil } from "lodash-es";
 import { ProxyTip } from "next-common/components/overview/accountInfo/accountInfoPanel.js";
 import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 import AssetHubTabs from "./tabs";
-import { useEffect, useState } from "react";
-import AssetsTransfersHistory from "./transfersHistory";
+import { useEffect } from "react";
+import AssetsTransfersHistory from "./transferHistory";
 
 function HeadContent() {
   const address = useRealAddress();
@@ -94,8 +94,8 @@ export default function WalletAssetList() {
     <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
       <div className="flex flex-col gap-[16px]">
         <AssetHubTabs>
-          <AssetsTabContent />
           <TransfersTabContent />
+          <AssetsTabContent />
         </AssetHubTabs>
       </div>
     </ListLayout>
