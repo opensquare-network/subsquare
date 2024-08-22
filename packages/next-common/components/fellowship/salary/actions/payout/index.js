@@ -7,7 +7,7 @@ import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useS
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
@@ -17,7 +17,7 @@ const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
 export default function FellowshipSalaryPayout() {
   const [showPopup, setShowPopup] = useState(false);
   const address = useRealAddress();
-  const members = useFellowshipCollectiveMembers();
+  const { members } = useFellowshipCollectiveMembers();
   const memberAddrs = (members || []).map((item) => item.address);
   const isCollectiveMember = memberAddrs.includes(address);
 

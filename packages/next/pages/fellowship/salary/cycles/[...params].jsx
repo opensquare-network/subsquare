@@ -11,7 +11,6 @@ import {
   fellowshipSalaryCycleUnregisteredPaymentsApi,
 } from "next-common/services/url";
 import { withFellowshipSalaryCommonProps } from "next-common/services/serverSide/fellowship/common";
-import useFetchFellowshipMembers from "next-common/hooks/fellowship/collective/useFetchFellowshipMembers";
 import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
 import useFetchFellowshipSalaryClaimants from "next-common/hooks/fellowship/salary/useFetchFellowshipSalaryClaimants";
 import { MySalaryClaimantProvider } from "next-common/context/fellowship/myClaimant";
@@ -20,7 +19,6 @@ import { defaultPageSize } from "next-common/utils/constants";
 
 export default function FellowshipSalaryCyclePage({ cycle, fellowshipParams }) {
   useFetchFellowshipSalaryClaimants();
-  useFetchFellowshipMembers();
   useSubFellowshipSalaryStats();
 
   return (

@@ -1,7 +1,7 @@
 import SecondaryButton from "next-common/lib/button/secondary";
 import React, { useEffect, useMemo, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import { useSelector } from "react-redux";
 import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
 import Tooltip from "next-common/components/tooltip";
@@ -16,7 +16,7 @@ const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
 );
 
 function useMySalary() {
-  const members = useFellowshipCollectiveMembers();
+  const { members } = useFellowshipCollectiveMembers();
   const address = useRealAddress();
   const member = members.find((m) => m.address === address);
   const { fellowshipParams } = usePageProps();
@@ -35,7 +35,7 @@ function useMySalary() {
 export default function FellowshipSalaryRegister() {
   const [disabled, setDisabled] = useState(true);
   const address = useRealAddress();
-  const members = useFellowshipCollectiveMembers();
+  const { members } = useFellowshipCollectiveMembers();
   const memberAddrs = (members || []).map((item) => item.address);
   const { claimant } = useMySalaryClaimantFromContext();
   const [showPopup, setShowPopup] = useState(false);

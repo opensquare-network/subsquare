@@ -6,7 +6,7 @@ import {
   fellowshipSalaryStatusSelector,
   salaryStatusLoadedSelector,
 } from "next-common/store/reducers/fellowship/salary";
-import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
@@ -25,7 +25,7 @@ export default function Import() {
     useMySalaryClaimantFromContext();
 
   const address = useRealAddress();
-  const members = useFellowshipCollectiveMembers();
+  const { members } = useFellowshipCollectiveMembers();
   const memberAddrs = (members || []).map((item) => item.address);
 
   useEffect(() => {
