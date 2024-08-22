@@ -14,7 +14,8 @@ import { isNil } from "lodash-es";
 import { ProxyTip } from "next-common/components/overview/accountInfo/accountInfoPanel.js";
 import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 import AssetHubTabs from "./tabs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import AssetsTransfersHistory from "./transfersHistory";
 
 function HeadContent() {
   const address = useRealAddress();
@@ -60,16 +61,17 @@ export function Title({ assetsCount }) {
   );
 }
 
-function AssetsTabContent({ assets, setTotalCount }) {
+function AssetsTabContent({ setTotalCount }) {
+  const assets = useMyAssets();
   useEffect(() => {
-    if (setTotalCount) {
-      setTotalCount(assets ? assets.length : 0);
+    if (assets && setTotalCount) {
+      const count = assets ? assets.length : 0;
+      setTotalCount(count);
     }
   }, [assets, setTotalCount]);
 
   return (
     <div>
-      <Title assetsCount={assets?.length} />
       <SecondaryCard>
         <AssetsList assets={assets} />
       </SecondaryCard>
@@ -77,32 +79,23 @@ function AssetsTabContent({ assets, setTotalCount }) {
   );
 }
 
-function TransfersTabContent({ assets, setTotalCount }) {
-  useEffect(() => {
-    if (setTotalCount) {
-      setTotalCount(assets ? assets.length : 0);
-    }
-  }, [assets, setTotalCount]);
-
+function TransfersTabContent({ setTotalCount }) {
   return (
     <div>
-      <Title assetsCount={assets?.length} />
       <SecondaryCard>
-        <AssetsList assets={assets} />
+        <AssetsTransfersHistory setTotalCount={setTotalCount} />
       </SecondaryCard>
     </div>
   );
 }
 
 export default function WalletAssetList() {
-  const assets = useMyAssets();
-
   return (
     <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
       <div className="flex flex-col gap-[16px]">
         <AssetHubTabs>
-          <AssetsTabContent assets={assets} />
-          <TransfersTabContent assets={assets} />
+          <AssetsTabContent />
+          <TransfersTabContent />
         </AssetHubTabs>
       </div>
     </ListLayout>
