@@ -8,7 +8,10 @@ import {
 import businessCategory from "next-common/utils/consts/business/category";
 import { overviewApi } from "next-common/services/url";
 import { usePageProps } from "next-common/context/page";
-import { getCommunityTreasuryMenu } from "next-common/utils/consts/menu/communityTreasury";
+import {
+  getCommunityTreasuryMenu,
+  Names,
+} from "next-common/utils/consts/menu/communityTreasury";
 import normalizeCommunityTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeCommunityTreasuryProposalListItem";
 
 const itemOptions = {
@@ -34,12 +37,14 @@ export function useRecentProposalCommunityTreasury() {
       const options = itemOptions[item.value];
 
       if (options) {
+        const initData = recentProposals[Names.communityTreasury]?.[item.value];
+
         return {
           ...item,
           ...options,
           api: {
             ...options.api,
-            initData: recentProposals.communityTreasury?.[item.value],
+            initData,
           },
           columns: [
             getProposalPostTitleColumn(),

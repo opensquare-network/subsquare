@@ -194,7 +194,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
     ].advisoryMotions = await fetcher(overviewApi.advisoryMotions);
   }
 
-  if (isShibuyaChain()) {
+  if (isShibuyaChain(process.env.CHAIN)) {
     // community council
     const communityCouncilMenu = getCommunityCouncilMenu();
     const hasCommunityCouncil =
