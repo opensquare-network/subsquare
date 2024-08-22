@@ -13,6 +13,16 @@ import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/us
 
 export default function AmbassadorCoreMembersPage() {
   const { ambassadorParams } = usePageProps();
+
+  return (
+    <CollectivesProvider params={ambassadorParams} section="ambassador">
+      <AmbassadorCoreMembersPageInContext />
+    </CollectivesProvider>
+  );
+}
+
+function AmbassadorCoreMembersPageInContext() {
+  const { ambassadorParams } = usePageProps();
   const members = useFellowshipSortedCoreMembers();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
@@ -31,29 +41,27 @@ export default function AmbassadorCoreMembersPage() {
   const hasMembers = !!pageMembers.length;
 
   return (
-    <CollectivesProvider params={ambassadorParams} section="ambassador">
-      <FellowshipMembersLoadable>
-        <AmbassadorMemberCommon params={ambassadorParams}>
-          <div className="flex items-center justify-between mb-4 pr-6">
-            <FellowshipMemberTabs members={members} section="ambassador" />
-            {component}
-          </div>
+    <FellowshipMembersLoadable>
+      <AmbassadorMemberCommon params={ambassadorParams}>
+        <div className="flex items-center justify-between mb-4 pr-6">
+          <FellowshipMemberTabs members={members} section="ambassador" />
+          {component}
+        </div>
 
-          {hasMembers ? (
-            <FellowshipCoreMemberCardListContainer>
-              {filteredMembers.map((member) => (
-                <AmbassadorCoreMemberCard
-                  key={member.address}
-                  member={member}
-                  params={ambassadorParams}
-                />
-              ))}
-            </FellowshipCoreMemberCardListContainer>
-          ) : (
-            <FellowshipMembersEmpty />
-          )}
-        </AmbassadorMemberCommon>
-      </FellowshipMembersLoadable>
-    </CollectivesProvider>
+        {hasMembers ? (
+          <FellowshipCoreMemberCardListContainer>
+            {filteredMembers.map((member) => (
+              <AmbassadorCoreMemberCard
+                key={member.address}
+                member={member}
+                params={ambassadorParams}
+              />
+            ))}
+          </FellowshipCoreMemberCardListContainer>
+        ) : (
+          <FellowshipMembersEmpty />
+        )}
+      </AmbassadorMemberCommon>
+    </FellowshipMembersLoadable>
   );
 }
