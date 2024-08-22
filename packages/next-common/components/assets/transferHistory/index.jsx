@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import ScrollerX from "next-common/components/styled/containers/scrollerX";
+import React, { useEffect, useState } from "react";
 import { MapDataList } from "next-common/components/dataList";
 import useTransfersHistory from "next-common/utils/hooks/useTransfersHistory";
 import { useAssetsTransfersHistoryTokenColumn } from "./columns/token";
@@ -8,6 +7,8 @@ import { useAssetsTransfersHistoryFromColumn } from "./columns/from";
 import { useAssetsTransfersHistoryToColumn } from "./columns/to";
 import { useAssetsTransfersHistoryTimeAgeColumn } from "./columns/timeAge";
 import { useAssetsTransfersHistoryAmountColumn } from "./columns/amount";
+import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+import { defaultPageSize } from "next-common/utils/constants";
 
 export default function AssetsTransfersHistory({ setTotalCount }) {
   const tokenColumn = useAssetsTransfersHistoryTokenColumn();
@@ -16,7 +17,6 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
   const toColumn = useAssetsTransfersHistoryToColumn();
   const timeAgeColumn = useAssetsTransfersHistoryTimeAgeColumn();
   const amountColumn = useAssetsTransfersHistoryAmountColumn();
-
   const columnsDef = [
     tokenColumn,
     idColumn,
@@ -25,23 +25,34 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
     timeAgeColumn,
     amountColumn,
   ];
-  const { value, loading } = useTransfersHistory();
+  const [total, setTotal] = useState(0);
+  const [rowData, setRowData] = useState([]);
+
+  const { page, component: pageComponent } = usePaginationComponent(
+    total,
+    defaultPageSize,
+  );
+
+  const { value, loading } = useTransfersHistory(page - 1);
 
   useEffect(() => {
-    if (value) {
-      setTotalCount(value?.items?.length || 0);
+    if (value && !loading) {
+      const totalCount = value?.items?.length || 0;
+      setTotalCount(totalCount);
+      setTotal(totalCount);
+      setRowData(value?.items || []);
     }
   }, [value, loading]);
 
-  const data = value?.items || [];
   return (
-    <ScrollerX>
+    <div>
       <MapDataList
         columnsDef={columnsDef}
-        data={data}
+        data={rowData}
         loading={loading}
         noDataText="No data"
       />
-    </ScrollerX>
+      {pageComponent}
+    </div>
   );
 }
