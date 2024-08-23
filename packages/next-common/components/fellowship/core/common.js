@@ -1,16 +1,14 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import FellowshipCoreMembersSummary from "next-common/components/fellowship/core/members/summary";
 import FellowshipSummaryActions from "next-common/components/fellowship/core/summary/actions";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
-import { upperFirst } from "lodash-es";
 
 export default function FellowshipCoreCommon({ children, ...props }) {
-  const { section } = useCollectivesContext();
-  const title = `${upperFirst(section)} Core`;
-  const desc = `${section} Core controls the overall process of induction, promotion and demotion according to the ${section} rules and timelines, and handles the retention of evidence which members and candidates submit for these processes.`;
+  const title = "Fellowship Core";
+  const desc =
+    "The core pallet controls the overall process of induction, promotion and demotion according to the Fellowship rules and timelines, and handles the retention of evidence which members and candidates submit for these processes.";
   const seoInfo = { title, desc };
 
-  const corePath = `/${section}/core`;
+  const corePath = "/fellowship/core";
 
   return (
     <ListLayout
@@ -23,20 +21,20 @@ export default function FellowshipCoreCommon({ children, ...props }) {
         {
           label: "Members",
           url: corePath,
-          urls: [corePath, `/${section}/core/candidates`],
+          urls: [corePath, "/fellowship/core/candidates"],
           exactMatch: true,
         },
         {
           label: "Params",
-          url: `/${section}/core/params`,
+          url: "/fellowship/core/params",
           exactMatch: true,
         },
         {
           label: "Feeds",
-          url: `/${section}/core/feeds`,
+          url: "/fellowship/core/feeds",
           exactMatch: true,
         },
-      ]}
+      ].filter(Boolean)}
       {...props}
     >
       {children}
