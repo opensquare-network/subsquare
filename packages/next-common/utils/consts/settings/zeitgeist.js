@@ -20,10 +20,6 @@ const defaultNodes = [
     url: "wss://zeitgeist.api.onfinality.io/public-ws",
   },
   {
-    name: "Dwellir",
-    url: "wss://zeitgeist-rpc.dwellir.com",
-  },
-  {
     name: "ZeitgeistPM",
     url: "wss://main.rpc.zeitgeist.pm/ws",
   },

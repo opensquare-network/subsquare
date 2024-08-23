@@ -13,28 +13,20 @@ const ProjectLogoKintsugiDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoKintsugiDark"),
 );
 
-const DEFAULT_KINTSUGI_NODES =
-  process.env.NEXT_PUBLIC_TEST === "true"
-    ? [
-        {
-          name: "Kintsugi Test Endpoint",
-          url: "wss://api-dev-kintsugi.interlay.io/parachain",
-        },
-      ]
-    : [
-        {
-          name: "Dwellir",
-          url: "wss://kintsugi-rpc.dwellir.com",
-        },
-        {
-          name: "Kintsugi Labs",
-          url: "wss://api-kusama.interlay.io/parachain",
-        },
-        {
-          name: "OnFinality",
-          url: "wss://kintsugi.api.onfinality.io/public-ws",
-        },
-      ];
+const DEFAULT_KINTSUGI_NODES = [
+  {
+    name: "Kintsugi Labs",
+    url: "wss://api-kusama.interlay.io/parachain",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://kintsugi.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://kintsugi-rpc.dwellir.com",
+  },
+];
 
 const links = [
   {
