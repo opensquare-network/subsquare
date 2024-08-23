@@ -1,9 +1,12 @@
 import { useAsync } from "react-use";
 import nextApi from "next-common/services/nextApi";
-import { STATESCAN_CHAIN_URL_MAP } from "next-common/utils/constants";
 import Chains from "next-common/utils/consts/chains";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChain } from "next-common/context/chain";
+
+const STATESCAN_CHAIN_URL_MAP = {
+  "polkadot-assethub": "https://statemint-api.statescan.io",
+};
 
 function getTransfersHistoryURL(address, chain) {
   const urlSuffix = `/accounts/${address}/transfers`;
