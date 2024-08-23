@@ -11,16 +11,18 @@ const useCachedResult = createGlobalState({});
 export function useStorage(
   pallet = "",
   storage = "",
-  params = [],
+  params,
   { subscribe = false } = {},
 ) {
   const api = useContextApi();
   const [cachedResult, setCachedResult] = useCachedResult();
   const [loading, setLoading] = useState(true);
 
-  params = Array.isArray(params) ? params : [params];
+  const filteredParams = (Array.isArray(params) ? params : [params]).filter(
+    Boolean,
+  );
 
-  const cacheKey = `${pallet}-${storage}-${params.join("-")}`;
+  const cacheKey = `${pallet}-${storage}-${filteredParams.join("-")}`;
   const result = cachedResult[cacheKey];
 
   const fetch = useCallback(() => {
@@ -33,7 +35,6 @@ export function useStorage(
       return;
     }
 
-    const filteredParams = params.filter(Boolean);
     const meta = api?.query[pallet]?.[storage].meta;
     if (meta.type?.isMap && filteredParams.length !== 1) {
       setLoading(false);
@@ -70,7 +71,7 @@ export function useStorage(
     promise.finally(() => {
       setLoading(false);
     });
-  }, [api, pallet, storage, params, subscribe, cacheKey]);
+  }, [api, pallet, storage, filteredParams, subscribe, cacheKey]);
 
   useEffect(() => {
     if (!result) {
@@ -88,6 +89,11 @@ export function useStorage(
         if (count === 0) {
           subscribing = false;
 
+          setCachedResult((val) => {
+            delete val[cacheKey];
+            return val;
+          });
+
           if (unsub) {
             unsub();
             unsub = null;
@@ -95,7 +101,7 @@ export function useStorage(
         }
       }
     };
-  }, [result, fetch, subscribe]);
+  }, [result, fetch, subscribe, cacheKey]);
 
   return { result, loading };
 }
