@@ -15,10 +15,17 @@ const useLoading = createGlobalState(fetching);
 const useCachedMembers = createGlobalState({});
 
 export function useFellowshipCollectiveMembers() {
-  const { fellowshipMembers } = usePageProps();
+  const { section } = useCollectivesContext();
+
+  const { fellowshipMembers, ambassadorMembers } = usePageProps();
+  let membersFromServer;
+  if (section === "fellowship") {
+    membersFromServer = fellowshipMembers;
+  } else if (section === "ambassador") {
+    membersFromServer = ambassadorMembers;
+  }
 
   const [loading, setLoading] = useLoading();
-  const { section } = useCollectivesContext();
   const collectivePallet = useRankedCollectivePallet();
   const api = useContextApi();
   const [cachedMembers, setCachedMembers] = useCachedMembers();
@@ -56,5 +63,9 @@ export function useFellowshipCollectiveMembers() {
     }
   }, [members, fetch]);
 
-  return { members: members || fellowshipMembers, fetch, loading };
+  return {
+    members: members || membersFromServer,
+    fetch,
+    loading,
+  };
 }

@@ -1,6 +1,6 @@
 import { isNil, map } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
-import useAmbassadorCollectiveMembers from "next-common/hooks/ambassador/collective/useAmbassadorCollectiveMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -17,7 +17,7 @@ const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
 export default function AmbassadorSalaryPayout() {
   const [showPopup, setShowPopup] = useState(false);
   const address = useRealAddress();
-  const members = useAmbassadorCollectiveMembers();
+  const { members } = useFellowshipCollectiveMembers();
   const memberAddrs = map(members, "address");
   const isCollectiveMember = memberAddrs.includes(address);
 

@@ -1,17 +1,16 @@
 import { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import { ambassadorCollectiveMembersSelector } from "next-common/store/reducers/ambassador/collective";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
 import PrimaryButton from "next-common/lib/button/primary";
 import { SystemImportMember } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 const AmbassadorCoreImportPopup = dynamicPopup(() => import("./popup"));
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
-  const collectiveMembers = useSelector(ambassadorCollectiveMembersSelector);
+  const { members: collectiveMembers } = useFellowshipCollectiveMembers();
   const { members } = useFellowshipCoreMembers();
   const realAddress = useRealAddress();
 

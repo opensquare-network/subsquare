@@ -2,7 +2,7 @@ import { SystemImportMember } from "@osn/icons/subsquare";
 import { map } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { useMyAmbassadorSalaryClaimantFromContext } from "next-common/context/ambassador/myClaimant";
-import useAmbassadorCollectiveMembers from "next-common/hooks/ambassador/collective/useAmbassadorCollectiveMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import {
@@ -26,7 +26,7 @@ export default function Import() {
     useMyAmbassadorSalaryClaimantFromContext();
 
   const realAddress = useRealAddress();
-  const members = useAmbassadorCollectiveMembers();
+  const { members } = useFellowshipCollectiveMembers();
   const memberAddrs = map(members, "address");
 
   useEffect(() => {

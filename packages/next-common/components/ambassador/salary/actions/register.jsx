@@ -2,7 +2,7 @@ import { find, map } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { useMyAmbassadorSalaryClaimantFromContext } from "next-common/context/ambassador/myClaimant";
 import { usePageProps } from "next-common/context/page";
-import useAmbassadorCollectiveMembers from "next-common/hooks/ambassador/collective/useAmbassadorCollectiveMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
 import SecondaryButton from "next-common/lib/button/secondary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -17,7 +17,7 @@ const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
 );
 
 function useMySalary() {
-  const members = useAmbassadorCollectiveMembers();
+  const { members } = useFellowshipCollectiveMembers();
   const address = useRealAddress();
   const member = find(members, { address });
   const { ambassadorParams } = usePageProps();
@@ -38,7 +38,7 @@ function useMySalary() {
 export default function AmbassadorSalaryRegister() {
   const [disabled, setDisabled] = useState(true);
   const address = useRealAddress();
-  const members = useAmbassadorCollectiveMembers();
+  const { members } = useFellowshipCollectiveMembers();
   const memberAddrs = map(members, "address");
   const { claimant } = useMyAmbassadorSalaryClaimantFromContext();
   const [showPopup, setShowPopup] = useState(false);
