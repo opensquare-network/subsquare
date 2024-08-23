@@ -1,6 +1,6 @@
 import { usePageProps } from "next-common/context/page";
 import { useMemo } from "react";
-import AmbassadorCoreCommon from "next-common/components/ambassador/core/summary/common";
+import AmbassadorCoreCommon from "next-common/components/ambassador/core/common";
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import AmbassadorCoreMemberCard from "next-common/components/ambassador/core/members/card";
