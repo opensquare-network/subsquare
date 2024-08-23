@@ -188,7 +188,11 @@ export async function sendHydraDXMultiFeeEvmTx({
 }) {
   const evmSignerAddress = getEvmSignerAddress(signerAddress);
   const ethereum = await getEthereum();
-  const ok = await prepareEthereum({ ethereum, onError, signerAddress });
+  const ok = await prepareEthereum({
+    ethereum,
+    onError,
+    signerAddress: evmSignerAddress,
+  });
   if (!ok) {
     return;
   }
