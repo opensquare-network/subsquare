@@ -3,17 +3,17 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import nextApi from "next-common/services/nextApi";
 import { ambassadorCoreFeedsApiUri } from "next-common/services/url";
-import FellowshipCoreCommon from "next-common/components/fellowship/core/common";
+import AmbassadorCoreCommon from "next-common/components/ambassador/core/common";
 import FellowshipCoreFeedsContainer from "next-common/components/fellowship/core/feeds/container";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function AmbassadorCoreFeedsPage({ ambassadorCoreFeeds }) {
   return (
     <CollectivesProvider section="ambassador">
-      <FellowshipCoreCommon>
+      <AmbassadorCoreCommon>
         {/* todo: we may change the name of `FellowshipCoreFeedsContainer` to a common container */}
         <FellowshipCoreFeedsContainer feeds={ambassadorCoreFeeds} />
-      </FellowshipCoreCommon>
+      </AmbassadorCoreCommon>
     </CollectivesProvider>
   );
 }
