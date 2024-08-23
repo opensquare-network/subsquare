@@ -13,9 +13,8 @@ import { hexToNumber } from "viem";
 import { noop } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { createSendTxEventHandler } from "./sendSubstrateTx";
+import { DISPATCH_PRECOMPILE_ADDRESS } from "./sendEvmTx";
 
-export const DISPATCH_PRECOMPILE_ADDRESS =
-  "0x0000000000000000000000000000000000000401";
 export const CALL_PERMIT_ADDRESS = "0x000000000000000000000000000000000000080a";
 export const CALL_PERMIT_ABI =
   // eslint-disable-next-line quotes
@@ -35,10 +34,10 @@ async function dryRun(provider, tx) {
   await provider.call(tx);
 }
 
-async function createPermitMessageData({ provider, to, data, signerAddress }) {
+async function createPermitMessageData({ provider, data, signerAddress }) {
   let tx = {
     from: signerAddress,
-    to,
+    to: DISPATCH_PRECOMPILE_ADDRESS,
     data: `0x${Buffer.from(data).toString("hex")}`,
   };
 
@@ -136,7 +135,6 @@ async function signPermitMessageData({ provider, signerAddress, typedData }) {
 
 async function dispatchCall({
   api,
-  to = DISPATCH_PRECOMPILE_ADDRESS,
   provider,
   signerAddress,
   data,
@@ -147,7 +145,6 @@ async function dispatchCall({
 }) {
   const { message, typedData } = await createPermitMessageData({
     provider,
-    to,
     data,
     signerAddress,
   });

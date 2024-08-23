@@ -99,7 +99,6 @@ export async function sendEvmTx({
 }
 
 async function dispatchCall({
-  to = DISPATCH_PRECOMPILE_ADDRESS,
   provider,
   signer,
   signerAddress,
@@ -109,7 +108,7 @@ async function dispatchCall({
 }) {
   let tx = {
     from: signerAddress,
-    to,
+    to: DISPATCH_PRECOMPILE_ADDRESS,
     data: data,
   };
   await dryRun(provider, tx);
