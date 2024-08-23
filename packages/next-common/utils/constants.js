@@ -20,7 +20,6 @@ import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
 import rococo from "./consts/settings/rococo";
-import westendCollectives from "./consts/settings/westendCollectives";
 import collectives from "./consts/settings/collectives";
 import darwinia2 from "./consts/settings/darwinia";
 // import moonbeam from "./consts/settings/moonbeam";
@@ -48,7 +47,6 @@ export const nodes = [
   collectives,
   // crab,
   westend,
-  westendCollectives,
   crust,
   darwinia2,
   hydradx,
