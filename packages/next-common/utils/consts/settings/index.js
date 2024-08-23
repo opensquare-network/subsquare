@@ -32,6 +32,7 @@ import bifrostPolkadot from "./bifrostPolkadot";
 import vara from "./vara";
 import polkadotAssetHub from "./polkadotAssetHub";
 import shibuya from "./shibuya";
+import astar from "./astar";
 import { isNil } from "lodash-es";
 
 const settingsMap = {
@@ -39,6 +40,7 @@ const settingsMap = {
   kusama,
   acala,
   altair,
+  astar,
   basilisk,
   bifrost,
   calamari,

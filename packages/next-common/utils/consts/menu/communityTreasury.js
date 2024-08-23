@@ -15,7 +15,7 @@ export function getCommunityTreasuryMenu(summary) {
 
   return {
     name: Names.communityTreasury,
-    excludeToChains: getExcludeChains([Chains.shibuya]), //TODO: add Astar
+    excludeToChains: getExcludeChains([Chains.shibuya, Chains.astar]),
     icon: <MenuTreasury />,
     pathname: "/community-treasury",
     activeCount: totalActiveCount,

@@ -14,7 +14,7 @@ export function getCommunityCouncilMenu(summary) {
 
   return {
     name: Names.communityCouncil,
-    excludeToChains: getExcludeChains([Chains.shibuya]),
+    excludeToChains: getExcludeChains([Chains.shibuya, Chains.astar]),
     activeCount: activeCommunityMotions,
     icon: <MenuFellowship />,
     pathname: "/community-council",
