@@ -16,7 +16,6 @@ export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
 
 export async function sendEvmTx({
-  to,
   data,
   onStarted = noop,
   onInBlock = noop,
@@ -87,7 +86,6 @@ export async function sendEvmTx({
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = await provider.getSigner();
     await dispatchCall({
-      to,
       provider,
       signer,
       signerAddress: realSignerAddress,

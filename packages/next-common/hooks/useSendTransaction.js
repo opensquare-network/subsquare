@@ -8,6 +8,7 @@ import {
   maybeSendSignetTx,
   sendEvmTx,
   sendSubstrateTx,
+  sendHydraDXMultiFeeEvmTx,
 } from "next-common/utils/sendTransaction";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { useDispatch } from "react-redux";
@@ -24,6 +25,7 @@ import {
 import { noop } from "lodash-es";
 import { useSignetSdk } from "next-common/context/signet";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
+import isHydradx from "next-common/utils/isHydradx";
 
 function isShouldSendEvmTx(signerAccount) {
   const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
@@ -43,6 +45,31 @@ function isShouldSendSignetTx(signerAccount) {
 
 function isShouldSendMimirTx(signerAccount) {
   return signerAccount?.meta?.source === WalletTypes.MIMIR;
+}
+
+async function isShouldSendHydraDXMultiFeeTx(api, signerAccount) {
+  // Multi fee tx support on HydraDX chain only
+  if (!isHydradx()) {
+    return false;
+  }
+  // Make sure the chain has the multi fee tx feature
+  if (!api.query.multiTransactionPayment) {
+    return false;
+  }
+
+  const accountCurrency =
+    await api.query.multiTransactionPayment.accountCurrencyMap(
+      signerAccount?.address,
+    );
+  // If fee asset is not set, it use HDX as default
+  if (accountCurrency.isNone) {
+    return true;
+  }
+
+  // If fee asset is not WETH, it should use multi fee tx
+  const WETH = 20;
+  const currencyId = accountCurrency.unwrap();
+  return currencyId.toNumber() !== WETH;
 }
 
 export function useSendTransaction() {
@@ -152,6 +179,24 @@ export function useSendTransaction() {
         }
 
         if (isShouldSendEvmTx(signerAccount)) {
+          const hydradxMultiFee = await isShouldSendHydraDXMultiFeeTx(
+            api,
+            signerAccount,
+          );
+          if (hydradxMultiFee) {
+            await sendHydraDXMultiFeeEvmTx({
+              api,
+              data: tx.inner.toU8a(),
+              onStarted,
+              onInBlock: _onInBlock,
+              onSubmitted: _onSubmitted,
+              onFinalized: _onFinalized,
+              onError,
+              signerAddress: signerAccount?.address,
+            });
+            return;
+          }
+
           await sendEvmTx({
             data: tx.inner.toU8a(),
             onStarted,
