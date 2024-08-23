@@ -1,8 +1,9 @@
 import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
-import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
+import { astarLinks, astarThemeVars } from "./common/astar";
+import { defaultPostLabels } from "./common";
 
 const ProjectIconShibuyaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconShibuyaDark"),
@@ -28,33 +29,6 @@ const nodes = [
   },
 ];
 
-const links = [
-  {
-    name: "website",
-    url: "https://astar.network/",
-  },
-  {
-    name: "twitter",
-    url: "https://twitter.com/AstarNetwork",
-  },
-  {
-    name: "discord",
-    url: "https://discord.gg/astarnetwork",
-  },
-  {
-    name: "telegram",
-    url: "https://t.me/PlasmOfficial",
-  },
-  {
-    name: "github",
-    url: "https://github.com/AstarNetwork",
-  },
-  {
-    name: "youtube",
-    url: "https://www.youtube.com/c/AstarNetwork",
-  },
-];
-
 const shibuya = {
   value: Chains.shibuya,
   name: capitalize(Chains.shibuya),
@@ -69,7 +43,7 @@ const shibuya = {
   navLogo: ProjectLogoShibuyaLight,
   navLogoDark: ProjectLogoShibuyaDark,
   navPreferDark: true,
-  links,
+  links: astarLinks,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,
@@ -81,25 +55,7 @@ const shibuya = {
     democracy: true,
     referenda: false,
   },
-  cssVarsLight: {
-    theme100: "rgba(0,117,255,0.10)",
-    theme300: "rgba(0,117,255,0.40)",
-    theme500: "rgba(0,117,255,1)",
-    navigationBg: "rgba(2,6,23,1)",
-    navigationActive: "rgba(255,255,255,0.06)",
-    navigationBorder: "rgba(255,255,255,0.08)",
-    navigationText: "var(--textPrimaryContrast)",
-    navigationTextTertiary: "var(--textTertiaryContrast)",
-    navigationIcon: "var(--textSecondaryContrast)",
-  },
-  cssVarsDark: {
-    theme100: "rgba(0,117,255,0.10)",
-    theme300: "rgba(0,117,255,0.40)",
-    theme500: "rgba(0,117,255,1)",
-    navigationBg: "rgba(2,6,23,1)",
-    navigationActive: "rgba(38,41,56,1)",
-    navigationBorder: "var(--neutral300)",
-  },
+  ...astarThemeVars,
 };
 
 export default shibuya;

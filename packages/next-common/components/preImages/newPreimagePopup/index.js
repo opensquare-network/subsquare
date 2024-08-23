@@ -13,6 +13,7 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -108,7 +109,7 @@ export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
           dispatch(incPreImagesTrigger());
         }}
         onFinalized={() => dispatch(incPreImagesTrigger())}
-        onClose={onCreated === noop ? onClose : undefined}
+        onClose={isEmptyFunc(onCreated) ? onClose : undefined}
       />
     </Popup>
   );

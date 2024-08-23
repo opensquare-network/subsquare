@@ -18,13 +18,6 @@ const ProjectLogoPolkadotCollectivesLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesLight"),
 );
 
-const testEndpoints = [
-  {
-    name: "Subsquare",
-    url: "ws://127.0.0.1:8000",
-    // url: "wss://tc.subsquare.io",
-  },
-];
 
 const collectivesEndpoints = [
   {
@@ -73,10 +66,7 @@ const collectives = {
   decimals: 10,
   blockTime: 12000,
   ss58Format: 0,
-  endpoints:
-    process.env.NEXT_PUBLIC_TEST === "true"
-      ? testEndpoints
-      : collectivesEndpoints,
+  endpoints: collectivesEndpoints,
   links: collectiveLinks,
   avatar: ProjectIconPolkadotCollectivesLight,
   darkAvatar: ProjectIconPolkadotCollectivesDark,
@@ -84,7 +74,8 @@ const collectives = {
   navLogoDark: ProjectLogoPolkadotCollectivesDark,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
-  hasStatescan: true,
+  hasSubscan: true,
+  subscanDomain: "collectives-polkadot",
   hasFellowshipParams: true,
   hasFellowshipCore: true,
   hasPolkassemblyDiscussions: false,

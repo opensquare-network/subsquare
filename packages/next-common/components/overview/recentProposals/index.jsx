@@ -14,6 +14,8 @@ import { useRecentProposalAdvisoryCommittee } from "./advisoryCommittee";
 import Chains from "next-common/utils/consts/chains";
 import { partition } from "lodash-es";
 import EmptyRecentProposals from "./empty";
+import { useRecentProposalCommunityCouncil } from "./communityCouncil";
+import { useRecentProposalCommunityTreasury } from "./communityTreasury";
 
 export default function RecentProposals() {
   const chain = useChain();
@@ -31,6 +33,8 @@ export default function RecentProposals() {
   const financialCouncil = useRecentProposalFinancialCouncil();
   const alliance = useRecentProposalAlliance();
   const advisoryCommittee = useRecentProposalAdvisoryCommittee();
+  const communityCouncil = useRecentProposalCommunityCouncil();
+  const communityTreasury = useRecentProposalCommunityTreasury();
 
   const {
     modules: { referenda: hasReferenda, fellowship: hasFellowship },
@@ -45,6 +49,8 @@ export default function RecentProposals() {
     financialCouncil,
     alliance,
     advisoryCommittee,
+    communityCouncil,
+    communityTreasury,
     (hasDiscussions || chainSettings.hasDiscussionsForumTopics) && discussions,
   ]
     .filter(Boolean)

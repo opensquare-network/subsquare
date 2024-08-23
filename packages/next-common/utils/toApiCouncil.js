@@ -19,6 +19,8 @@ export default function toApiCouncil(chain, type) {
     return "openTechCommitteeCollective";
   } else if (type === detailPageCategory.ALLIANCE_MOTION) {
     return "allianceMotion";
+  } else if (type === detailPageCategory.COMMUNITY_MOTION) {
+    return "communityCouncil";
   }
 
   return "council";

@@ -16,7 +16,7 @@ export default function useTxSubmission({
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
-  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
+  const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
 
   const doSubmit = useCallback(async () => {
     if (!api) {
@@ -36,7 +36,7 @@ export default function useTxSubmission({
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
-    await sendTx({
+    await sendTxFunc({
       api,
       tx,
       onSubmitted,
@@ -48,7 +48,7 @@ export default function useTxSubmission({
     dispatch,
     signerAccount,
     getTxFunc,
-    sendTx,
+    sendTxFunc,
     onSubmitted,
     onInBlock,
     onFinalized,
