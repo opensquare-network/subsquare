@@ -1,6 +1,6 @@
 import { usePageProps } from "next-common/context/page";
 import { useMemo } from "react";
-import FellowshipCoreCommon from "next-common/components/fellowship/core/common";
+import AmbassadorCoreCommon from "next-common/components/ambassador/core/summary/common";
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import AmbassadorCoreMemberCard from "next-common/components/ambassador/core/members/card";
@@ -35,7 +35,7 @@ function AmbassadorCandidatesPageImpl() {
   return (
     <FellowshipMembersLoadable>
       <ActiveReferendaProvider pallet="ambassadorReferenda">
-        <FellowshipCoreCommon>
+        <AmbassadorCoreCommon>
           <div className="mb-4 pr-6 leading-8">
             <FellowshipMemberTabs members={members} section="ambassador" />
           </div>
@@ -53,7 +53,7 @@ function AmbassadorCandidatesPageImpl() {
           ) : (
             <FellowshipMembersEmpty />
           )}
-        </FellowshipCoreCommon>
+        </AmbassadorCoreCommon>
       </ActiveReferendaProvider>
     </FellowshipMembersLoadable>
   );
