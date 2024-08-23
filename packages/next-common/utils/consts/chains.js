@@ -35,6 +35,7 @@ const Chains = {
   polkadotAssetHub: "polkadot-assethub",
   vara: "vara",
   shibuya: "shibuya",
+  astar: "astar",
 };
 
 export default Chains;

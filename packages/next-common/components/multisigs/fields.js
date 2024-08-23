@@ -3,7 +3,7 @@ import { cn, textEllipsis } from "next-common/utils";
 import { useState } from "react";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import AddressUser from "next-common/components/user/addressUser";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -11,10 +11,15 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 const CallPopup = dynamicPopup(() => import("./callPopup"));
 
 export function When({ height, index }) {
-  const chain = useChain();
+  const { hasSubscan, subscanDomain } = useChainSettings();
+  const domain = subscanDomain || chain;
+  if (!hasSubscan) {
+    return null;
+  }
+
   return (
     <ExternalLink
-      href={`https://${chain}.subscan.io/extrinsic/${height}-${index}`}
+      href={`https://${domain}.subscan.io/extrinsic/${height}-${index}`}
       className="hover:!underline flex cursor-pointer gap-[4px] text-textPrimary"
       externalIcon={false}
     >

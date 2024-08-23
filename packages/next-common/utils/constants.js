@@ -20,7 +20,6 @@ import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
 import rococo from "./consts/settings/rococo";
-import westendCollectives from "./consts/settings/westendCollectives";
 import collectives from "./consts/settings/collectives";
 import darwinia2 from "./consts/settings/darwinia";
 // import moonbeam from "./consts/settings/moonbeam";
@@ -30,6 +29,7 @@ import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
 import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
 import shibuya from "next-common/utils/consts/settings/shibuya";
+import astar from "next-common/utils/consts/settings/astar";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -40,6 +40,7 @@ export const nodes = [
   kusama,
   acala,
   altair,
+  astar,
   basilisk,
   bifrost,
   bifrostPolkadot,
@@ -48,7 +49,6 @@ export const nodes = [
   collectives,
   // crab,
   westend,
-  westendCollectives,
   crust,
   darwinia2,
   hydradx,

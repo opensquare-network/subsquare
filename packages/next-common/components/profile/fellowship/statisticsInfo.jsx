@@ -49,17 +49,17 @@ function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
             />
           </LoadableContent>
         </SummaryItem>
-        <SummaryItem title="Promotion Times">
+        <SummaryItem title="Promotion">
           <LoadableContent isLoading={loading || isNil(value?.promotionTimes)}>
             {value?.promotionTimes}
           </LoadableContent>
         </SummaryItem>
-        <SummaryItem title="Demotion Times">
+        <SummaryItem title="Demotion">
           <LoadableContent isLoading={loading || isNil(value?.demotionTimes)}>
             {value?.demotionTimes}
           </LoadableContent>
         </SummaryItem>
-        <SummaryItem title="Retention Times">
+        <SummaryItem title="Retention">
           <LoadableContent isLoading={loading || isNil(value?.retentionTimes)}>
             {value?.retentionTimes}
           </LoadableContent>

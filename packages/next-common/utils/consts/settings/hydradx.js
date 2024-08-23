@@ -28,10 +28,6 @@ const endpoints = [
     url: "wss://rpc.helikon.io/hydradx",
   },
   {
-    name: "Helikon",
-    url: "wss://rpc.helikon.io/hydradx",
-  },
-  {
     name: "IBP1",
     url: "wss://hydradx.paras.ibp.network",
   },

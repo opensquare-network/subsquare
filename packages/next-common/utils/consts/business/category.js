@@ -21,6 +21,8 @@ const businessCategory = {
   allianceMotions: "Alliance Motions",
   allianceAnnouncements: "Alliance Announcements",
   openTechCommitteeProposals: "Open Tech. Comm. Proposals",
+  communityMotions: "Community Motions",
+  communityTreasuryProposals: "Community Treasury Proposals",
 };
 
 // TODO: add more category
@@ -54,6 +56,8 @@ export const detailPageCategory = {
   ALLIANCE_ANNOUNCEMENT: "alliance/announcements",
   TREASURY_COUNCIL_MOTION: "treasury-council/motions",
   OPEN_TECH_COMM_PROPOSAL: "open-techcomm/proposals",
+  COMMUNITY_MOTION: "community-council/motions",
+  COMMUNITY_TREASURY_PROPOSAL: "community-treasury/proposals",
 };
 
 export default businessCategory;

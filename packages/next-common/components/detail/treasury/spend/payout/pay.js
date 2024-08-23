@@ -1,4 +1,4 @@
-import { useOnchainData } from "next-common/context/post";
+import { useOnchainData, usePostState } from "next-common/context/post";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useMemo, useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -11,10 +11,15 @@ export default function TreasurySpendPay() {
   const { index } = useOnchainData() || {};
   const onchainStatus = useSubTreasurySpend(index);
   const [showPopup, setShowPopup] = useState(false);
+  const state = usePostState();
 
   const disabled = useMemo(() => {
     return !has(onchainStatus?.status, "pending");
   }, [onchainStatus]);
+
+  if (["Paid", "Processed"].includes(state)) {
+    return null;
+  }
 
   return (
     <>

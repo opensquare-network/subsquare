@@ -21,6 +21,15 @@ import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import getChainSettings from "next-common/utils/consts/settings";
 import { overviewApi } from "../url";
 import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
+import {
+  getCommunityCouncilMenu,
+  Names as communityCouncilNames,
+} from "next-common/utils/consts/menu/communityCouncil";
+import {
+  getCommunityTreasuryMenu,
+  Names as communityTreasuryNames,
+} from "next-common/utils/consts/menu/communityTreasury";
+import { isShibuyaChain } from "next-common/utils/chain";
 
 export const recentProposalFetchParams = {
   pageSize: 10,
@@ -183,6 +192,29 @@ export async function fetchRecentProposalsProps(summary = {}) {
     recentProposalsData[
       asAdvisoryCommitteeNames.advisoryCommittee
     ].advisoryMotions = await fetcher(overviewApi.advisoryMotions);
+  }
+
+  if (isShibuyaChain(CHAIN)) {
+    // community council
+    const communityCouncilMenu = getCommunityCouncilMenu();
+    const hasCommunityCouncil =
+      !communityCouncilMenu.excludeToChains.includes(CHAIN);
+    if (hasCommunityCouncil) {
+      recentProposalsData[communityCouncilNames.communityCouncil] = {};
+      recentProposalsData[
+        communityCouncilNames.communityCouncil
+      ].communityMotions = await fetcher(overviewApi.communityMotions);
+    }
+
+    // community treasury
+    const communityTreasuryMenu = getCommunityTreasuryMenu();
+    const hasCommunityTreasuryProposalMenu =
+      !communityTreasuryMenu.excludeToChains.includes(CHAIN);
+    if (hasCommunityTreasuryProposalMenu) {
+      recentProposalsData[communityTreasuryNames.communityTreasury] = {};
+      recentProposalsData[communityTreasuryNames.communityTreasury].proposals =
+        await fetcher(overviewApi.communityTreasuryProposals);
+    }
   }
 
   return recentProposalsData;
