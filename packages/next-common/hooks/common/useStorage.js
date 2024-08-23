@@ -18,10 +18,10 @@ export function useStorage(
   const [cachedResult, setCachedResult] = useCachedResult();
   const [loading, setLoading] = useState(true);
 
+  params = Array.isArray(params) ? params : [params];
+
   const cacheKey = `${pallet}-${storage}-${params.join("-")}`;
   const result = cachedResult[cacheKey];
-
-  params = Array.isArray(params) ? params : [params];
 
   const fetch = useCallback(() => {
     if (!api || subscribing) {
