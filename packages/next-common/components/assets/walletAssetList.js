@@ -13,9 +13,9 @@ import AssetsList from "./assetsList";
 import { isNil } from "lodash-es";
 import { ProxyTip } from "next-common/components/overview/accountInfo/accountInfoPanel.js";
 import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
-import AssetHubTabs from "./tabs";
+import AssetHubTabs from "next-common/components/assets/tabs/index";
 import { useEffect } from "react";
-import AssetsTransfersHistory from "./transferHistory";
+import AssetsTransfersHistory from "next-common/components/assets/transferHistory/index";
 
 function HeadContent() {
   const address = useRealAddress();
@@ -61,7 +61,7 @@ export function Title({ assetsCount }) {
   );
 }
 
-function AssetsTabContent({ setTotalCount }) {
+function Assets({ setTotalCount }) {
   const assets = useMyAssets();
   useEffect(() => {
     if (assets && setTotalCount) {
@@ -79,7 +79,7 @@ function AssetsTabContent({ setTotalCount }) {
   );
 }
 
-function TransfersTabContent({ setTotalCount }) {
+function Transfers({ setTotalCount }) {
   return (
     <div>
       <SecondaryCard>
@@ -94,8 +94,8 @@ export default function WalletAssetList() {
     <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
       <div className="flex flex-col gap-[16px]">
         <AssetHubTabs>
-          <AssetsTabContent />
-          <TransfersTabContent />
+          <Assets />
+          <Transfers />
         </AssetHubTabs>
       </div>
     </ListLayout>
