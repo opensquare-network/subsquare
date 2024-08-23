@@ -4,7 +4,7 @@ import { createGlobalState } from "react-use";
 
 let subscribing = false;
 let unsub;
-let count = 0;
+let subscribeCount = 0;
 
 const useCachedResult = createGlobalState({});
 
@@ -79,14 +79,14 @@ export function useStorage(
     }
 
     if (subscribe) {
-      count++;
+      subscribeCount++;
     }
 
     return () => {
       if (subscribe) {
-        count--;
+        subscribeCount--;
 
-        if (count === 0) {
+        if (subscribeCount === 0) {
           subscribing = false;
 
           setCachedResult((val) => {
