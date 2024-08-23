@@ -1,6 +1,4 @@
 import { useFellowshipSalaryCycleData } from "next-common/hooks/fellowship/salary/useFellowshipSalaryCycleData";
-import { useSelector } from "react-redux";
-import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
 import { useNavCollapsed } from "next-common/context/nav";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { cn } from "next-common/utils";
@@ -12,6 +10,7 @@ import SalaryStatsRegistrationItem from "next-common/components/fellowship/salar
 import SalaryStatsUnregisteredItem from "next-common/components/fellowship/salary/cycles/summary/unregisteredItem";
 import SalaryStatsTimeRemainItem from "next-common/components/fellowship/salary/cycles/summary/timeRemainItem";
 import SummaryItem from "next-common/components/summary/layout/item";
+import { useFellowshipSalaryStats } from "../../../../../hooks/fellowship/salary/useFellowshipSalaryStats";
 
 export function DesktopPlaceHolderItem() {
   const [navCollapsed] = useNavCollapsed();
@@ -31,7 +30,7 @@ export function MobilePlaceHolderItem() {
 
 export default function FellowshipSalaryStats() {
   const [navCollapsed] = useNavCollapsed();
-  const stats = useSelector(fellowshipSalaryStatusSelector);
+  const stats = useFellowshipSalaryStats();
   const cycleData = useFellowshipSalaryCycleData(stats?.cycleIndex);
   const {
     cycleIndex,

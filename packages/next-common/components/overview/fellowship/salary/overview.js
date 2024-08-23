@@ -7,13 +7,11 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function FellowshipSalaryOverview() {
   return (
-    <>
+    <CollectivesProvider>
       <TitleContainer className="mb-4">Fellowship Salary Cycle</TitleContainer>
 
       <SecondaryCard>
-        <CollectivesProvider>
-          <FellowshipSalaryStats />
-        </CollectivesProvider>
+        <FellowshipSalaryStats />
 
         <div className="mt-2 flex justify-end gap-x-4">
           <Link
@@ -26,6 +24,6 @@ export default function FellowshipSalaryOverview() {
           <FellowshipSalaryStatsActiveCycleDetailLink />
         </div>
       </SecondaryCard>
-    </>
+    </CollectivesProvider>
   );
 }

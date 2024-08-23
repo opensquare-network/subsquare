@@ -4,14 +4,12 @@ import { useRouter } from "next/router";
 import { isNil } from "lodash-es";
 import SecondaryButton from "next-common/lib/button/secondary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import Tooltip from "next-common/components/tooltip";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
-import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
 
 const FellowshipSalaryBumpPopup = dynamicPopup(() => import("./popup"));
 
@@ -19,14 +17,8 @@ export default function FellowshipSalaryBump() {
   const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
   const address = useRealAddress();
-  const { section } = useCollectivesContext();
-  let statusSelector;
-  if (section === "fellowship") {
-    statusSelector = fellowshipSalaryStatusSelector;
-  } else if (section === "ambassador") {
-    statusSelector = ambassadorSalaryStatusSelector;
-  }
-  const { cycleStart } = useSelector(statusSelector) || {};
+
+  const { cycleStart } = useFellowshipSalaryStats();
   const { registrationPeriod, payoutPeriod } = useSalaryFellowshipPeriods();
   const nextCycleStart =
     cycleStart + (registrationPeriod || null) + (payoutPeriod || null);
