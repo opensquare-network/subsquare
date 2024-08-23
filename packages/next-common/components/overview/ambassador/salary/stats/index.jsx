@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { useNavCollapsed } from "next-common/context/nav";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { cn } from "next-common/utils";
@@ -13,12 +12,12 @@ import {
   DesktopPlaceHolderItem,
   MobilePlaceHolderItem,
 } from "next-common/components/overview/fellowship/salary/stats";
-import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
 import { useAmbassadorSalaryCycleData } from "next-common/hooks/ambassador/salary/useAmbassadorSalaryCycleData";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 
 export default function AmbassadorSalaryStats() {
   const [navCollapsed] = useNavCollapsed();
-  const stats = useSelector(ambassadorSalaryStatusSelector);
+  const stats = useFellowshipSalaryStats();
   const cycleData = useAmbassadorSalaryCycleData(stats?.cycleIndex);
   const {
     cycleIndex,
