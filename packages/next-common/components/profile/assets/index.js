@@ -1,5 +1,4 @@
 import useMyAssets from "next-common/components/assets/useMyAssets";
-import { Title } from "next-common/components/assets/walletAssetList";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import ProfileAssetsList from "./assetsList";
 import { useRouter } from "next/router";
