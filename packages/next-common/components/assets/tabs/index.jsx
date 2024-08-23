@@ -1,24 +1,37 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, memo } from "react";
 import TabsList from "next-common/components/tabsList";
 
-const tabs = Object.freeze({
+const TABS = Object.freeze({
   assets: 1,
   transfers: 2,
 });
 
-export default function AssetHubTabs({ children }) {
-  const [activeTabId, setActiveTabId] = useState(tabs.assets);
+const TabLabel = ({ label, count, isActive }) => (
+  <span
+    className={`font-bold text-[16px] leading-[24px] ${
+      isActive ? "text-textPrimary" : "text-textTertiary"
+    }`}
+  >
+    {label}
+    <span className="ml-[4px] font-medium text-[16px] leading-[24px] text-textTertiary">
+      {count}
+    </span>
+  </span>
+);
+
+const AssetHubTabs = ({ children }) => {
+  const [activeTabId, setActiveTabId] = useState(TABS.assets);
   const [totalCounts, setTotalCounts] = useState({
     assets: "",
     transfers: "",
   });
 
-  const setTotalCount = useCallback((tabId, count) => {
+  const setTotalCount = useCallback((tabKey, count) => {
     setTotalCounts((prevCounts) => {
-      if (prevCounts[tabId] !== count) {
+      if (prevCounts[tabKey] !== count) {
         return {
           ...prevCounts,
-          [tabId]: count,
+          [tabKey]: count,
         };
       }
       return prevCounts;
@@ -27,37 +40,23 @@ export default function AssetHubTabs({ children }) {
 
   const tabsListItems = [
     {
-      id: tabs.assets,
+      id: TABS.assets,
       label: (
-        <span
-          className={`ml-[16px] font-bold text-[16px] leading-[24px] ${
-            activeTabId === tabs.assets
-              ? "text-textPrimary"
-              : "text-textTertiary"
-          }`}
-        >
-          Assets
-          <span className="ml-[4px] font-medium text-[16px] leading-[24px] text-textTertiary">
-            {totalCounts.assets}
-          </span>
-        </span>
+        <TabLabel
+          label="Assets"
+          count={totalCounts.assets}
+          isActive={activeTabId === TABS.assets}
+        />
       ),
     },
     {
-      id: tabs.transfers,
+      id: TABS.transfers,
       label: (
-        <span
-          className={`ml-[16px] font-bold text-[16px] leading-[24px] ${
-            activeTabId === tabs.transfers
-              ? "text-textPrimary"
-              : "text-textTertiary"
-          }`}
-        >
-          Transfers
-          <span className="ml-[4px] font-medium text-[16px] leading-[24px] text-textTertiary">
-            {totalCounts.transfers}
-          </span>
-        </span>
+        <TabLabel
+          label="Transfers"
+          count={totalCounts.transfers}
+          isActive={activeTabId === TABS.transfers}
+        />
       ),
     },
   ];
@@ -67,11 +66,11 @@ export default function AssetHubTabs({ children }) {
       <TabsList
         tabs={tabsListItems}
         onTabClick={(item) => setActiveTabId(item.id)}
+        className="pl-6"
       />
       {React.Children.map(children, (child, index) => {
-        const tabId = index + 1;
-        const isActive = activeTabId === tabId;
-        const tabKey = tabId === tabs.assets ? "assets" : "transfers";
+        const tabKey = Object.keys(TABS)[index];
+        const isActive = activeTabId === TABS[tabKey];
 
         return (
           <div className={isActive ? "" : "hidden"}>
@@ -83,4 +82,6 @@ export default function AssetHubTabs({ children }) {
       })}
     </>
   );
-}
+};
+
+export default memo(AssetHubTabs);
