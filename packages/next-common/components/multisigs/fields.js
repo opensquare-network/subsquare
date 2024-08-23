@@ -12,6 +12,7 @@ const CallPopup = dynamicPopup(() => import("./callPopup"));
 
 export function When({ height, index }) {
   const { hasSubscan, subscanDomain } = useChainSettings();
+  const chain = useChain();
   const domain = subscanDomain || chain;
   if (!hasSubscan) {
     return null;
