@@ -2,7 +2,8 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import dynamic from "next/dynamic";
-import astarSettings from "./astar";
+import { astarLinks, astarThemeVars } from "./common/astar";
+import { defaultPostLabels } from "./common";
 
 const ProjectIconShibuyaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconShibuyaDark"),
@@ -29,18 +30,32 @@ const nodes = [
 ];
 
 const shibuya = {
-  ...astarSettings,
   value: Chains.shibuya,
   name: capitalize(Chains.shibuya),
   identity: Chains.shibuya,
   symbol: "SBY",
+  decimals: 18,
+  blockTime: 12000,
+  ss58Format: 5,
   endpoints: nodes,
   avatar: ProjectIconShibuyaLight,
   darkAvatar: ProjectIconShibuyaDark,
   navLogo: ProjectLogoShibuyaLight,
   navLogoDark: ProjectLogoShibuyaDark,
+  navPreferDark: true,
+  links: astarLinks,
   group: MenuGroups.Solochain,
+  postLabels: defaultPostLabels,
+  hasSubscan: true,
+  hasDiscussions: true,
+  hasTechComm: true,
+  hasTipsModule: false,
   description: "Shibuya is the testnet of Shiden (a sister chain of Astar).",
+  modules: {
+    democracy: true,
+    referenda: false,
+  },
+  ...astarThemeVars,
 };
 
 export default shibuya;
