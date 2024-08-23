@@ -37,7 +37,7 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
 
   useEffect(() => {
     if (value && !loading) {
-      const totalCount = value?.items?.length || 0;
+      const totalCount = value?.total || 0;
       setTotalCount(totalCount);
       setTotal(totalCount);
       setRowData(value?.items || []);
