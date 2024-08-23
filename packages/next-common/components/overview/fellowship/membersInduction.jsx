@@ -4,10 +4,8 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import Induct from "next-common/components/fellowship/core/summary/induct";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useFellowshipCanInductMember } from "next-common/hooks/fellowship/useFellowshipCanInductMember";
-import useFetchFellowshipMembers from "next-common/hooks/fellowship/collective/useFetchFellowshipMembers";
 
 export default function MembersInduction({ className }) {
-  useFetchFellowshipMembers();
   const realAddress = useRealAddress();
   const canInductMember = useFellowshipCanInductMember();
 

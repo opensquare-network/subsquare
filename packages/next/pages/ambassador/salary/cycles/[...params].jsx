@@ -1,7 +1,6 @@
 import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salary/cycles/layout";
 import FellowshipSalaryCycleDetailNotFound from "next-common/components/fellowship/salary/cycles/notFound";
 import FellowshipSalaryCycleDetailTabsList from "next-common/components/fellowship/salary/cycles/tabsList";
-import useFetchAmbassadorCollectiveMembers from "next-common/hooks/ambassador/collective/useFetchAmbassadorCollectiveMembers";
 import useFetchAmbassadorSalaryClaimants from "next-common/hooks/ambassador/salary/useFetchAmbassadorSalaryClaimants";
 import nextApi from "next-common/services/nextApi";
 import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide/ambassador/common";
@@ -19,7 +18,6 @@ import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/use
 
 export default function AmbassadorSalaryCyclePage({ cycle, ambassadorParams }) {
   useFetchAmbassadorSalaryClaimants();
-  useFetchAmbassadorCollectiveMembers();
   useSubFellowshipSalaryStats("ambassadorSalary");
 
   return (

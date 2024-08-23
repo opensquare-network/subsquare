@@ -3,7 +3,6 @@ import FellowshipSalarySummary from "./summary";
 import useFetchFellowshipSalaryClaimants from "next-common/hooks/fellowship/salary/useFetchFellowshipSalaryClaimants";
 import FellowshipSalarySummaryActions from "next-common/components/fellowship/salary/summary/actions";
 import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
-import useFetchFellowshipMembers from "next-common/hooks/fellowship/collective/useFetchFellowshipMembers";
 import { MySalaryClaimantProvider } from "next-common/context/fellowship/myClaimant";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
@@ -16,7 +15,6 @@ export default function FellowshipSalaryCommon({ children, ...props }) {
   const { fellowshipParams } = usePageProps();
   useFetchFellowshipSalaryClaimants();
   useSubFellowshipSalaryStats();
-  useFetchFellowshipMembers();
 
   return (
     <CollectivesProvider params={fellowshipParams}>

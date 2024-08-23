@@ -1,10 +1,9 @@
 import StatisticsExpenditure from "next-common/components/fellowship/statistics/expenditure";
 import StatisticsMembership from "next-common/components/fellowship/statistics/membership";
-import { useSelector } from "react-redux";
-import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function FellowshipCollectivesStatistics() {
-  const members = useSelector(fellowshipCollectiveMembersSelector);
+  const { members } = useFellowshipCollectiveMembers();
 
   return (
     <div className="flex flex-col gap-y-4">
