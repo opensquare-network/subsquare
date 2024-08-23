@@ -9,8 +9,8 @@ const tabs = Object.freeze({
 export default function AssetHubTabs({ children }) {
   const [activeTabId, setActiveTabId] = useState(tabs.assets);
   const [totalCounts, setTotalCounts] = useState({
-    assets: 0,
-    transfers: 0,
+    assets: "",
+    transfers: "",
   });
 
   const setTotalCount = (tabId, count) => {
@@ -25,14 +25,14 @@ export default function AssetHubTabs({ children }) {
       id: tabs.assets,
       label: (
         <span
-          className={`font-bold text-[16px] leading-[24px] ${
+          className={`ml-[24px] font-bold text-[16px] leading-[24px] ${
             activeTabId === tabs.assets
               ? "text-textPrimary"
               : "text-textTertiary"
           }`}
         >
           Assets
-          <span className="ml-[8px] font-medium text-[16px] leading-[24px] text-textTertiary">
+          <span className="ml-[4px] font-medium text-[16px] leading-[24px] text-textTertiary">
             {totalCounts.assets}
           </span>
         </span>
@@ -49,7 +49,7 @@ export default function AssetHubTabs({ children }) {
           }`}
         >
           Transfers
-          <span className="ml-[8px] font-medium text-[16px] leading-[24px] text-textTertiary">
+          <span className="ml-[4px] font-medium text-[16px] leading-[24px] text-textTertiary">
             {totalCounts.transfers}
           </span>
         </span>
@@ -63,18 +63,14 @@ export default function AssetHubTabs({ children }) {
         tabs={tabsListItems}
         onTabClick={(item) => setActiveTabId(item.id)}
       />
-      {React.Children.map(children, (child, index) => {
-        if (activeTabId === tabs.assets && index === 0) {
-          return React.cloneElement(child, {
-            setTotalCount: (count) => setTotalCount("assets", count),
-          });
-        } else if (activeTabId === tabs.transfers && index === 1) {
-          return React.cloneElement(child, {
-            setTotalCount: (count) => setTotalCount("transfers", count),
-          });
-        }
-        return null;
-      })}
+      {React.Children.map(children, (child, index) => (
+        <div className={`${activeTabId === index + 1 ? "" : "hidden"}`}>
+          {React.cloneElement(child, {
+            setTotalCount: (count) =>
+              setTotalCount(Object.keys(tabs)[index], count),
+          })}
+        </div>
+      ))}
     </>
   );
 }
