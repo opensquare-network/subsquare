@@ -10,14 +10,15 @@ import { useAssetsTransfersHistoryAmountColumn } from "./columns/amount";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
 
-export default function AssetsTransfersHistory({ setTotalCount }) {
+function useColumnsDef() {
   const tokenColumn = useAssetsTransfersHistoryTokenColumn();
   const idColumn = useAssetsTransfersHistoryIdColumn();
   const fromColumn = useAssetsTransfersHistoryFromColumn();
   const toColumn = useAssetsTransfersHistoryToColumn();
   const timeAgeColumn = useAssetsTransfersHistoryTimeAgeColumn();
   const amountColumn = useAssetsTransfersHistoryAmountColumn();
-  const columnsDef = [
+
+  return [
     tokenColumn,
     idColumn,
     fromColumn,
@@ -25,8 +26,12 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
     timeAgeColumn,
     amountColumn,
   ];
-  const [total, setTotal] = useState(0);
+}
+
+export default function AssetsTransfersHistory({ setTotalCount }) {
+  const columnsDef = useColumnsDef();
   const [rowData, setRowData] = useState([]);
+  const [total, setTotal] = useState(0);
 
   const { page, component: pageComponent } = usePaginationComponent(
     total,
@@ -42,7 +47,7 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
       setTotal(totalCount);
       setRowData(value?.items || []);
     }
-  }, [value, loading]);
+  }, [value, loading, setTotalCount]);
 
   return (
     <div>
