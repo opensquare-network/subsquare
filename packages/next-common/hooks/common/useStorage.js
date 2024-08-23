@@ -4,18 +4,24 @@ import { createGlobalState } from "react-use";
 
 let subscribing = false;
 let unsub;
+let count = 0;
 
-const useResult = createGlobalState();
+const useCachedResult = createGlobalState({});
 
 export function useStorage(
-  pallet,
-  storage,
-  params,
+  pallet = "",
+  storage = "",
+  params = [],
   { subscribe = false } = {},
 ) {
   const api = useContextApi();
-  const [result, setResult] = useResult();
+  const [cachedResult, setCachedResult] = useCachedResult();
   const [loading, setLoading] = useState(true);
+
+  const cacheKey = `${pallet}-${storage}-${params.join("-")}`;
+  const result = cachedResult[cacheKey];
+
+  params = Array.isArray(params) ? params : [params];
 
   const fetch = useCallback(() => {
     if (!api || subscribing) {
@@ -26,8 +32,6 @@ export function useStorage(
       setLoading(false);
       return;
     }
-
-    params = Array.isArray(params) ? params : [params];
 
     const filteredParams = params.filter(Boolean);
     const meta = api?.query[pallet]?.[storage].meta;
@@ -43,29 +47,55 @@ export function useStorage(
     if (subscribe) {
       subscribing = true;
       promise = storageQueryFn(...filteredParams, (args) => {
-        setResult(args);
+        setCachedResult((val) => {
+          return {
+            ...val,
+            [cacheKey]: args,
+          };
+        });
       }).then((fn) => {
         unsub = fn;
       });
     } else {
-      promise = storageQueryFn(...filteredParams).then(setResult);
+      promise = storageQueryFn(...filteredParams).then((resp) => {
+        setCachedResult((val) => {
+          return {
+            ...val,
+            [cacheKey]: resp,
+          };
+        });
+      });
     }
 
     promise.finally(() => {
       setLoading(false);
     });
-  }, [api, pallet, storage, params, subscribe]);
+  }, [api, pallet, storage, params, subscribe, cacheKey]);
 
   useEffect(() => {
     if (!result) {
       fetch();
     }
 
+    if (subscribe) {
+      count++;
+    }
+
     return () => {
-      unsub?.();
-      subscribing = false;
+      if (subscribe) {
+        count--;
+
+        if (count === 0) {
+          subscribing = false;
+
+          if (unsub) {
+            unsub();
+            unsub = null;
+          }
+        }
+      }
     };
-  }, [result, fetch]);
+  }, [result, fetch, subscribe]);
 
   return { result, loading };
 }
