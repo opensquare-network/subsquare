@@ -1,6 +1,6 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
-import AmbassadorCoreCommon from "next-common/components/ambassador/core/common";
+import FellowshipCoreCommon from "next-common/components/fellowship/core/common";
 import MyAmbassadorMemberStatus from "next-common/components/collectives/core/member/myStatus";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
@@ -14,10 +14,10 @@ export default function AmbassadorMemberCommon({ children, params }) {
 
   return (
     <ActiveReferendaProvider pallet="ambassadorReferenda">
-      <AmbassadorCoreCommon>
+      <FellowshipCoreCommon>
         <MyAmbassadorMemberStatus member={mine} params={params} />
         {children}
-      </AmbassadorCoreCommon>
+      </FellowshipCoreCommon>
     </ActiveReferendaProvider>
   );
 }

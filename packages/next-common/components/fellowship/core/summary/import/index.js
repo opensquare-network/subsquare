@@ -7,9 +7,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
-const FellowshipCoreImportPopup = dynamicPopup(() =>
-  import("next-common/components/fellowship/core/summary/import/popup"),
-);
+const FellowshipCoreImportPopup = dynamicPopup(() => import("./popup"));
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
