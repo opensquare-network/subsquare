@@ -16,7 +16,6 @@ export default function AssetHubTabs({ children }) {
   const setTotalCount = useCallback((tabId, count) => {
     setTotalCounts((prevCounts) => {
       if (prevCounts[tabId] !== count) {
-        console.log(`Updating ${tabId} count to:`, count);
         return {
           ...prevCounts,
           [tabId]: count,
