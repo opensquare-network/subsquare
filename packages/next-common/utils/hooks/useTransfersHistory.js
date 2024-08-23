@@ -11,7 +11,7 @@ function getTransfersHistoryURL(address, chain) {
     return `${STATESCAN_CHAIN_URL_MAP[chain]}${urlSuffix}`;
   }
 
-  throw new Error("Invalid chain.");
+  throw new Error(`Chain ${chain} is not supported.`);
 }
 
 export default function useTransfersHistory(page = 0, page_size = 25) {
@@ -19,13 +19,19 @@ export default function useTransfersHistory(page = 0, page_size = 25) {
   const chain = useChain();
   const { value: value, loading } = useAsync(async () => {
     const url = getTransfersHistoryURL(address, chain);
+    if (!url) {
+      return {};
+    }
 
-    const response = await nextApi.fetch(url, {
-      page,
-      page_size,
-    });
-
-    return response?.result;
+    try {
+      const response = await nextApi.fetch(url, {
+        page,
+        page_size,
+      });
+      return response?.result || {};
+    } catch (error) {
+      return {};
+    }
   }, [page, page_size]);
 
   return { value, loading };
