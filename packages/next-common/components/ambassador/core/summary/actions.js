@@ -1,5 +1,5 @@
-import Induct from "next-common/components/ambassador/core/summary/induct";
-import Import from "next-common/components/ambassador/core/summary/import";
+import Induct from "./induct";
+import Import from "next-common/components/fellowship/core/summary/import";
 
 export default function AmbassadorSummaryActions() {
   return (

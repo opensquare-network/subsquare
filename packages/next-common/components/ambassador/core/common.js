@@ -1,5 +1,5 @@
 import ListLayout from "next-common/components/layout/ListLayout";
-import AmbassadorCoreMembersSummary from "next-common/components/ambassador/core/members/summary";
+import FellowshipCoreMembersSummary from "next-common/components/fellowship/core/members/summary";
 import AmbassadorSummaryActions from "next-common/components/ambassador/core/summary/actions";
 
 export default function AmbassadorCoreCommon({ children, ...props }) {
@@ -15,7 +15,7 @@ export default function AmbassadorCoreCommon({ children, ...props }) {
       seoInfo={seoInfo}
       title={title}
       description={seoInfo.desc}
-      summary={<AmbassadorCoreMembersSummary />}
+      summary={<FellowshipCoreMembersSummary />}
       summaryFooter={<AmbassadorSummaryActions />}
       tabs={[
         {
