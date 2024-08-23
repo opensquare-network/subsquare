@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import TabsList from "next-common/components/tabsList";
 
 const tabs = Object.freeze({
@@ -13,19 +13,25 @@ export default function AssetHubTabs({ children }) {
     transfers: "",
   });
 
-  const setTotalCount = (tabId, count) => {
-    setTotalCounts((prevCounts) => ({
-      ...prevCounts,
-      [tabId]: count,
-    }));
-  };
+  const setTotalCount = useCallback((tabId, count) => {
+    setTotalCounts((prevCounts) => {
+      if (prevCounts[tabId] !== count) {
+        console.log(`Updating ${tabId} count to:`, count);
+        return {
+          ...prevCounts,
+          [tabId]: count,
+        };
+      }
+      return prevCounts;
+    });
+  }, []);
 
   const tabsListItems = [
     {
       id: tabs.assets,
       label: (
         <span
-          className={`ml-[24px] font-bold text-[16px] leading-[24px] ${
+          className={`ml-[16px] font-bold text-[16px] leading-[24px] ${
             activeTabId === tabs.assets
               ? "text-textPrimary"
               : "text-textTertiary"
@@ -42,7 +48,7 @@ export default function AssetHubTabs({ children }) {
       id: tabs.transfers,
       label: (
         <span
-          className={`font-bold text-[16px] leading-[24px] ${
+          className={`ml-[16px] font-bold text-[16px] leading-[24px] ${
             activeTabId === tabs.transfers
               ? "text-textPrimary"
               : "text-textTertiary"
@@ -63,14 +69,19 @@ export default function AssetHubTabs({ children }) {
         tabs={tabsListItems}
         onTabClick={(item) => setActiveTabId(item.id)}
       />
-      {React.Children.map(children, (child, index) => (
-        <div className={`${activeTabId === index + 1 ? "" : "hidden"}`}>
-          {React.cloneElement(child, {
-            setTotalCount: (count) =>
-              setTotalCount(Object.keys(tabs)[index], count),
-          })}
-        </div>
-      ))}
+      {React.Children.map(children, (child, index) => {
+        const tabId = index + 1;
+        const isActive = activeTabId === tabId;
+        const tabKey = tabId === tabs.assets ? "assets" : "transfers";
+
+        return (
+          <div className={isActive ? "" : "hidden"}>
+            {React.cloneElement(child, {
+              setTotalCount: (count) => setTotalCount(tabKey, count),
+            })}
+          </div>
+        );
+      })}
     </>
   );
 }
