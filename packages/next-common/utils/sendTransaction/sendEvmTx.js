@@ -15,22 +15,12 @@ import { noop } from "lodash-es";
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
 
-export async function sendEvmTx({
-  data,
-  onStarted = noop,
-  onInBlock = noop,
-  onSubmitted = noop,
-  onError = noop,
-  signerAddress,
-}) {
-  const realSignerAddress = getEvmSignerAddress(signerAddress);
+export async function prepareEthereum({ ethereum, onError, signerAddress }) {
   const connector = getConnector();
-
-  const ethereum = await getEthereum();
 
   if (!ethereum) {
     onError(new Error("Please install MetaMask"));
-    return;
+    return false;
   }
   const walletName = connector.name;
 
@@ -47,37 +37,52 @@ export async function sendEvmTx({
           `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`,
         ),
       );
-      return;
+      return false;
     }
   }
 
   if (ethereum?.isTalisman) {
     if (
       ethereum.selectedAddress &&
-      ethereum.selectedAddress?.toLowerCase() !==
-        realSignerAddress.toLowerCase()
+      ethereum.selectedAddress?.toLowerCase() !== signerAddress.toLowerCase()
     ) {
       onError(
         new Error(
-          `Please switch to correct account from ${walletName}: ${realSignerAddress}`,
+          `Please switch to correct account from ${walletName}: ${signerAddress}`,
         ),
       );
-      return;
+      return false;
     }
   } else {
     const accounts = await requestAccounts();
     const walletSelectedAddress = accounts?.[0];
 
-    if (
-      walletSelectedAddress?.toLowerCase() !== realSignerAddress.toLowerCase()
-    ) {
+    if (walletSelectedAddress?.toLowerCase() !== signerAddress.toLowerCase()) {
       onError(
         new Error(
-          `Please switch to correct account from ${walletName}: ${realSignerAddress}`,
+          `Please switch to correct account from ${walletName}: ${signerAddress}`,
         ),
       );
-      return;
+      return false;
     }
+  }
+
+  return true;
+}
+
+export async function sendEvmTx({
+  data,
+  onStarted = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  onError = noop,
+  signerAddress,
+}) {
+  const evmSignerAddress = getEvmSignerAddress(signerAddress);
+  const ethereum = await getEthereum();
+  const ok = await prepareEthereum({ ethereum, onError, signerAddress });
+  if (!ok) {
+    return;
   }
 
   onStarted();
@@ -88,7 +93,7 @@ export async function sendEvmTx({
     await dispatchCall({
       provider,
       signer,
-      signerAddress: realSignerAddress,
+      signerAddress: evmSignerAddress,
       data,
       onSubmitted,
       onInBlock,

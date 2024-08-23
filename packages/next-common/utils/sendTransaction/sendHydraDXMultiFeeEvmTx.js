@@ -1,19 +1,12 @@
 import { Contract, ethers } from "ethers";
 import { splitSignature } from "ethers/lib/utils";
-import {
-  getConnector,
-  getEthereum,
-  isSameChainId,
-  requestAccounts,
-  switchNetwork,
-} from "../metamask";
+import { getEthereum } from "../metamask";
 import getChainSettings from "../consts/settings";
 import { getEvmSignerAddress } from "../mixedChainUtil";
-import { hexToNumber } from "viem";
 import { noop } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { createSendTxEventHandler } from "./sendSubstrateTx";
-import { DISPATCH_PRECOMPILE_ADDRESS } from "./sendEvmTx";
+import { DISPATCH_PRECOMPILE_ADDRESS, prepareEthereum } from "./sendEvmTx";
 
 export const CALL_PERMIT_ADDRESS = "0x000000000000000000000000000000000000080a";
 export const CALL_PERMIT_ABI =
@@ -194,59 +187,10 @@ export async function sendHydraDXMultiFeeEvmTx({
   signerAddress,
 }) {
   const evmSignerAddress = getEvmSignerAddress(signerAddress);
-  const connector = getConnector();
-
   const ethereum = await getEthereum();
-
-  if (!ethereum) {
-    onError(new Error("Please install MetaMask"));
+  const ok = await prepareEthereum({ ethereum, onError, signerAddress });
+  if (!ok) {
     return;
-  }
-  const walletName = connector.name;
-
-  const { ethereumNetwork } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-
-  const chainId = hexToNumber(ethereumNetwork.chainId);
-
-  if (!isSameChainId(chainId)) {
-    try {
-      await switchNetwork(chainId);
-    } catch (e) {
-      onError(
-        new Error(
-          `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`,
-        ),
-      );
-      return;
-    }
-  }
-
-  if (ethereum?.isTalisman) {
-    if (
-      ethereum.selectedAddress &&
-      ethereum.selectedAddress?.toLowerCase() !== evmSignerAddress.toLowerCase()
-    ) {
-      onError(
-        new Error(
-          `Please switch to correct account from ${walletName}: ${evmSignerAddress}`,
-        ),
-      );
-      return;
-    }
-  } else {
-    const accounts = await requestAccounts();
-    const walletSelectedAddress = accounts?.[0];
-
-    if (
-      walletSelectedAddress?.toLowerCase() !== evmSignerAddress.toLowerCase()
-    ) {
-      onError(
-        new Error(
-          `Please switch to correct account from ${walletName}: ${evmSignerAddress}`,
-        ),
-      );
-      return;
-    }
   }
 
   onStarted();
