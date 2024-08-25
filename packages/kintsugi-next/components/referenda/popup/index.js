@@ -28,7 +28,7 @@ function PopupContent() {
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
 
-  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
+  const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
 
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState();
@@ -105,7 +105,7 @@ function PopupContent() {
       }
 
       setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
-      await sendTx({
+      await sendTxFunc({
         api,
         tx,
         onInBlock: () => {
@@ -123,7 +123,7 @@ function PopupContent() {
       signerAccount,
       votingBalance,
       getMyVoteAndShowSuccessful,
-      sendTx,
+      sendTxFunc,
       node,
       showErrorToast,
     ],
