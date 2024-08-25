@@ -26,7 +26,7 @@ function PopupContent() {
   const showVoteSuccessful = useShowVoteSuccessful();
   const dispatch = useDispatch();
 
-  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
+  const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -90,7 +90,7 @@ function PopupContent() {
       }
 
       setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
-      await sendTx({
+      await sendTxFunc({
         api,
         tx,
         onInBlock: () => {
@@ -105,7 +105,7 @@ function PopupContent() {
       collectivePallet,
       referendumIndex,
       signerAccount,
-      sendTx,
+      sendTxFunc,
       onInBlock,
       getMyVoteAndShowSuccessful,
       onClose,

@@ -41,7 +41,7 @@ export default function PopupContent() {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
-  const { sendTx, isLoading: isSubmitting } = useSendTransaction();
+  const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
 
   const [loadingState, setLoadingState] = useState();
 
@@ -96,7 +96,7 @@ export default function PopupContent() {
       }
 
       setLoadingState(approve ? VoteEnum.Aye : VoteEnum.Nay);
-      await sendTx({
+      await sendTxFunc({
         api,
         tx,
         onInBlock: () => {
@@ -113,7 +113,7 @@ export default function PopupContent() {
       motionHash,
       motionIndex,
       signerAccount,
-      sendTx,
+      sendTxFunc,
       onInBlock,
       getMyVoteAndShowSuccessful,
       onClose,
