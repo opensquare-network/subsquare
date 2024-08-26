@@ -8,6 +8,7 @@ import {
   maybeSendSignetTx,
   sendEvmTx,
   sendSubstrateTx,
+  sendHydraDXMultiFeeEvmTx,
 } from "next-common/utils/sendTransaction";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { useDispatch } from "react-redux";
@@ -24,8 +25,10 @@ import {
 import { noop } from "lodash-es";
 import { useSignetSdk } from "next-common/context/signet";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
+import isHydradx from "next-common/utils/isHydradx";
+import { HydradxAssets } from "next-common/utils/hydradx";
 
-function isShouldSendEvmTx(signerAccount) {
+function shouldSendEvmTx(signerAccount) {
   const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
   if ((isEvmChain() || isMixedChain()) && isWalletMetamask) {
     return true;
@@ -37,12 +40,36 @@ function isShouldSendEvmTx(signerAccount) {
   return isMixedChain() && isEvmAddr && isWalletTalisman;
 }
 
-function isShouldSendSignetTx(signerAccount) {
+function shouldSendSignetTx(signerAccount) {
   return signerAccount?.meta?.source === WalletTypes.SIGNET;
 }
 
-function isShouldSendMimirTx(signerAccount) {
+function shouldSendMimirTx(signerAccount) {
   return signerAccount?.meta?.source === WalletTypes.MIMIR;
+}
+
+async function shouldSendHydraDXMultiFeeTx(api, signerAccount) {
+  // Multi fee tx support on HydraDX chain only
+  if (!isHydradx()) {
+    return false;
+  }
+  // Make sure the chain has the multi fee tx feature
+  if (!api.query.multiTransactionPayment) {
+    return false;
+  }
+
+  const accountCurrency =
+    await api.query.multiTransactionPayment.accountCurrencyMap(
+      signerAccount?.address,
+    );
+  // If fee asset is not set, it use HDX as default
+  if (accountCurrency.isNone) {
+    return true;
+  }
+
+  // If fee asset is not WETH, it should use multi fee tx
+  const currencyId = accountCurrency.unwrap();
+  return currencyId.toNumber() !== HydradxAssets.WETH.assetId;
 }
 
 export function useSendTransaction() {
@@ -112,7 +139,7 @@ export function useSendTransaction() {
       setIsLoading(true);
 
       try {
-        if (isShouldSendMimirTx(signerAccount)) {
+        if (shouldSendMimirTx(signerAccount)) {
           const handled = await maybeSendMimirTx({
             api,
             tx,
@@ -128,7 +155,7 @@ export function useSendTransaction() {
           }
         }
 
-        if (isShouldSendSignetTx(signerAccount)) {
+        if (shouldSendSignetTx(signerAccount)) {
           const handled = await maybeSendSignetTx({
             sdk: signetSdk,
             tx,
@@ -151,7 +178,25 @@ export function useSendTransaction() {
           }
         }
 
-        if (isShouldSendEvmTx(signerAccount)) {
+        if (shouldSendEvmTx(signerAccount)) {
+          const hydradxMultiFee = await shouldSendHydraDXMultiFeeTx(
+            api,
+            signerAccount,
+          );
+          if (hydradxMultiFee) {
+            await sendHydraDXMultiFeeEvmTx({
+              api,
+              data: tx.inner.toU8a(),
+              onStarted,
+              onInBlock: _onInBlock,
+              onSubmitted: _onSubmitted,
+              onFinalized: _onFinalized,
+              onError,
+              signerAddress: signerAccount?.address,
+            });
+            return;
+          }
+
           await sendEvmTx({
             data: tx.inner.toU8a(),
             onStarted,

@@ -2,6 +2,9 @@ export const { sendSubstrateTx } = require("./sendSubstrateTx");
 export const { sendEvmTx } = require("./sendEvmTx");
 export const { maybeSendMimirTx } = require("./sendMimirTx");
 export const { maybeSendSignetTx } = require("./sendSignetTx");
+export const {
+  sendHydraDXMultiFeeEvmTx,
+} = require("./sendHydraDXMultiFeeEvmTx");
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
