@@ -28,7 +28,7 @@ import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import isHydradx from "next-common/utils/isHydradx";
 import { HydradxAssets } from "next-common/utils/hydradx";
 
-function isShouldSendEvmTx(signerAccount) {
+function shouldSendEvmTx(signerAccount) {
   const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
   if ((isEvmChain() || isMixedChain()) && isWalletMetamask) {
     return true;
@@ -40,15 +40,15 @@ function isShouldSendEvmTx(signerAccount) {
   return isMixedChain() && isEvmAddr && isWalletTalisman;
 }
 
-function isShouldSendSignetTx(signerAccount) {
+function shouldSendSignetTx(signerAccount) {
   return signerAccount?.meta?.source === WalletTypes.SIGNET;
 }
 
-function isShouldSendMimirTx(signerAccount) {
+function shouldSendMimirTx(signerAccount) {
   return signerAccount?.meta?.source === WalletTypes.MIMIR;
 }
 
-async function isShouldSendHydraDXMultiFeeTx(api, signerAccount) {
+async function shouldSendHydraDXMultiFeeTx(api, signerAccount) {
   // Multi fee tx support on HydraDX chain only
   if (!isHydradx()) {
     return false;
@@ -139,7 +139,7 @@ export function useSendTransaction() {
       setIsLoading(true);
 
       try {
-        if (isShouldSendMimirTx(signerAccount)) {
+        if (shouldSendMimirTx(signerAccount)) {
           const handled = await maybeSendMimirTx({
             api,
             tx,
@@ -155,7 +155,7 @@ export function useSendTransaction() {
           }
         }
 
-        if (isShouldSendSignetTx(signerAccount)) {
+        if (shouldSendSignetTx(signerAccount)) {
           const handled = await maybeSendSignetTx({
             sdk: signetSdk,
             tx,
@@ -178,8 +178,8 @@ export function useSendTransaction() {
           }
         }
 
-        if (isShouldSendEvmTx(signerAccount)) {
-          const hydradxMultiFee = await isShouldSendHydraDXMultiFeeTx(
+        if (shouldSendEvmTx(signerAccount)) {
+          const hydradxMultiFee = await shouldSendHydraDXMultiFeeTx(
             api,
             signerAccount,
           );
