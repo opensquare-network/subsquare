@@ -2,26 +2,37 @@ import styled from "styled-components";
 import Loading from "next-common/components/loading";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import {
-  BorderedRow,
-  Header,
-  Value,
-} from "next-common/components/referenda/tally/styled";
-import SymbolValue from "components/gov2/sidebar/tally/values/symbolValue";
+import { BorderedRow } from "next-common/components/referenda/tally/styled";
 import { useOnchainData } from "next-common/context/post";
-import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
+import AddressUser from "next-common/components/user/addressUser";
+import IndentPanel from "next-common/components/callTreeView/indentPanel";
+import CuratorLinks from "./links";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
 `;
 
-function BountySidebarCurator() {
-  const { address } = useOnchainData();
-  const { balance, isLoading } = useSubAddressBalance(address);
+function MultisigAccounts() {
+  // TODO:
+  // if MultisigAccounts null, return null;
+  // return IndentPanel
+  return (
+    <div className="pl-3">
+      <IndentPanel>123</IndentPanel>
+    </div>
+  );
+}
 
-  if (!address) {
+function BountySidebarCurator() {
+  // TODO: curator: null?
+  const mockCurator = "";
+
+  if (!mockCurator) {
     return null;
   }
+
+  // TODO: loading
+  const isLoading = false;
 
   return (
     <SecondaryCardDetail>
@@ -34,9 +45,10 @@ function BountySidebarCurator() {
         )}
       </Title>
       <BorderedRow>
-        <Header>title</Header>
-        {isLoading ? <Value>-</Value> : '123'}
+        <AddressUser key={mockCurator} add={mockCurator} />
       </BorderedRow>
+      <CuratorLinks address={mockCurator} showCouncilorLink={true} />
+      <MultisigAccounts />
     </SecondaryCardDetail>
   );
 }
