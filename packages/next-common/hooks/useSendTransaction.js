@@ -26,6 +26,7 @@ import { noop } from "lodash-es";
 import { useSignetSdk } from "next-common/context/signet";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import isHydradx from "next-common/utils/isHydradx";
+import { HydradxAssets } from "next-common/utils/hydradx";
 
 function isShouldSendEvmTx(signerAccount) {
   const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
@@ -67,9 +68,8 @@ async function isShouldSendHydraDXMultiFeeTx(api, signerAccount) {
   }
 
   // If fee asset is not WETH, it should use multi fee tx
-  const WETH = 20;
   const currencyId = accountCurrency.unwrap();
-  return currencyId.toNumber() !== WETH;
+  return currencyId.toNumber() !== HydradxAssets.WETH.assetId;
 }
 
 export function useSendTransaction() {
