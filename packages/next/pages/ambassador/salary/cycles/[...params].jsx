@@ -1,7 +1,6 @@
 import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salary/cycles/layout";
 import FellowshipSalaryCycleDetailNotFound from "next-common/components/fellowship/salary/cycles/notFound";
 import FellowshipSalaryCycleDetailTabsList from "next-common/components/fellowship/salary/cycles/tabsList";
-import useFetchAmbassadorSalaryClaimants from "next-common/hooks/ambassador/salary/useFetchAmbassadorSalaryClaimants";
 import nextApi from "next-common/services/nextApi";
 import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide/ambassador/common";
 import {
@@ -24,8 +23,6 @@ export default function AmbassadorSalaryCyclePage({ cycle, ambassadorParams }) {
 }
 
 function AmbassadorSalaryCyclePageImpl({ cycle }) {
-  useFetchAmbassadorSalaryClaimants();
-
   return (
     <MyAmbassadorSalaryClaimantProvider>
       <FellowshipSalaryCycleLayout>

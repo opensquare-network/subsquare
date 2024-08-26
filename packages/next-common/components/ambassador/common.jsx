@@ -1,7 +1,6 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import AmbassadorSalarySummary from "./summary";
 import AmbassadorSalarySummaryActions from "./summary/actions";
-import useFetchAmbassadorSalaryClaimants from "next-common/hooks/ambassador/salary/useFetchAmbassadorSalaryClaimants";
 import { MyAmbassadorSalaryClaimantProvider } from "next-common/context/ambassador/myClaimant";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
@@ -24,8 +23,6 @@ function AmbassadorSalaryCommonImpl({ children, ...props }) {
   const desc =
     "The salary pallet controls the periodic process of salary payments and members registration.";
   const seoInfo = { title, desc };
-
-  useFetchAmbassadorSalaryClaimants();
 
   return (
     <MyAmbassadorSalaryClaimantProvider>
