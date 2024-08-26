@@ -118,8 +118,9 @@ async function dispatchCall({
   let tx = {
     from: signerAddress,
     to: DISPATCH_PRECOMPILE_ADDRESS,
-    data: data,
+    data: `0x${Buffer.from(data).toString("hex")}`,
   };
+
   await dryRun(provider, tx);
 
   let sentTx = null;
