@@ -7,10 +7,12 @@ import { noop } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { createSendTxEventHandler } from "./sendSubstrateTx";
 import { DISPATCH_PRECOMPILE_ADDRESS, prepareEthereum } from "./sendEvmTx";
-import hydradxCallPermitAbi from "./hydradxCallPermitAbi.json";
+import CallPermitAbi from "./hydradx/callPermitAbi.json";
+import CallPermit from "./hydradx/callPermitType.json";
+import EIP712Domain from "./hydradx/eip712DomainType.json";
 
 export const CALL_PERMIT_ADDRESS = "0x000000000000000000000000000000000000080a";
-export const CALL_PERMIT_ABI = JSON.stringify(hydradxCallPermitAbi);
+export const CALL_PERMIT_ABI = JSON.stringify(CallPermitAbi);
 
 async function getPermitNonce(provider, address) {
   const callPermit = new Contract(
@@ -50,54 +52,8 @@ async function createPermitMessageData({ provider, data, signerAddress }) {
 
   const typedData = JSON.stringify({
     types: {
-      EIP712Domain: [
-        {
-          name: "name",
-          type: "string",
-        },
-        {
-          name: "version",
-          type: "string",
-        },
-        {
-          name: "chainId",
-          type: "uint256",
-        },
-        {
-          name: "verifyingContract",
-          type: "address",
-        },
-      ],
-      CallPermit: [
-        {
-          name: "from",
-          type: "address",
-        },
-        {
-          name: "to",
-          type: "address",
-        },
-        {
-          name: "value",
-          type: "uint256",
-        },
-        {
-          name: "data",
-          type: "bytes",
-        },
-        {
-          name: "gaslimit",
-          type: "uint64",
-        },
-        {
-          name: "nonce",
-          type: "uint256",
-        },
-        {
-          name: "deadline",
-          type: "uint256",
-        },
-      ],
+      EIP712Domain,
+      CallPermit,
     },
     primaryType: "CallPermit",
     domain: {
