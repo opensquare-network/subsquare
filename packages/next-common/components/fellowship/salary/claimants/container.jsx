@@ -19,7 +19,7 @@ export default function FellowshipSalaryClaimantsContainer() {
   if (section === "fellowship") {
     params = fellowshipParams;
     members = fellowshipMembers;
-  } else {
+  } else if (section === "ambassador") {
     params = ambassadorParams;
     members = ambassadorMembers;
   }
