@@ -13,7 +13,7 @@ function BountySidebar() {
   return (
     <RightBarWrapper>
       <BountySidebarBalance />
-      <BountySidebarCurator />
+      <BountySidebarCurator curator={""}/>
     </RightBarWrapper>
   );
 }

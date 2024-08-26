@@ -6,35 +6,32 @@ import { BorderedRow } from "next-common/components/referenda/tally/styled";
 import AddressUser from "next-common/components/user/addressUser";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import CuratorLinks from "./links";
+import { useCuratorMultisigAddress } from "./useCuratorMultisigAddress";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
 `;
 
-function MultisigAccounts() {
-  // TODO:
-  // if MultisigAccounts null, return null;
-  // return IndentPanel
-  const mockCurator = "";
+function MultisigAccounts({ signatories }) {
+  if (!signatories) {
+    return null;
+  }
 
   return (
     <div className="pl-3">
       <IndentPanel>
-        <AddressUser key={mockCurator} add={mockCurator} className="my-1" />
-        <AddressUser key={mockCurator} add={mockCurator} className="my-1" />
-        <AddressUser key={mockCurator} add={mockCurator} className="my-1" />
-        <AddressUser key={mockCurator} add={mockCurator} className="my-1" />
+        {signatories.map((address) => (
+          <AddressUser key={address} add={address} className="my-1" />
+        ))}
       </IndentPanel>
     </div>
   );
 }
 
-function ThresholdSignatoryBadge() {
-  // TODO
-  const badgeValue = "3/7";
+export function ThresholdSignatoryBadge({ count }) {
   return (
     <span className="py-[2px] px-[8px] rounded-[10px] text12Medium bg-theme100 text-theme500">
-      {badgeValue}
+      {count}
     </span>
   );
 }
@@ -47,28 +44,29 @@ function CuratorTitle() {
   );
 }
 
-function BountySidebarCurator() {
-  // TODO: curator: null?
-  const mockCurator = "";
-
-  if (!mockCurator) {
+function BountySidebarCurator({ curator }) {
+  if (!curator) {
     return null;
   }
 
-  // TODO: loading
-  const isLoading = false;
+  const {
+    data: count,
+    signatories,
+    loading,
+    error,
+  } = useCuratorMultisigAddress(curator);
 
   return (
     <SecondaryCardDetail>
       <CuratorTitle />
       <BorderedRow>
         <div className="flex items-center space-x-2">
-          <AddressUser key={mockCurator} add={mockCurator} />
-          <ThresholdSignatoryBadge />
+          <AddressUser key={curator} add={curator} />
+          {loading || error ? null : <ThresholdSignatoryBadge count={count} />}
         </div>
       </BorderedRow>
-      <CuratorLinks address={mockCurator} showCouncilorLink={true} />
-      <MultisigAccounts />
+      <CuratorLinks address={curator} showCouncilorLink={true} />
+      <MultisigAccounts signatories={signatories} />
     </SecondaryCardDetail>
   );
 }
