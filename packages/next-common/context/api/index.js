@@ -52,6 +52,9 @@ export default function ApiProvider({ children }) {
   return <ApiContext.Provider value={nowApi}>{children}</ApiContext.Provider>;
 }
 
+/**
+ * @returns {import("@polkadot/api").ApiPromise}
+ */
 export function useContextApi() {
   return useContext(ApiContext);
 }

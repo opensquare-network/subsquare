@@ -3,14 +3,13 @@ import { isNil } from "lodash-es";
 import AmbassadorSalaryStats from "next-common/components/overview/ambassador/salary/stats";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
-import { useSelector } from "react-redux";
 import AmbassadorSalaryRegister from "../../actions/register";
 import AmbassadorSalaryPayout from "../../actions/payout";
 import AmbassadorSalaryMyStatus from "../myStatus";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 
 export default function AmbassadorSalaryCurrentCycle() {
-  const stats = useSelector(ambassadorSalaryStatusSelector);
+  const stats = useFellowshipSalaryStats();
 
   if (isNil(stats)) {
     return null;

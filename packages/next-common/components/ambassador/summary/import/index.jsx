@@ -3,15 +3,11 @@ import { map } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { useMyAmbassadorSalaryClaimantFromContext } from "next-common/context/ambassador/myClaimant";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import {
-  ambassadorSalaryStatusSelector,
-  salaryStatusLoadedSelector,
-} from "next-common/store/reducers/ambassador/salary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 
 const FellowshipSalaryImportPopup = dynamicPopup(() =>
   import("next-common/components/fellowship/salary/summary/import/popup"),
@@ -20,8 +16,8 @@ const FellowshipSalaryImportPopup = dynamicPopup(() =>
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const stats = useSelector(ambassadorSalaryStatusSelector);
-  const statusLoaded = useSelector(salaryStatusLoadedSelector);
+  const stats = useFellowshipSalaryStats();
+  const statusLoaded = !!stats;
   const { isLoading: isLoadingClaimant, claimant } =
     useMyAmbassadorSalaryClaimantFromContext();
 

@@ -1,14 +1,13 @@
 import { usePageProps } from "next-common/context/page";
 import FellowshipSalaryCycleDetailInfoClosed from "./closed";
 import FellowshipSalaryCycleDetailInfoOngoing from "./ongoing";
-import { useSelector } from "react-redux";
-import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import { useMemo } from "react";
 import FellowshipSalaryCycleDetailInfoOngoingFooter from "./ongoingFooter";
 
 export default function FellowshipSalaryCycleDetailInfo() {
   const { cycle } = usePageProps();
-  const stats = useSelector(fellowshipSalaryStatusSelector);
+  const stats = useFellowshipSalaryStats();
 
   const isActive = useMemo(() => {
     if (cycle.isFinal) {

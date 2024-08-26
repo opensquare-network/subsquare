@@ -3,14 +3,13 @@ import Tooltip from "next-common/components/tooltip";
 import { useMyAmbassadorSalaryClaimantFromContext } from "next-common/context/ambassador/myClaimant";
 import { usePageProps } from "next-common/context/page";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
 import SecondaryButton from "next-common/lib/button/secondary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 
 const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
   import("next-common/components/fellowship/salary/actions/register/popup"),
@@ -42,7 +41,7 @@ export default function AmbassadorSalaryRegister() {
   const memberAddrs = map(members, "address");
   const { claimant } = useMyAmbassadorSalaryClaimantFromContext();
   const [showPopup, setShowPopup] = useState(false);
-  const status = useSelector(ambassadorSalaryStatusSelector);
+  const status = useFellowshipSalaryStats();
   const isRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
   const mySalary = useMySalary();
 

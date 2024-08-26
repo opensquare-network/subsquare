@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
-import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
 import { isNil } from "lodash-es";
 import FellowshipSalaryStatsDetailLink from ".";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 
 export default function FellowshipSalaryStatsActiveCycleDetailLink() {
-  const stats = useSelector(fellowshipSalaryStatusSelector);
+  const stats = useFellowshipSalaryStats();
   if (isNil(stats?.cycleIndex)) {
     return null;
   }

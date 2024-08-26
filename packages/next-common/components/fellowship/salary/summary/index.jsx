@@ -1,15 +1,15 @@
 import { has, partition } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
 import { useFellowSalaryClaimantsData } from "next-common/hooks/fellowship/salary/useFellowshipSalaryClaimantsData";
-import { useSelector } from "react-redux";
-import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 
 export default function FellowshipSalarySummary() {
   const { fellowshipMembers } = usePageProps();
   const fellowshipSalaryClaimants = useFellowSalaryClaimantsData();
-  const stats = useSelector(fellowshipSalaryStatusSelector);
+  const stats = useFellowshipSalaryStats();
+
   const { activeCycle } = usePageProps();
   const cycleIndex = activeCycle?.index || stats?.cycleIndex;
 

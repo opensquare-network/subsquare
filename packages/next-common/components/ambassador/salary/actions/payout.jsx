@@ -1,10 +1,10 @@
 import { isNil, map } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo, useState } from "react";
@@ -21,7 +21,7 @@ export default function AmbassadorSalaryPayout() {
   const memberAddrs = map(members, "address");
   const isCollectiveMember = memberAddrs.includes(address);
 
-  const { cycleStart } = useSelector(ambassadorSalaryStatusSelector) || {};
+  const { cycleStart } = useFellowshipSalaryStats() || {};
   const { registrationPeriod } = useSalaryFellowshipPeriods();
   const payoutStart = cycleStart + registrationPeriod || null;
   const latestHeight = useSelector(chainOrScanHeightSelector);
