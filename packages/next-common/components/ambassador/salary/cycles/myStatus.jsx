@@ -2,7 +2,7 @@ import { upperFirst } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 import DotSplitter from "next-common/components/dotSplitter";
 import { toClaimStatusLabel } from "next-common/components/fellowship/salary/claimants/utils";
-import AmbassadorSalaryStatsDetailLink from "next-common/components/overview/ambassador/salary/detailLink";
+import FellowshipSalaryStatsDetailLink from "next-common/components/overview/fellowship/salary/detailLink";
 import { useMyAmbassadorSalaryClaimantFromContext } from "next-common/context/ambassador/myClaimant";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
@@ -25,12 +25,12 @@ export default function AmbassadorSalaryMyStatus() {
       <div className="ml-4 text-textTertiary inline-flex items-center gap-x-1">
         Last Active{" "}
         <LoadableContent size={12} isLoading={isLoading}>
-          <AmbassadorSalaryStatsDetailLink
+          <FellowshipSalaryStatsDetailLink
             className="text12Medium"
             index={index}
           >
             #{index}
-          </AmbassadorSalaryStatsDetailLink>
+          </FellowshipSalaryStatsDetailLink>
         </LoadableContent>
       </div>
 
