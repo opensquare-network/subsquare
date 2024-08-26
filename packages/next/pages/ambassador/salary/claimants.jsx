@@ -1,12 +1,12 @@
-import AmbassadorSalaryCommon from "next-common/components/ambassador/common";
-import AmbassadorSalaryClaimantsContainer from "next-common/components/ambassador/salary/claimants/container";
+import FellowshipSalaryClaimantsContainer from "next-common/components/fellowship/salary/claimants/container";
+import FellowshipSalaryCommon from "next-common/components/fellowship/salary/common";
 import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide/ambassador/common";
 
 export default function AmbassadorSalaryCalimantsPage() {
   return (
-    <AmbassadorSalaryCommon>
-      <AmbassadorSalaryClaimantsContainer />
-    </AmbassadorSalaryCommon>
+    <FellowshipSalaryCommon section="ambassador">
+      <FellowshipSalaryClaimantsContainer />
+    </FellowshipSalaryCommon>
   );
 }
 

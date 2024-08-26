@@ -10,8 +10,8 @@ import {
   ambassadorSalaryCycleRegistrationsApi,
   ambassadorSalaryCycleUnregisteredPaymentsApi,
 } from "next-common/services/url";
-import AmbassadorSalaryCycleDetailInfo from "next-common/components/ambassador/salary/cycles/info";
-import { MyAmbassadorSalaryClaimantProvider } from "next-common/context/ambassador/myClaimant";
+import FellowshipSalaryCycleDetailInfo from "next-common/components/fellowship/salary/cycles/info";
+import { MySalaryClaimantProvider } from "next-common/context/fellowship/myClaimant";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function AmbassadorSalaryCyclePage({ cycle, ambassadorParams }) {
@@ -24,18 +24,18 @@ export default function AmbassadorSalaryCyclePage({ cycle, ambassadorParams }) {
 
 function AmbassadorSalaryCyclePageImpl({ cycle }) {
   return (
-    <MyAmbassadorSalaryClaimantProvider>
+    <MySalaryClaimantProvider>
       <FellowshipSalaryCycleLayout>
         {cycle ? (
           <div className="space-y-6">
-            <AmbassadorSalaryCycleDetailInfo />
+            <FellowshipSalaryCycleDetailInfo />
             <FellowshipSalaryCycleDetailTabsList />
           </div>
         ) : (
           <FellowshipSalaryCycleDetailNotFound />
         )}
       </FellowshipSalaryCycleLayout>
-    </MyAmbassadorSalaryClaimantProvider>
+    </MySalaryClaimantProvider>
   );
 }
 
