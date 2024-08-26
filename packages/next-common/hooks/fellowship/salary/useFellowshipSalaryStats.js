@@ -1,5 +1,5 @@
 import { useSalaryFellowshipPallet } from "next-common/context/collectives/collectives";
-import { useStorage } from "next-common/hooks/common/useStorage";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { useEffect } from "react";
 import { createGlobalState } from "react-use";
 
@@ -11,9 +11,7 @@ export function useFellowshipSalaryStats() {
 
   const stats = cachedStats[pallet];
 
-  const { result: rawOptional } = useStorage(pallet, "status", [], {
-    subscribe: true,
-  });
+  const { result: rawOptional } = useSubStorage(pallet, "status");
 
   useEffect(() => {
     if (rawOptional?.isSome) {
