@@ -1,4 +1,4 @@
-import { orderBy, set } from "lodash-es";
+import { orderBy, set, find } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import {
   useCollectivesContext,
