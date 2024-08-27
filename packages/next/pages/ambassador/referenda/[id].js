@@ -1,18 +1,11 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
-import {
-  getAmbassadorReferendumCommentsUrl,
-  getAmbassadorReferendumUrl,
-} from "next-common/services/url";
+import { getAmbassadorReferendumCommentsUrl, getAmbassadorReferendumUrl } from "next-common/services/url";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { EmptyList } from "next-common/utils/constants";
-import {
-  PostProvider,
-  useOnchainData,
-  usePost,
-} from "next-common/context/post";
+import { PostProvider, useOnchainData, usePost } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -25,13 +18,14 @@ import React from "react";
 import AmbassadorReferendaDetail from "next-common/components/detail/ambassador";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
-import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
+import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
+import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -48,8 +42,8 @@ const Gov2ReferendumCall = dynamicClientOnly(() =>
 function AmbassadorContent() {
   const post = usePost();
 
-  useSubFellowshipReferendumInfo("ambassadorReferenda");
-  const info = useFellowshipReferendumInfo();
+  useSubReferendumInfo("ambassadorReferenda");
+  const info = useReferendumInfo();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   useSubscribePostDetail(post?.referendumIndex);
@@ -60,9 +54,7 @@ function AmbassadorContent() {
         <CollectivesProvider section="ambassador">
           <ContentWithComment>
             <AmbassadorReferendaDetail />
-            <CollectivesProvider section="ambassador">
-              <FellowshipReferendumSideBar />
-            </CollectivesProvider>
+            <FellowshipReferendumSideBar />
             <DetailMultiTabs
               call={
                 (proposal?.call || proposal.inline) && <Gov2ReferendumCall />
@@ -136,7 +128,11 @@ function ReferendumPageImpl() {
     );
   }
 
-  return <ReferendumPageWithPost />;
+  return (
+    <ReferendaPalletProvider pallet="ambassadorReferenda">
+      <ReferendumPageWithPost />
+    </ReferendaPalletProvider>
+  );
 }
 
 export default function ReferendumPage({ detail }) {
