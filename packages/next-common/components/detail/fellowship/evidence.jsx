@@ -8,8 +8,10 @@ import { useCoreFellowshipPallet } from "next-common/context/collectives/collect
 import { useOnchainData } from "next-common/context/post";
 import { useReferendumFellowshipCoreEvidence } from "next-common/context/post/fellowship/useReferendumFellowshipCoreEvidence";
 import { useIpfsContent } from "next-common/hooks/useIpfsContent";
+import { isHash } from "next-common/utils";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import { hexToString } from "@polkadot/util";
 
 function ContentLoading() {
   return (
@@ -43,8 +45,6 @@ function FellowshipReferendaDetailEvidenceImpl() {
   const { wish, evidence, loading } = useReferendumFellowshipCoreEvidence();
   const notFound = !wish && !evidence;
 
-  const cid = getCidByEvidence(evidence);
-
   let content;
   if (loading) {
     content = <ContentLoading />;
@@ -55,7 +55,11 @@ function FellowshipReferendaDetailEvidenceImpl() {
         {"Warning: can't find evidence on chain."}
       </WarningInfoPanel>
     );
+  } else if (!isHash(evidence)) {
+    content = <MarkdownPreviewer content={hexToString(evidence)} />;
   } else {
+    const cid = getCidByEvidence(evidence);
+
     content = (
       <>
         <GreyPanel className="justify-center gap-x-2 text14Medium text-textPrimary py-2.5 px-4 max-w-full">
