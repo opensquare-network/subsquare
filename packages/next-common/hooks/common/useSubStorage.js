@@ -1,4 +1,3 @@
-import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import { useCallback, useEffect, useState } from "react";
 import { createGlobalState } from "react-use";
@@ -11,13 +10,15 @@ export default function useSubStorage(
   pallet,
   storage,
   params = [],
-  callbackFn = noop,
+  callbackFn,
 ) {
   const api = useContextApi();
   const [cachedResult, setCachedResult] = useCachedResult();
   const [loading, setLoading] = useState(true);
 
-  const filteredParams = Array.isArray(params) ? params : [params];
+  const filteredParams = (Array.isArray(params) ? params : [params]).filter(
+    Boolean,
+  );
   const key = `${pallet}-${storage}-${filteredParams.join("-")}`;
   const result = cachedResult[key];
 
@@ -49,7 +50,7 @@ export default function useSubStorage(
       subs[key].unsub = await queryStorage(
         ...filteredParams,
         (subscribeResult) => {
-          callbackFn(subscribeResult);
+          callbackFn?.(subscribeResult);
 
           setCachedResult((val) => {
             return {
@@ -63,6 +64,13 @@ export default function useSubStorage(
       setLoading(false);
     }
   }, [api, pallet, storage, ...filteredParams, key, callbackFn]);
+
+  useEffect(() => {
+    if (result && callbackFn) {
+      callbackFn(result);
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (!api) {

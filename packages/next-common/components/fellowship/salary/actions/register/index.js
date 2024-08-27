@@ -9,22 +9,32 @@ import { usePageProps } from "next-common/context/page";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
   import("next-common/components/fellowship/salary/actions/register/popup"),
 );
 
 function useMySalary() {
+  const { section } = useCollectivesContext();
   const { members } = useFellowshipCollectiveMembers();
   const address = useRealAddress();
   const member = members.find((m) => m.address === address);
-  const { fellowshipParams } = usePageProps();
+  const { fellowshipParams, ambassadorParams } = usePageProps();
+
+  let params;
+  if (section === "fellowship") {
+    params = fellowshipParams;
+  } else if (section === "ambassador") {
+    params = ambassadorParams;
+  }
+
   const { member: coreMember, isLoading } = useMySalaryClaimantFromContext();
   if (!member || !coreMember || isLoading) {
     return 0;
   }
 
-  const { activeSalary = [], passiveSalary = [] } = fellowshipParams || {};
+  const { activeSalary = [], passiveSalary = [] } = params || {};
   const rank = member.rank;
   const { isActive } = coreMember || {};
   const salaryArray = isActive ? activeSalary : passiveSalary;
