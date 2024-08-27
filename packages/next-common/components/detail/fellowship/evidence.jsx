@@ -8,7 +8,7 @@ function FellowshipReferendaDetailEvidenceImpl() {
 
   return (
     <div className="mt-4 space-y-4">
-      <hr className="my-4" />
+      <hr />
 
       <FellowshipEvidenceContent
         wish={wish}
