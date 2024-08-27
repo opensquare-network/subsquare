@@ -7,6 +7,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import CuratorLinks from "./links";
 import { useCuratorMultisigAddress } from "./useCuratorMultisigAddress";
+import { useCurator } from "next-common/context/treasury/bounties";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -44,7 +45,8 @@ function CuratorTitle() {
   );
 }
 
-function BountySidebarCurator({ curator }) {
+function BountySidebarCurator() {
+  const curator = useCurator();
   if (!curator) {
     return null;
   }

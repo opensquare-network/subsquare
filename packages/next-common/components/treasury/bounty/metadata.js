@@ -4,17 +4,19 @@ import Anchor from "../../styled/anchor";
 import SymbolBalance from "../../values/symbolBalance";
 import AddressUser from "next-common/components/user/addressUser";
 import Copyable from "next-common/components/copyable";
+import { useCurator } from "next-common/context/treasury/bounties";
 
 /**
  *
  * @param meta {proposer, beneficiary, value, bond, status}
  * @constructor
  */
-function BountyMetadata({ meta, address, curator = "" }) {
+function BountyMetadata({ meta, address }) {
   if (!meta) {
     return null;
   }
 
+  const curator = useCurator();
   const metadata = meta ? Object.entries(meta) : [];
   if (address) {
     metadata.push(["address", address]);
@@ -22,7 +24,7 @@ function BountyMetadata({ meta, address, curator = "" }) {
 
   if (curator) {
     const curatorDepositIndex = metadata.findIndex(
-      ([key]) => key === "curatorDeposit"
+      ([key]) => key === "curatorDeposit",
     );
 
     const curatorEntry = ["curator", curator];
