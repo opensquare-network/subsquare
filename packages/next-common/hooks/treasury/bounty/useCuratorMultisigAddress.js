@@ -3,7 +3,7 @@ import { useChainSettings } from "next-common/context/chain";
 
 export function useCuratorMultisigAddress(address) {
   const { graphqlApiSubDomain } = useChainSettings();
-  const [data, setData] = useState(null);
+  const [badge, setBadge] = useState(null);
   const [signatories, setSignatories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,10 +42,10 @@ export function useCuratorMultisigAddress(address) {
         const result = await response.json();
         const { multisigAddress = {} } = result?.data || {};
         const signatoriesList = multisigAddress.signatories || [];
-        const count = multisigAddress
+        const badgeCount = multisigAddress
           ? `${multisigAddress.threshold}/${signatoriesList.length}`
           : "";
-        setData(count);
+        setBadge(badgeCount);
         setSignatories(signatoriesList);
       } catch (error) {
         setError(error);
@@ -57,5 +57,5 @@ export function useCuratorMultisigAddress(address) {
     fetchData();
   }, [address, graphqlApiSubDomain]);
 
-  return { data, signatories, loading, error };
+  return { badge, signatories, loading, error };
 }

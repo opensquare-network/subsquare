@@ -38,7 +38,7 @@ function BountyMetadata({ meta, address }) {
   }
 
   function getCuratorElement() {
-    const { data: count, loading, error } = useCuratorMultisigAddress(curator);
+    const { badge, loading, error } = useCuratorMultisigAddress(curator);
     if (!curator) {
       return null;
     }
@@ -46,7 +46,7 @@ function BountyMetadata({ meta, address }) {
     return (
       <CuratorHeader
         curator={curator}
-        count={count}
+        badge={badge}
         hasBadge={!loading && !error}
       />
     );

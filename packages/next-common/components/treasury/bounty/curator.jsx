@@ -23,13 +23,13 @@ function MultisigAccounts({ signatories }) {
   );
 }
 
-export function CuratorHeader({ curator, count, hasBadge = false }) {
+export function CuratorHeader({ curator, badge, hasBadge = false }) {
   return (
     <div className="flex items-center flex-wrap space-x-2">
       <AddressUser key={curator} add={curator} />
       {hasBadge && (
         <span className="py-[2px] px-[8px] rounded-[10px] text12Medium bg-theme100 text-theme500">
-          {count}
+          {badge}
         </span>
       )}
     </div>
@@ -47,7 +47,7 @@ function CuratorTitle() {
 function BountySidebarCurator() {
   const curator = useCurator();
   const {
-    data: count,
+    badge,
     signatories,
     loading,
     error,
@@ -62,7 +62,7 @@ function BountySidebarCurator() {
       <BorderedRow>
         <CuratorHeader
           curator={curator}
-          count={count}
+          badge={badge}
           hasBadge={!loading && !error}
         />
       </BorderedRow>
