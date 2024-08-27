@@ -1,27 +1,16 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
-import {
-  getFellowshipReferendumCommentsUrl,
-  getFellowshipReferendumUrl,
-} from "next-common/services/url";
+import { getFellowshipReferendumCommentsUrl, getFellowshipReferendumUrl, } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
-import {
-  PostProvider,
-  useOnchainData,
-  usePost,
-} from "next-common/context/post";
+import { PostProvider, useOnchainData, usePost, } from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import FellowshipBreadcrumb from "next-common/components/fellowship/breadcrumb";
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
 import CheckUnFinalized from "components/fellowship/checkUnFinalized";
-import BreadcrumbWrapper, {
-  BreadcrumbHideOnMobileText,
-} from "next-common/components/detail/common/BreadcrumbWrapper";
+import BreadcrumbWrapper, { BreadcrumbHideOnMobileText, } from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import FellowshipReferendaDetail from "next-common/components/detail/fellowship";
-import useSubFellowshipReferendumInfo from "next-common/hooks/fellowship/useSubFellowshipReferendumInfo";
-import { useFellowshipReferendumInfo } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
@@ -35,6 +24,8 @@ import { OffChainCommentActionsProvider } from "next-common/noSima/context/comme
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
+import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
+import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -51,8 +42,8 @@ const Gov2ReferendumCall = dynamicClientOnly(() =>
 function FellowshipContent() {
   const post = usePost();
 
-  useSubFellowshipReferendumInfo();
-  const info = useFellowshipReferendumInfo();
+  useSubReferendumInfo("fellowshipReferenda");
+  const info = useReferendumInfo();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
 
