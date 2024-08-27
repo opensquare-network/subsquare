@@ -1,14 +1,14 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
-import { getFellowshipReferendumCommentsUrl, getFellowshipReferendumUrl, } from "next-common/services/url";
+import { getFellowshipReferendumCommentsUrl, getFellowshipReferendumUrl } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
-import { PostProvider, useOnchainData, usePost, } from "next-common/context/post";
+import { PostProvider, useOnchainData, usePost } from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import FellowshipBreadcrumb from "next-common/components/fellowship/breadcrumb";
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
 import CheckUnFinalized from "components/fellowship/checkUnFinalized";
-import BreadcrumbWrapper, { BreadcrumbHideOnMobileText, } from "next-common/components/detail/common/BreadcrumbWrapper";
+import BreadcrumbWrapper, { BreadcrumbHideOnMobileText } from "next-common/components/detail/common/BreadcrumbWrapper";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import FellowshipReferendaDetail from "next-common/components/detail/fellowship";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
