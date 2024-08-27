@@ -9,13 +9,13 @@ import StatescanAccountLink from "next-common/components/links/statescanAccountL
 import CouncilorLink from "next-common/components/links/councilorLink";
 
 export default function CuratorLinks({ address, showCouncilorLink = true }) {
-  if (!address) {
-    return null;
-  }
-
   const chain = useChain();
   const identity = useIdentity(address, chain);
   const { email, riot, twitter, web } = identity?.info || {};
+
+  if (!address) {
+    return null;
+  }
 
   return (
     <div className="flex h-5 space-x-3 pl-[28px] mt-2">

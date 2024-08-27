@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Loading from "next-common/components/loading";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { BorderedRow } from "next-common/components/referenda/tally/styled";
@@ -47,22 +46,21 @@ function CuratorTitle() {
 
 function BountySidebarCurator() {
   const curator = useCurator();
-  if (!curator) {
-    return null;
-  }
-
   const {
     data: count,
     signatories,
     loading,
     error,
   } = useCuratorMultisigAddress(curator);
+  if (!curator) {
+    return null;
+  }
 
   return (
     <SecondaryCardDetail>
       <CuratorTitle />
       <BorderedRow>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center flex-wrap space-x-2">
           <AddressUser key={curator} add={curator} />
           {loading || error ? null : <ThresholdSignatoryBadge count={count} />}
         </div>
