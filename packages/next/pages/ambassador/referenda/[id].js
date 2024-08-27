@@ -54,9 +54,7 @@ function AmbassadorContent() {
         <CollectivesProvider section="ambassador">
           <ContentWithComment>
             <AmbassadorReferendaDetail />
-            <CollectivesProvider section="ambassador">
-              <FellowshipReferendumSideBar />
-            </CollectivesProvider>
+            <FellowshipReferendumSideBar />
             <DetailMultiTabs
               call={
                 (proposal?.call || proposal.inline) && <Gov2ReferendumCall />
