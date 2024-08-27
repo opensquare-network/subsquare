@@ -5,6 +5,8 @@ import SymbolBalance from "../../values/symbolBalance";
 import AddressUser from "next-common/components/user/addressUser";
 import Copyable from "next-common/components/copyable";
 import { useCurator } from "next-common/context/treasury/bounties";
+import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
+import { CuratorHeader } from "./curator";
 
 /**
  *
@@ -35,6 +37,21 @@ function BountyMetadata({ meta, address }) {
     }
   }
 
+  function getCuratorElement() {
+    const { data: count, loading, error } = useCuratorMultisigAddress(curator);
+    if (!curator) {
+      return null;
+    }
+
+    return (
+      <CuratorHeader
+        curator={curator}
+        count={count}
+        hasBadge={!loading && !error}
+      />
+    );
+  }
+
   const normalized = metadata.map(([key, value]) => {
     let normalizedValue = value;
 
@@ -46,8 +63,10 @@ function BountyMetadata({ meta, address }) {
         break;
       case "proposer":
       case "beneficiary":
-      case "curator":
         normalizedValue = <AddressUser add={value} />;
+        break;
+      case "curator":
+        normalizedValue = getCuratorElement();
         break;
       case "value":
       case "fee":

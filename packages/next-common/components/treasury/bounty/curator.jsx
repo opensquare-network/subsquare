@@ -5,7 +5,7 @@ import { BorderedRow } from "next-common/components/referenda/tally/styled";
 import AddressUser from "next-common/components/user/addressUser";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import CuratorLinks from "./links";
-import { useCuratorMultisigAddress } from "./useCuratorMultisigAddress";
+import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { useCurator } from "next-common/context/treasury/bounties";
 
 const Title = styled(TitleContainer)`
@@ -28,11 +28,16 @@ function MultisigAccounts({ signatories }) {
   );
 }
 
-export function ThresholdSignatoryBadge({ count }) {
+export function CuratorHeader({ curator, count, hasBadge = false }) {
   return (
-    <span className="py-[2px] px-[8px] rounded-[10px] text12Medium bg-theme100 text-theme500">
-      {count}
-    </span>
+    <div className="flex items-center flex-wrap space-x-2">
+      <AddressUser key={curator} add={curator} />
+      {hasBadge && (
+        <span className="py-[2px] px-[8px] rounded-[10px] text12Medium bg-theme100 text-theme500">
+          {count}
+        </span>
+      )}
+    </div>
   );
 }
 
@@ -60,10 +65,11 @@ function BountySidebarCurator() {
     <SecondaryCardDetail>
       <CuratorTitle />
       <BorderedRow>
-        <div className="flex items-center flex-wrap space-x-2">
-          <AddressUser key={curator} add={curator} />
-          {loading || error ? null : <ThresholdSignatoryBadge count={count} />}
-        </div>
+        <CuratorHeader
+          curator={curator}
+          count={count}
+          hasBadge={!loading && !error}
+        />
       </BorderedRow>
       <CuratorLinks address={curator} showCouncilorLink={true} />
       <MultisigAccounts signatories={signatories} />
