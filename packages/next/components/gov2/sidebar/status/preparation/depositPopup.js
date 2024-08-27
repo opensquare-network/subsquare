@@ -10,18 +10,20 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import { useReferendaPallet } from "next-common/context/referenda/pallet";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
   const api = useContextApi();
   const node = useChainSettings();
   const { referendumIndex, trackInfo: track } = usePostOnChainData();
+  const pallet = useReferendaPallet();
 
   const getTxFunc = useCallback(() => {
-    if (api) {
-      return api.tx.referenda.placeDecisionDeposit(referendumIndex);
+    if (api && api.tx[pallet]) {
+      return api.tx[pallet].placeDecisionDeposit(referendumIndex);
     }
-  }, [api, referendumIndex]);
+  }, [api, referendumIndex, pallet]);
 
   return (
     <>

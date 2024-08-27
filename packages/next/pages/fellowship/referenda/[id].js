@@ -34,6 +34,7 @@ import { OffChainArticleActionsProvider } from "next-common/noSima/context/artic
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -63,9 +64,7 @@ function FellowshipContent() {
         <CollectivesProvider section="fellowship">
           <ContentWithComment>
             <FellowshipReferendaDetail />
-            <CollectivesProvider section="fellowship">
-              <FellowshipReferendumSideBar />
-            </CollectivesProvider>
+            <FellowshipReferendumSideBar />
             <DetailMultiTabs
               call={
                 (proposal?.call || proposal.inline) && <Gov2ReferendumCall />
@@ -152,7 +151,11 @@ function ReferendumPageImpl() {
     return <ReferendumNullPage />;
   }
 
-  return <ReferendumPageWithPost />;
+  return (
+    <ReferendaPalletProvider pallet="fellowshipReferenda">
+      <ReferendumPageWithPost />
+    </ReferendaPalletProvider>
+  );
 }
 
 export default function ReferendumPage({ detail }) {

@@ -32,6 +32,7 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -136,7 +137,11 @@ function ReferendumPageImpl() {
     );
   }
 
-  return <ReferendumPageWithPost />;
+  return (
+    <ReferendaPalletProvider pallet="ambassadorReferenda">
+      <ReferendumPageWithPost />
+    </ReferendaPalletProvider>
+  );
 }
 
 export default function ReferendumPage({ detail }) {
