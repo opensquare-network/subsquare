@@ -13,6 +13,7 @@ import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import { usePopupOnClose } from "next-common/context/popup";
 import { useListPageType } from "next-common/context/page";
 import { listPageCategory } from "next-common/utils/consts/business/category";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 export default function CreateProposalSubmitButton({
   trackId,
@@ -29,6 +30,7 @@ export default function CreateProposalSubmitButton({
   } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
     pallet = "ambassadorReferenda";
   }
+  const section = useCollectivesSection();
 
   const onClose = usePopupOnClose();
   const router = useRouter();
@@ -70,11 +72,7 @@ export default function CreateProposalSubmitButton({
           return;
         }
         const [referendumIndex] = eventData;
-        let urlPrefix = listPageType;
-        if (listPageCategory.FELLOWSHIP_REFERENDA === listPageType) {
-          urlPrefix = `${listPageType}/referenda`;
-        }
-        router.push(`/${urlPrefix}/${referendumIndex}`);
+        router.push(`/${section}/referenda/${referendumIndex}`);
       },
       onSubmitted: onClose,
     });

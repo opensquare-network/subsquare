@@ -10,6 +10,7 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { find } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 export default function CreateFellowshipCoreMemberProposalSubmitButton({
   enactment,
@@ -28,6 +29,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   const onClose = usePopupOnClose();
   const router = useRouter();
   const listPageType = useListPageType();
+  const section = useCollectivesSection();
 
   const disabled = !myRankOk || !who || !rank;
 
@@ -69,11 +71,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
             return;
           }
           const [referendumIndex] = eventData;
-          let urlPrefix = listPageType;
-          if (listPageCategory.FELLOWSHIP_REFERENDA === listPageType) {
-            urlPrefix = `${listPageType}/referenda`;
-          }
-          router.push(`/${urlPrefix}/${referendumIndex}`);
+          router.push(`/${section}/referenda/${referendumIndex}`);
         }}
       />
     </Tooltip>
