@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 
 export function useCuratorMultisigAddress(address) {
-  const { identityApiSubDomain } = useChainSettings();
+  const { graphqlApiSubDomain } = useChainSettings();
   const [data, setData] = useState(null);
   const [signatories, setSignatories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,13 +10,13 @@ export function useCuratorMultisigAddress(address) {
 
   useEffect(() => {
     async function fetchData() {
-      if (!identityApiSubDomain) {
+      if (!graphqlApiSubDomain) {
         setError(new Error("Unsupported chain"));
         setLoading(false);
         return;
       }
 
-      const url = `https://${identityApiSubDomain}.statescan.io/graphql`;
+      const url = `https://${graphqlApiSubDomain}.statescan.io/graphql`;
       try {
         const response = await fetch(url, {
           method: "POST",
@@ -55,7 +55,7 @@ export function useCuratorMultisigAddress(address) {
     }
 
     fetchData();
-  }, [address, identityApiSubDomain]);
+  }, [address, graphqlApiSubDomain]);
 
   return { data, signatories, loading, error };
 }

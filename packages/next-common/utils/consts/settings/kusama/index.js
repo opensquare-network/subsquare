@@ -33,7 +33,7 @@ const kusama = {
   group: MenuGroups.KusamaAndParachains,
   links: kusamaLinks,
   hasStatescan: true,
-  identityApiSubDomain: "ksm-gh-api",
+  graphqlApiSubDomain: "ksm-gh-api",
   hasSubscan: true,
   postLabels: defaultPostLabels,
   useVoteCall: true,
