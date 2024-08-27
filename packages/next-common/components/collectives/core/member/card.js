@@ -42,7 +42,7 @@ export default function CoreFellowshipMemberCard({
           )}
         </CoreFellowshipMemberInfoLine>
         <CoreFellowshipMemberInfoLine>
-          <CoreFellowshipMemberEvidence address={address} pallet={pallet} />
+          <CoreFellowshipMemberEvidence member={member} pallet={pallet} />
           <CoreFellowshipMemberRelatedReferenda
             address={address}
             pallet={pallet}
