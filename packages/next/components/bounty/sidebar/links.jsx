@@ -5,8 +5,10 @@ import ElementLink from "next-common/components/links/elementLink";
 import TwitterLink from "next-common/components/links/twitterLink";
 import useIdentity from "next-common/utils/hooks/useIdentity";
 import { useChain } from "next-common/context/chain";
+import StatescanAccountLink from "next-common/components/links/statescanAccountLink";
+import CouncilorLink from "next-common/components/links/councilorLink";
 
-export default function CuratorLinks({ address }) {
+export default function CuratorLinks({ address, showCouncilorLink = true }) {
   if (!address) {
     return null;
   }
@@ -17,11 +19,13 @@ export default function CuratorLinks({ address }) {
 
   return (
     <div className="flex h-5 space-x-3 pl-[28px] mt-2">
+      <StatescanAccountLink address={address} />
       <SubScanAccountLink address={address} />
       {email && <MailLink email={email} />}
       {web && <WebLink website={web} />}
       {riot && <ElementLink riot={riot} />}
       {twitter && <TwitterLink twitter={twitter} />}
+      {showCouncilorLink && <CouncilorLink address={address} />}
     </div>
   );
 }

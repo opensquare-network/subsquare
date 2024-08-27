@@ -10,7 +10,7 @@ import Copyable from "next-common/components/copyable";
  * @param meta {proposer, beneficiary, value, bond, status}
  * @constructor
  */
-function BountyMetadata({ meta, address }) {
+function BountyMetadata({ meta, address, curator = "" }) {
   if (!meta) {
     return null;
   }
@@ -18,6 +18,19 @@ function BountyMetadata({ meta, address }) {
   const metadata = meta ? Object.entries(meta) : [];
   if (address) {
     metadata.push(["address", address]);
+  }
+
+  if (curator) {
+    const curatorDepositIndex = metadata.findIndex(
+      ([key]) => key === "curatorDeposit"
+    );
+
+    const curatorEntry = ["curator", curator];
+    if (curatorDepositIndex !== -1) {
+      metadata.splice(curatorDepositIndex, 0, curatorEntry);
+    } else {
+      metadata.push(curatorEntry);
+    }
   }
 
   const normalized = metadata.map(([key, value]) => {
@@ -31,6 +44,7 @@ function BountyMetadata({ meta, address }) {
         break;
       case "proposer":
       case "beneficiary":
+      case "curator":
         normalizedValue = <AddressUser add={value} />;
         break;
       case "value":

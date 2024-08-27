@@ -43,6 +43,9 @@ function BountyContent() {
     detailMultiTabsIsTimelineCompactModeSelector,
   );
 
+  // TODO: get curator value.
+  const curator = "";
+
   return (
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
@@ -60,6 +63,7 @@ function BountyContent() {
               <Metadata
                 meta={detail.onchainData?.meta}
                 address={detail.onchainData?.address}
+                curator={curator}
               />
             }
             timeline={

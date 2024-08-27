@@ -10,10 +10,13 @@ function BountySidebar() {
     return null;
   }
 
+  // TODO: get curator value from context.
+  const curator = "";
+
   return (
     <RightBarWrapper>
       <BountySidebarBalance />
-      <BountySidebarCurator curator={""}/>
+      <BountySidebarCurator curator={curator} />
     </RightBarWrapper>
   );
 }
