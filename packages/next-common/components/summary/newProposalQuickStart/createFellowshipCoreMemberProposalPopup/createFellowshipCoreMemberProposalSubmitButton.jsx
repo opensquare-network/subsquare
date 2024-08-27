@@ -69,7 +69,11 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
             return;
           }
           const [referendumIndex] = eventData;
-          router.push(`/${listPageType}/${referendumIndex}`);
+          let urlPrefix = listPageType;
+          if (listPageCategory.FELLOWSHIP_REFERENDA === listPageType) {
+            urlPrefix = `${listPageType}/referenda`;
+          }
+          router.push(`/${urlPrefix}/${referendumIndex}`);
         }}
       />
     </Tooltip>
