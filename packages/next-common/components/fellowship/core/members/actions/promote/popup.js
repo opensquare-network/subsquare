@@ -15,6 +15,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import Chains from "next-common/utils/consts/chains";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { getEventData } from "next-common/utils/sendTransaction";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 const CollectivesPromoteTracks = {
   1: "PromoteTo1Dan",
@@ -44,6 +45,7 @@ function PopupContent({ member, onClose }) {
   const [toRank, setToRank] = useState(member?.rank + 1);
   const trackName = getTrackNameFromRank(toRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
+  const section = useCollectivesSection();
 
   const getTxFunc = useCallback(async () => {
     if (!api || !memberAddress) {
@@ -96,7 +98,7 @@ function PopupContent({ member, onClose }) {
             return;
           }
           const [referendumIndex] = eventData;
-          router.push(`/fellowship/referenda/${referendumIndex}`);
+          router.push(`/${section}/referenda/${referendumIndex}`);
         }}
         onFinalized={() => dispatch(incPreImagesTrigger())}
       />

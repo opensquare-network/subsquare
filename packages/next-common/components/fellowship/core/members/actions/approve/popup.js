@@ -14,6 +14,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import RankField from "next-common/components/popup/fields/rankField";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Chains from "next-common/utils/consts/chains";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 const CollectivesRetainTracks = {
   1: "RetainAt1Dan",
@@ -43,6 +44,7 @@ function PopupContent({ member, onClose }) {
   const [atRank, setAtRank] = useState(member?.rank);
   const trackName = getRetainTrackNameFromRank(atRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
+  const section = useCollectivesSection();
 
   const getTxFunc = useCallback(async () => {
     if (!api || !memberAddress) {
@@ -90,7 +92,7 @@ function PopupContent({ member, onClose }) {
             return;
           }
           const [referendumIndex] = eventData;
-          router.push(`/fellowship/referenda/${referendumIndex}`);
+          router.push(`/${section}/referenda/${referendumIndex}`);
         }}
         onFinalized={() => dispatch(incPreImagesTrigger())}
       />

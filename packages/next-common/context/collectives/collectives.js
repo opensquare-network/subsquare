@@ -18,6 +18,11 @@ export function useCollectivesContext() {
   return useContext(CollectivesContext);
 }
 
+export function useCollectivesSection() {
+  const { section } = useContext(CollectivesContext);
+  return section;
+}
+
 export function useCoreFellowshipPallet() {
   const { section } = useContext(CollectivesContext);
   if ("ambassador" === section) {
