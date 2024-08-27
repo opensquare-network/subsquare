@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { useMemo } from "react";
 import FellowshipMembersLoadable from "next-common/components/pages/fellowship/loadable";
 import FellowshipMemberCommon from "next-common/components/pages/fellowship/common";
@@ -8,11 +6,24 @@ import FellowshipCoreMemberCardListContainer from "next-common/components/fellow
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import FellowshipMembersEmpty from "./empty";
 import { usePageProps } from "next-common/context/page";
-import CollectivesProvider from "next-common/context/collectives/collectives";
+import CollectivesProvider, {
+  useCollectivesContext,
+} from "next-common/context/collectives/collectives";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
 export default function FellowshipCandidatesPage() {
   const { fellowshipParams } = usePageProps();
-  const members = useSelector(fellowshipCoreMembersSelector);
+
+  return (
+    <CollectivesProvider section="fellowship" params={fellowshipParams}>
+      <FellowshipCandidatesPageImpl />
+    </CollectivesProvider>
+  );
+}
+
+function FellowshipCandidatesPageImpl() {
+  const { params } = useCollectivesContext();
+  const { members } = useFellowshipCoreMembers();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank <= 0),
     [members],
@@ -20,28 +31,26 @@ export default function FellowshipCandidatesPage() {
   const hasMembers = !!pageMembers.length;
 
   return (
-    <CollectivesProvider params={fellowshipParams} section="fellowship">
-      <FellowshipMembersLoadable>
-        <FellowshipMemberCommon>
-          <div className="mb-4 pr-6 leading-8">
-            <FellowshipMemberTabs members={members} />
-          </div>
+    <FellowshipMembersLoadable>
+      <FellowshipMemberCommon>
+        <div className="mb-4 pr-6 leading-8">
+          <FellowshipMemberTabs members={members} />
+        </div>
 
-          {hasMembers ? (
-            <FellowshipCoreMemberCardListContainer>
-              {pageMembers.map((member) => (
-                <FellowshipCoreMemberCard
-                  key={member.address}
-                  member={member}
-                  params={fellowshipParams}
-                />
-              ))}
-            </FellowshipCoreMemberCardListContainer>
-          ) : (
-            <FellowshipMembersEmpty />
-          )}
-        </FellowshipMemberCommon>
-      </FellowshipMembersLoadable>
-    </CollectivesProvider>
+        {hasMembers ? (
+          <FellowshipCoreMemberCardListContainer>
+            {pageMembers.map((member) => (
+              <FellowshipCoreMemberCard
+                key={member.address}
+                member={member}
+                params={params}
+              />
+            ))}
+          </FellowshipCoreMemberCardListContainer>
+        ) : (
+          <FellowshipMembersEmpty />
+        )}
+      </FellowshipMemberCommon>
+    </FellowshipMembersLoadable>
   );
 }

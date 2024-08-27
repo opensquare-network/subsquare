@@ -1,4 +1,4 @@
-import AmbassadorSalaryCommon from "next-common/components/ambassador/common";
+import FellowshipSalaryCommon from "next-common/components/fellowship/salary/common";
 import FellowshipSalaryFeedsContainer from "next-common/components/fellowship/salary/feeds/container";
 import nextApi from "next-common/services/nextApi";
 import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide/ambassador/common";
@@ -9,9 +9,9 @@ export default function AmbassadorSalaryFeedsPage({
   ambassadorSalaryFeeds = {},
 }) {
   return (
-    <AmbassadorSalaryCommon>
+    <FellowshipSalaryCommon section="ambassador">
       <FellowshipSalaryFeedsContainer feeds={ambassadorSalaryFeeds} />
-    </AmbassadorSalaryCommon>
+    </FellowshipSalaryCommon>
   );
 }
 

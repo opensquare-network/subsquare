@@ -1,24 +1,13 @@
-import { useSelector } from "react-redux";
-import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
 import SummaryItem from "next-common/components/summary/layout/item";
 import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
 import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
-import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
+import { useFellowshipSalaryStats } from "../../../../../hooks/fellowship/salary/useFellowshipSalaryStats";
 
 export default function SalaryStatsRegistrationItem({ cycleData }) {
-  const { section } = useCollectivesContext();
-  let statusSelector = null;
-  if (section === "fellowship") {
-    statusSelector = fellowshipSalaryStatusSelector;
-  } else if (section === "ambassador") {
-    statusSelector = ambassadorSalaryStatusSelector;
-  }
-
-  const stats = useSelector(statusSelector);
+  const stats = useFellowshipSalaryStats();
 
   const { totalRegistrations } = stats || {};
   const { decimals, symbol } = useSalaryAsset();

@@ -8,9 +8,7 @@ import {
 import CollectivesSalaryGetPaymentWarning from "./getPayment";
 import CollectivesSalaryRegisterWarning from "./register";
 import { isNil } from "lodash-es";
-import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
-import { ambassadorSalaryStatusSelector } from "next-common/store/reducers/ambassador/salary";
-import { useSelector } from "react-redux";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
 import { useIsInSalaryPayoutPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryPayoutPeriod";
 
@@ -54,14 +52,7 @@ function CollectivesSalaryAmbassadorWarningsImpl() {
 function CollectivesSalaryWarningsImpl() {
   const { section } = useCollectivesContext();
 
-  let statusSelector;
-  if (section === "fellowship") {
-    statusSelector = fellowshipSalaryStatusSelector;
-  } else if (section === "ambassador") {
-    statusSelector = ambassadorSalaryStatusSelector;
-  }
-
-  const status = useSelector(statusSelector);
+  const status = useFellowshipSalaryStats();
 
   const isInRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
   const isInPayoutPeriod = useIsInSalaryPayoutPeriod(status);

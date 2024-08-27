@@ -25,7 +25,6 @@ import {
 import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
-import useLoadOverviewPageData from "next-common/hooks/overview/useLoadOverviewPageData";
 import Chains from "next-common/utils/consts/chains";
 import isAssetHub from "next-common/utils/isAssetHub";
 import AssetHubOverviewPage from "next-common/components/assets/assetHubOverviewPage";
@@ -35,7 +34,6 @@ function DefaultOverviewPage() {
   const chainSettings = useChainSettings();
   const user = useUser();
   const url = useAccountUrl();
-  useLoadOverviewPageData();
 
   const tabs = [
     {

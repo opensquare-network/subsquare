@@ -13,13 +13,10 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import isAssetHub from "next-common/utils/isAssetHub";
 import ProfileFellowshipCore from "../fellowship/core";
 import ProfileFellowshipSalary from "../fellowship/salary";
-import CollectivesProvider from "next-common/context/collectives/collectives";
-import { useProfileCollectivesSection } from "./useProfileCollectivesSection";
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
   const pathname = usePathname();
-  const section = useProfileCollectivesSection();
 
   if (isAssetHub()) {
     return <ProfileAssets />;
@@ -45,20 +42,12 @@ export default function useProfileTabContent() {
     pathname === `/user/${maybeEvmAddress}/fellowship` ||
     pathname === `/user/${maybeEvmAddress}/ambassador`
   ) {
-    return (
-      <CollectivesProvider section={section}>
-        <ProfileFellowshipCore />
-      </CollectivesProvider>
-    );
+    return <ProfileFellowshipCore />;
   } else if (
     pathname === `/user/${maybeEvmAddress}/fellowship/salary` ||
     pathname === `/user/${maybeEvmAddress}/ambassador/salary`
   ) {
-    return (
-      <CollectivesProvider section={section}>
-        <ProfileFellowshipSalary />
-      </CollectivesProvider>
-    );
+    return <ProfileFellowshipSalary />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {
     return <Posted />;
   }

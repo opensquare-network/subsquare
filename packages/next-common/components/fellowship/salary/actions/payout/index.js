@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import Tooltip from "next-common/components/tooltip";
 import { useSelector } from "react-redux";
-import { fellowshipSalaryStatusSelector } from "next-common/store/reducers/fellowship/salary";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
@@ -17,11 +17,12 @@ const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
 export default function FellowshipSalaryPayout() {
   const [showPopup, setShowPopup] = useState(false);
   const address = useRealAddress();
-  const members = useFellowshipCollectiveMembers();
+  const { members } = useFellowshipCollectiveMembers();
   const memberAddrs = (members || []).map((item) => item.address);
   const isCollectiveMember = memberAddrs.includes(address);
 
-  const { cycleStart } = useSelector(fellowshipSalaryStatusSelector) || {};
+  const { cycleStart } = useFellowshipSalaryStats() || {};
+
   const { registrationPeriod } = useSalaryFellowshipPeriods();
   const payoutStart = cycleStart + registrationPeriod || null;
   const latestHeight = useSelector(chainOrScanHeightSelector);

@@ -1,25 +1,30 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import FellowshipSalarySummary from "./summary";
-import useFetchFellowshipSalaryClaimants from "next-common/hooks/fellowship/salary/useFetchFellowshipSalaryClaimants";
 import FellowshipSalarySummaryActions from "next-common/components/fellowship/salary/summary/actions";
-import useSubFellowshipSalaryStats from "next-common/hooks/fellowship/salary/useSubFellowshipSalaryStats";
-import useFetchFellowshipMembers from "next-common/hooks/fellowship/collective/useFetchFellowshipMembers";
 import { MySalaryClaimantProvider } from "next-common/context/fellowship/myClaimant";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
+import { upperFirst } from "lodash-es";
 
-export default function FellowshipSalaryCommon({ children, ...props }) {
-  const title = "Fellowship Salary";
+export default function FellowshipSalaryCommon({
+  children,
+  section = "fellowship",
+  ...props
+}) {
+  const title = `${upperFirst(section)} Salary`;
   const desc =
     "The salary pallet controls the periodic process of salary payments and members registration.";
   const seoInfo = { title, desc };
-  const { fellowshipParams } = usePageProps();
-  useFetchFellowshipSalaryClaimants();
-  useSubFellowshipSalaryStats();
-  useFetchFellowshipMembers();
+  const { fellowshipParams, ambassadorParams } = usePageProps();
+  let params;
+  if (section === "fellowship") {
+    params = fellowshipParams;
+  } else if (section === "ambassador") {
+    params = ambassadorParams;
+  }
 
   return (
-    <CollectivesProvider params={fellowshipParams}>
+    <CollectivesProvider params={params} section={section}>
       <MySalaryClaimantProvider>
         <ListLayout
           seoInfo={seoInfo}
@@ -30,20 +35,20 @@ export default function FellowshipSalaryCommon({ children, ...props }) {
           tabs={[
             {
               label: "Cycles",
-              url: "/fellowship/salary",
+              url: `/${section}/salary`,
               exactMatch: true,
             },
             {
               label: "Claimants",
-              url: "/fellowship/salary/claimants",
+              url: `/${section}/salary/claimants`,
               exactMatch: true,
             },
             {
               label: "Feeds",
-              url: "/fellowship/salary/feeds",
+              url: `/${section}/salary/feeds`,
               exactMatch: true,
             },
-          ].filter(Boolean)}
+          ]}
           {...props}
         >
           {children}

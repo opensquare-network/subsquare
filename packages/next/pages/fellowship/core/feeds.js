@@ -5,12 +5,15 @@ import nextApi from "next-common/services/nextApi";
 import { fellowshipCoreFeedsApiUri } from "next-common/services/url";
 import FellowshipCoreFeedsContainer from "next-common/components/fellowship/core/feeds/container";
 import { defaultPageSize } from "next-common/utils/constants";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function FellowshipCoreFeedsPage({ fellowshipCoreFeeds }) {
   return (
-    <FellowshipCoreCommon>
-      <FellowshipCoreFeedsContainer feeds={fellowshipCoreFeeds} />
-    </FellowshipCoreCommon>
+    <CollectivesProvider section="fellowship">
+      <FellowshipCoreCommon>
+        <FellowshipCoreFeedsContainer feeds={fellowshipCoreFeeds} />
+      </FellowshipCoreCommon>
+    </CollectivesProvider>
   );
 }
 

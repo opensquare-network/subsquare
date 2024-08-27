@@ -1,6 +1,5 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import { usePageProps } from "next-common/context/page";
-import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
 import FellowshipCollectiveMembers from "next-common/components/fellowship/collective/list";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
@@ -12,7 +11,6 @@ export default function MembersPage() {
   const { fellowshipMembers } = usePageProps();
   const category = "Fellowship Members";
   const seoInfo = { title: category, desc: category };
-  useFetchFellowshipCoreMembers();
   const ranks = [...new Set(fellowshipMembers.map((m) => m.rank))];
   const { rank, component } = useRankFilter(ranks);
 
