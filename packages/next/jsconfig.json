@@ -6,5 +6,5 @@
     },
     "jsx": "react-jsx"
   },
-  "include": ["./", "../next-common/hooks/treasury/bounty/useCuratorMultisigAddress.js", "../next-common/components/treasury/bounty/balance.jsx", "../next-common/components/treasury/bounty/curator.jsx", "../next-common/components/treasury/bounty/links.jsx"]
+  "include": ["./"]
 }
