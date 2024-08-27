@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { BorderedRow } from "next-common/components/referenda/tally/styled";
@@ -7,10 +6,6 @@ import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import CuratorLinks from "./links";
 import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { useCurator } from "next-common/context/treasury/bounties";
-
-const Title = styled(TitleContainer)`
-  margin-bottom: 16px;
-`;
 
 function MultisigAccounts({ signatories }) {
   if (!signatories) {
@@ -43,9 +38,9 @@ export function CuratorHeader({ curator, count, hasBadge = false }) {
 
 function CuratorTitle() {
   return (
-    <Title className="!px-0">
+    <TitleContainer className="mb-4 !px-0">
       <span>Curator</span>
-    </Title>
+    </TitleContainer>
   );
 }
 

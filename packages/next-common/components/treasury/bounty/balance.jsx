@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import Loading from "next-common/components/loading";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
@@ -12,10 +11,6 @@ import { useOnchainData } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 
-const Title = styled(TitleContainer)`
-  margin-bottom: 16px;
-`;
-
 function BountySidebarBalance() {
   const { address } = useOnchainData();
   const { balance, isLoading } = useSubAddressBalance(address);
@@ -27,14 +22,14 @@ function BountySidebarBalance() {
 
   return (
     <SecondaryCardDetail>
-      <Title className="!px-0">
+      <TitleContainer className="mb-4 !px-0">
         <span>Balance</span>
         {isLoading && (
           <div>
             <Loading size={16} />
           </div>
         )}
-      </Title>
+      </TitleContainer>
       <BorderedRow>
         <Header>Balance</Header>
         {isLoading ? <Value>-</Value> : <SymbolValue value={balance} />}
