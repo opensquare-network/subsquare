@@ -3,7 +3,7 @@ import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 export default function useSubFellowshipCoreMember(
   address,
-  pallet = "fellowship",
+  pallet = "fellowshipCore",
 ) {
   const [member, setMember] = useState(null);
   const { loading } = useSubStorage(
