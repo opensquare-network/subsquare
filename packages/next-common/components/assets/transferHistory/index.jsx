@@ -38,14 +38,14 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
     defaultPageSize,
   );
 
-  const { value, loading } = useTransfersHistory(page - 1);
+  // TODO: get symbol
+  const { value, loading, total: totalCount } = useTransfersHistory(page);
 
   useEffect(() => {
     if (value && !loading) {
-      const totalCount = value?.total || 0;
       setTotalCount(totalCount);
       setTotal(totalCount);
-      setRowData(value?.items || []);
+      setRowData(value || []);
     }
   }, [value, loading, setTotalCount]);
 
