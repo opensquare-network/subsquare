@@ -7,6 +7,9 @@ import NoData from "next-common/components/noData";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import { useState } from "react";
+import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 
 const getDate = (row) => {
   return dayjs(row?.indexer?.blockTime).format("YYYY/MM/DD") || "";
@@ -41,21 +44,48 @@ const SubSquareLinks = ({ referenda }) => {
 };
 
 const EvidenceItem = ({ row }) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <NeutralPanel className="p-6">
-      <div className="text16Bold text-textPrimary">{getTitle(row)}</div>
-      <div className="text14Medium text-textTertiary mt-1">{getDate(row)}</div>
-      <div className="mt-4 flex items-center gap-x-2">
-        <SubSquareLinks referenda={row?.referenda || []} />
-        <ExternalLink
-          href={getIpfsLink(row.cid)}
-          externalIcon={false}
-          className="text-textTertiary hover:text-textSecondary"
+    <>
+      <NeutralPanel className="p-6">
+        <div
+          role="button"
+          className="text16Bold text-textPrimary hover:underline"
+          onClick={() => {
+            setOpen(true);
+          }}
         >
-          <LinkIpfs className="w-5 h-5" />
-        </ExternalLink>
-      </div>
-    </NeutralPanel>
+          {getTitle(row)}
+        </div>
+        <div className="text14Medium text-textTertiary mt-1">
+          {getDate(row)}
+        </div>
+        <div className="mt-4 flex items-center gap-x-2">
+          <SubSquareLinks referenda={row?.referenda || []} />
+          <ExternalLink
+            href={getIpfsLink(row.cid)}
+            externalIcon={false}
+            className="text-textTertiary hover:text-textSecondary"
+          >
+            <LinkIpfs className="w-5 h-5" />
+          </ExternalLink>
+        </div>
+      </NeutralPanel>
+
+      {open && (
+        <Popup
+          title="Evidence Detail"
+          className="w-[800px] max-w-full"
+          onClose={() => {
+            setOpen(false);
+          }}
+        >
+          <hr className="my-4" />
+          <FellowshipEvidenceContent evidence={row.hex} wish={row.wish} />
+        </Popup>
+      )}
+    </>
   );
 };
 
