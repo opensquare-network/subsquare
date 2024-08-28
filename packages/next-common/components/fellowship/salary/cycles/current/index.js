@@ -5,8 +5,16 @@ import FellowshipSalaryStatsActiveCycleDetailLink from "next-common/components/o
 import FellowshipSalaryRegister from "next-common/components/fellowship/salary/actions/register";
 import FellowshipSalaryPayout from "next-common/components/fellowship/salary/actions/payout";
 import FellowshipSalaryMyStatus from "../myStatus";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
+import { isNil } from "lodash-es";
 
 export default function FellowshipSalaryActiveCycle() {
+  const stats = useFellowshipSalaryStats();
+
+  if (isNil(stats)) {
+    return null;
+  }
+
   return (
     <>
       <TitleContainer className="mb-4">Current Cycle</TitleContainer>

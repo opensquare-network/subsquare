@@ -2,14 +2,9 @@ import { createContext, useContext } from "react";
 
 const CollectivesMemberContext = createContext(null);
 
-export default function CollectivesMemberProvider({
-  children,
-  section,
-  params,
-  member,
-}) {
+export default function CollectivesMemberProvider({ children, member }) {
   return (
-    <CollectivesMemberContext.Provider value={{ section, params, member }}>
+    <CollectivesMemberContext.Provider value={{ member }}>
       {children}
     </CollectivesMemberContext.Provider>
   );

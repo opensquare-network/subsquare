@@ -4,8 +4,9 @@ import Tooltip from "next-common/components/tooltip";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemPlus } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-const AmbassadorCoreInductionPopup = dynamicPopup(() =>
-  import("next-common/components/ambassador/core/summary/induct/popup.js"),
+
+const FellowshipCoreInductionPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/core/summary/induct/popup"),
 );
 
 export default function Induct(props = {}) {
@@ -26,7 +27,7 @@ export default function Induct(props = {}) {
         </SecondaryButton>
       </Tooltip>
       {showPopup && (
-        <AmbassadorCoreInductionPopup onClose={() => setShowPopup(false)} />
+        <FellowshipCoreInductionPopup onClose={() => setShowPopup(false)} />
       )}
     </>
   );

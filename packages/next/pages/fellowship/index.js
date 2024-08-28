@@ -183,7 +183,7 @@ export default function FellowshipPage({ fellowshipSummary }) {
   const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useState(false);
 
   return (
-    <CollectivesProvider>
+    <CollectivesProvider section="fellowship">
       <ListLayout
         seoInfo={seoInfo}
         title={title}

@@ -1,16 +1,16 @@
-import AmbassadorSalaryCommon from "next-common/components/ambassador/common";
 import nextApi from "next-common/services/nextApi";
 import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide/ambassador/common";
 import { ambassadorSalaryHistoryCyclesApi } from "next-common/services/url";
-import AmbassadorSalaryCurrentCycle from "next-common/components/ambassador/salary/cycles/current";
-import AmbassadorHistoryCyclesSection from "next-common/components/ambassador/salary/cycles/historyCyclesSection";
+import FellowshipSalaryActiveCycle from "next-common/components/fellowship/salary/cycles/current";
+import FellowshipHistoryCyclesSection from "next-common/components/fellowship/salary/cycles/section";
+import FellowshipSalaryCommon from "next-common/components/fellowship/salary/common";
 
 export default function AmbassadorSalaryPage() {
   return (
-    <AmbassadorSalaryCommon>
-      <AmbassadorSalaryCurrentCycle />
-      <AmbassadorHistoryCyclesSection />
-    </AmbassadorSalaryCommon>
+    <FellowshipSalaryCommon section="ambassador">
+      <FellowshipSalaryActiveCycle />
+      <FellowshipHistoryCyclesSection />
+    </FellowshipSalaryCommon>
   );
 }
 

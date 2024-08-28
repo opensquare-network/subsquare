@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
-import { ambassadorCollectiveMembersSelector } from "next-common/store/reducers/ambassador/collective";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
 import { isSameAddress } from "next-common/utils";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function useAmbassadorCanInductMember() {
-  const members = useSelector(ambassadorCollectiveMembersSelector);
+  const { members } = useFellowshipCollectiveMembers();
   const realAddress = useRealAddress();
   return useMemo(() => {
     const found = (members || []).find((m) =>

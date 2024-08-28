@@ -5,6 +5,7 @@ import TreasuryStats from "./treasuryStats";
 import WithPallet from "next-common/components/common/withPallet";
 import FellowshipSalaryOverview from "next-common/components/overview/fellowship/salary/overview";
 import MembersInduction from "./fellowship/membersInduction";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function Overview() {
   const { showAccountManagementTab } = useChainSettings();
@@ -13,7 +14,9 @@ export default function Overview() {
       <AccountInfo hideManageAccountLink={showAccountManagementTab === false} />
 
       <WithPallet pallet="fellowshipCore">
-        <MembersInduction className="mt-4" />
+        <CollectivesProvider section="fellowship">
+          <MembersInduction className="mt-4" />
+        </CollectivesProvider>
       </WithPallet>
 
       <WithPallet pallet="treasury">

@@ -10,7 +10,7 @@ import {
 import { triggerFetchVotes } from "next-common/store/reducers/referenda/votes";
 import { useContextApi } from "next-common/context/api";
 
-export default function useSubReferendumInfo() {
+export default function useSubReferendumInfo(pallet = "referenda") {
   const api = useContextApi();
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
@@ -26,7 +26,7 @@ export default function useSubReferendumInfo() {
     }
 
     let unsub;
-    api.query.referenda
+    api.query[pallet]
       .referendumInfoFor(referendumIndex, (optionalInfo) => {
         if (!isMounted() || !optionalInfo.isSome) {
           return;
@@ -38,7 +38,9 @@ export default function useSubReferendumInfo() {
         }
 
         dispatch(setReferendaReferendumInfo(info.asOngoing.toJSON()));
-        dispatch(triggerFetchVotes());
+        if (pallet === "referenda") {
+          dispatch(triggerFetchVotes());
+        }
       })
       .then((result) => {
         unsub = result;

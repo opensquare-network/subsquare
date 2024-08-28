@@ -1,12 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { SystemImportMember } from "@osn/icons/subsquare";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useSelector } from "react-redux";
-import {
-  fellowshipSalaryStatusSelector,
-  salaryStatusLoadedSelector,
-} from "next-common/store/reducers/fellowship/salary";
-import useFellowshipCollectiveMembers from "next-common/hooks/fellowship/collective/useFellowshipCollectiveMembers";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
@@ -19,13 +15,13 @@ const FellowshipSalaryImportPopup = dynamicPopup(() =>
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const stats = useSelector(fellowshipSalaryStatusSelector);
-  const statusLoaded = useSelector(salaryStatusLoadedSelector);
+  const stats = useFellowshipSalaryStats();
+  const statusLoaded = !!stats;
   const { isLoading: isLoadingClaimant, claimant } =
     useMySalaryClaimantFromContext();
 
   const address = useRealAddress();
-  const members = useFellowshipCollectiveMembers();
+  const { members } = useFellowshipCollectiveMembers();
   const memberAddrs = (members || []).map((item) => item.address);
 
   useEffect(() => {

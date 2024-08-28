@@ -22,6 +22,7 @@ import { usePageProps } from "next-common/context/page";
 import { SimaReferendumContent } from "components/referenda/sima/referendaContent";
 import { ReferendumContent } from "components/referenda/referendaContent";
 import { useChainSettings } from "next-common/context/chain";
+import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -86,7 +87,11 @@ function ReferendumPageImpl() {
     return <ReferendumNullPage />;
   }
 
-  return <ReferendumPageWithPost />;
+  return (
+    <ReferendaPalletProvider pallet="referenda">
+      <ReferendumPageWithPost />
+    </ReferendaPalletProvider>
+  );
 }
 
 export default function ReferendumPage({ detail }) {

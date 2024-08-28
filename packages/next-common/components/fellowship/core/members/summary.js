@@ -1,11 +1,11 @@
-import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
 import CollectivesCoreSummary from "next-common/components/collectives/core/summary";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function FellowshipCoreMembersSummary() {
-  const collectiveMembers = useSelector(fellowshipCollectiveMembersSelector);
-  const coreMembers = useSelector(fellowshipCoreMembersSelector);
+  const { members: collectiveMembers } = useFellowshipCollectiveMembers();
+  const { members: coreMembers } = useFellowshipCoreMembers();
+
   return (
     <CollectivesCoreSummary
       coreMembers={coreMembers}

@@ -5,16 +5,16 @@ import nextApi from "next-common/services/nextApi";
 import { ambassadorCoreFeedsApiUri } from "next-common/services/url";
 import AmbassadorCoreCommon from "next-common/components/ambassador/core/common";
 import FellowshipCoreFeedsContainer from "next-common/components/fellowship/core/feeds/container";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function AmbassadorCoreFeedsPage({ ambassadorCoreFeeds }) {
   return (
-    <AmbassadorCoreCommon>
-      {/* todo: we may change the name of `FellowshipCoreFeedsContainer` to a common container */}
-      <FellowshipCoreFeedsContainer
-        feeds={ambassadorCoreFeeds}
-        section="ambassador"
-      />
-    </AmbassadorCoreCommon>
+    <CollectivesProvider section="ambassador">
+      <AmbassadorCoreCommon>
+        {/* todo: we may change the name of `FellowshipCoreFeedsContainer` to a common container */}
+        <FellowshipCoreFeedsContainer feeds={ambassadorCoreFeeds} />
+      </AmbassadorCoreCommon>
+    </CollectivesProvider>
   );
 }
 

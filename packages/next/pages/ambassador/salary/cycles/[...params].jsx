@@ -1,9 +1,6 @@
 import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salary/cycles/layout";
 import FellowshipSalaryCycleDetailNotFound from "next-common/components/fellowship/salary/cycles/notFound";
 import FellowshipSalaryCycleDetailTabsList from "next-common/components/fellowship/salary/cycles/tabsList";
-import useFetchAmbassadorCollectiveMembers from "next-common/hooks/ambassador/collective/useFetchAmbassadorCollectiveMembers";
-import useFetchAmbassadorSalaryClaimants from "next-common/hooks/ambassador/salary/useFetchAmbassadorSalaryClaimants";
-import useSubAmbassadorSalaryStats from "next-common/hooks/ambassador/salary/useSubAmbassadorSalaryStats";
 import nextApi from "next-common/services/nextApi";
 import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide/ambassador/common";
 import {
@@ -13,30 +10,32 @@ import {
   ambassadorSalaryCycleRegistrationsApi,
   ambassadorSalaryCycleUnregisteredPaymentsApi,
 } from "next-common/services/url";
-import AmbassadorSalaryCycleDetailInfo from "next-common/components/ambassador/salary/cycles/info";
-import { MyAmbassadorSalaryClaimantProvider } from "next-common/context/ambassador/myClaimant";
+import FellowshipSalaryCycleDetailInfo from "next-common/components/fellowship/salary/cycles/info";
+import { MySalaryClaimantProvider } from "next-common/context/fellowship/myClaimant";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function AmbassadorSalaryCyclePage({ cycle, ambassadorParams }) {
-  useFetchAmbassadorSalaryClaimants();
-  useFetchAmbassadorCollectiveMembers();
-  useSubAmbassadorSalaryStats();
-
   return (
     <CollectivesProvider params={ambassadorParams} section="ambassador">
-      <MyAmbassadorSalaryClaimantProvider>
-        <FellowshipSalaryCycleLayout>
-          {cycle ? (
-            <div className="space-y-6">
-              <AmbassadorSalaryCycleDetailInfo />
-              <FellowshipSalaryCycleDetailTabsList />
-            </div>
-          ) : (
-            <FellowshipSalaryCycleDetailNotFound />
-          )}
-        </FellowshipSalaryCycleLayout>
-      </MyAmbassadorSalaryClaimantProvider>
+      <AmbassadorSalaryCyclePageImpl cycle={cycle} />
     </CollectivesProvider>
+  );
+}
+
+function AmbassadorSalaryCyclePageImpl({ cycle }) {
+  return (
+    <MySalaryClaimantProvider>
+      <FellowshipSalaryCycleLayout>
+        {cycle ? (
+          <div className="space-y-6">
+            <FellowshipSalaryCycleDetailInfo />
+            <FellowshipSalaryCycleDetailTabsList />
+          </div>
+        ) : (
+          <FellowshipSalaryCycleDetailNotFound />
+        )}
+      </FellowshipSalaryCycleLayout>
+    </MySalaryClaimantProvider>
   );
 }
 

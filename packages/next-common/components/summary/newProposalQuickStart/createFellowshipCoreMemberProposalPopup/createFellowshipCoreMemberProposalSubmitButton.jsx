@@ -6,12 +6,11 @@ import { listPageCategory } from "next-common/utils/consts/business/category";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
-import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { find } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 export default function CreateFellowshipCoreMemberProposalSubmitButton({
   enactment,
@@ -20,8 +19,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   action = "",
   trackName,
 }) {
-  useFetchFellowshipCoreMembers();
-  const members = useSelector(fellowshipCoreMembersSelector);
+  const { members } = useFellowshipCoreMembers();
   const realAddress = useRealAddress();
   const me = find(members, { address: realAddress });
 
@@ -31,6 +29,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   const onClose = usePopupOnClose();
   const router = useRouter();
   const listPageType = useListPageType();
+  const section = useCollectivesSection();
 
   const disabled = !myRankOk || !who || !rank;
 
@@ -72,7 +71,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
             return;
           }
           const [referendumIndex] = eventData;
-          router.push(`/${listPageType}/${referendumIndex}`);
+          router.push(`/${section}/referenda/${referendumIndex}`);
         }}
       />
     </Tooltip>
