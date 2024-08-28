@@ -21,6 +21,10 @@ const ProjectLogoPolkadotLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoPolkadotLight"),
 );
 
+const NetworkPolkadot = dynamic(() =>
+  import("@osn/icons/subsquare/NetworkPolkadotLight"),
+);
+
 const name = Chains.polkadot;
 
 const polkadot = {
@@ -37,6 +41,7 @@ const polkadot = {
   darkAvatar: ProjectIconPolkadotDark,
   navLogo: ProjectLogoPolkadotLight,
   navLogoDark: ProjectLogoPolkadotDark,
+  networkIcon: NetworkPolkadot,
   group: MenuGroups.PolkadotAndParachains,
   links: polkadotLinks,
   postLabels: defaultPostLabels,

@@ -12,6 +12,10 @@ const ProjectIconPolkadotAssetHub = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotAssethub"),
 );
 
+const NetworkIconPolkadotAssetHub = dynamic(() =>
+  import("@osn/icons/subsquare/NetworkPolkadotAssethubLight"),
+);
+
 const name = Chains.polkadotAssetHub;
 
 const polkadotAssetHub = {
@@ -27,6 +31,7 @@ const polkadotAssetHub = {
   darkAvatar: ProjectIconPolkadotAssetHub,
   navLogo: ProjectLogoPolkadotAssetHub,
   navLogoDark: ProjectLogoPolkadotAssetHub,
+  networkIcon: NetworkIconPolkadotAssetHub,
   group: MenuGroups.PolkadotAndParachains,
   links: polkadotLinks,
   hasSubscan: true,
