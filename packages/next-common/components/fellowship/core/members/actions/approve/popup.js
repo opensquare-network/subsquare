@@ -15,15 +15,7 @@ import RankField from "next-common/components/popup/fields/rankField";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Chains from "next-common/utils/consts/chains";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
-
-const CollectivesRetainTracks = {
-  1: "RetainAt1Dan",
-  2: "RetainAt2Dan",
-  3: "RetainAt3Dan",
-  4: "RetainAt4Dan",
-  5: "RetainAt5Dan",
-  6: "RetainAt6Dan",
-};
+import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
 
 export function getRetainTrackNameFromRank(rank) {
   switch (process.env.NEXT_PUBLIC_CHAIN) {

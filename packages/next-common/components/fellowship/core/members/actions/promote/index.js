@@ -8,6 +8,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { find } from "lodash-es";
+import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 
 const PromoteFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
 
@@ -21,10 +22,11 @@ export default function Promote({ member }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { fellowshipParams } = usePageProps();
 
-  const isMaxRank = rank >= 6;
-
-  if (isMaxRank) {
+  if (rank >= 6) {
     return;
+  }
+  if (CollectivesPromoteTracks[member?.rank + 1]) { // only show when we have the corresponding track
+    return null;
   }
 
   const me = find(members, { address });
