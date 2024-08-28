@@ -17,7 +17,7 @@ export function useCuratorMultisigAddress(address) {
       if (!graphqlApiSubDomain) {
         setError(new Error("Unsupported chain"));
         setLoading(false);
-        return;
+        return { badge: "", signatories: [] };
       }
 
       try {
@@ -45,28 +45,49 @@ export function useCuratorMultisigAddress(address) {
 
         const result = await response.json();
         const { multisigAddress = {} } = result?.data || {};
-        const signatoriesList = multisigAddress.signatories || [];
+        const signatoriesList = multisigAddress?.signatories || [];
         const badgeCount = multisigAddress
           ? `${multisigAddress.threshold}/${signatoriesList.length}`
           : "";
 
-        if (signatoriesList.length === 0) {
-          const data = await api.query.proxy.proxies(currentAddress);
-          const [proxies] = data.toJSON() || [];
-          if (proxies.length === 1) {
-            setDelegateAddress(proxies[0]?.delegate || "");
+        return { badge: badgeCount, signatories: signatoriesList };
+      } catch (error) {
+        setError(error);
+        return { badge: "", signatories: [] };
+      }
+    }
 
-            const delegateResult = await fetchMultisigData(
-              proxies[0]?.delegate || "",
-            );
-            if (delegateResult.signatories.length > 0) {
-              setBadge(delegateResult.badge);
-              setSignatories(delegateResult.signatories);
+    async function loadData() {
+      setLoading(true);
+      try {
+        const { badge: initialBadge, signatories: initialSignatories } =
+          await fetchMultisigData(address);
+
+        if (initialSignatories.length === 0 && api) {
+          const data = await api.query.proxy.proxies(address);
+          const [proxies] = data.toJSON() || [];
+
+          if (proxies.length === 1) {
+            const proxyDelegateAddress = proxies[0]?.delegate || "";
+            setDelegateAddress(proxyDelegateAddress);
+
+            const { badge: delegateBadge, signatories: delegateSignatories } =
+              await fetchMultisigData(proxyDelegateAddress);
+
+            if (delegateSignatories.length > 0) {
+              setBadge(delegateBadge);
+              setSignatories(delegateSignatories);
+            } else {
+              setBadge(initialBadge);
+              setSignatories(initialSignatories);
             }
+          } else {
+            setBadge(initialBadge);
+            setSignatories(initialSignatories);
           }
         } else {
-          setBadge(badgeCount);
-          setSignatories(signatoriesList);
+          setBadge(initialBadge);
+          setSignatories(initialSignatories);
         }
       } catch (error) {
         setError(error);
@@ -75,7 +96,7 @@ export function useCuratorMultisigAddress(address) {
       }
     }
 
-    fetchMultisigData(address);
+    loadData();
   }, [address, graphqlApiSubDomain, api]);
 
   return { badge, signatories, delegateAddress, loading, error };

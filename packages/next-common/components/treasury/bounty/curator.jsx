@@ -23,15 +23,28 @@ function MultisigAccounts({ signatories }) {
   );
 }
 
-export function CuratorHeader({ curator, badge, hasBadge = false }) {
+function CuratorHeaderProxyTag() {
+  return (
+    <span className="py-[2px] px-[8px] rounded-[10px] text12Medium bg-neutral200 text-textSecondary">
+      Proxy
+    </span>
+  );
+}
+
+function CuratorHeaderBadge({ badge }) {
+  return (
+    <span className="py-[2px] px-[8px] rounded-[10px] text12Medium bg-theme100 text-theme500">
+      {badge}
+    </span>
+  );
+}
+
+export function CuratorHeader({ curator, badge, hasDelegate }) {
   return (
     <div className="flex items-center flex-wrap space-x-2">
       <AddressUser key={curator} add={curator} />
-      {hasBadge && (
-        <span className="py-[2px] px-[8px] rounded-[10px] text12Medium bg-theme100 text-theme500">
-          {badge}
-        </span>
-      )}
+      {badge && <CuratorHeaderBadge badge={badge} />}
+      {hasDelegate && <CuratorHeaderProxyTag />}
     </div>
   );
 }
@@ -46,12 +59,9 @@ function CuratorTitle() {
 
 function BountySidebarCurator() {
   const curator = useCurator();
-  const {
-    badge,
-    signatories,
-    loading,
-    error,
-  } = useCuratorMultisigAddress(curator);
+  const { badge, signatories, delegateAddress } =
+    useCuratorMultisigAddress(curator);
+
   if (!curator) {
     return null;
   }
@@ -63,7 +73,7 @@ function BountySidebarCurator() {
         <CuratorHeader
           curator={curator}
           badge={badge}
-          hasBadge={!loading && !error}
+          hasDelegate={delegateAddress}
         />
       </BorderedRow>
       <CuratorLinks address={curator} showCouncilorLink={true} />
