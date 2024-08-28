@@ -11,16 +11,17 @@ import {
   ASSET_DETAIL_LINKS,
 } from "next-common/utils/consts/asset";
 
-function Wrapper({ children }) {
+export function RequestWrapper({ children }) {
   return (
     <SecondaryCardDetail>
       <div className="flex justify-between">
-        <div className="flex items-center gap-[8px]">
-          <div className="inline-flex">
-            <SystemCoins className="w-[20px] h-[20px] [&_path]:stroke-textTertiary" />
+        <div className="align-baseline">
+          <div className="flex items-center gap-[8px]">
+            <SystemCoins className="w-[20px] h-[20px] text-textTertiary" />
+            <div className="text-textPrimary text14Medium">Request</div>
           </div>
-          <span className="text-textPrimary text14Medium">Request</span>
         </div>
+
         {children}
       </div>
     </SecondaryCardDetail>
@@ -124,10 +125,10 @@ export default function Request() {
   }
 
   return (
-    <Wrapper>
+    <RequestWrapper>
       <div className="text-textPrimary text14Medium">
         <SpendValues />
       </div>
-    </Wrapper>
+    </RequestWrapper>
   );
 }
