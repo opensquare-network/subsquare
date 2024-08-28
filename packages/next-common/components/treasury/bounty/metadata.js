@@ -4,8 +4,7 @@ import Anchor from "../../styled/anchor";
 import SymbolBalance from "../../values/symbolBalance";
 import AddressUser from "next-common/components/user/addressUser";
 import Copyable from "next-common/components/copyable";
-import { useCurator } from "next-common/context/treasury/bounties";
-import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
+import { useCurator, useCuratorParams } from "next-common/context/treasury/bounties";
 import { CuratorHeader } from "./curator";
 
 /**
@@ -38,7 +37,7 @@ function BountyMetadata({ meta, address }) {
   }
 
   function getCuratorElement() {
-    const { badge, delegateAddress } = useCuratorMultisigAddress(curator);
+    const { badge, delegateAddress } = useCuratorParams();
     if (!curator) {
       return null;
     }

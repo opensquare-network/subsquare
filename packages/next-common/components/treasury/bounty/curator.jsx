@@ -4,8 +4,7 @@ import { BorderedRow } from "next-common/components/referenda/tally/styled";
 import AddressUser from "next-common/components/user/addressUser";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import CuratorLinks from "./links";
-import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
-import { useCurator } from "next-common/context/treasury/bounties";
+import { useCurator, useCuratorParams } from "next-common/context/treasury/bounties";
 
 function MultisigAccounts({ signatories }) {
   if (!signatories) {
@@ -59,8 +58,7 @@ function CuratorTitle() {
 
 function BountySidebarCurator() {
   const curator = useCurator();
-  const { badge, signatories, delegateAddress } =
-    useCuratorMultisigAddress(curator);
+  const { badge, signatories, delegateAddress } = useCuratorParams();
 
   if (!curator) {
     return null;

@@ -23,6 +23,7 @@ import { OffChainCommentActionsProvider } from "next-common/noSima/context/comme
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { CuratorProvider } from "next-common/context/treasury/bounties";
 import useBountyCuratorData from "next-common/hooks/treasury/bounty/useBountyCuratorData";
+import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 
 const ChildBountiesTable = dynamicClientOnly(() =>
   import("../../../components/bounty/childBountiesTable"),
@@ -41,6 +42,7 @@ function BountyContent() {
   useSubscribePostDetail(detail?.bountyIndex);
 
   const curator = useBountyCuratorData(detail?.onchainData);
+  const curatorParams = useCuratorMultisigAddress(curator);
   const timelineData = useBountyTimelineData(detail?.onchainData);
   const isTimelineCompact = useSelector(
     detailMultiTabsIsTimelineCompactModeSelector,
@@ -49,7 +51,7 @@ function BountyContent() {
   return (
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
-        <CuratorProvider curator={curator}>
+        <CuratorProvider curator={curator} params={curatorParams}>
           <ContentWithComment>
             <BountyDetail />
             <BountySidebar />
