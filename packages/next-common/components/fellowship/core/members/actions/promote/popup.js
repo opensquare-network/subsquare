@@ -16,15 +16,7 @@ import Chains from "next-common/utils/consts/chains";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
-
-const CollectivesPromoteTracks = {
-  1: "PromoteTo1Dan",
-  2: "PromoteTo2Dan",
-  3: "PromoteTo3Dan",
-  4: "PromoteTo4Dan",
-  5: "PromoteTo5Dan",
-  6: "PromoteTo6Dan",
-};
+import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 
 export function getTrackNameFromRank(rank) {
   switch (process.env.NEXT_PUBLIC_CHAIN) {
