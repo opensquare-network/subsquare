@@ -4,7 +4,10 @@ import { BorderedRow } from "next-common/components/referenda/tally/styled";
 import AddressUser from "next-common/components/user/addressUser";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import CuratorLinks from "./links";
-import { useCurator, useCuratorParams } from "next-common/context/treasury/bounties";
+import {
+  useCurator,
+  useCuratorParams,
+} from "next-common/context/treasury/bounties";
 
 function MultisigAccounts({ signatories }) {
   if (!signatories) {
@@ -22,7 +25,7 @@ function MultisigAccounts({ signatories }) {
   );
 }
 
-function CuratorHeaderProxyTag() {
+export function CuratorProxyTag() {
   return (
     <span className="py-[2px] px-[8px] rounded-[10px] text12Medium bg-neutral200 text-textSecondary">
       Proxy
@@ -30,21 +33,11 @@ function CuratorHeaderProxyTag() {
   );
 }
 
-function CuratorHeaderBadge({ badge }) {
+export function CuratorBadge({ badge }) {
   return (
     <span className="py-[2px] px-[8px] rounded-[10px] text12Medium bg-theme100 text-theme500">
       {badge}
     </span>
-  );
-}
-
-export function CuratorHeader({ curator, badge, hasDelegate }) {
-  return (
-    <div className="flex items-center flex-wrap space-x-2">
-      <AddressUser key={curator} add={curator} />
-      {badge && <CuratorHeaderBadge badge={badge} />}
-      {hasDelegate && <CuratorHeaderProxyTag />}
-    </div>
   );
 }
 
@@ -68,11 +61,11 @@ function BountySidebarCurator() {
     <SecondaryCardDetail>
       <CuratorTitle />
       <BorderedRow>
-        <CuratorHeader
-          curator={curator}
-          badge={badge}
-          hasDelegate={delegateAddress}
-        />
+        <div className="flex items-center flex-wrap space-x-2">
+          <AddressUser key={curator} add={curator} />
+          {badge && <CuratorBadge badge={badge} />}
+          {delegateAddress && <CuratorProxyTag />}
+        </div>
       </BorderedRow>
       <CuratorLinks address={curator} showCouncilorLink={true} />
       <MultisigAccounts signatories={signatories} />

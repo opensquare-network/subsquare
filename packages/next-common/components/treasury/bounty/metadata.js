@@ -4,8 +4,28 @@ import Anchor from "../../styled/anchor";
 import SymbolBalance from "../../values/symbolBalance";
 import AddressUser from "next-common/components/user/addressUser";
 import Copyable from "next-common/components/copyable";
-import { useCurator, useCuratorParams } from "next-common/context/treasury/bounties";
-import { CuratorHeader } from "./curator";
+import {
+  useCurator,
+  useCuratorParams,
+} from "next-common/context/treasury/bounties";
+import { CuratorBadge, CuratorProxyTag } from "./curator";
+
+function CuratorElement() {
+  const curator = useCurator();
+  const { badge, delegateAddress } = useCuratorParams();
+
+  if (!curator) {
+    return null;
+  }
+
+  return (
+    <div className="flex items-center flex-wrap space-x-2">
+      <AddressUser key={curator} add={curator} />
+      {badge && <CuratorBadge badge={badge} />}
+      {delegateAddress && <CuratorProxyTag />}
+    </div>
+  );
+}
 
 /**
  *
@@ -36,21 +56,6 @@ function BountyMetadata({ meta, address }) {
     }
   }
 
-  function getCuratorElement() {
-    const { badge, delegateAddress } = useCuratorParams();
-    if (!curator) {
-      return null;
-    }
-
-    return (
-      <CuratorHeader
-        curator={curator}
-        badge={badge}
-        hasDelegate={delegateAddress}
-      />
-    );
-  }
-
   const normalized = metadata.map(([key, value]) => {
     let normalizedValue = value;
 
@@ -65,7 +70,7 @@ function BountyMetadata({ meta, address }) {
         normalizedValue = <AddressUser add={value} />;
         break;
       case "curator":
-        normalizedValue = getCuratorElement();
+        normalizedValue = CuratorElement();
         break;
       case "value":
       case "fee":
