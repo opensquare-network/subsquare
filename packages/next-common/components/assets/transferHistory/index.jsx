@@ -38,16 +38,17 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
     defaultPageSize,
   );
 
-  // TODO: get symbol
-  const { value, loading, total: totalCount } = useTransfersHistory(page);
+  // TODO: query symbol and decimals by assetId & assetHeight
+  const { value, loading, total: totalCount, error } = useTransfersHistory(page - 1, defaultPageSize);
+  console.log(":::::value", value, loading, totalCount);
 
   useEffect(() => {
-    if (value && !loading) {
+    if (value && !loading && !error) {
       setTotalCount(totalCount);
       setTotal(totalCount);
       setRowData(value || []);
     }
-  }, [value, loading, setTotalCount]);
+  }, [value, loading, error, setTotalCount]);
 
   return (
     <div>
