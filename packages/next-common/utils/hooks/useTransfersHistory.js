@@ -4,7 +4,7 @@ import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import { gql, request } from "graphql-request";
 
-export const assetTransfersQuery = gql`
+const assetTransfersQuery = gql`
   query MyQuery($limit: Int!, $offset: Int!, $address: String!) {
     assetTransfers(limit: $limit, offset: $offset, address: $address) {
       transfers {
@@ -22,7 +22,7 @@ export const assetTransfersQuery = gql`
   }
 `;
 
-export const assetMetadataQuery = gql`
+const assetMetadataQuery = gql`
   query MyQuery($id: Int!, $height: Int!) {
     asset(id: $id, height: $height) {
       metadata {
@@ -47,19 +47,18 @@ export default function useTransfersHistory(page = 0, page_size = 25) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
+    if (!STATESCAN_CHAIN_URL_MAP[chain]) {
+      setError(new Error(`Chain ${chain} is not supported.`));
+      setLoading(false);
+      return;
+    }
 
-      if (chain !== Chains.polkadotAssetHub) {
-        setError(new Error(`Chain ${chain} is not supported.`));
-        setLoading(false);
-        return;
-      }
-
+    const fetchTransfersData = async () => {
       try {
-        const url = STATESCAN_CHAIN_URL_MAP[chain];
+        setLoading(true);
+        setError(null);
 
+        const url = STATESCAN_CHAIN_URL_MAP[chain];
         const transfersData = await request(url, assetTransfersQuery, {
           limit: page_size,
           offset: page * page_size,
@@ -67,22 +66,22 @@ export default function useTransfersHistory(page = 0, page_size = 25) {
         });
 
         const transfers = transfersData?.assetTransfers?.transfers || [];
-        const totalTransfers = transfersData?.assetTransfers?.total || 0;
+        setTotal(transfersData?.assetTransfers?.total || 0);
 
-        const metadataPromises = transfers.map((transfer) =>
-          request(url, assetMetadataQuery, {
-            id: transfer.assetId,
-            height: transfer.assetHeight,
-          }).then((metadataData) => ({
-            ...transfer,
-            metadata: metadataData?.asset?.metadata,
-          })),
+        const transfersWithMetadata = await Promise.all(
+          transfers.map(async (transfer) => {
+            const metadataData = await request(url, assetMetadataQuery, {
+              id: transfer.assetId,
+              height: transfer.assetHeight,
+            });
+            return {
+              ...transfer,
+              metadata: metadataData?.asset?.metadata,
+            };
+          }),
         );
 
-        const transfersWithMetadata = await Promise.all(metadataPromises);
-
         setValue(transfersWithMetadata);
-        setTotal(totalTransfers);
       } catch (err) {
         setError(err);
       } finally {
@@ -90,7 +89,7 @@ export default function useTransfersHistory(page = 0, page_size = 25) {
       }
     };
 
-    fetchData();
+    fetchTransfersData();
   }, [page, page_size, address, chain]);
 
   return { value, total, loading, error };
