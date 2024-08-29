@@ -117,9 +117,10 @@ export default function Request() {
   const onchain = useOnchainData();
 
   if (
-    !onchain?.isTreasury &&
-    !onchain?.isStableTreasury &&
-    isNil(onchain?.value)
+    (!onchain?.isTreasury &&
+      !onchain?.isStableTreasury &&
+      isNil(onchain?.value)) ||
+    onchain?.allSpends
   ) {
     return null;
   }
