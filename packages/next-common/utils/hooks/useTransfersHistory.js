@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChain } from "next-common/context/chain";
-import Chains from "next-common/utils/consts/chains";
 import { gql, request } from "graphql-request";
 
 const assetTransfersQuery = gql`
