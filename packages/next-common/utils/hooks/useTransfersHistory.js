@@ -67,20 +67,43 @@ export default function useTransfersHistory(page = 0, page_size = 25) {
         const transfers = transfersData?.assetTransfers?.transfers || [];
         setTotal(transfersData?.assetTransfers?.total || 0);
 
-        const transfersWithMetadata = await Promise.all(
-          transfers.map(async (transfer) => {
-            const metadataData = await request(url, assetMetadataQuery, {
-              id: transfer.assetId,
-              height: transfer.assetHeight,
-            });
-            return {
-              ...transfer,
-              metadata: metadataData?.asset?.metadata,
-            };
-          }),
-        );
+        const uniqueAssetKeys = new Set();
+        const uniqueAssets = [];
 
-        setValue(transfersWithMetadata);
+        transfers.forEach((transfer) => {
+          const key = `${transfer.assetId}_${transfer.assetHeight}`;
+          if (!uniqueAssetKeys.has(key)) {
+            uniqueAssetKeys.add(key);
+            uniqueAssets.push({
+              assetId: transfer.assetId,
+              assetHeight: transfer.assetHeight,
+            });
+          }
+        });
+
+        const metadataPromises = uniqueAssets.map((asset) => {
+          return request(url, assetMetadataQuery, {
+            id: asset.assetId,
+            height: asset.assetHeight,
+          });
+        });
+
+        const metadataResults = await Promise.all(metadataPromises);
+
+        const metadataMap = new Map();
+        uniqueAssets.forEach((asset, index) => {
+          metadataMap.set(
+            `${asset.assetId}_${asset.assetHeight}`,
+            metadataResults[index]?.asset?.metadata,
+          );
+        });
+
+        transfers.forEach((transfer) => {
+          const key = `${transfer.assetId}_${transfer.assetHeight}`;
+          transfer.metadata = metadataMap.get(key);
+        });
+
+        setValue(transfers);
       } catch (err) {
         setError(err);
       } finally {
