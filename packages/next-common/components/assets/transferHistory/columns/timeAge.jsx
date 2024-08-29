@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import Duration from "next-common/components/duration";
 import { useState } from "react";
+import ExplorerLink from "next-common/components/links/explorerLink";
 
 export function useAssetsTransfersHistoryTimeAgeColumn() {
   const [isTime, setIsTime] = useState(true);
@@ -21,15 +22,16 @@ export function useAssetsTransfersHistoryTimeAgeColumn() {
       const time = item?.indexer?.blockTime;
 
       return (
-        <div className="text-textTertiary">
-          {isTime ? (
-            dayjs(time).format("YYYY-MM-DD HH:mm:ss")
-          ) : (
-            <Duration time={time} />
-          )}
-        </div>
+        <ExplorerLink indexer={item?.indexer}>
+          <div className="text-textTertiary hover:underline">
+            {isTime ? (
+              dayjs(time).format("YYYY-MM-DD HH:mm:ss")
+            ) : (
+              <Duration time={time} />
+            )}
+          </div>
+        </ExplorerLink>
       );
     },
   };
 }
-
