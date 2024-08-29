@@ -11,11 +11,11 @@ export function CuratorProvider({ curator, params, children }) {
 }
 
 export function useCurator() {
-  const { curator } = useContext(CuratorContext);
+  const { curator } = useContext(CuratorContext) || {};
   return curator;
 }
 
 export function useCuratorParams() {
-  const { params } = useContext(CuratorContext);
+  const { params } = useContext(CuratorContext) || {};
   return params;
 }
