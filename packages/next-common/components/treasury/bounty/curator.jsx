@@ -60,13 +60,11 @@ function BountySidebarCurator() {
   return (
     <SecondaryCardDetail>
       <CuratorTitle />
-      <BorderedRow>
-        <div className="flex items-center flex-wrap space-x-2">
-          <AddressUser key={curator} add={curator} />
-          {badge && <CuratorBadge badge={badge} />}
-          {delegateAddress && <CuratorProxyTag />}
-        </div>
-      </BorderedRow>
+      <div className="flex items-center flex-wrap  space-x-2 h-[44px] mt-0 border-b border-neutral300">
+        <AddressUser key={curator} add={curator} maxWidth={150} />
+        {badge && <CuratorBadge badge={badge} />}
+        {delegateAddress && <CuratorProxyTag />}
+      </div>
       <CuratorLinks address={curator} showCouncilorLink={true} />
       <MultisigAccounts signatories={signatories} />
     </SecondaryCardDetail>
