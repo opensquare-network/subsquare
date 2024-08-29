@@ -1,6 +1,6 @@
-import { SystemCoins } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
@@ -14,16 +14,8 @@ import {
 export function RequestWrapper({ children }) {
   return (
     <SecondaryCardDetail>
-      <div className="flex justify-between">
-        <div className="align-baseline">
-          <div className="flex items-center gap-[8px]">
-            <SystemCoins className="w-[20px] h-[20px] text-textTertiary" />
-            <div className="text-textPrimary text14Medium">Request</div>
-          </div>
-        </div>
-
-        {children}
-      </div>
+      <TitleContainer className="!px-0 mb-4">Request</TitleContainer>
+      {children}
     </SecondaryCardDetail>
   );
 }

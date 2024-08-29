@@ -43,7 +43,7 @@ function Spend({ assetKind, amount }) {
   const { decimals } = getChainSettings(chain);
 
   return (
-    <div className="flex justify-end items-center gap-x-2">
+    <div className="flex items-center gap-x-2">
       <NetworkIcon chain={chain} className="w-3 h-3" />
 
       <ValueDisplay
