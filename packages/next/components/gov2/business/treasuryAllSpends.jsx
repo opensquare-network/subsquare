@@ -1,16 +1,13 @@
 import dayjs from "dayjs";
 import { isNil } from "lodash-es";
-import NetworkIcon from "next-common/components/networkIcon";
 import AddressUser from "next-common/components/user/addressUser";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import useBlockTimestamp from "next-common/hooks/common/useBlockTimestamp";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import { cn, estimateBlocksTime, toPrecisionNumber } from "next-common/utils";
-import Chains from "next-common/utils/consts/chains";
-import getChainSettings from "next-common/utils/consts/settings";
+import { cn, estimateBlocksTime } from "next-common/utils";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import TreasurySpendValueDisplay from "./treasurySpendValueDisplay";
 
 export function getTreasuryAllSpendsBusiness(onchain) {
   return [["Request", <AllSpends key="all-spend" onchain={onchain} />]];
@@ -53,15 +50,7 @@ function AllSpends({ onchain }) {
 }
 
 function Spend({ beneficiary, assetKind, amount, validFrom, className = "" }) {
-  const currentChain = useChain();
-  let { chain, symbol, type } = assetKind;
-
-  if (type === "assets") {
-    chain = Chains.polkadotAssetHub;
-  } else if (type === "native") {
-    chain = currentChain;
-  }
-  const { decimals } = getChainSettings(chain);
+  const { chain, symbol, type } = assetKind;
 
   return (
     <div
@@ -70,11 +59,12 @@ function Spend({ beneficiary, assetKind, amount, validFrom, className = "" }) {
         className,
       )}
     >
-      <div className="flex gap-2 items-center">
-        <NetworkIcon chain={chain} className="w-3 h-3" />
-        <ValueDisplay
-          value={toPrecisionNumber(amount, decimals)}
+      <div className="flex gap-x-2 items-center">
+        <TreasurySpendValueDisplay
+          chain={chain}
+          amount={amount}
           symbol={symbol}
+          type={type}
         />
         <div className="text-textTertiary">to</div>
         <AddressUser add={beneficiary.address} />

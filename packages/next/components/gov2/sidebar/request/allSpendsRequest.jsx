@@ -1,13 +1,9 @@
+import TreasurySpendValueDisplay from "components/gov2/business/treasurySpendValueDisplay";
 import { isNil } from "lodash-es";
-import NetworkIcon from "next-common/components/networkIcon";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { useChain } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
-import { cn, toPrecision } from "next-common/utils";
-import Chains from "next-common/utils/consts/chains";
-import getChainSettings from "next-common/utils/consts/settings";
-import { RequestWrapper } from ".";
+import { cn } from "next-common/utils";
 import { useState } from "react";
+import { RequestWrapper } from ".";
 
 export default function AllSpendsRequest() {
   const onchain = useOnchainData();
@@ -59,25 +55,15 @@ export default function AllSpendsRequest() {
 }
 
 function Spend({ assetKind, amount, className }) {
-  const currentChain = useChain();
-  let { chain, symbol, type } = assetKind;
-
-  if (type === "assets") {
-    chain = Chains.polkadotAssetHub;
-  } else if (type === "native") {
-    chain = currentChain;
-  }
-  const { decimals } = getChainSettings(chain);
+  const { chain, symbol, type } = assetKind;
 
   return (
-    <div className={cn("flex items-center gap-x-2", className)}>
-      <NetworkIcon chain={chain} className="w-3 h-3" />
-
-      <ValueDisplay
-        className="text14Medium"
-        value={toPrecision(amount, decimals)}
-        symbol={symbol}
-      />
-    </div>
+    <TreasurySpendValueDisplay
+      className={cn("flex ", className)}
+      chain={chain}
+      type={type}
+      amount={amount}
+      symbol={symbol}
+    />
   );
 }
