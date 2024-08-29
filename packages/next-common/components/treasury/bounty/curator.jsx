@@ -61,7 +61,7 @@ function BountySidebarCurator() {
     <SecondaryCardDetail>
       <CuratorTitle />
       <div className="flex items-center flex-wrap  space-x-2 h-[44px] mt-0 border-b border-neutral300">
-        <AddressUser key={curator} add={curator} maxWidth={150} />
+        <AddressUser key={curator} add={curator} maxWidth={badge ? 150 : undefined} />
         {badge && <CuratorBadge badge={badge} />}
         {delegateAddress && <CuratorProxyTag />}
       </div>
