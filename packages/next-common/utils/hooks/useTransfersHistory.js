@@ -22,6 +22,17 @@ export const assetTransfersQuery = gql`
   }
 `;
 
+export const assetMetadataQuery = gql`
+  query MyQuery($id: Int!, $height: Int!) {
+    asset(id: $id, height: $height) {
+      metadata {
+        decimals
+        symbol
+      }
+    }
+  }
+`;
+
 const STATESCAN_CHAIN_URL_MAP = Object.freeze({
   "polkadot-assethub": "https://statemint-gh-api.statescan.io/graphql",
 });
@@ -48,14 +59,30 @@ export default function useTransfersHistory(page = 0, page_size = 25) {
 
       try {
         const url = STATESCAN_CHAIN_URL_MAP[chain];
-        const data = await request(url, assetTransfersQuery, {
+
+        const transfersData = await request(url, assetTransfersQuery, {
           limit: page_size,
           offset: page * page_size,
           address,
         });
 
-        setValue(data?.assetTransfers?.transfers || []);
-        setTotal(data?.assetTransfers?.total || 0);
+        const transfers = transfersData?.assetTransfers?.transfers || [];
+        const totalTransfers = transfersData?.assetTransfers?.total || 0;
+
+        const metadataPromises = transfers.map((transfer) =>
+          request(url, assetMetadataQuery, {
+            id: transfer.assetId,
+            height: transfer.assetHeight,
+          }).then((metadataData) => ({
+            ...transfer,
+            metadata: metadataData?.asset?.metadata,
+          })),
+        );
+
+        const transfersWithMetadata = await Promise.all(metadataPromises);
+
+        setValue(transfersWithMetadata);
+        setTotal(totalTransfers);
       } catch (err) {
         setError(err);
       } finally {

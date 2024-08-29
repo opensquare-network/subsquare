@@ -19,7 +19,7 @@ export function useAssetsTransfersHistoryTokenColumn() {
         type={checkIsNativeAsset(chain, item?.isNativeAsset) ? "native" : ""}
         assetId={item.assetId}
         symbol={
-          checkIsNativeAsset(chain, item?.isNativeAsset) ? symbol : item.symbol
+          checkIsNativeAsset(chain, item?.isNativeAsset) ? symbol : item?.metadata?.symbol
         }
       />
     ),
