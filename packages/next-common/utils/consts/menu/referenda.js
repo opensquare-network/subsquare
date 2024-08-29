@@ -30,6 +30,7 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
       Chains.westend,
       Chains.basilisk,
       Chains.altair,
+      Chains.zkverifyTestnet,
     ]),
     activeCount: totalActiveCount,
     icon: <MenuReferenda />,

@@ -34,6 +34,7 @@ import polkadotAssetHub from "./polkadotAssetHub";
 import shibuya from "./shibuya";
 import astar from "./astar";
 import { isNil } from "lodash-es";
+import zkverifyTestnet from "./zkverifyTestnet";
 
 const settingsMap = {
   polkadot,
@@ -70,6 +71,7 @@ const settingsMap = {
   [polkadotAssetHub.value]: polkadotAssetHub,
   vara,
   shibuya,
+  [zkverifyTestnet.value]: zkverifyTestnet,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
 
