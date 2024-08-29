@@ -13,6 +13,9 @@ const assetTransfersQuery = gql`
         from
         to
         indexer {
+          blockHeight
+          extrinsicIndex
+          eventIndex
           blockTime
         }
       }
