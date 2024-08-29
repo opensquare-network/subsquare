@@ -1,8 +1,8 @@
 import React from "react";
 import useDuration from "../../../utils/hooks/useDuration";
 import Info from "../../styled/info";
-import UpdateIcon from "../../../assets/imgs/icons/line-chart.svg";
 import { usePost } from "../../../context/post";
+import { SystemActivity } from "@osn/icons/subsquare";
 
 export default function UpdatedTime() {
   const post = usePost();
@@ -18,7 +18,7 @@ export default function UpdatedTime() {
   const duration = useDuration(postUpdatedTime);
   return (
     <Info>
-      <UpdateIcon />
+      <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
       <span>{duration}</span>
     </Info>
   );

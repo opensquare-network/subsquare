@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import Post from "next-common/components/post";
+import Post from "./post";
 import Pagination from "next-common/components/pagination/index.js";
-import { EmptyList } from "./emptyList";
-import ListTitleBar from "./listTitleBar";
+import { EmptyList } from "../emptyList";
+import ListTitleBar from "../listTitleBar";
 
 const Wrapper = styled.div`
   display: flex;
