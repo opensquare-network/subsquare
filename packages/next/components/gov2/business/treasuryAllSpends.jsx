@@ -80,7 +80,7 @@ function Time({ validFrom }) {
 
   let content;
   if (isNil(validFrom)) {
-    content = "Immediately";
+    content = "immediately";
   } else {
     if (currentHeight > validFrom) {
       content = <PassedTime validFrom={validFrom} />;
