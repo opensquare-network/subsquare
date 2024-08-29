@@ -4,38 +4,36 @@ import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import MotionElapse from "next-common/components/motionElapse";
-import UpdateIcon from "../assets/imgs/icons/line-chart.svg";
-import CommentIcon from "../assets/imgs/icons/comment.svg";
 import Anchor from "next-common/components/styled/anchor";
-import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
-import Divider from "./styled/layout/divider";
-import { DemocracyTag, TreasuryTag } from "./tags/business";
+import { HoverSecondaryCard } from "../styled/containers/secondaryCard";
+import Divider from "../styled/layout/divider";
+import { DemocracyTag, TreasuryTag } from "../tags/business";
 import { isNil } from "lodash-es";
-import { getBannerUrl } from "../utils/banner";
-import businessCategory from "../utils/consts/business/category";
-import useDuration from "../utils/hooks/useDuration";
-import { getMotionStateArgs } from "../utils/collective/result";
-import { getGov2ReferendumStateArgs } from "../utils/gov2/result";
-import { useChainSettings } from "../context/chain";
-import { smcss } from "../utils/responsive";
-import Gov2TrackTag from "../components/gov2/trackTag";
-import DecisionCountdown from "../components/gov2/postList/decisionCountdown";
-import { gov2State } from "../utils/consts/state";
-import ConfirmCountdown from "./gov2/postList/confirmCountdown";
-import ValueDisplay from "./valueDisplay";
-import ListPostTitle from "./postList/postTitle";
-import IpfsLink from "./alliance/ipfsLink";
-import PostLabels from "./postLabels";
-import { useScreenSize } from "../utils/hooks/useScreenSize";
-import LinkInfo from "./styled/linkInfo";
+import { getBannerUrl } from "../../utils/banner";
+import businessCategory from "../../utils/consts/business/category";
+import useDuration from "../../utils/hooks/useDuration";
+import { getMotionStateArgs } from "../../utils/collective/result";
+import { getGov2ReferendumStateArgs } from "../../utils/gov2/result";
+import { useChainSettings } from "../../context/chain";
+import { smcss } from "../../utils/responsive";
+import Gov2TrackTag from "../gov2/trackTag";
+import DecisionCountdown from "../gov2/postList/decisionCountdown";
+import { gov2State } from "../../utils/consts/state";
+import ConfirmCountdown from "../gov2/postList/confirmCountdown";
+import ValueDisplay from "../valueDisplay";
+import ListPostTitle from "./postTitle";
+import IpfsLink from "../alliance/ipfsLink";
+import PostLabels from "../postLabels";
+import { useScreenSize } from "../../utils/hooks/useScreenSize";
+import LinkInfo from "../styled/linkInfo";
 import Link from "next/link";
-import PreparingCountdown from "./gov2/postList/preparingCountdown";
-import { getDemocracyStateArgs } from "../utils/democracy/result";
-import ReferendumElapse from "./democracy/referendum/referendumElapse";
-import PostListCardVotesSummaryBar from "./postList/votesSummaryBar";
-import SystemUser from "./user/systemUser";
-import AddressUser from "./user/addressUser";
-import PolkassemblyUser from "./user/polkassemblyUser";
+import PreparingCountdown from "../gov2/postList/preparingCountdown";
+import { getDemocracyStateArgs } from "../../utils/democracy/result";
+import ReferendumElapse from "../democracy/referendum/referendumElapse";
+import PostListCardVotesSummaryBar from "./votesSummaryBar";
+import SystemUser from "../user/systemUser";
+import AddressUser from "../user/addressUser";
+import PolkassemblyUser from "../user/polkassemblyUser";
 import tw from "tailwind-styled-components";
 import Tooltip from "next-common/components/tooltip";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
@@ -43,6 +41,7 @@ import {
   isUsdcByMeta,
   isUsdtByMeta,
 } from "next-common/utils/treasury/spend/usdCheck";
+import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -360,14 +359,14 @@ export default function Post({ data, href, type }) {
             )}
             {data.time && (
               <Info>
-                <UpdateIcon />
+                <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
                 <span>{duration}</span>
                 <Flex className="elapseIcon">{elapseIcon}</Flex>
               </Info>
             )}
             {commentsCount > -1 && (
               <MobileHiddenInfo>
-                <CommentIcon />
+                <SystemComment className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
                 {`${commentsCount}`}
               </MobileHiddenInfo>
             )}
