@@ -7,8 +7,8 @@ const NativeAssetPanel = ({ children }) => {
   const [count, setCount] = React.useState("");
 
   return (
-    <div className="mb-6">
-      <div className=" pl-6">
+    <div className="mb-1">
+      <div className="pl-6">
         <NativeAssetLabel label="Native Assets" count={count} isActive={true} />
       </div>
       <div className="mt-4">

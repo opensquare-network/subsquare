@@ -62,6 +62,27 @@ export function Title({ assetsCount }) {
   );
 }
 
+function NativeAsset({ setTotalCount }) {
+  const assets = useMyAssets();
+  const nativeAssets = assets?.filter(
+    (asset) => asset?.type && asset?.type === "native",
+  );
+
+  useEffect(() => {
+    if (nativeAssets && setTotalCount) {
+      setTotalCount(nativeAssets.length);
+    }
+  }, [nativeAssets, setTotalCount]);
+
+  return (
+    <div>
+      <SecondaryCard>
+        <AssetsList assets={nativeAssets} />
+      </SecondaryCard>
+    </div>
+  );
+}
+
 function Assets({ setTotalCount }) {
   const assets = useMyAssets();
   const nonNativeAssets = assets?.filter(
@@ -69,11 +90,10 @@ function Assets({ setTotalCount }) {
   );
 
   useEffect(() => {
-    if (assets && setTotalCount) {
-      const count = nonNativeAssets ? nonNativeAssets.length : 0;
-      setTotalCount(count);
+    if (nonNativeAssets && setTotalCount) {
+      setTotalCount(nonNativeAssets.length);
     }
-  }, [assets, setTotalCount]);
+  }, [nonNativeAssets, setTotalCount]);
 
   return (
     <div>
@@ -89,28 +109,6 @@ function Transfers({ setTotalCount }) {
     <div>
       <SecondaryCard>
         <AssetsTransfersHistory setTotalCount={setTotalCount} />
-      </SecondaryCard>
-    </div>
-  );
-}
-
-function NativeAsset({ setTotalCount }) {
-  const assets = useMyAssets();
-  const nativeAssets = assets?.filter(
-    (asset) => asset?.type && asset?.type === "native",
-  );
-
-  useEffect(() => {
-    if (assets && setTotalCount) {
-      const count = nativeAssets ? nativeAssets.length : 0;
-      setTotalCount(count);
-    }
-  }, [assets, setTotalCount]);
-
-  return (
-    <div>
-      <SecondaryCard>
-        <AssetsList assets={nativeAssets} />
       </SecondaryCard>
     </div>
   );
