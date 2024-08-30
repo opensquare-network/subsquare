@@ -19,23 +19,33 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { noop } from "lodash-es";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 
-function PopupContent() {
-  const { treasuryPallet = "treasury", onInBlock = noop } = usePopupParams();
-  const dispatch = useDispatch();
-  const signerAccount = useSignerAccount();
-  const { value: beneficiary, component: beneficiaryField } =
-    useAddressComboField();
-
-  const [inputValue, setInputValue] = useState();
-
-  const { decimals } = useChainSettings();
+function useProposalBond(proposalValue) {
   const api = useContextApi();
-
-  const proposalValue = new BigNumber(inputValue).times(Math.pow(10, decimals));
   const bond = useBond({
     api,
     proposalValue,
   });
+
+  return {
+    value: bond,
+    component: <ProposalBond bond={bond} />,
+  };
+}
+
+function PopupContent() {
+  const { treasuryPallet = "treasury", onInBlock = noop } = usePopupParams();
+  const dispatch = useDispatch();
+  const signerAccount = useSignerAccount();
+
+  const api = useContextApi();
+  const { decimals } = useChainSettings();
+
+  const [inputValue, setInputValue] = useState();
+  const proposalValue = new BigNumber(inputValue).times(Math.pow(10, decimals));
+  const { value: bond, component: bondComponent } =
+    useProposalBond(proposalValue);
+  const { value: beneficiary, component: beneficiaryField } =
+    useAddressComboField();
 
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
@@ -76,7 +86,7 @@ function PopupContent() {
       />
       {beneficiaryField}
       <ProposalValue setValue={setInputValue} />
-      <ProposalBond bond={bond} />
+      {bondComponent}
       {balanceInsufficient && (
         <WarningMessage danger>Insufficient balance</WarningMessage>
       )}
