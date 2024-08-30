@@ -1,12 +1,12 @@
 import BigNumber from "bignumber.js";
-import { find, groupBy } from "lodash-es";
+import { groupBy } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 import { cn, toPrecision } from "next-common/utils";
 import Chains from "next-common/utils/consts/chains";
 import getChainSettings from "next-common/utils/consts/settings";
-import knownPolkadotAssetHubAssets from "../assets/known/polkadot";
-import ValueDisplay from "../valueDisplay";
+import AssetIcon from "../icons/assetIcon";
 import Tooltip from "../tooltip";
+import ValueDisplay from "../valueDisplay";
 
 export default function PostListTreasuryAllSpends({ allSpends }) {
   const groupedSpends = groupBy(allSpends, "assetKind.symbol");
@@ -19,13 +19,12 @@ export default function PostListTreasuryAllSpends({ allSpends }) {
     return {
       symbol,
       amount,
-      assetKind: spends[0].assetKind,
+      ...spends[0].assetKind,
     };
   });
 
   if (resolvedSpends.length === 1) {
-    const { amount, assetKind } = resolvedSpends[0];
-    const { type, chain, symbol } = assetKind;
+    const { amount, type, chain, symbol } = resolvedSpends[0];
 
     return (
       <SingleSpend amount={amount} chain={chain} type={type} symbol={symbol} />
@@ -58,8 +57,8 @@ function MultiSpends({ spends }) {
               className="text-textPrimaryContrast text12Medium"
               showTooltip={false}
               amount={spend.amount}
-              type={spend.assetKind.type}
-              chain={spend.assetKind.chain}
+              type={spend.type}
+              chain={spend.chain}
               symbol={spend.symbol}
             />
           ))}
@@ -67,10 +66,10 @@ function MultiSpends({ spends }) {
       }
     >
       {spends.map((spend, idx) => (
-        <SpendAssetIcon
+        <AssetIcon
           key={spend.symbol}
           symbol={spend.symbol}
-          className={cn(idx > 0 && "-ml-2")}
+          className={cn("w-5 h-5", idx > 0 && "-ml-2")}
         />
       ))}
     </Tooltip>
@@ -101,12 +100,5 @@ function SpendValueDisplay({
       symbol={symbol}
       showTooltip={showTooltip}
     />
-  );
-}
-
-function SpendAssetIcon({ symbol, className = "" }) {
-  const foundAsset = find(knownPolkadotAssetHubAssets, { symbol });
-  return (
-    foundAsset?.icon && <foundAsset.icon className={cn("w-5 h-5", className)} />
   );
 }

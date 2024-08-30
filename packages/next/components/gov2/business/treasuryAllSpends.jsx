@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import TreasurySpendValueDisplay from "./treasurySpendValueDisplay";
 import { useNavCollapsed } from "next-common/context/nav";
+import AssetIcon from "next-common/components/icons/assetIcon";
 
 const seperateNumber = 5;
 
@@ -63,13 +64,16 @@ function Spend({ beneficiary, assetKind, amount, validFrom, className = "" }) {
         className,
       )}
     >
-      <TreasurySpendValueDisplay
-        className="flex gap-x-2 items-center"
-        chain={chain}
-        amount={amount}
-        symbol={symbol}
-        type={type}
-      />
+      <div className="flex items-center gap-x-2">
+        <AssetIcon symbol={symbol} className="w-4 h-4" />
+        <TreasurySpendValueDisplay
+          className="flex gap-x-2 items-center text14Medium"
+          chain={chain}
+          amount={amount}
+          symbol={symbol}
+          type={type}
+        />
+      </div>
 
       <div className="flex items-center grow">
         <div className={cn("grow flex items-center justify-start gap-x-1")}>

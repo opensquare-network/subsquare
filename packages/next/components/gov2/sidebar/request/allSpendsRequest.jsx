@@ -3,6 +3,7 @@ import { isNil } from "lodash-es";
 import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import { RequestWrapper } from ".";
+import AssetIcon from "next-common/components/icons/assetIcon";
 
 const seperateNumber = 5;
 
@@ -57,11 +58,15 @@ function Spend({ assetKind, amount }) {
   const { chain, symbol, type } = assetKind;
 
   return (
-    <TreasurySpendValueDisplay
-      chain={chain}
-      type={type}
-      amount={amount}
-      symbol={symbol}
-    />
+    <div className="flex items-center gap-x-2">
+      <AssetIcon symbol={symbol} className="w-4 h-4" />
+      <TreasurySpendValueDisplay
+        chain={chain}
+        type={type}
+        amount={amount}
+        symbol={symbol}
+        className="text14Medium"
+      />
+    </div>
   );
 }

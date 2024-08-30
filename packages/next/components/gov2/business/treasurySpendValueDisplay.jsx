@@ -1,38 +1,30 @@
-import NetworkIcon from "next-common/components/networkIcon";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useChain } from "next-common/context/chain";
-import { cn, toPrecision } from "next-common/utils";
-import Chains from "next-common/utils/consts/chains";
-import getChainSettings from "next-common/utils/consts/settings";
+import { useChainSettings } from "next-common/context/chain";
+import { toPrecision } from "next-common/utils";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 export default function TreasurySpendValueDisplay({
   className = "",
   type,
-  chain,
+  // chain,
   amount,
   symbol,
+  showTooltip,
 }) {
-  const currentChain = useChain();
+  let { decimals } = useChainSettings();
 
-  if (type === "assets") {
-    chain = Chains.polkadotAssetHub;
-  } else if (type === "native") {
-    chain = currentChain;
+  if (type !== "native") {
+    decimals = SYMBOL_DECIMALS[symbol];
   }
 
-  const { decimals } = getChainSettings(chain);
-
   return (
-    <div
-      className={cn(
-        "inline-flex items-center gap-x-2",
-        "text14Medium",
-        className,
-      )}
-    >
-      <NetworkIcon chain={chain} className="w-3 h-3" />
-
-      <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />
+    <div className="inline-flex">
+      <ValueDisplay
+        value={toPrecision(amount, decimals)}
+        symbol={symbol}
+        showTooltip={showTooltip}
+        className={className}
+      />
     </div>
   );
 }
