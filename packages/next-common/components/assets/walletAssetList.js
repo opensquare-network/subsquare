@@ -16,6 +16,7 @@ import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/c
 import AssetHubTabs from "next-common/components/assets/tabs/index";
 import { useEffect } from "react";
 import AssetsTransfersHistory from "next-common/components/assets/transferHistory/index";
+import NativeAssetPanel from "next-common/components/assets/nativeAssetPanel/index";
 
 function HeadContent() {
   const address = useRealAddress();
@@ -89,10 +90,21 @@ function Transfers({ setTotalCount }) {
   );
 }
 
+function NativeAsset({ setTotalCount }) {
+  return (
+    <div>
+      <SecondaryCard>NativeAsset</SecondaryCard>
+    </div>
+  );
+}
+
 export default function WalletAssetList() {
   return (
     <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
       <div className="flex flex-col gap-[16px]">
+        <NativeAssetPanel>
+          <NativeAsset />
+        </NativeAssetPanel>
         <AssetHubTabs>
           <Assets />
           <Transfers />
