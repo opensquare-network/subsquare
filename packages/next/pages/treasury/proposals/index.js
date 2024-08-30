@@ -11,12 +11,27 @@ import NewTreasuryProposalButton from "next-common/components/treasury/proposal/
 import { useRouter } from "next/router";
 import { getEventData } from "next-common/utils/sendTransaction";
 
+function NewTreasuryProposal() {
+  const router = useRouter();
+  return (
+    <NewTreasuryProposalButton
+      onInBlock={(events) => {
+        const eventData = getEventData(events, "treasury", "Proposed");
+        if (!eventData) {
+          return;
+        }
+        const [proposalIndex] = eventData;
+        router.push(`/treasury/proposals/${proposalIndex}`);
+      }}
+    />
+  );
+}
+
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
   const { hasDotreasury, showNewTreasuryProposalButton } = useChainSettings();
 
-  const router = useRouter();
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
   );
@@ -44,20 +59,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         titleExtra={
           showNewTreasuryProposalButton && (
             <div className="flex justify-end">
-              <NewTreasuryProposalButton
-                onInBlock={(events) => {
-                  const eventData = getEventData(
-                    events,
-                    "treasury",
-                    "Proposed",
-                  );
-                  if (!eventData) {
-                    return;
-                  }
-                  const [proposalIndex] = eventData;
-                  router.push(`/treasury/proposals/${proposalIndex}`);
-                }}
-              />
+              <NewTreasuryProposal />
             </div>
           )
         }
