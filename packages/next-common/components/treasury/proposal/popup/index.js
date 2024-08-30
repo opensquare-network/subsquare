@@ -76,7 +76,7 @@ function PopupContent() {
       />
       {beneficiaryField}
       <ProposalValue setValue={setInputValue} />
-      <ProposalBond bond={bond} decimals={decimals} />
+      <ProposalBond bond={bond} />
       {balanceInsufficient && (
         <WarningMessage danger>Insufficient balance</WarningMessage>
       )}
