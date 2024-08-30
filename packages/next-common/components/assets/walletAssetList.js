@@ -14,7 +14,7 @@ import { isNil } from "lodash-es";
 import { ProxyTip } from "next-common/components/overview/accountInfo/accountInfoPanel.js";
 import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 import AssetHubTabs from "next-common/components/assets/tabs/index";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AssetsTransfersHistory from "next-common/components/assets/transferHistory/index";
 import NativeAssetPanel from "next-common/components/assets/nativeAssetPanel/index";
 
@@ -64,9 +64,13 @@ export function Title({ assetsCount }) {
 
 function Assets({ setTotalCount }) {
   const assets = useMyAssets();
+  const nonNativeAssets = assets?.filter(
+    (asset) => !asset?.type || asset?.type !== "native",
+  );
+
   useEffect(() => {
     if (assets && setTotalCount) {
-      const count = assets ? assets.length : 0;
+      const count = nonNativeAssets ? nonNativeAssets.length : 0;
       setTotalCount(count);
     }
   }, [assets, setTotalCount]);
@@ -74,7 +78,7 @@ function Assets({ setTotalCount }) {
   return (
     <div>
       <SecondaryCard>
-        <AssetsList assets={assets} />
+        <AssetsList assets={nonNativeAssets} />
       </SecondaryCard>
     </div>
   );
@@ -91,9 +95,23 @@ function Transfers({ setTotalCount }) {
 }
 
 function NativeAsset({ setTotalCount }) {
+  const assets = useMyAssets();
+  const nativeAssets = assets?.filter(
+    (asset) => asset?.type && asset?.type === "native",
+  );
+
+  useEffect(() => {
+    if (assets && setTotalCount) {
+      const count = nativeAssets ? nativeAssets.length : 0;
+      setTotalCount(count);
+    }
+  }, [assets, setTotalCount]);
+
   return (
     <div>
-      <SecondaryCard>NativeAsset</SecondaryCard>
+      <SecondaryCard>
+        <AssetsList assets={nativeAssets} />
+      </SecondaryCard>
     </div>
   );
 }

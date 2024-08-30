@@ -8,7 +8,9 @@ const NativeAssetPanel = ({ children }) => {
 
   return (
     <div className="mb-6">
-      <NativeAssetLabel label="Native Assets" count={count} isActive={true} />
+      <div className=" pl-6">
+        <NativeAssetLabel label="Native Assets" count={count} isActive={true} />
+      </div>
       <div className="mt-4">
         {React.cloneElement(children, { setTotalCount: setCount })}
       </div>
