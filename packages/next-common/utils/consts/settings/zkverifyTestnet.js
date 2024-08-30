@@ -17,7 +17,7 @@ const ProjectLogoZkverifyLight = dynamic(() =>
 
 const DEFAULT_ZKVERIFY_NODES = [
   {
-    name: "ZKVerify Test",
+    name: "ZKVerify",
     url: "wss://testnet-rpc.zkverify.io",
   },
 ];
