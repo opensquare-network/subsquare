@@ -30,6 +30,7 @@ import westend from "./consts/settings/westend";
 import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
 import shibuya from "next-common/utils/consts/settings/shibuya";
 import astar from "next-common/utils/consts/settings/astar";
+import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -68,6 +69,7 @@ export const nodes = [
   turing,
   zeitgeist,
   vara,
+  zkverifyTestnet,
   ...optionalNodes,
 ];
 
