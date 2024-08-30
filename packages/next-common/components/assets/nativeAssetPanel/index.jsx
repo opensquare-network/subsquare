@@ -1,22 +1,17 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo } from "react";
 import { TabLabel } from "next-common/components/assets/tabs/index";
 
-const NativeAssetLabel = TabLabel;
-
 const NativeAssetPanel = ({ children }) => {
-  const [count, setCount] = useState("");
-
-  const setTotalCount = useCallback((newCount) => {
-    setCount(newCount);
-  }, []);
 
   return (
     <div className="mb-1">
       <div className="pl-6">
-        <NativeAssetLabel label="Native Assets" count={count} isActive={true} />
+        <span className="font-bold text-[16px] leading-[24px] text-textPrimary">
+          Native Asset
+        </span>
       </div>
       <div className="mt-4">
-        {React.cloneElement(children, { setTotalCount })}
+        {React.cloneElement(children)}
       </div>
     </div>
   );

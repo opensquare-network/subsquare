@@ -32,6 +32,20 @@ function useSubscribeNativeBalance(address) {
   return balanceObj;
 }
 
+export function useMyNativeAsset() {
+  const address = useRealAddress();
+  const nativeBalanceObj = useSubscribeNativeBalance(address);
+  return useMemo(() => {
+    if (!nativeBalanceObj) {
+      return null;
+    }
+
+    const tokens = [{ ...PolkadotAssetHubNativeToken, ...nativeBalanceObj }];
+
+    return tokens.filter((item) => !new BigNumber(item.balance || 0).isZero());
+  }, [nativeBalanceObj]);
+}
+
 export default function useMyAssets() {
   const address = useRealAddress();
   const api = useContextApi();
@@ -41,11 +55,10 @@ export default function useMyAssets() {
     [allMetadata, address],
   );
   const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey, api);
-  const nativeBalanceObj = useSubscribeNativeBalance(address);
   const knownAssetDefs = useKnownAssetHubAssets();
 
   return useMemo(() => {
-    if (!allMetadata || !multiAccounts || !nativeBalanceObj) {
+    if (!allMetadata || !multiAccounts) {
       return null;
     }
 
@@ -74,12 +87,8 @@ export default function useMyAssets() {
       (asset) => !knownAssetIds.includes(asset.assetId),
     );
 
-    const tokens = [
-      { ...PolkadotAssetHubNativeToken, ...nativeBalanceObj },
-      ...knownAssets,
-      ...otherAssets,
-    ];
+    const tokens = [...knownAssets, ...otherAssets];
 
     return tokens.filter((item) => !new BigNumber(item.balance || 0).isZero());
-  }, [allMetadata, multiAccounts, nativeBalanceObj, knownAssetDefs]);
+  }, [allMetadata, multiAccounts, knownAssetDefs]);
 }

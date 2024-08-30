@@ -1,23 +1,21 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import AssetsList from "next-common/components/assets/assetsList";
+import useMyAssets from "next-common/components/assets/useMyAssets";
 
-export default function Assets({ setTotalCount, assets }) {
-  const nonNativeAssets = useMemo(
-    () => assets?.filter((asset) => !asset?.type || asset?.type !== "native"),
-    [assets],
-  );
+export default function Assets({ setTotalCount }) {
+  const assets = useMyAssets();
 
   useEffect(() => {
-    if (nonNativeAssets && setTotalCount) {
-      setTotalCount(nonNativeAssets.length);
+    if (assets && setTotalCount) {
+      setTotalCount(assets.length);
     }
-  }, [nonNativeAssets, setTotalCount]);
+  }, [assets, setTotalCount]);
 
   return (
     <div>
       <SecondaryCard>
-        <AssetsList assets={nonNativeAssets} />
+        <AssetsList assets={assets} />
       </SecondaryCard>
     </div>
   );
