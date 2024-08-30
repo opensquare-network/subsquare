@@ -1,14 +1,14 @@
 import TreasurySpendValueDisplay from "components/gov2/business/treasurySpendValueDisplay";
 import { isNil } from "lodash-es";
 import { useOnchainData } from "next-common/context/post";
-import { cn } from "next-common/utils";
 import { useState } from "react";
 import { RequestWrapper } from ".";
+
+const seperateNumber = 5;
 
 export default function AllSpendsRequest() {
   const onchain = useOnchainData();
 
-  const collapseCount = 5;
   const [showMore, setShowMore] = useState(false);
 
   if (
@@ -20,21 +20,20 @@ export default function AllSpendsRequest() {
     return null;
   }
 
-  const shouldCollapsed = onchain.allSpends?.length > collapseCount;
+  const shouldCollapsed = onchain.allSpends?.length > seperateNumber;
 
   return (
     <RequestWrapper>
       <div className="flex flex-col">
-        {onchain?.allSpends?.map?.((spend, idx) => (
-          <Spend
-            key={idx}
-            assetKind={spend.assetKind}
-            amount={spend.amount}
-            className={cn(
-              shouldCollapsed && !showMore && idx >= collapseCount && "hidden",
-            )}
-          />
+        {onchain?.allSpends?.slice(0, seperateNumber).map?.((spend, idx) => (
+          <Spend key={idx} assetKind={spend.assetKind} amount={spend.amount} />
         ))}
+
+        {showMore &&
+          shouldCollapsed &&
+          onchain?.allSpends
+            .slice(seperateNumber)
+            .map((spend, idx) => <Spend key={idx} {...spend} />)}
 
         {shouldCollapsed && (
           <div>
@@ -54,12 +53,11 @@ export default function AllSpendsRequest() {
   );
 }
 
-function Spend({ assetKind, amount, className }) {
+function Spend({ assetKind, amount }) {
   const { chain, symbol, type } = assetKind;
 
   return (
     <TreasurySpendValueDisplay
-      className={cn("flex ", className)}
       chain={chain}
       type={type}
       amount={amount}

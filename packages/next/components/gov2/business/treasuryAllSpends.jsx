@@ -9,28 +9,29 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import TreasurySpendValueDisplay from "./treasurySpendValueDisplay";
 
+const seperateNumber = 5;
+
 export function getTreasuryAllSpendsBusiness(onchain) {
   return [["Request", <AllSpends key="all-spend" onchain={onchain} />]];
 }
 
 function AllSpends({ onchain }) {
-  const collapseCount = 5;
   const { allSpends = [] } = onchain;
   const [showMore, setShowMore] = useState(false);
 
-  const shouldCollapsed = allSpends?.length > collapseCount;
+  const shouldCollapsed = allSpends?.length > seperateNumber;
 
   return (
     <div className="flex flex-col gap-y-1 w-full">
-      {allSpends.map((spend, idx) => (
-        <Spend
-          key={idx}
-          {...spend}
-          className={cn(
-            shouldCollapsed && !showMore && idx >= collapseCount && "hidden",
-          )}
-        />
+      {allSpends.slice(0, seperateNumber).map((spend, idx) => (
+        <Spend key={idx} {...spend} />
       ))}
+
+      {showMore &&
+        shouldCollapsed &&
+        allSpends
+          .slice(seperateNumber)
+          .map((spend, idx) => <Spend key={idx} {...spend} />)}
 
       {shouldCollapsed && (
         <div>
