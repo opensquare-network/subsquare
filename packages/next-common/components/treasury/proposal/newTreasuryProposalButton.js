@@ -6,7 +6,10 @@ const SystemPlus = dynamic(() => import("@osn/icons/subsquare/SystemPlus"));
 
 const NewTreasuryProposalPopup = dynamic(() => import("./popup"));
 
-export default function NewTreasuryProposalButton({ treasuryPallet }) {
+export default function NewTreasuryProposalButton({
+  treasuryPallet,
+  onInBlock,
+}) {
   const [showPopup, setShowPopup] = useState(false);
 
   return (
@@ -23,6 +26,7 @@ export default function NewTreasuryProposalButton({ treasuryPallet }) {
       {showPopup && (
         <NewTreasuryProposalPopup
           treasuryPallet={treasuryPallet}
+          onInBlock={onInBlock}
           onClose={() => setShowPopup(false)}
         />
       )}

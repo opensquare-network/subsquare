@@ -8,11 +8,14 @@ import { fetchList } from "next-common/services/list";
 import normalizeCommunityTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeCommunityTreasuryProposalListItem";
 import NewTreasuryProposalButton from "next-common/components/treasury/proposal/newTreasuryProposalButton";
 import { useChainSettings } from "next-common/context/chain";
+import { useRouter } from "next/router";
+import { getEventData } from "next-common/utils/sendTransaction";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
 
+  const router = useRouter();
   const { showNewTreasuryProposalButton } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
@@ -40,7 +43,21 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         titleExtra={
           showNewTreasuryProposalButton && (
             <div className="flex justify-end">
-              <NewTreasuryProposalButton treasuryPallet="communityTreasury" />
+              <NewTreasuryProposalButton
+                treasuryPallet="communityTreasury"
+                onInBlock={(events) => {
+                  const eventData = getEventData(
+                    events,
+                    "communityTreasury",
+                    "Proposed",
+                  );
+                  if (!eventData) {
+                    return;
+                  }
+                  const [proposalIndex] = eventData;
+                  router.push(`/community-treasury/proposals/${proposalIndex}`);
+                }}
+              />
             </div>
           )
         }

@@ -18,7 +18,6 @@ import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { noop } from "lodash-es";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
-import { getEventData } from "next-common/utils/sendTransaction";
 
 function PopupContent() {
   const { treasuryPallet = "treasury", onInBlock = noop } = usePopupParams();
@@ -84,14 +83,7 @@ function PopupContent() {
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         disabled={disabled}
-        onInBlock={(events) => {
-          const eventData = getEventData(events, "treasury", "Proposed");
-          if (!eventData) {
-            return;
-          }
-          const [proposalIndex] = eventData;
-          onInBlock(signerAccount?.address, proposalIndex);
-        }}
+        onInBlock={onInBlock}
       />
     </>
   );

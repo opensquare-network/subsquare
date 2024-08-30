@@ -8,12 +8,15 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 import NewTreasuryProposalButton from "next-common/components/treasury/proposal/newTreasuryProposalButton";
+import { useRouter } from "next/router";
+import { getEventData } from "next-common/utils/sendTransaction";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
   const { hasDotreasury, showNewTreasuryProposalButton } = useChainSettings();
 
+  const router = useRouter();
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
   );
@@ -41,7 +44,20 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         titleExtra={
           showNewTreasuryProposalButton && (
             <div className="flex justify-end">
-              <NewTreasuryProposalButton />
+              <NewTreasuryProposalButton
+                onInBlock={(events) => {
+                  const eventData = getEventData(
+                    events,
+                    "treasury",
+                    "Proposed",
+                  );
+                  if (!eventData) {
+                    return;
+                  }
+                  const [proposalIndex] = eventData;
+                  router.push(`/treasury/proposals/${proposalIndex}`);
+                }}
+              />
             </div>
           )
         }
