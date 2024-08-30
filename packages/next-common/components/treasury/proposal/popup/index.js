@@ -21,7 +21,7 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import { getEventData } from "next-common/utils/sendTransaction";
 
 function PopupContent() {
-  const { onInBlock = noop } = usePopupParams();
+  const { treasuryPallet = "treasury", onInBlock = noop } = usePopupParams();
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const { value: beneficiary, component: beneficiaryField } =
@@ -61,8 +61,8 @@ function PopupContent() {
       return;
     }
 
-    return api.tx.treasury.proposeSpend(bnValue.toString(), beneficiary);
-  }, [beneficiary, inputValue, decimals, api, dispatch]);
+    return api.tx[treasuryPallet].proposeSpend(bnValue.toString(), beneficiary);
+  }, [treasuryPallet, beneficiary, inputValue, decimals, api, dispatch]);
 
   const balanceInsufficient = new BigNumber(bond).gt(balance);
   const disabled = balanceInsufficient || !new BigNumber(inputValue).gt(0);
