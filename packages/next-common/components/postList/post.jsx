@@ -42,6 +42,7 @@ import {
   isUsdtByMeta,
 } from "next-common/utils/treasury/spend/usdCheck";
 import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
+import PostListTreasuryAllSpends from "./treasuryAllSpends";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -221,6 +222,11 @@ function PostValueTitle({ data, type }) {
         symbol={symbol}
       />
     );
+  }
+
+  if (onchainData?.allSpends?.length) {
+    const { allSpends } = onchainData;
+    return <PostListTreasuryAllSpends allSpends={allSpends} />;
   }
 
   if (onchainData?.isStableTreasury) {
