@@ -5,13 +5,14 @@ import SubScanLink from "./subscanLink";
 import StatescanLink from "./statescanLink";
 import Flex from "../styled/flex";
 import { useChainSettings } from "next-common/context/chain";
+import PolkascanLink from "./polkascanLink";
 
 const Wrapper = styled(Flex)`
   height: 20px;
 `;
 
 export default function ExplorerLink({ indexer = {}, style = {}, children }) {
-  const { hasSubscan, hasStatescan } = useChainSettings();
+  const { hasSubscan, hasStatescan, hasPolkascan } = useChainSettings();
 
   if (isEmpty(indexer)) {
     return null;
@@ -22,6 +23,8 @@ export default function ExplorerLink({ indexer = {}, style = {}, children }) {
     LinkComponent = SubScanLink;
   } else if (hasStatescan) {
     LinkComponent = StatescanLink;
+  } else if (hasPolkascan) {
+    LinkComponent = PolkascanLink;
   }
 
   return (

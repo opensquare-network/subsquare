@@ -33,6 +33,7 @@ export function getTreasuryMenu(summary) {
       Chains.kabocha,
       Chains.westendCollectives,
       Chains.collectives,
+      Chains.zkverifyTestnet,
     ],
     icon: <MenuTreasury />,
     pathname: "/treasury",

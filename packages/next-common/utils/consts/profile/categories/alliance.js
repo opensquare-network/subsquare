@@ -27,4 +27,4 @@ const allianceCategory = {
   ],
 };
 
-export default allianceCategory;
+export { allianceCategory };

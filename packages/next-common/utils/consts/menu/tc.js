@@ -22,6 +22,7 @@ export function getTechCommMenu(summary) {
       Chains.collectives,
       Chains.vara,
       Chains.westend,
+      Chains.zkverifyTestnet,
     ],
     archivedToChains: [Chains.kusama, Chains.polkadot, Chains.rococo],
     activeCount: activeTechCommMotions,
