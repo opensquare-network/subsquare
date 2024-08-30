@@ -8,6 +8,7 @@ import { cn, estimateBlocksTime } from "next-common/utils";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import TreasurySpendValueDisplay from "./treasurySpendValueDisplay";
+import { useNavCollapsed } from "next-common/context/nav";
 
 const seperateNumber = 5;
 
@@ -52,31 +53,37 @@ function AllSpends({ onchain }) {
 
 function Spend({ beneficiary, assetKind, amount, validFrom, className = "" }) {
   const { chain, symbol, type } = assetKind;
+  const [navCollapsed] = useNavCollapsed();
 
   return (
     <div
       className={cn(
-        "text14Medium flex justify-between items-center",
+        "text14Medium flex gap-x-2 items-center",
+        navCollapsed ? "max-sm:block" : "max-md:block",
         className,
       )}
     >
-      <div className="flex gap-x-2 items-center">
-        <TreasurySpendValueDisplay
-          chain={chain}
-          amount={amount}
-          symbol={symbol}
-          type={type}
-        />
-        <div className="text-textTertiary">to</div>
-        <AddressUser add={beneficiary.address} />
-      </div>
+      <TreasurySpendValueDisplay
+        className="flex gap-x-2 items-center"
+        chain={chain}
+        amount={amount}
+        symbol={symbol}
+        type={type}
+      />
 
-      <Time validFrom={validFrom} />
+      <div className="flex items-center grow">
+        <div className={cn("grow flex items-center justify-start gap-x-1")}>
+          <div className="text-textTertiary">to</div>
+          <AddressUser add={beneficiary.address} />
+        </div>
+
+        <Time validFrom={validFrom} />
+      </div>
     </div>
   );
 }
 
-function Time({ validFrom }) {
+function Time({ validFrom, className = "" }) {
   const currentHeight = useSelector(latestHeightSelector);
 
   let content;
@@ -90,7 +97,7 @@ function Time({ validFrom }) {
     }
   }
 
-  return <div className="text-textTertiary">{content}</div>;
+  return <div className={cn("text-textTertiary", className)}>{content}</div>;
 }
 
 function PassedTime({ validFrom }) {
