@@ -112,5 +112,7 @@ function SpendValueDisplay({
 
 function SpendAssetIcon({ symbol, className = "" }) {
   const foundAsset = find(knownPolkadotAssetHubAssets, { symbol });
-  return foundAsset?.icon && <foundAsset.icon className={className} />;
+  return (
+    foundAsset?.icon && <foundAsset.icon className={cn("w-5 h-5", className)} />
+  );
 }
