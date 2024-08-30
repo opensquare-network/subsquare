@@ -37,18 +37,12 @@ export default function PostListTreasuryAllSpends({ allSpends }) {
 
 function SingleSpend({ amount, chain, type, symbol }) {
   return (
-    <div className="flex items-baseline">
-      <div className="flex items-center gap-x-2">
-        <SpendValueDisplay
-          chain={chain}
-          type={type}
-          symbol={symbol}
-          amount={amount}
-        />
-
-        <SpendAssetIcon symbol={symbol} />
-      </div>
-    </div>
+    <SpendValueDisplay
+      chain={chain}
+      type={type}
+      symbol={symbol}
+      amount={amount}
+    />
   );
 }
 
