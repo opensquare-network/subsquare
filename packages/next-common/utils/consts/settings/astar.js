@@ -71,6 +71,7 @@ const astar = {
     democracy: true,
     referenda: false,
   },
+  showNewTreasuryProposalButton: true,
   ...astarThemeVars,
 };
 
