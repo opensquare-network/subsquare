@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import { useAllAssetMetadata } from "./context/assetMetadata";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
@@ -32,6 +32,26 @@ function useSubscribeNativeBalance(address) {
   return balanceObj;
 }
 
+export function useMyNativeAsset() {
+  const address = useRealAddress();
+  const nativeBalanceObj = useSubscribeNativeBalance(address);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (nativeBalanceObj) {
+      setLoading(false);
+    }
+  }, [nativeBalanceObj]);
+
+  return {
+    loading,
+    value: {
+      ...PolkadotAssetHubNativeToken,
+      ...nativeBalanceObj,
+    },
+  };
+}
+
 export default function useMyAssets() {
   const address = useRealAddress();
   const api = useContextApi();
@@ -41,11 +61,10 @@ export default function useMyAssets() {
     [allMetadata, address],
   );
   const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey, api);
-  const nativeBalanceObj = useSubscribeNativeBalance(address);
   const knownAssetDefs = useKnownAssetHubAssets();
 
   return useMemo(() => {
-    if (!allMetadata || !multiAccounts || !nativeBalanceObj) {
+    if (!allMetadata || !multiAccounts) {
       return null;
     }
 
@@ -74,12 +93,8 @@ export default function useMyAssets() {
       (asset) => !knownAssetIds.includes(asset.assetId),
     );
 
-    const tokens = [
-      { ...PolkadotAssetHubNativeToken, ...nativeBalanceObj },
-      ...knownAssets,
-      ...otherAssets,
-    ];
+    const tokens = [...knownAssets, ...otherAssets];
 
     return tokens.filter((item) => !new BigNumber(item.balance || 0).isZero());
-  }, [allMetadata, multiAccounts, nativeBalanceObj, knownAssetDefs]);
+  }, [allMetadata, multiAccounts, knownAssetDefs]);
 }

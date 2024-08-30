@@ -8,7 +8,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import LoadableContent from "next-common/components/common/loadableContent";
 import AssetsList from "./assetsList";
-import { Title } from "../walletAssetList";
+import { Title } from "../walletAssetList/index";
 import useAssets from "../useAssets";
 
 function Summary({ assetsCount }) {
