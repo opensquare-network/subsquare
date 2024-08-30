@@ -16,6 +16,7 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import Chains from "next-common/utils/consts/chains";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 
 export function getRetainTrackNameFromRank(rank) {
   switch (process.env.NEXT_PUBLIC_CHAIN) {
@@ -62,7 +63,9 @@ function PopupContent({ member, onClose }) {
         readOnly
       />
       <RankField title="At Rank" rank={atRank} setRank={setAtRank} readOnly />
-      <EnactmentBlocks setEnactment={setEnactment} />
+      <AdvanceSettings>
+        <EnactmentBlocks setEnactment={setEnactment} />
+      </AdvanceSettings>
       <InfoMessage className="mb-4">
         <span>
           Will create a referendum in {trackName} track to approve{" "}
