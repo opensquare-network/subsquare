@@ -113,7 +113,9 @@ export default function getChainSettings(chain, blockHeight) {
   }
 
   return {
-    modules: {},
+    modules: {
+      treasury: true,
+    },
     ...settings,
   };
 }

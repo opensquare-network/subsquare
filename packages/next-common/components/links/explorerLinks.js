@@ -4,6 +4,7 @@ import Flex from "../styled/flex";
 import SubScanLink from "./subscanLink";
 import { isEmpty } from "lodash-es";
 import StatescanLink from "./statescanLink";
+import PolkascanLink from "./polkascanLink";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -22,6 +23,7 @@ export default function ExplorerLinks({ indexer = {}, style = {}, children }) {
     <Wrapper style={style}>
       <SubScanLink indexer={indexer}>{children}</SubScanLink>
       <StatescanLink indexer={indexer}>{children}</StatescanLink>
+      <PolkascanLink indexer={indexer}>{children}</PolkascanLink>
     </Wrapper>
   );
 }

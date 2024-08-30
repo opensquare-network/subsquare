@@ -64,10 +64,13 @@ const zkverifyTestnet = {
   group: MenuGroups.Solochain,
   postLabels: [],
   hasSubscan: false,
+  hasPolkascan: true,
+  polkascanUrl: "https://testnet-explorer.zkverify.io",
   showAccountManagementTab: false,
   description: "The modular blockchain for ZK proof verification.",
   modules: {
     referenda: true,
+    treasury: false,
   },
   cssVarsLight: {
     theme100: "rgba(38,219,141,0.10)",
