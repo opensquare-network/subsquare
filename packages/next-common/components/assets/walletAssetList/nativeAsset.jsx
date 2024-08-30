@@ -1,30 +1,11 @@
-import React, { useEffect, memo } from "react";
-import useMyAssets from "next-common/components/assets/useAssets";
+import { useEffect, useMemo } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import AssetsList from "next-common/components/assets/assetsList.js";
-import { TabLabel } from "next-common/components/assets/tabs/index";
+import AssetsList from "next-common/components/assets/assetsList";
 
-const NativeAssetLabel = TabLabel;
-
-const NativeAssetPanel = memo(({ children }) => {
-  const [count, setCount] = React.useState("");
-
-  return (
-    <div className="mb-1">
-      <div className="pl-6">
-        <NativeAssetLabel label="Native Assets" count={count} isActive={true} />
-      </div>
-      <div className="mt-4">
-        {React.cloneElement(children, { setTotalCount: setCount })}
-      </div>
-    </div>
-  );
-});
-
-export default function NativeAsset({ setTotalCount }) {
-  const assets = useMyAssets();
-  const nativeAssets = assets?.filter(
-    (asset) => asset?.type && asset?.type === "native",
+export default function NativeAsset({ setTotalCount, assets }) {
+  const nativeAssets = useMemo(
+    () => assets?.filter((asset) => asset?.type === "native"),
+    [assets],
   );
 
   useEffect(() => {
@@ -34,10 +15,10 @@ export default function NativeAsset({ setTotalCount }) {
   }, [nativeAssets, setTotalCount]);
 
   return (
-    <NativeAssetPanel>
+    <div>
       <SecondaryCard>
         <AssetsList assets={nativeAssets} />
       </SecondaryCard>
-    </NativeAssetPanel>
+    </div>
   );
 }
