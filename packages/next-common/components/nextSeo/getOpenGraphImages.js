@@ -5,6 +5,14 @@ const CHAIN_COVER_FILENAMES_MAP = {
     large: "hydration.jpg",
     small: "hydration-small.jpg",
   },
+  [Chains.hydradxTestnet]: {
+    large: "hydration.jpg",
+    small: "hydration-small.jpg",
+  },
+  [Chains.zkverifyTestnet]: {
+    large: "zkverify.jpg",
+    small: "zkverify-small.jpg",
+  },
 };
 
 function resolveCoversRepoFilepathUrl(filename) {
