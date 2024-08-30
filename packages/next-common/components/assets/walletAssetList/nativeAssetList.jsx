@@ -7,7 +7,6 @@ import {
   colTransferrable,
 } from "next-common/components/assets/assetsList";
 import { useMyNativeAsset } from "next-common/components/assets/useMyAssets";
-import { useMemo } from "react";
 
 function TokenSymbol({ symbol }) {
   const NativeAssetIcon = useNativeTokenIcon();
