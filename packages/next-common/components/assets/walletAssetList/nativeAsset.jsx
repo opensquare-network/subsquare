@@ -1,10 +1,7 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import NativeAssetsList from "./nativeAssetList";
-import { useMyNativeAsset } from "next-common/components/assets/useMyAssets";
+import NativeAssetList from "./nativeAssetList";
 
 export default function NativeAsset() {
-  const assets = useMyNativeAsset();
-
   return (
     <div className="mb-1">
       <div className="pl-6">
@@ -14,7 +11,7 @@ export default function NativeAsset() {
       </div>
       <div className="mt-4">
         <SecondaryCard>
-          <NativeAssetsList assets={assets} />
+          <NativeAssetList />
         </SecondaryCard>
       </div>
     </div>

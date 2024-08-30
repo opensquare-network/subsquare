@@ -6,6 +6,8 @@ import {
   colTotal,
   colTransferrable,
 } from "next-common/components/assets/assetsList";
+import { useMyNativeAsset } from "next-common/components/assets/useMyAssets";
+import { useMemo } from "react";
 
 function TokenSymbol({ symbol }) {
   const NativeAssetIcon = useNativeTokenIcon();
@@ -19,7 +21,7 @@ function TokenSymbol({ symbol }) {
 const colToken = {
   name: "Token",
   style: { textAlign: "left", minWidth: "160px" },
-  render: (item) => <TokenSymbol key="token" symbol={item.symbol} />,
+  render: (item) => <TokenSymbol key="token" symbol={item?.symbol} />,
 };
 
 const colTransfer = {
@@ -30,13 +32,14 @@ const colTransfer = {
 
 const columnsDef = [colToken, colTotal, colTransferrable, colTransfer];
 
-export default function NativeAssetsList({ assets }) {
+export default function NativeAssetList() {
+  const { loading, value } = useMyNativeAsset();
   return (
     <ScrollerX>
       <MapDataList
         columnsDef={columnsDef}
-        data={assets}
-        loading={!assets}
+        data={[value]}
+        loading={loading}
         noDataText="No current assets"
       />
     </ScrollerX>

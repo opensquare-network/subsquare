@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import { useAllAssetMetadata } from "./context/assetMetadata";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
@@ -35,15 +35,21 @@ function useSubscribeNativeBalance(address) {
 export function useMyNativeAsset() {
   const address = useRealAddress();
   const nativeBalanceObj = useSubscribeNativeBalance(address);
-  return useMemo(() => {
-    if (!nativeBalanceObj) {
-      return null;
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (nativeBalanceObj) {
+      setLoading(false);
     }
-
-    const tokens = [{ ...PolkadotAssetHubNativeToken, ...nativeBalanceObj }];
-
-    return tokens.filter((item) => !new BigNumber(item.balance || 0).isZero());
   }, [nativeBalanceObj]);
+
+  return {
+    loading,
+    value: {
+      ...PolkadotAssetHubNativeToken,
+      ...nativeBalanceObj,
+    },
+  };
 }
 
 export default function useMyAssets() {
