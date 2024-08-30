@@ -71,6 +71,7 @@ const zkverifyTestnet = {
   modules: {
     referenda: true,
     treasury: false,
+    democracy: false,
   },
   cssVarsLight: {
     theme100: "rgba(38,219,141,0.10)",
