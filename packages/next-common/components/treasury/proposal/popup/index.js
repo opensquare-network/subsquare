@@ -89,7 +89,7 @@ function PopupContent() {
   );
 }
 
-export default function Popup(props) {
+export default function NewTreasuryProposalPopup(props) {
   return (
     <PopupWithSigner
       title="New Treasury Proposal"
