@@ -12,7 +12,7 @@ export default function NewTreasuryProposalButton() {
   return (
     <>
       <PrimaryButton
-        small
+        size="small"
         icon={
           <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
         }

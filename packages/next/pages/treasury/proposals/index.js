@@ -26,13 +26,6 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
       seoInfo={seoInfo}
       title={category}
       summary={<TreasurySummary />}
-      summaryFooter={
-        showNewTreasuryProposalButton && (
-          <div className="flex justify-end">
-            <NewTreasuryProposalButton />
-          </div>
-        )
-      }
       tabs={[
         {
           label: "Proposals",
@@ -45,6 +38,13 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
       ].filter(Boolean)}
     >
       <PostList
+        titleExtra={
+          showNewTreasuryProposalButton && (
+            <div className="flex justify-end">
+              <NewTreasuryProposalButton />
+            </div>
+          )
+        }
         category={category}
         title="List"
         titleCount={proposals.total}

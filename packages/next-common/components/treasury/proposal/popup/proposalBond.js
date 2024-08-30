@@ -2,8 +2,8 @@ import React from "react";
 import { TextBox } from "./styled";
 import Labeled from "../../../Labeled";
 
-export default function ProposalBond({ bond, node }) {
-  const bondHuman = bond.div(Math.pow(10, node.decimals));
+export default function ProposalBond({ bond, decimals }) {
+  const bondHuman = bond.div(Math.pow(10, decimals));
 
   return (
     <Labeled
