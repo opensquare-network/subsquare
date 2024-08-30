@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import TreasurySpendValueDisplay from "./treasurySpendValueDisplay";
 import { useNavCollapsed } from "next-common/context/nav";
 import AssetIcon from "next-common/components/icons/assetIcon";
+import Tooltip from "next-common/components/tooltip";
 
 const seperateNumber = 5;
 
@@ -91,17 +92,27 @@ function Time({ validFrom, className = "" }) {
   const currentHeight = useSelector(latestHeightSelector);
 
   let content;
+  let tooltipContent;
   if (isNil(validFrom)) {
     content = "immediately";
+    tooltipContent = "Can be claimed immediately after approval";
   } else {
     if (currentHeight > validFrom) {
       content = <PassedTime validFrom={validFrom} />;
     } else {
       content = <FutureTime validFrom={validFrom} />;
     }
+    tooltipContent = `Block #${validFrom?.toLocaleString?.()}`;
   }
 
-  return <div className={cn("text-textTertiary", className)}>{content}</div>;
+  return (
+    <Tooltip
+      content={tooltipContent}
+      className={cn("text-textTertiary", className)}
+    >
+      {content}
+    </Tooltip>
+  );
 }
 
 function PassedTime({ validFrom }) {
