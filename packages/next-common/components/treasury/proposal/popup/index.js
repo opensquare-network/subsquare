@@ -19,10 +19,9 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { noop } from "lodash-es";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 
-function useProposalBond(proposalValue) {
-  const api = useContextApi();
+function useProposalBond({ treasuryPallet, proposalValue }) {
   const bond = useBond({
-    api,
+    treasuryPallet,
     proposalValue,
   });
 
@@ -42,8 +41,10 @@ function PopupContent() {
 
   const [inputValue, setInputValue] = useState();
   const proposalValue = new BigNumber(inputValue).times(Math.pow(10, decimals));
-  const { value: bond, component: bondComponent } =
-    useProposalBond(proposalValue);
+  const { value: bond, component: bondComponent } = useProposalBond({
+    treasuryPallet,
+    proposalValue,
+  });
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
 

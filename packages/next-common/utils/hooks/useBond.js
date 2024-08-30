@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import BigNumber from "bignumber.js";
+import { useContextApi } from "next-common/context/api";
 
-export default function useBond({ api, proposalValue }) {
+export default function useBond({
+  treasuryPallet = "treasury",
+  proposalValue,
+}) {
+  const api = useContextApi();
   const [bondPercentage, setBondPercentage] = useState();
   const [bondMaximum, setBondMaximum] = useState();
   const [bondMinimum, setBondMinimum] = useState();
 
   useEffect(() => {
     if (api) {
-      setBondPercentage(api.consts.treasury?.proposalBond?.toJSON());
-      setBondMaximum(api.consts.treasury?.proposalBondMaximum?.toJSON());
-      setBondMinimum(api.consts.treasury?.proposalBondMinimum?.toJSON());
+      setBondPercentage(api.consts[treasuryPallet]?.proposalBond?.toJSON());
+      setBondMaximum(api.consts[treasuryPallet]?.proposalBondMaximum?.toJSON());
+      setBondMinimum(api.consts[treasuryPallet]?.proposalBondMinimum?.toJSON());
     }
   }, [api]);
 
