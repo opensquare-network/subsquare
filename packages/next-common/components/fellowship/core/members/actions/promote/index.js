@@ -25,7 +25,7 @@ export default function Promote({ member }) {
   if (rank >= 6) {
     return;
   }
-  if (CollectivesPromoteTracks[member?.rank + 1]) { // only show when we have the corresponding track
+  if (!CollectivesPromoteTracks[member?.rank + 1]) { // only show when we have the corresponding track
     return null;
   }
 
