@@ -50,7 +50,12 @@ export default function ValueDisplay({
   }
 
   let container = (
-    <span className={cn("inline-flex items-center gap-x-1", className)}>
+    <span
+      className={cn(
+        "inline-flex items-center gap-x-1 text-textPrimary",
+        className,
+      )}
+    >
       {content}
     </span>
   );
