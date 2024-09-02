@@ -11,11 +11,12 @@ export function formatTimeAgo(
   }
 
   const now = dayjs();
-  const diffInMinutes = Math.abs(now.diff(date, "minute"));
-  if (Math.abs(diffInMinutes) < 1) {
+  const diffInSeconds = Math.abs(now.diff(date, "second"));
+  if (diffInSeconds <= 10) {
     return "now";
   }
 
+  const diffInMinutes = Math.abs(now.diff(date, "minute"));
   const diffInHours = Math.abs(now.diff(date, "hour"));
   const diffInDays = Math.abs(now.diff(date, "day"));
   const diffInMonths = Math.abs(now.diff(date, "month"));
@@ -28,6 +29,7 @@ export function formatTimeAgo(
     diffInDays,
     diffInHours,
     diffInMinutes,
+    diffInSeconds,
   );
 
   if (isFuture) {
@@ -37,7 +39,7 @@ export function formatTimeAgo(
   }
 }
 
-function getTimes(years, months, days, hours, minutes) {
+function getTimes(years, months, days, hours, minutes, seconds) {
   if (years > 0) {
     return `${years}y`;
   }
@@ -50,5 +52,8 @@ function getTimes(years, months, days, hours, minutes) {
   if (hours > 0) {
     return `${hours}hr`;
   }
-  return `${minutes}min`;
+  if (minutes > 0) {
+    return `${minutes}min`;
+  }
+  return `${seconds}s`;
 }

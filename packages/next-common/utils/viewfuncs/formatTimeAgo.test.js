@@ -35,40 +35,62 @@ describe("pass time", () => {
     expect(formatTimeAgo(dayjs().subtract(1, "minute"))).toBe("1min ago");
   });
 
-  it("now/pass within a minute", () => {
-    expect(formatTimeAgo(dayjs().subtract(20, "second"))).toBe("now");
+  it("30 seconds ago", () => {
+    expect(formatTimeAgo(dayjs().subtract(30, "second"))).toBe("30s ago");
+  });
+
+  it("15 seconds ago", () => {
+    expect(formatTimeAgo(dayjs().subtract(15, "second"))).toBe("15s ago");
+  });
+
+  it("now/pass within 10 seconds", () => {
+    expect(formatTimeAgo(dayjs().subtract(10, "second"))).toBe("now");
+    expect(formatTimeAgo(dayjs().subtract(9, "second"))).toBe("now");
+    expect(formatTimeAgo(dayjs().subtract(3, "second"))).toBe("now");
   });
 });
 
 describe("future time", () => {
-  const time = dayjs().add(10, "second");
+  function d() {
+    return dayjs().add(200, "millisecond");
+  }
 
   it("in 2 years", () => {
-    expect(formatTimeAgo(time.add(2, "year"))).toBe("in 2y");
+    expect(formatTimeAgo(d().add(2, "year"))).toBe("in 2y");
   });
 
   it("in 2 months", () => {
-    expect(formatTimeAgo(time.add(2, "month"))).toBe("in 2mo");
+    expect(formatTimeAgo(d().add(2, "month"))).toBe("in 2mo");
   });
 
   it("in 2 days", () => {
-    expect(formatTimeAgo(time.add(2, "day"))).toBe("in 2d");
+    expect(formatTimeAgo(d().add(2, "day"))).toBe("in 2d");
   });
 
   it("in 2 hours", () => {
-    expect(formatTimeAgo(time.add(2, "hour"))).toBe("in 2hr");
+    expect(formatTimeAgo(d().add(2, "hour"))).toBe("in 2hr");
   });
 
   it("in 2 minutes", () => {
-    expect(formatTimeAgo(time.add(2, "minute"))).toBe("in 2min");
+    expect(formatTimeAgo(d().add(2, "minute"))).toBe("in 2min");
   });
 
   it("in a minute", () => {
-    expect(formatTimeAgo(time.add(1, "minute"))).toBe("in 1min");
+    expect(formatTimeAgo(d().add(1, "minute"))).toBe("in 1min");
   });
 
-  it("now/future within a minute", () => {
-    expect(formatTimeAgo(time.add(20, "second"))).toBe("now");
+  it("in 30 seconds", () => {
+    expect(formatTimeAgo(d().add(30, "second"))).toBe("in 30s");
+  });
+
+  it("in 15 seconds", () => {
+    expect(formatTimeAgo(d().add(15, "second"))).toBe("in 15s");
+  });
+
+  it("now/future within 10 seconds", () => {
+    expect(formatTimeAgo(d().add(10, "second"))).toBe("now");
+    expect(formatTimeAgo(d().add(9, "second"))).toBe("now");
+    expect(formatTimeAgo(d().add(3, "second"))).toBe("now");
   });
 });
 
