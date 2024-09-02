@@ -46,7 +46,6 @@ export const accountTransferrableBalanceSelector = createSelector(
 
     const { free, frozen, reserved } = info;
     const frozenReserveDif = BigNumber(frozen).minus(reserved);
-    console.log("frozenReserveDif", frozenReserveDif.toString(), "existentialDeposit", existentialDeposit, "free", free);
     return BigNumber(free || 0).minus(BigNumber.max(frozenReserveDif, existentialDeposit)).toNumber();
   },
 );
