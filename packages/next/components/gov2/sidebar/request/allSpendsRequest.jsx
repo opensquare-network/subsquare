@@ -65,7 +65,7 @@ function Spend({ assetKind, amount }) {
         type={type}
         amount={amount}
         symbol={symbol}
-        className="text14Medium"
+        className="text14Medium text-textPrimary"
       />
     </div>
   );
