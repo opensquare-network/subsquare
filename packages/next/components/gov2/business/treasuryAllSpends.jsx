@@ -1,16 +1,17 @@
 import dayjs from "dayjs";
 import { isNil } from "lodash-es";
+import AssetIcon from "next-common/components/icons/assetIcon";
+import Tooltip from "next-common/components/tooltip";
 import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
+import { useNavCollapsed } from "next-common/context/nav";
 import useBlockTimestamp from "next-common/hooks/common/useBlockTimestamp";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import { cn, estimateBlocksTime } from "next-common/utils";
+import { cn } from "next-common/utils";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import TreasurySpendValueDisplay from "./treasurySpendValueDisplay";
-import { useNavCollapsed } from "next-common/context/nav";
-import AssetIcon from "next-common/components/icons/assetIcon";
-import Tooltip from "next-common/components/tooltip";
 
 const seperateNumber = 5;
 
@@ -138,6 +139,7 @@ function FutureTime({ validFrom }) {
   const currentHeight = useSelector(latestHeightSelector);
   const { blockTime } = useChainSettings();
 
-  const timeStr = estimateBlocksTime(validFrom - currentHeight, blockTime);
-  return <>in {timeStr.slice(0, 2)}</>;
+  return formatTimeAgo(dayjs().add((validFrom - currentHeight) * blockTime), {
+    slice: 2,
+  });
 }
