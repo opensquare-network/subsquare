@@ -15,6 +15,10 @@ import Tooltip from "next-common/components/tooltip";
 const seperateNumber = 5;
 
 export function getTreasuryAllSpendsBusiness(onchain) {
+  if (!onchain?.allSpends) {
+    return null;
+  }
+
   return [["Request", <AllSpends key="all-spend" onchain={onchain} />]];
 }
 
