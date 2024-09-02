@@ -21,11 +21,17 @@ export function getTreasuryAllSpendsBusiness(onchain) {
 function AllSpends({ onchain }) {
   const { allSpends = [] } = onchain;
   const [showMore, setShowMore] = useState(false);
+  const [navCollapsed] = useNavCollapsed();
 
   const shouldCollapsed = allSpends?.length > seperateNumber;
 
   return (
-    <div className="flex flex-col gap-y-1 w-full">
+    <div
+      className={cn(
+        "flex flex-col gap-y-1 w-full",
+        navCollapsed ? "max-md:gap-y-2" : "max-sm:gap-y-2",
+      )}
+    >
       {allSpends.slice(0, seperateNumber).map((spend, idx) => (
         <Spend key={idx} {...spend} />
       ))}
@@ -60,7 +66,7 @@ function Spend({ beneficiary, assetKind, amount, validFrom, className = "" }) {
   return (
     <div
       className={cn(
-        "text14Medium flex gap-x-2 items-center",
+        "text14Medium flex gap-x-2 items-center justify-between",
         navCollapsed ? "max-sm:block" : "max-md:block",
         className,
       )}
@@ -74,16 +80,15 @@ function Spend({ beneficiary, assetKind, amount, validFrom, className = "" }) {
           symbol={symbol}
           type={type}
         />
-      </div>
 
-      <div className="flex items-center grow">
-        <div className={cn("grow flex items-center justify-start gap-x-1")}>
-          <div className="text-textTertiary">to</div>
-          <AddressUser add={beneficiary.address} />
+        <div className="text-textTertiary">to</div>
+
+        <div className={cn("grow flex")}>
+          <AddressUser add={beneficiary.address} maxWidth={176} />
         </div>
-
-        <Time validFrom={validFrom} />
       </div>
+
+      <Time validFrom={validFrom} />
     </div>
   );
 }
