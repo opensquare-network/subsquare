@@ -11,6 +11,7 @@ const chainSlice = createSlice({
     latestHeight: null,
     convictionVotingLockPeriod: null,
     democracyLockPeriod: null,
+    existentialDeposit: null,
   },
   reducers: {
     setBlockTime(state, { payload }) {
@@ -25,6 +26,9 @@ const chainSlice = createSlice({
     setDemocracyLockPeriod(state, { payload }) {
       state.democracyLockPeriod = payload;
     },
+    setExistentialDeposit(state, { payload }) {
+      state.existentialDeposit = payload;
+    },
   },
 });
 
@@ -33,6 +37,7 @@ export const {
   setLatestHeight,
   setConvictionVotingLockPeriod,
   setDemocracyLockPeriod,
+  setExistentialDeposit,
 } = chainSlice.actions;
 
 export const blockTimeSelector = (state) => state.chain.blockTime;
@@ -41,5 +46,6 @@ export const convictionVotingLockPeriodSelector = (state) =>
   state.chain.convictionVotingLockPeriod;
 export const democracyLockPeriodSelector = (state) =>
   state.chain.democracyLockPeriod;
+export const existentialDepositSelector = (state) => state.chain.existentialDeposit;
 
 export default chainSlice.reducer;
