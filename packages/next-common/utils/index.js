@@ -1,5 +1,4 @@
 import BigNumber from "bignumber.js";
-import { extractTime } from "@polkadot/util";
 import { encodeAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -12,6 +11,7 @@ import { isHex } from "@polkadot/util";
 import { camelCase } from "lodash-es";
 import { upperFirst } from "lodash-es";
 import { getEffectiveNumbers } from "next-common/utils/viewfuncs";
+import { formatTimeDuration } from "./viewfuncs/formatTimeDuration";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -144,18 +144,7 @@ export const estimateBlocksTime = (blocks, blockTime) => {
   }
 
   const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
-  const time = extractTime(Math.abs(value));
-  const { days, hours, minutes, seconds } = time;
-  return [
-    days ? (days > 1 ? `${days} days` : "1 day") : null,
-    hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
-    minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
-    seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
-  ]
-    .filter((s) => !!s)
-    .slice(0, 2)
-    .join(" ")
-    .split(" ");
+  return formatTimeDuration(value, { withUnitSpace: true });
 };
 
 export function isMotionEnded(motion) {
