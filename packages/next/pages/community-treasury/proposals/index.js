@@ -6,10 +6,33 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 import normalizeCommunityTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeCommunityTreasuryProposalListItem";
+import NewTreasuryProposalButton from "next-common/components/treasury/proposal/newTreasuryProposalButton";
+import { useChainSettings } from "next-common/context/chain";
+import { useRouter } from "next/router";
+import { getEventData } from "next-common/utils/sendTransaction";
+
+function NewTreasuryProposal() {
+  const router = useRouter();
+  return (
+    <NewTreasuryProposalButton
+      treasuryPallet="communityTreasury"
+      onInBlock={(events) => {
+        const eventData = getEventData(events, "communityTreasury", "Proposed");
+        if (!eventData) {
+          return;
+        }
+        const [proposalIndex] = eventData;
+        router.push(`/community-treasury/proposals/${proposalIndex}`);
+      }}
+    />
+  );
+}
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
+
+  const { showNewTreasuryProposalButton } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
     normalizeCommunityTreasuryProposalListItem(chain, item),
@@ -33,6 +56,13 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
       <PostList
         category={category}
         title="List"
+        titleExtra={
+          showNewTreasuryProposalButton && (
+            <div className="flex justify-end">
+              <NewTreasuryProposal />
+            </div>
+          )
+        }
         titleCount={proposals.total}
         items={items}
         pagination={{

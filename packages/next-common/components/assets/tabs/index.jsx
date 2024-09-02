@@ -6,7 +6,7 @@ const TABS = Object.freeze({
   transfers: 2,
 });
 
-const TabLabel = ({ label, count, isActive }) => (
+export const TabLabel = ({ label, count, isActive }) => (
   <span
     className={`font-bold text-[16px] leading-[24px] ${
       isActive ? "text-textPrimary" : "text-textTertiary"

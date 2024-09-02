@@ -1,41 +1,121 @@
-import { useAsync } from "react-use";
-import nextApi from "next-common/services/nextApi";
-import Chains from "next-common/utils/consts/chains";
+import { useState, useEffect } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChain } from "next-common/context/chain";
+import { gql, request } from "graphql-request";
 
-const STATESCAN_CHAIN_URL_MAP = {
-  "polkadot-assethub": "https://statemint-api.statescan.io",
-};
-
-function getTransfersHistoryURL(address, chain) {
-  const urlSuffix = `/accounts/${address}/transfers`;
-  if (Chains.polkadotAssetHub === chain) {
-    return `${STATESCAN_CHAIN_URL_MAP[chain]}${urlSuffix}`;
+const assetTransfersQuery = gql`
+  query MyQuery($limit: Int!, $offset: Int!, $address: String!) {
+    assetTransfers(limit: $limit, offset: $offset, address: $address) {
+      transfers {
+        assetId
+        assetHeight
+        balance
+        from
+        to
+        indexer {
+          blockHeight
+          extrinsicIndex
+          eventIndex
+          blockTime
+        }
+      }
+      total
+    }
   }
+`;
 
-  throw new Error(`Chain ${chain} is not supported.`);
-}
+const assetMetadataQuery = gql`
+  query MyQuery($id: Int!, $height: Int!) {
+    asset(id: $id, height: $height) {
+      metadata {
+        decimals
+        symbol
+      }
+    }
+  }
+`;
+
+const STATESCAN_CHAIN_URL_MAP = Object.freeze({
+  "polkadot-assethub": "https://statemint-gh-api.statescan.io/graphql",
+});
 
 export default function useTransfersHistory(page = 0, page_size = 25) {
   const address = useRealAddress();
   const chain = useChain();
-  const { value: value, loading } = useAsync(async () => {
-    const url = getTransfersHistoryURL(address, chain);
-    if (!url) {
-      return {};
+
+  const [value, setValue] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!STATESCAN_CHAIN_URL_MAP[chain]) {
+      setError(new Error(`Chain ${chain} is not supported.`));
+      setLoading(false);
+      return;
     }
 
-    try {
-      const response = await nextApi.fetch(url, {
-        page,
-        page_size,
-      });
-      return response?.result || {};
-    } catch (error) {
-      return {};
-    }
-  }, [page, page_size]);
+    const fetchTransfersData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  return { value, loading };
+        const url = STATESCAN_CHAIN_URL_MAP[chain];
+        const transfersData = await request(url, assetTransfersQuery, {
+          limit: page_size,
+          offset: page * page_size,
+          address,
+        });
+
+        const transfers = transfersData?.assetTransfers?.transfers || [];
+        setTotal(transfersData?.assetTransfers?.total || 0);
+
+        const uniqueAssetKeys = new Set();
+        const uniqueAssets = [];
+
+        transfers.forEach((transfer) => {
+          const key = `${transfer.assetId}_${transfer.assetHeight}`;
+          if (!uniqueAssetKeys.has(key)) {
+            uniqueAssetKeys.add(key);
+            uniqueAssets.push({
+              assetId: transfer.assetId,
+              assetHeight: transfer.assetHeight,
+            });
+          }
+        });
+
+        const metadataPromises = uniqueAssets.map((asset) => {
+          return request(url, assetMetadataQuery, {
+            id: asset.assetId,
+            height: asset.assetHeight,
+          });
+        });
+
+        const metadataResults = await Promise.all(metadataPromises);
+
+        const metadataMap = new Map();
+        uniqueAssets.forEach((asset, index) => {
+          metadataMap.set(
+            `${asset.assetId}_${asset.assetHeight}`,
+            metadataResults[index]?.asset?.metadata,
+          );
+        });
+
+        transfers.forEach((transfer) => {
+          const key = `${transfer.assetId}_${transfer.assetHeight}`;
+          transfer.metadata = metadataMap.get(key);
+        });
+
+        setValue(transfers);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTransfersData();
+  }, [page, page_size, address, chain]);
+
+  return { value, total, loading, error };
 }

@@ -36,6 +36,7 @@ const Chains = {
   vara: "vara",
   shibuya: "shibuya",
   astar: "astar",
+  zkverifyTestnet: "zkverify-testnet",
 };
 
 export default Chains;

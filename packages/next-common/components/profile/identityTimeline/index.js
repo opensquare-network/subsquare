@@ -14,9 +14,9 @@ import ExternalLink from "next-common/components/externalLink";
 
 function useIdentityUrl() {
   const chain = useChain();
-  const { identityApiSubDomain } = useChainSettings();
-  if (identityApiSubDomain) {
-    return `https://${identityApiSubDomain}.statescan.io/graphql`;
+  const { graphqlApiSubDomain } = useChainSettings();
+  if (graphqlApiSubDomain) {
+    return `https://${graphqlApiSubDomain}.statescan.io/graphql`;
   } else {
     return `https://${chain}-identity-api.statescan.io/graphql`;
   }

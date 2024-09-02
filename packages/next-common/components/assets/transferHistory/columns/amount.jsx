@@ -18,12 +18,12 @@ export function useAssetsTransfersHistoryAmountColumn() {
             item?.balance,
             checkIsNativeAsset(chain, item?.isNativeAsset)
               ? decimals
-              : item?.decimals,
+              : item?.metadata?.decimals,
           )}
           symbol={
             checkIsNativeAsset(chain, item?.isNativeAsset)
               ? symbol
-              : item?.symbol
+              : item?.metadata?.symbol
           }
         />
       </span>

@@ -55,6 +55,8 @@ const shibuya = {
     democracy: true,
     referenda: false,
   },
+  showNewTreasuryProposalButton: true,
+
   ...astarThemeVars,
 };
 

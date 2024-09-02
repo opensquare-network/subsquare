@@ -187,6 +187,7 @@ export default function OverviewSummary() {
       referenda: hasReferenda,
       fellowship: hasFellowship,
       democracy: hasDemocracyModule,
+      treasury: hasTreasury,
     },
   } = useChainSettings();
 
@@ -202,9 +203,11 @@ export default function OverviewSummary() {
           <DemocracyGroupContent />
         </SummaryItem>
       )}
-      <SummaryItem title="Treasury">
-        <TreasuryGroupContent />
-      </SummaryItem>
+      {hasTreasury && (
+        <SummaryItem title="Treasury">
+          <TreasuryGroupContent />
+        </SummaryItem>
+      )}
       {hasDemocracyModule && (
         <SummaryItem
           title={`${showCouncil ? "Council" : ""}${

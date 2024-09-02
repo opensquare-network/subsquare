@@ -21,6 +21,9 @@ import BountySidebar from "components/bounty/sidebar";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { CuratorProvider } from "next-common/context/treasury/bounties";
+import useBountyCuratorData from "next-common/hooks/treasury/bounty/useBountyCuratorData";
+import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 
 const ChildBountiesTable = dynamicClientOnly(() =>
   import("../../../components/bounty/childBountiesTable"),
@@ -38,6 +41,8 @@ function BountyContent() {
 
   useSubscribePostDetail(detail?.bountyIndex);
 
+  const curator = useBountyCuratorData(detail?.onchainData);
+  const curatorParams = useCuratorMultisigAddress(curator);
   const timelineData = useBountyTimelineData(detail?.onchainData);
   const isTimelineCompact = useSelector(
     detailMultiTabsIsTimelineCompactModeSelector,
@@ -46,28 +51,30 @@ function BountyContent() {
   return (
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
-        <ContentWithComment>
-          <BountyDetail />
-          <BountySidebar />
-          <DetailMultiTabs
-            childBounties={
-              !!childBounties.total && (
-                <ChildBountiesTable {...{ childBounties }} />
-              )
-            }
-            childBountiesCount={childBounties.total}
-            metadata={
-              <Metadata
-                meta={detail.onchainData?.meta}
-                address={detail.onchainData?.address}
-              />
-            }
-            timeline={
-              <Timeline data={timelineData} compact={isTimelineCompact} />
-            }
-            timelineCount={timelineData.length}
-          />
-        </ContentWithComment>
+        <CuratorProvider curator={curator} params={curatorParams}>
+          <ContentWithComment>
+            <BountyDetail />
+            <BountySidebar />
+            <DetailMultiTabs
+              childBounties={
+                !!childBounties.total && (
+                  <ChildBountiesTable {...{ childBounties }} />
+                )
+              }
+              childBountiesCount={childBounties.total}
+              metadata={
+                <Metadata
+                  meta={detail.onchainData?.meta}
+                  address={detail.onchainData?.address}
+                />
+              }
+              timeline={
+                <Timeline data={timelineData} compact={isTimelineCompact} />
+              }
+              timelineCount={timelineData.length}
+            />
+          </ContentWithComment>
+        </CuratorProvider>
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>
   );
