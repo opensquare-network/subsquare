@@ -15,6 +15,7 @@ import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDem
 import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useStoreConvictionVotingLockPeriod";
 import useConnectApis from "next-common/services/chain/apis/useConnectApis";
 import { useContextApi } from "next-common/context/api";
+import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -28,6 +29,7 @@ export default function BaseLayout({ children, seoInfo = {} }) {
   const api = useContextApi();
   useBlockTime(api);
   useSubscribeChainHead(api);
+  useExistentialDeposit();
 
   useStoreDemocracyLockPeriod();
   useStoreConvictionVotingLockPeriod();

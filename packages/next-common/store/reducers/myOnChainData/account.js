@@ -1,5 +1,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
+import { existentialDepositSelector } from "next-common/store/reducers/chainSlice";
+import calcTransferable from "next-common/utils/account/transferable";
 
 const name = "myAccount";
 
@@ -37,13 +39,13 @@ export const accountTotalBalanceSelector = createSelector(
 
 export const accountTransferrableBalanceSelector = createSelector(
   accountInfoSelector,
-  (info) => {
+  existentialDepositSelector,
+  (info, existentialDeposit) => {
     if (!info) {
       return 0;
     }
 
-    const { free, frozen } = info;
-    return new BigNumber(free || 0).minus(frozen || 0).toNumber();
+    return calcTransferable(info, existentialDeposit);
   },
 );
 

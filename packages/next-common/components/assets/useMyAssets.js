@@ -6,6 +6,9 @@ import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import { useAllAssetMetadata } from "./context/assetMetadata";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
+import { useSelector } from "react-redux";
+import { existentialDepositSelector } from "next-common/store/reducers/chainSlice";
+import calcTransferable from "next-common/utils/account/transferable";
 
 const PolkadotAssetHubNativeToken = {
   symbol: "DOT",
@@ -16,15 +19,16 @@ const PolkadotAssetHubNativeToken = {
 
 function useSubscribeNativeBalance(address) {
   const [balanceObj, setBalanceObj] = useState();
+  const existentialDeposit = useSelector(existentialDepositSelector);
 
   useSubStorage(
     "system",
     "account",
     [address],
     useCallback(({ data }) => {
-      const { free, reserved, frozen } = data;
+      const { free, reserved } = data;
       const balance = (free.toBigInt() + reserved.toBigInt()).toString();
-      const transferrable = (free.toBigInt() - frozen.toBigInt()).toString();
+      const transferrable = calcTransferable(data, existentialDeposit);
       setBalanceObj({ balance, transferrable });
     }, []),
   );
