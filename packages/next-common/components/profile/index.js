@@ -42,20 +42,24 @@ export default function ProfilePage() {
     dispatch(setProfileIdentityTimeline(null));
   }, [dispatch, address]);
 
-  const { member: fellowshipMember } = useSubFellowshipCoreMember(address);
-  const { member: ambassadorMember } = useSubFellowshipCoreMember(
-    address,
-    "ambassadorCore",
-  );
-  let section = null;
-  let member = null;
-  if (fellowshipMember) {
-    section = "fellowship";
-    member = fellowshipMember;
-  } else if (ambassadorMember) {
-    section = "ambassador";
-    member = ambassadorMember;
-  }
+  // const { member: fellowshipMember } = useSubFellowshipCoreMember(address);
+  // const { member: ambassadorMember } = useSubFellowshipCoreMember(
+  //   address,
+  //   "ambassadorCore",
+  // );
+  // let section = null;
+  // let member = null;
+  // if (fellowshipMember) {
+  //   section = "fellowship";
+  //   member = fellowshipMember;
+  // } else if (ambassadorMember) {
+  //   section = "ambassador";
+  //   member = ambassadorMember;
+  // }
+
+  let section = "fellowship";
+  let member = [];
+  // console.log("::::member", member, fellowshipMember, ambassadorMember);
 
   return (
     <CollectivesProvider section={section}>
