@@ -4,15 +4,15 @@ import dayjs from "dayjs";
 
 describe("pass time", () => {
   it("2 years ago", () => {
-    expect(formatTimeAgo(dayjs().subtract(2, "year"))).toBe("2y ago");
+    expect(formatTimeAgo(dayjs().subtract(2, "year"))).toBe("2yrs ago");
   });
 
   it("a year ago", () => {
-    expect(formatTimeAgo(dayjs().subtract(1, "year"))).toBe("1y ago");
+    expect(formatTimeAgo(dayjs().subtract(1, "year"))).toBe("1yr ago");
   });
 
   it("3 months ago", () => {
-    expect(formatTimeAgo(dayjs().subtract(3, "month"))).toBe("3mo ago");
+    expect(formatTimeAgo(dayjs().subtract(3, "month"))).toBe("3mos ago");
   });
 
   it("1 month ago", () => {
@@ -56,11 +56,11 @@ describe("future time", () => {
   }
 
   it("in 2 years", () => {
-    expect(formatTimeAgo(d().add(2, "year"))).toBe("in 2y");
+    expect(formatTimeAgo(d().add(2, "year"))).toBe("in 2yrs");
   });
 
   it("in 2 months", () => {
-    expect(formatTimeAgo(d().add(2, "month"))).toBe("in 2mo");
+    expect(formatTimeAgo(d().add(2, "month"))).toBe("in 2mos");
   });
 
   it("in 2 days", () => {
@@ -68,11 +68,11 @@ describe("future time", () => {
   });
 
   it("in 2 hours", () => {
-    expect(formatTimeAgo(d().add(2, "hour"))).toBe("in 2hr");
+    expect(formatTimeAgo(d().add(2, "hour"))).toBe("in 2hrs");
   });
 
   it("in 2 minutes", () => {
-    expect(formatTimeAgo(d().add(2, "minute"))).toBe("in 2min");
+    expect(formatTimeAgo(d().add(2, "minute"))).toBe("in 2mins");
   });
 
   it("in a minute", () => {
@@ -96,8 +96,8 @@ describe("future time", () => {
 
 describe("unknown time", () => {
   it("unknown", () => {
-    expect(formatTimeAgo(null)).toBe("unknown");
-    expect(formatTimeAgo(undefined)).toBe("unknown");
-    expect(formatTimeAgo(false)).toBe("unknown");
+    expect(formatTimeAgo(null)).toBe("unknown time");
+    expect(formatTimeAgo(undefined)).toBe("unknown time");
+    expect(formatTimeAgo(false)).toBe("unknown time");
   });
 });
