@@ -1,14 +1,8 @@
 import { useMemo } from "react";
 import useOnChainAccountData from "./useOnChainAccountData";
 import { existentialDepositSelector } from "next-common/store/reducers/chainSlice";
-import BigNumber from "bignumber.js";
 import { useSelector } from "react-redux";
-
-function calcTransferable(info, existentialDeposit) {
-  const { free, frozen, reserved } = info;
-  const frozenReserveDif = BigNumber(frozen).minus(reserved);
-  return BigNumber(free || 0).minus(BigNumber.max(frozenReserveDif, existentialDeposit)).toString();
-}
+import calcTransferable from "next-common/utils/account/transferable";
 
 function extractAccountInfo(accountData, existentialDeposit) {
   if (!accountData) {
