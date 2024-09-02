@@ -37,10 +37,10 @@ export default function AllSpendsRequest() {
             .map((spend, idx) => <Spend key={idx} {...spend} />)}
 
         {shouldCollapsed && (
-          <div>
+          <div className="mt-4">
             <span
               role="button"
-              className="mt-4 text12Medium text-theme500"
+              className="text12Medium text-theme500"
               onClick={() => {
                 setShowMore(!showMore);
               }}
