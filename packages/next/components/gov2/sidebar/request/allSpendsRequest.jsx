@@ -5,7 +5,7 @@ import { useState } from "react";
 import { RequestWrapper } from ".";
 import AssetIcon from "next-common/components/icons/assetIcon";
 
-const seperateNumber = 5;
+const separateNumber = 5;
 
 export default function AllSpendsRequest() {
   const onchain = useOnchainData();
@@ -21,19 +21,19 @@ export default function AllSpendsRequest() {
     return null;
   }
 
-  const shouldCollapsed = onchain.allSpends?.length > seperateNumber;
+  const shouldCollapsed = onchain.allSpends?.length > separateNumber;
 
   return (
     <RequestWrapper>
       <div className="flex flex-col">
-        {onchain?.allSpends?.slice(0, seperateNumber).map?.((spend, idx) => (
+        {onchain?.allSpends?.slice(0, separateNumber).map?.((spend, idx) => (
           <Spend key={idx} {...spend} />
         ))}
 
         {showMore &&
           shouldCollapsed &&
           onchain?.allSpends
-            .slice(seperateNumber)
+            .slice(separateNumber)
             .map((spend, idx) => <Spend key={idx} {...spend} />)}
 
         {shouldCollapsed && (
