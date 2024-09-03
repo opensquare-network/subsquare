@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import TreasurySpendValueDisplay from "./treasurySpendValueDisplay";
 
-const seperateNumber = 5;
+const separateNumber = 5;
 
 export function getTreasuryAllSpendsBusiness(onchain) {
   if (!onchain?.allSpends) {
@@ -28,7 +28,7 @@ function AllSpends({ onchain }) {
   const [showMore, setShowMore] = useState(false);
   const [navCollapsed] = useNavCollapsed();
 
-  const shouldCollapsed = allSpends?.length > seperateNumber;
+  const shouldCollapsed = allSpends?.length > separateNumber;
 
   return (
     <div
@@ -37,14 +37,14 @@ function AllSpends({ onchain }) {
         navCollapsed ? "max-md:gap-y-2" : "max-sm:gap-y-2",
       )}
     >
-      {allSpends.slice(0, seperateNumber).map((spend, idx) => (
+      {allSpends.slice(0, separateNumber).map((spend, idx) => (
         <Spend key={idx} {...spend} />
       ))}
 
       {showMore &&
         shouldCollapsed &&
         allSpends
-          .slice(seperateNumber)
+          .slice(separateNumber)
           .map((spend, idx) => <Spend key={idx} {...spend} />)}
 
       {shouldCollapsed && (
