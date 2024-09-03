@@ -1,7 +1,7 @@
 import { useState } from "react";
-import useDuration from "../../utils/hooks/useDuration";
 import formatTime from "../../utils/viewfuncs/formatDate";
 import { cn } from "next-common/utils";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 function SwitchableTime({
   timestamp = new Date().getTime(),
@@ -11,7 +11,7 @@ function SwitchableTime({
   const [isDuration, setIsDuration] = useState(showDuration);
 
   const timeStr = formatTime(timestamp);
-  const duration = useDuration(timestamp);
+  const timeAgo = formatTimeAgo(timestamp);
 
   return (
     <span
@@ -26,7 +26,7 @@ function SwitchableTime({
       }}
     >
       {isEstimated ? <span className="mr-1">≈</span> : null}
-      {isDuration ? duration : timeStr}
+      {isDuration ? timeAgo : timeStr}
     </span>
   );
 }
