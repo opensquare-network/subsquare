@@ -5,8 +5,8 @@ import Tag from "../tags/state/tag";
 import Flex from "../styled/flex";
 import ArrowTriangleUp from "../../assets/imgs/icons/arrow-triangle-up.svg";
 import Tooltip from "../tooltip";
-import useDuration from "../../utils/hooks/useDuration";
 import { cn } from "next-common/utils";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 const Wrapper = styled.div`
   display: flex;
@@ -136,7 +136,7 @@ export default function Item({
   className = "",
 }) {
   const itemTime = data.time;
-  const itemAge = useDuration(itemTime);
+  const itemAge = formatTimeAgo(itemTime);
 
   return (
     <Wrapper

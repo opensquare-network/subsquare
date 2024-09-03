@@ -5,6 +5,7 @@ import { useOnchainData } from "next-common/context/post";
 import Link from "next/link";
 import { toPrecision } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
+import { getTreasuryAllSpendsBusiness } from "components/gov2/business/treasuryAllSpends";
 
 function extractReferendaLink(call = {}) {
   const { section, method, args = [] } = call;
@@ -106,6 +107,11 @@ export default function useReferendaBusinessData() {
 
   if (!onchain.proposal) {
     return null;
+  }
+
+  const allSpendsBusiness = getTreasuryAllSpendsBusiness(onchain);
+  if (allSpendsBusiness) {
+    return allSpendsBusiness;
   }
 
   const spendBusiness = getTreasurySpendBusiness(onchain, decimals, symbol);

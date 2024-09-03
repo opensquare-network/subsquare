@@ -5,7 +5,7 @@ import PostListCardVotesSummaryBar from "next-common/components/postList/votesSu
 import Flex from "next-common/components/styled/flex";
 import Tag from "next-common/components/tags/state/tag";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { timeDurationFromNow, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import Link from "next/link";
@@ -17,6 +17,7 @@ import {
   isUsdcByMeta,
   isUsdtByMeta,
 } from "next-common/utils/treasury/spend/usdCheck";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 export function getReferendumPostTitleColumn() {
   return {
@@ -201,7 +202,7 @@ function Time({ time }) {
 
   return (
     <span className="text14Medium text-textSecondary">
-      {timeDurationFromNow(text)}
+      {formatTimeAgo(text)}
     </span>
   );
 }

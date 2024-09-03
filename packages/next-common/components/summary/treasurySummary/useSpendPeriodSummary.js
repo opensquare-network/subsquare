@@ -22,12 +22,17 @@ export default function useSpendPeriodSummary() {
         .div(spendPeriod)
         .multipliedBy(100)
         .toNumber();
-      const timeArray = estimateBlocksTime(spendPeriod - goneBlocks, blockTime);
+      const spendPeriodTime = estimateBlocksTime(
+        spendPeriod - goneBlocks,
+        blockTime,
+      ).split(" ");
       if (isMounted()) {
         setSummary({
           progress,
-          spendPeriod: timeArray,
-          totalPeriod: ["/"].concat(estimateBlocksTime(spendPeriod, blockTime)),
+          spendPeriod: spendPeriodTime,
+          totalPeriod: ["/"].concat(
+            estimateBlocksTime(spendPeriod, blockTime).split(" "),
+          ),
         });
       }
     }

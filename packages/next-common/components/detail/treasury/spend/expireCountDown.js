@@ -8,7 +8,7 @@ import CountDown from "next-common/components/_CountDown";
 import React from "react";
 import Malicious from "next-common/components/detail/malicious";
 import useBlockTimestamp from "next-common/hooks/common/useBlockTimestamp";
-import { timeDurationFromNow } from "next-common/utils";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 export default function TreasurySpendExpireCountdown() {
   const { meta } = useOnchainData() || {};
@@ -28,7 +28,7 @@ export default function TreasurySpendExpireCountdown() {
   if (latestHeight >= expireAt) {
     return (
       <Malicious>
-        Already expired {timestamp ? timeDurationFromNow(timestamp) : null}
+        Already expired {timestamp ? formatTimeAgo(timestamp) : null}
       </Malicious>
     );
   }

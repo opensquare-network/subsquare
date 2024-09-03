@@ -1,5 +1,4 @@
 import BigNumber from "bignumber.js";
-import { extractTime } from "@polkadot/util";
 import { encodeAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -12,6 +11,7 @@ import { isHex } from "@polkadot/util";
 import { camelCase } from "lodash-es";
 import { upperFirst } from "lodash-es";
 import { getEffectiveNumbers } from "next-common/utils/viewfuncs";
+import { formatTimeDuration } from "./viewfuncs/formatTimeDuration";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -48,81 +48,6 @@ export function hashEllipsis(hash = "") {
   }
 
   return hash.slice(0, 6);
-}
-
-export function timeDurationFromNow(time) {
-  if (!time) {
-    return "Unknown time";
-  }
-
-  dayjs.updateLocale("en", {
-    relativeTime: {
-      future: "in %s",
-      past: "%s ",
-      s: (number) => number + " secs",
-      ss: "%d secs",
-      m: "1 min",
-      mm: "%d mins",
-      h: "1 h",
-      hh: "%d hrs",
-      d: "1 d",
-      dd: "%dd",
-      M: "1 mo",
-      MM: "%d mos",
-      y: "1 y",
-      yy: "%d y",
-    },
-  });
-
-  const now = dayjs();
-  if (dayjs(time).isSame(now) || dayjs(time).isAfter(now)) {
-    return dayjs(time).fromNow();
-  }
-
-  let ss = now.diff(time, "second");
-  let ii = now.diff(time, "minute");
-  let hh = now.diff(time, "hour");
-  let dd = now.diff(time, "day");
-  let mm = now.diff(time, "month");
-  let yy = now.diff(time, "year");
-
-  if (yy) {
-    mm %= 12;
-    if (mm) {
-      return `${yy}y ${mm}mo${mm > 1 ? "s" : ""} ago`;
-    }
-    return `${yy}y ago`;
-  }
-
-  if (mm) {
-    return `${mm}mo${mm > 1 ? "s" : ""} ago`;
-  }
-
-  if (dd) {
-    hh %= 24;
-    if (hh && dd < 3) {
-      return `${dd}d ${hh}h${hh > 1 ? "rs" : ""} ago`;
-    }
-    return `${dd}d ago`;
-  }
-
-  if (hh) {
-    ii %= 60;
-    if (ii) {
-      return `${hh}h${hh > 1 ? "rs" : ""} ${ii}min${ii > 1 ? "s" : ""} ago`;
-    }
-    return `${hh}h${hh > 1 ? "rs" : ""} ago`;
-  }
-
-  if (ii) {
-    ss %= 60;
-    if (ss) {
-      return `${ii}min${ii > 1 ? "s" : ""} ${ss}s ago`;
-    }
-    return `${ii}min${ii > 1 ? "s" : ""} ago`;
-  }
-
-  return `${ss}s ago`;
 }
 
 export function toPrecision(value, decimals = 0, fixed) {
@@ -219,18 +144,7 @@ export const estimateBlocksTime = (blocks, blockTime) => {
   }
 
   const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
-  const time = extractTime(Math.abs(value));
-  const { days, hours, minutes, seconds } = time;
-  return [
-    days ? (days > 1 ? `${days} days` : "1 day") : null,
-    hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
-    minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
-    seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
-  ]
-    .filter((s) => !!s)
-    .slice(0, 2)
-    .join(" ")
-    .split(" ");
+  return formatTimeDuration(value, { withUnitSpace: true });
 };
 
 export function isMotionEnded(motion) {

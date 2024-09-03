@@ -28,8 +28,8 @@ export default function useVoteLockTime(
 
     const multiplier = Math.pow(2, conviction - 1);
     const blocks = (api.consts?.[module]?.voteLockingPeriod || 0) * multiplier;
-    const timeArr = estimateBlocksTime(blocks, blockTime);
-    setTime(timeArr.join(" "));
+    const time = estimateBlocksTime(blocks, blockTime);
+    setTime(time);
 
     setIsLoading(false);
   }, [api, module, conviction, blockTime]);

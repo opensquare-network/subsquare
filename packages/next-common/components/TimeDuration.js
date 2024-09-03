@@ -2,30 +2,14 @@ import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useMemo } from "react";
 import BigNumber from "bignumber.js";
-import { extractTime } from "@polkadot/util";
+import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 
-export default function TimeDuration({
-  blocks = 0,
-  showDays = true,
-  showHours = true,
-  showMinutes = true,
-}) {
+export default function TimeDuration({ blocks = 0 }) {
   const blockTime = useSelector(blockTimeSelector);
 
   return useMemo(() => {
     const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
-    const time = extractTime(Math.abs(value));
-    const { days, hours, minutes } = time;
-    if (days > 30) {
-      return `${days}days`;
-    }
 
-    return [
-      showDays && days ? `${days}d` : null,
-      showHours && hours ? (hours > 1 ? `${hours}hrs` : "1hr") : null,
-      showMinutes && minutes ? `${minutes}mins` : null,
-    ]
-      .filter((s) => !!s)
-      .join(" ");
+    return formatTimeDuration(value);
   }, [blocks, blockTime]);
 }
