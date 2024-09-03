@@ -6,7 +6,6 @@ import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 export default function TreasurySpendValueDisplay({
   className = "",
   type,
-  // chain,
   amount,
   symbol,
   showTooltip,

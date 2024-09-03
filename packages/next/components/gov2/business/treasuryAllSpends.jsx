@@ -64,8 +64,21 @@ function AllSpends({ onchain }) {
   );
 }
 
-function Spend({ beneficiary, assetKind, amount, validFrom, className = "" }) {
-  const { chain, symbol, type } = assetKind;
+function Spend({
+  beneficiary,
+  assetKind,
+  amount,
+  validFrom,
+  symbol,
+  type,
+  className = "",
+} = {}) {
+  symbol = symbol || assetKind?.symbol;
+  type = type || assetKind?.type;
+
+  beneficiary =
+    typeof beneficiary === "string" ? beneficiary : beneficiary?.address;
+
   const [navCollapsed] = useNavCollapsed();
 
   return (
@@ -80,7 +93,6 @@ function Spend({ beneficiary, assetKind, amount, validFrom, className = "" }) {
         <AssetIcon symbol={symbol} className="w-4 h-4" />
         <TreasurySpendValueDisplay
           className="flex gap-x-2 items-center text14Medium"
-          chain={chain}
           amount={amount}
           symbol={symbol}
           type={type}
@@ -89,7 +101,7 @@ function Spend({ beneficiary, assetKind, amount, validFrom, className = "" }) {
         <div className="text-textTertiary">to</div>
 
         <div className={cn("grow flex")}>
-          <AddressUser add={beneficiary.address} maxWidth={176} />
+          <AddressUser add={beneficiary} maxWidth={176} />
         </div>
       </div>
 

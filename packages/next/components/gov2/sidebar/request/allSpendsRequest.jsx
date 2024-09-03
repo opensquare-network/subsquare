@@ -27,7 +27,7 @@ export default function AllSpendsRequest() {
     <RequestWrapper>
       <div className="flex flex-col">
         {onchain?.allSpends?.slice(0, seperateNumber).map?.((spend, idx) => (
-          <Spend key={idx} assetKind={spend.assetKind} amount={spend.amount} />
+          <Spend key={idx} {...spend} />
         ))}
 
         {showMore &&
@@ -54,14 +54,14 @@ export default function AllSpendsRequest() {
   );
 }
 
-function Spend({ assetKind, amount }) {
-  const { chain, symbol, type } = assetKind;
+function Spend({ assetKind, amount, symbol, type }) {
+  symbol = symbol || assetKind?.symbol;
+  type = type || assetKind?.type;
 
   return (
     <div className="flex items-center gap-x-2">
       <AssetIcon symbol={symbol} className="w-4 h-4" />
       <TreasurySpendValueDisplay
-        chain={chain}
         type={type}
         amount={amount}
         symbol={symbol}
