@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import useSubscribeIdentityDeposit from "next-common/hooks/account/deposit/fetch/identity";
 import {
   setProfileIdentityAddress,
@@ -17,32 +17,11 @@ export default function useSubProfileIdentityDeposits() {
   const { identityName, identityDeposit, subsDeposit, subs } =
     useSubscribeIdentityDeposit(address);
 
-  const prevIdentityName = useRef(identityName);
-  const prevIdentityDeposit = useRef(identityDeposit);
-  const prevSubsDeposit = useRef(subsDeposit);
-  const prevSubs = useRef(subs);
-
   useEffect(() => {
     dispatch(setProfileIdentityAddress(address));
-
-    if (prevIdentityName.current !== identityName) {
-      dispatch(setProfileIdentityDisplayName(identityName));
-      prevIdentityName.current = identityName;
-    }
-
-    if (prevIdentityDeposit.current !== identityDeposit) {
-      dispatch(setProfileIdentityDeposit(identityDeposit));
-      prevIdentityDeposit.current = identityDeposit;
-    }
-
-    if (prevSubsDeposit.current !== subsDeposit) {
-      dispatch(setProfileSubsDeposits(subsDeposit));
-      prevSubsDeposit.current = subsDeposit;
-    }
-
-    if (prevSubs.current !== subs) {
-      dispatch(setProfileSubs(subs));
-      prevSubs.current = subs;
-    }
-  }, [identityName, identityDeposit, subsDeposit, subs, address, dispatch]);
+    dispatch(setProfileIdentityDisplayName(identityName));
+    dispatch(setProfileIdentityDeposit(identityDeposit));
+    dispatch(setProfileSubsDeposits(subsDeposit));
+    dispatch(setProfileSubs(subs));
+  }, [identityName, identityDeposit, subsDeposit, subs, dispatch]);
 }
