@@ -70,7 +70,7 @@ export default function Posted() {
       setFirstCategory(items[0]);
       setSecondCategory(items[1]);
     }
-  }, [router.asPath, categories, firstCategory, secondCategory]);
+  }, [router.asPath, categories]);
 
   useEffect(() => {
     if (router.asPath !== `/user/${maybeEvmAddress}`) {
