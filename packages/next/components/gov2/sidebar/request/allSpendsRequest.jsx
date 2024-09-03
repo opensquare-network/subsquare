@@ -16,7 +16,7 @@ export default function AllSpendsRequest() {
     !onchain?.isTreasury &&
     !onchain?.isStableTreasury &&
     isNil(onchain?.value) &&
-    !onchain?.allSpends
+    !onchain?.allSpends?.length
   ) {
     return null;
   }

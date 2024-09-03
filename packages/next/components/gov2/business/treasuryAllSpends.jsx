@@ -16,7 +16,7 @@ import TreasurySpendValueDisplay from "./treasurySpendValueDisplay";
 const seperateNumber = 5;
 
 export function getTreasuryAllSpendsBusiness(onchain) {
-  if (!onchain?.allSpends) {
+  if (!onchain?.allSpends?.length) {
     return null;
   }
 
