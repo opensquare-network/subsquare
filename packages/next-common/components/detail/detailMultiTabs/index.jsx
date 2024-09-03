@@ -4,7 +4,6 @@ import VotesBubbleViewTabs from "./votesBubbleViewTabs";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import TimelineModeTabs from "./timelineModeTabs";
-import { TagWrapper } from "next-common/components/comment/voteTag/referendaVoteTag";
 import { useRouter } from "next/router";
 import { snakeCase, startCase } from "lodash-es";
 

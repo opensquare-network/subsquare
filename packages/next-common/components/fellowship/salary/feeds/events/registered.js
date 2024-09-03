@@ -1,13 +1,13 @@
 import AddressUser from "next-common/components/user/addressUser";
 import { FellowshipFeedEventLabel } from "next-common/components/fellowship/feeds/label";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import Link from "next/link";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 export default function FellowshipRegisteredFeed({ who, amount, index }) {
-  const { symbol, decimals } = useSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset();
   const { section } = useCollectivesContext();
 
   return (

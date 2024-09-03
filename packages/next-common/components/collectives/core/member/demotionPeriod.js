@@ -64,10 +64,6 @@ export default function CoreFellowshipMemberDemotionPeriod({
     useDemotionPeriod({ rank, lastProof, params });
   const blockTime = useSelector(blockTimeSelector);
 
-  if (isNil(demotionPeriod)) {
-    return null;
-  }
-
   const fgColor = useMemo(() => {
     return _getProgressBarColor(
       remainingBlocks,
@@ -75,6 +71,10 @@ export default function CoreFellowshipMemberDemotionPeriod({
       demotionPeriod,
     );
   }, [blockTime, remainingBlocks, demotionPeriod]);
+
+  if (isNil(demotionPeriod)) {
+    return null;
+  }
 
   return (
     <CoreFellowshipMemberInfoWrapper>

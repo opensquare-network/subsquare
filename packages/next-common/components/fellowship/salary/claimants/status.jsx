@@ -1,10 +1,10 @@
 import { has } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
 
 export default function FellowshipSalaryMemberStatus({ status }) {
-  const { decimals, symbol } = useSalaryAsset();
+  const { decimals, symbol } = getSalaryAsset();
 
   let content = <span className="text-textTertiary">-</span>;
   let tooltipContent;

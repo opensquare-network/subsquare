@@ -3,14 +3,14 @@ import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 
 export default function SalaryStatsUnregisteredItem({ cycleData }) {
   const stats = useFellowshipSalaryStats();
 
   const { totalUnregisteredPaid } = stats || {};
-  const { decimals, symbol } = useSalaryAsset();
+  const { decimals, symbol } = getSalaryAsset();
   const { unRegisteredPaidCount } = cycleData || {};
 
   return (

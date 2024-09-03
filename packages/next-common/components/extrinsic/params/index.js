@@ -4,10 +4,6 @@ import { noop } from "lodash-es";
 import { useCallback } from "react";
 
 export default function Params({ params, value, setValue = noop }) {
-  if (!params || params?.length === 0) {
-    return null;
-  }
-
   const { data = [] } = value || {};
   const _setValue = useCallback(
     (valuesOrFunction) => {
@@ -31,6 +27,10 @@ export default function Params({ params, value, setValue = noop }) {
     },
     [setValue],
   );
+
+  if (!params || params?.length === 0) {
+    return null;
+  }
 
   return (
     <IndentPanel className="flex flex-col gap-[8px]">

@@ -30,12 +30,6 @@ export default function PreImagesList({ data }) {
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
 
-  const { width } = useWindowSize();
-
-  if (isNil(width)) {
-    return null;
-  }
-
   let filteredData = useMemo(
     () =>
       (data || []).filter(({ data: [hash, status], method }) => {
@@ -53,6 +47,12 @@ export default function PreImagesList({ data }) {
       }),
     [data, searchValue, isMyDepositOn, realAddress],
   );
+
+  const { width } = useWindowSize();
+
+  if (isNil(width)) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col gap-[16px]">

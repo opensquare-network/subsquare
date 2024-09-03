@@ -1,6 +1,6 @@
 import MultiProgress from "next-common/components/progress/multiProgress";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { cn, toPercentage, toPrecision } from "next-common/utils";
 
 const registreredPaidColor = "var(--theme500)";
@@ -62,7 +62,7 @@ export default function FellowshipCycleProgress({ cycle }) {
 }
 
 function PaidLabel({ value, label = "", color = "" }) {
-  const { decimals, symbol } = useSalaryAsset();
+  const { decimals, symbol } = getSalaryAsset();
 
   return (
     <div className="flex items-center gap-x-2 text12Medium">

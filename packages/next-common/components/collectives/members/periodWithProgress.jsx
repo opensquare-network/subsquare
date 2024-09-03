@@ -70,15 +70,15 @@ export function FellowshipDemotionPeriodWithProgress({
   rank,
   blocks,
 }) {
-  if (isNil(address)) {
-    return null;
-  }
-
   const corePallet = useCoreFellowshipPallet();
   const { member: memberStatus } = useSubCoreCollectivesMember(
     address,
     corePallet,
   );
+
+  if (isNil(address)) {
+    return null;
+  }
 
   return (
     <div className="max-sm:text-right">
@@ -95,15 +95,15 @@ export function FellowshipPromotionPeriodWithProgress({
   rank,
   blocks,
 }) {
-  if (blocks <= 0 || isNil(address)) {
-    return null;
-  }
-
   const corePallet = useCoreFellowshipPallet();
   const { member: memberStatus } = useSubCoreCollectivesMember(
     address,
     corePallet,
   );
+
+  if (blocks <= 0 || isNil(address)) {
+    return null;
+  }
 
   return (
     <div className="max-sm:text-right">

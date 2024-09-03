@@ -1,5 +1,5 @@
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
@@ -7,14 +7,19 @@ import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDurati
 export function useRemainingTime(blocks) {
   const blockTime = useSelector(blockTimeSelector);
   const ms = blockTime * blocks;
+  const [duration, setDuration] = useState();
 
-  if (isNil(blocks)) {
-    return null;
-  }
+  useEffect(() => {
+    if (isNil(blocks)) {
+      return;
+    }
 
-  return useMemo(() => {
-    return formatTimeDuration(ms) + " remaining";
-  }, [ms]);
+    if (ms) {
+      setDuration(formatTimeDuration(ms) + " remaining");
+    }
+  }, [ms, blocks]);
+
+  return duration;
 }
 
 export default function Remaining({ blocks = 0, percentage }) {

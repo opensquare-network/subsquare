@@ -1,5 +1,5 @@
 import SummaryItem from "next-common/components/summary/layout/item";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -10,7 +10,7 @@ export default function SalaryStatsRegistrationItem({ cycleData }) {
   const stats = useFellowshipSalaryStats();
 
   const { totalRegistrations } = stats || {};
-  const { decimals, symbol } = useSalaryAsset();
+  const { decimals, symbol } = getSalaryAsset();
   const { registeredCount } = cycleData || {};
 
   return (

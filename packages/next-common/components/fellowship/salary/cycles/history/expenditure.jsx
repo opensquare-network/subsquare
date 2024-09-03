@@ -1,12 +1,12 @@
 import ValueDisplay from "next-common/components/valueDisplay";
 import Progress from "next-common/components/progress";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPercentage, toPrecision } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import bigAdd from "next-common/utils/math/bigAdd";
 
 export default function FellowshipSalaryExpenditure({ cycle = {} }) {
-  const { symbol, decimals } = useSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset();
 
   const { status = {}, registeredPaid, unRegisteredPaid } = cycle || {};
   const { budget } = status;

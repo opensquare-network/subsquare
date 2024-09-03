@@ -16,7 +16,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
-function createPreimageRow(
+function useCreatePreimageRow(
   hash,
   preimage,
   isStatusLoaded,
@@ -85,7 +85,7 @@ function createPreimageRow(
 
 function PreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
-  const row = createPreimageRow(
+  const row = useCreatePreimageRow(
     hash,
     preimage,
     isStatusLoaded,
@@ -97,7 +97,7 @@ function PreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
 
 function OldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
-  const row = createPreimageRow(
+  const row = useCreatePreimageRow(
     hash,
     preimage,
     isStatusLoaded,

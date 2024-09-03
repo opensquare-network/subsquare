@@ -12,7 +12,7 @@ import {
   FellowshipDemotionPeriodWithProgress,
   FellowshipPromotionPeriodWithProgress,
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import Period from "next-common/components/fellowship/params/period";
 
@@ -30,7 +30,7 @@ export default function CollectivesMemberTable({ members = [] }) {
     minPromotionPeriod = [],
     offboardTimeout,
   } = params ?? {};
-  const { symbol, decimals } = useSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset();
 
   const isLoading = isNil(members);
 

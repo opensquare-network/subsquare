@@ -33,11 +33,12 @@ function CuratorElement() {
  * @constructor
  */
 function BountyMetadata({ meta, address }) {
+  const curator = useCurator();
+
   if (!meta) {
     return null;
   }
 
-  const curator = useCurator();
   const metadata = meta ? Object.entries(meta) : [];
   if (address) {
     metadata.push(["address", address]);
