@@ -47,15 +47,13 @@ export default function ProfilePage() {
     address,
     "ambassadorCore",
   );
-  let section = null;
-  let member = null;
-  if (fellowshipMember) {
-    section = "fellowship";
-    member = fellowshipMember;
-  } else if (ambassadorMember) {
-    section = "ambassador";
-    member = ambassadorMember;
-  }
+
+  const member = fellowshipMember || ambassadorMember || null;
+  const section = fellowshipMember
+    ? "fellowship"
+    : ambassadorMember
+    ? "ambassador"
+    : null;
 
   return (
     <CollectivesProvider section={section}>

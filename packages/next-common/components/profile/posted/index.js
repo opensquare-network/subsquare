@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { getProfileCategories } from "../../../utils/consts/profile";
+import { useEffect, useState, useMemo } from "react";
+import { getProfileCategories } from "next-common/utils/consts/profile/index";
 import { useRouter } from "next/router";
-import { useChain } from "../../../context/chain";
+import { useChain } from "next-common/context/chain";
 import List from "./list";
 import Categories from "./categories";
 import { usePageProps } from "next-common/context/page";
@@ -24,24 +24,27 @@ const getCategoryByRoute = (route, categories = []) => {
 
 export default function Posted() {
   const { route, userSummary: summary, id } = usePageProps();
-  const maybeEvmAddress = tryConvertToEvmAddress(id);
+  const maybeEvmAddress = useMemo(() => tryConvertToEvmAddress(id), [id]);
   const postedRoute = route.replace(/^posted\//, "");
 
-  const overview = {
-    ...summary,
-    collectives: {
-      councilMotions: summary?.council?.motions ?? 0,
-      techCommProposals: summary?.techComm?.proposals ?? 0,
-    },
-    discussions: {
-      posts: summary?.discussions ?? 0,
-      comments: summary?.comments ?? 0,
-      polkassemblyDiscussions: summary?.polkassemblyDiscussions ?? 0,
-    },
-  };
+  const overview = useMemo(
+    () => ({
+      ...summary,
+      collectives: {
+        councilMotions: summary?.council?.motions ?? 0,
+        techCommProposals: summary?.techComm?.proposals ?? 0,
+      },
+      discussions: {
+        posts: summary?.discussions ?? 0,
+        comments: summary?.comments ?? 0,
+        polkassemblyDiscussions: summary?.polkassemblyDiscussions ?? 0,
+      },
+    }),
+    [summary],
+  );
 
   const chain = useChain();
-  const categories = getProfileCategories(chain);
+  const categories = useMemo(() => getProfileCategories(chain), [chain]);
   const [firstCategory, setFirstCategory] = useState(
     getCategoryByRoute(postedRoute, categories)[0],
   );
@@ -58,14 +61,16 @@ export default function Posted() {
       undefined,
       { shallow: true },
     );
-  }, [maybeEvmAddress, secondCategory]);
+  }, [maybeEvmAddress]);
 
   useEffect(() => {
     const [, postedRoute] = router.asPath.split("/posted/");
     const items = getCategoryByRoute(postedRoute, categories);
-    setFirstCategory(items[0]);
-    setSecondCategory(items[1]);
-  }, [router]);
+    if (items[0] !== firstCategory || items[1] !== secondCategory) {
+      setFirstCategory(items[0]);
+      setSecondCategory(items[1]);
+    }
+  }, [router.asPath, categories]);
 
   useEffect(() => {
     if (router.asPath !== `/user/${maybeEvmAddress}`) {
@@ -81,13 +86,18 @@ export default function Posted() {
       }
       for (subCategory of mainCategory.children) {
         if (overview[mainCategory.id][subCategory.id] > 0) {
-          setFirstCategory(mainCategory);
-          setSecondCategory(subCategory);
+          if (
+            mainCategory !== firstCategory ||
+            subCategory !== secondCategory
+          ) {
+            setFirstCategory(mainCategory);
+            setSecondCategory(subCategory);
+          }
           return;
         }
       }
     }
-  }, [id, router, categories, summary]);
+  }, [id, router.asPath, categories, overview]);
 
   return (
     <>
