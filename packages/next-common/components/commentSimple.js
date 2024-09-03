@@ -12,10 +12,10 @@ import {
 import { getMotionId } from "../utils/motion";
 import IdentityOrAddr from "./IdentityOrAddr";
 import { prettyHTML } from "../utils/viewfuncs";
-import useDuration from "../utils/hooks/useDuration";
 import { useChain } from "../context/chain";
 import { hashEllipsis, textEllipsis } from "next-common/utils";
 import { isNil } from "lodash-es";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -256,7 +256,7 @@ const getCommentSource = (comment) => {
 export default function CommentSimple({ data }) {
   const chain = useChain();
   const [type, title, route] = getCommentSource(data, chain);
-  const duration = useDuration(data.updatedAt);
+  const timeAgo = formatTimeAgo(data.updatedAt);
   return (
     <Wrapper>
       <div className="flex-1 overflow-x-scroll overflow-y-hidden scrollbar-pretty">
@@ -296,7 +296,7 @@ export default function CommentSimple({ data }) {
                 {title || "Untitled"}
               </Anchor>
             </AutHideInfo>
-            {data.updatedAt && <Info>{duration}</Info>}
+            {data.updatedAt && <Info>{timeAgo}</Info>}
           </Footer>
         </FooterWrapper>
       </div>

@@ -22,13 +22,22 @@ function SummaryItems({ summary, period }) {
   const { decimals, symbol } = useChainSettings();
 
   const blockTime = useSelector(blockTimeSelector);
-  const preparePeriodBlockTime = estimateBlocksTime(preparePeriod, blockTime);
-  const decisionPeriodBlockTime = estimateBlocksTime(decisionPeriod, blockTime);
-  const confirmPeriodBlockTime = estimateBlocksTime(confirmPeriod, blockTime);
+  const preparePeriodBlockTime = estimateBlocksTime(
+    preparePeriod,
+    blockTime,
+  ).split(" ");
+  const decisionPeriodBlockTime = estimateBlocksTime(
+    decisionPeriod,
+    blockTime,
+  ).split(" ");
+  const confirmPeriodBlockTime = estimateBlocksTime(
+    confirmPeriod,
+    blockTime,
+  ).split(" ");
   const minEnactPeriodBlockTime = estimateBlocksTime(
     minEnactmentPeriod,
     blockTime,
-  );
+  ).split(" ");
 
   return (
     <SummaryLayout className="!grid-cols-3 max-md:!grid-cols-2 !w-auto grow">

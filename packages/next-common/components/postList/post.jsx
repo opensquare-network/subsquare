@@ -11,7 +11,6 @@ import { DemocracyTag, TreasuryTag } from "../tags/business";
 import { isNil } from "lodash-es";
 import { getBannerUrl } from "../../utils/banner";
 import businessCategory from "../../utils/consts/business/category";
-import useDuration from "../../utils/hooks/useDuration";
 import { getMotionStateArgs } from "../../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../../utils/gov2/result";
 import { useChainSettings } from "../../context/chain";
@@ -42,6 +41,8 @@ import {
   isUsdtByMeta,
 } from "next-common/utils/treasury/spend/usdCheck";
 import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
+import PostListTreasuryAllSpends from "./treasuryAllSpends";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -223,6 +224,11 @@ function PostValueTitle({ data, type }) {
     );
   }
 
+  if (onchainData?.allSpends?.length) {
+    const { allSpends } = onchainData;
+    return <PostListTreasuryAllSpends allSpends={allSpends} />;
+  }
+
   if (onchainData?.isStableTreasury) {
     const { amount, spends = [] } = onchainData?.stableTreasuryInfo || {};
     const symbolSet = new Set(spends.map((spend) => spend.symbol));
@@ -266,7 +272,7 @@ export default function Post({ data, href, type }) {
     );
   }
 
-  const duration = useDuration(data.time);
+  const timeAgo = formatTimeAgo(data.time);
 
   let elapseIcon = null;
   if (
@@ -360,7 +366,7 @@ export default function Post({ data, href, type }) {
             {data.time && (
               <Info>
                 <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-                <span>{duration}</span>
+                <span>{timeAgo}</span>
                 <Flex className="elapseIcon">{elapseIcon}</Flex>
               </Info>
             )}

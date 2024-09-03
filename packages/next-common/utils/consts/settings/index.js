@@ -78,7 +78,7 @@ const settingsMap = {
 /**
  * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof moonriver & typeof centrifuge & typeof collectives & typeof hydradx}
  */
-export default function getChainSettings(chain, blockHeight) {
+export default function getChainSettings(chain, blockHeight = null) {
   let settings = settingsMap[chain];
   if (!settings) {
     throw `can not get chain settings of ${chain}`;

@@ -1,4 +1,3 @@
-import { extractTime } from "@polkadot/util";
 import dayjs from "dayjs";
 import CountDown from "next-common/components/summary/countDown";
 import { SummaryGreyText } from "next-common/components/summary/styled";
@@ -7,7 +6,6 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import { useDemocracySummaryData } from "next-common/hooks/useDemoracySummaryData";
 import Chains from "next-common/utils/consts/chains";
 import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
-import { Fragment, useMemo } from "react";
 import useNextLaunchTimestamp from "next-common/hooks/democracy/kintsugi/useNextLaunchTimestamp";
 import useLaunchPeriod from "next-common/hooks/democracy/useLaunchPeriod";
 import { useSelector } from "react-redux";
@@ -19,6 +17,7 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import { useContextApi } from "next-common/context/api";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
+import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 
 export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
@@ -75,8 +74,11 @@ function LaunchPeriod() {
   const blockHeight = useSelector(chainOrScanHeightSelector);
   const goneBlocks = blockHeight % launchPeriod;
   const blockTime = useSelector(blockTimeSelector);
-  const timeArray = estimateBlocksTime(launchPeriod - goneBlocks, blockTime);
-  const total = estimateBlocksTime(launchPeriod, blockTime);
+  const timeArray = estimateBlocksTime(
+    launchPeriod - goneBlocks,
+    blockTime,
+  ).split(" ");
+  const total = estimateBlocksTime(launchPeriod, blockTime).split(" ");
 
   if (!launchPeriod || !blockHeight) {
     return null;
@@ -105,7 +107,8 @@ function NextLaunchTime() {
   const nextLaunchTimestamp = useNextLaunchTimestamp();
   const nextLaunchTimestampMilliseconds = nextLaunchTimestamp * 1000;
   const offset = nextLaunchTimestampMilliseconds - latestBlockTime;
-  const time = useEstimateTime(offset);
+
+  const times = formatTimeDuration(offset, { withUnitSpace: true }).split(" ");
 
   return (
     <LoadableContent isLoading={!nextLaunchTimestamp || !latestBlockTime}>
@@ -115,36 +118,15 @@ function NextLaunchTime() {
         )}
       >
         <span>
-          <SummaryGreyText>≈ In</SummaryGreyText> {time}
+          <span className="text-textTertiary">≈ In</span>{" "}
+          {times.map((item, index) => (
+            <span className={index % 2 === 1 ? "unit" : ""} key={index}>
+              {" "}
+              {item}
+            </span>
+          ))}
         </span>
       </Tooltip>
     </LoadableContent>
-  );
-}
-
-function useEstimateTime(ms) {
-  const { days, hours, minutes, seconds } = extractTime(ms);
-
-  const render = (number, unit, suffix = "s") => (
-    <Fragment key={unit}>
-      {number}{" "}
-      <SummaryGreyText>
-        {unit}
-        {number > 1 ? suffix : ""}{" "}
-      </SummaryGreyText>
-    </Fragment>
-  );
-
-  return useMemo(
-    () =>
-      [
-        days && render(days, "day"),
-        hours && render(hours, "hr"),
-        minutes && render(minutes, "min"),
-        seconds && render(minutes, "s", ""),
-      ]
-        .filter(Boolean)
-        .slice(0, 2),
-    [ms],
   );
 }

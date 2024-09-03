@@ -13,32 +13,38 @@ const AssetIconUsdc = dynamic(() =>
 const AssetIconUsdt = dynamic(() =>
   import("@osn/icons/subsquare/AssetIconUsdt"),
 );
+const AssetIconDot = dynamic(() => import("@osn/icons/subsquare/AssetIconDot"));
 
 const knownPolkadotAssetHubAssets = [
   {
-    // symbol: "USDt",
+    symbol: "USDt",
     assetId: 1984,
     icon: AssetIconUsdt,
   },
   {
-    // symbol: "USDC",
+    symbol: "USDC",
     assetId: 1337,
     icon: AssetIconUsdc,
   },
   {
-    // symbol: "DED",
+    symbol: "DED",
     assetId: 30,
     icon: AssetIconDed,
   },
   {
-    // symbol: "DOTA",
+    symbol: "DOTA",
     assetId: 18,
     icon: AssetIconDota,
   },
   {
-    // symbol: "PINK",
+    symbol: "PINK",
     assetId: 23,
     icon: AssetIconPink,
+  },
+  {
+    symbol: "DOT",
+    assetId: 3,
+    icon: AssetIconDot,
   },
 ];
 

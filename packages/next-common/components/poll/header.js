@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import useDuration from "../../utils/hooks/useDuration";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,14 +38,14 @@ const Title = styled.div`
 `;
 
 export default function PollHeader({ title, expiresTime, anonymous }) {
-  const duration = useDuration(expiresTime);
+  const timeAgo = formatTimeAgo(expiresTime);
   return (
     <Wrapper>
       <Title>{title}</Title>
       <Info>
         <Item>Single</Item>
         {anonymous && <Item>Anonymous</Item>}
-        <Item>{`Expired ${duration}`}</Item>
+        <Item>{`Expired ${timeAgo}`}</Item>
       </Info>
     </Wrapper>
   );

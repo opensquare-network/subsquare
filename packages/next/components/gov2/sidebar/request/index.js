@@ -1,6 +1,6 @@
-import { SystemCoins } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
@@ -11,18 +11,11 @@ import {
   ASSET_DETAIL_LINKS,
 } from "next-common/utils/consts/asset";
 
-function Wrapper({ children }) {
+export function RequestWrapper({ children }) {
   return (
     <SecondaryCardDetail>
-      <div className="flex justify-between">
-        <div className="flex items-center gap-[8px]">
-          <div className="inline-flex">
-            <SystemCoins className="w-[20px] h-[20px] [&_path]:stroke-textTertiary" />
-          </div>
-          <span className="text-textPrimary text14Medium">Request</span>
-        </div>
-        {children}
-      </div>
+      <TitleContainer className="!px-0 mb-4">Request</TitleContainer>
+      {children}
     </SecondaryCardDetail>
   );
 }
@@ -116,18 +109,19 @@ export default function Request() {
   const onchain = useOnchainData();
 
   if (
-    !onchain?.isTreasury &&
-    !onchain?.isStableTreasury &&
-    isNil(onchain?.value)
+    (!onchain?.isTreasury &&
+      !onchain?.isStableTreasury &&
+      isNil(onchain?.value)) ||
+    onchain?.allSpends
   ) {
     return null;
   }
 
   return (
-    <Wrapper>
+    <RequestWrapper>
       <div className="text-textPrimary text14Medium">
         <SpendValues />
       </div>
-    </Wrapper>
+    </RequestWrapper>
   );
 }
