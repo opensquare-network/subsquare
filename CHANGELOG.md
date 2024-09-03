@@ -2,15 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.2.4
+
+date: 2024-09-03
+
+- [Big] Refactor the code to submit transactions.
+- Enhance `valid_from` UI on referenda submission modal.
+- Polkadot fellowship
+    - Improve some text about fellowship, like expenditure -> salary, etc.
+    - Improve demotion warning text on fellowship core page.
+    - Remove westend collectives because nobody use it.
+    - [Medium] Refactor code to increase code reusability. We created hooks to replace redux slices.
+    - Fix referendum redirection after creation.
+    - [Medium] Support fellowship evidence by either IPFS or bytes content.
+    - Fix fellowship promote/bump button status.
+    - Add advanced options on new approval/promotion related popups to hide referendum details.
+- Update endpoints.
+- Add assets transfer history on subsquare polkadot assethub.
+- Support hydration EVM transaction with multiple gas assets.
+- Fix referendum decision deposit check.
+- Display curator info on bounty detail page.
+- Support Astar and its testnet Shibuya network.
+- Support zkverify testnet.
+- [Bug] Fix transferable balance calculation.
+- [Medium] Enhance treasury spends info on referendum detail page
+  like [#944](https://polkadot.subsquare.io/referenda/944).
+- [Bug] Fix tabs not highlighted on profile page due to incorrect hooks dependencies.
+- Code refactor and dependencies upgrade.
+
 ### 4.2.3
 
 date: 2024-08-20
 
 - Polkadot fellowship
-  - [Big] Add polkadot fellowship statistics page.
-  - [Medium] Add more filters on fellowship core page.
-  - Add salary related warnings on overview page to inform members to register and claim salary.
-  - Show demotion/promotion progress bar on fellowship members page.
+    - [Big] Add polkadot fellowship statistics page.
+    - [Medium] Add more filters on fellowship core page.
+    - Add salary related warnings on overview page to inform members to register and claim salary.
+    - Show demotion/promotion progress bar on fellowship members page.
 - Subscribe treasury spend status on detail page and update post when new update detected.
 - Enable kill/cancel referenda templates for westend.
 - AssetHub
@@ -19,7 +47,7 @@ date: 2024-08-20
     - Fix assethub profile page crash.
     - Show proxy and extension metadata update warnings on assethub overview page.
 - Support astar test network shibuya.
-- Fix broken post rendered table by markdown [#4580](https://github.com/opensquare-network/subsquare/issues/4580). 
+- Fix broken post rendered table by markdown [#4580](https://github.com/opensquare-network/subsquare/issues/4580).
 - Fix open graph social media link.
 - Fix styles and refactor code.
 
