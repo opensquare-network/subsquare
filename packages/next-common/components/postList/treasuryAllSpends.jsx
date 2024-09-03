@@ -1,12 +1,9 @@
 import BigNumber from "bignumber.js";
 import { groupBy } from "lodash-es";
-import { useChain } from "next-common/context/chain";
-import { cn, toPrecision } from "next-common/utils";
-import Chains from "next-common/utils/consts/chains";
-import getChainSettings from "next-common/utils/consts/settings";
+import { cn } from "next-common/utils";
+import TreasurySpendValueDisplay from "../gov2/business/treasurySpendValueDisplay";
 import AssetIcon from "../icons/assetIcon";
 import Tooltip from "../tooltip";
-import ValueDisplay from "../valueDisplay";
 
 export default function PostListTreasuryAllSpends({ allSpends }) {
   const groupedSpends = groupBy(allSpends, "assetKind.symbol");
@@ -24,25 +21,19 @@ export default function PostListTreasuryAllSpends({ allSpends }) {
   });
 
   if (resolvedSpends.length === 1) {
-    const { amount, type, chain, symbol } = resolvedSpends[0];
+    const { amount, type, symbol } = resolvedSpends[0];
 
     return (
-      <SingleSpend amount={amount} chain={chain} type={type} symbol={symbol} />
+      <TreasurySpendValueDisplay
+        className={cn("text14Medium text-textPrimary")}
+        type={type}
+        amount={amount}
+        symbol={symbol}
+      />
     );
   }
 
   return <MultiSpends spends={resolvedSpends} />;
-}
-
-function SingleSpend({ amount, chain, type, symbol }) {
-  return (
-    <SpendValueDisplay
-      chain={chain}
-      type={type}
-      symbol={symbol}
-      amount={amount}
-    />
-  );
 }
 
 function MultiSpends({ spends }) {
@@ -52,7 +43,7 @@ function MultiSpends({ spends }) {
       content={
         <div className="flex flex-col">
           {spends.map((spend) => (
-            <SpendValueDisplay
+            <TreasurySpendValueDisplay
               key={spend.symbol}
               className="text-textPrimaryContrast text12Medium"
               showTooltip={false}
@@ -73,32 +64,5 @@ function MultiSpends({ spends }) {
         />
       ))}
     </Tooltip>
-  );
-}
-
-function SpendValueDisplay({
-  chain,
-  type,
-  symbol,
-  amount,
-  className = "",
-  showTooltip,
-}) {
-  const currentChain = useChain();
-
-  if (type === "assets") {
-    chain = Chains.polkadotAssetHub;
-  } else if (type === "native") {
-    chain = currentChain;
-  }
-  const { decimals } = getChainSettings(chain);
-
-  return (
-    <ValueDisplay
-      className={cn("text14Medium", className)}
-      value={toPrecision(amount, decimals)}
-      symbol={symbol}
-      showTooltip={showTooltip}
-    />
   );
 }

@@ -11,7 +11,7 @@ import { cn } from "next-common/utils";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import TreasurySpendValueDisplay from "./treasurySpendValueDisplay";
+import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
 
 const seperateNumber = 5;
 

@@ -1,6 +1,6 @@
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { toPrecision } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 export default function TreasurySpendValueDisplay({
@@ -17,13 +17,11 @@ export default function TreasurySpendValueDisplay({
   }
 
   return (
-    <div className="inline-flex">
-      <ValueDisplay
-        value={toPrecision(amount, decimals)}
-        symbol={symbol}
-        showTooltip={showTooltip}
-        className={className}
-      />
-    </div>
+    <ValueDisplay
+      value={toPrecision(amount, decimals)}
+      symbol={symbol}
+      showTooltip={showTooltip}
+      className={cn("inline-flex", className)}
+    />
   );
 }

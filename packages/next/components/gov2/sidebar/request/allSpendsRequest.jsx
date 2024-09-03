@@ -1,4 +1,4 @@
-import TreasurySpendValueDisplay from "components/gov2/business/treasurySpendValueDisplay";
+import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
 import { isNil } from "lodash-es";
 import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
