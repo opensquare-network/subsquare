@@ -42,14 +42,11 @@ export default function ProfilePage() {
     dispatch(setProfileIdentityTimeline(null));
   }, [dispatch, address]);
 
-  const { member: fellowshipMember, isLoading: fellowshipMemberLoading } =
-    useSubFellowshipCoreMember(address);
-  const { member: ambassadorMember, isLoading: ambassadorMemberLoading } =
-    useSubFellowshipCoreMember(address, "ambassadorCore");
-
-  if (fellowshipMemberLoading || ambassadorMemberLoading) {
-    return null;
-  }
+  const { member: fellowshipMember } = useSubFellowshipCoreMember(address);
+  const { member: ambassadorMember } = useSubFellowshipCoreMember(
+    address,
+    "ambassadorCore",
+  );
 
   const member = fellowshipMember || ambassadorMember || null;
   const section = fellowshipMember
