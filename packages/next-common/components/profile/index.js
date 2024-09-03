@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect } from "react";
 import ListLayout from "next-common/components/layout/ListLayout";
 import Bio from "./bio";
 import useProfileTabs from "next-common/components/profile/tabs";
