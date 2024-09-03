@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import {
   useConfirmingStarted,
   useDecidingSince,
-  userConfirmingAborted,
+  useConfirmingAborted,
 } from "next-common/context/post/gov2/referendum";
 import { useConfirm } from "next-common/context/post/gov2/track";
 import { isNil } from "lodash-es";
@@ -63,7 +63,7 @@ export function useConfirmPercentage() {
 
   const confirmPeriod = useConfirm();
   const confirmStart = useConfirmingStarted();
-  const confirmAbortedHeight = userConfirmingAborted();
+  const confirmAbortedHeight = useConfirmingAborted();
 
   return useMemo(() => {
     if (

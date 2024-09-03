@@ -32,7 +32,7 @@ export function useConfirmedHeight() {
 }
 
 // last confirm aborted height
-export function userConfirmingAborted() {
+export function useConfirmingAborted() {
   const timeline = useTimelineData();
   const abortedItem = findLast(
     timeline,
