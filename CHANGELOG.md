@@ -27,6 +27,7 @@ date: 2024-09-03
 - [Bug] Fix transferable balance calculation.
 - [Medium] Enhance treasury spends info on referendum detail page
   like [#944](https://polkadot.subsquare.io/referenda/944).
+- Fix expiration countdown component on treasury spend detail page.
 - [Bug] Fix tabs not highlighted on profile page due to incorrect hooks dependencies.
 - Code refactor and dependencies upgrade.
 
