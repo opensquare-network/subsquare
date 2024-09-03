@@ -20,6 +20,7 @@ module.exports = {
     "react/react-in-jsx-scope": 0,
     "react/jsx-uses-react": "error",
     "react/prop-types": 0,
+    "react-hooks/exhaustive-deps": "error",
   },
   settings: {
     react: {
