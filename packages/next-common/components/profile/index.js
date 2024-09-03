@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState, useMemo } from "react";
 import ListLayout from "next-common/components/layout/ListLayout";
 import Bio from "./bio";
 import useProfileTabs from "next-common/components/profile/tabs";
@@ -42,24 +42,21 @@ export default function ProfilePage() {
     dispatch(setProfileIdentityTimeline(null));
   }, [dispatch, address]);
 
-  // const { member: fellowshipMember } = useSubFellowshipCoreMember(address);
-  // const { member: ambassadorMember } = useSubFellowshipCoreMember(
-  //   address,
-  //   "ambassadorCore",
-  // );
-  // let section = null;
-  // let member = null;
-  // if (fellowshipMember) {
-  //   section = "fellowship";
-  //   member = fellowshipMember;
-  // } else if (ambassadorMember) {
-  //   section = "ambassador";
-  //   member = ambassadorMember;
-  // }
+  const { member: fellowshipMember, isLoading: fellowshipMemberLoading } =
+    useSubFellowshipCoreMember(address);
+  const { member: ambassadorMember, isLoading: ambassadorMemberLoading } =
+    useSubFellowshipCoreMember(address, "ambassadorCore");
 
-  let section = "fellowship";
-  let member = [];
-  // console.log("::::member", member, fellowshipMember, ambassadorMember);
+  if (fellowshipMemberLoading || ambassadorMemberLoading) {
+    return null;
+  }
+
+  const member = fellowshipMember || ambassadorMember || null;
+  const section = fellowshipMember
+    ? "fellowship"
+    : ambassadorMember
+    ? "ambassador"
+    : null;
 
   return (
     <CollectivesProvider section={section}>
