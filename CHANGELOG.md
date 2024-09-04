@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.2.5
+
+date: 2024-09-04
+
+- Fix Markdown table color.
+- Fix call tree view for inline call.
+- Astar community treasury
+    - Fix to be awarded value
+    - Fix proposal un-finalization check.
+    - Add award countdown on proposal detail page.
+- Enable statescan for collectives.
+- Fix transferable when balance is 0.
+
 ### 4.2.4
 
 date: 2024-09-03
