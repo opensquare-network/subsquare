@@ -3,7 +3,7 @@ import { hexToU8a } from "@polkadot/util";
 import nextApi from "next-common/services/nextApi";
 import { useContextApi } from "next-common/context/api";
 
-export function usePreImage(preImageHash) {
+function usePreImage(preImageHash) {
   const [preImage, setPreImage] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -67,7 +67,7 @@ const getBlockApi = async (api, blockHash) => {
   return api;
 };
 
-export function usePreImageCall(preImage, isLoadingPreImage) {
+function usePreImageCall(blockHash, proposalHex, isLoadingPreImage) {
   const api = useContextApi();
   const [call, setCall] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -77,23 +77,8 @@ export function usePreImageCall(preImage, isLoadingPreImage) {
       return;
     }
 
-    if (!preImage) {
-      setIsLoading(false);
-      return;
-    }
-
     if (!api) {
       return;
-    }
-
-    const blockHash = preImage?.indexer.blockHash;
-    let proposalHex;
-    if (preImage.isGov2) {
-      // Gov2 preImage
-      proposalHex = preImage?.hex;
-    } else {
-      // Democracy preImage
-      proposalHex = preImage?.data;
     }
 
     getBlockApi(api, blockHash)
@@ -109,15 +94,38 @@ export function usePreImageCall(preImage, isLoadingPreImage) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, isLoadingPreImage, preImage]);
+  }, [api, isLoadingPreImage, blockHash, proposalHex]);
 
   return { call, isLoading };
 }
 
-export default function usePreImageCallFromHash(preImageHash) {
+export default function usePreImageCallFromProposal({
+  preImageHash,
+  preImageHex,
+  indexer,
+}) {
   const { preImage, isLoading: isLoadingPreImage } = usePreImage(preImageHash);
+
+  let blockHash;
+  let proposalHex;
+
+  if (preImage) {
+    blockHash = preImage?.indexer?.blockHash;
+    if (preImage.isGov2) {
+      // Gov2 preImage
+      proposalHex = preImage?.hex;
+    } else {
+      // Democracy preImage
+      proposalHex = preImage?.data;
+    }
+  } else if (indexer && preImageHex) {
+    blockHash = indexer.blockHash;
+    proposalHex = preImageHex;
+  }
+
   const { call, isLoading: isLoadingCall } = usePreImageCall(
-    preImage,
+    blockHash,
+    proposalHex,
     isLoadingPreImage,
   );
 
