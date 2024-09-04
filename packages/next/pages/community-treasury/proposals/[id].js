@@ -85,7 +85,7 @@ function ProposalContentWithNullGuard() {
   const { sima } = useChainSettings();
 
   if (!detail) {
-    return <CheckUnFinalized id={id} />;
+    return <CheckUnFinalized id={id} pallet="communityTreasury" />;
   }
 
   return sima ? (
