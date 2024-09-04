@@ -12,7 +12,7 @@ import extractFellowshipApprove from "next-common/components/common/call/fellows
 export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
-  const { call: inlineCall } = onchainData?.inlineCall || {};
+  const inlineCall = onchainData?.inlineCall || {};
   const preImageHash = onchainData?.proposalHash;
 
   const data = [
@@ -22,16 +22,18 @@ export default function Gov2ReferendumCall() {
           <Copyable key="hash">{onchainData?.proposalHash}</Copyable>,
         ]
       : null,
-    inlineCall
+    inlineCall?.call
       ? [
           <Proposal
             key={"call"}
-            call={inlineCall}
+            call={inlineCall?.call}
             preImageHash={preImageHash}
+            preImageHex={inlineCall?.hex}
+            indexer={onchainData?.indexer}
           />,
         ]
       : null,
-    proposal?.call && !inlineCall
+    proposal?.call && !inlineCall?.call
       ? [
           <Proposal
             key={"call"}
@@ -49,10 +51,10 @@ export default function Gov2ReferendumCall() {
   }
   data.push(
     ...[
-      ...extractRemarkMetaFields(proposal?.call || inlineCall),
+      ...extractRemarkMetaFields(proposal?.call || inlineCall?.call),
       ...extractWhitelistCallHash(proposal?.call),
-      ...extractFellowshipPromote(proposal?.call || inlineCall),
-      ...extractFellowshipApprove(proposal?.call || inlineCall),
+      ...extractFellowshipPromote(proposal?.call || inlineCall?.call),
+      ...extractFellowshipApprove(proposal?.call || inlineCall?.call),
     ],
   );
 
