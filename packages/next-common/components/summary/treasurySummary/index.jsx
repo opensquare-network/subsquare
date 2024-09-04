@@ -10,7 +10,6 @@ import TreasurySummaryAvailable from "./available";
 import TreasurySummarySpendPeriodCountDown from "./spendPeriodCountDown";
 import { gql } from "@apollo/client";
 import { useDoTreasuryEcoQuery } from "next-common/hooks/apollo";
-import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import TreasurySummaryToBeAwarded from "./toBeAwarded";
 import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
 import bifrost from "next-common/utils/consts/settings/bifrost";
@@ -18,6 +17,8 @@ import { find } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
+import useBeAwardedAPI from "./useBeAwardedAPI";
+
 const GET_TREASURIES = gql`
   query GetTreasuries {
     treasuries {
@@ -37,7 +38,7 @@ export default function TreasurySummary() {
 
   const free = useTreasuryFree(api);
   const summary = useSpendPeriodSummary();
-  const toBeAwarded = useToBeAwarded();
+  const toBeAwarded = useBeAwardedAPI();
 
   const { data } = useDoTreasuryEcoQuery(GET_TREASURIES);
   const treasury = find(data?.treasuries, {
