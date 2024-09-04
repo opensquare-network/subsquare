@@ -66,7 +66,7 @@ export default function FellowshipSalaryRegister() {
     } else {
       setDisabled(false);
     }
-  }, [isRegistrationPeriod, address, memberAddrs]);
+  }, [isRegistrationPeriod, address, memberAddrs, status, claimant, mySalary]);
 
   const tooltipText = useMemo(() => {
     if (!isRegistrationPeriod) {
@@ -84,7 +84,14 @@ export default function FellowshipSalaryRegister() {
     }
 
     return null;
-  }, [isRegistrationPeriod, address, memberAddrs]);
+  }, [
+    isRegistrationPeriod,
+    address,
+    memberAddrs,
+    claimant,
+    mySalary,
+    status?.cycleIndex,
+  ]);
 
   return (
     <>

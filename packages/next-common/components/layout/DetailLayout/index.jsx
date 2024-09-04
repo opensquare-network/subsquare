@@ -23,7 +23,7 @@ export default function DetailLayout({
     return () => {
       dispatch(setLayoutDetailSidebarHeight(0));
     };
-  }, []);
+  }, [dispatch]);
 
   const [navCollapsed] = useNavCollapsed();
 

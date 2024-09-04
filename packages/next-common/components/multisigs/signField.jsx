@@ -19,7 +19,7 @@ export default function MultisigSignField({ multisig = {} }) {
     }
 
     return approvals?.some((item) => isSameAddress(item, realAddress));
-  }, [pathname, profileAddress, realAddress]);
+  }, [approvals, pathname, profileAddress, realAddress]);
 
   const content = isApproved ? (
     <Tooltip content="You didn't sign this multisig">

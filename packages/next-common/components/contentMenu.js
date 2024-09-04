@@ -221,7 +221,7 @@ export function CommentContextMenu({ editable, setIsEdit }) {
       return;
     }
     router.replace(router.asPath);
-  }, [comment, router]);
+  }, [comment._id, dispatch, router]);
 
   return (
     <Wrapper ref={ref}>
@@ -293,7 +293,7 @@ export function PostContextMenu({ editable, setIsEdit }) {
       return;
     }
     router.replace("/discussions");
-  }, [post, router]);
+  }, [dispatch, post._id, router]);
 
   let linkOrUnlinkMenuItem = (
     <LinkMenuItem setShowLinkPopup={setShowLinkPopup} setShow={setShow} />

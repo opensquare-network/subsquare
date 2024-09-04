@@ -19,7 +19,7 @@ export function useDemocracyDelegatesData({ page, sort, pageSize = 18 }) {
   useEffect(() => {
     const q = router.query;
     dispatch(fetchDemocracyDelegates(q.sort || "", q.page || 1, pageSize));
-  }, [router.asPath, triggerUpdate]);
+  }, [dispatch, pageSize, router.asPath, router.query, triggerUpdate]);
 
   useEffect(() => {
     const q = omit(router.query, ["sort", "page"]);
@@ -31,7 +31,7 @@ export function useDemocracyDelegatesData({ page, sort, pageSize = 18 }) {
     }
 
     router.push({ query: q }, null, { shallow: true });
-  }, [sort, page, pageSize]);
+  }, [sort, page, pageSize, router]);
 
   return democracyDelegatesPageData;
 }

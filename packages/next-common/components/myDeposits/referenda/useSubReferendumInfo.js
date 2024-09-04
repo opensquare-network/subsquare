@@ -30,7 +30,7 @@ export default function useSubReferendumInfo(pallet, referendumIndex) {
         unsub();
       }
     };
-  }, [api, referendumIndex]);
+  }, [api, isMounted, pallet, referendumIndex]);
 
   return info;
 }

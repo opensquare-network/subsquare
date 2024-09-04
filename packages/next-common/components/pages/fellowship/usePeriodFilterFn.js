@@ -69,7 +69,7 @@ export default function usePeriodFilterFn() {
         });
       });
     },
-    [params, blockTime, latestHeight],
+    [params, latestHeight],
   );
 
   return {

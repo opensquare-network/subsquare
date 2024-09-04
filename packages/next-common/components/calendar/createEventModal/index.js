@@ -35,11 +35,11 @@ function PopupContent() {
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
-    [],
+    [dispatch],
   );
   const showSuccessToast = useCallback(
     (message) => dispatch(newSuccessToast(message)),
-    [],
+    [dispatch],
   );
 
   const submit = useCallback(async () => {

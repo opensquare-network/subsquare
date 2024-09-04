@@ -34,7 +34,7 @@ function PopupContent({ children }) {
     } else if (module === "democracy") {
       dispatch(setDemocracyDelegatesTriggerUpdate());
     }
-  }, [module]);
+  }, [dispatch, module]);
 
   const revokeAnnouncement = useCallback(async () => {
     try {

@@ -24,7 +24,7 @@ export default function Time({
     m = Math.max(0, Math.min(m, 59));
 
     onChange(h, m);
-  }, [hour, minute]);
+  }, [hour, minute, onChange]);
 
   return (
     <Labeled text={"Time"}>

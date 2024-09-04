@@ -87,6 +87,7 @@ export default function EnumParam({ title, def, value, setValue }) {
       isValid: true,
       data: { [enumType]: undefined },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options?.[0]?.value, setValue]);
 
   const subType = (subTypes || []).find((item) => item.name === enumType);

@@ -63,6 +63,7 @@ export default function useSubStorage(
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, pallet, storage, ...filteredParams, key, callbackFn]);
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function useSubStorage(
       callbackFn(result);
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -94,6 +96,7 @@ export default function useSubStorage(
         }
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, key, subscribe]);
 
   return { loading, result };

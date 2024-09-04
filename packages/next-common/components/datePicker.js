@@ -188,6 +188,7 @@ export default function DatePicker({
     if (isOpen && date === null) {
       setDate(new Date(now.setDate(now.getDate() + 7)));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const getFormattedTime = () => {

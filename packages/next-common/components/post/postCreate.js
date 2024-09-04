@@ -133,7 +133,7 @@ export default function PostCreate() {
     result = isEmpty || !validatePass || editorUploading;
 
     return result;
-  }, [isEmpty, formValue, isAdvanced, editorUploading]);
+  }, [isEmpty, isAdvanced, editorUploading]);
 
   return (
     <Wrapper>

@@ -37,7 +37,7 @@ function useAvailablePromotionCount() {
 
       return result;
     }, 0);
-  }, [coreMembers, isLoading, params]);
+  }, [coreMembers, latestHeight, params]);
 
   return { availablePromotionCount, isLoading };
 }
@@ -78,7 +78,7 @@ function useDemotionExpirationCounts() {
       },
       { members: 0, candidates: 0 },
     );
-  }, [coreMembers, isLoading, latestHeight, blockTime, params]);
+  }, [coreMembers, latestHeight, blockTime, params]);
 
   return {
     membersCount,

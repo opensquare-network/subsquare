@@ -18,6 +18,7 @@ export function RightBarWrapper(props) {
 
   useEffect(() => {
     setHeight();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useMutationObserver(

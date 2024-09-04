@@ -25,12 +25,15 @@ function useSubscribeNativeBalance(address) {
     "system",
     "account",
     [address],
-    useCallback(({ data }) => {
-      const { free, reserved } = data;
-      const balance = (free.toBigInt() + reserved.toBigInt()).toString();
-      const transferrable = calcTransferable(data, existentialDeposit);
-      setBalanceObj({ balance, transferrable });
-    }, []),
+    useCallback(
+      ({ data }) => {
+        const { free, reserved } = data;
+        const balance = (free.toBigInt() + reserved.toBigInt()).toString();
+        const transferrable = calcTransferable(data, existentialDeposit);
+        setBalanceObj({ balance, transferrable });
+      },
+      [existentialDeposit],
+    ),
   );
 
   return balanceObj;

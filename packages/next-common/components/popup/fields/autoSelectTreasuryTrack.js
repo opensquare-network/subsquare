@@ -20,7 +20,7 @@ export default function AutoSelectTreasuryTrack({
     if (track) {
       setTrackId(track?.id);
     }
-  }, [requestAmount, treasuryProposalTracks]);
+  }, [requestAmount, setTrackId, treasuryProposalTracks]);
 
   return <DetailedTrack trackId={trackId} setTrackId={setTrackId} />;
 }

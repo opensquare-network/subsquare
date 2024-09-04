@@ -28,7 +28,7 @@ export default function Verify() {
     if (success && countdown === 0) {
       router.replace("/");
     }
-  }, [success, countdown]);
+  }, [success, countdown, router]);
 
   useEffect(() => {
     if (!email || !token) {
@@ -60,7 +60,7 @@ export default function Verify() {
           setLoading(false);
         }
       });
-  }, [email, token, isMounted, startCountdown, setUser]);
+  }, [email, token, isMounted, startCountdown, setUser, userContext]);
 
   return (
     <>

@@ -36,5 +36,6 @@ export function useMutationObserver(callback = noop, target, options) {
     return () => {
       observer?.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options, target]);
 }

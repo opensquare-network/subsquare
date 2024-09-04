@@ -11,7 +11,7 @@ export default function WithPallet({ pallet, children }) {
     }
 
     setHasPallet(api.query[pallet]);
-  }, [api]);
+  }, [api, pallet]);
 
   if (!hasPallet) {
     return null;

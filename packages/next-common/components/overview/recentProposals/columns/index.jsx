@@ -195,7 +195,7 @@ export function getSpendRequestColumn() {
 
 function Time({ time }) {
   const [text, setText] = useState("");
-  useEffect(() => setText(time), []);
+  useEffect(() => setText(time), [time]);
   if (!text) {
     return null;
   }

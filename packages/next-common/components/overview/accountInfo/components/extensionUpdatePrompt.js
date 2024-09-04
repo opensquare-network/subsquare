@@ -67,24 +67,20 @@ export default function ExtensionUpdatePrompt() {
   const chainInfo = useChainInfo();
   const [triggerCheck, setTriggerCheck] = useState(0);
 
-  const checkNeedUpdate = useCallback(
-    async (api, extension) => {
-      if (!api || !extension) {
-        return false;
-      }
+  const checkNeedUpdate = useCallback(async (api, extension) => {
+    if (!api || !extension) {
+      return false;
+    }
 
-      const known = await extension.metadata.get();
-      const current =
-        known.find(({ genesisHash }) => api.genesisHash.eq(genesisHash)) ||
-        null;
-      return (
-        !current ||
-        api.runtimeVersion.specVersion.gtn(current?.specVersion) ||
-        checkPropertiesChange(api, extension)
-      );
-    },
-    [api],
-  );
+    const known = await extension.metadata.get();
+    const current =
+      known.find(({ genesisHash }) => api.genesisHash.eq(genesisHash)) || null;
+    return (
+      !current ||
+      api.runtimeVersion.specVersion.gtn(current?.specVersion) ||
+      checkPropertiesChange(api, extension)
+    );
+  }, []);
 
   useEffect(() => {
     if (!api || isLoadingInjectedWeb3Extension || !injectedWeb3Extension) {
@@ -100,6 +96,7 @@ export default function ExtensionUpdatePrompt() {
       .catch(console.error);
   }, [
     api,
+    checkNeedUpdate,
     injectedWeb3Extension,
     isLoadingInjectedWeb3Extension,
     triggerCheck,

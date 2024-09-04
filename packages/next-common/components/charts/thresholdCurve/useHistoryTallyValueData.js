@@ -84,5 +84,12 @@ export default function useHistoryTallyValueData() {
       latestHeight,
       blockTime,
     );
-  }, [tallyHistory, latestHeight, decidingEndOrLatestHeight, blockTime]);
+  }, [
+    tallyHistory,
+    labels,
+    decidingSince,
+    decidingEndOrLatestHeight,
+    latestHeight,
+    blockTime,
+  ]);
 }

@@ -98,7 +98,7 @@ function NavMobile() {
     } else {
       setLocked(false);
     }
-  }, [menuVisible, toolbarVisible]);
+  }, [menuVisible, setLocked, toolbarVisible]);
 
   return (
     <nav

@@ -103,6 +103,7 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
     }
 
     return tx;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     api,
     signerAccount,

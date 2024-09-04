@@ -61,11 +61,11 @@ function Editor(props, ref) {
         textarea.selectionStart = textarea.selectionEnd = lastCaretPosition;
       }
     }
-  }, [uploading, textAreaRef]);
+  }, [uploading, textAreaRef, lastCaretPosition]);
 
   useEffect(() => {
     dispatch(setEditorUploading(uploading));
-  }, [uploading]);
+  }, [uploading, dispatch]);
 
   function onDragOver(event) {
     event.preventDefault();

@@ -59,7 +59,7 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
     }
 
     setTabIndex(tabs[0]);
-  }, [search]);
+  }, [filteredAye, filteredNay, search, tabIndex]);
 
   let page;
   let votes;

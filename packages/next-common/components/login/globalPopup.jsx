@@ -9,6 +9,7 @@ export default function LoginGlobalPopup() {
 
   useEffect(() => {
     closeLoginPopup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname]);
 
   return loginPopupOpen && <LoginPopup onClose={closeLoginPopup} />;

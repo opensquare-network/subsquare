@@ -92,6 +92,7 @@ export default function DepositTemplate({
   const [activeTabLabel, setActiveTabLabel] = useState(tabs[0]?.label);
   useEffect(() => {
     setActiveTabLabel(tabs[0]?.label);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   useEffect(() => {
@@ -99,6 +100,7 @@ export default function DepositTemplate({
       ...tabTableLoaded,
       [activeTabLabel]: true,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTabLabel]);
 
   if (!activeCount || loading) {
@@ -161,6 +163,7 @@ function TableTemplate({
     }
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabTableLoaded]);
 
   useUpdateEffect(fetchData, [page, api?.fetchData]);

@@ -18,7 +18,7 @@ function Content() {
     }
 
     return api.tx[pallet].refundSubmissionDeposit(referendumIndex);
-  }, [api, referendumIndex]);
+  }, [api, pallet, referendumIndex]);
 
   return (
     <>

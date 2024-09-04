@@ -30,9 +30,11 @@ export default function LoginWeb3EVM() {
     }
 
     setSelectedWallet(connectedWallet);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connectedWallet]);
   useEffect(() => {
     setSelectedWallet(connectedWallet);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isError]);
 
   useEffect(() => {
@@ -45,7 +47,7 @@ export default function LoginWeb3EVM() {
     } else if (accounts?.length > 0) {
       setSelectedAccount(accounts?.[0]);
     }
-  }, [accounts]);
+  }, [accounts, lastConnectedAccount?.address]);
 
   return (
     <div className="space-y-6">

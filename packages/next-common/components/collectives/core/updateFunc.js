@@ -2,11 +2,9 @@ import { useCallback } from "react";
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
-import { useDispatch } from "react-redux";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
 export default function useCoreFellowshipUpdateFunc() {
-  const dispatch = useDispatch();
   const { fetch } = useFellowshipCoreMembers();
 
   return useCallback(async () => {
@@ -20,5 +18,5 @@ export default function useCoreFellowshipUpdateFunc() {
       await fetch();
       await sleep(blockTime);
     }
-  }, [dispatch, fetch]);
+  }, [fetch]);
 }

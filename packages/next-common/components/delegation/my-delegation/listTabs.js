@@ -23,7 +23,7 @@ export default function ListTabs() {
         { shallow: true },
       );
     }
-  }, [address, tab]);
+  }, [address, router, tab]);
 
   return (
     <div className="ml-[24px]">
