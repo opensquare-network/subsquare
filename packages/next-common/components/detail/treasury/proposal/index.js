@@ -7,6 +7,17 @@ import TreasuryAwardCountDown from "next-common/components/detail/treasury/propo
 import TreasuryProposalNavigation from "next-common/components/detail/navigation/treasuryProposalNavigation";
 import TreasuryProposalPostMeta from "next-common/components/detail/treasury/proposal/meta";
 import useSetEdit from "../../common/hooks/useSetEdit";
+import { useIsCommunityTreasuryPage } from "next-common/components/summary/treasurySummary/useBeAwardedAPI";
+import CommunityTreasuryAwardCountDown from "next-common/components/detail/treasury/proposal/communityAwardCountDown";
+
+function AwardCountDown() {
+  const isCommunityTreasuryPage = useIsCommunityTreasuryPage();
+  return isCommunityTreasuryPage ? (
+    <CommunityTreasuryAwardCountDown />
+  ) : (
+    <TreasuryAwardCountDown />
+  );
+}
 
 export default function TreasuryProposalDetail() {
   const setIsEdit = useSetEdit();
@@ -17,7 +28,7 @@ export default function TreasuryProposalDetail() {
       head={
         !isEditing && (
           <>
-            <TreasuryAwardCountDown />
+            <AwardCountDown />
             <TreasuryProposalNavigation />
           </>
         )
