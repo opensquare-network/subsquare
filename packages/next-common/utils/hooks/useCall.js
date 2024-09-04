@@ -37,7 +37,8 @@ function useCall(fn, params = [], { cacheKey = "", trigger } = {}) {
       .finally(() => {
         setLoading(false);
       });
-  }, [fn, cacheKey, trigger, ...params]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fn, cacheKey, trigger, isMounted, ...params]);
 
   return { value, loading, loaded };
 }

@@ -15,7 +15,7 @@ export default function useTreasuryBurn(api, free) {
         .toString();
       setBurn(toBurn);
     }
-  }, [api, free]);
+  }, [api, free, isMounted]);
 
   return burn;
 }

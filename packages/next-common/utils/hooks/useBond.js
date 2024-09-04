@@ -17,7 +17,7 @@ export default function useBond({
       setBondMaximum(api.consts[treasuryPallet]?.proposalBondMaximum?.toJSON());
       setBondMinimum(api.consts[treasuryPallet]?.proposalBondMinimum?.toJSON());
     }
-  }, [api]);
+  }, [api, treasuryPallet]);
 
   const value = new BigNumber(proposalValue);
   let bond = value.times(bondPercentage / 1000000);

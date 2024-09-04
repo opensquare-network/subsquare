@@ -32,7 +32,7 @@ export function useTreasuryAccount(api) {
       EMPTY_U8A_32,
     ).subarray(0, 32);
     setAccount(treasuryAccount);
-  }, [api]);
+  }, [api, chain]);
 
   return account;
 }
@@ -66,7 +66,7 @@ export default function useTreasuryFree(api) {
         }
       });
     }
-  }, [api, chain, treasuryAccount]);
+  }, [api, chain, isMounted, treasuryAccount]);
 
   return free;
 }
