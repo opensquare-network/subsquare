@@ -7,11 +7,14 @@ import TreasuryAwardCountDown from "next-common/components/detail/treasury/propo
 import TreasuryProposalNavigation from "next-common/components/detail/navigation/treasuryProposalNavigation";
 import TreasuryProposalPostMeta from "next-common/components/detail/treasury/proposal/meta";
 import useSetEdit from "../../common/hooks/useSetEdit";
-import { useIsCommunityTreasuryPage } from "next-common/components/summary/treasurySummary/useBeAwardedAPI";
+import { useRouter } from "next/router";
 import CommunityTreasuryAwardCountDown from "next-common/components/detail/treasury/proposal/communityAwardCountDown";
 
 function AwardCountDown() {
-  const isCommunityTreasuryPage = useIsCommunityTreasuryPage();
+  const router = useRouter();
+  const isCommunityTreasuryPage = router.pathname.startsWith(
+    "/community-treasury",
+  );
   return isCommunityTreasuryPage ? (
     <CommunityTreasuryAwardCountDown />
   ) : (

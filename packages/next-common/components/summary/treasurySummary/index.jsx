@@ -17,7 +17,7 @@ import { find } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import useBeAwardedAPI from "./useBeAwardedAPI";
+import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 
 const GET_TREASURIES = gql`
   query GetTreasuries {
@@ -38,7 +38,7 @@ export default function TreasurySummary() {
 
   const free = useTreasuryFree(api);
   const summary = useSpendPeriodSummary();
-  const toBeAwarded = useBeAwardedAPI();
+  const toBeAwarded = useToBeAwarded();
 
   const { data } = useDoTreasuryEcoQuery(GET_TREASURIES);
   const treasury = find(data?.treasuries, {
