@@ -11,12 +11,12 @@
   }
 
   table {
-    thead tr {
+    tr {
       background-color: var(--neutral100);
     }
+
     tbody {
       tr {
-        background-color: var(--neutral100);
         &:nth-child(2n) {
           background-color: var(--neutral200);
         }
