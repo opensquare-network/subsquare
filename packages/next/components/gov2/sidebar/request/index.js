@@ -108,11 +108,14 @@ function SpendValues() {
 export default function Request() {
   const onchain = useOnchainData();
 
+  if (onchain?.allSpends?.length) {
+    return null;
+  }
+
   if (
-    (!onchain?.isTreasury &&
-      !onchain?.isStableTreasury &&
-      isNil(onchain?.value)) ||
-    onchain?.allSpends
+    !onchain?.isTreasury &&
+    !onchain?.isStableTreasury &&
+    isNil(onchain?.value)
   ) {
     return null;
   }
