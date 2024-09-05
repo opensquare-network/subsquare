@@ -65,20 +65,12 @@ function PromotionPeriodProgress({ memberStatus, rank }) {
   );
 }
 
-export function FellowshipDemotionPeriodWithProgress({
-  address,
-  rank,
-  blocks,
-}) {
+function FellowshipDemotionPeriodWithProgressImpl({ address, rank, blocks }) {
   const corePallet = useCoreFellowshipPallet();
   const { member: memberStatus } = useSubCoreCollectivesMember(
     address,
     corePallet,
   );
-
-  if (isNil(address)) {
-    return null;
-  }
 
   return (
     <div className="max-sm:text-right">
@@ -89,21 +81,30 @@ export function FellowshipDemotionPeriodWithProgress({
     </div>
   );
 }
-
-export function FellowshipPromotionPeriodWithProgress({
+export function FellowshipDemotionPeriodWithProgress({
   address,
   rank,
   blocks,
 }) {
+  if (isNil(address)) {
+    return null;
+  }
+
+  return (
+    <FellowshipDemotionPeriodWithProgressImpl
+      address={address}
+      rank={rank}
+      blocks={blocks}
+    />
+  );
+}
+
+function FellowshipPromotionPeriodWithProgressImpl({ address, rank, blocks }) {
   const corePallet = useCoreFellowshipPallet();
   const { member: memberStatus } = useSubCoreCollectivesMember(
     address,
     corePallet,
   );
-
-  if (blocks <= 0 || isNil(address)) {
-    return null;
-  }
 
   return (
     <div className="max-sm:text-right">
@@ -112,5 +113,22 @@ export function FellowshipPromotionPeriodWithProgress({
         <PromotionPeriodProgress rank={rank} memberStatus={memberStatus} />
       </div>
     </div>
+  );
+}
+export function FellowshipPromotionPeriodWithProgress({
+  address,
+  rank,
+  blocks,
+}) {
+  if (blocks <= 0 || isNil(address)) {
+    return null;
+  }
+
+  return (
+    <FellowshipPromotionPeriodWithProgressImpl
+      address={address}
+      rank={rank}
+      blocks={blocks}
+    />
   );
 }
