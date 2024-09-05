@@ -12,7 +12,6 @@ export default function useQueryExistentialDeposit() {
       return;
     }
 
-    console.log("api", api)
     if (api.consts.balances?.existentialDeposit) {
       setExistentialDeposit(api.consts.balances?.existentialDeposit.toNumber());
     }
