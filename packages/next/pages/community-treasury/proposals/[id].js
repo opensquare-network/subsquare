@@ -23,7 +23,7 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { useChainSettings } from "next-common/context/chain";
 import { SimaProposalCommentActionsProvider } from "next-common/sima/components/common/context/commentActionsProvider";
 import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
-import { ProposalsProvider } from "next-common/context/treasury/proposals";
+import { TreasuryProvider } from "next-common/context/treasury/index";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/proposal/metadata"),
@@ -44,9 +44,9 @@ function TreasuryProposalContent() {
 
   return (
     <ContentWithComment>
-      <ProposalsProvider section="communityTreasury">
+      <TreasuryProvider pallet="communityTreasury">
         <TreasuryProposalDetail />
-      </ProposalsProvider>
+      </TreasuryProvider>
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
         timeline={

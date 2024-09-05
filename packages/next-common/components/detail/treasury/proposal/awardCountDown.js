@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import BigNumber from "bignumber.js";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
@@ -9,62 +9,48 @@ import { useOnchainData } from "next-common/context/post";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useContextApi } from "next-common/context/api";
-import { useProposalsSection } from "next-common/context/treasury/proposals";
+import { useTreasuryPallet } from "next-common/context/treasury";
 
 export default function TreasuryAwardCountDown() {
   const api = useContextApi();
   const blockHeight = useSelector(chainOrScanHeightSelector);
-  const [period, setPeriod] = useState(null);
-  const [gone, setGone] = useState(null);
-  const estimatedBlocksTime = useEstimateBlocksTime(period - gone);
+
   const { proposalIndex } = useOnchainData();
-  const section = useProposalsSection();
+  const pallet = useTreasuryPallet();
 
-  const isCommunityTreasurySection = section === "communityTreasury";
-  const approvalsQuery = isCommunityTreasurySection
-    ? api?.query?.communityTreasury?.approvals
-    : api?.query?.treasury?.approvals;
+  const { approvalsQuery, spendPeriod } = useMemo(() => {
+    const query = api?.query?.[pallet]?.approvals;
+    const period = api?.consts?.[pallet]?.spendPeriod;
 
-  useEffect(() => {
-    if (!api || !api.consts) {
-      return;
-    }
+    return { approvalsQuery: query, spendPeriod: period?.toNumber() || null };
+  }, [api, pallet]);
 
-    const spendPeriod = isCommunityTreasurySection
-      ? api.consts.communityTreasury?.spendPeriod
-      : api.consts.treasury?.spendPeriod;
-
-    if (spendPeriod) {
-      setPeriod(spendPeriod.toNumber());
-    }
-  }, [api, section]);
+  const [gone, setGone] = useState(null);
+  const estimatedBlocksTime = useEstimateBlocksTime(spendPeriod - gone);
 
   useEffect(() => {
-    if (period && blockHeight) {
-      setGone(new BigNumber(blockHeight).mod(period).toNumber());
+    if (spendPeriod && blockHeight) {
+      setGone(new BigNumber(blockHeight).mod(spendPeriod).toNumber());
     }
-  }, [blockHeight, period]);
+  }, [blockHeight, spendPeriod]);
 
   const { value: rawApprovals } = useCall(approvalsQuery, []);
 
-  if (!gone) {
-    return null;
-  }
+  if (!gone || !rawApprovals) return null;
 
-  if (!rawApprovals || !(rawApprovals.toJSON() || []).includes(proposalIndex)) {
-    return null;
-  }
+  const approvalsList = rawApprovals.toJSON() || [];
+  if (!approvalsList.includes(proposalIndex)) return null;
 
   const shortText = `Next award in ${estimatedBlocksTime}`;
   const longText = `${shortText}, #${bigNumber2Locale(
-    new BigNumber(blockHeight + period - gone).toString(),
+    new BigNumber(blockHeight + spendPeriod - gone).toString(),
   )}`;
 
   return (
     <CountDownWrapper>
       <CountDown
         numerator={gone}
-        denominator={period}
+        denominator={spendPeriod}
         tooltipContent={longText}
       />
       <span>{shortText}</span>

@@ -2,12 +2,11 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import PrimaryButton from "next-common/lib/button/primary";
-import NewTreasuryProposalButton from "./newTreasuryProposalButton";
 import { getEventData } from "next-common/utils/sendTransaction";
 import {
-  useProposalsSection,
-  useProposalsParams,
-} from "next-common/context/treasury/proposals";
+  useTreasuryPallet,
+  useTreasuryProposalListUrl,
+} from "next-common/context/treasury";
 
 const SystemPlus = dynamic(() => import("@osn/icons/subsquare/SystemPlus"));
 
@@ -40,19 +39,19 @@ function NewTreasuryProposalButton({ treasuryPallet, onInBlock }) {
 
 export default function NewTreasuryProposal() {
   const router = useRouter();
-  const section = useProposalsSection();
-  const { proposalsUrl } = useProposalsParams();
+  const pallet = useTreasuryPallet();
+  const treasuryProposalListUrl = useTreasuryProposalListUrl(pallet);
 
   return (
     <NewTreasuryProposalButton
-      treasuryPallet={section}
+      treasuryPallet={pallet}
       onInBlock={(events) => {
-        const eventData = getEventData(events, section, "Proposed");
+        const eventData = getEventData(events, pallet, "Proposed");
         if (!eventData) {
           return;
         }
         const [proposalIndex] = eventData;
-        router.push(`${proposalsUrl}/${proposalIndex}`);
+        router.push(`${treasuryProposalListUrl}/${proposalIndex}`);
       }}
     />
   );

@@ -7,7 +7,10 @@ import { useChainSettings } from "next-common/context/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
-import { ProposalsProvider } from "next-common/context/treasury/proposals";
+import {
+  TreasuryProvider,
+  useTreasuryProposalListUrl,
+} from "next-common/context/treasury/index";
 import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
@@ -21,10 +24,12 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
 
   const category = "Treasury Proposals";
   const seoInfo = { title: category, desc: category };
-  const proposalsUrl = "/treasury/proposals";
+
+  const pallet = "treasury";
+  const treasuryProposalListUrl = useTreasuryProposalListUrl(pallet);
 
   return (
-    <ProposalsProvider section="treasury" params={{ proposalsUrl }}>
+    <TreasuryProvider pallet={pallet}>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
@@ -32,7 +37,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         tabs={[
           {
             label: "Proposals",
-            url: proposalsUrl,
+            url: treasuryProposalListUrl,
           },
           hasDotreasury && {
             label: "Statistics",
@@ -59,7 +64,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
           }}
         />
       </ListLayout>
-    </ProposalsProvider>
+    </TreasuryProvider>
   );
 }
 

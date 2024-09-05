@@ -16,7 +16,7 @@ import { usePageProps } from "next-common/context/page";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
-import { ProposalsProvider } from "next-common/context/treasury/proposals";
+import { TreasuryProvider } from "next-common/context/treasury/index";
 
 const Timeline = dynamicClientOnly(() =>
   import("components/treasuryProposal/timeline"),
@@ -34,9 +34,9 @@ function TreasuryProposalContent() {
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
         <ContentWithComment>
-          <ProposalsProvider>
+          <TreasuryProvider>
             <TreasuryProposalDetail />
-          </ProposalsProvider>
+          </TreasuryProvider>
           <DetailMultiTabs
             metadata={<Metadata treasuryProposal={detail?.onchainData} />}
             timeline={<Timeline treasuryProposal={detail?.onchainData} />}

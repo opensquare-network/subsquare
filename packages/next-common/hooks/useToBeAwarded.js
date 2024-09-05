@@ -1,25 +1,29 @@
 import { useEffect, useState, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
-import { useProposalsSection } from "next-common/context/treasury/proposals";
+import { useTreasuryPallet } from "next-common/context/treasury";
 
 function isValidApi(api) {
   return api?.approvals && api?.proposals;
 }
 
-function useToBeAwardedAPI(api) {
+export default function useToBeAwarded() {
+  const api = useContextApi();
+  const pallet = useTreasuryPallet();
   const [toBeAwarded, setToBeAwarded] = useState();
 
+  const toBeAwardedAPI = api?.query?.[pallet];
+
   const fetchToBeAwarded = useCallback(async () => {
-    if (!isValidApi(api)) return;
+    if (!isValidApi(toBeAwardedAPI)) return;
 
     try {
       const [approvals, proposals] = await Promise.all([
-        api.approvals(),
-        api.proposals.entries(),
+        toBeAwardedAPI.approvals(),
+        toBeAwardedAPI.proposals.entries(),
       ]);
 
       const toBeAwardedProposalIds = approvals.toJSON();
-      const toBeAwarded = proposals.reduce((total, [id, proposal]) => {
+      const toBeAwardedAmount = proposals.reduce((total, [id, proposal]) => {
         if (proposal.isNone) return total;
 
         const proposalId = id.args[0].toNumber();
@@ -28,27 +32,17 @@ function useToBeAwardedAPI(api) {
         return total + proposal.value.value.toBigInt();
       }, 0n);
 
-      setToBeAwarded(toBeAwarded);
+      setToBeAwarded(toBeAwardedAmount);
     } catch (error) {
       console.error("Error fetching to be awarded proposals:", error);
     }
-  }, [api]);
+  }, [toBeAwardedAPI]);
 
   useEffect(() => {
-    fetchToBeAwarded();
-  }, [fetchToBeAwarded]);
+    if (toBeAwardedAPI) {
+      fetchToBeAwarded();
+    }
+  }, [fetchToBeAwarded, toBeAwardedAPI]);
 
   return toBeAwarded;
-}
-
-export default function useToBeAwarded() {
-  const api = useContextApi();
-  const section = useProposalsSection();
-
-  const toBeAwardedAPI =
-    section === "communityTreasury"
-      ? api?.query?.communityTreasury
-      : api?.query?.treasury;
-
-  return useToBeAwardedAPI(toBeAwardedAPI);
 }

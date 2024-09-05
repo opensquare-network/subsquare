@@ -7,7 +7,10 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 import normalizeCommunityTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeCommunityTreasuryProposalListItem";
 import { useChainSettings } from "next-common/context/chain";
-import { ProposalsProvider } from "next-common/context/treasury/proposals";
+import {
+  TreasuryProvider,
+  useTreasuryProposalListUrl,
+} from "next-common/context/treasury/index";
 import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
@@ -22,10 +25,12 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
 
   const category = "Community Treasury Proposals";
   const seoInfo = { title: category, desc: category };
-  const proposalsUrl = "/community-treasury/proposals";
+
+  const pallet = "communityTreasury";
+  const treasuryProposalListUrl = useTreasuryProposalListUrl(pallet);
 
   return (
-    <ProposalsProvider section="communityTreasury" params={{ proposalsUrl }}>
+    <TreasuryProvider pallet={pallet}>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
@@ -33,7 +38,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         tabs={[
           {
             label: "Proposals",
-            url: proposalsUrl,
+            url: treasuryProposalListUrl,
           },
         ].filter(Boolean)}
       >
@@ -56,7 +61,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
           }}
         />
       </ListLayout>
-    </ProposalsProvider>
+    </TreasuryProvider>
   );
 }
 
