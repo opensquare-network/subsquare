@@ -10,9 +10,9 @@ export function ProposalsProvider({ section = "treasury", params, children }) {
   );
 }
 
-export function useProposals() {
-  const { proposals } = useContext(ProposalsContext) || {};
-  return proposals;
+export function useProposalsSection() {
+  const { section } = useContext(ProposalsContext) || {};
+  return section;
 }
 
 export function useProposalsParams() {

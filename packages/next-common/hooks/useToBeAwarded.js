@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { useContextApi } from "next-common/context/api";
+import { useProposalsSection } from "next-common/context/treasury/proposals";
 
 function useToBeAwardedAPI(api) {
   const [toBeAwarded, setToBeAwarded] = useState();
@@ -33,11 +33,9 @@ function useToBeAwardedAPI(api) {
 
 export default function useToBeAwarded() {
   const api = useContextApi();
-  const router = useRouter();
+  const section = useProposalsSection();
 
-  const isCommunityTreasuryPage = router.pathname.startsWith(
-    "/community-treasury",
-  );
+  const isCommunityTreasuryPage = section === "community-treasury";
   const toBeAwardedAPI = isCommunityTreasuryPage
     ? api?.query?.communityTreasury
     : api?.query?.treasury;

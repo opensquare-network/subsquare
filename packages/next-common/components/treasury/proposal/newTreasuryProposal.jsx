@@ -2,13 +2,13 @@ import { useRouter } from "next/router";
 import NewTreasuryProposalButton from "./newTreasuryProposalButton";
 import { getEventData } from "next-common/utils/sendTransaction";
 import {
-  useProposals,
+  useProposalsSection,
   useProposalsParams,
 } from "next-common/context/treasury/proposals";
 
 export default function NewTreasuryProposal() {
   const router = useRouter();
-  const section = useProposals();
+  const section = useProposalsSection();
   const { proposalsUrl } = useProposalsParams();
 
   return (
