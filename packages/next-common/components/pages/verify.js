@@ -28,7 +28,8 @@ export default function Verify() {
     if (success && countdown === 0) {
       router.replace("/");
     }
-  }, [success, countdown, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [success, countdown]);
 
   useEffect(() => {
     if (!email || !token) {
