@@ -12,11 +12,14 @@ export default function AllSpendsRequest() {
 
   const [showMore, setShowMore] = useState(false);
 
+  if (!onchain?.allSpends?.length) {
+    return null;
+  }
+
   if (
     !onchain?.isTreasury &&
     !onchain?.isStableTreasury &&
-    isNil(onchain?.value) &&
-    !onchain?.allSpends?.length
+    isNil(onchain?.value)
   ) {
     return null;
   }

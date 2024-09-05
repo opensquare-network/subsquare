@@ -49,6 +49,7 @@ export default function SubmitProposalPopupCommon({
     setPreimageLength(preimageLength);
     setShowNewPreimagePopup(false);
     setShowNewProposalPopup(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (showNewPreimagePopup) {
@@ -68,7 +69,7 @@ export default function SubmitProposalPopupCommon({
       title="Submit Proposal"
       onClose={onClose}
     >
-      <div className="flex flex-col !mt-[24px] gap-[16px]">
+      <div className="flex flex-col !mt-[24px] gap-[12px]">
         <ChoiceButton
           icon={<NewPreimageSVG />}
           name="New preimage"

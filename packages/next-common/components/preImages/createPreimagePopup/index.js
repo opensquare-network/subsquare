@@ -18,9 +18,9 @@ import KillReferendumPopup from "./killReferendumPopup";
 
 export function QuickStart({ children }) {
   return (
-    <div className="flex flex-col gap-[16px] !mt-[24px]">
+    <div className="flex flex-col gap-[12px] !mt-[24px]">
       <h6 className="text-textPrimary text14Bold">Quick Start</h6>
-      <div className="flex flex-col flex-wrap gap-[16px]">{children}</div>
+      <div className="flex flex-col flex-wrap gap-[12px]">{children}</div>
     </div>
   );
 }

@@ -6,9 +6,8 @@ import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import { useAllAssetMetadata } from "./context/assetMetadata";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
-import { useSelector } from "react-redux";
-import { existentialDepositSelector } from "next-common/store/reducers/chainSlice";
 import calcTransferable from "next-common/utils/account/transferable";
+import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
 
 const PolkadotAssetHubNativeToken = {
   symbol: "DOT",
@@ -18,25 +17,27 @@ const PolkadotAssetHubNativeToken = {
 };
 
 function useSubscribeNativeBalance(address) {
-  const [balanceObj, setBalanceObj] = useState();
-  const existentialDeposit = useSelector(existentialDepositSelector);
+  const [accountInfo, setAccountInfo] = useState();
+  const existentialDeposit = useQueryExistentialDeposit();
 
   useSubStorage(
     "system",
     "account",
     [address],
-    useCallback(
-      ({ data }) => {
-        const { free, reserved } = data;
-        const balance = (free.toBigInt() + reserved.toBigInt()).toString();
-        const transferrable = calcTransferable(data, existentialDeposit);
-        setBalanceObj({ balance, transferrable });
-      },
-      [existentialDeposit],
-    ),
+    useCallback(({ data }) => setAccountInfo(data.toJSON()), []),
   );
 
-  return balanceObj;
+  return useMemo(() => {
+    if (!accountInfo) {
+      return null;
+    }
+
+    const { free, reserved } = accountInfo;
+    const balance = (free + reserved).toString();
+    const transferrable = calcTransferable(accountInfo, existentialDeposit);
+
+    return { balance, transferrable };
+  }, [accountInfo, existentialDeposit]);
 }
 
 export function useMyNativeAsset() {

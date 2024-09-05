@@ -18,7 +18,6 @@ const ProjectLogoPolkadotCollectivesLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesLight"),
 );
 
-
 const collectivesEndpoints = [
   {
     name: "Parity",
@@ -75,6 +74,7 @@ const collectives = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasSubscan: true,
+  hasStatescan: true,
   subscanDomain: "collectives-polkadot",
   hasFellowshipParams: true,
   hasFellowshipCore: true,

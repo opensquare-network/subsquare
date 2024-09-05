@@ -61,7 +61,7 @@ export default function Popup({
                 {title && (
                   <div className="flex items-center justify-between">
                     <Dialog.Title asChild>
-                      <h3 className="text14Bold text-textPrimary">{title}</h3>
+                      <h3 className="text16Bold text-textPrimary">{title}</h3>
                     </Dialog.Title>
                     <div className="flex items-center gap-[12px]">
                       {extra}
