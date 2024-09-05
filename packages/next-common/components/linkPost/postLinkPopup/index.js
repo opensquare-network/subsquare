@@ -21,25 +21,35 @@ import { useArticleActions } from "next-common/sima/context/articleActions";
 const Section = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+  margin-top: 24px !important;
 `;
 
 const SectionTitle = tw.span`
-  text12Bold text-textPrimary
+  text14Bold text-textPrimary
 `;
 
 const Discussion = styled.div`
   display: flex;
   cursor: pointer;
   padding: 10px 16px;
-  color: var(--textPrimary);
   background: var(--neutral200);
+  overflow: hidden;
+  color: var(--textPrimary);
+  text-overflow: ellipsis;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  border: 1px solid var(--neutral400);
   ${(p) =>
     p.selected &&
     css`
-      background: var(--neutral300);
+      background: var(--neutral200);
     `}
-  border-radius: 4px;
 `;
 
 function getDiscussionUrl(discussion) {
@@ -152,7 +162,7 @@ export default function PostLinkPopup({ setShow = noop }) {
   }, [postUrl]);
 
   let discussionList = (
-    <div className="flex justify-center items-center text14Medium text-textTertiary">
+    <div className="flex justify-center items-center text14Medium text-textPrimary">
       {isLoadingList ? <Loading size={16} /> : "No posts"}
     </div>
   );
@@ -175,7 +185,7 @@ export default function PostLinkPopup({ setShow = noop }) {
         Linking a post will use the linked content and comments, existing
         comments will be hidden.
       </Info>
-      <Section>
+      <Section className="!gap-[8px]">
         <SectionTitle>Paste URL</SectionTitle>
         <Input
           value={postUrl || ""}
