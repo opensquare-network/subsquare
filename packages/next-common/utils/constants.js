@@ -8,7 +8,6 @@ import interlay from "./consts/settings/interlay";
 import kintsugi from "./consts/settings/kintsugi";
 import khala from "./consts/settings/khala";
 import phala from "./consts/settings/phala";
-import turing from "./consts/settings/turing";
 import centrifuge from "./consts/settings/centrifuge";
 // import kabocha from "./consts/settings/kabocha";
 import crust from "./consts/settings/crust";
@@ -64,7 +63,6 @@ export const nodes = [
   // polkadex,
   rococo,
   shibuya,
-  turing,
   zeitgeist,
   vara,
   zkverifyTestnet,
