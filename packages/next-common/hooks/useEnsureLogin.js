@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/router";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { LoginResult } from "next-common/store/reducers/userSlice";
@@ -23,7 +22,6 @@ export function useEnsureLogin() {
   const setUser = useSetUser();
   const userContext = useUserContext();
   const isLoggedIn = useIsLoggedIn();
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { openLoginPopup, waitForClose } = useLoginPopup();
@@ -77,7 +75,7 @@ export function useEnsureLogin() {
     } finally {
       setLoading(false);
     }
-  }, [signMsg, chain, dispatch, setUser, router]);
+  }, [chain, dispatch, signMsg, setUser, userContext]);
 
   const ensureLogin = useCallback(async () => {
     if (isLoggedIn) {

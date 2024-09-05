@@ -32,5 +32,5 @@ export default function useSubChildBounty(parentBountyId, childBountyId) {
         dispatch(setChildBounty(null));
       }
     };
-  }, [api, parentBountyId, childBountyId]);
+  }, [api, parentBountyId, childBountyId, dispatch]);
 }

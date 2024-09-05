@@ -41,7 +41,16 @@ export default function useMaybeFetchElectorate(referendum, api) {
         ),
       );
     }
-  }, [api, dispatch, voteFinishedHeight, nowHeight, possibleElectorate]);
+  }, [
+    api,
+    dispatch,
+    voteFinishedHeight,
+    nowHeight,
+    possibleElectorate,
+    voteFinished,
+    tally.electorate,
+    electorate,
+  ]);
 
   return electorate;
 }

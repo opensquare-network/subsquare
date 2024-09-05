@@ -133,7 +133,7 @@ export function usePostCommentsFilteredData() {
     }
 
     return data;
-  }, [filterParams, mergedComments, getAddressVotesData]);
+  }, [filterParams, mergedComments, getAddressVotesData, isDVAddress]);
 
   return {
     commentsData: filteredComments,

@@ -52,6 +52,7 @@ export default function AppendantEditor({ setIsAppend }) {
     } finally {
       setIsAppending(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     setIsAppend,
     content,

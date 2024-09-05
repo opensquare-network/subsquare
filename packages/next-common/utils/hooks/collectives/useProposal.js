@@ -42,7 +42,7 @@ export default function useCollectiveProposal(moduleName = "council", hash) {
           setLoading(false);
         }
       });
-  }, [api, isMounted, hash]);
+  }, [api, isMounted, hash, moduleName]);
 
   return {
     proposal,

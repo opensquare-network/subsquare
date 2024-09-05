@@ -52,5 +52,13 @@ export default function useSubReferendumInfo(pallet = "referenda") {
       }
       dispatch(clearReferendaReferendumInfo());
     };
-  }, [api, votingFinishHeight, referendumIndex, isMounted]);
+  }, [
+    api,
+    votingFinishHeight,
+    referendumIndex,
+    isMounted,
+    pallet,
+    dispatch,
+    onchain.info,
+  ]);
 }

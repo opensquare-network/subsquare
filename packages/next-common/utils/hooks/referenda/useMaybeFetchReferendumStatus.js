@@ -15,7 +15,7 @@ export default function useMaybeFetchReferendumStatus(referendum) {
         referendum?.status || referendum?.info?.ongoing || referendum?.meta,
       ),
     );
-  }, [referendum]);
+  }, [dispatch, referendum]);
 
   return referendumStatus;
 }

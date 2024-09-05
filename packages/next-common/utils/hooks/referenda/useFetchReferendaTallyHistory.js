@@ -20,5 +20,5 @@ export default function useFetchReferendaTallyHistory(referendumIndex) {
     return () => {
       dispatch(clearTallyHistory());
     };
-  }, [referendumIndex]);
+  }, [dispatch, referendumIndex]);
 }

@@ -55,5 +55,5 @@ export default function useDemocracyVotesFromServer(referendumIndex) {
     }, []);
 
     dispatch(setAllVotes(sortVotes(allVotes)));
-  }, [votes, reduxVotes]);
+  }, [votes, reduxVotes, dispatch]);
 }

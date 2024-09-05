@@ -43,12 +43,14 @@ export function useDemocracySummaryData(defaultSummaryData = {}) {
         publicPropCountResponse,
         referendumCountResponse,
       ]) => {
-        setSummary({
-          ...summary,
-          activeProposalsCount: activeProposals?.length,
-          referendumCount: (activeReferendums || []).length,
-          publicPropCount: publicPropCountResponse?.toJSON() || 0,
-          referendumTotal: referendumCountResponse?.toJSON() || 0,
+        setSummary((data) => {
+          return {
+            ...data,
+            activeProposalsCount: activeProposals?.length,
+            referendumCount: (activeReferendums || []).length,
+            publicPropCount: publicPropCountResponse?.toJSON() || 0,
+            referendumTotal: referendumCountResponse?.toJSON() || 0,
+          };
         });
       },
     );

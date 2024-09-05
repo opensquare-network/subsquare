@@ -99,5 +99,5 @@ export default function useFellowshipVotes(pollIndex, blockHeight) {
       dispatch(clearFellowshipVotes());
       dispatch(clearFellowshipVotesTrigger());
     };
-  }, [api, pollIndex, blockHeight, votesTrigger]);
+  }, [api, pollIndex, blockHeight, votesTrigger, dispatch]);
 }

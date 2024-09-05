@@ -36,7 +36,7 @@ export default function useCollectiveMembers(moduleName = "council") {
           setLoading(false);
         }
       });
-  }, [api]);
+  }, [api, isMounted, moduleName]);
 
   return {
     members,

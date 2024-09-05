@@ -32,6 +32,7 @@ export function useUrlSearchParams({
       ...router.query,
       ...parsed,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parsed, router.query]);
 
   function set(query, { shallow = true } = {}) {

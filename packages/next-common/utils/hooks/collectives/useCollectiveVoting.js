@@ -26,7 +26,7 @@ export default function useCollectiveVoting(moduleName = "council", hash) {
           setLoading(false);
         }
       });
-  }, [api, isMounted, hash]);
+  }, [api, isMounted, hash, moduleName]);
 
   return {
     voting,
