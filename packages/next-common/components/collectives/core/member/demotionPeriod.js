@@ -62,6 +62,28 @@ export default function CoreFellowshipMemberDemotionPeriod({
   const { percentageValue, remainingBlocks, demotionPeriod } =
     useDemotionPeriod({ rank, lastProof, params });
 
+  if (isNil(demotionPeriod)) {
+    return null;
+  }
+
+  return (
+    <CoreFellowshipMemberDemotionPeriodImpl
+      percentageValue={percentageValue}
+      remainingBlocks={remainingBlocks}
+      demotionPeriod={demotionPeriod}
+      showTitle={showTitle}
+      rank={rank}
+    />
+  );
+}
+
+function CoreFellowshipMemberDemotionPeriodImpl({
+  percentageValue,
+  remainingBlocks,
+  demotionPeriod,
+  showTitle,
+  rank,
+}) {
   const fgColor = useMemo(() => {
     return _getProgressBarColor(
       remainingBlocks,
@@ -69,10 +91,6 @@ export default function CoreFellowshipMemberDemotionPeriod({
       demotionPeriod,
     );
   }, [remainingBlocks, demotionPeriod]);
-
-  if (isNil(demotionPeriod)) {
-    return null;
-  }
 
   return (
     <CoreFellowshipMemberInfoWrapper>
