@@ -3,7 +3,7 @@ import ItemParam from "./itemParam";
 import { noop } from "lodash-es";
 import { useCallback } from "react";
 
-export default function Params({ params, value, setValue = noop }) {
+function ParamsImpl({ params, value, setValue = noop }) {
   const { data = [] } = value || {};
   const _setValue = useCallback(
     (valuesOrFunction) => {
@@ -28,10 +28,6 @@ export default function Params({ params, value, setValue = noop }) {
     [setValue],
   );
 
-  if (!params || params?.length === 0) {
-    return null;
-  }
-
   return (
     <IndentPanel className="flex flex-col gap-[8px]">
       {params.map((param, index) => (
@@ -46,4 +42,12 @@ export default function Params({ params, value, setValue = noop }) {
       ))}
     </IndentPanel>
   );
+}
+
+export default function Params({ params, value, setValue = noop }) {
+  if (!params || params?.length === 0) {
+    return null;
+  }
+
+  return <ParamsImpl params={params} value={value} setValue={setValue} />;
 }
