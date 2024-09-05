@@ -22,7 +22,8 @@ function ProfileAssetsInContext({ setTotalCount }) {
       undefined,
       { shallow: true },
     );
-  }, [maybeEvmAddress, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maybeEvmAddress]);
 
   const assets = useMyAssets();
 
