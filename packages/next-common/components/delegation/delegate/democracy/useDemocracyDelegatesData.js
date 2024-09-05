@@ -19,7 +19,8 @@ export function useDemocracyDelegatesData({ page, sort, pageSize = 18 }) {
   useEffect(() => {
     const q = router.query;
     dispatch(fetchDemocracyDelegates(q.sort || "", q.page || 1, pageSize));
-  }, [dispatch, pageSize, router.asPath, router.query, triggerUpdate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.asPath, triggerUpdate]);
 
   useEffect(() => {
     const q = omit(router.query, ["sort", "page"]);
