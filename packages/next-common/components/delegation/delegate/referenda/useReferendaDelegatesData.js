@@ -32,7 +32,8 @@ export function useReferendaDelegatesData({ page, sort, pageSize = 18 }) {
     }
 
     router.push({ query: q }, null, { shallow: true });
-  }, [sort, page, pageSize, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sort, page, pageSize]);
 
   return referendaDelegatesPageData;
 }

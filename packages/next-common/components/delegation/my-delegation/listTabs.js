@@ -23,7 +23,8 @@ export default function ListTabs() {
         { shallow: true },
       );
     }
-  }, [address, router, tab]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, tab]);
 
   return (
     <div className="ml-[24px]">
