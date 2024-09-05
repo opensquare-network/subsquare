@@ -29,7 +29,8 @@ function DeletePopup({ onClose }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, onClose, userContext]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, userContext]);
 
   return (
     <Popup title="Unlink Confirmation" onClose={onClose}>
