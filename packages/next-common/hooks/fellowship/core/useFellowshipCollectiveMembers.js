@@ -56,7 +56,7 @@ export function useFellowshipCollectiveMembers() {
       setLoading(fetching);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, collectivePallet, section, setCachedMembers, setLoading]);
+  }, [api, collectivePallet, section]);
 
   useEffect(() => {
     if (!members) {
