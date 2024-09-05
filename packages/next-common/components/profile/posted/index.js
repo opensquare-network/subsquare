@@ -61,7 +61,8 @@ export default function Posted() {
       undefined,
       { shallow: true },
     );
-  }, [maybeEvmAddress, router, secondCategory.routePath]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maybeEvmAddress, secondCategory.routePath]);
 
   useEffect(() => {
     const [, postedRoute] = router.asPath.split("/posted/");
