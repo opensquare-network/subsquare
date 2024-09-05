@@ -12,7 +12,6 @@ import turing from "./consts/settings/turing";
 import centrifuge from "./consts/settings/centrifuge";
 // import kabocha from "./consts/settings/kabocha";
 import crust from "./consts/settings/crust";
-import litmus from "./consts/settings/litmus";
 import litentry from "./consts/settings/litentry";
 import zeitgeist from "./consts/settings/zeitgeist";
 import altair from "./consts/settings/altair";
@@ -59,7 +58,6 @@ export const nodes = [
   khala,
   kintsugi,
   litentry,
-  litmus,
   // moonbeam,
   // moonriver,
   phala,
