@@ -6,27 +6,9 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 import normalizeCommunityTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeCommunityTreasuryProposalListItem";
-import NewTreasuryProposalButton from "next-common/components/treasury/proposal/newTreasuryProposalButton";
 import { useChainSettings } from "next-common/context/chain";
-import { useRouter } from "next/router";
-import { getEventData } from "next-common/utils/sendTransaction";
-
-function NewTreasuryProposal() {
-  const router = useRouter();
-  return (
-    <NewTreasuryProposalButton
-      treasuryPallet="communityTreasury"
-      onInBlock={(events) => {
-        const eventData = getEventData(events, "communityTreasury", "Proposed");
-        if (!eventData) {
-          return;
-        }
-        const [proposalIndex] = eventData;
-        router.push(`/community-treasury/proposals/${proposalIndex}`);
-      }}
-    />
-  );
-}
+import { ProposalsProvider } from "next-common/context/treasury/proposals";
+import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
@@ -42,36 +24,41 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={category}
-      summary={<TreasurySummary />}
-      tabs={[
-        {
-          label: "Proposals",
-          url: "/community-treasury/proposals",
-        },
-      ].filter(Boolean)}
+    <ProposalsProvider
+      section="communityTreasury"
+      params={{ urlPrefix: "/community-treasury/proposals/" }}
     >
-      <PostList
-        category={category}
-        title="List"
-        titleExtra={
-          showNewTreasuryProposalButton && (
-            <div className="flex justify-end">
-              <NewTreasuryProposal />
-            </div>
-          )
-        }
-        titleCount={proposals.total}
-        items={items}
-        pagination={{
-          page: proposals.page,
-          pageSize: proposals.pageSize,
-          total: proposals.total,
-        }}
-      />
-    </ListLayout>
+      <ListLayout
+        seoInfo={seoInfo}
+        title={category}
+        summary={<TreasurySummary />}
+        tabs={[
+          {
+            label: "Proposals",
+            url: "/community-treasury/proposals",
+          },
+        ].filter(Boolean)}
+      >
+        <PostList
+          category={category}
+          title="List"
+          titleExtra={
+            showNewTreasuryProposalButton && (
+              <div className="flex justify-end">
+                <NewTreasuryProposal />
+              </div>
+            )
+          }
+          titleCount={proposals.total}
+          items={items}
+          pagination={{
+            page: proposals.page,
+            pageSize: proposals.pageSize,
+            total: proposals.total,
+          }}
+        />
+      </ListLayout>
+    </ProposalsProvider>
   );
 }
 
