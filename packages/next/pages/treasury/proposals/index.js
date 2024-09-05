@@ -21,12 +21,10 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
 
   const category = "Treasury Proposals";
   const seoInfo = { title: category, desc: category };
+  const proposalsUrl = "/treasury/proposals";
 
   return (
-    <ProposalsProvider
-      section="treasury"
-      params={{ urlPrefix: "/treasury/proposals/" }}
-    >
+    <ProposalsProvider section="treasury" params={{ proposalsUrl }}>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
@@ -34,7 +32,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         tabs={[
           {
             label: "Proposals",
-            url: "/treasury/proposals",
+            url: proposalsUrl,
           },
           hasDotreasury && {
             label: "Statistics",

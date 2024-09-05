@@ -9,7 +9,7 @@ import {
 export default function NewTreasuryProposal() {
   const router = useRouter();
   const section = useProposals();
-  const { urlPrefix } = useProposalsParams();
+  const { proposalsUrl } = useProposalsParams();
 
   return (
     <NewTreasuryProposalButton
@@ -20,7 +20,7 @@ export default function NewTreasuryProposal() {
           return;
         }
         const [proposalIndex] = eventData;
-        router.push(`${urlPrefix}${proposalIndex}`);
+        router.push(`${proposalsUrl}/${proposalIndex}`);
       }}
     />
   );

@@ -22,12 +22,10 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
 
   const category = "Community Treasury Proposals";
   const seoInfo = { title: category, desc: category };
+  const proposalsUrl = "/community-treasury/proposals";
 
   return (
-    <ProposalsProvider
-      section="communityTreasury"
-      params={{ urlPrefix: "/community-treasury/proposals/" }}
-    >
+    <ProposalsProvider section="communityTreasury" params={{ proposalsUrl }}>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
@@ -35,7 +33,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         tabs={[
           {
             label: "Proposals",
-            url: "/community-treasury/proposals",
+            url: proposalsUrl,
           },
         ].filter(Boolean)}
       >
