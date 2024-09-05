@@ -70,7 +70,7 @@ function useIdentityTimeline() {
         }
       })
       .catch((error) => console.error(error));
-  }, [address, chain, isMounted]);
+  }, [address, chain, dispatch, identityApiUrl, isMounted]);
 
   return timeline;
 }
