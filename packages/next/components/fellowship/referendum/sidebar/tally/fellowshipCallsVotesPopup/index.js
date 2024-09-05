@@ -94,7 +94,7 @@ function VotesList({ items = [], loading }) {
     },
     {
       name: "VOTES",
-      style: { minWidth: 168, textAlign: "right" },
+      style: { minWidth: 160, textAlign: "right" },
     },
   ];
 
