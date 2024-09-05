@@ -30,7 +30,7 @@ export default function useSubCoreCollectivesMember(
         unsub();
       }
     };
-  }, [address, api]);
+  }, [address, api, pallet]);
 
   return { isLoading: loading, member };
 }

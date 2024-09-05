@@ -40,7 +40,7 @@ export function useSubstrateInjectedAccounts({ defaultLoading = false } = {}) {
     if (isMounted()) {
       loadInjectedAccounts();
     }
-  }, [isMounted]);
+  }, [isMounted, loadInjectedAccounts]);
 
   return {
     accounts,

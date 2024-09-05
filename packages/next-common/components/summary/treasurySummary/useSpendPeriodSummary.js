@@ -36,7 +36,7 @@ export default function useSpendPeriodSummary() {
         });
       }
     }
-  }, [api, blockHeight, blockTime]);
+  }, [api, blockHeight, blockTime, isMounted]);
 
   return summary;
 }

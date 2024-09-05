@@ -67,6 +67,7 @@ export function useFellowshipSalaryClaimants() {
       fetching = false;
       setLoading(fetching);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, pallet, section]);
 
   useEffect(() => {

@@ -51,7 +51,7 @@ export function CancelReferendumInnerPopup({
       { Inline: proposal.method.toHex() },
       enactment,
     );
-  }, [api, referendumIndex, enactment]);
+  }, [api, referendumIndex, proposalOrigin, enactment]);
 
   return (
     <Popup

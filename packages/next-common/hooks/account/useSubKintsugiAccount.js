@@ -38,5 +38,5 @@ export default function useSubKintsugiAccount() {
         unsub();
       }
     };
-  }, [api, realAddress, dispatch]);
+  }, [api, realAddress, dispatch, symbol]);
 }

@@ -51,7 +51,7 @@ export default function EnactmentBlocks({ track, setEnactment }) {
     setEnactment({
       at: parseInt(initialAt),
     });
-  }, [isInvalid, initialAt, afterBlocks, tabIndex]);
+  }, [isInvalid, initialAt, afterBlocks, tabIndex, setEnactment]);
 
   return (
     <div>

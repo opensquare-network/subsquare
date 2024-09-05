@@ -54,5 +54,5 @@ export default function useFetchMyTreasuryTipDeposits() {
     queryAddressDeposits(api, realAddress).then((data) => {
       dispatch(setTipDeposits(data));
     });
-  }, [api, realAddress, dispatch, hasTreasuryTips]);
+  }, [api, realAddress, dispatch, hasTreasuryTips, hasTipsModule]);
 }

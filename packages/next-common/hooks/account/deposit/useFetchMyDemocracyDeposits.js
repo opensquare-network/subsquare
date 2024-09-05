@@ -52,5 +52,5 @@ export default function useFetchMyDemocracyDeposits() {
     queryAddressDeposits(api, realAddress).then((data) => {
       dispatch(setDemocracyDeposits(data));
     });
-  }, [api, realAddress, dispatch]);
+  }, [api, realAddress, dispatch, hasDemocracyModule]);
 }

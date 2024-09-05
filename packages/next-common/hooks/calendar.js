@@ -30,7 +30,7 @@ function useFetchCalendarEvents(endpoint, date, unit) {
         [cachedKey]: result,
       });
     }
-  }, [begin_time, end_time, cachedKey]);
+  }, [endpoint, begin_time, end_time, cachedEvents, cachedKey]);
 
   useEffect(() => {
     if (isMounted()) {

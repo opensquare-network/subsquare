@@ -23,9 +23,12 @@ export function ConnectedAccountProvider({
     setCookie(CACHE_KEY.connectedAccount, JSON.stringify(account), 365);
   }, []);
 
-  const saveLastConnectedAccount = useCallback((account) => {
-    setLastConnectedAccount(account);
-  }, []);
+  const saveLastConnectedAccount = useCallback(
+    (account) => {
+      setLastConnectedAccount(account);
+    },
+    [setLastConnectedAccount],
+  );
 
   const disconnect = useCallback(async () => {
     await logoutUser(userContext);

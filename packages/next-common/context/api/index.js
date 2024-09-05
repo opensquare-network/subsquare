@@ -47,7 +47,7 @@ export default function ApiProvider({ children }) {
         dispatch(setCurrentNode({ url: endpoint, saveLocalStorage: false }));
       });
     }
-  }, [currentEndpoint, chain, dispatch, endpoints, candidateNodes]);
+  }, [currentEndpoint, chain, dispatch, endpoints, candidateNodes, nowApi]);
 
   return <ApiContext.Provider value={nowApi}>{children}</ApiContext.Provider>;
 }

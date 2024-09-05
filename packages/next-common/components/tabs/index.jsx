@@ -21,7 +21,7 @@ export default function Tabs({
       ...v,
       [activeTabLabel]: true,
     }));
-  }, [activeTabLabel]);
+  }, [activeTabLabel, lazyRendered]);
 
   useEffect(() => {
     return () => {

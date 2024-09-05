@@ -30,6 +30,7 @@ export default function useInjectedWeb3() {
         }, 1000);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted]);
 
   return { loading, injectedWeb3, setInjectedWeb3 };

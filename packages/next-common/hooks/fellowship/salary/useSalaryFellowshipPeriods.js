@@ -19,7 +19,7 @@ export default function useSalaryFellowshipPeriods() {
     if (api.consts[pallet]?.payoutPeriod) {
       setPayoutPeriod(api.consts[pallet].payoutPeriod.toNumber());
     }
-  }, [api]);
+  }, [api, pallet]);
 
   return {
     registrationPeriod,
