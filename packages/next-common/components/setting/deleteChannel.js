@@ -29,7 +29,7 @@ function DeletePopup({ onClose }) {
     } finally {
       setIsLoading(false);
     }
-  }, [userContext]);
+  }, [dispatch, onClose, userContext]);
 
   return (
     <Popup title="Unlink Confirmation" onClose={onClose}>

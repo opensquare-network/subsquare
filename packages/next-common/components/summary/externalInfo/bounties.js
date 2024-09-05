@@ -13,7 +13,7 @@ function BountyProposals() {
       .then(({ result: { items } }) => {
         setPosts(items.filter((item) => item.network === chain));
       });
-  }, []);
+  }, [chain]);
 
   return (
     <List

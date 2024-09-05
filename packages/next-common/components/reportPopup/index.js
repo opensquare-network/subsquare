@@ -81,7 +81,7 @@ export default function ReportPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, post, selectedOption, ensureLogin]);
+  }, [post, dispatch, ensureLogin, setShow, selectedOption]);
 
   return (
     <Popup title="Report" onClose={() => setShow(false)}>

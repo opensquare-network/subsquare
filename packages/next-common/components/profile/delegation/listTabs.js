@@ -25,7 +25,7 @@ export default function ListTabs() {
         { shallow: true },
       );
     }
-  }, [maybeEvmAddress, tab]);
+  }, [maybeEvmAddress, router, tab]);
 
   return (
     <div className="ml-[24px]">

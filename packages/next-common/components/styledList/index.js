@@ -47,13 +47,14 @@ function StyledList({
     if (!isEqual(items, compareItems)) {
       setCompareItems(items);
     }
-  }, [items]);
+  }, [items, compareItems]);
   useEffect(() => {
     if (scrollToFirstRowOnChange && compareItems.length) {
       if (tableBodyRef.current) {
         tableBodyRef.current.scrollTo(0, 0);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [compareItems]);
 
   return (

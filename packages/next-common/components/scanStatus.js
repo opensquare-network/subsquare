@@ -26,7 +26,7 @@ export default function ScanStatusComponent({ children }) {
       parseInt(blockTime) || 12000,
     );
     return () => clearInterval(interval);
-  }, [blockTime]);
+  }, [blockTime, fetchAndUpdateHeight]);
 
   return children;
 }

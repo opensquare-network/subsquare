@@ -52,6 +52,7 @@ export default function TechCommMotionOptions() {
       tcMotionDisApproved,
     };
   }, [
+    isKintsugi,
     tcMotionProposed,
     tcMotionVoted,
     tcMotionApproved,

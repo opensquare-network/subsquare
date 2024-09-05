@@ -31,7 +31,7 @@ export default function AccountsConvictionUsedContent() {
   const [barChartKey, setBarChartKey] = useState(0);
 
   useEffect(() => {
-    setBarChartKey(barChartKey + 1);
+    setBarChartKey((k) => k + 1);
   }, [width, navCollapsed]);
 
   const theme = useTheme();

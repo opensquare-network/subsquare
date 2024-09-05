@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import Api from "next-common/services/api";
 import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo";
 
+const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
+
 const NewProposal = styled.a`
   cursor: pointer;
   background: linear-gradient(270deg, #04d2c5 0%, #6848ff 100%);
@@ -29,8 +31,6 @@ function NoProposals({ host }) {
 }
 
 function VotingProposals({ host }) {
-  const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
-
   const [posts, setPosts] = useState();
   useEffect(() => {
     new Api(host)

@@ -19,5 +19,5 @@ export default function useFetchProfileData() {
     }
 
     dispatch(fetchProfileMultisigsCount(chain, address));
-  }, [dispatch, chain, address]);
+  }, [dispatch, chain, address, hasMultisig]);
 }

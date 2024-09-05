@@ -17,7 +17,7 @@ function PopupContent({ children, actionCallback, confirmText }) {
     } finally {
       setIsLoading(false);
     }
-  }, [actionCallback]);
+  }, [actionCallback, signerAccount]);
 
   return (
     <>

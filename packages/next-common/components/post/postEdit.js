@@ -17,7 +17,6 @@ const UploaderWrapper = styled.div`
 `;
 
 export default function PostEdit({ setIsEdit }) {
-  const type = useDetailType();
   const post = usePost();
   const defaultTitle = usePostTitle();
   const [title, setTitle] = useState(defaultTitle);
@@ -44,7 +43,7 @@ export default function PostEdit({ setIsEdit }) {
         labels: selectedLabels,
       });
     },
-    [type, post, bannerCid, title, selectedLabels, provideContext],
+    [post, bannerCid, title, selectedLabels, provideContext],
   );
 
   const isMounted = useMountedState();

@@ -22,7 +22,7 @@ function ProfileAssetsInContext({ setTotalCount }) {
       undefined,
       { shallow: true },
     );
-  }, [maybeEvmAddress]);
+  }, [maybeEvmAddress, router]);
 
   const assets = useMyAssets();
 
@@ -31,7 +31,7 @@ function ProfileAssetsInContext({ setTotalCount }) {
       const count = assets ? assets.length : 0;
       setTotalCount(count);
     }
-  }, [assets]);
+  }, [assets, setTotalCount]);
 
   return (
     <div className="flex flex-col gap-[16px]">
