@@ -43,11 +43,16 @@ export function AllianceMotionNavigator({ motion }) {
 
 export default function AnnouncementNavigation() {
   const type = useDetailType();
-  const chainData = usePostOnChainData();
 
   if (detailPageCategory.ALLIANCE_ANNOUNCEMENT !== type) {
     return null;
   }
+
+  return <AnnouncementNavigationImpl />;
+}
+
+function AnnouncementNavigationImpl() {
+  const chainData = usePostOnChainData();
 
   const { motion, cid, height } = chainData;
   if (!motion) {
