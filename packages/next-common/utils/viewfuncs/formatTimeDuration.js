@@ -9,14 +9,14 @@ export function formatTimeDuration(
   input,
   { slice = 2, withUnitSpace = false, showMonths = true } = {},
 ) {
-  let duration = dayjs.duration(input);
+  const duration = dayjs.duration(input);
 
   let yr = duration.years();
   let mo = duration.months();
   let d = duration.days();
-  let hr = duration.hours();
-  let min = duration.minutes();
-  let s = duration.seconds();
+  const hr = duration.hours();
+  const min = duration.minutes();
+  const s = duration.seconds();
 
   if (!showMonths) {
     const yearAsDays = dayjs.duration({ years: yr }).asDays();
