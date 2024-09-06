@@ -10,7 +10,7 @@ export default function useTreasuryBurn(api, free) {
 
   useEffect(() => {
     if (api && api.consts[pallet] && isMounted()) {
-      const burn = api.consts.treasury.burn;
+      const burn = api.consts[pallet].burn;
       const toBurn = new BigNumber(burn.toNumber())
         .dividedBy(Math.pow(10, 6))
         .multipliedBy(free)
