@@ -21,7 +21,8 @@ export default function Tabs({
       ...v,
       [activeTabLabel]: true,
     }));
-  }, [activeTabLabel, lazyRendered]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTabLabel]);
 
   useEffect(() => {
     return () => {
