@@ -13,7 +13,6 @@ import referenda from "./referenda";
 import navReducer from "./navSlice";
 import democracy from "./democracy";
 import layoutReducer from "./layoutSlice";
-import treasury from "./treasury";
 import preImagesReducer from "./preImagesSlice";
 import myOnChainData from "./myOnChainData";
 import detailReducer from "./detailSlice";
@@ -36,7 +35,6 @@ export default combineReducers({
   ...referenda,
   ...democracy,
   layout: layoutReducer,
-  ...treasury,
   preImages: preImagesReducer,
   ...myOnChainData,
   detail: detailReducer,
