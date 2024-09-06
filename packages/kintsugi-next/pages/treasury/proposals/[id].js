@@ -34,9 +34,7 @@ function TreasuryProposalContent() {
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
         <ContentWithComment>
-          <TreasuryProvider>
-            <TreasuryProposalDetail />
-          </TreasuryProvider>
+          <TreasuryProposalDetail />
           <DetailMultiTabs
             metadata={<Metadata treasuryProposal={detail?.onchainData} />}
             timeline={<Timeline treasuryProposal={detail?.onchainData} />}
@@ -78,7 +76,9 @@ function ProposalPageImpl() {
 export default function Proposal({ detail }) {
   return (
     <PostProvider post={detail}>
-      <ProposalPageImpl />
+      <TreasuryProvider>
+        <ProposalPageImpl />
+      </TreasuryProvider>
     </PostProvider>
   );
 }

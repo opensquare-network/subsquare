@@ -44,9 +44,7 @@ function TreasuryProposalContent() {
 
   return (
     <ContentWithComment>
-      <TreasuryProvider>
-        <TreasuryProposalDetail />
-      </TreasuryProvider>
+      <TreasuryProposalDetail />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
         timeline={
@@ -119,7 +117,9 @@ function ProposalPageImpl() {
 export default function ProposalPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <ProposalPageImpl />
+      <TreasuryProvider>
+        <ProposalPageImpl />
+      </TreasuryProvider>
     </PostProvider>
   );
 }
