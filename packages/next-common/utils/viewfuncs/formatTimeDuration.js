@@ -7,7 +7,12 @@ dayjs.extend(relativeTime);
 
 export function formatTimeDuration(
   input,
-  { slice = 2, withUnitSpace = false, showMonths = true } = {},
+  {
+    slice = 2,
+    withUnitSpace = false,
+    showMonths = true,
+    showSeconds = true,
+  } = {},
 ) {
   const duration = dayjs.duration(input);
 
@@ -36,7 +41,9 @@ export function formatTimeDuration(
     buildTimeUnit(d, "d", { withUnitSpace, withPluralSuffix: false }),
     buildTimeUnit(hr, "hr", { withUnitSpace }),
     buildTimeUnit(min, "min", { withUnitSpace }),
-    buildTimeUnit(s, "s", { withUnitSpace, withPluralSuffix: false }),
+    showSeconds
+      ? buildTimeUnit(s, "s", { withUnitSpace, withPluralSuffix: false })
+      : null,
   ]
     .filter(Boolean)
     .slice(0, slice)

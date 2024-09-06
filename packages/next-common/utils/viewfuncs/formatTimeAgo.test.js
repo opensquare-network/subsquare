@@ -72,15 +72,9 @@ describe("pass time", () => {
     expect(formatTimeAgo(dayjs().subtract(1, "minute"))).toBe("1min ago");
   });
 
-  it("30 seconds ago", () => {
-    expect(formatTimeAgo(dayjs().subtract(30, "second"))).toBe("30s ago");
-  });
-
-  it("15 seconds ago", () => {
-    expect(formatTimeAgo(dayjs().subtract(15, "second"))).toBe("15s ago");
-  });
-
-  it("now/pass within 10 seconds", () => {
+  it("now/pass within 60 seconds", () => {
+    expect(formatTimeAgo(dayjs().subtract(30, "second"))).toBe("now");
+    expect(formatTimeAgo(dayjs().subtract(15, "second"))).toBe("now");
     expect(formatTimeAgo(dayjs().subtract(10, "second"))).toBe("now");
     expect(formatTimeAgo(dayjs().subtract(9, "second"))).toBe("now");
     expect(formatTimeAgo(dayjs().subtract(3, "second"))).toBe("now");
@@ -136,15 +130,9 @@ describe("future time", () => {
     expect(formatTimeAgo(d().add(1, "minute"))).toBe("in 1min");
   });
 
-  it("in 30 seconds", () => {
-    expect(formatTimeAgo(d().add(30, "second"))).toBe("in 30s");
-  });
-
-  it("in 15 seconds", () => {
-    expect(formatTimeAgo(d().add(15, "second"))).toBe("in 15s");
-  });
-
-  it("now/future within 10 seconds", () => {
+  it("now/future within 60 seconds", () => {
+    expect(formatTimeAgo(d().add(30, "second"))).toBe("now");
+    expect(formatTimeAgo(d().add(15, "second"))).toBe("now");
     expect(formatTimeAgo(d().add(10, "second"))).toBe("now");
     expect(formatTimeAgo(d().add(9, "second"))).toBe("now");
     expect(formatTimeAgo(d().add(3, "second"))).toBe("now");
