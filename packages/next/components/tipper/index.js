@@ -4,7 +4,7 @@ import { isSameAddress } from "next-common/utils";
 import PrimaryButton from "next-common/lib/button/primary";
 import TipperList from "./tipperList";
 import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
 import { useOnchainData } from "next-common/context/post";
@@ -41,7 +41,6 @@ export default function Tipper() {
   const tipIsFinal = useTipIsFinished();
   const userIsTipper = useIsCouncilMember();
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  const dispatch = useDispatch();
   const { hideActionButtons } = useChainSettings();
 
   const closeFromHeight = chainData.meta?.closes;
