@@ -25,7 +25,8 @@ export default function DeletePopup({
     } finally {
       setIsLoading(false);
     }
-  }, [ensureLogin, deletePost, setShow]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ensureLogin, deletePost]);
 
   return (
     <Popup title="Delete" onClose={() => setShow(false)}>
