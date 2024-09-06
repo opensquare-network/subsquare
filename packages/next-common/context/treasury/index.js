@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-const TreasuryContext = createContext();
+const TreasuryContext = createContext(null);
 const defaultPallet = "treasury";
 
 export function TreasuryProvider({ pallet = defaultPallet, children }) {
@@ -14,7 +14,7 @@ export function TreasuryProvider({ pallet = defaultPallet, children }) {
 export function useTreasuryPallet() {
   const { pallet } = useContext(TreasuryContext) || {};
   if (!pallet) {
-    throw new Error(`No treasury provider set when useTreasuryPallet`);
+    throw new Error("No treasury provider set when useTreasuryPallet");
   }
 
   return pallet;
