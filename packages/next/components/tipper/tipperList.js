@@ -69,7 +69,7 @@ function Threshold({ tipsLength }) {
 
   return <Statistics>
     {tipsLength}/{tipThreshold}
-  </Statistics>
+  </Statistics>;
 }
 
 export default function TipperList({ tipHash }) {
