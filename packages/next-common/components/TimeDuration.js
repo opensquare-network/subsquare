@@ -18,5 +18,5 @@ export default function TimeDuration({
       showMonths,
       slice,
     });
-  }, [blocks, blockTime]);
+  }, [blocks, blockTime, showMonths, slice]);
 }
