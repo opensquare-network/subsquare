@@ -27,7 +27,7 @@ export function formatTimeDuration(
   }
 
   if (yr < 1 && mo < 1 && d < 3) {
-    slice = Math.max(slice, 3);
+    slice = Math.max(slice, 2);
   }
 
   const result = [

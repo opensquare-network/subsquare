@@ -61,6 +61,7 @@ describe("formatTimeDuration", () => {
     const input = dayjs
       .duration({ year: 1, months: 1, days: 2, hours: 1, minutes: 23 })
       .asMilliseconds();
+    expect(formatTimeDuration(input, { showMonths: false })).toBe("397d 1hr");
     expect(formatTimeDuration(input, { showMonths: false, slice: 3 })).toBe("397d 1hr 23mins");
   });
 });
