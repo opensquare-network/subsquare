@@ -7,32 +7,49 @@ dayjs.extend(relativeTime);
 
 export function formatTimeDuration(
   input,
-  { slice = 2, withUnitSpace = false } = {},
+  {
+    slice = 2,
+    withUnitSpace = false,
+    showMonths = true,
+    showSeconds = true,
+  } = {},
 ) {
   const duration = dayjs.duration(input);
 
-  const yr = duration.years();
-  const mo = duration.months();
-  const d = duration.days();
+  let yr = duration.years();
+  let mo = duration.months();
+  let d = duration.days();
   const hr = duration.hours();
   const min = duration.minutes();
   const s = duration.seconds();
+
+  if (!showMonths) {
+    const yearAsDays = dayjs.duration({ years: yr }).asDays();
+    const monthAsDays = dayjs.duration({ months: mo }).asDays();
+    d += yearAsDays + monthAsDays;
+    yr = 0;
+    mo = 0;
+  }
 
   if (yr < 1 && mo < 1 && d < 3) {
     slice = Math.max(slice, 2);
   }
 
-  return [
+  const result = [
     buildTimeUnit(yr, "yr", { withUnitSpace }),
     buildTimeUnit(mo, "mo", { withUnitSpace }),
     buildTimeUnit(d, "d", { withUnitSpace, withPluralSuffix: false }),
     buildTimeUnit(hr, "hr", { withUnitSpace }),
     buildTimeUnit(min, "min", { withUnitSpace }),
-    buildTimeUnit(s, "s", { withUnitSpace, withPluralSuffix: false }),
+    showSeconds
+      ? buildTimeUnit(s, "s", { withUnitSpace, withPluralSuffix: false })
+      : null,
   ]
     .filter(Boolean)
     .slice(0, slice)
     .join(" ");
+
+  return result;
 }
 
 function buildTimeUnit(
