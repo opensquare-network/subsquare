@@ -2,6 +2,21 @@ import { usePost } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import { SystemInfo } from "@osn/icons/subsquare";
 import { gov2State } from "next-common/utils/consts/state";
+import TimeDuration from "next-common/components/TimeDuration";
+
+function AttemptsLastTimeDuration({ start, end }) {
+  if (!start || !end) {
+    return null;
+  }
+
+  const blocks = end - start;
+  return (
+    <span>
+      ,&nbsp;
+      <TimeDuration blocks={blocks} />
+    </span>
+  );
+}
 
 export default function ConfirmAttempts() {
   const post = usePost();
@@ -32,19 +47,26 @@ export default function ConfirmAttempts() {
 
   const tooltipContent = (
     <ol>
-      {attempts.map((item, index) => (
-        <li key={index}>
-          {(item.end || index !== 0) && (
-            <span className="inline-block w-[18px]">
-              {item.end && (item.success ? "✅" : "❌")}
-            </span>
-          )}
-          {`#${
-            index + 1
-          }: ${item.start.indexer.blockHeight.toLocaleString()} ~ `}
-          {item.end && `${item.end?.indexer.blockHeight.toLocaleString()}`}
-        </li>
-      ))}
+      {attempts.map((item) => {
+        const { start, end, success } = item;
+        const blockStart = start.indexer.blockHeight;
+        const blockEnd = end?.indexer?.blockHeight;
+
+        return (
+          <li key={blockStart}>
+            {(end || blockStart !== attempts[0].start.indexer.blockHeight) && (
+              <span className="inline-block w-[18px]">
+                {end && (success ? "✅" : "❌")}
+              </span>
+            )}
+            {`#${
+              attempts.indexOf(item) + 1
+            }: ${blockStart.toLocaleString()} ~ `}
+            {blockEnd && blockEnd.toLocaleString()}
+            <AttemptsLastTimeDuration start={blockStart} end={blockEnd} />
+          </li>
+        );
+      })}
     </ol>
   );
 

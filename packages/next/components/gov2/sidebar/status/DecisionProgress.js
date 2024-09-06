@@ -60,8 +60,6 @@ export default function DecisionProgress() {
         <span>
           <TimeDuration
             blocks={decisionBlocks}
-            showHours={false}
-            showMinutes={false}
           />
         </span>
       </ProgressInfo>
