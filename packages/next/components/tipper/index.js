@@ -4,13 +4,12 @@ import { isSameAddress } from "next-common/utils";
 import PrimaryButton from "next-common/lib/button/primary";
 import TipperList from "./tipperList";
 import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
 import { useOnchainData } from "next-common/context/post";
 import { useChainSettings } from "next-common/context/chain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
-import { incTipTrigger } from "next-common/store/reducers/treasury/tip";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
@@ -42,7 +41,6 @@ export default function Tipper() {
   const tipIsFinal = useTipIsFinished();
   const userIsTipper = useIsCouncilMember();
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  const dispatch = useDispatch();
   const { hideActionButtons } = useChainSettings();
 
   const closeFromHeight = chainData.meta?.closes;
@@ -114,7 +112,6 @@ export default function Tipper() {
         <EndorsePopup
           tipHash={tipHash}
           onClose={() => setShowEndorsePopup(false)}
-          onInBlock={() => dispatch(incTipTrigger())}
         />
       )}
       {showCloseTipPopup && (
