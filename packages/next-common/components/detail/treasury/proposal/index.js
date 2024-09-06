@@ -7,20 +7,6 @@ import TreasuryAwardCountDown from "next-common/components/detail/treasury/propo
 import TreasuryProposalNavigation from "next-common/components/detail/navigation/treasuryProposalNavigation";
 import TreasuryProposalPostMeta from "next-common/components/detail/treasury/proposal/meta";
 import useSetEdit from "../../common/hooks/useSetEdit";
-import { useRouter } from "next/router";
-import CommunityTreasuryAwardCountDown from "next-common/components/detail/treasury/proposal/communityAwardCountDown";
-
-function AwardCountDown() {
-  const router = useRouter();
-  const isCommunityTreasuryPage = router.pathname.startsWith(
-    "/community-treasury",
-  );
-  return isCommunityTreasuryPage ? (
-    <CommunityTreasuryAwardCountDown />
-  ) : (
-    <TreasuryAwardCountDown />
-  );
-}
 
 export default function TreasuryProposalDetail() {
   const setIsEdit = useSetEdit();
@@ -31,7 +17,7 @@ export default function TreasuryProposalDetail() {
       head={
         !isEditing && (
           <>
-            <AwardCountDown />
+            <TreasuryAwardCountDown />
             <TreasuryProposalNavigation />
           </>
         )

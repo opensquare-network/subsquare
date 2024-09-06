@@ -18,10 +18,12 @@ import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { noop } from "lodash-es";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import { useTreasuryPallet } from "next-common/context/treasury";
 
-function useProposalBond({ treasuryPallet, proposalValue }) {
+function useProposalBond({ proposalValue }) {
+  const pallet = useTreasuryPallet();
   const bond = useBond({
-    treasuryPallet,
+    pallet,
     proposalValue,
   });
 
@@ -32,9 +34,10 @@ function useProposalBond({ treasuryPallet, proposalValue }) {
 }
 
 function PopupContent() {
-  const { treasuryPallet = "treasury", onInBlock = noop } = usePopupParams();
+  const { onInBlock = noop } = usePopupParams();
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
+  const pallet = useTreasuryPallet();
 
   const api = useContextApi();
   const { decimals } = useChainSettings();
@@ -42,7 +45,7 @@ function PopupContent() {
   const [inputValue, setInputValue] = useState();
   const proposalValue = new BigNumber(inputValue).times(Math.pow(10, decimals));
   const { value: bond, component: bondComponent } = useProposalBond({
-    treasuryPallet,
+    pallet,
     proposalValue,
   });
   const { value: beneficiary, component: beneficiaryField } =
@@ -71,8 +74,8 @@ function PopupContent() {
       return;
     }
 
-    return api.tx[treasuryPallet].proposeSpend(bnValue.toString(), beneficiary);
-  }, [treasuryPallet, beneficiary, inputValue, decimals, api, dispatch]);
+    return api.tx[pallet].proposeSpend(bnValue.toString(), beneficiary);
+  }, [pallet, beneficiary, inputValue, decimals, api, dispatch]);
 
   const balanceInsufficient = new BigNumber(bond).gt(balance);
   const disabled = balanceInsufficient || !new BigNumber(inputValue).gt(0);

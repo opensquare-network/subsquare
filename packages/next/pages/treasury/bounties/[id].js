@@ -24,6 +24,7 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { CuratorProvider } from "next-common/context/treasury/bounties";
 import useBountyCuratorData from "next-common/hooks/treasury/bounty/useBountyCuratorData";
 import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 const ChildBountiesTable = dynamicClientOnly(() =>
   import("../../../components/bounty/childBountiesTable"),
@@ -113,7 +114,9 @@ function BountyPageImpl() {
 export default function BountyPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <BountyPageImpl />
+      <TreasuryProvider>
+        <BountyPageImpl />
+      </TreasuryProvider>
     </PostProvider>
   );
 }

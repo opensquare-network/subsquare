@@ -19,6 +19,7 @@ import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 const Metadata = dynamicClientOnly(() => import("components/tip/metadata"));
 
@@ -78,7 +79,9 @@ function TipPageImpl() {
 export default function TipPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <TipPageImpl />
+      <TreasuryProvider>
+        <TipPageImpl />
+      </TreasuryProvider>
     </PostProvider>
   );
 }
