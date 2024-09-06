@@ -10,7 +10,7 @@ import { fetchList } from "next-common/services/list";
 import {
   TreasuryProvider,
   useTreasuryProposalListUrl,
-} from "next-common/context/treasury/index";
+} from "next-common/context/treasury";
 import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {

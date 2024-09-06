@@ -6,7 +6,7 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import {
   useTreasuryPallet,
   useTreasuryProposalListUrl,
-} from "next-common/context/treasury/index";
+} from "next-common/context/treasury";
 
 const SystemPlus = dynamic(() => import("@osn/icons/subsquare/SystemPlus"));
 

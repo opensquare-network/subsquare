@@ -16,7 +16,7 @@ import { usePageProps } from "next-common/context/page";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
-import { TreasuryProvider } from "next-common/context/treasury/index";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 const Timeline = dynamicClientOnly(() =>
   import("components/treasuryProposal/timeline"),

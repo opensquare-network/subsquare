@@ -1,7 +1,7 @@
 import React from "react";
 import nextApi from "next-common/services/nextApi";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
-import { useTreasuryPallet } from "next-common/context/treasury/index";
+import { useTreasuryPallet } from "next-common/context/treasury";
 
 export default function CheckUnFinalized({ id }) {
   const pallet = useTreasuryPallet();
