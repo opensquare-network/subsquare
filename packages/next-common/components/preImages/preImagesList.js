@@ -26,9 +26,20 @@ function parseStatus(status, method) {
 }
 
 export default function PreImagesList({ data }) {
+  const { width } = useWindowSize();
+
+  if (isNil(width)) {
+    return null;
+  }
+
+  return <PreImagesListImpl data={data} />;
+}
+
+function PreImagesListImpl({ data }) {
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
+  const { width } = useWindowSize();
 
   let filteredData = useMemo(
     () =>
@@ -47,12 +58,6 @@ export default function PreImagesList({ data }) {
       }),
     [data, searchValue, isMyDepositOn, realAddress],
   );
-
-  const { width } = useWindowSize();
-
-  if (isNil(width)) {
-    return null;
-  }
 
   return (
     <div className="flex flex-col gap-[16px]">
