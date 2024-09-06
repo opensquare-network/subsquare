@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.2.6
+
+date: 2024-09-06
+
+- [Medium] Improve eslint rule and fix react hook dependencies.
+- Refactor treasury related pages with context and fix astar community treasury overview data.
+- Show referenda confirmation attempts time duration.
+- Fix extrinsic submission with talisman.
+- Remove litmus and turing network from network menu.
+- Fix styles [#4650](https://github.com/opensquare-network/subsquare/issues/4650).
+
 ### 4.2.5
 
 date: 2024-09-04
