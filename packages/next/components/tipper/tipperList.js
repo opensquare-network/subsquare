@@ -4,11 +4,9 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import Flex from "next-common/components/styled/flex";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Statistics from "next-common/components/styled/paragraph/statistic";
-import Loading from "next-common/components/loading";
 import useTipMeta from "next-common/utils/hooks/useTipMeta";
 import MemberLinks from "components/motion/vote/memberLinks";
 import useTipThreshold from "next-common/context/post/treasury/tip/tipThreshold";
-import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import AddressUser from "next-common/components/user/addressUser";
 
@@ -66,11 +64,17 @@ function Items({ tips, windowWidth }) {
   );
 }
 
+function Threshold({ tipsLength }) {
+  const tipThreshold = useTipThreshold();
+
+  return <Statistics>
+    {tipsLength}/{tipThreshold}
+  </Statistics>
+}
+
 export default function TipperList({ tipHash }) {
   const { width: windowWidth } = useWindowSize();
-  const isFinished = useTipIsFinished();
-  const tipThreshold = useTipThreshold();
-  const { isLoading, tipMeta } = useTipMeta(tipHash);
+  const { tipMeta } = useTipMeta(tipHash);
   const tips = tipMeta?.tips || [];
 
   return (
@@ -78,11 +82,8 @@ export default function TipperList({ tipHash }) {
       <StatisticTitleContainer className="!px-0">
         <Flex>
           <span>Tippers</span>
-          <Statistics>
-            {tips.length}/{tipThreshold}
-          </Statistics>
+          <Threshold tipsLength={tips.length}/>
         </Flex>
-        <div>{!isFinished && isLoading && <Loading size={16} />}</div>
       </StatisticTitleContainer>
       <Items tips={tips} windowWidth={windowWidth} />
       <MemberLinks />
