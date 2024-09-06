@@ -26,7 +26,7 @@ export function useFellowshipSalaryCycleData(index) {
     nextApi.fetch(apiUrl).then((resp) => {
       setData(resp.result);
     });
-  }, [index]);
+  }, [apiUrl, index]);
 
   return data;
 }

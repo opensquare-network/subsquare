@@ -24,6 +24,7 @@ export function useDetectEthereum({ timeout = 1000 } = {}) {
         }, timeout);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted]);
 
   useEvent(

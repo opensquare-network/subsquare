@@ -20,6 +20,7 @@ export function useFellowshipSalaryStats() {
         [pallet]: rawOptional.unwrap().toJSON(),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawOptional, pallet]);
 
   return stats;

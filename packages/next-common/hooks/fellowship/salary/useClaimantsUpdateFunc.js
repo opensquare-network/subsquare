@@ -2,11 +2,9 @@ import { useChainSettings } from "next-common/context/chain";
 import { sleep } from "next-common/utils";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { useFellowshipSalaryClaimants } from "./useFellowshipSalaryClaimants";
 
 export default function useClaimantsFellowshipUpdateFunc() {
-  const dispatch = useDispatch();
   const { blockTime: settingBlockTime } = useChainSettings();
   const { fetch } = useFellowshipSalaryClaimants();
 
@@ -19,5 +17,5 @@ export default function useClaimantsFellowshipUpdateFunc() {
       await fetch();
       await sleep(blockTime);
     }
-  }, [dispatch, settingBlockTime]);
+  }, [settingBlockTime, fetch]);
 }

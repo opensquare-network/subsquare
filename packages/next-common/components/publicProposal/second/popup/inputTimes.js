@@ -21,7 +21,11 @@ export default function SecondPopupInputTimes({
 
   const isOverLimit =
     times > batchCallsLimit || times + currentTimes >= maxDeposits;
-  useEffect(() => setSubmitDisabled(isOverLimit), [isOverLimit]);
+  useEffect(
+    () => setSubmitDisabled(isOverLimit),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isOverLimit],
+  );
 
   return (
     <>

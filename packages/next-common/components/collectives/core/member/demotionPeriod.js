@@ -14,7 +14,6 @@ import {
 } from "next-common/utils/collective/demotionAndPromotion";
 import { ONE_DAY } from "next-common/utils/constants";
 import BigNumber from "bignumber.js";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 const days20 = 20 * ONE_DAY;
 
@@ -62,19 +61,36 @@ export default function CoreFellowshipMemberDemotionPeriod({
 }) {
   const { percentageValue, remainingBlocks, demotionPeriod } =
     useDemotionPeriod({ rank, lastProof, params });
-  const blockTime = useSelector(blockTimeSelector);
 
   if (isNil(demotionPeriod)) {
     return null;
   }
 
+  return (
+    <CoreFellowshipMemberDemotionPeriodImpl
+      percentageValue={percentageValue}
+      remainingBlocks={remainingBlocks}
+      demotionPeriod={demotionPeriod}
+      showTitle={showTitle}
+      rank={rank}
+    />
+  );
+}
+
+function CoreFellowshipMemberDemotionPeriodImpl({
+  percentageValue,
+  remainingBlocks,
+  demotionPeriod,
+  showTitle,
+  rank,
+}) {
   const fgColor = useMemo(() => {
     return _getProgressBarColor(
       remainingBlocks,
       remainingBlocks,
       demotionPeriod,
     );
-  }, [blockTime, remainingBlocks, demotionPeriod]);
+  }, [remainingBlocks, demotionPeriod]);
 
   return (
     <CoreFellowshipMemberInfoWrapper>

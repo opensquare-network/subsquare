@@ -5,7 +5,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import nextApi from "next-common/services/nextApi";
 import {
   ambassadorStatisticsUsersApi,
@@ -36,7 +36,7 @@ function useUserStatisticsData(address, section) {
 function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
   const { id: address } = usePageProps();
   const { value, loading } = useUserStatisticsData(address, section);
-  const { decimals, symbol } = useSalaryAsset();
+  const { decimals, symbol } = getSalaryAsset();
 
   return (
     <NeutralPanel className="p-6">

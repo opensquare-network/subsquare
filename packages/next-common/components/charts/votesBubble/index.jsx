@@ -48,6 +48,7 @@ export default function VotesBubble({
 
   useLayoutEffect(() => {
     handleSize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navCollapsed, ref.current]);
 
   useEvent("resize", handleSize);

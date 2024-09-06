@@ -26,7 +26,7 @@ export default function useCountdown(initSeconds) {
   const resetCountdown = useCallback(() => {
     setCountdown(initSeconds);
     setCounting(false);
-  }, []);
+  }, [initSeconds]);
 
   return { countdown, counting, startCountdown, resetCountdown };
 }

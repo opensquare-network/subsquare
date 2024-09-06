@@ -4,7 +4,12 @@ module.exports = {
     node: true,
     es2021: true,
   },
-  extends: ["eslint:recommended", "plugin:react/recommended", "@osn"],
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "@osn",
+  ],
   overrides: [],
   parserOptions: {
     ecmaVersion: "latest",
@@ -15,6 +20,7 @@ module.exports = {
     "react/react-in-jsx-scope": 0,
     "react/jsx-uses-react": "error",
     "react/prop-types": 0,
+    "react-hooks/exhaustive-deps": "error",
   },
   settings: {
     react: {

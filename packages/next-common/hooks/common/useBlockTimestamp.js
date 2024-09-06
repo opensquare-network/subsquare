@@ -30,7 +30,7 @@ export default function useBlockTimestamp(height) {
       );
       setIsEstimated(true);
     }
-  }, [api, height, chainHeight]);
+  }, [api, height, chainHeight, oneBlockTime]);
 
   return {
     timestamp,

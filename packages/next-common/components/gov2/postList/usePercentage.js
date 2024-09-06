@@ -18,5 +18,5 @@ export default function usePercentage(startHeight, period) {
 
     const gone = latestHeight - startHeight;
     return Number((gone / period) * 100).toFixed(2);
-  }, [latestHeight, startHeight, period]);
+  }, [latestHeight, startHeight, end, period]);
 }

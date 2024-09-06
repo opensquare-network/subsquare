@@ -25,12 +25,14 @@ function useFetchCalendarEvents(endpoint, date, unit) {
   const refresh = useCallback(async () => {
     const { result } = await nextApi.fetch(endpoint, { begin_time, end_time });
     if (result) {
-      setCachedEvents({
-        ...cachedEvents,
-        [cachedKey]: result,
+      setCachedEvents((events) => {
+        return {
+          ...events,
+          [cachedKey]: result,
+        };
       });
     }
-  }, [begin_time, end_time, cachedKey]);
+  }, [endpoint, begin_time, end_time, cachedKey]);
 
   useEffect(() => {
     if (isMounted()) {

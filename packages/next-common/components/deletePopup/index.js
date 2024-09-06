@@ -3,7 +3,6 @@ import Popup from "../popup/wrapper/Popup";
 import { noop } from "lodash-es";
 import PrimaryButton from "next-common/lib/button/primary";
 import { PopupButtonWrapper } from "../popup/wrapper";
-import { useDispatch } from "react-redux";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
@@ -12,7 +11,6 @@ export default function DeletePopup({
   setShow = noop,
   deletePost = noop,
 }) {
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { ensureLogin } = useEnsureLogin();
 
@@ -27,7 +25,8 @@ export default function DeletePopup({
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, ensureLogin, deletePost]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ensureLogin, deletePost]);
 
   return (
     <Popup title="Delete" onClose={() => setShow(false)}>

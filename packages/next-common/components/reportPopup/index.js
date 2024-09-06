@@ -81,7 +81,8 @@ export default function ReportPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, post, selectedOption, ensureLogin]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [post, dispatch, post, selectedOption]);
 
   return (
     <Popup title="Report" onClose={() => setShow(false)}>

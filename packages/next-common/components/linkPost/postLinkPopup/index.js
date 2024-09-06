@@ -146,6 +146,7 @@ export default function PostLinkPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, postType, post?._id, router, selectedDiscussion, ensureLogin]);
 
   const onSelectDiscussion = useCallback((discussion) => {
@@ -159,7 +160,7 @@ export default function PostLinkPopup({ setShow = noop }) {
       (item) => getDiscussionUrl(item) === postUrl,
     );
     setSelectedDiscussion(item);
-  }, [postUrl]);
+  }, [myDiscussions, postUrl]);
 
   let discussionList = (
     <div className="flex justify-center items-center text14Medium text-textPrimary">

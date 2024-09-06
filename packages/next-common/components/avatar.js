@@ -36,6 +36,7 @@ export default function Avatar({ address, size = 24 }) {
   const themeObj = useThemeSetting();
   const theme = "polkadot";
   const avatarSize = (size / 10) * 9;
+  const addressAvatarMap = useAddressAvatarMap();
 
   const [avatarCid] = useAvatarInfo(address);
 
@@ -45,7 +46,6 @@ export default function Avatar({ address, size = 24 }) {
 
   const maybeEvmAddress = tryConvertToEvmAddress(address);
 
-  const addressAvatarMap = useAddressAvatarMap();
   const image = addressAvatarMap?.get(maybeEvmAddress);
   if (image) {
     return (

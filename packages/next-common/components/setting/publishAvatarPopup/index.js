@@ -86,7 +86,16 @@ function Content() {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, onClose, imageFile, router, upload, signMessage]);
+  }, [
+    upload,
+    imageFile,
+    signerAccount?.address,
+    signerAccount?.meta.source,
+    signMessage,
+    dispatch,
+    onClose,
+    router,
+  ]);
 
   return (
     <>

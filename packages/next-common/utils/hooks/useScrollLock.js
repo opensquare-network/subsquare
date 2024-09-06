@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export function useScrollLock(element) {
   const [isLocked, setIsLocked] = useState(false);
-
-  let initialOverflow;
+  const initialOverflowRef = useRef();
 
   useEffect(() => {
     const elm = element || document.body;
     if (elm) {
-      initialOverflow = elm.style.overflow;
+      initialOverflowRef.current = elm.style.overflow;
 
       if (isLocked) {
         elm.style.overflow = "hidden";
@@ -17,10 +16,10 @@ export function useScrollLock(element) {
 
     return () => {
       if (elm) {
-        elm.style.overflow = initialOverflow;
+        elm.style.overflow = initialOverflowRef.current || "";
       }
     };
-  }, [isLocked]);
+  }, [isLocked, element]);
 
   return [isLocked, setIsLocked];
 }

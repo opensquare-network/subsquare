@@ -41,6 +41,7 @@ export default function useMaybeFetchElectorate(referendum, api) {
         ),
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, dispatch, voteFinishedHeight, nowHeight, possibleElectorate]);
 
   return electorate;

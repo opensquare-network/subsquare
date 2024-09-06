@@ -31,5 +31,5 @@ export default function useFetchProfileTreasuryBountyDeposits() {
       dispatch(setProfileBountyBonds(bonds));
       dispatch(setProfileBountyCuratorDeposits(curatorDeposits));
     });
-  }, [api, address, dispatch]);
+  }, [api, address, dispatch, hasTreasuryBounties]);
 }

@@ -8,7 +8,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import nextApi from "next-common/services/nextApi";
 import {
   ambassadorParamsApi,
@@ -80,7 +80,7 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
   const { rank, status } = member;
   const { lastProof, lastPromotion, isActive } = status || {};
 
-  const { decimals, symbol } = useSalaryAsset();
+  const { decimals, symbol } = getSalaryAsset();
 
   return (
     <NeutralPanel className="p-6">

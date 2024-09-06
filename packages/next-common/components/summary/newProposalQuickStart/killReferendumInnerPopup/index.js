@@ -52,7 +52,7 @@ export function KillReferendumInnerPopup({
       { Inline: proposal.method.toHex() },
       enactment,
     );
-  }, [api, referendumIndex, enactment]);
+  }, [api, referendumIndex, enactment, proposalOrigin]);
 
   return (
     <Popup

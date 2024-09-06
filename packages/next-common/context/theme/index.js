@@ -92,7 +92,7 @@ export function useToggleThemeMode() {
     const target = themeMode !== "dark" ? "dark" : "light";
     setThemeMode(target);
     setCookie(CACHE_KEY.themeMode, target);
-  }, [themeMode]);
+  }, [themeMode, setThemeMode]);
 
   return themeModeSetter;
 }

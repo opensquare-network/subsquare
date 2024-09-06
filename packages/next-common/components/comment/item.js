@@ -69,7 +69,7 @@ function CommentItemImpl({
         jumpToAnchor(anchor);
       }, 100);
     }
-  }, [hasAnchor, anchor]);
+  }, [hasAnchor, anchor, comment.height]);
 
   const reloadComment = useCallback(async () => {
     const { result: updatedComment } = await getComment(comment);
@@ -85,6 +85,7 @@ function CommentItemImpl({
       };
       setComments(newComments);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comments, setComments, comment._id]);
 
   const maybeReloadTopLevelComment = reloadTopLevelComment || reloadComment;

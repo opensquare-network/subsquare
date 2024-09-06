@@ -82,6 +82,7 @@ function StatisticsClaimantsTable({ members = [] }) {
       );
       setRowData(rows);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [processedData, page]);
 
   return (

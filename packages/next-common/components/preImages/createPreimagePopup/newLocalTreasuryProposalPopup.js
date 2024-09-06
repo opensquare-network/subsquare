@@ -32,7 +32,7 @@ export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
     } catch (e) {
       return {};
     }
-  }, [api, inputBalance, beneficiary]);
+  }, [api, inputBalance, beneficiary, decimals]);
 }
 
 export default function NewLocalTreasuryProposalPopup({ onClose }) {

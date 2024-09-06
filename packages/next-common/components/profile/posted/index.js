@@ -61,7 +61,8 @@ export default function Posted() {
       undefined,
       { shallow: true },
     );
-  }, [maybeEvmAddress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maybeEvmAddress, secondCategory.routePath]);
 
   useEffect(() => {
     const [, postedRoute] = router.asPath.split("/posted/");
@@ -70,6 +71,7 @@ export default function Posted() {
       setFirstCategory(items[0]);
       setSecondCategory(items[1]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath, categories]);
 
   useEffect(() => {
@@ -97,7 +99,15 @@ export default function Posted() {
         }
       }
     }
-  }, [id, router.asPath, categories, overview]);
+  }, [
+    id,
+    router.asPath,
+    categories,
+    overview,
+    maybeEvmAddress,
+    firstCategory,
+    secondCategory,
+  ]);
 
   return (
     <>

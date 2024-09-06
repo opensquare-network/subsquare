@@ -17,7 +17,7 @@ export default function useLatestBlockTime() {
         (blockTime) => isMounted() && setTime(blockTime),
       );
     }
-  }, [api, blockHeight]);
+  }, [api, blockHeight, isMounted]);
 
   return time;
 }

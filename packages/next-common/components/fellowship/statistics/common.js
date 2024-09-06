@@ -1,6 +1,6 @@
 import { useTheme } from "styled-components";
 import deepmerge from "deepmerge";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision, formatNum } from "next-common/utils";
 import Loading from "next-common/components/loading";
 
@@ -73,7 +73,7 @@ export const doughnutChartColors = [
 ];
 
 export function getAbbreviateBigNumber(count, showSymbol = true) {
-  const { symbol, decimals } = useSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset();
   const precisionCount = toPrecision(count, decimals);
   return showSymbol
     ? `${formatNum(precisionCount)} ${symbol}`

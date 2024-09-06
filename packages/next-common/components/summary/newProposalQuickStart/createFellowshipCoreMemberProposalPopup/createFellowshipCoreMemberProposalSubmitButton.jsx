@@ -54,7 +54,17 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
       { Inline: proposal.method.toHex() },
       enactment,
     );
-  }, [api, disabled, who, rank, corePallet, referendaPallet, enactment]);
+  }, [
+    api,
+    disabled,
+    action,
+    corePallet,
+    who,
+    rank,
+    referendaPallet,
+    trackName,
+    enactment,
+  ]);
 
   return (
     <Tooltip

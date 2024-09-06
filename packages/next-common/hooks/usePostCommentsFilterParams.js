@@ -32,6 +32,7 @@ export function usePostCommentsFilterParams() {
 
   useEffect(() => {
     setState(value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return [state, set, update];

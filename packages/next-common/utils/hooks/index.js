@@ -40,7 +40,7 @@ export function useBlockTime(api) {
     if (blockTime) {
       dispatch(setBlockTime(blockTime.toNumber()));
     }
-  }, [api]);
+  }, [api, dispatch]);
 }
 
 export function useSubscribeChainHead(api) {
@@ -55,7 +55,7 @@ export function useSubscribeChainHead(api) {
         }
       });
     }
-  }, [api]);
+  }, [api, dispatch, isMounted]);
 }
 
 export function useEstimateTimestampAtBlockHeight(blockHeight) {
@@ -91,7 +91,7 @@ export function useEstimateBlocksTime(blocks) {
 
   useEffect(() => {
     setEstimatedTime(estimateBlocksTime(blocks, blockTime));
-  }, [blocks]);
+  }, [blockTime, blocks]);
 
   return estimatedTime;
 }

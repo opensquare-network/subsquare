@@ -71,7 +71,7 @@ export default function useFetchMaxVoters(pallet = "fellowshipCollective") {
     return () => {
       dispatch(clearFellowshipMaxVoters());
     };
-  }, [maxVoters]);
+  }, [dispatch, maxVoters]);
 
   if (
     ![
@@ -92,7 +92,7 @@ export default function useFetchMaxVoters(pallet = "fellowshipCollective") {
     queryMaxVoters(api, trackId, votingFinishHeight, pallet).then((count) =>
       setMaxVoters(count),
     );
-  }, [api, trackId, votingFinishHeight]);
+  }, [api, pallet, trackId, votingFinishHeight]);
 
   return maxVoters;
 }

@@ -19,7 +19,7 @@ function Content() {
     if (api && who) {
       return api.tx[pallet].setActive(targetActiveValue);
     }
-  }, [api, who]);
+  }, [api, pallet, who, targetActiveValue]);
 
   const onInBlock = useCoreFellowshipUpdateFunc();
 

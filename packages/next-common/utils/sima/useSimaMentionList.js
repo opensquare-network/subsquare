@@ -42,7 +42,7 @@ export default function useSimaMentionList(post, comments) {
     ).then((suggestions) => {
       setUsers(suggestions);
     });
-  }, [chain, post, comments]);
+  }, [chain, post, comments, connectedAccount?.address]);
 
   return users;
 }

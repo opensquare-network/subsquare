@@ -18,7 +18,10 @@ function extractAccountInfo(accountData, existentialDeposit) {
       free: free?.toBigInt().toString(),
       reserved: reserved?.toBigInt().toString(),
       total: (free?.toBigInt() + reserved?.toBigInt()).toString(),
-      transferrable: calcTransferable(accountData.account.data, existentialDeposit),
+      transferrable: calcTransferable(
+        accountData.account.data,
+        existentialDeposit,
+      ),
       lockedBalance: lockedBalance?.toBigInt().toString(),
       bonded: stakingLedger?.active?.toBigInt().toString(),
     },
@@ -34,5 +37,5 @@ export default function useAccountInfo(address) {
       return null;
     }
     return extractAccountInfo(accountData, existentialDeposit);
-  }, [accountData]);
+  }, [accountData, existentialDeposit]);
 }

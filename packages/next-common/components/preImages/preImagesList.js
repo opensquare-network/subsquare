@@ -26,15 +26,20 @@ function parseStatus(status, method) {
 }
 
 export default function PreImagesList({ data }) {
-  const [searchValue, setSearchValue] = useState("");
-  const [isMyDepositOn, setIsMyDepositOn] = useState(false);
-  const realAddress = useRealAddress();
-
   const { width } = useWindowSize();
 
   if (isNil(width)) {
     return null;
   }
+
+  return <PreImagesListImpl data={data} />;
+}
+
+function PreImagesListImpl({ data }) {
+  const [searchValue, setSearchValue] = useState("");
+  const [isMyDepositOn, setIsMyDepositOn] = useState(false);
+  const realAddress = useRealAddress();
+  const { width } = useWindowSize();
 
   let filteredData = useMemo(
     () =>

@@ -29,7 +29,7 @@ export default function useSubCoreFellowshipEvidence(
       setWish(wish);
       setEvidence(text);
     });
-  }, [api, address]);
+  }, [api, address, pallet]);
 
   return {
     wish,

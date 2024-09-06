@@ -71,7 +71,7 @@ export default function useMentionList(post, comments) {
     loadSuggestions().then((suggestions) => {
       setUsers(suggestions);
     });
-  }, [chain, post, comments]);
+  }, [chain, post, comments, currentUser?.username]);
 
   return users;
 }

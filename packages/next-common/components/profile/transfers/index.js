@@ -44,7 +44,7 @@ export default function ProfileTransfers() {
         }
       })
       .catch((error) => console.error(error));
-  }, [address, chain, page, isMounted]);
+  }, [address, chain, page, isMounted, dispatch]);
 
   return (
     <SecondaryCard>

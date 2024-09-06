@@ -21,6 +21,7 @@ export default function CommentsFilterFormFilter() {
   const [showFilter, setShowFilter] = useState(false);
   useEffect(() => {
     setValue(params);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showFilter]);
 
   const ref = useRef();

@@ -13,7 +13,9 @@ export default function useExistentialDeposit() {
     }
 
     if (api.consts.balances?.existentialDeposit) {
-      dispatch(setExistentialDeposit(api.consts.balances?.existentialDeposit.toJSON()));
+      dispatch(
+        setExistentialDeposit(api.consts.balances?.existentialDeposit.toJSON()),
+      );
     } else {
       dispatch(setExistentialDeposit(0));
     }

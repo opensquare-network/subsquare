@@ -83,6 +83,7 @@ function PopupContent({ defaultTargetAddress, targetDisabled }) {
       conviction,
       bnVoteBalance.toString(),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     inputVoteBalance,
     api,

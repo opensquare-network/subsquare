@@ -42,7 +42,7 @@ export default function AnnouncementTimeline({ data }) {
     );
 
     setTimelineData(sortTimeline([...data, ...motionTimeline].filter(Boolean)));
-  }, [timeline, motion]);
+  }, [timeline, motion, type]);
 
   const isTimelineCompact = useSelector(
     detailMultiTabsIsTimelineCompactModeSelector,

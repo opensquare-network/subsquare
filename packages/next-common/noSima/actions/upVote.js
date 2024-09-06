@@ -38,6 +38,7 @@ export function useOffChainCommentUpVote() {
         reaction: 1,
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [type, ensureLogin],
   );
 }

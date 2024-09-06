@@ -83,14 +83,7 @@ export function NewProposalInnerPopup({
       },
       enactment,
     );
-  }, [
-    api,
-    proposalOrigin,
-    track?.name,
-    preimageHash,
-    preimageLength,
-    enactment,
-  ]);
+  }, [api, proposalOrigin, preimageHash, preimageLength, enactment]);
 
   return (
     <Popup wide title="New Proposal" onClose={onClose}>

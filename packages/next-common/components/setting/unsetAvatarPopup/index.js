@@ -72,7 +72,14 @@ function Content() {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, onClose, router, signMessage]);
+  }, [
+    dispatch,
+    onClose,
+    router,
+    signMessage,
+    signerAccount?.address,
+    signerAccount?.meta.source,
+  ]);
 
   return (
     <>

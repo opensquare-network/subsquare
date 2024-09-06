@@ -24,6 +24,7 @@ export default function Time({
     m = Math.max(0, Math.min(m, 59));
 
     onChange(h, m);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hour, minute]);
 
   return (

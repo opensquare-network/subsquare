@@ -29,5 +29,5 @@ export default function useFetchProfileTreasuryTipDeposits() {
     queryAddressTipDeposits(api, address).then((data) => {
       dispatch(setProfileTipDeposits(data));
     });
-  }, [api, address, dispatch, hasTipsModule]);
+  }, [api, address, dispatch, hasTipsModule, hasTreasuryTips]);
 }

@@ -26,7 +26,7 @@ function Content() {
     if (api && who) {
       return api.tx[pallet].bump(who);
     }
-  }, [api, who]);
+  }, [api, pallet, who]);
 
   const onInBlock = useCoreFellowshipUpdateFunc();
 

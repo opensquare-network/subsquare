@@ -23,5 +23,5 @@ export default function useSubProfileIdentityDeposits() {
     dispatch(setProfileIdentityDeposit(identityDeposit));
     dispatch(setProfileSubsDeposits(subsDeposit));
     dispatch(setProfileSubs(subs));
-  }, [identityName, identityDeposit, subsDeposit, subs, dispatch]);
+  }, [identityName, identityDeposit, subsDeposit, subs, dispatch, address]);
 }

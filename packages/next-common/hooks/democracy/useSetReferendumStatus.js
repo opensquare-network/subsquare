@@ -23,7 +23,7 @@ export default function useSetReferendumStatus() {
         tally: contextTally, // we set this because we update only tally on server side. Status is not updated in time.
       }),
     );
-  }, [onchainData]);
+  }, [contextTally, dispatch, onchainData]);
 
   return referendumStatus;
 }

@@ -79,7 +79,7 @@ function Content() {
 
     const hexDigest = "0x" + Buffer.from(digest).toString("hex");
     return api.tx[pallet]?.submitEvidence(wish, hexDigest);
-  }, [api, address, upload, evidence, wish, dispatch]);
+  }, [upload, evidence, address, wish, api.tx, pallet, dispatch]);
 
   return (
     <>

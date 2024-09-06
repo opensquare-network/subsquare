@@ -26,7 +26,7 @@ export default function useFellowshipVote(referendumIndex, address) {
           setIsLoading(false);
         }
       });
-  }, [api, referendumIndex, address, isMounted]);
+  }, [api, referendumIndex, address, isMounted, collectivePallet]);
 
   return { vote, isLoading };
 }

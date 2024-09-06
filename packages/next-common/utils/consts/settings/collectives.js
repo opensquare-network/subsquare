@@ -18,7 +18,6 @@ const ProjectLogoPolkadotCollectivesLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoPolkadotCollectivesLight"),
 );
 
-
 const collectivesEndpoints = [
   {
     name: "Parity",

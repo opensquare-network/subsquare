@@ -2,7 +2,6 @@ import { SystemLoading } from "@osn/icons/subsquare";
 import { find, some } from "lodash-es";
 import AddressSelect from "next-common/components/addressSelect";
 import WalletSubstrateOptions from "next-common/components/wallet/options/substrate";
-import { useChain } from "next-common/context/chain";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
 import { useSubstrateWallets } from "next-common/hooks/connect/useSubstrateWallets";
@@ -13,7 +12,6 @@ import LoginAddressNotDetectedMessage from "../addressNotDetectedMessage";
 import { Label } from "../styled";
 
 export default function LoginWeb3Substrate() {
-  const chain = useChain();
   const { allWallets } = useSubstrateWallets();
   const [unknownWallet, setUnknownWallet] = useState();
   const [selectedWallet, setSelectedWallet] = useState();
@@ -41,7 +39,7 @@ export default function LoginWeb3Substrate() {
 
       setSelectedAccount(accounts[0]);
     }
-  }, [accounts, selectedWallet]);
+  }, [accounts, lastConnectedAccount?.address, selectedWallet]);
 
   const onSelectAccount = useCallback(
     async (account) => {
@@ -56,7 +54,7 @@ export default function LoginWeb3Substrate() {
         setUnknownWallet(injector);
       }
     },
-    [selectedWallet, chain],
+    [allWallets, selectedWallet?.extensionName],
   );
 
   return (

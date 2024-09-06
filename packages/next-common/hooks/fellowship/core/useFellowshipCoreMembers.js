@@ -70,6 +70,7 @@ export default function useFellowshipCoreMembers() {
       fetching = false;
       setLoading(fetching);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, corePallet, collectivePallet, section]);
 
   useEffect(() => {

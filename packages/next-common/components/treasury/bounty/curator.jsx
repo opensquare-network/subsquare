@@ -1,6 +1,5 @@
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { BorderedRow } from "next-common/components/referenda/tally/styled";
 import AddressUser from "next-common/components/user/addressUser";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import CuratorLinks from "./links";
@@ -61,7 +60,11 @@ function BountySidebarCurator() {
     <SecondaryCardDetail>
       <CuratorTitle />
       <div className="flex items-center flex-wrap  space-x-2 h-[44px] mt-0 border-b border-neutral300">
-        <AddressUser key={curator} add={curator} maxWidth={badge ? 150 : undefined} />
+        <AddressUser
+          key={curator}
+          add={curator}
+          maxWidth={badge ? 150 : undefined}
+        />
         {badge && <CuratorBadge badge={badge} />}
         {delegateAddress && <CuratorProxyTag />}
       </div>

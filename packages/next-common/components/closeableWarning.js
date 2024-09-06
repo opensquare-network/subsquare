@@ -59,7 +59,7 @@ export default function ClosableWarning({ name, rememberCloseTime, children }) {
     }
 
     setIsClosed(true);
-  }, []);
+  }, [name, rememberCloseTime]);
 
   if (isClosed) {
     return null;

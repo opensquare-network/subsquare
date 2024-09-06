@@ -45,6 +45,7 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
           : endTime,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, endTime]);
 
   useEffect(() => {
@@ -56,6 +57,7 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
     } else {
       setValue(initValue);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCreatePoll]);
 
   const handleAddOption = () => {

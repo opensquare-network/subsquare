@@ -3,7 +3,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import BigNumber from "bignumber.js";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
 
 function getTotalSpent(data) {
@@ -24,7 +24,7 @@ function SpentCycles({ count }) {
 
 function TotalSpent({ cycles }) {
   const totalSpent = getTotalSpent(cycles);
-  const { symbol, decimals } = useSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset();
   return (
     <SummaryItem title="Total Spent">
       <ValueDisplay

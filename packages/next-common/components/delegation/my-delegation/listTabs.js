@@ -23,6 +23,7 @@ export default function ListTabs() {
         { shallow: true },
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, tab]);
 
   return (

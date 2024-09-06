@@ -71,7 +71,20 @@ export default function useIsProposalFinished() {
       // set false as default, so we will subscribe proposal post detail by default
       setIsFinished(false);
     }
-  }, [type, timeline]);
+  }, [
+    type,
+    timeline,
+    openGovReferendumFinishedHeight,
+    isDemocracyReferendumVoteFinished,
+    isDemocracyProposalFinished,
+    isDemocracyExternalFinished,
+    isTreasuryProposalFinished,
+    isTreasurySpendFinished,
+    isTipFinished,
+    isBountyFinished,
+    isChildBountyFinished,
+    isMotionEnd,
+  ]);
 
   return isFinished;
 }

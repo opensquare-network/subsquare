@@ -74,6 +74,7 @@ export default function RecentProposalTemplate({
       ...tabTableLoaded,
       [activeTabLabel]: true,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTabLabel]);
 
   if (!activeCount) {
@@ -127,6 +128,7 @@ function TableTemplate({
     }
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabTableLoaded]);
 
   useUpdateEffect(fetchData, [page]);

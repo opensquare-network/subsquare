@@ -87,7 +87,7 @@ export default function ScrollPrompt({ prompts }) {
         });
     }, 6500);
     return () => clearInterval(interval);
-  }, [scope, pauseRef, scrollingPrompts, shiftMessage]);
+  }, [scope, pauseRef, scrollingPrompts, shiftMessage, animate]);
 
   if (scrollingPrompts.length === 0) {
     return null;

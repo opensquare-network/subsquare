@@ -5,7 +5,7 @@ import { has, isNil } from "lodash-es";
 import AddressUser from "next-common/components/user/addressUser";
 import FellowshipSalaryMemberIsRegistered from "./isRegistered";
 import Link from "next/link";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import FellowshipSalaryMemberStatus from "./status";
@@ -20,7 +20,7 @@ export default function FellowshipSalaryClaimantsList({
   params = {},
   members = [],
 }) {
-  const { symbol, decimals } = useSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset();
 
   const ranks = [...new Set(members.map((m) => m.rank))];
   const { rank, component: rankFilterComponent } = useRankFilter(ranks);

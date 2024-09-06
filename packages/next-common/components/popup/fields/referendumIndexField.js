@@ -37,7 +37,7 @@ function useReferendumTitle(referendumIndex, trackId) {
   const { tracks } = usePageProps();
   const referendumTrack = useMemo(
     () => tracks.find((track) => track.id === trackId),
-    [trackId],
+    [trackId, tracks],
   );
 
   const { value: fetchReferendumResult, loading } = useAsync(async () => {

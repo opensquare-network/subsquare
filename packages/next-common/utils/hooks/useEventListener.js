@@ -24,5 +24,6 @@ export function useEventListener(type, handler, target, opts, ...deps) {
     return () => {
       targetElement.removeEventListener(type, handler, opts);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, target, opts, ...deps]);
 }

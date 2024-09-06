@@ -27,7 +27,7 @@ export default function useIssuance() {
     if (!votingFinishHeight && latestHeight % 10 === 0) {
       dispatch(fetchIssuanceForGov2(api));
     }
-  }, [votingFinishHeight, api, latestHeight, issuance]);
+  }, [votingFinishHeight, api, latestHeight, issuance, dispatch]);
 
   return {
     issuance,

@@ -34,6 +34,7 @@ export default function KeyValueParam({ title, setValue }) {
     const key = createParam(data.key);
     const value = createParam(data.value);
     setValue(u8aConcat(key, value));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (

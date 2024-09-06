@@ -22,6 +22,7 @@ function ProfileAssetsInContext({ setTotalCount }) {
       undefined,
       { shallow: true },
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maybeEvmAddress]);
 
   const assets = useMyAssets();
@@ -31,7 +32,7 @@ function ProfileAssetsInContext({ setTotalCount }) {
       const count = assets ? assets.length : 0;
       setTotalCount(count);
     }
-  }, [assets]);
+  }, [assets, setTotalCount]);
 
   return (
     <div className="flex flex-col gap-[16px]">

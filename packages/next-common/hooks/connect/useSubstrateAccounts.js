@@ -1,7 +1,6 @@
 import { noop, reject } from "lodash-es";
 import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
-import { useChainSettings } from "next-common/context/chain";
 import { useSignetAccounts } from "next-common/context/signet";
 import { newWarningToast } from "next-common/store/reducers/toastSlice";
 import ChainTypes from "next-common/utils/consts/chainTypes";
@@ -21,7 +20,6 @@ export function useSubstrateAccounts({
   const dispatch = useDispatch();
   const isMounted = useMountedState();
   const { injectedWeb3, loading: loadingWeb3 } = useInjectedWeb3();
-  const { chainType } = useChainSettings();
   const signetAccounts = useSignetAccounts();
   const [loading, setLoading] = useState(defaultLoading);
 
@@ -68,7 +66,7 @@ export function useSubstrateAccounts({
         dispatch(newWarningToast(message));
       }
     },
-    [setAccounts, onAccessGranted, isMounted, chainType, wallet, injectedWeb3],
+    [injectedWeb3, isMounted, onAccessGranted, dispatch],
   );
 
   const loadSignetVault = useCallback(() => {
@@ -110,7 +108,7 @@ export function useSubstrateAccounts({
         loadWalletAccounts(wallet);
       }
     }
-  }, [wallet, isMounted, loadingWeb3]);
+  }, [wallet, isMounted, loadingWeb3, loadWalletAccounts]);
 
   return {
     accounts,

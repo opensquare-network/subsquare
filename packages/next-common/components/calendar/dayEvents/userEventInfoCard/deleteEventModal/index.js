@@ -18,8 +18,14 @@ export default function DeleteEventModal({ event, onClose, refresh = noop }) {
   const [isLoading, setIsLoading] = useState(false);
   const { ensureLogin } = useEnsureLogin();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-  const showSuccessToast = (message) => dispatch(newSuccessToast(message));
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
+  const showSuccessToast = useCallback(
+    (message) => dispatch(newSuccessToast(message)),
+    [dispatch],
+  );
 
   const deleteEvent = useCallback(async () => {
     setIsLoading(true);
@@ -44,7 +50,14 @@ export default function DeleteEventModal({ event, onClose, refresh = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, onClose, event?._id, ensureLogin]);
+  }, [
+    ensureLogin,
+    event?._id,
+    showErrorToast,
+    showSuccessToast,
+    onClose,
+    refresh,
+  ]);
 
   return (
     <Popup title="Delete" onClose={onClose}>

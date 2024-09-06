@@ -144,6 +144,7 @@ export default function CMDKPalette() {
     };
 
     return [homePageItem, ...subPageItems];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foldedMenu, search]);
 
   function onPageEscape(page) {

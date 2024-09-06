@@ -38,7 +38,12 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
     defaultPageSize,
   );
 
-  const { value, loading, total: totalCount, error } = useTransfersHistory(page - 1, defaultPageSize);
+  const {
+    value,
+    loading,
+    total: totalCount,
+    error,
+  } = useTransfersHistory(page - 1, defaultPageSize);
 
   useEffect(() => {
     if (value && !loading && !error) {
@@ -46,7 +51,7 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
       setTotal(totalCount);
       setRowData(value || []);
     }
-  }, [value, loading, error, setTotalCount]);
+  }, [value, loading, error, setTotalCount, totalCount]);
 
   return (
     <div>

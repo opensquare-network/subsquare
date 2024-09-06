@@ -34,7 +34,7 @@ export function useDemocracyReferendumHash() {
     } else {
       setHash(proposalHash);
     }
-  }, [proposal, proposalHash, inlineHash]);
+  }, [proposal, proposalHash, inlineHash, hash, preImage?.hash]);
 
   return hash;
 }

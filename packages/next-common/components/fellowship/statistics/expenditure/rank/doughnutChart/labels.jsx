@@ -1,6 +1,6 @@
 import { cn } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
 import { getPercentageValue } from "next-common/components/fellowship/statistics/common";
 
@@ -12,7 +12,7 @@ function getSalaryValue(count, decimals, symbol) {
   );
 }
 
-function RowItem({ bgColor, label, percentage, count, decimals, symbol }) {
+function RowItem({ bgColor, label, percentage, count }) {
   return (
     <div className="flex items-center gap-2">
       <span
@@ -29,7 +29,7 @@ function RowItem({ bgColor, label, percentage, count, decimals, symbol }) {
 }
 
 export default function DoughnutChartLabels({ labelDataArr }) {
-  const { symbol, decimals } = useSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset();
   return (
     <div className="flex flex-col gap-2 flex-grow min-w-[220px]">
       {labelDataArr.map((i) => (

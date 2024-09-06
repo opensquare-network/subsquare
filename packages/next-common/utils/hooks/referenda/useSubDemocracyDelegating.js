@@ -32,7 +32,7 @@ export default function useSubDemocracyDelegating(address) {
         unsub();
       }
     };
-  }, [api]);
+  }, [address, api]);
 
   return { delegating, isLoading };
 }

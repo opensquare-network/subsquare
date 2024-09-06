@@ -19,7 +19,7 @@ import {
   useConfirmingStarted,
   useConfirmTimelineFailPairs,
   useDecidingSince,
-  userConfirmingAborted,
+  useConfirmingAborted,
 } from "next-common/context/post/gov2/referendum";
 import { isNil } from "lodash-es";
 import TimeDuration from "next-common/components/TimeDuration";
@@ -82,7 +82,7 @@ function ConfirmSingleProgress() {
 function ConfirmMultiProgress() {
   const confirmRemaining = useConfirmRemaining();
   const confirmStart = useConfirmingStarted();
-  const confirmAbortedHeight = userConfirmingAborted();
+  const confirmAbortedHeight = useConfirmingAborted();
   const confirmStartPercentage = useConfirmStartPercentage();
   const confirmEndPercentage = useConfirmEndPercentage();
   const decisionBlocks = useDecisionBlocks();

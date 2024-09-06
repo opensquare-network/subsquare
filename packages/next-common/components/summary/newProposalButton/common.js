@@ -49,6 +49,7 @@ export default function SubmitProposalPopupCommon({
     setPreimageLength(preimageLength);
     setShowNewPreimagePopup(false);
     setShowNewProposalPopup(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (showNewPreimagePopup) {

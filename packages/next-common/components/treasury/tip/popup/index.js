@@ -82,7 +82,10 @@ function PopupContent() {
 
   const [beneficiary, setBeneficiary] = useState();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
 
   const getTxFunc = useCallback(async () => {
     if (!beneficiary) {

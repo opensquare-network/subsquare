@@ -29,7 +29,7 @@ export function useDecentralizedVoicesVotes() {
     });
 
     setVotes(dvVotes);
-  }, [allNestedVotes, chain, post.track]);
+  }, [allNestedVotes, chain, post.track, finishHeight]);
 
   return votes;
 }

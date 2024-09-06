@@ -28,6 +28,7 @@ export default function Verify() {
     if (success && countdown === 0) {
       router.replace("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [success, countdown]);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function Verify() {
           setLoading(false);
         }
       });
-  }, [email, token, isMounted, startCountdown, setUser]);
+  }, [email, token, isMounted, startCountdown, setUser, userContext]);
 
   return (
     <>

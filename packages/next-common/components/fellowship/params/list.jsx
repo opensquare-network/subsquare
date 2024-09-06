@@ -1,6 +1,6 @@
 import DataList from "next-common/components/dataList";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
 import Period from "next-common/components/fellowship/params/period";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
@@ -36,7 +36,7 @@ export default function FellowshipParamsList({ rank, params }) {
     minPromotionPeriod = [],
   } = params ?? {};
 
-  const { symbol, decimals } = useSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset();
 
   const rows = activeSalary?.map?.((_, idx) => {
     return [

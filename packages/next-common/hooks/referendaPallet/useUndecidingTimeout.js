@@ -9,7 +9,7 @@ export default function useUndecidingTimeout(pallet = "referenda") {
     if (api?.consts[pallet]) {
       setTimeout(api.consts[pallet].undecidingTimeout.toNumber());
     }
-  }, [api]);
+  }, [api, pallet]);
 
   return timout;
 }

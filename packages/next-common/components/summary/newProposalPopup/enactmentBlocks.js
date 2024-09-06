@@ -51,6 +51,7 @@ export default function EnactmentBlocks({ track, setEnactment }) {
     setEnactment({
       at: parseInt(initialAt),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInvalid, initialAt, afterBlocks, tabIndex]);
 
   return (

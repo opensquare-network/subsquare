@@ -32,6 +32,7 @@ export function useOffChainCommentCancelUpVote() {
 
       return await await nextApi.delete(`comments/${comment._id}/reaction`);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [type, ensureLogin],
   );
 }

@@ -37,7 +37,7 @@ export function NewDemocracyProposalInnerPopup({
 
     setDeposit(deposit);
     setLockedBalance(deposit);
-  }, [api]);
+  }, [api, decimals]);
 
   const length = usePreimageLength(preimageHash);
   useEffect(() => {
