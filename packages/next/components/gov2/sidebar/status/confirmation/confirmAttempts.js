@@ -13,7 +13,7 @@ function AttemptsLastTimeDuration({ start, end }) {
   return (
     <span>
       ,&nbsp;
-      <TimeDuration blocks={blocks} />
+      <TimeDuration blocks={blocks} showMonths={false} />
     </span>
   );
 }
