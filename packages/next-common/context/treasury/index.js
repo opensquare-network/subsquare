@@ -16,9 +16,7 @@ export function useTreasuryPallet() {
 }
 
 export function useTreasuryProposalListUrl(pallet) {
-  if ("communityTreasury" === pallet) {
-    return "/community-treasury/proposals";
-  } else {
-    return "/treasury/proposals";
-  }
+  return "communityTreasury" === pallet
+    ? "/community-treasury/proposals"
+    : "/treasury/proposals";
 }
