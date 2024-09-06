@@ -4,12 +4,15 @@ import { u8aConcat } from "@polkadot/util";
 import { Kintsugi, Interlay } from "@interlay/monetary-js";
 import Chains from "../consts/chains";
 import { useChain } from "../../context/chain";
+import { useTreasuryPallet } from "next-common/context/treasury";
+import { encodeAddressToChain } from "next-common/services/address";
 
 const EMPTY_U8A_32 = new Uint8Array(32);
 
 export function useTreasuryAccount(api) {
   const [account, setAccount] = useState();
   const chain = useChain();
+  const pallet = useTreasuryPallet();
 
   useEffect(() => {
     if (Chains.kintsugi === chain) {
@@ -26,12 +29,12 @@ export function useTreasuryAccount(api) {
 
     const treasuryAccount = u8aConcat(
       "modl",
-      api?.consts.treasury && api.consts.treasury.palletId
-        ? api.consts.treasury.palletId.toU8a(true)
+      api?.consts[pallet] && api.consts[pallet].palletId
+        ? api.consts[pallet].palletId.toU8a(true)
         : "py/trsry",
       EMPTY_U8A_32,
     ).subarray(0, 32);
-    setAccount(treasuryAccount);
+    setAccount(encodeAddressToChain(treasuryAccount, chain));
   }, [api]);
 
   return account;
