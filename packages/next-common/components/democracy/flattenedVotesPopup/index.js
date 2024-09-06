@@ -43,7 +43,8 @@ export default function VotesPopup({ setShowVoteList }) {
     }
 
     setTabIndex(tabs[0]);
-  }, [filteredAye, filteredNay, search, tabIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   let page;
   let votes;
