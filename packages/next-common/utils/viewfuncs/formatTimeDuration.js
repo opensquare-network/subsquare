@@ -26,6 +26,10 @@ export function formatTimeDuration(
     mo = 0;
   }
 
+  if (yr < 1 && mo < 1 && d < 3) {
+    slice = Math.max(slice, 3);
+  }
+
   const result = [
     buildTimeUnit(yr, "yr", { withUnitSpace }),
     buildTimeUnit(mo, "mo", { withUnitSpace }),

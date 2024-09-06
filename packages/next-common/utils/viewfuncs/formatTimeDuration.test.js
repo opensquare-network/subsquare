@@ -49,4 +49,18 @@ describe("formatTimeDuration", () => {
     const input = dayjs.duration({ seconds: 12 }).asMilliseconds();
     expect(formatTimeDuration(input)).toBe("12s");
   });
+
+  it("32d 1hr", () => {
+    const input = dayjs
+      .duration({ months: 1, days: 2, hours: 1 })
+      .asMilliseconds();
+    expect(formatTimeDuration(input, { showMonths: false })).toBe("32d 1hr");
+  });
+
+  it("397d 1hr 23mins", () => {
+    const input = dayjs
+      .duration({ year: 1, months: 1, days: 2, hours: 1, minutes: 23 })
+      .asMilliseconds();
+    expect(formatTimeDuration(input, { showMonths: false, slice: 3 })).toBe("397d 1hr 23mins");
+  });
 });
