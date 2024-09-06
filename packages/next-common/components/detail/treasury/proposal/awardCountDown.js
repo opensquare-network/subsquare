@@ -9,7 +9,7 @@ import { useOnchainData } from "next-common/context/post";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useContextApi } from "next-common/context/api";
-import { useTreasuryPallet } from "next-common/context/treasury";
+import { useTreasuryPallet } from "next-common/context/treasury/index";
 
 export default function TreasuryAwardCountDown() {
   const api = useContextApi();

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
-import { useTreasuryPallet } from "next-common/context/treasury";
+import { useTreasuryPallet } from "next-common/context/treasury/index";
 
 function isValidApi(api) {
   return api?.approvals && api?.proposals;
