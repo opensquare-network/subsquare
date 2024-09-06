@@ -6,6 +6,7 @@ import BigNumber from "bignumber.js";
 import { estimateBlocksTime } from "next-common/utils";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useContextApi } from "next-common/context/api";
+import { useTreasuryPallet } from "next-common/context/treasury";
 
 export default function useSpendPeriodSummary() {
   const api = useContextApi();
@@ -13,30 +14,39 @@ export default function useSpendPeriodSummary() {
   const [summary, setSummary] = useState({});
   const isMounted = useMountedState();
   const blockTime = useSelector(blockTimeSelector);
+  const pallet = useTreasuryPallet();
 
   useEffect(() => {
-    if (api?.consts?.treasury?.spendPeriod && blockHeight) {
-      const spendPeriod = api.consts.treasury.spendPeriod.toNumber();
-      const goneBlocks = new BigNumber(blockHeight).mod(spendPeriod).toNumber();
-      const progress = new BigNumber(goneBlocks)
-        .div(spendPeriod)
-        .multipliedBy(100)
-        .toNumber();
-      const spendPeriodTime = estimateBlocksTime(
-        spendPeriod - goneBlocks,
-        blockTime,
-      ).split(" ");
-      if (isMounted()) {
-        setSummary({
-          progress,
-          spendPeriod: spendPeriodTime,
-          totalPeriod: ["/"].concat(
-            estimateBlocksTime(spendPeriod, blockTime).split(" "),
-          ),
-        });
-      }
+    if (!api || !api.consts || !api.consts[pallet]?.spendPeriod) {
+      return;
     }
-  }, [api, blockHeight, blockTime, isMounted]);
+
+    const spendPeriod = api.consts[pallet].spendPeriod.toNumber();
+    const goneBlocks = new BigNumber(blockHeight).mod(spendPeriod).toNumber();
+    const progress = new BigNumber(goneBlocks)
+      .div(spendPeriod)
+      .multipliedBy(100)
+      .toNumber();
+
+    if (!spendPeriod || !goneBlocks || !blockTime) {
+      return;
+    }
+
+    const spendPeriodTime = estimateBlocksTime(
+      spendPeriod - goneBlocks,
+      blockTime,
+    ).split(" ");
+
+    if (isMounted()) {
+      setSummary({
+        progress,
+        spendPeriod: spendPeriodTime,
+        totalPeriod: ["/"].concat(
+          estimateBlocksTime(spendPeriod, blockTime).split(" "),
+        ),
+      });
+    }
+  }, [api, blockHeight, blockTime, isMounted, pallet]);
 
   return summary;
 }

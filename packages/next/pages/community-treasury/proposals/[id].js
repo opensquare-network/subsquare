@@ -23,6 +23,7 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { useChainSettings } from "next-common/context/chain";
 import { SimaProposalCommentActionsProvider } from "next-common/sima/components/common/context/commentActionsProvider";
 import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/proposal/metadata"),
@@ -85,7 +86,7 @@ function ProposalContentWithNullGuard() {
   const { sima } = useChainSettings();
 
   if (!detail) {
-    return <CheckUnFinalized id={id} pallet="communityTreasury" />;
+    return <CheckUnFinalized id={id} />;
   }
 
   return sima ? (
@@ -116,7 +117,9 @@ function ProposalPageImpl() {
 export default function ProposalPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <ProposalPageImpl />
+      <TreasuryProvider pallet="communityTreasury">
+        <ProposalPageImpl />
+      </TreasuryProvider>
     </PostProvider>
   );
 }

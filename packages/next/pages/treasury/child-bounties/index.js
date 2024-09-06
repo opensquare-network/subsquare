@@ -8,6 +8,7 @@ import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 import { isNil } from "lodash-es";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 export default function ChildBountiesPage({ bounties }) {
   const chainSettings = useChainSettings();
@@ -19,35 +20,37 @@ export default function ChildBountiesPage({ bounties }) {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={category}
-      summary={<TreasurySummary />}
-      tabs={[
-        {
-          label: "Child Bounties",
-          url: "/treasury/child-bounties",
-        },
-        chainSettings.hasDotreasury && {
-          label: "Statistics",
-          url: `https://dotreasury.com/${lowerCase(
-            chainSettings.symbol,
-          )}/child-bounties`,
-        },
-      ].filter(Boolean)}
-    >
-      <PostList
-        category={category}
-        title="List"
-        titleCount={bounties.total}
-        items={items}
-        pagination={{
-          page: bounties.page,
-          pageSize: bounties.pageSize,
-          total: bounties.total,
-        }}
-      />
-    </ListLayout>
+    <TreasuryProvider>
+      <ListLayout
+        seoInfo={seoInfo}
+        title={category}
+        summary={<TreasurySummary />}
+        tabs={[
+          {
+            label: "Child Bounties",
+            url: "/treasury/child-bounties",
+          },
+          chainSettings.hasDotreasury && {
+            label: "Statistics",
+            url: `https://dotreasury.com/${lowerCase(
+              chainSettings.symbol,
+            )}/child-bounties`,
+          },
+        ].filter(Boolean)}
+      >
+        <PostList
+          category={category}
+          title="List"
+          titleCount={bounties.total}
+          items={items}
+          pagination={{
+            page: bounties.page,
+            pageSize: bounties.pageSize,
+            total: bounties.total,
+          }}
+        />
+      </ListLayout>
+    </TreasuryProvider>
   );
 }
 

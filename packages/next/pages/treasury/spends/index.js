@@ -5,6 +5,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import PostList from "next-common/components/postList";
 import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const { items, total, page, pageSize } = pagedSpends;
@@ -15,18 +16,20 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={category}
-      summary={<TreasurySummary />}
-    >
-      <PostList
-        category={category}
-        titleCount={total}
-        items={spends}
-        pagination={{ page, pageSize, total }}
-      />
-    </ListLayout>
+    <TreasuryProvider>
+      <ListLayout
+        seoInfo={seoInfo}
+        title={category}
+        summary={<TreasurySummary />}
+      >
+        <PostList
+          category={category}
+          titleCount={total}
+          items={spends}
+          pagination={{ page, pageSize, total }}
+        />
+      </ListLayout>
+    </TreasuryProvider>
   );
 }
 

@@ -23,6 +23,7 @@ import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/bounty/metadata"),
@@ -97,7 +98,9 @@ function ChildBountyPageImpl() {
 export default function ChildBountyPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <ChildBountyPageImpl />
+      <TreasuryProvider>
+        <ChildBountyPageImpl />
+      </TreasuryProvider>
     </PostProvider>
   );
 }

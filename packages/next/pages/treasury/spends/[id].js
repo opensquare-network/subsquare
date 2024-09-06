@@ -24,6 +24,7 @@ import { SimaProposalCommentActionsProvider } from "next-common/sima/components/
 import { useChainSettings } from "next-common/context/chain";
 import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 const TreasurySpendMetadata = dynamicClientOnly(() =>
   import("next-common/components/detail/treasury/spend/metadata"),
@@ -111,7 +112,9 @@ function SpendPageImpl() {
 export default function SpendPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <SpendPageImpl />
+      <TreasuryProvider>
+        <SpendPageImpl />
+      </TreasuryProvider>
     </PostProvider>
   );
 }
