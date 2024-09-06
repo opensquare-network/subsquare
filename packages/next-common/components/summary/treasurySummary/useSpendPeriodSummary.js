@@ -27,6 +27,11 @@ export default function useSpendPeriodSummary() {
       .div(spendPeriod)
       .multipliedBy(100)
       .toNumber();
+
+    if (!spendPeriod || !goneBlocks || !blockTime) {
+      return;
+    }
+
     const spendPeriodTime = estimateBlocksTime(
       spendPeriod - goneBlocks,
       blockTime,
