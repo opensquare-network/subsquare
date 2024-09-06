@@ -14,5 +14,5 @@ export default function useTipMeta(tipHash) {
   return {
     isLoading: loading,
     tipMeta,
-  }
+  };
 }
