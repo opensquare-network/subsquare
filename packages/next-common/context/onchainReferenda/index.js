@@ -1,6 +1,5 @@
 import useOnChainReferenda from "next-common/hooks/referenda/useOnChainReferenda";
-
-const { createContext, useContext } = require("react");
+import { createContext, useContext } from "react";
 
 const OnChainReferendaContext = createContext();
 
