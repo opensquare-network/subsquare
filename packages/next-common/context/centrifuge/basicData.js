@@ -11,7 +11,7 @@ function DataUpdater({ children }) {
 
   useEffect(() => {
     setCfgBasicData({ data: value, loading });
-  }, [value, loading]);
+  }, [value, loading, setCfgBasicData]);
 
   return children;
 }
