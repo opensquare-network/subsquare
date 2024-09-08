@@ -1,7 +1,6 @@
 import { isValidIntegerIndex } from "next-common/utils/isValidIntegerIndex";
-
-const { useContextApi } = require("next-common/context/api");
-const { useState, useEffect } = require("react");
+import { useContextApi } from "next-common/context/api";
+import { useState, useEffect } from "react";
 
 export default function useOnChainReferendum(referendumIndex) {
   const api = useContextApi();
