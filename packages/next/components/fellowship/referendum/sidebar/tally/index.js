@@ -17,7 +17,7 @@ import CurvePopupOpener from "next-common/components/gov2/referendum/curvePopup"
 import Calls from "./voteCalls";
 import { useChainSettings } from "next-common/context/chain";
 import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
-import { useApprovalPercentage, useSupportPercentage, } from "next-common/context/post/gov2/percentage";
+import { useApprovalPercentage, useSupportPercentage } from "next-common/context/post/gov2/percentage";
 import ConfirmationEstimation from "next-common/components/tally/confirmationEstimation";
 
 const Title = styled(TitleContainer)`
