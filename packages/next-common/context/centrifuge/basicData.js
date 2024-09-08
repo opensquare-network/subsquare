@@ -1,6 +1,6 @@
 import { useAsync } from "react-use";
 import queryBasicData from "./query/queryBasicData";
-import { createStateContext } from 'react-use';
+import { createStateContext } from "react-use";
 import { useEffect } from "react";
 
 const [useCfgBasicData, CfgBasicDataProvider] = createStateContext({});

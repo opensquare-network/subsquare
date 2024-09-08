@@ -13,7 +13,7 @@ import {
 } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
 import CardHeader from "next-common/components/overview/centrifugeStats/cardHeader";
-import { DetailList, DetailRow, } from "next-common/components/overview/centrifugeStats/detailRow";
+import { DetailList, DetailRow } from "next-common/components/overview/centrifugeStats/detailRow";
 import useCfgBasicData from "next-common/context/centrifuge/basicData";
 import BigNumber from "bignumber.js";
 import PriceCard from "./priceCard";
