@@ -7,19 +7,14 @@ const cmdkSlice = createSlice({
     paletteVisible: false,
   },
   reducers: {
-    setCmdkTriggerVisible(state, { payload }) {
-      state.triggerVisible = payload;
-    },
     setCmdkPaletteVisible(state, { payload }) {
       state.paletteVisible = payload;
     },
   },
 });
 
-export const { setCmdkTriggerVisible, setCmdkPaletteVisible } =
-  cmdkSlice.actions;
+export const { setCmdkPaletteVisible } = cmdkSlice.actions;
 
-export const cmdkTriggerVisibleSelector = (state) => state.cmdk.triggerVisible;
 export const cmdkPaletteVisibleSelector = (state) => state.cmdk.paletteVisible;
 
 export default cmdkSlice.reducer;
