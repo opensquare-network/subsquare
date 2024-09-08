@@ -5,6 +5,7 @@ import { normalizedSubstrateAccounts } from "next-common/utils/substrate";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
+import getOriginForExtension from "next-common/utils/extension/origin";
 
 export function useSubstrateInjectedAccounts({ defaultLoading = false } = {}) {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ export function useSubstrateInjectedAccounts({ defaultLoading = false } = {}) {
     );
 
     try {
-      await web3Enable("subsquare");
+      await web3Enable(getOriginForExtension());
       const injectedAccounts = reject(await web3Accounts(), {
         type: ChainTypes.ETHEREUM,
       });

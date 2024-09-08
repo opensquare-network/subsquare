@@ -10,6 +10,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { useCallback, useEffect, useState } from "react";
 import LoginAddressNotDetectedMessage from "../addressNotDetectedMessage";
 import { Label } from "../styled";
+import getOriginForExtension from "next-common/utils/extension/origin";
 
 export default function LoginWeb3Substrate() {
   const { allWallets } = useSubstrateWallets();
@@ -47,7 +48,7 @@ export default function LoginWeb3Substrate() {
 
       if (!some(allWallets, { extensionName: selectedWallet?.extensionName })) {
         const extensionDapp = await import("@polkadot/extension-dapp");
-        await extensionDapp.web3Enable("subsquare");
+        await extensionDapp.web3Enable(getOriginForExtension());
         const injector = await extensionDapp.web3FromSource(
           account.meta?.source,
         );
