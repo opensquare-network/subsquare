@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import useQueryAllAssetDetail from "next-common/hooks/assets/useQueryAllAssetDetail";
-import { useAllAssetMetadata } from "./context/assetMetadata";
 import { useKnownAssetHubAssets } from "./known";
+import useAllAssetMetadata from "next-common/components/assets/context/assetMetadata";
 
 export default function useAssets() {
-  const metadata = useAllAssetMetadata();
+  const [metadata] = useAllAssetMetadata();
   const details = useQueryAllAssetDetail();
   const knownAssetDefs = useKnownAssetHubAssets();
 
