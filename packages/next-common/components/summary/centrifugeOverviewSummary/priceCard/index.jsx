@@ -1,7 +1,4 @@
-import {
-  TIME_RANGE,
-  useTokenPrices,
-} from "next-common/context/centrifuge/tokenPrices";
+import useCfgTokenPrices, { TIME_RANGE } from "next-common/context/centrifuge/tokenPrices";
 import PriceCardContent from "./content";
 
 function getChartOptions(stepSize) {
@@ -48,7 +45,7 @@ const OPTIONS = [
 ];
 
 export default function PriceCard() {
-  const { data, loading, range, setRange } = useTokenPrices();
+  const [{ data, loading, range, setRange }] = useCfgTokenPrices();
 
   return (
     <PriceCardContent
