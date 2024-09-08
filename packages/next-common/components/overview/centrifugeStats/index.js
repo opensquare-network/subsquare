@@ -5,6 +5,7 @@ import TransactionsCard from "./transactionsCard";
 import TokenHoldersCard from "./tokenHoldersCard";
 import BlockRewardsCard from "./blockRewardsCard";
 import GovernanceCard from "./governanceCard";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 export default function CentrifugeStats() {
   return (
@@ -19,7 +20,9 @@ export default function CentrifugeStats() {
           <GovernanceCard />
         </div>
         <SecondaryCard>
-          <TreasurySummary />
+          <TreasuryProvider>
+            <TreasurySummary />
+          </TreasuryProvider>
         </SecondaryCard>
       </div>
     </div>

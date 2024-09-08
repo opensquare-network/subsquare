@@ -1,7 +1,7 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import CardHeader from "./cardHeader";
 import { DetailList, DetailRow } from "./detailRow";
-import { useBasicData } from "next-common/context/centrifuge/basicData";
+import useCfgBasicData from "next-common/context/centrifuge/basicData";
 import Tooltip from "next-common/components/tooltip";
 import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -9,7 +9,7 @@ import { useChainSettings } from "next-common/context/chain";
 
 export default function GovernanceCard() {
   const { symbol } = useChainSettings();
-  const { data = {}, loading: isLoading } = useBasicData();
+  const [{ data = {}, loading: isLoading }] = useCfgBasicData();
   const { governanceToken = {} } = data;
   const { onChain = 0, offChain = 0 } = governanceToken;
 

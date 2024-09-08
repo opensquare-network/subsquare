@@ -2,9 +2,9 @@ import { find, noop } from "lodash-es";
 import PriceCardContentChart from "./chart";
 import CardHeader from "next-common/components/overview/centrifugeStats/cardHeader";
 import { cn } from "next-common/utils";
-import { useBasicData } from "next-common/context/centrifuge/basicData";
+import useCfgBasicData from "next-common/context/centrifuge/basicData";
 import { bnToLocaleString } from "next-common/utils/bn";
-import { LinkCoinmarketcap, LinkCoingecko } from "@osn/icons/subsquare";
+import { LinkCoingecko, LinkCoinmarketcap } from "@osn/icons/subsquare";
 import Loading from "next-common/components/loading";
 import LoadableContent from "next-common/components/common/loadableContent";
 
@@ -45,7 +45,7 @@ export default function PriceCardContent({
   setRange = noop,
   options = [],
 }) {
-  const { data: { cfgPrice = 0 } = {}, loading: isLoading } = useBasicData();
+  const [{ data: { cfgPrice = 0 } = {}, loading: isLoading }] = useCfgBasicData();
 
   const { chartOptions = {} } = find(options, { value: range }) || {};
 

@@ -2,7 +2,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import CardHeader from "./cardHeader";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
-import { useBasicData } from "next-common/context/centrifuge/basicData";
+import useCfgBasicData from "next-common/context/centrifuge/basicData";
 import { useDailyExtrinsics } from "next-common/context/centrifuge/DailyExtrinsics";
 import { bnToLocaleString } from "next-common/utils/bn";
 import dayjs from "dayjs";
@@ -37,10 +37,10 @@ function BarChart({ data }) {
 }
 
 export default function TransactionsCard() {
-  const {
+  const [{
     data: { signedExtrinsicCount = 0 } = {},
     loading: isLoadingBasicData,
-  } = useBasicData();
+  }] = useCfgBasicData();
   const { data: dailyExtrinsics = [], loading: isLoading } =
     useDailyExtrinsics();
   const themeSettings = useThemeSetting();
