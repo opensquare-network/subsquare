@@ -129,16 +129,16 @@ function ReferendumPageImpl() {
   }
 
   return (
-    <ReferendaPalletProvider pallet="ambassadorReferenda">
-      <ReferendumPageWithPost />
-    </ReferendaPalletProvider>
+    <ReferendumPageWithPost />
   );
 }
 
 export default function ReferendumPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <ReferendumPageImpl />
+      <ReferendaPalletProvider pallet="ambassadorReferenda">
+        <ReferendumPageImpl />
+      </ReferendaPalletProvider>
     </PostProvider>
   );
 }
