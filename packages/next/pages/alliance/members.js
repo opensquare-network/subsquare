@@ -2,9 +2,18 @@ import MembersList from "components/alliance/membersList";
 import MemberSummary from "components/alliance/memberSummary";
 import { useAllianceMembers } from "hooks/useAllianceMembers";
 import ListLayout from "next-common/components/layout/ListLayout";
+import CollectiveProvider from "next-common/context/collective";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default function MembersPage() {
+  return (
+    <CollectiveProvider pallet="alliance">
+      <MembersPageImpl />
+    </CollectiveProvider>
+  );
+}
+
+function MembersPageImpl() {
   const { data, isLoading } = useAllianceMembers();
   const list = [
     ...(data?.fellow?.map?.((address) => ({ address, role: "Fellow" })) ?? []),
