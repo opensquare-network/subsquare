@@ -1,19 +1,26 @@
 import MembersList from "next-common/components/membersList/simpleMembersList";
 import useCall from "next-common/utils/hooks/useCall";
 import usePrime from "next-common/utils/hooks/usePrime";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
-import toApiCouncil from "next-common/utils/toApiCouncil";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import { useContextApi } from "next-common/context/api";
+import CollectiveProvider, {
+  useCollectivePallet,
+} from "next-common/context/collective";
 
 export default function MembersPage() {
-  const chain = process.env.NEXT_PUBLIC_CHAIN;
-  const type = detailPageCategory.TECH_COMM_MOTION;
+  return (
+    <CollectiveProvider pallet="technicalCommittee">
+      <MembersPageImpl />
+    </CollectiveProvider>
+  );
+}
+
+function MembersPageImpl() {
   const api = useContextApi();
-  const councilName = toApiCouncil(chain, type);
+  const pallet = useCollectivePallet();
   const { value: members, loading: loadingMembers } = useCall(
-    api?.query?.[councilName]?.members,
+    api?.query?.[pallet]?.members,
     [],
   );
   const data = members?.toJSON() || [];
