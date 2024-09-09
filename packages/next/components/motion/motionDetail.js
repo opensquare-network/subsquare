@@ -1,8 +1,6 @@
-import { cloneDeep } from "lodash-es";
 import ArticleContent from "next-common/components/articleContent";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Vote from "./vote";
-import { useMountedState } from "react-use";
 import { isMotionEnded } from "next-common/utils";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import Chains from "next-common/utils/consts/chains";
@@ -19,9 +17,7 @@ import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import MotionHead from "./head";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
-import { useContextApi } from "next-common/context/api";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-import { useCollectivePallet } from "next-common/context/collective";
 
 const Business = dynamicClientOnly(() => import("./business"));
 
@@ -37,15 +33,11 @@ export default function MotionDetail() {
   const type = useDetailType();
   const chain = useChain();
   const postDispatch = usePostDispatch();
-  const api = useContextApi();
-  const isMounted = useMountedState();
   const post = usePost();
   const motionBusinessData = useCouncilMotionBusinessData();
 
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
-  const pallet = useCollectivePallet();
-  const votingMethod = api?.query?.[pallet]?.voting;
   const isEdit = useSelector(isEditingPostSelector);
   const setIsEdit = useSetEdit();
 
@@ -82,7 +74,6 @@ export default function MotionDetail() {
   }, [post, chain, singleApprovalMotion]);
 
   const [votes] = useState(dbVotes);
-
 
   const refreshPageData = () =>
     fetchAndUpdatePost(postDispatch, type, post._id);
