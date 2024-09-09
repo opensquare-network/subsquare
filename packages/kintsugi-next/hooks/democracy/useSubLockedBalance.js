@@ -7,9 +7,11 @@ export default function useSubLockedBalance(address) {
     "escrow",
     "locked",
     [address],
-    useCallback((rawBalance) => {
-      setBalance(rawBalance.amount.toString());
-    }, []),
+    {
+      callback: useCallback((rawBalance) => {
+        setBalance(rawBalance.amount.toString());
+      }, []),
+    },
   );
 
   return balance;
