@@ -3,13 +3,15 @@ import { StatisticTitleContainer } from "next-common/components/styled/container
 import Flex from "next-common/components/styled/flex";
 import Statistics from "next-common/components/styled/paragraph/statistic";
 import MemberLinks from "../memberLinks";
-import { usePostOnChainData } from "next-common/context/post";
+import { useOnchainData, usePostOnChainData } from "next-common/context/post";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import AyeNay from "next-common/components/collective/AyeNay";
 import styled from "styled-components";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import AddressUser from "next-common/components/user/addressUser";
 import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
+import { isMotionEnded } from "next-common/utils";
+import usePrime from "next-common/utils/hooks/usePrime";
 
 const TipperList = styled.div`
   margin-top: 16px;
@@ -41,10 +43,14 @@ const VoterAddr = styled.div`
   gap: 8px;
 `;
 
-export default function Voters({ prime }) {
+export default function Voters() {
+  const onchainData = useOnchainData();
+  const motionEnd = isMotionEnded(onchainData);
+  const blockHash = motionEnd ? onchainData?.state?.indexer?.blockHash : null;
+  const prime = usePrime(blockHash);
+
   const votes = useCollectiveMotionVotes();
   const ayeVotesCount = votes.filter(([, approval]) => approval).length;
-  const onchainData = usePostOnChainData();
 
   let voteList;
   if (votes.length === 0) {

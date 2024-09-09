@@ -13,10 +13,8 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 const VotePopup = dynamicPopup(() => import("./popup"));
 
 export default function Vote({
-  prime,
   motionHash,
   motionIndex,
-  onInBlock = noop,
 }) {
   const type = useDetailType();
   const [showPopup, setShowPopup] = useState(false);
@@ -27,7 +25,7 @@ export default function Vote({
   return (
     <>
       <RightBarWrapper>
-        <Voters prime={prime} />
+        <Voters />
         {!hideActionButtons && !noAction && (
           <Action setShowPopup={setShowPopup} />
         )}
@@ -37,9 +35,7 @@ export default function Vote({
           <VotePopup
             motionHash={motionHash}
             motionIndex={motionIndex}
-            type={type}
             onClose={() => setShowPopup(false)}
-            onInBlock={onInBlock}
           />
         )}
       </VoteSuccessfulProvider>

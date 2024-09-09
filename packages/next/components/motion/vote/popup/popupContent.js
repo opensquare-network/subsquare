@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
-import { noop } from "lodash-es";
 import { VoteEnum } from "next-common/utils/voteEnum";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
@@ -28,7 +27,6 @@ export default function PopupContent() {
     motionHash,
     motionIndex,
     onClose,
-    onInBlock = noop,
   } = usePopupParams();
   const dispatch = useDispatch();
   const api = useContextApi();
@@ -94,7 +92,6 @@ export default function PopupContent() {
         tx,
         onInBlock: () => {
           getMyVoteAndShowSuccessful();
-          onInBlock();
         },
         onSubmitted: onClose,
       });
@@ -106,7 +103,6 @@ export default function PopupContent() {
       motionIndex,
       signerAccount,
       sendTxFunc,
-      onInBlock,
       getMyVoteAndShowSuccessful,
       onClose,
       isSubmitting,
