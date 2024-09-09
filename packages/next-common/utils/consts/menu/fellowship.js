@@ -94,6 +94,15 @@ function getFellowshipReferendaMenu(
   };
 }
 
+function getFellowshipTreasurySpendsMenu() {
+  return {
+    value: "fellowship-treasury-spends",
+    name: Names.treasurySpends,
+    pathname: "/fellowship/treasury/spends",
+    extraMatchNavMenuActivePathnames: ["/fellowship/treasury/spends/[id]"],
+  };
+}
+
 export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
 
@@ -129,6 +138,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
         currentTrackId,
         totalActiveCount,
       ),
+      getFellowshipTreasurySpendsMenu(),
     ].filter(Boolean),
   };
 

@@ -1,6 +1,7 @@
 const businessCategory = {
   treasuryProposals: "Treasury Proposals",
   treasurySpends: "Treasury Spends",
+  fellowshipTreasurySpends: "Fellowship Treasury Spends",
   treasuryTips: "Tips",
   treasuryBounties: "Treasury Bounties",
   treasuryChildBounties: "Treasury Child Bounties",
@@ -43,6 +44,7 @@ export const detailPageCategory = {
   DEMOCRACY_PROPOSAL: "democracy/proposals",
   TREASURY_PROPOSAL: "treasury/proposals",
   TREASURY_SPEND: "treasury/spends",
+  FELLOWSHIP_TREASURY_SPEND: "fellowship/treasury/spends",
   TREASURY_BOUNTY: "treasury/bounties",
   TREASURY_CHILD_BOUNTY: "treasury/child-bounties",
   TREASURY_TIP: "treasury/tips",
