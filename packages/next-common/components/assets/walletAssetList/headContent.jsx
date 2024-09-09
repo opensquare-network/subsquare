@@ -17,24 +17,26 @@ export default function HeadContent() {
 
   return (
     <div className="flex flex-col gap-[16px]">
-      <AvatarDisplay
-        avatarCid={user?.avatarCid}
-        address={address}
-        emailMd5={user?.emailMd5}
-        size={56}
-      />
-      <div className="flex flex-col gap-[4px]">
-        <span className="text20Bold text-textPrimary">
-          {addressEllipsis(address)}
-        </span>
-        <Copyable copyText={maybeEvmAddress}>
-          <span className="text14Medium text-textTertiary">
-            {maybeEvmAddress}
+      <div className="flex items-center gap-[16px]">
+        <AvatarDisplay
+          avatarCid={user?.avatarCid}
+          address={address}
+          emailMd5={user?.emailMd5}
+          size={48}
+        />
+        <div className="flex flex-col gap-[4px]">
+          <span className="text20Bold text-textPrimary">
+            {addressEllipsis(address)}
           </span>
-        </Copyable>
-        {!isEthereumAddress(maybeEvmAddress) && (
-          <AccountLinks address={maybeEvmAddress} />
-        )}
+          <Copyable copyText={maybeEvmAddress}>
+            <span className="text14Medium text-textTertiary">
+              {maybeEvmAddress}
+            </span>
+          </Copyable>
+          {!isEthereumAddress(maybeEvmAddress) && (
+            <AccountLinks address={maybeEvmAddress} />
+          )}
+        </div>
       </div>
       <ProxyTip />
       <ExtensionUpdatePrompt />
