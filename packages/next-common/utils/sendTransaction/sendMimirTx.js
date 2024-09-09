@@ -2,6 +2,7 @@ import { inject, isMimirReady, MIMIR_REGEXP } from "@mimirdev/apps-inject";
 import { checkCall } from "@mimirdev/apps-sdk";
 import { noop } from "lodash-es";
 import { createSendTxEventHandler } from "./sendSubstrateTx";
+import getOriginForExtension from "next-common/utils/extension/origin";
 
 export async function tryInitMimir() {
   if (typeof window === "undefined") {
@@ -44,7 +45,7 @@ export async function maybeSendMimirTx({
     "@polkadot/extension-dapp"
   );
 
-  await web3Enable("subsquare");
+  await web3Enable(getOriginForExtension());
   const injected = await web3FromSource("mimir");
 
   const isMimir = injected.name === "mimir";

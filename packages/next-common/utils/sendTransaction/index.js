@@ -1,3 +1,5 @@
+import getOriginForExtension from "next-common/utils/extension/origin";
+
 export { sendSubstrateTx } from "./sendSubstrateTx";
 export { sendEvmTx } from "./sendEvmTx";
 export { maybeSendMimirTx } from "./sendMimirTx";
@@ -9,7 +11,7 @@ export async function getSigner(signerAddress) {
     "@polkadot/extension-dapp"
   );
 
-  await web3Enable("subsquare");
+  await web3Enable(getOriginForExtension());
   const injector = await web3FromAddress(signerAddress);
   return injector.signer;
 }
