@@ -38,7 +38,7 @@ const TypeGroup = styled(Flex)`
 
 function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
   return (
-    <TypeGroup separator={separator}>
+    <TypeGroup separator={separator} className="space-x-1">
       <SummaryGreyText className="text16Bold">{label}</SummaryGreyText>
       <ActiveValue tooltip={tooltip} href={href} value={value} />
     </TypeGroup>
