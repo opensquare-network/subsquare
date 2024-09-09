@@ -4,6 +4,7 @@ import FlexBetween from "next-common/components/styled/flexBetween";
 import tw from "tailwind-styled-components";
 
 export const ProgressGroup = styled.div`
+  position: relative;
   padding-bottom: 4px;
 `;
 
