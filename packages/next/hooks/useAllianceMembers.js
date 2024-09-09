@@ -1,14 +1,12 @@
 import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
-import { useCollectivePallet } from "next-common/context/collective";
 
 export function useAllianceMembers() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const pallet = useCollectivePallet();
   const api = useContextApi();
-  const { value: members } = useCall(api?.query?.[pallet]?.members.entries, []);
+  const { value: members } = useCall(api?.query?.alliance?.members.entries, []);
   useEffect(() => {
     if (!members) {
       setIsLoading(false);
