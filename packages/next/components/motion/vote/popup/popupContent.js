@@ -1,12 +1,10 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import toApiCouncil from "next-common/utils/toApiCouncil";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
 import { noop } from "lodash-es";
 import { VoteEnum } from "next-common/utils/voteEnum";
-import { useChain } from "next-common/context/chain";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
@@ -17,6 +15,7 @@ import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 import { wrapWithProxy } from "next-common/utils/sendTransaction";
 import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
+import { useCollectivePallet } from "next-common/context/collective";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -30,9 +29,7 @@ export default function PopupContent() {
     motionIndex,
     onClose,
     onInBlock = noop,
-    type,
   } = usePopupParams();
-  const chain = useChain();
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
@@ -42,9 +39,9 @@ export default function PopupContent() {
 
   const [loadingState, setLoadingState] = useState();
 
-  const { isMember: canVote, loading: isMemberLoading } = useIsCollectiveMember(
-    toApiCouncil(chain, type),
-  );
+  const pallet = useCollectivePallet();
+  const { isMember: canVote, loading: isMemberLoading } =
+    useIsCollectiveMember(pallet);
   const currentVote = votes.find(
     (item) => item[0] === signerAccount?.realAddress,
   );
@@ -80,7 +77,7 @@ export default function PopupContent() {
         return;
       }
 
-      const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
+      const voteMethod = api?.tx?.[pallet]?.vote;
       if (!voteMethod) {
         showErrorToast("Chain network is not connected yet");
         return;
@@ -104,8 +101,7 @@ export default function PopupContent() {
     },
     [
       api,
-      chain,
-      type,
+      pallet,
       motionHash,
       motionIndex,
       signerAccount,
