@@ -1,12 +1,9 @@
 import MembersList from "next-common/components/membersList/simpleMembersList";
-import useCall from "next-common/utils/hooks/useCall";
 import usePrime from "next-common/utils/hooks/usePrime";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
-import { useContextApi } from "next-common/context/api";
-import CollectiveProvider, {
-  useCollectivePallet,
-} from "next-common/context/collective";
+import CollectiveProvider from "next-common/context/collective";
+import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 
 export default function MembersPage() {
   return (
@@ -17,13 +14,7 @@ export default function MembersPage() {
 }
 
 function MembersPageImpl() {
-  const api = useContextApi();
-  const pallet = useCollectivePallet();
-  const { value: members, loading: loadingMembers } = useCall(
-    api?.query?.[pallet]?.members,
-    [],
-  );
-  const data = members?.toJSON() || [];
+  const members = useCouncilMembers();
   const prime = usePrime();
 
   const category = "Technical Committee Members";
@@ -35,7 +26,7 @@ function MembersPageImpl() {
       title={category}
       description="Technical committee members"
     >
-      <MembersList prime={prime} items={data} loading={loadingMembers} />
+      <MembersList prime={prime} items={members || []} loading={!members} />
     </ListLayout>
   );
 }
