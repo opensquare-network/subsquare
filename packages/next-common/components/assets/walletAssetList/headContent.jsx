@@ -17,7 +17,7 @@ export default function HeadContent() {
 
   return (
     <div className="flex flex-col gap-[16px]">
-      <div className="flex items-center gap-[16px]">
+      <div className="flex items-start gap-[16px]">
         <AvatarDisplay
           avatarCid={user?.avatarCid}
           address={address}
