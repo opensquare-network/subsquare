@@ -31,7 +31,7 @@ export function useVotesFromDb() {
       rawVoters.unshift([proposed.args.proposer, true]);
     }
     return Array.from(new Map(rawVoters));
-  }, [onchainData, Chains, chain]);
+  }, [onchainData, chain]);
 }
 
 export function useCollectiveMotionOnChainVotes() {
@@ -40,9 +40,7 @@ export function useCollectiveMotionOnChainVotes() {
   const { hash } = onchainData;
 
   const motionEnd = isMotionEnded(onchainData);
-  const blockHash = motionEnd
-    ? onchainData?.state?.indexer?.blockHash
-    : null;
+  const blockHash = motionEnd ? onchainData?.state?.indexer?.blockHash : null;
   const api = useBlockApi(blockHash);
 
   const { loading, result } = useSubStorage(pallet, "voting", [hash], { api });
@@ -50,7 +48,7 @@ export function useCollectiveMotionOnChainVotes() {
   return {
     loading,
     data: result?.toJSON(),
-  }
+  };
 }
 
 export default function useCollectiveMotionVotes() {
@@ -58,7 +56,7 @@ export default function useCollectiveMotionVotes() {
   const dbVotes = useVotesFromDb();
   const { ayes = [], nays = [] } = onchain?.data || {};
 
-  return useMemo(()=> {
+  return useMemo(() => {
     const votes = [...dbVotes];
     for (const voter of ayes) {
       const vote = votes.find((item) => item[0] === voter);
@@ -79,5 +77,5 @@ export default function useCollectiveMotionVotes() {
     }
 
     return votes;
-  }, [dbVotes, ayes, nays])
+  }, [dbVotes, ayes, nays]);
 }
