@@ -16,7 +16,7 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <TreasuryProvider>
+    <TreasuryProvider pallet="fellowshipTreasury">
       <ListLayout
         seoInfo={seoInfo}
         title={category}
