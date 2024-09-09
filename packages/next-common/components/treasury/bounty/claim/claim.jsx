@@ -7,7 +7,7 @@ import { childBountyStatusSelector } from "next-common/store/reducers/childBount
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const Popup = dynamicPopup(() => import("./popup"));
+const ClaimPopup = dynamicPopup(() => import("./popup"));
 
 export default function Claim() {
   const onChain = useOnchainData();
@@ -35,7 +35,7 @@ export default function Claim() {
       </PrimaryButton>
 
       {showPopup && (
-        <Popup bounty={onChain} onClose={() => setShowPopup(false)} />
+        <ClaimPopup bounty={onChain} onClose={() => setShowPopup(false)} />
       )}
     </>
   );
