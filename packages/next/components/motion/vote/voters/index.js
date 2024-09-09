@@ -3,7 +3,7 @@ import { StatisticTitleContainer } from "next-common/components/styled/container
 import Flex from "next-common/components/styled/flex";
 import Statistics from "next-common/components/styled/paragraph/statistic";
 import MemberLinks from "../memberLinks";
-import { useOnchainData, usePostOnChainData } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
 import AyeNay from "next-common/components/collective/AyeNay";
 import styled from "styled-components";
