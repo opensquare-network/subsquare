@@ -1,23 +1,30 @@
 import useQueryAllAssetMetadata from "next-common/hooks/assets/useQueryAllAssetMetadata";
 import { useContextApi } from "next-common/context/api";
+import { createStateContext } from "react-use";
+import { useEffect } from "react";
 
-const { createContext, useContext } = require("react");
+const [useAllAssetMetadata, InnerProvider] = createStateContext();
 
-const AssetMetadataContext = createContext();
-
-export default AssetMetadataContext;
-
-export function AssetMetadataProvider({ children }) {
+function DataUpdater({ children }) {
   const api = useContextApi();
   const allMetadata = useQueryAllAssetMetadata(api);
+  const [, setAssetMetadata] = useAllAssetMetadata();
 
+  useEffect(() => {
+    setAssetMetadata(allMetadata);
+  }, [allMetadata, setAssetMetadata]);
+
+  return children;
+}
+
+export function AssetMetadataProvider({ children }) {
   return (
-    <AssetMetadataContext.Provider value={allMetadata}>
-      {children}
-    </AssetMetadataContext.Provider>
+    <InnerProvider>
+      <DataUpdater>
+        {children}
+      </DataUpdater>
+    </InnerProvider>
   );
 }
 
-export function useAllAssetMetadata() {
-  return useContext(AssetMetadataContext);
-}
+export default useAllAssetMetadata;

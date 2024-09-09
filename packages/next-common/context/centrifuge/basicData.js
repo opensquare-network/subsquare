@@ -1,21 +1,29 @@
 import { useAsync } from "react-use";
 import queryBasicData from "./query/queryBasicData";
+import { createStateContext } from "react-use";
+import { useEffect } from "react";
 
-const { createContext, useContext } = require("react");
+const [useCfgBasicData, CfgBasicDataProvider] = createStateContext({});
 
-const BasicDataContext = createContext(null);
+function DataUpdater({ children }) {
+  const { value, loading } = useAsync(() => queryBasicData(), []);
+  const [, setCfgBasicData] = useCfgBasicData();
 
-export default BasicDataContext;
+  useEffect(() => {
+    setCfgBasicData({ data: value, loading });
+  }, [value, loading, setCfgBasicData]);
+
+  return children;
+}
 
 export function BasicDataProvider({ children }) {
-  const { value, loading } = useAsync(() => queryBasicData(), []);
   return (
-    <BasicDataContext.Provider value={{ data: value, loading }}>
-      {children}
-    </BasicDataContext.Provider>
+    <CfgBasicDataProvider>
+      <DataUpdater>
+        {children}
+      </DataUpdater>
+    </CfgBasicDataProvider>
   );
 }
 
-export function useBasicData() {
-  return useContext(BasicDataContext);
-}
+export default useCfgBasicData;

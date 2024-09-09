@@ -13,11 +13,8 @@ import {
 } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
 import CardHeader from "next-common/components/overview/centrifugeStats/cardHeader";
-import {
-  DetailList,
-  DetailRow,
-} from "next-common/components/overview/centrifugeStats/detailRow";
-import { useBasicData } from "next-common/context/centrifuge/basicData";
+import { DetailList, DetailRow } from "next-common/components/overview/centrifugeStats/detailRow";
+import useCfgBasicData from "next-common/context/centrifuge/basicData";
 import BigNumber from "bignumber.js";
 import PriceCard from "./priceCard";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -185,7 +182,7 @@ function Supply() {
   const { symbol } = useChainSettings();
 
   const [collapsed] = useNavCollapsed();
-  const { data: { supply = {} } = {}, loading: isLoading } = useBasicData();
+  const [{ data: { supply = {} } = {}, loading: isLoading }] = useCfgBasicData();
   const { total = 0, wrapped = 0 } = supply;
 
   return (

@@ -1,23 +1,33 @@
 import { useAssetHubApi } from "next-common/context/assetHub";
 import useQueryAllAssetMetadata from "next-common/hooks/assets/useQueryAllAssetMetadata";
+import { createStateContext } from "react-use";
+import { useEffect } from "react";
 
-const { createContext, useContext } = require("react");
+const [useAssetHubOnPolkadotMetadataMetadata, InnerProvider] = createStateContext();
 
-const AssetHubOnPolkadotMetadataContext = createContext();
-
-export default AssetHubOnPolkadotMetadataContext;
-
-export function AssetHubOnPolkadotMetadataProvider({ children }) {
+function DataUpdater({ children }) {
   const api = useAssetHubApi();
   const allMetadata = useQueryAllAssetMetadata(api);
+  const [, setAllAssetMetadata] = useAssetHubOnPolkadotMetadataMetadata();
 
+  useEffect(() => {
+    setAllAssetMetadata(allMetadata);
+  }, [allMetadata, setAllAssetMetadata]);
+
+  return children;
+}
+
+export function AssetHubOnPolkadotMetadataProvider({ children }) {
   return (
-    <AssetHubOnPolkadotMetadataContext.Provider value={allMetadata}>
-      {children}
-    </AssetHubOnPolkadotMetadataContext.Provider>
+    <InnerProvider>
+      <DataUpdater>
+        {children}
+      </DataUpdater>
+    </InnerProvider>
   );
 }
 
 export function useAssetHubOnPolkadotMetadata() {
-  return useContext(AssetHubOnPolkadotMetadataContext);
+  const [metadata] = useAssetHubOnPolkadotMetadataMetadata();
+  return metadata;
 }

@@ -1,26 +1,30 @@
 import { useAsync } from "react-use";
 import queryDailyExtrinsics from "./query/queryDailyExtrinsics";
+import { createStateContext } from "react-use";
+import { useEffect, useMemo } from "react";
 
-const { createContext, useContext, useMemo } = require("react");
+const [useCfgDailyExtrinsic, InnerProvider] = createStateContext({});
 
-const DailyExtrinsicsContext = createContext(null);
+function DataUpdater({ children }) {
+  const { value, loading } = useAsync(() => queryDailyExtrinsics(), []);
+  const sortedData = useMemo(() => value?.sort((a, b) => a.startTime - b.startTime), [value]);
+  const [, setCfgDailyExtrinsic] = useCfgDailyExtrinsic();
 
-export default DailyExtrinsicsContext;
+  useEffect(() => {
+    setCfgDailyExtrinsic({ data: sortedData, loading });
+  }, [sortedData, loading, setCfgDailyExtrinsic]);
+
+  return children;
+}
 
 export function DailyExtrinsicsProvider({ children }) {
-  const { value, loading } = useAsync(() => queryDailyExtrinsics(), []);
-  const sortedData = useMemo(
-    () => value?.sort((a, b) => a.startTime - b.startTime),
-    [value],
-  );
-
   return (
-    <DailyExtrinsicsContext.Provider value={{ data: sortedData, loading }}>
-      {children}
-    </DailyExtrinsicsContext.Provider>
+    <InnerProvider>
+      <DataUpdater>
+        {children}
+      </DataUpdater>
+    </InnerProvider>
   );
 }
 
-export function useDailyExtrinsics() {
-  return useContext(DailyExtrinsicsContext);
-}
+export default useCfgDailyExtrinsic;

@@ -1,4 +1,4 @@
-const { createContext, useContext } = require("react");
+import { createContext, useContext } from "react";
 
 const CommentActionsContext = createContext({});
 

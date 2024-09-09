@@ -1,7 +1,6 @@
 import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalaryClaimant";
 import useSubMyCoreMember from "next-common/hooks/fellowship/core/useSubMyCoreMember";
-
-const { createContext, useContext } = require("react");
+import { createContext, useContext } from "react";
 
 const MySalaryClaimantContext = createContext(null);
 

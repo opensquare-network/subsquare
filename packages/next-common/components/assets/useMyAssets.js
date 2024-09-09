@@ -3,11 +3,11 @@ import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
-import { useAllAssetMetadata } from "./context/assetMetadata";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
 import calcTransferable from "next-common/utils/account/transferable";
 import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
+import useAllAssetMetadata from "next-common/components/assets/context/assetMetadata";
 
 const PolkadotAssetHubNativeToken = {
   symbol: "DOT",
@@ -63,7 +63,7 @@ export function useMyNativeAsset() {
 export default function useMyAssets() {
   const address = useRealAddress();
   const api = useContextApi();
-  const allMetadata = useAllAssetMetadata();
+  const [allMetadata] = useAllAssetMetadata();
   const multiAccountKey = useMemo(
     () => allMetadata?.map((item) => [item.assetId, address]),
     [allMetadata, address],

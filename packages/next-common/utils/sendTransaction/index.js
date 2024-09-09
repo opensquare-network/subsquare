@@ -1,12 +1,10 @@
 import getOriginForExtension from "next-common/utils/extension/origin";
 
-export const { sendSubstrateTx } = require("./sendSubstrateTx");
-export const { sendEvmTx } = require("./sendEvmTx");
-export const { maybeSendMimirTx } = require("./sendMimirTx");
-export const { maybeSendSignetTx } = require("./sendSignetTx");
-export const {
-  sendHydraDXMultiFeeEvmTx,
-} = require("./sendHydraDXMultiFeeEvmTx");
+export { sendSubstrateTx } from "./sendSubstrateTx";
+export { sendEvmTx } from "./sendEvmTx";
+export { maybeSendMimirTx } from "./sendMimirTx";
+export { maybeSendSignetTx } from "./sendSignetTx";
+export { sendHydraDXMultiFeeEvmTx } from "./sendHydraDXMultiFeeEvmTx";
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
