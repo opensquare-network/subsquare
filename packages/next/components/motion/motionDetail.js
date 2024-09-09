@@ -81,59 +81,8 @@ export default function MotionDetail() {
     return Array.from(new Map(rawVoters));
   }, [post, chain, singleApprovalMotion]);
 
-  const [votes, setVotes] = useState(dbVotes);
-  const [readOnchainVotes, setReadOnchainVotes] = useState(Date.now());
-  const [isLoadingVote, setIsLoadingVote] = useState(false);
+  const [votes] = useState(dbVotes);
 
-  useEffect(() => {
-    if (!votingMethod || !readOnchainVotes || singleApprovalMotion) {
-      return;
-    }
-
-    setIsLoadingVote(true);
-
-    votingMethod(post.onchainData.hash)
-      .then((voting) => {
-        const jsonVoting = voting.toJSON();
-        if (!jsonVoting) {
-          return;
-        }
-
-        const newVotes = cloneDeep(dbVotes);
-        jsonVoting.ayes?.map((voter) => {
-          const vote = newVotes.find((item) => item[0] === voter);
-          if (!vote) {
-            newVotes.push([voter, true]);
-          } else {
-            vote[1] = true;
-          }
-        });
-        jsonVoting.nays?.map((voter) => {
-          const vote = newVotes.find((item) => item[0] === voter);
-          if (!vote) {
-            newVotes.push([voter, false]);
-          } else {
-            vote[1] = false;
-          }
-        });
-
-        if (isMounted()) {
-          setVotes(newVotes);
-        }
-      })
-      .finally(() => setIsLoadingVote(false));
-  }, [
-    votingMethod,
-    readOnchainVotes,
-    post,
-    dbVotes,
-    isMounted,
-    singleApprovalMotion,
-  ]);
-
-  const updateVotes = useCallback(() => {
-    setReadOnchainVotes(Date.now());
-  }, []);
 
   const refreshPageData = () =>
     fetchAndUpdatePost(postDispatch, type, post._id);
@@ -153,8 +102,6 @@ export default function MotionDetail() {
         prime={prime}
         motionHash={post.hash}
         motionIndex={post.motionIndex}
-        onInBlock={updateVotes}
-        isLoadingVote={isLoadingVote}
       />
       <DetailMultiTabs
         call={
