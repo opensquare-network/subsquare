@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 const CollectiveContext = createContext({});
 
-export function CollectiveProvider({ children, pallet = "council" }) {
+export default function CollectiveProvider({ children, pallet = "council" }) {
   return (
     <CollectiveContext.Provider value={{ pallet }}>
       {children}
