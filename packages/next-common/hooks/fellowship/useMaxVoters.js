@@ -1,8 +1,6 @@
 import { useOnchainData } from "../../context/post";
 import { useTrack } from "next-common/context/post/gov2/track";
-import useReferendumVotingFinishHeight, {
-  useReferendumVotingFinishIndexer
-} from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import { useMemo } from "react";
 import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
