@@ -7,9 +7,11 @@ export function useFellowshipParams(pallet = "fellowshipCore") {
     pallet,
     "params",
     [],
-    useCallback((rawOptional) => {
-      setParams(rawOptional.toJSON());
-    }, []),
+    {
+      callback: useCallback((rawOptional) => {
+        setParams(rawOptional.toJSON());
+      }, []),
+    },
   );
 
   return { isLoading, params };

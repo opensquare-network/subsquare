@@ -10,14 +10,16 @@ export default function useSubCollectiveRank(
     pallet,
     "members",
     [address],
-    useCallback((rawOptional) => {
-      if (rawOptional.isSome) {
-        const unwrapped = rawOptional.unwrap();
-        setRank(unwrapped.rank.toNumber());
-      } else {
-        setRank(null);
-      }
-    }, []),
+    {
+      callback: useCallback((rawOptional) => {
+        if (rawOptional.isSome) {
+          const unwrapped = rawOptional.unwrap();
+          setRank(unwrapped.rank.toNumber());
+        } else {
+          setRank(null);
+        }
+      }, []),
+    },
   );
 
   return { rank, loading };

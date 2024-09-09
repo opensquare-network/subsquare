@@ -10,11 +10,13 @@ export default function useSubFellowshipCoreMember(
     pallet,
     "member",
     [address],
-    useCallback((rawOptional) => {
-      if (rawOptional.isSome) {
-        setMember(rawOptional.unwrap().toJSON());
-      }
-    }, []),
+    {
+      callback: useCallback((rawOptional) => {
+        if (rawOptional.isSome) {
+          setMember(rawOptional.unwrap().toJSON());
+        }
+      }, []),
+    },
   );
 
   return { isLoading: loading, member };

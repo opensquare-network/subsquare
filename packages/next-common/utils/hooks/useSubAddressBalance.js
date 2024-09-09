@@ -8,12 +8,14 @@ export default function useSubAddressBalance(address) {
     "system",
     "account",
     [address],
-    useCallback((account) => {
-      const balance = new BigNumber(account.data.free.toJSON())
-        .plus(account.data.reserved.toJSON())
-        .toString();
-      setBalance(balance);
-    }, []),
+    {
+      callback: useCallback((account) => {
+        const balance = new BigNumber(account.data.free.toJSON())
+          .plus(account.data.reserved.toJSON())
+          .toString();
+        setBalance(balance);
+      }, []),
+    },
   );
 
   return { balance, isLoading: loading };
