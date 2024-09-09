@@ -2,14 +2,12 @@ import { useSelector } from "react-redux";
 import { usePost, usePostOnChainData } from "next-common/context/post";
 import { useEffect, useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
-import toApiCouncil from "next-common/utils/toApiCouncil";
-import { useChain } from "next-common/context/chain";
-import { useDetailType } from "next-common/context/page";
 import useCollectiveProposal from "next-common/utils/hooks/collectives/useProposal";
 import useWeight from "next-common/utils/hooks/common/useWeight";
 import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useCollectivePallet } from "next-common/context/collective";
 
 const CloseMotionPopup = dynamicPopup(() => import("./closeMotionPopup"));
 
@@ -18,14 +16,12 @@ export default function Close() {
   const onchainData = usePostOnChainData();
   const { voting: { end, nays = [], ayes = [], threshold } = {} } =
     onchainData || {};
-  const chain = useChain();
-  const type = useDetailType();
   const { hash, motionIndex } = usePost();
-  const mod = toApiCouncil(chain, type);
-  const { proposal } = useCollectiveProposal(mod, onchainData.hash);
+  const pallet = useCollectivePallet();
+  const { proposal } = useCollectiveProposal(pallet, onchainData.hash);
 
   const { encodedCallLength, weight } = useWeight(proposal);
-  const { members, loading: membersLoading } = useCollectiveMembers(mod);
+  const { members, loading: membersLoading } = useCollectiveMembers(pallet);
   const hasFailed = threshold > Math.abs(members.length - nays.length);
   const [showClosePopup, setShowClosePopup] = useState(false);
 
@@ -60,8 +56,6 @@ export default function Close() {
       </SecondaryButton>
       {showClosePopup && (
         <CloseMotionPopup
-          chain={chain}
-          type={type}
           hash={hash}
           motionIndex={motionIndex}
           weight={weight}

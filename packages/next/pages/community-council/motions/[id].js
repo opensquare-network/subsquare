@@ -14,6 +14,7 @@ import { usePageProps } from "next-common/context/page";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import CollectiveProvider from "next-common/context/collective";
 
 function CommunityCouncilMotionContent() {
   const motion = usePost();
@@ -62,9 +63,11 @@ function MotionPageImpl() {
 
 export default function MotionPage({ motion }) {
   return (
-    <PostProvider post={motion}>
-      <MotionPageImpl />
-    </PostProvider>
+    <CollectiveProvider pallet="communityCouncil">
+      <PostProvider post={motion}>
+        <MotionPageImpl />
+      </PostProvider>
+    </CollectiveProvider>
   );
 }
 

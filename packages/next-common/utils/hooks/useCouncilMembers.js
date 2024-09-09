@@ -1,9 +1,9 @@
-import useCouncilName from "../../hooks/useCouncilName";
+import { useCollectivePallet } from "next-common/context/collective";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 
-export default function useCouncilMembers(type) {
-  const councilName = useCouncilName(type);
-  const { result } = useSubStorage(councilName, "members");
+export default function useCouncilMembers() {
+  const pallet = useCollectivePallet();
+  const { result } = useSubStorage(pallet, "members");
 
   return result?.toJSON();
 }
