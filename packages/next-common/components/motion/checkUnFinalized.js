@@ -2,17 +2,16 @@ import React, { useCallback } from "react";
 import nextApi from "next-common/services/nextApi";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 import { useDetailType } from "next-common/context/page";
-import { useChain } from "next-common/context/chain";
-import toApiCouncil from "next-common/utils/toApiCouncil";
 import { toApiType } from "next-common/utils/viewfuncs";
+import { useCollectivePallet } from "next-common/context/collective";
 
 export default function CheckUnFinalized({ id }) {
   const type = useDetailType();
-  const chain = useChain();
+  const pallet = useCollectivePallet();
 
   const findMotion = useCallback(
     async (api) => {
-      const councilApi = api.query[toApiCouncil(chain, type)];
+      const councilApi = api.query[pallet];
       if (!councilApi) {
         return;
       }
@@ -34,7 +33,7 @@ export default function CheckUnFinalized({ id }) {
         return await councilApi.proposalOf(id);
       }
     },
-    [id, chain, type],
+    [id, pallet],
   );
 
   return (

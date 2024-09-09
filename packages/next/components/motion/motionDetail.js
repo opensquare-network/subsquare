@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Vote from "./vote";
 import { useMountedState } from "react-use";
 import { isMotionEnded } from "next-common/utils";
-import toApiCouncil from "next-common/utils/toApiCouncil";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import Chains from "next-common/utils/consts/chains";
 import usePrime from "next-common/utils/hooks/usePrime";
@@ -22,6 +21,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
 import { useContextApi } from "next-common/context/api";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { useCollectivePallet } from "next-common/context/collective";
 
 const Business = dynamicClientOnly(() => import("./business"));
 
@@ -44,7 +44,8 @@ export default function MotionDetail() {
 
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
-  const votingMethod = api?.query?.[toApiCouncil(chain, type)]?.voting;
+  const pallet = useCollectivePallet();
+  const votingMethod = api?.query?.[pallet]?.voting;
   const isEdit = useSelector(isEditingPostSelector);
   const setIsEdit = useSetEdit();
 
