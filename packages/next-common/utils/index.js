@@ -148,9 +148,8 @@ export const estimateBlocksTime = (blocks, blockTime) => {
 };
 
 export function isMotionEnded(motion) {
-  return ["Closed", "Approved", "Executed", "Disapproved"].includes(
-    motion?.state?.state,
-  );
+  const { state, name } = motion?.state;
+  return ["Closed", "Approved", "Executed", "Disapproved"].includes(state || name);
 }
 
 export function isPolkadotKeyRegisteredUser(user) {

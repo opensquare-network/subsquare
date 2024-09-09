@@ -14,6 +14,7 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import CollectiveProvider from "next-common/context/collective";
 
 function MotionContent() {
   const motion = usePost();
@@ -24,7 +25,9 @@ function MotionContent() {
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
         <ContentWithComment>
-          <MotionDetail />
+          <CollectiveProvider>
+            <MotionDetail />
+          </CollectiveProvider>
         </ContentWithComment>
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>

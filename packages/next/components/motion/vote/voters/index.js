@@ -2,7 +2,6 @@
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Flex from "next-common/components/styled/flex";
 import Statistics from "next-common/components/styled/paragraph/statistic";
-import Loading from "next-common/components/loading";
 import MemberLinks from "../memberLinks";
 import { usePostOnChainData } from "next-common/context/post";
 import PrimeAddressMark from "next-common/components/primeAddressMark";
@@ -10,6 +9,7 @@ import AyeNay from "next-common/components/collective/AyeNay";
 import styled from "styled-components";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import AddressUser from "next-common/components/user/addressUser";
+import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
 
 const TipperList = styled.div`
   margin-top: 16px;
@@ -41,7 +41,8 @@ const VoterAddr = styled.div`
   gap: 8px;
 `;
 
-export default function Voters({ votes = [], isLoadingVote = false, prime }) {
+export default function Voters({ prime }) {
+  const votes = useCollectiveMotionVotes();
   const ayeVotesCount = votes.filter(([, approval]) => approval).length;
   const onchainData = usePostOnChainData();
 
@@ -77,7 +78,6 @@ export default function Voters({ votes = [], isLoadingVote = false, prime }) {
             {ayeVotesCount}/{onchainData?.threshold}
           </Statistics>
         </Flex>
-        <div>{isLoadingVote && <Loading size={16} />}</div>
       </StatisticTitleContainer>
       {voteList}
       <MemberLinks />
