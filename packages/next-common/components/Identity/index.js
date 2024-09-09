@@ -9,6 +9,7 @@ export default function Identity({
   maxWidth,
   className = "",
   ellipsis = false,
+  addressClassName = "",
 }) {
   if (!identity || identity?.info?.status === "NO_ID") {
     return null;
@@ -24,7 +25,10 @@ export default function Identity({
       <IdentityIcon identity={identity} className="mr-1" />
       <Tooltip
         content={shouldShowTooltip ? displayName : null}
-        className={cn(shouldShowTooltip && "!line-clamp-1 break-all")}
+        className={cn(
+          shouldShowTooltip && "!line-clamp-1 break-all",
+          addressClassName,
+        )}
         style={{ fontSize, maxWidth }}
       >
         {displayName}
