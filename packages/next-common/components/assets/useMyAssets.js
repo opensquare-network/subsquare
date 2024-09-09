@@ -24,7 +24,9 @@ function useSubscribeNativeBalance(address) {
     "system",
     "account",
     [address],
-    useCallback(({ data }) => setAccountInfo(data.toJSON()), []),
+    {
+      callback: useCallback(({ data }) => setAccountInfo(data.toJSON()), []),
+    },
   );
 
   return useMemo(() => {

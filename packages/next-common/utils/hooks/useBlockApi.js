@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 
-export default function useBlockApi(atBlockHeight) {
+export default function useBlockApi(atBlockHeightOrHash) {
   const [blockApi, setBlockApi] = useState();
   const api = useContextApi();
   useEffect(() => {
@@ -9,16 +9,20 @@ export default function useBlockApi(atBlockHeight) {
       return;
     }
 
-    if (!atBlockHeight) {
+    if (!atBlockHeightOrHash) {
       setBlockApi(api);
       return;
     }
 
-    api.rpc.chain
-      .getBlockHash(atBlockHeight)
-      .then((blockHash) => api.at(blockHash))
-      .then((blockApi) => setBlockApi(blockApi));
-  }, [api, atBlockHeight]);
+    if (/^\d+$/.test(atBlockHeightOrHash)) {
+      api.rpc.chain
+        .getBlockHash(atBlockHeightOrHash)
+        .then((blockHash) => api.at(blockHash))
+        .then((blockApi) => setBlockApi(blockApi));
+    } else {
+      api.at(atBlockHeightOrHash).then(blockApi => setBlockApi(blockApi));
+    }
+  }, [api, atBlockHeightOrHash]);
 
   return blockApi;
 }

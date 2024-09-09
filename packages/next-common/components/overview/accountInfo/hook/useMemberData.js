@@ -21,9 +21,11 @@ export default function useMemberData(section = "fellowship") {
     collectivePallet,
     "members",
     [address],
-    useCallback((rawOptional) => {
-      setCollectiveMember(rawOptional.toJSON());
-    }, []),
+    {
+      callback: useCallback((rawOptional) => {
+        setCollectiveMember(rawOptional.toJSON());
+      }, []),
+    },
   );
 
   const [coreMember, setCoreMember] = useState();
@@ -31,9 +33,11 @@ export default function useMemberData(section = "fellowship") {
     corePallet,
     "member",
     [address],
-    useCallback((rawOptional) => {
-      setCoreMember(rawOptional.toJSON());
-    }, []),
+    {
+      callback: useCallback((rawOptional) => {
+        setCoreMember(rawOptional.toJSON());
+      }, []),
+    },
   );
 
   const [coreParams, setCoreParams] = useState();
@@ -41,9 +45,11 @@ export default function useMemberData(section = "fellowship") {
     corePallet,
     "params",
     [],
-    useCallback((rawOptional) => {
-      setCoreParams(rawOptional.toJSON());
-    }, []),
+    {
+      callback: useCallback((rawOptional) => {
+        setCoreParams(rawOptional.toJSON());
+      }, []),
+    },
   );
 
   const isLoading =
