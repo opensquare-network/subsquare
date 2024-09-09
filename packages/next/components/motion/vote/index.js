@@ -11,11 +11,12 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const VotePopup = dynamicPopup(() => import("./popup"));
 
-export default function Vote({ motionHash, motionIndex }) {
+export default function MotionSideBar({ motionHash, motionIndex }) {
   const type = useDetailType();
   const [showPopup, setShowPopup] = useState(false);
   const { hideActionButtons } = useChainSettings();
-  // No openTechComm precompile at the moment
+
+  // No openTechComm precompile at the moment, for moonriver
   const noAction = type === detailPageCategory.OPEN_TECH_COMM_PROPOSAL;
 
   return (
