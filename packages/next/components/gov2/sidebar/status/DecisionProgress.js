@@ -1,4 +1,4 @@
-import { useDecisionBlocks, useDecisionEnd, useDecisionRemaining, } from "./useDecisionPercentage";
+import { useDecisionBlocks, useDecisionEnd, useDecisionRemaining } from "./useDecisionPercentage";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import Remaining from "next-common/components/remaining";
 import Progress from "next-common/components/progress";
 import TimeDuration from "next-common/components/TimeDuration";
-import { ProgressBarWrapper, ProgressGroup, ProgressInfo, Tooltip, } from "./styled";
+import { ProgressBarWrapper, ProgressGroup, ProgressInfo, Tooltip } from "./styled";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import Threshold from "next-common/components/referenda/threshold";
 import { useDecision } from "next-common/context/post/gov2/track";
