@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { noop } from "lodash-es";
 import { useDetailType } from "next-common/context/page";
 import Voters from "./voters";
 import Action from "./action";
@@ -12,10 +11,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const VotePopup = dynamicPopup(() => import("./popup"));
 
-export default function Vote({
-  motionHash,
-  motionIndex,
-}) {
+export default function Vote({ motionHash, motionIndex }) {
   const type = useDetailType();
   const [showPopup, setShowPopup] = useState(false);
   const { hideActionButtons } = useChainSettings();
