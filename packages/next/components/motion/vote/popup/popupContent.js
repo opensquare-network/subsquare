@@ -126,7 +126,7 @@ export default function PopupContent() {
           )
         }
       </SignerWrapper>
-      <CurrentVote currentVote={currentVote} isLoadingVotes={false} />
+      <CurrentVote currentVote={currentVote} />
       <VoteButton
         disabled={isMemberLoading || !canVote}
         doVote={doVote}
