@@ -100,6 +100,10 @@ function getFellowshipTreasurySpendsMenu() {
     name: Names.treasurySpends,
     pathname: "/fellowship/treasury/spends",
     extraMatchNavMenuActivePathnames: ["/fellowship/treasury/spends/[id]"],
+    excludeToChains: getExcludeChains([
+      Chains.collectives,
+      Chains.westendCollectives,
+    ]),
   };
 }
 
