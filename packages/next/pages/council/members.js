@@ -3,6 +3,7 @@ import MembersNoElections from "components/council/membersNoElections";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import CollectiveProvider from "next-common/context/collective";
 import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
 export default function MembersPage() {
   const category = "Council Members";
@@ -10,7 +11,7 @@ export default function MembersPage() {
   const chain = useChain();
 
   let pallet = "council";
-  if (["karura", "acala"].includes(chain)) {
+  if ([Chains.acala, Chains.karura].includes(chain)) {
     pallet = "generalCouncil";
   }
 
