@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import Loading from "next-common/components/loading";
 import { WarningMessage } from "next-common/components/popup/styled";
 import VoteStatusBox from "next-common/components/popup/voteStatusBox";
 import NoDataStatusBox from "next-common/components/popup/noDataStatusBox";
 import PopupLabel from "next-common/components/popup/label";
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
 const CurrentVotingWrapper = styled.div`
   > :not(:first-child) {
@@ -12,31 +10,24 @@ const CurrentVotingWrapper = styled.div`
   }
 `;
 
-const CurrentVotingLoading = styled(GreyPanel)`
-  height: 38px;
-  justify-content: center;
-`;
-
-export default function CurrentVote({ isLoadingVotes, currentVote }) {
+export default function CurrentVote({ currentVote }) {
   return (
     <CurrentVotingWrapper>
       <PopupLabel text={"Current Voting"} />
-      {isLoadingVotes && (
-        <CurrentVotingLoading>
-          <Loading />
-        </CurrentVotingLoading>
-      )}
-      {!isLoadingVotes &&
-        (currentVote ? (
+      {
+        currentVote ? (
           <VoteStatusBox aye={currentVote[1]}>Voting</VoteStatusBox>
         ) : (
           <NoDataStatusBox text={"No voting record"} />
-        ))}
-      {!isLoadingVotes && currentVote && (
-        <WarningMessage>
-          Resubmitting the vote will override the current voting record
-        </WarningMessage>
-      )}
+        )
+      }
+      {
+        currentVote && (
+          <WarningMessage>
+            Resubmitting the vote will override the current voting record
+          </WarningMessage>
+        )
+      }
     </CurrentVotingWrapper>
   );
 }
