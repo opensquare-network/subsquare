@@ -1,5 +1,5 @@
 import ArticleContent from "next-common/components/articleContent";
-import Vote from "./vote";
+import MotionSideBar from "./vote";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
@@ -48,7 +48,7 @@ export default function MotionDetail() {
         {!isEdit && <MotionHead motion={post} type={type} />}
         <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
       </DetailContentBase>
-      <Vote
+      <MotionSideBar
         motionHash={post.hash}
         motionIndex={post.motionIndex}
       />

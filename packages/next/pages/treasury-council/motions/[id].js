@@ -14,7 +14,7 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
-import CollectiveProvider from "next-common/context/collective";
+import CollectiveProvider, { collectivePallets } from "next-common/context/collective";
 
 function MotionContent() {
   const motion = usePost();
@@ -63,7 +63,7 @@ function MotionPageImpl() {
 
 export default function MotionPage({ motion }) {
   return (
-    <CollectiveProvider pallet="treasuryCouncilCollective">
+    <CollectiveProvider pallet={collectivePallets.treasuryCouncilCollective}>
       <PostProvider post={motion}>
         <MotionPageImpl />
       </PostProvider>
