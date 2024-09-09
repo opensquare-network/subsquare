@@ -1,14 +1,14 @@
 import MembersList from "next-common/components/membersList/simpleMembersList";
 import usePrime from "next-common/utils/hooks/usePrime";
-import useCouncilName from "next-common/hooks/useCouncilName";
 import useCall from "next-common/utils/hooks/useCall";
 import { useContextApi } from "next-common/context/api";
+import { useCollectivePallet } from "next-common/context/collective";
 
-export default function Members({ category, type }) {
+export default function MembersNoElections({ category }) {
   const api = useContextApi();
-  const councilName = useCouncilName(type);
+  const pallet = useCollectivePallet();
   const { value: members, loading: loadingMembers } = useCall(
-    api?.query[councilName]?.members,
+    api?.query[pallet]?.members,
     [],
   );
   const prime = usePrime();
