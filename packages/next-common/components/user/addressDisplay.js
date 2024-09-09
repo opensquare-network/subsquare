@@ -12,6 +12,7 @@ export default function AddressDisplay({
   maxWidth,
   ellipsis,
   noTooltip,
+  addressClassName = "",
 }) {
   const knownAddr = KNOWN_ADDR_MATCHERS.map((matcher) => matcher(address)).find(
     Boolean,
@@ -25,6 +26,7 @@ export default function AddressDisplay({
       fontSize={fontSize}
       color={color}
       maxWidth={maxWidth}
+      addressClassName={addressClassName}
     />
   );
 

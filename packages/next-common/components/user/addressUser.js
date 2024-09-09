@@ -25,6 +25,7 @@ export function AddressUserImpl({
   linkToVotesPage = false,
   ellipsis = true,
   externalLink,
+  addressClassName = "",
 }) {
   const displayAddress = tryConvertToEvmAddress(address);
 
@@ -34,6 +35,7 @@ export function AddressUserImpl({
       fontSize={fontSize}
       maxWidth={maxWidth}
       ellipsis={ellipsis}
+      addressClassName={addressClassName}
     />
   ) : (
     <AddressDisplay
@@ -43,6 +45,7 @@ export function AddressUserImpl({
       maxWidth={maxWidth}
       noTooltip={noTooltip}
       ellipsis={ellipsis}
+      addressClassName={addressClassName}
     />
   );
 
@@ -103,6 +106,7 @@ function AddressUser({
   linkToVotesPage = false,
   ellipsis = true,
   externalLink,
+  addressClassName = "",
 }) {
   const address = add;
   const [identity, hasIdentity] = useIdentityInfo(address);
@@ -130,6 +134,7 @@ function AddressUser({
       linkToVotesPage={linkToVotesPage}
       ellipsis={ellipsis}
       externalLink={externalLink}
+      addressClassName={addressClassName}
     />
   );
 }

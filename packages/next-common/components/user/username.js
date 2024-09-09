@@ -24,9 +24,20 @@ const Wrapper = styled.div`
         `}
 `;
 
-export default function Username({ username, fontSize, maxWidth, color }) {
+export default function Username({
+  username,
+  fontSize,
+  maxWidth,
+  color,
+  addressClassName = "",
+}) {
   return (
-    <Wrapper fontSize={fontSize} maxWidth={maxWidth} color={color}>
+    <Wrapper
+      fontSize={fontSize}
+      maxWidth={maxWidth}
+      color={color}
+      className={addressClassName}
+    >
       {username}
     </Wrapper>
   );
