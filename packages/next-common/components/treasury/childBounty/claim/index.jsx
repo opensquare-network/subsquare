@@ -9,7 +9,7 @@ export default function ChildBountyClaim() {
   const { hideActionButtons } = useChainSettings();
   const onChain = useOnchainData();
   if (
-    !["PendingPayout", "Claimed"].includes(onChain.state?.state) ||
+    !["PendingPayout", "Claimed"].includes(onChain?.state?.state) ||
     hideActionButtons
   ) {
     return null;
