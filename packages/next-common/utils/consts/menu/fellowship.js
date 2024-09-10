@@ -94,16 +94,29 @@ function getFellowshipReferendaMenu(
   };
 }
 
-function getFellowshipTreasurySpendsMenu() {
+function getFellowshipTreasuryMenu() {
   return {
-    value: "fellowship-treasury-spends",
-    name: Names.treasurySpends,
-    pathname: "/fellowship/treasury/spends",
-    extraMatchNavMenuActivePathnames: ["/fellowship/treasury/spends/[id]"],
+    value: "fellowship-treasury",
+    name: Names.treasury,
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship/treasury/spends",
+      "/fellowship/treasury/spends/[id]",
+    ],
     excludeToChains: getExcludeChains([
       Chains.collectives,
       Chains.westendCollectives,
     ]),
+    items: [
+      {
+        value: "fellowship-treasury-spends",
+        name: Names.treasurySpends,
+        pathname: "/fellowship/treasury/spends",
+        extraMatchNavMenuActivePathnames: [
+          "/fellowship/treasury/spends",
+          "/fellowship/treasury/spends/[id]",
+        ],
+      },
+    ],
   };
 }
 
@@ -142,7 +155,7 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
         currentTrackId,
         totalActiveCount,
       ),
-      getFellowshipTreasurySpendsMenu(),
+      getFellowshipTreasuryMenu(),
     ].filter(Boolean),
   };
 
