@@ -64,12 +64,12 @@ export default function DecisionProgress() {
     <ProgressGroup>
       <ProgressBarWrapper>
         <Tooltip content={<DecisionTooltip />}>
-          <Progress percentage={decisionPercentage}></Progress>
+          <Progress percentage={decisionPercentage} />
+          <OverDecisionMarker
+            allBlocks={allBlocks}
+            normalCaseBlocks={normalCaseBlocks}
+          />
         </Tooltip>
-        <OverDecisionMarker
-          allBlocks={allBlocks}
-          normalCaseBlocks={normalCaseBlocks}
-        />
       </ProgressBarWrapper>
 
       <ProgressInfo>

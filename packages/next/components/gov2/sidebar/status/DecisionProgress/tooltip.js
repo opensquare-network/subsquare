@@ -7,6 +7,7 @@ import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useDecision } from "next-common/context/post/gov2/track";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export default function DecisionTooltip() {
   const latestHeight = useSelector(chainOrScanHeightSelector);
@@ -14,10 +15,8 @@ export default function DecisionTooltip() {
   const decisionPeriod = useDecision();
   const decisionBlocks = useDecisionBlocks();
   const end = useDecisionEnd();
+  const votingFinishedHeight = useReferendumVotingFinishHeight();
   const blockTime = useSelector(blockTimeSelector);
-
-  const goneBlocks = latestHeight >= end ? decisionBlocks : latestHeight - decidingSince;
-  const goneTime = formatTimeDuration(goneBlocks * blockTime);
 
   const decisionPercentage = useMemo(() => {
     if (isNil(latestHeight)) {
@@ -31,12 +30,19 @@ export default function DecisionTooltip() {
     return Number((gone / decisionBlocks) * 100).toFixed(2);
   }, [latestHeight, decidingSince, decisionBlocks, end]);
 
+  if (isNil(latestHeight)) {
+    return null;
+  }
+
+  if (latestHeight >= end || latestHeight > votingFinishedHeight) {
+    return `Total decision time ${formatTimeDuration(decisionBlocks * blockTime)}`;
+  }
+
+  const goneBlocks = latestHeight >= end ? decisionBlocks : latestHeight - decidingSince;
+  const goneTime = formatTimeDuration(goneBlocks * blockTime);
   const leftBlocks = end - latestHeight;
   const leftTime = formatTimeDuration(blockTime * leftBlocks);
-
-  if (latestHeight >= end) {
-    return `Total decision time ${formatTimeDuration(decisionBlocks * blockTime)}`;
-  } else if (decisionBlocks <= decisionPeriod) {
+  if (decisionBlocks <= decisionPeriod) {
     return `${leftTime} remaining, ${decisionPercentage}%(${goneTime} has gone)`;
   }
 
