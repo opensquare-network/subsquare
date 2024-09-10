@@ -36,7 +36,7 @@ export default function TreasurySummary() {
   const chain = useChain();
   const api = useContextApi();
   const free = useTreasuryFree(api);
-  const toBeAwarded = useToBeAwarded(api);
+  const toBeAwarded = useToBeAwarded();
   const summary = useSpendPeriodSummary();
 
   const { data } = useDoTreasuryEcoQuery(GET_TREASURIES);

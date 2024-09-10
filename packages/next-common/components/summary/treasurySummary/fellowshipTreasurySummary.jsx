@@ -32,7 +32,7 @@ export default function FellowshipTreasurySummary() {
   const chain = useChain();
   const api = useAssetHubApi();
   const free = useTreasuryFree(api);
-  const toBeAwarded = useToBeAwarded(api);
+  const toBeAwarded = useToBeAwarded();
 
   const { data } = useDoTreasuryEcoQuery(GET_TREASURIES);
   const treasury = find(data?.treasuries, {
