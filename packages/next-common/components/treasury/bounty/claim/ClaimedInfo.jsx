@@ -1,12 +1,4 @@
-import styled from "styled-components";
-
-const ClaimInfoText = styled.div`
-  margin-top: 16px;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--textTertiary);
-`;
+import { ClaimInfoText } from "next-common/components/treasury/common/styled";
 
 export default function ClaimedInfo() {
   return <ClaimInfoText>This bounty has been claimed.</ClaimInfoText>;
