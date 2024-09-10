@@ -21,7 +21,7 @@ function WarningText() {
   // fixme: normalize nay votes number
   return <div className="flex text14Medium text-orange500 bg-orange100 rounded-[8px] py-2.5 px-4">
     Will be rejected immediately with over {toPrecision(needNayVotes, decimals, 2)} nay votes.
-  </div>
+  </div>;
 }
 
 export default function DecisionWarning() {
