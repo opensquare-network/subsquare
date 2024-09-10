@@ -14,8 +14,8 @@ function BountySidebar() {
   return (
     <RightBarWrapper>
       <BountySidebarBalance />
-      <BountySidebarCurator />
       <BountyClaim />
+      <BountySidebarCurator />
     </RightBarWrapper>
   );
 }
