@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useMountedState } from "react-use";
 import { useContextApi } from "next-common/context/api";
 
-export default function useCollectiveMembers(moduleName = "council") {
+export default function useCollectiveMembers(pallet = "council") {
   const api = useContextApi();
   const cache = useRef({});
   const isMounted = useMountedState();
@@ -10,25 +10,25 @@ export default function useCollectiveMembers(moduleName = "council") {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!api || !api.query?.[moduleName]?.members) {
+    if (!api || !api.query?.[pallet]?.members) {
       return;
     }
 
-    if (cache.current[moduleName]) {
+    if (cache.current[pallet]) {
       if (isMounted()) {
-        setMembers(cache.current[moduleName]);
+        setMembers(cache.current[pallet]);
       }
       return;
     }
 
     setLoading(true);
-    api.query[moduleName]
+    api.query[pallet]
       .members()
       .then((members) => {
         if (isMounted()) {
           const normalized = members.toJSON();
           setMembers(normalized);
-          cache.current[moduleName] = normalized;
+          cache.current[pallet] = normalized;
         }
       })
       .finally(() => {
@@ -36,7 +36,7 @@ export default function useCollectiveMembers(moduleName = "council") {
           setLoading(false);
         }
       });
-  }, [api, isMounted, moduleName]);
+  }, [api, isMounted, pallet]);
 
   return {
     members,

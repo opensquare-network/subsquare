@@ -148,8 +148,9 @@ export const estimateBlocksTime = (blocks, blockTime) => {
 };
 
 export function isMotionEnded(motion) {
+  const { state, name } = motion?.state || {};
   return ["Closed", "Approved", "Executed", "Disapproved"].includes(
-    motion?.state?.state,
+    state || name,
   );
 }
 
