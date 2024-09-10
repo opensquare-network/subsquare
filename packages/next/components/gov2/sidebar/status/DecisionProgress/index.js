@@ -5,24 +5,28 @@ import { isNil } from "lodash-es";
 import { useSelector } from "react-redux";
 import Progress from "next-common/components/progress";
 import TimeDuration from "next-common/components/TimeDuration";
-import { ProgressBarWrapper, ProgressGroup, ProgressInfo, Tooltip } from "../styled";
+import {
+  ProgressBarWrapper,
+  ProgressGroup,
+  ProgressInfo,
+  Tooltip,
+} from "../styled";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import Threshold from "next-common/components/referenda/threshold";
 import { useDecision } from "next-common/context/post/gov2/track";
 import { toPercentage } from "next-common/utils";
 import DecisionTooltip from "./tooltip";
 
-function OverDecisionMarker() {
-  const allBlocks = useDecisionBlocks();
-  const normalCaseBlocks = useDecision(); // track decision period
+function OverDecisionMarker({ allBlocks, normalCaseBlocks }) {
   if (normalCaseBlocks >= allBlocks) {
     return null; // only show it when over decision
   }
 
   return (
     <Threshold
-      thin={true}
+      thin={false}
       threshold={toPercentage(normalCaseBlocks / allBlocks, 2) + "%"}
+      className={"h-[16px] !top-0"}
     />
   );
 }
@@ -37,6 +41,9 @@ export default function DecisionProgress() {
 
   const decidingSince = useDecidingSince();
   const decisionEnd = useDecisionEnd();
+  // const decisionRemaining = useDecisionRemaining();
+  const normalCaseBlocks = useDecision();
+  const allBlocks = useDecisionBlocks();
 
   const decisionPercentage = useMemo(() => {
     if (isNil(latestHeight)) {
@@ -50,23 +57,28 @@ export default function DecisionProgress() {
     return Number((gone / decisionBlocks) * 100).toFixed(2);
   }, [latestHeight, decidingSince, decisionBlocks, decisionEnd]);
 
+  const decisionTimePercentage =
+    toPercentage(normalCaseBlocks / allBlocks, 2) || 100;
+
   return (
     <ProgressGroup>
       <ProgressBarWrapper>
         <Tooltip content={<DecisionTooltip />}>
           <Progress percentage={decisionPercentage}></Progress>
         </Tooltip>
-        <OverDecisionMarker />
+        <OverDecisionMarker
+          allBlocks={allBlocks}
+          normalCaseBlocks={normalCaseBlocks}
+        />
       </ProgressBarWrapper>
 
       <ProgressInfo>
         <span>Decision</span>
-        {/* fixme: fix decision time position by decision time percentage */}
-        <span className="absolute left-full">
-          <TimeDuration
-            blocks={period}
-            showMonths={false}
-          />
+        <span
+          className="absolute"
+          style={{ right: `${100 - decisionTimePercentage}%` }}
+        >
+          <TimeDuration blocks={period} showMonths={false} />
         </span>
       </ProgressInfo>
     </ProgressGroup>
