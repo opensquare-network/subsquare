@@ -94,7 +94,9 @@ function getFellowshipReferendaMenu(
   };
 }
 
-function getFellowshipTreasuryMenu() {
+function getFellowshipTreasuryMenu(overviewSummary) {
+  const fellowshipTreasurySpends =
+    overviewSummary?.fellowshipTreasurySpends || {};
   return {
     value: "fellowship-treasury",
     name: Names.treasury,
@@ -102,6 +104,8 @@ function getFellowshipTreasuryMenu() {
       "/fellowship/treasury/spends",
       "/fellowship/treasury/spends/[id]",
     ],
+    activeCount: fellowshipTreasurySpends.active || 0,
+
     excludeToChains: getExcludeChains([
       Chains.collectives,
       Chains.westendCollectives,
@@ -115,12 +119,14 @@ function getFellowshipTreasuryMenu() {
           "/fellowship/treasury/spends",
           "/fellowship/treasury/spends/[id]",
         ],
+        activeCount: fellowshipTreasurySpends.active || 0,
       },
     ],
   };
 }
 
-export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
+export function getFellowshipMenu(overviewSummary, currentTrackId) {
+  const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks || [];
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
 
   const menu = {
@@ -155,7 +161,9 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
         currentTrackId,
         totalActiveCount,
       ),
-      getFellowshipTreasuryMenu(),
+      dividerConfig,
+
+      getFellowshipTreasuryMenu(overviewSummary),
     ].filter(Boolean),
   };
 
