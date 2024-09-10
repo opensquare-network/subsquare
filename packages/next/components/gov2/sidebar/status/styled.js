@@ -19,6 +19,7 @@ export const Tooltip = styled(TooltipOrigin)`
 export const ProgressInfo = tw(FlexBetween)`
   text-textPrimary text12Medium
   py-1 pb-2
+  relative
 `;
 export const ProgressTooltipFailContent = styled.span`
   display: inline-flex;
