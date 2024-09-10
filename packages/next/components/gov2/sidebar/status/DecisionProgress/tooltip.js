@@ -17,7 +17,7 @@ export default function DecisionTooltip() {
   const blockTime = useSelector(blockTimeSelector);
 
   const goneBlocks = latestHeight >= end ? decisionBlocks : latestHeight - decidingSince;
-  const goneTime = formatTimeDuration(goneBlocks);
+  const goneTime = formatTimeDuration(goneBlocks * blockTime);
 
   const decisionPercentage = useMemo(() => {
     if (isNil(latestHeight)) {
@@ -31,11 +31,20 @@ export default function DecisionTooltip() {
     return Number((gone / decisionBlocks) * 100).toFixed(2);
   }, [latestHeight, decidingSince, decisionBlocks, end]);
 
-  if (decisionBlocks <= decisionPeriod && latestHeight < end) {
-    const leftBlocks = end - latestHeight;
-    const leftTime = formatTimeDuration(blockTime * leftBlocks);
-    return `${goneTime} gone, ${decisionPercentage}%, ${leftTime} remaining`;
-  } else if (latestHeight >= end) {
+  const leftBlocks = end - latestHeight;
+  const leftTime = formatTimeDuration(blockTime * leftBlocks);
+
+  if (latestHeight >= end) {
     return `Total decision time ${formatTimeDuration(decisionBlocks * blockTime)}`;
+  } else if (decisionBlocks <= decisionPeriod) {
+    return `${leftTime} remaining, ${decisionPercentage}%(${goneTime} has gone)`;
+  }
+
+  const maxDecisionTime = formatTimeDuration(decisionBlocks * blockTime);
+  const periodTime = formatTimeDuration(decisionPeriod * blockTime);
+  if (latestHeight - decidingSince <= decisionPeriod) {
+    return `${leftTime} left in ${periodTime} decision period, max decision time is ${maxDecisionTime}`;
+  } else {
+    return `${goneTime} has gone, max decision time is ${maxDecisionTime}`;
   }
 }
