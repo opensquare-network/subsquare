@@ -14,6 +14,8 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import { useAssetHubApi } from "next-common/context/assetHub";
+import collectives from "next-common/utils/consts/settings/collectives";
+import polkadot from "next-common/utils/consts/settings/polkadot";
 
 const GET_TREASURIES = gql`
   query GetTreasuries {
@@ -26,6 +28,7 @@ const GET_TREASURIES = gql`
 
 const CHAIN_VALUE_TREASURY_MAP = {
   [bifrostPolkadot.value]: bifrost.value,
+  [collectives.value]: polkadot.value,
 };
 
 export default function FellowshipTreasurySummary() {
