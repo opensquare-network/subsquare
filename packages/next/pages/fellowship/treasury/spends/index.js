@@ -2,10 +2,11 @@ import { withCommonProps } from "next-common/lib";
 import { fetchList } from "next-common/services/list";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ListLayout from "next-common/components/layout/ListLayout";
-import TreasurySummary from "next-common/components/summary/treasurySummary";
+import FellowshipTreasurySummary from "next-common/components/summary/treasurySummary/fellowshipTreasurySummary";
 import PostList from "next-common/components/postList";
 import { normalizeFellowshipTreasurySpendListItem } from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
 import { TreasuryProvider } from "next-common/context/treasury";
+import { AssetHubApiProvider } from "next-common/context/assetHub";
 
 export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const { items, total, page, pageSize } = pagedSpends;
@@ -16,20 +17,22 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <TreasuryProvider pallet="fellowshipTreasury">
-      <ListLayout
-        seoInfo={seoInfo}
-        title={category}
-        summary={<TreasurySummary />}
-      >
-        <PostList
-          category={category}
-          titleCount={total}
-          items={spends}
-          pagination={{ page, pageSize, total }}
-        />
-      </ListLayout>
-    </TreasuryProvider>
+    <AssetHubApiProvider>
+      <TreasuryProvider pallet="fellowshipTreasury">
+        <ListLayout
+          seoInfo={seoInfo}
+          title={category}
+          summary={<FellowshipTreasurySummary />}
+        >
+          <PostList
+            category={category}
+            titleCount={total}
+            items={spends}
+            pagination={{ page, pageSize, total }}
+          />
+        </ListLayout>
+      </TreasuryProvider>
+    </AssetHubApiProvider>
   );
 }
 

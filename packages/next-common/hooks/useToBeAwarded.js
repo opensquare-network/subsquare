@@ -1,13 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
-import { useContextApi } from "next-common/context/api";
 import { useTreasuryPallet } from "next-common/context/treasury";
 
 function isValidApi(api) {
   return api?.approvals && api?.proposals;
 }
 
-export default function useToBeAwarded() {
-  const api = useContextApi();
+export default function useToBeAwarded(api) {
   const pallet = useTreasuryPallet();
   const [toBeAwarded, setToBeAwarded] = useState();
 
