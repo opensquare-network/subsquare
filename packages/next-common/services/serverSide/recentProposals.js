@@ -226,9 +226,12 @@ export async function fetchRecentProposalsProps(summary = {}) {
     // console.log(treasurySpendMenu);
     // const hasTreasurySpend = !treasurySpendMenu.excludeToChains.includes(CHAIN);
     // if (hasTreasurySpend) {
-    recentProposalsData.fellowshipTreasurySpends = await fetcher(
+    const fellowshipTreasurySpends = await fetcher(
       overviewApi.fellowshipTreasurySpends,
     );
+    recentProposalsData.fellowshipTreasury = {
+      spends: fellowshipTreasurySpends,
+    };
     // }
   }
 

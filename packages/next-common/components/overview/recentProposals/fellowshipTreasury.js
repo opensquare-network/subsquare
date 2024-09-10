@@ -60,7 +60,7 @@ export function useRecentProposalFellowshipTreasury() {
           ...options,
           api: {
             ...options.api,
-            initData: recentProposals.treasury?.[item.value],
+            initData: recentProposals.fellowshipTreasury?.[item.value],
           },
           columns: [
             getProposalPostTitleColumn(),
