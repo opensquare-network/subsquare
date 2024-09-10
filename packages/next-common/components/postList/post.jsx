@@ -193,12 +193,16 @@ function PostAmount({ amount, decimals, symbol }) {
 
 export function TreasurySpendAmount({ meta }) {
   let { amount } = meta;
-  let symbol = isUsdtByMeta(meta) ? "USDT" : isUsdcByMeta(meta) ? "USDC" : null;
-  if (!symbol) {
-    return null;
+  const { symbol, decimals } = useChainSettings();
+  let assetSymbol = isUsdtByMeta(meta)
+    ? "USDT"
+    : isUsdcByMeta(meta)
+    ? "USDC"
+    : null;
+  if (assetSymbol) {
+    return <PostAmount amount={amount} symbol={assetSymbol} decimals={6} />;
   }
-
-  return <PostAmount amount={amount} symbol={symbol} decimals={6} />;
+  return <PostAmount amount={amount} symbol={symbol} decimals={decimals} />;
 }
 
 function PostValueTitle({ data, type }) {
@@ -208,7 +212,12 @@ function PostValueTitle({ data, type }) {
     ? onchainData?.treasuryInfo?.amount
     : value;
 
-  if (businessCategory.treasurySpends === type) {
+  if (
+    [
+      businessCategory.treasurySpends,
+      businessCategory.fellowshipTreasurySpends,
+    ].includes(type)
+  ) {
     return <TreasurySpendAmount meta={data?.meta} />;
   }
 

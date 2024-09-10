@@ -18,6 +18,7 @@ import {
   isUsdtByMeta,
 } from "next-common/utils/treasury/spend/usdCheck";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
+import { useChainSettings } from "next-common/context/chain";
 
 export function getReferendumPostTitleColumn() {
   return {
@@ -163,32 +164,45 @@ export function getRequestColumn() {
   };
 }
 
+function SpendRequestAmount({ meta }) {
+  const { decimals, symbol } = useChainSettings();
+
+  if (isNil(meta)) {
+    return "--";
+  }
+
+  let { amount } = meta;
+  let assetSymbol = isUsdtByMeta(meta)
+    ? "USDT"
+    : isUsdcByMeta(meta)
+    ? "USDC"
+    : null;
+
+  if (assetSymbol) {
+    return (
+      <ValueDisplay
+        className="text14Medium text-textPrimary"
+        value={toPrecision(amount, 6)}
+        symbol={assetSymbol}
+      />
+    );
+  }
+
+  return (
+    <ValueDisplay
+      className="text14Medium text-textPrimary"
+      value={toPrecision(amount, decimals)}
+      symbol={symbol}
+    />
+  );
+}
+
 export function getSpendRequestColumn() {
   return {
     name: "Request",
     className: "w-40 text-left",
     cellRender(data) {
-      if (!isNil(data.meta)) {
-        let { amount } = data.meta;
-        let symbol = isUsdtByMeta(data.meta)
-          ? "USDT"
-          : isUsdcByMeta(data.meta)
-          ? "USDC"
-          : null;
-
-        if (!symbol) {
-          return "--";
-        }
-
-        return (
-          <ValueDisplay
-            className="text14Medium text-textPrimary"
-            value={toPrecision(amount, 6)}
-            symbol={symbol}
-          />
-        );
-      }
-      return "--";
+      return <SpendRequestAmount meta={data.meta} />;
     },
   };
 }
