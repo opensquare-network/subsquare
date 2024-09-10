@@ -16,7 +16,7 @@ export default function NewMotionProposalInnerPopup({ onClose, onCreated }) {
   const [{ proposal, proposalLength }, setProposalState] = useState({
     proposalLength: 0,
   });
-  const [threshold, setThreshold] = useState(0);
+  const [threshold, setThreshold] = useState(1);
   const members = useCouncilMembers();
 
   const thresholdDefault = Math.ceil(members?.length / 2) + 1;
@@ -78,7 +78,7 @@ export default function NewMotionProposalInnerPopup({ onClose, onCreated }) {
           <div>
             <PopupLabel text="Threshold" />
             <InputNumber
-              value={threshold}
+              value={threshold || 1}
               setValue={setThreshold}
               min={1}
               max={members?.length}
