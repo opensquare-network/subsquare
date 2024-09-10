@@ -3,7 +3,7 @@ import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import Claim from "components/childBounty/claim";
+import ChildBountySidebar from "components/childBounty/sidebar";
 import {
   PostProvider,
   useOnchainData,
@@ -46,7 +46,7 @@ function ChildBountyContent() {
       <OffChainCommentActionsProvider>
         <ContentWithComment>
           <ChildBountyDetail />
-          <Claim />
+          <ChildBountySidebar />
           <DetailMultiTabs
             metadata={
               <Metadata

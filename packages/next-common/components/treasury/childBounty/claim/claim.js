@@ -7,7 +7,7 @@ import { childBountyStatusSelector } from "next-common/store/reducers/childBount
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const Popup = dynamicPopup(() => import("../popup"));
+const Popup = dynamicPopup(() => import("./popup"));
 
 export default function Claim() {
   const onChain = useOnchainData();
