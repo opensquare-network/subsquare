@@ -29,7 +29,8 @@ import {
   getCommunityTreasuryMenu,
   Names as communityTreasuryNames,
 } from "next-common/utils/consts/menu/communityTreasury";
-import { isShibuyaChain } from "next-common/utils/chain";
+import { isCollectivesChain, isShibuyaChain } from "next-common/utils/chain";
+// import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 
 export const recentProposalFetchParams = {
   pageSize: 10,
@@ -215,6 +216,20 @@ export async function fetchRecentProposalsProps(summary = {}) {
       recentProposalsData[communityTreasuryNames.communityTreasury].proposals =
         await fetcher(overviewApi.communityTreasuryProposals);
     }
+  }
+
+  if (isCollectivesChain(CHAIN)) {
+    // const fellowshipMenu = getFellowshipMenu(summary);
+    // const treasurySpendMenu = fellowshipMenu.items.find(
+    //   (item) => item.value === "fellowship-treasury-spends",
+    // );
+    // console.log(treasurySpendMenu);
+    // const hasTreasurySpend = !treasurySpendMenu.excludeToChains.includes(CHAIN);
+    // if (hasTreasurySpend) {
+    recentProposalsData.fellowshipTreasurySpends = await fetcher(
+      overviewApi.fellowshipTreasurySpends,
+    );
+    // }
   }
 
   return recentProposalsData;

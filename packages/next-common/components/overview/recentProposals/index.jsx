@@ -16,6 +16,7 @@ import { partition } from "lodash-es";
 import EmptyRecentProposals from "./empty";
 import { useRecentProposalCommunityCouncil } from "./communityCouncil";
 import { useRecentProposalCommunityTreasury } from "./communityTreasury";
+import { useRecentProposalFellowshipTreasury } from "./fellowshipTreasury";
 
 export default function RecentProposals() {
   const chain = useChain();
@@ -35,6 +36,7 @@ export default function RecentProposals() {
   const advisoryCommittee = useRecentProposalAdvisoryCommittee();
   const communityCouncil = useRecentProposalCommunityCouncil();
   const communityTreasury = useRecentProposalCommunityTreasury();
+  const fellowshipTreasury = useRecentProposalFellowshipTreasury();
 
   const {
     modules: { referenda: hasReferenda, fellowship: hasFellowship },
@@ -44,6 +46,7 @@ export default function RecentProposals() {
     hasFellowship && fellowship,
     democracy,
     treasury,
+    fellowshipTreasury,
     !isPolkadotChain && council,
     !isPolkadotChain && tc,
     financialCouncil,
