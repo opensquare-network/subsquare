@@ -1,4 +1,4 @@
-import { useDecisionBlocks, useDecisionEnd, useDecisionRemaining } from "../useDecisionPercentage";
+import { useDecisionBlocks, useDecisionEnd } from "../useDecisionPercentage";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
@@ -37,7 +37,6 @@ export default function DecisionProgress() {
 
   const decidingSince = useDecidingSince();
   const decisionEnd = useDecisionEnd();
-  const decisionRemaining = useDecisionRemaining();
 
   const decisionPercentage = useMemo(() => {
     if (isNil(latestHeight)) {
