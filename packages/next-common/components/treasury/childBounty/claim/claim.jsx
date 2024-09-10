@@ -13,6 +13,7 @@ export default function Claim() {
   const onChain = useOnchainData();
   const [showPopup, setShowPopup] = useState(false);
   const chainHeight = useSelector(chainOrScanHeightSelector);
+  console.log("::::::chainHeight", chainHeight, onChain);
 
   const status = useSelector(childBountyStatusSelector);
   if (!status || !status.pendingPayout) {
