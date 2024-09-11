@@ -13,7 +13,10 @@ import {
 } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
 import CardHeader from "next-common/components/overview/centrifugeStats/cardHeader";
-import { DetailList, DetailRow } from "next-common/components/overview/centrifugeStats/detailRow";
+import {
+  DetailList,
+  DetailRow,
+} from "next-common/components/overview/centrifugeStats/detailRow";
 import useCfgBasicData from "next-common/context/centrifuge/basicData";
 import BigNumber from "bignumber.js";
 import PriceCard from "./priceCard";
@@ -38,7 +41,7 @@ const TypeGroup = styled(Flex)`
 
 function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
   return (
-    <TypeGroup separator={separator}>
+    <TypeGroup separator={separator} className="space-x-1">
       <SummaryGreyText className="text16Bold">{label}</SummaryGreyText>
       <ActiveValue tooltip={tooltip} href={href} value={value} />
     </TypeGroup>
@@ -182,7 +185,8 @@ function Supply() {
   const { symbol } = useChainSettings();
 
   const [collapsed] = useNavCollapsed();
-  const [{ data: { supply = {} } = {}, loading: isLoading }] = useCfgBasicData();
+  const [{ data: { supply = {} } = {}, loading: isLoading }] =
+    useCfgBasicData();
   const { total = 0, wrapped = 0 } = supply;
 
   return (

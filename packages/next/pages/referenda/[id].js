@@ -87,17 +87,15 @@ function ReferendumPageImpl() {
     return <ReferendumNullPage />;
   }
 
-  return (
-    <ReferendaPalletProvider pallet="referenda">
-      <ReferendumPageWithPost />
-    </ReferendaPalletProvider>
-  );
+  return <ReferendumPageWithPost />;
 }
 
 export default function ReferendumPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <ReferendumPageImpl />
+      <ReferendaPalletProvider pallet="referenda">
+        <ReferendumPageImpl />
+      </ReferendaPalletProvider>
     </PostProvider>
   );
 }

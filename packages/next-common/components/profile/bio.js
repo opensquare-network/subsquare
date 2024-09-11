@@ -60,7 +60,13 @@ const DisplayUserAvatar = ({ address, user }) => (
 
 const DisplayUser = ({ id }) => {
   if (isPolkadotAddress(id) || isEthereumAddress(id)) {
-    return <AddressUser add={id} showAvatar={false} fontSize={16} />;
+    return (
+      <AddressUser
+        add={id}
+        showAvatar={false}
+        addressClassName={"!text16Bold"}
+      />
+    );
   }
 
   return <Username>{id}</Username>;

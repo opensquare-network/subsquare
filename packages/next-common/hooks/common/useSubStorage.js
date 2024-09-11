@@ -10,9 +10,11 @@ export default function useSubStorage(
   pallet,
   storage,
   params = [],
-  callbackFn,
+  options = {}, // callback or api
 ) {
-  const api = useContextApi();
+  const { callback, api: optionApi } = options;
+  let contextApi = useContextApi();
+  const api = optionApi || contextApi;
   const [cachedResult, setCachedResult] = useCachedResult();
   const [loading, setLoading] = useState(true);
 
@@ -35,14 +37,7 @@ export default function useSubStorage(
     }
 
     const queryStorage = api?.query[pallet]?.[storage];
-
     if (!queryStorage) {
-      setLoading(false);
-      return;
-    }
-
-    const meta = queryStorage.meta;
-    if (meta.type?.isMap && filteredParams.length !== 1) {
       setLoading(false);
       return;
     }
@@ -51,7 +46,7 @@ export default function useSubStorage(
       subs[key].unsub = await queryStorage(
         ...filteredParams,
         (subscribeResult) => {
-          callbackFn?.(subscribeResult);
+          callback?.(subscribeResult);
 
           setCachedResult((val) => {
             return {
@@ -65,11 +60,11 @@ export default function useSubStorage(
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, pallet, storage, ...filteredParams, key, callbackFn]);
+  }, [api, pallet, storage, ...filteredParams, key, callback]);
 
   useEffect(() => {
-    if (result && callbackFn) {
-      callbackFn(result);
+    if (result && callback) {
+      callback(result);
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

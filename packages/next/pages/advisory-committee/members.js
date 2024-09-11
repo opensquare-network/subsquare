@@ -1,32 +1,30 @@
-import MembersList from "next-common/components/membersList/simpleMembersList";
-import useCall from "next-common/utils/hooks/useCall";
-import { useEffect, useState } from "react";
-import usePrime from "next-common/utils/hooks/usePrime";
 import ListLayout from "next-common/components/layout/ListLayout";
+import MembersList from "next-common/components/membersList/simpleMembersList";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
-import { useContextApi } from "next-common/context/api";
+import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
+import usePrime from "next-common/utils/hooks/usePrime";
 
 export default function AdvisoryCommitteeMembersPage() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const api = useContextApi();
-  const { value: members } = useCall(
-    api?.query?.advisoryCommittee?.members,
-    [],
+  return (
+    <CollectiveProvider pallet={collectivePallets.advisoryCommittee}>
+      <AdvisoryCommitteeMembersPageImpl />
+    </CollectiveProvider>
   );
-  const prime = usePrime();
-  useEffect(() => {
-    if (members) {
-      setData(members.toJSON() || []);
-      setLoading(false);
-    }
-  }, [members]);
+}
+
+function AdvisoryCommitteeMembersPageImpl() {
   const category = "Advisory Council Members";
   const seoInfo = { title: category, desc: category };
 
+  const members = useCouncilMembers();
+  const prime = usePrime();
+
   return (
     <ListLayout title={category} seoInfo={seoInfo}>
-      <MembersList prime={prime} items={data} loading={loading} />
+      <MembersList prime={prime} items={members || []} loading={!members} />
     </ListLayout>
   );
 }

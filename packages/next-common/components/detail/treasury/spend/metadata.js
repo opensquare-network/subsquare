@@ -10,20 +10,14 @@ export default function TreasurySpendMetadata({ spend = {} }) {
   const meta = spend?.meta || {};
   const proposer = spend?.proposer;
   const { validFrom, expireAt } = meta;
-  const {
-    isAssetHubUsdc,
-    isAssetHubUsdt,
-    amount,
-    symbol,
-    decimals,
-    beneficiary,
-  } = useTreasurySpendRequest(meta);
+  const { amount, symbol, decimals, beneficiary } =
+    useTreasurySpendRequest(meta);
 
   const data = [];
   if (proposer) {
     data.push(["Proposer", <AddressUser add={proposer} key="proposer" />]);
   }
-  if (isAssetHubUsdt || isAssetHubUsdc) {
+  if (symbol) {
     data.push([
       "Request",
       <div

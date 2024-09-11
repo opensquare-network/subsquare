@@ -1,23 +1,23 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import toApiCouncil from "next-common/utils/toApiCouncil";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
-import { noop } from "lodash-es";
 import { VoteEnum } from "next-common/utils/voteEnum";
-import { useChain } from "next-common/context/chain";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
-import Loading from "next-common/components/loading";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 import { wrapWithProxy } from "next-common/utils/sendTransaction";
+import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
+import { useCollectivePallet } from "next-common/context/collective";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -26,45 +26,35 @@ const SignerWrapper = styled.div`
 `;
 
 export default function PopupContent() {
-  const {
-    votes,
-    refVotes,
-    isLoadingVotes,
-    motionHash,
-    motionIndex,
-    onClose,
-    onInBlock = noop,
-    type,
-  } = usePopupParams();
-  const chain = useChain();
+  const { motionHash, motionIndex, onClose } = usePopupParams();
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
   const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
+  const votes = useCollectiveMotionVotes();
 
   const [loadingState, setLoadingState] = useState();
 
-  const { isMember: canVote, loading: isMemberLoading } = useIsCollectiveMember(
-    toApiCouncil(chain, type),
-  );
+  const pallet = useCollectivePallet();
+  const { isMember: canVote, loading: isMemberLoading } =
+    useIsCollectiveMember(pallet);
   const currentVote = votes.find(
     (item) => item[0] === signerAccount?.realAddress,
   );
 
   const getMyVoteAndShowSuccessful = useCallback(async () => {
-    const votes = refVotes?.current;
     if (!votes) {
       return;
     }
+
     const currentVote = votes.find(
       (item) => item[0] === signerAccount?.realAddress,
     );
-    if (!currentVote) {
-      return;
+    if (currentVote) {
+      showVoteSuccessful(currentVote);
     }
-    showVoteSuccessful(currentVote);
-  }, [refVotes, signerAccount?.realAddress, showVoteSuccessful]);
+  }, [votes, signerAccount?.realAddress, showVoteSuccessful]);
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -84,7 +74,7 @@ export default function PopupContent() {
         return;
       }
 
-      const voteMethod = api?.tx?.[toApiCouncil(chain, type)]?.vote;
+      const voteMethod = api?.tx?.[pallet]?.vote;
       if (!voteMethod) {
         showErrorToast("Chain network is not connected yet");
         return;
@@ -101,20 +91,17 @@ export default function PopupContent() {
         tx,
         onInBlock: () => {
           getMyVoteAndShowSuccessful();
-          onInBlock();
         },
         onSubmitted: onClose,
       });
     },
     [
       api,
-      chain,
-      type,
+      pallet,
       motionHash,
       motionIndex,
       signerAccount,
       sendTxFunc,
-      onInBlock,
       getMyVoteAndShowSuccessful,
       onClose,
       isSubmitting,
@@ -126,19 +113,13 @@ export default function PopupContent() {
     <>
       <SignerWrapper>
         <SignerWithBalance />
-        {isMemberLoading ? (
-          <WarningMessage className="justify-center">
-            <div className="h-[19.6px]">
-              <Loading size={14} />
-            </div>
-          </WarningMessage>
-        ) : (
-          <WarningMessage danger={!canVote}>
+        {!isMemberLoading && !canVote && (
+          <WarningMessage danger={true}>
             Only council members can vote.
           </WarningMessage>
         )}
       </SignerWrapper>
-      <CurrentVote currentVote={currentVote} isLoadingVotes={isLoadingVotes} />
+      <CurrentVote currentVote={currentVote} />
       <VoteButton
         disabled={isMemberLoading || !canVote}
         doVote={doVote}

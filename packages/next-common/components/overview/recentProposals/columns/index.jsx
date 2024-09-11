@@ -13,10 +13,7 @@ import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
 import { useEffect, useState } from "react";
-import {
-  isUsdcByMeta,
-  isUsdtByMeta,
-} from "next-common/utils/treasury/spend/usdCheck";
+import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 export function getReferendumPostTitleColumn() {
@@ -164,28 +161,22 @@ export function getRequestColumn() {
 }
 
 function SpendRequestAmount({ meta }) {
-  if (isNil(meta)) {
-    return "--";
+  if (!isNil(meta)) {
+    let { amount } = meta;
+    const asset = getAssetByMeta(meta);
+    if (!asset) {
+      return "--";
+    }
+
+    return (
+      <ValueDisplay
+        className="text14Medium text-textPrimary"
+        value={toPrecision(amount, asset.decimals)}
+        symbol={asset.symbol}
+      />
+    );
   }
-
-  let { amount } = meta;
-  let assetSymbol = isUsdtByMeta(meta)
-    ? "USDT"
-    : isUsdcByMeta(meta)
-    ? "USDC"
-    : null;
-
-  if (!assetSymbol) {
-    return "--";
-  }
-
-  return (
-    <ValueDisplay
-      className="text14Medium text-textPrimary"
-      value={toPrecision(amount, 6)}
-      symbol={assetSymbol}
-    />
-  );
+  return "--";
 }
 
 export function getSpendRequestColumn() {

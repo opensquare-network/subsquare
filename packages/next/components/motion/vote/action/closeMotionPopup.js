@@ -1,11 +1,9 @@
-import toApiCouncil from "next-common/utils/toApiCouncil";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 import { useCallback } from "react";
+import { useCollectivePallet } from "next-common/context/collective";
 
 export default function CloseMotionPopup({
-  chain,
-  type,
   hash,
   motionIndex,
   weight,
@@ -14,9 +12,10 @@ export default function CloseMotionPopup({
   onClose,
 }) {
   const api = useContextApi();
+  const pallet = useCollectivePallet();
 
   const getTxFunc = useCallback(async () => {
-    const closeMethod = api?.tx?.[toApiCouncil(chain, type)]?.close;
+    const closeMethod = api?.tx?.[pallet]?.close;
     if (!closeMethod) {
       return;
     }
@@ -30,16 +29,7 @@ export default function CloseMotionPopup({
       tx = closeMethod(hash, motionIndex, weight, encodedCallLength);
     }
     return tx;
-  }, [
-    api,
-    chain,
-    type,
-    hash,
-    motionIndex,
-    weight,
-    encodedCallLength,
-    hasFailed,
-  ]);
+  }, [api, pallet, hash, motionIndex, weight, encodedCallLength, hasFailed]);
 
   return (
     <SimpleTxPopup

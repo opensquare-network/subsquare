@@ -6,11 +6,8 @@ export default function useSubCollectiveRank(
   pallet = "fellowshipCollective",
 ) {
   const [rank, setRank] = useState(undefined);
-  const { loading } = useSubStorage(
-    pallet,
-    "members",
-    [address],
-    useCallback((rawOptional) => {
+  const { loading } = useSubStorage(pallet, "members", [address], {
+    callback: useCallback((rawOptional) => {
       if (rawOptional.isSome) {
         const unwrapped = rawOptional.unwrap();
         setRank(unwrapped.rank.toNumber());
@@ -18,7 +15,7 @@ export default function useSubCollectiveRank(
         setRank(null);
       }
     }, []),
-  );
+  });
 
   return { rank, loading };
 }

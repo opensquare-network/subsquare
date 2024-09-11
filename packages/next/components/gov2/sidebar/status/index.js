@@ -9,6 +9,7 @@ import PlaceDecisionDeposit from "./preparation/decisionDeposit";
 import EnactmentProgress from "./enactment";
 import Zoom from "./zoom";
 import { ZoomProvider } from "./context/zoomContext";
+import DecisionWarning from "./warning";
 
 export default function Gov2Status() {
   const state = usePostState();
@@ -48,6 +49,7 @@ export default function Gov2Status() {
       <StatusWrapper titleExtra={<Zoom />}>
         <DecisionProgress />
         <ConfirmProgress />
+        <DecisionWarning />
       </StatusWrapper>
     </ZoomProvider>
   );

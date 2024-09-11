@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { noop } from "lodash-es";
+import { useState } from "react";
 import { useDetailType } from "next-common/context/page";
 import Voters from "./voters";
 import Action from "./action";
@@ -12,30 +11,18 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const VotePopup = dynamicPopup(() => import("./popup"));
 
-export default function Vote({
-  votes = [],
-  prime,
-  motionHash,
-  motionIndex,
-  isLoadingVote = false,
-  onInBlock = noop,
-}) {
+export default function MotionSideBar({ motionHash, motionIndex }) {
   const type = useDetailType();
   const [showPopup, setShowPopup] = useState(false);
   const { hideActionButtons } = useChainSettings();
-  const refVotes = useRef();
 
-  useEffect(() => {
-    refVotes.current = votes;
-  }, [votes]);
-
-  // No openTechComm precompile at the moment
+  // No openTechComm precompile at the moment, for moonriver
   const noAction = type === detailPageCategory.OPEN_TECH_COMM_PROPOSAL;
 
   return (
     <>
       <RightBarWrapper>
-        <Voters votes={votes} isLoadingVote={isLoadingVote} prime={prime} />
+        <Voters />
         {!hideActionButtons && !noAction && (
           <Action setShowPopup={setShowPopup} />
         )}
@@ -43,13 +30,9 @@ export default function Vote({
       <VoteSuccessfulProvider VoteSuccessfulPopup={VoteSuccessfulPopup}>
         {showPopup && (
           <VotePopup
-            votes={votes}
-            refVotes={refVotes}
             motionHash={motionHash}
             motionIndex={motionIndex}
-            type={type}
             onClose={() => setShowPopup(false)}
-            onInBlock={onInBlock}
           />
         )}
       </VoteSuccessfulProvider>
