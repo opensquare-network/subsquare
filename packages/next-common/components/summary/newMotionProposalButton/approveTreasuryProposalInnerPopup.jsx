@@ -4,38 +4,36 @@ import PopupLabel from "next-common/components/popup/label";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
-import { useCollectivePallet } from "next-common/context/collective";
+import nextApi from "next-common/services/nextApi";
 import { useCallback, useState } from "react";
-import { useAsync } from "react-use";
+import { useAsync, useDebounce } from "react-use";
 
 export default function ApproveTreasuryProposalInnerPopup({
   onClose,
   onSubmitted,
 }) {
   const api = useContextApi();
-  const pallet = useCollectivePallet();
   const [inputProposal, setInputProposal] = useState("");
+  const [debouncedInputProposal, setDebouncedInputProposal] = useState("");
+  useDebounce(
+    () => {
+      setDebouncedInputProposal(inputProposal);
+    },
+    300,
+    [inputProposal],
+  );
 
-  // FIXME: council proposal, fetch proposals
+  // FIXME: council proposal, fetch proposal from on-chain
   // eslint-disable-next-line no-unused-vars
-  const { value: proposals, loading } = useAsync(async () => {
-    if (!api) {
-      return [];
+  const { loading, value: proposalData } = useAsync(async () => {
+    if (!api || !debouncedInputProposal) {
+      return null;
     }
-
-    const proposalHashes = await api?.query?.[pallet]?.proposals?.();
-    const proposalsWithDetails = await Promise.all(
-      proposalHashes.map(async (hash) => {
-        const proposal = await api.query[pallet].proposalOf(hash);
-        return {
-          hash: hash.toHex(),
-          proposal: proposal.toJSON(),
-        };
-      }),
+    const { result: proposal } = await nextApi.fetch(
+      `community-council/motions/${debouncedInputProposal}`,
     );
-
-    return proposalsWithDetails;
-  }, [api, pallet]);
+    return proposal;
+  }, [api, debouncedInputProposal]);
 
   const disabled = !inputProposal || loading;
 
