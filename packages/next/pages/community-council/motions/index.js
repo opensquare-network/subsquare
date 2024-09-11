@@ -7,6 +7,10 @@ import { useChainSettings } from "next-common/context/chain";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import { fetchList } from "next-common/services/list";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
+import NewMotionProposalButton from "next-common/components/summary/newMotionProposalButton";
 
 export default function MotionsPage({ motions }) {
   const chainSettings = useChainSettings();
@@ -21,22 +25,25 @@ export default function MotionsPage({ motions }) {
   };
 
   return (
-    <ListLayout
-      title={chainSettings.name}
-      seoInfo={seoInfo}
-      description={chainSettings.description}
-      headContent={<ChainSocialLinks />}
-    >
-      <PostList
-        category={category}
-        items={items}
-        pagination={{
-          page: motions.page,
-          pageSize: motions.pageSize,
-          total: motions.total,
-        }}
-      />
-    </ListLayout>
+    <CollectiveProvider pallet={collectivePallets.communityCouncil}>
+      <ListLayout
+        title={chainSettings.name}
+        seoInfo={seoInfo}
+        description={chainSettings.description}
+        headContent={<ChainSocialLinks />}
+      >
+        <PostList
+          category={category}
+          titleExtra={<NewMotionProposalButton />}
+          items={items}
+          pagination={{
+            page: motions.page,
+            pageSize: motions.pageSize,
+            total: motions.total,
+          }}
+        />
+      </ListLayout>
+    </CollectiveProvider>
   );
 }
 
