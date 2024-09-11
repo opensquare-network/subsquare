@@ -24,7 +24,7 @@ function _isAssetHubX2(assetId = {}) {
 
 function _isAssetHere(assetId = {}) {
   const { parents, interior } = assetId || {};
-  return parents === 1 && interior?.here === null;
+  return parents === 1 && "here" in interior;
 }
 
 function getAssetHubAsset(assetId = {}) {
