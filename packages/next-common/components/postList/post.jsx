@@ -192,17 +192,18 @@ function PostAmount({ amount, decimals, symbol }) {
 }
 
 export function TreasurySpendAmount({ meta }) {
-  let { amount } = meta;
-  const { symbol, decimals } = useChainSettings();
-  let assetSymbol = isUsdtByMeta(meta)
+  const { amount } = meta;
+  const assetSymbol = isUsdtByMeta(meta)
     ? "USDT"
     : isUsdcByMeta(meta)
     ? "USDC"
     : null;
-  if (assetSymbol) {
-    return <PostAmount amount={amount} symbol={assetSymbol} decimals={6} />;
+
+  if (!assetSymbol) {
+    return null;
   }
-  return <PostAmount amount={amount} symbol={symbol} decimals={decimals} />;
+
+  return <PostAmount amount={amount} symbol={assetSymbol} decimals={6} />;
 }
 
 function PostValueTitle({ data, type }) {
