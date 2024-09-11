@@ -13,6 +13,7 @@ date: 2024-09-11
 - Use subscription to update collective votes, so we don't have to trigger the update after vote.
 - Add claim button on bounty detail page.
 - Extract assets info by XCM v4 on treasury related spends pages.
+- Improve account info layout on polkadot assethub.
 - Refactor:
     - Support block hash as param for hook `useBlockApi`.
     - Support custom api for hook `useSubStorage`.
