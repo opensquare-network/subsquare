@@ -3,11 +3,71 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
+import TokenSymbolAssets from "../common/tokenSymbolAssets";
+import LabelItem from "../common/LabelItem";
+
+function TokenSymbolAssetsList() {
+  // TODO: mock data
+  const MockTokenSybmbolAssets = [
+    {
+      type: "native",
+      amount: 123321,
+      symbol: "DOT",
+    },
+  ];
+
+  return MockTokenSybmbolAssets.map((item) => {
+    return (
+      <TokenSymbolAssets
+        type={item.type}
+        amount={item.amount}
+        symbol={item.symbol}
+      />
+    );
+  });
+}
+
+function LabelItems() {
+  const { decimals } = useChainSettings();
+  // TODO: mock data
+  const balance1 = 12343545;
+  const balance2 = 12343545;
+  const symbol1 = "DOT";
+  const symbol2 = "USDC";
+
+  return (
+    <>
+      <LabelItem label={"To be awarded"}>
+        <ValueDisplay
+          value={toPrecision(balance1, decimals)}
+          symbol={symbol1}
+          className={"text12Medium text-textPrimary"}
+          showApproximationSymbol={false}
+        />
+      </LabelItem>
+      <LabelItem label={"Next burn"}>
+        <ValueDisplay
+          value={toPrecision(balance2, decimals)}
+          symbol={symbol2}
+          className={"text12Medium text-textPrimary"}
+          showApproximationSymbol={false}
+        />
+      </LabelItem>
+      <LabelItem label={"Spend period"}>
+        <span className={"text12Medium text-textPrimary"}>
+          12d 12hrs
+          <span className="text-textTertiary ml-1">/ 24d</span>
+          <span className="ml-1">circle</span>
+        </span>
+      </LabelItem>
+    </>
+  );
+}
 
 export default function RelayChainTreasury() {
   // TODO: address, totalBalance
   const address = "";
-  const totalBalance = 123;
+  const totalBalance = 123456789;
   const { decimals } = useChainSettings();
 
   return (
@@ -20,6 +80,10 @@ export default function RelayChainTreasury() {
             value={toPrecision(totalBalance, decimals)}
             symbol={""}
           />
+        </div>
+        <div className="!ml-0">
+          <TokenSymbolAssetsList />
+          <LabelItems />
         </div>
       </LoadableContent>
     </SummaryItem>

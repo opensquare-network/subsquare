@@ -4,13 +4,39 @@ import Link from "next/link";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
+import TokenSymbolAssets from "../common/tokenSymbolAssets";
+
+function TokenSymbolAssetsList() {
+  // TODO: mock data
+  const MockTokenSybmbolAssets = [
+    {
+      type: "native",
+      amount: 123321,
+      symbol: "DOT",
+    },
+    {
+      type: "",
+      amount: 123321,
+      symbol: "USDC",
+    },
+  ];
+
+  return MockTokenSybmbolAssets.map((item) => {
+    return (
+      <TokenSymbolAssets
+        type={item.type}
+        amount={item.amount}
+        symbol={item.symbol}
+      />
+    );
+  });
+}
 
 export default function MultiAssetsTreasury() {
-   // TODO: address, totalBalance
-   const address = "";
-   const totalBalance = 123;
-   const { decimals } = useChainSettings();
- 
+  // TODO: address, totalBalance
+  const address = "";
+  const totalBalance = 123;
+  const { decimals } = useChainSettings();
 
   return (
     <SummaryItem
@@ -36,6 +62,9 @@ export default function MultiAssetsTreasury() {
             value={toPrecision(totalBalance, decimals)}
             symbol={""}
           />
+        </div>
+        <div className="!ml-0">
+          <TokenSymbolAssetsList />
         </div>
       </LoadableContent>
     </SummaryItem>
