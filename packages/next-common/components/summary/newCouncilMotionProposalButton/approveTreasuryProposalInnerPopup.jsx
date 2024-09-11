@@ -1,9 +1,13 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
+import { StatusWrapper } from "next-common/components/popup/styled";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
+import nextApi from "next-common/services/nextApi";
+import { isValidIntegerIndex } from "next-common/utils/isValidIntegerIndex";
+import Link from "next/link";
 import { useCallback, useState } from "react";
 import { useAsync, useDebounce } from "react-use";
 
@@ -18,12 +22,16 @@ export default function ApproveTreasuryProposalInnerPopup({
     () => {
       setDebouncedInputProposal(inputProposal);
     },
-    300,
+    500,
     [inputProposal],
   );
 
   const { loading, value: proposalData } = useAsync(async () => {
-    if (!api || !debouncedInputProposal) {
+    if (
+      !api ||
+      !debouncedInputProposal ||
+      !isValidIntegerIndex(debouncedInputProposal)
+    ) {
       return null;
     }
 
@@ -35,6 +43,18 @@ export default function ApproveTreasuryProposalInnerPopup({
 
     return proposal.toJSON();
   }, [api, debouncedInputProposal]);
+
+  const { loading: loadingTreasuryTitle, value: treasuryTitle } =
+    useAsync(async () => {
+      if (proposalData) {
+        const { result } = await nextApi.fetch(
+          `treasury/proposals/${debouncedInputProposal}`,
+        );
+        if (result?.title) {
+          return result.title;
+        }
+      }
+    }, [proposalData, debouncedInputProposal]);
 
   const disabled = !inputProposal || loading || !proposalData;
 
@@ -57,6 +77,19 @@ export default function ApproveTreasuryProposalInnerPopup({
             setInputProposal(e.target.value);
           }}
         />
+
+        {!loadingTreasuryTitle && treasuryTitle && (
+          <StatusWrapper className="mt-2">
+            <Link
+              className="cursor-pointer hover:underline"
+              target="_blank"
+              href={`/treasury/proposals/${debouncedInputProposal}`}
+              rel="noreferrer"
+            >
+              {treasuryTitle}
+            </Link>
+          </StatusWrapper>
+        )}
       </div>
 
       <TxSubmissionButton
