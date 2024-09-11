@@ -4,7 +4,6 @@ import PopupLabel from "next-common/components/popup/label";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
-import nextApi from "next-common/services/nextApi";
 import { useCallback, useState } from "react";
 import { useAsync, useDebounce } from "react-use";
 
@@ -23,19 +22,21 @@ export default function ApproveTreasuryProposalInnerPopup({
     [inputProposal],
   );
 
-  // FIXME: council proposal, fetch proposal from on-chain
-  // eslint-disable-next-line no-unused-vars
   const { loading, value: proposalData } = useAsync(async () => {
     if (!api || !debouncedInputProposal) {
       return null;
     }
-    const { result: proposal } = await nextApi.fetch(
-      `community-council/motions/${debouncedInputProposal}`,
-    );
-    return proposal;
+
+    const proposal = await api.query.treasury.proposals(debouncedInputProposal);
+
+    if (!proposal.isSome) {
+      return null;
+    }
+
+    return proposal.toJSON();
   }, [api, debouncedInputProposal]);
 
-  const disabled = !inputProposal || loading;
+  const disabled = !inputProposal || loading || !proposalData;
 
   const getTxFunc = useCallback(() => {}, []);
 
@@ -61,6 +62,7 @@ export default function ApproveTreasuryProposalInnerPopup({
       <TxSubmissionButton
         // TODO: council proposal, only collective member can do
         disabled={disabled}
+        loading={loading}
         getTxFunc={getTxFunc}
         onInBlock={() => {
           onSubmitted?.();
