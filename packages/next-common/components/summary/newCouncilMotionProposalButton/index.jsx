@@ -1,8 +1,8 @@
 import { useState } from "react";
 import NewButton from "../newProposalButton/newButton";
-import PromoteMotionPopup from "./promoteMotionPopup";
+import NewCouncilMotionProposalPopup from "./newCouncilMotionProposalPopup";
 
-export default function NewMotionProposalButton() {
+export default function NewCouncilMotionProposalButton() {
   const [showPopup, setShowPopup] = useState(false);
 
   return (
@@ -10,7 +10,7 @@ export default function NewMotionProposalButton() {
       <NewButton setShowPopup={setShowPopup} />
 
       {showPopup && (
-        <PromoteMotionPopup
+        <NewCouncilMotionProposalPopup
           onClose={() => {
             setShowPopup(false);
           }}

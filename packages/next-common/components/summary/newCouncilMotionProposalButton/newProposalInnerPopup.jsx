@@ -10,7 +10,10 @@ import { useCollectivePallet } from "next-common/context/collective";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { useCallback, useEffect, useState } from "react";
 
-export default function NewMotionProposalInnerPopup({ onClose, onCreated }) {
+export default function NewCouncilMotionProposalInnerPopup({
+  onClose,
+  onCreated,
+}) {
   const pallet = useCollectivePallet();
   const api = useContextApi();
   const [{ proposal, proposalLength }, setProposalState] = useState({
