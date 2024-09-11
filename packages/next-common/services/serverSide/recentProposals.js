@@ -219,20 +219,12 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   if (isCollectivesChain(CHAIN)) {
-    // const fellowshipMenu = getFellowshipMenu(summary);
-    // const treasurySpendMenu = fellowshipMenu.items.find(
-    //   (item) => item.value === "fellowship-treasury-spends",
-    // );
-    // console.log(treasurySpendMenu);
-    // const hasTreasurySpend = !treasurySpendMenu.excludeToChains.includes(CHAIN);
-    // if (hasTreasurySpend) {
     const fellowshipTreasurySpends = await fetcher(
       overviewApi.fellowshipTreasurySpends,
     );
     recentProposalsData.fellowshipTreasury = {
       spends: fellowshipTreasurySpends,
     };
-    // }
   }
 
   return recentProposalsData;
