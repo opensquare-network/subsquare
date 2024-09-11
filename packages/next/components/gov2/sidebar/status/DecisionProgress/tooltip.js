@@ -38,16 +38,17 @@ export default function DecisionTooltip() {
     return `Total decision time ${formatTimeDuration(decisionBlocks * blockTime)}`;
   }
 
+  const timeOptions = { showMonths: false };
   const goneBlocks = latestHeight >= end ? decisionBlocks : latestHeight - decidingSince;
-  const goneTime = formatTimeDuration(goneBlocks * blockTime);
+  const goneTime = formatTimeDuration(goneBlocks * blockTime, timeOptions);
   const leftBlocks = end - latestHeight;
-  const leftTime = formatTimeDuration(blockTime * leftBlocks);
+  const leftTime = formatTimeDuration(blockTime * leftBlocks, timeOptions);
   if (decisionBlocks <= decisionPeriod) {
     return `${leftTime} remaining, ${decisionPercentage}%(${goneTime} has gone)`;
   }
 
-  const maxDecisionTime = formatTimeDuration(decisionBlocks * blockTime);
-  const periodTime = formatTimeDuration(decisionPeriod * blockTime);
+  const maxDecisionTime = formatTimeDuration(decisionBlocks * blockTime, timeOptions);
+  const periodTime = formatTimeDuration(decisionPeriod * blockTime, timeOptions);
   if (latestHeight - decidingSince <= decisionPeriod) {
     return `${leftTime} left in ${periodTime} decision period, max decision time is ${maxDecisionTime}`;
   } else {

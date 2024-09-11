@@ -37,11 +37,8 @@ export default function DecisionProgress() {
   const decisionBlocks = useDecisionBlocks();
   const period = useDecision();
 
-  // const percentage = period / decisionBlocks; // todo:
-
   const decidingSince = useDecidingSince();
   const decisionEnd = useDecisionEnd();
-  // const decisionRemaining = useDecisionRemaining();
   const normalCaseBlocks = useDecision();
   const allBlocks = useDecisionBlocks();
 
