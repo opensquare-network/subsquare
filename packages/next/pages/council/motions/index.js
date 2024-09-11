@@ -5,7 +5,7 @@ import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collecti
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
-import NewMotionProposalButton from "next-common/components/summary/newMotionProposalButton";
+import NewCouncilMotionProposalButton from "next-common/components/summary/newCouncilMotionProposalButton";
 import CollectiveProvider from "next-common/context/collective";
 import Chains from "next-common/utils/consts/chains";
 
@@ -32,7 +32,7 @@ export default function MotionsPage({ motions, chain }) {
           category={category}
           title="List"
           titleCount={motions.total}
-          titleExtra={<NewMotionProposalButton />}
+          titleExtra={<NewCouncilMotionProposalButton />}
           items={items}
           pagination={{
             page: motions.page,

@@ -10,7 +10,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import CollectiveProvider, {
   collectivePallets,
 } from "next-common/context/collective";
-import NewMotionProposalButton from "next-common/components/summary/newMotionProposalButton";
+import NewCouncilMotionProposalButton from "next-common/components/summary/newCouncilMotionProposalButton";
 
 export default function MotionsPage({ motions }) {
   const chainSettings = useChainSettings();
@@ -34,7 +34,7 @@ export default function MotionsPage({ motions }) {
       >
         <PostList
           category={category}
-          titleExtra={<NewMotionProposalButton />}
+          titleExtra={<NewCouncilMotionProposalButton />}
           items={items}
           pagination={{
             page: motions.page,
