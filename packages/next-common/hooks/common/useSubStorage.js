@@ -37,14 +37,7 @@ export default function useSubStorage(
     }
 
     const queryStorage = api?.query[pallet]?.[storage];
-
     if (!queryStorage) {
-      setLoading(false);
-      return;
-    }
-
-    const meta = queryStorage.meta;
-    if (meta.type?.isMap && filteredParams.length !== 1) {
       setLoading(false);
       return;
     }

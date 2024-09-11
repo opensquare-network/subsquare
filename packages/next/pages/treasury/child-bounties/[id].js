@@ -4,14 +4,9 @@ import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import ChildBountySidebar from "components/childBounty/sidebar";
-import {
-  PostProvider,
-  useOnchainData,
-  usePost,
-} from "next-common/context/post";
+import { PostProvider, usePost, } from "next-common/context/post";
 import CheckUnFinalized from "components/childBounty/checkUnFinalized";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
-import useSubChildBounty from "next-common/hooks/treasury/useSubChildBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
@@ -35,10 +30,6 @@ const Timeline = dynamicClientOnly(() =>
 
 function ChildBountyContent() {
   const post = usePost();
-
-  const { parentBountyId, index } = useOnchainData();
-  useSubChildBounty(parentBountyId, index);
-
   useSubscribePostDetail(post?.index);
 
   return (
