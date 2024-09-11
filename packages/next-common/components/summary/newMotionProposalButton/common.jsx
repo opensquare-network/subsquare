@@ -6,8 +6,11 @@ import NewPreimageSVG from "../newProposalButton/icons/new-preimage.svg";
 import NewMotionProposalInnerPopup from "./newProposalInnerPopup";
 import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
 import ApproveTreasuryProposalInnerPopup from "./approveTreasuryProposalInnerPopup";
+import { isShibuyaChain } from "next-common/utils/chain";
+import { useChain } from "next-common/context/chain";
 
 export default function SubmitMotionProposalPopupCommon({ children }) {
+  const chain = useChain();
   const { onClose } = usePopupParams();
   const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
   const [
@@ -52,15 +55,17 @@ export default function SubmitMotionProposalPopupCommon({ children }) {
         />
       </div>
 
-      <QuickStart>
-        <ChoiceButton
-          name="Approve a treasury proposal"
-          description="Approve a treasury proposal"
-          onClick={() => {
-            setShowApproveTreasuryProposalPopup(true);
-          }}
-        />
-      </QuickStart>
+      {isShibuyaChain(chain) && (
+        <QuickStart>
+          <ChoiceButton
+            name="Approve a treasury proposal"
+            description="Approve a treasury proposal"
+            onClick={() => {
+              setShowApproveTreasuryProposalPopup(true);
+            }}
+          />
+        </QuickStart>
+      )}
 
       {children}
     </Popup>
