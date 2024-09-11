@@ -10,5 +10,5 @@ export default function PromoteMotionPopup({ onClose }) {
 }
 
 function PromoteMotionInnerPopup() {
-  return <SubmitMotionProposalPopupCommon></SubmitMotionProposalPopupCommon>;
+  return <SubmitMotionProposalPopupCommon />;
 }

@@ -4,10 +4,16 @@ import { useCallback, useState } from "react";
 import { ChoiceButton } from "../newProposalButton/common";
 import NewPreimageSVG from "../newProposalButton/icons/new-preimage.svg";
 import NewMotionProposalInnerPopup from "./newProposalInnerPopup";
+import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
+import ApproveTreasuryProposalInnerPopup from "./approveTreasuryProposalInnerPopup";
 
 export default function SubmitMotionProposalPopupCommon({ children }) {
   const { onClose } = usePopupParams();
   const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
+  const [
+    showApproveTreasuryProposalPopup,
+    setShowApproveTreasuryProposalPopup,
+  ] = useState(false);
 
   const onProposalCreated = useCallback(() => {
     setShowNewProposalPopup(false);
@@ -18,6 +24,17 @@ export default function SubmitMotionProposalPopupCommon({ children }) {
       <NewMotionProposalInnerPopup
         onClose={onClose}
         onCreated={onProposalCreated}
+      />
+    );
+  }
+
+  if (showApproveTreasuryProposalPopup) {
+    return (
+      <ApproveTreasuryProposalInnerPopup
+        onClose={onClose}
+        onSubmitted={() => {
+          setShowApproveTreasuryProposalPopup(false);
+        }}
       />
     );
   }
@@ -34,6 +51,17 @@ export default function SubmitMotionProposalPopupCommon({ children }) {
           }}
         />
       </div>
+
+      <QuickStart>
+        <ChoiceButton
+          name="Approve a treasury proposal"
+          description="Approve a treasury proposal"
+          onClick={() => {
+            setShowApproveTreasuryProposalPopup(true);
+          }}
+        />
+      </QuickStart>
+
       {children}
     </Popup>
   );
