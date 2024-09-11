@@ -1,7 +1,7 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import Select from "next-common/components/select";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
 import { useCollectivePallet } from "next-common/context/collective";
@@ -14,15 +14,30 @@ export default function ApproveTreasuryProposalInnerPopup({
 }) {
   const api = useContextApi();
   const pallet = useCollectivePallet();
-  const [activeProposal, setActiveProposal] = useState(null);
+  const [inputProposal, setInputProposal] = useState("");
 
+  // FIXME: council proposal, fetch proposals
   // eslint-disable-next-line no-unused-vars
-  const { value } = useAsync(async () => {
-    const proposals = await api?.query?.[pallet]?.proposals?.();
-    return proposals.toJSON();
+  const { value: proposals, loading } = useAsync(async () => {
+    if (!api) {
+      return [];
+    }
+
+    const proposalHashes = await api?.query?.[pallet]?.proposals?.();
+    const proposalsWithDetails = await Promise.all(
+      proposalHashes.map(async (hash) => {
+        const proposal = await api.query[pallet].proposalOf(hash);
+        return {
+          hash: hash.toHex(),
+          proposal: proposal.toJSON(),
+        };
+      }),
+    );
+
+    return proposalsWithDetails;
   }, [api, pallet]);
 
-  const disabled = !activeProposal;
+  const disabled = !inputProposal || loading;
 
   const getTxFunc = useCallback(() => {}, []);
 
@@ -37,12 +52,9 @@ export default function ApproveTreasuryProposalInnerPopup({
 
       <div>
         <PopupLabel text="Proposal" />
-        <Select
-          options={[]}
-          value={activeProposal}
-          onChange={(option) => {
-            setActiveProposal(option);
-          }}
+        <Input
+          value={inputProposal}
+          onChange={(e) => setInputProposal(e.target.value)}
         />
       </div>
 
