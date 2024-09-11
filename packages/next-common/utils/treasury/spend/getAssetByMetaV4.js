@@ -8,9 +8,14 @@ export function getParachainIdV4(location) {
   return interior?.x1?.[0]?.parachain;
 }
 
-function isAssetHub(location = {}) {
+function isLocationFromRelayToAssetHub(location = {}) {
   const { parents, interior } = location || {};
   return parents === 0 && interior?.x1?.[0]?.parachain === 1000;
+}
+
+function isLocationFromParaToAssetHub(location = {}) {
+  const { parents, interior } = location || {};
+  return parents === 1 && interior?.x1?.[0]?.parachain === 1000;
 }
 
 function _isAssetHubX2(assetId = {}) {
@@ -45,7 +50,10 @@ function getAssetHubAsset(assetId = {}) {
 
 export function getAssetByMetaV4(v4 = {}) {
   const { location, assetId } = v4;
-  if (!isAssetHub(location)) {
+  if (
+    !isLocationFromRelayToAssetHub(location) &&
+    !isLocationFromParaToAssetHub(location)
+  ) {
     return null;
   }
   return getAssetHubAsset(assetId);
