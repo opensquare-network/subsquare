@@ -20,6 +20,6 @@ export const KnownPolkadotAssetHubAssets = [
     type: "asset",
     assetId: 30,
     symbol: "DED",
-    decimals: 12,
+    decimals: 10,
   },
 ];
