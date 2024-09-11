@@ -2,12 +2,12 @@ import React, { useCallback } from "react";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 
-export default function ClaimPopup({ bounty, onClose }) {
+export default function ClaimPopup({ bountyIndex, onClose }) {
   const api = useContextApi();
 
   const getTxFunc = useCallback(async () => {
-    return api.tx.bounties.claimBounty(bounty.bountyIndex);
-  }, [api, bounty]);
+    return api.tx.bounties.claimBounty(bountyIndex);
+  }, [api, bountyIndex]);
 
   return (
     <SimpleTxPopup

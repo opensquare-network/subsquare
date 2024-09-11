@@ -38,7 +38,7 @@ export default function Claim() {
       </PrimaryButton>
 
       {showPopup && (
-        <ClaimPopup bounty={onChain} onClose={() => setShowPopup(false)} />
+        <ClaimPopup bountyIndex={bountyIndex} onClose={() => setShowPopup(false)} />
       )}
     </>
   );
