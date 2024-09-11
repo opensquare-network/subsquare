@@ -4,6 +4,7 @@ import FlexBetween from "next-common/components/styled/flexBetween";
 import tw from "tailwind-styled-components";
 
 export const ProgressGroup = styled.div`
+  position: relative;
   padding-bottom: 4px;
 `;
 
@@ -18,6 +19,7 @@ export const Tooltip = styled(TooltipOrigin)`
 export const ProgressInfo = tw(FlexBetween)`
   text-textPrimary text12Medium
   py-1 pb-2
+  relative
 `;
 export const ProgressTooltipFailContent = styled.span`
   display: inline-flex;
