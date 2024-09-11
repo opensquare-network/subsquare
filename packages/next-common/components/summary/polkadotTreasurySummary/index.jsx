@@ -4,8 +4,7 @@ import RelayChainTreasury from "./relayChainTreasury";
 import MultiAssets from "./multiAssets";
 import FellowshipTreasury from "./fellowshipTreasury";
 
-export default function TreasurySummary() {
-
+export default function PolkadotTreasurySummary() {
   return (
     <SummaryLayout>
       <TotalTreasury />

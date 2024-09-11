@@ -1,6 +1,6 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import TreasurySummary from "next-common/components/summary/assetsTreasurySummary";
+import PolkadotTreasurySummary from "next-common/components/summary/polkadotTreasurySummary";
 import { TreasuryProvider } from "next-common/context/treasury";
 
 export default function AssetsTreasuryStats() {
@@ -10,7 +10,7 @@ export default function AssetsTreasuryStats() {
 
       <SecondaryCard>
         <TreasuryProvider>
-          <TreasurySummary />
+          <PolkadotTreasurySummary />
         </TreasuryProvider>
       </SecondaryCard>
     </div>
