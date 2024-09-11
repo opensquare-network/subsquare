@@ -22,13 +22,13 @@ function _isAssetHubX2(assetId = {}) {
   return x2 && Array.isArray(x2);
 }
 
-function _isAssetHere(assetId = {}) {
+function isNativeAsset(assetId = {}) {
   const { parents, interior } = assetId?.concrete || {};
   return parents === 1 && "here" in interior;
 }
 
 function getAssetHubAsset(assetId = {}) {
-  if (_isAssetHere(assetId)) {
+  if (isNativeAsset(assetId)) {
     return KnownPolkadotAssetHubAssets.find((asset) => asset.type === "native");
   }
   if (!_isAssetHubX2(assetId)) {
