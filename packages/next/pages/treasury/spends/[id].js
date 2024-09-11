@@ -24,7 +24,10 @@ import { SimaProposalCommentActionsProvider } from "next-common/sima/components/
 import { useChainSettings } from "next-common/context/chain";
 import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import { TreasuryProvider } from "next-common/context/treasury";
+import {
+  TreasuryProvider,
+  useTreasuryPallet,
+} from "next-common/context/treasury";
 
 const TreasurySpendMetadata = dynamicClientOnly(() =>
   import("next-common/components/detail/treasury/spend/metadata"),
@@ -60,62 +63,88 @@ function TreasurySpendContent() {
   );
 }
 
-function NonSimaTreasurySpendContent() {
+function NonSimaTreasurySpendContent({ children }) {
   return (
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
-        <TreasurySpendContent />
+        {children}
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>
   );
 }
 
-function SimaTreasurySpendContent() {
+function SimaTreasurySpendContent({ children }) {
   return (
     <SimaProposalArticleActionsProvider>
       <SimaProposalCommentActionsProvider>
-        <TreasurySpendContent />
+        {children}
       </SimaProposalCommentActionsProvider>
     </SimaProposalArticleActionsProvider>
   );
 }
 
-function ProposalContentWithNullGuard() {
+function ProposalContentWithNullGuard({ detailApiPath, children }) {
   const { id } = usePageProps();
   const detail = usePost();
   const { sima } = useChainSettings();
+  const treasuryPallet = useTreasuryPallet();
 
   useSubscribePostDetail(detail?.index);
 
   if (!detail) {
     return (
       <CheckUnFinalizedBase
-        onChainDataFetcher={async (api) => api.query.treasury?.spends(id)}
-        serverPostFetcher={() => nextApi.fetch(`treasury/spends/${id}`)}
+        onChainDataFetcher={async (api) =>
+          api.query[treasuryPallet]?.spends(id)
+        }
+        serverPostFetcher={() => nextApi.fetch(`${detailApiPath}/${id}`)}
       />
     );
   }
 
-  return sima ? <SimaTreasurySpendContent /> : <NonSimaTreasurySpendContent />;
+  if (sima) {
+    return <SimaTreasurySpendContent>{children}</SimaTreasurySpendContent>;
+  }
+
+  return <NonSimaTreasurySpendContent>{children}</NonSimaTreasurySpendContent>;
 }
 
-function SpendPageImpl() {
+function SpendPageImpl({ detailApiPath, children }) {
   const seoInfo = useDetailPageSeoInfo();
 
   return (
     <DetailLayout seoInfo={seoInfo} hasSidebar={true}>
-      <ProposalContentWithNullGuard />
+      <ProposalContentWithNullGuard detailApiPath={detailApiPath}>
+        {children}
+      </ProposalContentWithNullGuard>
     </DetailLayout>
+  );
+}
+
+export function CommonSpendPageWrapper({
+  post,
+  pallet,
+  detailApiPath,
+  children,
+}) {
+  return (
+    <PostProvider post={post}>
+      <TreasuryProvider pallet={pallet}>
+        <SpendPageImpl detailApiPath={detailApiPath}>{children}</SpendPageImpl>
+      </TreasuryProvider>
+    </PostProvider>
   );
 }
 
 export default function SpendPage({ detail }) {
   return (
-    <PostProvider post={detail}>
-      <TreasuryProvider>
-        <SpendPageImpl />
-      </TreasuryProvider>
-    </PostProvider>
+    <CommonSpendPageWrapper
+      post={detail}
+      pallet="treasury"
+      detailApiPath="treasury/spends"
+    >
+      <TreasurySpendContent />
+    </CommonSpendPageWrapper>
   );
 }
 
