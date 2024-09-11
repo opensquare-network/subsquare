@@ -7,8 +7,8 @@ import { FellowshipReferendumLink } from "next-common/components/detail/referend
 
 export default function FellowshipTreasurySpendNavigation() {
   const onchainData = useOnchainData();
-  const { gov2Referendum, index } = onchainData;
-  const hasReferendum = !isNil(gov2Referendum);
+  const { fellowshipReferendum, index } = onchainData;
+  const hasReferendum = !isNil(fellowshipReferendum);
 
   if (!hasReferendum) {
     return null;
@@ -16,7 +16,7 @@ export default function FellowshipTreasurySpendNavigation() {
 
   return (
     <NavigationWrapper>
-      <FellowshipReferendumLink referendumIndex={gov2Referendum} />
+      <FellowshipReferendumLink referendumIndex={fellowshipReferendum} />
       <div>
         <TriangleRight />
       </div>
