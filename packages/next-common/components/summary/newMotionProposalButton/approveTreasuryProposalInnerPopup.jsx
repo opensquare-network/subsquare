@@ -52,7 +52,9 @@ export default function ApproveTreasuryProposalInnerPopup({
         <PopupLabel text="Proposal" />
         <Input
           value={inputProposal}
-          onChange={(e) => setInputProposal(e.target.value)}
+          onChange={(e) => {
+            setInputProposal(e.target.value);
+          }}
         />
       </div>
 
