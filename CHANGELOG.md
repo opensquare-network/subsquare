@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.2.7
+
+date: 2024-09-11
+
+- [Medium] Add a context on top of collective pallet instances related pages including council, tech committee, etc. So
+  we can increase code reusability and reduce bugs.
+- [Medium] Design and improve the referenda decision progress bar for cases when deciding time is over the normal time(
+  defined by track).
+- Use subscription to update collective votes, so we don't have to trigger the update after vote.
+- Add claim button on bounty detail page.
+- Extract assets info by XCM v4 on treasury related spends pages.
+- Refactor:
+    - Support block hash as param for hook `useBlockApi`.
+    - Support custom api for hook `useSubStorage`.
+    - Improve some contexts with createStateContext.
+    - Improve the way to get fellowship max voters.
+    - Improve `web3Enable` origin for extensions.
+    - Use subscription to get tip meta.
+    - Remove useless redux items.
+
 ### 4.2.6
 
 date: 2024-09-06
