@@ -103,7 +103,6 @@ export default function ApproveTreasuryProposalInnerPopup({
       </div>
 
       <TxSubmissionButton
-        // TODO: council proposal, only collective member can do
         disabled={disabled}
         loading={loadingProposalData}
         getTxFunc={getTxFunc}

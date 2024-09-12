@@ -105,7 +105,6 @@ export default function NewCouncilMotionProposalInnerPopup({
       )}
 
       <TxSubmissionButton
-        // TODO: council proposal, only collective member can do
         disabled={disabled}
         getTxFunc={getTxFunc}
         onInBlock={() => {
