@@ -5,12 +5,33 @@ import HeightWithTime from "next-common/components/common/block/heightWithTime";
 import useTreasurySpendRequest from "next-common/hooks/treasury/spend/useTreasurySpendRequest";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecisionNumber } from "next-common/utils";
+import ExternalLink from "next-common/components/externalLink";
+
+function Beneficiary({ parachain, beneficiary }) {
+  if (!beneficiary) {
+    return null;
+  }
+
+  if (parachain !== 1000) { // not assethub
+    return <AddressUser add={beneficiary} />;
+  }
+
+  let link = `https://assethub-polkadot.subscan.io/account/${beneficiary}`;
+  return (
+    <>
+      <AddressUser add={beneficiary} />
+      <ExternalLink href={link}>
+        Check the beneficiary
+      </ExternalLink>
+    </>
+  );
+}
 
 export default function TreasurySpendMetadata({ spend = {} }) {
   const meta = spend?.meta || {};
   const proposer = spend?.proposer;
   const { validFrom, expireAt } = meta;
-  const { amount, symbol, decimals, beneficiary } =
+  const { parachain, amount, symbol, decimals, beneficiary } =
     useTreasurySpendRequest(meta);
 
   const data = [];
@@ -22,14 +43,14 @@ export default function TreasurySpendMetadata({ spend = {} }) {
       "Request",
       <div
         key="request"
-        className="flex gap-[8px] items-center text14Medium text-textPrimary"
+        className="flex flex-wrap gap-[8px] items-center text14Medium text-textPrimary"
       >
         <ValueDisplay
           value={toPrecisionNumber(amount, decimals)}
           symbol={symbol}
         />
         <span className="text-textTertiary">to</span>
-        <AddressUser add={beneficiary} />
+        <Beneficiary parachain={parachain} beneficiary={beneficiary} />
       </div>,
     ]);
   }
