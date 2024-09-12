@@ -92,6 +92,7 @@ const phala = {
   multisigApiPrefix: "phala",
   modules: {
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(192,236,69,0.10)",

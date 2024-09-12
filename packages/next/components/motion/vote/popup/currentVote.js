@@ -14,20 +14,16 @@ export default function CurrentVote({ currentVote }) {
   return (
     <CurrentVotingWrapper>
       <PopupLabel text={"Current Voting"} />
-      {
-        currentVote ? (
-          <VoteStatusBox aye={currentVote[1]}>Voting</VoteStatusBox>
-        ) : (
-          <NoDataStatusBox text={"No voting record"} />
-        )
-      }
-      {
-        currentVote && (
-          <WarningMessage>
-            Resubmitting the vote will override the current voting record
-          </WarningMessage>
-        )
-      }
+      {currentVote ? (
+        <VoteStatusBox aye={currentVote[1]}>Voting</VoteStatusBox>
+      ) : (
+        <NoDataStatusBox text={"No voting record"} />
+      )}
+      {currentVote && (
+        <WarningMessage>
+          Resubmitting the vote will override the current voting record
+        </WarningMessage>
+      )}
     </CurrentVotingWrapper>
   );
 }

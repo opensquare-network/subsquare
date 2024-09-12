@@ -20,14 +20,9 @@ function useSubscribeNativeBalance(address) {
   const [accountInfo, setAccountInfo] = useState();
   const existentialDeposit = useQueryExistentialDeposit();
 
-  useSubStorage(
-    "system",
-    "account",
-    [address],
-    {
-      callback: useCallback(({ data }) => setAccountInfo(data.toJSON()), []),
-    },
-  );
+  useSubStorage("system", "account", [address], {
+    callback: useCallback(({ data }) => setAccountInfo(data.toJSON()), []),
+  });
 
   return useMemo(() => {
     if (!accountInfo) {

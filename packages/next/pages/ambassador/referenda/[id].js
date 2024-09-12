@@ -1,11 +1,18 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
-import { getAmbassadorReferendumCommentsUrl, getAmbassadorReferendumUrl } from "next-common/services/url";
+import {
+  getAmbassadorReferendumCommentsUrl,
+  getAmbassadorReferendumUrl,
+} from "next-common/services/url";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { EmptyList } from "next-common/utils/constants";
-import { PostProvider, useOnchainData, usePost } from "next-common/context/post";
+import {
+  PostProvider,
+  useOnchainData,
+  usePost,
+} from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -128,9 +135,7 @@ function ReferendumPageImpl() {
     );
   }
 
-  return (
-    <ReferendumPageWithPost />
-  );
+  return <ReferendumPageWithPost />;
 }
 
 export default function ReferendumPage({ detail }) {

@@ -69,7 +69,7 @@ const astar = {
   description: "A Scalable Network Powering a Global Web3 Vision for All.",
   modules: {
     democracy: true,
-    referenda: false,
+    treasury: true,
   },
   showNewTreasuryProposalButton: true,
   ...astarThemeVars,

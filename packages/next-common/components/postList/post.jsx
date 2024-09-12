@@ -36,10 +36,7 @@ import PolkassemblyUser from "../user/polkassemblyUser";
 import tw from "tailwind-styled-components";
 import Tooltip from "next-common/components/tooltip";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
-import {
-  isUsdcByMeta,
-  isUsdtByMeta,
-} from "next-common/utils/treasury/spend/usdCheck";
+import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
 import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
 import PostListTreasuryAllSpends from "./treasuryAllSpends";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
@@ -192,13 +189,19 @@ function PostAmount({ amount, decimals, symbol }) {
 }
 
 export function TreasurySpendAmount({ meta }) {
-  let { amount } = meta;
-  let symbol = isUsdtByMeta(meta) ? "USDT" : isUsdcByMeta(meta) ? "USDC" : null;
-  if (!symbol) {
+  const { amount } = meta;
+  const asset = getAssetByMeta(meta);
+  if (!asset) {
     return null;
   }
 
-  return <PostAmount amount={amount} symbol={symbol} decimals={6} />;
+  return (
+    <PostAmount
+      amount={amount}
+      symbol={asset.symbol}
+      decimals={asset.decimals}
+    />
+  );
 }
 
 function PostValueTitle({ data, type }) {
@@ -208,7 +211,12 @@ function PostValueTitle({ data, type }) {
     ? onchainData?.treasuryInfo?.amount
     : value;
 
-  if (businessCategory.treasurySpends === type) {
+  if (
+    [
+      businessCategory.treasurySpends,
+      businessCategory.fellowshipTreasurySpends,
+    ].includes(type)
+  ) {
     return <TreasurySpendAmount meta={data?.meta} />;
   }
 

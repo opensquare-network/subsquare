@@ -87,9 +87,7 @@ function ReferendumPageImpl() {
     return <ReferendumNullPage />;
   }
 
-  return (
-    <ReferendumPageWithPost />
-  );
+  return <ReferendumPageWithPost />;
 }
 
 export default function ReferendumPage({ detail }) {

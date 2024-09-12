@@ -14,7 +14,7 @@ function MultisigAccounts({ signatories }) {
   }
 
   return (
-    <div className="pl-3">
+    <div className="pl-[10px]">
       <IndentPanel>
         {signatories.map((address) => (
           <AddressUser key={address} add={address} className="my-1" />

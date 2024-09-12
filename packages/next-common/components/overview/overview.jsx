@@ -8,6 +8,7 @@ import MembersInduction from "./fellowship/membersInduction";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 import Chains from "next-common/utils/consts/chains";
+import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
 
 export default function Overview() {
   const { showAccountManagementTab } = useChainSettings();
@@ -30,6 +31,10 @@ export default function Overview() {
 
       <WithPallet pallet="fellowshipSalary">
         <FellowshipSalaryOverview />
+      </WithPallet>
+
+      <WithPallet pallet="fellowshipTreasury">
+        <FellowshipTreasuryStats />
       </WithPallet>
 
       <div>

@@ -113,13 +113,7 @@ export default function getChainSettings(chain, blockHeight = null) {
   }
 
   return {
+    modules: {},
     ...settings,
-    modules: Object.assign(
-      {
-        treasury: true,
-        democracy: true,
-      },
-      settings.modules,
-    ),
   };
 }

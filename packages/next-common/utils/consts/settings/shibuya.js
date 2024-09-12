@@ -53,7 +53,7 @@ const shibuya = {
   description: "Shibuya is the testnet of Shiden (a sister chain of Astar).",
   modules: {
     democracy: true,
-    referenda: false,
+    treasury: true,
   },
   showNewTreasuryProposalButton: true,
 

@@ -65,7 +65,7 @@ export default function MarketMetadata({ id, metadata }) {
     Question: (
       <ExternalLink
         href={questionLink}
-        className="text14Medium text-sapphire500"
+        className="text14Medium"
       >
         {metadata?.question}
       </ExternalLink>

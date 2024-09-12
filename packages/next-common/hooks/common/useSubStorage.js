@@ -10,7 +10,7 @@ export default function useSubStorage(
   pallet,
   storage,
   params = [],
-  options = {},
+  options = {}, // callback or api
 ) {
   const { callback, api: optionApi } = options;
   let contextApi = useContextApi();
@@ -37,14 +37,7 @@ export default function useSubStorage(
     }
 
     const queryStorage = api?.query[pallet]?.[storage];
-
     if (!queryStorage) {
-      setLoading(false);
-      return;
-    }
-
-    const meta = queryStorage.meta;
-    if (meta.type?.isMap && filteredParams.length !== 1) {
       setLoading(false);
       return;
     }

@@ -27,7 +27,7 @@ import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
 import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
 import shibuya from "next-common/utils/consts/settings/shibuya";
-import astar from "next-common/utils/consts/settings/astar";
+// import astar from "next-common/utils/consts/settings/astar";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 
 const optionalNodes =
@@ -39,7 +39,7 @@ export const nodes = [
   kusama,
   acala,
   altair,
-  astar,
+  // astar,
   basilisk,
   bifrost,
   bifrostPolkadot,

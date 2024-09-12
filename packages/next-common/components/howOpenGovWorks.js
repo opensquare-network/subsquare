@@ -7,7 +7,7 @@ export default function HowOpenGovWorks({ anchor }) {
   }
 
   return (
-    <ExternalLink className="text14Medium text-sapphire500" href={link}>
+    <ExternalLink className="text14Medium" href={link}>
       How OpenGov works
     </ExternalLink>
   );

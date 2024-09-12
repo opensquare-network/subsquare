@@ -31,6 +31,7 @@ const hydradxTestnet = {
   ethereumNetwork,
   modules: {
     democracy: true,
+    treasury: true,
   },
 };
 
