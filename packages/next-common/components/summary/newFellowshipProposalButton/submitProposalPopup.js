@@ -5,8 +5,9 @@ import SubmitProposalPopupCommon, {
 } from "../newProposalButton/common";
 import { usePageProps } from "next-common/context/page";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import { NewRemarkReferendumInnerPopup } from "../newProposalQuickStart/createSystemRemarkProposalPopup";
 import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
+import { NewRemarkReferendumInnerPopup } from "../newProposalQuickStart/createSystemRemarkProposalPopup";
+import { NewAssetSpendProposalInnerPopup } from "../newProposalQuickStart/newAssetSpendProposalInnerPopup";
 import NewFellowshipCoreMemberPromoteReferendumInnerPopup from "../newProposalQuickStart/createFellowshipCoreMemberProposalPopup/createFellowshipCoreMemberPromotePopup";
 import NewFellowshipCoreMemberRetainReferendumInnerPopup from "../newProposalQuickStart/createFellowshipCoreMemberProposalPopup/createFellowshipCoreMemberRetainPopup";
 
@@ -19,6 +20,7 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
     useState(false);
   const [showRetainPopup, setShowRetainPopup] = useState(false);
   const [showNewRemarkPopup, setShowNewRemarkPopup] = useState(false);
+  const [showSpendPopup, setShowSpendPopup] = useState(false);
 
   let content;
   if (showMemberPromotionPopup) {
@@ -27,6 +29,8 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
     content = <NewFellowshipCoreMemberRetainReferendumInnerPopup />;
   } else if (showNewRemarkPopup) {
     content = <NewRemarkReferendumInnerPopup />;
+  } else if (showSpendPopup) {
+    content = <NewAssetSpendProposalInnerPopup />;
   } else {
     content = (
       <SubmitProposalPopupCommon
@@ -59,6 +63,11 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
             name="Remark"
             description="Put remarks on chain"
             onClick={() => setShowNewRemarkPopup(true)}
+          />
+          <ChoiceButton
+            name="Treasury proposal"
+            description="Create a treasury spend of DOT from Asset Hub"
+            onClick={() => setShowSpendPopup(true)}
           />
         </QuickStart>
       </SubmitProposalPopupCommon>
