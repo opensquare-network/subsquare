@@ -51,7 +51,7 @@ const kusama = {
     referenda: true,
     fellowship: true,
     whales: true,
-    democracy: false,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",

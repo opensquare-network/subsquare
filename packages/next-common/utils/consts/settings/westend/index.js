@@ -43,7 +43,7 @@ const westend = {
   ...westendThemeVars,
   modules: {
     referenda: true,
-    democracy: false,
+    treasury: true,
   },
   newProposalQuickStart: {
     cancelReferendum: true,

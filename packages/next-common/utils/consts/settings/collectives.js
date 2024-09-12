@@ -90,7 +90,6 @@ const collectives = {
   modules: {
     fellowship: true,
     ambassador: true,
-    democracy: false,
   },
   ...polkadotThemeVars,
 };

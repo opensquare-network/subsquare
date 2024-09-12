@@ -101,6 +101,7 @@ const hydradx = {
   description: "Making finance efficient, simple and unstoppable.",
   modules: {
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(229,62,118,0.10)",

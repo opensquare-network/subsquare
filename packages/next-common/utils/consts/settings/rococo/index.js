@@ -61,7 +61,7 @@ const rococo = {
   modules: {
     referenda: true,
     fellowship: true,
-    democracy: false,
+    treasury: true,
   },
   multisigWallets: {
     signet: true,

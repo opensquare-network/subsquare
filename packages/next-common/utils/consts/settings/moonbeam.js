@@ -64,6 +64,7 @@ const moonbeam = {
   modules: {
     referenda: true,
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",

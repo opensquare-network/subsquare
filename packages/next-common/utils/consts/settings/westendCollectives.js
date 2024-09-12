@@ -65,7 +65,6 @@ const westendCollectives = {
   noIdentityModule: true,
   modules: {
     fellowship: true,
-    democracy: false,
   },
   cssVarsLight: {
     theme100: "rgba(239,72,106,0.10)",

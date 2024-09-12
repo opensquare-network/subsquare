@@ -100,6 +100,7 @@ const acala = {
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
   modules: {
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(100,90,255,0.10)",

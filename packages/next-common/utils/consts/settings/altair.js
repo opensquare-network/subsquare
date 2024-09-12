@@ -66,6 +66,7 @@ const altair = {
   modules: {
     democracy: true,
     referenda: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(255,192,18,0.10)",
