@@ -1,8 +1,12 @@
+import Tooltip from "next-common/components/tooltip";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
 import { useState } from "react";
 import NewButton from "../newProposalButton/newButton";
-import NewCouncilMotionProposalPopup from "./newCouncilMotionProposalPopup";
-import Tooltip from "next-common/components/tooltip";
-import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
+
+const NewCouncilMotionProposalPopup = dynamicPopup(() =>
+  import("./newCouncilMotionProposalPopup"),
+);
 
 export default function NewCouncilMotionProposalButton() {
   const [showPopup, setShowPopup] = useState(false);

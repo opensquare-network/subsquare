@@ -21,14 +21,7 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
   ] = useState(false);
 
   if (showNewProposalPopup) {
-    return (
-      <NewCouncilMotionProposalInnerPopup
-        onClose={onClose}
-        onProposed={() => {
-          setShowNewProposalPopup(false);
-        }}
-      />
-    );
+    return <NewCouncilMotionProposalInnerPopup onClose={onClose} />;
   }
 
   if (showApproveTreasuryProposalPopup) {

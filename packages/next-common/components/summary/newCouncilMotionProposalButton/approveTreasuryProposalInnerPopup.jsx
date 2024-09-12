@@ -16,8 +16,11 @@ import {
   useTreasuryPallet,
   useTreasuryProposalListUrl,
 } from "../../../context/treasury";
+import { getEventData } from "next-common/utils/sendTransaction";
+import { useRouter } from "next/router";
 
 export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
+  const router = useRouter();
   const pallet = useCollectivePallet();
   const treasuryPallet = useTreasuryPallet();
   const proposalListUrl = useTreasuryProposalListUrl(treasuryPallet);
@@ -141,8 +144,14 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
         disabled={disabled}
         loading={loadingProposalData}
         getTxFunc={getTxFunc}
-        onInBlock={() => {
-          // TODO: council proposal, trigger list update?
+        onInBlock={(events) => {
+          const eventData = getEventData(events, pallet, "Proposed");
+          if (!eventData) {
+            return;
+          }
+
+          const [, proposalIndex] = eventData;
+          router.push(`${router.pathname}/${proposalIndex}`);
         }}
         onClose={onClose}
       />

@@ -8,12 +8,12 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import { useContextApi } from "next-common/context/api";
 import { useCollectivePallet } from "next-common/context/collective";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
+import { getEventData } from "next-common/utils/sendTransaction";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-export default function NewCouncilMotionProposalInnerPopup({
-  onClose,
-  onProposed,
-}) {
+export default function NewCouncilMotionProposalInnerPopup({ onClose }) {
+  const router = useRouter();
   const pallet = useCollectivePallet();
   const api = useContextApi();
   const [{ proposal, proposalLength }, setProposalState] = useState({
@@ -107,9 +107,14 @@ export default function NewCouncilMotionProposalInnerPopup({
       <TxSubmissionButton
         disabled={disabled}
         getTxFunc={getTxFunc}
-        onInBlock={() => {
-          // TODO: council proposal, trigger list update?
-          onProposed();
+        onInBlock={(events) => {
+          const eventData = getEventData(events, pallet, "Proposed");
+          if (!eventData) {
+            return;
+          }
+
+          const [, proposalIndex] = eventData;
+          router.push(`${router.pathname}/${proposalIndex}`);
         }}
         onClose={onClose}
       />
