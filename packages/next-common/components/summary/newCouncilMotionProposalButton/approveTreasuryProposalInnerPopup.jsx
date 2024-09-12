@@ -8,7 +8,7 @@ import { useContextApi } from "next-common/context/api";
 import nextApi from "next-common/services/nextApi";
 import { isValidIntegerIndex } from "next-common/utils/isValidIntegerIndex";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAsync, useDebounce } from "react-use";
 
 export default function ApproveTreasuryProposalInnerPopup({
@@ -18,45 +18,55 @@ export default function ApproveTreasuryProposalInnerPopup({
   const api = useContextApi();
   const [inputProposal, setInputProposal] = useState("");
   const [debouncedInputProposal, setDebouncedInputProposal] = useState("");
+  useEffect(() => {
+    if (!inputProposal) {
+      setDebouncedInputProposal("");
+    }
+  }, [inputProposal]);
   useDebounce(
     () => {
-      setDebouncedInputProposal(inputProposal);
+      if (inputProposal) {
+        setDebouncedInputProposal(inputProposal);
+      }
     },
     500,
     [inputProposal],
   );
 
-  const { loading, value: proposalData } = useAsync(async () => {
-    if (
-      !api ||
-      !debouncedInputProposal ||
-      !isValidIntegerIndex(debouncedInputProposal)
-    ) {
-      return null;
-    }
+  const { loading: loadingProposalData, value: proposalData } =
+    useAsync(async () => {
+      if (
+        !api ||
+        !debouncedInputProposal ||
+        !isValidIntegerIndex(debouncedInputProposal)
+      ) {
+        return null;
+      }
 
-    const proposal = await api.query.treasury.proposals(debouncedInputProposal);
+      const proposal = await api.query.treasury.proposals(
+        debouncedInputProposal,
+      );
 
-    if (!proposal.isSome) {
-      return null;
-    }
+      if (!proposal.isSome) {
+        return null;
+      }
 
-    return proposal.toJSON();
-  }, [api, debouncedInputProposal]);
+      return proposal.toJSON();
+    }, [api, debouncedInputProposal]);
 
   const { loading: loadingTreasuryTitle, value: treasuryTitle } =
     useAsync(async () => {
-      if (proposalData) {
-        const { result } = await nextApi.fetch(
-          `treasury/proposals/${debouncedInputProposal}`,
-        );
-        if (result?.title) {
-          return result.title;
-        }
+      if (loadingProposalData || !debouncedInputProposal || !proposalData) {
+        return;
       }
-    }, [proposalData, debouncedInputProposal]);
 
-  const disabled = !inputProposal || loading || !proposalData;
+      const resp = await nextApi.fetch(
+        `treasury/proposals/${debouncedInputProposal}`,
+      );
+      return resp?.result?.title;
+    }, [proposalData, debouncedInputProposal, loadingProposalData]);
+
+  const disabled = !inputProposal || loadingProposalData || !proposalData;
 
   const getTxFunc = useCallback(() => {}, []);
 
@@ -95,7 +105,7 @@ export default function ApproveTreasuryProposalInnerPopup({
       <TxSubmissionButton
         // TODO: council proposal, only collective member can do
         disabled={disabled}
-        loading={loading}
+        loading={loadingProposalData}
         getTxFunc={getTxFunc}
         onInBlock={() => {
           onSubmitted?.();
