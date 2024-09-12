@@ -1,13 +1,13 @@
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import { useCallback, useState } from "react";
+import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
+import { useChain } from "next-common/context/chain";
+import { isShibuyaChain } from "next-common/utils/chain";
+import { useState } from "react";
 import { ChoiceButton } from "../newProposalButton/common";
 import NewPreimageSVG from "../newProposalButton/icons/new-preimage.svg";
-import NewCouncilMotionProposalInnerPopup from "./newProposalInnerPopup";
-import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
 import ApproveTreasuryProposalInnerPopup from "./approveTreasuryProposalInnerPopup";
-import { isShibuyaChain } from "next-common/utils/chain";
-import { useChain } from "next-common/context/chain";
+import NewCouncilMotionProposalInnerPopup from "./newProposalInnerPopup";
 
 export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
   const chain = useChain();
@@ -18,28 +18,19 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
     setShowApproveTreasuryProposalPopup,
   ] = useState(false);
 
-  const onProposalCreated = useCallback(() => {
-    setShowNewProposalPopup(false);
-  }, []);
-
   if (showNewProposalPopup) {
     return (
       <NewCouncilMotionProposalInnerPopup
         onClose={onClose}
-        onCreated={onProposalCreated}
+        onProposed={() => {
+          setShowNewProposalPopup(false);
+        }}
       />
     );
   }
 
   if (showApproveTreasuryProposalPopup) {
-    return (
-      <ApproveTreasuryProposalInnerPopup
-        onClose={onClose}
-        onSubmitted={() => {
-          setShowApproveTreasuryProposalPopup(false);
-        }}
-      />
-    );
+    return <ApproveTreasuryProposalInnerPopup onClose={onClose} />;
   }
 
   return (

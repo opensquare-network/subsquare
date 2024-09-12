@@ -12,7 +12,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export default function NewCouncilMotionProposalInnerPopup({
   onClose,
-  onCreated,
+  onProposed,
 }) {
   const pallet = useCollectivePallet();
   const api = useContextApi();
@@ -108,9 +108,9 @@ export default function NewCouncilMotionProposalInnerPopup({
         disabled={disabled}
         getTxFunc={getTxFunc}
         onInBlock={() => {
-          onCreated();
+          // TODO: council proposal, trigger list update?
+          onProposed();
         }}
-        // TODO: council proposal, onFinalized
         onClose={onClose}
       />
     </Popup>

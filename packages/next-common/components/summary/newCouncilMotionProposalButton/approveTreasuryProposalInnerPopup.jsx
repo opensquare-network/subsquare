@@ -17,10 +17,7 @@ import {
   useTreasuryProposalListUrl,
 } from "../../../context/treasury";
 
-export default function ApproveTreasuryProposalInnerPopup({
-  onClose,
-  onSubmitted,
-}) {
+export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
   const pallet = useCollectivePallet();
   const treasuryPallet = useTreasuryPallet();
   const proposalListUrl = useTreasuryProposalListUrl(treasuryPallet);
@@ -95,7 +92,7 @@ export default function ApproveTreasuryProposalInnerPopup({
       return;
     }
 
-    const proposalData = api.tx.communityTreasury.approveProposal(
+    const proposalData = api.tx[treasuryPallet].approveProposal(
       debouncedInputProposal,
     );
     const proposalLength = proposalData?.encodedLength || 0;
@@ -106,7 +103,7 @@ export default function ApproveTreasuryProposalInnerPopup({
         : [threshold, proposalData];
 
     return api.tx[pallet].propose(...params);
-  }, [api, debouncedInputProposal, pallet, threshold]);
+  }, [api, debouncedInputProposal, pallet, threshold, treasuryPallet]);
 
   return (
     <Popup
@@ -131,7 +128,7 @@ export default function ApproveTreasuryProposalInnerPopup({
             <Link
               className="cursor-pointer hover:underline"
               target="_blank"
-              href={`/treasury/proposals/${debouncedInputProposal}`}
+              href={`${proposalListUrl}/${debouncedInputProposal}`}
               rel="noreferrer"
             >
               {treasuryTitle}
@@ -145,9 +142,8 @@ export default function ApproveTreasuryProposalInnerPopup({
         loading={loadingProposalData}
         getTxFunc={getTxFunc}
         onInBlock={() => {
-          onSubmitted?.();
+          // TODO: council proposal, trigger list update?
         }}
-        // TODO: council proposal, onFinalized
         onClose={onClose}
       />
     </Popup>
