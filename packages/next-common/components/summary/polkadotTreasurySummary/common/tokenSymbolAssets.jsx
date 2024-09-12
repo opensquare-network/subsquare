@@ -1,15 +1,14 @@
 import AssetIcon from "next-common/components/icons/assetIcon";
-import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
+import ValueDisplay from "next-common/components/valueDisplay";
 
-export default function TokenSymbolAssets({ amount, symbol, type }) {
+export default function TokenSymbolAssets({ amount, symbol }) {
   return (
     <div className="flex items-center gap-x-2">
       <AssetIcon symbol={symbol} className="w-4 h-4" />
-      <TreasurySpendValueDisplay
-        type={type}
-        amount={amount}
+      <ValueDisplay
+        value={amount}
         symbol={symbol}
-        className="text12Medium text-textTertiary"
+        className={"text12Medium text-textTertiary"}
       />
     </div>
   );

@@ -1,95 +1,80 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
-import TokenSymbolAssets from "../common/tokenSymbolAssets";
-import LabelItem from "../common/LabelItem";
-import SpendPeriodItem from "./spendPeriodItem";
+import LabelItem from "../common/labelItem";
+import SpendPeriodCountdown from "./spendPeriodCountdown";
+import ToBeAwarded from "./toBeAwarded";
+import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
+import { useChain } from "next-common/context/chain";
+import useSpendPeriodSummary from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";
+import { isNil } from "lodash-es";
+import { gql } from "@apollo/client";
+import { useDoTreasuryEcoQuery } from "next-common/hooks/apollo";
+import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
+import bifrost from "next-common/utils/consts/settings/bifrost";
+import { find } from "lodash-es";
+import { useContextApi } from "next-common/context/api";
+import useToBeAwarded from "next-common/hooks/useToBeAwarded";
+import NextBurn from "./nextBurn";
+import SpendPeriod from "./spendPeriod";
+import Total from "./total";
+import PolkadotTokenSymbol from "./polkadotTokenSymbol";
 
-function TokenSymbolAssetsList() {
-  // TODO: mock data
-  const MockTokenSybmbolAssets = [
-    {
-      type: "native",
-      amount: 123321,
-      symbol: "DOT",
-    },
-  ];
+const GET_TREASURIES = gql`
+  query GetTreasuries {
+    treasuries {
+      chain
+      price
+    }
+  }
+`;
 
-  return MockTokenSybmbolAssets.map((item) => {
-    return (
-      <TokenSymbolAssets
-        type={item.type}
-        amount={item.amount}
-        symbol={item.symbol}
-      />
-    );
-  });
-}
-
-function LabelItems() {
-  const { decimals } = useChainSettings();
-  // TODO: mock data
-  const balance1 = 12343545;
-  const balance2 = 12343545;
-  const symbol1 = "DOT";
-  const symbol2 = "USDC";
-
-  return (
-    <>
-      <LabelItem label={"To be awarded"}>
-        <ValueDisplay
-          value={toPrecision(balance1, decimals)}
-          symbol={symbol1}
-          className={"text12Medium text-textPrimary"}
-          showApproximationSymbol={false}
-        />
-      </LabelItem>
-      <LabelItem label={"Next burn"}>
-        <ValueDisplay
-          value={toPrecision(balance2, decimals)}
-          symbol={symbol2}
-          className={"text12Medium text-textPrimary"}
-          showApproximationSymbol={false}
-        />
-      </LabelItem>
-      <LabelItem label={"Spend period"}>
-        <SpendPeriodItem
-          percentage={12}
-          label={"24d"}
-          total={123}
-          remain={12}
-          text={"12d 12hrs"}
-        />
-      </LabelItem>
-    </>
-  );
-}
+const CHAIN_VALUE_TREASURY_MAP = {
+  [bifrostPolkadot.value]: bifrost.value,
+};
 
 export default function RelayChainTreasury() {
-  // TODO: address, totalBalance
-  const address = "";
-  const totalBalance = 123456789;
-  const { decimals } = useChainSettings();
+  const chain = useChain();
+  const api = useContextApi();
+
+  const free = useTreasuryFree(api);
+  const summary = useSpendPeriodSummary();
+  const toBeAwarded = useToBeAwarded();
+
+  const { data } = useDoTreasuryEcoQuery(GET_TREASURIES);
+  const treasury = find(data?.treasuries, {
+    chain: CHAIN_VALUE_TREASURY_MAP[chain] || chain,
+  });
 
   return (
     <SummaryItem title="Relay Chain Treasury">
-      {/* TODO: loading */}
-      <LoadableContent isLoading={false}>
-        <div>
-          <ValueDisplay
-            key="value"
-            value={toPrecision(totalBalance, decimals)}
-            symbol={""}
-            prefix={"$"}
-          />
-        </div>
-        <div className="!ml-0">
-          <TokenSymbolAssetsList />
-          <LabelItems />
-        </div>
+      <LoadableContent isLoading={isNil(free) || isNil(treasury)}>
+        <Total free={free} fiatPrice={treasury?.price} />
       </LoadableContent>
+      <div className="!ml-0">
+        <LoadableContent isLoading={isNil(free)}>
+          <PolkadotTokenSymbol free={free} />
+        </LoadableContent>
+        <LabelItem label={"To be awarded"}>
+          <LoadableContent isLoading={isNil(toBeAwarded) || isNil(treasury)}>
+            <ToBeAwarded
+              toBeAwarded={toBeAwarded}
+              fiatPrice={treasury?.price}
+            />
+          </LoadableContent>
+        </LabelItem>
+        <LabelItem label={"Next burn"}>
+          <LoadableContent isLoading={isNil(free)}>
+            <NextBurn free={free} />
+          </LoadableContent>
+        </LabelItem>
+        <LabelItem label={"Spend period"}>
+          <LoadableContent isLoading={isNil(summary)}>
+            <SpendPeriod summary={summary} />
+            <SpendPeriodCountdown summary={summary} />
+          </LoadableContent>
+        </LabelItem>
+      </div>
     </SummaryItem>
   );
 }
