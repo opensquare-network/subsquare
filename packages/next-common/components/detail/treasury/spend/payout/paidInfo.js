@@ -29,7 +29,7 @@ export default function PayHint() {
   }
 
   if (parachain === 1000 && beneficiary) {
-    return <BeneficiaryLink beneficiary={beneficiary} />
+    return <BeneficiaryLink beneficiary={beneficiary} />;
   }
 
   return null;
