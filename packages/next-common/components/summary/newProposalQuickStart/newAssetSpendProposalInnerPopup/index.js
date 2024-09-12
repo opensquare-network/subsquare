@@ -122,10 +122,7 @@ export function NewAssetSpendProposalInnerPopup() {
       wide
     >
       <SignerWithBalance title="Origin" />
-      <div className="flex flex-col gap-[8px]">
-        {balanceField}
-        <InfoMessage>Currently requesting DOT from AssetHub</InfoMessage>
-      </div>
+      {balanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}
         <InfoMessage>Please fill the address from AssetHub</InfoMessage>

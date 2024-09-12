@@ -65,8 +65,8 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
             onClick={() => setShowNewRemarkPopup(true)}
           />
           <ChoiceButton
-            name="Treasury proposal"
-            description="Create a treasury spend of DOT from Asset Hub"
+            name="Treasury spend"
+            description="Create a treasury spend of DOT from AssetHub"
             onClick={() => setShowSpendPopup(true)}
           />
         </QuickStart>
