@@ -7,7 +7,7 @@ import { useChain } from "next-common/context/chain";
 
 function BeneficiaryLink({ beneficiary }) {
   let link = `https://assethub-polkadot.subscan.io/account/${beneficiary}`;
-  return (<ExternalLink className="text12Medium text-sapphire500" href={link}>
+  return (<ExternalLink className="text12Medium" href={link}>
     Check the beneficiary
   </ExternalLink>);
 }
