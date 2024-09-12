@@ -35,10 +35,9 @@ const CHAIN_VALUE_TREASURY_MAP = {
 export default function TreasurySummary() {
   const chain = useChain();
   const api = useContextApi();
-
   const free = useTreasuryFree(api);
-  const summary = useSpendPeriodSummary();
   const toBeAwarded = useToBeAwarded();
+  const summary = useSpendPeriodSummary();
 
   const { data } = useDoTreasuryEcoQuery(GET_TREASURIES);
   const treasury = find(data?.treasuries, {

@@ -11,7 +11,9 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { usePageProps } from "next-common/context/page";
-import CollectiveProvider, { collectivePallets } from "next-common/context/collective";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
 
 function MotionPageImpl() {
   const motion = usePost();

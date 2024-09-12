@@ -71,6 +71,7 @@ const moonriver = {
   modules: {
     referenda: true,
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(79,204,198,0.10)",

@@ -21,6 +21,10 @@ export function useTreasuryAccount(api) {
     } else if (Chains.interlay === chain) {
       setAccount("wd9yNSwR7YL4Y4PEtY4pUxYR2jeVdsgwyoN8fwVc9196VMAt4");
       return;
+    } else if (Chains.collectives === chain) {
+      // For collectives chain, return the treasury account on Polkadot AssetHub
+      setAccount("16VcQSRcMFy6ZHVjBvosKmo7FKqTb8ZATChDYo8ibutzLnos");
+      return;
     }
 
     if (!api) {

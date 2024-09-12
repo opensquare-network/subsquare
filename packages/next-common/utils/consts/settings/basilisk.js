@@ -75,6 +75,7 @@ const basilisk = {
   modules: {
     democracy: true,
     referenda: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(63,227,154,0.10)",

@@ -74,6 +74,7 @@ const litmus = {
     "Litmus is a companion canary network to Litentry and connects to the Kusama ecosystem as parachain.",
   modules: {
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(104,34,251,0.10)",

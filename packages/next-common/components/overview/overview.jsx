@@ -6,6 +6,7 @@ import WithPallet from "next-common/components/common/withPallet";
 import FellowshipSalaryOverview from "next-common/components/overview/fellowship/salary/overview";
 import MembersInduction from "./fellowship/membersInduction";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
 
 export default function Overview() {
   const { showAccountManagementTab } = useChainSettings();
@@ -25,6 +26,10 @@ export default function Overview() {
 
       <WithPallet pallet="fellowshipSalary">
         <FellowshipSalaryOverview />
+      </WithPallet>
+
+      <WithPallet pallet="fellowshipTreasury">
+        <FellowshipTreasuryStats />
       </WithPallet>
 
       <div>

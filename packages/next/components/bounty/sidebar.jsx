@@ -2,6 +2,7 @@ import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarW
 import { useOnchainData } from "next-common/context/post";
 import BountySidebarBalance from "next-common/components/treasury/bounty/balance";
 import BountySidebarCurator from "next-common/components/treasury/bounty/curator";
+import BountyClaim from "next-common/components/treasury/bounty/claim";
 
 function BountySidebar() {
   const { address } = useOnchainData();
@@ -13,6 +14,7 @@ function BountySidebar() {
   return (
     <RightBarWrapper>
       <BountySidebarBalance />
+      <BountyClaim />
       <BountySidebarCurator />
     </RightBarWrapper>
   );

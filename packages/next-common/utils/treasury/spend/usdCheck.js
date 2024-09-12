@@ -1,57 +1,22 @@
-import { isNil } from "lodash-es";
+import { getAssetByMetaV3, getParachainIdV3 } from "./getAssetByMetaV3";
+import { getAssetByMetaV4, getParachainIdV4 } from "./getAssetByMetaV4";
 
-export function isParachain(location) {
-  const { parents, interior } = location || {};
-  return parents === 0 && !isNil(interior?.x1?.parachain);
-}
-
-export function getParachainId(location) {
-  const { parents, interior } = location || {};
-  if (parents !== 0) {
-    return null;
+export function getParachainIdByMeta(meta = {}) {
+  const { v3, v4 } = meta?.assetKind || {};
+  if (v3) {
+    return getParachainIdV3(v3.location);
+  } else if (v4) {
+    return getParachainIdV4(v4.location);
   }
-  return interior?.x1?.parachain;
+  return null;
 }
 
-function isAssetHub(location = {}) {
-  const { parents, interior } = location || {};
-  return parents === 0 && interior?.x1?.parachain === 1000;
-}
-
-function _isAssetHubX2(assetId = {}) {
-  const { parents, interior } = assetId?.concrete || {};
-  if (parents !== 0) {
-    return false;
+export function getAssetByMeta(meta = {}) {
+  const { v3, v4 } = meta?.assetKind || {};
+  if (v3) {
+    return getAssetByMetaV3(v3);
+  } else if (v4) {
+    return getAssetByMetaV4(v4);
   }
-
-  const x2 = interior?.x2;
-  return x2 && Array.isArray(x2);
-}
-
-function isUsdt(assetId = {}) {
-  if (!_isAssetHubX2(assetId)) {
-    return false;
-  }
-
-  const x2 = assetId?.concrete?.interior?.x2;
-  return x2[0]?.palletInstance === 50 && x2[1]?.generalIndex === 1984;
-}
-
-function isUsdc(assetId = {}) {
-  if (!_isAssetHubX2(assetId)) {
-    return false;
-  }
-
-  const x2 = assetId?.concrete?.interior?.x2;
-  return x2[0]?.palletInstance === 50 && x2[1]?.generalIndex === 1337;
-}
-
-export function isUsdtByMeta(meta = {}) {
-  const { location, assetId } = meta?.assetKind?.v3 || {};
-  return isAssetHub(location) && isUsdt(assetId);
-}
-
-export function isUsdcByMeta(meta = {}) {
-  const { location, assetId } = meta?.assetKind?.v3 || {};
-  return isAssetHub(location) && isUsdc(assetId);
+  return null;
 }

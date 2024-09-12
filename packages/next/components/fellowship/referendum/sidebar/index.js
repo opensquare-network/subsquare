@@ -19,6 +19,8 @@ import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVot
 import { useTrack } from "next-common/context/post/gov2/track";
 import Tooltip from "next-common/components/tooltip";
 import dynamic from "next/dynamic";
+import AllSpendsRequest from "./request/allSpendsRequest";
+
 const MyCollectiveVote = dynamic(
   () => import("next-common/components/collectives/referenda/myCollectiveVote"),
   {
@@ -75,6 +77,7 @@ export default function FellowshipReferendumSideBar() {
 
   return (
     <RightBarWrapper>
+      <AllSpendsRequest />
       <Gov2Status />
       <FellowshipTally />
       <MyCollectiveVote />
@@ -89,7 +92,6 @@ export default function FellowshipReferendumSideBar() {
           />
         )}
       </VoteSuccessfulProvider>
-
       <InlineWrapper>
         <HowOpenGovWorks anchor="polkadot-fellowship" />
       </InlineWrapper>

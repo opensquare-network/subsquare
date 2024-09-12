@@ -10,6 +10,7 @@ import SymbolValue from "components/gov2/sidebar/tally/values/symbolValue";
 import { useOnchainData } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
+import { InfoDocs, SystemCoins } from "@osn/icons/subsquare";
 
 function BountySidebarBalance() {
   const { address } = useOnchainData();
@@ -31,11 +32,21 @@ function BountySidebarBalance() {
         )}
       </TitleContainer>
       <BorderedRow>
-        <Header>Balance</Header>
+        <Header>
+          <div>
+            <SystemCoins className="w-[20px] h-[20px] text-textTertiary" />
+          </div>
+          Balance
+        </Header>
         {isLoading ? <Value>-</Value> : <SymbolValue value={balance} />}
       </BorderedRow>
       <BorderedRow>
-        <Header>Child Bounties</Header>
+        <Header>
+          <div>
+            <InfoDocs className="w-[20px] h-[20px] text-textTertiary" />
+          </div>
+          Child Bounties
+        </Header>
         <Value>{childBounties?.total || 0}</Value>
       </BorderedRow>
     </SecondaryCardDetail>
