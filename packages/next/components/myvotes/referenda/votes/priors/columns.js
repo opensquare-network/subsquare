@@ -13,7 +13,7 @@ const priorColumns = [
     style: { textAlign: "left", width: "128px", minWidth: "128px" },
   },
   {
-    name: "Expired In",
+    name: "Expire In",
     style: { textAlign: "right", width: "160px", minWidth: "160px" },
   },
 ];
