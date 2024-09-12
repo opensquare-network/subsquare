@@ -55,7 +55,7 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
         />
       </div>
 
-      {!isShibuyaChain(chain) && (
+      {isShibuyaChain(chain) && (
         <QuickStart>
           <ChoiceButton
             name="Approve a treasury proposal"
