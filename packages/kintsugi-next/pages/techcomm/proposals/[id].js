@@ -14,6 +14,9 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
 
 function TechCommMotionContent() {
   const motion = usePost();
@@ -61,9 +64,11 @@ function TechCommProposalPageImpl() {
 
 export default function TechCommProposalPage({ motion }) {
   return (
-    <PostProvider post={motion}>
-      <TechCommProposalPageImpl />
-    </PostProvider>
+    <CollectiveProvider pallet={collectivePallets.technicalCommittee}>
+      <PostProvider post={motion}>
+        <TechCommProposalPageImpl />
+      </PostProvider>
+    </CollectiveProvider>
   );
 }
 
