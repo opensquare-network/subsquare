@@ -22,8 +22,8 @@ export default function ChildBountyCountDown({ data = {} }) {
   return (
     <NoticeWrapper>
       <TreasuryCountDown
-        startHeight={ awardedItem.indexer?.blockHeight }
-        targetHeight={ data.unlockAt }
+        startHeight={awardedItem.indexer?.blockHeight}
+        targetHeight={data.unlockAt}
         prefix="Claimable"
       />
     </NoticeWrapper>

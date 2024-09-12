@@ -7,7 +7,10 @@ import { VoteEnum } from "next-common/utils/voteEnum";
 import { WarningMessage } from "next-common/components/popup/styled";
 import styled from "styled-components";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
-import { usePopupParams, useSignerAccount } from "next-common/components/popupWithSigner/context";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { useContextApi } from "next-common/context/api";
@@ -23,11 +26,7 @@ const SignerWrapper = styled.div`
 `;
 
 export default function PopupContent() {
-  const {
-    motionHash,
-    motionIndex,
-    onClose,
-  } = usePopupParams();
+  const { motionHash, motionIndex, onClose } = usePopupParams();
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
@@ -114,13 +113,11 @@ export default function PopupContent() {
     <>
       <SignerWrapper>
         <SignerWithBalance />
-        {
-          !isMemberLoading && !canVote && (
-            <WarningMessage danger={true}>
-              Only council members can vote.
-            </WarningMessage>
-          )
-        }
+        {!isMemberLoading && !canVote && (
+          <WarningMessage danger={true}>
+            Only council members can vote.
+          </WarningMessage>
+        )}
       </SignerWrapper>
       <CurrentVote currentVote={currentVote} />
       <VoteButton

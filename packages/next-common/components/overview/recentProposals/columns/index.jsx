@@ -160,27 +160,31 @@ export function getRequestColumn() {
   };
 }
 
+function SpendRequestAmount({ meta }) {
+  if (!isNil(meta)) {
+    let { amount } = meta;
+    const asset = getAssetByMeta(meta);
+    if (!asset) {
+      return "--";
+    }
+
+    return (
+      <ValueDisplay
+        className="text14Medium text-textPrimary"
+        value={toPrecision(amount, asset.decimals)}
+        symbol={asset.symbol}
+      />
+    );
+  }
+  return "--";
+}
+
 export function getSpendRequestColumn() {
   return {
     name: "Request",
     className: "w-40 text-left",
     cellRender(data) {
-      if (!isNil(data.meta)) {
-        let { amount } = data.meta;
-        const asset = getAssetByMeta(data.meta);
-        if (!asset) {
-          return "--";
-        }
-
-        return (
-          <ValueDisplay
-            className="text14Medium text-textPrimary"
-            value={toPrecision(amount, asset.decimals)}
-            symbol={asset.symbol}
-          />
-        );
-      }
-      return "--";
+      return <SpendRequestAmount meta={data.meta} />;
     },
   };
 }

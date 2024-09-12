@@ -10,6 +10,7 @@ import PreimageWarning from "next-common/components/detail/referenda/preimageWar
 import FellowshipTimeoutCountdown from "next-common/components/detail/fellowship/timeoutCountdown";
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import FellowshipReferendumTreasurySpendNavigation from "./fellowshipReferendumTreasurySpendNavigation";
 
 const FellowshipReferendaDetailEvidence = dynamicClientOnly(() =>
   import("./evidence"),
@@ -29,6 +30,7 @@ export default function FellowshipReferendaDetail() {
               <FellowshipTimeoutCountdown />
             </TimeoutGuard>
             <FellowshipWhitelistNavigation />
+            <FellowshipReferendumTreasurySpendNavigation />
           </>
         )
       }

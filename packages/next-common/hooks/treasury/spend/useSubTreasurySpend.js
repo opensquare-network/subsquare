@@ -1,10 +1,12 @@
 import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
 import { isNil } from "lodash-es";
+import { useTreasuryPallet } from "next-common/context/treasury";
 
 export default function useSubTreasurySpend(index) {
   const api = useContextApi();
   const [spend, setSpend] = useState();
+  const treasuryPallet = useTreasuryPallet();
 
   useEffect(() => {
     if (!api || isNil(index)) {
@@ -12,7 +14,7 @@ export default function useSubTreasurySpend(index) {
     }
 
     let unsub;
-    api.query.treasury
+    api.query[treasuryPallet]
       .spends(index, (optional) => {
         if (!optional || optional.isNone) {
           return;
@@ -27,7 +29,7 @@ export default function useSubTreasurySpend(index) {
         unsub();
       }
     };
-  }, [api, index]);
+  }, [api, index, treasuryPallet]);
 
   return spend;
 }

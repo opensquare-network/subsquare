@@ -15,7 +15,7 @@ export function useRecentProposalFellowship() {
   const { overviewSummary, recentProposals } = usePageProps();
   const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
 
-  const menu = getFellowshipMenu(fellowshipTracks);
+  const menu = getFellowshipMenu(overviewSummary);
   const referendaMenu = find(menu.items, { value: "fellowship-referenda" });
 
   const items = referendaMenu.items?.map((item) => {

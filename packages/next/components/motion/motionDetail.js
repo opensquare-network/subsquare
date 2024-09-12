@@ -48,10 +48,7 @@ export default function MotionDetail() {
         {!isEdit && <MotionHead motion={post} type={type} />}
         <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
       </DetailContentBase>
-      <MotionSideBar
-        motionHash={post.hash}
-        motionIndex={post.motionIndex}
-      />
+      <MotionSideBar motionHash={post.hash} motionIndex={post.motionIndex} />
       <DetailMultiTabs
         call={
           post?.onchainData?.proposal && (

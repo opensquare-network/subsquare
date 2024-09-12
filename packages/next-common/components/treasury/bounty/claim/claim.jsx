@@ -11,7 +11,11 @@ const ClaimPopup = dynamicPopup(() => import("./popup"));
 export default function Claim() {
   const onChain = useOnchainData();
   const { bountyIndex } = onChain;
-  const { loading, result: onChainStorage } = useSubStorage("bounties", "bounties", [bountyIndex]);
+  const { loading, result: onChainStorage } = useSubStorage(
+    "bounties",
+    "bounties",
+    [bountyIndex],
+  );
 
   const [showPopup, setShowPopup] = useState(false);
   const chainHeight = useSelector(chainOrScanHeightSelector);
@@ -38,7 +42,10 @@ export default function Claim() {
       </PrimaryButton>
 
       {showPopup && (
-        <ClaimPopup bountyIndex={bountyIndex} onClose={() => setShowPopup(false)} />
+        <ClaimPopup
+          bountyIndex={bountyIndex}
+          onClose={() => setShowPopup(false)}
+        />
       )}
     </>
   );
