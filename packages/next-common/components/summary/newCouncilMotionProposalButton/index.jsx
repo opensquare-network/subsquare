@@ -1,8 +1,9 @@
 import Tooltip from "next-common/components/tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
 import { useState } from "react";
 import NewButton from "../newProposalButton/newButton";
+import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
+import { useCollectivePallet } from "next-common/context/collective";
 
 const NewCouncilMotionProposalPopup = dynamicPopup(() =>
   import("./newCouncilMotionProposalPopup"),
@@ -10,16 +11,17 @@ const NewCouncilMotionProposalPopup = dynamicPopup(() =>
 
 export default function NewCouncilMotionProposalButton() {
   const [showPopup, setShowPopup] = useState(false);
-  const isCouncilMember = useIsCouncilMember();
+  const pallet = useCollectivePallet();
+  const { isMember } = useIsCollectiveMember(pallet);
 
   return (
     <>
       <Tooltip
         content={
-          !isCouncilMember ? "Only council members can create proposals" : null
+          !isMember ? "Only collective members can create proposals" : null
         }
       >
-        <NewButton setShowPopup={setShowPopup} disabled={!isCouncilMember} />
+        <NewButton setShowPopup={setShowPopup} disabled={!isMember} />
       </Tooltip>
 
       {showPopup && (
