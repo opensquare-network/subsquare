@@ -8,9 +8,11 @@ import { ChoiceButton } from "../newProposalButton/common";
 import NewPreimageSVG from "../newProposalButton/icons/new-preimage.svg";
 import ApproveTreasuryProposalInnerPopup from "./approveTreasuryProposalInnerPopup";
 import NewCouncilMotionProposalInnerPopup from "./newProposalInnerPopup";
+import { useTreasuryPallet } from "next-common/context/treasury";
 
 export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
   const chain = useChain();
+  const treasuryPallet = useTreasuryPallet();
   const { onClose } = usePopupParams();
   const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
   const [
@@ -46,7 +48,7 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
         />
       </div>
 
-      {isShibuyaChain(chain) && (
+      {isShibuyaChain(chain) && treasuryPallet === "communityTreasury" && (
         <QuickStart>
           <ChoiceButton
             name="Approve a treasury proposal"
