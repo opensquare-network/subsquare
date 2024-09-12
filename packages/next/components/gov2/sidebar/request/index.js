@@ -14,7 +14,7 @@ import {
 export function RequestWrapper({ children }) {
   return (
     <SecondaryCardDetail>
-      <TitleContainer className="!px-0 mb-4">Request</TitleContainer>/
+      <TitleContainer className="!px-0 mb-4">Request</TitleContainer>
       {children}
     </SecondaryCardDetail>
   );
