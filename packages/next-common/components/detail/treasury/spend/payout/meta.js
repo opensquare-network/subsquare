@@ -42,7 +42,7 @@ export default function Meta() {
         <SideInfoItem>
           <SideInfoItemName>Beneficiary</SideInfoItemName>
           <SideInfoItemValue>
-            <AddressUser add={beneficiary} />
+            <AddressUser add={beneficiary} maxWidth={160} />
           </SideInfoItemValue>
         </SideInfoItem>
       </Info>
