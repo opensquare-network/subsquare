@@ -85,6 +85,7 @@ const bifrost = {
     referenda: true,
     fellowship: true,
     democracy: true,
+    treasury: true,
   },
   useVoteCall: true,
   hasMultisig: true,

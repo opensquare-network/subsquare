@@ -82,6 +82,7 @@ const kintsugi = {
   hasTipsModule: false,
   modules: {
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(247,205,69,0.10)",

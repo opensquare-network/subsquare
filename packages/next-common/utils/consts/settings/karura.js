@@ -96,6 +96,7 @@ const karura = {
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
   modules: {
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(229,15,89,0.10)",

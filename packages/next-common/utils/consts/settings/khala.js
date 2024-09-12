@@ -68,6 +68,7 @@ const khala = {
   multisigApiPrefix: "khala",
   modules: {
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(5,227,227,0.10)",

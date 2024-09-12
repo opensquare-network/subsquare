@@ -57,6 +57,7 @@ const darwinia2 = {
   modules: {
     referenda: true,
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(219,55,138,0.10)",

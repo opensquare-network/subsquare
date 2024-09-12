@@ -64,6 +64,7 @@ const bifrostPolkadot = {
     referenda: true,
     fellowship: true,
     democracy: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(84,43,251,0.10)",

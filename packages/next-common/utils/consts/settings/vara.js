@@ -97,6 +97,7 @@ const vara = {
   modules: {
     referenda: true,
     fellowship: true,
+    treasury: true,
   },
   cssVarsLight: {
     theme100: "rgba(11,234,179,0.10)",
