@@ -11,6 +11,7 @@ import CollectiveProvider, {
   collectivePallets,
 } from "next-common/context/collective";
 import NewCouncilMotionProposalButton from "next-common/components/summary/newCouncilMotionProposalButton";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 export default function MotionsPage({ motions }) {
   const chainSettings = useChainSettings();
@@ -25,25 +26,27 @@ export default function MotionsPage({ motions }) {
   };
 
   return (
-    <CollectiveProvider pallet={collectivePallets.communityCouncil}>
-      <ListLayout
-        title={chainSettings.name}
-        seoInfo={seoInfo}
-        description={chainSettings.description}
-        headContent={<ChainSocialLinks />}
-      >
-        <PostList
-          category={category}
-          titleExtra={<NewCouncilMotionProposalButton />}
-          items={items}
-          pagination={{
-            page: motions.page,
-            pageSize: motions.pageSize,
-            total: motions.total,
-          }}
-        />
-      </ListLayout>
-    </CollectiveProvider>
+    <TreasuryProvider pallet="communityTreasury">
+      <CollectiveProvider pallet={collectivePallets.communityCouncil}>
+        <ListLayout
+          title={chainSettings.name}
+          seoInfo={seoInfo}
+          description={chainSettings.description}
+          headContent={<ChainSocialLinks />}
+        >
+          <PostList
+            category={category}
+            titleExtra={<NewCouncilMotionProposalButton />}
+            items={items}
+            pagination={{
+              page: motions.page,
+              pageSize: motions.pageSize,
+              total: motions.total,
+            }}
+          />
+        </ListLayout>
+      </CollectiveProvider>
+    </TreasuryProvider>
   );
 }
 
