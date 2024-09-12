@@ -16,7 +16,7 @@ function WarningText() {
   const decimals = useDecimals();
   let needNayVotes = BigNumber(tally.ayes)
     .div(approvalThreshold)
-    .minus(tally.nays)
+    .minus(tally.ayes)
     .minus(tally.nays)
     .toString();
   if (BigNumber(needNayVotes).lt(0)) {
