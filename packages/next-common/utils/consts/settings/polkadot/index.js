@@ -63,6 +63,7 @@ const polkadot = {
   modules: {
     referenda: true,
     whales: true,
+    democracy: false,
   },
   multisigWallets: {
     signet: true,
