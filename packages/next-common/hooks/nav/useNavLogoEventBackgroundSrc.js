@@ -80,6 +80,21 @@ const fathersDayEvent = {
 };
 
 /**
+ * Mid-Autumn
+ */
+const midAutumnDay = lunarDateToSolarDate(nowDay.year(), 8, 15);
+const midAutumnEveDay = midAutumnDay.add(-1, "day");
+const midAutumnEndDay = midAutumnDay.add(1, "day");
+const midAutumnEvent = {
+  name: "mid-autumn",
+  filetype: "png",
+  startMonth: midAutumnEveDay.month() + 1,
+  startDate: midAutumnEveDay.date(),
+  endMonth: midAutumnEndDay.month() + 1,
+  endDate: midAutumnEndDay.date(),
+};
+
+/**
  * Christmas
  */
 const christmasEvent = {
@@ -96,6 +111,7 @@ const events = [
   labourDayEvent,
   dragonBoatFestivalEvent,
   fathersDayEvent,
+  midAutumnEvent,
   christmasEvent,
 ];
 
