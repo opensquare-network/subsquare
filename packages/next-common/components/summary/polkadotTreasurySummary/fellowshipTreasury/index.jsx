@@ -34,8 +34,8 @@ function TokenSymbolAssetsList() {
 }
 
 export default function FellowshipTreasury() {
-  // TODO: totalBalance Link address
-  const address = useRealAddress();
+  // TODO: totalBalance Link
+  const address = "16VcQSRcMFy6ZHVjBvosKmo7FKqTb8ZATChDYo8ibutzLnos";
   const totalBalance = 9921999999999999999999;
   const { decimals } = useChainSettings();
 

@@ -34,8 +34,8 @@ function TokenSymbolAssetsList() {
 }
 
 export default function MultiAssetsTreasury() {
-  // TODO: totalBalance Link address
-  const address = useRealAddress();
+  // TODO: totalBalance Link
+  const address = "14xmwinmCEz6oRrFdczHKqHgWNMiCysE2KrA4jXXAAM1Eogk";
   const totalBalance = 123;
   const { decimals } = useChainSettings();
 
