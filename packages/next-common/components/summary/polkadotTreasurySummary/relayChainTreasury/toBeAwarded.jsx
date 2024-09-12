@@ -2,7 +2,6 @@ import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import TreasurySummaryFiatPriceLabel from "./fiatPriceLabel";
 
 export default function ToBeAwarded({ toBeAwarded, fiatPrice }) {
   const { decimals, symbol } = useChainSettings();
@@ -17,10 +16,6 @@ export default function ToBeAwarded({ toBeAwarded, fiatPrice }) {
         symbol={symbol}
         className={"text12Medium text-textPrimary"}
       />
-
-      {!isNil(fiatPrice) && (
-        <TreasurySummaryFiatPriceLabel value={value} fiatPrice={fiatPrice} />
-      )}
     </span>
   );
 }
