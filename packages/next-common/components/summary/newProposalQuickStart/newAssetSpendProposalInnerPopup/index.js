@@ -22,7 +22,7 @@ const getAssetKindParam = () => {
   return {
     V3: {
       location: {
-        parents: 0,
+        parents: 1,
         interior: {
           X1: {
             Parachain: 1000,
@@ -31,7 +31,7 @@ const getAssetKindParam = () => {
       },
       assetId: {
         Concrete: {
-          parents: 0,
+          parents: 1,
           interior: {
             here: null,
           },
