@@ -1,5 +1,8 @@
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
-import { treasurySpendBaseUrl } from "next-common/utils/postBaseUrl";
+import {
+  fellowshipTreasurySpendBaseUrl,
+  treasurySpendBaseUrl,
+} from "next-common/utils/postBaseUrl";
 
 function getSpendDefaultTitle(item) {
   let title = item.title?.trim();
@@ -18,5 +21,16 @@ export default function normalizeTreasurySpendListItem(chain, item) {
     status: item.state ?? "Unknown",
     time: getPostLastActivityAt(item),
     detailLink: `${treasurySpendBaseUrl}/${item.index}`,
+  };
+}
+
+export function normalizeFellowshipTreasurySpendListItem(chain, item) {
+  return {
+    ...item,
+    title: getSpendDefaultTitle(item),
+    address: item.proposer,
+    status: item.state ?? "Unknown",
+    time: getPostLastActivityAt(item),
+    detailLink: `${fellowshipTreasurySpendBaseUrl}/${item.index}`,
   };
 }

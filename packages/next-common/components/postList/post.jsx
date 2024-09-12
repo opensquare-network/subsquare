@@ -189,7 +189,7 @@ function PostAmount({ amount, decimals, symbol }) {
 }
 
 export function TreasurySpendAmount({ meta }) {
-  let { amount } = meta;
+  const { amount } = meta;
   const asset = getAssetByMeta(meta);
   if (!asset) {
     return null;
@@ -211,7 +211,12 @@ function PostValueTitle({ data, type }) {
     ? onchainData?.treasuryInfo?.amount
     : value;
 
-  if (businessCategory.treasurySpends === type) {
+  if (
+    [
+      businessCategory.treasurySpends,
+      businessCategory.fellowshipTreasurySpends,
+    ].includes(type)
+  ) {
     return <TreasurySpendAmount meta={data?.meta} />;
   }
 

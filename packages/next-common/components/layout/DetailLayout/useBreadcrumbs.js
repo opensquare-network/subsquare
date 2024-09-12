@@ -79,6 +79,15 @@ export default function useBreadcrumbs() {
       },
       getIndexField(post?.index, id),
     ];
+  } else if (detailPageCategory.FELLOWSHIP_TREASURY_SPEND === type) {
+    return [
+      treasury,
+      {
+        content: "Spends",
+        path: "/fellowship/treasury/spends",
+      },
+      getIndexField(post?.index, id),
+    ];
   } else if (detailPageCategory.TREASURY_BOUNTY === type) {
     return [
       treasury,

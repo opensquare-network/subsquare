@@ -3,6 +3,7 @@ export const bountyBaseUrl = "/treasury/bounties";
 export const tipBaseUrl = "/treasury/tips";
 export const treasuryProposalBaseUrl = "/treasury/proposals";
 export const treasurySpendBaseUrl = "/treasury/spends";
+export const fellowshipTreasurySpendBaseUrl = "/fellowship/treasury/spends";
 export const democracyReferendumBaseUrl = "/democracy/referenda";
 export const democracyProposalBaseUrl = "/democracy/proposals";
 export const democracyExternalBaseUrl = "/democracy/externals";

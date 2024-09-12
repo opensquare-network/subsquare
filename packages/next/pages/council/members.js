@@ -1,7 +1,9 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import MembersNoElections from "components/council/membersNoElections";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
-import CollectiveProvider, { collectivePallets } from "next-common/context/collective";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 

@@ -6,18 +6,13 @@ export default function useSubFellowshipCoreMember(
   pallet = "fellowshipCore",
 ) {
   const [member, setMember] = useState(null);
-  const { loading } = useSubStorage(
-    pallet,
-    "member",
-    [address],
-    {
-      callback: useCallback((rawOptional) => {
-        if (rawOptional.isSome) {
-          setMember(rawOptional.unwrap().toJSON());
-        }
-      }, []),
-    },
-  );
+  const { loading } = useSubStorage(pallet, "member", [address], {
+    callback: useCallback((rawOptional) => {
+      if (rawOptional.isSome) {
+        setMember(rawOptional.unwrap().toJSON());
+      }
+    }, []),
+  });
 
   return { isLoading: loading, member };
 }

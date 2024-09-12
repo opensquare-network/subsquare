@@ -20,7 +20,6 @@ import { getCommunityTreasuryMenu } from "./communityTreasury";
 export function getHomeMenu({
   summary = {},
   tracks = [],
-  fellowshipTracks = [],
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
@@ -31,7 +30,7 @@ export function getHomeMenu({
   return [
     commonMenus,
     getReferendaMenu(tracks, currentTrackId),
-    getFellowshipMenu(fellowshipTracks, currentTrackId),
+    getFellowshipMenu(summary, currentTrackId),
     getAmbassadorMenu(ambassadorTracks, currentTrackId),
     getDemocracyMenu(summary),
     getTreasuryMenu(summary),
