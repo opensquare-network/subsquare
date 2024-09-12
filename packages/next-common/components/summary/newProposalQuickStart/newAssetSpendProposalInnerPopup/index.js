@@ -127,9 +127,9 @@ export function NewAssetSpendProposalInnerPopup() {
         {beneficiaryField}
         <InfoMessage>Please fill the address from AssetHub</InfoMessage>
       </div>
-      {validFromField}
       {trackField}
       <AdvanceSettings>
+        {validFromField}
         {enactmentField}
         {submissionDepositField}
       </AdvanceSettings>
