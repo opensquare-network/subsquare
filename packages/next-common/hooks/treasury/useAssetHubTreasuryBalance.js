@@ -17,8 +17,11 @@ export const StatemintAssets = [
   },
 ];
 
-const StatemintTreasuryAccount =
+export const StatemintTreasuryAccount =
   "14xmwinmCEz6oRrFdczHKqHgWNMiCysE2KrA4jXXAAM1Eogk";
+
+export const StatemintFellowShipTreasuryAccount =
+  "16VcQSRcMFy6ZHVjBvosKmo7FKqTb8ZATChDYo8ibutzLnos";
 
 export default function useAssetHubTreasuryBalance(symbol) {
   const api = useAssetHubApi();

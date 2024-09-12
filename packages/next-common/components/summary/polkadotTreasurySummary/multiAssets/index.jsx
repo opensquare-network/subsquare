@@ -5,9 +5,16 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import TokenSymbolAssets from "../common/tokenSymbolAssets";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useAssetHubTreasuryBalance, {
+  StatemintTreasuryAccount,
+  StatemintAssets,
+} from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 
 function TokenSymbolAssetsList() {
+  const getAssetBySymbol = (symbol) =>
+    StatemintAssets.find((asset) => asset.symbol === symbol);
+  const asset = useAssetHubTreasuryBalance("USDC");
+  console.log(":::::getAssetBySymbol, ", asset);
   // TODO: mock data
   const MockTokenSybmbolAssets = [
     {
@@ -35,20 +42,15 @@ function TokenSymbolAssetsList() {
 
 export default function MultiAssetsTreasury() {
   // TODO: totalBalance Link
-  const address = "14xmwinmCEz6oRrFdczHKqHgWNMiCysE2KrA4jXXAAM1Eogk";
   const totalBalance = 123;
   const { decimals } = useChainSettings();
-
-  if (!address) {
-    return null;
-  }
 
   return (
     <SummaryItem
       title={
         <Link
           className="text12Medium"
-          href={`https://statemint.statescan.io/#/accounts/${address}`}
+          href={`https://statemint.statescan.io/#/accounts/${StatemintTreasuryAccount}`}
           target="_blank"
           rel="noreferrer"
         >

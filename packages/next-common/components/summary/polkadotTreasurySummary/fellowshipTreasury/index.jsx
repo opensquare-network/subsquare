@@ -5,7 +5,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import TokenSymbolAssets from "../common/tokenSymbolAssets";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance"
 
 function TokenSymbolAssetsList() {
   // TODO: mock data
@@ -35,20 +35,15 @@ function TokenSymbolAssetsList() {
 
 export default function FellowshipTreasury() {
   // TODO: totalBalance Link
-  const address = "16VcQSRcMFy6ZHVjBvosKmo7FKqTb8ZATChDYo8ibutzLnos";
   const totalBalance = 9921999999999999999999;
   const { decimals } = useChainSettings();
-
-  if (!address) {
-    return null;
-  }
 
   return (
     <SummaryItem
       title={
         <Link
           className="text12Medium"
-          href={`https://statemint.statescan.io/#/accounts/${address}`}
+          href={`https://statemint.statescan.io/#/accounts/${StatemintFellowShipTreasuryAccount}`}
           target="_blank"
           rel="noreferrer"
         >
