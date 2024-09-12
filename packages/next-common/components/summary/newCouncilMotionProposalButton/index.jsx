@@ -17,9 +17,7 @@ export default function NewCouncilMotionProposalButton() {
   return (
     <>
       <Tooltip
-        content={
-          !isMember ? "Only collective members can create proposals" : null
-        }
+        content={!isMember ? "Only council members can create proposal" : null}
       >
         <NewButton setShowPopup={setShowPopup} disabled={!isMember} />
       </Tooltip>
