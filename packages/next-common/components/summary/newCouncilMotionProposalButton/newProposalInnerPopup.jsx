@@ -60,7 +60,7 @@ export default function NewCouncilMotionProposalInnerPopup({
         ? [threshold, proposal, proposalLength]
         : [threshold, proposal];
 
-    return api.tx[pallet].propose([params]);
+    return api.tx[pallet].propose(...params);
   }, [api, pallet, proposal, proposalLength, threshold]);
 
   return (
