@@ -5,17 +5,30 @@ import { StatusWrapper } from "next-common/components/popup/styled";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
+import { useCollectivePallet } from "next-common/context/collective";
 import nextApi from "next-common/services/nextApi";
+import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { isValidIntegerIndex } from "next-common/utils/isValidIntegerIndex";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useAsync, useDebounce } from "react-use";
+import {
+  useTreasuryPallet,
+  useTreasuryProposalListUrl,
+} from "../../../context/treasury";
 
 export default function ApproveTreasuryProposalInnerPopup({
   onClose,
   onSubmitted,
 }) {
+  const pallet = useCollectivePallet();
+  const treasuryPallet = useTreasuryPallet();
+  const proposalListUrl = useTreasuryProposalListUrl(treasuryPallet);
   const api = useContextApi();
+
+  const members = useCouncilMembers();
+  const threshold = Math.ceil(members?.length / 2) + 1;
+
   const [inputProposal, setInputProposal] = useState("");
   const [debouncedInputProposal, setDebouncedInputProposal] = useState("");
   useEffect(() => {
@@ -43,7 +56,7 @@ export default function ApproveTreasuryProposalInnerPopup({
         return null;
       }
 
-      const proposal = await api.query.treasury.proposals(
+      const proposal = await api.query[treasuryPallet].proposals(
         debouncedInputProposal,
       );
 
@@ -52,7 +65,7 @@ export default function ApproveTreasuryProposalInnerPopup({
       }
 
       return proposal.toJSON();
-    }, [api, debouncedInputProposal]);
+    }, [api, debouncedInputProposal, treasuryPallet]);
 
   const { loading: loadingTreasuryTitle, value: treasuryTitle } =
     useAsync(async () => {
@@ -61,14 +74,39 @@ export default function ApproveTreasuryProposalInnerPopup({
       }
 
       const resp = await nextApi.fetch(
-        `treasury/proposals/${debouncedInputProposal}`,
+        `${
+          proposalListUrl.startsWith("/")
+            ? proposalListUrl.slice(1)
+            : proposalListUrl
+        }/${debouncedInputProposal}`,
       );
       return resp?.result?.title;
-    }, [proposalData, debouncedInputProposal, loadingProposalData]);
+    }, [
+      proposalData,
+      debouncedInputProposal,
+      loadingProposalData,
+      proposalListUrl,
+    ]);
 
   const disabled = !inputProposal || loadingProposalData || !proposalData;
 
-  const getTxFunc = useCallback(() => {}, []);
+  const getTxFunc = useCallback(() => {
+    if (!api) {
+      return;
+    }
+
+    const proposalData = api.tx.communityTreasury.approveProposal(
+      debouncedInputProposal,
+    );
+    const proposalLength = proposalData?.encodedLength || 0;
+
+    const params =
+      api.tx[pallet].propose.meta.args.length === 3
+        ? [threshold, proposalData, proposalLength]
+        : [threshold, proposalData];
+
+    return api.tx[pallet].propose(...params);
+  }, [api, debouncedInputProposal, pallet, threshold]);
 
   return (
     <Popup
