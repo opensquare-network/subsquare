@@ -92,15 +92,15 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
       return;
     }
 
-    const proposalData = api.tx[treasuryPallet].approveProposal(
+    const proposal = api.tx[treasuryPallet].approveProposal(
       debouncedInputProposal,
     );
-    const proposalLength = proposalData?.encodedLength || 0;
+    const proposalLength = proposal?.encodedLength || 0;
 
     const params =
       api.tx[pallet].propose.meta.args.length === 3
-        ? [threshold, proposalData, proposalLength]
-        : [threshold, proposalData];
+        ? [threshold, proposal, proposalLength]
+        : [threshold, proposal];
 
     return api.tx[pallet].propose(...params);
   }, [api, debouncedInputProposal, pallet, threshold, treasuryPallet]);
