@@ -52,6 +52,7 @@ export default function TotalTreasury() {
             key="value"
             value={toPrecision(totalBalance, decimals)}
             symbol={""}
+            prefix={"$"}
           />
         </div>
         <div className="!ml-0">

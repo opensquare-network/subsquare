@@ -5,6 +5,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import TokenSymbolAssets from "../common/tokenSymbolAssets";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function TokenSymbolAssetsList() {
   // TODO: mock data
@@ -33,10 +34,14 @@ function TokenSymbolAssetsList() {
 }
 
 export default function MultiAssetsTreasury() {
-  // TODO: address, totalBalance
-  const address = "";
+  // TODO: totalBalance Link address
+  const address = useRealAddress();
   const totalBalance = 123;
   const { decimals } = useChainSettings();
+
+  if (!address) {
+    return null;
+  }
 
   return (
     <SummaryItem
@@ -61,6 +66,7 @@ export default function MultiAssetsTreasury() {
             key="value"
             value={toPrecision(totalBalance, decimals)}
             symbol={""}
+            prefix={"$"}
           />
         </div>
         <div className="!ml-0">

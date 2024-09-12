@@ -5,6 +5,7 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import TokenSymbolAssets from "../common/tokenSymbolAssets";
 import LabelItem from "../common/LabelItem";
+import SpendPeriodItem from "./spendPeriodItem";
 
 function TokenSymbolAssetsList() {
   // TODO: mock data
@@ -54,11 +55,13 @@ function LabelItems() {
         />
       </LabelItem>
       <LabelItem label={"Spend period"}>
-        <span className={"text12Medium text-textPrimary"}>
-          12d 12hrs
-          <span className="text-textTertiary ml-1">/ 24d</span>
-          <span className="ml-1">circle</span>
-        </span>
+        <SpendPeriodItem
+          percentage={12}
+          label={"24d"}
+          total={123}
+          remain={12}
+          text={"12d 12hrs"}
+        />
       </LabelItem>
     </>
   );
@@ -79,6 +82,7 @@ export default function RelayChainTreasury() {
             key="value"
             value={toPrecision(totalBalance, decimals)}
             symbol={""}
+            prefix={"$"}
           />
         </div>
         <div className="!ml-0">
