@@ -10,7 +10,7 @@ function PopupContainer(props, ref) {
       {...props}
       ref={ref}
       className={cn(
-        "fixed inset-0 bg-[#000000]/25 flex justify-center items-start overflow-auto overscroll-y-none",
+        "fixed inset-0 bg-black/25 flex justify-center items-start overflow-auto overscroll-y-none",
         props.className,
       )}
     />
