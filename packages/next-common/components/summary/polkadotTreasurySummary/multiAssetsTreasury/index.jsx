@@ -8,7 +8,7 @@ import {
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
 import { useAssetHubApi } from "next-common/context/assetHub";
-import { useSubscribeFellowshipTreasury } from "../common/useSubscribeAssetHubTreasuryFree";
+import { useSubscribeFellowshipTreasuryFree } from "../common/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useSubscribeAssetHubAssets } from "../common/useSubscribeAssetHubAssets";
 
@@ -50,7 +50,7 @@ function TokenSymbolAssetsList() {
 
 export default function MultiAssetsTreasury() {
   const api = useAssetHubApi();
-  const { free, isLoading } = useSubscribeFellowshipTreasury(
+  const { free, isLoading } = useSubscribeFellowshipTreasuryFree(
     api,
     StatemintTreasuryAccount,
   );

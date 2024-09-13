@@ -93,7 +93,6 @@ export default function useMyAssets() {
         return result;
       }
     }, []);
-    console.log(":::::knownAssets, assets", knownAssets,assets);
     const knownAssetIds = knownAssetDefs.map((def) => def.assetId);
     const otherAssets = assets.filter(
       (asset) => !knownAssetIds.includes(asset.assetId),

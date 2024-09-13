@@ -1,17 +1,16 @@
-import BigNumber from "bignumber.js";
 import { useCallback, useState } from "react";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 
-export function useSubscribeFellowshipTreasury(api, address) {
+export function useSubscribeFellowshipTreasuryFree(api, address) {
   const [free, setFree] = useState(0);
 
-  const { loading } = useSubStorage("system", "account", [address], {
+  useSubStorage("system", "account", [address], {
     api,
-    callback: useCallback((account) => {
-      const free = new BigNumber(account.data.free.toJSON()).toString();
+    callback: useCallback((accountData) => {
+      const free = accountData.data.free.toJSON();
       setFree(free);
     }, []),
   });
 
-  return { free, isLoading: loading };
+  return { free, isLoading: false };
 }
