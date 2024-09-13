@@ -20,7 +20,6 @@ module.exports = {
     resolve("./packages/next-common/**/*.{html,js,jsx}"),
   ],
   theme: {
-    colors: twThemeVariables,
     screens: {
       sm: "768px",
       md: "1024px",
@@ -28,6 +27,9 @@ module.exports = {
       pad: "1080px",
     },
     extend: {
+      colors: {
+        ...twThemeVariables,
+      },
       borderRadius: {
         "2xl": "14px",
         "3xl": "16px",
