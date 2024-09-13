@@ -4,14 +4,8 @@ import SummaryLabelItem from "../common/summaryLabelItem";
 import SpendPeriodCountdown from "./spendPeriodCountdown";
 import ToBeAwarded from "./toBeAwarded";
 import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
-import { useChain } from "next-common/context/chain";
 import useSpendPeriodSummary from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";
 import { isNil } from "lodash-es";
-import { gql } from "@apollo/client";
-import { useDoTreasuryEcoQuery } from "next-common/hooks/apollo";
-import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
-import bifrost from "next-common/utils/consts/settings/bifrost";
-import { find } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import NextBurn from "./nextBurn";
@@ -19,47 +13,25 @@ import SpendPeriod from "./spendPeriod";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
 
-const GET_TREASURIES = gql`
-  query GetTreasuries {
-    treasuries {
-      chain
-      price
-    }
-  }
-`;
-
-const CHAIN_VALUE_TREASURY_MAP = {
-  [bifrostPolkadot.value]: bifrost.value,
-};
-
 export default function RelayChainTreasury() {
-  const chain = useChain();
   const api = useContextApi();
 
   const free = useTreasuryFree(api);
   const summary = useSpendPeriodSummary();
   const toBeAwarded = useToBeAwarded();
 
-  const { data } = useDoTreasuryEcoQuery(GET_TREASURIES);
-  const treasury = find(data?.treasuries, {
-    chain: CHAIN_VALUE_TREASURY_MAP[chain] || chain,
-  });
-
   return (
     <SummaryItem title="Relay Chain Treasury">
-      <LoadableContent isLoading={isNil(free) || isNil(treasury)}>
-        <FiatPriceLabel free={free} fiatPrice={treasury?.price} />
+      <LoadableContent isLoading={isNil(free)}>
+        <FiatPriceLabel free={free} />
       </LoadableContent>
       <div className="!ml-0">
         <LoadableContent isLoading={isNil(free)}>
           <PolkadotTokenSymbol free={free} />
         </LoadableContent>
         <SummaryLabelItem label={"To be awarded"}>
-          <LoadableContent isLoading={isNil(toBeAwarded) || isNil(treasury)}>
-            <ToBeAwarded
-              toBeAwarded={toBeAwarded}
-              fiatPrice={treasury?.price}
-            />
+          <LoadableContent isLoading={isNil(toBeAwarded)}>
+            <ToBeAwarded toBeAwarded={toBeAwarded} />
           </LoadableContent>
         </SummaryLabelItem>
         <SummaryLabelItem label={"Next burn"}>
