@@ -1,7 +1,7 @@
 import { cn } from "next-common/utils";
 import { SummaryTitle } from "next-common/components/summary/styled";
 
-export default function LabelItem({ className, label, suffix, children }) {
+export default function SummaryLabelItem({ className, label, suffix, children }) {
   return (
     <div className={cn("flex justify-between items-center whitespace-nowrap", className)}>
       <span className="inline-flex items-center gap-x-[4px]">

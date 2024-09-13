@@ -1,7 +1,6 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
-import { useChainSettings } from "next-common/context/chain";
-import LabelItem from "../common/labelItem";
+import SummaryLabelItem from "../common/summaryLabelItem";
 import SpendPeriodCountdown from "./spendPeriodCountdown";
 import ToBeAwarded from "./toBeAwarded";
 import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
@@ -17,8 +16,8 @@ import { useContextApi } from "next-common/context/api";
 import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import NextBurn from "./nextBurn";
 import SpendPeriod from "./spendPeriod";
-import Total from "./total";
-import PolkadotTokenSymbol from "./polkadotTokenSymbol";
+import FiatPriceLabel from "../common/fiatPriceLabel";
+import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
 
 const GET_TREASURIES = gql`
   query GetTreasuries {
@@ -49,31 +48,31 @@ export default function RelayChainTreasury() {
   return (
     <SummaryItem title="Relay Chain Treasury">
       <LoadableContent isLoading={isNil(free) || isNil(treasury)}>
-        <Total free={free} fiatPrice={treasury?.price} />
+        <FiatPriceLabel free={free} fiatPrice={treasury?.price} />
       </LoadableContent>
       <div className="!ml-0">
         <LoadableContent isLoading={isNil(free)}>
           <PolkadotTokenSymbol free={free} />
         </LoadableContent>
-        <LabelItem label={"To be awarded"}>
+        <SummaryLabelItem label={"To be awarded"}>
           <LoadableContent isLoading={isNil(toBeAwarded) || isNil(treasury)}>
             <ToBeAwarded
               toBeAwarded={toBeAwarded}
               fiatPrice={treasury?.price}
             />
           </LoadableContent>
-        </LabelItem>
-        <LabelItem label={"Next burn"}>
+        </SummaryLabelItem>
+        <SummaryLabelItem label={"Next burn"}>
           <LoadableContent isLoading={isNil(free)}>
             <NextBurn free={free} />
           </LoadableContent>
-        </LabelItem>
-        <LabelItem label={"Spend period"}>
+        </SummaryLabelItem>
+        <SummaryLabelItem label={"Spend period"}>
           <LoadableContent isLoading={isNil(summary)}>
             <SpendPeriod summary={summary} />
             <SpendPeriodCountdown summary={summary} />
           </LoadableContent>
-        </LabelItem>
+        </SummaryLabelItem>
       </div>
     </SummaryItem>
   );

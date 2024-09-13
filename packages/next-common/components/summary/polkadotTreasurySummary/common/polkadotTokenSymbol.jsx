@@ -1,6 +1,6 @@
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import TokenSymbolAssets from "../common/tokenSymbolAssets";
+import TokenSymbolAssets from "./tokenSymbolAssets";
 
 export default function PolkadotTokenSymbol({ free = 0 }) {
   const { decimals, symbol } = useChainSettings();
