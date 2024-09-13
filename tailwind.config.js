@@ -39,7 +39,7 @@ module.exports = {
     },
   },
   plugins: [
-    require("./packages/next-common/styles/tailwind-plugins/scrollbar"),
-    require("./packages/next-common/styles/tailwind-plugins/fonts"),
+    require("./packages/next-common/styles/tailwind-plugins/scrollbar").plugin,
+    require("./packages/next-common/styles/tailwind-plugins/fonts").plugin,
   ],
 };

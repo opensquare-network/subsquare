@@ -54,6 +54,6 @@ exports.fonts = {
   },
 };
 
-module.exports = plugin(({ addComponents }) => {
-  addComponents(exports.fonts);
+exports.plugin = plugin(({ addComponents }) => {
+  addComponents(this.fonts);
 });
