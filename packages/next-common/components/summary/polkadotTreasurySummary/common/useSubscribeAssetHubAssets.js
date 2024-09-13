@@ -9,6 +9,20 @@ import calcTransferable from "next-common/utils/account/transferable";
 import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
 import useAllAssetMetadata from "next-common/components/assets/context/assetMetadata";
 
+export function useSubscribeAssetHubAssets(api, assetId, address) {
+  const [free, setFree] = useState(0);
+
+  const { loading } = useSubStorage("assets", "account", [assetId, address], {
+    api,
+    callback: useCallback((data) => {
+      const free = data?.toJSON();
+      setFree(free);
+    }, []),
+  });
+
+  return { free, isLoading: loading };
+}
+
 const PolkadotAssetHubNativeToken = {
   symbol: "DOT",
   name: "Polkadot",
@@ -57,9 +71,8 @@ export function useMyNativeAsset() {
   };
 }
 
-export default function useMyAssets() {
+export default function useSubscribe1AssetHubAssets(api) {
   const address = useRealAddress();
-  const api = useContextApi();
   const [allMetadata] = useAllAssetMetadata();
   const multiAccountKey = useMemo(
     () => allMetadata?.map((item) => [item.assetId, address]),
@@ -93,14 +106,7 @@ export default function useMyAssets() {
         return result;
       }
     }, []);
-    console.log(":::::knownAssets, assets", knownAssets,assets);
-    const knownAssetIds = knownAssetDefs.map((def) => def.assetId);
-    const otherAssets = assets.filter(
-      (asset) => !knownAssetIds.includes(asset.assetId),
-    );
-
-    const tokens = [...knownAssets, ...otherAssets];
-
-    return tokens.filter((item) => !new BigNumber(item.balance || 0).isZero());
+    console.log(":::::knownAssets, assets", knownAssets, assets);
+    return knownAssets;
   }, [allMetadata, multiAccounts, knownAssetDefs]);
 }

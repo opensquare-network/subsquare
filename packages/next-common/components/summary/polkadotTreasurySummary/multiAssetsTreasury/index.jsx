@@ -1,39 +1,47 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
 import TokenSymbolAssets from "../common/tokenSymbolAssets";
-import useAssetHubTreasuryBalance, {
+import {
   StatemintTreasuryAccount,
   StatemintAssets,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
+import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
+import { useAssetHubApi } from "next-common/context/assetHub";
+import { useSubscribeFellowshipTreasury } from "../common/useSubscribeAssetHubTreasuryFree";
+import FiatPriceLabel from "../common/fiatPriceLabel";
+import { useSubscribeAssetHubAssets } from "../common/useSubscribeAssetHubAssets";
 
+const SybmbolAssets = [
+  {
+    id: 1984,
+    symbol: "USDt",
+    decimals: 6,
+    type: "",
+  },
+  {
+    id: 1337,
+    symbol: "USDC",
+    decimals: 6,
+    type: "",
+  },
+];
 function TokenSymbolAssetsList() {
-  const getAssetBySymbol = (symbol) =>
-    StatemintAssets.find((asset) => asset.symbol === symbol);
-  const asset = useAssetHubTreasuryBalance("USDC");
-  console.log(":::::getAssetBySymbol, ", asset);
-  // TODO: mock data
-  const MockTokenSybmbolAssets = [
-    {
-      type: "native",
-      amount: 123321,
-      symbol: "DOT",
-    },
-    {
-      type: "",
-      amount: 123321,
-      symbol: "USDC",
-    },
-  ];
+  const api = useAssetHubApi();
+  SybmbolAssets.forEach((item) => {
+    const { free: balance } = useSubscribeAssetHubAssets(
+      api,
+      item.id,
+      StatemintTreasuryAccount,
+    );
+    item.balance = balance;
+  });
 
-  return MockTokenSybmbolAssets.map((item) => {
+  return SybmbolAssets.map((item) => {
     return (
       <TokenSymbolAssets
         type={item.type}
-        amount={item.amount}
+        amount={item?.balance || 0}
         symbol={item.symbol}
       />
     );
@@ -41,9 +49,11 @@ function TokenSymbolAssetsList() {
 }
 
 export default function MultiAssetsTreasury() {
-  // TODO: totalBalance Link
-  const totalBalance = 123;
-  const { decimals } = useChainSettings();
+  const api = useAssetHubApi();
+  const { free, isLoading } = useSubscribeFellowshipTreasury(
+    api,
+    StatemintTreasuryAccount,
+  );
 
   return (
     <SummaryItem
@@ -61,17 +71,12 @@ export default function MultiAssetsTreasury() {
         </Link>
       }
     >
-      {/* TODO: loading */}
-      <LoadableContent isLoading={false}>
+      <LoadableContent isLoading={isLoading}>
         <div>
-          <ValueDisplay
-            key="value"
-            value={toPrecision(totalBalance, decimals)}
-            symbol={""}
-            prefix={"$"}
-          />
+          <FiatPriceLabel free={free} />
         </div>
         <div className="!ml-0">
+          <PolkadotTokenSymbol free={free} />
           <TokenSymbolAssetsList />
         </div>
       </LoadableContent>
