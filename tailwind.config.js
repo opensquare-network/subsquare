@@ -20,6 +20,7 @@ module.exports = {
     resolve("./packages/next-common/**/*.{html,js,jsx}"),
   ],
   theme: {
+    colors: twThemeVariables,
     screens: {
       sm: "768px",
       md: "1024px",
@@ -27,9 +28,6 @@ module.exports = {
       pad: "1080px",
     },
     extend: {
-      colors: {
-        ...twThemeVariables,
-      },
       borderRadius: {
         "2xl": "14px",
         "3xl": "16px",
@@ -39,11 +37,9 @@ module.exports = {
         200: "0px 6px 22px rgba(30, 33, 52, 0.11), 0px 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718), 0px 0.399006px 1.46302px rgba(30, 33, 52, 0.0444282)",
       },
     },
-    // TODO: v2, disable all tw colors
-    // colors: {},
   },
   plugins: [
-    require("./packages/next-common/styles/tailwind-plugins/scrollbar"),
-    require("./packages/next-common/styles/tailwind-plugins/fonts"),
+    require("./packages/next-common/styles/tailwind-plugins/scrollbar").plugin,
+    require("./packages/next-common/styles/tailwind-plugins/fonts").plugin,
   ],
 };
