@@ -20,6 +20,7 @@ export default function CreateProposalSubmitButton({
   encodedHash,
   encodedLength,
   notePreimageTx,
+  disabled,
 }) {
   const listPageType = useListPageType();
 
@@ -92,7 +93,11 @@ export default function CreateProposalSubmitButton({
 
   if (preimageExists) {
     return (
-      <LoadingPrimaryButton loading={isLoading} onClick={submitReferendaTx}>
+      <LoadingPrimaryButton
+        loading={isLoading}
+        disabled={disabled}
+        onClick={submitReferendaTx}
+      >
         Submit Proposal
       </LoadingPrimaryButton>
     );
@@ -100,7 +105,7 @@ export default function CreateProposalSubmitButton({
     return (
       <LoadingPrimaryButton
         loading={isLoading}
-        disabled={!notePreimageTx}
+        disabled={disabled || !notePreimageTx}
         onClick={submitPreimageTx}
       >
         Create Preimage

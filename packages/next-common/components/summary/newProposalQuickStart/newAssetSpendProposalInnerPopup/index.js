@@ -17,6 +17,9 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
 import { useDefaultTrackId } from "../../newProposalPopup/useTrackDetail";
 import { useSubmissionDeposit } from "../common/useSubmissionDeposit";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Tooltip from "next-common/components/tooltip";
 
 const getAssetKindParam = () => {
   return {
@@ -93,6 +96,41 @@ export function useAssetHubNativeTreasuryNotePreimageTx(
   }, [api, inputBalance, beneficiary, validFrom, decimals]);
 }
 
+function CreateProposalSubmitButtonWithRankCheck({
+  trackId,
+  enactment,
+  encodedHash,
+  encodedLength,
+  notePreimageTx,
+}) {
+  const { members } = useFellowshipCoreMembers();
+  const realAddress = useRealAddress();
+  const me = find(members, { address: realAddress });
+
+  const myRankOk = me && me.rank >= 3;
+
+  const submitButton = (
+    <CreateProposalSubmitButton
+      disabled={!myRankOk}
+      trackId={trackId}
+      enactment={enactment}
+      encodedHash={encodedHash}
+      encodedLength={encodedLength}
+      notePreimageTx={notePreimageTx}
+    />
+  );
+
+  if (myRankOk) {
+    return submitButton;
+  }
+
+  return (
+    <Tooltip content="Only available to the members with rank >= 3">
+      {submitButton}
+    </Tooltip>
+  );
+}
+
 export function NewAssetSpendProposalInnerPopup() {
   const defaultTrackId = useDefaultTrackId();
 
@@ -134,7 +172,7 @@ export function NewAssetSpendProposalInnerPopup() {
         {submissionDepositField}
       </AdvanceSettings>
       <div className="flex justify-end">
-        <CreateProposalSubmitButton
+        <CreateProposalSubmitButtonWithRankCheck
           trackId={trackId}
           enactment={enactment}
           encodedHash={encodedHash}

@@ -6,10 +6,28 @@ import SubmitProposalPopupCommon, {
 import { usePageProps } from "next-common/context/page";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
-import { NewRemarkReferendumInnerPopup } from "../newProposalQuickStart/createSystemRemarkProposalPopup";
-import { NewAssetSpendProposalInnerPopup } from "../newProposalQuickStart/newAssetSpendProposalInnerPopup";
-import NewFellowshipCoreMemberPromoteReferendumInnerPopup from "../newProposalQuickStart/createFellowshipCoreMemberProposalPopup/createFellowshipCoreMemberPromotePopup";
-import NewFellowshipCoreMemberRetainReferendumInnerPopup from "../newProposalQuickStart/createFellowshipCoreMemberProposalPopup/createFellowshipCoreMemberRetainPopup";
+import dynamic from "next/dynamic";
+
+const NewRemarkReferendumInnerPopup = dynamic(() =>
+  import("../newProposalQuickStart/createSystemRemarkProposalPopup").then(
+    (mod) => mod.NewRemarkReferendumInnerPopup,
+  ),
+);
+const NewAssetSpendProposalInnerPopup = dynamic(() =>
+  import("../newProposalQuickStart/newAssetSpendProposalInnerPopup").then(
+    (mod) => mod.NewAssetSpendProposalInnerPopup,
+  ),
+);
+const NewFellowshipCoreMemberPromoteReferendumInnerPopup = dynamic(() =>
+  import(
+    "../newProposalQuickStart/createFellowshipCoreMemberProposalPopup/createFellowshipCoreMemberPromotePopup"
+  ).then((mod) => mod.default),
+);
+const NewFellowshipCoreMemberRetainReferendumInnerPopup = dynamic(() =>
+  import(
+    "../newProposalQuickStart/createFellowshipCoreMemberProposalPopup/createFellowshipCoreMemberRetainPopup"
+  ).then((mod) => mod.default),
+);
 
 export default function SubmitFellowshipProposalPopup({ onClose }) {
   const { period } = usePageProps();
