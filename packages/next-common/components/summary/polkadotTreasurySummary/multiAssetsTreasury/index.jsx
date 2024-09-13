@@ -2,15 +2,13 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
 import TokenSymbolAssets from "../common/tokenSymbolAssets";
-import {
-  StatemintTreasuryAccount,
-  StatemintAssets,
-} from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
+import { StatemintTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
 import { useAssetHubApi } from "next-common/context/assetHub";
 import { useSubscribeFellowshipTreasuryFree } from "../common/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useSubscribeAssetHubAssets } from "../common/useSubscribeAssetHubAssets";
+import { useEffect } from "react";
 
 const SybmbolAssets = [
   {
@@ -26,7 +24,8 @@ const SybmbolAssets = [
     type: "",
   },
 ];
-function TokenSymbolAssetsList() {
+
+function TokenSymbolAssetsList({ setUSDtFree, setUSDCFree }) {
   const api = useAssetHubApi();
   SybmbolAssets.forEach((item) => {
     const { free: balance } = useSubscribeAssetHubAssets(
@@ -35,6 +34,12 @@ function TokenSymbolAssetsList() {
       StatemintTreasuryAccount,
     );
     item.balance = balance;
+    if (item.symbol === "USDC") {
+      setUSDCFree(balance);
+    }
+    if (item.symbol === "USDt") {
+      setUSDtFree(balance);
+    }
   });
 
   return SybmbolAssets.map((item) => {
@@ -43,17 +48,26 @@ function TokenSymbolAssetsList() {
         type={item.type}
         amount={item?.balance || 0}
         symbol={item.symbol}
+        key={item.symbol}
       />
     );
   });
 }
 
-export default function MultiAssetsTreasury() {
+export default function MultiAssetsTreasury({
+  setMultiAssetsFree,
+  setUSDtFree,
+  setUSDCFree,
+}) {
   const api = useAssetHubApi();
   const { free, isLoading } = useSubscribeFellowshipTreasuryFree(
     api,
     StatemintTreasuryAccount,
   );
+
+  useEffect(() => {
+    setMultiAssetsFree(free);
+  }, [setMultiAssetsFree]);
 
   return (
     <SummaryItem
@@ -77,7 +91,10 @@ export default function MultiAssetsTreasury() {
         </div>
         <div className="!ml-0">
           <PolkadotTokenSymbol free={free} />
-          <TokenSymbolAssetsList />
+          <TokenSymbolAssetsList
+            setUSDtFree={setUSDtFree}
+            setUSDCFree={setUSDCFree}
+          />
         </div>
       </LoadableContent>
     </SummaryItem>

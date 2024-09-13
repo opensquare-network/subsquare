@@ -6,13 +6,20 @@ import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
 import { useAssetHubApi } from "next-common/context/assetHub";
 import { useSubscribeFellowshipTreasuryFree } from "../common/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
+import { useEffect } from "react";
 
-export default function FellowshipTreasury() {
+export default function FellowshipTreasury({ setFellowshipFree }) {
   const api = useAssetHubApi();
   const { free, isLoading } = useSubscribeFellowshipTreasuryFree(
     api,
     StatemintFellowShipTreasuryAccount,
   );
+
+  useEffect(() => {
+    if (!free) return;
+
+    setFellowshipFree(free);
+  }, [free, setFellowshipFree]);
 
   return (
     <SummaryItem

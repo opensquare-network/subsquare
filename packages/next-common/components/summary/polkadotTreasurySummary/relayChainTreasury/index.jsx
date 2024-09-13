@@ -12,13 +12,20 @@ import NextBurn from "./nextBurn";
 import SpendPeriod from "./spendPeriod";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
+import { useEffect } from "react";
 
-export default function RelayChainTreasury() {
+export default function RelayChainTreasury({ setRelayChainDotFree }) {
   const api = useContextApi();
 
   const free = useTreasuryFree(api);
   const summary = useSpendPeriodSummary();
   const toBeAwarded = useToBeAwarded();
+
+  useEffect(() => {
+    if (!free) return;
+
+    setRelayChainDotFree(free);
+  }, [free, setRelayChainDotFree]);
 
   return (
     <SummaryItem title="Relay Chain Treasury">
