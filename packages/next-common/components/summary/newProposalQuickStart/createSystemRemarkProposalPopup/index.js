@@ -1,5 +1,4 @@
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
 import Popup from "next-common/components/popup/wrapper/Popup";
@@ -8,40 +7,11 @@ import { useRemarkNotePreimageTx } from "next-common/components/preImages/create
 import useRemarkField from "next-common/components/preImages/createPreimagePopup/fields/useRemarkField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import useTrackField from "../common/useTrackField";
-import { useListPageType, usePageProps } from "next-common/context/page";
-import { listPageCategory } from "next-common/utils/consts/business/category";
-import { useChain } from "next-common/context/chain";
-import Chains from "next-common/utils/consts/chains";
+import { useDefaultTrackId } from "../../newProposalPopup/useTrackDetail";
+import { useSubmissionDeposit } from "../common/useSubmissionDeposit";
 
 export function NewRemarkReferendumInnerPopup() {
-  const listPageType = useListPageType();
-  const chain = useChain();
-
-  let pallet = "referenda";
-  if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
-    pallet = "fellowshipReferenda";
-  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
-    pallet = "ambassadorReferenda";
-  }
-
-  const { tracks, fellowshipTracks, ambassadorTracks } = usePageProps();
-
-  let trackList;
-  let defaultTrackId;
-
-  if (listPageType === listPageCategory.REFERENDA) {
-    trackList = tracks;
-    defaultTrackId = tracks[0].id;
-    if ([Chains.polkadot, Chains.kusama].includes(chain)) {
-      defaultTrackId = 2; // Wish for Change
-    }
-  } else if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
-    trackList = fellowshipTracks;
-    defaultTrackId = 3; // fellows
-  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
-    trackList = ambassadorTracks;
-    defaultTrackId = trackList[0].id;
-  }
+  const defaultTrackId = useDefaultTrackId();
 
   const { onClose } = usePopupParams();
   const { value: remark, component: remarkField } = useRemarkField();
@@ -49,6 +19,7 @@ export function NewRemarkReferendumInnerPopup() {
     useTrackField(defaultTrackId);
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);
+  const { component: submissionDepositField } = useSubmissionDeposit();
 
   const { encodedHash, encodedLength, notePreimageTx } =
     useRemarkNotePreimageTx(remark);
@@ -60,7 +31,7 @@ export function NewRemarkReferendumInnerPopup() {
       {trackField}
       <AdvanceSettings>
         {enactmentField}
-        <SubmissionDeposit pallet={pallet} />
+        {submissionDepositField}
       </AdvanceSettings>
       <div className="flex justify-end">
         <CreateProposalSubmitButton
