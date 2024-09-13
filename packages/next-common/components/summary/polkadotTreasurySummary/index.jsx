@@ -1,7 +1,7 @@
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import TotalTreasury from "./totalTreasury";
 import RelayChainTreasury from "./relayChainTreasury";
-import MultiAssets from "./multiAssets";
+import MultiAssetsTreasury from "./multiAssetsTreasury";
 import FellowshipTreasury from "./fellowshipTreasury";
 
 export default function PolkadotTreasurySummary() {
@@ -9,7 +9,7 @@ export default function PolkadotTreasurySummary() {
     <SummaryLayout>
       <TotalTreasury />
       <RelayChainTreasury />
-      <MultiAssets />
+      <MultiAssetsTreasury />
       <FellowshipTreasury />
     </SummaryLayout>
   );
