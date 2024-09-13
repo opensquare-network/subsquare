@@ -1,7 +1,9 @@
 import { useCallback, useState } from "react";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useAssetHubApi } from "next-common/context/assetHub";
 
-export function useSubscribeAssetHubAssets(api, assetId, address) {
+export function useSubscribeAssetHubAssets(assetId, address) {
+  const api = useAssetHubApi();
   const [free, setFree] = useState(0);
 
   const { loading } = useSubStorage("assets", "account", [assetId, address], {

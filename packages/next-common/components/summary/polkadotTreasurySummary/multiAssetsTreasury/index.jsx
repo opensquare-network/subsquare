@@ -26,27 +26,20 @@ const SybmbolAssets = [
 ];
 
 function TokenSymbolAssetsList({ setUSDtFree, setUSDCFree }) {
-  const api = useAssetHubApi();
-  SybmbolAssets.forEach((item) => {
-    const { free: balance } = useSubscribeAssetHubAssets(
-      api,
-      item.id,
-      StatemintTreasuryAccount,
-    );
-    item.balance = balance;
-    if (item.symbol === "USDC") {
-      setUSDCFree(balance);
-    }
-    if (item.symbol === "USDt") {
-      setUSDtFree(balance);
-    }
-  });
+  const usdtBalance = useSubscribeAssetHubAssets(1984, StatemintTreasuryAccount);
+  const usdcBalance = useSubscribeAssetHubAssets(1337, StatemintTreasuryAccount);
+
+  useEffect(() => {
+    setUSDtFree(usdtBalance.free);
+    setUSDCFree(usdcBalance.free);
+  }, [usdtBalance.free, usdcBalance.free, setUSDtFree, setUSDCFree]);
 
   return SybmbolAssets.map((item) => {
+    const balance = item.symbol === "USDt" ? usdtBalance.free : usdcBalance.free;
     return (
       <TokenSymbolAssets
         type={item.type}
-        amount={item?.balance || 0}
+        amount={balance || 0}
         symbol={item.symbol}
         key={item.symbol}
       />
@@ -59,9 +52,7 @@ export default function MultiAssetsTreasury({
   setUSDtFree,
   setUSDCFree,
 }) {
-  const api = useAssetHubApi();
   const { free, isLoading } = useSubscribeFellowshipTreasuryFree(
-    api,
     StatemintTreasuryAccount,
   );
 

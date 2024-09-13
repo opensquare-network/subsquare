@@ -3,15 +3,12 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
 import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
-import { useAssetHubApi } from "next-common/context/assetHub";
 import { useSubscribeFellowshipTreasuryFree } from "../common/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useEffect } from "react";
 
 export default function FellowshipTreasury({ setFellowshipFree }) {
-  const api = useAssetHubApi();
   const { free, isLoading } = useSubscribeFellowshipTreasuryFree(
-    api,
     StatemintFellowShipTreasuryAccount,
   );
 

@@ -1,7 +1,9 @@
 import { useCallback, useState } from "react";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useAssetHubApi } from "next-common/context/assetHub";
 
-export function useSubscribeFellowshipTreasuryFree(api, address) {
+export function useSubscribeFellowshipTreasuryFree(address) {
+  const api = useAssetHubApi();
   const [free, setFree] = useState(0);
 
   useSubStorage("system", "account", [address], {
