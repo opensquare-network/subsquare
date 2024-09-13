@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { abbreviateBigNumber, cn } from "next-common/utils";
 
-export default function FiatPriceLabel({
+export default function TreasurySummaryFiatPriceLabel({
   value = 0,
   fiatPrice = 0,
   className = "",

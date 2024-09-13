@@ -6,7 +6,7 @@ import { TreasuryProvider } from "next-common/context/treasury";
 export default function TreasuryStats() {
   return (
     <div>
-      <TitleContainer className="mb-4">TreasuryStats</TitleContainer>
+      <TitleContainer className="mb-4">Treasury Stats</TitleContainer>
 
       <SecondaryCard>
         <TreasuryProvider>

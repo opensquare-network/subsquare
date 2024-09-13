@@ -1,6 +1,6 @@
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import FiatPriceLabel from "./fiatPriceLabel";
+import TreasurySummaryFiatPriceLabel from "./fiatPriceLabel";
 import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 
@@ -18,7 +18,7 @@ export default function TreasurySummaryAvailable({ free = 0, fiatPrice }) {
       />
 
       {!isNil(fiatPrice) && (
-        <FiatPriceLabel value={value} fiatPrice={fiatPrice} />
+        <TreasurySummaryFiatPriceLabel value={value} fiatPrice={fiatPrice} />
       )}
     </div>
   );
