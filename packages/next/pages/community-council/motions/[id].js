@@ -1,6 +1,5 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
-import MotionDetail from "components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -17,6 +16,7 @@ import { OffChainCommentActionsProvider } from "next-common/noSima/context/comme
 import CollectiveProvider, {
   collectivePallets,
 } from "next-common/context/collective";
+import AstarMotionDetail from "components/motion/astar/astarMotionDetail";
 
 function CommunityCouncilMotionContent() {
   const motion = usePost();
@@ -27,7 +27,7 @@ function CommunityCouncilMotionContent() {
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
         <ContentWithComment>
-          <MotionDetail />
+          <AstarMotionDetail />
         </ContentWithComment>
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>
