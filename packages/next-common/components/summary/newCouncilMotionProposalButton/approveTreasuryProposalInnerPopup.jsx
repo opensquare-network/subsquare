@@ -7,7 +7,6 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import { useContextApi } from "next-common/context/api";
 import { useCollectivePallet } from "next-common/context/collective";
 import nextApi from "next-common/services/nextApi";
-import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { isValidIntegerIndex } from "next-common/utils/isValidIntegerIndex";
 import { useCallback, useEffect, useState } from "react";
 import { useAsync, useDebounce } from "react-use";
@@ -19,6 +18,7 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import ErrorMessage from "next-common/components/styled/errorMessage";
 import ExternalLink from "next-common/components/externalLink";
+import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 
 export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
   const treasuryPallet = useTreasuryPallet();
   const api = useContextApi();
 
-  const members = useCouncilMembers();
+  const { members } = useCollectiveMembers();
   const threshold = Math.ceil(members?.length / 2) + 1;
 
   const [inputProposal, setInputProposal] = useState("");

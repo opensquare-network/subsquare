@@ -1,42 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { useMountedState } from "react-use";
-import { useContextApi } from "next-common/context/api";
+import { useCollectivePallet } from "next-common/context/collective";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
-export default function useCollectiveMembers(pallet = "council") {
-  const api = useContextApi();
-  const cache = useRef({});
-  const isMounted = useMountedState();
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (!api || !api.query?.[pallet]?.members) {
-      return;
-    }
-
-    if (cache.current[pallet]) {
-      if (isMounted()) {
-        setMembers(cache.current[pallet]);
-      }
-      return;
-    }
-
-    setLoading(true);
-    api.query[pallet]
-      .members()
-      .then((members) => {
-        if (isMounted()) {
-          const normalized = members.toJSON();
-          setMembers(normalized);
-          cache.current[pallet] = normalized;
-        }
-      })
-      .finally(() => {
-        if (isMounted()) {
-          setLoading(false);
-        }
-      });
-  }, [api, isMounted, pallet]);
+export default function useCollectiveMembers() {
+  const pallet = useCollectivePallet();
+  const { result, loading } = useSubStorage(pallet, "members");
+  const members = result?.toJSON?.();
 
   return {
     members,

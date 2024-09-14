@@ -1,9 +1,9 @@
 import MembersList from "next-common/components/membersList/simpleMembersList";
-import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
+import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 import usePrime from "next-common/utils/hooks/usePrime";
 
 export default function MembersNoElections({ category }) {
-  const members = useCouncilMembers();
+  const { members } = useCollectiveMembers();
   const prime = usePrime();
 
   return (

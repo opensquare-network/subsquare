@@ -4,7 +4,7 @@ import CollectiveProvider, {
   collectivePallets,
 } from "next-common/context/collective";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
-import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
+import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 import usePrime from "next-common/utils/hooks/usePrime";
 
 export default function AdvisoryCommitteeMembersPage() {
@@ -19,7 +19,7 @@ function AdvisoryCommitteeMembersPageImpl() {
   const category = "Advisory Council Members";
   const seoInfo = { title: category, desc: category };
 
-  const members = useCouncilMembers();
+  const { members } = useCollectiveMembers();
   const prime = usePrime();
 
   return (
