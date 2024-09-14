@@ -9,7 +9,7 @@ import { useCollectivePallet } from "next-common/context/collective";
 import nextApi from "next-common/services/nextApi";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { isValidIntegerIndex } from "next-common/utils/isValidIntegerIndex";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAsync, useDebounce } from "react-use";
 import {
   useTreasuryPallet,
@@ -24,7 +24,6 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
   const router = useRouter();
   const pallet = useCollectivePallet();
   const treasuryPallet = useTreasuryPallet();
-  const proposalListUrl = useTreasuryProposalListUrl(treasuryPallet);
   const api = useContextApi();
 
   const members = useCouncilMembers();
@@ -33,40 +32,28 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
   const [inputProposal, setInputProposal] = useState("");
   const [debouncedInputProposal, setDebouncedInputProposal] = useState("");
 
+  useEffect(() => {
+    if (!inputProposal) {
+      setDebouncedInputProposal("");
+    }
+  }, [inputProposal]);
+
   useDebounce(
     () => {
-      setDebouncedInputProposal(inputProposal);
+      if (inputProposal) {
+        setDebouncedInputProposal(inputProposal);
+      }
     },
     500,
     [inputProposal],
   );
+
   const { value: proposalDataResult, loading: loadingProposalData } =
     useTreasuryProposalData(debouncedInputProposal);
 
-  const { loading: loadingTreasuryTitle, value: treasuryTitle } =
-    useAsync(async () => {
-      if (
-        loadingProposalData ||
-        !debouncedInputProposal ||
-        !proposalDataResult?.data
-      ) {
-        return;
-      }
-
-      const resp = await nextApi.fetch(
-        `${
-          proposalListUrl.startsWith("/")
-            ? proposalListUrl.slice(1)
-            : proposalListUrl
-        }/${debouncedInputProposal}`,
-      );
-      return resp?.result?.title;
-    }, [
-      proposalDataResult?.data,
-      debouncedInputProposal,
-      loadingProposalData,
-      proposalListUrl,
-    ]);
+  const { value: treasuryTitle } = useTreasuryProposalTitle(
+    proposalDataResult?.id,
+  );
 
   const disabled = !inputProposal || loadingProposalData || !proposalDataResult;
 
@@ -108,8 +95,6 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
 
         {proposalDataResult && (
           <ProposalInfo
-            loadingProposalData={loadingProposalData}
-            loadingTreasuryTitle={loadingTreasuryTitle}
             treasuryTitle={treasuryTitle}
             inputProposal={inputProposal}
             debouncedInputProposal={debouncedInputProposal}
@@ -138,23 +123,21 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
 }
 
 function ProposalInfo({
-  loadingProposalData,
   treasuryTitle,
+  inputProposal,
   debouncedInputProposal,
   proposalData,
 }) {
   const treasuryPallet = useTreasuryPallet();
   const proposalListUrl = useTreasuryProposalListUrl(treasuryPallet);
 
-  const hasProposalData = proposalData && !loadingProposalData;
-
-  if (!debouncedInputProposal || loadingProposalData) {
+  if (!inputProposal) {
     return null;
   }
 
   let content;
 
-  if (hasProposalData) {
+  if (proposalData) {
     if (treasuryTitle) {
       content = (
         <StatusWrapper className="mt-2">
@@ -192,9 +175,31 @@ function useTreasuryProposalData(id) {
     const proposal = await api.query[treasuryPallet].proposals(id);
 
     if (proposal.isSome) {
+      result.id = id;
       result.data = proposal.toJSON();
     }
 
     return result;
   }, [api, id, treasuryPallet]);
+}
+
+function useTreasuryProposalTitle(id) {
+  const treasuryPallet = useTreasuryPallet();
+  const proposalListUrl = useTreasuryProposalListUrl(treasuryPallet);
+
+  return useAsync(async () => {
+    if (!id) {
+      return null;
+    }
+
+    const resp = await nextApi.fetch(
+      `${
+        proposalListUrl.startsWith("/")
+          ? proposalListUrl.slice(1)
+          : proposalListUrl
+      }/${id}`,
+    );
+
+    return resp?.result?.title;
+  }, [id, proposalListUrl]);
 }
