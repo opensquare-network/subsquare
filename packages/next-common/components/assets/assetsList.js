@@ -4,7 +4,6 @@ import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
 import BigNumber from "bignumber.js";
 import ListButton from "next-common/components/styled/listButton";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import useKnownAssetHubAssetIcon, {
   useNativeTokenIcon,
 } from "next-common/components/assets/known";
@@ -12,10 +11,9 @@ import BalanceDisplay from "./balanceDisplay";
 import { isNil } from "lodash-es";
 import Tooltip from "../tooltip";
 import CrossChainTransferButton from "./crossChainTransferButton";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const AssetTransferPopup = dynamicClientOnly(() =>
-  import("./transferPopup").then((module) => module.AssetTransferPopup),
-);
+const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
 function TransferButton({ asset }) {
   const [showPopup, setShowPopup] = useState(false);

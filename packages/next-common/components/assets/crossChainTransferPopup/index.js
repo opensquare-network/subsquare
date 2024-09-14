@@ -137,7 +137,7 @@ function PopupContent() {
   );
 }
 
-export function CrossChainTransferPopup(props) {
+export default function CrossChainTransferPopup(props) {
   return (
     <PopupWithSigner title="Cross-chain" className="!w-[640px]" {...props}>
       <PopupContent />

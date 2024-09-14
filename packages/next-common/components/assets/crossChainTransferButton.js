@@ -2,16 +2,14 @@ import { useState } from "react";
 import Tooltip from "../tooltip";
 import ListButton from "../styled/listButton";
 import dynamic from "next/dynamic";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
 );
 
-const CrossChainTransferPopup = dynamicClientOnly(() =>
-  import("./crossChainTransferPopup").then(
-    (module) => module.CrossChainTransferPopup,
-  ),
+const CrossChainTransferPopup = dynamicPopup(() =>
+  import("./crossChainTransferPopup"),
 );
 
 export default function CrossChainTransferButton() {
