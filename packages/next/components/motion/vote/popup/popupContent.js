@@ -38,7 +38,7 @@ export default function PopupContent() {
 
   const pallet = useCollectivePallet();
   const { isMember: canVote, loading: isMemberLoading } =
-    useIsCollectiveMember(pallet);
+    useIsCollectiveMember();
   const currentVote = votes.find(
     (item) => item[0] === signerAccount?.realAddress,
   );

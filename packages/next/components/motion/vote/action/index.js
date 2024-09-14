@@ -4,7 +4,6 @@ import styled from "styled-components";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 import PrimaryButton from "next-common/lib/button/primary";
 import Close from "./close";
-import { useCollectivePallet } from "next-common/context/collective";
 
 const Description = styled.div`
   font-size: 12px;
@@ -20,9 +19,8 @@ const Description = styled.div`
 export default function Action({ setShowPopup }) {
   const onchainData = usePostOnChainData();
   const motionIsFinal = isMotionEnded(onchainData);
-  const pallet = useCollectivePallet();
 
-  const { isMember: userCanVote } = useIsCollectiveMember(pallet);
+  const { isMember: userCanVote } = useIsCollectiveMember();
 
   if (motionIsFinal) {
     return <Description>This vote has been closed.</Description>;

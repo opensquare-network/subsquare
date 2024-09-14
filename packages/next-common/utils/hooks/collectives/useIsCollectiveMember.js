@@ -2,8 +2,8 @@ import useCollectiveMembers from "./useCollectiveMembers";
 import useRealAddress from "../useRealAddress";
 import { isAddressInGroup } from "../../index";
 
-export default function useIsCollectiveMember(pallet) {
-  const { members, loading } = useCollectiveMembers(pallet);
+export default function useIsCollectiveMember() {
+  const { members, loading } = useCollectiveMembers();
   const realAddress = useRealAddress();
 
   return {

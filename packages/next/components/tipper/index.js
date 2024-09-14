@@ -12,7 +12,6 @@ import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarW
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
-import { useCollectivePallet } from "next-common/context/collective";
 
 const CloseTipPopup = dynamicPopup(() => import("./closeTipPopup"));
 
@@ -40,8 +39,7 @@ export default function Tipper() {
   const [showCloseTipPopup, setShowCloseTipPopup] = useState(false);
   const [showRetractTipPopup, setShowRetractTipPopup] = useState(false);
   const tipIsFinal = useTipIsFinished();
-  const pallet = useCollectivePallet();
-  const { isMember } = useIsCollectiveMember(pallet);
+  const { isMember } = useIsCollectiveMember();
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { hideActionButtons } = useChainSettings();
 
