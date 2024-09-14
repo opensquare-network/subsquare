@@ -10,20 +10,19 @@ export default function FiatPriceLabel({
   USDCBalance = 0,
   USDtBalance = 0,
 }) {
-  const fiatPrice = useBifrostPolkadotFiatPrice();
+  const { price: fiatPrice } = useBifrostPolkadotFiatPrice();
   const { decimals } = useChainSettings();
   const value = toPrecision(free || 0, decimals);
   const bn = BigNumber(value);
-  const totalPrice = bn.multipliedBy(fiatPrice).plus(USDCBalance).plus(USDtBalance);
+  const totalPrice = bn
+    .multipliedBy(fiatPrice)
+    .plus(USDCBalance)
+    .plus(USDtBalance);
 
   return (
     <div>
       {!isNil(fiatPrice) && (
-        <ValueDisplay
-          value={totalPrice}
-          symbol={""}
-          prefix={"$"}
-        />
+        <ValueDisplay value={totalPrice} symbol={""} prefix={"$"} />
       )}
     </div>
   );
