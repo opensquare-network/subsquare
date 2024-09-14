@@ -3,7 +3,7 @@ import CountDown from "next-common/components/_CountDown";
 
 export default function SpendPeriodCountdown({ summary }) {
   return (
-    <Tooltip content={`${summary?.progress ?? 0}%`}>
+    <Tooltip content={`${summary?.progress ?? 0}%`} className={"z-10"}>
       <span className="ml-2">
         <CountDown
           numerator={summary?.progress ?? 0}

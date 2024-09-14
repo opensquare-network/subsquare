@@ -7,20 +7,19 @@ import useBifrostPolkadotFiatPrice from "./useBifrostPolkadotFiatPrice";
 
 export default function FiatPriceLabel({
   free = 0,
-  USDCFree = 0,
-  USDtFree = 0,
+  USDCBalance = 0,
+  USDtBalance = 0,
 }) {
   const fiatPrice = useBifrostPolkadotFiatPrice();
   const { decimals } = useChainSettings();
   const value = toPrecision(free || 0, decimals);
   const bn = BigNumber(value);
-  const totalPrice = bn.multipliedBy(fiatPrice).plus(USDCFree).plus(USDtFree);
+  const totalPrice = bn.multipliedBy(fiatPrice).plus(USDCBalance).plus(USDtBalance);
 
   return (
     <div>
       {!isNil(fiatPrice) && (
         <ValueDisplay
-          showApproximationSymbol={false}
           value={totalPrice}
           symbol={""}
           prefix={"$"}

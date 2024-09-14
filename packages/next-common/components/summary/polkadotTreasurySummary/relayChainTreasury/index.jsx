@@ -14,7 +14,7 @@ import FiatPriceLabel from "../common/fiatPriceLabel";
 import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
 import { useEffect } from "react";
 
-export default function RelayChainTreasury({ setRelayChainDotFree }) {
+export default function RelayChainTreasury({ setRelayChainDOTFree }) {
   const api = useContextApi();
 
   const free = useTreasuryFree(api);
@@ -24,8 +24,8 @@ export default function RelayChainTreasury({ setRelayChainDotFree }) {
   useEffect(() => {
     if (!free) return;
 
-    setRelayChainDotFree(free);
-  }, [free, setRelayChainDotFree]);
+    setRelayChainDOTFree(free);
+  }, [free, setRelayChainDOTFree]);
 
   return (
     <SummaryItem title="Relay Chain Treasury">

@@ -4,7 +4,6 @@ import Link from "next/link";
 import TokenSymbolAssets from "../common/tokenSymbolAssets";
 import { StatemintTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
-import { useAssetHubApi } from "next-common/context/assetHub";
 import { useSubscribeFellowshipTreasuryFree } from "../common/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useSubscribeAssetHubAssets } from "../common/useSubscribeAssetHubAssets";
@@ -12,53 +11,47 @@ import { useEffect } from "react";
 
 const SybmbolAssets = [
   {
-    id: 1984,
-    symbol: "USDt",
-    decimals: 6,
-    type: "",
-  },
-  {
     id: 1337,
     symbol: "USDC",
     decimals: 6,
     type: "",
   },
+  {
+    id: 1984,
+    symbol: "USDt",
+    decimals: 6,
+    type: "",
+  },
 ];
-
-function TokenSymbolAssetsList({ setUSDtFree, setUSDCFree }) {
-  const usdtBalance = useSubscribeAssetHubAssets(1984, StatemintTreasuryAccount);
-  const usdcBalance = useSubscribeAssetHubAssets(1337, StatemintTreasuryAccount);
-
-  useEffect(() => {
-    setUSDtFree(usdtBalance.free);
-    setUSDCFree(usdcBalance.free);
-  }, [usdtBalance.free, usdcBalance.free, setUSDtFree, setUSDCFree]);
-
-  return SybmbolAssets.map((item) => {
-    const balance = item.symbol === "USDt" ? usdtBalance.free : usdcBalance.free;
-    return (
-      <TokenSymbolAssets
-        type={item.type}
-        amount={balance || 0}
-        symbol={item.symbol}
-        key={item.symbol}
-      />
-    );
-  });
-}
 
 export default function MultiAssetsTreasury({
   setMultiAssetsFree,
-  setUSDtFree,
-  setUSDCFree,
+  setUSDtBalance,
+  setUSDCBalance,
 }) {
   const { free, isLoading } = useSubscribeFellowshipTreasuryFree(
     StatemintTreasuryAccount,
   );
 
+  const usdtBalance = useSubscribeAssetHubAssets(
+    1984,
+    StatemintTreasuryAccount,
+  );
+  const usdcBalance = useSubscribeAssetHubAssets(
+    1337,
+    StatemintTreasuryAccount,
+  );
+
   useEffect(() => {
+    setUSDtBalance(usdtBalance.free);
+    setUSDCBalance(usdcBalance.free);
+  }, [usdtBalance.free, usdcBalance.free, setUSDtBalance, setUSDCBalance]);
+
+  useEffect(() => {
+    if (!free) return;
+
     setMultiAssetsFree(free);
-  }, [setMultiAssetsFree]);
+  }, [free, setMultiAssetsFree]);
 
   return (
     <SummaryItem
@@ -78,14 +71,26 @@ export default function MultiAssetsTreasury({
     >
       <LoadableContent isLoading={isLoading}>
         <div>
-          <FiatPriceLabel free={free} />
+          <FiatPriceLabel
+            free={free}
+            USDCBalance={usdcBalance.free}
+            USDtBalance={usdtBalance.free}
+          />
         </div>
         <div className="!ml-0">
           <PolkadotTokenSymbol free={free} />
-          <TokenSymbolAssetsList
-            setUSDtFree={setUSDtFree}
-            setUSDCFree={setUSDCFree}
-          />
+          {SybmbolAssets.map((item) => {
+            const balance =
+              item.symbol === "USDt" ? usdtBalance.free : usdcBalance.free;
+            return (
+              <TokenSymbolAssets
+                type={item.type}
+                amount={balance || 0}
+                symbol={item.symbol}
+                key={item.symbol}
+              />
+            );
+          })}
         </div>
       </LoadableContent>
     </SummaryItem>
