@@ -1,5 +1,4 @@
 import { cn } from "next-common/utils";
-import { SummaryTitle } from "next-common/components/summary/styled";
 
 export default function SummaryLabelItem({
   className,
