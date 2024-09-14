@@ -2,7 +2,7 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
 import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
-import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
+import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import { useSubscribeFellowshipTreasuryFree } from "../common/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useEffect } from "react";
@@ -39,7 +39,7 @@ export default function FellowshipTreasury({ setFellowshipFree }) {
           <FiatPriceLabel free={free} />
         </div>
         <div className="!ml-0">
-          <PolkadotTokenSymbol free={free} />
+          <DotTokenSymbolAsset free={free} />
         </div>
       </LoadableContent>
     </SummaryItem>

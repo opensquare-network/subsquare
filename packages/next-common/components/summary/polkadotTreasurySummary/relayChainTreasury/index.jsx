@@ -1,6 +1,6 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
-import SummaryLabelItem from "../common/summaryLabelItem";
+import SummaryLabelItem from "./summaryLabelItem";
 import SpendPeriodCountdown from "./spendPeriodCountdown";
 import ToBeAwarded from "./toBeAwarded";
 import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
@@ -11,7 +11,7 @@ import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import NextBurn from "./nextBurn";
 import SpendPeriod from "./spendPeriod";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
+import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import { useEffect } from "react";
 
 export default function RelayChainTreasury({ setRelayChainDOTFree }) {
@@ -34,7 +34,7 @@ export default function RelayChainTreasury({ setRelayChainDOTFree }) {
       </LoadableContent>
       <div className="!ml-0">
         <LoadableContent isLoading={isNil(free)}>
-          <PolkadotTokenSymbol free={free} />
+          <DotTokenSymbolAsset free={free} />
         </LoadableContent>
         <SummaryLabelItem label={"To be awarded"}>
           <LoadableContent isLoading={isNil(toBeAwarded)}>

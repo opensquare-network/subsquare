@@ -1,7 +1,7 @@
 import SummaryItem from "next-common/components/summary/layout/item";
-import TokenSymbolAssets from "../common/tokenSymbolAssets";
+import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
+import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import LoadableContent from "next-common/components/common/loadableContent";
 
 export default function TotalTreasury({ USDtBalance, USDCBalance, DOTBalance, isLoading }) {
@@ -12,13 +12,13 @@ export default function TotalTreasury({ USDtBalance, USDCBalance, DOTBalance, is
       </LoadableContent>
       <div className="!ml-0">
         <LoadableContent isLoading={isLoading}>
-          <PolkadotTokenSymbol free={DOTBalance} />
+          <DotTokenSymbolAsset free={DOTBalance} />
         </LoadableContent>
         <LoadableContent isLoading={isLoading}>
-          <TokenSymbolAssets type={""} amount={USDCBalance} symbol={"USDC"} />
+          <TokenSymbolAsset type={""} amount={USDCBalance} symbol={"USDC"} />
         </LoadableContent>
         <LoadableContent isLoading={isLoading}>
-          <TokenSymbolAssets type={""} amount={USDtBalance} symbol={"USDt"} />
+          <TokenSymbolAsset type={""} amount={USDtBalance} symbol={"USDt"} />
         </LoadableContent>
       </div>
     </SummaryItem>

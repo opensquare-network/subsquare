@@ -1,9 +1,9 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
-import TokenSymbolAssets from "../common/tokenSymbolAssets";
+import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import { StatemintTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
-import PolkadotTokenSymbol from "../common/polkadotTokenSymbol";
+import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import { useSubscribeFellowshipTreasuryFree } from "../common/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useSubscribeAssetHubAssets } from "../common/useSubscribeAssetHubAssets";
@@ -78,12 +78,12 @@ export default function MultiAssetsTreasury({
           />
         </div>
         <div className="!ml-0">
-          <PolkadotTokenSymbol free={free} />
+          <DotTokenSymbolAsset free={free} />
           {SybmbolAssets.map((item) => {
             const balance =
               item.symbol === "USDt" ? usdtBalance.free : usdcBalance.free;
             return (
-              <TokenSymbolAssets
+              <TokenSymbolAsset
                 type={item.type}
                 amount={balance || 0}
                 symbol={item.symbol}
