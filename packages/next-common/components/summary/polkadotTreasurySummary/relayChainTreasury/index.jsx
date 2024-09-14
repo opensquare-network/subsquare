@@ -33,8 +33,10 @@ export default function RelayChainTreasury({ setRelayChainDOTFree }) {
         isLoading={isNil(free) || isNil(toBeAwarded) || isNil(summary)}
       >
         <FiatPriceLabel free={free} />
-        <div className="!ml-0">
-          <DotTokenSymbolAsset free={free} />
+        <div className="!ml-0 flex flex-col gap-y-1">
+          <div className="mb-3">
+            <DotTokenSymbolAsset free={free} />
+          </div>
           <SummaryLabelItem label={"To be awarded"}>
             <ToBeAwarded toBeAwarded={toBeAwarded} />
           </SummaryLabelItem>

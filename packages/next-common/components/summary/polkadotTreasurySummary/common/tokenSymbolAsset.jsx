@@ -3,7 +3,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 
 export default function TokenSymbolAsset({ amount, symbol }) {
   return (
-    <div className="inline-flex items-center gap-x-2">
+    <div className="flex items-center gap-x-2">
       <AssetIcon symbol={symbol} className="w-4 h-4" />
       <ValueDisplay
         value={amount}

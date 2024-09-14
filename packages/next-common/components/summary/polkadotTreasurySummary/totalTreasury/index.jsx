@@ -18,7 +18,7 @@ export default function TotalTreasury({
           USDtBalance={USDtBalance}
           USDCBalance={USDCBalance}
         />
-        <div className="!ml-0">
+        <div className="!ml-0 flex flex-col gap-y-1">
           <DotTokenSymbolAsset free={DOTBalance} />
           <TokenSymbolAsset type={""} amount={USDCBalance} symbol={"USDC"} />
           <TokenSymbolAsset type={""} amount={USDtBalance} symbol={"USDt"} />
