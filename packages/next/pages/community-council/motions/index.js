@@ -7,6 +7,11 @@ import { useChainSettings } from "next-common/context/chain";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import { fetchList } from "next-common/services/list";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
+import NewCouncilMotionProposalButton from "next-common/components/summary/newCouncilMotionProposalButton";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 export default function MotionsPage({ motions }) {
   const chainSettings = useChainSettings();
@@ -21,22 +26,27 @@ export default function MotionsPage({ motions }) {
   };
 
   return (
-    <ListLayout
-      title={chainSettings.name}
-      seoInfo={seoInfo}
-      description={chainSettings.description}
-      headContent={<ChainSocialLinks />}
-    >
-      <PostList
-        category={category}
-        items={items}
-        pagination={{
-          page: motions.page,
-          pageSize: motions.pageSize,
-          total: motions.total,
-        }}
-      />
-    </ListLayout>
+    <TreasuryProvider pallet="communityTreasury">
+      <CollectiveProvider pallet={collectivePallets.communityCouncil}>
+        <ListLayout
+          title={chainSettings.name}
+          seoInfo={seoInfo}
+          description={chainSettings.description}
+          headContent={<ChainSocialLinks />}
+        >
+          <PostList
+            category={category}
+            titleExtra={<NewCouncilMotionProposalButton />}
+            items={items}
+            pagination={{
+              page: motions.page,
+              pageSize: motions.pageSize,
+              total: motions.total,
+            }}
+          />
+        </ListLayout>
+      </CollectiveProvider>
+    </TreasuryProvider>
   );
 }
 
