@@ -1,4 +1,3 @@
-import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
