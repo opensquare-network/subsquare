@@ -6,7 +6,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
 import { capitalize, isNil } from "lodash-es";
 import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
+import { twMerge } from "./tailwind/tailwindMerge";
 import { isHex } from "@polkadot/util";
 import { camelCase } from "lodash-es";
 import { upperFirst } from "lodash-es";

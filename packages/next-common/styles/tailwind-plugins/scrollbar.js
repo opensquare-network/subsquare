@@ -1,6 +1,6 @@
 const plugin = require("tailwindcss/plugin");
 
-module.exports = plugin(({ addUtilities }) => {
+exports.plugin = plugin(({ addUtilities }) => {
   addUtilities(
     {
       ".scrollbar-pretty": {

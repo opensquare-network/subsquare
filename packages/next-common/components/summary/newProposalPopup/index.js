@@ -14,6 +14,8 @@ import { useContextApi } from "next-common/context/api";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { useListPageType } from "next-common/context/page";
+import { listPageCategory } from "next-common/utils/consts/business/category";
 
 export function useProposalOrigin(trackId) {
   const track = useTrackDetail(trackId);
@@ -25,15 +27,25 @@ export function useProposalOrigin(trackId) {
 }
 
 export function useReferendaProposalOrigin(trackId) {
+  const listPageType = useListPageType();
   const track = useTrackDetail(trackId);
-  const origins = useProposalOrigin();
+  const origins = useProposalOrigin(trackId);
   if (origins) {
     return origins;
   }
+
   if (track?.name === "root") {
     return { system: "Root" };
   }
-  return { Origins: upperFirstCamelCase(track?.name) };
+  const trackName = upperFirstCamelCase(track?.name);
+
+  if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
+    return { FellowshipOrigins: trackName };
+  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
+    return { AmbassadorOrigins: trackName };
+  } else {
+    return { Origins: trackName };
+  }
 }
 
 export function NewProposalInnerPopup({
