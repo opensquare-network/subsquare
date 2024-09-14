@@ -4,23 +4,26 @@ import FiatPriceLabel from "../common/fiatPriceLabel";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import LoadableContent from "next-common/components/common/loadableContent";
 
-export default function TotalTreasury({ USDtBalance, USDCBalance, DOTBalance, isLoading }) {
+export default function TotalTreasury({
+  USDtBalance,
+  USDCBalance,
+  DOTBalance,
+  isLoading,
+}) {
   return (
     <SummaryItem title="Total Treasury">
       <LoadableContent isLoading={isLoading}>
-        <FiatPriceLabel free={DOTBalance} USDtBalance={USDtBalance} USDCBalance={USDCBalance} />
-      </LoadableContent>
-      <div className="!ml-0">
-        <LoadableContent isLoading={isLoading}>
+        <FiatPriceLabel
+          free={DOTBalance}
+          USDtBalance={USDtBalance}
+          USDCBalance={USDCBalance}
+        />
+        <div className="!ml-0">
           <DotTokenSymbolAsset free={DOTBalance} />
-        </LoadableContent>
-        <LoadableContent isLoading={isLoading}>
           <TokenSymbolAsset type={""} amount={USDCBalance} symbol={"USDC"} />
-        </LoadableContent>
-        <LoadableContent isLoading={isLoading}>
           <TokenSymbolAsset type={""} amount={USDtBalance} symbol={"USDt"} />
-        </LoadableContent>
-      </div>
+        </div>
+      </LoadableContent>
     </SummaryItem>
   );
 }

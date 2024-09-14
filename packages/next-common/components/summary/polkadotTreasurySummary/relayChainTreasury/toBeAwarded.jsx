@@ -8,13 +8,11 @@ export default function ToBeAwarded({ toBeAwarded }) {
   const value = toPrecision(toBeAwarded || 0, decimals);
 
   return (
-    <span className="!inline">
-      <ValueDisplay
-        showApproximationSymbol={false}
-        value={value}
-        symbol={symbol}
-        className={"text12Medium text-textPrimary"}
-      />
-    </span>
+    <ValueDisplay
+      showApproximationSymbol={false}
+      value={value}
+      symbol={symbol}
+      className={"text12Medium text-textPrimary"}
+    />
   );
 }

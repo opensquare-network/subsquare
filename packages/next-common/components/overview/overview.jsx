@@ -7,13 +7,12 @@ import FellowshipSalaryOverview from "next-common/components/overview/fellowship
 import MembersInduction from "./fellowship/membersInduction";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import PolkadotTreasuryStats from "./polkadotTreasuryStats";
-import Chains from "next-common/utils/consts/chains";
 import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
+import { isPolkadotChain } from "next-common/utils/chain";
 
 export default function Overview() {
   const { showAccountManagementTab } = useChainSettings();
   const chain = useChain();
-  const isPolkadotChain = chain === Chains.polkadot;
 
   return (
     <div className="space-y-6">
@@ -26,7 +25,7 @@ export default function Overview() {
       </WithPallet>
 
       <WithPallet pallet="treasury">
-        {isPolkadotChain ? <PolkadotTreasuryStats /> : <TreasuryStats />}
+        {isPolkadotChain(chain) ? <PolkadotTreasuryStats /> : <TreasuryStats />}
       </WithPallet>
 
       <WithPallet pallet="fellowshipSalary">

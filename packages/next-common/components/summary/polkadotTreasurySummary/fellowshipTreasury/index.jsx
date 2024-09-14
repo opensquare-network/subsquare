@@ -30,7 +30,7 @@ export default function FellowshipTreasury({ setFellowshipFree }) {
           <span className="text-textTertiary hover:underline">
             Fellowship Treasury
           </span>
-          <i className="text-textTertiary">↗</i>
+          <i className="text-textTertiary">&nbsp;↗</i>
         </Link>
       }
     >

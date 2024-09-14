@@ -65,7 +65,7 @@ export default function MultiAssetsTreasury({
           <span className="text-textTertiary hover:underline">
             Multi Assets Treasury
           </span>
-          <i className="text-textTertiary">↗</i>
+          <i className="text-textTertiary">&nbsp;↗</i>
         </Link>
       }
     >

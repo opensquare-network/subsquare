@@ -29,30 +29,24 @@ export default function RelayChainTreasury({ setRelayChainDOTFree }) {
 
   return (
     <SummaryItem title="Relay Chain Treasury">
-      <LoadableContent isLoading={isNil(free)}>
+      <LoadableContent
+        isLoading={isNil(free) || isNil(toBeAwarded) || isNil(summary)}
+      >
         <FiatPriceLabel free={free} />
-      </LoadableContent>
-      <div className="!ml-0">
-        <LoadableContent isLoading={isNil(free)}>
+        <div className="!ml-0">
           <DotTokenSymbolAsset free={free} />
-        </LoadableContent>
-        <SummaryLabelItem label={"To be awarded"}>
-          <LoadableContent isLoading={isNil(toBeAwarded)}>
+          <SummaryLabelItem label={"To be awarded"}>
             <ToBeAwarded toBeAwarded={toBeAwarded} />
-          </LoadableContent>
-        </SummaryLabelItem>
-        <SummaryLabelItem label={"Next burn"}>
-          <LoadableContent isLoading={isNil(free)}>
+          </SummaryLabelItem>
+          <SummaryLabelItem label={"Next burn"}>
             <NextBurn free={free} />
-          </LoadableContent>
-        </SummaryLabelItem>
-        <SummaryLabelItem label={"Spend period"}>
-          <LoadableContent isLoading={isNil(summary)}>
+          </SummaryLabelItem>
+          <SummaryLabelItem label={"Spend period"}>
             <SpendPeriod summary={summary} />
             <SpendPeriodCountdown summary={summary} />
-          </LoadableContent>
-        </SummaryLabelItem>
-      </div>
+          </SummaryLabelItem>
+        </div>
+      </LoadableContent>
     </SummaryItem>
   );
 }
