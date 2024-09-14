@@ -16,7 +16,7 @@ export default function ValueDisplay({
       {symbol}
     </span>
   );
-  const prefixContent = prefix ? prefix : null;
+  const prefixContent = prefix || null;
 
   let content = (
     <>
