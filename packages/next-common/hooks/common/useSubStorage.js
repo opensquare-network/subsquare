@@ -12,9 +12,8 @@ export default function useSubStorage(
   params = [],
   options = {}, // callback or api
 ) {
-  const { callback, api: optionApi } = options;
-  let contextApi = useContextApi();
-  const api = optionApi || contextApi;
+  const contextApi = useContextApi();
+  const { callback, api = contextApi } = options;
   const [cachedResult, setCachedResult] = useCachedResult();
   const [loading, setLoading] = useState(true);
 

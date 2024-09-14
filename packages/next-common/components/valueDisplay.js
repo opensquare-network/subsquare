@@ -8,6 +8,8 @@ export default function ValueDisplay({
   showTooltip = true,
   showApproximationSymbol = true,
   className,
+  prefix,
+  tooltipClassName,
 }) {
   const tooltipContent = `${value}${symbol ? " " + symbol : ""}`;
   const symbolContent = symbol && (
@@ -18,6 +20,7 @@ export default function ValueDisplay({
 
   let content = (
     <>
+      {prefix}
       {Number(value)?.toLocaleString()}
       {symbolContent}
     </>
@@ -31,6 +34,7 @@ export default function ValueDisplay({
           getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value) && (
             <span>≈</span>
           )}
+        {prefix}
         {abbreviated}
         {symbolContent}
       </>
@@ -42,6 +46,7 @@ export default function ValueDisplay({
       content = (
         <>
           {showApproximationSymbol && <span>≈</span>}
+          {prefix}
           {int}.{shortDecimal}
           {symbolContent}
         </>
@@ -56,7 +61,11 @@ export default function ValueDisplay({
   );
 
   if (showTooltip) {
-    container = <Tooltip content={tooltipContent}>{container}</Tooltip>;
+    container = (
+      <Tooltip content={tooltipContent} className={tooltipClassName}>
+        {container}
+      </Tooltip>
+    );
   }
 
   return container;

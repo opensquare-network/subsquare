@@ -25,3 +25,7 @@ export function isAssetHubChain(chain) {
 export function isShibuyaChain(chain) {
   return [Chains.shibuya, Chains.astar].includes(chain);
 }
+
+export function isPolkadotChain(chain) {
+  return [Chains.polkadot].includes(chain);
+}

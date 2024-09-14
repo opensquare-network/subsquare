@@ -1,15 +1,19 @@
 import AccountInfo from "./accountInfo";
 import RecentProposals from "./recentProposals";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import TreasuryStats from "./treasuryStats";
 import WithPallet from "next-common/components/common/withPallet";
 import FellowshipSalaryOverview from "next-common/components/overview/fellowship/salary/overview";
 import MembersInduction from "./fellowship/membersInduction";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
+import { isPolkadotChain } from "next-common/utils/chain";
 
 export default function Overview() {
   const { showAccountManagementTab } = useChainSettings();
+  const chain = useChain();
+
   return (
     <div className="space-y-6">
       <AccountInfo hideManageAccountLink={showAccountManagementTab === false} />
@@ -21,7 +25,7 @@ export default function Overview() {
       </WithPallet>
 
       <WithPallet pallet="treasury">
-        <TreasuryStats />
+        {isPolkadotChain(chain) ? <PolkadotTreasuryStats /> : <TreasuryStats />}
       </WithPallet>
 
       <WithPallet pallet="fellowshipSalary">
