@@ -9,8 +9,7 @@ import { useCollectivePallet } from "next-common/context/collective";
 import nextApi from "next-common/services/nextApi";
 import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { isValidIntegerIndex } from "next-common/utils/isValidIntegerIndex";
-import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useAsync, useDebounce } from "react-use";
 import {
   useTreasuryPallet,
@@ -18,6 +17,8 @@ import {
 } from "../../../context/treasury";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
+import ErrorMessage from "next-common/components/styled/errorMessage";
+import ExternalLink from "next-common/components/externalLink";
 
 export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
   const router = useRouter();
@@ -31,45 +32,24 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
 
   const [inputProposal, setInputProposal] = useState("");
   const [debouncedInputProposal, setDebouncedInputProposal] = useState("");
-  useEffect(() => {
-    if (!inputProposal) {
-      setDebouncedInputProposal("");
-    }
-  }, [inputProposal]);
+
   useDebounce(
     () => {
-      if (inputProposal) {
-        setDebouncedInputProposal(inputProposal);
-      }
+      setDebouncedInputProposal(inputProposal);
     },
     500,
     [inputProposal],
   );
-
-  const { loading: loadingProposalData, value: proposalData } =
-    useAsync(async () => {
-      if (
-        !api ||
-        !debouncedInputProposal ||
-        !isValidIntegerIndex(debouncedInputProposal)
-      ) {
-        return null;
-      }
-
-      const proposal = await api.query[treasuryPallet].proposals(
-        debouncedInputProposal,
-      );
-
-      if (!proposal.isSome) {
-        return null;
-      }
-
-      return proposal.toJSON();
-    }, [api, debouncedInputProposal, treasuryPallet]);
+  const { value: proposalDataResult, loading: loadingProposalData } =
+    useTreasuryProposalData(debouncedInputProposal);
 
   const { loading: loadingTreasuryTitle, value: treasuryTitle } =
     useAsync(async () => {
-      if (loadingProposalData || !debouncedInputProposal || !proposalData) {
+      if (
+        loadingProposalData ||
+        !debouncedInputProposal ||
+        !proposalDataResult?.data
+      ) {
         return;
       }
 
@@ -82,13 +62,13 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
       );
       return resp?.result?.title;
     }, [
-      proposalData,
+      proposalDataResult?.data,
       debouncedInputProposal,
       loadingProposalData,
       proposalListUrl,
     ]);
 
-  const disabled = !inputProposal || loadingProposalData || !proposalData;
+  const disabled = !inputProposal || loadingProposalData || !proposalDataResult;
 
   const getTxFunc = useCallback(() => {
     if (!api) {
@@ -126,17 +106,15 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
           }}
         />
 
-        {!loadingTreasuryTitle && treasuryTitle && (
-          <StatusWrapper className="mt-2">
-            <Link
-              className="cursor-pointer hover:underline"
-              target="_blank"
-              href={`${proposalListUrl}/${debouncedInputProposal}`}
-              rel="noreferrer"
-            >
-              {treasuryTitle}
-            </Link>
-          </StatusWrapper>
+        {proposalDataResult && (
+          <ProposalInfo
+            loadingProposalData={loadingProposalData}
+            loadingTreasuryTitle={loadingTreasuryTitle}
+            treasuryTitle={treasuryTitle}
+            inputProposal={inputProposal}
+            debouncedInputProposal={debouncedInputProposal}
+            proposalData={proposalDataResult.data}
+          />
         )}
       </div>
 
@@ -157,4 +135,66 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
       />
     </Popup>
   );
+}
+
+function ProposalInfo({
+  loadingProposalData,
+  treasuryTitle,
+  debouncedInputProposal,
+  proposalData,
+}) {
+  const treasuryPallet = useTreasuryPallet();
+  const proposalListUrl = useTreasuryProposalListUrl(treasuryPallet);
+
+  const hasProposalData = proposalData && !loadingProposalData;
+
+  if (!debouncedInputProposal || loadingProposalData) {
+    return null;
+  }
+
+  let content;
+
+  if (hasProposalData) {
+    if (treasuryTitle) {
+      content = (
+        <StatusWrapper className="mt-2">
+          <ExternalLink
+            className="hover:!underline text-textPrimary"
+            externalIcon={false}
+            href={`${proposalListUrl}/${debouncedInputProposal}`}
+          >
+            {treasuryTitle}
+          </ExternalLink>
+        </StatusWrapper>
+      );
+    }
+  } else {
+    content = (
+      <ErrorMessage className="!mt-2">
+        Can not find a treasury proposal with id {debouncedInputProposal}
+      </ErrorMessage>
+    );
+  }
+
+  return content;
+}
+
+function useTreasuryProposalData(id) {
+  const api = useContextApi();
+  const treasuryPallet = useTreasuryPallet();
+
+  return useAsync(async () => {
+    if (!api || !id || !isValidIntegerIndex(id)) {
+      return null;
+    }
+
+    const result = {};
+    const proposal = await api.query[treasuryPallet].proposals(id);
+
+    if (proposal.isSome) {
+      result.data = proposal.toJSON();
+    }
+
+    return result;
+  }, [api, id, treasuryPallet]);
 }
