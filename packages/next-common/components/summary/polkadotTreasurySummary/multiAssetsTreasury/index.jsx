@@ -4,9 +4,9 @@ import Link from "next/link";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import { StatemintTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
-import { useSubscribeFellowshipTreasuryFree } from "../common/useSubscribeAssetHubTreasuryFree";
+import { useSubscribeFellowshipTreasuryFree } from "../hook/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import { useSubscribeAssetHubAssets } from "../common/useSubscribeAssetHubAssets";
+import { useSubscribeAssetHubAssets } from "../hook/useSubscribeAssetHubAssets";
 import { useEffect } from "react";
 
 const SybmbolAssets = [

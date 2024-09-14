@@ -3,7 +3,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
 import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
-import { useSubscribeFellowshipTreasuryFree } from "../common/useSubscribeAssetHubTreasuryFree";
+import { useSubscribeFellowshipTreasuryFree } from "../hook/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useEffect } from "react";
 

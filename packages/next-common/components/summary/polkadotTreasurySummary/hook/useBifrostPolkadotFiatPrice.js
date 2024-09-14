@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { useDoTreasuryEcoQuery } from "next-common/hooks/apollo";
+import { useDoTreasuryEcoLazyQuery } from "next-common/hooks/apollo";
 import { useChain } from "next-common/context/chain";
 import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
 import bifrost from "next-common/utils/consts/settings/bifrost";
@@ -22,11 +22,8 @@ const CHAIN_VALUE_TREASURY_MAP = {
 export default function useBifrostPolkadotFiatPrice() {
   const chain = useChain();
 
-  const [getTreasuries, { data, loading }] = useDoTreasuryEcoQuery(
-    GET_TREASURIES,
-    {},
-    true,
-  );
+  const [getTreasuries, { data, loading }] =
+    useDoTreasuryEcoLazyQuery(GET_TREASURIES);
 
   useEffect(() => {
     getTreasuries();

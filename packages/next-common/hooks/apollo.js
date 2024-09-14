@@ -12,19 +12,18 @@ const doTreasuryEcoClient = new ApolloClient({
 
 /**
  * @description https://eco-api.dotreasury.com/graphql
- * @type {typeof useQuery | typeof useLazyQuery}
+ * @type {typeof useQuery}
  */
-export function useDoTreasuryEcoQuery(
-  query,
-  options = {},
-  lazy = false,
-  ...args
-) {
+export function useDoTreasuryEcoQuery(query, options = {}, ...args) {
   options.client = options.client || doTreasuryEcoClient;
+  return useQuery(query, options, ...args);
+}
 
-  if (lazy) {
-    return useLazyQuery(query, options, ...args);
-  } else {
-    return useQuery(query, options, ...args);
-  }
+/**
+ * @description https://eco-api.dotreasury.com/graphql
+ * @type {typeof useLazyQuery}
+ */
+export function useDoTreasuryEcoLazyQuery(query, options = {}, ...args) {
+  options.client = options.client || doTreasuryEcoClient;
+  return useLazyQuery(query, options, ...args);
 }

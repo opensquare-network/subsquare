@@ -3,7 +3,7 @@ import { toPrecision } from "next-common/utils";
 import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
-import useBifrostPolkadotFiatPrice from "./useBifrostPolkadotFiatPrice";
+import useBifrostPolkadotFiatPrice from "../hook/useBifrostPolkadotFiatPrice";
 
 export default function FiatPriceLabel({
   free = 0,
