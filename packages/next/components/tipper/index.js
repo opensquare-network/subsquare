@@ -3,7 +3,6 @@ import { useState } from "react";
 import { isSameAddress } from "next-common/utils";
 import PrimaryButton from "next-common/lib/button/primary";
 import TipperList from "./tipperList";
-import useIsCouncilMember from "next-common/utils/hooks/useIsCouncilMember";
 import { useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
@@ -12,6 +11,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 
 const CloseTipPopup = dynamicPopup(() => import("./closeTipPopup"));
 
@@ -39,7 +39,7 @@ export default function Tipper() {
   const [showCloseTipPopup, setShowCloseTipPopup] = useState(false);
   const [showRetractTipPopup, setShowRetractTipPopup] = useState(false);
   const tipIsFinal = useTipIsFinished();
-  const userIsTipper = useIsCouncilMember();
+  const { isMember } = useIsCollectiveMember();
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { hideActionButtons } = useChainSettings();
 
@@ -75,7 +75,7 @@ export default function Tipper() {
   let action;
   if (tipIsFinal) {
     action = <Description>This tip has been closed.</Description>;
-  } else if (userIsTipper) {
+  } else if (isMember) {
     action = (
       <>
         {closeTipAction}

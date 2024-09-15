@@ -5,7 +5,6 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import { WarningMessage } from "next-common/components/popup/styled";
 import { useChainSettings } from "next-common/context/chain";
 import BalanceField from "next-common/components/popup/fields/balanceField";
-import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
@@ -14,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { noop } from "lodash-es";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
+import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 
 function PopupContent() {
   const { tipHash, onClose, onInBlock = noop } = usePopupParams();
@@ -23,11 +22,8 @@ function PopupContent() {
 
   const [inputTipValue, setInputTipValue] = useState("");
   const { decimals } = useChainSettings();
-  const councilTippers = useCouncilMembers(detailPageCategory.COUNCIL_MOTION);
-  const isTipper = isAddressInGroup(
-    signerAccount?.realAddress,
-    councilTippers || [],
-  );
+  const { members } = useCollectiveMembers();
+  const isTipper = isAddressInGroup(signerAccount?.realAddress, members || []);
   const dispatch = useDispatch();
 
   const getTxFunc = useCallback(() => {

@@ -7,7 +7,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
 import { useCollectivePallet } from "next-common/context/collective";
-import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
+import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -20,7 +20,7 @@ export default function NewCouncilMotionProposalInnerPopup({ onClose }) {
     proposalLength: 0,
   });
   const [threshold, setThreshold] = useState(1);
-  const members = useCouncilMembers();
+  const { members } = useCollectiveMembers();
 
   const thresholdDefault = Math.ceil(members?.length / 2) + 1;
   useEffect(() => {

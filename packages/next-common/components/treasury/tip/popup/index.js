@@ -13,10 +13,9 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useRouter } from "next/router";
 import { useContextApi } from "next-common/context/api";
-import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { WarningMessage } from "next-common/components/popup/styled";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
+import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 
 function TipCommon({ setBeneficiary, setReason }) {
   return (
@@ -50,11 +49,8 @@ function NewTipContent({
   onInBlock,
 }) {
   const signerAccount = useSignerAccount();
-  const councilTippers = useCouncilMembers(detailPageCategory.COUNCIL_MOTION);
-  const isTipper = isAddressInGroup(
-    signerAccount?.realAddress,
-    councilTippers || [],
-  );
+  const { members } = useCollectiveMembers();
+  const isTipper = isAddressInGroup(signerAccount?.realAddress, members || []);
   return (
     <>
       <WarningMessage danger={!isTipper}>

@@ -5,7 +5,7 @@ import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import CollectiveProvider, {
   collectivePallets,
 } from "next-common/context/collective";
-import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
+import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 
 export default function MembersPage() {
   return (
@@ -16,7 +16,7 @@ export default function MembersPage() {
 }
 
 function MembersPageImpl() {
-  const members = useCouncilMembers();
+  const { members } = useCollectiveMembers();
   const prime = usePrime();
 
   const category = "Technical Committee Members";
