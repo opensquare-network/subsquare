@@ -20,6 +20,11 @@ import { OffChainArticleActionsProvider } from "next-common/noSima/context/artic
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { TreasuryProvider } from "next-common/context/treasury";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
 const Metadata = dynamicClientOnly(() => import("components/tip/metadata"));
 
@@ -77,12 +82,21 @@ function TipPageImpl() {
 }
 
 export default function TipPage({ detail }) {
+  const chain = useChain();
+
+  let pallet = collectivePallets.council;
+  if ([Chains.acala, Chains.karura].includes(chain)) {
+    pallet = collectivePallets.generalCouncil;
+  }
+
   return (
-    <PostProvider post={detail}>
-      <TreasuryProvider>
-        <TipPageImpl />
-      </TreasuryProvider>
-    </PostProvider>
+    <CollectiveProvider pallet={pallet}>
+      <PostProvider post={detail}>
+        <TreasuryProvider>
+          <TipPageImpl />
+        </TreasuryProvider>
+      </PostProvider>
+    </CollectiveProvider>
   );
 }
 
