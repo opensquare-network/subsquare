@@ -1,5 +1,6 @@
 import { cloneDeep, merge } from "lodash-es";
 
+// polkadot
 const base = {
   whales: false,
 
@@ -31,6 +32,11 @@ const base = {
   preimages: true,
 };
 
+/**
+ *
+ * @param {typeof base} modules
+ * @returns typeof base
+ */
 export function mergeChainModules(modules) {
   return merge(cloneDeep(base), modules);
 }

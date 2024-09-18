@@ -94,7 +94,6 @@ const centrifuge = {
   hasSubscan: true,
   hasDiscussions: false,
   hasTechComm: false,
-  hasTipsModule: false,
   description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
   useVoteCall: true,
   hasDotreasury: true,

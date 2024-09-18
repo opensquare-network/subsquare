@@ -7,7 +7,6 @@ import {
   useMenuHasCouncil,
   useMenuHasDemocracyExternal,
   useMenuHasTechComm,
-  useMenuHasTreasuryTips,
 } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
 import CardHeader from "next-common/components/overview/centrifugeStats/cardHeader";
@@ -85,7 +84,7 @@ function TreasuryGroupContent() {
   } = useChainSettings();
   const showTreasuryBounties = !!treasury?.bounties;
   const showChildBounties = !!treasury?.childBounties;
-  const showTips = useMenuHasTreasuryTips();
+  const showTips = !!treasury?.tips || !treasury?.tips?.archived;
 
   const { bounties, childBounties, tips, treasuryProposals } = summary ?? {};
 

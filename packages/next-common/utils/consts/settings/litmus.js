@@ -67,7 +67,6 @@ const litmus = {
   hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  hasTipsModule: false,
   noIdentityModule: true,
   hasMultisig: true,
   multisigApiPrefix: "litmus",

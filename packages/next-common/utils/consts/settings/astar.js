@@ -66,7 +66,6 @@ const astar = {
   hasSubscan: true,
   hasDiscussions: true,
   hasTechComm: true,
-  hasTipsModule: false,
   description: "A Scalable Network Powering a Global Web3 Vision for All.",
   modules: mergeChainModules({
     treasury: {

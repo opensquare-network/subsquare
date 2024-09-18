@@ -47,16 +47,6 @@ export function useMenuHasTreasury() {
   return !treasury.excludeToChains.includes(chain);
 }
 
-export function useMenuHasTreasuryTips() {
-  const chain = useChain();
-  const tipsConfig = treasury.items.find(({ value }) => value === "tips");
-  return (
-    tipsConfig &&
-    !tipsConfig.excludeToChains?.includes(chain) &&
-    !tipsConfig.archivedToChains?.includes(chain)
-  );
-}
-
 export function useMenuHasDemocracyExternal() {
   const chain = useChain();
   const tipsConfig = democracy.items.find(

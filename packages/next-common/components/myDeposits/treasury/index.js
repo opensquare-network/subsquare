@@ -27,11 +27,14 @@ export function useMyDepositTreasury() {
 
   const tipDeposits = useSelector(myTreasuryTipDepositsSelector);
   const tips = useDepositTreasuryTipsTab(tipDeposits);
-  const { hasTipsModule } = useChainSettings();
+  const {
+    modules: { treasury },
+  } = useChainSettings();
+  const hasTreasuryTips = !!treasury?.tips || !treasury?.tips?.archived;
 
   let loading = proposals.loading || bounties.loading;
   let activeCount = sum([proposals.activeCount, bounties.activeCount]);
-  if (hasTipsModule !== false) {
+  if (hasTreasuryTips) {
     activeCount += tips.activeCount;
     loading = loading || tips.loading;
   }

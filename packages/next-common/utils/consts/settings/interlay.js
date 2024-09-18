@@ -84,7 +84,6 @@ const interlay = {
   hasMultisig: true,
   multisigApiPrefix: "interlay",
   hasTreasuryModule: false,
-  hasTipsModule: false,
   modules: mergeChainModules({
     treasury: {
       bounties: false,

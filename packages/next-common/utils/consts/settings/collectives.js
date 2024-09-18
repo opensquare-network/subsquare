@@ -81,7 +81,6 @@ const collectives = {
   hasPolkassemblyDiscussions: false,
   hasTechComm: false,
   hasTreasuryModule: false,
-  hasTipsModule: false,
   hasDiscussionsRFCs: true,
   noDemocracy: true,
   noIdentityModule: true,

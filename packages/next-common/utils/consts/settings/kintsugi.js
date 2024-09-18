@@ -80,7 +80,6 @@ const kintsugi = {
     "Make your Bitcoin work for you with Kintsugi. Use your BTC for lending, borrowing, swapping and staking.",
   useVoteCall: true,
   hasTreasuryModule: false,
-  hasTipsModule: false,
   modules: mergeChainModules({
     treasury: {
       bounties: false,

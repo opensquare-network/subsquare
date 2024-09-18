@@ -43,7 +43,6 @@ const kusama = {
   hasDiscussionsForumTopics: true,
   discourseForumLink: "https://forum.polkadot.network",
   hasMultisig: true,
-  hasTipsModule: false,
   multisigApiPrefix: "kusama",
   showAchainableLabels: true,
   description:

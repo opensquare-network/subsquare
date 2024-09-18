@@ -50,7 +50,6 @@ const moonriver = {
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
   subscanDomain: "moonriver",
-  hasTipsModule: false,
   hasPolkassemblyDiscussions: true,
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,

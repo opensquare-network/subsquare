@@ -25,7 +25,11 @@ export default function useProfileTreasuryDepositsData() {
     bountyCuratorDeposits,
   );
 
-  const { hasTipsModule } = useChainSettings();
+  const {
+    modules: { treasury },
+  } = useChainSettings();
+  const hasTreasuryTips = !!treasury?.tips || !treasury?.tips?.archived;
+
   const tipDeposits = useSelector(profileTreasuryTipDepositsSelector);
   const tips = useDepositTreasuryTipsTab(tipDeposits);
 
@@ -34,7 +38,7 @@ export default function useProfileTreasuryDepositsData() {
 
   let activeCount = sum([proposals.activeCount, bounties.activeCount]);
   let loading = proposals.loading || bounties.loading;
-  if (hasTipsModule !== false) {
+  if (hasTreasuryTips) {
     activeCount += tips.activeCount;
     loading = loading || tips.loading;
   }

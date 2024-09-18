@@ -65,7 +65,6 @@ const zeitgeist = {
   postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],
   hasSubscan: true,
   useVoteCall: true,
-  hasTipsModule: false,
   description:
     "A Prediction Markets protocol built on Polkadot. With the world’s leading forecasting minds, we’re building the best prediction markets app available.",
   modules: mergeChainModules({

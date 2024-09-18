@@ -8,7 +8,6 @@ import {
   useMenuHasDemocracyExternal,
   useMenuHasTechComm,
   useMenuHasTreasurySpends,
-  useMenuHasTreasuryTips,
 } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
 import SummaryLayout from "next-common/components/summary/layout/layout";
@@ -100,7 +99,7 @@ function TreasuryGroupContent() {
   } = useChainSettings();
   const showTreasuryBounties = !!treasury?.bounties;
   const showChildBounties = !!treasury?.childBounties;
-  const showTips = useMenuHasTreasuryTips();
+  const showTips = !!treasury?.tips || !treasury?.tips?.archived;
   const showSpends = useMenuHasTreasurySpends();
 
   const { bounties, childBounties, tips, treasuryProposals, treasurySpends } =

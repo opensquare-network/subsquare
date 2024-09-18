@@ -50,7 +50,6 @@ const shibuya = {
   hasSubscan: true,
   hasDiscussions: true,
   hasTechComm: true,
-  hasTipsModule: false,
   description: "Shibuya is the testnet of Shiden (a sister chain of Astar).",
   modules: mergeChainModules({
     treasury: {

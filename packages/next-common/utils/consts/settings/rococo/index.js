@@ -53,7 +53,6 @@ const rococo = {
   links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasTipsModule: false,
   hasSubscan: true,
   hasDiscussionsForumTopics: true,
   discourseForumLink: "https://forum.polkadot.network",
