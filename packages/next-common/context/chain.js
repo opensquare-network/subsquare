@@ -1,9 +1,7 @@
 import { createContext, useContext, useMemo } from "react";
 import getChainSettings from "../utils/consts/settings";
 import democracy from "../utils/consts/menu/democracy";
-import treasury, {
-  SpendsSupportingChains,
-} from "../utils/consts/menu/treasury";
+import treasury from "../utils/consts/menu/treasury";
 import council from "../utils/consts/menu/council";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
@@ -63,9 +61,4 @@ export function useMenuHasCouncil() {
 export function useMenuHasTechComm() {
   const chainSettings = useChainSettings();
   return chainSettings.hasTechComm !== false;
-}
-
-export function useMenuHasTreasurySpends() {
-  const chain = useChain();
-  return SpendsSupportingChains.includes(chain);
 }

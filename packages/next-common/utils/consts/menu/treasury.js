@@ -1,5 +1,4 @@
 import Chains from "../chains";
-import { getExcludeChains } from "../../viewfuncs";
 import { MenuTreasury } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
@@ -49,7 +48,6 @@ export function getTreasuryMenu(summary) {
         name: Names.spends,
         pathname: "/treasury/spends",
         extraMatchNavMenuActivePathnames: ["/treasury/spends/[id]"],
-        excludeToChains: getExcludeChains(SpendsSupportingChains),
         activeCount: activeTreasurySpends,
       },
       {
