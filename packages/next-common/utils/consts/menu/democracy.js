@@ -1,4 +1,6 @@
 import { MenuDemocracy } from "@osn/icons/subsquare";
+import { CHAIN } from "next-common/utils/constants";
+import getChainSettings from "../settings";
 
 export const Names = {
   democracy: "DEMOCRACY",
@@ -8,6 +10,9 @@ export const Names = {
 };
 
 export function getDemocracyMenu(summary) {
+  const { modules } = getChainSettings(CHAIN);
+  const archived = modules?.democracy?.archived;
+
   const activeReferenda = summary?.referenda?.active || 0;
   const activePublicProposals = summary?.publicProposals?.active || 0;
   const activeExternalProposals = summary?.externalProposals?.active || 0;
@@ -17,6 +22,7 @@ export function getDemocracyMenu(summary) {
   return {
     name: Names.democracy,
     activeCount: totalActiveCount,
+    archived,
     icon: <MenuDemocracy />,
     pathname: "/democracy",
     items: [

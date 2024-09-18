@@ -1,4 +1,6 @@
 import { MenuCouncil } from "@osn/icons/subsquare";
+import getChainSettings from "../settings";
+import { CHAIN } from "next-common/utils/constants";
 
 export const Names = {
   council: "COUNCIL",
@@ -7,11 +9,15 @@ export const Names = {
 };
 
 export function getCouncilMenu(summary) {
+  const { modules } = getChainSettings(CHAIN);
+  const archived = modules?.council?.archived;
+
   const activeMotions = summary?.motions?.active || 0;
 
   return {
     name: Names.council,
     activeCount: activeMotions,
+    archived,
     icon: <MenuCouncil />,
     pathname: "/council",
     items: [

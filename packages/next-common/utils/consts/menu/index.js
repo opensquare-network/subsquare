@@ -85,11 +85,6 @@ export function getNavMenu({
   for (let idx = 0; idx < menu.slice(1).length; idx++) {
     const m = menu.slice(1)[idx];
 
-    // next loop early
-    if (m?.excludeToChains?.includes?.(CHAIN)) {
-      continue;
-    }
-
     // single menu
     if (!m?.items?.length) {
       featuredMenu.push(m);
@@ -97,7 +92,7 @@ export function getNavMenu({
     }
 
     // root menu archived
-    if (m?.archivedToChains?.includes?.(CHAIN)) {
+    if (m?.archived) {
       archivedMenu.push(m);
     }
     // child menu
