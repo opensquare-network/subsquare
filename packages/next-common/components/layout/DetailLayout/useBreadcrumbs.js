@@ -72,7 +72,7 @@ export default function useBreadcrumbs() {
     ];
   } else if (detailPageCategory.COMMUNITY_TREASURY_PROPOSAL === type) {
     return [
-      treasury,
+      { content: "Community Treasury" },
       {
         content: "Proposals",
         path: "/community-treasury/proposals",
