@@ -117,7 +117,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // technical committee
-  const hasTechComm = chainSettings.hasTechComm !== false;
+  const hasTechComm = modules?.technicalCommittee;
   if (hasTechComm) {
     recentProposalsData[tcNames.techComm] = {};
     recentProposalsData[tcNames.techComm].techCommProposals = await fetcher(

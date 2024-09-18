@@ -21,13 +21,9 @@ const base = {
     tips: true,
   },
   council: {
-    motions: true,
-    members: true,
     archived: false,
   },
   technicalCommittee: {
-    proposals: true,
-    members: true,
     archived: false,
   },
   financialCouncil: false,
