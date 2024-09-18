@@ -12,10 +12,7 @@ import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import getChainSettings from "next-common/utils/consts/settings";
 import { overviewApi } from "../url";
 import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
-import {
-  getCommunityCouncilMenu,
-  Names as communityCouncilNames,
-} from "next-common/utils/consts/menu/communityCouncil";
+import { Names as communityCouncilNames } from "next-common/utils/consts/menu/communityCouncil";
 import { Names as communityTreasuryNames } from "next-common/utils/consts/menu/communityTreasury";
 import { isCollectivesChain, isShibuyaChain } from "next-common/utils/chain";
 // import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
@@ -175,9 +172,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
 
   if (isShibuyaChain(CHAIN)) {
     // community council
-    const communityCouncilMenu = getCommunityCouncilMenu();
-    const hasCommunityCouncil =
-      !communityCouncilMenu.excludeToChains.includes(CHAIN);
+    const hasCommunityCouncil = modules?.communityCouncil;
     if (hasCommunityCouncil) {
       recentProposalsData[communityCouncilNames.communityCouncil] = {};
       recentProposalsData[

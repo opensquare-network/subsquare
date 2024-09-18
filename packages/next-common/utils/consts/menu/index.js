@@ -43,7 +43,7 @@ export function getHomeMenu({
     modules?.financialCouncil && getFinancialCouncilMenu(summary),
     modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
     modules?.alliance && getAllianceMenu(summary),
-    getCommunityCouncilMenu(summary),
+    modules?.communityCouncil && getCommunityCouncilMenu(summary),
     preImages,
   ].filter(Boolean);
 }

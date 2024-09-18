@@ -55,6 +55,7 @@ const shibuya = {
       bounties: false,
       tips: false,
     },
+    communityCouncil: true,
     communityTreasury: true,
     technicalCommittee: true,
   }),
