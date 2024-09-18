@@ -32,7 +32,7 @@ export function getHomeMenu({
 
   return [
     commonMenus,
-    getReferendaMenu(tracks, currentTrackId),
+    modules?.referenda && getReferendaMenu(tracks, currentTrackId),
     getFellowshipMenu(summary, currentTrackId),
     getAmbassadorMenu(ambassadorTracks, currentTrackId),
     getDemocracyMenu(summary),
