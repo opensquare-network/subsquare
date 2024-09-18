@@ -1,7 +1,8 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import { difference } from "lodash-es";
+import { difference, merge } from "lodash-es";
 import dynamic from "next/dynamic";
+import { commonModules } from "./common/modules";
 
 const ProjectIconKintsugiDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKintsugiDark"),
@@ -80,10 +81,11 @@ const kintsugi = {
   useVoteCall: true,
   hasTreasuryModule: false,
   hasTipsModule: false,
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
+  modules: merge(commonModules, {
+    treasury: {
+      tips: false,
+    },
+  }),
   cssVarsLight: {
     theme100: "rgba(247,205,69,0.10)",
     theme300: "rgba(247,205,69,0.40)",

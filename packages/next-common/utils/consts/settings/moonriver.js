@@ -4,6 +4,8 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
 import dynamic from "next/dynamic";
+import { merge } from "lodash-es";
+import { commonModules } from "./common/modules";
 
 const ProjectIconMoonriverDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconMoonriverDark"),
@@ -68,11 +70,12 @@ const moonriver = {
   description:
     "Solidity Smart Contracts on Kusama. Moonriver is a community-led cousin parachain on Kusama and will provide a permanently incentivized canary network for Moonbeam.",
   useVoteCall: true,
-  modules: {
+  modules: merge(commonModules, {
     referenda: true,
-    democracy: true,
-    treasury: true,
-  },
+    treasury: {
+      tips: false,
+    },
+  }),
   cssVarsLight: {
     theme100: "rgba(79,204,198,0.10)",
     theme300: "rgba(79,204,198,0.40)",

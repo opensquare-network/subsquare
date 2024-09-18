@@ -96,31 +96,15 @@ export function getTreasuryMenu(summary) {
         ]),
         activeCount: activeChildBounties,
       },
-      {
+      treasury?.tips && {
         value: "tips",
         name: Names.tips,
         pathname: "/treasury/tips",
         extraMatchNavMenuActivePathnames: ["/treasury/tips/[id]"],
-        excludeToChains: [
-          Chains.kintsugi,
-          Chains.interlay,
-          Chains.litmus,
-          Chains.litentry,
-          Chains.zeitgeist,
-          Chains.centrifuge,
-          Chains.altair,
-          Chains.moonriver,
-          Chains.moonbeam,
-          Chains.vara,
-          Chains.turing,
-          Chains.darwinia2,
-          Chains.shibuya,
-          Chains.astar,
-        ],
         archived: treasury?.tips?.archived,
         activeCount: activeTips,
       },
-    ],
+    ].filter(Boolean),
   };
 }
 
