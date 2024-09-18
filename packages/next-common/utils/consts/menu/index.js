@@ -44,7 +44,7 @@ export function getHomeMenu({
     modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
-    preImages,
+    modules?.preimages && preImages,
   ].filter(Boolean);
 }
 
