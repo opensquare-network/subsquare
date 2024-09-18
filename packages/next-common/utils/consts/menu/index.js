@@ -41,7 +41,7 @@ export function getHomeMenu({
     modules?.council && getCouncilMenu(summary),
     modules?.technicalCommittee && getTechCommMenu(summary),
     modules?.financialCouncil && getFinancialCouncilMenu(summary),
-    getAdvisoryCommitteeMenu(summary),
+    modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
     getAllianceMenu(summary),
     getCommunityCouncilMenu(summary),
     preImages,

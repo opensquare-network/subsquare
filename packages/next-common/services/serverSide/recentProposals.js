@@ -1,9 +1,6 @@
 import nextApi from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
-import {
-  getAdvisoryCommitteeMenu,
-  Names as asAdvisoryCommitteeNames,
-} from "next-common/utils/consts/menu/advisoryCouncil";
+import { Names as asAdvisoryCommitteeNames } from "next-common/utils/consts/menu/advisoryCouncil";
 import {
   getAllianceMenu,
   Names as allianceNames,
@@ -170,9 +167,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // advisory
-  const advisoryCommitteeMenu = getAdvisoryCommitteeMenu();
-  const hasAdvisoryCommittee =
-    !advisoryCommitteeMenu.excludeToChains.includes(CHAIN);
+  const hasAdvisoryCommittee = modules?.advisoryCommittee;
   if (hasAdvisoryCommittee) {
     recentProposalsData[asAdvisoryCommitteeNames.advisoryCommittee] = {};
     recentProposalsData[

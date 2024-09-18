@@ -72,6 +72,7 @@ const zeitgeist = {
       bounties: false,
       tips: false,
     },
+    advisoryCommittee: true,
   }),
   cssVarsLight: {
     theme100: "rgba(28,100,242,0.10)",

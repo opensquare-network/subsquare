@@ -32,6 +32,7 @@ const base = {
   },
   financialCouncil: false,
   communityTreasury: false,
+  advisoryCommittee: false,
   preimages: true,
 };
 
