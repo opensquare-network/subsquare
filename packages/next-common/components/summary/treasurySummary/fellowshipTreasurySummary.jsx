@@ -1,4 +1,4 @@
-import useTreasuryFree from "../../../utils/hooks/useTreasuryFree";
+import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
@@ -8,6 +8,14 @@ import { usePrice } from "./usePrice";
 import { AvailableItem, ToBeAwardedItem } from ".";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
+import {
+  ActiveReferendaProvider,
+  useActiveReferendaContext,
+} from "next-common/context/activeReferenda";
+import {
+  TreasuryProvider,
+  useTreasuryPallet,
+} from "next-common/context/treasury";
 
 function useAllSpends() {
   const api = useContextApi();
@@ -29,14 +37,41 @@ function useAllSpends() {
   return { value, loading };
 }
 
-function RequestingItem({ allSpends, price, isLoading }) {
-  const requesting = allSpends.reduce((prev, spend) => {
-    if (spend?.value?.status?.isPending) {
-      return prev + spend.value.amount.toBigInt();
-    }
-    return prev;
-  }, 0n);
+function useActiveTreasurySpendReferenda() {
+  const { activeReferenda, isLoading } = useActiveReferendaContext();
+  const treasuryPallet = useTreasuryPallet();
 
+  const activeSpendReferenda = activeReferenda.filter(({ call }) => {
+    if (!call) {
+      return false;
+    }
+    const { section, method } = call;
+    return section === treasuryPallet && "spend" === method;
+  });
+
+  return {
+    activeSpendReferenda,
+    isLoading,
+  };
+}
+
+function sumSpendAmounts(spends) {
+  return spends.reduce((prev, spend) => {
+    const { call } = spend;
+    if (!call) {
+      return prev;
+    }
+    const amount = call.args.find((arg) => arg.name === "amount");
+    if (!amount) {
+      return prev;
+    }
+    return prev + BigInt(amount.value);
+  }, 0n);
+}
+
+function RequestingItem({ price }) {
+  const { activeSpendReferenda, isLoading } = useActiveTreasurySpendReferenda();
+  const requesting = sumSpendAmounts(activeSpendReferenda);
   return (
     <SummaryItem title="Requesting">
       <LoadableContent isLoading={isLoading}>
@@ -46,14 +81,15 @@ function RequestingItem({ allSpends, price, isLoading }) {
   );
 }
 
-function TreasuryProposalsItem({ allSpends, isLoading }) {
+function TreasuryProposalsItem() {
+  const { value: allSpends, loading: isAllSpendsLoading } = useAllSpends();
   const active = allSpends.filter(
     (spend) => spend?.value?.status?.isPending,
   ).length;
   const total = allSpends.length;
   return (
     <SummaryItem title="Treasury Proposals">
-      <LoadableContent isLoading={isLoading}>
+      <LoadableContent isLoading={isAllSpendsLoading}>
         <div className="flex gap-[4px]">
           <span className="text-textPrimary">{active}</span>
           <span className="text-textDisabled">/</span>
@@ -68,21 +104,16 @@ export default function FellowshipTreasurySummary() {
   const price = usePrice();
   const api = useAssetHubApi();
   const free = useTreasuryFree(api);
-  const { value: allSpends, loading: isAllSpendsLoading } = useAllSpends();
-
   return (
-    <SummaryLayout>
-      <AvailableItem free={free} price={price} />
-      <RequestingItem
-        allSpends={allSpends}
-        price={price}
-        isLoading={isAllSpendsLoading}
-      />
-      <ToBeAwardedItem price={price} />
-      <TreasuryProposalsItem
-        allSpends={allSpends}
-        isLoading={isAllSpendsLoading}
-      />
-    </SummaryLayout>
+    <ActiveReferendaProvider pallet="fellowshipReferenda">
+      <TreasuryProvider pallet="fellowshipTreasury">
+        <SummaryLayout>
+          <AvailableItem free={free} price={price} />
+          <RequestingItem price={price} />
+          <ToBeAwardedItem price={price} />
+          <TreasuryProposalsItem />
+        </SummaryLayout>
+      </TreasuryProvider>
+    </ActiveReferendaProvider>
   );
 }
