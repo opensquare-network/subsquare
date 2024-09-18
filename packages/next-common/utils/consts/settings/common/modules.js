@@ -1,4 +1,6 @@
-export const commonModules = {
+import { cloneDeep, merge } from "lodash-es";
+
+const base = {
   whales: false,
 
   democracy: {
@@ -28,3 +30,7 @@ export const commonModules = {
   },
   preimages: true,
 };
+
+export function mergeChainModules(modules) {
+  return merge(cloneDeep(base), modules);
+}

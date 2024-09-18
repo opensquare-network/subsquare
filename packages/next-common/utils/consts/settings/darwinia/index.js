@@ -7,8 +7,7 @@ import ChainTypes from "../../chainTypes";
 import Chains from "../../chains";
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
-import { merge } from "lodash-es";
-import { commonModules } from "../common/modules";
+import { mergeChainModules } from "../common/modules";
 
 const ProjectIconDarwinia2Dark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconDarwinia2Dark"),
@@ -56,9 +55,10 @@ const darwinia2 = {
   description:
     "Darwinia Provides Cross-Chain Smart Contract Platform And Message Port Network.",
   useVoteCall: true,
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     referenda: true,
     treasury: {
+      bounties: false,
       tips: false,
     },
   }),

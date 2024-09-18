@@ -1,8 +1,7 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
-import { merge } from "lodash-es";
-import { commonModules } from "./common/modules";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconPhalaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPhalaDark"),
@@ -92,7 +91,7 @@ const phala = {
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "phala",
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     treasury: {
       childBounties: true,
     },

@@ -3,8 +3,7 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import dynamic from "next/dynamic";
-import { merge } from "lodash-es";
-import { commonModules } from "./common/modules";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconZeigeistDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconZeigeistDark"),
@@ -69,8 +68,9 @@ const zeitgeist = {
   hasTipsModule: false,
   description:
     "A Prediction Markets protocol built on Polkadot. With the world’s leading forecasting minds, we’re building the best prediction markets app available.",
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     treasury: {
+      bounties: false,
       tips: false,
     },
   }),

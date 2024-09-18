@@ -4,8 +4,7 @@ import MenuGroups from "./menuGroups";
 import dynamic from "next/dynamic";
 import { astarLinks, astarThemeVars } from "./common/astar";
 import { defaultPostLabels } from "./common";
-import { merge } from "lodash-es";
-import { commonModules } from "./common/modules";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconShibuyaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconShibuyaDark"),
@@ -53,8 +52,9 @@ const shibuya = {
   hasTechComm: true,
   hasTipsModule: false,
   description: "Shibuya is the testnet of Shiden (a sister chain of Astar).",
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     treasury: {
+      bounties: false,
       tips: false,
     },
   }),

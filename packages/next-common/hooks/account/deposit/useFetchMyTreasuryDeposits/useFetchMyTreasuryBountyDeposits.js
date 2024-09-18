@@ -6,7 +6,7 @@ import {
   setBountyBonds,
   setBountyCuratorDeposits,
 } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
-import { useMenuHasTreasuryBounties } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import { useContextApi } from "next-common/context/api";
 
 export async function queryAddressDeposits(api, address) {
@@ -71,7 +71,10 @@ export default function useFetchMyTreasuryBountyDeposits() {
   const realAddress = useRealAddress();
   const api = useContextApi();
   const dispatch = useDispatch();
-  const hasTreasuryBounties = useMenuHasTreasuryBounties();
+  const {
+    modules: { treasury },
+  } = useChainSettings();
+  const hasTreasuryBounties = !!treasury?.bounties;
 
   useEffect(() => {
     if (!hasTreasuryBounties) {

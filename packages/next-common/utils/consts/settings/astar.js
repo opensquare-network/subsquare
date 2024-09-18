@@ -4,8 +4,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { astarLinks, astarThemeVars } from "./common/astar";
-import { merge } from "lodash-es";
-import { commonModules } from "./common/modules";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconAstarDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconAstarDark"),
@@ -69,8 +68,9 @@ const astar = {
   hasTechComm: true,
   hasTipsModule: false,
   description: "A Scalable Network Powering a Global Web3 Vision for All.",
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     treasury: {
+      bounties: false,
       tips: false,
     },
   }),

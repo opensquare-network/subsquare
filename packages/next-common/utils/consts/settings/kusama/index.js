@@ -4,8 +4,7 @@ import defaultKusamaNodes from "next-common/utils/consts/settings/kusama/nodes";
 import kusamaTreasuryTracks from "next-common/utils/consts/settings/kusama/tracks";
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
-import { merge } from "lodash-es";
-import { commonModules } from "../common/modules";
+import { mergeChainModules } from "../common/modules";
 
 const ProjectIconKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaDark"),
@@ -49,7 +48,7 @@ const kusama = {
   showAchainableLabels: true,
   description:
     "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     referenda: true,
     fellowship: true,
     whales: true,

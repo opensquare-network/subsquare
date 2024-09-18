@@ -4,8 +4,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { litentryBlockHeightSettings } from "./blockHeightSettings/litentry";
-import { merge } from "lodash-es";
-import { commonModules } from "./common/modules";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconLitentryDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconLitentryDark"),
@@ -90,7 +89,7 @@ const litentry = {
   multisigApiPrefix: "litentry",
   description:
     "The Litentry identity Hub allows you to aggregate your personal data from blockchains and platforms to manage granular access to dApps. Exist in a digital world without KYC. Get Maximum Privacy & Authorization Control. Share Interoperable Verifiable Credentials. Use Multi-chain Data from Web3 + Web2 Platforms",
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     treasury: {
       tips: false,
     },

@@ -113,7 +113,7 @@ export default function getChainSettings(chain, blockHeight = null) {
   }
 
   return {
-    modules: {},
     ...settings,
+    modules: settings.modules || {},
   };
 }

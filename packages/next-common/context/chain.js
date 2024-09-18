@@ -47,20 +47,12 @@ export function useMenuHasTreasury() {
   return !treasury.excludeToChains.includes(chain);
 }
 
-export function useMenuHasTreasuryBounties() {
-  const chain = useChain();
-  const bountiesConfig = treasury.items.find(
-    ({ value }) => value === "bounties",
-  );
-  return bountiesConfig && !bountiesConfig.excludeToChains.includes(chain);
-}
-
 export function useMenuHasTreasuryTips() {
   const chain = useChain();
   const tipsConfig = treasury.items.find(({ value }) => value === "tips");
   return (
     tipsConfig &&
-    !tipsConfig.excludeToChains.includes(chain) &&
+    !tipsConfig.excludeToChains?.includes(chain) &&
     !tipsConfig.archivedToChains?.includes(chain)
   );
 }

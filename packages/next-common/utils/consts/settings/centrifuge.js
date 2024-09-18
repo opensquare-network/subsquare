@@ -1,11 +1,11 @@
-import { difference, merge } from "lodash-es";
+import { difference } from "lodash-es";
 import dynamic from "next/dynamic";
 import capitalize from "../../capitalize";
 import Chains from "../chains";
 import ChainTypes from "../chainTypes";
 import { defaultPostLabels, PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
-import { commonModules } from "./common/modules";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconCentrifugeDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconCentrifugeDark"),
@@ -100,8 +100,9 @@ const centrifuge = {
   hasDotreasury: true,
   hasMultisig: true,
   multisigApiPrefix: "cfg",
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     treasury: {
+      bounties: false,
       tips: false,
     },
   }),

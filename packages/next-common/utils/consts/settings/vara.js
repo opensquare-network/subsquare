@@ -3,8 +3,7 @@ import capitalize from "next-common/utils/capitalize";
 import Chains from "next-common/utils/consts/chains";
 import { defaultPostLabels } from "next-common/utils/consts/settings/common";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
-import { merge } from "lodash-es";
-import { commonModules } from "./common/modules";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconVaraDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconVaraDark"),
@@ -96,10 +95,11 @@ const vara = {
   multisigApiPrefix: "vara",
   description:
     "Vara is an ultra-fast and scalable Layer-1 decentralized network powered by the Gear Protocol.",
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     referenda: true,
     fellowship: true,
     treasury: {
+      bounties: false,
       tips: false,
     },
   }),

@@ -5,8 +5,7 @@ import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
-import { merge } from "lodash-es";
-import { commonModules } from "../common/modules";
+import { mergeChainModules } from "../common/modules";
 
 const ProjectIconRococoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconRococoDark"),
@@ -60,7 +59,7 @@ const rococo = {
   discourseForumLink: "https://forum.polkadot.network",
   description: "Polkadot’s Parachain Testnet",
   ...polkadotThemeVars,
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     referenda: true,
     fellowship: true,
     treasury: {

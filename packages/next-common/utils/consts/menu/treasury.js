@@ -59,27 +59,11 @@ export function getTreasuryMenu(summary) {
         extraMatchNavMenuActivePathnames: ["/treasury/proposals/[id]"],
         activeCount: activeTreasuryProposals,
       },
-      {
+      treasury?.bounties && {
         value: "bounties",
         name: Names.bounties,
         pathname: "/treasury/bounties",
         extraMatchNavMenuActivePathnames: ["/treasury/bounties/[id]"],
-        excludeToChains: [
-          Chains.basilisk,
-          Chains.hydradx,
-          Chains.hydradxTestnet,
-          Chains.kintsugi,
-          Chains.interlay,
-          Chains.zeitgeist,
-          Chains.centrifuge,
-          Chains.altair,
-          Chains.darwinia2,
-          Chains.moonriver,
-          Chains.moonbeam,
-          Chains.vara,
-          Chains.shibuya,
-          Chains.astar,
-        ],
         activeCount: activeBounties,
       },
       treasury?.childBounties && {

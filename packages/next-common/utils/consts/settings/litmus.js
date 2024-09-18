@@ -4,8 +4,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { litmusBlockHeightSettings } from "./blockHeightSettings/litmus";
-import { merge } from "lodash-es";
-import { commonModules } from "./common/modules";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconLitmusDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconLitmusDark"),
@@ -74,7 +73,7 @@ const litmus = {
   multisigApiPrefix: "litmus",
   description:
     "Litmus is a companion canary network to Litentry and connects to the Kusama ecosystem as parachain.",
-  modules: merge(commonModules, {
+  modules: mergeChainModules({
     treasury: {
       tips: false,
     },
