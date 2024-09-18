@@ -88,6 +88,7 @@ const kintsugi = {
       bounties: false,
       tips: false,
     },
+    council: false,
   }),
   cssVarsLight: {
     theme100: "rgba(247,205,69,0.10)",

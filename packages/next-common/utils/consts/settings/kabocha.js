@@ -15,6 +15,7 @@ const kabocha = {
   modules: mergeChainModules({
     democracy: false,
     treasury: false,
+    council: false,
   }),
 };
 

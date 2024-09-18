@@ -45,6 +45,7 @@ const westend = {
   modules: mergeChainModules({
     referenda: true,
     democracy: false,
+    council: false,
   }),
   newProposalQuickStart: {
     cancelReferendum: true,

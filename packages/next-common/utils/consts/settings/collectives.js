@@ -93,6 +93,7 @@ const collectives = {
     democracy: false,
     fellowshipTreasury: true,
     treasury: false,
+    council: false,
   }),
   ...polkadotThemeVars,
 };

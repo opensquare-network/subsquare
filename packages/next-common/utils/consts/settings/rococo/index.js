@@ -67,6 +67,9 @@ const rococo = {
     treasury: {
       childBounties: true,
     },
+    council: {
+      archived: true,
+    },
   }),
   multisigWallets: {
     signet: true,

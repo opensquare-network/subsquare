@@ -36,6 +36,7 @@ const development = {
     democracy: false,
     referenda: true,
     fellowship: true,
+    council: false,
   }),
 };
 

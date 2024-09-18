@@ -38,7 +38,7 @@ export function getHomeMenu({
     modules?.democracy && getDemocracyMenu(summary),
     modules?.treasury && getTreasuryMenu(summary),
     modules?.communityTreasury && getCommunityTreasuryMenu(summary),
-    getCouncilMenu(summary),
+    modules?.council && getCouncilMenu(summary),
     getTechCommMenu(summary),
     getFinancialCouncilMenu(summary),
     getAdvisoryCommitteeMenu(summary),

@@ -8,10 +8,7 @@ import {
   getAllianceMenu,
   Names as allianceNames,
 } from "next-common/utils/consts/menu/alliance";
-import {
-  getCouncilMenu,
-  Names as councilNames,
-} from "next-common/utils/consts/menu/council";
+import { Names as councilNames } from "next-common/utils/consts/menu/council";
 import {
   getFinancialCouncilMenu,
   Names as financialCouncilNames,
@@ -126,8 +123,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // council
-  const councilMenu = getCouncilMenu();
-  const hasCouncil = !councilMenu.excludeToChains.includes(CHAIN);
+  const hasCouncil = modules?.council;
   if (hasCouncil) {
     recentProposalsData[councilNames.council] = {};
     recentProposalsData[councilNames.council].motions = await fetcher(

@@ -1,4 +1,3 @@
-import Chains from "../chains";
 import { MenuCouncil } from "@osn/icons/subsquare";
 
 export const Names = {
@@ -12,18 +11,6 @@ export function getCouncilMenu(summary) {
 
   return {
     name: Names.council,
-    excludeToChains: [
-      Chains.kabocha,
-      Chains.kintsugi,
-      Chains.interlay,
-      Chains.development,
-      Chains.westendCollectives,
-      Chains.collectives,
-      Chains.vara,
-      Chains.westend,
-      Chains.zkverifyTestnet,
-    ],
-    archivedToChains: [Chains.kusama, Chains.polkadot, Chains.rococo],
     activeCount: activeMotions,
     icon: <MenuCouncil />,
     pathname: "/council",
