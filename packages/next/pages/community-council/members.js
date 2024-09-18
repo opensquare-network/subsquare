@@ -16,7 +16,7 @@ export default function CommunityCouncilMembersPage() {
 }
 
 function CommunityCouncilMembersPageImpl() {
-  const { members } = useCollectiveMembers();
+  const { members, loading } = useCollectiveMembers();
   const prime = usePrime();
 
   const category = "Community Council Members";
@@ -24,7 +24,7 @@ function CommunityCouncilMembersPageImpl() {
 
   return (
     <ListLayout title={category} seoInfo={seoInfo}>
-      <MembersList prime={prime} items={members || []} loading={!members} />
+      <MembersList prime={prime} items={members || []} loading={loading} />
     </ListLayout>
   );
 }

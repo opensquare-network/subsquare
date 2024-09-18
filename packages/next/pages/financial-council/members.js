@@ -19,12 +19,12 @@ function MembersPageImpl() {
   const category = "Financial Council Members";
   const seoInfo = { title: category, desc: category };
 
-  const { members } = useCollectiveMembers();
+  const { members, loading } = useCollectiveMembers();
   const prime = usePrime();
 
   return (
     <ListLayout seoInfo={seoInfo} title={category}>
-      <MembersList prime={prime} items={members || []} loading={!members} />
+      <MembersList prime={prime} items={members || []} loading={loading} />
     </ListLayout>
   );
 }
