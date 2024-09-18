@@ -70,6 +70,15 @@ export default function useBreadcrumbs() {
       },
       getIndexField(post?.proposalIndex, id),
     ];
+  } else if (detailPageCategory.COMMUNITY_TREASURY_PROPOSAL === type) {
+    return [
+      treasury,
+      {
+        content: "Proposals",
+        path: "/community-treasury/proposals",
+      },
+      getIndexField(post?.proposalIndex, id),
+    ];
   } else if (detailPageCategory.TREASURY_SPEND === type) {
     return [
       treasury,
@@ -189,6 +198,17 @@ export default function useBreadcrumbs() {
       {
         content: "Motions",
         path: "/treasury-council/motions",
+      },
+      getMotionField(post, id),
+    ];
+  } else if (detailPageCategory.COMMUNITY_MOTION === type) {
+    return [
+      {
+        content: "Community Council",
+      },
+      {
+        content: "Motions",
+        path: "/community-council/motions",
       },
       getMotionField(post, id),
     ];
