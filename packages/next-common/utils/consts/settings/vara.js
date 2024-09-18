@@ -96,6 +96,7 @@ const vara = {
     "Vara is an ultra-fast and scalable Layer-1 decentralized network powered by the Gear Protocol.",
   modules: mergeChainModules({
     referenda: true,
+    democracy: false,
     fellowship: true,
     treasury: {
       bounties: false,

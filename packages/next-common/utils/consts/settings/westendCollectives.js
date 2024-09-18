@@ -67,6 +67,7 @@ const westendCollectives = {
   modules: mergeChainModules({
     fellowship: true,
     treasury: false,
+    democracy: false,
   }),
   cssVarsLight: {
     theme100: "rgba(239,72,106,0.10)",

@@ -1,5 +1,3 @@
-import React from "react";
-import Chains from "../chains";
 import { MenuDemocracy } from "@osn/icons/subsquare";
 
 export const Names = {
@@ -18,16 +16,6 @@ export function getDemocracyMenu(summary) {
 
   return {
     name: Names.democracy,
-    excludeToChains: [
-      Chains.kabocha,
-      Chains.development,
-      Chains.westendCollectives,
-      Chains.collectives,
-      Chains.vara,
-      Chains.westend,
-      Chains.zkverifyTestnet,
-    ],
-    archivedToChains: [Chains.kusama, Chains.polkadot, Chains.rococo],
     activeCount: totalActiveCount,
     icon: <MenuDemocracy />,
     pathname: "/democracy",
@@ -51,7 +39,6 @@ export function getDemocracyMenu(summary) {
       },
       {
         value: "democracyExternals",
-        excludeToChains: [Chains.kintsugi, Chains.interlay],
         name: Names.democracyExternals,
         activeCount: activeExternalProposals,
         pathname: "/democracy/externals",

@@ -13,6 +13,7 @@ const kabocha = {
   hasTechComm: false,
   hasTreasury: false,
   modules: mergeChainModules({
+    democracy: false,
     treasury: false,
   }),
 };

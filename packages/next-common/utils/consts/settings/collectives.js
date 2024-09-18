@@ -90,6 +90,7 @@ const collectives = {
   modules: mergeChainModules({
     fellowship: true,
     ambassador: true,
+    democracy: false,
     fellowshipTreasury: true,
     treasury: false,
   }),

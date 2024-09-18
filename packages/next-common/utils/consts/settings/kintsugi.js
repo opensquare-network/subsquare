@@ -81,6 +81,9 @@ const kintsugi = {
   useVoteCall: true,
   hasTreasuryModule: false,
   modules: mergeChainModules({
+    democracy: {
+      externalProposals: false,
+    },
     treasury: {
       bounties: false,
       tips: false,

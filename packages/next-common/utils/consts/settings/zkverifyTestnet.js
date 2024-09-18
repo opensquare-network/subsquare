@@ -70,6 +70,7 @@ const zkverifyTestnet = {
   showAccountManagementTab: false,
   description: "The modular blockchain for ZK proof verification.",
   modules: mergeChainModules({
+    democracy: false,
     referenda: true,
     treasury: false,
   }),

@@ -59,6 +59,9 @@ const rococo = {
   description: "Polkadot’s Parachain Testnet",
   ...polkadotThemeVars,
   modules: mergeChainModules({
+    democracy: {
+      archived: true,
+    },
     referenda: true,
     fellowship: true,
     treasury: {

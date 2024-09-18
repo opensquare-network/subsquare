@@ -85,6 +85,9 @@ const interlay = {
   multisigApiPrefix: "interlay",
   hasTreasuryModule: false,
   modules: mergeChainModules({
+    democracy: {
+      externalProposals: false,
+    },
     treasury: {
       bounties: false,
       tips: false,

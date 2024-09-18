@@ -33,6 +33,7 @@ const development = {
   blockTime: 3000,
   postLabels: defaultPostLabels,
   modules: mergeChainModules({
+    democracy: false,
     referenda: true,
     fellowship: true,
   }),

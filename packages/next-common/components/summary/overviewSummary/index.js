@@ -5,7 +5,6 @@ import ActiveValue from "./activeValue";
 import {
   useChainSettings,
   useMenuHasCouncil,
-  useMenuHasDemocracyExternal,
   useMenuHasTechComm,
 } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
@@ -61,7 +60,10 @@ function OpenGovGroupContent() {
 
 function DemocracyGroupContent() {
   const { summary } = usePageProps();
-  const showExternal = useMenuHasDemocracyExternal();
+  const {
+    modules: { democracy },
+  } = useChainSettings();
+  const showExternal = democracy?.externalProposals;
 
   const { referenda, publicProposals, externalProposals } = summary ?? {};
 
