@@ -3,7 +3,7 @@ import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollect
 import usePrime from "next-common/utils/hooks/usePrime";
 
 export default function MembersNoElections({ category }) {
-  const { members } = useCollectiveMembers();
+  const { members, loading } = useCollectiveMembers();
   const prime = usePrime();
 
   return (
@@ -11,7 +11,7 @@ export default function MembersNoElections({ category }) {
       prime={prime}
       category={category}
       items={members || []}
-      loading={!members}
+      loading={loading}
     />
   );
 }

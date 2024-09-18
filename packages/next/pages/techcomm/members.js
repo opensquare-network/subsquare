@@ -16,7 +16,7 @@ export default function MembersPage() {
 }
 
 function MembersPageImpl() {
-  const { members } = useCollectiveMembers();
+  const { members, loading } = useCollectiveMembers();
   const prime = usePrime();
 
   const category = "Technical Committee Members";
@@ -28,7 +28,7 @@ function MembersPageImpl() {
       title={category}
       description="Technical committee members"
     >
-      <MembersList prime={prime} items={members || []} loading={!members} />
+      <MembersList prime={prime} items={members || []} loading={loading} />
     </ListLayout>
   );
 }
