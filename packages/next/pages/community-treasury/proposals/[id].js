@@ -5,7 +5,7 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/treasury/proposal/checkUnFinalized";
-import TreasuryProposalDetail from "next-common/components/detail/treasury/proposal";
+import AstarTreasuryProposalDetail from "next-common/components/detail/treasury/proposal/astar/astarTreasuryProposalDetail";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
@@ -44,7 +44,7 @@ function TreasuryProposalContent() {
 
   return (
     <ContentWithComment>
-      <TreasuryProposalDetail />
+      <AstarTreasuryProposalDetail />
       <DetailMultiTabs
         metadata={<Metadata treasuryProposal={detail?.onchainData} />}
         timeline={
