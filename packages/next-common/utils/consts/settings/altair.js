@@ -60,7 +60,6 @@ const altair = {
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
   hasDiscussions: false,
-  hasTechComm: false,
   description:
     "The home for financing assets on Kusama. Powered by Centrifuge.",
   modules: mergeChainModules({
@@ -69,6 +68,7 @@ const altair = {
       bounties: false,
       tips: false,
     },
+    technicalCommittee: false,
   }),
   cssVarsLight: {
     theme100: "rgba(255,192,18,0.10)",

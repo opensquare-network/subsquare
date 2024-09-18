@@ -29,7 +29,6 @@ const development = {
   group: MenuGroups.Solochain,
   hasStatescan: true,
   noIdentityModule: true,
-  hasTechComm: false,
   blockTime: 3000,
   postLabels: defaultPostLabels,
   modules: mergeChainModules({
@@ -37,6 +36,7 @@ const development = {
     referenda: true,
     fellowship: true,
     council: false,
+    technicalCommittee: false,
   }),
 };
 

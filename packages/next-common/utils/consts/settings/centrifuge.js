@@ -93,7 +93,6 @@ const centrifuge = {
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
   hasDiscussions: false,
-  hasTechComm: false,
   description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
   useVoteCall: true,
   hasDotreasury: true,
@@ -104,6 +103,7 @@ const centrifuge = {
       bounties: false,
       tips: false,
     },
+    technicalCommittee: false,
   }),
   cssVarsLight: {
     theme100: "rgba(18,83,255,0.10)",

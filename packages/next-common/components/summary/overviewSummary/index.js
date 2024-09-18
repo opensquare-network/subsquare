@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "./activeValue";
-import { useChainSettings, useMenuHasTechComm } from "../../../context/chain";
+import { useChainSettings } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
@@ -149,10 +149,10 @@ function TreasuryGroupContent() {
 function CouncilGroupContent() {
   const { summary } = usePageProps();
   const {
-    modules: { council },
+    modules: { council, technicalCommittee },
   } = useChainSettings();
   const showCouncil = !!council;
-  const showTc = useMenuHasTechComm();
+  const showTc = !!technicalCommittee;
 
   const { motions, techCommMotions } = summary ?? {};
 
@@ -181,10 +181,10 @@ function CouncilGroupContent() {
 
 export default function OverviewSummary() {
   const {
-    modules: { council },
+    modules: { council, technicalCommittee },
   } = useChainSettings();
   const showCouncil = !!council;
-  const showTC = useMenuHasTechComm();
+  const showTC = !!technicalCommittee;
   const {
     modules: {
       referenda: hasReferenda,

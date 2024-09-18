@@ -36,8 +36,3 @@ export function useVoteSymbol() {
   const { symbol, voteSymbol } = useChainSettings();
   return voteSymbol || symbol;
 }
-
-export function useMenuHasTechComm() {
-  const chainSettings = useChainSettings();
-  return chainSettings.hasTechComm !== false;
-}

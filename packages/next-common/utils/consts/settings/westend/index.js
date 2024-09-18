@@ -46,6 +46,7 @@ const westend = {
     referenda: true,
     democracy: false,
     council: false,
+    technicalCommittee: false,
   }),
   newProposalQuickStart: {
     cancelReferendum: true,

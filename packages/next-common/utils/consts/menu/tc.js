@@ -1,5 +1,3 @@
-import Chains from "../chains";
-import React from "react";
 import { MenuTechComm } from "@osn/icons/subsquare";
 
 export const Names = {
@@ -13,18 +11,6 @@ export function getTechCommMenu(summary) {
 
   return {
     name: Names.techComm,
-    excludeToChains: [
-      Chains.kabocha,
-      Chains.centrifuge,
-      Chains.altair,
-      Chains.development,
-      Chains.westendCollectives,
-      Chains.collectives,
-      Chains.vara,
-      Chains.westend,
-      Chains.zkverifyTestnet,
-    ],
-    archivedToChains: [Chains.kusama, Chains.polkadot, Chains.rococo],
     activeCount: activeTechCommMotions,
     icon: <MenuTechComm />,
     pathname: "/techcomm",

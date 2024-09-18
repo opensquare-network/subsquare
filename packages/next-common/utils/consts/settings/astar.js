@@ -65,7 +65,6 @@ const astar = {
   postLabels: defaultPostLabels,
   hasSubscan: true,
   hasDiscussions: true,
-  hasTechComm: true,
   description: "A Scalable Network Powering a Global Web3 Vision for All.",
   modules: mergeChainModules({
     treasury: {
@@ -73,6 +72,7 @@ const astar = {
       tips: false,
     },
     communityTreasury: true,
+    technicalCommittee: true,
   }),
   showNewTreasuryProposalButton: true,
   ...astarThemeVars,

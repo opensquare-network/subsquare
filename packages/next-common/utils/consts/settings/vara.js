@@ -88,7 +88,6 @@ const vara = {
   hasStatescan: false,
   hasSubscan: true,
   hasDotreasury: false,
-  hasTechComm: false,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "vara",
@@ -103,6 +102,7 @@ const vara = {
       tips: false,
     },
     council: false,
+    technicalCommittee: false,
   }),
   cssVarsLight: {
     theme100: "rgba(11,234,179,0.10)",

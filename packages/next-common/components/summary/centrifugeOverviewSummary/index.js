@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "../overviewSummary/activeValue";
-import { useChainSettings, useMenuHasTechComm } from "../../../context/chain";
+import { useChainSettings } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
 import CardHeader from "next-common/components/overview/centrifugeStats/cardHeader";
 import {
@@ -125,10 +125,10 @@ function TreasuryGroupContent() {
 function CouncilGroupContent() {
   const { summary } = usePageProps();
   const {
-    modules: { council },
+    modules: { council, technicalCommittee },
   } = useChainSettings();
   const showCouncil = !!council;
-  const showTc = useMenuHasTechComm();
+  const showTc = !!technicalCommittee;
 
   const { motions, techCommMotions } = summary ?? {};
 

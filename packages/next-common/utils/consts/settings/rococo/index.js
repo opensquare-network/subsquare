@@ -70,6 +70,9 @@ const rococo = {
     council: {
       archived: true,
     },
+    technicalCommittee: {
+      archived: true,
+    },
   }),
   multisigWallets: {
     signet: true,

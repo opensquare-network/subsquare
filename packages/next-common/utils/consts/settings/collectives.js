@@ -80,7 +80,6 @@ const collectives = {
   hasFellowshipParams: true,
   hasFellowshipCore: true,
   hasPolkassemblyDiscussions: false,
-  hasTechComm: false,
   hasTreasuryModule: false,
   hasDiscussionsRFCs: true,
   noDemocracy: true,
@@ -94,6 +93,7 @@ const collectives = {
     fellowshipTreasury: true,
     treasury: false,
     council: false,
+    technicalCommittee: false,
   }),
   ...polkadotThemeVars,
 };

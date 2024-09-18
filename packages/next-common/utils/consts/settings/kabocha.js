@@ -10,12 +10,12 @@ const kabocha = {
   // decimals: 0,
   // hasElections: true,
   hasSubscan: true,
-  hasTechComm: false,
   hasTreasury: false,
   modules: mergeChainModules({
     democracy: false,
     treasury: false,
     council: false,
+    technicalCommittee: false,
   }),
 };
 

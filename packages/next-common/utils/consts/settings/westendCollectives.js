@@ -60,7 +60,6 @@ const westendCollectives = {
   hasStatescan: true,
   hasFellowship: true,
   hasFellowshipCore: true,
-  hasTechComm: false,
   hasTreasury: false,
   hasTreasuryModule: false,
   noIdentityModule: true,
@@ -69,6 +68,7 @@ const westendCollectives = {
     treasury: false,
     democracy: false,
     council: false,
+    technicalCommittee: false,
   }),
   cssVarsLight: {
     theme100: "rgba(239,72,106,0.10)",
