@@ -30,6 +30,7 @@ const base = {
     members: true,
     archived: false,
   },
+  communityTreasury: false,
   preimages: true,
 };
 

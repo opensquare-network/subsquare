@@ -37,7 +37,7 @@ export function getHomeMenu({
     modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
     modules?.democracy && getDemocracyMenu(summary),
     modules?.treasury && getTreasuryMenu(summary),
-    getCommunityTreasuryMenu(summary),
+    modules?.communityTreasury && getCommunityTreasuryMenu(summary),
     getCouncilMenu(summary),
     getTechCommMenu(summary),
     getFinancialCouncilMenu(summary),

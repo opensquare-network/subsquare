@@ -25,10 +25,7 @@ import {
   getCommunityCouncilMenu,
   Names as communityCouncilNames,
 } from "next-common/utils/consts/menu/communityCouncil";
-import {
-  getCommunityTreasuryMenu,
-  Names as communityTreasuryNames,
-} from "next-common/utils/consts/menu/communityTreasury";
+import { Names as communityTreasuryNames } from "next-common/utils/consts/menu/communityTreasury";
 import { isCollectivesChain, isShibuyaChain } from "next-common/utils/chain";
 // import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 
@@ -205,9 +202,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
     }
 
     // community treasury
-    const communityTreasuryMenu = getCommunityTreasuryMenu();
-    const hasCommunityTreasuryProposalMenu =
-      !communityTreasuryMenu.excludeToChains.includes(CHAIN);
+    const hasCommunityTreasuryProposalMenu = modules?.communityTreasury;
     if (hasCommunityTreasuryProposalMenu) {
       recentProposalsData[communityTreasuryNames.communityTreasury] = {};
       recentProposalsData[communityTreasuryNames.communityTreasury].proposals =
