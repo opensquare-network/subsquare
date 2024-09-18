@@ -101,7 +101,7 @@ export function getNavMenu({
     else {
       const [featuredItems, archivedItems] = partition(
         m.items?.filter?.((item) => !item?.excludeToChains?.includes?.(CHAIN)),
-        (item) => !item?.archivedToChains?.includes?.(CHAIN),
+        (item) => !item?.archived,
       );
 
       if (archivedItems.length) {

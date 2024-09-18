@@ -1,7 +1,8 @@
-import React from "react";
 import Chains from "../chains";
 import { getExcludeChains } from "../../viewfuncs";
 import { MenuTreasury } from "@osn/icons/subsquare";
+import getChainSettings from "../settings";
+import { CHAIN } from "next-common/utils/constants";
 
 export const Names = {
   treasury: "TREASURY",
@@ -15,6 +16,10 @@ export const Names = {
 export const SpendsSupportingChains = [Chains.polkadot];
 
 export function getTreasuryMenu(summary) {
+  const {
+    modules: { treasury },
+  } = getChainSettings(CHAIN);
+
   const activeTreasuryProposals = summary?.treasuryProposals?.active || 0;
   const activeTreasurySpends = summary?.treasurySpends?.active || 0;
   const activeBounties = summary?.bounties?.active || 0;
@@ -112,7 +117,7 @@ export function getTreasuryMenu(summary) {
           Chains.shibuya,
           Chains.astar,
         ],
-        archivedToChains: [Chains.kusama, Chains.polkadot],
+        archived: treasury?.tips?.archived,
         activeCount: activeTips,
       },
     ],

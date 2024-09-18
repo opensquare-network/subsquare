@@ -7,6 +7,8 @@ import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polk
 import defaultPolkadotNodes from "next-common/utils/consts/settings/polkadot/nodes";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import polkadotTreasuryTracks from "next-common/utils/consts/settings/polkadot/tracks";
+import { merge } from "lodash-es";
+import { commonModules } from "../common/modules";
 
 const ProjectIconPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotDark"),
@@ -60,11 +62,25 @@ const polkadot = {
   description:
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
   ...polkadotThemeVars,
-  modules: {
-    referenda: true,
+  modules: merge(commonModules, {
     whales: true,
-    treasury: true,
-  },
+    democracy: {
+      archived: true,
+    },
+    referenda: true,
+    treasury: {
+      spends: true,
+      tips: {
+        archived: true,
+      },
+    },
+    council: {
+      archived: true,
+    },
+    technicalCommittee: {
+      archived: true,
+    },
+  }),
   multisigWallets: {
     signet: true,
     mimir: true,
