@@ -3,6 +3,7 @@ import Chains from "../chains";
 import bifrost from "./bifrost";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconBifrostPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostPolkadotDark"),
@@ -60,12 +61,10 @@ const bifrostPolkadot = {
   hasMultisig: true,
   multisigApiPrefix: "pbnc",
   description: bifrost.description,
-  modules: {
+  modules: mergeChainModules({
     referenda: true,
     fellowship: true,
-    democracy: true,
-    treasury: true,
-  },
+  }),
   cssVarsLight: {
     theme100: "rgba(84,43,251,0.10)",
     theme300: "rgba(84,43,251,0.40)",
