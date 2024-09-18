@@ -1,7 +1,6 @@
 import { createContext, useContext, useMemo } from "react";
 import getChainSettings from "../utils/consts/settings";
 import democracy from "../utils/consts/menu/democracy";
-import treasury from "../utils/consts/menu/treasury";
 import council from "../utils/consts/menu/council";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
@@ -38,11 +37,6 @@ export function useSymbol() {
 export function useVoteSymbol() {
   const { symbol, voteSymbol } = useChainSettings();
   return voteSymbol || symbol;
-}
-
-export function useMenuHasTreasury() {
-  const chain = useChain();
-  return !treasury.excludeToChains.includes(chain);
 }
 
 export function useMenuHasDemocracyExternal() {
