@@ -70,6 +70,7 @@ const moonriver = {
   useVoteCall: true,
   modules: mergeChainModules({
     referenda: true,
+    fellowship: true,
     treasury: {
       bounties: false,
       tips: false,

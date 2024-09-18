@@ -33,7 +33,7 @@ export function getHomeMenu({
   return [
     commonMenus,
     modules?.referenda && getReferendaMenu(tracks, currentTrackId),
-    getFellowshipMenu(summary, currentTrackId),
+    modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
     getAmbassadorMenu(ambassadorTracks, currentTrackId),
     getDemocracyMenu(summary),
     modules?.treasury && getTreasuryMenu(summary),

@@ -4,6 +4,7 @@ import Avatar from "../../../assets/icons/chain/development.png";
 import MenuGroups from "./menuGroups";
 import DarkAvatar from "../../../assets/icons/chain/development-dark.png";
 import { defaultPostLabels } from "./common";
+import { mergeChainModules } from "./common/modules";
 
 const name = Chains.development;
 
@@ -31,6 +32,10 @@ const development = {
   hasTechComm: false,
   blockTime: 3000,
   postLabels: defaultPostLabels,
+  modules: mergeChainModules({
+    referenda: true,
+    fellowship: true,
+  }),
 };
 
 export default development;

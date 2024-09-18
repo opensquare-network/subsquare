@@ -131,18 +131,6 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
 
   const menu = {
     name: Names.fellowship,
-    excludeToChains: getExcludeChains([
-      Chains.development,
-      Chains.kusama,
-      Chains.collectives,
-      Chains.moonriver,
-      Chains.moonbeam,
-      Chains.bifrost,
-      Chains.bifrostPolkadot,
-      Chains.westendCollectives,
-      Chains.vara,
-      Chains.rococo,
-    ]),
     activeCount: totalActiveCount,
     icon: <MenuFellowship />,
     pathname: "/fellowship",

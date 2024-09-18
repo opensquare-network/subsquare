@@ -12,6 +12,7 @@ const base = {
   },
   referenda: false,
   fellowship: false,
+  ambassador: false,
   treasury: {
     spends: false,
     proposals: true,
