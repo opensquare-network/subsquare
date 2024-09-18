@@ -16,6 +16,7 @@ import preImages from "./preImages";
 import { partition } from "lodash-es";
 import isAssetHub from "next-common/utils/isAssetHub";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
+import getChainSettings from "../settings";
 
 export function getHomeMenu({
   summary = {},
@@ -27,13 +28,15 @@ export function getHomeMenu({
     return assetHubMenu;
   }
 
+  const { modules } = getChainSettings(CHAIN);
+
   return [
     commonMenus,
     getReferendaMenu(tracks, currentTrackId),
     getFellowshipMenu(summary, currentTrackId),
     getAmbassadorMenu(ambassadorTracks, currentTrackId),
     getDemocracyMenu(summary),
-    getTreasuryMenu(summary),
+    modules?.treasury && getTreasuryMenu(summary),
     getCommunityTreasuryMenu(summary),
     getCouncilMenu(summary),
     getTechCommMenu(summary),
@@ -42,7 +45,7 @@ export function getHomeMenu({
     getAllianceMenu(summary),
     getCommunityCouncilMenu(summary),
     preImages,
-  ];
+  ].filter(Boolean);
 }
 
 export function getCommonMenu({

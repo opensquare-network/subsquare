@@ -4,6 +4,7 @@ import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polk
 import Chains from "../chains";
 import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconPolkadotCollectivesDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotCollectivesDark"),
@@ -86,11 +87,12 @@ const collectives = {
   noIdentityModule: true,
   showAchainableLabels: true,
   description: "Collectives on Polkadot network.",
-  modules: {
+  modules: mergeChainModules({
     fellowship: true,
     ambassador: true,
     fellowshipTreasury: true,
-  },
+    treasury: false,
+  }),
   ...polkadotThemeVars,
 };
 

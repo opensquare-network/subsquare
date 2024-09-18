@@ -47,9 +47,8 @@ async function fetcher(url) {
 
 export async function fetchRecentProposalsProps(summary = {}) {
   const chainSettings = getChainSettings(CHAIN);
-  const {
-    modules: { democracy: hasDemocracyModule },
-  } = chainSettings;
+  const { modules } = chainSettings;
+  const { democracy: hasDemocracyModule } = modules;
 
   const recentProposalsData = {};
 
@@ -107,12 +106,10 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // treasury
-  const treasuryMenu = getTreasuryMenu(summary);
-  const hasTreasury = !treasuryMenu.excludeToChains.includes(CHAIN);
+  const hasTreasury = !!modules?.treasury;
   if (hasTreasury) {
-    const treasuryMenuItems = treasuryMenu.items
-      .filter((m) => !m.excludeToChains?.includes(CHAIN))
-      .filter((m) => m.activeCount);
+    const treasuryMenu = getTreasuryMenu(summary);
+    const treasuryMenuItems = treasuryMenu.items.filter((m) => m.activeCount);
     const firstTreasuryMenuItem = treasuryMenuItems[0];
     if (firstTreasuryMenuItem) {
       const initDataApiMap = {

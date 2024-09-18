@@ -1,4 +1,3 @@
-import Chains from "../chains";
 import { MenuTreasury } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
@@ -11,8 +10,6 @@ export const Names = {
   childBounties: "Child Bounties",
   tips: "Tips",
 };
-
-export const SpendsSupportingChains = [Chains.polkadot];
 
 export function getTreasuryMenu(summary) {
   const {
@@ -33,24 +30,18 @@ export function getTreasuryMenu(summary) {
 
   return {
     name: Names.treasury,
-    excludeToChains: [
-      Chains.kabocha,
-      Chains.westendCollectives,
-      Chains.collectives,
-      Chains.zkverifyTestnet,
-    ],
     icon: <MenuTreasury />,
     pathname: "/treasury",
     activeCount: totalActiveCount,
     items: [
-      {
+      treasury?.spends && {
         value: "spends",
         name: Names.spends,
         pathname: "/treasury/spends",
         extraMatchNavMenuActivePathnames: ["/treasury/spends/[id]"],
         activeCount: activeTreasurySpends,
       },
-      {
+      treasury?.proposals && {
         value: "proposals",
         name: Names.proposals,
         pathname: "/treasury/proposals",

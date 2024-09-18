@@ -1,3 +1,5 @@
+import { mergeChainModules } from "./common/modules";
+
 const kabocha = {
   value: "kabocha",
   name: "Kabocha",
@@ -10,6 +12,9 @@ const kabocha = {
   hasSubscan: true,
   hasTechComm: false,
   hasTreasury: false,
+  modules: mergeChainModules({
+    treasury: false,
+  }),
 };
 
 export default kabocha;
