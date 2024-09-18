@@ -1,6 +1,7 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconAcalaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconAcalaDark"),
@@ -98,10 +99,10 @@ const acala = {
   hasMultisig: true,
   multisigApiPrefix: "acala",
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
     treasury: true,
-  },
+    financialCouncil: true,
+  }),
   cssVarsLight: {
     theme100: "rgba(100,90,255,0.10)",
     theme300: "rgba(100,90,255,0.40)",

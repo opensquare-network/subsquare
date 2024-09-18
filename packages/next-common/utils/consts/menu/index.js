@@ -40,7 +40,7 @@ export function getHomeMenu({
     modules?.communityTreasury && getCommunityTreasuryMenu(summary),
     modules?.council && getCouncilMenu(summary),
     modules?.technicalCommittee && getTechCommMenu(summary),
-    getFinancialCouncilMenu(summary),
+    modules?.financialCouncil && getFinancialCouncilMenu(summary),
     getAdvisoryCommitteeMenu(summary),
     getAllianceMenu(summary),
     getCommunityCouncilMenu(summary),

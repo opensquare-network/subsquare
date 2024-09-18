@@ -9,10 +9,7 @@ import {
   Names as allianceNames,
 } from "next-common/utils/consts/menu/alliance";
 import { Names as councilNames } from "next-common/utils/consts/menu/council";
-import {
-  getFinancialCouncilMenu,
-  Names as financialCouncilNames,
-} from "next-common/utils/consts/menu/financialCouncil";
+import { Names as financialCouncilNames } from "next-common/utils/consts/menu/financialCouncil";
 import { Names as tcNames } from "next-common/utils/consts/menu/tc";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import getChainSettings from "next-common/utils/consts/settings";
@@ -141,9 +138,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // financial council
-  const financialCouncilMenu = getFinancialCouncilMenu();
-  const hasFinancialCouncil =
-    !financialCouncilMenu.excludeToChains.includes(CHAIN);
+  const hasFinancialCouncil = !!modules?.financialCouncil;
   if (hasFinancialCouncil) {
     recentProposalsData[financialCouncilNames.financialCouncil] = {};
     recentProposalsData[
