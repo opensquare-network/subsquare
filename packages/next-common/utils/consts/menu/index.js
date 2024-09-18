@@ -42,7 +42,7 @@ export function getHomeMenu({
     modules?.technicalCommittee && getTechCommMenu(summary),
     modules?.financialCouncil && getFinancialCouncilMenu(summary),
     modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
-    getAllianceMenu(summary),
+    modules?.alliance && getAllianceMenu(summary),
     getCommunityCouncilMenu(summary),
     preImages,
   ].filter(Boolean);

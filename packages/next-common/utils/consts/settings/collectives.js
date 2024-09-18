@@ -94,6 +94,7 @@ const collectives = {
     treasury: false,
     council: false,
     technicalCommittee: false,
+    alliance: true,
   }),
   ...polkadotThemeVars,
 };

@@ -33,6 +33,7 @@ const base = {
   financialCouncil: false,
   communityTreasury: false,
   advisoryCommittee: false,
+  alliance: false,
   preimages: true,
 };
 

@@ -69,6 +69,7 @@ const westendCollectives = {
     democracy: false,
     council: false,
     technicalCommittee: false,
+    alliance: true,
   }),
   cssVarsLight: {
     theme100: "rgba(239,72,106,0.10)",

@@ -144,12 +144,10 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // alliance
-  const allianceMenu = getAllianceMenu(summary);
-  const hasAlliance = !allianceMenu.excludeToChains.includes(CHAIN);
+  const hasAlliance = modules?.alliance;
   if (hasAlliance) {
-    const allianceMenuItems = allianceMenu.items
-      .filter((m) => !m.excludeToChains?.includes(CHAIN))
-      .filter((m) => m.activeCount);
+    const allianceMenu = getAllianceMenu(summary);
+    const allianceMenuItems = allianceMenu.items;
     const firstAllianceMenuItem = allianceMenuItems[0];
     if (firstAllianceMenuItem) {
       const initDataApiMap = {
