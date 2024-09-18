@@ -87,7 +87,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
   // treasury
   const hasTreasury = !!modules?.treasury;
   if (hasTreasury) {
-    const treasuryMenu = getTreasuryMenu(summary).filter((m) => m.activeCount);
+    const treasuryMenu = getTreasuryMenu(summary);
     const treasuryMenuItems = treasuryMenu.items.filter((m) => m.activeCount);
     const firstTreasuryMenuItem = treasuryMenuItems[0];
     if (firstTreasuryMenuItem) {
@@ -137,8 +137,8 @@ export async function fetchRecentProposalsProps(summary = {}) {
   // alliance
   const hasAlliance = modules?.alliance;
   if (hasAlliance) {
-    const allianceMenu = getAllianceMenu(summary).filter((m) => m.activeCount);
-    const allianceMenuItems = allianceMenu.items;
+    const allianceMenu = getAllianceMenu(summary);
+    const allianceMenuItems = allianceMenu.items.filter((m) => m.activeCount);
     const firstAllianceMenuItem = allianceMenuItems[0];
     if (firstAllianceMenuItem) {
       const initDataApiMap = {
