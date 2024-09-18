@@ -100,7 +100,6 @@ const acala = {
   multisigApiPrefix: "acala",
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
   modules: mergeChainModules({
-    treasury: true,
     financialCouncil: true,
   }),
   cssVarsLight: {
