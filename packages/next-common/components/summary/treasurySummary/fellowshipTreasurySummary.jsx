@@ -30,10 +30,12 @@ function useAllSpends() {
 }
 
 function RequestingItem({ allSpends, price, isLoading }) {
-  const requesting = allSpends.reduce(
-    (prev, spend) => prev + spend.value.amount.toBigInt(),
-    0n,
-  );
+  const requesting = allSpends.reduce((prev, spend) => {
+    if (spend?.value?.status?.isPending) {
+      return prev + spend.value.amount.toBigInt();
+    }
+    return prev;
+  }, 0n);
 
   return (
     <SummaryItem title="Requesting">
@@ -45,12 +47,15 @@ function RequestingItem({ allSpends, price, isLoading }) {
 }
 
 function TreasuryProposalsItem({ allSpends, isLoading }) {
+  const active = allSpends.filter(
+    (spend) => spend?.value?.status?.isPending,
+  ).length;
   const total = allSpends.length;
   return (
     <SummaryItem title="Treasury Proposals">
       <LoadableContent isLoading={isLoading}>
         <div className="flex gap-[4px]">
-          <span className="text-textPrimary">0</span>
+          <span className="text-textPrimary">{active}</span>
           <span className="text-textDisabled">/</span>
           <span className="text-textTertiary">{total}</span>
         </div>
