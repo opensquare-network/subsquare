@@ -6,23 +6,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import getFellowshipMembersServerSideProps from "next-common/services/serverSide/fellowship/members";
-import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
-
-function isFellowshipCoreOnly(item) {
-  const { member: memberStatus, isLoading } = useSubCoreCollectivesMember(
-    item.address,
-  );
-  return !isNil(memberStatus) && !isLoading;
-}
-
-function handleFilterMembers(members) {
-  return members.map((item) => {
-    return {
-      ...item,
-      isFellowshipOnly: isFellowshipCoreOnly(item),
-    };
-  });
-}
+import useFellowshipCoreMembersFilter from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 
 // TODO: move into next-common/components/
 export default function MembersPage() {
@@ -32,20 +16,23 @@ export default function MembersPage() {
   const ranks = [...new Set(fellowshipMembers.map((m) => m.rank))];
   const { rank, component } = useRankFilter(ranks);
 
-  const membersWithStatus = handleFilterMembers(fellowshipMembers);
+  const { filteredMembers, component: FilterComponent } =
+    useFellowshipCoreMembersFilter(fellowshipMembers);
 
-  const filteredMembers = useMemo(() => {
-    // TODO: read status by isFellowshipOnly
-    if (true) {
-      return membersWithStatus.filter((m) => m.isFellowshipOnly);
-    }
+  const membersCount = filteredMembers?.length;
 
-    if (isNil(rank)) {
-      return membersWithStatus;
-    }
+  // const filteredMembers = useMemo(() => {
+  //   // TODO: read status by isFellowshipOnly
+  //   if (true) {
+  //     return membersWithStatus.filter((m) => m.isFellowshipOnly);
+  //   }
 
-    return membersWithStatus.filter((m) => m.rank === rank);
-  }, [membersWithStatus, rank]);
+  //   if (isNil(rank)) {
+  //     return membersWithStatus;
+  //   }
+
+  //   return membersWithStatus.filter((m) => m.rank === rank);
+  // }, [membersWithStatus, rank]);
 
   return (
     <ListLayout seoInfo={seoInfo} title={category}>
@@ -54,9 +41,10 @@ export default function MembersPage() {
           <span>
             List
             <span className="text-textTertiary text14Medium ml-1">
-              {filteredMembers.length}
+              {membersCount}
             </span>
           </span>
+          {FilterComponent}
           {component}
         </TitleContainer>
         <FellowshipCollectiveMembers members={filteredMembers} />
