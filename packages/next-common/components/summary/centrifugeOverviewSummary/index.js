@@ -8,7 +8,6 @@ import {
   useMenuHasDemocracyExternal,
   useMenuHasTechComm,
   useMenuHasTreasuryBounties,
-  useMenuHasTreasuryChildBounties,
   useMenuHasTreasuryTips,
 } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
@@ -83,7 +82,10 @@ function DemocracyGroupContent() {
 function TreasuryGroupContent() {
   const { summary } = usePageProps();
   const showTreasuryBounties = useMenuHasTreasuryBounties();
-  const showChildBounties = useMenuHasTreasuryChildBounties();
+  const {
+    modules: { treasury },
+  } = useChainSettings();
+  const showChildBounties = !!treasury?.childBounties;
   const showTips = useMenuHasTreasuryTips();
 
   const { bounties, childBounties, tips, treasuryProposals } = summary ?? {};

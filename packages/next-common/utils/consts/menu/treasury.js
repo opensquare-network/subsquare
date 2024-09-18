@@ -82,18 +82,11 @@ export function getTreasuryMenu(summary) {
         ],
         activeCount: activeBounties,
       },
-      {
+      treasury?.childBounties && {
         value: "child-bounties",
         name: Names.childBounties,
         pathname: "/treasury/child-bounties",
         extraMatchNavMenuActivePathnames: ["/treasury/child-bounties/[id]"],
-        excludeToChains: getExcludeChains([
-          Chains.polkadot,
-          Chains.kusama,
-          Chains.rococo,
-          Chains.khala,
-          Chains.phala,
-        ]),
         activeCount: activeChildBounties,
       },
       treasury?.tips && {

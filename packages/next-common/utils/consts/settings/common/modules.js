@@ -13,7 +13,7 @@ export const commonModules = {
     spends: false,
     proposals: true,
     bounties: true,
-    childBounties: true,
+    childBounties: false,
     tips: true,
   },
   council: {

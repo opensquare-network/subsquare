@@ -55,16 +55,6 @@ export function useMenuHasTreasuryBounties() {
   return bountiesConfig && !bountiesConfig.excludeToChains.includes(chain);
 }
 
-export function useMenuHasTreasuryChildBounties() {
-  const chain = useChain();
-  const childBountiesConfig = treasury.items.find(
-    ({ value }) => value === "child-bounties",
-  );
-  return (
-    childBountiesConfig && !childBountiesConfig.excludeToChains.includes(chain)
-  );
-}
-
 export function useMenuHasTreasuryTips() {
   const chain = useChain();
   const tipsConfig = treasury.items.find(({ value }) => value === "tips");
