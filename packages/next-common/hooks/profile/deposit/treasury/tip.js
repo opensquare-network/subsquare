@@ -13,7 +13,7 @@ export default function useFetchProfileTreasuryTipDeposits() {
   const {
     modules: { treasury },
   } = useChainSettings();
-  const hasTreasuryTips = !!treasury?.tips || !treasury?.tips?.archived;
+  const hasTreasuryTips = !!treasury?.tips && !treasury?.tips?.archived;
 
   useEffect(() => {
     if (!hasTreasuryTips) {

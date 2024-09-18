@@ -28,7 +28,7 @@ export default function useProfileTreasuryDepositsData() {
   const {
     modules: { treasury },
   } = useChainSettings();
-  const hasTreasuryTips = !!treasury?.tips || !treasury?.tips?.archived;
+  const hasTreasuryTips = !!treasury?.tips && !treasury?.tips?.archived;
 
   const tipDeposits = useSelector(profileTreasuryTipDepositsSelector);
   const tips = useDepositTreasuryTipsTab(tipDeposits);

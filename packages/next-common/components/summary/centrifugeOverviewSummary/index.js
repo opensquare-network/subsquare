@@ -84,7 +84,7 @@ function TreasuryGroupContent() {
   } = useChainSettings();
   const showTreasuryBounties = !!treasury?.bounties;
   const showChildBounties = !!treasury?.childBounties;
-  const showTips = !!treasury?.tips || !treasury?.tips?.archived;
+  const showTips = !!treasury?.tips && !treasury?.tips?.archived;
 
   const { bounties, childBounties, tips, treasuryProposals } = summary ?? {};
 

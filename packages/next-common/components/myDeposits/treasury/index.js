@@ -30,7 +30,7 @@ export function useMyDepositTreasury() {
   const {
     modules: { treasury },
   } = useChainSettings();
-  const hasTreasuryTips = !!treasury?.tips || !treasury?.tips?.archived;
+  const hasTreasuryTips = !!treasury?.tips && !treasury?.tips?.archived;
 
   let loading = proposals.loading || bounties.loading;
   let activeCount = sum([proposals.activeCount, bounties.activeCount]);
