@@ -196,3 +196,14 @@ export const toTreasuryChildBountyListItem = (item) => ({
   detailLink: `${childBountyBaseUrl}/${item.index}`,
   parentIndex: item.parentBountyId,
 });
+
+// TODO: format
+export function formatVerySmallNumber(value) {
+  const val = Number(value);
+  if (val === 0) return "0";
+
+  const exponent = Math.floor(Math.log10(Math.abs(val)));
+  const coefficient = (val / Math.pow(10, exponent)).toFixed(2);
+
+  return `${coefficient}e${exponent}`;
+}

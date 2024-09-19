@@ -1,5 +1,9 @@
 import Tooltip from "./tooltip";
-import { abbreviateBigNumber, getEffectiveNumbers } from "../utils/viewfuncs";
+import {
+  abbreviateBigNumber,
+  getEffectiveNumbers,
+  formatVerySmallNumber,
+} from "../utils/viewfuncs";
 import { cn } from "next-common/utils";
 
 export default function ValueDisplay({
@@ -10,6 +14,7 @@ export default function ValueDisplay({
   className,
   prefix,
   tooltipClassName,
+  showVerySmallNumber = false,
 }) {
   const tooltipContent = `${value}${symbol ? " " + symbol : ""}`;
   const symbolContent = symbol && (
@@ -26,7 +31,19 @@ export default function ValueDisplay({
     </>
   );
 
-  if (Number(value) >= 100000 || getEffectiveNumbers(value)?.length >= 11) {
+  if (showVerySmallNumber && Number(value) < 0.00001) {
+    const formattedSmallNumber = formatVerySmallNumber(value);
+    content = (
+      <>
+        {prefix}
+        {formattedSmallNumber}
+        {symbolContent}
+      </>
+    );
+  } else if (
+    Number(value) >= 100000 ||
+    getEffectiveNumbers(value)?.length >= 11
+  ) {
     const abbreviated = abbreviateBigNumber(value, 2);
     content = (
       <>
