@@ -59,12 +59,13 @@ const westendCollectives = {
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
   hasFellowship: true,
-  hasFellowshipCore: true,
   hasTreasury: false,
   hasTreasuryModule: false,
   noIdentityModule: true,
   modules: mergeChainModules({
-    fellowship: true,
+    fellowship: {
+      core: true,
+    },
     treasury: false,
     fellowshipTreasury: true,
     democracy: false,

@@ -10,8 +10,8 @@ export const Names = {
 };
 
 function getFellowshipCoreMenu() {
-  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-  if (!chainSettings.hasFellowshipCore) {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowship?.core) {
     return null;
   }
 
@@ -27,8 +27,8 @@ function getFellowshipCoreMenu() {
 }
 
 function getFellowshipSalaryMenu() {
-  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-  if (!chainSettings.hasFellowshipCore) {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowship?.core) {
     return null;
   }
 

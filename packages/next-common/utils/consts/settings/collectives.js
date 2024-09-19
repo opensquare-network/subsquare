@@ -78,7 +78,6 @@ const collectives = {
   hasStatescan: true,
   subscanDomain: "collectives-polkadot",
   hasFellowshipParams: true,
-  hasFellowshipCore: true,
   hasPolkassemblyDiscussions: false,
   hasTreasuryModule: false,
   hasDiscussionsRFCs: true,
@@ -87,7 +86,9 @@ const collectives = {
   showAchainableLabels: true,
   description: "Collectives on Polkadot network.",
   modules: mergeChainModules({
-    fellowship: true,
+    fellowship: {
+      core: true,
+    },
     ambassador: true,
     democracy: false,
     fellowshipTreasury: true,
