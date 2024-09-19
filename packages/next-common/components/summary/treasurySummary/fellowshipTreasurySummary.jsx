@@ -4,7 +4,6 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import { useAssetHubApi } from "next-common/context/assetHub";
 import BalanceWithFiat from "./balanceWithFiat";
-import { usePrice } from "./usePrice";
 import { AvailableItem, ToBeAwardedItem } from ".";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
@@ -17,6 +16,7 @@ import {
   useTreasuryPallet,
 } from "next-common/context/treasury";
 import Tooltip from "next-common/components/tooltip";
+import { useFiatPrice } from "next-common/hooks/useFiatPrice";
 
 function useAllSpends() {
   const api = useContextApi();
@@ -104,7 +104,7 @@ function TreasuryProposalsItem() {
 }
 
 export default function FellowshipTreasurySummary() {
-  const price = usePrice();
+  const { price } = useFiatPrice();
   const api = useAssetHubApi();
   const free = useTreasuryFree(api);
   return (

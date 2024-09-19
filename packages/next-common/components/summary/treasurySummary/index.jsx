@@ -11,8 +11,8 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import BalanceWithFiat from "./balanceWithFiat";
-import { usePrice } from "./usePrice";
 import useSpendPeriodSummary from "./useSpendPeriodSummary";
+import { useFiatPrice } from "next-common/hooks/useFiatPrice";
 
 export function AvailableItem({ free, price }) {
   return (
@@ -59,7 +59,7 @@ function SpendPeriodItem() {
 
 export default function TreasurySummary() {
   const chain = useChain();
-  const price = usePrice();
+  const { price } = useFiatPrice();
   const api = useContextApi();
   const free = useTreasuryFree(api);
 
