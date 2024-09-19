@@ -19,12 +19,12 @@ function AdvisoryCommitteeMembersPageImpl() {
   const category = "Advisory Council Members";
   const seoInfo = { title: category, desc: category };
 
-  const { members } = useCollectiveMembers();
+  const { members, loading } = useCollectiveMembers();
   const prime = usePrime();
 
   return (
     <ListLayout title={category} seoInfo={seoInfo}>
-      <MembersList prime={prime} items={members || []} loading={!members} />
+      <MembersList prime={prime} items={members || []} loading={loading} />
     </ListLayout>
   );
 }
