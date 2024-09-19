@@ -79,7 +79,6 @@ const collectives = {
   subscanDomain: "collectives-polkadot",
   hasFellowshipParams: true,
   hasPolkassemblyDiscussions: false,
-  hasTreasuryModule: false,
   hasDiscussionsRFCs: true,
   noIdentityModule: true,
   showAchainableLabels: true,

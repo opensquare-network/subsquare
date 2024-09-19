@@ -60,7 +60,6 @@ const westendCollectives = {
   hasStatescan: true,
   hasFellowship: true,
   hasTreasury: false,
-  hasTreasuryModule: false,
   noIdentityModule: true,
   modules: mergeChainModules({
     fellowship: {

@@ -83,7 +83,6 @@ const interlay = {
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "interlay",
-  hasTreasuryModule: false,
   modules: mergeChainModules({
     democracy: {
       externalProposals: false,

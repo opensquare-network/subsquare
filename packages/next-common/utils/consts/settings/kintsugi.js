@@ -79,7 +79,6 @@ const kintsugi = {
   description:
     "Make your Bitcoin work for you with Kintsugi. Use your BTC for lending, borrowing, swapping and staking.",
   useVoteCall: true,
-  hasTreasuryModule: false,
   modules: mergeChainModules({
     democracy: {
       externalProposals: false,
