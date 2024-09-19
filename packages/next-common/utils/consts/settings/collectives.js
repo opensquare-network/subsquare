@@ -81,7 +81,6 @@ const collectives = {
   hasPolkassemblyDiscussions: false,
   hasTreasuryModule: false,
   hasDiscussionsRFCs: true,
-  noDemocracy: true,
   noIdentityModule: true,
   showAchainableLabels: true,
   description: "Collectives on Polkadot network.",
