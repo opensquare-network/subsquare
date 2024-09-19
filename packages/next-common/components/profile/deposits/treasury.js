@@ -33,6 +33,10 @@ export default function useProfileTreasuryDepositsData() {
   const tipDeposits = useSelector(profileTreasuryTipDepositsSelector);
   const tips = useDepositTreasuryTipsTab(tipDeposits);
 
+  if (!treasury) {
+    return null;
+  }
+
   const menu = getTreasuryMenu();
   menu.pathname = menu.items[0].pathname;
 
