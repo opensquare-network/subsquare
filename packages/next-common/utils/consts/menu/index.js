@@ -58,9 +58,7 @@ export function getCommonMenu({
     fellowshipTracks,
     ambassadorTracks,
   });
-  commonMenu.items = commonMenu.items.filter(
-    (i) => !i?.excludeToChains?.includes?.(CHAIN),
-  );
+
   return commonMenu.items;
 }
 
