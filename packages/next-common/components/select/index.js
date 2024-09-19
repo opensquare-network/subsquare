@@ -65,6 +65,7 @@ function Select({
   search = false,
   readOnly = false,
   optionsPadding = "",
+  placeholder = "",
 }) {
   const ref = useRef();
   const [searchText, setSearchText] = useState("");
@@ -123,7 +124,13 @@ function Select({
       itemHeight={theItemHeight}
     >
       <SelectInner>
-        <div className="overflow-hidden">{displayValue}</div>
+        <div className="overflow-hidden">
+          {displayValue ? (
+            displayValue
+          ) : (
+            <span className="text-textDisabled">{placeholder}</span>
+          )}
+        </div>
         {!readOnly && (
           <div>
             <ArrowDown
