@@ -12,7 +12,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import BalanceWithFiat from "./balanceWithFiat";
 import useSpendPeriodSummary from "./useSpendPeriodSummary";
-import { useFiatPrice } from "next-common/hooks/useFiatPrice";
+import useFiatPrice from "next-common/hooks/useFiatPrice";
 
 export function AvailableItem({ free, price }) {
   return (

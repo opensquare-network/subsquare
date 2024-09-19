@@ -16,7 +16,7 @@ import {
   useTreasuryPallet,
 } from "next-common/context/treasury";
 import Tooltip from "next-common/components/tooltip";
-import { useFiatPrice } from "next-common/hooks/useFiatPrice";
+import useFiatPrice from "next-common/hooks/useFiatPrice";
 
 function useAllSpends() {
   const api = useContextApi();

@@ -3,7 +3,7 @@ import { toPrecision } from "next-common/utils";
 import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
-import { useFiatPrice } from "next-common/hooks/useFiatPrice";
+import useFiatPrice from "next-common/hooks/useFiatPrice";
 
 export default function FiatPriceLabel({
   free = 0,

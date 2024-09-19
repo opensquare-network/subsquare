@@ -22,7 +22,7 @@ const CHAIN_VALUE_TREASURY_MAP = {
   [collectives.value]: polkadot.value,
 };
 
-export function useFiatPrice() {
+export default function useFiatPrice() {
   const chain = useChain();
 
   const [getTreasuries, { data, loading }] =
