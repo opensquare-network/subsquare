@@ -11,7 +11,6 @@ export default function useSubCoreCollectivesMember(
 
   useEffect(() => {
     if (!address || !api?.query[pallet]?.member) {
-      setLoading(false);
       return;
     }
 
