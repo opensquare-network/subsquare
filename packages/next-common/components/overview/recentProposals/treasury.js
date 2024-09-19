@@ -64,8 +64,8 @@ const itemOptions = {
 };
 
 export function useRecentProposalTreasury() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { recentSummary, recentProposals } = usePageProps();
+  const summary = recentSummary;
 
   const menu = getTreasuryMenu(summary);
 

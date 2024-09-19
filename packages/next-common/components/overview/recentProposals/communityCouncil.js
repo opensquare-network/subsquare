@@ -22,8 +22,8 @@ const itemOptions = {
 };
 
 export function useRecentProposalCommunityCouncil() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { recentSummary, recentProposals } = usePageProps();
+  const summary = recentSummary;
 
   const menu = getCommunityCouncilMenu(summary);
 

@@ -26,8 +26,7 @@ const discussionsColumns = [
 ];
 
 export function useRecentProposalDiscussions() {
-  const { overviewSummary, recentProposals, forumLatestTopics } =
-    usePageProps();
+  const { recentSummary, recentProposals, forumLatestTopics } = usePageProps();
   const chainSettings = useChainSettings();
   const rfcsData = useRFCsData();
 
@@ -62,7 +61,7 @@ export function useRecentProposalDiscussions() {
         path: overviewApi.discussions,
         initData: subsquare,
       },
-      activeCount: overviewSummary?.discussions?.active,
+      activeCount: recentSummary?.discussions?.active,
       formatter: (item) => normalizeDiscussionListItem(CHAIN, item),
       columns: discussionsColumns,
     },

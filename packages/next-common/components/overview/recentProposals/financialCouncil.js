@@ -22,8 +22,8 @@ const itemOptions = {
 };
 
 export function useRecentProposalFinancialCouncil() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { recentSummary, recentProposals } = usePageProps();
+  const summary = recentSummary;
 
   const menu = getFinancialCouncilMenu(summary);
 
