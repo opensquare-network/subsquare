@@ -66,6 +66,7 @@ const westendCollectives = {
   modules: mergeChainModules({
     fellowship: true,
     treasury: false,
+    fellowshipTreasury: true,
     democracy: false,
     council: false,
     technicalCommittee: false,

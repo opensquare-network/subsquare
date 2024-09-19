@@ -1,6 +1,4 @@
 import { startCase, sumBy } from "lodash-es";
-import { getExcludeChains } from "../../viewfuncs";
-import Chains from "../chains";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
@@ -95,6 +93,11 @@ function getFellowshipReferendaMenu(
 }
 
 function getFellowshipTreasuryMenu(overviewSummary) {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowshipTreasury) {
+    return null;
+  }
+
   const fellowshipTreasurySpends =
     overviewSummary?.fellowshipTreasurySpends || {};
   return {
@@ -105,11 +108,6 @@ function getFellowshipTreasuryMenu(overviewSummary) {
       "/fellowship/treasury/spends/[id]",
     ],
     activeCount: fellowshipTreasurySpends.active || 0,
-
-    excludeToChains: getExcludeChains([
-      Chains.collectives,
-      Chains.westendCollectives,
-    ]),
     items: [
       {
         value: "fellowship-treasury-spends",
