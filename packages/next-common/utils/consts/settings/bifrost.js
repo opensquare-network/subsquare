@@ -1,6 +1,7 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconBifrostKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostKusamaDark"),
@@ -81,12 +82,10 @@ const bifrost = {
   postLabels: defaultPostLabels,
   hasSubscan: true,
   description: "The Liquid Staking Standard for Any Chain.",
-  modules: {
+  modules: mergeChainModules({
     referenda: true,
     fellowship: true,
-    democracy: true,
-    treasury: true,
-  },
+  }),
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "kbnc",

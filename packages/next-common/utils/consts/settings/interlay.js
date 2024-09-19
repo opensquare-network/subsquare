@@ -2,6 +2,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconInterlayDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconInterlayDark"),
@@ -82,12 +83,16 @@ const interlay = {
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "interlay",
-  hasTreasuryModule: false,
-  hasTipsModule: false,
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
+  modules: mergeChainModules({
+    democracy: {
+      externalProposals: false,
+    },
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    council: false,
+  }),
   cssVarsLight: {
     theme100: "rgba(7,90,188,0.10)",
     theme300: "rgba(7,90,188,0.40)",

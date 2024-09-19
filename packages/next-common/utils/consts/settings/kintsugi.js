@@ -2,6 +2,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconKintsugiDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKintsugiDark"),
@@ -78,12 +79,16 @@ const kintsugi = {
   description:
     "Make your Bitcoin work for you with Kintsugi. Use your BTC for lending, borrowing, swapping and staking.",
   useVoteCall: true,
-  hasTreasuryModule: false,
-  hasTipsModule: false,
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
+  modules: mergeChainModules({
+    democracy: {
+      externalProposals: false,
+    },
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    council: false,
+  }),
   cssVarsLight: {
     theme100: "rgba(247,205,69,0.10)",
     theme300: "rgba(247,205,69,0.40)",

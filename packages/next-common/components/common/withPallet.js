@@ -17,5 +17,5 @@ export default function WithPallet({ pallet, children }) {
     return null;
   }
 
-  return children;
+  return <>{children}</>;
 }

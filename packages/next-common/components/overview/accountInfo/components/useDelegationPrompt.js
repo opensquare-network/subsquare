@@ -15,10 +15,10 @@ export default function useDelegationPrompt() {
   );
 
   const {
-    modules: { referenda: hasReferenda },
+    modules: { referenda: hasReferenda, democracy: hasDemocracy },
   } = chainSettings;
   const hasDelegation =
-    (hasReferenda || !chainSettings.noDemocracy) && !isKintsugiChain(chain);
+    (hasReferenda || hasDemocracy) && !isKintsugiChain(chain);
 
   return useMemo(() => {
     if (!hasDelegation || !visible) {

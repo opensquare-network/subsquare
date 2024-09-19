@@ -6,6 +6,7 @@ import { westendThemeVars } from "next-common/utils/consts/settings/westend/them
 import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import defaultWestendNodes from "./nodes";
+import { mergeChainModules } from "../common/modules";
 
 const ProjectIconWestendDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendDark"),
@@ -41,10 +42,12 @@ const westend = {
   hasSubscan: true,
   description: "Westend is the primary test network of Polkadot.",
   ...westendThemeVars,
-  modules: {
+  modules: mergeChainModules({
     referenda: true,
-    treasury: true,
-  },
+    democracy: false,
+    council: false,
+    technicalCommittee: false,
+  }),
   newProposalQuickStart: {
     cancelReferendum: true,
     killReferendum: true,

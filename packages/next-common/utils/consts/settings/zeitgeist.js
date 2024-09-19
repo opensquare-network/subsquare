@@ -3,6 +3,7 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconZeigeistDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconZeigeistDark"),
@@ -64,13 +65,15 @@ const zeitgeist = {
   postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],
   hasSubscan: true,
   useVoteCall: true,
-  hasTipsModule: false,
   description:
     "A Prediction Markets protocol built on Polkadot. With the world’s leading forecasting minds, we’re building the best prediction markets app available.",
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
+  modules: mergeChainModules({
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    advisoryCommittee: true,
+  }),
   cssVarsLight: {
     theme100: "rgba(28,100,242,0.10)",
     theme300: "rgba(28,100,242,0.40)",

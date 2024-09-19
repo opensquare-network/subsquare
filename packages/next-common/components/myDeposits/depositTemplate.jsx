@@ -7,7 +7,6 @@ import Link from "next/link";
 import { recentProposalFetchParams } from "next-common/services/serverSide/recentProposals";
 import { isNil } from "lodash-es";
 import { useUpdateEffect } from "react-use";
-import { useChain } from "next-common/context/chain";
 import { first } from "lodash-es";
 import Pagination from "next-common/components/pagination";
 import Loading from "next-common/components/loading";
@@ -45,11 +44,7 @@ export default function DepositTemplate({
   children,
   loading,
 }) {
-  const chain = useChain();
-
-  const activeItems = (items || [])
-    .filter((item) => item.activeCount)
-    .filter((item) => !item.excludeToChains?.includes(chain));
+  const activeItems = (items || []).filter((item) => item.activeCount);
 
   const firstActiveItem = first(activeItems);
   const titleLink = firstActiveItem?.pathname ?? pathname;

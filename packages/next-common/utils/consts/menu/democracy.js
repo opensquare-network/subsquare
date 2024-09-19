@@ -1,6 +1,6 @@
-import React from "react";
-import Chains from "../chains";
 import { MenuDemocracy } from "@osn/icons/subsquare";
+import { CHAIN } from "next-common/utils/constants";
+import getChainSettings from "../settings";
 
 export const Names = {
   democracy: "DEMOCRACY",
@@ -10,6 +10,9 @@ export const Names = {
 };
 
 export function getDemocracyMenu(summary) {
+  const { modules } = getChainSettings(CHAIN);
+  const archived = modules?.democracy?.archived;
+
   const activeReferenda = summary?.referenda?.active || 0;
   const activePublicProposals = summary?.publicProposals?.active || 0;
   const activeExternalProposals = summary?.externalProposals?.active || 0;
@@ -18,17 +21,8 @@ export function getDemocracyMenu(summary) {
 
   return {
     name: Names.democracy,
-    excludeToChains: [
-      Chains.kabocha,
-      Chains.development,
-      Chains.westendCollectives,
-      Chains.collectives,
-      Chains.vara,
-      Chains.westend,
-      Chains.zkverifyTestnet,
-    ],
-    archivedToChains: [Chains.kusama, Chains.polkadot, Chains.rococo],
     activeCount: totalActiveCount,
+    archived,
     icon: <MenuDemocracy />,
     pathname: "/democracy",
     items: [
@@ -49,15 +43,14 @@ export function getDemocracyMenu(summary) {
         pathname: "/democracy/proposals",
         extraMatchNavMenuActivePathnames: ["/democracy/proposals/[id]"],
       },
-      {
+      modules?.democracy?.externalProposals && {
         value: "democracyExternals",
-        excludeToChains: [Chains.kintsugi, Chains.interlay],
         name: Names.democracyExternals,
         activeCount: activeExternalProposals,
         pathname: "/democracy/externals",
         extraMatchNavMenuActivePathnames: ["/democracy/externals/[id]"],
       },
-    ],
+    ].filter(Boolean),
   };
 }
 
