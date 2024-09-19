@@ -16,6 +16,7 @@ import {
   TreasuryProvider,
   useTreasuryPallet,
 } from "next-common/context/treasury";
+import Tooltip from "next-common/components/tooltip";
 
 function useAllSpends() {
   const api = useContextApi();
@@ -91,7 +92,9 @@ function TreasuryProposalsItem() {
     <SummaryItem title="Treasury Proposals">
       <LoadableContent isLoading={isAllSpendsLoading}>
         <div className="flex gap-[4px]">
-          <span className="text-textPrimary">{active}</span>
+          <Tooltip content="Active proposals">
+            <span className="text-textPrimary">{active}</span>
+          </Tooltip>
           <span className="text-textDisabled">/</span>
           <span className="text-textTertiary">{total}</span>
         </div>
