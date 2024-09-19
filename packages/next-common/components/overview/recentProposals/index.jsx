@@ -55,10 +55,7 @@ export default function RecentProposals() {
     communityCouncil,
     communityTreasury,
     (hasDiscussions || chainSettings.hasDiscussionsForumTopics) && discussions,
-  ]
-    .filter(Boolean)
-    .filter((item) => !item.excludeToChains?.includes?.(chain))
-    .filter((item) => !item.archivedToChains?.includes?.(chain));
+  ].filter(Boolean);
 
   const [activeItems] = partition(sections, (item) => item.activeCount > 0);
 

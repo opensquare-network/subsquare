@@ -29,10 +29,12 @@ export function useDepositSections(
         referenda: hasReferenda,
         fellowship: hasFellowship,
         democracy: hasDemocracyModule,
+        treasury: hasTreasury,
       },
-      hasTreasuryModule,
       noIdentityModule,
     } = chainSettings;
+
+    const hasTreasuryTips = hasTreasury?.tips && !hasTreasury?.tips?.archived;
 
     const sections = [
       hasReferenda && {
@@ -47,7 +49,7 @@ export function useDepositSections(
         activeCount: democracy.activeCount,
         content: <DepositTemplate key="democracy" {...democracy} />,
       },
-      hasTreasuryModule !== false && {
+      hasTreasuryTips && {
         activeCount: treasury.activeCount,
         content: <DepositTemplate key="treasury" {...treasury} />,
       },

@@ -1,34 +1,19 @@
 import nextApi from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
-import {
-  getAdvisoryCommitteeMenu,
-  Names as asAdvisoryCommitteeNames,
-} from "next-common/utils/consts/menu/advisoryCouncil";
+import { Names as asAdvisoryCommitteeNames } from "next-common/utils/consts/menu/advisoryCouncil";
 import {
   getAllianceMenu,
   Names as allianceNames,
 } from "next-common/utils/consts/menu/alliance";
-import {
-  getCouncilMenu,
-  Names as councilNames,
-} from "next-common/utils/consts/menu/council";
-import {
-  getFinancialCouncilMenu,
-  Names as financialCouncilNames,
-} from "next-common/utils/consts/menu/financialCouncil";
+import { Names as councilNames } from "next-common/utils/consts/menu/council";
+import { Names as financialCouncilNames } from "next-common/utils/consts/menu/financialCouncil";
 import { Names as tcNames } from "next-common/utils/consts/menu/tc";
 import { getTreasuryMenu } from "next-common/utils/consts/menu/treasury";
 import getChainSettings from "next-common/utils/consts/settings";
 import { overviewApi } from "../url";
 import { getDemocracyMenu } from "next-common/utils/consts/menu/democracy";
-import {
-  getCommunityCouncilMenu,
-  Names as communityCouncilNames,
-} from "next-common/utils/consts/menu/communityCouncil";
-import {
-  getCommunityTreasuryMenu,
-  Names as communityTreasuryNames,
-} from "next-common/utils/consts/menu/communityTreasury";
+import { Names as communityCouncilNames } from "next-common/utils/consts/menu/communityCouncil";
+import { Names as communityTreasuryNames } from "next-common/utils/consts/menu/communityTreasury";
 import { isCollectivesChain, isShibuyaChain } from "next-common/utils/chain";
 // import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 
@@ -47,9 +32,7 @@ async function fetcher(url) {
 
 export async function fetchRecentProposalsProps(summary = {}) {
   const chainSettings = getChainSettings(CHAIN);
-  const {
-    modules: { democracy: hasDemocracyModule },
-  } = chainSettings;
+  const { modules } = chainSettings;
 
   const recentProposalsData = {};
 
@@ -81,15 +64,10 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // democracy
-  const democracyMenu = getDemocracyMenu(summary);
-  const hasDemocracy =
-    hasDemocracyModule ||
-    !democracyMenu.excludeToChains.includes(CHAIN) ||
-    !democracyMenu.archivedToChains.includes(CHAIN);
+  const hasDemocracy = modules?.democracy;
   if (hasDemocracy) {
-    const democracyMenuItems = democracyMenu.items
-      .filter((m) => !m.excludeToChains?.includes(CHAIN))
-      .filter((m) => m.activeCount);
+    const democracyMenu = getDemocracyMenu(summary);
+    const democracyMenuItems = democracyMenu.items.filter((m) => m.activeCount);
     const firstDemocracyMenuItem = democracyMenuItems[0];
     if (firstDemocracyMenuItem) {
       const initDataApiMap = {
@@ -107,12 +85,10 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // treasury
-  const treasuryMenu = getTreasuryMenu(summary);
-  const hasTreasury = !treasuryMenu.excludeToChains.includes(CHAIN);
+  const hasTreasury = !!modules?.treasury;
   if (hasTreasury) {
-    const treasuryMenuItems = treasuryMenu.items
-      .filter((m) => !m.excludeToChains?.includes(CHAIN))
-      .filter((m) => m.activeCount);
+    const treasuryMenu = getTreasuryMenu(summary);
+    const treasuryMenuItems = treasuryMenu.items.filter((m) => m.activeCount);
     const firstTreasuryMenuItem = treasuryMenuItems[0];
     if (firstTreasuryMenuItem) {
       const initDataApiMap = {
@@ -132,8 +108,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // council
-  const councilMenu = getCouncilMenu();
-  const hasCouncil = !councilMenu.excludeToChains.includes(CHAIN);
+  const hasCouncil = modules?.council;
   if (hasCouncil) {
     recentProposalsData[councilNames.council] = {};
     recentProposalsData[councilNames.council].motions = await fetcher(
@@ -142,7 +117,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // technical committee
-  const hasTechComm = chainSettings.hasTechComm !== false;
+  const hasTechComm = modules?.technicalCommittee;
   if (hasTechComm) {
     recentProposalsData[tcNames.techComm] = {};
     recentProposalsData[tcNames.techComm].techCommProposals = await fetcher(
@@ -151,9 +126,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // financial council
-  const financialCouncilMenu = getFinancialCouncilMenu();
-  const hasFinancialCouncil =
-    !financialCouncilMenu.excludeToChains.includes(CHAIN);
+  const hasFinancialCouncil = !!modules?.financialCouncil;
   if (hasFinancialCouncil) {
     recentProposalsData[financialCouncilNames.financialCouncil] = {};
     recentProposalsData[
@@ -162,12 +135,10 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // alliance
-  const allianceMenu = getAllianceMenu(summary);
-  const hasAlliance = !allianceMenu.excludeToChains.includes(CHAIN);
+  const hasAlliance = modules?.alliance;
   if (hasAlliance) {
-    const allianceMenuItems = allianceMenu.items
-      .filter((m) => !m.excludeToChains?.includes(CHAIN))
-      .filter((m) => m.activeCount);
+    const allianceMenu = getAllianceMenu(summary);
+    const allianceMenuItems = allianceMenu.items.filter((m) => m.activeCount);
     const firstAllianceMenuItem = allianceMenuItems[0];
     if (firstAllianceMenuItem) {
       const initDataApiMap = {
@@ -185,9 +156,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
   }
 
   // advisory
-  const advisoryCommitteeMenu = getAdvisoryCommitteeMenu();
-  const hasAdvisoryCommittee =
-    !advisoryCommitteeMenu.excludeToChains.includes(CHAIN);
+  const hasAdvisoryCommittee = modules?.advisoryCommittee;
   if (hasAdvisoryCommittee) {
     recentProposalsData[asAdvisoryCommitteeNames.advisoryCommittee] = {};
     recentProposalsData[
@@ -197,9 +166,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
 
   if (isShibuyaChain(CHAIN)) {
     // community council
-    const communityCouncilMenu = getCommunityCouncilMenu();
-    const hasCommunityCouncil =
-      !communityCouncilMenu.excludeToChains.includes(CHAIN);
+    const hasCommunityCouncil = modules?.communityCouncil;
     if (hasCommunityCouncil) {
       recentProposalsData[communityCouncilNames.communityCouncil] = {};
       recentProposalsData[
@@ -208,9 +175,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
     }
 
     // community treasury
-    const communityTreasuryMenu = getCommunityTreasuryMenu();
-    const hasCommunityTreasuryProposalMenu =
-      !communityTreasuryMenu.excludeToChains.includes(CHAIN);
+    const hasCommunityTreasuryProposalMenu = modules?.communityTreasury;
     if (hasCommunityTreasuryProposalMenu) {
       recentProposalsData[communityTreasuryNames.communityTreasury] = {};
       recentProposalsData[communityTreasuryNames.communityTreasury].proposals =

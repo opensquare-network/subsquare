@@ -38,8 +38,10 @@ if (chainSettings.hasDiscussions !== false) {
   commonMenus.items.push(discussionsMenu);
 }
 
-const { modules: { referenda: hasReferenda } = {} } = chainSettings;
-if ((hasReferenda || !chainSettings.noDemocracy) && !isKintsugiChain(CHAIN)) {
+const {
+  modules: { referenda: hasReferenda, democracy: hasDemocracy },
+} = chainSettings;
+if ((hasReferenda || hasDemocracy) && !isKintsugiChain(CHAIN)) {
   commonMenus.items.push({
     value: "delegation",
     name: "Delegation",

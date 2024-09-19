@@ -2,16 +2,7 @@ import styled from "styled-components";
 import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "./activeValue";
-import {
-  useChainSettings,
-  useMenuHasCouncil,
-  useMenuHasDemocracyExternal,
-  useMenuHasTechComm,
-  useMenuHasTreasuryBounties,
-  useMenuHasTreasuryChildBounties,
-  useMenuHasTreasurySpends,
-  useMenuHasTreasuryTips,
-} from "../../../context/chain";
+import { useChainSettings } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
@@ -65,7 +56,10 @@ function OpenGovGroupContent() {
 
 function DemocracyGroupContent() {
   const { summary } = usePageProps();
-  const showExternal = useMenuHasDemocracyExternal();
+  const {
+    modules: { democracy },
+  } = useChainSettings();
+  const showExternal = democracy?.externalProposals;
 
   const { referenda, publicProposals, externalProposals } = summary ?? {};
 
@@ -97,10 +91,13 @@ function DemocracyGroupContent() {
 
 function TreasuryGroupContent() {
   const { summary } = usePageProps();
-  const showTreasuryBounties = useMenuHasTreasuryBounties();
-  const showChildBounties = useMenuHasTreasuryChildBounties();
-  const showTips = useMenuHasTreasuryTips();
-  const showSpends = useMenuHasTreasurySpends();
+  const {
+    modules: { treasury },
+  } = useChainSettings();
+  const showTreasuryBounties = !!treasury?.bounties;
+  const showChildBounties = !!treasury?.childBounties;
+  const showTips = !!treasury?.tips && !treasury?.tips?.archived;
+  const showSpends = !!treasury?.spends;
 
   const { bounties, childBounties, tips, treasuryProposals, treasurySpends } =
     summary ?? {};
@@ -151,8 +148,11 @@ function TreasuryGroupContent() {
 
 function CouncilGroupContent() {
   const { summary } = usePageProps();
-  const showCouncil = useMenuHasCouncil();
-  const showTc = useMenuHasTechComm();
+  const {
+    modules: { council, technicalCommittee },
+  } = useChainSettings();
+  const showCouncil = !!council;
+  const showTc = !!technicalCommittee;
 
   const { motions, techCommMotions } = summary ?? {};
 
@@ -180,8 +180,11 @@ function CouncilGroupContent() {
 }
 
 export default function OverviewSummary() {
-  const showCouncil = useMenuHasCouncil();
-  const showTC = useMenuHasTechComm();
+  const {
+    modules: { council, technicalCommittee },
+  } = useChainSettings();
+  const showCouncil = !!council;
+  const showTC = !!technicalCommittee;
   const {
     modules: {
       referenda: hasReferenda,

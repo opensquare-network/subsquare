@@ -1,6 +1,3 @@
-import React from "react";
-import { getExcludeChains } from "../../viewfuncs";
-import Chains from "../chains";
 import { MenuFellowship } from "@osn/icons/subsquare";
 
 export const Names = {
@@ -14,7 +11,6 @@ export function getCommunityCouncilMenu(summary) {
 
   return {
     name: Names.communityCouncil,
-    excludeToChains: getExcludeChains([Chains.shibuya, Chains.astar]),
     activeCount: activeCommunityMotions,
     icon: <MenuFellowship />,
     pathname: "/community-council",

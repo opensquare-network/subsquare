@@ -1,6 +1,7 @@
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconBasiliskDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBasiliskDark"),
@@ -72,11 +73,12 @@ const basilisk = {
   useVoteCall: true,
   description:
     "Snek brings permissionless liquidity to the Kusama ecosystem. Swap tokens, flip NFTs and earn rewards. Help young crypto projects bootstrap liquidity and receive tokens.",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
     referenda: true,
-    treasury: true,
-  },
+    treasury: {
+      bounties: false,
+    },
+  }),
   cssVarsLight: {
     theme100: "rgba(63,227,154,0.10)",
     theme300: "rgba(63,227,154,0.40)",

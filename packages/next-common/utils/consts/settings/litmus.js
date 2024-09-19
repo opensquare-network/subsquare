@@ -4,6 +4,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { litmusBlockHeightSettings } from "./blockHeightSettings/litmus";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconLitmusDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconLitmusDark"),
@@ -66,16 +67,16 @@ const litmus = {
   hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  hasTipsModule: false,
   noIdentityModule: true,
   hasMultisig: true,
   multisigApiPrefix: "litmus",
   description:
     "Litmus is a companion canary network to Litentry and connects to the Kusama ecosystem as parachain.",
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
+  modules: mergeChainModules({
+    treasury: {
+      tips: false,
+    },
+  }),
   cssVarsLight: {
     theme100: "rgba(104,34,251,0.10)",
     theme300: "rgba(104,34,251,0.40)",

@@ -4,6 +4,7 @@ import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polk
 import Chains from "../chains";
 import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconPolkadotCollectivesDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotCollectivesDark"),
@@ -77,21 +78,23 @@ const collectives = {
   hasStatescan: true,
   subscanDomain: "collectives-polkadot",
   hasFellowshipParams: true,
-  hasFellowshipCore: true,
   hasPolkassemblyDiscussions: false,
-  hasTechComm: false,
-  hasTreasuryModule: false,
-  hasTipsModule: false,
   hasDiscussionsRFCs: true,
-  noDemocracy: true,
   noIdentityModule: true,
   showAchainableLabels: true,
   description: "Collectives on Polkadot network.",
-  modules: {
-    fellowship: true,
+  modules: mergeChainModules({
+    fellowship: {
+      core: true,
+    },
     ambassador: true,
+    democracy: false,
     fellowshipTreasury: true,
-  },
+    treasury: false,
+    council: false,
+    technicalCommittee: false,
+    alliance: true,
+  }),
   ...polkadotThemeVars,
 };
 
