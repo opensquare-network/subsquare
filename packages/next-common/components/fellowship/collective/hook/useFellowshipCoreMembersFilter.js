@@ -78,7 +78,15 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
       return filteredMembers;
     }
     return filteredMembers.filter((m) => m.rank === rank);
-  }, [membersWithStatus, isFellowshipCoreOnly, periodFilter, rank]);
+  }, [
+    membersWithStatus,
+    isFellowshipCoreOnly,
+    periodFilter,
+    rank,
+    filterDemotionAboutToExpireFn,
+    filterDemotionExpiredFn,
+    filterPromotableFn,
+  ]);
 
   const component = (
     <div className="flex flex-wrap max-sm:flex-col sm:items-center gap-[12px] max-sm:gap-[8px] ml-[24px]">
