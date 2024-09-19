@@ -10,7 +10,7 @@ import usePeriodSelect, {
 import usePeriodFilterFn from "next-common/components/pages/fellowship/usePeriodFilterFn";
 import { useRouterRankFilter } from "next-common/hooks/fellowship/useRankFilter";
 
-function getMemberStatus(item) {
+function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
     item.address,
     "fellowshipCore",
@@ -24,7 +24,7 @@ function getMemberStatus(item) {
 
 export function handleFilterMembers(members) {
   const membersWithStatus = members.map((item) => {
-    const { status, isLoading } = getMemberStatus(item);
+    const { status, isLoading } = useSingleMemberStatus(item);
     return {
       ...item,
       status,
@@ -41,6 +41,9 @@ export function handleFilterMembers(members) {
 }
 
 export default function useFellowshipCoreMembersFilter(membersWithStatus) {
+  const { isOn: isFellowshipCoreOnly, component: FellowshipCoreSwitch } =
+    useFellowshipCoreOnlySwitch();
+
   const { periodFilter, component: PeriodFilterComponent } = usePeriodSelect();
 
   const ranks = [...new Set(membersWithStatus.map((m) => m.rank))];
@@ -51,9 +54,6 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
     filterDemotionExpiredFn,
     filterPromotableFn,
   } = usePeriodFilterFn();
-
-  const { isOn: isFellowshipCoreOnly, component: FellowshipCoreSwitch } =
-    useFellowshipCoreOnlySwitch();
 
   const filteredMembers = useMemo(() => {
     if (isNil(membersWithStatus)) return;
@@ -78,15 +78,7 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
       return filteredMembers;
     }
     return filteredMembers.filter((m) => m.rank === rank);
-  }, [
-    membersWithStatus,
-    periodFilter,
-    filterDemotionAboutToExpireFn,
-    filterDemotionExpiredFn,
-    filterPromotableFn,
-    isFellowshipCoreOnly,
-    rank,
-  ]);
+  }, [membersWithStatus, isFellowshipCoreOnly, periodFilter, rank]);
 
   const component = (
     <div className="flex flex-wrap max-sm:flex-col sm:items-center gap-[12px] max-sm:gap-[8px] ml-[24px]">
