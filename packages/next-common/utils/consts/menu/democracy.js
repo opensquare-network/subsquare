@@ -43,14 +43,14 @@ export function getDemocracyMenu(summary) {
         pathname: "/democracy/proposals",
         extraMatchNavMenuActivePathnames: ["/democracy/proposals/[id]"],
       },
-      {
+      modules?.democracy?.externalProposals && {
         value: "democracyExternals",
         name: Names.democracyExternals,
         activeCount: activeExternalProposals,
         pathname: "/democracy/externals",
         extraMatchNavMenuActivePathnames: ["/democracy/externals/[id]"],
       },
-    ],
+    ].filter(Boolean),
   };
 }
 
