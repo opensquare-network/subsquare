@@ -3,6 +3,7 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconCrustDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconCrustDark"),
@@ -78,10 +79,9 @@ const crust = {
   showAccountManagementTab: false,
   description:
     "CRUST implements the incentive layer protocol for decentralized storage. It is adaptable to multiple storage layer protocols such as IPFS, and provides support for the application layer. ",
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
+  modules: mergeChainModules({
+    preimages: false,
+  }),
   cssVarsLight: {
     theme100: "rgba(250,140,22,0.10)",
     theme300: "rgba(250,140,22,0.40)",
