@@ -197,13 +197,25 @@ export const toTreasuryChildBountyListItem = (item) => ({
   parentIndex: item.parentBountyId,
 });
 
-// TODO: format
-export function formatVerySmallNumber(value) {
-  const val = Number(value);
-  if (val === 0) return "0";
+export function formatVerySmallNumberWithAbbr(value) {
+  const bigValue = new BigNumber(value);
 
-  const exponent = Math.floor(Math.log10(Math.abs(val)));
-  const coefficient = (val / Math.pow(10, exponent)).toFixed(2);
+  const smallNumbers = [
+    { smallNumber: new BigNumber("0.001"), abbr: "m" }, // milli (10^-3)
+    { smallNumber: new BigNumber("0.000001"), abbr: "μ" }, // micro (10^-6)
+    { smallNumber: new BigNumber("0.000000001"), abbr: "n" }, // nano (10^-9)
+    { smallNumber: new BigNumber("0.000000000001"), abbr: "p" }, // pico (10^-12)
+    { smallNumber: new BigNumber("0.000000000000001"), abbr: "f" }, // femto (10^-15)
+    { smallNumber: new BigNumber("0.000000000000000001"), abbr: "a" }, // atto (10^-18)
+  ];
 
-  return `${coefficient}e${exponent}`;
+  for (let i = smallNumbers.length - 1; i >= 0; i--) {
+    const { smallNumber, abbr } = smallNumbers[i];
+    if (bigValue.isLessThan(smallNumber)) continue;
+
+    const divided = bigValue.dividedBy(smallNumber).toFixed(2);
+    return `${divided}${abbr}`;
+  }
+
+  return bigValue.toFixed(2);
 }

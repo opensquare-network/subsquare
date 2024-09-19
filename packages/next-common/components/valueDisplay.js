@@ -2,7 +2,7 @@ import Tooltip from "./tooltip";
 import {
   abbreviateBigNumber,
   getEffectiveNumbers,
-  formatVerySmallNumber,
+  formatVerySmallNumberWithAbbr,
 } from "../utils/viewfuncs";
 import { cn } from "next-common/utils";
 
@@ -31,8 +31,8 @@ export default function ValueDisplay({
     </>
   );
 
-  if (showVerySmallNumber && Number(value) < 0.00001) {
-    const formattedSmallNumber = formatVerySmallNumber(value);
+  if (showVerySmallNumber && Number(value) < 0.001) {
+    const formattedSmallNumber = formatVerySmallNumberWithAbbr(value);
     content = (
       <>
         {prefix}
