@@ -20,7 +20,7 @@ function FellowshipCollectiveMembersInContext() {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between mb-4 pr-6">
+      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between pr-6">
         <TitleContainer>
           <span>
             List
