@@ -25,8 +25,8 @@ const itemOptions = {
 };
 
 export function useRecentProposalFellowshipTreasury() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { recentSummary, recentProposals } = usePageProps();
+  const summary = recentSummary;
   const activeTreasurySpends = summary?.fellowshipTreasurySpends?.active || 0;
 
   const menu = {
