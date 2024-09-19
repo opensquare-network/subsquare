@@ -6,10 +6,8 @@ import getFellowshipMembersServerSideProps from "next-common/services/serverSide
 import useFellowshipCoreMembersFilter from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 
-export default function MembersPage() {
+function FellowshipCollectiveMembersInContext() {
   const { fellowshipMembers } = usePageProps();
-  const category = "Fellowship Members";
-  const seoInfo = { title: category, desc: category };
 
   const { filteredMembers, component: FilterComponent } =
     useFellowshipCoreMembersFilter(fellowshipMembers);
@@ -17,20 +15,30 @@ export default function MembersPage() {
   const membersCount = filteredMembers?.length || 0;
 
   return (
-    <CollectivesProvider section="fellowship">
+    <div className="flex flex-col gap-y-4">
+      <TitleContainer>
+        <span>
+          List
+          <span className="text-textTertiary text14Medium ml-1">
+            {membersCount}
+          </span>
+        </span>
+        {FilterComponent}
+      </TitleContainer>
+      <FellowshipCollectiveMembers members={filteredMembers} />
+    </div>
+  );
+}
+
+export default function MembersPage() {
+  const { fellowshipParams } = usePageProps();
+  const category = "Fellowship Members";
+  const seoInfo = { title: category, desc: category };
+
+  return (
+    <CollectivesProvider params={fellowshipParams} section="fellowship">
       <ListLayout seoInfo={seoInfo} title={category}>
-        <div className="flex flex-col gap-y-4">
-          <TitleContainer>
-            <span>
-              List
-              <span className="text-textTertiary text14Medium ml-1">
-                {membersCount}
-              </span>
-            </span>
-            {FilterComponent}
-          </TitleContainer>
-          <FellowshipCollectiveMembers members={filteredMembers} />
-        </div>
+        <FellowshipCollectiveMembersInContext />
       </ListLayout>
     </CollectivesProvider>
   );
