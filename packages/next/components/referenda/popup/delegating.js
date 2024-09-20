@@ -7,6 +7,7 @@ import {
   convictionToLockXNumber,
 } from "next-common/utils/referendumCommon";
 import tw from "tailwind-styled-components";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 const DelegationInfoPanel = tw.div`
   flex
@@ -66,7 +67,12 @@ export default function Delegating({ addressVoteDelegate }) {
         <InfoItem>
           <InfoItemName>Capital</InfoItemName>
           <InfoItemValue>
-            {capital} {node.voteSymbol || node.symbol}
+            <ValueDisplay
+              value={capital}
+              symbol={node.voteSymbol || node.symbol}
+              showVerySmallNumber={true}
+              className="text-textPrimary text14Medium"
+            />
           </InfoItemValue>
         </InfoItem>
         <InfoItem>
@@ -78,7 +84,12 @@ export default function Delegating({ addressVoteDelegate }) {
         <InfoItem>
           <InfoItemName>Votes</InfoItemName>
           <InfoItemValue>
-            {votes} {node.voteSymbol || node.symbol}
+            <ValueDisplay
+              value={votes}
+              symbol={node.voteSymbol || node.symbol}
+              showVerySmallNumber={true}
+              className="text-textPrimary text14Medium"
+            />
           </InfoItemValue>
         </InfoItem>
       </InfoList>

@@ -196,3 +196,31 @@ export const toTreasuryChildBountyListItem = (item) => ({
   detailLink: `${childBountyBaseUrl}/${item.index}`,
   parentIndex: item.parentBountyId,
 });
+
+export function formatVerySmallNumberWithAbbr(value) {
+  const bigValue = new BigNumber(value);
+
+  const smallNumbers = [
+    { smallNumber: new BigNumber("0.001"), abbr: "m" }, // milli (10^-3)
+    { smallNumber: new BigNumber("0.000001"), abbr: "μ" }, // micro (10^-6)
+    { smallNumber: new BigNumber("0.000000001"), abbr: "n" }, // nano (10^-9)
+    { smallNumber: new BigNumber("0.000000000001"), abbr: "p" }, // pico (10^-12)
+    { smallNumber: new BigNumber("0.000000000000001"), abbr: "f" }, // femto (10^-15)
+    { smallNumber: new BigNumber("0.000000000000000001"), abbr: "a" }, // atto (10^-18)
+  ];
+
+  if (bigValue.isGreaterThanOrEqualTo(1)) {
+    return bigValue.toFixed(2);
+  }
+
+  for (let i = 0; i < smallNumbers.length; i++) {
+    const { smallNumber, abbr } = smallNumbers[i];
+
+    if (bigValue.isGreaterThanOrEqualTo(smallNumber)) {
+      const divided = bigValue.dividedBy(smallNumber).toFixed(2);
+      return `${divided}${abbr}`;
+    }
+  }
+
+  return bigValue.toFixed(2);
+}
