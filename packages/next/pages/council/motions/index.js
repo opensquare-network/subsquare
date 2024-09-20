@@ -9,8 +9,15 @@ import NewCouncilMotionProposalButton from "next-common/components/summary/newCo
 import CollectiveProvider from "next-common/context/collective";
 import Chains from "next-common/utils/consts/chains";
 import { TreasuryProvider } from "next-common/context/treasury";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function MotionsPage({ motions, chain }) {
+  const {
+    modules: { council },
+  } = useChainSettings();
+
+  const hasCouncil = council && !council?.archived;
+
   const items = (motions.items || []).map((item) =>
     normalizeCouncilMotionListItem(chain, item),
   );
@@ -34,7 +41,7 @@ export default function MotionsPage({ motions, chain }) {
             category={category}
             title="List"
             titleCount={motions.total}
-            titleExtra={<NewCouncilMotionProposalButton />}
+            titleExtra={hasCouncil && <NewCouncilMotionProposalButton />}
             items={items}
             pagination={{
               page: motions.page,
