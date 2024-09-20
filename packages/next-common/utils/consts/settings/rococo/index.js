@@ -54,8 +54,6 @@ const rococo = {
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://forum.polkadot.network",
   description: "Polkadot’s Parachain Testnet",
   ...polkadotThemeVars,
   modules: mergeChainModules({
@@ -74,6 +72,11 @@ const rococo = {
       archived: true,
     },
   }),
+  integrations: {
+    discourseForum: {
+      link: "https://forum.polkadot.network",
+    },
+  },
   multisigWallets: {
     signet: true,
     mimir: true,

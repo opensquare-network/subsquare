@@ -65,13 +65,13 @@ export function useRecentProposalDiscussions() {
       formatter: (item) => normalizeDiscussionListItem(CHAIN, item),
       columns: discussionsColumns,
     },
-    chainSettings.hasDiscussionsForumTopics && {
+    chainSettings.integrations?.discourseForum && {
       lazy: false,
       value: "forumTopics",
       name: "Forum",
       api: {
         initData: forumLatestTopics,
-        viewAllLink: chainSettings?.discourseForumLink,
+        viewAllLink: chainSettings.integrations.discourseForum.link,
       },
       activeCount: forumLatestTopics?.items?.length,
       formatter: normalizePolkadotForumTopicListItem,

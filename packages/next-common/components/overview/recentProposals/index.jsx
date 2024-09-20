@@ -54,7 +54,7 @@ export default function RecentProposals() {
     advisoryCommittee,
     communityCouncil,
     communityTreasury,
-    (modules?.discussions || chainSettings.hasDiscussionsForumTopics) &&
+    (modules?.discussions || chainSettings.integrations?.discourseForum) &&
       discussions,
   ].filter(Boolean);
 

@@ -8,8 +8,8 @@ export default function normalizePolkadotForumTopicListItem(item) {
     ...item,
     title: item.topic_title,
     time: item.updated_at || item.created_at,
-    detailLink: `${removeTrailingSlash(chainSettings.discourseForumLink)}/t/${
-      item.topic_slug
-    }/${item.topic_id}`,
+    detailLink: `${removeTrailingSlash(
+      chainSettings.integrations?.discourseForum?.link,
+    )}/t/${item.topic_slug}/${item.topic_id}`,
   };
 }

@@ -87,8 +87,6 @@ const centrifuge = {
   navLogo: ProjectLogoCentrifugeLight,
   navLogoDark: ProjectLogoCentrifugeDark,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://gov.centrifuge.io",
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
@@ -105,6 +103,11 @@ const centrifuge = {
     },
     technicalCommittee: false,
   }),
+  integrations: {
+    discourseForum: {
+      link: "https://gov.centrifuge.io",
+    },
+  },
   cssVarsLight: {
     theme100: "rgba(18,83,255,0.10)",
     theme300: "rgba(18,83,255,0.40)",

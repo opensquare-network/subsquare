@@ -52,8 +52,6 @@ const polkadot = {
   hasSubscan: true,
   hasDotreasury: true,
   hasPolkassemblyDiscussions: true,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://forum.polkadot.network",
   hasMultisig: true,
   multisigApiPrefix: "dot",
   useVoteCall: true,
@@ -81,6 +79,11 @@ const polkadot = {
       archived: true,
     },
   }),
+  integrations: {
+    discourseForum: {
+      link: "https://forum.polkadot.network",
+    },
+  },
   multisigWallets: {
     signet: true,
     mimir: true,
