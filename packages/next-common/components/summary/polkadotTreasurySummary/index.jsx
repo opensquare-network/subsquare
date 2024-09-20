@@ -3,7 +3,7 @@ import TotalTreasury from "./totalTreasury";
 import RelayChainTreasury from "./relayChainTreasury";
 import MultiAssetsTreasury from "./multiAssetsTreasury";
 import FellowshipTreasury from "./fellowshipTreasury";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import BigNumber from "bignumber.js";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
@@ -35,7 +35,13 @@ function PolkadotTreasurySummaryInContext() {
       .plus(fellowshipFree);
     setDOTBalance(DOTBalanceTotal);
     setIsLoading(false);
-  }, [relayChainFree, multiAssetsFree, fellowshipFree]);
+  }, [
+    relayChainFree,
+    multiAssetsFree,
+    fellowshipFree,
+    setDOTBalance,
+    setIsLoading,
+  ]);
 
   return (
     <SummaryLayout className={cn("max-sm:grid-cols-1")}>

@@ -13,6 +13,14 @@ import { useSubscribeAssetHubAssets } from "../hook/useSubscribeAssetHubAssets";
 import { useEffect } from "react";
 import { usePolkadotTreasurySummary } from "../context";
 
+function useSingleAssetBalance(asset) {
+  return {
+    ...asset,
+    balance: useSubscribeAssetHubAssets(asset.id, StatemintTreasuryAccount)
+      .free,
+  };
+}
+
 export default function MultiAssetsTreasury() {
   const { setMultiAssetsFree, setUSDtBalance, setUSDCBalance } =
     usePolkadotTreasurySummary();
@@ -21,11 +29,10 @@ export default function MultiAssetsTreasury() {
     StatemintTreasuryAccount,
   );
 
-  const assetBalances = StatemintAssets.map((asset) => ({
-    ...asset,
-    balance: useSubscribeAssetHubAssets(asset.id, StatemintTreasuryAccount)
-      .free,
-  }));
+  const assetBalances = StatemintAssets.map((asset) => {
+    const assetBalance = useSingleAssetBalance(asset);
+    return assetBalance;
+  });
   const usdtBalance = assetBalances.find(
     (asset) => asset.symbol === "USDt",
   )?.balance;
@@ -41,7 +48,7 @@ export default function MultiAssetsTreasury() {
     if (usdcBalance !== undefined) {
       setUSDCBalance(usdcBalance);
     }
-  }, [assetBalances, setUSDtBalance, setUSDCBalance]);
+  }, [assetBalances, usdtBalance, usdcBalance, setUSDtBalance, setUSDCBalance]);
 
   useEffect(() => {
     if (free) {
