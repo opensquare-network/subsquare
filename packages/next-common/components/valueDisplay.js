@@ -5,6 +5,7 @@ import {
   formatVerySmallNumberWithAbbr,
 } from "../utils/viewfuncs";
 import { cn } from "next-common/utils";
+import BigNumber from "bignumber.js";
 
 export default function ValueDisplay({
   value,
@@ -16,7 +17,7 @@ export default function ValueDisplay({
   tooltipClassName,
   showVerySmallNumber = false,
 }) {
-  const tooltipContent = `${value}${symbol ? " " + symbol : ""}`;
+  let tooltipContent = `${value}${symbol ? " " + symbol : ""}`;
   const symbolContent = symbol && (
     <span className={cn("value-display-symbol text-textTertiary", className)}>
       {symbol}
@@ -33,13 +34,16 @@ export default function ValueDisplay({
 
   if (showVerySmallNumber && Number(value) < 0.001) {
     const formattedSmallNumber = formatVerySmallNumberWithAbbr(value);
+    const bigValue = new BigNumber(value);
     content = (
       <>
+        {showApproximationSymbol && <span>≈</span>}
         {prefix}
         {formattedSmallNumber}
         {symbolContent}
       </>
     );
+    tooltipContent = `${bigValue.toFixed()}${symbol ? " " + symbol : ""}`;
   } else if (
     Number(value) >= 100000 ||
     getEffectiveNumbers(value)?.length >= 11
