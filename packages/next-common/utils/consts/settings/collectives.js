@@ -75,7 +75,6 @@ const collectives = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasSubscan: true,
-  hasStatescan: true,
   subscanDomain: "collectives-polkadot",
   hasFellowshipParams: true,
   noIdentityModule: true,
@@ -94,6 +93,7 @@ const collectives = {
     alliance: true,
   }),
   integrations: {
+    statescan: true,
     discussionsRFCs: {
       link: "https://github.com/polkadot-fellows/RFCs/issues",
     },

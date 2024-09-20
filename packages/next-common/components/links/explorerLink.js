@@ -12,7 +12,7 @@ const Wrapper = styled(Flex)`
 `;
 
 export default function ExplorerLink({ indexer = {}, style = {}, children }) {
-  const { hasSubscan, hasStatescan, hasPolkascan } = useChainSettings();
+  const { integrations, hasSubscan, hasPolkascan } = useChainSettings();
 
   if (isEmpty(indexer)) {
     return null;
@@ -21,7 +21,7 @@ export default function ExplorerLink({ indexer = {}, style = {}, children }) {
   let LinkComponent = Fragment;
   if (hasSubscan) {
     LinkComponent = SubScanLink;
-  } else if (hasStatescan) {
+  } else if (integrations?.statescan) {
     LinkComponent = StatescanLink;
   } else if (hasPolkascan) {
     LinkComponent = PolkascanLink;

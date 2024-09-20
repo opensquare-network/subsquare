@@ -63,7 +63,6 @@ const litmus = {
   navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
-  hasStatescan: true,
   hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
@@ -77,6 +76,9 @@ const litmus = {
       tips: false,
     },
   }),
+  integrations: {
+    statescan: true,
+  },
   cssVarsLight: {
     theme100: "rgba(104,34,251,0.10)",
     theme300: "rgba(104,34,251,0.40)",

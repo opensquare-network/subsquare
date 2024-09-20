@@ -85,7 +85,6 @@ const vara = {
   navPreferDark: true,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasStatescan: false,
   hasSubscan: true,
   useVoteCall: true,
   hasMultisig: true,

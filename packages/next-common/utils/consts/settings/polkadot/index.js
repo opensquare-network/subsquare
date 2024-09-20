@@ -46,7 +46,6 @@ const polkadot = {
   group: MenuGroups.PolkadotAndParachains,
   links: polkadotLinks,
   postLabels: defaultPostLabels,
-  hasStatescan: true,
   hasIdentityTimeline: true,
   graphqlApiSubDomain: "dot-gh-api",
   hasSubscan: true,
@@ -79,6 +78,7 @@ const polkadot = {
   }),
   integrations: {
     doTreasury: true,
+    statescan: true,
     discourseForum: {
       link: "https://forum.polkadot.network",
     },

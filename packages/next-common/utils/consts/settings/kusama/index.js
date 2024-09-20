@@ -33,7 +33,6 @@ const kusama = {
   navPreferDark: true,
   group: MenuGroups.KusamaAndParachains,
   links: kusamaLinks,
-  hasStatescan: true,
   graphqlApiSubDomain: "ksm-gh-api",
   hasSubscan: true,
   postLabels: defaultPostLabels,
@@ -65,6 +64,7 @@ const kusama = {
   }),
   integrations: {
     doTreasury: true,
+    statescan: true,
     discourseForum: {
       link: "https://forum.polkadot.network",
     },

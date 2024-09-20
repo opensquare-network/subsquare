@@ -15,8 +15,8 @@ export default function useProfileTabs() {
       fellowship: hasFellowship,
       democracy: hasDemocracyModule,
     },
+    integrations,
     hasMultisig,
-    hasStatescan,
     hasIdentityTimeline,
   } = useChainSettings();
   const activeMultisigsCount = useSelector(profileActiveMultisigsCountSelector);
@@ -75,7 +75,7 @@ export default function useProfileTabs() {
     });
   }
 
-  if (hasStatescan) {
+  if (integrations?.statescan) {
     tabs.push({
       label: "Transfers",
       url: `${prefix}transfers`,

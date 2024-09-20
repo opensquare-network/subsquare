@@ -26,7 +26,6 @@ const hydradxTestnet = {
   name: "HydraDX Testnet",
   endpoints,
   chainType: ChainTypes.MIXED,
-  hasStatescan: true,
   hasSubscan: false,
   ethereumNetwork,
 };
