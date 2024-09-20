@@ -68,7 +68,6 @@ export default function Delegating({ addressVoteDelegate }) {
           <InfoItemName>Capital</InfoItemName>
           <InfoItemValue>
             <ValueDisplay
-              showApproximationSymbol={false}
               value={capital}
               symbol={node.voteSymbol || node.symbol}
               showVerySmallNumber={true}
@@ -86,7 +85,6 @@ export default function Delegating({ addressVoteDelegate }) {
           <InfoItemName>Votes</InfoItemName>
           <InfoItemValue>
             <ValueDisplay
-              showApproximationSymbol={false}
               value={votes}
               symbol={node.voteSymbol || node.symbol}
               showVerySmallNumber={true}

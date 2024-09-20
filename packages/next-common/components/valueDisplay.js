@@ -37,7 +37,6 @@ export default function ValueDisplay({
     const bigValue = new BigNumber(value);
     content = (
       <>
-        {showApproximationSymbol && <span>≈</span>}
         {prefix}
         {formattedSmallNumber}
         {symbolContent}
