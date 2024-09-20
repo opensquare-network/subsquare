@@ -6,13 +6,15 @@ import IconLink from "./iconLink";
 
 export default function SubScanLink({ indexer = {}, children }) {
   const chain = useChain();
-  const { hasSubscan, subscanDomain } = useChainSettings();
-  if (!hasSubscan) {
+  const { integrations } = useChainSettings();
+  if (!integrations?.subscan) {
     return null;
   }
 
+  const domain = integrations.subscan.domain || chain;
+
   const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
-  let url = `https://${subscanDomain || chain}.subscan.io`;
+  let url = `https://${domain}.subscan.io`;
   if (!isNil(extrinsicIndex) || !isNil(index)) {
     url += `/extrinsic/${blockHeight}-${extrinsicIndex ?? index}`;
   } else if (!isNil(eventIndex)) {

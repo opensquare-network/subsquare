@@ -63,7 +63,6 @@ const litmus = {
   navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
-  hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
   noIdentityModule: true,

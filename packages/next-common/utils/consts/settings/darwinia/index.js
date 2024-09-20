@@ -39,8 +39,6 @@ const darwinia2 = {
   links: darwiniaLinks,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
-  subscanDomain: "darwinia",
   chainType: ChainTypes.ETHEREUM,
   ethereumNetwork: {
     chainId: "0x2e",
@@ -62,6 +60,11 @@ const darwinia2 = {
       tips: false,
     },
   }),
+  integrations: {
+    subscan: {
+      domain: "darwinia",
+    },
+  },
   cssVarsLight: {
     theme100: "rgba(219,55,138,0.10)",
     theme300: "rgba(219,55,138,0.40)",

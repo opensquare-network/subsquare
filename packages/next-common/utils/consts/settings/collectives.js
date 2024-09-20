@@ -74,8 +74,6 @@ const collectives = {
   navLogoDark: ProjectLogoPolkadotCollectivesDark,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
-  hasSubscan: true,
-  subscanDomain: "collectives-polkadot",
   hasFellowshipParams: true,
   noIdentityModule: true,
   showAchainableLabels: true,
@@ -94,6 +92,9 @@ const collectives = {
   }),
   integrations: {
     statescan: true,
+    subscan: {
+      domain: "collectives-polkadot",
+    },
     discussionsRFCs: {
       link: "https://github.com/polkadot-fellows/RFCs/issues",
     },

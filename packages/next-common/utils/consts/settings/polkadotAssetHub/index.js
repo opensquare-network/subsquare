@@ -34,10 +34,11 @@ const polkadotAssetHub = {
   networkIcon: NetworkIconPolkadotAssetHub,
   group: MenuGroups.PolkadotAndParachains,
   links: polkadotLinks,
-  hasSubscan: true,
-  subscanDomain: "assethub-polkadot",
   integrations: {
     statescan: true,
+    subscan: {
+      domain: "assethub-polkadot",
+    },
   },
   description:
     "System parachain on Polkadot network for creating and sending tokens and NFTs.",

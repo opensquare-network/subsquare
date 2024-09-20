@@ -48,7 +48,6 @@ const polkadot = {
   postLabels: defaultPostLabels,
   hasIdentityTimeline: true,
   graphqlApiSubDomain: "dot-gh-api",
-  hasSubscan: true,
   hasMultisig: true,
   multisigApiPrefix: "dot",
   useVoteCall: true,
@@ -79,6 +78,7 @@ const polkadot = {
   integrations: {
     doTreasury: true,
     statescan: true,
+    subscan: true,
     discourseForum: {
       link: "https://forum.polkadot.network",
     },

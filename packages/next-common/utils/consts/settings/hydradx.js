@@ -95,7 +95,6 @@ const hydradx = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "hydradx",
@@ -105,6 +104,9 @@ const hydradx = {
       bounties: false,
     },
   }),
+  integrations: {
+    subscan: true,
+  },
   cssVarsLight: {
     theme100: "rgba(229,62,118,0.10)",
     theme300: "rgba(229,62,118,0.40)",

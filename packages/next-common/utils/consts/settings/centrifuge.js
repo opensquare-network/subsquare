@@ -89,7 +89,6 @@ const centrifuge = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
-  hasSubscan: true,
   description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
   useVoteCall: true,
   hasMultisig: true,
@@ -103,6 +102,7 @@ const centrifuge = {
     technicalCommittee: false,
   }),
   integrations: {
+    subscan: true,
     doTreasury: true,
     discourseForum: {
       link: "https://gov.centrifuge.io",

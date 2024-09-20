@@ -64,7 +64,6 @@ const zkverifyTestnet = {
   links,
   group: MenuGroups.Solochain,
   postLabels: [],
-  hasSubscan: false,
   showAccountManagementTab: false,
   description: "The modular blockchain for ZK proof verification.",
   modules: mergeChainModules({

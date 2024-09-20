@@ -75,7 +75,6 @@ const kintsugi = {
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
-  hasSubscan: true,
   description:
     "Make your Bitcoin work for you with Kintsugi. Use your BTC for lending, borrowing, swapping and staking.",
   useVoteCall: true,
@@ -89,6 +88,9 @@ const kintsugi = {
     },
     council: false,
   }),
+  integrations: {
+    subscan: true,
+  },
   cssVarsLight: {
     theme100: "rgba(247,205,69,0.10)",
     theme300: "rgba(247,205,69,0.40)",

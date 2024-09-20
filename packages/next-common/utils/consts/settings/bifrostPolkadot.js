@@ -54,9 +54,7 @@ const bifrostPolkadot = {
   navPreferDark: true,
   links,
   group: MenuGroups.PolkadotAndParachains,
-  subscanDomain: "bifrost",
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "pbnc",
@@ -65,6 +63,11 @@ const bifrostPolkadot = {
     referenda: true,
     fellowship: true,
   }),
+  integrations: {
+    subscan: {
+      domain: "bifrost",
+    },
+  },
   cssVarsLight: {
     theme100: "rgba(84,43,251,0.10)",
     theme300: "rgba(84,43,251,0.40)",

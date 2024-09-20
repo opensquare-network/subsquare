@@ -48,8 +48,6 @@ const moonriver = {
   darkAvatar: ProjectIconMoonriverDark,
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
-  hasSubscan: true,
-  subscanDomain: "moonriver",
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
   noDispatchPrecompile: true,
@@ -76,6 +74,9 @@ const moonriver = {
     },
   }),
   integrations: {
+    subscan: {
+      domain: "moonriver",
+    },
     polkassembly: {
       discussions: true,
     },

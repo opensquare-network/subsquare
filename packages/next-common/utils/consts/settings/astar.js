@@ -63,7 +63,6 @@ const astar = {
   links: astarLinks,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description: "A Scalable Network Powering a Global Web3 Vision for All.",
   modules: mergeChainModules({
     treasury: {
@@ -74,6 +73,9 @@ const astar = {
     communityTreasury: true,
     technicalCommittee: true,
   }),
+  integrations: {
+    subscan: true,
+  },
   showNewTreasuryProposalButton: true,
   ...astarThemeVars,
 };

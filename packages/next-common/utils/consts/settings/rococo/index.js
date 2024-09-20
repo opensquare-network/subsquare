@@ -53,7 +53,6 @@ const rococo = {
   links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description: "Polkadot’s Parachain Testnet",
   ...polkadotThemeVars,
   modules: mergeChainModules({
@@ -73,6 +72,7 @@ const rococo = {
     },
   }),
   integrations: {
+    subscan: true,
     discourseForum: {
       link: "https://forum.polkadot.network",
     },

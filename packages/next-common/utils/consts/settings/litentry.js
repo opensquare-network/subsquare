@@ -79,7 +79,6 @@ const litentry = {
   navPreferDark: true,
   links,
   group: MenuGroups.PolkadotAndParachains,
-  hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
   noIdentityModule: true,

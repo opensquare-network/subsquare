@@ -61,7 +61,6 @@ const khala = {
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description:
     "Khala Network is the canary network of Phala launched on Kusama and is responsible for the technical and economic testing of Phala Network.",
   useVoteCall: true,
@@ -72,6 +71,9 @@ const khala = {
       childBounties: true,
     },
   }),
+  integrations: {
+    subscan: true,
+  },
   cssVarsLight: {
     theme100: "rgba(5,227,227,0.10)",
     theme300: "rgba(5,227,227,0.40)",

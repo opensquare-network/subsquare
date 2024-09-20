@@ -39,7 +39,6 @@ const westend = {
   group: MenuGroups.WestendAndParachains,
   links: polkadotLinks,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description: "Westend is the primary test network of Polkadot.",
   ...westendThemeVars,
   modules: mergeChainModules({
@@ -48,6 +47,9 @@ const westend = {
     council: false,
     technicalCommittee: false,
   }),
+  integrations: {
+    subscan: true,
+  },
   newProposalQuickStart: {
     cancelReferendum: true,
     killReferendum: true,
