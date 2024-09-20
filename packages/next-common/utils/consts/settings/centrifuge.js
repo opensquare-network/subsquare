@@ -92,13 +92,13 @@ const centrifuge = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
-  hasDiscussions: false,
   description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
   useVoteCall: true,
   hasDotreasury: true,
   hasMultisig: true,
   multisigApiPrefix: "cfg",
   modules: mergeChainModules({
+    discussions: false,
     treasury: {
       bounties: false,
       tips: false,

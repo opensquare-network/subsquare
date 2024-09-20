@@ -64,7 +64,6 @@ const astar = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  hasDiscussions: true,
   description: "A Scalable Network Powering a Global Web3 Vision for All.",
   modules: mergeChainModules({
     treasury: {

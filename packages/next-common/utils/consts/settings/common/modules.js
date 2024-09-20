@@ -1,9 +1,13 @@
 import { cloneDeep, merge } from "lodash-es";
 
-// polkadot
+// polkadot menu snapshot
 const base = {
+  // common menu
+  discussions: true,
+
   whales: false,
 
+  // pallet menu
   democracy: {
     referenda: true,
     publicProposals: true,

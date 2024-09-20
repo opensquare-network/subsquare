@@ -59,10 +59,10 @@ const altair = {
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
-  hasDiscussions: false,
   description:
     "The home for financing assets on Kusama. Powered by Centrifuge.",
   modules: mergeChainModules({
+    discussions: false,
     referenda: true,
     treasury: {
       bounties: false,

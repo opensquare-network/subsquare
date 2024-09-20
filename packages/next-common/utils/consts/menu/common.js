@@ -34,7 +34,7 @@ const commonMenus = {
   items: [overviewMenu],
 };
 
-if (chainSettings.hasDiscussions !== false) {
+if (chainSettings.modules.discussions) {
   commonMenus.items.push(discussionsMenu);
 }
 

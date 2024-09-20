@@ -48,7 +48,6 @@ const shibuya = {
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  hasDiscussions: true,
   description: "Shibuya is the testnet of Shiden (a sister chain of Astar).",
   modules: mergeChainModules({
     treasury: {
