@@ -12,7 +12,7 @@ const Wrapper = styled(Flex)`
 `;
 
 export default function ExplorerLink({ indexer = {}, style = {}, children }) {
-  const { integrations, hasSubscan, hasPolkascan } = useChainSettings();
+  const { integrations, hasSubscan } = useChainSettings();
 
   if (isEmpty(indexer)) {
     return null;
@@ -23,7 +23,7 @@ export default function ExplorerLink({ indexer = {}, style = {}, children }) {
     LinkComponent = SubScanLink;
   } else if (integrations?.statescan) {
     LinkComponent = StatescanLink;
-  } else if (hasPolkascan) {
+  } else if (integrations?.polkascan) {
     LinkComponent = PolkascanLink;
   }
 

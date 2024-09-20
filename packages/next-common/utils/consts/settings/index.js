@@ -76,7 +76,7 @@ const settingsMap = {
 };
 
 /**
- * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof moonriver & typeof centrifuge & typeof collectives & typeof hydradx}
+ * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof moonriver & typeof centrifuge & typeof collectives & typeof hydradx & typeof zkverifyTestnet}
  */
 export default function getChainSettings(chain, blockHeight = null) {
   let settings = settingsMap[chain];
