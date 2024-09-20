@@ -8,6 +8,7 @@ import { useSubscribeFellowshipTreasuryFree } from "../hook/useSubscribeAssetHub
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useSubscribeAssetHubAssets } from "../hook/useSubscribeAssetHubAssets";
 import { useEffect } from "react";
+import { usePolkadotTreasurySummary } from "../context";
 
 const SybmbolAssets = [
   {
@@ -24,11 +25,10 @@ const SybmbolAssets = [
   },
 ];
 
-export default function MultiAssetsTreasury({
-  setMultiAssetsFree,
-  setUSDtBalance,
-  setUSDCBalance,
-}) {
+export default function MultiAssetsTreasury() {
+  const { setMultiAssetsFree, setUSDtBalance, setUSDCBalance } =
+    usePolkadotTreasurySummary();
+
   const { free, isLoading } = useSubscribeFellowshipTreasuryFree(
     StatemintTreasuryAccount,
   );

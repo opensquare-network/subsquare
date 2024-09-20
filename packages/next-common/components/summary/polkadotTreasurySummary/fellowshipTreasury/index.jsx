@@ -6,8 +6,11 @@ import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import { useSubscribeFellowshipTreasuryFree } from "../hook/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useEffect } from "react";
+import { usePolkadotTreasurySummary } from "../context";
 
-export default function FellowshipTreasury({ setFellowshipFree }) {
+export default function FellowshipTreasury() {
+  const { setFellowshipFree } = usePolkadotTreasurySummary();
+
   const { free, isLoading } = useSubscribeFellowshipTreasuryFree(
     StatemintFellowShipTreasuryAccount,
   );

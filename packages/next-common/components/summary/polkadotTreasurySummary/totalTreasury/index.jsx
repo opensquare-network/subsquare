@@ -3,13 +3,12 @@ import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import LoadableContent from "next-common/components/common/loadableContent";
+import { usePolkadotTreasurySummary } from "../context";
 
-export default function TotalTreasury({
-  USDtBalance,
-  USDCBalance,
-  DOTBalance,
-  isLoading,
-}) {
+export default function TotalTreasury() {
+  const { USDtBalance, USDCBalance, DOTBalance, isLoading } =
+    usePolkadotTreasurySummary();
+
   return (
     <SummaryItem title="Total Treasury">
       <LoadableContent isLoading={isLoading}>

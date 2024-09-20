@@ -13,8 +13,11 @@ import SpendPeriod from "./spendPeriod";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import { useEffect } from "react";
+import { usePolkadotTreasurySummary } from "../context";
 
-export default function RelayChainTreasury({ setRelayChainDOTFree }) {
+export default function RelayChainTreasury() {
+  const { setRelayChainDOTFree } = usePolkadotTreasurySummary();
+
   const api = useContextApi();
 
   const free = useTreasuryFree(api);
