@@ -13,13 +13,16 @@ import { useSubscribeAssetHubAssets } from "../hook/useSubscribeAssetHubAssets";
 import { useEffect } from "react";
 import { usePolkadotTreasurySummary } from "../context";
 
-function useSingleAssetBalance(asset) {
+function useAssetBalance(asset) {
   return {
     ...asset,
     balance: useSubscribeAssetHubAssets(asset.id, StatemintTreasuryAccount)
       .free,
   };
 }
+
+const getAssetBySymbol = (symbol) =>
+  StatemintAssets.find((asset) => asset.symbol === symbol);
 
 export default function MultiAssetsTreasury() {
   const { setMultiAssetsFree, setUSDtBalance, setUSDCBalance } =
@@ -29,16 +32,11 @@ export default function MultiAssetsTreasury() {
     StatemintTreasuryAccount,
   );
 
-  const assetBalances = StatemintAssets.map((asset) => {
-    const assetBalance = useSingleAssetBalance(asset);
-    return assetBalance;
-  });
-  const usdtBalance = assetBalances.find(
-    (asset) => asset.symbol === "USDt",
-  )?.balance;
-  const usdcBalance = assetBalances.find(
-    (asset) => asset.symbol === "USDC",
-  )?.balance;
+  const usdtAsset = getAssetBySymbol("USDt");
+  const usdcAsset = getAssetBySymbol("USDC");
+
+  const usdtBalance = useAssetBalance(usdtAsset)?.balance;
+  const usdcBalance = useAssetBalance(usdcAsset)?.balance;
 
   useEffect(() => {
     if (usdtBalance !== undefined) {
@@ -48,7 +46,7 @@ export default function MultiAssetsTreasury() {
     if (usdcBalance !== undefined) {
       setUSDCBalance(usdcBalance);
     }
-  }, [assetBalances, usdtBalance, usdcBalance, setUSDtBalance, setUSDCBalance]);
+  }, [usdtBalance, usdcBalance, setUSDtBalance, setUSDCBalance]);
 
   useEffect(() => {
     if (free) {
@@ -82,13 +80,8 @@ export default function MultiAssetsTreasury() {
         </div>
         <div className="!ml-0 flex flex-col gap-y-1">
           <DotTokenSymbolAsset free={free} />
-          {assetBalances.map((item) => (
-            <TokenSymbolAsset
-              amount={item.balance || 0}
-              symbol={item.symbol}
-              key={item.symbol}
-            />
-          ))}
+          <TokenSymbolAsset amount={usdcBalance} symbol={usdcAsset.symbol} />
+          <TokenSymbolAsset amount={usdtBalance} symbol={usdtAsset.symbol} />
         </div>
       </LoadableContent>
     </SummaryItem>
