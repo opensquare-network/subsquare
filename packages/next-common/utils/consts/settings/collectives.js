@@ -78,8 +78,6 @@ const collectives = {
   hasStatescan: true,
   subscanDomain: "collectives-polkadot",
   hasFellowshipParams: true,
-  hasPolkassemblyDiscussions: false,
-  hasDiscussionsRFCs: true,
   noIdentityModule: true,
   showAchainableLabels: true,
   description: "Collectives on Polkadot network.",
@@ -95,6 +93,11 @@ const collectives = {
     technicalCommittee: false,
     alliance: true,
   }),
+  integrations: {
+    discussionsRFCs: {
+      link: "https://github.com/polkadot-fellows/RFCs/issues",
+    },
+  },
   ...polkadotThemeVars,
 };
 

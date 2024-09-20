@@ -37,13 +37,12 @@ export async function fetchRecentProposalsProps(summary = {}) {
   const recentProposalsData = {};
 
   // discussions
-  const hasDiscussions = chainSettings.hasDiscussions !== false;
-  if (hasDiscussions) {
+  if (modules?.discussions) {
     recentProposalsData.discussions = {};
     recentProposalsData.discussions.subsquare = await fetcher(
       overviewApi.discussions,
     );
-    if (chainSettings.hasPolkassemblyDiscussions) {
+    if (chainSettings.integrations?.polkassembly?.discussions) {
       recentProposalsData.discussions.polkassembly = await fetcher(
         overviewApi.polkassemblyDiscussions,
       );

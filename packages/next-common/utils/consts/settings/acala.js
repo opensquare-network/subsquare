@@ -89,8 +89,6 @@ const acala = {
   navLogo: ProjectLogoAcalaLight,
   navLogoDark: ProjectLogoAcalaDark,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://acala.discourse.group",
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
@@ -102,6 +100,11 @@ const acala = {
   modules: mergeChainModules({
     financialCouncil: true,
   }),
+  integrations: {
+    discourseForum: {
+      link: "https://acala.discourse.group",
+    },
+  },
   cssVarsLight: {
     theme100: "rgba(100,90,255,0.10)",
     theme300: "rgba(100,90,255,0.40)",
