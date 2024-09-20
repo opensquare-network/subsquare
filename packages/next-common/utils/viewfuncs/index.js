@@ -209,12 +209,17 @@ export function formatVerySmallNumberWithAbbr(value) {
     { smallNumber: new BigNumber("0.000000000000000001"), abbr: "a" }, // atto (10^-18)
   ];
 
-  for (let i = smallNumbers.length - 1; i >= 0; i--) {
-    const { smallNumber, abbr } = smallNumbers[i];
-    if (bigValue.isLessThan(smallNumber)) continue;
+  if (bigValue.isGreaterThanOrEqualTo(1)) {
+    return bigValue.toFixed(2);
+  }
 
-    const divided = bigValue.dividedBy(smallNumber).toFixed(2);
-    return `${divided}${abbr}`;
+  for (let i = 0; i < smallNumbers.length; i++) {
+    const { smallNumber, abbr } = smallNumbers[i];
+
+    if (bigValue.isGreaterThanOrEqualTo(smallNumber)) {
+      const divided = bigValue.dividedBy(smallNumber).toFixed(2);
+      return `${divided}${abbr}`;
+    }
   }
 
   return bigValue.toFixed(2);
