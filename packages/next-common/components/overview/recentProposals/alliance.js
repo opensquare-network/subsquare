@@ -28,8 +28,8 @@ const itemOptions = {
 };
 
 export function useRecentProposalAlliance() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { recentSummary, recentProposals } = usePageProps();
+  const summary = recentSummary;
 
   const menu = getAllianceMenu(summary);
 

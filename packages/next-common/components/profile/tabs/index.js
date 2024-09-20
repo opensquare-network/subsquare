@@ -15,7 +15,6 @@ export default function useProfileTabs() {
       fellowship: hasFellowship,
       democracy: hasDemocracyModule,
     },
-    noDemocracy,
     hasMultisig,
     hasStatescan,
     hasIdentityTimeline,
@@ -46,7 +45,7 @@ export default function useProfileTabs() {
     },
   ];
 
-  if (hasReferenda || hasFellowship || !noDemocracy) {
+  if (hasReferenda || hasFellowship || hasDemocracyModule) {
     tabs.push({
       label: "Votes",
       url: `${prefix}votes`,

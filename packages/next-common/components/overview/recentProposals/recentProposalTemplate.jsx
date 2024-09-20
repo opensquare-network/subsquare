@@ -9,7 +9,6 @@ import nextApi from "next-common/services/nextApi";
 import { recentProposalFetchParams } from "next-common/services/serverSide/recentProposals";
 import { isNil } from "lodash-es";
 import { useUpdateEffect } from "react-use";
-import { useChain } from "next-common/context/chain";
 import { first } from "lodash-es";
 import DataList from "next-common/components/dataList";
 
@@ -20,11 +19,7 @@ export default function RecentProposalTemplate({
   activeCount,
   items = [],
 }) {
-  const chain = useChain();
-
-  const activeItems = (items || [])
-    .filter((item) => item.activeCount)
-    .filter((item) => !item.excludeToChains?.includes(chain));
+  const activeItems = (items || []).filter((item) => item.activeCount);
 
   const titleLink =
     first(activeItems)?.pathname ?? first(items)?.pathname ?? pathname;

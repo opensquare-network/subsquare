@@ -2,15 +2,7 @@ import styled from "styled-components";
 import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "../overviewSummary/activeValue";
-import {
-  useChainSettings,
-  useMenuHasCouncil,
-  useMenuHasDemocracyExternal,
-  useMenuHasTechComm,
-  useMenuHasTreasuryBounties,
-  useMenuHasTreasuryChildBounties,
-  useMenuHasTreasuryTips,
-} from "../../../context/chain";
+import { useChainSettings } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
 import CardHeader from "next-common/components/overview/centrifugeStats/cardHeader";
 import {
@@ -50,7 +42,10 @@ function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
 
 function DemocracyGroupContent() {
   const { summary } = usePageProps();
-  const showExternal = useMenuHasDemocracyExternal();
+  const {
+    modules: { democracy },
+  } = useChainSettings();
+  const showExternal = democracy?.externalProposals;
 
   const { referenda, publicProposals, externalProposals } = summary ?? {};
 
@@ -82,9 +77,12 @@ function DemocracyGroupContent() {
 
 function TreasuryGroupContent() {
   const { summary } = usePageProps();
-  const showTreasuryBounties = useMenuHasTreasuryBounties();
-  const showChildBounties = useMenuHasTreasuryChildBounties();
-  const showTips = useMenuHasTreasuryTips();
+  const {
+    modules: { treasury },
+  } = useChainSettings();
+  const showTreasuryBounties = !!treasury?.bounties;
+  const showChildBounties = !!treasury?.childBounties;
+  const showTips = !!treasury?.tips && !treasury?.tips?.archived;
 
   const { bounties, childBounties, tips, treasuryProposals } = summary ?? {};
 
@@ -126,8 +124,11 @@ function TreasuryGroupContent() {
 
 function CouncilGroupContent() {
   const { summary } = usePageProps();
-  const showCouncil = useMenuHasCouncil();
-  const showTc = useMenuHasTechComm();
+  const {
+    modules: { council, technicalCommittee },
+  } = useChainSettings();
+  const showCouncil = !!council;
+  const showTc = !!technicalCommittee;
 
   const { motions, techCommMotions } = summary ?? {};
 

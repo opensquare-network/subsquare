@@ -7,7 +7,6 @@ import { isExternalLink } from "../../utils";
 import commonMenus from "../../utils/consts/menu/common";
 import { useIsMacOS, usePageProps } from "next-common/context/page";
 import { getHomeMenu } from "next-common/utils/consts/menu";
-import { useChain } from "next-common/context/chain";
 import {
   cmdkPaletteVisibleSelector,
   setCmdkPaletteVisible,
@@ -38,7 +37,6 @@ function renderCommandPaletteLink(props) {
 }
 
 export default function CMDKPalette() {
-  const chain = useChain();
   const { isDark } = useTheme();
   const isMacOS = useIsMacOS();
   const [page, setPage] = useState("home");
@@ -48,15 +46,11 @@ export default function CMDKPalette() {
 
   const { tracks, fellowshipTracks } = usePageProps();
   const homeMenus = getHomeMenu({ tracks, fellowshipTracks });
-  function filterExcludeChains(item) {
-    return !item?.excludeToChains?.includes(chain);
-  }
 
   const foldedMenu = homeMenus
     .filter((menu) => menu.name)
-    .filter(filterExcludeChains)
     .map((menu) => {
-      const items = (menu.items || []).filter(filterExcludeChains);
+      const items = menu.items || [];
       return {
         ...menu,
         items,
@@ -96,7 +90,7 @@ export default function CMDKPalette() {
           {
             id: "home",
             items: [
-              ...commonMenus.items.filter(filterExcludeChains).map((i) => {
+              ...commonMenus.items.map((i) => {
                 return {
                   id: i.name,
                   children: i.name,

@@ -1,6 +1,4 @@
 import { startCase, sumBy } from "lodash-es";
-import { getExcludeChains } from "../../viewfuncs";
-import Chains from "../chains";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
@@ -12,8 +10,8 @@ export const Names = {
 };
 
 function getFellowshipCoreMenu() {
-  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-  if (!chainSettings.hasFellowshipCore) {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowship?.core) {
     return null;
   }
 
@@ -29,8 +27,8 @@ function getFellowshipCoreMenu() {
 }
 
 function getFellowshipSalaryMenu() {
-  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-  if (!chainSettings.hasFellowshipCore) {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowship?.core) {
     return null;
   }
 
@@ -95,6 +93,11 @@ function getFellowshipReferendaMenu(
 }
 
 function getFellowshipTreasuryMenu(overviewSummary) {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowshipTreasury) {
+    return null;
+  }
+
   const fellowshipTreasurySpends =
     overviewSummary?.fellowshipTreasurySpends || {};
   return {
@@ -105,11 +108,6 @@ function getFellowshipTreasuryMenu(overviewSummary) {
       "/fellowship/treasury/spends/[id]",
     ],
     activeCount: fellowshipTreasurySpends.active || 0,
-
-    excludeToChains: getExcludeChains([
-      Chains.collectives,
-      Chains.westendCollectives,
-    ]),
     items: [
       {
         value: "fellowship-treasury-spends",
@@ -131,18 +129,6 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
 
   const menu = {
     name: Names.fellowship,
-    excludeToChains: getExcludeChains([
-      Chains.development,
-      Chains.kusama,
-      Chains.collectives,
-      Chains.moonriver,
-      Chains.moonbeam,
-      Chains.bifrost,
-      Chains.bifrostPolkadot,
-      Chains.westendCollectives,
-      Chains.vara,
-      Chains.rococo,
-    ]),
     activeCount: totalActiveCount,
     icon: <MenuFellowship />,
     pathname: "/fellowship",

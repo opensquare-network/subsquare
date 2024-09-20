@@ -16,6 +16,7 @@ import preImages from "./preImages";
 import { partition } from "lodash-es";
 import isAssetHub from "next-common/utils/isAssetHub";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
+import getChainSettings from "../settings";
 
 export function getHomeMenu({
   summary = {},
@@ -27,22 +28,24 @@ export function getHomeMenu({
     return assetHubMenu;
   }
 
+  const { modules } = getChainSettings(CHAIN);
+
   return [
     commonMenus,
-    getReferendaMenu(tracks, currentTrackId),
-    getFellowshipMenu(summary, currentTrackId),
-    getAmbassadorMenu(ambassadorTracks, currentTrackId),
-    getDemocracyMenu(summary),
-    getTreasuryMenu(summary),
-    getCommunityTreasuryMenu(summary),
-    getCouncilMenu(summary),
-    getTechCommMenu(summary),
-    getFinancialCouncilMenu(summary),
-    getAdvisoryCommitteeMenu(summary),
-    getAllianceMenu(summary),
-    getCommunityCouncilMenu(summary),
-    preImages,
-  ];
+    modules?.referenda && getReferendaMenu(tracks, currentTrackId),
+    modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
+    modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
+    modules?.democracy && getDemocracyMenu(summary),
+    modules?.treasury && getTreasuryMenu(summary),
+    modules?.communityTreasury && getCommunityTreasuryMenu(summary),
+    modules?.council && getCouncilMenu(summary),
+    modules?.technicalCommittee && getTechCommMenu(summary),
+    modules?.financialCouncil && getFinancialCouncilMenu(summary),
+    modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
+    modules?.alliance && getAllianceMenu(summary),
+    modules?.communityCouncil && getCommunityCouncilMenu(summary),
+    modules?.preimages && preImages,
+  ].filter(Boolean);
 }
 
 export function getCommonMenu({
@@ -55,9 +58,7 @@ export function getCommonMenu({
     fellowshipTracks,
     ambassadorTracks,
   });
-  commonMenu.items = commonMenu.items.filter(
-    (i) => !i?.excludeToChains?.includes?.(CHAIN),
-  );
+
   return commonMenu.items;
 }
 
@@ -82,11 +83,6 @@ export function getNavMenu({
   for (let idx = 0; idx < menu.slice(1).length; idx++) {
     const m = menu.slice(1)[idx];
 
-    // next loop early
-    if (m?.excludeToChains?.includes?.(CHAIN)) {
-      continue;
-    }
-
     // single menu
     if (!m?.items?.length) {
       featuredMenu.push(m);
@@ -94,14 +90,14 @@ export function getNavMenu({
     }
 
     // root menu archived
-    if (m?.archivedToChains?.includes?.(CHAIN)) {
+    if (m?.archived) {
       archivedMenu.push(m);
     }
     // child menu
     else {
       const [featuredItems, archivedItems] = partition(
-        m.items?.filter?.((item) => !item?.excludeToChains?.includes?.(CHAIN)),
-        (item) => !item?.archivedToChains?.includes?.(CHAIN),
+        m.items,
+        (item) => !item?.archived,
       );
 
       if (archivedItems.length) {

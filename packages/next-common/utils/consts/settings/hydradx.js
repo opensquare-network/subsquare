@@ -3,6 +3,7 @@ import ChainTypes from "../chainTypes";
 import Chains from "../chains";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconHydrationDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconHydrationDark"),
@@ -99,10 +100,11 @@ const hydradx = {
   hasMultisig: true,
   multisigApiPrefix: "hydradx",
   description: "Making finance efficient, simple and unstoppable.",
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
+  modules: mergeChainModules({
+    treasury: {
+      bounties: false,
+    },
+  }),
   cssVarsLight: {
     theme100: "rgba(229,62,118,0.10)",
     theme300: "rgba(229,62,118,0.40)",

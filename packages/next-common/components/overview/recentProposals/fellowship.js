@@ -12,10 +12,10 @@ import { usePageProps } from "next-common/context/page";
 import { find } from "lodash-es";
 
 export function useRecentProposalFellowship() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
+  const { recentSummary, recentProposals } = usePageProps();
+  const fellowshipTracks = recentSummary?.fellowshipReferendaTracks;
 
-  const menu = getFellowshipMenu(overviewSummary);
+  const menu = getFellowshipMenu(recentSummary);
   const referendaMenu = find(menu.items, { value: "fellowship-referenda" });
 
   const items = referendaMenu.items?.map((item) => {

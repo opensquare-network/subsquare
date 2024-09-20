@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
@@ -17,6 +18,8 @@ export default function usePeriodFilterFn() {
   const filterDemotionAboutToExpireFn = useCallback(
     (members) => {
       return members.filter((member) => {
+        if (isNil(member?.status)) return false;
+
         const {
           rank,
           status: { lastProof },
@@ -37,6 +40,8 @@ export default function usePeriodFilterFn() {
   const filterDemotionExpiredFn = useCallback(
     (members) => {
       return members.filter((member) => {
+        if (isNil(member?.status)) return false;
+
         const {
           rank,
           status: { lastProof },
@@ -56,6 +61,8 @@ export default function usePeriodFilterFn() {
   const filterPromotableFn = useCallback(
     (members) => {
       return members.filter((member) => {
+        if (isNil(member?.status)) return false;
+
         const {
           rank,
           status: { lastPromotion },
