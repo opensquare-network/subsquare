@@ -40,13 +40,13 @@ export function useRecentProposalDiscussions() {
     (rfcsData?.items?.length || 0);
 
   const items = [
-    chainSettings.hasDiscussionsRFCs && {
+    chainSettings.integrations?.discussionsRFCs && {
       lazy: false,
       value: "rfcs",
       name: "RFC issues",
       api: {
         initData: rfcsData,
-        viewAllLink: "https://github.com/polkadot-fellows/RFCs/issues",
+        viewAllLink: chainSettings.integrations.discussionsRFCs.link,
       },
       activeCount: rfcsData?.items?.length || 0,
       formatter: (item) => normalizeRFCsListItem(CHAIN, item),
@@ -100,14 +100,14 @@ export function useRecentProposalDiscussions() {
 }
 
 function useRFCsData() {
-  const { hasDiscussionsRFCs } = useChainSettings();
+  const { integrations } = useChainSettings();
   const [data, setData] = useState();
 
   useEffect(() => {
-    if (hasDiscussionsRFCs) {
+    if (integrations?.discussionsRFCs) {
       fetchRFCs().then(setData);
     }
-  }, [hasDiscussionsRFCs]);
+  }, [integrations?.discussionsRFCs]);
 
   return data;
 }
