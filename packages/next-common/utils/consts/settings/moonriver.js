@@ -50,7 +50,6 @@ const moonriver = {
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
   subscanDomain: "moonriver",
-  hasPolkassemblyDiscussions: true,
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
   noDispatchPrecompile: true,
@@ -76,6 +75,11 @@ const moonriver = {
       tips: false,
     },
   }),
+  integrations: {
+    polkassembly: {
+      discussions: true,
+    },
+  },
   cssVarsLight: {
     theme100: "rgba(79,204,198,0.10)",
     theme300: "rgba(79,204,198,0.40)",

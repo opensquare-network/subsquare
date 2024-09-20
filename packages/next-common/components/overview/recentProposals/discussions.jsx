@@ -77,7 +77,7 @@ export function useRecentProposalDiscussions() {
       formatter: normalizePolkadotForumTopicListItem,
       columns: discussionsForumTopicsColumns,
     },
-    chainSettings.hasPolkassemblyDiscussions && {
+    chainSettings.integrations?.polkassembly?.discussions && {
       lazy: false,
       value: "polkassembly",
       name: "Polkassembly",

@@ -24,7 +24,7 @@ export default function DiscussionsLayout(props) {
 
   return (
     <ListLayout
-      tabs={chainSettings.hasPolkassemblyDiscussions && tabs}
+      tabs={chainSettings.integrations?.polkassembly?.discussions && tabs}
       summaryFooter={
         <div className="flex justify-end">
           <PrimaryButton

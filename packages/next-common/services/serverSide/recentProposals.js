@@ -42,7 +42,7 @@ export async function fetchRecentProposalsProps(summary = {}) {
     recentProposalsData.discussions.subsquare = await fetcher(
       overviewApi.discussions,
     );
-    if (chainSettings.hasPolkassemblyDiscussions) {
+    if (chainSettings.integrations?.polkassembly?.discussions) {
       recentProposalsData.discussions.polkassembly = await fetcher(
         overviewApi.polkassemblyDiscussions,
       );

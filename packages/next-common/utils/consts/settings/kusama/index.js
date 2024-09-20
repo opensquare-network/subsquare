@@ -39,7 +39,6 @@ const kusama = {
   postLabels: defaultPostLabels,
   useVoteCall: true,
   hasDotreasury: true,
-  hasPolkassemblyDiscussions: true,
   hasMultisig: true,
   multisigApiPrefix: "kusama",
   showAchainableLabels: true,
@@ -68,6 +67,9 @@ const kusama = {
   integrations: {
     discourseForum: {
       link: "https://forum.polkadot.network",
+    },
+    polkassembly: {
+      discussions: true,
     },
   },
   cssVarsLight: {

@@ -51,7 +51,6 @@ const polkadot = {
   graphqlApiSubDomain: "dot-gh-api",
   hasSubscan: true,
   hasDotreasury: true,
-  hasPolkassemblyDiscussions: true,
   hasMultisig: true,
   multisigApiPrefix: "dot",
   useVoteCall: true,
@@ -82,6 +81,9 @@ const polkadot = {
   integrations: {
     discourseForum: {
       link: "https://forum.polkadot.network",
+    },
+    polkassembly: {
+      discussions: true,
     },
   },
   multisigWallets: {
