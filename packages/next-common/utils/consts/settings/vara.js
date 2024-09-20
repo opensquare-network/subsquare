@@ -87,7 +87,6 @@ const vara = {
   postLabels: defaultPostLabels,
   hasStatescan: false,
   hasSubscan: true,
-  hasDotreasury: false,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "vara",

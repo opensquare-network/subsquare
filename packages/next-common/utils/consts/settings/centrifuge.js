@@ -92,7 +92,6 @@ const centrifuge = {
   hasSubscan: true,
   description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
   useVoteCall: true,
-  hasDotreasury: true,
   hasMultisig: true,
   multisigApiPrefix: "cfg",
   modules: mergeChainModules({
@@ -104,6 +103,7 @@ const centrifuge = {
     technicalCommittee: false,
   }),
   integrations: {
+    doTreasury: true,
     discourseForum: {
       link: "https://gov.centrifuge.io",
     },

@@ -38,7 +38,6 @@ const kusama = {
   hasSubscan: true,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  hasDotreasury: true,
   hasMultisig: true,
   multisigApiPrefix: "kusama",
   showAchainableLabels: true,
@@ -65,6 +64,7 @@ const kusama = {
     },
   }),
   integrations: {
+    doTreasury: true,
     discourseForum: {
       link: "https://forum.polkadot.network",
     },
