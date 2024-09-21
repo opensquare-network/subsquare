@@ -5,6 +5,7 @@ import { Title } from "./styled";
 import { isKintsugiChain } from "next-common/utils/chain";
 import DepositsTitle from "./depositsTitle";
 import Chains from "next-common/utils/consts/chains";
+import { useRouter } from "next/router";
 
 function TabTitle({ active, children }) {
   return (
@@ -17,6 +18,7 @@ function TabTitle({ active, children }) {
 export default function AccountSubTabs({ className = "" }) {
   const { hasMultisig } = useChainSettings();
   const chain = useChain();
+  const router = useRouter();
 
   const tabs = [];
   if (
@@ -27,6 +29,7 @@ export default function AccountSubTabs({ className = "" }) {
       label: "Votes",
       render: ({ active }) => <TabTitle active={active}>Votes</TabTitle>,
       url: "/account/votes",
+      active: router.pathname.startsWith("/account/votes"),
     });
   }
 

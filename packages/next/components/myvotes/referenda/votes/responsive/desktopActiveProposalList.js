@@ -73,13 +73,16 @@ function ActiveProposalsList() {
   const { tracks } = usePageProps();
   const { unVotedActiveReferenda, isLoading: isLoadingUnVotedActiveReferenda } =
     useUnVotedActiveReferenda();
-  const { value: referenda, loading: isLoadingReferendaPosts } =
+  const { value: data, loading: isLoadingReferendaPosts } =
     useAsync(async () => {
       if (isLoadingUnVotedActiveReferenda) {
         return [];
       }
-      return await getOpenGovReferendaPosts(unVotedActiveReferenda);
-    }, [unVotedActiveReferenda, isLoadingUnVotedActiveReferenda]);
+      const referenda = await getOpenGovReferendaPosts(unVotedActiveReferenda);
+      return (referenda || []).map((item) =>
+        normalizeGov2ReferendaListItem(item, tracks),
+      );
+    }, [tracks, unVotedActiveReferenda, isLoadingUnVotedActiveReferenda]);
 
   const isLoading = isLoadingReferendaPosts || isLoadingUnVotedActiveReferenda;
 
@@ -90,15 +93,14 @@ function ActiveProposalsList() {
     getStatusTagColumn({ category: businessCategory.openGovReferenda }),
   ];
 
-  const data = (referenda || []).map((item) =>
-    normalizeGov2ReferendaListItem(item, tracks),
-  );
-
   const { page, component: paginationComponent } = usePaginationComponent(
     data?.length || 0,
     10,
   );
-  const pageItems = data.slice((page - 1) * 10, page * 10);
+  const pageItems = useMemo(
+    () => (data || [])?.slice((page - 1) * 10, page * 10),
+    [data, page],
+  );
 
   return (
     <div>
