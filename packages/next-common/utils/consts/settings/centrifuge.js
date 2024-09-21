@@ -5,6 +5,7 @@ import Chains from "../chains";
 import ChainTypes from "../chainTypes";
 import { defaultPostLabels, PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconCentrifugeDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconCentrifugeDark"),
@@ -86,22 +87,26 @@ const centrifuge = {
   navLogo: ProjectLogoCentrifugeLight,
   navLogoDark: ProjectLogoCentrifugeDark,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://gov.centrifuge.io",
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
-  hasDiscussions: false,
-  hasTechComm: false,
-  hasTipsModule: false,
   description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
   useVoteCall: true,
   hasDotreasury: true,
   hasMultisig: true,
   multisigApiPrefix: "cfg",
-  modules: {
-    democracy: true,
-    treasury: true,
+  modules: mergeChainModules({
+    discussions: false,
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    technicalCommittee: false,
+  }),
+  integrations: {
+    discourseForum: {
+      link: "https://gov.centrifuge.io",
+    },
   },
   cssVarsLight: {
     theme100: "rgba(18,83,255,0.10)",

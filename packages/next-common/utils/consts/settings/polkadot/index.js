@@ -7,6 +7,7 @@ import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polk
 import defaultPolkadotNodes from "next-common/utils/consts/settings/polkadot/nodes";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import polkadotTreasuryTracks from "next-common/utils/consts/settings/polkadot/tracks";
+import { mergeChainModules } from "../common/modules";
 
 const ProjectIconPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotDark"),
@@ -50,9 +51,6 @@ const polkadot = {
   graphqlApiSubDomain: "dot-gh-api",
   hasSubscan: true,
   hasDotreasury: true,
-  hasPolkassemblyDiscussions: true,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://forum.polkadot.network",
   hasMultisig: true,
   multisigApiPrefix: "dot",
   useVoteCall: true,
@@ -60,10 +58,33 @@ const polkadot = {
   description:
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
   ...polkadotThemeVars,
-  modules: {
-    referenda: true,
+  modules: mergeChainModules({
     whales: true,
-    treasury: true,
+    democracy: {
+      archived: true,
+    },
+    referenda: true,
+    treasury: {
+      spends: true,
+      childBounties: true,
+      tips: {
+        archived: true,
+      },
+    },
+    council: {
+      archived: true,
+    },
+    technicalCommittee: {
+      archived: true,
+    },
+  }),
+  integrations: {
+    discourseForum: {
+      link: "https://forum.polkadot.network",
+    },
+    polkassembly: {
+      discussions: true,
+    },
   },
   multisigWallets: {
     signet: true,

@@ -1,4 +1,5 @@
 import Chains from "../chains";
+import { mergeChainModules } from "./common/modules";
 import MenuGroups from "./menuGroups";
 import dynamic from "next/dynamic";
 
@@ -68,9 +69,13 @@ const zkverifyTestnet = {
   polkascanUrl: "https://testnet-explorer.zkverify.io",
   showAccountManagementTab: false,
   description: "The modular blockchain for ZK proof verification.",
-  modules: {
+  modules: mergeChainModules({
+    democracy: false,
     referenda: true,
-  },
+    treasury: false,
+    council: false,
+    technicalCommittee: false,
+  }),
   cssVarsLight: {
     theme100: "rgba(38,219,141,0.10)",
     theme300: "rgba(38,219,141,0.40)",

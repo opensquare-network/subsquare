@@ -21,8 +21,8 @@ import { useRecentProposalFellowshipTreasury } from "./fellowshipTreasury";
 export default function RecentProposals() {
   const chain = useChain();
   const chainSettings = useChainSettings();
+  const { modules } = chainSettings;
   const isPolkadotChain = chain === Chains.polkadot;
-  const hasDiscussions = chainSettings.hasDiscussions !== false;
 
   const discussions = useRecentProposalDiscussions();
   const referenda = useRecentProposalReferenda();
@@ -54,11 +54,9 @@ export default function RecentProposals() {
     advisoryCommittee,
     communityCouncil,
     communityTreasury,
-    (hasDiscussions || chainSettings.hasDiscussionsForumTopics) && discussions,
-  ]
-    .filter(Boolean)
-    .filter((item) => !item.excludeToChains?.includes?.(chain))
-    .filter((item) => !item.archivedToChains?.includes?.(chain));
+    (modules?.discussions || chainSettings.integrations?.discourseForum) &&
+      discussions,
+  ].filter(Boolean);
 
   const [activeItems] = partition(sections, (item) => item.activeCount > 0);
 

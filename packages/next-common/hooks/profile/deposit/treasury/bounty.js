@@ -1,7 +1,7 @@
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { useMenuHasTreasuryBounties } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import {
   setProfileBountyBonds,
   setProfileBountyCuratorDeposits,
@@ -13,7 +13,10 @@ export default function useFetchProfileTreasuryBountyDeposits() {
   const address = useProfileAddress();
   const api = useContextApi();
   const dispatch = useDispatch();
-  const hasTreasuryBounties = useMenuHasTreasuryBounties();
+  const {
+    modules: { treasury },
+  } = useChainSettings();
+  const hasTreasuryBounties = !!treasury?.bounties;
 
   useEffect(() => {
     if (!hasTreasuryBounties) {

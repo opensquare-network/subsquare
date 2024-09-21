@@ -14,14 +14,16 @@ import ModuleVotes from "components/myvotes/moduleVotes";
 
 function MyVoteLayout({ children }) {
   const {
-    modules: { referenda: hasReferenda, democracy: hasDemocracyModule },
+    modules: { referenda: hasReferenda, democracy },
   } = useChainSettings();
+
+  const hasDemocracy = democracy && !democracy?.archived;
 
   const availableTabs = [];
   if (hasReferenda) {
     availableTabs.push({ tabId: Referenda, tabTitle: Referenda });
   }
-  if (hasDemocracyModule) {
+  if (hasDemocracy) {
     availableTabs.push({ tabId: Democracy, tabTitle: Democracy });
   }
 

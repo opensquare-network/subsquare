@@ -28,6 +28,7 @@ import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices"
 import Chains from "next-common/utils/consts/chains";
 import isAssetHub from "next-common/utils/isAssetHub";
 import AssetHubOverviewPage from "next-common/components/assets/assetHubOverviewPage";
+import nextApi from "next-common/services/nextApi";
 
 function DefaultOverviewPage() {
   const chain = useChain();
@@ -128,7 +129,10 @@ export const getServerSideProps = withCommonProps(async () => {
   const tracksProps = await fetchOpenGovTracksProps();
 
   const overviewSummary = tracksProps.summary || {};
-  const recentProposals = await fetchRecentProposalsProps(overviewSummary);
+  const { result: recentSummary = {} } = await nextApi.fetch(
+    "overview/recent/summary",
+  );
+  const recentProposals = await fetchRecentProposalsProps(recentSummary);
 
   const forumLatestTopics = await fetchForumLatestTopics();
   const forumCategories = await fetchForumCategories();
@@ -136,7 +140,8 @@ export const getServerSideProps = withCommonProps(async () => {
   return {
     props: {
       recentProposals,
-      overviewSummary: overviewSummary,
+      overviewSummary,
+      recentSummary,
       forumLatestTopics,
       forumCategories,
       ...tracksProps,

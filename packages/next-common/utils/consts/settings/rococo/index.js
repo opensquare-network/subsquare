@@ -5,6 +5,7 @@ import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
+import { mergeChainModules } from "../common/modules";
 
 const ProjectIconRococoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconRococoDark"),
@@ -52,16 +53,29 @@ const rococo = {
   links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasTipsModule: false,
   hasSubscan: true,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://forum.polkadot.network",
   description: "Polkadot’s Parachain Testnet",
   ...polkadotThemeVars,
-  modules: {
+  modules: mergeChainModules({
+    democracy: {
+      archived: true,
+    },
     referenda: true,
     fellowship: true,
-    treasury: true,
+    treasury: {
+      childBounties: true,
+    },
+    council: {
+      archived: true,
+    },
+    technicalCommittee: {
+      archived: true,
+    },
+  }),
+  integrations: {
+    discourseForum: {
+      link: "https://forum.polkadot.network",
+    },
   },
   multisigWallets: {
     signet: true,

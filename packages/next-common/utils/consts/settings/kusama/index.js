@@ -4,6 +4,7 @@ import defaultKusamaNodes from "next-common/utils/consts/settings/kusama/nodes";
 import kusamaTreasuryTracks from "next-common/utils/consts/settings/kusama/tracks";
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
+import { mergeChainModules } from "../common/modules";
 
 const ProjectIconKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaDark"),
@@ -38,20 +39,38 @@ const kusama = {
   postLabels: defaultPostLabels,
   useVoteCall: true,
   hasDotreasury: true,
-  hasPolkassemblyDiscussions: true,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://forum.polkadot.network",
   hasMultisig: true,
-  hasTipsModule: false,
   multisigApiPrefix: "kusama",
   showAchainableLabels: true,
   description:
     "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
-  modules: {
+  modules: mergeChainModules({
     referenda: true,
     fellowship: true,
     whales: true,
-    treasury: true,
+    democracy: {
+      archived: true,
+    },
+    treasury: {
+      childBounties: true,
+      tips: {
+        archived: true,
+      },
+    },
+    council: {
+      archived: true,
+    },
+    technicalCommittee: {
+      archived: true,
+    },
+  }),
+  integrations: {
+    discourseForum: {
+      link: "https://forum.polkadot.network",
+    },
+    polkassembly: {
+      discussions: true,
+    },
   },
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",

@@ -1,6 +1,3 @@
-import React from "react";
-import Chains from "../chains";
-import { getExcludeChains } from "../../viewfuncs";
 import { MenuTreasury } from "@osn/icons/subsquare";
 
 export const Names = {
@@ -15,7 +12,6 @@ export function getCommunityTreasuryMenu(summary) {
 
   return {
     name: Names.communityTreasury,
-    excludeToChains: getExcludeChains([Chains.shibuya, Chains.astar]),
     icon: <MenuTreasury />,
     pathname: "/community-treasury",
     activeCount: totalActiveCount,

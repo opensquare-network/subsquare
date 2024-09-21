@@ -4,6 +4,7 @@ import MenuGroups from "./menuGroups";
 import dynamic from "next/dynamic";
 import { astarLinks, astarThemeVars } from "./common/astar";
 import { defaultPostLabels } from "./common";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconShibuyaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconShibuyaDark"),
@@ -47,14 +48,16 @@ const shibuya = {
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  hasDiscussions: true,
-  hasTechComm: true,
-  hasTipsModule: false,
   description: "Shibuya is the testnet of Shiden (a sister chain of Astar).",
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
+  modules: mergeChainModules({
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    communityCouncil: true,
+    communityTreasury: true,
+    technicalCommittee: true,
+  }),
   showNewTreasuryProposalButton: true,
 
   ...astarThemeVars,

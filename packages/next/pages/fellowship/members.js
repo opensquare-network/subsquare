@@ -1,42 +1,56 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import { usePageProps } from "next-common/context/page";
 import FellowshipCollectiveMembers from "next-common/components/fellowship/collective/list";
-import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { useMemo } from "react";
-import { isNil } from "lodash-es";
 import getFellowshipMembersServerSideProps from "next-common/services/serverSide/fellowship/members";
+import useFellowshipCoreMembersFilter, {
+  handleFilterMembers,
+} from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
-export default function MembersPage() {
+function FellowshipCollectiveMembersInContext() {
   const { fellowshipMembers } = usePageProps();
-  const category = "Fellowship Members";
-  const seoInfo = { title: category, desc: category };
-  const ranks = [...new Set(fellowshipMembers.map((m) => m.rank))];
-  const { rank, component } = useRankFilter(ranks);
+  const { members: membersWithStatus, isAllLoaded } =
+    handleFilterMembers(fellowshipMembers);
 
-  const filteredMembers = useMemo(() => {
-    if (isNil(rank)) {
-      return fellowshipMembers;
-    }
+  const { filteredMembers, component: FilterComponent } =
+    useFellowshipCoreMembersFilter(membersWithStatus);
 
-    return fellowshipMembers.filter((m) => m.rank === rank);
-  }, [fellowshipMembers, rank]);
+  const membersCount = filteredMembers?.length || 0;
 
   return (
-    <ListLayout seoInfo={seoInfo} title={category}>
-      <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4">
+      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between pr-6">
         <TitleContainer>
           <span>
             List
             <span className="text-textTertiary text14Medium ml-1">
-              {filteredMembers.length}
+              {membersCount}
             </span>
           </span>
-          {component}
         </TitleContainer>
-        <FellowshipCollectiveMembers members={filteredMembers} />
+
+        {FilterComponent}
       </div>
-    </ListLayout>
+      <FellowshipCollectiveMembers
+        members={filteredMembers}
+        isAllLoaded={isAllLoaded}
+      />
+    </div>
+  );
+}
+
+export default function MembersPage() {
+  const { fellowshipParams } = usePageProps();
+  const category = "Fellowship Members";
+  const seoInfo = { title: category, desc: category };
+
+  return (
+    <CollectivesProvider params={fellowshipParams} section="fellowship">
+      <ListLayout seoInfo={seoInfo} title={category}>
+        <FellowshipCollectiveMembersInContext />
+      </ListLayout>
+    </CollectivesProvider>
   );
 }
 

@@ -3,6 +3,7 @@ import { collectiveLinks } from "next-common/utils/consts/settings/common/collec
 import Chains from "../chains";
 import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconWestendCollectivesDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendCollectivesDark"),
@@ -58,14 +59,19 @@ const westendCollectives = {
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasStatescan: true,
   hasFellowship: true,
-  hasFellowshipCore: true,
-  hasTechComm: false,
   hasTreasury: false,
-  hasTreasuryModule: false,
   noIdentityModule: true,
-  modules: {
-    fellowship: true,
-  },
+  modules: mergeChainModules({
+    fellowship: {
+      core: true,
+    },
+    treasury: false,
+    fellowshipTreasury: true,
+    democracy: false,
+    council: false,
+    technicalCommittee: false,
+    alliance: true,
+  }),
   cssVarsLight: {
     theme100: "rgba(239,72,106,0.10)",
     theme300: "rgba(239,72,106,0.40)",

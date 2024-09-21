@@ -1,6 +1,3 @@
-import React from "react";
-import { getExcludeChains } from "../../viewfuncs";
-import Chains from "../chains";
 import { MenuAlliance } from "@osn/icons/subsquare";
 
 export const Names = {
@@ -51,10 +48,6 @@ export function getAllianceMenu(summary) {
 
   return {
     name: Names.alliance,
-    excludeToChains: getExcludeChains([
-      Chains.westendCollectives,
-      Chains.collectives,
-    ]),
     icon: <MenuAlliance />,
     pathname: "/alliance",
     activeCount: totalActiveCount,

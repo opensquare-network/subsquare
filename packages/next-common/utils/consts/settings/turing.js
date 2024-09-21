@@ -3,6 +3,7 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconTuringDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconTuringDark"),
@@ -77,10 +78,11 @@ const turing = {
   hasSubscan: true,
   useVoteCall: true,
   description: "The Web 3.0 Hub for Automated DeFi and Payments",
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
+  modules: mergeChainModules({
+    treasury: {
+      tips: false,
+    },
+  }),
   cssVarsLight: {
     theme100: "rgba(168,44,190,0.10)",
     theme300: "rgba(168,44,190,0.40)",

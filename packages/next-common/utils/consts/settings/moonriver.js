@@ -4,6 +4,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconMoonriverDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconMoonriverDark"),
@@ -49,8 +50,6 @@ const moonriver = {
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
   hasSubscan: true,
   subscanDomain: "moonriver",
-  hasTipsModule: false,
-  hasPolkassemblyDiscussions: true,
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
   noDispatchPrecompile: true,
@@ -68,10 +67,18 @@ const moonriver = {
   description:
     "Solidity Smart Contracts on Kusama. Moonriver is a community-led cousin parachain on Kusama and will provide a permanently incentivized canary network for Moonbeam.",
   useVoteCall: true,
-  modules: {
+  modules: mergeChainModules({
     referenda: true,
-    democracy: true,
-    treasury: true,
+    fellowship: true,
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+  }),
+  integrations: {
+    polkassembly: {
+      discussions: true,
+    },
   },
   cssVarsLight: {
     theme100: "rgba(79,204,198,0.10)",

@@ -4,6 +4,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconMoonbeamDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconMoonbeamDark"),
@@ -61,11 +62,14 @@ const moonbeam = {
   },
   description:
     "Solidity Smart Contracts on Polkadot. Moonbeam is a Polkadot parachain designed for developers that combines full Ethereum compatibility with the power of Polkadot.",
-  modules: {
+  modules: mergeChainModules({
     referenda: true,
-    democracy: true,
-    treasury: true,
-  },
+    fellowship: true,
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+  }),
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",
     theme300: "rgba(230,0,122,0.40)",

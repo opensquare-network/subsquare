@@ -1,5 +1,3 @@
-import { getExcludeChains } from "../../viewfuncs";
-import Chains from "../chains";
 import { sumBy } from "lodash-es";
 import { startCase } from "lodash-es";
 import { MenuReferenda } from "@osn/icons/subsquare";
@@ -16,22 +14,6 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
 
   const menu = {
     name: Names.referenda,
-    excludeToChains: getExcludeChains([
-      Chains.development,
-      Chains.kusama,
-      Chains.moonriver,
-      Chains.moonbeam,
-      Chains.polkadot,
-      Chains.bifrost,
-      Chains.bifrostPolkadot,
-      Chains.vara,
-      Chains.rococo,
-      Chains.darwinia2,
-      Chains.westend,
-      Chains.basilisk,
-      Chains.altair,
-      Chains.zkverifyTestnet,
-    ]),
     activeCount: totalActiveCount,
     icon: <MenuReferenda />,
     pathname: "/referenda",

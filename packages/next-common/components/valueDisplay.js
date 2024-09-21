@@ -1,6 +1,11 @@
 import Tooltip from "./tooltip";
-import { abbreviateBigNumber, getEffectiveNumbers } from "../utils/viewfuncs";
+import {
+  abbreviateBigNumber,
+  getEffectiveNumbers,
+  formatVerySmallNumberWithAbbr,
+} from "../utils/viewfuncs";
 import { cn } from "next-common/utils";
+import BigNumber from "bignumber.js";
 
 export default function ValueDisplay({
   value,
@@ -10,8 +15,9 @@ export default function ValueDisplay({
   className,
   prefix,
   tooltipClassName,
+  showVerySmallNumber = false,
 }) {
-  const tooltipContent = `${value}${symbol ? " " + symbol : ""}`;
+  let tooltipContent = `${value}${symbol ? " " + symbol : ""}`;
   const symbolContent = symbol && (
     <span className={cn("value-display-symbol text-textTertiary", className)}>
       {symbol}
@@ -26,7 +32,21 @@ export default function ValueDisplay({
     </>
   );
 
-  if (Number(value) >= 100000 || getEffectiveNumbers(value)?.length >= 11) {
+  if (showVerySmallNumber && Number(value) < 0.001) {
+    const formattedSmallNumber = formatVerySmallNumberWithAbbr(value);
+    const bigValue = new BigNumber(value);
+    content = (
+      <>
+        {prefix}
+        {formattedSmallNumber}
+        {symbolContent}
+      </>
+    );
+    tooltipContent = `${bigValue.toFixed()}${symbol ? " " + symbol : ""}`;
+  } else if (
+    Number(value) >= 100000 ||
+    getEffectiveNumbers(value)?.length >= 11
+  ) {
     const abbreviated = abbreviateBigNumber(value, 2);
     content = (
       <>

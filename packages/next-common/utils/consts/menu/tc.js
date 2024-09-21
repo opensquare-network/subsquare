@@ -1,6 +1,6 @@
-import Chains from "../chains";
-import React from "react";
 import { MenuTechComm } from "@osn/icons/subsquare";
+import getChainSettings from "../settings";
+import { CHAIN } from "next-common/utils/constants";
 
 export const Names = {
   techComm: "Technical Committee",
@@ -9,23 +9,15 @@ export const Names = {
 };
 
 export function getTechCommMenu(summary) {
+  const { modules } = getChainSettings(CHAIN);
+  const archived = modules?.technicalCommittee?.archived;
+
   const activeTechCommMotions = summary?.techCommMotions?.active || 0;
 
   return {
     name: Names.techComm,
-    excludeToChains: [
-      Chains.kabocha,
-      Chains.centrifuge,
-      Chains.altair,
-      Chains.development,
-      Chains.westendCollectives,
-      Chains.collectives,
-      Chains.vara,
-      Chains.westend,
-      Chains.zkverifyTestnet,
-    ],
-    archivedToChains: [Chains.kusama, Chains.polkadot, Chains.rococo],
     activeCount: activeTechCommMotions,
+    archived,
     icon: <MenuTechComm />,
     pathname: "/techcomm",
     items: [

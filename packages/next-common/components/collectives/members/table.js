@@ -21,7 +21,10 @@ function AddressCol({ address }) {
   return <AddressUser maxWidth={navCollapsed ? 360 : 160} add={address} />;
 }
 
-export default function CollectivesMemberTable({ members = [] }) {
+export default function CollectivesMemberTable({
+  members = [],
+  isAllLoaded = true,
+}) {
   const { params = {}, section } = useCollectivesContext();
   const {
     activeSalary = [],
@@ -32,7 +35,7 @@ export default function CollectivesMemberTable({ members = [] }) {
   } = params ?? {};
   const { symbol, decimals } = getSalaryAsset();
 
-  const isLoading = isNil(members);
+  const isLoading = isNil(members) || !isAllLoaded;
 
   const rows = (members || []).map(({ address, rank }, idx) => {
     const demotionBlocks =

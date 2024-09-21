@@ -4,6 +4,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { astarLinks, astarThemeVars } from "./common/astar";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconAstarDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconAstarDark"),
@@ -63,14 +64,16 @@ const astar = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   hasSubscan: true,
-  hasDiscussions: true,
-  hasTechComm: true,
-  hasTipsModule: false,
   description: "A Scalable Network Powering a Global Web3 Vision for All.",
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
+  modules: mergeChainModules({
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    communityCouncil: true,
+    communityTreasury: true,
+    technicalCommittee: true,
+  }),
   showNewTreasuryProposalButton: true,
   ...astarThemeVars,
 };

@@ -10,8 +10,16 @@ import CollectiveProvider, {
 } from "next-common/context/collective";
 import NewCouncilMotionProposalButton from "next-common/components/summary/newCouncilMotionProposalButton";
 import { TreasuryProvider } from "next-common/context/treasury";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function ProposalsPage({ proposals, chain }) {
+  const {
+    modules: { technicalCommittee },
+  } = useChainSettings();
+
+  const hasTechnicalCommittee =
+    technicalCommittee && !technicalCommittee?.archived;
+
   const items = (proposals.items || []).map((item) =>
     normalizeTechCommMotionListItem(chain, item),
   );
@@ -33,7 +41,9 @@ export default function ProposalsPage({ proposals, chain }) {
             category={category}
             title="List"
             titleCount={proposals.total}
-            titleExtra={<NewCouncilMotionProposalButton />}
+            titleExtra={
+              hasTechnicalCommittee && <NewCouncilMotionProposalButton />
+            }
             items={items}
             pagination={{
               page: proposals.page,

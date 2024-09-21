@@ -1,6 +1,7 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconKaruraDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKaruraDark"),
@@ -86,17 +87,19 @@ const karura = {
   navLogoDark: ProjectLogoKaruraDark,
   navPreferDark: true,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://acala.discourse.group",
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
   noIdentityModule: true,
   useVoteCall: true,
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
-  modules: {
-    democracy: true,
-    treasury: true,
+  modules: mergeChainModules({
+    financialCouncil: true,
+  }),
+  integrations: {
+    discourseForum: {
+      link: "https://acala.discourse.group",
+    },
   },
   cssVarsLight: {
     theme100: "rgba(229,15,89,0.10)",

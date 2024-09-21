@@ -29,10 +29,6 @@ const hydradxTestnet = {
   hasStatescan: true,
   hasSubscan: false,
   ethereumNetwork,
-  modules: {
-    democracy: true,
-    treasury: true,
-  },
 };
 
 export default hydradxTestnet;

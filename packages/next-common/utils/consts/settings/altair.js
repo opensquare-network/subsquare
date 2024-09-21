@@ -4,6 +4,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
 const ProjectIconAltairDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconAltairDark"),
@@ -53,20 +54,24 @@ const altair = {
   navLogoDark: ProjectLogoAltairDark,
   navPreferDark: true,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://gov.centrifuge.io",
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
-  hasDiscussions: false,
-  hasTechComm: false,
-  hasTipsModule: false,
   description:
     "The home for financing assets on Kusama. Powered by Centrifuge.",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    discussions: false,
     referenda: true,
-    treasury: true,
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    technicalCommittee: false,
+  }),
+  integrations: {
+    discourseForum: {
+      link: "https://gov.centrifuge.io",
+    },
   },
   cssVarsLight: {
     theme100: "rgba(255,192,18,0.10)",
