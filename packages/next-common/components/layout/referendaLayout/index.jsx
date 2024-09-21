@@ -38,7 +38,11 @@ export default function ReferendaLayout({ summaryData, ...props }) {
           labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
           url: "/referenda/tracks",
         },
-        user?.address && { label: "My Votes", url: "/referenda/votes" },
+        user?.address && {
+          label: "My Votes",
+          url: "/referenda/votes",
+          active: router.pathname.startsWith("/referenda/votes"),
+        },
         { label: "Statistics", url: "/referenda/statistics" },
         modules.whales && {
           label: "Whales",

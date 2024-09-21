@@ -10,9 +10,9 @@ import {
   setMyReferendaPriors,
   setMyReferendaVoting,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
-import getOpenGovReferendaPosts from "./posts";
 import getDelegatedVoting from "./delegation";
 import { useContextApi } from "next-common/context/api";
+import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 
 async function normalizeCastingVoting(api, trackId, votingOf) {
   const casting = votingOf.asCasting;

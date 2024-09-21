@@ -1,6 +1,6 @@
 import normalizePrior from "../../utils/normalizePrior";
 import queryReferendumInfo from "../queryReferendumInfo";
-import getOpenGovReferendaPosts from "./posts";
+import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 
 export default async function getDelegatedVoting(api, trackId, voting) {
   const delegating = voting.asDelegating;

@@ -144,7 +144,9 @@ export default function DataList({
 
 export function MapDataList({ data, columnsDef, getRowKey, ...props }) {
   const rows = (data || []).map((item, index) => {
-    const row = columnsDef.map(({ render }) => render(item));
+    const row = columnsDef.map(({ render, cellRender }) =>
+      (render || cellRender)(item),
+    );
     row.key = getRowKey ? getRowKey(item) : index;
     return row;
   });
