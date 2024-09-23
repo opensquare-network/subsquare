@@ -1,4 +1,5 @@
 import useSubSystemAccount from "./useSubSystemAccount";
+import calcTransferable from "next-common/utils/account/transferable";
 
 export default function useAccountTransferrable(api, address) {
   const { account, isLoading } = useSubSystemAccount(api, address);
@@ -9,9 +10,9 @@ export default function useAccountTransferrable(api, address) {
     };
   }
 
-  const { free, frozen } = account.data;
+  const existentialDeposit = api.consts.balances?.existentialDeposit.toJSON() || 0;
   return {
-    transferrable: free.toNumber() - frozen.toNumber(),
+    transferrable: calcTransferable(account.data.toJSON(), existentialDeposit),
     isLoading: false,
   };
 }

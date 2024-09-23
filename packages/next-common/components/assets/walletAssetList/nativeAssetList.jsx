@@ -23,13 +23,13 @@ const colToken = {
   render: (item) => <TokenSymbol key="token" symbol={item?.symbol} />,
 };
 
-const colTransfer = {
+const teleport = {
   name: "",
   style: { textAlign: "right", width: "80px", minWidth: "80px" },
   render: () => <CrossChainTransferButton />,
 };
 
-const columnsDef = [colToken, colTotal, colTransferrable, colTransfer];
+const columnsDef = [colToken, colTotal, colTransferrable, teleport];
 
 export default function NativeAssetList() {
   const { loading, value } = useMyNativeAsset();
