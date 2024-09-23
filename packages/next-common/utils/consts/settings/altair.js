@@ -54,15 +54,13 @@ const altair = {
   navLogoDark: ProjectLogoAltairDark,
   navPreferDark: true,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://gov.centrifuge.io",
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   hasSubscan: true,
-  hasDiscussions: false,
   description:
     "The home for financing assets on Kusama. Powered by Centrifuge.",
   modules: mergeChainModules({
+    discussions: false,
     referenda: true,
     treasury: {
       bounties: false,
@@ -70,6 +68,11 @@ const altair = {
     },
     technicalCommittee: false,
   }),
+  integrations: {
+    discourseForum: {
+      link: "https://gov.centrifuge.io",
+    },
+  },
   cssVarsLight: {
     theme100: "rgba(255,192,18,0.10)",
     theme300: "rgba(255,192,18,0.40)",

@@ -87,8 +87,6 @@ const karura = {
   navLogoDark: ProjectLogoKaruraDark,
   navPreferDark: true,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://acala.discourse.group",
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
   hasSubscan: true,
@@ -98,6 +96,11 @@ const karura = {
   modules: mergeChainModules({
     financialCouncil: true,
   }),
+  integrations: {
+    discourseForum: {
+      link: "https://acala.discourse.group",
+    },
+  },
   cssVarsLight: {
     theme100: "rgba(229,15,89,0.10)",
     theme300: "rgba(229,15,89,0.40)",

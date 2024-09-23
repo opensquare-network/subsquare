@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 export default function EmptyRecentProposals() {
   const router = useRouter();
   const chainSettings = useChainSettings();
-  const hasDiscussions = chainSettings.hasDiscussions !== false;
 
   function handleNewDiscussion() {
     router.push("/posts/create");
@@ -28,7 +27,7 @@ export default function EmptyRecentProposals() {
           }
         />
 
-        {hasDiscussions && (
+        {chainSettings.modules?.discussions && (
           <div className="mt-4 text-center">
             <PrimaryButton
               onClick={handleNewDiscussion}
