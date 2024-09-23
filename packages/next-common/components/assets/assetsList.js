@@ -4,13 +4,10 @@ import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
 import BigNumber from "bignumber.js";
 import ListButton from "next-common/components/styled/listButton";
-import useKnownAssetHubAssetIcon, {
-  useNativeTokenIcon,
-} from "next-common/components/assets/known";
+import useKnownAssetHubAssetIcon, { useNativeTokenIcon } from "next-common/components/assets/known";
 import BalanceDisplay from "./balanceDisplay";
 import { isNil } from "lodash-es";
 import Tooltip from "../tooltip";
-import CrossChainTransferButton from "./crossChainTransferButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
