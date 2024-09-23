@@ -3,20 +3,11 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
 import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
-import { useSubscribeFellowshipTreasuryFree } from "../hook/useSubscribeAssetHubTreasuryFree";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import { useEffect } from "react";
+import { usePolkadotTreasurySummary } from "../context";
 
-export default function FellowshipTreasury({ setFellowshipFree }) {
-  const { free, isLoading } = useSubscribeFellowshipTreasuryFree(
-    StatemintFellowShipTreasuryAccount,
-  );
-
-  useEffect(() => {
-    if (!free) return;
-
-    setFellowshipFree(free);
-  }, [free, setFellowshipFree]);
+export default function FellowshipTreasury() {
+  const { fellowshipFree, isFellowshipLoading } = usePolkadotTreasurySummary();
 
   return (
     <SummaryItem
@@ -27,19 +18,17 @@ export default function FellowshipTreasury({ setFellowshipFree }) {
           target="_blank"
           rel="noreferrer"
         >
-          <span className="text-textTertiary hover:underline">
-            Fellowship Treasury
-          </span>
+          <span className="text-textTertiary hover:underline">Fellowship</span>
           <i className="text-textTertiary">&nbsp;↗</i>
         </Link>
       }
     >
-      <LoadableContent isLoading={isLoading}>
+      <LoadableContent isLoading={isFellowshipLoading}>
         <div>
-          <FiatPriceLabel free={free} />
+          <FiatPriceLabel free={fellowshipFree} />
         </div>
         <div className="!ml-0">
-          <DotTokenSymbolAsset free={free} />
+          <DotTokenSymbolAsset free={fellowshipFree} />
         </div>
       </LoadableContent>
     </SummaryItem>
