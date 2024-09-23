@@ -14,7 +14,7 @@ export default function FellowshipTreasury() {
       title={
         <Link
           className="text12Medium"
-          href={`https://statemint.statescan.io/#/accounts/${StatemintFellowShipTreasuryAccount}`}
+          href={`https://assethub-polkadot.subscan.io/account/${StatemintFellowShipTreasuryAccount}`}
           target="_blank"
           rel="noreferrer"
         >

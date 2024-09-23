@@ -16,7 +16,7 @@ export default function MultiAssetsTreasury() {
       title={
         <Link
           className="text12Medium"
-          href={`https://statemint.statescan.io/#/accounts/${StatemintTreasuryAccount}`}
+          href={`https://assethub-polkadot.subscan.io/account/${StatemintTreasuryAccount}`}
           target="_blank"
           rel="noreferrer"
         >
