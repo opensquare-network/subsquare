@@ -3,48 +3,38 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLabelItem from "./summaryLabelItem";
 import SpendPeriodCountdown from "./spendPeriodCountdown";
 import ToBeAwarded from "./toBeAwarded";
-import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
 import useSpendPeriodSummary from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";
 import { isNil } from "lodash-es";
-import { useContextApi } from "next-common/context/api";
 import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import NextBurn from "./nextBurn";
 import SpendPeriod from "./spendPeriod";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
-import { useEffect } from "react";
 import { usePolkadotTreasurySummary } from "../context";
 
 export default function RelayChainTreasury() {
-  const { setRelayChainDOTFree } = usePolkadotTreasurySummary();
+  const { relayChainFree } = usePolkadotTreasurySummary();
 
-  const api = useContextApi();
-
-  const free = useTreasuryFree(api);
   const summary = useSpendPeriodSummary();
   const toBeAwarded = useToBeAwarded();
-
-  useEffect(() => {
-    if (!free) return;
-
-    setRelayChainDOTFree(free);
-  }, [free, setRelayChainDOTFree]);
 
   return (
     <SummaryItem title="Relay Chain">
       <LoadableContent
-        isLoading={isNil(free) || isNil(toBeAwarded) || isNil(summary)}
+        isLoading={
+          isNil(relayChainFree) || isNil(toBeAwarded) || isNil(summary)
+        }
       >
-        <FiatPriceLabel free={free} />
+        <FiatPriceLabel free={relayChainFree} />
         <div className="!ml-0 flex flex-col gap-y-1">
           <div className="mb-3">
-            <DotTokenSymbolAsset free={free} />
+            <DotTokenSymbolAsset free={relayChainFree} />
           </div>
           <SummaryLabelItem label={"To be awarded"}>
             <ToBeAwarded toBeAwarded={toBeAwarded} />
           </SummaryLabelItem>
           <SummaryLabelItem label={"Next burn"}>
-            <NextBurn free={free} />
+            <NextBurn free={relayChainFree} />
           </SummaryLabelItem>
           <SummaryLabelItem label={"Spend period"}>
             <SpendPeriod summary={summary} />

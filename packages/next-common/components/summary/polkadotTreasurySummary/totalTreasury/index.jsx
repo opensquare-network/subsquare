@@ -4,46 +4,14 @@ import FiatPriceLabel from "../common/fiatPriceLabel";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { usePolkadotTreasurySummary } from "../context";
-import { useEffect, useState } from "react";
-import { isNil } from "lodash-es";
 
 export default function TotalTreasury() {
-  const {
-    USDtBalance,
-    USDCBalance,
-    DOTBalance,
-    relayChainFree,
-    multiAssetsFree,
-    fellowshipFree,
-  } = usePolkadotTreasurySummary();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (
-      isNil(USDtBalance) ||
-      isNil(USDCBalance) ||
-      isNil(DOTBalance) ||
-      isNil(relayChainFree) ||
-      isNil(multiAssetsFree) ||
-      isNil(fellowshipFree)
-    ) {
-      return;
-    }
-
-    setIsLoading(false);
-  }, [
-    USDtBalance,
-    USDCBalance,
-    relayChainFree,
-    multiAssetsFree,
-    fellowshipFree,
-    DOTBalance,
-    setIsLoading,
-  ]);
+  const { DOTBalance, USDtBalance, USDCBalance, isTotalAssetsLoading } =
+    usePolkadotTreasurySummary();
 
   return (
     <SummaryItem title="Total">
-      <LoadableContent isLoading={isLoading}>
+      <LoadableContent isLoading={isTotalAssetsLoading}>
         <FiatPriceLabel
           free={DOTBalance}
           USDtBalance={USDtBalance}
