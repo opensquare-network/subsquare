@@ -134,12 +134,7 @@ export const colTransferrable = {
 export const colTransfer = {
   name: "",
   style: { textAlign: "right", width: "80px", minWidth: "80px" },
-  render: (item) =>
-    item.type === "native" ? (
-      <CrossChainTransferButton />
-    ) : (
-      <TransferButton asset={item} />
-    ),
+  render: (item) => <TransferButton asset={item} />,
 };
 
 const columnsDef = [
