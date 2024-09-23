@@ -68,19 +68,15 @@ export function PolkadotTreasurySummaryProvider({ children }) {
     usdcBalance,
   ]);
 
+  const { relayChainFree, multiAssetsFree, fellowshipFree } = balances;
   useEffect(() => {
-    const { relayChainFree, multiAssetsFree, fellowshipFree } = balances;
     if (relayChainFree && multiAssetsFree && fellowshipFree) {
       const totalDOTBalance = BigNumber(relayChainFree)
         .plus(multiAssetsFree)
         .plus(fellowshipFree);
       setBalances((prev) => ({ ...prev, DOTBalance: totalDOTBalance }));
     }
-  }, [
-    balances.relayChainFree,
-    balances.multiAssetsFree,
-    balances.fellowshipFree,
-  ]);
+  }, [relayChainFree, multiAssetsFree, fellowshipFree]);
 
   useEffect(() => {
     setIsLoading({
