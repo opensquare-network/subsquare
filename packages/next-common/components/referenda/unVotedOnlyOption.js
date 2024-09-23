@@ -3,7 +3,7 @@ import Toggle from "../toggle";
 import Tooltip from "../tooltip";
 
 export default function UnVotedOnlyOption({
-  tooltip,
+  tooltip = "Only referenda I haven't voted",
   isLoading,
   isOn,
   setIsOn,
