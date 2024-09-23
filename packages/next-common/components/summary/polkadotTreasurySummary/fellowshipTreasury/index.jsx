@@ -30,9 +30,7 @@ export default function FellowshipTreasury() {
           target="_blank"
           rel="noreferrer"
         >
-          <span className="text-textTertiary hover:underline">
-            Fellowship Treasury
-          </span>
+          <span className="text-textTertiary hover:underline">Fellowship</span>
           <i className="text-textTertiary">&nbsp;↗</i>
         </Link>
       }

@@ -31,7 +31,7 @@ export default function RelayChainTreasury() {
   }, [free, setRelayChainDOTFree]);
 
   return (
-    <SummaryItem title="Relay Chain Treasury">
+    <SummaryItem title="Relay Chain">
       <LoadableContent
         isLoading={isNil(free) || isNil(toBeAwarded) || isNil(summary)}
       >

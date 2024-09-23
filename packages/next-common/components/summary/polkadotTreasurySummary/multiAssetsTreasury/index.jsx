@@ -63,9 +63,7 @@ export default function MultiAssetsTreasury() {
           target="_blank"
           rel="noreferrer"
         >
-          <span className="text-textTertiary hover:underline">
-            Multi Assets Treasury
-          </span>
+          <span className="text-textTertiary hover:underline">Asset Hub</span>
           <i className="text-textTertiary">&nbsp;↗</i>
         </Link>
       }

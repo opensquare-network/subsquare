@@ -42,7 +42,7 @@ export default function TotalTreasury() {
   ]);
 
   return (
-    <SummaryItem title="Total Treasury">
+    <SummaryItem title="Total">
       <LoadableContent isLoading={isLoading}>
         <FiatPriceLabel
           free={DOTBalance}
