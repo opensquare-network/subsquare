@@ -9,7 +9,6 @@ import {
 import BigNumber from "bignumber.js";
 import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
 import { useContextApi } from "next-common/context/api";
-import { isNil } from "lodash-es";
 
 const PolkadotTreasurySummaryContext = createContext();
 
@@ -21,79 +20,47 @@ const getAssetBySymbol = (symbol) =>
   StatemintAssets.find((asset) => asset.symbol === symbol);
 
 export function PolkadotTreasurySummaryProvider({ children }) {
-  const [balances, setBalances] = useState({
-    relayChainFree: null,
-    multiAssetsFree: null,
-    fellowshipFree: null,
-    USDtBalance: 0,
-    USDCBalance: 0,
-    DOTBalance: 0,
-  });
+  const [DOTBalance, setDOTBalance] = useState(0);
 
-  const [isLoading, setIsLoading] = useState({
-    isTotalAssetsLoading: true,
-    isFellowshipLoading: true,
-    isMultiAssetsLoading: true,
-  });
+  const [isTotalAssetsLoading, setIsTotalAssetsLoading] = useState(true);
 
   const api = useContextApi();
-  const relayChainFreeBalance = useTreasuryFree(api);
+  const relayChainFree = useTreasuryFree(api);
 
-  const { free: fellowshipFreeBalance, isLoading: isFellowshipLoading } =
+  const { free: fellowshipFree, isLoading: isFellowshipLoading } =
     useSubscribeFellowshipTreasuryFree(StatemintFellowShipTreasuryAccount);
 
-  const { free: multiAssetsFreeBalance, isLoading: isMultiAssetsLoading } =
+  const { free: multiAssetsFree, isLoading: isMultiAssetsLoading } =
     useSubscribeFellowshipTreasuryFree(StatemintTreasuryAccount);
 
   const usdtAsset = getAssetBySymbol("USDt");
   const usdcAsset = getAssetBySymbol("USDC");
 
-  const usdtBalance = useAssetBalance(usdtAsset);
-  const usdcBalance = useAssetBalance(usdcAsset);
+  const USDtBalance = useAssetBalance(usdtAsset);
+  const USDCBalance = useAssetBalance(usdcAsset);
 
-  useEffect(() => {
-    setBalances((prev) => ({
-      ...prev,
-      relayChainFree: relayChainFreeBalance || prev.relayChainFree,
-      multiAssetsFree: multiAssetsFreeBalance || prev.multiAssetsFree,
-      fellowshipFree: fellowshipFreeBalance || prev.fellowshipFree,
-      USDtBalance: usdtBalance || prev.USDtBalance,
-      USDCBalance: usdcBalance || prev.USDCBalance,
-    }));
-  }, [
-    relayChainFreeBalance,
-    multiAssetsFreeBalance,
-    fellowshipFreeBalance,
-    usdtBalance,
-    usdcBalance,
-  ]);
-
-  const { relayChainFree, multiAssetsFree, fellowshipFree } = balances;
   useEffect(() => {
     if (relayChainFree && multiAssetsFree && fellowshipFree) {
       const totalDOTBalance = BigNumber(relayChainFree)
         .plus(multiAssetsFree)
         .plus(fellowshipFree);
-      setBalances((prev) => ({ ...prev, DOTBalance: totalDOTBalance }));
+      setDOTBalance(totalDOTBalance);
+      setIsTotalAssetsLoading(false);
     }
   }, [relayChainFree, multiAssetsFree, fellowshipFree]);
-
-  useEffect(() => {
-    setIsLoading({
-      isFellowshipLoading,
-      isMultiAssetsLoading,
-      isTotalAssetsLoading:
-        isFellowshipLoading ||
-        isMultiAssetsLoading ||
-        Object.values(balances).some(isNil),
-    });
-  }, [isFellowshipLoading, isMultiAssetsLoading, balances]);
 
   return (
     <PolkadotTreasurySummaryContext.Provider
       value={{
-        ...balances,
-        ...isLoading,
+        relayChainFree,
+        multiAssetsFree,
+        fellowshipFree,
+        USDtBalance,
+        USDCBalance,
+        DOTBalance,
+        isFellowshipLoading,
+        isMultiAssetsLoading,
+        isTotalAssetsLoading,
       }}
     >
       {children}
