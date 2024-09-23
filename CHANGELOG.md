@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.2.8
+
+date: 2024-09-23
+
+- [Big] Support fellowship sub treasury.
+    - Scan treasury related events/extrinsics and serve related data via API.
+    - Add fellowship treasury list and detail page.
+    - Add a treasury spend template on fellowship new referenda popup.
+- [Medium] Support creating proposal for collectives like council, astar community council, etc.
+- [Medium] Support multi assets treasury for polkadot.
+- Refactor chain settings for modules control.
+- Fix menu active count.
+- Add filters on fellowship members page.
+- Improve Astar community council treasury approval template with a treasury proposal select component.
+- Fix editor style issues by correcting dependency to styled components.
+- Fix transferable on assethub teleport popup.
+- Improve treasury spend paid state color.
+- Upgrade dependency to vite and next.js.
+- Enhance view for very small value.
+- Improve the way to check loading for collective(council) members.
+- Fix styles and refactor code.
+
 ### 4.2.7
 
 date: 2024-09-11
