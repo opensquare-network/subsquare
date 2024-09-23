@@ -2,7 +2,7 @@ import { isEmpty } from "lodash-es";
 import nextApi from "next-common/services/nextApi";
 import { omit } from "lodash-es";
 
-export default async function getOpenGovReferendaPosts(indexes = []) {
+export async function getOpenGovReferendaPosts(indexes = []) {
   if (isEmpty(indexes)) {
     return [];
   }
