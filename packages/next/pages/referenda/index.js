@@ -33,7 +33,6 @@ import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 import { useAsync } from "react-use";
 
 function useMyVotedReferenda() {
-  useFetchMyReferendaVoting();
   const voting = useSelector(myReferendaVotingSelector);
   const isLoading = useSelector(isLoadingReferendaVotingSelector);
   const myVotedReferenda = useMemo(() => {
@@ -78,6 +77,7 @@ function useUnVotedActiveReferenda() {
 function useMyUnVotedReferendaPosts() {
   const { unVotedActiveReferenda, isLoading: isLoadingUnVotedActiveReferenda } =
     useUnVotedActiveReferenda();
+
   const { value: referenda, loading: isLoadingReferendaPosts } =
     useAsync(async () => {
       if (isLoadingUnVotedActiveReferenda) {
@@ -248,16 +248,18 @@ function FullList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
 }
 
 export default function ReferendaPage({ title, gov2ReferendaSummary }) {
+  useFetchMyReferendaVoting();
+
   const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useState(false);
   const seoInfo = { title, desc: title };
 
   return (
-    <ActiveReferendaProvider pallet="referenda">
-      <ReferendaLayout
-        seoInfo={seoInfo}
-        title={title}
-        summaryData={gov2ReferendaSummary}
-      >
+    <ReferendaLayout
+      seoInfo={seoInfo}
+      title={title}
+      summaryData={gov2ReferendaSummary}
+    >
+      <ActiveReferendaProvider pallet="referenda">
         {isShowUnVotedOnly ? (
           <UnVotedOnlyList
             isShowUnVotedOnly={isShowUnVotedOnly}
@@ -269,8 +271,8 @@ export default function ReferendaPage({ title, gov2ReferendaSummary }) {
             setIsShowUnVotedOnly={setIsShowUnVotedOnly}
           />
         )}
-      </ReferendaLayout>
-    </ActiveReferendaProvider>
+      </ActiveReferendaProvider>
+    </ReferendaLayout>
   );
 }
 
