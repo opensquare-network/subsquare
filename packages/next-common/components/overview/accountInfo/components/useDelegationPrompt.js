@@ -15,8 +15,9 @@ export default function useDelegationPrompt() {
   );
 
   const {
-    modules: { referenda: hasReferenda, democracy: hasDemocracy },
+    modules: { referenda: hasReferenda, democracy },
   } = chainSettings;
+  const hasDemocracy = democracy && !democracy?.archived;
   const hasDelegation =
     (hasReferenda || hasDemocracy) && !isKintsugiChain(chain);
 

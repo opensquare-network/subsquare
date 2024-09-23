@@ -7,8 +7,9 @@ import {
 
 export default function PalletTabs({ shallow, children }) {
   const {
-    modules: { referenda: hasReferenda, democracy: hasDemocracyModule },
+    modules: { referenda: hasReferenda, democracy },
   } = useChainSettings();
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   const availableTabs = [];
   if (hasReferenda) {

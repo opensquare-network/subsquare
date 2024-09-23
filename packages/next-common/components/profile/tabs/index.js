@@ -10,15 +10,12 @@ import { useProfileCollectivesTabs } from "./useProfileCollectivesTabs";
 export default function useProfileTabs() {
   const { id } = usePageProps();
   const {
-    modules: {
-      referenda: hasReferenda,
-      fellowship: hasFellowship,
-      democracy: hasDemocracyModule,
-    },
+    modules: { referenda: hasReferenda, fellowship: hasFellowship, democracy },
     integrations,
     hasMultisig,
     hasIdentityTimeline,
   } = useChainSettings();
+  const hasDemocracyModule = democracy && !democracy?.archived;
   const activeMultisigsCount = useSelector(profileActiveMultisigsCountSelector);
   const depositsCount = useDepositsCount();
 

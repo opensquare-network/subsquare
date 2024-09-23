@@ -28,11 +28,13 @@ export function useDepositSections(
       modules: {
         referenda: hasReferenda,
         fellowship: hasFellowship,
-        democracy: hasDemocracyModule,
+        democracy: hasDemocracy,
         treasury: hasTreasury,
       },
       noIdentityModule,
     } = chainSettings;
+
+    const hasDemocracyModule = hasDemocracy && !hasDemocracy?.archived;
 
     const hasTreasuryTips = hasTreasury?.tips && !hasTreasury?.tips?.archived;
 

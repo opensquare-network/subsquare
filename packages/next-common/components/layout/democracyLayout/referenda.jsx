@@ -11,8 +11,10 @@ export default function DemocracyReferendaLayout({ summaryData, ...props }) {
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
   const user = useUser();
   const {
-    modules: { democracy: hasDemocracyModule },
+    modules: { democracy },
   } = chainSettings;
+
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   return (
     <ListLayout

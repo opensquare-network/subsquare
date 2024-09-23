@@ -11,8 +11,10 @@ import AccountSubTabs from "next-common/components/overview/account/subTabs";
 
 function MyVoteLayout({ children }) {
   const {
-    modules: { referenda: hasReferenda, democracy: hasDemocracyModule },
+    modules: { referenda: hasReferenda, democracy },
   } = useChainSettings();
+
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   const availableTabs = [];
   if (hasReferenda) {

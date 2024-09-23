@@ -23,9 +23,10 @@ export default function DemocracySummary({ summary = {} }) {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const {
-    modules: { democracy: hasDemocracyModule },
+    modules: { democracy },
   } = chainSettings;
   const summaryData = useDemocracySummaryData(summary);
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
   const progress = useLaunchProgress();
