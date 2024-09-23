@@ -98,7 +98,7 @@ function TreasuryProposalsItem() {
   );
 }
 
-function FellowshipTreasuryAvailableItem({price}) {
+function FellowshipTreasuryAvailableItem({ price }) {
   const api = useAssetHubApi();
   const { result } = useSubStorage("system", "account", [StatemintFellowShipTreasuryAccount], {
     api,
