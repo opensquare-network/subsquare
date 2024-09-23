@@ -33,12 +33,9 @@ const kusama = {
   navPreferDark: true,
   group: MenuGroups.KusamaAndParachains,
   links: kusamaLinks,
-  hasStatescan: true,
   graphqlApiSubDomain: "ksm-gh-api",
-  hasSubscan: true,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  hasDotreasury: true,
   hasMultisig: true,
   multisigApiPrefix: "kusama",
   showAchainableLabels: true,
@@ -65,6 +62,9 @@ const kusama = {
     },
   }),
   integrations: {
+    doTreasury: true,
+    statescan: true,
+    subscan: true,
     discourseForum: {
       link: "https://forum.polkadot.network",
     },

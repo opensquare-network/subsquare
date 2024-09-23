@@ -24,7 +24,7 @@ export default function PostDataSource() {
     },
     {
       label: <LinkSubscan />,
-      when: chainSettings.hasSubscan,
+      when: chainSettings.integrations?.subscan,
       link: getSubscanLink(chain, type, post),
     },
   ].filter((source) => source.when && source.link);

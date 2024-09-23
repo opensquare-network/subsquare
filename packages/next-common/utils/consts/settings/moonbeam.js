@@ -44,8 +44,6 @@ const moonbeam = {
   navPreferDark: true,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
-  hasSubscan: true,
-  subscanDomain: "moonbeam",
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
   noDispatchPrecompile: true,
@@ -70,6 +68,11 @@ const moonbeam = {
       tips: false,
     },
   }),
+  integrations: {
+    subscan: {
+      domain: "moonbeam",
+    },
+  },
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",
     theme300: "rgba(230,0,122,0.40)",

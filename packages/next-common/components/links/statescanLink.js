@@ -11,8 +11,8 @@ const statescanDomainMap = {
 
 export default function StatescanLink({ indexer, children }) {
   const chain = useChain();
-  const { hasStatescan } = useChainSettings();
-  if (!hasStatescan) {
+  const { integrations } = useChainSettings();
+  if (!integrations?.statescan) {
     return null;
   }
 

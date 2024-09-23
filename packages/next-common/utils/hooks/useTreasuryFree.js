@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useMountedState } from "react-use";
 import { u8aConcat } from "@polkadot/util";
 import { Kintsugi, Interlay } from "@interlay/monetary-js";
-import Chains from "../consts/chains";
-import { useChain } from "../../context/chain";
+import Chains from "next-common/utils/consts/chains";
+import { useChain } from "next-common/context/chain";
 import { useTreasuryPallet } from "next-common/context/treasury";
 import { encodeAddressToChain } from "next-common/services/address";
 

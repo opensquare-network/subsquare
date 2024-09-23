@@ -6,11 +6,16 @@ export function getSubscanLink(chain, type, post) {
     return null;
   }
 
-  const { subscanDomain } = getChainSettings(chain);
-  const sub = subscanDomain || chain;
+  const { integrations } = getChainSettings(chain);
+
+  if (!integrations?.subscan) {
+    return null;
+  }
+
+  const domain = integrations.subscan.domain || chain;
 
   const makeLink = (path = "") => {
-    return `https://${sub}.subscan.io${path}`;
+    return `https://${domain}.subscan.io${path}`;
   };
 
   // prettier-ignore

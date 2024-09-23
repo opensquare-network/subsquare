@@ -85,7 +85,6 @@ const phala = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description:
     "Phala Network, an off-chain compute network powered by Secure Enclaves, can be utilized to build the MEV core stack with minimal trust assumptions.",
   useVoteCall: true,
@@ -96,6 +95,9 @@ const phala = {
       childBounties: true,
     },
   }),
+  integrations: {
+    subscan: true,
+  },
   cssVarsLight: {
     theme100: "rgba(192,236,69,0.10)",
     theme300: "rgba(192,236,69,0.40)",

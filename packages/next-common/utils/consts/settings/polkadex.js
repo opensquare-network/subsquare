@@ -32,9 +32,11 @@ const polkadex = {
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description:
     "Trade crypto with fully decentralized peer-to-peer orderbook based trading engine for Web3. Polkadex Orderbook - the CEXiest DEX in DeFi.",
+  integrations: {
+    subscan: true,
+  },
 };
 
 export default polkadex;

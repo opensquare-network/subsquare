@@ -34,9 +34,11 @@ const calamari = {
   avatar: Avatar,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description:
     "Calamari Network is the canary network of Manta Network, and empowers web2 and web3 applications with trustless, private on-chain identity and transaction services.",
+  integrations: {
+    subscan: true,
+  },
 };
 
 export default calamari;

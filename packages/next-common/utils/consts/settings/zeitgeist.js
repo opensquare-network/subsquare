@@ -63,7 +63,6 @@ const zeitgeist = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],
-  hasSubscan: true,
   useVoteCall: true,
   description:
     "A Prediction Markets protocol built on Polkadot. With the world’s leading forecasting minds, we’re building the best prediction markets app available.",
@@ -74,6 +73,9 @@ const zeitgeist = {
     },
     advisoryCommittee: true,
   }),
+  integrations: {
+    subscan: true,
+  },
   cssVarsLight: {
     theme100: "rgba(28,100,242,0.10)",
     theme300: "rgba(28,100,242,0.40)",

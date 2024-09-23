@@ -9,13 +9,13 @@ const LinkPolkascan = dynamic(() =>
 );
 
 export default function PolkascanLink({ indexer = {}, children }) {
-  const { hasPolkascan, polkascanUrl } = useChainSettings();
-  if (!hasPolkascan) {
+  const { integrations } = useChainSettings();
+  if (!integrations?.polkascan) {
     return null;
   }
 
   const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
-  let url = polkascanUrl;
+  let url = integrations.polkascan.link;
   if (!isNil(extrinsicIndex) || !isNil(index)) {
     url += `/extrinsic/${blockHeight}-${extrinsicIndex ?? index}`;
   } else if (!isNil(eventIndex)) {

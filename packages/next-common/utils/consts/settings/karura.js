@@ -89,7 +89,6 @@ const karura = {
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
-  hasSubscan: true,
   noIdentityModule: true,
   useVoteCall: true,
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
@@ -97,6 +96,7 @@ const karura = {
     financialCouncil: true,
   }),
   integrations: {
+    subscan: true,
     discourseForum: {
       link: "https://acala.discourse.group",
     },

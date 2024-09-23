@@ -11,12 +11,13 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 const CallPopup = dynamicPopup(() => import("./callPopup"));
 
 export function When({ height, index }) {
-  const { hasSubscan, subscanDomain } = useChainSettings();
   const chain = useChain();
-  const domain = subscanDomain || chain;
-  if (!hasSubscan) {
+  const { integrations } = useChainSettings();
+  if (!integrations?.subscan) {
     return null;
   }
+
+  const domain = integrations.subscan.domain || chain;
 
   return (
     <ExternalLink

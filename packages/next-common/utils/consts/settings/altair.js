@@ -56,7 +56,6 @@ const altair = {
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
-  hasSubscan: true,
   description:
     "The home for financing assets on Kusama. Powered by Centrifuge.",
   modules: mergeChainModules({
@@ -69,6 +68,7 @@ const altair = {
     technicalCommittee: false,
   }),
   integrations: {
+    subscan: true,
     discourseForum: {
       link: "https://gov.centrifuge.io",
     },

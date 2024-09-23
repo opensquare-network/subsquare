@@ -78,14 +78,17 @@ const bifrost = {
   navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
-  subscanDomain: "bifrost-kusama",
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description: "The Liquid Staking Standard for Any Chain.",
   modules: mergeChainModules({
     referenda: true,
     fellowship: true,
   }),
+  integrations: {
+    subscan: {
+      domain: "bifrost-kusama",
+    },
+  },
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "kbnc",

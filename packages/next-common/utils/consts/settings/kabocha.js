@@ -9,7 +9,6 @@ const kabocha = {
   // symbol: "",
   // decimals: 0,
   // hasElections: true,
-  hasSubscan: true,
   hasTreasury: false,
   modules: mergeChainModules({
     democracy: false,
@@ -17,6 +16,9 @@ const kabocha = {
     council: false,
     technicalCommittee: false,
   }),
+  integrations: {
+    subscan: true,
+  },
 };
 
 export default kabocha;

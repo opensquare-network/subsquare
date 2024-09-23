@@ -30,7 +30,7 @@ export default function ChildBountiesPage({ bounties }) {
             label: "Child Bounties",
             url: "/treasury/child-bounties",
           },
-          chainSettings.hasDotreasury && {
+          chainSettings.integrations?.doTreasury && {
             label: "Statistics",
             url: `https://dotreasury.com/${lowerCase(
               chainSettings.symbol,

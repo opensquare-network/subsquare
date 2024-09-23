@@ -8,8 +8,13 @@ export default function LargeDataPlaceHolder({
   proposalIndex,
 }) {
   const chain = useChain();
-  const { hasSubscan, subscanDomain } = useChainSettings();
-  const domain = subscanDomain || chain;
+  const { integrations } = useChainSettings();
+
+  if (!integrations?.subscan) {
+    return null;
+  }
+
+  const domain = integrations.subscan.domain || chain;
   let subscanLink =
     referendumIndex !== undefined
       ? `https://${domain}.subscan.io/referenda/${referendumIndex}`
@@ -18,8 +23,7 @@ export default function LargeDataPlaceHolder({
       : `https://${domain}.subscan.io/democracy_proposal/${proposalIndex}`;
 
   return (
-    !isNil(referendumIndex) &&
-    hasSubscan && (
+    !isNil(referendumIndex) && (
       <ExternalLink href={subscanLink}>
         Large data, please check it on subscan
       </ExternalLink>

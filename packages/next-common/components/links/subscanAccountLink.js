@@ -4,14 +4,16 @@ import { LinkSubscan } from "@osn/icons/subsquare";
 
 export default function SubScanAccountLink({ address }) {
   const chain = useChain();
-  const { hasSubscan, subscanDomain } = useChainSettings();
-  if (!hasSubscan) {
+  const { integrations } = useChainSettings();
+  if (!integrations?.subscan) {
     return null;
   }
 
+  const domain = integrations.subscan.domain || chain;
+
   return (
     <IconLink
-      href={`https://${subscanDomain || chain}.subscan.io/account/${address}`}
+      href={`https://${domain}.subscan.io/account/${address}`}
       icon={<LinkSubscan />}
     />
   );
