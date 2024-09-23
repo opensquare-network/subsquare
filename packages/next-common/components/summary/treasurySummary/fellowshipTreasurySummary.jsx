@@ -83,11 +83,12 @@ function TreasuryProposalsItem() {
     (spend) => spend?.value?.status?.isPending,
   ).length;
   const total = allSpends.length;
+
   return (
-    <SummaryItem title="Treasury Proposals">
+    <SummaryItem title="Spends">
       <LoadableContent isLoading={isAllSpendsLoading}>
         <div className="flex gap-[4px]">
-          <Tooltip content="Active proposals">
+          <Tooltip content="Active spends">
             <span className="text-textPrimary">{active}</span>
           </Tooltip>
           <span className="text-textDisabled">/</span>
@@ -98,18 +99,23 @@ function TreasuryProposalsItem() {
   );
 }
 
-export default function FellowshipTreasurySummary() {
-  const { price } = useFiatPrice();
+function FellowshipTreasuryAvailableItem({price}) {
   const api = useAssetHubApi();
   const { result } = useSubStorage("system", "account", [StatemintFellowShipTreasuryAccount], {
     api,
   });
 
+  return <AvailableItem free={result?.data?.free?.toString()} price={price} />;
+}
+
+export default function FellowshipTreasurySummary() {
+  const { price } = useFiatPrice();
+
   return (
     <ActiveReferendaProvider pallet="fellowshipReferenda">
       <TreasuryProvider pallet="fellowshipTreasury">
         <SummaryLayout>
-          <AvailableItem free={result?.data?.free?.toString()} price={price} />
+          <FellowshipTreasuryAvailableItem price={price} />
           <RequestingItem price={price} />
           <ToBeAwardedItem price={price} />
           <TreasuryProposalsItem />
