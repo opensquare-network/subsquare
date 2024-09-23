@@ -1,73 +1,35 @@
-import React from "react";
-import styled, { css } from "styled-components";
-
-const Wrapper = styled.div`
-  position: relative;
-  cursor: pointer;
-  width: 38px;
-  height: 22px;
-  background: var(--neutral500);
-  border-radius: 16px;
-  > div {
-    width: 14px;
-    height: 14px;
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    background: var(--neutral100);
-    border-radius: 7px;
-  }
-  ${(p) =>
-    p.disabled
-      ? css`
-          cursor: default;
-          background: var(--neutral300);
-          > div {
-            right: 4px;
-          }
-        `
-      : p.active
-      ? css`
-          background: var(--theme500);
-          > div {
-            left: auto;
-            right: 4px;
-          }
-        `
-      : null}
-  ${(p) =>
-    p.size === "small" &&
-    css`
-      width: 32px;
-      height: 20px;
-      > div {
-        width: 12px;
-        height: 12px;
-        top: 4px;
-        left: 4px;
-        border-radius: 8px;
-      }
-      ${(p) =>
-        p.active &&
-        css`
-          background: var(--theme500);
-          > div {
-            left: auto;
-            right: 3px;
-          }
-        `}
-    `}
-`;
+import { cn } from "next-common/utils";
 
 export default function Toggle({ disabled, isOn, onToggle, size }) {
+  const small = size === "small";
+
   return (
-    <Wrapper
+    <div
+      role="button"
       disabled={disabled}
-      active={isOn}
-      onClick={() => onToggle(!isOn)}
-      size={size}
+      className={cn(
+        "relative",
+        "w-[38px] h-[22px]",
+        "bg-neutral500",
+        "rounded-full",
+        small && "w-8 h-5",
+        isOn && "bg-theme500",
+        disabled && "bg-neutral300",
+      )}
+      onClick={() => {
+        onToggle(!isOn);
+      }}
     >
-      <div />
-    </Wrapper>
+      <div
+        className={cn(
+          "w-[14px] h-[14px]",
+          "absolute top-1 left-1",
+          "bg-neutral100",
+          "rounded-full",
+          small && "w-3 h-3",
+          isOn && "left-auto right-1",
+        )}
+      />
+    </div>
   );
 }
