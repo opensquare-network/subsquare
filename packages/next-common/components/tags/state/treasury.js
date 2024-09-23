@@ -70,7 +70,7 @@ const childBountyStateTagMap = {
 
 const spendStateTagMap = {
   Approved: StartTag,
-  Paid: ActiveTag,
+  Paid: PositiveTag,
   Processed: PositiveTag,
   Voided: NegativeTag,
 };
