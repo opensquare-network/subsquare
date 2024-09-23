@@ -64,9 +64,6 @@ const zkverifyTestnet = {
   links,
   group: MenuGroups.Solochain,
   postLabels: [],
-  hasSubscan: false,
-  hasPolkascan: true,
-  polkascanUrl: "https://testnet-explorer.zkverify.io",
   showAccountManagementTab: false,
   description: "The modular blockchain for ZK proof verification.",
   modules: mergeChainModules({
@@ -76,6 +73,11 @@ const zkverifyTestnet = {
     council: false,
     technicalCommittee: false,
   }),
+  integrations: {
+    polkascan: {
+      link: "https://testnet-explorer.zkverify.io",
+    },
+  },
   cssVarsLight: {
     theme100: "rgba(38,219,141,0.10)",
     theme300: "rgba(38,219,141,0.40)",

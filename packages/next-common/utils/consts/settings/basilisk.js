@@ -69,7 +69,6 @@ const basilisk = {
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   useVoteCall: true,
   description:
     "Snek brings permissionless liquidity to the Kusama ecosystem. Swap tokens, flip NFTs and earn rewards. Help young crypto projects bootstrap liquidity and receive tokens.",
@@ -79,6 +78,9 @@ const basilisk = {
       bounties: false,
     },
   }),
+  integrations: {
+    subscan: true,
+  },
   cssVarsLight: {
     theme100: "rgba(63,227,154,0.10)",
     theme300: "rgba(63,227,154,0.40)",

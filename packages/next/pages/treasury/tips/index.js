@@ -27,7 +27,7 @@ export default function TipsPage({ tips: ssrTips }) {
   const [showPopup, setShowPopup] = useState(false);
   const [tips, setTips] = useState(ssrTips);
   useEffect(() => setTips(ssrTips), [ssrTips]);
-  const { hasDotreasury, symbol, hideActionButtons } = useChainSettings();
+  const { integrations, symbol, hideActionButtons } = useChainSettings();
   const hasTips = useHasTips();
 
   const items = (tips.items || []).map((item) =>
@@ -70,7 +70,7 @@ export default function TipsPage({ tips: ssrTips }) {
               label: "Tips",
               url: "/treasury/tips",
             },
-            hasDotreasury && {
+            integrations?.doTreasury && {
               label: "Statistics",
               url: `https://dotreasury.com/${lowerCase(symbol)}/tips`,
             },

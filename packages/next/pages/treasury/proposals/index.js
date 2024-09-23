@@ -16,7 +16,7 @@ import NewTreasuryProposal from "next-common/components/treasury/proposal/newTre
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
-  const { hasDotreasury, showNewTreasuryProposalButton } = useChainSettings();
+  const { integrations, showNewTreasuryProposalButton } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
@@ -39,7 +39,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
             label: "Proposals",
             url: treasuryProposalListUrl,
           },
-          hasDotreasury && {
+          integrations?.doTreasury && {
             label: "Statistics",
             url: `https://${chain}.dotreasury.com`,
           },

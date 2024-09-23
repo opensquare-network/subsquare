@@ -77,7 +77,6 @@ const interlay = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
-  hasSubscan: true,
   description:
     "Interlay is building the safest and easiest way to use Bitcoin in decentralized finance: a one-stop-shop for all things Bitcoin finance, including trading, lending, and staking.",
   useVoteCall: true,
@@ -93,6 +92,9 @@ const interlay = {
     },
     council: false,
   }),
+  integrations: {
+    subscan: true,
+  },
   cssVarsLight: {
     theme100: "rgba(7,90,188,0.10)",
     theme300: "rgba(7,90,188,0.40)",

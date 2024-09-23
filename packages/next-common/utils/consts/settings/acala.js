@@ -91,7 +91,6 @@ const acala = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
-  hasSubscan: true,
   noIdentityModule: true,
   useVoteCall: true,
   hasMultisig: true,
@@ -101,6 +100,7 @@ const acala = {
     financialCouncil: true,
   }),
   integrations: {
+    subscan: true,
     discourseForum: {
       link: "https://acala.discourse.group",
     },

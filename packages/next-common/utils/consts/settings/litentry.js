@@ -79,8 +79,6 @@ const litentry = {
   navPreferDark: true,
   links,
   group: MenuGroups.PolkadotAndParachains,
-  hasStatescan: true,
-  hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
   noIdentityModule: true,
@@ -93,6 +91,9 @@ const litentry = {
       tips: false,
     },
   }),
+  integrations: {
+    statescan: true,
+  },
   cssVarsLight: {
     theme100: "rgba(21,184,135,0.10)",
     theme300: "rgba(21,184,135,0.40)",

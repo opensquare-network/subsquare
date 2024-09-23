@@ -29,7 +29,7 @@ export default function BountiesPage({ bounties, chain }) {
             label: "Bounties",
             url: "/treasury/bounties",
           },
-          chainSettings.hasDotreasury && {
+          chainSettings.integrations?.doTreasury && {
             label: "Statistics",
             url: `https://dotreasury.com/${lowerCase(
               chainSettings.symbol,

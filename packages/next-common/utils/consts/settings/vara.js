@@ -85,9 +85,6 @@ const vara = {
   navPreferDark: true,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasStatescan: false,
-  hasSubscan: true,
-  hasDotreasury: false,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "vara",
@@ -104,6 +101,9 @@ const vara = {
     council: false,
     technicalCommittee: false,
   }),
+  integrations: {
+    subscan: true,
+  },
   cssVarsLight: {
     theme100: "rgba(11,234,179,0.10)",
     theme300: "rgba(11,234,179,0.40)",
