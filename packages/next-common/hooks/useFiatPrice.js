@@ -1,6 +1,8 @@
 import { gql } from "@apollo/client";
-import { useDoTreasuryEcoLazyQuery } from "next-common/hooks/apollo";
 import { useChain } from "next-common/context/chain";
+import { useDoTreasuryEcoLazyQuery } from "next-common/hooks/apollo";
+import collectives from "next-common/utils/consts/settings/collectives";
+import polkadot from "next-common/utils/consts/settings/polkadot";
 import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
 import bifrost from "next-common/utils/consts/settings/bifrost";
 import { find } from "lodash-es";
@@ -17,9 +19,10 @@ const GET_TREASURIES = gql`
 
 const CHAIN_VALUE_TREASURY_MAP = {
   [bifrostPolkadot.value]: bifrost.value,
+  [collectives.value]: polkadot.value,
 };
 
-export default function useBifrostPolkadotFiatPrice() {
+export default function useFiatPrice() {
   const chain = useChain();
 
   const [getTreasuries, { data, loading }] =
