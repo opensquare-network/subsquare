@@ -1,6 +1,6 @@
-import { cloneDeep, isObject, merge } from "lodash-es";
+import { cloneDeep, merge } from "lodash-es";
 
-// common modules snapshot
+// polkadot menu snapshot
 const base = {
   // common menu
   discussions: true,
@@ -40,33 +40,10 @@ const base = {
 };
 
 /**
- * if a pallet is true, returns true.
- * if a pallet is an object returns this object;
- *  if the pallet has archived: true, returns false.
- */
-function createPalletModules(pallet) {
-  return new Proxy(pallet, {
-    get(target, key) {
-      const value = Reflect.get(target, key);
-
-      if (isObject(value)) {
-        if (value.archived) {
-          return false;
-        }
-
-        return createPalletModules(value);
-      }
-
-      return value;
-    },
-  });
-}
-
-/**
+ *
  * @param {typeof base} modules
+ * @returns typeof base
  */
 export function mergeChainModules(modules) {
-  /** @type {typeof base} */
-  const m = createPalletModules(merge(cloneDeep(base), modules));
-  return m;
+  return merge(cloneDeep(base), modules);
 }
