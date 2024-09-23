@@ -106,6 +106,7 @@ function ReferendaListFilters({
     <div className="flex flex-wrap gap-[12px] sm:items-center">
       {address && (
         <UnVotedOnlyOption
+          tooltip="Only referenda I haven't voted"
           isLoading={isUnVotedOnlyLoading}
           isOn={isShowUnVotedOnly}
           setIsOn={setIsShowUnVotedOnly}

@@ -2,7 +2,12 @@ import Loading from "../loading";
 import Toggle from "../toggle";
 import Tooltip from "../tooltip";
 
-export default function UnVotedOnlyOption({ isLoading, isOn, setIsOn }) {
+export default function UnVotedOnlyOption({
+  tooltip,
+  isLoading,
+  isOn,
+  setIsOn,
+}) {
   const onToggle = () => {
     setIsOn(!isOn);
   };
@@ -13,7 +18,7 @@ export default function UnVotedOnlyOption({ isLoading, isOn, setIsOn }) {
         <span className="text-textSecondary whitespace-nowrap">
           Un-voted Only
         </span>
-        <Tooltip content={"Only referenda I can but haven't voted"} />
+        <Tooltip content={tooltip} />
       </div>
       {isLoading ? (
         <Loading size={20} />

@@ -78,6 +78,7 @@ function WithFilterPostList({
         <div className="flex gap-[12px] items-center">
           {address && (
             <UnVotedOnlyOption
+              tooltip="Only referenda I can but haven't voted"
               isLoading={isUnVotedOnlyLoading}
               isOn={isShowUnVotedOnly}
               setIsOn={setIsShowUnVotedOnly}
