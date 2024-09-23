@@ -18,7 +18,7 @@ function PolkadotTreasurySummaryInContext() {
     multiAssetsFree,
     fellowshipFree,
     setDOTBalance,
-    setIsLoading,
+    setIsTotalTreasuryLoading,
   } = usePolkadotTreasurySummary();
 
   useEffect(() => {
@@ -34,13 +34,13 @@ function PolkadotTreasurySummaryInContext() {
       .plus(multiAssetsFree)
       .plus(fellowshipFree);
     setDOTBalance(DOTBalanceTotal);
-    setIsLoading(false);
+    setIsTotalTreasuryLoading(false);
   }, [
     relayChainFree,
     multiAssetsFree,
     fellowshipFree,
     setDOTBalance,
-    setIsLoading,
+    setIsTotalTreasuryLoading,
   ]);
 
   return (

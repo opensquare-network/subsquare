@@ -6,12 +6,12 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import { usePolkadotTreasurySummary } from "../context";
 
 export default function TotalTreasury() {
-  const { USDtBalance, USDCBalance, DOTBalance, isLoading } =
+  const { USDtBalance, USDCBalance, DOTBalance, isTotalTreasuryLoading } =
     usePolkadotTreasurySummary();
 
   return (
     <SummaryItem title="Total Treasury">
-      <LoadableContent isLoading={isLoading}>
+      <LoadableContent isLoading={isTotalTreasuryLoading}>
         <FiatPriceLabel
           free={DOTBalance}
           USDtBalance={USDtBalance}

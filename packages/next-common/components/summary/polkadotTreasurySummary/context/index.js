@@ -9,7 +9,7 @@ export function PolkadotTreasurySummaryProvider({ children }) {
   const [USDtBalance, setUSDtBalance] = useState(0);
   const [USDCBalance, setUSDCBalance] = useState(0);
   const [DOTBalance, setDOTBalance] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isTotalTreasuryLoading, setIsTotalTreasuryLoading] = useState(true);
 
   return (
     <PolkadotTreasurySummaryContext.Provider
@@ -26,8 +26,8 @@ export function PolkadotTreasurySummaryProvider({ children }) {
         setUSDCBalance,
         DOTBalance,
         setDOTBalance,
-        isLoading,
-        setIsLoading,
+        isTotalTreasuryLoading,
+        setIsTotalTreasuryLoading,
       }}
     >
       {children}
