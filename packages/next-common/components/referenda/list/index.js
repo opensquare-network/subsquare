@@ -182,7 +182,10 @@ function PagedUnVotedOnlyList({
   );
 }
 
-export function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
+export function UnVotedOnlyReferendaList({
+  isShowUnVotedOnly,
+  setIsShowUnVotedOnly,
+}) {
   const { posts } = usePageProps();
   const { posts: unVotedPosts, isLoading } = useMyUnVotedReferendaPosts();
 
@@ -214,7 +217,7 @@ export function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
   );
 }
 
-export function FullList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
+export function FullReferendaList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
   const { posts } = usePageProps();
 
   return (

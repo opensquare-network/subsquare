@@ -13,8 +13,8 @@ import { useState } from "react";
 import useFetchMyReferendaVoting from "components/myvotes/referenda/useFetchMyReferendaVoting";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import {
-  FullList,
-  UnVotedOnlyList,
+  FullReferendaList,
+  UnVotedOnlyReferendaList,
 } from "next-common/components/referenda/list";
 
 export default function ReferendaPage({ title, gov2ReferendaSummary }) {
@@ -31,12 +31,12 @@ export default function ReferendaPage({ title, gov2ReferendaSummary }) {
     >
       <ActiveReferendaProvider pallet="referenda">
         {isShowUnVotedOnly ? (
-          <UnVotedOnlyList
+          <UnVotedOnlyReferendaList
             isShowUnVotedOnly={isShowUnVotedOnly}
             setIsShowUnVotedOnly={setIsShowUnVotedOnly}
           />
         ) : (
-          <FullList
+          <FullReferendaList
             isShowUnVotedOnly={isShowUnVotedOnly}
             setIsShowUnVotedOnly={setIsShowUnVotedOnly}
           />
