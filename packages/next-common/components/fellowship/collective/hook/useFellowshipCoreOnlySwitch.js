@@ -10,7 +10,7 @@ function FellowshipCoreOnlySwitch({ isOn, setIsOn }) {
   return (
     <div className="flex items-center gap-[8px]">
       <span className="text-textSecondary text12Medium whitespace-nowrap">
-        Fellowship core only
+        Core only
       </span>
       <Toggle size="small" isOn={isOn} onToggle={() => setIsOn(!isOn)} />
     </div>
