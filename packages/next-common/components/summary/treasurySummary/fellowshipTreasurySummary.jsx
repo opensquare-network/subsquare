@@ -15,10 +15,7 @@ import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/u
 
 function useAllSpends() {
   const api = useContextApi();
-  const { value: spends, loading } = useCall(
-    api?.query?.fellowshipTreasury?.spends?.entries,
-    [],
-  );
+  const { value: spends, loading } = useCall(api?.query?.fellowshipTreasury?.spends?.entries, []);
 
   const value = (spends || [])
     .map(([key, value]) => {
@@ -51,16 +48,18 @@ function useActiveTreasurySpendReferenda() {
   };
 }
 
-function sumSpendAmounts(spends) {
-  return spends.reduce((prev, spend) => {
-    const { call } = spend;
+function sumSpendAmounts(referenda) {
+  return referenda.reduce((prev, referendum) => {
+    const { call } = referendum;
     if (!call) {
       return prev;
     }
+
     const amount = call.args.find((arg) => arg.name === "amount");
     if (!amount) {
       return prev;
     }
+
     return prev + BigInt(amount.value);
   }, 0n);
 }
