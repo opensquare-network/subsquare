@@ -1,4 +1,3 @@
-import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
@@ -7,16 +6,12 @@ import BalanceWithFiat from "./balanceWithFiat";
 import { AvailableItem, ToBeAwardedItem } from ".";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
-import {
-  ActiveReferendaProvider,
-  useActiveReferendaContext,
-} from "next-common/context/activeReferenda";
-import {
-  TreasuryProvider,
-  useTreasuryPallet,
-} from "next-common/context/treasury";
+import { ActiveReferendaProvider, useActiveReferendaContext, } from "next-common/context/activeReferenda";
+import { TreasuryProvider, useTreasuryPallet, } from "next-common/context/treasury";
 import Tooltip from "next-common/components/tooltip";
 import useFiatPrice from "next-common/hooks/useFiatPrice";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 
 function useAllSpends() {
   const api = useContextApi();
@@ -88,11 +83,12 @@ function TreasuryProposalsItem() {
     (spend) => spend?.value?.status?.isPending,
   ).length;
   const total = allSpends.length;
+
   return (
-    <SummaryItem title="Treasury Proposals">
+    <SummaryItem title="Spends">
       <LoadableContent isLoading={isAllSpendsLoading}>
         <div className="flex gap-[4px]">
-          <Tooltip content="Active proposals">
+          <Tooltip content="Active spends">
             <span className="text-textPrimary">{active}</span>
           </Tooltip>
           <span className="text-textDisabled">/</span>
@@ -103,15 +99,23 @@ function TreasuryProposalsItem() {
   );
 }
 
+function FellowshipTreasuryAvailableItem({price}) {
+  const api = useAssetHubApi();
+  const { result } = useSubStorage("system", "account", [StatemintFellowShipTreasuryAccount], {
+    api,
+  });
+
+  return <AvailableItem free={result?.data?.free?.toString()} price={price} />;
+}
+
 export default function FellowshipTreasurySummary() {
   const { price } = useFiatPrice();
-  const api = useAssetHubApi();
-  const free = useTreasuryFree(api);
+
   return (
     <ActiveReferendaProvider pallet="fellowshipReferenda">
       <TreasuryProvider pallet="fellowshipTreasury">
         <SummaryLayout>
-          <AvailableItem free={free} price={price} />
+          <FellowshipTreasuryAvailableItem price={price} />
           <RequestingItem price={price} />
           <ToBeAwardedItem price={price} />
           <TreasuryProposalsItem />
