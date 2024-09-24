@@ -189,10 +189,11 @@ export default function OverviewSummary() {
     modules: {
       referenda: hasReferenda,
       fellowship: hasFellowship,
-      democracy: hasDemocracyModule,
+      democracy,
       treasury: hasTreasury,
     },
   } = useChainSettings();
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   return (
     <SummaryLayout description="Active proposal numbers of various governance processes.">

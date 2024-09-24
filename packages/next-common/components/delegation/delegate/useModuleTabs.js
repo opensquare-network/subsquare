@@ -6,8 +6,10 @@ import {
 } from "next-common/components/profile/votingHistory/common";
 
 export default function useDelegationModuleTabs() {
-  const { modules: { referenda: hasReferenda, democracy: hasDemocracy } = {} } =
+  const { modules: { referenda: hasReferenda, democracy } = {} } =
     useChainSettings();
+
+  const hasDemocracy = democracy && !democracy?.archived;
 
   const moduleTabs = useMemo(() => {
     const tabs = [];

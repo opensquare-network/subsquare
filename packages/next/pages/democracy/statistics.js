@@ -31,8 +31,10 @@ export default function DemocracyStatisticsPage({
   summary,
 }) {
   const {
-    modules: { democracy: hasDemocracyModule },
+    modules: { democracy },
   } = useChainSettings();
+
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   const title = "Democracy Statistics";
   const seoInfo = { title, desc: title };

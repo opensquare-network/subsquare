@@ -13,10 +13,12 @@ import NewDemocracyProposalButton from "next-common/components/summary/newDemocr
 
 export default function DemocracyProposalsPage({ proposals, summary }) {
   const {
-    modules: { democracy: hasDemocracyModule },
+    modules: { democracy },
   } = useChainSettings();
   const chain = useChain();
   const noProposeButton = [Chains.crust].includes(chain);
+
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   const items = (proposals.items || []).map((item) =>
     normalizeProposalListItem(chain, item),
