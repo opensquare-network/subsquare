@@ -17,7 +17,7 @@ import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
-import { useAccountTransferPopup } from "./hook/useTransferPopup";
+import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 import dynamic from "next/dynamic";
 import { useState } from "react";

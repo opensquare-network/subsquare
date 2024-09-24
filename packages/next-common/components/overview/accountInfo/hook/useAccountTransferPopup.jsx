@@ -17,7 +17,10 @@ export function useAccountTransferPopup() {
   const nativeAsset = useMyNativeAsset();
   const [isOpen, setIsOpen] = useState(false);
   const component = isOpen && (
-    <Popup asset={nativeAsset?.value} onClose={() => setIsOpen(false)} />
+    <AccountTransferPopup
+      asset={nativeAsset?.value}
+      onClose={() => setIsOpen(false)}
+    />
   );
 
   return {
@@ -82,7 +85,7 @@ function PopupContent() {
   );
 }
 
-function Popup(props) {
+function AccountTransferPopup(props) {
   return (
     <PopupWithSigner title="Transfer" className="!w-[640px]" {...props}>
       <PopupContent />
