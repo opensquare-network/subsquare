@@ -16,7 +16,12 @@ import {
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { getOpenGovReferendaPosts } from "next-common/utils/posts";
-import { useAsync } from "react-use";
+import { createStateContext, useAsync } from "react-use";
+
+const [useUnVotedOnlyState, UnVotedOnlyStateProvider] =
+  createStateContext(false);
+
+export { useUnVotedOnlyState, UnVotedOnlyStateProvider };
 
 function useMyVotedReferenda() {
   const voting = useSelector(myReferendaVotingSelector);
@@ -80,14 +85,11 @@ function useMyUnVotedReferendaPosts() {
   };
 }
 
-function ReferendaListFilters({
-  status,
-  isUnVotedOnlyLoading,
-  isShowUnVotedOnly,
-  setIsShowUnVotedOnly,
-}) {
+function ReferendaListFilters({ isUnVotedOnlyLoading }) {
+  const { status } = usePageProps();
   const router = useRouter();
   const address = useRealAddress();
+  const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useUnVotedOnlyState();
 
   function onStatusChange(item) {
     const q = router.query;
@@ -122,11 +124,9 @@ function WithFilterPostList({
   posts,
   total,
   isUnVotedOnlyLoading,
-  isShowUnVotedOnly,
-  setIsShowUnVotedOnly,
   pagination,
 }) {
-  const { tracks, status } = usePageProps();
+  const { tracks } = usePageProps();
 
   const items = (posts || []).map((item) =>
     normalizeGov2ReferendaListItem(item, tracks),
@@ -137,12 +137,7 @@ function WithFilterPostList({
       title="List"
       titleCount={total}
       titleExtra={
-        <ReferendaListFilters
-          status={status}
-          isUnVotedOnlyLoading={isUnVotedOnlyLoading}
-          isShowUnVotedOnly={isShowUnVotedOnly}
-          setIsShowUnVotedOnly={setIsShowUnVotedOnly}
-        />
+        <ReferendaListFilters isUnVotedOnlyLoading={isUnVotedOnlyLoading} />
       }
       category={businessCategory.openGovReferenda}
       items={items}
@@ -151,12 +146,7 @@ function WithFilterPostList({
   );
 }
 
-function PagedUnVotedOnlyList({
-  posts,
-  isUnVotedOnlyLoading,
-  isShowUnVotedOnly,
-  setIsShowUnVotedOnly,
-}) {
+function PagedUnVotedOnlyList({ posts, isUnVotedOnlyLoading }) {
   const [page, setPage] = useState(1);
   const pageSize = 25;
   const total = posts.length || 0;
@@ -171,8 +161,6 @@ function PagedUnVotedOnlyList({
       posts={pagedItems}
       total={total}
       isUnVotedOnlyLoading={isUnVotedOnlyLoading}
-      isShowUnVotedOnly={isShowUnVotedOnly}
-      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
       pagination={{
         page,
         pageSize,
@@ -183,10 +171,7 @@ function PagedUnVotedOnlyList({
   );
 }
 
-export function UnVotedOnlyReferendaList({
-  isShowUnVotedOnly,
-  setIsShowUnVotedOnly,
-}) {
+export function UnVotedOnlyReferendaList() {
   const { posts } = usePageProps();
   const { posts: unVotedPosts, isLoading } = useMyUnVotedReferendaPosts();
 
@@ -196,8 +181,6 @@ export function UnVotedOnlyReferendaList({
         posts={posts.items}
         total={posts.total}
         isUnVotedOnlyLoading={isLoading}
-        isShowUnVotedOnly={isShowUnVotedOnly}
-        setIsShowUnVotedOnly={setIsShowUnVotedOnly}
         pagination={{
           page: posts.page,
           pageSize: posts.pageSize,
@@ -212,13 +195,11 @@ export function UnVotedOnlyReferendaList({
       posts={unVotedPosts}
       total={unVotedPosts.length}
       isUnVotedOnlyLoading={isLoading}
-      isShowUnVotedOnly={isShowUnVotedOnly}
-      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
     />
   );
 }
 
-export function FullReferendaList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
+export function FullReferendaList() {
   const { posts } = usePageProps();
 
   return (
@@ -226,13 +207,28 @@ export function FullReferendaList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
       posts={posts.items}
       total={posts.total}
       isUnVotedOnlyLoading={false}
-      isShowUnVotedOnly={isShowUnVotedOnly}
-      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
       pagination={{
         page: posts.page,
         pageSize: posts.pageSize,
         total: posts.total,
       }}
     />
+  );
+}
+
+function ReferendaListImpl() {
+  const [isShowUnVotedOnly] = useUnVotedOnlyState();
+  return isShowUnVotedOnly ? (
+    <UnVotedOnlyReferendaList />
+  ) : (
+    <FullReferendaList />
+  );
+}
+
+export function ReferendaList() {
+  return (
+    <UnVotedOnlyStateProvider>
+      <ReferendaListImpl />
+    </UnVotedOnlyStateProvider>
   );
 }

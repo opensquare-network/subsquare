@@ -9,18 +9,13 @@ import {
 import { camelCase, upperFirst } from "lodash-es";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { useState } from "react";
 import useFetchMyReferendaVoting from "components/myvotes/referenda/useFetchMyReferendaVoting";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
-import {
-  FullReferendaList,
-  UnVotedOnlyReferendaList,
-} from "next-common/components/referenda/list";
+import { ReferendaList } from "next-common/components/referenda/list";
 
 export default function ReferendaPage({ title, gov2ReferendaSummary }) {
   useFetchMyReferendaVoting();
 
-  const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useState(false);
   const seoInfo = { title, desc: title };
 
   return (
@@ -30,17 +25,7 @@ export default function ReferendaPage({ title, gov2ReferendaSummary }) {
       summaryData={gov2ReferendaSummary}
     >
       <ActiveReferendaProvider pallet="referenda">
-        {isShowUnVotedOnly ? (
-          <UnVotedOnlyReferendaList
-            isShowUnVotedOnly={isShowUnVotedOnly}
-            setIsShowUnVotedOnly={setIsShowUnVotedOnly}
-          />
-        ) : (
-          <FullReferendaList
-            isShowUnVotedOnly={isShowUnVotedOnly}
-            setIsShowUnVotedOnly={setIsShowUnVotedOnly}
-          />
-        )}
+        <ReferendaList />
       </ActiveReferendaProvider>
     </ReferendaLayout>
   );
