@@ -37,9 +37,10 @@ export function useOnChainActiveReferenda(pallet) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!api) {
+    if (!api || !api.query?.[pallet]) {
       return;
     }
+
     api.query[pallet].referendumInfoFor
       .entries()
       .then((entries) => extractActiveReferenda(api, entries))

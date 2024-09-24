@@ -6,41 +6,15 @@ import {
   gov2ReferendumsSummaryApi,
   gov2TracksApi,
 } from "next-common/services/url";
-import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
-import { useRouter } from "next/router";
-import { camelCase, snakeCase, upperFirst } from "lodash-es";
+import { camelCase, upperFirst } from "lodash-es";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
-import PostList from "next-common/components/postList";
-import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
-import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import NewProposalButton from "next-common/components/summary/newProposalButton";
+import useFetchMyReferendaVoting from "components/myvotes/referenda/useFetchMyReferendaVoting";
+import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
+import { ReferendaList } from "next-common/components/referenda/list";
 
-export default function ReferendaPage({
-  posts,
-  title,
-  tracks,
-  gov2ReferendaSummary,
-  status,
-}) {
-  const router = useRouter();
-
-  const items = (posts.items || []).map((item) =>
-    normalizeGov2ReferendaListItem(item, tracks),
-  );
-
-  function onStatusChange(item) {
-    const q = router.query;
-
-    delete q.page;
-    if (item.value) {
-      q.status = snakeCase(item.value);
-    } else {
-      delete q.status;
-    }
-
-    router.replace({ query: q });
-  }
+export default function ReferendaPage({ title, gov2ReferendaSummary }) {
+  useFetchMyReferendaVoting();
 
   const seoInfo = { title, desc: title };
 
@@ -50,26 +24,9 @@ export default function ReferendaPage({
       title={title}
       summaryData={gov2ReferendaSummary}
     >
-      <PostList
-        title="List"
-        titleCount={posts.total}
-        titleExtra={
-          <div className="flex gap-[12px] items-center">
-            <ReferendaStatusSelectField
-              value={status}
-              onChange={onStatusChange}
-            />
-            <NewProposalButton />
-          </div>
-        }
-        category={businessCategory.openGovReferenda}
-        items={items}
-        pagination={{
-          page: posts.page,
-          pageSize: posts.pageSize,
-          total: posts.total,
-        }}
-      />
+      <ActiveReferendaProvider pallet="referenda">
+        <ReferendaList />
+      </ActiveReferendaProvider>
     </ReferendaLayout>
   );
 }
