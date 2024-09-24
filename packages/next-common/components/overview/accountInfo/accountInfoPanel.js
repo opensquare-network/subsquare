@@ -164,12 +164,14 @@ function TeleportButton() {
   const [showPopup, setShowPopup] = useState(false);
   return (
     <>
-      <IconButton
-        className={cn("bg-theme100 [&_svg_path]:fill-theme500")}
-        onClick={() => setShowPopup(true)}
-      >
-        <SystemCrosschain width={20} height={20} />
-      </IconButton>
+      <Tooltip content="Cross-chain">
+        <IconButton
+          className={cn("bg-theme100 [&_svg_path]:fill-theme500")}
+          onClick={() => setShowPopup(true)}
+        >
+          <SystemCrosschain width={20} height={20} />
+        </IconButton>
+      </Tooltip>
       {showPopup && (
         <CrossChainTransferPopup onClose={() => setShowPopup(false)} />
       )}
