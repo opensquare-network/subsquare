@@ -1,13 +1,11 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
 
+const AssetHubTabsContext = createContext();
+
 const TABS = Object.freeze({
   assets: 1,
   transfers: 2,
 });
-
-const AssetHubTabsContext = createContext();
-
-export const useAssetHubTabsContext = () => useContext(AssetHubTabsContext);
 
 export const AssetHubTabsProvider = ({ children }) => {
   const [activeTabId, setActiveTabId] = useState(TABS.assets);
@@ -30,9 +28,13 @@ export const AssetHubTabsProvider = ({ children }) => {
 
   return (
     <AssetHubTabsContext.Provider
-      value={{ activeTabId, setActiveTabId, totalCounts, setTotalCount }}
+      value={{ activeTabId, setActiveTabId, totalCounts, setTotalCount, TABS }}
     >
       {children}
     </AssetHubTabsContext.Provider>
   );
+};
+
+export const useAssetHubTabsContext = () => {
+  return useContext(AssetHubTabsContext);
 };

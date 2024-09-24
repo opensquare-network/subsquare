@@ -8,11 +8,16 @@ import { usePageProps } from "next-common/context/page";
 import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 import AssetHubTabs from "next-common/components/assets/tabs/index";
 import AssetsTransfersHistory from "next-common/components/assets/transferHistory/index";
+import {
+  AssetHubTabsProvider,
+  useAssetHubTabsContext,
+} from "next-common/components/assets/context/assetHubTabsProvider";
 
-function ProfileAssetsInContext({ setTotalCount }) {
+function ProfileAssetsInContext() {
   const { id } = usePageProps();
   const router = useRouter();
   const maybeEvmAddress = tryConvertToEvmAddress(id);
+  const { setTotalCount } = useAssetHubTabsContext();
 
   useEffect(() => {
     router.push(
@@ -30,7 +35,7 @@ function ProfileAssetsInContext({ setTotalCount }) {
   useEffect(() => {
     if (assets && setTotalCount) {
       const count = assets ? assets.length : 0;
-      setTotalCount(count);
+      setTotalCount("assets", count);
     }
   }, [assets, setTotalCount]);
 
@@ -43,11 +48,11 @@ function ProfileAssetsInContext({ setTotalCount }) {
   );
 }
 
-function ProfileTransfers({ setTotalCount }) {
+function ProfileTransfers() {
   return (
     <div>
       <SecondaryCard>
-        <AssetsTransfersHistory setTotalCount={setTotalCount} />
+        <AssetsTransfersHistory />
       </SecondaryCard>
     </div>
   );
@@ -55,13 +60,15 @@ function ProfileTransfers({ setTotalCount }) {
 
 export default function ProfileAssets() {
   return (
-    <AssetMetadataProvider>
-      <div className="flex flex-col gap-[16px]">
-        <AssetHubTabs>
-          <ProfileAssetsInContext />
-          <ProfileTransfers />
-        </AssetHubTabs>
-      </div>
-    </AssetMetadataProvider>
+    <AssetHubTabsProvider>
+      <AssetMetadataProvider>
+        <div className="flex flex-col gap-[16px]">
+          <AssetHubTabs>
+            <ProfileAssetsInContext />
+            <ProfileTransfers />
+          </AssetHubTabs>
+        </div>
+      </AssetMetadataProvider>
+    </AssetHubTabsProvider>
   );
 }

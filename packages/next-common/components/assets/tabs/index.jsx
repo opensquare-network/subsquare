@@ -1,10 +1,6 @@
-import React, { useState, useCallback, memo } from "react";
+import React from "react";
 import TabsList from "next-common/components/tabsList";
-
-const TABS = Object.freeze({
-  assets: 1,
-  transfers: 2,
-});
+import { useAssetHubTabsContext } from "next-common/components/assets/context/assetHubTabsProvider";
 
 export const TabLabel = ({ label, count, isActive }) => (
   <span
@@ -20,23 +16,8 @@ export const TabLabel = ({ label, count, isActive }) => (
 );
 
 const AssetHubTabs = ({ children }) => {
-  const [activeTabId, setActiveTabId] = useState(TABS.assets);
-  const [totalCounts, setTotalCounts] = useState({
-    assets: "",
-    transfers: "",
-  });
-
-  const setTotalCount = useCallback((tabKey, count) => {
-    setTotalCounts((prevCounts) => {
-      if (prevCounts[tabKey] !== count) {
-        return {
-          ...prevCounts,
-          [tabKey]: count,
-        };
-      }
-      return prevCounts;
-    });
-  }, []);
+  const { activeTabId, setActiveTabId, totalCounts, TABS } =
+    useAssetHubTabsContext();
 
   const tabsListItems = [
     {
@@ -72,16 +53,10 @@ const AssetHubTabs = ({ children }) => {
         const tabKey = Object.keys(TABS)[index];
         const isActive = activeTabId === TABS[tabKey];
 
-        return (
-          <div className={isActive ? "" : "hidden"}>
-            {React.cloneElement(child, {
-              setTotalCount: (count) => setTotalCount(tabKey, count),
-            })}
-          </div>
-        );
+        return <div className={isActive ? "" : "hidden"}>{child}</div>;
       })}
     </>
   );
 };
 
-export default memo(AssetHubTabs);
+export default AssetHubTabs;

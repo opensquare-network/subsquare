@@ -9,6 +9,7 @@ import { useAssetsTransfersHistoryTimeAgeColumn } from "./columns/timeAge";
 import { useAssetsTransfersHistoryAmountColumn } from "./columns/amount";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
+import { useAssetHubTabsContext } from "next-common/components/assets/context/assetHubTabsProvider";
 
 function useColumnsDef() {
   const tokenColumn = useAssetsTransfersHistoryTokenColumn();
@@ -28,7 +29,8 @@ function useColumnsDef() {
   ];
 }
 
-export default function AssetsTransfersHistory({ setTotalCount }) {
+export default function AssetsTransfersHistory() {
+  const { setTotalCount } = useAssetHubTabsContext();
   const columnsDef = useColumnsDef();
   const [rowData, setRowData] = useState([]);
   const [total, setTotal] = useState(0);
@@ -47,7 +49,7 @@ export default function AssetsTransfersHistory({ setTotalCount }) {
 
   useEffect(() => {
     if (value && !loading && !error) {
-      setTotalCount(totalCount);
+      setTotalCount("transfers", totalCount);
       setTotal(totalCount);
       setRowData(value || []);
     }
