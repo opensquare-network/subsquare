@@ -19,6 +19,10 @@ import useMyUnVotedCollectiveReferenda from "next-common/hooks/referenda/useMyUn
 import { useEffect, useMemo, useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import {
+  UnVotedOnlyStateProvider,
+  useUnVotedOnlyState,
+} from "next-common/components/referenda/list";
 
 function useMyUnVotedReferendaPosts() {
   const [posts, setPosts] = useState();
@@ -59,12 +63,11 @@ function WithFilterPostList({
   posts,
   total,
   isUnVotedOnlyLoading,
-  isShowUnVotedOnly,
-  setIsShowUnVotedOnly,
   pagination,
 }) {
   const { fellowshipTracks } = usePageProps();
   const address = useRealAddress();
+  const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useUnVotedOnlyState();
 
   const items = (posts || []).map((item) =>
     normalizeFellowshipReferendaListItem(item, fellowshipTracks),
@@ -94,12 +97,7 @@ function WithFilterPostList({
   );
 }
 
-function PagedUnVotedOnlyList({
-  posts,
-  isUnVotedOnlyLoading,
-  isShowUnVotedOnly,
-  setIsShowUnVotedOnly,
-}) {
+function PagedUnVotedOnlyList({ posts, isUnVotedOnlyLoading }) {
   const [page, setPage] = useState(1);
   const pageSize = 25;
   const total = posts.length || 0;
@@ -114,8 +112,6 @@ function PagedUnVotedOnlyList({
       posts={pagedItems}
       total={total}
       isUnVotedOnlyLoading={isUnVotedOnlyLoading}
-      isShowUnVotedOnly={isShowUnVotedOnly}
-      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
       pagination={{
         page,
         pageSize,
@@ -126,7 +122,7 @@ function PagedUnVotedOnlyList({
   );
 }
 
-function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
+function UnVotedOnlyList() {
   const { posts } = usePageProps();
   const { posts: unVotedPosts, isLoading } = useMyUnVotedReferendaPosts();
 
@@ -136,8 +132,6 @@ function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
         posts={posts.items}
         total={posts.total}
         isUnVotedOnlyLoading={isLoading}
-        isShowUnVotedOnly={isShowUnVotedOnly}
-        setIsShowUnVotedOnly={setIsShowUnVotedOnly}
         pagination={{
           page: posts.page,
           pageSize: posts.pageSize,
@@ -150,15 +144,12 @@ function UnVotedOnlyList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
   return (
     <PagedUnVotedOnlyList
       posts={unVotedPosts}
-      total={unVotedPosts.length}
       isUnVotedOnlyLoading={isLoading}
-      isShowUnVotedOnly={isShowUnVotedOnly}
-      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
     />
   );
 }
 
-function FullList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
+function FullList() {
   const { posts } = usePageProps();
 
   return (
@@ -166,8 +157,6 @@ function FullList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
       posts={posts.items}
       total={posts.total}
       isUnVotedOnlyLoading={false}
-      isShowUnVotedOnly={isShowUnVotedOnly}
-      setIsShowUnVotedOnly={setIsShowUnVotedOnly}
       pagination={{
         page: posts.page,
         pageSize: posts.pageSize,
@@ -177,11 +166,22 @@ function FullList({ isShowUnVotedOnly, setIsShowUnVotedOnly }) {
   );
 }
 
+function ReferendaListImpl() {
+  const [isShowUnVotedOnly] = useUnVotedOnlyState();
+  return isShowUnVotedOnly ? <UnVotedOnlyList /> : <FullList />;
+}
+
+function ReferendaList() {
+  return (
+    <UnVotedOnlyStateProvider>
+      <ReferendaListImpl />
+    </UnVotedOnlyStateProvider>
+  );
+}
+
 export default function FellowshipPage({ fellowshipSummary }) {
   const title = "Fellowship Referenda";
   const seoInfo = { title, desc: title };
-
-  const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useState(false);
 
   return (
     <CollectivesProvider section="fellowship">
@@ -191,17 +191,7 @@ export default function FellowshipPage({ fellowshipSummary }) {
         description="All active and history referenda in various tracks."
         summary={<Gov2Summary summary={fellowshipSummary} />}
       >
-        {isShowUnVotedOnly ? (
-          <UnVotedOnlyList
-            isShowUnVotedOnly={isShowUnVotedOnly}
-            setIsShowUnVotedOnly={setIsShowUnVotedOnly}
-          />
-        ) : (
-          <FullList
-            isShowUnVotedOnly={isShowUnVotedOnly}
-            setIsShowUnVotedOnly={setIsShowUnVotedOnly}
-          />
-        )}
+        <ReferendaList />
       </ListLayout>
     </CollectivesProvider>
   );

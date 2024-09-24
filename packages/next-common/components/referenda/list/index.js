@@ -193,7 +193,6 @@ export function UnVotedOnlyReferendaList() {
   return (
     <PagedUnVotedOnlyList
       posts={unVotedPosts}
-      total={unVotedPosts.length}
       isUnVotedOnlyLoading={isLoading}
     />
   );
