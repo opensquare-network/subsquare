@@ -1,5 +1,6 @@
 import { createStateContext } from "react-use";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import useMyAssets from "next-common/components/assets/useMyAssets";
 
 export const TABS = Object.freeze({
   assets: 1,
@@ -16,6 +17,8 @@ const [useTotalCountsContext, TotalCountsProvider] = createStateContext({
     transfers: 0,
   },
 });
+
+const [useAssetsContext, AssetsProvider] = createStateContext();
 
 export const useActiveTab = () => {
   const [state, setState] = useActiveTabContext();
@@ -48,10 +51,27 @@ export const useTotalCounts = () => {
   return [state.totalCounts, setTotalCount];
 };
 
+export const useAssets = () => {
+  const [state, setState] = useAssetsContext();
+  const [, setTotalCount] = useTotalCounts();
+  const assets = useMyAssets();
+
+  useEffect(() => {
+    if (assets) {
+      setState(assets);
+      setTotalCount("assets", assets.length); // 在这里更新 totalCounts
+    }
+  }, [setState, setTotalCount, assets]);
+
+  return state;
+};
+
 export function AssetHubTabsProvider({ children }) {
   return (
     <ActiveTabProvider>
-      <TotalCountsProvider>{children}</TotalCountsProvider>
+      <TotalCountsProvider>
+        <AssetsProvider>{children}</AssetsProvider>
+      </TotalCountsProvider>
     </ActiveTabProvider>
   );
 }
