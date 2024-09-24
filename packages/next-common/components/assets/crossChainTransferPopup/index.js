@@ -73,7 +73,7 @@ function PopupContent() {
   const getTxFunc = useCallback(() => {
     try {
       if (!transferToAddress) {
-        throw new Error("Transfer to address is not specified");
+        throw new Error("Destination address is required");
       }
 
       const amount = getCheckedTransferAmount();
