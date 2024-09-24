@@ -24,7 +24,7 @@ import useNativeTransferAmount from "./useNativeTransferAmount";
 import useCrossChainApi from "./useCrossChainApi";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 
-function ExistentialDeposit({ destApi }) {
+export function ExistentialDeposit({ destApi }) {
   const { decimals } = useChainSettings();
   return (
     <div>
