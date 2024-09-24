@@ -8,22 +8,15 @@ import {
   BatchProvider,
   useValueFromBatchResult,
 } from "next-common/context/batch";
-import nextApi from "next-common/services/nextApi";
 import { useCallback } from "react";
 import useReferendaTrackDetail from "next-common/hooks/referenda/useReferendaTrackDetail";
+import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 
 export function BucketProvider({ children }) {
   const fetchReferendaList = useCallback(async (referendumIndexes) => {
-    const { result } = await nextApi.fetch(
-      `gov2/referendums?simple=1&page_size=${
-        referendumIndexes.length
-      }&${referendumIndexes.map((i) => `referendum_index=${i}`).join("&")}`,
-    );
-    if (!result) {
-      throw new Error("fetch referendums failed");
-    }
+    const posts = await getOpenGovReferendaPosts(referendumIndexes);
     const referendaMap = Object.fromEntries(
-      result.items.map((item) => [item.referendumIndex, item]),
+      posts.map((item) => [item.referendumIndex, item]),
     );
     return referendumIndexes.map((i) => referendaMap[i]);
   }, []);

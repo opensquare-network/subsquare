@@ -10,7 +10,7 @@ import {
   setMyReferendaPriors,
   setMyReferendaVoting,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
-import getOpenGovReferendaPosts from "./posts";
+import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 import getDelegatedVoting from "./delegation";
 import { useContextApi } from "next-common/context/api";
 
