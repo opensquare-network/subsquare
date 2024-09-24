@@ -21,6 +21,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import OnlyChain from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
+import { AssetHubApiProvider } from "next-common/context/assetHub";
 
 const CrossChainTransferPopup = dynamic(
   import("./crossChainTransferPopup").then((mod) => mod.default),
@@ -182,7 +183,9 @@ export function AccountHead() {
       <Account />
       <div className="flex gap-[16px] items-center">
         <OnlyChain chain={Chains.polkadot}>
-          <TeleportButton />
+          <AssetHubApiProvider>
+            <TeleportButton />
+          </AssetHubApiProvider>
         </OnlyChain>
         <div className="w-[1px] h-[16px] bg-neutral300"></div>
         <ProfileButton />
