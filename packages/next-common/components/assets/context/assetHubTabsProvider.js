@@ -17,13 +17,6 @@ const [useTotalCountsContext, TotalCountsProvider] = createStateContext({
   },
 });
 
-export const useAssetHubTabsContext = () => {
-  return {
-    activeTab: useActiveTabContext(),
-    totalCounts: useTotalCountsContext(),
-  };
-};
-
 export const useActiveTab = () => {
   const [state, setState] = useActiveTabContext();
 
@@ -55,7 +48,6 @@ export const useTotalCounts = () => {
   return [state.totalCounts, setTotalCount];
 };
 
-// TODO: assets、transfers
 export function AssetHubTabsProvider({ children }) {
   return (
     <ActiveTabProvider>

@@ -19,8 +19,7 @@ export const TabLabel = ({ label, count, isActive }) => (
   </span>
 );
 
-// TODO: move setActiveTabId into provider
-const AssetHubTabs = ({ children }) => {
+export default function AssetHubTabs({ children }) {
   const [activeTabId, setActiveTabId] = useActiveTab();
   const [totalCounts] = useTotalCounts();
 
@@ -62,6 +61,4 @@ const AssetHubTabs = ({ children }) => {
       })}
     </>
   );
-};
-
-export default AssetHubTabs;
+}
