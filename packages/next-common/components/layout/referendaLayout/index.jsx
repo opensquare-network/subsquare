@@ -35,7 +35,6 @@ export default function ReferendaLayout({ summaryData, ...props }) {
         { label: "Referenda", url: "/referenda" },
         {
           label: "Tracks",
-          labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
           url: "/referenda/tracks",
         },
         user?.address && { label: "My Votes", url: "/referenda/votes" },
