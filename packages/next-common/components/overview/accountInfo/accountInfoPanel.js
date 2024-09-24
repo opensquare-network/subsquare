@@ -4,9 +4,8 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import { AddressUser } from "next-common/components/user";
 import Copyable from "next-common/components/copyable";
 import tw from "tailwind-styled-components";
-import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
-import { addressEllipsis } from "next-common/utils";
+import { addressEllipsis, cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
 import AccountBalances from "next-common/components/overview/accountInfo/components/accountBalances";
@@ -18,6 +17,25 @@ import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+import OnlyChain from "next-common/components/common/onlyChain";
+import Chains from "next-common/utils/consts/chains";
+import { AssetHubApiProvider } from "next-common/context/assetHub";
+
+const CrossChainTransferPopup = dynamic(
+  import("./crossChainTransferPopup").then((mod) => mod.default),
+);
+
+const SystemCrosschain = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
+);
+const SystemProfile = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.SystemProfile),
+);
+const SystemSetting = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.SystemSetting),
+);
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -98,14 +116,29 @@ export function ProxyTip() {
   );
 }
 
-export function AccountHead() {
+function ProfileButton() {
   const router = useRouter();
   const user = useUser();
-  const isWeb3User = useIsWeb3User();
 
   const goProfile = () => {
     router.push(`/user/${user?.address}`);
   };
+
+  return (
+    <Tooltip content="Profile">
+      <IconButton
+        className="[&_svg_path]:fill-textSecondary"
+        onClick={goProfile}
+      >
+        <SystemProfile width={20} height={20} />
+      </IconButton>
+    </Tooltip>
+  );
+}
+
+function SettingsButton() {
+  const router = useRouter();
+  const isWeb3User = useIsWeb3User();
 
   const goSetting = () => {
     if (isWeb3User) {
@@ -116,25 +149,49 @@ export function AccountHead() {
   };
 
   return (
+    <Tooltip content="Settings">
+      <IconButton
+        className="[&_svg_path]:stroke-textSecondary"
+        onClick={goSetting}
+      >
+        <SystemSetting width={20} height={20} />
+      </IconButton>
+    </Tooltip>
+  );
+}
+
+function TeleportButton() {
+  const [showPopup, setShowPopup] = useState(false);
+  return (
+    <>
+      <Tooltip content="Cross-chain">
+        <IconButton
+          className={cn("bg-theme100 [&_svg_path]:fill-theme500")}
+          onClick={() => setShowPopup(true)}
+        >
+          <SystemCrosschain width={20} height={20} />
+        </IconButton>
+      </Tooltip>
+      {showPopup && (
+        <CrossChainTransferPopup onClose={() => setShowPopup(false)} />
+      )}
+    </>
+  );
+}
+
+export function AccountHead() {
+  return (
     <div className="flex justify-between items-center grow">
       <Account />
-      <div className="flex gap-[16px]">
-        <Tooltip content="Profile">
-          <IconButton
-            className="[&_svg_path]:fill-textSecondary"
-            onClick={goProfile}
-          >
-            <SystemProfile width={20} height={20} />
-          </IconButton>
-        </Tooltip>
-        <Tooltip content="Settings">
-          <IconButton
-            className="[&_svg_path]:stroke-textSecondary"
-            onClick={goSetting}
-          >
-            <SystemSetting width={20} height={20} />
-          </IconButton>
-        </Tooltip>
+      <div className="flex gap-[16px] items-center">
+        <OnlyChain chain={Chains.polkadot}>
+          <AssetHubApiProvider>
+            <TeleportButton />
+          </AssetHubApiProvider>
+        </OnlyChain>
+        <div className="w-[1px] h-[16px] bg-neutral300"></div>
+        <ProfileButton />
+        <SettingsButton />
       </div>
     </div>
   );
