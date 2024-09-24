@@ -59,7 +59,7 @@ export const useAssets = () => {
   useEffect(() => {
     if (assets) {
       setState(assets);
-      setTotalCount("assets", assets.length); // 在这里更新 totalCounts
+      setTotalCount("assets", assets.length);
     }
   }, [setState, setTotalCount, assets]);
 
