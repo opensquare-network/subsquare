@@ -30,19 +30,18 @@ function useColumnsDef() {
 
 export default function AssetsTransfersHistory() {
   const columnsDef = useColumnsDef();
-  const {
-    list = [],
-    total,
-    loading,
-    setPage,
-    page,
-  } = useTransfersHistoryData();
-  const { component: pageComponent } = usePaginationComponent(
-    total,
+  const [totalCount, setTotalCount] = useState(0);
+  const { page, component: pageComponent } = usePaginationComponent(
+    totalCount,
     defaultPageSize,
-    page - 1,
-    setPage,
   );
+  const { list = [], total, loading } = useTransfersHistoryData(page - 1);
+
+  useEffect(() => {
+    if (!loading && total) {
+      setTotalCount(total);
+    }
+  }, [total]);
 
   return (
     <div>

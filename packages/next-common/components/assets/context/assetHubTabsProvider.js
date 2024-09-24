@@ -68,16 +68,12 @@ const [useTransfersHistoryContext, TransfersHistoryProvider] =
   createStateContext({
     list: [],
     total: 0,
-    page: 1,
   });
 
-export const useTransfersHistoryData = () => {
+export const useTransfersHistoryData = (page) => {
   const [state, setState] = useTransfersHistoryContext();
   const [, setTotalCount] = useTotalCounts();
-  const { value, total, loading, error } = useTransfersHistory(
-    state.page,
-    defaultPageSize,
-  );
+  const { value, total, loading } = useTransfersHistory(page, defaultPageSize);
 
   useEffect(() => {
     if (!loading && !error && value) {
@@ -86,17 +82,10 @@ export const useTransfersHistoryData = () => {
     }
   }, [loading, error, value, total, setState, setTotalCount]);
 
-  const setPage = (newPage) => {
-    setState((prevState) => ({ ...prevState, page: newPage }));
-  };
-
   return {
     list: state.list,
     total: state.total,
     loading,
-    error,
-    setPage,
-    page: state.page,
   };
 };
 
