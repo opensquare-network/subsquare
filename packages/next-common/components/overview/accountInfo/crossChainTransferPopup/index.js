@@ -5,11 +5,8 @@ import {
   useSetSigner,
 } from "next-common/components/popupWithSigner/context";
 import { useCallback } from "react";
-import Input from "next-common/components/input";
-import PopupLabel from "next-common/components/popup/label";
 import { useDispatch } from "react-redux";
-import { isSameAddress, toPrecision } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
+import { isSameAddress } from "next-common/utils";
 import {
   newErrorToast,
   newSuccessToast,
@@ -19,23 +16,36 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import Signer from "next-common/components/popup/fields/signerField";
 import { useUser } from "next-common/context/user";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
-import useCrossChainDirection from "./useCrossChainDirection";
-import useNativeTransferAmount from "./useNativeTransferAmount";
-import useCrossChainApi from "./useCrossChainApi";
+import useNativeTransferAmount from "next-common/components/assets/crossChainTransferPopup/useNativeTransferAmount";
+import useCrossChainApi from "next-common/components/assets/crossChainTransferPopup/useCrossChainApi";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
+import Chains from "next-common/utils/consts/chains";
+import { ExistentialDeposit } from "next-common/components/assets/crossChainTransferPopup";
+import dynamic from "next/dynamic";
+import {
+  Chain,
+  getChainName,
+} from "next-common/components/assets/crossChainTransferPopup/useCrossChainDirection";
 
-export function ExistentialDeposit({ destApi }) {
-  const { decimals } = useChainSettings();
+const SystemCrosschain = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
+);
+
+function CrosschainDirection({ sourceChain, destinationChain }) {
   return (
-    <div>
-      <PopupLabel text="Destination Existential Deposit" />
-      <Input
-        disabled
-        value={toPrecision(
-          destApi?.consts.balances?.existentialDeposit || 0,
-          decimals,
-        )}
-        symbol="DOT"
+    <div className="flex items-end gap-[12px]">
+      <Chain
+        title="Source Chain"
+        chain={sourceChain}
+        name={getChainName(sourceChain)}
+      />
+      <div className="flex w-[40px] h-[40px] justify-center items-center [&_svg_path]:fill-textPrimary">
+        <SystemCrosschain width={24} height={24} />
+      </div>
+      <Chain
+        title="Destination Chain"
+        chain={destinationChain}
+        name={getChainName(destinationChain)}
       />
     </div>
   );
@@ -43,11 +53,8 @@ export function ExistentialDeposit({ destApi }) {
 
 function PopupContent() {
   const { onClose } = usePopupParams();
-  const {
-    sourceChain,
-    destinationChain,
-    component: crossChainDirection,
-  } = useCrossChainDirection();
+  const sourceChain = Chains.polkadot;
+  const destinationChain = Chains.polkadotAssetHub;
   const { sourceApi, destinationApi, getTeleportTx } = useCrossChainApi({
     sourceChain,
     destinationChain,
@@ -122,7 +129,10 @@ function PopupContent() {
   return (
     <>
       <Signer title="Origin" />
-      {crossChainDirection}
+      <CrosschainDirection
+        sourceChain={sourceChain}
+        destinationChain={destinationChain}
+      />
       {addressComboField}
       {transferAmountField}
       <AdvanceSettings>

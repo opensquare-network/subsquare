@@ -18,6 +18,13 @@ import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 import dynamic from "next/dynamic";
+import { useState } from "react";
+import OnlyChain from "next-common/components/common/onlyChain";
+import Chains from "next-common/utils/consts/chains";
+
+const CrossChainTransferPopup = dynamic(
+  import("./crossChainTransferPopup").then((mod) => mod.default),
+);
 
 const SystemCrosschain = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
@@ -153,10 +160,19 @@ function SettingsButton() {
 }
 
 function TeleportButton() {
+  const [showPopup, setShowPopup] = useState(false);
   return (
-    <IconButton className={cn("bg-theme100 [&_svg_path]:fill-theme500")}>
-      <SystemCrosschain width={20} height={20} />
-    </IconButton>
+    <>
+      <IconButton
+        className={cn("bg-theme100 [&_svg_path]:fill-theme500")}
+        onClick={() => setShowPopup(true)}
+      >
+        <SystemCrosschain width={20} height={20} />
+      </IconButton>
+      {showPopup && (
+        <CrossChainTransferPopup onClose={() => setShowPopup(false)} />
+      )}
+    </>
   );
 }
 
@@ -165,7 +181,9 @@ export function AccountHead() {
     <div className="flex justify-between items-center grow">
       <Account />
       <div className="flex gap-[16px] items-center">
-        <TeleportButton />
+        <OnlyChain chain={Chains.polkadot}>
+          <TeleportButton />
+        </OnlyChain>
         <div className="w-[1px] h-[16px] bg-neutral300"></div>
         <ProfileButton />
         <SettingsButton />

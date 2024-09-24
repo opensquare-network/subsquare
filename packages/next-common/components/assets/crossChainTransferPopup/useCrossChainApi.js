@@ -4,14 +4,22 @@ import Chains from "next-common/utils/consts/chains";
 import teleportFromRelayChainToAssetHub from "./teleportFromRelayChainToAssetHub";
 import teleportFromAssetHubToRelayChain from "./teleportFromAssetHubToRelayChain";
 import { useCallback } from "react";
+import { useAssetHubApi } from "next-common/context/assetHub";
+import { useChain } from "next-common/context/chain";
 
 function useChainApi(chain) {
+  const currChain = useChain();
   const api = useContextApi();
   const polkadotApi = usePolkadotApi();
+  const assetHubApi = useAssetHubApi();
 
-  if (chain === Chains.polkadot) {
-    return polkadotApi;
-  } else if (chain === Chains.polkadotAssetHub) {
+  if (currChain !== chain) {
+    if (chain === Chains.polkadot) {
+      return polkadotApi;
+    } else if (chain === Chains.polkadotAssetHub) {
+      return assetHubApi;
+    }
+  } else {
     return api;
   }
 

@@ -9,7 +9,7 @@ const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
 );
 
-function Chain({ title, chain, name }) {
+export function Chain({ title, chain, name }) {
   return (
     <div className="flex flex-col grow basis-[calc(100%/2-33px)] shrink-0">
       <PopupLabel text={title} />
@@ -27,7 +27,7 @@ function Chain({ title, chain, name }) {
   );
 }
 
-function getChainName(chain) {
+export function getChainName(chain) {
   if (chain === Chains.polkadot) {
     return "Polkadot";
   } else if (chain === Chains.polkadotAssetHub) {
