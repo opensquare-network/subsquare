@@ -1,6 +1,8 @@
 import { createStateContext } from "react-use";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useMyAssets from "next-common/components/assets/useMyAssets";
+import useTransfersHistory from "next-common/utils/hooks/useTransfersHistory";
+import { defaultPageSize } from "next-common/utils/constants";
 
 export const TABS = Object.freeze({
   assets: 1,
@@ -12,10 +14,8 @@ const [useActiveTabContext, ActiveTabProvider] = createStateContext({
 });
 
 const [useTotalCountsContext, TotalCountsProvider] = createStateContext({
-  totalCounts: {
-    assets: 0,
-    transfers: 0,
-  },
+  assets: "",
+  transfers: "",
 });
 
 const [useAssetsContext, AssetsProvider] = createStateContext();
@@ -39,16 +39,14 @@ export const useTotalCounts = () => {
   const setTotalCount = useCallback(
     (tabKey, count) => {
       setState((prevState) => ({
-        totalCounts: {
-          ...prevState.totalCounts,
-          [tabKey]: count,
-        },
+        ...prevState,
+        [tabKey]: count,
       }));
     },
     [setState],
   );
 
-  return [state.totalCounts, setTotalCount];
+  return [state, setTotalCount];
 };
 
 export const useAssets = () => {
@@ -66,11 +64,49 @@ export const useAssets = () => {
   return state;
 };
 
+const [useTransfersHistoryContext, TransfersHistoryProvider] =
+  createStateContext({
+    list: [],
+    total: 0,
+    page: 1,
+  });
+
+export const useTransfersHistoryData = () => {
+  const [state, setState] = useTransfersHistoryContext();
+  const [, setTotalCount] = useTotalCounts();
+  const { value, total, loading, error } = useTransfersHistory(
+    state.page,
+    defaultPageSize,
+  );
+
+  useEffect(() => {
+    if (!loading && !error && value) {
+      setState({ list: value, total });
+      setTotalCount("transfers", total);
+    }
+  }, [loading, error, value, total, setState, setTotalCount]);
+
+  const setPage = (newPage) => {
+    setState((prevState) => ({ ...prevState, page: newPage }));
+  };
+
+  return {
+    list: state.list,
+    total: state.total,
+    loading,
+    error,
+    setPage,
+    page: state.page,
+  };
+};
+
 export function AssetHubTabsProvider({ children }) {
   return (
     <ActiveTabProvider>
       <TotalCountsProvider>
-        <AssetsProvider>{children}</AssetsProvider>
+        <AssetsProvider>
+          <TransfersHistoryProvider>{children}</TransfersHistoryProvider>
+        </AssetsProvider>
       </TotalCountsProvider>
     </ActiveTabProvider>
   );

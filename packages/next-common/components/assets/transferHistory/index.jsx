@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MapDataList } from "next-common/components/dataList";
-import useTransfersHistory from "next-common/utils/hooks/useTransfersHistory";
 import { useAssetsTransfersHistoryTokenColumn } from "./columns/token";
 import { useAssetsTransfersHistoryIdColumn } from "./columns/id";
 import { useAssetsTransfersHistoryFromColumn } from "./columns/from";
@@ -9,7 +8,7 @@ import { useAssetsTransfersHistoryTimeAgeColumn } from "./columns/timeAge";
 import { useAssetsTransfersHistoryAmountColumn } from "./columns/amount";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
-import { useTotalCounts } from "next-common/components/assets/context/assetHubTabsProvider";
+import { useTransfersHistoryData } from "next-common/components/assets/context/assetHubTabsProvider";
 
 function useColumnsDef() {
   const tokenColumn = useAssetsTransfersHistoryTokenColumn();
@@ -30,36 +29,26 @@ function useColumnsDef() {
 }
 
 export default function AssetsTransfersHistory() {
-  const [, setTotalCount] = useTotalCounts();
   const columnsDef = useColumnsDef();
-  const [rowData, setRowData] = useState([]);
-  const [total, setTotal] = useState(0);
-
-  const { page, component: pageComponent } = usePaginationComponent(
+  const {
+    list = [],
+    total,
+    loading,
+    setPage,
+    page,
+  } = useTransfersHistoryData();
+  const { component: pageComponent } = usePaginationComponent(
     total,
     defaultPageSize,
+    page - 1,
+    setPage,
   );
-
-  const {
-    value,
-    loading,
-    total: totalCount,
-    error,
-  } = useTransfersHistory(page - 1, defaultPageSize);
-
-  useEffect(() => {
-    if (value && !loading && !error) {
-      setTotalCount("transfers", totalCount);
-      setTotal(totalCount);
-      setRowData(value || []);
-    }
-  }, [value, loading, error, setTotalCount, totalCount]);
 
   return (
     <div>
       <MapDataList
         columnsDef={columnsDef}
-        data={rowData}
+        data={list}
         loading={loading}
         noDataText="No data"
       />
