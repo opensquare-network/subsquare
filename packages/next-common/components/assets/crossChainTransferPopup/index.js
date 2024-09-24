@@ -21,7 +21,7 @@ import { useUser } from "next-common/context/user";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useCrossChainDirection from "./useCrossChainDirection";
 import useNativeTransferAmount from "./useNativeTransferAmount";
-import useCrossChainApi from "./useCrossChainApi";
+import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 
 export function ExistentialDeposit({ destApi }) {
@@ -48,7 +48,10 @@ function PopupContent() {
     destinationChain,
     component: crossChainDirection,
   } = useCrossChainDirection();
-  const { sourceApi, destinationApi, getTeleportTx } = useCrossChainApi({
+  const sourceApi = useChainApi(sourceChain);
+  const destinationApi = useChainApi(destinationChain);
+  const getTeleportTx = useGetTeleportTxFunc({
+    sourceApi,
     sourceChain,
     destinationChain,
   });
@@ -73,7 +76,7 @@ function PopupContent() {
   const getTxFunc = useCallback(() => {
     try {
       if (!transferToAddress) {
-        throw new Error("Transfer to address is not specified");
+        throw new Error("Destination address is required");
       }
 
       const amount = getCheckedTransferAmount();
