@@ -66,7 +66,10 @@ function PopupContent() {
       {transferToAddressField}
       {transferAmountField}
       <AdvanceSettings>
-        <ExistentialDeposit destApi={api} />
+        <ExistentialDeposit
+          destApi={api}
+          text="Existential Deposit"
+        />
       </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton
