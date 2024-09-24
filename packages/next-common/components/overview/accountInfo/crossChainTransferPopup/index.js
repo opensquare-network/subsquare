@@ -10,7 +10,10 @@ import Signer from "next-common/components/popup/fields/signerField";
 import { useUser } from "next-common/context/user";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useNativeTransferAmount from "next-common/components/assets/crossChainTransferPopup/useNativeTransferAmount";
-import useCrossChainApi from "next-common/components/assets/crossChainTransferPopup/useCrossChainApi";
+import {
+  useChainApi,
+  useGetTeleportTxFunc,
+} from "next-common/components/assets/crossChainTransferPopup/crossChainApi";
 import Chains from "next-common/utils/consts/chains";
 import { ExistentialDeposit } from "next-common/components/assets/crossChainTransferPopup";
 import dynamic from "next/dynamic";
@@ -47,7 +50,10 @@ function CrosschainDirection({ sourceChain, destinationChain }) {
 function PopupContent() {
   const sourceChain = Chains.polkadot;
   const destinationChain = Chains.polkadotAssetHub;
-  const { sourceApi, destinationApi, getTeleportTx } = useCrossChainApi({
+  const sourceApi = useChainApi(sourceChain);
+  const destinationApi = useChainApi(destinationChain);
+  const getTeleportTx = useGetTeleportTxFunc({
+    sourceApi,
     sourceChain,
     destinationChain,
   });

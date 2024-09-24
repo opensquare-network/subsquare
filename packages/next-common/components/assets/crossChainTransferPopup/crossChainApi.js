@@ -7,7 +7,7 @@ import { useCallback } from "react";
 import { useAssetHubApi } from "next-common/context/assetHub";
 import { useChain } from "next-common/context/chain";
 
-function useChainApi(chain) {
+export function useChainApi(chain) {
   const currChain = useChain();
   const api = useContextApi();
   const polkadotApi = usePolkadotApi();
@@ -26,11 +26,12 @@ function useChainApi(chain) {
   throw new Error("Unsupported chain");
 }
 
-export default function useCrossChainApi({ sourceChain, destinationChain }) {
-  const sourceApi = useChainApi(sourceChain);
-  const destinationApi = useChainApi(destinationChain);
-
-  const getTeleportTx = useCallback(
+export function useGetTeleportTxFunc({
+  sourceApi,
+  sourceChain,
+  destinationChain,
+}) {
+  return useCallback(
     (transferToAddress, amount) => {
       if (!sourceApi) {
         throw new Error("Chain network is not connected yet");
@@ -60,10 +61,4 @@ export default function useCrossChainApi({ sourceChain, destinationChain }) {
     },
     [sourceApi, sourceChain, destinationChain],
   );
-
-  return {
-    sourceApi,
-    destinationApi,
-    getTeleportTx,
-  };
 }
