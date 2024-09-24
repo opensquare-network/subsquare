@@ -5,7 +5,6 @@ import Gov2SummaryFooter from "next-common/components/summary/gov2SummaryFooter"
 import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useChainSettings } from "next-common/context/chain";
-import { ThemedTag } from "next-common/components/tags/state/styled";
 
 function HeadContent() {
   return (
