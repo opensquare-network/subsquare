@@ -10,14 +10,14 @@ import AssetHubTabs from "next-common/components/assets/tabs/index";
 import AssetsTransfersHistory from "next-common/components/assets/transferHistory/index";
 import {
   AssetHubTabsProvider,
-  useAssetHubTabsContext,
+  useTotalCounts,
 } from "next-common/components/assets/context/assetHubTabsProvider";
 
 function ProfileAssetsInContext() {
   const { id } = usePageProps();
   const router = useRouter();
   const maybeEvmAddress = tryConvertToEvmAddress(id);
-  const { setTotalCount } = useAssetHubTabsContext();
+  const [, setTotalCount] = useTotalCounts();
 
   useEffect(() => {
     router.push(

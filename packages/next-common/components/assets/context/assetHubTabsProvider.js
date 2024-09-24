@@ -1,40 +1,65 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import { createStateContext } from "react-use";
+import { useCallback } from "react";
 
-const AssetHubTabsContext = createContext();
-
-const TABS = Object.freeze({
+export const TABS = Object.freeze({
   assets: 1,
   transfers: 2,
 });
 
-export const AssetHubTabsProvider = ({ children }) => {
-  const [activeTabId, setActiveTabId] = useState(TABS.assets);
-  const [totalCounts, setTotalCounts] = useState({
-    assets: "",
-    transfers: "",
-  });
+const [useActiveTabContext, ActiveTabProvider] = createStateContext({
+  activeTabId: TABS.assets,
+});
 
-  const setTotalCount = useCallback((tabKey, count) => {
-    setTotalCounts((prevCounts) => {
-      if (prevCounts[tabKey] !== count) {
-        return {
-          ...prevCounts,
-          [tabKey]: count,
-        };
-      }
-      return prevCounts;
-    });
-  }, []);
-
-  return (
-    <AssetHubTabsContext.Provider
-      value={{ activeTabId, setActiveTabId, totalCounts, setTotalCount, TABS }}
-    >
-      {children}
-    </AssetHubTabsContext.Provider>
-  );
-};
+const [useTotalCountsContext, TotalCountsProvider] = createStateContext({
+  totalCounts: {
+    assets: 0,
+    transfers: 0,
+  },
+});
 
 export const useAssetHubTabsContext = () => {
-  return useContext(AssetHubTabsContext);
+  return {
+    activeTab: useActiveTabContext(),
+    totalCounts: useTotalCountsContext(),
+  };
 };
+
+export const useActiveTab = () => {
+  const [state, setState] = useActiveTabContext();
+
+  const setActiveTabId = useCallback(
+    (newTabId) => {
+      setState({ activeTabId: newTabId });
+    },
+    [setState],
+  );
+
+  return [state.activeTabId, setActiveTabId];
+};
+
+export const useTotalCounts = () => {
+  const [state, setState] = useTotalCountsContext();
+
+  const setTotalCount = useCallback(
+    (tabKey, count) => {
+      setState((prevState) => ({
+        totalCounts: {
+          ...prevState.totalCounts,
+          [tabKey]: count,
+        },
+      }));
+    },
+    [setState],
+  );
+
+  return [state.totalCounts, setTotalCount];
+};
+
+// TODO: assets、transfers
+export function AssetHubTabsProvider({ children }) {
+  return (
+    <ActiveTabProvider>
+      <TotalCountsProvider>{children}</TotalCountsProvider>
+    </ActiveTabProvider>
+  );
+}

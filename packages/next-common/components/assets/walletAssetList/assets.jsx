@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import AssetsList from "next-common/components/assets/assetsList";
 import useMyAssets from "next-common/components/assets/useMyAssets";
-import { useAssetHubTabsContext } from "next-common/components/assets/context/assetHubTabsProvider";
+import { useTotalCounts } from "next-common/components/assets/context/assetHubTabsProvider";
 
 export default function Assets() {
   const assets = useMyAssets();
-  const { setTotalCount } = useAssetHubTabsContext();
+  const [, setTotalCount] = useTotalCounts();
 
   useEffect(() => {
     if (assets && setTotalCount) {

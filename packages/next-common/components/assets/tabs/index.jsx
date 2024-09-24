@@ -1,6 +1,10 @@
 import React from "react";
 import TabsList from "next-common/components/tabsList";
-import { useAssetHubTabsContext } from "next-common/components/assets/context/assetHubTabsProvider";
+import {
+  useActiveTab,
+  useTotalCounts,
+  TABS,
+} from "next-common/components/assets/context/assetHubTabsProvider";
 
 export const TabLabel = ({ label, count, isActive }) => (
   <span
@@ -15,9 +19,10 @@ export const TabLabel = ({ label, count, isActive }) => (
   </span>
 );
 
+// TODO: move setActiveTabId into provider
 const AssetHubTabs = ({ children }) => {
-  const { activeTabId, setActiveTabId, totalCounts, TABS } =
-    useAssetHubTabsContext();
+  const [activeTabId, setActiveTabId] = useActiveTab();
+  const [totalCounts] = useTotalCounts();
 
   const tabsListItems = [
     {
