@@ -4,7 +4,11 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import { AddressUser } from "next-common/components/user";
 import Copyable from "next-common/components/copyable";
 import tw from "tailwind-styled-components";
-import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
+import {
+  SystemProfile,
+  SystemSetting,
+  SystemTransfer,
+} from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 import { addressEllipsis } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
@@ -18,6 +22,8 @@ import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
+import { useAccountTransferPopup } from "./hook/useTransferPopup";
+import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 
 const DisplayUserAvatar = () => {
   const user = useUser();
@@ -102,6 +108,7 @@ export function AccountHead() {
   const router = useRouter();
   const user = useUser();
   const isWeb3User = useIsWeb3User();
+  const { showPopup, component: transferPopup } = useAccountTransferPopup();
 
   const goProfile = () => {
     router.push(`/user/${user?.address}`);
@@ -119,6 +126,17 @@ export function AccountHead() {
     <div className="flex justify-between items-center grow">
       <Account />
       <div className="flex gap-[16px]">
+        <Tooltip content="Transfer">
+          <IconButton
+            className="text-theme500 bg-theme100"
+            onClick={() => {
+              showPopup();
+            }}
+          >
+            <SystemTransfer className="w-5 h-5" />
+          </IconButton>
+        </Tooltip>
+        {transferPopup}
         <Tooltip content="Profile">
           <IconButton
             className="[&_svg_path]:fill-textSecondary"
@@ -159,6 +177,8 @@ export default function AccountInfoPanel({ hideManageAccountLink }) {
   useSubscribeAccount();
 
   return (
-    <CommonAccountInfoPanel hideManageAccountLink={hideManageAccountLink} />
+    <AssetMetadataProvider>
+      <CommonAccountInfoPanel hideManageAccountLink={hideManageAccountLink} />
+    </AssetMetadataProvider>
   );
 }
