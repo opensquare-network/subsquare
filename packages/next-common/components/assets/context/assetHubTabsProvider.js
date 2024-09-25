@@ -9,60 +9,16 @@ export const TABS = Object.freeze({
   transfers: 2,
 });
 
-const [useActiveTabContext, ActiveTabProvider] = createStateContext({
-  activeTabId: TABS.assets,
-});
+const [useActiveTabContext, ActiveTabProvider] = createStateContext(
+  TABS.assets,
+);
 
 const [useTotalCountsContext, TotalCountsProvider] = createStateContext({
-  assets: "",
-  transfers: "",
+  assets: 0,
+  transfers: 0,
 });
 
 const [useAssetsContext, AssetsProvider] = createStateContext();
-
-export const useActiveTab = () => {
-  const [state, setState] = useActiveTabContext();
-
-  const setActiveTabId = useCallback(
-    (newTabId) => {
-      setState({ activeTabId: newTabId });
-    },
-    [setState],
-  );
-
-  return [state.activeTabId, setActiveTabId];
-};
-
-export const useTotalCounts = () => {
-  const [state, setState] = useTotalCountsContext();
-
-  const setTotalCount = useCallback(
-    (tabKey, count) => {
-      setState((prevState) => ({
-        ...prevState,
-        [tabKey]: count,
-      }));
-    },
-    [setState],
-  );
-
-  return [state, setTotalCount];
-};
-
-export const useAssets = () => {
-  const [state, setState] = useAssetsContext();
-  const [, setTotalCount] = useTotalCounts();
-  const assets = useMyAssets();
-
-  useEffect(() => {
-    if (assets) {
-      setState(assets);
-      setTotalCount("assets", assets.length);
-    }
-  }, [setState, setTotalCount, assets]);
-
-  return state;
-};
 
 const [useTransfersHistoryContext, TransfersHistoryProvider] =
   createStateContext({
@@ -70,10 +26,49 @@ const [useTransfersHistoryContext, TransfersHistoryProvider] =
     total: 0,
   });
 
-export const useTransfersHistoryData = (page) => {
+export const useActiveTab = () => {
+  const [activeTabId, setActiveTabId] = useActiveTabContext();
+  return [activeTabId, setActiveTabId];
+};
+
+export const useTotalCounts = () => {
+  const [totalCounts, setTotalCounts] = useTotalCountsContext();
+
+  const setTotalCount = useCallback(
+    (tabKey, count) => {
+      setTotalCounts((prev) => ({
+        ...prev,
+        [tabKey]: count,
+      }));
+    },
+    [setTotalCounts],
+  );
+
+  return [totalCounts, setTotalCount];
+};
+
+export const useAssets = () => {
+  const [assets, setAssets] = useAssetsContext();
+  const [, setTotalCount] = useTotalCounts();
+  const fetchedAssets = useMyAssets();
+
+  useEffect(() => {
+    if (fetchedAssets) {
+      setAssets(fetchedAssets);
+      setTotalCount("assets", fetchedAssets?.length || 0);
+    }
+  }, [fetchedAssets, setAssets, setTotalCount]);
+
+  return assets;
+};
+
+export const useQueryTransfersHistory = (page) => {
   const [state, setState] = useTransfersHistoryContext();
   const [, setTotalCount] = useTotalCounts();
-  const { value, total, loading, error } = useTransfersHistory(page, defaultPageSize);
+  const { value, total, loading, error } = useTransfersHistory(
+    page,
+    defaultPageSize,
+  );
 
   useEffect(() => {
     if (!loading && !error && value) {
