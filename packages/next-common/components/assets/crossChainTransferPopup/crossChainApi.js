@@ -6,6 +6,7 @@ import teleportFromAssetHubToRelayChain from "./teleportFromAssetHubToRelayChain
 import { useCallback } from "react";
 import { useAssetHubApi } from "next-common/context/assetHub";
 import { useChain } from "next-common/context/chain";
+import { isAssetHubChain } from "next-common/utils/chain";
 
 export function useChainApi(chain) {
   const currChain = useChain();
@@ -16,7 +17,7 @@ export function useChainApi(chain) {
   if (currChain !== chain) {
     if (chain === Chains.polkadot) {
       return polkadotApi;
-    } else if (chain === Chains.polkadotAssetHub) {
+    } else if (isAssetHubChain(chain)) {
       return assetHubApi;
     }
   } else {

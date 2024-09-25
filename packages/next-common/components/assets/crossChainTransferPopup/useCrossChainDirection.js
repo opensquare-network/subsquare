@@ -4,6 +4,7 @@ import ChainIcon from "next-common/components/header/chainIcon";
 import { cn } from "next-common/utils";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { isAssetHubChain } from "next-common/utils/chain";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
@@ -30,7 +31,7 @@ export function Chain({ title, chain, name }) {
 export function getChainName(chain) {
   if (chain === Chains.polkadot) {
     return "Polkadot";
-  } else if (chain === Chains.polkadotAssetHub) {
+  } else if (isAssetHubChain(chain)) {
     return "Asset Hub";
   }
 

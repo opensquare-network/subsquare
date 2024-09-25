@@ -19,10 +19,7 @@ export function isKintsugiChain(chain) {
 }
 
 export function isAssetHubChain(chain) {
-  return (
-    [Chains.polkadotAssetHub].includes(chain) ||
-    [Chains.westendAssetHub].includes(chain)
-  );
+  return [Chains.polkadotAssetHub, Chains.westendAssetHub].includes(chain);
 }
 
 export function isShibuyaChain(chain) {
