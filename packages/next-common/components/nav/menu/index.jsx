@@ -2,11 +2,7 @@ import NavCommonMenu from "./common";
 import NavMenuDivider from "../divider";
 import NavFeaturedMenu from "./featured";
 import NavArchivedMenu from "./archived";
-import {
-  ArrowCircleLeft,
-  ArrowRight,
-  MenuArchived,
-} from "@osn/icons/subsquare";
+import { ArrowCircleLeft } from "@osn/icons/subsquare";
 import NavMenuItem from "./item";
 import { getNavMenu } from "next-common/utils/consts/menu";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +18,7 @@ export default function NavMenu({ collapsed }) {
   const showMainMenu = useSelector(navMenuShowMainMenuSelector);
   const showArchivedMenu = !showMainMenu;
 
-  const { featuredMenu, archivedMenu } = getNavMenu({
+  const { featuredMenu, archivedMenu, moreMenu } = getNavMenu({
     tracks,
     fellowshipTracks,
     ambassadorTracks,
@@ -36,6 +32,7 @@ export default function NavMenu({ collapsed }) {
         <MainMenu
           collapsed={collapsed}
           featuredMenu={featuredMenu}
+          moreMenu={moreMenu}
           hasArchivedMenu={!!archivedMenu?.length}
         />
       )}
@@ -47,7 +44,7 @@ export default function NavMenu({ collapsed }) {
   );
 }
 
-function MainMenu({ collapsed, featuredMenu = [], hasArchivedMenu = false }) {
+function MainMenu({ collapsed, featuredMenu = [], moreMenu = [] }) {
   return (
     <>
       <NavCommonMenu collapsed={collapsed} />
@@ -59,12 +56,10 @@ function MainMenu({ collapsed, featuredMenu = [], hasArchivedMenu = false }) {
         </>
       )}
 
-      {hasArchivedMenu && (
-        <>
-          <NavMenuDivider />
-          <ArchivedMenuButton collapsed={collapsed} />
-        </>
-      )}
+      <>
+        <NavMenuDivider />
+        <NavFeaturedMenu collapsed={collapsed} menu={[moreMenu]} />
+      </>
     </>
   );
 }
@@ -93,29 +88,5 @@ function ArchivedMenu({ collapsed, archivedMenu = [] }) {
 
       <NavArchivedMenu collapsed={collapsed} menu={archivedMenu} />
     </>
-  );
-}
-
-function ArchivedMenuButton({ collapsed }) {
-  const dispatch = useDispatch();
-
-  return (
-    <ul>
-      <li>
-        <NavMenuItem
-          item={{
-            icon: <MenuArchived />,
-            name: "Archived",
-          }}
-          collapsed={collapsed}
-          onClick={() => {
-            dispatch(setMenuShowMainMenu(false));
-          }}
-          extra={
-            <ArrowRight className="[&_path]:stroke-navigationTextTertiary" />
-          }
-        />
-      </li>
-    </ul>
   );
 }

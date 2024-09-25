@@ -1,13 +1,13 @@
 import {
   MenuOverview,
   MenuDiscussions,
-  MenuCalendar,
-  MenuOffChainVoting,
   MenuDelegation,
+  MenuAccount,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
 import { isKintsugiChain } from "next-common/utils/chain";
+import { getAccountUrl } from "next-common/hooks/account/useAccountUrl";
 
 const chainSettings = getChainSettings(CHAIN);
 
@@ -16,6 +16,19 @@ export const overviewMenu = {
   name: "Overview",
   pathname: "/",
   icon: <MenuOverview />,
+};
+
+const accountMenu = {
+  value: "account",
+  name: "Account",
+  pathname: getAccountUrl(),
+  extraMatchNavMenuActivePathnames: [
+    "/account/been-delegated",
+    "/account/delegations",
+    "/account/deposits",
+    "/account/multisigs",
+  ],
+  icon: <MenuAccount />,
 };
 
 export const discussionsMenu = {
@@ -31,7 +44,7 @@ export const discussionsMenu = {
 };
 
 const commonMenus = {
-  items: [overviewMenu],
+  items: [overviewMenu, accountMenu],
 };
 
 if (chainSettings.modules.discussions) {
@@ -55,23 +68,6 @@ if ((hasReferenda || hasDemocracy) && !isKintsugiChain(CHAIN)) {
       "/delegation/mine/delegations",
     ],
     icon: <MenuDelegation />,
-  });
-}
-
-commonMenus.items.push({
-  value: "calendar",
-  name: "Calendar",
-  pathname: "/calendar",
-  icon: <MenuCalendar />,
-});
-
-const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
-if (space) {
-  commonMenus.items.push({
-    value: "offChainVoting",
-    name: "Off-chain Voting",
-    pathname: `https://voting.opensquare.io/space/${space}`,
-    icon: <MenuOffChainVoting />,
   });
 }
 
