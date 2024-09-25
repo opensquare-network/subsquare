@@ -1,5 +1,5 @@
 import { createStateContext } from "react-use";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import useMyAssets from "next-common/components/assets/useMyAssets";
 import useTransfersHistory from "next-common/utils/hooks/useTransfersHistory";
 import { defaultPageSize } from "next-common/utils/constants";
@@ -73,7 +73,7 @@ const [useTransfersHistoryContext, TransfersHistoryProvider] =
 export const useTransfersHistoryData = (page) => {
   const [state, setState] = useTransfersHistoryContext();
   const [, setTotalCount] = useTotalCounts();
-  const { value, total, loading } = useTransfersHistory(page, defaultPageSize);
+  const { value, total, loading, error } = useTransfersHistory(page, defaultPageSize);
 
   useEffect(() => {
     if (!loading && !error && value) {

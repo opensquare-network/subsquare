@@ -41,7 +41,7 @@ export default function AssetsTransfersHistory() {
     if (!loading && total) {
       setTotalCount(total);
     }
-  }, [total]);
+  }, [total, loading]);
 
   return (
     <div>
