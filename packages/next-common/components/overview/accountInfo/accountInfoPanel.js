@@ -18,7 +18,6 @@ import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
-import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import OnlyChain from "next-common/components/common/onlyChain";
@@ -209,9 +208,7 @@ export function AccountHead() {
       <Account />
       <div className="flex gap-[16px] items-center">
         <OnlyChain chain={Chains.polkadot}>
-          <AssetMetadataProvider>
-            <TransferButton />
-          </AssetMetadataProvider>
+          <TransferButton />
           <AssetHubApiProvider>
             <TeleportButton />
           </AssetHubApiProvider>
