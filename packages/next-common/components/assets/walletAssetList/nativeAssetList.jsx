@@ -6,7 +6,7 @@ import {
   colTotal,
   colTransferrable,
 } from "next-common/components/assets/assetsList";
-import { useMyAsset } from "next-common/hooks/assets/useMyAsset";
+import { useMyNativeAsset } from "next-common/hooks/assets/useMyNativeAsset";
 
 function TokenSymbol({ symbol }) {
   const NativeAssetIcon = useNativeTokenIcon();
@@ -32,7 +32,7 @@ const teleport = {
 const columnsDef = [colToken, colTotal, colTransferrable, teleport];
 
 export default function NativeAssetList() {
-  const { loading, value } = useMyAsset();
+  const { loading, value } = useMyNativeAsset();
   return (
     <ScrollerX>
       <MapDataList
