@@ -5,6 +5,7 @@ import HeadContent from "./headContent";
 import NativeAsset from "./nativeAsset";
 import Assets from "./assets";
 import Transfers from "./transfers";
+import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
 
 export function Title({ assetsCount }) {
   return (
@@ -19,14 +20,16 @@ export function Title({ assetsCount }) {
 
 export default function WalletAssetList() {
   return (
-    <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
-      <div className="flex flex-col gap-[16px]">
-        <NativeAsset />
-        <AssetHubTabs>
-          <Assets />
-          <Transfers />
-        </AssetHubTabs>
-      </div>
-    </ListLayout>
+    <AssetHubTabsProvider>
+      <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
+        <div className="flex flex-col gap-[16px]">
+          <NativeAsset />
+          <AssetHubTabs>
+            <Assets />
+            <Transfers />
+          </AssetHubTabs>
+        </div>
+      </ListLayout>
+    </AssetHubTabsProvider>
   );
 }
