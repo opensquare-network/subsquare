@@ -1,45 +1,26 @@
+import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
+import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import {
   useExtensionAccounts,
   usePopupParams,
   useSetSigner,
 } from "next-common/components/popupWithSigner/context";
-import { useCallback } from "react";
-import Input from "next-common/components/input";
-import PopupLabel from "next-common/components/popup/label";
-import { useDispatch } from "react-redux";
-import { isSameAddress, toPrecision } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
+import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import { useUser } from "next-common/context/user";
+import { useSendTransaction } from "next-common/hooks/useSendTransaction";
+import PrimaryButton from "next-common/lib/button/primary";
 import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import PrimaryButton from "next-common/lib/button/primary";
-import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
-import Signer from "next-common/components/popup/fields/signerField";
-import { useUser } from "next-common/context/user";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import { isSameAddress } from "next-common/utils";
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
 import useCrossChainDirection from "./useCrossChainDirection";
 import useNativeTransferAmount from "./useNativeTransferAmount";
-import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
-import { useSendTransaction } from "next-common/hooks/useSendTransaction";
-
-export function ExistentialDeposit({ destApi, text }) {
-  const { decimals } = useChainSettings();
-  return (
-    <div>
-      <PopupLabel text={text || "Destination Existential Deposit"} />
-      <Input
-        disabled
-        value={toPrecision(
-          destApi?.consts.balances?.existentialDeposit || 0,
-          decimals,
-        )}
-        symbol="DOT"
-      />
-    </div>
-  );
-}
 
 function PopupContent() {
   const { onClose } = usePopupParams();

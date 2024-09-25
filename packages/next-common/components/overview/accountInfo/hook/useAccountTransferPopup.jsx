@@ -11,7 +11,7 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import useTransferAmount from "next-common/components/assets/transferPopup/useTransferAmount";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
-import { ExistentialDeposit } from "next-common/components/assets/crossChainTransferPopup";
+import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
 
 export function useAccountTransferPopup() {
   const nativeAsset = useMyNativeAsset();
@@ -55,9 +55,7 @@ function PopupContent() {
       return;
     }
 
-    const transferFn = api.tx.balances?.transferKeepAlive;
-
-    return transferFn(transferToAddress, amount);
+    return api.tx.balances?.transferKeepAlive(transferToAddress, amount);
   }, [dispatch, api, transferToAddress, getCheckedTransferAmount]);
 
   return (
@@ -66,10 +64,7 @@ function PopupContent() {
       {transferToAddressField}
       {transferAmountField}
       <AdvanceSettings>
-        <ExistentialDeposit
-          destApi={api}
-          text="Existential Deposit"
-        />
+        <ExistentialDeposit destApi={api} text="Existential Deposit" />
       </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton
