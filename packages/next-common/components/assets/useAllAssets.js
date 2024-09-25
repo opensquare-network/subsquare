@@ -3,7 +3,7 @@ import useQueryAllAssetDetail from "next-common/hooks/assets/useQueryAllAssetDet
 import { useKnownAssetHubAssets } from "./known";
 import useAllAssetMetadata from "next-common/components/assets/context/assetMetadata";
 
-export default function useAssets() {
+export default function useAllAssets() {
   const [metadata] = useAllAssetMetadata();
   const details = useQueryAllAssetDetail();
   const knownAssetDefs = useKnownAssetHubAssets();

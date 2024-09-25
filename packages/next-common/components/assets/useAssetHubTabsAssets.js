@@ -2,13 +2,13 @@ import {
   useAssetsContext,
   useTotalCounts,
 } from "next-common/components/assets/context/assetHubTabsProvider";
-import useAccountAssets from "./useAccountAssets";
+import useSingleAccountAssets from "./useSingleAccountAssets";
 import { useEffect } from "react";
 
-const useAssetHubAccountAssets = (address) => {
+const useAssetHubTabsAssets = (address) => {
   const [assets, setAssets] = useAssetsContext();
   const [, setTotalCount] = useTotalCounts();
-  const fetchedAssets = useAccountAssets(address);
+  const fetchedAssets = useSingleAccountAssets(address);
 
   useEffect(() => {
     if (fetchedAssets) {
@@ -20,4 +20,4 @@ const useAssetHubAccountAssets = (address) => {
   return assets;
 };
 
-export default useAssetHubAccountAssets;
+export default useAssetHubTabsAssets;

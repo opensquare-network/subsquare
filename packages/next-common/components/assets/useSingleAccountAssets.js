@@ -5,7 +5,7 @@ import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
 import useAllAssetMetadata from "next-common/components/assets/context/assetMetadata";
 
-export default function useAccountAssets(address) {
+export default function useSingleAccountAssets(address) {
   const api = useContextApi();
   const [allMetadata] = useAllAssetMetadata();
   const multiAccountKey = useMemo(
