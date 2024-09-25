@@ -12,7 +12,6 @@ import { isNil } from "lodash-es";
 import Tooltip from "../tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
-import useAccountAddress from "next-common/utils/hooks/useAccountAddress";
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
@@ -147,8 +146,7 @@ const columnsDef = [
   colTransfer,
 ];
 
-export default function AssetsList() {
-  const address = useAccountAddress();
+export default function AssetsList({ address }) {
   const assets = useAssetHubTabsAssets(address);
 
   return (

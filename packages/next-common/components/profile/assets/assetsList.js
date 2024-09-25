@@ -9,12 +9,10 @@ import {
   colTransferrable,
 } from "next-common/components/assets/assetsList";
 import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
-import useAccountAddress from "next-common/utils/hooks/useAccountAddress";
 
 const columnsDef = [colToken, colId, colName, colTotal, colTransferrable];
 
-export default function ProfileAssetsList() {
-  const address = useAccountAddress();
+export default function ProfileAssetsList({ address }) {
   const assets = useAssetHubTabsAssets(address);
 
   return (
