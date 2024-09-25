@@ -24,11 +24,11 @@ import useNativeTransferAmount from "./useNativeTransferAmount";
 import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 
-export function ExistentialDeposit({ destApi }) {
+export function ExistentialDeposit({ destApi, text }) {
   const { decimals } = useChainSettings();
   return (
     <div>
-      <PopupLabel text="Destination Existential Deposit" />
+      <PopupLabel text={text || "Destination Existential Deposit"} />
       <Input
         disabled
         value={toPrecision(

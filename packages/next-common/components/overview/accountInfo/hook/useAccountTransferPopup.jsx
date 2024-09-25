@@ -47,11 +47,6 @@ function PopupContent() {
       return;
     }
 
-    if (transferToAddress === address) {
-      dispatch(newErrorToast("Cannot transfer to self"));
-      return;
-    }
-
     let amount;
     try {
       amount = getCheckedTransferAmount();
@@ -60,11 +55,10 @@ function PopupContent() {
       return;
     }
 
-    const transferFn =
-      api.tx.balances?.transferAllowDeath || api.tx.balances?.transfer;
+    const transferFn = api.tx.balances?.transferKeepAlive;
 
     return transferFn(transferToAddress, amount);
-  }, [dispatch, api, address, transferToAddress, getCheckedTransferAmount]);
+  }, [dispatch, api, transferToAddress, getCheckedTransferAmount]);
 
   return (
     <>
@@ -72,7 +66,10 @@ function PopupContent() {
       {transferToAddressField}
       {transferAmountField}
       <AdvanceSettings>
-        <ExistentialDeposit destApi={api} />
+        <ExistentialDeposit
+          destApi={api}
+          text="Existential Deposit"
+        />
       </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton
