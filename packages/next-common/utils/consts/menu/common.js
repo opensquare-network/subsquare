@@ -18,7 +18,7 @@ export const overviewMenu = {
   icon: <MenuOverview />,
 };
 
-const accountMenu = {
+export const accountMenu = {
   value: "account",
   name: "Account",
   pathname: getAccountUrl(),
@@ -44,7 +44,10 @@ export const discussionsMenu = {
 };
 
 const commonMenus = {
-  items: [overviewMenu, accountMenu],
+  items: [
+    overviewMenu,
+    // accountMenu,
+  ],
 };
 
 if (chainSettings.modules.discussions) {
