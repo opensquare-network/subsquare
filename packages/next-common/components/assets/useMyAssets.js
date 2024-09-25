@@ -5,9 +5,12 @@ import { useMemo } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
 import useAllAssetMetadata from "next-common/components/assets/context/assetMetadata";
+import { usePageProps } from "next-common/context/page";
 
 export default function useMyAssets() {
-  const address = useRealAddress();
+  const { id } = usePageProps();
+  const myAddress = useRealAddress();
+  const address = id || myAddress;
   const api = useContextApi();
   const [allMetadata] = useAllAssetMetadata();
   const multiAccountKey = useMemo(
