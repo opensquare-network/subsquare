@@ -6,7 +6,7 @@ import {
   colTotal,
   colTransferrable,
 } from "next-common/components/assets/assetsList";
-import { useMyNativeAsset } from "next-common/components/assets/useMyAssets";
+import { useMyNativeAsset } from "next-common/hooks/assets/useMyNativeAsset";
 
 function TokenSymbol({ symbol }) {
   const NativeAssetIcon = useNativeTokenIcon();

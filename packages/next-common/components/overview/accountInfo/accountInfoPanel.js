@@ -17,6 +17,7 @@ import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
+import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import OnlyChain from "next-common/components/common/onlyChain";
@@ -35,6 +36,9 @@ const SystemProfile = dynamic(
 );
 const SystemSetting = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemSetting),
+);
+const SystemTransfer = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.SystemTransfer),
 );
 
 const DisplayUserAvatar = () => {
@@ -116,6 +120,25 @@ export function ProxyTip() {
   );
 }
 
+function TransferButton() {
+  const { showPopup, component: transferPopup } = useAccountTransferPopup();
+  return (
+    <>
+      <Tooltip content="Transfer">
+        <IconButton
+          className="text-theme500 bg-theme100"
+          onClick={() => {
+            showPopup();
+          }}
+        >
+          <SystemTransfer className="w-5 h-5" />
+        </IconButton>
+      </Tooltip>
+      {transferPopup}
+    </>
+  );
+}
+
 function ProfileButton() {
   const router = useRouter();
   const user = useUser();
@@ -185,11 +208,12 @@ export function AccountHead() {
       <Account />
       <div className="flex gap-[16px] items-center">
         <OnlyChain chain={Chains.polkadot}>
+          <TransferButton />
           <AssetHubApiProvider>
             <TeleportButton />
           </AssetHubApiProvider>
+          <div className="w-[1px] h-[16px] bg-neutral300"></div>
         </OnlyChain>
-        <div className="w-[1px] h-[16px] bg-neutral300"></div>
         <ProfileButton />
         <SettingsButton />
       </div>
