@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChain } from "next-common/context/chain";
 import { gql, request } from "graphql-request";
+import { usePageProps } from "next-common/context/page";
 
 const assetTransfersQuery = gql`
   query MyQuery($limit: Int!, $offset: Int!, $address: String!) {
@@ -40,7 +41,8 @@ const STATESCAN_CHAIN_URL_MAP = Object.freeze({
 });
 
 export default function useTransfersHistory(page = 0, page_size = 25) {
-  const address = useRealAddress();
+  const { id } = usePageProps();
+  const address = id || useRealAddress();
   const chain = useChain();
 
   const [value, setValue] = useState([]);
