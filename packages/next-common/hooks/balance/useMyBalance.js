@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import { useSubMyAsset } from "./useSubMyAsset";
+import { useSubMyBalanceInfo } from "./useSubMyBalanceInfo";
 
-export function useMyAsset() {
-  const balanceObj = useSubMyAsset();
+export function useMyBalance() {
+  const balance = useSubMyBalanceInfo();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (balanceObj) {
+    if (balance) {
       setLoading(false);
     }
-  }, [balanceObj]);
+  }, [balance]);
 
   return {
     loading,
     value: {
-      ...balanceObj,
+      ...balance,
     },
   };
 }

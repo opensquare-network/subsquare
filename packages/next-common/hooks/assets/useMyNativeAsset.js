@@ -1,21 +1,13 @@
-import polkadot from "next-common/utils/consts/settings/polkadot";
-import { useMyAsset } from "./useMyAsset";
-
-const PolkadotAssetHubNativeToken = {
-  symbol: polkadot.symbol,
-  name: polkadot.name,
-  decimals: polkadot.decimals,
-  type: "native",
-};
+import { useMyBalance } from "../balance/useMyBalance";
 
 export function useMyNativeAsset() {
-  const { value, loading } = useMyAsset();
+  const { value: balance, loading } = useMyBalance();
 
   return {
     loading,
     value: {
-      ...PolkadotAssetHubNativeToken,
-      ...value,
+      ...balance,
+      type: "native",
     },
   };
 }

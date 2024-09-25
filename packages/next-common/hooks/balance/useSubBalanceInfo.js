@@ -2,8 +2,10 @@ import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryEx
 import { useMemo } from "react";
 import useSubStorage from "../common/useSubStorage";
 import calcTransferable from "next-common/utils/account/transferable";
+import { useChainSettings } from "next-common/context/chain";
 
-export function useSubAsset(address) {
+export function useSubBalanceInfo(address) {
+  const { decimals, symbol, name } = useChainSettings();
   const existentialDeposit = useQueryExistentialDeposit();
 
   const { result } = useSubStorage("system", "account", [address]);
@@ -18,6 +20,12 @@ export function useSubAsset(address) {
     const balance = (free + reserved).toString();
     const transferrable = calcTransferable(accountInfo, existentialDeposit);
 
-    return { balance, transferrable };
-  }, [accountInfo, existentialDeposit]);
+    return {
+      balance,
+      transferrable,
+      decimals,
+      symbol,
+      name,
+    };
+  }, [accountInfo, decimals, existentialDeposit, name, symbol]);
 }

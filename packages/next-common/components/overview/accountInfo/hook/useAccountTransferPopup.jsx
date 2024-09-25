@@ -11,14 +11,14 @@ import { useDispatch } from "react-redux";
 import useTransferAmount from "next-common/components/assets/transferPopup/useTransferAmount";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
-import { useMyAsset } from "next-common/hooks/assets/useMyAsset";
+import { useMyBalance } from "next-common/hooks/balance/useMyBalance";
 
 export function useAccountTransferPopup() {
-  const asset = useMyAsset();
+  const balance = useMyBalance();
   const [isOpen, setIsOpen] = useState(false);
   const component = isOpen && (
     <AccountTransferPopup
-      asset={asset?.value}
+      balance={balance?.value}
       onClose={() => setIsOpen(false)}
     />
   );
@@ -30,14 +30,14 @@ export function useAccountTransferPopup() {
 }
 
 function PopupContent() {
-  const { asset, onClose } = usePopupParams();
+  const { balance, onClose } = usePopupParams();
   const api = useContextApi();
   const address = useRealAddress();
   const dispatch = useDispatch();
   const {
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
-  } = useTransferAmount({ asset, transferFromAddress: address });
+  } = useTransferAmount({ asset: balance, transferFromAddress: address });
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
 
