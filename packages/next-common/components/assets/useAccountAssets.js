@@ -1,16 +1,11 @@
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
 import useAllAssetMetadata from "next-common/components/assets/context/assetMetadata";
-import { usePageProps } from "next-common/context/page";
 
-export default function useMyAssets() {
-  const { id } = usePageProps();
-  const myAddress = useRealAddress();
-  const address = id || myAddress;
+export default function useAccountAssets(address) {
   const api = useContextApi();
   const [allMetadata] = useAllAssetMetadata();
   const multiAccountKey = useMemo(

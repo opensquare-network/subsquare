@@ -37,6 +37,7 @@ export default function AssetsTransfersHistory() {
     totalCount,
     defaultPageSize,
   );
+
   const { id } = usePageProps();
   const myAddress = useRealAddress();
   const address = id || myAddress;
