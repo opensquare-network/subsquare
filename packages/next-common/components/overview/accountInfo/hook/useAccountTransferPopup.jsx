@@ -1,4 +1,3 @@
-import { useMyNativeAsset } from "next-common/components/assets/useMyAssets";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
@@ -12,13 +11,14 @@ import { useDispatch } from "react-redux";
 import useTransferAmount from "next-common/components/assets/transferPopup/useTransferAmount";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
+import { useMyAsset } from "next-common/hooks/assets/useMyAsset";
 
 export function useAccountTransferPopup() {
-  const nativeAsset = useMyNativeAsset();
+  const asset = useMyAsset();
   const [isOpen, setIsOpen] = useState(false);
   const component = isOpen && (
     <AccountTransferPopup
-      asset={nativeAsset?.value}
+      asset={asset?.value}
       onClose={() => setIsOpen(false)}
     />
   );
