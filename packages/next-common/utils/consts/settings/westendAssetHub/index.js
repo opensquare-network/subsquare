@@ -21,7 +21,7 @@ const name = Chains.westendAssetHub;
 const westendAssetHub = {
   value: name,
   name: "Asset Hub",
-  identity: Chains.polkadot,
+  identity: Chains.westend,
   symbol: "DOT",
   decimals: 10,
   ss58Format: 0,
