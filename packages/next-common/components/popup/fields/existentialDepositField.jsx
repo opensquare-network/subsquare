@@ -3,11 +3,11 @@ import PopupLabel from "../label";
 import Input from "next-common/components/input";
 import { toPrecision } from "next-common/utils";
 
-export default function ExistentialDeposit({ destApi, label }) {
+export default function ExistentialDeposit({ destApi, title }) {
   const { decimals } = useChainSettings();
   return (
     <div>
-      <PopupLabel text={label || "Destination Existential Deposit"} />
+      <PopupLabel text={title || "Destination Existential Deposit"} />
       <Input
         disabled
         value={toPrecision(
