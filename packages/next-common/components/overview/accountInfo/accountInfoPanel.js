@@ -20,7 +20,7 @@ import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import OnlyChain from "next-common/components/common/onlyChain";
+import OnlyChain, { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 
@@ -202,18 +202,24 @@ function TeleportButton() {
   );
 }
 
+const transferEnabledChains = [Chains.polkadot, Chains.kusama, Chains.westend, Chains.rococo];
+
 export function AccountHead() {
   return (
     <div className="flex justify-between items-center grow">
       <Account />
       <div className="flex gap-[16px] items-center">
-        <OnlyChain chain={Chains.polkadot}>
+        <OnlyChains chains={transferEnabledChains}>
           <TransferButton />
+        </OnlyChains>
+        <OnlyChain chain={Chains.polkadot}>
           <AssetHubApiProvider>
             <TeleportButton />
           </AssetHubApiProvider>
-          <div className="w-[1px] h-[16px] bg-neutral300"></div>
         </OnlyChain>
+        <OnlyChains chains={transferEnabledChains}>
+          <div className="w-[1px] h-[16px] bg-neutral300"></div>
+        </OnlyChains>
         <ProfileButton />
         <SettingsButton />
       </div>
