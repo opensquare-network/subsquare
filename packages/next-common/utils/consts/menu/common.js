@@ -1,8 +1,6 @@
 import {
   MenuOverview,
   MenuDiscussions,
-  MenuCalendar,
-  MenuOffChainVoting,
   MenuDelegation,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
@@ -55,23 +53,6 @@ if ((hasReferenda || hasDemocracy) && !isKintsugiChain(CHAIN)) {
       "/delegation/mine/delegations",
     ],
     icon: <MenuDelegation />,
-  });
-}
-
-commonMenus.items.push({
-  value: "calendar",
-  name: "Calendar",
-  pathname: "/calendar",
-  icon: <MenuCalendar />,
-});
-
-const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
-if (space) {
-  commonMenus.items.push({
-    value: "offChainVoting",
-    name: "Off-chain Voting",
-    pathname: `https://voting.opensquare.io/space/${space}`,
-    icon: <MenuOffChainVoting />,
   });
 }
 
