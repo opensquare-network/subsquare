@@ -2,6 +2,7 @@ import {
   MenuOverview,
   MenuDiscussions,
   MenuDelegation,
+  MenuAccount,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
@@ -14,6 +15,19 @@ export const overviewMenu = {
   name: "Overview",
   pathname: "/",
   icon: <MenuOverview />,
+};
+
+const accountMenu = {
+  value: "account",
+  name: "Account",
+  pathname: "/account/votes",
+  extraMatchNavMenuActivePathnames: [
+    "/account/been-delegated",
+    "/account/delegations",
+    "/account/deposits",
+    "/account/multisigs",
+  ],
+  icon: <MenuAccount />,
 };
 
 export const discussionsMenu = {
@@ -29,7 +43,7 @@ export const discussionsMenu = {
 };
 
 const commonMenus = {
-  items: [overviewMenu],
+  items: [overviewMenu, accountMenu],
 };
 
 if (chainSettings.modules.discussions) {
