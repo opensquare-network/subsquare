@@ -2,17 +2,17 @@ import { getChainApi } from "../getChainApi";
 
 let api = null;
 
-export async function getPolkadotApi() {
+export async function getRelayChainApi() {
   if (api) {
     return api;
   }
 
-  const wsPolkadotEndpoint = process.env.NEXT_PUBLIC_WS_RELAY_CHAIN_ENDPOINTS;
-  if (!wsPolkadotEndpoint) {
+  const wsRelayChainEndpoint = process.env.NEXT_PUBLIC_WS_RELAY_CHAIN_ENDPOINTS;
+  if (!wsRelayChainEndpoint) {
     return null;
   }
 
-  const endpoints = wsPolkadotEndpoint.split(";");
+  const endpoints = wsRelayChainEndpoint.split(";");
   api = getChainApi(endpoints);
 
   return api;

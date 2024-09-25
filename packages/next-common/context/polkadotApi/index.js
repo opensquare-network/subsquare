@@ -1,22 +1,22 @@
-import { getPolkadotApi } from "next-common/utils/polkadot";
+import { getRelayChainApi } from "next-common/utils/polkadot";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const PolkadotApiContext = createContext(null);
+const RelayChainContext = createContext(null);
 
-export function PolkadotApiProvider({ children }) {
+export function RelayChainApiProvider({ children }) {
   const [api, setApi] = useState(null);
 
   useEffect(() => {
-    getPolkadotApi().then(setApi);
+    getRelayChainApi().then(setApi);
   }, []);
 
   return (
-    <PolkadotApiContext.Provider value={api}>
+    <RelayChainContext.Provider value={api}>
       {children}
-    </PolkadotApiContext.Provider>
+    </RelayChainContext.Provider>
   );
 }
 
 export function usePolkadotApi() {
-  return useContext(PolkadotApiContext);
+  return useContext(RelayChainContext);
 }
