@@ -1,7 +1,9 @@
 import { useContextApi } from "next-common/context/api";
 import { usePolkadotApi } from "next-common/context/polkadotApi";
 import Chains from "next-common/utils/consts/chains";
-import teleportFromRelayChainToAssetHub from "./teleportFromRelayChainToAssetHub";
+import teleportFromRelayChainToAssetHub, {
+  getParaChainId,
+} from "./teleportFromRelayChainToAssetHub";
 import teleportFromAssetHubToRelayChain from "./teleportFromAssetHubToRelayChain";
 import { useCallback } from "react";
 import { useAssetHubApi } from "next-common/context/assetHub";
@@ -37,19 +39,15 @@ export function useGetTeleportTxFunc({
         throw new Error("Chain network is not connected yet");
       }
 
-      if (
-        sourceChain === Chains.polkadot &&
-        destinationChain === Chains.polkadotAssetHub
-      ) {
+      if (sourceChain === Chains.polkadot) {
+        const paraChainId = getParaChainId(destinationChain);
         return teleportFromRelayChainToAssetHub({
           sourceApi,
           transferToAddress,
           amount,
+          paraChainId,
         });
-      } else if (
-        sourceChain === Chains.polkadotAssetHub &&
-        destinationChain === Chains.polkadot
-      ) {
+      } else if (destinationChain === Chains.polkadot) {
         return teleportFromAssetHubToRelayChain({
           sourceApi,
           transferToAddress,

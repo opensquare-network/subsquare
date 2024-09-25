@@ -8,11 +8,11 @@ const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
 );
 
-const CrossChainTransferPopup = dynamicPopup(() =>
-  import("./crossChainTransferPopup"),
+const ParaChainTeleportPopup = dynamicPopup(() =>
+  import("./paraChainTeleportPopup"),
 );
 
-export default function CrossChainTransferButton() {
+export default function ParaChainTeleportButton() {
   const [showPopup, setShowPopup] = useState(false);
 
   return (
@@ -27,7 +27,7 @@ export default function CrossChainTransferButton() {
         </ListButton>
       </Tooltip>
       {showPopup && (
-        <CrossChainTransferPopup onClose={() => setShowPopup(false)} />
+        <ParaChainTeleportPopup onClose={() => setShowPopup(false)} />
       )}
     </>
   );

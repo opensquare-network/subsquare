@@ -9,18 +9,18 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import Signer from "next-common/components/popup/fields/signerField";
 import { useUser } from "next-common/context/user";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
-import useNativeTransferAmount from "next-common/components/assets/crossChainTransferPopup/useNativeTransferAmount";
+import useNativeTransferAmount from "next-common/components/assets/paraChainTeleportPopup/useNativeTransferAmount";
 import {
   useChainApi,
   useGetTeleportTxFunc,
-} from "next-common/components/assets/crossChainTransferPopup/crossChainApi";
+} from "next-common/components/assets/paraChainTeleportPopup/crossChainApi";
 import Chains from "next-common/utils/consts/chains";
 import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
 import dynamic from "next/dynamic";
 import {
   Chain,
   getChainName,
-} from "next-common/components/assets/crossChainTransferPopup/useCrossChainDirection";
+} from "next-common/components/assets/paraChainTeleportPopup/useCrossChainDirection";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
 const SystemCrosschain = dynamic(

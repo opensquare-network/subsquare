@@ -20,9 +20,11 @@ import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import OnlyChain, { OnlyChains } from "next-common/components/common/onlyChain";
+import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
+import { PolkadotApiProvider } from "next-common/context/polkadotApi";
+import ParaChainTeleportButton from "next-common/components/assets/paraChainTeleportButton";
 
 const CrossChainTransferPopup = dynamic(
   import("./crossChainTransferPopup").then((mod) => mod.default),
@@ -202,7 +204,16 @@ function TeleportButton() {
   );
 }
 
-const transferEnabledChains = [Chains.polkadot, Chains.kusama, Chains.westend, Chains.rococo];
+const transferEnabledChains = [
+  Chains.polkadot,
+  Chains.kusama,
+  Chains.westend,
+  Chains.rococo,
+];
+
+const relayChainTeleportEnabledChains = [Chains.polkadot];
+
+const paraChainTeleportEnabledChains = [Chains.collectives];
 
 export function AccountHead() {
   return (
@@ -212,12 +223,23 @@ export function AccountHead() {
         <OnlyChains chains={transferEnabledChains}>
           <TransferButton />
         </OnlyChains>
-        <OnlyChain chain={Chains.polkadot}>
+        <OnlyChains chains={relayChainTeleportEnabledChains}>
           <AssetHubApiProvider>
             <TeleportButton />
           </AssetHubApiProvider>
-        </OnlyChain>
-        <OnlyChains chains={transferEnabledChains}>
+        </OnlyChains>
+        <OnlyChains chains={paraChainTeleportEnabledChains}>
+          <PolkadotApiProvider>
+            <ParaChainTeleportButton />
+          </PolkadotApiProvider>
+        </OnlyChains>
+        <OnlyChains
+          chains={[
+            ...transferEnabledChains,
+            ...relayChainTeleportEnabledChains,
+            ...paraChainTeleportEnabledChains,
+          ]}
+        >
           <div className="w-[1px] h-[16px] bg-neutral300"></div>
         </OnlyChains>
         <ProfileButton />
