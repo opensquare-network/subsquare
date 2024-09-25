@@ -6,7 +6,8 @@ import calcTransferable from "next-common/utils/account/transferable";
 export function useSubAsset(address) {
   const existentialDeposit = useQueryExistentialDeposit();
 
-  const { result: accountInfo } = useSubStorage("system", "account", [address]);
+  const { result } = useSubStorage("system", "account", [address]);
+  const accountInfo = result?.data?.toJSON();
 
   return useMemo(() => {
     if (!accountInfo) {
