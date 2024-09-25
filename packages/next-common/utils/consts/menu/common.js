@@ -7,6 +7,7 @@ import {
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
 import { isKintsugiChain } from "next-common/utils/chain";
+import { getAccountUrl } from "next-common/hooks/account/useAccountUrl";
 
 const chainSettings = getChainSettings(CHAIN);
 
@@ -20,7 +21,7 @@ export const overviewMenu = {
 const accountMenu = {
   value: "account",
   name: "Account",
-  pathname: "/account/votes",
+  pathname: getAccountUrl(),
   extraMatchNavMenuActivePathnames: [
     "/account/been-delegated",
     "/account/delegations",
