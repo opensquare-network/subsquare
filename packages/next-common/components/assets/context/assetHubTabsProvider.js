@@ -1,6 +1,5 @@
 import { createStateContext } from "react-use";
-import { useCallback, useEffect } from "react";
-import useAccountAssets from "next-common/components/assets/useAccountAssets";
+import { useCallback } from "react";
 
 export const TABS = Object.freeze({
   assets: 1,
