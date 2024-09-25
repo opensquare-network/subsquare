@@ -1,4 +1,4 @@
-import { useRealAddress } from "next-common/hooks/account/useRealAddress";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useSubAsset } from "./useSubAsset";
 
 export function useSubMyAsset() {
