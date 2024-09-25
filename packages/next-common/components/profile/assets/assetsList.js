@@ -8,12 +8,12 @@ import {
   colTotal,
   colTransferrable,
 } from "next-common/components/assets/assetsList";
-import { useAssets } from "next-common/components/assets/context/assetHubTabsProvider";
+import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
 
 const columnsDef = [colToken, colId, colName, colTotal, colTransferrable];
 
-export default function ProfileAssetsList() {
-  const assets = useAssets();
+export default function ProfileAssetsList({ address }) {
+  const assets = useAssetHubTabsAssets(address);
 
   return (
     <ScrollerX>

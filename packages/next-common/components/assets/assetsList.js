@@ -11,7 +11,7 @@ import BalanceDisplay from "./balanceDisplay";
 import { isNil } from "lodash-es";
 import Tooltip from "../tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useAssets } from "next-common/components/assets/context/assetHubTabsProvider";
+import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
@@ -146,8 +146,8 @@ const columnsDef = [
   colTransfer,
 ];
 
-export default function AssetsList() {
-  const assets = useAssets();
+export default function AssetsList({ address }) {
+  const assets = useAssetHubTabsAssets(address);
 
   return (
     <ScrollerX>

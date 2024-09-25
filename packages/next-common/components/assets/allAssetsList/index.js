@@ -9,7 +9,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import LoadableContent from "next-common/components/common/loadableContent";
 import AssetsList from "./assetsList";
 import { Title } from "../walletAssetList/index";
-import useAssets from "../useAssets";
+import useAllAssets from "../useAllAssets";
 
 function Summary({ assetsCount }) {
   return (
@@ -25,7 +25,7 @@ function Summary({ assetsCount }) {
 
 export default function AllAssetsList() {
   const chainSettings = useChainSettings();
-  const assets = useAssets();
+  const assets = useAllAssets();
   const pageSize = 25;
   const { page, component: pagination } = usePaginationComponent(
     assets?.length || 0,

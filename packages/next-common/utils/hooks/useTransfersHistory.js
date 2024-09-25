@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChain } from "next-common/context/chain";
 import { gql, request } from "graphql-request";
-import { usePageProps } from "next-common/context/page";
 
 const assetTransfersQuery = gql`
   query MyQuery($limit: Int!, $offset: Int!, $address: String!) {
@@ -40,10 +38,7 @@ const STATESCAN_CHAIN_URL_MAP = Object.freeze({
   "polkadot-assethub": "https://statemint-gh-api.statescan.io/graphql",
 });
 
-export default function useTransfersHistory(page = 0, page_size = 25) {
-  const { id } = usePageProps();
-  const myAddress = useRealAddress();
-  const address = id || myAddress;
+export default function useTransfersHistory(address, page = 0, page_size = 25) {
   const chain = useChain();
 
   const [value, setValue] = useState([]);
