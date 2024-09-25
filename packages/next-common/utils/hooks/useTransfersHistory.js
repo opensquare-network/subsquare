@@ -42,7 +42,8 @@ const STATESCAN_CHAIN_URL_MAP = Object.freeze({
 
 export default function useTransfersHistory(page = 0, page_size = 25) {
   const { id } = usePageProps();
-  const address = id || useRealAddress();
+  const myAddress = useRealAddress();
+  const address = id || myAddress;
   const chain = useChain();
 
   const [value, setValue] = useState([]);

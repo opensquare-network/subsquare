@@ -9,7 +9,8 @@ import { usePageProps } from "next-common/context/page";
 
 export default function useMyAssets() {
   const { id } = usePageProps();
-  const address = id || useRealAddress();
+  const myAddress = useRealAddress();
+  const address = id || myAddress;
   const api = useContextApi();
   const [allMetadata] = useAllAssetMetadata();
   const multiAccountKey = useMemo(
