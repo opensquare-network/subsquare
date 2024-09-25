@@ -13,8 +13,6 @@ export function useMyBalance() {
 
   return {
     loading,
-    value: {
-      ...balance,
-    },
+    value: balance,
   };
 }
