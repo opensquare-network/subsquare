@@ -7,7 +7,7 @@ export async function getPolkadotApi() {
     return api;
   }
 
-  const wsPolkadotEndpoint = process.env.NEXT_PUBLIC_WS_POLKADOT_ENDPOINTS;
+  const wsPolkadotEndpoint = process.env.NEXT_PUBLIC_WS_RELAY_CHAIN_ENDPOINTS;
   if (!wsPolkadotEndpoint) {
     return null;
   }

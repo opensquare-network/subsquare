@@ -7,7 +7,7 @@ export async function getAssetHubApi() {
     return api;
   }
 
-  const wsAssetHubEndpoint = process.env.NEXT_PUBLIC_WS_RELAY_CHAIN_ENDPOINTS;
+  const wsAssetHubEndpoint = process.env.NEXT_PUBLIC_WS_ASSET_HUB_ENDPOINTS;
   if (!wsAssetHubEndpoint) {
     return null;
   }
