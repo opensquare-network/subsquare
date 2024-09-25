@@ -5,7 +5,6 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
 import CentrifugeOverviewSummary from "next-common/components/summary/centrifugeOverviewSummary";
-import { useUser } from "next-common/context/user";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import Bounties from "next-common/components/summary/externalInfo/bounties";
 import {
@@ -17,7 +16,6 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
 import Overview from "next-common/components/overview/overview";
 import CentrifugeOverview from "next-common/components/overview/centrifugeOverview";
-import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import {
   fetchForumCategories,
   fetchForumLatestTopics,
@@ -33,8 +31,6 @@ import nextApi from "next-common/services/nextApi";
 function DefaultOverviewPage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
-  const user = useUser();
-  const url = useAccountUrl();
 
   const tabs = [
     {
@@ -43,13 +39,6 @@ function DefaultOverviewPage() {
       exactMatch: false,
     },
   ];
-
-  if (user?.address && chainSettings.showAccountManagementTab !== false) {
-    tabs.push({
-      label: "Account",
-      url,
-    });
-  }
 
   if (chain === "interlay" || chain === "kintsugi") {
     tabs.push({
