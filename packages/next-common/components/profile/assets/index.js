@@ -1,4 +1,3 @@
-import useMyAssets from "next-common/components/assets/useMyAssets";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import ProfileAssetsList from "./assetsList";
 import { useRouter } from "next/router";
@@ -8,8 +7,9 @@ import { usePageProps } from "next-common/context/page";
 import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 import AssetHubTabs from "next-common/components/assets/tabs/index";
 import AssetsTransfersHistory from "next-common/components/assets/transferHistory/index";
+import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
 
-function ProfileAssetsInContext({ setTotalCount }) {
+function ProfileAssetsInContext() {
   const { id } = usePageProps();
   const router = useRouter();
   const maybeEvmAddress = tryConvertToEvmAddress(id);
@@ -25,29 +25,20 @@ function ProfileAssetsInContext({ setTotalCount }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maybeEvmAddress]);
 
-  const assets = useMyAssets();
-
-  useEffect(() => {
-    if (assets && setTotalCount) {
-      const count = assets ? assets.length : 0;
-      setTotalCount(count);
-    }
-  }, [assets, setTotalCount]);
-
   return (
     <div className="flex flex-col gap-[16px]">
       <SecondaryCard>
-        <ProfileAssetsList assets={assets} />
+        <ProfileAssetsList />
       </SecondaryCard>
     </div>
   );
 }
 
-function ProfileTransfers({ setTotalCount }) {
+function ProfileTransfers() {
   return (
     <div>
       <SecondaryCard>
-        <AssetsTransfersHistory setTotalCount={setTotalCount} />
+        <AssetsTransfersHistory />
       </SecondaryCard>
     </div>
   );
@@ -55,13 +46,15 @@ function ProfileTransfers({ setTotalCount }) {
 
 export default function ProfileAssets() {
   return (
-    <AssetMetadataProvider>
-      <div className="flex flex-col gap-[16px]">
-        <AssetHubTabs>
-          <ProfileAssetsInContext />
-          <ProfileTransfers />
-        </AssetHubTabs>
-      </div>
-    </AssetMetadataProvider>
+    <AssetHubTabsProvider>
+      <AssetMetadataProvider>
+        <div className="flex flex-col gap-[16px]">
+          <AssetHubTabs>
+            <ProfileAssetsInContext />
+            <ProfileTransfers />
+          </AssetHubTabs>
+        </div>
+      </AssetMetadataProvider>
+    </AssetHubTabsProvider>
   );
 }

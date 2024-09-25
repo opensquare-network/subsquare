@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MapDataList } from "next-common/components/dataList";
-import useTransfersHistory from "next-common/utils/hooks/useTransfersHistory";
 import { useAssetsTransfersHistoryTokenColumn } from "./columns/token";
 import { useAssetsTransfersHistoryIdColumn } from "./columns/id";
 import { useAssetsTransfersHistoryFromColumn } from "./columns/from";
@@ -9,6 +8,7 @@ import { useAssetsTransfersHistoryTimeAgeColumn } from "./columns/timeAge";
 import { useAssetsTransfersHistoryAmountColumn } from "./columns/amount";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
+import { useQueryTransfersHistory } from "next-common/components/assets/context/assetHubTabsProvider";
 
 function useColumnsDef() {
   const tokenColumn = useAssetsTransfersHistoryTokenColumn();
@@ -28,36 +28,26 @@ function useColumnsDef() {
   ];
 }
 
-export default function AssetsTransfersHistory({ setTotalCount }) {
+export default function AssetsTransfersHistory() {
   const columnsDef = useColumnsDef();
-  const [rowData, setRowData] = useState([]);
-  const [total, setTotal] = useState(0);
-
+  const [totalCount, setTotalCount] = useState(0);
   const { page, component: pageComponent } = usePaginationComponent(
-    total,
+    totalCount,
     defaultPageSize,
   );
-
-  const {
-    value,
-    loading,
-    total: totalCount,
-    error,
-  } = useTransfersHistory(page - 1, defaultPageSize);
+  const { list = [], total, loading } = useQueryTransfersHistory(page - 1);
 
   useEffect(() => {
-    if (value && !loading && !error) {
-      setTotalCount(totalCount);
-      setTotal(totalCount);
-      setRowData(value || []);
+    if (!loading && total) {
+      setTotalCount(total);
     }
-  }, [value, loading, error, setTotalCount, totalCount]);
+  }, [total, loading]);
 
   return (
     <div>
       <MapDataList
         columnsDef={columnsDef}
-        data={rowData}
+        data={list}
         loading={loading}
         noDataText="No data"
       />
