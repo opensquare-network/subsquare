@@ -9,8 +9,7 @@ import { useAssetsTransfersHistoryAmountColumn } from "./columns/amount";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
 import useQueryTransfersHistory from "./useQueryTransfersHistory";
-import { usePageProps } from "next-common/context/page";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useAccountAddress from "next-common/utils/hooks/useAccountAddress";
 
 function useColumnsDef() {
   const tokenColumn = useAssetsTransfersHistoryTokenColumn();
@@ -38,9 +37,7 @@ export default function AssetsTransfersHistory() {
     defaultPageSize,
   );
 
-  const { id } = usePageProps();
-  const myAddress = useRealAddress();
-  const address = id || myAddress;
+  const address = useAccountAddress();
   const {
     list = [],
     total,

@@ -12,8 +12,7 @@ import { isNil } from "lodash-es";
 import Tooltip from "../tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useAssetHubAccountAssets from "next-common/components/assets/useAssetHubAccountAssets";
-import { usePageProps } from "next-common/context/page";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useAccountAddress from "next-common/utils/hooks/useAccountAddress";
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
@@ -149,9 +148,7 @@ const columnsDef = [
 ];
 
 export default function AssetsList() {
-  const { id } = usePageProps();
-  const myAddress = useRealAddress();
-  const address = id || myAddress;
+  const address = useAccountAddress();
   const assets = useAssetHubAccountAssets(address);
 
   return (
