@@ -32,7 +32,7 @@ function ChainName() {
 }
 
 const BrandingHintMap = {
-  [Chains.polkadotAssetHub]: "Westend Asset Hub Management",
+  [Chains.westendAssetHub]: "Westend Asset Hub Management",
 };
 
 const getBrandingHint = () => {
