@@ -12,20 +12,25 @@ export function useSubBalanceInfo(address) {
   const accountInfo = result?.data?.toJSON();
 
   return useMemo(() => {
+    const info = {
+      balance: 0,
+      transferrable: 0,
+      decimals,
+      symbol,
+      name,
+    };
+
     if (!accountInfo) {
-      return null;
+      return info;
     }
 
     const { free, reserved } = accountInfo;
     const balance = (free + reserved).toString();
     const transferrable = calcTransferable(accountInfo, existentialDeposit);
 
-    return {
-      balance,
-      transferrable,
-      decimals,
-      symbol,
-      name,
-    };
+    info.balance = balance;
+    info.transferrable = transferrable;
+
+    return info;
   }, [accountInfo, decimals, existentialDeposit, name, symbol]);
 }
