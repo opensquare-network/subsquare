@@ -31,7 +31,7 @@ export default function PopupContent() {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
-  const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
+  const { sendTxFunc, isSubmitting } = useSendTransaction();
   const votes = useCollectiveMotionVotes();
 
   const [loadingState, setLoadingState] = useState();

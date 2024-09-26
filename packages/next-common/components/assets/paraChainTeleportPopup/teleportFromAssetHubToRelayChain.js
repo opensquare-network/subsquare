@@ -1,6 +1,4 @@
-const AssetHubParaId = 1000;
-
-function getTeleportParamsFromRelayChainToAssetHub({
+function getTeleportParamsFromParaChainToRelayChain({
   api,
   transferToAddress,
   amount,
@@ -8,16 +6,13 @@ function getTeleportParamsFromRelayChainToAssetHub({
   return [
     {
       V3: {
-        interior: {
-          X1: {
-            ParaChain: AssetHubParaId,
-          },
-        },
-        parents: 0,
+        parents: 1,
+        interior: "Here",
       },
     },
     {
       V3: {
+        parents: 0,
         interior: {
           X1: {
             AccountId32: {
@@ -26,20 +21,19 @@ function getTeleportParamsFromRelayChainToAssetHub({
             },
           },
         },
-        parents: 0,
       },
     },
     {
       V3: [
         {
-          fun: {
-            Fungible: amount,
-          },
           id: {
             Concrete: {
+              parents: 1,
               interior: "Here",
-              parents: 0,
             },
+          },
+          fun: {
+            Fungible: amount,
           },
         },
       ],
@@ -49,15 +43,15 @@ function getTeleportParamsFromRelayChainToAssetHub({
   ];
 }
 
-export default function teleportFromRelayChainToAssetHub({
+export default function teleportFromParaChainToRelayChain({
   sourceApi,
   transferToAddress,
   amount,
 }) {
-  const params = getTeleportParamsFromRelayChainToAssetHub({
+  const params = getTeleportParamsFromParaChainToRelayChain({
     api: sourceApi,
     transferToAddress,
     amount,
   });
-  return sourceApi.tx.xcmPallet.limitedTeleportAssets(...params);
+  return sourceApi.tx.polkadotXcm.limitedTeleportAssets(...params);
 }

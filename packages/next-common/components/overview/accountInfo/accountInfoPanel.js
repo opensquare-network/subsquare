@@ -20,12 +20,18 @@ import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import OnlyChain, { OnlyChains } from "next-common/components/common/onlyChain";
+import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
+import { PolkadotApiProvider } from "next-common/context/polkadotApi";
 
-const CrossChainTransferPopup = dynamic(
-  import("./crossChainTransferPopup").then((mod) => mod.default),
+const RelayChainTeleportPopup = dynamic(
+  import("./relayChainTeleportPopup").then((mod) => mod.default),
+);
+const ParaChainTeleportPopup = dynamic(() =>
+  import("next-common/components/assets/paraChainTeleportPopup").then(
+    (mod) => mod.default,
+  ),
 );
 
 const SystemCrosschain = dynamic(
@@ -183,26 +189,53 @@ function SettingsButton() {
   );
 }
 
+function CrosschainButton({ onClick }) {
+  return (
+    <Tooltip content="Cross-chain">
+      <IconButton
+        className={cn("bg-theme100 [&_svg_path]:fill-theme500")}
+        onClick={onClick}
+      >
+        <SystemCrosschain width={20} height={20} />
+      </IconButton>
+    </Tooltip>
+  );
+}
+
 function TeleportButton() {
   const [showPopup, setShowPopup] = useState(false);
   return (
     <>
-      <Tooltip content="Cross-chain">
-        <IconButton
-          className={cn("bg-theme100 [&_svg_path]:fill-theme500")}
-          onClick={() => setShowPopup(true)}
-        >
-          <SystemCrosschain width={20} height={20} />
-        </IconButton>
-      </Tooltip>
+      <CrosschainButton onClick={() => setShowPopup(true)} />
       {showPopup && (
-        <CrossChainTransferPopup onClose={() => setShowPopup(false)} />
+        <RelayChainTeleportPopup onClose={() => setShowPopup(false)} />
       )}
     </>
   );
 }
 
-const transferEnabledChains = [Chains.polkadot, Chains.kusama, Chains.westend, Chains.rococo];
+function ParaChainTeleportButton() {
+  const [showPopup, setShowPopup] = useState(false);
+  return (
+    <>
+      <CrosschainButton onClick={() => setShowPopup(true)} />
+      {showPopup && (
+        <ParaChainTeleportPopup onClose={() => setShowPopup(false)} />
+      )}
+    </>
+  );
+}
+
+const transferEnabledChains = [
+  Chains.polkadot,
+  Chains.kusama,
+  Chains.westend,
+  Chains.rococo,
+];
+
+const relayChainTeleportEnabledChains = [Chains.polkadot];
+
+const paraChainTeleportEnabledChains = [Chains.collectives];
 
 export function AccountHead() {
   return (
@@ -212,12 +245,23 @@ export function AccountHead() {
         <OnlyChains chains={transferEnabledChains}>
           <TransferButton />
         </OnlyChains>
-        <OnlyChain chain={Chains.polkadot}>
+        <OnlyChains chains={relayChainTeleportEnabledChains}>
           <AssetHubApiProvider>
             <TeleportButton />
           </AssetHubApiProvider>
-        </OnlyChain>
-        <OnlyChains chains={transferEnabledChains}>
+        </OnlyChains>
+        <OnlyChains chains={paraChainTeleportEnabledChains}>
+          <PolkadotApiProvider>
+            <ParaChainTeleportButton />
+          </PolkadotApiProvider>
+        </OnlyChains>
+        <OnlyChains
+          chains={[
+            ...transferEnabledChains,
+            ...relayChainTeleportEnabledChains,
+            ...paraChainTeleportEnabledChains,
+          ]}
+        >
           <div className="w-[1px] h-[16px] bg-neutral300"></div>
         </OnlyChains>
         <ProfileButton />

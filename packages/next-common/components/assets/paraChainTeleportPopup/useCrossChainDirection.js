@@ -4,6 +4,8 @@ import ChainIcon from "next-common/components/header/chainIcon";
 import { cn } from "next-common/utils";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { capitalize } from "lodash-es";
+import { useChain } from "next-common/context/chain";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
@@ -28,20 +30,16 @@ export function Chain({ title, chain, name }) {
 }
 
 export function getChainName(chain) {
-  if (chain === Chains.polkadot) {
-    return "Polkadot";
-  } else if (chain === Chains.polkadotAssetHub) {
+  if (chain === Chains.polkadotAssetHub) {
     return "Asset Hub";
   }
-
-  throw new Error("Unsupported chain");
+  return capitalize(chain);
 }
 
 export default function useCrossChainDirection() {
+  const currChain = useChain();
   const [sourceChain, setSourceChain] = useState(Chains.polkadot);
-  const [destinationChain, setDestinationChain] = useState(
-    Chains.polkadotAssetHub,
-  );
+  const [destinationChain, setDestinationChain] = useState(currChain);
 
   const component = (
     <div className="flex items-end gap-[12px]">
