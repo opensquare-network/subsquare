@@ -10,6 +10,8 @@ import {
   isAssetHubChain,
   isWestendChain,
   isPolkadotChain,
+  isWestendAssetHubChain,
+  isPolkadotAssetHubChain,
 } from "next-common/utils/chain";
 
 export function useChainApi(chain) {
@@ -31,6 +33,14 @@ export function useChainApi(chain) {
   throw new Error("Unsupported chain");
 }
 
+const isFromRelayChainToAssetHub = (sourceChain, destinationChain) =>
+  (isPolkadotChain(sourceChain) && isPolkadotAssetHubChain(destinationChain)) ||
+  (isWestendChain(sourceChain) && isWestendAssetHubChain(destinationChain));
+
+const isFromAssetHubToRelayChain = (sourceChain, destinationChain) =>
+  (isPolkadotAssetHubChain(sourceChain) && isPolkadotChain(destinationChain)) ||
+  (isWestendAssetHubChain(sourceChain) && isWestendChain(destinationChain));
+
 export function useGetTeleportTxFunc({
   sourceApi,
   sourceChain,
@@ -42,19 +52,13 @@ export function useGetTeleportTxFunc({
         throw new Error("Chain network is not connected yet");
       }
 
-      if (
-        sourceChain === Chains.polkadot &&
-        destinationChain === Chains.polkadotAssetHub
-      ) {
+      if (isFromRelayChainToAssetHub(sourceChain, destinationChain)) {
         return teleportFromRelayChainToAssetHub({
           sourceApi,
           transferToAddress,
           amount,
         });
-      } else if (
-        sourceChain === Chains.polkadotAssetHub &&
-        destinationChain === Chains.polkadot
-      ) {
+      } else if (isFromAssetHubToRelayChain(sourceChain, destinationChain)) {
         return teleportFromAssetHubToRelayChain({
           sourceApi,
           transferToAddress,
