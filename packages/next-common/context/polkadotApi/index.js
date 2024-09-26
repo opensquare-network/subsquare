@@ -17,6 +17,6 @@ export function RelayChainApiProvider({ children }) {
   );
 }
 
-export function usePolkadotApi() {
+export function useRelayChainApi() {
   return useContext(RelayChainContext);
 }

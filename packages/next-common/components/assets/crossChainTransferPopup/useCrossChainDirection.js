@@ -4,7 +4,14 @@ import ChainIcon from "next-common/components/header/chainIcon";
 import { cn } from "next-common/utils";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { isAssetHubChain } from "next-common/utils/chain";
+import {
+  isAssetHubChain,
+  isPolkadotAssetHubChain,
+  isWestendAssetHubChain,
+  isWestendChain,
+  isPolkadotChain,
+} from "next-common/utils/chain";
+import { useChain } from "next-common/context/chain";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
@@ -29,19 +36,48 @@ export function Chain({ title, chain, name }) {
 }
 
 export function getChainName(chain) {
-  if (chain === Chains.polkadot) {
+  if (isPolkadotChain(chain)) {
     return "Polkadot";
-  } else if (isAssetHubChain(chain)) {
+  }
+
+  if (isWestendChain(chain)) {
+    return "Westend";
+  }
+
+  if (isAssetHubChain(chain)) {
     return "Asset Hub";
   }
 
   throw new Error("Unsupported chain");
 }
 
+export function useInitialChain() {
+  const chain = useChain();
+  let initialSourceChain = null;
+  let initialDestinationChain = null;
+
+  if (isPolkadotAssetHubChain(chain)) {
+    initialSourceChain = Chains.polkadot;
+    initialDestinationChain = Chains.polkadotAssetHub;
+  }
+
+  if (isWestendAssetHubChain(chain)) {
+    initialSourceChain = Chains.westend;
+    initialDestinationChain = Chains.westendAssetHub;
+  }
+
+  return {
+    initialSourceChain,
+    initialDestinationChain,
+  };
+}
+
 export default function useCrossChainDirection() {
-  const [sourceChain, setSourceChain] = useState(Chains.polkadot);
+  const { initialSourceChain, initialDestinationChain } = useInitialChain();
+
+  const [sourceChain, setSourceChain] = useState(initialSourceChain);
   const [destinationChain, setDestinationChain] = useState(
-    Chains.polkadotAssetHub,
+    initialDestinationChain,
   );
 
   const component = (

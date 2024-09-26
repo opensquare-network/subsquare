@@ -1,22 +1,26 @@
 import { useContextApi } from "next-common/context/api";
-import { usePolkadotApi } from "next-common/context/polkadotApi";
+import { useRelayChainApi } from "next-common/context/polkadotApi";
 import Chains from "next-common/utils/consts/chains";
 import teleportFromRelayChainToAssetHub from "./teleportFromRelayChainToAssetHub";
 import teleportFromAssetHubToRelayChain from "./teleportFromAssetHubToRelayChain";
 import { useCallback } from "react";
 import { useAssetHubApi } from "next-common/context/assetHub";
 import { useChain } from "next-common/context/chain";
-import { isAssetHubChain } from "next-common/utils/chain";
+import {
+  isAssetHubChain,
+  isWestendChain,
+  isPolkadotChain,
+} from "next-common/utils/chain";
 
 export function useChainApi(chain) {
   const currChain = useChain();
   const api = useContextApi();
-  const polkadotApi = usePolkadotApi();
+  const relayChainApi = useRelayChainApi();
   const assetHubApi = useAssetHubApi();
 
   if (currChain !== chain) {
-    if (chain === Chains.polkadot) {
-      return polkadotApi;
+    if (isPolkadotChain(chain) || isWestendChain(chain)) {
+      return relayChainApi;
     } else if (isAssetHubChain(chain)) {
       return assetHubApi;
     }
