@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { useToggle } from "react-use";
 import NavMenu from "./menu";
 import tw from "tailwind-styled-components";
@@ -10,6 +10,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
 import { useEffect } from "react";
 import ChainLogo from "./logo";
+import Chains from "next-common/utils/consts/chains";
 
 export default function Nav() {
   return (
@@ -30,10 +31,19 @@ function ChainName() {
   );
 }
 
+const BrandingHintMap = {
+  [Chains.polkadotAssetHub]: "Westend Asset Hub Management",
+};
+
+const getBrandingHint = () => {
+  const chain = useChain();
+  return BrandingHintMap[chain] || "Governance by Subsquare";
+};
+
 function BrandingHint() {
   return (
     <div className="text12Medium mt-1 max-sm:mt-0 text-navigationTextTertiary">
-      Governance by Subsquare
+      {getBrandingHint()}
     </div>
   );
 }
