@@ -44,10 +44,7 @@ export const discussionsMenu = {
 };
 
 const commonMenus = {
-  items: [
-    overviewMenu,
-    // accountMenu,
-  ],
+  items: [overviewMenu, accountMenu],
 };
 
 if (chainSettings.modules.discussions) {
