@@ -24,10 +24,14 @@ import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import { PolkadotApiProvider } from "next-common/context/polkadotApi";
-import ParaChainTeleportButton from "next-common/components/assets/paraChainTeleportButton";
 
-const CrossChainTransferPopup = dynamic(
-  import("./crossChainTransferPopup").then((mod) => mod.default),
+const RelayChainTeleportPopup = dynamic(
+  import("./relayChainTeleportPopup").then((mod) => mod.default),
+);
+const ParaChainTeleportPopup = dynamic(() =>
+  import("next-common/components/assets/paraChainTeleportPopup").then(
+    (mod) => mod.default,
+  ),
 );
 
 const SystemCrosschain = dynamic(
@@ -185,20 +189,38 @@ function SettingsButton() {
   );
 }
 
+function CrosschainButton({ onClick }) {
+  return (
+    <Tooltip content="Cross-chain">
+      <IconButton
+        className={cn("bg-theme100 [&_svg_path]:fill-theme500")}
+        onClick={onClick}
+      >
+        <SystemCrosschain width={20} height={20} />
+      </IconButton>
+    </Tooltip>
+  );
+}
+
 function TeleportButton() {
   const [showPopup, setShowPopup] = useState(false);
   return (
     <>
-      <Tooltip content="Cross-chain">
-        <IconButton
-          className={cn("bg-theme100 [&_svg_path]:fill-theme500")}
-          onClick={() => setShowPopup(true)}
-        >
-          <SystemCrosschain width={20} height={20} />
-        </IconButton>
-      </Tooltip>
+      <CrosschainButton onClick={() => setShowPopup(true)} />
       {showPopup && (
-        <CrossChainTransferPopup onClose={() => setShowPopup(false)} />
+        <RelayChainTeleportPopup onClose={() => setShowPopup(false)} />
+      )}
+    </>
+  );
+}
+
+function ParaChainTeleportButton() {
+  const [showPopup, setShowPopup] = useState(false);
+  return (
+    <>
+      <CrosschainButton onClick={() => setShowPopup(true)} />
+      {showPopup && (
+        <ParaChainTeleportPopup onClose={() => setShowPopup(false)} />
       )}
     </>
   );

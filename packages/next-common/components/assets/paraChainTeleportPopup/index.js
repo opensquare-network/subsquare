@@ -36,7 +36,7 @@ function PopupContent() {
     sourceChain,
     destinationChain,
   });
-  const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
+  const { sendTxFunc, isSubmitting } = useSendTransaction();
 
   const setSigner = useSetSigner();
 

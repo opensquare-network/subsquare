@@ -16,7 +16,7 @@ export default function useTxSubmission({
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
-  const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
+  const { sendTxFunc, isSubmitting } = useSendTransaction();
 
   const doSubmit = useCallback(async () => {
     if (!api) {
