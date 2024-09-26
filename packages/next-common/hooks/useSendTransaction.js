@@ -73,7 +73,7 @@ async function shouldSendHydraDXMultiFeeTx(api, signerAccount) {
 }
 
 export function useSendTransaction() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const { sdk: signetSdk } = useSignetSdk();
@@ -107,7 +107,7 @@ export function useSendTransaction() {
       };
 
       const _onInBlock = (data) => {
-        setIsLoading(false);
+        setIsSubmitting(false);
         if (noWaitForFinalized) {
           dispatch(removeToast(toastId));
         } else {
@@ -127,7 +127,7 @@ export function useSendTransaction() {
       };
 
       const onError = (e) => {
-        setIsLoading(false);
+        setIsSubmitting(false);
         dispatch(removeToast(toastId));
         if (e.message === "Cancelled") {
           dispatch(newWarningToast(e.message));
@@ -136,7 +136,7 @@ export function useSendTransaction() {
         }
       };
 
-      setIsLoading(true);
+      setIsSubmitting(true);
 
       try {
         if (shouldSendMimirTx(signerAccount)) {
@@ -164,12 +164,12 @@ export function useSendTransaction() {
             },
             onSubmitted: () => {
               dispatch(newSuccessToast("Multisig transaction submitted"));
-              setIsLoading(false);
+              setIsSubmitting(false);
               onSubmitted();
             },
             onEnded: () => {
               dispatch(removeToast(toastId));
-              setIsLoading(false);
+              setIsSubmitting(false);
             },
             onError,
           });
@@ -221,7 +221,7 @@ export function useSendTransaction() {
         });
       } catch (e) {
         dispatch(newErrorToast(e.message));
-        setIsLoading(false);
+        setIsSubmitting(false);
       }
     },
     [dispatch, signerAccount, signetSdk],
@@ -229,6 +229,6 @@ export function useSendTransaction() {
 
   return {
     sendTxFunc,
-    isLoading,
+    isSubmitting,
   };
 }

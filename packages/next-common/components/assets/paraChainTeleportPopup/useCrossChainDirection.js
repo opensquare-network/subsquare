@@ -8,9 +8,8 @@ import {
   isAssetHubChain,
   isPolkadotAssetHubChain,
   isWestendAssetHubChain,
-  isWestendChain,
-  isPolkadotChain,
 } from "next-common/utils/chain";
+import { capitalize } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 
 const SystemCrosschain = dynamic(() =>
@@ -36,49 +35,27 @@ export function Chain({ title, chain, name }) {
 }
 
 export function getChainName(chain) {
-  if (isPolkadotChain(chain)) {
-    return "Polkadot";
-  }
-
-  if (isWestendChain(chain)) {
-    return "Westend";
-  }
-
   if (isAssetHubChain(chain)) {
     return "Asset Hub";
   }
-
-  throw new Error("Unsupported chain");
+  return capitalize(chain);
 }
 
-export function useInitialChain() {
-  const chain = useChain();
-  let initialSourceChain = null;
-  let initialDestinationChain = null;
-
+export function useInitialSourceChain(chain) {
   if (isPolkadotAssetHubChain(chain)) {
-    initialSourceChain = Chains.polkadot;
-    initialDestinationChain = Chains.polkadotAssetHub;
+    return Chains.polkadot;
   }
 
   if (isWestendAssetHubChain(chain)) {
-    initialSourceChain = Chains.westend;
-    initialDestinationChain = Chains.westendAssetHub;
+    return Chains.westend;
   }
-
-  return {
-    initialSourceChain,
-    initialDestinationChain,
-  };
 }
 
 export default function useCrossChainDirection() {
-  const { initialSourceChain, initialDestinationChain } = useInitialChain();
-
+  const currChain = useChain();
+  const initialSourceChain = useInitialSourceChain(currChain);
   const [sourceChain, setSourceChain] = useState(initialSourceChain);
-  const [destinationChain, setDestinationChain] = useState(
-    initialDestinationChain,
-  );
+  const [destinationChain, setDestinationChain] = useState(currChain);
 
   const component = (
     <div className="flex items-end gap-[12px]">

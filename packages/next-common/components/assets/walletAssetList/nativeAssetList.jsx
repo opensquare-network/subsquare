@@ -1,6 +1,6 @@
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
-import CrossChainTransferButton from "../crossChainTransferButton";
+import ParaChainTeleportButton from "../paraChainTeleportButton";
 import { useNativeTokenIcon } from "next-common/components/assets/known";
 import {
   colTotal,
@@ -26,7 +26,7 @@ const colToken = {
 const teleport = {
   name: "",
   style: { textAlign: "right", width: "80px", minWidth: "80px" },
-  render: () => <CrossChainTransferButton />,
+  render: () => <ParaChainTeleportButton />,
 };
 
 const columnsDef = [colToken, colTotal, colTransferrable, teleport];

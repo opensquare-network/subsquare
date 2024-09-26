@@ -28,7 +28,7 @@ function PopupContent() {
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
 
-  const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
+  const { sendTxFunc, isSubmitting } = useSendTransaction();
 
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState();

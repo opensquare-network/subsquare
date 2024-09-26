@@ -8,13 +8,9 @@ import OffChainVoting from "next-common/components/summary/externalInfo/offChain
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
 import Overview from "next-common/components/overview/overview";
-import { useUser } from "next-common/context/user";
-import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 
 export default function Home() {
   const { name, description } = useChainSettings();
-  const user = useUser();
-  const url = useAccountUrl();
 
   let externalInfo = null;
   if (hasDefinedOffChainVoting()) {
@@ -36,13 +32,6 @@ export default function Home() {
       url: "/escrow",
     },
   ];
-
-  if (user?.address) {
-    tabs.push({
-      label: "Account",
-      url,
-    });
-  }
 
   return (
     <ListLayout

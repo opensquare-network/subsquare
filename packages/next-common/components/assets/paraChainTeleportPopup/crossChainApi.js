@@ -1,7 +1,8 @@
 import { useContextApi } from "next-common/context/api";
 import { useRelayChainApi } from "next-common/context/polkadotApi";
-import Chains from "next-common/utils/consts/chains";
-import teleportFromRelayChainToAssetHub from "./teleportFromRelayChainToAssetHub";
+import teleportFromRelayChainToAssetHub, {
+  getParaChainId,
+} from "./teleportFromRelayChainToAssetHub";
 import teleportFromAssetHubToRelayChain from "./teleportFromAssetHubToRelayChain";
 import { useCallback } from "react";
 import { useAssetHubApi } from "next-common/context/assetHub";
@@ -10,9 +11,9 @@ import {
   isAssetHubChain,
   isWestendChain,
   isPolkadotChain,
-  isWestendAssetHubChain,
-  isPolkadotAssetHubChain,
 } from "next-common/utils/chain";
+
+const isRelayChain = (chain) => isPolkadotChain(chain) || isWestendChain(chain);
 
 export function useChainApi(chain) {
   const currChain = useChain();
@@ -21,7 +22,7 @@ export function useChainApi(chain) {
   const assetHubApi = useAssetHubApi();
 
   if (currChain !== chain) {
-    if (isPolkadotChain(chain) || isWestendChain(chain)) {
+    if (isRelayChain(chain)) {
       return relayChainApi;
     } else if (isAssetHubChain(chain)) {
       return assetHubApi;
@@ -32,14 +33,6 @@ export function useChainApi(chain) {
 
   throw new Error("Unsupported chain");
 }
-
-const isFromRelayChainToAssetHub = (sourceChain, destinationChain) =>
-  (isPolkadotChain(sourceChain) && isPolkadotAssetHubChain(destinationChain)) ||
-  (isWestendChain(sourceChain) && isWestendAssetHubChain(destinationChain));
-
-const isFromAssetHubToRelayChain = (sourceChain, destinationChain) =>
-  (isPolkadotAssetHubChain(sourceChain) && isPolkadotChain(destinationChain)) ||
-  (isWestendAssetHubChain(sourceChain) && isWestendChain(destinationChain));
 
 export function useGetTeleportTxFunc({
   sourceApi,
@@ -52,13 +45,15 @@ export function useGetTeleportTxFunc({
         throw new Error("Chain network is not connected yet");
       }
 
-      if (isFromRelayChainToAssetHub(sourceChain, destinationChain)) {
+      if (isRelayChain(sourceChain)) {
+        const paraChainId = getParaChainId(destinationChain);
         return teleportFromRelayChainToAssetHub({
           sourceApi,
           transferToAddress,
           amount,
+          paraChainId,
         });
-      } else if (isFromAssetHubToRelayChain(sourceChain, destinationChain)) {
+      } else if (isRelayChain(destinationChain)) {
         return teleportFromAssetHubToRelayChain({
           sourceApi,
           transferToAddress,

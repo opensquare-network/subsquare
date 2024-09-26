@@ -26,7 +26,7 @@ function PopupContent() {
   const showVoteSuccessful = useShowVoteSuccessful();
   const dispatch = useDispatch();
 
-  const { sendTxFunc, isLoading: isSubmitting } = useSendTransaction();
+  const { sendTxFunc, isSubmitting } = useSendTransaction();
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
