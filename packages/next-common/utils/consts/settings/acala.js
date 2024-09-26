@@ -91,7 +91,6 @@ const acala = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
-  noIdentityModule: true,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "acala",

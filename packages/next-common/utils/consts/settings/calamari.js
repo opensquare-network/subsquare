@@ -28,7 +28,6 @@ const calamari = {
   decimals: 12,
   blockTime: 12000,
   hasElections: false,
-  noIdentityModule: true,
   ss58Format: 78,
   endpoints: DEFAULT_CALAMARI_NODES,
   avatar: Avatar,
