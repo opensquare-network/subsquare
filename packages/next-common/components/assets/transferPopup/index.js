@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useTransferAmount from "./useTransferAmount";
+import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import Signer from "next-common/components/popup/fields/signerField";
 
@@ -18,7 +18,13 @@ function PopupContent() {
   const {
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
-  } = useTransferAmount({ asset, transferFromAddress: address });
+  } = useTransferAmount({
+    transferrable: asset.transferrable,
+    decimals: asset.decimals,
+    symbol: asset.symbol,
+    transferFromAddress: address,
+  });
+
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
 
