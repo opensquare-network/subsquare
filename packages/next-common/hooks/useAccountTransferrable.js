@@ -3,7 +3,7 @@ import calcTransferable from "next-common/utils/account/transferable";
 
 export default function useAccountTransferrable(api, address) {
   const { account, isLoading } = useSubSystemAccount(api, address);
-  if (isLoading) {
+  if (isLoading || !api) {
     return {
       transferrable: 0,
       isLoading: true,
