@@ -5,15 +5,12 @@ import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 import { westendAssetHubThemeVars } from "next-common/utils/consts/settings/westendAssetHub/theme";
 
-const ProjectLogoPolkadotAssetHub = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoPolkadotAssethub"),
-);
-const ProjectIconPolkadotAssetHub = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectIconPolkadotAssethub"),
+const ProjectIconWestendAssethub = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconWestendAssethub"),
 );
 
-const NetworkIconPolkadotAssetHub = dynamic(() =>
-  import("@osn/icons/subsquare/NetworkPolkadotAssethubLight"),
+const ProjectLogoWestendAssethub = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoWestendAssethub"),
 );
 
 const name = Chains.westendAssetHub;
@@ -24,14 +21,14 @@ const westendAssetHub = {
   identity: Chains.westend,
   symbol: "WND",
   decimals: 12,
-  ss58Format: 0,
+  ss58Format: 42,
   blockTime: 12000,
   endpoints: westendAssetHubNodes,
-  avatar: ProjectIconPolkadotAssetHub,
-  darkAvatar: ProjectIconPolkadotAssetHub,
-  navLogo: ProjectLogoPolkadotAssetHub,
-  navLogoDark: ProjectLogoPolkadotAssetHub,
-  networkIcon: NetworkIconPolkadotAssetHub,
+  avatar: ProjectIconWestendAssethub,
+  darkAvatar: ProjectIconWestendAssethub,
+  navLogo: ProjectLogoWestendAssethub,
+  navLogoDark: ProjectLogoWestendAssethub,
+  networkIcon: ProjectIconWestendAssethub,
   group: MenuGroups.WestendAndParachains,
   links: polkadotLinks,
   integrations: {
@@ -41,7 +38,7 @@ const westendAssetHub = {
     },
   },
   description:
-    "System parachain on Polkadot network for creating and sending tokens and NFTs.",
+    "System parachain on Westend network for creating and sending tokens and NFTs.",
   ...westendAssetHubThemeVars,
   multisigWallets: {
     signet: true,
