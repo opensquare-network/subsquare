@@ -11,7 +11,7 @@ export default function NavMenuItem({
   active,
   collapsed,
   extra,
-  onClick = noop,
+  onClick,
   className = "",
   hoverTooltipLabel = true,
   items,
@@ -28,7 +28,7 @@ export default function NavMenuItem({
     />
   ) : (
     <div
-      onClick={onClick}
+      onClick={item?.onClick || onClick || noop}
       className={cn(
         "group/menu-item",
         "text-navigationText",
@@ -68,7 +68,7 @@ export default function NavMenuItem({
             <span className="ml-1 text-navigationTextTertiary">↗</span>
           )}
         </span>
-        <span>{extra}</span>
+        <span>{item?.extra || extra}</span>
       </span>
     </div>
   );

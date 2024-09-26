@@ -17,6 +17,7 @@ import { partition } from "lodash-es";
 import isAssetHub from "next-common/utils/isAssetHub";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
+import { getMoreMenu } from "./more";
 
 export function getHomeMenu({
   summary = {},
@@ -115,5 +116,7 @@ export function getNavMenu({
     }
   }
 
-  return { featuredMenu, archivedMenu };
+  const moreMenu = getMoreMenu({ hasArchivedMenu: !!archivedMenu.length });
+
+  return { featuredMenu, archivedMenu, moreMenu };
 }

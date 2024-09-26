@@ -28,17 +28,19 @@ function ProfileAssetsInContext() {
   return (
     <div className="flex flex-col gap-[16px]">
       <SecondaryCard>
-        <ProfileAssetsList />
+        <ProfileAssetsList address={id} />
       </SecondaryCard>
     </div>
   );
 }
 
 function ProfileTransfers() {
+  const { id } = usePageProps();
+
   return (
     <div>
       <SecondaryCard>
-        <AssetsTransfersHistory />
+        <AssetsTransfersHistory address={id} />
       </SecondaryCard>
     </div>
   );
