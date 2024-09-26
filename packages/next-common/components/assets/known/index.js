@@ -1,8 +1,11 @@
 import Chains from "next-common/utils/consts/chains";
 import knownPolkadotAssetHubAssets from "next-common/components/assets/known/polkadot";
 import { useChain } from "next-common/context/chain";
-import { AssetIconDot } from "@osn/icons/subsquare";
-import { isAssetHubChain } from "next-common/utils/chain";
+import { AssetIconDot, AssetIconWnd } from "@osn/icons/subsquare";
+import {
+  isPolkadotAssetHubChain,
+  isWestendAssetHubChain,
+} from "next-common/utils/chain";
 
 const knownAssetHubAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: knownPolkadotAssetHubAssets,
@@ -16,11 +19,13 @@ export function useKnownAssetHubAssets() {
 
 export function useNativeTokenIcon() {
   const chain = useChain();
-  if (isAssetHubChain(chain)) {
+  if (isPolkadotAssetHubChain(chain)) {
     return AssetIconDot;
-  } else {
-    return null;
   }
+  if (isWestendAssetHubChain(chain)) {
+    return AssetIconWnd;
+  }
+  return null;
 }
 
 export default function useKnownAssetHubAssetIcon(assetId) {

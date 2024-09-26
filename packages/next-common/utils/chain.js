@@ -18,6 +18,14 @@ export function isKintsugiChain(chain) {
   return [Chains.kintsugi, Chains.interlay].includes(chain);
 }
 
+export function isPolkadotAssetHubChain(chain) {
+  return [Chains.polkadotAssetHub].includes(chain);
+}
+
+export function isWestendAssetHubChain(chain) {
+  return [Chains.westendAssetHub].includes(chain);
+}
+
 export function isAssetHubChain(chain) {
   return [Chains.polkadotAssetHub, Chains.westendAssetHub].includes(chain);
 }
