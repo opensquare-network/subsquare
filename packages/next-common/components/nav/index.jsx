@@ -35,15 +35,16 @@ const BrandingHintMap = {
   [Chains.westendAssetHub]: "Westend Asset Hub Management",
 };
 
-const getBrandingHint = () => {
-  const chain = useChain();
+const getBrandingHint = (chain) => {
   return BrandingHintMap[chain] || "Governance by Subsquare";
 };
 
 function BrandingHint() {
+  const chain = useChain();
+
   return (
     <div className="text12Medium mt-1 max-sm:mt-0 text-navigationTextTertiary">
-      {getBrandingHint()}
+      {getBrandingHint(chain)}
     </div>
   );
 }

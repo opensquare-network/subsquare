@@ -1,5 +1,4 @@
 import { TokenSymbol } from "next-common/components/assets/assetsList";
-import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
 import { useChainSettings } from "next-common/context/chain";
 import { isAssetHubChain } from "next-common/utils/chain";

@@ -23,7 +23,6 @@ import {
 import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
-import Chains from "next-common/utils/consts/chains";
 import isAssetHub from "next-common/utils/isAssetHub";
 import AssetHubOverviewPage from "next-common/components/assets/assetHubOverviewPage";
 import nextApi from "next-common/services/nextApi";
