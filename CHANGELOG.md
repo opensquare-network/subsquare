@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.2.9
+
+date: 2024-09-25
+
+- Add a filter for OpenGov referenda to see all un-voted referenda.
+- Upgrade dependency to @polkadot/api.
+- Fix modules control by chains to fix chain deprecated modules like democracy and council.
+- Support teleport token from polkadot to assethub.
+- Support native token transfer for polkadot, kusama, westend and rococo.
+- Refactor assethub assets management with context.
+- Remove new tag from referenda tracks tab.
+
 ### 4.2.8
 
 date: 2024-09-23

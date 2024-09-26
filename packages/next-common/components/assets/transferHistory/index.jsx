@@ -8,7 +8,7 @@ import { useAssetsTransfersHistoryTimeAgeColumn } from "./columns/timeAge";
 import { useAssetsTransfersHistoryAmountColumn } from "./columns/amount";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
-import { useQueryTransfersHistory } from "next-common/components/assets/context/assetHubTabsProvider";
+import useQueryTransfersHistory from "./useQueryTransfersHistory";
 
 function useColumnsDef() {
   const tokenColumn = useAssetsTransfersHistoryTokenColumn();
@@ -28,14 +28,19 @@ function useColumnsDef() {
   ];
 }
 
-export default function AssetsTransfersHistory() {
+export default function AssetsTransfersHistory({ address }) {
   const columnsDef = useColumnsDef();
   const [totalCount, setTotalCount] = useState(0);
   const { page, component: pageComponent } = usePaginationComponent(
     totalCount,
     defaultPageSize,
   );
-  const { list = [], total, loading } = useQueryTransfersHistory(page - 1);
+
+  const {
+    list = [],
+    total,
+    loading,
+  } = useQueryTransfersHistory(address, page - 1);
 
   useEffect(() => {
     if (!loading && total) {

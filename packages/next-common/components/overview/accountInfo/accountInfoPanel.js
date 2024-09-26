@@ -17,9 +17,10 @@ import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
+import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import OnlyChain from "next-common/components/common/onlyChain";
+import OnlyChain, { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 
@@ -35,6 +36,9 @@ const SystemProfile = dynamic(
 );
 const SystemSetting = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemSetting),
+);
+const SystemTransfer = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.SystemTransfer),
 );
 
 const DisplayUserAvatar = () => {
@@ -116,6 +120,25 @@ export function ProxyTip() {
   );
 }
 
+function TransferButton() {
+  const { showPopup, component: transferPopup } = useAccountTransferPopup();
+  return (
+    <>
+      <Tooltip content="Transfer">
+        <IconButton
+          className="text-theme500 bg-theme100"
+          onClick={() => {
+            showPopup();
+          }}
+        >
+          <SystemTransfer className="w-5 h-5" />
+        </IconButton>
+      </Tooltip>
+      {transferPopup}
+    </>
+  );
+}
+
 function ProfileButton() {
   const router = useRouter();
   const user = useUser();
@@ -179,17 +202,24 @@ function TeleportButton() {
   );
 }
 
+const transferEnabledChains = [Chains.polkadot, Chains.kusama, Chains.westend, Chains.rococo];
+
 export function AccountHead() {
   return (
     <div className="flex justify-between items-center grow">
       <Account />
       <div className="flex gap-[16px] items-center">
+        <OnlyChains chains={transferEnabledChains}>
+          <TransferButton />
+        </OnlyChains>
         <OnlyChain chain={Chains.polkadot}>
           <AssetHubApiProvider>
             <TeleportButton />
           </AssetHubApiProvider>
         </OnlyChain>
-        <div className="w-[1px] h-[16px] bg-neutral300"></div>
+        <OnlyChains chains={transferEnabledChains}>
+          <div className="w-[1px] h-[16px] bg-neutral300"></div>
+        </OnlyChains>
         <ProfileButton />
         <SettingsButton />
       </div>

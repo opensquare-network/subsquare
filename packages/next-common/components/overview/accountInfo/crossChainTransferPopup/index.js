@@ -15,7 +15,7 @@ import {
   useGetTeleportTxFunc,
 } from "next-common/components/assets/crossChainTransferPopup/crossChainApi";
 import Chains from "next-common/utils/consts/chains";
-import { ExistentialDeposit } from "next-common/components/assets/crossChainTransferPopup";
+import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
 import dynamic from "next/dynamic";
 import {
   Chain,
