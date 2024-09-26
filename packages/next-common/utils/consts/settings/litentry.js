@@ -89,7 +89,6 @@ const litentry = {
     treasury: {
       tips: false,
     },
-    identity: false,
   }),
   integrations: {
     statescan: true,

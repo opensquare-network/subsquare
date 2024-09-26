@@ -37,7 +37,6 @@ const base = {
   advisoryCommittee: false,
   alliance: false,
   preimages: true,
-  identity: true,
 };
 
 /**

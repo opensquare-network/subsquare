@@ -88,7 +88,6 @@ const collectives = {
     council: false,
     technicalCommittee: false,
     alliance: true,
-    identity: false,
   }),
   integrations: {
     statescan: true,

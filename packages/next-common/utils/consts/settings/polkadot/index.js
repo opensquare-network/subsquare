@@ -74,7 +74,6 @@ const polkadot = {
     technicalCommittee: {
       archived: true,
     },
-    identity: false,
   }),
   integrations: {
     doTreasury: true,

@@ -31,7 +31,6 @@ export function useDepositSections(
         fellowship: hasFellowship,
         democracy: hasDemocracy,
         treasury: hasTreasury,
-        identity: hasIdentity,
       },
     } = chainSettings;
 
@@ -62,11 +61,11 @@ export function useDepositSections(
           <MyDepositPreimages key="preimages" deposits={preimageDeposits} />
         ),
       },
-      hasIdentity && {
+      {
         activeCount: identity?.depositsCount || 0,
         content: (
-          <WithPallet pallet="identity">
-            <IdentityDeposit key="identity" deposits={identity} />
+          <WithPallet key="identity" pallet="identity">
+            <IdentityDeposit deposits={identity} />
           </WithPallet>
         ),
       },

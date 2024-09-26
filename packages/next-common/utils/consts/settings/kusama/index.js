@@ -60,7 +60,6 @@ const kusama = {
     technicalCommittee: {
       archived: true,
     },
-    identity: false,
   }),
   integrations: {
     doTreasury: true,

@@ -35,7 +35,6 @@ const development = {
     fellowship: true,
     council: false,
     technicalCommittee: false,
-    identity: false,
   }),
 };
 

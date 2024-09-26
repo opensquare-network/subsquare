@@ -73,7 +73,6 @@ const litmus = {
     treasury: {
       tips: false,
     },
-    identity: false,
   }),
   integrations: {
     statescan: true,

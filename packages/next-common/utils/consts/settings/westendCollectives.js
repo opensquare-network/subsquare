@@ -69,7 +69,6 @@ const westendCollectives = {
     council: false,
     technicalCommittee: false,
     alliance: true,
-    identity: false,
   }),
   integrations: {
     statescan: true,
