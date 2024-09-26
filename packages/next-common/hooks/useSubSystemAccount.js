@@ -14,6 +14,13 @@ export default function useSubSystemAccount(api, address) {
     });
   }, [api, address]);
 
+  if (!api) {
+    return {
+      account: null,
+      isLoading: false,
+    };
+  }
+
   return {
     account,
     isLoading,
