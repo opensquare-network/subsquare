@@ -8,19 +8,16 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import useTransferAmount from "next-common/components/assets/transferPopup/useTransferAmount";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
-import { useMyBalance } from "next-common/hooks/balance/useMyBalance";
+import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
+import { useChainSettings } from "next-common/context/chain";
+import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 
 export function useAccountTransferPopup() {
-  const balance = useMyBalance();
   const [isOpen, setIsOpen] = useState(false);
   const component = isOpen && (
-    <AccountTransferPopup
-      balance={balance?.value}
-      onClose={() => setIsOpen(false)}
-    />
+    <AccountTransferPopup onClose={() => setIsOpen(false)} />
   );
 
   return {
@@ -30,14 +27,22 @@ export function useAccountTransferPopup() {
 }
 
 function PopupContent() {
-  const { balance, onClose } = usePopupParams();
-  const api = useContextApi();
+  const { onClose } = usePopupParams();
+  const { decimals, symbol } = useChainSettings();
   const address = useRealAddress();
+  const { value: balance, loading } = useSubBalanceInfo(address);
+  const api = useContextApi();
   const dispatch = useDispatch();
   const {
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
-  } = useTransferAmount({ asset: balance, transferFromAddress: address });
+  } = useTransferAmount({
+    transferrable: balance?.transferrable,
+    decimals,
+    symbol,
+    isLoading: loading,
+    transferFromAddress: address,
+  });
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
 
