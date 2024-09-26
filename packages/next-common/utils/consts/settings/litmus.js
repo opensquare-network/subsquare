@@ -65,7 +65,6 @@ const litmus = {
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  noIdentityModule: true,
   hasMultisig: true,
   multisigApiPrefix: "litmus",
   description:
@@ -74,6 +73,7 @@ const litmus = {
     treasury: {
       tips: false,
     },
+    identity: false,
   }),
   integrations: {
     statescan: true,

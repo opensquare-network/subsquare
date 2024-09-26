@@ -75,7 +75,6 @@ const collectives = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasFellowshipParams: true,
-  noIdentityModule: true,
   showAchainableLabels: true,
   description: "Collectives on Polkadot network.",
   modules: mergeChainModules({
@@ -89,6 +88,7 @@ const collectives = {
     council: false,
     technicalCommittee: false,
     alliance: true,
+    identity: false,
   }),
   integrations: {
     statescan: true,

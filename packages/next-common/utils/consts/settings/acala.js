@@ -91,13 +91,13 @@ const acala = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
-  noIdentityModule: true,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "acala",
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
   modules: mergeChainModules({
     financialCouncil: true,
+    identity: false,
   }),
   integrations: {
     subscan: true,

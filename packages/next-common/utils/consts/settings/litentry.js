@@ -81,7 +81,6 @@ const litentry = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  noIdentityModule: true,
   hasMultisig: true,
   multisigApiPrefix: "litentry",
   description:
@@ -90,6 +89,7 @@ const litentry = {
     treasury: {
       tips: false,
     },
+    identity: false,
   }),
   integrations: {
     statescan: true,

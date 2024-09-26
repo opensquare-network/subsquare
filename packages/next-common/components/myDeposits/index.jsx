@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import useMyIdentityDeposit from "next-common/hooks/useMyIdentityDeposit";
 import IdentityDeposit from "./identity";
 import { useMemo } from "react";
+import WithPallet from "../common/withPallet";
 
 export function useDepositSections(
   referenda,
@@ -30,8 +31,8 @@ export function useDepositSections(
         fellowship: hasFellowship,
         democracy: hasDemocracy,
         treasury: hasTreasury,
+        identity: hasIdentity,
       },
-      noIdentityModule,
     } = chainSettings;
 
     const hasDemocracyModule = hasDemocracy && !hasDemocracy?.archived;
@@ -61,9 +62,13 @@ export function useDepositSections(
           <MyDepositPreimages key="preimages" deposits={preimageDeposits} />
         ),
       },
-      !noIdentityModule && {
+      hasIdentity && {
         activeCount: identity?.depositsCount || 0,
-        content: <IdentityDeposit key="identity" deposits={identity} />,
+        content: (
+          <WithPallet pallet="identity">
+            <IdentityDeposit key="identity" deposits={identity} />
+          </WithPallet>
+        ),
       },
     ].filter(Boolean);
 

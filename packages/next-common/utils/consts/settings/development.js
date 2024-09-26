@@ -27,7 +27,6 @@ const development = {
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
-  noIdentityModule: true,
   blockTime: 3000,
   postLabels: defaultPostLabels,
   modules: mergeChainModules({
@@ -36,6 +35,7 @@ const development = {
     fellowship: true,
     council: false,
     technicalCommittee: false,
+    identity: false,
   }),
 };
 
