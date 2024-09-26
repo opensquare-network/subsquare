@@ -1,32 +1,11 @@
 const westendAssetHubNodes = [
-  {
-    name: "OnFinality",
-    url: "wss://statemint.api.onfinality.io/public-ws",
-  },
-  {
-    name: "Parity",
-    url: "wss://polkadot-asset-hub-rpc.polkadot.io",
-  },
-  {
-    name: "LuckyFriday",
-    url: "wss://rpc-asset-hub-polkadot.luckyfriday.io",
-  },
-  {
-    name: "Dwellir",
-    url: "wss://asset-hub-polkadot-rpc.dwellir.com",
-  },
-  {
-    name: "Dwellir Tunisia",
-    url: "wss://statemint-rpc-tn.dwellir.com",
-  },
-  {
-    name: "RadiumBlock",
-    url: "wss://statemint.public.curie.radiumblock.co/ws",
-  },
-  {
-    name: "Stakeworld",
-    url: "wss://dot-rpc.stakeworld.io/assethub",
-  },
+  { name: "Parity", url: "wss://westend-asset-hub-rpc.polkadot.io" },
+  { name: "Dwellir", url: "wss://westmint-rpc.dwellir.com" },
+  { name: "Dwellir Tunisia", url: "wss://westmint-rpc-tn.dwellir.com" },
+  { name: "IBP-GeoDNS1", url: "wss://sys.ibp.network/westmint" },
+  { name: "IBP-GeoDNS2", url: "wss://sys.dotters.network/westmint" },
+  { name: "OnFinality", url: "wss://westmint.api.onfinality.io/public-ws" },
+  { name: "Stakeworld", url: "wss://wnd-rpc.stakeworld.io/assethub" },
 ];
 
 export default westendAssetHubNodes;
