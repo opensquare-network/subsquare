@@ -17,7 +17,7 @@ export default function useSubSystemAccount(api, address) {
   if (!api) {
     return {
       account: null,
-      isLoading: false,
+      isLoading: true,
     };
   }
 
