@@ -9,6 +9,7 @@ import {
 import LoadableItem from "next-common/components/overview/accountInfo/components/loadableItem";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
+import CollapsePanel from "./collapsePanel";
 
 export function TotalBalance() {
   const isLoading = useSelector(isLoadingAccountInfoSelector);
@@ -57,10 +58,12 @@ export function Locked() {
 export default function AccountBalances() {
   return (
     <SummaryLayout>
-      <TotalBalance />
-      <Transferrable />
-      <Reserved />
-      <Locked />
+      <CollapsePanel>
+        <TotalBalance />
+        <Transferrable />
+        <Reserved />
+        <Locked />
+      </CollapsePanel>
     </SummaryLayout>
   );
 }

@@ -1,21 +1,5 @@
 import { useState } from "react";
 import { ArrowTriangleUp, ArrowTriangleDown } from "@osn/icons/subsquare";
-import styled from "styled-components";
-
-const Wrapper = styled.div`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--neutral400);
-  border-radius: 4px;
-  width: 20px;
-  height: 20px;
-
-  > svg path {
-    fill: var(--textSecondary);
-  }
-`;
 
 export default function CollapsePanel({ children }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -27,13 +11,12 @@ export default function CollapsePanel({ children }) {
   return (
     <>
       <div className="flex items-center justify-between">
-        <Wrapper>
-          <Icon
-            role="button"
-            className="w-3 h-3 [&_path]:fill-textTertiary"
-            onClick={toggleCollapse}
-          />
-        </Wrapper>
+        <div
+          className="flex items-center justify-center border border-neutral400 rounded w-5 h-5 cursor-pointer"
+          onClick={toggleCollapse}
+        >
+          <Icon className="w-3 h-3 [&_path]:fill-textSecondary" />
+        </div>
       </div>
       {isCollapsed && <div className="space-y-4">{children}</div>}
     </>
