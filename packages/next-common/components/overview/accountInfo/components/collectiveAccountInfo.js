@@ -1,6 +1,4 @@
-import SummaryLayout from "next-common/components/summary/layout/layout";
 import { TotalBalance, Transferrable } from "./accountBalances";
-import SummaryItem from "next-common/components/summary/layout/item";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
 import FellowshipRank from "next-common/components/fellowship/rank";
@@ -10,6 +8,16 @@ import {
   useAmbassadorMemberData,
   useFellowshipMemberData,
 } from "../context/memberDataContext";
+import CollapsePanel from "./collapsePanel";
+
+function CollectivesAccountInfoItem({ title, children }) {
+  return (
+    <div className="w-full flex grow justify-between">
+      <span className="text14Medium text-textTertiary">{title}</span>
+      {children}
+    </div>
+  );
+}
 
 function MemberInfo({ data, isLoading }) {
   if (isLoading) {
@@ -19,7 +27,7 @@ function MemberInfo({ data, isLoading }) {
   const { collectiveMember, coreMember, coreParams } = data;
 
   if (!collectiveMember || !coreMember || !coreParams) {
-    return <span className="text-textTertiary text16Bold">-</span>;
+    return <span className="text-textTertiary text14Medium">-</span>;
   }
 
   return (
@@ -47,28 +55,27 @@ function MemberInfo({ data, isLoading }) {
 function FellowshipMember() {
   const { data, isLoading } = useFellowshipMemberData();
   return (
-    <SummaryItem title="Fellowship">
+    <CollectivesAccountInfoItem title="Fellowship">
       <MemberInfo data={data} isLoading={isLoading} />
-    </SummaryItem>
+    </CollectivesAccountInfoItem>
   );
 }
 
 function AmbassadorMember() {
   const { data, isLoading } = useAmbassadorMemberData();
   return (
-    <SummaryItem title="Ambassador">
+    <CollectivesAccountInfoItem title="Ambassador">
       <MemberInfo data={data} isLoading={isLoading} />
-    </SummaryItem>
+    </CollectivesAccountInfoItem>
   );
 }
 
 export default function CollectivesAccountInfo() {
   return (
-    <SummaryLayout>
-      <TotalBalance />
+    <CollapsePanel labelItem={<TotalBalance />}>
       <Transferrable />
       <FellowshipMember />
       <AmbassadorMember />
-    </SummaryLayout>
+    </CollapsePanel>
   );
 }

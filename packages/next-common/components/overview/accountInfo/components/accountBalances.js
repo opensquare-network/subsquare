@@ -9,7 +9,7 @@ import {
 import LoadableItem from "next-common/components/overview/accountInfo/components/loadableItem";
 import CollapsePanel from "./collapsePanel";
 
-export function AccountBalanceItem({ value, title, isLoading }) {
+function AccountBalanceItem({ value, title, isLoading }) {
   return (
     <div className="inline-flex items-center w-full gap-0">
       <LoadableItem
