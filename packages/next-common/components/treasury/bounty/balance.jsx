@@ -10,7 +10,9 @@ import SymbolValue from "components/gov2/sidebar/tally/values/symbolValue";
 import { useOnchainData } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
-import { InfoDocs, SystemCoins } from "@osn/icons/subsquare";
+import { InfoDocs, InfoUser, SystemCoins } from "@osn/icons/subsquare";
+import { addressEllipsis } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
 
 function CardDetailTitle({ isLoading, title }) {
   return (
@@ -60,6 +62,15 @@ function BountySidebarBalance() {
         icon={<InfoDocs />}
         title="Child Bounties"
         value={<Value>{childBounties?.total || 0}</Value>}
+      />
+      <CardDetailRow
+        icon={<InfoUser />}
+        title="Address"
+        value={
+          <Value>
+            <Tooltip content={address}>{addressEllipsis(address)}</Tooltip>
+          </Value>
+        }
       />
     </SecondaryCardDetail>
   );
