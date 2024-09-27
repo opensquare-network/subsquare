@@ -99,7 +99,12 @@ function Select({
 
   const displayValue = useMemo(() => {
     const item = filteredOptions.find((option) => option.value === value);
-    return item?.displayValue || item?.label || item?.text;
+    return (
+      <div className="flex items-center">
+        {item?.icon && <div className="mr-2 flex">{item.icon}</div>}
+        {item?.displayValue || item?.label || item?.text}
+      </div>
+    );
   }, [filteredOptions, value]);
 
   let DropdownOptionsWrapper = OptionsWrapper;
@@ -176,6 +181,9 @@ function Select({
                     onClick={() => onChange(option)}
                     height={theItemHeight}
                   >
+                    {option?.icon && (
+                      <div className="mr-2 flex">{option.icon}</div>
+                    )}
                     {option.label || option.text}
                   </Option>
                 ),
