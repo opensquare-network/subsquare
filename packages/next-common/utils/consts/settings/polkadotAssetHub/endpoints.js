@@ -8,6 +8,14 @@ const polkadotAssetHubNodes = [
     url: "wss://polkadot-asset-hub-rpc.polkadot.io",
   },
   {
+    name: "IBP1",
+    url: "wss://sys.ibp.network/asset-hub-polkadot",
+  },
+  {
+    name: "IBP2",
+    url: "wss://asset-hub-polkadot.dotters.network",
+  },
+  {
     name: "LuckyFriday",
     url: "wss://rpc-asset-hub-polkadot.luckyfriday.io",
   },
