@@ -39,12 +39,6 @@ const SelectWrapper = styled(FlexBetweenCenter)`
       background-color: var(--neutral200);
       color: var(--textDisabled);
       cursor: default;
-
-      svg {
-        path {
-          stroke: var(--textDisabled);
-        }
-      }
     `}
 `;
 
