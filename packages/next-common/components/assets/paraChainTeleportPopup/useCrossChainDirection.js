@@ -61,12 +61,14 @@ export default function useCrossChainDirection() {
       <Chain
         title="Source Chain"
         value={sourceChain}
+        className="!text-textPrimary"
         disabled
+        readOnly
         options={[
           {
-            icon: <ChainIcon chain={currChain} />,
-            label: getChainName(currChain),
-            value: currChain,
+            icon: <ChainIcon chain={sourceChain} />,
+            label: getChainName(sourceChain),
+            value: sourceChain,
           },
         ]}
       />
@@ -86,10 +88,9 @@ export default function useCrossChainDirection() {
       <Chain
         title="Destination Chain"
         value={destinationChain}
+        className="!text-textPrimary"
         disabled
-        onChange={(item) => {
-          setDestinationChain(item.value);
-        }}
+        readOnly
         options={[
           {
             icon: <ChainIcon chain={destinationChain} />,
