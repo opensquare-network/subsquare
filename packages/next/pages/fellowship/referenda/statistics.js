@@ -23,7 +23,7 @@ export default function FellowshipReferendaStatisticsPage({
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
+export const getServerSideProps = withCommonProps(async () => {
   const [
     tracksProps,
     { result: fellowshipSummary },
