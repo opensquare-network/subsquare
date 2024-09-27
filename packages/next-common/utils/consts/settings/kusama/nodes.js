@@ -8,6 +8,14 @@ const defaultKusamaNodes = [
     url: "wss://kusama.api.onfinality.io/public-ws",
   },
   {
+    name: "IBP1",
+    url: "wss://rpc.ibp.network/kusama",
+  },
+  {
+    name: "SubQuery",
+    url: "wss://kusama.rpc.subquery.network/public/ws",
+  },
+  {
     name: "Dwellir",
     url: "wss://kusama-rpc.dwellir.com",
   },
@@ -16,16 +24,12 @@ const defaultKusamaNodes = [
     url: "wss://kusama-rpc.publicnode.com",
   },
   {
-    name: "IBP1",
-    url: "wss://rpc.ibp.network/kusama",
-  },
-  {
     name: "Dwellir Tunisia",
     url: "wss://kusama-rpc-tn.dwellir.com",
   },
   {
     name: "IBP2",
-    url: "wss://rpc.dotters.network/kusama",
+    url: "wss://kusama.dotters.network",
   },
   {
     name: "RadiumBlock",
@@ -38,6 +42,10 @@ const defaultKusamaNodes = [
   {
     name: "Stakeworld",
     url: "wss://ksm-rpc.stakeworld.io",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-kusama.luckyfriday.io",
   },
 ];
 
