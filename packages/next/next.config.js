@@ -24,7 +24,28 @@ const config = {
       },
     ];
   },
-  webpack(config) {
+  webpack(config, { dev }) {
+    // Treat warnings as errors if we're not in development.
+    if (!dev) {
+      config.optimization.minimizer = config.optimization.minimizer || [];
+      config.optimization.minimizer.push({
+        apply(compiler) {
+          compiler.hooks.afterEmit.tap("AfterEmitPlugin", (compilation) => {
+            if (compilation.warnings.length > 0) {
+              throw new Error(
+                compilation.warnings
+                  .map((warning) => warning.message)
+                  .join("\n\n"),
+              );
+            }
+          });
+        },
+      });
+    }
+
+    // Add this to make the build fail on errors
+    config.bail = true;
+
     config.module.rules.push(
       {
         test: /\.svg$/,
