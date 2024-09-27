@@ -12,10 +12,14 @@ import {
   isWestendChain,
   isPolkadotChain,
   isKusamaChain,
+  isCollectivesChain,
 } from "next-common/utils/chain";
 
 const isRelayChain = (chain) =>
-  isPolkadotChain(chain) || isWestendChain(chain) || isKusamaChain(chain);
+  isPolkadotChain(chain) ||
+  isWestendChain(chain) ||
+  isKusamaChain(chain) ||
+  isCollectivesChain(chain);
 
 export function useChainApi(chain) {
   const currChain = useChain();
