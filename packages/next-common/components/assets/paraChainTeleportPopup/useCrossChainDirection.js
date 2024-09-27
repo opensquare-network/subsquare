@@ -15,10 +15,10 @@ const SystemCrosschain = dynamic(() =>
 export function Chain({
   title,
   value,
-  disabled,
+  disabled = false,
   options = [],
   onChange,
-  readOnly,
+  readOnly = false,
   className = "",
 }) {
   return (
