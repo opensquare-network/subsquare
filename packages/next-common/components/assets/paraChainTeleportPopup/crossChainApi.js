@@ -1,5 +1,5 @@
 import { useContextApi } from "next-common/context/api";
-import { useRelayChainApi } from "next-common/context/polkadotApi";
+import { useRelayChainApi } from "next-common/context/relayChainApi";
 import teleportFromRelayChainToAssetHub, {
   getParaChainId,
 } from "./teleportFromRelayChainToAssetHub";

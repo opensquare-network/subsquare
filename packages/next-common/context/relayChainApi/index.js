@@ -1,4 +1,4 @@
-import { getRelayChainApi } from "next-common/utils/polkadot";
+import { getRelayChainApi } from "next-common/utils/relayChain";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const RelayChainContext = createContext(null);
