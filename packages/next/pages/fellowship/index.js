@@ -6,11 +6,9 @@ import {
   fellowshipReferendumsSummaryApi,
   fellowshipTracksApi,
 } from "next-common/services/url";
-import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
-import Gov2Summary from "next-common/components/summary/gov2Summary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
@@ -23,6 +21,7 @@ import {
   UnVotedOnlyStateProvider,
   useUnVotedOnlyState,
 } from "next-common/components/referenda/list";
+import FellowshipListLayout from "next-common/components/fellowship/fellowshipListLayout";
 
 function useMyUnVotedReferendaPosts() {
   const [posts, setPosts] = useState();
@@ -180,19 +179,11 @@ function ReferendaList() {
 }
 
 export default function FellowshipPage({ fellowshipSummary }) {
-  const title = "Fellowship Referenda";
-  const seoInfo = { title, desc: title };
-
   return (
     <CollectivesProvider section="fellowship">
-      <ListLayout
-        seoInfo={seoInfo}
-        title={title}
-        description="All active and history referenda in various tracks."
-        summary={<Gov2Summary summary={fellowshipSummary} />}
-      >
+      <FellowshipListLayout fellowshipSummary={fellowshipSummary}>
         <ReferendaList />
-      </ListLayout>
+      </FellowshipListLayout>
     </CollectivesProvider>
   );
 }
