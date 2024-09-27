@@ -7,18 +7,27 @@ import { isAssetHubChain } from "next-common/utils/chain";
 import { capitalize } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 import Select from "next-common/components/select";
-import collectives from "next-common/utils/consts/settings/collectives";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
 );
 
-export function Chain({ title, name, disabled, options = [], onChange }) {
+export function Chain({
+  title,
+  value,
+  disabled,
+  options = [],
+  onChange,
+  readOnly,
+  className = "",
+}) {
   return (
     <div className="flex flex-col grow basis-[calc(100%/2-33px)] shrink-0">
       <PopupLabel text={title} />
       <Select
-        value={name}
+        className={className}
+        readOnly={readOnly}
+        value={value}
         disabled={disabled}
         options={options}
         onChange={onChange}
@@ -51,17 +60,13 @@ export default function useCrossChainDirection() {
     <div className="flex items-end gap-[12px]">
       <Chain
         title="Source Chain"
-        chain={sourceChain}
+        value={sourceChain}
         disabled
         options={[
           {
-            label: (
-              <div className="flex items-center gap-x-2">
-                <ChainIcon chain={currChain} />
-                {getChainName(currChain)}
-              </div>
-            ),
-            value: getChainName(currChain),
+            icon: <ChainIcon chain={currChain} />,
+            label: getChainName(currChain),
+            value: currChain,
           },
         ]}
       />
@@ -80,29 +85,16 @@ export default function useCrossChainDirection() {
       </div>
       <Chain
         title="Destination Chain"
-        chain={destinationChain}
-        name={getChainName(destinationChain)}
+        value={destinationChain}
+        disabled
         onChange={(item) => {
           setDestinationChain(item.value);
         }}
         options={[
           {
-            label: (
-              <div className="flex items-center gap-x-2">
-                <ChainIcon chain={destinationChain} />
-                {getChainName(destinationChain)}
-              </div>
-            ),
-            value: getChainName(destinationChain),
-          },
-          {
-            label: (
-              <div className="flex items-center gap-x-2">
-                <ChainIcon chain={collectives.value} />
-                {getChainName(collectives.value)}
-              </div>
-            ),
-            value: getChainName(collectives.value),
+            icon: <ChainIcon chain={destinationChain} />,
+            label: getChainName(destinationChain),
+            value: destinationChain,
           },
         ]}
       />
