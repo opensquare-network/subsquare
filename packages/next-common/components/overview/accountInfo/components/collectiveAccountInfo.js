@@ -79,8 +79,9 @@ function CollectivesAccountInfoMobile() {
 function CollectivesAccountInfoDesktop() {
   return (
     <SummaryLayout>
-      <AccountBalances />
-      <div></div>
+      <div className="col-span-2">
+        <AccountBalances />
+      </div>
       <FellowshipMember />
       <AmbassadorMember />
     </SummaryLayout>
