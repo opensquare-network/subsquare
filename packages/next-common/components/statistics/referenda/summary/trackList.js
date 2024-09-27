@@ -5,7 +5,7 @@ import { startCase } from "lodash-es";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
 
-export const Box = styled.div`
+const Box = styled.div`
   width: 10px;
   height: 10px;
 
@@ -13,24 +13,24 @@ export const Box = styled.div`
   border-radius: 2px;
 `;
 
-export const TrackName = styled.div`
+const TrackName = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
 `;
 
-export const TrackItem = styled.div`
+const TrackItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-export const Name = tw(Link)`
+const Name = tw(Link)`
   text12Medium text-textPrimary
   hover:underline
 `;
 
-export const Count = tw.span`
+const Count = tw.span`
   text12Medium text-textTertiary
 `;
 
