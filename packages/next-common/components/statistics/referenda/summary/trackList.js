@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { TrackColors } from "./colors";
+import { ReferendaTrackColors } from "./colors";
 import { startCase } from "lodash-es";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
 
-const Box = styled.div`
+export const Box = styled.div`
   width: 10px;
   height: 10px;
 
@@ -13,28 +13,28 @@ const Box = styled.div`
   border-radius: 2px;
 `;
 
-const TrackName = styled.div`
+export const TrackName = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
 `;
 
-const TrackItem = styled.div`
+export const TrackItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-const Name = tw(Link)`
+export const Name = tw(Link)`
   text12Medium text-textPrimary
   hover:underline
 `;
 
-const Count = tw.span`
+export const Count = tw.span`
   text12Medium text-textTertiary
 `;
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -48,7 +48,7 @@ export default function TrackList({ trackReferendaCounts }) {
       {trackReferendaCounts?.map((item, index) => (
         <TrackItem key={index}>
           <TrackName>
-            <Box color={TrackColors[item.name]} />
+            <Box color={ReferendaTrackColors[item.name]} />
             <Name href={`/referenda/tracks/${item.id}/statistics`}>
               {startCase(item.name)}
             </Name>
