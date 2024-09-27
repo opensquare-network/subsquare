@@ -12,6 +12,33 @@ import { usePageProps } from "next-common/context/page";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import { InfoDocs, SystemCoins } from "@osn/icons/subsquare";
 
+function CardDetailTitle({ isLoading, title }) {
+  return (
+    <TitleContainer className="mb-4 !px-0">
+      <span>{title}</span>
+      {isLoading && (
+        <div>
+          <Loading size={16} />
+        </div>
+      )}
+    </TitleContainer>
+  );
+}
+
+function CardDetailRow({ icon, title, value }) {
+  return (
+    <BorderedRow>
+      <Header>
+        <div className="[&_svg]:w-[20px] [&_svg]:h-[20px] [&_svg]:text-textTertiary">
+          {icon}
+        </div>
+        {title}
+      </Header>
+      {value}
+    </BorderedRow>
+  );
+}
+
 function BountySidebarBalance() {
   const { address } = useOnchainData();
   const { balance, isLoading } = useSubAddressBalance(address);
@@ -23,32 +50,17 @@ function BountySidebarBalance() {
 
   return (
     <SecondaryCardDetail>
-      <TitleContainer className="mb-4 !px-0">
-        <span>Balance</span>
-        {isLoading && (
-          <div>
-            <Loading size={16} />
-          </div>
-        )}
-      </TitleContainer>
-      <BorderedRow>
-        <Header>
-          <div>
-            <SystemCoins className="w-[20px] h-[20px] text-textTertiary" />
-          </div>
-          Balance
-        </Header>
-        {isLoading ? <Value>-</Value> : <SymbolValue value={balance} />}
-      </BorderedRow>
-      <BorderedRow>
-        <Header>
-          <div>
-            <InfoDocs className="w-[20px] h-[20px] text-textTertiary" />
-          </div>
-          Child Bounties
-        </Header>
-        <Value>{childBounties?.total || 0}</Value>
-      </BorderedRow>
+      <CardDetailTitle isLoading={isLoading} title="Balance" />
+      <CardDetailRow
+        icon={<SystemCoins />}
+        title="Balance"
+        value={isLoading ? "-" : <SymbolValue value={balance} />}
+      />
+      <CardDetailRow
+        icon={<InfoDocs />}
+        title="Child Bounties"
+        value={<Value>{childBounties?.total || 0}</Value>}
+      />
     </SecondaryCardDetail>
   );
 }
