@@ -9,7 +9,7 @@ import {
 
 const knownAssetHubAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: knownPolkadotAssetHubAssets,
-  [Chains.westendAssetHub]: knownPolkadotAssetHubAssets,
+  [Chains.westendAssetHub]: [],
 });
 
 export function useKnownAssetHubAssets() {
