@@ -8,6 +8,7 @@ import {
   isAssetHubChain,
   isPolkadotAssetHubChain,
   isWestendAssetHubChain,
+  isKusamaAssetHubChain,
 } from "next-common/utils/chain";
 import { capitalize } from "lodash-es";
 import { useChain } from "next-common/context/chain";
@@ -48,6 +49,10 @@ export function useInitialSourceChain(chain) {
 
   if (isWestendAssetHubChain(chain)) {
     return Chains.westend;
+  }
+
+  if (isKusamaAssetHubChain(chain)) {
+    return Chains.kusama;
   }
 }
 

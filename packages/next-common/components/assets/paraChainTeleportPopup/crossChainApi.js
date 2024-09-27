@@ -11,9 +11,11 @@ import {
   isAssetHubChain,
   isWestendChain,
   isPolkadotChain,
+  isKusamaChain,
 } from "next-common/utils/chain";
 
-const isRelayChain = (chain) => isPolkadotChain(chain) || isWestendChain(chain);
+const isRelayChain = (chain) =>
+  isPolkadotChain(chain) || isWestendChain(chain) || isKusamaChain(chain);
 
 export function useChainApi(chain) {
   const currChain = useChain();
