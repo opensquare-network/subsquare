@@ -11,6 +11,7 @@ import {
   setMenuShowMainMenu,
 } from "next-common/store/reducers/navSlice";
 import { usePageProps } from "next-common/context/page";
+import isAssetHub from "next-common/utils/isAssetHub";
 
 export default function NavMenu({ collapsed }) {
   const { tracks, fellowshipTracks, summary, detail, ambassadorTracks } =
@@ -56,10 +57,12 @@ function MainMenu({ collapsed, featuredMenu = [], moreMenu = [] }) {
         </>
       )}
 
-      <>
-        <NavMenuDivider />
-        <NavFeaturedMenu collapsed={collapsed} menu={[moreMenu]} />
-      </>
+      {!isAssetHub() && (
+        <>
+          <NavMenuDivider />
+          <NavFeaturedMenu collapsed={collapsed} menu={[moreMenu]} />
+        </>
+      )}
     </>
   );
 }
