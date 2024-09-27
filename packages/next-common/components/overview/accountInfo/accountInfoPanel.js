@@ -78,7 +78,7 @@ function Account() {
       <DisplayUserAvatar />
       <div className="flex flex-col">
         <DisplayUser />
-        <Copyable className="max-md:hidden text-textTertiary text14Medium">
+        <Copyable className="max-md:hidden text-textTertiary text14Medium inline-flex items-center">
           {maybeEvmAddress}
         </Copyable>
         <Copyable
