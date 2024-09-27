@@ -4,6 +4,7 @@ import ChainIcon from "next-common/components/header/chainIcon";
 import { cn } from "next-common/utils";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { isAssetHubChain } from "next-common/utils/chain";
 import { capitalize } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 
@@ -30,15 +31,22 @@ export function Chain({ title, chain, name }) {
 }
 
 export function getChainName(chain) {
-  if (chain === Chains.polkadotAssetHub) {
+  if (isAssetHubChain(chain)) {
     return "Asset Hub";
   }
   return capitalize(chain);
 }
 
+const assetHubChainMap = {
+  [Chains.polkadotAssetHub]: Chains.polkadot,
+  [Chains.westendAssetHub]: Chains.westend,
+  [Chains.kusamaAssetHub]: Chains.kusama,
+};
+
 export default function useCrossChainDirection() {
   const currChain = useChain();
-  const [sourceChain, setSourceChain] = useState(Chains.polkadot);
+  const initialSourceChain = assetHubChainMap[currChain];
+  const [sourceChain, setSourceChain] = useState(initialSourceChain);
   const [destinationChain, setDestinationChain] = useState(currChain);
 
   const component = (

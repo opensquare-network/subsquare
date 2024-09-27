@@ -1,10 +1,10 @@
 import { TokenSymbol } from "next-common/components/assets/assetsList";
-import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
 import { useChainSettings } from "next-common/context/chain";
+import { isAssetHubChain } from "next-common/utils/chain";
 
 export function checkIsNativeAsset(chain, isNativeAsset) {
-  return isNativeAsset && Chains.polkadotAssetHub === chain;
+  return isNativeAsset && isAssetHubChain(chain);
 }
 
 export function useAssetsTransfersHistoryTokenColumn() {
@@ -19,7 +19,9 @@ export function useAssetsTransfersHistoryTokenColumn() {
         type={checkIsNativeAsset(chain, item?.isNativeAsset) ? "native" : ""}
         assetId={item.assetId}
         symbol={
-          checkIsNativeAsset(chain, item?.isNativeAsset) ? symbol : item?.metadata?.symbol
+          checkIsNativeAsset(chain, item?.isNativeAsset)
+            ? symbol
+            : item?.metadata?.symbol
         }
       />
     ),

@@ -1,6 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { isCentrifugeChain, isCollectivesChain } from "next-common/utils/chain";
+import { isCentrifugeChain, isCollectivesChain, isAssetHubChain } from "next-common/utils/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
@@ -23,7 +23,6 @@ import {
 import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
-import Chains from "next-common/utils/consts/chains";
 import isAssetHub from "next-common/utils/isAssetHub";
 import AssetHubOverviewPage from "next-common/components/assets/assetHubOverviewPage";
 import nextApi from "next-common/services/nextApi";
@@ -111,7 +110,7 @@ export default function HomePage() {
 
 export const getServerSideProps = withCommonProps(async () => {
   const chain = process.env.CHAIN;
-  if (Chains.polkadotAssetHub === chain) {
+  if (isAssetHubChain(chain)) {
     return {};
   }
 
