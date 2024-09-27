@@ -25,7 +25,6 @@ const SearchInput = styled.input`
 
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
-  font-size: 14px;
   background: var(--neutral100);
   border: 1px solid var(--neutral400);
   border-radius: 6px;
@@ -116,7 +115,11 @@ function Select({
 
   return (
     <SelectWrapper
-      className={cn(className, readOnly && "pointer-events-none")}
+      className={cn(
+        "text14Medium",
+        className,
+        readOnly && "pointer-events-none",
+      )}
       ref={ref}
       disabled={disabled}
       onClick={handleShowOptions}
