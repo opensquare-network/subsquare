@@ -3,14 +3,14 @@ import { PromptTypes } from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useMemo } from "react";
 import Link from "next/link";
-import useAssetHubOnPolkadot from "../hook/useAssetHubOnPolkadot";
+import useAssetsFromAssetHub from "../hook/useAssetsFromAssetHub";
 import { AssetHubProvider } from "next-common/context/assetHub";
 import { AssetHubMetadataProvider } from "next-common/components/overview/accountInfo/context/assetHubMetadataContext";
 import Chains from "next-common/utils/consts/chains";
 import OnlyChain from "next-common/components/common/onlyChain";
 
 export function PromptContent() {
-  const assets = useAssetHubOnPolkadot();
+  const assets = useAssetsFromAssetHub();
 
   return useMemo(() => {
     if (!assets || assets.length === 0) {
