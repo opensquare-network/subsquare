@@ -37,7 +37,7 @@ export function getChainName(chain) {
   return capitalize(chain);
 }
 
-const AssetHubChainMap = {
+const assetHubChainMap = {
   [Chains.polkadotAssetHub]: Chains.polkadot,
   [Chains.westendAssetHub]: Chains.westend,
   [Chains.kusamaAssetHub]: Chains.kusama,
@@ -45,7 +45,7 @@ const AssetHubChainMap = {
 
 export default function useCrossChainDirection() {
   const currChain = useChain();
-  const initialSourceChain = AssetHubChainMap[currChain];
+  const initialSourceChain = assetHubChainMap[currChain];
   const [sourceChain, setSourceChain] = useState(initialSourceChain);
   const [destinationChain, setDestinationChain] = useState(currChain);
 
