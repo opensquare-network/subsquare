@@ -1,4 +1,5 @@
-import { TotalBalance, Transferrable } from "./accountBalances";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
 import FellowshipRank from "next-common/components/fellowship/rank";
@@ -8,16 +9,9 @@ import {
   useAmbassadorMemberData,
   useFellowshipMemberData,
 } from "../context/memberDataContext";
-import CollapsePanel from "./collapsePanel";
-
-function CollectivesAccountInfoItem({ title, children }) {
-  return (
-    <div className="w-full flex grow justify-between">
-      <span className="text14Medium text-textTertiary">{title}</span>
-      {children}
-    </div>
-  );
-}
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { isNil } from "lodash-es";
+import AccountBalances from "./accountBalances";
 
 function MemberInfo({ data, isLoading }) {
   if (isLoading) {
@@ -27,7 +21,7 @@ function MemberInfo({ data, isLoading }) {
   const { collectiveMember, coreMember, coreParams } = data;
 
   if (!collectiveMember || !coreMember || !coreParams) {
-    return <span className="text-textTertiary text14Medium">-</span>;
+    return <span className="text-textTertiary text16Bold">-</span>;
   }
 
   return (
@@ -55,27 +49,54 @@ function MemberInfo({ data, isLoading }) {
 function FellowshipMember() {
   const { data, isLoading } = useFellowshipMemberData();
   return (
-    <CollectivesAccountInfoItem title="Fellowship">
+    <SummaryItem title="Fellowship">
       <MemberInfo data={data} isLoading={isLoading} />
-    </CollectivesAccountInfoItem>
+    </SummaryItem>
   );
 }
 
 function AmbassadorMember() {
   const { data, isLoading } = useAmbassadorMemberData();
   return (
-    <CollectivesAccountInfoItem title="Ambassador">
+    <SummaryItem title="Ambassador">
       <MemberInfo data={data} isLoading={isLoading} />
-    </CollectivesAccountInfoItem>
+    </SummaryItem>
+  );
+}
+
+function CollectivesAccountInfoMobile() {
+  return (
+    <>
+      <AccountBalances />
+      <SummaryLayout>
+        <FellowshipMember />
+        <AmbassadorMember />
+      </SummaryLayout>
+    </>
+  );
+}
+
+function CollectivesAccountInfoDesktop() {
+  return (
+    <SummaryLayout>
+      <AccountBalances />
+      <div></div>
+      <FellowshipMember />
+      <AmbassadorMember />
+    </SummaryLayout>
   );
 }
 
 export default function CollectivesAccountInfo() {
-  return (
-    <CollapsePanel labelItem={<TotalBalance />}>
-      <Transferrable />
-      <FellowshipMember />
-      <AmbassadorMember />
-    </CollapsePanel>
+  const { width } = useWindowSize();
+
+  if (isNil(width)) {
+    return null;
+  }
+
+  return width > 768 ? (
+    <CollectivesAccountInfoDesktop />
+  ) : (
+    <CollectivesAccountInfoMobile />
   );
 }
