@@ -31,6 +31,8 @@ import moonbeam from "./moonbeam";
 import bifrostPolkadot from "./bifrostPolkadot";
 import vara from "./vara";
 import polkadotAssetHub from "./polkadotAssetHub";
+import westendAssetHub from "./westendAssetHub";
+import kusamaAssetHub from "./kusamaAssetHub";
 import shibuya from "./shibuya";
 import astar from "./astar";
 import { isNil } from "lodash-es";
@@ -69,6 +71,8 @@ const settingsMap = {
   [westendCollectives.value]: westendCollectives,
   [bifrostPolkadot.value]: bifrostPolkadot,
   [polkadotAssetHub.value]: polkadotAssetHub,
+  [westendAssetHub.value]: westendAssetHub,
+  [kusamaAssetHub.value]: kusamaAssetHub,
   vara,
   shibuya,
   [zkverifyTestnet.value]: zkverifyTestnet,

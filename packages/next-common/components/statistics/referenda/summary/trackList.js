@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { TrackColors } from "./colors";
+import { ReferendaTrackColors } from "./colors";
 import { startCase } from "lodash-es";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
@@ -34,7 +34,7 @@ const Count = tw.span`
   text12Medium text-textTertiary
 `;
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -42,22 +42,35 @@ const Wrapper = styled.div`
   min-width: 240px;
 `;
 
+export function TrackListItem({ item, color, link }) {
+  return (
+    <TrackItem>
+      <TrackName>
+        <Box color={color} />
+        {link ? (
+          <Name href={link}>{startCase(item.name)}</Name>
+        ) : (
+          <span className="text12Medium text-textPrimary">
+            {startCase(item.name)}
+          </span>
+        )}
+        {item.percent > 0 && <Count>{item.count}</Count>}
+      </TrackName>
+      {item.percent > 0 && <Count>{(item.percent * 100).toFixed(2)}%</Count>}
+    </TrackItem>
+  );
+}
+
 export default function TrackList({ trackReferendaCounts }) {
   return (
     <Wrapper>
       {trackReferendaCounts?.map((item, index) => (
-        <TrackItem key={index}>
-          <TrackName>
-            <Box color={TrackColors[item.name]} />
-            <Name href={`/referenda/tracks/${item.id}/statistics`}>
-              {startCase(item.name)}
-            </Name>
-            {item.percent > 0 && <Count>{item.count}</Count>}
-          </TrackName>
-          {item.percent > 0 && (
-            <Count>{(item.percent * 100).toFixed(2)}%</Count>
-          )}
-        </TrackItem>
+        <TrackListItem
+          key={index}
+          item={item}
+          color={ReferendaTrackColors[item.name]}
+          link={`/referenda/tracks/${item.id}/statistics`}
+        />
       ))}
     </Wrapper>
   );

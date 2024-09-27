@@ -77,6 +77,7 @@ function getFellowshipReferendaMenu(
     name: "Referenda",
     extraMatchNavMenuActivePathnames: [
       "/fellowship",
+      "/fellowship/referenda/statistics",
       "/fellowship/tracks/[id]",
     ],
     items: [
@@ -84,6 +85,10 @@ function getFellowshipReferendaMenu(
         value: "all",
         name: Names.all,
         pathname: "/fellowship",
+        extraMatchNavMenuActivePathnames: [
+          "/fellowship",
+          "/fellowship/referenda/statistics",
+        ],
         activeCount: totalActiveCount,
         excludeToSumActives: true,
       },

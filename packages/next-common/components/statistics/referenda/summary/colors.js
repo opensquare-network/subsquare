@@ -1,4 +1,4 @@
-export const TrackColors = {
+export const ReferendaTrackColors = {
   root: "#4CAF91",
   whitelisted_caller: "#E47E52",
   staking_admin: "#5564EA",
@@ -19,4 +19,28 @@ export const TrackColors = {
   system_staking_admin: "#5564EA",
   salp_admin: "#5564EACC",
   validator_election: "#5DB5D0",
+};
+
+export const FellowshipTrackColors = {
+  members: "rgba(173,173,173,1)",
+  proficient_members: "rgba(213,183,120,1)",
+  fellows: "rgba(248,170,126,1)",
+  architects: "rgba(201,159,240,1)",
+  architects_adept: "rgba(129,182,227,1)",
+  grand_architects: "rgba(128,187,110,1)",
+  masters: "rgba(155,164,243,1)",
+  masters_constant: "rgba(96,214,204,1)",
+  grand_masters: "rgba(239,148,196,1)",
+  retain_at_i_dan: "rgba(241,82,138,1)",
+  retain_at_ii_dan: "rgba(233,89,140,1)",
+  retain_at_iii_dan: "rgba(237,122,163,1)",
+  retain_at_iv_dan: "rgba(242,156,186,1)",
+  retain_at_v_dan: "rgba(246,189,209,1)",
+  retain_at_vi_dan: "rgba(251,222,232,1)",
+  promote_to_i_dan: "rgba(131,107,245,1)",
+  promote_to_ii_dan: "rgba(144,122,244,1)",
+  promote_to_iii_dan: "rgba(156,136,245,1)",
+  promote_to_iv_dan: "rgba(179,164,247,1)",
+  promote_to_v_dan: "rgba(202,192,250,1)",
+  promote_to_vi_dan: "rgba(226,220,252,1)",
 };

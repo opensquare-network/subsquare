@@ -23,7 +23,7 @@ import { useState } from "react";
 import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
-import { PolkadotApiProvider } from "next-common/context/polkadotApi";
+import { RelayChainApiProvider } from "next-common/context/relayChainApi";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -251,9 +251,9 @@ export function AccountHead() {
           </AssetHubApiProvider>
         </OnlyChains>
         <OnlyChains chains={paraChainTeleportEnabledChains}>
-          <PolkadotApiProvider>
+          <RelayChainApiProvider>
             <ParaChainTeleportButton />
-          </PolkadotApiProvider>
+          </RelayChainApiProvider>
         </OnlyChains>
         <OnlyChains
           chains={[

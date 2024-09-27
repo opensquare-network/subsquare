@@ -1,6 +1,5 @@
 import { useContextApi } from "next-common/context/api";
-import { usePolkadotApi } from "next-common/context/polkadotApi";
-import Chains from "next-common/utils/consts/chains";
+import { useRelayChainApi } from "next-common/context/relayChainApi";
 import teleportFromRelayChainToAssetHub, {
   getParaChainId,
 } from "./teleportFromRelayChainToAssetHub";
@@ -8,17 +7,26 @@ import teleportFromAssetHubToRelayChain from "./teleportFromAssetHubToRelayChain
 import { useCallback } from "react";
 import { useAssetHubApi } from "next-common/context/assetHub";
 import { useChain } from "next-common/context/chain";
+import {
+  isAssetHubChain,
+  isWestendChain,
+  isPolkadotChain,
+  isKusamaChain,
+} from "next-common/utils/chain";
+
+const isRelayChain = (chain) =>
+  isPolkadotChain(chain) || isWestendChain(chain) || isKusamaChain(chain);
 
 export function useChainApi(chain) {
   const currChain = useChain();
   const api = useContextApi();
-  const polkadotApi = usePolkadotApi();
+  const relayChainApi = useRelayChainApi();
   const assetHubApi = useAssetHubApi();
 
   if (currChain !== chain) {
-    if (chain === Chains.polkadot) {
-      return polkadotApi;
-    } else if (chain === Chains.polkadotAssetHub) {
+    if (isRelayChain(chain)) {
+      return relayChainApi;
+    } else if (isAssetHubChain(chain)) {
       return assetHubApi;
     }
   } else {
@@ -39,7 +47,7 @@ export function useGetTeleportTxFunc({
         throw new Error("Chain network is not connected yet");
       }
 
-      if (sourceChain === Chains.polkadot) {
+      if (isRelayChain(sourceChain)) {
         const paraChainId = getParaChainId(destinationChain);
         return teleportFromRelayChainToAssetHub({
           sourceApi,
@@ -47,7 +55,7 @@ export function useGetTeleportTxFunc({
           amount,
           paraChainId,
         });
-      } else if (destinationChain === Chains.polkadot) {
+      } else if (isRelayChain(destinationChain)) {
         return teleportFromAssetHubToRelayChain({
           sourceApi,
           transferToAddress,
