@@ -4,12 +4,7 @@ import ChainIcon from "next-common/components/header/chainIcon";
 import { cn } from "next-common/utils";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import {
-  isAssetHubChain,
-  isPolkadotAssetHubChain,
-  isWestendAssetHubChain,
-  isKusamaAssetHubChain,
-} from "next-common/utils/chain";
+import { isAssetHubChain } from "next-common/utils/chain";
 import { capitalize } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 
@@ -42,23 +37,15 @@ export function getChainName(chain) {
   return capitalize(chain);
 }
 
-export function useInitialSourceChain(chain) {
-  if (isPolkadotAssetHubChain(chain)) {
-    return Chains.polkadot;
-  }
-
-  if (isWestendAssetHubChain(chain)) {
-    return Chains.westend;
-  }
-
-  if (isKusamaAssetHubChain(chain)) {
-    return Chains.kusama;
-  }
-}
+const AssetHubChainMap = {
+  [Chains.polkadotAssetHub]: Chains.polkadot,
+  [Chains.westendAssetHub]: Chains.westend,
+  [Chains.kusamaAssetHub]: Chains.kusama,
+};
 
 export default function useCrossChainDirection() {
   const currChain = useChain();
-  const initialSourceChain = useInitialSourceChain(currChain);
+  const initialSourceChain = AssetHubChainMap[currChain];
   const [sourceChain, setSourceChain] = useState(initialSourceChain);
   const [destinationChain, setDestinationChain] = useState(currChain);
 
