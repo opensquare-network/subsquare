@@ -31,7 +31,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
     nextApi.fetch(fellowshipReferendumsSummaryApi),
-    nextApi.fetch("/fellowship/referenda/statistics"),
+    nextApi.fetch("fellowship/referenda/statistics"),
   ]);
 
   return {
