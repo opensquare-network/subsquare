@@ -2,7 +2,7 @@ import NoWalletConnected from "next-common/components/assets/noWalletConnected";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import WalletAssetList from "next-common/components/assets/walletAssetList/index";
 import { AssetMetadataProvider } from "./context/assetMetadata";
-import { RelayChainApiProvider } from "next-common/context/relayChainApi";
+import { RelayChainProvider } from "next-common/context/relayChain";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 
 export default function AssetHubOverviewPage() {
@@ -15,9 +15,9 @@ export default function AssetHubOverviewPage() {
 
   return (
     <AssetMetadataProvider>
-      <RelayChainApiProvider>
+      <RelayChainProvider>
         <WalletAssetList />
-      </RelayChainApiProvider>
+      </RelayChainProvider>
     </AssetMetadataProvider>
   );
 }

@@ -53,3 +53,7 @@ export function isShibuyaChain(chain) {
 export function isPolkadotChain(chain) {
   return [Chains.polkadot].includes(chain);
 }
+
+export function isRelayChain(chain) {
+  return [Chains.polkadot, Chains.kusama, Chains.westend].includes(chain);
+}

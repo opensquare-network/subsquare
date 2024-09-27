@@ -1,22 +1,12 @@
-import { getAssetHubApi } from "next-common/utils/assetHub";
-import { createContext, useContext, useEffect, useState } from "react";
+import { AssetHubChainProvider, useAssetHubChain } from "./chain";
+import { AssetHubApiProvider, useAssetHubApi } from "./api";
 
-const AssetHubApiContext = createContext(null);
-
-export function AssetHubApiProvider({ children }) {
-  const [api, setApi] = useState(null);
-
-  useEffect(() => {
-    getAssetHubApi().then(setApi);
-  }, []);
-
+export function AssetHubProvider({ children }) {
   return (
-    <AssetHubApiContext.Provider value={api}>
-      {children}
-    </AssetHubApiContext.Provider>
+    <AssetHubChainProvider>
+      <AssetHubApiProvider>{children}</AssetHubApiProvider>
+    </AssetHubChainProvider>
   );
 }
 
-export function useAssetHubApi() {
-  return useContext(AssetHubApiContext);
-}
+export { useAssetHubApi, useAssetHubChain };

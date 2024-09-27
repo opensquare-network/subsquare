@@ -5,7 +5,7 @@ import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
 import BigNumber from "bignumber.js";
-import { AssetHubApiProvider } from "next-common/context/assetHub";
+import { AssetHubProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useUSDxTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/newUSDxTreasuryProposalPopup";
 import useUSDxBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useUSDxBalanceField";
@@ -75,9 +75,9 @@ export function NewUSDxTreasuryReferendumInnerPopup() {
       onClose={onClose}
       wide
     >
-      <AssetHubApiProvider>
+      <AssetHubProvider>
         <PopupContent />
-      </AssetHubApiProvider>
+      </AssetHubProvider>
     </Popup>
   );
 }

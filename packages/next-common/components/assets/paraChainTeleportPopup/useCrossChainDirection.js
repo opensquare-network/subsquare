@@ -1,4 +1,3 @@
-import Chains from "next-common/utils/consts/chains";
 import PopupLabel from "next-common/components/popup/label";
 import ChainIcon from "next-common/components/header/chainIcon";
 import { cn } from "next-common/utils";
@@ -7,6 +6,7 @@ import { useState } from "react";
 import { isAssetHubChain } from "next-common/utils/chain";
 import { capitalize } from "lodash-es";
 import { useChain } from "next-common/context/chain";
+import { useRelayChain } from "next-common/context/relayChain";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
@@ -37,17 +37,10 @@ export function getChainName(chain) {
   return capitalize(chain);
 }
 
-const relayChainMap = {
-  [Chains.collectives]: Chains.polkadot,
-  [Chains.polkadotAssetHub]: Chains.polkadot,
-  [Chains.westendAssetHub]: Chains.westend,
-  [Chains.kusamaAssetHub]: Chains.kusama,
-};
-
 export default function useCrossChainDirection() {
   const currChain = useChain();
-  const initialSourceChain = relayChainMap[currChain];
-  const [sourceChain, setSourceChain] = useState(initialSourceChain);
+  const relayChain = useRelayChain();
+  const [sourceChain, setSourceChain] = useState(relayChain);
   const [destinationChain, setDestinationChain] = useState(currChain);
 
   const component = (
