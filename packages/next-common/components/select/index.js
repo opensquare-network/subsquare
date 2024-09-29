@@ -25,7 +25,6 @@ const SearchInput = styled.input`
 
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
-  font-size: 14px;
   background: var(--neutral100);
   border: 1px solid var(--neutral400);
   border-radius: 6px;
@@ -39,12 +38,6 @@ const SelectWrapper = styled(FlexBetweenCenter)`
       background-color: var(--neutral200);
       color: var(--textDisabled);
       cursor: default;
-
-      svg {
-        path {
-          stroke: var(--textDisabled);
-        }
-      }
     `}
 `;
 
@@ -105,7 +98,12 @@ function Select({
 
   const displayValue = useMemo(() => {
     const item = filteredOptions.find((option) => option.value === value);
-    return item?.displayValue || item?.label || item?.text;
+    return (
+      <div className="flex items-center">
+        {item?.icon && <div className="mr-2 flex">{item.icon}</div>}
+        {item?.displayValue || item?.label || item?.text}
+      </div>
+    );
   }, [filteredOptions, value]);
 
   let DropdownOptionsWrapper = OptionsWrapper;
@@ -117,7 +115,11 @@ function Select({
 
   return (
     <SelectWrapper
-      className={cn(className, readOnly && "pointer-events-none")}
+      className={cn(
+        "text14Medium",
+        className,
+        readOnly && "pointer-events-none",
+      )}
       ref={ref}
       disabled={disabled}
       onClick={handleShowOptions}
@@ -182,6 +184,9 @@ function Select({
                     onClick={() => onChange(option)}
                     height={theItemHeight}
                   >
+                    {option?.icon && (
+                      <div className="mr-2 flex">{option.icon}</div>
+                    )}
                     {option.label || option.text}
                   </Option>
                 ),

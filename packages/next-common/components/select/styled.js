@@ -38,8 +38,6 @@ export const OptionWrapper = styled.div`
   align-items: center;
   padding: 10px 16px;
   height: ${(p) => p.height}px;
-  font-size: 14px;
-  font-weight: 400;
   cursor: pointer;
   color: var(--textPrimary);
   background: var(--neutral100);

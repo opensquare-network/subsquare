@@ -10,6 +10,8 @@ import { useChain } from "next-common/context/chain";
 import { isRelayChain } from "next-common/utils/chain";
 import { useRelayChain } from "next-common/hooks/useRelayChain";
 import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
+import Chains from "next-common/utils/consts/chains";
+import { useCollectivesApi } from "next-common/context/collectives/api";
 
 export function useChainApi(chain) {
   const currChain = useChain();
@@ -21,12 +23,16 @@ export function useChainApi(chain) {
   const assetHubChain = useAssetHubChain();
   const assetHubApi = useAssetHubApi();
 
+  const collectivesApi = useCollectivesApi();
+
   if (chain === currChain) {
     return currChainApi;
   } else if (chain === replyChain) {
     return relayChainApi;
   } else if (chain === assetHubChain) {
     return assetHubApi;
+  } else if (chain === Chains.collectives) {
+    return collectivesApi;
   }
 
   throw new Error("Unsupported chain");
