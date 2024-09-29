@@ -5,7 +5,7 @@ import { isNil } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 
-function ExtrinsicAndEvent({indexer}) {
+function ExtrinsicAndEvent({ indexer }) {
   const currentChain = useChain();
   const { blockHeight, extrinsicIndex, eventIndex, chain } = indexer;
   if (currentChain === Chains.polkadot && chain === "people") {
@@ -48,7 +48,6 @@ function ExtrinsicAndEvent({indexer}) {
 }
 
 export default function TimelineItemInfoHeader({ item }) {
-  const chain = useChain();
   return (
     <div className="flex flex-col py-[8px] gap-[8px] min-w-[280px] max-sm:min-w-fit">
       <div className="text14Bold text-textPrimary">{item.name}</div>
