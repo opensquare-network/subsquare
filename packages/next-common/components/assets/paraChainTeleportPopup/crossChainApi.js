@@ -1,16 +1,15 @@
 import { useContextApi } from "next-common/context/api";
-import {
-  useRelayChain,
-  useRelayChainApi,
-} from "next-common/context/relayChain";
+import { useRelayChainApi } from "next-common/context/relayChain";
 import teleportFromRelayChainToParaChain, {
   getParaChainId,
 } from "./teleportFromRelayChainToParaChain";
 import teleportFromParaChainToRelayChain from "./teleportFromParaChainToRelayChain";
 import { useCallback } from "react";
-import { useAssetHubApi, useAssetHubChain } from "next-common/context/assetHub";
+import { useAssetHubApi } from "next-common/context/assetHub";
 import { useChain } from "next-common/context/chain";
 import { isRelayChain } from "next-common/utils/chain";
+import { useRelayChain } from "next-common/hooks/useRelayChain";
+import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 
 export function useChainApi(chain) {
   const currChain = useChain();

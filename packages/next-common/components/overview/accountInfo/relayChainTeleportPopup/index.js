@@ -22,7 +22,7 @@ import {
 } from "next-common/components/assets/paraChainTeleportPopup/useCrossChainDirection";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useChain } from "next-common/context/chain";
-import { useAssetHubChain } from "next-common/context/assetHub";
+import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 
 const SystemCrosschain = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),

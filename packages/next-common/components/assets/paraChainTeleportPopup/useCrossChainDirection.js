@@ -6,7 +6,7 @@ import { useState } from "react";
 import { isAssetHubChain } from "next-common/utils/chain";
 import { capitalize } from "lodash-es";
 import { useChain } from "next-common/context/chain";
-import { useRelayChain } from "next-common/context/relayChain";
+import { useRelayChain } from "next-common/hooks/useRelayChain";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
