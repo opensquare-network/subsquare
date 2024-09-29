@@ -11,11 +11,21 @@ import { useDispatch } from "react-redux";
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { useChainSettings } from "next-common/context/chain";
 import BalanceField from "next-common/components/popup/fields/balanceField";
+import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 
-function useFeeField() {
+function useFeeField({ balance, decimals }) {
   const [inputBalance, setInputBalance] = useState("");
 
+  const getCheckedValue = useCallback(() => {
+    return checkTransferAmount({
+      transferAmount: inputBalance,
+      decimals,
+      transferrable: balance,
+    });
+  }, [inputBalance, decimals, balance]);
+
   return {
+    getCheckedValue,
     value: inputBalance,
     component: (
       <BalanceField
@@ -46,15 +56,39 @@ function PopupContent() {
   const { value: balance, loading } = useSubBalanceInfo(address);
   const api = useContextApi();
   const dispatch = useDispatch();
-  const { value: fee, component: feeField } = useFeeField();
+  const { getCheckedValue: getCheckedFee, component: feeField } = useFeeField({
+    balance: balance?.balance,
+    decimals,
+  });
 
   const { value: curator, component: curatorSelect } = useAddressComboField({
     title: "Curator",
   });
 
   const getTxFunc = useCallback(() => {
-    // TODO: getTxFunc
-  }, []);
+    if (!curator) {
+      dispatch(newErrorToast("Please enter the recipient address"));
+      return;
+    }
+
+    // TODO: params
+    //   parentBountyId: "",
+    //   childBountyId: "",
+    //   curator: {
+    //     id: "",
+    //   },
+    //   fee: "",
+    let params = {};
+    try {
+      params["fee"] = getCheckedFee();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+      return;
+    }
+    console.log("::::params", params);
+
+    // TODO: call tx api.
+  }, [dispatch, api, curator, getCheckedFee]);
 
   return (
     <>
