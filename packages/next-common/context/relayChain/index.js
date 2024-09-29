@@ -1,7 +1,7 @@
 import { getRelayChainApi } from "next-common/utils/relayChain";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const RelayChainContext = createContext(null);
+const RelayChainApiContext = createContext(null);
 
 export function RelayChainApiProvider({ children }) {
   const [api, setApi] = useState(null);
@@ -11,12 +11,12 @@ export function RelayChainApiProvider({ children }) {
   }, []);
 
   return (
-    <RelayChainContext.Provider value={api}>
+    <RelayChainApiContext.Provider value={api}>
       {children}
-    </RelayChainContext.Provider>
+    </RelayChainApiContext.Provider>
   );
 }
 
 export function useRelayChainApi() {
-  return useContext(RelayChainContext);
+  return useContext(RelayChainApiContext);
 }

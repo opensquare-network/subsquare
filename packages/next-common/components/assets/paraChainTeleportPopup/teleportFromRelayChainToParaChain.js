@@ -1,10 +1,11 @@
+import { isAssetHubChain } from "next-common/utils/chain";
 import Chains from "next-common/utils/consts/chains";
 
 export const AssetHubParaId = 1000;
 export const CollectivesParaId = 1001;
 
 export function getParaChainId(chain) {
-  if (chain === Chains.polkadotAssetHub) {
+  if (isAssetHubChain(chain)) {
     return AssetHubParaId;
   } else if (chain === Chains.collectives) {
     return CollectivesParaId;

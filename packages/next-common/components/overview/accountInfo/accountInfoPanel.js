@@ -23,7 +23,7 @@ import { useState } from "react";
 import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
-import { RelayChainApiProvider } from "next-common/context/relayChainApi";
+import { RelayChainApiProvider } from "next-common/context/relayChain";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -78,7 +78,7 @@ function Account() {
       <DisplayUserAvatar />
       <div className="flex flex-col">
         <DisplayUser />
-        <Copyable className="max-md:hidden text-textTertiary text14Medium">
+        <Copyable className="max-md:hidden text-textTertiary text14Medium inline-flex items-center">
           {maybeEvmAddress}
         </Copyable>
         <Copyable

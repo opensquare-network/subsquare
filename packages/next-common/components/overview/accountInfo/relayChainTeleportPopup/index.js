@@ -14,13 +14,15 @@ import {
   useChainApi,
   useGetTeleportTxFunc,
 } from "next-common/components/assets/paraChainTeleportPopup/crossChainApi";
-import Chains from "next-common/utils/consts/chains";
 import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
 import dynamic from "next/dynamic";
 import { Chain } from "next-common/components/assets/paraChainTeleportPopup/useCrossChainDirection";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import ChainIcon from "next-common/components/header/chainIcon";
 import getChainSettings from "next-common/utils/consts/settings";
+import { useChain } from "next-common/context/chain";
+import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
+import Chains from "next-common/utils/consts/chains";
 
 const SystemCrosschain = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
@@ -74,12 +76,14 @@ function CrosschainDirection({
 }
 
 function PopupContent() {
-  const sourceChain = Chains.polkadot;
-  const [destinationChain, setDestinationChain] = useState(
-    Chains.polkadotAssetHub,
-  );
+  const sourceChain = useChain();
   const sourceApi = useChainApi(sourceChain);
+
+  const assetHubChain = useAssetHubChain();
+  const [destinationChain, setDestinationChain] = useState(assetHubChain);
+
   const destinationApi = useChainApi(destinationChain);
+
   const getTeleportTx = useGetTeleportTxFunc({
     sourceApi,
     sourceChain,
