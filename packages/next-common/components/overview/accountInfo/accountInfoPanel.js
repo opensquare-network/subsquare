@@ -22,8 +22,8 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
-import { AssetHubProvider } from "next-common/context/assetHub";
-import { RelayChainProvider } from "next-common/context/relayChain";
+import { AssetHubApiProvider } from "next-common/context/assetHub";
+import { RelayChainApiProvider } from "next-common/context/relayChain";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -246,14 +246,14 @@ export function AccountHead() {
           <TransferButton />
         </OnlyChains>
         <OnlyChains chains={relayChainTeleportEnabledChains}>
-          <AssetHubProvider>
+          <AssetHubApiProvider>
             <TeleportButton />
-          </AssetHubProvider>
+          </AssetHubApiProvider>
         </OnlyChains>
         <OnlyChains chains={paraChainTeleportEnabledChains}>
-          <RelayChainProvider>
+          <RelayChainApiProvider>
             <ParaChainTeleportButton />
-          </RelayChainProvider>
+          </RelayChainApiProvider>
         </OnlyChains>
         <OnlyChains
           chains={[

@@ -57,3 +57,33 @@ export function isPolkadotChain(chain) {
 export function isRelayChain(chain) {
   return [Chains.polkadot, Chains.kusama, Chains.westend].includes(chain);
 }
+
+export function getAssetHubChain(chain) {
+  if (isAssetHubChain(chain)) {
+    return chain;
+  } else if (isPolkadotChain(chain)) {
+    return Chains.polkadotAssetHub;
+  } else if (isKusamaChain(chain)) {
+    return Chains.kusamaAssetHub;
+  } else if (isWestendChain(chain)) {
+    return Chains.westendAssetHub;
+  }
+
+  throw new Error("Unsupported asset hub chain");
+}
+
+export function getRelayChain(chain) {
+  if (isRelayChain(chain)) {
+    return chain;
+  } else if (isPolkadotAssetHubChain(chain)) {
+    return Chains.polkadot;
+  } else if (isKusamaAssetHubChain(chain)) {
+    return Chains.kusama;
+  } else if (isWestendAssetHubChain(chain)) {
+    return Chains.westend;
+  } else if (isCollectivesChain(chain)) {
+    return Chains.polkadot;
+  }
+
+  throw new Error("Unsupported relay chain");
+}

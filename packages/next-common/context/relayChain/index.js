@@ -1,15 +1,22 @@
-import {
-  RelayChainProvider as RelayChainNameProvider,
-  useRelayChain,
-} from "./chain";
-import { RelayChainApiProvider, useRelayChainApi } from "./api";
+import { getRelayChainApi } from "next-common/utils/relayChain";
+import { createContext, useContext, useEffect, useState } from "react";
 
-export function RelayChainProvider({ children }) {
+const RelayChainApiContext = createContext(null);
+
+export function RelayChainApiProvider({ children }) {
+  const [api, setApi] = useState(null);
+
+  useEffect(() => {
+    getRelayChainApi().then(setApi);
+  }, []);
+
   return (
-    <RelayChainNameProvider>
-      <RelayChainApiProvider>{children}</RelayChainApiProvider>
-    </RelayChainNameProvider>
+    <RelayChainApiContext.Provider value={api}>
+      {children}
+    </RelayChainApiContext.Provider>
   );
 }
 
-export { useRelayChainApi, useRelayChain };
+export function useRelayChainApi() {
+  return useContext(RelayChainApiContext);
+}

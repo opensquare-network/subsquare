@@ -6,7 +6,7 @@ import { checkInputValue } from "next-common/utils";
 import { addressToPublicKey } from "next-common/utils/address";
 import { InfoMessage } from "next-common/components/setting/styled";
 import { StatemintAssets } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
-import { AssetHubProvider } from "next-common/context/assetHub";
+import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "./notePreimageButton";
 import useUSDxBalanceField from "./fields/useUSDxBalanceField";
@@ -143,9 +143,9 @@ export default function NewUSDxTreasuryProposalPopup({ onClose }) {
       onClose={onClose}
       wide
     >
-      <AssetHubProvider>
+      <AssetHubApiProvider>
         <PopupContent />
-      </AssetHubProvider>
+      </AssetHubApiProvider>
     </Popup>
   );
 }

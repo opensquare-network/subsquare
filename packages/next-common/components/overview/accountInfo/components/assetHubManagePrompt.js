@@ -4,7 +4,7 @@ import { CACHE_KEY } from "next-common/utils/constants";
 import { useMemo } from "react";
 import Link from "next/link";
 import useAssetsFromAssetHub from "../hook/useAssetsFromAssetHub";
-import { AssetHubProvider } from "next-common/context/assetHub";
+import { AssetHubApiProvider } from "next-common/context/assetHub";
 import { AssetHubMetadataProvider } from "next-common/components/overview/accountInfo/context/assetHubMetadataContext";
 import Chains from "next-common/utils/consts/chains";
 import OnlyChain from "next-common/components/common/onlyChain";
@@ -39,11 +39,11 @@ export function PromptContent() {
 export default function AssetHubManagePrompt() {
   return (
     <OnlyChain chain={Chains.polkadot}>
-      <AssetHubProvider>
+      <AssetHubApiProvider>
         <AssetHubMetadataProvider>
           <PromptContent />
         </AssetHubMetadataProvider>
-      </AssetHubProvider>
+      </AssetHubApiProvider>
     </OnlyChain>
   );
 }
