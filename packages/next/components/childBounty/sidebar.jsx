@@ -6,15 +6,17 @@ import ChildBountySidebarBalance from "next-common/components/treasury/childBoun
 
 export default function ChildBountySidebar() {
   const state = usePostState();
-  if (!["PendingPayout", "Claimed"].includes(state)) {
-    return null;
-  }
+  const isClaimable = ["PendingPayout", "Claimed"].includes(state);
 
   return (
     <RightBarWrapper>
       <ChildBountySidebarBalance />
-      <Meta />
-      <ChildBountyClaim />
+      {isClaimable && (
+        <>
+          <Meta />
+          <ChildBountyClaim />
+        </>
+      )}
     </RightBarWrapper>
   );
 }
