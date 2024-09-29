@@ -217,7 +217,6 @@ export function useSendTransaction() {
           onFinalized: _onFinalized,
           onError,
           signerAddress: signerAccount?.address,
-          wallet: signerAccount?.meta?.source,
         });
       } catch (e) {
         dispatch(newErrorToast(e.message));

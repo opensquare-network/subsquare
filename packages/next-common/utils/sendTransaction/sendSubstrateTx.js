@@ -1,5 +1,4 @@
 import { noop } from "lodash-es";
-import WalletTypes from "../consts/walletTypes";
 
 export function getDispatchError(dispatchError) {
   let message = dispatchError.type;
@@ -87,21 +86,17 @@ export async function sendSubstrateTx({
   onSubmitted = noop,
   onError = noop,
   signerAddress,
-  wallet,
 }) {
   onStarted();
 
   try {
     const account = await api.query.system.account(signerAddress);
 
-    // Fix: withSignedTransaction=true will cause Talisman wallet sign transaction to fail
-    const withSignedTransaction = wallet !== WalletTypes.TALISMAN;
-
     const unsub = await tx.signAndSend(
       signerAddress,
       {
         nonce: account.nonce,
-        withSignedTransaction,
+        withSignedTransaction: true,
       },
       createSendTxEventHandler({
         onFinalized,
