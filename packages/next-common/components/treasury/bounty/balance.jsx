@@ -15,7 +15,7 @@ import { addressEllipsis } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import Copyable from "next-common/components/copyable";
 
-function CardDetailTitle({ isLoading, title }) {
+export function CardDetailTitle({ isLoading, title }) {
   return (
     <TitleContainer className="mb-4 !px-0">
       <span>{title}</span>
@@ -28,7 +28,7 @@ function CardDetailTitle({ isLoading, title }) {
   );
 }
 
-function CardDetailRow({ icon, title, value }) {
+export function CardDetailRow({ icon, title, value }) {
   return (
     <BorderedRow>
       <Header>
@@ -42,7 +42,7 @@ function CardDetailRow({ icon, title, value }) {
   );
 }
 
-function CopyableAddress({ address }) {
+export function CopyableAddress({ address }) {
   return (
     <Copyable copyText={address} className="inline-flex items-center">
       <Tooltip content={address}>{addressEllipsis(address)}</Tooltip>
