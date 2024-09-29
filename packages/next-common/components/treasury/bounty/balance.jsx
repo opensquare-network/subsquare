@@ -14,21 +14,17 @@ import { InfoDocs, InfoUser, SystemCoins } from "@osn/icons/subsquare";
 import { addressEllipsis } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import Copyable from "next-common/components/copyable";
+import LoadableContent from "next-common/components/common/loadableContent";
 
-export function CardDetailTitle({ isLoading, title }) {
+export function CardDetailTitle({ title }) {
   return (
     <TitleContainer className="mb-4 !px-0">
       <span>{title}</span>
-      {isLoading && (
-        <div>
-          <Loading size={16} />
-        </div>
-      )}
     </TitleContainer>
   );
 }
 
-export function CardDetailRow({ icon, title, value }) {
+export function CardDetailRow({ isLoading = false, icon, title, value }) {
   return (
     <BorderedRow>
       <Header>
@@ -37,7 +33,9 @@ export function CardDetailRow({ icon, title, value }) {
         </div>
         {title}
       </Header>
-      <span className="text14Medium">{value}</span>
+      <LoadableContent isLoading={isLoading}>
+        <span className="text14Medium">{value}</span>
+      </LoadableContent>
     </BorderedRow>
   );
 }
@@ -61,11 +59,12 @@ function BountySidebarBalance() {
 
   return (
     <SecondaryCardDetail>
-      <CardDetailTitle isLoading={isLoading} title="Balance" />
+      <CardDetailTitle title="Balance" />
       <CardDetailRow
         icon={<SystemCoins />}
         title="Balance"
-        value={isLoading ? "-" : <SymbolValue value={balance} />}
+        value={<SymbolValue value={balance} />}
+        isLoading={isLoading}
       />
       <CardDetailRow
         icon={<InfoDocs />}

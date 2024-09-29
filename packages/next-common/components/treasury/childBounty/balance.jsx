@@ -20,11 +20,12 @@ function ChildBountySidebarBalance() {
 
   return (
     <SecondaryCardDetail>
-      <CardDetailTitle isLoading={isLoading} title="Balance" />
+      <CardDetailTitle title="Balance" />
       <CardDetailRow
         icon={<SystemCoins />}
         title="Balance"
-        value={isLoading ? "-" : <SymbolValue value={balance} />}
+        value={<SymbolValue value={balance} />}
+        isLoading={isLoading}
       />
       <CardDetailRow
         icon={<InfoUser />}
