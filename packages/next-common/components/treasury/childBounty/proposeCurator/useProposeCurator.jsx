@@ -12,6 +12,7 @@ import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { useChainSettings } from "next-common/context/chain";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
+import { useOnchainData } from "next-common/context/post";
 
 function useFeeField({ balance, decimals }) {
   const [inputBalance, setInputBalance] = useState("");
@@ -65,29 +66,29 @@ function PopupContent() {
     title: "Curator",
   });
 
+  const { parentBountyId, index: childBountyId } = useOnchainData();
+
   const getTxFunc = useCallback(() => {
     if (!curator) {
       dispatch(newErrorToast("Please enter the recipient address"));
       return;
     }
 
-    // TODO: params
-    //   parentBountyId: "",
-    //   childBountyId: "",
-    //   curator: {
-    //     id: "",
-    //   },
-    //   fee: "",
-    let params = {};
+    let fee;
     try {
-      params["fee"] = getCheckedFee();
+      fee = getCheckedFee();
     } catch (e) {
       dispatch(newErrorToast(e.message));
       return;
     }
-    console.log("::::params", params);
 
     // TODO: call tx api.
+    // return api.tx.childBounties?.proposeCurator(
+    //   parentBountyId,
+    //   childBountyId,
+    //   curator,
+    //   fee,
+    // );
   }, [dispatch, api, curator, getCheckedFee]);
 
   return (
