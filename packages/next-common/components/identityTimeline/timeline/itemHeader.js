@@ -3,6 +3,49 @@ import BlockHeight from "./blockHeight";
 import Link from "./link";
 import { isNil } from "lodash-es";
 import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
+
+function ExtrinsicAndEvent({indexer}) {
+  const currentChain = useChain();
+  const { blockHeight, extrinsicIndex, eventIndex, chain } = indexer;
+  if (currentChain === Chains.polkadot && chain === "people") {
+    const domain = "https://people-polkadot.subscan.io";
+    return (<>
+      <Link
+        href={`${domain}/extrinsic/${blockHeight}-${extrinsicIndex}`}
+      >
+        Extrinsic
+      </Link>
+      {!isNil(eventIndex) && (
+        <Link
+          href={`${domain}/block/${blockHeight}?tab=event&event=${blockHeight}-${eventIndex}`}
+        >
+          Event
+        </Link>
+      )}
+    </>);
+  }
+
+  let domain = `https://${currentChain}.statescan.io/#`;
+  if (chain === "people" && currentChain === Chains.kusama) {
+    domain = "https://people-kusama.statescan.io/#";
+  }
+
+  return (<>
+    <Link
+      href={`${domain}/extrinsics/${blockHeight}-${extrinsicIndex}`}
+    >
+      Extrinsic
+    </Link>
+    {!isNil(eventIndex) && (
+      <Link
+        href={`${domain}/events/${blockHeight}-${eventIndex}`}
+      >
+        Event
+      </Link>
+    )}
+  </>);
+}
 
 export default function TimelineItemInfoHeader({ item }) {
   const chain = useChain();
@@ -14,18 +57,7 @@ export default function TimelineItemInfoHeader({ item }) {
         <BlockHeight number={item.indexer.blockHeight} />
       </div>
       <div className="flex gap-[8px]">
-        <Link
-          href={`https://${chain}.statescan.io/#/extrinsics/${item.indexer.blockHeight}-${item.indexer.extrinsicIndex}`}
-        >
-          Extrinsic
-        </Link>
-        {!isNil(item.indexer.eventIndex) && (
-          <Link
-            href={`https://${chain}.statescan.io/#/events/${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
-          >
-            Event
-          </Link>
-        )}
+        <ExtrinsicAndEvent indexer={item.indexer} />
       </div>
     </div>
   );

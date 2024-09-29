@@ -46,12 +46,13 @@ function useIdentityTimeline() {
             name
             args
               indexer {
+                chain
                 blockHeight
-                  blockHash
-                  blockTime
-                  extrinsicIndex
-                  eventIndex
-                  __typename
+                blockHash
+                blockTime
+                extrinsicIndex
+                eventIndex
+                __typename
               }
             __typename
           }
