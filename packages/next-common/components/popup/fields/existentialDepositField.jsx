@@ -1,10 +1,10 @@
-import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
 import Input from "next-common/components/input";
 import { toPrecision } from "next-common/utils";
+import useApiProperties from "next-common/hooks/useApiProperties";
 
 export default function ExistentialDeposit({ destApi, title }) {
-  const { decimals } = useChainSettings();
+  const { decimals } = useApiProperties(destApi);
   return (
     <div>
       <PopupLabel text={title || "Destination Existential Deposit"} />
