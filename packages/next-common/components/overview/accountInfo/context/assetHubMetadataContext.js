@@ -3,12 +3,13 @@ import useQueryAllAssetMetadata from "next-common/hooks/assets/useQueryAllAssetM
 import { createStateContext } from "react-use";
 import { useEffect } from "react";
 
-const [useAssetHubOnPolkadotMetadataMetadata, InnerProvider] = createStateContext();
+const [useAssetHubMetadataState, AssetHubMetadataStateProvider] =
+  createStateContext();
 
 function DataUpdater({ children }) {
   const api = useAssetHubApi();
   const allMetadata = useQueryAllAssetMetadata(api);
-  const [, setAllAssetMetadata] = useAssetHubOnPolkadotMetadataMetadata();
+  const [, setAllAssetMetadata] = useAssetHubMetadataState();
 
   useEffect(() => {
     setAllAssetMetadata(allMetadata);
@@ -17,17 +18,15 @@ function DataUpdater({ children }) {
   return children;
 }
 
-export function AssetHubOnPolkadotMetadataProvider({ children }) {
+export function AssetHubMetadataProvider({ children }) {
   return (
-    <InnerProvider>
-      <DataUpdater>
-        {children}
-      </DataUpdater>
-    </InnerProvider>
+    <AssetHubMetadataStateProvider>
+      <DataUpdater>{children}</DataUpdater>
+    </AssetHubMetadataStateProvider>
   );
 }
 
-export function useAssetHubOnPolkadotMetadata() {
-  const [metadata] = useAssetHubOnPolkadotMetadataMetadata();
+export function useAssetHubMetadata() {
+  const [metadata] = useAssetHubMetadataState();
   return metadata;
 }

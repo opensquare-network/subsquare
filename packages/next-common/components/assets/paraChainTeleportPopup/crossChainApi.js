@@ -1,33 +1,31 @@
 import { useContextApi } from "next-common/context/api";
-import { useRelayChainApi } from "next-common/context/relayChainApi";
-import teleportFromRelayChainToAssetHub, {
+import { useRelayChainApi } from "next-common/context/relayChain";
+import teleportFromRelayChainToParaChain, {
   getParaChainId,
-} from "./teleportFromRelayChainToAssetHub";
-import teleportFromAssetHubToRelayChain from "./teleportFromAssetHubToRelayChain";
+} from "./teleportFromRelayChainToParaChain";
+import teleportFromParaChainToRelayChain from "./teleportFromParaChainToRelayChain";
 import { useCallback } from "react";
 import { useAssetHubApi } from "next-common/context/assetHub";
 import { useChain } from "next-common/context/chain";
-import {
-  isAssetHubChain,
-  isWestendChain,
-  isPolkadotChain,
-  isKusamaChain,
-} from "next-common/utils/chain";
-
-const isRelayChain = (chain) =>
-  isPolkadotChain(chain) || isWestendChain(chain) || isKusamaChain(chain);
+import { isRelayChain } from "next-common/utils/chain";
+import { useRelayChain } from "next-common/hooks/useRelayChain";
+import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 
 export function useChainApi(chain) {
   const currChain = useChain();
-  const api = useContextApi();
+  const currChainApi = useContextApi();
+
+  const replyChain = useRelayChain();
   const relayChainApi = useRelayChainApi();
+
+  const assetHubChain = useAssetHubChain();
   const assetHubApi = useAssetHubApi();
 
-  if (currChain === chain) {
-    return api;
-  } else if (isRelayChain(chain)) {
+  if (chain === currChain) {
+    return currChainApi;
+  } else if (chain === replyChain) {
     return relayChainApi;
-  } else if (isAssetHubChain(chain)) {
+  } else if (chain === assetHubChain) {
     return assetHubApi;
   }
 
@@ -47,14 +45,14 @@ export function useGetTeleportTxFunc({
 
       if (isRelayChain(sourceChain)) {
         const paraChainId = getParaChainId(destinationChain);
-        return teleportFromRelayChainToAssetHub({
+        return teleportFromRelayChainToParaChain({
           sourceApi,
           transferToAddress,
           amount,
           paraChainId,
         });
       } else if (isRelayChain(destinationChain)) {
-        return teleportFromAssetHubToRelayChain({
+        return teleportFromParaChainToRelayChain({
           sourceApi,
           transferToAddress,
           amount,

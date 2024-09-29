@@ -8,20 +8,29 @@ export function useSubscribeAssetHubAssets(assetId, address) {
   const [free, setFree] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { loading, result } = useSubStorage(
+  const { loading: isLoadingAccount, result: account } = useSubStorage(
     "assets",
     "account",
     [assetId, address],
     { api },
   );
+  const { loading: isLoadingMeta, result: meta } = useSubStorage(
+    "assets",
+    "metadata",
+    [assetId],
+    { api },
+  );
+
+  const loading = isLoadingAccount || isLoadingMeta;
 
   useEffect(() => {
     if (loading) return;
 
-    const freeAsset = result?.toJSON()?.balance || 0;
-    setFree(toPrecision(freeAsset, 6));
+    const freeAsset = account?.toJSON()?.balance || 0;
+    const decimals = meta?.toJSON()?.decimals || 0;
+    setFree(toPrecision(freeAsset, decimals));
     setIsLoading(loading);
-  }, [loading, result]);
+  }, [loading, account, meta]);
 
   return { free, isLoading };
 }
