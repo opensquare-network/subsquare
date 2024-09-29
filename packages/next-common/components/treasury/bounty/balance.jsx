@@ -13,6 +13,7 @@ import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import { InfoDocs, InfoUser, SystemCoins } from "@osn/icons/subsquare";
 import { addressEllipsis } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
+import Copyable from "next-common/components/copyable";
 
 function CardDetailTitle({ isLoading, title }) {
   return (
@@ -36,8 +37,16 @@ function CardDetailRow({ icon, title, value }) {
         </div>
         {title}
       </Header>
-      {value}
+      <span className="text14Medium">{value}</span>
     </BorderedRow>
+  );
+}
+
+function CopyableAddress({ address }) {
+  return (
+    <Copyable copyText={address} className="inline-flex items-center">
+      <Tooltip content={address}>{addressEllipsis(address)}</Tooltip>
+    </Copyable>
   );
 }
 
@@ -68,7 +77,7 @@ function BountySidebarBalance() {
         title="Address"
         value={
           <Value>
-            <Tooltip content={address}>{addressEllipsis(address)}</Tooltip>
+            <CopyableAddress address={address} />
           </Value>
         }
       />
