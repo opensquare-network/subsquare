@@ -1,5 +1,4 @@
 import SummaryLayout from "next-common/components/summary/layout/layout";
-import { TotalBalance, Transferrable } from "./accountBalances";
 import SummaryItem from "next-common/components/summary/layout/item";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
@@ -10,6 +9,9 @@ import {
   useAmbassadorMemberData,
   useFellowshipMemberData,
 } from "../context/memberDataContext";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { isNil } from "lodash-es";
+import AccountBalances from "./accountBalances";
 
 function MemberInfo({ data, isLoading }) {
   if (isLoading) {
@@ -62,13 +64,40 @@ function AmbassadorMember() {
   );
 }
 
-export default function CollectivesAccountInfo() {
+function CollectivesAccountInfoMobile() {
+  return (
+    <>
+      <AccountBalances />
+      <SummaryLayout>
+        <FellowshipMember />
+        <AmbassadorMember />
+      </SummaryLayout>
+    </>
+  );
+}
+
+function CollectivesAccountInfoDesktop() {
   return (
     <SummaryLayout>
-      <TotalBalance />
-      <Transferrable />
+      <div className="col-span-2">
+        <AccountBalances />
+      </div>
       <FellowshipMember />
       <AmbassadorMember />
     </SummaryLayout>
+  );
+}
+
+export default function CollectivesAccountInfo() {
+  const { width } = useWindowSize();
+
+  if (isNil(width)) {
+    return null;
+  }
+
+  return width > 768 ? (
+    <CollectivesAccountInfoDesktop />
+  ) : (
+    <CollectivesAccountInfoMobile />
   );
 }

@@ -8,6 +8,14 @@ const defaultPolkadotNodes = [
     url: "wss://polkadot.api.onfinality.io/public-ws",
   },
   {
+    name: "IBP1",
+    url: "wss://rpc.ibp.network/polkadot",
+  },
+  {
+    name: "SubQuery",
+    url: "wss://polkadot.rpc.subquery.network/public/ws",
+  },
+  {
     name: "Dwellir",
     url: "wss://polkadot-rpc.dwellir.com",
   },
@@ -23,17 +31,13 @@ const defaultPolkadotNodes = [
     name: "Dwellir Tunisia",
     url: "wss://polkadot-rpc-tn.dwellir.com",
   },
+  // {
+  //   name: "Automata 1RPC",
+  //   url: "wss://1rpc.io/dot",
+  // },
   {
-    name: "Automata 1RPC",
-    url: "wss://1rpc.io/dot",
-  },
-  {
-    name: "IBP-GeoDNS1",
-    url: "wss://rpc.ibp.network/polkadot",
-  },
-  {
-    name: "IBP-GeoDNS2",
-    url: "wss://rpc.dotters.network/polkadot",
+    name: "IBP2",
+    url: "wss://polkadot.dotters.network",
   },
   {
     name: "RadiumBlock",

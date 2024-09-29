@@ -23,14 +23,12 @@ export function useChainApi(chain) {
   const relayChainApi = useRelayChainApi();
   const assetHubApi = useAssetHubApi();
 
-  if (currChain !== chain) {
-    if (isRelayChain(chain)) {
-      return relayChainApi;
-    } else if (isAssetHubChain(chain)) {
-      return assetHubApi;
-    }
-  } else {
+  if (currChain === chain) {
     return api;
+  } else if (isRelayChain(chain)) {
+    return relayChainApi;
+  } else if (isAssetHubChain(chain)) {
+    return assetHubApi;
   }
 
   throw new Error("Unsupported chain");
