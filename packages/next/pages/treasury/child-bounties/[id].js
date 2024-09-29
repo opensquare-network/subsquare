@@ -19,6 +19,7 @@ import { OffChainArticleActionsProvider } from "next-common/noSima/context/artic
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { TreasuryProvider } from "next-common/context/treasury";
+import { useOnchainData } from "next-common/context/post";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/bounty/metadata"),
@@ -66,11 +67,12 @@ function ChildBountyContentWithNullGuard() {
 
 function ChildBountyPageImpl() {
   const post = usePost();
+  const { address } = useOnchainData();
 
   const desc = getMetaDesc(post);
-  const showRightSidePanel = ["PendingPayout", "Claimed"].includes(
-    post?.onchainData?.state?.state,
-  );
+  const showRightSidePanel =
+    address ||
+    ["PendingPayout", "Claimed"].includes(post?.onchainData?.state?.state);
 
   return (
     <DetailLayout
