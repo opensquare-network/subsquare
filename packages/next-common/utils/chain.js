@@ -69,7 +69,12 @@ export function getAssetHubChain(chain) {
     return Chains.westendAssetHub;
   }
 
-  throw new Error("Unsupported asset hub chain");
+  const relayChain = getRelayChain(chain);
+  if (relayChain === chain) {
+    throw new Error("Unsupported asset hub chain");
+  }
+
+  return getAssetHubChain(relayChain);
 }
 
 export function getRelayChain(chain) {

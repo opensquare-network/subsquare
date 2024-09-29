@@ -1,5 +1,5 @@
+import { useChain } from "next-common/context/chain";
 import { getAssetHubChain } from "next-common/utils/chain";
-import { useChain } from "../chain";
 
 export function useAssetHubChain() {
   const chain = useChain();
