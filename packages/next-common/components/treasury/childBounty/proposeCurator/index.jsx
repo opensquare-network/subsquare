@@ -21,7 +21,11 @@ export default function ProposeCurator() {
 
   return (
     <>
-      <PrimaryButton className="w-full" onClick={() => showPopup()}>
+      <PrimaryButton
+        className="w-full"
+        onClick={() => showPopup()}
+        disabled={disabled}
+      >
         Propose Curator
       </PrimaryButton>
       {ProposeCuratorPopup}

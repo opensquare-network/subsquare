@@ -10,6 +10,22 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { useChainSettings } from "next-common/context/chain";
+import BalanceField from "next-common/components/popup/fields/balanceField";
+
+function useFeeField() {
+  const [inputBalance, setInputBalance] = useState("");
+
+  return {
+    value: inputBalance,
+    component: (
+      <BalanceField
+        title="Fee"
+        inputBalance={inputBalance}
+        setInputBalance={setInputBalance}
+      />
+    ),
+  };
+}
 
 export function useProposeCuratorPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +46,7 @@ function PopupContent() {
   const { value: balance, loading } = useSubBalanceInfo(address);
   const api = useContextApi();
   const dispatch = useDispatch();
+  const { value: fee, component: feeField } = useFeeField();
 
   const { value: curator, component: curatorSelect } = useAddressComboField({
     title: "Curator",
@@ -41,9 +58,13 @@ function PopupContent() {
 
   return (
     <>
-      <Signer />
+      <Signer
+        balanceName="Available"
+        signerBalance={balance?.balance}
+        isSignerBalanceLoading={loading}
+      />
       {curatorSelect}
-      {/* fee field*/}
+      {feeField}
       <div className="flex justify-end">
         <TxSubmissionButton
           title="Confirm"
