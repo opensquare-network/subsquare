@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useProposeCuratorPopup from "./useProposeCurator";
 import PrimaryButton from "next-common/lib/button/primary";
-import { usePostState, useOnchainData } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
