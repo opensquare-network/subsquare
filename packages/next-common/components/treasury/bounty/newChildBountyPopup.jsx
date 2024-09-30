@@ -9,15 +9,22 @@ import BigNumber from "bignumber.js";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { toPrecision } from "next-common/utils";
-import TextInputField from "next-common/components/popup/fields/textInputField";
+import TextAreaField from "next-common/components/popup/fields/textAreaField";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 
-function useTextField({ title }) {
+function useTextField({ title, placeholder }) {
   const [text, setText] = useState("");
   return {
     value: text,
-    component: <TextInputField title={title} text={text} setText={setText} />,
+    component: (
+      <TextAreaField
+        title={title}
+        placeholder={placeholder}
+        text={text}
+        setText={setText}
+      />
+    ),
   };
 }
 
@@ -58,6 +65,7 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
   );
   const { value: description, component: descriptionField } = useTextField({
     title: "Description",
+    placeholder: "Please fill the description about this child bounty...",
   });
 
   const getTxFunc = useCallback(async () => {
