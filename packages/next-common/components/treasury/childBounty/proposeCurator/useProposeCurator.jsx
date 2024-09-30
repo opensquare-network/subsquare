@@ -52,7 +52,7 @@ export function useProposeCuratorPopup() {
 
 function PopupContent() {
   const { onClose } = usePopupParams();
-  const { decimals, symbol } = useChainSettings();
+  const { decimals } = useChainSettings();
   const address = useRealAddress();
   const { value: balance, loading } = useSubBalanceInfo(address);
   const api = useContextApi();
@@ -82,14 +82,15 @@ function PopupContent() {
       return;
     }
 
-    // TODO: call tx api.
-    // return api.tx.childBounties?.proposeCurator(
-    //   parentBountyId,
-    //   childBountyId,
-    //   curator,
-    //   fee,
-    // );
-  }, [dispatch, api, curator, getCheckedFee]);
+    return api.tx.childBounties?.proposeCurator(
+      parentBountyId,
+      childBountyId,
+      {
+        id: curator,
+      },
+      fee,
+    );
+  }, [dispatch, api, curator, getCheckedFee, parentBountyId, childBountyId]);
 
   return (
     <>
