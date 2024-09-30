@@ -18,7 +18,7 @@ export default function ChildBountyAcceptCurator() {
     childBountyId,
   ]);
 
-  if (loading) {
+  if (loading || result.isNone) {
     return null;
   }
 
