@@ -118,7 +118,7 @@ function PopupContent() {
 
   return (
     <>
-      <Signer title="Origin" />
+      <Signer />
       <CrosschainDirection
         sourceChain={sourceChain}
         destinationChain={destinationChain}

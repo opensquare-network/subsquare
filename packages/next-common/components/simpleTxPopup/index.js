@@ -7,7 +7,7 @@ import TxSubmissionButton from "../common/tx/txSubmissionButton";
 function PopupContent({ children, confirmText, ...props }) {
   return (
     <>
-      <SignerWithBalance />
+      <SignerWithBalance title="Origin" />
       {children}
       <TxSubmissionButton title={confirmText} {...props} />
     </>

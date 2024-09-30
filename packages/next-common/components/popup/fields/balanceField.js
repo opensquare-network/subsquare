@@ -10,6 +10,7 @@ export default function BalanceField({
   symbol,
   title = "Balance",
   titleTooltip = "",
+  disabled = false,
 }) {
   const node = useChainSettings();
   return (
@@ -18,7 +19,7 @@ export default function BalanceField({
       <Input
         type="text"
         placeholder="0.00"
-        disabled={isLoading}
+        disabled={isLoading || disabled}
         value={inputBalance}
         onChange={(e) => setInputBalance(e.target.value.replace("。", "."))}
         symbol={symbol || node.symbol}

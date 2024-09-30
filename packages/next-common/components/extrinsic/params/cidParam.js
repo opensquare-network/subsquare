@@ -1,7 +1,7 @@
 import { CID } from "multiformats";
 import { u8aToHex } from "@polkadot/util";
 import { useCallback } from "react";
-import TextInput from "next-common/components/textInput";
+import TextAreaInput from "next-common/components/textAreaInput";
 
 function fromIpfsCid(cid) {
   try {
@@ -60,7 +60,7 @@ export default function CidParam({ title, value, setValue }) {
     <>
       {title}
 
-      <TextInput
+      <TextAreaInput
         value={data}
         setValue={_setValue}
         placeholder="IPFS compatible CID"
