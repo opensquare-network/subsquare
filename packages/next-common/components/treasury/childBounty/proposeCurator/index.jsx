@@ -28,9 +28,8 @@ function useSubChildBountyIsAdded(parentBountyId, index) {
   if (loading || !onChainStorage?.isSome) {
     return false;
   }
-
   const { status } = onChainStorage.toJSON();
-  if (!status || !"added" in status) {
+  if (!status || !("added" in status)) {
     return false;
   }
   return true;
