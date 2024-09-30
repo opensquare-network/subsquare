@@ -4,6 +4,7 @@ import BountySidebarBalance from "next-common/components/treasury/bounty/balance
 import BountySidebarCurator from "next-common/components/treasury/bounty/curator";
 import BountyClaim from "next-common/components/treasury/bounty/claim";
 import NewChildBountyButton from "next-common/components/treasury/bounty/newChildBountyButton";
+import BountyAcceptCurator from "next-common/components/treasury/bounty/acceptCurator";
 
 function BountySidebar() {
   const { address } = useOnchainData();
@@ -15,6 +16,7 @@ function BountySidebar() {
   return (
     <RightBarWrapper>
       <BountySidebarBalance />
+      <BountyAcceptCurator />
       <BountyClaim />
       <BountySidebarCurator />
       <NewChildBountyButton />

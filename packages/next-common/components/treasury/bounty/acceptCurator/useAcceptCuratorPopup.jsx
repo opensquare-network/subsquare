@@ -11,11 +11,13 @@ import { toPrecision } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback, useState } from "react";
 
-export function useAcceptCuratorPopup() {
+export function useAcceptCuratorPopup(pallet = "bounties", params = []) {
   const [isOpen, setIsOpen] = useState(false);
 
   const component = isOpen && (
     <AcceptCuratorPopup
+      pallet={pallet}
+      params={params}
       onClose={() => {
         setIsOpen(false);
       }}
@@ -30,10 +32,10 @@ export function useAcceptCuratorPopup() {
   };
 }
 
-function PopupContent() {
+function PopupContent({ pallet = "bounties", params = [] } = {}) {
   const onchainData = useOnchainData();
   const { symbol, decimals } = useChainSettings();
-  const { parentBountyId, index: childBountyId, meta } = onchainData;
+  const { meta } = onchainData;
   const { curatorDeposit } = meta || {};
   const { onClose } = usePopupParams();
   const api = useContextApi();
@@ -41,12 +43,12 @@ function PopupContent() {
   const { value: balance, loading } = useSubBalanceInfo(address);
 
   const getTxFunc = useCallback(() => {
-    if (!api?.tx?.childBounties) {
+    if (!api?.tx?.[pallet]) {
       return null;
     }
 
-    return api.tx.childBounties.acceptCurator(parentBountyId, childBountyId);
-  }, [api, childBountyId, parentBountyId]);
+    return api.tx[pallet].acceptCurator(...params);
+  }, [api, pallet, params]);
 
   return (
     <>
@@ -75,7 +77,7 @@ function PopupContent() {
 function AcceptCuratorPopup(props) {
   return (
     <PopupWithSigner title="Accept Curator" className="!w-[640px]" {...props}>
-      <PopupContent />
+      <PopupContent pallet={props.pallet} params={props.params} />
     </PopupWithSigner>
   );
 }
