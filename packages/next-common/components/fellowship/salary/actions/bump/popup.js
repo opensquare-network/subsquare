@@ -20,7 +20,7 @@ function Content() {
 
   return (
     <>
-      <Signer title="Origin" />
+      <Signer />
       <TxSubmissionButton
         title="Confirm"
         getTxFunc={getTxFunc}

@@ -35,7 +35,7 @@ function SelfPayout() {
 
   return (
     <>
-      <Signer title="Origin" />
+      <Signer />
       <TxSubmissionButton
         title="Confirm"
         getTxFunc={getTxFunc}
@@ -65,7 +65,7 @@ function OtherPayout() {
 
   return (
     <>
-      <Signer title="Origin" />
+      <Signer />
       <Beneficiary setAddress={setBeneficiary} />
       <TxSubmissionButton
         title="Confirm"
