@@ -85,9 +85,7 @@ function PopupContent() {
     return api.tx.childBounties?.proposeCurator(
       parentBountyId,
       childBountyId,
-      {
-        id: curator,
-      },
+      curator,
       fee,
     );
   }, [dispatch, api, curator, getCheckedFee, parentBountyId, childBountyId]);
