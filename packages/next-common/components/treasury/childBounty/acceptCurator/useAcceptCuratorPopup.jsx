@@ -57,7 +57,6 @@ function PopupContent() {
       />
       <BalanceField
         title="Curator Deposit"
-        isLoading={loading}
         disabled
         inputBalance={toPrecision(curatorDeposit, decimals)}
         symbol={symbol}
