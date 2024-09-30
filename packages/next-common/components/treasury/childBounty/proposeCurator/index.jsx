@@ -4,7 +4,18 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { usePostState, useOnchainData } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useSubBountyOnChainData from "next-common/hooks/treasury/bounty/useSubBountyOnChainData";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
+
+function useSubParentBountyData(bountyIndex) {
+  const { result, loading } = useSubStorage("bounties", "bounties", [
+    bountyIndex,
+  ]);
+  const data = result?.toJSON();
+  return {
+    status: data?.status,
+    loading,
+  };
+}
 
 function isParentBountyCurator(status = {}, address) {
   for (const item of Object.values(status)) {
@@ -23,7 +34,7 @@ export default function ProposeCurator() {
   const { showPopup, component: ProposeCuratorPopup } =
     useProposeCuratorPopup();
   const { parentBountyId } = useOnchainData();
-  const { data, loading } = useSubBountyOnChainData(parentBountyId);
+  const { status, loading } = useSubParentBountyData(parentBountyId);
 
   // The dispatch origin for this call must be curator of parent bounty.
   useEffect(() => {
@@ -31,7 +42,7 @@ export default function ProposeCurator() {
       return;
     }
 
-    const isParentCurator = isParentBountyCurator(data?.status, address);
+    const isParentCurator = isParentBountyCurator(status, address);
     setIsDisabled(!isParentCurator);
 
     if (!isParentCurator) {
@@ -39,7 +50,7 @@ export default function ProposeCurator() {
         "Only parent bounty curator can propose a curator";
       setDisabledTooltip(disabledTooltipContent);
     }
-  }, [loading, address, data?.status]);
+  }, [loading, address, status]);
 
   if (!address || chainState !== "Added") {
     return null;
