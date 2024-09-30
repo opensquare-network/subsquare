@@ -14,17 +14,6 @@ import { useOnchainData } from "next-common/context/post";
 import useFeeAmount from "./useFeeAmount";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 
-export default function useProposeCuratorPopup() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return {
-    showPopup: () => setIsOpen(true),
-    component: isOpen ? (
-      <ProposeCuratorPopup onClose={() => setIsOpen(false)} />
-    ) : null,
-  };
-}
-
 function PopupContent() {
   const { onClose } = usePopupParams();
   const { decimals, symbol } = useChainSettings();
@@ -102,4 +91,15 @@ function ProposeCuratorPopup(props) {
       <PopupContent />
     </PopupWithSigner>
   );
+}
+
+export default function useProposeCuratorPopup() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return {
+    showPopup: () => setIsOpen(true),
+    component: isOpen ? (
+      <ProposeCuratorPopup onClose={() => setIsOpen(false)} />
+    ) : null,
+  };
 }
