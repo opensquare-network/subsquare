@@ -17,9 +17,13 @@ function useSubParentBountyOnChainData(bountyIndex) {
   };
 }
 
-function isParentBountyCuratorInActive(status = null, address) {
-  const isActive = status?.active;
-  return isActive && isActive.curator === address;
+function isParentBountyCurator(status = {}, address) {
+  for (const item of Object.values(status)) {
+    if (item?.curator && item.curator === address) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export default function ProposeCurator() {
@@ -38,10 +42,7 @@ export default function ProposeCurator() {
       return;
     }
 
-    const isParentCurator = isParentBountyCuratorInActive(
-      data?.status,
-      address,
-    );
+    const isParentCurator = isParentBountyCurator(data?.status, address);
     setIsDisabled(!isParentCurator);
 
     if (!isParentCurator) {
