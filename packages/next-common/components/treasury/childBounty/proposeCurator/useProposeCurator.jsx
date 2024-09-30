@@ -14,15 +14,14 @@ import { useOnchainData } from "next-common/context/post";
 import useFeeAmount from "./useFeeAmount";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 
-export function useProposeCuratorPopup() {
+export default function useProposeCuratorPopup() {
   const [isOpen, setIsOpen] = useState(false);
-  const component = isOpen && (
-    <ProposeCuratorPopup onClose={() => setIsOpen(false)} />
-  );
 
   return {
     showPopup: () => setIsOpen(true),
-    component,
+    component: isOpen ? (
+      <ProposeCuratorPopup onClose={() => setIsOpen(false)} />
+    ) : null,
   };
 }
 
@@ -75,7 +74,7 @@ function PopupContent() {
       curator,
       fee,
     );
-  }, [dispatch, api, curator, getCheckedFee, parentBountyId, childBountyId]);
+  }, [curator, getCheckedFee, parentBountyId, childBountyId, api, dispatch]);
 
   return (
     <>

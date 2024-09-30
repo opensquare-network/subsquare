@@ -16,7 +16,7 @@ function checkFeeAmount({ feeAmount, decimals, balance }) {
     throw new Error("Invalid fee");
   }
   if (balance && amount.gt(balance)) {
-    throw new Error("Insufficient balance");
+    throw new Error("Insufficient fee");
   }
 
   return amount.toFixed();
@@ -47,23 +47,33 @@ function FeeAmount({
   feeAmount,
   setFeeAmount,
 }) {
-  const balanceStatus = !!address && (
-    <MaxBalance
-      value={balance}
-      isLoading={isLoading}
-      decimals={decimals}
-      symbol={symbol}
-    />
+  const handleFeeChange = useCallback(
+    (e) => {
+      setFeeAmount(e.target.value.replace("。", "."));
+    },
+    [setFeeAmount],
   );
 
   return (
     <div>
-      <PopupLabel text="Fee" status={balanceStatus} />
+      <PopupLabel
+        text="Fee"
+        status={
+          !!address && (
+            <MaxBalance
+              value={balance}
+              isLoading={isLoading}
+              decimals={decimals}
+              symbol={symbol}
+            />
+          )
+        }
+      />
       <Input
         type="text"
         placeholder="0.00"
         value={feeAmount}
-        onChange={(e) => setFeeAmount(e.target.value.replace("。", "."))}
+        onChange={handleFeeChange}
         symbol={symbol}
       />
     </div>

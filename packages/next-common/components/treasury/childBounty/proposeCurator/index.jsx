@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useProposeCuratorPopup } from "./useProposeCurator";
+import useProposeCuratorPopup from "./useProposeCurator";
 import PrimaryButton from "next-common/lib/button/primary";
 import { usePostState, useOnchainData } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
