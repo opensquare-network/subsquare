@@ -41,6 +41,10 @@ function PopupContent() {
   const { value: balance, loading } = useSubBalanceInfo(address);
 
   const getTxFunc = useCallback(() => {
+    if (!api?.tx?.childBounties) {
+      return null;
+    }
+
     return api.tx.childBounties.acceptCurator(parentBountyId, childBountyId);
   }, [api, childBountyId, parentBountyId]);
 
