@@ -4,7 +4,6 @@ import PrimaryButton from "next-common/lib/button/primary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
 import Tooltip from "next-common/components/tooltip";
-import { isNil } from "lodash-es";
 import { isSameAddress } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
 
@@ -18,14 +17,18 @@ export default function ChildBountyAcceptCurator() {
     parentBountyId,
     childBountyId,
   ]);
-  const { status } = result?.toJSON() || {};
 
-  if (loading || isNil(status?.curatorProposed)) {
+  if (loading) {
     return null;
   }
 
-  const curatorProposed = status.curatorProposed || {};
-  const { curator } = curatorProposed;
+  const { status } = result.unwrap();
+
+  if (!status.isCuratorProposed) {
+    return null;
+  }
+
+  const curator = status.asCuratorProposed.curator.toString();
 
   const disabled = !isSameAddress(curator, address);
 
