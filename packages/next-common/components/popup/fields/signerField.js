@@ -15,7 +15,7 @@ export default function Signer({
   symbol,
   signerBalance,
   isSignerBalanceLoading,
-  title = "Address",
+  title = "Origin",
 }) {
   const signerAccount = useSignerAccount();
   const node = useChainSettings();
@@ -25,10 +25,10 @@ export default function Signer({
   return (
     <div>
       {noSignerBalance ? (
-        <PopupLabel text={title || "Signer Address"} />
+        <PopupLabel text={title || "Origin"} />
       ) : (
         <PopupLabelWithBalance
-          text={title || "Address"}
+          text={title || "Origin"}
           isLoading={isSignerBalanceLoading}
           balanceName={balanceName}
           balance={toPrecision(signerBalance ?? 0, node.decimals)}

@@ -105,7 +105,7 @@ function PopupContent() {
 
   return (
     <>
-      <Signer title="Origin" />
+      <Signer />
       {crossChainDirection}
       {addressComboField}
       {transferAmountField}
