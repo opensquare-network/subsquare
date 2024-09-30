@@ -4,7 +4,6 @@ import { useState } from "react";
 import NewChildBountyPopup from "./newChildBountyPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
-import { usePageProps } from "next-common/context/page";
 import { useContextApi } from "next-common/context/api";
 import { useCurator } from "next-common/context/treasury/bounties";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
@@ -20,16 +19,29 @@ function useSubBountyStatus(bountyIndex) {
   };
 }
 
+function useSubChildBountiesCount(bountyIndex) {
+  const { result, loading } = useSubStorage(
+    "childBounties",
+    "parentChildBounties",
+    [bountyIndex],
+  );
+  return {
+    count: result?.toJSON(),
+    loading,
+  };
+}
+
 export default function NewChildBountyButton() {
   const address = useRealAddress();
   const [showPopup, setShowPopup] = useState(false);
   const onChain = useOnchainData();
-  const { childBounties } = usePageProps();
   const api = useContextApi();
   const curator = useCurator();
 
   const { bountyIndex, state } = onChain;
   const { status: onchainStatus } = useSubBountyStatus(bountyIndex);
+  const { count: childBountiesCount } = useSubChildBountiesCount(bountyIndex);
+
   const isActive = onchainStatus
     ? "active" in onchainStatus
     : state.state === "Active";
@@ -47,9 +59,9 @@ export default function NewChildBountyButton() {
   } else {
     const maxActiveChildBountyCount =
       api?.consts.childBounties.maxActiveChildBountyCount.toNumber();
-    if (childBounties?.total >= maxActiveChildBountyCount) {
+    if (childBountiesCount >= maxActiveChildBountyCount) {
       disabled = true;
-      disabledTooltip = `This bounty has ${childBounties?.total} active child bounties which reach the max limit`;
+      disabledTooltip = `This bounty has ${childBountiesCount} active child bounties which reach the max limit`;
     }
   }
 
