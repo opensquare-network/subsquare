@@ -29,6 +29,7 @@ function useChildBountyBalanceField({ transferrable, isLoading }) {
     component: (
       <AmountInputWithMaxHint
         label="Value"
+        hintLabel="Available"
         hintTooltip="Available bounty balance"
         maxAmount={transferrable}
         decimals={decimals}
