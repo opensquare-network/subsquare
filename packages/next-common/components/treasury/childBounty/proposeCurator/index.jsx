@@ -11,10 +11,29 @@ function useSubParentBountyData(bountyIndex) {
     bountyIndex,
   ]);
   const data = result?.toJSON();
+
   return {
     status: data?.status,
     loading,
   };
+}
+
+function useSubChildBountyIsAdded(parentBountyId, index) {
+  const { loading, result: onChainStorage } = useSubStorage(
+    "childBounties",
+    "childBounties",
+    [parentBountyId, index],
+  );
+
+  if (loading || !onChainStorage?.isSome) {
+    return false;
+  }
+
+  const { status } = onChainStorage.toJSON();
+  if (!status || !"added" in status) {
+    return false;
+  }
+  return true;
 }
 
 function isParentBountyCurator(status = {}, address) {
@@ -28,13 +47,13 @@ function isParentBountyCurator(status = {}, address) {
 
 export default function ProposeCurator() {
   const address = useRealAddress();
-  const chainState = usePostState();
   const [isDisabled, setIsDisabled] = useState(true);
   const [disabledTooltip, setDisabledTooltip] = useState("");
-  const { showPopup, component: ProposeCuratorPopup } =
+  const { showPopupFn, component: ProposeCuratorPopup } =
     useProposeCuratorPopup();
-  const { parentBountyId } = useOnchainData();
+  const { parentBountyId, index } = useOnchainData();
   const { status, loading } = useSubParentBountyData(parentBountyId);
+  const isAddedState = useSubChildBountyIsAdded(parentBountyId, index);
 
   // The dispatch origin for this call must be curator of parent bounty.
   useEffect(() => {
@@ -52,7 +71,7 @@ export default function ProposeCurator() {
     }
   }, [loading, address, status]);
 
-  if (!address || chainState !== "Added") {
+  if (!address || !isAddedState) {
     return null;
   }
 
@@ -61,7 +80,7 @@ export default function ProposeCurator() {
       <Tooltip content={disabledTooltip}>
         <PrimaryButton
           className="w-full"
-          onClick={() => showPopup()}
+          onClick={() => showPopupFn()}
           disabled={isDisabled}
         >
           Propose Curator

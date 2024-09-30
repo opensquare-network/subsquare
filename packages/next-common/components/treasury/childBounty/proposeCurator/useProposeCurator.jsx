@@ -26,10 +26,10 @@ function PopupContent() {
   const {
     parentBountyId,
     index: childBountyId,
-    address: metadataAddress,
+    address: childBountyAddress,
   } = useOnchainData();
   const { balance: metadataBalance, isLoading: metadataBalanceLoading } =
-    useSubAddressBalance(metadataAddress);
+    useSubAddressBalance(childBountyAddress);
 
   const { getCheckedValue: getCheckedFee, component: feeField } = useFeeAmount({
     balance: metadataBalance,
@@ -71,6 +71,7 @@ function PopupContent() {
         balanceName="Available"
         signerBalance={signerBalance?.balance}
         isSignerBalanceLoading={signerBalanceLoading}
+        title="Origin"
       />
       {curatorSelect}
       {feeField}
@@ -97,7 +98,7 @@ export default function useProposeCuratorPopup() {
   const [isOpen, setIsOpen] = useState(false);
 
   return {
-    showPopup: () => setIsOpen(true),
+    showPopupFn: () => setIsOpen(true),
     component: isOpen ? (
       <ProposeCuratorPopup onClose={() => setIsOpen(false)} />
     ) : null,

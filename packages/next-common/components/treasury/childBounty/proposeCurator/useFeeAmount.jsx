@@ -15,8 +15,8 @@ function checkFeeAmount({ feeAmount, decimals, balance }) {
   if (amount.isNaN() || amount.lte(0) || !amount.isInteger()) {
     throw new Error("Invalid fee");
   }
-  if (balance && amount.gt(balance)) {
-    throw new Error("Insufficient fee");
+  if (balance && amount.gte(balance)) {
+    throw new Error("Fee should be less than child bounty value");
   }
 
   return amount.toFixed();
