@@ -12,14 +12,13 @@ export default function ChildBountySidebar() {
   return (
     <RightBarWrapper>
       <ChildBountySidebarBalance />
+      <ChildBountyAcceptCurator />
       {isClaimable && (
         <>
           <Meta />
           <ChildBountyClaim />
         </>
       )}
-
-      <ChildBountyAcceptCurator />
     </RightBarWrapper>
   );
 }
