@@ -1,16 +1,24 @@
+import { useOnchainData } from "next-common/context/post";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
-import { useOnchainData, usePostState } from "next-common/context/post";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
 
 export default function ChildBountyAcceptCurator() {
   const address = useRealAddress();
   const onchainData = useOnchainData();
-  const { curator } = onchainData || {};
-  const postState = usePostState();
+  const { parentBountyId, index: childBountyId } = onchainData;
+  const { result, loading } = useSubStorage("childBounties", "childBounties", [
+    parentBountyId,
+    childBountyId,
+  ]);
+  const status = result?.toJSON() || {};
+  const curatorProposed = status.curatorProposed || {};
+  const { curator } = curatorProposed;
+
   const { showPopup, component } = useAcceptCuratorPopup();
 
-  if (curator !== address && postState !== "CuratorProposed") {
+  if (loading || curator !== address) {
     return null;
   }
 
