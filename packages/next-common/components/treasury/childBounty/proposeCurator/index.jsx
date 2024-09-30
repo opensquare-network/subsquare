@@ -4,18 +4,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { usePostState, useOnchainData } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
-
-function useSubParentBountyOnChainData(bountyIndex) {
-  const { result, loading } = useSubStorage("bounties", "bounties", [
-    bountyIndex,
-  ]);
-  const data = result?.toJSON();
-  return {
-    data: data,
-    loading,
-  };
-}
+import useSubBountyOnChainData from "next-common/hooks/treasury/bounty/useSubBountyOnChainData";
 
 function isParentBountyCurator(status = {}, address) {
   for (const item of Object.values(status)) {
@@ -34,7 +23,7 @@ export default function ProposeCurator() {
   const { showPopup, component: ProposeCuratorPopup } =
     useProposeCuratorPopup();
   const { parentBountyId } = useOnchainData();
-  const { data, loading } = useSubParentBountyOnChainData(parentBountyId);
+  const { data, loading } = useSubBountyOnChainData(parentBountyId);
 
   // The dispatch origin for this call must be curator of parent bounty.
   useEffect(() => {
