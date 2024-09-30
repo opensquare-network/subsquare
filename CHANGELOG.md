@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.3.0
+
+date: 2024-09-29
+
+- Hide account treasury deposit for chains without treasury.
+- Hide account identity deposit for chains without identity pallet.
+- Refactor menus and move account page out of home page.
+- Refactor assethub assets query and support westend/kusama assethub.
+- Support teleport between polkadot and collectives.
+- Refactor account panel balance component to reduce space.
+- Add a fellowship referenda statistics page.
+- Support identity timeline people chain explorer link.
+- Add a panel on child bounty detail page to show child bounty address and balance.
+- Change config to make CI fail when next build fails.
+- Fix styles and code refactor.
+
 ### 4.2.9
 
 date: 2024-09-25

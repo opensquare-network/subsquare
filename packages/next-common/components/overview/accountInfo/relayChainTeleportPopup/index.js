@@ -1,5 +1,5 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   newErrorToast,
@@ -16,33 +16,60 @@ import {
 } from "next-common/components/assets/paraChainTeleportPopup/crossChainApi";
 import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
 import dynamic from "next/dynamic";
-import {
-  Chain,
-  getChainName,
-} from "next-common/components/assets/paraChainTeleportPopup/useCrossChainDirection";
+import { Chain } from "next-common/components/assets/paraChainTeleportPopup/useCrossChainDirection";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import ChainIcon from "next-common/components/header/chainIcon";
+import getChainSettings from "next-common/utils/consts/settings";
 import { useChain } from "next-common/context/chain";
 import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
+import Chains from "next-common/utils/consts/chains";
 
 const SystemCrosschain = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
 );
 
-function CrosschainDirection({ sourceChain, destinationChain }) {
+function buildChainOption(chain) {
+  const { name } = getChainSettings(chain);
+
+  return {
+    icon: <ChainIcon chain={chain} />,
+    label: name,
+    value: chain,
+  };
+}
+
+const SOURCE_CHAIN_OPTIONS = [buildChainOption(Chains.polkadot)];
+
+const DESTINATION_CHAIN_OPTIONS = [
+  Chains.polkadotAssetHub,
+  Chains.collectives,
+].map(buildChainOption);
+
+function CrosschainDirection({
+  sourceChain,
+  destinationChain,
+  setDestinationChain,
+}) {
   return (
     <div className="flex items-end gap-[12px]">
       <Chain
         title="Source Chain"
-        chain={sourceChain}
-        name={getChainName(sourceChain)}
+        value={sourceChain}
+        className="!text-textPrimary"
+        disabled
+        readOnly
+        options={SOURCE_CHAIN_OPTIONS}
       />
       <div className="flex w-[40px] h-[40px] justify-center items-center [&_svg_path]:fill-textPrimary">
         <SystemCrosschain width={24} height={24} />
       </div>
       <Chain
         title="Destination Chain"
-        chain={destinationChain}
-        name={getChainName(destinationChain)}
+        value={destinationChain}
+        options={DESTINATION_CHAIN_OPTIONS}
+        onChange={(item) => {
+          setDestinationChain(item.value);
+        }}
       />
     </div>
   );
@@ -52,7 +79,9 @@ function PopupContent() {
   const sourceChain = useChain();
   const sourceApi = useChainApi(sourceChain);
 
-  const destinationChain = useAssetHubChain();
+  const assetHubChain = useAssetHubChain();
+  const [destinationChain, setDestinationChain] = useState(assetHubChain);
+
   const destinationApi = useChainApi(destinationChain);
 
   const getTeleportTx = useGetTeleportTxFunc({
@@ -93,6 +122,7 @@ function PopupContent() {
       <CrosschainDirection
         sourceChain={sourceChain}
         destinationChain={destinationChain}
+        setDestinationChain={setDestinationChain}
       />
       {addressComboField}
       {transferAmountField}

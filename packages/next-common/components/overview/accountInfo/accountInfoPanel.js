@@ -24,6 +24,7 @@ import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
+import { CollectivesApiProvider } from "next-common/context/collectives/api";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -247,7 +248,9 @@ export function AccountHead() {
         </OnlyChains>
         <OnlyChains chains={relayChainTeleportEnabledChains}>
           <AssetHubApiProvider>
-            <TeleportButton />
+            <CollectivesApiProvider>
+              <TeleportButton />
+            </CollectivesApiProvider>
           </AssetHubApiProvider>
         </OnlyChains>
         <OnlyChains chains={paraChainTeleportEnabledChains}>

@@ -1,31 +1,37 @@
 import PopupLabel from "next-common/components/popup/label";
 import ChainIcon from "next-common/components/header/chainIcon";
-import { cn } from "next-common/utils";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { isAssetHubChain } from "next-common/utils/chain";
 import { capitalize } from "lodash-es";
 import { useChain } from "next-common/context/chain";
+import Select from "next-common/components/select";
 import { useRelayChain } from "next-common/hooks/useRelayChain";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
 );
 
-export function Chain({ title, chain, name }) {
+export function Chain({
+  title,
+  value,
+  disabled = false,
+  options = [],
+  onChange,
+  readOnly = false,
+  className = "",
+}) {
   return (
     <div className="flex flex-col grow basis-[calc(100%/2-33px)] shrink-0">
       <PopupLabel text={title} />
-      <div
-        className={cn(
-          "flex border border-neutral400 bg-neutral200 rounded-[8px] overflow-hidden whitespace-nowrap",
-          "items-center",
-          "text14Medium text-textPrimary",
-        )}
-      >
-        <ChainIcon className="w-[24px] h-[24px] m-[8px]" chain={chain} />
-        <span>{name}</span>
-      </div>
+      <Select
+        className={className}
+        readOnly={readOnly}
+        value={value}
+        disabled={disabled}
+        options={options}
+        onChange={onChange}
+      />
     </div>
   );
 }
@@ -47,8 +53,17 @@ export default function useCrossChainDirection() {
     <div className="flex items-end gap-[12px]">
       <Chain
         title="Source Chain"
-        chain={sourceChain}
-        name={getChainName(sourceChain)}
+        value={sourceChain}
+        className="!text-textPrimary"
+        disabled
+        readOnly
+        options={[
+          {
+            icon: <ChainIcon chain={sourceChain} />,
+            label: getChainName(sourceChain),
+            value: sourceChain,
+          },
+        ]}
       />
       <div
         className="cursor-pointer p-[8px] rounded-[8px] border border-neutral400 bg-neutral100"
@@ -65,8 +80,17 @@ export default function useCrossChainDirection() {
       </div>
       <Chain
         title="Destination Chain"
-        chain={destinationChain}
-        name={getChainName(destinationChain)}
+        value={destinationChain}
+        className="!text-textPrimary"
+        disabled
+        readOnly
+        options={[
+          {
+            icon: <ChainIcon chain={destinationChain} />,
+            label: getChainName(destinationChain),
+            value: destinationChain,
+          },
+        ]}
       />
     </div>
   );
