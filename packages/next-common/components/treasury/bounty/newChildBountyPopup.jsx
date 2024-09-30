@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { toPrecision } from "next-common/utils";
 import TextAreaField from "next-common/components/popup/fields/textAreaField";
+import { getEventData } from "next-common/utils/sendTransaction";
+import { useRouter } from "next/router";
 
 function useTextAreaField({ title }) {
   const [text, setText] = useState("");
@@ -42,6 +44,7 @@ function useChildBountyBalanceField({ transferrable, isLoading }) {
 }
 
 export default function NewChildBountyPopup({ bountyIndex, onClose }) {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { decimals } = useChainSettings();
   const api = useContextApi();
@@ -105,6 +108,14 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
       title="New Child Bounty"
       getTxFunc={getTxFunc}
       onClose={onClose}
+      onInBlock={(events) => {
+        const eventData = getEventData(events, "childBounties", "Added");
+        if (!eventData) {
+          return;
+        }
+        const [, childBountyIndex] = eventData;
+        router.push(`/treasury/child-bounties/${childBountyIndex}`);
+      }}
     >
       {balanceField}
       {descriptionField}

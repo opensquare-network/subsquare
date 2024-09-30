@@ -58,7 +58,9 @@ export default function NewChildBountyButton() {
     disabledTooltip = "Only curators can create a child bounty";
   } else {
     const maxActiveChildBountyCount =
-      api?.consts.childBounties.maxActiveChildBountyCount.toNumber();
+      api?.consts.childBounties.maxActiveChildBountyCount.toNumber() ||
+      Number.MAX_VALUE;
+
     if (childBountiesCount >= maxActiveChildBountyCount) {
       disabled = true;
       disabledTooltip = `This bounty has ${childBountiesCount} active child bounties which reach the max limit`;
