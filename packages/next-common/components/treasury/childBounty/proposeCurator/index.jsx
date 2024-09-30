@@ -49,7 +49,7 @@ export default function ProposeCurator() {
         "Only parent bounty curator can propose a curator";
       setDisabledTooltip(disabledTooltipContent);
     }
-  }, [loading]);
+  }, [loading, address, data?.status]);
 
   if (!address || chainState !== "Added") {
     return null;
