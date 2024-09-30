@@ -6,6 +6,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { usePageProps } from "next-common/context/page";
 import { useContextApi } from "next-common/context/api";
+import { useCurator } from "next-common/context/treasury/bounties";
 
 export default function NewChildBountyButton() {
   const address = useRealAddress();
@@ -13,8 +14,9 @@ export default function NewChildBountyButton() {
   const onChain = useOnchainData();
   const { childBounties } = usePageProps();
   const api = useContextApi();
+  const curator = useCurator();
 
-  const { bountyIndex, state, meta } = onChain;
+  const { bountyIndex, state } = onChain;
   const isActive = state.state === "Active";
   if (!isActive) {
     return null;
@@ -23,7 +25,7 @@ export default function NewChildBountyButton() {
   let disabled = false;
   let disabledTooltip = "";
 
-  const isCurator = meta.status?.active?.curator === address;
+  const isCurator = curator === address;
   if (!isCurator) {
     disabled = true;
     disabledTooltip = "You are not the curator";

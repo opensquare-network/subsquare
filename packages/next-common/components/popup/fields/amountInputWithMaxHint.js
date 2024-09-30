@@ -3,6 +3,7 @@ import BalanceDisplay from "next-common/components/assets/balanceDisplay";
 import Loading from "next-common/components/loading";
 import PopupLabel from "../label";
 import Input from "next-common/components/input";
+import Tooltip from "next-common/components/tooltip";
 
 function MaxAmountHint({ title, value, isLoading, decimals }) {
   return (
@@ -22,6 +23,7 @@ function MaxAmountHint({ title, value, isLoading, decimals }) {
 export default function AmountInputWithMaxHint({
   label = "Amount",
   hintLabel = "Available",
+  hintTooltip = "Available bounty balance",
   maxAmount,
   decimals,
   symbol,
@@ -30,12 +32,14 @@ export default function AmountInputWithMaxHint({
   setInputAmount,
 }) {
   const status = (
-    <MaxAmountHint
-      title={hintLabel}
-      value={maxAmount}
-      isLoading={isLoading}
-      decimals={decimals}
-    />
+    <Tooltip content={hintTooltip}>
+      <MaxAmountHint
+        title={hintLabel}
+        value={maxAmount}
+        isLoading={isLoading}
+        decimals={decimals}
+      />
+    </Tooltip>
   );
 
   return (

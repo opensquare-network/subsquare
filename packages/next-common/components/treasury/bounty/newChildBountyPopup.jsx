@@ -53,10 +53,6 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
     title: "Description",
   });
 
-  //TODO: ensure child bounties count is less than max: api.consts.childBounties.maxActiveChildBountyCount
-  //TODO: ensure bounty state is active
-  //TODO: ensure is signer the curator
-
   const getTxFunc = useCallback(async () => {
     const balance = new BigNumber(amount).times(Math.pow(10, decimals));
 
