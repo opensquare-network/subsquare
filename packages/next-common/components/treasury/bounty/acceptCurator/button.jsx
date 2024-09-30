@@ -17,17 +17,17 @@ export default function BountyAcceptCuratorButton({
 
   const { result, loading } = useSubStorage(pallet, storage, params);
 
-  if (loading || result.isNone) {
+  if (loading || result?.isNone) {
     return null;
   }
 
-  const { status } = result.unwrap();
+  const { status } = result?.unwrap?.() || {};
 
-  if (!status.isCuratorProposed) {
+  if (!status?.isCuratorProposed) {
     return null;
   }
 
-  const curator = status.asCuratorProposed.curator.toString();
+  const curator = status?.asCuratorProposed?.curator?.toString();
 
   const disabled = !isSameAddress(curator, address);
 
