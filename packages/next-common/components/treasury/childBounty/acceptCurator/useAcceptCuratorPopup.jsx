@@ -24,7 +24,7 @@ export function useAcceptCuratorPopup() {
 
   return {
     component,
-    showPopup() {
+    showPopupFn() {
       setIsOpen(true);
     },
   };

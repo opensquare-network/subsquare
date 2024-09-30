@@ -11,7 +11,7 @@ export default function ChildBountyAcceptCurator() {
   const address = useRealAddress();
   const onchainData = useOnchainData();
   const { parentBountyId, index: childBountyId } = onchainData;
-  const { showPopup, component } = useAcceptCuratorPopup();
+  const { showPopupFn, component } = useAcceptCuratorPopup();
 
   const { result, loading } = useSubStorage("childBounties", "childBounties", [
     parentBountyId,
@@ -52,7 +52,7 @@ export default function ChildBountyAcceptCurator() {
         disabled={disabled}
         className="w-full"
         onClick={() => {
-          showPopup();
+          showPopupFn();
         }}
       >
         Accept Curator
