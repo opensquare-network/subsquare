@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
-import AmountInputWithMaxHint from "next-common/components/popup/fields/amountInputWithMaxHint";
+import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import { useAccountAllTransferrable } from "next-common/hooks/useAccountTransferrable";
@@ -27,7 +27,7 @@ function useChildBountyBalanceField({ transferrable, isLoading }) {
   return {
     value: inputBalance,
     component: (
-      <AmountInputWithMaxHint
+      <AmountInputWithHint
         label="Value"
         hintLabel="Available"
         hintTooltip="Available bounty balance"

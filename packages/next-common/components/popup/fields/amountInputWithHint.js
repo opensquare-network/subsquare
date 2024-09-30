@@ -20,7 +20,7 @@ function MaxAmountHint({ title, value, isLoading, decimals }) {
   );
 }
 
-export default function AmountInputWithMaxHint({
+export default function AmountInputWithHint({
   label = "Amount",
   hintLabel = "Available",
   hintTooltip = "",
