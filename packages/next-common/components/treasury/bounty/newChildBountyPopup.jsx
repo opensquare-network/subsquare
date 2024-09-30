@@ -4,7 +4,7 @@ import { useContextApi } from "next-common/context/api";
 import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
-import { useAccountAllTransferrable } from "next-common/hooks/useAccountTransferrable";
+import { useAccountDeathTransferrable } from "next-common/hooks/useAccountTransferrable";
 import BigNumber from "bignumber.js";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -46,7 +46,10 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
   const { decimals } = useChainSettings();
   const api = useContextApi();
   const { address } = useOnchainData();
-  const { transferrable, isLoading } = useAccountAllTransferrable(api, address);
+  const { transferrable, isLoading } = useAccountDeathTransferrable(
+    api,
+    address,
+  );
   const { value: amount, component: balanceField } = useChildBountyBalanceField(
     { transferrable, isLoading },
   );

@@ -18,7 +18,7 @@ export default function useAccountTransferrable(api, address) {
   };
 }
 
-export function useAccountAllTransferrable(api, address) {
+export function useAccountDeathTransferrable(api, address) {
   const { account, isLoading } = useSubSystemAccount(api, address);
   if (isLoading || !api) {
     return {
