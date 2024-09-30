@@ -1,22 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useProposeCuratorPopup } from "./useProposeCurator";
 import PrimaryButton from "next-common/lib/button/primary";
+import { usePostState } from "next-common/context/post";
 
 export default function ProposeCurator() {
-  // TODO: Null Guard.
-
-  // TODO: disabled.
-  const disabled = false;
-
+  const [isProposeDisabled, setIsProposeDisabled] = useState(true);
+  const chainState = usePostState();
   const { showPopup, component: ProposeCuratorPopup } =
     useProposeCuratorPopup();
+
+  if (chainState !== "Add") {
+    return null;
+  }
 
   return (
     <>
       <PrimaryButton
         className="w-full"
         onClick={() => showPopup()}
-        disabled={disabled}
+        disabled={isProposeDisabled}
       >
         Propose Curator
       </PrimaryButton>
