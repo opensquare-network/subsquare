@@ -11,9 +11,8 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { toPrecision } from "next-common/utils";
 import TextAreaField from "next-common/components/popup/fields/textAreaField";
 
-function useTextArea({ title }) {
+function useTextAreaField({ title }) {
   const [text, setText] = useState("");
-
   return {
     value: text,
     component: <TextAreaField title={title} text={text} setText={setText} />,
@@ -51,7 +50,7 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
   const { value: amount, component: balanceField } = useChildBountyBalanceField(
     { transferrable, isLoading },
   );
-  const { value: description, component: descriptionField } = useTextArea({
+  const { value: description, component: descriptionField } = useTextAreaField({
     title: "Description",
   });
 
