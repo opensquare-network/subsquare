@@ -10,33 +10,9 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { useChainSettings } from "next-common/context/chain";
-import BalanceField from "next-common/components/popup/fields/balanceField";
-import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 import { useOnchainData } from "next-common/context/post";
-
-function useFeeField({ balance, decimals }) {
-  const [inputBalance, setInputBalance] = useState("");
-
-  const getCheckedValue = useCallback(() => {
-    return checkTransferAmount({
-      transferAmount: inputBalance,
-      decimals,
-      transferrable: balance,
-    });
-  }, [inputBalance, decimals, balance]);
-
-  return {
-    getCheckedValue,
-    value: inputBalance,
-    component: (
-      <BalanceField
-        title="Fee"
-        inputBalance={inputBalance}
-        setInputBalance={setInputBalance}
-      />
-    ),
-  };
-}
+import useFeeAmount from "./useFeeAmount";
+import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 
 export function useProposeCuratorPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,21 +28,32 @@ export function useProposeCuratorPopup() {
 
 function PopupContent() {
   const { onClose } = usePopupParams();
-  const { decimals } = useChainSettings();
+  const { decimals, symbol } = useChainSettings();
   const address = useRealAddress();
-  const { value: balance, loading } = useSubBalanceInfo(address);
+  const { value: signerBalance, loading: signerBalanceLoading } =
+    useSubBalanceInfo(address);
   const api = useContextApi();
   const dispatch = useDispatch();
-  const { getCheckedValue: getCheckedFee, component: feeField } = useFeeField({
-    balance: balance?.balance,
+
+  const {
+    parentBountyId,
+    index: childBountyId,
+    address: metadataAddress,
+  } = useOnchainData();
+  const { balance: metadataBalance, isLoading: metadataBalanceLoading } =
+    useSubAddressBalance(metadataAddress);
+
+  const { getCheckedValue: getCheckedFee, component: feeField } = useFeeAmount({
+    balance: metadataBalance,
     decimals,
+    symbol,
+    address,
+    isLoading: metadataBalanceLoading,
   });
 
   const { value: curator, component: curatorSelect } = useAddressComboField({
     title: "Curator",
   });
-
-  const { parentBountyId, index: childBountyId } = useOnchainData();
 
   const getTxFunc = useCallback(() => {
     if (!curator) {
@@ -94,8 +81,8 @@ function PopupContent() {
     <>
       <Signer
         balanceName="Available"
-        signerBalance={balance?.balance}
-        isSignerBalanceLoading={loading}
+        signerBalance={signerBalance?.balance}
+        isSignerBalanceLoading={signerBalanceLoading}
       />
       {curatorSelect}
       {feeField}
