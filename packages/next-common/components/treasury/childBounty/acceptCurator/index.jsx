@@ -18,9 +18,9 @@ export default function ChildBountyAcceptCurator() {
     parentBountyId,
     childBountyId,
   ]);
-  const status = result?.toJSON() || {};
+  const { status } = result?.toJSON() || {};
 
-  if (loading || isNil(status.curatorProposed)) {
+  if (loading || isNil(status?.curatorProposed)) {
     return null;
   }
 
