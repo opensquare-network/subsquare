@@ -5,49 +5,37 @@ import NewChildBountyPopup from "./newChildBountyPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useContextApi } from "next-common/context/api";
-import { useCurator } from "next-common/context/treasury/bounties";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
-
-function useSubBountyStatus(bountyIndex) {
-  const { result, loading } = useSubStorage("bounties", "bounties", [
-    bountyIndex,
-  ]);
-  const data = result?.toJSON();
-  return {
-    status: data?.status,
-    loading,
-  };
-}
-
-function useSubChildBountiesCount(bountyIndex) {
-  const { result, loading } = useSubStorage(
-    "childBounties",
-    "parentChildBounties",
-    [bountyIndex],
-  );
-  return {
-    count: result?.toJSON(),
-    loading,
-  };
-}
 
 export default function NewChildBountyButton() {
   const address = useRealAddress();
   const [showPopup, setShowPopup] = useState(false);
   const onChain = useOnchainData();
   const api = useContextApi();
-  const curator = useCurator();
 
-  const { bountyIndex, state } = onChain;
-  const { status: onchainStatus } = useSubBountyStatus(bountyIndex);
-  const { count: childBountiesCount } = useSubChildBountiesCount(bountyIndex);
+  const { bountyIndex } = onChain;
 
-  const isActive = onchainStatus
-    ? "active" in onchainStatus
-    : state.state === "Active";
+  // Get bounty status
+  const { result: onchainBounty } = useSubStorage("bounties", "bounties", [
+    bountyIndex,
+  ]);
+  const onchainBountyStatus = onchainBounty?.unwrap()?.status;
+
+  // Get child bounty count
+  const { result: onchainChildBountyCount } = useSubStorage(
+    "childBounties",
+    "parentChildBounties",
+    [bountyIndex],
+  );
+  const childBountiesCount = onchainChildBountyCount?.toJSON();
+
+  // New bounty button is only available when the bounty is active
+  const isActive = onchainBountyStatus?.isActive;
   if (!isActive) {
     return null;
   }
+
+  const curator = onchainBountyStatus.asActive.curator?.toString();
 
   let disabled = false;
   let disabledTooltip = "";
