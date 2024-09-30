@@ -23,7 +23,7 @@ function MaxAmountHint({ title, value, isLoading, decimals }) {
 export default function AmountInputWithMaxHint({
   label = "Amount",
   hintLabel = "Available",
-  hintTooltip = "Available bounty balance",
+  hintTooltip = "",
   maxAmount,
   decimals,
   symbol,
