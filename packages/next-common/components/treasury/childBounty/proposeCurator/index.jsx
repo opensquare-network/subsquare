@@ -9,7 +9,7 @@ export default function ProposeCurator() {
   const { showPopup, component: ProposeCuratorPopup } =
     useProposeCuratorPopup();
 
-  if (chainState !== "Add") {
+  if (chainState !== "Added") {
     return null;
   }
 
