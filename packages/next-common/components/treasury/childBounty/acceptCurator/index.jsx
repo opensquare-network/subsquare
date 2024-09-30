@@ -6,7 +6,6 @@ export default function ChildBountyAcceptCurator() {
   const postState = usePostState();
   const { showPopup, component } = useAcceptCuratorPopup();
 
-  // TODO: accept_curator, the bounty state should be `active`
   if (postState !== "CuratorProposed") {
     return null;
   }
