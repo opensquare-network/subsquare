@@ -21,8 +21,8 @@ export default function Close() {
   const { proposal } = useCollectiveProposal(pallet, onchainData.hash);
 
   const { encodedCallLength, weight } = useWeight(proposal);
-  const { members, loading: membersLoading } = useCollectiveMembers(pallet);
-  const hasFailed = threshold > Math.abs(members.length - nays.length);
+  const { members = [], loading: membersLoading } = useCollectiveMembers(pallet);
+  const hasFailed = threshold > Math.abs(members?.length - nays.length);
   const [showClosePopup, setShowClosePopup] = useState(false);
 
   const [canClose, setCanClose] = useState(false);
@@ -32,7 +32,7 @@ export default function Close() {
     }
 
     if (
-      threshold > Math.abs(members.length - nays.length) ||
+      threshold > Math.abs(members?.length - nays.length) ||
       ayes.length >= threshold
     ) {
       // failed or approved
