@@ -13,7 +13,8 @@ function BountySidebar() {
   const { result } = useSubStorage("bounties", "bounties", [bountyIndex]);
   const { status } = result?.unwrap?.() || {};
 
-  const showCuratorActionHint = status?.isCuratorProposed || status?.isActive;
+  const showCuratorActionHint =
+    status?.isCuratorProposed || status?.isPendingPayout || status?.isActive;
 
   if (!address) {
     return null;

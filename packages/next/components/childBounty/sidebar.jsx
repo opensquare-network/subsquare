@@ -18,7 +18,8 @@ export default function ChildBountySidebar() {
   ]);
   const { status } = result?.unwrap?.() || {};
 
-  const showCuratorActionHint = status?.isCuratorProposed || status?.isAdded;
+  const showCuratorActionHint =
+    status?.isCuratorProposed || status?.isPendingPayout || status?.isAdded;
 
   return (
     <RightBarWrapper>
