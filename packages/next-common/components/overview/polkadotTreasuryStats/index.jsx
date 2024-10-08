@@ -3,6 +3,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import PolkadotTreasurySummary from "next-common/components/summary/polkadotTreasurySummary";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
+import { HydrationApiProvider } from "next-common/context/hydration";
 
 export default function PolkadotTreasuryStats() {
   return (
@@ -11,7 +12,9 @@ export default function PolkadotTreasuryStats() {
       <SecondaryCard>
         <AssetHubApiProvider>
           <TreasuryProvider>
-            <PolkadotTreasurySummary />
+            <HydrationApiProvider>
+              <PolkadotTreasurySummary />
+            </HydrationApiProvider>
           </TreasuryProvider>
         </AssetHubApiProvider>
       </SecondaryCard>
