@@ -1,5 +1,5 @@
 import { isNil } from "lodash-es";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import useFellowshipCoreOnlySwitch from "./useFellowshipCoreOnlySwitch";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
 import usePeriodSelect, {
@@ -7,8 +7,76 @@ import usePeriodSelect, {
   DemotionPeriodExpired,
   Promotable,
 } from "next-common/components/pages/fellowship/usePeriodSelect";
-import usePeriodFilterFn from "next-common/components/pages/fellowship/usePeriodFilterFn";
 import { useRouterRankFilter } from "next-common/hooks/fellowship/useRankFilter";
+import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import {
+  isDemotionAboutToExpire,
+  isDemotionExpired,
+  isPromotable,
+} from "next-common/utils/collective/demotionAndPromotion";
+import { useSelector } from "react-redux";
+
+function filterDemotionAboutToExpireFn(
+  members,
+  params,
+  blockTime,
+  latestHeight,
+) {
+  return members.filter((member) => {
+    if (isNil(member?.status)) return false;
+
+    const {
+      rank,
+      status: { lastProof },
+    } = member;
+
+    return isDemotionAboutToExpire({
+      lastProof,
+      rank,
+      params,
+      blockTime,
+      latestHeight,
+    });
+  });
+}
+
+function filterDemotionExpiredFn(members, params, latestHeight) {
+  return members.filter((member) => {
+    if (isNil(member?.status)) return false;
+
+    const {
+      rank,
+      status: { lastProof },
+    } = member;
+
+    return isDemotionExpired({
+      lastProof,
+      rank,
+      latestHeight,
+      params,
+    });
+  });
+}
+
+function filterPromotableFn(members, params, latestHeight) {
+  return members.filter((member) => {
+    if (isNil(member?.status)) return false;
+
+    const {
+      rank,
+      status: { lastProof },
+    } = member;
+
+    return isPromotable({
+      lastProof,
+      rank,
+      latestHeight,
+      params,
+    });
+  });
+}
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -48,24 +116,38 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
 
   const ranks = [...new Set(membersWithStatus.map((m) => m.rank))];
   const { rank, component: RankFilterComponent } = useRouterRankFilter(ranks);
+  const params = useCoreFellowshipParams();
+  const blockTime = useSelector(blockTimeSelector);
+  const latestHeight = useSelector(chainOrScanHeightSelector);
 
-  const {
-    filterDemotionAboutToExpireFn,
-    filterDemotionExpiredFn,
-    filterPromotableFn,
-  } = usePeriodFilterFn();
+  const initialLatestHeightRef = useRef(latestHeight);
 
   const filteredMembers = useMemo(() => {
     if (isNil(membersWithStatus)) return;
 
     let filteredMembers = membersWithStatus;
 
+    const constantHeight = initialLatestHeightRef.current;
+
     if (periodFilter === DemotionPeriodAboutToExpire) {
-      filteredMembers = filterDemotionAboutToExpireFn(filteredMembers);
+      filteredMembers = filterDemotionAboutToExpireFn(
+        filteredMembers,
+        params,
+        blockTime,
+        constantHeight,
+      );
     } else if (periodFilter === DemotionPeriodExpired) {
-      filteredMembers = filterDemotionExpiredFn(filteredMembers);
+      filteredMembers = filterDemotionExpiredFn(
+        filteredMembers,
+        params,
+        constantHeight,
+      );
     } else if (periodFilter === Promotable) {
-      filteredMembers = filterPromotableFn(filteredMembers);
+      filteredMembers = filterPromotableFn(
+        filteredMembers,
+        params,
+        constantHeight,
+      );
     }
 
     if (isFellowshipCoreOnly) {
@@ -78,15 +160,7 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
       return filteredMembers;
     }
     return filteredMembers.filter((m) => m.rank === rank);
-  }, [
-    membersWithStatus,
-    isFellowshipCoreOnly,
-    periodFilter,
-    rank,
-    filterDemotionAboutToExpireFn,
-    filterDemotionExpiredFn,
-    filterPromotableFn,
-  ]);
+  }, [membersWithStatus, isFellowshipCoreOnly, periodFilter, rank]);
 
   const component = (
     <div className="flex flex-wrap max-sm:flex-col sm:items-center gap-[12px] max-sm:gap-[8px] ml-[24px]">
