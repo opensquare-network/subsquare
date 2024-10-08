@@ -17,6 +17,7 @@ import {
   isPromotable,
 } from "next-common/utils/collective/demotionAndPromotion";
 import { useSelector } from "react-redux";
+import useLatestHeightSnapshot from "./useLatestHeightSnapshot";
 
 function filterDemotionAboutToExpireFn(
   members,
@@ -118,12 +119,14 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
   const { rank, component: RankFilterComponent } = useRouterRankFilter(ranks);
   const params = useCoreFellowshipParams();
   const blockTime = useSelector(blockTimeSelector);
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  // const latestHeight = useSelector(chainOrScanHeightSelector);
+
+  const { latestHeight, isLoading } = useLatestHeightSnapshot();
 
   const initialLatestHeightRef = useRef(latestHeight);
 
   const filteredMembers = useMemo(() => {
-    if (isNil(membersWithStatus)) return;
+    if (isNil(membersWithStatus) || isLoading) return;
 
     let filteredMembers = membersWithStatus;
 
@@ -160,7 +163,17 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
       return filteredMembers;
     }
     return filteredMembers.filter((m) => m.rank === rank);
-  }, [membersWithStatus, isFellowshipCoreOnly, periodFilter, rank]);
+  }, [
+    membersWithStatus,
+    isFellowshipCoreOnly,
+    periodFilter,
+    rank,
+    latestHeight,
+    isLoading,
+    filterDemotionExpiredFn,
+    filterDemotionExpiredFn,
+    filterDemotionAboutToExpireFn,
+  ]);
 
   const component = (
     <div className="flex flex-wrap max-sm:flex-col sm:items-center gap-[12px] max-sm:gap-[8px] ml-[24px]">
