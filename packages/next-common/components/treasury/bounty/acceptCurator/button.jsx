@@ -5,7 +5,6 @@ import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
 import Tooltip from "next-common/components/tooltip";
 import { isSameAddress } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
-import CuratorActionHint from "../../common/curatorActionHint";
 
 export default function BountyAcceptCuratorButton({
   pallet = "bounties",
@@ -33,39 +32,32 @@ export default function BountyAcceptCuratorButton({
   const disabled = !isSameAddress(curator, address);
 
   return (
-    <>
-      <div>
-        <Tooltip
-          className="w-full"
-          content={
-            disabled ? (
-              <div className="flex items-center gap-x-2">
-                Only{" "}
-                <AddressUser
-                  addressClassName="!text-textPrimaryContrast"
-                  add={curator}
-                  noEvent
-                />
-                can accept curator
-              </div>
-            ) : null
-          }
-        >
-          <PrimaryButton
-            disabled={disabled}
-            className="w-full"
-            onClick={() => {
-              showPopupFn();
-            }}
-          >
-            Accept Curator
-          </PrimaryButton>
-        </Tooltip>
-
-        <CuratorActionHint className="mt-4" />
-      </div>
+    <Tooltip
+      content={
+        disabled ? (
+          <div className="flex items-center gap-x-2">
+            Only{" "}
+            <AddressUser
+              addressClassName="!text-textPrimaryContrast"
+              add={curator}
+              noEvent
+            />
+            can accept curator
+          </div>
+        ) : null
+      }
+    >
+      <PrimaryButton
+        disabled={disabled}
+        className="w-full"
+        onClick={() => {
+          showPopupFn();
+        }}
+      >
+        Accept Curator
+      </PrimaryButton>
 
       {component}
-    </>
+    </Tooltip>
   );
 }

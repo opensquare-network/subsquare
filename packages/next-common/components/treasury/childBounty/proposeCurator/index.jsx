@@ -5,7 +5,6 @@ import { useOnchainData } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
-import CuratorActionHint from "../../common/curatorActionHint";
 
 function useSubParentBountyData(bountyIndex) {
   const { result, loading } = useSubStorage("bounties", "bounties", [
@@ -77,20 +76,15 @@ export default function ProposeCurator() {
 
   return (
     <>
-      <div>
-        <Tooltip content={disabledTooltip} className="w-full">
-          <PrimaryButton
-            className="w-full"
-            onClick={() => showPopupFn()}
-            disabled={isDisabled}
-          >
-            Propose Curator
-          </PrimaryButton>
-        </Tooltip>
-
-        <CuratorActionHint className="mt-4" />
-      </div>
-
+      <Tooltip content={disabledTooltip}>
+        <PrimaryButton
+          className="w-full"
+          onClick={() => showPopupFn()}
+          disabled={isDisabled}
+        >
+          Propose Curator
+        </PrimaryButton>
+      </Tooltip>
       {ProposeCuratorPopup}
     </>
   );
