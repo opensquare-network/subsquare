@@ -34,7 +34,7 @@ export default function usePeriodFilterFn() {
         });
       });
     },
-    [params, blockTime],
+    [params, blockTime, latestHeight],
   );
 
   const filterDemotionExpiredFn = useCallback(
@@ -55,7 +55,7 @@ export default function usePeriodFilterFn() {
         });
       });
     },
-    [params],
+    [params, latestHeight],
   );
 
   const filterPromotableFn = useCallback(
@@ -76,7 +76,7 @@ export default function usePeriodFilterFn() {
         });
       });
     },
-    [params],
+    [params, latestHeight],
   );
 
   return {
