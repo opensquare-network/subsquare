@@ -12,8 +12,7 @@ function Beneficiary({ parachain, beneficiary }) {
     return null;
   }
 
-  if (parachain !== 1000) {
-    // not assethub
+  if (parachain !== 1000) { // not assethub
     return <AddressUser add={beneficiary} />;
   }
 
@@ -21,7 +20,9 @@ function Beneficiary({ parachain, beneficiary }) {
   return (
     <>
       <AddressUser add={beneficiary} />
-      <ExternalLink href={link}>Check the beneficiary</ExternalLink>
+      <ExternalLink href={link}>
+        Check the beneficiary
+      </ExternalLink>
     </>
   );
 }
