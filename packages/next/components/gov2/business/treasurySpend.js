@@ -65,8 +65,14 @@ function getStableTreasuryBusiness(onchain) {
             )}
             symbol={spend.symbol}
           />
-          <span className="text-textTertiary">to</span>
-          <AddressUser add={spend.beneficiary} />
+          {
+            spend.beneficiary ? (
+              <>
+                <span className="text-textTertiary">to</span>
+                <AddressUser add={spend.beneficiary} />
+              </>
+            ) : null
+          }
         </div>
       ))}
     </div>
