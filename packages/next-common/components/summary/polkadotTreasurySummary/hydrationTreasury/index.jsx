@@ -7,7 +7,7 @@ import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useHydrationTreasurySummary } from "../context/hydrationTreasury";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 
-export default function HydrationTreasury() {
+export default function TreasuryOnHydration() {
   const { dot, usdt, usdc, isLoading } = useHydrationTreasurySummary();
 
   return (

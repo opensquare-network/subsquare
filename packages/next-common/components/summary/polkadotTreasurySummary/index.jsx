@@ -1,19 +1,19 @@
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import TotalTreasury from "./totalTreasury";
 import RelayChainTreasury from "./relayChainTreasury";
-import AssetHubTreasury from "./assetHubTreasury";
-import HydrationTreasury from "./hydrationTreasury";
+import TreasuryOnAssetHub from "./assetHubTreasury";
+import TreasuryOnHydration from "./hydrationTreasury";
 import { cn } from "next-common/utils";
 import { PolkadotTreasurySummaryProvider } from "./context";
-import { HydrationTreasurySummaryProvider } from "./context/hydrationTreasury";
+import { TreasuryOnHydrationProvider } from "./context/hydrationTreasury";
 
 function PolkadotTreasurySummaryInContext() {
   return (
     <SummaryLayout className={cn("max-sm:grid-cols-1")}>
       <TotalTreasury />
       <RelayChainTreasury />
-      <AssetHubTreasury />
-      <HydrationTreasury />
+      <TreasuryOnAssetHub />
+      <TreasuryOnHydration />
     </SummaryLayout>
   );
 }
@@ -21,9 +21,9 @@ function PolkadotTreasurySummaryInContext() {
 export default function PolkadotTreasurySummary() {
   return (
     <PolkadotTreasurySummaryProvider>
-      <HydrationTreasurySummaryProvider>
+      <TreasuryOnHydrationProvider>
         <PolkadotTreasurySummaryInContext />
-      </HydrationTreasurySummaryProvider>
+      </TreasuryOnHydrationProvider>
     </PolkadotTreasurySummaryProvider>
   );
 }

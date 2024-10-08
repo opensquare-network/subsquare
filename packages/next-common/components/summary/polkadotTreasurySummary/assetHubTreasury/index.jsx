@@ -59,7 +59,7 @@ function FellowshipSummary({ fellowshipFree }) {
   );
 }
 
-export default function AssetHubTreasurySummary() {
+export default function TreasuryOnAssetHub() {
   const {
     multiAssetsFree,
     USDtBalance,

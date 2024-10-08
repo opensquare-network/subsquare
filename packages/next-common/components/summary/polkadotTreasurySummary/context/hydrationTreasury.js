@@ -1,19 +1,11 @@
 import { createContext, useContext } from "react";
-import { useSubscribeHydrationTreasuryFree } from "../hook/useSubscribeHydrationTreasuryFree";
-import { HydrationTreasuryAccount } from "next-common/utils/hydration/consts";
-import { useSubscribeHydrationTreasuryTokens } from "../hook/useSubscribeHydrationTreasuryTokens";
+import { useSubscribeHydrationTreasuryBalances } from "../hook/useSubscribeHydrationTreasuryBalances";
 
 const HydrationTreasurySummaryContext = createContext();
 
-export function HydrationTreasurySummaryProvider({ children }) {
-  const { free: dot, isLoading: isDotLoading } =
-    useSubscribeHydrationTreasuryFree(HydrationTreasuryAccount);
-
-  const {
-    usdt,
-    usdc,
-    isLoading: isTokensLoading,
-  } = useSubscribeHydrationTreasuryTokens();
+export function TreasuryOnHydrationProvider({ children }) {
+  const { dot, usdt, usdc, isLoading } =
+    useSubscribeHydrationTreasuryBalances();
 
   return (
     <HydrationTreasurySummaryContext.Provider
@@ -21,9 +13,7 @@ export function HydrationTreasurySummaryProvider({ children }) {
         dot,
         usdt,
         usdc,
-        isDotLoading,
-        isTokensLoading,
-        isLoading: isDotLoading || isTokensLoading,
+        isLoading,
       }}
     >
       {children}
