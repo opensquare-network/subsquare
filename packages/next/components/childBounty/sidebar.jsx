@@ -25,13 +25,13 @@ export default function ChildBountySidebar() {
       <ChildBountySidebarBalance />
       <ProposeCurator />
       <ChildBountyAcceptCurator />
-      {showCuratorActionHint && <BountyCuratorActionHint />}
       {isClaimable && (
         <>
           <Meta />
           <ChildBountyClaim />
         </>
       )}
+      {showCuratorActionHint && <BountyCuratorActionHint />}
     </RightBarWrapper>
   );
 }
