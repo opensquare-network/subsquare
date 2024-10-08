@@ -77,17 +77,19 @@ export default function ProposeCurator() {
 
   return (
     <>
-      <Tooltip content={disabledTooltip}>
-        <PrimaryButton
-          className="w-full"
-          onClick={() => showPopupFn()}
-          disabled={isDisabled}
-        >
-          Propose Curator
-        </PrimaryButton>
-      </Tooltip>
+      <div>
+        <Tooltip content={disabledTooltip}>
+          <PrimaryButton
+            className="w-full"
+            onClick={() => showPopupFn()}
+            disabled={isDisabled}
+          >
+            Propose Curator
+          </PrimaryButton>
+        </Tooltip>
 
-      <CuratorActionHint />
+        <CuratorActionHint className="mt-4" />
+      </div>
 
       {ProposeCuratorPopup}
     </>

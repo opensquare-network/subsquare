@@ -34,33 +34,35 @@ export default function BountyAcceptCuratorButton({
 
   return (
     <>
-      <Tooltip
-        content={
-          disabled ? (
-            <div className="flex items-center gap-x-2">
-              Only{" "}
-              <AddressUser
-                addressClassName="!text-textPrimaryContrast"
-                add={curator}
-                noEvent
-              />
-              can accept curator
-            </div>
-          ) : null
-        }
-      >
-        <PrimaryButton
-          disabled={disabled}
-          className="w-full"
-          onClick={() => {
-            showPopupFn();
-          }}
+      <div>
+        <Tooltip
+          content={
+            disabled ? (
+              <div className="flex items-center gap-x-2">
+                Only{" "}
+                <AddressUser
+                  addressClassName="!text-textPrimaryContrast"
+                  add={curator}
+                  noEvent
+                />
+                can accept curator
+              </div>
+            ) : null
+          }
         >
-          Accept Curator
-        </PrimaryButton>
-      </Tooltip>
+          <PrimaryButton
+            disabled={disabled}
+            className="w-full"
+            onClick={() => {
+              showPopupFn();
+            }}
+          >
+            Accept Curator
+          </PrimaryButton>
+        </Tooltip>
 
-      <CuratorActionHint />
+        <CuratorActionHint className="mt-4" />
+      </div>
 
       {component}
     </>
