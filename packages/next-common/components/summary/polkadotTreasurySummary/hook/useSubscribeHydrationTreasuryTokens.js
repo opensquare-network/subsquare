@@ -1,6 +1,7 @@
 import { useHydrationApi } from "next-common/context/hydration";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { HydrationTreasuryAccount } from "next-common/hooks/treasury/useHydrationTreasuryBalance";
+import { toPrecision } from "next-common/utils";
 
 const AssetHubUSDTTokenID = 10;
 const AssetHubUSDCTokenID = 22;
@@ -22,9 +23,12 @@ export function useSubscribeHydrationTreasuryTokens() {
 
   const isLoading = isLoadingUSDT || isLoadingUSDC;
 
+  const usdt = toPrecision(accountUsdt?.free?.toJSON() || 0, 5);
+  const usdc = toPrecision(accountUsdc?.free?.toJSON() || 0, 5);
+
   return {
-    usdt: accountUsdt?.free?.toJSON() || 0,
-    usdc: accountUsdc?.free?.toJSON() || 0,
+    usdt,
+    usdc,
     isLoading,
   };
 }

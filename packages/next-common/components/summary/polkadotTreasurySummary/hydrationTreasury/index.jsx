@@ -6,16 +6,9 @@ import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useHydrationTreasurySummary } from "../context/hydrationTreasury";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
-import { toPrecisionNumber } from "next-common/utils";
 
 export default function HydrationTreasury() {
-  const { dot, usdt, usdc, isDotLoading, isTokensLoading } =
-    useHydrationTreasurySummary();
-
-  const usdtAmount = toPrecisionNumber(usdt, 6);
-  const usdcAmount = toPrecisionNumber(usdc, 6);
-
-  const isLoading = isDotLoading || isTokensLoading;
+  const { dot, usdt, usdc, isLoading } = useHydrationTreasurySummary();
 
   return (
     <SummaryItem
@@ -33,16 +26,12 @@ export default function HydrationTreasury() {
     >
       <LoadableContent isLoading={isLoading}>
         <div>
-          <FiatPriceLabel
-            free={dot}
-            USDCBalance={usdcAmount}
-            USDtBalance={usdtAmount}
-          />
+          <FiatPriceLabel free={dot} USDCBalance={usdc} USDtBalance={usdt} />
         </div>
         <div className="flex flex-col gap-y-1 !ml-0">
           <DotTokenSymbolAsset free={dot} />
-          <TokenSymbolAsset amount={usdcAmount} symbol="USDC" />
-          <TokenSymbolAsset amount={usdtAmount} symbol="USDt" />
+          <TokenSymbolAsset amount={usdc} symbol="USDC" />
+          <TokenSymbolAsset amount={usdt} symbol="USDt" />
         </div>
       </LoadableContent>
     </SummaryItem>

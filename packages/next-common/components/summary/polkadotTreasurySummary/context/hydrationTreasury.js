@@ -23,6 +23,7 @@ export function HydrationTreasurySummaryProvider({ children }) {
         usdc,
         isDotLoading,
         isTokensLoading,
+        isLoading: isDotLoading || isTokensLoading,
       }}
     >
       {children}
