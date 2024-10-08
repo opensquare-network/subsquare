@@ -65,6 +65,7 @@ function BountyContent() {
               childBountiesCount={childBounties.total}
               metadata={
                 <Metadata
+                  id={detail?.bountyIndex}
                   meta={detail.onchainData?.meta}
                   address={detail.onchainData?.address}
                 />

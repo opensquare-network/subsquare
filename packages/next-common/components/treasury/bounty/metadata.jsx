@@ -32,7 +32,7 @@ function CuratorElement() {
  * @param meta {proposer, beneficiary, value, bond, status}
  * @constructor
  */
-function BountyMetadata({ meta, address }) {
+function BountyMetadata({ id, meta, address }) {
   const curator = useCurator();
 
   if (!meta) {
@@ -40,6 +40,11 @@ function BountyMetadata({ meta, address }) {
   }
 
   const metadata = meta ? Object.entries(meta) : [];
+
+  if (id) {
+    metadata.unshift(["id", `#${id}`]);
+  }
+
   if (address) {
     metadata.push(["address", address]);
   }
