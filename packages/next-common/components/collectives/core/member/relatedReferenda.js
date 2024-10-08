@@ -6,6 +6,7 @@ import CoreFellowshipMemberInfoWrapper from "./infoWrapper";
 import CoreFellowshipMemberInfoTitle from "./title";
 import useFetch from "next-common/hooks/useFetch";
 import Tooltip from "next-common/components/tooltip";
+import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
 
 function useRelatedReferenda(address, pallet) {
   const activeReferenda = useActiveReferenda();
@@ -36,10 +37,9 @@ function ReferendumTooltip({ referendumIndex, children }) {
   if (!value) {
     return children;
   }
+  const title = getGov2ReferendumTitle(value);
   return (
-    <Tooltip content={`#${referendumIndex} · ${value?.title}`}>
-      {children}
-    </Tooltip>
+    <Tooltip content={`#${referendumIndex} · ${title}`}>{children}</Tooltip>
   );
 }
 
