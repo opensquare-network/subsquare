@@ -36,6 +36,7 @@ export default function BountyAcceptCuratorButton({
     <>
       <div>
         <Tooltip
+          className="w-full"
           content={
             disabled ? (
               <div className="flex items-center gap-x-2">

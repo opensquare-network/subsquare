@@ -78,7 +78,7 @@ export default function ProposeCurator() {
   return (
     <>
       <div>
-        <Tooltip content={disabledTooltip}>
+        <Tooltip content={disabledTooltip} className="w-full">
           <PrimaryButton
             className="w-full"
             onClick={() => showPopupFn()}
