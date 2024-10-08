@@ -5,6 +5,7 @@ import { useOnchainData } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import CuratorActionHint from "../../common/curatorActionHint";
 
 function useSubParentBountyData(bountyIndex) {
   const { result, loading } = useSubStorage("bounties", "bounties", [
@@ -85,6 +86,9 @@ export default function ProposeCurator() {
           Propose Curator
         </PrimaryButton>
       </Tooltip>
+
+      <CuratorActionHint />
+
       {ProposeCuratorPopup}
     </>
   );
