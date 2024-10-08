@@ -1,6 +1,6 @@
 import { useHydrationApi } from "next-common/context/hydration";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
-import { HydrationTreasuryAccount } from "next-common/hooks/treasury/useHydrationTreasuryBalance";
+import { HydrationTreasuryAccount } from "next-common/utils/hydration/consts";
 import { toPrecision } from "next-common/utils";
 
 const AssetHubUSDTTokenID = 10;

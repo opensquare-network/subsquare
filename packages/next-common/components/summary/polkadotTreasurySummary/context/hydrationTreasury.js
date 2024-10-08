@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { useSubscribeHydrationTreasuryFree } from "../hook/useSubscribeHydrationTreasuryFree";
-import { HydrationTreasuryAccount } from "next-common/hooks/treasury/useHydrationTreasuryBalance";
+import { HydrationTreasuryAccount } from "next-common/utils/hydration/consts";
 import { useSubscribeHydrationTreasuryTokens } from "../hook/useSubscribeHydrationTreasuryTokens";
 
 const HydrationTreasurySummaryContext = createContext();

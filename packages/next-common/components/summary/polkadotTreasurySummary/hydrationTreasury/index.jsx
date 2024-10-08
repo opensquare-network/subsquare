@@ -1,7 +1,7 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
-import { HydrationTreasuryAccount } from "next-common/hooks/treasury/useHydrationTreasuryBalance";
+import { HydrationTreasuryAccount } from "next-common/utils/hydration/consts";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useHydrationTreasurySummary } from "../context/hydrationTreasury";
