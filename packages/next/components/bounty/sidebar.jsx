@@ -5,9 +5,15 @@ import BountySidebarCurator from "next-common/components/treasury/bounty/curator
 import BountyClaim from "next-common/components/treasury/bounty/claim";
 import NewChildBountyButton from "next-common/components/treasury/bounty/newChildBountyButton";
 import BountyAcceptCurator from "next-common/components/treasury/bounty/acceptCurator";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
+import BountyCuratorActionHint from "next-common/components/treasury/common/curatorActionHint";
 
 function BountySidebar() {
-  const { address } = useOnchainData();
+  const { address, bountyIndex } = useOnchainData();
+  const { result } = useSubStorage("bounties", "bounties", [bountyIndex]);
+  const { status } = result?.unwrap?.() || {};
+
+  const showCuratorActionHint = status?.isCuratorProposed || status?.isActive;
 
   if (!address) {
     return null;
@@ -20,6 +26,7 @@ function BountySidebar() {
       <BountyClaim />
       <BountySidebarCurator />
       <NewChildBountyButton />
+      {showCuratorActionHint && <BountyCuratorActionHint />}
     </RightBarWrapper>
   );
 }
