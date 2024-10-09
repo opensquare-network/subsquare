@@ -1,4 +1,3 @@
-import { InfoDocs } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import { useOnchainData } from "next-common/context/post";
 import dynamic from "next/dynamic";
@@ -8,6 +7,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 const JsonView = dynamic(() => import("next-common/components/jsonView"), {
   ssr: false,
 });
+const InfoDocs = dynamic(() => import("@osn/icons/subsquare/InfoDocs"));
 
 function BeneficiaryJsonView({ onClose }) {
   const { proposal } = useOnchainData();
