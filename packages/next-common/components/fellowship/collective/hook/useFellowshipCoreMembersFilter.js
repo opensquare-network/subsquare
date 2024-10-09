@@ -104,9 +104,6 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
     rank,
     latestHeight,
     isLoading,
-    filterDemotionAboutToExpireFn,
-    filterDemotionExpiredFn,
-    filterPromotableFn,
     blockTime,
     params,
   ]);

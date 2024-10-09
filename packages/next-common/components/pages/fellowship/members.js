@@ -84,9 +84,6 @@ function useMembersFilter(members) {
   }, [
     members,
     periodFilter,
-    filterDemotionAboutToExpireFn,
-    filterDemotionExpiredFn,
-    filterPromotableFn,
     isEvidenceOnly,
     evidenceOnlyFilterFn,
     rank,
