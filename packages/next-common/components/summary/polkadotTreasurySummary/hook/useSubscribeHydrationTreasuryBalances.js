@@ -30,9 +30,19 @@ export function useSubscribeHydrationTreasuryBalances() {
 
   const isLoading = isLoadingUSDT || isLoadingUSDC || isLoadingDOT;
 
-  const dot = accountDot?.free?.toJSON();
-  const usdt = toPrecision(accountUsdt?.free?.toJSON() || 0, 6);
-  const usdc = toPrecision(accountUsdc?.free?.toJSON() || 0, 6);
+  const dot =
+    (accountDot?.free?.toBigInt() || 0n) +
+    (accountDot?.reserved?.toBigInt() || 0n);
+  const usdt = toPrecision(
+    (accountUsdt?.free?.toBigInt() || 0n) +
+      (accountUsdt?.reserved?.toBigInt() || 0n),
+    6,
+  );
+  const usdc = toPrecision(
+    (accountUsdc?.free?.toBigInt() || 0n) +
+      (accountUsdc?.reserved?.toBigInt() || 0n),
+    6,
+  );
 
   return {
     dot,
