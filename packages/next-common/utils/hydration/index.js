@@ -7,12 +7,12 @@ export async function getHydrationApi() {
     return api;
   }
 
-  const wsHydrationEndpoint = process.env.NEXT_PUBLIC_WS_HYDRATION_ENDPOINTS;
-  if (!wsHydrationEndpoint) {
+  const hydrationWsEndpointStr = process.env.NEXT_PUBLIC_WS_HYDRATION_ENDPOINTS;
+  if (!hydrationWsEndpointStr) {
     return null;
   }
 
-  const endpoints = wsHydrationEndpoint.split(";");
+  const endpoints = hydrationWsEndpointStr.split(";");
   api = getChainApi(endpoints);
 
   return api;

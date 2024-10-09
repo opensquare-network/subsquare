@@ -11,11 +11,11 @@ export default function PolkadotTreasuryStats() {
       <TitleContainer className="mb-4">Treasury Stats</TitleContainer>
       <SecondaryCard>
         <AssetHubApiProvider>
-          <TreasuryProvider>
-            <HydrationApiProvider>
+          <HydrationApiProvider>
+            <TreasuryProvider>
               <PolkadotTreasurySummary />
-            </HydrationApiProvider>
-          </TreasuryProvider>
+            </TreasuryProvider>
+          </HydrationApiProvider>
         </AssetHubApiProvider>
       </SecondaryCard>
     </div>
