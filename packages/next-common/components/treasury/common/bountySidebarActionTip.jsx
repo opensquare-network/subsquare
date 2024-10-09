@@ -6,7 +6,7 @@ export default function BountySidebarActionTip({ className = "" }) {
   return (
     <div className={cn("text12Normal text-textTertiary", className)}>
       For multisig curators, we suggest to do actions with{" "}
-      <ExternalLink href={mimir.installUrl} className="text12Medium">
+      <ExternalLink href={mimir.installUrl} className="text12Normal">
         Mimir
       </ExternalLink>
     </div>
