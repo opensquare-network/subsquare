@@ -7,8 +7,16 @@ import usePeriodSelect, {
   DemotionPeriodExpired,
   Promotable,
 } from "next-common/components/pages/fellowship/usePeriodSelect";
-import usePeriodFilterFn from "next-common/components/pages/fellowship/usePeriodFilterFn";
 import { useRouterRankFilter } from "next-common/hooks/fellowship/useRankFilter";
+import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import { useSelector } from "react-redux";
+import useLatestHeightSnapshot from "./useLatestHeightSnapshot";
+import {
+  filterDemotionAboutToExpireFn,
+  filterDemotionExpiredFn,
+  filterPromotableFn,
+} from "next-common/components/pages/fellowship/periodFilters";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -48,24 +56,35 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
 
   const ranks = [...new Set(membersWithStatus.map((m) => m.rank))];
   const { rank, component: RankFilterComponent } = useRouterRankFilter(ranks);
+  const params = useCoreFellowshipParams();
+  const blockTime = useSelector(blockTimeSelector);
 
-  const {
-    filterDemotionAboutToExpireFn,
-    filterDemotionExpiredFn,
-    filterPromotableFn,
-  } = usePeriodFilterFn();
+  const { latestHeight, isLoading } = useLatestHeightSnapshot();
 
   const filteredMembers = useMemo(() => {
-    if (isNil(membersWithStatus)) return;
+    if (isNil(membersWithStatus) || isLoading) return;
 
     let filteredMembers = membersWithStatus;
 
     if (periodFilter === DemotionPeriodAboutToExpire) {
-      filteredMembers = filterDemotionAboutToExpireFn(filteredMembers);
+      filteredMembers = filterDemotionAboutToExpireFn(
+        filteredMembers,
+        params,
+        blockTime,
+        latestHeight,
+      );
     } else if (periodFilter === DemotionPeriodExpired) {
-      filteredMembers = filterDemotionExpiredFn(filteredMembers);
+      filteredMembers = filterDemotionExpiredFn(
+        filteredMembers,
+        params,
+        latestHeight,
+      );
     } else if (periodFilter === Promotable) {
-      filteredMembers = filterPromotableFn(filteredMembers);
+      filteredMembers = filterPromotableFn(
+        filteredMembers,
+        params,
+        latestHeight,
+      );
     }
 
     if (isFellowshipCoreOnly) {
@@ -83,9 +102,10 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
     isFellowshipCoreOnly,
     periodFilter,
     rank,
-    filterDemotionAboutToExpireFn,
-    filterDemotionExpiredFn,
-    filterPromotableFn,
+    latestHeight,
+    isLoading,
+    blockTime,
+    params,
   ]);
 
   const component = (

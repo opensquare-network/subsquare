@@ -22,12 +22,13 @@ function RankSelect({ ranks, rank, setRank, noneLabel }) {
     <div className="text12Medium text-textPrimary flex items-center gap-x-2">
       <div>Rank</div>
       <Select
-        className="w-20"
+        className="w-20 text12Medium"
         small
         value={rank}
         options={options}
         onChange={(option) => {
-          setRank(option.value);
+          const value = option.value != null ? String(option.value) : null;
+          setRank(value);
         }}
       />
     </div>

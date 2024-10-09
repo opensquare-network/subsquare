@@ -40,7 +40,7 @@ function PeriodFilterSelect({ periodFilter, setPeriodFilter }) {
         Period Status
       </span>
       <Select
-        className="w-[170px]"
+        className="w-[160px] text12Medium"
         optionsPadding="right"
         small
         value={periodFilter}
