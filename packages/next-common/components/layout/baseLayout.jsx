@@ -39,7 +39,7 @@ export default function BaseLayout({ children, seoInfo = {} }) {
       <SEO {...seoInfo} />
 
       <div className="min-h-screen flex bg-pageBg max-sm:flex-col">
-        <section className="sticky top-0 max-h-screen z-20">
+        <section className="sticky top-0 max-h-screen z-50">
           <Nav />
         </section>
 
@@ -53,7 +53,7 @@ export default function BaseLayout({ children, seoInfo = {} }) {
           )}
         >
           {!sm && (
-            <div className="sticky top-0 z-10 max-sm:hidden">
+            <div className="sticky top-0 z-50 max-sm:hidden">
               <Header />
             </div>
           )}
