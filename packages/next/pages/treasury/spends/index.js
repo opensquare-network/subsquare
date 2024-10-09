@@ -17,7 +17,7 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const category = "Treasury Spends";
   const seoInfo = { title: category, desc: category };
 
-  const TreasurySummaryPanel = isPolkadotChain(chain) ? (
+  const treasurySummaryPanel = isPolkadotChain(chain) ? (
     <PolkadotTreasuryStatsOnProposal />
   ) : (
     <TreasurySummary />
@@ -28,7 +28,7 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
       <ListLayout
         seoInfo={seoInfo}
         title={category}
-        summary={TreasurySummaryPanel}
+        summary={treasurySummaryPanel}
       >
         <PostList
           category={category}

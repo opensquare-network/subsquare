@@ -22,7 +22,7 @@ export default function ChildBountiesPage({ bounties }) {
   const category = "Treasury Child Bounties";
   const seoInfo = { title: category, desc: category };
 
-  const TreasurySummaryPanel = isPolkadotChain(chain) ? (
+  const treasurySummaryPanel = isPolkadotChain(chain) ? (
     <PolkadotTreasuryStatsOnProposal />
   ) : (
     <TreasurySummary />
@@ -33,7 +33,7 @@ export default function ChildBountiesPage({ bounties }) {
       <ListLayout
         seoInfo={seoInfo}
         title={category}
-        summary={TreasurySummaryPanel}
+        summary={treasurySummaryPanel}
         tabs={[
           {
             label: "Child Bounties",

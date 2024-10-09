@@ -30,7 +30,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const pallet = "treasury";
   const treasuryProposalListUrl = useTreasuryProposalListUrl(pallet);
 
-  const TreasurySummaryPanel = isPolkadotChain(chain) ? (
+  const treasurySummaryPanel = isPolkadotChain(chain) ? (
     <PolkadotTreasuryStatsOnProposal />
   ) : (
     <TreasurySummary />
@@ -41,7 +41,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
       <ListLayout
         seoInfo={seoInfo}
         title={category}
-        summary={TreasurySummaryPanel}
+        summary={treasurySummaryPanel}
         tabs={[
           {
             label: "Proposals",
