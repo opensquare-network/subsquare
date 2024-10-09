@@ -7,12 +7,13 @@ import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import { toPrecision } from "next-common/utils";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 export default function TreasuryOnHydration() {
   const { dot, usdt, usdc, isLoading } = useHydrationTreasurySummary();
 
-  const usdtAmount = toPrecision(usdt, 6);
-  const usdcAmount = toPrecision(usdc, 6);
+  const usdtAmount = toPrecision(usdt, SYMBOL_DECIMALS.USDT);
+  const usdcAmount = toPrecision(usdc, SYMBOL_DECIMALS.USDC);
 
   return (
     <SummaryItem
