@@ -4,7 +4,7 @@ import { SummaryTitle } from "next-common/components/summary/styled";
 export default function SummaryItem({ className, title, suffix, children }) {
   return (
     <div className={cn("flex-1 flex justify-between", className)}>
-      <div>
+      <div className="flex flex-col gap-[4px]">
         {title && <SummaryTitle>{title}</SummaryTitle>}
         <div
           className={cn(

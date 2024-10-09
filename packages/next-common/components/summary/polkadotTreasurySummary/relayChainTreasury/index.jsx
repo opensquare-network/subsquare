@@ -25,21 +25,23 @@ export default function RelayChainTreasury() {
           isNil(relayChainFree) || isNil(toBeAwarded) || isNil(summary)
         }
       >
-        <FiatPriceLabel free={relayChainFree} />
-        <div className="!ml-0 flex flex-col gap-y-1">
-          <div className="mb-3">
-            <DotTokenSymbolAsset free={relayChainFree} />
+        <div className="flex flex-col gap-[4px]">
+          <FiatPriceLabel free={relayChainFree} />
+          <div className="!ml-0 flex flex-col gap-y-1">
+            <div className="mb-3">
+              <DotTokenSymbolAsset free={relayChainFree} />
+            </div>
+            <SummaryLabelItem label={"To be awarded"}>
+              <ToBeAwarded toBeAwarded={toBeAwarded} />
+            </SummaryLabelItem>
+            <SummaryLabelItem label={"Next burn"}>
+              <NextBurn free={relayChainFree} />
+            </SummaryLabelItem>
+            <SummaryLabelItem label={"Spend period"}>
+              <SpendPeriod summary={summary} />
+              <SpendPeriodCountdown summary={summary} />
+            </SummaryLabelItem>
           </div>
-          <SummaryLabelItem label={"To be awarded"}>
-            <ToBeAwarded toBeAwarded={toBeAwarded} />
-          </SummaryLabelItem>
-          <SummaryLabelItem label={"Next burn"}>
-            <NextBurn free={relayChainFree} />
-          </SummaryLabelItem>
-          <SummaryLabelItem label={"Spend period"}>
-            <SpendPeriod summary={summary} />
-            <SpendPeriodCountdown summary={summary} />
-          </SummaryLabelItem>
         </div>
       </LoadableContent>
     </SummaryItem>

@@ -34,23 +34,25 @@ export default function TotalTreasury() {
       <LoadableContent
         isLoading={isTotalAssetsLoading || isHydrationTreasuryLoading}
       >
-        <FiatPriceLabel
-          free={totalDotBalance}
-          USDtBalance={totalUsdtBalance}
-          USDCBalance={totalUsdcBalance}
-        />
-        <div className="!ml-0 flex flex-col gap-y-1">
-          <DotTokenSymbolAsset free={totalDotBalance} />
-          <TokenSymbolAsset
-            type={""}
-            amount={totalUsdcBalance}
-            symbol={"USDC"}
+        <div className="flex flex-col gap-[4px]">
+          <FiatPriceLabel
+            free={totalDotBalance}
+            USDtBalance={totalUsdtBalance}
+            USDCBalance={totalUsdcBalance}
           />
-          <TokenSymbolAsset
-            type={""}
-            amount={totalUsdtBalance}
-            symbol={"USDt"}
-          />
+          <div className="!ml-0 flex flex-col gap-y-1">
+            <DotTokenSymbolAsset free={totalDotBalance} />
+            <TokenSymbolAsset
+              type={""}
+              amount={totalUsdcBalance}
+              symbol={"USDC"}
+            />
+            <TokenSymbolAsset
+              type={""}
+              amount={totalUsdtBalance}
+              symbol={"USDt"}
+            />
+          </div>
         </div>
       </LoadableContent>
     </SummaryItem>

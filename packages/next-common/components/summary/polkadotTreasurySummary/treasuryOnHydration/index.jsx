@@ -29,17 +29,19 @@ export default function TreasuryOnHydration() {
       }
     >
       <LoadableContent isLoading={isLoading}>
-        <div>
-          <FiatPriceLabel
-            free={dot}
-            USDCBalance={usdcAmount}
-            USDtBalance={usdtAmount}
-          />
-        </div>
-        <div className="flex flex-col gap-y-1 !ml-0">
-          <DotTokenSymbolAsset free={dot} />
-          <TokenSymbolAsset amount={usdtAmount} symbol="USDC" />
-          <TokenSymbolAsset amount={usdcAmount} symbol="USDt" />
+        <div className="flex flex-col gap-[4px]">
+          <div>
+            <FiatPriceLabel
+              free={dot}
+              USDCBalance={usdcAmount}
+              USDtBalance={usdtAmount}
+            />
+          </div>
+          <div className="flex flex-col gap-y-1 !ml-0">
+            <DotTokenSymbolAsset free={dot} />
+            <TokenSymbolAsset amount={usdtAmount} symbol="USDC" />
+            <TokenSymbolAsset amount={usdcAmount} symbol="USDt" />
+          </div>
         </div>
       </LoadableContent>
     </SummaryItem>

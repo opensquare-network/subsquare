@@ -11,7 +11,7 @@ import BigNumber from "bignumber.js";
 
 function TreasurySummary({ multiAssetsFree, USDtBalance, USDCBalance }) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-[4px]">
       <div className="flex gap-[4px] text12Medium text-textPrimary">
         <Link
           className="text12Medium"
@@ -39,7 +39,7 @@ function TreasurySummary({ multiAssetsFree, USDtBalance, USDCBalance }) {
 
 function FellowshipSummary({ fellowshipFree }) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-[4px]">
       <div className="flex gap-[4px] text12Medium text-textPrimary">
         <Link
           className="text12Medium"
