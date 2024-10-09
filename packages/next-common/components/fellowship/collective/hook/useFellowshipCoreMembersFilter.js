@@ -10,73 +10,13 @@ import usePeriodSelect, {
 import { useRouterRankFilter } from "next-common/hooks/fellowship/useRankFilter";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import {
-  isDemotionAboutToExpire,
-  isDemotionExpired,
-  isPromotable,
-} from "next-common/utils/collective/demotionAndPromotion";
 import { useSelector } from "react-redux";
 import useLatestHeightSnapshot from "./useLatestHeightSnapshot";
-
-function filterDemotionAboutToExpireFn(
-  members,
-  params,
-  blockTime,
-  latestHeight,
-) {
-  return members.filter((member) => {
-    if (isNil(member?.status)) return false;
-
-    const {
-      rank,
-      status: { lastProof },
-    } = member;
-
-    return isDemotionAboutToExpire({
-      lastProof,
-      rank,
-      params,
-      blockTime,
-      latestHeight,
-    });
-  });
-}
-
-function filterDemotionExpiredFn(members, params, latestHeight) {
-  return members.filter((member) => {
-    if (isNil(member?.status)) return false;
-
-    const {
-      rank,
-      status: { lastProof },
-    } = member;
-
-    return isDemotionExpired({
-      lastProof,
-      rank,
-      latestHeight,
-      params,
-    });
-  });
-}
-
-function filterPromotableFn(members, params, latestHeight) {
-  return members.filter((member) => {
-    if (isNil(member?.status)) return false;
-
-    const {
-      rank,
-      status: { lastProof },
-    } = member;
-
-    return isPromotable({
-      lastProof,
-      rank,
-      latestHeight,
-      params,
-    });
-  });
-}
+import {
+  filterDemotionAboutToExpireFn,
+  filterDemotionExpiredFn,
+  filterPromotableFn,
+} from "next-common/components/pages/fellowship/usePeriodFilterFn";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -164,9 +104,9 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
     rank,
     latestHeight,
     isLoading,
-    filterDemotionExpiredFn,
-    filterDemotionExpiredFn,
     filterDemotionAboutToExpireFn,
+    filterDemotionExpiredFn,
+    filterPromotableFn,
   ]);
 
   const component = (
