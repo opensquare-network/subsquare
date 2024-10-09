@@ -1,5 +1,5 @@
 import { isNil } from "lodash-es";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import useFellowshipCoreOnlySwitch from "./useFellowshipCoreOnlySwitch";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
 import usePeriodSelect, {
@@ -10,7 +10,6 @@ import usePeriodSelect, {
 import { useRouterRankFilter } from "next-common/hooks/fellowship/useRankFilter";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import {
   isDemotionAboutToExpire,
   isDemotionExpired,
@@ -119,37 +118,32 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
   const { rank, component: RankFilterComponent } = useRouterRankFilter(ranks);
   const params = useCoreFellowshipParams();
   const blockTime = useSelector(blockTimeSelector);
-  // const latestHeight = useSelector(chainOrScanHeightSelector);
 
   const { latestHeight, isLoading } = useLatestHeightSnapshot();
-
-  const initialLatestHeightRef = useRef(latestHeight);
 
   const filteredMembers = useMemo(() => {
     if (isNil(membersWithStatus) || isLoading) return;
 
     let filteredMembers = membersWithStatus;
 
-    const constantHeight = initialLatestHeightRef.current;
-
     if (periodFilter === DemotionPeriodAboutToExpire) {
       filteredMembers = filterDemotionAboutToExpireFn(
         filteredMembers,
         params,
         blockTime,
-        constantHeight,
+        latestHeight,
       );
     } else if (periodFilter === DemotionPeriodExpired) {
       filteredMembers = filterDemotionExpiredFn(
         filteredMembers,
         params,
-        constantHeight,
+        latestHeight,
       );
     } else if (periodFilter === Promotable) {
       filteredMembers = filterPromotableFn(
         filteredMembers,
         params,
-        constantHeight,
+        latestHeight,
       );
     }
 
