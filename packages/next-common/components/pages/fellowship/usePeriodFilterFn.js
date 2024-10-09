@@ -134,11 +134,11 @@ export function filterPromotableFn(members, params, latestHeight) {
 
     const {
       rank,
-      status: { lastProof },
+      status: { lastPromotion },
     } = member;
 
     return isPromotable({
-      lastProof,
+      lastPromotion,
       rank,
       latestHeight,
       params,
