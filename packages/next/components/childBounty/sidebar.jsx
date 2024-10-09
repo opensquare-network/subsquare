@@ -4,7 +4,7 @@ import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarW
 import { useOnchainData, usePostState } from "next-common/context/post";
 import ChildBountySidebarBalance from "next-common/components/treasury/childBounty/balance";
 import ProposeCurator from "next-common/components/treasury/childBounty/proposeCurator";
-import ChildBountyAcceptCurator from "next-common/components/treasury/childBounty/acceptCurator";
+import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
 
@@ -25,7 +25,10 @@ export default function ChildBountySidebar() {
     <RightBarWrapper>
       <ChildBountySidebarBalance />
       <ProposeCurator />
-      <ChildBountyAcceptCurator />
+      <BountyAcceptCuratorButton
+        pallet="childBounties"
+        params={[parentBountyId, childBountyId]}
+      />
       {isClaimable && (
         <>
           <Meta />
