@@ -44,7 +44,7 @@ export const polkadotDvDelegates = [
     address: "153YD8ZHD9dRh82U419bSCB5SzWhbdAFzjj4NtA5pMazR2yC", // SAXEMBERG
     slots: [
       { start: 19653264, end: 21157744, trackIds: treasuryTrackIds },
-      { start: 21172834, end: null, trackIds: cohort2TrackIds }, // cohort 2
+      { start: 21172834, end: 22888566, trackIds: cohort2TrackIds }, // cohort 2
     ],
   },
   {
@@ -73,11 +73,11 @@ export const polkadotDvDelegates = [
   },
   {
     address: "13mZThJSNdKUyVUjQE9ZCypwJrwdvY8G5cUCpS9Uw4bodh4t", // polkassembly
-    slots: [{ start: 21172851, end: null, trackIds: cohort2TrackIds }], // cohort 2
+    slots: [{ start: 21172851, end: 22888555, trackIds: cohort2TrackIds }], // cohort 2
   },
   {
     address: "13Bf8PY8dks2EecNFW7hrqJ7r1aj7iEFFUudFJFvoprXdUiH", // Scytale Digital
-    slots: [{ start: 21172851, end: null, trackIds: cohort2TrackIds }], // cohort 2
+    slots: [{ start: 21172851, end: 22888555, trackIds: cohort2TrackIds }], // cohort 2
   },
   {
     address: "12pXignPnq8sZvPtEsC3RdhDLAscqzFQz97pX2tpiNp3xLqo", // Lucky Friday Labs
