@@ -36,9 +36,9 @@ export default function VoteBubbleContent({ node, sizeField }) {
             ellipsis={false}
             linkToVotesPage
             color={cn(
-              node.data.aye && "var(--green500)",
-              node.data.aye === false && "var(--red500)",
-              node.data.isAbstain && "var(--textSecondary)",
+              node.data.aye && "var(--green500)!important",
+              node.data.aye === false && "var(--red500)!important",
+              node.data.isAbstain && "var(--textSecondary)!important",
             )}
           />
         )}
