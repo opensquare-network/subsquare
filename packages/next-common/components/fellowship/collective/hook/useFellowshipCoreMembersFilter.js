@@ -107,6 +107,8 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
     filterDemotionAboutToExpireFn,
     filterDemotionExpiredFn,
     filterPromotableFn,
+    blockTime,
+    params,
   ]);
 
   const component = (

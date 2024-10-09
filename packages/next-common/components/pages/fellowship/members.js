@@ -92,6 +92,8 @@ function useMembersFilter(members) {
     rank,
     isLoading,
     latestHeight,
+    blockTime,
+    params,
   ]);
 
   const component = (
