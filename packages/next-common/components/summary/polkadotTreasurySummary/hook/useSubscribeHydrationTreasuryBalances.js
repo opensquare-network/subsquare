@@ -32,9 +32,10 @@ export function useSubscribeHydrationTreasuryBalances() {
 
   const isLoading = isLoadingUSDT || isLoadingUSDC || isLoadingDOT;
 
-  const dot =
+  const dot = (
     (accountDot?.free?.toBigInt() || 0n) +
-    (accountDot?.reserved?.toBigInt() || 0n);
+    (accountDot?.reserved?.toBigInt() || 0n)
+  ).toString();
   const usdt = toPrecision(
     (accountUsdt?.free?.toBigInt() || 0n) +
       (accountUsdt?.reserved?.toBigInt() || 0n),
