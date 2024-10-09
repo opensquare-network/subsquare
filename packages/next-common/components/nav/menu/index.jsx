@@ -1,25 +1,45 @@
-import NavCommonMenu from "./common";
-import NavMenuDivider from "../divider";
-import NavFeaturedMenu from "./featured";
-import NavArchivedMenu from "./archived";
 import { ArrowCircleLeft } from "@osn/icons/subsquare";
-import NavMenuItem from "./item";
-import { getNavMenu } from "next-common/utils/consts/menu";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  navMenuShowMainMenuSelector,
-  setMenuShowMainMenu,
-} from "next-common/store/reducers/navSlice";
+import { useNavCollapsed } from "next-common/context/nav";
 import { usePageProps } from "next-common/context/page";
-import isAssetHub from "next-common/utils/isAssetHub";
+import { getNavMenu } from "next-common/utils/consts/menu";
+import { createStateContext } from "react-use";
+import NavMenuDivider from "../divider";
+import NavMenuEntrance from "./entrance";
+import NavMenuItem from "./item";
 
-export default function NavMenu({ collapsed }) {
+const [useNavMenuView, NavMenuViewProvider] = createStateContext({
+  view: "main",
+  menu: null,
+});
+
+export { useNavMenuView };
+
+export default function NavMenu() {
+  return (
+    <NavMenuViewProvider>
+      <NavMenuImpl />
+    </NavMenuViewProvider>
+  );
+}
+
+function NavMenuImpl() {
+  const [collapsed] = useNavCollapsed();
+
+  const [{ view }] = useNavMenuView();
+
+  return (
+    <>
+      {view === "main" && <MainMenu collapsed={collapsed} />}
+      {view === "subspace" && <SubSpaceMenu collapsed={collapsed} />}
+    </>
+  );
+}
+
+function MainMenu({ collapsed }) {
   const { tracks, fellowshipTracks, summary, detail, ambassadorTracks } =
     usePageProps();
-  const showMainMenu = useSelector(navMenuShowMainMenuSelector);
-  const showArchivedMenu = !showMainMenu;
 
-  const { featuredMenu, archivedMenu, moreMenu } = getNavMenu({
+  const menu = getNavMenu({
     tracks,
     fellowshipTracks,
     ambassadorTracks,
@@ -29,49 +49,18 @@ export default function NavMenu({ collapsed }) {
 
   return (
     <div>
-      {showMainMenu && (
-        <MainMenu
-          collapsed={collapsed}
-          featuredMenu={featuredMenu}
-          moreMenu={moreMenu}
-          hasArchivedMenu={!!archivedMenu?.length}
-        />
-      )}
-
-      {showArchivedMenu && (
-        <ArchivedMenu collapsed={collapsed} archivedMenu={archivedMenu} />
-      )}
+      {menu.map((m) => (
+        <NavMenuEntrance key={m.name} {...m} collapsed={collapsed} />
+      ))}
     </div>
   );
 }
 
-function MainMenu({ collapsed, featuredMenu = [], moreMenu = [] }) {
-  return (
-    <>
-      <NavCommonMenu collapsed={collapsed} />
-
-      {featuredMenu.length > 0 && (
-        <>
-          <NavMenuDivider />
-          <NavFeaturedMenu collapsed={collapsed} menu={featuredMenu} />
-        </>
-      )}
-
-      {!isAssetHub() && (
-        <>
-          <NavMenuDivider />
-          <NavFeaturedMenu collapsed={collapsed} menu={[moreMenu]} />
-        </>
-      )}
-    </>
-  );
-}
-
-function ArchivedMenu({ collapsed, archivedMenu = [] }) {
-  const dispatch = useDispatch();
+function SubSpaceMenu({ collapsed }) {
+  const [{ menu }, setNavMenuView] = useNavMenuView();
 
   return (
-    <>
+    <div>
       <ul>
         <li>
           <NavMenuItem
@@ -80,7 +69,7 @@ function ArchivedMenu({ collapsed, archivedMenu = [] }) {
               name: "Back",
             }}
             onClick={() => {
-              dispatch(setMenuShowMainMenu(true));
+              setNavMenuView({ view: "main" });
             }}
             collapsed={collapsed}
           />
@@ -89,7 +78,9 @@ function ArchivedMenu({ collapsed, archivedMenu = [] }) {
 
       <NavMenuDivider />
 
-      <NavArchivedMenu collapsed={collapsed} menu={archivedMenu} />
-    </>
+      {menu?.map((m) => (
+        <NavMenuEntrance key={m.name} {...m} collapsed={collapsed} />
+      ))}
+    </div>
   );
 }

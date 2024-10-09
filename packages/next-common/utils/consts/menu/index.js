@@ -116,7 +116,18 @@ export function getNavMenu({
     }
   }
 
-  const moreMenu = getMoreMenu({ hasArchivedMenu: !!archivedMenu.length });
+  const commonMenu = getCommonMenu({
+    tracks,
+    fellowshipTracks,
+    ambassadorTracks,
+  });
+  const moreMenu = getMoreMenu({ archivedMenu });
 
-  return { featuredMenu, archivedMenu, moreMenu };
+  return [
+    ...commonMenu,
+    { type: "divider" },
+    ...featuredMenu,
+    { type: "divider" },
+    moreMenu,
+  ];
 }
