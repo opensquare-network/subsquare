@@ -19,7 +19,7 @@ export default function VoteBubbleHoverContent({ node, sizeField }) {
         <AddressUser
           add={node.data.account}
           ellipsis={false}
-          color="var(--textPrimaryContrast)"
+          color="var(--textPrimaryContrast)!important"
           noEvent
         />
       </li>
