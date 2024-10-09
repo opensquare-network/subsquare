@@ -61,7 +61,7 @@ export const polkadotDvDelegates = [
   },
   {
     address: "16XYgDGN6MxvdmjhRsHLT1oqQVDwGdEPVQqC42pRXiZrE8su", // Irina Karagyaur
-    slots: [{ start: 21173594, end: null, trackIds: cohort2TrackIds }], // cohort 2
+    slots: [{ start: 21173594, end: 22888546, trackIds: cohort2TrackIds }], // cohort 2
   },
   {
     address: "15TzZpYZa2rwfBNKhkDzuU1JApgACxD3m6pcaNt4SZneYTV5", // Mexican Collective
@@ -69,7 +69,7 @@ export const polkadotDvDelegates = [
   },
   {
     address: "12BJTP99gUerdvBhPobiTvrWwRaj1i5eFHN9qx51JWgrBtmv", // oneblock
-    slots: [{ start: 21173594, end: null, trackIds: treasuryTrackIds }], // cohort 2
+    slots: [{ start: 21173594, end: 22888546, trackIds: treasuryTrackIds }], // cohort 2
   },
   {
     address: "13mZThJSNdKUyVUjQE9ZCypwJrwdvY8G5cUCpS9Uw4bodh4t", // polkassembly
@@ -81,6 +81,6 @@ export const polkadotDvDelegates = [
   },
   {
     address: "12pXignPnq8sZvPtEsC3RdhDLAscqzFQz97pX2tpiNp3xLqo", // Lucky Friday Labs
-    slots: [{ start: 21172834, end: null, trackIds: cohort2TrackIds }], // cohort 2
+    slots: [{ start: 21172834, end: 22888566, trackIds: cohort2TrackIds }], // cohort 2
   },
 ];
