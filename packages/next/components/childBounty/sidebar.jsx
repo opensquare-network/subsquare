@@ -6,7 +6,7 @@ import ChildBountySidebarBalance from "next-common/components/treasury/childBoun
 import ProposeCurator from "next-common/components/treasury/childBounty/proposeCurator";
 import ChildBountyAcceptCurator from "next-common/components/treasury/childBounty/acceptCurator";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
-import BountyCuratorActionHint from "next-common/components/treasury/common/curatorActionHint";
+import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
 
 export default function ChildBountySidebar() {
   const state = usePostState();
@@ -18,7 +18,7 @@ export default function ChildBountySidebar() {
   ]);
   const { status } = result?.unwrap?.() || {};
 
-  const showCuratorActionHint =
+  const showActionTip =
     status?.isCuratorProposed || status?.isPendingPayout || status?.isAdded;
 
   return (
@@ -32,7 +32,7 @@ export default function ChildBountySidebar() {
           <ChildBountyClaim />
         </>
       )}
-      {showCuratorActionHint && <BountyCuratorActionHint />}
+      {showActionTip && <BountySidebarActionTip />}
     </RightBarWrapper>
   );
 }
