@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { useAssetHubApi } from "next-common/context/assetHub";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 
-export function useSubscribeFellowshipTreasuryFree(address) {
-  const api = useAssetHubApi();
+export function useSubscribeAccountFree(api, address) {
   const [free, setFree] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -20,4 +19,9 @@ export function useSubscribeFellowshipTreasuryFree(address) {
   }, [loading, result]);
 
   return { free, isLoading };
+}
+
+export function useSubscribeFellowshipTreasuryFree(address) {
+  const api = useAssetHubApi();
+  return useSubscribeAccountFree(api, address);
 }
