@@ -16,7 +16,7 @@ import {
   filterDemotionAboutToExpireFn,
   filterDemotionExpiredFn,
   filterPromotableFn,
-} from "next-common/components/pages/fellowship/usePeriodFilterFn";
+} from "next-common/components/pages/fellowship/periodFilters";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(

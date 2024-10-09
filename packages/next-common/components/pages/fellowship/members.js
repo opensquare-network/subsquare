@@ -29,7 +29,7 @@ import {
   filterDemotionAboutToExpireFn,
   filterDemotionExpiredFn,
   filterPromotableFn,
-} from "next-common/components/pages/fellowship/usePeriodFilterFn";
+} from "next-common/components/pages/fellowship/periodFilters";
 
 function useMembersFilter(members) {
   const ranks = [...new Set(members.map((m) => m.rank))];
