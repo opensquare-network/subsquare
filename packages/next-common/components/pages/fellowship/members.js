@@ -20,34 +20,56 @@ import usePeriodSelect, {
   DemotionPeriodExpired,
   Promotable,
 } from "./usePeriodSelect";
-import usePeriodFilterFn from "./usePeriodFilterFn";
 import useEvidenceOnlySwitch from "./useEvidenceOnlySwitch";
 import useEvidenceOnlyFilterFn from "./useEvidenceOnlyFilterFn";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import { useSelector } from "react-redux";
+import useLatestHeightSnapshot from "next-common/components/fellowship/collective/hook/useLatestHeightSnapshot";
+import {
+  filterDemotionAboutToExpireFn,
+  filterDemotionExpiredFn,
+  filterPromotableFn,
+} from "next-common/components/pages/fellowship/usePeriodFilterFn";
 
 function useMembersFilter(members) {
   const ranks = [...new Set(members.map((m) => m.rank))];
   const { rank, component: rankFilterComponent } = useRouterRankFilter(ranks);
 
   const { periodFilter, component: periodFilterComponent } = usePeriodSelect();
-  const {
-    filterDemotionAboutToExpireFn,
-    filterDemotionExpiredFn,
-    filterPromotableFn,
-  } = usePeriodFilterFn();
-
   const { isOn: isEvidenceOnly, component: evidenceOnlySwitch } =
     useEvidenceOnlySwitch();
   const evidenceOnlyFilterFn = useEvidenceOnlyFilterFn();
+  const params = useCoreFellowshipParams();
+  const blockTime = useSelector(blockTimeSelector);
+
+  const { latestHeight, isLoading } = useLatestHeightSnapshot();
 
   const filteredMembers = useMemo(() => {
+    if (isLoading) {
+      return;
+    }
+
     let filteredMembers = members;
 
     if (periodFilter === DemotionPeriodAboutToExpire) {
-      filteredMembers = filterDemotionAboutToExpireFn(filteredMembers);
+      filteredMembers = filterDemotionAboutToExpireFn(
+        filteredMembers,
+        params,
+        blockTime,
+        latestHeight,
+      );
     } else if (periodFilter === DemotionPeriodExpired) {
-      filteredMembers = filterDemotionExpiredFn(filteredMembers);
+      filteredMembers = filterDemotionExpiredFn(
+        filteredMembers,
+        params,
+        latestHeight,
+      );
     } else if (periodFilter === Promotable) {
-      filteredMembers = filterPromotableFn(filteredMembers);
+      filteredMembers = filterPromotableFn(
+        filteredMembers,
+        params,
+        latestHeight,
+      );
     }
 
     if (isEvidenceOnly) {
@@ -68,6 +90,8 @@ function useMembersFilter(members) {
     isEvidenceOnly,
     evidenceOnlyFilterFn,
     rank,
+    isLoading,
+    latestHeight,
   ]);
 
   const component = (
@@ -93,9 +117,9 @@ function FellowshipMembersPageInContext() {
   const params = useCoreFellowshipParams();
   const { filteredMembers, component: memberFilters } =
     useMembersFilter(pageMembers);
-  const hasMembers = filteredMembers.length > 0;
+  const hasMembers = filteredMembers?.length > 0;
 
-  const membersCount = filteredMembers.length;
+  const membersCount = filteredMembers?.length;
   const candidatesCount = useMemo(
     () => (members || []).filter((member) => member.rank <= 0).length,
     [members],
