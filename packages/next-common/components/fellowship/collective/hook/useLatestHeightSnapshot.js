@@ -7,13 +7,21 @@ export default function useLatestHeightSnapshot() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (api) {
-      api.rpc.chain.getHeader((header) => {
+    if (!api) {
+      return;
+    }
+
+    api.rpc.chain
+      .getHeader()
+      .then((header) => {
         const latestUnFinalizedHeight = header.number.toNumber();
         setLatestHeight(latestUnFinalizedHeight);
         setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        throw new Error("Failed to fetch latest height:", error);
       });
-    }
   }, [api]);
   return {
     isLoading,
