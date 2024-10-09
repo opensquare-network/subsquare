@@ -11,14 +11,15 @@ import BountyCuratorActionHint from "next-common/components/treasury/common/cura
 function BountySidebar() {
   const { address, bountyIndex } = useOnchainData();
   const { result } = useSubStorage("bounties", "bounties", [bountyIndex]);
-  const { status } = result?.unwrap?.() || {};
-
-  const showCuratorActionHint =
-    status?.isCuratorProposed || status?.isPendingPayout || status?.isActive;
 
   if (!address) {
     return null;
   }
+
+  const { status } = result?.unwrap?.() || {};
+
+  const showCuratorActionHint =
+    status?.isCuratorProposed || status?.isPendingPayout || status?.isActive;
 
   return (
     <RightBarWrapper>

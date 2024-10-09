@@ -10,8 +10,8 @@ import BountyCuratorActionHint from "next-common/components/treasury/common/cura
 
 export default function ChildBountySidebar() {
   const state = usePostState();
-  const { parentBountyId, index: childBountyId } = useOnchainData();
   const isClaimable = ["PendingPayout", "Claimed"].includes(state);
+  const { parentBountyId, index: childBountyId } = useOnchainData();
   const { result } = useSubStorage("childBounties", "childBounties", [
     parentBountyId,
     childBountyId,
