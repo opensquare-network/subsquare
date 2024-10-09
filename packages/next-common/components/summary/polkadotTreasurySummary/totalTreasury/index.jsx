@@ -6,6 +6,7 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import { usePolkadotTreasurySummary } from "../context";
 import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import BigNumber from "bignumber.js";
+import { toPrecision } from "next-common/utils";
 
 export default function TotalTreasury() {
   const { DOTBalance, USDtBalance, USDCBalance, isTotalAssetsLoading } =
@@ -22,10 +23,10 @@ export default function TotalTreasury() {
     .plus(hydrationTreasuryDot)
     .toString();
   const totalUsdtBalance = new BigNumber(USDtBalance)
-    .plus(hydrationTreasuryUsdt)
+    .plus(toPrecision(hydrationTreasuryUsdt, 6))
     .toString();
   const totalUsdcBalance = new BigNumber(USDCBalance)
-    .plus(hydrationTreasuryUsdc)
+    .plus(toPrecision(hydrationTreasuryUsdc, 6))
     .toString();
 
   return (

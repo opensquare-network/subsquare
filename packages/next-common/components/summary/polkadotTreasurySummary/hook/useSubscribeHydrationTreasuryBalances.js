@@ -1,6 +1,5 @@
 import { useHydrationApi } from "next-common/context/hydration";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
-import { toPrecision } from "next-common/utils";
 
 const DotTokenId = 5;
 const UsdtTokenIdFromAssetHub = 10;
@@ -39,8 +38,8 @@ export function useSubscribeHydrationTreasuryBalances() {
   const isLoading = isLoadingUSDT || isLoadingUSDC || isLoadingDOT;
 
   const dot = getTotal(accountDot);
-  const usdt = toPrecision(getTotal(accountUsdt), 6);
-  const usdc = toPrecision(getTotal(accountUsdc), 6);
+  const usdt = getTotal(accountUsdt);
+  const usdc = getTotal(accountUsdc);
 
   return {
     dot,
