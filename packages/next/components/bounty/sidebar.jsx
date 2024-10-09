@@ -4,7 +4,7 @@ import BountySidebarBalance from "next-common/components/treasury/bounty/balance
 import BountySidebarCurator from "next-common/components/treasury/bounty/curator";
 import BountyClaim from "next-common/components/treasury/bounty/claim";
 import NewChildBountyButton from "next-common/components/treasury/bounty/newChildBountyButton";
-import BountyAcceptCurator from "next-common/components/treasury/bounty/acceptCurator";
+import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
 
@@ -24,7 +24,7 @@ function BountySidebar() {
   return (
     <RightBarWrapper>
       <BountySidebarBalance />
-      <BountyAcceptCurator />
+      <BountyAcceptCuratorButton params={[bountyIndex]} />
       <BountyClaim />
       <BountySidebarCurator />
       <NewChildBountyButton />
