@@ -1,10 +1,10 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
-import { HydrationTreasuryAccount } from "next-common/utils/hydration/consts";
+import { PolkadotTreasuryOnHydrationAccount } from "../hook/useSubscribeHydrationTreasuryBalances";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import { useHydrationTreasurySummary } from "../context/hydrationTreasury";
+import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 
 export default function TreasuryOnHydration() {
@@ -15,7 +15,7 @@ export default function TreasuryOnHydration() {
       title={
         <Link
           className="text12Medium"
-          href={`https://hydration.subscan.io/account/${HydrationTreasuryAccount}`}
+          href={`https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount}`}
           target="_blank"
           rel="noreferrer"
         >

@@ -1,11 +1,11 @@
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import TotalTreasury from "./totalTreasury";
 import RelayChainTreasury from "./relayChainTreasury";
-import TreasuryOnAssetHub from "./assetHubTreasury";
-import TreasuryOnHydration from "./hydrationTreasury";
+import TreasuryOnAssetHub from "./treasuryOnAssetHub";
+import TreasuryOnHydration from "./treasuryOnHydration";
 import { cn } from "next-common/utils";
 import { PolkadotTreasurySummaryProvider } from "./context";
-import { TreasuryOnHydrationProvider } from "./context/hydrationTreasury";
+import { TreasuryOnHydrationProvider } from "./context/treasuryOnHydration";
 
 function PolkadotTreasurySummaryInContext() {
   return (

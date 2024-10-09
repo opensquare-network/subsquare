@@ -1,30 +1,32 @@
 import { useHydrationApi } from "next-common/context/hydration";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
-import { HydrationTreasuryAccount } from "next-common/utils/hydration/consts";
 import { toPrecision } from "next-common/utils";
 
 const DotTokenId = 5;
 const UsdtTokenIdFromAssetHub = 10;
 const UsdcTokenIdFromAssetHub = 22;
 
+export const PolkadotTreasuryOnHydrationAccount =
+  "7KCp4eenFS4CowF9SpQE5BBCj5MtoBA3K811tNyRmhLfH1aV";
+
 export function useSubscribeHydrationTreasuryBalances() {
   const api = useHydrationApi();
   const { loading: isLoadingUSDT, result: accountUsdt } = useSubStorage(
     "tokens",
     "accounts",
-    [HydrationTreasuryAccount, UsdtTokenIdFromAssetHub],
+    [PolkadotTreasuryOnHydrationAccount, UsdtTokenIdFromAssetHub],
     { api },
   );
   const { loading: isLoadingUSDC, result: accountUsdc } = useSubStorage(
     "tokens",
     "accounts",
-    [HydrationTreasuryAccount, UsdcTokenIdFromAssetHub],
+    [PolkadotTreasuryOnHydrationAccount, UsdcTokenIdFromAssetHub],
     { api },
   );
   const { loading: isLoadingDOT, result: accountDot } = useSubStorage(
     "tokens",
     "accounts",
-    [HydrationTreasuryAccount, DotTokenId],
+    [PolkadotTreasuryOnHydrationAccount, DotTokenId],
     { api },
   );
 

@@ -4,7 +4,7 @@ import FiatPriceLabel from "../common/fiatPriceLabel";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { usePolkadotTreasurySummary } from "../context";
-import { useHydrationTreasurySummary } from "../context/hydrationTreasury";
+import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import BigNumber from "bignumber.js";
 
 export default function TotalTreasury() {
