@@ -5,7 +5,7 @@ import { isNil } from "lodash-es";
 import Link from "next/link";
 import AddressUser from "next-common/components/user/addressUser";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
-import BeneficiaryJsonViewButton from "./beneficiaryJsonViewButton";
+import BeneficiaryDetailButton from "./beneficiaryDetailButton";
 
 function getTreasuryBusiness(onchain, decimals, symbol) {
   const {
@@ -70,7 +70,7 @@ function getStableTreasuryBusiness(onchain) {
           {spend.beneficiary ? (
             <AddressUser add={spend.beneficiary} />
           ) : (
-            <BeneficiaryJsonViewButton />
+            <BeneficiaryDetailButton />
           )}
         </div>
       ))}

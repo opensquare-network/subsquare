@@ -22,7 +22,7 @@ function BeneficiaryJsonView({ onClose }) {
   );
 }
 
-export default function BeneficiaryJsonViewButton() {
+export default function BeneficiaryDetailButton() {
   const [showDetail, setShowDetail] = useState(false);
 
   return (
