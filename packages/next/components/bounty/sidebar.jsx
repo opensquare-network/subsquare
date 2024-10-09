@@ -28,7 +28,7 @@ function BountySidebar() {
       <BountyClaim />
       <BountySidebarCurator />
       <NewChildBountyButton />
-      {showActionTip && <BountySidebarActionTip />}
+      {showActionTip && <BountySidebarActionTip className="!mt-4" />}
     </RightBarWrapper>
   );
 }

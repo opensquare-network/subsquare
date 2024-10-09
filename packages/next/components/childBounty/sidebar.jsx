@@ -32,7 +32,7 @@ export default function ChildBountySidebar() {
           <ChildBountyClaim />
         </>
       )}
-      {showActionTip && <BountySidebarActionTip />}
+      {showActionTip && <BountySidebarActionTip className="!mt-4" />}
     </RightBarWrapper>
   );
 }
