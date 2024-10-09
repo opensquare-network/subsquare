@@ -8,7 +8,7 @@ export default function SpendPeriodCountdown({ summary }) {
   return (
     <Tooltip
       content={`${percentage}%`}
-      className={"inline-flex items-center !ml-2"}
+      className={"z-10 inline-flex items-center !ml-2"}
     >
       <CountDown
         numerator={percentage}
