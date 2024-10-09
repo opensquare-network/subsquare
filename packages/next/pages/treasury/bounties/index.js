@@ -8,6 +8,8 @@ import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 import { TreasuryProvider } from "next-common/context/treasury";
+import { isPolkadotChain } from "next-common/utils/chain";
+import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 
 export default function BountiesPage({ bounties, chain }) {
   const chainSettings = useChainSettings();
@@ -18,12 +20,18 @@ export default function BountiesPage({ bounties, chain }) {
   const category = "Treasury Bounties";
   const seoInfo = { title: category, desc: category };
 
+  const treasurySummaryPanel = isPolkadotChain(chain) ? (
+    <PolkadotTreasuryStatsOnProposal />
+  ) : (
+    <TreasurySummary />
+  );
+
   return (
     <TreasuryProvider>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
-        summary={<TreasurySummary />}
+        summary={treasurySummaryPanel}
         tabs={[
           {
             label: "Bounties",

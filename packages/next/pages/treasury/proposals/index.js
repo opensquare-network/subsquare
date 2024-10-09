@@ -12,6 +12,8 @@ import {
   useTreasuryProposalListUrl,
 } from "next-common/context/treasury";
 import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
+import { isPolkadotChain } from "next-common/utils/chain";
+import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
@@ -28,12 +30,18 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const pallet = "treasury";
   const treasuryProposalListUrl = useTreasuryProposalListUrl(pallet);
 
+  const treasurySummaryPanel = isPolkadotChain(chain) ? (
+    <PolkadotTreasuryStatsOnProposal />
+  ) : (
+    <TreasurySummary />
+  );
+
   return (
     <TreasuryProvider pallet={pallet}>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
-        summary={<TreasurySummary />}
+        summary={treasurySummaryPanel}
         tabs={[
           {
             label: "Proposals",
