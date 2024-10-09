@@ -13,7 +13,7 @@ export function useChain() {
   return useContext(ChainContext);
 }
 
-export function useChainSettings(blockHeight) {
+export function useChainSettings(blockHeight = null) {
   const chain = useChain();
   return useMemo(
     () => getChainSettings(chain, blockHeight),
