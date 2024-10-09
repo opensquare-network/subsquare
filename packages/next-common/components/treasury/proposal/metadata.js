@@ -12,8 +12,11 @@ const keys = {
 };
 
 export default function TreasuryProposalMetadata({ treasuryProposal = {} }) {
+  const id = treasuryProposal?.proposalIndex;
   const meta = treasuryProposal?.meta || {};
   const metadata = Object.entries(meta);
+  metadata.unshift(["id", `#${id}`]);
+
   let proposer = meta.proposer;
   if (treasuryProposal.isByGov2 && treasuryProposal.proposer) {
     proposer = treasuryProposal.proposer;

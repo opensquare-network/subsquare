@@ -42,6 +42,7 @@ function ChildBountyContent() {
           <DetailMultiTabs
             metadata={
               <Metadata
+                id={post?.index}
                 meta={post?.onchainData?.meta}
                 address={post?.onchainData?.address}
               />
