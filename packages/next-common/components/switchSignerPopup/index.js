@@ -8,6 +8,10 @@ import Account from "../account";
 import { cn } from "next-common/utils";
 import { ArrowRight } from "@osn/icons/subsquare";
 import { usePopupOnClose } from "next-common/context/popup";
+import {
+  OnChainProxiesProvider,
+  useMyProxied,
+} from "next-common/context/proxy";
 
 function AccountItem({ disabled, account, onClick }) {
   if (disabled) {
@@ -51,7 +55,7 @@ function OriginAddress() {
 
   return (
     <div className="flex flex-col gap-[12px]">
-      <div className="text14Bold text-textPrimary">Origin</div>
+      <div className="text14Bold text-textPrimary">Connected account</div>
       <AccountItem
         disabled={disabled}
         account={account}
@@ -64,28 +68,39 @@ function OriginAddress() {
   );
 }
 
-function ProxyAddress() {
+function ProxyAddress({ address }) {
   const onClose = usePopupOnClose();
   const { signerAccount, setProxyAddress } = useSignerContext();
-  const user = useUser();
   const extensionAccounts = useExtensionAccounts();
-  const account = extensionAccounts.find(
-    (item) => item.address === user.proxyAddress,
+  const account = extensionAccounts.find((item) => item.address === address);
+  const disabled = signerAccount.proxyAddress === address;
+  return (
+    <AccountItem
+      disabled={disabled}
+      account={account}
+      onClick={() => {
+        setProxyAddress(address);
+        onClose();
+      }}
+    />
   );
+}
 
-  const disabled = signerAccount.proxyAddress === user.proxyAddress;
+function ProxiedAccounts() {
+  const { value: proxies } = useMyProxied();
+
+  if (!proxies.length) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col gap-[12px]">
-      <div className="text14Bold text-textPrimary">Proxy</div>
-      <AccountItem
-        disabled={disabled}
-        account={account}
-        onClick={() => {
-          setProxyAddress(user.proxyAddress);
-          onClose();
-        }}
-      />
+      <div className="text14Bold text-textPrimary">Proxied accounts</div>
+      <div className="flex flex-col">
+        {proxies.map((proxy, index) => (
+          <ProxyAddress key={index} address={proxy.delegator} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -95,7 +110,9 @@ export default function SwitchSignerPopup({ onClose }) {
     <Popup title="Select Address" className="w-[640px]" onClose={onClose}>
       <div className="flex flex-col gap-[24px]">
         <OriginAddress />
-        <ProxyAddress />
+        <OnChainProxiesProvider>
+          <ProxiedAccounts />
+        </OnChainProxiesProvider>
       </div>
     </Popup>
   );
