@@ -55,10 +55,6 @@ function PopupContent() {
     api,
     signerAccount?.realAddress,
   );
-  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
-    api,
-    signerAccount?.address,
-  );
 
   const getTxFunc = useCallback(async () => {
     if (!beneficiary) {
@@ -82,12 +78,7 @@ function PopupContent() {
 
   return (
     <>
-      <Signer
-        balance={balance}
-        isBalanceLoading={balanceIsLoading}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
-      />
+      <Signer balance={balance} isBalanceLoading={balanceIsLoading} />
       {beneficiaryField}
       <ProposalValue setValue={setInputValue} />
       {bondComponent}

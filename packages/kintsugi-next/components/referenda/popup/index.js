@@ -37,10 +37,6 @@ function PopupContent() {
     api,
     signerAccount?.realAddress,
   );
-  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.address,
-  );
   const { vote: addressVote, isLoading: addressVoteIsLoading } =
     useSubMyDemocracyVote(referendumIndex, signerAccount?.realAddress);
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
@@ -135,8 +131,6 @@ function PopupContent() {
         balanceName="Voting balance"
         balance={votingBalance}
         isBalanceLoading={votingIsLoading}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
         symbol={node.voteSymbol}
       />
       <VoteBalance

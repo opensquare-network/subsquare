@@ -13,18 +13,7 @@ export default function SignerWithBalance({ title }) {
     signerAccount?.realAddress,
   );
 
-  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
-    api,
-    signerAccount?.address,
-  );
-
   return (
-    <Signer
-      title={title}
-      balance={balance}
-      isBalanceLoading={loadingBalance}
-      signerBalance={signerBalance}
-      isSignerBalanceLoading={isSignerBalanceLoading}
-    />
+    <Signer title={title} balance={balance} isBalanceLoading={loadingBalance} />
   );
 }

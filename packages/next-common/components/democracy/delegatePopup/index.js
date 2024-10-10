@@ -38,11 +38,6 @@ function PopupContent({ defaultTargetAddress, targetDisabled }) {
     signerAccount?.realAddress,
   );
 
-  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.address,
-  );
-
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
 
@@ -99,8 +94,6 @@ function PopupContent({ defaultTargetAddress, targetDisabled }) {
         balanceName="Voting balance"
         balance={votingBalance}
         isBalanceLoading={votingIsLoading}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
         symbol={node.voteSymbol || node.symbol}
       />
       <Target
