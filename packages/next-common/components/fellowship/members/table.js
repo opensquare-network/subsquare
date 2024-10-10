@@ -9,8 +9,8 @@ export default function FellowshipMemberTable({ members = [] }) {
 
   const rows = (members || []).map(({ address, rank }, idx) => {
     return [
-      <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
       <AddressCol key={`address-row-${idx}`} address={address} />,
+      <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
     ];
   });
 

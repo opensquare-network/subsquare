@@ -1,11 +1,11 @@
 const fellowshipMemberColumns = [
   {
-    name: "Rank",
-    width: 80,
+    name: "Member",
+    className: "text-left",
   },
   {
-    name: "Member",
-    className: "",
+    name: "Rank",
+    className: "text-right",
   },
 ];
 
