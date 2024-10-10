@@ -10,6 +10,7 @@ import {
 import { useUser } from "next-common/context/user";
 import { addressEllipsis } from "next-common/utils";
 import SwitchSignerPopup from "./switchSignerPopup";
+import useOnChainProxyInfo from "next-common/hooks/useOnChainProxy";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
@@ -64,9 +65,27 @@ function SwitchButton() {
   );
 }
 
+function ProxyHint({ address }) {
+  const proxyInfo = useOnChainProxyInfo(address);
+  const proxyType = proxyInfo?.proxyType?.toString();
+  return (
+    <div className="mt-[12px] pt-[12px] pl-[52px] border-neutral300 border-t text14Medium text-textSecondary">
+      {proxyType && (
+        <>
+          <div className="inline-flex rounded-[10px] py-[2px] px-[8px] border border-neutral400 text12Medium">
+            {proxyType}
+          </div>
+          {" · "}
+        </>
+      )}
+      Your transactions will be submitted on behalf of this proxy address.
+    </div>
+  );
+}
+
 export default function ConnectedSigner() {
-  const signerAccount = useSignerAccount();
   const user = useUser();
+  const signerAccount = useSignerAccount();
   const originAccount = useOriginAccount();
 
   return (
@@ -81,9 +100,7 @@ export default function ConnectedSigner() {
           {user?.proxyAddress && <SwitchButton />}
         </div>
         {signerAccount?.proxyAddress && (
-          <div className="mt-[12px] pt-[12px] pl-[52px] border-neutral300 border-t text14Medium text-textSecondary">
-            Your transactions will be submitted on behalf of this proxy address.
-          </div>
+          <ProxyHint address={signerAccount?.proxyAddress} />
         )}
       </div>
     </Wrapper>
