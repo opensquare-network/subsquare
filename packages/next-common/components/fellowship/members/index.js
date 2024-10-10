@@ -1,18 +1,7 @@
 import { usePageProps } from "next-common/context/page";
 import FellowshipMemberTable from "./table";
-import CollectivesProvider from "next-common/context/collectives/collectives";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import useRankFilter from "./useRankFilter";
-
-function FellowshipMembers({ members }) {
-  const { fellowshipParams } = usePageProps();
-
-  return (
-    <CollectivesProvider section="fellowship" params={fellowshipParams ?? {}}>
-      <FellowshipMemberTable members={members} />
-    </CollectivesProvider>
-  );
-}
 
 export default function FellowshipMembersInContext() {
   const { fellowshipMembers } = usePageProps();
@@ -35,7 +24,7 @@ export default function FellowshipMembersInContext() {
 
         {RankFilterComponent}
       </div>
-      <FellowshipMembers members={filteredMembers} />
+      <FellowshipMemberTable members={filteredMembers} />
     </div>
   );
 }
