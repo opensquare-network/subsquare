@@ -10,11 +10,8 @@ function AddressCol({ address }) {
   return <AddressUser maxWidth={navCollapsed ? 360 : 160} add={address} />;
 }
 
-export default function FellowshipMemberTable({
-  members = [],
-  isAllLoaded = true,
-}) {
-  const isLoading = isNil(members) || !isAllLoaded;
+export default function FellowshipMemberTable({ members = [] }) {
+  const isLoading = isNil(members);
 
   const rows = (members || []).map(({ address, rank }, idx) => {
     return [
