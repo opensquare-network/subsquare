@@ -63,7 +63,7 @@ export function getCommonMenu({
   return commonMenu.items;
 }
 
-export function getNavMenu({
+export function getMainMenu({
   summary = {},
   tracks = [],
   fellowshipTracks = [],
