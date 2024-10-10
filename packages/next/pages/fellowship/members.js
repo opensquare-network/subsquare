@@ -7,6 +7,9 @@ import useFellowshipCoreMembersFilter, {
   handleFilterMembers,
 } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { useChain } from "next-common/context/chain";
+import { isCollectivesChain } from "next-common/utils/chain";
+import FellowshipMembersInContext from "next-common/components/fellowship/members";
 
 function FellowshipCollectiveMembersInContext() {
   const { fellowshipMembers } = usePageProps();
@@ -40,6 +43,14 @@ function FellowshipCollectiveMembersInContext() {
   );
 }
 
+function FellowshipMembers() {
+  const chain = useChain();
+  if (!isCollectivesChain(chain)) {
+    return <FellowshipCollectiveMembersInContext />;
+  }
+  return <FellowshipMembersInContext />;
+}
+
 export default function MembersPage() {
   const { fellowshipParams } = usePageProps();
   const category = "Fellowship Members";
@@ -48,7 +59,7 @@ export default function MembersPage() {
   return (
     <CollectivesProvider params={fellowshipParams} section="fellowship">
       <ListLayout seoInfo={seoInfo} title={category}>
-        <FellowshipCollectiveMembersInContext />
+        <FellowshipMembers />
       </ListLayout>
     </CollectivesProvider>
   );
