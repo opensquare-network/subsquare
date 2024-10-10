@@ -29,7 +29,6 @@ export default function NavMenuItem({
         name={item?.name}
         extra={item?.extra || extra}
         collapsed={collapsed}
-        active={active}
         onClick={() => {
           setNavMenuView({
             view: "subspace",
