@@ -2,13 +2,12 @@ import { ArrowRight, MenuMore } from "@osn/icons/subsquare";
 import { useIsMacOS } from "next-common/context/page";
 import { store } from "next-common/store";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
-import { setMenuShowMainMenu } from "next-common/store/reducers/navSlice";
 import { cn } from "next-common/utils";
 import isAssetHub from "next-common/utils/isAssetHub";
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 
-export function getMoreMenu({ hasArchivedMenu }) {
+export function getMoreMenu({ archivedMenu = [] }) {
   return {
     name: "More",
     icon: <MenuMore />,
@@ -31,13 +30,12 @@ export function getMoreMenu({ hasArchivedMenu }) {
         },
         extra: <NavigationExtra />,
       },
-      hasArchivedMenu && {
+      archivedMenu?.length && {
         value: "archived",
         name: "Archived",
-        onClick() {
-          store.dispatch(setMenuShowMainMenu(false));
-        },
+        type: "subspace",
         extra: <ArrowRight className="text-navigationTextTertiary" />,
+        items: archivedMenu,
       },
     ].filter(Boolean),
   };

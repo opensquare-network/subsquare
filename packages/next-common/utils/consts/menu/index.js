@@ -25,14 +25,9 @@ export function getHomeMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  if (isAssetHub()) {
-    return assetHubMenu;
-  }
-
   const { modules } = getChainSettings(CHAIN);
 
   return [
-    commonMenus,
     modules?.referenda && getReferendaMenu(tracks, currentTrackId),
     modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
     modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
@@ -49,28 +44,18 @@ export function getHomeMenu({
   ].filter(Boolean);
 }
 
-export function getCommonMenu({
-  tracks = [],
-  fellowshipTracks = [],
-  ambassadorTracks = [],
-}) {
-  const [commonMenu] = getHomeMenu({
-    tracks,
-    fellowshipTracks,
-    ambassadorTracks,
-  });
-
-  return commonMenu.items;
-}
-
-export function getNavMenu({
+export function getMainMenu({
   summary = {},
   tracks = [],
   fellowshipTracks = [],
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  const menu = getHomeMenu({
+  if (isAssetHub()) {
+    return [...assetHubMenu];
+  }
+
+  const modulesMenu = getHomeMenu({
     summary,
     tracks,
     fellowshipTracks,
@@ -78,45 +63,51 @@ export function getNavMenu({
     currentTrackId,
   });
 
-  const featuredMenu = [];
-  const archivedMenu = [];
+  const activeModulesMenu = [];
+  const archivedModulesMenu = [];
 
-  for (let idx = 0; idx < menu.slice(1).length; idx++) {
-    const m = menu.slice(1)[idx];
+  for (let idx = 0; idx < modulesMenu.length; idx++) {
+    const m = modulesMenu[idx];
 
     // single menu
     if (!m?.items?.length) {
-      featuredMenu.push(m);
+      activeModulesMenu.push(m);
       continue;
     }
 
     // root menu archived
     if (m?.archived) {
-      archivedMenu.push(m);
+      archivedModulesMenu.push(m);
     }
     // child menu
     else {
-      const [featuredItems, archivedItems] = partition(
+      const [activeItems, archivedItems] = partition(
         m.items,
         (item) => !item?.archived,
       );
 
       if (archivedItems.length) {
-        archivedMenu.push({
+        archivedModulesMenu.push({
           ...m,
           items: archivedItems,
         });
       }
-      if (featuredItems.length) {
-        featuredMenu.push({
+      if (activeItems.length) {
+        activeModulesMenu.push({
           ...m,
-          items: featuredItems,
+          items: activeItems,
         });
       }
     }
   }
 
-  const moreMenu = getMoreMenu({ hasArchivedMenu: !!archivedMenu.length });
+  const moreMenu = getMoreMenu({ archivedMenu: archivedModulesMenu });
 
-  return { featuredMenu, archivedMenu, moreMenu };
+  return [
+    ...commonMenus.items,
+    { type: "divider" },
+    ...activeModulesMenu,
+    { type: "divider" },
+    moreMenu,
+  ];
 }
