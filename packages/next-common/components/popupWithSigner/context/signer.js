@@ -54,7 +54,7 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   const [signerAccount, setSignerAccount] = useState();
   const user = useUser();
   const userAddress = user?.address;
-  const proxyAddress = user?.proxyAddress;
+  const [proxyAddress, setProxyAddress] = useState(user?.proxyAddress);
   const api = useContextApi();
   const setSigner = useSetSigner();
 
@@ -87,6 +87,7 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       value={{
         extensionAccounts,
         signerAccount,
+        setProxyAddress,
       }}
     >
       {children}
