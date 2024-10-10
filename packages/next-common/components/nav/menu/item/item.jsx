@@ -38,14 +38,18 @@ export default function NavMenuItemItem({
     );
   }
 
-  let content = items?.length ? (
-    <NavMenuItemGroup
-      menu={item}
-      navSubmenuVisible={navSubmenuVisible}
-      setNavSubmenuVisible={setNavSubmenuVisible}
-      padSubMenuItems={false}
-    />
-  ) : (
+  if (items?.length) {
+    return (
+      <NavMenuItemGroup
+        menu={item}
+        navSubmenuVisible={navSubmenuVisible}
+        setNavSubmenuVisible={setNavSubmenuVisible}
+        padSubMenuItems={false}
+      />
+    );
+  }
+
+  let content = (
     <NavMenuItemTemplate
       className={className}
       icon={item?.icon}
@@ -59,7 +63,7 @@ export default function NavMenuItemItem({
     />
   );
 
-  if (item?.pathname && !items) {
+  if (item?.pathname) {
     content = (
       <Link
         href={item?.pathname || ""}
