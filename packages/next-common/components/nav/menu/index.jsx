@@ -44,8 +44,12 @@ export default function NavMenu() {
   return (
     <ul>
       <li>
-        {menu.map((m) => (
-          <NavMenuItem key={m.name} {...m} collapsed={collapsed} />
+        {menu.map((m, idx) => (
+          <NavMenuItem
+            key={`${m.value || ""}-${idx}`}
+            {...m}
+            collapsed={collapsed}
+          />
         ))}
       </li>
     </ul>
