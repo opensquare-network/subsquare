@@ -29,7 +29,8 @@ export default function NavMenuItemTemplate({
           className={cn(
             "w-6 h-6",
             "inline-flex items-center",
-            !active && "text-navigationIcon",
+            "[&_svg]:text-navigationIcon",
+            active && "[&_svg]:text-theme500",
           )}
         >
           {icon}
