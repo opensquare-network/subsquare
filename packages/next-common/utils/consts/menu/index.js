@@ -18,6 +18,7 @@ import isAssetHub from "next-common/utils/isAssetHub";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
+import { coretimeMenu } from "./coretime";
 
 export function getHomeMenu({
   summary = {},
@@ -42,6 +43,12 @@ export function getHomeMenu({
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.preimages && preImages,
   ].filter(Boolean);
+}
+
+function getIntegrationsMenu() {
+  const { modules } = getChainSettings(CHAIN);
+
+  return [modules?.coretime && coretimeMenu].filter(Boolean);
 }
 
 export function getMainMenu({
@@ -101,6 +108,8 @@ export function getMainMenu({
     }
   }
 
+  const integrationsMenu = getIntegrationsMenu();
+
   const moreMenu = getMoreMenu({ archivedMenu: archivedModulesMenu });
 
   return [
@@ -108,6 +117,9 @@ export function getMainMenu({
     { type: "divider" },
     ...activeModulesMenu,
     { type: "divider" },
+    integrationsMenu?.length && [...integrationsMenu, { type: "divider" }],
     moreMenu,
-  ];
+  ]
+    .filter(Boolean)
+    .flat();
 }
