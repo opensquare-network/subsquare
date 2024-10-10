@@ -25,7 +25,7 @@ export default function PostListTreasuryAllSpends({ allSpends }) {
 
     return (
       <TreasurySpendValueDisplay
-        className={cn("text14Medium text-textPrimary")}
+        className={cn("text14Medium")}
         type={type}
         amount={amount}
         symbol={symbol}
