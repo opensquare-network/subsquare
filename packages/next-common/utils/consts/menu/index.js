@@ -25,10 +25,6 @@ export function getHomeMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  if (isAssetHub()) {
-    return assetHubMenu;
-  }
-
   const { modules } = getChainSettings(CHAIN);
 
   return [
@@ -55,6 +51,10 @@ export function getMainMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
+  if (isAssetHub()) {
+    return [...assetHubMenu];
+  }
+
   const modulesMenu = getHomeMenu({
     summary,
     tracks,

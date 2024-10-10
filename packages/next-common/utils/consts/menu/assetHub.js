@@ -8,11 +8,6 @@ const assetsMenu = {
   icon: <MenuAsset />,
 };
 
-const assetHubMenu = [
-  {
-    items: [overviewMenu],
-  },
-  assetsMenu,
-];
+const assetHubMenu = [overviewMenu, { type: "divider" }, assetsMenu];
 
 export { assetHubMenu };
