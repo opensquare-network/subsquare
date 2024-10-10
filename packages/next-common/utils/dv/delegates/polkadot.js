@@ -13,7 +13,7 @@ export const polkadotDvDelegates = [
       {
         // cohort 2
         start: 21172801,
-        end: null,
+        end: 22891629,
         trackIds: cohort2TrackIds,
       },
     ],
@@ -53,11 +53,11 @@ export const polkadotDvDelegates = [
   },
   {
     address: "1CaXBXVGNbey352w7ydA1A2yDyNQLshycom8Zyj69v5eRNK", // BRA_16 Collective
-    slots: [{ start: 21172801, end: null, trackIds: cohort2TrackIds }], // cohort 2
+    slots: [{ start: 21172801, end: 22891629, trackIds: cohort2TrackIds }], // cohort 2
   },
   {
     address: "14Gn7SEmCgMX7Ukuppnw5TRjA7pao2HFpuJo39frB42tYLEh", // Ezio Rojas
-    slots: [{ start: 21172820, end: null, trackIds: cohort2TrackIds }], // cohort 2
+    slots: [{ start: 21172820, end: 22891621, trackIds: cohort2TrackIds }], // cohort 2
   },
   {
     address: "16XYgDGN6MxvdmjhRsHLT1oqQVDwGdEPVQqC42pRXiZrE8su", // Irina Karagyaur
@@ -65,7 +65,7 @@ export const polkadotDvDelegates = [
   },
   {
     address: "15TzZpYZa2rwfBNKhkDzuU1JApgACxD3m6pcaNt4SZneYTV5", // Mexican Collective
-    slots: [{ start: 21172820, end: null, trackIds: cohort2TrackIds }], // cohort 2
+    slots: [{ start: 21172820, end: 22891621, trackIds: cohort2TrackIds }], // cohort 2
   },
   {
     address: "12BJTP99gUerdvBhPobiTvrWwRaj1i5eFHN9qx51JWgrBtmv", // oneblock
