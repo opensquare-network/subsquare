@@ -3,6 +3,7 @@ import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
 import dividerConfig from "next-common/utils/consts/menu/common/divider";
+import { isCollectivesChain } from "next-common/utils/chain";
 
 export const Names = {
   fellowship: "FELLOWSHIP",
@@ -45,6 +46,10 @@ function getFellowshipSalaryMenu() {
 }
 
 function getFellowshipStatisticsMenu() {
+  if (!isCollectivesChain(process.env.NEXT_PUBLIC_CHAIN)) {
+    return null;
+  }
+
   return {
     value: "fellowship-statistics",
     name: Names.statistics,

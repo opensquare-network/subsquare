@@ -16,7 +16,7 @@ import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import Period from "next-common/components/fellowship/params/period";
 
-function AddressCol({ address }) {
+export function AddressCol({ address }) {
   const [navCollapsed] = useNavCollapsed();
   return <AddressUser maxWidth={navCollapsed ? 360 : 160} add={address} />;
 }

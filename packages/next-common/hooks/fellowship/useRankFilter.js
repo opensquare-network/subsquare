@@ -27,7 +27,7 @@ function RankSelect({ ranks, rank, setRank, noneLabel }) {
         value={rank}
         options={options}
         onChange={(option) => {
-          const value = option.value != null ? String(option.value) : null;
+          const value = option.value === 0 ? "0" : option.value;
           setRank(value);
         }}
       />
