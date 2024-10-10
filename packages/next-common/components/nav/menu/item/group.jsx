@@ -6,11 +6,11 @@ import { ArrowDown } from "@osn/icons/subsquare";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useUpdateEffect } from "react-use";
-import NavMenuItem from "./item";
-import NavMenuDivider from "../divider";
+import NavMenuItemItem from "./item";
+import NavMenuDivider from "../../divider";
 import { sumBy } from "lodash-es";
 
-export default function NavMenuGroup({
+export default function NavMenuItemGroup({
   menu = {},
   collapsed,
   navSubmenuVisible,
@@ -53,7 +53,7 @@ export default function NavMenuGroup({
       <li>
         <HoverCard.Root openDelay={0} closeDelay={0}>
           <HoverCard.Trigger>
-            <NavMenuItem
+            <NavMenuItemItem
               item={{
                 ...omit(menu, "pathname"),
                 name: startCase(capitalize(menu.name)),
@@ -91,7 +91,7 @@ export default function NavMenuGroup({
             <HoverCard.Content side="right" align="start" alignOffset={-8}>
               <div className="pl-6">
                 <div className="py-2.5 px-4 bg-navigationBg w-[268px] rounded-lg max-h-screen overflow-y-scroll scrollbar-pretty border border-navigationBorder">
-                  <NavMenuItem
+                  <NavMenuItemItem
                     item={{
                       name: startCase(capitalize(menu.name)),
                       activeCount:
@@ -141,7 +141,7 @@ function SubMenuItems({ className = "", items = [] }) {
             {item?.type === "divider" ? (
               <NavMenuDivider />
             ) : (
-              <NavMenuItem
+              <NavMenuItemItem
                 item={item}
                 items={item.items}
                 active={active}

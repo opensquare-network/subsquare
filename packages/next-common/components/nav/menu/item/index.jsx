@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
-import NavMenuGroup from "./group";
-import NavMenuItem from "./item";
-import NavMenuDivider from "../divider";
+import NavMenuItemGroup from "./group";
+import NavMenuItemItem from "./item";
+import NavMenuDivider from "../../divider";
 import { useNavSubmenuVisible } from "next-common/context/nav";
 
-export default function NavMenuEntrance({ collapsed, ...menu } = {}) {
+export default function NavMenuItem({ collapsed, ...menu } = {}) {
   const { type, items } = menu || {};
   const router = useRouter();
   const routePathname = router.asPath.split("?")[0];
@@ -16,7 +16,7 @@ export default function NavMenuEntrance({ collapsed, ...menu } = {}) {
 
   if (items?.length) {
     return (
-      <NavMenuGroup
+      <NavMenuItemGroup
         menu={menu}
         collapsed={collapsed}
         navSubmenuVisible={navSubmenuVisible}
@@ -25,7 +25,7 @@ export default function NavMenuEntrance({ collapsed, ...menu } = {}) {
     );
   } else {
     return (
-      <NavMenuItem
+      <NavMenuItemItem
         item={menu}
         active={
           menu.pathname === routePathname ||

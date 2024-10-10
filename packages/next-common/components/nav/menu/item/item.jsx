@@ -3,11 +3,11 @@ import { noop } from "lodash-es";
 import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import NavMenuGroup from "./group";
+import NavMenuItemGroup from "./group";
 import { useNavSubmenuVisible } from "next-common/context/nav";
-import { useNavMenuView } from ".";
+import { useNavMenuView } from "..";
 
-export default function NavMenuItem({
+export default function NavMenuItemItem({
   item,
   active,
   collapsed,
@@ -40,7 +40,7 @@ export default function NavMenuItem({
   }
 
   let content = items?.length ? (
-    <NavMenuGroup
+    <NavMenuItemGroup
       menu={item}
       navSubmenuVisible={navSubmenuVisible}
       setNavSubmenuVisible={setNavSubmenuVisible}

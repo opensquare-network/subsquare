@@ -3,7 +3,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { usePageProps } from "next-common/context/page";
 import { getMainMenu } from "next-common/utils/consts/menu";
 import { createGlobalState } from "react-use";
-import NavMenuEntrance from "./entrance";
+import NavMenuItem from "./item";
 
 export const useNavMenuView = createGlobalState({
   view: "main",
@@ -45,7 +45,7 @@ export default function NavMenu() {
     <ul>
       <li>
         {menu.map((m) => (
-          <NavMenuEntrance key={m.name} {...m} collapsed={collapsed} />
+          <NavMenuItem key={m.name} {...m} collapsed={collapsed} />
         ))}
       </li>
     </ul>
