@@ -43,7 +43,7 @@ function BountyMetadata({ id, meta, address }) {
   const metadata = meta ? Object.entries(meta) : [];
 
   if (id) {
-    metadata.unshift(["ID", `#${id}`]);
+    metadata.unshift(["Id", `#${id}`]);
   }
 
   if (address) {

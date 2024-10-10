@@ -33,7 +33,7 @@ export default function TreasurySpendMetadata({ spend = {} }) {
   const { parachain, amount, symbol, decimals, beneficiary } =
     useTreasurySpendRequest(meta);
 
-  const data = [["ID", `#${spend?.index}`]];
+  const data = [["Id", `#${spend?.index}`]];
   if (proposer) {
     data.push(["Proposer", <AddressUser add={proposer} key="proposer" />]);
   }
