@@ -1,54 +1,20 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import { usePageProps } from "next-common/context/page";
-import FellowshipCollectiveMembers from "next-common/components/fellowship/collective/list";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import getFellowshipMembersServerSideProps from "next-common/services/serverSide/fellowship/members";
-import useFellowshipCoreMembersFilter, {
-  handleFilterMembers,
-} from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { useChain } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
 import FellowshipMembersInContext from "next-common/components/fellowship/members";
-
-function FellowshipCollectiveMembersInContext() {
-  const { fellowshipMembers } = usePageProps();
-  const { members: membersWithStatus, isAllLoaded } =
-    handleFilterMembers(fellowshipMembers);
-
-  const { filteredMembers, component: FilterComponent } =
-    useFellowshipCoreMembersFilter(membersWithStatus);
-
-  const membersCount = filteredMembers?.length || 0;
-
-  return (
-    <div className="flex flex-col gap-y-4">
-      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between pr-6">
-        <TitleContainer>
-          <span>
-            List
-            <span className="text-textTertiary text14Medium ml-1">
-              {membersCount}
-            </span>
-          </span>
-        </TitleContainer>
-
-        {FilterComponent}
-      </div>
-      <FellowshipCollectiveMembers
-        members={filteredMembers}
-        isAllLoaded={isAllLoaded}
-      />
-    </div>
-  );
-}
+import FellowshipCollectiveMembersInContext from "next-common/components/fellowship/collective/members";
 
 function FellowshipMembers() {
   const chain = useChain();
-  if (!isCollectivesChain(chain)) {
-    return <FellowshipCollectiveMembersInContext />;
-  }
-  return <FellowshipMembersInContext />;
+
+  return isCollectivesChain(chain) ? (
+    <FellowshipCollectiveMembersInContext />
+  ) : (
+    <FellowshipMembersInContext />
+  );
 }
 
 export default function MembersPage() {
