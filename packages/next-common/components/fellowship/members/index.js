@@ -14,7 +14,7 @@ function FellowshipMembers({ members }) {
   );
 }
 
-export default function FellowshipCollectiveMembersInContext() {
+export default function FellowshipMembersInContext() {
   const { fellowshipMembers } = usePageProps();
   const { filteredMembers, component: RankFilterComponent } =
     useRankFilter(fellowshipMembers);
