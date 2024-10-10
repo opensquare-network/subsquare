@@ -12,7 +12,8 @@ function Beneficiary({ parachain, beneficiary }) {
     return null;
   }
 
-  if (parachain !== 1000) { // not assethub
+  if (parachain !== 1000) {
+    // not assethub
     return <AddressUser add={beneficiary} />;
   }
 
@@ -20,9 +21,7 @@ function Beneficiary({ parachain, beneficiary }) {
   return (
     <>
       <AddressUser add={beneficiary} />
-      <ExternalLink href={link}>
-        Check the beneficiary
-      </ExternalLink>
+      <ExternalLink href={link}>Check the beneficiary</ExternalLink>
     </>
   );
 }
@@ -34,7 +33,7 @@ export default function TreasurySpendMetadata({ spend = {} }) {
   const { parachain, amount, symbol, decimals, beneficiary } =
     useTreasurySpendRequest(meta);
 
-  const data = [["id", `#${spend?.index}`]];
+  const data = [["ID", `#${spend?.index}`]];
   if (proposer) {
     data.push(["Proposer", <AddressUser add={proposer} key="proposer" />]);
   }

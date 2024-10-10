@@ -9,6 +9,7 @@ import {
   useCuratorParams,
 } from "next-common/context/treasury/bounties";
 import { CuratorBadge, CuratorProxyTag } from "./curator";
+import { upperFirst } from "lodash-es";
 
 function CuratorElement() {
   const curator = useCurator();
@@ -42,7 +43,7 @@ function BountyMetadata({ id, meta, address }) {
   const metadata = meta ? Object.entries(meta) : [];
 
   if (id) {
-    metadata.unshift(["id", `#${id}`]);
+    metadata.unshift(["ID", `#${id}`]);
   }
 
   if (address) {
@@ -92,7 +93,7 @@ function BountyMetadata({ id, meta, address }) {
         break;
     }
 
-    return [key, normalizedValue];
+    return [upperFirst(key), normalizedValue];
   });
 
   return <KVList title="Metadata" data={normalized} showFold />;
