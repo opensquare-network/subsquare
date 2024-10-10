@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.3.1
+
+date: 2024-10-09
+
+- [Medium] Support various bounty actions.
+    - Support creating new child bounty on a bounty detail page.
+    - Support accepting curator on a bounty detail page.
+    - Support accepting curator on a child bounty detail page.
+    - Support proposing curator on a child bounty detail page.
+    - Show a tip to use Mimir for multisig actions.
+- Fellowship
+    - Hide vote participation rate for fellowship on profile page.
+    - Fix referenda title on fellowship core page.
+- Show JSON object when we can not parse treasury spend beneficiary as an address.
+- Show polkadot treasury value on hydration chain on the treasury status panel.
+- Refactor menu navigation component for 2nd level menu.
+- Stop fellowship members page auto refresh caused by block number increase.
+- Update polkadot/kusama decentralized voices cohort 2.
+- Fix UI style problems.
+
 ### 4.3.0
 
 date: 2024-09-29
