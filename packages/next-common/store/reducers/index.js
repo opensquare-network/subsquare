@@ -9,7 +9,6 @@ import cmdkReducer from "./cmdkSlice";
 import userReducer from "./userSlice";
 import fellowship from "./fellowship";
 import referenda from "./referenda";
-import navReducer from "./navSlice";
 import democracy from "./democracy";
 import layoutReducer from "./layoutSlice";
 import preImagesReducer from "./preImagesSlice";
@@ -28,7 +27,6 @@ export default combineReducers({
   gov2Referendum: gov2ReferendumReducer,
   cmdk: cmdkReducer,
   user: userReducer,
-  nav: navReducer,
   ...fellowship,
   ...referenda,
   ...democracy,
