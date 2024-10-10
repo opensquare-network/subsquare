@@ -95,6 +95,10 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   );
 }
 
+export function useSignerContext() {
+  return useContext(SignerContext);
+}
+
 export function useSignerAccount() {
   const value = useContext(SignerContext);
   return value?.signerAccount;
