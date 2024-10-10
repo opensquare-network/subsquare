@@ -18,7 +18,7 @@ function AccountItem({ disabled, account, onClick }) {
           "bg-neutral200 rounded-[8px]",
         )}
       >
-        <Account account={account} />
+        <Account account={account} showFullAddress />
       </div>
     );
   }
@@ -32,7 +32,7 @@ function AccountItem({ disabled, account, onClick }) {
       )}
       onClick={onClick}
     >
-      <Account account={account} />
+      <Account account={account} showFullAddress />
       <ArrowRight className="w-[20px] h-[20px] [&_path]:stroke-textTertiary group-hover:[&_path]:stroke-textSecondary" />
     </div>
   );
