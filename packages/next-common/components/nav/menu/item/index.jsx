@@ -14,6 +14,10 @@ export default function NavMenuItem({ collapsed, ...menu } = {}) {
     return <NavMenuDivider />;
   }
 
+  if (type === "subspace") {
+    return <NavMenuItemItem item={menu} collapsed={collapsed} />;
+  }
+
   if (items?.length) {
     return (
       <NavMenuItemGroup
