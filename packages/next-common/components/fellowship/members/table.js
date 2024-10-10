@@ -1,14 +1,8 @@
 import FellowshipRank from "next-common/components/fellowship/rank";
-import { useNavCollapsed } from "next-common/context/nav";
-import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
 import { isNil } from "lodash-es";
 import fellowshipMemberColumns from "./columns";
-
-function AddressCol({ address }) {
-  const [navCollapsed] = useNavCollapsed();
-  return <AddressUser maxWidth={navCollapsed ? 360 : 160} add={address} />;
-}
+import { AddressCol } from "next-common/components/collectives/members/table";
 
 export default function FellowshipMemberTable({ members = [] }) {
   const isLoading = isNil(members);
