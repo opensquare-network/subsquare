@@ -42,13 +42,8 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.preimages && preImages,
+    ...(modules?.coretime ? [{ type: "divider" }, coretimeMenu] : []),
   ].filter(Boolean);
-}
-
-function getIntegrationsMenu() {
-  const { modules } = getChainSettings(CHAIN);
-
-  return [modules?.coretime && coretimeMenu].filter(Boolean);
 }
 
 export function getMainMenu({
@@ -108,8 +103,6 @@ export function getMainMenu({
     }
   }
 
-  const integrationsMenu = getIntegrationsMenu();
-
   const moreMenu = getMoreMenu({ archivedMenu: archivedModulesMenu });
 
   return [
@@ -117,9 +110,6 @@ export function getMainMenu({
     { type: "divider" },
     ...activeModulesMenu,
     { type: "divider" },
-    integrationsMenu?.length && [...integrationsMenu, { type: "divider" }],
     moreMenu,
-  ]
-    .filter(Boolean)
-    .flat();
+  ];
 }
