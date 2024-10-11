@@ -10,6 +10,7 @@ export default function useQueryMyProxied() {
     }
     return nextApi.fetch("proxies", {
       delegatee: user?.address,
+      noDelay: true,
     });
   }, [user?.address]);
 
