@@ -4,7 +4,6 @@ import { store } from "next-common/store";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
 import { cn } from "next-common/utils";
 import isAssetHub from "next-common/utils/isAssetHub";
-import isPaseo from "next-common/utils/isPaseo";
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 
@@ -18,12 +17,11 @@ export function getMoreMenu({ archivedMenu = [] }) {
         name: "Calendar",
         pathname: "/calendar",
       },
-      !isPaseo() &&
-        space && {
-          value: "offChainVoting",
-          name: "Off-chain Voting",
-          pathname: `https://voting.opensquare.io/space/${space}`,
-        },
+      space && {
+        value: "offChainVoting",
+        name: "Off-chain Voting",
+        pathname: `https://voting.opensquare.io/space/${space}`,
+      },
       !isAssetHub() && {
         value: "navigation",
         name: "Navigation",

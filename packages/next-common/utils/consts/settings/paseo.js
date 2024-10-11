@@ -94,19 +94,11 @@ const paseo = {
   description:
     "The new Polkadot testnet replacing Rococo. Paseo is decentralised, stable, and community run.",
   modules: mergeChainModules({
-    democracy: {
-      archived: true,
-    },
     referenda: true,
     fellowship: false,
     treasury: {
+      spends: true,
       childBounties: true,
-    },
-    council: {
-      archived: true,
-    },
-    technicalCommittee: {
-      archived: true,
     },
   }),
   integrations: {
