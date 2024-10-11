@@ -55,7 +55,7 @@ function useOriginAccount() {
 function SwitchButton() {
   const user = useUser();
 
-  const { value: proxies } = useMyProxied();
+  const { proxies } = useMyProxied();
   const [showPopup, setShowPopup] = useState(false);
 
   if (!proxies.length && !user?.proxyAddress) {
@@ -78,12 +78,12 @@ function SwitchButton() {
 function ProxyHint({ proxyType }) {
   return (
     <div className="flex items-center gap-[8px] mt-[12px] pt-[12px] pl-[52px] border-neutral300 border-t text12Medium text-textSecondary">
-      <div className="bg-theme500 rounded-[10px] py-[2px] px-[8px] text-textPrimaryContrast">
-        Proxy
-      </div>
-      <span>{" · "}</span>
       {proxyType && (
         <>
+          <div className="bg-theme500 rounded-[10px] py-[2px] px-[8px] text-textPrimaryContrast">
+            Proxy
+          </div>
+          <span>{" · "}</span>
           {proxyType}
           <span>{" · "}</span>
         </>

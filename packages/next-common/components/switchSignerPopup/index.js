@@ -11,6 +11,8 @@ import { useMyProxied } from "next-common/context/proxy";
 import Tooltip from "../tooltip";
 import tw from "tailwind-styled-components";
 import Loading from "../loading";
+import { addressEllipsis } from "next-common/utils";
+import { useMemo } from "react";
 
 const DisabledAccountItemWrapper = tw.div`
   flex flex-col gap-[12px] p-[12px] pr-[16px]
@@ -112,10 +114,23 @@ function ProxyAddress({ proxyInfo }) {
   const onClose = usePopupOnClose();
   const { signerAccount, setProxyAddress } = useSignerContext();
   const extensionAccounts = useExtensionAccounts();
-  const account = extensionAccounts.find(
-    (item) => item.address === proxyInfo.delegator,
-  );
+
+  const account = useMemo(() => {
+    const extensionAccount = extensionAccounts.find(
+      (item) => item.address === proxyInfo.delegator,
+    );
+    if (extensionAccount) {
+      return extensionAccount;
+    }
+    return {
+      address: proxyInfo.delegator,
+      name: addressEllipsis(proxyInfo.delegator),
+      meta: signerAccount.meta,
+    };
+  }, [proxyInfo, extensionAccounts, signerAccount]);
+
   const disabled = signerAccount.proxyAddress === proxyInfo.delegator;
+
   return (
     <ProxyAccountItem
       disabled={disabled}
@@ -130,7 +145,7 @@ function ProxyAddress({ proxyInfo }) {
 }
 
 function ProxiedAccounts() {
-  const { value: proxies } = useMyProxied();
+  const { proxies, isLoading } = useMyProxied();
 
   let proxyList = (
     <div className="flex justify-center">
@@ -138,7 +153,7 @@ function ProxiedAccounts() {
     </div>
   );
 
-  if (proxies.length) {
+  if (!isLoading) {
     proxyList = (
       <div className="flex flex-col gap-[12px]">
         {proxies.map((proxy, index) => (
