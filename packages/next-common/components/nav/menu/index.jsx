@@ -23,7 +23,7 @@ export default function NavMenu() {
     if (router.pathname === "/") {
       setNavMenuView({ view: "main" });
     }
-  }, [router.pathname]);
+  }, [router.pathname, setNavMenuView]);
 
   const mainMenu = getMainMenu({
     tracks,
