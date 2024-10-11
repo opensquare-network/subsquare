@@ -147,13 +147,21 @@ function ProxyAddress({ proxyInfo }) {
 function ProxiedAccounts() {
   const { proxies, isLoading } = useMyProxied();
 
-  let proxyList = (
-    <div className="flex justify-center">
-      <Loading size={20} />
-    </div>
-  );
+  let proxyList = null;
 
-  if (!isLoading) {
+  if (isLoading) {
+    proxyList = (
+      <div className="flex justify-center">
+        <Loading size={20} />
+      </div>
+    );
+  } else if (!proxies.length) {
+    proxyList = (
+      <div className="flex justify-center text14Medium text-textTertiary">
+        No proxied accounts
+      </div>
+    );
+  } else {
     proxyList = (
       <div className="flex flex-col gap-[12px]">
         {proxies.map((proxy, index) => (
