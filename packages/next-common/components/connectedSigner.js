@@ -12,6 +12,7 @@ import { addressEllipsis } from "next-common/utils";
 import SwitchSignerPopup from "./switchSignerPopup";
 import useOnChainProxyInfo from "next-common/hooks/useOnChainProxy";
 import { useMyProxied } from "next-common/context/proxy";
+import Tooltip from "./tooltip";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
@@ -74,18 +75,27 @@ function SwitchButton() {
   );
 }
 
-export function ProxyHint({ proxyType }) {
+function ProxyHint({ proxyType }) {
   return (
-    <div className="mt-[12px] pt-[12px] pl-[52px] border-neutral300 border-t text14Medium text-textSecondary">
+    <div className="flex items-center gap-[8px] mt-[12px] pt-[12px] pl-[52px] border-neutral300 border-t text12Medium text-textSecondary">
+      <div className="bg-theme500 rounded-[10px] py-[2px] px-[8px] text-textPrimaryContrast">
+        Proxy
+      </div>
+      <span>{" · "}</span>
       {proxyType && (
         <>
-          <div className="inline-block rounded-[10px] py-[2px] px-[8px] border border-neutral400 text12Medium">
-            {proxyType}
-          </div>
-          {" · "}
+          {proxyType}
+          <span>{" · "}</span>
         </>
       )}
-      Your transaction will be submitted on behalf of this address.
+      <Tooltip
+        className="truncate"
+        content="Your transaction will be submitted on behalf of this address."
+      >
+        <div className="truncate">
+          Your transaction will be submitted on behalf of this address.
+        </div>
+      </Tooltip>
     </div>
   );
 }

@@ -10,7 +10,6 @@ import { usePopupOnClose } from "next-common/context/popup";
 import { useMyProxied } from "next-common/context/proxy";
 import Tooltip from "../tooltip";
 import tw from "tailwind-styled-components";
-import { ProxyHint } from "../connectedSigner";
 import Loading from "../loading";
 
 const DisabledAccountItemWrapper = tw.div`
@@ -37,6 +36,14 @@ function AccountDisplay({ account }) {
   return (
     <div className="flex gap-[12px] items-center">
       <Account account={account} showFullAddress />
+    </div>
+  );
+}
+
+function ProxyHint({ proxyType }) {
+  return (
+    <div className="mt-[12px] pt-[12px] pl-[52px] border-neutral300 border-t text12Medium text-textSecondary">
+      Proxy type: {proxyType}
     </div>
   );
 }
@@ -133,7 +140,7 @@ function ProxiedAccounts() {
 
   if (proxies.length) {
     proxyList = (
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-[12px]">
         {proxies.map((proxy, index) => (
           <ProxyAddress key={index} proxyInfo={proxy} />
         ))}

@@ -19,6 +19,7 @@ export function OnChainProxiesProvider({ children }) {
           delegator: key.args?.[0]?.toString(),
           delegatee: delegatee.delegate?.toString(),
           proxyType: delegatee.proxyType?.toString(),
+          delay: delegatee.delay?.toNumber(),
         })),
       ),
     );
@@ -45,7 +46,9 @@ export function useMyProxied() {
   const user = useUser();
 
   const value = useMemo(() => {
-    return proxies?.filter((proxy) => proxy.delegatee === user?.address);
+    return proxies?.filter(
+      (proxy) => proxy.delegatee === user?.address && proxy.delay === 0,
+    );
   }, [proxies, user]);
 
   return {
