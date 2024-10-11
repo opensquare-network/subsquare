@@ -16,7 +16,7 @@ function BountySidebar() {
     return null;
   }
 
-  const { status } = result?.unwrap?.() || {};
+  const { status } = result?.isSome && result?.unwrap?.() || {};
 
   const showActionTip =
     status?.isCuratorProposed || status?.isPendingPayout || status?.isActive;
