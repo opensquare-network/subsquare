@@ -107,7 +107,6 @@ const paseo = {
   integrations: {
     subscan: true,
   },
-  showNewTreasuryProposalButton: true,
   ...themeVars,
 };
 
