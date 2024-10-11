@@ -100,6 +100,9 @@ const paseo = {
       spends: true,
       childBounties: true,
     },
+    council: false,
+    democracy: false,
+    technicalCommittee: false,
   }),
   integrations: {
     subscan: true,
