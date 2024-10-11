@@ -4,10 +4,14 @@ import { store } from "next-common/store";
 import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
 import { cn } from "next-common/utils";
 import isAssetHub from "next-common/utils/isAssetHub";
+import { isPaseoChain } from "next-common/utils/chain";
+import { useChain } from "next-common/context/chain";
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 
 export function getMoreMenu({ archivedMenu = [] }) {
+  const chain = useChain();
+
   return {
     name: "More",
     icon: <MenuMore />,
@@ -17,11 +21,12 @@ export function getMoreMenu({ archivedMenu = [] }) {
         name: "Calendar",
         pathname: "/calendar",
       },
-      space && {
-        value: "offChainVoting",
-        name: "Off-chain Voting",
-        pathname: `https://voting.opensquare.io/space/${space}`,
-      },
+      !isPaseoChain(chain) &&
+        space && {
+          value: "offChainVoting",
+          name: "Off-chain Voting",
+          pathname: `https://voting.opensquare.io/space/${space}`,
+        },
       !isAssetHub() && {
         value: "navigation",
         name: "Navigation",
