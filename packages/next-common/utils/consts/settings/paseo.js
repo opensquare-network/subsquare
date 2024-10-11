@@ -98,7 +98,7 @@ const paseo = {
       archived: true,
     },
     referenda: true,
-    fellowship: true,
+    fellowship: false,
     treasury: {
       childBounties: true,
     },
