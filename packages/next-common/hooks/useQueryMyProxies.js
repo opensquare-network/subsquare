@@ -9,7 +9,7 @@ export default function useQueryMyProxied() {
       return [];
     }
     return nextApi.fetch("proxies", {
-      delegatee: "12osRLnDacGMGC2QtPm4QT3HLDQneKvWQderHeu1ZXdrAU37",
+      delegatee: user?.address,
     });
   }, [user?.address]);
 
