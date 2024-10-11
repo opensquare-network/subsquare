@@ -58,6 +58,10 @@ export function isRelayChain(chain) {
   return [Chains.polkadot, Chains.kusama, Chains.westend].includes(chain);
 }
 
+export function isPaseoChain(chain) {
+  return [Chains.paseo].includes(chain);
+}
+
 export function getAssetHubChain(chain) {
   if (isAssetHubChain(chain)) {
     return chain;
