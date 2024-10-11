@@ -167,7 +167,7 @@ function ProxiedAccounts() {
     <div className="flex flex-col gap-[12px]">
       <div className="text14Bold text-textPrimary">
         Proxied Accounts{" "}
-        <Tooltip content="Accounts that the connected account set a proxy"></Tooltip>
+        <Tooltip content="Delegators who set proxies to the connected account"></Tooltip>
       </div>
       {proxyList}
     </div>
