@@ -82,6 +82,7 @@ function AddressesTooltip({ addresses = [] }) {
             add={address}
             ellipsis={false}
             color="var(--textPrimaryContrast)"
+            addressClassName="!text-textPrimaryContrast"
             fontSize={12}
           />
         </li>
