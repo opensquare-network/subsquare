@@ -35,10 +35,10 @@ function PopupContent() {
     useSubBalanceInfo(address);
 
   const { meta } = useOnchainData();
-  const requestAmount = toPrecision(meta?.value, decimals);
+  const bountyValueWithDecimals = toPrecision(meta?.value, decimals);
 
   const { value: trackId, component: trackField } =
-    useAutoSelectTreasuryTrackField(requestAmount);
+    useAutoSelectTreasuryTrackField(bountyValueWithDecimals);
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);
   const proposalOrigin = useReferendaProposalOrigin(trackId);
