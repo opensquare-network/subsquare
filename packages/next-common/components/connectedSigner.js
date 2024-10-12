@@ -10,6 +10,9 @@ import {
 import { useUser } from "next-common/context/user";
 import { addressEllipsis } from "next-common/utils";
 import SwitchSignerPopup from "./switchSignerPopup";
+import useOnChainProxyInfo from "next-common/hooks/useOnChainProxy";
+import { useMyProxied } from "next-common/context/proxy";
+import Tooltip from "./tooltip";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
@@ -50,7 +53,15 @@ function useOriginAccount() {
 }
 
 function SwitchButton() {
+  const user = useUser();
+
+  const { proxies } = useMyProxied();
   const [showPopup, setShowPopup] = useState(false);
+
+  if (!proxies.length && !user?.proxyAddress) {
+    return null;
+  }
+
   return (
     <>
       <span
@@ -64,9 +75,39 @@ function SwitchButton() {
   );
 }
 
+function ProxyHint({ proxyType }) {
+  return (
+    <div className="flex items-center gap-[8px] mt-[12px] pt-[12px] pl-[52px] border-neutral300 border-t text12Medium text-textSecondary">
+      {proxyType && (
+        <>
+          <div className="bg-theme500 rounded-[10px] py-[2px] px-[8px] text-textPrimaryContrast">
+            Proxy
+          </div>
+          <span>{" · "}</span>
+          {proxyType}
+          <span>{" · "}</span>
+        </>
+      )}
+      <Tooltip
+        className="truncate"
+        content="Your transaction will be submitted on behalf of this address."
+      >
+        <div className="truncate">
+          Your transaction will be submitted on behalf of this address.
+        </div>
+      </Tooltip>
+    </div>
+  );
+}
+
+function ProxyHintForAddress({ address }) {
+  const proxyInfo = useOnChainProxyInfo(address);
+  const proxyType = proxyInfo?.proxyType?.toString();
+  return <ProxyHint proxyType={proxyType} />;
+}
+
 export default function ConnectedSigner() {
   const signerAccount = useSignerAccount();
-  const user = useUser();
   const originAccount = useOriginAccount();
 
   return (
@@ -78,12 +119,10 @@ export default function ConnectedSigner() {
           ) : (
             <EmptyAccount />
           )}
-          {user?.proxyAddress && <SwitchButton />}
+          <SwitchButton />
         </div>
         {signerAccount?.proxyAddress && (
-          <div className="mt-[12px] pt-[12px] pl-[52px] border-neutral300 border-t text14Medium text-textSecondary">
-            Your transactions will be submitted on behalf of this proxy address.
-          </div>
+          <ProxyHintForAddress address={signerAccount?.proxyAddress} />
         )}
       </div>
     </Wrapper>
