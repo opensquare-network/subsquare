@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   blockTimeSelector,
   setBlockTime,
+  setLatestHeight,
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
 import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
@@ -52,6 +53,7 @@ export function useSubscribeChainHead(api) {
       api.rpc.chain.subscribeNewHeads((header) => {
         const latestUnFinalizedHeight = header.number.toNumber();
         if (isMounted()) {
+          dispatch(setLatestHeight(latestUnFinalizedHeight));
           setChainState((val) => {
             return {
               ...val,

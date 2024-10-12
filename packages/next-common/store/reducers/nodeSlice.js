@@ -79,6 +79,9 @@ const nodeSlice = createSlice({
         if (node) node.delay = item.delay;
       });
     },
+    setNodeBlockHeight(state, { payload }) {
+      state.nodesHeight = payload;
+    },
   },
 });
 
@@ -86,7 +89,11 @@ export const currentNodeSelector = (state) => state.node?.currentNode;
 export const nodesSelector = (state) => state.node?.nodes;
 export const nodesHeightSelector = (state) => state.node?.nodesHeight;
 
-export const { setCurrentNode, removeCurrentNode, setNodesDelay } =
-  nodeSlice.actions;
+export const {
+  setCurrentNode,
+  removeCurrentNode,
+  setNodesDelay,
+  setNodeBlockHeight,
+} = nodeSlice.actions;
 
 export default nodeSlice.reducer;

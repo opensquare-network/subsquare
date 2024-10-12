@@ -17,6 +17,9 @@ const chainSlice = createSlice({
     setBlockTime(state, { payload }) {
       state.blockTime = payload;
     },
+    setLatestHeight(state, { payload }) {
+      state.latestHeight = payload || 0;
+    },
     setConvictionVotingLockPeriod(state, { payload }) {
       state.convictionVotingLockPeriod = payload;
     },
@@ -31,6 +34,7 @@ const chainSlice = createSlice({
 
 export const {
   setBlockTime,
+  setLatestHeight,
   setConvictionVotingLockPeriod,
   setDemocracyLockPeriod,
   setExistentialDeposit,
