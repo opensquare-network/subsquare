@@ -11,13 +11,13 @@ export default function useReferendaVotingBalance(api, address) {
       return {
         isLoading: loading,
         balance: null,
-      }
+      };
     }
 
     const balanceBig = result.data.free.toBigInt() + result.data.reserved.toBigInt();
     return {
       isLoading: loading,
       balance: balanceBig.toString(),
-    }
+    };
   }, [result, loading]);
 }
