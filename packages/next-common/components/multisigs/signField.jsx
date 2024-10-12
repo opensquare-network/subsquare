@@ -8,11 +8,25 @@ import { useMemo } from "react";
 import useMultiSig from "./hooks/useMultiSig";
 
 export default function MultisigSignField({ multisig = {} }) {
-  const { approvals, state } = multisig;
+  const { approvals, state, signatories, threshold } = multisig;
   const pathname = usePathname();
   const profileAddress = useProfileAddress();
   const realAddress = useRealAddress();
   const { component: MultiSigComponent } = useMultiSig(state?.name);
+
+  const isNeedSelfApprove = useMemo(() => {
+    if (!approvals || !signatories || state?.name !== "Approving") {
+      return false;
+    }
+
+    const hasNotApproved = !approvals.some((item) =>
+      isSameAddress(item, realAddress),
+    );
+    const isSignatory = signatories.includes(realAddress);
+    const isNeedSign = approvals.length < threshold;
+
+    return isSignatory && hasNotApproved && isNeedSign;
+  }, [approvals, realAddress, signatories, threshold]);
 
   const isApproved = useMemo(() => {
     if (pathname.startsWith("/user/")) {
@@ -38,7 +52,7 @@ export default function MultisigSignField({ multisig = {} }) {
   );
 
   // TODO
-  if (state?.name === "Approving" && !isApproved) {
+  if (isNeedSelfApprove) {
     content = MultiSigComponent;
   }
 
