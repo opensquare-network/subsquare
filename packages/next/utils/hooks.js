@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMountedState } from "react-use";
-import {
-  getAddressVote,
-  getAddressVotingBalance,
-} from "next-common/utils/referendumUtil";
+import { getAddressVotingBalance } from "next-common/utils/referendumUtil";
 
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
@@ -28,29 +25,4 @@ export function useAddressVotingBalance(api, address) {
       });
   }, [api, address, isMounted]);
   return [balance, isLoading];
-}
-
-export function useAddressVote(api, referendumIndex, address, updateTime) {
-  const [vote, setVote] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const isMounted = useMountedState();
-
-  useEffect(() => {
-    if (!api || !address) {
-      return;
-    }
-
-    setIsLoading(true);
-    getAddressVote(api, referendumIndex, address)
-      .then((vote) => {
-        if (isMounted()) {
-          setVote(vote);
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [api, referendumIndex, address, isMounted, updateTime]);
-
-  return [vote, isLoading];
 }
