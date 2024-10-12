@@ -59,8 +59,8 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
     <>
       <Signer
         balanceName="Available"
-        signerBalance={balance?.balance}
-        isSignerBalanceLoading={loading}
+        balance={balance?.balance}
+        isBalanceLoading={loading}
       />
       <BalanceField
         title="Curator Deposit"

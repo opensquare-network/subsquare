@@ -5,6 +5,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { useUser } from "next-common/context/user";

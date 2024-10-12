@@ -92,8 +92,8 @@ function PopupContent() {
   return (
     <>
       <Signer
-        signerBalance={signerBalance?.balance}
-        isSignerBalanceLoading={signerBalanceLoading}
+        balance={signerBalance?.balance}
+        isBalanceLoading={signerBalanceLoading}
         title="Origin"
       />
       {curatorSelect}
