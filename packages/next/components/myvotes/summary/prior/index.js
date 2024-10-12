@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { isNil } from "lodash-es";
-import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 import BigNumber from "bignumber.js";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import Tooltip from "next-common/components/tooltip";
@@ -28,7 +27,7 @@ const Expiration = styled.span`
 
 export default function PriorInfo({ prior }) {
   const { unlockAt, balance } = prior || {};
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(
     Math.abs(unlockAt - latestHeight),
   );

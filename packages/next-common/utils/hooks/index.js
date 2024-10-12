@@ -11,6 +11,7 @@ import BigNumber from "bignumber.js";
 import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 import useCurrentBlockHeightAndTime from "./useCurrentBlockHeightAndTime";
 import { estimateBlocksTime } from "..";
+import { useChainState } from "next-common/context/chain";
 
 const DEFAULT_TIME = new BN(6_000);
 
@@ -44,6 +45,7 @@ export function useBlockTime(api) {
 }
 
 export function useSubscribeChainHead(api) {
+  const [, setChainState] = useChainState();
   const isMounted = useMountedState();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -52,10 +54,16 @@ export function useSubscribeChainHead(api) {
         const latestUnFinalizedHeight = header.number.toNumber();
         if (isMounted()) {
           dispatch(setLatestHeight(latestUnFinalizedHeight));
+          setChainState((val) => {
+            return {
+              ...val,
+              latestHeight: latestUnFinalizedHeight,
+            };
+          });
         }
       });
     }
-  }, [api, dispatch, isMounted]);
+  }, [api, dispatch, isMounted, setChainState]);
 }
 
 export function useEstimateTimestampAtBlockHeight(blockHeight) {

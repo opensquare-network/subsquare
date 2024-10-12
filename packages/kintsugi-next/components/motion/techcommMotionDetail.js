@@ -24,7 +24,7 @@ import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 const TimelineMotionEnd = styled.div`
@@ -104,7 +104,7 @@ export default function TechcommMotionDetail({ motion }) {
   const isEdit = useSelector(isEditingPostSelector);
   const setIsEdit = useSetEdit();
   const motionEndHeight = motion.onchainData?.voting?.end;
-  const blockHeight = useSelector(chainOrScanHeightSelector);
+  const blockHeight = useBlockHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight,
   );

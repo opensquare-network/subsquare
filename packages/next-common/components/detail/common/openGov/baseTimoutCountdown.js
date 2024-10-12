@@ -1,13 +1,12 @@
-import { useSelector } from "react-redux";
 import { useOnchainData } from "next-common/context/post";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import CountDown from "next-common/components/_CountDown";
 import React from "react";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 
 export default function BaseTimeoutCountdown({ timeout }) {
-  const now = useSelector(chainOrScanHeightSelector);
+  const now = useBlockHeight();
   const onchain = useOnchainData();
   const submitted = onchain.info?.submitted;
   const timeoutAt = submitted + timeout || 0;

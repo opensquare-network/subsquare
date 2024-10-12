@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
 import useSalaryFellowshipPeriods from "./useSalaryFellowshipPeriods";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 import { isNil } from "lodash-es";
 
 export function useIsInSalaryRegistrationPeriod(status) {
   const { registrationPeriod } = useSalaryFellowshipPeriods();
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
 
   if (isNil(latestHeight) || isNil(status) || isNil(registrationPeriod)) {
     return false;

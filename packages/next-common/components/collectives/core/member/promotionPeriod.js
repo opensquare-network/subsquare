@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { isNil } from "lodash-es";
-import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
 import Tooltip from "next-common/components/tooltip";
@@ -14,7 +13,7 @@ import {
 } from "next-common/utils/collective/demotionAndPromotion";
 
 export function usePromotionPeriod({ lastPromotion, rank, params = {} }) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
   return useMemo(() => {
     const promotionPeriod = getPromotionPeriod(rank, params);
     const gone = latestHeight - lastPromotion;

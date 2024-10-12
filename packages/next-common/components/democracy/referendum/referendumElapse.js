@@ -1,10 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { referendumVoteFinishedStatusArray } from "../../../utils/democracy/referendum";
 import { useEstimateBlocksTime } from "../../../utils/hooks";
 import CountDown from "../../_CountDown";
 import { bigNumber2Locale } from "../../../utils";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 
 function getMeta(onchain) {
   if (onchain.meta) {
@@ -23,7 +22,7 @@ function getMeta(onchain) {
 }
 
 export default function ReferendumElapse({ detail }) {
-  const blockHeight = useSelector(chainOrScanHeightSelector);
+  const blockHeight = useBlockHeight();
   const onchain = detail?.onchainData;
   const timeline = onchain.timeline || [];
   const isFinished = (timeline || []).some((item) =>

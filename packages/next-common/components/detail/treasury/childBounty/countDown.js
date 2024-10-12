@@ -1,12 +1,11 @@
 import React from "react";
 import { NoticeWrapper } from "../../../styled/containers/titleContainer";
 import TreasuryCountDown from "../../../treasury/common/countdown";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { useSelector } from "react-redux";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 import { isNil } from "lodash-es";
 
 export default function ChildBountyCountDown({ data = {} }) {
-  const chainHeight = useSelector(chainOrScanHeightSelector);
+  const chainHeight = useBlockHeight();
   if (data.state?.state !== "PendingPayout" || isNil(chainHeight)) {
     return null;
   }

@@ -1,16 +1,33 @@
-import { createContext, useContext, useMemo } from "react";
+import { useMemo } from "react";
 import getChainSettings from "../utils/consts/settings";
+import { CHAIN, defaultBlockTime } from "next-common/utils/constants";
+import { createStateContext } from "react-use";
 
-const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
+const [useChainState, ChainStateProvider] = createStateContext({});
 
-export default function ChainProvider({ chain, children }) {
+export { useChainState };
+
+export default function ChainProvider({ chain = CHAIN, children }) {
+  const initialValue = {
+    chain,
+    blockTime: getChainSettings(chain).blockTime || defaultBlockTime,
+    scanHeight: null,
+    latestHeight: null,
+    convictionVotingLockPeriod: null,
+    democracyLockPeriod: null,
+    existentialDeposit: null,
+  };
+
   return (
-    <ChainContext.Provider value={chain}>{children}</ChainContext.Provider>
+    <ChainStateProvider initialValue={initialValue}>
+      {children}
+    </ChainStateProvider>
   );
 }
 
 export function useChain() {
-  return useContext(ChainContext);
+  const [{ chain }] = useChainState();
+  return chain;
 }
 
 export function useChainSettings(blockHeight = null) {
