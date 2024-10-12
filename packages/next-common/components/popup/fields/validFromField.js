@@ -8,8 +8,7 @@ import {
   WarningMessage,
 } from "next-common/components/setting/styled";
 import { SystemWarning } from "@osn/icons/subsquare";
-import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 import BigNumber from "bignumber.js";
 import { useDebounce } from "react-use";
 
@@ -66,7 +65,7 @@ function ValidFromFieldWarning() {
 export default function ValidFromField({ title = "", value, setValue }) {
   const [isEditable, setIsEditable] = useState(false);
   const [shouldShowWarning, setShouldShowWarning] = useState(false);
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
 
   useEffect(() => {
     setValue(isEditable ? "" : "None");

@@ -1,8 +1,7 @@
 import { useOnchainData, usePostStateInfo } from "next-common/context/post";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { isNil } from "lodash-es";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 import { useTrack } from "next-common/context/post/gov2/track";
 
 function useEnactmentHeight(confirmedAt) {
@@ -31,7 +30,7 @@ function useEnactmentHeight(confirmedAt) {
 }
 
 export default function useEnactmentPercentage() {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
   const stateInfo = usePostStateInfo();
   const { indexer: { blockHeight: confirmedAt = 0 } = {} } = stateInfo || {};
   const when = useEnactmentHeight(confirmedAt);

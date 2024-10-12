@@ -1,5 +1,4 @@
 import { useSubmittedAt } from "next-common/context/post/gov2/referendum";
-import { useSelector } from "react-redux";
 import { usePreparation } from "next-common/context/post/gov2/track";
 import { useEffect, useState } from "react";
 import { isNil } from "lodash-es";
@@ -13,10 +12,10 @@ import Progress from "next-common/components/progress";
 import { usePrepareRemaining } from "./remaining";
 import Remaining from "next-common/components/remaining";
 import TimeDuration from "next-common/components/TimeDuration";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 
 export default function PreparationProgress() {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
   const submittedAt = useSubmittedAt();
   const prepareBlocks = usePreparation();
   const remaining = usePrepareRemaining();

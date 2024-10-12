@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useMountedState } from "react-use";
 import { getVotingBalance } from "./escrow/votingBalance";
-import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
@@ -38,7 +37,7 @@ export function useAddressVotingBalance(api, address) {
 
 export function useLatestAddressVotingBalance(api, address) {
   const [balance, isLoading, refresh] = useAddressVotingBalance(api, address);
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
 
   useEffect(() => {
     refresh();

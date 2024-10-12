@@ -3,13 +3,12 @@ import { useState } from "react";
 import { isSameAddress } from "next-common/utils";
 import PrimaryButton from "next-common/lib/button/primary";
 import TipperList from "./tipperList";
-import { useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTipIsFinished from "next-common/context/post/treasury/tip/isFinished";
 import { useOnchainData } from "next-common/context/post";
 import { useChainSettings } from "next-common/context/chain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 
@@ -40,7 +39,7 @@ export default function Tipper() {
   const [showRetractTipPopup, setShowRetractTipPopup] = useState(false);
   const tipIsFinal = useTipIsFinished();
   const { isMember } = useIsCollectiveMember();
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
   const { hideActionButtons } = useChainSettings();
 
   const closeFromHeight = chainData.meta?.closes;

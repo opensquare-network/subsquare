@@ -1,7 +1,7 @@
 import { isNil } from "lodash-es";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
 import { useMemo } from "react";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import {
@@ -20,7 +20,7 @@ import ShallowLink from "next-common/components/shallowLink";
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
 function useAvailablePromotionCount() {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
   const { coreMembers, isLoading } = useCoreMembersWithRankContext();
   const params = useCoreFellowshipParams();
 
@@ -46,7 +46,7 @@ function useDemotionExpirationCounts() {
   const { coreMembers, isLoading } = useCoreMembersWithRankContext();
   const params = useCoreFellowshipParams();
 
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
   const blockTime = useSelector(blockTimeSelector);
 
   const { members: membersCount, candidates: candidatesCount } = useMemo(() => {

@@ -1,5 +1,4 @@
-import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 import { useMemo, useState } from "react";
 import Popup from "./popup";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
@@ -7,7 +6,7 @@ import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
 export default function CoreFellowshipBump({ member }) {
   const { address, rank, status: { lastProof } = {} } = member || {};
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useBlockHeight();
   const params = useCoreFellowshipParams();
   const demotionPeriod = useMemo(() => {
     return rank <= 0
