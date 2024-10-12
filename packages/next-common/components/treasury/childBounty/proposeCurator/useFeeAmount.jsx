@@ -8,7 +8,7 @@ import BigNumber from "bignumber.js";
 
 function checkFeeAmount({ feeAmount, decimals, balance }) {
   if (!feeAmount) {
-    throw new Error("Please fill the fee");
+    throw new Error("Fee is required");
   }
 
   const amount = new BigNumber(feeAmount).times(Math.pow(10, decimals));

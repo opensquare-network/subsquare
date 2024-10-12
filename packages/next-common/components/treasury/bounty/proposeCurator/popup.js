@@ -62,7 +62,7 @@ function PopupContent() {
 
   const getTxFunc = useCallback(() => {
     if (!curator) {
-      dispatch(newErrorToast("Please enter the curator address"));
+      dispatch(newErrorToast("Curator address is required"));
       return;
     }
 
