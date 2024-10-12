@@ -45,7 +45,7 @@ const shibuya = {
   navLogoDark: ProjectLogoShibuyaDark,
   navPreferDark: true,
   links: astarLinks,
-  group: MenuGroups.Solochain,
+  group: MenuGroups.Testnet,
   postLabels: defaultPostLabels,
   description: "Shibuya is the testnet of Shiden (a sister chain of Astar).",
   modules: mergeChainModules({
