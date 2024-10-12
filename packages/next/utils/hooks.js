@@ -7,23 +7,25 @@ import {
 
 export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const isMounted = useMountedState();
   useEffect(() => {
-    if (api && address) {
-      setIsLoading(true);
-      getAddressVotingBalance(api, address)
-        .then((value) => {
-          if (isMounted()) {
-            setBalance(value);
-          }
-        })
-        .finally(() => {
-          if (isMounted()) {
-            setIsLoading(false);
-          }
-        });
+    if (!api || !address) {
+      return;
     }
+
+    setIsLoading(true);
+    getAddressVotingBalance(api, address)
+      .then((value) => {
+        if (isMounted()) {
+          setBalance(value);
+        }
+      })
+      .finally(() => {
+        if (isMounted()) {
+          setIsLoading(false);
+        }
+      });
   }, [api, address, isMounted]);
   return [balance, isLoading];
 }
