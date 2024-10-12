@@ -24,14 +24,14 @@ export default function PostListTreasuryAllSpends({ allSpends }) {
     const { amount, type, symbol } = resolvedSpends[0];
 
     return (
-      <span className="text-textPrimary">
+      <div className="text-textPrimary">
         <TreasurySpendValueDisplay
           className={cn("text14Medium")}
           type={type}
           amount={amount}
           symbol={symbol}
         />
-      </span>
+      </div>
     );
   }
 
