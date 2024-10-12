@@ -26,7 +26,7 @@ const development = {
   endpoints: defaultNodes,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
-  group: MenuGroups.Solochain,
+  group: MenuGroups.Testnet,
   blockTime: 3000,
   postLabels: defaultPostLabels,
   modules: mergeChainModules({

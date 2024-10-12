@@ -89,7 +89,7 @@ const paseo = {
   navLogoDark: ProjectLogoPaseoDark,
   navPreferDark: true,
   links,
-  group: MenuGroups.Solochain,
+  group: MenuGroups.Testnet,
   postLabels: defaultPostLabels,
   description:
     "The new Polkadot testnet replacing Rococo. Paseo is decentralised, stable, and community run.",

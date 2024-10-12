@@ -62,7 +62,7 @@ const zkverifyTestnet = {
   navLogoDark: ProjectLogoZkverifyDark,
   navPreferDark: true,
   links,
-  group: MenuGroups.Solochain,
+  group: MenuGroups.Testnet,
   postLabels: [],
   showAccountManagementTab: false,
   description: "The modular blockchain for ZK proof verification.",

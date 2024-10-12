@@ -48,6 +48,11 @@ export default function NetworkOptions({ activeNode, setShow }) {
         activeNode={activeNode}
         setShow={setShow}
       />
+      <NetworkOptionGroup
+        groupName={MenuGroups.Testnet}
+        activeNode={activeNode}
+        setShow={setShow}
+      />
     </Options>
   );
 }
