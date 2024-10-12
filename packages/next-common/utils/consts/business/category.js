@@ -31,6 +31,7 @@ export const listPageCategory = {
   REFERENDA: "referenda",
   FELLOWSHIP_REFERENDA: "fellowship",
   AMBASSADOR_REFERENDA: "ambassador/referenda",
+  TREASURY_BOUNTY: "treasury/bounties",
 };
 
 export const detailPageCategory = {

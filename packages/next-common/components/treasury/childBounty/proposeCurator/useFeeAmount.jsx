@@ -8,7 +8,7 @@ import BigNumber from "bignumber.js";
 
 function checkFeeAmount({ feeAmount, decimals, balance }) {
   if (!feeAmount) {
-    throw new Error("Please fill the fee");
+    throw new Error("Fee is required");
   }
 
   const amount = new BigNumber(feeAmount).times(Math.pow(10, decimals));
@@ -16,7 +16,7 @@ function checkFeeAmount({ feeAmount, decimals, balance }) {
     throw new Error("Invalid fee");
   }
   if (balance && amount.gte(balance)) {
-    throw new Error("Fee should be less than child bounty value");
+    throw new Error("Fee should be less than the max available");
   }
 
   return amount.toFixed();
