@@ -19,9 +19,12 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import SubmissionDeposit from "next-common/components/summary/newProposalPopup/submissionDeposit";
 import { useReferendaProposalOrigin } from "next-common/components/summary/newProposalPopup";
 import { toPrecision } from "next-common/utils";
+import { getEventData } from "next-common/utils/sendTransaction";
+import { useRouter } from "next/router";
 
 function PopupContent() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const onClose = usePopupOnClose();
   const { decimals, symbol } = useChainSettings();
   const api = useContextApi();
@@ -105,6 +108,14 @@ function PopupContent() {
         <TxSubmissionButton
           title="Confirm"
           getTxFunc={getTxFunc}
+          onInBlock={(events) => {
+            const eventData = getEventData(events, "referenda", "Submitted");
+            if (!eventData) {
+              return;
+            }
+            const [referendumIndex] = eventData;
+            router.push(`/referenda/${referendumIndex}`);
+          }}
           onClose={onClose}
         />
       </div>
