@@ -6,6 +6,7 @@ import useProfileAddress from "next-common/components/profile/useProfileAddress"
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
 import SignApprove from "./signApprove";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 
 function ApprovedTooltip() {
   return (
@@ -63,5 +64,9 @@ export default function MultisigSignField({ multisig = {} }) {
   }
   // TODO: SignCancel
 
-  return <div className="flex items-center justify-end gap-x-2">{content}</div>;
+  return (
+    <SignerPopupWrapper>
+      <div className="flex items-center justify-end gap-x-2">{content}</div>
+    </SignerPopupWrapper>
+  );
 }
