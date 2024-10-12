@@ -21,6 +21,7 @@ import { useReferendaProposalOrigin } from "next-common/components/summary/newPr
 import { toPrecision } from "next-common/utils";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
+import { InfoMessage } from "next-common/components/setting/styled";
 
 function PopupContent() {
   const dispatch = useDispatch();
@@ -44,15 +45,15 @@ function PopupContent() {
   const proposalOrigin = useReferendaProposalOrigin(trackId);
 
   const { bountyIndex, address: bountyAddress } = useOnchainData();
-  const { balance: metadataBalance, isLoading: metadataBalanceLoading } =
+  const { balance: bountyBalance, isLoading: bountyBalanceLoading } =
     useSubAddressBalance(bountyAddress);
 
   const { getCheckedValue: getCheckedFee, component: feeField } = useFeeAmount({
-    balance: metadataBalance,
+    balance: bountyBalance,
     decimals,
     symbol,
     address,
-    isLoading: metadataBalanceLoading,
+    isLoading: bountyBalanceLoading,
   });
 
   const { value: curator, component: curatorSelect } = useAddressComboField({
@@ -61,7 +62,7 @@ function PopupContent() {
 
   const getTxFunc = useCallback(() => {
     if (!curator) {
-      dispatch(newErrorToast("Please enter the recipient address"));
+      dispatch(newErrorToast("Please enter the curator address"));
       return;
     }
 
@@ -98,7 +99,12 @@ function PopupContent() {
       />
       {curatorSelect}
       {feeField}
-      {trackField}
+      <div className="flex flex-col gap-[8px]">
+        {trackField}
+        <InfoMessage>
+          A referendum will be created for curator proposing.
+        </InfoMessage>
+      </div>
       <AdvanceSettings>
         {enactmentField}
         <SubmissionDeposit />

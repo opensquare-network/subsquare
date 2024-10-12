@@ -1,5 +1,4 @@
 import PrimaryButton from "next-common/lib/button/primary";
-import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import BountyProposeCuratorPopup from "./popup";
 import { useOnchainData } from "next-common/context/post";
@@ -16,11 +15,9 @@ export default function BountyProposeCuratorButton() {
 
   return (
     <>
-      <Tooltip content={"There will be a referendum created"}>
-        <PrimaryButton className="w-full" onClick={() => setShowPopup(true)}>
-          Propose Curator
-        </PrimaryButton>
-      </Tooltip>
+      <PrimaryButton className="w-full" onClick={() => setShowPopup(true)}>
+        Propose Curator
+      </PrimaryButton>
 
       {showPopup && (
         <BountyProposeCuratorPopup onClose={() => setShowPopup(false)} />
