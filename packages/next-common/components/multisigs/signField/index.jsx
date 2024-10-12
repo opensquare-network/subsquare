@@ -5,14 +5,33 @@ import { usePathname } from "next/navigation";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
-import useMultiSig from "./hooks/useMultiSig";
+import SignApprove from "./signApprove";
+
+function ApprovedTooltip() {
+  return (
+    <Tooltip content="You approved this multisig">
+      <span className="inline-flex p-1.5">
+        <SystemVoteAye className="w-4 h-4" />
+      </span>
+    </Tooltip>
+  );
+}
+
+function NotApprovedTooltip() {
+  return (
+    <Tooltip content="You didn't sign this multisig">
+      <span className="inline-flex p-1.5">
+        <SystemVoteAbstain className="w-4 h-4" />
+      </span>
+    </Tooltip>
+  );
+}
 
 export default function MultisigSignField({ multisig = {} }) {
   const { approvals, state, signatories, threshold } = multisig;
   const pathname = usePathname();
   const profileAddress = useProfileAddress();
   const realAddress = useRealAddress();
-  const { component: MultiSigComponent } = useMultiSig(state?.name);
 
   const isNeedSelfApprove = useMemo(() => {
     if (!approvals || !signatories || state?.name !== "Approving") {
@@ -26,7 +45,7 @@ export default function MultisigSignField({ multisig = {} }) {
     const isNeedSign = approvals.length < threshold;
 
     return isSignatory && hasNotApproved && isNeedSign;
-  }, [approvals, realAddress, signatories, threshold]);
+  }, [approvals, realAddress, signatories, threshold, state?.name]);
 
   const isApproved = useMemo(() => {
     if (pathname.startsWith("/user/")) {
@@ -37,24 +56,12 @@ export default function MultisigSignField({ multisig = {} }) {
     return approvals?.some((item) => isSameAddress(item, realAddress));
   }, [approvals, pathname, profileAddress, realAddress]);
 
-  let content = isApproved ? (
-    <Tooltip content="You approved this multisig">
-      <span className="inline-flex p-1.5">
-        <SystemVoteAye className="w-4 h-4" />
-      </span>
-    </Tooltip>
-  ) : (
-    <Tooltip content="You didn't sign this multisig">
-      <span className="inline-flex p-1.5">
-        <SystemVoteAbstain className="w-4 h-4" />
-      </span>
-    </Tooltip>
-  );
+  let content = isApproved ? <ApprovedTooltip /> : <NotApprovedTooltip />;
 
-  // TODO
   if (isNeedSelfApprove) {
-    content = MultiSigComponent;
+    content = <SignApprove multisig={multisig} />;
   }
+  // TODO: SignCancel
 
   return <div className="flex items-center justify-end gap-x-2">{content}</div>;
 }
