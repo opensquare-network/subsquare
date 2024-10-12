@@ -1,10 +1,8 @@
 import { SystemSignature } from "@osn/icons/subsquare";
 import styled, { css } from "styled-components";
 import { useContextApi } from "next-common/context/api";
-// import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useCallback, useState } from "react";
-// import { useDispatch } from "react-redux";
+import { useCallback } from "react";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 
 export const Wrapper = styled.div`
@@ -31,9 +29,7 @@ export const Wrapper = styled.div`
 `;
 
 export default function SignApprove({ multisig = {} }) {
-  const [isDisabled, setIsDisabled] = useState(false);
   const api = useContextApi();
-  // const dispatch = useDispatch();
   const address = useRealAddress();
   const { threshold, signatories, when: maybeTimepoint, callHash } = multisig;
 
@@ -41,8 +37,6 @@ export default function SignApprove({ multisig = {} }) {
     if (!api || !address) {
       return;
     }
-
-    setIsDisabled(true);
 
     const otherSignatories = signatories.filter((item) => item !== address);
     const maxWeight = {
@@ -58,18 +52,18 @@ export default function SignApprove({ multisig = {} }) {
       maxWeight,
     );
   }, [api, address, threshold, signatories, callHash, maybeTimepoint]);
-  // TODO
-  // reload page data
+
+  // TODO: reload page data
   const onInBlock = () => {};
 
-  const { doSubmit } = useTxSubmission({
+  const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
     onInBlock,
     onFinalized: onInBlock,
   });
 
   return (
-    <Wrapper disabled={isDisabled}>
+    <Wrapper disabled={isSubmitting}>
       <SystemSignature className="w-4 h-4" onClick={doSubmit} />
     </Wrapper>
   );
