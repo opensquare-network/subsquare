@@ -1,0 +1,125 @@
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import Signer from "next-common/components/popup/fields/signerField";
+import PopupWithSigner from "next-common/components/popupWithSigner";
+import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import { useOnchainData } from "next-common/context/post";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useCallback } from "react";
+import useFeeAmount from "../../childBounty/proposeCurator/useFeeAmount";
+import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
+import { useDispatch } from "react-redux";
+import { useContextApi } from "next-common/context/api";
+import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
+import { useChainSettings } from "next-common/context/chain";
+import { usePopupOnClose } from "next-common/context/popup";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import useAutoSelectTreasuryTrackField from "next-common/components/summary/newProposalQuickStart/common/useAutoSelectTreasuryTrackField";
+import useEnactmentBlocksField from "next-common/components/summary/newProposalQuickStart/common/useEnactmentBlocksField";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import SubmissionDeposit from "next-common/components/summary/newProposalPopup/submissionDeposit";
+import { useReferendaProposalOrigin } from "next-common/components/summary/newProposalPopup";
+import { toPrecision } from "next-common/utils";
+
+function PopupContent() {
+  const dispatch = useDispatch();
+  const onClose = usePopupOnClose();
+  const { decimals, symbol } = useChainSettings();
+  const api = useContextApi();
+
+  const signerAccount = useSignerAccount();
+  const address = signerAccount?.realAddress;
+  const { value: signerBalance, loading: signerBalanceLoading } =
+    useSubBalanceInfo(address);
+
+  const { meta } = useOnchainData();
+  const requestAmount = toPrecision(meta?.value, decimals);
+
+  const { value: trackId, component: trackField } =
+    useAutoSelectTreasuryTrackField(requestAmount);
+  const { value: enactment, component: enactmentField } =
+    useEnactmentBlocksField(trackId);
+  const proposalOrigin = useReferendaProposalOrigin(trackId);
+
+  const { bountyIndex, address: bountyAddress } = useOnchainData();
+  const { balance: metadataBalance, isLoading: metadataBalanceLoading } =
+    useSubAddressBalance(bountyAddress);
+
+  const { getCheckedValue: getCheckedFee, component: feeField } = useFeeAmount({
+    balance: metadataBalance,
+    decimals,
+    symbol,
+    address,
+    isLoading: metadataBalanceLoading,
+  });
+
+  const { value: curator, component: curatorSelect } = useAddressComboField({
+    title: "Curator",
+  });
+
+  const getTxFunc = useCallback(() => {
+    if (!curator) {
+      dispatch(newErrorToast("Please enter the recipient address"));
+      return;
+    }
+
+    let fee;
+    try {
+      fee = getCheckedFee();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+      return;
+    }
+
+    const proposal = api.tx.bounties?.proposeCurator(bountyIndex, curator, fee);
+    return api.tx.referenda.submit(
+      proposalOrigin,
+      { Inline: proposal.method.toHex() },
+      enactment,
+    );
+  }, [
+    curator,
+    getCheckedFee,
+    bountyIndex,
+    api,
+    dispatch,
+    proposalOrigin,
+    enactment,
+  ]);
+
+  return (
+    <>
+      <Signer
+        signerBalance={signerBalance?.balance}
+        isSignerBalanceLoading={signerBalanceLoading}
+        title="Origin"
+      />
+      {curatorSelect}
+      {feeField}
+      {trackField}
+      <AdvanceSettings>
+        {enactmentField}
+        <SubmissionDeposit />
+      </AdvanceSettings>
+
+      <div className="flex justify-end">
+        <TxSubmissionButton
+          title="Confirm"
+          getTxFunc={getTxFunc}
+          onClose={onClose}
+        />
+      </div>
+    </>
+  );
+}
+
+export default function BountyProposeCuratorPopup({ onClose }) {
+  return (
+    <PopupWithSigner
+      title="Propose Curator"
+      className="!w-[640px]"
+      onClose={onClose}
+    >
+      <PopupContent />
+    </PopupWithSigner>
+  );
+}

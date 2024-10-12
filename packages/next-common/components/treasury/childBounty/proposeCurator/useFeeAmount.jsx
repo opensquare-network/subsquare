@@ -16,7 +16,7 @@ function checkFeeAmount({ feeAmount, decimals, balance }) {
     throw new Error("Invalid fee");
   }
   if (balance && amount.gte(balance)) {
-    throw new Error("Fee should be less than child bounty value");
+    throw new Error("Fee should be less than the max available");
   }
 
   return amount.toFixed();
