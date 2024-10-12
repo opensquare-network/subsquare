@@ -4,6 +4,7 @@ import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback } from "react";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
+import { useMultisigContext } from "../multisigContext";
 
 export const Wrapper = styled.div`
   display: inline-flex;
@@ -31,6 +32,7 @@ export const Wrapper = styled.div`
 export default function SignApprove({ multisig = {} }) {
   const api = useContextApi();
   const address = useRealAddress();
+  const { setIsNeedReload } = useMultisigContext();
   const { threshold, signatories, when: maybeTimepoint, callHash } = multisig;
 
   const getTxFunc = useCallback(() => {
@@ -53,8 +55,9 @@ export default function SignApprove({ multisig = {} }) {
     );
   }, [api, address, threshold, signatories, callHash, maybeTimepoint]);
 
-  // TODO: reload page data
-  const onInBlock = () => {};
+  const onInBlock = () => {
+    setIsNeedReload(true);
+  };
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
