@@ -19,7 +19,7 @@ async function fetchDemocracyVotes10Times(api, dispatch, referendumIndex) {
     defaultBlockTime;
   const timers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   // eslint-disable-next-line no-unused-vars
-  for (const timer of timers) {
+  for (const _timer of timers) {
     dispatch(fetchVotes(api, referendumIndex));
     await sleep(blockTime);
   }

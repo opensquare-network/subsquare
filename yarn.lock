@@ -5890,6 +5890,7 @@ __metadata:
     dayjs: ^1.10.7
     eslint: ^8.44.0
     eslint-config-next: ^13.3.0
+    eslint-plugin-unused-imports: ^4.1.4
     http-proxy: ^1.18.1
     lodash-es: ^4.17.21
     next: ^14.2.13
@@ -5926,6 +5927,7 @@ __metadata:
     dayjs: ^1.10.7
     eslint: ^8.44.0
     eslint-config-next: ^13.3.0
+    eslint-plugin-unused-imports: ^4.1.4
     http-proxy: ^1.18.1
     localforage: ^1.10.0
     lodash-es: ^4.17.21
@@ -10187,6 +10189,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-unused-imports@npm:^4.1.4":
+  version: 4.1.4
+  resolution: "eslint-plugin-unused-imports@npm:4.1.4"
+  peerDependencies:
+    "@typescript-eslint/eslint-plugin": ^8.0.0-0 || ^7.0.0 || ^6.0.0 || ^5.0.0
+    eslint: ^9.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    "@typescript-eslint/eslint-plugin":
+      optional: true
+  checksum: 1f4ce3e3972699345513840f3af1b783033dbc3a3e85b62ce12b3f6a89fd8c92afe46d0c00af40bacb14465445983ba0ccc326a6fd5132553061fb0e47bcba19
+  languageName: node
+  linkType: hard
+
 "eslint-scope@npm:5.1.1":
   version: 5.1.1
   resolution: "eslint-scope@npm:5.1.1"
@@ -13434,6 +13449,7 @@ __metadata:
     eslint: ^8.44.0
     eslint-plugin-react: ^7.31.11
     eslint-plugin-react-hooks: ^4.6.2
+    eslint-plugin-unused-imports: ^4.1.4
     ethereum-blockies-base64: ^1.0.2
     ethers: 5.7.0
     framer-motion: ^11.2.10
