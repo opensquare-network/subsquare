@@ -49,65 +49,6 @@ export async function getAddressVotingBalance(api, address) {
   return jsonAccount?.data?.free;
 }
 
-export async function getAddressVote(api, referendumIndex, address) {
-  if (!api.query.democracy.votingOf) {
-    return null;
-  }
-  const voting = await api.query.democracy?.votingOf(address);
-  const jsonVoting = voting?.toJSON();
-  if (!jsonVoting) {
-    return null;
-  }
-
-  // For the direct vote, just return the vote.
-  if (jsonVoting.direct) {
-    const vote = (jsonVoting.direct.votes || []).find(
-      (vote) => vote[0] === referendumIndex,
-    )?.[1];
-
-    return {
-      ...vote,
-      delegations: jsonVoting.direct.delegations,
-    };
-  }
-
-  // If the address has delegated to other.
-  if (jsonVoting.delegating) {
-    // Then, look into the votes of the delegating target address.
-    const { target, conviction } = jsonVoting.delegating;
-    const proxyVoting = await api.query.democracy?.votingOf(target);
-    const jsonProxyVoting = proxyVoting?.toJSON();
-
-    const vote = (jsonProxyVoting?.direct?.votes || []).find(
-      (vote) => vote[0] === referendumIndex,
-    )?.[1];
-
-    if (!vote?.standard) {
-      return {
-        delegating: {
-          ...jsonVoting.delegating,
-          conviction: Conviction[conviction],
-          voted: false,
-        },
-      };
-    }
-
-    // If the delegating target address has standard vote on this referendum,
-    // means this address has voted on this referendum.
-    const aye = isAye(vote.standard.vote);
-    return {
-      delegating: {
-        ...jsonVoting.delegating,
-        conviction: Conviction[conviction],
-        voted: true,
-        aye,
-      },
-    };
-  }
-
-  return null;
-}
-
 export function calcPassing(referendumInfo, totalIssuance) {
   if (!referendumInfo) {
     return false;

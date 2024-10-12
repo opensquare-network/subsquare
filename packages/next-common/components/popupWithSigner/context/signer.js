@@ -53,7 +53,7 @@ export function useSetSigner() {
 export function SignerContextProvider({ children, extensionAccounts }) {
   const user = useUser();
   const userAddress = user?.address;
-  const proxyAddress = user?.proxyAddress;
+  const [proxyAddress, setProxyAddress] = useState(user?.proxyAddress);
   const api = useContextApi();
   const setSigner = useSetSigner();
   const signerAccount = useMemo(() => {
@@ -86,11 +86,16 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       value={{
         extensionAccounts,
         signerAccount,
+        setProxyAddress,
       }}
     >
       {children}
     </SignerContext.Provider>
   );
+}
+
+export function useSignerContext() {
+  return useContext(SignerContext);
 }
 
 export function useSignerAccount() {

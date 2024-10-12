@@ -1,3 +1,4 @@
+import { OnChainProxiesProvider } from "next-common/context/proxy";
 import { useUser } from "../../context/user";
 import { isSameAddress } from "../../utils";
 import { SignerContextProvider, usePopupParams } from "./context";
@@ -16,7 +17,7 @@ export default function MaybeSignerConnected({ children, extensionAccounts }) {
 
   return (
     <SignerContextProvider extensionAccounts={extensionAccounts}>
-      {children}
+      <OnChainProxiesProvider>{children}</OnChainProxiesProvider>
     </SignerContextProvider>
   );
 }

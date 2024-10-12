@@ -58,7 +58,7 @@ const NameWrapper = styled.div`
   }
 `;
 
-export default function Account({ account }) {
+export default function Account({ account, showFullAddress = false }) {
   const { identity: identityChain } = useChainSettings();
   const [identity, setIdentity] = useState(null);
 
@@ -78,6 +78,10 @@ export default function Account({ account }) {
     }
   }, [account?.address, identityChain]);
 
+  const addressHint = showFullAddress
+    ? maybeEvmAddress
+    : addressEllipsis(maybeEvmAddress);
+
   return (
     <>
       <AvatarWrapper>
@@ -93,12 +97,12 @@ export default function Account({ account }) {
         {identity && identity?.info?.status !== "NO_ID" ? (
           <>
             <Identity identity={identity} />
-            <div>{addressEllipsis(maybeEvmAddress)}</div>
+            <div>{addressHint}</div>
           </>
         ) : (
           <>
             <div className="text-textPrimary">{account?.name}</div>
-            <div>{addressEllipsis(maybeEvmAddress) ?? "--"}</div>
+            <div>{addressHint ?? "--"}</div>
           </>
         )}
       </NameWrapper>
