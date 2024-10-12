@@ -21,7 +21,8 @@ import { useReferendaProposalOrigin } from "next-common/components/summary/newPr
 import { toPrecision } from "next-common/utils";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
-import { InfoMessage } from "next-common/components/setting/styled";
+import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
+import { WarningMessage } from "next-common/components/setting/styled";
 
 function PopupContent() {
   const dispatch = useDispatch();
@@ -99,12 +100,10 @@ function PopupContent() {
       />
       {curatorSelect}
       {feeField}
-      <div className="flex flex-col gap-[8px]">
-        {trackField}
-        <InfoMessage>
-          A referendum will be created for curator proposing.
-        </InfoMessage>
-      </div>
+      {trackField}
+      <WarningMessage className="flex gap-[8px] items-center">
+        <WarningIcon /> A referendum will be created for curator proposing.
+      </WarningMessage>
       <AdvanceSettings>
         {enactmentField}
         <SubmissionDeposit />
