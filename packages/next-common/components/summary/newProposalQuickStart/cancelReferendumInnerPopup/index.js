@@ -60,7 +60,7 @@ export function CancelReferendumInnerPopup({
       onClose={onClose}
       wide
     >
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance />
       {referendumIndexField}
       {trackField}
       <AdvanceSettings>

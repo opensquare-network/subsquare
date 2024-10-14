@@ -4,7 +4,7 @@ import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import { useSignerAccount } from "../popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-export default function SignerWithBalance({ title }) {
+export default function SignerWithBalance({ title, noSwitchSigner }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
 
@@ -14,6 +14,11 @@ export default function SignerWithBalance({ title }) {
   );
 
   return (
-    <Signer title={title} balance={balance} isBalanceLoading={loadingBalance} />
+    <Signer
+      title={title}
+      balance={balance}
+      isBalanceLoading={loadingBalance}
+      noSwitchSigner={noSwitchSigner}
+    />
   );
 }

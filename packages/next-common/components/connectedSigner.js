@@ -106,7 +106,7 @@ function ProxyHintForAddress({ address }) {
   return <ProxyHint proxyType={proxyType} />;
 }
 
-export default function ConnectedSigner() {
+export default function ConnectedSigner({ noSwitch }) {
   const signerAccount = useSignerAccount();
   const originAccount = useOriginAccount();
 
@@ -119,7 +119,7 @@ export default function ConnectedSigner() {
           ) : (
             <EmptyAccount />
           )}
-          <SwitchButton />
+          {!noSwitch && <SwitchButton />}
         </div>
         {signerAccount?.proxyAddress && (
           <ProxyHintForAddress address={signerAccount?.proxyAddress} />

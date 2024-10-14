@@ -162,7 +162,7 @@ export function NewAssetSpendProposalInnerPopup() {
       onClose={onClose}
       wide
     >
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance />
       {balanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}

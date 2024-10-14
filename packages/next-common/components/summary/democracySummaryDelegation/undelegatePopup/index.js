@@ -17,6 +17,7 @@ export default function UndelegatePopup({ onClose, onInBlock = noop }) {
       getTxFunc={getTxFunc}
       onClose={onClose}
       onInBlock={onInBlock}
+      noSwitchSigner
     />
   );
 }

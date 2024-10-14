@@ -12,6 +12,7 @@ export default function Signer({
   symbol,
   balance,
   isBalanceLoading,
+  noSwitchSigner = false,
 }) {
   const node = useChainSettings();
   const noBalance = isNil(balance) && isNil(isBalanceLoading);
@@ -29,7 +30,7 @@ export default function Signer({
           symbol={symbol || node.symbol}
         />
       )}
-      <ConnectedSigner />
+      <ConnectedSigner noSwitch={noSwitchSigner} />
     </div>
   );
 }

@@ -121,7 +121,7 @@ function PopupContent() {
 
   return (
     <>
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance />
       {usdxBalanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}
