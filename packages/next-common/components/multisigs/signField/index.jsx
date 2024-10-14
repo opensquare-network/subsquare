@@ -71,14 +71,14 @@ export default function MultisigSignField({ multisig = {} }) {
 
   let content = isApproved ? <ApprovedTooltip /> : <NotApprovedTooltip />;
 
-  if (isNeedSelfApprove) {
-    content = <SignApprove multisig={multisig} />;
-  }
+  // if (isNeedSelfApprove) {
+  //   content = <SignApprove multisig={multisig} />;
+  // }
 
-  // SignCancel by depositor
-  if (isCanbeCanceled) {
-    content = <SignCancel multisig={multisig} />;
-  }
+  // // SignCancel by depositor
+  // if (isCanbeCanceled) {
+  //   content = <SignCancel multisig={multisig} />;
+  // }
 
   return (
     <SignerPopupWrapper>
