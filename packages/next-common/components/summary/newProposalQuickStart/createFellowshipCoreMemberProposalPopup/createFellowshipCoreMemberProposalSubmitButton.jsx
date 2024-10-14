@@ -7,7 +7,7 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { find } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
@@ -20,7 +20,8 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   trackName,
 }) {
   const { members } = useFellowshipCoreMembers();
-  const realAddress = useRealAddress();
+  const signerAccount = useSignerAccount();
+  const realAddress = signerAccount?.realAddress;
   const me = find(members, { address: realAddress });
 
   const myRankOk = me && me.rank >= 3;
