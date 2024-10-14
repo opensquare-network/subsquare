@@ -39,6 +39,7 @@ const Chains = {
   shibuya: "shibuya",
   astar: "astar",
   zkverifyTestnet: "zkverify-testnet",
+  coretime: "coretime",
 };
 
 export default Chains;
