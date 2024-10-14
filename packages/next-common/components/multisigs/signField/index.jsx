@@ -6,6 +6,7 @@ import useProfileAddress from "next-common/components/profile/useProfileAddress"
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
 import SignApprove from "./signApprove";
+import SignCancel from "./signCancel";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 
 function ApprovedTooltip() {
@@ -48,6 +49,16 @@ export default function MultisigSignField({ multisig = {} }) {
     return isSignatory && hasNotApproved && isNeedSign;
   }, [approvals, realAddress, signatories, threshold, state?.name]);
 
+  const isCanbeCanceled = useMemo(() => {
+    if (!approvals || !signatories || state?.name !== "Approving") {
+      return false;
+    }
+
+    const isSignatory = signatories.includes(realAddress);
+
+    return isSignatory;
+  }, [approvals, realAddress, signatories, state?.name]);
+
   const isApproved = useMemo(() => {
     if (pathname.startsWith("/user/")) {
       // on user profile multisigs page
@@ -62,7 +73,10 @@ export default function MultisigSignField({ multisig = {} }) {
   if (isNeedSelfApprove) {
     content = <SignApprove multisig={multisig} />;
   }
-  // TODO: SignCancel
+  // TODO: SignCancel by depositor
+  if (isCanbeCanceled) {
+    content = <SignCancel multisig={multisig} />;
+  }
 
   return (
     <SignerPopupWrapper>
