@@ -22,10 +22,10 @@ export function getEnvEndpoints() {
 
 const endpointsFromEnv = getEnvEndpoints();
 
-function getInitNodeUrl(chain) {
+export function getInitNodeUrl(chain) {
   let localNodeUrl = null;
   try {
-    localNodeUrl = localStorage.getItem("nodeUrl");
+    localNodeUrl = localStorage.getItem(`nodeUrl-${chain}`);
   } catch (e) {
     // ignore parse error
   }
@@ -43,6 +43,7 @@ function getInitNodeUrl(chain) {
 const nodeSlice = createSlice({
   name: "node",
   initialState: {
+    chain,
     currentNode: getInitNodeUrl(chain),
     nodes: endpointsFromEnv || getChainSettings(chain).endpoints,
     nodesHeight: null,
@@ -62,15 +63,15 @@ const nodeSlice = createSlice({
       });
 
       if (saveLocalStorage) {
-        localStorage.setItem("nodeUrl", url);
+        localStorage.setItem(`nodeUrl-${state.chain}`, url);
       }
 
       if (refresh) {
-        window.location.href = `https://${chain}.subsquare.io`;
+        window.location.href = `https://${state.chain}.subsquare.io`;
       }
     },
     removeCurrentNode(state) {
-      localStorage.removeItem("nodeUrl");
+      localStorage.removeItem(`nodeUrl-${state.chain}`);
       state.currentNode = null;
     },
     setNodesDelay(state, { payload }) {
