@@ -3,7 +3,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 export default function getEndpointFromLocalStorage(chain) {
   let localNodeUrl = null;
   try {
-    localNodeUrl = localStorage.getItem("nodeUrl");
+    localNodeUrl = localStorage.getItem(`nodeUrl-${chain}`);
   } catch (e) {
     // ignore parse error
   }
