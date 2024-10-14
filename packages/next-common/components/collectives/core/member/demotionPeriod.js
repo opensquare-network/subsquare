@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
 import Tooltip from "next-common/components/tooltip";
@@ -17,7 +18,7 @@ import BigNumber from "bignumber.js";
 const days20 = 20 * ONE_DAY;
 
 export function useDemotionPeriod({ rank, lastProof, params }) {
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   return useMemo(() => {
     const demotionPeriod = getDemotionPeriod(rank, params);
     if (demotionPeriod <= 0) {

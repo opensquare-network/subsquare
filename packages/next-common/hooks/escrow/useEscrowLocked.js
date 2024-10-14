@@ -1,6 +1,7 @@
 import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import { useSelector } from "react-redux";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import bigAdd from "next-common/utils/math/bigAdd";
 import { u8aToHex } from "@polkadot/util";
 
@@ -35,7 +36,7 @@ async function queryLocked(api) {
 
 export default function useEscrowLocked() {
   const api = useContextApi();
-  const height = useBlockHeight();
+  const height = useSelector(chainOrScanHeightSelector);
   const [data, setData] = useState(null);
 
   useEffect(() => {

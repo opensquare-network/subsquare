@@ -15,24 +15,12 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["react", "unused-imports"],
+  plugins: ["react"],
   rules: {
     "react/react-in-jsx-scope": 0,
     "react/jsx-uses-react": "error",
     "react/prop-types": 0,
     "react-hooks/exhaustive-deps": "error",
-    // unused-imports
-    "no-unused-vars": "off",
-    "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": [
-      "error",
-      {
-        vars: "all",
-        varsIgnorePattern: "(^_|^req|^context)",
-        args: "after-used",
-        argsIgnorePattern: "(^_|^req|^context)",
-      },
-    ],
   },
   settings: {
     react: {

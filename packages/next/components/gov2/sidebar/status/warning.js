@@ -1,4 +1,5 @@
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import { useSelector } from "react-redux";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useDecision } from "next-common/context/post/gov2/track";
 import { useDecisionBlocks, useDecisionEnd } from "./useDecisionPercentage";
@@ -43,7 +44,7 @@ function WarningText() {
 }
 
 export default function DecisionWarning() {
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const decidingSince = useDecidingSince();
   const decisionPeriod = useDecision();
   const decisionBlocks = useDecisionBlocks();

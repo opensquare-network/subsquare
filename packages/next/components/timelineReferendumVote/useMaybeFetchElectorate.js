@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import extractVoteInfo from "next-common/utils/democracy/referendum";
 import getElectorate from "next-common/utils/democracy/electorate";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function useMaybeFetchElectorate(
   referendum,
@@ -9,7 +10,7 @@ export default function useMaybeFetchElectorate(
   api,
 ) {
   const [electorate, setElectorate] = useState(0);
-  const nowHeight = useBlockHeight();
+  const nowHeight = useSelector(chainOrScanHeightSelector);
 
   const { voteFinishedHeight } = extractVoteInfo(referendum?.timeline);
   const possibleElectorate = referendumStatus?.tally?.electorate;

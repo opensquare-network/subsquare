@@ -1,6 +1,7 @@
 import { useOnchainData } from "next-common/context/post";
 import { isNil } from "lodash-es";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import { useSelector } from "react-redux";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import CountDown from "next-common/components/_CountDown";
@@ -9,7 +10,7 @@ import React from "react";
 export default function TreasurySpendValidCountdown() {
   const { meta, indexer } = useOnchainData() || {};
   const { validFrom } = meta || {};
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(validFrom - latestHeight);
 
   if (

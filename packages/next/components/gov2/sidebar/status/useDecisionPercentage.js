@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import {
   useConfirming,
   useDecidingSince,
@@ -6,7 +7,7 @@ import { useDecision } from "next-common/context/post/gov2/track";
 import { isNil } from "lodash-es";
 import { useOnchainData, usePostState } from "next-common/context/post";
 import { gov2State } from "next-common/utils/consts/state";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export function useDecisionEnd() {
   const trackDecision = useDecision();
@@ -40,7 +41,7 @@ export function useDecisionBlocks() {
 
 // get decision remaining blocks
 export function useDecisionRemaining() {
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const decidingSince = useDecidingSince();
   const decisionPeriod = useDecisionBlocks();
   if (isNil(latestHeight)) {

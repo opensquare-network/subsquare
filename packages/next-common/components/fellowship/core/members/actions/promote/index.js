@@ -1,4 +1,5 @@
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import { useSelector } from "react-redux";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { usePageProps } from "next-common/context/page";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
@@ -18,14 +19,13 @@ export default function Promote({ member }) {
 
   const { members } = useFellowshipCoreMembers();
 
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const { fellowshipParams } = usePageProps();
 
   if (rank >= 6) {
     return;
   }
-  if (!CollectivesPromoteTracks[member?.rank + 1]) {
-    // only show when we have the corresponding track
+  if (!CollectivesPromoteTracks[member?.rank + 1]) { // only show when we have the corresponding track
     return null;
   }
 

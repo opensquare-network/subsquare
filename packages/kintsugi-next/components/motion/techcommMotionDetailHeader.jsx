@@ -9,12 +9,12 @@ import { usePost } from "next-common/context/post";
 import { isMotionEnded } from "next-common/utils";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import MotionEnd from "next-common/components/motionEnd";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function TechcommMotionDetailHeader({ motion }) {
   const post = usePost();
   const isEdit = useSelector(isEditingPostSelector);
-  const blockHeight = useBlockHeight();
+  const blockHeight = useSelector(chainOrScanHeightSelector);
   const motionEndHeight = motion.onchainData?.voting?.end;
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight,

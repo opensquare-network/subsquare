@@ -1,17 +1,18 @@
+import { useSelector } from "react-redux";
 import { usePost, usePostOnChainData } from "next-common/context/post";
 import { useEffect, useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
 import useCollectiveProposal from "next-common/utils/hooks/collectives/useProposal";
 import useWeight from "next-common/utils/hooks/common/useWeight";
 import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useCollectivePallet } from "next-common/context/collective";
 
 const CloseMotionPopup = dynamicPopup(() => import("./closeMotionPopup"));
 
 export default function Close() {
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const onchainData = usePostOnChainData();
   const { voting: { end, nays = [], ayes = [], threshold } = {} } =
     onchainData || {};
@@ -20,8 +21,7 @@ export default function Close() {
   const { proposal } = useCollectiveProposal(pallet, onchainData.hash);
 
   const { encodedCallLength, weight } = useWeight(proposal);
-  const { members = [], loading: membersLoading } =
-    useCollectiveMembers(pallet);
+  const { members = [], loading: membersLoading } = useCollectiveMembers(pallet);
   const hasFailed = threshold > Math.abs(members?.length - nays.length);
   const [showClosePopup, setShowClosePopup] = useState(false);
 

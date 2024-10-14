@@ -2,6 +2,7 @@ import { useDecisionBlocks, useDecisionEnd } from "../useDecisionPercentage";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
+import { useSelector } from "react-redux";
 import Progress from "next-common/components/progress";
 import TimeDuration from "next-common/components/TimeDuration";
 import {
@@ -10,7 +11,7 @@ import {
   ProgressInfo,
   Tooltip,
 } from "../styled";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import Threshold from "next-common/components/referenda/threshold";
 import { useDecision } from "next-common/context/post/gov2/track";
 import { toPercentage } from "next-common/utils";
@@ -31,7 +32,7 @@ function OverDecisionMarker({ allBlocks, normalCaseBlocks }) {
 }
 
 export default function DecisionProgress() {
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
 
   const decisionBlocks = useDecisionBlocks();
   const period = useDecision();

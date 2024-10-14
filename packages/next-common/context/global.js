@@ -24,10 +24,10 @@ export default function GlobalProvider({
   navSubmenuVisible,
 }) {
   return (
-    <ChainProvider chain={chain}>
-      <WagmiProvider>
-        <ReactQueryClientProvider>
-          <ThemeModeProvider defaultThemeMode={themeMode}>
+    <WagmiProvider>
+      <ReactQueryClientProvider>
+        <ThemeModeProvider defaultThemeMode={themeMode}>
+          <ChainProvider chain={chain}>
             <UserProvider user={user} userStatus={userStatus}>
               <ConnectedAccountProvider connectedAccount={connectedAccount}>
                 <AdminProvider admins={admins}>
@@ -46,9 +46,9 @@ export default function GlobalProvider({
                 </AdminProvider>
               </ConnectedAccountProvider>
             </UserProvider>
-          </ThemeModeProvider>
-        </ReactQueryClientProvider>
-      </WagmiProvider>
-    </ChainProvider>
+          </ChainProvider>
+        </ThemeModeProvider>
+      </ReactQueryClientProvider>
+    </WagmiProvider>
   );
 }

@@ -1,13 +1,14 @@
+import { useSelector } from "react-redux";
 import useUndecidingTimeout from "next-common/hooks/referenda/useUndecidingTimeout";
 import Wrapper from "./wrapper";
 import CountDown from "next-common/components/_CountDown";
 import React from "react";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function TimeoutCountDown({ detail = {} }) {
   const timeout = useUndecidingTimeout();
-  const now = useBlockHeight();
+  const now = useSelector(chainOrScanHeightSelector);
 
   const onchain = detail?.onchainData;
   const submitted = onchain.info.submitted;

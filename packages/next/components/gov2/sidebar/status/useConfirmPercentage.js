@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import {
   useConfirmingStarted,
   useDecidingSince,
@@ -7,11 +8,11 @@ import { useConfirm } from "next-common/context/post/gov2/track";
 import { isNil } from "lodash-es";
 import { useDecisionBlocks } from "./useDecisionPercentage";
 import { useMemo } from "react";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 // get confirm remaining blocks
 export function useConfirmRemaining() {
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const confirmingAt = useConfirmingStarted();
   const confirmPeriod = useConfirm();
   if (isNil(latestHeight) || latestHeight <= confirmingAt) {
@@ -58,7 +59,7 @@ export function calcConfirmStartPercentage(
 }
 
 export function useConfirmPercentage() {
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
 
   const confirmPeriod = useConfirm();
   const confirmStart = useConfirmingStarted();

@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import Loading from "../loading";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import ChainIcon from "./chainIcon";
 import { ArrowDown } from "@osn/icons/subsquare";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { useClickAway } from "react-use";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
 
 const NetworkOptions = dynamicClientOnly(() => import("./networkOptions"));
 
@@ -60,7 +61,7 @@ export default function NetworkSwitch({ activeNode }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
-  const blockHeight = useBlockHeight();
+  const nodesHeight = useSelector(chainOrScanHeightSelector);
 
   useClickAway(ref, () => setShow(false));
 
@@ -71,8 +72,8 @@ export default function NetworkSwitch({ activeNode }) {
   }, [windowSize]);
 
   let heightComponent;
-  if (blockHeight) {
-    heightComponent = <span>{`#${blockHeight?.toLocaleString()}`}</span>;
+  if (nodesHeight) {
+    heightComponent = <span>{`#${nodesHeight?.toLocaleString()}`}</span>;
   } else {
     heightComponent = <Loading size={16} />;
   }

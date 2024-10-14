@@ -13,7 +13,7 @@ export default function useClaimantsFellowshipUpdateFunc() {
 
     const timers = [1, 2];
     // eslint-disable-next-line no-unused-vars
-    for (const _timer of timers) {
+    for (const timer of timers) {
       await fetch();
       await sleep(blockTime);
     }

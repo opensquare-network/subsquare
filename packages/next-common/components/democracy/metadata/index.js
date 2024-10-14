@@ -10,7 +10,7 @@ import useDemocracyThreshold from "../../../context/post/democracy/referendum/th
 import { useDemocracyReferendumHash } from "next-common/hooks/democracy/useDemocracyReferendumHash";
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function ReferendumMetadata({
   proposer,
@@ -20,7 +20,7 @@ export default function ReferendumMetadata({
   onchainData = {},
 }) {
   const oneBlockTime = useSelector(blockTimeSelector);
-  const blockHeight = useBlockHeight();
+  const blockHeight = useSelector(chainOrScanHeightSelector);
   const latestBlockTime = useLatestBlockTime();
   const { state, timeline = [] } = onchainData;
   const { delay = 0, end = 0 } = status;

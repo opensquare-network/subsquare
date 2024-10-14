@@ -1,11 +1,10 @@
 import { useCallback, useEffect } from "react";
 import { setNodeBlockHeight } from "../store/reducers/nodeSlice";
-import { useChainState, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 
 export default function ScanStatusComponent({ children }) {
-  const [, setChainState] = useChainState();
   const { blockTime } = useChainSettings();
   const dispatch = useDispatch();
 
@@ -15,13 +14,7 @@ export default function ScanStatusComponent({ children }) {
       "inspect/scan-height",
     );
     dispatch(setNodeBlockHeight(scanHeight));
-    setChainState((val) => {
-      return {
-        ...val,
-        scanHeight,
-      };
-    });
-  }, [dispatch, setChainState]);
+  }, [dispatch]);
 
   useEffect(() => {
     const interval = setInterval(

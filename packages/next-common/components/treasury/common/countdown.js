@@ -1,17 +1,18 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "../../../utils/hooks";
 import { isNil } from "lodash-es";
 import Loading from "../../loading";
 import Flex from "../../styled/flex";
 import CountDown from "../../_CountDown";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function TreasuryCountDown({
   startHeight = 0,
   targetHeight = 0,
   prefix = "End",
 }) {
-  const nowHeight = useBlockHeight();
+  const nowHeight = useSelector(chainOrScanHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(
     Math.abs(targetHeight - nowHeight),
   );

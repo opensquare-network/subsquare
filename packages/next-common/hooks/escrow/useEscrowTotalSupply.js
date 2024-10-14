@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import { useSelector } from "react-redux";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useContextApi } from "next-common/context/api";
 import { getTotalSupply } from "next-common/utils/democracy/kintsugi/escrow/totalSupply";
 import { isNil } from "lodash-es";
 
 export default function useEscrowTotalSupply() {
-  const height = useBlockHeight();
+  const height = useSelector(chainOrScanHeightSelector);
   const api = useContextApi();
   const [supply, setSupply] = useState(null);
 

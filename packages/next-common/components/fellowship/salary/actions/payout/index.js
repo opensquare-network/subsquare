@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import Tooltip from "next-common/components/tooltip";
+import { useSelector } from "react-redux";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
@@ -24,7 +25,7 @@ export default function FellowshipSalaryPayout() {
 
   const { registrationPeriod } = useSalaryFellowshipPeriods();
   const payoutStart = cycleStart + registrationPeriod || null;
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const isStarted =
     !isNil(latestHeight) && !isNil(payoutStart) && latestHeight >= payoutStart;
 

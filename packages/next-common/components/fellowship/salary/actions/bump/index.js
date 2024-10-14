@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { isNil } from "lodash-es";
 import SecondaryButton from "next-common/lib/button/secondary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import Tooltip from "next-common/components/tooltip";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -21,7 +22,7 @@ export default function FellowshipSalaryBump() {
   const { registrationPeriod, payoutPeriod } = useSalaryFellowshipPeriods();
   const nextCycleStart =
     cycleStart + (registrationPeriod || null) + (payoutPeriod || null);
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const isStarted =
     !isNil(latestHeight) &&
     !isNil(nextCycleStart) &&

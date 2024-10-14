@@ -8,13 +8,13 @@ import {
   setElectorate,
 } from "../../../store/reducers/referendumSlice";
 import useDemocracyTally from "../../../context/post/democracy/referendum/tally";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function useMaybeFetchElectorate(referendum, api) {
   const dispatch = useDispatch();
   const electorate = useSelector(electorateSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
-  const nowHeight = useBlockHeight();
+  const nowHeight = useSelector(chainOrScanHeightSelector);
   const tally = useDemocracyTally();
 
   const { voteFinished, voteFinishedHeight } = extractVoteInfo(

@@ -1,10 +1,11 @@
 import useLaunchPeriod from "next-common/hooks/democracy/useLaunchPeriod";
+import { useSelector } from "react-redux";
 import BigNumber from "bignumber.js";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export default function useLaunchProgress() {
   const period = useLaunchPeriod();
-  const blockHeight = useBlockHeight();
+  const blockHeight = useSelector(chainOrScanHeightSelector);
   const goneBlocks = blockHeight % period;
   if (!period) {
     return null;

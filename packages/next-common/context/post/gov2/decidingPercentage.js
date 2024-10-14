@@ -1,12 +1,13 @@
 import { useDecision } from "./track";
 import { useDecidingSince } from "./referendum";
+import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import useReferendumVotingFinishHeight from "../referenda/useReferendumVotingFinishHeight";
-import { useBlockHeight } from "next-common/hooks/common/useBlockHeight";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 
 export function useDecidingEndHeight() {
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
   const votingFinishHeight = useReferendumVotingFinishHeight();
   return votingFinishHeight || latestHeight;
 }
@@ -33,7 +34,7 @@ export function useDecidingEndPercentage() {
 export default function useDecidingPercentage() {
   const decisionPeriod = useDecision();
   const decidingSince = useDecidingSince();
-  const latestHeight = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
 
   return useMemo(() => {
     if (isNil(decidingSince) || isNil(latestHeight)) {

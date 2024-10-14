@@ -46,7 +46,6 @@ export const convictionVotingLockPeriodSelector = (state) =>
   state.chain.convictionVotingLockPeriod;
 export const democracyLockPeriodSelector = (state) =>
   state.chain.democracyLockPeriod;
-export const existentialDepositSelector = (state) =>
-  state.chain.existentialDeposit;
+export const existentialDepositSelector = (state) => state.chain.existentialDeposit;
 
 export default chainSlice.reducer;
