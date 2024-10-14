@@ -51,7 +51,7 @@ const rococo = {
   navLogo: ProjectLogoRococoLight,
   navLogoDark: ProjectLogoRococoDark,
   links,
-  group: MenuGroups.Solochain,
+  group: MenuGroups.Testnet,
   postLabels: defaultPostLabels,
   description: "Polkadot’s Parachain Testnet",
   ...polkadotThemeVars,
