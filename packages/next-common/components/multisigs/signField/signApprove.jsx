@@ -22,10 +22,10 @@ export const Wrapper = styled.div`
     ${(p) =>
       p.disabled
         ? css`
-            fill: var(--textDisabled);
+            color: var(--textDisabled);
           `
         : css`
-            fill: var(--textPrimary);
+            color: var(--textPrimary);
           `}
   }
 `;
