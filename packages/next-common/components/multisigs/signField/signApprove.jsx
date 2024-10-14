@@ -5,6 +5,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback } from "react";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { useMultisigContext } from "../multisigContext";
+import Tooltip from "next-common/components/tooltip";
 
 export const Wrapper = styled.div`
   display: inline-flex;
@@ -67,7 +68,9 @@ export default function SignApprove({ multisig = {} }) {
 
   return (
     <Wrapper disabled={isSubmitting}>
-      <SystemSignature className="w-4 h-4" onClick={doSubmit} />
+      <Tooltip content="Sign">
+        <SystemSignature className="w-4 h-4" onClick={doSubmit} />
+      </Tooltip>
     </Wrapper>
   );
 }
