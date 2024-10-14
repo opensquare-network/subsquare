@@ -11,7 +11,7 @@ const suffixBytes = Buffer.alloc(8);
 
 export function safeConvertAddressH160(value) {
   try {
-    return ethers.utils.getAddress(value?.toLowerCase());
+    return ethers.getAddress(value?.toLowerCase());
   } catch {
     return null;
   }

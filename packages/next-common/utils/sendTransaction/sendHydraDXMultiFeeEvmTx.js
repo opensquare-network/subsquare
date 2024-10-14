@@ -1,5 +1,4 @@
-import { Contract, ethers } from "ethers";
-import { splitSignature } from "ethers/lib/utils";
+import { Contract, ethers, Signature } from "ethers";
 import { getEthereum } from "../metamask";
 import getChainSettings from "../consts/settings";
 import { getEvmSignerAddress } from "../mixedChainUtil";
@@ -45,7 +44,7 @@ async function createPermitMessageData({ provider, data, signerAddress }) {
   const message = {
     ...tx,
     value: 0,
-    gaslimit: gas.mul(11).div(10).toNumber(),
+    gaslimit: Number((gas * 11n) / 10n), // add 10%
     nonce: nonce.toNumber(),
     deadline: Math.floor(Date.now() / 1000 + 3600),
   };
@@ -78,7 +77,7 @@ async function signPermitMessageData({ provider, signerAddress, typedData }) {
   const method = "eth_signTypedData_v4";
   const params = [signerAddress, typedData];
   const signResult = await provider.send(method, params);
-  return splitSignature(signResult);
+  return Signature.from(signResult);
 }
 
 async function dispatchCall({
@@ -155,7 +154,7 @@ export async function sendHydraDXMultiFeeEvmTx({
   onStarted();
 
   try {
-    const provider = new ethers.providers.Web3Provider(ethereum);
+    const provider = new ethers.BrowserProvider(ethereum);
     await dispatchCall({
       api,
       provider,

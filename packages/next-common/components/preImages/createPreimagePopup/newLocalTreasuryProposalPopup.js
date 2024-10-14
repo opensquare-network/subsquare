@@ -52,7 +52,7 @@ export default function NewLocalTreasuryProposalPopup({ onClose }) {
       onClose={onClose}
       wide
     >
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance />
       {balanceField}
       {beneficiaryField}
       <div className="flex justify-end">

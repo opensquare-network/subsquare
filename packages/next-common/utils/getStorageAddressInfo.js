@@ -22,7 +22,7 @@ export default function getStorageAddressInfo(key) {
 
   if (
     chainSettings.chainType === ChainTypes.ETHEREUM &&
-    !ethers.utils.isAddress(info.address)
+    !ethers.isAddress(info.address)
   ) {
     return;
   }
