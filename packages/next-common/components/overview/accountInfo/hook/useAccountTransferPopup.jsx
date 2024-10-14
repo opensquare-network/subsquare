@@ -1,11 +1,13 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useContextApi } from "next-common/context/api";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
@@ -29,7 +31,8 @@ export function useAccountTransferPopup() {
 function PopupContent() {
   const { onClose } = usePopupParams();
   const { decimals, symbol } = useChainSettings();
-  const address = useRealAddress();
+  const signerAccount = useSignerAccount();
+  const address = signerAccount?.realAddress;
   const { value: balance, loading } = useSubBalanceInfo(address);
   const api = useContextApi();
   const dispatch = useDispatch();

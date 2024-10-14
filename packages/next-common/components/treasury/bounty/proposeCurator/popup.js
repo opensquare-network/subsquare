@@ -96,7 +96,6 @@ function PopupContent() {
       <Signer
         balance={signerBalance?.balance}
         isBalanceLoading={signerBalanceLoading}
-        title="Origin"
       />
       {curatorSelect}
       {feeField}

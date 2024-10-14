@@ -9,12 +9,14 @@ import useSigner from "next-common/components/common/tx/useSigner";
 import Editor from "next-common/components/editor";
 import PopupLabel from "next-common/components/popup/label";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { cn } from "next-common/utils";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
@@ -46,7 +48,8 @@ function WishChoice({ title, description, checked, onClick = noop }) {
 function Content() {
   const { onClose } = usePopupParams();
   const dispatch = useDispatch();
-  const address = useRealAddress();
+  const signerAccount = useSignerAccount();
+  const address = signerAccount?.realAddress;
   const { component } = useSigner("Address");
   const [evidence, setEvidence] = useState("");
   const [wish, setWish] = useState("retention");

@@ -4,10 +4,10 @@ import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { noop } from "lodash-es";
 import TxSubmissionButton from "../common/tx/txSubmissionButton";
 
-function PopupContent({ children, confirmText, ...props }) {
+function PopupContent({ children, confirmText, noSwitchSigner, ...props }) {
   return (
     <>
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance noSwitchSigner={noSwitchSigner} />
       {children}
       <TxSubmissionButton title={confirmText} {...props} />
     </>
@@ -22,6 +22,7 @@ export default function SimpleTxPopup({
   onInBlock = noop,
   onFinalized = noop,
   onClose = noop,
+  noSwitchSigner,
   ...props
 }) {
   return (
@@ -32,6 +33,7 @@ export default function SimpleTxPopup({
         onSubmitted={onSubmitted}
         onInBlock={onInBlock}
         onFinalized={onFinalized}
+        noSwitchSigner={noSwitchSigner}
       >
         {children}
       </PopupContent>
