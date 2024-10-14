@@ -3,7 +3,7 @@ import DesktopList from "./desktop";
 import MobileList from "./mobile";
 import { useDispatch, useSelector } from "react-redux";
 import { useChain } from "next-common/context/chain";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import {
   fetchMyMultisigs,
   myMultisigsSelector,
@@ -11,6 +11,7 @@ import {
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { ListCard } from "next-common/components/overview/styled";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+import { useMultisigContext } from "./multisigContext";
 
 export default function MultisigsList() {
   const { width } = useWindowSize();
@@ -24,13 +25,24 @@ export default function MultisigsList() {
     total,
     pageSize,
   );
+  const { isNeedReload, setIsNeedReload } = useMultisigContext();
+
+  const fetchMyMultisigsData = useCallback(() => {
+    if (realAddress) {
+      dispatch(fetchMyMultisigs(chain, realAddress, page));
+    }
+  }, [dispatch, chain, realAddress, page]);
 
   useEffect(() => {
-    if (!realAddress) {
-      return;
+    fetchMyMultisigsData();
+  }, [fetchMyMultisigsData]);
+
+  useEffect(() => {
+    if (isNeedReload) {
+      fetchMyMultisigsData();
+      setIsNeedReload(false);
     }
-    dispatch(fetchMyMultisigs(chain, realAddress, page));
-  }, [dispatch, chain, page, realAddress]);
+  }, [isNeedReload, setIsNeedReload, fetchMyMultisigsData]);
 
   return (
     <ListCard>
