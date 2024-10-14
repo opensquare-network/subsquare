@@ -29,7 +29,7 @@ export default function NewRemarkProposalPopup({ onClose }) {
 
   return (
     <Popup title="New Remark Proposal" onClose={onClose} wide>
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance />
       {remarkField}
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />

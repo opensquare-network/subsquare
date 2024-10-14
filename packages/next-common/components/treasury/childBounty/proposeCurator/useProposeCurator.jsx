@@ -74,7 +74,6 @@ function PopupContent() {
         balanceName="Available"
         balance={signerBalance?.balance}
         isBalanceLoading={signerBalanceLoading}
-        title="Origin"
       />
       {curatorSelect}
       {feeField}

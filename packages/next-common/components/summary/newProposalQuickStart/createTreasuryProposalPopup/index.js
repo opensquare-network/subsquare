@@ -30,7 +30,7 @@ export function NewTreasuryReferendumInnerPopup() {
       onClose={onClose}
       wide
     >
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance />
       {balanceField}
       {beneficiaryField}
       {trackField}

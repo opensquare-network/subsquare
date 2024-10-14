@@ -106,7 +106,7 @@ function ProxyHintForAddress({ address }) {
   return <ProxyHint proxyType={proxyType} />;
 }
 
-export default function ConnectedSigner() {
+export default function MaybeProxySigner({ noSwitch }) {
   const signerAccount = useSignerAccount();
   const originAccount = useOriginAccount();
 
@@ -119,11 +119,33 @@ export default function ConnectedSigner() {
           ) : (
             <EmptyAccount />
           )}
-          <SwitchButton />
+          {!noSwitch && <SwitchButton />}
         </div>
         {signerAccount?.proxyAddress && (
           <ProxyHintForAddress address={signerAccount?.proxyAddress} />
         )}
+      </div>
+    </Wrapper>
+  );
+}
+
+export function ConnectedAccountSigner() {
+  const user = useUser();
+  const extensionAccounts = useExtensionAccounts();
+  const originAccount = extensionAccounts.find(
+    (item) => item.address === user?.address,
+  );
+
+  return (
+    <Wrapper>
+      <div className="w-full">
+        <div className="flex justify-between items-center gap-[12px] w-full">
+          {originAccount ? (
+            <Account account={originAccount} />
+          ) : (
+            <EmptyAccount />
+          )}
+        </div>
       </div>
     </Wrapper>
   );

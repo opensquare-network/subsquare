@@ -22,6 +22,7 @@ export default function ReferendumRemovalPopup({
       getTxFunc={getTxFunc}
       onClose={onClose}
       onInBlock={onInBlock}
+      noSwitchSigner
     >
       <RelatedReferenda relatedReferenda={[referendumIndex]} />
     </SimpleTxPopup>

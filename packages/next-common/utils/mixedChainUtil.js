@@ -42,7 +42,7 @@ export function tryConvertToSubstrateAddress(address) {
     if (isCentrifuge()) {
       return centrifugeEvmToSubstrateAddress(address);
     }
-    return ethers.utils.getAddress(address);
+    return ethers.getAddress(address);
   }
   return address;
 }
