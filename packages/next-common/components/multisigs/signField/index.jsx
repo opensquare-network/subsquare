@@ -30,7 +30,7 @@ function NotApprovedTooltip() {
 }
 
 export default function MultisigSignField({ multisig = {} }) {
-  const { approvals, state, signatories, threshold } = multisig;
+  const { approvals, state, signatories, threshold, depositor } = multisig;
   const pathname = usePathname();
   const profileAddress = useProfileAddress();
   const realAddress = useRealAddress();
@@ -55,9 +55,10 @@ export default function MultisigSignField({ multisig = {} }) {
     }
 
     const isSignatory = signatories.includes(realAddress);
+    const isDepositor = depositor === realAddress;
 
-    return isSignatory;
-  }, [approvals, realAddress, signatories, state?.name]);
+    return isSignatory && isDepositor;
+  }, [approvals, realAddress, signatories, state?.name, depositor]);
 
   const isApproved = useMemo(() => {
     if (pathname.startsWith("/user/")) {
@@ -73,7 +74,8 @@ export default function MultisigSignField({ multisig = {} }) {
   if (isNeedSelfApprove) {
     content = <SignApprove multisig={multisig} />;
   }
-  // TODO: SignCancel by depositor
+
+  // SignCancel by depositor
   if (isCanbeCanceled) {
     content = <SignCancel multisig={multisig} />;
   }
