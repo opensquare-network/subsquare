@@ -72,6 +72,7 @@ export default function ClearExpiredReferendaVotePopup({
       getTxFunc={getTxFunc}
       onClose={onClose}
       onInBlock={onInBlock}
+      noSwitchSigner
     >
       <ExtraInfo
         relatedReferenda={relatedReferenda}

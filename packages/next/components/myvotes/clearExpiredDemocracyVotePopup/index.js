@@ -34,7 +34,12 @@ export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
 
   const title = relatedReferenda.length <= 0 ? "Unlock" : "Clear Expired Votes";
   return (
-    <SimpleTxPopup title={title} getTxFunc={getTxFunc} onClose={onClose}>
+    <SimpleTxPopup
+      title={title}
+      getTxFunc={getTxFunc}
+      onClose={onClose}
+      noSwitchSigner
+    >
       <RelatedReferenda relatedReferenda={relatedReferenda} />
     </SimpleTxPopup>
   );
