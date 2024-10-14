@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
-import SignApprove from "./signApprove";
-import SignCancel from "./signCancel";
+// import SignApprove from "./signApprove";
+// import SignCancel from "./signCancel";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 
 function ApprovedTooltip() {
@@ -30,35 +30,36 @@ function NotApprovedTooltip() {
 }
 
 export default function MultisigSignField({ multisig = {} }) {
-  const { approvals, state, signatories, threshold, depositor } = multisig;
+  // const { approvals, state, signatories, threshold, depositor } = multisig;
+  const { approvals } = multisig;
   const pathname = usePathname();
   const profileAddress = useProfileAddress();
   const realAddress = useRealAddress();
 
-  const isNeedSelfApprove = useMemo(() => {
-    if (!approvals || !signatories || state?.name !== "Approving") {
-      return false;
-    }
+  // const isNeedSelfApprove = useMemo(() => {
+  //   if (!approvals || !signatories || state?.name !== "Approving") {
+  //     return false;
+  //   }
 
-    const hasNotApproved = !approvals.some((item) =>
-      isSameAddress(item, realAddress),
-    );
-    const isSignatory = signatories.includes(realAddress);
-    const isNeedSign = approvals.length < threshold;
+  //   const hasNotApproved = !approvals.some((item) =>
+  //     isSameAddress(item, realAddress),
+  //   );
+  //   const isSignatory = signatories.includes(realAddress);
+  //   const isNeedSign = approvals.length < threshold;
 
-    return isSignatory && hasNotApproved && isNeedSign;
-  }, [approvals, realAddress, signatories, threshold, state?.name]);
+  //   return isSignatory && hasNotApproved && isNeedSign;
+  // }, [approvals, realAddress, signatories, threshold, state?.name]);
 
-  const isCanbeCanceled = useMemo(() => {
-    if (!approvals || !signatories || state?.name !== "Approving") {
-      return false;
-    }
+  // const isCanbeCanceled = useMemo(() => {
+  //   if (!approvals || !signatories || state?.name !== "Approving") {
+  //     return false;
+  //   }
 
-    const isSignatory = signatories.includes(realAddress);
-    const isDepositor = depositor === realAddress;
+  //   const isSignatory = signatories.includes(realAddress);
+  //   const isDepositor = depositor === realAddress;
 
-    return isSignatory && isDepositor;
-  }, [approvals, realAddress, signatories, state?.name, depositor]);
+  //   return isSignatory && isDepositor;
+  // }, [approvals, realAddress, signatories, state?.name, depositor]);
 
   const isApproved = useMemo(() => {
     if (pathname.startsWith("/user/")) {
