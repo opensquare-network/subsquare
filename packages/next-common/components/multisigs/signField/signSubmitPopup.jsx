@@ -11,6 +11,7 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import { useMultisigContext } from "../multisigContext";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useWeight from "next-common/utils/hooks/common/useWeight";
 
 export function SignSubmitInnerPopup({
   onClose,
@@ -19,33 +20,38 @@ export function SignSubmitInnerPopup({
 }) {
   const api = useContextApi();
   const address = useRealAddress();
-  const disabled = !api;
   const isLoading = !api;
   const { setIsNeedReload } = useMultisigContext();
   const { threshold, signatories, when: maybeTimepoint } = multisig;
   const [encodedCall, setEncodedCall] = useState(null);
-  const [maxWeight, setMaxWeight] = useState(null);
+  const [isSubmitBtnLoading, setIsSubmitBtnLoading] = useState(false);
+  const [proposal, setProposal] = useState(null);
+  const { weight: maxWeight } = useWeight(proposal);
+  const isSubmitBtnDisabled = !proposal || !maxWeight;
 
-  const setProposal = useCallback(
+  const setValue = useCallback(
     ({ isValid, data }) => {
       if (!api || !isValid) {
+        setProposal(null);
+        setEncodedCall(null);
         return;
       }
+
       if (data) {
-        // TODO: call
+        setProposal(data);
         setEncodedCall(data.method);
-        // TODO: maxWeight
-        setMaxWeight(null);
       }
     },
     [api],
   );
 
   const getTxFunc = useCallback(() => {
+    setIsSubmitBtnLoading(true);
     if (!api || !address || !encodedCall || !maxWeight) {
       return;
     }
 
+    setIsSubmitBtnLoading(false);
     const otherSignatories = signatories.filter((item) => item !== address);
 
     return api.tx.multisig?.asMulti(
@@ -87,16 +93,17 @@ export function SignSubmitInnerPopup({
           <Extrinsic
             defaultSectionName="system"
             defaultMethodName="setCode"
-            setValue={setProposal}
+            setValue={setValue}
           />
         </div>
       )}
       <TxSubmissionButton
-        disabled={disabled}
+        disabled={isSubmitBtnDisabled}
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}
         onFinalized={onInBlock}
         onClose={isEmptyFunc(onCreated) ? onClose : undefined}
+        loading={isSubmitBtnLoading}
       />
     </Popup>
   );
