@@ -3,12 +3,18 @@ import rootReducer from "./reducers";
 import { CHAIN, defaultBlockTime } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import { getEnvEndpoints, getInitNodeUrl } from "./reducers/nodeSlice";
+import { merge } from "lodash-es";
 
-export const store = createStore({ useEndpointsFromEnv: true });
+export const store = createStore({
+  useEndpointsFromEnv: true,
+  reducer: rootReducer,
+});
 
 export function createStore({
   chain = CHAIN,
   useEndpointsFromEnv = false,
+  reducer,
+  preloadedState,
 } = {}) {
   const chainSettings = getChainSettings(chain);
 
@@ -19,16 +25,20 @@ export function createStore({
   }
 
   return configureStore({
-    reducer: rootReducer,
-    preloadedState: {
-      chain: {
-        blockTime: chainSettings.blockTime || defaultBlockTime,
+    reducer,
+    preloadedState: merge(
+      {},
+      {
+        chain: {
+          blockTime: chainSettings.blockTime || defaultBlockTime,
+        },
+        node: {
+          chain,
+          currentNode: getInitNodeUrl(chain),
+          nodes,
+        },
       },
-      node: {
-        chain,
-        currentNode: getInitNodeUrl(chain),
-        nodes,
-      },
-    },
+      preloadedState,
+    ),
   });
 }
