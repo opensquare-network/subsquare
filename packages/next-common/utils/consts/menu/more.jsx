@@ -7,7 +7,7 @@ import isAssetHub from "next-common/utils/isAssetHub";
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 
-export function getMoreMenu({ archivedMenu = [] }) {
+export function useMoreMenu({ archivedMenu = [] }) {
   return {
     name: "More",
     icon: <MenuMore />,
