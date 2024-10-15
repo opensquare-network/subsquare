@@ -5,7 +5,6 @@ import nodeReducer from "./nodeSlice";
 import chainReducer from "./chainSlice";
 import referendumReducer from "./referendumSlice";
 import gov2ReferendumReducer from "./gov2ReferendumSlice";
-import cmdkReducer from "./cmdkSlice";
 import userReducer from "./userSlice";
 import fellowship from "./fellowship";
 import referenda from "./referenda";
@@ -22,7 +21,6 @@ export const commonReducers = {
   chain: chainReducer, // network switcher
   // baseLayout global
   user: userReducer, // global connect popup
-  cmdk: cmdkReducer,
   toast: toastReducer,
   avatar: avatarReducer,
 };
