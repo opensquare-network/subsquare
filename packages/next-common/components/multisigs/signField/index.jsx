@@ -112,7 +112,7 @@ export default function MultisigSignField({ multisig = {} }) {
     content = <SignCancel multisig={multisig} />;
   }
 
-  // TODO: add params
+  // Sign & Submit
   if (isNeedFinalApproval || isReadyForSubmission) {
     content = <SignSubmit multisig={multisig} />;
   }
