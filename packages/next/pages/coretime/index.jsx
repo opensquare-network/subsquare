@@ -6,9 +6,13 @@ import { createStore } from "next-common/store";
 import ChainProvider, { useChainSettings } from "next-common/context/chain";
 import ApiProvider from "next-common/context/api";
 import { Provider } from "react-redux";
+import { commonReducers } from "next-common/store/reducers";
 
 const chain = "coretime";
-const store = createStore({ chain });
+const store = createStore({
+  chain,
+  reducer: commonReducers,
+});
 
 export default function CoretimePage() {
   return (
