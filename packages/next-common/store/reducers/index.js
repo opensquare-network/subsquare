@@ -13,7 +13,6 @@ import democracy from "./democracy";
 import layoutReducer from "./layoutSlice";
 import preImagesReducer from "./preImagesSlice";
 import myOnChainData from "./myOnChainData";
-import detailReducer from "./detailSlice";
 import multisigSlice from "./multisigSlice";
 import profile from "./profile";
 import avatarReducer from "./avatarSlice";
@@ -31,7 +30,6 @@ export const commonReducers = {
   toast: toastReducer,
   // baseLayout children
   layout: layoutReducer,
-  detail: detailReducer,
 };
 
 const businessReducers = {
