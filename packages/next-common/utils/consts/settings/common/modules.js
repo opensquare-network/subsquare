@@ -37,6 +37,9 @@ const base = {
   advisoryCommittee: false,
   alliance: false,
   preimages: true,
+  proxy: {
+    provider: "server",
+  },
 };
 
 /**

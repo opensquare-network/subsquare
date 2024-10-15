@@ -47,6 +47,11 @@ const polkadotAssetHub = {
     signet: true,
     mimir: true,
   },
+  modules: {
+    proxy: {
+      provider: "chain",
+    },
+  },
 };
 
 export default polkadotAssetHub;
