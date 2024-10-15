@@ -1,23 +1,43 @@
+import { omit } from "lodash-es";
+import {
+  DropdownFilter,
+  FilterContentWrapper,
+  useStagedFilterState,
+} from "next-common/components/dropdownFilter";
 import Select from "next-common/components/select";
-import { createStateContext } from "react-use";
-
-export const [useVoteFilterState, VoteFilterStateProvider] =
-  createStateContext("all");
 
 export function VoteFilter() {
-  const [voteFilter, setVoteFilter] = useVoteFilterState();
+  const [voteFilter, setVoteFilter] = useStagedFilterState();
+  const voteType = voteFilter?.type || "all";
+
+  const handleTypeChange = ({ value: type }) => {
+    if (type === "all") {
+      setVoteFilter(omit(voteFilter, ["type"]));
+    } else {
+      setVoteFilter({ ...voteFilter, type });
+    }
+  };
+
   return (
-    <div>
-      <Select
-        className="w-[80px]"
-        value={voteFilter}
-        options={[
-          { value: "all", label: "All" },
-          { value: "aye", label: "Aye" },
-          { value: "nay", label: "Nay" },
-        ]}
-        onChange={({ value }) => setVoteFilter(value)}
-      />
-    </div>
+    <DropdownFilter>
+      <FilterContentWrapper>
+        <div className="flex items-center text12Medium">
+          <span className="text-textPrimary my-[12px] w-[144px]">Type</span>
+          <Select
+            small
+            className="w-[144px] text12Medium"
+            value={voteType}
+            options={[
+              { value: "all", label: "All types" },
+              { value: "aye", label: "Aye" },
+              { value: "nay", label: "Nay" },
+              { value: "split", label: "Split" },
+              { value: "abstain", label: "Abstain" },
+            ]}
+            onChange={handleTypeChange}
+          />
+        </div>
+      </FilterContentWrapper>
+    </DropdownFilter>
   );
 }
