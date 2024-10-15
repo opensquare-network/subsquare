@@ -10,7 +10,6 @@ import userReducer from "./userSlice";
 import fellowship from "./fellowship";
 import referenda from "./referenda";
 import democracy from "./democracy";
-import layoutReducer from "./layoutSlice";
 import preImagesReducer from "./preImagesSlice";
 import myOnChainData from "./myOnChainData";
 import multisigSlice from "./multisigSlice";
@@ -28,8 +27,6 @@ export const commonReducers = {
   user: userReducer, // global connect popup
   cmdk: cmdkReducer,
   toast: toastReducer,
-  // baseLayout children
-  layout: layoutReducer,
 };
 
 const businessReducers = {
