@@ -1,13 +1,14 @@
 import { ArrowRight, MenuMore } from "@osn/icons/subsquare";
 import { useIsMacOS } from "next-common/context/page";
-import { store } from "next-common/store";
-import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
+import { useCmdkPaletteVisible } from "next-common/components/cmdk/cmdkPalette";
 import { cn } from "next-common/utils";
 import isAssetHub from "next-common/utils/isAssetHub";
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 
-export function getMoreMenu({ archivedMenu = [] }) {
+export function useMoreMenu({ archivedMenu = [] }) {
+  const [, setCmdkPaletteVisible] = useCmdkPaletteVisible();
+
   return {
     name: "More",
     icon: <MenuMore />,
@@ -26,7 +27,7 @@ export function getMoreMenu({ archivedMenu = [] }) {
         value: "navigation",
         name: "Navigation",
         onClick() {
-          store.dispatch(setCmdkPaletteVisible(true));
+          setCmdkPaletteVisible(true);
         },
         extra: <NavigationExtra />,
       },

@@ -10,8 +10,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useBountyTimelineData from "../../../components/bounty/useBountyTimelineData";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
-import { useSelector } from "react-redux";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -45,9 +44,7 @@ function BountyContent() {
   const curator = useBountyCuratorData(detail?.onchainData);
   const curatorParams = useCuratorMultisigAddress(curator);
   const timelineData = useBountyTimelineData(detail?.onchainData);
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   return (
     <OffChainArticleActionsProvider>

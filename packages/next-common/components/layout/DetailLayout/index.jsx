@@ -1,15 +1,11 @@
 import { cn } from "next-common/utils";
 import BaseLayout from "../baseLayout";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  layoutDetailSidebarHeight,
-  setLayoutDetailSidebarHeight,
-} from "next-common/store/reducers/layoutSlice";
 import { useEffect } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
 import ScrollToTopButton from "next-common/components/layout/DetailLayout/ScrollToTopButton";
+import { useLayoutSidebarHeight } from "../sidebar/rightBarWrapper";
 
 export default function DetailLayout({
   seoInfo,
@@ -17,13 +13,12 @@ export default function DetailLayout({
   children,
   hasSidebar,
 }) {
-  const dispatch = useDispatch();
-  const sidebarHeight = useSelector(layoutDetailSidebarHeight);
+  const [sidebarHeight, setSidebarHeight] = useLayoutSidebarHeight();
   useEffect(() => {
     return () => {
-      dispatch(setLayoutDetailSidebarHeight(0));
+      setSidebarHeight(0);
     };
-  }, [dispatch]);
+  }, [setSidebarHeight]);
 
   const [navCollapsed] = useNavCollapsed();
 

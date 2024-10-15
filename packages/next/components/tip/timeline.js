@@ -6,8 +6,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
 import AddressUser from "next-common/components/user/addressUser";
 
 const FlexEnd = styled.div`
@@ -104,9 +103,7 @@ export default function TipTimeline({ tip }) {
     setTimelineData(data);
   }, [tip]);
 
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   return (
     <Timeline data={timelineData} indent={false} compact={isTimelineCompact} />

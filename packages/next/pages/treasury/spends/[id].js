@@ -14,8 +14,7 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import TreasurySpendDetail from "next-common/components/detail/treasury/spend";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTreasurySpendTimelineData";
-import { useSelector } from "react-redux";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
@@ -40,9 +39,7 @@ const Timeline = dynamicClientOnly(() =>
 function TreasurySpendContent() {
   const detail = usePost();
   const timelineData = useTreasurySpendTimelineData(detail?.onchainData);
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   return (
     <ContentWithComment>
