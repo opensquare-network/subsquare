@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import SignApprove from "./signApprove";
 import SignCancel from "./signCancel";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import SignSubmit from "./signSubmit";
 
 function ApprovedTooltip() {
   return (
@@ -61,6 +62,36 @@ export default function MultisigSignField({ multisig = {} }) {
     return isSignatory && isDepositor;
   }, [approvals, realAddress, signatories, state?.name, depositor]);
 
+  // call as_multi (Sign & Submit)
+  const isNeedFinalApproval = useMemo(() => {
+    if (!approvals || !signatories || state?.name !== "Approving") {
+      return false;
+    }
+
+    const isSignatory = signatories.includes(realAddress);
+    const hasNotApproved = !approvals.some((item) =>
+      isSameAddress(item, realAddress),
+    );
+
+    return isSignatory && hasNotApproved && approvals.length === threshold - 1;
+  }, [approvals, realAddress, signatories, state?.name, threshold]);
+
+  // call as_multi (Submit)
+  const isReadyForSubmission = useMemo(() => {
+    if (!approvals || !signatories || state?.name !== "Approving") {
+      return false;
+    }
+
+    const isSignatory = signatories.includes(realAddress);
+    const hasNotApproved = !approvals.some((item) =>
+      isSameAddress(item, realAddress),
+    );
+    const isAllApproved =
+      isSignatory && hasNotApproved && approvals.length === threshold;
+
+    return isAllApproved;
+  }, [approvals, realAddress, signatories, state?.name, threshold]);
+
   const isApproved = useMemo(() => {
     if (pathname.startsWith("/user/")) {
       // on user profile multisigs page
@@ -79,6 +110,11 @@ export default function MultisigSignField({ multisig = {} }) {
   // SignCancel by depositor
   if (isCanbeCanceled) {
     content = <SignCancel multisig={multisig} />;
+  }
+
+  // TODO: add params
+  if (isNeedFinalApproval || isReadyForSubmission) {
+    content = <SignSubmit multisig={multisig} />;
   }
 
   return (
