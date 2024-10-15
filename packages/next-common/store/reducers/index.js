@@ -16,7 +16,6 @@ import myOnChainData from "./myOnChainData";
 import detailReducer from "./detailSlice";
 import multisigSlice from "./multisigSlice";
 import profile from "./profile";
-import editorReducer from "./editorSlice";
 import avatarReducer from "./avatarSlice";
 
 // TODO: clean unnecessay reducers, use `createGlobalState` instead
@@ -33,7 +32,6 @@ export const commonReducers = {
   // baseLayout children
   layout: layoutReducer,
   detail: detailReducer,
-  editor: editorReducer, // removable
 };
 
 const businessReducers = {
