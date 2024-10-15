@@ -3,8 +3,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useTimelineData } from "next-common/context/post";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
-import { useSelector } from "react-redux";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
 
 const getTimelineData = (args, method) => {
   switch (method) {
@@ -49,9 +48,7 @@ export default function ReferendumTimeline() {
     [timeline],
   );
 
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   return <Timeline data={timelineData} compact={isTimelineCompact} />;
 }

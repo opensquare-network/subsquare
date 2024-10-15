@@ -20,12 +20,13 @@ import { useDetailType } from "next-common/context/page";
 import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import DetailMultiTabs, {
+  useIsTimelineCompact,
+} from "next-common/components/detail/detailMultiTabs";
 import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -109,9 +110,7 @@ export default function TechcommMotionDetail({ motion }) {
     blockHeight - motionEndHeight,
   );
 
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   if (isEdit) {
     return (

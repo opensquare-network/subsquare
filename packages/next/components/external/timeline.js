@@ -4,8 +4,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useTimelineData } from "next-common/context/post";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
 
 function makeSingleExternalTimelineData(args, method) {
   switch (method) {
@@ -48,9 +47,7 @@ export default function ExternalTimeline() {
     [timeline],
   );
 
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   return <Timeline data={timelineData} compact={isTimelineCompact} />;
 }
