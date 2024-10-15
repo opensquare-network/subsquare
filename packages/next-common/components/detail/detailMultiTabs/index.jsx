@@ -1,11 +1,29 @@
+import Tab from "next-common/components/tab";
 import Tabs from "../../tabs";
 import { useTimelineData } from "next-common/context/post";
 import VotesBubbleViewTabs from "./votesBubbleViewTabs";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
-import TimelineModeTabs from "./timelineModeTabs";
 import { useRouter } from "next/router";
 import { snakeCase, startCase } from "lodash-es";
+import { createGlobalState } from "react-use";
+
+const timelineTabs = [
+  {
+    tabId: "normal",
+    tabTitle: "Normal",
+  },
+  {
+    tabId: "compact",
+    tabTitle: "Compact",
+  },
+];
+
+export const useTimelineMode = createGlobalState(timelineTabs[0].tabId);
+export function useIsTimelineCompact() {
+  const [timelineMode] = useTimelineMode();
+  return timelineMode === "compact";
+}
 
 export default function DetailMultiTabs({
   call,
@@ -22,6 +40,7 @@ export default function DetailMultiTabs({
   const timelineData = useTimelineData();
   const chain = useChain();
   const hasVotesViewTabs = ![Chains.kintsugi, Chains.interlay].includes(chain);
+  const [timelineMode, setTimelineMode] = useTimelineMode();
 
   const tabs = [
     business && { label: "Business", content: business },
@@ -37,7 +56,13 @@ export default function DetailMultiTabs({
       activeCount: timelineCount || timelineData?.length,
       content: (
         <div>
-          <TimelineModeTabs />
+          <Tab
+            selectedTabId={timelineMode}
+            setSelectedTabId={(id) => {
+              setTimelineMode(id);
+            }}
+            tabs={timelineTabs}
+          />
 
           {timeline}
         </div>

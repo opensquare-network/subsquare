@@ -20,7 +20,9 @@ import { clearVotes } from "next-common/store/reducers/democracy/votes";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import DetailMultiTabs, {
+  useIsTimelineCompact,
+} from "next-common/components/detail/detailMultiTabs";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import ReferendumCall from "next-common/components/democracy/call";
 import DemocracyReferendaVotesBubble from "components/referenda/votesBubble";
@@ -28,7 +30,6 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
@@ -76,9 +77,7 @@ function ReferendumContent() {
   const { call: inlineCall } = useInlineCall(timelineData, proposal);
   const call = post?.onchainData?.preImage?.call || inlineCall;
 
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   return (
     <OffChainArticleActionsProvider>
