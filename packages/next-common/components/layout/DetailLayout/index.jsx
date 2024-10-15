@@ -5,7 +5,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
 import ScrollToTopButton from "next-common/components/layout/DetailLayout/ScrollToTopButton";
-import { useLayoutSidebarHeight } from "./sidebar/rightBarWrapper";
+import { useLayoutSidebarHeight } from "../sidebar/rightBarWrapper";
 
 export default function DetailLayout({
   seoInfo,
