@@ -44,6 +44,11 @@ const westendAssetHub = {
     signet: true,
     mimir: true,
   },
+  modules: {
+    proxy: {
+      provider: "chain",
+    },
+  },
 };
 
 export default westendAssetHub;
