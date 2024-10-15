@@ -19,23 +19,36 @@ import profile from "./profile";
 import editorReducer from "./editorSlice";
 import avatarReducer from "./avatarSlice";
 
-export default combineReducers({
+// TODO: clean unnecessay reducers, use `createGlobalState` instead
+export const commonReducers = {
+  // baseLayout header
+  node: nodeReducer, // node switcher
+  chain: chainReducer, // network switcher
+  // baseLayout nav menu
+  avatar: avatarReducer,
+  // baseLayout global
+  user: userReducer, // global connect popup
+  cmdk: cmdkReducer,
   toast: toastReducer,
-  node: nodeReducer,
-  chain: chainReducer,
+  // baseLayout children
+  layout: layoutReducer,
+  detail: detailReducer,
+  editor: editorReducer, // removable
+};
+
+const businessReducers = {
   referendum: referendumReducer,
   gov2Referendum: gov2ReferendumReducer,
-  cmdk: cmdkReducer,
-  user: userReducer,
   ...fellowship,
   ...referenda,
   ...democracy,
-  layout: layoutReducer,
   preImages: preImagesReducer,
   ...myOnChainData,
-  detail: detailReducer,
   multisig: multisigSlice,
   ...profile,
-  editor: editorReducer,
-  avatar: avatarReducer,
+};
+
+export default combineReducers({
+  ...commonReducers,
+  ...businessReducers,
 });
