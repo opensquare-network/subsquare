@@ -17,7 +17,7 @@ import { partition } from "lodash-es";
 import isAssetHub from "next-common/utils/isAssetHub";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
-import { getMoreMenu } from "./more";
+import { useMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
 
 export function getHomeMenu({
@@ -46,17 +46,13 @@ export function getHomeMenu({
   ].filter(Boolean);
 }
 
-export function getMainMenu({
+export function useMainMenu({
   summary = {},
   tracks = [],
   fellowshipTracks = [],
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  if (isAssetHub()) {
-    return [...assetHubMenu];
-  }
-
   const modulesMenu = getHomeMenu({
     summary,
     tracks,
@@ -103,7 +99,11 @@ export function getMainMenu({
     }
   }
 
-  const moreMenu = getMoreMenu({ archivedMenu: archivedModulesMenu });
+  const moreMenu = useMoreMenu({ archivedMenu: archivedModulesMenu });
+
+  if (isAssetHub()) {
+    return [...assetHubMenu];
+  }
 
   return [
     ...commonMenus.items,

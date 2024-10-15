@@ -1,7 +1,7 @@
 import { ArrowCircleLeft } from "@osn/icons/subsquare";
 import { useNavCollapsed } from "next-common/context/nav";
 import { usePageProps } from "next-common/context/page";
-import { getMainMenu } from "next-common/utils/consts/menu";
+import { useMainMenu } from "next-common/utils/consts/menu";
 import { createGlobalState } from "react-use";
 import NavMenuItem from "./item";
 import { useRouter } from "next/router";
@@ -25,7 +25,7 @@ export default function NavMenu() {
     }
   }, [router.pathname, setNavMenuView]);
 
-  const mainMenu = getMainMenu({
+  const mainMenu = useMainMenu({
     tracks,
     fellowshipTracks,
     ambassadorTracks,
