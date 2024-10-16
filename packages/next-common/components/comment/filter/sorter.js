@@ -1,5 +1,4 @@
 import Select from "next-common/components/select";
-import Tooltip from "next-common/components/tooltip";
 import { useStagedCommentFilterParams } from "./utils";
 
 const options = [
@@ -19,21 +18,7 @@ const options = [
     label: "Most Thumbs Up",
     value: "most_thumbs_up",
   },
-].map((option) => {
-  let label = <span className="text12Medium">{option.label}</span>;
-  if (option.disabled) {
-    label = (
-      <Tooltip content="Not available" className="text-textDisabled">
-        {label}
-      </Tooltip>
-    );
-  }
-
-  return {
-    ...option,
-    label,
-  };
-});
+];
 
 export const defaultSortBy = "oldest";
 export const sortByQueryName = "comments_sort_by";
