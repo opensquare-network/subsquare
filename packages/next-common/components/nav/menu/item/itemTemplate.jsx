@@ -42,7 +42,7 @@ export default function NavMenuItemTemplate({
           collapsed && "hidden",
         )}
       >
-        <span>
+        <span className="w-full">
           {name}{" "}
           {!!activeCount && (
             <span className="ml-1 text-navigationTextTertiary">

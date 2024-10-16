@@ -18,6 +18,8 @@ export default function ConvictionField({
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
+  balance = (isNaN(Number(balance)) ? 0 : balance) || 0;
+
   let lockingPeriod = null;
 
   if (isLoading) {

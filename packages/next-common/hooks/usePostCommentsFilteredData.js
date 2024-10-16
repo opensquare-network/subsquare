@@ -8,9 +8,8 @@ import { getAddressVotingBalance } from "next-common/utils/referendumUtil";
 import { useCommittedCommentFilterParams } from "next-common/components/comment/filter/utils";
 import { useIsDVAddressFn } from "./useIsDVAddress";
 import { useShallowCompareEffect } from "react-use";
-import { useDispatch } from "react-redux";
-import { setDetailCommentsMerging } from "next-common/store/reducers/detailSlice";
 import { defaultSortBy } from "next-common/components/comment/filter/sorter";
+import { usePostCommentsMerging } from "./usePostCommentsMerging";
 
 function isDeletedComment(comment) {
   return comment?.content?.trim?.() !== "[Deleted]";
@@ -22,22 +21,20 @@ function is0Balance(comment) {
 
 export function usePostCommentsFilteredData() {
   const api = useContextApi();
-  const dispatch = useDispatch();
   const { commentsData, loading: commentsLoading } = usePostCommentsData();
 
   const [filterParams] = useCommittedCommentFilterParams();
   const getAddressVotesData = useGetAddressVotesDataFn();
   const isDVAddress = useIsDVAddressFn();
 
+  const [, setCommentsMerging] = usePostCommentsMerging();
   const [mergedComments, setMergedComments] = useState(commentsData);
 
   useShallowCompareEffect(() => {
-    dispatch(
-      setDetailCommentsMerging(
-        !every(mergedComments.items, (item) => has(item, "balance")),
-      ),
+    setCommentsMerging(
+      !every(mergedComments.items, (item) => has(item, "balance")),
     );
-  }, [dispatch, mergedComments.items]);
+  }, [mergedComments.items]);
 
   useShallowCompareEffect(() => {
     const data = cloneDeep(commentsData);
