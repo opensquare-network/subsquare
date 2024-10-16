@@ -1,4 +1,3 @@
-import { omit } from "lodash-es";
 import Select from "next-common/components/select";
 import Tooltip from "next-common/components/tooltip";
 import { useStagedCommentFilterParams } from "./utils";
@@ -48,11 +47,7 @@ export default function CommentsSorter() {
     if (option.disabled) {
       return;
     }
-    if (option.value === defaultSortBy) {
-      setFilterState(omit(filterState, sortByQueryName));
-    } else {
-      setFilterState({ ...filterState, [sortByQueryName]: option.value });
-    }
+    setFilterState({ ...filterState, [sortByQueryName]: option.value });
   };
 
   return (
