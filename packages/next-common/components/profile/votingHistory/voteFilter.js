@@ -1,7 +1,5 @@
-import {
-  CommonDropdownFilter,
-  useStagedFilterState,
-} from "next-common/components/dropdownFilter";
+import { CommonDropdownFilter } from "next-common/components/dropdownFilter";
+import { useStagedFilterState } from "next-common/components/dropdownFilter/context";
 import Select from "next-common/components/select";
 
 const options = [

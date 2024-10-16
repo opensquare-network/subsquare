@@ -1,7 +1,7 @@
 import {
   useCommittedFilterState,
   useStagedFilterState,
-} from "next-common/components/dropdownFilter";
+} from "next-common/components/dropdownFilter/context";
 import { optionItems } from "./options";
 import { useMemo } from "react";
 

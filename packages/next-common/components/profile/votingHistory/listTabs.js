@@ -3,7 +3,7 @@ import { useChainSettings } from "next-common/context/chain";
 import ResponsiveVotes from "./responsiveVotes";
 import ResponsiveCalls from "./responsiveCalls";
 import { defaultFilterValues, VoteFilter } from "./voteFilter";
-import { DropdownFilterProvider } from "next-common/components/dropdownFilter";
+import { DropdownFilterProvider } from "next-common/components/dropdownFilter/context";
 
 export default function ListTabs() {
   const { useVoteCall } = useChainSettings();

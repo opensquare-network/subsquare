@@ -9,7 +9,7 @@ import { isNil } from "lodash-es";
 import { useIsFellowship, useModuleName } from "./common";
 import FellowshipVotesList from "./fellowshipVotesList";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useCommittedFilterState } from "next-common/components/dropdownFilter";
+import { useCommittedFilterState } from "next-common/components/dropdownFilter/context";
 
 const VoteDetailPopup = dynamicPopup(() => import("./voteDetailPopup"));
 
