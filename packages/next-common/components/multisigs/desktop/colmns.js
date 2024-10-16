@@ -31,8 +31,8 @@ const columns = [
   {
     name: "",
     style: {
-      width: 80,
-      minWidth: 80,
+      width: 120,
+      minWidth: 120,
     },
   },
 ];

@@ -18,6 +18,7 @@ export default function RemoveReferendaVotePopup({
       title="Remove Vote"
       getTxFunc={getTxFunc}
       onClose={onClose}
+      noSwitchSigner
     />
   );
 }

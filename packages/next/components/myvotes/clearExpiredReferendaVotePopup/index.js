@@ -6,7 +6,7 @@ import PopupLabel from "next-common/components/popup/label";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 function ExtraInfo({ relatedReferenda, relatedTracks }) {
   return (
@@ -34,7 +34,8 @@ export default function ClearExpiredReferendaVotePopup({
 }) {
   const dispatch = useDispatch();
   const api = useContextApi();
-  const realAddress = useRealAddress();
+  const signerAccount = useSignerAccount();
+  const realAddress = signerAccount?.realAddress;
 
   const relatedReferenda = Array.from(
     new Set((votes || []).map(({ referendumIndex }) => referendumIndex)),
@@ -71,6 +72,7 @@ export default function ClearExpiredReferendaVotePopup({
       getTxFunc={getTxFunc}
       onClose={onClose}
       onInBlock={onInBlock}
+      noSwitchSigner
     >
       <ExtraInfo
         relatedReferenda={relatedReferenda}

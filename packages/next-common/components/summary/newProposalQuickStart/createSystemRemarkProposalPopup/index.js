@@ -26,7 +26,7 @@ export function NewRemarkReferendumInnerPopup() {
 
   return (
     <Popup title="New Remark Proposal" onClose={onClose} wide>
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance />
       {remarkField}
       {trackField}
       <AdvanceSettings>

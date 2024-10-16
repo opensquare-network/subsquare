@@ -31,6 +31,7 @@ import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
 import shibuya from "next-common/utils/consts/settings/shibuya";
 // import astar from "next-common/utils/consts/settings/astar";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
+import paseo from "./consts/settings/paseo";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -70,6 +71,7 @@ export const nodes = [
   zeitgeist,
   vara,
   zkverifyTestnet,
+  paseo,
   ...optionalNodes,
 ];
 

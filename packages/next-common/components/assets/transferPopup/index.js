@@ -1,11 +1,13 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import { useCallback } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useContextApi } from "next-common/context/api";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import Signer from "next-common/components/popup/fields/signerField";
@@ -13,7 +15,8 @@ import Signer from "next-common/components/popup/fields/signerField";
 function PopupContent() {
   const { asset, onClose } = usePopupParams();
   const api = useContextApi();
-  const address = useRealAddress();
+  const signerAccount = useSignerAccount();
+  const address = signerAccount?.realAddress;
   const dispatch = useDispatch();
   const {
     getCheckedValue: getCheckedTransferAmount,

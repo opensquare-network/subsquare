@@ -16,10 +16,8 @@ import { useChain } from "../../context/chain";
 import { useUser } from "../../context/user";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import PostLabel from "./postLabel";
-import Editor from "../editor";
+import Editor, { useEditorUploading } from "../editor";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { useSelector } from "react-redux";
-import { editorUploadingSelector } from "next-common/store/reducers/editorSlice";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -78,7 +76,7 @@ export default function PostCreate() {
   const isEmpty = title === "" || content === "" || content === "<p><br></p>";
   const [selectedLabels, setSelectedLabels] = useState([]);
   const { ensureLogin } = useEnsureLogin();
-  const editorUploading = useSelector(editorUploadingSelector);
+  const [editorUploading] = useEditorUploading();
 
   const createPost = async () => {
     setCreating(true);

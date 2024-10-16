@@ -40,6 +40,7 @@ const Chains = {
   astar: "astar",
   zkverifyTestnet: "zkverify-testnet",
   coretime: "coretime",
+  paseo: "paseo",
 };
 
 export default Chains;

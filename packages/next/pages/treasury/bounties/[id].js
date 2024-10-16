@@ -10,8 +10,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useBountyTimelineData from "../../../components/bounty/useBountyTimelineData";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
-import { useSelector } from "react-redux";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -25,6 +24,7 @@ import { CuratorProvider } from "next-common/context/treasury/bounties";
 import useBountyCuratorData from "next-common/hooks/treasury/bounty/useBountyCuratorData";
 import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { TreasuryProvider } from "next-common/context/treasury";
+import { gov2TracksApi } from "next-common/services/url";
 
 const ChildBountiesTable = dynamicClientOnly(() =>
   import("../../../components/bounty/childBountiesTable"),
@@ -45,9 +45,7 @@ function BountyContent() {
   const curator = useBountyCuratorData(detail?.onchainData);
   const curatorParams = useCuratorMultisigAddress(curator);
   const timelineData = useBountyTimelineData(detail?.onchainData);
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   return (
     <OffChainArticleActionsProvider>
@@ -124,9 +122,14 @@ export default function BountyPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const [{ result: detail }, { result: childBounties }] = await Promise.all([
+  const [
+    { result: detail },
+    { result: childBounties },
+    { result: tracksDetail },
+  ] = await Promise.all([
     nextApi.fetch(`treasury/bounties/${id}`),
     nextApi.fetch(`treasury/bounties/${id}/child-bounties`, { pageSize: 5 }),
+    nextApi.fetch(gov2TracksApi),
   ]);
 
   if (!detail) {
@@ -144,6 +147,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       detail,
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
+      tracksDetail: tracksDetail ?? null,
 
       ...tracksProps,
     },

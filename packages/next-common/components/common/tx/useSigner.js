@@ -13,18 +13,12 @@ export default function useSigner(title) {
     api,
     signerAccount?.realAddress,
   );
-  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
-    api,
-    signerAccount?.address,
-  );
 
   const component = (
     <Signer
       balanceName="Balance"
       balance={balance}
       isBalanceLoading={isBalanceLoading}
-      signerBalance={signerBalance}
-      isSignerBalanceLoading={isSignerBalanceLoading}
       symbol={node.symbol}
       title={title}
     />
@@ -33,7 +27,6 @@ export default function useSigner(title) {
   return {
     signerAccount,
     balance,
-    signerBalance,
     component,
   };
 }

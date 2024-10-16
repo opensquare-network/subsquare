@@ -15,7 +15,12 @@ export default function ReferendumRemovalPopup({
   }, [api, referendumIndex]);
 
   return (
-    <SimpleTxPopup title="Remove Vote" getTxFunc={getTxFunc} onClose={onClose}>
+    <SimpleTxPopup
+      title="Remove Vote"
+      getTxFunc={getTxFunc}
+      onClose={onClose}
+      noSwitchSigner
+    >
       <RelatedReferenda relatedReferenda={[referendumIndex]} />
     </SimpleTxPopup>
   );

@@ -1,7 +1,6 @@
 import { ArrowRight, MenuMore } from "@osn/icons/subsquare";
 import { useIsMacOS } from "next-common/context/page";
-import { store } from "next-common/store";
-import { setCmdkPaletteVisible } from "next-common/store/reducers/cmdkSlice";
+import { useCmdkPaletteVisible } from "next-common/components/cmdk/cmdkPalette";
 import { cn } from "next-common/utils";
 import isAssetHub from "next-common/utils/isAssetHub";
 
@@ -24,11 +23,7 @@ export function getMoreMenu({ archivedMenu = [] }) {
       },
       !isAssetHub() && {
         value: "navigation",
-        name: "Navigation",
-        onClick() {
-          store.dispatch(setCmdkPaletteVisible(true));
-        },
-        extra: <NavigationExtra />,
+        name: <NavigationItem />,
       },
       archivedMenu?.length && {
         value: "archived",
@@ -41,17 +36,26 @@ export function getMoreMenu({ archivedMenu = [] }) {
   };
 }
 
-function NavigationExtra() {
+function NavigationItem() {
+  const [, setCmdkPaletteVisible] = useCmdkPaletteVisible();
   const isMacOS = useIsMacOS();
 
   return (
     <span
-      className={cn(
-        "bg-navigationActive rounded py-0.5 px-2",
-        "text12Medium text-navigationTextTertiary",
-      )}
+      className="w-full inline-flex justify-between"
+      onClick={() => {
+        setCmdkPaletteVisible(true);
+      }}
     >
-      {isMacOS ? "⌘" : "Ctrl +"} K
+      Navigation
+      <span
+        className={cn(
+          "bg-navigationActive rounded py-0.5 px-2",
+          "text12Medium text-navigationTextTertiary",
+        )}
+      >
+        {isMacOS ? "⌘" : "Ctrl +"} K
+      </span>
     </span>
   );
 }

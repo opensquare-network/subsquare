@@ -1,5 +1,4 @@
 import { ArrowCircleLeft } from "@osn/icons/subsquare";
-import { useNavCollapsed } from "next-common/context/nav";
 import { usePageProps } from "next-common/context/page";
 import { getMainMenu } from "next-common/utils/consts/menu";
 import { createGlobalState } from "react-use";
@@ -12,8 +11,7 @@ export const useNavMenuView = createGlobalState({
   menu: null,
 });
 
-export default function NavMenu() {
-  const [collapsed] = useNavCollapsed();
+export default function NavMenu({ collapsed }) {
   const [navMenuView, setNavMenuView] = useNavMenuView();
   const { tracks, fellowshipTracks, summary, detail, ambassadorTracks } =
     usePageProps();

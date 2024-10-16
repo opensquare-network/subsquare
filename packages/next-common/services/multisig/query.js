@@ -13,6 +13,7 @@ const getMultisigsQuery = (address, page, pageSize) => `query MyQuery {
       call
       callHash
       callHex
+      depositor
       signatories
       threshold
       when {

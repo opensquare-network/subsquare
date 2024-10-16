@@ -33,10 +33,6 @@ function PopupContent() {
     signerAccount?.realAddress,
   );
   const isBalanceLoaded = useIsLoaded(loadingBalance);
-  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.address,
-  );
   const {
     deposit,
     balanceInsufficient,
@@ -74,8 +70,6 @@ function PopupContent() {
         balanceName="Voting balance"
         balance={balance}
         isBalanceLoading={loadingBalance}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
         symbol={node.voteSymbol}
       />
       <DepositRequired
