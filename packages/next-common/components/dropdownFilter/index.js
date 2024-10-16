@@ -13,7 +13,7 @@ import { OptionsPadRightWrapper } from "../select/styled";
 import SecondaryButton from "next-common/lib/button/secondary";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useRouter } from "next/router";
-import { isNil, omit, pick } from "lodash-es";
+import { omit, pick } from "lodash-es";
 
 const [useDropdownFilterState, DropdownFilterStateProvider] =
   createStateContext(false);
@@ -50,21 +50,20 @@ function useEmptyFilterValues() {
 
 const CommittedFilterStateContext = createContext();
 
+function subtractObject(a, b) {
+  return Object.fromEntries(
+    Object.entries(a).filter(
+      ([key, value]) => value.toString() !== b[key].toString(),
+    ),
+  );
+}
+
 function useCommittedFilterState() {
   const emptyFilterValues = useEmptyFilterValues();
   const [filterState, setFilterState] = useContext(CommittedFilterStateContext);
 
   const normalizedFilterState = useMemo(
-    () =>
-      Object.fromEntries(
-        Object.keys(filterState)
-          .filter(
-            (key) =>
-              !isNil(filterState[key]) &&
-              filterState[key] !== emptyFilterValues[key],
-          )
-          .map((key) => [key, filterState[key]]),
-      ),
+    () => subtractObject(filterState, emptyFilterValues),
     [filterState, emptyFilterValues],
   );
 
@@ -85,32 +84,20 @@ function UrlFilterStateProvider({ children }) {
   const router = useRouter();
   const defaultFilterValues = useDefaultFilterValues();
   const emptyFilterValues = useEmptyFilterValues();
-  const urlQueryNames = useMemo(
-    () => Object.keys(emptyFilterValues),
-    [emptyFilterValues],
-  );
 
   const { otherFilters, filterValues } = useMemo(() => {
+    const urlQueryNames = Object.keys(emptyFilterValues);
     const urlFilters = {
       ...defaultFilterValues,
       ...pick(router.query, urlQueryNames),
     };
     const otherFilters = omit(router.query, urlQueryNames);
-    const filterValues = Object.fromEntries(
-      urlQueryNames
-        .filter(
-          (key) =>
-            !isNil(urlFilters[key]) &&
-            urlFilters[key].toString() !== emptyFilterValues[key]?.toString(),
-        )
-        .map((key) => [key, urlFilters[key]]),
-    );
-
+    const filterValues = subtractObject(urlFilters, emptyFilterValues);
     return {
       otherFilters,
       filterValues,
     };
-  }, [router, defaultFilterValues, urlQueryNames, emptyFilterValues]);
+  }, [router, defaultFilterValues, emptyFilterValues]);
 
   const setUrlFilters = useCallback(
     (newFilters) => {
@@ -119,23 +106,14 @@ function UrlFilterStateProvider({ children }) {
           pathname: router.pathname,
           query: {
             ...otherFilters,
-            ...Object.fromEntries(
-              urlQueryNames
-                .filter(
-                  (key) =>
-                    !isNil(newFilters[key]) &&
-                    newFilters[key].toString() !==
-                      defaultFilterValues[key]?.toString(),
-                )
-                .map((key) => [key, newFilters[key]]),
-            ),
+            ...subtractObject(newFilters, defaultFilterValues),
           },
         },
         undefined,
         { shallow: true },
       );
     },
-    [router, otherFilters, urlQueryNames, defaultFilterValues],
+    [router, otherFilters, defaultFilterValues],
   );
 
   return (
