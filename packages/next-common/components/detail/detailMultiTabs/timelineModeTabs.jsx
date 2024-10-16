@@ -1,33 +1,33 @@
 import Tab from "next-common/components/tab";
-import {
-  detailMultiTabsTimelineMode,
-  setDetailMultiTabsTimelineMode,
-} from "next-common/store/reducers/detailSlice";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { createGlobalState } from "react-use";
+
+const timelineTabs = [
+  {
+    tabId: "normal",
+    tabTitle: "Normal",
+  },
+  {
+    tabId: "compact",
+    tabTitle: "Compact",
+  },
+];
+
+const useTimelineMode = createGlobalState(timelineTabs[0].tabId);
+export function useIsTimelineCompact() {
+  const [timelineMode] = useTimelineMode();
+  return timelineMode === "compact";
+}
 
 export default function TimelineModeTabs() {
-  const tabId = useSelector(detailMultiTabsTimelineMode);
-  const dispatch = useDispatch();
-
-  const tabs = [
-    {
-      tabId: "normal",
-      tabTitle: "Normal",
-    },
-    {
-      tabId: "compact",
-      tabTitle: "Compact",
-    },
-  ];
+  const [timelineMode, setTimelineMode] = useTimelineMode();
 
   return (
     <Tab
-      selectedTabId={tabId}
+      selectedTabId={timelineMode}
       setSelectedTabId={(id) => {
-        dispatch(setDetailMultiTabsTimelineMode(id));
+        setTimelineMode(id);
       }}
-      tabs={tabs}
+      tabs={timelineTabs}
     />
   );
 }

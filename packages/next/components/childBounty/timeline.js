@@ -7,8 +7,7 @@ import TreasuryCountDown from "next-common/components/treasury/common/countdown"
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import AddressUser from "next-common/components/user/addressUser";
 
 export default function ChildBountyTimeline({ onchainData }) {
@@ -89,9 +88,7 @@ export default function ChildBountyTimeline({ onchainData }) {
     setTimelineData(sortTimeline(data));
   }, [getTimelineData, onchainData]);
 
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   return (
     <Timeline
