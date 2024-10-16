@@ -1,17 +1,16 @@
 import VoteLabel from "next-common/components/democracy/flattenedVotesPopup/voteLabel";
+import { useVotesBubbleView } from "next-common/components/detail/detailMultiTabs/votesBubbleViewTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { detailMultiTabsVotesBubbleView } from "next-common/store/reducers/detailSlice";
 import { toPrecision } from "next-common/utils";
 import Chains from "next-common/utils/consts/chains";
-import { useSelector } from "react-redux";
 
 export default function VoteBubbleHoverContent({ node, sizeField }) {
   const chainSettings = useChainSettings();
   const chain = useChain();
   const hasLabel = ![Chains.kintsugi, Chains.interlay].includes(chain);
-  const view = useSelector(detailMultiTabsVotesBubbleView);
+  const [view] = useVotesBubbleView();
 
   return (
     <ul>
