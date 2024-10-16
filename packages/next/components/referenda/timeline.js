@@ -3,7 +3,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useTimelineData } from "next-common/context/post";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 
 const getTimelineData = (args, method) => {
   switch (method) {

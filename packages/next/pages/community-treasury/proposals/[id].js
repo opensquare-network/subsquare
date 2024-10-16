@@ -10,7 +10,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useTreasuryTimelineData from "../../../components/treasuryProposal/useTimelineData";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";

@@ -6,7 +6,7 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useTimelineData } from "next-common/context/post";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useEffect, useState } from "react";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 
 export function makePublicProposalTimelineData(timeline) {
   const getTimelineData = (args, method) => {

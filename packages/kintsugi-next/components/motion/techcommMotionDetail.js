@@ -20,9 +20,8 @@ import { useDetailType } from "next-common/context/page";
 import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
-import DetailMultiTabs, {
-  useIsTimelineCompact,
-} from "next-common/components/detail/detailMultiTabs";
+import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";

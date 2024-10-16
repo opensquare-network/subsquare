@@ -10,7 +10,7 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import FellowshipTreasurySpendDetail from "next-common/components/detail/fellowship/treasury/spend";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTreasurySpendTimelineData";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
 import { CommonSpendPageWrapper } from "pages/treasury/spends/[id]";

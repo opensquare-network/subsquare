@@ -5,7 +5,7 @@ import Timeline from "../../timeline";
 import { createMotionTimelineData } from "@subsquare/next/utils/timeline/motion";
 import IpfsCidWithLink from "../ipfsCidWithLink";
 import formatTime from "../../../utils/viewfuncs/formatDate";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 
 function getData(item) {
   const { method, args = {} } = item;
