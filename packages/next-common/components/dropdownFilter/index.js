@@ -1,19 +1,67 @@
-import { useEffect, useRef } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { createStateContext, useClickAway } from "react-use";
 import { SystemFilter } from "@osn/icons/subsquare";
 import { OptionsPadRightWrapper } from "../select/styled";
 import SecondaryButton from "next-common/lib/button/secondary";
 import PrimaryButton from "next-common/lib/button/primary";
+import { useRouter } from "next/router";
+import { omit, pick } from "lodash-es";
 
 const [useDropdownFilterState, DropdownFilterStateProvider] =
   createStateContext(false);
 
-const [useCommittedFilterState, CommittedFilterStateProvider] =
-  createStateContext({});
-
 const [useStagedFilterState, StagedFilterStateProvider] = createStateContext(
   {},
 );
+
+const CommittedFilterStateContext = createContext();
+
+function useCommittedFilterState() {
+  return useContext(CommittedFilterStateContext);
+}
+
+function CommittedFilterStateProvider({ children }) {
+  const [filterState, setFilterState] = useState({});
+  return (
+    <CommittedFilterStateContext.Provider value={[filterState, setFilterState]}>
+      {children}
+    </CommittedFilterStateContext.Provider>
+  );
+}
+
+function UrlFilterStateProvider({ urlQueryNames = [], children }) {
+  const router = useRouter();
+
+  const urlFilters = pick(router.query, urlQueryNames);
+  const otherFilters = omit(router.query, urlQueryNames);
+
+  const setUrlFilters = useCallback(
+    (newFilters) => {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { ...otherFilters, ...pick(newFilters, urlQueryNames) },
+        },
+        undefined,
+        { shallow: true },
+      );
+    },
+    [router, otherFilters, urlQueryNames],
+  );
+
+  return (
+    <CommittedFilterStateContext.Provider value={[urlFilters, setUrlFilters]}>
+      {children}
+    </CommittedFilterStateContext.Provider>
+  );
+}
 
 export {
   useDropdownFilterState,
@@ -27,6 +75,16 @@ export function DropdownFilterProvider({ children }) {
       <CommittedFilterStateProvider>
         <StagedFilterStateProvider>{children}</StagedFilterStateProvider>
       </CommittedFilterStateProvider>
+    </DropdownFilterStateProvider>
+  );
+}
+
+export function DropdownUrlFilterProvider({ urlQueryNames, children }) {
+  return (
+    <DropdownFilterStateProvider>
+      <UrlFilterStateProvider urlQueryNames={urlQueryNames}>
+        <StagedFilterStateProvider>{children}</StagedFilterStateProvider>
+      </UrlFilterStateProvider>
     </DropdownFilterStateProvider>
   );
 }
