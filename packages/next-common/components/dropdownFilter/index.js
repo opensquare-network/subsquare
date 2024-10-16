@@ -26,7 +26,7 @@ const DefaultFilterValuesContext = createContext();
 
 function DefaultFilterValuesProvider({
   defaultFilterValues = {},
-  emptyFilterValues = {},
+  emptyFilterValues,
   children,
 }) {
   return (
@@ -44,8 +44,10 @@ function useDefaultFilterValues() {
 }
 
 function useEmptyFilterValues() {
-  const { emptyFilterValues } = useContext(DefaultFilterValuesContext);
-  return emptyFilterValues;
+  const { emptyFilterValues, defaultFilterValues } = useContext(
+    DefaultFilterValuesContext,
+  );
+  return emptyFilterValues || defaultFilterValues;
 }
 
 const CommittedFilterStateContext = createContext();
@@ -86,13 +88,15 @@ function UrlFilterStateProvider({ children }) {
   const emptyFilterValues = useEmptyFilterValues();
 
   const { otherFilters, filterValues } = useMemo(() => {
-    const urlQueryNames = Object.keys(emptyFilterValues);
-    const urlFilters = {
-      ...defaultFilterValues,
-      ...pick(router.query, urlQueryNames),
-    };
+    const urlQueryNames = Object.keys(defaultFilterValues);
     const otherFilters = omit(router.query, urlQueryNames);
-    const filterValues = subtractObject(urlFilters, emptyFilterValues);
+    const filterValues = subtractObject(
+      {
+        ...defaultFilterValues,
+        ...pick(router.query, urlQueryNames),
+      },
+      emptyFilterValues,
+    );
     return {
       otherFilters,
       filterValues,
@@ -106,14 +110,17 @@ function UrlFilterStateProvider({ children }) {
           pathname: router.pathname,
           query: {
             ...otherFilters,
-            ...subtractObject(newFilters, defaultFilterValues),
+            ...subtractObject(
+              { ...emptyFilterValues, ...newFilters },
+              defaultFilterValues,
+            ),
           },
         },
         undefined,
         { shallow: true },
       );
     },
-    [router, otherFilters, defaultFilterValues],
+    [router, otherFilters, emptyFilterValues, defaultFilterValues],
   );
 
   return (

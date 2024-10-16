@@ -27,11 +27,8 @@ export default function CommentsSorter() {
   const [filterState, setFilterState] = useStagedCommentFilterParams();
   const sortBy = filterState[sortByQueryName] || defaultSortBy;
 
-  const handleSortByChange = (option) => {
-    if (option.disabled) {
-      return;
-    }
-    setFilterState({ ...filterState, [sortByQueryName]: option.value });
+  const handleSortByChange = ({ value }) => {
+    setFilterState({ ...filterState, [sortByQueryName]: value });
   };
 
   return (

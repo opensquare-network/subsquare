@@ -4,11 +4,20 @@ import {
 } from "next-common/components/dropdownFilter";
 import Select from "next-common/components/select";
 
-export const emptyFilterValues = { type: "all" };
+const options = [
+  { value: "all", label: "All types" },
+  { value: "aye", label: "Aye" },
+  { value: "nay", label: "Nay" },
+  { value: "split", label: "Split" },
+  { value: "abstain", label: "Abstain" },
+];
+
+export const defaultVoteType = "all";
+export const defaultFilterValues = { type: defaultVoteType };
 
 export function VoteFilter() {
   const [voteFilter, setVoteFilter] = useStagedFilterState();
-  const voteType = voteFilter?.type ?? emptyFilterValues.type;
+  const voteType = voteFilter?.type || defaultVoteType;
 
   const handleTypeChange = ({ value: type }) => {
     setVoteFilter({ ...voteFilter, type });
@@ -22,13 +31,7 @@ export function VoteFilter() {
           small
           className="w-[144px] text12Medium"
           value={voteType}
-          options={[
-            { value: "all", label: "All types" },
-            { value: "aye", label: "Aye" },
-            { value: "nay", label: "Nay" },
-            { value: "split", label: "Split" },
-            { value: "abstain", label: "Abstain" },
-          ]}
+          options={options}
           onChange={handleTypeChange}
         />
       </div>
