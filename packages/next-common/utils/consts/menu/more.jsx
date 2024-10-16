@@ -6,9 +6,7 @@ import isAssetHub from "next-common/utils/isAssetHub";
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 
-export function useMoreMenu({ archivedMenu = [] }) {
-  const [, setCmdkPaletteVisible] = useCmdkPaletteVisible();
-
+export function getMoreMenu({ archivedMenu = [] }) {
   return {
     name: "More",
     icon: <MenuMore />,
@@ -25,11 +23,7 @@ export function useMoreMenu({ archivedMenu = [] }) {
       },
       !isAssetHub() && {
         value: "navigation",
-        name: "Navigation",
-        onClick() {
-          setCmdkPaletteVisible(true);
-        },
-        extra: <NavigationExtra />,
+        name: <NavigationItem />,
       },
       archivedMenu?.length && {
         value: "archived",
@@ -42,17 +36,26 @@ export function useMoreMenu({ archivedMenu = [] }) {
   };
 }
 
-function NavigationExtra() {
+function NavigationItem() {
+  const [, setCmdkPaletteVisible] = useCmdkPaletteVisible();
   const isMacOS = useIsMacOS();
 
   return (
     <span
-      className={cn(
-        "bg-navigationActive rounded py-0.5 px-2",
-        "text12Medium text-navigationTextTertiary",
-      )}
+      className="w-full inline-flex justify-between"
+      onClick={() => {
+        setCmdkPaletteVisible(true);
+      }}
     >
-      {isMacOS ? "⌘" : "Ctrl +"} K
+      Navigation
+      <span
+        className={cn(
+          "bg-navigationActive rounded py-0.5 px-2",
+          "text12Medium text-navigationTextTertiary",
+        )}
+      >
+        {isMacOS ? "⌘" : "Ctrl +"} K
+      </span>
     </span>
   );
 }
