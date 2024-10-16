@@ -57,10 +57,15 @@ export function SignSubmitInnerPopup({
     setIsSubmitBtnLoading(false);
     const otherSignatories = signatories.filter((item) => item !== address);
 
+    const encodedTimepoint = api.registry.createType(
+      "Timepoint",
+      maybeTimepoint,
+    );
+
     return api.tx.multisig?.asMulti(
       threshold,
       otherSignatories,
-      maybeTimepoint,
+      encodedTimepoint,
       encodedCall,
       maxWeight,
     );
