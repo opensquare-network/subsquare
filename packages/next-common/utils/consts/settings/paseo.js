@@ -81,7 +81,7 @@ const paseo = {
   symbol: "PAS",
   decimals: 10,
   blockTime: 6000,
-  ss58Format: 42,
+  ss58Format: 0,
   endpoints: nodes,
   avatar: ProjectIconPaseoLight,
   darkAvatar: ProjectIconPaseoDark,

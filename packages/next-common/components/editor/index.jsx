@@ -61,7 +61,8 @@ function Editor(props, ref) {
         textarea.selectionStart = textarea.selectionEnd = lastCaretPosition;
       }
     }
-  }, [uploading, textAreaRef, lastCaretPosition]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uploading, textAreaRef]);
 
   useEffect(() => {
     setEditorUploading(uploading);
