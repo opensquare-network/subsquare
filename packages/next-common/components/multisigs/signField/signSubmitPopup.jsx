@@ -28,20 +28,20 @@ export function SignSubmitInnerPopup({
   const { threshold, signatories, when: maybeTimepoint } = multisig;
   const [encodedCall, setEncodedCall] = useState(null);
   const [isSubmitBtnLoading, setIsSubmitBtnLoading] = useState(false);
-  const [proposal, setProposal] = useState(null);
-  const { weight: maxWeight } = useWeight(proposal);
-  const isSubmitBtnDisabled = !proposal || !maxWeight;
+  const [call, setCall] = useState(null);
+  const { weight: maxWeight } = useWeight(call);
+  const isSubmitBtnDisabled = !call || !maxWeight;
 
   const setValue = useCallback(
     ({ isValid, data }) => {
       if (!api || !isValid) {
-        setProposal(null);
+        setCall(null);
         setEncodedCall(null);
         return;
       }
 
       if (data) {
-        setProposal(data);
+        setCall(data);
         setEncodedCall(data.method);
       }
     },
