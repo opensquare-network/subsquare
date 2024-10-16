@@ -57,8 +57,6 @@ export function SignSubmitInnerPopup({
     setIsSubmitBtnLoading(false);
     const otherSignatories = signatories.filter((item) => item !== address);
 
-    console.log(":::::encodedCall", encodedCall);
-
     return api.tx.multisig?.asMulti(
       threshold,
       otherSignatories,
