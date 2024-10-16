@@ -1,5 +1,5 @@
 import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
-import Signer from "next-common/components/popup/fields/signerField";
+import ConnectedUserOrigin from "next-common/components/popup/fields/connectedUserOriginField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import {
   useExtensionAccounts,
@@ -105,7 +105,7 @@ function PopupContent() {
 
   return (
     <>
-      <Signer />
+      <ConnectedUserOrigin />
       {crossChainDirection}
       {addressComboField}
       {transferAmountField}

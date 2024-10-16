@@ -16,7 +16,8 @@ export default function ChildBountySidebar() {
     parentBountyId,
     childBountyId,
   ]);
-  const { status } = result?.unwrap?.() || {};
+
+  const { status } = (result?.isSome && result?.unwrap?.()) || {};
 
   const showActionTip =
     status?.isCuratorProposed || status?.isPendingPayout || status?.isAdded;

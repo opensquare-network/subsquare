@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAddressVotingBalance } from "utils/hooks";
 import { noop } from "lodash-es";
 import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
@@ -16,16 +15,19 @@ import PrimaryButton from "next-common/lib/button/primary";
 import useSubMyReferendaVote, {
   getReferendaDirectVote,
 } from "next-common/hooks/referenda/useSubMyReferendaVote";
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import { LoadingPanel } from "components/referenda/popup/popupContent";
 import { normalizeOnchainVote } from "next-common/utils/vote";
 import { useShowVoteSuccessful } from "next-common/components/vote";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import useStandardVote from "components/referenda/popup/voteHooks/useStandardVote";
 import useSplitVote from "components/referenda/popup/voteHooks/useSplitVote";
 import useSplitAbstainVote from "./voteHooks/useSplitAbstainVote";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
+import useReferendaVotingBalance from "next-common/hooks/referenda/useReferendaVotingBalance";
 
 function VotePanel({
   referendumIndex,
@@ -136,15 +138,8 @@ export default function PopupContent() {
   const signerAccount = useSignerAccount();
 
   const api = useContextApi();
-
-  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.realAddress,
-  );
-  const [signerBalance, isSignerBalanceLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.address,
-  );
+  const { isLoading: votingIsLoading, balance: votingBalance } =
+    useReferendaVotingBalance(api, signerAccount?.realAddress);
 
   const {
     vote: addressVote,
@@ -198,8 +193,6 @@ export default function PopupContent() {
         balanceName="Voting balance"
         balance={votingBalance}
         isBalanceLoading={votingIsLoading}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
       />
       {content}
     </>

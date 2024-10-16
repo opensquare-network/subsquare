@@ -21,6 +21,7 @@ export default function RemoveDemocracyVotePopup({
       getTxFunc={getTxFunc}
       onClose={onClose}
       onInBlock={onInBlock}
+      noSwitchSigner
     />
   );
 }

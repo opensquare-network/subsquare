@@ -7,7 +7,7 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import Signer from "next-common/components/popup/fields/signerField";
-import { useUser } from "next-common/context/user";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useNativeTransferAmount from "next-common/components/assets/paraChainTeleportPopup/useNativeTransferAmount";
 import {
@@ -38,18 +38,28 @@ function buildChainOption(chain) {
   };
 }
 
-const SOURCE_CHAIN_OPTIONS = [buildChainOption(Chains.polkadot)];
+function useSourceChainOptions() {
+  const chain = useChain();
+  return [buildChainOption(chain)];
+}
 
-const DESTINATION_CHAIN_OPTIONS = [
-  Chains.polkadotAssetHub,
-  Chains.collectives,
-].map(buildChainOption);
+function useDestinationChainOptions() {
+  const chain = useChain();
+  const assetHubChain = useAssetHubChain();
+  const options = [buildChainOption(assetHubChain)];
+  if (chain === Chains.polkadot) {
+    options.push(buildChainOption(Chains.collectives));
+  }
+  return options;
+}
 
 function CrosschainDirection({
   sourceChain,
   destinationChain,
   setDestinationChain,
 }) {
+  const sourceChainOptions = useSourceChainOptions();
+  const destinationChainOptions = useDestinationChainOptions();
   return (
     <div className="flex items-end gap-[12px]">
       <Chain
@@ -58,7 +68,7 @@ function CrosschainDirection({
         className="!text-textPrimary"
         disabled
         readOnly
-        options={SOURCE_CHAIN_OPTIONS}
+        options={sourceChainOptions}
       />
       <div className="flex w-[40px] h-[40px] justify-center items-center [&_svg_path]:fill-textPrimary">
         <SystemCrosschain width={24} height={24} />
@@ -66,7 +76,7 @@ function CrosschainDirection({
       <Chain
         title="Destination Chain"
         value={destinationChain}
-        options={DESTINATION_CHAIN_OPTIONS}
+        options={destinationChainOptions}
         onChange={(item) => {
           setDestinationChain(item.value);
         }}
@@ -89,18 +99,20 @@ function PopupContent() {
     sourceChain,
     destinationChain,
   });
-  const user = useUser();
-  const address = user?.address;
+  const signerAccount = useSignerAccount();
   const dispatch = useDispatch();
   const {
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
   } = useNativeTransferAmount({
     api: sourceApi,
-    transferFromAddress: address,
+    transferFromAddress: signerAccount?.realAddress,
   });
   const { value: transferToAddress, component: addressComboField } =
-    useAddressComboField({ title: "To Address", defaultAddress: address });
+    useAddressComboField({
+      title: "To Address",
+      defaultAddress: signerAccount?.realAddress,
+    });
 
   const getTxFunc = useCallback(() => {
     try {

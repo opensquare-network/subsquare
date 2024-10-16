@@ -11,6 +11,11 @@ export default function UndelegatePopup({ trackId, onClose }) {
   }, [api, trackId]);
 
   return (
-    <SimpleTxPopup title="Undelegate" getTxFunc={getTxFunc} onClose={onClose} />
+    <SimpleTxPopup
+      title="Undelegate"
+      getTxFunc={getTxFunc}
+      onClose={onClose}
+      noSwitchSigner
+    />
   );
 }

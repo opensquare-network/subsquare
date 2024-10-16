@@ -15,10 +15,13 @@ export default function FellowshipVoteCallsList({ data, fetchData, page }) {
       name: "Proposal",
       style: { textAlign: "left", minWidth: "180px", maxWidth: 384 },
     },
-    { name: "Date", style: { textAlign: "left", minWidth: "200px" } },
+    {
+      name: "Date",
+      style: { textAlign: "left", width: "200px", minWidth: "200px" },
+    },
     {
       name: "Vote",
-      style: { textAlign: "left", width: "128px", minWidth: "128px" },
+      style: { textAlign: "left", width: "260px", minWidth: "260px" },
     },
     {
       name: "Status",

@@ -44,6 +44,11 @@ const kusamaAssetHub = {
     signet: true,
     mimir: true,
   },
+  modules: {
+    proxy: {
+      provider: "chain",
+    },
+  },
 };
 
 export default kusamaAssetHub;

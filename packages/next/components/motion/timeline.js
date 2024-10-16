@@ -6,7 +6,7 @@ import MotionEnd from "next-common/components/motionEnd";
 import Timeline from "next-common/components/timeline";
 import { usePostOnChainData } from "next-common/context/post";
 import { useEffect, useState } from "react";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 
 const TimelineMotionEnd = styled.div`
   display: flex;

@@ -1,12 +1,13 @@
 import React, { useCallback, useMemo } from "react";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useContextApi } from "next-common/context/api";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
   const api = useContextApi();
-  const realAddress = useRealAddress();
+  const signerAccount = useSignerAccount();
+  const realAddress = signerAccount?.realAddress;
 
   const relatedReferenda = useMemo(() => {
     const referenda = [...new Set(votes)];
@@ -33,7 +34,12 @@ export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
 
   const title = relatedReferenda.length <= 0 ? "Unlock" : "Clear Expired Votes";
   return (
-    <SimpleTxPopup title={title} getTxFunc={getTxFunc} onClose={onClose}>
+    <SimpleTxPopup
+      title={title}
+      getTxFunc={getTxFunc}
+      onClose={onClose}
+      noSwitchSigner
+    >
       <RelatedReferenda relatedReferenda={relatedReferenda} />
     </SimpleTxPopup>
   );

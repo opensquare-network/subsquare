@@ -37,7 +37,7 @@ export default function KillReferendumPopup({ onClose }) {
       onClose={onClose}
       wide
     >
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance />
       {referendumIndexField}
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />

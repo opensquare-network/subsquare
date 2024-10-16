@@ -38,6 +38,9 @@ const base = {
   alliance: false,
   preimages: true,
   coretime: false,
+  proxy: {
+    provider: "server",
+  },
 };
 
 /**

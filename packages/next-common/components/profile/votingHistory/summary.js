@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { Title } from "./styled";
-import { ModuleTab, useAvailableModuleTabs, useModuleName } from "./common";
+import {
+  ModuleTab,
+  useAvailableModuleTabs,
+  useModuleName,
+  useIsFellowship,
+} from "./common";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
@@ -22,6 +27,7 @@ export default function VotingHistorySummary() {
   const { useVoteCall } = useChainSettings();
   const module = useModuleName();
   const availableTabs = useAvailableModuleTabs();
+  const isFellowship = useIsFellowship();
 
   useEffect(() => {
     nextApi.fetch(`users/${id}/${module}/vote-stats`).then(({ result }) => {
@@ -49,11 +55,13 @@ export default function VotingHistorySummary() {
               <CountSummaryContent count={data?.totalCalls || 0} />
             </SummaryItem>
           ) : null}
-          <SummaryItem title="Participation Rate">
-            <TextSummaryContent
-              value={`${((data?.participationRate || 0) * 100).toFixed(1)}%`}
-            />
-          </SummaryItem>
+          {!isFellowship && (
+            <SummaryItem title="Participation Rate">
+              <TextSummaryContent
+                value={`${((data?.participationRate || 0) * 100).toFixed(1)}%`}
+              />
+            </SummaryItem>
+          )}
         </SummaryLayout>
       </SecondaryCard>
     </>

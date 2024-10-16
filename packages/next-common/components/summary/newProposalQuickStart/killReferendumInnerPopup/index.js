@@ -61,7 +61,7 @@ export function KillReferendumInnerPopup({
       onClose={onClose}
       wide
     >
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance />
       {referendumIndexField}
       {trackField}
       <AdvanceSettings>

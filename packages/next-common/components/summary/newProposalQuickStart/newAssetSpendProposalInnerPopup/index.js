@@ -1,4 +1,7 @@
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
@@ -18,7 +21,6 @@ import useBalanceField from "next-common/components/preImages/createPreimagePopu
 import { useDefaultTrackId } from "../../newProposalPopup/useTrackDetail";
 import { useSubmissionDeposit } from "../common/useSubmissionDeposit";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 
 const getAssetKindParam = () => {
@@ -104,7 +106,8 @@ function CreateProposalSubmitButtonWithRankCheck({
   notePreimageTx,
 }) {
   const { members } = useFellowshipCoreMembers();
-  const realAddress = useRealAddress();
+  const signerAccount = useSignerAccount();
+  const realAddress = signerAccount?.realAddress;
   const me = find(members, { address: realAddress });
 
   const myRankOk = me && me.rank >= 3;
@@ -159,7 +162,7 @@ export function NewAssetSpendProposalInnerPopup() {
       onClose={onClose}
       wide
     >
-      <SignerWithBalance title="Origin" />
+      <SignerWithBalance />
       {balanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}

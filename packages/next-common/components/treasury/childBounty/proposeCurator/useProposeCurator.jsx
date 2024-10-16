@@ -1,11 +1,13 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useContextApi } from "next-common/context/api";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
@@ -17,7 +19,8 @@ import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 function PopupContent() {
   const { onClose } = usePopupParams();
   const { decimals, symbol } = useChainSettings();
-  const address = useRealAddress();
+  const signerAccount = useSignerAccount();
+  const address = signerAccount?.realAddress;
   const { value: signerBalance, loading: signerBalanceLoading } =
     useSubBalanceInfo(address);
   const api = useContextApi();
@@ -45,7 +48,7 @@ function PopupContent() {
 
   const getTxFunc = useCallback(() => {
     if (!curator) {
-      dispatch(newErrorToast("Please enter the recipient address"));
+      dispatch(newErrorToast("Curator address is required"));
       return;
     }
 
@@ -69,9 +72,8 @@ function PopupContent() {
     <>
       <Signer
         balanceName="Available"
-        signerBalance={signerBalance?.balance}
-        isSignerBalanceLoading={signerBalanceLoading}
-        title="Origin"
+        balance={signerBalance?.balance}
+        isBalanceLoading={signerBalanceLoading}
       />
       {curatorSelect}
       {feeField}
