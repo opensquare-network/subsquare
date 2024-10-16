@@ -90,6 +90,8 @@ const paseo = {
   navPreferDark: true,
   links,
   group: MenuGroups.Testnet,
+  hasMultisig: true,
+  multisigApiPrefix: "paseo",
   postLabels: defaultPostLabels,
   description:
     "The new Polkadot testnet replacing Rococo. Paseo is decentralised, stable, and community run.",
