@@ -11,7 +11,7 @@ import { useMyProxied } from "next-common/context/proxy";
 import Tooltip from "../tooltip";
 import tw from "tailwind-styled-components";
 import Loading from "../loading";
-import { addressEllipsis } from "next-common/utils";
+import { addressEllipsis, isSameAddress } from "next-common/utils";
 import { useMemo } from "react";
 
 const DisabledAccountItemWrapper = tw.div`
@@ -89,8 +89,8 @@ function OriginAddress() {
   const { signerAccount, setProxyAddress } = useSignerContext();
   const user = useUser();
   const extensionAccounts = useExtensionAccounts();
-  const account = extensionAccounts.find(
-    (item) => item.address === user.address,
+  const account = extensionAccounts.find((item) =>
+    isSameAddress(item.address, user.address),
   );
 
   const disabled = !signerAccount.proxyAddress;
@@ -116,8 +116,8 @@ function ProxyAddress({ proxyInfo }) {
   const extensionAccounts = useExtensionAccounts();
 
   const account = useMemo(() => {
-    const extensionAccount = extensionAccounts.find(
-      (item) => item.address === proxyInfo.delegator,
+    const extensionAccount = extensionAccounts.find((item) =>
+      isSameAddress(item.address, proxyInfo.delegator),
     );
     if (extensionAccount) {
       return extensionAccount;
