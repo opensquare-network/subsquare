@@ -36,7 +36,7 @@ const options = [
   };
 });
 
-const defaultSortBy = "oldest";
+export const defaultSortBy = "oldest";
 export const sortByQueryName = "comments_sort_by";
 
 export default function CommentsSorter() {

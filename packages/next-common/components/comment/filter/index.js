@@ -3,11 +3,11 @@ import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import usePostCommentsFilterReady from "next-common/hooks/usePostCommentsFilterReady";
 import { CommonDropdownFilter } from "next-common/components/dropdownFilter";
-import CommentsSorter, { sortByQueryName } from "./sorter";
+import CommentsSorter, { defaultSortBy, sortByQueryName } from "./sorter";
 import CommentFilterOptions, { optionItems } from "./options";
 
 export const emptyFilterValues = {
-  [sortByQueryName]: "oldest",
+  [sortByQueryName]: defaultSortBy,
   ...Object.fromEntries(optionItems.map((item) => [item.key, false])),
 };
 

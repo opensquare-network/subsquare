@@ -10,6 +10,7 @@ import { useIsDVAddressFn } from "./useIsDVAddress";
 import { useShallowCompareEffect } from "react-use";
 import { useDispatch } from "react-redux";
 import { setDetailCommentsMerging } from "next-common/store/reducers/detailSlice";
+import { defaultSortBy } from "next-common/components/comment/filter/sorter";
 
 function isDeletedComment(comment) {
   return comment?.content?.trim?.() !== "[Deleted]";
@@ -122,13 +123,14 @@ export function usePostCommentsFilteredData() {
       return flag;
     });
 
-    if (filterParams.comments_sort_by === "newest") {
+    const sortBy = filterParams.comments_sort_by || defaultSortBy;
+    if (sortBy === "newest") {
       sortbyNewest();
-    } else if (filterParams.comments_sort_by === "oldest") {
+    } else if (sortBy === "oldest") {
       sortByOldest();
-    } else if (filterParams.comments_sort_by === "most_votes") {
+    } else if (sortBy === "most_votes") {
       sortByMostVotes();
-    } else if (filterParams.comments_sort_by === "most_thumbs_up") {
+    } else if (sortBy === "most_thumbs_up") {
       sortByMostThumbsUp();
     }
 
