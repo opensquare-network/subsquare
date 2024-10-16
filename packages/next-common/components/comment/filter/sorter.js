@@ -14,7 +14,6 @@ const options = [
   {
     label: "Most votes",
     value: "most_votes",
-    displayValue: "Most votes",
   },
   {
     label: "Most Thumbs Up",

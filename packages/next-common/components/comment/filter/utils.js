@@ -8,9 +8,9 @@ import { useMemo } from "react";
 function useNormalizeFilterState(filterState) {
   return useMemo(() => {
     const newState = { ...filterState };
-    optionItems.forEach((item) => {
-      if (item.key in newState) {
-        newState[item.key] = newState[item.key].toString() === "true";
+    optionItems.forEach(({ key }) => {
+      if (key in newState) {
+        newState[key] = newState[key].toString() === "true";
       }
     });
     return newState;
