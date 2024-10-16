@@ -1,3 +1,8 @@
+import {
+  filterDefaultValues,
+  filterNames,
+} from "next-common/components/comment/filter";
+import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { useDetailType, usePageProps } from "next-common/context/page";
 import { CommentsProvider } from "next-common/context/post/comments";
@@ -45,7 +50,21 @@ export default function ContentWithComment({ children }) {
     detailType === detailPageCategory.GOV2_REFERENDUM ||
     detailType === detailPageCategory.DEMOCRACY_REFERENDUM
   ) {
-    content = <CommentsWithFilterContent>{children}</CommentsWithFilterContent>;
+    content = (
+      <DropdownUrlFilterProvider
+        urlQueryNames={filterNames}
+        initialFilters={filterDefaultValues}
+        emptyFilterValues={{
+          comments_sort_by: "oldest",
+          hide_0: false,
+          show_voters_only: false,
+          show_dv_only: false,
+          hide_deleted: false,
+        }}
+      >
+        <CommentsWithFilterContent>{children}</CommentsWithFilterContent>
+      </DropdownUrlFilterProvider>
+    );
   } else {
     content = <CommentsContent>{children}</CommentsContent>;
   }

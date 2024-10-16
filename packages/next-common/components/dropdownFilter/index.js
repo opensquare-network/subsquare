@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -12,7 +13,7 @@ import { OptionsPadRightWrapper } from "../select/styled";
 import SecondaryButton from "next-common/lib/button/secondary";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useRouter } from "next/router";
-import { omit, pick } from "lodash-es";
+import { isNil, omit, pick } from "lodash-es";
 
 const [useDropdownFilterState, DropdownFilterStateProvider] =
   createStateContext(false);
@@ -21,6 +22,32 @@ const [useStagedFilterState, StagedFilterStateProvider] = createStateContext(
   {},
 );
 
+const InitialFiltersContext = createContext();
+
+function InitialFiltersProvider({
+  initialFilters = {},
+  emptyFilterValues = {},
+  children,
+}) {
+  return (
+    <InitialFiltersContext.Provider
+      value={{ initialFilters, emptyFilterValues }}
+    >
+      {children}
+    </InitialFiltersContext.Provider>
+  );
+}
+
+function useInitialFilters() {
+  const { initialFilters } = useContext(InitialFiltersContext);
+  return initialFilters;
+}
+
+function useEmptyFilterValues() {
+  const { emptyFilterValues } = useContext(InitialFiltersContext);
+  return emptyFilterValues;
+}
+
 const CommittedFilterStateContext = createContext();
 
 function useCommittedFilterState() {
@@ -28,7 +55,8 @@ function useCommittedFilterState() {
 }
 
 function CommittedFilterStateProvider({ children }) {
-  const [filterState, setFilterState] = useState({});
+  const initialFilters = useInitialFilters();
+  const [filterState, setFilterState] = useState(initialFilters);
   return (
     <CommittedFilterStateContext.Provider value={[filterState, setFilterState]}>
       {children}
@@ -38,16 +66,40 @@ function CommittedFilterStateProvider({ children }) {
 
 function UrlFilterStateProvider({ urlQueryNames = [], children }) {
   const router = useRouter();
+  const initialFilters = useInitialFilters();
+  const emptyFilterValues = useEmptyFilterValues();
 
-  const urlFilters = pick(router.query, urlQueryNames);
-  const otherFilters = omit(router.query, urlQueryNames);
+  const { otherFilters, filterValues } = useMemo(() => {
+    const urlFilters = {
+      ...initialFilters,
+      ...pick(router.query, urlQueryNames),
+    };
+    const otherFilters = omit(router.query, urlQueryNames);
+    const filterValues = Object.fromEntries(
+      urlQueryNames
+        .filter(
+          (key) =>
+            !isNil(urlFilters[key]) &&
+            urlFilters[key].toString() !== emptyFilterValues[key]?.toString(),
+        )
+        .map((key) => [key, urlFilters[key]]),
+    );
+
+    return {
+      otherFilters,
+      filterValues,
+    };
+  }, [router, urlQueryNames, initialFilters, emptyFilterValues]);
 
   const setUrlFilters = useCallback(
     (newFilters) => {
       router.push(
         {
           pathname: router.pathname,
-          query: { ...otherFilters, ...pick(newFilters, urlQueryNames) },
+          query: {
+            ...otherFilters,
+            ...pick(newFilters, urlQueryNames),
+          },
         },
         undefined,
         { shallow: true },
@@ -57,7 +109,7 @@ function UrlFilterStateProvider({ urlQueryNames = [], children }) {
   );
 
   return (
-    <CommittedFilterStateContext.Provider value={[urlFilters, setUrlFilters]}>
+    <CommittedFilterStateContext.Provider value={[filterValues, setUrlFilters]}>
       {children}
     </CommittedFilterStateContext.Provider>
   );
@@ -69,22 +121,41 @@ export {
   useStagedFilterState,
 };
 
-export function DropdownFilterProvider({ children }) {
+export function DropdownFilterProvider({
+  initialFilters,
+  emptyFilterValues,
+  children,
+}) {
   return (
     <DropdownFilterStateProvider>
-      <CommittedFilterStateProvider>
-        <StagedFilterStateProvider>{children}</StagedFilterStateProvider>
-      </CommittedFilterStateProvider>
+      <InitialFiltersProvider
+        initialFilters={initialFilters}
+        emptyFilterValues={emptyFilterValues}
+      >
+        <CommittedFilterStateProvider>
+          <StagedFilterStateProvider>{children}</StagedFilterStateProvider>
+        </CommittedFilterStateProvider>
+      </InitialFiltersProvider>
     </DropdownFilterStateProvider>
   );
 }
 
-export function DropdownUrlFilterProvider({ urlQueryNames, children }) {
+export function DropdownUrlFilterProvider({
+  urlQueryNames,
+  initialFilters,
+  emptyFilterValues,
+  children,
+}) {
   return (
     <DropdownFilterStateProvider>
-      <UrlFilterStateProvider urlQueryNames={urlQueryNames}>
-        <StagedFilterStateProvider>{children}</StagedFilterStateProvider>
-      </UrlFilterStateProvider>
+      <InitialFiltersProvider
+        initialFilters={initialFilters}
+        emptyFilterValues={emptyFilterValues}
+      >
+        <UrlFilterStateProvider urlQueryNames={urlQueryNames}>
+          <StagedFilterStateProvider>{children}</StagedFilterStateProvider>
+        </UrlFilterStateProvider>
+      </InitialFiltersProvider>
     </DropdownFilterStateProvider>
   );
 }
@@ -119,20 +190,26 @@ export function ApplyFilterButton() {
 }
 
 export function ResetFilterButton() {
-  const [committedFilter] = useCommittedFilterState();
   const [, setStagedFilter] = useStagedFilterState();
+  const [, setCommittedFilter] = useCommittedFilterState();
+  const [, setShowDropdown] = useDropdownFilterState();
+  const initialFilters = useInitialFilters();
 
   return (
     <SecondaryButton
       size="small"
-      onClick={() => setStagedFilter(committedFilter)}
+      onClick={() => {
+        setStagedFilter(initialFilters);
+        setCommittedFilter(initialFilters);
+        setShowDropdown(false);
+      }}
     >
       Reset
     </SecondaryButton>
   );
 }
 
-export function FilterContentWrapper({ children }) {
+function FilterContentWrapper({ children }) {
   return (
     <div className="flex flex-col p-[16px] gap-[16px]">
       <span className="text12Bold text-textPrimary">Conditions</span>
@@ -169,5 +246,13 @@ export function DropdownFilter({ name = "Filter", children }) {
       </SecondaryButton>
       {showDropdown && <DropdownFilterPanel>{children}</DropdownFilterPanel>}
     </div>
+  );
+}
+
+export function CommonDropdownFilter({ children }) {
+  return (
+    <DropdownFilter>
+      <FilterContentWrapper>{children}</FilterContentWrapper>
+    </DropdownFilter>
   );
 }

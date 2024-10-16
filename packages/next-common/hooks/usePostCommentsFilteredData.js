@@ -5,7 +5,7 @@ import { cloneDeep, every, has, map, orderBy, filter } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { useGetAddressVotesDataFn } from "./useAddressVotesData";
 import { getAddressVotingBalance } from "next-common/utils/referendumUtil";
-import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
+import { useCommittedCommentFilterParams } from "next-common/components/comment/filter/utils";
 import { useIsDVAddressFn } from "./useIsDVAddress";
 import { useShallowCompareEffect } from "react-use";
 import { useDispatch } from "react-redux";
@@ -24,7 +24,7 @@ export function usePostCommentsFilteredData() {
   const dispatch = useDispatch();
   const { commentsData, loading: commentsLoading } = usePostCommentsData();
 
-  const [filterParams] = usePostCommentsFilterParams();
+  const [filterParams] = useCommittedCommentFilterParams();
   const getAddressVotesData = useGetAddressVotesDataFn();
   const isDVAddress = useIsDVAddressFn();
 
