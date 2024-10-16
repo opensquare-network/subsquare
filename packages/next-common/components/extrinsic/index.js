@@ -91,8 +91,6 @@ export default function Extrinsic({
       setValue({
         isValid: true,
         data: tx,
-        section: sectionName,
-        method: methodName,
       });
     } catch (e) {
       setValue({
