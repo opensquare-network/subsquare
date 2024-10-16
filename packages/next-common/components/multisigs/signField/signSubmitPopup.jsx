@@ -27,15 +27,20 @@ export function SignSubmitInnerPopup({
   const [isSubmitBtnLoading, setIsSubmitBtnLoading] = useState(false);
   const [proposal, setProposal] = useState(null);
   const { weight: maxWeight } = useWeight(proposal);
+  const [sectionName, setSectionName] = useState(null);
+  const [methodName, setMethodName] = useState(null);
   const isSubmitBtnDisabled = !proposal || !maxWeight;
 
   const setValue = useCallback(
-    ({ isValid, data }) => {
-      if (!api || !isValid) {
+    ({ isValid, data, method, section }) => {
+      if (!api || !isValid || !method || !section) {
         setProposal(null);
         setEncodedCall(null);
         return;
       }
+
+      setSectionName(section);
+      setMethodName(method);
 
       if (data) {
         setProposal(data);
