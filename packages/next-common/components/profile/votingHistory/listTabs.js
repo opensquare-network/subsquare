@@ -2,7 +2,7 @@ import PageTabs from "next-common/components/pageTabs";
 import { useChainSettings } from "next-common/context/chain";
 import ResponsiveVotes from "./responsiveVotes";
 import ResponsiveCalls from "./responsiveCalls";
-import { VoteFilter } from "./voteFilter";
+import { emptyFilterValues, VoteFilter } from "./voteFilter";
 import { DropdownFilterProvider } from "next-common/components/dropdownFilter";
 
 export default function ListTabs() {
@@ -10,7 +10,10 @@ export default function ListTabs() {
 
   return (
     <div className="ml-[24px]">
-      <DropdownFilterProvider>
+      <DropdownFilterProvider
+        defaultFilterValues={emptyFilterValues}
+        emptyFilterValues={emptyFilterValues}
+      >
         <PageTabs
           tabs={[
             {

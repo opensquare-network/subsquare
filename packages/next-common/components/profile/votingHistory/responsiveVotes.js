@@ -41,7 +41,7 @@ export default function ResponsiveVotes() {
         includesTitle: 1,
       };
 
-      if (voteType && voteType !== "all") {
+      if (voteType) {
         query.type = voteType;
       }
 

@@ -6,13 +6,13 @@ import { CommonDropdownFilter } from "next-common/components/dropdownFilter";
 import CommentsSorter, { sortByQueryName } from "./sorter";
 import CommentFilterOptions, { optionItems } from "./options";
 
-export const filterNames = [
-  sortByQueryName,
-  ...optionItems.map((item) => item.key),
-];
-
-export const filterDefaultValues = {
+export const emptyFilterValues = {
   [sortByQueryName]: "oldest",
+  ...Object.fromEntries(optionItems.map((item) => [item.key, false])),
+};
+
+export const defaultFilterValues = {
+  ...emptyFilterValues,
   hide_deleted: true,
 };
 

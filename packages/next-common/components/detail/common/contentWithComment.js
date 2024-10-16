@@ -1,6 +1,6 @@
 import {
-  filterDefaultValues,
-  filterNames,
+  emptyFilterValues,
+  defaultFilterValues,
 } from "next-common/components/comment/filter";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter";
 import useCommentComponent from "next-common/components/useCommentComponent";
@@ -52,15 +52,8 @@ export default function ContentWithComment({ children }) {
   ) {
     content = (
       <DropdownUrlFilterProvider
-        urlQueryNames={filterNames}
-        initialFilters={filterDefaultValues}
-        emptyFilterValues={{
-          comments_sort_by: "oldest",
-          hide_0: false,
-          show_voters_only: false,
-          show_dv_only: false,
-          hide_deleted: false,
-        }}
+        defaultFilterValues={defaultFilterValues}
+        emptyFilterValues={emptyFilterValues}
       >
         <CommentsWithFilterContent>{children}</CommentsWithFilterContent>
       </DropdownUrlFilterProvider>

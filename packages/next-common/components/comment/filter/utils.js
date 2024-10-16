@@ -12,9 +12,6 @@ function useNormalizeFilterState(filterState) {
       if (item.key in newState) {
         newState[item.key] = newState[item.key].toString() === "true";
       }
-      if (item.default) {
-        newState[item.key] = true;
-      }
     });
     return newState;
   }, [filterState]);

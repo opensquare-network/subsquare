@@ -22,41 +22,58 @@ const [useStagedFilterState, StagedFilterStateProvider] = createStateContext(
   {},
 );
 
-const InitialFiltersContext = createContext();
+const DefaultFilterValuesContext = createContext();
 
-function InitialFiltersProvider({
-  initialFilters = {},
+function DefaultFilterValuesProvider({
+  defaultFilterValues = {},
   emptyFilterValues = {},
   children,
 }) {
   return (
-    <InitialFiltersContext.Provider
-      value={{ initialFilters, emptyFilterValues }}
+    <DefaultFilterValuesContext.Provider
+      value={{ defaultFilterValues, emptyFilterValues }}
     >
       {children}
-    </InitialFiltersContext.Provider>
+    </DefaultFilterValuesContext.Provider>
   );
 }
 
-function useInitialFilters() {
-  const { initialFilters } = useContext(InitialFiltersContext);
-  return initialFilters;
+function useDefaultFilterValues() {
+  const { defaultFilterValues } = useContext(DefaultFilterValuesContext);
+  return defaultFilterValues;
 }
 
 function useEmptyFilterValues() {
-  const { emptyFilterValues } = useContext(InitialFiltersContext);
+  const { emptyFilterValues } = useContext(DefaultFilterValuesContext);
   return emptyFilterValues;
 }
 
 const CommittedFilterStateContext = createContext();
 
 function useCommittedFilterState() {
-  return useContext(CommittedFilterStateContext);
+  const emptyFilterValues = useEmptyFilterValues();
+  const [filterState, setFilterState] = useContext(CommittedFilterStateContext);
+
+  const normalizedFilterState = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.keys(filterState)
+          .filter(
+            (key) =>
+              !isNil(filterState[key]) &&
+              filterState[key] !== emptyFilterValues[key],
+          )
+          .map((key) => [key, filterState[key]]),
+      ),
+    [filterState, emptyFilterValues],
+  );
+
+  return [normalizedFilterState, setFilterState];
 }
 
 function CommittedFilterStateProvider({ children }) {
-  const initialFilters = useInitialFilters();
-  const [filterState, setFilterState] = useState(initialFilters);
+  const defaultFilterValues = useDefaultFilterValues();
+  const [filterState, setFilterState] = useState(defaultFilterValues);
   return (
     <CommittedFilterStateContext.Provider value={[filterState, setFilterState]}>
       {children}
@@ -64,14 +81,18 @@ function CommittedFilterStateProvider({ children }) {
   );
 }
 
-function UrlFilterStateProvider({ urlQueryNames = [], children }) {
+function UrlFilterStateProvider({ children }) {
   const router = useRouter();
-  const initialFilters = useInitialFilters();
+  const defaultFilterValues = useDefaultFilterValues();
   const emptyFilterValues = useEmptyFilterValues();
+  const urlQueryNames = useMemo(
+    () => Object.keys(emptyFilterValues),
+    [emptyFilterValues],
+  );
 
   const { otherFilters, filterValues } = useMemo(() => {
     const urlFilters = {
-      ...initialFilters,
+      ...defaultFilterValues,
       ...pick(router.query, urlQueryNames),
     };
     const otherFilters = omit(router.query, urlQueryNames);
@@ -89,7 +110,7 @@ function UrlFilterStateProvider({ urlQueryNames = [], children }) {
       otherFilters,
       filterValues,
     };
-  }, [router, urlQueryNames, initialFilters, emptyFilterValues]);
+  }, [router, defaultFilterValues, urlQueryNames, emptyFilterValues]);
 
   const setUrlFilters = useCallback(
     (newFilters) => {
@@ -98,14 +119,23 @@ function UrlFilterStateProvider({ urlQueryNames = [], children }) {
           pathname: router.pathname,
           query: {
             ...otherFilters,
-            ...pick(newFilters, urlQueryNames),
+            ...Object.fromEntries(
+              urlQueryNames
+                .filter(
+                  (key) =>
+                    !isNil(newFilters[key]) &&
+                    newFilters[key].toString() !==
+                      defaultFilterValues[key]?.toString(),
+                )
+                .map((key) => [key, newFilters[key]]),
+            ),
           },
         },
         undefined,
         { shallow: true },
       );
     },
-    [router, otherFilters, urlQueryNames],
+    [router, otherFilters, urlQueryNames, defaultFilterValues],
   );
 
   return (
@@ -122,40 +152,39 @@ export {
 };
 
 export function DropdownFilterProvider({
-  initialFilters,
+  defaultFilterValues,
   emptyFilterValues,
   children,
 }) {
   return (
     <DropdownFilterStateProvider>
-      <InitialFiltersProvider
-        initialFilters={initialFilters}
+      <DefaultFilterValuesProvider
+        defaultFilterValues={defaultFilterValues}
         emptyFilterValues={emptyFilterValues}
       >
         <CommittedFilterStateProvider>
           <StagedFilterStateProvider>{children}</StagedFilterStateProvider>
         </CommittedFilterStateProvider>
-      </InitialFiltersProvider>
+      </DefaultFilterValuesProvider>
     </DropdownFilterStateProvider>
   );
 }
 
 export function DropdownUrlFilterProvider({
-  urlQueryNames,
-  initialFilters,
+  defaultFilterValues,
   emptyFilterValues,
   children,
 }) {
   return (
     <DropdownFilterStateProvider>
-      <InitialFiltersProvider
-        initialFilters={initialFilters}
+      <DefaultFilterValuesProvider
+        defaultFilterValues={defaultFilterValues}
         emptyFilterValues={emptyFilterValues}
       >
-        <UrlFilterStateProvider urlQueryNames={urlQueryNames}>
+        <UrlFilterStateProvider>
           <StagedFilterStateProvider>{children}</StagedFilterStateProvider>
         </UrlFilterStateProvider>
-      </InitialFiltersProvider>
+      </DefaultFilterValuesProvider>
     </DropdownFilterStateProvider>
   );
 }
@@ -193,14 +222,14 @@ export function ResetFilterButton() {
   const [, setStagedFilter] = useStagedFilterState();
   const [, setCommittedFilter] = useCommittedFilterState();
   const [, setShowDropdown] = useDropdownFilterState();
-  const initialFilters = useInitialFilters();
+  const defaultFilterValues = useDefaultFilterValues();
 
   return (
     <SecondaryButton
       size="small"
       onClick={() => {
-        setStagedFilter(initialFilters);
-        setCommittedFilter(initialFilters);
+        setStagedFilter(defaultFilterValues);
+        setCommittedFilter(defaultFilterValues);
         setShowDropdown(false);
       }}
     >

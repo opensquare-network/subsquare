@@ -2,29 +2,24 @@ import { useContextApi } from "next-common/context/api";
 import Checkbox from "next-common/components/checkbox";
 import Tooltip from "next-common/components/tooltip";
 import { cn } from "next-common/utils";
-import { omit } from "lodash-es";
 import { useStagedCommentFilterParams } from "./utils";
 
 export const optionItems = [
   {
     key: "hide_0",
     name: "Hide 0 balance accounts",
-    default: false,
   },
   {
     key: "show_voters_only",
     name: "Show voter's comments only",
-    default: false,
   },
   {
     key: "show_dv_only",
     name: "Show DV delegates only",
-    default: false,
   },
   {
     key: "hide_deleted",
     name: "Hide [Deleted] comments",
-    default: true,
   },
 ];
 
@@ -41,14 +36,10 @@ export default function CommentFilterOptions() {
     if (item.disabled) {
       return;
     }
-    if (item.key in filterState && filterState[item.key] !== item.default) {
-      setFilterState(omit(filterState, item.key));
-    } else {
-      setFilterState({
-        ...filterState,
-        [item.key]: !item.default,
-      });
-    }
+    setFilterState({
+      ...filterState,
+      [item.key]: !filterState[item.key],
+    });
   };
 
   return optionItems.map((item) => (
@@ -66,7 +57,7 @@ export default function CommentFilterOptions() {
       >
         <div className="cursor-[inherit]">{item.name}</div>
         <Checkbox
-          checked={filterState[item.key] ?? item.default}
+          checked={filterState[item.key]}
           className="w-5 h-5 cursor-[inherit]"
         />
       </div>

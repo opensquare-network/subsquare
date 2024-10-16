@@ -1,20 +1,17 @@
-import { omit } from "lodash-es";
 import {
   CommonDropdownFilter,
   useStagedFilterState,
 } from "next-common/components/dropdownFilter";
 import Select from "next-common/components/select";
 
+export const emptyFilterValues = { type: "all" };
+
 export function VoteFilter() {
   const [voteFilter, setVoteFilter] = useStagedFilterState();
-  const voteType = voteFilter?.type || "all";
+  const voteType = voteFilter?.type ?? emptyFilterValues.type;
 
   const handleTypeChange = ({ value: type }) => {
-    if (type === "all") {
-      setVoteFilter(omit(voteFilter, ["type"]));
-    } else {
-      setVoteFilter({ ...voteFilter, type });
-    }
+    setVoteFilter({ ...voteFilter, type });
   };
 
   return (
