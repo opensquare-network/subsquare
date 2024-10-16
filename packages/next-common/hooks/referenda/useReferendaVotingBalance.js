@@ -14,8 +14,7 @@ export default function useReferendaVotingBalance(api, address) {
       };
     }
 
-    const balanceBig =
-      result.data.free.toBigInt() + result.data.reserved.toBigInt();
+    const balanceBig = result.data.free.toBigInt() + result.data.reserved.toBigInt();
     return {
       isLoading: loading,
       balance: balanceBig.toString(),
