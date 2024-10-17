@@ -4,7 +4,7 @@ import { TitleContainer } from "../styled/containers/titleContainer";
 import { cn } from "next-common/utils";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import Loading from "../loading";
-import CommentsFilterForm from "./filterForm";
+import CommentsFilter from "./filter";
 
 export default function Comments({ data: commentsData, loading }) {
   const { items } = commentsData;
@@ -43,7 +43,7 @@ export default function Comments({ data: commentsData, loading }) {
         <TitleContainer className={cn("w-full !px-0")}>
           <div className="text14Bold">Comments</div>
 
-          <CommentsFilterForm />
+          <CommentsFilter />
         </TitleContainer>
       </div>
 

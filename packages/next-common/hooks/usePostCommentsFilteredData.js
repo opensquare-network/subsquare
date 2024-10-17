@@ -5,9 +5,10 @@ import { cloneDeep, every, has, map, orderBy, filter } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { useGetAddressVotesDataFn } from "./useAddressVotesData";
 import { getAddressVotingBalance } from "next-common/utils/referendumUtil";
-import { usePostCommentsFilterParams } from "./usePostCommentsFilterParams";
+import { useCommittedCommentFilterParams } from "next-common/components/comment/filter/utils";
 import { useIsDVAddressFn } from "./useIsDVAddress";
 import { useShallowCompareEffect } from "react-use";
+import { defaultSortBy } from "next-common/components/comment/filter/sorter";
 import { usePostCommentsMerging } from "./usePostCommentsMerging";
 
 function isDeletedComment(comment) {
@@ -22,7 +23,7 @@ export function usePostCommentsFilteredData() {
   const api = useContextApi();
   const { commentsData, loading: commentsLoading } = usePostCommentsData();
 
-  const [filterParams] = usePostCommentsFilterParams();
+  const [filterParams] = useCommittedCommentFilterParams();
   const getAddressVotesData = useGetAddressVotesDataFn();
   const isDVAddress = useIsDVAddressFn();
 
@@ -119,13 +120,14 @@ export function usePostCommentsFilteredData() {
       return flag;
     });
 
-    if (filterParams.comments_sort_by === "newest") {
+    const sortBy = filterParams.comments_sort_by || defaultSortBy;
+    if (sortBy === "newest") {
       sortbyNewest();
-    } else if (filterParams.comments_sort_by === "oldest") {
+    } else if (sortBy === "oldest") {
       sortByOldest();
-    } else if (filterParams.comments_sort_by === "most_votes") {
+    } else if (sortBy === "most_votes") {
       sortByMostVotes();
-    } else if (filterParams.comments_sort_by === "most_thumbs_up") {
+    } else if (sortBy === "most_thumbs_up") {
       sortByMostThumbsUp();
     }
 
