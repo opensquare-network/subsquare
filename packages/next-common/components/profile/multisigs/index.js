@@ -17,6 +17,7 @@ import {
   MultisigContextProvider,
   useMultisigContext,
 } from "next-common/components/multisigs/multisigContext";
+import { fetchMultisigList10Times } from "next-common/components/multisigs/common";
 
 function Multisigs() {
   const { width } = useWindowSize();
@@ -52,10 +53,12 @@ function Multisigs() {
 
   useEffect(() => {
     if (isNeedReload) {
-      fetchProfileMultisigsData();
+      fetchMultisigList10Times(dispatch, chain, address, page).then(() => {
+        // updated 10 time, do nothing
+      });
       setIsNeedReload(false);
     }
-  }, [isNeedReload, setIsNeedReload, fetchProfileMultisigsData]);
+  }, [isNeedReload, setIsNeedReload, chain, address, page, dispatch]);
 
   return (
     <ListCard>
