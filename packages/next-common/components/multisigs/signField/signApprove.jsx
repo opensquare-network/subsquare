@@ -56,14 +56,13 @@ export default function SignApprove({ multisig = {} }) {
     );
   }, [api, address, threshold, signatories, callHash, maybeTimepoint]);
 
-  const onInBlock = () => {
+  const onFinalized = () => {
     setIsNeedReload(true);
   };
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
-    onInBlock,
-    onFinalized: onInBlock,
+    onFinalized,
   });
 
   return (

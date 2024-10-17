@@ -76,7 +76,7 @@ export function SignSubmitInnerPopup({
     maxWeight,
   ]);
 
-  const onInBlock = () => {
+  const onFinalized = () => {
     setIsNeedReload(true);
   };
 
@@ -105,8 +105,7 @@ export function SignSubmitInnerPopup({
       <TxSubmissionButton
         disabled={isSubmitBtnDisabled}
         getTxFunc={getTxFunc}
-        onInBlock={onInBlock}
-        onFinalized={onInBlock}
+        onFinalized={onFinalized}
         onClose={isEmptyFunc(onCreated) ? onClose : undefined}
         loading={isSubmitBtnLoading}
       />

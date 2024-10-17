@@ -28,14 +28,13 @@ export default function SignCancel({ multisig = {} }) {
     );
   }, [api, address, threshold, signatories, callHash, timepoint]);
 
-  const onInBlock = () => {
+  const onFinalized = () => {
     setIsNeedReload(true);
   };
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
-    onInBlock,
-    onFinalized: onInBlock,
+    onFinalized,
   });
 
   return (
