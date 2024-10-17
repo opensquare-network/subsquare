@@ -1,30 +1,15 @@
-import {
-  useCommittedFilterState,
-  useStagedFilterState,
-} from "next-common/components/dropdownFilter/context";
 import { optionItems } from "./options";
-import { useMemo } from "react";
+import {
+  useNormalizedCommittedFilterValues,
+  useNormalizedStagedFilterValues,
+} from "next-common/components/dropdownFilter/utils";
 
-function useNormalizeFilterState(filterState) {
-  return useMemo(() => {
-    const newState = { ...filterState };
-    optionItems.forEach(({ key }) => {
-      if (key in newState) {
-        newState[key] = newState[key].toString() === "true";
-      }
-    });
-    return newState;
-  }, [filterState]);
-}
+const booleanFilterKeys = optionItems.map(({ key }) => key);
 
 export function useStagedCommentFilterParams() {
-  const [filterState, setFilterState] = useStagedFilterState();
-  const normalizeFilterState = useNormalizeFilterState(filterState);
-  return [normalizeFilterState, setFilterState];
+  return useNormalizedStagedFilterValues({ booleanFilterKeys });
 }
 
 export function useCommittedCommentFilterParams() {
-  const [filterState, setFilterState] = useCommittedFilterState();
-  const normalizeFilterState = useNormalizeFilterState(filterState);
-  return [normalizeFilterState, setFilterState];
+  return useNormalizedCommittedFilterValues({ booleanFilterKeys });
 }

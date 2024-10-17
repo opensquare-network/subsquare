@@ -20,7 +20,7 @@ function DropdownFilterPanel({ children }) {
   return <OptionsPadRightWrapper>{children}</OptionsPadRightWrapper>;
 }
 
-export function DropdownFilter({ name = "Filter", children }) {
+export function DropdownFilterBase({ name = "Filter", children }) {
   const [showDropdown, setShowDropdown] = useDropdownDisplayState();
   const ref = useRef();
   useClickAway(ref, () => setShowDropdown(false));

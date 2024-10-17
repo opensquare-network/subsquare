@@ -1,19 +1,27 @@
-import { CommonDropdownFilter } from "next-common/components/dropdownFilter";
+import { DropdownFilter } from "next-common/components/dropdownFilter";
 import { useStagedFilterState } from "next-common/components/dropdownFilter/context";
 import Select from "next-common/components/select";
 
-const options = [
+export const fellowshipVoteOptions = [
   { value: "all", label: "All types" },
   { value: "aye", label: "Aye" },
   { value: "nay", label: "Nay" },
+];
+
+export const democracyVoteOptions = [
+  ...fellowshipVoteOptions,
   { value: "split", label: "Split" },
+];
+
+export const referendaVoteOptions = [
+  ...democracyVoteOptions,
   { value: "abstain", label: "Abstain" },
 ];
 
 export const defaultVoteType = "all";
 export const defaultFilterValues = { type: defaultVoteType };
 
-export function VoteFilter() {
+export function VoteFilter({ options }) {
   const [voteFilter, setVoteFilter] = useStagedFilterState();
   const voteType = voteFilter?.type || defaultVoteType;
 
@@ -22,7 +30,7 @@ export function VoteFilter() {
   };
 
   return (
-    <CommonDropdownFilter>
+    <DropdownFilter>
       <div className="flex items-center text12Medium">
         <span className="text-textPrimary my-[12px] w-[144px]">Type</span>
         <Select
@@ -33,6 +41,6 @@ export function VoteFilter() {
           onChange={handleTypeChange}
         />
       </div>
-    </CommonDropdownFilter>
+    </DropdownFilter>
   );
 }

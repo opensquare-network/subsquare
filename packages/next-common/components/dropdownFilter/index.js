@@ -1,5 +1,5 @@
 import { ApplyFilterButton, ResetFilterButton } from "./button";
-import { DropdownFilter } from "./filter";
+import { DropdownFilterBase } from "./filter";
 
 function FilterContentWrapper({ children }) {
   return (
@@ -14,10 +14,10 @@ function FilterContentWrapper({ children }) {
   );
 }
 
-export function CommonDropdownFilter({ children }) {
+export function DropdownFilter({ children }) {
   return (
-    <DropdownFilter>
+    <DropdownFilterBase>
       <FilterContentWrapper>{children}</FilterContentWrapper>
-    </DropdownFilter>
+    </DropdownFilterBase>
   );
 }
