@@ -9,6 +9,7 @@ import { isNil } from "lodash-es";
 import { useIsFellowship, useModuleName } from "./common";
 import FellowshipVotesList from "./fellowshipVotesList";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useCommittedFilterState } from "next-common/components/dropdownFilter/context";
 
 const VoteDetailPopup = dynamicPopup(() => import("./voteDetailPopup"));
 
@@ -21,6 +22,8 @@ export default function ResponsiveVotes() {
   const [showVoteDetail, setShowVoteDetail] = useState(null);
   const module = useModuleName();
   const isFellowship = useIsFellowship();
+  const [voteFilter] = useCommittedFilterState();
+  const { type: voteType } = voteFilter || {};
 
   useEffect(() => {
     setData();
@@ -31,12 +34,19 @@ export default function ResponsiveVotes() {
       setPage(page);
 
       setIsLoading(true);
+
+      const query = {
+        page,
+        pageSize,
+        includesTitle: 1,
+      };
+
+      if (voteType) {
+        query.type = voteType;
+      }
+
       nextApi
-        .fetch(`users/${id}/${module}/votes`, {
-          page,
-          pageSize,
-          includesTitle: 1,
-        })
+        .fetch(`users/${id}/${module}/votes`, query)
         .then(({ result }) => {
           if (result) {
             setData(result);
@@ -46,7 +56,7 @@ export default function ResponsiveVotes() {
           setIsLoading(false);
         });
     },
-    [id, module],
+    [id, module, voteType],
   );
 
   useEffect(() => {

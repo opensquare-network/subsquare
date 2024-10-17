@@ -18,7 +18,7 @@ export default function TabHeaders({
   setActiveTab = noop,
 }) {
   return (
-    <FlexBetweenCenter className="max-sm:flex-col max-sm:gap-[12px] max-sm:!items-start">
+    <FlexBetweenCenter className="flex-wrap max-sm:pr-[24px] max-sm:gap-[12px] max-sm:!items-start">
       <Wrapper>
         {tabs.map((tab, index) => (
           <TabWrapper key={index} onClick={() => setActiveTab(tab.value)}>
