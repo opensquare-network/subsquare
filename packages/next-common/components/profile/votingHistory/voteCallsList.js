@@ -29,7 +29,7 @@ export default function VoteCallsList({ data, fetchData, page }) {
     },
     {
       name: "Vote",
-      style: { textAlign: "left", width: "260px", minWidth: "260px" },
+      style: { textAlign: "left", minWidth: "260px" },
     },
     {
       name: "Status",
