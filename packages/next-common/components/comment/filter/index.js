@@ -27,21 +27,26 @@ function DropdownCommentFilter() {
   );
 }
 
+function InnerCommentsFilter() {
+  const ready = usePostCommentsFilterReady();
+
+  return (
+    <div className="flex items-center gap-x-2">
+      {!ready && <Loading size={16} />}
+
+      <DropdownCommentFilter />
+    </div>
+  );
+}
+
 export default function CommentsFilter() {
   const detailType = useDetailType();
-  const ready = usePostCommentsFilterReady();
 
   if (
     detailType === detailPageCategory.GOV2_REFERENDUM ||
     detailType === detailPageCategory.DEMOCRACY_REFERENDUM
   ) {
-    return (
-      <div className="flex items-center gap-x-2">
-        {!ready && <Loading size={16} />}
-
-        <DropdownCommentFilter />
-      </div>
-    );
+    return <InnerCommentsFilter />;
   }
 
   return null;
