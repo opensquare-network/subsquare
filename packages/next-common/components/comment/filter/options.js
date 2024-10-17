@@ -33,7 +33,7 @@ export default function CommentFilterOptions() {
   const [filterState, setFilterState] = useStagedCommentFilterParams();
 
   const handleCheckboxChange = (item) => {
-    if (item.disabled) {
+    if (disabledOptions[item.key]) {
       return;
     }
     setFilterState({
