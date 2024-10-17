@@ -32,7 +32,6 @@ function NotApprovedTooltip() {
 
 export default function MultisigSignField({ multisig = {} }) {
   const { approvals, state, signatories, threshold, depositor } = multisig;
-  // const { approvals } = multisig;
   const pathname = usePathname();
   const profileAddress = useProfileAddress();
   const realAddress = useRealAddress();
