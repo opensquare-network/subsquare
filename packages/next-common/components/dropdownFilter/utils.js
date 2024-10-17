@@ -2,13 +2,14 @@ import { useMemo } from "react";
 import { useCommittedFilterState, useStagedFilterState } from "./context";
 
 function normalizeBooleanValues(keys, filterState) {
-  const newState = { ...filterState };
-  keys.forEach((key) => {
-    if (key in newState) {
-      newState[key] = newState[key].toString() === "true";
+  return Object.entries(filterState).reduce((acc, [key, value]) => {
+    if (key in keys) {
+      acc[key] = value.toString() === "true";
+    } else {
+      acc[key] = value;
     }
-  });
-  return newState;
+    return acc;
+  }, {});
 }
 
 function useNormalizeFilterValues({ booleanFilterKeys, filterState }) {
