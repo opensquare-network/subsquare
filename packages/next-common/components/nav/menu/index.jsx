@@ -3,6 +3,8 @@ import { usePageProps } from "next-common/context/page";
 import { getMainMenu } from "next-common/utils/consts/menu";
 import { createGlobalState } from "react-use";
 import NavMenuItem from "./item";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export const useNavMenuView = createGlobalState({
   view: "main",
@@ -13,6 +15,13 @@ export default function NavMenu({ collapsed }) {
   const [navMenuView, setNavMenuView] = useNavMenuView();
   const { tracks, fellowshipTracks, summary, detail, ambassadorTracks } =
     usePageProps();
+
+  const router = useRouter();
+  useEffect(() => {
+    if (router.pathname === "/") {
+      setNavMenuView({ view: "main" });
+    }
+  }, [router.pathname, setNavMenuView]);
 
   const mainMenu = getMainMenu({
     tracks,

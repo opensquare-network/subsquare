@@ -37,6 +37,7 @@ import shibuya from "./shibuya";
 import astar from "./astar";
 import { isNil } from "lodash-es";
 import zkverifyTestnet from "./zkverifyTestnet";
+import coretime from "./coretime";
 import paseo from "./paseo";
 
 const settingsMap = {
@@ -77,6 +78,7 @@ const settingsMap = {
   vara,
   shibuya,
   [zkverifyTestnet.value]: zkverifyTestnet,
+  coretime,
   paseo,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
