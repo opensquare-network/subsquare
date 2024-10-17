@@ -68,7 +68,7 @@ export default function SignApprove({ multisig = {} }) {
 
   return (
     <Wrapper disabled={isSubmitting}>
-      <Tooltip content="Sign">
+      <Tooltip content="Approve">
         <SystemSignature className="w-4 h-4" onClick={doSubmit} />
       </Tooltip>
     </Wrapper>
