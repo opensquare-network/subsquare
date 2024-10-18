@@ -2,7 +2,7 @@ import { SystemSignature } from "@osn/icons/subsquare";
 import styled, { css } from "styled-components";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useCallback } from "react";
+import { useCallback, useState, useEffect } from "react";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { useMultisigContext } from "../multisigContext";
 import Tooltip from "next-common/components/tooltip";
@@ -38,6 +38,7 @@ export default function SignApprove({ multisig = {} }) {
   const { setIsNeedReload } = useMultisigContext();
   const { threshold, signatories, when: maybeTimepoint, callHash } = multisig;
   const dispatch = useDispatch();
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const getTxFunc = useCallback(() => {
     if (!api || !address) {
@@ -60,6 +61,7 @@ export default function SignApprove({ multisig = {} }) {
   }, [api, address, threshold, signatories, callHash, maybeTimepoint]);
 
   const onFinalized = () => {
+    setIsDisabled(false);
     setIsNeedReload(true);
     dispatch(newSuccessToast("Multisig status will be updated in seconds"));
   };
@@ -69,8 +71,14 @@ export default function SignApprove({ multisig = {} }) {
     onFinalized,
   });
 
+  useEffect(() => {
+    if (isSubmitting) {
+      setIsDisabled(isSubmitting);
+    }
+  }, [isSubmitting]);
+
   return (
-    <Wrapper disabled={isSubmitting}>
+    <Wrapper disabled={isDisabled}>
       <Tooltip content="Approve">
         <SystemSignature className="w-4 h-4" onClick={doSubmit} />
       </Tooltip>

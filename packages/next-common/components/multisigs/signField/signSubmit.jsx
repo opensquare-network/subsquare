@@ -8,9 +8,12 @@ const SignSubmitPopup = dynamicPopup(() => import("./signSubmitPopup"));
 
 export default function SignSubmit({ multisig = {} }) {
   const [isShowSignSubmitPopup, setIsShowSignSubmitPopup] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const toggleDisabled = (status) => setIsDisabled(status);
 
   return (
-    <Wrapper disabled={isShowSignSubmitPopup}>
+    <Wrapper disabled={isDisabled}>
       <Tooltip content="Approve">
         <SystemSignature
           className="w-4 h-4"
@@ -21,6 +24,7 @@ export default function SignSubmit({ multisig = {} }) {
         <SignSubmitPopup
           onClose={() => setIsShowSignSubmitPopup(false)}
           multisig={multisig}
+          toggleDisabled={toggleDisabled}
         />
       )}
     </Wrapper>

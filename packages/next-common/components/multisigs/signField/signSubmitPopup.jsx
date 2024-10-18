@@ -22,6 +22,7 @@ export function SignSubmitInnerPopup({
   onClose,
   onCreated = noop,
   multisig = {},
+  toggleDisabled,
 }) {
   const api = useContextApi();
   const address = useRealAddress();
@@ -52,6 +53,7 @@ export function SignSubmitInnerPopup({
   );
 
   const getTxFunc = useCallback(() => {
+    toggleDisabled(true);
     setIsSubmitBtnLoading(true);
     if (!api || !address || !encodedCall || !maxWeight) {
       return;
@@ -77,9 +79,11 @@ export function SignSubmitInnerPopup({
     maybeTimepoint,
     encodedCall,
     maxWeight,
+    toggleDisabled,
   ]);
 
   const onFinalized = () => {
+    toggleDisabled(false);
     setIsNeedReload(true);
     setIsRefetchCount(true);
     dispatch(newSuccessToast("Multisig status will be updated in seconds"));
@@ -122,6 +126,7 @@ export default function SignSubmitPopup({
   onClose,
   onCreated = noop,
   multisig = {},
+  toggleDisabled,
 }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
@@ -129,6 +134,7 @@ export default function SignSubmitPopup({
         onClose={onClose}
         onCreated={onCreated}
         multisig={multisig}
+        toggleDisabled={toggleDisabled}
       />
     </SignerPopupWrapper>
   );
