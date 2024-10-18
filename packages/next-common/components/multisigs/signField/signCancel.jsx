@@ -8,6 +8,7 @@ import { useMultisigContext } from "../multisigContext";
 import Tooltip from "next-common/components/tooltip";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import { sortSignatories } from "../common";
 
 export default function SignCancel({ multisig = {} }) {
   const api = useContextApi();
@@ -26,7 +27,7 @@ export default function SignCancel({ multisig = {} }) {
 
     return api.tx.multisig?.cancelAsMulti(
       threshold,
-      otherSignatories,
+      sortSignatories(otherSignatories),
       timepoint,
       callHash,
     );

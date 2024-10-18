@@ -8,6 +8,7 @@ import { useMultisigContext } from "../multisigContext";
 import Tooltip from "next-common/components/tooltip";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import { sortSignatories } from "../common";
 
 export const Wrapper = styled.div`
   display: inline-flex;
@@ -53,7 +54,7 @@ export default function SignApprove({ multisig = {} }) {
 
     return api.tx.multisig?.approveAsMulti(
       threshold,
-      otherSignatories,
+      sortSignatories(otherSignatories),
       maybeTimepoint,
       callHash,
       maxWeight,

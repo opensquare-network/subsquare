@@ -51,3 +51,7 @@ export async function fetchProfileMultisigList10Times(
 export async function fetchMultisigsCount10Times(dispatch, chain, address) {
   await fetchDataMultipleTimes(dispatch, fetchMyMultisigsCount, chain, address);
 }
+
+export function sortSignatories(signatories = []) {
+  return Array.from(new Set(signatories)).sort();
+}

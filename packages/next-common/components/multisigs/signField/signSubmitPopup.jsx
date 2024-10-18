@@ -14,6 +14,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useWeight from "next-common/utils/hooks/common/useWeight";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import { sortSignatories } from "../common";
 
 const defaultSectionName = "system";
 const defaultMethodName = "setCode";
@@ -66,7 +67,7 @@ export function SignSubmitInnerPopup({
 
     return api.tx.multisig?.asMulti(
       threshold,
-      otherSignatories,
+      sortSignatories(otherSignatories),
       encodedTimepoint,
       encodedCall,
       maxWeight,
