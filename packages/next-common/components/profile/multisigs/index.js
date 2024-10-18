@@ -13,10 +13,6 @@ import MobileList from "next-common/components/multisigs/mobile";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import {
-  MultisigContextProvider,
-  useMultisigContext,
-} from "next-common/components/multisigs/multisigContext";
 
 function Multisigs() {
   const { width } = useWindowSize();
@@ -35,7 +31,6 @@ function Multisigs() {
     total,
     pageSize,
   );
-  const { isNeedReload, setIsNeedReload } = useMultisigContext();
 
   const fetchProfileMultisigsData = useCallback(() => {
     if (!isPolkadotAddress(address)) {
@@ -49,13 +44,6 @@ function Multisigs() {
   useEffect(() => {
     fetchProfileMultisigsData();
   }, [fetchProfileMultisigsData]);
-
-  useEffect(() => {
-    if (isNeedReload) {
-      fetchProfileMultisigsData();
-      setIsNeedReload(false);
-    }
-  }, [isNeedReload, setIsNeedReload, fetchProfileMultisigsData]);
 
   return (
     <ListCard>
@@ -71,10 +59,8 @@ function Multisigs() {
 
 export default function ProfileMultisigs() {
   return (
-    <MultisigContextProvider>
-      <WithPageWidth>
-        <Multisigs />
-      </WithPageWidth>
-    </MultisigContextProvider>
+    <WithPageWidth>
+      <Multisigs />
+    </WithPageWidth>
   );
 }

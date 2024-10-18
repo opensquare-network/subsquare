@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Title } from "./styled";
 
-export default function MultisigsTitle({ active }) {
+function MultisigsCount() {
   const dispatch = useDispatch();
   const chain = useChain();
   const realAddress = useRealAddress();
@@ -19,13 +19,19 @@ export default function MultisigsTitle({ active }) {
   }, [dispatch, chain, realAddress]);
 
   return (
+    myMultisigsCount !== null && (
+      <span className="text-textTertiary mx-1 text16Medium">
+        {myMultisigsCount || 0}
+      </span>
+    )
+  );
+}
+
+export default function MultisigsTitle({ active }) {
+  return (
     <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
       Multisigs
-      {myMultisigsCount !== null && (
-        <span className="text-textTertiary mx-1 text16Medium">
-          {myMultisigsCount || 0}
-        </span>
-      )}
+      <MultisigsCount />
     </Title>
   );
 }

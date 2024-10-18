@@ -5,13 +5,19 @@ import { usePathname } from "next/navigation";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
-// import SignApprove from "./signApprove";
-// import SignCancel from "./signCancel";
+import SignApprove from "./signApprove";
+import SignCancel from "./signCancel";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import SignSubmit from "./signSubmit";
+import { useRouter } from "next/router";
 
-function ApprovedTooltip() {
+function ApprovedTooltip({ isAccountMultisigPage }) {
+  const content = `${
+    isAccountMultisigPage ? "You" : "This account"
+  } approved this multisig`;
+
   return (
-    <Tooltip content="You approved this multisig">
+    <Tooltip content={content}>
       <span className="inline-flex p-1.5">
         <SystemVoteAye className="w-4 h-4" />
       </span>
@@ -19,9 +25,13 @@ function ApprovedTooltip() {
   );
 }
 
-function NotApprovedTooltip() {
+function NotApprovedTooltip({ isAccountMultisigPage }) {
+  const content = `${
+    isAccountMultisigPage ? "You" : "This account"
+  }  didn't sign this multisig`;
+
   return (
-    <Tooltip content="You didn't sign this multisig">
+    <Tooltip content={content}>
       <span className="inline-flex p-1.5">
         <SystemVoteAbstain className="w-4 h-4" />
       </span>
@@ -30,36 +40,66 @@ function NotApprovedTooltip() {
 }
 
 export default function MultisigSignField({ multisig = {} }) {
-  // const { approvals, state, signatories, threshold, depositor } = multisig;
-  const { approvals } = multisig;
+  const { approvals, state, signatories, threshold, depositor } = multisig;
   const pathname = usePathname();
   const profileAddress = useProfileAddress();
   const realAddress = useRealAddress();
+  const router = useRouter();
+  const routePath = router.asPath.split("?")[0];
 
-  // const isNeedSelfApprove = useMemo(() => {
-  //   if (!approvals || !signatories || state?.name !== "Approving") {
-  //     return false;
-  //   }
+  const isAccountMultisigPage = routePath === "/account/multisigs";
 
-  //   const hasNotApproved = !approvals.some((item) =>
-  //     isSameAddress(item, realAddress),
-  //   );
-  //   const isSignatory = signatories.includes(realAddress);
-  //   const isNeedSign = approvals.length < threshold;
+  const commonCheck = useMemo(() => {
+    const isSignatory = signatories?.includes(realAddress);
+    const hasNotApproved = !approvals?.some((item) =>
+      isSameAddress(item, realAddress),
+    );
+    const isApproving = state?.name === "Approving";
+    return { isSignatory, hasNotApproved, isApproving };
+  }, [approvals, realAddress, signatories, state?.name]);
 
-  //   return isSignatory && hasNotApproved && isNeedSign;
-  // }, [approvals, realAddress, signatories, threshold, state?.name]);
+  const isNeedSelfApprove = useMemo(() => {
+    const { isSignatory, hasNotApproved, isApproving } = commonCheck;
+    if (!approvals || !signatories || !isApproving || !realAddress) {
+      return false;
+    }
 
-  // const isCanbeCanceled = useMemo(() => {
-  //   if (!approvals || !signatories || state?.name !== "Approving") {
-  //     return false;
-  //   }
+    const isNeedSign = approvals.length < threshold;
+    return isSignatory && hasNotApproved && isNeedSign;
+  }, [approvals, realAddress, signatories, threshold, commonCheck]);
 
-  //   const isSignatory = signatories.includes(realAddress);
-  //   const isDepositor = depositor === realAddress;
+  const isCanbeCanceled = useMemo(() => {
+    const { isSignatory, isApproving } = commonCheck;
+    if (!approvals || !signatories || !isApproving || !realAddress) {
+      return false;
+    }
 
-  //   return isSignatory && isDepositor;
-  // }, [approvals, realAddress, signatories, state?.name, depositor]);
+    const isDepositor = depositor === realAddress;
+    return isSignatory && isDepositor;
+  }, [approvals, realAddress, signatories, depositor, commonCheck]);
+
+  // call as_multi (Sign & Submit)
+  const isNeedFinalApproval = useMemo(() => {
+    const { isSignatory, hasNotApproved, isApproving } = commonCheck;
+    if (!approvals || !signatories || !isApproving || !realAddress) {
+      return false;
+    }
+
+    return isSignatory && hasNotApproved && approvals.length === threshold - 1;
+  }, [approvals, realAddress, signatories, threshold, commonCheck]);
+
+  // call as_multi (Submit)
+  const isReadyForSubmission = useMemo(() => {
+    const { isSignatory, hasNotApproved, isApproving } = commonCheck;
+    if (!approvals || !signatories || !isApproving || !realAddress) {
+      return false;
+    }
+
+    const isAllApproved =
+      isSignatory && hasNotApproved && approvals.length === threshold;
+
+    return isAllApproved;
+  }, [approvals, realAddress, signatories, threshold, commonCheck]);
 
   const isApproved = useMemo(() => {
     if (pathname.startsWith("/user/")) {
@@ -70,20 +110,37 @@ export default function MultisigSignField({ multisig = {} }) {
     return approvals?.some((item) => isSameAddress(item, realAddress));
   }, [approvals, pathname, profileAddress, realAddress]);
 
-  let content = isApproved ? <ApprovedTooltip /> : <NotApprovedTooltip />;
-
-  // if (isNeedSelfApprove) {
-  //   content = <SignApprove multisig={multisig} />;
-  // }
-
-  // // SignCancel by depositor
-  // if (isCanbeCanceled) {
-  //   content = <SignCancel multisig={multisig} />;
-  // }
-
-  return (
-    <SignerPopupWrapper>
-      <div className="flex items-center justify-end gap-x-2">{content}</div>
-    </SignerPopupWrapper>
+  let content = isApproved ? (
+    <ApprovedTooltip isAccountMultisigPage={isAccountMultisigPage} />
+  ) : (
+    <NotApprovedTooltip isAccountMultisigPage={isAccountMultisigPage} />
   );
+
+  if (isNeedSelfApprove && isAccountMultisigPage) {
+    content = (
+      <SignerPopupWrapper>
+        <SignApprove multisig={multisig} />
+      </SignerPopupWrapper>
+    );
+  }
+
+  // SignCancel by depositor
+  if (isCanbeCanceled && isAccountMultisigPage) {
+    content = (
+      <SignerPopupWrapper>
+        <SignCancel multisig={multisig} />
+      </SignerPopupWrapper>
+    );
+  }
+
+  // Sign & Submit
+  if ((isNeedFinalApproval || isReadyForSubmission) && isAccountMultisigPage) {
+    content = (
+      <SignerPopupWrapper>
+        <SignSubmit multisig={multisig} />
+      </SignerPopupWrapper>
+    );
+  }
+
+  return <div className="flex items-center justify-end gap-x-2">{content}</div>;
 }
