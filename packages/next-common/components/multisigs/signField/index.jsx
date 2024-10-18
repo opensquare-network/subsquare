@@ -36,70 +36,52 @@ export default function MultisigSignField({ multisig = {} }) {
   const profileAddress = useProfileAddress();
   const realAddress = useRealAddress();
 
+  const commonCheck = useMemo(() => {
+    const isSignatory = signatories?.includes(realAddress);
+    const hasNotApproved = !approvals?.some((item) =>
+      isSameAddress(item, realAddress),
+    );
+    const isApproving = state?.name === "Approving";
+    return { isSignatory, hasNotApproved, isApproving };
+  }, [approvals, realAddress, signatories, state?.name]);
+
   const isNeedSelfApprove = useMemo(() => {
-    if (
-      !approvals ||
-      !signatories ||
-      state?.name !== "Approving" ||
-      !realAddress
-    ) {
+    const { isSignatory, hasNotApproved, isApproving } = commonCheck;
+    if (!approvals || !signatories || !isApproving || !realAddress) {
       return false;
     }
 
-    const hasNotApproved = !approvals.some((item) =>
-      isSameAddress(item, realAddress),
-    );
-    const isSignatory = signatories.includes(realAddress);
     const isNeedSign = approvals.length < threshold;
-
     return isSignatory && hasNotApproved && isNeedSign;
   }, [approvals, realAddress, signatories, threshold, state?.name]);
 
   const isCanbeCanceled = useMemo(() => {
-    if (
-      !approvals ||
-      !signatories ||
-      state?.name !== "Approving" ||
-      !realAddress
-    ) {
+    const { isSignatory, isApproving } = commonCheck;
+    if (!approvals || !signatories || !isApproving || !realAddress) {
       return false;
     }
 
-    const isSignatory = signatories.includes(realAddress);
     const isDepositor = depositor === realAddress;
-
     return isSignatory && isDepositor;
   }, [approvals, realAddress, signatories, state?.name, depositor]);
 
   // call as_multi (Sign & Submit)
   const isNeedFinalApproval = useMemo(() => {
-    if (
-      !approvals ||
-      !signatories ||
-      state?.name !== "Approving" ||
-      !realAddress
-    ) {
+    const { isSignatory, hasNotApproved, isApproving } = commonCheck;
+    if (!approvals || !signatories || !isApproving || !realAddress) {
       return false;
     }
-
-    const isSignatory = signatories.includes(realAddress);
-    const hasNotApproved = !approvals.some((item) =>
-      isSameAddress(item, realAddress),
-    );
 
     return isSignatory && hasNotApproved && approvals.length === threshold - 1;
   }, [approvals, realAddress, signatories, state?.name, threshold]);
 
   // call as_multi (Submit)
   const isReadyForSubmission = useMemo(() => {
-    if (!approvals || !signatories || state?.name !== "Approving") {
+    const { isSignatory, hasNotApproved, isApproving } = commonCheck;
+    if (!approvals || !signatories || !isApproving || !realAddress) {
       return false;
     }
 
-    const isSignatory = signatories.includes(realAddress);
-    const hasNotApproved = !approvals.some((item) =>
-      isSameAddress(item, realAddress),
-    );
     const isAllApproved =
       isSignatory && hasNotApproved && approvals.length === threshold;
 
