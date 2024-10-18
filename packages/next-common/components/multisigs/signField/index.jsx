@@ -37,7 +37,12 @@ export default function MultisigSignField({ multisig = {} }) {
   const realAddress = useRealAddress();
 
   const isNeedSelfApprove = useMemo(() => {
-    if (!approvals || !signatories || state?.name !== "Approving") {
+    if (
+      !approvals ||
+      !signatories ||
+      state?.name !== "Approving" ||
+      !realAddress
+    ) {
       return false;
     }
 
@@ -51,7 +56,12 @@ export default function MultisigSignField({ multisig = {} }) {
   }, [approvals, realAddress, signatories, threshold, state?.name]);
 
   const isCanbeCanceled = useMemo(() => {
-    if (!approvals || !signatories || state?.name !== "Approving") {
+    if (
+      !approvals ||
+      !signatories ||
+      state?.name !== "Approving" ||
+      !realAddress
+    ) {
       return false;
     }
 
@@ -63,7 +73,12 @@ export default function MultisigSignField({ multisig = {} }) {
 
   // call as_multi (Sign & Submit)
   const isNeedFinalApproval = useMemo(() => {
-    if (!approvals || !signatories || state?.name !== "Approving") {
+    if (
+      !approvals ||
+      !signatories ||
+      state?.name !== "Approving" ||
+      !realAddress
+    ) {
       return false;
     }
 
@@ -103,22 +118,30 @@ export default function MultisigSignField({ multisig = {} }) {
   let content = isApproved ? <ApprovedTooltip /> : <NotApprovedTooltip />;
 
   if (isNeedSelfApprove) {
-    content = <SignApprove multisig={multisig} />;
+    content = (
+      <SignerPopupWrapper>
+        <SignApprove multisig={multisig} />
+      </SignerPopupWrapper>
+    );
   }
 
   // SignCancel by depositor
   if (isCanbeCanceled) {
-    content = <SignCancel multisig={multisig} />;
+    content = (
+      <SignerPopupWrapper>
+        <SignCancel multisig={multisig} />
+      </SignerPopupWrapper>
+    );
   }
 
   // Sign & Submit
   if (isNeedFinalApproval || isReadyForSubmission) {
-    content = <SignSubmit multisig={multisig} />;
+    content = (
+      <SignerPopupWrapper>
+        <SignSubmit multisig={multisig} />
+      </SignerPopupWrapper>
+    );
   }
 
-  return (
-    <SignerPopupWrapper>
-      <div className="flex items-center justify-end gap-x-2">{content}</div>
-    </SignerPopupWrapper>
-  );
+  return <div className="flex items-center justify-end gap-x-2">{content}</div>;
 }
