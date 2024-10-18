@@ -9,8 +9,9 @@ import { Provider } from "react-redux";
 import { commonReducers } from "next-common/store/reducers";
 import { coretimeClient } from "next-common/hooks/apollo";
 import { GET_CORETIME_CURRENT_SALE } from "next-common/services/gql/coretime";
+import { CHAIN } from "next-common/utils/constants";
 
-const chain = "coretime";
+const chain = `${CHAIN}-coretime`;
 const store = createStore({
   chain,
   reducer: commonReducers,
@@ -29,10 +30,10 @@ export default function CoretimePage() {
 }
 
 function CoretimePageImpl() {
-  const { name, description } = useChainSettings();
+  const { description } = useChainSettings();
 
   return (
-    <ListLayout title={name} description={description}>
+    <ListLayout title="Coretime" description={description}>
       <div className="space-y-6">
         <CoretimeSalePanel />
         <CoretimeSalesHistorySection />
