@@ -4,6 +4,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 
 const { modules } = getChainSettings(CHAIN);
 
+/** @type {ApolloClient<InMemoryCache> | undefined} */
 export let coretimeClient;
 
 if (modules?.coretime) {
