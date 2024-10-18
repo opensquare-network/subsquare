@@ -43,10 +43,15 @@ function CoretimePageImpl() {
 }
 
 export const getServerSideProps = withCommonProps(async () => {
-  const { data } =
-    (await coretimeClient?.query?.({
+  let data;
+  try {
+    const result = await coretimeClient?.query?.({
       query: GET_CORETIME_CURRENT_SALE,
-    })) || {};
+    });
+    data = result?.data;
+  } catch (_error) {
+    /* empty */
+  }
 
   return {
     props: {
