@@ -10,12 +10,18 @@ import {
 } from "next-common/store/reducers/multisigSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import getChainSettings from "next-common/utils/consts/settings";
 
 function PromptContent() {
   const dispatch = useDispatch();
   const chain = useChain();
   const realAddress = useRealAddress();
   const myMultisigsCount = useSelector(myMultisigsCountSelector) || 0;
+
+  const settings = getChainSettings(chain);
+  if (!settings?.multisigApiPrefix) {
+    return null;
+  }
 
   useEffect(() => {
     dispatch(fetchMyMultisigsCount(chain, realAddress));
