@@ -10,14 +10,12 @@ import { useCoretimeQuery } from "next-common/hooks/apollo";
 import { GET_CORETIME_SALE_PURCHASES } from "next-common/services/gql/coretime";
 import { toPrecision } from "next-common/utils";
 import { defaultPageSize } from "next-common/utils/constants";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function SalesHistoryPurchase() {
+export default function SalesHistoryPurchases() {
   const { decimals, symbol } = useChainSettings();
   const { id } = usePageProps();
-  const router = useRouter();
-  const page = Number(router.query.page) || 1;
+  const [page, setPage] = useState(1);
   const [isTime, setIsTime] = useState(true);
 
   const pageSize = defaultPageSize;
@@ -107,17 +105,20 @@ export default function SalesHistoryPurchase() {
     <div>
       <MapDataList
         loading={loading}
-        noDataText="No purchase history"
+        noDataText="No purchases history"
         columnsDef={columns}
         data={data?.coretimeSalePurchases?.items}
       />
 
       <div className="mt-4">
         <Pagination
-          shallow
           page={page}
           total={data?.coretimeSalePurchases?.total}
           pageSize={pageSize}
+          onPageChange={(e, newPage) => {
+            e.preventDefault();
+            setPage(newPage);
+          }}
         />
       </div>
     </div>
