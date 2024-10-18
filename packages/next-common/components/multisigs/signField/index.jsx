@@ -76,26 +76,13 @@ export default function MultisigSignField({ multisig = {} }) {
   }, [approvals, realAddress, signatories, depositor, commonCheck]);
 
   // call as_multi (Sign & Submit)
-  const isNeedFinalApproval = useMemo(() => {
+  const readyForExecution = useMemo(() => {
     const { isSignatory, hasNotApproved, isApproving } = commonCheck;
     if (!approvals || !signatories || !isApproving || !realAddress) {
       return false;
     }
 
-    return isSignatory && hasNotApproved && approvals.length === threshold - 1;
-  }, [approvals, realAddress, signatories, threshold, commonCheck]);
-
-  // call as_multi (Submit)
-  const isReadyForSubmission = useMemo(() => {
-    const { isSignatory, hasNotApproved, isApproving } = commonCheck;
-    if (!approvals || !signatories || !isApproving || !realAddress) {
-      return false;
-    }
-
-    const isAllApproved =
-      isSignatory && hasNotApproved && approvals.length === threshold;
-
-    return isAllApproved;
+    return isSignatory && hasNotApproved && approvals.length >= threshold - 1;
   }, [approvals, realAddress, signatories, threshold, commonCheck]);
 
   const isApproved = useMemo(() => {
@@ -131,7 +118,7 @@ export default function MultisigSignField({ multisig = {} }) {
   }
 
   // Sign & Submit
-  if ((isNeedFinalApproval || isReadyForSubmission) && isAccountMultisigPage) {
+  if ((readyForExecution) && isAccountMultisigPage) {
     content = (
       <SignerPopupWrapper>
         <SignSubmit multisig={multisig} />
