@@ -7,8 +7,9 @@ import ChainProvider, { useChainSettings } from "next-common/context/chain";
 import ApiProvider from "next-common/context/api";
 import { Provider } from "react-redux";
 import { commonReducers } from "next-common/store/reducers";
+import { CHAIN } from "next-common/utils/constants";
 
-const chain = "coretime";
+const chain = `${CHAIN}-coretime`;
 const store = createStore({
   chain,
   reducer: commonReducers,
@@ -27,10 +28,10 @@ export default function CoretimePage() {
 }
 
 function CoretimePageImpl() {
-  const { name, description } = useChainSettings();
+  const { description } = useChainSettings();
 
   return (
-    <ListLayout title={name} description={description}>
+    <ListLayout title="Coretime" description={description}>
       <div className="space-y-6">
         <CoretimeSalePanel />
         <CoretimeSalesHistorySection />
