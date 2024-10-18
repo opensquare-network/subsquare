@@ -39,8 +39,9 @@ const Chains = {
   shibuya: "shibuya",
   astar: "astar",
   zkverifyTestnet: "zkverify-testnet",
-  coretime: "coretime",
   paseo: "paseo",
+  kusamaCoretime: "kusama-coretime",
+  polkadotCoretime: "polkadot-coretime",
 };
 
 export default Chains;
