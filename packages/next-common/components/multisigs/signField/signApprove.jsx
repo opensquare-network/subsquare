@@ -35,7 +35,7 @@ export const Wrapper = styled.div`
 export default function SignApprove({ multisig = {} }) {
   const api = useContextApi();
   const address = useRealAddress();
-  const { setIsNeedReload } = useMultisigContext();
+  const { setIsNeedReload, setIsRefetchCount } = useMultisigContext();
   const { threshold, signatories, when: maybeTimepoint, callHash } = multisig;
   const dispatch = useDispatch();
   const [isDisabled, setIsDisabled] = useState(false);
@@ -63,6 +63,7 @@ export default function SignApprove({ multisig = {} }) {
   const onFinalized = () => {
     setIsDisabled(false);
     setIsNeedReload(true);
+    setIsRefetchCount(true);
     dispatch(newSuccessToast("Multisig status will be updated in seconds"));
   };
 
