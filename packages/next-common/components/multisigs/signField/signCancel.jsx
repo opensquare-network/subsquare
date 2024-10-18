@@ -10,7 +10,7 @@ import Tooltip from "next-common/components/tooltip";
 export default function SignCancel({ multisig = {} }) {
   const api = useContextApi();
   const address = useRealAddress();
-  const { setIsNeedReload } = useMultisigContext();
+  const { setIsNeedReload, setIsRefetchCount } = useMultisigContext();
   const { threshold, signatories, when: timepoint, callHash } = multisig;
 
   const getTxFunc = useCallback(() => {
@@ -30,6 +30,7 @@ export default function SignCancel({ multisig = {} }) {
 
   const onFinalized = () => {
     setIsNeedReload(true);
+    setIsRefetchCount(true);
   };
 
   const { doSubmit, isSubmitting } = useTxSubmission({

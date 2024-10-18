@@ -24,7 +24,7 @@ export function SignSubmitInnerPopup({
   const api = useContextApi();
   const address = useRealAddress();
   const isLoading = !api;
-  const { setIsNeedReload } = useMultisigContext();
+  const { setIsNeedReload, setIsRefetchCount } = useMultisigContext();
   const { threshold, signatories, when: maybeTimepoint } = multisig;
   const [encodedCall, setEncodedCall] = useState(null);
   const [isSubmitBtnLoading, setIsSubmitBtnLoading] = useState(false);
@@ -78,6 +78,7 @@ export function SignSubmitInnerPopup({
 
   const onFinalized = () => {
     setIsNeedReload(true);
+    setIsRefetchCount(true);
   };
 
   return (
