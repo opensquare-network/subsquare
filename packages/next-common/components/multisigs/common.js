@@ -33,10 +33,6 @@ export async function fetchMultisigList10Times(dispatch, chain, address, page) {
   );
 }
 
-export async function fetchMultisigsCountList10Times(dispatch, chain, address) {
-  await fetchDataMultipleTimes(dispatch, fetchMyMultisigsCount, chain, address);
-}
-
 export async function fetchProfileMultisigList10Times(
   dispatch,
   chain,
@@ -50,4 +46,8 @@ export async function fetchProfileMultisigList10Times(
     address,
     page,
   );
+}
+
+export async function fetchMultisigsCount10Times(dispatch, chain, address) {
+  await fetchDataMultipleTimes(dispatch, fetchMyMultisigsCount, chain, address);
 }

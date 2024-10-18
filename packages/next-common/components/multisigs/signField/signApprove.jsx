@@ -6,6 +6,8 @@ import { useCallback } from "react";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { useMultisigContext } from "../multisigContext";
 import Tooltip from "next-common/components/tooltip";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 export const Wrapper = styled.div`
   display: inline-flex;
@@ -35,6 +37,7 @@ export default function SignApprove({ multisig = {} }) {
   const address = useRealAddress();
   const { setIsNeedReload } = useMultisigContext();
   const { threshold, signatories, when: maybeTimepoint, callHash } = multisig;
+  const dispatch = useDispatch();
 
   const getTxFunc = useCallback(() => {
     if (!api || !address) {
@@ -58,6 +61,7 @@ export default function SignApprove({ multisig = {} }) {
 
   const onFinalized = () => {
     setIsNeedReload(true);
+    dispatch(newSuccessToast("Multisig status will be updated in seconds"));
   };
 
   const { doSubmit, isSubmitting } = useTxSubmission({

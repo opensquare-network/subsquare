@@ -12,6 +12,8 @@ import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import { useMultisigContext } from "../multisigContext";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useWeight from "next-common/utils/hooks/common/useWeight";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 const defaultSectionName = "system";
 const defaultMethodName = "setCode";
@@ -31,6 +33,7 @@ export function SignSubmitInnerPopup({
   const [call, setCall] = useState(null);
   const { weight: maxWeight } = useWeight(call);
   const isSubmitBtnDisabled = !call || !maxWeight;
+  const dispatch = useDispatch();
 
   const setValue = useCallback(
     ({ isValid, data }) => {
@@ -79,6 +82,7 @@ export function SignSubmitInnerPopup({
   const onFinalized = () => {
     setIsNeedReload(true);
     setIsRefetchCount(true);
+    dispatch(newSuccessToast("Multisig status will be updated in seconds"));
   };
 
   return (

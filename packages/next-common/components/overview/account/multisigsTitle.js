@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Title } from "./styled";
 import { useMultisigContext } from "next-common/components/multisigs/multisigContext";
-import { fetchMultisigsCountList10Times } from "next-common/components/multisigs/common";
+import { fetchMultisigsCount10Times } from "next-common/components/multisigs/common";
 
 function MultisigsCount() {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ function MultisigsCount() {
 
   useEffect(() => {
     if (isRefetchCount) {
-      fetchMultisigsCountList10Times(dispatch, chain, realAddress).then(() => {
+      fetchMultisigsCount10Times(dispatch, chain, realAddress).then(() => {
         // updated 10 time, do nothing
       });
       setIsRefetchCount(false);
