@@ -101,7 +101,7 @@ export default function SalesHistoryRenewal() {
     <div>
       <MapDataList
         loading={loading}
-        noDataText="No purchase history"
+        noDataText="No renewals history"
         columnsDef={columns}
         data={data?.coretimeSaleRenewals?.items}
       />
