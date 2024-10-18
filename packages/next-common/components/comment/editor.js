@@ -177,7 +177,7 @@ function CommentEditor(
             loading={loading}
             disabled={isEmpty}
             onClickComment={isEdit ? editComment : createComment}
-            onClickCommentAsProxy={isEdit ? editComment : createComment}
+            onClickCommentAsProxy={() => {}}
           />
         </Tooltip>
       </ButtonWrapper>
