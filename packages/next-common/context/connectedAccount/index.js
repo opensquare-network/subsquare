@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useState } from "react";
 import { fetchAndUpdateUser, logoutUser, useUserContext } from "../user";
 import { useLocalStorage } from "react-use";
 import { clearMyMultisigsData } from "next-common/store/reducers/multisigSlice";
+import { useDispatch } from "react-redux";
 
 const ConnectedAccountContext = createContext(null);
 
@@ -18,6 +19,7 @@ export function ConnectedAccountProvider({
   const [lastConnectedAccount, setLastConnectedAccount] = useLocalStorage(
     CACHE_KEY.lastConnectedAccount,
   );
+  const dispatch = useDispatch();
 
   const saveConnectedAccount = useCallback((account) => {
     setConnectedAccount(account);
@@ -35,8 +37,8 @@ export function ConnectedAccountProvider({
     await logoutUser(userContext);
     setConnectedAccount(null);
     clearCookie(CACHE_KEY.connectedAccount);
-    clearMyMultisigsData();
-  }, [userContext]);
+    dispatch(clearMyMultisigsData());
+  }, [userContext, dispatch]);
 
   const connect = useCallback(
     async (account) => {
