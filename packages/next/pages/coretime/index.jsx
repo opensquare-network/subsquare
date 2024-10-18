@@ -7,6 +7,8 @@ import ChainProvider, { useChainSettings } from "next-common/context/chain";
 import ApiProvider from "next-common/context/api";
 import { Provider } from "react-redux";
 import { commonReducers } from "next-common/store/reducers";
+import { coretimeClient } from "next-common/hooks/apollo";
+import { GET_CORETIME_CURRENT_SALE } from "next-common/services/gql/coretime";
 import { CHAIN } from "next-common/utils/constants";
 
 const chain = `${CHAIN}-coretime`;
@@ -40,4 +42,22 @@ function CoretimePageImpl() {
   );
 }
 
-export const getServerSideProps = withCommonProps();
+export const getServerSideProps = withCommonProps(async () => {
+  let data;
+  try {
+    const result = await coretimeClient?.query?.({
+      query: GET_CORETIME_CURRENT_SALE,
+    });
+    data = result?.data;
+  } catch (_error) {
+    /* empty */
+  }
+
+  return {
+    props: {
+      id: data?.coretimeCurrentSale?.id,
+      purchaseCount: data?.coretimeCurrentSale?.purchaseCount,
+      renewalCount: data?.coretimeCurrentSale?.renewalCount,
+    },
+  };
+});
