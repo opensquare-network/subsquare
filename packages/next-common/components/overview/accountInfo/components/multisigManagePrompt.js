@@ -19,16 +19,15 @@ function PromptContent() {
   const myMultisigsCount = useSelector(myMultisigsCountSelector) || 0;
 
   const settings = getChainSettings(chain);
-  if (!settings?.multisigApiPrefix) {
-    return null;
-  }
 
   useEffect(() => {
-    dispatch(fetchMyMultisigsCount(chain, realAddress));
-  }, [dispatch, chain, realAddress]);
+    if (settings?.multisigApiPrefix) {
+      dispatch(fetchMyMultisigsCount(chain, realAddress));
+    }
+  }, [dispatch, chain, realAddress, settings]);
 
-  return useMemo(() => {
-    if (myMultisigsCount === 0) {
+  const promptContent = useMemo(() => {
+    if (!settings?.multisigApiPrefix || myMultisigsCount === 0) {
       return null;
     }
 
@@ -49,7 +48,9 @@ function PromptContent() {
         </Link>
       </Prompt>
     );
-  }, [myMultisigsCount]);
+  }, [myMultisigsCount, settings]);
+
+  return promptContent;
 }
 
 export default function MultisigManagePrompt() {
