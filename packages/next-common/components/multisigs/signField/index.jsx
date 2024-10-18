@@ -65,7 +65,7 @@ export default function MultisigSignField({ multisig = {} }) {
     return isSignatory && hasNotApproved && isNeedSign;
   }, [approvals, realAddress, signatories, threshold, commonCheck]);
 
-  const isCanbeCanceled = useMemo(() => {
+  const canBeCanceled = useMemo(() => {
     const { isSignatory, isApproving } = commonCheck;
     if (!approvals || !signatories || !isApproving || !realAddress) {
       return false;
@@ -122,7 +122,7 @@ export default function MultisigSignField({ multisig = {} }) {
   }
 
   // SignCancel by depositor
-  if (isCanbeCanceled && isAccountMultisigPage) {
+  if (canBeCanceled && isAccountMultisigPage) {
     content = (
       <SignerPopupWrapper>
         <SignCancel multisig={multisig} />
