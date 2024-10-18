@@ -4,26 +4,34 @@ import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
 import { fetchMyMultisigsCount } from "next-common/store/reducers/multisigSlice";
 
-export async function fetchMultisigList10Times(dispatch, chain, address, page) {
+async function fetchDataMultipleTimes(
+  dispatch,
+  actionCreator,
+  chain,
+  address,
+  page = null,
+  times = 10,
+) {
   const blockTime =
     getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
     defaultBlockTime;
-  const timers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  // eslint-disable-next-line no-unused-vars
-  for (const timer of timers) {
-    dispatch(fetchMyMultisigs(chain, address, page));
+
+  for (let i = 0; i < times; i++) {
+    dispatch(actionCreator(chain, address, page));
     await sleep(blockTime);
   }
 }
 
+export async function fetchMultisigList10Times(dispatch, chain, address, page) {
+  await fetchDataMultipleTimes(
+    dispatch,
+    fetchMyMultisigs,
+    chain,
+    address,
+    page,
+  );
+}
+
 export async function fetchMultisigsCountList10Times(dispatch, chain, address) {
-  const blockTime =
-    getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
-    defaultBlockTime;
-  const timers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  // eslint-disable-next-line no-unused-vars
-  for (const timer of timers) {
-    dispatch(fetchMyMultisigsCount(chain, address));
-    await sleep(blockTime);
-  }
+  await fetchDataMultipleTimes(dispatch, fetchMyMultisigsCount, chain, address);
 }

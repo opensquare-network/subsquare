@@ -15,7 +15,7 @@ function MultisigsCount() {
   const chain = useChain();
   const realAddress = useRealAddress();
   const myMultisigsCount = useSelector(myMultisigsCountSelector);
-  const { isRefetchCount, setIsRefetchCount } = useMultisigContext();
+  const { isRefetchCount, setIsRefetchCount } = useMultisigContext() || {};
 
   useEffect(() => {
     dispatch(fetchMyMultisigsCount(chain, realAddress));
