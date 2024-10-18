@@ -9,7 +9,6 @@ import SignApprove from "./signApprove";
 import SignCancel from "./signCancel";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SignSubmit from "./signSubmit";
-import { useRouter } from "next/router";
 
 function ApprovedTooltip({ isAccountMultisigPage }) {
   const content = `${
@@ -44,10 +43,8 @@ export default function MultisigSignField({ multisig = {} }) {
   const pathname = usePathname();
   const profileAddress = useProfileAddress();
   const realAddress = useRealAddress();
-  const router = useRouter();
-  const routePath = router.asPath.split("?")[0];
 
-  const isAccountMultisigPage = routePath === "/account/multisigs";
+  const isAccountMultisigPage = pathname === "/account/multisigs";
 
   const commonCheck = useMemo(() => {
     const isSignatory = signatories?.includes(realAddress);
