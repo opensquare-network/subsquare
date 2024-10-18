@@ -12,12 +12,12 @@ import { GET_CORETIME_CURRENT_SALE } from "next-common/services/gql/coretime";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 
-const isSupportCoretime = !!getChainSettings(CHAIN).modules?.coretime;
+const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
 let chain;
 let store;
 
-if (isSupportCoretime) {
+if (isCoretimeSupported) {
   chain = `${CHAIN}-coretime`;
   store = createStore({
     chain,
@@ -26,7 +26,7 @@ if (isSupportCoretime) {
 }
 
 export default function CoretimePage() {
-  if (!isSupportCoretime) {
+  if (!isCoretimeSupported) {
     return null;
   }
 
@@ -55,7 +55,7 @@ function CoretimePageImpl() {
 }
 
 export const getServerSideProps = async (ctx) => {
-  if (!isSupportCoretime) {
+  if (!isCoretimeSupported) {
     return {
       notFound: true,
     };
