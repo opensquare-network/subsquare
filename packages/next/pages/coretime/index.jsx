@@ -8,7 +8,7 @@ import ApiProvider from "next-common/context/api";
 import { Provider } from "react-redux";
 import { commonReducers } from "next-common/store/reducers";
 import { coretimeClient } from "next-common/hooks/apollo";
-import { coretimeCurrentSale } from "next-common/services/gql/coretime";
+import { GET_CORETIME_CURRENT_SALE } from "next-common/services/gql/coretime";
 
 const chain = "coretime";
 const store = createStore({
@@ -42,7 +42,9 @@ function CoretimePageImpl() {
 }
 
 export const getServerSideProps = withCommonProps(async () => {
-  const { data } = await coretimeClient.query({ query: coretimeCurrentSale });
+  const { data } = await coretimeClient.query({
+    query: GET_CORETIME_CURRENT_SALE,
+  });
 
   return {
     props: {

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const coretimeCurrentSale = gql`
+export const GET_CORETIME_CURRENT_SALE = gql`
   query MyQuery {
     coretimeCurrentSale {
       id
