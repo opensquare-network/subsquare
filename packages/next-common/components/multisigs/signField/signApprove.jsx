@@ -82,6 +82,7 @@ export default function SignApprove({ multisig = {} }) {
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
     onFinalized,
+    onCancelled: () => setIsDisabled(false),
   });
 
   useEffect(() => {
