@@ -10,14 +10,26 @@ import { commonReducers } from "next-common/store/reducers";
 import { coretimeClient } from "next-common/hooks/apollo";
 import { GET_CORETIME_CURRENT_SALE } from "next-common/services/gql/coretime";
 import { CHAIN } from "next-common/utils/constants";
+import getChainSettings from "next-common/utils/consts/settings";
 
-const chain = `${CHAIN}-coretime`;
-const store = createStore({
-  chain,
-  reducer: commonReducers,
-});
+const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
+
+let chain;
+let store;
+
+if (isCoretimeSupported) {
+  chain = `${CHAIN}-coretime`;
+  store = createStore({
+    chain,
+    reducer: commonReducers,
+  });
+}
 
 export default function CoretimePage() {
+  if (!isCoretimeSupported) {
+    return null;
+  }
+
   return (
     <Provider store={store}>
       <ChainProvider chain={chain}>
@@ -42,22 +54,30 @@ function CoretimePageImpl() {
   );
 }
 
-export const getServerSideProps = withCommonProps(async () => {
-  let data;
-  try {
-    const result = await coretimeClient?.query?.({
-      query: GET_CORETIME_CURRENT_SALE,
-    });
-    data = result?.data;
-  } catch (_error) {
-    /* empty */
+export const getServerSideProps = async (ctx) => {
+  if (!isCoretimeSupported) {
+    return {
+      notFound: true,
+    };
   }
 
-  return {
-    props: {
-      id: data?.coretimeCurrentSale?.id,
-      purchaseCount: data?.coretimeCurrentSale?.purchaseCount,
-      renewalCount: data?.coretimeCurrentSale?.renewalCount,
-    },
-  };
-});
+  return withCommonProps(async () => {
+    let data;
+    try {
+      const result = await coretimeClient?.query?.({
+        query: GET_CORETIME_CURRENT_SALE,
+      });
+      data = result?.data;
+    } catch (_error) {
+      /* empty */
+    }
+
+    return {
+      props: {
+        id: data?.coretimeCurrentSale?.id,
+        purchaseCount: data?.coretimeCurrentSale?.purchaseCount,
+        renewalCount: data?.coretimeCurrentSale?.renewalCount,
+      },
+    };
+  })(ctx);
+};
