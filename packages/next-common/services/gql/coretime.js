@@ -32,3 +32,26 @@ export const GET_CORETIME_SALE_PURCHASES = gql`
     }
   }
 `;
+
+export const GET_CORETIME_SALE_RENEWALS = gql`
+  query MyQuery($limit: Int!, $offset: Int!, $saleId: Int!) {
+    coretimeSaleRenewals(limit: $limit, offset: $offset, saleId: $saleId) {
+      limit
+      offset
+      total
+      items {
+        core
+        oldCore
+        who
+        workload
+        price
+        indexer {
+          blockHeight
+          blockTime
+          extrinsicIndex
+          eventIndex
+        }
+      }
+    }
+  }
+`;
