@@ -3,6 +3,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
 import { fetchMyMultisigsCount } from "next-common/store/reducers/multisigSlice";
+import { fetchProfileMultisigs } from "next-common/store/reducers/profile/multisig";
 
 async function fetchDataMultipleTimes(
   dispatch,
@@ -34,4 +35,19 @@ export async function fetchMultisigList10Times(dispatch, chain, address, page) {
 
 export async function fetchMultisigsCountList10Times(dispatch, chain, address) {
   await fetchDataMultipleTimes(dispatch, fetchMyMultisigsCount, chain, address);
+}
+
+export async function fetchProfileMultisigList10Times(
+  dispatch,
+  chain,
+  address,
+  page,
+) {
+  await fetchDataMultipleTimes(
+    dispatch,
+    fetchProfileMultisigs,
+    chain,
+    address,
+    page,
+  );
 }

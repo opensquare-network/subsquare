@@ -17,7 +17,7 @@ import {
   MultisigContextProvider,
   useMultisigContext,
 } from "next-common/components/multisigs/multisigContext";
-import { fetchMultisigList10Times } from "next-common/components/multisigs/common";
+import { fetchProfileMultisigList10Times } from "next-common/components/multisigs/common";
 
 function Multisigs() {
   const { width } = useWindowSize();
@@ -53,7 +53,7 @@ function Multisigs() {
 
   useEffect(() => {
     if (isNeedReload) {
-      fetchMultisigList10Times(dispatch, chain, address, page).then(() => {
+      fetchProfileMultisigList10Times(dispatch, chain, address, page).then(() => {
         // updated 10 time, do nothing
       });
       setIsNeedReload(false);
