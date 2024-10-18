@@ -5,6 +5,8 @@ import {
   useLazyQuery,
 } from "@apollo/client";
 
+export * from "./coretime";
+
 const doTreasuryEcoClient = new ApolloClient({
   uri: "https://eco-api.dotreasury.com/graphql",
   cache: new InMemoryCache(),

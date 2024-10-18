@@ -40,6 +40,8 @@ const Chains = {
   astar: "astar",
   zkverifyTestnet: "zkverify-testnet",
   paseo: "paseo",
+  kusamaCoretime: "kusama-coretime",
+  polkadotCoretime: "polkadot-coretime",
 };
 
 export default Chains;
