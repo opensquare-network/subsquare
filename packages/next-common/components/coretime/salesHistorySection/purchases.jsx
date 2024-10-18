@@ -12,7 +12,7 @@ import { toPrecision } from "next-common/utils";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useState } from "react";
 
-export default function SalesHistoryPurchase() {
+export default function SalesHistoryPurchases() {
   const { decimals, symbol } = useChainSettings();
   const { id } = usePageProps();
   const [page, setPage] = useState(1);
@@ -105,7 +105,7 @@ export default function SalesHistoryPurchase() {
     <div>
       <MapDataList
         loading={loading}
-        noDataText="No purchase history"
+        noDataText="No purchases history"
         columnsDef={columns}
         data={data?.coretimeSalePurchases?.items}
       />

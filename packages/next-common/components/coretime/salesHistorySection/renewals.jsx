@@ -12,7 +12,7 @@ import { toPrecision } from "next-common/utils";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useState } from "react";
 
-export default function SalesHistoryRenewal() {
+export default function SalesHistoryRenewals() {
   const { decimals, symbol } = useChainSettings();
   const { id } = usePageProps();
   const [page, setPage] = useState(1);

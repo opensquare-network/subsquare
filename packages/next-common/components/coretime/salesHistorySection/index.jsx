@@ -1,14 +1,14 @@
 import Tabs from "next-common/components/tabs";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import { TitleContainer } from "../../styled/containers/titleContainer";
-import SalesHistoryPurchase from "./purchase";
-import SalesHistoryRenewal from "./renewal";
+import SalesHistoryPurchases from "./purchases";
+import SalesHistoryRenewals from "./renewals";
 import { useState } from "react";
 import { usePageProps } from "next-common/context/page";
 
 export default function CoretimeSalesHistorySection() {
   const { purchaseCount, renewalCount } = usePageProps();
-  const [activeTabLabel, setActiveTabLabel] = useState("Purchase");
+  const [activeTabLabel, setActiveTabLabel] = useState("Purchases");
 
   return (
     <div>
@@ -21,14 +21,14 @@ export default function CoretimeSalesHistorySection() {
           }}
           tabs={[
             {
-              label: "Purchase",
+              label: "Purchases",
               activeCount: purchaseCount,
-              content: <SalesHistoryPurchase />,
+              content: <SalesHistoryPurchases />,
             },
             {
-              label: "Renewal",
+              label: "Renewals",
               activeCount: renewalCount,
-              content: <SalesHistoryRenewal />,
+              content: <SalesHistoryRenewals />,
             },
           ]}
         />
