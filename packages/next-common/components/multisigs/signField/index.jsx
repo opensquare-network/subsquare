@@ -55,14 +55,14 @@ export default function MultisigSignField({ multisig = {} }) {
     return { isSignatory, hasNotApproved, isApproving };
   }, [approvals, realAddress, signatories, state?.name]);
 
-  const isNeedSelfApprove = useMemo(() => {
+  const needMyApproval = useMemo(() => {
     const { isSignatory, hasNotApproved, isApproving } = commonCheck;
     if (!approvals || !signatories || !isApproving || !realAddress) {
       return false;
     }
 
-    const isNeedSign = approvals.length < threshold;
-    return isSignatory && hasNotApproved && isNeedSign;
+    const needSign = approvals.length < threshold;
+    return isSignatory && hasNotApproved && needSign;
   }, [approvals, realAddress, signatories, threshold, commonCheck]);
 
   const canBeCanceled = useMemo(() => {
@@ -113,7 +113,7 @@ export default function MultisigSignField({ multisig = {} }) {
     <NotApprovedTooltip isAccountMultisigPage={isAccountMultisigPage} />
   );
 
-  if (isNeedSelfApprove && isAccountMultisigPage) {
+  if (needMyApproval && isAccountMultisigPage) {
     content = (
       <SignerPopupWrapper>
         <SignApprove multisig={multisig} />
