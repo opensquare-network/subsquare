@@ -3,6 +3,7 @@ import { clearCookie, setCookie } from "next-common/utils/viewfuncs/cookies";
 import { createContext, useCallback, useContext, useState } from "react";
 import { fetchAndUpdateUser, logoutUser, useUserContext } from "../user";
 import { useLocalStorage } from "react-use";
+import { clearMyMultisigsData } from "next-common/store/reducers/multisigSlice";
 
 const ConnectedAccountContext = createContext(null);
 
@@ -34,6 +35,7 @@ export function ConnectedAccountProvider({
     await logoutUser(userContext);
     setConnectedAccount(null);
     clearCookie(CACHE_KEY.connectedAccount);
+    clearMyMultisigsData();
   }, [userContext]);
 
   const connect = useCallback(
