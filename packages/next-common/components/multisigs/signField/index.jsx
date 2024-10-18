@@ -9,10 +9,15 @@ import SignApprove from "./signApprove";
 import SignCancel from "./signCancel";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SignSubmit from "./signSubmit";
+import { useRouter } from "next/router";
 
-function ApprovedTooltip() {
+function ApprovedTooltip({ isAccountMultisigPage }) {
+  const content = `${
+    isAccountMultisigPage ? "You" : "This account"
+  } approved this multisig`;
+
   return (
-    <Tooltip content="You approved this multisig">
+    <Tooltip content={content}>
       <span className="inline-flex p-1.5">
         <SystemVoteAye className="w-4 h-4" />
       </span>
@@ -20,9 +25,13 @@ function ApprovedTooltip() {
   );
 }
 
-function NotApprovedTooltip() {
+function NotApprovedTooltip({ isAccountMultisigPage }) {
+  const content = `${
+    isAccountMultisigPage ? "You" : "This account"
+  }  didn't sign this multisig`;
+
   return (
-    <Tooltip content="You didn't sign this multisig">
+    <Tooltip content={content}>
       <span className="inline-flex p-1.5">
         <SystemVoteAbstain className="w-4 h-4" />
       </span>
@@ -35,6 +44,10 @@ export default function MultisigSignField({ multisig = {} }) {
   const pathname = usePathname();
   const profileAddress = useProfileAddress();
   const realAddress = useRealAddress();
+  const router = useRouter();
+  const routePath = router.asPath.split("?")[0];
+
+  const isAccountMultisigPage = routePath === "/account/multisigs";
 
   const commonCheck = useMemo(() => {
     const isSignatory = signatories?.includes(realAddress);
@@ -97,9 +110,13 @@ export default function MultisigSignField({ multisig = {} }) {
     return approvals?.some((item) => isSameAddress(item, realAddress));
   }, [approvals, pathname, profileAddress, realAddress]);
 
-  let content = isApproved ? <ApprovedTooltip /> : <NotApprovedTooltip />;
+  let content = isApproved ? (
+    <ApprovedTooltip isAccountMultisigPage={isAccountMultisigPage} />
+  ) : (
+    <NotApprovedTooltip isAccountMultisigPage={isAccountMultisigPage} />
+  );
 
-  if (isNeedSelfApprove) {
+  if (isNeedSelfApprove && isAccountMultisigPage) {
     content = (
       <SignerPopupWrapper>
         <SignApprove multisig={multisig} />
@@ -108,7 +125,7 @@ export default function MultisigSignField({ multisig = {} }) {
   }
 
   // SignCancel by depositor
-  if (isCanbeCanceled) {
+  if (isCanbeCanceled && isAccountMultisigPage) {
     content = (
       <SignerPopupWrapper>
         <SignCancel multisig={multisig} />
@@ -117,7 +134,7 @@ export default function MultisigSignField({ multisig = {} }) {
   }
 
   // Sign & Submit
-  if (isNeedFinalApproval || isReadyForSubmission) {
+  if ((isNeedFinalApproval || isReadyForSubmission) && isAccountMultisigPage) {
     content = (
       <SignerPopupWrapper>
         <SignSubmit multisig={multisig} />
