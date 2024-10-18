@@ -4,6 +4,8 @@ export const GET_CORETIME_CURRENT_SALE = gql`
   query MyQuery {
     coretimeCurrentSale {
       id
+      purchaseCount
+      renewalCount
     }
   }
 `;

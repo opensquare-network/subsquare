@@ -4,8 +4,10 @@ import { TitleContainer } from "../../styled/containers/titleContainer";
 import SalesHistoryPurchase from "./purchase";
 import SalesHistoryRenewal from "./renewal";
 import { useState } from "react";
+import { usePageProps } from "next-common/context/page";
 
 export default function CoretimeSalesHistorySection() {
+  const { purchaseCount, renewalCount } = usePageProps();
   const [activeTabLabel, setActiveTabLabel] = useState("Purchase");
 
   return (
@@ -20,10 +22,12 @@ export default function CoretimeSalesHistorySection() {
           tabs={[
             {
               label: "Purchase",
+              activeCount: purchaseCount,
               content: <SalesHistoryPurchase />,
             },
             {
               label: "Renewal",
+              activeCount: renewalCount,
               content: <SalesHistoryRenewal />,
             },
           ]}

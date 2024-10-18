@@ -49,6 +49,8 @@ export const getServerSideProps = withCommonProps(async () => {
   return {
     props: {
       id: data?.coretimeCurrentSale?.id,
+      purchaseCount: data?.coretimeCurrentSale?.purchaseCount,
+      renewalCount: data?.coretimeCurrentSale?.renewalCount,
     },
   };
 });
