@@ -5,7 +5,7 @@ import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
 import { useMountedState } from "react-use";
 import IdentityOrAddr from "../IdentityOrAddr";
-import PrimaryButton from "next-common/lib/button/primary";
+import SplitCommentButton from "../splitCommentButton";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useChain } from "../../context/chain";
 import { noop } from "lodash-es";
@@ -14,6 +14,7 @@ import { usePost } from "next-common/context/post";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import Tooltip from "../tooltip";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -170,14 +171,15 @@ function CommentEditor(
             Cancel
           </SecondaryButton>
         )}
-        <PrimaryButton
-          loading={loading}
-          onClick={isEdit ? editComment : createComment}
-          disabled={isEmpty}
-          title={isEmpty ? "cannot submit empty content" : ""}
-        >
-          {isEdit ? "Update" : isReply ? "Reply" : "Comment"}
-        </PrimaryButton>
+        <Tooltip content={isEmpty ? "Cannot submit empty content" : ""}>
+          <SplitCommentButton
+            action={isEdit ? "Update" : isReply ? "Reply" : "Comment"}
+            loading={loading}
+            disabled={isEmpty}
+            onClickComment={isEdit ? editComment : createComment}
+            onClickCommentAsProxy={isEdit ? editComment : createComment}
+          />
+        </Tooltip>
       </ButtonWrapper>
     </Wrapper>
   );
