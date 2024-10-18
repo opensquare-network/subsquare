@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.3.2
+
+date: 2024-10-17
+
+- [Big] Refactor to support child scope redux for supporting child chain space under the parent one. We plan to support
+  coretime/assethub/people chain under polkadot deployment.
+- [Medium] Support switch between connected address and proxied address when signing extrinsics.
+- [Medium] Add filter on profile votes page and refactor the comments filter component.
+- [Medium] Support signing/cancelling a multisig, but we hide these features temporarily. They will be released in next
+  version.
+- Support create a referenda to proposing a curator on bounty detail page.
+- Support paseo testnet.
+- Fix the convicted value on votes popup.
+- Separate solo chains and test networks on menu.
+- Upgrade dependencies.
+- Fix styles.
+
 ### 4.3.1
 
 date: 2024-10-09
