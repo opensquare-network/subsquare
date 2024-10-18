@@ -9,12 +9,17 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
-import { useMultisigContext } from "../multisigContext";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useWeight from "next-common/utils/hooks/common/useWeight";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
-import { sortSignatories } from "../common";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  sortSignatories,
+  fetchMultisigList10Times,
+  fetchMultisigsCount10Times,
+} from "../common";
+import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
+import { useChain } from "next-common/context/chain";
 
 const defaultSectionName = "system";
 const defaultMethodName = "setCode";
@@ -28,7 +33,6 @@ export function SignSubmitInnerPopup({
   const api = useContextApi();
   const address = useRealAddress();
   const isLoading = !api;
-  const { setIsNeedReload, setIsRefetchCount } = useMultisigContext();
   const { threshold, signatories, when: maybeTimepoint } = multisig;
   const [encodedCall, setEncodedCall] = useState(null);
   const [isSubmitBtnLoading, setIsSubmitBtnLoading] = useState(false);
@@ -36,6 +40,9 @@ export function SignSubmitInnerPopup({
   const { weight: maxWeight } = useWeight(call);
   const isSubmitBtnDisabled = !call || !maxWeight;
   const dispatch = useDispatch();
+  const myMultisigs = useSelector(myMultisigsSelector);
+  const { page = 1 } = myMultisigs || {};
+  const chain = useChain();
 
   const setValue = useCallback(
     ({ isValid, data }) => {
@@ -85,9 +92,13 @@ export function SignSubmitInnerPopup({
 
   const onFinalized = () => {
     toggleDisabled(false);
-    setIsNeedReload(true);
-    setIsRefetchCount(true);
     dispatch(newSuccessToast("Multisig status will be updated in seconds"));
+    fetchMultisigList10Times(dispatch, chain, address, page).then(() => {
+      // updated 10 time, do nothing
+    });
+    fetchMultisigsCount10Times(dispatch, chain, address).then(() => {
+      // updated 10 time, do nothing
+    });
   };
 
   return (
