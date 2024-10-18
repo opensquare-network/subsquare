@@ -53,7 +53,7 @@ export default function MultisigSignField({ multisig = {} }) {
 
     const isNeedSign = approvals.length < threshold;
     return isSignatory && hasNotApproved && isNeedSign;
-  }, [approvals, realAddress, signatories, threshold, state?.name]);
+  }, [approvals, realAddress, signatories, threshold, commonCheck]);
 
   const isCanbeCanceled = useMemo(() => {
     const { isSignatory, isApproving } = commonCheck;
@@ -63,7 +63,7 @@ export default function MultisigSignField({ multisig = {} }) {
 
     const isDepositor = depositor === realAddress;
     return isSignatory && isDepositor;
-  }, [approvals, realAddress, signatories, state?.name, depositor]);
+  }, [approvals, realAddress, signatories, depositor, commonCheck]);
 
   // call as_multi (Sign & Submit)
   const isNeedFinalApproval = useMemo(() => {
@@ -73,7 +73,7 @@ export default function MultisigSignField({ multisig = {} }) {
     }
 
     return isSignatory && hasNotApproved && approvals.length === threshold - 1;
-  }, [approvals, realAddress, signatories, state?.name, threshold]);
+  }, [approvals, realAddress, signatories, threshold, commonCheck]);
 
   // call as_multi (Submit)
   const isReadyForSubmission = useMemo(() => {
@@ -86,7 +86,7 @@ export default function MultisigSignField({ multisig = {} }) {
       isSignatory && hasNotApproved && approvals.length === threshold;
 
     return isAllApproved;
-  }, [approvals, realAddress, signatories, state?.name, threshold]);
+  }, [approvals, realAddress, signatories, threshold, commonCheck]);
 
   const isApproved = useMemo(() => {
     if (pathname.startsWith("/user/")) {
