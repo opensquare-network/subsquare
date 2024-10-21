@@ -85,6 +85,7 @@ export function useSendTransaction() {
       onInBlock = noop,
       onSubmitted = noop,
       onFinalized = noop,
+      onCancelled = noop,
     }) => {
       const noWaitForFinalized = isEmptyFunc(onFinalized);
       const totalSteps = noWaitForFinalized ? 2 : 3;
@@ -131,6 +132,7 @@ export function useSendTransaction() {
         dispatch(removeToast(toastId));
         if (e.message === "Cancelled") {
           dispatch(newWarningToast(e.message));
+          onCancelled();
         } else {
           dispatch(newErrorToast(e.message));
         }
