@@ -11,7 +11,6 @@ import {
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { ListCard } from "next-common/components/overview/styled";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
-import { useMultisigContext } from "./multisigContext";
 
 export default function MultisigsList() {
   const { width } = useWindowSize();
@@ -25,7 +24,6 @@ export default function MultisigsList() {
     total,
     pageSize,
   );
-  const { isNeedReload, setIsNeedReload } = useMultisigContext();
 
   const fetchMyMultisigsData = useCallback(() => {
     if (realAddress) {
@@ -36,13 +34,6 @@ export default function MultisigsList() {
   useEffect(() => {
     fetchMyMultisigsData();
   }, [fetchMyMultisigsData]);
-
-  useEffect(() => {
-    if (isNeedReload) {
-      fetchMyMultisigsData();
-      setIsNeedReload(false);
-    }
-  }, [isNeedReload, setIsNeedReload, fetchMyMultisigsData]);
 
   return (
     <ListCard>
