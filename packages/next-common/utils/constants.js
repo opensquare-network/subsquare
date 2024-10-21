@@ -32,6 +32,7 @@ import shibuya from "next-common/utils/consts/settings/shibuya";
 // import astar from "next-common/utils/consts/settings/astar";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
+import ajuna from "./consts/settings/ajuna";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -72,6 +73,7 @@ export const nodes = [
   vara,
   zkverifyTestnet,
   paseo,
+  ajuna,
   ...optionalNodes,
 ];
 
