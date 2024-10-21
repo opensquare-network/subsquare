@@ -21,14 +21,14 @@ export default function CoretimeSalesHistorySection() {
           }}
           tabs={[
             {
-              label: "Purchases",
-              activeCount: purchaseCount,
-              content: <SalesHistoryPurchases />,
-            },
-            {
               label: "Renewals",
               activeCount: renewalCount,
               content: <SalesHistoryRenewals />,
+            },
+            {
+              label: "Purchases",
+              activeCount: purchaseCount,
+              content: <SalesHistoryPurchases />,
             },
           ]}
         />
