@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { MapDataList } from "next-common/components/dataList";
 import Duration from "next-common/components/duration";
+import ExplorerLink from "next-common/components/links/explorerLink";
 import Pagination from "next-common/components/pagination";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -30,17 +31,6 @@ export default function SalesHistoryPurchases() {
 
   const columns = [
     {
-      name: "Extrinsic ID",
-      className: "w-40",
-      render(data) {
-        return (
-          <div>
-            {data?.indexer?.blockHeight}-{data?.indexer?.extrinsicIndex}
-          </div>
-        );
-      },
-    },
-    {
       name: "Core",
       className: "w-[120px]",
       render(data) {
@@ -49,7 +39,7 @@ export default function SalesHistoryPurchases() {
     },
     {
       name: "Purchased By",
-      className: "w-60",
+      className: "w-80",
       render(data) {
         return (
           <div>
@@ -58,7 +48,6 @@ export default function SalesHistoryPurchases() {
         );
       },
     },
-    // TODO: coretime, to the browser
     {
       name: (
         <button
@@ -70,24 +59,25 @@ export default function SalesHistoryPurchases() {
           {isTime ? "Time" : "Age"}
         </button>
       ),
-      className: "w-40",
       render(data) {
         const time = data?.indexer?.blockTime;
 
         return (
-          <div className="text-textTertiary">
-            {isTime ? (
-              dayjs(time).format("YYYY-MM-DD HH:mm:ss")
-            ) : (
-              <Duration time={time} />
-            )}
-          </div>
+          <ExplorerLink indexer={data?.indexer}>
+            <div className="text-textTertiary hover:underline">
+              {isTime ? (
+                dayjs(time).format("YYYY-MM-DD HH:mm:ss")
+              ) : (
+                <Duration time={time} />
+              )}
+            </div>
+          </ExplorerLink>
         );
       },
     },
     {
       name: "Price",
-      className: "text-right",
+      className: "text-right w-40",
       render(data) {
         return (
           <div>

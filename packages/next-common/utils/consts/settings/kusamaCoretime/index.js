@@ -32,6 +32,11 @@ const kusamaCoretime = {
       url: "wss://coretime-kusama-rpc.dwellir.com",
     },
   ],
+  integrations: {
+    subscan: {
+      domain: "coretime-kusama",
+    },
+  },
 };
 
 export default kusamaCoretime;

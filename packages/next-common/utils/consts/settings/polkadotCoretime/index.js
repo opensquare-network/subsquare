@@ -16,6 +16,11 @@ const polkadotCoretime = {
       url: "wss://coretime-polkadot.dotters.network",
     },
   ],
+  integrations: {
+    subscan: {
+      domain: "coretime-polkadot",
+    },
+  },
 };
 
 export default polkadotCoretime;
