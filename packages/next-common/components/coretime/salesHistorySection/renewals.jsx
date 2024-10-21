@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { MapDataList } from "next-common/components/dataList";
 import Duration from "next-common/components/duration";
+import ExplorerLink from "next-common/components/links/explorerLink";
 import Pagination from "next-common/components/pagination";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -54,7 +55,6 @@ export default function SalesHistoryRenewals() {
         );
       },
     },
-    // TODO: coretime, to the browser
     {
       name: (
         <button
@@ -71,13 +71,15 @@ export default function SalesHistoryRenewals() {
         const time = data?.indexer?.blockTime;
 
         return (
-          <div className="text-textTertiary">
-            {isTime ? (
-              dayjs(time).format("YYYY-MM-DD HH:mm:ss")
-            ) : (
-              <Duration time={time} />
-            )}
-          </div>
+          <ExplorerLink indexer={data?.indexer}>
+            <div className="text-textTertiary hover:underline">
+              {isTime ? (
+                dayjs(time).format("YYYY-MM-DD HH:mm:ss")
+              ) : (
+                <Duration time={time} />
+              )}
+            </div>
+          </ExplorerLink>
         );
       },
     },
