@@ -24,7 +24,7 @@ const getNeedApprovalCount = (multisigs, address) => {
   return needApprovalItems?.length || 0;
 };
 
-function ManageLink() {
+function ManageLink({ manageContent }) {
   const pathname = usePathname();
   if (pathname.startsWith("/account/multisigs")) {
     return null;
@@ -32,7 +32,7 @@ function ManageLink() {
 
   return (
     <>
-      &nbsp;Manage&nbsp;
+      &nbsp;Manage&nbsp;{manageContent}&nbsp;
       <Link className="underline" href={"/account/multisigs"}>
         here
       </Link>
@@ -80,7 +80,7 @@ function PromptContent() {
         You have {myMultisigsCount} active {transactionContent}, &nbsp;
         {needApprovalCount} of &nbsp;
         {manageContent} need your approval.
-        <ManageLink />
+        <ManageLink manageContent={manageContent} />
       </Prompt>
     );
   }, [myMultisigsCount, needApprovalCount, settings]);
