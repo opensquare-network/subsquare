@@ -21,7 +21,7 @@ import { OffChainArticleActionsProvider } from "next-common/noSima/context/artic
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { CuratorProvider } from "next-common/context/treasury/bounties";
-import useBountyCuratorData from "next-common/hooks/treasury/bounty/useBountyCuratorData";
+import { useBountyStatus } from "next-common/components/treasury/bounty/useBountyStatus";
 import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { gov2TracksApi } from "next-common/services/url";
@@ -36,13 +36,25 @@ const Timeline = dynamicClientOnly(() =>
   import("next-common/components/timeline"),
 );
 
+function useBountyCurator(bountyIndex) {
+  const status = useBountyStatus(bountyIndex);
+  if (status?.isActive) {
+    return status.asActive.curator.toString();
+  }
+  if (status?.isPendingPayout) {
+    return status.asPendingPayout.curator.toString();
+  }
+  return null;
+}
+
 function BountyContent() {
   const { childBounties } = usePageProps();
   const detail = usePost();
+  const bountyIndex = detail?.bountyIndex;
 
-  useSubscribePostDetail(detail?.bountyIndex);
+  useSubscribePostDetail(bountyIndex);
 
-  const curator = useBountyCuratorData(detail?.onchainData);
+  const curator = useBountyCurator(bountyIndex);
   const curatorParams = useCuratorMultisigAddress(curator);
   const timelineData = useBountyTimelineData(detail?.onchainData);
   const isTimelineCompact = useIsTimelineCompact();
