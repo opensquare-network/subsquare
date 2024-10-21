@@ -65,3 +65,8 @@ export const fetchMyMultisigsCount = (chain, address) => async (dispatch) => {
   const count = multisigs?.total || 0;
   dispatch(setMyMultisigsCount(count));
 };
+
+export const clearMyMultisigsData = () => async (dispatch) => {
+  dispatch(setMyMultisigs(null));
+  dispatch(setMyMultisigsCount(null));
+};
