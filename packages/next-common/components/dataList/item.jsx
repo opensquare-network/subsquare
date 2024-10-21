@@ -3,6 +3,7 @@ import { cn } from "next-common/utils";
 import Descriptions from "../Descriptions";
 import { last } from "lodash-es";
 import { isNil } from "lodash-es";
+import { useNavCollapsed } from "next-common/context/nav";
 
 export default function DataListItem({
   columns,
@@ -12,6 +13,7 @@ export default function DataListItem({
   highlighted,
 }) {
   const { onClick } = row ?? {};
+  const [navCollapsed] = useNavCollapsed();
 
   return (
     <div
@@ -20,7 +22,7 @@ export default function DataListItem({
         "datalist-item group/datalist-item",
         "w-full",
         "flex items-center py-4",
-        "max-sm:block",
+        navCollapsed ? "max-sm:block" : "max-md:block",
         onClick && "cursor-pointer",
         "relative",
         highlighted &&
@@ -38,20 +40,27 @@ export default function DataListItem({
         row={row}
         columnClassNames={columnClassNames}
         columnStyles={columnStyles}
+        navCollapsed={navCollapsed}
       />
 
       <MobileContent
         row={row}
         columns={columns}
         columnClassNames={columnClassNames}
+        navCollapsed={navCollapsed}
       />
     </div>
   );
 }
 
-function DesktopContent({ row, columnClassNames, columnStyles }) {
+function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
   return (
-    <div className="datalist-desktop-item max-sm:hidden w-full flex items-center">
+    <div
+      className={cn(
+        "datalist-desktop-item w-full flex items-center",
+        navCollapsed ? "max-sm:hidden" : "max-md:hidden",
+      )}
+    >
       {row?.map((item, idx) => (
         <div
           key={idx}
@@ -65,7 +74,7 @@ function DesktopContent({ row, columnClassNames, columnStyles }) {
   );
 }
 
-function MobileContent({ row = [], columns }) {
+function MobileContent({ row = [], columns, navCollapsed }) {
   const items = columns.map((col, idx) => {
     return {
       name: col.name,
@@ -102,7 +111,12 @@ function MobileContent({ row = [], columns }) {
     .filter(Boolean);
 
   return (
-    <div className="datalist-mobile-item sm:hidden sm:py-4 space-y-3">
+    <div
+      className={cn(
+        "datalist-mobile-item space-y-3",
+        navCollapsed ? "sm:hidden sm:py-4" : "md:hidden md:py-4",
+      )}
+    >
       <div>
         <div className="flex grow items-center justify-between">
           {first.value}
