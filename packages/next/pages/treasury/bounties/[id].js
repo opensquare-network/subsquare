@@ -38,9 +38,6 @@ const Timeline = dynamicClientOnly(() =>
 
 function useBountyCurator(bountyIndex) {
   const status = useBountyStatus(bountyIndex);
-  if (status?.isCuratorProposed) {
-    return status.asCuratorProposed.curator.toString();
-  }
   if (status?.isActive) {
     return status.asActive.curator.toString();
   }
