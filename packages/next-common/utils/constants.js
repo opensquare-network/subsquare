@@ -43,6 +43,7 @@ export const nodes = [
   kusama,
   kusamaAssetHub,
   acala,
+  ajuna,
   altair,
   // astar,
   basilisk,
@@ -73,7 +74,6 @@ export const nodes = [
   vara,
   zkverifyTestnet,
   paseo,
-  ajuna,
   ...optionalNodes,
 ];
 

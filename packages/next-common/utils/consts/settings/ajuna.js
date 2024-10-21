@@ -102,8 +102,6 @@ const ajuna = {
   navPreferDark: true,
   links,
   group: MenuGroups.PolkadotAndParachains,
-  hasMultisig: true,
-  multisigApiPrefix: "ajuna",
   postLabels: defaultPostLabels,
   description: "Creators of the Polkadot Unity SDK.",
   modules: mergeChainModules({
