@@ -40,7 +40,7 @@ function ManageLink({ manageContent }) {
   );
 }
 
-function PromptContent() {
+export default function MultisigManagePrompt() {
   const dispatch = useDispatch();
   const chain = useChain();
   const realAddress = useRealAddress();
@@ -86,8 +86,4 @@ function PromptContent() {
   }, [myMultisigsCount, needApprovalCount, settings]);
 
   return promptContent;
-}
-
-export default function MultisigManagePrompt() {
-  return <PromptContent />;
 }
