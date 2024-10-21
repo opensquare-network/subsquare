@@ -1,4 +1,5 @@
 import Chains from "../chains";
+import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import dynamic from "next/dynamic";
 import { defaultPostLabels } from "./common";
@@ -87,7 +88,7 @@ const themeVars = {
 
 const ajuna = {
   value: Chains.ajuna,
-  name: "Ajuna Network",
+  name: capitalize(Chains.ajuna),
   identity: Chains.ajuna,
   symbol: "AJUN",
   decimals: 12,
