@@ -14,7 +14,13 @@ function MultisigApprovingGuard({ state, children }) {
 }
 
 export default function SignatoryAction({ multisig = {} }) {
-  const { approvals = [], state, signatories = [], threshold, depositor } = multisig || {};
+  const {
+    approvals = [],
+    state,
+    signatories = [],
+    threshold,
+    depositor,
+  } = multisig || {};
   const realAddress = useRealAddress();
   const isSignatory = signatories.includes(realAddress);
   const isApproved = approvals.some((item) => isSameAddress(item, realAddress));
@@ -28,12 +34,14 @@ export default function SignatoryAction({ multisig = {} }) {
   return (
     <MultisigApprovingGuard state={state?.name}>
       <SignerPopupWrapper>
-        {
-          isDepositor ? <SignCancel multisig={multisig} /> :
-            isDispatchable ? <SignSubmit multisig={multisig} /> :
-              <SignApprove multisig={multisig} />
-        }
+        {isDepositor ? (
+          <SignCancel multisig={multisig} />
+        ) : isDispatchable ? (
+          <SignSubmit multisig={multisig} />
+        ) : (
+          <SignApprove multisig={multisig} />
+        )}
       </SignerPopupWrapper>
     </MultisigApprovingGuard>
-  )
+  );
 }
