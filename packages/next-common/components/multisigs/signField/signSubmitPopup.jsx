@@ -1,6 +1,4 @@
-import { useCallback, useState } from "react";
-import Extrinsic from "next-common/components/extrinsic";
-import PopupLabel from "next-common/components/popup/label";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import Loading from "next-common/components/loading";
 import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
@@ -20,7 +18,8 @@ import {
 } from "../common";
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
 import { useChain } from "next-common/context/chain";
-import useCallInfoFromHex from "./useCallInfoFromHex";
+import SignSubmitPopupContent from "./signSubmitPopupContent";
+import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 
 export function SignSubmitInnerPopup({
   onClose,
@@ -31,33 +30,43 @@ export function SignSubmitInnerPopup({
   const api = useContextApi();
   const address = useRealAddress();
   const isLoading = !api;
-  const { threshold, signatories, when: maybeTimepoint } = multisig;
-  const [encodedCall, setEncodedCall] = useState(null);
+  const { threshold, signatories, when: maybeTimepoint, callHex } = multisig;
   const [isSubmitBtnLoading, setIsSubmitBtnLoading] = useState(false);
   const [call, setCall] = useState(null);
-  const { weight: maxWeight } = useWeight(call);
-  const isSubmitBtnDisabled = !call || !maxWeight;
   const dispatch = useDispatch();
   const myMultisigs = useSelector(myMultisigsSelector);
   const { page = 1 } = myMultisigs || {};
   const chain = useChain();
-  const { tableViewData } = useCallInfoFromHex(multisig);
-  const { section = "system", method = "setCode" } = tableViewData;
+  const { call: rawCall, isLoading: isLoadingRawCall } = useCallFromHex(
+    callHex,
+    maybeTimepoint?.height,
+  );
+  const { weight: maxWeight } = useWeight(call);
 
-  const defaultSectionName = section;
-  const defaultMethodName = method;
+  const isSubmitBtnDisabled = useMemo(() => {
+    if (callHex) {
+      return isLoadingRawCall || !maxWeight;
+    }
+
+    return !call || !maxWeight;
+  }, [callHex, call, maxWeight, isLoadingRawCall]);
+
+  useEffect(() => {
+    if (isLoadingRawCall) {
+      return;
+    }
+    setCall(rawCall);
+  }, [rawCall, isLoadingRawCall]);
 
   const setValue = useCallback(
     ({ isValid, data }) => {
       if (!api || !isValid) {
         setCall(null);
-        setEncodedCall(null);
         return;
       }
 
       if (data) {
-        setCall(data);
-        setEncodedCall(data.method);
+        setCall(data.method);
       }
     },
     [api],
@@ -66,7 +75,7 @@ export function SignSubmitInnerPopup({
   const getTxFunc = useCallback(() => {
     toggleDisabled(true);
     setIsSubmitBtnLoading(true);
-    if (!api || !address || !encodedCall || !maxWeight) {
+    if (!api || !address || !call || !maxWeight) {
       return;
     }
 
@@ -79,7 +88,7 @@ export function SignSubmitInnerPopup({
       threshold,
       sortSignatories(otherSignatories),
       encodedTimepoint,
-      encodedCall,
+      call,
       maxWeight,
     );
   }, [
@@ -88,7 +97,7 @@ export function SignSubmitInnerPopup({
     threshold,
     signatories,
     maybeTimepoint,
-    encodedCall,
+    call,
     maxWeight,
     toggleDisabled,
   ]);
@@ -117,14 +126,7 @@ export function SignSubmitInnerPopup({
           <Loading size={20} />
         </div>
       ) : (
-        <div>
-          <PopupLabel text="Propose" />
-          <Extrinsic
-            defaultSectionName={defaultSectionName}
-            defaultMethodName={defaultMethodName}
-            setValue={setValue}
-          />
-        </div>
+        <SignSubmitPopupContent multisig={multisig} setValue={setValue} />
       )}
       <TxSubmissionButton
         disabled={isSubmitBtnDisabled}
