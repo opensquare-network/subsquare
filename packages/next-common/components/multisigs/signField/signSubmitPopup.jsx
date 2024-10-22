@@ -52,11 +52,10 @@ export function SignSubmitInnerPopup({
   }, [callHex, call, maxWeight, isLoadingRawCall]);
 
   useEffect(() => {
-    if (isLoadingRawCall) {
-      return;
+    if (callHex && !isLoadingRawCall) {
+      setCall(rawCall);
     }
-    setCall(rawCall);
-  }, [rawCall, isLoadingRawCall]);
+  }, [callHex, rawCall, isLoadingRawCall]);
 
   const setValue = useCallback(
     ({ isValid, data }) => {
