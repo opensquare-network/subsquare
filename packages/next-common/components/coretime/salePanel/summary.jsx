@@ -33,13 +33,17 @@ export default function CoretimeSaleSummary({ data }) {
         </SummaryItem>
 
         <SummaryItem title="Available Cores">
-          <div>
-            {data?.info?.coresSold}
-            <span className="text-textTertiary">
-              {" "}
-              / {data?.info?.coresOffered}
-            </span>
-          </div>
+          {data?.info ? (
+            <div>
+              {data?.info?.coresSold}
+              <span className="text-textTertiary">
+                {" "}
+                / {data?.info?.coresOffered}
+              </span>
+            </div>
+          ) : (
+            <div className="text-textTertiary">-</div>
+          )}
         </SummaryItem>
 
         <SummaryItem title="Current Phase">

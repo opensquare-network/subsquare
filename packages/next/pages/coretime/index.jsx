@@ -8,9 +8,13 @@ import ApiProvider from "next-common/context/api";
 import { Provider } from "react-redux";
 import { commonReducers } from "next-common/store/reducers";
 import { coretimeClient } from "next-common/hooks/apollo";
-import { GET_CORETIME_CURRENT_SALE } from "next-common/services/gql/coretime";
+import {
+  GET_CORETIME_CURRENT_SALE,
+  GET_CORETIME_SALE,
+} from "next-common/services/gql/coretime";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
+import { isNil } from "lodash-es";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -62,22 +66,49 @@ export const getServerSideProps = async (ctx) => {
   }
 
   return withCommonProps(async () => {
-    let data;
+    let props = {};
+
     try {
-      const result = await coretimeClient?.query?.({
-        query: GET_CORETIME_CURRENT_SALE,
-      });
-      data = result?.data;
+      const {
+        data: { coretimeCurrentSale = null },
+      } =
+        (await coretimeClient?.query?.({
+          query: GET_CORETIME_CURRENT_SALE,
+        })) || {};
+
+      const id = coretimeCurrentSale?.id || null;
+
+      props = {
+        id,
+        purchaseCount: coretimeCurrentSale?.purchaseCount || null,
+        renewalCount: coretimeCurrentSale?.renewalCount || null,
+      };
+
+      if (!isNil(id)) {
+        const {
+          data: { coretimeSale = null },
+        } =
+          (await coretimeClient?.query?.({
+            query: GET_CORETIME_SALE,
+            variables: {
+              id,
+            },
+          })) || {};
+
+        if (coretimeSale) {
+          props.coretimeSale = coretimeSale;
+        }
+      }
+
+      return {
+        props,
+      };
     } catch (_error) {
       /* empty */
     }
 
     return {
-      props: {
-        id: data?.coretimeCurrentSale?.id,
-        purchaseCount: data?.coretimeCurrentSale?.purchaseCount,
-        renewalCount: data?.coretimeCurrentSale?.renewalCount,
-      },
+      props,
     };
   })(ctx);
 };
