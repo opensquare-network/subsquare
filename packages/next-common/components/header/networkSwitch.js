@@ -5,9 +5,9 @@ import Loading from "../loading";
 import useWindowSize from "../../utils/hooks/useWindowSize";
 import ChainIcon from "./chainIcon";
 import { ArrowDown } from "@osn/icons/subsquare";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { useClickAway } from "react-use";
+import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 
 const NetworkOptions = dynamicClientOnly(() => import("./networkOptions"));
 
@@ -61,7 +61,7 @@ export default function NetworkSwitch({ activeNode }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
-  const nodesHeight = useSelector(chainOrScanHeightSelector);
+  const nodesHeight = useSelector(nodesHeightSelector);
 
   useClickAway(ref, () => setShow(false));
 

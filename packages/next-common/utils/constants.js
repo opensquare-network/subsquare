@@ -32,6 +32,7 @@ import shibuya from "next-common/utils/consts/settings/shibuya";
 // import astar from "next-common/utils/consts/settings/astar";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
+import ajuna from "./consts/settings/ajuna";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -42,6 +43,7 @@ export const nodes = [
   kusama,
   kusamaAssetHub,
   acala,
+  ajuna,
   altair,
   // astar,
   basilisk,
@@ -121,6 +123,7 @@ export const CACHE_KEY = {
     "ambassador-demotion-expire-remind-visible",
   extensionUpdateMetadata: "extensionUpdateMetadata",
   assetHubPromptVisible: "asset-hub-management-prompt-visible",
+  multisigPromptVisible: "multisig-management-prompt-visible",
 };
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;

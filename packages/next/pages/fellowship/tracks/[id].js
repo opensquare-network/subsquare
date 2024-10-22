@@ -16,6 +16,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function TrackPage({
   posts,
@@ -30,31 +31,33 @@ export default function TrackPage({
   );
 
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={`[${period.id}] Origin: ${period.origin}`}
-      description={period.description}
-      summary={
-        <Gov2TrackSummary
-          summary={trackReferendaSummary}
-          period={period}
-          titleExtra={`[${period.id}]`}
+    <CollectivesProvider section="fellowship">
+      <ListLayout
+        seoInfo={seoInfo}
+        title={`[${period.id}] Origin: ${period.origin}`}
+        description={period.description}
+        summary={
+          <Gov2TrackSummary
+            summary={trackReferendaSummary}
+            period={period}
+            titleExtra={`[${period.id}]`}
+          />
+        }
+      >
+        <PostList
+          title="List"
+          titleCount={posts.total}
+          titleExtra={<NewFellowshipProposalButton />}
+          category={businessCategory.fellowship}
+          items={items}
+          pagination={{
+            page: posts.page,
+            pageSize: posts.pageSize,
+            total: posts.total,
+          }}
         />
-      }
-    >
-      <PostList
-        title="List"
-        titleCount={posts.total}
-        titleExtra={<NewFellowshipProposalButton />}
-        category={businessCategory.fellowship}
-        items={items}
-        pagination={{
-          page: posts.page,
-          pageSize: posts.pageSize,
-          total: posts.total,
-        }}
-      />
-    </ListLayout>
+      </ListLayout>
+    </CollectivesProvider>
   );
 }
 
