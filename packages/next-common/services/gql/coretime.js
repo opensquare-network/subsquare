@@ -10,6 +10,17 @@ export const GET_CORETIME_CURRENT_SALE = gql`
   }
 `;
 
+export const GET_CORETIME_SALE = gql`
+  query MyQuery($id: Int!) {
+    coretimeSale(id: $id) {
+      id
+      purchaseRevenue
+      renewalRevenue
+      totalRevenue
+    }
+  }
+`;
+
 export const GET_CORETIME_SALE_PURCHASES = gql`
   query MyQuery($limit: Int!, $offset: Int!, $saleId: Int!) {
     coretimeSalePurchases(limit: $limit, offset: $offset, saleId: $saleId) {
