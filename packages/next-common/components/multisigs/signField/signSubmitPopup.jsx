@@ -20,9 +20,7 @@ import {
 } from "../common";
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
 import { useChain } from "next-common/context/chain";
-
-const defaultSectionName = "system";
-const defaultMethodName = "setCode";
+import useCallInfoFromHex from "./useCallInfoFromHex";
 
 export function SignSubmitInnerPopup({
   onClose,
@@ -43,6 +41,11 @@ export function SignSubmitInnerPopup({
   const myMultisigs = useSelector(myMultisigsSelector);
   const { page = 1 } = myMultisigs || {};
   const chain = useChain();
+  const { tableViewData } = useCallInfoFromHex(multisig);
+  const { section = "system", method = "setCode" } = tableViewData;
+
+  const defaultSectionName = section;
+  const defaultMethodName = method;
 
   const setValue = useCallback(
     ({ isValid, data }) => {
