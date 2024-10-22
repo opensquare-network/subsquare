@@ -2,9 +2,10 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
+import { usePageProps } from "next-common/context/page";
 import { toPrecision } from "next-common/utils";
 
-function Item({ label, value }) {
+function Item({ label = "", value }) {
   return (
     <div className="flex items-center gap-x-1 text12Medium text-textTertiary">
       <div>{label}</div>
@@ -14,6 +15,7 @@ function Item({ label, value }) {
 }
 
 export default function CoretimeSaleSummary({ data }) {
+  const { renewalCount, purchaseCount } = usePageProps();
   const { decimals, symbol } = useChainSettings();
 
   return (
@@ -31,11 +33,17 @@ export default function CoretimeSaleSummary({ data }) {
         </SummaryItem>
 
         <SummaryItem title="Available Cores">
-          <div>52</div>
+          <div>
+            {data?.info?.coresSold}
+            <span className="text-textTertiary">
+              {" "}
+              / {data?.info?.coresOffered}
+            </span>
+          </div>
         </SummaryItem>
 
         <SummaryItem title="Current Phase">
-          <div>Interlude Phase</div>
+          <div>Interlude</div>
         </SummaryItem>
 
         <SummaryItem title="Sale Period">
@@ -79,22 +87,21 @@ export default function CoretimeSaleSummary({ data }) {
 
         <SummaryItem>
           <div className="space-y-1 text12Medium text-textTertiary">
-            <Item label="System Reserved" value={0} />
-            <Item label="Leased" value={0} />
-            <Item label="Renewal" value={4} />
+            <Item label="System Reserved" value="[0]" />
+            <Item label="Renewal" value={renewalCount} />
+            <Item label="Sale" value={purchaseCount} />
           </div>
         </SummaryItem>
 
         <SummaryItem>
           <div className="text12Medium">
-            <div>End in [time]</div>
+            <Item label="End in" value="[time]" />
           </div>
         </SummaryItem>
 
         <SummaryItem>
           <div className="space-y-1 text12Medium">
-            <div>Start Block: [block]</div>
-            <div>End Block: [block]</div>
+            <Item label="End At" value="[time]" />
           </div>
         </SummaryItem>
       </SummaryLayout>

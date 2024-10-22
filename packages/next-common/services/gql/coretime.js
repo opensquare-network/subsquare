@@ -17,6 +17,16 @@ export const GET_CORETIME_SALE = gql`
       purchaseRevenue
       renewalRevenue
       totalRevenue
+      info {
+        firstCore
+        price
+        coresSold
+        coresOffered
+        regionBegin
+        regionEnd
+        saleStart
+        selloutPrice
+      }
     }
   }
 `;
