@@ -15,10 +15,10 @@ import {
   sortSignatories,
   fetchMultisigList10Times,
   fetchMultisigsCount10Times,
-} from "../common";
+} from "../../common";
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
 import { useChain } from "next-common/context/chain";
-import SignSubmitPopupContent from "./signSubmitPopupContent";
+import PopupPropose from "./propose";
 import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 
 export function SignSubmitInnerPopup({
@@ -125,7 +125,7 @@ export function SignSubmitInnerPopup({
           <Loading size={20} />
         </div>
       ) : (
-        <SignSubmitPopupContent multisig={multisig} setValue={setValue} />
+        <PopupPropose multisig={multisig} setValue={setValue} />
       )}
       <TxSubmissionButton
         disabled={isSubmitBtnDisabled}

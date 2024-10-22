@@ -24,7 +24,7 @@ function ProposeExtrinsic({ setValue }) {
   );
 }
 
-export default function SignSubmitPopupContent({ multisig, setValue }) {
+export default function PopupPropose({ multisig, setValue }) {
   const { callHex, when } = multisig;
   return callHex ? (
     <ProposeTree callHex={callHex} when={when} />
