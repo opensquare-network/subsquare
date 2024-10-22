@@ -8,12 +8,7 @@ const defaultMethodName = "setCode";
 
 function ProposeTree({ callHex, when }) {
   const { call, isLoading } = useCallFromHex(callHex, when?.height);
-
-  return (
-    <div>
-      <CallTree call={call} isLoading={isLoading} />
-    </div>
-  );
+  return <CallTree call={call} isLoading={isLoading} />;
 }
 
 function ProposeExtrinsic({ setValue }) {
