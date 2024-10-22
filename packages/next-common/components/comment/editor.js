@@ -61,10 +61,14 @@ function CommentEditor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
-  const { createPostComment, createCommentReply, updateComment } =
-    useCommentActions();
+  const {
+    createPostComment,
+    createCommentReply,
+    updateComment,
+    createPostProxyComment,
+  } = useCommentActions();
 
-  const createComment = async () => {
+  const createComment = async (realAddress) => {
     if (!isMounted()) {
       return;
     }
@@ -75,6 +79,13 @@ function CommentEditor(
 
       if (comment) {
         result = await createCommentReply(post, comment, content, contentType);
+      } else if (realAddress) {
+        result = await createPostProxyComment(
+          realAddress,
+          post,
+          content,
+          contentType,
+        );
       } else {
         result = await createPostComment(post, content, contentType);
       }
@@ -177,7 +188,9 @@ function CommentEditor(
             loading={loading}
             disabled={isEmpty}
             onClickComment={isEdit ? editComment : createComment}
-            onClickCommentAsProxy={() => {}}
+            onClickCommentAsProxy={(realAddress) => {
+              createComment(realAddress);
+            }}
           />
         </Tooltip>
       </ButtonWrapper>
