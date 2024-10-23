@@ -4,11 +4,11 @@ import Divider from "../../styled/layout/divider";
 import CoretimeSaleSummary from "./summary";
 
 export default function CoretimeSalePanel() {
-  const { id, coretimeSale } = usePageProps();
+  const { coretimeSale } = usePageProps();
 
   return (
     <NeutralPanel className="p-6 text-textPrimary">
-      <h3 className="text16Bold">Coretime Sale #{id}</h3>
+      <h3 className="text16Bold">Coretime Sale #{coretimeSale.id}</h3>
       <Divider className="my-4" />
       <CoretimeSaleSummary data={coretimeSale} />
 
