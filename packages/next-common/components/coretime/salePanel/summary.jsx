@@ -2,7 +2,6 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { usePageProps } from "next-common/context/page";
 import { toPrecision } from "next-common/utils";
 
 function Item({ label = "", value }) {
@@ -15,7 +14,6 @@ function Item({ label = "", value }) {
 }
 
 export default function CoretimeSaleSummary({ data }) {
-  const { renewalCount, purchaseCount } = usePageProps();
   const { decimals, symbol } = useChainSettings();
 
   return (
@@ -92,8 +90,8 @@ export default function CoretimeSaleSummary({ data }) {
         <SummaryItem>
           <div className="space-y-1 text12Medium text-textTertiary">
             <Item label="System Reserved" value="[0]" />
-            <Item label="Renewal" value={renewalCount} />
-            <Item label="Sale" value={purchaseCount} />
+            <Item label="Renewal" value={data?.renewalCount} />
+            <Item label="Sale" value={data?.purchaseCount} />
           </div>
         </SummaryItem>
 
