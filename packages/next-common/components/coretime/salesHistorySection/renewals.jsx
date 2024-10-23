@@ -15,7 +15,7 @@ import { useState } from "react";
 
 export default function SalesHistoryRenewals() {
   const { decimals, symbol } = useChainSettings();
-  const { id } = usePageProps();
+  const { coretimeSale } = usePageProps();
   const [page, setPage] = useState(1);
   const [isTime, setIsTime] = useState(true);
 
@@ -23,7 +23,7 @@ export default function SalesHistoryRenewals() {
 
   const { data, loading } = useCoretimeQuery(GET_CORETIME_SALE_RENEWALS, {
     variables: {
-      saleId: id,
+      saleId: coretimeSale?.id,
       offset: (page - 1) * pageSize,
       limit: pageSize,
     },

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { usePageProps } from "next-common/context/page";
 
 export default function CoretimeSalesHistorySection() {
-  const { purchaseCount, renewalCount } = usePageProps();
+  const { coretimeSale } = usePageProps();
   const [activeTabLabel, setActiveTabLabel] = useState("Purchases");
 
   return (
@@ -22,12 +22,12 @@ export default function CoretimeSalesHistorySection() {
           tabs={[
             {
               label: "Renewals",
-              activeCount: renewalCount,
+              activeCount: coretimeSale?.renewalCount,
               content: <SalesHistoryRenewals />,
             },
             {
               label: "Purchases",
-              activeCount: purchaseCount,
+              activeCount: coretimeSale?.purchaseCount,
               content: <SalesHistoryPurchases />,
             },
           ]}
