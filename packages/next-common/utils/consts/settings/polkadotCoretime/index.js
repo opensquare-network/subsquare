@@ -1,11 +1,17 @@
+import dynamic from "next/dynamic";
 import Chains from "../../chains";
 import polkadot from "../polkadot";
+
+const ProjectIconPolkadotCoretime = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPolkadotCoretime"),
+);
 
 const polkadotCoretime = {
   ...polkadot,
   value: Chains.polkadotCoretime,
   description:
     "A revolutionary approach to accessing the right amount of blockspace for every stage of growth.",
+  avatar: ProjectIconPolkadotCoretime,
   endpoints: [
     {
       name: "Parity",
