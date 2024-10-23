@@ -3,11 +3,10 @@ import { PromptTypes } from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useMemo } from "react";
 import Link from "next/link";
-import { useChain } from "next-common/context/chain";
 import { myMultisigsCountSelector } from "next-common/store/reducers/multisigSlice";
 import { useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import getChainSettings from "next-common/utils/consts/settings";
+import { useChainSettings } from "next-common/context/chain";
 import { usePathname } from "next/navigation";
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
 import useSubscribeMyActiveMultisigs from "next-common/components/overview/accountInfo/hook/useSubscribeMyActiveMultisigs";
@@ -34,17 +33,15 @@ function ManageLink({ manageContent }) {
 }
 
 export default function MultisigManagePrompt() {
-  const chain = useChain();
   const realAddress = useRealAddress();
   const myMultisigsCount = useSelector(myMultisigsCountSelector) || 0;
   const myMultisigs = useSelector(myMultisigsSelector);
+  const chainSettings = useChainSettings();
   const { items: multisigs = [], total = 0 } = myMultisigs || {};
   const pathname = usePathname();
   const isAccountMultisigPage = pathname.startsWith("/account/multisigs");
 
   useSubscribeMyActiveMultisigs(isAccountMultisigPage);
-
-  const settings = useMemo(() => getChainSettings(chain), [chain]);
 
   const needApprovalCount = useMemo(() => {
     if (total === 0) {
@@ -55,7 +52,7 @@ export default function MultisigManagePrompt() {
   }, [multisigs, realAddress, total]);
 
   const promptContent = useMemo(() => {
-    if (!settings?.multisigApiPrefix || myMultisigsCount === 0) {
+    if (!chainSettings?.multisigApiPrefix || myMultisigsCount === 0) {
       return null;
     }
 
@@ -73,7 +70,12 @@ export default function MultisigManagePrompt() {
         {!isAccountMultisigPage && <ManageLink manageContent={manageContent} />}
       </Prompt>
     );
-  }, [myMultisigsCount, needApprovalCount, settings, isAccountMultisigPage]);
+  }, [
+    myMultisigsCount,
+    needApprovalCount,
+    chainSettings,
+    isAccountMultisigPage,
+  ]);
 
   return promptContent;
 }
