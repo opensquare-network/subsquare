@@ -72,7 +72,6 @@ export const getServerSideProps = async (ctx) => {
     const sale = await queryCoretimeCurrentSale();
     const configuration = await queryCoretimeConfiguration();
     const status = await queryCoretimeStatus();
-    // todo: query configuration and status
     return {
       props: {
         coretimeSale: sale,
