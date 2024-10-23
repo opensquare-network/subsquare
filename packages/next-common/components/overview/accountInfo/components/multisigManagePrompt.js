@@ -1,19 +1,19 @@
 import Prompt from "./prompt";
 import { PromptTypes } from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { useChain } from "next-common/context/chain";
-import {
-  fetchMyMultisigsCount,
-  fetchMyMultisigs,
-  myMultisigsCountSelector,
-} from "next-common/store/reducers/multisigSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { myMultisigsCountSelector } from "next-common/store/reducers/multisigSlice";
+import { useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import getChainSettings from "next-common/utils/consts/settings";
 import { usePathname } from "next/navigation";
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
+import {
+  useSubscribeMyMultisigs,
+  useSubscribeMyActiveMultisigsCount,
+} from "next-common/components/overview/accountInfo/hook/useSubscribeMyMultisigs";
 
 const getNeedApprovalCount = (multisigs, address) => {
   const needApprovalItems = multisigs?.filter((item) => {
@@ -37,7 +37,9 @@ function ManageLink({ manageContent }) {
 }
 
 export default function MultisigManagePrompt() {
-  const dispatch = useDispatch();
+  useSubscribeMyMultisigs();
+  useSubscribeMyActiveMultisigsCount();
+
   const chain = useChain();
   const realAddress = useRealAddress();
   const myMultisigsCount = useSelector(myMultisigsCountSelector) || 0;
@@ -56,16 +58,6 @@ export default function MultisigManagePrompt() {
 
     return getNeedApprovalCount(multisigs, realAddress);
   }, [multisigs, realAddress, total]);
-
-  useEffect(() => {
-    if (settings?.multisigApiPrefix && realAddress) {
-      dispatch(fetchMyMultisigsCount(chain, realAddress));
-
-      if (!isAccountMultisigPage) {
-        dispatch(fetchMyMultisigs(chain, realAddress));
-      }
-    }
-  }, [dispatch, chain, realAddress, settings, isAccountMultisigPage]);
 
   const promptContent = useMemo(() => {
     if (!settings?.multisigApiPrefix || myMultisigsCount === 0) {
