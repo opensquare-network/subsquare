@@ -1,27 +1,17 @@
 import { ArrowCircleLeft } from "@osn/icons/subsquare";
 import { usePageProps } from "next-common/context/page";
 import { getMainMenu } from "next-common/utils/consts/menu";
-import { createGlobalState } from "react-use";
 import NavMenuItem from "./item";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-
-export const useNavMenuView = createGlobalState({
-  view: "main",
-  menu: null,
-});
+import { useNavMenuType } from "next-common/context/nav";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export default function NavMenu({ collapsed }) {
-  const [navMenuView, setNavMenuView] = useNavMenuView();
+  const [navMenuType, setNavMenuType] = useNavMenuType();
   const { tracks, fellowshipTracks, summary, detail, ambassadorTracks } =
     usePageProps();
 
   const router = useRouter();
-  useEffect(() => {
-    if (router.pathname === "/") {
-      setNavMenuView({ view: "main" });
-    }
-  }, [router.pathname, setNavMenuView]);
 
   const mainMenu = getMainMenu({
     tracks,
@@ -32,19 +22,31 @@ export default function NavMenu({ collapsed }) {
   });
 
   let menu = [];
-  if (navMenuView.view === "main") {
+  if (navMenuType.type === NAV_MENU_TYPE.main) {
     menu = mainMenu;
-  } else if (navMenuView.view === "subspace") {
+  } else if (navMenuType.type === NAV_MENU_TYPE.subspace) {
     menu = [
       {
         name: "Back",
         icon: <ArrowCircleLeft />,
         onClick() {
-          setNavMenuView({ view: "main" });
+          router.push("/");
         },
       },
       { type: "divider" },
-      ...(navMenuView.menu || []),
+      ...(navMenuType.menu || []),
+    ];
+  } else if (navMenuType.type === NAV_MENU_TYPE.archived) {
+    menu = [
+      {
+        name: "Back",
+        icon: <ArrowCircleLeft />,
+        onClick() {
+          setNavMenuType({ type: NAV_MENU_TYPE.main, menu: null });
+        },
+      },
+      { type: "divider" },
+      ...(navMenuType.menu || []),
     ];
   }
 

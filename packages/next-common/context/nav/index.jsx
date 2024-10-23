@@ -1,19 +1,26 @@
-import { CACHE_KEY } from "next-common/utils/constants";
+import { find } from "lodash-es";
+import { CACHE_KEY, NAV_MENU_TYPE } from "next-common/utils/constants";
+import { getMainMenu } from "next-common/utils/consts/menu";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
-import { createContext, useContext } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
+import { useIsomorphicLayoutEffect } from "react-use";
 
 const NavCollapsedContext = createContext([]);
 const NavSubmenuVisibleContext = createContext([]);
+const NavMenuTypeContext = createContext([]);
 
 export default function NavProvider({
   navCollapsed,
   navSubmenuVisible = "{}",
+  pathname,
   children,
 }) {
   return (
     <NavCollapsedProvider value={navCollapsed}>
       <NavSubmenuVisibleProvider value={navSubmenuVisible}>
-        {children}
+        <NavMenuTypeProvider pathname={pathname}>
+          {children}
+        </NavMenuTypeProvider>
       </NavSubmenuVisibleProvider>
     </NavCollapsedProvider>
   );
@@ -61,5 +68,37 @@ function NavSubmenuVisibleProvider({ children, value }) {
     >
       {children}
     </NavSubmenuVisibleContext.Provider>
+  );
+}
+
+const menu = getMainMenu();
+export function useNavMenuType() {
+  return useContext(NavMenuTypeContext);
+}
+function NavMenuTypeProvider({ pathname, children }) {
+  const getMatchedMenuType = useCallback((p) => {
+    const matchedMenu = find(menu, { pathname: p });
+    if (matchedMenu?.type === NAV_MENU_TYPE.subspace) {
+      return {
+        type: NAV_MENU_TYPE.subspace,
+        menu: matchedMenu.items,
+      };
+    }
+
+    return { type: NAV_MENU_TYPE.main, menu: null };
+  }, []);
+
+  const [navMenuType, setNavMenuType] = useState(getMatchedMenuType(pathname));
+
+  useIsomorphicLayoutEffect(() => {
+    if (navMenuType.type !== NAV_MENU_TYPE.archived) {
+      setNavMenuType(getMatchedMenuType(pathname));
+    }
+  }, [getMatchedMenuType, pathname]);
+
+  return (
+    <NavMenuTypeContext.Provider value={[navMenuType, setNavMenuType]}>
+      {children}
+    </NavMenuTypeContext.Provider>
   );
 }
