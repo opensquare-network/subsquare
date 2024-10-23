@@ -3,6 +3,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
+import useCoretimeSalePhase from "next-common/context/coretime/hooks/useCoretimeSalePhase";
 
 function Item({ label = "", value }) {
   return (
@@ -15,6 +16,8 @@ function Item({ label = "", value }) {
 
 export default function CoretimeSaleSummary({ data }) {
   const { decimals, symbol } = useChainSettings();
+  const phase = useCoretimeSalePhase();
+  console.log("phase", phase);
 
   return (
     <div>

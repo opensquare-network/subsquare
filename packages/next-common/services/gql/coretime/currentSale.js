@@ -11,14 +11,16 @@ const GET_CORETIME_CURRENT_SALE = gql`
       purchaseRevenue
       totalRevenue
       info {
-        firstCore
+        saleStart
+        leadinLength
         price
-        coresSold
-        coresOffered
         regionBegin
         regionEnd
-        saleStart
+        idealCoresSold
+        coresOffered
+        firstCore
         selloutPrice
+        coresSold
       }
     }
   }
