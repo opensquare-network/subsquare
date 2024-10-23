@@ -65,6 +65,7 @@ export const getServerSideProps = async (ctx) => {
 
   return withCommonProps(async () => {
     const sale = await queryCoretimeCurrentSale();
+    // todo: query configuration and status
     return {
       props: {
         coretimeSale: sale,
