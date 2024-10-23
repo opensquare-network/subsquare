@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useChain } from "next-common/context/chain";
 import {
   fetchMyMultisigsCount,
+  fetchMyMultisigs,
   myMultisigsCountSelector,
 } from "next-common/store/reducers/multisigSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,11 +26,6 @@ const getNeedApprovalCount = (multisigs, address) => {
 };
 
 function ManageLink({ manageContent }) {
-  const pathname = usePathname();
-  if (pathname.startsWith("/account/multisigs")) {
-    return null;
-  }
-
   return (
     <>
       &nbsp;Manage&nbsp;{manageContent}&nbsp;
@@ -47,6 +43,9 @@ export default function MultisigManagePrompt() {
   const myMultisigsCount = useSelector(myMultisigsCountSelector) || 0;
   const myMultisigs = useSelector(myMultisigsSelector);
   const { items: multisigs = [], total = 0 } = myMultisigs || {};
+  const pathname = usePathname();
+
+  const isAccountMultisigPage = pathname.startsWith("/account/multisigs");
 
   const settings = getChainSettings(chain);
 
@@ -56,13 +55,17 @@ export default function MultisigManagePrompt() {
     }
 
     return getNeedApprovalCount(multisigs, realAddress);
-  }, [multisigs, total, realAddress]);
+  }, [multisigs, realAddress, total]);
 
   useEffect(() => {
-    if (settings?.multisigApiPrefix) {
+    if (settings?.multisigApiPrefix && realAddress) {
       dispatch(fetchMyMultisigsCount(chain, realAddress));
+
+      if (!isAccountMultisigPage) {
+        dispatch(fetchMyMultisigs(chain, realAddress));
+      }
     }
-  }, [dispatch, chain, realAddress, settings]);
+  }, [dispatch, chain, realAddress, settings, isAccountMultisigPage]);
 
   const promptContent = useMemo(() => {
     if (!settings?.multisigApiPrefix || myMultisigsCount === 0) {
@@ -80,10 +83,10 @@ export default function MultisigManagePrompt() {
         You have {myMultisigsCount} active {transactionContent}, &nbsp;
         {needApprovalCount} of &nbsp;
         {manageContent} need your approval.
-        <ManageLink manageContent={manageContent} />
+        {!isAccountMultisigPage && <ManageLink manageContent={manageContent} />}
       </Prompt>
     );
-  }, [myMultisigsCount, needApprovalCount, settings]);
+  }, [myMultisigsCount, needApprovalCount, settings, isAccountMultisigPage]);
 
   return promptContent;
 }
