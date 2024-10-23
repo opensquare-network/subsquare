@@ -1,19 +1,25 @@
+import { find } from "lodash-es";
 import { CACHE_KEY } from "next-common/utils/constants";
+import { getMainMenu } from "next-common/utils/consts/menu";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { createContext, useContext } from "react";
 
 const NavCollapsedContext = createContext([]);
 const NavSubmenuVisibleContext = createContext([]);
+const NavMenuViewContext = createContext({});
 
 export default function NavProvider({
   navCollapsed,
   navSubmenuVisible = "{}",
+  pathname,
   children,
 }) {
   return (
     <NavCollapsedProvider value={navCollapsed}>
       <NavSubmenuVisibleProvider value={navSubmenuVisible}>
-        {children}
+        <NavMenuViewProvider pathname={pathname}>
+          {children}
+        </NavMenuViewProvider>
       </NavSubmenuVisibleProvider>
     </NavCollapsedProvider>
   );
@@ -61,5 +67,27 @@ function NavSubmenuVisibleProvider({ children, value }) {
     >
       {children}
     </NavSubmenuVisibleContext.Provider>
+  );
+}
+
+export function useNavMenuView() {
+  return useContext(NavMenuViewContext);
+}
+function NavMenuViewProvider({ pathname, children }) {
+  const menu = getMainMenu();
+  const matchedMenu = find(menu, { pathname });
+
+  let navMenuView = { view: "main", menu: null };
+  if (matchedMenu.type === "subspace") {
+    navMenuView = {
+      view: "subspace",
+      menu: matchedMenu.items,
+    };
+  }
+
+  return (
+    <NavMenuViewContext.Provider value={navMenuView}>
+      {children}
+    </NavMenuViewContext.Provider>
   );
 }

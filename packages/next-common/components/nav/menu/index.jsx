@@ -1,27 +1,16 @@
 import { ArrowCircleLeft } from "@osn/icons/subsquare";
 import { usePageProps } from "next-common/context/page";
 import { getMainMenu } from "next-common/utils/consts/menu";
-import { createGlobalState } from "react-use";
 import NavMenuItem from "./item";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-
-export const useNavMenuView = createGlobalState({
-  view: "main",
-  menu: null,
-});
+import { useNavMenuView } from "next-common/context/nav";
 
 export default function NavMenu({ collapsed }) {
-  const [navMenuView, setNavMenuView] = useNavMenuView();
+  const navMenuView = useNavMenuView();
   const { tracks, fellowshipTracks, summary, detail, ambassadorTracks } =
     usePageProps();
 
   const router = useRouter();
-  useEffect(() => {
-    if (router.pathname === "/") {
-      setNavMenuView({ view: "main" });
-    }
-  }, [router.pathname, setNavMenuView]);
 
   const mainMenu = getMainMenu({
     tracks,
@@ -40,7 +29,7 @@ export default function NavMenu({ collapsed }) {
         name: "Back",
         icon: <ArrowCircleLeft />,
         onClick() {
-          setNavMenuView({ view: "main" });
+          router.push("/");
         },
       },
       { type: "divider" },

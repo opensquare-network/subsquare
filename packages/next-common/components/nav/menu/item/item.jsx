@@ -3,7 +3,6 @@ import { isExternalLink } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import NavMenuItemGroup from "./group";
 import { useNavSubmenuVisible } from "next-common/context/nav";
-import { useNavMenuView } from "..";
 import NavMenuItemTemplate from "./itemTemplate";
 
 export default function NavMenuItemItem({
@@ -18,25 +17,6 @@ export default function NavMenuItemItem({
 }) {
   const isExternal = isExternalLink(item?.pathname);
   const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
-  const [, setNavMenuView] = useNavMenuView();
-
-  if (item?.type === "subspace") {
-    return (
-      <NavMenuItemTemplate
-        className={className}
-        icon={item?.icon}
-        name={item?.name}
-        extra={item?.extra || extra}
-        collapsed={collapsed}
-        onClick={() => {
-          setNavMenuView({
-            view: "subspace",
-            menu: item?.items,
-          });
-        }}
-      />
-    );
-  }
 
   if (items?.length) {
     return (
