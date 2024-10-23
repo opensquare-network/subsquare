@@ -15,13 +15,16 @@ export default function useSubscribeMyActiveMultisigs(isAccountMultisigPage) {
   const settings = useMemo(() => getChainSettings(chain), [chain]);
 
   useEffect(() => {
-    if (isAccountMultisigPage) {
+    if (
+      isAccountMultisigPage ||
+      !settings?.multisigApiPrefix ||
+      !chain ||
+      !realAddress
+    ) {
       return;
     }
 
-    if (settings?.multisigApiPrefix && realAddress) {
-      dispatch(fetchMyMultisigs(chain, realAddress));
-      dispatch(fetchMyMultisigsCount(chain, realAddress));
-    }
+    dispatch(fetchMyMultisigs(chain, realAddress));
+    dispatch(fetchMyMultisigsCount(chain, realAddress));
   }, [dispatch, chain, realAddress, settings, isAccountMultisigPage]);
 }
