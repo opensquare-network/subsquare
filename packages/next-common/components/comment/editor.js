@@ -66,6 +66,7 @@ function CommentEditor(
     createCommentReply,
     updateComment,
     createPostProxyComment,
+    createCommentProxyReply,
   } = useCommentActions();
 
   const createComment = async (realAddress) => {
@@ -78,16 +79,33 @@ function CommentEditor(
       let result;
 
       if (comment) {
-        result = await createCommentReply(post, comment, content, contentType);
-      } else if (realAddress) {
-        result = await createPostProxyComment(
-          realAddress,
-          post,
-          content,
-          contentType,
-        );
+        if (realAddress) {
+          result = await createCommentProxyReply(
+            realAddress,
+            post,
+            comment,
+            content,
+            contentType,
+          );
+        } else {
+          result = await createCommentReply(
+            post,
+            comment,
+            content,
+            contentType,
+          );
+        }
       } else {
-        result = await createPostComment(post, content, contentType);
+        if (realAddress) {
+          result = await createPostProxyComment(
+            realAddress,
+            post,
+            content,
+            contentType,
+          );
+        } else {
+          result = await createPostComment(post, content, contentType);
+        }
       }
 
       if (!isMounted()) {

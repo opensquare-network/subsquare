@@ -27,3 +27,30 @@ export function useCreateDiscussionProxyComment() {
     [signSimaMessage],
   );
 }
+
+export function useCreateDiscussionCommentProxyReply() {
+  const signSimaMessage = useSignSimaMessage();
+
+  return useCallback(
+    async (realAddress, post, comment, content, contentType) => {
+      checkSimaDataSource(comment);
+
+      const entity = {
+        action: "comment",
+        cid: comment.cid,
+        ...getContentField(content, contentType),
+        timestamp: Date.now(),
+        real: {
+          address: realAddress,
+          section: "proxy",
+        },
+      };
+      const data = await signSimaMessage(entity);
+      return await nextApi.post(
+        `sima/discussions/${post.cid}/comments/${comment.cid}/replies`,
+        data,
+      );
+    },
+    [signSimaMessage],
+  );
+}

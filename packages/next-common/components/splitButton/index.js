@@ -16,6 +16,7 @@ export default function SplitButton({
   loading,
   disabled,
   dropdownContent,
+  children,
   ...props
 }) {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -23,7 +24,11 @@ export default function SplitButton({
   useClickAway(ref, () => setShowDropdown(false));
 
   if (loading) {
-    return <PrimaryButton loading={loading} {...props} />;
+    return (
+      <PrimaryButton loading={loading} {...props}>
+        {children}
+      </PrimaryButton>
+    );
   }
 
   return (
@@ -33,7 +38,7 @@ export default function SplitButton({
         {...props}
         className="rounded-tr-none rounded-br-none"
       >
-        Comment
+        {children}
       </PrimaryButton>
       <div ref={ref} className="relative">
         <PrimaryButton
