@@ -2,15 +2,31 @@ import { SystemComment } from "@osn/icons/subsquare";
 import SplitMenuButton from "../splitMenuButton";
 import SelectProxyAccountPopup from "../selectProxyAccountPopup";
 import { useState } from "react";
+import {
+  GeneralProxiesProvider,
+  useMyProxied,
+} from "next-common/context/proxy";
+import PrimaryButton from "next-common/lib/button/primary";
 
-export default function SplitCommentButton({
+function SplitCommentButtonImpl({
   action,
   onClickComment,
   onClickCommentAsProxy,
   ...props
 }) {
+  const { proxies } = useMyProxied();
+
   const [isSelectProxyAccountPopupOpen, setIsSelectProxyAccountPopupOpen] =
     useState(false);
+
+  if (!proxies.length) {
+    return (
+      <PrimaryButton {...props} onClick={onClickComment}>
+        {action}
+      </PrimaryButton>
+    );
+  }
+
   return (
     <>
       <SplitMenuButton
@@ -39,5 +55,13 @@ export default function SplitCommentButton({
         />
       )}
     </>
+  );
+}
+
+export default function SplitCommentButton(props) {
+  return (
+    <GeneralProxiesProvider>
+      <SplitCommentButtonImpl {...props} />
+    </GeneralProxiesProvider>
   );
 }

@@ -187,7 +187,7 @@ function CommentEditor(
             action={isEdit ? "Update" : isReply ? "Reply" : "Comment"}
             loading={loading}
             disabled={isEmpty}
-            onClickComment={isEdit ? editComment : createComment}
+            onClickComment={() => (isEdit ? editComment() : createComment())}
             onClickCommentAsProxy={(realAddress) => {
               createComment(realAddress);
             }}
