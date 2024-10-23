@@ -9,6 +9,7 @@ import NewPreimageSVG from "../newProposalButton/icons/new-preimage.svg";
 import ApproveTreasuryProposalInnerPopup from "./approveTreasuryProposalInnerPopup";
 import NewCouncilMotionProposalInnerPopup from "./newProposalInnerPopup";
 import { useTreasuryPallet } from "next-common/context/treasury";
+import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 
 export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
   const chain = useChain();
@@ -19,13 +20,24 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
     showApproveTreasuryProposalPopup,
     setShowApproveTreasuryProposalPopup,
   ] = useState(false);
+  const { isMember } = useIsCollectiveMember();
 
   if (showNewProposalPopup) {
-    return <NewCouncilMotionProposalInnerPopup onClose={onClose} />;
+    return (
+      <NewCouncilMotionProposalInnerPopup
+        onClose={onClose}
+        isMember={isMember}
+      />
+    );
   }
 
   if (showApproveTreasuryProposalPopup) {
-    return <ApproveTreasuryProposalInnerPopup onClose={onClose} />;
+    return (
+      <ApproveTreasuryProposalInnerPopup
+        onClose={onClose}
+        isMember={isMember}
+      />
+    );
   }
 
   return (
