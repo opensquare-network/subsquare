@@ -1,11 +1,17 @@
+import dynamic from "next/dynamic";
 import Chains from "../../chains";
 import kusama from "../kusama";
+
+const ProjectIconKusamaCoretime = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKusamaCoretime"),
+);
 
 const kusamaCoretime = {
   ...kusama,
   value: Chains.kusamaCoretime,
   description:
     "A revolutionary approach to accessing the right amount of blockspace for every stage of growth.",
+  avatar: ProjectIconKusamaCoretime,
   endpoints: [
     {
       name: "Parity",
