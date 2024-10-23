@@ -10,10 +10,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import getChainSettings from "next-common/utils/consts/settings";
 import { usePathname } from "next/navigation";
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
-import {
-  useSubscribeMyMultisigs,
-  useSubscribeMyActiveMultisigsCount,
-} from "next-common/components/overview/accountInfo/hook/useSubscribeMyMultisigs";
+import useSubscribeMyActiveMultisigs from "next-common/components/overview/accountInfo/hook/useSubscribeMyActiveMultisigs";
 
 const getNeedApprovalCount = (multisigs, address) => {
   const needApprovalItems = multisigs?.filter((item) => {
@@ -37,19 +34,17 @@ function ManageLink({ manageContent }) {
 }
 
 export default function MultisigManagePrompt() {
-  useSubscribeMyMultisigs();
-  useSubscribeMyActiveMultisigsCount();
-
   const chain = useChain();
   const realAddress = useRealAddress();
   const myMultisigsCount = useSelector(myMultisigsCountSelector) || 0;
   const myMultisigs = useSelector(myMultisigsSelector);
   const { items: multisigs = [], total = 0 } = myMultisigs || {};
   const pathname = usePathname();
-
   const isAccountMultisigPage = pathname.startsWith("/account/multisigs");
 
-  const settings = getChainSettings(chain);
+  useSubscribeMyActiveMultisigs(isAccountMultisigPage);
+
+  const settings = useMemo(() => getChainSettings(chain), [chain]);
 
   const needApprovalCount = useMemo(() => {
     if (total === 0) {
