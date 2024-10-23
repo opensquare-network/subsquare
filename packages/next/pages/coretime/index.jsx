@@ -12,8 +12,8 @@ import getChainSettings from "next-common/utils/consts/settings";
 import queryCoretimeCurrentSale from "next-common/services/gql/coretime/currentSale";
 import { CoretimeActiveSaleProvider } from "next-common/context/coretime/sale";
 import queryCoretimeConfiguration from "next-common/services/gql/coretime/configuration";
-import { usePageProps } from "next-common/context/page";
 import queryCoretimeStatus from "next-common/services/gql/coretime/status";
+import CoretimeCommonProvider from "next-common/context/coretime/common";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -29,8 +29,6 @@ if (isCoretimeSupported) {
 }
 
 export default function CoretimePage() {
-  const { configuration, status } = usePageProps();
-  console.log("configuration, status", configuration, status);
   if (!isCoretimeSupported) {
     return null;
   }
@@ -39,9 +37,11 @@ export default function CoretimePage() {
     <Provider store={store}>
       <ChainProvider chain={chain}>
         <ApiProvider>
-          <CoretimeActiveSaleProvider>
-            <CoretimeOverviewPageImpl />
-          </CoretimeActiveSaleProvider>
+          <CoretimeCommonProvider>
+            <CoretimeActiveSaleProvider>
+              <CoretimeOverviewPageImpl />
+            </CoretimeActiveSaleProvider>
+          </CoretimeCommonProvider>
         </ApiProvider>
       </ChainProvider>
     </Provider>
