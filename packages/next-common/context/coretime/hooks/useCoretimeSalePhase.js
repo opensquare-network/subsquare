@@ -1,8 +1,7 @@
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
-import useCoretimeConfiguration from "next-common/context/coretime/configuration";
-import { useMemo } from "react";
+import { isNil } from "lodash-es";
 
 const Phases = Object.freeze({
   Interlude: "Interlude",
@@ -13,27 +12,29 @@ const Phases = Object.freeze({
 export default function useCoretimeSalePhase() {
   const chainHeight = useSelector(chainOrScanHeightSelector);
   const sale = useCoretimeSale();
-  const configuration = useCoretimeConfiguration();
   const { initIndexer: { blockHeight: initBlockHeight } = {}, info: { saleStart, leadinLength } = {} } = sale;
-  const { interludeLength } = configuration;
 
-  const isInterludePhase = useMemo(() => {
-    return chainHeight >= initBlockHeight && chainHeight <= saleStart;
-  }, [chainHeight, initBlockHeight, interludeLength]);
-
-  const isLeadinPhase = useMemo(() => {
-    return chainHeight > saleStart && chainHeight < saleStart + leadinLength;
-  }, [chainHeight, saleStart, leadinLength]);
-
+  const isLoading = isNil(chainHeight);
   if (sale.isFinal) {
-    return null;
+    return {
+      isLoading: false,
+      phase: null,
+    }
+  } else if (isLoading) {
+    return {
+      isLoading,
+      phase: null,
+    }
   }
 
-  if (isInterludePhase) {
-    return Phases.Interlude;
-  } else if (isLeadinPhase) {
-    return Phases.Leadin;
+  let phase;
+  if (chainHeight >= initBlockHeight && chainHeight <= saleStart) {
+    phase = Phases.Interlude;
+  } else if (chainHeight > saleStart && chainHeight < saleStart + leadinLength) {
+    phase = Phases.Leadin;
   } else {
-    return Phases.FixedPrice;
+    phase = Phases.FixedPrice;
   }
+
+  return { isLoading, phase };
 }
