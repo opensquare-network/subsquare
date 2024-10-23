@@ -1,7 +1,7 @@
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import Divider from "../../styled/layout/divider";
 import CoretimeSaleSummary from "./summary";
-import useCoretimeSale from "next-common/context/coretime/sale/hooks/useCoretimeSale";
+import useCoretimeSale from "next-common/context/coretime/sale/provider";
 
 export default function CoretimeSalePanel() {
   const coretimeSale = useCoretimeSale();

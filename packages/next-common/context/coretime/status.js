@@ -3,10 +3,10 @@ import { usePageProps } from "next-common/context/page";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { useEffect } from "react";
 
-const [useCoretimeStatus, Provider] = createStateContext({});
+const [useSharedCoretimeStatus, Provider] = createStateContext({});
 
 function DataUpdater({ children }) {
-  const [, setStatus] = useCoretimeStatus();
+  const [, setStatus] = useSharedCoretimeStatus();
   const { result: option } = useSubStorage("broker", "status");
 
   useEffect(() => {
@@ -27,4 +27,9 @@ export function CoretimeStatusProvider({ children }) {
       </DataUpdater>
     </Provider>
   );
+}
+
+export default function useCoretimeStatus() {
+  const [status] = useSharedCoretimeStatus();
+  return status;
 }

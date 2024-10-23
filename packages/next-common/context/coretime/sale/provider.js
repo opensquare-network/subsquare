@@ -1,6 +1,6 @@
 import { createStateContext } from "react-use";
 
-const [useCoretimeActiveSale, Provider] = createStateContext({});
+const [useSharedCoretimeSale, Provider] = createStateContext({});
 
 export function CoretimeSaleProvider({ value, children }) {
   return (
@@ -10,4 +10,7 @@ export function CoretimeSaleProvider({ value, children }) {
   );
 }
 
-export default useCoretimeActiveSale;
+export default function useCoretimeSale() {
+  const [sale] = useSharedCoretimeSale();
+  return sale;
+};
