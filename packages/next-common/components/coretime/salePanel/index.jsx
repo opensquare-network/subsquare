@@ -1,10 +1,10 @@
-import { usePageProps } from "next-common/context/page";
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import Divider from "../../styled/layout/divider";
 import CoretimeSaleSummary from "./summary";
+import useCoretimeSale from "next-common/context/coretime/sale/hooks/useCoretimeSale";
 
 export default function CoretimeSalePanel() {
-  const { coretimeSale } = usePageProps();
+  const coretimeSale = useCoretimeSale();
 
   return (
     <NeutralPanel className="p-6 text-textPrimary">
