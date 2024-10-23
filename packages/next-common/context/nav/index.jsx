@@ -1,12 +1,13 @@
 import { find } from "lodash-es";
-import { CACHE_KEY } from "next-common/utils/constants";
+import { CACHE_KEY, NAV_MENU_TYPE } from "next-common/utils/constants";
 import { getMainMenu } from "next-common/utils/consts/menu";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
-import { createContext, useContext } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
+import { useIsomorphicLayoutEffect } from "react-use";
 
 const NavCollapsedContext = createContext([]);
 const NavSubmenuVisibleContext = createContext([]);
-const NavMenuViewContext = createContext({});
+const NavMenuTypeContext = createContext([]);
 
 export default function NavProvider({
   navCollapsed,
@@ -17,9 +18,9 @@ export default function NavProvider({
   return (
     <NavCollapsedProvider value={navCollapsed}>
       <NavSubmenuVisibleProvider value={navSubmenuVisible}>
-        <NavMenuViewProvider pathname={pathname}>
+        <NavMenuTypeProvider pathname={pathname}>
           {children}
-        </NavMenuViewProvider>
+        </NavMenuTypeProvider>
       </NavSubmenuVisibleProvider>
     </NavCollapsedProvider>
   );
@@ -70,24 +71,34 @@ function NavSubmenuVisibleProvider({ children, value }) {
   );
 }
 
-export function useNavMenuView() {
-  return useContext(NavMenuViewContext);
+const menu = getMainMenu();
+export function useNavMenuType() {
+  return useContext(NavMenuTypeContext);
 }
-function NavMenuViewProvider({ pathname, children }) {
-  const menu = getMainMenu();
-  const matchedMenu = find(menu, { pathname });
+function NavMenuTypeProvider({ pathname, children }) {
+  const getMatchedMenuType = useCallback((p) => {
+    const matchedMenu = find(menu, { pathname: p });
+    if (matchedMenu?.type === NAV_MENU_TYPE.subspace) {
+      return {
+        type: NAV_MENU_TYPE.subspace,
+        menu: matchedMenu.items,
+      };
+    }
 
-  let navMenuView = { view: "main", menu: null };
-  if (matchedMenu.type === "subspace") {
-    navMenuView = {
-      view: "subspace",
-      menu: matchedMenu.items,
-    };
-  }
+    return { type: NAV_MENU_TYPE.main, menu: null };
+  }, []);
+
+  const [navMenuType, setNavMenuType] = useState(getMatchedMenuType(pathname));
+
+  useIsomorphicLayoutEffect(() => {
+    if (navMenuType.type !== NAV_MENU_TYPE.archived) {
+      setNavMenuType(getMatchedMenuType(pathname));
+    }
+  }, [getMatchedMenuType, pathname]);
 
   return (
-    <NavMenuViewContext.Provider value={navMenuView}>
+    <NavMenuTypeContext.Provider value={[navMenuType, setNavMenuType]}>
       {children}
-    </NavMenuViewContext.Provider>
+    </NavMenuTypeContext.Provider>
   );
 }

@@ -3,10 +3,11 @@ import { usePageProps } from "next-common/context/page";
 import { getMainMenu } from "next-common/utils/consts/menu";
 import NavMenuItem from "./item";
 import { useRouter } from "next/router";
-import { useNavMenuView } from "next-common/context/nav";
+import { useNavMenuType } from "next-common/context/nav";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export default function NavMenu({ collapsed }) {
-  const navMenuView = useNavMenuView();
+  const [navMenuType, setNavMenuType] = useNavMenuType();
   const { tracks, fellowshipTracks, summary, detail, ambassadorTracks } =
     usePageProps();
 
@@ -21,9 +22,9 @@ export default function NavMenu({ collapsed }) {
   });
 
   let menu = [];
-  if (navMenuView.view === "main") {
+  if (navMenuType.type === NAV_MENU_TYPE.main) {
     menu = mainMenu;
-  } else if (navMenuView.view === "subspace") {
+  } else if (navMenuType.type === NAV_MENU_TYPE.subspace) {
     menu = [
       {
         name: "Back",
@@ -33,7 +34,19 @@ export default function NavMenu({ collapsed }) {
         },
       },
       { type: "divider" },
-      ...(navMenuView.menu || []),
+      ...(navMenuType.menu || []),
+    ];
+  } else if (navMenuType.type === NAV_MENU_TYPE.archived) {
+    menu = [
+      {
+        name: "Back",
+        icon: <ArrowCircleLeft />,
+        onClick() {
+          setNavMenuType({ type: NAV_MENU_TYPE.main, menu: null });
+        },
+      },
+      { type: "divider" },
+      ...(navMenuType.menu || []),
     ];
   }
 
