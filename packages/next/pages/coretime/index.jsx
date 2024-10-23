@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import { commonReducers } from "next-common/store/reducers";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
-import queryCoretimeCurrentSale from "next-common/services/gql/currentSale";
+import queryCoretimeCurrentSale from "next-common/services/gql/coretime/currentSale";
 import { CoretimeActiveSaleProvider } from "next-common/context/coretime/sale";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
