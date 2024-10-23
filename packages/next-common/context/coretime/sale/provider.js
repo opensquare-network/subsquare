@@ -13,4 +13,4 @@ export function CoretimeSaleProvider({ value, children }) {
 export default function useCoretimeSale() {
   const [sale] = useSharedCoretimeSale();
   return sale;
-};
+}

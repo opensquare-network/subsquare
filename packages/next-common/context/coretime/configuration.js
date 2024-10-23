@@ -13,7 +13,7 @@ function DataUpdater({ children }) {
     if (option?.isSome) {
       setConfiguration(option.unwrap().toJSON());
     }
-  }, [option]);
+  }, [option, setConfiguration]);
 
   return children;
 }

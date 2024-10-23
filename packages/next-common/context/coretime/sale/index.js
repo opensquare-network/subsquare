@@ -11,5 +11,5 @@ export function CoretimeActiveSaleProvider({ children }) {
         {children}
       </CoretimeActiveSaleSubscriber>
     </CoretimeSaleProvider>
-  )
+  );
 }
