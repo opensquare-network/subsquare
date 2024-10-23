@@ -8,10 +8,10 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
 import { useCoretimeQuery } from "next-common/hooks/apollo";
-import { GET_CORETIME_SALE_PURCHASES } from "next-common/services/gql/coretime";
 import { toPrecision } from "next-common/utils";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useState } from "react";
+import { GET_CORETIME_SALE_PURCHASES } from "next-common/services/gql/coretime/consts";
 
 export default function SalesHistoryPurchases() {
   const { decimals, symbol } = useChainSettings();

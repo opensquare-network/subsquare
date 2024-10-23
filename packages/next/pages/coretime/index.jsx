@@ -9,8 +9,11 @@ import { Provider } from "react-redux";
 import { commonReducers } from "next-common/store/reducers";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
-import queryCoretimeCurrentSale from "next-common/services/gql/currentSale";
+import queryCoretimeCurrentSale from "next-common/services/gql/coretime/currentSale";
 import { CoretimeActiveSaleProvider } from "next-common/context/coretime/sale";
+import queryCoretimeConfiguration from "next-common/services/gql/coretime/configuration";
+import queryCoretimeStatus from "next-common/services/gql/coretime/status";
+import CoretimeCommonProvider from "next-common/context/coretime/common";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -34,9 +37,11 @@ export default function CoretimePage() {
     <Provider store={store}>
       <ChainProvider chain={chain}>
         <ApiProvider>
-          <CoretimeActiveSaleProvider>
-            <CoretimeOverviewPageImpl />
-          </CoretimeActiveSaleProvider>
+          <CoretimeCommonProvider>
+            <CoretimeActiveSaleProvider>
+              <CoretimeOverviewPageImpl />
+            </CoretimeActiveSaleProvider>
+          </CoretimeCommonProvider>
         </ApiProvider>
       </ChainProvider>
     </Provider>
@@ -65,9 +70,13 @@ export const getServerSideProps = async (ctx) => {
 
   return withCommonProps(async () => {
     const sale = await queryCoretimeCurrentSale();
+    const configuration = await queryCoretimeConfiguration();
+    const status = await queryCoretimeStatus();
     return {
       props: {
         coretimeSale: sale,
+        configuration,
+        status,
       },
     };
   })(ctx);
