@@ -14,6 +14,7 @@ import { CoretimeActiveSaleProvider } from "next-common/context/coretime/sale";
 import queryCoretimeConfiguration from "next-common/services/gql/coretime/configuration";
 import queryCoretimeStatus from "next-common/services/gql/coretime/status";
 import CoretimeCommonProvider from "next-common/context/coretime/common";
+import useLoopCoretimeScanHeight from "next-common/hooks/coretime/useLoopCoretimeScanHeight";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -50,6 +51,7 @@ export default function CoretimePage() {
 
 function CoretimeOverviewPageImpl() {
   const { description } = useChainSettings();
+  useLoopCoretimeScanHeight();
 
   return (
     <ListLayout title="Coretime" description={description}>
