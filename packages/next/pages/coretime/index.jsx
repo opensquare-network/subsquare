@@ -11,6 +11,9 @@ import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import queryCoretimeCurrentSale from "next-common/services/gql/coretime/currentSale";
 import { CoretimeActiveSaleProvider } from "next-common/context/coretime/sale";
+import queryCoretimeConfiguration from "next-common/services/gql/coretime/configuration";
+import { usePageProps } from "next-common/context/page";
+import queryCoretimeStatus from "next-common/services/gql/coretime/status";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -26,6 +29,8 @@ if (isCoretimeSupported) {
 }
 
 export default function CoretimePage() {
+  const { configuration, status } = usePageProps();
+  console.log("configuration, status", configuration, status);
   if (!isCoretimeSupported) {
     return null;
   }
@@ -65,10 +70,14 @@ export const getServerSideProps = async (ctx) => {
 
   return withCommonProps(async () => {
     const sale = await queryCoretimeCurrentSale();
+    const configuration = await queryCoretimeConfiguration();
+    const status = await queryCoretimeStatus();
     // todo: query configuration and status
     return {
       props: {
         coretimeSale: sale,
+        configuration,
+        status,
       },
     };
   })(ctx);
