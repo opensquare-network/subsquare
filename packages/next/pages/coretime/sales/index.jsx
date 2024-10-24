@@ -1,6 +1,7 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import { withCommonProps } from "next-common/lib";
-import CoretimeSalesHistory from "next-common/components/coretime/sales";
+import CoretimeSalesHistory from "next-common/components/coretime/sales/history";
+import CoretimeSalesActiveSale from "next-common/components/coretime/sales/active";
 import { createStore } from "next-common/store";
 import ChainProvider, { useChainSettings } from "next-common/context/chain";
 import ApiProvider from "next-common/context/api";
@@ -56,6 +57,7 @@ function CoretimeSalesPageImpl() {
   return (
     <ListLayout title="Coretime" description={description}>
       <div className="space-y-6">
+        <CoretimeSalesActiveSale />
         <CoretimeSalesHistory />
       </div>
     </ListLayout>
