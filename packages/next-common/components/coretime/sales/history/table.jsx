@@ -65,7 +65,7 @@ export default function SalesHistoryTable() {
     <div>
       <MapDataList
         loading={false}
-        noDataText="No purchases history"
+        noDataText="No sales history"
         columnsDef={columns}
         data={data?.items}
       />
