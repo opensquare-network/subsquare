@@ -19,12 +19,12 @@ export default function useCoretimeSalePhase() {
     return {
       isLoading: false,
       phase: null,
-    }
+    };
   } else if (isLoading) {
     return {
       isLoading,
       phase: null,
-    }
+    };
   }
 
   let phase;
