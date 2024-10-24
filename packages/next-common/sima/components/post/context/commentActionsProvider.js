@@ -6,17 +6,11 @@ import {
 import { useDiscussionCommentUpVote } from "next-common/sima/actions/upVote";
 import { useDiscussionCommentCancelUpVote } from "next-common/sima/actions/cancelUpVote";
 import { useGetComment } from "next-common/noSima/actions/comment";
-import {
-  useCreateDiscussionCommentProxyReply,
-  useCreateDiscussionProxyComment,
-} from "next-common/sima/actions/proxyComment";
 
 export function DiscussionCommentActionsProvider({ children }) {
   const getComment = useGetComment();
   const createPostComment = useCreateDiscussionComment();
-  const createPostProxyComment = useCreateDiscussionProxyComment();
   const createCommentReply = useCreateDiscussionCommentReply();
-  const createCommentProxyReply = useCreateDiscussionCommentProxyReply();
   const upVoteComment = useDiscussionCommentUpVote();
   const cancelUpVoteComment = useDiscussionCommentCancelUpVote();
 
@@ -28,8 +22,6 @@ export function DiscussionCommentActionsProvider({ children }) {
         createCommentReply,
         upVoteComment,
         cancelUpVoteComment,
-        createPostProxyComment,
-        createCommentProxyReply,
       }}
     >
       {children}

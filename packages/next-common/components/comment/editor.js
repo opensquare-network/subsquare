@@ -61,13 +61,8 @@ function CommentEditor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
-  const {
-    createPostComment,
-    createCommentReply,
-    updateComment,
-    createPostProxyComment,
-    createCommentProxyReply,
-  } = useCommentActions();
+  const { createPostComment, createCommentReply, updateComment } =
+    useCommentActions();
 
   const createComment = async (realAddress) => {
     if (!isMounted()) {
@@ -80,12 +75,15 @@ function CommentEditor(
 
       if (comment) {
         if (realAddress) {
-          result = await createCommentProxyReply(
-            realAddress,
+          result = await createCommentReply(
             post,
             comment,
             content,
             contentType,
+            {
+              address: realAddress,
+              section: "proxy",
+            },
           );
         } else {
           result = await createCommentReply(
@@ -97,12 +95,10 @@ function CommentEditor(
         }
       } else {
         if (realAddress) {
-          result = await createPostProxyComment(
-            realAddress,
-            post,
-            content,
-            contentType,
-          );
+          result = await createPostComment(post, content, contentType, {
+            address: realAddress,
+            section: "proxy",
+          });
         } else {
           result = await createPostComment(post, content, contentType);
         }
