@@ -5,13 +5,55 @@ import { useEffect, useState } from "react";
 import { useCoretimeQuery } from "next-common/hooks/apollo";
 import { GET_CORETIME_SALES } from "next-common/services/gql/coretime/consts";
 import {
-  IDColumn,
+  idColumn,
   regionBeginColumn,
   regionEndColumn,
   timeRangeColumn,
   totalRevenueColumn,
   actionColumn,
+  mobileStartTimeColumns,
+  mobileEndTimeColumns,
 } from "./columns";
+
+function ResponsiveTable({ loading, items }) {
+  const desktopColumns = [
+    idColumn,
+    regionBeginColumn,
+    regionEndColumn,
+    timeRangeColumn,
+    totalRevenueColumn,
+    actionColumn,
+  ];
+
+  const mobileColumns = [
+    idColumn,
+    regionBeginColumn,
+    regionEndColumn,
+    mobileStartTimeColumns,
+    mobileEndTimeColumns,
+    totalRevenueColumn,
+    actionColumn,
+  ];
+
+  return (
+    <>
+      <MapDataList
+        className="max-sm:hidden"
+        loading={loading}
+        noDataText="No sales history"
+        columnsDef={desktopColumns}
+        data={items}
+      />
+      <MapDataList
+        className="hidden max-sm:block"
+        loading={loading}
+        noDataText="No sales history"
+        columnsDef={mobileColumns}
+        data={items}
+      />
+    </>
+  );
+}
 
 export default function SalesHistoryTable() {
   const [totalCount, setTotalCount] = useState(0);
@@ -37,24 +79,9 @@ export default function SalesHistoryTable() {
     setTotalCount(total);
   }, [total, loading]);
 
-  // TODO: responsive columns
-  const columns = [
-    IDColumn,
-    regionBeginColumn,
-    regionEndColumn,
-    timeRangeColumn,
-    totalRevenueColumn,
-    actionColumn,
-  ];
-
   return (
     <div>
-      <MapDataList
-        loading={loading}
-        noDataText="No sales history"
-        columnsDef={columns}
-        data={items}
-      />
+      <ResponsiveTable items={items} loading={loading} />
       {pageComponent}
     </div>
   );

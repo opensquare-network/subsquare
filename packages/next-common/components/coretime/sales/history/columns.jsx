@@ -2,10 +2,13 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { ArrowRight } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
-import { CoretimeSalesHistoryTimeRange } from "./timeRange";
+import {
+  CoretimeSalesHistoryTimeRange,
+  CoretimeSalesHistoryTimeBlock,
+} from "./timeRange";
 import CoretimeSalesHistoryTotalRevenue from "./totalRevenue";
 
-export const IDColumn = {
+export const idColumn = {
   name: "ID",
   className: "w-[120px]",
   render(data) {
@@ -17,7 +20,7 @@ export const regionBeginColumn = {
   name: "Region Begin",
   className: "w-40",
   render(data) {
-    return <div>{data?.info?.regionBegin.toLocaleString()}</div>;
+    return <div>{data?.info?.regionBegin?.toLocaleString()}</div>;
   },
 };
 
@@ -25,13 +28,12 @@ export const regionEndColumn = {
   name: "Region End",
   className: "w-40",
   render(data) {
-    return <div>{data?.info?.regionEnd.toLocaleString()}</div>;
+    return <div>{data?.info?.regionEnd?.toLocaleString()}</div>;
   },
 };
 
 export const timeRangeColumn = {
   name: "Time Range",
-  // width: 240,
   render(data) {
     return <CoretimeSalesHistoryTimeRange data={data} />;
   },
@@ -62,6 +64,30 @@ export const actionColumn = {
           </SecondaryButton>
         </Link>
       </Tooltip>
+    );
+  },
+};
+
+export const mobileStartTimeColumns = {
+  name: "Start Time",
+  render(data) {
+    return (
+      <CoretimeSalesHistoryTimeBlock
+        key="start-time"
+        indexer={data.initIndexer}
+      />
+    );
+  },
+};
+
+export const mobileEndTimeColumns = {
+  name: "End Time",
+  render(data) {
+    return (
+      <CoretimeSalesHistoryTimeBlock
+        key="start-time"
+        indexer={data.endIndexer}
+      />
     );
   },
 };
