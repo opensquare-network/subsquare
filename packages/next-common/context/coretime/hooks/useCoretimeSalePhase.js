@@ -12,25 +12,31 @@ const Phases = Object.freeze({
 export default function useCoretimeSalePhase() {
   const chainHeight = useSelector(chainOrScanHeightSelector);
   const sale = useCoretimeSale();
-  const { initIndexer: { blockHeight: initBlockHeight } = {}, info: { saleStart, leadinLength } = {} } = sale;
+  const {
+    initIndexer: { blockHeight: initBlockHeight } = {},
+    info: { saleStart, leadinLength } = {},
+  } = sale;
 
   const isLoading = isNil(chainHeight);
   if (sale.isFinal) {
     return {
       isLoading: false,
       phase: null,
-    }
+    };
   } else if (isLoading) {
     return {
       isLoading,
       phase: null,
-    }
+    };
   }
 
   let phase;
   if (chainHeight >= initBlockHeight && chainHeight <= saleStart) {
     phase = Phases.Interlude;
-  } else if (chainHeight > saleStart && chainHeight < saleStart + leadinLength) {
+  } else if (
+    chainHeight > saleStart &&
+    chainHeight < saleStart + leadinLength
+  ) {
     phase = Phases.Leadin;
   } else {
     phase = Phases.FixedPrice;
