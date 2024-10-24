@@ -22,6 +22,7 @@ export default function GlobalProvider({
   pageProperties,
   navCollapsed,
   navSubmenuVisible,
+  pathname,
 }) {
   return (
     <WagmiProvider>
@@ -34,6 +35,7 @@ export default function GlobalProvider({
                   <NavProvider
                     navCollapsed={navCollapsed}
                     navSubmenuVisible={navSubmenuVisible}
+                    pathname={pathname}
                   >
                     <PageProvider pageProperties={pageProperties}>
                       <ApiProvider>

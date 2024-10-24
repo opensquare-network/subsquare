@@ -3,6 +3,7 @@ import NavMenuItemGroup from "./group";
 import NavMenuItemItem from "./item";
 import NavMenuDivider from "../../divider";
 import { useNavSubmenuVisible } from "next-common/context/nav";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export default function NavMenuItem({ collapsed, ...menu } = {}) {
   const { type, items } = menu || {};
@@ -14,7 +15,7 @@ export default function NavMenuItem({ collapsed, ...menu } = {}) {
     return <NavMenuDivider />;
   }
 
-  if (type === "subspace") {
+  if (type === NAV_MENU_TYPE.subspace) {
     return <NavMenuItemItem item={menu} collapsed={collapsed} />;
   }
 

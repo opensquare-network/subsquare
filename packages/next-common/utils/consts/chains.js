@@ -41,6 +41,8 @@ const Chains = {
   zkverifyTestnet: "zkverify-testnet",
   paseo: "paseo",
   ajuna: "ajuna",
+  kusamaCoretime: "kusama-coretime",
+  polkadotCoretime: "polkadot-coretime",
 };
 
 export default Chains;

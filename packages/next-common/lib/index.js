@@ -32,6 +32,7 @@ export function withCommonProps(
     const listPageProperties = getListPageProperties(context);
     const detailPageProperties = getDetailPageProperties(context);
     const connectedAccount = getConnectedAccount(cookies);
+    const pathname = context.resolvedUrl?.split("?")?.[0];
 
     const [
       props,
@@ -57,6 +58,7 @@ export function withCommonProps(
       ...props,
       props: {
         ...(props?.props || {}),
+        pathname,
         chain: process.env.CHAIN,
         user: user ?? null,
         userStatus: userStatus ?? null,

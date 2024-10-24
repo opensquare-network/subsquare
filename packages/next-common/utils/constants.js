@@ -151,3 +151,9 @@ export const FELLOWSHIP_RANK_LEVEL_NAMES = [
   "Master Constant",
   "Grand Master",
 ];
+
+export const NAV_MENU_TYPE = {
+  main: "main",
+  subspace: "subspace",
+  archived: "archived",
+};

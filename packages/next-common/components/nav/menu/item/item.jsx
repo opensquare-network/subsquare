@@ -2,9 +2,10 @@ import Link from "next/link";
 import { isExternalLink } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import NavMenuItemGroup from "./group";
-import { useNavSubmenuVisible } from "next-common/context/nav";
-import { useNavMenuView } from "..";
+import { useNavMenuType, useNavSubmenuVisible } from "next-common/context/nav";
 import NavMenuItemTemplate from "./itemTemplate";
+import { useRouter } from "next/router";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export default function NavMenuItemItem({
   item,
@@ -18,9 +19,13 @@ export default function NavMenuItemItem({
 }) {
   const isExternal = isExternalLink(item?.pathname);
   const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
-  const [, setNavMenuView] = useNavMenuView();
+  const [, setNavMenuType] = useNavMenuType();
+  const router = useRouter();
 
-  if (item?.type === "subspace") {
+  if (
+    item?.type === NAV_MENU_TYPE.subspace ||
+    item?.type === NAV_MENU_TYPE.archived
+  ) {
     return (
       <NavMenuItemTemplate
         className={className}
@@ -29,10 +34,14 @@ export default function NavMenuItemItem({
         extra={item?.extra || extra}
         collapsed={collapsed}
         onClick={() => {
-          setNavMenuView({
-            view: "subspace",
-            menu: item?.items,
-          });
+          if (item?.type === NAV_MENU_TYPE.archived) {
+            setNavMenuType({
+              type: NAV_MENU_TYPE.archived,
+              menu: item?.items,
+            });
+          } else if (item?.type === NAV_MENU_TYPE.subspace) {
+            router.push(item?.pathname);
+          }
         }}
       />
     );
