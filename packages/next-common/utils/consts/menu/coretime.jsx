@@ -1,4 +1,9 @@
-import { ArrowRight, MenuCoretime, MenuOverview } from "@osn/icons/subsquare";
+import {
+  ArrowRight,
+  MenuCoretime,
+  MenuOverview,
+  MenuHistory,
+} from "@osn/icons/subsquare";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export const coretimeMenu = {
@@ -14,6 +19,12 @@ export const coretimeMenu = {
       value: "overview",
       pathname: "/coretime",
       icon: <MenuOverview />,
+    },
+    {
+      name: "Sales",
+      value: "sales",
+      pathname: "/coretime/sales",
+      icon: <MenuHistory />,
     },
   ],
 };
