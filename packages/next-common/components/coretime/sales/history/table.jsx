@@ -8,8 +8,10 @@ import { useState } from "react";
 
 export default function SalesHistoryTable() {
   const { decimals, symbol } = useChainSettings();
-  const [totalCount, setTotalCount] = useState(0);
-  const { page, component: pageComponent } = usePaginationComponent(
+  // TODO: setTotalCount
+  const [totalCount] = useState(0);
+  // TODO: page
+  const { component: pageComponent } = usePaginationComponent(
     totalCount,
     defaultPageSize,
   );
@@ -69,7 +71,6 @@ export default function SalesHistoryTable() {
         columnsDef={columns}
         data={data?.items}
       />
-
       {pageComponent}
     </div>
   );

@@ -23,7 +23,6 @@ let store;
 
 if (isCoretimeSupported) {
   chain = `${CHAIN}-coretime`;
-  // TODO: get store
   store = createStore({
     chain,
     reducer: commonReducers,
