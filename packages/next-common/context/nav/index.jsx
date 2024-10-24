@@ -1,4 +1,4 @@
-import { find } from "lodash-es";
+import { find, some } from "lodash-es";
 import { CACHE_KEY, NAV_MENU_TYPE } from "next-common/utils/constants";
 import { getMainMenu } from "next-common/utils/consts/menu";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
@@ -77,7 +77,14 @@ export function useNavMenuType() {
 }
 function NavMenuTypeProvider({ pathname, children }) {
   const getMatchedMenuType = useCallback((p) => {
-    const matchedMenu = find(menu, { pathname: p });
+    const matchedMenu = find(menu, (m) => {
+      let matched = m.pathname === p;
+      if (!matched && m?.items?.length) {
+        matched = some(m?.items, { pathname: p });
+      }
+
+      return matched;
+    });
     if (matchedMenu?.type === NAV_MENU_TYPE.subspace) {
       return {
         type: NAV_MENU_TYPE.subspace,
