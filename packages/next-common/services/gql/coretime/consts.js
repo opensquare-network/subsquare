@@ -45,3 +45,39 @@ export const GET_CORETIME_SALE_RENEWALS = gql`
     }
   }
 `;
+
+// TODO: isFinal
+export const GET_CORETIME_SALES = gql`
+  query MyQuery($limit: Int!, $offset: Int!) {
+    coretimeSales(limit: $limit, offset: $offset) {
+      limit
+      offset
+      total
+      items {
+        id
+        isFinal
+        endIndexer {
+          blockHash
+          blockHeight
+          blockTime
+          chain
+          eventIndex
+          extrinsicIndex
+        }
+        initIndexer {
+          blockHash
+          blockHeight
+          blockTime
+          chain
+          eventIndex
+          extrinsicIndex
+        }
+        info {
+          regionBegin
+          regionEnd
+        }
+        totalRevenue
+      }
+    }
+  }
+`;
