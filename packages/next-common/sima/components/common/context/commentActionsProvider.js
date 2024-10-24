@@ -21,6 +21,7 @@ export function SimaProposalCommentActionsProvider({ children }) {
   return (
     <CommentActionsContext.Provider
       value={{
+        supportSima: true,
         getComment,
         createPostComment,
         createCommentReply,

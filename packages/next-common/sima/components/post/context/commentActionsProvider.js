@@ -17,6 +17,7 @@ export function DiscussionCommentActionsProvider({ children }) {
   return (
     <CommentActionsContext.Provider
       value={{
+        supportSima: true,
         getComment,
         createPostComment,
         createCommentReply,

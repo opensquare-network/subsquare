@@ -11,8 +11,9 @@ import { useMyProxied } from "next-common/context/proxy";
 import Tooltip from "../tooltip";
 import tw from "tailwind-styled-components";
 import Loading from "../loading";
-import { addressEllipsis, isSameAddress } from "next-common/utils";
+import { addressEllipsis, cn, isSameAddress } from "next-common/utils";
 import { useMemo } from "react";
+import { noop } from "lodash-es";
 
 const DisabledAccountItemWrapper = tw.div`
   flex flex-col gap-[12px] p-[12px] pr-[16px]
@@ -29,7 +30,12 @@ function AccountDisplayWithArrow({ account }) {
   return (
     <div className="flex gap-[12px] items-center">
       <Account account={account} showFullAddress />
-      <ArrowRight className="w-[20px] h-[20px] [&_path]:stroke-textTertiary group-hover:[&_path]:stroke-textSecondary" />
+      <ArrowRight
+        className={cn(
+          "w-[20px] h-[20px]",
+          "[&_path]:stroke-textTertiary group-hover:[&_path]:stroke-textSecondary",
+        )}
+      />
     </div>
   );
 }
@@ -44,7 +50,13 @@ function AccountDisplay({ account }) {
 
 function ProxyHint({ proxyType }) {
   return (
-    <div className="mt-[12px] pt-[12px] pl-[52px] border-neutral300 border-t text12Medium text-textSecondary">
+    <div
+      className={cn(
+        "mt-[12px] pt-[12px] pl-[52px]",
+        "border-neutral300 border-t",
+        "text12Medium text-textSecondary",
+      )}
+    >
       Proxy type: {proxyType}
     </div>
   );
@@ -110,9 +122,8 @@ function OriginAddress() {
   );
 }
 
-function ProxyAddress({ proxyInfo }) {
-  const onClose = usePopupOnClose();
-  const { signerAccount, setProxyAddress } = useSignerContext();
+function ProxyAddress({ disabled, proxyInfo, onClick = noop }) {
+  const { signerAccount } = useSignerContext();
   const extensionAccounts = useExtensionAccounts();
 
   const account = useMemo(() => {
@@ -129,22 +140,18 @@ function ProxyAddress({ proxyInfo }) {
     };
   }, [proxyInfo, extensionAccounts, signerAccount]);
 
-  const disabled = signerAccount.proxyAddress === proxyInfo.delegator;
-
   return (
     <ProxyAccountItem
       disabled={disabled}
       account={account}
       proxyType={proxyInfo.proxyType}
-      onClick={() => {
-        setProxyAddress(proxyInfo.delegator);
-        onClose();
-      }}
+      onClick={onClick}
     />
   );
 }
 
-function ProxiedAccounts() {
+export function ProxiedAccounts({ selected, onSelect = noop }) {
+  const onClose = usePopupOnClose();
   const { proxies, isLoading } = useMyProxied();
 
   let proxyList = null;
@@ -165,7 +172,15 @@ function ProxiedAccounts() {
     proxyList = (
       <div className="flex flex-col gap-[12px]">
         {proxies.map((proxy, index) => (
-          <ProxyAddress key={index} proxyInfo={proxy} />
+          <ProxyAddress
+            key={index}
+            proxyInfo={proxy}
+            disabled={selected === proxy.delegator}
+            onClick={() => {
+              onSelect(proxy.delegator);
+              onClose();
+            }}
+          />
         ))}
       </div>
     );
@@ -183,11 +198,16 @@ function ProxiedAccounts() {
 }
 
 export default function SwitchSignerPopup({ onClose }) {
+  const { signerAccount, setProxyAddress } = useSignerContext();
+
   return (
     <Popup title="Select Address" className="w-[640px]" onClose={onClose}>
       <div className="flex flex-col gap-[24px]">
         <OriginAddress />
-        <ProxiedAccounts />
+        <ProxiedAccounts
+          selected={signerAccount.proxyAddress}
+          onSelect={setProxyAddress}
+        />
       </div>
     </Popup>
   );
