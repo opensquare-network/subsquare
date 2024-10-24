@@ -46,13 +46,6 @@ export default function SalesHistoryTable() {
       },
     },
     {
-      name: "",
-      className: "w-40",
-      render() {
-        return <div></div>;
-      },
-    },
-    {
       name: "Total Revenue",
       className: "text-right w-40",
       render() {
