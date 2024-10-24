@@ -15,7 +15,7 @@ import queryCoretimeConfiguration from "next-common/services/gql/coretime/config
 import queryCoretimeStatus from "next-common/services/gql/coretime/status";
 import CoretimeCommonProvider from "next-common/context/coretime/common";
 import useLoopCoretimeScanHeight from "next-common/hooks/coretime/useLoopCoretimeScanHeight";
-import SubspaceProvider from "next-common/context/subspace";
+import RelayInfoProvider from "next-common/context/relayInfo";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -36,7 +36,7 @@ export default function CoretimePage() {
   }
 
   return (
-    <SubspaceProvider>
+    <RelayInfoProvider>
       <Provider store={store}>
         <ChainProvider chain={chain}>
           <ApiProvider>
@@ -48,7 +48,7 @@ export default function CoretimePage() {
           </ApiProvider>
         </ChainProvider>
       </Provider>
-    </SubspaceProvider>
+    </RelayInfoProvider>
   );
 }
 

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 export const SubspaceContext = createContext({});
 
-export default function SubspaceProvider({ children }) {
+export default function RelayInfoProvider({ children }) {
   const height = useSelector(chainOrScanHeightSelector);
 
   return (
@@ -18,7 +18,7 @@ export default function SubspaceProvider({ children }) {
   );
 }
 
-export function useParentHeight() {
+export function useRelayHeight() {
   const { height } = useContext(SubspaceContext);
   return height;
 }
