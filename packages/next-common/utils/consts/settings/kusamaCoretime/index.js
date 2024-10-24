@@ -12,6 +12,7 @@ const kusamaCoretime = {
   description:
     "A revolutionary approach to accessing the right amount of blockspace for every stage of growth.",
   avatar: ProjectIconKusamaCoretime,
+  darkAvatar: ProjectIconKusamaCoretime,
   endpoints: [
     {
       name: "Parity",

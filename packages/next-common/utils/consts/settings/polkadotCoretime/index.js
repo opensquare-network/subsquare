@@ -12,6 +12,7 @@ const polkadotCoretime = {
   description:
     "A revolutionary approach to accessing the right amount of blockspace for every stage of growth.",
   avatar: ProjectIconPolkadotCoretime,
+  darkAvatar: ProjectIconPolkadotCoretime,
   endpoints: [
     {
       name: "Parity",
