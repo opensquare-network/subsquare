@@ -6,8 +6,8 @@ export default function PhaseItem() {
   const { phase, isLoading } = useCoretimeSalePhase();
 
   return (
-      <SummaryItem title="Current Phase">
-        <div>{isLoading ? <FieldLoading/> : phase}</div>
-      </SummaryItem>
-    );
+    <SummaryItem title="Current Phase">
+      <div>{isLoading ? <FieldLoading /> : phase}</div>
+    </SummaryItem>
+  );
 }

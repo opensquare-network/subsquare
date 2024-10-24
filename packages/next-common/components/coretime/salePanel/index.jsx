@@ -1,5 +1,6 @@
 import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import Divider from "../../styled/layout/divider";
+import CoretimeSalePanelChartPeriodProgress from "./chart/periodProgress";
 import CoretimeSaleSummary from "./summary";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 
@@ -14,8 +15,12 @@ export default function CoretimeSalePanel() {
 
       <hr className="border-dashed border-neutral300 my-4" />
 
-      <div className="h-48 bg-neutral200">
-        <div className="flex justify-center items-center h-full">chart</div>
+      <div>
+        <div className="h-48 bg-neutral200">
+          <div className="flex justify-center items-center h-full">chart</div>
+        </div>
+
+        <CoretimeSalePanelChartPeriodProgress className="mt-2" />
       </div>
     </NeutralPanel>
   );
