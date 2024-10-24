@@ -3,6 +3,7 @@ import { hexToString } from "@polkadot/util";
 import React from "react";
 import { MarkdownPreviewer } from "@osn/previewer";
 import styled from "styled-components";
+import { cn } from "next-common/utils";
 
 const RemarkWrapper = styled.div`
   .markdown-body {
@@ -66,12 +67,19 @@ export default function extractRemarkMetaFields(call = {}) {
     }
 
     data.push([
-      key,
-      <RemarkWrapper key={`remark-${i}`}>
-        <MarkdownPreviewer
-          content={splitMarkdownBlockLevels(remarks[i] || "")}
-        />
-      </RemarkWrapper>,
+      <div
+        key={key}
+        className={cn("flex overflow-x-auto", "max-sm:flex-col max-sm:gap-2")}
+      >
+        <div className="text-textSecondary text14Medium w-40 min-w-[160px]">
+          Remark
+        </div>
+        <RemarkWrapper>
+          <MarkdownPreviewer
+            content={splitMarkdownBlockLevels(remarks[i] || "")}
+          />
+        </RemarkWrapper>
+      </div>,
     ]);
   }
 
