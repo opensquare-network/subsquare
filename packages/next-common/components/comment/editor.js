@@ -5,7 +5,7 @@ import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
 import { useMountedState } from "react-use";
 import IdentityOrAddr from "../IdentityOrAddr";
-import SplitCommentButton from "../splitCommentButton";
+import MaybeSplitCommentButton from "../maybeSplitCommentButton";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useChain } from "../../context/chain";
 import { noop } from "lodash-es";
@@ -15,6 +15,8 @@ import { useCommentActions } from "next-common/sima/context/commentActions";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import Tooltip from "../tooltip";
+import { useDetailType } from "next-common/context/page";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -36,6 +38,25 @@ const ButtonWrapper = styled(Flex)`
 
 function escapeLinkText(text) {
   return text.replace(/\\/g, "\\\\").replace(/([[\]])/g, "\\$1");
+}
+
+function useIsSima(comment) {
+  const post = usePost();
+  const type = useDetailType();
+  const { supportSima } = useCommentActions();
+
+  let isSima = false;
+  if (comment) {
+    isSima = comment.dataSource === "sima";
+  } else {
+    if (type === detailPageCategory.POST) {
+      isSima = post?.dataSource === "sima";
+    } else {
+      isSima = supportSima;
+    }
+  }
+
+  return isSima;
 }
 
 function CommentEditor(
@@ -63,6 +84,8 @@ function CommentEditor(
   const isMounted = useMountedState();
   const { createPostComment, createCommentReply, updateComment } =
     useCommentActions();
+
+  const isSima = useIsSima(comment);
 
   const createComment = async (realAddress) => {
     if (!isMounted()) {
@@ -197,8 +220,10 @@ function CommentEditor(
           </SecondaryButton>
         )}
         <Tooltip content={isEmpty ? "Cannot submit empty content" : ""}>
-          <SplitCommentButton
-            action={isEdit ? "Update" : isReply ? "Reply" : "Comment"}
+          <MaybeSplitCommentButton
+            isSima={isSima}
+            isEdit={isEdit}
+            isReply={isReply}
             loading={loading}
             disabled={isEmpty}
             onClickComment={() => (isEdit ? editComment() : createComment())}

@@ -3,10 +3,10 @@ import SplitMenuButton from "../splitMenuButton";
 import SelectProxyAccountPopup from "../selectProxyAccountPopup";
 import { useState } from "react";
 
-export default function SplitCommentButton({
+export default function SplitProxyMenuButton({
   action,
-  onClickComment,
-  onClickCommentAsProxy,
+  onClick,
+  onClickAsProxy,
   ...props
 }) {
   const [isSelectProxyAccountPopupOpen, setIsSelectProxyAccountPopupOpen] =
@@ -16,7 +16,7 @@ export default function SplitCommentButton({
     <>
       <SplitMenuButton
         {...props}
-        onClick={onClickComment}
+        onClick={onClick}
         dropdownMenuItems={[
           {
             icon: (
@@ -36,7 +36,7 @@ export default function SplitCommentButton({
       {isSelectProxyAccountPopupOpen && (
         <SelectProxyAccountPopup
           onClose={() => setIsSelectProxyAccountPopupOpen(false)}
-          onSelect={onClickCommentAsProxy}
+          onSelect={onClickAsProxy}
         />
       )}
     </>
