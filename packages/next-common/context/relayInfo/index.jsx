@@ -2,23 +2,23 @@ import chainOrScanHeightSelector from "next-common/store/reducers/selectors/heig
 import { createContext, useContext } from "react";
 import { useSelector } from "react-redux";
 
-export const SubspaceContext = createContext({});
+const RelayInfoContext = createContext({});
 
 export default function RelayInfoProvider({ children }) {
   const height = useSelector(chainOrScanHeightSelector);
 
   return (
-    <SubspaceContext.Provider
+    <RelayInfoContext.Provider
       value={{
         height,
       }}
     >
       {children}
-    </SubspaceContext.Provider>
+    </RelayInfoContext.Provider>
   );
 }
 
 export function useRelayHeight() {
-  const { height } = useContext(SubspaceContext);
+  const { height } = useContext(RelayInfoContext);
   return height;
 }
