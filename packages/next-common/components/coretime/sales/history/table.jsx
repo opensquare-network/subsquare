@@ -1,75 +1,59 @@
 import { MapDataList } from "next-common/components/dataList";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
-import { toPrecision } from "next-common/utils";
 import { defaultPageSize } from "next-common/utils/constants";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useCoretimeQuery } from "next-common/hooks/apollo";
+import { GET_CORETIME_SALES } from "next-common/services/gql/coretime/consts";
+import {
+  IDColumn,
+  regionBeginColumn,
+  regionEndColumn,
+  timeRangeColumn,
+  totalRevenueColumn,
+  actionColumn,
+} from "./columns";
 
 export default function SalesHistoryTable() {
-  const { decimals, symbol } = useChainSettings();
-  // TODO: setTotalCount
-  const [totalCount] = useState(0);
-  // TODO: page
-  const { component: pageComponent } = usePaginationComponent(
+  const [totalCount, setTotalCount] = useState(0);
+  const { page, component: pageComponent } = usePaginationComponent(
     totalCount,
     defaultPageSize,
   );
 
-  // TODO: query data
-  const data = {};
+  const { data, loading } = useCoretimeQuery(GET_CORETIME_SALES, {
+    variables: {
+      offset: page - 1,
+      limit: defaultPageSize,
+    },
+  });
 
+  const { items = [], total = 0 } = data?.coretimeSales || {};
+
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    setTotalCount(total);
+  }, [total, loading]);
+
+  // TODO: responsive columns
   const columns = [
-    {
-      name: "ID",
-      className: "w-[120px]",
-      render() {
-        return <div></div>;
-      },
-    },
-    {
-      name: "Region Begin",
-      className: "w-40",
-      render() {
-        return <div></div>;
-      },
-    },
-    {
-      name: "Region End",
-      className: "w-40",
-      render() {
-        return <div></div>;
-      },
-    },
-    {
-      name: "Time Range",
-      render() {
-        return <div></div>;
-      },
-    },
-    {
-      name: "Total Revenue",
-      className: "text-right w-40",
-      render() {
-        return (
-          <div>
-            <ValueDisplay
-              value={toPrecision(10000000, decimals)}
-              symbol={symbol}
-            />
-          </div>
-        );
-      },
-    },
+    IDColumn,
+    regionBeginColumn,
+    regionEndColumn,
+    timeRangeColumn,
+    totalRevenueColumn,
+    actionColumn,
   ];
 
   return (
     <div>
       <MapDataList
-        loading={false}
+        loading={loading}
         noDataText="No sales history"
         columnsDef={columns}
-        data={data?.items}
+        data={items}
       />
       {pageComponent}
     </div>
