@@ -271,6 +271,15 @@ export default function useBreadcrumbs() {
         content: `#${id}`,
       },
     ];
+  } else if (detailPageCategory.CORETIME_SALES === type) {
+    return [
+      {
+        content: "Sales",
+      },
+      {
+        content: `#${id}`,
+      },
+    ];
   }
 
   return null;
