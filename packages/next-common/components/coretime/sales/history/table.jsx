@@ -69,7 +69,7 @@ export default function SalesHistoryTable() {
     },
   });
 
-  const { items = [], total = 0 } = data?.coretimeSales || {};
+  const { items = [], total = 0 } = data?.coretimeHistorySales || {};
 
   const dataSource = items.filter((item) => item?.isFinal);
 
