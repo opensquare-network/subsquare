@@ -7,9 +7,79 @@ import { Conviction } from "next-common/utils/referendumCommon";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePageProps } from "../../../context/page";
 import { getGov2BeenDelegatedListByAddress } from "../../gov2/gov2ReferendumVote";
-import { useMountedState } from "react-use";
+import { useAsync, useMountedState } from "react-use";
 import useRealAddress from "../useRealAddress";
 import { useContextApi } from "next-common/context/api";
+import nextApi from "next-common/services/nextApi";
+
+export function useServerAllBeenDelegatedList(address) {
+  const { tracks = [] } = usePageProps();
+  const { value, loading } = useAsync(async () => {
+    const { result } = await nextApi.fetch(
+      `users/${address}/referenda/delegator`,
+    );
+    return result || [];
+  }, [address, tracks]);
+
+  const trackGroupedData = useMemo(() => {
+    const trackGroups = {};
+    for (const item of value || []) {
+      trackGroups[item.trackId] = trackGroups[item.trackId] || [];
+      trackGroups[item.trackId].push(item);
+    }
+    return Object.entries(trackGroups).map(([trackId, beenDelegated]) => {
+      // console.log({ trackId, beenDelegated });
+      const track = tracks.find((t) => t.id === parseInt(trackId));
+      return {
+        track,
+        beenDelegated: beenDelegated.map((i) => ({
+          conviction: i.conviction,
+          balance: i.balance,
+          trackId: i.trackId,
+          delegator: i.account,
+          target: i.delegatee,
+          votes: i.votes,
+        })),
+        totalVotes: beenDelegated
+          .reduce((acc, i) => acc.plus(i.votes), new BigNumber(0))
+          .toString(),
+        totalBalance: beenDelegated
+          .reduce((acc, i) => acc.plus(i.balance), new BigNumber(0))
+          .toString(),
+      };
+    });
+  }, [value, tracks]);
+
+  return {
+    value: trackGroupedData,
+    loading,
+  };
+}
+
+export function useMaybeServerAllBeenDelegatedList(address) {
+  const { value: serverData, loading: isServerDataLoading } =
+    useServerAllBeenDelegatedList(address);
+
+  const {
+    beenDelegatedList,
+    isLoading: isOnchainDataLoading,
+    refresh,
+  } = useAllBeenDelegatedList(address);
+
+  if (!isOnchainDataLoading) {
+    return {
+      beenDelegatedList,
+      isLoading: false,
+      refresh,
+    };
+  }
+
+  return {
+    beenDelegatedList: serverData,
+    isLoading: isServerDataLoading,
+    refresh,
+  };
+}
 
 /**
  * @description returns all been delegated
@@ -19,10 +89,7 @@ export function useAllBeenDelegatedList(address) {
   const isMounted = useMountedState();
   const { tracks = [] } = usePageProps();
   const [beenDelegatedList, setBeenDelegatedList] = useState(null);
-  const isLoading = useMemo(
-    () => isNil(beenDelegatedList),
-    [beenDelegatedList],
-  );
+  const isLoading = isNil(beenDelegatedList);
 
   const getAllBeenDelegated = useCallback(async () => {
     if (!api || !address) {
@@ -90,4 +157,9 @@ export function useAllBeenDelegatedList(address) {
 export function useAllMyBeenDelegatedList() {
   const realAddress = useRealAddress();
   return useAllBeenDelegatedList(realAddress);
+}
+
+export function useMaybeServerAllMyBeenDelegatedList() {
+  const realAddress = useRealAddress();
+  return useMaybeServerAllBeenDelegatedList(realAddress);
 }
