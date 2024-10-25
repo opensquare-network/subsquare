@@ -15,7 +15,7 @@ import {
   mobileEndTimeColumns,
 } from "./columns";
 
-function ResponsiveTable({ loading, items }) {
+function ResponsiveTable({ loading, dataSource }) {
   const desktopColumns = [
     idColumn,
     regionBeginColumn,
@@ -42,14 +42,14 @@ function ResponsiveTable({ loading, items }) {
         loading={loading}
         noDataText="No sales history"
         columnsDef={desktopColumns}
-        data={items}
+        data={dataSource}
       />
       <MapDataList
         className="hidden max-sm:block"
         loading={loading}
         noDataText="No sales history"
         columnsDef={mobileColumns}
-        data={items}
+        data={dataSource}
       />
     </>
   );
@@ -71,6 +71,8 @@ export default function SalesHistoryTable() {
 
   const { items = [], total = 0 } = data?.coretimeSales || {};
 
+  const dataSource = items.filter((item) => item?.isFinal);
+
   useEffect(() => {
     if (loading) {
       return;
@@ -81,7 +83,7 @@ export default function SalesHistoryTable() {
 
   return (
     <div>
-      <ResponsiveTable items={items} loading={loading} />
+      <ResponsiveTable dataSource={dataSource} loading={loading} />
       {pageComponent}
     </div>
   );
