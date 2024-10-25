@@ -1,12 +1,15 @@
 import { cn } from "next-common/utils";
 import { Line } from "react-chartjs-2";
 import "next-common/components/charts/globalConfig";
+import { useThemeSetting } from "next-common/context/theme";
 
 function Statistics({ className = "" }) {
+  const theme = useThemeSetting();
+
   function createGradient(ctx) {
     const gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
-    gradient.addColorStop(0, "rgba(255, 0, 125, 0.1)");
-    gradient.addColorStop(1, "rgba(255, 0, 125, 0.2)");
+    gradient.addColorStop(0, theme.theme100);
+    gradient.addColorStop(1, theme.theme300);
     return gradient;
   }
 
@@ -31,26 +34,26 @@ function Statistics({ className = "" }) {
         data: [1, 45],
         showLine: false,
         pointRadius: 4,
-        pointBackgroundColor: "rgb(255, 0, 125, 0.5)",
-        pointBorderColor: "rgb(255, 0, 125, 0.5)",
+        pointBackgroundColor: theme.theme300,
+        pointBorderColor: theme.theme300,
         pointBorderWidth: 0,
         pointHoverRadius: 3,
-        pointHoverBackgroundColor: "rgb(255, 0, 125, 0.5)",
-        pointHoverBorderColor: "rgb(255, 0, 125, 0.5)",
+        pointHoverBackgroundColor: theme.theme300,
+        pointHoverBorderColor: theme.theme300,
         pointHoverBorderWidth: 0,
         pointHitRadius: 10,
       },
       {
         data: [null, null, 100, 80, 60, 40, 30, 20, 15, 15, 2],
-        borderColor: "rgb(255, 0, 125)",
+        borderColor: theme.theme500,
         borderWidth: 2,
         pointRadius: 4,
-        pointBackgroundColor: "rgb(255, 0, 125)",
-        pointBorderColor: "rgb(255, 0, 125)",
+        pointBackgroundColor: theme.theme500,
+        pointBorderColor: theme.theme500,
         pointBorderWidth: 0,
         pointHoverRadius: 3,
-        pointHoverBackgroundColor: "rgb(255, 0, 125)",
-        pointHoverBorderColor: "rgb(255, 0, 125)",
+        pointHoverBackgroundColor: theme.theme500,
+        pointHoverBorderColor: theme.theme500,
         pointHoverBorderWidth: 0,
         pointHitRadius: 10,
       },
@@ -97,7 +100,7 @@ function Statistics({ className = "" }) {
             type: "line",
             xMin: 2,
             xMax: 2,
-            borderColor: "rgba(255, 0, 125, 0.5)",
+            borderColor: theme.neutral500,
             borderWidth: 1,
             borderDash: [5, 5],
             drawTime: "beforeDatasetsDraw",
