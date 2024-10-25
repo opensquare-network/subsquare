@@ -1,4 +1,3 @@
-import { LinkChatgpt } from "@osn/icons/subsquare";
 import { MarkdownPreviewer } from "@osn/previewer";
 import { usePost } from "next-common/context/post";
 
