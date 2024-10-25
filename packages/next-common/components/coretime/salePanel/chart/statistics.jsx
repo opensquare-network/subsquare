@@ -28,6 +28,19 @@ function Statistics({ className = "" }) {
         pointHitRadius: 0,
       },
       {
+        data: [1, 45],
+        showLine: false,
+        pointRadius: 4,
+        pointBackgroundColor: "rgb(255, 0, 125, 0.5)",
+        pointBorderColor: "rgb(255, 0, 125, 0.5)",
+        pointBorderWidth: 0,
+        pointHoverRadius: 3,
+        pointHoverBackgroundColor: "rgb(255, 0, 125, 0.5)",
+        pointHoverBorderColor: "rgb(255, 0, 125, 0.5)",
+        pointHoverBorderWidth: 0,
+        pointHitRadius: 10,
+      },
+      {
         data: [null, null, 100, 80, 60, 40, 30, 20, 15, 15, 2],
         borderColor: "rgb(255, 0, 125)",
         borderWidth: 2,
@@ -66,10 +79,10 @@ function Statistics({ className = "" }) {
         display: false,
       },
       tooltip: {
-        mode: "index",
-        intersect: false,
         filter(tooltipItem) {
-          return tooltipItem.datasetIndex === 1;
+          return (
+            tooltipItem.datasetIndex === 1 || tooltipItem.datasetIndex === 2
+          );
         },
         displayColors: false,
         callbacks: {
