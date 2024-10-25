@@ -47,18 +47,16 @@ export const totalRevenueColumn = {
   },
 };
 
-// TODO: view details
 export const actionColumn = {
   name: "",
   width: 80,
   className: "text-right",
-  render() {
-    // (data, { resolveActionColLink })
-    // const link = resolveActionColLink?.(data);
+  render(data) {
+    const link = `/coretime/sales/${data?.id}`;
 
     return (
       <Tooltip content="View Detail">
-        <Link href={""}>
+        <Link href={link}>
           <SecondaryButton size="small" className="w-7 p-0">
             <ArrowRight className="w-4 h-4" />
           </SecondaryButton>
