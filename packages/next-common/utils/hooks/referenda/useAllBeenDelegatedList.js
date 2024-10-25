@@ -16,7 +16,7 @@ export function useServerAllBeenDelegatedList(address) {
   const { tracks = [] } = usePageProps();
   const { value, loading } = useAsync(async () => {
     const { result } = await nextApi.fetch(
-      `users/${address}/referenda/delegator`,
+      `users/${address}/referenda/delegators`,
     );
     return result || [];
   }, [address, tracks]);
