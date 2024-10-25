@@ -3,7 +3,7 @@ import { defaultPageSize } from "next-common/utils/constants";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { useEffect, useState } from "react";
 import { useCoretimeQuery } from "next-common/hooks/apollo";
-import { GET_CORETIME_SALES } from "next-common/services/gql/coretime/consts";
+import { GET_CORETIME_HISTORY_SALES } from "next-common/services/gql/coretime/consts";
 import {
   idColumn,
   regionBeginColumn,
@@ -62,7 +62,7 @@ export default function SalesHistoryTable() {
     defaultPageSize,
   );
 
-  const { data, loading } = useCoretimeQuery(GET_CORETIME_SALES, {
+  const { data, loading } = useCoretimeQuery(GET_CORETIME_HISTORY_SALES, {
     variables: {
       offset: page - 1,
       limit: defaultPageSize,

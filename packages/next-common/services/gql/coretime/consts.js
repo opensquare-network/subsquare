@@ -47,7 +47,7 @@ export const GET_CORETIME_SALE_RENEWALS = gql`
 `;
 
 // TODO: isFinal
-export const GET_CORETIME_SALES = gql`
+export const GET_CORETIME_HISTORY_SALES = gql`
   query MyQuery($limit: Int!, $offset: Int!) {
     coretimeHistorySales(limit: $limit, offset: $offset) {
       limit
