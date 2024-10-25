@@ -28,7 +28,6 @@ export function useServerAllBeenDelegatedList(address) {
       trackGroups[item.trackId].push(item);
     }
     return Object.entries(trackGroups).map(([trackId, beenDelegated]) => {
-      // console.log({ trackId, beenDelegated });
       const track = tracks.find((t) => t.id === parseInt(trackId));
       return {
         track,
