@@ -6,8 +6,7 @@ function Statistics({ className = "" }) {
   function createGradient(ctx) {
     const gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
     gradient.addColorStop(0, "rgba(255, 0, 125, 0.1)");
-    gradient.addColorStop(0.5, "rgba(255, 0, 125, 0.2)");
-    gradient.addColorStop(1, "rgba(255, 0, 125, 0.3)");
+    gradient.addColorStop(1, "rgba(255, 0, 125, 0.2)");
     return gradient;
   }
 
@@ -22,6 +21,7 @@ function Statistics({ className = "" }) {
           const { ctx } = chart;
           return createGradient(ctx);
         },
+        borderWidth: 0,
         pointRadius: 0,
         pointHoverRadius: 0,
         hoverBorderWidth: 0,
@@ -45,11 +45,11 @@ function Statistics({ className = "" }) {
   };
 
   const options = {
+    clip: false,
     responsive: true,
     maintainAspectRatio: false,
-    interaction: {
-      mode: "index",
-      intersect: false,
+    animation: {
+      duration: 0,
     },
     scales: {
       x: {
