@@ -5,9 +5,8 @@ import { useState } from "react";
 export function useSpendLocalTreasuryButton() {
   const [showSpendLocalTreasuryPopup, setShowSpendLocalTreasuryPopup] =
     useState(false);
-  const { treasuryProposalTracks } = useChainSettings();
 
-  const localTreasuryButton = !!treasuryProposalTracks && (
+  const localTreasuryButton = (
     <ChoiceButton
       name="Treasury proposal local"
       description="Create a treasury spend of native token that is locally available"
