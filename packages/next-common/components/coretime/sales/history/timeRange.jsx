@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import Tooltip from "next-common/components/tooltip";
+import ExplorerLink from "next-common/components/links/explorerLink";
 
 function formatDateTime(time) {
   return dayjs(time).format("YYYY-MM-DD HH:mm:ss");
@@ -13,6 +14,16 @@ function formatBlockHeight(height) {
   return "#" + height?.toLocaleString();
 }
 
+function TimeRangeLink({ indexer }) {
+  return (
+    <div className="inline hover:underline">
+      <ExplorerLink indexer={indexer} style={{ display: "inline" }}>
+        {formatDate(indexer?.blockTime)}
+      </ExplorerLink>
+    </div>
+  );
+}
+
 export function CoretimeSalesHistoryTimeRange({ data = {} }) {
   const { initIndexer = {}, endIndexer = {} } = data;
 
@@ -22,7 +33,8 @@ export function CoretimeSalesHistoryTimeRange({ data = {} }) {
       content={
         <div>
           <div className="text12Bold">
-            {formatBlockHeight(initIndexer.blockHeight)} -{" "}
+            {formatBlockHeight(initIndexer.blockHeight)}
+            {" - "}
             {formatBlockHeight(endIndexer?.blockHeight)}
           </div>
 
@@ -36,7 +48,9 @@ export function CoretimeSalesHistoryTimeRange({ data = {} }) {
         </div>
       }
     >
-      {formatDate(initIndexer.blockTime)} - {formatDate(endIndexer?.blockTime)}
+      <TimeRangeLink indexer={initIndexer} />
+      {" - "}
+      <TimeRangeLink indexer={endIndexer} />
     </Tooltip>
   );
 }
@@ -44,7 +58,7 @@ export function CoretimeSalesHistoryTimeRange({ data = {} }) {
 export function CoretimeSalesHistoryTimeBlock({ indexer = {} }) {
   return (
     <div className="max-sm:text-right">
-      <div>{formatDateTime(indexer?.blockTime)}</div>
+      <TimeRangeLink indexer={indexer} />
       <div className="text12Medium text-textSecondary">
         {formatBlockHeight(indexer?.blockHeight)}
       </div>
