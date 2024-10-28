@@ -25,6 +25,7 @@ export const coretimeMenu = {
       value: "sales",
       pathname: "/coretime/sales",
       icon: <MenuHistory />,
+      extraMatchNavMenuActivePathnames: ["/coretime/sales/[id]"],
     },
   ],
 };

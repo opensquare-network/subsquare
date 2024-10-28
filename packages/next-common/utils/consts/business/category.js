@@ -61,6 +61,7 @@ export const detailPageCategory = {
   OPEN_TECH_COMM_PROPOSAL: "open-techcomm/proposals",
   COMMUNITY_MOTION: "community-council/motions",
   COMMUNITY_TREASURY_PROPOSAL: "community-treasury/proposals",
+  CORETIME_SALES: "coretime/sales",
 };
 
 export default businessCategory;
