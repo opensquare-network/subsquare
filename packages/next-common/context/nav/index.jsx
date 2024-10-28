@@ -4,6 +4,7 @@ import { getMainMenu } from "next-common/utils/consts/menu";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { createContext, useCallback, useContext, useState } from "react";
 import { useIsomorphicLayoutEffect } from "react-use";
+import { useRouter } from "next/router";
 
 const NavCollapsedContext = createContext([]);
 const NavSubmenuVisibleContext = createContext([]);
@@ -78,7 +79,9 @@ export function useNavMenuType() {
   return useContext(NavMenuTypeContext);
 }
 function NavMenuTypeProvider({ pathname, children }) {
-  const firstPath = "/" + pathname.split("/").filter(Boolean)[0];
+  const router = useRouter();
+  const firstPath = "/" + router.asPath.split("/").filter(Boolean)[0];
+
   const getMatchedMenuType = useCallback(
     (p) => {
       const matchedMenu = find(menu, (m) => {
