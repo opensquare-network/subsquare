@@ -17,7 +17,8 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CoretimeSalesDetail from "next-common/components/detail/coretime/sales";
-import DetailLayout from "next-common/components/layout/DetailLayout";
+import BaseLayout from "next-common/components/layout/baseLayout";
+import { cn } from "next-common/utils";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -70,11 +71,13 @@ function CoretimeSalesDetailPageImpl() {
   };
 
   return (
-    <DetailLayout seoInfo={seoInfo}>
-      <div className="space-y-6">
-        <CoretimeSalesDetail />
+    <BaseLayout seoInfo={seoInfo}>
+      <div className="flex-1">
+        <div className={cn("px-6 py-6 mx-auto max-w-[1200px]", "max-sm:px-0")}>
+          <CoretimeSalesDetail />
+        </div>
       </div>
-    </DetailLayout>
+    </BaseLayout>
   );
 }
 
