@@ -19,6 +19,7 @@ import { PostProvider, usePost } from "next-common/context/post";
 import CoretimeSalesDetail from "next-common/components/detail/coretime/sales";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import { cn } from "next-common/utils";
+import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -74,6 +75,7 @@ function CoretimeSalesDetailPageImpl() {
     <BaseLayout seoInfo={seoInfo}>
       <div className="flex-1">
         <div className={cn("px-6 py-6 mx-auto max-w-[1200px]", "max-sm:px-0")}>
+          <Breadcrumbs />
           <CoretimeSalesDetail />
         </div>
       </div>

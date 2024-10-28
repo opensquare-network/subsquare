@@ -275,6 +275,7 @@ export default function useBreadcrumbs() {
     return [
       {
         content: "Sales",
+        path: "/coretime/sales",
       },
       {
         content: `#${id}`,
