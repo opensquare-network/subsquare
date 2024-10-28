@@ -4,11 +4,8 @@ import { TitleContainer } from "../../styled/containers/titleContainer";
 import SalesHistoryPurchases from "./purchases";
 import SalesHistoryRenewals from "./renewals";
 import { useState } from "react";
-import { usePageProps } from "next-common/context/page";
-import useCoretimeSalePhase, {
-  Phases,
-} from "next-common/context/coretime/hooks/useCoretimeSalePhase";
-import Loading from "next-common/components/loading";
+import useCoretimeSaleIsInterlude from "next-common/context/coretime/hooks/useCoretimeSaleIsInterlude";
+import useCoretimeSale from "next-common/context/coretime/sale/provider";
 
 function SalesHistoryWrapper({ children }) {
   return (
@@ -19,24 +16,21 @@ function SalesHistoryWrapper({ children }) {
   );
 }
 
-function SalesHistoryList({ phase }) {
-  const { coretimeSale } = usePageProps();
+function SalesHistoryList() {
+  const sale = useCoretimeSale();
+  const isInterludePhase = useCoretimeSaleIsInterlude();
 
-  const isInterludePhase = phase === Phases.Interlude;
-
-  const [activeTabLabel, setActiveTabLabel] = useState(
-    isInterludePhase ? "Purchases" : "Renewals",
-  );
+  const [activeTabLabel, setActiveTabLabel] = useState(isInterludePhase ?  "Renewals": "Purchases");
 
   const renewalsTabInfo = {
     label: "Renewals",
-    activeCount: coretimeSale?.renewalCount,
+    activeCount: sale?.renewalCount,
     content: <SalesHistoryRenewals />,
   };
 
   const purchasesTabInfo = {
     label: "Purchases",
-    activeCount: coretimeSale?.purchaseCount,
+    activeCount: sale?.purchaseCount,
     content: <SalesHistoryPurchases />,
   };
 
@@ -56,21 +50,9 @@ function SalesHistoryList({ phase }) {
 }
 
 export default function CoretimeSalesHistorySection() {
-  const { isLoading, phase } = useCoretimeSalePhase();
-
-  if (isLoading) {
-    return (
-      <SalesHistoryWrapper>
-        <div className="flex items-center justify-center">
-          <Loading size={20} />
-        </div>
-      </SalesHistoryWrapper>
-    );
-  }
-
   return (
     <SalesHistoryWrapper>
-      <SalesHistoryList phase={phase} />
+      <SalesHistoryList />
     </SalesHistoryWrapper>
   );
 }
