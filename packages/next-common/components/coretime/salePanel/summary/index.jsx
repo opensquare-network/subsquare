@@ -21,81 +21,82 @@ export default function CoretimeSaleSummary({ data }) {
   return (
     <div>
       <SummaryLayout>
-        <PriceItem />
-
-        <SummaryItem title="Available Cores">
-          {data?.info ? (
-            <div>
-              {data?.info?.coresSold}
-              <span className="text-textTertiary">
-                {" "}
-                / {data?.info?.coresOffered}
-              </span>
+        <SummaryItem>
+          <PriceItem />
+          <SummaryItem>
+            <div className="space-y-1 text12Medium text-textTertiary">
+              <Item
+                label="Total Revenue"
+                value={
+                  <ValueDisplay
+                    className="text-textPrimary"
+                    value={toPrecision(data?.totalRevenue, decimals)}
+                    symbol={symbol}
+                  />
+                }
+              />
+              <Item
+                label="↳ Renewal"
+                value={
+                  <ValueDisplay
+                    className="text-textPrimary"
+                    value={toPrecision(data?.renewalRevenue, decimals)}
+                    symbol={symbol}
+                  />
+                }
+              />
+              <Item
+                label="↳ Sale"
+                value={
+                  <ValueDisplay
+                    className="text-textPrimary"
+                    value={toPrecision(data?.purchaseRevenue, decimals)}
+                    symbol={symbol}
+                  />
+                }
+              />
             </div>
-          ) : (
-            <div className="text-textTertiary">-</div>
-          )}
+          </SummaryItem>
         </SummaryItem>
-
-        <PhaseItem />
-
-        <SummaryItem title="Sale Period">
-          <div>[time]</div>
-        </SummaryItem>
-
         <SummaryItem>
-          <div className="space-y-1 text12Medium text-textTertiary">
-            <Item
-              label="Total Revenue"
-              value={
-                <ValueDisplay
-                  className="text-textPrimary"
-                  value={toPrecision(data?.totalRevenue, decimals)}
-                  symbol={symbol}
-                />
-              }
-            />
-            <Item
-              label="↳ Renewal"
-              value={
-                <ValueDisplay
-                  className="text-textPrimary"
-                  value={toPrecision(data?.renewalRevenue, decimals)}
-                  symbol={symbol}
-                />
-              }
-            />
-            <Item
-              label="↳ Sale"
-              value={
-                <ValueDisplay
-                  className="text-textPrimary"
-                  value={toPrecision(data?.purchaseRevenue, decimals)}
-                  symbol={symbol}
-                />
-              }
-            />
-          </div>
+          <SummaryItem title="Available Cores">
+            {data?.info ? (
+              <div>
+                {data?.info?.coresSold}
+                <span className="text-textTertiary">
+                  {" "}
+                  / {data?.info?.coresOffered}
+                </span>
+              </div>
+            ) : (
+              <div className="text-textTertiary">-</div>
+            )}
+          </SummaryItem>
+          <SummaryItem>
+            <div className="space-y-1 text12Medium text-textTertiary">
+              <Item label="System Reserved" value="[0]" />
+              <Item label="Renewal" value={data?.renewalCount} />
+              <Item label="Sale" value={data?.purchaseCount} />
+            </div>
+          </SummaryItem>
         </SummaryItem>
-
         <SummaryItem>
-          <div className="space-y-1 text12Medium text-textTertiary">
-            <Item label="System Reserved" value="[0]" />
-            <Item label="Renewal" value={data?.renewalCount} />
-            <Item label="Sale" value={data?.purchaseCount} />
-          </div>
+          <PhaseItem />
+          <SummaryItem>
+            <div className="text12Medium">
+              <Item label="End in" value="[time]" />
+            </div>
+          </SummaryItem>
         </SummaryItem>
-
         <SummaryItem>
-          <div className="text12Medium">
-            <Item label="End in" value="[time]" />
-          </div>
-        </SummaryItem>
-
-        <SummaryItem>
-          <div className="space-y-1 text12Medium">
-            <Item label="End At" value="[time]" />
-          </div>
+          <SummaryItem title="Sale Period">
+            <div>[time]</div>
+          </SummaryItem>
+          <SummaryItem>
+            <div className="space-y-1 text12Medium">
+              <Item label="End At" value="[time]" />
+            </div>
+          </SummaryItem>
         </SummaryItem>
       </SummaryLayout>
     </div>
