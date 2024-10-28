@@ -78,7 +78,7 @@ export function useNavMenuType() {
   return useContext(NavMenuTypeContext);
 }
 function NavMenuTypeProvider({ pathname, children }) {
-  const firstPath = "/" + String(pathname)?.split("/").filter(Boolean)[0];
+  const firstPath = "/" + pathname?.split("/").filter(Boolean)[0];
 
   const getMatchedMenuType = useCallback((p) => {
     const matchedMenu = find(menu, (m) => {
