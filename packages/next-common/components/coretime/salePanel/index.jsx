@@ -2,12 +2,9 @@ import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import Divider from "../../styled/layout/divider";
 import CoretimeSaleSummary from "./summary";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
-import useSaleEnd from "next-common/context/coretime/hooks/useSaleEnd";
 
 export default function CoretimeSalePanel() {
   const coretimeSale = useCoretimeSale();
-  const saleEnd = useSaleEnd();
-  console.log("sale end", saleEnd);
 
   return (
     <NeutralPanel className="p-6 text-textPrimary">

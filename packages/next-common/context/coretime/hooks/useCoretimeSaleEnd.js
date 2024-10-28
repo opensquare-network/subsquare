@@ -11,7 +11,7 @@ function toEven(num) {
 }
 
 // note that the result is evaluated for active sale
-export default function useSaleEnd() {
+export default function useCoretimeSaleEnd() {
   const relayHeight = useRelayHeight();
   const sale = useCoretimeSale();
   const configuration = useCoretimeConfiguration();
