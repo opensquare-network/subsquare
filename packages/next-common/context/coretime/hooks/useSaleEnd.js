@@ -21,11 +21,11 @@ export default function useSaleEnd() {
     return {
       isLoading: false,
       indexer: endIndexer,
-    }
+    };
   } else if (isNil(coretimeHeight)) {
     return {
       isLoading: true,
-    }
+    };
   }
 
   const advanced = relayHeight + configuration.advanceNotice;
@@ -43,6 +43,6 @@ export default function useSaleEnd() {
     indexer: {
       blockHeight: toEven(coretimeHeight + coretimeBlocksGap),
       blockTime: null, // future block, we have to evaluate the time
-    }
-  }
+    },
+  };
 }
