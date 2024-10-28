@@ -1,10 +1,12 @@
 import React, { useCallback, useMemo } from "react";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
-import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import PopupWithSigner from "next-common/components/popupWithSigner";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
-export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
+function PopupContent({ votes }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const realAddress = signerAccount?.realAddress;
@@ -32,15 +34,21 @@ export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
     return tx;
   }, [api, relatedReferenda, realAddress]);
 
-  const title = relatedReferenda.length <= 0 ? "Unlock" : "Clear Expired Votes";
   return (
-    <SimpleTxPopup
-      title={title}
-      getTxFunc={getTxFunc}
-      onClose={onClose}
-      noSwitchSigner
-    >
+    <>
+      <SignerWithBalance noSwitchSigner />
       <RelatedReferenda relatedReferenda={relatedReferenda} />
-    </SimpleTxPopup>
+      <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
+    </>
+  );
+}
+
+export default function ClearExpiredDemocracyVotePopup({ votes, onClose }) {
+  const title = votes.length <= 0 ? "Unlock" : "Clear Expired Votes";
+
+  return (
+    <PopupWithSigner title={title} onClose={onClose}>
+      <PopupContent votes={votes} />
+    </PopupWithSigner>
   );
 }
