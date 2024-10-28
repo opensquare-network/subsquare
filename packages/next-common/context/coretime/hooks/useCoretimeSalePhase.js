@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { isNil } from "lodash-es";
 
-const Phases = Object.freeze({
+export const Phases = Object.freeze({
   Interlude: "Interlude",
   Leadin: "Leadin",
   FixedPrice: "Fixed Price",
@@ -12,7 +12,10 @@ const Phases = Object.freeze({
 export default function useCoretimeSalePhase() {
   const chainHeight = useSelector(chainOrScanHeightSelector);
   const sale = useCoretimeSale();
-  const { initIndexer: { blockHeight: initBlockHeight } = {}, info: { saleStart, leadinLength } = {} } = sale;
+  const {
+    initIndexer: { blockHeight: initBlockHeight } = {},
+    info: { saleStart, leadinLength } = {},
+  } = sale;
 
   const isLoading = isNil(chainHeight);
   if (sale.isFinal) {
@@ -30,7 +33,10 @@ export default function useCoretimeSalePhase() {
   let phase;
   if (chainHeight >= initBlockHeight && chainHeight <= saleStart) {
     phase = Phases.Interlude;
-  } else if (chainHeight > saleStart && chainHeight < saleStart + leadinLength) {
+  } else if (
+    chainHeight > saleStart &&
+    chainHeight < saleStart + leadinLength
+  ) {
     phase = Phases.Leadin;
   } else {
     phase = Phases.FixedPrice;
