@@ -14,6 +14,7 @@ const GET_CORETIME_CURRENT_SALE = gql`
         saleStart
         leadinLength
         price
+        endPrice
         regionBegin
         regionEnd
         idealCoresSold

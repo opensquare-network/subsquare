@@ -4,6 +4,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import PhaseItem from "next-common/components/coretime/salePanel/summary/phase";
+import PriceItem from "next-common/components/coretime/salePanel/summary/price";
 
 function Item({ label = "", value }) {
   return (
@@ -20,16 +21,7 @@ export default function CoretimeSaleSummary({ data }) {
   return (
     <div>
       <SummaryLayout>
-        <SummaryItem title="Current Price">
-          {data?.info?.price ? (
-            <ValueDisplay
-              value={toPrecision(10000000000, decimals)}
-              symbol={symbol}
-            />
-          ) : (
-            <div className="text-textTertiary">-</div>
-          )}
-        </SummaryItem>
+        <PriceItem />
 
         <SummaryItem title="Available Cores">
           {data?.info ? (
