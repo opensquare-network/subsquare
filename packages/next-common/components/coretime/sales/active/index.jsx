@@ -9,7 +9,7 @@ function ViewDetail() {
   const href = "/coretime";
 
   return (
-    <div className="flex justify-end pt-[8px]">
+    <div className="flex justify-end">
       <Link href={href} className="text-theme500 text14Medium">
         View Detail
       </Link>
@@ -25,6 +25,7 @@ function ActiveCoretimeSalePanel() {
       <h3 className="text16Bold">Coretime Sale #{coretimeSale.id}</h3>
       <Divider className="my-4" />
       <CoretimeSaleSummary data={coretimeSale} />
+      <Divider className="my-4" />
       <ViewDetail />
     </NeutralPanel>
   );
