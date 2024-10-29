@@ -60,7 +60,7 @@ function useShouldUseSima(toReplyComment) {
   return true;
 }
 
-function getReal(realAddress) {
+function getRealField(realAddress) {
   if (!realAddress) {
     return;
   }
@@ -114,14 +114,14 @@ function CommentEditor(
           comment,
           content,
           contentType,
-          getReal(realAddress),
+          getRealField(realAddress),
         );
       } else {
         result = await createPostComment(
           post,
           content,
           contentType,
-          getReal(realAddress),
+          getRealField(realAddress),
         );
       }
 
