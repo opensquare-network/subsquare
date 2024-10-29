@@ -92,17 +92,17 @@ export default function Account({ account, showFullAddress = false }) {
           <WalletIcon wallet={wallet} />
         )}
       </AvatarWrapper>
-      <NameWrapper>
+      <NameWrapper className="truncate">
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
         {identity && identity?.info?.status !== "NO_ID" ? (
           <>
             <Identity identity={identity} />
-            <div>{addressHint}</div>
+            <div className="truncate">{addressHint}</div>
           </>
         ) : (
           <>
             <div className="text-textPrimary">{account?.name}</div>
-            <div>{addressHint ?? "--"}</div>
+            <div className="truncate">{addressHint ?? "--"}</div>
           </>
         )}
       </NameWrapper>

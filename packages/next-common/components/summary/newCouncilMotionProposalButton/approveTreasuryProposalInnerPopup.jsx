@@ -18,8 +18,12 @@ import {
   useTreasuryPallet,
   useTreasuryProposalListUrl,
 } from "../../../context/treasury";
+import Tooltip from "next-common/components/tooltip";
 
-export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
+export default function ApproveTreasuryProposalInnerPopup({
+  onClose,
+  isMember,
+}) {
   const router = useRouter();
   const pallet = useCollectivePallet();
   const treasuryPallet = useTreasuryPallet();
@@ -34,7 +38,10 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
     useTreasuryProposalIDs();
 
   const disabled =
-    isNil(selectedID) || loadingProposalIDs || !proposalIDs?.length;
+    isNil(selectedID) ||
+    loadingProposalIDs ||
+    !proposalIDs?.length ||
+    !isMember;
 
   const getTxFunc = useCallback(() => {
     if (!api) {
@@ -79,21 +86,30 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
         {proposalIDs && <ProposalInfo id={selectedID} />}
       </div>
 
-      <TxSubmissionButton
-        disabled={disabled}
-        loading={loadingProposalIDs}
-        getTxFunc={getTxFunc}
-        onInBlock={(events) => {
-          const eventData = getEventData(events, pallet, "Proposed");
-          if (!eventData) {
-            return;
+      <div className="flex justify-end">
+        <Tooltip
+          content={
+            !isMember ? "Only council members can create proposal" : null
           }
+          className="inline"
+        >
+          <TxSubmissionButton
+            disabled={disabled}
+            loading={loadingProposalIDs}
+            getTxFunc={getTxFunc}
+            onInBlock={(events) => {
+              const eventData = getEventData(events, pallet, "Proposed");
+              if (!eventData) {
+                return;
+              }
 
-          const [, proposalIndex] = eventData;
-          router.push(`${router.pathname}/${proposalIndex}`);
-        }}
-        onClose={onClose}
-      />
+              const [, proposalIndex] = eventData;
+              router.push(`${router.pathname}/${proposalIndex}`);
+            }}
+            onClose={onClose}
+          />
+        </Tooltip>
+      </div>
     </Popup>
   );
 }

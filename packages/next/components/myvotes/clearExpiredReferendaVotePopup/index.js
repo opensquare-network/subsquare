@@ -4,9 +4,11 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
 import PopupLabel from "next-common/components/popup/label";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
-import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import PopupWithSigner from "next-common/components/popupWithSigner";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 function ExtraInfo({ relatedReferenda, relatedTracks }) {
   return (
@@ -26,12 +28,7 @@ function ExtraInfo({ relatedReferenda, relatedTracks }) {
   );
 }
 
-export default function ClearExpiredReferendaVotePopup({
-  votes = [],
-  unlockTracks = [],
-  onClose,
-  onInBlock = noop,
-}) {
+function PopupContent({ votes = [], unlockTracks = [], onInBlock = noop }) {
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
@@ -67,17 +64,34 @@ export default function ClearExpiredReferendaVotePopup({
   }, [api, realAddress, dispatch, votes, unlockTracks]);
 
   return (
-    <SimpleTxPopup
-      title="Clear Expired Votes"
-      getTxFunc={getTxFunc}
-      onClose={onClose}
-      onInBlock={onInBlock}
-      noSwitchSigner
-    >
+    <>
+      <SignerWithBalance noSwitchSigner />
       <ExtraInfo
         relatedReferenda={relatedReferenda}
         relatedTracks={unlockTracks}
       />
-    </SimpleTxPopup>
+      <TxSubmissionButton
+        title="Confirm"
+        getTxFunc={getTxFunc}
+        onInBlock={onInBlock}
+      />
+    </>
+  );
+}
+
+export default function ClearExpiredReferendaVotePopup({
+  votes = [],
+  unlockTracks = [],
+  onClose,
+  onInBlock = noop,
+}) {
+  return (
+    <PopupWithSigner title="Clear Expired Votes" onClose={onClose}>
+      <PopupContent
+        votes={votes}
+        unlockTracks={unlockTracks}
+        onInBlock={onInBlock}
+      />
+    </PopupWithSigner>
   );
 }

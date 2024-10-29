@@ -95,6 +95,18 @@ const midAutumnEvent = {
 };
 
 /**
+ * Halloween
+ */
+const halloweenEvent = {
+  name: "halloween",
+  filetype: "png",
+  startMonth: 10,
+  startDate: 31,
+  endMonth: 11,
+  endDate: 2,
+};
+
+/**
  * Christmas
  */
 const christmasEvent = {
@@ -112,6 +124,7 @@ const events = [
   dragonBoatFestivalEvent,
   fathersDayEvent,
   midAutumnEvent,
+  halloweenEvent,
   christmasEvent,
 ];
 

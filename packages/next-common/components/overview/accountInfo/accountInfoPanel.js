@@ -17,6 +17,7 @@ import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
+import MultisigManagePrompt from "./components/multisigManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -284,6 +285,7 @@ export function CommonAccountInfoPanel({ hideManageAccountLink }) {
       {!hideManageAccountLink && <ManageAccountButton />}
       <ExtensionUpdatePrompt />
       <AssetHubManagePrompt />
+      <MultisigManagePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );

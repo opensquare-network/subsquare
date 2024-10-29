@@ -48,7 +48,6 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
     },
     post.contentSummary?.summary && {
       label: "AI Summary",
-      tooltip: "Powered by OpenAI",
       content: <ContentSummary />,
     },
   ].filter(Boolean);

@@ -15,6 +15,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function AmbassadorTrackPage({
   posts,
@@ -29,30 +30,32 @@ export default function AmbassadorTrackPage({
   );
 
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={`[${track.id}] Origin: ${track.origin}`}
-      description={track.description}
-      summary={
-        <Gov2TrackSummary
-          summary={trackReferendaSummary}
-          period={track}
-          titleExtra={`[${track.id}]`}
+    <CollectivesProvider section="ambassador">
+      <ListLayout
+        seoInfo={seoInfo}
+        title={`[${track.id}] Origin: ${track.origin}`}
+        description={track.description}
+        summary={
+          <Gov2TrackSummary
+            summary={trackReferendaSummary}
+            period={track}
+            titleExtra={`[${track.id}]`}
+          />
+        }
+      >
+        <PostList
+          title="List"
+          titleCount={posts.total}
+          category={businessCategory.ambassadorReferenda}
+          items={items}
+          pagination={{
+            page: posts.page,
+            pageSize: posts.pageSize,
+            total: posts.total,
+          }}
         />
-      }
-    >
-      <PostList
-        title="List"
-        titleCount={posts.total}
-        category={businessCategory.ambassadorReferenda}
-        items={items}
-        pagination={{
-          page: posts.page,
-          pageSize: posts.pageSize,
-          total: posts.total,
-        }}
-      />
-    </ListLayout>
+      </ListLayout>
+    </CollectivesProvider>
   );
 }
 

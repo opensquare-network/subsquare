@@ -24,20 +24,20 @@ const nodes = [
     url: "wss://paseo.rpc.amforc.com",
   },
   {
-    name: "Dwellir",
-    url: "wss://paseo-rpc.dwellir.com",
-  },
-  {
     name: "IBP1",
     url: "wss://rpc.ibp.network/paseo",
   },
   {
-    name: "IBP2",
-    url: "wss://paseo.dotters.network",
-  },
-  {
     name: "StakeWorld",
     url: "wss://pas-rpc.stakeworld.io",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://paseo-rpc.dwellir.com",
+  },
+  {
+    name: "IBP2",
+    url: "wss://paseo.dotters.network",
   },
 ];
 
@@ -90,6 +90,8 @@ const paseo = {
   navPreferDark: true,
   links,
   group: MenuGroups.Testnet,
+  hasMultisig: true,
+  multisigApiPrefix: "paseo",
   postLabels: defaultPostLabels,
   description:
     "The new Polkadot testnet replacing Rococo. Paseo is decentralised, stable, and community run.",

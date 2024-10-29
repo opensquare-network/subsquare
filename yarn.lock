@@ -2887,10 +2887,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.141.0":
-  version: 1.141.0
-  resolution: "@osn/icons@npm:1.141.0"
-  checksum: 4d54cdeb637cdbacdb255de9925abada6bbfa742fad2ea45bd5bf6f47a2b578c2bf6194d7d0cd28d1fec3c59cb9fb68d96b8f257e1aaa49599e0f24ac8773ab5
+"@osn/icons@npm:^1.144.0":
+  version: 1.144.0
+  resolution: "@osn/icons@npm:1.144.0"
+  checksum: 2bb5f1b87c068bea0fe1248f8b159d4923acd93f2d68a1f5d62a00323f6aa266be07af0da5729e8c6fecd07ed33d63d26481b7e2c27136fe2d11e63caa0270ad
   languageName: node
   linkType: hard
 
@@ -5527,7 +5527,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.141.0
+    "@osn/icons": ^1.144.0
     "@polkadot/util-crypto": ^13.1.1
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
@@ -5563,7 +5563,7 @@ __metadata:
     "@next/bundle-analyzer": ^14.2.4
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.141.0
+    "@osn/icons": ^1.144.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -9284,7 +9284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"elliptic@npm:^6.5.4, elliptic@npm:^6.5.7":
+"elliptic@npm:^6.5.7":
   version: 6.5.7
   resolution: "elliptic@npm:6.5.7"
   dependencies:
@@ -13001,7 +13001,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.3.0
     "@mimirdev/apps-sdk": ^0.2.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.141.0
+    "@osn/icons": ^1.144.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.4.3
     "@osn/provider-options": 1.1.0
@@ -15352,14 +15352,14 @@ __metadata:
   linkType: hard
 
 "secp256k1@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "secp256k1@npm:5.0.0"
+  version: 5.0.1
+  resolution: "secp256k1@npm:5.0.1"
   dependencies:
-    elliptic: ^6.5.4
+    elliptic: ^6.5.7
     node-addon-api: ^5.0.0
     node-gyp: latest
     node-gyp-build: ^4.2.0
-  checksum: a0719dff4687c38d385b5e0b7e811c51a4ea24893128be9d097aee99f879eb0ea52582590deb15a49da627a3db23c6b028ad5c9c6ac1fca92ce760153b8cf21c
+  checksum: e21fb801502fe03a233f04c294cfdf16bd6087c36caa6514ccc5eac38ebd5ff50090a59d0ee7d50adf87f6d508a8211d09b905290fac97b4d43751967b7dfd9e
   languageName: node
   linkType: hard
 
