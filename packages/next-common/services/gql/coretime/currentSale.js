@@ -22,6 +22,14 @@ const GET_CORETIME_CURRENT_SALE = gql`
         selloutPrice
         coresSold
       }
+      initIndexer {
+        blockHash
+        blockHeight
+        blockTime
+        chain
+        eventIndex
+        extrinsicIndex
+      }
     }
   }
 `;
@@ -30,9 +38,9 @@ export default async function queryCoretimeCurrentSale() {
   const {
     data: { coretimeCurrentSale = null },
   } =
-  (await coretimeClient?.query?.({
-    query: GET_CORETIME_CURRENT_SALE,
-  })) || {};
+    (await coretimeClient?.query?.({
+      query: GET_CORETIME_CURRENT_SALE,
+    })) || {};
 
   return coretimeCurrentSale;
 }
