@@ -62,10 +62,6 @@ export function isPaseoChain(chain) {
   return [Chains.paseo].includes(chain);
 }
 
-export function isKusamaCoretimeChain(chain) {
-  return [Chains.kusamaCoretime].includes(chain);
-}
-
 export function getAssetHubChain(chain) {
   if (isAssetHubChain(chain)) {
     return chain;
