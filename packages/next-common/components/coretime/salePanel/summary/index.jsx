@@ -7,10 +7,12 @@ import PhaseItem from "next-common/components/coretime/salePanel/summary/phase";
 import PriceItem from "next-common/components/coretime/salePanel/summary/price";
 import { Item, SummaryColumnGap } from "./common";
 import AvailableCores from "./columns/availableCores";
+import useCoretimeSale from "next-common/context/coretime/sale/provider";
 
 // TODO: move into ./columns
-function CurrentPrice({ data }) {
+function CurrentPrice() {
   const { decimals, symbol } = useChainSettings();
+  const { totalRevenue, renewalRevenue, purchaseRevenue } = useCoretimeSale();
 
   return (
     <SummaryColumnGap>
@@ -22,7 +24,7 @@ function CurrentPrice({ data }) {
             value={
               <ValueDisplay
                 className="text-textPrimary"
-                value={toPrecision(data?.totalRevenue, decimals)}
+                value={toPrecision(totalRevenue, decimals)}
                 symbol={symbol}
               />
             }
@@ -32,7 +34,7 @@ function CurrentPrice({ data }) {
             value={
               <ValueDisplay
                 className="text-textPrimary"
-                value={toPrecision(data?.renewalRevenue, decimals)}
+                value={toPrecision(renewalRevenue, decimals)}
                 symbol={symbol}
               />
             }
@@ -42,7 +44,7 @@ function CurrentPrice({ data }) {
             value={
               <ValueDisplay
                 className="text-textPrimary"
-                value={toPrecision(data?.purchaseRevenue, decimals)}
+                value={toPrecision(purchaseRevenue, decimals)}
                 symbol={symbol}
               />
             }
@@ -83,12 +85,12 @@ function SalePeriod() {
   );
 }
 
-export default function CoretimeSaleSummary({ data }) {
+export default function CoretimeSaleSummary() {
   return (
     <div>
       <SummaryLayout>
-        <CurrentPrice data={data} />
-        <AvailableCores data={data} />
+        <CurrentPrice />
+        <AvailableCores />
         <CurrentPhase />
         <SalePeriod />
       </SummaryLayout>

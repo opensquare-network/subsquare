@@ -24,7 +24,7 @@ function ActiveCoretimeSalePanel() {
     <NeutralPanel className="p-6 text-textPrimary">
       <h3 className="text16Bold">Coretime Sale #{coretimeSale.id}</h3>
       <Divider className="my-4" />
-      <CoretimeSaleSummary data={coretimeSale} />
+      <CoretimeSaleSummary />
       <Divider className="my-4" />
       <ViewDetail />
     </NeutralPanel>

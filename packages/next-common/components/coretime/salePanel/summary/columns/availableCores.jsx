@@ -1,22 +1,22 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import { Item, SummaryColumnGap } from "../common";
+import useCoretimeSale from "next-common/context/coretime/sale/provider";
 
-export default function AvailableCores({ data = {} }) {
-  const { renewalCount, purchaseCount, info = {} } = data;
+export default function AvailableCores() {
+  const { renewalCount, purchaseCount, info = {} } = useCoretimeSale();
   const { coresOffered = 0, coresSold = 0 } = info;
   const availableCores = coresOffered - coresSold;
+  if (!info) {
+    throw new Error("Coretime sale info should be available on AvailableCores: AvailableCores");
+  }
 
   return (
     <SummaryColumnGap>
       <SummaryItem title="Available Cores">
-        {info ? (
-          <div>
-            {availableCores}
-            <span className="text-textTertiary"> / {coresOffered}</span>
-          </div>
-        ) : (
-          <div className="text-textTertiary">-</div>
-        )}
+        <div>
+          {availableCores}
+          <span className="text-textTertiary"> / {coresOffered}</span>
+        </div>
       </SummaryItem>
       <SummaryItem>
         <div className="space-y-1 text12Medium text-textTertiary">
