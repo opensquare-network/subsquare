@@ -44,16 +44,12 @@ const GET_CORETIME_SALE = gql`
 `;
 
 export default async function queryCoretimeDetailSale(id) {
-  if (!id) {
-    return null;
-  }
-
   const {
     data: { coretimeSale = null },
   } =
     (await coretimeClient?.query?.({
       query: GET_CORETIME_SALE,
-      variables: { id },
+      variables: { id: Number(id) },
     })) || {};
 
   return coretimeSale;
