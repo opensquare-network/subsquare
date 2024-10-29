@@ -10,7 +10,7 @@ export default function CoretimeSalePanel() {
     <NeutralPanel className="p-6 text-textPrimary">
       <h3 className="text16Bold">Coretime Sale #{coretimeSale.id}</h3>
       <Divider className="my-4" />
-      <CoretimeSaleSummary data={coretimeSale} />
+      <CoretimeSaleSummary />
 
       <hr className="border-dashed border-neutral300 my-4" />
 
