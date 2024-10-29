@@ -26,7 +26,7 @@ export default function NewCouncilMotionProposalInnerPopup({
   const [threshold, setThreshold] = useState(1);
   const { members } = useCollectiveMembers();
 
-  const thresholdDefault = Math.ceil(members?.length / 2) + 1;
+  const thresholdDefault = Math.floor(members?.length / 2) + 1;
   useEffect(() => {
     setThreshold(thresholdDefault);
   }, [thresholdDefault]);
