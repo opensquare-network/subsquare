@@ -1,14 +1,22 @@
 import { ArrowDown } from "@osn/icons/subsquare";
 import PrimaryButton from "next-common/lib/button/primary";
-import { OptionsPadRightWrapper } from "../select/styled";
 import { useRef, useState } from "react";
 import { useClickAway } from "react-use";
+import { cn } from "next-common/utils";
 
 function DropdownPanel({ onClick, children }) {
   return (
-    <OptionsPadRightWrapper onClick={onClick}>
+    <div
+      className={cn(
+        "z-[999999] absolute top-[calc(100%+4px)] right-0",
+        "min-w-[calc(100%+2px)] py-2 px-0",
+        "shadow-200 rounded dark:border dark:border-neutral300",
+        "whitespace-nowrap bg-neutral100 text-textPrimary",
+      )}
+      onClick={onClick}
+    >
       {children}
-    </OptionsPadRightWrapper>
+    </div>
   );
 }
 

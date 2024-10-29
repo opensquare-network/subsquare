@@ -1,5 +1,5 @@
 import { noop } from "lodash-es";
-import SplitButton from "../splitButton";
+import SplitButton from "./splitButton";
 
 function MenuItem({ icon, label, onClick = noop }) {
   return (
