@@ -5,20 +5,10 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import PhaseItem from "next-common/components/coretime/salePanel/summary/phase";
 import PriceItem from "next-common/components/coretime/salePanel/summary/price";
+import { Item, SummaryColumnGap } from "./columns/common";
+import AvailableCoresSummary from "./columns/availableCores";
 
-function Item({ label = "", value }) {
-  return (
-    <div className="flex items-center gap-x-1 text12Medium text-textTertiary">
-      <div>{label}</div>
-      <div className="text-textPrimary">{value}</div>
-    </div>
-  );
-}
-
-function SummaryColumnGap({ children }) {
-  return <div className="flex flex-col gap-2.5">{children}</div>;
-}
-
+// TODO: move into ./column
 function CurrentPriceSummary({ data }) {
   const { decimals, symbol } = useChainSettings();
 
@@ -28,7 +18,7 @@ function CurrentPriceSummary({ data }) {
       <SummaryItem>
         <div className="space-y-1 text12Medium text-textTertiary">
           <Item
-            label="Total Revenue"
+            label="Revenue"
             value={
               <ValueDisplay
                 className="text-textPrimary"
@@ -63,33 +53,7 @@ function CurrentPriceSummary({ data }) {
   );
 }
 
-function AvailableCoresSummary({ data }) {
-  return (
-    <SummaryColumnGap>
-      <SummaryItem title="Available Cores">
-        {data?.info ? (
-          <div>
-            {data?.info?.coresSold}
-            <span className="text-textTertiary">
-              {" "}
-              / {data?.info?.coresOffered}
-            </span>
-          </div>
-        ) : (
-          <div className="text-textTertiary">-</div>
-        )}
-      </SummaryItem>
-      <SummaryItem>
-        <div className="space-y-1 text12Medium text-textTertiary">
-          <Item label="System Reserved" value="[0]" />
-          <Item label="Renewal" value={data?.renewalCount} />
-          <Item label="Sale" value={data?.purchaseCount} />
-        </div>
-      </SummaryItem>
-    </SummaryColumnGap>
-  );
-}
-
+// TODO: move into ./column
 function CurrentPhaseSummary() {
   return (
     <SummaryColumnGap>
@@ -103,6 +67,7 @@ function CurrentPhaseSummary() {
   );
 }
 
+// TODO: move into ./column
 function SalePeriodSummary() {
   return (
     <SummaryColumnGap>
