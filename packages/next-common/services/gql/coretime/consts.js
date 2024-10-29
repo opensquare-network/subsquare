@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { INDEXER_FIELDS } from "./common";
 
 export const GET_CORETIME_SALE_PURCHASES = gql`
   query MyQuery($limit: Int!, $offset: Int!, $saleId: Int!) {
@@ -11,10 +12,7 @@ export const GET_CORETIME_SALE_PURCHASES = gql`
           core
         }
         indexer {
-          blockHeight
-          blockTime
-          extrinsicIndex
-          eventIndex
+          ${INDEXER_FIELDS}
         }
         price
         who
@@ -36,10 +34,7 @@ export const GET_CORETIME_SALE_RENEWALS = gql`
         workload
         price
         indexer {
-          blockHeight
-          blockTime
-          extrinsicIndex
-          eventIndex
+          ${INDEXER_FIELDS}
         }
       }
     }
@@ -57,20 +52,10 @@ export const GET_CORETIME_HISTORY_SALES = gql`
         id
         isFinal
         endIndexer {
-          blockHash
-          blockHeight
-          blockTime
-          chain
-          eventIndex
-          extrinsicIndex
+          ${INDEXER_FIELDS}
         }
         initIndexer {
-          blockHash
-          blockHeight
-          blockTime
-          chain
-          eventIndex
-          extrinsicIndex
+          ${INDEXER_FIELDS}
         }
         info {
           regionBegin
