@@ -40,23 +40,24 @@ function escapeLinkText(text) {
   return text.replace(/\\/g, "\\\\").replace(/([[\]])/g, "\\$1");
 }
 
-function useIsSima(comment) {
+function useShouldUseSima(toReplyComment) {
   const post = usePost();
   const type = useDetailType();
   const { supportSima } = useCommentActions();
 
-  let isSima = false;
-  if (comment) {
-    isSima = comment.dataSource === "sima";
-  } else {
-    if (type === detailPageCategory.POST) {
-      isSima = post?.dataSource === "sima";
-    } else {
-      isSima = supportSima;
-    }
+  if (!supportSima) {
+    return false;
   }
 
-  return isSima;
+  if (toReplyComment) {
+    return toReplyComment.dataSource === "sima";
+  }
+
+  if (type === detailPageCategory.POST) {
+    return post?.dataSource === "sima";
+  }
+
+  return true;
 }
 
 function CommentEditor(
@@ -85,7 +86,7 @@ function CommentEditor(
   const { createPostComment, createCommentReply, updateComment } =
     useCommentActions();
 
-  const isSima = useIsSima(comment);
+  const shouldUseSima = useShouldUseSima(comment);
 
   const createComment = async (realAddress) => {
     if (!isMounted()) {
@@ -221,7 +222,7 @@ function CommentEditor(
         )}
         <Tooltip content={isEmpty ? "Cannot submit empty content" : ""}>
           <MaybeSplitCommentButton
-            isSima={isSima}
+            isSima={shouldUseSima}
             isEdit={isEdit}
             isReply={isReply}
             loading={loading}
