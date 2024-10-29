@@ -60,6 +60,17 @@ function useShouldUseSima(toReplyComment) {
   return true;
 }
 
+function getReal(realAddress) {
+  if (!realAddress) {
+    return;
+  }
+
+  return {
+    address: realAddress,
+    section: "proxy",
+  };
+}
+
 function CommentEditor(
   {
     isEdit,
@@ -98,34 +109,20 @@ function CommentEditor(
       let result;
 
       if (comment) {
-        if (realAddress) {
-          result = await createCommentReply(
-            post,
-            comment,
-            content,
-            contentType,
-            {
-              address: realAddress,
-              section: "proxy",
-            },
-          );
-        } else {
-          result = await createCommentReply(
-            post,
-            comment,
-            content,
-            contentType,
-          );
-        }
+        result = await createCommentReply(
+          post,
+          comment,
+          content,
+          contentType,
+          getReal(realAddress),
+        );
       } else {
-        if (realAddress) {
-          result = await createPostComment(post, content, contentType, {
-            address: realAddress,
-            section: "proxy",
-          });
-        } else {
-          result = await createPostComment(post, content, contentType);
-        }
+        result = await createPostComment(
+          post,
+          content,
+          contentType,
+          getReal(realAddress),
+        );
       }
 
       if (!isMounted()) {
