@@ -30,7 +30,7 @@ export default function ApproveTreasuryProposalInnerPopup({
   const api = useContextApi();
 
   const { members } = useCollectiveMembers();
-  const threshold = Math.ceil(members?.length / 2) + 1;
+  const threshold = Math.floor(members?.length / 2) + 1;
 
   const [selectedID, setSelectedID] = useState();
 
