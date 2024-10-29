@@ -1,17 +1,18 @@
 import SummaryItem from "next-common/components/summary/layout/item";
-import { Item, SummaryColumnGap } from "./common";
+import { Item, SummaryColumnGap } from "../common";
 
-export default function AvailableCoresSummary({ data }) {
+export default function AvailableCoresSummary({ data = {} }) {
+  const { renewalCount, purchaseCount, info = {} } = data;
+  const { coresOffered = 0, coresSold = 0 } = info;
+  const availableCores = coresOffered - coresSold;
+
   return (
     <SummaryColumnGap>
       <SummaryItem title="Available Cores">
-        {data?.info ? (
+        {info ? (
           <div>
-            {data?.info?.coresSold}
-            <span className="text-textTertiary">
-              {" "}
-              / {data?.info?.coresOffered}
-            </span>
+            {availableCores}
+            <span className="text-textTertiary"> / {coresOffered}</span>
           </div>
         ) : (
           <div className="text-textTertiary">-</div>
@@ -19,9 +20,9 @@ export default function AvailableCoresSummary({ data }) {
       </SummaryItem>
       <SummaryItem>
         <div className="space-y-1 text12Medium text-textTertiary">
-          <Item label="Sold" value="[0]" />
-          <Item label="↳ Renewed" value={data?.renewalCount} />
-          <Item label="↳ Sold" value={data?.purchaseCount} />
+          <Item label="Sold" value={coresSold} />
+          <Item label="↳ Renewed" value={renewalCount} />
+          <Item label="↳ Purchased" value={purchaseCount} />
         </div>
       </SummaryItem>
     </SummaryColumnGap>
