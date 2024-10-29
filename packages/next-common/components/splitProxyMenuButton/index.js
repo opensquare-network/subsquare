@@ -1,5 +1,5 @@
 import { SystemComment } from "@osn/icons/subsquare";
-import SplitMenuButton from "../splitMenuButton";
+import SplitMenuButton from "next-common/lib/button/splitMenuButton";
 import SelectProxyAccountPopup from "../selectProxyAccountPopup";
 import { useState } from "react";
 
