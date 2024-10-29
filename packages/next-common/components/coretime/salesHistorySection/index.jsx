@@ -4,35 +4,55 @@ import { TitleContainer } from "../../styled/containers/titleContainer";
 import SalesHistoryPurchases from "./purchases";
 import SalesHistoryRenewals from "./renewals";
 import { useState } from "react";
-import { usePageProps } from "next-common/context/page";
+import useCoretimeSaleIsInterlude from "next-common/context/coretime/hooks/useCoretimeSaleIsInterlude";
+import useCoretimeSale from "next-common/context/coretime/sale/provider";
 
-export default function CoretimeSalesHistorySection() {
-  const { coretimeSale } = usePageProps();
-  const [activeTabLabel, setActiveTabLabel] = useState("Purchases");
-
+function SalesHistoryWrapper({ children }) {
   return (
     <div>
       <TitleContainer className="mb-4">Sales History</TitleContainer>
-      <NeutralPanel className="p-6">
-        <Tabs
-          activeTabLabel={activeTabLabel}
-          onTabClick={(tab) => {
-            setActiveTabLabel(tab.label);
-          }}
-          tabs={[
-            {
-              label: "Renewals",
-              activeCount: coretimeSale?.renewalCount,
-              content: <SalesHistoryRenewals />,
-            },
-            {
-              label: "Purchases",
-              activeCount: coretimeSale?.purchaseCount,
-              content: <SalesHistoryPurchases />,
-            },
-          ]}
-        />
-      </NeutralPanel>
+      <NeutralPanel className="p-6">{children}</NeutralPanel>
     </div>
+  );
+}
+
+function SalesHistoryList() {
+  const sale = useCoretimeSale();
+  const isInterludePhase = useCoretimeSaleIsInterlude();
+
+  const [activeTabLabel, setActiveTabLabel] = useState(isInterludePhase ?  "Renewals": "Purchases");
+
+  const renewalsTabInfo = {
+    label: "Renewals",
+    activeCount: sale?.renewalCount,
+    content: <SalesHistoryRenewals />,
+  };
+
+  const purchasesTabInfo = {
+    label: "Purchases",
+    activeCount: sale?.purchaseCount,
+    content: <SalesHistoryPurchases />,
+  };
+
+  const tabs = isInterludePhase
+    ? [purchasesTabInfo, renewalsTabInfo]
+    : [renewalsTabInfo, purchasesTabInfo];
+
+  return (
+    <Tabs
+      activeTabLabel={activeTabLabel}
+      onTabClick={(tab) => {
+        setActiveTabLabel(tab.label);
+      }}
+      tabs={tabs}
+    />
+  );
+}
+
+export default function CoretimeSalesHistorySection() {
+  return (
+    <SalesHistoryWrapper>
+      <SalesHistoryList />
+    </SalesHistoryWrapper>
   );
 }

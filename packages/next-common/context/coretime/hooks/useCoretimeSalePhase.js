@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { isNil } from "lodash-es";
 
-const Phases = Object.freeze({
+export const Phases = Object.freeze({
   Interlude: "Interlude",
   Leadin: "Leadin",
   FixedPrice: "Fixed Price",
