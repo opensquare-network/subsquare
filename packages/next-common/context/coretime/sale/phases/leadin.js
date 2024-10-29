@@ -8,6 +8,13 @@ export function useCoretimeSaleLeadinLength() {
   return leadinLength;
 }
 
+export function useCoretimeSaleLeadinEnd() {
+  const saleStartHeight = useCoretimeSaleStart();
+  const leadinLength = useCoretimeSaleLeadinLength();
+
+  return saleStartHeight + leadinLength;
+}
+
 export function useIsCoretimeSaleLeadinPhase() {
   const saleStartHeight = useCoretimeSaleStart();
   const leadinLength = useCoretimeSaleLeadinLength();

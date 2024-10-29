@@ -2,6 +2,7 @@ import { SummaryColumnGap } from "next-common/components/coretime/salePanel/summ
 import PhaseItem from "next-common/components/coretime/salePanel/summary/phase";
 import MaybeInterludeEnd from "./interlude";
 import MaybeLeadinEnd from "next-common/components/coretime/salePanel/summary/columns/currentPhase/leadin";
+import MaybeFixedPriceEnd from "next-common/components/coretime/salePanel/summary/columns/currentPhase/fixedPrice";
 
 export default function CurrentPhase() {
   return (
@@ -10,6 +11,7 @@ export default function CurrentPhase() {
       <>
         <MaybeInterludeEnd />
         <MaybeLeadinEnd />
+        <MaybeFixedPriceEnd />
       </>
     </SummaryColumnGap>
   );
