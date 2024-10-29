@@ -7,9 +7,15 @@ export function CoretimeActiveSaleProvider({ children }) {
 
   return (
     <CoretimeSaleProvider value={coretimeSale}>
-      <CoretimeActiveSaleSubscriber>
-        {children}
-      </CoretimeActiveSaleSubscriber>
+      <CoretimeActiveSaleSubscriber>{children}</CoretimeActiveSaleSubscriber>
     </CoretimeSaleProvider>
+  );
+}
+
+export function CoretimeDetailSaleProvider({ children }) {
+  const { coretimeSale } = usePageProps();
+
+  return (
+    <CoretimeSaleProvider value={coretimeSale}>{children}</CoretimeSaleProvider>
   );
 }
