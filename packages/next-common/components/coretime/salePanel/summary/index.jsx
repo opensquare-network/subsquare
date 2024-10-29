@@ -6,10 +6,10 @@ import { toPrecision } from "next-common/utils";
 import PhaseItem from "next-common/components/coretime/salePanel/summary/phase";
 import PriceItem from "next-common/components/coretime/salePanel/summary/price";
 import { Item, SummaryColumnGap } from "./common";
-import AvailableCoresSummary from "./columns/availableCores";
+import AvailableCores from "./columns/availableCores";
 
 // TODO: move into ./columns
-function CurrentPriceSummary({ data }) {
+function CurrentPrice({ data }) {
   const { decimals, symbol } = useChainSettings();
 
   return (
@@ -54,7 +54,7 @@ function CurrentPriceSummary({ data }) {
 }
 
 // TODO: move into ./columns
-function CurrentPhaseSummary() {
+function CurrentPhase() {
   return (
     <SummaryColumnGap>
       <PhaseItem />
@@ -68,7 +68,7 @@ function CurrentPhaseSummary() {
 }
 
 // TODO: move into ./columns
-function SalePeriodSummary() {
+function SalePeriod() {
   return (
     <SummaryColumnGap>
       <SummaryItem title="Sale Period">
@@ -87,10 +87,10 @@ export default function CoretimeSaleSummary({ data }) {
   return (
     <div>
       <SummaryLayout>
-        <CurrentPriceSummary data={data} />
-        <AvailableCoresSummary data={data} />
-        <CurrentPhaseSummary />
-        <SalePeriodSummary />
+        <CurrentPrice data={data} />
+        <AvailableCores data={data} />
+        <CurrentPhase />
+        <SalePeriod />
       </SummaryLayout>
     </div>
   );
