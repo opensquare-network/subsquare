@@ -14,7 +14,7 @@ const Options = styled(NeutralPanel)`
   gap: 8px;
   padding: 8px;
   flex-direction: column;
-  width: 384px;
+  width: 560px;
   box-shadow: var(--shadow200);
   @media screen and (max-width: 768px) {
     width: 100% !important;

@@ -34,7 +34,7 @@ const endpoints = [
   },
   {
     name: "IBP2",
-    url: "wss://hydradx.paras.dotters.network",
+    url: "wss://hydration.dotters.network/",
   },
 ];
 

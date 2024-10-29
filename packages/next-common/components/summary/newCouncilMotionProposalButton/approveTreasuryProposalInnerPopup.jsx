@@ -18,15 +18,19 @@ import {
   useTreasuryPallet,
   useTreasuryProposalListUrl,
 } from "../../../context/treasury";
+import Tooltip from "next-common/components/tooltip";
 
-export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
+export default function ApproveTreasuryProposalInnerPopup({
+  onClose,
+  isMember,
+}) {
   const router = useRouter();
   const pallet = useCollectivePallet();
   const treasuryPallet = useTreasuryPallet();
   const api = useContextApi();
 
   const { members } = useCollectiveMembers();
-  const threshold = Math.ceil(members?.length / 2) + 1;
+  const threshold = Math.floor(members?.length / 2) + 1;
 
   const [selectedID, setSelectedID] = useState();
 
@@ -34,7 +38,10 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
     useTreasuryProposalIDs();
 
   const disabled =
-    isNil(selectedID) || loadingProposalIDs || !proposalIDs?.length;
+    isNil(selectedID) ||
+    loadingProposalIDs ||
+    !proposalIDs?.length ||
+    !isMember;
 
   const getTxFunc = useCallback(() => {
     if (!api) {
@@ -79,21 +86,30 @@ export default function ApproveTreasuryProposalInnerPopup({ onClose }) {
         {proposalIDs && <ProposalInfo id={selectedID} />}
       </div>
 
-      <TxSubmissionButton
-        disabled={disabled}
-        loading={loadingProposalIDs}
-        getTxFunc={getTxFunc}
-        onInBlock={(events) => {
-          const eventData = getEventData(events, pallet, "Proposed");
-          if (!eventData) {
-            return;
+      <div className="flex justify-end">
+        <Tooltip
+          content={
+            !isMember ? "Only council members can create proposal" : null
           }
+          className="inline"
+        >
+          <TxSubmissionButton
+            disabled={disabled}
+            loading={loadingProposalIDs}
+            getTxFunc={getTxFunc}
+            onInBlock={(events) => {
+              const eventData = getEventData(events, pallet, "Proposed");
+              if (!eventData) {
+                return;
+              }
 
-          const [, proposalIndex] = eventData;
-          router.push(`${router.pathname}/${proposalIndex}`);
-        }}
-        onClose={onClose}
-      />
+              const [, proposalIndex] = eventData;
+              router.push(`${router.pathname}/${proposalIndex}`);
+            }}
+            onClose={onClose}
+          />
+        </Tooltip>
+      </div>
     </Popup>
   );
 }
@@ -130,14 +146,11 @@ function useTreasuryProposalIDs() {
       return null;
     }
 
-    const entries = await api.query[treasuryPallet].proposals.entries();
-    return orderBy(
-      entries.map(([storageKey]) => {
-        return storageKey.args[0].toJSON();
-      }),
-      Number,
-      "desc",
-    );
+    const proposalEntries = await api.query[treasuryPallet].proposals.entries();
+    const approvals = await api.query[treasuryPallet].approvals();
+    const proposalIds = proposalEntries.map(([storageKey]) => storageKey.args[0].toNumber());
+    const approvedIds = approvals.toJSON();
+    return orderBy(proposalIds.filter(id => !approvedIds.includes(id)), Number, "desc");
   }, [api, treasuryPallet]);
 }
 
