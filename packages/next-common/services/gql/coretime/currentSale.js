@@ -6,9 +6,7 @@ const GET_CORETIME_CURRENT_SALE = gql`
   query MyQuery {
     coretimeCurrentSale {
       ${COMMON_SALE_FIELDS}
-      info {
-        ${INFO_FIELDS}
-      }
+      ${INFO_FIELDS}
     }
   }
 `;

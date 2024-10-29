@@ -8,17 +8,19 @@ export const COMMON_SALE_FIELDS = `
 `;
 
 export const INFO_FIELDS = `
-  coresOffered
-  coresSold
-  endPrice
-  firstCore
-  idealCoresSold
-  leadinLength
-  price
-  regionBegin
-  regionEnd
-  saleStart
-  selloutPrice
+  info {
+    coresOffered
+    coresSold
+    endPrice
+    firstCore
+    idealCoresSold
+    leadinLength
+    price
+    regionBegin
+    regionEnd
+    saleStart
+    selloutPrice
+  }
 `;
 
 export const INDEXER_FIELDS = `

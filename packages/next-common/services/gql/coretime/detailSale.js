@@ -7,9 +7,7 @@ const GET_CORETIME_SALE = gql`
     coretimeSale(id: $id) {
       isFinal
       ${COMMON_SALE_FIELDS}
-      info {
-        ${INFO_FIELDS}
-      }
+      ${INFO_FIELDS}
       infoUpdatedAt {
         blockHash
         blockHeight
