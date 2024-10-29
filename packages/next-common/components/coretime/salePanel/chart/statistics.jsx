@@ -1,124 +1,170 @@
-import { cn } from "next-common/utils";
-import { Line } from "react-chartjs-2";
+import { groupBy, map, max, range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
+import { useChainSettings } from "next-common/context/chain";
 import { useThemeSetting } from "next-common/context/theme";
-import { useCallback, useMemo } from "react";
-
-const GROUP_SIZE = 100;
-function createGroupedBlocks(blocks = 0) {
-  return Math.ceil(blocks / GROUP_SIZE);
-}
+import { useCoretimeQuery } from "next-common/hooks/apollo";
+import { GET_CORETIME_SALE_PURCHASES } from "next-common/services/gql/coretime/consts";
+import { cn, toPrecision } from "next-common/utils";
+import { getCoretimePriceAt } from "next-common/utils/coretime/price";
+import { useMemo } from "react";
+import { Line } from "react-chartjs-2";
 
 function Statistics({
   className = "",
+  coretimeSale,
   initBlockHeight,
-  // eslint-disable-next-line no-unused-vars
-  endBlockHeight,
+  // endBlockHeight,
   totalBlocks = 0,
   interludeEndHeight,
 }) {
+  const { decimals } = useChainSettings();
+  const { data } = useCoretimeQuery(GET_CORETIME_SALE_PURCHASES, {
+    variables: {
+      saleId: 7,
+      offset: 0,
+      limit: 100,
+    },
+  });
+  // get the price at the start of the sale
+  const initPrice = toPrecision(
+    getCoretimePriceAt(coretimeSale?.info?.saleStart, coretimeSale.info),
+    decimals,
+  );
+  // console.log(initPrice);
+
+  const groupedSales = Object.entries(
+    groupBy(data?.coretimeSalePurchases?.items, "indexer.blockHeight"),
+  ).map(([height, sale]) => {
+    return {
+      height,
+      price: toPrecision(sale[0].price, decimals),
+    };
+  });
+
+  const maxPrice = max([initPrice, ...map(groupedSales, "price")]);
+
   const theme = useThemeSetting();
-  const totalGroupedBlocks = createGroupedBlocks(totalBlocks || 0);
   const interludeBlocks = interludeEndHeight - initBlockHeight;
 
-  const createGradient = useCallback(
-    (ctx) => {
-      const gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
-      gradient.addColorStop(0, theme.theme100);
-      gradient.addColorStop(1, theme.theme300);
-      return gradient;
-    },
-    [theme],
-  );
+  const indexes = range(0, totalBlocks);
+  const sales1 = useMemo(() => {
+    const result = [];
 
-  const data = useMemo(() => {
+    for (let i = 0; i < groupedSales.length; i++) {
+      const sale = groupedSales[i];
+      result[Number(sale.height) - initBlockHeight] = sale.price;
+    }
+
+    return result;
+  }, [groupedSales, initBlockHeight]);
+
+  const priceLine = useMemo(() => {
+    const points = [...sales1];
+    points[interludeBlocks] = initPrice;
+    return points;
+  }, [initPrice, interludeBlocks, sales1]);
+
+  const chartData = useMemo(() => {
     return {
-      labels: Array(totalGroupedBlocks).fill(""),
+      labels: indexes,
       datasets: [
+        // {
+        //   data: Array(interludeBlocks).fill(maxPrice),
+        //   fill: true,
+        //   backgroundColor(context) {
+        //     const chart = context.chart;
+        //     const { ctx } = chart;
+
+        //     const gradient = ctx.createLinearGradient(
+        //       0,
+        //       0,
+        //       ctx.canvas.width,
+        //       0,
+        //     );
+        //     gradient.addColorStop(0, theme.theme100);
+        //     gradient.addColorStop(1, theme.theme300);
+        //     return gradient;
+        //   },
+        //   borderWidth: 0,
+        //   pointRadius: 0,
+        //   pointHoverRadius: 0,
+        //   hoverBorderWidth: 0,
+        //   pointHitRadius: 0,
+        // },
+        // sale points
         {
-          data: Array(0).fill(100),
-          fill: true,
-          backgroundColor(context) {
-            const chart = context.chart;
-            const { ctx } = chart;
-            return createGradient(ctx);
-          },
-          borderWidth: 0,
+          data: sales1,
+          type: "scatter",
+          borderColor: theme.theme500,
+          // borderWidth: 0,
+          pointRadius: 4,
+          pointBackgroundColor: theme.theme500,
+          pointBorderColor: theme.theme500,
+          pointBorderWidth: 0,
+          pointHoverRadius: 6,
+          pointHoverBackgroundColor: theme.theme500,
+          pointHoverBorderColor: theme.theme500,
+          pointHoverBorderWidth: 0,
+          pointHitRadius: 10,
+          // showLine: false,
+        },
+        // price line
+        {
+          data: priceLine,
+          borderColor: theme.neutral500,
+          borderWidth: 1,
           pointRadius: 0,
           pointHoverRadius: 0,
-          hoverBorderWidth: 0,
           pointHitRadius: 0,
+          fill: false,
           spanGaps: true,
         },
-        // // renewal points
-        // {
-        //   data: [1, 45],
-        //   showLine: false,
-        //   pointRadius: 4,
-        //   pointBackgroundColor: theme.theme300,
-        //   pointBorderColor: theme.theme300,
-        //   pointBorderWidth: 0,
-        //   pointHoverRadius: 3,
-        //   pointHoverBackgroundColor: theme.theme300,
-        //   pointHoverBorderColor: theme.theme300,
-        //   pointHoverBorderWidth: 0,
-        //   pointHitRadius: 10,
-        // },
-        // // sale line
-        // {
-        //   data: [null, null, 100, 80, 60, 40, 30, 20, 15, 15, 2],
-        //   borderColor: theme.theme500,
-        //   borderWidth: 2,
-        //   pointRadius: 4,
-        //   pointBackgroundColor: theme.theme500,
-        //   pointBorderColor: theme.theme500,
-        //   pointBorderWidth: 0,
-        //   pointHoverRadius: 3,
-        //   pointHoverBackgroundColor: theme.theme500,
-        //   pointHoverBorderColor: theme.theme500,
-        //   pointHoverBorderWidth: 0,
-        //   pointHitRadius: 10,
-        // },
       ],
     };
-  }, [createGradient, totalGroupedBlocks]);
+  }, [indexes, priceLine, sales1, theme.neutral500, theme.theme500]);
 
   const options = {
     clip: false,
     responsive: true,
     maintainAspectRatio: false,
-    animation: {
-      duration: 0,
-    },
-    elements: {
-      line: {
-        tension: 0,
-      },
-    },
+    animation: false,
+    // parsing: false,
     scales: {
       x: {
         display: false,
+        // ticks: {
+        //   source: "auto",
+        //   // Disabled rotation for performance
+        //   maxRotation: 0,
+        //   autoSkip: true,
+        // },
+        // min: initBlockHeight,
+        // max: endBlockHeight,
       },
       y: {
         display: false,
         min: 0,
-        max: 100,
+        max: maxPrice,
       },
     },
     plugins: {
+      decimation: {
+        enabled: true,
+        // algorithm: "min-max",
+        algorithm: "lttb",
+        samples: 500,
+      },
       legend: {
         display: false,
       },
       tooltip: {
-        filter(tooltipItem) {
-          return (
-            tooltipItem.datasetIndex === 1 || tooltipItem.datasetIndex === 2
-          );
-        },
         displayColors: false,
         callbacks: {
           label(context) {
-            return `${context.parsed.y}%`;
+            return [
+              `Block: ${context.dataIndex}`,
+              `Price: ${context.parsed?.y}`,
+            ];
           },
         },
       },
@@ -126,8 +172,8 @@ function Statistics({
         annotations: {
           line1: {
             type: "line",
-            xMin: Math.ceil(interludeBlocks / GROUP_SIZE),
-            xMax: Math.ceil(interludeBlocks / GROUP_SIZE),
+            xMin: interludeBlocks,
+            xMax: interludeBlocks,
             borderColor: theme.neutral500,
             borderWidth: 1,
             borderDash: [3, 3],
@@ -140,7 +186,7 @@ function Statistics({
 
   return (
     <div className={cn("w-full", className)}>
-      <Line options={options} data={data} />
+      <Line options={options} data={chartData} />
     </div>
   );
 }

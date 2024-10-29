@@ -21,7 +21,6 @@ export default function CoretimeSalePanelChartPeriodProgress({
         total:{totalBlocks}
         end:{endBlockHeight}
         interlude:{interludeBlocks}
-        <div>{interludeBlocks / totalBlocks}</div>
       </div>
       <div className={cn("flex", className)}>
         <RenewalPeriodProgress

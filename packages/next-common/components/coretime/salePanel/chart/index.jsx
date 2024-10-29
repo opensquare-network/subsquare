@@ -21,6 +21,7 @@ export default function CoretimeSalePanelChart() {
         endBlockHeight={endBlockHeight}
         totalBlocks={totalBlocks}
         interludeEndHeight={interludeEndHeight}
+        coretimeSale={coretimeSale}
       />
 
       <CoretimeSalePanelChartPeriodProgress
