@@ -146,14 +146,11 @@ function useTreasuryProposalIDs() {
       return null;
     }
 
-    const entries = await api.query[treasuryPallet].proposals.entries();
-    return orderBy(
-      entries.map(([storageKey]) => {
-        return storageKey.args[0].toJSON();
-      }),
-      Number,
-      "desc",
-    );
+    const proposalEntries = await api.query[treasuryPallet].proposals.entries();
+    const approvals = await api.query[treasuryPallet].approvals();
+    const proposalIds = proposalEntries.map(([storageKey]) => storageKey.args[0].toNumber());
+    const approvedIds = approvals.toJSON();
+    return orderBy(proposalIds.filter(id => !approvedIds.includes(id)), Number, "desc");
   }, [api, treasuryPallet]);
 }
 
