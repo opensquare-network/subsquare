@@ -1,28 +1,13 @@
 import { coretimeClient } from "next-common/hooks/apollo";
 import { gql } from "@apollo/client";
+import { COMMON_SALE_FIELDS, SALE_INFO_FIELDS } from "./common";
 
 const GET_CORETIME_SALE = gql`
   query MyQuery($id: Int!) {
     coretimeSale(id: $id) {
-      id
+      ...CommonSaleFields
+      ...SaleInfoFields
       isFinal
-      purchaseCount
-      purchaseRevenue
-      renewalCount
-      renewalRevenue
-      totalRevenue
-      info {
-        coresOffered
-        coresSold
-        firstCore
-        idealCoresSold
-        leadinLength
-        price
-        regionBegin
-        regionEnd
-        saleStart
-        selloutPrice
-      }
       infoUpdatedAt {
         blockHash
         blockHeight
@@ -41,6 +26,8 @@ const GET_CORETIME_SALE = gql`
       }
     }
   }
+  ${COMMON_SALE_FIELDS}
+  ${SALE_INFO_FIELDS}
 `;
 
 export default async function queryCoretimeDetailSale(id) {
