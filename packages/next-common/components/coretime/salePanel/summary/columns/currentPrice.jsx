@@ -4,17 +4,11 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { Item, SummaryColumnGap } from "../common";
-import { useChain } from "next-common/context/chain";
-import { isKusamaCoretimeChain } from "next-common/utils/chain";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 
-export default function CurrentPrice({ data = {} }) {
+export default function CurrentPrice() {
   const { decimals, symbol } = useChainSettings();
-  const chain = useChain();
   const { totalRevenue, renewalRevenue, purchaseRevenue } = useCoretimeSale();
-
-  // TODO: toFixed
-  const isKusamaCoretime = isKusamaCoretimeChain(chain);
 
   return (
     <SummaryColumnGap>

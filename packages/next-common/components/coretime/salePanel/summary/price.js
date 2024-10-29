@@ -11,11 +11,17 @@ export default function PriceItem() {
 
   return (
     <SummaryItem title="Current Price">
-      {
-        isLoading ? <FieldLoading /> : price ?
-          (<ValueDisplay value={toPrecision(price, decimals)} symbol={symbol} />) :
-          <div className="text-textTertiary">-</div>
-      }
+      {isLoading ? (
+        <FieldLoading />
+      ) : price ? (
+        <ValueDisplay
+          value={toPrecision(price, decimals)}
+          symbol={symbol}
+          showVerySmallNumber={true}
+        />
+      ) : (
+        <div className="text-textTertiary">-</div>
+      )}
     </SummaryItem>
   );
 }
