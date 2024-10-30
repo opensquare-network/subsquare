@@ -6,7 +6,6 @@ import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import CountDown from "next-common/components/_CountDown";
 import { toPercentage } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import FieldLoading from "next-common/components/icons/fieldLoading";
 
 function getCountDownProgress(startHeight, currentHeight, endHeight) {
   if (currentHeight <= startHeight) {
