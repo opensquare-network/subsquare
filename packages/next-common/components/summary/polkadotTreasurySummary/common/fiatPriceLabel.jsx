@@ -1,9 +1,10 @@
 import { useChainSettings } from "next-common/context/chain";
-import { toPrecision } from "next-common/utils";
 import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
 import useFiatPrice from "next-common/hooks/useFiatPrice";
+import { toPrecision } from "next-common/utils";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 export default function FiatPriceLabel({
   free = 0,
@@ -12,12 +13,11 @@ export default function FiatPriceLabel({
 }) {
   const { price: fiatPrice } = useFiatPrice();
   const { decimals } = useChainSettings();
-  const value = toPrecision(free || 0, decimals);
-  const bn = BigNumber(value);
-  const totalPrice = bn
+  const totalPrice = BigNumber(free || 0)
+    .dividedBy(Math.pow(10, decimals))
     .multipliedBy(fiatPrice)
-    .plus(USDCBalance)
-    .plus(USDtBalance);
+    .plus(toPrecision(USDCBalance, SYMBOL_DECIMALS.USDC))
+    .plus(toPrecision(USDtBalance, SYMBOL_DECIMALS.USDT));
 
   return (
     <div>

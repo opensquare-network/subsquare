@@ -10,8 +10,14 @@ import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 export default function TotalTreasury() {
-  const { DOTBalance, USDtBalance, USDCBalance, isTotalAssetsLoading } =
-    usePolkadotTreasurySummary();
+  const {
+    DOTBalance,
+    USDtBalance,
+    USDCBalance,
+    isTotalAssetsLoading,
+    fellowshipSalaryUsdtBalance,
+    isFellowshipSalaryUsdtBalanceLoading,
+  } = usePolkadotTreasurySummary();
 
   const {
     dot: hydrationTreasuryDot,
@@ -24,16 +30,21 @@ export default function TotalTreasury() {
     .plus(hydrationTreasuryDot)
     .toString();
   const totalUsdtBalance = new BigNumber(USDtBalance)
-    .plus(toPrecision(hydrationTreasuryUsdt, SYMBOL_DECIMALS.USDT))
+    .plus(hydrationTreasuryUsdt)
+    .plus(fellowshipSalaryUsdtBalance)
     .toString();
   const totalUsdcBalance = new BigNumber(USDCBalance)
-    .plus(toPrecision(hydrationTreasuryUsdc, SYMBOL_DECIMALS.USDC))
+    .plus(hydrationTreasuryUsdc)
     .toString();
 
   return (
     <SummaryItem title="Total">
       <LoadableContent
-        isLoading={isTotalAssetsLoading || isHydrationTreasuryLoading}
+        isLoading={
+          isTotalAssetsLoading ||
+          isHydrationTreasuryLoading ||
+          isFellowshipSalaryUsdtBalanceLoading
+        }
       >
         <div className="flex flex-col gap-[4px]">
           <FiatPriceLabel
@@ -45,12 +56,12 @@ export default function TotalTreasury() {
             <DotTokenSymbolAsset free={totalDotBalance} />
             <TokenSymbolAsset
               type={""}
-              amount={totalUsdcBalance}
+              amount={toPrecision(totalUsdcBalance, SYMBOL_DECIMALS.USDC)}
               symbol={"USDC"}
             />
             <TokenSymbolAsset
               type={""}
-              amount={totalUsdtBalance}
+              amount={toPrecision(totalUsdtBalance, SYMBOL_DECIMALS.USDT)}
               symbol={"USDt"}
             />
           </div>
