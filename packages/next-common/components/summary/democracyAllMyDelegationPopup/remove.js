@@ -23,7 +23,7 @@ export default function RemoveDelegation({ trackId }) {
       getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
       defaultBlockTime;
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 3; i++) {
       dispatch(incMyReferendaDelegationsTrigger());
       await sleep(blockTime);
     }
