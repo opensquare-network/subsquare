@@ -18,6 +18,8 @@ import {
   useTreasuryProposalListUrl,
 } from "next-common/context/treasury";
 import Tooltip from "next-common/components/tooltip";
+import FieldLoading from "next-common/components/icons/fieldLoading";
+import { CacheProvider, useCache } from "next-common/context/cache";
 
 export default function TreasuryProposalPopupContent({
   onClose,
@@ -67,6 +69,21 @@ export default function TreasuryProposalPopupContent({
     treasuryProposalAction,
   ]);
 
+  const options = proposalIDs?.map((id) => ({
+    label: (
+      <div className="flex items-center">
+        <span>
+          {id}
+          &nbsp;
+          {"·"}
+          &nbsp;
+        </span>
+        <ProposalTitle id={id} />
+      </div>
+    ),
+    value: id,
+  }));
+
   return (
     <>
       <SignerWithBalance />
@@ -74,19 +91,18 @@ export default function TreasuryProposalPopupContent({
       <div>
         <PopupLabel text="Proposal ID" />
 
-        <Select
-          placeholder="Please select a treasury proposal"
-          value={selectedID}
-          options={proposalIDs?.map((id) => ({
-            label: id?.toString(),
-            value: id,
-          }))}
-          onChange={(item) => {
-            setSelectedID(item.value);
-          }}
-        />
+        <CacheProvider>
+          <Select
+            placeholder="Please select a treasury proposal"
+            value={selectedID}
+            options={options}
+            onChange={(item) => {
+              setSelectedID(item.value);
+            }}
+          />
 
-        {proposalIDs && <ProposalInfo id={selectedID} />}
+          {proposalIDs && <ProposalInfo id={selectedID} />}
+        </CacheProvider>
       </div>
 
       <div className="flex justify-end">
@@ -115,6 +131,20 @@ export default function TreasuryProposalPopupContent({
       </div>
     </>
   );
+}
+
+function ProposalTitle({ id }) {
+  const { value: title, loading } = useTreasuryProposalTitle(id);
+
+  if (loading) {
+    return <FieldLoading />;
+  }
+
+  if (isNil(id) || !title) {
+    return null;
+  }
+
+  return <span>{title}</span>;
 }
 
 function ProposalInfo({ id }) {
@@ -166,10 +196,16 @@ function useTreasuryProposalIDs() {
 function useTreasuryProposalTitle(id) {
   const treasuryPallet = useTreasuryPallet();
   const proposalListUrl = useTreasuryProposalListUrl(treasuryPallet);
+  const { getCacheItem, setCacheItem } = useCache();
 
   return useAsync(async () => {
     if (isNil(id)) {
       return null;
+    }
+
+    const cachedTitle = getCacheItem(id);
+    if (cachedTitle) {
+      return cachedTitle;
     }
 
     const resp = await nextApi.fetch(
@@ -177,9 +213,15 @@ function useTreasuryProposalTitle(id) {
         proposalListUrl.startsWith("/")
           ? proposalListUrl.slice(1)
           : proposalListUrl
-      }/${id}`,
+      }/${id}?simple=true`,
     );
 
-    return resp?.result?.title;
-  }, [id, proposalListUrl]);
+    const title = resp?.result?.title;
+
+    if (title) {
+      setCacheItem(id, title);
+    }
+
+    return title;
+  }, [id, proposalListUrl, getCacheItem, setCacheItem]);
 }
