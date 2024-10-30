@@ -90,6 +90,7 @@ export const GET_CORETIME_SALE_RENEWALS_CHART = gql`
         indexer {
           blockHeight
         }
+        who
       }
     }
   }
@@ -103,6 +104,7 @@ export const GET_CORETIME_SALE_PURCHASES_CHART = gql`
         indexer {
           blockHeight
         }
+        who
       }
     }
   }
