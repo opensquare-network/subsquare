@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 
 const GET_CORETIME_CURRENT_SALE = gql`
   query MyQuery {
-    coretimeSale(id: 7) {
+    coretimeCurrentSale {
       id
       purchaseCount
       renewalCount
@@ -32,21 +32,13 @@ const GET_CORETIME_CURRENT_SALE = gql`
         eventIndex
         extrinsicIndex
       }
-      endIndexer {
-        blockHeight
-        blockHash
-        blockTime
-        chain
-        eventIndex
-        extrinsicIndex
-      }
     }
   }
 `;
 
 export default async function queryCoretimeCurrentSale() {
   const {
-    data: { coretimeSale: coretimeCurrentSale = null },
+    data: { coretimeCurrentSale = null },
   } =
     (await coretimeClient?.query?.({
       query: GET_CORETIME_CURRENT_SALE,
