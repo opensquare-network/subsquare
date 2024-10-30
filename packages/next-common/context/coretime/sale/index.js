@@ -17,10 +17,10 @@ export function CoretimeDetailSaleProvider({ children }) {
   const { coretimeSale } = usePageProps();
 
   return (
-    <CoretimeDetailSaleSubscriber isFinal={coretimeSale?.isFinal}>
-      <CoretimeSaleProvider value={coretimeSale}>
+    <CoretimeSaleProvider value={coretimeSale}>
+      <CoretimeDetailSaleSubscriber isFinal={coretimeSale?.isFinal}>
         {children}
-      </CoretimeSaleProvider>
-    </CoretimeDetailSaleSubscriber>
+      </CoretimeDetailSaleSubscriber>
+    </CoretimeSaleProvider>
   );
 }
