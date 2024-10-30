@@ -6,14 +6,10 @@ import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import CountDown from "next-common/components/_CountDown";
 import { toPercentage } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 function getCountDownProgress(startHeight, currentHeight, endHeight) {
-  if (
-    isNaN(startHeight) ||
-    isNaN(currentHeight) ||
-    isNaN(endHeight) ||
-    currentHeight <= startHeight
-  ) {
+  if (currentHeight <= startHeight) {
     return 0;
   }
 
@@ -32,18 +28,20 @@ export default function CurrentPhaseEnd({ startHeight, endHeight }) {
   const blockGap = endHeight - chainHeight;
   const estimatedBlocksTime = useEstimateBlocksTime(blockGap);
 
+  if (isNaN(startHeight) || isNaN(chainHeight) || isNaN(endHeight)) {
+    return null;
+  }
+
   const percentage = getCountDownProgress(startHeight, chainHeight, endHeight);
 
   return (
     <SummaryItem>
       <div className="text12Medium flex gap-x-1">
-        {/* TODO: NaN */}
         <Item
           label="End in"
           value={estimatedBlocksTime}
           valueClassName={"text-textSecondary"}
         />
-
         <Tooltip
           content={`${percentage}%`}
           className={"inline-flex items-center"}
