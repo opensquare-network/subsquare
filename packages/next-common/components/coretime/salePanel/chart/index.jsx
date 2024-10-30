@@ -12,6 +12,8 @@ export default function CoretimeSalePanelChart() {
 
   const endBlockHeight = endSale?.indexer?.blockHeight;
   const totalBlocks = endBlockHeight - initBlockHeight;
+  const fixedBlockHeight =
+    coretimeSale.info.saleStart + coretimeSale.info.leadinLength;
 
   return (
     <div>
@@ -22,6 +24,7 @@ export default function CoretimeSalePanelChart() {
         totalBlocks={totalBlocks}
         interludeEndHeight={interludeEndHeight}
         coretimeSale={coretimeSale}
+        fixedBlockHeight={fixedBlockHeight}
       />
 
       <CoretimeSalePanelChartPeriodProgress

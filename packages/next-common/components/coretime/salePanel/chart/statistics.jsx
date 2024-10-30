@@ -1,4 +1,4 @@
-import { range } from "lodash-es";
+import { maxBy, range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useChainSettings } from "next-common/context/chain";
 import { useThemeSetting } from "next-common/context/theme";
@@ -19,7 +19,9 @@ function Statistics({
   // endBlockHeight,
   totalBlocks = 0,
   interludeEndHeight,
+  fixedBlockHeight,
 }) {
+  // console.log(fixedBlockHeight);
   const theme = useThemeSetting();
   const { decimals, symbol } = useChainSettings();
 
@@ -49,6 +51,7 @@ function Statistics({
   const indexes = range(0, totalBlocks);
 
   const interludeBlocks = interludeEndHeight - initBlockHeight;
+  const saleBlocks = fixedBlockHeight - initBlockHeight;
 
   const renewals = useMemo(() => {
     const result = [];
@@ -82,6 +85,11 @@ function Statistics({
   const priceLine = useMemo(() => {
     return [...sales, { x: interludeBlocks, y: initPrice }];
   }, [initPrice, interludeBlocks, sales]);
+
+  const lastPrice = toPrecision(
+    maxBy(salesData?.coretimeSalePurchases?.items, "price")?.price,
+    decimals,
+  );
 
   const chartData = useMemo(() => {
     return {
@@ -156,6 +164,21 @@ function Statistics({
           fill: false,
           spanGaps: true,
         },
+        // fixed price line
+        {
+          data: [
+            // end
+            { x: totalBlocks - 1, y: lastPrice },
+            // offset
+            { x: saleBlocks, y: lastPrice },
+          ],
+          borderColor: theme.neutral500,
+          borderWidth: 1,
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          pointHitRadius: 0,
+          fill: false,
+        },
       ],
     };
   }, [
@@ -163,9 +186,10 @@ function Statistics({
     priceLine,
     renewals,
     sales,
-    theme.neutral500,
-    theme.theme300,
-    theme.theme500,
+    theme,
+    lastPrice,
+    saleBlocks,
+    totalBlocks,
   ]);
 
   const options = {
