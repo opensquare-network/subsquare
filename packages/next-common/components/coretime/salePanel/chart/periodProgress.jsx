@@ -18,8 +18,7 @@ export default function CoretimeSalePanelChartPeriodProgress({
   return (
     <>
       <div>
-        total:{totalBlocks}
-        end:{endBlockHeight}
+        total:{totalBlocks}, init:{initBlockHeight}, end:{endBlockHeight},
         interlude:{interludeBlocks}
       </div>
       <div className={cn("flex", className)}>
