@@ -1,9 +1,12 @@
-import { groupBy, map, max, range } from "lodash-es";
+import { range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useChainSettings } from "next-common/context/chain";
 import { useThemeSetting } from "next-common/context/theme";
 import { useCoretimeQuery } from "next-common/hooks/apollo";
-import { GET_CORETIME_SALE_PURCHASES } from "next-common/services/gql/coretime/consts";
+import {
+  GET_CORETIME_SALE_PURCHASES_CHART,
+  GET_CORETIME_SALE_RENEWALS_CHART,
+} from "next-common/services/gql/coretime/consts";
 import { cn, toPrecision } from "next-common/utils";
 import { getCoretimePriceAt } from "next-common/utils/coretime/price";
 import { useMemo } from "react";
@@ -17,52 +20,68 @@ function Statistics({
   totalBlocks = 0,
   interludeEndHeight,
 }) {
+  const theme = useThemeSetting();
   const { decimals } = useChainSettings();
-  const { data } = useCoretimeQuery(GET_CORETIME_SALE_PURCHASES, {
-    variables: {
-      saleId: 7,
-      offset: 0,
-      limit: 100,
+
+  const { data: salesData } = useCoretimeQuery(
+    GET_CORETIME_SALE_PURCHASES_CHART,
+    {
+      variables: {
+        saleId: 7,
+      },
     },
-  });
+  );
+  const { data: renewalsData } = useCoretimeQuery(
+    GET_CORETIME_SALE_RENEWALS_CHART,
+    {
+      variables: {
+        saleId: 7,
+      },
+    },
+  );
   // get the price at the start of the sale
   const initPrice = toPrecision(
     getCoretimePriceAt(coretimeSale?.info?.saleStart, coretimeSale.info),
     decimals,
   );
-  // console.log(initPrice);
-
-  const groupedSales = Object.entries(
-    groupBy(data?.coretimeSalePurchases?.items, "indexer.blockHeight"),
-  ).map(([height, sale]) => {
-    return {
-      height,
-      price: toPrecision(sale[0].price, decimals),
-    };
-  });
-
-  const maxPrice = max([initPrice, ...map(groupedSales, "price")]);
-
-  const theme = useThemeSetting();
-  const interludeBlocks = interludeEndHeight - initBlockHeight;
 
   const indexes = range(0, totalBlocks);
-  const sales1 = useMemo(() => {
+
+  const interludeBlocks = interludeEndHeight - initBlockHeight;
+
+  const renewals = useMemo(() => {
     const result = [];
 
-    for (let i = 0; i < groupedSales.length; i++) {
-      const sale = groupedSales[i];
-      result[Number(sale.height) - initBlockHeight] = sale.price;
+    for (let i = 0; i < renewalsData?.coretimeSaleRenewals?.items.length; i++) {
+      const renewal = renewalsData?.coretimeSaleRenewals?.items[i];
+      result[renewal.indexer.blockHeight - initBlockHeight] = toPrecision(
+        renewal.price,
+        decimals,
+      );
     }
 
     return result;
-  }, [groupedSales, initBlockHeight]);
+  }, [renewalsData?.coretimeSaleRenewals?.items, initBlockHeight, decimals]);
+
+  const sales = useMemo(() => {
+    const result = [];
+
+    for (let i = 0; i < salesData?.coretimeSalePurchases?.items.length; i++) {
+      const sale = salesData?.coretimeSalePurchases?.items[i];
+      result[sale.indexer.blockHeight - initBlockHeight] = toPrecision(
+        sale.price,
+        decimals,
+      );
+    }
+
+    return result;
+  }, [decimals, initBlockHeight, salesData?.coretimeSalePurchases?.items]);
 
   const priceLine = useMemo(() => {
-    const points = [...sales1];
+    const points = [...sales];
     points[interludeBlocks] = initPrice;
     return points;
-  }, [initPrice, interludeBlocks, sales1]);
+  }, [initPrice, interludeBlocks, sales]);
 
   const chartData = useMemo(() => {
     return {
@@ -91,9 +110,26 @@ function Statistics({
         //   hoverBorderWidth: 0,
         //   pointHitRadius: 0,
         // },
+        // renewals points
+        {
+          data: renewals,
+          type: "scatter",
+          borderColor: theme.theme500,
+          // borderWidth: 0,
+          pointRadius: 4,
+          pointBackgroundColor: theme.theme500,
+          pointBorderColor: theme.theme500,
+          pointBorderWidth: 0,
+          pointHoverRadius: 6,
+          pointHoverBackgroundColor: theme.theme500,
+          pointHoverBorderColor: theme.theme500,
+          pointHoverBorderWidth: 0,
+          pointHitRadius: 10,
+        },
         // sale points
         {
-          data: sales1,
+          data: sales,
+          source: "sale",
           type: "scatter",
           borderColor: theme.theme500,
           // borderWidth: 0,
@@ -121,7 +157,7 @@ function Statistics({
         },
       ],
     };
-  }, [indexes, priceLine, sales1, theme.neutral500, theme.theme500]);
+  }, [indexes, priceLine, renewals, sales, theme.neutral500, theme.theme500]);
 
   const options = {
     clip: false,
@@ -132,19 +168,11 @@ function Statistics({
     scales: {
       x: {
         display: false,
-        // ticks: {
-        //   source: "auto",
-        //   // Disabled rotation for performance
-        //   maxRotation: 0,
-        //   autoSkip: true,
-        // },
-        // min: initBlockHeight,
-        // max: endBlockHeight,
       },
       y: {
         display: false,
         min: 0,
-        max: maxPrice,
+        max: initPrice,
       },
     },
     plugins: {
@@ -160,10 +188,10 @@ function Statistics({
       tooltip: {
         displayColors: false,
         callbacks: {
-          label(context) {
+          label(item) {
             return [
-              `Block: ${context.dataIndex}`,
-              `Price: ${context.parsed?.y}`,
+              `Block: ${item.dataIndex + initBlockHeight}`,
+              `Price: ${item.parsed?.y}`,
             ];
           },
         },
