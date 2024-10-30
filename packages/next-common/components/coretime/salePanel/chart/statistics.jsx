@@ -1,4 +1,4 @@
-import { maxBy, range } from "lodash-es";
+import { last, maxBy, range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useChainSettings } from "next-common/context/chain";
 import { useThemeSetting } from "next-common/context/theme";
@@ -16,10 +16,10 @@ function Statistics({
   className = "",
   coretimeSale,
   initBlockHeight,
-  // endBlockHeight,
+  endBlockHeight,
   totalBlocks = 0,
-  interludeEndHeight,
-  fixedBlockHeight,
+  saleStart,
+  fixedStart,
 }) {
   // console.log(fixedBlockHeight);
   const theme = useThemeSetting();
@@ -29,7 +29,7 @@ function Statistics({
     GET_CORETIME_SALE_PURCHASES_CHART,
     {
       variables: {
-        saleId: 7,
+        saleId: coretimeSale.id,
       },
     },
   );
@@ -37,23 +37,17 @@ function Statistics({
     GET_CORETIME_SALE_RENEWALS_CHART,
     {
       variables: {
-        saleId: 7,
+        saleId: coretimeSale.id,
       },
     },
   );
 
-  // get the price at the start of the sale
-  const initPrice = toPrecision(
-    getCoretimePriceAt(coretimeSale?.info?.saleStart, coretimeSale.info),
-    decimals,
-  );
-
   const indexes = range(0, totalBlocks);
 
-  const interludeBlocks = interludeEndHeight - initBlockHeight;
-  const saleBlocks = fixedBlockHeight - initBlockHeight;
+  const renewalPeriodBlocks = saleStart - initBlockHeight;
+  const salePeriodBlocks = endBlockHeight - renewalPeriodBlocks;
 
-  const renewals = useMemo(() => {
+  const renewalsDataset = useMemo(() => {
     const result = [];
 
     for (let i = 0; i < renewalsData?.coretimeSaleRenewals?.items.length; i++) {
@@ -69,7 +63,7 @@ function Statistics({
     return result;
   }, [renewalsData?.coretimeSaleRenewals?.items, initBlockHeight, decimals]);
 
-  const sales = useMemo(() => {
+  const salesDataset = useMemo(() => {
     const result = [];
 
     for (let i = 0; i < salesData?.coretimeSalePurchases?.items.length; i++) {
@@ -84,14 +78,23 @@ function Statistics({
     return result;
   }, [decimals, initBlockHeight, salesData?.coretimeSalePurchases?.items]);
 
-  const priceLine = useMemo(() => {
-    return [...sales, { x: interludeBlocks, y: initPrice }];
-  }, [initPrice, interludeBlocks, sales]);
+  const saleBlockHeightRange = range(saleStart, fixedStart);
+  const priceDataset = saleBlockHeightRange.map((blockHeight) => {
+    const price = toPrecision(
+      getCoretimePriceAt(blockHeight, coretimeSale.info),
+      decimals,
+    );
 
-  const lastPrice = toPrecision(
-    maxBy(salesData?.coretimeSalePurchases?.items, "price")?.price,
-    decimals,
-  );
+    return {
+      blockHeight,
+      price,
+      x: blockHeight,
+      y: price,
+    };
+  });
+
+  const lastPrice = last(priceDataset)?.price;
+  const maxPrice = maxBy(priceDataset, "price")?.price;
 
   const chartData = useMemo(() => {
     return {
@@ -122,7 +125,7 @@ function Statistics({
         // },
         // renewals points
         {
-          data: renewals,
+          data: renewalsDataset,
           source: "Renewal",
           type: "scatter",
           borderColor: theme.theme300,
@@ -139,7 +142,7 @@ function Statistics({
         },
         // sale points
         {
-          data: sales,
+          data: salesDataset,
           source: "Sale",
           type: "scatter",
           borderColor: theme.theme500,
@@ -156,21 +159,21 @@ function Statistics({
           // showLine: false,
         },
         // price line
-        {
-          data: priceLine,
-          borderColor: theme.neutral500,
-          borderWidth: 1,
-          pointRadius: 0,
-          pointHoverRadius: 0,
-          pointHitRadius: 0,
-          fill: false,
-          spanGaps: true,
-        },
+        // {
+        //   data: priceDataset,
+        //   borderColor: theme.neutral500,
+        //   borderWidth: 1,
+        //   pointRadius: 0,
+        //   pointHoverRadius: 0,
+        //   pointHitRadius: 0,
+        //   fill: false,
+        //   spanGaps: true,
+        // },
         // fixed price line
         {
           data: [
             // start
-            { x: saleBlocks, y: lastPrice },
+            { x: salePeriodBlocks, y: lastPrice },
             // end
             { x: totalBlocks - 1, y: lastPrice },
           ],
@@ -185,12 +188,12 @@ function Statistics({
     };
   }, [
     indexes,
-    priceLine,
-    renewals,
-    sales,
+    // priceDataset,
+    renewalsDataset,
+    salesDataset,
     theme,
     lastPrice,
-    saleBlocks,
+    salePeriodBlocks,
     totalBlocks,
   ]);
 
@@ -202,21 +205,27 @@ function Statistics({
     // parsing: false,
     scales: {
       x: {
-        display: false,
+        // display: false,
+        ticks: {
+          source: "auto",
+          // Disabled rotation for performance
+          maxRotation: 0,
+          autoSkip: true,
+        },
       },
       y: {
-        display: false,
+        // display: false,
         min: 0,
-        max: initPrice,
+        max: maxPrice,
       },
     },
     plugins: {
-      decimation: {
-        enabled: true,
-        // algorithm: "min-max",
-        algorithm: "lttb",
-        samples: 500,
-      },
+      // decimation: {
+      //   enabled: true,
+      //   // algorithm: "min-max",
+      //   algorithm: "lttb",
+      //   samples: 500,
+      // },
       legend: {
         display: false,
       },
@@ -229,12 +238,12 @@ function Statistics({
             const index = item.dataIndex;
             const price = item.parsed.y;
             const data = item.dataset.data[index];
-            const blockHeight = data.indexer.blockHeight;
+            const blockHeight = data.indexer?.blockHeight;
 
             const result = [
               `Type: ${type}`,
               `Block: ${Number(blockHeight).toLocaleString()}`,
-              `Price: ≈${price.toFixed(2)} ${symbol}`,
+              `Price: ≈${price?.toFixed?.(2)} ${symbol}`,
             ];
 
             if (type === "Renewal") {
@@ -251,8 +260,8 @@ function Statistics({
         annotations: {
           line1: {
             type: "line",
-            xMin: interludeBlocks,
-            xMax: interludeBlocks,
+            xMin: renewalPeriodBlocks,
+            xMax: renewalPeriodBlocks,
             borderColor: theme.neutral500,
             borderWidth: 1,
             borderDash: [3, 3],

@@ -6,14 +6,16 @@ import CoretimeSalePanelChartStatistics from "./statistics";
 
 export default function CoretimeSalePanelChart() {
   const coretimeSale = useCoretimeSale();
-  const { initIndexer: { blockHeight: initBlockHeight } = {} } = coretimeSale;
+  const {
+    initIndexer: { blockHeight: initBlockHeight } = {},
+    info: { saleStart, leadinLength },
+  } = coretimeSale;
   const endSale = useCoretimeSaleEnd();
   const interludeEndHeight = useCoretimeSaleInterludeEndHeight();
 
   const endBlockHeight = endSale?.indexer?.blockHeight;
   const totalBlocks = endBlockHeight - initBlockHeight;
-  const fixedBlockHeight =
-    coretimeSale.info.saleStart + coretimeSale.info.leadinLength;
+  const fixedStart = saleStart + leadinLength;
 
   return (
     <div>
@@ -22,9 +24,9 @@ export default function CoretimeSalePanelChart() {
         initBlockHeight={initBlockHeight}
         endBlockHeight={endBlockHeight}
         totalBlocks={totalBlocks}
-        interludeEndHeight={interludeEndHeight}
         coretimeSale={coretimeSale}
-        fixedBlockHeight={fixedBlockHeight}
+        saleStart={saleStart}
+        fixedStart={fixedStart}
       />
 
       <CoretimeSalePanelChartPeriodProgress
