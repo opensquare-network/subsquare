@@ -11,6 +11,8 @@ import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import { StatemintFellowShipSalaryAccount } from "../hook/useSubscribeFellowshipSalaryBalance";
+import { useChainSettings } from "next-common/context/chain";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 function TreasurySummary({ multiAssetsFree, USDtBalance, USDCBalance }) {
   return (
@@ -48,7 +50,7 @@ function TreasurySummary({ multiAssetsFree, USDtBalance, USDCBalance }) {
 
 function FellowshipSubItem({ name, href, children }) {
   return (
-    <div className="flex flex-col gap-[4px]">
+    <div className="flex gap-[4px]">
       <Link
         className="text12Medium"
         href={href}
@@ -59,12 +61,15 @@ function FellowshipSubItem({ name, href, children }) {
         <span className="text-textTertiary hover:underline">{name}</span>
         <i className="text-textTertiary">&nbsp;↗</i>
       </Link>
-      <div className="flex ml-[16px]">{children}</div>
+      <div className="flex">{children}</div>
     </div>
   );
 }
 
 function FellowshipSummary({ fellowshipFree, fellowshipSalaryUsdtBalance }) {
+  const { decimals, symbol } = useChainSettings();
+  const fellowshipFreeBalance = toPrecision(fellowshipFree || 0, decimals);
+
   return (
     <div className="flex flex-col gap-[4px]">
       <div className="flex gap-[4px] text12Medium text-textPrimary">
@@ -78,18 +83,22 @@ function FellowshipSummary({ fellowshipFree, fellowshipSalaryUsdtBalance }) {
         name="Treasury"
         href={`https://assethub-polkadot.subscan.io/account/${StatemintFellowShipTreasuryAccount}`}
       >
-        <DotTokenSymbolAsset free={fellowshipFree} />
+        <ValueDisplay
+          value={fellowshipFreeBalance}
+          symbol={symbol}
+          className={"text12Medium text-textPrimary"}
+          tooltipClassName={"inline-flex items-center"}
+        />
       </FellowshipSubItem>
       <FellowshipSubItem
         name="Salary"
         href={`https://assethub-polkadot.subscan.io/account/${StatemintFellowShipSalaryAccount}`}
       >
-        <TokenSymbolAsset
-          amount={toPrecision(
-            fellowshipSalaryUsdtBalance,
-            SYMBOL_DECIMALS.USDT,
-          )}
+        <ValueDisplay
+          value={toPrecision(fellowshipSalaryUsdtBalance, SYMBOL_DECIMALS.USDT)}
           symbol="USDt"
+          className={"text12Medium text-textPrimary"}
+          tooltipClassName={"inline-flex items-center"}
         />
       </FellowshipSubItem>
     </div>
