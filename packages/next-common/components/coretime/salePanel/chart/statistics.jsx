@@ -21,7 +21,7 @@ function Statistics({
   interludeEndHeight,
 }) {
   const theme = useThemeSetting();
-  const { decimals } = useChainSettings();
+  const { decimals, symbol } = useChainSettings();
 
   const { data: salesData } = useCoretimeQuery(
     GET_CORETIME_SALE_PURCHASES_CHART,
@@ -39,6 +39,7 @@ function Statistics({
       },
     },
   );
+
   // get the price at the start of the sale
   const initPrice = toPrecision(
     getCoretimePriceAt(coretimeSale?.info?.saleStart, coretimeSale.info),
@@ -113,23 +114,24 @@ function Statistics({
         // renewals points
         {
           data: renewals,
+          source: "Renewal",
           type: "scatter",
-          borderColor: theme.theme500,
+          borderColor: theme.theme300,
           // borderWidth: 0,
           pointRadius: 4,
-          pointBackgroundColor: theme.theme500,
-          pointBorderColor: theme.theme500,
+          pointBackgroundColor: theme.theme300,
+          pointBorderColor: theme.theme300,
           pointBorderWidth: 0,
           pointHoverRadius: 6,
-          pointHoverBackgroundColor: theme.theme500,
-          pointHoverBorderColor: theme.theme500,
+          pointHoverBackgroundColor: theme.theme300,
+          pointHoverBorderColor: theme.theme300,
           pointHoverBorderWidth: 0,
           pointHitRadius: 10,
         },
         // sale points
         {
           data: sales,
-          source: "sale",
+          source: "Sale",
           type: "scatter",
           borderColor: theme.theme500,
           // borderWidth: 0,
@@ -157,7 +159,15 @@ function Statistics({
         },
       ],
     };
-  }, [indexes, priceLine, renewals, sales, theme.neutral500, theme.theme500]);
+  }, [
+    indexes,
+    priceLine,
+    renewals,
+    sales,
+    theme.neutral500,
+    theme.theme300,
+    theme.theme500,
+  ]);
 
   const options = {
     clip: false,
@@ -188,11 +198,29 @@ function Statistics({
       tooltip: {
         displayColors: false,
         callbacks: {
+          title: () => "",
           label(item) {
-            return [
-              `Block: ${item.dataIndex + initBlockHeight}`,
-              `Price: ${item.parsed?.y}`,
+            const type = item.dataset.source;
+            const index = item.dataIndex;
+            const price = item.dataset.data[index];
+
+            const result = [
+              `Type: ${type}`,
+              `Block: ${index + initBlockHeight}`,
+              `Price: ≈${Number(price).toFixed(2)} ${symbol}`,
             ];
+
+            if (type === "Renewal") {
+              result.push(
+                `Who: ${renewalsData?.coretimeSaleRenewals?.items[index]?.who}`,
+              );
+            } else if (type === "Sale") {
+              result.push(
+                `Who: ${salesData?.coretimeSalePurchases?.items[index]?.who}`,
+              );
+            }
+
+            return result;
           },
         },
       },
