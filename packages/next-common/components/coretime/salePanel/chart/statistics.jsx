@@ -205,7 +205,7 @@ function Statistics({
 
             const result = [
               `Type: ${type}`,
-              `Block: ${index + initBlockHeight}`,
+              `Block: ${(index + initBlockHeight).toLocaleString()}`,
               `Price: ≈${price.toFixed(2)} ${symbol}`,
             ];
 
