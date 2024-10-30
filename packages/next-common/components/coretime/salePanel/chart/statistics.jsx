@@ -77,20 +77,24 @@ function Statistics({
     return result;
   }, [decimals, initBlockHeight, salesData?.coretimeSalePurchases?.items]);
 
-  const saleBlockHeightRange = range(saleStart, fixedStart);
-  const priceDataset = saleBlockHeightRange.map((blockHeight) => {
-    const price = toPrecision(
-      getCoretimePriceAt(blockHeight, coretimeSale.info),
-      decimals,
-    );
+  const priceDataset = useMemo(() => {
+    return Array.from(
+      { length: Math.ceil((fixedStart - saleStart) / 200) },
+      (_, i) => saleStart + i * 200,
+    ).map((blockHeight) => {
+      const price = toPrecision(
+        getCoretimePriceAt(blockHeight, coretimeSale.info),
+        decimals,
+      );
 
-    return {
-      blockHeight,
-      price,
-      x: blockHeight,
-      y: price,
-    };
-  });
+      return {
+        blockHeight,
+        price,
+        x: blockHeight - initBlockHeight,
+        y: price,
+      };
+    });
+  }, [coretimeSale.info, decimals, fixedStart, initBlockHeight, saleStart]);
 
   const lastPrice = last(priceDataset)?.price;
   const maxPrice = maxBy(priceDataset, "price")?.price;
@@ -158,16 +162,16 @@ function Statistics({
           // showLine: false,
         },
         // price line
-        // {
-        //   data: priceDataset,
-        //   borderColor: theme.neutral500,
-        //   borderWidth: 1,
-        //   pointRadius: 0,
-        //   pointHoverRadius: 0,
-        //   pointHitRadius: 0,
-        //   fill: false,
-        //   spanGaps: true,
-        // },
+        {
+          data: priceDataset,
+          borderColor: theme.neutral500,
+          borderWidth: 1,
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          pointHitRadius: 0,
+          fill: false,
+          spanGaps: true,
+        },
         // fixed price line
         {
           data: [
@@ -192,6 +196,7 @@ function Statistics({
     theme.theme500,
     theme.neutral500,
     salesDataset,
+    priceDataset,
     renewalPeriodBlocks,
     fixedStart,
     saleStart,
@@ -207,7 +212,7 @@ function Statistics({
     // parsing: false,
     scales: {
       x: {
-        // display: false,
+        display: false,
         ticks: {
           source: "auto",
           // Disabled rotation for performance
@@ -216,7 +221,7 @@ function Statistics({
         },
       },
       y: {
-        // display: false,
+        display: false,
         min: 0,
         max: maxPrice,
       },
