@@ -60,10 +60,9 @@ function Statistics({
       const renewal = renewalsData?.coretimeSaleRenewals?.items[i];
 
       result.push({
+        ...renewal,
         x: renewal.indexer.blockHeight - initBlockHeight,
         y: toPrecision(renewal.price, decimals),
-        blockHeight: renewal.indexer.blockHeight,
-        who: renewal.who,
       });
     }
 
@@ -76,10 +75,9 @@ function Statistics({
     for (let i = 0; i < salesData?.coretimeSalePurchases?.items.length; i++) {
       const sale = salesData?.coretimeSalePurchases?.items[i];
       result.push({
+        ...sale,
         x: sale.indexer.blockHeight - initBlockHeight,
         y: toPrecision(sale.price, decimals),
-        blockHeight: sale.indexer.blockHeight,
-        who: sale.who,
       });
     }
 
@@ -231,7 +229,7 @@ function Statistics({
             const index = item.dataIndex;
             const price = item.parsed.y;
             const data = item.dataset.data[index];
-            const blockHeight = data.blockHeight;
+            const blockHeight = data.indexer.blockHeight;
 
             const result = [
               `Type: ${type}`,
