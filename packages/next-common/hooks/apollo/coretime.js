@@ -1,4 +1,9 @@
-import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  useQuery,
+  useSubscription,
+} from "@apollo/client";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 
@@ -32,4 +37,12 @@ if (modules?.coretime) {
 export function useCoretimeQuery(query, options = {}, ...args) {
   options.client = options.client || coretimeClient;
   return useQuery(query, options, ...args);
+}
+
+/**
+ * @type {typeof useSubscription}
+ */
+export function useCoretimeSubscription(subscription, options = {}, ...args) {
+  options.client = options.client || coretimeClient;
+  return useSubscription(subscription, options, ...args);
 }
