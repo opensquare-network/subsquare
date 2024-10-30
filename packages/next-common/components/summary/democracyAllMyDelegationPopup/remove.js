@@ -2,7 +2,7 @@ import RemoveButton from "next-common/components/removeButton";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-  incMyReferendaDelegationsTrigger
+  incMyReferendaDelegationsTrigger,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import Tooltip from "next-common/components/tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -27,7 +27,7 @@ export default function RemoveDelegation({ trackId }) {
       dispatch(incMyReferendaDelegationsTrigger());
       await sleep(blockTime);
     }
-  }, [dispatch, defaultBlockTime]);
+  }, [dispatch]);
 
   return (
     <>
