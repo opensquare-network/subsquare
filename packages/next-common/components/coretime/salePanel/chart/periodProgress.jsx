@@ -5,7 +5,6 @@ import { cn, toPercentage } from "next-common/utils";
 
 export default function CoretimeSalePanelChartPeriodProgress({
   className = "",
-  endBlockHeight,
   totalBlocks,
   interludeEndHeight,
 }) {
@@ -16,20 +15,14 @@ export default function CoretimeSalePanelChartPeriodProgress({
   const interludeWidth = toPercentage(interludeBlocks / totalBlocks, 3);
 
   return (
-    <>
-      <div>
-        total:{totalBlocks}, init:{initBlockHeight}, end:{endBlockHeight},
-        interlude:{interludeBlocks}
-      </div>
-      <div className={cn("flex", className)}>
-        <RenewalPeriodProgress
-          style={{
-            width: `${interludeWidth}%`,
-          }}
-        />
-        <SalePeriodProgress />
-      </div>
-    </>
+    <div className={cn("flex", className)}>
+      <RenewalPeriodProgress
+        style={{
+          width: `${interludeWidth}%`,
+        }}
+      />
+      <SalePeriodProgress />
+    </div>
   );
 }
 

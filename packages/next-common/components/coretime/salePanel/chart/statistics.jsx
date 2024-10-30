@@ -169,10 +169,10 @@ function Statistics({
         // fixed price line
         {
           data: [
+            // start
+            { x: saleBlocks, y: lastPrice },
             // end
             { x: totalBlocks - 1, y: lastPrice },
-            // offset
-            { x: saleBlocks, y: lastPrice },
           ],
           borderColor: theme.neutral500,
           borderWidth: 1,
@@ -202,10 +202,10 @@ function Statistics({
     // parsing: false,
     scales: {
       x: {
-        // display: false,
+        display: false,
       },
       y: {
-        // display: false,
+        display: false,
         min: 0,
         max: initPrice,
       },
