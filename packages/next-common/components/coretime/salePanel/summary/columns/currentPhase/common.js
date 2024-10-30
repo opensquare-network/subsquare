@@ -26,12 +26,14 @@ export default function CurrentPhaseEnd({ startHeight, endHeight }) {
   const chainHeight = useSelector(chainOrScanHeightSelector);
   const blockGap = endHeight - chainHeight;
   const estimatedBlocksTime = useEstimateBlocksTime(blockGap);
+  const countDownTotal = useEstimateBlocksTime(endHeight - startHeight);
 
   if (isNaN(startHeight) || isNaN(chainHeight) || isNaN(endHeight)) {
     return null;
   }
 
   const percentage = getCountDownProgress(startHeight, chainHeight, endHeight);
+  const tooltipContent = `${percentage}%, total ${countDownTotal}`;
 
   return (
     <SummaryItem>
@@ -42,7 +44,7 @@ export default function CurrentPhaseEnd({ startHeight, endHeight }) {
           valueClassName={"text-textSecondary"}
         />
         <Tooltip
-          content={`${percentage}%`}
+          content={tooltipContent}
           className={"inline-flex items-center"}
         >
           <CountDown
