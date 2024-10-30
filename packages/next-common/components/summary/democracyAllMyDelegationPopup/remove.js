@@ -1,9 +1,14 @@
 import RemoveButton from "next-common/components/removeButton";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { incMyReferendaDelegationsTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
+import {
+  incMyReferendaDelegationsTrigger
+} from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import Tooltip from "next-common/components/tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import getChainSettings from "next-common/utils/consts/settings";
+import { defaultBlockTime } from "next-common/utils/constants";
+import { sleep } from "next-common/utils";
 
 const UndelegatePopup = dynamicPopup(() =>
   import("../delegation/undelegatePopup"),
@@ -13,6 +18,17 @@ export default function RemoveDelegation({ trackId }) {
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const updateDelegationsFn = useCallback(async () => {
+    const blockTime =
+      getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
+      defaultBlockTime;
+
+    for (let i = 0; i < 5; i++) {
+      dispatch(incMyReferendaDelegationsTrigger());
+      await sleep(blockTime);
+    }
+  }, [dispatch, defaultBlockTime]);
 
   return (
     <>
@@ -25,9 +41,7 @@ export default function RemoveDelegation({ trackId }) {
           onClose={() => setShowPopup(false)}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-          onInBlock={() => {
-            dispatch(incMyReferendaDelegationsTrigger());
-          }}
+          onInBlock={updateDelegationsFn}
         />
       )}
     </>
