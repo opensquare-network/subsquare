@@ -17,14 +17,13 @@ const UndelegatePopup = dynamicPopup(() =>
 export default function RemoveDelegation({ trackId }) {
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const updateDelegationsFn = useCallback(async () => {
     const blockTime =
       getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
       defaultBlockTime;
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       dispatch(incMyReferendaDelegationsTrigger());
       await sleep(blockTime);
     }
@@ -33,14 +32,12 @@ export default function RemoveDelegation({ trackId }) {
   return (
     <>
       <Tooltip content={"Remove"}>
-        <RemoveButton disabled={isLoading} onClick={() => setShowPopup(true)} />
+        <RemoveButton onClick={() => setShowPopup(true)} />
       </Tooltip>
       {showPopup && (
         <UndelegatePopup
           trackId={trackId}
           onClose={() => setShowPopup(false)}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
           onInBlock={updateDelegationsFn}
         />
       )}
