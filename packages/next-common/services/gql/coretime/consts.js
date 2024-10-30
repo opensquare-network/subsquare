@@ -81,3 +81,29 @@ export const GET_CORETIME_HISTORY_SALES = gql`
     }
   }
 `;
+
+export const GET_CORETIME_SALE_RENEWALS_CHART = gql`
+  query MyQuery($saleId: Int!) {
+    coretimeSaleRenewals(limit: 100, offset: 0, saleId: $saleId) {
+      items {
+        price
+        indexer {
+          blockHeight
+        }
+      }
+    }
+  }
+`;
+
+export const GET_CORETIME_SALE_PURCHASES_CHART = gql`
+  query MyQuery($saleId: Int!) {
+    coretimeSalePurchases(limit: 100, offset: 0, saleId: $saleId) {
+      items {
+        price
+        indexer {
+          blockHeight
+        }
+      }
+    }
+  }
+`;
