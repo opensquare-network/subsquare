@@ -12,12 +12,21 @@ export default function CurrentPhaseEnd({ startHeight, endHeight }) {
 
   return (
     <SummaryItem>
-      <div className="text12Medium flex ">
-        <Item label="End in" value={estimatedBlocksTime} />
-        <CountDown
-          numerator={endHeight - chainHeight}
-          denominator={endHeight - startHeight}
+      <div className="text12Medium flex gap-x-1">
+        {/* TODO: NaN */}
+        <Item
+          label="End in"
+          value={estimatedBlocksTime}
+          valueClassName={"text-textSecondary"}
         />
+        <div className="flex items-center">
+          <CountDown
+            numerator={endHeight - chainHeight}
+            denominator={endHeight - startHeight}
+            backgroundColor="var(--theme100)"
+            foregroundColor="var(--theme500)"
+          />
+        </div>
       </div>
     </SummaryItem>
   );
