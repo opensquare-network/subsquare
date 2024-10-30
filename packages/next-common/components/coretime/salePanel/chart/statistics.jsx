@@ -62,6 +62,8 @@ function Statistics({
       result.push({
         x: renewal.indexer.blockHeight - initBlockHeight,
         y: toPrecision(renewal.price, decimals),
+        blockHeight: renewal.indexer.blockHeight,
+        who: renewal.who,
       });
     }
 
@@ -76,6 +78,8 @@ function Statistics({
       result.push({
         x: sale.indexer.blockHeight - initBlockHeight,
         y: toPrecision(sale.price, decimals),
+        blockHeight: sale.indexer.blockHeight,
+        who: sale.who,
       });
     }
 
@@ -200,10 +204,10 @@ function Statistics({
     // parsing: false,
     scales: {
       x: {
-        display: false,
+        // display: false,
       },
       y: {
-        display: false,
+        // display: false,
         min: 0,
         max: initPrice,
       },
@@ -226,21 +230,19 @@ function Statistics({
             const type = item.dataset.source;
             const index = item.dataIndex;
             const price = item.parsed.y;
+            const data = item.dataset.data[index];
+            const blockHeight = data.blockHeight;
 
             const result = [
               `Type: ${type}`,
-              `Block: ${(index + initBlockHeight).toLocaleString()}`,
+              `Block: ${Number(blockHeight).toLocaleString()}`,
               `Price: ≈${price.toFixed(2)} ${symbol}`,
             ];
 
             if (type === "Renewal") {
-              result.push(
-                `Who: ${renewalsData?.coretimeSaleRenewals?.items[index]?.who}`,
-              );
+              result.push(`Who: ${data.who}`);
             } else if (type === "Sale") {
-              result.push(
-                `Who: ${salesData?.coretimeSalePurchases?.items[index]?.who}`,
-              );
+              result.push(`Who: ${data.who}`);
             }
 
             return result;
