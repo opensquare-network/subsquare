@@ -55,10 +55,11 @@ function Statistics({
 
     for (let i = 0; i < renewalsData?.coretimeSaleRenewals?.items.length; i++) {
       const renewal = renewalsData?.coretimeSaleRenewals?.items[i];
-      result[renewal.indexer.blockHeight - initBlockHeight] = toPrecision(
-        renewal.price,
-        decimals,
-      );
+
+      result.push({
+        x: renewal.indexer.blockHeight - initBlockHeight,
+        y: toPrecision(renewal.price, decimals),
+      });
     }
 
     return result;
@@ -69,19 +70,17 @@ function Statistics({
 
     for (let i = 0; i < salesData?.coretimeSalePurchases?.items.length; i++) {
       const sale = salesData?.coretimeSalePurchases?.items[i];
-      result[sale.indexer.blockHeight - initBlockHeight] = toPrecision(
-        sale.price,
-        decimals,
-      );
+      result.push({
+        x: sale.indexer.blockHeight - initBlockHeight,
+        y: toPrecision(sale.price, decimals),
+      });
     }
 
     return result;
   }, [decimals, initBlockHeight, salesData?.coretimeSalePurchases?.items]);
 
   const priceLine = useMemo(() => {
-    const points = [...sales];
-    points[interludeBlocks] = initPrice;
-    return points;
+    return [...sales, { x: interludeBlocks, y: initPrice }];
   }, [initPrice, interludeBlocks, sales]);
 
   const chartData = useMemo(() => {
@@ -202,12 +201,12 @@ function Statistics({
           label(item) {
             const type = item.dataset.source;
             const index = item.dataIndex;
-            const price = item.dataset.data[index];
+            const price = item.parsed.y;
 
             const result = [
               `Type: ${type}`,
               `Block: ${index + initBlockHeight}`,
-              `Price: ≈${Number(price).toFixed(2)} ${symbol}`,
+              `Price: ≈${price.toFixed(2)} ${symbol}`,
             ];
 
             if (type === "Renewal") {
