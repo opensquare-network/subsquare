@@ -16,7 +16,7 @@ function Statistics({
   className = "",
   coretimeSale,
   initBlockHeight,
-  endBlockHeight,
+  // endBlockHeight,
   totalBlocks = 0,
   saleStart,
   fixedStart,
@@ -45,7 +45,6 @@ function Statistics({
   const indexes = range(0, totalBlocks);
 
   const renewalPeriodBlocks = saleStart - initBlockHeight;
-  const salePeriodBlocks = endBlockHeight - renewalPeriodBlocks;
 
   const renewalsDataset = useMemo(() => {
     const result = [];
@@ -173,7 +172,7 @@ function Statistics({
         {
           data: [
             // start
-            { x: salePeriodBlocks, y: lastPrice },
+            { x: renewalPeriodBlocks + (fixedStart - saleStart), y: lastPrice },
             // end
             { x: totalBlocks - 1, y: lastPrice },
           ],
@@ -188,12 +187,15 @@ function Statistics({
     };
   }, [
     indexes,
-    // priceDataset,
     renewalsDataset,
+    theme.theme300,
+    theme.theme500,
+    theme.neutral500,
     salesDataset,
-    theme,
+    renewalPeriodBlocks,
+    fixedStart,
+    saleStart,
     lastPrice,
-    salePeriodBlocks,
     totalBlocks,
   ]);
 
