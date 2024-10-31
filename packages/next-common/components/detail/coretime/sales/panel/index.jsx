@@ -4,6 +4,7 @@ import CoretimeHistoricalSaleSummary from "./summary";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { ClosedTag } from "next-common/components/tags/state/styled";
 import CoretimeSaleSummary from "next-common/components/coretime/salePanel/summary";
+import CoretimeSalePanelChart from "next-common/components/coretime/salePanel/chart";
 
 export default function CoretimeDetailSalePanel() {
   const coretimeSale = useCoretimeSale();
@@ -21,11 +22,8 @@ export default function CoretimeDetailSalePanel() {
 
         {isFinal ? <CoretimeHistoricalSaleSummary /> : <CoretimeSaleSummary />}
 
-        <Divider className="my-4" />
-
-        <div className="h-48 bg-neutral200">
-          <div className="flex justify-center items-center h-full">chart</div>
-        </div>
+        <hr className="border-dashed border-neutral300 my-4" />
+        <CoretimeSalePanelChart />
       </NeutralPanel>
     </div>
   );

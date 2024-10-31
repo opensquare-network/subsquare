@@ -14,7 +14,6 @@ export default function CoretimeSalePanel() {
       <CoretimeSaleSummary />
 
       <hr className="border-dashed border-neutral300 my-4" />
-
       <CoretimeSalePanelChart />
     </NeutralPanel>
   );
