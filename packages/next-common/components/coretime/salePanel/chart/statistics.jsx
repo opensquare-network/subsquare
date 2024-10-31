@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { last, maxBy, range, uniqWith } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useChainSettings } from "next-common/context/chain";
@@ -116,7 +117,9 @@ export default function Statistics({
   }, [coretimeSale.info, decimals, fixedStart, initBlockHeight, saleStart]);
 
   const lastPrice = last(priceDataset)?.price;
-  const maxPrice = maxBy(priceDataset, "price")?.price;
+  const maxPrice = maxBy(priceDataset, (data) =>
+    BigNumber(data.price).toNumber(),
+  )?.price;
 
   const chartData = useMemo(() => {
     return {
