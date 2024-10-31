@@ -19,6 +19,9 @@ const GET_CORETIME_SALE = gql`
       initIndexer {
         ${INDEXER_FIELDS}
       }
+      endIndexer {
+        ${INDEXER_FIELDS}
+      }
     }
   }
 `;
