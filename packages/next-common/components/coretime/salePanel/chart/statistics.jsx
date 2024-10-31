@@ -184,7 +184,7 @@ export default function Statistics({
         // price line
         {
           data: priceDataset,
-          borderColor: theme.neutral500,
+          borderColor: theme.theme500,
           borderWidth: 1,
           pointRadius: 0,
           pointHoverRadius: 0,
@@ -200,7 +200,7 @@ export default function Statistics({
             // end
             { x: totalBlocks - 1, y: lastPrice },
           ],
-          borderColor: theme.neutral500,
+          borderColor: theme.theme500,
           borderWidth: 1,
           pointRadius: 0,
           pointHoverRadius: 0,
@@ -216,7 +216,6 @@ export default function Statistics({
     renewalsDataset,
     theme.theme300,
     theme.theme500,
-    theme.neutral500,
     theme.theme100,
     salesDataset,
     priceDataset,
