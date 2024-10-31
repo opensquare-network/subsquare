@@ -4,7 +4,7 @@ import AvailableCores from "./columns/availableCores";
 import StartTime from "./columns/startTime";
 import EndTime from "./columns/endTime";
 
-export default function CoretimeDetailSaleSummary() {
+export default function CoretimeHistoricalSaleSummary() {
   return (
     <div>
       <SummaryLayout>
