@@ -1,27 +1,33 @@
 import { SystemQuestion } from "@osn/icons/subsquare";
 import Progress from "next-common/components/progress";
-import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { cn, toPercentage } from "next-common/utils";
 
 export default function CoretimeSalePanelChartPeriodProgress({
   className = "",
   totalBlocks,
-  interludeEndHeight,
+  initBlockHeight,
+  endBlockHeight,
+  saleStart,
+  fixedStart,
 }) {
-  const sale = useCoretimeSale();
-  const { initIndexer: { blockHeight: initBlockHeight } = {} } = sale;
-  const interludeBlocks = interludeEndHeight - initBlockHeight;
+  const renewalBlocks = saleStart - initBlockHeight;
+  const saleBlocks = endBlockHeight - saleStart;
 
-  const interludeWidth = toPercentage(interludeBlocks / totalBlocks, 3);
+  const renewalWidth = toPercentage(renewalBlocks / totalBlocks, 3);
 
   return (
     <div className={cn("flex", className)}>
       <RenewalPeriodProgress
         style={{
-          width: `${interludeWidth}%`,
+          width: `${renewalWidth}%`,
         }}
       />
-      <SalePeriodProgress />
+
+      <SalePeriodProgress
+        fixedStart={fixedStart}
+        saleStart={saleStart}
+        saleBlocks={saleBlocks}
+      />
     </div>
   );
 }
@@ -39,7 +45,9 @@ function RenewalPeriodProgress({ style }) {
   );
 }
 
-function SalePeriodProgress() {
+function SalePeriodProgress({ fixedStart, saleStart, saleBlocks }) {
+  const fixedPosition = toPercentage((fixedStart - saleStart) / saleBlocks, 3);
+
   return (
     <div className="grow text12Medium space-y-2">
       <div>Sale Period</div>
@@ -50,7 +58,12 @@ function SalePeriodProgress() {
           <SystemQuestion className="inline-flex w-3 h-3" />
         </div>
 
-        <div className="!mt-0 absolute top-0 left-1/2 space-y-2">
+        <div
+          className="!mt-0 absolute top-0 space-y-2"
+          style={{
+            left: `${fixedPosition}%`,
+          }}
+        >
           <div className="w-0.5 h-2 bg-neutral500" />
           <div className="text-textTertiary flex items-center gap-1">
             Fixed Price

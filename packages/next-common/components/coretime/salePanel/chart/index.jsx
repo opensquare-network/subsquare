@@ -1,4 +1,3 @@
-import useCoretimeSaleInterludeEndHeight from "next-common/context/coretime/hooks/heights/useCoretimeSaleInterludeEndHeight";
 import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import CoretimeSalePanelChartPeriodProgress from "./periodProgress";
@@ -11,7 +10,6 @@ export default function CoretimeSalePanelChart() {
     info: { saleStart, leadinLength },
   } = coretimeSale;
   const endSale = useCoretimeSaleEnd();
-  const interludeEndHeight = useCoretimeSaleInterludeEndHeight();
 
   const endBlockHeight = endSale?.indexer?.blockHeight;
   const totalBlocks = endBlockHeight - initBlockHeight;
@@ -31,9 +29,11 @@ export default function CoretimeSalePanelChart() {
 
       <CoretimeSalePanelChartPeriodProgress
         className="mt-2"
+        initBlockHeight={initBlockHeight}
         endBlockHeight={endBlockHeight}
         totalBlocks={totalBlocks}
-        interludeEndHeight={interludeEndHeight}
+        saleStart={saleStart}
+        fixedStart={fixedStart}
       />
     </div>
   );
