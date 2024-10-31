@@ -18,9 +18,7 @@ export function CoretimeDetailSaleProvider({ children }) {
 
   return (
     <CoretimeSaleProvider value={coretimeSale}>
-      <CoretimeDetailSaleSubscriber>
-        {children}
-      </CoretimeDetailSaleSubscriber>
+      <CoretimeDetailSaleSubscriber>{children}</CoretimeDetailSaleSubscriber>
     </CoretimeSaleProvider>
   );
 }
