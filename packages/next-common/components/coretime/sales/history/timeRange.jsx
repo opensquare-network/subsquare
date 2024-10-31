@@ -10,7 +10,7 @@ function formatDate(time) {
   return dayjs(time).format("YYYY-MM-DD");
 }
 
-function formatBlockHeight(height) {
+export function formatBlockHeight(height) {
   return "#" + height?.toLocaleString();
 }
 

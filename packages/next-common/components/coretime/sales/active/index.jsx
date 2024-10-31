@@ -5,8 +5,8 @@ import CoretimeSaleSummary from "next-common/components/coretime/salePanel/summa
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import Link from "next/link";
 
-function ViewDetail() {
-  const href = "/coretime";
+function ViewDetail({ id }) {
+  const href = `/coretime/sales/${id}`;
 
   return (
     <div className="flex justify-end">
@@ -18,15 +18,15 @@ function ViewDetail() {
 }
 
 function ActiveCoretimeSalePanel() {
-  const coretimeSale = useCoretimeSale();
+  const { id } = useCoretimeSale();
 
   return (
     <NeutralPanel className="p-6 text-textPrimary">
-      <h3 className="text16Bold">Coretime Sale #{coretimeSale.id}</h3>
+      <h3 className="text16Bold">Coretime Sale #{id}</h3>
       <Divider className="my-4" />
       <CoretimeSaleSummary />
       <Divider className="my-4" />
-      <ViewDetail />
+      <ViewDetail id={id} />
     </NeutralPanel>
   );
 }
