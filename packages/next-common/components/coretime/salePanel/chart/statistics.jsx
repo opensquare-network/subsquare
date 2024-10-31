@@ -1,4 +1,4 @@
-import { last, maxBy, range } from "lodash-es";
+import { last, maxBy, range, uniqWith } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useChainSettings } from "next-common/context/chain";
 import { useThemeSetting } from "next-common/context/theme";
@@ -49,8 +49,14 @@ function Statistics({
   const renewalsDataset = useMemo(() => {
     const result = [];
 
-    for (let i = 0; i < renewalsData?.coretimeSaleRenewals?.items.length; i++) {
-      const renewal = renewalsData?.coretimeSaleRenewals?.items[i];
+    const data = uniqWith(renewalsData?.coretimeSaleRenewals?.items, (a, b) => {
+      return (
+        a.indexer.blockHeight === b.indexer.blockHeight && a.price === b.price
+      );
+    });
+
+    for (let i = 0; i < data.length; i++) {
+      const renewal = data[i];
 
       result.push({
         ...renewal,
@@ -65,8 +71,15 @@ function Statistics({
   const salesDataset = useMemo(() => {
     const result = [];
 
-    for (let i = 0; i < salesData?.coretimeSalePurchases?.items.length; i++) {
-      const sale = salesData?.coretimeSalePurchases?.items[i];
+    const data = uniqWith(salesData?.coretimeSalePurchases?.items, (a, b) => {
+      return (
+        a.indexer.blockHeight === b.indexer.blockHeight && a.price === b.price
+      );
+    });
+
+    for (let i = 0; i < data.length; i++) {
+      const sale = data[i];
+
       result.push({
         ...sale,
         x: sale.indexer.blockHeight - initBlockHeight,
