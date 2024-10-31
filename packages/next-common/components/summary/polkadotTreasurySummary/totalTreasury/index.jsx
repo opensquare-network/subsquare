@@ -23,6 +23,9 @@ export default function TotalTreasury() {
     isUsdcTreasuryBalanceOnAssetHubLoading,
     fellowshipSalaryUsdtBalance,
     isFellowshipSalaryUsdtBalanceLoading,
+    loanCentrifugeUsdcBalance,
+    loanBifrostDotBalance,
+    loadPendulumDotBalance,
   } = usePolkadotTreasurySummary();
 
   const {
@@ -45,6 +48,8 @@ export default function TotalTreasury() {
     .plus(dotTreasuryBalanceOnAssetHub || 0)
     .plus(fellowshipTreasuryDotBalance || 0)
     .plus(hydrationTreasuryDot || 0)
+    .plus(loanBifrostDotBalance || 0)
+    .plus(loadPendulumDotBalance || 0)
     .toString();
 
   const totalUsdtBalance = new BigNumber(usdtTreasuryBalanceOnAssetHub || 0)
@@ -54,6 +59,7 @@ export default function TotalTreasury() {
 
   const totalUsdcBalance = new BigNumber(usdcTreasuryBalanceOnAssetHub || 0)
     .plus(hydrationTreasuryUsdc || 0)
+    .plus(loanCentrifugeUsdcBalance || 0)
     .toString();
 
   return (

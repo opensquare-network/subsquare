@@ -6,71 +6,75 @@ import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
-import SummaryLabelItem from "../common/summaryLabelItem";
+import { usePolkadotTreasurySummary } from "../context";
 
-function LoansItemList({
-  centrifugeUsdcBalance,
-  bifrostDotBalance,
-  pendulumDotBalance,
-}) {
+function LoansItemList() {
+  const {
+    loanCentrifugeUsdcBalance,
+    loanBifrostDotBalance,
+    loadPendulumDotBalance,
+  } = usePolkadotTreasurySummary();
+
   const { decimals, symbol } = useChainSettings();
-  const bifrostDotAmount = toPrecision(bifrostDotBalance || 0, decimals);
-  const pendulumDotAmount = toPrecision(pendulumDotBalance || 0, decimals);
+  const bifrostDotAmount = toPrecision(loanBifrostDotBalance || 0, decimals);
+  const pendulumDotAmount = toPrecision(loadPendulumDotBalance || 0, decimals);
 
   return (
     <div className="flex flex-col gap-[4px]">
       <SummaryLabelLinkItem
         label="Centrifuge"
-        href={
-          "https://assethub-polkadot.subscan.io/account/16hdUXXYjoBQBpdQ14z7qk372rwNHkdQJ9YyBuPaXiZcqnru"
-        }
+        href={"https://polkadot.subsquare.io/referenda/1122"}
       >
         <ValueDisplay
-          value={toPrecision(centrifugeUsdcBalance, SYMBOL_DECIMALS.USDT)}
+          value={toPrecision(loanCentrifugeUsdcBalance, SYMBOL_DECIMALS.USDC)}
           symbol={symbol}
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
         />
       </SummaryLabelLinkItem>
-      <SummaryLabelItem label="Bifrost">
+      <SummaryLabelLinkItem
+        label="Bifrost"
+        href="https://polkadot.subsquare.io/referenda/432"
+      >
         <ValueDisplay
           value={bifrostDotAmount}
           symbol="DOT"
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
         />
-      </SummaryLabelItem>
-      <SummaryLabelItem label="Pendulum">
+      </SummaryLabelLinkItem>
+      <SummaryLabelLinkItem
+        label="Pendulum"
+        href="https://polkadot.subsquare.io/referenda/748"
+      >
         <ValueDisplay
           value={pendulumDotAmount}
           symbol="DOT"
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
         />
-      </SummaryLabelItem>
+      </SummaryLabelLinkItem>
     </div>
   );
 }
 
 export default function Loans() {
-  const centrifugeUsdcBalance = 1500000000000; // 1.5M * USDC decimals
-  const bifrostDotBalance = 5000000000000000; // 500K * DOT decimals
-  const pendulumDotBalance = 500000000000000; // 50K * DOT decimals
+  const {
+    loanCentrifugeUsdcBalance,
+    loanBifrostDotBalance,
+    loadPendulumDotBalance,
+  } = usePolkadotTreasurySummary();
 
   return (
     <SummaryItem title="Loans">
       <div className="flex flex-col gap-[16px]">
         <FiatPriceLabel
-          free={new BigNumber(bifrostDotBalance)
-            .plus(pendulumDotBalance)
+          free={new BigNumber(loanBifrostDotBalance)
+            .plus(loadPendulumDotBalance)
             .toString()}
-          usdtBalance={centrifugeUsdcBalance}
+          usdtBalance={loanCentrifugeUsdcBalance}
         />
-        <LoansItemList
-          centrifugeUsdcBalance={centrifugeUsdcBalance}
-          bifrostDotBalance={bifrostDotBalance}
-          pendulumDotBalance={pendulumDotBalance}
-        />
+        <LoansItemList />
       </div>
     </SummaryItem>
   );
