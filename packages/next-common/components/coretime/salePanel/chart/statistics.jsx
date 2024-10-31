@@ -16,11 +16,10 @@ import { useSelector } from "react-redux";
 
 const STEP_SIZE = 200;
 
-function Statistics({
+export default function Statistics({
   className = "",
   coretimeSale,
   initBlockHeight,
-  // endBlockHeight,
   totalBlocks = 0,
   saleStart,
   fixedStart,
@@ -156,7 +155,6 @@ function Statistics({
           source: "Renewal",
           type: "scatter",
           borderColor: theme.theme300,
-          // borderWidth: 0,
           pointRadius: 4,
           pointBackgroundColor: theme.theme300,
           pointBorderColor: theme.theme300,
@@ -173,7 +171,6 @@ function Statistics({
           source: "Sale",
           type: "scatter",
           borderColor: theme.theme500,
-          // borderWidth: 0,
           pointRadius: 4,
           pointBackgroundColor: theme.theme500,
           pointBorderColor: theme.theme500,
@@ -183,7 +180,6 @@ function Statistics({
           pointHoverBorderColor: theme.theme500,
           pointHoverBorderWidth: 0,
           pointHitRadius: 10,
-          // showLine: false,
         },
         // price line
         {
@@ -236,7 +232,6 @@ function Statistics({
     responsive: true,
     maintainAspectRatio: false,
     animation: false,
-    // parsing: false,
     scales: {
       x: {
         display: false,
@@ -254,12 +249,6 @@ function Statistics({
       },
     },
     plugins: {
-      // decimation: {
-      //   enabled: true,
-      //   // algorithm: "min-max",
-      //   algorithm: "lttb",
-      //   samples: 500,
-      // },
       legend: {
         display: false,
       },
@@ -312,5 +301,3 @@ function Statistics({
     </div>
   );
 }
-
-export default Statistics;
