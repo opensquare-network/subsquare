@@ -15,6 +15,8 @@ export default function CoretimeSalePanelChart() {
   const totalBlocks = endBlockHeight - initBlockHeight;
   const fixedStart = saleStart + leadinLength;
 
+  const isLoading = endSale?.isLoading;
+
   return (
     <div>
       <CoretimeSalePanelChartStatistics
@@ -24,6 +26,7 @@ export default function CoretimeSalePanelChart() {
         coretimeSale={coretimeSale}
         saleStart={saleStart}
         fixedStart={fixedStart}
+        isLoading={isLoading}
       />
 
       <CoretimeSalePanelChartPeriodProgress
@@ -33,6 +36,7 @@ export default function CoretimeSalePanelChart() {
         totalBlocks={totalBlocks}
         saleStart={saleStart}
         fixedStart={fixedStart}
+        isLoading={isLoading}
       />
     </div>
   );

@@ -17,7 +17,40 @@ import { useSelector } from "react-redux";
 
 const STEP_SIZE = 200;
 
-export default function Statistics({
+export default function CoretimeSalePanelChartStatistics({
+  className = "",
+  coretimeSale,
+  initBlockHeight,
+  totalBlocks = 0,
+  saleStart,
+  fixedStart,
+  isLoading,
+}) {
+  if (isLoading) {
+    return <Skeleton className={className} />;
+  }
+
+  return (
+    <StatisticsImpl
+      className={className}
+      coretimeSale={coretimeSale}
+      initBlockHeight={initBlockHeight}
+      totalBlocks={totalBlocks}
+      saleStart={saleStart}
+      fixedStart={fixedStart}
+    />
+  );
+}
+
+function Skeleton({ className = "" }) {
+  return (
+    <div
+      className={cn("w-full rounded-lg bg-neutral300 animate-pulse", className)}
+    />
+  );
+}
+
+function StatisticsImpl({
   className = "",
   coretimeSale,
   initBlockHeight,

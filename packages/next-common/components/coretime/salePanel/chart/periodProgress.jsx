@@ -12,6 +12,42 @@ export default function CoretimeSalePanelChartPeriodProgress({
   endBlockHeight,
   saleStart,
   fixedStart,
+  isLoading,
+}) {
+  if (isLoading) {
+    return (
+      <Skeleton
+        className={cn(
+          "w-full h-14 rounded-lg bg-neutral300 animate-pulse",
+          className,
+        )}
+      />
+    );
+  }
+
+  return (
+    <PeriodProgressImpl
+      className={className}
+      totalBlocks={totalBlocks}
+      initBlockHeight={initBlockHeight}
+      endBlockHeight={endBlockHeight}
+      saleStart={saleStart}
+      fixedStart={fixedStart}
+    />
+  );
+}
+
+function Skeleton({ className = "" }) {
+  return <div className={cn("w-full h-52", className)}></div>;
+}
+
+function PeriodProgressImpl({
+  className = "",
+  totalBlocks,
+  initBlockHeight,
+  endBlockHeight,
+  saleStart,
+  fixedStart,
 }) {
   const renewalBlocks = saleStart - initBlockHeight;
   const saleBlocks = endBlockHeight - saleStart;
