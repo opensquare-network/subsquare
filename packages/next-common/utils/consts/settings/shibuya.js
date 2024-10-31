@@ -36,7 +36,7 @@ const shibuya = {
   identity: Chains.shibuya,
   symbol: "SBY",
   decimals: 18,
-  blockTime: 12000,
+  blockTime: 6000,
   ss58Format: 5,
   endpoints: nodes,
   avatar: ProjectIconShibuyaLight,

@@ -12,9 +12,6 @@ import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 export default function TreasuryOnHydration() {
   const { dot, usdt, usdc, isLoading } = useHydrationTreasurySummary();
 
-  const usdtAmount = toPrecision(usdt, SYMBOL_DECIMALS.USDT);
-  const usdcAmount = toPrecision(usdc, SYMBOL_DECIMALS.USDC);
-
   return (
     <SummaryItem
       title={
@@ -32,16 +29,18 @@ export default function TreasuryOnHydration() {
       <LoadableContent isLoading={isLoading}>
         <div className="flex flex-col gap-[4px]">
           <div>
-            <FiatPriceLabel
-              free={dot}
-              USDCBalance={usdcAmount}
-              USDtBalance={usdtAmount}
-            />
+            <FiatPriceLabel free={dot} USDCBalance={usdc} USDtBalance={usdt} />
           </div>
           <div className="flex flex-col gap-y-1 !ml-0">
             <DotTokenSymbolAsset free={dot} />
-            <TokenSymbolAsset amount={usdtAmount} symbol="USDC" />
-            <TokenSymbolAsset amount={usdcAmount} symbol="USDt" />
+            <TokenSymbolAsset
+              amount={toPrecision(usdt, SYMBOL_DECIMALS.USDT)}
+              symbol="USDC"
+            />
+            <TokenSymbolAsset
+              amount={toPrecision(usdc, SYMBOL_DECIMALS.USDC)}
+              symbol="USDt"
+            />
           </div>
         </div>
       </LoadableContent>

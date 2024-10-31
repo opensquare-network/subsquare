@@ -8,7 +8,7 @@ import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStakin
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
 import businessCategory from "next-common/utils/consts/business/category";
-import NewDemocracyProposalButton from "next-common/components/summary/newDemocracyProposalButton";
+import NewDemocracyProposalButton from "components/democracy/proposals/newDemoracyProposalButton";
 
 export default function DemocracyProposalsPage({ proposals, summary }) {
   const chain = useChain();

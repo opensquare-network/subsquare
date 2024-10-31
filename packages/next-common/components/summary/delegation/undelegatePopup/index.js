@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 
-export default function UndelegatePopup({ trackId, onClose }) {
+export default function UndelegatePopup({ trackId, onClose, onInBlock }) {
   const api = useContextApi();
 
   const getTxFunc = useCallback(async () => {
@@ -15,6 +15,7 @@ export default function UndelegatePopup({ trackId, onClose }) {
       title="Undelegate"
       getTxFunc={getTxFunc}
       onClose={onClose}
+      onInBlock={onInBlock}
       noSwitchSigner
     />
   );

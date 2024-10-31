@@ -6,8 +6,7 @@ import { Provider } from "react-redux";
 import { commonReducers } from "next-common/store/reducers";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
-import queryCoretimeCurrentSale from "next-common/services/gql/coretime/currentSale";
-import { CoretimeActiveSaleProvider } from "next-common/context/coretime/sale";
+import { CoretimeDetailSaleProvider } from "next-common/context/coretime/sale";
 import queryCoretimeConfiguration from "next-common/services/gql/coretime/configuration";
 import queryCoretimeStatus from "next-common/services/gql/coretime/status";
 import CoretimeCommonProvider from "next-common/context/coretime/common";
@@ -20,6 +19,7 @@ import CoretimeSalesDetail from "next-common/components/detail/coretime/sales";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import { cn } from "next-common/utils";
 import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
+import queryCoretimeDetailSale from "next-common/services/gql/coretime/detailSale";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -45,11 +45,11 @@ export default function CoretimePage({ detail }) {
         <ChainProvider chain={chain}>
           <ApiProvider>
             <CoretimeCommonProvider>
-              <CoretimeActiveSaleProvider>
+              <CoretimeDetailSaleProvider>
                 <PostProvider post={detail}>
                   <CoretimeSalesDetailPageImpl />
                 </PostProvider>
-              </CoretimeActiveSaleProvider>
+              </CoretimeDetailSaleProvider>
             </CoretimeCommonProvider>
           </ApiProvider>
         </ChainProvider>
@@ -90,13 +90,15 @@ export const getServerSideProps = async (ctx) => {
     };
   }
 
+  const { id } = ctx.query;
+
   return withCommonProps(async () => {
-    const sale = await queryCoretimeCurrentSale();
+    const coretimeSale = await queryCoretimeDetailSale(id);
     const configuration = await queryCoretimeConfiguration();
     const status = await queryCoretimeStatus();
     return {
       props: {
-        coretimeSale: sale,
+        coretimeSale,
         configuration,
         status,
       },

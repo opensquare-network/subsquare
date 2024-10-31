@@ -1,5 +1,5 @@
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import SubmitCouncilMotionProposalPopupCommon from "./common";
+import SubmitCouncilMotionProposalPopupCommon from "./common/submitCouncilMotionProposalPopupCommon";
 
 export default function NewCouncilMotionProposalPopup({ onClose }) {
   return (

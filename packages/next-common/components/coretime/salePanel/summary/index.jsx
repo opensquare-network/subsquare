@@ -1,23 +1,9 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
-import PhaseItem from "next-common/components/coretime/salePanel/summary/phase";
 import { Item, SummaryColumnGap } from "./common";
 import CurrentPrice from "./columns/currentPrice";
 import AvailableCores from "./columns/availableCores";
-
-// TODO: move into ./columns
-function CurrentPhase() {
-  return (
-    <SummaryColumnGap>
-      <PhaseItem />
-      <SummaryItem>
-        <div className="text12Medium">
-          <Item label="End in" value="[time]" />
-        </div>
-      </SummaryItem>
-    </SummaryColumnGap>
-  );
-}
+import CurrentPhase from "./columns/currentPhase";
 
 // TODO: move into ./columns
 function SalePeriod() {

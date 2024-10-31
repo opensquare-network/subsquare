@@ -35,7 +35,6 @@ export default function ArticleContent({ postReactions, className = "" }) {
     },
     post.contentSummary?.summary && {
       label: "AI Summary",
-      tooltip: "Powered by OpenAI",
       content: <ContentSummary />,
     },
   ].filter(Boolean);

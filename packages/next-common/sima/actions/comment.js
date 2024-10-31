@@ -18,7 +18,7 @@ export function useCreateDiscussionComment() {
   const signSimaMessage = useSignSimaMessage();
 
   return useCallback(
-    async (post, content, contentType) => {
+    async (post, content, contentType, real) => {
       checkSimaDataSource(post);
 
       const entity = {
@@ -26,6 +26,7 @@ export function useCreateDiscussionComment() {
         cid: post.cid,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
+        real,
       };
       const data = await signSimaMessage(entity);
       return await nextApi.post(`sima/discussions/${post.cid}/comments`, data);
@@ -40,7 +41,7 @@ export function useCreateProposalComment() {
   const createOffChainComment = useCreateOffChainComment();
 
   return useCallback(
-    async (post, content, contentType) => {
+    async (post, content, contentType, real) => {
       if (isLinkedToOffChainDiscussion(post)) {
         return await createOffChainComment(post, content, contentType);
       }
@@ -50,6 +51,7 @@ export function useCreateProposalComment() {
           post.refToPost,
           content,
           contentType,
+          real,
         );
       }
 
@@ -59,6 +61,7 @@ export function useCreateProposalComment() {
         indexer,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
+        real,
       };
       const data = await signSimaMessage(entity);
 
@@ -73,7 +76,7 @@ export function useCreateDiscussionCommentReply() {
   const signSimaMessage = useSignSimaMessage();
 
   return useCallback(
-    async (post, comment, content, contentType) => {
+    async (post, comment, content, contentType, real) => {
       checkSimaDataSource(comment);
 
       const entity = {
@@ -81,6 +84,7 @@ export function useCreateDiscussionCommentReply() {
         cid: comment.cid,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
+        real,
       };
       const data = await signSimaMessage(entity);
       return await nextApi.post(
@@ -98,7 +102,7 @@ export function useCreateProposalCommentReply() {
   const createOffChainCommentReply = useCreateOffChainCommentReply();
 
   return useCallback(
-    async (post, comment, content, contentType) => {
+    async (post, comment, content, contentType, real) => {
       if (isLinkedToOffChainDiscussion(post)) {
         return await createOffChainCommentReply(
           post,
@@ -114,6 +118,7 @@ export function useCreateProposalCommentReply() {
           comment,
           content,
           contentType,
+          real,
         );
       }
 
@@ -132,6 +137,7 @@ export function useCreateProposalCommentReply() {
         cid: comment.cid,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
+        real,
       };
       const data = await signSimaMessage(entity);
 

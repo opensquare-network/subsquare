@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.3.4
+
+date: 2024-10-30
+
+- [Medium]Support comments on behalf of a proxied account.
+- Fix default threshold for collective(council, TC, etc) proposals.
+- Not show approved proposal ids for shibuya treasury template.
+- Add reject a treasury proposal template for council motions.
+- Update my delegation list after removing one.
+- Update dependency to @polkadot/api.
+
+### 4.3.3
+
+date: 2024-10-26
+
+- [Medium] Support approving, cancelling and executing a multisig on account page.
+- Enhance the performance to fetch all accounts who give their delegations to a given account. We add a backend API so
+  we can fetch data from our backend API and chain RPC in parallel.
+- Support ajuna network.
+- Take place of OpenAI with [deepseek](https://www.deepseek.com/).
+- Add a `spendFromTreasury` template for interlay/kintsugi democracy proposals.
+- Add a multisig warning on account panel to show how many active multisigs the connected account has.
+- Add Hallowen UI effect.
+- Use scan height on the header instead of latest chain height.
+- Adjust paseo and hydration rpc endpoints.
+- Improve network selection dropdown layout in case the dropdown popup height is too much.
+- Improve new proposal button disable status on collectives(council, TC, etc) proposals page.
+- Fix styles, bugs and refactor code.
+
 ### 4.3.2
 
 date: 2024-10-17
