@@ -5,7 +5,7 @@ import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
 import { useMountedState } from "react-use";
 import IdentityOrAddr from "../IdentityOrAddr";
-import PrimaryButton from "next-common/lib/button/primary";
+import MaybeSplitCommentButton from "../maybeSplitCommentButton";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useChain } from "../../context/chain";
 import { noop } from "lodash-es";
@@ -14,6 +14,9 @@ import { usePost } from "next-common/context/post";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import Tooltip from "../tooltip";
+import { useDetailType } from "next-common/context/page";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -35,6 +38,37 @@ const ButtonWrapper = styled(Flex)`
 
 function escapeLinkText(text) {
   return text.replace(/\\/g, "\\\\").replace(/([[\]])/g, "\\$1");
+}
+
+function useShouldUseSima(toReplyComment) {
+  const post = usePost();
+  const type = useDetailType();
+  const { supportSima } = useCommentActions();
+
+  if (!supportSima) {
+    return false;
+  }
+
+  if (toReplyComment) {
+    return toReplyComment.dataSource === "sima";
+  }
+
+  if (type === detailPageCategory.POST) {
+    return post?.dataSource === "sima";
+  }
+
+  return true;
+}
+
+function getRealField(realAddress) {
+  if (!realAddress) {
+    return;
+  }
+
+  return {
+    address: realAddress,
+    section: "proxy",
+  };
 }
 
 function CommentEditor(
@@ -63,7 +97,9 @@ function CommentEditor(
   const { createPostComment, createCommentReply, updateComment } =
     useCommentActions();
 
-  const createComment = async () => {
+  const shouldUseSima = useShouldUseSima(comment);
+
+  const createComment = async (realAddress) => {
     if (!isMounted()) {
       return;
     }
@@ -73,9 +109,20 @@ function CommentEditor(
       let result;
 
       if (comment) {
-        result = await createCommentReply(post, comment, content, contentType);
+        result = await createCommentReply(
+          post,
+          comment,
+          content,
+          contentType,
+          getRealField(realAddress),
+        );
       } else {
-        result = await createPostComment(post, content, contentType);
+        result = await createPostComment(
+          post,
+          content,
+          contentType,
+          getRealField(realAddress),
+        );
       }
 
       if (!isMounted()) {
@@ -170,14 +217,19 @@ function CommentEditor(
             Cancel
           </SecondaryButton>
         )}
-        <PrimaryButton
-          loading={loading}
-          onClick={isEdit ? editComment : createComment}
-          disabled={isEmpty}
-          title={isEmpty ? "cannot submit empty content" : ""}
-        >
-          {isEdit ? "Update" : isReply ? "Reply" : "Comment"}
-        </PrimaryButton>
+        <Tooltip content={isEmpty ? "Cannot submit empty content" : ""}>
+          <MaybeSplitCommentButton
+            isSima={shouldUseSima}
+            isEdit={isEdit}
+            isReply={isReply}
+            loading={loading}
+            disabled={isEmpty}
+            onClickComment={() => (isEdit ? editComment() : createComment())}
+            onClickCommentAsProxy={(realAddress) => {
+              createComment(realAddress);
+            }}
+          />
+        </Tooltip>
       </ButtonWrapper>
     </Wrapper>
   );

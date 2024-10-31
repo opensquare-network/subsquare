@@ -109,6 +109,7 @@ const paseo = {
   integrations: {
     subscan: true,
   },
+  sima: true,
   ...themeVars,
 };
 

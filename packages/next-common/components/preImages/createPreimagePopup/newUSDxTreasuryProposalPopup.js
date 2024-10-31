@@ -5,7 +5,7 @@ import { useContextApi } from "next-common/context/api";
 import { checkInputValue } from "next-common/utils";
 import { addressToPublicKey } from "next-common/utils/address";
 import { InfoMessage } from "next-common/components/setting/styled";
-import { StatemintAssets } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
+import { getAssetBySymbol } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "./notePreimageButton";
@@ -58,9 +58,6 @@ const getBeneficiaryParam = (beneficiary) => {
     },
   };
 };
-
-const getAssetBySymbol = (symbol) =>
-  StatemintAssets.find((asset) => asset.symbol === symbol);
 
 export function useUSDxTreasuryNotePreimageTx(
   inputBalance,
