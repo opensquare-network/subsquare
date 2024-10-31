@@ -1,5 +1,6 @@
 import { SystemQuestion } from "@osn/icons/subsquare";
 import Progress from "next-common/components/progress";
+import Tooltip from "next-common/components/tooltip";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { cn, toPercentage } from "next-common/utils";
 import { useSelector } from "react-redux";
@@ -62,7 +63,10 @@ function RenewalPeriodProgress({
         bg="var(--neutral200)"
       />
       <div className="text-textTertiary flex items-center gap-1">
-        Interlude <SystemQuestion className="inline-flex w-3 h-3" />
+        Interlude
+        <Tooltip content="Cores can be renewed">
+          <SystemQuestion className="inline-flex w-3 h-3" />
+        </Tooltip>
       </div>
     </div>
   );
@@ -96,7 +100,9 @@ function SalePeriodProgress({
         />
         <div className="text-textTertiary flex items-center gap-1">
           Price Discovery
-          <SystemQuestion className="inline-flex w-3 h-3" />
+          <Tooltip content="Core price decreases from the start price to the floor price">
+            <SystemQuestion className="inline-flex w-3 h-3" />
+          </Tooltip>
         </div>
 
         <div
@@ -108,7 +114,9 @@ function SalePeriodProgress({
           <div className="w-0.5 h-2 bg-neutral500" />
           <div className="text-textTertiary flex items-center gap-1">
             Fixed Price
-            <SystemQuestion className="inline-flex w-3 h-3" />
+            <Tooltip content="Cores are sold for the floor price">
+              <SystemQuestion className="inline-flex w-3 h-3" />
+            </Tooltip>
           </div>
         </div>
       </div>
