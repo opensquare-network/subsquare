@@ -18,7 +18,7 @@ export default function CoretimeSalePanelChart() {
   return (
     <div>
       <CoretimeSalePanelChartStatistics
-        className="h-52"
+        className="h-52 -ml-0.5"
         initBlockHeight={initBlockHeight}
         endBlockHeight={endBlockHeight}
         totalBlocks={totalBlocks}
