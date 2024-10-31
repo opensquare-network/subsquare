@@ -12,6 +12,8 @@ import { getCoretimePriceAt } from "next-common/utils/coretime/price";
 import { useMemo } from "react";
 import { Line } from "react-chartjs-2";
 
+const STEP_SIZE = 200;
+
 function Statistics({
   className = "",
   coretimeSale,
@@ -92,8 +94,8 @@ function Statistics({
 
   const priceDataset = useMemo(() => {
     return Array.from(
-      { length: Math.ceil((fixedStart - saleStart) / 200) },
-      (_, i) => saleStart + i * 200,
+      { length: Math.ceil((fixedStart - saleStart) / STEP_SIZE) },
+      (_, i) => saleStart + i * STEP_SIZE,
     ).map((blockHeight) => {
       const price = toPrecision(
         getCoretimePriceAt(blockHeight, coretimeSale.info),
