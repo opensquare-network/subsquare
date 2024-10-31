@@ -19,6 +19,7 @@ export function OffChainCommentActionsProvider({ children }) {
   return (
     <CommentActionsContext.Provider
       value={{
+        supportSima: false,
         getComment,
         updateComment,
         createPostComment,

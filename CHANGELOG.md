@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.3.4
+
+date: 2024-10-30
+
+- [Medium]Support comments on behalf of a proxied account.
+- Fix default threshold for collective(council, TC, etc) proposals.
+- Not show approved proposal ids for shibuya treasury template.
+- Add reject a treasury proposal template for council motions.
+- Update my delegation list after removing one.
+- Update dependency to @polkadot/api.
+
 ### 4.3.3
 
 date: 2024-10-26

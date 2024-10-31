@@ -3,6 +3,7 @@ import USDxBalanceField from "next-common/components/popup/fields/usdxBalanceFie
 import useAssetHubTreasuryBalance from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import Loading from "next-common/components/loading";
 import ValueDisplay from "next-common/components/valueDisplay";
+import { toPrecision } from "next-common/utils";
 
 function TreasuryBalance({ symbol, isLoading, treasuryBalance }) {
   return (
@@ -18,8 +19,11 @@ function TreasuryBalance({ symbol, isLoading, treasuryBalance }) {
 }
 
 function USDxBalance({ inputBalance, setInputBalance, symbol, setSymbol }) {
-  const { balance: treasuryBalance, loading: isTreasuryBalanceLoading } =
-    useAssetHubTreasuryBalance(symbol);
+  const {
+    balance: treasuryBalance,
+    decimals: treasuryBalanceDecimals,
+    loading: isTreasuryBalanceLoading,
+  } = useAssetHubTreasuryBalance(symbol);
 
   return (
     <USDxBalanceField
@@ -32,7 +36,10 @@ function USDxBalance({ inputBalance, setInputBalance, symbol, setSymbol }) {
         <TreasuryBalance
           isLoading={isTreasuryBalanceLoading}
           symbol={symbol}
-          treasuryBalance={treasuryBalance}
+          treasuryBalance={toPrecision(
+            treasuryBalance,
+            treasuryBalanceDecimals,
+          )}
         />
       }
     />

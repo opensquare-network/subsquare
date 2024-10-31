@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import { useAssetHubApi } from "next-common/context/assetHub";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
@@ -17,6 +16,9 @@ export const StatemintAssets = [
   },
 ];
 
+export const getAssetBySymbol = (symbol) =>
+  StatemintAssets.find((asset) => asset.symbol === symbol);
+
 export const StatemintTreasuryAccount =
   "14xmwinmCEz6oRrFdczHKqHgWNMiCysE2KrA4jXXAAM1Eogk";
 
@@ -24,10 +26,6 @@ export const StatemintFellowShipTreasuryAccount =
   "16VcQSRcMFy6ZHVjBvosKmo7FKqTb8ZATChDYo8ibutzLnos";
 
 export default function useAssetHubTreasuryBalance(symbol) {
-  const api = useAssetHubApi();
-
-  const [balance, setBalance] = useState(0);
-  const [loading, setLoading] = useState(true);
   const chain = useChain();
 
   let treasuryAccount = null;
@@ -36,35 +34,44 @@ export default function useAssetHubTreasuryBalance(symbol) {
     treasuryAccount = StatemintTreasuryAccount;
   }
 
+  return useAssetHubAssetBalance(treasuryAccount, symbol);
+}
+
+export function useAssetHubAssetBalance(account, symbol) {
+  const api = useAssetHubApi();
+
+  const [balance, setBalance] = useState(0);
+  const [decimals, setDecimals] = useState(0);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (!api) {
       return;
     }
 
-    if (!treasuryAccount) {
-      return;
-    }
-
-    const asset = StatemintAssets.find((asset) => asset.symbol === symbol);
-    if (!asset) {
+    if (!account) {
       return;
     }
 
     setLoading(true);
-    api.query.assets.account(asset.id, treasuryAccount).then((data) => {
-      const assetInfo = data?.toJSON();
-      setBalance(
-        new BigNumber(assetInfo.balance.toString())
-          .div(Math.pow(10, asset.decimals))
-          .toFixed(),
-      );
 
+    const asset = getAssetBySymbol(symbol);
+    if (!asset) {
+      return;
+    }
+
+    setDecimals(asset.decimals);
+
+    api.query.assets.account(asset.id, account).then((data) => {
+      const assetInfo = data?.toJSON();
+      setBalance(assetInfo?.balance);
       setLoading(false);
     });
-  }, [api, treasuryAccount, symbol]);
+  }, [api, account, symbol]);
 
   return {
     balance,
+    decimals,
     loading,
   };
 }
