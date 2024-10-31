@@ -1,10 +1,36 @@
-export default function CoretimeDetailSaleSubscriber({ isFinal, children }) {
-  // todo: 1. guard by isFinal
-  // if isFinal === false -> return children, (cancel subscription)
-  // if isFinal === true
-  // todo: 2. subscribe current sale from graphql API
-  // todo: 3. setCurrentSale data (Do not subscribe on chain sale info and update info field)
-  // const [, setCurrentSale] = useSharedCoretimeSale();
+import queryCoretimeDetailSale from "next-common/services/gql/coretime/detailSale";
+import { useEffect, useState } from "react";
+import { useInterval } from "react-use";
+import { useChainSettings } from "next-common/context/chain";
+import { useSharedCoretimeSale } from "./provider";
+
+export default function CoretimeDetailSaleSubscriber({ children }) {
+  const [detailSale, setDetailSale] = useSharedCoretimeSale();
+  const [saleData, setSaleData] = useState(null);
+  const { blockTime } = useChainSettings();
+  const { id, isFinal } = detailSale;
+
+  const pollInterval = parseInt(blockTime) || 12000;
+  useInterval(async () => {
+    if (isFinal) {
+      return;
+    }
+
+    try {
+      const newSaleData = await queryCoretimeDetailSale(id);
+      setSaleData(newSaleData);
+    } catch (err) {
+      throw new Error("Subscribe coretime detailSale failed.");
+    }
+  }, pollInterval);
+
+  useEffect(() => {
+    if (isFinal || !saleData) {
+      return;
+    }
+
+    setDetailSale(saleData);
+  }, [setDetailSale, saleData, isFinal]);
 
   return children;
 }

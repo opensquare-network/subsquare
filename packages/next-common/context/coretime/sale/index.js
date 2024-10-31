@@ -18,7 +18,7 @@ export function CoretimeDetailSaleProvider({ children }) {
 
   return (
     <CoretimeSaleProvider value={coretimeSale}>
-      <CoretimeDetailSaleSubscriber isFinal={coretimeSale?.isFinal}>
+      <CoretimeDetailSaleSubscriber>
         {children}
       </CoretimeDetailSaleSubscriber>
     </CoretimeSaleProvider>
