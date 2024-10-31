@@ -14,10 +14,10 @@ import BalanceWithFiat from "./balanceWithFiat";
 import useSpendPeriodSummary from "./useSpendPeriodSummary";
 import useFiatPrice from "next-common/hooks/useFiatPrice";
 
-export function AvailableItem({ free, price }) {
+export function AvailableItem({ free, isLoading, price }) {
   return (
     <SummaryItem title="Available">
-      <LoadableContent isLoading={isNil(free)}>
+      <LoadableContent isLoading={isLoading}>
         <BalanceWithFiat balance={free} fiatPrice={price} />
       </LoadableContent>
     </SummaryItem>
@@ -35,10 +35,10 @@ export function ToBeAwardedItem({ price }) {
   );
 }
 
-function NextBurnItem({ free }) {
+function NextBurnItem({ free, isLoading }) {
   return (
     <SummaryItem title="Next Burn">
-      <LoadableContent isLoading={isNil(free)}>
+      <LoadableContent isLoading={isLoading}>
         <TreasurySummaryNextBurn free={free} />
       </LoadableContent>
     </SummaryItem>
@@ -61,13 +61,13 @@ export default function TreasurySummary() {
   const chain = useChain();
   const { price } = useFiatPrice();
   const api = useContextApi();
-  const free = useTreasuryFree(api);
+  const { free, isLoading } = useTreasuryFree(api);
 
   return (
     <SummaryLayout>
-      <AvailableItem free={free} price={price} />
+      <AvailableItem free={free} isLoading={isLoading} price={price} />
       {!isKintsugiChain(chain) && <ToBeAwardedItem price={price} />}
-      <NextBurnItem free={free} />
+      <NextBurnItem free={free} isLoading={isLoading} />
       {!isKintsugiChain(chain) && <SpendPeriodItem />}
     </SummaryLayout>
   );

@@ -11,11 +11,14 @@ import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 
 function FellowshipTreasuryItemList({
-  fellowshipFree,
+  fellowshipTreasuryDotBalance,
   fellowshipSalaryUsdtBalance,
 }) {
   const { decimals, symbol } = useChainSettings();
-  const fellowshipFreeBalance = toPrecision(fellowshipFree || 0, decimals);
+  const fellowshipFreeBalance = toPrecision(
+    fellowshipTreasuryDotBalance || 0,
+    decimals,
+  );
 
   return (
     <div className="flex flex-col gap-[4px]">
@@ -47,8 +50,8 @@ function FellowshipTreasuryItemList({
 
 export default function FellowshipTreasuryOnAssetHub() {
   const {
-    fellowshipFree,
-    isFellowshipLoading,
+    fellowshipTreasuryDotBalance,
+    isFellowshipTreasuryDotBalanceLoading,
     fellowshipSalaryUsdtBalance,
     isFellowshipSalaryUsdtBalanceLoading,
   } = usePolkadotTreasurySummary();
@@ -56,15 +59,18 @@ export default function FellowshipTreasuryOnAssetHub() {
   return (
     <SummaryItem title="Fellowship">
       <LoadableContent
-        isLoading={isFellowshipLoading || isFellowshipSalaryUsdtBalanceLoading}
+        isLoading={
+          isFellowshipTreasuryDotBalanceLoading ||
+          isFellowshipSalaryUsdtBalanceLoading
+        }
       >
         <div className="flex flex-col gap-[16px]">
           <FiatPriceLabel
-            free={fellowshipFree}
-            USDtBalance={fellowshipSalaryUsdtBalance}
+            free={fellowshipTreasuryDotBalance}
+            usdtBalance={fellowshipSalaryUsdtBalance}
           />
           <FellowshipTreasuryItemList
-            fellowshipFree={fellowshipFree}
+            fellowshipTreasuryDotBalance={fellowshipTreasuryDotBalance}
             fellowshipSalaryUsdtBalance={fellowshipSalaryUsdtBalance}
           />
         </div>

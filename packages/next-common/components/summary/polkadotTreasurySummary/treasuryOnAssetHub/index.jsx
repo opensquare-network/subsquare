@@ -9,17 +9,27 @@ import { StatemintTreasuryAccount } from "next-common/hooks/treasury/useAssetHub
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
-function TreasurySummary({ multiAssetsFree, USDtBalance, USDCBalance }) {
+function TreasurySummary({
+  dotTreasuryBalanceOnAssetHub,
+  usdtTreasuryBalanceOnAssetHub,
+  usdcTreasuryBalanceOnAssetHub,
+}) {
   return (
     <div className="flex flex-col gap-[4px]">
       <div className="!ml-0 flex flex-col gap-y-1">
-        <DotTokenSymbolAsset free={multiAssetsFree} />
+        <DotTokenSymbolAsset free={dotTreasuryBalanceOnAssetHub} />
         <TokenSymbolAsset
-          amount={toPrecision(USDCBalance, SYMBOL_DECIMALS.USDC)}
+          amount={toPrecision(
+            usdcTreasuryBalanceOnAssetHub,
+            SYMBOL_DECIMALS.USDC,
+          )}
           symbol="USDC"
         />
         <TokenSymbolAsset
-          amount={toPrecision(USDtBalance, SYMBOL_DECIMALS.USDT)}
+          amount={toPrecision(
+            usdtTreasuryBalanceOnAssetHub,
+            SYMBOL_DECIMALS.USDT,
+          )}
           symbol="USDt"
         />
       </div>
@@ -28,8 +38,19 @@ function TreasurySummary({ multiAssetsFree, USDtBalance, USDCBalance }) {
 }
 
 export default function TreasuryOnAssetHub() {
-  const { multiAssetsFree, USDtBalance, USDCBalance, isMultiAssetsLoading } =
-    usePolkadotTreasurySummary();
+  const {
+    dotTreasuryBalanceOnAssetHub,
+    isDotTreasuryBalanceOnAssetHubLoading,
+    usdtTreasuryBalanceOnAssetHub,
+    isUsdtTreasuryBalanceOnAssetHubLoading,
+    usdcTreasuryBalanceOnAssetHub,
+    isUsdcTreasuryBalanceOnAssetHubLoading,
+  } = usePolkadotTreasurySummary();
+
+  const isLoading =
+    isDotTreasuryBalanceOnAssetHubLoading ||
+    isUsdtTreasuryBalanceOnAssetHubLoading ||
+    isUsdcTreasuryBalanceOnAssetHubLoading;
 
   return (
     <SummaryItem
@@ -47,17 +68,17 @@ export default function TreasuryOnAssetHub() {
         </Link>
       }
     >
-      <LoadableContent isLoading={isMultiAssetsLoading}>
+      <LoadableContent isLoading={isLoading}>
         <div className="flex flex-col gap-[4px]">
           <FiatPriceLabel
-            free={multiAssetsFree}
-            USDtBalance={USDtBalance}
-            USDCBalance={USDCBalance}
+            free={dotTreasuryBalanceOnAssetHub}
+            usdtBalance={usdtTreasuryBalanceOnAssetHub}
+            usdcBalance={usdcTreasuryBalanceOnAssetHub}
           />
           <TreasurySummary
-            multiAssetsFree={multiAssetsFree}
-            USDtBalance={USDtBalance}
-            USDCBalance={USDCBalance}
+            dotTreasuryBalanceOnAssetHub={dotTreasuryBalanceOnAssetHub}
+            usdtTreasuryBalanceOnAssetHub={usdtTreasuryBalanceOnAssetHub}
+            usdcTreasuryBalanceOnAssetHub={usdcTreasuryBalanceOnAssetHub}
           />
         </div>
       </LoadableContent>

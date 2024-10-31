@@ -64,7 +64,7 @@ export default function Loans() {
           free={new BigNumber(bifrostDotBalance)
             .plus(pendulumDotBalance)
             .toString()}
-          USDtBalance={centrifugeUsdcBalance}
+          usdtBalance={centrifugeUsdcBalance}
         />
         <LoansItemList
           centrifugeUsdcBalance={centrifugeUsdcBalance}

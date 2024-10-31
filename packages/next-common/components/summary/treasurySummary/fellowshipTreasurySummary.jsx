@@ -6,8 +6,14 @@ import BalanceWithFiat from "./balanceWithFiat";
 import { AvailableItem, ToBeAwardedItem } from ".";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
-import { ActiveReferendaProvider, useActiveReferendaContext } from "next-common/context/activeReferenda";
-import { TreasuryProvider, useTreasuryPallet } from "next-common/context/treasury";
+import {
+  ActiveReferendaProvider,
+  useActiveReferendaContext,
+} from "next-common/context/activeReferenda";
+import {
+  TreasuryProvider,
+  useTreasuryPallet,
+} from "next-common/context/treasury";
 import Tooltip from "next-common/components/tooltip";
 import useFiatPrice from "next-common/hooks/useFiatPrice";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
@@ -15,7 +21,10 @@ import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/u
 
 function useAllSpends() {
   const api = useContextApi();
-  const { value: spends, loading } = useCall(api?.query?.fellowshipTreasury?.spends?.entries, []);
+  const { value: spends, loading } = useCall(
+    api?.query?.fellowshipTreasury?.spends?.entries,
+    [],
+  );
 
   const value = (spends || [])
     .map(([key, value]) => {
@@ -100,11 +109,22 @@ function TreasuryProposalsItem() {
 
 function FellowshipTreasuryAvailableItem({ price }) {
   const api = useAssetHubApi();
-  const { result } = useSubStorage("system", "account", [StatemintFellowShipTreasuryAccount], {
-    api,
-  });
+  const { result, loading } = useSubStorage(
+    "system",
+    "account",
+    [StatemintFellowShipTreasuryAccount],
+    {
+      api,
+    },
+  );
 
-  return <AvailableItem free={result?.data?.free?.toString()} price={price} />;
+  return (
+    <AvailableItem
+      free={result?.data?.free?.toString()}
+      isLoading={loading}
+      price={price}
+    />
+  );
 }
 
 export default function FellowshipTreasurySummary() {
