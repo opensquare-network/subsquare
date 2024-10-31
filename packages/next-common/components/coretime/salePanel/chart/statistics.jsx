@@ -7,10 +7,12 @@ import {
   GET_CORETIME_SALE_PURCHASES_CHART,
   GET_CORETIME_SALE_RENEWALS_CHART,
 } from "next-common/services/gql/coretime/consts";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { cn, toPrecision } from "next-common/utils";
 import { getCoretimePriceAt } from "next-common/utils/coretime/price";
 import { useMemo } from "react";
 import { Line } from "react-chartjs-2";
+import { useSelector } from "react-redux";
 
 const STEP_SIZE = 200;
 
@@ -23,7 +25,8 @@ function Statistics({
   saleStart,
   fixedStart,
 }) {
-  // console.log(fixedBlockHeight);
+  const chainHeight = useSelector(chainOrScanHeightSelector);
+
   const theme = useThemeSetting();
   const { decimals, symbol } = useChainSettings();
 
@@ -118,29 +121,33 @@ function Statistics({
     return {
       labels: indexes,
       datasets: [
-        // {
-        //   data: Array(interludeBlocks).fill(maxPrice),
-        //   fill: true,
-        //   backgroundColor(context) {
-        //     const chart = context.chart;
-        //     const { ctx } = chart;
+        // progress
+        {
+          data: [
+            { x: 0, y: maxPrice },
+            { x: chainHeight - initBlockHeight, y: maxPrice },
+          ],
+          fill: true,
+          backgroundColor(context) {
+            const chart = context.chart;
+            const { ctx } = chart;
 
-        //     const gradient = ctx.createLinearGradient(
-        //       0,
-        //       0,
-        //       ctx.canvas.width,
-        //       0,
-        //     );
-        //     gradient.addColorStop(0, theme.theme100);
-        //     gradient.addColorStop(1, theme.theme300);
-        //     return gradient;
-        //   },
-        //   borderWidth: 0,
-        //   pointRadius: 0,
-        //   pointHoverRadius: 0,
-        //   hoverBorderWidth: 0,
-        //   pointHitRadius: 0,
-        // },
+            const gradient = ctx.createLinearGradient(
+              0,
+              0,
+              ctx.canvas.width,
+              0,
+            );
+            gradient.addColorStop(0, theme.theme100);
+            gradient.addColorStop(1, theme.theme300);
+            return gradient;
+          },
+          borderWidth: 0,
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          hoverBorderWidth: 0,
+          pointHitRadius: 0,
+        },
         // renewals points
         {
           data: renewalsDataset,
@@ -206,10 +213,14 @@ function Statistics({
     };
   }, [
     indexes,
+    maxPrice,
+    chainHeight,
+    initBlockHeight,
     renewalsDataset,
     theme.theme300,
     theme.theme500,
     theme.neutral500,
+    theme.theme100,
     salesDataset,
     priceDataset,
     renewalPeriodBlocks,
