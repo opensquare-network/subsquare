@@ -4,6 +4,7 @@ import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { formatBlockHeight } from "next-common/components/coretime/sales/history/timeRange";
 import dayjs from "dayjs";
 import { isNil } from "lodash-es";
+import ExplorerLink from "next-common/components/links/explorerLink";
 
 export default function StartTime() {
   const { initIndexer } = useCoretimeSale();
@@ -22,8 +23,10 @@ export default function StartTime() {
             {dayjs(blockTime).format("HH:mm:ss")}
           </span>
         </div>
-        <span className="text12Medium text-textSecondary">
-          {formatBlockHeight(blockHeight)}
+        <span className="text12Medium text-textSecondary hover:underline">
+          <ExplorerLink indexer={initIndexer} style={{ display: "inline" }}>
+            {formatBlockHeight(blockHeight)}
+          </ExplorerLink>
         </span>
       </SummaryItem>
     </SummaryColumnGap>
