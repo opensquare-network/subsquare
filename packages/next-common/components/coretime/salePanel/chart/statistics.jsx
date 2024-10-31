@@ -26,6 +26,12 @@ function Statistics({
   fixedStart,
 }) {
   const chainHeight = useSelector(chainOrScanHeightSelector);
+  const indexes = range(0, totalBlocks);
+  const currentIndex = Math.max(
+    0,
+    Math.min(chainHeight - initBlockHeight, totalBlocks),
+  );
+  const renewalPeriodBlocks = saleStart - initBlockHeight;
 
   const theme = useThemeSetting();
   const { decimals, symbol } = useChainSettings();
@@ -46,10 +52,6 @@ function Statistics({
       },
     },
   );
-
-  const indexes = range(0, totalBlocks);
-
-  const renewalPeriodBlocks = saleStart - initBlockHeight;
 
   const renewalsDataset = useMemo(() => {
     const result = [];
@@ -125,7 +127,7 @@ function Statistics({
         {
           data: [
             { x: 0, y: maxPrice },
-            { x: chainHeight - initBlockHeight, y: maxPrice },
+            { x: currentIndex, y: maxPrice },
           ],
           fill: true,
           backgroundColor(context) {
@@ -214,8 +216,7 @@ function Statistics({
   }, [
     indexes,
     maxPrice,
-    chainHeight,
-    initBlockHeight,
+    currentIndex,
     renewalsDataset,
     theme.theme300,
     theme.theme500,
