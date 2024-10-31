@@ -29,7 +29,7 @@ export default function TreasuryOnHydration() {
       <LoadableContent isLoading={isLoading}>
         <div className="flex flex-col gap-[4px]">
           <div>
-            <FiatPriceLabel free={dot} USDCBalance={usdc} USDtBalance={usdt} />
+            <FiatPriceLabel free={dot} usdcBalance={usdc} usdtBalance={usdt} />
           </div>
           <div className="flex flex-col gap-y-1 !ml-0">
             <DotTokenSymbolAsset free={dot} />
