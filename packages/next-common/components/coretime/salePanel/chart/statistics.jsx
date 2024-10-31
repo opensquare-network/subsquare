@@ -28,7 +28,7 @@ export default function Statistics({
   const indexes = range(0, totalBlocks);
   const currentIndex = Math.max(
     0,
-    Math.min(chainHeight - initBlockHeight, totalBlocks),
+    Math.min(chainHeight - initBlockHeight, totalBlocks - 1),
   );
   const renewalPeriodBlocks = saleStart - initBlockHeight;
 
