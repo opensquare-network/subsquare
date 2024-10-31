@@ -1,5 +1,5 @@
 import LoadableContent from "next-common/components/common/loadableContent";
-import Link from "next/link";
+import SummaryLabelLinkItem from "../common/summaryLabelLinkItem";
 import { usePolkadotTreasurySummary } from "../context";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import SummaryItem from "next-common/components/summary/layout/item";
@@ -10,23 +10,6 @@ import { StatemintFellowShipSalaryAccount } from "../hook/useSubscribeFellowship
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 
-function FellowshipTreasuryItem({ name, href, children }) {
-  return (
-    <div className="flex gap-[4px]">
-      <Link
-        className="text12Medium"
-        href={href}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <span className="text-textTertiary hover:underline">{name}</span>
-        <i className="text-textTertiary">&nbsp;↗</i>
-      </Link>
-      <div className="flex">{children}</div>
-    </div>
-  );
-}
-
 function FellowshipTreasuryItemList({
   fellowshipFree,
   fellowshipSalaryUsdtBalance,
@@ -36,8 +19,8 @@ function FellowshipTreasuryItemList({
 
   return (
     <div className="flex flex-col gap-[4px]">
-      <FellowshipTreasuryItem
-        name="Treasury"
+      <SummaryLabelLinkItem
+        label="Treasury"
         href={`https://assethub-polkadot.subscan.io/account/${StatemintFellowShipTreasuryAccount}`}
       >
         <ValueDisplay
@@ -46,9 +29,9 @@ function FellowshipTreasuryItemList({
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
         />
-      </FellowshipTreasuryItem>
-      <FellowshipTreasuryItem
-        name="Salary"
+      </SummaryLabelLinkItem>
+      <SummaryLabelLinkItem
+        label="Salary"
         href={`https://assethub-polkadot.subscan.io/account/${StatemintFellowShipSalaryAccount}`}
       >
         <ValueDisplay
@@ -57,7 +40,7 @@ function FellowshipTreasuryItemList({
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
         />
-      </FellowshipTreasuryItem>
+      </SummaryLabelLinkItem>
     </div>
   );
 }

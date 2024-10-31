@@ -1,6 +1,6 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
-import SummaryLabelItem from "./summaryLabelItem";
+import SummaryLabelItem from "../common/summaryLabelItem";
 import SpendPeriodCountdown from "./spendPeriodCountdown";
 import ToBeAwarded from "./toBeAwarded";
 import useSpendPeriodSummary from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";

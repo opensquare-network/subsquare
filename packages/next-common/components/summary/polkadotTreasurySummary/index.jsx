@@ -7,6 +7,7 @@ import { cn } from "next-common/utils";
 import { PolkadotTreasurySummaryProvider } from "./context";
 import { TreasuryOnHydrationProvider } from "./context/treasuryOnHydration";
 import FellowshipTreasuryOnAssetHub from "./fellowshipTreasuryOnAssetHub";
+import Loans from "./loans";
 
 function PolkadotTreasurySummaryInContext() {
   return (
@@ -16,6 +17,7 @@ function PolkadotTreasurySummaryInContext() {
       <TreasuryOnAssetHub />
       <TreasuryOnHydration />
       <FellowshipTreasuryOnAssetHub />
+      <Loans />
     </SummaryLayout>
   );
 }
