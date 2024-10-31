@@ -33,7 +33,7 @@ export default function RelayChainTreasury() {
         <div className="flex flex-col gap-[4px]">
           <FiatPriceLabel free={dotTreasuryBalanceOnRelayChain} />
           <div className="!ml-0 flex flex-col gap-y-1">
-            <div className="mb-3">
+            <div>
               <DotTokenSymbolAsset free={dotTreasuryBalanceOnRelayChain} />
             </div>
             <SummaryLabelItem label={"To be awarded"}>

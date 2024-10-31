@@ -64,7 +64,7 @@ export default function FellowshipTreasuryOnAssetHub() {
           isFellowshipSalaryUsdtBalanceLoading
         }
       >
-        <div className="flex flex-col gap-[16px]">
+        <div className="flex flex-col gap-[4px]">
           <FiatPriceLabel
             free={fellowshipTreasuryDotBalance}
             usdtBalance={fellowshipSalaryUsdtBalance}

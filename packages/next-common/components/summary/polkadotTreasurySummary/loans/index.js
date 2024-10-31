@@ -27,7 +27,7 @@ function LoansItemList() {
       >
         <ValueDisplay
           value={toPrecision(loanCentrifugeUsdcBalance, SYMBOL_DECIMALS.USDC)}
-          symbol={symbol}
+          symbol="USDC"
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
         />
@@ -38,7 +38,7 @@ function LoansItemList() {
       >
         <ValueDisplay
           value={bifrostDotAmount}
-          symbol="DOT"
+          symbol={symbol}
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
         />
@@ -49,7 +49,7 @@ function LoansItemList() {
       >
         <ValueDisplay
           value={pendulumDotAmount}
-          symbol="DOT"
+          symbol={symbol}
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
         />
@@ -67,7 +67,7 @@ export default function Loans() {
 
   return (
     <SummaryItem title="Loans">
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-[4px]">
         <FiatPriceLabel
           free={new BigNumber(loanBifrostDotBalance)
             .plus(loadPendulumDotBalance)
