@@ -2,7 +2,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import CurrentPrice from "./columns/currentPrice";
 import AvailableCores from "./columns/availableCores";
 import CurrentPhase from "./columns/currentPhase";
-import SalePeriod from "./columns/salePeriod";
+import TotalPeriod from "./columns/totalPeriod";
 
 export default function CoretimeSaleSummary() {
   return (
@@ -11,7 +11,7 @@ export default function CoretimeSaleSummary() {
         <CurrentPrice />
         <AvailableCores />
         <CurrentPhase />
-        <SalePeriod />
+        <TotalPeriod />
       </SummaryLayout>
     </div>
   );

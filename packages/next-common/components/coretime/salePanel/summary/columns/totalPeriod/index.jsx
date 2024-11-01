@@ -17,7 +17,7 @@ function getEndBlocksTime(initBlocksTime, blockTime, blockGap) {
   return initBlocksTime + blockGap * blockTime;
 }
 
-export default function SalePeriod() {
+export default function TotalPeriod() {
   const { initIndexer = {} } = useCoretimeSale();
   const { isLoading, indexer: endIndexer } = useCoretimeSaleEnd();
 
@@ -55,7 +55,7 @@ export default function SalePeriod() {
   return (
     <SummaryColumnGap>
       <SummaryItem
-        title="Sale Period"
+        title="Total Period"
         suffix={<SalePeriodCountdown percentage={percentage} />}
       >
         {isFieldLoading ? <FieldLoading /> : <SalePeriodContent />}
