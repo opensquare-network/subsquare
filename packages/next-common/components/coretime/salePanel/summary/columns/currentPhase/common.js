@@ -7,7 +7,7 @@ import CountDown from "next-common/components/_CountDown";
 import { toPercentage } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 
-function getCountDownProgress(startHeight, currentHeight, endHeight) {
+export function getCountDownProgress(startHeight, currentHeight, endHeight) {
   if (currentHeight <= startHeight) {
     return 0;
   }
