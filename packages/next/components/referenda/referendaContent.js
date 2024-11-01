@@ -10,8 +10,7 @@ import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
-import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
-import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
@@ -59,14 +58,12 @@ export function ReferendumContent() {
   }, [dispatch]);
 
   return (
-    <OffChainArticleActionsProvider>
-      <OffChainCommentActionsProvider>
-        <ContentWithComment>
-          <ReferendaDetail />
-          <Gov2Sidebar />
-          <ReferendumDetailMultiTabs />
-        </ContentWithComment>
-      </OffChainCommentActionsProvider>
-    </OffChainArticleActionsProvider>
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <ReferendaDetail />
+        <Gov2Sidebar />
+        <ReferendumDetailMultiTabs />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }

@@ -19,9 +19,7 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { usePageProps } from "next-common/context/page";
-import { SimaReferendumContent } from "components/referenda/sima/referendaContent";
 import { ReferendumContent } from "components/referenda/referendaContent";
-import { useChainSettings } from "next-common/context/chain";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 
 function UnFinalizedBreadcrumb({ id }) {
@@ -71,11 +69,10 @@ function ReferendumNullPage() {
 }
 
 function ReferendumPageWithPost() {
-  const { sima } = useChainSettings();
   return (
     <ReferendumPageCommon
       breadcrumbs={<ReferendaBreadcrumb />}
-      postContent={sima ? <SimaReferendumContent /> : <ReferendumContent />}
+      postContent={<ReferendumContent />}
     />
   );
 }

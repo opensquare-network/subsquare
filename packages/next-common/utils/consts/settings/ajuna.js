@@ -112,10 +112,14 @@ const ajuna = {
       spends: true,
       tips: false,
     },
+    proxy: {
+      provider: "chain",
+    },
   }),
   integrations: {
     subscan: true,
   },
+  sima: true,
   ...themeVars,
 };
 

@@ -23,5 +23,5 @@ export default function getProposalIndexer(post) {
   } else if (type === "treasuryProposal") {
     return getTreasuryProposalIndexer(post.refToPost);
   }
-  throw new Error("Invalid post type for getProposalIndexer");
+  throw new Error(`Invalid post type for getProposalIndexer: ${type}`);
 }
