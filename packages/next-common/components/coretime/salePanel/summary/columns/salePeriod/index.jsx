@@ -10,21 +10,20 @@ import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useRemainingTime } from "next-common/components/remaining";
 import EndAt from "./endAt";
-import PassedTimeWithTooltip from "./passedTimeWithTooltip";
+import PassedTime from "./passedTime";
 import TotalTime from "./totalTime";
 
 function getEndBlocksTime(initBlocksTime, blockTime, blockGap) {
   return initBlocksTime + blockGap * blockTime;
 }
 
-// TODO: style && mobile countdown
-function SalePeriodContentWithNullGuard({
-  isLoading,
-  endIndexer,
-  initIndexer,
-}) {
+export default function SalePeriod() {
+  const { initIndexer = {} } = useCoretimeSale();
+  const { isLoading, indexer: endIndexer } = useCoretimeSaleEnd();
+
   const blockTime = useSelector(blockTimeSelector);
   const chainHeight = useSelector(chainOrScanHeightSelector);
+
   const initHeight = initIndexer?.blockHeight;
   const endHeight = endIndexer?.blockHeight;
 
@@ -32,38 +31,26 @@ function SalePeriodContentWithNullGuard({
   const passedBlockGap = chainHeight - initHeight;
   const remainingBlocksGap = endHeight - chainHeight;
 
+  const remaining = useRemainingTime(remainingBlocksGap);
+
+  const percentage = getCountDownProgress(initHeight, chainHeight, endHeight);
   const endBlocksTime = getEndBlocksTime(
     initIndexer?.blockTime,
     blockTime,
     totalBlockGap,
   );
 
-  const remaining = useRemainingTime(remainingBlocksGap);
+  const isFieldLoading = !initHeight || !endHeight || isLoading;
 
-  if (!initHeight || !endHeight || isLoading) {
-    return <FieldLoading />;
-  }
-
-  return (
-    <div className="space-y-1">
-      <PassedTimeWithTooltip
-        passedBlockGap={passedBlockGap}
-        remaining={remaining}
-      />
-      <TotalTime totalBlockGap={totalBlockGap} />
-      <EndAt endTime={endBlocksTime} />
-    </div>
-  );
-}
-
-export default function SalePeriod() {
-  const { initIndexer = {} } = useCoretimeSale();
-  const { isLoading, indexer } = useCoretimeSaleEnd();
-
-  const chainHeight = useSelector(chainOrScanHeightSelector);
-  const initHeight = initIndexer?.blockHeight;
-  const endHeight = indexer?.blockHeight;
-  const percentage = getCountDownProgress(initHeight, chainHeight, endHeight);
+  const SalePeriodContent = () => {
+    return (
+      <div className="space-y-1">
+        <PassedTime passedBlockGap={passedBlockGap} remaining={remaining} />
+        <TotalTime totalBlockGap={totalBlockGap} />
+        <EndAt endTime={endBlocksTime} />
+      </div>
+    );
+  };
 
   return (
     <SummaryColumnGap>
@@ -71,11 +58,7 @@ export default function SalePeriod() {
         title="Sale Period"
         suffix={<SalePeriodCountdown percentage={percentage} />}
       >
-        <SalePeriodContentWithNullGuard
-          isLoading={isLoading}
-          endIndexer={indexer}
-          initIndexer={initIndexer}
-        />
+        {isFieldLoading ? <FieldLoading /> : <SalePeriodContent />}
       </SummaryItem>
     </SummaryColumnGap>
   );

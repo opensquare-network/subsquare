@@ -3,5 +3,8 @@ import { formatDate } from "next-common/components/coretime/sales/history/timeRa
 
 export default function EndAt({ endTime }) {
   const endAt = formatDate(endTime);
-  return <Item label="End At" value={endAt} />;
+
+  return (
+    <Item label="End At" value={endAt} valueClassName={"text-textSecondary"} />
+  );
 }
