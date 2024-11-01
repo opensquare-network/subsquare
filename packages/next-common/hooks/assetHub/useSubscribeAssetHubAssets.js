@@ -1,8 +1,11 @@
 import { useAssetHubApi } from "next-common/context/assetHub";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useEffect, useState } from "react";
 
 export default function useSubscribeAssetHubAssets(assetId, address) {
   const api = useAssetHubApi();
+  const [balance, setBalance] = useState(0);
+  const [decimals, setDecimals] = useState(0);
 
   const { loading: isLoadingAccount, result: account } = useSubStorage(
     "assets",
@@ -19,13 +22,12 @@ export default function useSubscribeAssetHubAssets(assetId, address) {
 
   const loading = isLoadingAccount || isLoadingMeta;
 
-  if (loading) {
-    return { isLoading: true, balance: 0, decimals: 0 };
-  }
+  useEffect(() => {
+    if (loading) return;
 
-  return {
-    isLoading: false,
-    balance: account?.toJSON()?.balance || 0,
-    decimals: meta?.toJSON()?.decimals || 0,
-  };
+    setBalance(account?.toJSON()?.balance || 0);
+    setDecimals(meta?.toJSON()?.decimals || 0);
+  }, [loading, account, meta]);
+
+  return { isLoading: loading, balance, decimals };
 }
