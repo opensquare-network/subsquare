@@ -4,16 +4,13 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { Item, SummaryColumnGap } from "../common";
-import useCoretimeSale from "next-common/context/coretime/sale/provider";
+import useCoretimeSale, {
+  useCoretimeSaleInfo,
+} from "next-common/context/coretime/sale/provider";
 
 export function FloorPriceField() {
   const { decimals, symbol } = useChainSettings();
-  const { info = {} } = useCoretimeSale();
-  if (!info) {
-    throw new Error(
-      "Coretime sale info should be available on CurrentPrice: CurrentPrice",
-    );
-  }
+  const info = useCoretimeSaleInfo();
 
   const floorPrice = info?.endPrice || info?.price;
 
