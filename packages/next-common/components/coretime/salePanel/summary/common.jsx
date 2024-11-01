@@ -1,7 +1,7 @@
 import { cn } from "next-common/utils";
 
 export function SummaryColumnGap({ children }) {
-  return <div className="flex flex-col gap-2.5">{children}</div>;
+  return <div className="flex flex-col gap-y-1">{children}</div>;
 }
 
 export function Item({ label = "", value, valueClassName }) {

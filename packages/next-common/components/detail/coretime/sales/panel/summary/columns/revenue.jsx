@@ -2,12 +2,10 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import {
-  Item,
-  SummaryColumnGap,
-} from "next-common/components/coretime/salePanel/summary/common";
+import { Item } from "next-common/components/coretime/salePanel/summary/common";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { isNil } from "lodash-es";
+import { FloorPriceField } from "next-common/components/coretime/salePanel/summary/columns/currentPrice";
 
 export default function Revenue() {
   const { decimals, symbol } = useChainSettings();
@@ -18,7 +16,7 @@ export default function Revenue() {
   }
 
   return (
-    <SummaryColumnGap>
+    <div className="space-y-1">
       <SummaryItem title="Revenue">
         <ValueDisplay
           className="text-textPrimary"
@@ -28,6 +26,7 @@ export default function Revenue() {
       </SummaryItem>
       <SummaryItem>
         <div className="space-y-1 text12Medium text-textTertiary">
+          <FloorPriceField />
           <Item
             label="Renewal"
             value={
@@ -50,6 +49,6 @@ export default function Revenue() {
           />
         </div>
       </SummaryItem>
-    </SummaryColumnGap>
+    </div>
   );
 }

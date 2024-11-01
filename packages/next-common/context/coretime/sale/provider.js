@@ -25,4 +25,15 @@ export function useCoretimeSaleInitHeight() {
   return initIndexer?.blockHeight;
 }
 
+export function useCoretimeSaleInfo() {
+  const sale = useCoretimeSale();
+  const { info = {} } = sale;
+
+  if (!info) {
+    throw new Error("Coretime sale info should be available");
+  }
+
+  return info;
+}
+
 export { useSharedCoretimeSale };
