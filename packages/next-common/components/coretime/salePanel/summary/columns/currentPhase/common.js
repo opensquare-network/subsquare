@@ -1,4 +1,3 @@
-import SummaryItem from "next-common/components/summary/layout/item";
 import { Item } from "next-common/components/coretime/salePanel/summary/common";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
@@ -36,25 +35,20 @@ export default function CurrentPhaseEnd({ startHeight, endHeight }) {
   const tooltipContent = `${percentage}%, total ${countDownTotal}`;
 
   return (
-    <SummaryItem>
-      <div className="text12Medium flex gap-x-1">
-        <Item
-          label="End in"
-          value={estimatedBlocksTime}
-          valueClassName={"text-textSecondary"}
+    <div className="text12Medium flex gap-x-1">
+      <Item
+        label="End in"
+        value={estimatedBlocksTime}
+        valueClassName={"text-textSecondary"}
+      />
+      <Tooltip content={tooltipContent} className={"inline-flex items-center"}>
+        <CountDown
+          numerator={endHeight - chainHeight}
+          denominator={endHeight - startHeight}
+          backgroundColor="var(--theme100)"
+          foregroundColor="var(--theme500)"
         />
-        <Tooltip
-          content={tooltipContent}
-          className={"inline-flex items-center"}
-        >
-          <CountDown
-            numerator={endHeight - chainHeight}
-            denominator={endHeight - startHeight}
-            backgroundColor="var(--theme100)"
-            foregroundColor="var(--theme500)"
-          />
-        </Tooltip>
-      </div>
-    </SummaryItem>
+      </Tooltip>
+    </div>
   );
 }
