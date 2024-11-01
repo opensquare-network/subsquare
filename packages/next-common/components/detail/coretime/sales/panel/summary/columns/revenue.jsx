@@ -5,6 +5,7 @@ import { toPrecision } from "next-common/utils";
 import { Item } from "next-common/components/coretime/salePanel/summary/common";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { isNil } from "lodash-es";
+import { FloorPriceField } from "next-common/components/coretime/salePanel/summary/columns/currentPrice";
 
 export default function Revenue() {
   const { decimals, symbol } = useChainSettings();
@@ -25,6 +26,7 @@ export default function Revenue() {
       </SummaryItem>
       <SummaryItem>
         <div className="space-y-1 text12Medium text-textTertiary">
+          <FloorPriceField />
           <Item
             label="Renewal"
             value={

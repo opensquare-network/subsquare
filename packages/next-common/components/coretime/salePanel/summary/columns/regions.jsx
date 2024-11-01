@@ -1,15 +1,9 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import { SummaryColumnGap } from "../common";
-import useCoretimeSale from "next-common/context/coretime/sale/provider";
+import { useCoretimeSaleInfo } from "next-common/context/coretime/sale/provider";
 
 export default function Regions() {
-  const { info = {} } = useCoretimeSale();
-
-  if (!info) {
-    throw new Error(
-      "Coretime sale info should be available on Regions: Regions",
-    );
-  }
+  const info = useCoretimeSaleInfo();
 
   const regionBegin = info?.regionBegin?.toLocaleString();
   const regionEnd = info?.regionEnd?.toLocaleString();
