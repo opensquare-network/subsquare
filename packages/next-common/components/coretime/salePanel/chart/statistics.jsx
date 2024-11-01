@@ -258,7 +258,7 @@ function StatisticsImpl({
     clip: false,
     responsive: true,
     maintainAspectRatio: false,
-    // animation: false,
+    animation: false,
     layout: {
       autoPadding: false,
       padding: CHART_LAYOUT_PADDING,
