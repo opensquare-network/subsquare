@@ -3,6 +3,7 @@ import Revenue from "./columns/revenue";
 import AvailableCores from "./columns/availableCores";
 import StartTime from "./columns/startTime";
 import EndTime from "./columns/endTime";
+import Regions from "next-common/components/coretime/salePanel/summary/columns/regions";
 
 export default function CoretimeHistoricalSaleSummary() {
   return (
@@ -12,6 +13,7 @@ export default function CoretimeHistoricalSaleSummary() {
         <AvailableCores />
         <StartTime />
         <EndTime />
+        <Regions />
       </SummaryLayout>
     </div>
   );

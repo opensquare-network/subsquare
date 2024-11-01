@@ -3,6 +3,7 @@ import CurrentPrice from "./columns/currentPrice";
 import AvailableCores from "./columns/availableCores";
 import CurrentPhase from "./columns/currentPhase";
 import TotalPeriod from "./columns/totalPeriod";
+import Regions from "./columns/regions";
 
 export default function CoretimeSaleSummary() {
   return (
@@ -12,6 +13,7 @@ export default function CoretimeSaleSummary() {
         <AvailableCores />
         <CurrentPhase />
         <TotalPeriod />
+        <Regions />
       </SummaryLayout>
     </div>
   );
