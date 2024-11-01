@@ -274,6 +274,9 @@ function StatisticsImpl({
     responsive: true,
     maintainAspectRatio: false,
     animation: false,
+    layout: {
+      autoPadding: false,
+    },
     scales: {
       x: {
         display: false,
