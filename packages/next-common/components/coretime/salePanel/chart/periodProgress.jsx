@@ -1,4 +1,5 @@
 import { SystemQuestion } from "@osn/icons/subsquare";
+import ExternalLink from "next-common/components/externalLink";
 import Progress from "next-common/components/progress";
 import Tooltip from "next-common/components/tooltip";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
@@ -100,7 +101,13 @@ function RenewalPeriodProgress({
       />
       <div className="text-textTertiary flex items-center gap-1">
         Interlude
-        <Tooltip content="Cores can be renewed">
+        <Tooltip
+          content={
+            <>
+              Cores can be renewed. <WikiLink />
+            </>
+          }
+        >
           <SystemQuestion className="inline-flex w-3 h-3" />
         </Tooltip>
       </div>
@@ -136,7 +143,14 @@ function SalePeriodProgress({
         />
         <div className="text-textTertiary flex items-center gap-1">
           Price Discovery
-          <Tooltip content="Core price decreases from the start price to the floor price">
+          <Tooltip
+            content={
+              <>
+                Core price decreases from the start price to the floor price.{" "}
+                <WikiLink />
+              </>
+            }
+          >
             <SystemQuestion className="inline-flex w-3 h-3" />
           </Tooltip>
         </div>
@@ -150,12 +164,30 @@ function SalePeriodProgress({
           <div className="w-0.5 h-2 bg-neutral500" />
           <div className="text-textTertiary flex items-center gap-1">
             Fixed Price
-            <Tooltip content="Cores are sold for the floor price">
+            <Tooltip
+              content={
+                <>
+                  Cores are sold for the floor price. <WikiLink />
+                </>
+              }
+            >
               <SystemQuestion className="inline-flex w-3 h-3" />
             </Tooltip>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function WikiLink() {
+  return (
+    <ExternalLink
+      externalIcon={false}
+      className="text12Medium text-textPrimaryContrast"
+      href="https://wiki.polkadot.network/docs/learn-agile-coretime#coretime-sales"
+    >
+      <span className="underline">Wiki</span> ↗
+    </ExternalLink>
   );
 }
