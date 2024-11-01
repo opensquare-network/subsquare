@@ -109,7 +109,7 @@ const ajuna = {
       bounties: false,
       childBounties: false,
       proposals: true,
-      //TODO: Enable treasury spends once we determine how to handle spending proposals
+      //TODO: Enable treasury spends once we determine how to handle spends proposals
       // spends: true,
       tips: false,
     },
