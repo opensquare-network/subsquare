@@ -6,6 +6,32 @@ import { toPrecision } from "next-common/utils";
 import { Item, SummaryColumnGap } from "../common";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 
+export function FloorPriceField() {
+  const { decimals, symbol } = useChainSettings();
+  const { info = {} } = useCoretimeSale();
+  if (!info) {
+    throw new Error(
+      "Coretime sale info should be available on CurrentPrice: CurrentPrice",
+    );
+  }
+
+  const floorPrice = info?.endPrice || info?.price;
+
+  return (
+    <Item
+      label="Floor Price"
+      value={
+        <ValueDisplay
+          className="text-textPrimary"
+          value={toPrecision(floorPrice, decimals)}
+          symbol={symbol}
+          showVerySmallNumber={true}
+        />
+      }
+    />
+  );
+}
+
 export default function CurrentPrice() {
   const { decimals, symbol } = useChainSettings();
   const { totalRevenue, renewalRevenue, purchaseRevenue } = useCoretimeSale();
@@ -15,6 +41,7 @@ export default function CurrentPrice() {
       <PriceItem />
       <SummaryItem>
         <div className="space-y-1 text12Medium text-textTertiary">
+          <FloorPriceField />
           <Item
             label="Revenue"
             value={
