@@ -14,7 +14,7 @@ import useLoopCoretimeScanHeight from "next-common/hooks/coretime/useLoopCoretim
 import RelayInfoProvider from "next-common/context/relayInfo";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider, usePost } from "next-common/context/post";
+import { usePost } from "next-common/context/post";
 import CoretimeSalesDetail from "next-common/components/detail/coretime/sales";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import { cn } from "next-common/utils";
@@ -34,7 +34,7 @@ if (isCoretimeSupported) {
   });
 }
 
-export default function CoretimePage({ detail }) {
+export default function CoretimeSaleDetailPage() {
   if (!isCoretimeSupported) {
     return null;
   }
@@ -46,9 +46,7 @@ export default function CoretimePage({ detail }) {
           <ApiProvider>
             <CoretimeCommonProvider>
               <CoretimeDetailSaleProvider>
-                <PostProvider post={detail}>
-                  <CoretimeSalesDetailPageImpl />
-                </PostProvider>
+                <CoretimeSalesDetailPageImpl />
               </CoretimeDetailSaleProvider>
             </CoretimeCommonProvider>
           </ApiProvider>

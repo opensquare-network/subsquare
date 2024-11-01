@@ -10,5 +10,5 @@ export function useIsCoretimeSaleInterludePhase() {
   const saleStartHeight = useCoretimeSaleStart();
   const initHeight = useCoretimeSaleInitHeight();
 
-  return chainHeight >= initHeight && initHeight < saleStartHeight;
+  return chainHeight >= initHeight && chainHeight < saleStartHeight;
 }

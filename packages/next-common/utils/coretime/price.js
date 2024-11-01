@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 
 export function getCoretimeLeadinFactorAt(when) {
   if (when <= 0.5) {
-    return 100 - 100 * when;
+    return 100 - 180 * when;
   } else {
     return 19 - when * 18;
   }
