@@ -1,6 +1,6 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import { SummaryColumnGap } from "../../common";
-import SalePeriodCountdown from "./countdown";
+import TotalPeriodCountdown from "./countdown";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
@@ -56,7 +56,7 @@ export default function TotalPeriod() {
     <SummaryColumnGap>
       <SummaryItem
         title="Total Period"
-        suffix={<SalePeriodCountdown percentage={percentage} />}
+        suffix={<TotalPeriodCountdown percentage={percentage} />}
       >
         {isFieldLoading ? <FieldLoading /> : <SalePeriodContent />}
       </SummaryItem>
