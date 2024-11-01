@@ -16,6 +16,7 @@ import { Line } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 
 const STEP_SIZE = 200;
+const CHART_LAYOUT_PADDING = 10;
 
 export default function CoretimeSalePanelChartStatistics({
   className = "",
@@ -46,6 +47,7 @@ function Skeleton({ className = "" }) {
   return (
     <div
       className={cn("w-full rounded-lg bg-neutral300 animate-pulse", className)}
+      // style={{ margin: LAYOUT_PADDING }}
     />
   );
 }
@@ -276,6 +278,7 @@ function StatisticsImpl({
     animation: false,
     layout: {
       autoPadding: false,
+      padding: CHART_LAYOUT_PADDING,
     },
     scales: {
       x: {
@@ -342,7 +345,16 @@ function StatisticsImpl({
 
   return (
     <div className={cn("w-full", className)}>
-      <Line options={options} data={chartData} />
+      <div
+        className="h-full"
+        style={{
+          margin: -CHART_LAYOUT_PADDING,
+          marginTop: -CHART_LAYOUT_PADDING + 4,
+          marginBottom: -CHART_LAYOUT_PADDING + 4,
+        }}
+      >
+        <Line options={options} data={chartData} />
+      </div>
     </div>
   );
 }

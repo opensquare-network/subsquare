@@ -39,7 +39,7 @@ export default function CoretimeSalePanelChartPeriodProgress({
 }
 
 function Skeleton({ className = "" }) {
-  return <div className={cn("w-full h-52", className)}></div>;
+  return <div className={cn("w-full", className)} />;
 }
 
 function PeriodProgressImpl({
@@ -56,21 +56,23 @@ function PeriodProgressImpl({
   const renewalWidth = toPercentage(renewalBlocks / totalBlocks, 3);
 
   return (
-    <div className={cn("flex", className)}>
-      <RenewalPeriodProgress
-        style={{
-          width: `${renewalWidth}%`,
-        }}
-        renewalBlocks={renewalBlocks}
-        initBlockHeight={initBlockHeight}
-      />
+    <div className={className}>
+      <div className="flex -mt-2">
+        <RenewalPeriodProgress
+          style={{
+            width: `${renewalWidth}%`,
+          }}
+          renewalBlocks={renewalBlocks}
+          initBlockHeight={initBlockHeight}
+        />
 
-      <SalePeriodProgress
-        fixedStart={fixedStart}
-        saleStart={saleStart}
-        saleBlocks={saleBlocks}
-        endBlockHeight={endBlockHeight}
-      />
+        <SalePeriodProgress
+          fixedStart={fixedStart}
+          saleStart={saleStart}
+          saleBlocks={saleBlocks}
+          endBlockHeight={endBlockHeight}
+        />
+      </div>
     </div>
   );
 }

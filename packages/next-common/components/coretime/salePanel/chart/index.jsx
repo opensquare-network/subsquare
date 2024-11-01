@@ -3,7 +3,7 @@ import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import CoretimeSalePanelChartPeriodProgress from "./periodProgress";
 import CoretimeSalePanelChartStatistics from "./statistics";
 
-export default function CoretimeSalePanelChart() {
+export default function CoretimeSalePanelChart({ className = "" }) {
   const coretimeSale = useCoretimeSale();
   const {
     initIndexer: { blockHeight: initBlockHeight } = {},
@@ -18,7 +18,7 @@ export default function CoretimeSalePanelChart() {
   const isLoading = endSale?.isLoading;
 
   return (
-    <div>
+    <div className={className}>
       <CoretimeSalePanelChartStatistics
         className="h-52"
         initBlockHeight={initBlockHeight}

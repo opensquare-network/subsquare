@@ -13,8 +13,9 @@ export default function CoretimeSalePanel() {
       <Divider className="my-4" />
       <CoretimeSaleSummary />
 
-      <hr className="border-dashed border-neutral300 my-4" />
-      <CoretimeSalePanelChart />
+      <hr className="border-dashed border-neutral300 mt-4" />
+
+      <CoretimeSalePanelChart className="mt-2" />
     </NeutralPanel>
   );
 }
