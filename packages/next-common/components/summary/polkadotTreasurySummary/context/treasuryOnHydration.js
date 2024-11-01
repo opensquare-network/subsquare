@@ -1,11 +1,10 @@
 import { createContext, useContext } from "react";
-import { useSubscribeHydrationTreasuryBalances } from "../hook/useSubscribeHydrationTreasuryBalances";
+import { useQueryHydrationTreasuryBalances } from "../hook/useQueryHydrationTreasuryBalances";
 
 const HydrationTreasurySummaryContext = createContext();
 
 export function TreasuryOnHydrationProvider({ children }) {
-  const { dot, usdt, usdc, isLoading } =
-    useSubscribeHydrationTreasuryBalances();
+  const { dot, usdt, usdc, isLoading } = useQueryHydrationTreasuryBalances();
 
   return (
     <HydrationTreasurySummaryContext.Provider
