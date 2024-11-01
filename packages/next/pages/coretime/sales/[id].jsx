@@ -20,6 +20,10 @@ import BaseLayout from "next-common/components/layout/baseLayout";
 import { cn } from "next-common/utils";
 import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
 import queryCoretimeDetailSale from "next-common/services/gql/coretime/detailSale";
+import {
+  queryCoretimeSaleRenewalsChart,
+  queryCoretimeSalePurchasesChart,
+} from "next-common/services/gql/coretime/chart";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -94,11 +98,18 @@ export const getServerSideProps = async (ctx) => {
     const coretimeSale = await queryCoretimeDetailSale(id);
     const configuration = await queryCoretimeConfiguration();
     const status = await queryCoretimeStatus();
+    const coretimeSaleRenewalsChart = await queryCoretimeSaleRenewalsChart(id);
+    const coretimeSalePurchasesChart = await queryCoretimeSalePurchasesChart(
+      id,
+    );
+
     return {
       props: {
         coretimeSale,
         configuration,
         status,
+        coretimeSaleRenewalsChart,
+        coretimeSalePurchasesChart,
       },
     };
   })(ctx);

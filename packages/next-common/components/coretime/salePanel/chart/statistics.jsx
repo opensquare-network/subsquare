@@ -2,12 +2,8 @@ import BigNumber from "bignumber.js";
 import { last, maxBy, range, uniqWith } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useChainSettings } from "next-common/context/chain";
+import { usePageProps } from "next-common/context/page";
 import { useThemeSetting } from "next-common/context/theme";
-import { useCoretimeQuery } from "next-common/hooks/apollo";
-import {
-  GET_CORETIME_SALE_PURCHASES_CHART,
-  GET_CORETIME_SALE_RENEWALS_CHART,
-} from "next-common/services/gql/coretime/consts";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { cn, toPrecision } from "next-common/utils";
 import { getCoretimePriceAt } from "next-common/utils/coretime/price";
@@ -47,7 +43,6 @@ function Skeleton({ className = "" }) {
   return (
     <div
       className={cn("w-full rounded-lg bg-neutral300 animate-pulse", className)}
-      // style={{ margin: LAYOUT_PADDING }}
     />
   );
 }
@@ -60,8 +55,13 @@ function StatisticsImpl({
   saleStart,
   fixedStart,
 }) {
+  const { coretimeSaleRenewalsChart, coretimeSalePurchasesChart } =
+    usePageProps();
   const chainHeight = useSelector(chainOrScanHeightSelector);
-  const indexes = range(0, totalBlocks);
+  const indexes = useMemo(() => {
+    return range(0, totalBlocks);
+  }, [totalBlocks]);
+
   const currentIndex = Math.max(
     0,
     Math.min(chainHeight - initBlockHeight, totalBlocks - 1),
@@ -71,27 +71,10 @@ function StatisticsImpl({
   const theme = useThemeSetting();
   const { decimals, symbol } = useChainSettings();
 
-  const { data: salesData } = useCoretimeQuery(
-    GET_CORETIME_SALE_PURCHASES_CHART,
-    {
-      variables: {
-        saleId: coretimeSale.id,
-      },
-    },
-  );
-  const { data: renewalsData } = useCoretimeQuery(
-    GET_CORETIME_SALE_RENEWALS_CHART,
-    {
-      variables: {
-        saleId: coretimeSale.id,
-      },
-    },
-  );
-
   const renewalsDataset = useMemo(() => {
     const result = [];
 
-    const data = uniqWith(renewalsData?.coretimeSaleRenewals?.items, (a, b) => {
+    const data = uniqWith(coretimeSaleRenewalsChart?.items, (a, b) => {
       return (
         a.indexer.blockHeight === b.indexer.blockHeight && a.price === b.price
       );
@@ -108,12 +91,12 @@ function StatisticsImpl({
     }
 
     return result;
-  }, [renewalsData?.coretimeSaleRenewals?.items, initBlockHeight, decimals]);
+  }, [coretimeSaleRenewalsChart?.items, initBlockHeight, decimals]);
 
   const salesDataset = useMemo(() => {
     const result = [];
 
-    const data = uniqWith(salesData?.coretimeSalePurchases?.items, (a, b) => {
+    const data = uniqWith(coretimeSalePurchasesChart?.items, (a, b) => {
       return (
         a.indexer.blockHeight === b.indexer.blockHeight && a.price === b.price
       );
@@ -130,7 +113,7 @@ function StatisticsImpl({
     }
 
     return result;
-  }, [decimals, initBlockHeight, salesData?.coretimeSalePurchases?.items]);
+  }, [decimals, initBlockHeight, coretimeSalePurchasesChart?.items]);
 
   const priceDataset = useMemo(() => {
     const steppedBlocksRange = [
@@ -275,7 +258,7 @@ function StatisticsImpl({
     clip: false,
     responsive: true,
     maintainAspectRatio: false,
-    animation: false,
+    // animation: false,
     layout: {
       autoPadding: false,
       padding: CHART_LAYOUT_PADDING,
