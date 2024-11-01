@@ -22,13 +22,14 @@ export default function useCoretimeSaleEnd() {
       isLoading: false,
       indexer: endIndexer,
     };
-  } else if (isNil(coretimeHeight)) {
+  } else if (isNil(coretimeHeight) || isNil(relayHeight)) {
     return {
       isLoading: true,
     };
   }
 
-  const relayEndBlock = (regionBegin + 1) * CORETIME_TIMESLICE_PERIOD - configuration.advanceNotice;
+  const relayEndBlock =
+    (regionBegin + 1) * CORETIME_TIMESLICE_PERIOD - configuration.advanceNotice;
   const relayBlocksGap = relayEndBlock - relayHeight;
   const coretimeBlocksGap = Math.ceil(relayBlocksGap / 2);
   return {
