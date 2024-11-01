@@ -17,17 +17,19 @@ export default function StartTime() {
   return (
     <SummaryColumnGap>
       <SummaryItem title="Start Time">
-        <div>
-          {dayjs(blockTime).format("YYYY-MM-DD")}{" "}
-          <span className="text-textTertiary">
-            {dayjs(blockTime).format("HH:mm:ss")}
-          </span>
+        <div className="space-y-1">
+          <div>
+            {dayjs(blockTime).format("YYYY-MM-DD")}{" "}
+            <span className="text-textTertiary">
+              {dayjs(blockTime).format("HH:mm:ss")}
+            </span>
+          </div>
+          <div className="text12Medium text-textSecondary hover:underline">
+            <ExplorerLink indexer={initIndexer} style={{ display: "inline" }}>
+              {formatBlockHeight(blockHeight)}
+            </ExplorerLink>
+          </div>
         </div>
-        <span className="text12Medium text-textSecondary hover:underline">
-          <ExplorerLink indexer={initIndexer} style={{ display: "inline" }}>
-            {formatBlockHeight(blockHeight)}
-          </ExplorerLink>
-        </span>
       </SummaryItem>
     </SummaryColumnGap>
   );
