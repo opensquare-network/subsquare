@@ -131,10 +131,17 @@ function StatisticsImpl({
   }, [decimals, initBlockHeight, salesData?.coretimeSalePurchases?.items]);
 
   const priceDataset = useMemo(() => {
-    return Array.from(
-      { length: Math.ceil((fixedStart - saleStart) / STEP_SIZE) },
-      (_, i) => saleStart + i * STEP_SIZE,
-    ).map((blockHeight) => {
+    const steppedBlocksRange = [
+      // from sale start point to fixed price point
+      ...Array.from(
+        { length: Math.ceil((fixedStart - saleStart) / STEP_SIZE) },
+        (_, i) => saleStart + i * STEP_SIZE,
+      ),
+      // fixed price point
+      fixedStart,
+    ];
+
+    return steppedBlocksRange.map((blockHeight) => {
       const price = toPrecision(
         getCoretimePriceAt(blockHeight, coretimeSale.info),
         decimals,
