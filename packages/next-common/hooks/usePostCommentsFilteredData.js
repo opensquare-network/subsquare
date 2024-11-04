@@ -55,20 +55,20 @@ export function usePostCommentsFilteredData() {
           ).toNumber();
 
           // merge balance
-          try {
-            if (api) {
-              if (address) {
-                const normalizedAddress = normalizeAddress(address);
+          if (api) {
+            if (address) {
+              const normalizedAddress = normalizeAddress(address);
+              try {
                 item.balance = await getAddressVotingBalance(
                   api,
                   normalizedAddress,
                 );
-              } else {
-                item.balance = 0;
+              } catch (e) {
+                console.error(e);
               }
+            } else {
+              item.balance = 0;
             }
-          } catch (e) {
-            console.error(e);
           }
 
           return item;
