@@ -15,7 +15,7 @@ import TotalTime from "./totalTime";
 import { usePageProps } from "next-common/context/page";
 import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
 
-function getEndBlocksTime(initBlocksTime, blockTime, blockGap) {
+export function getEndBlocksTime(initBlocksTime, blockTime, blockGap) {
   return initBlocksTime + blockGap * blockTime;
 }
 
