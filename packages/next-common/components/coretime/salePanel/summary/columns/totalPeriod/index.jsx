@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { getCountDownProgress } from "../currentPhase/common";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useRemainingTime } from "next-common/components/remaining";
+import StartAt from "./startAt";
 import EndAt from "./endAt";
 import PassedTime from "./passedTime";
 import TotalTime from "./totalTime";
@@ -22,12 +23,14 @@ function SalePeriodContent({
   passedBlockGap,
   remaining,
   totalBlockGap,
+  startBlocksTime,
   endBlocksTime,
 }) {
   return (
     <div className="space-y-1">
       <PassedTime passedBlockGap={passedBlockGap} remaining={remaining} />
       <TotalTime totalBlockGap={totalBlockGap} />
+      <StartAt startTime={startBlocksTime} />
       <EndAt endTime={endBlocksTime} />
     </div>
   );
@@ -85,6 +88,7 @@ export default function TotalPeriod() {
             passedBlockGap={passedBlockGap}
             remaining={remaining}
             totalBlockGap={totalBlockGap}
+            startBlocksTime={initIndexer?.blockTime}
             endBlocksTime={endBlocksTime}
           />
         )}
