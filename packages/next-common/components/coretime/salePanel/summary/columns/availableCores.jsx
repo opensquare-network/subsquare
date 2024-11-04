@@ -13,7 +13,7 @@ export default function AvailableCores() {
 
   return (
     <SummaryColumnGap>
-      <SummaryItem title="Available Cores">
+      <SummaryItem title="Available Cores" className="!flex-none">
         <div>
           {availableCores}
           <span className="text-textTertiary"> / {coresOffered}</span>

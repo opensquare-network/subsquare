@@ -27,7 +27,7 @@ function SalePeriodContent({
   endIndexer,
 }) {
   return (
-    <div className="space-y-1">
+    <div className="flex flex-col gap-y-1">
       <PassedTime passedBlockGap={passedBlockGap} remaining={remaining} />
       <TotalTime totalBlockGap={totalBlockGap} />
       <StartAt indexer={initIndexer} />
