@@ -26,7 +26,6 @@ export default function Revenue() {
       </SummaryItem>
       <SummaryItem>
         <div className="space-y-1 text12Medium text-textTertiary">
-          <FloorPriceField />
           <Item
             label="Renewal"
             value={
@@ -47,6 +46,7 @@ export default function Revenue() {
               />
             }
           />
+          <FloorPriceField />
         </div>
       </SummaryItem>
     </div>
