@@ -10,7 +10,7 @@ export default function EndAt({ indexer }) {
   const endAt = formatDate(blockTime);
   const endTime = formatDateTime(blockTime);
 
-  const content = `Estimated. ${blockHeight?.toLocaleString()}, ${endTime}`;
+  const content = `Estimated: ${blockHeight?.toLocaleString()}, ${endTime}`;
 
   return (
     <Tooltip content={content}>

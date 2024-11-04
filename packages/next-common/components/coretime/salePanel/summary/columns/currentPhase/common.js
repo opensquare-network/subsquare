@@ -52,7 +52,7 @@ export default function CurrentPhaseEnd({ startHeight, endHeight }) {
   const countDownTooltipContent = `${percentage}%, total ${countDownTotal}`;
 
   const isInFixedPriceStage = chainHeight >= saleStartHeight + leadinLength;
-  const endInTooltipPrefix = isInFixedPriceStage ? "Estimated. " : "";
+  const endInTooltipPrefix = isInFixedPriceStage ? "Estimated: " : "";
   const endInTime = getEndBlocksTime(
     coretimeSale?.initIndexer?.blockTime,
     blockTime,
