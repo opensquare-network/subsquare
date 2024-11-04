@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
-import useSubscribeAssetHubAssets from "next-common/hooks/assetHub/useSubscribeAssetHubAssets";
-import { useSubscribeFellowshipTreasuryFree } from "../hook/useSubscribeAssetHubTreasuryFree";
+import useQueryAssetHubAssets from "next-common/hooks/assetHub/useQueryAssetHubAssets";
+import { useQueryAssetHubTreasuryFree } from "../hook/useQueryAssetHubTreasuryFree";
 import {
   StatemintTreasuryAccount,
   getAssetBySymbol,
@@ -8,13 +8,13 @@ import {
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
 import { useContextApi } from "next-common/context/api";
-import useSubscribeFellowshipSalaryBalance from "../hook/useSubscribeFellowshipSalaryBalance";
+import useQueryFellowshipSalaryBalance from "../hook/useQueryFellowshipSalaryBalance";
 
 const PolkadotTreasurySummaryContext = createContext();
 
 function useTreasuryAccountAssetBalance(symbol) {
   const asset = getAssetBySymbol(symbol);
-  return useSubscribeAssetHubAssets(asset.id, StatemintTreasuryAccount);
+  return useQueryAssetHubAssets(asset.id, StatemintTreasuryAccount);
 }
 
 export function PolkadotTreasurySummaryProvider({ children }) {
@@ -27,17 +27,17 @@ export function PolkadotTreasurySummaryProvider({ children }) {
   const {
     free: fellowshipTreasuryDotBalance,
     isLoading: isFellowshipTreasuryDotBalanceLoading,
-  } = useSubscribeFellowshipTreasuryFree(StatemintFellowShipTreasuryAccount);
+  } = useQueryAssetHubTreasuryFree(StatemintFellowShipTreasuryAccount);
 
   const {
     balance: fellowshipSalaryUsdtBalance,
     isLoading: isFellowshipSalaryUsdtBalanceLoading,
-  } = useSubscribeFellowshipSalaryBalance("USDt");
+  } = useQueryFellowshipSalaryBalance("USDt");
 
   const {
     free: dotTreasuryBalanceOnAssetHub,
     isLoading: isDotTreasuryBalanceOnAssetHubLoading,
-  } = useSubscribeFellowshipTreasuryFree(StatemintTreasuryAccount);
+  } = useQueryAssetHubTreasuryFree(StatemintTreasuryAccount);
 
   const {
     balance: usdtTreasuryBalanceOnAssetHub,

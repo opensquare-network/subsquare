@@ -6,7 +6,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
-import { StatemintFellowShipSalaryAccount } from "../hook/useSubscribeFellowshipSalaryBalance";
+import { StatemintFellowShipSalaryAccount } from "../hook/useQueryFellowshipSalaryBalance";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 
