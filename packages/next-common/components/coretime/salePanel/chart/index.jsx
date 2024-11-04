@@ -1,7 +1,15 @@
 import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import CoretimeSalePanelChartPeriodProgress from "./periodProgress";
-import CoretimeSalePanelChartStatistics from "./statistics";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import CoretimeSalePanelChartSkeleton from "./skeleton";
+
+const CoretimeSalePanelChartStatistics = dynamicClientOnly(
+  () => import("./statistics"),
+  {
+    loading: () => <CoretimeSalePanelChartSkeleton className="h-52 mb-4" />,
+  },
+);
 
 export default function CoretimeSalePanelChart({ className = "" }) {
   const coretimeSale = useCoretimeSale();
@@ -31,6 +39,7 @@ export default function CoretimeSalePanelChart({ className = "" }) {
 
       <CoretimeSalePanelChartPeriodProgress
         className="mt-2"
+        coretimeSale={coretimeSale}
         initBlockHeight={initBlockHeight}
         endBlockHeight={endBlockHeight}
         totalBlocks={totalBlocks}

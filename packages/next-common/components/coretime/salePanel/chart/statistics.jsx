@@ -55,10 +55,16 @@ function StatisticsImpl({
     return range(0, totalBlocks);
   }, [totalBlocks]);
 
-  const currentIndex = Math.max(
-    0,
-    Math.min(chainHeight - initBlockHeight, totalBlocks - 1),
-  );
+  const currentIndex = useMemo(() => {
+    const endIndex = totalBlocks - 1;
+
+    if (coretimeSale?.isFinal) {
+      return endIndex;
+    }
+
+    return Math.max(0, Math.min(chainHeight - initBlockHeight, endIndex));
+  }, [chainHeight, coretimeSale?.isFinal, initBlockHeight, totalBlocks]);
+
   const renewalPeriodBlocks = saleStart - initBlockHeight;
 
   const theme = useThemeSetting();
@@ -312,7 +318,7 @@ function StatisticsImpl({
             borderColor: theme.neutral500,
             borderWidth: 1,
             borderDash: [3, 3],
-            drawTime: "beforeDatasetsDraw",
+            // drawTime: "beforeDatasetsDraw",
           },
         },
       },

@@ -15,6 +15,7 @@ export default function CoretimeSalePanelChartPeriodProgress({
   saleStart,
   fixedStart,
   isLoading,
+  coretimeSale,
 }) {
   if (isLoading) {
     return <CoretimeSalePanelChartSkeleton className={cn("h-14", className)} />;
@@ -28,6 +29,7 @@ export default function CoretimeSalePanelChartPeriodProgress({
       endBlockHeight={endBlockHeight}
       saleStart={saleStart}
       fixedStart={fixedStart}
+      coretimeSale={coretimeSale}
     />
   );
 }
@@ -39,6 +41,7 @@ function PeriodProgressImpl({
   endBlockHeight,
   saleStart,
   fixedStart,
+  coretimeSale,
 }) {
   const renewalBlocks = saleStart - initBlockHeight;
   const saleBlocks = endBlockHeight - saleStart;
@@ -54,6 +57,7 @@ function PeriodProgressImpl({
           }}
           renewalBlocks={renewalBlocks}
           initBlockHeight={initBlockHeight}
+          coretimeSale={coretimeSale}
         />
 
         <SalePeriodProgress
@@ -61,6 +65,7 @@ function PeriodProgressImpl({
           saleStart={saleStart}
           saleBlocks={saleBlocks}
           endBlockHeight={endBlockHeight}
+          coretimeSale={coretimeSale}
         />
       </div>
     </div>
@@ -72,11 +77,12 @@ function RenewalPeriodProgress({
   renewalBlocks,
   saleStart,
   initBlockHeight,
+  coretimeSale,
 }) {
   const chainHeight = useSelector(chainOrScanHeightSelector);
 
   let percentage = 0;
-  if (chainHeight >= saleStart) {
+  if (coretimeSale?.isFinal || chainHeight >= saleStart) {
     percentage = 100;
   } else if (chainHeight >= initBlockHeight) {
     const gone = chainHeight - initBlockHeight;
@@ -112,12 +118,13 @@ function SalePeriodProgress({
   saleStart,
   saleBlocks,
   endBlockHeight,
+  coretimeSale,
 }) {
   const chainHeight = useSelector(chainOrScanHeightSelector);
   const fixedPosition = toPercentage((fixedStart - saleStart) / saleBlocks, 3);
 
   let percentage = 0;
-  if (chainHeight >= endBlockHeight) {
+  if (coretimeSale?.isFinal || chainHeight >= endBlockHeight) {
     percentage = 100;
   } else if (chainHeight >= saleStart) {
     const gone = chainHeight - saleStart;
