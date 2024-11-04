@@ -15,7 +15,7 @@ export default function SearchBox({
   placeholder = "Search hash",
 }) {
   return (
-    <div className="flex items-center gap-x-2 max-md:w-full">
+    <div className="flex items-center gap-x-2 max-md:w-full text12Normal">
       <Input
         placeholder={placeholder}
         prefix={<SystemSearch className="text-textTertiary w-5 h-5" />}
