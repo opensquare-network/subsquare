@@ -36,6 +36,15 @@ export function getTreasurySpendIndexer(post) {
   };
 }
 
+export function getFellowshipTreasurySpendIndexer(post) {
+  return {
+    pallet: "fellowshipTreasury",
+    object: "spends",
+    proposed_height: post.indexer.blockHeight,
+    id: post.index,
+  };
+}
+
 export function getMotionProposalIndexer(post) {
   return {
     pallet: "council",
@@ -92,6 +101,8 @@ export default function getProposalIndexer(post) {
     return getTreasuryProposalIndexer(refToPost);
   } else if (type === "treasurySpend") {
     return getTreasurySpendIndexer(refToPost);
+  } else if (type === "fellowshipTreasurySpend") {
+    return getFellowshipTreasurySpendIndexer(refToPost);
   } else if (type === "motion") {
     return getMotionProposalIndexer(refToPost);
   } else if (type === "techCommMotion") {
