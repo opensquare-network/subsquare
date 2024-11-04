@@ -7,10 +7,11 @@ import { useThemeSetting } from "next-common/context/theme";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { cn, toPrecision } from "next-common/utils";
 import { getCoretimePriceAt } from "next-common/utils/coretime/price";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 import CoretimeSalePanelChartSkeleton from "./skeleton";
+import AddressUser from "next-common/components/user/addressUser";
 
 const INDEX_SIZE = 200;
 const CHART_LAYOUT_PADDING = 10;
@@ -85,7 +86,10 @@ function StatisticsImpl({
   const renewalPeriodIndexes = saleStartIndex - initBlockHeightIndex;
 
   const theme = useThemeSetting();
-  const { decimals, symbol } = useChainSettings();
+  const { decimals } = useChainSettings();
+
+  const [tooltipData, setTooltipData] = useState(null);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
 
   const renewalsDataset = useMemo(() => {
     const result = [];
@@ -304,30 +308,30 @@ function StatisticsImpl({
         display: false,
       },
       tooltip: {
-        displayColors: false,
-        callbacks: {
-          title: () => "",
-          label(item) {
-            const type = item.dataset.source;
-            const index = item.dataIndex;
-            const price = item.parsed.y;
-            const data = item.dataset.data[index];
-            const blockHeight = data.indexer?.blockHeight;
+        enabled: false,
+        external(context) {
+          const { chart, tooltip } = context;
 
-            const result = [
-              `Type: ${type}`,
-              `Block: ${Number(blockHeight).toLocaleString()}`,
-              `Price: ≈${price?.toFixed?.(2)} ${symbol}`,
-            ];
+          if (tooltip.opacity === 0) {
+            setTooltipData(null);
+            return;
+          }
 
-            if (type === "Renewal") {
-              result.push(`Who: ${data.who}`);
-            } else if (type === "Sale") {
-              result.push(`Who: ${data.who}`);
-            }
+          const position = chart.canvas.getBoundingClientRect();
+          const dataPoint = tooltip.dataPoints[0];
+          const data = dataPoint.dataset.data[dataPoint.dataIndex];
 
-            return result;
-          },
+          setTooltipPos({
+            x: toIndex(position.left) + tooltip.caretX,
+            y: toIndex(position.top) + tooltip.caretY,
+          });
+
+          setTooltipData({
+            source: dataPoint.dataset.source,
+            blockHeight: data.indexer?.blockHeight,
+            price: dataPoint.parsed.y,
+            who: data.who,
+          });
         },
       },
       annotation: {
@@ -346,7 +350,7 @@ function StatisticsImpl({
   };
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className={cn("w-full relative", className)}>
       <div
         className="h-full"
         style={{
@@ -356,6 +360,56 @@ function StatisticsImpl({
         }}
       >
         <Line options={options} data={chartData} />
+      </div>
+
+      <Tooltip
+        x={tooltipPos.x}
+        y={tooltipPos.y}
+        visible={!!tooltipData}
+        data={tooltipData}
+      />
+    </div>
+  );
+}
+
+function Tooltip({ x, y, visible, data }) {
+  const { symbol } = useChainSettings();
+
+  if (!visible || !data) {
+    return null;
+  }
+
+  return (
+    <div
+      className="absolute z-50 pointer-events-none -translate-x-1/2 -translate-y-full"
+      style={{
+        left: x,
+        top: y,
+      }}
+    >
+      <div className="rounded py-1.5 px-3 text12Normal text-textPrimaryContrast bg-tooltipBg">
+        {data.source && <div>Type: {data.source}</div>}
+        {data.blockHeight && (
+          <div>Block: {Number(data.blockHeight).toLocaleString()}</div>
+        )}
+        {data.price && (
+          <div>
+            Price: ≈{data.price?.toFixed?.(2)} {symbol}
+          </div>
+        )}
+        {data.who && (
+          <div className="inline-flex items-center">
+            <span className="mr-1">Who:</span>
+            <AddressUser
+              add={data.who}
+              fontSize={12}
+              addressClassName="!text12Medium"
+              noEvent
+              noTooltip
+              linkToVotesPage
+            />
+          </div>
+        )}
       </div>
     </div>
   );
