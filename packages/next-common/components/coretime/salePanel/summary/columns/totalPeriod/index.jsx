@@ -23,15 +23,15 @@ function SalePeriodContent({
   passedBlockGap,
   remaining,
   totalBlockGap,
-  startBlocksTime,
-  endBlocksTime,
+  initIndexer,
+  endIndexer,
 }) {
   return (
     <div className="space-y-1">
       <PassedTime passedBlockGap={passedBlockGap} remaining={remaining} />
       <TotalTime totalBlockGap={totalBlockGap} />
-      <StartAt startTime={startBlocksTime} />
-      <EndAt endTime={endBlocksTime} />
+      <StartAt indexer={initIndexer} />
+      <EndAt indexer={endIndexer} />
     </div>
   );
 }
@@ -88,8 +88,11 @@ export default function TotalPeriod() {
             passedBlockGap={passedBlockGap}
             remaining={remaining}
             totalBlockGap={totalBlockGap}
-            startBlocksTime={initIndexer?.blockTime}
-            endBlocksTime={endBlocksTime}
+            initIndexer={initIndexer}
+            endIndexer={{
+              blockHeight: endHeight,
+              blockTime: endBlocksTime,
+            }}
           />
         )}
       </SummaryItem>
