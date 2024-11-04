@@ -39,7 +39,7 @@ export function getMotionProposalIndexer(post) {
 export function getDemocracyExternalIndexer(post) {
   return {
     pallet: "democracy",
-    object: "externalProposal",
+    object: "nextExternal",
     proposed_height: post.indexer.blockHeight,
     id: post.externalProposalHash,
   };
@@ -48,7 +48,7 @@ export function getDemocracyExternalIndexer(post) {
 export function getDemocracyPublicIndexer(post) {
   return {
     pallet: "democracy",
-    object: "publicProposal",
+    object: "publicProps",
     proposed_height: post.indexer.blockHeight,
     id: post.proposalIndex,
   };
