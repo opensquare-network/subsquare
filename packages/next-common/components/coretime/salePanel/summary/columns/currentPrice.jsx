@@ -60,7 +60,7 @@ export default function CurrentPrice() {
             }
           />
           <Item
-            label="↳ Sale"
+            label="↳ Purchase"
             value={
               <ValueDisplay
                 className="text-textPrimary"
