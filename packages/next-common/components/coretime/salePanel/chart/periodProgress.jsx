@@ -5,6 +5,7 @@ import Tooltip from "next-common/components/tooltip";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { cn, toPercentage } from "next-common/utils";
 import { useSelector } from "react-redux";
+import CoretimeSalePanelChartSkeleton from "./skeleton";
 
 export default function CoretimeSalePanelChartPeriodProgress({
   className = "",
@@ -16,14 +17,7 @@ export default function CoretimeSalePanelChartPeriodProgress({
   isLoading,
 }) {
   if (isLoading) {
-    return (
-      <Skeleton
-        className={cn(
-          "w-full h-14 rounded-lg bg-neutral300 animate-pulse",
-          className,
-        )}
-      />
-    );
+    return <CoretimeSalePanelChartSkeleton className={cn("h-14", className)} />;
   }
 
   return (
@@ -36,10 +30,6 @@ export default function CoretimeSalePanelChartPeriodProgress({
       fixedStart={fixedStart}
     />
   );
-}
-
-function Skeleton({ className = "" }) {
-  return <div className={cn("w-full", className)} />;
 }
 
 function PeriodProgressImpl({

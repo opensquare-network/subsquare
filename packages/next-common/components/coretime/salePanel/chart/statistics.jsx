@@ -10,6 +10,7 @@ import { getCoretimePriceAt } from "next-common/utils/coretime/price";
 import { useMemo } from "react";
 import { Line } from "react-chartjs-2";
 import { useSelector } from "react-redux";
+import CoretimeSalePanelChartSkeleton from "./skeleton";
 
 const STEP_SIZE = 200;
 const CHART_LAYOUT_PADDING = 10;
@@ -24,7 +25,7 @@ export default function CoretimeSalePanelChartStatistics({
   isLoading,
 }) {
   if (isLoading) {
-    return <Skeleton className={className} />;
+    return <CoretimeSalePanelChartSkeleton className={className} />;
   }
 
   return (
@@ -35,14 +36,6 @@ export default function CoretimeSalePanelChartStatistics({
       totalBlocks={totalBlocks}
       saleStart={saleStart}
       fixedStart={fixedStart}
-    />
-  );
-}
-
-function Skeleton({ className = "" }) {
-  return (
-    <div
-      className={cn("w-full rounded-lg bg-neutral300 animate-pulse", className)}
     />
   );
 }
