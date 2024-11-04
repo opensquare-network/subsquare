@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import Tooltip from "next-common/components/tooltip";
 import ExplorerLink from "next-common/components/links/explorerLink";
 
-function formatDateTime(time) {
+export function formatDateTime(time) {
   return dayjs(time).format("YYYY-MM-DD HH:mm:ss");
 }
 
