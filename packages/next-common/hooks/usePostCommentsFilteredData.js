@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePostCommentsData } from "./usePostComments";
 import { useContextApi } from "next-common/context/api";
 import { cloneDeep, every, has, map, orderBy, filter } from "lodash-es";
@@ -7,9 +7,9 @@ import { useGetAddressVotesDataFn } from "./useAddressVotesData";
 import { getAddressVotingBalance } from "next-common/utils/referendumUtil";
 import { useCommittedCommentFilterParams } from "next-common/components/comment/filter/utils";
 import { useIsDVAddressFn } from "./useIsDVAddress";
-import { useShallowCompareEffect } from "react-use";
 import { defaultSortBy } from "next-common/components/comment/filter/sorter";
 import { usePostCommentsMerging } from "./usePostCommentsMerging";
+import { normalizeAddress } from "next-common/utils/address";
 
 function isDeletedComment(comment) {
   return comment?.content?.trim?.() !== "[Deleted]";
@@ -30,13 +30,13 @@ export function usePostCommentsFilteredData() {
   const [, setCommentsMerging] = usePostCommentsMerging();
   const [mergedComments, setMergedComments] = useState(commentsData);
 
-  useShallowCompareEffect(() => {
+  useEffect(() => {
     setCommentsMerging(
       !every(mergedComments.items, (item) => has(item, "balance")),
     );
-  }, [mergedComments.items]);
+  }, [mergedComments.items, setCommentsMerging]);
 
-  useShallowCompareEffect(() => {
+  useEffect(() => {
     const data = cloneDeep(commentsData);
 
     merge();
@@ -57,7 +57,15 @@ export function usePostCommentsFilteredData() {
           // merge balance
           if (api) {
             if (address) {
-              item.balance = await getAddressVotingBalance(api, address);
+              const normalizedAddress = normalizeAddress(address);
+              try {
+                item.balance = await getAddressVotingBalance(
+                  api,
+                  normalizedAddress,
+                );
+              } catch (e) {
+                console.error(e);
+              }
             } else {
               item.balance = 0;
             }

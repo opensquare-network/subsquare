@@ -44,7 +44,7 @@ export function getThresholdOfSuperMajorityApprove(turnout, totalIssuance) {
 }
 
 export async function getAddressVotingBalance(api, address) {
-  const account = await api.query.system.account(address);
+  const account = await api?.query.system?.account(address);
   const jsonAccount = account?.toJSON();
   return jsonAccount?.data?.free;
 }
