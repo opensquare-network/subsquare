@@ -12,6 +12,8 @@ export default function getDetailPageCategory(post) {
     return detailPageCategory.TREASURY_PROPOSAL;
   } else if (postType === "treasurySpend") {
     return detailPageCategory.TREASURY_SPEND;
+  } else if (postType === "fellowshipTreasurySpend") {
+    return detailPageCategory.FELLOWSHIP_TREASURY_SPEND;
   } else if (postType === "motion") {
     return detailPageCategory.COUNCIL_MOTION;
   } else if (postType === "techCommMotion") {

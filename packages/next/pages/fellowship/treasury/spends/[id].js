@@ -14,6 +14,7 @@ import { useIsTimelineCompact } from "next-common/components/detail/detailMultiT
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
 import { CommonSpendPageWrapper } from "pages/treasury/spends/[id]";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 
 const TreasurySpendMetadata = dynamicClientOnly(() =>
   import("next-common/components/detail/treasury/spend/metadata"),
@@ -29,21 +30,23 @@ function TreasurySpendContent() {
   const isTimelineCompact = useIsTimelineCompact();
 
   return (
-    <ContentWithComment>
-      <FellowshipTreasurySpendDetail />
-      <TreasurySpendPayout />
-      <DetailMultiTabs
-        metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
-        timeline={
-          <Timeline
-            data={timelineData}
-            indent={false}
-            compact={isTimelineCompact}
-          />
-        }
-        timelineCount={timelineData.length}
-      />
-    </ContentWithComment>
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <FellowshipTreasurySpendDetail />
+        <TreasurySpendPayout />
+        <DetailMultiTabs
+          metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
+          timeline={
+            <Timeline
+              data={timelineData}
+              indent={false}
+              compact={isTimelineCompact}
+            />
+          }
+          timelineCount={timelineData.length}
+        />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 
