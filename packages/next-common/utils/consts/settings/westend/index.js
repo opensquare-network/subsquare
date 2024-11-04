@@ -54,7 +54,6 @@ const westend = {
     cancelReferendum: true,
     killReferendum: true,
   },
-  disableWeb2Registration: true,
   sima: true,
 };
 

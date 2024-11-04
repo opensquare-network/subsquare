@@ -98,6 +98,7 @@ const collectives = {
       link: "https://github.com/polkadot-fellows/RFCs/issues",
     },
   },
+  sima: true,
   ...polkadotThemeVars,
 };
 
