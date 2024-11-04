@@ -1,6 +1,6 @@
 import { isNil } from "lodash-es";
 
-export function getReferendaProposalIndexer(post) {
+export function getOpenGovReferendaIndexer(post) {
   return {
     pallet: "referenda",
     object: "referendumInfoFor",
@@ -85,7 +85,7 @@ export default function getProposalIndexer(post) {
   const refToPost = post.refToPost;
   const type = refToPost?.postType;
   if (type === "referendaReferendum") {
-    return getReferendaProposalIndexer(refToPost);
+    return getOpenGovReferendaIndexer(refToPost);
   } else if (type === "fellowshipReferendum") {
     return getFellowshipReferendaIndexer(refToPost);
   } else if (type === "treasuryProposal") {
