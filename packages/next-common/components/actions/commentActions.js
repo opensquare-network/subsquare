@@ -10,7 +10,7 @@ import { useUser } from "next-common/context/user";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
-import { usePageProps } from "next-common/context/page";
+import { useComments } from "next-common/context/post/comments";
 import { noop } from "lodash-es";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -48,7 +48,7 @@ export default function CommentActions({
     user?.preference?.editor || "markdown",
   );
   const [isReply, setIsReply] = useState(false);
-  const { comments } = usePageProps();
+  const comments = useComments();
 
   const users = useMentionList(post, comments);
 
