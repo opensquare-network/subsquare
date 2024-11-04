@@ -6,6 +6,8 @@ export default function getDetailPageCategory(post) {
   const postType = refToPost?.postType;
   if (postType === "referendaReferendum") {
     return detailPageCategory.GOV2_REFERENDUM;
+  } else if (postType === "fellowshipReferendum") {
+    return detailPageCategory.FELLOWSHIP_REFERENDUM;
   } else if (postType === "treasuryProposal") {
     return detailPageCategory.TREASURY_PROPOSAL;
   } else if (postType === "treasurySpend") {

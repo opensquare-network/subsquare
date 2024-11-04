@@ -9,6 +9,15 @@ export function getReferendaProposalIndexer(post) {
   };
 }
 
+export function getFellowshipReferendaIndexer(post) {
+  return {
+    pallet: "fellowshipReferenda",
+    object: "referendumInfoFor",
+    proposed_height: post.indexer.blockHeight,
+    id: post.referendumIndex,
+  };
+}
+
 export function getTreasuryProposalIndexer(post) {
   return {
     pallet: "treasury",
@@ -77,6 +86,8 @@ export default function getProposalIndexer(post) {
   const type = refToPost?.postType;
   if (type === "referendaReferendum") {
     return getReferendaProposalIndexer(refToPost);
+  } else if (type === "fellowshipReferendum") {
+    return getFellowshipReferendaIndexer(refToPost);
   } else if (type === "treasuryProposal") {
     return getTreasuryProposalIndexer(refToPost);
   } else if (type === "treasurySpend") {
