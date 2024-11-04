@@ -29,25 +29,25 @@ const GET_CORETIME_SALE_PURCHASES_CHART = gql`
   }
 `;
 
-export async function queryCoretimeSaleRenewalsChart(id) {
+export async function queryCoretimeSaleRenewalsChart(id, { limit = 0 } = {}) {
   const {
     data: { coretimeSaleRenewals = null },
   } =
     (await coretimeClient?.query?.({
       query: GET_CORETIME_SALE_RENEWALS_CHART,
-      variables: { saleId: Number(id), limit: 100, offset: 0 },
+      variables: { saleId: Number(id), offset: 0, limit },
     })) || {};
 
   return coretimeSaleRenewals;
 }
 
-export async function queryCoretimeSalePurchasesChart(id) {
+export async function queryCoretimeSalePurchasesChart(id, { limit = 0 } = {}) {
   const {
     data: { coretimeSalePurchases = null },
   } =
     (await coretimeClient?.query?.({
       query: GET_CORETIME_SALE_PURCHASES_CHART,
-      variables: { saleId: Number(id), limit: 100, offset: 0 },
+      variables: { saleId: Number(id), offset: 0, limit },
     })) || {};
 
   return coretimeSalePurchases;

@@ -82,9 +82,14 @@ export const getServerSideProps = async (ctx) => {
     const id = sale?.id;
     const configuration = await queryCoretimeConfiguration();
     const status = await queryCoretimeStatus();
-    const coretimeSaleRenewalsChart = await queryCoretimeSaleRenewalsChart(id);
+    const coretimeSaleRenewalsChart = await queryCoretimeSaleRenewalsChart(id, {
+      limit: sale?.renewalCount,
+    });
     const coretimeSalePurchasesChart = await queryCoretimeSalePurchasesChart(
       id,
+      {
+        limit: sale?.purchaseCount,
+      },
     );
 
     return {
