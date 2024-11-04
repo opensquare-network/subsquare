@@ -12,8 +12,12 @@ import { Line } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 import CoretimeSalePanelChartSkeleton from "./skeleton";
 
-const STEP_SIZE = 200;
+const INDEX_SIZE = 200;
 const CHART_LAYOUT_PADDING = 10;
+
+function toIndex(blockHeight) {
+  return Math.ceil(blockHeight / INDEX_SIZE);
+}
 
 export default function CoretimeSalePanelChartStatistics({
   className = "",
@@ -51,21 +55,34 @@ function StatisticsImpl({
   const { coretimeSaleRenewalsChart, coretimeSalePurchasesChart } =
     usePageProps();
   const chainHeight = useSelector(chainOrScanHeightSelector);
-  const indexes = useMemo(() => {
-    return range(0, totalBlocks);
-  }, [totalBlocks]);
+
+  const totalBlocksIndex = toIndex(totalBlocks);
+  const initBlockHeightIndex = toIndex(initBlockHeight);
+  const saleStartIndex = toIndex(saleStart);
+  const fixedStartIndex = toIndex(fixedStart);
+  const chainHeightIndex = toIndex(chainHeight);
+
+  const indexes = useMemo(() => range(0, totalBlocksIndex), [totalBlocksIndex]);
 
   const currentIndex = useMemo(() => {
-    const endIndex = totalBlocks - 1;
+    const endIndex = totalBlocksIndex - 1;
 
     if (coretimeSale?.isFinal) {
       return endIndex;
     }
 
-    return Math.max(0, Math.min(chainHeight - initBlockHeight, endIndex));
-  }, [chainHeight, coretimeSale?.isFinal, initBlockHeight, totalBlocks]);
+    return Math.max(
+      0,
+      Math.min(chainHeightIndex - initBlockHeightIndex, endIndex),
+    );
+  }, [
+    chainHeightIndex,
+    coretimeSale?.isFinal,
+    initBlockHeightIndex,
+    totalBlocksIndex,
+  ]);
 
-  const renewalPeriodBlocks = saleStart - initBlockHeight;
+  const renewalPeriodIndexes = saleStartIndex - initBlockHeightIndex;
 
   const theme = useThemeSetting();
   const { decimals, symbol } = useChainSettings();
@@ -84,13 +101,13 @@ function StatisticsImpl({
 
       result.push({
         ...renewal,
-        x: renewal.indexer.blockHeight - initBlockHeight,
+        x: toIndex(renewal.indexer.blockHeight) - initBlockHeightIndex,
         y: toPrecision(renewal.price, decimals),
       });
     }
 
     return result;
-  }, [coretimeSaleRenewalsChart?.items, initBlockHeight, decimals]);
+  }, [coretimeSaleRenewalsChart?.items, initBlockHeightIndex, decimals]);
 
   const salesDataset = useMemo(() => {
     const result = [];
@@ -106,22 +123,17 @@ function StatisticsImpl({
 
       result.push({
         ...sale,
-        x: sale.indexer.blockHeight - initBlockHeight,
+        x: toIndex(sale.indexer.blockHeight) - initBlockHeightIndex,
         y: toPrecision(sale.price, decimals),
       });
     }
 
     return result;
-  }, [decimals, initBlockHeight, coretimeSalePurchasesChart?.items]);
+  }, [coretimeSalePurchasesChart?.items, initBlockHeightIndex, decimals]);
 
   const priceDataset = useMemo(() => {
     const steppedBlocksRange = [
-      // from sale start point to fixed price point
-      ...Array.from(
-        { length: Math.ceil((fixedStart - saleStart) / STEP_SIZE) },
-        (_, i) => saleStart + i * STEP_SIZE,
-      ),
-      // fixed price point
+      ...range(saleStart, fixedStart, INDEX_SIZE),
       fixedStart,
     ];
 
@@ -134,11 +146,17 @@ function StatisticsImpl({
       return {
         blockHeight,
         price,
-        x: blockHeight - initBlockHeight,
+        x: toIndex(blockHeight) - initBlockHeightIndex,
         y: price,
       };
     });
-  }, [coretimeSale.info, decimals, fixedStart, initBlockHeight, saleStart]);
+  }, [
+    coretimeSale.info,
+    decimals,
+    fixedStart,
+    saleStart,
+    initBlockHeightIndex,
+  ]);
 
   const lastPrice = last(priceDataset)?.price;
   const maxPrice = maxBy(priceDataset, (data) =>
@@ -223,9 +241,12 @@ function StatisticsImpl({
         {
           data: [
             // start
-            { x: renewalPeriodBlocks + (fixedStart - saleStart), y: lastPrice },
+            {
+              x: renewalPeriodIndexes + (fixedStartIndex - saleStartIndex),
+              y: lastPrice,
+            },
             // end
-            { x: totalBlocks - 1, y: lastPrice },
+            { x: totalBlocksIndex - 1, y: lastPrice },
           ],
           borderColor: theme.theme500,
           borderWidth: 1,
@@ -246,11 +267,11 @@ function StatisticsImpl({
     theme.theme100,
     salesDataset,
     priceDataset,
-    renewalPeriodBlocks,
-    fixedStart,
-    saleStart,
+    renewalPeriodIndexes,
+    fixedStartIndex,
+    saleStartIndex,
     lastPrice,
-    totalBlocks,
+    totalBlocksIndex,
   ]);
 
   const options = {
@@ -313,12 +334,11 @@ function StatisticsImpl({
         annotations: {
           line1: {
             type: "line",
-            xMin: renewalPeriodBlocks,
-            xMax: renewalPeriodBlocks,
+            xMin: renewalPeriodIndexes,
+            xMax: renewalPeriodIndexes,
             borderColor: theme.neutral500,
             borderWidth: 1,
             borderDash: [3, 3],
-            // drawTime: "beforeDatasetsDraw",
           },
         },
       },
