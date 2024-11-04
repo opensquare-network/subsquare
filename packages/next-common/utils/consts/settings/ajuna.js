@@ -109,13 +109,18 @@ const ajuna = {
       bounties: false,
       childBounties: false,
       proposals: true,
-      spends: true,
+      //TODO: Enable treasury spends once we determine how to handle spends proposals
+      // spends: true,
       tips: false,
+    },
+    proxy: {
+      provider: "chain",
     },
   }),
   integrations: {
     subscan: true,
   },
+  sima: true,
   ...themeVars,
 };
 
