@@ -1,4 +1,3 @@
-import SummaryItem from "next-common/components/summary/layout/item";
 import { SummaryColumnGap } from "../common";
 import { useCoretimeSaleInfo } from "next-common/context/coretime/sale/provider";
 
