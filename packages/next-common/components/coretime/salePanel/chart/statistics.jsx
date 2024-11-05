@@ -403,7 +403,7 @@ function Tooltip({ x, y, visible, data }) {
             <AddressUser
               add={data.who}
               fontSize={12}
-              addressClassName="!text12Medium"
+              addressClassName="!text12Medium !text-textPrimaryContrast"
               noEvent
               noTooltip
               linkToVotesPage
