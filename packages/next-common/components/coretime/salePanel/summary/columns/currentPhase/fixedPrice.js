@@ -1,4 +1,7 @@
-import { useCoretimeSaleLeadinEnd, useCoretimeSaleLeadinLength } from "next-common/context/coretime/sale/phases/leadin";
+import {
+  useCoretimeSaleLeadinEnd,
+  useCoretimeSaleLeadinLength,
+} from "next-common/context/coretime/sale/phases/leadin";
 import { useCoretimeSaleStart } from "next-common/context/coretime/sale/provider";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
@@ -26,7 +29,10 @@ export default function MaybeFixedPriceEnd() {
 
   return (
     <FixPricePhaseGuard>
-      <CurrentPhaseEnd startHeight={leadinEnd} endHeight={indexer.blockHeight} />
+      <CurrentPhaseEnd
+        startHeight={leadinEnd}
+        endHeight={indexer.blockHeight}
+      />
     </FixPricePhaseGuard>
   );
 }

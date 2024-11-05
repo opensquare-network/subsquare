@@ -1,4 +1,6 @@
-import useCoretimeSale, { useCoretimeSaleStart } from "next-common/context/coretime/sale/provider";
+import useCoretimeSale, {
+  useCoretimeSaleStart,
+} from "next-common/context/coretime/sale/provider";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
 
@@ -20,5 +22,8 @@ export function useIsCoretimeSaleLeadinPhase() {
   const leadinLength = useCoretimeSaleLeadinLength();
   const chainHeight = useSelector(chainOrScanHeightSelector);
 
-  return chainHeight >= saleStartHeight && chainHeight < saleStartHeight + leadinLength;
+  return (
+    chainHeight >= saleStartHeight &&
+    chainHeight < saleStartHeight + leadinLength
+  );
 }

@@ -20,7 +20,10 @@ export default function MaybeLeadinEnd() {
 
   return (
     <LeadinGuard>
-      <CurrentPhaseEnd startHeight={saleStartHeight} endHeight={saleStartHeight + leadinLength} />
+      <CurrentPhaseEnd
+        startHeight={saleStartHeight}
+        endHeight={saleStartHeight + leadinLength}
+      />
     </LeadinGuard>
   );
 }

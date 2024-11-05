@@ -16,6 +16,10 @@ import queryCoretimeStatus from "next-common/services/gql/coretime/status";
 import CoretimeCommonProvider from "next-common/context/coretime/common";
 import useLoopCoretimeScanHeight from "next-common/hooks/coretime/useLoopCoretimeScanHeight";
 import RelayInfoProvider from "next-common/context/relayInfo";
+import {
+  queryCoretimeSalePurchasesChart,
+  queryCoretimeSaleRenewalsChart,
+} from "next-common/services/gql/coretime/chart";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -75,13 +79,26 @@ export const getServerSideProps = async (ctx) => {
 
   return withCommonProps(async () => {
     const sale = await queryCoretimeCurrentSale();
+    const id = sale?.id;
     const configuration = await queryCoretimeConfiguration();
     const status = await queryCoretimeStatus();
+    const coretimeSaleRenewalsChart = await queryCoretimeSaleRenewalsChart(id, {
+      limit: sale?.renewalCount,
+    });
+    const coretimeSalePurchasesChart = await queryCoretimeSalePurchasesChart(
+      id,
+      {
+        limit: sale?.purchaseCount,
+      },
+    );
+
     return {
       props: {
         coretimeSale: sale,
         configuration,
         status,
+        coretimeSaleRenewalsChart,
+        coretimeSalePurchasesChart,
       },
     };
   })(ctx);
