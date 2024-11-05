@@ -96,6 +96,22 @@ export function EditMenuItem({ setIsEdit, setShow }) {
   );
 }
 
+export function RewriteMenuItem({ setIsEdit, setShow }) {
+  return (
+    <OptionItem
+      onClick={() => {
+        setIsEdit(true);
+        setShow(false);
+      }}
+    >
+      <div className="mr-2">
+        <SystemEdit />
+      </div>
+      <span>Rewrite</span>
+    </OptionItem>
+  );
+}
+
 export function CopyMenuItem({ onCopy = noop }) {
   const [copyState, setCopyState] = useState(false);
 
@@ -231,19 +247,20 @@ export function CommentContextMenu({ editable, setIsEdit }) {
       />
       {show && (
         <OptionWrapper>
-          {comment?.dataSource !== "sima" && (
-            <>
-              {editable && (
-                <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
-              )}
-              {(editable || isAdmin) && (
-                <DeleteMenuItem
-                  setShowDeletePopup={setShowDeletePopup}
-                  setShow={setShow}
-                />
-              )}
-            </>
+          {editable &&
+            (comment?.dataSource === "sima" ? (
+              <RewriteMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+            ) : (
+              <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+            ))}
+
+          {comment?.dataSource !== "sima" && (editable || isAdmin) && (
+            <DeleteMenuItem
+              setShowDeletePopup={setShowDeletePopup}
+              setShow={setShow}
+            />
           )}
+
           <CopyMenuItem onCopy={onCopy} />
         </OptionWrapper>
       )}
