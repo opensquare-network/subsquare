@@ -89,7 +89,7 @@ export function useBountiesTotalBalance(bounties, api) {
   }, [fetchBalances, api, bounties]);
 
   return {
-    value: totalBalance,
+    balance: totalBalance,
     isLoading,
   };
 }
