@@ -104,6 +104,22 @@ function StatisticsImpl({
   )?.price;
 
   const chartData = useMemo(() => {
+    function getPointConfig(color) {
+      return {
+        type: "scatter",
+        borderColor: color,
+        pointRadius: 4,
+        pointBackgroundColor: color,
+        pointBorderColor: color,
+        pointBorderWidth: 0,
+        pointHoverRadius: 6,
+        pointHoverBackgroundColor: color,
+        pointHoverBorderColor: color,
+        pointHoverBorderWidth: 0,
+        pointHitRadius: 10,
+      };
+    }
+
     return {
       labels: indexes,
       datasets: [
@@ -138,33 +154,13 @@ function StatisticsImpl({
         {
           data: renewalsDataset,
           source: "Renewal",
-          type: "scatter",
-          borderColor: theme.theme300,
-          pointRadius: 4,
-          pointBackgroundColor: theme.theme300,
-          pointBorderColor: theme.theme300,
-          pointBorderWidth: 0,
-          pointHoverRadius: 6,
-          pointHoverBackgroundColor: theme.theme300,
-          pointHoverBorderColor: theme.theme300,
-          pointHoverBorderWidth: 0,
-          pointHitRadius: 10,
+          ...getPointConfig(theme.theme300),
         },
         // sale points
         {
           data: salesDataset,
           source: "Sale",
-          type: "scatter",
-          borderColor: theme.theme500,
-          pointRadius: 4,
-          pointBackgroundColor: theme.theme500,
-          pointBorderColor: theme.theme500,
-          pointBorderWidth: 0,
-          pointHoverRadius: 6,
-          pointHoverBackgroundColor: theme.theme500,
-          pointHoverBorderColor: theme.theme500,
-          pointHoverBorderWidth: 0,
-          pointHitRadius: 10,
+          ...getPointConfig(theme.theme500),
         },
         // price line
         {
@@ -174,7 +170,6 @@ function StatisticsImpl({
           pointRadius: 0,
           pointHoverRadius: 0,
           pointHitRadius: 0,
-          fill: false,
           spanGaps: true,
         },
       ],
@@ -191,6 +186,7 @@ function StatisticsImpl({
     priceDataset,
   ]);
 
+  /** @type {import("chart.js").ChartOptions} */
   const options = {
     clip: false,
     responsive: true,
