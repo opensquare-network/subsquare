@@ -1,5 +1,5 @@
 import useCall from "next-common/utils/hooks/useCall";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import nextApi from "next-common/services/nextApi";
 import BigNumber from "bignumber.js";
 
@@ -39,14 +39,8 @@ export function useBountiesTotalBalance(bounties, api) {
   const [isLoading, setIsLoading] = useState(true);
   const [totalBalance, setTotalBalance] = useState(0);
 
-  useEffect(() => {
-    if (!api || !bounties || bounties?.length === 0) {
-      return;
-    }
-
-    const fetchBalances = async () => {
-      setIsLoading(true);
-
+  const fetchBalances = useCallback(async () => {
+    try {
       const balances = await Promise.all(
         bounties.map(async (bounty) => {
           const id = bounty?.index?.toJSON();
@@ -63,14 +57,10 @@ export function useBountiesTotalBalance(bounties, api) {
             }
 
             const account = await api?.query?.system?.account(address);
-            const balance = new BigNumber(account?.data?.free?.toJSON()).plus(
-              account.data.reserved.toJSON(),
+            return new BigNumber(account?.data?.free?.toJSON()).plus(
+              account?.data?.reserved?.toJSON(),
             );
-
-            return balance;
           } catch (error) {
-            setTotalBalance(0);
-            setIsLoading(false);
             throw new Error(
               `Error fetching balance for bounty index ${id}: ${error}`,
             );
@@ -83,11 +73,21 @@ export function useBountiesTotalBalance(bounties, api) {
         new BigNumber(0),
       );
       setTotalBalance(total.toString());
+    } catch (error) {
+      console.error("Error fetching balances:", error);
+      setTotalBalance("0");
+    } finally {
       setIsLoading(false);
-    };
+    }
+  }, [bounties, api]);
+
+  useEffect(() => {
+    if (!api || !bounties || bounties?.length === 0) {
+      return;
+    }
 
     fetchBalances();
-  }, [bounties, api]);
+  }, [fetchBalances, api, bounties]);
 
   return {
     value: totalBalance,
