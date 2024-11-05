@@ -3,14 +3,23 @@ import Link from "next/link";
 import LoadableContent from "next-common/components/common/loadableContent";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import useQueryBountiesData from "../hook/useQueryBountiesData";
+import {
+  useQueryBounties,
+  useBountiesTotalBalance,
+} from "../hook/useQueryBountiesData";
+import { useContextApi } from "next-common/context/api";
 
 const TARGET_LINK = "https://polkadot.subsquare.io/treasury/bounties";
 
 export default function Bounties() {
-  // TODO: sum dot total
-  const dot = "12345678";
-  const { bountiesCount, isLoading } = useQueryBountiesData();
+  const api = useContextApi();
+  const {
+    bounties,
+    bountiesCount,
+    isLoading: isBountiesLoading,
+  } = useQueryBounties(api);
+  const { value: dot, isLoading: isTotalBalanceLoading } =
+    useBountiesTotalBalance(bounties, api);
 
   const Title = (
     <>
@@ -29,7 +38,7 @@ export default function Bounties() {
 
   return (
     <SummaryItem title={Title}>
-      <LoadableContent isLoading={isLoading}>
+      <LoadableContent isLoading={isBountiesLoading || isTotalBalanceLoading}>
         <div className="flex flex-col gap-[4px]">
           <div>
             <FiatPriceLabel free={dot} />
