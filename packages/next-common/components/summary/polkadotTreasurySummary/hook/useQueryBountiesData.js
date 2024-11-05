@@ -2,6 +2,8 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useEffect, useState, useCallback } from "react";
 import nextApi from "next-common/services/nextApi";
 import BigNumber from "bignumber.js";
+import { querySystemAccountBalance } from "next-common/utils/hooks/useAddressBalance";
+import bigAdd from "next-common/utils/math/bigAdd";
 
 function filterBountiesData(items) {
   return items.filter((item) => {
@@ -54,10 +56,7 @@ export function useBountiesTotalBalance(bounties, api) {
               return new BigNumber(metadataValue);
             }
 
-            const account = await api?.query?.system?.account(address);
-            return new BigNumber(account?.data?.free?.toJSON()).plus(
-              account?.data?.reserved?.toJSON(),
-            );
+            return await querySystemAccountBalance(api, address);
           } catch (error) {
             throw new Error(
               `Error fetching balance for bounty index ${id}: ${error}`,
@@ -66,11 +65,8 @@ export function useBountiesTotalBalance(bounties, api) {
         }),
       );
 
-      const total = balances.reduce(
-        (acc, balance) => acc.plus(balance),
-        new BigNumber(0),
-      );
-      setTotalBalance(total.toString());
+      const total = balances.reduce((acc, balance) => bigAdd(acc, balance), 0);
+      setTotalBalance(total);
     } catch (error) {
       throw new Error(`"Error fetching balances: ${error}`);
     } finally {
