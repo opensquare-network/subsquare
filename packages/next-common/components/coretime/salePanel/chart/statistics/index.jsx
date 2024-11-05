@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { last, maxBy, range } from "lodash-es";
+import { maxBy, range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useThemeSetting } from "next-common/context/theme";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
@@ -56,7 +56,6 @@ function StatisticsImpl({
   const totalBlocksIndex = toIndex(totalBlocks);
   const initBlockHeightIndex = toIndex(initBlockHeight);
   const saleStartIndex = toIndex(saleStart);
-  const fixedStartIndex = toIndex(fixedStart);
   const chainHeightIndex = toIndex(chainHeight);
 
   const indexes = useMemo(() => range(0, totalBlocksIndex), [totalBlocksIndex]);
@@ -97,9 +96,9 @@ function StatisticsImpl({
     saleStart,
     fixedStart,
     coretimeSale,
+    totalBlocks,
   });
 
-  const lastPrice = last(priceDataset)?.price;
   const maxPrice = maxBy(priceDataset, (data) =>
     BigNumber(data.price).toNumber(),
   )?.price;
@@ -178,24 +177,6 @@ function StatisticsImpl({
           fill: false,
           spanGaps: true,
         },
-        // fixed price line
-        {
-          data: [
-            // start
-            {
-              x: renewalPeriodIndexes + (fixedStartIndex - saleStartIndex),
-              y: lastPrice,
-            },
-            // end
-            { x: totalBlocksIndex - 1, y: lastPrice },
-          ],
-          borderColor: theme.theme500,
-          borderWidth: 1,
-          pointRadius: 0,
-          pointHoverRadius: 0,
-          pointHitRadius: 0,
-          fill: false,
-        },
       ],
     };
   }, [
@@ -208,11 +189,6 @@ function StatisticsImpl({
     theme.theme100,
     salesDataset,
     priceDataset,
-    renewalPeriodIndexes,
-    fixedStartIndex,
-    saleStartIndex,
-    lastPrice,
-    totalBlocksIndex,
   ]);
 
   const options = {

@@ -69,10 +69,11 @@ export function useCoretimeStatisticsPriceDataset({
   const { decimals } = useChainSettings();
 
   return useMemo(() => {
-    const steppedBlocksRange = [
-      ...range(saleStart, fixedStart, INDEX_SIZE),
-      fixedStart,
-    ];
+    const steppedBlocksRange = range(
+      saleStart,
+      fixedStart + saleStart,
+      INDEX_SIZE,
+    );
 
     return steppedBlocksRange.map((blockHeight) => {
       const price = toPrecision(
