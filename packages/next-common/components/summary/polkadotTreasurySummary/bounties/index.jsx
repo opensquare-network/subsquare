@@ -4,6 +4,7 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { usePolkadotTreasurySummary } from "../context";
+import Tooltip from "next-common/components/tooltip";
 
 const TARGET_LINK = "https://polkadot.subsquare.io/treasury/bounties";
 
@@ -27,7 +28,9 @@ export default function Bounties() {
       {isLoading ? null : (
         <>
           <span>{" · "}</span>
-          <span>{bountiesCount}</span>
+          <Tooltip content="Approved bounties">
+            <span>{bountiesCount}</span>
+          </Tooltip>
         </>
       )}
     </>
