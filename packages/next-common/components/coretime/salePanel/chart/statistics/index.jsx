@@ -1,24 +1,22 @@
 import BigNumber from "bignumber.js";
-import { last, maxBy, range, uniqWith } from "lodash-es";
+import { last, maxBy, range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
-import { useChainSettings } from "next-common/context/chain";
-import { usePageProps } from "next-common/context/page";
 import { useThemeSetting } from "next-common/context/theme";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { cn, toPrecision } from "next-common/utils";
-import { getCoretimePriceAt } from "next-common/utils/coretime/price";
+import { cn } from "next-common/utils";
 import { useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { useSelector } from "react-redux";
-import CoretimeSalePanelChartSkeleton from "./skeleton";
-import AddressUser from "next-common/components/user/addressUser";
+import CoretimeSalePanelChartSkeleton from "../skeleton";
+import {
+  useCoretimeStatisticsPriceDataset,
+  useCoretimeStatisticsRenewalsDataset,
+  useCoretimeStatisticsSalesDataset,
+} from "./hooks";
+import CoretimeSalePanelChartStatisticsTooltip from "./tooltip";
+import { toIndex } from "./utils";
 
-const INDEX_SIZE = 200;
 const CHART_LAYOUT_PADDING = 10;
-
-function toIndex(blockHeight) {
-  return Math.ceil(blockHeight / INDEX_SIZE);
-}
 
 export default function CoretimeSalePanelChartStatistics({
   className = "",
@@ -53,8 +51,6 @@ function StatisticsImpl({
   saleStart,
   fixedStart,
 }) {
-  const { coretimeSaleRenewalsChart, coretimeSalePurchasesChart } =
-    usePageProps();
   const chainHeight = useSelector(chainOrScanHeightSelector);
 
   const totalBlocksIndex = toIndex(totalBlocks);
@@ -86,81 +82,22 @@ function StatisticsImpl({
   const renewalPeriodIndexes = saleStartIndex - initBlockHeightIndex;
 
   const theme = useThemeSetting();
-  const { decimals } = useChainSettings();
 
   const [tooltipData, setTooltipData] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
 
-  const renewalsDataset = useMemo(() => {
-    const result = [];
-
-    const data = uniqWith(coretimeSaleRenewalsChart?.items, (a, b) => {
-      return (
-        a.indexer.blockHeight === b.indexer.blockHeight && a.price === b.price
-      );
-    });
-
-    for (let i = 0; i < data.length; i++) {
-      const renewal = data[i];
-
-      result.push({
-        ...renewal,
-        x: toIndex(renewal.indexer.blockHeight) - initBlockHeightIndex,
-        y: toPrecision(renewal.price, decimals),
-      });
-    }
-
-    return result;
-  }, [coretimeSaleRenewalsChart?.items, initBlockHeightIndex, decimals]);
-
-  const salesDataset = useMemo(() => {
-    const result = [];
-
-    const data = uniqWith(coretimeSalePurchasesChart?.items, (a, b) => {
-      return (
-        a.indexer.blockHeight === b.indexer.blockHeight && a.price === b.price
-      );
-    });
-
-    for (let i = 0; i < data.length; i++) {
-      const sale = data[i];
-
-      result.push({
-        ...sale,
-        x: toIndex(sale.indexer.blockHeight) - initBlockHeightIndex,
-        y: toPrecision(sale.price, decimals),
-      });
-    }
-
-    return result;
-  }, [coretimeSalePurchasesChart?.items, initBlockHeightIndex, decimals]);
-
-  const priceDataset = useMemo(() => {
-    const steppedBlocksRange = [
-      ...range(saleStart, fixedStart, INDEX_SIZE),
-      fixedStart,
-    ];
-
-    return steppedBlocksRange.map((blockHeight) => {
-      const price = toPrecision(
-        getCoretimePriceAt(blockHeight, coretimeSale.info),
-        decimals,
-      );
-
-      return {
-        blockHeight,
-        price,
-        x: toIndex(blockHeight) - initBlockHeightIndex,
-        y: price,
-      };
-    });
-  }, [
-    coretimeSale.info,
-    decimals,
-    fixedStart,
-    saleStart,
+  const renewalsDataset = useCoretimeStatisticsRenewalsDataset({
     initBlockHeightIndex,
-  ]);
+  });
+  const salesDataset = useCoretimeStatisticsSalesDataset({
+    initBlockHeightIndex,
+  });
+  const priceDataset = useCoretimeStatisticsPriceDataset({
+    initBlockHeightIndex,
+    saleStart,
+    fixedStart,
+    coretimeSale,
+  });
 
   const lastPrice = last(priceDataset)?.price;
   const maxPrice = maxBy(priceDataset, (data) =>
@@ -362,54 +299,12 @@ function StatisticsImpl({
         <Line options={options} data={chartData} />
       </div>
 
-      <Tooltip
+      <CoretimeSalePanelChartStatisticsTooltip
         x={tooltipPos.x}
         y={tooltipPos.y}
         visible={!!tooltipData}
         data={tooltipData}
       />
-    </div>
-  );
-}
-
-function Tooltip({ x, y, visible, data }) {
-  const { symbol } = useChainSettings();
-
-  if (!visible || !data) {
-    return null;
-  }
-
-  return (
-    <div
-      className="absolute z-50 pointer-events-none -translate-x-1/2 -translate-y-full"
-      style={{
-        left: x,
-        top: y,
-      }}
-    >
-      <div className="rounded py-1.5 px-3 text12Normal text-textPrimaryContrast bg-tooltipBg">
-        {data.source && <div>Type: {data.source}</div>}
-        {data.blockHeight && (
-          <div>Block: {Number(data.blockHeight).toLocaleString()}</div>
-        )}
-        {data.price && (
-          <div>
-            Price: ≈{data.price?.toFixed?.(2)} {symbol}
-          </div>
-        )}
-        {data.who && (
-          <div className="inline-flex items-center">
-            <span className="mr-1">Who:</span>
-            <AddressUser
-              add={data.who}
-              fontSize={12}
-              addressClassName="!text12Medium !text-textPrimaryContrast"
-              noEvent
-              noTooltip
-            />
-          </div>
-        )}
-      </div>
     </div>
   );
 }
