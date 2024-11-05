@@ -5,10 +5,8 @@ import BigNumber from "bignumber.js";
 
 function filterBountiesData(items) {
   return items.filter((item) => {
-    const currentBounty = item?.bounty?.toJSON();
-    const { status } = currentBounty;
-
-    return status && ("active" in status || "funded" in status);
+    const { isFunded, isCuratorProposed, isActive } = item?.bounty?.status;
+    return isFunded || isCuratorProposed || isActive;
   });
 }
 
