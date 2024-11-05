@@ -406,7 +406,6 @@ function Tooltip({ x, y, visible, data }) {
               addressClassName="!text12Medium !text-textPrimaryContrast"
               noEvent
               noTooltip
-              linkToVotesPage
             />
           </div>
         )}
