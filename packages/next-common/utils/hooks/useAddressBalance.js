@@ -14,7 +14,7 @@ async function queryKintsugiBalance(api, address, chain) {
     .toString();
 }
 
-async function querySystemAccountBalance(api, address) {
+export async function querySystemAccountBalance(api, address) {
   const account = await api.query.system.account(address);
   return new BigNumber(account.data.free.toJSON())
     .plus(account.data.reserved.toJSON())

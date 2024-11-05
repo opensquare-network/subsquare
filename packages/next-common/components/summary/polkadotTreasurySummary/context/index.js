@@ -9,6 +9,10 @@ import {
 import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
 import { useContextApi } from "next-common/context/api";
 import useQueryFellowshipSalaryBalance from "../hook/useQueryFellowshipSalaryBalance";
+import {
+  useQueryBounties,
+  useBountiesTotalBalance,
+} from "../hook/useQueryBountiesData";
 
 const PolkadotTreasurySummaryContext = createContext();
 
@@ -49,6 +53,19 @@ export function PolkadotTreasurySummaryProvider({ children }) {
     isLoading: isUsdcTreasuryBalanceOnAssetHubLoading,
   } = useTreasuryAccountAssetBalance("USDC");
 
+  const {
+    bounties,
+    bountiesCount,
+    isLoading: isQueryBountiesLoading,
+  } = useQueryBounties(api);
+  const {
+    balance: dotTreasuryBalanceOnBounties,
+    isLoading: isBountiesTotalBalanceLoading,
+  } = useBountiesTotalBalance(bounties, api);
+
+  const isDotTreasuryBalanceOnBountiesLoading =
+    isQueryBountiesLoading || isBountiesTotalBalanceLoading;
+
   return (
     <PolkadotTreasurySummaryContext.Provider
       value={{
@@ -67,6 +84,9 @@ export function PolkadotTreasurySummaryProvider({ children }) {
         loanCentrifugeUsdcBalance: 3000000000000,
         loanBifrostDotBalance: 5000000000000000,
         loadPendulumDotBalance: 500000000000000,
+        bountiesCount,
+        dotTreasuryBalanceOnBounties,
+        isDotTreasuryBalanceOnBountiesLoading,
       }}
     >
       {children}
