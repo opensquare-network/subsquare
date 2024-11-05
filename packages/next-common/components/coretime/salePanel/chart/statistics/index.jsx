@@ -252,6 +252,7 @@ function StatisticsImpl({
             borderColor: theme.neutral500,
             borderWidth: 1,
             borderDash: [3, 3],
+            drawTime: "beforeDatasetsDraw",
           },
         },
       },
