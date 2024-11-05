@@ -8,6 +8,7 @@ import { PolkadotTreasurySummaryProvider } from "./context";
 import { TreasuryOnHydrationProvider } from "./context/treasuryOnHydration";
 import FellowshipTreasuryOnAssetHub from "./fellowshipTreasuryOnAssetHub";
 import Loans from "./loans";
+import Bounties from "./bounties";
 
 function PolkadotTreasurySummaryInContext() {
   return (
@@ -16,6 +17,7 @@ function PolkadotTreasurySummaryInContext() {
       <RelayChainTreasury />
       <TreasuryOnAssetHub />
       <TreasuryOnHydration />
+      <Bounties />
       <FellowshipTreasuryOnAssetHub />
       <Loans />
     </SummaryLayout>
