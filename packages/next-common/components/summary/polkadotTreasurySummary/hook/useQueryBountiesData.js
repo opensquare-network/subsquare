@@ -74,8 +74,7 @@ export function useBountiesTotalBalance(bounties, api) {
       );
       setTotalBalance(total.toString());
     } catch (error) {
-      console.error("Error fetching balances:", error);
-      setTotalBalance("0");
+      throw new Error(`"Error fetching balances: ${error}`);
     } finally {
       setIsLoading(false);
     }
