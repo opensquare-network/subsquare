@@ -8,13 +8,14 @@ import { useSelector } from "react-redux";
 import { getCountDownProgress } from "../currentPhase/common";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useRemainingTime } from "next-common/components/remaining";
+import StartAt from "./startAt";
 import EndAt from "./endAt";
 import PassedTime from "./passedTime";
 import TotalTime from "./totalTime";
 import { usePageProps } from "next-common/context/page";
 import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
 
-function getEndBlocksTime(initBlocksTime, blockTime, blockGap) {
+export function getEndBlocksTime(initBlocksTime, blockTime, blockGap) {
   return initBlocksTime + blockGap * blockTime;
 }
 
@@ -22,13 +23,15 @@ function SalePeriodContent({
   passedBlockGap,
   remaining,
   totalBlockGap,
-  endBlocksTime,
+  initIndexer,
+  endIndexer,
 }) {
   return (
-    <div className="space-y-1">
+    <div className="flex flex-col gap-y-1">
       <PassedTime passedBlockGap={passedBlockGap} remaining={remaining} />
       <TotalTime totalBlockGap={totalBlockGap} />
-      <EndAt endTime={endBlocksTime} />
+      <StartAt indexer={initIndexer} />
+      <EndAt indexer={endIndexer} />
     </div>
   );
 }
@@ -85,7 +88,11 @@ export default function TotalPeriod() {
             passedBlockGap={passedBlockGap}
             remaining={remaining}
             totalBlockGap={totalBlockGap}
-            endBlocksTime={endBlocksTime}
+            initIndexer={initIndexer}
+            endIndexer={{
+              blockHeight: endHeight,
+              blockTime: endBlocksTime,
+            }}
           />
         )}
       </SummaryItem>

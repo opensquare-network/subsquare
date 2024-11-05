@@ -5,18 +5,18 @@ import {
 } from "next-common/components/coretime/sales/history/timeRange";
 import Tooltip from "next-common/components/tooltip";
 
-export default function EndAt({ indexer }) {
+export default function StartAt({ indexer }) {
   const { blockTime, blockHeight } = indexer;
-  const endAt = formatDate(blockTime);
-  const endTime = formatDateTime(blockTime);
+  const startAt = formatDate(blockTime);
+  const startTime = formatDateTime(blockTime);
 
-  const content = `Estimated: ${blockHeight?.toLocaleString()}, ${endTime}`;
+  const content = `${blockHeight?.toLocaleString()}, ${startTime}`;
 
   return (
     <Tooltip content={content}>
       <Item
-        label="End at"
-        value={endAt}
+        label="Start at"
+        value={startAt}
         valueClassName={"text-textSecondary"}
       />
     </Tooltip>

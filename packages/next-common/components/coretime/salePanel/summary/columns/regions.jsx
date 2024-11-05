@@ -1,4 +1,3 @@
-import SummaryItem from "next-common/components/summary/layout/item";
 import { SummaryColumnGap } from "../common";
 import { useCoretimeSaleInfo } from "next-common/context/coretime/sale/provider";
 
@@ -10,11 +9,12 @@ export default function Regions() {
 
   return (
     <SummaryColumnGap>
-      <SummaryItem title="Regions">
-        <div>
-          {regionBegin} - {regionEnd}
-        </div>
-      </SummaryItem>
+      <div className="text12Medium text-textTertiary">
+        <span className="text-textTertiary">Regions</span>
+        <span className="text-textPrimary ml-1">{regionBegin}</span>
+        {" - "}
+        <span className="text-textPrimary">{regionEnd}</span>
+      </div>
     </SummaryColumnGap>
   );
 }

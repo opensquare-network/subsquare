@@ -20,7 +20,9 @@ function SalesHistoryList() {
   const sale = useCoretimeSale();
   const isInterludePhase = useCoretimeSaleIsInterlude();
 
-  const [activeTabLabel, setActiveTabLabel] = useState(isInterludePhase ?  "Renewals": "Purchases");
+  const [activeTabLabel, setActiveTabLabel] = useState(
+    isInterludePhase ? "Renewals" : "Purchases",
+  );
 
   const renewalsTabInfo = {
     label: "Renewals",
@@ -35,8 +37,8 @@ function SalesHistoryList() {
   };
 
   const tabs = isInterludePhase
-    ? [purchasesTabInfo, renewalsTabInfo]
-    : [renewalsTabInfo, purchasesTabInfo];
+    ? [renewalsTabInfo, purchasesTabInfo]
+    : [purchasesTabInfo, renewalsTabInfo];
 
   return (
     <Tabs
