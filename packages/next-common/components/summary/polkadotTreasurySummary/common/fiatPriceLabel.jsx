@@ -6,10 +6,12 @@ import useFiatPrice from "next-common/hooks/useFiatPrice";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
+// TODO: fiat price plus mythTokenBalance
 export default function FiatPriceLabel({
   free = 0,
   usdcBalance = 0,
   usdtBalance = 0,
+  // mythTokenBalance = 0,
 }) {
   const { price: fiatPrice } = useFiatPrice();
   const { decimals } = useChainSettings();
