@@ -9,6 +9,7 @@ import { TreasuryOnHydrationProvider } from "./context/treasuryOnHydration";
 import FellowshipTreasuryOnAssetHub from "./fellowshipTreasuryOnAssetHub";
 import Loans from "./loans";
 import Bounties from "./bounties";
+import MythToken from "./mythToken"
 
 function PolkadotTreasurySummaryInContext() {
   return (
@@ -20,6 +21,7 @@ function PolkadotTreasurySummaryInContext() {
       <Bounties />
       <FellowshipTreasuryOnAssetHub />
       <Loans />
+      <MythToken />
     </SummaryLayout>
   );
 }
