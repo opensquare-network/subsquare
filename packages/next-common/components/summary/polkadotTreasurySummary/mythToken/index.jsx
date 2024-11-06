@@ -1,15 +1,15 @@
 import SummaryItem from "next-common/components/summary/layout/item";
-import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import LoadableContent from "next-common/components/common/loadableContent";
 import Link from "next/link";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useForeignAssets, MythTokenAccount } from "../context/foreignAssetsOnAssethub";
+import TokenSymbolForeignAsset from "../common/tokenSymbolForeignAsset";
 
 export function MythTokenAsset({ balance }) {
   return (
-    <TokenSymbolAsset
+    <TokenSymbolForeignAsset
       amount={toPrecision(balance, SYMBOL_DECIMALS.MYTH)}
       symbol="MYTH"
     />
