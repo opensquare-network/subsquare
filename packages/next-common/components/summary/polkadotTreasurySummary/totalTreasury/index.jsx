@@ -8,6 +8,8 @@ import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+import { MythTokenAsset } from "../mythToken";
+import { useForeignAssets } from "../context/foreignAssetsOnAssethub";
 
 export default function TotalTreasury() {
   const {
@@ -37,6 +39,9 @@ export default function TotalTreasury() {
     isLoading: isHydrationTreasuryLoading,
   } = useHydrationTreasurySummary();
 
+  const { isLoading: isMythTokenBalanceLoading, mythTokenBalance } =
+    useForeignAssets();
+
   const isTotalAssetsLoading =
     isDotTreasuryBalanceOnRelayChainLoading ||
     isDotTreasuryBalanceOnAssetHubLoading ||
@@ -45,7 +50,8 @@ export default function TotalTreasury() {
     isFellowshipTreasuryDotBalanceLoading ||
     isFellowshipSalaryUsdtBalanceLoading ||
     isHydrationTreasuryLoading ||
-    isDotTreasuryBalanceOnBountiesLoading;
+    isDotTreasuryBalanceOnBountiesLoading ||
+    isMythTokenBalanceLoading;
 
   const totalDotBalance = new BigNumber(dotTreasuryBalanceOnRelayChain || 0)
     .plus(dotTreasuryBalanceOnAssetHub || 0)
@@ -74,6 +80,7 @@ export default function TotalTreasury() {
             free={totalDotBalance}
             usdtBalance={totalUsdtBalance}
             usdcBalance={totalUsdcBalance}
+            mythTokenBalance={mythTokenBalance}
           />
           <div className="!ml-0 flex flex-col gap-y-1">
             <DotTokenSymbolAsset free={totalDotBalance} />
@@ -87,6 +94,7 @@ export default function TotalTreasury() {
               amount={toPrecision(totalUsdtBalance, SYMBOL_DECIMALS.USDT)}
               symbol={"USDt"}
             />
+            <MythTokenAsset balance={mythTokenBalance} />
           </div>
         </div>
       </LoadableContent>

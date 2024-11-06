@@ -3,7 +3,7 @@ import useQueryAssetHubForeignAssets from "next-common/hooks/assetHub/useQueryAs
 
 const ForeignAssetsContext = createContext();
 
-const MythTokenAccount = "13gYFscwJFJFqFMNnttzuTtMrApUEmcUARtgFubbChU9g6mh";
+export const MythTokenAccount = "13gYFscwJFJFqFMNnttzuTtMrApUEmcUARtgFubbChU9g6mh";
 
 export function ForeignAssetsProvider({ children }) {
   const { isLoading, balance: mythTokenBalance } =

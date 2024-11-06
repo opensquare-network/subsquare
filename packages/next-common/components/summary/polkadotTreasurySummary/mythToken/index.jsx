@@ -5,7 +5,7 @@ import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import LoadableContent from "next-common/components/common/loadableContent";
 import Link from "next/link";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import { useForeignAssets } from "../context/foreignAssetsOnAssethub";
+import { useForeignAssets, MythTokenAccount } from "../context/foreignAssetsOnAssethub";
 
 export function MythTokenAsset({ balance }) {
   return (

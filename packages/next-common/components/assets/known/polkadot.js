@@ -14,7 +14,9 @@ const AssetIconUsdt = dynamic(() =>
   import("@osn/icons/subsquare/AssetIconUsdt"),
 );
 const AssetIconDot = dynamic(() => import("@osn/icons/subsquare/AssetIconDot"));
-const AssetIconMyth = dynamic(() => import("@osn/icons/subsquare/AssetIconMyth"));
+const AssetIconMyth = dynamic(() =>
+  import("@osn/icons/subsquare/AssetIconMyth"),
+);
 
 const knownPolkadotAssetHubAssets = [
   {
@@ -51,7 +53,7 @@ const knownPolkadotAssetHubAssets = [
     symbol: "MYTH",
     assetId: null, // Foreign Asset
     icon: AssetIconMyth,
-  }
+  },
 ];
 
 export default knownPolkadotAssetHubAssets;
