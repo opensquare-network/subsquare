@@ -5,10 +5,16 @@ import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { ClosedTag } from "next-common/components/tags/state/styled";
 import CoretimeSaleSummary from "next-common/components/coretime/salePanel/summary";
 import CoretimeSalePanelChart from "next-common/components/coretime/salePanel/chart";
+import { CHAIN } from "next-common/utils/constants";
+import { isKusamaChain } from "next-common/utils/chain";
+
+const isKusama = isKusamaChain(CHAIN);
 
 export default function CoretimeDetailSalePanel() {
   const coretimeSale = useCoretimeSale();
   const { isFinal, id } = coretimeSale || {};
+
+  const showChart = isKusama ? coretimeSale.id >= 4 : true;
 
   return (
     <div>
@@ -22,8 +28,12 @@ export default function CoretimeDetailSalePanel() {
 
         {isFinal ? <CoretimeHistoricalSaleSummary /> : <CoretimeSaleSummary />}
 
-        <hr className="border-dashed border-neutral300 my-4" />
-        <CoretimeSalePanelChart />
+        {showChart && (
+          <>
+            <hr className="border-dashed border-neutral300 my-4" />
+            <CoretimeSalePanelChart />
+          </>
+        )}
       </NeutralPanel>
     </div>
   );
