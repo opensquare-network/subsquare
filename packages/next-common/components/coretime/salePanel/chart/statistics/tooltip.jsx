@@ -1,7 +1,7 @@
 import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
 
-const TRIANGLE_SIZE = 8;
+const TRIANGLE_SIZE = 6;
 
 export default function CoretimeSalePanelChartStatisticsTooltip({
   x,
@@ -15,8 +15,8 @@ export default function CoretimeSalePanelChartStatisticsTooltip({
     return null;
   }
 
-  const offsetLeft = x - TRIANGLE_SIZE - 3;
-  const offsetTop = y - TRIANGLE_SIZE - 3;
+  const offsetLeft = x - TRIANGLE_SIZE - 4;
+  const offsetTop = y - TRIANGLE_SIZE - 4;
 
   return (
     <div
@@ -49,10 +49,12 @@ export default function CoretimeSalePanelChartStatisticsTooltip({
           </div>
         )}
         <div
-          className="absolute left-1/2 bottom-0 bg-tooltipBg rotate-45 -translate-x-1/2 translate-y-1/2"
+          className="absolute left-1/2 -translate-x-1/2 w-0 h-0"
           style={{
-            width: TRIANGLE_SIZE,
-            height: TRIANGLE_SIZE,
+            borderLeft: `${TRIANGLE_SIZE}px solid transparent`,
+            borderRight: `${TRIANGLE_SIZE}px solid transparent`,
+            borderTop: `${TRIANGLE_SIZE}px solid var(--tooltipBg)`,
+            bottom: -TRIANGLE_SIZE + 0.5,
           }}
         />
       </div>
