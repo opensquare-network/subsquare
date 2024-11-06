@@ -177,7 +177,7 @@ export function useReplaceDiscussionComment() {
 
       const entity = {
         action: "replace_comment",
-        cid: replyToComment.cid || post.cid,
+        cid: replyToComment?.cid || post?.cid,
         old_comment_cid: comment.cid,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
@@ -187,6 +187,43 @@ export function useReplaceDiscussionComment() {
 
       return await nextApi.patch(
         `sima/discussions/${post.cid}/comments/${comment.cid}`,
+        data,
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [signSimaMessage, getProposalIndexer],
+  );
+}
+
+export function useReplaceProposalComment() {
+  const signSimaMessage = useSignSimaMessage();
+  const updateOffChainComment = useUpdateOffChainComment();
+
+  return useCallback(
+    async (post, replyToComment, comment, content, contentType, real) => {
+      if (comment.dataSource !== "sima") {
+        return await updateOffChainComment(
+          post,
+          replyToComment,
+          comment,
+          content,
+          contentType,
+        );
+      }
+
+      const entity = {
+        action: "replace_comment",
+        cid: replyToComment?.cid || post?.cid,
+        old_comment_cid: comment.cid,
+        ...getContentField(content, contentType),
+        timestamp: Date.now(),
+        real,
+      };
+      const data = await signSimaMessage(entity);
+
+      const type = getDetailPageCategory(post);
+      return await nextApi.patch(
+        `sima/${type}/${post.cid}/comments/${comment.cid}`,
         data,
       );
     },

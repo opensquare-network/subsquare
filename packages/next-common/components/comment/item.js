@@ -20,6 +20,7 @@ import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentUser from "./user";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { usePost } from "next-common/context/post";
+import { getRealField } from "next-common/sima/actions/common";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -101,13 +102,14 @@ function CommentItemImpl({
     }
   }, [refCommentTree]);
 
-  const editComment = async (content, contentType) => {
+  const editComment = async (content, contentType, realAddress) => {
     return await updateComment(
       post,
-      replyToComment,
+      replyToComment !== comment ? replyToComment : null,
       comment,
       content,
       contentType,
+      getRealField(realAddress),
     );
   };
 
@@ -153,6 +155,7 @@ function CommentItemImpl({
           )}
           {isEdit && (
             <EditInput
+              isSima={comment.dataSource === "sima"}
               editContent={comment.content}
               editContentType={comment.contentType}
               onFinishedEdit={async (reload) => {

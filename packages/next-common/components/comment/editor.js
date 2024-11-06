@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import Tooltip from "../tooltip";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { getRealField } from "next-common/sima/actions/common";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -58,17 +59,6 @@ function useShouldUseSima(toReplyComment) {
   }
 
   return true;
-}
-
-function getRealField(realAddress) {
-  if (!realAddress) {
-    return;
-  }
-
-  return {
-    address: realAddress,
-    section: "proxy",
-  };
 }
 
 function CommentEditor(

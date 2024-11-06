@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import SecondaryButton from "next-common/lib/button/secondary";
-import PrimaryButton from "next-common/lib/button/primary";
+import MaybeSplitCommentButton from "./maybeSplitCommentButton";
 import Editor from "./editor";
 
 const Wrapper = styled.div`
@@ -20,6 +20,7 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function EditInput({
+  isSima,
   editContent = "",
   editContentType,
   onFinishedEdit,
@@ -33,10 +34,10 @@ export default function EditInput({
 
   const isEmpty = content === "" || content === "<p><br></p>";
 
-  const onUpdate = async () => {
+  const onUpdate = async (realAddress) => {
     setLoading(true);
     try {
-      const { result, error } = await update(content, contentType);
+      const { result, error } = await update(content, contentType, realAddress);
       if (error) {
         setErrors(error);
       } else if (result) {
@@ -70,9 +71,16 @@ export default function EditInput({
             Cancel
           </SecondaryButton>
         )}
-        <PrimaryButton loading={loading} onClick={onUpdate} disabled={isEmpty}>
-          Update
-        </PrimaryButton>
+        <MaybeSplitCommentButton
+          isSima={isSima}
+          isEdit={true}
+          loading={loading}
+          disabled={isEmpty}
+          onClickComment={() => onUpdate()}
+          onClickCommentAsProxy={(realAddress) => {
+            onUpdate(realAddress);
+          }}
+        />
       </ButtonWrapper>
     </Wrapper>
   );
