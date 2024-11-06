@@ -99,9 +99,9 @@ function StatisticsImpl({
     totalBlocks,
   });
 
-  const maxPrice = maxBy(priceDataset, (data) =>
-    BigNumber(data.price).toNumber(),
-  )?.price;
+  const maxPrice = Number(
+    maxBy(priceDataset, (data) => BigNumber(data.price).toNumber())?.price,
+  );
 
   const chartData = useMemo(() => {
     function getPointConfig(color) {
