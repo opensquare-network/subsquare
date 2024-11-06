@@ -9,9 +9,9 @@ export default function useQueryAssetHubForeignAssets(
 ) {
   const api = useAssetHubApi();
   const [balance, setBalance] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { loading, value: account } = useAsync(async () => {
+  const { loading, value } = useAsync(async () => {
     if (!api) {
       return;
     }
@@ -32,13 +32,13 @@ export default function useQueryAssetHubForeignAssets(
   }, [api, address, paraChainId, parentId]);
 
   useEffect(() => {
-    if (loading) {
+    if (loading || !value) {
       return;
     }
 
-    setBalance(account);
+    setBalance(value);
     setIsLoading(false);
-  }, [loading, account]);
+  }, [loading, value]);
 
   return {
     balance,

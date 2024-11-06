@@ -6,6 +6,7 @@ import TreasuryOnHydration from "./treasuryOnHydration";
 import { cn } from "next-common/utils";
 import { PolkadotTreasurySummaryProvider } from "./context";
 import { TreasuryOnHydrationProvider } from "./context/treasuryOnHydration";
+import { ForeignAssetsProvider } from "./context/TreasuryOnHydrationProvider";
 import FellowshipTreasuryOnAssetHub from "./fellowshipTreasuryOnAssetHub";
 import Loans from "./loans";
 import Bounties from "./bounties";
@@ -30,7 +31,9 @@ export default function PolkadotTreasurySummary() {
   return (
     <PolkadotTreasurySummaryProvider>
       <TreasuryOnHydrationProvider>
-        <PolkadotTreasurySummaryInContext />
+        <ForeignAssetsProvider>
+          <PolkadotTreasurySummaryInContext />
+        </ForeignAssetsProvider>
       </TreasuryOnHydrationProvider>
     </PolkadotTreasurySummaryProvider>
   );

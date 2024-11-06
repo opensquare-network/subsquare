@@ -3,27 +3,41 @@ import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import LoadableContent from "next-common/components/common/loadableContent";
-// import Link from "next/link";
+import Link from "next/link";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import useQueryAssetHubForeignAssets from "next-common/hooks/assetHub/useQueryAssetHubForeignAssets";
+import { useForeignAssets } from "../context/foreignAssetsOnAssethub";
 
-const MythTokenAccount = "13gYFscwJFJFqFMNnttzuTtMrApUEmcUARtgFubbChU9g6mh";
+export function MythTokenAsset({ balance }) {
+  return (
+    <TokenSymbolAsset
+      amount={toPrecision(balance, SYMBOL_DECIMALS.MYTH)}
+      symbol="MYTH"
+    />
+  );
+}
 
 export default function MythToken() {
-  const { isLoading, balance } =
-    useQueryAssetHubForeignAssets(MythTokenAccount);
+  const { isLoading, mythTokenBalance } = useForeignAssets();
 
   return (
     <SummaryItem title="Myth Token">
       <LoadableContent isLoading={isLoading}>
         <div className="flex flex-col gap-[4px]">
-          <FiatPriceLabel mythTokenBalance={balance} />
+          <FiatPriceLabel mythTokenBalance={mythTokenBalance} />
           <div className="flex flex-col gap-[4px]">
             <div className="!ml-0 flex flex-col gap-y-1">
-              <TokenSymbolAsset
-                amount={toPrecision(balance, SYMBOL_DECIMALS.MYTH)}
-                symbol="MYTH"
-              />
+              <MythTokenAsset balance={mythTokenBalance} />
+              <Link
+                className="text12Medium"
+                href={`https://assethub-polkadot.subscan.io/account/${MythTokenAccount}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="text-textTertiary hover:underline">
+                  Distribution
+                </span>
+                <i className="text-textTertiary">&nbsp;↗</i>
+              </Link>
             </div>
           </div>
         </div>
