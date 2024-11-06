@@ -19,6 +19,7 @@ import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentUser from "./user";
 import { useCommentActions } from "next-common/sima/context/commentActions";
+import { usePost } from "next-common/context/post";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -42,6 +43,7 @@ function CommentItemImpl({
   reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
 }) {
+  const post = usePost();
   const comment = useComment();
   const refCommentTree = useRef();
   const [isEdit, setIsEdit] = useState(false);
@@ -100,7 +102,13 @@ function CommentItemImpl({
   }, [refCommentTree]);
 
   const editComment = async (content, contentType) => {
-    return await updateComment(comment._id, content, contentType);
+    return await updateComment(
+      post,
+      replyToComment,
+      comment,
+      content,
+      contentType,
+    );
   };
 
   return (

@@ -14,12 +14,12 @@ export function useUpdateOffChainComment() {
   const { ensureLogin } = useEnsureLogin();
 
   return useCallback(
-    async (commentId, content, contentType) => {
+    async (post, replyToComment, comment, content, contentType) => {
       if (!(await ensureLogin())) {
         throw new Error("Cancelled");
       }
 
-      return await nextApi.patch(`comments/${commentId}`, {
+      return await nextApi.patch(`comments/${comment._id}`, {
         content: contentType === "html" ? prettyHTML(content) : content,
         contentType,
       });
