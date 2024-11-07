@@ -159,12 +159,12 @@ export function useCreateProposalCommentReply() {
   );
 }
 
-export function useReplaceDiscussionComment() {
+function useReplaceComment() {
   const signSimaMessage = useSignSimaMessage();
   const updateOffChainComment = useUpdateOffChainComment();
 
   return useCallback(
-    async (post, replyToComment, comment, content, contentType, real) => {
+    async (type, post, replyToComment, comment, content, contentType, real) => {
       if (comment.dataSource !== "sima") {
         return await updateOffChainComment(
           post,
@@ -186,7 +186,7 @@ export function useReplaceDiscussionComment() {
       const data = await signSimaMessage(entity);
 
       return await nextApi.patch(
-        `sima/discussions/${post.cid}/comments/${comment.cid}`,
+        `sima/${type}/${post.cid}/comments/${comment.cid}`,
         data,
       );
     },
@@ -195,39 +195,38 @@ export function useReplaceDiscussionComment() {
   );
 }
 
-export function useReplaceProposalComment() {
-  const signSimaMessage = useSignSimaMessage();
-  const updateOffChainComment = useUpdateOffChainComment();
-
+export function useReplaceDiscussionComment() {
+  const replaceComment = useReplaceComment();
   return useCallback(
     async (post, replyToComment, comment, content, contentType, real) => {
-      if (comment.dataSource !== "sima") {
-        return await updateOffChainComment(
-          post,
-          replyToComment,
-          comment,
-          content,
-          contentType,
-        );
-      }
-
-      const entity = {
-        action: "replace_comment",
-        cid: replyToComment?.cid || post?.cid,
-        old_comment_cid: comment.cid,
-        ...getContentField(content, contentType),
-        timestamp: Date.now(),
+      return replaceComment(
+        "discussions",
+        post,
+        replyToComment,
+        comment,
+        content,
+        contentType,
         real,
-      };
-      const data = await signSimaMessage(entity);
-
-      const type = getDetailPageCategory(post);
-      return await nextApi.patch(
-        `sima/${type}/${post.cid}/comments/${comment.cid}`,
-        data,
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [signSimaMessage, getProposalIndexer],
+    [replaceComment],
+  );
+}
+
+export function useReplaceProposalComment() {
+  const replaceComment = useReplaceComment();
+  return useCallback(
+    async (post, replyToComment, comment, content, contentType, real) => {
+      return replaceComment(
+        getDetailPageCategory(post),
+        post,
+        replyToComment,
+        comment,
+        content,
+        contentType,
+        real,
+      );
+    },
+    [replaceComment],
   );
 }
