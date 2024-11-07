@@ -5,39 +5,68 @@ const DotTokenId = 5;
 const UsdtTokenIdFromAssetHub = 10;
 const UsdcTokenIdFromAssetHub = 22;
 
-function getTotal(account) {
-  return (
-    (account?.free?.toBigInt() || 0n) + (account?.reserved?.toBigInt() || 0n)
-  ).toString();
-}
-
 export const PolkadotTreasuryOnHydrationAccount1 =
   "7LcF8b5GSvajXkSChhoMFcGDxF9Yn9unRDceZj1Q6NYox8HY";
 
 export const PolkadotTreasuryOnHydrationAccount2 =
   "7KCp4eenFS4CowF9SpQE5BBCj5MtoBA3K811tNyRmhLfH1aV";
 
-// TODO: addr1 + addr2
-export function useQueryHydrationTreasuryBalances() {
+function getTotal(account) {
+  return (
+    (account?.free?.toBigInt() || 0n) + (account?.reserved?.toBigInt() || 0n)
+  ).toString();
+}
+
+function useHydrationTreasuryBalanceForAccount(address) {
   const api = useHydrationApi();
+
   const { loaded: isUsdtLoaded, value: accountUsdt } = useCall(
     api?.query.tokens?.accounts,
-    [PolkadotTreasuryOnHydrationAccount2, UsdtTokenIdFromAssetHub],
+    [address, UsdtTokenIdFromAssetHub],
   );
   const { loaded: isUsdcLoaded, value: accountUsdc } = useCall(
     api?.query.tokens?.accounts,
-    [PolkadotTreasuryOnHydrationAccount2, UsdcTokenIdFromAssetHub],
+    [address, UsdcTokenIdFromAssetHub],
   );
   const { loaded: isDotLoaded, value: accountDot } = useCall(
     api?.query.tokens?.accounts,
-    [PolkadotTreasuryOnHydrationAccount2, DotTokenId],
+    [address, DotTokenId],
   );
 
   const isLoading = !isUsdtLoaded || !isUsdcLoaded || !isDotLoaded;
 
-  const dot = getTotal(accountDot);
-  const usdt = getTotal(accountUsdt);
-  const usdc = getTotal(accountUsdc);
+  return {
+    dot: getTotal(accountDot),
+    usdt: getTotal(accountUsdt),
+    usdc: getTotal(accountUsdc),
+    isLoading,
+  };
+}
+
+export function useQueryHydrationTreasuryBalances() {
+  const {
+    dot: dot1,
+    usdt: usdt1,
+    usdc: usdc1,
+    isLoading: isLoading1,
+  } = useHydrationTreasuryBalanceForAccount(
+    PolkadotTreasuryOnHydrationAccount1,
+  );
+
+  const {
+    dot: dot2,
+    usdt: usdt2,
+    usdc: usdc2,
+    isLoading: isLoading2,
+  } = useHydrationTreasuryBalanceForAccount(
+    PolkadotTreasuryOnHydrationAccount2,
+  );
+
+  const isLoading = isLoading1 || isLoading2;
+
+  const dot = (dot1 + dot2).toString();
+  const usdt = (usdt1 + usdt2).toString();
+  const usdc = (usdc1 + usdc2).toString();
 
   return {
     dot,

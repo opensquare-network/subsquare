@@ -14,7 +14,7 @@ import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 function AddressLinks() {
   return (
-    <div>
+    <div className="inline-flex gap-x-1">
       <Link
         className="text12Medium"
         href={`https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount1}`}
