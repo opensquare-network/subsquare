@@ -17,10 +17,26 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "../comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { useFindMyUpVote } from "next-common/sima/actions/common";
+import { useMyProxied } from "next-common/context/proxy";
+import { isSameAddress } from "next-common/utils";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
   return findMyUpVote(reactions);
+}
+
+function useCanEditComment() {
+  const user = useUser();
+  const { proxies } = useMyProxied();
+  const comment = useComment();
+  if (!user) {
+    return false;
+  }
+
+  return (
+    comment?.author?.username === user.username ||
+    proxies?.some((p) => isSameAddress(p.delegator, comment?.proposer))
+  );
 }
 
 export default function CommentActions({
@@ -38,6 +54,8 @@ export default function CommentActions({
   const ownComment = user && author?.username === user.username;
   const myUpVote = useMyUpVote(reactions);
   const thumbUp = !!myUpVote;
+
+  const canEditComment = useCanEditComment();
 
   const chain = useChain();
   const post = usePost();
@@ -121,7 +139,7 @@ export default function CommentActions({
             setShowThumbsUpList={setShowThumbsUpList}
           />
         </Wrapper>
-        <CommentContextMenu editable={ownComment} setIsEdit={setIsEdit} />
+        <CommentContextMenu editable={canEditComment} setIsEdit={setIsEdit} />
       </div>
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (

@@ -1,4 +1,5 @@
 import { useChainSettings } from "next-common/context/chain";
+import { GeneralProxiesProvider } from "next-common/context/proxy";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
@@ -11,7 +12,7 @@ export default function MaybeSimaContent({ children }) {
     return (
       <SimaProposalArticleActionsProvider>
         <SimaProposalCommentActionsProvider>
-          {children}
+          <GeneralProxiesProvider>{children}</GeneralProxiesProvider>
         </SimaProposalCommentActionsProvider>
       </SimaProposalArticleActionsProvider>
     );
