@@ -41,7 +41,6 @@ import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
 import PostListTreasuryAllSpends from "./treasuryAllSpends";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import PostListAISummary from "./aiSummary";
-import DesktopOnly from "../responsive/desktopOnly";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -270,9 +269,6 @@ export default function Post({ data, href, type }) {
     businessCategory.ambassadorReferenda,
   ].includes(type);
 
-  const isReferendum =
-    isGov2Referendum || businessCategory.democracyReferenda === type;
-
   let stateArgs;
   if (isDemocracyCollective) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
@@ -420,13 +416,7 @@ export default function Post({ data, href, type }) {
               </div>
             )}
 
-            {isReferendum && (
-              <DesktopOnly>
-                <div className="flex items-center">
-                  <PostListAISummary data={data} />
-                </div>
-              </DesktopOnly>
-            )}
+            <PostListAISummary data={data} />
           </Footer>
           {data.status && (
             <Tag
