@@ -12,7 +12,7 @@ export default function PostListAISummary({ data }) {
 
   return (
     <DesktopOnly>
-      <div className="flex items-center">
+      <div className="flex items-center max-sm:hidden">
         <Tooltip
           content={
             <MarkdownPreviewer
