@@ -11,6 +11,7 @@ import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+import Tooltip from "next-common/components/tooltip";
 
 function AddressLinks() {
   return (
@@ -21,8 +22,10 @@ function AddressLinks() {
         target="_blank"
         rel="noreferrer"
       >
-        <span className="text-textTertiary hover:underline">Addr #1</span>
-        <i className="text-textTertiary">&nbsp;↗</i>
+        <Tooltip content="Treasury stablecoin acquisition #1">
+          <span className="text-textTertiary hover:underline">Addr #1</span>
+          <i className="text-textTertiary">&nbsp;↗</i>
+        </Tooltip>
       </Link>
       <Link
         className="text12Medium"
@@ -30,8 +33,10 @@ function AddressLinks() {
         target="_blank"
         rel="noreferrer"
       >
-        <span className="text-textTertiary hover:underline">Addr #2</span>
-        <i className="text-textTertiary">&nbsp;↗</i>
+        <Tooltip content="Treasury stablecoin acquisition #2">
+          <span className="text-textTertiary hover:underline">Addr #2</span>
+          <i className="text-textTertiary">&nbsp;↗</i>
+        </Tooltip>
       </Link>
     </div>
   );
