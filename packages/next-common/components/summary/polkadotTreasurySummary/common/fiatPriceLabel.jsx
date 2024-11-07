@@ -18,11 +18,11 @@ export default function FiatPriceLabel({
   const { price: fiatPrice } = useFiatPrice();
   const { decimals } = useChainSettings();
 
-  const mythTokenFiatValue = BigNumber(mythTokenBalance || 0)
+  const mythTokenFiatValue = BigNumber(mythTokenBalance)
     .dividedBy(Math.pow(10, SYMBOL_DECIMALS.MYTH))
     .multipliedBy(mythTokenFiatPrice);
 
-  const totalPrice = BigNumber(free || 0)
+  const totalPrice = BigNumber(free)
     .dividedBy(Math.pow(10, decimals))
     .multipliedBy(fiatPrice)
     .plus(toPrecision(usdcBalance, SYMBOL_DECIMALS.USDC))

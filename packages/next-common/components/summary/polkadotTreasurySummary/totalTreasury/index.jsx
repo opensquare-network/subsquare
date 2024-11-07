@@ -9,7 +9,7 @@ import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import { MythTokenAsset } from "../mythToken";
-import { useForeignAssets } from "../context/foreignAssetsOnAssethub";
+import { useForeignAssets } from "../context/foreignAssets";
 
 export default function TotalTreasury() {
   const {
