@@ -1,13 +1,41 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
-import { PolkadotTreasuryOnHydrationAccount } from "../hook/useQueryHydrationTreasuryBalances";
+import {
+  PolkadotTreasuryOnHydrationAccount1,
+  PolkadotTreasuryOnHydrationAccount2,
+} from "../hook/useQueryHydrationTreasuryBalances";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+
+function AddressLinks() {
+  return (
+    <div>
+      <Link
+        className="text12Medium"
+        href={`https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount1}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span className="text-textTertiary hover:underline">Addr #1</span>
+        <i className="text-textTertiary">&nbsp;↗</i>
+      </Link>
+      <Link
+        className="text12Medium"
+        href={`https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount2}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span className="text-textTertiary hover:underline">Addr #2</span>
+        <i className="text-textTertiary">&nbsp;↗</i>
+      </Link>
+    </div>
+  );
+}
 
 export default function TreasuryOnHydration() {
   const { dot, usdt, usdc, isLoading } = useHydrationTreasurySummary();
@@ -17,7 +45,7 @@ export default function TreasuryOnHydration() {
       title={
         <Link
           className="text12Medium"
-          href={`https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount}`}
+          href={`https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount2}`}
           target="_blank"
           rel="noreferrer"
         >
@@ -41,6 +69,7 @@ export default function TreasuryOnHydration() {
               amount={toPrecision(usdc, SYMBOL_DECIMALS.USDC)}
               symbol="USDt"
             />
+            <AddressLinks />
           </div>
         </div>
       </LoadableContent>

@@ -11,22 +11,26 @@ function getTotal(account) {
   ).toString();
 }
 
-export const PolkadotTreasuryOnHydrationAccount =
+export const PolkadotTreasuryOnHydrationAccount1 =
+  "7LcF8b5GSvajXkSChhoMFcGDxF9Yn9unRDceZj1Q6NYox8HY";
+
+export const PolkadotTreasuryOnHydrationAccount2 =
   "7KCp4eenFS4CowF9SpQE5BBCj5MtoBA3K811tNyRmhLfH1aV";
 
+// TODO: addr1 + addr2
 export function useQueryHydrationTreasuryBalances() {
   const api = useHydrationApi();
   const { loaded: isUsdtLoaded, value: accountUsdt } = useCall(
     api?.query.tokens?.accounts,
-    [PolkadotTreasuryOnHydrationAccount, UsdtTokenIdFromAssetHub],
+    [PolkadotTreasuryOnHydrationAccount2, UsdtTokenIdFromAssetHub],
   );
   const { loaded: isUsdcLoaded, value: accountUsdc } = useCall(
     api?.query.tokens?.accounts,
-    [PolkadotTreasuryOnHydrationAccount, UsdcTokenIdFromAssetHub],
+    [PolkadotTreasuryOnHydrationAccount2, UsdcTokenIdFromAssetHub],
   );
   const { loaded: isDotLoaded, value: accountDot } = useCall(
     api?.query.tokens?.accounts,
-    [PolkadotTreasuryOnHydrationAccount, DotTokenId],
+    [PolkadotTreasuryOnHydrationAccount2, DotTokenId],
   );
 
   const isLoading = !isUsdtLoaded || !isUsdcLoaded || !isDotLoaded;
