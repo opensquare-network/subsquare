@@ -1,5 +1,6 @@
 import { useHydrationApi } from "next-common/context/hydration";
 import useCall from "next-common/utils/hooks/useCall";
+import bigAdd from "next-common/utils/math/bigAdd";
 
 const DotTokenId = 5;
 const UsdtTokenIdFromAssetHub = 10;
@@ -64,9 +65,9 @@ export function useQueryHydrationTreasuryBalances() {
 
   const isLoading = isLoading1 || isLoading2;
 
-  const dot = (dot1 + dot2).toString();
-  const usdt = (usdt1 + usdt2).toString();
-  const usdc = (usdc1 + usdc2).toString();
+  const dot = bigAdd(dot1, dot2);
+  const usdt = bigAdd(usdt1, usdt2);
+  const usdc = bigAdd(usdc1, usdc2);
 
   return {
     dot,
