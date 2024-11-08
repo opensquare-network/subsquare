@@ -8,14 +8,11 @@ function usePreimageHashesCommon(method) {
   const trigger = useSelector(preImagesTriggerSelector);
   const api = useContextApi();
   const [loading, setLoading] = useState(true);
+  const preimageHashesCall = api?.query?.preimage?.[method];
 
-  const { value: allStatus } = useCall(
-    api?.query.preimage?.[method]?.entries,
-    [],
-    {
-      trigger,
-    },
-  );
+  const { value: allStatus } = useCall(preimageHashesCall?.entries, [], {
+    trigger,
+  });
 
   const hashes = useMemo(
     () =>
@@ -32,9 +29,18 @@ function usePreimageHashesCommon(method) {
   );
 
   useEffect(() => {
-    // Update loading state based on whether data has been received
+    if (!api) {
+      return;
+    }
+
+    // Check if the preimageHashesCall exists
+    if (preimageHashesCall === undefined) {
+      setLoading(false);
+      return;
+    }
+
     setLoading(!allStatus);
-  }, [allStatus]);
+  }, [allStatus, api, preimageHashesCall]);
 
   return { hashes, loading };
 }
