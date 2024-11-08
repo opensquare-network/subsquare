@@ -5,8 +5,6 @@ import SearchBox from "./searchBox";
 import { useMemo, useState } from "react";
 import MyDeposit from "./myDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useWindowSize } from "react-use";
-import { isNil } from "lodash-es";
 import { isSameAddress } from "next-common/utils";
 import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 
@@ -26,7 +24,7 @@ function parseStatus(status, method) {
   };
 }
 
-function PreImagesListImpl() {
+export default function PreImagesList() {
   const { hashes: data, loading } = useCombinedPreimageHashes();
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
@@ -77,14 +75,4 @@ function PreImagesListImpl() {
       </div>
     </div>
   );
-}
-
-export default function PreImagesList() {
-  const { width } = useWindowSize();
-
-  if (isNil(width)) {
-    return null;
-  }
-
-  return <PreImagesListImpl />;
 }
