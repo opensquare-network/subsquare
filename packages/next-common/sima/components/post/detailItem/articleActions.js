@@ -11,6 +11,7 @@ import ThumbUpList from "../../actions/thumbUpList";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { PostContextMenu } from "../../contentMenu";
 import { useArticleActions } from "next-common/sima/context/articleActions";
+import { isSameAddress } from "next-common/utils";
 
 export default function ArticleActions({
   extraActions,
@@ -25,9 +26,9 @@ export default function ArticleActions({
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
-  const isAuthor = post?.proposer === account?.address;
-  const reaction = post?.reactions?.find(
-    (r) => r.proposer === account?.address,
+  const isAuthor = isSameAddress(post?.proposer, account?.address);
+  const reaction = post?.reactions?.find((r) =>
+    isSameAddress(r.proposer, account?.address),
   );
   const thumbUp = !!reaction;
   const { cancelUpVote, upVote, reloadPost } = useArticleActions();
