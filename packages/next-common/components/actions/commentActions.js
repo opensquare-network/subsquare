@@ -17,26 +17,11 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "../comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { useFindMyUpVote } from "next-common/sima/actions/common";
-import { useMyProxied } from "next-common/context/proxy";
-import { isSameAddress } from "next-common/utils";
+import useCanEditComment from "next-common/hooks/useCanEditComment";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
   return findMyUpVote(reactions);
-}
-
-function useCanEditComment() {
-  const user = useUser();
-  const { proxies } = useMyProxied();
-  const comment = useComment();
-  if (!user) {
-    return false;
-  }
-
-  return (
-    comment?.author?.username === user.username ||
-    proxies?.some((p) => isSameAddress(p.delegator, comment?.proposer))
-  );
 }
 
 export default function CommentActions({
