@@ -21,6 +21,7 @@ import CommentUser from "./user";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { usePost } from "next-common/context/post";
 import { getRealField } from "next-common/sima/actions/common";
+import useIsProxyAuthor from "next-common/hooks/useIsProxyAuthor";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -57,6 +58,7 @@ function CommentItemImpl({
   const setComments = useSetComments();
   const isUniversalComments = useIsUniversalPostComments();
   const { getComment, updateComment } = useCommentActions();
+  const isProxyAuthor = useIsProxyAuthor(comment);
 
   // Jump to comment when anchor is set
   useEffect(() => {
@@ -156,6 +158,9 @@ function CommentItemImpl({
           {isEdit && (
             <EditInput
               isSima={comment.dataSource === "sima"}
+              updateAsProxyAddress={
+                isProxyAuthor ? comment.proposer : undefined
+              }
               editContent={comment.content}
               editContentType={comment.contentType}
               onFinishedEdit={async (reload) => {

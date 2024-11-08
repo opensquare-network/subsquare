@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import SecondaryButton from "next-common/lib/button/secondary";
-import MaybeSplitCommentButton from "./maybeSplitCommentButton";
 import Editor from "./editor";
+import MaybeProxyEditButton from "./maybeProxyEditButton";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -21,6 +21,7 @@ const ButtonWrapper = styled.div`
 
 export default function EditInput({
   isSima,
+  updateAsProxyAddress,
   editContent = "",
   editContentType,
   onFinishedEdit,
@@ -71,15 +72,12 @@ export default function EditInput({
             Cancel
           </SecondaryButton>
         )}
-        <MaybeSplitCommentButton
+        <MaybeProxyEditButton
           isSima={isSima}
-          isEdit={true}
+          isProxy={!!updateAsProxyAddress}
           loading={loading}
           disabled={isEmpty}
-          onClickComment={() => onUpdate()}
-          onClickCommentAsProxy={(realAddress) => {
-            onUpdate(realAddress);
-          }}
+          onClick={() => onUpdate(updateAsProxyAddress)}
         />
       </ButtonWrapper>
     </Wrapper>
