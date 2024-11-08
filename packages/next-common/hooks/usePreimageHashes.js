@@ -6,17 +6,15 @@ import { useContextApi } from "next-common/context/api";
 
 function usePreimageHashesCommon(method) {
   const trigger = useSelector(preImagesTriggerSelector);
-
   const api = useContextApi();
-  const { value: allStatus } = useCall(
-    api?.query.preimage?.[method]?.entries,
-    [],
-    {
-      trigger,
-    },
-  );
 
-  return useMemo(
+  const preimageHashesCall = api?.query?.preimage?.[method];
+
+  const { value: allStatus } = useCall(preimageHashesCall?.entries, [], {
+    trigger,
+  });
+
+  const hashes = useMemo(
     () =>
       (allStatus || []).map((item) => {
         const [
@@ -29,6 +27,10 @@ function usePreimageHashesCommon(method) {
       }),
     [allStatus],
   );
+
+  const loading = (preimageHashesCall !== undefined && !allStatus) || !api;
+
+  return { hashes, loading };
 }
 
 export function useOldPreimageHashes() {
@@ -40,8 +42,10 @@ export function usePreimageHashes() {
 }
 
 export function useCombinedPreimageHashes() {
-  const oldHashes = useOldPreimageHashes();
-  const newHashes = usePreimageHashes();
+  const { hashes: oldHashes, loading: oldLoading } = useOldPreimageHashes();
+  const { hashes: newHashes, loading: newLoading } = usePreimageHashes();
+
+  const combinedLoading = oldLoading || newLoading;
 
   const hashes = useMemo(() => {
     const hashes = newHashes.map((data) => ({
@@ -57,5 +61,5 @@ export function useCombinedPreimageHashes() {
     return hashes;
   }, [oldHashes, newHashes]);
 
-  return hashes;
+  return { hashes, loading: combinedLoading };
 }
