@@ -7,7 +7,8 @@ import { serverSidePropsWithSummary } from "next-common/services/serverSide/serv
 export default function PreimagesPage() {
   const title = "Preimages";
   const seoInfo = { title, desc: title };
-  const hashes = useCombinedPreimageHashes();
+  // TODO: loading
+  const { hashes, loading } = useCombinedPreimageHashes();
 
   return (
     <ListLayout

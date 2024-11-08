@@ -25,21 +25,23 @@ function parseStatus(status, method) {
   };
 }
 
-export default function PreImagesList({ data }) {
+export default function PreImagesList({ data, loading }) {
   const { width } = useWindowSize();
 
   if (isNil(width)) {
     return null;
   }
 
-  return <PreImagesListImpl data={data} />;
+  return <PreImagesListImpl data={data} loading={loading} />;
 }
 
-function PreImagesListImpl({ data }) {
+function PreImagesListImpl({ data, loading }) {
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
   const { width } = useWindowSize();
+
+  console.log("::::loading", data, loading);
 
   let filteredData = useMemo(
     () =>
@@ -80,7 +82,7 @@ function PreImagesListImpl({ data }) {
       </div>
 
       {width > 1024 ? (
-        <DesktopList data={filteredData} />
+        <DesktopList data={filteredData} loading={loading} />
       ) : (
         <MobileList data={filteredData} />
       )}
