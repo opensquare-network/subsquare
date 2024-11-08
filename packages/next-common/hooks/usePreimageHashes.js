@@ -1,13 +1,13 @@
 import { preImagesTriggerSelector } from "next-common/store/reducers/preImagesSlice";
 import useCall from "next-common/utils/hooks/useCall";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useContextApi } from "next-common/context/api";
 
 function usePreimageHashesCommon(method) {
   const trigger = useSelector(preImagesTriggerSelector);
   const api = useContextApi();
-  const [loading, setLoading] = useState(true);
+
   const preimageHashesCall = api?.query?.preimage?.[method];
 
   const { value: allStatus } = useCall(preimageHashesCall?.entries, [], {
@@ -28,19 +28,7 @@ function usePreimageHashesCommon(method) {
     [allStatus],
   );
 
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    // Check if the preimageHashesCall exists
-    if (preimageHashesCall === undefined) {
-      setLoading(false);
-      return;
-    }
-
-    setLoading(!allStatus);
-  }, [allStatus, api, preimageHashesCall]);
+  const loading = (preimageHashesCall !== undefined && !allStatus) || !api;
 
   return { hashes, loading };
 }
