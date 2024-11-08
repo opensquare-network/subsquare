@@ -46,6 +46,9 @@ const westend = {
     democracy: false,
     council: false,
     technicalCommittee: false,
+    proxy: {
+      provider: "chain",
+    },
   }),
   integrations: {
     subscan: true,

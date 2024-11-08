@@ -15,6 +15,7 @@ export function SimaProposalArticleActionsProvider({ children }) {
   return (
     <ArticleActionsContext.Provider
       value={{
+        supportSima: true,
         provideContext,
         upVote,
         cancelUpVote,

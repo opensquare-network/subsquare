@@ -275,7 +275,7 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   );
 }
 
-export function PostContextMenu({ editable, setIsEdit }) {
+export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const post = usePost();
@@ -334,8 +334,12 @@ export function PostContextMenu({ editable, setIsEdit }) {
         <OptionWrapper>
           {editable && (
             <>
-              {!isDiscussionPost && linkOrUnlinkMenuItem}
-              <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+              {isAuthor && !isDiscussionPost && linkOrUnlinkMenuItem}
+              {post.dataSource === "sima" ? (
+                <RewriteMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+              ) : (
+                <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+              )}
             </>
           )}
           {canDelete && (
