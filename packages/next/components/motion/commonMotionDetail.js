@@ -1,4 +1,3 @@
-import ArticleContent from "next-common/components/articleContent";
 import MotionSideBar from "./vote";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import PostEdit from "next-common/components/post/postEdit";
@@ -13,6 +12,7 @@ import MotionHead from "./head";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
 
 const Business = dynamicClientOnly(() => import("./business"));
 
@@ -46,7 +46,7 @@ export default function CommonMotionDetail({ head }) {
     <>
       <DetailContentBase head={head}>
         {!isEdit && <MotionHead motion={post} type={type} />}
-        <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+        <MaybeSimaDiscussionArticleContent />
       </DetailContentBase>
       <MotionSideBar motionHash={post.hash} motionIndex={post.motionIndex} />
       <DetailMultiTabs

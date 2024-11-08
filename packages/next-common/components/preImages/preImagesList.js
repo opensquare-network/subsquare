@@ -72,7 +72,11 @@ function PreImagesListImpl({ data }) {
             <MyDeposit isOn={isMyDepositOn} setIsOn={setIsMyDepositOn} />
           )}
         </div>
-        <SearchBox value={searchValue} setValue={setSearchValue} />
+        <SearchBox
+          value={searchValue}
+          setValue={setSearchValue}
+          isDebounce={true}
+        />
       </div>
 
       {width > 1024 ? (
