@@ -8,6 +8,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useWindowSize } from "react-use";
 import { isNil } from "lodash-es";
 import { isSameAddress } from "next-common/utils";
+import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 
 function parseStatus(status, method) {
   const statusName = Object.keys(status || {})[0];
@@ -25,17 +26,8 @@ function parseStatus(status, method) {
   };
 }
 
-export default function PreImagesList({ data, loading }) {
-  const { width } = useWindowSize();
-
-  if (isNil(width)) {
-    return null;
-  }
-
-  return <PreImagesListImpl data={data} loading={loading} />;
-}
-
-function PreImagesListImpl({ data, loading }) {
+function PreImagesListImpl() {
+  const { hashes: data, loading } = useCombinedPreimageHashes();
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
@@ -85,4 +77,14 @@ function PreImagesListImpl({ data, loading }) {
       </div>
     </div>
   );
+}
+
+export default function PreImagesList() {
+  const { width } = useWindowSize();
+
+  if (isNil(width)) {
+    return null;
+  }
+
+  return <PreImagesListImpl />;
 }
