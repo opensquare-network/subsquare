@@ -12,6 +12,7 @@ import { Deposit, Hash, Proposal, Status } from "./fields";
 import tw from "tailwind-styled-components";
 import DetailButton from "../detailButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import Loading from "next-common/components/loading";
 
 const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
@@ -129,10 +130,20 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded }) {
   );
 }
 
-export default function MobileList({ data }) {
+export default function MobileList({ data, loading }) {
+  if (loading) {
+    return (
+      <SecondaryCard>
+        <div className="flex w-full justify-center p-[8px]">
+          <Loading size={20} />
+        </div>
+      </SecondaryCard>
+    );
+  }
+
   return (
     <SecondaryCard>
-      {data.map(({ data: [hash], method }) => {
+      {data?.map(({ data: [hash], method }) => {
         if (method === "requestStatusFor") {
           return <PreimageItem key={hash} hash={hash} />;
         }

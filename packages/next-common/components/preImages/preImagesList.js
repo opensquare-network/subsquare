@@ -39,9 +39,6 @@ function PreImagesListImpl({ data, loading }) {
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
-  const { width } = useWindowSize();
-
-  console.log("::::loading", data, loading);
 
   let filteredData = useMemo(
     () =>
@@ -80,12 +77,12 @@ function PreImagesListImpl({ data, loading }) {
           isDebounce={true}
         />
       </div>
-
-      {width > 1024 ? (
+      <div className="max-md:hidden">
         <DesktopList data={filteredData} loading={loading} />
-      ) : (
-        <MobileList data={filteredData} />
-      )}
+      </div>
+      <div className="hidden max-md:block">
+        <MobileList data={filteredData} loading={loading} />
+      </div>
     </div>
   );
 }
