@@ -13,13 +13,14 @@ import tw from "tailwind-styled-components";
 import DetailButton from "../detailButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import Loading from "next-common/components/loading";
+import { cn } from "next-common/utils";
 import { FixedSizeList } from "react-window";
 
 const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
 const FieldName = tw.span`text-textTertiary`;
 
-function PreimageItem({ hash }) {
+function PreimageItem({ hash, index }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
   return (
     <Item
@@ -27,11 +28,12 @@ function PreimageItem({ hash }) {
       preimage={preimage}
       isStatusLoaded={isStatusLoaded}
       isBytesLoaded={isBytesLoaded}
+      index={index}
     />
   );
 }
 
-function OldPreimageItem({ hash }) {
+function OldPreimageItem({ hash, index }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
   return (
     <Item
@@ -39,11 +41,12 @@ function OldPreimageItem({ hash }) {
       preimage={preimage}
       isStatusLoaded={isStatusLoaded}
       isBytesLoaded={isBytesLoaded}
+      index={index}
     />
   );
 }
 
-function Item({ hash, preimage, isStatusLoaded, isBytesLoaded }) {
+function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
   const dispatch = useDispatch();
   const triggerUpdate = useSelector(preImagesTriggerSelector);
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
@@ -119,6 +122,7 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded }) {
             <FieldLoading />
           )
         }
+        index={index}
       />
 
       {showArgumentsDetail && (
@@ -150,9 +154,9 @@ export default function MobileList({ data, loading }) {
     return (
       <div style={style}>
         {method === "requestStatusFor" ? (
-          <PreimageItem key={hash} hash={hash} />
+          <PreimageItem key={hash} hash={hash} index={index} />
         ) : (
-          <OldPreimageItem key={hash} hash={hash} />
+          <OldPreimageItem key={hash} hash={hash} index={index} />
         )}
       </div>
     );
@@ -162,8 +166,8 @@ export default function MobileList({ data, loading }) {
     <SecondaryCard>
       <FixedSizeList
         height={800}
-        itemCount={data.length}
-        itemSize={220}
+        itemCount={data?.length}
+        itemSize={210}
         width="100%"
       >
         {Row}
@@ -179,9 +183,15 @@ export function PreimageMobileListItemTemplate({
   hash,
   depositBalance,
   length,
+  index,
 }) {
   return (
-    <div className="flex flex-col py-[16px] gap-[12px] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral300 text14Medium">
+    <div
+      className={cn(
+        "flex flex-col py-[16px] gap-[12px] text14Medium",
+        index === 0 ? "" : "border-t border-neutral300",
+      )}
+    >
       <div className="flex flex-col gap-[12px]">
         <div className="flex justify-between gap-[24px]">
           {title}
