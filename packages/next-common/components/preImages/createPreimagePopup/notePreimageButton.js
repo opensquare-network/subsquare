@@ -10,6 +10,7 @@ export default function NotePreimageButton({ notePreimageTx }) {
 
   return (
     <TxSubmissionButton
+      disabled={!notePreimageTx}
       getTxFunc={() => notePreimageTx}
       onClose={onClose}
       onInBlock={() => {
