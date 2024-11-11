@@ -13,6 +13,7 @@ import tw from "tailwind-styled-components";
 import DetailButton from "../detailButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import Loading from "next-common/components/loading";
+import { FixedSizeList } from "react-window";
 
 const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
@@ -141,14 +142,32 @@ export default function MobileList({ data, loading }) {
     );
   }
 
+  const Row = ({ index, style }) => {
+    const {
+      data: [hash],
+      method,
+    } = data[index];
+    return (
+      <div style={style}>
+        {method === "requestStatusFor" ? (
+          <PreimageItem key={hash} hash={hash} />
+        ) : (
+          <OldPreimageItem key={hash} hash={hash} />
+        )}
+      </div>
+    );
+  };
+
   return (
     <SecondaryCard>
-      {data?.map(({ data: [hash], method }) => {
-        if (method === "requestStatusFor") {
-          return <PreimageItem key={hash} hash={hash} />;
-        }
-        return <OldPreimageItem key={hash} hash={hash} />;
-      })}
+      <FixedSizeList
+        height={800}
+        itemCount={data.length}
+        itemSize={220}
+        width="100%"
+      >
+        {Row}
+      </FixedSizeList>
     </SecondaryCard>
   );
 }
