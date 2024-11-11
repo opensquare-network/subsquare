@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useArticleActions } from "next-common/sima/context/articleActions";
 import { useMyUpVote } from "next-common/context/post/useMyUpVote";
-import useCanEditContent from "next-common/hooks/useCanEditContent";
+import useCanEditPost from "next-common/hooks/useCanEditPost";
 
 export default function ArticleActions({ setIsEdit, extraActions }) {
   const user = useUser();
@@ -23,7 +23,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
   const thumbsUp = !!myUpVote;
   const focusEditor = useFocusEditor();
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
-  const canEdit = useCanEditContent(post);
+  const canEdit = useCanEditPost();
 
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);

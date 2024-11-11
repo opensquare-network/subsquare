@@ -11,8 +11,9 @@ import PostLabel from "./postLabel";
 import { detailPageCategory } from "../../utils/consts/business/category";
 import FormItem from "../form/item";
 import { useArticleActions } from "next-common/sima/context/articleActions";
-import useIsProxyAuthor from "next-common/hooks/useIsProxyAuthor";
 import { getRealField } from "next-common/sima/actions/common";
+import usePostProxyAuthor from "next-common/hooks/usePostProxyAuthor";
+import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
 
 const UploaderWrapper = styled.div`
   margin-top: 16px;
@@ -42,7 +43,8 @@ export default function PostEdit({ setIsEdit }) {
   const [selectedLabels, setSelectedLabels] = useState(post.labels || []);
   const postType = useDetailType();
   const { provideContext, reloadPost } = useArticleActions();
-  const isProxyAuthor = useIsProxyAuthor(post);
+  const proxyAuthor = usePostProxyAuthor();
+  const isAuthor = useIsPostAuthor();
   const isSima = useShouldUseSimaEdit();
 
   const [isSetBanner, setIsSetBanner] = useState(!!post.bannerCid);
@@ -110,7 +112,7 @@ export default function PostEdit({ setIsEdit }) {
       <FormItem label="Issue">
         <EditInput
           isSima={isSima}
-          updateAsProxyAddress={isProxyAuthor ? post.proposer : undefined}
+          updateAsProxyAddress={!isAuthor ? proxyAuthor : undefined}
           editContent={post.content || ""}
           editContentType={post.contentType}
           onFinishedEdit={async (reload) => {

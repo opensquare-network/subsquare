@@ -12,7 +12,7 @@ import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { PostContextMenu } from "../../contentMenu";
 import { useArticleActions } from "next-common/sima/context/articleActions";
 import { isSameAddress } from "next-common/utils";
-import useCanEditContent from "next-common/hooks/useCanEditContent";
+import useCanEditPost from "next-common/hooks/useCanEditPost";
 
 export default function ArticleActions({
   extraActions,
@@ -28,7 +28,7 @@ export default function ArticleActions({
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
   const isAuthor = isSameAddress(post?.proposer, account?.address);
-  const canEdit = useCanEditContent(post);
+  const canEdit = useCanEditPost();
 
   const reaction = post?.reactions?.find((r) =>
     isSameAddress(r.proposer, account?.address),
