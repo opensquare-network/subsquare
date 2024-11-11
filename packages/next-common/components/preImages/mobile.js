@@ -135,15 +135,33 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
   );
 }
 
+function NoDataText() {
+  return (
+    <SecondaryCard className="flex justify-center">
+      <div className="text14Medium text-textTertiary inline-flex items-center">
+        No current preimages
+      </div>
+    </SecondaryCard>
+  );
+}
+
+function TableLoading() {
+  return (
+    <SecondaryCard>
+      <div className="flex w-full justify-center p-[8px]">
+        <Loading size={20} />
+      </div>
+    </SecondaryCard>
+  );
+}
+
 export default function MobileList({ data, loading }) {
   if (loading) {
-    return (
-      <SecondaryCard>
-        <div className="flex w-full justify-center p-[8px]">
-          <Loading size={20} />
-        </div>
-      </SecondaryCard>
-    );
+    return <TableLoading />;
+  }
+
+  if (data?.length === 0) {
+    return <NoDataText />;
   }
 
   const Row = ({ index, style }) => {
@@ -164,7 +182,7 @@ export default function MobileList({ data, loading }) {
 
   const itemSize = 210;
   const itemCount = data?.length || 0;
-  const listHeight = itemCount * itemSize;
+  const listHeight = itemCount >= 3 ? 680 : itemCount * itemSize;
 
   return (
     <SecondaryCard>
