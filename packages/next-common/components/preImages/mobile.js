@@ -162,12 +162,16 @@ export default function MobileList({ data, loading }) {
     );
   };
 
+  const itemSize = 210;
+  const itemCount = data?.length || 0;
+  const listHeight = itemCount * itemSize;
+
   return (
     <SecondaryCard>
       <FixedSizeList
-        height={800}
-        itemCount={data?.length}
-        itemSize={210}
+        height={listHeight}
+        itemCount={itemCount}
+        itemSize={itemSize}
         width="100%"
       >
         {Row}
