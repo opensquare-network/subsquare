@@ -1,5 +1,5 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import usePreimage from "next-common/hooks/usePreimage";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,7 @@ const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
 const FieldName = tw.span`text-textTertiary`;
 
-function PreimageItem({ hash, index }) {
+function PreimageItemComp({ hash, index }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
   return (
     <Item
@@ -32,8 +32,7 @@ function PreimageItem({ hash, index }) {
     />
   );
 }
-
-function OldPreimageItem({ hash, index }) {
+function OldPreimageItemComp({ hash, index }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
   return (
     <Item
@@ -45,6 +44,8 @@ function OldPreimageItem({ hash, index }) {
     />
   );
 }
+const PreimageItem = React.memo(PreimageItemComp);
+const OldPreimageItem = React.memo(OldPreimageItemComp);
 
 function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
   const dispatch = useDispatch();
@@ -156,6 +157,14 @@ function TableLoading() {
 }
 
 export default function MobileList({ data, loading }) {
+  const listRef = useRef();
+
+  useEffect(() => {
+    if (listRef.current && data?.length) {
+      listRef.current?.scrollTo(0, 0);
+    }
+  }, [data]);
+
   if (loading) {
     return <TableLoading />;
   }
@@ -191,6 +200,7 @@ export default function MobileList({ data, loading }) {
         itemCount={itemCount}
         itemSize={itemSize}
         width="100%"
+        ref={listRef}
       >
         {Row}
       </FixedSizeList>
