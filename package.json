@@ -33,8 +33,5 @@
       "eslint --fix"
     ]
   },
-  "packageManager": "yarn@3.5.0",
-  "dependencies": {
-    "react-window": "^1.8.10"
-  }
+  "packageManager": "yarn@3.5.0"
 }
