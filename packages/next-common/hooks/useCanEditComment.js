@@ -1,12 +1,11 @@
 import { useComment } from "next-common/components/comment/context";
 import { useUser } from "next-common/context/user";
-import useIsProxyAuthor from "./useIsProxyAuthor";
+import useIsCommentProxyAuthor from "./useIsCommentProxyAuthor";
 
 export default function useCanEditComment() {
   const user = useUser();
   const comment = useComment();
-  const isProxyAuthor = useIsProxyAuthor(comment);
-
+  const isProxyAuthor = useIsCommentProxyAuthor();
   if (!user) {
     return false;
   }

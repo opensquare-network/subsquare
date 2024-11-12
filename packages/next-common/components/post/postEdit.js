@@ -11,10 +11,28 @@ import PostLabel from "./postLabel";
 import { detailPageCategory } from "../../utils/consts/business/category";
 import FormItem from "../form/item";
 import { useArticleActions } from "next-common/sima/context/articleActions";
+import { getRealField } from "next-common/sima/actions/common";
+import usePostProxyAuthor from "next-common/hooks/usePostProxyAuthor";
+import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
 
 const UploaderWrapper = styled.div`
   margin-top: 16px;
 `;
+
+function useShouldUseSimaEdit() {
+  const post = usePost();
+  const { supportSima } = useArticleActions();
+
+  if (!supportSima) {
+    return false;
+  }
+
+  if (post?.refToPost?.postType === detailPageCategory.POST) {
+    return post?.refToPost?.dataSource === "sima";
+  }
+
+  return true;
+}
 
 export default function PostEdit({ setIsEdit }) {
   const post = usePost();
@@ -25,6 +43,9 @@ export default function PostEdit({ setIsEdit }) {
   const [selectedLabels, setSelectedLabels] = useState(post.labels || []);
   const postType = useDetailType();
   const { provideContext, reloadPost } = useArticleActions();
+  const proxyAuthor = usePostProxyAuthor();
+  const isAuthor = useIsPostAuthor();
+  const isSima = useShouldUseSimaEdit();
 
   const [isSetBanner, setIsSetBanner] = useState(!!post.bannerCid);
   useEffect(() => {
@@ -34,14 +55,18 @@ export default function PostEdit({ setIsEdit }) {
   }, [isSetBanner]);
 
   const editPost = useCallback(
-    async (content, contentType) => {
-      return await provideContext(post, {
-        title,
-        content,
-        contentType,
-        bannerCid,
-        labels: selectedLabels,
-      });
+    async (content, contentType, realAddress) => {
+      return await provideContext(
+        post,
+        {
+          title,
+          content,
+          contentType,
+          bannerCid,
+          labels: selectedLabels,
+        },
+        getRealField(realAddress),
+      );
     },
     [post, bannerCid, title, selectedLabels, provideContext],
   );
@@ -86,6 +111,8 @@ export default function PostEdit({ setIsEdit }) {
 
       <FormItem label="Issue">
         <EditInput
+          isSima={isSima}
+          updateAsProxyAddress={!isAuthor ? proxyAuthor : undefined}
           editContent={post.content || ""}
           editContentType={post.contentType}
           onFinishedEdit={async (reload) => {

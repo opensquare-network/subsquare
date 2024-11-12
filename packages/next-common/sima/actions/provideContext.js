@@ -15,7 +15,7 @@ export function useProvideContext() {
   const offChainDiscussionProvideContext = useOffChainProvideContext();
 
   return useCallback(
-    async (post, { title, content, contentType, bannerCid, labels }) => {
+    async (post, { title, content, contentType, bannerCid, labels }, real) => {
       if (isLinkedToOffChainDiscussion(post)) {
         return await offChainDiscussionProvideContext(post, {
           title,
@@ -37,6 +37,7 @@ export function useProvideContext() {
         title,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
+        real,
       };
       const data = await signSimaMessage(entity);
 
