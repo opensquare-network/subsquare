@@ -67,15 +67,18 @@ export default function TotalTreasury() {
     .toString();
 
   return (
-    <SummaryItem title="Total">
+    <SummaryItem
+      title="Total"
+      className="border-b-neutral300 border-b py-[12px]"
+    >
       <LoadableContent isLoading={isTotalAssetsLoading}>
-        <div className="flex flex-col gap-[4px]">
+        <div className="flex flex-col gap-2">
           <FiatPriceLabel
             free={totalDotBalance}
             usdtBalance={totalUsdtBalance}
             usdcBalance={totalUsdcBalance}
           />
-          <div className="!ml-0 flex flex-col gap-y-1">
+          <div className="!ml-0 grid  gap-2 grid-cols-4 max-sm:grid-cols-2">
             <DotTokenSymbolAsset free={totalDotBalance} />
             <TokenSymbolAsset
               type={""}

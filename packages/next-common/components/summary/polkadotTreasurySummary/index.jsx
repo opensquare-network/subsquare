@@ -12,15 +12,17 @@ import Bounties from "./bounties";
 
 function PolkadotTreasurySummaryInContext() {
   return (
-    <SummaryLayout className={cn("max-sm:grid-cols-1")}>
+    <div className={cn("max-sm:grid-cols-1")}>
       <TotalTreasury />
-      <RelayChainTreasury />
-      <TreasuryOnAssetHub />
-      <TreasuryOnHydration />
-      <Bounties />
-      <FellowshipTreasuryOnAssetHub />
-      <Loans />
-    </SummaryLayout>
+      <SummaryLayout className={cn("max-sm:grid-cols-1")}>
+        <RelayChainTreasury />
+        <TreasuryOnAssetHub />
+        <TreasuryOnHydration />
+        <Bounties />
+        <FellowshipTreasuryOnAssetHub />
+        <Loans />
+      </SummaryLayout>
+    </div>
   );
 }
 
