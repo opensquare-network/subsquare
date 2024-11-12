@@ -24,7 +24,7 @@ export default function CollapsePanel({ children, labelItem }) {
       </div>
       <Divider className={cn(!isCollapsed && "hidden")} />
       <SummaryLayout
-        className={cn("max-sm:grid-cols-1", !isCollapsed && "hidden")}
+        className={cn("max-sm:grid-cols-2", !isCollapsed && "hidden")}
       >
         {children}
       </SummaryLayout>

@@ -11,16 +11,14 @@ import CollapsePanel from "next-common/components/summary/polkadotTreasurySummar
 
 function PolkadotTreasurySummaryInContext() {
   return (
-    <div className="max-sm:grid-cols-1 space-y-4">
-      <CollapsePanel labelItem={<TotalTreasury />}>
-        <RelayChainTreasury />
-        <TreasuryOnAssetHub />
-        <TreasuryOnHydration />
-        <Bounties />
-        <FellowshipTreasuryOnAssetHub />
-        <Loans />
-      </CollapsePanel>
-    </div>
+    <CollapsePanel labelItem={<TotalTreasury />}>
+      <RelayChainTreasury />
+      <TreasuryOnAssetHub />
+      <TreasuryOnHydration />
+      <Bounties />
+      <FellowshipTreasuryOnAssetHub />
+      <Loans />
+    </CollapsePanel>
   );
 }
 

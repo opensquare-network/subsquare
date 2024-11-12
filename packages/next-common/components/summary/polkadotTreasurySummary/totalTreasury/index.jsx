@@ -87,7 +87,7 @@ export default function TotalTreasury() {
           />
           <div
             className={cn(
-              "!ml-0 grid  gap-2 grid-cols-4",
+              "!ml-0 grid gap-2 grid-cols-4",
               !navCollapsed ? "max-md:grid-cols-2" : "max-sm:grid-cols-2",
             )}
           >
