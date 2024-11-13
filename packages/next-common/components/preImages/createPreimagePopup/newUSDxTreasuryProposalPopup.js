@@ -122,7 +122,9 @@ function PopupContent() {
       {usdxBalanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}
-        <InfoMessage>Please fill the address from AssetHub</InfoMessage>
+        <InfoMessage>
+          Please input an AssetHub address as the beneficiary
+        </InfoMessage>
       </div>
       {validFromField}
       <div className="flex justify-end">

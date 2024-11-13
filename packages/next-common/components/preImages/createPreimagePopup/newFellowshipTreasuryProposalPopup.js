@@ -113,7 +113,9 @@ export default function NewFellowshipTreasuryProposalPopup() {
       {balanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}
-        <InfoMessage>Please fill the address from AssetHub</InfoMessage>
+        <InfoMessage>
+          Please input an AssetHub address as the beneficiary
+        </InfoMessage>
       </div>
       <AdvanceSettings>{validFromField}</AdvanceSettings>
       <div className="flex justify-end">
