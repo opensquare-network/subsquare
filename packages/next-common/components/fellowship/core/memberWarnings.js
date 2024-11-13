@@ -94,7 +94,7 @@ function useEvidencesStat() {
 
   const memberEvidences = useMemo(() => {
     return (evidences || []).filter((evidence) => {
-      const m = members.find((m) => m.address === evidence.who);
+      const m = (members || []).find((m) => m.address === evidence.who);
       return m?.rank >= 0;
     });
   }, [evidences, members]);
