@@ -16,6 +16,7 @@ import {
 import dynamic from "next/dynamic";
 import BillBoardPanel from "next-common/components/billBoardPanel";
 import ShallowLink from "next-common/components/shallowLink";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
@@ -89,9 +90,17 @@ function useDemotionExpirationCounts() {
 
 function useEvidencesStat() {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
-  const totalEvidences = (evidences || []).length || 0;
+  const { members } = useFellowshipCoreMembers();
 
-  const evidencesToBeHandled = (evidences || []).filter((evidence) =>
+  const memberEvidences = useMemo(() => {
+    return (evidences || []).filter((evidence) => {
+      const m = (members || []).find((m) => m.address === evidence.who);
+      return m?.rank >= 0;
+    });
+  }, [evidences, members]);
+
+  const totalEvidences = (memberEvidences || []).length || 0;
+  const evidencesToBeHandled = (memberEvidences || []).filter((evidence) =>
     isNil(evidence.referendumIndex),
   ).length;
 
