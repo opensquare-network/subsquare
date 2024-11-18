@@ -7,7 +7,8 @@ import bigAdd from "next-common/utils/math/bigAdd";
 
 function filterBountiesData(items) {
   return items.filter((item) => {
-    const { isFunded, isCuratorProposed, isActive } = item?.bounty?.status || {};
+    const { isFunded, isCuratorProposed, isActive } =
+      item?.bounty?.status || {};
     return isFunded || isCuratorProposed || isActive;
   });
 }
