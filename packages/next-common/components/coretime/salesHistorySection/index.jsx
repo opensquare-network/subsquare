@@ -3,7 +3,7 @@ import { NeutralPanel } from "../../styled/containers/neutralPanel";
 import { TitleContainer } from "../../styled/containers/titleContainer";
 import SalesHistoryPurchases from "./purchases";
 import SalesHistoryRenewals from "./renewals";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCoretimeSaleIsInterlude from "next-common/context/coretime/hooks/useCoretimeSaleIsInterlude";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 
@@ -18,11 +18,16 @@ function SalesHistoryWrapper({ children }) {
 
 function SalesHistoryList() {
   const sale = useCoretimeSale();
-  const isInterludePhase = useCoretimeSaleIsInterlude();
+  const { isInterludePhase, isLoading } = useCoretimeSaleIsInterlude();
+  const [activeTabLabel, setActiveTabLabel] = useState("");
 
-  const [activeTabLabel, setActiveTabLabel] = useState(
-    isInterludePhase ? "Renewals" : "Purchases",
-  );
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    setActiveTabLabel(isInterludePhase ? "Renewals" : "Purchases");
+  }, [isInterludePhase, isLoading]);
 
   const renewalsTabInfo = {
     label: "Renewals",
@@ -46,7 +51,7 @@ function SalesHistoryList() {
       onTabClick={(tab) => {
         setActiveTabLabel(tab.label);
       }}
-      tabs={tabs}
+      tabs={isLoading ? [] : tabs}
     />
   );
 }
