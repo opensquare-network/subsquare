@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.3.5
+
+date: 2024-11-18
+
+- Improve polkadot treasury status panel on home page. Add assets on hydration, fellowship treasury, loans, bounties.
+- Support SIMA spec for other post types besides referenda.
+- Support treasury spend for kusama.
+- Remove rococo from network menu.
+- Improve arrow icon on home page.
+- Hide beneficiary row if not on treasury spend detail page.
+- Preimages page
+    - Debounce preimage search input.
+    - Improve preimages loading and responsive display.
+    - Support virtual list for preimage table.
+- Show post AI summary on post list page.
+- Collectives fellowship
+    - Fix fellowship member filter by evidence. Some member leave fellowship but there are still corresponding evidence.
+    - Improve fellowship treasury spend button and beneficiary text.
+    - Add treasury spend template for fellowship referenda.
+- Upgrade dependencies, refactor and fix styles.
+
 ### 4.3.4
 
 date: 2024-10-30
