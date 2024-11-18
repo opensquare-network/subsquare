@@ -1,69 +1,92 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import useSubscribeAssetHubAssets from "next-common/hooks/assetHub/useSubscribeAssetHubAssets";
-import { useSubscribeFellowshipTreasuryFree } from "../hook/useSubscribeAssetHubTreasuryFree";
+import { createContext, useContext } from "react";
+import useQueryAssetHubAssets from "next-common/hooks/assetHub/useQueryAssetHubAssets";
+import { useQueryAssetHubTreasuryFree } from "../hook/useQueryAssetHubTreasuryFree";
 import {
   StatemintTreasuryAccount,
   getAssetBySymbol,
   StatemintFellowShipTreasuryAccount,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
-import BigNumber from "bignumber.js";
 import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
 import { useContextApi } from "next-common/context/api";
-import useSubscribeFellowshipSalaryBalance from "../hook/useSubscribeFellowshipSalaryBalance";
+import useQueryFellowshipSalaryBalance from "../hook/useQueryFellowshipSalaryBalance";
+import {
+  useQueryBounties,
+  useBountiesTotalBalance,
+} from "../hook/useQueryBountiesData";
 
 const PolkadotTreasurySummaryContext = createContext();
 
 function useTreasuryAccountAssetBalance(symbol) {
   const asset = getAssetBySymbol(symbol);
-  return useSubscribeAssetHubAssets(asset.id, StatemintTreasuryAccount);
+  return useQueryAssetHubAssets(asset.id, StatemintTreasuryAccount);
 }
 
 export function PolkadotTreasurySummaryProvider({ children }) {
-  const [DOTBalance, setDOTBalance] = useState(0);
-
-  const [isTotalAssetsLoading, setIsTotalAssetsLoading] = useState(true);
-
   const api = useContextApi();
-  const relayChainFree = useTreasuryFree(api);
+  const {
+    free: dotTreasuryBalanceOnRelayChain,
+    isLoading: isDotTreasuryBalanceOnRelayChainLoading,
+  } = useTreasuryFree(api);
 
-  const { free: fellowshipFree, isLoading: isFellowshipLoading } =
-    useSubscribeFellowshipTreasuryFree(StatemintFellowShipTreasuryAccount);
+  const {
+    free: fellowshipTreasuryDotBalance,
+    isLoading: isFellowshipTreasuryDotBalanceLoading,
+  } = useQueryAssetHubTreasuryFree(StatemintFellowShipTreasuryAccount);
 
   const {
     balance: fellowshipSalaryUsdtBalance,
     isLoading: isFellowshipSalaryUsdtBalanceLoading,
-  } = useSubscribeFellowshipSalaryBalance("USDt");
+  } = useQueryFellowshipSalaryBalance("USDt");
 
-  const { free: multiAssetsFree, isLoading: isMultiAssetsLoading } =
-    useSubscribeFellowshipTreasuryFree(StatemintTreasuryAccount);
+  const {
+    free: dotTreasuryBalanceOnAssetHub,
+    isLoading: isDotTreasuryBalanceOnAssetHubLoading,
+  } = useQueryAssetHubTreasuryFree(StatemintTreasuryAccount);
 
-  const { balance: USDtBalance } = useTreasuryAccountAssetBalance("USDt");
-  const { balance: USDCBalance } = useTreasuryAccountAssetBalance("USDC");
+  const {
+    balance: usdtTreasuryBalanceOnAssetHub,
+    isLoading: isUsdtTreasuryBalanceOnAssetHubLoading,
+  } = useTreasuryAccountAssetBalance("USDt");
 
-  useEffect(() => {
-    if (relayChainFree && multiAssetsFree && fellowshipFree) {
-      const totalDOTBalance = BigNumber(relayChainFree)
-        .plus(multiAssetsFree)
-        .plus(fellowshipFree);
-      setDOTBalance(totalDOTBalance);
-      setIsTotalAssetsLoading(false);
-    }
-  }, [relayChainFree, multiAssetsFree, fellowshipFree]);
+  const {
+    balance: usdcTreasuryBalanceOnAssetHub,
+    isLoading: isUsdcTreasuryBalanceOnAssetHubLoading,
+  } = useTreasuryAccountAssetBalance("USDC");
+
+  const {
+    bounties,
+    bountiesCount,
+    isLoading: isQueryBountiesLoading,
+  } = useQueryBounties(api);
+  const {
+    balance: dotTreasuryBalanceOnBounties,
+    isLoading: isBountiesTotalBalanceLoading,
+  } = useBountiesTotalBalance(bounties, api);
+
+  const isDotTreasuryBalanceOnBountiesLoading =
+    isQueryBountiesLoading || isBountiesTotalBalanceLoading;
 
   return (
     <PolkadotTreasurySummaryContext.Provider
       value={{
-        relayChainFree,
-        multiAssetsFree,
-        fellowshipFree,
+        dotTreasuryBalanceOnRelayChain,
+        isDotTreasuryBalanceOnRelayChainLoading,
+        dotTreasuryBalanceOnAssetHub,
+        isDotTreasuryBalanceOnAssetHubLoading,
+        fellowshipTreasuryDotBalance,
+        isFellowshipTreasuryDotBalanceLoading,
         fellowshipSalaryUsdtBalance,
-        USDtBalance,
-        USDCBalance,
-        DOTBalance,
-        isFellowshipLoading,
         isFellowshipSalaryUsdtBalanceLoading,
-        isMultiAssetsLoading,
-        isTotalAssetsLoading,
+        usdtTreasuryBalanceOnAssetHub,
+        isUsdtTreasuryBalanceOnAssetHubLoading,
+        usdcTreasuryBalanceOnAssetHub,
+        isUsdcTreasuryBalanceOnAssetHubLoading,
+        loanCentrifugeUsdcBalance: 3000000000000,
+        loanBifrostDotBalance: 5000000000000000,
+        loadPendulumDotBalance: 500000000000000,
+        bountiesCount,
+        dotTreasuryBalanceOnBounties,
+        isDotTreasuryBalanceOnBountiesLoading,
       }}
     >
       {children}

@@ -15,18 +15,14 @@ import TreasurySpendDetail from "next-common/components/detail/treasury/spend";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTreasurySpendTimelineData";
 import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
-import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
-import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
-import { SimaProposalCommentActionsProvider } from "next-common/sima/components/common/context/commentActionsProvider";
-import { useChainSettings } from "next-common/context/chain";
 import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import {
   TreasuryProvider,
   useTreasuryPallet,
 } from "next-common/context/treasury";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 
 const TreasurySpendMetadata = dynamicClientOnly(() =>
   import("next-common/components/detail/treasury/spend/metadata"),
@@ -42,48 +38,29 @@ function TreasurySpendContent() {
   const isTimelineCompact = useIsTimelineCompact();
 
   return (
-    <ContentWithComment>
-      <TreasurySpendDetail />
-      <TreasurySpendPayout />
-      <DetailMultiTabs
-        metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
-        timeline={
-          <Timeline
-            data={timelineData}
-            indent={false}
-            compact={isTimelineCompact}
-          />
-        }
-        timelineCount={timelineData.length}
-      />
-    </ContentWithComment>
-  );
-}
-
-function NonSimaTreasurySpendContent({ children }) {
-  return (
-    <OffChainArticleActionsProvider>
-      <OffChainCommentActionsProvider>
-        {children}
-      </OffChainCommentActionsProvider>
-    </OffChainArticleActionsProvider>
-  );
-}
-
-function SimaTreasurySpendContent({ children }) {
-  return (
-    <SimaProposalArticleActionsProvider>
-      <SimaProposalCommentActionsProvider>
-        {children}
-      </SimaProposalCommentActionsProvider>
-    </SimaProposalArticleActionsProvider>
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <TreasurySpendDetail />
+        <TreasurySpendPayout />
+        <DetailMultiTabs
+          metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
+          timeline={
+            <Timeline
+              data={timelineData}
+              indent={false}
+              compact={isTimelineCompact}
+            />
+          }
+          timelineCount={timelineData.length}
+        />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 
 function ProposalContentWithNullGuard({ detailApiPath, children }) {
   const { id } = usePageProps();
   const detail = usePost();
-  const { sima } = useChainSettings();
   const treasuryPallet = useTreasuryPallet();
 
   useSubscribePostDetail(detail?.index);
@@ -99,11 +76,7 @@ function ProposalContentWithNullGuard({ detailApiPath, children }) {
     );
   }
 
-  if (sima) {
-    return <SimaTreasurySpendContent>{children}</SimaTreasurySpendContent>;
-  }
-
-  return <NonSimaTreasurySpendContent>{children}</NonSimaTreasurySpendContent>;
+  return children;
 }
 
 function SpendPageImpl({ detailApiPath, children }) {

@@ -86,7 +86,6 @@ const rococo = {
     cancelReferendum: true,
     killReferendum: true,
   },
-  disableWeb2Registration: true,
   sima: true,
 };
 

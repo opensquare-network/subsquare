@@ -11,13 +11,13 @@ export default function SimaPostEdit({ setIsEdit }) {
   const defaultTitle = usePostTitle();
   const [title, setTitle] = useState(defaultTitle);
   const [updating, setUpdating] = useState(false);
-  const { provideContent, reloadPost } = useArticleActions();
+  const { provideContext, reloadPost } = useArticleActions();
 
   const editPost = useCallback(
     async (content, contentType) => {
-      return await provideContent(post, title, content, contentType);
+      return await provideContext(post, title, content, contentType);
     },
-    [post, title, provideContent],
+    [post, title, provideContext],
   );
 
   const isMounted = useMountedState();

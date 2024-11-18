@@ -1,6 +1,4 @@
 import DetailContentBase from "../common/detailBase";
-import ArticleContent from "../../articleContent";
-import useSetEdit from "../common/hooks/useSetEdit";
 import PostTitle from "next-common/components/detail/common/Title";
 import ReferendaPostMeta from "next-common/components/detail/common/openGov/meta";
 import { useSelector } from "react-redux";
@@ -11,13 +9,13 @@ import FellowshipTimeoutCountdown from "next-common/components/detail/fellowship
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import FellowshipReferendumTreasurySpendNavigation from "./fellowshipReferendumTreasurySpendNavigation";
+import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
 
 const FellowshipReferendaDetailEvidence = dynamicClientOnly(() =>
   import("./evidence"),
 );
 
 export default function FellowshipReferendaDetail() {
-  const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
@@ -37,8 +35,7 @@ export default function FellowshipReferendaDetail() {
       title={<PostTitle />}
       meta={<ReferendaPostMeta section="fellowship" />}
     >
-      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
-
+      <MaybeSimaDiscussionArticleContent />
       <FellowshipReferendaDetailEvidence />
     </DetailContentBase>
   );

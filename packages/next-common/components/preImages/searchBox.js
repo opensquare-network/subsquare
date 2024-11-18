@@ -1,53 +1,50 @@
 import { SystemSearch } from "@osn/icons/subsquare";
+import InputOrigin from "next-common/components/input";
 import styled from "styled-components";
+import { useEffect } from "react";
+import { debounce } from "lodash-es";
 
-const Input = styled.input`
-  all: unset;
-  display: flex;
-  flex-grow: 1;
-  border: none;
-
-  overflow: hidden;
-  color: var(--textPrimary);
-  text-overflow: ellipsis;
-  font-family: Inter;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 16px;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: 160px;
-
-  gap: 8px;
-  padding: 4px;
+const Input = styled(InputOrigin)`
+  width: 100%;
+  height: 30px;
+  background-color: var(--neutral100);
   border-radius: 4px;
-  border: 1px solid var(--neutral400);
-  background: var(--neutral100);
 `;
 
 export default function SearchBox({
   value,
   setValue,
   placeholder = "Search hash",
+  isDebounce = false,
+  debounceDelay = 500,
 }) {
+  const handleDebouncedChange = debounce((newValue) => {
+    setValue(newValue);
+  }, debounceDelay);
+
+  useEffect(() => {
+    // Clean up debounce on unmount to avoid memory leaks
+    return () => handleDebouncedChange.cancel();
+  }, [handleDebouncedChange]);
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+
+    if (isDebounce) {
+      handleDebouncedChange(newValue);
+    } else {
+      setValue(newValue);
+    }
+  };
+
   return (
-    <Wrapper className="max-md:!w-full">
-      <div>
-        <SystemSearch
-          width={20}
-          height={20}
-          className="[&_path]:fill-textTertiary"
-        />
-      </div>
+    <div className="flex items-center gap-x-2 max-md:w-full text12Normal">
       <Input
-        value={value}
         placeholder={placeholder}
-        onChange={(e) => setValue(e.target.value)}
+        prefix={<SystemSearch className="text-textTertiary w-5 h-5" />}
+        defaultValue={value}
+        onChange={handleChange}
       />
-    </Wrapper>
+    </div>
   );
 }

@@ -105,21 +105,22 @@ const ajuna = {
   postLabels: defaultPostLabels,
   description: "Creators of the Polkadot Unity SDK.",
   modules: mergeChainModules({
-    referenda: false,
-    fellowship: false,
     treasury: {
       bounties: false,
       childBounties: false,
       proposals: true,
-      spends: true,
+      //TODO: Enable treasury spends once we determine how to handle spends proposals
+      // spends: true,
+      tips: false,
     },
-    council: true,
-    democracy: true,
-    technicalCommittee: true,
+    proxy: {
+      provider: "chain",
+    },
   }),
   integrations: {
     subscan: true,
   },
+  sima: true,
   ...themeVars,
 };
 

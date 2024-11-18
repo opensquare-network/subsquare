@@ -28,13 +28,12 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
-import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -59,28 +58,24 @@ function FellowshipContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <OffChainArticleActionsProvider>
-      <OffChainCommentActionsProvider>
-        <CollectivesProvider section="fellowship">
-          <ContentWithComment>
-            <FellowshipReferendaDetail />
-            <FellowshipReferendumSideBar />
-            <DetailMultiTabs
-              call={
-                (proposal?.call || proposal.inline) && <Gov2ReferendumCall />
-              }
-              metadata={
-                <Gov2ReferendumMetadata
-                  info={info}
-                  pallet="fellowshipReferenda"
-                />
-              }
-              timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
-            />
-          </ContentWithComment>
-        </CollectivesProvider>
-      </OffChainCommentActionsProvider>
-    </OffChainArticleActionsProvider>
+    <MaybeSimaContent>
+      <CollectivesProvider section="fellowship">
+        <ContentWithComment>
+          <FellowshipReferendaDetail />
+          <FellowshipReferendumSideBar />
+          <DetailMultiTabs
+            call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
+            metadata={
+              <Gov2ReferendumMetadata
+                info={info}
+                pallet="fellowshipReferenda"
+              />
+            }
+            timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
+          />
+        </ContentWithComment>
+      </CollectivesProvider>
+    </MaybeSimaContent>
   );
 }
 

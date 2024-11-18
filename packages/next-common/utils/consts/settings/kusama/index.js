@@ -49,6 +49,7 @@ const kusama = {
       archived: true,
     },
     treasury: {
+      spends: true,
       childBounties: true,
       tips: {
         archived: true,
@@ -101,7 +102,7 @@ const kusama = {
     cancelReferendum: true,
     killReferendum: true,
   },
-  disableWeb2Registration: true,
+  sima: true,
 };
 
 export default kusama;

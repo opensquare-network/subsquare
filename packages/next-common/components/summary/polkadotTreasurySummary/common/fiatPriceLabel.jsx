@@ -8,16 +8,16 @@ import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 export default function FiatPriceLabel({
   free = 0,
-  USDCBalance = 0,
-  USDtBalance = 0,
+  usdcBalance = 0,
+  usdtBalance = 0,
 }) {
   const { price: fiatPrice } = useFiatPrice();
   const { decimals } = useChainSettings();
   const totalPrice = BigNumber(free || 0)
     .dividedBy(Math.pow(10, decimals))
     .multipliedBy(fiatPrice)
-    .plus(toPrecision(USDCBalance, SYMBOL_DECIMALS.USDC))
-    .plus(toPrecision(USDtBalance, SYMBOL_DECIMALS.USDT));
+    .plus(toPrecision(usdcBalance, SYMBOL_DECIMALS.USDC))
+    .plus(toPrecision(usdtBalance, SYMBOL_DECIMALS.USDT));
 
   return (
     <div>

@@ -2,6 +2,26 @@ import { ChoiceButton } from "next-common/components/summary/newProposalButton/c
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
 
+export function useFellowshipTreasurySpendButton() {
+  const [
+    showFellowshipTreasurySpendPopup,
+    setShowFellowshipTreasurySpendPopup,
+  ] = useState(false);
+
+  const fellowshipTreasurySpendButton = (
+    <ChoiceButton
+      name="Fellowship treasury spend"
+      description="Create a treasury spend of DOT from AssetHub fellowship treasury account"
+      onClick={() => setShowFellowshipTreasurySpendPopup(true)}
+    />
+  );
+
+  return {
+    fellowshipTreasurySpendButton,
+    showFellowshipTreasurySpendPopup,
+  };
+}
+
 export function useSpendLocalTreasuryButton() {
   const [showSpendLocalTreasuryPopup, setShowSpendLocalTreasuryPopup] =
     useState(false);
