@@ -16,6 +16,7 @@ export default function CollapsePanel({ children, labelItem }) {
       <div className="flex justify-between">
         <div>{labelItem}</div>
         <div
+          role="button"
           className="flex items-center justify-center shrink-0 border rounded-[8px] w-8 h-8 cursor-pointer bg-neutral200"
           onClick={toggleCollapse}
         >
