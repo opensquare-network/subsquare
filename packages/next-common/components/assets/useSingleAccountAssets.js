@@ -8,6 +8,7 @@ import {
   multiAccountsSelector,
 } from "next-common/store/reducers/multiAccountsSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { isNil } from "lodash-es";
 
 export function useMultiAccountsDeps(address) {
   const [allMetadata] = useAllAssetMetadata();
@@ -39,13 +40,12 @@ export default function useSingleAccountAssets(address) {
 
     const assets = (allMetadata || []).reduce((result, item, index) => {
       const account = multiAccounts[index];
-      if (account.isNone) {
+      if (isNil(account)) {
         return result;
       }
 
-      const unwrapped = account.unwrap();
-      const balance = unwrapped.balance.toString();
-      const transferrable = unwrapped.status.isFrozen ? 0 : balance;
+      const balance = account.balance.toString();
+      const transferrable = account.status.isFrozen ? 0 : balance;
       return [...result, { ...item, balance, transferrable }];
     }, []);
 
