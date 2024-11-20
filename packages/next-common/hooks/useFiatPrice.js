@@ -17,6 +17,15 @@ const GET_TREASURIES = gql`
   }
 `;
 
+const GET_PRICE = gql`
+  query GetPrice($symbol: String!) {
+    prices(symbol: $symbol) {
+      price
+      symbol
+    }
+  }
+`;
+
 const CHAIN_VALUE_TREASURY_MAP = {
   [bifrostPolkadot.value]: bifrost.value,
   [collectives.value]: polkadot.value,
@@ -45,5 +54,28 @@ export default function useFiatPrice() {
   return {
     price: treasury?.price,
     loading,
+  };
+}
+
+export function useFiatPriceBySymbol(symbol) {
+  const [getPrice, { data, loading }] = useDoTreasuryEcoLazyQuery(GET_PRICE);
+
+  useEffect(() => {
+    getPrice({ variables: { symbol } });
+
+    const intervalId = setInterval(() => {
+      getPrice({ variables: { symbol } });
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, [getPrice, symbol]);
+
+  const price = find(data?.prices, {
+    symbol,
+  });
+
+  return {
+    price: price?.price ?? 0,
+    isLoading: loading,
   };
 }

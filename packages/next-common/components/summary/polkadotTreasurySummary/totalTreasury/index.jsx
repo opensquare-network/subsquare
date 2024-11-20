@@ -8,6 +8,8 @@ import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+import { MythTokenAsset } from "../mythToken";
+import { useMythTokenAssets } from "../context/mythTokenAssets";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 
@@ -47,6 +49,9 @@ export default function TotalTreasury() {
     isLoading: isHydrationTreasuryLoading,
   } = useHydrationTreasurySummary();
 
+  const { isLoading: isMythTokenBalanceLoading, mythTokenBalance } =
+    useMythTokenAssets();
+
   const isTotalAssetsLoading =
     isDotTreasuryBalanceOnRelayChainLoading ||
     isDotTreasuryBalanceOnAssetHubLoading ||
@@ -55,7 +60,8 @@ export default function TotalTreasury() {
     isFellowshipTreasuryDotBalanceLoading ||
     isFellowshipSalaryUsdtBalanceLoading ||
     isHydrationTreasuryLoading ||
-    isDotTreasuryBalanceOnBountiesLoading;
+    isDotTreasuryBalanceOnBountiesLoading ||
+    isMythTokenBalanceLoading;
 
   const totalDotBalance = new BigNumber(dotTreasuryBalanceOnRelayChain || 0)
     .plus(dotTreasuryBalanceOnAssetHub || 0)
@@ -84,6 +90,7 @@ export default function TotalTreasury() {
             free={totalDotBalance}
             usdtBalance={totalUsdtBalance}
             usdcBalance={totalUsdcBalance}
+            mythTokenBalance={mythTokenBalance}
           />
           <div
             className={cn(
@@ -113,6 +120,12 @@ export default function TotalTreasury() {
                 amount={toPrecision(totalUsdtBalance, SYMBOL_DECIMALS.USDT)}
                 symbol={"USDt"}
                 valueClassName={"text-textSecondary"}
+              />
+            </TokenWrappper>
+            <TokenWrappper>
+              <MythTokenAsset
+                balance={mythTokenBalance}
+                className={"text-textSecondary"}
               />
             </TokenWrappper>
           </div>
