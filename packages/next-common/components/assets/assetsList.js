@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AssetIconPlaceholder, SystemTransfer } from "@osn/icons/subsquare";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
@@ -12,6 +12,8 @@ import { isNil } from "lodash-es";
 import Tooltip from "../tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
+import { clearMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
+import { useDispatch } from "react-redux";
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
@@ -148,6 +150,13 @@ const columnsDef = [
 
 export default function AssetsList({ address }) {
   const assets = useAssetHubTabsAssets(address);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearMultiAccounts());
+    };
+  }, [dispatch]);
 
   return (
     <ScrollerX>
