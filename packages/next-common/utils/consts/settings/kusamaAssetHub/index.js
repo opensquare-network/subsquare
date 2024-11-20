@@ -31,6 +31,7 @@ const kusamaAssetHub = {
   networkIcon: ProjectIconKusamaAssethub,
   group: MenuGroups.KusamaAndParachains,
   links: kusamaLinks,
+  noScan: true,
   integrations: {
     statescan: true,
     subscan: {
