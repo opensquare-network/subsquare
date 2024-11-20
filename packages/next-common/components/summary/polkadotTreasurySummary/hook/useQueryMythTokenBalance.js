@@ -27,7 +27,7 @@ export default function useQueryMythTokenBalance(address) {
     );
 
     return result?.toJSON()?.balance || 0;
-  }, [api, address, paraChainId, parentId]);
+  }, [api, address]);
 
   useEffect(() => {
     if (loading || !value) {
