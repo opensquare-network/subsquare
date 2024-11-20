@@ -20,9 +20,11 @@ export default function useQueryAssetHubForeignAssets(
       {
         parents: parentId,
         interior: {
-          X1: {
-            ParaChain: paraChainId,
-          },
+          X1: [
+            {
+              Parachain: paraChainId,
+            },
+          ],
         },
       },
       address,
