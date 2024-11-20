@@ -2,12 +2,11 @@ import { useChainSettings } from "next-common/context/chain";
 import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
-import useFiatPrice from "next-common/hooks/useFiatPrice";
+import useFiatPrice, {
+  useFiatPriceBySymbol,
+} from "next-common/hooks/useFiatPrice";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
-
-// TODO: fetch Myth Token fiat price
-const mythTokenFiatPrice = 0.2168;
 
 export default function FiatPriceLabel({
   free = 0,
@@ -17,10 +16,12 @@ export default function FiatPriceLabel({
 }) {
   const { price: fiatPrice } = useFiatPrice();
   const { decimals } = useChainSettings();
+  const { price: MYTHFiatPrice, isLoading: isMYTHFiatPriceLoading } =
+    useFiatPriceBySymbol("MYTH");
 
   const mythTokenFiatValue = BigNumber(mythTokenBalance)
     .dividedBy(Math.pow(10, SYMBOL_DECIMALS.MYTH))
-    .multipliedBy(mythTokenFiatPrice);
+    .multipliedBy(MYTHFiatPrice);
 
   const totalPrice = BigNumber(free)
     .dividedBy(Math.pow(10, decimals))
@@ -31,7 +32,7 @@ export default function FiatPriceLabel({
 
   return (
     <div>
-      {!isNil(fiatPrice) && (
+      {!isNil(fiatPrice) && !isMYTHFiatPriceLoading && (
         <ValueDisplay value={totalPrice} symbol={""} prefix={"$"} />
       )}
     </div>
