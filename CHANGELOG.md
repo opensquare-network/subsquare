@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.3.6
+
+date: 2024-11-20
+
+- [Big] Add coretime dashboard and history sales page.
+- Update decentralized voices cohort 3 delegates info.
+- Show myth token value on polkadot treasury panel.
+- Use chain height for assethub header.
+- Add `role="button"` to some components to
+  enable [vimium](https://chromewebstore.google.com/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb?hl=en&pli=1).
+- Upgrade dependencies.
+
 # 4.3.5
 
 date: 2024-11-18
