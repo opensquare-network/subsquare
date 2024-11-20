@@ -7,7 +7,6 @@ const AssetIconMyth = dynamic(() =>
 const foreignAssets = [
   {
     symbol: "MYTH",
-    assetId: null, // Foreign Asset
     icon: AssetIconMyth,
   },
 ];
