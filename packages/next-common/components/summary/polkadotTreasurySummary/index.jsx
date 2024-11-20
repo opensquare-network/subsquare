@@ -4,7 +4,7 @@ import TreasuryOnAssetHub from "./treasuryOnAssetHub";
 import TreasuryOnHydration from "./treasuryOnHydration";
 import { PolkadotTreasurySummaryProvider } from "./context";
 import { TreasuryOnHydrationProvider } from "./context/treasuryOnHydration";
-import { ForeignAssetsProvider } from "./context/foreignAssets";
+import { MythTokenAssetsProvider } from "./context/mythTokenAssets";
 import FellowshipTreasuryOnAssetHub from "./fellowshipTreasuryOnAssetHub";
 import Loans from "./loans";
 import Bounties from "./bounties";
@@ -29,9 +29,9 @@ export default function PolkadotTreasurySummary() {
   return (
     <PolkadotTreasurySummaryProvider>
       <TreasuryOnHydrationProvider>
-        <ForeignAssetsProvider>
+        <MythTokenAssetsProvider>
           <PolkadotTreasurySummaryInContext />
-        </ForeignAssetsProvider>
+        </MythTokenAssetsProvider>
       </TreasuryOnHydrationProvider>
     </PolkadotTreasurySummaryProvider>
   );

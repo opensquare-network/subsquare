@@ -9,7 +9,7 @@ import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import { MythTokenAsset } from "../mythToken";
-import { useForeignAssets } from "../context/foreignAssets";
+import { useMythTokenAssets } from "../context/mythTokenAssets";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 
@@ -50,7 +50,7 @@ export default function TotalTreasury() {
   } = useHydrationTreasurySummary();
 
   const { isLoading: isMythTokenBalanceLoading, mythTokenBalance } =
-    useForeignAssets();
+    useMythTokenAssets();
 
   const isTotalAssetsLoading =
     isDotTreasuryBalanceOnRelayChainLoading ||

@@ -3,7 +3,10 @@ import { toPrecision } from "next-common/utils";
 import LoadableContent from "next-common/components/common/loadableContent";
 import Link from "next/link";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import { useForeignAssets, MythTokenAccount } from "../context/foreignAssets";
+import {
+  useMythTokenAssets,
+  MythTokenAccount,
+} from "../context/mythTokenAssets";
 import { cn } from "next-common/utils";
 import dynamic from "next/dynamic";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -27,7 +30,7 @@ export function MythTokenAsset({ balance, className }) {
 }
 
 export default function MythToken() {
-  const { isLoading, mythTokenBalance } = useForeignAssets();
+  const { isLoading, mythTokenBalance } = useMythTokenAssets();
 
   return (
     <SummaryItem title="Myth Token">
