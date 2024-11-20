@@ -1,4 +1,4 @@
-import { cohort2TrackIds, treasuryTrackIds } from "./common";
+import { cohort2TrackIds, cohort3TrackIds, treasuryTrackIds } from "./common";
 
 export const kusamaDvDelegates = [
   {
@@ -77,6 +77,42 @@ export const kusamaDvDelegates = [
     address: "DG8Q1VmFkmDwuKDN9ZqdB78W6BiXTX5Z33XzZNAykuB5nFh", // Dr. Jeff Cao
     slots: [
       { start: 23707164, end: 25266047, trackIds: cohort2TrackIds }, // cohort 2
+    ],
+  },
+  {
+    address: "JHTfbt39EL1CcbKteN6hG5L5pWo9XWi9XFiyuS9q24cAc8u", // KusDAO
+    slots: [
+      { start: 25732465, end: null, trackIds: cohort3TrackIds }, // cohort 3
+    ],
+  },
+  {
+    address: "Hgm7ELPfRmPKbHgGZCYEZGTjJX8VicXEnFKec7YAeFgAd4d", // Polkadot Hungary
+    slots: [
+      { start: 25732465, end: null, trackIds: cohort3TrackIds }, // cohort 3
+    ],
+  },
+  {
+    address: "DCZyhphXsRLcW84G9WmWEXtAA8DKGtVGSFZLJYty8Ajjyfa", // ChaosDao OpenGov
+    slots: [
+      { start: 25732403, end: null, trackIds: cohort3TrackIds }, // cohort 3
+    ],
+  },
+  {
+    address: "EPrEfsCZQtKt3Cp3vx6BSE4d9ACxMWTN2E5kQBRe612WpL2", // Lucky Friday Labs
+    slots: [
+      { start: 25732403, end: null, trackIds: cohort3TrackIds }, // cohort 3
+    ],
+  },
+  {
+    address: "HcEbeTviCK33EddVN3mfJ6WymWLyKfFuekjhjn5PFirjJ5F", // SAXEMBERG Governance
+    slots: [
+      { start: 25732529, end: null, trackIds: cohort3TrackIds }, // cohort 3
+    ],
+  },
+  {
+    address: "HYmYudY1cxN6XyY98dd82TckYF2YiPFc6sXmHqMoKifGAje", // Le Nexus
+    slots: [
+      { start: 25732529, end: null, trackIds: cohort3TrackIds }, // cohort 3
     ],
   },
 ];

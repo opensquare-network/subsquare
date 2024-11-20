@@ -1,21 +1,12 @@
-import { cohort2TrackIds, treasuryTrackIds } from "./common";
+import { cohort2TrackIds, cohort3TrackIds, treasuryTrackIds } from "./common";
 
 export const polkadotDvDelegates = [
   {
     address: "13EyMuuDHwtq5RD6w3psCJ9WvJFZzDDion6Fd2FVAqxz1g7K", // ChaosDao OpenGov
     slots: [
-      {
-        // cohort 1
-        start: 19653189,
-        end: 21157749,
-        trackIds: treasuryTrackIds,
-      },
-      {
-        // cohort 2
-        start: 21172801,
-        end: 22891629,
-        trackIds: cohort2TrackIds,
-      },
+      { start: 19653189, end: 21157749, trackIds: treasuryTrackIds }, // cohort 1
+      { start: 21172801, end: 22891629, trackIds: cohort2TrackIds }, // cohort 2
+      { start: 23363983, end: null, trackIds: cohort3TrackIds }, // cohort 3
     ],
   },
   {
@@ -45,6 +36,7 @@ export const polkadotDvDelegates = [
     slots: [
       { start: 19653264, end: 21157744, trackIds: treasuryTrackIds },
       { start: 21172834, end: 22888566, trackIds: cohort2TrackIds }, // cohort 2
+      { start: 23364976, end: null, trackIds: cohort3TrackIds }, // cohort 3
     ],
   },
   {
@@ -81,6 +73,21 @@ export const polkadotDvDelegates = [
   },
   {
     address: "12pXignPnq8sZvPtEsC3RdhDLAscqzFQz97pX2tpiNp3xLqo", // Lucky Friday Labs
-    slots: [{ start: 21172834, end: 22888566, trackIds: cohort2TrackIds }], // cohort 2
+    slots: [
+      { start: 21172834, end: 22888566, trackIds: cohort2TrackIds }, // cohort 2
+      { start: 23363983, end: null, trackIds: cohort3TrackIds }, // cohort 3
+    ],
+  },
+  {
+    address: "15KHTWdJyzyxaQbBNRmQN89KmFr1jPXXsPHM5Rxvd1Tkb2XZ", // KusDAO
+    slots: [{ start: 23364955, end: null, trackIds: cohort3TrackIds }], // cohort 3
+  },
+  {
+    address: "13z9CiETVYCrxz3cghDuTyRGbaYQrwSyRnRcJX5iFbXvrwhT", // Polkadot Hungary
+    slots: [{ start: 23364955, end: null, trackIds: cohort3TrackIds }], // cohort 3
+  },
+  {
+    address: "16Gpd7FDEMR6STGyzTqKie4Xd3AXWNCjr6K8W8kSaG1r4VTQ", // Le Nexus
+    slots: [{ start: 23364976, end: null, trackIds: cohort3TrackIds }], // cohort 3
   },
 ];

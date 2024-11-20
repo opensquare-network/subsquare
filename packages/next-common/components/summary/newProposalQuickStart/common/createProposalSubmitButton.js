@@ -40,7 +40,7 @@ export default function CreateProposalSubmitButton({
   const api = useContextApi();
   const proposalOrigin = useReferendaProposalOrigin(trackId);
 
-  const preimages = useCombinedPreimageHashes();
+  const { hashes: preimages } = useCombinedPreimageHashes();
   const preimageExists = useMemo(() => {
     if (isNil(encodedHash) || !preimages) {
       return false;

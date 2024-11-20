@@ -134,6 +134,7 @@ export default function ExtensionUpdatePrompt() {
       The extension can be updated with the latest chain metadata and
       properties.&nbsp;
       <span
+        role="button"
         className="cursor-pointer underline"
         onClick={() => updateMeta(chainInfo)}
       >

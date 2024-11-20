@@ -17,7 +17,7 @@ import altair from "./consts/settings/altair";
 import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
-import rococo from "./consts/settings/rococo";
+// import rococo from "./consts/settings/rococo";
 import collectives from "./consts/settings/collectives";
 import darwinia2 from "./consts/settings/darwinia";
 // import moonbeam from "./consts/settings/moonbeam";
@@ -68,7 +68,7 @@ export const nodes = [
   // moonriver,
   phala,
   // polkadex,
-  rococo,
+  // rococo,
   shibuya,
   zeitgeist,
   vara,
@@ -151,3 +151,9 @@ export const FELLOWSHIP_RANK_LEVEL_NAMES = [
   "Master Constant",
   "Grand Master",
 ];
+
+export const NAV_MENU_TYPE = {
+  main: "main",
+  subspace: "subspace",
+  archived: "archived",
+};

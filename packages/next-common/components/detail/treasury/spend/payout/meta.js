@@ -39,12 +39,14 @@ export default function Meta() {
             />
           </SideInfoItemValue>
         </SideInfoItem>
-        <SideInfoItem>
-          <SideInfoItemName>Beneficiary</SideInfoItemName>
-          <SideInfoItemValue>
-            <AddressUser add={beneficiary} maxWidth={160} />
-          </SideInfoItemValue>
-        </SideInfoItem>
+        {beneficiary && (
+          <SideInfoItem>
+            <SideInfoItemName>Beneficiary</SideInfoItemName>
+            <SideInfoItemValue>
+              <AddressUser add={beneficiary} maxWidth={160} />
+            </SideInfoItemValue>
+          </SideInfoItem>
+        )}
       </Info>
     </SecondaryCardDetail>
   );

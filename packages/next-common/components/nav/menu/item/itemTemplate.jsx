@@ -14,6 +14,7 @@ export default function NavMenuItemTemplate({
 }) {
   return (
     <div
+      role="button"
       onClick={onClick}
       className={cn(
         "group/menu-item",

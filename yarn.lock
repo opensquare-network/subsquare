@@ -1519,6 +1519,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.0.0":
+  version: 7.26.0
+  resolution: "@babel/runtime@npm:7.26.0"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: c8e2c0504ab271b3467a261a8f119bf2603eb857a0d71e37791f4e3fae00f681365073cc79f141ddaa90c6077c60ba56448004ad5429d07ac73532be9f7cf28a
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.1.2":
   version: 7.23.4
   resolution: "@babel/runtime@npm:7.23.4"
@@ -2887,17 +2896,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.144.0":
-  version: 1.144.0
-  resolution: "@osn/icons@npm:1.144.0"
-  checksum: 2bb5f1b87c068bea0fe1248f8b159d4923acd93f2d68a1f5d62a00323f6aa266be07af0da5729e8c6fecd07ed33d63d26481b7e2c27136fe2d11e63caa0270ad
-  languageName: node
-  linkType: hard
-
-"@osn/icons@npm:^1.146.0":
-  version: 1.148.0
-  resolution: "@osn/icons@npm:1.148.0"
-  checksum: 8759ed255d62be2f533ad4a2b616f8232c5de0a5333bcf7872dbc7f09a42200e32f1fa9538052841c7b4acd1c56a1f3ae5dfccb28f5d434598e31f8fc4c74c4f
+"@osn/icons@npm:^1.150.0":
+  version: 1.150.0
+  resolution: "@osn/icons@npm:1.150.0"
+  checksum: d5d7cbb91fcd16052ac213339a75db87d01afea94f9bb40f3fb0e399dd516592eb3939615ce0d4e4719b6f104e6efc2f9858cb2edcf19943b3671eacea99e621
   languageName: node
   linkType: hard
 
@@ -5284,8 +5286,8 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.146.0
-    "@polkadot/util-crypto": ^13.2.2
+    "@osn/icons": ^1.150.0
+    "@polkadot/util-crypto": 13.2.2
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -5320,7 +5322,7 @@ __metadata:
     "@next/bundle-analyzer": ^14.2.4
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.146.0
+    "@osn/icons": ^1.150.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -8135,13 +8137,13 @@ __metadata:
   linkType: hard
 
 "cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "cross-spawn@npm:7.0.3"
+  version: 7.0.5
+  resolution: "cross-spawn@npm:7.0.5"
   dependencies:
     path-key: ^3.1.0
     shebang-command: ^2.0.0
     which: ^2.0.1
-  checksum: 671cc7c7288c3a8406f3c69a3ae2fc85555c04169e9d611def9a675635472614f1c0ed0ef80955d5b6d4e724f6ced67f0ad1bb006c2ea643488fcfef994d7f52
+  checksum: 55c50004cb6bbea3649784caac6e7b8ddd03fa8c1e14dbd5a1f15896708378006eb7526a52a0f48770c768c9b8aed48a5888eb8e785ff59ff7749e74f66cd96b
   languageName: node
   linkType: hard
 
@@ -12306,6 +12308,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"memoize-one@npm:>=3.1.1 <6":
+  version: 5.2.1
+  resolution: "memoize-one@npm:5.2.1"
+  checksum: a3cba7b824ebcf24cdfcd234aa7f86f3ad6394b8d9be4c96ff756dafb8b51c7f71320785fbc2304f1af48a0467cbbd2a409efc9333025700ed523f254cb52e3d
+  languageName: node
+  linkType: hard
+
 "memoize-one@npm:^6.0.0":
   version: 6.0.0
   resolution: "memoize-one@npm:6.0.0"
@@ -12760,7 +12769,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.3.0
     "@mimirdev/apps-sdk": ^0.2.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.144.0
+    "@osn/icons": ^1.150.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^1.4.3
     "@osn/provider-options": 1.1.0
@@ -12818,6 +12827,7 @@ __metadata:
     react-scroll: ^1.9.0
     react-slider: ^2.0.4
     react-use: ^17.4.0
+    react-window: ^1.8.10
     solarlunar: ^2.0.7
     sonner: ^1.0.3
     styled-components: ^5.3.9
@@ -14425,6 +14435,19 @@ __metadata:
     react: ^16.8.0  || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
   checksum: 0889da919b49a186de375ec15d2778b954ae981c523acd17dd496e4a4da7b6190efe7993491e1b85fdd6de3e745d08a4eaba4caa35408d570b5f1de550f35d11
+  languageName: node
+  linkType: hard
+
+"react-window@npm:^1.8.10":
+  version: 1.8.10
+  resolution: "react-window@npm:1.8.10"
+  dependencies:
+    "@babel/runtime": ^7.0.0
+    memoize-one: ">=3.1.1 <6"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: e8830f32e3ad4bf91af9cdc5cead84148c7694ce6abd9fdb447fb609da6cd4bbd0bbc75ff985f78828f4bbbd3ba4cbc98235cc9c056b5e5787578518f7fafbb9
   languageName: node
   linkType: hard
 

@@ -40,6 +40,7 @@ import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
 import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
 import PostListTreasuryAllSpends from "./treasuryAllSpends";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
+import PostListAISummary from "./aiSummary";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -414,6 +415,8 @@ export default function Post({ data, href, type }) {
                 </Tooltip>
               </div>
             )}
+
+            <PostListAISummary data={data} />
           </Footer>
           {data.status && (
             <Tag

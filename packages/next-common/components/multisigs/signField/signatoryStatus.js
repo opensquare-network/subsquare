@@ -1,6 +1,9 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
-import { ApprovedTooltip, NotApprovedTooltip } from "next-common/components/multisigs/signField/tooltips";
+import {
+  ApprovedTooltip,
+  NotApprovedTooltip,
+} from "next-common/components/multisigs/signField/tooltips";
 
 export default function SignatoryStatus({ multisig }) {
   const realAddress = useRealAddress();

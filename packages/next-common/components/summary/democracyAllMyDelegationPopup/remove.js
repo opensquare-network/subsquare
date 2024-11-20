@@ -1,9 +1,7 @@
 import RemoveButton from "next-common/components/removeButton";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  incMyReferendaDelegationsTrigger,
-} from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
+import { incMyReferendaDelegationsTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import Tooltip from "next-common/components/tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import getChainSettings from "next-common/utils/consts/settings";

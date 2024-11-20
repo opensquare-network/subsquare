@@ -271,6 +271,16 @@ export default function useBreadcrumbs() {
         content: `#${id}`,
       },
     ];
+  } else if (detailPageCategory.CORETIME_SALES === type) {
+    return [
+      {
+        content: "Sales",
+        path: "/coretime/sales",
+      },
+      {
+        content: `#${id}`,
+      },
+    ];
   }
 
   return null;
