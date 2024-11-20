@@ -7,11 +7,12 @@ import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useForeignAssets, MythTokenAccount } from "../context/foreignAssets";
 import TokenSymbolForeignAsset from "../common/tokenSymbolForeignAsset";
 
-export function MythTokenAsset({ balance }) {
+export function MythTokenAsset({ balance, className }) {
   return (
     <TokenSymbolForeignAsset
       amount={toPrecision(balance, SYMBOL_DECIMALS.MYTH)}
       symbol="MYTH"
+      className={className}
     />
   );
 }

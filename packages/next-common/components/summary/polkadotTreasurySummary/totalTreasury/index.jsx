@@ -123,7 +123,10 @@ export default function TotalTreasury() {
               />
             </TokenWrappper>
             <TokenWrappper>
-              <MythTokenAsset balance={mythTokenBalance} />
+              <MythTokenAsset
+                balance={mythTokenBalance}
+                className={"text-textSecondary"}
+              />
             </TokenWrappper>
           </div>
         </div>
