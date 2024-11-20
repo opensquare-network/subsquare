@@ -1,19 +1,28 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import { toPrecision } from "next-common/utils";
-import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import LoadableContent from "next-common/components/common/loadableContent";
 import Link from "next/link";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useForeignAssets, MythTokenAccount } from "../context/foreignAssets";
-import TokenSymbolForeignAsset from "../common/tokenSymbolForeignAsset";
+import { cn } from "next-common/utils";
+import dynamic from "next/dynamic";
+import ValueDisplay from "next-common/components/valueDisplay";
+
+const AssetIconMyth = dynamic(() =>
+  import("@osn/icons/subsquare/AssetIconMyth"),
+);
 
 export function MythTokenAsset({ balance, className }) {
   return (
-    <TokenSymbolForeignAsset
-      amount={toPrecision(balance, SYMBOL_DECIMALS.MYTH)}
-      symbol="MYTH"
-      className={className}
-    />
+    <div className="flex items-center gap-x-2">
+      <AssetIconMyth className="w-4 h-4" />
+      <ValueDisplay
+        value={toPrecision(balance, 18)}
+        symbol={"MYTH"}
+        className={cn("text12Medium text-textTertiary", className)}
+        tooltipClassName={"inline-flex items-center"}
+      />
+    </div>
   );
 }
 

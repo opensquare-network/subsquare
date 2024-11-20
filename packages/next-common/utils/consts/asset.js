@@ -1,7 +1,6 @@
 export const SYMBOL_DECIMALS = {
   USDT: 6,
   USDC: 6,
-  MYTH: 18,
 };
 
 export const ASSET_DETAIL_LINKS = {

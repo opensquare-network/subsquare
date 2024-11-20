@@ -20,7 +20,7 @@ export default function FiatPriceLabel({
     useFiatPriceBySymbol("MYTH");
 
   const mythTokenFiatValue = BigNumber(mythTokenBalance)
-    .dividedBy(Math.pow(10, SYMBOL_DECIMALS.MYTH))
+    .dividedBy(Math.pow(10, 18))
     .multipliedBy(MYTHFiatPrice);
 
   const totalPrice = BigNumber(free)
