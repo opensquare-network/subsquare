@@ -34,6 +34,7 @@ const polkadotAssetHub = {
   networkIcon: NetworkIconPolkadotAssetHub,
   group: MenuGroups.PolkadotAndParachains,
   links: polkadotLinks,
+  noScan: true,
   integrations: {
     statescan: true,
     subscan: {

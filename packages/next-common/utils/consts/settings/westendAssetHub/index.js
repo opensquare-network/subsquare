@@ -31,6 +31,7 @@ const westendAssetHub = {
   networkIcon: ProjectIconWestendAssethub,
   group: MenuGroups.WestendAndParachains,
   links: polkadotLinks,
+  noScan: true,
   integrations: {
     statescan: true,
     subscan: {

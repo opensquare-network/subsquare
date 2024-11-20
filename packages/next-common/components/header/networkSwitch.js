@@ -8,6 +8,8 @@ import { ArrowDown } from "@osn/icons/subsquare";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { useClickAway } from "react-use";
 import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import { useChainSettings } from "next-common/context/chain";
 
 const NetworkOptions = dynamicClientOnly(() => import("./networkOptions"));
 
@@ -57,11 +59,19 @@ const NetworkBlock = styled.div`
   }
 `;
 
+function useHeaderHeight() {
+  const nodesHeight = useSelector(nodesHeightSelector);
+  const chainHeight = useSelector(latestHeightSelector);
+  const { noScan } = useChainSettings();
+
+  return noScan ? chainHeight : nodesHeight;
+}
+
 export default function NetworkSwitch({ activeNode }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
-  const nodesHeight = useSelector(nodesHeightSelector);
+  const nodesHeight = useHeaderHeight();
 
   useClickAway(ref, () => setShow(false));
 
