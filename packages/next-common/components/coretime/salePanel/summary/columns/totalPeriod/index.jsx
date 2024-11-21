@@ -7,13 +7,13 @@ import chainOrScanHeightSelector from "next-common/store/reducers/selectors/heig
 import { useSelector } from "react-redux";
 import { getCountDownProgress } from "../currentPhase/common";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import { useRemainingTime } from "next-common/components/remaining";
 import StartAt from "./startAt";
 import EndAt from "./endAt";
 import PassedTime from "./passedTime";
 import TotalTime from "./totalTime";
 import { usePageProps } from "next-common/context/page";
 import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
+import { estimateBlocksTime } from "next-common/utils";
 
 export function getEndBlocksTime(initBlocksTime, blockTime, blockGap) {
   return initBlocksTime + blockGap * blockTime;
@@ -62,7 +62,8 @@ export default function TotalPeriod() {
     [endHeight, chainHeight],
   );
 
-  const remaining = useRemainingTime(remainingBlocksGap);
+  const remaining = estimateBlocksTime(remainingBlocksGap, blockTime);
+
   const percentage = useMemo(
     () => getCountDownProgress(initHeight, chainHeight, endHeight),
     [initHeight, chainHeight, endHeight],

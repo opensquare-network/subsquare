@@ -3,8 +3,9 @@ import Tooltip from "next-common/components/tooltip";
 
 export default function PassedTime({ passedBlockGap, remaining }) {
   const passedBlocksTime = useEstimateBlocksTime(passedBlockGap);
+  const hasGoneContent = `${passedBlocksTime} has gone`;
 
-  const formattedTime = passedBlocksTime.split(" ").map((item, index) => (
+  const formattedTime = remaining.split(" ").map((item, index) => (
     <span key={index}>
       <span
         className={index % 2 === 0 ? "text-textPrimary" : "text-textTertiary"}
@@ -15,7 +16,10 @@ export default function PassedTime({ passedBlockGap, remaining }) {
   ));
 
   return (
-    <Tooltip content={remaining} className="inline-flex items-center gap-x-1">
+    <Tooltip
+      content={hasGoneContent}
+      className="inline-flex items-center gap-x-1"
+    >
       {formattedTime}
     </Tooltip>
   );
