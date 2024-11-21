@@ -1,6 +1,7 @@
 import { ChoiceButton } from "next-common/components/summary/newProposalButton/common";
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
+import { InfoPopoular } from "@osn/icons/subsquare";
 
 export function useFellowshipTreasurySpendButton() {
   const [
@@ -53,6 +54,7 @@ export function useSpendUSDxTreasuryButton() {
       name="USDx treasury proposal"
       description="Create a treasury spend with assets on AssetHub"
       onClick={() => setShowSpendUSDxTreasuryPopup(true)}
+      buttonSuffix={<InfoPopoular className="w-4 h-4 ml-2" />}
     />
   );
 
