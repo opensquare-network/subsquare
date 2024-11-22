@@ -9,7 +9,7 @@ import { getAllianceMenu } from "./alliance";
 import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
-import { assetHubMenu } from "./assetHub";
+import { assetHubMenu, assetsHubMenu } from "./assetHub";
 import { getCommunityCouncilMenu } from "./communityCouncil";
 import { CHAIN } from "next-common/utils/constants";
 import preImages from "./preImages";
@@ -28,6 +28,11 @@ export function getHomeMenu({
 } = {}) {
   const { modules } = getChainSettings(CHAIN);
 
+  const integrationsMenu = [
+    modules?.coretime && coretimeMenu,
+    modules?.assethub && assetsHubMenu,
+  ].filter(Boolean);
+
   return [
     modules?.referenda && getReferendaMenu(tracks, currentTrackId),
     modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
@@ -42,7 +47,7 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.preimages && preImages,
-    ...(modules?.coretime ? [{ type: "divider" }, coretimeMenu] : []),
+    ...(integrationsMenu ? [{ type: "divider" }, ...integrationsMenu] : []),
   ].filter(Boolean);
 }
 
