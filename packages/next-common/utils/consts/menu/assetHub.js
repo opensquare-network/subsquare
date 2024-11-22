@@ -2,9 +2,9 @@ import { ArrowRight, MenuAsset, MenuOverview } from "@osn/icons/subsquare";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export const assetsHubMenu = {
-  name: "AssetsHub",
-  value: "assetsHub",
-  pathname: "/assetshub",
+  name: "Asset Hub",
+  value: "assetHub",
+  pathname: "/assethub",
   icon: <MenuAsset />,
   extra: <ArrowRight className="text-navigationTextTertiary" />,
   type: NAV_MENU_TYPE.subspace,
@@ -12,7 +12,7 @@ export const assetsHubMenu = {
     {
       name: "Overview",
       value: "overview",
-      pathname: "/assetshub",
+      pathname: "/assethub",
       icon: <MenuOverview />,
     },
   ],

@@ -29,8 +29,8 @@ export function getHomeMenu({
   const { modules } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
-    modules?.coretime && coretimeMenu,
     modules?.assethub && assetsHubMenu,
+    modules?.coretime && coretimeMenu,
   ].filter(Boolean);
 
   return [
