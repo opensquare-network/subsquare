@@ -9,12 +9,11 @@ import { getAllianceMenu } from "./alliance";
 import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
-import { assetHubMenu, assetsHubMenu } from "./assetHub";
+import { assetHubMenu } from "./assetHub";
 import { getCommunityCouncilMenu } from "./communityCouncil";
 import { CHAIN } from "next-common/utils/constants";
 import preImages from "./preImages";
 import { partition } from "lodash-es";
-import isAssetHub from "next-common/utils/isAssetHub";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
@@ -29,7 +28,7 @@ export function getHomeMenu({
   const { modules } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
-    modules?.assethub && assetsHubMenu,
+    modules?.assethub && assetHubMenu,
     modules?.coretime && coretimeMenu,
   ].filter(Boolean);
 
@@ -58,10 +57,6 @@ export function getMainMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  if (isAssetHub()) {
-    return [...assetHubMenu];
-  }
-
   const modulesMenu = getHomeMenu({
     summary,
     tracks,
