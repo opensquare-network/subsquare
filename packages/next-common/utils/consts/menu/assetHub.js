@@ -15,5 +15,11 @@ export const assetHubMenu = {
       pathname: "/assethub",
       icon: <MenuOverview />,
     },
+    {
+      name: "Assets",
+      value: "assets",
+      pathname: "/assethub/assets",
+      icon: <MenuAsset />,
+    },
   ],
 };
