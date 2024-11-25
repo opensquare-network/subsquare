@@ -1,26 +1,27 @@
-import SummaryLayout from "next-common/components/summary/layout/layout";
 import TotalTreasury from "./totalTreasury";
 import RelayChainTreasury from "./relayChainTreasury";
 import TreasuryOnAssetHub from "./treasuryOnAssetHub";
 import TreasuryOnHydration from "./treasuryOnHydration";
-import { cn } from "next-common/utils";
 import { PolkadotTreasurySummaryProvider } from "./context";
 import { TreasuryOnHydrationProvider } from "./context/treasuryOnHydration";
+import { MythTokenAssetsProvider } from "./context/mythTokenAssets";
 import FellowshipTreasuryOnAssetHub from "./fellowshipTreasuryOnAssetHub";
 import Loans from "./loans";
 import Bounties from "./bounties";
+import MythToken from "./mythToken";
+import CollapsePanel from "next-common/components/summary/polkadotTreasurySummary/common/collapsePanel";
 
 function PolkadotTreasurySummaryInContext() {
   return (
-    <SummaryLayout className={cn("max-sm:grid-cols-1")}>
-      <TotalTreasury />
+    <CollapsePanel labelItem={<TotalTreasury />}>
       <RelayChainTreasury />
       <TreasuryOnAssetHub />
       <TreasuryOnHydration />
       <Bounties />
       <FellowshipTreasuryOnAssetHub />
       <Loans />
-    </SummaryLayout>
+      <MythToken />
+    </CollapsePanel>
   );
 }
 
@@ -28,7 +29,9 @@ export default function PolkadotTreasurySummary() {
   return (
     <PolkadotTreasurySummaryProvider>
       <TreasuryOnHydrationProvider>
-        <PolkadotTreasurySummaryInContext />
+        <MythTokenAssetsProvider>
+          <PolkadotTreasurySummaryInContext />
+        </MythTokenAssetsProvider>
       </TreasuryOnHydrationProvider>
     </PolkadotTreasurySummaryProvider>
   );

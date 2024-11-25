@@ -8,8 +8,20 @@ import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+import { MythTokenAsset } from "../mythToken";
+import { useMythTokenAssets } from "../context/mythTokenAssets";
+import { useNavCollapsed } from "next-common/context/nav";
+import { cn } from "next-common/utils";
+
+function TokenWrappper({ children }) {
+  return (
+    <div className="bg-neutral200 py-1 px-2 rounded-[4px]">{children}</div>
+  );
+}
 
 export default function TotalTreasury() {
+  const [navCollapsed] = useNavCollapsed();
+
   const {
     dotTreasuryBalanceOnRelayChain,
     isDotTreasuryBalanceOnRelayChainLoading,
@@ -37,6 +49,9 @@ export default function TotalTreasury() {
     isLoading: isHydrationTreasuryLoading,
   } = useHydrationTreasurySummary();
 
+  const { isLoading: isMythTokenBalanceLoading, mythTokenBalance } =
+    useMythTokenAssets();
+
   const isTotalAssetsLoading =
     isDotTreasuryBalanceOnRelayChainLoading ||
     isDotTreasuryBalanceOnAssetHubLoading ||
@@ -45,7 +60,8 @@ export default function TotalTreasury() {
     isFellowshipTreasuryDotBalanceLoading ||
     isFellowshipSalaryUsdtBalanceLoading ||
     isHydrationTreasuryLoading ||
-    isDotTreasuryBalanceOnBountiesLoading;
+    isDotTreasuryBalanceOnBountiesLoading ||
+    isMythTokenBalanceLoading;
 
   const totalDotBalance = new BigNumber(dotTreasuryBalanceOnRelayChain || 0)
     .plus(dotTreasuryBalanceOnAssetHub || 0)
@@ -69,24 +85,49 @@ export default function TotalTreasury() {
   return (
     <SummaryItem title="Total">
       <LoadableContent isLoading={isTotalAssetsLoading}>
-        <div className="flex flex-col gap-[4px]">
+        <div className="flex flex-col gap-2">
           <FiatPriceLabel
             free={totalDotBalance}
             usdtBalance={totalUsdtBalance}
             usdcBalance={totalUsdcBalance}
+            mythTokenBalance={mythTokenBalance}
           />
-          <div className="!ml-0 flex flex-col gap-y-1">
-            <DotTokenSymbolAsset free={totalDotBalance} />
-            <TokenSymbolAsset
-              type={""}
-              amount={toPrecision(totalUsdcBalance, SYMBOL_DECIMALS.USDC)}
-              symbol={"USDC"}
-            />
-            <TokenSymbolAsset
-              type={""}
-              amount={toPrecision(totalUsdtBalance, SYMBOL_DECIMALS.USDT)}
-              symbol={"USDt"}
-            />
+          <div
+            className={cn(
+              "!ml-0 grid gap-2 grid-cols-4",
+              !navCollapsed ? "max-md:grid-cols-2" : "max-sm:grid-cols-2",
+            )}
+          >
+            <TokenWrappper>
+              <DotTokenSymbolAsset
+                free={totalDotBalance}
+                valueClassName={"text-textSecondary"}
+              />
+            </TokenWrappper>
+
+            <TokenWrappper>
+              <TokenSymbolAsset
+                type={""}
+                amount={toPrecision(totalUsdcBalance, SYMBOL_DECIMALS.USDC)}
+                symbol={"USDC"}
+                valueClassName={"text-textSecondary"}
+              />
+            </TokenWrappper>
+
+            <TokenWrappper>
+              <TokenSymbolAsset
+                type={""}
+                amount={toPrecision(totalUsdtBalance, SYMBOL_DECIMALS.USDT)}
+                symbol={"USDt"}
+                valueClassName={"text-textSecondary"}
+              />
+            </TokenWrappper>
+            <TokenWrappper>
+              <MythTokenAsset
+                balance={mythTokenBalance}
+                className={"text-textSecondary"}
+              />
+            </TokenWrappper>
           </div>
         </div>
       </LoadableContent>

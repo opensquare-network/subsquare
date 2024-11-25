@@ -27,13 +27,15 @@ export default function AccordionCard({
         <h4 className="text14Bold text-textPrimary">{title}</h4>
         <div className="flex gap-[4px]">
           {extra}
-          <ArrowUp
-            role="button"
-            className={cn(
-              "[&_path]:stroke-textTertiary",
-              !open && "rotate-180",
-            )}
-          />
+          <div className="flex items-center justify-center shrink-0 border rounded-[8px] w-8 h-8 cursor-pointer bg-neutral200">
+            <ArrowUp
+              role="button"
+              className={cn(
+                "w-5 h-5 [&_path]:stroke-textSecondary",
+                !open && "rotate-180",
+              )}
+            />
+          </div>
         </div>
       </div>
 

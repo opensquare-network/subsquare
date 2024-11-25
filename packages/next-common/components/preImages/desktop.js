@@ -107,7 +107,7 @@ function OldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   return <DataListItem row={row} />;
 }
 
-export default function DesktopList({ data }) {
+export default function DesktopList({ data, loading }) {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const { columns } = useColumns([
     {
@@ -139,7 +139,7 @@ export default function DesktopList({ data }) {
           columns={columns}
           rows={data}
           noDataText="No current preimages"
-          loading={!data}
+          loading={loading}
           renderItem={(DataListItem, idx, rows) => {
             const {
               data: [hash],

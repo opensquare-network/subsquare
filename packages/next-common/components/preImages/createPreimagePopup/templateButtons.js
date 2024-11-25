@@ -1,6 +1,27 @@
 import { ChoiceButton } from "next-common/components/summary/newProposalButton/common";
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
+import { InfoPopoular } from "@osn/icons/subsquare";
+
+export function useFellowshipTreasurySpendButton() {
+  const [
+    showFellowshipTreasurySpendPopup,
+    setShowFellowshipTreasurySpendPopup,
+  ] = useState(false);
+
+  const fellowshipTreasurySpendButton = (
+    <ChoiceButton
+      name="Fellowship treasury spend"
+      description="Create a treasury spend of DOT from AssetHub fellowship treasury account"
+      onClick={() => setShowFellowshipTreasurySpendPopup(true)}
+    />
+  );
+
+  return {
+    fellowshipTreasurySpendButton,
+    showFellowshipTreasurySpendPopup,
+  };
+}
 
 export function useSpendLocalTreasuryButton() {
   const [showSpendLocalTreasuryPopup, setShowSpendLocalTreasuryPopup] =
@@ -33,6 +54,7 @@ export function useSpendUSDxTreasuryButton() {
       name="USDx treasury proposal"
       description="Create a treasury spend with assets on AssetHub"
       onClick={() => setShowSpendUSDxTreasuryPopup(true)}
+      buttonSuffix={<InfoPopoular className="w-4 h-4 ml-2" />}
     />
   );
 

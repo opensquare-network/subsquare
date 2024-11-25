@@ -49,6 +49,7 @@ const kusama = {
       archived: true,
     },
     treasury: {
+      spends: true,
       childBounties: true,
       tips: {
         archived: true,
@@ -60,6 +61,7 @@ const kusama = {
     technicalCommittee: {
       archived: true,
     },
+    coretime: true,
   }),
   integrations: {
     doTreasury: true,

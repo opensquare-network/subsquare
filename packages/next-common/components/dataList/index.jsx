@@ -118,7 +118,7 @@ export default function DataList({
             "datalist-head",
             "flex items-center pb-3",
             "border-b border-neutral300",
-            "max-sm:hidden",
+            navCollapsed ? "max-sm:hidden" : "max-md:hidden",
           )}
         >
           {columns.map((column, idx) => (

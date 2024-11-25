@@ -5,9 +5,8 @@ import SearchBox from "./searchBox";
 import { useMemo, useState } from "react";
 import MyDeposit from "./myDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useWindowSize } from "react-use";
-import { isNil } from "lodash-es";
 import { isSameAddress } from "next-common/utils";
+import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 
 function parseStatus(status, method) {
   const statusName = Object.keys(status || {})[0];
@@ -25,21 +24,11 @@ function parseStatus(status, method) {
   };
 }
 
-export default function PreImagesList({ data }) {
-  const { width } = useWindowSize();
-
-  if (isNil(width)) {
-    return null;
-  }
-
-  return <PreImagesListImpl data={data} />;
-}
-
-function PreImagesListImpl({ data }) {
+export default function PreImagesList() {
+  const { hashes: data, loading } = useCombinedPreimageHashes();
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
-  const { width } = useWindowSize();
 
   let filteredData = useMemo(
     () =>
@@ -78,12 +67,12 @@ function PreImagesListImpl({ data }) {
           isDebounce={true}
         />
       </div>
-
-      {width > 1024 ? (
-        <DesktopList data={filteredData} />
-      ) : (
-        <MobileList data={filteredData} />
-      )}
+      <div className="max-md:hidden">
+        <DesktopList data={filteredData} loading={loading} />
+      </div>
+      <div className="hidden max-md:block">
+        <MobileList data={filteredData} loading={loading} />
+      </div>
     </div>
   );
 }

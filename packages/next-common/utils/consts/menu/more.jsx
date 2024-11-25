@@ -3,6 +3,7 @@ import { useIsMacOS } from "next-common/context/page";
 import { useCmdkPaletteVisible } from "next-common/components/cmdk/cmdkPalette";
 import { cn } from "next-common/utils";
 import isAssetHub from "next-common/utils/isAssetHub";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 
@@ -28,7 +29,7 @@ export function getMoreMenu({ archivedMenu = [] }) {
       archivedMenu?.length && {
         value: "archived",
         name: "Archived",
-        type: "subspace",
+        type: NAV_MENU_TYPE.archived,
         extra: <ArrowRight className="text-navigationTextTertiary" />,
         items: archivedMenu,
       },

@@ -13,8 +13,12 @@ import {
   useNewRemarkButton,
   useSpendUSDxTreasuryButton,
   useKillReferendumButton,
+  useFellowshipTreasurySpendButton,
 } from "./templateButtons";
 import KillReferendumPopup from "./killReferendumPopup";
+import { isCollectivesChain } from "next-common/utils/chain";
+import NewFellowshipTreasuryProposalPopup from "./newFellowshipTreasuryProposalPopup";
+import { useChain } from "next-common/context/chain";
 
 export function QuickStart({ children }) {
   return (
@@ -26,10 +30,13 @@ export function QuickStart({ children }) {
 }
 
 function PopupContent() {
+  const chain = useChain();
   const { onClose } = usePopupParams();
   const [showNewPreimage, setShowNewPreimage] = useState();
   const { showSpendLocalTreasuryPopup, localTreasuryButton } =
     useSpendLocalTreasuryButton(false);
+  const { showFellowshipTreasurySpendPopup, fellowshipTreasurySpendButton } =
+    useFellowshipTreasurySpendButton(false);
   const { showSpendUSDxTreasuryPopup, usdxTreasuryButton } =
     useSpendUSDxTreasuryButton(false);
   const { showNewRemarkPopup, remarkButton } = useNewRemarkButton();
@@ -40,6 +47,10 @@ function PopupContent() {
 
   if (showNewPreimage) {
     return <NewPreimageInnerPopup onClose={onClose} />;
+  }
+
+  if (showFellowshipTreasurySpendPopup) {
+    return <NewFellowshipTreasuryProposalPopup onClose={onClose} />;
   }
 
   if (showSpendLocalTreasuryPopup) {
@@ -65,7 +76,9 @@ function PopupContent() {
   return (
     <MainPopup setShowNewPreimage={setShowNewPreimage} onClose={onClose}>
       <QuickStart>
-        {localTreasuryButton}
+        {isCollectivesChain(chain)
+          ? fellowshipTreasurySpendButton
+          : localTreasuryButton}
         {usdxTreasuryButton}
         {remarkButton}
         {cancelReferendumButton}

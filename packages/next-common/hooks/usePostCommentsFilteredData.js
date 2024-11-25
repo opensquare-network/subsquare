@@ -10,6 +10,9 @@ import { useIsDVAddressFn } from "./useIsDVAddress";
 import { defaultSortBy } from "next-common/components/comment/filter/sorter";
 import { usePostCommentsMerging } from "./usePostCommentsMerging";
 import { normalizeAddress } from "next-common/utils/address";
+import { useChainSettings } from "next-common/context/chain";
+import ChainTypes from "next-common/utils/consts/chainTypes";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 
 function isDeletedComment(comment) {
   return comment?.content?.trim?.() !== "[Deleted]";
@@ -22,6 +25,7 @@ function is0Balance(comment) {
 export function usePostCommentsFilteredData() {
   const api = useContextApi();
   const { commentsData, loading: commentsLoading } = usePostCommentsData();
+  const { chainType = ChainTypes.SUBSTRATE } = useChainSettings();
 
   const [filterParams] = useCommittedCommentFilterParams();
   const getAddressVotesData = useGetAddressVotesDataFn();
@@ -55,20 +59,32 @@ export function usePostCommentsFilteredData() {
           ).toNumber();
 
           // merge balance
-          if (api) {
-            if (address) {
-              const normalizedAddress = normalizeAddress(address);
-              try {
-                item.balance = await getAddressVotingBalance(
-                  api,
-                  normalizedAddress,
-                );
-              } catch (e) {
-                console.error(e);
-              }
-            } else {
-              item.balance = 0;
-            }
+          if (!api) {
+            return item;
+          }
+
+          if (!address) {
+            item.balance = 0;
+            return item;
+          }
+
+          if (
+            (chainType === ChainTypes.SUBSTRATE &&
+              isEthereumAddress(address)) ||
+            (chainType === ChainTypes.ETHEREUM && !isEthereumAddress(address))
+          ) {
+            item.balance = 0;
+            return item;
+          }
+
+          const normalizedAddress = normalizeAddress(address);
+          try {
+            item.balance = await getAddressVotingBalance(
+              api,
+              normalizedAddress,
+            );
+          } catch (e) {
+            console.error(e);
           }
 
           return item;
@@ -77,7 +93,7 @@ export function usePostCommentsFilteredData() {
 
       setMergedComments(data);
     }
-  }, [api, commentsData, getAddressVotesData]);
+  }, [api, commentsData, getAddressVotesData, chainType]);
 
   const filteredComments = useMemo(() => {
     const data = cloneDeep(mergedComments);

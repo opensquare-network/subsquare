@@ -4,11 +4,13 @@ import SignatoryStatus from "next-common/components/multisigs/signField/signator
 import SignatoryAction from "next-common/components/multisigs/signField/signatoryAction";
 
 export default function MultisigSignField({ multisig = {} }) {
-  return <div className="flex items-center justify-end gap-x-2">
-    <SignStatusOnProfile multisig={multisig} />
-    <AccountMultisigPageGuard>
-      <SignatoryStatus multisig={multisig} />
-      <SignatoryAction multisig={multisig} />
-    </AccountMultisigPageGuard>
-  </div>;
+  return (
+    <div className="flex items-center justify-end gap-x-2">
+      <SignStatusOnProfile multisig={multisig} />
+      <AccountMultisigPageGuard>
+        <SignatoryStatus multisig={multisig} />
+        <SignatoryAction multisig={multisig} />
+      </AccountMultisigPageGuard>
+    </div>
+  );
 }

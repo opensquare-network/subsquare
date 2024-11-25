@@ -12,8 +12,8 @@
   "dependencies": {
     "@interlay/monetary-js": "^0.5.3",
     "@next/env": "^13.3.0",
-    "@osn/icons": "^1.148.0",
-    "@polkadot/util-crypto": "^13.2.2",
+    "@osn/icons": "^1.152.0",
+    "@polkadot/util-crypto": "13.2.2",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
     "clsx": "^1.2.1",
