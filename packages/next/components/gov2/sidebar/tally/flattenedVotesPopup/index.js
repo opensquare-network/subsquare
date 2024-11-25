@@ -131,7 +131,7 @@ function VotesList({ items = [], loading, tab }) {
           columns={columns}
           rows={rows}
           loading={loading}
-          itemHeight={isMobile ? 113 : 52}
+          itemHeight={isMobile ? 112 : 52}
           listHeight={395}
         />
       </PopupListWrapper>
