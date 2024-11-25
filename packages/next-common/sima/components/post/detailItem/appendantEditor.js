@@ -12,10 +12,12 @@ import { useArticleActions } from "next-common/sima/context/articleActions";
 import { useAddDiscussionAppendant } from "next-common/sima/actions/appendant";
 import { getRealField } from "next-common/sima/actions/common";
 import usePostProxyAuthor from "next-common/hooks/usePostProxyAuthor";
+import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
 
 function MaybeProxyAppendButton({ submitAppendant, ...props }) {
+  const isAuthor = useIsPostAuthor();
   const proxyAddress = usePostProxyAuthor();
-  if (proxyAddress) {
+  if (!isAuthor && proxyAddress) {
     return (
       <PrimaryButton onClick={() => submitAppendant(proxyAddress)} {...props}>
         Append as Proxy
