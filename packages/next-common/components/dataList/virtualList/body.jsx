@@ -57,7 +57,7 @@ function VirtualListBody(
     <div
       className={cn(
         "datalist-body group/datalist-body",
-        "divide-y divide-neutral300 border-t border-b border-neutral300",
+        "divide-y divide-neutral300 border-b border-neutral300",
       )}
     >
       <FixedSizeList
