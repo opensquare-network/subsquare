@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import { isLoadingVoteCallsSelector } from "next-common/store/reducers/democracy/voteCalls";
-import Pagination from "next-common/components/pagination";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
@@ -17,8 +16,9 @@ import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "next-common/components/democracy/common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
-import DataList from "next-common/components/dataList";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import VirtualList from "next-common/components/dataList/virtualList";
+import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
 
 const BaseVotesPopup = dynamicPopup(() =>
   import("next-common/components/popup/baseVotesPopup"),
@@ -43,9 +43,6 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
     useDemocracyFetchVoteCalls(referendumIndex);
   const isLoading = useSelector(isLoadingVoteCallsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
-  const [ayePage, setAyePage] = useState(1);
-  const [nayPage, setNayPage] = useState(1);
-  const pageSize = 50;
 
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
@@ -62,38 +59,12 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  let page;
   let votes;
   if (tabIndex === "Aye") {
-    page = ayePage;
     votes = filteredAye;
   } else if (tabIndex === "Nay") {
-    page = nayPage;
     votes = filteredNay;
   }
-
-  const onPageChange = (e, target) => {
-    e.preventDefault();
-    if (tabIndex === "Aye") {
-      setAyePage(target);
-    } else if (tabIndex === "Nay") {
-      setNayPage(target);
-    }
-  };
-
-  const pagination = {
-    page,
-    pageSize,
-    total: votes?.length || 0,
-    onPageChange,
-  };
-
-  const sliceFrom = (pagination.page - 1) * pageSize;
-  const sliceTo = sliceFrom + pageSize;
-
-  const items = useMemo(() => {
-    return votes.slice(sliceFrom, sliceTo);
-  }, [votes, sliceFrom, sliceTo]);
 
   const searchBtn = (
     <SearchBtn
@@ -118,8 +89,7 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
         ayesCount={filteredAye?.length || 0}
         naysCount={filteredNay?.length || 0}
       />
-      <VotesList items={items} loading={isLoading} />
-      <Pagination {...pagination} />
+      <VotesList items={votes} loading={isLoading} />
     </BaseVotesPopup>
   );
 }
@@ -127,6 +97,7 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
 function VotesList({ items = [], loading }) {
   const post = usePost();
   const chainSettings = useChainSettings(post.indexer?.blockHeight);
+  const isMobile = useIsMobileDevice();
 
   const columns = [
     {
@@ -170,11 +141,13 @@ function VotesList({ items = [], loading }) {
 
   return (
     <PopupListWrapper>
-      <DataList
+      <VirtualList
         scrollToFirstRowOnChange
         loading={loading}
         columns={columns}
         rows={rows}
+        itemHeight={isMobile ? 112 : 52}
+        listHeight={395}
       />
     </PopupListWrapper>
   );

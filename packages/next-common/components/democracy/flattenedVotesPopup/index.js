@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import VotesTab, { tabs } from "./tab";
-import Pagination from "next-common/components/pagination";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import CapitalListItem from "next-common/components/dataList/capitalListItem";
@@ -19,17 +18,15 @@ import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "next-common/components/democracy/common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
-import DataList from "next-common/components/dataList";
 import { usePost } from "next-common/context/post";
+import VirtualList from "next-common/components/dataList/virtualList";
+import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
 
 export default function VotesPopup({ setShowVoteList }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
   const allAye = useSelector(allAyeSelector);
   const allNay = useSelector(allNaySelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
-  const [ayePage, setAyePage] = useState(1);
-  const [nayPage, setNayPage] = useState(1);
-  const pageSize = 50;
 
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
@@ -46,34 +43,12 @@ export default function VotesPopup({ setShowVoteList }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  let page;
   let votes;
   if (tabIndex === "Aye") {
-    page = ayePage;
     votes = filteredAye;
   } else {
-    page = nayPage;
     votes = filteredNay;
   }
-
-  function onPageChange(e, target) {
-    e.preventDefault();
-    if (tabIndex === "Aye") {
-      setAyePage(target);
-    } else {
-      setNayPage(target);
-    }
-  }
-
-  const pagination = {
-    page,
-    pageSize,
-    total: votes?.length || 0,
-    onPageChange,
-  };
-
-  const sliceFrom = (pagination.page - 1) * pageSize;
-  const sliceTo = sliceFrom + pageSize;
 
   const searchBtn = (
     <SearchBtn
@@ -97,12 +72,7 @@ export default function VotesPopup({ setShowVoteList }) {
         ayesCount={filteredAye?.length || 0}
         naysCount={filteredNay?.length || 0}
       />
-      <VotesList
-        items={votes.slice(sliceFrom, sliceTo)}
-        loading={!showVotesNumber}
-      />
-
-      <Pagination {...pagination} />
+      <VotesList items={votes} loading={!showVotesNumber} />
     </BaseVotesPopup>
   );
 }
@@ -110,6 +80,7 @@ export default function VotesPopup({ setShowVoteList }) {
 function VotesList({ loading, items = [] }) {
   const post = usePost();
   const chainSettings = useChainSettings(post.indexer?.blockHeight);
+  const isMobile = useIsMobileDevice();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   const columns = [
@@ -155,11 +126,13 @@ function VotesList({ loading, items = [] }) {
   return (
     <>
       <PopupListWrapper>
-        <DataList
+        <VirtualList
           scrollToFirstRowOnChange
           columns={columns}
           rows={rows}
           loading={loading}
+          itemHeight={isMobile ? 112 : 52}
+          listHeight={395}
         />
       </PopupListWrapper>
 
