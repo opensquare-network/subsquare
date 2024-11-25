@@ -71,6 +71,11 @@ export default function VirtualList({
       : {}),
   }));
 
+  const minListHeight = Math.min(rows.length * itemHeight, listHeight);
+
+  const calculatedListHeight =
+    rows.length * itemHeight <= listHeight ? minListHeight : listHeight;
+
   let content;
   if (loading) {
     content = (
@@ -88,7 +93,7 @@ export default function VirtualList({
         columns={columns}
         highlightedIndexes={highlightedIndexes}
         itemHeight={itemHeight}
-        listHeight={listHeight}
+        listHeight={calculatedListHeight}
         ref={bodyRef}
       />
     );
