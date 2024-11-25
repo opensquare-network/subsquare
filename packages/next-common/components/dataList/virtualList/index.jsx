@@ -1,77 +1,134 @@
+import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import DataListItem from "../item";
-import { FixedSizeList } from "react-window";
-import { forwardRef } from "react";
+import NoData from "../../noData";
+import DataListBody, { defaultRenderItem } from "./body";
+import { useDeepCompareEffect, useUpdateEffect } from "react-use";
+import { useEffect, useRef, useState } from "react";
+import { useNavCollapsed } from "next-common/context/nav";
+import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
+import { isNil } from "lodash-es";
 
-export default forwardRef(VirtualListBody);
+export default function VirtualList({
+  columns = [],
+  rows = [],
+  loading = false,
+  scrollToFirstRowOnChange = false,
+  className = "",
+  noDataText = "No current votes",
+  bordered = false,
+  highlightedIndexes = [],
+  renderItem = defaultRenderItem,
+  itemHeight = 50,
+  listHeight = 400,
+}) {
+  const listRef = useRef();
+  const bodyRef = useRef();
+  const [navCollapsed] = useNavCollapsed();
+  const [listOverflow, setListOverflow] = useState(false);
+  const screenSize = useScreenSize();
 
-// TODO: 1. item render,
-// TODO: 2. mobile data list.
-// TODO: 3. scroll bar style.
-export const defaultRenderItem = (DataListItem, idx, rows) => (
-  <DataListItem key={idx} row={rows[idx]} />
-);
+  const handleListOverflowSize = () => {
+    const parentEl = listRef.current?.parentElement;
+    const listEl = listRef.current;
+    if (!parentEl || !listEl) {
+      return;
+    }
+    const parentWidth = parentEl?.clientWidth;
+    const listWidth = listEl?.scrollWidth;
 
-function VirtualListBody(
-  {
-    rows = [],
-    renderItem = defaultRenderItem,
-    columnClassNames = [],
-    columnStyles = [],
-    columns = [],
-    highlightedIndexes = [],
-    itemHeight = 50,
-    listHeight = 400,
-  },
-  ref,
-) {
-  const renderRow = ({ index, style }) => {
-    const row = rows[index];
-    const isLastRow = index === rows.length - 1;
-
-    return (
-      <div
-        style={style}
-        key={row.key || index}
-        className={cn(
-          "flex items-center",
-          !isLastRow && "border-b border-neutral300",
-          highlightedIndexes.includes(index) ? "bg-highlight" : "",
-        )}
-      >
-        {renderItem(
-          ({ row }) => (
-            <DataListItem
-              row={row}
-              columnClassNames={columnClassNames}
-              columnStyles={columnStyles}
-              columns={columns}
-              highlighted={highlightedIndexes.includes(index)}
-            />
-          ),
-          index,
-          rows,
-        )}
-      </div>
-    );
+    if (listWidth > parentWidth) {
+      setListOverflow(true);
+    }
   };
+
+  useUpdateEffect(handleListOverflowSize, [screenSize, navCollapsed]);
+  useEffect(handleListOverflowSize, [listRef]);
+
+  useDeepCompareEffect(() => {
+    if (scrollToFirstRowOnChange) {
+      if (bodyRef.current) {
+        bodyRef.current.scrollTo(0, 0);
+      }
+    }
+  }, [rows]);
+
+  const columnClassNames = columns.map((column) =>
+    cn(
+      "text14Medium",
+      !column.className
+        ?.split(" ")
+        ?.some((className) => className.startsWith("w-")) &&
+        !column?.style?.width &&
+        !column?.width &&
+        "flex-1 w-full",
+      column.className,
+    ),
+  );
+  const columnStyles = columns.map((column) => ({
+    ...column.style,
+    ...(!isNil(column.width)
+      ? { width: column.width, minWidth: column.width }
+      : {}),
+  }));
+
+  let content;
+  if (loading) {
+    content = (
+      <SystemLoading className="w-5 h-5 mt-4 mb-2 mx-auto [&_path]:stroke-textDisabled" />
+    );
+  } else if (!rows.length) {
+    content = <NoData showIcon={false} text={noDataText} />;
+  } else {
+    content = (
+      <DataListBody
+        rows={rows}
+        renderItem={renderItem}
+        columnClassNames={columnClassNames}
+        columnStyles={columnStyles}
+        columns={columns}
+        highlightedIndexes={highlightedIndexes}
+        itemHeight={itemHeight}
+        listHeight={listHeight}
+      />
+    );
+  }
 
   return (
     <div
-      ref={ref}
       className={cn(
-        "datalist-body group/datalist-body",
-        "scrollbar-pretty divide-y divide-neutral300 border-t border-b border-neutral300",
+        "w-full scrollbar-hidden overflow-auto text-textPrimary bg-neutral100",
+        bordered && cn("p-6 border border-neutral300 shadow-100 rounded-xl"),
+        className,
       )}
     >
-      <FixedSizeList
-        height={listHeight}
-        itemCount={rows.length}
-        itemSize={itemHeight}
-        width="100%"
+      <div
+        ref={listRef}
+        role="list"
+        className={cn("datalist w-full", listOverflow && "min-w-min")}
       >
-        {renderRow}
-      </FixedSizeList>
+        <div
+          className={cn(
+            "datalist-head flex items-center pb-3 border-b border-neutral300",
+            navCollapsed ? "max-sm:hidden" : "max-md:hidden",
+          )}
+        >
+          {columns.map((column, idx) => (
+            <div
+              key={idx}
+              className={cn(
+                "text-textTertiary",
+                column.headClassName,
+                columnClassNames[idx],
+              )}
+              style={columnStyles[idx]}
+            >
+              {column.name}
+            </div>
+          ))}
+        </div>
+
+        {content}
+      </div>
     </div>
   );
 }
