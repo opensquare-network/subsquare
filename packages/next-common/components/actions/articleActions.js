@@ -14,6 +14,32 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useArticleActions } from "next-common/sima/context/articleActions";
 import { useMyUpVote } from "next-common/context/post/useMyUpVote";
 import useCanEditPost from "next-common/hooks/useCanEditPost";
+import useShouldUseSimaPostEdit from "next-common/sima/hooks/useShouldUseSimaPostEdit";
+
+function SimaPostContextMenu({ isAuthor, setIsEdit }) {
+  const canEdit = useCanEditPost();
+  return (
+    <PostContextMenu
+      isAuthor={isAuthor}
+      editable={canEdit}
+      setIsEdit={setIsEdit}
+    />
+  );
+}
+
+function MaybeSimaPostContextMenu({ isAuthor, setIsEdit }) {
+  const isSima = useShouldUseSimaPostEdit();
+  if (isSima) {
+    return <SimaPostContextMenu isAuthor={isAuthor} setIsEdit={setIsEdit} />;
+  }
+  return (
+    <PostContextMenu
+      isAuthor={isAuthor}
+      editable={isAuthor}
+      setIsEdit={setIsEdit}
+    />
+  );
+}
 
 export default function ArticleActions({ setIsEdit, extraActions }) {
   const user = useUser();
@@ -23,7 +49,6 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
   const thumbsUp = !!myUpVote;
   const focusEditor = useFocusEditor();
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
-  const canEdit = useCanEditPost();
 
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
@@ -80,11 +105,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
         </Wrapper>
 
         {user && (
-          <PostContextMenu
-            isAuthor={isAuthor}
-            editable={canEdit}
-            setIsEdit={setIsEdit}
-          />
+          <MaybeSimaPostContextMenu isAuthor={isAuthor} setIsEdit={setIsEdit} />
         )}
       </div>
 

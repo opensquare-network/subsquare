@@ -4,17 +4,18 @@ import { useAsync } from "react-use";
 
 export default function useQueryMyProxied() {
   const user = useUser();
-  const { value, loading } = useAsync(() => {
+  const { value, loading } = useAsync(async () => {
     if (!user?.address) {
       return [];
     }
-    return nextApi.fetch("proxies", {
+
+    const { result } = await nextApi.fetch("proxies", {
       delegatee: user?.address,
       noDelay: true,
     });
+
+    return result || [];
   }, [user?.address]);
 
-  const proxies = value?.result ?? [];
-
-  return { proxies, loading };
+  return { proxies: value, loading };
 }

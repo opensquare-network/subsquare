@@ -38,6 +38,38 @@ function jumpToAnchor(anchorId) {
   });
 }
 
+function useIsShouldUseSimaCommentEdit() {
+  const comment = useComment();
+  const { supportSima } = useCommentActions();
+  return supportSima && comment.dataSource === "sima";
+}
+
+function SimaEditInput({ update, ...props }) {
+  const comment = useComment();
+  const isProxyAuthor = useIsCommentProxyAuthor();
+  return (
+    <EditInput
+      {...props}
+      updateButtonText={isProxyAuthor ? "Update as Proxy" : "Update"}
+      update={(content, contentType) =>
+        update(
+          content,
+          contentType,
+          isProxyAuthor ? comment.proposer : undefined,
+        )
+      }
+    />
+  );
+}
+
+function MaybeSimaEditInput(props) {
+  const isUseSimaEdit = useIsShouldUseSimaCommentEdit();
+  if (isUseSimaEdit) {
+    return <SimaEditInput {...props} />;
+  }
+  return <EditInput {...props} />;
+}
+
 function CommentItemImpl({
   replyToCommentId,
   replyToComment,
@@ -58,7 +90,6 @@ function CommentItemImpl({
   const setComments = useSetComments();
   const isUniversalComments = useIsUniversalPostComments();
   const { getComment, updateComment } = useCommentActions();
-  const isProxyAuthor = useIsCommentProxyAuthor();
 
   // Jump to comment when anchor is set
   useEffect(() => {
@@ -156,11 +187,7 @@ function CommentItemImpl({
             </>
           )}
           {isEdit && (
-            <EditInput
-              isSima={comment.dataSource === "sima"}
-              updateAsProxyAddress={
-                isProxyAuthor ? comment.proposer : undefined
-              }
+            <MaybeSimaEditInput
               editContent={comment.content}
               editContentType={comment.contentType}
               onFinishedEdit={async (reload) => {

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import SecondaryButton from "next-common/lib/button/secondary";
 import Editor from "./editor";
-import MaybeProxyEditButton from "./maybeProxyEditButton";
+import PrimaryButton from "next-common/lib/button/primary";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -20,8 +20,7 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function EditInput({
-  isSima,
-  updateAsProxyAddress,
+  updateButtonText = "Update",
   editContent = "",
   editContentType,
   onFinishedEdit,
@@ -35,10 +34,10 @@ export default function EditInput({
 
   const isEmpty = content === "" || content === "<p><br></p>";
 
-  const onUpdate = async (realAddress) => {
+  const onUpdate = async () => {
     setLoading(true);
     try {
-      const { result, error } = await update(content, contentType, realAddress);
+      const { result, error } = await update(content, contentType);
       if (error) {
         setErrors(error);
       } else if (result) {
@@ -72,13 +71,13 @@ export default function EditInput({
             Cancel
           </SecondaryButton>
         )}
-        <MaybeProxyEditButton
-          isSima={isSima}
-          isProxy={!!updateAsProxyAddress}
+        <PrimaryButton
           loading={loading}
           disabled={isEmpty}
-          onClick={() => onUpdate(updateAsProxyAddress)}
-        />
+          onClick={() => onUpdate()}
+        >
+          {updateButtonText}
+        </PrimaryButton>
       </ButtonWrapper>
     </Wrapper>
   );

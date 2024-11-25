@@ -15,7 +15,11 @@ export function useIsPostAuthor() {
     if (!user) {
       setIsAuthor(false);
     } else if (type === detailPageCategory.POST) {
-      setIsAuthor(post.author?.username === user.username);
+      if (post.dataSource === "sima") {
+        setIsAuthor(isSameAddress(post.proposer, user.address));
+      } else {
+        setIsAuthor(post.author?.username === user.username);
+      }
     } else {
       setIsAuthor(
         post?.authors?.some((address) => isSameAddress(address, user.address)),

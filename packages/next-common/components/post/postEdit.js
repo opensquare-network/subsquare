@@ -14,24 +14,32 @@ import { useArticleActions } from "next-common/sima/context/articleActions";
 import { getRealField } from "next-common/sima/actions/common";
 import usePostProxyAuthor from "next-common/hooks/usePostProxyAuthor";
 import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
+import useShouldUseSimaPostEdit from "next-common/sima/hooks/useShouldUseSimaPostEdit";
 
 const UploaderWrapper = styled.div`
   margin-top: 16px;
 `;
 
-function useShouldUseSimaEdit() {
-  const post = usePost();
-  const { supportSima } = useArticleActions();
+function SimaEditInput({ update, ...props }) {
+  const proxyAuthor = usePostProxyAuthor();
+  const isAuthor = useIsPostAuthor();
+  return (
+    <EditInput
+      {...props}
+      updateButtonText={isAuthor ? "Update" : "Update as Proxy"}
+      update={(content, contentType) =>
+        update(content, contentType, !isAuthor ? proxyAuthor : undefined)
+      }
+    />
+  );
+}
 
-  if (!supportSima) {
-    return false;
+function MaybeSimaEditInput(props) {
+  const isUseSimaEdit = useShouldUseSimaPostEdit();
+  if (isUseSimaEdit) {
+    return <SimaEditInput {...props} />;
   }
-
-  if (post?.refToPost?.postType === detailPageCategory.POST) {
-    return post?.refToPost?.dataSource === "sima";
-  }
-
-  return true;
+  return <EditInput {...props} />;
 }
 
 export default function PostEdit({ setIsEdit }) {
@@ -43,9 +51,6 @@ export default function PostEdit({ setIsEdit }) {
   const [selectedLabels, setSelectedLabels] = useState(post.labels || []);
   const postType = useDetailType();
   const { provideContext, reloadPost } = useArticleActions();
-  const proxyAuthor = usePostProxyAuthor();
-  const isAuthor = useIsPostAuthor();
-  const isSima = useShouldUseSimaEdit();
 
   const [isSetBanner, setIsSetBanner] = useState(!!post.bannerCid);
   useEffect(() => {
@@ -110,9 +115,7 @@ export default function PostEdit({ setIsEdit }) {
       )}
 
       <FormItem label="Issue">
-        <EditInput
-          isSima={isSima}
-          updateAsProxyAddress={!isAuthor ? proxyAuthor : undefined}
+        <MaybeSimaEditInput
           editContent={post.content || ""}
           editContentType={post.contentType}
           onFinishedEdit={async (reload) => {
