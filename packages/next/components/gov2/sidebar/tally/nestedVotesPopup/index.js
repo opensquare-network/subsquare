@@ -15,6 +15,7 @@ import filterTabs from "../common/filterTabs";
 import VirtualList from "next-common/components/dataList/virtualList";
 import AccountCell from "./accountCell";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
@@ -91,6 +92,7 @@ function VotesList({ items = [], loading }) {
 
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState();
+  const isMobile = useIsMobileDevice();
 
   const columns = [
     {
@@ -140,7 +142,7 @@ function VotesList({ items = [], loading }) {
           columns={columns}
           rows={rows}
           loading={loading}
-          itemHeight={52}
+          itemHeight={isMobile ? 113 : 52}
           listHeight={395}
         />
       </PopupListWrapper>

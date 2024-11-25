@@ -47,7 +47,7 @@ export default function VirtualList({
   useDeepCompareEffect(() => {
     if (scrollToFirstRowOnChange) {
       if (bodyRef.current) {
-        bodyRef.current.scrollTo(0, 0);
+        bodyRef.current.scrollTo(0);
       }
     }
   }, [rows]);
@@ -89,6 +89,7 @@ export default function VirtualList({
         highlightedIndexes={highlightedIndexes}
         itemHeight={itemHeight}
         listHeight={listHeight}
+        ref={bodyRef}
       />
     );
   }

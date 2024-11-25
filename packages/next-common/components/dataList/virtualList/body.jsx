@@ -5,9 +5,6 @@ import { forwardRef } from "react";
 
 export default forwardRef(VirtualListBody);
 
-// TODO: 1. item render,
-// TODO: 2. mobile data list.
-// TODO: 3. scroll bar style.
 export const defaultRenderItem = (DataListItem, idx, rows) => (
   <DataListItem key={idx} row={rows[idx]} />
 );
@@ -58,16 +55,17 @@ function VirtualListBody(
 
   return (
     <div
-      ref={ref}
       className={cn(
         "datalist-body group/datalist-body",
-        "scrollbar-pretty divide-y divide-neutral300 border-t border-b border-neutral300",
+        "divide-y divide-neutral300 border-t border-b border-neutral300",
       )}
     >
       <FixedSizeList
+        ref={ref}
         height={listHeight}
         itemCount={rows.length}
         itemSize={itemHeight}
+        className="scrollbar-pretty"
         width="100%"
       >
         {renderRow}
