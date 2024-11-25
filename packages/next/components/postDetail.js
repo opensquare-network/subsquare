@@ -4,6 +4,7 @@ import { OffChainArticleActionsProvider } from "next-common/noSima/context/artic
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { usePost } from "next-common/context/post";
 import SimaPostDetail from "next-common/sima/components/post/postDetail";
+import { useChainSettings } from "next-common/context/chain";
 
 function DetailContent() {
   return (
@@ -14,9 +15,10 @@ function DetailContent() {
 }
 
 export default function PostDetail() {
+  const { sima } = useChainSettings();
   const post = usePost();
 
-  if (post.dataSource === "sima") {
+  if (sima && post.dataSource === "sima") {
     return <SimaPostDetail />;
   }
 

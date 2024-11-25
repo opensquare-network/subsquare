@@ -217,6 +217,18 @@ export function useReplaceProposalComment() {
   const replaceComment = useReplaceComment();
   return useCallback(
     async (post, replyToComment, comment, content, contentType, real) => {
+      if (isLinkedToSimaDiscussion(post)) {
+        return replaceComment(
+          "discussions",
+          post,
+          replyToComment,
+          comment,
+          content,
+          contentType,
+          real,
+        );
+      }
+
       return replaceComment(
         getDetailPageCategory(post),
         post,
