@@ -10,7 +10,12 @@ import { useProfileCollectivesTabs } from "./useProfileCollectivesTabs";
 export default function useProfileTabs() {
   const { id } = usePageProps();
   const {
-    modules: { referenda: hasReferenda, fellowship: hasFellowship, democracy },
+    modules: {
+      referenda: hasReferenda,
+      fellowship: hasFellowship,
+      democracy,
+      proxy,
+    },
     integrations,
     hasMultisig,
     hasIdentityTimeline,
@@ -86,6 +91,15 @@ export default function useProfileTabs() {
         exactMatch: false,
       });
     }
+  }
+
+  if (proxy) {
+    tabs.push({
+      label: "Proxy",
+      url: `${prefix}proxy/myProxies`,
+      root: `${prefix}proxy`,
+      exactMatch: false,
+    });
   }
 
   tabs.push(...collectivesTabs);
