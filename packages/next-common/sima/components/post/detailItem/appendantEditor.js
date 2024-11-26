@@ -20,7 +20,7 @@ function MaybeProxyAppendButton({ submitAppendant, ...props }) {
   if (!isAuthor && proxyAddress) {
     return (
       <PrimaryButton onClick={() => submitAppendant(proxyAddress)} {...props}>
-        Append as Proxy
+        Append as a proxy
       </PrimaryButton>
     );
   }

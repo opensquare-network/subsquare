@@ -50,7 +50,7 @@ function SimaEditInput({ update, ...props }) {
   return (
     <EditInput
       {...props}
-      updateButtonText={isProxyAuthor ? "Update as Proxy" : "Update"}
+      updateButtonText={isProxyAuthor ? "Update as a proxy" : "Update"}
       update={(content, contentType) =>
         update(
           content,
