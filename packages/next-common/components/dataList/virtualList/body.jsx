@@ -1,27 +1,34 @@
 import { cn } from "next-common/utils";
 import DataListItem from "../item";
 import { FixedSizeList } from "react-window";
-import { forwardRef } from "react";
-
-export default forwardRef(VirtualListBody);
+import { useRef } from "react";
+import { useDeepCompareEffect } from "react-use";
 
 export const defaultRenderItem = (DataListItem, idx, rows) => (
   <DataListItem key={idx} row={rows[idx]} />
 );
 
-function VirtualListBody(
-  {
-    rows = [],
-    renderItem = defaultRenderItem,
-    columnClassNames = [],
-    columnStyles = [],
-    columns = [],
-    highlightedIndexes = [],
-    itemHeight = 50,
-    listHeight = 400,
-  },
-  ref,
-) {
+export default function VirtualListBody({
+  rows = [],
+  renderItem = defaultRenderItem,
+  columnClassNames = [],
+  columnStyles = [],
+  columns = [],
+  highlightedIndexes = [],
+  scrollToFirstRowOnChange,
+  itemHeight = 50,
+  listHeight = 400,
+}) {
+  const bodyRef = useRef();
+
+  useDeepCompareEffect(() => {
+    if (scrollToFirstRowOnChange && bodyRef.current) {
+      requestAnimationFrame(() => {
+        bodyRef.current.scrollTo(0, 0);
+      });
+    }
+  }, [rows]);
+
   const renderRow = ({ index, style }) => {
     const row = rows[index];
     const isLastRow = index === rows.length - 1;
@@ -61,12 +68,13 @@ function VirtualListBody(
       )}
     >
       <FixedSizeList
-        ref={ref}
+        ref={bodyRef}
         height={listHeight}
         itemCount={rows.length}
         itemSize={itemHeight}
         className="scrollbar-pretty"
         width="100%"
+        overscanCount={20}
       >
         {renderRow}
       </FixedSizeList>
