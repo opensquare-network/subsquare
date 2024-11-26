@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import SecondaryButton from "next-common/lib/button/secondary";
-import PrimaryButton from "next-common/lib/button/primary";
 import Editor from "./editor";
+import PrimaryButton from "next-common/lib/button/primary";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -20,6 +20,7 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function EditInput({
+  updateButtonText = "Update",
   editContent = "",
   editContentType,
   onFinishedEdit,
@@ -70,8 +71,12 @@ export default function EditInput({
             Cancel
           </SecondaryButton>
         )}
-        <PrimaryButton loading={loading} onClick={onUpdate} disabled={isEmpty}>
-          Update
+        <PrimaryButton
+          loading={loading}
+          disabled={isEmpty}
+          onClick={() => onUpdate()}
+        >
+          {updateButtonText}
         </PrimaryButton>
       </ButtonWrapper>
     </Wrapper>

@@ -74,7 +74,7 @@ export function CommentContextMenu() {
   );
 }
 
-export function PostContextMenu({ editable, setIsAppend, setIsEdit }) {
+export function PostContextMenu({ isAuthor, canEdit, setIsAppend, setIsEdit }) {
   const [showLinkPopup, setShowLinkPopup] = useState(false);
   const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
 
@@ -107,9 +107,9 @@ export function PostContextMenu({ editable, setIsAppend, setIsEdit }) {
         />
         {show && (
           <OptionWrapper>
-            {editable && (
+            {canEdit && (
               <>
-                {!isSimaDiscussion && linkOrUnlinkMenuItem}
+                {isAuthor && !isSimaDiscussion && linkOrUnlinkMenuItem}
                 {post.content ? (
                   <AppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />
                 ) : (

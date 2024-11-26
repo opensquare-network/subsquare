@@ -3,7 +3,7 @@ import Link from "next/link";
 import Timeline from "next-common/components/timeline";
 import { isMotionEnded } from "next-common/utils";
 import { findLastIndex } from "lodash-es";
-import ArticleContent from "next-common/components/articleContent";
+import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
@@ -199,7 +199,7 @@ export default function TechcommMotionDetail({ motion }) {
     <div className="flex flex-col gap-y-12">
       <DetailContentBase>
         <TechcommMotionDetailHeader motion={motion} />
-        <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+        <MaybeSimaDiscussionArticleContent />
       </DetailContentBase>
 
       <DetailMultiTabs

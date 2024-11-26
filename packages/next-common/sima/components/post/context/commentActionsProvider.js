@@ -2,6 +2,7 @@ import CommentActionsContext from "next-common/sima/context/commentActions";
 import {
   useCreateDiscussionComment,
   useCreateDiscussionCommentReply,
+  useReplaceDiscussionComment,
 } from "next-common/sima/actions/comment";
 import { useDiscussionCommentUpVote } from "next-common/sima/actions/upVote";
 import { useDiscussionCommentCancelUpVote } from "next-common/sima/actions/cancelUpVote";
@@ -13,6 +14,7 @@ export function DiscussionCommentActionsProvider({ children }) {
   const createCommentReply = useCreateDiscussionCommentReply();
   const upVoteComment = useDiscussionCommentUpVote();
   const cancelUpVoteComment = useDiscussionCommentCancelUpVote();
+  const updateComment = useReplaceDiscussionComment();
 
   return (
     <CommentActionsContext.Provider
@@ -23,6 +25,7 @@ export function DiscussionCommentActionsProvider({ children }) {
         createCommentReply,
         upVoteComment,
         cancelUpVoteComment,
+        updateComment,
       }}
     >
       {children}

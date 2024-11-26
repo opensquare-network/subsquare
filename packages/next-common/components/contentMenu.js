@@ -231,19 +231,14 @@ export function CommentContextMenu({ editable, setIsEdit }) {
       />
       {show && (
         <OptionWrapper>
-          {comment?.dataSource !== "sima" && (
-            <>
-              {editable && (
-                <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
-              )}
-              {(editable || isAdmin) && (
-                <DeleteMenuItem
-                  setShowDeletePopup={setShowDeletePopup}
-                  setShow={setShow}
-                />
-              )}
-            </>
+          {editable && <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />}
+          {comment?.dataSource !== "sima" && (editable || isAdmin) && (
+            <DeleteMenuItem
+              setShowDeletePopup={setShowDeletePopup}
+              setShow={setShow}
+            />
           )}
+
           <CopyMenuItem onCopy={onCopy} />
         </OptionWrapper>
       )}
@@ -258,7 +253,7 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   );
 }
 
-export function PostContextMenu({ editable, setIsEdit }) {
+export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const post = usePost();
@@ -317,7 +312,7 @@ export function PostContextMenu({ editable, setIsEdit }) {
         <OptionWrapper>
           {editable && (
             <>
-              {!isDiscussionPost && linkOrUnlinkMenuItem}
+              {isAuthor && !isDiscussionPost && linkOrUnlinkMenuItem}
               <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
             </>
           )}

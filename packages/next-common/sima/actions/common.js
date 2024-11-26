@@ -39,3 +39,14 @@ export function checkSimaDataSource(data) {
     throw new Error("Invalid data source");
   }
 }
+
+export function getRealField(realAddress) {
+  if (!realAddress) {
+    return;
+  }
+
+  return {
+    address: realAddress,
+    section: "proxy",
+  };
+}

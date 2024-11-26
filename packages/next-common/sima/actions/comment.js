@@ -10,6 +10,7 @@ import {
 import {
   useCreateOffChainComment,
   useCreateOffChainCommentReply,
+  useUpdateOffChainComment,
 } from "next-common/noSima/actions/comment";
 import getProposalIndexer from "../utils/getProposalIndexer";
 import getDetailPageCategory from "../utils/getDetailPageCategoryFromPostType";
@@ -155,5 +156,89 @@ export function useCreateProposalCommentReply() {
       createDiscussionCommentReply,
       createOffChainCommentReply,
     ],
+  );
+}
+
+function useReplaceComment() {
+  const signSimaMessage = useSignSimaMessage();
+  const updateOffChainComment = useUpdateOffChainComment();
+
+  return useCallback(
+    async (type, post, replyToComment, comment, content, contentType, real) => {
+      if (comment.dataSource !== "sima") {
+        return await updateOffChainComment(
+          post,
+          replyToComment,
+          comment,
+          content,
+          contentType,
+        );
+      }
+
+      const entity = {
+        action: "replace_comment",
+        cid: replyToComment?.cid || post?.cid,
+        old_comment_cid: comment.cid,
+        ...getContentField(content, contentType),
+        timestamp: Date.now(),
+        real,
+      };
+      const data = await signSimaMessage(entity);
+
+      return await nextApi.patch(
+        `sima/${type}/${post.cid}/comments/${comment.cid}`,
+        data,
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [signSimaMessage, getProposalIndexer],
+  );
+}
+
+export function useReplaceDiscussionComment() {
+  const replaceComment = useReplaceComment();
+  return useCallback(
+    async (post, replyToComment, comment, content, contentType, real) => {
+      return replaceComment(
+        "discussions",
+        post,
+        replyToComment,
+        comment,
+        content,
+        contentType,
+        real,
+      );
+    },
+    [replaceComment],
+  );
+}
+
+export function useReplaceProposalComment() {
+  const replaceComment = useReplaceComment();
+  return useCallback(
+    async (post, replyToComment, comment, content, contentType, real) => {
+      if (isLinkedToSimaDiscussion(post)) {
+        return replaceComment(
+          "discussions",
+          post,
+          replyToComment,
+          comment,
+          content,
+          contentType,
+          real,
+        );
+      }
+
+      return replaceComment(
+        getDetailPageCategory(post),
+        post,
+        replyToComment,
+        comment,
+        content,
+        contentType,
+        real,
+      );
+    },
+    [replaceComment],
   );
 }

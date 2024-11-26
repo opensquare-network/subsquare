@@ -19,6 +19,9 @@ import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentUser from "./user";
 import { useCommentActions } from "next-common/sima/context/commentActions";
+import { usePost } from "next-common/context/post";
+import { getRealField } from "next-common/sima/actions/common";
+import useIsCommentProxyAuthor from "next-common/hooks/useIsCommentProxyAuthor";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -35,6 +38,38 @@ function jumpToAnchor(anchorId) {
   });
 }
 
+function useIsShouldUseSimaCommentEdit() {
+  const comment = useComment();
+  const { supportSima } = useCommentActions();
+  return supportSima && comment.dataSource === "sima";
+}
+
+function SimaEditInput({ update, ...props }) {
+  const comment = useComment();
+  const isProxyAuthor = useIsCommentProxyAuthor();
+  return (
+    <EditInput
+      {...props}
+      updateButtonText={isProxyAuthor ? "Update as Proxy" : "Update"}
+      update={(content, contentType) =>
+        update(
+          content,
+          contentType,
+          isProxyAuthor ? comment.proposer : undefined,
+        )
+      }
+    />
+  );
+}
+
+function MaybeSimaEditInput(props) {
+  const isUseSimaEdit = useIsShouldUseSimaCommentEdit();
+  if (isUseSimaEdit) {
+    return <SimaEditInput {...props} />;
+  }
+  return <EditInput {...props} />;
+}
+
 function CommentItemImpl({
   replyToCommentId,
   replyToComment,
@@ -42,6 +77,7 @@ function CommentItemImpl({
   reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
 }) {
+  const post = usePost();
   const comment = useComment();
   const refCommentTree = useRef();
   const [isEdit, setIsEdit] = useState(false);
@@ -99,8 +135,15 @@ function CommentItemImpl({
     }
   }, [refCommentTree]);
 
-  const editComment = async (content, contentType) => {
-    return await updateComment(comment._id, content, contentType);
+  const editComment = async (content, contentType, realAddress) => {
+    return await updateComment(
+      post,
+      replyToComment !== comment ? replyToComment : null,
+      comment,
+      content,
+      contentType,
+      getRealField(realAddress),
+    );
   };
 
   return (
@@ -144,7 +187,7 @@ function CommentItemImpl({
             </>
           )}
           {isEdit && (
-            <EditInput
+            <MaybeSimaEditInput
               editContent={comment.content}
               editContentType={comment.contentType}
               onFinishedEdit={async (reload) => {

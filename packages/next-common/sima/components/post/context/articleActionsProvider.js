@@ -10,7 +10,7 @@ export function DiscussionArticleActionsProvider({ children }) {
 
   return (
     <ArticleActionsContext.Provider
-      value={{ upVote, cancelUpVote, reloadPost }}
+      value={{ supportSima: true, upVote, cancelUpVote, reloadPost }}
     >
       {children}
     </ArticleActionsContext.Provider>
