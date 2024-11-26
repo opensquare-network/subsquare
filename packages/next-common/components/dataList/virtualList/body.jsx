@@ -22,10 +22,10 @@ export default function VirtualListBody({
   const bodyRef = useRef();
 
   useDeepCompareEffect(() => {
-    if (scrollToFirstRowOnChange) {
-      if (bodyRef.current) {
-        bodyRef.current.scrollTo(0);
-      }
+    if (scrollToFirstRowOnChange && bodyRef.current) {
+      requestAnimationFrame(() => {
+        bodyRef.current.scrollTo(0, 0);
+      });
     }
   }, [rows]);
 
@@ -74,6 +74,7 @@ export default function VirtualListBody({
         itemSize={itemHeight}
         className="scrollbar-pretty"
         width="100%"
+        overscanCount={20}
       >
         {renderRow}
       </FixedSizeList>
