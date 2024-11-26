@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.3.7
+
+date: 2024-11-26
+
+- [Medium] Support comments replacement by SIMA spec.
+- Improve referenda votes list by virtual list.
+- Add a hot symbol to polkadot referenda stable coin spend template.
+- Improve coretime total period by show the remaining time.
+
 # 4.3.6
 
 date: 2024-11-20
