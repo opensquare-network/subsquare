@@ -2,7 +2,7 @@ import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import NoData from "../../noData";
 import DataListBody, { defaultRenderItem } from "./body";
-import { useDeepCompareEffect, useUpdateEffect } from "react-use";
+import { useUpdateEffect } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
@@ -22,7 +22,6 @@ export default function VirtualList({
   listHeight = 400,
 }) {
   const listRef = useRef();
-  const bodyRef = useRef();
   const [navCollapsed] = useNavCollapsed();
   const [listOverflow, setListOverflow] = useState(false);
   const screenSize = useScreenSize();
@@ -43,14 +42,6 @@ export default function VirtualList({
 
   useUpdateEffect(handleListOverflowSize, [screenSize, navCollapsed]);
   useEffect(handleListOverflowSize, [listRef]);
-
-  useDeepCompareEffect(() => {
-    if (scrollToFirstRowOnChange) {
-      if (bodyRef.current) {
-        bodyRef.current.scrollTo(0);
-      }
-    }
-  }, [rows]);
 
   const columnClassNames = columns.map((column) =>
     cn(
@@ -94,7 +85,7 @@ export default function VirtualList({
         highlightedIndexes={highlightedIndexes}
         itemHeight={itemHeight}
         listHeight={calculatedListHeight}
-        ref={bodyRef}
+        scrollToFirstRowOnChange={scrollToFirstRowOnChange}
       />
     );
   }
