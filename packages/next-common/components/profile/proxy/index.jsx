@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import PageUrlTabs from "next-common/components/pageTabs/pageUrlTabs";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { OnChainProxiesProvider } from "next-common/context/proxy";
 
 export default function Proxy() {
   const address = useProfileAddress();
@@ -19,7 +20,7 @@ export default function Proxy() {
 
   useEffect(() => {
     if (!tab || tab === "/") {
-      router.push(`${prefix}/received`, undefined, {
+      router.push(`${prefix}/my`, undefined, {
         shallow: true,
       });
     }
@@ -28,7 +29,7 @@ export default function Proxy() {
   const tabs = useMemo(
     () => [
       {
-        url: `${prefix}/myProxies`,
+        url: `${prefix}/my`,
         name: "My Proxies",
         content: <MyProxies />,
       },
@@ -43,7 +44,9 @@ export default function Proxy() {
 
   return (
     <div className="ml-6">
-      <PageUrlTabs tabs={tabs} />
+      <OnChainProxiesProvider>
+        <PageUrlTabs tabs={tabs} />
+      </OnChainProxiesProvider>
     </div>
   );
 }

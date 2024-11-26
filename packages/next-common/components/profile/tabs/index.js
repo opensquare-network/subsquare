@@ -96,7 +96,7 @@ export default function useProfileTabs() {
   if (proxy) {
     tabs.push({
       label: "Proxy",
-      url: `${prefix}proxy/myProxies`,
+      url: `${prefix}proxy/my`,
       root: `${prefix}proxy`,
       exactMatch: false,
     });
