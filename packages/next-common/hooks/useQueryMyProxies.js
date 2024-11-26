@@ -4,7 +4,7 @@ import { useAsync } from "react-use";
 
 export default function useQueryMyProxied() {
   const user = useUser();
-  const { value, loading } = useAsync(async () => {
+  const { value: proxies = [], loading } = useAsync(async () => {
     if (!user?.address) {
       return [];
     }
@@ -17,5 +17,5 @@ export default function useQueryMyProxied() {
     return result || [];
   }, [user?.address]);
 
-  return { proxies: value, loading };
+  return { proxies, loading };
 }
