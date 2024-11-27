@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cn } from ".";
+import { cn } from "./clsx";
 
 describe("utils/index.cn", () => {
   it("text classes", () => {

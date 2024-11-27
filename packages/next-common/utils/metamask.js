@@ -52,6 +52,7 @@ export function normalizedMetaMaskAccounts(accounts, connectorId) {
   return accounts.map((item) => ({
     name: addressEllipsis(item),
     address: normalizeAddress(item),
+    evmAddress: item,
     type: ChainTypes.ETHEREUM,
     meta: {
       source: WalletTypes.METAMASK,

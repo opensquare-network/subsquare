@@ -5,13 +5,13 @@ import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
 import { capitalize, isNil } from "lodash-es";
-import clsx from "clsx";
-import { twMerge } from "./tailwind/tailwindMerge";
 import { isHex } from "@polkadot/util";
 import { camelCase } from "lodash-es";
 import { upperFirst } from "lodash-es";
 import { getEffectiveNumbers } from "next-common/utils/viewfuncs";
 import { formatTimeDuration } from "./viewfuncs/formatTimeDuration";
+
+export { cn } from "./clsx";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -243,10 +243,6 @@ export function isValidPreimageHash(hash) {
 
 export function upperFirstCamelCase(str) {
   return upperFirst(camelCase(str));
-}
-
-export function cn(...inputs) {
-  return twMerge(clsx(inputs));
 }
 
 export function formatNum(value) {

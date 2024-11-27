@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { astarLinks, astarThemeVars } from "./common/astar";
 import { defaultPostLabels } from "./common";
 import { mergeChainModules } from "./common/modules";
+import ChainTypes from "../chainTypes";
 
 const ProjectIconShibuyaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconShibuyaDark"),
@@ -30,6 +31,17 @@ const nodes = [
   },
 ];
 
+const ethereumNetwork = {
+  chainId: "0x51",
+  chainName: "Shibuya",
+  rpcUrls: ["https://evm.shibuya.astar.network/"],
+  blockExplorerUrls: ["https://shibuya.blockscout.com/"],
+  nativeCurrency: {
+    symbol: "SBY",
+    decimals: 18,
+  },
+};
+
 const shibuya = {
   value: Chains.shibuya,
   name: capitalize(Chains.shibuya),
@@ -48,6 +60,8 @@ const shibuya = {
   group: MenuGroups.Testnet,
   postLabels: defaultPostLabels,
   description: "Shibuya is the testnet of Shiden (a sister chain of Astar).",
+  chainType: ChainTypes.MIXED,
+  ethereumNetwork,
   modules: mergeChainModules({
     treasury: {
       bounties: false,
