@@ -1,10 +1,12 @@
-import ListLayout from "next-common/components/layout/ListLayout";
+import AllAssetsList from "next-common/components/assets/allAssetsList";
+import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 import ApiProvider from "next-common/context/api";
-import ChainProvider, { useChainSettings } from "next-common/context/chain";
+import ChainProvider from "next-common/context/chain";
 import RelayInfoProvider from "next-common/context/relayInfo";
 import { withCommonProps } from "next-common/lib";
 import { createStore } from "next-common/store";
 import { commonReducers } from "next-common/store/reducers";
+import multiAccountsSlice from "next-common/store/reducers/multiAccountsSlice";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import { Provider } from "react-redux";
@@ -18,7 +20,10 @@ if (isAssetHubSupported) {
   chain = `${CHAIN}-assethub`;
   store = createStore({
     chain,
-    reducer: commonReducers,
+    reducer: {
+      ...commonReducers,
+      multiAccounts: multiAccountsSlice,
+    },
   });
 }
 
@@ -37,14 +42,10 @@ export default function AssetHubAssetsPage() {
 }
 
 function AssetHubAssetsPageImpl() {
-  const { description } = useChainSettings();
-
   return (
-    <ListLayout title="Asset Hub" description={description}>
-      <div className="space-y-6">
-        <div>Assets page</div>
-      </div>
-    </ListLayout>
+    <AssetMetadataProvider>
+      <AllAssetsList />
+    </AssetMetadataProvider>
   );
 }
 
