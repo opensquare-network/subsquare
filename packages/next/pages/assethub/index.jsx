@@ -1,7 +1,6 @@
 import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 import NoWalletConnected from "next-common/components/assets/noWalletConnected";
 import ListLayout from "next-common/components/layout/ListLayout";
-// import NoWalletConnected from "next-common/components/noWalletConnected";
 import ApiProvider from "next-common/context/api";
 import ChainProvider, { useChainSettings } from "next-common/context/chain";
 import RelayInfoProvider from "next-common/context/relayInfo";
