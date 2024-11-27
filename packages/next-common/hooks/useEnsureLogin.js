@@ -15,6 +15,7 @@ import { useChain } from "next-common/context/chain";
 import { useLoginPopup } from "./useLoginPopup";
 import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
 import { useSignMessage } from "./useSignMessage";
+import isShibuya from "next-common/utils/isShibuya";
 
 export function useEnsureLogin() {
   const chain = useChain();
@@ -32,7 +33,12 @@ export function useEnsureLogin() {
 
     setLoading(true);
     try {
-      const address = encodeAddressToChain(connectedAccount.address, chain);
+      let address;
+      if (isShibuya() && connectedAccount.evmAddress) {
+        address = connectedAccount.evmAddress;
+      } else {
+        address = encodeAddressToChain(connectedAccount.address, chain);
+      }
 
       const { result, error } = await nextApi.fetch(`auth/login/${address}`);
 
