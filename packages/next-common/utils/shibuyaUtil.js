@@ -2,10 +2,11 @@ import { ethers } from "ethers";
 import { addressToEvm, evmToAddress } from "@polkadot/util-crypto";
 import { getContextConnectedAccount } from "next-common/context/connectedAccount";
 
+const shibuyaSS58 = 5;
 const substrateToEvmAddressMap = {};
 
 export function evmToSubstrateAddress(address) {
-  const substrateAddress = evmToAddress(address, 5);
+  const substrateAddress = evmToAddress(address, shibuyaSS58);
   substrateToEvmAddressMap[substrateAddress] = address;
   return substrateAddress;
 }
