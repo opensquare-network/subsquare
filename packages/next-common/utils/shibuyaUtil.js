@@ -2,11 +2,19 @@ import { ethers } from "ethers";
 import { addressToEvm, evmToAddress } from "@polkadot/util-crypto";
 import { getContextConnectedAccount } from "next-common/context/connectedAccount";
 
+const substrateToEvmAddressMap = {};
+
 export function evmToSubstrateAddress(address) {
-  return evmToAddress(address, 5);
+  const substrateAddress = evmToAddress(address, 5);
+  substrateToEvmAddressMap[substrateAddress] = address;
+  return substrateAddress;
 }
 
 export function substrateToEvmAddress(address) {
+  if (address in substrateToEvmAddressMap) {
+    return substrateToEvmAddressMap[address];
+  }
+
   const connectedAccount = getContextConnectedAccount();
   if (
     connectedAccount &&
@@ -15,12 +23,17 @@ export function substrateToEvmAddress(address) {
   ) {
     return connectedAccount?.evmAddress;
   }
+
   return ethers.getAddress(
     "0x" + Buffer.from(addressToEvm(address)).toString("hex"),
   );
 }
 
 export function checkIfShouldConvertToEvmAddress(address) {
+  if (address in substrateToEvmAddressMap) {
+    return true;
+  }
+
   const connectedAccount = getContextConnectedAccount();
   return (
     connectedAccount &&

@@ -37,7 +37,7 @@ export const wagmiConfig = createConfig({
     [moonriver.id]: http(),
     [hydradx.id]: http(),
     [centrifuge.id]: http(),
-    // [shibuya.id]: http(),
+    [shibuya.id]: http(),
   },
 });
 
