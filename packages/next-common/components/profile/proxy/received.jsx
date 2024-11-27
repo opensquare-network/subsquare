@@ -7,12 +7,12 @@ import {
   useDelayBlockOrTimeColumn,
 } from "./common/columns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { useRecievedProxiesContext } from "./context/recieved";
+import { useReceivedProxiesContext } from "./context/received";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import HeaderPrompt from "./common/headerPrompt";
 
-export default function RecievedProxies() {
-  const { data, total, loading } = useRecievedProxiesContext();
+export default function ReceivedProxies() {
+  const { data, total, loading } = useReceivedProxiesContext();
   const [dataList, setDataList] = useState([]);
 
   const { page, component: pageComponent } = usePaginationComponent(

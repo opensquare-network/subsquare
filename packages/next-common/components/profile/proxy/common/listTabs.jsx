@@ -1,18 +1,18 @@
 import MyProxies from "../myProxies";
-import RecievedProxies from "../recieved";
+import ReceivedProxies from "../received";
 import useProfileAddress from "../../useProfileAddress";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import PageUrlTabs from "next-common/components/pageTabs/pageUrlTabs";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useMyProxiesContext } from "../context/myProxies";
-import { useRecievedProxiesContext } from "../context/recieved";
+import { useReceivedProxiesContext } from "../context/received";
 
 export default function ProxyListTabs() {
   const { total: myProxiesCount, loading: isMyProxiesLoading } =
     useMyProxiesContext();
-  const { total: recievedProxiesCount, loading: isRecievedProxiesLoading } =
-    useRecievedProxiesContext();
+  const { total: receivedProxiesCount, loading: isReceivedProxiesLoading } =
+    useReceivedProxiesContext();
 
   const address = useProfileAddress();
   const maybeEvmAddress = useMemo(
@@ -53,22 +53,22 @@ export default function ProxyListTabs() {
         name: (
           <div className="inline-flex items-center space-x-1">
             <span>Received</span>
-            {!isRecievedProxiesLoading && (
+            {!isReceivedProxiesLoading && (
               <span className="text16Medium text-textTertiary">
-                {recievedProxiesCount}
+                {receivedProxiesCount}
               </span>
             )}
           </div>
         ),
-        content: <RecievedProxies />,
+        content: <ReceivedProxies />,
       },
     ],
     [
       prefix,
       myProxiesCount,
       isMyProxiesLoading,
-      recievedProxiesCount,
-      isRecievedProxiesLoading,
+      receivedProxiesCount,
+      isReceivedProxiesLoading,
     ],
   );
 
