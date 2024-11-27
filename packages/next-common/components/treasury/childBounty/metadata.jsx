@@ -55,7 +55,7 @@ export default function Meta() {
           <SideInfoItemName>Value</SideInfoItemName>
           <SideInfoItemValue>
             <ValueDisplay
-              value={toPrecision(onChain.meta.value ?? 0, decimals)}
+              value={toPrecision(onChain.meta?.value ?? 0, decimals)}
               symbol={symbol}
             />
           </SideInfoItemValue>
@@ -64,7 +64,7 @@ export default function Meta() {
           <SideInfoItemName>Curator fee</SideInfoItemName>
           <SideInfoItemValue>
             <ValueDisplay
-              value={toPrecision(onChain.meta.fee ?? 0, decimals)}
+              value={toPrecision(onChain.meta?.fee ?? 0, decimals)}
               symbol={symbol}
             />
           </SideInfoItemValue>
