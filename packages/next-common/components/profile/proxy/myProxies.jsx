@@ -9,7 +9,7 @@ import {
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useMyProxiesContext } from "./context/myProxies";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
-import PromptContent from "./common/promptContent";
+import HeaderPrompt from "./common/headerPrompt";
 
 export default function MyProxies() {
   const { data, total, loading } = useMyProxiesContext();
@@ -24,14 +24,18 @@ export default function MyProxies() {
   const columns = [delegateeColumn, typeColumn, delayBlockOrTimeColumn];
 
   useEffect(() => {
+    if (loading) {
+      return;
+    }
+
     const startIndex = (page - 1) * defaultPageSize;
     const endIndex = startIndex + defaultPageSize;
     setDataList(data?.slice(startIndex, endIndex));
-  }, [data, page]);
+  }, [data, page, loading]);
 
   return (
     <SecondaryCard className="space-y-4">
-      <PromptContent
+      <HeaderPrompt
         content={
           "I'm a delegator and my delegatees can submit extrinsics on behalf of me."
         }
