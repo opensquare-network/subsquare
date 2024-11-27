@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.3.8
+
+date: 2024-11-27
+
+- Not show free balance field on user profile page.
+- Add thanksgiving 2024 nav bar theme.
+
 # 4.3.7
 
 date: 2024-11-26
