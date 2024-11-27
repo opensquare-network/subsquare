@@ -7,11 +7,13 @@ const MyProxiesContext = createContext(null);
 export function MyProxiesProvider({ children }) {
   const address = useProfileAddress();
   const { proxies = [], loading } = useProfileOnChainProxies(address);
+  const total = proxies[0]?.length || 0;
 
   return (
     <MyProxiesContext.Provider
       value={{
-        proxies,
+        data: proxies[0],
+        total,
         loading,
       }}
     >
@@ -21,11 +23,5 @@ export function MyProxiesProvider({ children }) {
 }
 
 export function useMyProxiesContext() {
-  const { proxies = [], loading } = useContext(MyProxiesContext);
-  const total = proxies[0]?.length || 0;
-  return {
-    data: proxies[0],
-    total,
-    loading,
-  };
+  return useContext(MyProxiesContext);
 }
