@@ -27,6 +27,7 @@ export function useWeb3Login() {
         const address = encodeAddressToChain(account.address, chain);
         const accountInfo = {
           address,
+          evmAddress: account.evmAddress,
           wallet,
         };
         await connectAccount(accountInfo);

@@ -5,17 +5,14 @@ import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import { isAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
-import { cn } from "../utils";
+import { addressEllipsis, cn } from "../utils";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { fetchIdentity } from "next-common/services/identity.js";
 import { useChainSettings } from "next-common/context/chain.js";
 import { encodeAddressToChain } from "next-common/services/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
 import IdentityIcon from "./Identity/identityIcon.js";
-import {
-  getAddressHint,
-  tryConvertToEvmAddress,
-} from "next-common/utils/mixedChainUtil";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useClickAway } from "react-use";
 
 const Wrapper = Relative;
@@ -102,6 +99,21 @@ const IdentityName = styled.div`
   display: flex;
   gap: 4px;
 `;
+
+function getAddressHint(address) {
+  let addressHint = "--";
+
+  if (address) {
+    const maybeEvmAddress = tryConvertToEvmAddress(address);
+
+    addressHint = addressEllipsis(maybeEvmAddress);
+    if (maybeEvmAddress !== address) {
+      addressHint += ` (${addressEllipsis(address)})`;
+    }
+  }
+
+  return addressHint;
+}
 
 export default function AddressCombo({
   accounts,

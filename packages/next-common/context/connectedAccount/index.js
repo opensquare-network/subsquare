@@ -8,12 +8,16 @@ import { useDispatch } from "react-redux";
 
 const ConnectedAccountContext = createContext(null);
 
+let ssrConnectedAccount = null;
+let savedConnectedAccount = null;
+
 export default ConnectedAccountContext;
 
 export function ConnectedAccountProvider({
   connectedAccount: _connectedAccount,
   children,
 }) {
+  ssrConnectedAccount = _connectedAccount;
   const userContext = useUserContext();
   const [connectedAccount, setConnectedAccount] = useState(_connectedAccount);
   const [lastConnectedAccount, setLastConnectedAccount] = useLocalStorage(
@@ -22,8 +26,9 @@ export function ConnectedAccountProvider({
   const dispatch = useDispatch();
 
   const saveConnectedAccount = useCallback((account) => {
-    setConnectedAccount(account);
+    savedConnectedAccount = account;
     setCookie(CACHE_KEY.connectedAccount, JSON.stringify(account), 365);
+    setConnectedAccount(account);
   }, []);
 
   const saveLastConnectedAccount = useCallback(
@@ -35,8 +40,10 @@ export function ConnectedAccountProvider({
 
   const disconnect = useCallback(async () => {
     await logoutUser(userContext);
-    setConnectedAccount(null);
+    ssrConnectedAccount = null;
+    savedConnectedAccount = null;
     clearCookie(CACHE_KEY.connectedAccount);
+    setConnectedAccount(null);
     dispatch(clearMyMultisigsData());
   }, [userContext, dispatch]);
 
@@ -79,4 +86,8 @@ export function useConnectedAccountContext() {
 export function useConnectedAccount() {
   const { connectedAccount } = useConnectedAccountContext();
   return connectedAccount;
+}
+
+export function getContextConnectedAccount() {
+  return savedConnectedAccount || ssrConnectedAccount;
 }
