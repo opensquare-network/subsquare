@@ -121,7 +121,7 @@ const thanksgivingEvent = {
   name: "thanksgiving",
   filetype: "png",
   startMonth: thanksgivingDay.month() + 1,
-  startDate: thanksgivingDay.date(),
+  startDate: thanksgivingDay.date() - 1,
   endMonth: thanksgivingEndDay.month() + 1,
   endDate: thanksgivingEndDay.date(),
 };
