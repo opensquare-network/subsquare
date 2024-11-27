@@ -4,6 +4,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import tw from "tailwind-styled-components";
 import BigNumber from "bignumber.js";
+import { isNil } from "lodash-es";
 
 const Wrapper = styled.div`
   border-radius: 8px;
@@ -63,15 +64,13 @@ function AssetItem({ value, title }) {
 }
 
 export default function AssetDisplay({ accountInfo }) {
-  const showTransferrable = !isEmpty(accountInfo?.data?.transferrable);
+  const showTransferrable = !isNil(accountInfo?.data?.transferrable);
   const showBonded = !isEmpty(accountInfo?.data?.bonded);
   const showLocked = !isEmpty(accountInfo?.data?.lockedBalance);
-  const showReserved = !isEmpty(accountInfo?.data?.reserved);
 
-  let cellsNumber = 2;
+  let cellsNumber = 3;
   if (showBonded) cellsNumber++;
   if (showLocked) cellsNumber++;
-  if (showReserved) cellsNumber++;
 
   return (
     <Wrapper style={{ maxWidth: cellsNumber * 161 }}>
@@ -95,9 +94,7 @@ export default function AssetDisplay({ accountInfo }) {
           <AssetItem value={accountInfo?.data?.lockedBalance} title="Locked" />
         )}
 
-        {showReserved && (
-          <AssetItem value={accountInfo?.data?.reserved} title="Reserved" />
-        )}
+        <AssetItem value={accountInfo?.data?.reserved} title="Reserved" />
       </Grid>
     </Wrapper>
   );
