@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import useAllServerProxies from "next-common/hooks/useAllServerProxies";
 import useAllOnChainProxies from "next-common/hooks/useAllOnChainProxies";
 
-export default function useProfileRecievedProxies(address) {
+export default function useProfileReceivedProxies(address) {
   const { proxies: serverProxies, loading: serverLoading } =
     useAllServerProxies();
   const { proxies: onChainProxies, loading: onChainLoading } =
@@ -27,9 +27,9 @@ export default function useProfileRecievedProxies(address) {
     }
   }, [serverProxies, serverLoading, onChainProxies, onChainLoading]);
 
-  const recievedProxies = useMemo(() => {
-    return proxies.filter((item) => item?.delegatee == address);
+  const receivedProxies = useMemo(() => {
+    return proxies.filter((item) => item?.delegatee === address);
   }, [proxies, address]);
 
-  return { proxies: recievedProxies, loading };
+  return { proxies: receivedProxies, loading };
 }
