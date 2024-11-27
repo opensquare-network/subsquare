@@ -21,12 +21,12 @@ export default function ProxyListTabs() {
   );
 
   const router = useRouter();
-  const prefix = `/user/${maybeEvmAddress}/proxy`;
+  const prefix = `/user/${maybeEvmAddress}/proxies`;
   const tab = router.asPath.replace(prefix, "");
 
   useEffect(() => {
     if (!tab || tab === "/") {
-      router.push(`${prefix}/my`, undefined, {
+      router.push(`${prefix}/mine`, undefined, {
         shallow: true,
       });
     }
@@ -35,7 +35,7 @@ export default function ProxyListTabs() {
   const tabs = useMemo(
     () => [
       {
-        url: `${prefix}/my`,
+        url: `${prefix}/mine`,
         name: (
           <div className="inline-flex items-center space-x-1 ml-6">
             <span>My Proxies</span>

@@ -51,7 +51,7 @@ export default function useProfileTabContent() {
     return <ProfileFellowshipSalary />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {
     return <Posted />;
-  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/proxy`)) {
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/proxies`)) {
     return <ProfileProxy />;
   }
 
