@@ -1,3 +1,4 @@
+import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 import ListLayout from "next-common/components/layout/ListLayout";
 import ApiProvider from "next-common/context/api";
 import ChainProvider, { useChainSettings } from "next-common/context/chain";
@@ -25,13 +26,15 @@ if (isAssetHubSupported) {
 export default function AssetHubPage() {
   return (
     <RelayInfoProvider>
-      <Provider store={store}>
-        <ChainProvider chain={chain}>
-          <ApiProvider>
-            <AssetHubOverviewPageImpl />
-          </ApiProvider>
-        </ChainProvider>
-      </Provider>
+      <AssetMetadataProvider>
+        <Provider store={store}>
+          <ChainProvider chain={chain}>
+            <ApiProvider>
+              <AssetHubOverviewPageImpl />
+            </ApiProvider>
+          </ChainProvider>
+        </Provider>
+      </AssetMetadataProvider>
     </RelayInfoProvider>
   );
 }
