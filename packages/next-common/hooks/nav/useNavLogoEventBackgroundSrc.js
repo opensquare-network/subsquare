@@ -107,6 +107,26 @@ const halloweenEvent = {
 };
 
 /**
+ * Thanksgiving
+ */
+const novemberFirstDay = dayjs(`${nowDay.year()}-11-01`);
+const novemberFirstDayOfWeek = novemberFirstDay.day();
+const novemberFirstThursday =
+  novemberFirstDayOfWeek <= 4
+    ? novemberFirstDay.add(4 - novemberFirstDayOfWeek, "day")
+    : novemberFirstDay.add(11 - novemberFirstDayOfWeek, "day");
+const thanksgivingDay = novemberFirstThursday.add(21, "day");
+const thanksgivingEndDay = thanksgivingDay.add(2, "day");
+const thanksgivingEvent = {
+  name: "thanksgiving",
+  filetype: "png",
+  startMonth: thanksgivingDay.month() + 1,
+  startDate: thanksgivingDay.date(),
+  endMonth: thanksgivingEndDay.month() + 1,
+  endDate: thanksgivingEndDay.date(),
+};
+
+/**
  * Christmas
  */
 const christmasEvent = {
@@ -125,6 +145,7 @@ const events = [
   fathersDayEvent,
   midAutumnEvent,
   halloweenEvent,
+  thanksgivingEvent,
   christmasEvent,
 ];
 
