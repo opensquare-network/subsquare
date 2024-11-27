@@ -13,6 +13,7 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import isAssetHub from "next-common/utils/isAssetHub";
 import ProfileFellowshipCore from "../fellowship/core";
 import ProfileFellowshipSalary from "../fellowship/salary";
+import ProfileProxy from "../proxy";
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
@@ -50,6 +51,8 @@ export default function useProfileTabContent() {
     return <ProfileFellowshipSalary />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {
     return <Posted />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/proxies`)) {
+    return <ProfileProxy />;
   }
 
   return <Posted />;
