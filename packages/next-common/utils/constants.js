@@ -19,7 +19,6 @@ import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
 // import rococo from "./consts/settings/rococo";
 import collectives from "./consts/settings/collectives";
-import darwinia2 from "./consts/settings/darwinia";
 // import moonbeam from "./consts/settings/moonbeam";
 // import moonriver from "./consts/settings/moonriver";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
@@ -56,7 +55,6 @@ export const nodes = [
   westend,
   westendAssetHub,
   crust,
-  darwinia2,
   hydradx,
   interlay,
   // kabocha,
