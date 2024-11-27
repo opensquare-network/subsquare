@@ -38,11 +38,11 @@ export default function RecievedProxies() {
       />
       <MapDataList
         loading={loading}
-        noDataText="No proxy set"
+        noDataText="No proxy delegators"
         columnsDef={columns}
         data={dataList}
       />
-      {pageComponent}
+      {total > 0 && pageComponent}
     </SecondaryCard>
   );
 }

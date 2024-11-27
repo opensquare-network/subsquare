@@ -12,32 +12,20 @@ export default function useProfileRecievedProxies(address) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (serverLoading) {
-      return;
+    if (!serverLoading) {
+      setProxies(serverProxies);
+      setLoading(false);
     }
 
-    setProxies(serverProxies);
-    setLoading(false);
-  }, [serverProxies, serverLoading]);
+    if (!onChainLoading && !serverLoading) {
+      const areProxiesEqual =
+        JSON.stringify(serverProxies) === JSON.stringify(onChainProxies);
 
-  useEffect(() => {
-    if (onChainLoading || serverLoading) {
-      return;
+      if (!areProxiesEqual) {
+        setProxies(onChainProxies);
+      }
     }
-
-    if (onChainProxies?.length === 0) {
-      return;
-    }
-
-    const areProxiesEqual =
-      JSON.stringify(serverProxies) === JSON.stringify(onChainProxies);
-
-    if (areProxiesEqual) {
-      return;
-    }
-
-    setProxies(onChainProxies);
-  }, [onChainProxies, onChainLoading, serverProxies, serverLoading]);
+  }, [serverProxies, serverLoading, onChainProxies, onChainLoading]);
 
   const recievedProxies = useMemo(() => {
     return proxies.filter((item) => item?.delegatee == address);

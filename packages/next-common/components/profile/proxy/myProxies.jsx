@@ -42,7 +42,7 @@ export default function MyProxies() {
         columnsDef={columns}
         data={dataList}
       />
-      {pageComponent}
+      {total > 0 && pageComponent}
     </SecondaryCard>
   );
 }
