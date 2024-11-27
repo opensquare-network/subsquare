@@ -9,6 +9,13 @@ export const delegateeColumn = {
   },
 };
 
+export const delegatorColumn = {
+  name: "Delegator",
+  render(data) {
+    return <AddressUser key={data?.delegator} add={data?.delegator} />;
+  },
+};
+
 export const typeColumn = {
   name: "Type",
   className: "w-[200px]",

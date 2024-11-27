@@ -2,24 +2,17 @@ import { MapDataList } from "next-common/components/dataList";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useState } from "react";
 import {
-  delegateeColumn,
+  delegatorColumn,
   typeColumn,
   useDelayBlockOrTimeColumn,
-} from "./columns";
+} from "./common/columns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { useMyProxiesContext } from "../context/myProxies";
+import { useRecievedProxiesContext } from "./context/recieved";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+import PromptContent from "./common/promptContent";
 
-export function PromptContent({ content }) {
-  return (
-    <div className="rounded-[8px] border py-[10px] px-[16px] bg-neutral200 text-textSecondary text14Medium">
-      {content}
-    </div>
-  );
-}
-
-export default function MyProxies() {
-  const { data, total, loading } = useMyProxiesContext();
+export default function RecievedProxies() {
+  const { data, total, loading } = useRecievedProxiesContext();
   const [dataList, setDataList] = useState([]);
 
   const { page, component: pageComponent } = usePaginationComponent(
@@ -28,7 +21,7 @@ export default function MyProxies() {
   );
 
   const delayBlockOrTimeColumn = useDelayBlockOrTimeColumn();
-  const columns = [delegateeColumn, typeColumn, delayBlockOrTimeColumn];
+  const columns = [delegatorColumn, typeColumn, delayBlockOrTimeColumn];
 
   useEffect(() => {
     const startIndex = (page - 1) * defaultPageSize;
@@ -40,7 +33,7 @@ export default function MyProxies() {
     <SecondaryCard className="space-y-4">
       <PromptContent
         content={
-          "I'm a delegator and my delegatees can submit extrinsics on behalf of me."
+          "I'm a delegatee and I can submit extrinsics on behalf of others."
         }
       />
       <MapDataList

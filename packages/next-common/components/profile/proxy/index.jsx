@@ -1,15 +1,15 @@
-import { OnChainProxiesProvider } from "next-common/context/proxy";
 import ProxyListTabs from "./common/listTabs";
 import { MyProxiesProvider } from "./context/myProxies";
+import { RecievedProxiesProvider } from "./context/recieved";
 
 export default function Proxy() {
   return (
     <div className="ml-6">
-      <OnChainProxiesProvider>
+      <RecievedProxiesProvider>
         <MyProxiesProvider>
           <ProxyListTabs />
         </MyProxiesProvider>
-      </OnChainProxiesProvider>
+      </RecievedProxiesProvider>
     </div>
   );
 }
