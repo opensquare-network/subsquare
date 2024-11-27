@@ -33,15 +33,13 @@ if (isAssetHubSupported) {
 export default function AssetHubPage() {
   return (
     <RelayInfoProvider>
-      <AssetMetadataProvider>
-        <Provider store={store}>
-          <ChainProvider chain={chain}>
-            <ApiProvider>
-              <AssetHubOverviewPageImpl />
-            </ApiProvider>
-          </ChainProvider>
-        </Provider>
-      </AssetMetadataProvider>
+      <Provider store={store}>
+        <ChainProvider chain={chain}>
+          <ApiProvider>
+            <AssetHubOverviewPageImpl />
+          </ApiProvider>
+        </ChainProvider>
+      </Provider>
     </RelayInfoProvider>
   );
 }
@@ -54,7 +52,11 @@ function AssetHubOverviewPageImpl() {
     return <NoWalletConnected />;
   }
 
-  return <WalletAssetList />;
+  return (
+    <AssetMetadataProvider>
+      <WalletAssetList />
+    </AssetMetadataProvider>
+  );
 }
 
 export const getServerSideProps = async (ctx) => {
