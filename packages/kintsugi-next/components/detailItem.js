@@ -1,4 +1,4 @@
-import ArticleContent from "next-common/components/articleContent";
+import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
 import PostEdit from "next-common/components/post/postEdit";
 import { usePost, usePostDispatch } from "next-common/context/post";
 import fetchAndUpdatePost from "next-common/context/post/update";
@@ -28,7 +28,7 @@ export default function DetailItem() {
   return (
     <DetailContentBase>
       <DetailHeader />
-      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+      <MaybeSimaDiscussionArticleContent />
     </DetailContentBase>
   );
 }

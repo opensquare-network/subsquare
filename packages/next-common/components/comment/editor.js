@@ -17,11 +17,12 @@ import { useDispatch } from "react-redux";
 import Tooltip from "../tooltip";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { getRealField } from "next-common/sima/actions/common";
 
 const Wrapper = styled.div`
   margin-top: 48px;
   ${(p) =>
-    (p.isEdit || p.isReply) &&
+    p.isReply &&
     css`
       margin-top: 8px;
     `}
@@ -60,23 +61,10 @@ function useShouldUseSima(toReplyComment) {
   return true;
 }
 
-function getRealField(realAddress) {
-  if (!realAddress) {
-    return;
-  }
-
-  return {
-    address: realAddress,
-    section: "proxy",
-  };
-}
-
 function CommentEditor(
   {
-    isEdit,
     isReply,
     onFinishedEdit = noop,
-    commentId,
     comment,
     content,
     setContent,
@@ -94,8 +82,7 @@ function CommentEditor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
-  const { createPostComment, createCommentReply, updateComment } =
-    useCommentActions();
+  const { createPostComment, createCommentReply } = useCommentActions();
 
   const shouldUseSima = useShouldUseSima(comment);
 
@@ -155,26 +142,6 @@ function CommentEditor(
     }
   };
 
-  const editComment = async () => {
-    setLoading(true);
-    const { result, error } = await updateComment(
-      commentId,
-      content,
-      contentType,
-    );
-
-    if (!isMounted()) {
-      return;
-    }
-
-    setLoading(false);
-    if (error) {
-      setErrors(error);
-    } else if (result) {
-      onFinishedEdit(true);
-    }
-  };
-
   const isEmpty = content === "" || content === "<p><br></p>";
 
   const loadSuggestions = (text) => {
@@ -192,7 +159,7 @@ function CommentEditor(
   };
 
   return (
-    <Wrapper isEdit={isEdit} isReply={isReply}>
+    <Wrapper isReply={isReply}>
       <Editor
         ref={ref}
         value={content}
@@ -207,7 +174,7 @@ function CommentEditor(
       />
       {errors?.message && <ErrorText>{errors?.message}</ErrorText>}
       <ButtonWrapper>
-        {(isEdit || isReply) && (
+        {isReply && (
           <SecondaryButton
             onClick={() => {
               setContent("");
@@ -220,11 +187,10 @@ function CommentEditor(
         <Tooltip content={isEmpty ? "Cannot submit empty content" : ""}>
           <MaybeSplitCommentButton
             isSima={shouldUseSima}
-            isEdit={isEdit}
             isReply={isReply}
             loading={loading}
             disabled={isEmpty}
-            onClickComment={() => (isEdit ? editComment() : createComment())}
+            onClickComment={() => createComment()}
             onClickCommentAsProxy={(realAddress) => {
               createComment(realAddress);
             }}

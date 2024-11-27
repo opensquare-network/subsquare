@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VotesTab, { tabs } from "./tab";
-import Pagination from "next-common/components/pagination";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -14,7 +13,8 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
 import AddressUser from "next-common/components/user/addressUser";
-import DataList from "next-common/components/dataList";
+import VirtualList from "next-common/components/dataList/virtualList";
+import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -24,12 +24,8 @@ export default function VotesPopup({
   isLoadingVotes,
 }) {
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
-  const [ayePage, setAyePage] = useState(1);
-  const [nayPage, setNayPage] = useState(1);
-  const [abstainPage, setAbstainPage] = useState(1);
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const pageSize = 50;
 
   const filteredAye = useSearchVotes(search, allAye);
   const filteredNay = useSearchVotes(search, allNay);
@@ -45,43 +41,14 @@ export default function VotesPopup({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  let page;
   let votes;
   if (tabIndex === voteTabs.Aye) {
-    page = ayePage;
     votes = filteredAye;
   } else if (tabIndex === voteTabs.Nay) {
-    page = nayPage;
     votes = filteredNay;
   } else {
-    page = abstainPage;
     votes = filteredAbstain;
   }
-
-  function onPageChange(e, target) {
-    e.preventDefault();
-    if (tabIndex === "Aye") {
-      setAyePage(target);
-    } else if (tabIndex === "Nay") {
-      setNayPage(target);
-    } else {
-      setAbstainPage(target);
-    }
-  }
-
-  const pagination = {
-    page,
-    pageSize,
-    total: votes?.length || 0,
-    onPageChange,
-  };
-
-  const sliceFrom = (pagination.page - 1) * pageSize;
-  const sliceTo = sliceFrom + pageSize;
-
-  const items = useMemo(() => {
-    return votes.slice(sliceFrom, sliceTo);
-  }, [votes, sliceFrom, sliceTo]);
 
   const searchBtn = (
     <SearchBtn
@@ -106,14 +73,14 @@ export default function VotesPopup({
         naysCount={filteredNay?.length || 0}
         abstainsCount={filteredAbstain?.length || 0}
       />
-      <VotesList items={items} loading={isLoadingVotes} tab={tabIndex} />
-      <Pagination {...pagination} />
+      <VotesList items={votes} loading={isLoadingVotes} tab={tabIndex} />
     </BaseVotesPopup>
   );
 }
 
 function VotesList({ items = [], loading, tab }) {
   const chainSettings = useChainSettings();
+  const isMobile = useIsMobileDevice();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   const columns = [
@@ -159,11 +126,13 @@ function VotesList({ items = [], loading, tab }) {
   return (
     <>
       <PopupListWrapper>
-        <DataList
+        <VirtualList
           scrollToFirstRowOnChange
           columns={columns}
           rows={rows}
           loading={loading}
+          itemHeight={isMobile ? 112 : 52}
+          listHeight={395}
         />
       </PopupListWrapper>
 

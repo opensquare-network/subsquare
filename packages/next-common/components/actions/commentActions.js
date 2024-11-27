@@ -17,10 +17,38 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "../comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { useFindMyUpVote } from "next-common/sima/actions/common";
+import useCanEditComment from "next-common/hooks/useCanEditComment";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
   return findMyUpVote(reactions);
+}
+
+function useShouldUseSima(comment) {
+  const { supportSima } = useCommentActions();
+  return supportSima && comment?.dataSource === "sima";
+}
+
+function SimaCommentContextMenu({ setIsEdit }) {
+  const canEditComment = useCanEditComment();
+  return <CommentContextMenu editable={canEditComment} setIsEdit={setIsEdit} />;
+}
+
+function MaybeSimaCommentContextMenu({ setIsEdit }) {
+  const comment = useComment();
+  const ownComment = useIsOwnComment();
+  const isShouldUseSima = useShouldUseSima(comment);
+  if (isShouldUseSima) {
+    return <SimaCommentContextMenu setIsEdit={setIsEdit} />;
+  }
+  return <CommentContextMenu editable={ownComment} setIsEdit={setIsEdit} />;
+}
+
+function useIsOwnComment() {
+  const comment = useComment();
+  const user = useUser();
+  const author = comment?.author || {};
+  return user && author?.username === user.username;
 }
 
 export default function CommentActions({
@@ -35,7 +63,7 @@ export default function CommentActions({
   const user = useUser();
   const reactions = comment?.reactions || [];
   const author = comment?.author || {};
-  const ownComment = user && author?.username === user.username;
+  const ownComment = useIsOwnComment();
   const myUpVote = useMyUpVote(reactions);
   const thumbUp = !!myUpVote;
 
@@ -121,7 +149,7 @@ export default function CommentActions({
             setShowThumbsUpList={setShowThumbsUpList}
           />
         </Wrapper>
-        <CommentContextMenu editable={ownComment} setIsEdit={setIsEdit} />
+        <MaybeSimaCommentContextMenu setIsEdit={setIsEdit} />
       </div>
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (

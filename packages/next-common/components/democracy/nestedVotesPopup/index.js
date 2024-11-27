@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { noop } from "lodash-es";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
-import Pagination from "next-common/components/pagination";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -22,9 +21,10 @@ import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "../common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
-import DataList from "next-common/components/dataList";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { usePost } from "next-common/context/post";
+import VirtualList from "next-common/components/dataList/virtualList";
+import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
@@ -34,9 +34,6 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
   const { allAye, allNay } = useSelector(nestedVotesSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
-  const [ayePage, setAyePage] = useState(1);
-  const [nayPage, setNayPage] = useState(1);
-  const pageSize = 50;
 
   const allDirectAyes = useMemo(
     () => sortTotalVotes(allAye.filter((v) => !v.isDelegating)),
@@ -62,33 +59,12 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  let page;
   let votes;
   if (tabIndex === "Aye") {
-    page = ayePage;
     votes = filteredAye;
   } else {
-    page = nayPage;
     votes = filteredNay;
   }
-
-  function onPageChange(e, target) {
-    e.preventDefault();
-    if (tabIndex === "Aye") {
-      setAyePage(target);
-    } else {
-      setNayPage(target);
-    }
-  }
-  const pagination = {
-    page,
-    pageSize,
-    total: votes?.length || 0,
-    onPageChange,
-  };
-
-  const sliceFrom = (pagination.page - 1) * pageSize;
-  const sliceTo = sliceFrom + pageSize;
 
   const searchBtn = (
     <SearchBtn
@@ -112,12 +88,7 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
         naysCount={filteredNay?.length || 0}
       />
 
-      <VotesList
-        items={votes.slice(sliceFrom, sliceTo)}
-        loading={!showVotesNumber}
-      />
-
-      <Pagination {...pagination} />
+      <VotesList items={votes} loading={!showVotesNumber} />
     </BaseVotesPopup>
   );
 }
@@ -125,6 +96,7 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
 function VotesList({ items = [], loading }) {
   const post = usePost();
   const chainSettings = useChainSettings(post.indexer?.blockHeight);
+  const isMobile = useIsMobileDevice();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   const [showDetail, setShowDetail] = useState(false);
@@ -179,11 +151,13 @@ function VotesList({ items = [], loading }) {
   return (
     <>
       <PopupListWrapper>
-        <DataList
+        <VirtualList
           scrollToFirstRowOnChange
           columns={columns}
           rows={rows}
           loading={loading}
+          itemHeight={isMobile ? 112 : 52}
+          listHeight={395}
         />
       </PopupListWrapper>
 
