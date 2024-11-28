@@ -11,6 +11,9 @@ import {
   useDelayBlockOrTimeColumn,
 } from "next-common/components/profile/proxy/common/columns";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { useChainSettings } from "next-common/context/chain";
+import { toPrecision } from "next-common/utils";
 
 export function useProfileProxyDepositsData() {
   const address = useProfileAddress();
@@ -20,12 +23,31 @@ export function useProfileProxyDepositsData() {
     items: proxies[0],
     loading,
     total,
+    balance: proxies[1] ?? 0,
   };
   return proxyDeposits;
 }
 
+function TotalBalance({ balance }) {
+  const { decimals, symbol } = useChainSettings();
+
+  if (balance === 0) {
+    return null;
+  }
+
+  return (
+    <div className="inline-flex items-center h-8 mr-3">
+      <ValueDisplay
+        className="text14Medium"
+        value={toPrecision(balance, decimals)}
+        symbol={symbol}
+      />
+    </div>
+  );
+}
+
 export default function ProxyDeposits({ deposits }) {
-  const { items, total, loading } = deposits;
+  const { items, total, loading, balance } = deposits;
 
   const [dataList, setDataList] = useState([]);
   const { page, component: pageComponent } = usePaginationComponent(
@@ -51,6 +73,7 @@ export default function ProxyDeposits({ deposits }) {
       loading={loading}
       name="Proxy"
       icon={<MenuProxy />}
+      extra={<TotalBalance balance={balance} />}
     >
       <MapDataList
         loading={loading}

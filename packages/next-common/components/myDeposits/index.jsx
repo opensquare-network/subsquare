@@ -77,7 +77,6 @@ export function useDepositSections(
           </WithPallet>
         ),
       },
-      // TODO: total reserved balance
       hasProxyDeposits && {
         activeCount: proxyDeposits?.total,
         content: <ProxyDeposits key="proxy" deposits={proxyDeposits} />,
