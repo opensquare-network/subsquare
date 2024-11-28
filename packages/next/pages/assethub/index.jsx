@@ -3,6 +3,7 @@ import NoWalletConnected from "next-common/components/assets/noWalletConnected";
 import WalletAssetList from "next-common/components/assets/walletAssetList";
 import ApiProvider from "next-common/context/api";
 import ChainProvider from "next-common/context/chain";
+import { RelayChainApiProvider } from "next-common/context/relayChain";
 import RelayInfoProvider from "next-common/context/relayInfo";
 import { withCommonProps } from "next-common/lib";
 import { createStore } from "next-common/store";
@@ -54,7 +55,9 @@ function AssetHubOverviewPageImpl() {
 
   return (
     <AssetMetadataProvider>
-      <WalletAssetList />
+      <RelayChainApiProvider>
+        <WalletAssetList />
+      </RelayChainApiProvider>
     </AssetMetadataProvider>
   );
 }
