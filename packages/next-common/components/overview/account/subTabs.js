@@ -15,7 +15,10 @@ function TabTitle({ active, children }) {
 }
 
 export default function AccountSubTabs({ className = "" }) {
-  const { hasMultisig } = useChainSettings();
+  const {
+    hasMultisig,
+    modules: { proxy },
+  } = useChainSettings();
   const chain = useChain();
 
   const tabs = [];
@@ -67,6 +70,14 @@ export default function AccountSubTabs({ className = "" }) {
       ),
       url: "/account/been-delegated",
     });
+
+    if (proxy) {
+      tabs.push({
+        label: "Proxies",
+        render: ({ active }) => <TabTitle active={active}>Proxies</TabTitle>,
+        url: "/account/proxies",
+      });
+    }
   }
 
   return <UrlTabs tabs={tabs} className={className} />;
