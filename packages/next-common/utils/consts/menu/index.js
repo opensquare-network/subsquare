@@ -46,7 +46,9 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.preimages && preImages,
-    ...(integrationsMenu ? [{ type: "divider" }, ...integrationsMenu] : []),
+    ...(integrationsMenu.length
+      ? [{ type: "divider" }, ...integrationsMenu]
+      : []),
   ].filter(Boolean);
 }
 
