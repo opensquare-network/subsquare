@@ -10,11 +10,10 @@ import { useOnchainData } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import { InfoDocs, InfoUser, SystemCoins } from "@osn/icons/subsquare";
-import { addressEllipsis } from "next-common/utils";
+import AddressUser from "next-common/components/user/addressUser";
 import Tooltip from "next-common/components/tooltip";
 import Copyable from "next-common/components/copyable";
 import LoadableContent from "next-common/components/common/loadableContent";
-import Link from "next/link";
 
 export function CardDetailTitle({ title }) {
   return (
@@ -44,9 +43,7 @@ export function CopyableAddress({ address }) {
   return (
     <Copyable copyText={address} className="inline-flex items-center">
       <Tooltip content={address}>
-        <Link className="hover:underline" href={`/user/${address}`}>
-          {addressEllipsis(address)}
-        </Link>
+        <AddressUser add={address} />
       </Tooltip>
     </Copyable>
   );
