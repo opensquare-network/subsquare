@@ -2,7 +2,6 @@ import { ArrowRight, MenuMore } from "@osn/icons/subsquare";
 import { useIsMacOS } from "next-common/context/page";
 import { useCmdkPaletteVisible } from "next-common/components/cmdk/cmdkPalette";
 import { cn } from "next-common/utils";
-import isAssetHub from "next-common/utils/isAssetHub";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
@@ -22,7 +21,7 @@ export function getMoreMenu({ archivedMenu = [] }) {
         name: "Off-chain Voting",
         pathname: `https://voting.opensquare.io/space/${space}`,
       },
-      !isAssetHub() && {
+      {
         value: "navigation",
         name: <NavigationItem />,
       },

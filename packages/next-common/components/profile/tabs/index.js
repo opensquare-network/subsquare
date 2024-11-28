@@ -4,7 +4,6 @@ import { profileActiveMultisigsCountSelector } from "next-common/store/reducers/
 import useDepositsCount from "next-common/hooks/profile/deposit/useDepositsCount";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import isAssetHub from "next-common/utils/isAssetHub";
 import { useProfileCollectivesTabs } from "./useProfileCollectivesTabs";
 
 export default function useProfileTabs() {
@@ -23,16 +22,6 @@ export default function useProfileTabs() {
   const prefix = `/user/${maybeEvmAddress}/`;
 
   const collectivesTabs = useProfileCollectivesTabs();
-
-  if (isAssetHub()) {
-    return [
-      {
-        label: "Assets",
-        url: `${prefix}assets`,
-        exactMatch: false,
-      },
-    ];
-  }
 
   const tabs = [
     {
