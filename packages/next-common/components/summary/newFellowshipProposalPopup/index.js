@@ -99,7 +99,7 @@ export function NewFellowshipProposalInnerPopup({
         getTxFunc={getTxFunc}
         onClose={onClose}
         disabled={disabled}
-        onInBlock={(events) => {
+        onInBlock={({ events }) => {
           const eventData = getEventData(events, pallet, "Submitted");
           if (!eventData) {
             return;

@@ -76,7 +76,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
         title="Create Preimage"
         getTxFunc={getTxFunc}
         onClose={onClose}
-        onInBlock={(events) => {
+        onInBlock={({ events }) => {
           const eventData = getEventData(events, referendaPallet, "Submitted");
           if (!eventData) {
             return;

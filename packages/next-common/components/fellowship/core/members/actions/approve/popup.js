@@ -77,7 +77,7 @@ function PopupContent({ member, onClose }) {
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onClose={onClose}
-        onInBlock={(events) => {
+        onInBlock={({ events }) => {
           const eventData = getEventData(
             events,
             "fellowshipReferenda",

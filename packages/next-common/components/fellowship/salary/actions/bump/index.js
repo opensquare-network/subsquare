@@ -39,7 +39,7 @@ export default function FellowshipSalaryBump() {
   const fnWaitSync = useWaitSyncBlock("Bump successful", () =>
     router.replace(router.asPath),
   );
-  const onBump = (_, blockHash) => blockHash && fnWaitSync(blockHash);
+  const onBump = ({ blockHash }) => blockHash && fnWaitSync(blockHash);
 
   if (disabled) {
     return (

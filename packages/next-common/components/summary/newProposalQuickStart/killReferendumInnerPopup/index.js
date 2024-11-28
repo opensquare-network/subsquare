@@ -72,7 +72,7 @@ export function KillReferendumInnerPopup({
         <TxSubmissionButton
           getTxFunc={getTxFunc}
           onClose={onClose}
-          onInBlock={(events) => {
+          onInBlock={({ events }) => {
             const eventData = getEventData(events, "referenda", "Submitted");
             if (!eventData) {
               return;
