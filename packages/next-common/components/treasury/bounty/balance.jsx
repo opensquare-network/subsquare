@@ -14,6 +14,7 @@ import { addressEllipsis } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import Copyable from "next-common/components/copyable";
 import LoadableContent from "next-common/components/common/loadableContent";
+import Link from "next/link";
 
 export function CardDetailTitle({ title }) {
   return (
@@ -42,7 +43,11 @@ export function CardDetailRow({ isLoading = false, icon, title, value }) {
 export function CopyableAddress({ address }) {
   return (
     <Copyable copyText={address} className="inline-flex items-center">
-      <Tooltip content={address}>{addressEllipsis(address)}</Tooltip>
+      <Tooltip content={address}>
+        <Link className="hover:underline" href={`/user/${address}`}>
+          {addressEllipsis(address)}
+        </Link>
+      </Tooltip>
     </Copyable>
   );
 }
