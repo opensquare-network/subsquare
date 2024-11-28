@@ -29,7 +29,7 @@ if (isAssetHubSupported) {
   });
 }
 
-export { getServerSideProps } from "../user/[...params]";
+export { getServerSideProps } from "../../user/[...params]";
 
 export default function AssetHubUserPage() {
   return (
