@@ -12,7 +12,7 @@ import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsColl
 import RejectTreasuryProposalInnerPopup from "../rejectTreasuryProposalInnerPopup";
 import { useCollectivePallet } from "next-common/context/collective";
 import ExternalProposeMajorityPopup from "../externalProposeMajorityPopup";
-import ExternalProposeDefaultPopup from "../externalProposeDefaultPopup copy";
+import ExternalProposeDefaultPopup from "../externalProposeDefaultPopup";
 
 export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
   const chain = useChain();

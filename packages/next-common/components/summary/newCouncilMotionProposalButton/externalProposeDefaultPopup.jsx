@@ -1,9 +1,9 @@
 import ExternalProposeVoteThresholdPopup from "./common/externalProposeVoteThresholdPopup";
 
-export default function ExternalProposeMajorityPopup({ onClose }) {
+export default function ExternalProposeDefaultPopup({ onClose }) {
   return (
     <ExternalProposeVoteThresholdPopup
-      method="externalProposeMajority"
+      method="externalProposeDefault"
       onClose={onClose}
     />
   );
