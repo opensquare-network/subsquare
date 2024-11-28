@@ -14,7 +14,7 @@ import IdentityDeposit from "./identity";
 import { useMemo } from "react";
 import WithPallet from "../common/withPallet";
 import { usePathname } from "next/navigation";
-import ProxyDeposits from "next-common/components/profile/deposits/proxyDeposits";
+import ProxyDeposits from "next-common/components/profile/deposits/proxy";
 
 export function useDepositSections(
   referenda,
@@ -78,7 +78,7 @@ export function useDepositSections(
         ),
       },
       hasProxyDeposits && {
-        activeCount: proxyDeposits?.length || 0,
+        activeCount: proxyDeposits?.total,
         content: <ProxyDeposits key="proxy" deposits={proxyDeposits} />,
       },
     ].filter(Boolean);
