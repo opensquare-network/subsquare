@@ -92,7 +92,7 @@ export function NewTreasuryReferendumInnerPopup() {
       </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton
-          onInBlock={(events) => {
+          onInBlock={({ events }) => {
             const eventData = getEventData(events, "democracy", "Proposed");
             if (!eventData) {
               return;

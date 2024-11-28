@@ -113,7 +113,7 @@ export function NewProposalInnerPopup({
         getTxFunc={getTxFunc}
         onClose={onClose}
         disabled={disabled}
-        onInBlock={(events) => {
+        onInBlock={({ events }) => {
           const eventData = getEventData(events, "referenda", "Submitted");
           if (!eventData) {
             return;

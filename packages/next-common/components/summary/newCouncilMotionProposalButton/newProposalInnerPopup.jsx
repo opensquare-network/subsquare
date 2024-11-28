@@ -117,7 +117,7 @@ export default function NewCouncilMotionProposalInnerPopup({
           <TxSubmissionButton
             disabled={disabled}
             getTxFunc={getTxFunc}
-            onInBlock={(events) => {
+            onInBlock={({ events }) => {
               const eventData = getEventData(events, pallet, "Proposed");
               if (!eventData) {
                 return;

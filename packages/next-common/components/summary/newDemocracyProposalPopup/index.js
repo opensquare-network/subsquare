@@ -86,7 +86,7 @@ export function NewDemocracyProposalInnerPopup({
         getTxFunc={getTxFunc}
         onClose={onClose}
         disabled={disabled}
-        onInBlock={(events) => {
+        onInBlock={({ events }) => {
           const eventData = getEventData(events, "democracy", "Proposed");
           if (!eventData) {
             return;

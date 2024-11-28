@@ -116,7 +116,7 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
       title="New Child Bounty"
       getTxFunc={getTxFunc}
       onClose={onClose}
-      onInBlock={(events) => {
+      onInBlock={({ events }) => {
         const eventData = getEventData(events, "childBounties", "Added");
         if (!eventData) {
           return;

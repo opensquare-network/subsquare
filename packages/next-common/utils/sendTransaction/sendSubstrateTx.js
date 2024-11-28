@@ -71,7 +71,7 @@ export function createSendTxEventHandler({
 
     if (status.isInBlock) {
       blockHash = status.asInBlock.toString();
-      onInBlock(events, blockHash);
+      onInBlock({ events, blockHash });
       return;
     }
   };
