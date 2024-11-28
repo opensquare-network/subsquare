@@ -14,7 +14,10 @@ export default function ProfileDeposits() {
   const treasury = useProfileTreasuryDepositsData();
   const identity = useProfileIdentityDepositsData();
   const preimageDeposits = useSelector(profilePreimageDepositsSelector);
+  // TODO: get deposits proxy data
+  const proxyDeposits = [{}, {}];
 
+  // TODO: show proxy only profile
   const [activeSections, nonActiveSections] = useDepositSections(
     referenda,
     fellowship,
@@ -22,6 +25,7 @@ export default function ProfileDeposits() {
     treasury,
     identity,
     preimageDeposits,
+    proxyDeposits,
   );
 
   return (
