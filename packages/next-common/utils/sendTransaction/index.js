@@ -21,6 +21,9 @@ export function wrapWithProxy(api, tx, proxyAddress) {
 }
 
 export function getEventData(events, sectionName, methodName) {
+  if (!events) {
+    return;
+  }
   for (const event of events) {
     const { section, method, data } = event.event;
     if (section !== sectionName || method !== methodName) {

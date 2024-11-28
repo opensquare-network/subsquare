@@ -8,7 +8,6 @@ import {
 } from "../metamask";
 import getChainSettings from "../consts/settings";
 import { getEvmSignerAddress } from "../mixedChainUtil";
-import isHydradx from "../isHydradx";
 import { hexToNumber } from "viem";
 import { noop } from "lodash-es";
 
@@ -125,24 +124,16 @@ async function dispatchCall({
 
   let sentTx = null;
 
-  if (isHydradx()) {
-    const [gas, feeData] = await Promise.all([
-      provider.estimateGas(tx),
-      provider.getFeeData(),
-    ]);
-    sentTx = await signer.sendTransaction({
-      maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
-      maxFeePerGas: feeData.maxFeePerGas,
-      gasLimit: (gas * 11n) / 10n, // add 10%
-      ...tx,
-    });
-  } else {
-    const gas = await provider.estimateGas(tx);
-    sentTx = await signer.sendTransaction({
-      gasLimit: gas,
-      ...tx,
-    });
-  }
+  const [gas, feeData] = await Promise.all([
+    provider.estimateGas(tx),
+    provider.getFeeData(),
+  ]);
+  sentTx = await signer.sendTransaction({
+    maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+    maxFeePerGas: feeData.maxFeePerGas,
+    gasLimit: (gas * 11n) / 10n, // add 10%
+    ...tx,
+  });
 
   onSubmitted();
 
