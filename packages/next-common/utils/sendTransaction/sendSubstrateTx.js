@@ -59,7 +59,7 @@ export function createSendTxEventHandler({
 
   return ({ events = [], status }) => {
     if (status.isFinalized) {
-      onFinalized(events, blockHash);
+      onFinalized({ events, blockHash });
       unsub();
       return;
     }
