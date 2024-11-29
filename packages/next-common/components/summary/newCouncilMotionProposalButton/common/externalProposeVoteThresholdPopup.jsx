@@ -3,20 +3,19 @@ import { capitalize, startCase } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
 import { isValidPreimageHash } from "next-common/utils";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import PreimageField from "../../newProposalPopup/preimageField";
+import CouncilProposeButton from "./councilProposeButton";
+import Tooltip from "next-common/components/tooltip";
 
 export default function ExternalProposeVoteThresholdPopup({
+  isMember,
   method = "externalProposeMajority",
   onClose,
 }) {
   const title = capitalize(startCase(method));
   const api = useContextApi();
-  const dispatch = useDispatch();
   const [preimageHash, setPreimageHash] = useState("");
   const [preimageLength, setPreimageLength] = useState("");
 
@@ -51,14 +50,16 @@ export default function ExternalProposeVoteThresholdPopup({
         preimageLength={preimageLength}
         setPreimageLength={preimageLength}
       />
-      <TxSubmissionButton
-        getTxFunc={getTxFunc}
-        onClose={onClose}
-        disabled={disabled}
-        onInBlock={() => {
-          dispatch(newSuccessToast(`${title} submitted`));
-        }}
-      />
+      <div className="flex justify-end">
+        <Tooltip
+          content={
+            !isMember ? "Only council members can create proposal" : null
+          }
+          className="inline"
+        >
+          <CouncilProposeButton disabled={disabled} getTxFunc={getTxFunc} />
+        </Tooltip>
+      </div>
     </Popup>
   );
 }
