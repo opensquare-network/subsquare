@@ -43,6 +43,7 @@ export default function DepositTemplate({
   items = [],
   children,
   loading,
+  extra,
 }) {
   const activeItems = (items || []).filter((item) => item.activeCount);
 
@@ -109,7 +110,7 @@ export default function DepositTemplate({
   }
 
   return (
-    <AccordionCard title={title} defaultOpen>
+    <AccordionCard title={title} extra={extra} defaultOpen>
       {children || (
         <Tabs
           tabs={tabs}

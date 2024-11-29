@@ -14,6 +14,10 @@ export function formatTimeDuration(
     showSeconds = true,
   } = {},
 ) {
+  if (input == 0) {
+    return 0;
+  }
+
   const duration = dayjs.duration(input);
 
   let yr = duration.years();
