@@ -24,6 +24,9 @@ function AppendItem({ index, data }) {
             <MarkdownPreviewer
               content={data.content || ""}
               plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
+              markedOptions={{
+                breaks: true,
+              }}
             />
           )}
           {data.contentType === "html" && (

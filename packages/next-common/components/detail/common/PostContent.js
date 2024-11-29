@@ -43,7 +43,14 @@ export default function PostContent({ post = {} }) {
 
       content = <HtmlPreviewer content={postContent} />;
     } else {
-      content = <MarkdownPreviewer content={postContent} />;
+      content = (
+        <MarkdownPreviewer
+          content={postContent}
+          markedOptions={{
+            breaks: true,
+          }}
+        />
+      );
     }
   } else if (post.contentType === "html") {
     content = <HtmlPreviewer content={sanitizeHtml(post.content || "")} />;

@@ -22,7 +22,12 @@ export default function ArticleContent({ postReactions, className = "" }) {
 
   const postContent = (
     <>
-      <MarkdownPreviewer content={post.content || ""} />
+      <MarkdownPreviewer
+        content={post.content || ""}
+        markedOptions={{
+          breaks: true,
+        }}
+      />
 
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
     </>

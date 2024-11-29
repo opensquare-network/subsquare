@@ -34,7 +34,12 @@ export default function ReferendaDelegateeDetailPopupAnnouncement({
   }
 
   return contentType === "markdown" ? (
-    <MarkdownPreviewer content={content} />
+    <MarkdownPreviewer
+      content={content}
+      markedOptions={{
+        breaks: true,
+      }}
+    />
   ) : (
     <HtmlPreviewer content={content} />
   );
