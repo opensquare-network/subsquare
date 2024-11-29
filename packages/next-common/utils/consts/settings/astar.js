@@ -5,6 +5,7 @@ import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { astarLinks, astarThemeVars } from "./common/astar";
 import { mergeChainModules } from "./common/modules";
+import ChainTypes from "../chainTypes";
 
 const ProjectIconAstarDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconAstarDark"),
@@ -46,6 +47,17 @@ const nodes = [
   },
 ];
 
+const ethereumNetwork = {
+  chainId: "0x250",
+  chainName: "Astar",
+  rpcUrls: ["https://evm.astar.network/"],
+  blockExplorerUrls: ["https://astar.blockscout.com/"],
+  nativeCurrency: {
+    symbol: "ASTR",
+    decimals: 18,
+  },
+};
+
 const astar = {
   value: Chains.astar,
   name: capitalize(Chains.astar),
@@ -64,6 +76,8 @@ const astar = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   description: "A Scalable Network Powering a Global Web3 Vision for All.",
+  chainType: ChainTypes.MIXED,
+  ethereumNetwork,
   modules: mergeChainModules({
     treasury: {
       bounties: false,
