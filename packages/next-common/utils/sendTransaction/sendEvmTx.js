@@ -70,6 +70,7 @@ export async function prepareEthereum({ ethereum, onError, signerAddress }) {
 }
 
 export async function sendEvmTx({
+  api,
   data,
   onStarted = noop,
   onInBlock = noop,
@@ -94,6 +95,7 @@ export async function sendEvmTx({
     const provider = new ethers.BrowserProvider(ethereum);
     const signer = await provider.getSigner();
     await dispatchCall({
+      api,
       provider,
       signer,
       signerAddress: evmSignerAddress,
@@ -106,7 +108,95 @@ export async function sendEvmTx({
   }
 }
 
+function extractExtrinsicEvents(events, extrinsicIndex) {
+  return events.filter((event) => {
+    const { phase } = event;
+    return !phase.isNone && phase.value.toNumber() === extrinsicIndex;
+  });
+}
+
+function getEthereumConsensusLog(api, block) {
+  const digest = api.registry.createType(
+    "Digest",
+    block.block.header.digest,
+    true,
+  );
+
+  for (const log of digest.logs) {
+    if (!log.isConsensus) {
+      continue;
+    }
+    const [engine, data] = log.asConsensus;
+    if (engine.toHuman() !== "fron") {
+      continue;
+    }
+
+    return data;
+  }
+
+  throw new Error("Cannot find ethereum consensus log");
+}
+
+function getEthereumTransactIndex(logData, evmTxHash) {
+  // data[0] = 0x01
+  // data[1..33] = ethereum block hash
+  // data[33] = number of transactions * 4
+  // data[34..66] = transaction hash #1
+  // data[66..99] = transaction hash #2
+  // ...
+  const evmTxCount = logData[33] / 4;
+  for (let i = 0; i < evmTxCount; i++) {
+    const start = 34 + i * 32;
+    const txBytes = logData.slice(start, start + 32);
+    const txHash = "0x" + Buffer.from(txBytes).toString("hex");
+    if (txHash === evmTxHash) {
+      return i;
+    }
+  }
+
+  throw new Error("Cannot find ethereum transaction index");
+}
+
+function getEthereumTransactExtrinsicIndex(block, ethTransactIndex) {
+  let currEthTransactIndex = 0;
+  for (
+    let extrinsicIndex = 0;
+    extrinsicIndex < block.block.extrinsics.length;
+    extrinsicIndex++
+  ) {
+    const extrinsic = block.block.extrinsics[extrinsicIndex];
+    const { section, method } = extrinsic.method;
+    if (section === "ethereum" && method === "transact") {
+      if (currEthTransactIndex === ethTransactIndex) {
+        return extrinsicIndex;
+      }
+      currEthTransactIndex++;
+    }
+  }
+
+  throw new Error("Cannot find ethereum transact extrinsic index");
+}
+
+async function handleEvmOnInBlock({ api, receipt, onInBlock }) {
+  const blockHash = await api.rpc.chain.getBlockHash(receipt.blockNumber);
+  const [block, blockEvents] = await Promise.all([
+    api.rpc.chain.getBlock(blockHash),
+    api.query.system.events.at(blockHash),
+  ]);
+
+  const logData = getEthereumConsensusLog(api, block);
+  const ethTransactIndex = getEthereumTransactIndex(logData, receipt.hash);
+  const extrinsicIndex = getEthereumTransactExtrinsicIndex(
+    block,
+    ethTransactIndex,
+  );
+  const events = extractExtrinsicEvents(blockEvents, extrinsicIndex);
+
+  onInBlock({ events, blockHash: blockHash.toJSON() });
+}
+
 async function dispatchCall({
+  api,
   provider,
   signer,
   signerAddress,
@@ -138,7 +228,11 @@ async function dispatchCall({
   onSubmitted();
 
   const receipt = await sentTx.wait();
-  onInBlock({ receipt });
+  try {
+    await handleEvmOnInBlock({ api, receipt, onInBlock });
+  } catch (e) {
+    onInBlock({ receipt });
+  }
 }
 
 async function dryRun(provider, tx) {
