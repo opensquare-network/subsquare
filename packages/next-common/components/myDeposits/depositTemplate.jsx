@@ -77,7 +77,7 @@ export default function DepositTemplate({
   const [tabTableLoaded, setTabTableLoaded] = useState({});
   const tabs = activeItems.map((m) => {
     return {
-      label: m.name,
+      label: <span role="button">{m.name}</span>,
       activeCount: m.activeCount,
       content: (
         <TableTemplate tabTableLoaded={tabTableLoaded} label={m.name} {...m} />

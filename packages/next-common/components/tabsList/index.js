@@ -19,9 +19,9 @@ export default forwardRef(function TabsList(
         return (
           <li
             key={idx}
-            role="button"
-            className="cursor-pointer"
-            onClick={() => onTabClick(tab)}
+            role="listitem"
+            className={cn(onTabClick && "cursor-pointer")}
+            onClick={() => onTabClick?.(tab)}
           >
             {tab.render ? tab.render() : tab.label}
           </li>
