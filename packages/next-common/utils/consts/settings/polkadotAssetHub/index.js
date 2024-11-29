@@ -4,10 +4,8 @@ import dynamic from "next/dynamic";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 import { polkadotAssetHubThemeVars } from "next-common/utils/consts/settings/polkadotAssetHub/theme";
+import polkadot from "../polkadot";
 
-const ProjectLogoPolkadotAssetHub = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoPolkadotAssethub"),
-);
 const ProjectIconPolkadotAssetHub = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotAssethub"),
 );
@@ -29,8 +27,8 @@ const polkadotAssetHub = {
   endpoints: polkadotAssetHubNodes,
   avatar: ProjectIconPolkadotAssetHub,
   darkAvatar: ProjectIconPolkadotAssetHub,
-  navLogo: ProjectLogoPolkadotAssetHub,
-  navLogoDark: ProjectLogoPolkadotAssetHub,
+  navLogo: polkadot.navLogo,
+  navLogoDark: polkadot.navLogoDark,
   networkIcon: NetworkIconPolkadotAssetHub,
   group: MenuGroups.PolkadotAndParachains,
   links: polkadotLinks,
