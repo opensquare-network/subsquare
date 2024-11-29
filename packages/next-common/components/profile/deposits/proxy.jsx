@@ -19,13 +19,12 @@ export function useProfileProxyDepositsData() {
   const address = useProfileAddress();
   const { proxies = [], loading } = useProfileOnChainProxies(address);
   const total = proxies[0]?.length || 0;
-  const proxyDeposits = {
+  return {
     items: proxies[0],
     loading,
     total,
     balance: proxies[1] ?? 0,
   };
-  return proxyDeposits;
 }
 
 function TotalBalance({ balance }) {
