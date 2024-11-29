@@ -54,7 +54,7 @@ export function AddressUserImpl({
 
   let linkUserPage = `/user/${displayAddress}`;
   if (isAssetHubChain(chain)) {
-    linkUserPage = `/assethub/${linkUserPage}`;
+    linkUserPage = `/assethub${linkUserPage}`;
   }
   if (linkToVotesPage) {
     linkUserPage = `${linkUserPage}/votes`;
