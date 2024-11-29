@@ -172,6 +172,9 @@ function CommentItemImpl({
                   plugins={[
                     renderMentionIdentityUserPlugin(<IdentityOrAddr />),
                   ]}
+                  markedOptions={{
+                    breaks: true,
+                  }}
                 />
               )}
               {comment.contentType === "html" && (

@@ -2925,9 +2925,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/previewer@npm:^1.4.3":
-  version: 1.4.3
-  resolution: "@osn/previewer@npm:1.4.3"
+"@osn/previewer@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@osn/previewer@npm:2.0.0"
   dependencies:
     github-markdown-css: ^5.6.1
     marked: ^11.1.1
@@ -2937,7 +2937,7 @@ __metadata:
   peerDependencies:
     react: ^17.0.2
     react-dom: ^17.0.2
-  checksum: 3176ee58ba7f5bfa1032f1e8aa686a4d46b470b6a7d99fd53de1e25605e5240171ee304ec4b56d50458142a745ebe80da0b95a3841d213c987a896eaef553945
+  checksum: 231fb0a37b870c35e361fab7e2ee947633b7ae50ec62654dc47d339c3d96ea46665ba029fe82736311764becec9ae5d536b3c6ccb236637729e6b3fbb5af8a83
   languageName: node
   linkType: hard
 
@@ -12771,7 +12771,7 @@ __metadata:
     "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.155.0
     "@osn/polkadot-react-identicon": ^1.0.8
-    "@osn/previewer": ^1.4.3
+    "@osn/previewer": ^2.0.0
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.2.1
     "@osn/rich-text-editor": ^0.7.2

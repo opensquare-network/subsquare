@@ -22,6 +22,11 @@
         }
       }
     }
+
+    th,
+    td {
+      border-color: var(--borderColor-default);
+    }
   }
 
   pre {
