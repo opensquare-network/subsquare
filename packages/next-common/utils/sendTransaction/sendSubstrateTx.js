@@ -59,7 +59,7 @@ export function createSendTxEventHandler({
 
   return ({ events = [], status }) => {
     if (status.isFinalized) {
-      onFinalized(events, blockHash);
+      onFinalized({ events, blockHash });
       unsub();
       return;
     }
@@ -71,7 +71,7 @@ export function createSendTxEventHandler({
 
     if (status.isInBlock) {
       blockHash = status.asInBlock.toString();
-      onInBlock(events, blockHash);
+      onInBlock({ events, blockHash });
       return;
     }
   };

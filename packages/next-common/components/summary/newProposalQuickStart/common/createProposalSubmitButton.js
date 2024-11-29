@@ -68,7 +68,7 @@ export default function CreateProposalSubmitButton({
   const { isSubmitting: isReferendaTxSubmitting, doSubmit: submitReferendaTx } =
     useTxSubmission({
       getTxFunc: getSubmitReferendaTx,
-      onInBlock: (events) => {
+      onInBlock: ({ events }) => {
         const eventData = getEventData(events, pallet, "Submitted");
         if (!eventData) {
           return;
