@@ -25,10 +25,7 @@ export function PromptContent() {
         type={PromptTypes.NEUTRAL}
       >
         You have {assetsAmount} assets on AssetHub. Manage {manageContent}&nbsp;
-        <Link
-          className="underline"
-          href={"https://polkadot-assethub.subsquare.io/"}
-        >
+        <Link className="underline" href="/assethub">
           here
         </Link>
       </Prompt>
