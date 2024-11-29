@@ -19,7 +19,7 @@ function ProfileAssetsInContext() {
 
   let pathname = `/user/${maybeEvmAddress}/assets`;
   if (isAssetHubChain(chain)) {
-    pathname = `/assethub/${pathname}`;
+    pathname = `/assethub${pathname}`;
   }
 
   useEffect(() => {
