@@ -14,7 +14,7 @@ export default function MyProxiesSummary() {
   return (
     <SecondaryCard>
       <SummaryLayout>
-        <SummaryItem title="Proxied">
+        <SummaryItem title="Proxies">
           <LoadableContent isLoading={isMyProxiesLoading}>
             {myProxiesCount}
           </LoadableContent>

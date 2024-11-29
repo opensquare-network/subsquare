@@ -7,9 +7,9 @@ import ProxyListTabs from "./common/listTabs";
 export default function MyProxies() {
   return (
     <div className="space-y-6">
-      <AccountSubTabs className="mx-6" />
       <ReceivedProxiesProvider>
         <MyProxiesProvider>
+          <AccountSubTabs className="mx-6" />
           <MyProxiesSummary />
           <div className="space-y-6">
             <ProxyListTabs />
