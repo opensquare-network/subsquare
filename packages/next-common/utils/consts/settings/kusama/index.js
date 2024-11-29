@@ -62,6 +62,7 @@ const kusama = {
       archived: true,
     },
     coretime: true,
+    assethub: true,
   }),
   integrations: {
     doTreasury: true,
