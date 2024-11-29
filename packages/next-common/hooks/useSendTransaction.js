@@ -200,6 +200,7 @@ export function useSendTransaction() {
           }
 
           await sendEvmTx({
+            api,
             data: tx.inner.toU8a(),
             onStarted,
             onInBlock: _onInBlock,
