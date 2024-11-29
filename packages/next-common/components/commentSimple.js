@@ -270,6 +270,9 @@ export default function CommentSimple({ data }) {
                     renderMentionIdentityUserPlugin(<IdentityOrAddr />),
                   ]}
                   maxLines={2}
+                  markedOptions={{
+                    breaks: true,
+                  }}
                 />
               )}
               {data.contentType === "html" && (
