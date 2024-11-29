@@ -18,7 +18,7 @@
     "@mimirdev/apps-sdk": "^0.2.0",
     "@osn/icons": "^1.155.0",
     "@osn/polkadot-react-identicon": "^1.0.8",
-    "@osn/previewer": "^1.4.3",
+    "@osn/previewer": "^2.0.0",
     "@osn/provider-options": "1.1.0",
     "@osn/react-cmdk": "^1.2.1",
     "@osn/rich-text-editor": "^0.7.2",
