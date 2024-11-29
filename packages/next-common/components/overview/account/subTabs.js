@@ -4,6 +4,7 @@ import MultisigsTitle from "./multisigsTitle";
 import { Title } from "./styled";
 import { isKintsugiChain } from "next-common/utils/chain";
 import DepositsTitle from "./depositsTitle";
+import ProxiesTitle from "./proxiesTitle";
 import Chains from "next-common/utils/consts/chains";
 
 function TabTitle({ active, children }) {
@@ -15,7 +16,10 @@ function TabTitle({ active, children }) {
 }
 
 export default function AccountSubTabs({ className = "" }) {
-  const { hasMultisig } = useChainSettings();
+  const {
+    hasMultisig,
+    modules: { proxy },
+  } = useChainSettings();
   const chain = useChain();
 
   const tabs = [];
@@ -66,6 +70,14 @@ export default function AccountSubTabs({ className = "" }) {
         <TabTitle active={active}>Been Delegated</TabTitle>
       ),
       url: "/account/been-delegated",
+    });
+  }
+
+  if (proxy) {
+    tabs.push({
+      label: "Proxies",
+      render: ({ active }) => <ProxiesTitle active={active} />,
+      url: "/account/proxies",
     });
   }
 

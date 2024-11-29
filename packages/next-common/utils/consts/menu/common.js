@@ -27,6 +27,7 @@ export const accountMenu = {
     "/account/delegations",
     "/account/deposits",
     "/account/multisigs",
+    "/account/proxies",
   ],
   icon: <MenuAccount />,
 };
