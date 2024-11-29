@@ -28,7 +28,7 @@ import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub
 import westendAssetHub from "next-common/utils/consts/settings/westendAssetHub";
 import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
 import shibuya from "next-common/utils/consts/settings/shibuya";
-// import astar from "next-common/utils/consts/settings/astar";
+import astar from "next-common/utils/consts/settings/astar";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
 import ajuna from "./consts/settings/ajuna";
@@ -44,7 +44,7 @@ export const nodes = [
   acala,
   ajuna,
   altair,
-  // astar,
+  astar,
   basilisk,
   bifrost,
   bifrostPolkadot,
