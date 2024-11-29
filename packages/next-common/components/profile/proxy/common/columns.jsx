@@ -42,10 +42,6 @@ export function useDelayBlockOrTimeColumn() {
     render(data) {
       const { delay } = data;
 
-      if (delay === 0) {
-        return <div className="text-textPrimary">0</div>;
-      }
-
       return (
         <div className="text-textPrimary">
           {isBlock ? delay : formatTimeDuration(delay)}
