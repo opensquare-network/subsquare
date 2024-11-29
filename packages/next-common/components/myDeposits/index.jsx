@@ -13,6 +13,8 @@ import useMyIdentityDeposit from "next-common/hooks/useMyIdentityDeposit";
 import IdentityDeposit from "./identity";
 import { useMemo } from "react";
 import WithPallet from "../common/withPallet";
+import { usePathname } from "next/navigation";
+import ProxyDeposits from "next-common/components/profile/deposits/proxy";
 
 export function useDepositSections(
   referenda,
@@ -21,8 +23,11 @@ export function useDepositSections(
   treasury,
   identity,
   preimageDeposits,
+  proxyDeposits,
 ) {
   const chainSettings = useChainSettings();
+  const pathname = usePathname();
+  const isProfilePage = pathname.startsWith("/user");
 
   return useMemo(() => {
     const {
@@ -31,12 +36,15 @@ export function useDepositSections(
         fellowship: hasFellowship,
         democracy: hasDemocracy,
         treasury: hasTreasury,
+        proxy,
       },
     } = chainSettings;
 
     const hasDemocracyModule = hasDemocracy && !hasDemocracy?.archived;
 
     const hasTreasuryTips = hasTreasury?.tips && !hasTreasury?.tips?.archived;
+
+    const hasProxyDeposits = proxy && isProfilePage;
 
     const sections = [
       hasReferenda && {
@@ -69,6 +77,10 @@ export function useDepositSections(
           </WithPallet>
         ),
       },
+      hasProxyDeposits && {
+        activeCount: proxyDeposits?.total,
+        content: <ProxyDeposits key="proxy" deposits={proxyDeposits} />,
+      },
     ].filter(Boolean);
 
     return partition(sections, (section) => section.activeCount > 0);
@@ -79,6 +91,8 @@ export function useDepositSections(
     treasury,
     identity,
     preimageDeposits,
+    proxyDeposits,
+    isProfilePage,
     chainSettings,
   ]);
 }
