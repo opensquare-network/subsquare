@@ -1,11 +1,11 @@
 import { createContext, useContext } from "react";
 import useReceivedProxies from "next-common/hooks/useReceivedProxies";
-import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const ReceivedProxiesContext = createContext(null);
 
 export function ReceivedProxiesProvider({ children }) {
-  const address = useProfileAddress();
+  const address = useRealAddress();
   const { proxies = [], loading } = useReceivedProxies(address);
   const total = proxies?.length || 0;
 
