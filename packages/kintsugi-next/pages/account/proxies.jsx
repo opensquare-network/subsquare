@@ -10,8 +10,4 @@ export default function AccountProxiesPage() {
   );
 }
 
-export const getServerSideProps = withCommonProps(async () => {
-  return {
-    props: {},
-  };
-});
+export const getServerSideProps = withCommonProps();
