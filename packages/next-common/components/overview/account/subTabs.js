@@ -70,14 +70,14 @@ export default function AccountSubTabs({ className = "" }) {
       ),
       url: "/account/been-delegated",
     });
+  }
 
-    if (proxy) {
-      tabs.push({
-        label: "Proxies",
-        render: ({ active }) => <TabTitle active={active}>Proxies</TabTitle>,
-        url: "/account/proxies",
-      });
-    }
+  if (proxy) {
+    tabs.push({
+      label: "Proxies",
+      render: ({ active }) => <TabTitle active={active}>Proxies</TabTitle>,
+      url: "/account/proxies",
+    });
   }
 
   return <UrlTabs tabs={tabs} className={className} />;
