@@ -112,7 +112,7 @@ function PopupContent() {
         <TxSubmissionButton
           title="Confirm"
           getTxFunc={getTxFunc}
-          onInBlock={(events) => {
+          onInBlock={({ events }) => {
             const eventData = getEventData(events, "referenda", "Submitted");
             if (!eventData) {
               return;

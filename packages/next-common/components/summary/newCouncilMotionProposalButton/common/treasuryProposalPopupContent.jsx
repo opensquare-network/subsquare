@@ -116,7 +116,7 @@ export default function TreasuryProposalPopupContent({
             disabled={disabled}
             loading={loadingProposalIDs}
             getTxFunc={getTxFunc}
-            onInBlock={(events) => {
+            onInBlock={({ events }) => {
               const eventData = getEventData(events, pallet, "Proposed");
               if (!eventData) {
                 return;

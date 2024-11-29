@@ -122,7 +122,7 @@ function PopupContent() {
   ]);
 
   const onInBlock = useCallback(
-    (events, blockHash) => {
+    ({ events, blockHash }) => {
       const eventData = getEventData(events, "tips", "NewTip");
       if (!eventData || !blockHash) {
         return;
