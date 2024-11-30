@@ -177,7 +177,11 @@ function useReplaceComment() {
 
       const entity = {
         action: "replace_comment",
-        cid: replyToComment?.cid || post?.cid,
+        ...(replyToComment
+          ? { cid: replyToComment.cid }
+          : type === "discussions"
+          ? { cid: post?.cid }
+          : { indexer: getProposalIndexer(post) }),
         old_comment_cid: comment.cid,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
