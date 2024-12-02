@@ -4,8 +4,8 @@ import Loading from "../../loading";
 import { StatusWrapper } from "../styled";
 import ConvictionSlider from "next-common/components/convictionSlider";
 import { useChainSettings } from "next-common/context/chain";
-import { calcVotesWithComma } from "next-common/utils/democracy/votes/passed/common";
-
+import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
+import NumberWithComma from "next-common/components/numberWithComma";
 export default function ConvictionField({
   balance = 0,
   conviction,
@@ -38,7 +38,10 @@ export default function ConvictionField({
             <span>Votes</span>
           </div>
           <div className="result">
-            {calcVotesWithComma(balance, conviction)} {symbol}
+            <NumberWithComma
+              value={calcVotes(balance, conviction)}
+              symbol={symbol}
+            />
           </div>
         </div>
         <div className="flex justify-between w-full">
