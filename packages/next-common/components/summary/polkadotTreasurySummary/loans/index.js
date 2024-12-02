@@ -13,11 +13,16 @@ function LoansItemList() {
     loanCentrifugeUsdcBalance,
     loanBifrostDotBalance,
     loadPendulumDotBalance,
+    loanHydrationDotBalance,
   } = usePolkadotTreasurySummary();
 
   const { decimals, symbol } = useChainSettings();
   const bifrostDotAmount = toPrecision(loanBifrostDotBalance || 0, decimals);
   const pendulumDotAmount = toPrecision(loadPendulumDotBalance || 0, decimals);
+  const hydrationDotAmount = toPrecision(
+    loanHydrationDotBalance || 0,
+    decimals,
+  );
 
   return (
     <div className="flex flex-col gap-[4px]">
@@ -54,6 +59,17 @@ function LoansItemList() {
           tooltipClassName={"inline-flex items-center"}
         />
       </SummaryLabelLinkItem>
+      <SummaryLabelLinkItem
+        label="Hydration"
+        href="https://polkadot.subsquare.io/referenda/560"
+      >
+        <ValueDisplay
+          value={hydrationDotAmount}
+          symbol={symbol}
+          className={"text12Medium text-textPrimary"}
+          tooltipClassName={"inline-flex items-center"}
+        />
+      </SummaryLabelLinkItem>
     </div>
   );
 }
@@ -63,6 +79,7 @@ export default function Loans() {
     loanCentrifugeUsdcBalance,
     loanBifrostDotBalance,
     loadPendulumDotBalance,
+    loanHydrationDotBalance,
   } = usePolkadotTreasurySummary();
 
   return (
@@ -71,6 +88,7 @@ export default function Loans() {
         <FiatPriceLabel
           free={new BigNumber(loanBifrostDotBalance)
             .plus(loadPendulumDotBalance)
+            .plus(loanHydrationDotBalance)
             .toString()}
           usdtBalance={loanCentrifugeUsdcBalance}
         />

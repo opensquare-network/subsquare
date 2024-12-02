@@ -84,6 +84,7 @@ export function PolkadotTreasurySummaryProvider({ children }) {
         loanCentrifugeUsdcBalance: 3000000000000,
         loanBifrostDotBalance: 5000000000000000,
         loadPendulumDotBalance: 500000000000000,
+        loanHydrationDotBalance: 10000000000000000,
         bountiesCount,
         dotTreasuryBalanceOnBounties,
         isDotTreasuryBalanceOnBountiesLoading,
