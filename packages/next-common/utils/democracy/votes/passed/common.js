@@ -19,6 +19,19 @@ export function calcVotes(capital = 0, conviction = 0) {
     .toFixed(1, 1);
 }
 
+export function calcVotesWithComma(capital = 0, conviction = 0) {
+  const value = new BigNumber(capital).multipliedBy(LOCKS[conviction]).div(10);
+
+  const fmt = {
+    decimalSeparator: ".",
+    groupSeparator: ",",
+    groupSize: 3,
+  };
+
+  BigNumber.config({ FORMAT: fmt });
+  return value.toFormat(1, BigNumber.ROUND_DOWN);
+}
+
 export function objectSpread(dest, ...sources) {
   for (let i = 0; i < sources.length; i++) {
     const src = sources[i];
