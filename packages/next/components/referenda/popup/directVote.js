@@ -24,7 +24,6 @@ export default function DirectVote({
         isLoading={isLoading}
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
-        useCommaFormat
       />
       <Conviction
         balance={inputVoteBalance}

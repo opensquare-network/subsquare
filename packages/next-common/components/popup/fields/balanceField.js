@@ -11,36 +11,8 @@ export default function BalanceField({
   title = "Balance",
   titleTooltip = "",
   disabled = false,
-  useCommaFormat = false,
 }) {
   const node = useChainSettings();
-
-  const handleChange = (e) => {
-    const value = e.target.value.replace(/,/g, "");
-
-    if (!useCommaFormat) {
-      setInputBalance(value);
-      return;
-    }
-
-    if (/^\d*\.?\d*$/.test(value)) {
-      setInputBalance(value);
-    }
-  };
-
-  const getDisplayValue = () => {
-    if (!useCommaFormat || !inputBalance) {
-      return inputBalance;
-    }
-
-    const [intPart, decimalPart] = inputBalance.split(".");
-    const formattedIntPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-    return decimalPart !== undefined
-      ? `${formattedIntPart}.${decimalPart}`
-      : formattedIntPart;
-  };
-
   return (
     <div>
       <PopupLabel text={title} tooltip={titleTooltip} />
@@ -48,8 +20,8 @@ export default function BalanceField({
         type="text"
         placeholder="0.00"
         disabled={isLoading || disabled}
-        value={getDisplayValue()}
-        onChange={handleChange}
+        value={inputBalance}
+        onChange={(e) => setInputBalance(e.target.value.replace("。", "."))}
         symbol={symbol || node.symbol}
       />
     </div>
