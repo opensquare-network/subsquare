@@ -80,28 +80,31 @@ export function useNavMenuType() {
 function NavMenuTypeProvider({ pathname, children }) {
   const firstPath = "/" + pathname?.split("/").filter(Boolean)[0];
 
-  const getMatchedMenuType = useCallback((p) => {
-    const matchedMenu = find(menu, (m) => {
-      let matched = m.pathname === p;
-      if (!matched && m?.items?.length) {
-        matched = some(m?.items, { pathname: p });
+  const getMatchedMenuType = useCallback(
+    (p) => {
+      const matchedMenu = find(menu, (m) => {
+        let matched = m.pathname === p;
+        if (!matched && m?.items?.length) {
+          matched = some(m?.items, { pathname: p });
 
-        if (isSubSpaceNavMenu(m?.type) && m.pathname === firstPath) {
-          matched = true;
+          if (isSubSpaceNavMenu(m?.type) && m.pathname === firstPath) {
+            matched = true;
+          }
         }
+
+        return matched;
+      });
+      if (isSubSpaceNavMenu(matchedMenu?.type)) {
+        return {
+          type: NAV_MENU_TYPE.subspace,
+          menu: matchedMenu.items,
+        };
       }
 
-      return matched;
-    });
-    if (isSubSpaceNavMenu(matchedMenu?.type)) {
-      return {
-        type: NAV_MENU_TYPE.subspace,
-        menu: matchedMenu.items,
-      };
-    }
-
-    return { type: NAV_MENU_TYPE.main, menu: null };
-  }, [firstPath]);
+      return { type: NAV_MENU_TYPE.main, menu: null };
+    },
+    [firstPath],
+  );
 
   const [navMenuType, setNavMenuType] = useState(getMatchedMenuType(pathname));
 

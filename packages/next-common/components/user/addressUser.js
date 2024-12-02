@@ -9,6 +9,8 @@ import DeletedAccount from "./deletedAccount";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import useAvatarInfo from "next-common/hooks/useAvatarInfo";
 import { AvatarDisplay } from "./avatarDisplay";
+import { useChain } from "next-common/context/chain";
+import { isAssetHubChain } from "next-common/utils/chain";
 
 export function AddressUserImpl({
   className = "",
@@ -27,6 +29,7 @@ export function AddressUserImpl({
   externalLink,
   addressClassName = "",
 }) {
+  const chain = useChain();
   const displayAddress = tryConvertToEvmAddress(address);
 
   const userIdentity = hasIdentity ? (
@@ -50,6 +53,9 @@ export function AddressUserImpl({
   );
 
   let linkUserPage = `/user/${displayAddress}`;
+  if (isAssetHubChain(chain)) {
+    linkUserPage = `/assethub${linkUserPage}`;
+  }
   if (linkToVotesPage) {
     linkUserPage = `${linkUserPage}/votes`;
   }

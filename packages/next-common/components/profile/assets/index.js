@@ -8,22 +8,30 @@ import { AssetMetadataProvider } from "next-common/components/assets/context/ass
 import AssetHubTabs from "next-common/components/assets/tabs/index";
 import AssetsTransfersHistory from "next-common/components/assets/transferHistory/index";
 import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
+import { useChain } from "next-common/context/chain";
+import { isAssetHubChain } from "next-common/utils/chain";
 
 function ProfileAssetsInContext() {
+  const chain = useChain();
   const { id } = usePageProps();
   const router = useRouter();
   const maybeEvmAddress = tryConvertToEvmAddress(id);
 
+  let pathname = `/user/${maybeEvmAddress}/assets`;
+  if (isAssetHubChain(chain)) {
+    pathname = `/assethub${pathname}`;
+  }
+
   useEffect(() => {
     router.push(
       {
-        pathname: `/user/${maybeEvmAddress}/assets`,
+        pathname,
       },
       undefined,
       { shallow: true },
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maybeEvmAddress]);
+  }, [maybeEvmAddress, pathname]);
 
   return (
     <div className="flex flex-col gap-[16px]">

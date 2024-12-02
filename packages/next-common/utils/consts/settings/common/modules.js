@@ -38,6 +38,7 @@ const base = {
   alliance: false,
   preimages: true,
   coretime: false,
+  assethub: false,
   proxy: {
     provider: "server",
   },
