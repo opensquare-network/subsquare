@@ -132,6 +132,18 @@ export const formatBalance = (x, symbol) => {
   );
 };
 
+export const formatBalanceWithComma = (x, symbol) => {
+  const value = new BigNumber(x);
+  const fmt = {
+    decimalSeparator: ".",
+    groupSeparator: ",",
+    groupSize: 3,
+  };
+
+  BigNumber.config({ FORMAT: fmt });
+  return value.toFormat(BalanceDecimals[symbol] ?? 2, BigNumber.ROUND_DOWN);
+};
+
 //fixme: this a for mention insert from replay button
 //find a elegant way to do this
 export const prettyHTML = (html) => {
