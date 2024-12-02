@@ -7,6 +7,7 @@ export default function VoteValue({
   setInputVoteBalance,
   title = "Value",
   titleTooltip = "The value is locked for the duration of the vote",
+  useCommaFormat = false,
 }) {
   const node = useChainSettings();
   return (
@@ -17,6 +18,7 @@ export default function VoteValue({
       inputBalance={inputVoteBalance}
       setInputBalance={setInputVoteBalance}
       symbol={node?.voteSymbol || node?.symbol}
+      useCommaFormat={useCommaFormat}
     />
   );
 }

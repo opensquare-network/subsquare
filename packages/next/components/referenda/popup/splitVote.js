@@ -15,6 +15,7 @@ export default function SplitVote({
         isLoading={isLoading}
         inputVoteBalance={ayeInputVoteBalance}
         setInputVoteBalance={setAyeInputVoteBalance}
+        useCommaFormat
       />
       <VoteValue
         title="Nay Vote Value"
@@ -22,6 +23,7 @@ export default function SplitVote({
         isLoading={isLoading}
         inputVoteBalance={nayInputVoteBalance}
         setInputVoteBalance={setNayInputVoteBalance}
+        useCommaFormat
       />
     </>
   );

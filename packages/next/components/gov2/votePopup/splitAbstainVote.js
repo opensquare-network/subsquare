@@ -17,6 +17,7 @@ export default function SplitAbstainVote({
         isLoading={isLoading}
         inputVoteBalance={abstainInputVoteBalance}
         setInputVoteBalance={setAbstainInputVoteBalance}
+        useCommaFormat
       />
       <VoteValue
         title="Aye Vote Value"
@@ -24,6 +25,7 @@ export default function SplitAbstainVote({
         isLoading={isLoading}
         inputVoteBalance={ayeInputVoteBalance}
         setInputVoteBalance={setAyeInputVoteBalance}
+        useCommaFormat
       />
       <VoteValue
         title="Nay Vote Value"
@@ -31,6 +33,7 @@ export default function SplitAbstainVote({
         isLoading={isLoading}
         inputVoteBalance={nayInputVoteBalance}
         setInputVoteBalance={setNayInputVoteBalance}
+        useCommaFormat
       />
     </>
   );
