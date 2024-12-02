@@ -65,7 +65,6 @@ const links = [
     name: "medium",
     url: "https://medium.com/bifrost-finance",
   },
-  
 ];
 
 const bifrost = {
