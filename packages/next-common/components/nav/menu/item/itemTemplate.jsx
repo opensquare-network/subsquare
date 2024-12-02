@@ -1,4 +1,5 @@
 import { noop } from "lodash-es";
+import { ThemedTag } from "next-common/components/tags/state/styled";
 import { cn } from "next-common/utils";
 
 export default function NavMenuItemTemplate({
@@ -11,6 +12,7 @@ export default function NavMenuItemTemplate({
   active,
   onClick = noop,
   className = "",
+  isNew = false,
 }) {
   return (
     <div
@@ -50,6 +52,7 @@ export default function NavMenuItemTemplate({
               {activeCount}
             </span>
           )}
+          {isNew && <ThemedTag className="ml-1 rounded-full">New</ThemedTag>}
           {isExternal && (
             <span className="ml-1 text-navigationTextTertiary">↗</span>
           )}
