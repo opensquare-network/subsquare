@@ -35,23 +35,31 @@ const DEFAULT_BIFROST_NODES = [
 const links = [
   {
     name: "website",
-    url: "https://bifrost.finance/",
+    url: "https://bifrost.io/",
+  },
+  {
+    name: "dapp",
+    url: "https://app.bifrost.io/",
   },
   {
     name: "github",
-    url: "https://github.com/bifrost-finance",
+    url: "https://github.com/bifrost-io",
   },
   {
     name: "twitter",
-    url: "https://twitter.com/Bifrost",
+    url: "https://x.com/Bifrost",
   },
   {
     name: "telegram",
-    url: "https://t.me/bifrost_finance",
+    url: "https://t.me/bifrost_io",
   },
   {
     name: "discord",
-    url: "https://discord.gg/8DRBw2h5X4",
+    url: "https://discord.bifrost.io/",
+  },
+  {
+    name: "youtube",
+    url: "https://www.youtube.com/@bifrostio/videos",
   },
   {
     name: "medium",

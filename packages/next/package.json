@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@next/env": "^13.3.0",
-    "@osn/icons": "^1.155.0",
+    "@osn/icons": "^1.159.0",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
     "chartjs-plugin-gradient": "^0.6.1",
