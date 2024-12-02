@@ -2,6 +2,7 @@ import { ArrowRight, MenuAsset, MenuOverview } from "@osn/icons/subsquare";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export const assetHubMenu = {
+  isNew: true,
   name: "Asset Hub",
   value: "assetHub",
   pathname: "/assethub",
