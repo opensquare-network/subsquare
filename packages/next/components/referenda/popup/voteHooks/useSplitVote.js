@@ -29,7 +29,6 @@ export default function useSplitVote({
   );
 
   const getSplitVoteTx = useCallback(() => {
-
     let bnAyeVoteBalance;
     try {
       bnAyeVoteBalance = checkInputValue(
