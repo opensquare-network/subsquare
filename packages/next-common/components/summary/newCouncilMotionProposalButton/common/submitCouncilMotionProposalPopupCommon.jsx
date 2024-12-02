@@ -11,6 +11,8 @@ import NewCouncilMotionProposalInnerPopup from "../newProposalInnerPopup";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 import RejectTreasuryProposalInnerPopup from "../rejectTreasuryProposalInnerPopup";
 import { useCollectivePallet } from "next-common/context/collective";
+import ExternalProposeMajorityPopup from "../externalProposeMajorityPopup";
+import ExternalProposeDefaultPopup from "../externalProposeDefaultPopup";
 
 export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
   const chain = useChain();
@@ -22,6 +24,12 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
     setShowApproveTreasuryProposalPopup,
   ] = useState(false);
   const [showRejectTreasuryProposalPopup, setShowRejectTreasuryProposalPopup] =
+    useState(false);
+  const [
+    showExternalProposeMajorityPopup,
+    setShowExternalProposeMajorityPopup,
+  ] = useState(false);
+  const [showExternalProposeDefaultPopup, setShowExternalProposeDefaultPopup] =
     useState(false);
   const { isMember } = useIsCollectiveMember();
 
@@ -46,6 +54,18 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
   if (showRejectTreasuryProposalPopup) {
     return (
       <RejectTreasuryProposalInnerPopup onClose={onClose} isMember={isMember} />
+    );
+  }
+
+  if (showExternalProposeMajorityPopup) {
+    return (
+      <ExternalProposeMajorityPopup onClose={onClose} isMember={isMember} />
+    );
+  }
+
+  if (showExternalProposeDefaultPopup) {
+    return (
+      <ExternalProposeDefaultPopup onClose={onClose} isMember={isMember} />
     );
   }
 
@@ -77,6 +97,20 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
               description="Reject a treasury proposal"
               onClick={() => {
                 setShowRejectTreasuryProposalPopup(true);
+              }}
+            />
+            <ChoiceButton
+              name="External propose majority"
+              description="Schedule a majority-carries referendum to be tabled next once it is legal to schedule an external referendum"
+              onClick={() => {
+                setShowExternalProposeMajorityPopup(true);
+              }}
+            />
+            <ChoiceButton
+              name="External propose default"
+              description="Schedule a negative-turnout-bias referendum to be tabled next once it is legal to schedule an external referendum"
+              onClick={() => {
+                setShowExternalProposeDefaultPopup(true);
               }}
             />
           </QuickStart>

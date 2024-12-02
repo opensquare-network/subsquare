@@ -1,16 +1,11 @@
 import { isNil, orderBy } from "lodash-es";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import ExternalLink from "next-common/components/externalLink";
 import PopupLabel from "next-common/components/popup/label";
 import { StatusWrapper } from "next-common/components/popup/styled";
 import Select from "next-common/components/select";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
-import { useCollectivePallet } from "next-common/context/collective";
 import nextApi from "next-common/services/nextApi";
-import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
-import { getEventData } from "next-common/utils/sendTransaction";
-import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { useAsync } from "react-use";
 import {
@@ -20,19 +15,14 @@ import {
 import Tooltip from "next-common/components/tooltip";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { CacheProvider, useCache } from "next-common/context/cache";
+import CouncilProposeButton from "./councilProposeButton";
 
 export default function TreasuryProposalPopupContent({
-  onClose,
   isMember,
   treasuryProposalAction = "approveProposal",
 }) {
-  const router = useRouter();
-  const pallet = useCollectivePallet();
   const treasuryPallet = useTreasuryPallet();
   const api = useContextApi();
-
-  const { members } = useCollectiveMembers();
-  const threshold = Math.floor(members?.length / 2) + 1;
 
   const [selectedID, setSelectedID] = useState();
 
@@ -50,24 +40,8 @@ export default function TreasuryProposalPopupContent({
       return;
     }
 
-    const proposal =
-      api.tx[treasuryPallet][treasuryProposalAction]?.(selectedID);
-    const proposalLength = proposal?.encodedLength || 0;
-
-    const params =
-      api.tx[pallet].propose.meta.args.length === 3
-        ? [threshold, proposal, proposalLength]
-        : [threshold, proposal];
-
-    return api.tx[pallet].propose(...params);
-  }, [
-    api,
-    selectedID,
-    pallet,
-    threshold,
-    treasuryPallet,
-    treasuryProposalAction,
-  ]);
+    return api.tx[treasuryPallet][treasuryProposalAction]?.(selectedID);
+  }, [api, selectedID, treasuryPallet, treasuryProposalAction]);
 
   const options = proposalIDs?.map((id) => ({
     label: (
@@ -112,20 +86,10 @@ export default function TreasuryProposalPopupContent({
           }
           className="inline"
         >
-          <TxSubmissionButton
+          <CouncilProposeButton
             disabled={disabled}
             loading={loadingProposalIDs}
             getTxFunc={getTxFunc}
-            onInBlock={({ events }) => {
-              const eventData = getEventData(events, pallet, "Proposed");
-              if (!eventData) {
-                return;
-              }
-
-              const [, proposalIndex] = eventData;
-              router.push(`${router.pathname}/${proposalIndex}`);
-            }}
-            onClose={onClose}
           />
         </Tooltip>
       </div>
