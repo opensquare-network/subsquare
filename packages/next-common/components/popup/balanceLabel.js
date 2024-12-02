@@ -1,7 +1,7 @@
 import React from "react";
 import { LabelWrapper, Label, BalanceWrapper } from "./styled";
 import Loading from "../loading";
-import { formatBalance } from "../../utils/viewfuncs";
+import { formatBalanceWithComma } from "../../utils/viewfuncs";
 
 export default function PopupLabelWithBalance({
   text,
@@ -17,7 +17,7 @@ export default function PopupLabelWithBalance({
         <div>{balanceName}</div>
         {!isLoading && (
           <div>
-            {formatBalance(balance, symbol)} {symbol}
+            {formatBalanceWithComma(balance, symbol)} {symbol}
           </div>
         )}
         {isLoading && <Loading />}
