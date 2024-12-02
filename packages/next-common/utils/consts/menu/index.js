@@ -14,7 +14,6 @@ import { getCommunityCouncilMenu } from "./communityCouncil";
 import { CHAIN } from "next-common/utils/constants";
 import preImages from "./preImages";
 import { partition } from "lodash-es";
-import isAssetHub from "next-common/utils/isAssetHub";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
@@ -27,6 +26,11 @@ export function getHomeMenu({
   currentTrackId,
 } = {}) {
   const { modules } = getChainSettings(CHAIN);
+
+  const integrationsMenu = [
+    modules?.assethub && assetHubMenu,
+    modules?.coretime && coretimeMenu,
+  ].filter(Boolean);
 
   return [
     modules?.referenda && getReferendaMenu(tracks, currentTrackId),
@@ -42,7 +46,9 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.preimages && preImages,
-    ...(modules?.coretime ? [{ type: "divider" }, coretimeMenu] : []),
+    ...(integrationsMenu.length
+      ? [{ type: "divider" }, ...integrationsMenu]
+      : []),
   ].filter(Boolean);
 }
 
@@ -53,10 +59,6 @@ export function getMainMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  if (isAssetHub()) {
-    return [...assetHubMenu];
-  }
-
   const modulesMenu = getHomeMenu({
     summary,
     tracks,

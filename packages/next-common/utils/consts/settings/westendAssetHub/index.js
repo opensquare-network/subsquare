@@ -4,13 +4,10 @@ import dynamic from "next/dynamic";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 import { westendAssetHubThemeVars } from "next-common/utils/consts/settings/westendAssetHub/theme";
+import westend from "../westend";
 
 const ProjectIconWestendAssethub = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendAssethub"),
-);
-
-const ProjectLogoWestendAssethub = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoWestendAssethub"),
 );
 
 const name = Chains.westendAssetHub;
@@ -26,8 +23,8 @@ const westendAssetHub = {
   endpoints: westendAssetHubNodes,
   avatar: ProjectIconWestendAssethub,
   darkAvatar: ProjectIconWestendAssethub,
-  navLogo: ProjectLogoWestendAssethub,
-  navLogoDark: ProjectLogoWestendAssethub,
+  navLogo: westend.navLogo,
+  navLogoDark: westend.navLogoDark,
   networkIcon: ProjectIconWestendAssethub,
   group: MenuGroups.WestendAndParachains,
   links: polkadotLinks,

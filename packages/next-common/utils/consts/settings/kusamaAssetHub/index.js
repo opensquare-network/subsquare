@@ -4,13 +4,10 @@ import dynamic from "next/dynamic";
 import kusamaLinks from "next-common/utils/consts/settings/kusama/links";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 import { kusamaAssetHubThemeVars } from "next-common/utils/consts/settings/kusamaAssetHub/theme";
+import kusama from "../kusama";
 
 const ProjectIconKusamaAssethub = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaAssethub"),
-);
-
-const ProjectLogoKusamaAssethub = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoKusamaAssethub"),
 );
 
 const name = Chains.kusamaAssetHub;
@@ -26,8 +23,8 @@ const kusamaAssetHub = {
   endpoints: kusamaAssetHubNodes,
   avatar: ProjectIconKusamaAssethub,
   darkAvatar: ProjectIconKusamaAssethub,
-  navLogo: ProjectLogoKusamaAssethub,
-  navLogoDark: ProjectLogoKusamaAssethub,
+  navLogo: kusama.navLogo,
+  navLogoDark: kusama.navLogoDark,
   networkIcon: ProjectIconKusamaAssethub,
   group: MenuGroups.KusamaAndParachains,
   links: kusamaLinks,

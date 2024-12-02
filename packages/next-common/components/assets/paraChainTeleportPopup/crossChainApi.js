@@ -17,7 +17,7 @@ export function useChainApi(chain) {
   const currChain = useChain();
   const currChainApi = useContextApi();
 
-  const replyChain = useRelayChain();
+  const relayChain = useRelayChain();
   const relayChainApi = useRelayChainApi();
 
   const assetHubChain = useAssetHubChain();
@@ -27,7 +27,7 @@ export function useChainApi(chain) {
 
   if (chain === currChain) {
     return currChainApi;
-  } else if (chain === replyChain) {
+  } else if (chain === relayChain) {
     return relayChainApi;
   } else if (chain === assetHubChain) {
     return assetHubApi;
