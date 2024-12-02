@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.4.0
+
+date: 2024-12-02
+
+- [Medium] Integrate assethub under relay chain deployment.
+- Support astar and customize its council threshold 2/3.
+- Support EVM for astar and shibuya.
+- Increase EVM transaction gas limit by 10%.
+- Fix/Enhance EVM transaction callback functions.
+- Proxy support:
+    - Show proxy info on profile page.
+    - Show proxy deposits on profile page.
+- Show comma for referenda voting balance and convicted votes.
+- Update bifrost links.
+- Fix markdown new line break. Check the issue [here](https://github.com/opensquare-network/subsquare/issues/5104).
+- Improve tabs a11y for vimium on profile page.
+- Add external proposal templates for council.
+
 # 4.3.8
 
 date: 2024-11-27
