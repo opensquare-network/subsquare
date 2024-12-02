@@ -10,9 +10,9 @@ import { useCallback } from "react";
 
 function getThreshold(members, chain) {
   if (chain === Chains.shibuya) {
-    return Math.floor(members?.length / 2) + 1;
+    return Math.ceil(members?.length / 2);
   } else if (chain === Chains.astar) {
-    return Math.floor((members?.length * 2) / 3) + 1;
+    return Math.ceil((members?.length * 2) / 3);
   }
   throw new Error(`Unsupported chain: ${chain}`);
 }
