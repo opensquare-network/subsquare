@@ -16,7 +16,8 @@ export default function NumberWithComma({ value, symbol = "" }) {
 
   return (
     <>
-      {formattedNumber} {symbol}
+      {formattedNumber}
+      {symbol && ` ${symbol}`}
     </>
   );
 }
