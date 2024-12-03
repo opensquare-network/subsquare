@@ -5,7 +5,8 @@ import {
   delegateeColumn,
   typeColumn,
   useDelayBlockOrTimeColumn,
-} from "next-common/components/profile/proxy/common/columns";
+  removeColumn,
+} from "./common/columns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useMyProxiesContext } from "./context/myProxies";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
@@ -21,7 +22,12 @@ export default function MyProxies() {
   );
 
   const delayBlockOrTimeColumn = useDelayBlockOrTimeColumn();
-  const columns = [delegateeColumn, typeColumn, delayBlockOrTimeColumn];
+  const columns = [
+    delegateeColumn,
+    typeColumn,
+    delayBlockOrTimeColumn,
+    removeColumn,
+  ];
 
   useEffect(() => {
     if (loading) {

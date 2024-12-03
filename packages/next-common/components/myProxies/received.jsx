@@ -5,7 +5,7 @@ import {
   delegatorColumn,
   typeColumn,
   useDelayBlockOrTimeColumn,
-} from "next-common/components/profile/proxy/common/columns";
+} from "./common/columns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useReceivedProxiesContext } from "./context/received";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
