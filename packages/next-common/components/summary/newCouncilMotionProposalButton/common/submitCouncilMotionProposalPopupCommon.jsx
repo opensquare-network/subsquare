@@ -69,6 +69,64 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
     );
   }
 
+  const approveTreasuryProposalButton = (
+    <ChoiceButton
+      name="Approve a treasury proposal"
+      description="Approve a treasury proposal"
+      onClick={() => {
+        setShowApproveTreasuryProposalPopup(true);
+      }}
+    />
+  );
+
+  const rejectTreasuryProposalButton = (
+    <ChoiceButton
+      name="Reject a treasury proposal"
+      description="Reject a treasury proposal"
+      onClick={() => {
+        setShowRejectTreasuryProposalPopup(true);
+      }}
+    />
+  );
+
+  const externalProposeMajorityButton = (
+    <ChoiceButton
+      name="External propose majority"
+      description="Schedule a majority-carries referendum to be tabled next once it is legal to schedule an external referendum"
+      onClick={() => {
+        setShowExternalProposeMajorityPopup(true);
+      }}
+    />
+  );
+
+  const externalProposeDefaultButton = (
+    <ChoiceButton
+      name="External propose default"
+      description="Schedule a negative-turnout-bias referendum to be tabled next once it is legal to schedule an external referendum"
+      onClick={() => {
+        setShowExternalProposeDefaultPopup(true);
+      }}
+    />
+  );
+
+  let quickStartButtons = null;
+
+  if (isShibuyaChain(chain) && "communityCouncil" === collectivePallet) {
+    quickStartButtons = [
+      approveTreasuryProposalButton,
+      rejectTreasuryProposalButton,
+    ];
+  }
+
+  if (isShibuyaChain(chain) && "council" === collectivePallet) {
+    quickStartButtons = [
+      approveTreasuryProposalButton,
+      rejectTreasuryProposalButton,
+      externalProposeMajorityButton,
+      externalProposeDefaultButton,
+    ];
+  }
+
   return (
     <Popup wide className="!w-[640px]" title="Submit Motion" onClose={onClose}>
       <div className="flex flex-col !mt-[24px] gap-[12px]">
@@ -82,39 +140,7 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
         />
       </div>
 
-      {isShibuyaChain(chain) &&
-        ["communityCouncil", "council"].includes(collectivePallet) && (
-          <QuickStart>
-            <ChoiceButton
-              name="Approve a treasury proposal"
-              description="Approve a treasury proposal"
-              onClick={() => {
-                setShowApproveTreasuryProposalPopup(true);
-              }}
-            />
-            <ChoiceButton
-              name="Reject a treasury proposal"
-              description="Reject a treasury proposal"
-              onClick={() => {
-                setShowRejectTreasuryProposalPopup(true);
-              }}
-            />
-            <ChoiceButton
-              name="External propose majority"
-              description="Schedule a majority-carries referendum to be tabled next once it is legal to schedule an external referendum"
-              onClick={() => {
-                setShowExternalProposeMajorityPopup(true);
-              }}
-            />
-            <ChoiceButton
-              name="External propose default"
-              description="Schedule a negative-turnout-bias referendum to be tabled next once it is legal to schedule an external referendum"
-              onClick={() => {
-                setShowExternalProposeDefaultPopup(true);
-              }}
-            />
-          </QuickStart>
-        )}
+      {quickStartButtons && <QuickStart>{quickStartButtons}</QuickStart>}
 
       {children}
     </Popup>
