@@ -1,11 +1,16 @@
 import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
+import { forwardRef } from "react";
+
+const Button = forwardRef(_Button);
+
+export default Button;
 
 /**
  * @param {ButtonProps} props
  * @private
  */
-export default function _Button(props) {
+function _Button(props, ref) {
   const {
     size,
     loading,
@@ -22,6 +27,7 @@ export default function _Button(props) {
 
   return (
     <button
+      ref={ref}
       {...attrs}
       disabled={disabled || loading}
       className={cn(
