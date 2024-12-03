@@ -11,6 +11,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { useMyProxiesContext } from "./context/myProxies";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import HeaderPrompt from "next-common/components/profile/proxy/common/headerPrompt";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 
 export default function MyProxies() {
   const { data, total, loading } = useMyProxiesContext();
@@ -46,13 +47,15 @@ export default function MyProxies() {
           "I'm a delegator and my delegatees can submit extrinsics on behalf of me."
         }
       />
-      <MapDataList
-        loading={loading}
-        noDataText="No proxy set"
-        columnsDef={columns}
-        data={dataList}
-      />
-      {total > 0 && pageComponent}
+      <SignerPopupWrapper>
+        <MapDataList
+          loading={loading}
+          noDataText="No proxy set"
+          columnsDef={columns}
+          data={dataList}
+        />
+        {total > 0 && pageComponent}
+      </SignerPopupWrapper>
     </SecondaryCard>
   );
 }
