@@ -38,6 +38,7 @@ export default function TotalTreasury() {
     loanCentrifugeUsdcBalance,
     loanBifrostDotBalance,
     loadPendulumDotBalance,
+    loanHydrationDotBalance,
     dotTreasuryBalanceOnBounties,
     isDotTreasuryBalanceOnBountiesLoading,
   } = usePolkadotTreasurySummary();
@@ -69,6 +70,7 @@ export default function TotalTreasury() {
     .plus(hydrationTreasuryDot || 0)
     .plus(loanBifrostDotBalance || 0)
     .plus(loadPendulumDotBalance || 0)
+    .plus(loanHydrationDotBalance || 0)
     .plus(dotTreasuryBalanceOnBounties || 0)
     .toString();
 
