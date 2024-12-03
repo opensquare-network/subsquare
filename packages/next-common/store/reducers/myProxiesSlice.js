@@ -27,7 +27,7 @@ export const { setProxies, setTotal, setLoading } = myProxiesSlice.actions;
 export default myProxiesSlice.reducer;
 
 export const fetchMyProxies = (address, api) => async (dispatch) => {
-  if (!api) {
+  if (!address || !api) {
     return;
   }
 

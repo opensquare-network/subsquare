@@ -11,19 +11,9 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import HeaderPrompt from "next-common/components/profile/proxy/common/headerPrompt";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import {
-  fetchMyProxies,
-  myProxiesSelector,
-} from "next-common/store/reducers/myProxiesSlice";
-import { useSelector, useDispatch } from "react-redux";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useContextApi } from "next-common/context/api";
 
-export default function MyProxies() {
-  const { proxies, total, loading } = useSelector(myProxiesSelector);
-  const dispatch = useDispatch();
-  const address = useRealAddress();
-  const api = useContextApi();
+export default function MyProxies({ myProxies }) {
+  const { proxies, total, loading } = myProxies;
   const [dataList, setDataList] = useState([]);
 
   const { page, component: pageComponent } = usePaginationComponent(
@@ -38,10 +28,6 @@ export default function MyProxies() {
     delayBlockOrTimeColumn,
     removeColumn,
   ];
-
-  useEffect(() => {
-    dispatch(fetchMyProxies(address, api));
-  }, [dispatch, address, api]);
 
   useEffect(() => {
     if (loading) {
