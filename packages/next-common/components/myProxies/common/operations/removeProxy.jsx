@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
@@ -6,11 +6,13 @@ import RemoveButton from "next-common/components/removeButton";
 import Tooltip from "next-common/components/tooltip";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import updateMyproxies from "../updateMyproxies";
 
 export default function RemoveProxy({ data }) {
   const api = useContextApi();
   const address = useRealAddress();
   const dispatch = useDispatch();
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const getTxFunc = useCallback(() => {
     if (!api || !address) {
@@ -22,18 +24,28 @@ export default function RemoveProxy({ data }) {
   }, [api, address, data]);
 
   const onFinalized = () => {
-    dispatch(newSuccessToast("Proxy removed successfully"));
-    // TODO: refresh the proxy list
+    setIsDisabled(false);
+    dispatch(newSuccessToast("My proxies will be updated in seconds"));
+    updateMyproxies(dispatch, address, api).then(() => {
+      // updated 10 time, do nothing
+    });
   };
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
     onFinalized,
+    onCancelled: () => setIsDisabled(false),
   });
+
+  useEffect(() => {
+    if (isSubmitting) {
+      setIsDisabled(true);
+    }
+  }, [isSubmitting]);
 
   return (
     <Tooltip content="Remove">
-      <RemoveButton disabled={isSubmitting} onClick={doSubmit} />
+      <RemoveButton disabled={isDisabled} onClick={doSubmit} />
     </Tooltip>
   );
 }
