@@ -69,46 +69,62 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
     );
   }
 
-  const quickStartButtons = [];
+  const approveTreasuryProposalButton = (
+    <ChoiceButton
+      name="Approve a treasury proposal"
+      description="Approve a treasury proposal"
+      onClick={() => {
+        setShowApproveTreasuryProposalPopup(true);
+      }}
+    />
+  );
 
-  if (isShibuyaChain(chain)) {
-    if (["communityCouncil", "council"].includes(collectivePallet)) {
-      quickStartButtons.push(
-        <ChoiceButton
-          name="Approve a treasury proposal"
-          description="Approve a treasury proposal"
-          onClick={() => {
-            setShowApproveTreasuryProposalPopup(true);
-          }}
-        />,
-        <ChoiceButton
-          name="Reject a treasury proposal"
-          description="Reject a treasury proposal"
-          onClick={() => {
-            setShowRejectTreasuryProposalPopup(true);
-          }}
-        />,
-      );
+  const rejectTreasuryProposalButton = (
+    <ChoiceButton
+      name="Reject a treasury proposal"
+      description="Reject a treasury proposal"
+      onClick={() => {
+        setShowRejectTreasuryProposalPopup(true);
+      }}
+    />
+  );
 
-      if (collectivePallet === "council") {
-        quickStartButtons.push(
-          <ChoiceButton
-            name="External propose majority"
-            description="Schedule a majority-carries referendum to be tabled next once it is legal to schedule an external referendum"
-            onClick={() => {
-              setShowExternalProposeMajorityPopup(true);
-            }}
-          />,
-          <ChoiceButton
-            name="External propose default"
-            description="Schedule a negative-turnout-bias referendum to be tabled next once it is legal to schedule an external referendum"
-            onClick={() => {
-              setShowExternalProposeDefaultPopup(true);
-            }}
-          />,
-        );
-      }
-    }
+  const externalProposeMajorityButton = (
+    <ChoiceButton
+      name="External propose majority"
+      description="Schedule a majority-carries referendum to be tabled next once it is legal to schedule an external referendum"
+      onClick={() => {
+        setShowExternalProposeMajorityPopup(true);
+      }}
+    />
+  );
+
+  const externalProposeDefaultButton = (
+    <ChoiceButton
+      name="External propose default"
+      description="Schedule a negative-turnout-bias referendum to be tabled next once it is legal to schedule an external referendum"
+      onClick={() => {
+        setShowExternalProposeDefaultPopup(true);
+      }}
+    />
+  );
+
+  let quickStartButtons = null;
+
+  if (isShibuyaChain(chain) && "communityCouncil" === collectivePallet) {
+    quickStartButtons = [
+      approveTreasuryProposalButton,
+      rejectTreasuryProposalButton,
+    ];
+  }
+
+  if (isShibuyaChain(chain) && "council" === collectivePallet) {
+    quickStartButtons = [
+      approveTreasuryProposalButton,
+      rejectTreasuryProposalButton,
+      externalProposeMajorityButton,
+      externalProposeDefaultButton,
+    ];
   }
 
   return (
@@ -124,9 +140,7 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
         />
       </div>
 
-      {quickStartButtons.length > 0 && (
-        <QuickStart>{quickStartButtons}</QuickStart>
-      )}
+      {quickStartButtons && <QuickStart>{quickStartButtons}</QuickStart>}
 
       {children}
     </Popup>
