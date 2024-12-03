@@ -34,11 +34,10 @@ export const fetchMyProxies = (address, api) => async (dispatch) => {
   api.query.proxy.proxies(address).then((result) => {
     const proxies = result?.toJSON();
     const total = proxies[0]?.length || 0;
-    const loading = false;
 
     dispatch(setProxies(proxies[0]));
     dispatch(setTotal(total));
-    dispatch(setLoading(loading));
+    dispatch(setLoading(false));
   });
 };
 
