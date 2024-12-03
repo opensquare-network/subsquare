@@ -15,6 +15,7 @@ import multisigSlice from "./multisigSlice";
 import profile from "./profile";
 import avatarReducer from "./avatarSlice";
 import multiAccountsSlice from "./multiAccountsSlice";
+import myProxiesSlice from "./myProxiesSlice";
 
 export const commonReducers = {
   // baseLayout header
@@ -36,6 +37,7 @@ const businessReducers = {
   ...myOnChainData,
   multisig: multisigSlice,
   multiAccounts: multiAccountsSlice,
+  myProxies: myProxiesSlice,
   ...profile,
 };
 

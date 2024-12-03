@@ -8,13 +8,22 @@ import {
   removeColumn,
 } from "./common/columns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { useMyProxiesContext } from "./context/myProxies";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import HeaderPrompt from "next-common/components/profile/proxy/common/headerPrompt";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import {
+  fetchMyProxies,
+  myProxiesSelector,
+} from "next-common/store/reducers/myProxiesSlice";
+import { useSelector, useDispatch } from "react-redux";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useContextApi } from "next-common/context/api";
 
 export default function MyProxies() {
-  const { data, total, loading } = useMyProxiesContext();
+  const { proxies, total, loading } = useSelector(myProxiesSelector);
+  const dispatch = useDispatch();
+  const address = useRealAddress();
+  const api = useContextApi();
   const [dataList, setDataList] = useState([]);
 
   const { page, component: pageComponent } = usePaginationComponent(
@@ -31,14 +40,18 @@ export default function MyProxies() {
   ];
 
   useEffect(() => {
+    dispatch(fetchMyProxies(address, api));
+  }, [dispatch, address, api]);
+
+  useEffect(() => {
     if (loading) {
       return;
     }
 
     const startIndex = (page - 1) * defaultPageSize;
     const endIndex = startIndex + defaultPageSize;
-    setDataList(data?.slice(startIndex, endIndex));
-  }, [data, page, loading]);
+    setDataList(proxies?.slice(startIndex, endIndex));
+  }, [proxies, page, loading]);
 
   return (
     <SecondaryCard className="space-y-4">
