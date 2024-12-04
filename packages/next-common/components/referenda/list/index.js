@@ -112,7 +112,6 @@ function WithFilterPostList({
           <NewProposalButton />
         </div>
       }
-      // <ReferendaListFilters isUnVotedOnlyLoading={isUnVotedOnlyLoading} />
       category={businessCategory.openGovReferenda}
       items={items}
       pagination={pagination}
