@@ -24,7 +24,7 @@ export default function RemoveProxy({ data }) {
 
   const onFinalized = () => {
     setIsDisabled(false);
-    dispatch(newSuccessToast("My proxies will be updated in seconds"));
+    dispatch(newSuccessToast("Removed successfully"));
   };
 
   const { doSubmit, isSubmitting } = useTxSubmission({
