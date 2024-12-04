@@ -1,5 +1,5 @@
-import { SystemFilter } from "@osn/icons/subsquare";
 import * as Popover from "@radix-ui/react-popover";
+import { SystemFilter } from "@osn/icons/subsquare";
 import { camelCase, isEqual, upperFirst } from "lodash-es";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
@@ -14,7 +14,7 @@ import TreasuryRelatedOption from "../treasuryRelatedOption";
 import { usePageProps } from "next-common/context/page";
 import { useUpdateEffect } from "react-use";
 
-export default function ReferendaListFilter() {
+export default function ReferendaListFilter({ isUnVotedOnlyLodaing }) {
   const { isTreasury: isTreasuryProp, status: statusProp } = usePageProps();
   const status = upperFirst(camelCase(statusProp));
   const router = useRouter();
@@ -47,7 +47,6 @@ export default function ReferendaListFilter() {
 
   async function handleApply() {
     const q = {};
-
     if (value?.status) {
       q.status = value.status;
     }
@@ -55,10 +54,19 @@ export default function ReferendaListFilter() {
       q.is_treasury = value.isTreasury;
     }
 
+    const params = {};
+    if (statusProp) {
+      params.status = statusProp;
+    }
+    if (isTreasuryProp) {
+      params.is_treasury = isTreasuryProp === "true";
+    }
+
     setIsTreasury(value?.isTreasury);
     setUnVotedOnly(value?.unVotedOnly);
 
-    if (!isEqual(q, router.query)) {
+    const shouldUpdateRoute = !isEqual(q, params);
+    if (shouldUpdateRoute) {
       await router.replace({ query: q });
     }
 
@@ -66,9 +74,9 @@ export default function ReferendaListFilter() {
   }
 
   async function handleReset() {
-    setUnVotedOnly(false);
     await router.replace("");
 
+    setUnVotedOnly(false);
     setIsTreasury(false);
     setOpen(false);
   }
@@ -142,7 +150,11 @@ export default function ReferendaListFilter() {
               <SecondaryButton size="small" onClick={handleReset}>
                 Reset
               </SecondaryButton>
-              <PrimaryButton size="small" onClick={handleApply}>
+              <PrimaryButton
+                size="small"
+                onClick={handleApply}
+                loading={isUnVotedOnlyLodaing}
+              >
                 Apply
               </PrimaryButton>
             </div>
