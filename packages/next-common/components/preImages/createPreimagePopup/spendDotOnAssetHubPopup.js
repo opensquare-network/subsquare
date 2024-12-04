@@ -122,7 +122,7 @@ function PopupContent() {
 export default function SpendDotOnAssetHubPopup({ onClose }) {
   return (
     <Popup
-      title="Spend DOT AssetHub"
+      title="Spend DOT on AssetHub"
       className="!w-[640px]"
       onClose={onClose}
       wide
