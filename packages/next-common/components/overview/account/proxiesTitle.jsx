@@ -1,5 +1,8 @@
 import { Title } from "./styled";
-import { useMyProxiesContext } from "next-common/components/myProxies/context/myProxies";
+import {
+  useMyProxiesContext,
+  MyProxiesProvider,
+} from "next-common/components/myProxies/context/myProxies";
 
 function ProxiesCount() {
   const { total = 0, loading } = useMyProxiesContext();
@@ -13,9 +16,11 @@ function ProxiesCount() {
 
 export default function ProxiesTitle({ active }) {
   return (
-    <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
-      Proxies
-      <ProxiesCount />
-    </Title>
+    <MyProxiesProvider>
+      <Title className={active ? "text-textPrimary" : "text-textTertiary"}>
+        Proxies
+        <ProxiesCount />
+      </Title>
+    </MyProxiesProvider>
   );
 }

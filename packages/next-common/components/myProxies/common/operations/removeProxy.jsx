@@ -6,7 +6,6 @@ import RemoveButton from "next-common/components/removeButton";
 import Tooltip from "next-common/components/tooltip";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import updateMyproxies from "../updateMyproxies";
 
 export default function RemoveProxy({ data }) {
   const api = useContextApi();
@@ -26,9 +25,6 @@ export default function RemoveProxy({ data }) {
   const onFinalized = () => {
     setIsDisabled(false);
     dispatch(newSuccessToast("My proxies will be updated in seconds"));
-    updateMyproxies(dispatch, address, api).then(() => {
-      // updated 10 time, do nothing
-    });
   };
 
   const { doSubmit, isSubmitting } = useTxSubmission({
