@@ -1,6 +1,6 @@
 import * as Popover from "@radix-ui/react-popover";
 import { SystemFilter } from "@osn/icons/subsquare";
-import { camelCase, isEqual, snakeCase, upperFirst } from "lodash-es";
+import { camelCase, isEqual, pickBy, snakeCase, upperFirst } from "lodash-es";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -46,21 +46,21 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
   }).filter(Boolean).length;
 
   async function handleApply() {
-    const q = {};
-    if (value?.status) {
-      q.status = value.status;
-    }
-    if (value?.isTreasury) {
-      q.is_treasury = value.isTreasury;
-    }
+    const q = pickBy(
+      {
+        status: value.status,
+        is_treasury: value.isTreasury,
+      },
+      Boolean,
+    );
 
-    const params = {};
-    if (statusProp) {
-      params.status = statusProp;
-    }
-    if (isTreasuryProp) {
-      params.is_treasury = isTreasuryProp === "true";
-    }
+    const params = pickBy(
+      {
+        status: statusProp,
+        is_treasury: isTreasuryProp === "true",
+      },
+      Boolean,
+    );
 
     setIsTreasury(value?.isTreasury);
     setUnVotedOnly(value?.unVotedOnly);
@@ -70,7 +70,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
       const query = q;
       query.status = snakeCase(q.status);
 
-      await router.replace({ query });
+      await router.replace({ query: pickBy(query, Boolean) });
     }
 
     setOpen(false);
