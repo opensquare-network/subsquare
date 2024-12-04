@@ -101,6 +101,7 @@ const paseo = {
     treasury: {
       spends: true,
       childBounties: true,
+      tips: false,
     },
     council: false,
     democracy: false,
