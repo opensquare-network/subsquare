@@ -1,17 +1,19 @@
 import { merge } from "lodash-es";
-import { useEffect, useState } from "react";
-import { createGlobalState, useMountedState } from "react-use";
+import { useCallback, useEffect, useState } from "react";
+import { createGlobalState } from "react-use";
 
 const useGlobalInjectedWeb3 = createGlobalState(null);
 
 export default function useInjectedWeb3() {
-  const isMounted = useMountedState();
   const [injectedWeb3, _setInjectedWeb3] = useGlobalInjectedWeb3();
   const [loading, setLoading] = useState(true);
 
-  function setInjectedWeb3(value) {
-    _setInjectedWeb3(merge(injectedWeb3, value));
-  }
+  const setInjectedWeb3 = useCallback(
+    (newValue) => {
+      _setInjectedWeb3((oldValue) => merge(oldValue, newValue));
+    },
+    [_setInjectedWeb3],
+  );
 
   useEffect(() => {
     function handleWeb3() {
@@ -19,19 +21,17 @@ export default function useInjectedWeb3() {
       setInjectedWeb3(window.injectedWeb3);
     }
 
-    if (isMounted()) {
-      if (typeof window !== "undefined") {
-        if (window.injectedWeb3) {
-          handleWeb3();
-        }
-      } else {
-        setTimeout(() => {
-          handleWeb3();
-        }, 1000);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMounted]);
+    handleWeb3();
+    const timeout1 = setTimeout(handleWeb3, 1000);
+    const timeout2 = setTimeout(handleWeb3, 2000);
+    const timeout3 = setTimeout(handleWeb3, 5000);
+
+    return () => {
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
+      clearTimeout(timeout3);
+    };
+  }, [setInjectedWeb3]);
 
   return { loading, injectedWeb3, setInjectedWeb3 };
 }
