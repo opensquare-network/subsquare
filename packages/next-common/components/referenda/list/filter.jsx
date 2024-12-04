@@ -90,9 +90,9 @@ export default function ReferendaListFilter() {
           <NeutralPanel className="p-4 w-80 max-w-full text12Medium text-textPrimary shadow-200">
             <div className="mb-4 text12Bold">Conditions</div>
 
-            <div className="space-y-3 py-3">
+            <div>
               <TreasuryRelatedOption
-                className="justify-between"
+                className="justify-between py-3"
                 isOn={value?.isTreasury}
                 setIsOn={(isOn) => {
                   setValue?.((val) => {
@@ -106,7 +106,7 @@ export default function ReferendaListFilter() {
 
               {address && (
                 <UnVotedOnlyOption
-                  className="justify-between"
+                  className="justify-between py-3"
                   isOn={value?.unVotedOnly}
                   setIsOn={(isOn) => {
                     setValue?.((val) => {
@@ -119,7 +119,7 @@ export default function ReferendaListFilter() {
                 />
               )}
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between py-1.5">
                 <div>Status</div>
 
                 <ReferendaStatusSelectField
