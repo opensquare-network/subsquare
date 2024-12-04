@@ -14,11 +14,13 @@ import {
   useSpendUSDxTreasuryButton,
   useKillReferendumButton,
   useFellowshipTreasurySpendButton,
+  useSpendDotOnAssetHubButton,
 } from "./templateButtons";
 import KillReferendumPopup from "./killReferendumPopup";
 import { isCollectivesChain } from "next-common/utils/chain";
 import NewFellowshipTreasuryProposalPopup from "./newFellowshipTreasuryProposalPopup";
 import { useChain } from "next-common/context/chain";
+import SpendDotOnAssetHubPopup from "./spendDotOnAssetHubPopup";
 
 export function QuickStart({ children }) {
   return (
@@ -39,6 +41,8 @@ function PopupContent() {
     useFellowshipTreasurySpendButton(false);
   const { showSpendUSDxTreasuryPopup, usdxTreasuryButton } =
     useSpendUSDxTreasuryButton(false);
+  const { showSpendDotOnAssetHubPopup, spendDotOnAssetHubButton } =
+    useSpendDotOnAssetHubButton();
   const { showNewRemarkPopup, remarkButton } = useNewRemarkButton();
   const { showCancelReferendumPopup, cancelReferendumButton } =
     useCancelReferendumButton();
@@ -61,6 +65,10 @@ function PopupContent() {
     return <NewUSDxTreasuryProposalPopup onClose={onClose} />;
   }
 
+  if (showSpendDotOnAssetHubPopup) {
+    return <SpendDotOnAssetHubPopup onClose={onClose} />;
+  }
+
   if (showNewRemarkPopup) {
     return <NewRemarkProposalPopup onClose={onClose} />;
   }
@@ -80,6 +88,7 @@ function PopupContent() {
           ? fellowshipTreasurySpendButton
           : localTreasuryButton}
         {usdxTreasuryButton}
+        {spendDotOnAssetHubButton}
         {remarkButton}
         {cancelReferendumButton}
         {killReferendumButton}
