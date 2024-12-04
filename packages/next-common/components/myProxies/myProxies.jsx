@@ -11,10 +11,11 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import HeaderPrompt from "next-common/components/profile/proxy/common/headerPrompt";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import { useMyProxiesContext } from "./context/myProxies";
 
-export default function MyProxies({ myProxies }) {
-  const { proxies, total, loading } = myProxies;
+export default function MyProxies() {
   const [dataList, setDataList] = useState([]);
+  const { proxies, total, loading } = useMyProxiesContext();
 
   const { page, component: pageComponent } = usePaginationComponent(
     total,

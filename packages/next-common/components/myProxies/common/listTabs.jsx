@@ -3,9 +3,11 @@ import ReceivedProxies from "../received";
 import { useState, useMemo } from "react";
 import { useReceivedProxiesContext } from "../context/received";
 import { cn } from "next-common/utils";
+import { useMyProxiesContext } from "../context/myProxies";
 
-export default function ProxyListTabs({ myProxies }) {
-  const { total: myProxiesCount, loading: isMyProxiesLoading } = myProxies;
+export default function ProxyListTabs() {
+  const { total: myProxiesCount, loading: isMyProxiesLoading } =
+    useMyProxiesContext();
   const { total: receivedProxiesCount, loading: isReceivedProxiesLoading } =
     useReceivedProxiesContext();
 
@@ -25,7 +27,7 @@ export default function ProxyListTabs({ myProxies }) {
             )}
           </div>
         ),
-        content: <MyProxies myProxies={myProxies} />,
+        content: <MyProxies />,
       },
       {
         key: "received",
@@ -47,7 +49,6 @@ export default function ProxyListTabs({ myProxies }) {
       isMyProxiesLoading,
       receivedProxiesCount,
       isReceivedProxiesLoading,
-      myProxies,
     ],
   );
 

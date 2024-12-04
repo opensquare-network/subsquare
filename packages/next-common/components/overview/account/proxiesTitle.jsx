@@ -1,22 +1,12 @@
 import { Title } from "./styled";
-import {
-  fetchMyProxies,
-  myProxiesSelector,
-} from "next-common/store/reducers/myProxiesSlice";
-import { useSelector, useDispatch } from "react-redux";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useContextApi } from "next-common/context/api";
-import { useEffect } from "react";
+import { useMyProxiesContext } from "next-common/components/myProxies/context/myProxies";
 
 function ProxiesCount() {
-  const { total } = useSelector(myProxiesSelector);
-  const dispatch = useDispatch();
-  const address = useRealAddress();
-  const api = useContextApi();
+  const { total = 0, loading } = useMyProxiesContext();
 
-  useEffect(() => {
-    dispatch(fetchMyProxies(address, api));
-  }, [dispatch, address, api]);
+  if (loading) {
+    return null;
+  }
 
   return <span className="text-textTertiary mx-1 text16Medium">{total}</span>;
 }

@@ -3,9 +3,11 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import { useReceivedProxiesContext } from "./context/received";
+import { useMyProxiesContext } from "./context/myProxies";
 
-export default function MyProxiesSummary({ myProxies }) {
-  const { total: myProxiesCount, loading: isMyProxiesLoading } = myProxies;
+export default function MyProxiesSummary() {
+  const { total: myProxiesCount, loading: isMyProxiesLoading } =
+    useMyProxiesContext();
   const { total: receivedProxiesCount, loading: isReceivedProxiesLoading } =
     useReceivedProxiesContext();
 
