@@ -64,6 +64,29 @@ export function useSpendUSDxTreasuryButton() {
   };
 }
 
+export function useSpendDotOnAssetHubButton() {
+  const [showSpendDotOnAssetHubPopup, setShowSpendDotOnAssetHubPopup] =
+    useState(false);
+  const {
+    treasuryProposalTracks,
+    newProposalQuickStart: { spendDotOnAssetHubProposal } = {},
+  } = useChainSettings();
+
+  const spendDotOnAssetHubButton = treasuryProposalTracks &&
+    spendDotOnAssetHubProposal && (
+      <ChoiceButton
+        name="Spend DOT on AssetHub"
+        description="Create a treasury spend with DOT asset on AssetHub"
+        onClick={() => setShowSpendDotOnAssetHubPopup(true)}
+      />
+    );
+
+  return {
+    spendDotOnAssetHubButton,
+    showSpendDotOnAssetHubPopup,
+  };
+}
+
 export function useNewRemarkButton() {
   const [showNewRemarkPopup, setShowNewRemarkPopup] = useState(false);
 

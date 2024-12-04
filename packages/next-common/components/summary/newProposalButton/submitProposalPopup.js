@@ -14,8 +14,10 @@ import {
   useNewRemarkButton,
   useSpendUSDxTreasuryButton,
   useKillReferendumButton,
+  useSpendDotOnAssetHubButton,
 } from "next-common/components/preImages/createPreimagePopup/templateButtons";
 import { KillReferendumInnerPopup } from "../newProposalQuickStart/killReferendumInnerPopup";
+import { SpendDotOnAssetHubReferendumInnerPopup } from "../newProposalQuickStart/spendDotOnAssetHubPopup";
 
 function SubmitProposalInnerPopup({ onClose }) {
   const { period } = usePageProps();
@@ -26,6 +28,9 @@ function SubmitProposalInnerPopup({ onClose }) {
     useSpendLocalTreasuryButton(false);
   const { showSpendUSDxTreasuryPopup, usdxTreasuryButton } =
     useSpendUSDxTreasuryButton(false);
+  const { showSpendDotOnAssetHubPopup, spendDotOnAssetHubButton } =
+    useSpendDotOnAssetHubButton();
+
   const { showNewRemarkPopup, remarkButton } = useNewRemarkButton();
   const { showCancelReferendumPopup, cancelReferendumButton } =
     useCancelReferendumButton();
@@ -38,6 +43,10 @@ function SubmitProposalInnerPopup({ onClose }) {
 
   if (showSpendUSDxTreasuryPopup) {
     return <NewUSDxTreasuryReferendumInnerPopup onClose={onClose} />;
+  }
+
+  if (showSpendDotOnAssetHubPopup) {
+    return <SpendDotOnAssetHubReferendumInnerPopup onClose={onClose} />;
   }
 
   if (showNewRemarkPopup) {
@@ -67,6 +76,7 @@ function SubmitProposalInnerPopup({ onClose }) {
       <QuickStart>
         {localTreasuryButton}
         {usdxTreasuryButton}
+        {spendDotOnAssetHubButton}
         {remarkButton}
         {cancelReferendumButton}
         {killReferendumButton}
