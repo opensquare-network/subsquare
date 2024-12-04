@@ -1,16 +1,16 @@
 import { createContext, useContext } from "react";
-import useMyOnChainProxies from "next-common/hooks/account/useMyOnChainProxies";
+import useSubMyProxies from "next-common/hooks/account/useSubMyProxies";
 
 const MyProxiesContext = createContext(null);
 
 export function MyProxiesProvider({ children }) {
-  const { proxies = [], loading } = useMyOnChainProxies();
+  const { proxies = [], loading } = useSubMyProxies();
   const total = proxies[0]?.length || 0;
 
   return (
     <MyProxiesContext.Provider
       value={{
-        data: proxies[0],
+        proxies: proxies[0],
         total,
         loading,
       }}

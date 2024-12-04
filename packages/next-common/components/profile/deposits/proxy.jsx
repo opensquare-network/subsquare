@@ -3,14 +3,12 @@ import useProfileOnChainProxies from "next-common/components/profile/proxy/hooks
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { MenuProxy } from "@osn/icons/subsquare";
 import { MapDataList } from "next-common/components/dataList";
-import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useState } from "react";
 import {
   delegateeColumn,
   typeColumn,
   useDelayBlockOrTimeColumn,
 } from "next-common/components/profile/proxy/common/columns";
-import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
@@ -49,10 +47,6 @@ export default function ProxyDeposits({ deposits }) {
   const { items, total, loading, balance } = deposits;
 
   const [dataList, setDataList] = useState([]);
-  const { page, component: pageComponent } = usePaginationComponent(
-    total,
-    defaultPageSize,
-  );
   const delayBlockOrTimeColumn = useDelayBlockOrTimeColumn();
   const columns = [delegateeColumn, typeColumn, delayBlockOrTimeColumn];
 
@@ -61,10 +55,8 @@ export default function ProxyDeposits({ deposits }) {
       return;
     }
 
-    const startIndex = (page - 1) * defaultPageSize;
-    const endIndex = startIndex + defaultPageSize;
-    setDataList(items?.slice(startIndex, endIndex));
-  }, [items, page, loading]);
+    setDataList(items);
+  }, [items, loading]);
 
   return (
     <DepositTemplate
@@ -80,7 +72,6 @@ export default function ProxyDeposits({ deposits }) {
         columnsDef={columns}
         data={dataList}
       />
-      {total > 0 && pageComponent}
     </DepositTemplate>
   );
 }

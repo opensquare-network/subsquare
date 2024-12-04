@@ -1,8 +1,8 @@
 import AccountSubTabs from "next-common/components/overview/account/subTabs";
 import MyProxiesSummary from "./summary";
 import { ReceivedProxiesProvider } from "./context/received";
-import { MyProxiesProvider } from "./context/myProxies";
 import ProxyListTabs from "./common/listTabs";
+import { MyProxiesProvider } from "./context/myProxies";
 
 export default function MyProxies() {
   return (

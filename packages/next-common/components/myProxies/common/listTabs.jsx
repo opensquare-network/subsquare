@@ -1,9 +1,9 @@
 import MyProxies from "../myProxies";
 import ReceivedProxies from "../received";
 import { useState, useMemo } from "react";
-import { useMyProxiesContext } from "../context/myProxies";
 import { useReceivedProxiesContext } from "../context/received";
 import { cn } from "next-common/utils";
+import { useMyProxiesContext } from "../context/myProxies";
 
 export default function ProxyListTabs() {
   const { total: myProxiesCount, loading: isMyProxiesLoading } =

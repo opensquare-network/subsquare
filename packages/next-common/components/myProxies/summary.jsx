@@ -2,8 +2,8 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import { useMyProxiesContext } from "./context/myProxies";
 import { useReceivedProxiesContext } from "./context/received";
+import { useMyProxiesContext } from "./context/myProxies";
 
 export default function MyProxiesSummary() {
   const { total: myProxiesCount, loading: isMyProxiesLoading } =
