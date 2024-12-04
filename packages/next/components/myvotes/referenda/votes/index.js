@@ -18,7 +18,7 @@ function PriorLocksTitle({ disabled }) {
   const filteredLocks = useSelector(myFilteredReferendaPriorLocksSelector);
 
   return (
-    <div className="flex gap-[8px]" role="button">
+    <div className="flex gap-[8px]">
       <Title disabled={disabled}>Prior Locks</Title>
       <span className="text-textTertiary text16Medium">
         {filteredLocks.length}
