@@ -1,3 +1,4 @@
+import { cn } from "next-common/utils";
 import Loading from "../loading";
 import Toggle from "../toggle";
 import Tooltip from "../tooltip";
@@ -7,17 +8,16 @@ export default function UnVotedOnlyOption({
   isLoading,
   isOn,
   setIsOn,
+  className = "",
 }) {
   const onToggle = () => {
     setIsOn(!isOn);
   };
 
   return (
-    <div className="flex items-center text12Medium gap-[8px]">
+    <div className={cn("flex items-center text12Medium gap-[8px]", className)}>
       <div className="flex items-center gap-[4px]">
-        <span className="text-textSecondary whitespace-nowrap">
-          Un-voted Only
-        </span>
+        <span className="whitespace-nowrap">Un-voted Only</span>
         <Tooltip content={tooltip} />
       </div>
       {isLoading ? (
