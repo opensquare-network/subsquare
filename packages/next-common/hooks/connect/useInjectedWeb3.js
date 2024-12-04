@@ -1,11 +1,19 @@
-import { useEffect, useState } from "react";
+import { merge } from "lodash-es";
+import { useCallback, useEffect, useState } from "react";
 import { createGlobalState } from "react-use";
 
 const useGlobalInjectedWeb3 = createGlobalState(null);
 
 export default function useInjectedWeb3() {
-  const [injectedWeb3, setInjectedWeb3] = useGlobalInjectedWeb3();
+  const [injectedWeb3, _setInjectedWeb3] = useGlobalInjectedWeb3();
   const [loading, setLoading] = useState(true);
+
+  const setInjectedWeb3 = useCallback(
+    (newValue) => {
+      _setInjectedWeb3((oldValue) => merge(oldValue, newValue));
+    },
+    [_setInjectedWeb3],
+  );
 
   useEffect(() => {
     function handleWeb3() {
@@ -19,9 +27,9 @@ export default function useInjectedWeb3() {
     const timeout3 = setTimeout(handleWeb3, 5000);
 
     return () => {
-      if (timeout1) clearTimeout(timeout1);
-      if (timeout2) clearTimeout(timeout2);
-      if (timeout3) clearTimeout(timeout3);
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
+      clearTimeout(timeout3);
     };
   }, [setInjectedWeb3]);
 
