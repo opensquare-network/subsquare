@@ -1,6 +1,6 @@
 import * as Popover from "@radix-ui/react-popover";
 import { SystemFilter } from "@osn/icons/subsquare";
-import { camelCase, isEqual, upperFirst } from "lodash-es";
+import { camelCase, isEqual, snakeCase, upperFirst } from "lodash-es";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -67,7 +67,10 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
 
     const shouldUpdateRoute = !isEqual(q, params);
     if (shouldUpdateRoute) {
-      await router.replace({ query: q });
+      const query = q;
+      query.status = snakeCase(q.status);
+
+      await router.replace({ query });
     }
 
     setOpen(false);
