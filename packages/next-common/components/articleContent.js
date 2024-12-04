@@ -11,6 +11,7 @@ import { isPostEdited } from "next-common/utils/post";
 import Tabs from "./tabs";
 import ContentSummary from "./contentSummary";
 import PostDataSource from "./postDataSource";
+import ContentTranslations from "./contentTranslations";
 
 const Wrapper = styled.div`
   :hover {
@@ -49,6 +50,15 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
     post.contentSummary?.summary && {
       label: "AI Summary",
       content: <ContentSummary />,
+    },
+    {
+      label: "Translations",
+      content: (
+        <>
+          <ContentTranslations className="mb-4" />
+          {postContent}
+        </>
+      ),
     },
   ].filter(Boolean);
   const [activeTab, setActiveTab] = useState(tabs[0].label);
