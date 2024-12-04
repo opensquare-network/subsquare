@@ -14,7 +14,7 @@ import TreasuryRelatedOption from "../treasuryRelatedOption";
 import { usePageProps } from "next-common/context/page";
 import { useUpdateEffect } from "react-use";
 
-export default function ReferendaListFilter({ isUnVotedOnlyLodaing }) {
+export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
   const { isTreasury: isTreasuryProp, status: statusProp } = usePageProps();
   const status = upperFirst(camelCase(statusProp));
   const router = useRouter();
@@ -153,7 +153,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLodaing }) {
               <PrimaryButton
                 size="small"
                 onClick={handleApply}
-                loading={isUnVotedOnlyLodaing}
+                loading={isUnVotedOnlyLoading}
               >
                 Apply
               </PrimaryButton>

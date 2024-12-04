@@ -108,7 +108,7 @@ function WithFilterPostList({
       titleCount={total}
       titleExtra={
         <div className="flex items-center gap-x-2">
-          <ReferendaListFilter isUnVotedOnlyLodaing={isUnVotedOnlyLoading} />
+          <ReferendaListFilter isUnVotedOnlyLoading={isUnVotedOnlyLoading} />
           <NewProposalButton />
         </div>
       }
