@@ -2,7 +2,7 @@ import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
 import Toggle from "../toggle";
 
-export default function TreasuryRelatedOption({
+export default function TreasuryOnlyOption({
   className = "",
   tooltip = "Only show the referenda that requested treasury",
   isOn,

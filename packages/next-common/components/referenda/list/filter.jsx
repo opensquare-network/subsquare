@@ -10,7 +10,7 @@ import { useState } from "react";
 import UnVotedOnlyOption from "../unVotedOnlyOption";
 import { useIsTreasuryState, useUnVotedOnlyState } from ".";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import TreasuryRelatedOption from "../treasuryRelatedOption";
+import TreasuryOnlyOption from "../treasuryOnlyOption";
 import { usePageProps } from "next-common/context/page";
 import { useUpdateEffect } from "react-use";
 
@@ -104,7 +104,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
             <div className="mb-4 text12Bold">Conditions</div>
 
             <div>
-              <TreasuryRelatedOption
+              <TreasuryOnlyOption
                 className="justify-between py-3"
                 isOn={value?.isTreasury}
                 setIsOn={(isOn) => {
