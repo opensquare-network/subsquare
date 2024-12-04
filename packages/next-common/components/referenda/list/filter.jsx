@@ -15,7 +15,8 @@ import { usePageProps } from "next-common/context/page";
 import { useUpdateEffect } from "react-use";
 
 export default function ReferendaListFilter() {
-  const { isTreasury: isTreasuryProp, status } = usePageProps();
+  const { isTreasury: isTreasuryProp, status: statusProp } = usePageProps();
+  const status = upperFirst(camelCase(statusProp));
   const router = useRouter();
 
   const address = useRealAddress();
@@ -24,7 +25,7 @@ export default function ReferendaListFilter() {
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({
-    status: upperFirst(camelCase(status)),
+    status,
     unVotedOnly,
     isTreasury,
   });
@@ -33,9 +34,10 @@ export default function ReferendaListFilter() {
       return {
         ...val,
         isTreasury,
+        status,
       };
     });
-  }, [isTreasury]);
+  }, [isTreasury, status]);
 
   const filterCount = Object.values({
     status,
