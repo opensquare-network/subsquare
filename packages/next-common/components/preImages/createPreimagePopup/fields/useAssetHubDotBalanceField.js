@@ -1,25 +1,11 @@
 import { useState } from "react";
-import Loading from "next-common/components/loading";
-import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useQueryAssetHubTreasuryFree } from "next-common/components/summary/polkadotTreasurySummary/hook/useQueryAssetHubTreasuryFree";
 import { useChainSettings } from "next-common/context/chain";
 import Input from "next-common/components/input";
 import PopupLabel from "next-common/components/popup/label";
 import { StatemintTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
-
-function TreasuryBalance({ symbol, isLoading, treasuryBalance }) {
-  return (
-    <div className="flex items-center gap-[8px] text12Bold text-textPrimary [&_.value-display-symbol]:text-textPrimary">
-      <span className="text12Medium text-textTertiary">Treasury Balance</span>
-      {isLoading ? (
-        <Loading size={16} />
-      ) : (
-        <ValueDisplay value={treasuryBalance} symbol={symbol} />
-      )}
-    </div>
-  );
-}
+import { TreasuryBalance } from "./useUSDxBalanceField";
 
 function AssetHubDotBalance({ inputBalance, setInputBalance }) {
   const { symbol, decimals } = useChainSettings();
