@@ -42,6 +42,7 @@ function useMyVotedReferenda() {
 function useUnVotedActiveReferenda() {
   const { activeReferenda, isLoadingActiveReferenda } =
     useActiveReferendaContext();
+
   const { myVotedReferenda, isLoading: isLoadingMyVotedReferenda } =
     useMyVotedReferenda();
 
@@ -80,7 +81,12 @@ function useMyUnVotedReferendaPosts() {
         status,
         is_treasury: isTreasury,
       });
-    }, [unVotedActiveReferenda, isLoadingUnVotedActiveReferenda, status]);
+    }, [
+      unVotedActiveReferenda,
+      isLoadingUnVotedActiveReferenda,
+      status,
+      isTreasury,
+    ]);
 
   const isLoading = isLoadingReferendaPosts || isLoadingUnVotedActiveReferenda;
 
