@@ -19,7 +19,6 @@ export default function NewChildBountyButton() {
   const { result: onchainBounty } = useSubStorage("bounties", "bounties", [
     bountyIndex,
   ]);
-  const onchainBountyStatus = onchainBounty?.unwrap()?.status;
 
   // Get child bounty count
   const { result: onchainChildBountyCount } = useSubStorage(
@@ -27,6 +26,10 @@ export default function NewChildBountyButton() {
     "parentChildBounties",
     [bountyIndex],
   );
+  if (!onchainBounty || onchainBounty.isNone) {
+    return null;
+  }
+  const onchainBountyStatus = onchainBounty?.unwrap()?.status;
   const childBountiesCount = onchainChildBountyCount?.toJSON();
 
   // New bounty button is only available when the bounty is active
