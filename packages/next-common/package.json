@@ -29,6 +29,7 @@
     "@polkagate/extension-dapp": "^0.48.2",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-hover-card": "^1.0.6",
+    "@radix-ui/react-popover": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.0.5",
     "@reduxjs/toolkit": "^1.9.3",
     "@talismn/signet-apps-sdk": "^0.0.7",

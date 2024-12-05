@@ -1,12 +1,8 @@
-import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
-import { useRouter } from "next/router";
-import { flatten, snakeCase } from "lodash-es";
+import { flatten } from "lodash-es";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import UnVotedOnlyOption from "next-common/components/referenda/unVotedOnlyOption";
 import { usePageProps } from "next-common/context/page";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -17,11 +13,15 @@ import {
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 import { createStateContext, useAsync } from "react-use";
+import ReferendaListFilter from "./filter";
 
 const [useUnVotedOnlyState, UnVotedOnlyStateProvider] =
   createStateContext(false);
 
 export { useUnVotedOnlyState, UnVotedOnlyStateProvider };
+
+const [useIsTreasuryState, IsTreasuryStateProvider] = createStateContext(false);
+export { useIsTreasuryState };
 
 function useMyVotedReferenda() {
   const voting = useSelector(myReferendaVotingSelector);
@@ -42,6 +42,7 @@ function useMyVotedReferenda() {
 function useUnVotedActiveReferenda() {
   const { activeReferenda, isLoadingActiveReferenda } =
     useActiveReferendaContext();
+
   const { myVotedReferenda, isLoading: isLoadingMyVotedReferenda } =
     useMyVotedReferenda();
 
@@ -68,14 +69,24 @@ function useUnVotedActiveReferenda() {
 function useMyUnVotedReferendaPosts() {
   const { unVotedActiveReferenda, isLoading: isLoadingUnVotedActiveReferenda } =
     useUnVotedActiveReferenda();
+  const { status } = usePageProps();
+  const [isTreasury] = useIsTreasuryState();
 
   const { value: referenda, loading: isLoadingReferendaPosts } =
     useAsync(async () => {
       if (isLoadingUnVotedActiveReferenda) {
         return [];
       }
-      return await getOpenGovReferendaPosts(unVotedActiveReferenda);
-    }, [unVotedActiveReferenda, isLoadingUnVotedActiveReferenda]);
+      return await getOpenGovReferendaPosts(unVotedActiveReferenda, {
+        status,
+        is_treasury: isTreasury,
+      });
+    }, [
+      unVotedActiveReferenda,
+      isLoadingUnVotedActiveReferenda,
+      status,
+      isTreasury,
+    ]);
 
   const isLoading = isLoadingReferendaPosts || isLoadingUnVotedActiveReferenda;
 
@@ -83,41 +94,6 @@ function useMyUnVotedReferendaPosts() {
     posts: referenda,
     isLoading,
   };
-}
-
-function ReferendaListFilters({ isUnVotedOnlyLoading }) {
-  const { status } = usePageProps();
-  const router = useRouter();
-  const address = useRealAddress();
-  const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useUnVotedOnlyState();
-
-  function onStatusChange(item) {
-    const q = router.query;
-
-    delete q.page;
-    if (item.value) {
-      q.status = snakeCase(item.value);
-    } else {
-      delete q.status;
-    }
-
-    router.replace({ query: q });
-  }
-
-  return (
-    <div className="flex flex-wrap gap-[12px] sm:items-center">
-      {address && (
-        <UnVotedOnlyOption
-          tooltip="Only referenda I haven't voted"
-          isLoading={isUnVotedOnlyLoading}
-          isOn={isShowUnVotedOnly}
-          setIsOn={setIsShowUnVotedOnly}
-        />
-      )}
-      <ReferendaStatusSelectField value={status} onChange={onStatusChange} />
-      <NewProposalButton />
-    </div>
-  );
 }
 
 function WithFilterPostList({
@@ -135,9 +111,12 @@ function WithFilterPostList({
   return (
     <PostList
       title="List"
-      titleCount={total}
+      titleCount={isUnVotedOnlyLoading ? "Filtering un-voted..." : total}
       titleExtra={
-        <ReferendaListFilters isUnVotedOnlyLoading={isUnVotedOnlyLoading} />
+        <div className="flex items-center gap-x-2">
+          <ReferendaListFilter isUnVotedOnlyLoading={isUnVotedOnlyLoading} />
+          <NewProposalButton />
+        </div>
       }
       category={businessCategory.openGovReferenda}
       items={items}
@@ -225,9 +204,13 @@ function ReferendaListImpl() {
 }
 
 export function ReferendaList() {
+  const { isTreasury } = usePageProps();
+
   return (
-    <UnVotedOnlyStateProvider>
-      <ReferendaListImpl />
-    </UnVotedOnlyStateProvider>
+    <IsTreasuryStateProvider initialValue={isTreasury === "true"}>
+      <UnVotedOnlyStateProvider>
+        <ReferendaListImpl />
+      </UnVotedOnlyStateProvider>
+    </IsTreasuryStateProvider>
   );
 }

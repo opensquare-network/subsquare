@@ -36,6 +36,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     page = 1,
     page_size: pageSize = defaultPageSize,
     status: statusQuery = "",
+    is_treasury = "",
   } = context.query;
 
   const status = upperFirst(camelCase(statusQuery));
@@ -50,6 +51,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     nextApi.fetch(gov2ReferendumsApi, {
       page,
       pageSize,
+      is_treasury,
       status,
       simple: true,
     }),
@@ -64,6 +66,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       title: "OpenGov Referenda",
       gov2ReferendaSummary: gov2ReferendaSummary ?? {},
       status,
+      isTreasury: is_treasury,
       ...tracksProps,
     },
   };
