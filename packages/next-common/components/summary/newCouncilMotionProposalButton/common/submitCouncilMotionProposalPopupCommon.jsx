@@ -131,7 +131,7 @@ function useDappStakingButton() {
   const dappStakingButton = (
     <ChoiceButton
       name="Stake for a dapp"
-      description="Support a dapp by staking tokens"
+      description="Request the staking amount from the community treasury for a dApp"
       onClick={() => {
         setShowDappStakingPopup(true);
       }}
