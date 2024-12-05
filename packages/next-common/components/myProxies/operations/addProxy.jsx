@@ -14,6 +14,7 @@ import Select from "next-common/components/select";
 import Input from "next-common/components/input";
 import { InfoMessage } from "next-common/components/setting/styled";
 import Link from "next/link";
+import { useProxyTypeOptions } from "../hooks/useProxyTypeOptions";
 
 export function DelayBlocksField({ value, setValue }) {
   const PROXY_WIKI_LINK =
@@ -49,24 +50,17 @@ export function DelayBlocksField({ value, setValue }) {
 }
 
 function ProxyTypeSelector({ proxyType, setProxyType }) {
-  const options = [
-    {
-      value: "Any",
-      label: "Any",
-    },
-    {
-      value: "NonTransfer",
-      label: "NonTransfer",
-    },
-    {
-      value: "Governance",
-      label: "Governance",
-    },
-    {
-      value: "Staking",
-      label: "Staking",
-    },
-  ];
+  const { options, isLoading } = useProxyTypeOptions();
+
+  if (isLoading) {
+    return null;
+  }
+
+  const typeOptions = options.map((type) => ({
+    value: type,
+    label: type,
+  }));
+
   return (
     <div>
       <span className="text-textPrimary text14Bold">Type</span>
@@ -74,7 +68,7 @@ function ProxyTypeSelector({ proxyType, setProxyType }) {
         small
         className="w-full !h-[40px] text14Medium !mt-2"
         value={proxyType}
-        options={options}
+        options={typeOptions}
         onChange={({ value }) => {
           setProxyType(value);
         }}
