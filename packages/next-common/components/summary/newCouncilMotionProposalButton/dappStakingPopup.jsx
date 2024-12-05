@@ -42,29 +42,33 @@ export default function DappStakingPopup({ isMember, onClose }) {
       return;
     }
 
+    let stakingTx;
+
     if (contractType === EVM) {
       if (!isEthereumAddress(contractAddress)) {
         dispatch(newErrorToast("Please enter a valid EVM address"));
         return;
       }
-      return api.tx.dappStaking.stake(
+      stakingTx = api.tx.dappStaking.stake(
         {
           Evm: contractAddress,
         },
         bnValue.toFixed(),
       );
+    } else {
+      if (!isPolkadotAddress(contractAddress)) {
+        dispatch(newErrorToast("Please enter a valid Wasm address"));
+        return;
+      }
+      stakingTx = api.tx.dappStaking.stake(
+        {
+          Wasm: contractAddress,
+        },
+        bnValue.toFixed(),
+      );
     }
 
-    if (!isPolkadotAddress(contractAddress)) {
-      dispatch(newErrorToast("Please enter a valid Wasm address"));
-      return;
-    }
-    return api.tx.dappStaking.stake(
-      {
-        Wasm: contractAddress,
-      },
-      bnValue.toFixed(),
-    );
+    return api.tx.collectiveProxy.executeCall(stakingTx);
   }, [api, contractAddress, contractType, inputAmount, decimals, dispatch]);
 
   return (
