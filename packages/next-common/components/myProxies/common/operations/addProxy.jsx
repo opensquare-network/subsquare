@@ -8,9 +8,45 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
-import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+// import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import Select from "next-common/components/select";
+import Input from "next-common/components/input";
+import { InfoMessage } from "next-common/components/setting/styled";
+import Link from "next/link";
+
+export function DelayBlocksField({ value, setValue }) {
+  const PROXY_WIKI_LINK =
+    "https://wiki.polkadot.network/docs/learn-proxies#time-delayed-proxy";
+  const PROMPT_CONTENT =
+    "The proxy will announce its intended action immediately.";
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value.trim();
+    setValue(inputValue);
+  };
+
+  return (
+    <div>
+      <span className="text-textPrimary text14Bold">Delay Blocks</span>
+      <Input
+        className="mt-2"
+        value={value}
+        symbol="Blocks"
+        onChange={handleInputChange}
+      />
+      <InfoMessage className="mt-2">
+        <span className="text-textSecondary text14Medium">
+          {PROMPT_CONTENT}&nbsp;
+          <Link className="underline" href={PROXY_WIKI_LINK} target="_blank">
+            Wiki
+          </Link>
+          ↗
+        </span>
+      </InfoMessage>
+    </div>
+  );
+}
 
 function ProxyTypeSelector({ proxyType, setProxyType }) {
   const options = [
@@ -32,18 +68,18 @@ function ProxyTypeSelector({ proxyType, setProxyType }) {
     },
   ];
   return (
-    <>
-      <span className="text-textPrimary my-[12px] w-[144px]">Type</span>
+    <div>
+      <span className="text-textPrimary text14Bold">Type</span>
       <Select
         small
-        className="w-full h-[40px] text12Medium"
+        className="w-full !h-[40px] text14Medium !mt-2"
         value={proxyType}
         options={options}
         onChange={({ value }) => {
           setProxyType(value);
         }}
       />
-    </>
+    </div>
   );
 }
 
@@ -68,11 +104,13 @@ function PopupContent({ onClose }) {
   }, [api, signerAccount, proxyAccount, proxyType, delay]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <SignerWithBalance title="Account" />
       {proxyAccountField}
       <ProxyTypeSelector proxyType={proxyType} setProxyType={setProxyType} />
-      <AdvanceSettings></AdvanceSettings>
+      {/* <AdvanceSettings>
+        <DelayBlocksField value={delay} setValue={setDelay} />
+      </AdvanceSettings> */}
       <TxSubmissionButton getTxFunc={getTxFunc} onClose={onClose} />
     </div>
   );
@@ -80,7 +118,12 @@ function PopupContent({ onClose }) {
 
 function AddProxyPopup({ onClose }) {
   return (
-    <PopupWithSigner title="Add Proxy" onClose={onClose} wide>
+    <PopupWithSigner
+      title="Add Proxy"
+      onClose={onClose}
+      wide
+      className="!w-[640px]"
+    >
       <PopupContent />
     </PopupWithSigner>
   );
