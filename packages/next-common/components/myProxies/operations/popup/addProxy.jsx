@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
@@ -13,6 +12,8 @@ import Link from "next/link";
 import { useProxyTypeOptions } from "../../hooks/useProxyTypeOptions";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
+import Signer from "next-common/components/popup/fields/signerField";
 
 export function DelayBlocksField({ value, setValue }) {
   const PROXY_WIKI_LINK =
@@ -27,7 +28,7 @@ export function DelayBlocksField({ value, setValue }) {
 
   return (
     <div>
-      <span className="text-textPrimary text14Bold">Delay Blocks</span>
+      <span className="text-textPrimary">Delay Blocks</span>
       <Input
         className="mt-2"
         value={value}
@@ -61,10 +62,10 @@ function ProxyTypeSelector({ proxyType, setProxyType }) {
 
   return (
     <div>
-      <span className="text-textPrimary text14Bold">Type</span>
+      <div className="text-textPrimary text12Bold mb-3">Type</div>
       <Select
         small
-        className="w-full !h-[40px] text14Medium !mt-2"
+        className="w-full !h-[40px] text14Medium"
         value={proxyType}
         options={typeOptions}
         onChange={({ value }) => {
@@ -80,28 +81,35 @@ function ProxyTypeSelector({ proxyType, setProxyType }) {
 function PopupContent({ onClose }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
+  const address = signerAccount?.realAddress;
   const dispatch = useDispatch();
   const { value: proxyAccount, component: proxyAccountField } =
     useAddressComboField({ title: "Proxy Account" });
   const [proxyType, setProxyType] = useState("Any");
+  const { value: balance, loading } = useSubBalanceInfo(address);
   // const [delay, setDelay] = useState(0);
   const delay = 0;
 
   const getTxFunc = useCallback(() => {
-    if (!api || !signerAccount?.realAddress || !proxyAccount) {
+    if (!api || !address || !proxyAccount) {
       return;
     }
 
     return api.tx.proxy.addProxy(proxyAccount, proxyType, delay);
-  }, [api, signerAccount, proxyAccount, proxyType, delay]);
+  }, [api, address, proxyAccount, proxyType, delay]);
 
   const onFinalized = () => {
     dispatch(newSuccessToast("Added successfully"));
   };
 
   return (
-    <div className="space-y-6">
-      <SignerWithBalance title="Account" />
+    <div className="space-y-4">
+      <Signer
+        title="Account"
+        balanceName="Available"
+        balance={balance?.balance}
+        isBalanceLoading={loading}
+      />
       {proxyAccountField}
       <ProxyTypeSelector proxyType={proxyType} setProxyType={setProxyType} />
       {/* <AdvanceSettings>
