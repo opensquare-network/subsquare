@@ -13,6 +13,9 @@ import RejectTreasuryProposalInnerPopup from "../rejectTreasuryProposalInnerPopu
 import { useCollectivePallet } from "next-common/context/collective";
 import ExternalProposeMajorityPopup from "../externalProposeMajorityPopup";
 import ExternalProposeDefaultPopup from "../externalProposeDefaultPopup";
+import DappStakingRegisterPopup from "../dappStakingRegisterPopup";
+import DappStakingUnRegisterPopup from "../dappStakingUnRegisterPopup";
+import DappStakingPopup from "../dappStakingPopup";
 
 function useNewProposalPopupButton() {
   const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
@@ -195,24 +198,15 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
   }
 
   if (showDappStakingRegisterPopup) {
-    //TODO: Implement this
-    return (
-      <ExternalProposeDefaultPopup onClose={onClose} isMember={isMember} />
-    );
+    return <DappStakingRegisterPopup onClose={onClose} isMember={isMember} />;
   }
 
   if (showDappStakingUnRegisterPopup) {
-    //TODO: Implement this
-    return (
-      <ExternalProposeDefaultPopup onClose={onClose} isMember={isMember} />
-    );
+    return <DappStakingUnRegisterPopup onClose={onClose} isMember={isMember} />;
   }
 
   if (showDappStakingPopup) {
-    //TODO: Implement this
-    return (
-      <ExternalProposeDefaultPopup onClose={onClose} isMember={isMember} />
-    );
+    return <DappStakingPopup onClose={onClose} isMember={isMember} />;
   }
 
   let quickStartButtons = null;
