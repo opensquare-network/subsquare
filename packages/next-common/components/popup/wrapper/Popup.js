@@ -27,14 +27,7 @@ export default function Popup({
 
   return (
     <CommonPopupProvider onClose={onClose}>
-      <Dialog.Root
-        open
-        onOpenChange={() => {
-          if (maskClosable) {
-            onClose();
-          }
-        }}
-      >
+      <Dialog.Root open>
         <Dialog.Portal container={container}>
           <Dialog.Overlay />
           <Dialog.Content asChild onOpenAutoFocus={(e) => e.preventDefault()}>
