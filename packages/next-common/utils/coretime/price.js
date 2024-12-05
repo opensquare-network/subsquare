@@ -14,5 +14,5 @@ export function getCoretimePriceAt(blockHeight, saleInfo) {
   const percentageOfLeadin = Math.min(blockHeight - saleStart, leadinLength);
   const through = percentageOfLeadin / leadinLength;
   const factor = getCoretimeLeadinFactorAt(through);
-  return BigNumber(factor).multipliedBy(endPrice || price).toFixed();
+  return BigNumber(factor).multipliedBy(endPrice || price).toFixed(0);
 }
