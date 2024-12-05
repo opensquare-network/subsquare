@@ -1,8 +1,4 @@
 import { useState, useCallback } from "react";
-import PrimaryButton from "next-common/lib/button/primary";
-import { SystemAddProxy } from "@osn/icons/subsquare";
-import { ChoiceButton } from "next-common/components/summary/newProposalButton/common";
-import Popup from "next-common/components/popup/wrapper/Popup";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
@@ -14,7 +10,9 @@ import Select from "next-common/components/select";
 import Input from "next-common/components/input";
 import { InfoMessage } from "next-common/components/setting/styled";
 import Link from "next/link";
-import { useProxyTypeOptions } from "../hooks/useProxyTypeOptions";
+import { useProxyTypeOptions } from "../../hooks/useProxyTypeOptions";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 export function DelayBlocksField({ value, setValue }) {
   const PROXY_WIKI_LINK =
@@ -77,12 +75,12 @@ function ProxyTypeSelector({ proxyType, setProxyType }) {
   );
 }
 
-// TODO: 1. proxy type optioins
-// TODO: 2. delay options
-// TODO: 3. advance settings
+// TODO: delay options
+// TODO: advance settings
 function PopupContent({ onClose }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
+  const dispatch = useDispatch();
   const { value: proxyAccount, component: proxyAccountField } =
     useAddressComboField({ title: "Proxy Account" });
   const [proxyType, setProxyType] = useState("Any");
@@ -97,20 +95,28 @@ function PopupContent({ onClose }) {
     return api.tx.proxy.addProxy(proxyAccount, proxyType, delay);
   }, [api, signerAccount, proxyAccount, proxyType, delay]);
 
+  const onFinalized = () => {
+    dispatch(newSuccessToast("Added successfully"));
+  };
+
   return (
     <div className="space-y-6">
       <SignerWithBalance title="Account" />
       {proxyAccountField}
       <ProxyTypeSelector proxyType={proxyType} setProxyType={setProxyType} />
       {/* <AdvanceSettings>
-        <DelayBlocksField value={delay} setValue={setDelay} />
-      </AdvanceSettings> */}
-      <TxSubmissionButton getTxFunc={getTxFunc} onClose={onClose} />
+          <DelayBlocksField value={delay} setValue={setDelay} />
+        </AdvanceSettings> */}
+      <TxSubmissionButton
+        getTxFunc={getTxFunc}
+        onClose={onClose}
+        onFinalized={onFinalized}
+      />
     </div>
   );
 }
 
-function AddProxyPopup({ onClose }) {
+export default function AddProxyPopup({ onClose }) {
   return (
     <PopupWithSigner
       title="Add Proxy"
@@ -118,49 +124,7 @@ function AddProxyPopup({ onClose }) {
       wide
       className="!w-[640px]"
     >
-      <PopupContent />
+      <PopupContent onClose={onClose} />
     </PopupWithSigner>
-  );
-}
-
-function OperationSelector({ onSelect, onClose }) {
-  return (
-    <Popup wide className="!w-[640px]" title="Set Proxy" onClose={onClose}>
-      <div className="flex flex-col !mt-[24px] gap-[16px]">
-        <ChoiceButton
-          icon={<SystemAddProxy className="text-textTertiary w-10 h-10" />}
-          name="Add a Proxy Account"
-          onClick={onSelect}
-        />
-      </div>
-    </Popup>
-  );
-}
-
-export default function AddProxy() {
-  const [showOperationSelector, setShowOperationSelector] = useState(false);
-  const [showAddForm, setShowAddForm] = useState(false);
-
-  return (
-    <>
-      <PrimaryButton
-        size="small"
-        onClick={() => setShowOperationSelector(true)}
-      >
-        Set Proxy
-      </PrimaryButton>
-
-      {showOperationSelector && (
-        <OperationSelector
-          onSelect={() => {
-            setShowAddForm(true);
-            setShowOperationSelector(false);
-          }}
-          onClose={() => setShowOperationSelector(false)}
-        />
-      )}
-
-      {showAddForm && <AddProxyPopup onClose={() => setShowAddForm(false)} />}
-    </>
   );
 }

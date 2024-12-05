@@ -10,7 +10,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import HeaderPrompt from "next-common/components/profile/proxy/common/headerPrompt";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { useMyProxiesContext } from "./context/myProxies";
-import AddProxy from "./operations/addProxy";
+import SetProxy from "./operations/setProxy";
 
 export default function MyProxies() {
   const [dataList, setDataList] = useState([]);
@@ -48,7 +48,7 @@ export default function MyProxies() {
         />
       </SignerPopupWrapper>
       <div className="flex justify-end">
-        <AddProxy />
+        <SetProxy />
       </div>
     </SecondaryCard>
   );
