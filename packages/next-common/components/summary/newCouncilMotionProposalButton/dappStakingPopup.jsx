@@ -72,11 +72,7 @@ export default function DappStakingPopup({ isMember, onClose }) {
   }, [api, contractAddress, contractType, inputAmount, decimals, dispatch]);
 
   return (
-    <Popup
-      className="!w-[640px]"
-      title="Dapp staking registration"
-      onClose={onClose}
-    >
+    <Popup className="!w-[640px]" title="Dapp staking" onClose={onClose}>
       <SignerWithBalance />
       <div style={{ marginTop: "16px", marginBottom: "16px" }}>
         <ContractTypeTab
@@ -89,7 +85,10 @@ export default function DappStakingPopup({ isMember, onClose }) {
         text={contractAddress}
         setText={setContractAddress}
       />
-      <Labeled text={"Amount"} tooltip={"The stake amount"}>
+      <Labeled
+        text={"Amount"}
+        tooltip={"The stake amount requested from the community treasury"}
+      >
         <BalanceInput setValue={setInputAmount} symbol={symbol} />
       </Labeled>
 
