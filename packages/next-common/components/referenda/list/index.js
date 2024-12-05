@@ -111,7 +111,7 @@ function WithFilterPostList({
   return (
     <PostList
       title="List"
-      titleCount={total}
+      titleCount={isUnVotedOnlyLoading ? "Filtering un-voted..." : total}
       titleExtra={
         <div className="flex items-center gap-x-2">
           <ReferendaListFilter isUnVotedOnlyLoading={isUnVotedOnlyLoading} />
