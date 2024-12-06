@@ -133,7 +133,7 @@ function PopupContent({ onClose }) {
 export default function AddProxyPopup({ onClose }) {
   return (
     <PopupWithSigner
-      title="Add Proxy"
+      title="Add a proxy"
       onClose={onClose}
       wide
       className="!w-[640px]"
