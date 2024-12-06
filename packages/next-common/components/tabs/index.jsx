@@ -1,28 +1,27 @@
 import { cn } from "next-common/utils";
 import Divider from "../styled/layout/divider";
-import TabsList from "./tabsList";
+import TabsList from "./list";
 import { noop } from "lodash-es";
 import { useEffect, useState } from "react";
 
 export default function Tabs({
   tabs = [],
-  activeTabLabel = "",
+  activeTabValue = "",
   onTabClick = noop,
-  isUrlTabs = false,
 }) {
   const [lazyRendered, setLazyRendered] = useState({});
 
   useEffect(() => {
-    if (lazyRendered[activeTabLabel]) {
+    if (lazyRendered[activeTabValue]) {
       return;
     }
 
     setLazyRendered((v) => ({
       ...v,
-      [activeTabLabel]: true,
+      [activeTabValue]: true,
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTabLabel]);
+  }, [activeTabValue]);
 
   useEffect(() => {
     return () => {
@@ -34,9 +33,8 @@ export default function Tabs({
     <div>
       <TabsList
         tabs={tabs}
-        activeTabLabel={activeTabLabel}
+        activeTabValue={activeTabValue}
         onTabClick={onTabClick}
-        isUrlTabs={isUrlTabs}
       />
 
       <Divider />
@@ -44,13 +42,13 @@ export default function Tabs({
       <div className="mt-4 flex">
         {tabs.map(
           (tab, idx) =>
-            (lazyRendered[tab.label] || !tab.lazy) && (
+            (lazyRendered[tab.value] || !tab.lazy) && (
               <div
                 key={tab.value ?? idx}
                 className={cn(
                   "w-full",
                   "hidden",
-                  activeTabLabel === tab.label && "!block",
+                  activeTabValue === tab.value && "!block",
                 )}
               >
                 {tab.content}
