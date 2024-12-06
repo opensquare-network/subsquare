@@ -8,29 +8,9 @@ import {
   useDelayBlockOrTimeColumn,
   removeColumn,
 } from "next-common/components/myProxies/common/columns";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
-import { toPrecision } from "next-common/utils";
 import { useMyProxiesContext } from "next-common/components/myProxies/context/myProxies";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-
-function TotalBalance({ balance }) {
-  const { decimals, symbol } = useChainSettings();
-
-  if (balance === 0) {
-    return null;
-  }
-
-  return (
-    <div className="inline-flex items-center h-8 mr-3">
-      <ValueDisplay
-        className="text14Medium"
-        value={toPrecision(balance, decimals)}
-        symbol={symbol}
-      />
-    </div>
-  );
-}
+import { TotalBalance } from "next-common/components/profile/deposits/proxy";
 
 export default function MyProxyDeposits({ deposits }) {
   const { proxies, loading, balance, total } = deposits;
