@@ -1,8 +1,8 @@
-import { fetchMyMultisigs } from "next-common/store/reducers/multisigSlice";
+import { fetchMyMultisigs, fetchMyMultisigsCount } from "next-common/store/reducers/multisigSlice";
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
-import { fetchMyMultisigsCount } from "next-common/store/reducers/multisigSlice";
+import { sortAddresses } from "@polkadot/util-crypto";
 
 async function fetchDataMultipleTimes(
   dispatch,
@@ -37,5 +37,5 @@ export async function fetchMultisigsCount10Times(dispatch, chain, address) {
 }
 
 export function sortSignatories(signatories = []) {
-  return Array.from(new Set(signatories)).sort();
+  return sortAddresses(signatories);
 }
