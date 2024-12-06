@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import Signer from "next-common/components/popup/fields/signerField";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 export function DelayBlocksField({ value, setValue }) {
   const PROXY_WIKI_LINK =
@@ -95,8 +96,13 @@ function PopupContent({ onClose }) {
       return;
     }
 
+    if (address === proxyAccount) {
+      dispatch(newErrorToast("Cannot set yourself as proxy"));
+      return;
+    }
+
     return api.tx.proxy.addProxy(proxyAccount, proxyType, delay);
-  }, [api, address, proxyAccount, proxyType, delay]);
+  }, [api, address, proxyAccount, proxyType, delay, dispatch]);
 
   const onFinalized = () => {
     dispatch(newSuccessToast("Added successfully"));
