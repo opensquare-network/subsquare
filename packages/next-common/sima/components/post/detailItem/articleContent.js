@@ -24,23 +24,25 @@ function PostContentTab() {
 
   const tabs = [
     {
+      value: "content",
       label: "Content",
       content: <PostContent post={post} />,
     },
     post.contentSummary?.summary && {
+      value: "ai_summary",
       label: "AI Summary",
       content: <ContentSummary />,
     },
   ].filter(Boolean);
 
-  const [activeTab, setActiveTab] = useState(tabs[0].label);
+  const [activeValue, setActiveValue] = useState(tabs[0].value);
 
   return (
     <Tabs
-      activeTabLabel={activeTab}
+      activeTabValue={activeValue}
       tabs={tabs}
       onTabClick={(tab) => {
-        setActiveTab(tab.label);
+        setActiveValue(tab.value);
       }}
     />
   );
