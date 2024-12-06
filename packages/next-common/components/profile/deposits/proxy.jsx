@@ -25,7 +25,7 @@ export function useProfileProxyDepositsData() {
   };
 }
 
-function TotalBalance({ balance }) {
+export function TotalBalance({ balance }) {
   const { decimals, symbol } = useChainSettings();
 
   if (balance === 0) {

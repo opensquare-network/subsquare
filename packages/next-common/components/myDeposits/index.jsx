@@ -14,7 +14,8 @@ import IdentityDeposit from "./identity";
 import { useMemo } from "react";
 import WithPallet from "../common/withPallet";
 import { usePathname } from "next/navigation";
-import ProxyDeposits from "next-common/components/profile/deposits/proxy";
+import ProfileProxyDeposits from "next-common/components/profile/deposits/proxy";
+import MyProxyDeposits, { useMyProxyDeposits } from "./proxy";
 
 export function useDepositSections(
   referenda,
@@ -28,6 +29,7 @@ export function useDepositSections(
   const chainSettings = useChainSettings();
   const pathname = usePathname();
   const isProfilePage = pathname.startsWith("/user");
+  const isAccountPage = pathname.startsWith("/account");
 
   return useMemo(() => {
     const {
@@ -44,7 +46,9 @@ export function useDepositSections(
 
     const hasTreasuryTips = hasTreasury?.tips && !hasTreasury?.tips?.archived;
 
-    const hasProxyDeposits = proxy && isProfilePage;
+    const hasProfileProxyDeposits = proxy && isProfilePage;
+
+    const hasMyProxyDeposits = proxy && isAccountPage;
 
     const sections = [
       hasReferenda && {
@@ -77,9 +81,13 @@ export function useDepositSections(
           </WithPallet>
         ),
       },
-      hasProxyDeposits && {
+      hasProfileProxyDeposits && {
         activeCount: proxyDeposits?.total,
-        content: <ProxyDeposits key="proxy" deposits={proxyDeposits} />,
+        content: <ProfileProxyDeposits key="proxy" deposits={proxyDeposits} />,
+      },
+      hasMyProxyDeposits && {
+        activeCount: proxyDeposits?.total,
+        content: <MyProxyDeposits key="myProxy" deposits={proxyDeposits} />,
       },
     ].filter(Boolean);
 
@@ -93,6 +101,7 @@ export function useDepositSections(
     preimageDeposits,
     proxyDeposits,
     isProfilePage,
+    isAccountPage,
     chainSettings,
   ]);
 }
@@ -104,6 +113,7 @@ export default function MyDeposits() {
   const treasury = useMyDepositTreasury();
   const identity = useMyIdentityDeposit();
   const preimageDeposits = useSelector(myPreimageDepositsSelector);
+  const proxyDeposits = useMyProxyDeposits();
 
   const [activeSections, nonActiveSections] = useDepositSections(
     referenda,
@@ -112,6 +122,7 @@ export default function MyDeposits() {
     treasury,
     identity,
     preimageDeposits,
+    proxyDeposits,
   );
 
   return (
