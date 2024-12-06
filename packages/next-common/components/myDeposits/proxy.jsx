@@ -32,8 +32,8 @@ function TotalBalance({ balance }) {
   );
 }
 
-export default function MyProxyDeposits() {
-  const { proxies, loading, balance, total } = useMyProxiesContext();
+export default function MyProxyDeposits({ deposits }) {
+  const { proxies, loading, balance, total } = deposits;
 
   const [dataList, setDataList] = useState([]);
   const delayBlockOrTimeColumn = useDelayBlockOrTimeColumn();
@@ -73,10 +73,12 @@ export default function MyProxyDeposits() {
 }
 
 export function useMyProxyDeposits() {
-  const { total } = useMyProxiesContext();
+  const { proxies, loading, balance, total } = useMyProxiesContext();
 
   return {
+    proxies,
+    loading,
+    balance,
     total,
-    component: <MyProxyDeposits />,
   };
 }
