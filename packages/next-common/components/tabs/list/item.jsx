@@ -1,5 +1,6 @@
 import Tooltip from "next-common/components/tooltip";
-import { cn } from "next-common/utils";
+import { cn, isExternalLink } from "next-common/utils";
+import Link from "next/link";
 import { isValidElement } from "react";
 
 export default function TabsListItem({
@@ -10,14 +11,16 @@ export default function TabsListItem({
   active,
   activeCount,
   onClick,
+  url = "",
 }) {
   const isElement = isValidElement(label);
 
   let content = (
     <div
-      role={!isElement && "button"}
+      role={isElement ? null : "tab"}
       className={cn(
-        "block whitespace-nowrap pb-3",
+        "cursor-pointer",
+        "pb-3",
         "text14Bold border-b-4 text-textPrimary",
         "hover:text-theme500",
         "flex items-center",
@@ -35,6 +38,14 @@ export default function TabsListItem({
       {labelExtra}
     </div>
   );
+
+  if (url) {
+    content = (
+      <Link href={url} target={isExternalLink(url) ? "_blank" : "_self"}>
+        {content}
+      </Link>
+    );
+  }
 
   return <Tooltip content={tooltip}>{content}</Tooltip>;
 }

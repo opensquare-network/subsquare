@@ -2,6 +2,8 @@ import { cn } from "next-common/utils";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import TabsListItem from "./item";
 import { useWindowSize } from "react-use";
+import { useRouter } from "next/router";
+import { isNil } from "lodash-es";
 
 const SPACE = 1;
 
@@ -13,6 +15,8 @@ function TabsListImpl({ tabs = [], activeTabValue, onTabClick }, ref) {
   const [showRight, setShowRight] = useState(true);
   const listRef = useRef();
   const { width } = useWindowSize();
+  const router = useRouter();
+  const [routePath] = router.asPath.split("?");
 
   useEffect(() => {
     if (listRef.current) {
@@ -45,13 +49,31 @@ function TabsListImpl({ tabs = [], activeTabValue, onTabClick }, ref) {
         className="flex space-x-6 overflow-x-auto scrollbar-hidden"
       >
         {tabs?.map((tab) => {
+          let active = tab.active;
+
+          if (tab.url) {
+            // formerly urlTabs
+            if (isNil(active)) {
+              if (tab.exactMatch === false) {
+                active = routePath.startsWith(tab.root || tab.url);
+              } else {
+                const urls = [tab.url, tab.root, ...(tab.urls || [])].filter(
+                  Boolean,
+                );
+                active = urls.includes(routePath);
+              }
+            }
+          } else {
+            active = activeTabValue === tab.value;
+          }
+
           return (
             <TabsListItem
               key={tab.value}
               {...tab}
-              active={tab.active ?? activeTabValue === tab.value}
+              active={active}
               onClick={() => {
-                onTabClick(tab);
+                onTabClick?.(tab);
               }}
             />
           );
