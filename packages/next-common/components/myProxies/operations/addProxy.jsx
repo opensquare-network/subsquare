@@ -4,7 +4,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const AddProxyPopup = dynamicPopup(() => import("./popup/addProxy"));
 
-export default function SetProxy() {
+export default function AddProxy() {
   const [showAddProxyPopup, setShowAddProxyPopup] = useState(false);
 
   return (
