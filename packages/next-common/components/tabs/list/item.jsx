@@ -21,7 +21,7 @@ export default function TabsListItem({
       className={cn(
         "cursor-pointer",
         "pb-3",
-        "text14Bold border-b-4 text-textPrimary",
+        "text14Bold border-b-4 text-textPrimary whitespace-nowrap",
         "hover:text-theme500",
         "flex items-center",
         className,
