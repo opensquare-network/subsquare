@@ -235,7 +235,7 @@ const transferEnabledChains = [
   Chains.rococo,
 ];
 
-const relayChainTeleportEnabledChains = [Chains.polkadot];
+const relayChainTeleportEnabledChains = [Chains.polkadot, Chains.kusama];
 
 const paraChainTeleportEnabledChains = [Chains.collectives];
 
