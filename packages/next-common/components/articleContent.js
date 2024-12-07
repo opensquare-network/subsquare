@@ -43,15 +43,17 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
 
   const tabs = [
     {
+      value: "content",
       label: "Content",
       content: postContent,
     },
     post.contentSummary?.summary && {
+      value: "ai_summary",
       label: "AI Summary",
       content: <ContentSummary />,
     },
   ].filter(Boolean);
-  const [activeTab, setActiveTab] = useState(tabs[0].label);
+  const [activeValue, setActiveValue] = useState(tabs[0].value);
 
   return (
     <Wrapper className={className}>
@@ -66,10 +68,10 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
         <div className="mt-6">
           {post.contentSummary?.summary ? (
             <Tabs
-              activeTabLabel={activeTab}
+              activeTabValue={activeValue}
               tabs={tabs}
               onTabClick={(tab) => {
-                setActiveTab(tab.label);
+                setActiveValue(tab.value);
               }}
             />
           ) : (
