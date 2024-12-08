@@ -13,7 +13,6 @@ import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
-import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
@@ -275,14 +274,13 @@ export function AccountHead() {
   );
 }
 
-export function CommonAccountInfoPanel({ hideManageAccountLink }) {
+export function CommonAccountInfoPanel() {
   return (
     <NeutralPanel className="p-6 space-y-4">
       <ProxyTip />
       <AccountHead />
       <Divider />
       <AccountBalances />
-      {!hideManageAccountLink && <ManageAccountButton />}
       <ExtensionUpdatePrompt />
       <AssetHubManagePrompt />
       <MultisigManagePrompt />
@@ -291,10 +289,8 @@ export function CommonAccountInfoPanel({ hideManageAccountLink }) {
   );
 }
 
-export default function AccountInfoPanel({ hideManageAccountLink }) {
+export default function AccountInfoPanel() {
   useSubscribeAccount();
 
-  return (
-    <CommonAccountInfoPanel hideManageAccountLink={hideManageAccountLink} />
-  );
+  return <CommonAccountInfoPanel />;
 }

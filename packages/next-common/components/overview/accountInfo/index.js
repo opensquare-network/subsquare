@@ -7,7 +7,7 @@ import { useChain } from "next-common/context/chain";
 import CollectivesAccountInfoPanel from "./collectivesAccountInfoPanel";
 import KintsugiAccountInfoPanel from "./kintsugiAccountInfoPanel";
 
-export default function AccountInfo({ hideManageAccountLink }) {
+export default function AccountInfo() {
   const user = useUser();
   const chain = useChain();
 
@@ -20,18 +20,12 @@ export default function AccountInfo({ hideManageAccountLink }) {
   }
 
   if (isCollectivesChain(chain)) {
-    return (
-      <CollectivesAccountInfoPanel
-        hideManageAccountLink={hideManageAccountLink}
-      />
-    );
+    return <CollectivesAccountInfoPanel />;
   }
 
   if (isKintsugiChain(chain)) {
-    return (
-      <KintsugiAccountInfoPanel hideManageAccountLink={hideManageAccountLink} />
-    );
+    return <KintsugiAccountInfoPanel />;
   }
 
-  return <AccountInfoPanel hideManageAccountLink={hideManageAccountLink} />;
+  return <AccountInfoPanel />;
 }
