@@ -1,10 +1,11 @@
-import { useChainSettings } from "next-common/context/chain";
+import { useChainSettings, useChain } from "next-common/context/chain";
 import { useSelector } from "react-redux";
 import { profileActiveMultisigsCountSelector } from "next-common/store/reducers/profile/multisig";
 import useDepositsCount from "next-common/hooks/profile/deposit/useDepositsCount";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useProfileCollectivesTabs } from "./useProfileCollectivesTabs";
+import { isKintsugiChain } from "next-common/utils/chain";
 
 export default function useProfileTabs() {
   const { id } = usePageProps();
@@ -19,6 +20,7 @@ export default function useProfileTabs() {
     hasMultisig,
     hasIdentityTimeline,
   } = useChainSettings();
+  const chain = useChain();
   const hasDemocracyModule = democracy && !democracy?.archived;
   const activeMultisigsCount = useSelector(profileActiveMultisigsCountSelector);
   const depositsCount = useDepositsCount();
@@ -57,7 +59,7 @@ export default function useProfileTabs() {
     });
   }
 
-  if (hasReferenda || hasDemocracyModule) {
+  if ((hasReferenda || hasDemocracyModule) && !isKintsugiChain(chain)) {
     tabs.push({
       label: "Delegation",
       url: `${prefix}delegation/received`,
