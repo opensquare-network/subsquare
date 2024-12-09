@@ -256,7 +256,7 @@ function ProxyButton() {
   return (
     <div className="flex items-center px-[40px]">
       <div
-        className="flex items-center gap-1.5 rounded-[6px] border border-neutral400 px-1.5 py-1.5 ml-3 cursor-pointer"
+        className="flex items-center justify-center space-x-1.5 px-1.5 py-1.5 ml-3 rounded-[6px] border border-neutral400 cursor-pointer"
         onClick={goAccountProxies}
       >
         <MenuProxy width={16} height={16} className="text-textTertiary" />
