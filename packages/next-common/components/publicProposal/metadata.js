@@ -24,7 +24,7 @@ export default function Metadata({ publicProposal }) {
   const deposit = publicProposal.deposit;
   const metadata = [
     ["hash", <Copyable key="hash">{publicProposal?.hash}</Copyable>],
-    ["deposit", <SymbolBalance value={getDeposit(deposit)} key="balance" />],
+    ["deposit", <SymbolBalance isVote value={getDeposit(deposit)} key="balance" />],
     ["proposer", <AddressUser add={publicProposal?.proposer} key="user" />],
   ];
 
