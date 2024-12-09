@@ -256,7 +256,7 @@ function ProxyButton() {
   };
 
   return (
-    <div className={"flex items-center px-[52px]"}>
+    <div className="flex items-center px-[52px]">
       <div
         className="flex items-center justify-center space-x-1.5 px-1.5 py-1.5 rounded-[6px] border border-neutral400 cursor-pointer"
         onClick={goAccountProxies}
