@@ -15,7 +15,7 @@ import ExternalProposeMajorityPopup from "../externalProposeMajorityPopup";
 import ExternalProposeDefaultPopup from "../externalProposeDefaultPopup";
 import DappStakingRegisterPopup from "../dappStakingRegisterPopup";
 import DappStakingUnRegisterPopup from "../dappStakingUnRegisterPopup";
-import DappStakingPopup from "../dappStakingPopup";
+import CollectiveProxyCallPopup from "../collectiveProxyCallPopup";
 
 function useNewProposalPopupButton() {
   const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
@@ -126,18 +126,19 @@ function useDappStakingUnRegisterButton() {
   return { dappStakingUnRegisterButton, showDappStakingUnRegisterPopup };
 }
 
-function useDappStakingButton() {
-  const [showDappStakingPopup, setShowDappStakingPopup] = useState(false);
-  const dappStakingButton = (
+function useCollectiveProxyCallButton() {
+  const [showCollectiveProxyCallPopup, setShowCollectiveProxyCallPopup] =
+    useState(false);
+  const collectiveProxyCallButton = (
     <ChoiceButton
-      name="Stake for a dapp"
-      description="Request the staking amount from the community treasury for a dApp"
+      name="Community proxy call"
+      description="Propose a proxy call on behalf of the account representing the community treasury"
       onClick={() => {
-        setShowDappStakingPopup(true);
+        setShowCollectiveProxyCallPopup(true);
       }}
     />
   );
-  return { dappStakingButton, showDappStakingPopup };
+  return { collectiveProxyCallButton, showCollectiveProxyCallPopup };
 }
 
 export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
@@ -158,7 +159,8 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
     useDappStakingRegisterButton();
   const { showDappStakingUnRegisterPopup, dappStakingUnRegisterButton } =
     useDappStakingUnRegisterButton();
-  const { showDappStakingPopup, dappStakingButton } = useDappStakingButton();
+  const { showCollectiveProxyCallPopup, collectiveProxyCallButton } =
+    useCollectiveProxyCallButton();
   const { isMember } = useIsCollectiveMember();
 
   if (showNewProposalPopup) {
@@ -205,8 +207,8 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
     return <DappStakingUnRegisterPopup onClose={onClose} isMember={isMember} />;
   }
 
-  if (showDappStakingPopup) {
-    return <DappStakingPopup onClose={onClose} isMember={isMember} />;
+  if (showCollectiveProxyCallPopup) {
+    return <CollectiveProxyCallPopup onClose={onClose} isMember={isMember} />;
   }
 
   let quickStartButtons = null;
@@ -217,7 +219,7 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
       rejectTreasuryProposalButton,
       dappStakingRegisterButton,
       dappStakingUnRegisterButton,
-      dappStakingButton,
+      collectiveProxyCallButton,
     ];
   }
 
