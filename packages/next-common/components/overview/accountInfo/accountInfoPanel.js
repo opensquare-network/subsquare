@@ -26,6 +26,7 @@ import { AssetHubApiProvider } from "next-common/context/assetHub";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
+import { useChainSettings } from "next-common/context/chain";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -47,6 +48,12 @@ const SystemSetting = dynamic(
 );
 const SystemTransfer = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemTransfer),
+);
+const MenuProxy = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.MenuProxy),
+);
+const ArrowRight = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.ArrowRight),
 );
 
 const DisplayUserAvatar = () => {
@@ -232,6 +239,34 @@ function ParaChainTeleportButton() {
   );
 }
 
+function ProxyButton() {
+  const {
+    modules: { proxy },
+  } = useChainSettings();
+  const router = useRouter();
+
+  if (router.pathname.startsWith("/account") || !proxy) {
+    return null;
+  }
+
+  const goAccountProxies = () => {
+    router.push("/account/proxies");
+  };
+
+  return (
+    <div className="flex items-center px-[40px]">
+      <div
+        className="flex items-center gap-1.5 rounded-[6px] border border-neutral400 px-1.5 py-1.5 ml-3 cursor-pointer"
+        onClick={goAccountProxies}
+      >
+        <MenuProxy width={16} height={16} className="text-textTertiary" />
+        <span className="text12Medium text-textPrimary">Proxy</span>
+        <ArrowRight width={16} height={16} className="text-textTertiary" />
+      </div>
+    </div>
+  );
+}
+
 const transferEnabledChains = [
   Chains.polkadot,
   Chains.kusama,
@@ -245,36 +280,39 @@ const paraChainTeleportEnabledChains = [Chains.collectives];
 
 export function AccountHead() {
   return (
-    <div className="flex justify-between items-center grow">
-      <Account />
-      <div className="flex gap-[16px] items-center">
-        <OnlyChains chains={transferEnabledChains}>
-          <TransferButton />
-        </OnlyChains>
-        <OnlyChains chains={relayChainTeleportEnabledChains}>
-          <AssetHubApiProvider>
-            <CollectivesApiProvider>
-              <TeleportButton />
-            </CollectivesApiProvider>
-          </AssetHubApiProvider>
-        </OnlyChains>
-        <OnlyChains chains={paraChainTeleportEnabledChains}>
-          <RelayChainApiProvider>
-            <ParaChainTeleportButton />
-          </RelayChainApiProvider>
-        </OnlyChains>
-        <OnlyChains
-          chains={[
-            ...transferEnabledChains,
-            ...relayChainTeleportEnabledChains,
-            ...paraChainTeleportEnabledChains,
-          ]}
-        >
-          <div className="w-[1px] h-[16px] bg-neutral300"></div>
-        </OnlyChains>
-        <AccountButton />
-        <SettingsButton />
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between items-center grow">
+        <Account />
+        <div className="flex gap-[16px] items-center">
+          <OnlyChains chains={transferEnabledChains}>
+            <TransferButton />
+          </OnlyChains>
+          <OnlyChains chains={relayChainTeleportEnabledChains}>
+            <AssetHubApiProvider>
+              <CollectivesApiProvider>
+                <TeleportButton />
+              </CollectivesApiProvider>
+            </AssetHubApiProvider>
+          </OnlyChains>
+          <OnlyChains chains={paraChainTeleportEnabledChains}>
+            <RelayChainApiProvider>
+              <ParaChainTeleportButton />
+            </RelayChainApiProvider>
+          </OnlyChains>
+          <OnlyChains
+            chains={[
+              ...transferEnabledChains,
+              ...relayChainTeleportEnabledChains,
+              ...paraChainTeleportEnabledChains,
+            ]}
+          >
+            <div className="w-[1px] h-[16px] bg-neutral300"></div>
+          </OnlyChains>
+          <AccountButton />
+          <SettingsButton />
+        </div>
       </div>
+      <ProxyButton />
     </div>
   );
 }
