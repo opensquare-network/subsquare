@@ -4,8 +4,22 @@ import BeenDelegated from "./beenDelegated";
 import useProfileAddress from "../useProfileAddress";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import PageUrlTabs from "next-common/components/pageTabs/pageUrlTabs";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { cn } from "next-common/utils";
+import Tabs from "next-common/components/tabs";
+
+function TabTitle({ active, children }) {
+  return (
+    <div
+      className={cn(
+        "text16Bold",
+        active ? "text-textPrimary" : "text-textTertiary",
+      )}
+    >
+      {children}
+    </div>
+  );
+}
 
 export default function ListTabs() {
   const address = useProfileAddress();
@@ -30,21 +44,31 @@ export default function ListTabs() {
 
   return (
     <div className="ml-[24px]">
-      <PageUrlTabs
+      <Tabs
+        activeTabValue={tab}
         tabs={[
           {
+            value: "/received",
+            label({ active }) {
+              return <TabTitle active={active}>Received</TabTitle>;
+            },
             url: `/user/${maybeEvmAddress}/delegation/received`,
-            name: "Received",
+            shallow: true,
             content: <BeenDelegated />,
             extra: <ModuleTab />,
           },
           {
+            value: "/delegated",
+            label({ active }) {
+              return <TabTitle active={active}>Delegations</TabTitle>;
+            },
             url: `/user/${maybeEvmAddress}/delegation/delegated`,
-            name: "Delegations",
+            shallow: true,
             content: <DelegatedVotes />,
             extra: <ModuleTab />,
           },
         ]}
+        tabsListDivider={false}
       />
     </div>
   );
