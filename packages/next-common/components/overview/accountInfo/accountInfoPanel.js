@@ -27,6 +27,8 @@ import { RelayChainApiProvider } from "next-common/context/relayChain";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { useChainSettings } from "next-common/context/chain";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { isNil } from "lodash-es";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -81,9 +83,16 @@ const DisplayUser = () => {
 function Account() {
   const user = useUser();
   const maybeEvmAddress = tryConvertToEvmAddress(user?.address);
+  const { width } = useWindowSize();
+
+  if (isNil(width)) {
+    return null;
+  }
 
   return (
-    <div className="flex gap-[12px]">
+    <div
+      className={cn("flex gap-[12px]", width > 768 ? "flex-row" : "flex-col")}
+    >
       <DisplayUserAvatar />
       <div className="flex flex-col">
         <DisplayUser />
@@ -244,8 +253,9 @@ function ProxyButton() {
     modules: { proxy },
   } = useChainSettings();
   const router = useRouter();
+  const { width } = useWindowSize();
 
-  if (router.pathname.startsWith("/account") || !proxy) {
+  if (router.pathname.startsWith("/account") || !proxy || isNil(width)) {
     return null;
   }
 
@@ -254,9 +264,9 @@ function ProxyButton() {
   };
 
   return (
-    <div className="flex items-center px-[40px]">
+    <div className={cn("flex items-center", width > 768 ? "px-[52px]" : "")}>
       <div
-        className="flex items-center justify-center space-x-1.5 px-1.5 py-1.5 ml-3 rounded-[6px] border border-neutral400 cursor-pointer"
+        className="flex items-center justify-center space-x-1.5 px-1.5 py-1.5 rounded-[6px] border border-neutral400 cursor-pointer"
         onClick={goAccountProxies}
       >
         <MenuProxy className="w-4 h-4 text-textTertiary" />
@@ -281,7 +291,7 @@ const paraChainTeleportEnabledChains = [Chains.collectives];
 export function AccountHead() {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex justify-between items-center grow">
+      <div className="flex justify-between items-start grow gap-4">
         <Account />
         <div className="flex gap-[16px] items-center">
           <OnlyChains chains={transferEnabledChains}>
