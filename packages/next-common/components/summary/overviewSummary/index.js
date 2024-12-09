@@ -10,6 +10,7 @@ import DotSplitter from "next-common/components/dotSplitter";
 
 const ContentWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 const TypeGroup = styled(Flex)`
   column-gap: 4px;
