@@ -26,7 +26,7 @@ export default function CollapsePanel({ children, labelItem }) {
 
       <div className="flex flex-col ml-[12px] w-[240px]">
         {labelItem}
-        {isCollapsed && <div>{children}</div>}
+        {isCollapsed && children}
       </div>
     </div>
   ) : (
