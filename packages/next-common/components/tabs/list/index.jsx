@@ -3,7 +3,7 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import TabsListItem from "./item";
 import { useWindowSize } from "react-use";
 import { useRouter } from "next/router";
-import { isNil } from "lodash-es";
+import { find, isNil } from "lodash-es";
 
 const SPACE = 1;
 
@@ -41,15 +41,14 @@ function TabsListImpl(
   }
 
   return (
-    <div ref={ref} className={cn("relative", className)}>
+    <div ref={ref} className={cn("relative", "flex items-center", className)}>
       <GradientBlanket className={cn(showLeft && "opacity-100")} />
       <GradientBlanket reversed className={cn(showRight && "opacity-100")} />
 
       <div
         ref={listRef}
-        role="tablist"
         onScroll={onScroll}
-        className="flex space-x-6 overflow-x-auto scrollbar-hidden"
+        className="grow flex space-x-6 overflow-x-auto scrollbar-hidden"
       >
         {tabs?.map((tab) => {
           let active = tab.active;
@@ -82,6 +81,8 @@ function TabsListImpl(
           );
         })}
       </div>
+
+      {find(tabs, { value: activeTabValue })?.extra}
     </div>
   );
 }
