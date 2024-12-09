@@ -21,6 +21,7 @@ function useNewProposalPopupButton() {
   const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
   const newProposalPopupButton = (
     <ChoiceButton
+      key="new-common"
       icon={<NewPreimageSVG />}
       name="New common"
       description="Create a new proposal"
@@ -39,6 +40,7 @@ function useApproveTreasuryProposalButton() {
   ] = useState(false);
   const approveTreasuryProposalButton = (
     <ChoiceButton
+      key="approve-treasury-proposal"
       name="Approve a treasury proposal"
       description="Approve a treasury proposal"
       onClick={() => {
@@ -54,6 +56,7 @@ function useRejectTreasuryProposalButton() {
     useState(false);
   const rejectTreasuryProposalButton = (
     <ChoiceButton
+      key="reject-treasury-proposal"
       name="Reject a treasury proposal"
       description="Reject a treasury proposal"
       onClick={() => {
@@ -71,6 +74,7 @@ function useExternalProposeMajorityButton() {
   ] = useState(false);
   const externalProposeMajorityButton = (
     <ChoiceButton
+      key="external-propose-majority"
       name="External propose majority"
       description="Schedule a majority-carries referendum to be tabled next once it is legal to schedule an external referendum"
       onClick={() => {
@@ -86,6 +90,7 @@ function useExternalProposeDefaultButton() {
     useState(false);
   const externalProposeDefaultButton = (
     <ChoiceButton
+      key="external-propose-default"
       name="External propose default"
       description="Schedule a negative-turnout-bias referendum to be tabled next once it is legal to schedule an external referendum"
       onClick={() => {
@@ -101,6 +106,7 @@ function useDappStakingRegisterButton() {
     useState(false);
   const dappStakingRegisterButton = (
     <ChoiceButton
+      key="dapp-staking-register"
       name="Register for dapp staking"
       description="Register a dapp on staking system to get support from the community"
       onClick={() => {
@@ -116,6 +122,7 @@ function useDappStakingUnRegisterButton() {
     useState(false);
   const dappStakingUnRegisterButton = (
     <ChoiceButton
+      key="dapp-staking-un-register"
       name="Un-register from dapp staking"
       description="Un-register a dapp from the staking system"
       onClick={() => {
@@ -131,6 +138,7 @@ function useCollectiveProxyCallButton() {
     useState(false);
   const collectiveProxyCallButton = (
     <ChoiceButton
+      key="community-proxy-call"
       name="Community proxy call"
       description="Propose a proxy call on behalf of the account representing the community treasury"
       onClick={() => {
