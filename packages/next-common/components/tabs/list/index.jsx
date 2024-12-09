@@ -10,7 +10,10 @@ const SPACE = 1;
 const TabsList = forwardRef(TabsListImpl);
 export default TabsList;
 
-function TabsListImpl({ tabs = [], activeTabValue, onTabClick }, ref) {
+function TabsListImpl(
+  { tabs = [], activeTabValue, onTabClick, className = "" },
+  ref,
+) {
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
   const listRef = useRef();
@@ -38,7 +41,7 @@ function TabsListImpl({ tabs = [], activeTabValue, onTabClick }, ref) {
   }
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className={cn("relative", className)}>
       <GradientBlanket className={cn(showLeft && "opacity-100")} />
       <GradientBlanket reversed className={cn(showRight && "opacity-100")} />
 
