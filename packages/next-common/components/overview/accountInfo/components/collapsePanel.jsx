@@ -18,15 +18,15 @@ export default function CollapsePanel({ children, labelItem }) {
   return width > 768 ? (
     <div className="flex">
       <div
-        className="flex items-center justify-center shrink-0 border border-neutral400 rounded w-5 h-5 cursor-pointer"
+        className="flex items-center justify-center shrink-0 border border-neutral400 rounded w-5 h-5 mx-[10px] cursor-pointer"
         onClick={toggleCollapse}
       >
         <Icon className="w-3 h-3 [&_path]:fill-textSecondary" />
       </div>
 
-      <div className="flex flex-col ml-[22px] w-[240px]">
-        <div>{labelItem}</div>
-        {isCollapsed && <div>{children}</div>}
+      <div className="flex flex-col ml-[12px] w-[240px]">
+        {labelItem}
+        {isCollapsed && children}
       </div>
     </div>
   ) : (

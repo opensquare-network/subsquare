@@ -13,7 +13,6 @@ import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
-import ManageAccountButton from "./components/manageAccountButton";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
@@ -26,6 +25,10 @@ import Chains from "next-common/utils/consts/chains";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
+import useAccountUrl from "next-common/hooks/account/useAccountUrl";
+import { useChainSettings } from "next-common/context/chain";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { isNil } from "lodash-es";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -39,14 +42,20 @@ const ParaChainTeleportPopup = dynamic(() =>
 const SystemCrosschain = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
 );
-const SystemProfile = dynamic(
-  import("@osn/icons/subsquare").then((mod) => mod.SystemProfile),
+const MenuAccount = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.MenuAccount),
 );
 const SystemSetting = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemSetting),
 );
 const SystemTransfer = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemTransfer),
+);
+const MenuProxy = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.MenuProxy),
+);
+const ArrowRight = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.ArrowRight),
 );
 
 const DisplayUserAvatar = () => {
@@ -147,21 +156,25 @@ function TransferButton() {
   );
 }
 
-function ProfileButton() {
+function AccountButton() {
   const router = useRouter();
-  const user = useUser();
+  const url = useAccountUrl();
 
-  const goProfile = () => {
-    router.push(`/user/${user?.address}`);
+  if (router.pathname.startsWith("/account")) {
+    return null;
+  }
+
+  const goAccount = () => {
+    router.push(url);
   };
 
   return (
-    <Tooltip content="Profile">
+    <Tooltip content="Account">
       <IconButton
         className="[&_svg_path]:fill-textSecondary"
-        onClick={goProfile}
+        onClick={goAccount}
       >
-        <SystemProfile width={20} height={20} />
+        <MenuAccount width={20} height={20} />
       </IconButton>
     </Tooltip>
   );
@@ -228,6 +241,34 @@ function ParaChainTeleportButton() {
   );
 }
 
+function ProxyButton() {
+  const {
+    modules: { proxy },
+  } = useChainSettings();
+  const router = useRouter();
+
+  if (router.pathname.startsWith("/account") || !proxy) {
+    return null;
+  }
+
+  const goAccountProxies = () => {
+    router.push("/account/proxies");
+  };
+
+  return (
+    <div className="flex items-center px-[52px]">
+      <div
+        className="flex items-center justify-center space-x-1.5 px-1.5 py-1.5 rounded-[6px] border border-neutral400 cursor-pointer"
+        onClick={goAccountProxies}
+      >
+        <MenuProxy className="w-4 h-4 text-textTertiary" />
+        <span className="text12Medium text-textPrimary">Proxy</span>
+        <ArrowRight className="w-4 h-4 text-textTertiary" />
+      </div>
+    </div>
+  );
+}
+
 const transferEnabledChains = [
   Chains.polkadot,
   Chains.kusama,
@@ -240,49 +281,63 @@ const relayChainTeleportEnabledChains = [Chains.polkadot, Chains.kusama];
 const paraChainTeleportEnabledChains = [Chains.collectives];
 
 export function AccountHead() {
+  const { width } = useWindowSize();
+  if (isNil(width)) {
+    return null;
+  }
+
   return (
-    <div className="flex justify-between items-center grow">
-      <Account />
-      <div className="flex gap-[16px] items-center">
-        <OnlyChains chains={transferEnabledChains}>
-          <TransferButton />
-        </OnlyChains>
-        <OnlyChains chains={relayChainTeleportEnabledChains}>
-          <AssetHubApiProvider>
-            <CollectivesApiProvider>
-              <TeleportButton />
-            </CollectivesApiProvider>
-          </AssetHubApiProvider>
-        </OnlyChains>
-        <OnlyChains chains={paraChainTeleportEnabledChains}>
-          <RelayChainApiProvider>
-            <ParaChainTeleportButton />
-          </RelayChainApiProvider>
-        </OnlyChains>
-        <OnlyChains
-          chains={[
-            ...transferEnabledChains,
-            ...relayChainTeleportEnabledChains,
-            ...paraChainTeleportEnabledChains,
-          ]}
-        >
-          <div className="w-[1px] h-[16px] bg-neutral300"></div>
-        </OnlyChains>
-        <ProfileButton />
-        <SettingsButton />
+    <div className="flex flex-col gap-2">
+      <div
+        className={cn(
+          "flex justify-between items-start grow gap-4",
+          width > 768 ? "flex-row" : "flex-col",
+        )}
+      >
+        <div className="flex flex-col gap-2">
+          <Account />
+          <ProxyButton />
+        </div>
+        <div className="flex gap-[16px] items-center">
+          <OnlyChains chains={transferEnabledChains}>
+            <TransferButton />
+          </OnlyChains>
+          <OnlyChains chains={relayChainTeleportEnabledChains}>
+            <AssetHubApiProvider>
+              <CollectivesApiProvider>
+                <TeleportButton />
+              </CollectivesApiProvider>
+            </AssetHubApiProvider>
+          </OnlyChains>
+          <OnlyChains chains={paraChainTeleportEnabledChains}>
+            <RelayChainApiProvider>
+              <ParaChainTeleportButton />
+            </RelayChainApiProvider>
+          </OnlyChains>
+          <OnlyChains
+            chains={[
+              ...transferEnabledChains,
+              ...relayChainTeleportEnabledChains,
+              ...paraChainTeleportEnabledChains,
+            ]}
+          >
+            <div className="w-[1px] h-[16px] bg-neutral300"></div>
+          </OnlyChains>
+          <AccountButton />
+          <SettingsButton />
+        </div>
       </div>
     </div>
   );
 }
 
-export function CommonAccountInfoPanel({ hideManageAccountLink }) {
+export function CommonAccountInfoPanel() {
   return (
     <NeutralPanel className="p-6 space-y-4">
       <ProxyTip />
       <AccountHead />
       <Divider />
       <AccountBalances />
-      {!hideManageAccountLink && <ManageAccountButton />}
       <ExtensionUpdatePrompt />
       <AssetHubManagePrompt />
       <MultisigManagePrompt />
@@ -291,10 +346,8 @@ export function CommonAccountInfoPanel({ hideManageAccountLink }) {
   );
 }
 
-export default function AccountInfoPanel({ hideManageAccountLink }) {
+export default function AccountInfoPanel() {
   useSubscribeAccount();
 
-  return (
-    <CommonAccountInfoPanel hideManageAccountLink={hideManageAccountLink} />
-  );
+  return <CommonAccountInfoPanel />;
 }
