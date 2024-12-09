@@ -1,3 +1,4 @@
+import { isFunction } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { cn, isExternalLink } from "next-common/utils";
 import Link from "next/link";
@@ -13,31 +14,36 @@ export default function TabsListItem({
   onClick,
   url = "",
 }) {
-  const isElement = isValidElement(label);
+  let content;
+  if (isFunction(label)) {
+    content = label({ active });
+  } else {
+    const isElement = isValidElement(label);
 
-  let content = (
-    <div
-      role={isElement ? null : "tab"}
-      className={cn(
-        "cursor-pointer",
-        "pb-3",
-        "text14Bold border-b-4 text-textPrimary whitespace-nowrap",
-        "hover:text-theme500",
-        "flex items-center",
-        className,
-        active ? "border-theme500 text-theme500" : "border-transparent",
-      )}
-      onClick={onClick}
-    >
-      {label}
-      {!!activeCount && (
-        <span className="ml-1 text-textTertiary text14Medium">
-          {activeCount}
-        </span>
-      )}
-      {labelExtra}
-    </div>
-  );
+    content = (
+      <div
+        role={isElement ? null : "tab"}
+        className={cn(
+          "cursor-pointer",
+          "pb-3",
+          "text14Bold border-b-4 text-textPrimary whitespace-nowrap",
+          "hover:text-theme500",
+          "flex items-center",
+          className,
+          active ? "border-theme500 text-theme500" : "border-transparent",
+        )}
+        onClick={onClick}
+      >
+        {label}
+        {!!activeCount && (
+          <span className="ml-1 text-textTertiary text14Medium">
+            {activeCount}
+          </span>
+        )}
+        {labelExtra}
+      </div>
+    );
+  }
 
   if (url) {
     content = (
