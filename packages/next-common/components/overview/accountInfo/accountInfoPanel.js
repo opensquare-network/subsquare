@@ -25,6 +25,7 @@ import Chains from "next-common/utils/consts/chains";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
+import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -38,8 +39,8 @@ const ParaChainTeleportPopup = dynamic(() =>
 const SystemCrosschain = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
 );
-const SystemProfile = dynamic(
-  import("@osn/icons/subsquare").then((mod) => mod.SystemProfile),
+const MenuAccount = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.MenuAccount),
 );
 const SystemSetting = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemSetting),
@@ -146,21 +147,25 @@ function TransferButton() {
   );
 }
 
-function ProfileButton() {
+function AccountButton() {
   const router = useRouter();
-  const user = useUser();
+  const url = useAccountUrl();
 
-  const goProfile = () => {
-    router.push(`/user/${user?.address}`);
+  if (router.pathname.startsWith("/account")) {
+    return null;
+  }
+
+  const goAccount = () => {
+    router.push(url);
   };
 
   return (
-    <Tooltip content="Profile">
+    <Tooltip content="Account">
       <IconButton
         className="[&_svg_path]:fill-textSecondary"
-        onClick={goProfile}
+        onClick={goAccount}
       >
-        <SystemProfile width={20} height={20} />
+        <MenuAccount width={20} height={20} />
       </IconButton>
     </Tooltip>
   );
@@ -267,7 +272,7 @@ export function AccountHead() {
         >
           <div className="w-[1px] h-[16px] bg-neutral300"></div>
         </OnlyChains>
-        <ProfileButton />
+        <AccountButton />
         <SettingsButton />
       </div>
     </div>
