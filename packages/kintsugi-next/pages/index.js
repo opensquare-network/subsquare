@@ -23,11 +23,13 @@ export default function Home() {
 
   const tabs = [
     {
+      value: "overview",
       label: "Overview",
       url: "/",
       exactMatch: false,
     },
     {
+      value: "escrow",
       label: "Escrow",
       url: "/escrow",
     },
