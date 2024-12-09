@@ -14,8 +14,8 @@ export function formatTimeDuration(
     showSeconds = true,
   } = {},
 ) {
-  if (input == 0) {
-    return 0;
+  if (input === 0) {
+    return "0";
   }
 
   const duration = dayjs.duration(input);

@@ -9,6 +9,7 @@ import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/nor
 import ListLayout from "next-common/components/layout/ListLayout";
 import businessCategory from "next-common/utils/consts/business/category";
 import NewDemocracyProposalButton from "components/democracy/proposals/newDemoracyProposalButton";
+import { useIsLoggedIn } from "next-common/context/user";
 
 export default function DemocracyProposalsPage({ proposals, summary }) {
   const chain = useChain();
@@ -18,6 +19,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
   const category = businessCategory.democracyProposals;
   const title = category;
   const seoInfo = { title, desc: title };
+  const isLoggedIn = useIsLoggedIn();
 
   return (
     <ListLayout
@@ -25,7 +27,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
       title={category}
       description="Democracy uses public proposal, external proposal and referenda to mange the governance process."
       summary={<DemocracySummary summary={summary} />}
-      summaryFooter={<KintsugiDemocracyStaking />}
+      summaryFooter={isLoggedIn ? <KintsugiDemocracyStaking /> : null}
     >
       <PostList
         category={category}
