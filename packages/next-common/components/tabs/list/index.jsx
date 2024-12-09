@@ -54,8 +54,8 @@ function TabsListImpl(
         {tabs?.map((tab) => {
           let active = tab.active;
 
+          // formerly urlTabs
           if (tab.url) {
-            // formerly urlTabs
             if (isNil(active)) {
               if (tab.exactMatch === false) {
                 active = routePath.startsWith(tab.root || tab.url);
