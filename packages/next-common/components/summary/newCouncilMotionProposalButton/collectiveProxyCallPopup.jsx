@@ -9,9 +9,10 @@ import { useExtrinsicField } from "next-common/components/preImages/createPreima
 export default function CollectiveProxyCallPopup({ isMember, onClose }) {
   const api = useContextApi();
   const { extrinsic, component: extrinsicComponent } = useExtrinsicField();
+  const disabled = !extrinsic || !isMember;
 
   const getTxFunc = useCallback(() => {
-    if (!api) {
+    if (!api || !extrinsic) {
       return;
     }
     return api.tx.collectiveProxy.executeCall(extrinsic);
@@ -32,7 +33,7 @@ export default function CollectiveProxyCallPopup({ isMember, onClose }) {
           }
           className="inline"
         >
-          <CouncilProposeButton getTxFunc={getTxFunc} />
+          <CouncilProposeButton disabled={disabled} getTxFunc={getTxFunc} />
         </Tooltip>
       </div>
     </Popup>
