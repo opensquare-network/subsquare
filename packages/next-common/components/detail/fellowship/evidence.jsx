@@ -26,7 +26,7 @@ export default function FellowshipReferendaDetailEvidence() {
 
   if (
     call?.section === pallet &&
-    ["promote", "approve"].includes(call?.method)
+    ["approve", "promote", "promoteFast"].includes(call?.method)
   ) {
     return <FellowshipReferendaDetailEvidenceImpl />;
   }
