@@ -11,8 +11,8 @@ export default function PriceCardContentChart({ data = [], onHover = noop }) {
 
   const { width } = useWindowSize();
 
-  const labels = data.map?.(({ time }) => time);
-  const counts = data.map?.(({ count }) => count);
+  const labels = data.map?.(({ time }) => time) || [];
+  const counts = data.map?.(({ count }) => count) || [];
 
   const maxValue = Math.max(...counts);
 
