@@ -8,6 +8,8 @@ export default function Tabs({
   tabs = [],
   activeTabValue = "",
   onTabClick = noop,
+  tabsListDivider = true,
+  tabsListClassName = "",
 }) {
   const [lazyRendered, setLazyRendered] = useState({});
 
@@ -32,12 +34,13 @@ export default function Tabs({
   return (
     <div>
       <TabsList
+        className={tabsListClassName}
         tabs={tabs}
         activeTabValue={activeTabValue}
         onTabClick={onTabClick}
       />
 
-      <Divider />
+      {tabsListDivider && <Divider />}
 
       <div className="mt-4 flex">
         {tabs.map(
