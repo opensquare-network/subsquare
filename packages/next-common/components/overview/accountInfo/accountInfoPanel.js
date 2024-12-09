@@ -83,16 +83,9 @@ const DisplayUser = () => {
 function Account() {
   const user = useUser();
   const maybeEvmAddress = tryConvertToEvmAddress(user?.address);
-  const { width } = useWindowSize();
-
-  if (isNil(width)) {
-    return null;
-  }
 
   return (
-    <div
-      className={cn("flex gap-[12px]", width > 768 ? "flex-row" : "flex-col")}
-    >
+    <div className="flex gap-[12px]">
       <DisplayUserAvatar />
       <div className="flex flex-col">
         <DisplayUser />
@@ -253,9 +246,8 @@ function ProxyButton() {
     modules: { proxy },
   } = useChainSettings();
   const router = useRouter();
-  const { width } = useWindowSize();
 
-  if (router.pathname.startsWith("/account") || !proxy || isNil(width)) {
+  if (router.pathname.startsWith("/account") || !proxy) {
     return null;
   }
 
@@ -264,7 +256,7 @@ function ProxyButton() {
   };
 
   return (
-    <div className={cn("flex items-center", width > 768 ? "px-[52px]" : "")}>
+    <div className={"flex items-center px-[52px]"}>
       <div
         className="flex items-center justify-center space-x-1.5 px-1.5 py-1.5 rounded-[6px] border border-neutral400 cursor-pointer"
         onClick={goAccountProxies}
@@ -289,10 +281,23 @@ const relayChainTeleportEnabledChains = [Chains.polkadot, Chains.kusama];
 const paraChainTeleportEnabledChains = [Chains.collectives];
 
 export function AccountHead() {
+  const { width } = useWindowSize();
+  if (isNil(width)) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex justify-between items-start grow gap-4">
-        <Account />
+      <div
+        className={cn(
+          "flex justify-between items-start grow gap-4",
+          width > 768 ? "flex-row" : "flex-col",
+        )}
+      >
+        <div className="flex flex-col gap-2">
+          <Account />
+          <ProxyButton />
+        </div>
         <div className="flex gap-[16px] items-center">
           <OnlyChains chains={transferEnabledChains}>
             <TransferButton />
@@ -322,7 +327,6 @@ export function AccountHead() {
           <SettingsButton />
         </div>
       </div>
-      <ProxyButton />
     </div>
   );
 }
