@@ -3,7 +3,6 @@ import { useCollectivesContext } from "next-common/context/collectives/collectiv
 import { usePageProps } from "next-common/context/page";
 import { cn } from "next-common/utils";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import tw from "tailwind-styled-components";
 
@@ -29,21 +28,21 @@ export default function ProfileFellowshipModuleTabs() {
       value: "core",
       label: (
         <Label className={cn(pathname === urls.core && "text-textPrimary")}>
-          <Link shallow href={urls.core}>
-            Core
-          </Link>
+          Core
         </Label>
       ),
+      url: urls.core,
+      shallow: true,
     },
     {
       value: "salary",
       label: (
         <Label className={cn(pathname === urls.salary && "text-textPrimary")}>
-          <Link shallow href={urls.salary}>
-            Salary
-          </Link>
+          Salary
         </Label>
       ),
+      url: urls.salary,
+      shallow: true,
     },
   ];
 

@@ -11,7 +11,6 @@ export const TabLabel = ({ label, count, isActive }) => (
     className={`font-bold text-[16px] leading-[24px] ${
       isActive ? "text-textPrimary" : "text-textTertiary"
     }`}
-    role="button"
   >
     {label}
     <span className="ml-[4px] font-medium text-[16px] leading-[24px] text-textTertiary">
