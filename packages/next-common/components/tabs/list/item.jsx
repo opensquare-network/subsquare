@@ -13,41 +13,48 @@ export default function TabsListItem({
   activeCount,
   onClick,
   url = "",
+  shallow,
 }) {
-  let content;
-  if (isFunction(label)) {
-    content = label({ active });
-  } else {
-    const isElement = isValidElement(label);
+  const isFunctionLabel = isFunction(label);
+  const isStringLabel = isValidElement(label);
 
-    content = (
-      <div
-        role={isElement ? null : "tab"}
-        className={cn(
-          "cursor-pointer",
-          "pb-3",
-          "text14Bold border-b-4 text-textPrimary whitespace-nowrap",
-          "hover:text-theme500",
-          "flex items-center",
-          className,
-          active ? "border-theme500 text-theme500" : "border-transparent",
-        )}
-        onClick={onClick}
-      >
-        {label}
+  let content = (
+    <div
+      role={isStringLabel ? "tab" : null}
+      onClick={onClick}
+      className={cn(
+        !isFunctionLabel && !isStringLabel
+          ? cn(
+              "cursor-pointer",
+              "pb-3",
+              "text14Bold border-b-4 text-textPrimary whitespace-nowrap",
+              "hover:text-theme500",
+              "flex items-center",
+              className,
+              active ? "border-theme500 text-theme500" : "border-transparent",
+            )
+          : className,
+      )}
+    >
+      <>
+        {isFunction(label) ? label({ active }) : label}
         {!!activeCount && (
           <span className="ml-1 text-textTertiary text14Medium">
             {activeCount}
           </span>
         )}
         {labelExtra}
-      </div>
-    );
-  }
+      </>
+    </div>
+  );
 
   if (url) {
     content = (
-      <Link href={url} target={isExternalLink(url) ? "_blank" : "_self"}>
+      <Link
+        href={url}
+        target={isExternalLink(url) ? "_blank" : "_self"}
+        shallow={shallow}
+      >
         {content}
       </Link>
     );
