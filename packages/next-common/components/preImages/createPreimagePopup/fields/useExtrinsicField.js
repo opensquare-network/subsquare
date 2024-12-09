@@ -2,7 +2,10 @@ import { useCallback, useState } from "react";
 import Extrinsic from "next-common/components/extrinsic";
 import { useContextApi } from "next-common/context/api";
 
-export function useExtrinsicField() {
+export function useExtrinsicField({
+  defaultSectionName = "system",
+  defaultMethodName = "setCode",
+}) {
   const api = useContextApi();
 
   const [extrinsic, setExtrinsic] = useState(null);
@@ -25,8 +28,8 @@ export function useExtrinsicField() {
     extrinsic,
     component: (
       <Extrinsic
-        defaultSectionName="system"
-        defaultMethodName="setCode"
+        defaultSectionName={defaultSectionName}
+        defaultMethodName={defaultMethodName}
         setValue={setValue}
       />
     ),

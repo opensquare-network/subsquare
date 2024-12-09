@@ -8,7 +8,9 @@ import { useExtrinsicField } from "next-common/components/preImages/createPreima
 
 export default function CollectiveProxyCallPopup({ isMember, onClose }) {
   const api = useContextApi();
-  const { extrinsic, component: extrinsicComponent } = useExtrinsicField();
+  const { extrinsic, component: extrinsicComponent } = useExtrinsicField({
+    defaultSectionName: "dappStaking",
+  });
   const disabled = !extrinsic || !isMember;
 
   const getTxFunc = useCallback(() => {
