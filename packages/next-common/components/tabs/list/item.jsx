@@ -17,10 +17,11 @@ export default function TabsListItem({
 }) {
   const isFunctionLabel = isFunction(label);
   const isStringLabel = isValidElement(label);
+  const shouldSetA11yRole = !url && !isFunctionLabel;
 
   let content = (
     <div
-      role={isStringLabel ? "tab" : null}
+      role={shouldSetA11yRole ? "button" : null}
       onClick={onClick}
       className={cn(
         !isFunctionLabel && !isStringLabel
