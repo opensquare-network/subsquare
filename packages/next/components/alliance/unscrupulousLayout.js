@@ -18,10 +18,12 @@ export default function UnscrupulousLayout({ children, accounts, websites }) {
       }
       tabs={[
         {
+          value: "accounts",
           label: "Accounts",
           url: "/alliance/unscrupulous",
         },
         {
+          value: "websites",
           label: "Websites",
           url: "/alliance/unscrupulous/websites",
         },

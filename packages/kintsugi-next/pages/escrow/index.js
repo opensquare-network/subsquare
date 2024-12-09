@@ -14,10 +14,12 @@ export default function EscrowPage() {
 
   const tabs = [
     {
+      value: "overview",
       label: "Overview",
       url: "/",
     },
     {
+      value: "escrow",
       label: "Escrow",
       url: "/escrow",
       exactMatch: false,
@@ -26,6 +28,7 @@ export default function EscrowPage() {
 
   if (user?.address && chainSettings.showAccountManagementTab !== false) {
     tabs.push({
+      value: "account",
       label: "Account",
       url,
     });

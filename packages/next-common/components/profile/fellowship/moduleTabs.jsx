@@ -1,4 +1,4 @@
-import TabsList from "next-common/components/tabsList";
+import TabsList from "next-common/components/tabs/list";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import { cn } from "next-common/utils";
@@ -26,7 +26,7 @@ export default function ProfileFellowshipModuleTabs() {
 
   const tabs = [
     {
-      key: "core",
+      value: "core",
       label: (
         <Label className={cn(pathname === urls.core && "text-textPrimary")}>
           <Link shallow href={urls.core}>
@@ -36,7 +36,7 @@ export default function ProfileFellowshipModuleTabs() {
       ),
     },
     {
-      key: "salary",
+      value: "salary",
       label: (
         <Label className={cn(pathname === urls.salary && "text-textPrimary")}>
           <Link shallow href={urls.salary}>

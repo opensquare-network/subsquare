@@ -30,23 +30,25 @@ export function useDepositTreasuryBountiesTab(
 
   const subTabs = [
     {
+      value: "bounty_deposits",
       label: "Bounty Deposits",
       count: bountyBonds?.length,
       data: bountyDepositsResult,
     },
     {
+      value: "curator_deposits",
       label: "Curator Deposits",
       count: bountyCuratorDeposits?.length,
       data: curatorDepositsResult,
     },
   ].filter((subTab) => subTab.count);
 
-  const subTabLabels = subTabs.map((subTab) => subTab.label);
-  const [subTabActiveLabel, setSubTabActiveLabel] = useState(subTabLabels[0]);
+  const subTabValues = subTabs.map((subTab) => subTab.value);
+  const [subTabActiveValue, setSubTabActiveValue] = useState(subTabValues[0]);
 
   useShallowCompareEffect(() => {
-    setSubTabActiveLabel(subTabLabels[0]);
-  }, [subTabLabels]);
+    setSubTabActiveValue(subTabValues[0]);
+  }, [subTabValues]);
 
   useEffect(() => {
     if (bountyBonds?.length) {
@@ -113,7 +115,7 @@ export function useDepositTreasuryBountiesTab(
     api: {
       async fetchData() {
         const result =
-          subTabs.find((subTab) => subTab.label === subTabActiveLabel)?.data ??
+          subTabs.find((subTab) => subTab.value === subTabActiveValue)?.data ??
           EmptyList;
 
         return { result };
@@ -123,10 +125,10 @@ export function useDepositTreasuryBountiesTab(
       <div className="flex items-center gap-x-2 mb-4">
         {subTabs.map((subTab) => (
           <CheckableTag
-            checked={subTabActiveLabel === subTab.label}
-            key={subTab.label}
+            checked={subTabActiveValue === subTab.value}
+            key={subTab.value}
             count={subTab.count}
-            onClick={() => setSubTabActiveLabel(subTab.label)}
+            onClick={() => setSubTabActiveValue(subTab.value)}
           >
             {subTab.label}
           </CheckableTag>

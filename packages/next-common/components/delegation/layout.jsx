@@ -9,11 +9,13 @@ export default function DelegationLayout({ children }) {
 
   const tabs = [
     {
+      value: "delegates",
       label: "Delegates",
       url: "/delegation",
       exactMatch: true,
     },
     {
+      value: "statistics",
       label: "Statistics",
       url: "/delegation/statistics",
       exactMatch: true,
@@ -22,6 +24,7 @@ export default function DelegationLayout({ children }) {
 
   if (realAddress) {
     tabs.push({
+      value: "my_delegation",
       label: "My Delegation",
       url: "/delegation/mine/received",
       root: "/delegation/mine",

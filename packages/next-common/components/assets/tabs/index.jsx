@@ -1,5 +1,5 @@
 import React from "react";
-import TabsList from "next-common/components/tabsList";
+import TabsList from "next-common/components/tabs/list";
 import {
   useActiveTab,
   useTotalCounts,
@@ -11,6 +11,7 @@ export const TabLabel = ({ label, count, isActive }) => (
     className={`font-bold text-[16px] leading-[24px] ${
       isActive ? "text-textPrimary" : "text-textTertiary"
     }`}
+    role="button"
   >
     {label}
     <span className="ml-[4px] font-medium text-[16px] leading-[24px] text-textTertiary">
@@ -25,7 +26,7 @@ export default function AssetHubTabs({ children }) {
 
   const tabsListItems = [
     {
-      id: TABS.assets,
+      value: TABS.assets,
       label: (
         <TabLabel
           label="Assets"
@@ -35,7 +36,7 @@ export default function AssetHubTabs({ children }) {
       ),
     },
     {
-      id: TABS.transfers,
+      value: TABS.transfers,
       label: (
         <TabLabel
           label="Transfers"
@@ -50,7 +51,7 @@ export default function AssetHubTabs({ children }) {
     <>
       <TabsList
         tabs={tabsListItems}
-        onTabClick={(item) => setActiveTabId(item.id)}
+        onTabClick={(item) => setActiveTabId(item.value)}
         className="pl-6"
       />
       {React.Children.map(children, (child, index) => {

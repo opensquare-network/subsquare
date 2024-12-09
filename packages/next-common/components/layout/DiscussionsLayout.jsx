@@ -13,10 +13,12 @@ export default function DiscussionsLayout(props) {
 
   const tabs = [
     {
+      value: "subsquare",
       label: "Subsquare",
       url: "/discussions",
     },
     {
+      value: "polkassembly",
       label: "Polkassembly",
       url: "/polkassembly/discussions",
     },

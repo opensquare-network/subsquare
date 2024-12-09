@@ -24,14 +24,23 @@ export default function DemocracyReferendaLayout({ summaryData, ...props }) {
         hasDemocracyModule && !isKintsugi && <DemocracySummaryFooter />
       }
       tabs={[
-        { label: "Referenda", url: "/democracy/referenda" },
+        {
+          label: "Referenda",
+          value: "referenda",
+          url: "/democracy/referenda",
+        },
         !isKintsugi &&
           hasDemocracyModule &&
           user?.address && {
             label: "My Votes",
+            value: "my_votes",
             url: "/democracy/votes",
           },
-        { label: "Statistics", url: "/democracy/statistics" },
+        {
+          label: "Statistics",
+          value: "statistics",
+          url: "/democracy/statistics",
+        },
       ].filter(Boolean)}
       {...props}
     >

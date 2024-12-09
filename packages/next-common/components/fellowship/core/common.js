@@ -19,17 +19,20 @@ export default function FellowshipCoreCommon({ children, ...props }) {
       summaryFooter={<FellowshipSummaryActions />}
       tabs={[
         {
+          value: "members",
           label: "Members",
           url: corePath,
           urls: [corePath, "/fellowship/core/candidates"],
           exactMatch: true,
         },
         {
+          value: "params",
           label: "Params",
           url: "/fellowship/core/params",
           exactMatch: true,
         },
         {
+          value: "feeds",
           label: "Feeds",
           url: "/fellowship/core/feeds",
           exactMatch: true,

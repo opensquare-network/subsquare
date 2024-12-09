@@ -34,10 +34,12 @@ export default function BountiesPage({ bounties, chain }) {
         summary={treasurySummaryPanel}
         tabs={[
           {
+            value: "bounties",
             label: "Bounties",
             url: "/treasury/bounties",
           },
           chainSettings.integrations?.doTreasury && {
+            value: "statistics",
             label: "Statistics",
             url: `https://dotreasury.com/${lowerCase(
               chainSettings.symbol,
