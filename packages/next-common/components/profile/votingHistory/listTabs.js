@@ -1,4 +1,3 @@
-import PageTabs from "next-common/components/pageTabs";
 import { useChainSettings } from "next-common/context/chain";
 import ResponsiveVotes from "./responsiveVotes";
 import ResponsiveCalls from "./responsiveCalls";
@@ -11,6 +10,23 @@ import {
 } from "./voteFilter";
 import { DropdownFilterProvider } from "next-common/components/dropdownFilter/context";
 import { Democracy, Fellowship, Referenda, useModuleTab } from "./common";
+import Tabs from "next-common/components/tabs";
+import { useState } from "react";
+import { cn } from "next-common/utils";
+
+function TabTitle({ active, children }) {
+  return (
+    <div
+      role="button"
+      className={cn(
+        "text16Bold",
+        active ? "text-textPrimary" : "text-textTertiary",
+      )}
+    >
+      {children}
+    </div>
+  );
+}
 
 function useVoteFilter() {
   const selectedTabId = useModuleTab();
@@ -29,23 +45,37 @@ export default function ListTabs() {
   const { useVoteCall } = useChainSettings();
   const voteFilter = useVoteFilter();
 
+  const tabs = [
+    {
+      value: "all_votes",
+      label({ active }) {
+        return <TabTitle active={active}>All Votes</TabTitle>;
+      },
+      content: <ResponsiveVotes />,
+      extra: voteFilter,
+    },
+    useVoteCall && {
+      value: "calls",
+      label({ active }) {
+        return <TabTitle active={active}>Calls</TabTitle>;
+      },
+      content: <ResponsiveCalls />,
+    },
+  ].filter(Boolean);
+
+  const [activeTabValue, setActiveTabValue] = useState(tabs[0].value);
+
   return (
     <div className="ml-[24px]">
       <DropdownFilterProvider defaultFilterValues={defaultFilterValues}>
-        <PageTabs
-          tabs={[
-            {
-              name: "All Votes",
-              content: <ResponsiveVotes />,
-              extra: voteFilter,
-            },
-            useVoteCall
-              ? {
-                  name: "Calls",
-                  content: <ResponsiveCalls />,
-                }
-              : null,
-          ].filter(Boolean)}
+        <Tabs
+          tabs={tabs}
+          activeTabValue={activeTabValue}
+          onTabClick={(tab) => {
+            setActiveTabValue(tab.value);
+          }}
+          tabsListDivider={false}
+          tabsListClassName="mr-6"
         />
       </DropdownFilterProvider>
     </div>

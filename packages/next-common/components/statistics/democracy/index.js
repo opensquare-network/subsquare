@@ -1,9 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import DemocracyDelegatee from "./delegatee";
 import DemocracyDelegator from "./delegator";
-import PageTabs from "next-common/components/pageTabs";
 import DemocracySummary from "./summary";
 import { Wrapper } from "../styled";
+import Tabs from "next-common/components/tabs";
 
 export default function DemocracyStatistics({
   apiRoot,
@@ -13,14 +13,18 @@ export default function DemocracyStatistics({
 }) {
   const tabs = [
     {
-      name: "Delegatee",
+      value: "delegatee",
+      label: "Delegatee",
       content: <DemocracyDelegatee apiRoot={apiRoot} delegatee={delegatee} />,
     },
     {
-      name: "Delegator",
+      value: "delegator",
+      label: "Delegator",
       content: <DemocracyDelegator apiRoot={apiRoot} delegators={delegators} />,
     },
   ];
+
+  const [activeTabValue, setActiveTabValue] = useState(tabs[0].value);
 
   return (
     <div className="space-y-4">
@@ -29,7 +33,13 @@ export default function DemocracyStatistics({
       </Wrapper>
 
       <Wrapper>
-        <PageTabs tabs={tabs} />
+        <Tabs
+          tabs={tabs}
+          activeTabValue={activeTabValue}
+          onTabClick={(tab) => {
+            setActiveTabValue(tab.value);
+          }}
+        />
       </Wrapper>
     </div>
   );
