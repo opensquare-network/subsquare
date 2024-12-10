@@ -1,63 +1,18 @@
-import styled from "styled-components";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loading from "../loading";
-import useWindowSize from "../../utils/hooks/useWindowSize";
 import ChainIcon from "./chainIcon";
 import { ArrowDown } from "@osn/icons/subsquare";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-import { useClickAway } from "react-use";
+import { useWindowSize } from "react-use";
 import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useChainSettings } from "next-common/context/chain";
+import SecondaryButton from "next-common/lib/button/secondary";
+import * as Popover from "@radix-ui/react-popover";
+import { NeutralPanel } from "../styled/containers/neutralPanel";
 
 const NetworkOptions = dynamicClientOnly(() => import("./networkOptions"));
-
-const Wrapper = styled.div`
-  position: relative;
-  font-size: 14px;
-`;
-
-const Select = styled.div`
-  border: 1px solid;
-  border-color: var(--neutral400);
-  background-color: var(--neutral100);
-  border-radius: 8px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  cursor: pointer;
-  > :not(:first-child) {
-    margin-left: 8px;
-  }
-  > div {
-    flex-grow: 1;
-    display: flex;
-    > :first-child {
-      color: var(--textTertiary);
-    }
-    > :last-child {
-      font-weight: 500;
-      color: var(--textPrimary);
-    }
-  }
-`;
-
-const NetworkBlock = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 12px;
-  > span {
-    margin-left: 4px;
-    margin-right: 12px;
-    color: var(--textPrimary);
-  }
-  > svg {
-    margin-left: 7px;
-    margin-right: 15px;
-  }
-`;
 
 function useHeaderHeight() {
   const nodesHeight = useSelector(nodesHeightSelector);
@@ -69,11 +24,8 @@ function useHeaderHeight() {
 
 export default function NetworkSwitch({ activeNode }) {
   const [show, setShow] = useState(false);
-  const ref = useRef();
   const windowSize = useWindowSize();
   const nodesHeight = useHeaderHeight();
-
-  useClickAway(ref, () => setShow(false));
 
   useEffect(() => {
     if (windowSize.width && windowSize.width <= 768) {
@@ -89,19 +41,28 @@ export default function NetworkSwitch({ activeNode }) {
   }
 
   return (
-    <Wrapper ref={ref}>
-      <Select onClick={() => setShow(!show)}>
-        <ChainIcon chain={activeNode.value} />
-        <NetworkBlock>
+    <Popover.Root open={show} onOpenChange={setShow}>
+      <Popover.Trigger asChild>
+        <SecondaryButton
+          iconLeft={<ChainIcon chain={activeNode.value} />}
+          iconRight={<ArrowDown className="[&_path]:stroke-textTertiary" />}
+          onClick={() => {
+            setShow(!show);
+          }}
+        >
           {activeNode?.hideHeight ? (
             <div>{activeNode?.name}</div>
           ) : (
             heightComponent
           )}
-        </NetworkBlock>
-        <ArrowDown className="[&_path]:stroke-textTertiary" />
-      </Select>
-      {show && <NetworkOptions activeNode={activeNode} setShow={setShow} />}
-    </Wrapper>
+        </SecondaryButton>
+      </Popover.Trigger>
+
+      <Popover.Content sideOffset={8} align="end" asChild>
+        <NeutralPanel className="max-h-[calc(100vh-73px)] overflow-y-scroll scrollbar-hidden p-2 text14Medium outline-none">
+          <NetworkOptions activeNode={activeNode} setShow={setShow} />
+        </NeutralPanel>
+      </Popover.Content>
+    </Popover.Root>
   );
 }
