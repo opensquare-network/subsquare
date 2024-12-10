@@ -11,6 +11,7 @@ import { useChainSettings } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
 import * as Popover from "@radix-ui/react-popover";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
+import { cn } from "next-common/utils";
 
 const NetworkOptions = dynamicClientOnly(() => import("./networkOptions"));
 
@@ -44,6 +45,7 @@ export default function NetworkSwitch({ activeNode }) {
     <Popover.Root open={show} onOpenChange={setShow}>
       <Popover.Trigger asChild>
         <SecondaryButton
+          className="max-sm:w-full max-sm:justify-between"
           iconLeft={<ChainIcon chain={activeNode.value} />}
           iconRight={<ArrowDown className="[&_path]:stroke-textTertiary" />}
           onClick={() => {
@@ -60,7 +62,16 @@ export default function NetworkSwitch({ activeNode }) {
 
       <Popover.Content sideOffset={4} align="end" asChild>
         <NeutralPanel
-          className="max-h-[calc(100vh-73px)] overflow-y-scroll scrollbar-hidden p-2 text14Medium outline-none"
+          className={cn(
+            "z-50",
+            "max-h-[calc(100vh-73px)]",
+            "overflow-y-scroll scrollbar-hidden",
+            "p-2",
+            "text14Medium",
+            "outline-none",
+            "max-sm:max-h-[60vh]",
+            "max-sm:w-[calc(100vw-32px)]",
+          )}
           style={{
             boxShadow: "var(--shadow200)",
           }}
