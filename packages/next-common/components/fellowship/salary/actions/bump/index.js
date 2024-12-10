@@ -18,7 +18,7 @@ export default function FellowshipSalaryBump() {
   const [showPopup, setShowPopup] = useState(false);
   const address = useRealAddress();
 
-  const { cycleStart } = useFellowshipSalaryStats();
+  const { cycleStart } = useFellowshipSalaryStats() || {};
   const { registrationPeriod, payoutPeriod } = useSalaryFellowshipPeriods();
   const nextCycleStart =
     cycleStart + (registrationPeriod || null) + (payoutPeriod || null);
