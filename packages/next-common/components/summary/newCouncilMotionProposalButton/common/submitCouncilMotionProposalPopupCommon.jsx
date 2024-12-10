@@ -75,7 +75,7 @@ function useExternalProposeMajorityButton() {
   const externalProposeMajorityButton = (
     <ChoiceButton
       key="external-propose-majority"
-      name="External propose majority"
+      name="Democracy external propose majority"
       description="Schedule a majority-carries referendum to be tabled next once it is legal to schedule an external referendum"
       onClick={() => {
         setShowExternalProposeMajorityPopup(true);
@@ -91,7 +91,7 @@ function useExternalProposeDefaultButton() {
   const externalProposeDefaultButton = (
     <ChoiceButton
       key="external-propose-default"
-      name="External propose default"
+      name="Democracy external propose default"
       description="Schedule a negative-turnout-bias referendum to be tabled next once it is legal to schedule an external referendum"
       onClick={() => {
         setShowExternalProposeDefaultPopup(true);
