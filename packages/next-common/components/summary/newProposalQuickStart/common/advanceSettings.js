@@ -13,9 +13,7 @@ export default function AdvanceSettings({ children }) {
           onClick={() => setShowAdvanced(!showAdvanced)}
           className="cursor-pointer inline-flex items-center gap-1.5 border border-neutral400 rounded-[6px] py-1.5 pl-3 pr-1.5"
         >
-          <span className="text12Medium text-textPrimary">
-            Advanced Settings
-          </span>
+          <span className="text12Medium text-textPrimary">Advanced</span>
           <ArrowDown
             className={cn(
               showAdvanced && "rotate-180",
