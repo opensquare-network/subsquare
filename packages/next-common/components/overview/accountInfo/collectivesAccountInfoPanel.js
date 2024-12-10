@@ -9,12 +9,19 @@ import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import CollectivesSalaryWarnings from "./components/collectivesSalaryWarnings";
 import useMemberData from "./hook/useMemberData";
 import MemberDataProvider from "./context/memberDataContext";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { isNil } from "lodash-es";
 
 export default function CollectivesAccountInfoPanel() {
   useSubscribeAccount();
 
   const fellowshipMemberData = useMemberData();
   const ambassadorMemberData = useMemberData("ambassador");
+  const { width } = useWindowSize();
+
+  if (isNil(width)) {
+    return null;
+  }
 
   return (
     <MemberDataProvider
@@ -23,7 +30,7 @@ export default function CollectivesAccountInfoPanel() {
     >
       <NeutralPanel className="p-6 space-y-4">
         <ProxyTip />
-        <AccountHead />
+        <AccountHead width={width} />
         <Divider />
 
         <CollectivesAccountInfo />
