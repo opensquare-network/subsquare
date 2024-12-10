@@ -59,7 +59,12 @@ export default function NetworkSwitch({ activeNode }) {
       </Popover.Trigger>
 
       <Popover.Content sideOffset={8} align="end" asChild>
-        <NeutralPanel className="max-h-[calc(100vh-73px)] overflow-y-scroll scrollbar-hidden p-2 text14Medium outline-none">
+        <NeutralPanel
+          className="max-h-[calc(100vh-73px)] overflow-y-scroll scrollbar-hidden p-2 text14Medium outline-none"
+          style={{
+            boxShadow: "var(--shadow200)",
+          }}
+        >
           <NetworkOptions activeNode={activeNode} setShow={setShow} />
         </NeutralPanel>
       </Popover.Content>
