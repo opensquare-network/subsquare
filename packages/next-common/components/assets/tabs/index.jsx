@@ -1,5 +1,5 @@
 import React from "react";
-import TabsList from "next-common/components/tabsList";
+import TabsList from "next-common/components/tabs/list";
 import {
   useActiveTab,
   useTotalCounts,
@@ -25,7 +25,7 @@ export default function AssetHubTabs({ children }) {
 
   const tabsListItems = [
     {
-      id: TABS.assets,
+      value: TABS.assets,
       label: (
         <TabLabel
           label="Assets"
@@ -35,7 +35,7 @@ export default function AssetHubTabs({ children }) {
       ),
     },
     {
-      id: TABS.transfers,
+      value: TABS.transfers,
       label: (
         <TabLabel
           label="Transfers"
@@ -50,7 +50,7 @@ export default function AssetHubTabs({ children }) {
     <>
       <TabsList
         tabs={tabsListItems}
-        onTabClick={(item) => setActiveTabId(item.id)}
+        onTabClick={(item) => setActiveTabId(item.value)}
         className="pl-6"
       />
       {React.Children.map(children, (child, index) => {

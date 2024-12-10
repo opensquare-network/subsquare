@@ -77,6 +77,7 @@ export default function DepositTemplate({
   const [tabTableLoaded, setTabTableLoaded] = useState({});
   const tabs = activeItems.map((m) => {
     return {
+      value: m.name,
       label: m.name,
       activeCount: m.activeCount,
       content: (
@@ -85,19 +86,19 @@ export default function DepositTemplate({
     };
   });
 
-  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0]?.label);
+  const [activeTabValue, setActiveTabValue] = useState(tabs[0]?.value);
   useEffect(() => {
-    setActiveTabLabel(tabs[0]?.label);
+    setActiveTabValue(tabs[0]?.value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   useEffect(() => {
     setTabTableLoaded({
       ...tabTableLoaded,
-      [activeTabLabel]: true,
+      [activeTabValue]: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTabLabel]);
+  }, [activeTabValue]);
 
   if (!activeCount || loading) {
     return (
@@ -114,8 +115,8 @@ export default function DepositTemplate({
       {children || (
         <Tabs
           tabs={tabs}
-          activeTabLabel={activeTabLabel}
-          onTabClick={(tab) => setActiveTabLabel(tab.label)}
+          activeTabValue={activeTabValue}
+          onTabClick={(tab) => setActiveTabValue(tab.value)}
         />
       )}
     </AccordionCard>

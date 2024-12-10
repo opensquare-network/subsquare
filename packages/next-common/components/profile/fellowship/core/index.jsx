@@ -15,10 +15,12 @@ export default function ProfileFellowshipCore() {
   const tabs = [
     {
       label: "Timeline",
+      value: "timeline",
       content: <ProfileFellowshipCoreTimeline />,
     },
     {
       label: "Evidence",
+      value: "evidence",
       activeCount: evidenceCount,
       content: (
         <ProfileFellowshipCoreEvidence setEvidenceCount={setEvidenceCount} />
@@ -26,7 +28,7 @@ export default function ProfileFellowshipCore() {
     },
   ];
 
-  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0].label);
+  const [activeTabValue, setActiveTabValue] = useState(tabs[0].value);
 
   return (
     <div className="space-y-6">
@@ -41,9 +43,9 @@ export default function ProfileFellowshipCore() {
         <NeutralPanel className="p-6">
           <Tabs
             tabs={tabs}
-            activeTabLabel={activeTabLabel}
+            activeTabValue={activeTabValue}
             onTabClick={(tab) => {
-              setActiveTabLabel(tab.label);
+              setActiveTabValue(tab.value);
             }}
           />
         </NeutralPanel>

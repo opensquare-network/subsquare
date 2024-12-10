@@ -35,6 +35,7 @@ function DefaultOverviewPage() {
 
   const tabs = [
     {
+      value: "overview",
       label: "Overview",
       url: "/",
       exactMatch: false,
@@ -43,6 +44,7 @@ function DefaultOverviewPage() {
 
   if (chain === "interlay" || chain === "kintsugi") {
     tabs.push({
+      value: "escrow",
       label: "Escrow",
       url: "/escrow",
     });

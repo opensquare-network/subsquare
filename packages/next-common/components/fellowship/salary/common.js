@@ -34,16 +34,19 @@ export default function FellowshipSalaryCommon({
           summaryFooter={<FellowshipSalarySummaryActions />}
           tabs={[
             {
+              value: "cycles",
               label: "Cycles",
               url: `/${section}/salary`,
               exactMatch: true,
             },
             {
+              value: "claimants",
               label: "Claimants",
               url: `/${section}/salary/claimants`,
               exactMatch: true,
             },
             {
+              value: "feeds",
               label: "Feeds",
               url: `/${section}/salary/feeds`,
               exactMatch: true,

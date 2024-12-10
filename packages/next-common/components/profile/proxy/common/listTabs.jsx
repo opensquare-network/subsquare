@@ -3,10 +3,24 @@ import ReceivedProxies from "../received";
 import useProfileAddress from "../../useProfileAddress";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
-import PageUrlTabs from "next-common/components/pageTabs/pageUrlTabs";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useMyProxiesContext } from "../context/myProxies";
 import { useReceivedProxiesContext } from "../context/received";
+import Tabs from "next-common/components/tabs";
+import { cn } from "next-common/utils";
+
+function TabTitle({ active, children }) {
+  return (
+    <div
+      className={cn(
+        "text16Bold",
+        active ? "text-textPrimary" : "text-textTertiary",
+      )}
+    >
+      {children}
+    </div>
+  );
+}
 
 export default function ProxyListTabs() {
   const { total: myProxiesCount, loading: isMyProxiesLoading } =
@@ -35,31 +49,23 @@ export default function ProxyListTabs() {
   const tabs = useMemo(
     () => [
       {
+        value: "/mine",
+        label({ active }) {
+          return <TabTitle active={active}>My Proxies</TabTitle>;
+        },
+        activeCount: !isMyProxiesLoading && myProxiesCount,
         url: `${prefix}/mine`,
-        name: (
-          <div className="inline-flex items-center space-x-1 ml-6">
-            <span>My Proxies</span>
-            {!isMyProxiesLoading && (
-              <span className="text16Medium text-textTertiary">
-                {myProxiesCount}
-              </span>
-            )}
-          </div>
-        ),
+        shallow: true,
         content: <MyProxies />,
       },
       {
+        value: "/received",
+        label({ active }) {
+          return <TabTitle active={active}>Received</TabTitle>;
+        },
+        activeCount: !isReceivedProxiesLoading && receivedProxiesCount,
         url: `${prefix}/received`,
-        name: (
-          <div className="inline-flex items-center space-x-1">
-            <span>Received</span>
-            {!isReceivedProxiesLoading && (
-              <span className="text16Medium text-textTertiary">
-                {receivedProxiesCount}
-              </span>
-            )}
-          </div>
-        ),
+        shallow: true,
         content: <ReceivedProxies />,
       },
     ],
@@ -72,5 +78,12 @@ export default function ProxyListTabs() {
     ],
   );
 
-  return <PageUrlTabs tabs={tabs} />;
+  return (
+    <Tabs
+      activeTabValue={tab}
+      tabs={tabs}
+      tabsListDivider={false}
+      tabsContentClassName="-ml-6"
+    />
+  );
 }

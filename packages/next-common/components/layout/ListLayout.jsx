@@ -2,7 +2,7 @@ import { cn } from "next-common/utils";
 import BaseLayout from "./baseLayout";
 import usePageTitle from "next-common/hooks/usePageTitle";
 import Divider from "../styled/layout/divider";
-import TabsList from "../tabs/tabsList";
+import TabsList from "../tabs/list";
 
 /**
  * @typedef {{
@@ -89,7 +89,7 @@ export default function ListLayout({
 
         {tabs?.length > 0 && (
           <div className={cn("px-12 mx-auto max-w-[1200px]", "max-sm:px-6")}>
-            <TabsList isUrlTabs tabs={tabs} />
+            <TabsList tabs={tabs} />
           </div>
         )}
       </div>

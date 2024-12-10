@@ -16,6 +16,7 @@ export default function ProfileFellowshipSalary() {
   const tabs = [
     {
       label: "Payments",
+      value: "payments",
       activeCount: paymentsCount,
       content: (
         <ProfileFellowshipSalaryPayments setPaymentsCount={setPaymentsCount} />
@@ -23,11 +24,12 @@ export default function ProfileFellowshipSalary() {
     },
     {
       label: "Timeline",
+      value: "timeline",
       content: <ProfileFellowshipSalaryTimeline />,
     },
   ];
 
-  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0].label);
+  const [activeTabValue, setActiveTabValue] = useState(tabs[0].value);
 
   return (
     <div className="space-y-6">
@@ -42,9 +44,9 @@ export default function ProfileFellowshipSalary() {
         <NeutralPanel className="p-6">
           <Tabs
             tabs={tabs}
-            activeTabLabel={activeTabLabel}
+            activeTabValue={activeTabValue}
             onTabClick={(tab) => {
-              setActiveTabLabel(tab.label);
+              setActiveTabValue(tab.value);
             }}
           />
         </NeutralPanel>

@@ -9,12 +9,13 @@ import { useUpdateEffect } from "react-use";
 
 export default function FellowshipSalaryCycleDetailListTemplate({
   items = [],
-  defaultTab,
+  defaultTabValue,
   onTabClick = noop,
 }) {
   const tabs = items.map((m) => {
     return {
       url: m.url,
+      value: m.name,
       label: m.name,
       activeCount: m.activeCount,
       content: m.content || (
@@ -22,17 +23,17 @@ export default function FellowshipSalaryCycleDetailListTemplate({
       ),
     };
   });
-  const [activeTabLabel, setActiveTabLabel] = useState(
-    defaultTab ?? tabs[0]?.label,
+  const [activeTabValue, setActiveTabValue] = useState(
+    defaultTabValue ?? tabs[0]?.value,
   );
 
   return (
     <div>
       <Tabs
         tabs={tabs}
-        activeTabLabel={activeTabLabel}
+        activeTabValue={activeTabValue}
         onTabClick={(tab) => {
-          setActiveTabLabel(tab.label);
+          setActiveTabValue(tab.value);
           onTabClick(tab);
         }}
       />

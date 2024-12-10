@@ -12,8 +12,16 @@ export default function FellowshipListLayout({ fellowshipSummary, children }) {
       description="All active and history referenda in various tracks."
       summary={<Gov2Summary summary={fellowshipSummary} />}
       tabs={[
-        { label: "Referenda", url: "/fellowship" },
-        { label: "Statistics", url: "/fellowship/referenda/statistics" },
+        {
+          value: "referenda",
+          label: "Referenda",
+          url: "/fellowship",
+        },
+        {
+          value: "statistics",
+          label: "Statistics",
+          url: "/fellowship/referenda/statistics",
+        },
       ].filter(Boolean)}
     >
       {children}

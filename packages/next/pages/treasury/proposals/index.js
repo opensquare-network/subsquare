@@ -44,10 +44,12 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         summary={treasurySummaryPanel}
         tabs={[
           {
+            value: "proposals",
             label: "Proposals",
             url: treasuryProposalListUrl,
           },
           integrations?.doTreasury && {
+            value: "statistics",
             label: "Statistics",
             url: `https://${chain}.dotreasury.com`,
           },

@@ -54,8 +54,8 @@ export default function RecentProposalTemplate({
   const [tabTableLoaded, setTabTableLoaded] = useState({});
   const tabs = activeItems.map((m) => {
     return {
+      value: m.name,
       label: m.name,
-      value: m.value,
       activeCount: m.activeCount,
       content: (
         <TableTemplate tabTableLoaded={tabTableLoaded} label={m.name} {...m} />
@@ -63,14 +63,14 @@ export default function RecentProposalTemplate({
     };
   });
 
-  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0]?.label);
+  const [activeTabValue, setActiveTabValue] = useState(tabs[0]?.value);
   useEffect(() => {
     setTabTableLoaded({
       ...tabTableLoaded,
-      [activeTabLabel]: true,
+      [activeTabValue]: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTabLabel]);
+  }, [activeTabValue]);
 
   if (!activeCount) {
     return <SecondaryCard className="flex">{title}</SecondaryCard>;
@@ -80,8 +80,8 @@ export default function RecentProposalTemplate({
     <AccordionCard title={title} defaultOpen>
       <Tabs
         tabs={tabs}
-        activeTabLabel={activeTabLabel}
-        onTabClick={(tab) => setActiveTabLabel(tab.label)}
+        activeTabValue={activeTabValue}
+        onTabClick={(tab) => setActiveTabValue(tab.value)}
       />
     </AccordionCard>
   );

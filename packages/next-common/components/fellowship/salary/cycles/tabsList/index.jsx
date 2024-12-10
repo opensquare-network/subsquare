@@ -28,15 +28,15 @@ export default function FellowshipSalaryCycleDetailTabsList() {
     (i) => i.name.toLowerCase() === tab?.toLowerCase?.(),
   );
 
-  const defaultTab = matchedTabItem?.name || items[0]?.name;
+  const defaultTabValue = matchedTabItem?.name || items[0]?.name;
 
   return (
     <PrimaryCard>
       <FellowshipSalaryCycleDetailListTemplate
         items={items}
-        defaultTab={defaultTab}
+        defaultTabValue={defaultTabValue}
         onTabClick={(tab) => {
-          updateSearchParams({ tab: tab.label?.toLowerCase?.() });
+          updateSearchParams({ tab: tab.value?.toLowerCase?.() });
         }}
       />
     </PrimaryCard>

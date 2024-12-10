@@ -67,10 +67,12 @@ export default function TipsPage({ tips: ssrTips }) {
           }
           tabs={[
             {
+              value: "tips",
               label: "Tips",
               url: "/treasury/tips",
             },
             integrations?.doTreasury && {
+              value: "statistics",
               label: "Statistics",
               url: `https://dotreasury.com/${lowerCase(symbol)}/tips`,
             },

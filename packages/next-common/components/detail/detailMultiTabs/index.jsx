@@ -5,7 +5,6 @@ import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import TimelineModeTabs from "./timelineModeTabs";
 import { useRouter } from "next/router";
-import { snakeCase, startCase } from "lodash-es";
 
 export default function DetailMultiTabs({
   call,
@@ -24,15 +23,17 @@ export default function DetailMultiTabs({
   const hasVotesViewTabs = ![Chains.kintsugi, Chains.interlay].includes(chain);
 
   const tabs = [
-    business && { label: "Business", content: business },
-    call && { label: "Call", content: call },
+    business && { value: "business", label: "Business", content: business },
+    call && { value: "call", label: "Call", content: call },
     childBounties && {
+      value: "child_bounties",
       label: "Child Bounties",
       activeCount: childBountiesCount,
       content: childBounties,
     },
-    metadata && { label: "Metadata", content: metadata },
+    metadata && { value: "metadata", label: "Metadata", content: metadata },
     timeline && {
+      value: "timeline",
       label: "Timeline",
       activeCount: timelineCount || timelineData?.length,
       content: (
@@ -46,6 +47,7 @@ export default function DetailMultiTabs({
     votesBubble && {
       // NOTE: must have `lazy` flag
       lazy: true,
+      value: "votes_bubble",
       label: "Votes Bubble",
       content: (
         <div className="space-y-4">
@@ -56,19 +58,20 @@ export default function DetailMultiTabs({
     },
     statistics && {
       // lazy: true,
+      value: "statistics",
       label: "Statistics",
       content: <div className="space-y-4">{statistics}</div>,
     },
   ].filter(Boolean);
 
-  const activeTabLabel = startCase(router.query.tab) || tabs[0].label;
+  const activeTabValue = router.query.tab || tabs[0].value;
 
   function handleTabClick(tab) {
     router.replace(
       {
         query: {
           id: router.query.id,
-          tab: snakeCase(tab.label),
+          tab: tab.value,
         },
       },
       null,
@@ -79,7 +82,7 @@ export default function DetailMultiTabs({
   return (
     <div>
       <Tabs
-        activeTabLabel={activeTabLabel}
+        activeTabValue={activeTabValue}
         onTabClick={handleTabClick}
         tabs={tabs}
       />

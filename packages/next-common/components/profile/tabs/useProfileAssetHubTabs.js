@@ -8,6 +8,7 @@ export function useProfileAssetHubTabs() {
 
   return [
     {
+      value: "assets",
       label: "Assets",
       url: `${prefix}assets`,
       exactMatch: false,

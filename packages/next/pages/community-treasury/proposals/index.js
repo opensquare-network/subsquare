@@ -37,6 +37,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         summary={<TreasurySummary />}
         tabs={[
           {
+            value: "proposals",
             label: "Proposals",
             url: treasuryProposalListUrl,
           },

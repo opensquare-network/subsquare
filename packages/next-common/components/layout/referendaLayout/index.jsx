@@ -31,14 +31,28 @@ export default function ReferendaLayout({ summaryData, ...props }) {
       headContent={<HeadContent />}
       description="All active and history referenda of various tracks."
       tabs={[
-        { label: "Referenda", url: "/referenda" },
         {
+          value: "referenda",
+          label: "Referenda",
+          url: "/referenda",
+        },
+        {
+          value: "tracks",
           label: "Tracks",
           url: "/referenda/tracks",
         },
-        user?.address && { label: "My Votes", url: "/referenda/votes" },
-        { label: "Statistics", url: "/referenda/statistics" },
+        user?.address && {
+          value: "my_votes",
+          label: "My Votes",
+          url: "/referenda/votes",
+        },
+        {
+          value: "statistics",
+          label: "Statistics",
+          url: "/referenda/statistics",
+        },
         modules.whales && {
+          value: "whales",
           label: "Whales",
           url: "/referenda/whales",
           active: router.pathname.startsWith("/referenda/whales"),

@@ -7,7 +7,7 @@ import myFilteredReferendaPriorLocksSelector from "next-common/store/reducers/my
 import PriorLocks from "./priors";
 import WithAllVotesLink from "../../common/withAllVotesLink";
 import VotesListTitle from "../../common/votesListTitle";
-import TabsList from "next-common/components/tabsList";
+import TabsList from "next-common/components/tabs/list";
 
 const tabs = Object.freeze({
   votes: 1,
@@ -18,7 +18,7 @@ function PriorLocksTitle({ disabled }) {
   const filteredLocks = useSelector(myFilteredReferendaPriorLocksSelector);
 
   return (
-    <div className="flex gap-[8px]">
+    <div className="flex gap-[8px]" role="button">
       <Title disabled={disabled}>Prior Locks</Title>
       <span className="text-textTertiary text16Medium">
         {filteredLocks.length}
@@ -29,26 +29,24 @@ function PriorLocksTitle({ disabled }) {
 
 export default function MyReferendaVotes() {
   const referendaVotes = useSelector(myReferendaVotesSelector);
-  const [activeTabId, setActiveTabId] = useState(tabs.votes);
+  const [activeTabValue, setActiveTabValue] = useState(tabs.votes);
 
   const tabsListItems = [
     {
-      id: tabs.votes,
-      label: "On-chain Votes",
-      render() {
+      value: tabs.votes,
+      label() {
         return (
           <VotesListTitle
-            disabled={activeTabId !== tabs.votes}
+            disabled={activeTabValue !== tabs.votes}
             length={referendaVotes?.length || 0}
           />
         );
       },
     },
     {
-      id: tabs.priors,
-      label: "Prior Locks",
-      render() {
-        return <PriorLocksTitle disabled={activeTabId !== tabs.priors} />;
+      value: tabs.priors,
+      label() {
+        return <PriorLocksTitle disabled={activeTabValue !== tabs.priors} />;
       },
     },
   ];
@@ -58,11 +56,14 @@ export default function MyReferendaVotes() {
       <WithAllVotesLink isReferenda={true}>
         <TabsList
           tabs={tabsListItems}
-          onTabClick={(item) => setActiveTabId(item.id)}
+          activeTabValue={activeTabValue}
+          onTabClick={(item) => {
+            setActiveTabValue(item.value);
+          }}
         />
       </WithAllVotesLink>
 
-      {activeTabId === tabs.votes ? (
+      {activeTabValue === tabs.votes ? (
         <ResponsiveReferendaVotes />
       ) : (
         <PriorLocks />

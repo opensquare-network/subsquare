@@ -35,15 +35,17 @@ export default function ArticleContent({ postReactions, className = "" }) {
 
   const tabs = [
     {
+      value: "content",
       label: "Content",
       content: postContent,
     },
     post.contentSummary?.summary && {
+      value: "ai_summary",
       label: "AI Summary",
       content: <ContentSummary />,
     },
   ].filter(Boolean);
-  const [activeTab, setActiveTab] = useState(tabs[0].label);
+  const [activeValue, setActiveValue] = useState(tabs[0].value);
 
   if (!post) {
     return null;
@@ -59,10 +61,10 @@ export default function ArticleContent({ postReactions, className = "" }) {
         <div className="mt-6">
           {post.contentSummary?.summary ? (
             <Tabs
-              activeTabLabel={activeTab}
+              activeTabValue={activeValue}
               tabs={tabs}
               onTabClick={(tab) => {
-                setActiveTab(tab.label);
+                setActiveValue(tab.value);
               }}
             />
           ) : (

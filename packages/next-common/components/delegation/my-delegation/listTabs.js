@@ -3,8 +3,22 @@ import DelegatedVotes from "./delegatedVotes";
 import BeenDelegated from "./beenDelegated";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import PageUrlTabs from "next-common/components/pageTabs/pageUrlTabs";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Tabs from "next-common/components/tabs";
+import { cn } from "next-common/utils";
+
+function TabTitle({ active, children }) {
+  return (
+    <div
+      className={cn(
+        "text16Bold",
+        active ? "text-textPrimary" : "text-textTertiary",
+      )}
+    >
+      {children}
+    </div>
+  );
+}
 
 export default function ListTabs() {
   const address = useRealAddress();
@@ -28,21 +42,31 @@ export default function ListTabs() {
 
   return (
     <div className="ml-[24px]">
-      <PageUrlTabs
+      <Tabs
+        activeTabValue={tab}
         tabs={[
           {
+            value: "/received",
+            label({ active }) {
+              return <TabTitle active={active}>Received</TabTitle>;
+            },
             url: "/delegation/mine/received",
-            name: "Received",
+            shallow: true,
             content: <BeenDelegated />,
             extra: <ModuleTab />,
           },
           {
+            value: "/delegations",
+            label({ active }) {
+              return <TabTitle active={active}>Delegations</TabTitle>;
+            },
             url: "/delegation/mine/delegations",
-            name: "Delegations",
+            shallow: true,
             content: <DelegatedVotes />,
             extra: <ModuleTab />,
           },
         ]}
+        tabsListDivider={false}
       />
     </div>
   );

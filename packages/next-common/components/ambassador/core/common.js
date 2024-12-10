@@ -19,17 +19,20 @@ export default function AmbassadorCoreCommon({ children, ...props }) {
       summaryFooter={<AmbassadorSummaryActions />}
       tabs={[
         {
+          value: "members",
           label: "Members",
           url: corePath,
           urls: [corePath, "/ambassador/core/candidates"],
           exactMatch: true,
         },
         {
+          value: "params",
           label: "Params",
           url: "/ambassador/core/params",
           exactMatch: true,
         },
         {
+          value: "feeds",
           label: "Feeds",
           url: "/ambassador/core/feeds",
           exactMatch: true,
