@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { isNil } from "lodash-es";
-import { useAddressVotingBalance } from "utils/hooks";
+import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";

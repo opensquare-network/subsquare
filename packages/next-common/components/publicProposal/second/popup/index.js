@@ -13,6 +13,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
 
 function PopupContent() {
   const {
@@ -20,7 +21,6 @@ function PopupContent() {
     depositorUpperBound,
     depositRequired,
     onInBlock = noop,
-    useAddressVotingBalance,
   } = usePopupParams();
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();

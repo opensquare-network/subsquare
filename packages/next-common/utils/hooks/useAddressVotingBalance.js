@@ -1,18 +1,22 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useMountedState } from "react-use";
 import { getAddressVotingBalance } from "next-common/utils/democracy/getAddressVotingBalance";
+import { useChain } from "next-common/context/chain";
 
 export function useAddressVotingBalance(api, address) {
+  const chain = useChain();
   const [balance, setBalance] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const isMounted = useMountedState();
-  useEffect(() => {
+
+  const refresh = useCallback(() => {
     if (!api || !address) {
+      setBalance(0);
       return;
     }
 
     setIsLoading(true);
-    getAddressVotingBalance(api, address)
+    getAddressVotingBalance(chain, api, address)
       .then((value) => {
         if (isMounted()) {
           setBalance(value);
@@ -23,6 +27,11 @@ export function useAddressVotingBalance(api, address) {
           setIsLoading(false);
         }
       });
-  }, [api, address, isMounted]);
-  return [balance, isLoading];
+  }, [chain, api, address, isMounted]);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  return [balance, isLoading, refresh];
 }
