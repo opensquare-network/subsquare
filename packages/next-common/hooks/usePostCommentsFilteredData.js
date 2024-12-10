@@ -91,7 +91,7 @@ export function usePostCommentsFilteredData() {
 
       setMergedComments(data);
     }
-  }, [api, commentsData, getAddressVotesData, chainType]);
+  }, [api, chain, commentsData, getAddressVotesData, chainType]);
 
   const filteredComments = useMemo(() => {
     const data = cloneDeep(mergedComments);
