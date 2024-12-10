@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
@@ -11,10 +11,8 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import Link from "next/link";
 import { useProxyTypeOptions } from "../../hooks/useProxyTypeOptions";
 import { useDispatch } from "react-redux";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
-import Signer from "next-common/components/popup/fields/signerField";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { newErrorToast, newSuccessToast } from "next-common/store/reducers/toastSlice";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 export function DelayBlocksField({ value, setValue }) {
   const PROXY_WIKI_LINK =
@@ -63,7 +61,7 @@ function ProxyTypeSelector({ proxyType, setProxyType }) {
 
   return (
     <div>
-      <div className="text-textPrimary text12Bold mb-3">Type</div>
+      <div className="text-textPrimary text12Bold mb-3">Proxy Type</div>
       <Select
         small
         className="w-full !h-[40px] text14Medium"
@@ -87,7 +85,6 @@ function PopupContent({ onClose }) {
   const { value: proxyAccount, component: proxyAccountField } =
     useAddressComboField({ title: "Proxy Account" });
   const [proxyType, setProxyType] = useState("Any");
-  const { value: balance, loading } = useSubBalanceInfo(address);
   // const [delay, setDelay] = useState(0);
   const delay = 0;
 
@@ -110,14 +107,9 @@ function PopupContent({ onClose }) {
 
   return (
     <div className="space-y-4">
-      <Signer
-        title="Account"
-        balanceName="Available"
-        balance={balance?.balance}
-        isBalanceLoading={loading}
-      />
-      {proxyAccountField}
+      <SignerWithBalance />
       <ProxyTypeSelector proxyType={proxyType} setProxyType={setProxyType} />
+      {proxyAccountField}
       {/* <AdvanceSettings>
           <DelayBlocksField value={delay} setValue={setDelay} />
         </AdvanceSettings> */}
