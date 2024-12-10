@@ -8,6 +8,7 @@ export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const isMounted = useMountedState();
+  const chain = useChain();
   useEffect(() => {
     if (!api || !address) {
       return;

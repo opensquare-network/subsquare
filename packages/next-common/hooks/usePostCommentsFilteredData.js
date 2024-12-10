@@ -31,6 +31,7 @@ export function usePostCommentsFilteredData() {
   const [filterParams] = useCommittedCommentFilterParams();
   const getAddressVotesData = useGetAddressVotesDataFn();
   const isDVAddress = useIsDVAddressFn();
+  const chain = useChain();
 
   const [, setCommentsMerging] = usePostCommentsMerging();
   const [mergedComments, setMergedComments] = useState(commentsData);
@@ -80,11 +81,7 @@ export function usePostCommentsFilteredData() {
 
           const normalizedAddress = normalizeAddress(address);
           try {
-            item.balance = await getAddressVotingBalance(
-              chain,
-              api,
-              normalizedAddress,
-            );
+            item.balance = await getAddressVotingBalance(chain, api, normalizedAddress);
           } catch (e) {
             console.error(e);
           }
