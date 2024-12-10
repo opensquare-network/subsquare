@@ -280,12 +280,7 @@ const relayChainTeleportEnabledChains = [Chains.polkadot, Chains.kusama];
 
 const paraChainTeleportEnabledChains = [Chains.collectives];
 
-export function AccountHead() {
-  const { width } = useWindowSize();
-  if (isNil(width)) {
-    return null;
-  }
-
+export function AccountHead({ width }) {
   return (
     <div className="flex flex-col gap-2">
       <div
@@ -332,10 +327,16 @@ export function AccountHead() {
 }
 
 export function CommonAccountInfoPanel() {
+  const { width } = useWindowSize();
+
+  if (isNil(width)) {
+    return null;
+  }
+
   return (
     <NeutralPanel className="p-6 space-y-4">
       <ProxyTip />
-      <AccountHead />
+      <AccountHead width={width} />
       <Divider />
       <AccountBalances />
       <ExtensionUpdatePrompt />
