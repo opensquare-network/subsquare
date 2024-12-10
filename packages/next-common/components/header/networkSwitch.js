@@ -58,7 +58,7 @@ export default function NetworkSwitch({ activeNode }) {
         </SecondaryButton>
       </Popover.Trigger>
 
-      <Popover.Content sideOffset={8} align="end" asChild>
+      <Popover.Content sideOffset={4} align="end" asChild>
         <NeutralPanel
           className="max-h-[calc(100vh-73px)] overflow-y-scroll scrollbar-hidden p-2 text14Medium outline-none"
           style={{
