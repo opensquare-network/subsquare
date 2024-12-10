@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.4.1
+
+date: 2024-12-09
+
+- [Medium] Proxy support:
+    - Show proxy info on account page.
+    - Support removing an old proxy.
+    - Support creating a new proxy.
+    - Show proxy deposits on account page.
+- Astar/Shibuya
+    - Implement dapp staking templates for the community council.
+    - Implement democracy external proposal related templates for the main council.
+    - Fix Astar EVM chain config to interact with wallets like metamask.
+- Add hydration treasury LP loan to polkadot treasury panel.
+- Add a OpenGov referenda template for spending `DOT` on assethub.
+- Fix bounty page crash by checking on chain storage status.
+- Fix a wallet not found issue.
+- Remove tips module from paseo.
+- Fix core time price decimals.
+- Fix a popup close behavior.
+- Enable teleport between assethub for kusama.
+- Fellowship
+    - Extract call info for `fellowshipCore#promoteFast`.
+    - Show evidence if a referendum is promoting a member by `promoteFast` call.
+- Interlay/Kintsugi
+    - Not show delegation on user profile page.
+    - Fix token symbol on democracy metadata.
+    - Fix referendum turnout when electorate is 0.
+    - Guard escrow chart data to improve robustness.
+    - Show escrow token balance on governance related popups.
+
 # 4.4.0
 
 date: 2024-12-02
