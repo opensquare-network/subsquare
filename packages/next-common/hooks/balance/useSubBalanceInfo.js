@@ -1,6 +1,7 @@
 import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
 import useSubStorage from "../common/useSubStorage";
 import calcTransferable from "next-common/utils/account/transferable";
+import bigAdd from "next-common/utils/math/bigAdd";
 
 export function useSubBalanceInfo(address) {
   const existentialDeposit = useQueryExistentialDeposit();
@@ -16,7 +17,7 @@ export function useSubBalanceInfo(address) {
   }
 
   const { free, reserved } = info;
-  const balance = (free + reserved).toString();
+  const balance = bigAdd(free, reserved) || 0;
   const transferrable = calcTransferable(info, existentialDeposit);
 
   return {
