@@ -30,7 +30,7 @@ export default function CollectivesAccountInfoPanel() {
     >
       <NeutralPanel className="p-6 space-y-4">
         <ProxyTip />
-        <AccountHead />
+        <AccountHead width={width} />
         <Divider />
 
         <CollectivesAccountInfo />
