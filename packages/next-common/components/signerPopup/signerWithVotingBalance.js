@@ -6,7 +6,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
 
 export default function SignerWithVotingBalance({ title, noSwitchSigner }) {
-  const { voteSymbol } = useChainSettings();
+  const { voteSymbol, symbol } = useChainSettings();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
 
@@ -19,7 +19,7 @@ export default function SignerWithVotingBalance({ title, noSwitchSigner }) {
     <Signer
       title={title}
       balance={balance}
-      symbol={voteSymbol}
+      symbol={voteSymbol || symbol}
       isBalanceLoading={loadingBalance}
       noSwitchSigner={noSwitchSigner}
     />
