@@ -18,12 +18,14 @@ export function useProfileCollectivesTabs() {
     section === "fellowship" &&
       member && {
         label: "Fellowship",
+        value: "fellowship",
         url: `/user/${address}/fellowship`,
         exactMatch: false,
       },
     section === "ambassador" &&
       member && {
         label: "Ambassador",
+        value: "ambassador",
         url: `/user/${address}/ambassador`,
         exactMatch: false,
       },

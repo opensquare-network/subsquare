@@ -15,9 +15,14 @@ export default function ReferendaTrackLayout({
     <ListLayout
       description={periodData.description}
       tabs={[
-        { label: "Referenda", url: `/referenda/tracks/${periodData.id}` },
+        {
+          label: "Referenda",
+          value: "referenda",
+          url: `/referenda/tracks/${periodData.id}`,
+        },
         {
           label: "Statistics",
+          value: "statistics",
           url: `/referenda/tracks/${periodData.id}/statistics`,
         },
       ]}

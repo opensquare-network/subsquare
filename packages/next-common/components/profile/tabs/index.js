@@ -29,10 +29,10 @@ export default function useProfileTabs() {
   const prefix = `/user/${maybeEvmAddress}/`;
 
   const collectivesTabs = useProfileCollectivesTabs();
-
   const tabs = [
     {
       label: "Posted",
+      value: "posted",
       url: `${prefix}posted`,
       exactMatch: false,
     },
@@ -41,27 +41,31 @@ export default function useProfileTabs() {
   if (hasReferenda || hasFellowship || hasDemocracyModule) {
     tabs.push({
       label: "Votes",
+      value: "votes",
       url: `${prefix}votes`,
     });
   }
 
   tabs.push({
     label: "Deposits",
+    value: "deposits",
     url: `${prefix}deposits`,
-    count: depositsCount,
+    activeCount: depositsCount,
   });
 
   if (hasMultisig) {
     tabs.push({
       label: "Multisigs",
+      value: "multisigs",
       url: `${prefix}multisigs`,
-      count: activeMultisigsCount,
+      activeCount: activeMultisigsCount,
     });
   }
 
   if ((hasReferenda || hasDemocracyModule) && !isKintsugiChain(chain)) {
     tabs.push({
       label: "Delegation",
+      value: "delegation",
       url: `${prefix}delegation/received`,
       root: `${prefix}delegation`,
       exactMatch: false,
@@ -71,6 +75,7 @@ export default function useProfileTabs() {
   if (integrations?.statescan) {
     tabs.push({
       label: "Transfers",
+      value: "transfers",
       url: `${prefix}transfers`,
       exactMatch: false,
     });
@@ -78,6 +83,7 @@ export default function useProfileTabs() {
     if (hasIdentityTimeline) {
       tabs.push({
         label: "Identity",
+        value: "identity",
         url: `${prefix}identity`,
         exactMatch: false,
       });
@@ -87,6 +93,7 @@ export default function useProfileTabs() {
   if (proxy) {
     tabs.push({
       label: "Proxies",
+      value: "proxies",
       url: `${prefix}proxies/mine`,
       root: `${prefix}proxies`,
       exactMatch: false,

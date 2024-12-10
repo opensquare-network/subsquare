@@ -1,4 +1,4 @@
-import UrlTabs from "next-common/components/urlTabs";
+import TabsList from "next-common/components/tabs/list";
 
 // maybe used for fellowship and ambassador
 export default function FellowshipMemberTabs({
@@ -8,8 +8,7 @@ export default function FellowshipMemberTabs({
 }) {
   const tabs = [
     {
-      label: "Members",
-      render({ active }) {
+      label({ active }) {
         return (
           <>
             <span
@@ -28,8 +27,7 @@ export default function FellowshipMemberTabs({
       url: `/${section}/core`,
     },
     {
-      label: "Candidates",
-      render({ active }) {
+      label({ active }) {
         return (
           <>
             <span
@@ -49,5 +47,5 @@ export default function FellowshipMemberTabs({
     },
   ];
 
-  return <UrlTabs tabs={tabs} className="px-6" />;
+  return <TabsList tabs={tabs} className="px-6" />;
 }

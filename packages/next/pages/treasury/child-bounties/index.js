@@ -36,10 +36,12 @@ export default function ChildBountiesPage({ bounties }) {
         summary={treasurySummaryPanel}
         tabs={[
           {
+            value: "child_bounties",
             label: "Child Bounties",
             url: "/treasury/child-bounties",
           },
           chainSettings.integrations?.doTreasury && {
+            value: "statistics",
             label: "Statistics",
             url: `https://dotreasury.com/${lowerCase(
               chainSettings.symbol,

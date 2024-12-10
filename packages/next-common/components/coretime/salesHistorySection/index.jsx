@@ -19,23 +19,25 @@ function SalesHistoryWrapper({ children }) {
 function SalesHistoryList() {
   const sale = useCoretimeSale();
   const { isInterludePhase, isLoading } = useCoretimeSaleIsInterlude();
-  const [activeTabLabel, setActiveTabLabel] = useState("");
+  const [activeTabValue, setActiveTabValue] = useState("");
 
   useEffect(() => {
     if (isLoading) {
       return;
     }
 
-    setActiveTabLabel(isInterludePhase ? "Renewals" : "Purchases");
+    setActiveTabValue(isInterludePhase ? "renewals" : "purchases");
   }, [isInterludePhase, isLoading]);
 
   const renewalsTabInfo = {
+    value: "renewals",
     label: "Renewals",
     activeCount: sale?.renewalCount,
     content: <SalesHistoryRenewals />,
   };
 
   const purchasesTabInfo = {
+    value: "purchases",
     label: "Purchases",
     activeCount: sale?.purchaseCount,
     content: <SalesHistoryPurchases />,
@@ -47,9 +49,9 @@ function SalesHistoryList() {
 
   return (
     <Tabs
-      activeTabLabel={activeTabLabel}
+      activeTabValue={activeTabValue}
       onTabClick={(tab) => {
-        setActiveTabLabel(tab.label);
+        setActiveTabValue(tab.value);
       }}
       tabs={isLoading ? [] : tabs}
     />
