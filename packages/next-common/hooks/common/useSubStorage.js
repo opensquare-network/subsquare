@@ -1,6 +1,7 @@
 import { useContextApi } from "next-common/context/api";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { createGlobalState } from "react-use";
+import { useChain } from "next-common/context/chain";
 
 const subs = {};
 
@@ -16,11 +17,14 @@ export default function useSubStorage(
   const { callback, api = contextApi } = options;
   const [cachedResult, setCachedResult] = useCachedResult();
   const [loading, setLoading] = useState(true);
+  const chain = useChain();
 
   const filteredParams = (Array.isArray(params) ? params : [params]).filter(
     Boolean,
   );
-  const key = `${pallet}-${storage}-${filteredParams.join("-")}`;
+  const key = useMemo(() => {
+    return `${chain}-${pallet}-${storage}-${filteredParams.join("-")}`;
+  }, [chain, pallet, storage, filteredParams]);
   const result = cachedResult[key];
 
   const subscribe = useCallback(async () => {
