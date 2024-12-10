@@ -54,8 +54,8 @@ export default function RecentProposalTemplate({
   const [tabTableLoaded, setTabTableLoaded] = useState({});
   const tabs = activeItems.map((m) => {
     return {
+      value: m.name,
       label: m.name,
-      value: m.value,
       activeCount: m.activeCount,
       content: (
         <TableTemplate tabTableLoaded={tabTableLoaded} label={m.name} {...m} />
