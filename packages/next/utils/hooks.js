@@ -7,7 +7,7 @@ export function useAddressVotingBalance(api, address) {
   const [balance, setBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const isMounted = useMountedState();
-  const chain = useChain()
+  const chain = useChain();
   useEffect(() => {
     if (!api || !address) {
       return;
@@ -25,6 +25,6 @@ export function useAddressVotingBalance(api, address) {
           setIsLoading(false);
         }
       });
-  }, [api, address, isMounted]);
+  }, [api, chain, address, isMounted]);
   return [balance, isLoading];
 }
