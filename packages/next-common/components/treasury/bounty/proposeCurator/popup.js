@@ -1,5 +1,4 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useOnchainData } from "next-common/context/post";
@@ -9,12 +8,13 @@ import useFeeAmount from "../../childBounty/proposeCurator/useFeeAmount";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import { useDispatch } from "react-redux";
 import { useContextApi } from "next-common/context/api";
-import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { useChainSettings } from "next-common/context/chain";
 import { usePopupOnClose } from "next-common/context/popup";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import useAutoSelectTreasuryTrackField from "next-common/components/summary/newProposalQuickStart/common/useAutoSelectTreasuryTrackField";
-import useEnactmentBlocksField from "next-common/components/summary/newProposalQuickStart/common/useEnactmentBlocksField";
+import useAutoSelectTreasuryTrackField
+  from "next-common/components/summary/newProposalQuickStart/common/useAutoSelectTreasuryTrackField";
+import useEnactmentBlocksField
+  from "next-common/components/summary/newProposalQuickStart/common/useEnactmentBlocksField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import SubmissionDeposit from "next-common/components/summary/newProposalPopup/submissionDeposit";
 import { useReferendaProposalOrigin } from "next-common/components/summary/newProposalPopup";
@@ -23,6 +23,7 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
 import { WarningMessage } from "next-common/components/setting/styled";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 function PopupContent() {
   const dispatch = useDispatch();
@@ -33,8 +34,6 @@ function PopupContent() {
 
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
-  const { value: signerBalance, loading: signerBalanceLoading } =
-    useSubBalanceInfo(address);
 
   const { meta } = useOnchainData();
   const bountyValueWithDecimals = toPrecision(meta?.value, decimals);
@@ -93,10 +92,7 @@ function PopupContent() {
 
   return (
     <>
-      <Signer
-        balance={signerBalance?.balance}
-        isBalanceLoading={signerBalanceLoading}
-      />
+      <SignerWithBalance />
       {curatorSelect}
       {feeField}
       {trackField}
