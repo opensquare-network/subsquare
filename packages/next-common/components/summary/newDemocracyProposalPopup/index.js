@@ -10,7 +10,7 @@ import usePreimageLength from "next-common/hooks/usePreimageLength";
 import PreimageField from "../newProposalPopup/preimageField";
 import { useContextApi } from "next-common/context/api";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import SignerWithVotingBalance from "next-common/components/signerPopup/signerWithVotingBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
@@ -70,7 +70,7 @@ export function NewDemocracyProposalInnerPopup({
 
   return (
     <Popup wide title="New Proposal" className="!w-[640px]" onClose={onClose}>
-      <SignerWithBalance />
+      <SignerWithVotingBalance />
       <PreimageField
         preimageHash={preimageHash}
         setPreimageHash={setPreimageHash}

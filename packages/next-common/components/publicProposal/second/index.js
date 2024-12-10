@@ -85,7 +85,6 @@ export default function Second({
   proposalIndex,
   hasTurnIntoReferendum,
   hasCanceled,
-  useAddressVotingBalance,
   atBlockHeight,
 }) {
   const [showPopup, setShowPopup] = useState(false);
@@ -194,7 +193,6 @@ export default function Second({
           depositRequired={depositRequired}
           onClose={() => setShowPopup(false)}
           onInBlock={() => setTriggerUpdate(Date.now())}
-          useAddressVotingBalance={useAddressVotingBalance}
         />
       )}
     </>

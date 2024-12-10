@@ -7,7 +7,6 @@ import Business from "components/publicProposal/business";
 import Metadata from "next-common/components/publicProposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Second from "next-common/components/publicProposal/second";
-import { useAddressVotingBalance } from "utils/hooks";
 import { isNil } from "lodash-es";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
@@ -59,7 +58,6 @@ function PublicProposalContent() {
           proposalIndex={proposalIndex}
           hasTurnIntoReferendum={hasTurnIntoReferendum}
           hasCanceled={hasCanceled}
-          useAddressVotingBalance={useAddressVotingBalance}
           atBlockHeight={secondsAtBlockHeight}
         />
         <DetailMultiTabs
