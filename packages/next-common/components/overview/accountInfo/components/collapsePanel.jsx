@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { ArrowTriangleUp, ArrowTriangleDown } from "@osn/icons/subsquare";
+import { ArrowTriangleDown } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import SecondaryButton from "next-common/lib/button/secondary";
+import { cn } from "next-common/utils";
 
 export default function CollapsePanel({ children, labelItem }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -9,20 +11,24 @@ export default function CollapsePanel({ children, labelItem }) {
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
 
-  const Icon = isCollapsed ? ArrowTriangleUp : ArrowTriangleDown;
-
   if (isNil(width)) {
     return null;
   }
 
   return width > 768 ? (
     <div className="flex">
-      <div
-        className="flex items-center justify-center shrink-0 border border-neutral400 rounded w-5 h-5 mx-[10px] cursor-pointer"
+      <SecondaryButton
+        size="small"
+        className="w-5 h-5 mx-2.5 p-0"
         onClick={toggleCollapse}
       >
-        <Icon className="w-3 h-3 [&_path]:fill-textSecondary" />
-      </div>
+        <ArrowTriangleDown
+          className={cn(
+            "w-3 h-3 text-textSecondary",
+            isCollapsed && "rotate-180",
+          )}
+        />
+      </SecondaryButton>
 
       <div className="flex flex-col ml-[12px] w-[240px]">
         {labelItem}
