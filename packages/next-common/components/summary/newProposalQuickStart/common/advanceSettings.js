@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowDown } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import Divider from "next-common/components/styled/layout/divider";
+import SecondaryButton from "next-common/lib/button/secondary";
 
 export default function AdvanceSettings({ children }) {
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -9,18 +10,24 @@ export default function AdvanceSettings({ children }) {
     <>
       <div className="flex items-center justify-center w-full gap-4">
         <Divider className="flex-1" />
-        <div
-          onClick={() => setShowAdvanced(!showAdvanced)}
-          className="cursor-pointer inline-flex items-center gap-1.5 border border-neutral400 rounded-[6px] py-1.5 pl-3 pr-1.5"
+
+        <SecondaryButton
+          size="small"
+          onClick={() => {
+            setShowAdvanced(!showAdvanced);
+          }}
+          iconRight={
+            <ArrowDown
+              className={cn(
+                showAdvanced && "rotate-180",
+                "w-4 h-4 text-textTertiary",
+              )}
+            />
+          }
         >
-          <span className="text12Medium text-textPrimary">Advanced</span>
-          <ArrowDown
-            className={cn(
-              showAdvanced && "rotate-180",
-              "w-4 h-4 [&_path]:stroke-textTertiary",
-            )}
-          />
-        </div>
+          Advanced
+        </SecondaryButton>
+
         <Divider className="flex-1" />
       </div>
       <div className={showAdvanced ? "space-y-4" : "hidden"}>{children}</div>
