@@ -29,6 +29,9 @@ import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { useChainSettings } from "next-common/context/chain";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
+import SecondaryButton from "next-common/lib/button/secondary";
+import Link from "next/link";
+import Button from "next-common/lib/button";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -103,11 +106,11 @@ function Account() {
   );
 }
 
-const IconButton = tw.div`
-  cursor-pointer
+const IconButton = tw(Button)`
   flex
   justify-center
   items-center
+  p-0
   w-[32px]
   h-[32px]
   rounded-[8px]
@@ -164,42 +167,34 @@ function AccountButton() {
     return null;
   }
 
-  const goAccount = () => {
-    router.push(url);
-  };
-
   return (
     <Tooltip content="Account">
-      <IconButton
-        className="[&_svg_path]:fill-textSecondary"
-        onClick={goAccount}
-      >
-        <MenuAccount width={20} height={20} />
-      </IconButton>
+      <Link href={url}>
+        <IconButton className="text-textSecondary">
+          <MenuAccount width={20} height={20} />
+        </IconButton>
+      </Link>
     </Tooltip>
   );
 }
 
 function SettingsButton() {
-  const router = useRouter();
   const isWeb3User = useIsWeb3User();
 
-  const goSetting = () => {
-    if (isWeb3User) {
-      router.push("/settings/key-account");
-    } else {
-      router.push("/settings/account");
-    }
-  };
+  let url;
+  if (isWeb3User) {
+    url = "/settings/key-account";
+  } else {
+    url = "/settings/account";
+  }
 
   return (
     <Tooltip content="Settings">
-      <IconButton
-        className="[&_svg_path]:stroke-textSecondary"
-        onClick={goSetting}
-      >
-        <SystemSetting width={20} height={20} />
-      </IconButton>
+      <Link href={url}>
+        <IconButton className="text-textSecondary">
+          <SystemSetting width={20} height={20} />
+        </IconButton>
+      </Link>
     </Tooltip>
   );
 }
@@ -207,10 +202,7 @@ function SettingsButton() {
 function CrosschainButton({ onClick }) {
   return (
     <Tooltip content="Cross-chain">
-      <IconButton
-        className={cn("bg-theme100 [&_svg_path]:fill-theme500")}
-        onClick={onClick}
-      >
+      <IconButton className="bg-theme100 text-theme500" onClick={onClick}>
         <SystemCrosschain width={20} height={20} />
       </IconButton>
     </Tooltip>
@@ -251,20 +243,17 @@ function ProxyButton() {
     return null;
   }
 
-  const goAccountProxies = () => {
-    router.push("/account/proxies");
-  };
-
   return (
     <div className="flex items-center px-[52px]">
-      <div
-        className="flex items-center justify-center space-x-1.5 px-1.5 py-1.5 rounded-[6px] border border-neutral400 cursor-pointer"
-        onClick={goAccountProxies}
-      >
-        <MenuProxy className="w-4 h-4 text-textTertiary" />
-        <span className="text12Medium text-textPrimary">Proxy</span>
-        <ArrowRight className="w-4 h-4 text-textTertiary" />
-      </div>
+      <Link href="/account/proxies">
+        <SecondaryButton
+          size="small"
+          iconLeft={<MenuProxy className="w-4 h-4 text-textTertiary" />}
+          iconRight={<ArrowRight className="w-4 h-4 text-textTertiary" />}
+        >
+          Proxy
+        </SecondaryButton>
+      </Link>
     </div>
   );
 }
