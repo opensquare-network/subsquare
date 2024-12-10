@@ -10,6 +10,9 @@ const SPACE = 1;
 const TabsList = forwardRef(TabsListImpl);
 export default TabsList;
 
+/**
+ * @param {TabsList} props
+ */
 function TabsListImpl(
   { tabs = [], activeTabValue, onTabClick, className = "" },
   ref,

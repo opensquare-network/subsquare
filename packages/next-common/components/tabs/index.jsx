@@ -4,6 +4,9 @@ import TabsList from "./list";
 import { noop } from "lodash-es";
 import { useEffect, useState } from "react";
 
+/**
+ * @param {Tabs} props
+ */
 export default function Tabs({
   tabs = [],
   activeTabValue = "",

@@ -4,6 +4,9 @@ import { cn, isExternalLink } from "next-common/utils";
 import Link from "next/link";
 import { isValidElement } from "react";
 
+/**
+ * @param {TabsListItem} props
+ */
 export default function TabsListItem({
   tooltip,
   label,
