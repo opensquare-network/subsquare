@@ -10,7 +10,7 @@ import { useIsDVAddressFn } from "./useIsDVAddress";
 import { defaultSortBy } from "next-common/components/comment/filter/sorter";
 import { usePostCommentsMerging } from "./usePostCommentsMerging";
 import { normalizeAddress } from "next-common/utils/address";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 
@@ -23,6 +23,7 @@ function is0Balance(comment) {
 }
 
 export function usePostCommentsFilteredData() {
+  const chain = useChain();
   const api = useContextApi();
   const { commentsData, loading: commentsLoading } = usePostCommentsData();
   const { chainType = ChainTypes.SUBSTRATE } = useChainSettings();
@@ -80,6 +81,7 @@ export function usePostCommentsFilteredData() {
           const normalizedAddress = normalizeAddress(address);
           try {
             item.balance = await getAddressVotingBalance(
+              chain,
               api,
               normalizedAddress,
             );
@@ -93,7 +95,7 @@ export function usePostCommentsFilteredData() {
 
       setMergedComments(data);
     }
-  }, [api, commentsData, getAddressVotesData, chainType]);
+  }, [chain, api, commentsData, getAddressVotesData, chainType]);
 
   const filteredComments = useMemo(() => {
     const data = cloneDeep(mergedComments);
