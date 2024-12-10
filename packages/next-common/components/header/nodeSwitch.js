@@ -91,12 +91,12 @@ export default function NodeSwitch({ small }) {
   return (
     <Wrapper className="max-sm:relative" ref={ref}>
       {small && (
-        <SmallSelect onClick={() => setShow(!show)}>
+        <SmallSelect role="button" onClick={() => setShow(!show)}>
           <NodeSignalIcon delay={currentNodeSetting?.delay} />
         </SmallSelect>
       )}
       {!small && (
-        <Select onClick={() => setShow(!show)}>
+        <Select role="button" onClick={() => setShow(!show)}>
           <NodeSignalIcon delay={currentNodeSetting?.delay} />
           <div>{currentNodeSetting?.name}</div>
           <Caret />
