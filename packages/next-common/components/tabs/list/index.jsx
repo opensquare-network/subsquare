@@ -53,7 +53,6 @@ function TabsListImpl(
         {tabs?.map((tab) => {
           let active = tab.active;
 
-          // formerly urlTabs
           if (tab.url) {
             if (isNil(active)) {
               if (tab.exactMatch === false) {
