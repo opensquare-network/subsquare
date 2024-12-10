@@ -87,7 +87,7 @@ export default function Extrinsic({
 
     try {
       const fnValues = getExtrinsicValues(values);
-      const tx = fn(...fnValues);
+      const tx = fn(...(fnValues || []));
       setValue({
         isValid: true,
         data: tx,

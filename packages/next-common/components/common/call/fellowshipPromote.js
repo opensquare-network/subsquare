@@ -3,7 +3,7 @@ import AddressUser from "next-common/components/user/addressUser";
 
 export default function extractFellowshipPromote(call = {}) {
   const { section, method, args = [] } = call;
-  if ("fellowshipCore" !== section || "promote" !== method) {
+  if ("fellowshipCore" !== section || !["promote", "promoteFast"].includes(method)) {
     return [];
   }
 

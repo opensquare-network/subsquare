@@ -46,6 +46,9 @@ const bountyStateTagMap = {
   BountyAwarded: PositiveTag,
   BountyClaimed: PositiveTag,
   BountyRejected: NegativeTag,
+  BountyApproved: PositiveTag,
+  CuratorUnassigned: NegativeTag,
+  CuratorProposed: StartTag,
 
   // in timeline
   CloseVoting: NegativeTag,

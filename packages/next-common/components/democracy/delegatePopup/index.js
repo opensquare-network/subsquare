@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { noop } from "lodash-es";
 import { useDispatch } from "react-redux";
-import { useAddressVotingBalance } from "utils/hooks";
+import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue, isSameAddress } from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";

@@ -32,6 +32,9 @@ export default function CouncilProposeButton({ getTxFunc, loading, disabled }) {
     }
 
     const proposal = getTxFunc();
+    if (!proposal) {
+      return;
+    }
     const proposalLength = proposal?.encodedLength || 0;
 
     const params =

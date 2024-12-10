@@ -1,5 +1,5 @@
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import SignerWithVotingBalance from "next-common/components/signerPopup/signerWithVotingBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
@@ -84,7 +84,7 @@ export function NewTreasuryReferendumInnerPopup() {
       onClose={onClose}
       wide
     >
-      <SignerWithBalance />
+      <SignerWithVotingBalance />
       {balanceField}
       {beneficiaryField}
       <AdvanceSettings>

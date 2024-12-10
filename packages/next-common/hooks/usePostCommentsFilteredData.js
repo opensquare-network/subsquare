@@ -4,7 +4,7 @@ import { useContextApi } from "next-common/context/api";
 import { cloneDeep, every, has, map, orderBy, filter } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { useGetAddressVotesDataFn } from "./useAddressVotesData";
-import { getAddressVotingBalance } from "next-common/utils/referendumUtil";
+import { getAddressVotingBalance } from "next-common/utils/democracy/getAddressVotingBalance";
 import { useCommittedCommentFilterParams } from "next-common/components/comment/filter/utils";
 import { useIsDVAddressFn } from "./useIsDVAddress";
 import { defaultSortBy } from "next-common/components/comment/filter/sorter";

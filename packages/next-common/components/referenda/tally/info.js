@@ -17,6 +17,7 @@ import {
   showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 import { usePost } from "next-common/context/post";
+import { isNil } from "lodash-es";
 
 const Row = styled(Flex)`
   height: 44px;
@@ -67,10 +68,10 @@ export default function TallyInfo({ tally }) {
   useEffect(() => {
     const turnout = tally?.turnout || 0;
     if (electorate <= 0) {
-      setTurnoutPercentage(0);
+      setTurnoutPercentage(turnout > 0 ? 100 : 0);
+    } else {
+      setTurnoutPercentage(((turnout / electorate) * 100).toFixed(2));
     }
-
-    setTurnoutPercentage(((turnout / electorate) * 100).toFixed(2));
   }, [tally, electorate]);
 
   return (
@@ -99,7 +100,7 @@ export default function TallyInfo({ tally }) {
         <Header>
           <TurnoutIcon />
           Turnout
-          {turnoutPercentage && <VotesCount>{turnoutPercentage}%</VotesCount>}
+          {!isNil(turnoutPercentage) && <VotesCount>{turnoutPercentage}%</VotesCount>}
         </Header>
         <Value>
           <ValueDisplay value={nTurnout} symbol={symbol} />

@@ -10,7 +10,7 @@ import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import SignerWithVotingBalance from "next-common/components/signerPopup/signerWithVotingBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
@@ -82,7 +82,7 @@ export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
       onClose={onClose}
       maskClosable={false}
     >
-      <SignerWithBalance />
+      <SignerWithVotingBalance />
       {isLoading ? (
         <div className="flex justify-center">
           <Loading size={20} />
