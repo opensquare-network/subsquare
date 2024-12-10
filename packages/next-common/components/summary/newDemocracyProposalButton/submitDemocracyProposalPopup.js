@@ -8,12 +8,13 @@ import { QuickStart } from "next-common/components/preImages/createPreimagePopup
 import { isAjunaChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
 import SpendLocalProposalPopup from "./spendLocalProposalPopup";
+import SpendUSDxProposalPopup from "./spendUSDxProposalPopup";
 
 function useSpendTreasuryAjunToken() {
   const [showSpendLocalPopup, setShowSpendLocalPopup] = useState(false);
   const spendLocalButton = (
     <ChoiceButton
-      key="approve-treasury-proposal"
+      key="spend-treasury-ajun"
       name="Spend treasury AJUN token"
       description="Create a treasury spend of native token that is locally available"
       onClick={() => {
@@ -24,9 +25,25 @@ function useSpendTreasuryAjunToken() {
   return { spendLocalButton, showSpendLocalPopup };
 }
 
+function useSpendTreasuryUSDxToken() {
+  const [showSpendUSDxPopup, setShowSpendUSDxPopup] = useState(false);
+  const spendUSDxButton = (
+    <ChoiceButton
+      key="spend-treasury-usdx"
+      name="Spend treasury USDx token"
+      description="Create a treasury spend of USDT/USDC token that is locally available"
+      onClick={() => {
+        setShowSpendUSDxPopup(true);
+      }}
+    />
+  );
+  return { spendUSDxButton, showSpendUSDxPopup };
+}
+
 export function SubmitDemocracyProposalInnerPopup({ children }) {
   const chain = useChain();
   const { spendLocalButton, showSpendLocalPopup } = useSpendTreasuryAjunToken();
+  const { spendUSDxButton, showSpendUSDxPopup } = useSpendTreasuryUSDxToken();
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
 
@@ -34,10 +51,14 @@ export function SubmitDemocracyProposalInnerPopup({ children }) {
     return <SpendLocalProposalPopup />;
   }
 
+  if (showSpendUSDxPopup) {
+    return <SpendUSDxProposalPopup />;
+  }
+
   let quickStartButtons = null;
 
   if (isAjunaChain(chain)) {
-    quickStartButtons = [spendLocalButton];
+    quickStartButtons = [spendLocalButton, spendUSDxButton];
   }
 
   return (
