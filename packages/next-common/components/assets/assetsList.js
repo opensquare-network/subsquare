@@ -14,6 +14,9 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
 import { clearMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
 import { useDispatch } from "react-redux";
+import useSubAssetBalance, {
+  useQueryAddressAssets,
+} from "next-common/components/assets/useSubAssetBalance";
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
@@ -109,6 +112,55 @@ export const colName = {
   ),
 };
 
+function TotalBalance({ item, address }) {
+  const { result } = useSubAssetBalance(item.assetId, address);
+
+  return (
+    <span className="text14Medium text-textPrimary">
+      <BalanceDisplay
+        balance={formatBalance(
+          result?.balance || item?.balance || 0,
+          item.decimals,
+        )}
+      />
+    </span>
+  );
+}
+
+function TransferrableBalance({ item, address }) {
+  const { result } = useSubAssetBalance(item.assetId, address);
+
+  return (
+    <span key="transferrable" className="text14Medium text-textPrimary">
+      <BalanceDisplay
+        balance={formatBalance(
+          result?.transferrable || item.transferrable || 0,
+          item.decimals,
+        )}
+      />
+    </span>
+  );
+}
+
+export function useColTotal(address) {
+  return {
+    name: "Total",
+    style: { textAlign: "right", width: "160px", minWidth: "160px" },
+    render: (item) => (
+      <TotalBalance key="total" item={item} address={address} />
+    ),
+  };
+}
+
+export function useColTransferrable(address) {
+  return {
+    name: "Transferrable",
+    style: { textAlign: "right", width: "160px", minWidth: "160px" },
+    render: (item) => <TransferrableBalance item={item} address={address} />,
+  };
+}
+
+// TODO: remove (profile page & native asset)
 export const colTotal = {
   name: "Total",
   style: { textAlign: "right", width: "160px", minWidth: "160px" },
@@ -121,6 +173,7 @@ export const colTotal = {
   ),
 };
 
+// TODO: remove (profile page & native asset)
 export const colTransferrable = {
   name: "Transferrable",
   style: { textAlign: "right", width: "160px", minWidth: "160px" },
@@ -139,31 +192,26 @@ export const colTransfer = {
   render: (item) => <TransferButton asset={item} />,
 };
 
-const columnsDef = [
-  colToken,
-  colId,
-  colName,
-  colTotal,
-  colTransferrable,
-  colTransfer,
-];
-
 export default function AssetsList({ address }) {
-  const assets = useAssetHubTabsAssets(address);
-  const dispatch = useDispatch();
+  const { loading, assets } = useQueryAddressAssets(address);
+  const totalBalance = useColTotal(address);
+  const transferrableBalance = useColTransferrable(address);
 
-  useEffect(() => {
-    return () => {
-      dispatch(clearMultiAccounts());
-    };
-  }, [dispatch]);
+  const columnsDef = [
+    colToken,
+    colId,
+    colName,
+    totalBalance,
+    transferrableBalance,
+    colTransfer,
+  ];
 
   return (
     <ScrollerX>
       <MapDataList
         columnsDef={columnsDef}
         data={assets}
-        loading={!assets}
+        loading={loading}
         noDataText="No current assets"
       />
     </ScrollerX>
