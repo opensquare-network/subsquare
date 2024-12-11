@@ -6,8 +6,8 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import { useCallback, useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import { checkInputValue, toPrecision } from "next-common/utils";
-import { DemocracyProposeTxSubmissionButton } from "./common/democracyProposeTxSubmissionButton";
-import SubmissionDeposit from "./common/submissionDeposit";
+import { DemocracyProposeTxSubmissionButton } from "../common/democracyProposeTxSubmissionButton";
+import SubmissionDeposit from "../common/submissionDeposit";
 import { getAssetBySymbol } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { TreasuryBalance } from "next-common/components/preImages/createPreimagePopup/fields/useUSDxBalanceField";
 import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
@@ -81,7 +81,7 @@ function USDxBalance({ inputBalance, setInputBalance, symbol, setSymbol }) {
   );
 }
 
-export default function SpendUSDxProposalPopup() {
+export default function AjunaSpendUSDxProposalPopup() {
   const api = useContextApi();
   const { onClose } = usePopupParams();
   const [inputBalance, setInputBalance] = useState("");

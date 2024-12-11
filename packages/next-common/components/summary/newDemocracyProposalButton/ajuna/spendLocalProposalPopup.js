@@ -10,10 +10,10 @@ import { useChainSettings } from "next-common/context/chain";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
-import { DemocracyProposeTxSubmissionButton } from "./common/democracyProposeTxSubmissionButton";
-import SubmissionDeposit from "./common/submissionDeposit";
+import { DemocracyProposeTxSubmissionButton } from "../common/democracyProposeTxSubmissionButton";
+import SubmissionDeposit from "../common/submissionDeposit";
 
-export default function SpendLocalProposalPopup() {
+export default function AjunaSpendLocalProposalPopup() {
   const dispatch = useDispatch();
   const api = useContextApi();
   const { onClose } = usePopupParams();

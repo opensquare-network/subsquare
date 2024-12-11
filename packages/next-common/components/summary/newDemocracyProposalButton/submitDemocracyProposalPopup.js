@@ -7,58 +7,61 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
 import { isAjunaChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
-import SpendLocalProposalPopup from "./spendLocalProposalPopup";
-import SpendUSDxProposalPopup from "./spendUSDxProposalPopup";
+import AjunaSpendLocalProposalPopup from "./ajuna/spendLocalProposalPopup";
+import AjunaSpendUSDxProposalPopup from "./ajuna/spendUSDxProposalPopup";
 
 function useSpendTreasuryAjunToken() {
-  const [showSpendLocalPopup, setShowSpendLocalPopup] = useState(false);
-  const spendLocalButton = (
+  const [showAjunaSpendLocalPopup, setShowAjunaSpendLocalPopup] =
+    useState(false);
+  const ajunaSpendLocalButton = (
     <ChoiceButton
       key="spend-treasury-ajun"
       name="Spend treasury AJUN token"
       description="Create a treasury spend of native token that is locally available"
       onClick={() => {
-        setShowSpendLocalPopup(true);
+        setShowAjunaSpendLocalPopup(true);
       }}
     />
   );
-  return { spendLocalButton, showSpendLocalPopup };
+  return { ajunaSpendLocalButton, showAjunaSpendLocalPopup };
 }
 
-function useSpendTreasuryUSDxToken() {
-  const [showSpendUSDxPopup, setShowSpendUSDxPopup] = useState(false);
-  const spendUSDxButton = (
+function useAjunaSpendTreasuryUSDxToken() {
+  const [showAjunaSpendUSDxPopup, setShowAjunaSpendUSDxPopup] = useState(false);
+  const ajunaSpendUSDxButton = (
     <ChoiceButton
       key="spend-treasury-usdx"
       name="Spend treasury USDx token"
       description="Create a treasury spend of USDT/USDC token that is locally available"
       onClick={() => {
-        setShowSpendUSDxPopup(true);
+        setShowAjunaSpendUSDxPopup(true);
       }}
     />
   );
-  return { spendUSDxButton, showSpendUSDxPopup };
+  return { ajunaSpendUSDxButton, showAjunaSpendUSDxPopup };
 }
 
 export function SubmitDemocracyProposalInnerPopup({ children }) {
   const chain = useChain();
-  const { spendLocalButton, showSpendLocalPopup } = useSpendTreasuryAjunToken();
-  const { spendUSDxButton, showSpendUSDxPopup } = useSpendTreasuryUSDxToken();
+  const { ajunaSpendLocalButton, showAjunaSpendLocalPopup } =
+    useSpendTreasuryAjunToken();
+  const { ajunaSpendUSDxButton, showAjunaSpendUSDxPopup } =
+    useAjunaSpendTreasuryUSDxToken();
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
 
-  if (showSpendLocalPopup) {
-    return <SpendLocalProposalPopup />;
+  if (showAjunaSpendLocalPopup) {
+    return <AjunaSpendLocalProposalPopup />;
   }
 
-  if (showSpendUSDxPopup) {
-    return <SpendUSDxProposalPopup />;
+  if (showAjunaSpendUSDxPopup) {
+    return <AjunaSpendUSDxProposalPopup />;
   }
 
   let quickStartButtons = null;
 
   if (isAjunaChain(chain)) {
-    quickStartButtons = [spendLocalButton, spendUSDxButton];
+    quickStartButtons = [ajunaSpendLocalButton, ajunaSpendUSDxButton];
   }
 
   return (
