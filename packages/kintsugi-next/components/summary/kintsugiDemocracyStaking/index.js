@@ -18,7 +18,10 @@ const Wrapper = styled.div`
 export default function KintsugiDemocracyStaking() {
   const api = useContextApi();
   const realAddress = useRealAddress();
-  const [votingBalance] = useLatestAddressVotingBalance(api, realAddress);
+  const { balance: votingBalance } = useLatestAddressVotingBalance(
+    api,
+    realAddress,
+  );
   const balance = useSubLockedBalance(realAddress);
 
   return (

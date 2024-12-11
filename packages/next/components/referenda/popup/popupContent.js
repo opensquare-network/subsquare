@@ -137,10 +137,8 @@ export default function PopupContent() {
   const signerAccount = useSignerAccount();
 
   const api = useContextApi();
-  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.realAddress,
-  );
+  const { balance: votingBalance, isLoading: votingIsLoading } =
+    useAddressVotingBalance(api, signerAccount?.realAddress);
   const {
     vote: addressVote,
     isLoading: addressVoteIsLoading,

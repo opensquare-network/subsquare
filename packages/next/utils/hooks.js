@@ -4,10 +4,11 @@ import { getAddressVotingBalance } from "next-common/utils/democracy/getAddressV
 import { useChain } from "next-common/context/chain";
 
 export function useAddressVotingBalance(api, address) {
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const isMounted = useMountedState();
   const chain = useChain();
+
   useEffect(() => {
     if (!api || !address) {
       return;
@@ -26,5 +27,6 @@ export function useAddressVotingBalance(api, address) {
         }
       });
   }, [api, chain, address, isMounted]);
-  return [balance, isLoading];
+
+  return { balance, isLoading };
 }
