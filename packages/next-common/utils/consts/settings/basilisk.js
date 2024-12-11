@@ -77,6 +77,9 @@ const basilisk = {
     treasury: {
       bounties: false,
     },
+    council: {
+      archived: true,
+    },
   }),
   integrations: {
     subscan: true,
