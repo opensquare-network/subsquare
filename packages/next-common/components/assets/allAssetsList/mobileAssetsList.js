@@ -1,7 +1,11 @@
 import React from "react";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
-import { colId, colName, colToken } from "../assetsList";
+import {
+  colId,
+  colName,
+  colToken,
+} from "next-common/components/assets/common/columns";
 import { colAccounts, colStatus, colSupply } from "./pcAssetList";
 import AddressUser from "next-common/components/user/addressUser";
 
