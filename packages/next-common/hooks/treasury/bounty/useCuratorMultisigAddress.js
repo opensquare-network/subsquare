@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import { useContextApi } from "next-common/context/api";
+import { isNil } from "lodash-es";
 
 export function useCuratorMultisigAddress(address) {
   const { graphqlApiSubDomain } = useChainSettings();
@@ -13,6 +14,11 @@ export function useCuratorMultisigAddress(address) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (isNil(address)) {
+      setLoading(false);
+      return;
+    }
+
     async function fetchMultisigData(currentAddress) {
       if (!graphqlApiSubDomain) {
         setError(new Error("Unsupported chain"));
