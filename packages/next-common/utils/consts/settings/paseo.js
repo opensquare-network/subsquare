@@ -106,6 +106,7 @@ const paseo = {
     council: false,
     democracy: false,
     technicalCommittee: false,
+    assethub: true,
   }),
   integrations: {
     subscan: true,
