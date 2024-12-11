@@ -1,4 +1,4 @@
-import { formatBalance } from "next-common/components/assets/assetsList";
+import { formatBalance } from "next-common/components/assets/common";
 import BalanceDisplay from "next-common/components/assets/balanceDisplay";
 import Loading from "next-common/components/loading";
 import PopupLabel from "next-common/components/popup/label";

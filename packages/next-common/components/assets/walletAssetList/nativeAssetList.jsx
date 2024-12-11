@@ -5,7 +5,7 @@ import { useNativeTokenIcon } from "next-common/components/assets/known";
 import {
   colTotal,
   colTransferrable,
-} from "next-common/components/assets/assetsList";
+} from "next-common/components/assets/common/columns";
 import { useMyNativeAsset } from "next-common/hooks/assets/useMyNativeAsset";
 
 function TokenSymbol({ symbol }) {
