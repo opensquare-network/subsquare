@@ -5,6 +5,7 @@ import {
 import useSingleAccountAssets from "./useSingleAccountAssets";
 import { useEffect } from "react";
 
+// TODO: use subscribe
 const useAssetHubTabsAssets = (address) => {
   const [assets, setAssets] = useAssetsContext();
   const [, setTotalCount] = useTotalCounts();

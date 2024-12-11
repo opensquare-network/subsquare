@@ -7,7 +7,7 @@ import {
   colToken,
   colTotal,
   colTransferrable,
-} from "next-common/components/assets/assetsList";
+} from "next-common/components/assets/common/columns";
 import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
 
 const columnsDef = [colToken, colId, colName, colTotal, colTransferrable];
