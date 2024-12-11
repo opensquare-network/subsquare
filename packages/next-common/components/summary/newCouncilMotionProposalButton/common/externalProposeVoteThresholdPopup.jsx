@@ -12,7 +12,7 @@ import Tooltip from "next-common/components/tooltip";
 export default function ExternalProposeVoteThresholdPopup({
   isMember,
   method = "externalProposeMajority",
-  proposalThreshold,
+  threshold,
   onClose,
 }) {
   const title = capitalize(startCase(method));
@@ -59,7 +59,7 @@ export default function ExternalProposeVoteThresholdPopup({
           className="inline"
         >
           <CouncilProposeButton
-            proposalThreshold={proposalThreshold}
+            threshold={threshold}
             disabled={disabled}
             getTxFunc={getTxFunc}
           />

@@ -19,7 +19,7 @@ export default function ExternalProposeDefaultPopup({ isMember, onClose }) {
       method="externalProposeDefault"
       isMember={isMember}
       onClose={onClose}
-      proposalThreshold={threshold}
+      threshold={threshold}
     />
   );
 }

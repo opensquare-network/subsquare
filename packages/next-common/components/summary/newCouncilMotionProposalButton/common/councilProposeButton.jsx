@@ -20,7 +20,7 @@ function useDefaultThreshold() {
 }
 
 export default function CouncilProposeButton({
-  proposalThreshold,
+  threshold,
   getTxFunc,
   loading,
   disabled,
@@ -29,7 +29,7 @@ export default function CouncilProposeButton({
   const api = useContextApi();
   const pallet = useCollectivePallet();
   const defaultThreshold = useDefaultThreshold();
-  const threshold = proposalThreshold ?? defaultThreshold;
+  const proposalThreshold = threshold ?? defaultThreshold;
 
   const getProposeTxFunc = useCallback(() => {
     if (!api) {
@@ -44,11 +44,11 @@ export default function CouncilProposeButton({
 
     const params =
       api.tx[pallet].propose.meta.args.length === 3
-        ? [threshold, proposal, proposalLength]
-        : [threshold, proposal];
+        ? [proposalThreshold, proposal, proposalLength]
+        : [proposalThreshold, proposal];
 
     return api.tx[pallet].propose(...params);
-  }, [api, getTxFunc, pallet, threshold]);
+  }, [api, getTxFunc, pallet, proposalThreshold]);
 
   return (
     <TxSubmissionButton
