@@ -25,6 +25,7 @@ export function AddressUserImpl({
   noTooltip = false,
   color,
   linkToVotesPage = false,
+  linkToFellowshipPage = false,
   ellipsis = true,
   externalLink,
   addressClassName = "",
@@ -58,6 +59,9 @@ export function AddressUserImpl({
   }
   if (linkToVotesPage) {
     linkUserPage = `${linkUserPage}/votes`;
+  }
+  if (linkToFellowshipPage) {
+    linkUserPage = `${linkUserPage}/fellowship`;
   }
 
   let userIdentityLink = (
@@ -110,6 +114,7 @@ function AddressUser({
   noTooltip = false,
   color,
   linkToVotesPage = false,
+  linkToFellowshipPage = false,
   ellipsis = true,
   externalLink,
   addressClassName = "",
@@ -138,6 +143,7 @@ function AddressUser({
       noTooltip={noTooltip}
       color={color}
       linkToVotesPage={linkToVotesPage}
+      linkToFellowshipPage={linkToFellowshipPage}
       ellipsis={ellipsis}
       externalLink={externalLink}
       addressClassName={addressClassName}
