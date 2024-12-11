@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { AssetIconPlaceholder, SystemTransfer } from "@osn/icons/subsquare";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
@@ -11,9 +11,6 @@ import BalanceDisplay from "./balanceDisplay";
 import { isNil } from "lodash-es";
 import Tooltip from "../tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
-import { clearMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
-import { useDispatch } from "react-redux";
 import useSubAssetBalance, {
   useQueryAddressAssets,
 } from "next-common/components/assets/useSubAssetBalance";
