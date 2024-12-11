@@ -4,18 +4,13 @@ import { useMemo, useState, useEffect } from "react";
 import { useContextApi } from "next-common/context/api";
 import { isNil } from "lodash";
 
-export function useMultiAccountKeyDeps(address) {
+export function useQueryAddressAssets(address) {
+  const api = useContextApi();
   const [allMetadata] = useAllAssetMetadata();
   const multiAccountKey = useMemo(
     () => allMetadata?.map((item) => [item.assetId, address]),
     [allMetadata, address],
   );
-  return { multiAccountKey, allMetadata };
-}
-
-export function useQueryAssetsDeps(address) {
-  const api = useContextApi();
-  const { multiAccountKey, allMetadata } = useMultiAccountKeyDeps(address);
   const [multiAccounts, setMultiAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
 
