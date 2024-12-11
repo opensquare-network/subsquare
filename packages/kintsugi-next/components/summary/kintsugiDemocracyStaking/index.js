@@ -19,14 +19,13 @@ const Wrapper = styled.div`
 function StakingContent() {
   const api = useContextApi();
   const realAddress = useRealAddress();
-  const { balance: votingBalance, isLoading: isLoadingVotingBalance } = useLatestAddressVotingBalance(
-    api,
-    realAddress,
+  const { balance: votingBalance, isLoading: isLoadingVotingBalance } =
+    useLatestAddressVotingBalance(api, realAddress);
+  const { result: rawBalance, loading: isLoadingLocked } = useSubStorage(
+    "escrow",
+    "locked",
+    [realAddress],
   );
-  const {
-    result: rawBalance,
-    loading: isLoadingLocked,
-  } = useSubStorage("escrow", "locked", [realAddress]);
 
   if (isLoadingVotingBalance || isLoadingLocked) {
     return null;
@@ -44,7 +43,9 @@ function StakingContent() {
 }
 
 export default function KintsugiDemocracyStaking() {
-  return <WithAddress>
-    <StakingContent />
-  </WithAddress>;
+  return (
+    <WithAddress>
+      <StakingContent />
+    </WithAddress>
+  );
 }
