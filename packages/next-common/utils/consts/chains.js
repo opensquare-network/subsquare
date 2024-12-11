@@ -43,6 +43,7 @@ const Chains = {
   ajuna: "ajuna",
   kusamaCoretime: "kusama-coretime",
   polkadotCoretime: "polkadot-coretime",
+  laos: "laos",
 };
 
 export default Chains;

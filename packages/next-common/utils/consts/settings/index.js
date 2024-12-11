@@ -41,6 +41,7 @@ import paseo from "./paseo";
 import ajuna from "./ajuna";
 import kusamaCoretime from "./kusamaCoretime";
 import polkadotCoretime from "./polkadotCoretime";
+import laos from "./laos";
 
 const settingsMap = {
   polkadot,
@@ -62,6 +63,7 @@ const settingsMap = {
   karura,
   khala,
   kintsugi,
+  laos,
   litentry,
   litmus,
   moonbeam,
