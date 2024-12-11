@@ -30,10 +30,19 @@ export default function useTxSubmission({
       return;
     }
 
-    let tx = await getTxFunc();
+    let tx = null;
+    try {
+      tx = await getTxFunc();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+      return;
+    }
+
     if (!tx) {
       return;
-    } else if (signerAccount?.proxyAddress) {
+    }
+
+    if (signerAccount?.proxyAddress) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 

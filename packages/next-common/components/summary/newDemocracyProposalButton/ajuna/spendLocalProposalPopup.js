@@ -10,10 +10,10 @@ import { useChainSettings } from "next-common/context/chain";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
-import { DemocracyProposeTxSubmissionButton } from "next-common/components/summary/newDemocracyProposalButton/common/democracyProposeTxSubmissionButton";
-import SubmissionDeposit from "next-common/components/summary/newDemocracyProposalButton/common/submissionDeposit";
+import { DemocracyProposeTxSubmissionButton } from "../common/democracyProposeTxSubmissionButton";
+import SubmissionDeposit from "../common/submissionDeposit";
 
-export function NewTreasuryReferendumInnerPopup() {
+export default function AjunaSpendLocalProposalPopup() {
   const dispatch = useDispatch();
   const api = useContextApi();
   const { onClose } = usePopupParams();
@@ -24,16 +24,17 @@ export function NewTreasuryReferendumInnerPopup() {
 
   const getTxFunc = useCallback(() => {
     if (!api) {
-      return;
-    }
-
-    if (!beneficiary) {
-      dispatch(newErrorToast("Beneficiary address is required"));
+      dispatch(newErrorToast("Chain network is not connected yet"));
       return;
     }
 
     if (!inputBalance) {
       dispatch(newErrorToast("Request balance is required"));
+      return;
+    }
+
+    if (!beneficiary) {
+      dispatch(newErrorToast("Beneficiary address is required"));
       return;
     }
 
@@ -45,12 +46,12 @@ export function NewTreasuryReferendumInnerPopup() {
       return;
     }
 
-    return api.tx.democracy.spendFromTreasury(value.toString(), beneficiary);
+    return api.tx.treasury.spendLocal(value.toString(), beneficiary);
   }, [dispatch, api, decimals, inputBalance, beneficiary]);
 
   return (
     <Popup
-      title="Create Treasury Proposal"
+      title="Spend treasury AJUN token"
       className="!w-[640px]"
       onClose={onClose}
       wide
