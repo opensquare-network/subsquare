@@ -64,15 +64,29 @@ export function useQueryAddressAssets(address) {
 }
 
 export default function useSubAssetBalance(assetId, address) {
+  const [transferrable, setTransferrable] = useState(null);
+  const [isFrozen, setIsFrozen] = useState(null);
+  const [balance, setBalance] = useState(null);
+
   const { result, loading } = useSubStorage("assets", "account", [
-    assetId,
+    String(assetId),
     address,
   ]);
 
-  const data = result?.unwrap();
-  const balance = data?.balance?.toString() || 0;
-  const isFrozen = data?.status?.isFrozen;
-  const transferrable = isFrozen ? 0 : balance;
+  useEffect(() => {
+    if (loading || result?.isNone || isNil(assetId) || isNil(address)) {
+      return;
+    }
+
+    const data = result?.unwrap();
+    const balance = data?.balance?.toString() || 0;
+    const isFrozen = data?.status?.isFrozen;
+    const transferrable = isFrozen ? 0 : balance;
+
+    setBalance(balance);
+    setTransferrable(transferrable);
+    setIsFrozen(isFrozen);
+  }, [loading, result, assetId, address]);
 
   return {
     result: {
