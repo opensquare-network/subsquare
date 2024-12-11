@@ -22,6 +22,7 @@ export default function AvatarAndAddress({ address, isActive }) {
         showAvatar={false}
         fontSize={14}
         className="[&_.identity]:!font-semibold"
+        linkToFellowshipPage
       />
     </div>
   );
