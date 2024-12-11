@@ -23,10 +23,6 @@ const endpoints = [
     name: "Laos Foundation",
     url: "wss://rpc.laos.laosfoundation.io",
   },
-  {
-    name: "Dwellir",
-    url: "wss://laos-rpc.dwellir.com",
-  },
 ];
 
 const links = [
