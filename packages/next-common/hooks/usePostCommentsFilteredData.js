@@ -10,7 +10,7 @@ import { useIsDVAddressFn } from "./useIsDVAddress";
 import { defaultSortBy } from "next-common/components/comment/filter/sorter";
 import { usePostCommentsMerging } from "./usePostCommentsMerging";
 import { normalizeAddress } from "next-common/utils/address";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 
@@ -30,6 +30,7 @@ export function usePostCommentsFilteredData() {
   const [filterParams] = useCommittedCommentFilterParams();
   const getAddressVotesData = useGetAddressVotesDataFn();
   const isDVAddress = useIsDVAddressFn();
+  const chain = useChain();
 
   const [, setCommentsMerging] = usePostCommentsMerging();
   const [mergedComments, setMergedComments] = useState(commentsData);
@@ -79,10 +80,7 @@ export function usePostCommentsFilteredData() {
 
           const normalizedAddress = normalizeAddress(address);
           try {
-            item.balance = await getAddressVotingBalance(
-              api,
-              normalizedAddress,
-            );
+            item.balance = await getAddressVotingBalance(chain, api, normalizedAddress);
           } catch (e) {
             console.error(e);
           }
@@ -93,7 +91,7 @@ export function usePostCommentsFilteredData() {
 
       setMergedComments(data);
     }
-  }, [api, commentsData, getAddressVotesData, chainType]);
+  }, [api, chain, commentsData, getAddressVotesData, chainType]);
 
   const filteredComments = useMemo(() => {
     const data = cloneDeep(mergedComments);
