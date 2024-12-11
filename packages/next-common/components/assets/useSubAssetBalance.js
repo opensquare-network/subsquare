@@ -2,7 +2,7 @@ import useSubStorage from "next-common/hooks/common/useSubStorage";
 import useAllAssetMetadata from "next-common/components/assets/context/assetMetadata";
 import { useMemo, useState, useEffect } from "react";
 import { useContextApi } from "next-common/context/api";
-import BigNumber from "bignumber.js";
+import { isNil } from "lodash";
 
 export function useMultiAccountKeyDeps(address) {
   const [allMetadata] = useAllAssetMetadata();
@@ -10,12 +10,12 @@ export function useMultiAccountKeyDeps(address) {
     () => allMetadata?.map((item) => [item.assetId, address]),
     [allMetadata, address],
   );
-  return multiAccountKey;
+  return { multiAccountKey, allMetadata };
 }
 
-export function useSubAssetBalanceDeps(address) {
+export function useQueryAssetsDeps(address) {
   const api = useContextApi();
-  const multiAccountKey = useMultiAccountKeyDeps(address);
+  const { multiAccountKey, allMetadata } = useMultiAccountKeyDeps(address);
   const [multiAccounts, setMultiAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,24 +27,22 @@ export function useSubAssetBalanceDeps(address) {
     api.query.assets.account
       .multi(multiAccountKey)
       .then((result) => {
-        const multiAccounts = result
-          ?.map((option) => {
-            if (option.isNone) {
-              return null;
-            }
+        const multiAccounts = result?.map((option) => {
+          if (option.isNone) {
+            return null;
+          }
 
-            const { balance, status = {} } = option.unwrap();
-            const { isFrozen } = status;
+          const { balance, status = {} } = option.unwrap();
+          const { isFrozen } = status;
 
-            return {
-              balance: balance.toJSON(),
-              status: {
-                isFrozen,
-              },
-            };
-          })
-          .filter(Boolean)
-          .filter((item) => !new BigNumber(item.balance || 0).isZero());
+          return {
+            option: option.unwrap(),
+            balance: balance.toJSON(),
+            status: {
+              isFrozen,
+            },
+          };
+        });
 
         setMultiAccounts(multiAccounts);
       })
@@ -53,8 +51,19 @@ export function useSubAssetBalanceDeps(address) {
       });
   }, [api, multiAccountKey]);
 
+  const assets = (allMetadata || []).reduce((result, item, index) => {
+    const account = multiAccounts[index];
+    if (isNil(account)) {
+      return result;
+    }
+
+    const balance = account.balance.toString();
+    const transferrable = account.status.isFrozen ? 0 : balance;
+    return [...result, { ...item, balance, transferrable }];
+  }, []);
+
   return {
-    multiAccounts,
+    assets,
     loading,
   };
 }
@@ -65,8 +74,17 @@ export default function useSubAssetBalance(assetId, address) {
     address,
   ]);
 
+  const data = result?.unwrap();
+  const balance = data?.balance?.toString() || 0;
+  const isFrozen = data?.status?.isFrozen;
+  const transferrable = isFrozen ? 0 : balance;
+
   return {
-    result: result?.toJSON()?.balance || 0,
+    result: {
+      balance,
+      transferrable,
+      isFrozen,
+    },
     loading,
   };
 }
