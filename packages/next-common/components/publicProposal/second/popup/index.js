@@ -28,7 +28,7 @@ function PopupContent() {
 
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const api = useContextApi();
-  const [balance, loadingBalance] = useAddressVotingBalance(
+  const { balance, isLoading: loadingBalance } = useAddressVotingBalance(
     api,
     signerAccount?.realAddress,
   );

@@ -16,42 +16,83 @@ import USDxBalanceField from "next-common/components/popup/fields/usdxBalanceFie
 import { TreasuryProvider } from "next-common/context/treasury";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { isNil } from "lodash-es";
+
+function useAjunaAssetAccount(assetId, address) {
+  const api = useContextApi();
+  const [isLoading, setIsLoading] = useState(true);
+  const [account, setAccount] = useState(null);
+
+  useEffect(() => {
+    if (!api || isNil(assetId) || !address) {
+      return;
+    }
+
+    setIsLoading(true);
+    api.query.assets.account(assetId, address).then((account) => {
+      setAccount(account);
+      setIsLoading(false);
+    });
+  }, [api, assetId, address]);
+
+  return {
+    account,
+    isLoading,
+  };
+}
+
+function useAjunaAssetMetadata(assetId) {
+  const api = useContextApi();
+  const [isLoading, setIsLoading] = useState(true);
+  const [metadata, setMetadata] = useState(null);
+
+  useEffect(() => {
+    if (!api || isNil(assetId)) {
+      return;
+    }
+
+    setIsLoading(true);
+    api.query.assets.metadata(assetId).then((metadata) => {
+      setMetadata(metadata);
+      setIsLoading(false);
+    });
+  }, [api, assetId]);
+
+  return {
+    metadata,
+    isLoading,
+  };
+}
 
 function useAjunaTreasuryBalance(symbol) {
   const api = useContextApi();
   const asset = getAssetBySymbol(symbol);
   const treasuryAccount = useTreasuryAccount(api);
-  const [isBalanceLoading, setIsBalanceLoading] = useState(false);
-  const [account, setAccount] = useState(null);
-  const [isMetadataLoading, setIsMetadataLoading] = useState(false);
-  const [metadata, setMetadata] = useState(null);
+  const { account, isLoading: isAccountLoading } = useAjunaAssetAccount(
+    asset?.id,
+    treasuryAccount,
+  );
+  const { metadata, isLoading: isMetadataLoading } = useAjunaAssetMetadata(
+    asset?.id,
+  );
 
-  useEffect(() => {
-    if (!api || !asset || !treasuryAccount) {
-      return;
-    }
+  const loading = isAccountLoading || isMetadataLoading;
 
-    setIsBalanceLoading(true);
-    api.query.assets.account(asset.id, treasuryAccount).then((account) => {
-      setAccount(account);
-      setIsBalanceLoading(false);
-    });
-
-    setIsMetadataLoading(true);
-    api.query.assets.metadata(asset.id).then((metadata) => {
-      setMetadata(metadata);
-      setIsMetadataLoading(false);
-    });
-  }, [api, asset, treasuryAccount]);
+  if (loading) {
+    return {
+      balance: null,
+      decimals: null,
+      loading: true,
+    };
+  }
 
   const balance = account?.toJSON()?.balance?.toNumber() || 0;
-  const decimals = metadata?.decimals?.toNumber() || 0;
-  const loading = isBalanceLoading || isMetadataLoading;
+  const decimals = metadata?.decimals?.toNumber();
 
   return {
     balance,
     decimals,
-    loading,
+    loading: false,
   };
 }
 
@@ -62,6 +103,16 @@ function USDxBalance({ inputBalance, setInputBalance, symbol, setSymbol }) {
     loading: isTreasuryBalanceLoading,
   } = useAjunaTreasuryBalance(symbol);
 
+  const status = isTreasuryBalanceLoading ? (
+    <TreasuryBalance isLoading={isTreasuryBalanceLoading} symbol={symbol} />
+  ) : (
+    <TreasuryBalance
+      isLoading={isTreasuryBalanceLoading}
+      symbol={symbol}
+      treasuryBalance={toPrecision(treasuryBalance, treasuryBalanceDecimals)}
+    />
+  );
+
   return (
     <USDxBalanceField
       title="Request"
@@ -69,16 +120,7 @@ function USDxBalance({ inputBalance, setInputBalance, symbol, setSymbol }) {
       setInputBalance={setInputBalance}
       symbol={symbol}
       setSymbol={setSymbol}
-      status={
-        <TreasuryBalance
-          isLoading={isTreasuryBalanceLoading}
-          symbol={symbol}
-          treasuryBalance={toPrecision(
-            treasuryBalance,
-            treasuryBalanceDecimals,
-          )}
-        />
-      }
+      status={status}
     />
   );
 }
