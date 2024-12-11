@@ -4,7 +4,7 @@ import { useState } from "react";
 import ProfileFellowshipMemberInfo from "../memberInfo";
 import ProfileFellowshipModuleTabs from "../moduleTabs";
 import ProfileFellowshipCoreEvidence from "./evidence";
-import ProfileFellowshipCoreTimeline from "./timeline";
+import ProfileFellowshipCoreFeeds from "./feeds";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import ProfileFellowshipStatisticsInfo from "../statisticsInfo";
 
@@ -14,9 +14,9 @@ export default function ProfileFellowshipCore() {
 
   const tabs = [
     {
-      label: "Timeline",
-      value: "timeline",
-      content: <ProfileFellowshipCoreTimeline />,
+      label: "Feeds",
+      value: "feeds",
+      content: <ProfileFellowshipCoreFeeds />,
     },
     {
       label: "Evidence",
