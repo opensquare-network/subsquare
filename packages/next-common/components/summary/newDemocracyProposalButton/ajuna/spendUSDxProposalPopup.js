@@ -14,6 +14,8 @@ import useValidFromField from "next-common/components/preImages/createPreimagePo
 import { useTreasuryAccount } from "next-common/utils/hooks/useTreasuryFree";
 import USDxBalanceField from "next-common/components/popup/fields/usdxBalanceField";
 import { TreasuryProvider } from "next-common/context/treasury";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 function useAjunaTreasuryBalance(symbol) {
   const api = useContextApi();
@@ -82,6 +84,7 @@ function USDxBalance({ inputBalance, setInputBalance, symbol, setSymbol }) {
 }
 
 export default function AjunaSpendUSDxProposalPopup() {
+  const dispatch = useDispatch();
   const api = useContextApi();
   const { onClose } = usePopupParams();
   const [inputBalance, setInputBalance] = useState("");
@@ -91,20 +94,38 @@ export default function AjunaSpendUSDxProposalPopup() {
   const { value: validFrom, component: validFromField } = useValidFromField();
 
   const getTxFunc = useCallback(() => {
-    if (!api || !inputBalance || !beneficiary) {
-      return {};
+    if (!api) {
+      dispatch(newErrorToast("Chain network is not connected yet"));
+      return;
+    }
+
+    if (!inputBalance) {
+      dispatch(newErrorToast("Request balance is required"));
+      return;
+    }
+
+    if (!beneficiary) {
+      dispatch(newErrorToast("Beneficiary address is required"));
+      return;
     }
 
     const asset = getAssetBySymbol(symbol);
     if (!asset) {
-      throw new Error("Invalid asset");
+      dispatch(newErrorToast(`Invalid asset type: ${symbol}`));
+      return;
     }
 
     let bnValue;
     try {
-      bnValue = checkInputValue(inputBalance, asset.decimals);
-    } catch (err) {
-      return {};
+      bnValue = checkInputValue(
+        inputBalance,
+        asset.decimals,
+        "Request balance",
+        false,
+      );
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+      return;
     }
 
     return api.tx.treasury.spend(
@@ -115,7 +136,7 @@ export default function AjunaSpendUSDxProposalPopup() {
       beneficiary,
       validFrom ? parseInt(validFrom) : null,
     );
-  }, [api, symbol, inputBalance, beneficiary, validFrom]);
+  }, [dispatch, api, symbol, inputBalance, beneficiary, validFrom]);
 
   return (
     <TreasuryProvider>

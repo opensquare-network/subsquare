@@ -24,16 +24,17 @@ export default function AjunaSpendLocalProposalPopup() {
 
   const getTxFunc = useCallback(() => {
     if (!api) {
-      return;
-    }
-
-    if (!beneficiary) {
-      dispatch(newErrorToast("Beneficiary address is required"));
+      dispatch(newErrorToast("Chain network is not connected yet"));
       return;
     }
 
     if (!inputBalance) {
       dispatch(newErrorToast("Request balance is required"));
+      return;
+    }
+
+    if (!beneficiary) {
+      dispatch(newErrorToast("Beneficiary address is required"));
       return;
     }
 
