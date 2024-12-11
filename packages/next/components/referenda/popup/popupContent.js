@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAddressVotingBalance } from "utils/hooks";
+import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
 import { noop } from "lodash-es";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
