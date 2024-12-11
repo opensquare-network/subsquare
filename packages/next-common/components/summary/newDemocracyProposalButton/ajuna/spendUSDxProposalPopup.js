@@ -133,8 +133,8 @@ export default function AjunaSpendUSDxProposalPopup() {
           setSymbol={setSymbol}
         />
         {beneficiaryField}
-        {validFromField}
         <AdvanceSettings>
+          {validFromField}
           <SubmissionDeposit />
         </AdvanceSettings>
         <div className="flex justify-end">
