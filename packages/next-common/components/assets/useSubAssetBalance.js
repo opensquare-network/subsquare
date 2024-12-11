@@ -4,23 +4,32 @@ import { useMemo, useState, useEffect } from "react";
 import { useContextApi } from "next-common/context/api";
 import { isNil } from "lodash";
 
-export function useQueryAddressAssets(address) {
-  const api = useContextApi();
+function useAssetsAccountKeys(address) {
   const [allMetadata] = useAllAssetMetadata();
-  const multiAccountKey = useMemo(
+  const assetsAccountKeys = useMemo(
     () => allMetadata?.map((item) => [item.assetId, address]),
     [allMetadata, address],
   );
+
+  return {
+    assetsAccountKeys,
+    allMetadata,
+  };
+}
+
+export function useQueryAddressAssets(address) {
+  const api = useContextApi();
+  const { assetsAccountKeys, allMetadata } = useAssetsAccountKeys(address);
   const [multiAccounts, setMultiAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!api || !multiAccountKey) {
+    if (!api || !assetsAccountKeys) {
       return;
     }
 
     api.query.assets.account
-      .multi(multiAccountKey)
+      .multi(assetsAccountKeys)
       .then((result) => {
         const multiAccounts = result?.map((option) => {
           if (option.isNone) {
@@ -44,7 +53,7 @@ export function useQueryAddressAssets(address) {
       .finally(() => {
         setLoading(false);
       });
-  }, [api, multiAccountKey]);
+  }, [api, assetsAccountKeys]);
 
   const assets = (allMetadata || []).reduce((result, item, index) => {
     const account = multiAccounts[index];
