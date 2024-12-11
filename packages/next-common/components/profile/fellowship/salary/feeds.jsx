@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAsync } from "react-use";
 
-export default function ProfileFellowshipSalaryTimeline() {
+export default function ProfileFellowshipSalaryFeeds() {
   const { id: address } = usePageProps();
   const router = useRouter();
   const [page, setPage] = useState(parseInt(router.query.page || 1));

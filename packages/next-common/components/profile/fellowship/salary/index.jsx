@@ -4,7 +4,7 @@ import { useState } from "react";
 import ProfileFellowshipMemberInfo from "../memberInfo";
 import ProfileFellowshipModuleTabs from "../moduleTabs";
 import ProfileFellowshipSalaryPayments from "./payments";
-import ProfileFellowshipSalaryTimeline from "./timeline";
+import ProfileFellowshipSalaryFeeds from "./feeds";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import ProfileFellowshipStatisticsInfo from "../statisticsInfo";
 
@@ -23,9 +23,9 @@ export default function ProfileFellowshipSalary() {
       ),
     },
     {
-      label: "Timeline",
-      value: "timeline",
-      content: <ProfileFellowshipSalaryTimeline />,
+      label: "Feeds",
+      value: "feeds",
+      content: <ProfileFellowshipSalaryFeeds />,
     },
   ];
 
