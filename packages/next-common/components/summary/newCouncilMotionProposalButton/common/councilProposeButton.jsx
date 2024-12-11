@@ -8,28 +8,28 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 
-function getThreshold(members, chain, pallet) {
-  if ([Chains.shibuya, Chains.astar].includes(chain) && pallet === "council") {
-    return members?.length;
-  }
+function useDefaultThreshold() {
+  const chain = useChain();
+  const { members } = useCollectiveMembers();
 
-  if (chain === Chains.shibuya) {
-    return Math.ceil(members?.length / 2);
-  } else if (chain === Chains.astar) {
+  if (chain === Chains.astar) {
     return Math.ceil((members?.length * 2) / 3);
   }
 
-  throw new Error(`Unsupported chain: ${chain}`);
+  return Math.ceil(members?.length / 2);
 }
 
-export default function CouncilProposeButton({ getTxFunc, loading, disabled }) {
+export default function CouncilProposeButton({
+  proposalThreshold,
+  getTxFunc,
+  loading,
+  disabled,
+}) {
   const router = useRouter();
   const api = useContextApi();
   const pallet = useCollectivePallet();
-  const chain = useChain();
-
-  const { members } = useCollectiveMembers();
-  const threshold = getThreshold(members, chain, pallet);
+  const defaultThreshold = useDefaultThreshold();
+  const threshold = proposalThreshold ?? defaultThreshold;
 
   const getProposeTxFunc = useCallback(() => {
     if (!api) {
