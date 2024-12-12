@@ -7,6 +7,7 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import AddressUser from "next-common/components/user/addressUser";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { sortAddresses } from "@polkadot/util-crypto";
 
 const CallPopup = dynamicPopup(() => import("./callPopup"));
 
@@ -104,9 +105,12 @@ export function Approving({ approvals, threshold }) {
 }
 
 export function Signatories({ signatories = [] }) {
+  const { ss58Format } = useChainSettings();
+  const sortedSignatories = sortAddresses(signatories, ss58Format);
+
   return (
-    <Tooltip content={<AddressesTooltip addresses={signatories} />}>
-      <span>{signatories?.length}</span>
+    <Tooltip content={<AddressesTooltip addresses={sortedSignatories} />}>
+      <span>{sortedSignatories?.length}</span>
     </Tooltip>
   );
 }
