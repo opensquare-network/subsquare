@@ -42,6 +42,7 @@ import ajuna from "./ajuna";
 import kusamaCoretime from "./kusamaCoretime";
 import polkadotCoretime from "./polkadotCoretime";
 import laos from "./laos";
+import laosTestnet from "./laosTestnet";
 
 const settingsMap = {
   polkadot,
@@ -64,6 +65,7 @@ const settingsMap = {
   khala,
   kintsugi,
   laos,
+  [laosTestnet.value]: laosTestnet,
   litentry,
   litmus,
   moonbeam,

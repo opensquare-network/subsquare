@@ -44,6 +44,7 @@ const Chains = {
   kusamaCoretime: "kusama-coretime",
   polkadotCoretime: "polkadot-coretime",
   laos: "laos",
+  laosTestnet: "laos-testnet",
 };
 
 export default Chains;
