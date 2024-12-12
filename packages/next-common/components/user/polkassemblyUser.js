@@ -2,12 +2,13 @@ import React, { memo } from "react";
 import Identity from "../Identity";
 import DeletedAccount from "./deletedAccount";
 import UserDisplay from "./userDisplay";
-import { AvatarWrapper, LinkWrapper, UserWrapper } from "./styled";
+import { AvatarWrapper, UserWrapper } from "./styled";
 import Avatar from "../avatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
 import Gravatar from "../gravatar";
 import Link from "next/link";
+import ExternalLink from "../externalLink";
 
 function PolkassemblyUser({
   user,
@@ -55,15 +56,14 @@ function PolkassemblyUser({
       {address ? (
         <Link href={`/user/${address}/votes`}>{userIdentity}</Link>
       ) : (
-        <LinkWrapper
+        <ExternalLink
           href={user.polkassemblyUserLink}
-          target="_blank"
-          rel="noreferrer"
-          color={color}
-          onClick={(e) => e.stopPropagation()}
+          style={{ color }}
+          externalIcon={false}
+          className="text-inherit hover:!underline"
         >
           {userIdentity}
-        </LinkWrapper>
+        </ExternalLink>
       )}
     </UserWrapper>
   );
