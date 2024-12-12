@@ -5,22 +5,24 @@ import {
   colId,
   colName,
   colToken,
-  colTotal,
-  colTransferrable,
+  useColTotal,
+  useColTransferrable,
 } from "next-common/components/assets/common/columns";
-import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
-
-const columnsDef = [colToken, colId, colName, colTotal, colTransferrable];
+import { useQueryAddressAssets } from "next-common/components/assets/useSubAssetBalance";
 
 export default function ProfileAssetsList({ address }) {
-  const assets = useAssetHubTabsAssets(address);
+  const { loading, assets } = useQueryAddressAssets(address);
+  const colTotal = useColTotal(address);
+  const colTransferrable = useColTransferrable(address);
+
+  const columnsDef = [colToken, colId, colName, colTotal, colTransferrable];
 
   return (
     <ScrollerX>
       <MapDataList
         columnsDef={columnsDef}
         data={assets}
-        loading={!assets}
+        loading={loading}
         noDataText="No current assets"
       />
     </ScrollerX>
