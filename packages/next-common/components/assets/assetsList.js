@@ -51,17 +51,17 @@ export const colTransfer = {
 
 export default function AssetsList({ address }) {
   const { loading, assets } = useQueryAddressAssets(address);
-  const [, setTotalCount] = useTotalCounts();
+  const [totalCounts, setTotalCount] = useTotalCounts();
   const colTotal = useColTotal(address);
   const colTransferrable = useColTransferrable(address);
 
   useEffect(() => {
-    if (loading) {
+    if (loading || assets?.length === totalCounts.assets) {
       return;
     }
 
     setTotalCount("assets", assets?.length || 0);
-  }, [assets, setTotalCount, loading]);
+  }, [assets, setTotalCount, loading, totalCounts.assets]);
 
   const columnsDef = [
     colToken,

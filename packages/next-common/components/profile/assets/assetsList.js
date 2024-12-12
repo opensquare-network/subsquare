@@ -13,19 +13,19 @@ import { useTotalCounts } from "next-common/components/assets/context/assetHubTa
 
 export default function ProfileAssetsList({ address }) {
   const { loading, assets } = useQueryAddressAssets(address);
-  const [, setTotalCount] = useTotalCounts();
+  const [totalCounts, setTotalCount] = useTotalCounts();
   const colTotal = useColTotal(address);
   const colTransferrable = useColTransferrable(address);
 
   const columnsDef = [colToken, colId, colName, colTotal, colTransferrable];
 
   useEffect(() => {
-    if (loading) {
+    if (loading || assets?.length === totalCounts.assets) {
       return;
     }
 
     setTotalCount("assets", assets?.length || 0);
-  }, [assets, setTotalCount, loading]);
+  }, [assets, setTotalCount, loading, totalCounts.assets]);
 
   return (
     <ScrollerX>
