@@ -3,7 +3,7 @@ import {
   usePopupParams,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -11,6 +11,7 @@ import { useContextApi } from "next-common/context/api";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import Signer from "next-common/components/popup/fields/signerField";
+import useSubAssetBalance from "next-common/components/assets/useSubAssetBalance";
 
 function PopupContent() {
   const { asset, onClose } = usePopupParams();
@@ -77,8 +78,19 @@ function PopupContent() {
 }
 
 export default function AssetTransferPopup(props) {
+  const { asset: initialAsset, address } = props;
+  const { result, loading } = useSubAssetBalance(initialAsset.assetId, address);
+
+  const updatedProps = useMemo(() => {
+    const asset = loading ? initialAsset : { ...initialAsset, ...result };
+    return {
+      ...props,
+      asset,
+    };
+  }, [props, initialAsset, result, loading]);
+
   return (
-    <PopupWithSigner title="Transfer" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Transfer" className="!w-[640px]" {...updatedProps}>
       <PopupContent />
     </PopupWithSigner>
   );

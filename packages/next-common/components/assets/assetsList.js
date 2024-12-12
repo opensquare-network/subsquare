@@ -17,13 +17,17 @@ import { useTotalCounts } from "next-common/components/assets/context/assetHubTa
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
-function TransferButton({ asset }) {
+function TransferButton({ asset, address }) {
   const [showPopup, setShowPopup] = useState(false);
 
   let popup = null;
   if (asset.type !== "native") {
     popup = (
-      <AssetTransferPopup asset={asset} onClose={() => setShowPopup(false)} />
+      <AssetTransferPopup
+        asset={asset}
+        address={address}
+        onClose={() => setShowPopup(false)}
+      />
     );
   }
 
@@ -43,17 +47,20 @@ function TransferButton({ asset }) {
   );
 }
 
-export const colTransfer = {
-  name: "",
-  style: { textAlign: "right", width: "80px", minWidth: "80px" },
-  render: (item) => <TransferButton asset={item} />,
-};
+function useColTransfer(address) {
+  return {
+    name: "",
+    style: { textAlign: "right", width: "80px", minWidth: "80px" },
+    render: (item) => <TransferButton asset={item} address={address} />,
+  };
+}
 
 export default function AssetsList({ address }) {
   const { loading, assets } = useQueryAddressAssets(address);
   const [totalCounts, setTotalCount] = useTotalCounts();
   const colTotal = useColTotal(address);
   const colTransferrable = useColTransferrable(address);
+  const colTransfer = useColTransfer(address);
 
   useEffect(() => {
     if (loading || assets?.length === totalCounts.assets) {
