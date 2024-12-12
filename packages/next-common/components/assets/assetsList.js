@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SystemTransfer } from "@osn/icons/subsquare";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
@@ -13,6 +13,7 @@ import {
   useColTotal,
   useColTransferrable,
 } from "next-common/components/assets/common/columns";
+import { useTotalCounts } from "next-common/components/assets/context/assetHubTabsProvider";
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
@@ -50,8 +51,17 @@ export const colTransfer = {
 
 export default function AssetsList({ address }) {
   const { loading, assets } = useQueryAddressAssets(address);
+  const [, setTotalCount] = useTotalCounts();
   const colTotal = useColTotal(address);
   const colTransferrable = useColTransferrable(address);
+
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    setTotalCount("assets", assets?.length || 0);
+  }, [assets, setTotalCount, loading]);
 
   const columnsDef = [
     colToken,
