@@ -15,7 +15,7 @@ export default function DelegationHint({ style = {} }) {
       }}
     >
       You are delegating votes to &nbsp;
-      <AddressUser add={target} fontSize={12} linkToVotesPage />
+      <AddressUser add={target} fontSize={12} link="/votes" />
     </HintMessage>
   );
 }

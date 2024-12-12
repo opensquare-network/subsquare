@@ -12,9 +12,8 @@ function SubIdentityUser({
   maxWidth: propMaxWidth,
   noTooltip = false,
   color,
-  linkToVotesPage = false,
   ellipsis = true,
-  externalLink,
+  link,
 }) {
   const address = add;
   const [identity, hasIdentity] = useIdentityInfo(address);
@@ -49,9 +48,8 @@ function SubIdentityUser({
       noEvent={noEvent}
       noTooltip={noTooltip}
       color={color}
-      linkToVotesPage={linkToVotesPage}
       ellipsis={ellipsis}
-      externalLink={externalLink}
+      link={link}
     />
   );
 }

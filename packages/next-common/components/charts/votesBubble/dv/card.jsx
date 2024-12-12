@@ -38,9 +38,7 @@ export default function DVDelegateCard({ data }) {
   const noVoted = isNil(totalVotes);
   const delegators = data?.directVoterDelegations;
 
-  const user = (
-    <AddressUser linkToVotesPage add={data.account} maxWidth={220} />
-  );
+  const user = <AddressUser link="/votes" add={data.account} maxWidth={220} />;
 
   const percentage = `${bnToPercentage(
     totalVotes,
