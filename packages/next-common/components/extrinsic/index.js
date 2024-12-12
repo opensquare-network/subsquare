@@ -5,7 +5,6 @@ import Params from "./params";
 import SectionSelect from "./sectionSelect";
 import { useObjectItemState } from "next-common/hooks/useItemState";
 import { useContextApi } from "next-common/context/api";
-import ExtrinsicLoading from "./loading";
 
 function getParams({ meta }) {
   return meta.args.map(({ name, type, typeName }) => ({
@@ -117,10 +116,6 @@ export default function Extrinsic({
       return getCallState(fn);
     });
   }, [api, sectionName, methodName]);
-
-  if (!api) {
-    return <ExtrinsicLoading />;
-  }
 
   return (
     <div className="flex flex-col gap-[8px]">
