@@ -75,7 +75,7 @@ const collectives = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasFellowshipParams: true,
-  showAchainableLabels: true,
+  showAchainableLabels: false,
   description: "Collectives on Polkadot network.",
   modules: mergeChainModules({
     fellowship: {
