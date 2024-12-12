@@ -8,7 +8,6 @@ import RelayInfoProvider from "next-common/context/relayInfo";
 import { withCommonProps } from "next-common/lib";
 import { createStore } from "next-common/store";
 import { commonReducers } from "next-common/store/reducers";
-import multiAccountsSlice from "next-common/store/reducers/multiAccountsSlice";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
@@ -26,7 +25,6 @@ if (isAssetHubSupported) {
     chain,
     reducer: {
       ...commonReducers,
-      multiAccounts: multiAccountsSlice,
     },
   });
 }
