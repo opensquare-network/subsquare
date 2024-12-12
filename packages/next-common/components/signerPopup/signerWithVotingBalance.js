@@ -10,7 +10,7 @@ export default function SignerWithVotingBalance({ title, noSwitchSigner }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
 
-  const [balance, loadingBalance] = useAddressVotingBalance(
+  const { balance, isLoading: loadingBalance } = useAddressVotingBalance(
     api,
     signerAccount?.realAddress,
   );

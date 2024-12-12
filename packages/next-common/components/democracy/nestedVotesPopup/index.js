@@ -127,7 +127,7 @@ function VotesList({ items = [], loading }) {
         add={item.account}
         noTooltip
         maxWidth={296}
-        linkToVotesPage
+        link="/votes"
       />,
       (item.directVoterDelegations || []).length,
       <ValueDisplay

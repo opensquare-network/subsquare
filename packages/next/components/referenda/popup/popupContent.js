@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAddressVotingBalance } from "utils/hooks";
+import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
 import { noop } from "lodash-es";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
@@ -137,10 +137,8 @@ export default function PopupContent() {
   const signerAccount = useSignerAccount();
 
   const api = useContextApi();
-  const [votingBalance, votingIsLoading] = useAddressVotingBalance(
-    api,
-    signerAccount?.realAddress,
-  );
+  const { balance: votingBalance, isLoading: votingIsLoading } =
+    useAddressVotingBalance(api, signerAccount?.realAddress);
   const {
     vote: addressVote,
     isLoading: addressVoteIsLoading,

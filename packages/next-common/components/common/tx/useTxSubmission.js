@@ -21,7 +21,7 @@ export default function useTxSubmission({
 
   const doSubmit = useCallback(async () => {
     if (!api) {
-      dispatch(newErrorToast("Chain network is not connected yet"));
+      dispatch(newErrorToast("Chain RPC is not connected yet"));
       return;
     }
 
