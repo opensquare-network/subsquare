@@ -79,15 +79,18 @@ function PopupContent() {
 
 export default function AssetTransferPopup(props) {
   const { asset: initialAsset, address } = props;
-  const { result, loading } = useSubAssetBalance(initialAsset.assetId, address);
+  const { result } = useSubAssetBalance(initialAsset.assetId, address);
 
   const updatedProps = useMemo(() => {
-    const asset = loading ? initialAsset : { ...initialAsset, ...result };
+    const asset = result?.transferrable
+      ? { ...initialAsset, ...result }
+      : initialAsset;
+
     return {
       ...props,
       asset,
     };
-  }, [props, initialAsset, result, loading]);
+  }, [props, initialAsset, result]);
 
   return (
     <PopupWithSigner title="Transfer" className="!w-[640px]" {...updatedProps}>

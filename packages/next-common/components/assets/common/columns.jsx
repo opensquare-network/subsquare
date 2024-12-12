@@ -61,13 +61,11 @@ export const colName = {
 function TotalBalance({ item, address }) {
   const { result } = useSubAssetBalance(item.assetId, address);
 
+  // TODO: update balance & transferrable after transfer all current asset balance.
   return (
     <span className="text14Medium text-textPrimary">
       <BalanceDisplay
-        balance={formatBalance(
-          result?.balance || item?.balance || 0,
-          item.decimals,
-        )}
+        balance={formatBalance(result?.balance || 0, item.decimals)}
       />
     </span>
   );
@@ -79,10 +77,7 @@ function TransferrableBalance({ item, address }) {
   return (
     <span key="transferrable" className="text14Medium text-textPrimary">
       <BalanceDisplay
-        balance={formatBalance(
-          result?.transferrable || item.transferrable || 0,
-          item.decimals,
-        )}
+        balance={formatBalance(result?.transferrable || 0, item.decimals)}
       />
     </span>
   );

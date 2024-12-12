@@ -73,9 +73,9 @@ export function useQueryAddressAssets(address) {
 }
 
 export default function useSubAssetBalance(assetId, address) {
-  const [transferrable, setTransferrable] = useState(null);
+  const [balance, setBalance] = useState(0);
+  const [transferrable, setTransferrable] = useState(0);
   const [isFrozen, setIsFrozen] = useState(null);
-  const [balance, setBalance] = useState(null);
 
   const { result, loading } = useSubStorage("assets", "account", [
     String(assetId),
