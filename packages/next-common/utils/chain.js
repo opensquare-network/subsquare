@@ -43,6 +43,7 @@ export function isAssetHubChain(chain) {
     Chains.polkadotAssetHub,
     Chains.westendAssetHub,
     Chains.kusamaAssetHub,
+    Chains.paseoAssetHub,
   ].includes(chain);
 }
 
@@ -64,6 +65,10 @@ export function isRelayChain(chain) {
 
 export function isPaseoChain(chain) {
   return [Chains.paseo].includes(chain);
+}
+
+export function isPaseoAssetHubChain(chain) {
+  return [Chains.paseoAssetHub].includes(chain);
 }
 
 export function getAssetHubChain(chain) {
@@ -94,6 +99,8 @@ export function getRelayChain(chain) {
     return Chains.kusama;
   } else if (isWestendAssetHubChain(chain)) {
     return Chains.westend;
+  } else if (isPaseoAssetHubChain(chain)) {
+    return Chains.paseo;
   } else if (isCollectivesChain(chain)) {
     return Chains.polkadot;
   }
