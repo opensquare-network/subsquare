@@ -61,8 +61,8 @@ export function useQueryAddressAssets(address) {
       return result;
     }
 
-    const balance = account.balance.toString();
-    const transferrable = account.status.isFrozen ? 0 : balance;
+    const balance = account?.balance?.toString();
+    const transferrable = account?.status?.isFrozen ? 0 : balance;
     return [...result, { ...item, balance, transferrable }];
   }, []);
 
