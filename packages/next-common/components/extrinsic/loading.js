@@ -1,10 +1,15 @@
-import tw from "tailwind-styled-components";
+import styled from "styled-components";
 
-const Bar = tw.div`
-my-[8px]
-h-[20px]
-rounded-[4px]
-bg-gradient-to-r from-[#F6F7FA] via-[rgba(246, 247, 250, 0.5)] to-[#F6F7FA]
+const Bar = styled.div`
+  margin: 8px 0;
+  height: 20px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    #f6f7fa 0%,
+    rgba(246, 247, 250, 0.5) 49.5%,
+    #f6f7fa 100%
+  );
 `;
 
 export default function ExtrinsicLoading() {
