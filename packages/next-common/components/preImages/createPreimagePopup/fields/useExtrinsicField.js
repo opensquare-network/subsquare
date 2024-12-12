@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import Extrinsic from "next-common/components/extrinsic";
 import { useContextApi } from "next-common/context/api";
-import Loading from "next-common/components/loading";
 
 export function useExtrinsicField({
   defaultSectionName = "system",
@@ -24,17 +23,6 @@ export function useExtrinsicField({
     },
     [api],
   );
-
-  if (!api) {
-    return {
-      extrinsic,
-      component: (
-        <div className="flex justify-center">
-          <Loading size={20} />
-        </div>
-      ),
-    };
-  }
 
   return {
     extrinsic,
