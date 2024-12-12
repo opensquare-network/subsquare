@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Loading from "next-common/components/loading";
+import { LoadingContent } from "next-common/components/popup/loadingContent";
 import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
@@ -118,13 +118,9 @@ export function SignSubmitInnerPopup({
       maskClosable={false}
     >
       <SignerWithBalance />
-      {isLoading ? (
-        <div className="flex justify-center">
-          <Loading size={20} />
-        </div>
-      ) : (
+      <LoadingContent isLoading={isLoading}>
         <PopupPropose multisig={multisig} setValue={setValue} />
-      )}
+      </LoadingContent>
       <TxSubmissionButton
         disabled={isSubmitBtnDisabled}
         getTxFunc={getTxFunc}

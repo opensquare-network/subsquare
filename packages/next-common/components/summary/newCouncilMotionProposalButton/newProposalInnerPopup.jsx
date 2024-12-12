@@ -1,7 +1,7 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useExtrinsicField } from "next-common/components/preImages/createPreimagePopup/fields/useExtrinsicField";
 import InputNumber from "next-common/components/inputNumber";
-import Loading from "next-common/components/loading";
+import { LoadingContent } from "next-common/components/popup/loadingContent";
 import PopupLabel from "next-common/components/popup/label";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
@@ -57,30 +57,24 @@ export default function NewCouncilMotionProposalInnerPopup({
     >
       <SignerWithBalance />
 
-      {loading ? (
-        <div className="flex justify-center">
-          <Loading size={20} />
+      <LoadingContent isLoading={loading}>
+        <div>
+          <PopupLabel text="Threshold" />
+          <InputNumber
+            value={threshold || 1}
+            setValue={setThreshold}
+            min={1}
+            max={members?.length}
+          />
+          {!thresholdValid && (
+            <div className="text-red500 text12Medium">
+              Threshold must be between 1 and {members?.length}
+            </div>
+          )}
         </div>
-      ) : (
-        <>
-          <div>
-            <PopupLabel text="Threshold" />
-            <InputNumber
-              value={threshold || 1}
-              setValue={setThreshold}
-              min={1}
-              max={members?.length}
-            />
-            {!thresholdValid && (
-              <div className="text-red500 text12Medium">
-                Threshold must be between 1 and {members?.length}
-              </div>
-            )}
-          </div>
 
-          {extrinsicComponent}
-        </>
-      )}
+        {extrinsicComponent}
+      </LoadingContent>
 
       <div className="flex justify-end">
         <Tooltip
