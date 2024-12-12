@@ -30,7 +30,7 @@ export function useExtrinsicField({
   label = "Propose",
   defaultSectionName = "system",
   defaultMethodName = "setCode",
-}) {
+} = {}) {
   const api = useContextApi();
 
   const [extrinsic, setExtrinsic] = useState(null);

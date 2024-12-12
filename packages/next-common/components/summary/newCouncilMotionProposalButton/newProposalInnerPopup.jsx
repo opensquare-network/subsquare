@@ -1,5 +1,5 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import Extrinsic from "next-common/components/extrinsic";
+import { useExtrinsicField } from "next-common/components/preImages/createPreimagePopup/fields/useExtrinsicField";
 import InputNumber from "next-common/components/inputNumber";
 import Loading from "next-common/components/loading";
 import PopupLabel from "next-common/components/popup/label";
@@ -20,9 +20,8 @@ export default function NewCouncilMotionProposalInnerPopup({
   const router = useRouter();
   const pallet = useCollectivePallet();
   const api = useContextApi();
-  const [{ proposal, proposalLength }, setProposalState] = useState({
-    proposalLength: 0,
-  });
+  const { extrinsic, component: extrinsicComponent } = useExtrinsicField();
+
   const [threshold, setThreshold] = useState(1);
   const { members } = useCollectiveMembers();
 
@@ -34,38 +33,20 @@ export default function NewCouncilMotionProposalInnerPopup({
   const thresholdValid = threshold > 0 && threshold <= members?.length;
 
   const loading = !api || !members?.length;
-  const disabled = !api || !thresholdValid || !proposal || !isMember;
-
-  const setProposal = useCallback(
-    ({ isValid, data }) => {
-      if (!api) {
-        return;
-      }
-      if (isValid) {
-        setProposalState({
-          proposal: data,
-          proposalLength: data.encodedLength,
-        });
-      }
-    },
-    [api],
-  );
+  const disabled = !api || !thresholdValid || !extrinsic || !isMember;
 
   const getTxFunc = useCallback(() => {
-    if (!api) {
-      return;
-    }
-    if (!proposal) {
+    if (!api || !extrinsic) {
       return;
     }
 
     const params =
       api.tx[pallet].propose.meta.args.length === 3
-        ? [threshold, proposal, proposalLength]
-        : [threshold, proposal];
+        ? [threshold, extrinsic, extrinsic.encodedLength]
+        : [threshold, extrinsic];
 
     return api.tx[pallet].propose(...params);
-  }, [api, pallet, proposal, proposalLength, threshold]);
+  }, [api, pallet, extrinsic, threshold]);
 
   return (
     <Popup
@@ -97,14 +78,7 @@ export default function NewCouncilMotionProposalInnerPopup({
             )}
           </div>
 
-          <div>
-            <PopupLabel text="Propose" />
-            <Extrinsic
-              defaultSectionName="system"
-              defaultMethodName="setCode"
-              setValue={setProposal}
-            />
-          </div>
+          {extrinsicComponent}
         </>
       )}
 
