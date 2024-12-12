@@ -46,6 +46,10 @@ export function isAssetHubChain(chain) {
   ].includes(chain);
 }
 
+export function isAjunaChain(chain) {
+  return [Chains.ajuna].includes(chain);
+}
+
 export function isShibuyaChain(chain) {
   return [Chains.shibuya, Chains.astar].includes(chain);
 }

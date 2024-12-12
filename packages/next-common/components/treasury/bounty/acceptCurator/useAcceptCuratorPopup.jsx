@@ -1,17 +1,13 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import BalanceField from "next-common/components/popup/fields/balanceField";
-import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import {
-  usePopupParams,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
-import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { toPrecision } from "next-common/utils";
 import { useCallback, useState } from "react";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 export function useAcceptCuratorPopup(pallet = "bounties", params = []) {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,11 +38,6 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
   const { onClose } = usePopupParams();
   const api = useContextApi();
 
-  const signerAccount = useSignerAccount();
-  const address = signerAccount?.realAddress;
-
-  const { value: balance, loading } = useSubBalanceInfo(address);
-
   const getTxFunc = useCallback(() => {
     if (!api?.tx?.[pallet]) {
       return null;
@@ -57,11 +48,7 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
 
   return (
     <>
-      <Signer
-        balanceName="Available"
-        balance={balance?.balance}
-        isBalanceLoading={loading}
-      />
+      <SignerWithBalance />
       <BalanceField
         title="Curator Deposit"
         disabled
