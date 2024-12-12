@@ -74,7 +74,7 @@ function DetailDelegatorList({ items = [] }) {
         add={item.account}
         noTooltip
         maxWidth={296}
-        linkToVotesPage
+        link="/votes"
       />,
       <CapitalListItem
         key="capital"

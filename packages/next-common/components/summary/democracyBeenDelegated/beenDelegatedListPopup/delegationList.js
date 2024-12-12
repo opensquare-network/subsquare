@@ -49,7 +49,7 @@ function DelegationList({ items, loading = false }) {
         key="user"
         add={item.delegator}
         maxWidth={colWidths.address}
-        linkToVotesPage
+        link="/votes"
       />,
       <CapitalListItem
         key="capital"
