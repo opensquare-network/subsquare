@@ -89,7 +89,16 @@ export function SignSubmitInnerPopup({
       call,
       maxWeight,
     );
-  }, [api, address, threshold, signatories, maybeTimepoint, call, maxWeight]);
+  }, [
+    api,
+    address,
+    threshold,
+    signatories,
+    ss58Format,
+    maybeTimepoint,
+    call,
+    maxWeight,
+  ]);
 
   const onFinalized = () => {
     dispatch(newSuccessToast("Multisig status will be updated in seconds"));

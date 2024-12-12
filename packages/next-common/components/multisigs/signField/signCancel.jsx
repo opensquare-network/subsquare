@@ -39,7 +39,7 @@ export default function SignCancel({ multisig = {} }) {
       timepoint,
       callHash,
     );
-  }, [api, address, threshold, signatories, callHash, timepoint]);
+  }, [api, address, threshold, signatories, ss58Format, callHash, timepoint]);
 
   const onFinalized = () => {
     setIsDisabled(false);

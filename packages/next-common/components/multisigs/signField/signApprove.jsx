@@ -67,7 +67,15 @@ export default function SignApprove({ multisig = {} }) {
       callHash,
       maxWeight,
     );
-  }, [api, address, threshold, signatories, callHash, maybeTimepoint]);
+  }, [
+    api,
+    address,
+    threshold,
+    signatories,
+    ss58Format,
+    callHash,
+    maybeTimepoint,
+  ]);
 
   const onFinalized = () => {
     setIsDisabled(false);
