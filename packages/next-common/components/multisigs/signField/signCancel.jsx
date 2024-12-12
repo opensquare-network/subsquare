@@ -8,12 +8,12 @@ import Tooltip from "next-common/components/tooltip";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  sortSignatories,
   fetchMultisigList10Times,
   fetchMultisigsCount10Times,
 } from "../common";
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
+import { sortAddresses } from "@polkadot/util-crypto";
 
 export default function SignCancel({ multisig = {} }) {
   const api = useContextApi();
@@ -24,6 +24,7 @@ export default function SignCancel({ multisig = {} }) {
   const myMultisigs = useSelector(myMultisigsSelector);
   const { page = 1 } = myMultisigs || {};
   const chain = useChain();
+  const { ss58Format } = useChainSettings();
 
   const getTxFunc = useCallback(() => {
     if (!api || !address) {
@@ -34,7 +35,7 @@ export default function SignCancel({ multisig = {} }) {
 
     return api.tx.multisig?.cancelAsMulti(
       threshold,
-      sortSignatories(otherSignatories),
+      sortAddresses(otherSignatories, ss58Format),
       timepoint,
       callHash,
     );

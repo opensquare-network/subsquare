@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Loading from "next-common/components/loading";
 import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
@@ -12,14 +12,14 @@ import useWeight from "next-common/utils/hooks/common/useWeight";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  sortSignatories,
   fetchMultisigList10Times,
   fetchMultisigsCount10Times,
 } from "../../common";
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import PopupPropose from "./propose";
 import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
+import { sortAddresses } from "@polkadot/util-crypto";
 
 export function SignSubmitInnerPopup({
   onClose,
@@ -41,6 +41,7 @@ export function SignSubmitInnerPopup({
     maybeTimepoint?.height,
   );
   const { weight: maxWeight } = useWeight(call);
+  const { ss58Format } = useChainSettings();
 
   const isSubmitBtnDisabled = useMemo(() => {
     if (callHex) {
@@ -83,7 +84,7 @@ export function SignSubmitInnerPopup({
 
     return api.tx.multisig?.asMulti(
       threshold,
-      sortSignatories(otherSignatories),
+      sortAddresses(otherSignatories, ss58Format),
       encodedTimepoint,
       call,
       maxWeight,
