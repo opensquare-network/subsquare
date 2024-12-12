@@ -87,8 +87,8 @@ const laos = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  hasMultisig: false,
-  multisigApiPrefix: "laos",
+  // hasMultisig: true,
+  // multisigApiPrefix: "laos",
   description:
     "The universal Layer-1 for digital assets across all blockchains.",
   modules: mergeChainModules({
