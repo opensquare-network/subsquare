@@ -38,26 +38,6 @@ export const UserWrapper = styled(Flex)`
     `}
 `;
 
-export const LinkWrapper = styled.a`
-  width: max-content;
-  ${(p) =>
-    p.color
-      ? css`
-          color: ${p.color} !important;
-          text-decoration-color: ${p.color} !important;
-        `
-      : css`
-          color: var(--textPrimary) !important;
-          text-decoration-color: var(--textPrimary) !important;
-        `}
-  display: flex;
-  align-items: center;
-  :hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-`;
-
 export const AvatarImg = styled.img`
   border-radius: 50%;
   width: ${(p) => p.size}px;
