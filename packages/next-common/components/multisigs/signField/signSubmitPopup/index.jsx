@@ -109,12 +109,7 @@ export function SignSubmitInnerPopup({
   };
 
   return (
-    <Popup
-      className="!w-[640px]"
-      title="Multisig"
-      onClose={onClose}
-      maskClosable={false}
-    >
+    <Popup title="Multisig" onClose={onClose} maskClosable={false}>
       <SignerWithBalance />
       <PopupPropose multisig={multisig} setValue={setValue} />
       <TxSubmissionButton

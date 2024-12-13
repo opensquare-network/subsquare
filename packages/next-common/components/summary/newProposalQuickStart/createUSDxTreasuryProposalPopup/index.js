@@ -71,12 +71,7 @@ function PopupContent() {
 export function NewUSDxTreasuryReferendumInnerPopup() {
   const { onClose } = usePopupParams();
   return (
-    <Popup
-      title="Create USDx Treasury Proposal"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Create USDx Treasury Proposal" onClose={onClose}>
       <AssetHubApiProvider>
         <PopupContent />
       </AssetHubApiProvider>

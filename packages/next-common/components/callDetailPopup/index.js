@@ -49,11 +49,7 @@ export default function CallDetailPopup({
   const setSelectedTabId = setStorageTabId;
 
   return (
-    <Popup
-      title="Call Detail"
-      onClose={() => setShow(false)}
-      className="w-[650px]"
-    >
+    <Popup title="Call Detail" onClose={() => setShow(false)}>
       <Tab
         tabs={tabs}
         selectedTabId={selectedTabId}

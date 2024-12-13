@@ -103,12 +103,7 @@ export default function NewFellowshipTreasuryProposalPopup() {
   );
 
   return (
-    <Popup
-      title="Create Treasury Proposal"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Create Treasury Proposal" onClose={onClose}>
       <SignerWithBalance />
       {balanceField}
       <div className="flex flex-col gap-[8px]">

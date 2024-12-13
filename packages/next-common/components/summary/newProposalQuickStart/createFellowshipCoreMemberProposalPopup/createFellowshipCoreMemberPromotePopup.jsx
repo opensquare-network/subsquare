@@ -21,7 +21,7 @@ export default function NewFellowshipCoreMemberPromoteReferendumInnerPopup() {
   const trackName = getTrackNameFromRank(toRank);
 
   return (
-    <Popup title="New Promote Proposal" onClose={onClose} wide>
+    <Popup title="New Promote Proposal" onClose={onClose}>
       {whoField}
       <RankField title="To Rank" rank={toRank} setRank={setToRank} />
       <AdvanceSettings>{enactmentField}</AdvanceSettings>

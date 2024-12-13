@@ -121,7 +121,7 @@ export default function DelegatePopup({
   ...props
 }) {
   return (
-    <PopupWithSigner title="Delegate" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Delegate" {...props}>
       <PopupContent
         defaultTargetAddress={defaultTargetAddress}
         targetDisabled={targetDisabled}

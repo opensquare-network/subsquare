@@ -98,7 +98,7 @@ export function NewProposalInnerPopup({
   }, [api, proposalOrigin, preimageHash, preimageLength, enactment]);
 
   return (
-    <Popup wide title="New Proposal" onClose={onClose}>
+    <Popup title="New Proposal" onClose={onClose}>
       <SignerWithBalance />
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField

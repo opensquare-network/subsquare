@@ -54,12 +54,7 @@ export function CancelReferendumInnerPopup({
   }, [api, referendumIndex, proposalOrigin, enactment]);
 
   return (
-    <Popup
-      title="Cancel a referendum"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Cancel a referendum" onClose={onClose}>
       <SignerWithBalance />
       {referendumIndexField}
       {trackField}

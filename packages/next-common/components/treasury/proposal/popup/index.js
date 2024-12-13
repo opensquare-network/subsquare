@@ -96,11 +96,7 @@ function PopupContent() {
 
 export default function NewTreasuryProposalPopup(props) {
   return (
-    <PopupWithSigner
-      title="New Treasury Proposal"
-      className="!w-[640px]"
-      {...props}
-    >
+    <PopupWithSigner title="New Treasury Proposal" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );

@@ -50,12 +50,7 @@ export default function NewCouncilMotionProposalInnerPopup({
   }, [api, pallet, proposal, threshold]);
 
   return (
-    <Popup
-      className="!w-[640px]"
-      title="New Proposal"
-      maskClosable={false}
-      onClose={onClose}
-    >
+    <Popup title="New Proposal" maskClosable={false} onClose={onClose}>
       <SignerWithBalance />
 
       <LoadingContent isLoading={loading}>

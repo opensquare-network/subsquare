@@ -22,7 +22,7 @@ export default function FellowshipCoreFeedsCompareParamsChangesPopup({
   const [tabId, setTabId] = useState(tabs[0].tabId);
 
   return (
-    <Popup {...props} className="!w-[640px]" title={"Compare Params Changes"}>
+    <Popup {...props} title={"Compare Params Changes"}>
       <Tab selectedTabId={tabId} tabs={tabs} setSelectedTabId={setTabId} />
 
       <div

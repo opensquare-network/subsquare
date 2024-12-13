@@ -103,7 +103,7 @@ function PopupContent({ member, onClose }) {
 
 export default function PromoteFellowshipMemberPopup({ member, onClose }) {
   return (
-    <PopupWithSigner title="Promote Fellowship Member" onClose={onClose} wide>
+    <PopupWithSigner title="Promote Fellowship Member" onClose={onClose}>
       <PopupContent member={member} onClose={onClose} />
     </PopupWithSigner>
   );

@@ -18,7 +18,7 @@ export default function LinkedAddressSelectWalletPopup({
   useUnmount(resetView);
 
   return (
-    <Popup className="w-[640px] p-[48px]" onClose={onClose}>
+    <Popup className="p-[48px]" onClose={onClose}>
       <h3 className="text20Bold text-textPrimary">
         <span>{"Select "}</span>
         <span className="text-theme500">Wallet</span>

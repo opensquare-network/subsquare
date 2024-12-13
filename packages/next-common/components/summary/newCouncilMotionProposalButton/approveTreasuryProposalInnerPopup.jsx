@@ -7,7 +7,6 @@ export default function ApproveTreasuryProposalInnerPopup({
 }) {
   return (
     <Popup
-      className="!w-[640px]"
       title="Approve Treasury Proposal"
       maskClosable={false}
       onClose={onClose}

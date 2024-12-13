@@ -11,10 +11,8 @@ import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { usePopupOnClose } from "next-common/context/popup";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import useAutoSelectTreasuryTrackField
-  from "next-common/components/summary/newProposalQuickStart/common/useAutoSelectTreasuryTrackField";
-import useEnactmentBlocksField
-  from "next-common/components/summary/newProposalQuickStart/common/useEnactmentBlocksField";
+import useAutoSelectTreasuryTrackField from "next-common/components/summary/newProposalQuickStart/common/useAutoSelectTreasuryTrackField";
+import useEnactmentBlocksField from "next-common/components/summary/newProposalQuickStart/common/useEnactmentBlocksField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import SubmissionDeposit from "next-common/components/summary/newProposalPopup/submissionDeposit";
 import { useReferendaProposalOrigin } from "next-common/components/summary/newProposalPopup";
@@ -125,11 +123,7 @@ function PopupContent() {
 
 export default function BountyProposeCuratorPopup({ onClose }) {
   return (
-    <PopupWithSigner
-      title="Propose Curator"
-      className="!w-[640px]"
-      onClose={onClose}
-    >
+    <PopupWithSigner title="Propose Curator" onClose={onClose}>
       <PopupContent />
     </PopupWithSigner>
   );

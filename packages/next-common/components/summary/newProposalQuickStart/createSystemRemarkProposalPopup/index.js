@@ -25,7 +25,7 @@ export function NewRemarkReferendumInnerPopup() {
     useRemarkNotePreimageTx(remark);
 
   return (
-    <Popup title="New Remark Proposal" onClose={onClose} wide>
+    <Popup title="New Remark Proposal" onClose={onClose}>
       <SignerWithBalance />
       {remarkField}
       {trackField}

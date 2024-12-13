@@ -99,7 +99,7 @@ function Content() {
 
 export default function UnsetAvatarPopup(props) {
   return (
-    <PopupWithSigner title="Unset" wide {...props}>
+    <PopupWithSigner title="Unset" {...props}>
       <Content />
     </PopupWithSigner>
   );

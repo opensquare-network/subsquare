@@ -25,7 +25,7 @@ export default function NewFellowshipCoreMemberRetainReferendumInnerPopup() {
   const trackName = getRetainTrackNameFromRank(atRank);
 
   return (
-    <Popup title="New Retain Proposal" onClose={onClose} wide>
+    <Popup title="New Retain Proposal" onClose={onClose}>
       {whoField}
       <RankField title="At Rank" rank={atRank} readOnly />
       <AdvanceSettings>{enactmentField}</AdvanceSettings>

@@ -241,7 +241,7 @@ export default function SubmitCouncilMotionProposalPopupCommon({ children }) {
   }
 
   return (
-    <Popup wide className="!w-[640px]" title="Submit Motion" onClose={onClose}>
+    <Popup title="Submit Motion" onClose={onClose}>
       <div className="flex flex-col !mt-[24px] gap-[12px]">
         {newProposalPopupButton}
       </div>

@@ -50,11 +50,7 @@ export default function DappStakingRegisterPopup({ isMember, onClose }) {
   }, [api, developerAddress, contractAddress, contractType, dispatch]);
 
   return (
-    <Popup
-      className="!w-[640px]"
-      title="Dapp staking registration"
-      onClose={onClose}
-    >
+    <Popup title="Dapp staking registration" onClose={onClose}>
       <SignerWithBalance />
       <DeveloperAddress
         address={developerAddress}
