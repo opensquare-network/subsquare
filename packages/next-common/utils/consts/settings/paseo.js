@@ -89,7 +89,7 @@ const paseo = {
   navLogoDark: ProjectLogoPaseoDark,
   navPreferDark: true,
   links,
-  group: MenuGroups.Testnet,
+  group: MenuGroups.Paseo,
   hasMultisig: true,
   multisigApiPrefix: "paseo",
   graphqlApiSubDomain: "paseo-gh-api",
