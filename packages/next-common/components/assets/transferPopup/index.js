@@ -87,7 +87,7 @@ function PopupContent() {
 
 export default function AssetTransferPopup(props) {
   return (
-    <PopupWithSigner title="Transfer" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Transfer" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );

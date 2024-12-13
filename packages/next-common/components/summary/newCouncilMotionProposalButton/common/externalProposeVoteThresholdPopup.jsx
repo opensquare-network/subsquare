@@ -43,7 +43,7 @@ export default function ExternalProposeVoteThresholdPopup({
   }, [api, preimageHash, preimageLength, method]);
 
   return (
-    <Popup className="!w-[640px]" title={title} onClose={onClose}>
+    <Popup title={title} onClose={onClose}>
       <SignerWithBalance />
       <PreimageField
         preimageHash={preimageHash}

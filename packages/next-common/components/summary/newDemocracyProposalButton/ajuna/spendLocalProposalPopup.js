@@ -50,11 +50,7 @@ export default function AjunaSpendLocalProposalPopup() {
   }, [dispatch, api, decimals, inputBalance, beneficiary]);
 
   return (
-    <Popup
-      title="Spend treasury AJUN token"
-      className="!w-[640px]"
-      onClose={onClose}
-    >
+    <Popup title="Spend treasury AJUN token" onClose={onClose}>
       <SignerWithVotingBalance />
       {balanceField}
       {beneficiaryField}

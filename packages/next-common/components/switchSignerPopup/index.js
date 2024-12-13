@@ -201,7 +201,7 @@ export default function SwitchSignerPopup({ onClose }) {
   const { signerAccount, setProxyAddress } = useSignerContext();
 
   return (
-    <Popup title="Select Address" className="w-[640px]" onClose={onClose}>
+    <Popup title="Select Address" onClose={onClose}>
       <div className="flex flex-col gap-[24px]">
         <OriginAddress />
         <ProxiedAccounts

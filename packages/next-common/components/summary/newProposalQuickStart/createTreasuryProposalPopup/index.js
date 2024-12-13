@@ -24,11 +24,7 @@ export function NewTreasuryReferendumInnerPopup() {
     useLocalTreasuryNotePreimageTx(inputBalance, beneficiary);
 
   return (
-    <Popup
-      title="Create Treasury Proposal"
-      className="!w-[640px]"
-      onClose={onClose}
-    >
+    <Popup title="Create Treasury Proposal" onClose={onClose}>
       <SignerWithBalance />
       {balanceField}
       {beneficiaryField}

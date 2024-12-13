@@ -13,11 +13,7 @@ export default function DVDetailPopup({
   nayPercentage,
 }) {
   return (
-    <Popup
-      title="Decentralized Voices Detail"
-      className="!w-[640px]"
-      onClose={closeFunc}
-    >
+    <Popup title="Decentralized Voices Detail" onClose={closeFunc}>
       <div>
         <DVDetailInfo
           dvVotesValue={dvVotesValue}

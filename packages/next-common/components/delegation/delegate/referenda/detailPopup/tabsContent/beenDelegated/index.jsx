@@ -89,7 +89,6 @@ export default function ReferendaDelegateeDetailPopupBeenDelegated({
       {beenDelegatedPopup && (
         <Popup
           title="Been Delegated"
-          className="w-[640px] max-w-full"
           onClose={() => {
             setBeenDelegatedPopup(false);
             setBeenDelegatedPopupData([]);

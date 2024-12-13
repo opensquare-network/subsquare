@@ -123,7 +123,7 @@ function PopupContent() {
 
 export default function ParaChainTeleportPopup(props) {
   return (
-    <PopupWithSigner title="Cross-chain" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Cross-chain" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );

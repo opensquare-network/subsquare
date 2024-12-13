@@ -48,11 +48,7 @@ export default function DappStakingUnRegisterPopup({ isMember, onClose }) {
   }, [api, contractAddress, contractType, dispatch]);
 
   return (
-    <Popup
-      className="!w-[640px]"
-      title="Dapp staking registration"
-      onClose={onClose}
-    >
+    <Popup title="Dapp staking registration" onClose={onClose}>
       <SignerWithBalance />
       <div style={{ marginTop: "16px", marginBottom: "16px" }}>
         <ContractTypeTab

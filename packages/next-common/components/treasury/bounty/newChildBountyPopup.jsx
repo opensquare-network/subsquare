@@ -112,7 +112,6 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
 
   return (
     <SimpleTxPopup
-      className="w-[640px]"
       title="New Child Bounty"
       getTxFunc={getTxFunc}
       onClose={onClose}

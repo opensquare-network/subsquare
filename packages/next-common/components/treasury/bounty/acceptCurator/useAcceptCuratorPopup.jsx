@@ -68,7 +68,7 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
 
 function AcceptCuratorPopup(props) {
   return (
-    <PopupWithSigner title="Accept Curator" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Accept Curator" {...props}>
       <PopupContent pallet={props.pallet} params={props.params} />
     </PopupWithSigner>
   );
