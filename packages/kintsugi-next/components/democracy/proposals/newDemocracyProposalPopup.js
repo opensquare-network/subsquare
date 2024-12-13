@@ -1,20 +1,31 @@
 import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
 import { SubmitDemocracyProposalInnerPopup } from "next-common/components/summary/newDemocracyProposalButton/submitDemocracyProposalPopup";
 import { NewTreasuryReferendumInnerPopup } from "./quickStart/newTreasuryReferendumInnerPopup";
-import { useSpendLocalTreasuryButton } from "next-common/components/preImages/createPreimagePopup/templateButtons";
+import { SpendLocalTreasuryButton } from "next-common/components/preImages/createPreimagePopup/templateButtons";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import { useForwardPopupContext } from "next-common/context/forwardPopup";
+
+function SpendLocalTreasury() {
+  const { setForwardPopup } = useForwardPopupContext();
+  return (
+    <SpendLocalTreasuryButton
+      onClick={() => setForwardPopup(<NewTreasuryReferendumInnerPopup />)}
+    />
+  );
+}
+
+function KintsugiDemocracyProposalQuickStart() {
+  return (
+    <QuickStart>
+      <SpendLocalTreasury />
+    </QuickStart>
+  );
+}
 
 function NewDemocracyProposalInnerPopup() {
-  const { showSpendLocalTreasuryPopup, localTreasuryButton } =
-    useSpendLocalTreasuryButton(false);
-
-  if (showSpendLocalTreasuryPopup) {
-    return <NewTreasuryReferendumInnerPopup />;
-  }
-
   return (
     <SubmitDemocracyProposalInnerPopup>
-      <QuickStart>{localTreasuryButton}</QuickStart>
+      <KintsugiDemocracyProposalQuickStart />
     </SubmitDemocracyProposalInnerPopup>
   );
 }

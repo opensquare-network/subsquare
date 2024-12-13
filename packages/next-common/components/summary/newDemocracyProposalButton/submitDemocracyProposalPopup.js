@@ -5,7 +5,7 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import ForwardPopupProvider from "next-common/context/forwardPopup";
 import { AjunaDemocracyProposalQuickStart } from "./ajuna/quickStart";
 
-export function SubmitDemocracyProposalInnerPopup() {
+export function SubmitDemocracyProposalInnerPopup({ children }) {
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
 
@@ -20,7 +20,7 @@ export function SubmitDemocracyProposalInnerPopup() {
         />
       }
     >
-      <AjunaDemocracyProposalQuickStart />
+      {children}
     </SubmitProposalPopupCommon>
   );
 }
@@ -29,7 +29,9 @@ export default function SubmitDemocracyProposalPopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
       <ForwardPopupProvider>
-        <SubmitDemocracyProposalInnerPopup />
+        <SubmitDemocracyProposalInnerPopup>
+          <AjunaDemocracyProposalQuickStart />
+        </SubmitDemocracyProposalInnerPopup>
       </ForwardPopupProvider>
     </SignerPopupWrapper>
   );
