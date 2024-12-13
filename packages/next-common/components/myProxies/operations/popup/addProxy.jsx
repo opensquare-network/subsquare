@@ -95,8 +95,14 @@ function PopupContent({ onClose }) {
     if (!api || !address) {
       return;
     }
+
+    if (!proxyType) {
+      dispatch(newErrorToast("The proxy type is required"));
+      return;
+    }
+
     if (!proxyAccount) {
-      dispatch(newErrorToast("Please select a proxy account"));
+      dispatch(newErrorToast("The proxy account is required"));
       return;
     }
 
