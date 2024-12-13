@@ -1,7 +1,6 @@
-import Extrinsic from "next-common/components/extrinsic";
-import PopupLabel from "next-common/components/popup/label";
 import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import CallTree from "next-common/components/proposal/callTree";
+import { ExtrinsicFieldWithLoading } from "next-common/components/preImages/createPreimagePopup/fields/useExtrinsicField";
 
 const defaultSectionName = "system";
 const defaultMethodName = "setCode";
@@ -13,14 +12,12 @@ function ProposeTree({ callHex, when }) {
 
 function ProposeExtrinsic({ setValue }) {
   return (
-    <div>
-      <PopupLabel text="Propose" />
-      <Extrinsic
-        defaultSectionName={defaultSectionName}
-        defaultMethodName={defaultMethodName}
-        setValue={setValue}
-      />
-    </div>
+    <ExtrinsicFieldWithLoading
+      label="Propose"
+      defaultSectionName={defaultSectionName}
+      defaultMethodName={defaultMethodName}
+      setValue={setValue}
+    />
   );
 }
 

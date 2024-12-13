@@ -26,6 +26,29 @@ export default function ExtrinsicLoading() {
   );
 }
 
+export function ExtrinsicFieldWithLoading({
+  label,
+  defaultSectionName,
+  defaultMethodName,
+  setValue,
+}) {
+  const api = useContextApi();
+  if (!api) {
+    return <ExtrinsicLoading />;
+  }
+
+  return (
+    <div>
+      <PopupLabel text={label} />
+      <Extrinsic
+        defaultSectionName={defaultSectionName}
+        defaultMethodName={defaultMethodName}
+        setValue={setValue}
+      />
+    </div>
+  );
+}
+
 export function useExtrinsicField({
   label = "Propose",
   defaultSectionName = "system",
@@ -49,26 +72,15 @@ export function useExtrinsicField({
     [api],
   );
 
-  if (!api) {
-    return {
-      extrinsic,
-      component: <ExtrinsicLoading />,
-    };
-  }
-
-  const component = (
-    <div>
-      <PopupLabel text={label} />
-      <Extrinsic
+  return {
+    extrinsic,
+    component: (
+      <ExtrinsicFieldWithLoading
+        label={label}
         defaultSectionName={defaultSectionName}
         defaultMethodName={defaultMethodName}
         setValue={setValue}
       />
-    </div>
-  );
-
-  return {
-    extrinsic,
-    component,
+    ),
   };
 }
