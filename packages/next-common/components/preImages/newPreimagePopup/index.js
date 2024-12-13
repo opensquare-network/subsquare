@@ -13,7 +13,7 @@ import SignerWithVotingBalance from "next-common/components/signerPopup/signerWi
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
-import ExtrinsicLoading from "next-common/components/extrinsic/loading";
+import { ExtrinsicLoading } from "next-common/components/popup/fields/extrinsicField";
 
 const EMPTY_HASH = blake2AsHex("");
 
