@@ -3,8 +3,11 @@ import Avatar from "next-common/components/avatar";
 import Tooltip from "next-common/components/tooltip";
 import SignalIndicator from "next-common/components/icons/signalIndicator";
 import AddressUser from "next-common/components/user/addressUser";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 export default function AvatarAndAddress({ address, isActive }) {
+  const { section } = useCollectivesContext();
+
   return (
     <div className="flex flex-col gap-y-2">
       <div className="relative w-10 h-10">
@@ -22,7 +25,7 @@ export default function AvatarAndAddress({ address, isActive }) {
         showAvatar={false}
         fontSize={14}
         className="[&_.identity]:!font-semibold"
-        linkToFellowshipPage
+        link={`/${section}`}
       />
     </div>
   );

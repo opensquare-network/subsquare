@@ -122,7 +122,7 @@ function VotesList({ items = [], loading }) {
         add={item.account}
         noTooltip
         maxWidth={176}
-        linkToVotesPage
+        link="/votes"
       />,
       <ValueDisplay
         key="value"

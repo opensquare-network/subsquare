@@ -51,7 +51,6 @@ const polkadot = {
   hasMultisig: true,
   multisigApiPrefix: "dot",
   useVoteCall: true,
-  showAchainableLabels: false,
   description:
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
   ...polkadotThemeVars,

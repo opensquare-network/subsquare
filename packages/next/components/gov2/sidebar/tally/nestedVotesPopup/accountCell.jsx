@@ -9,7 +9,7 @@ export default function AccountCell({ item }) {
         add={item.account}
         noTooltip
         maxWidth={296}
-        linkToVotesPage
+        link="/votes"
       />
       <DVTag address={item.account} showTooltip={false} />
     </div>

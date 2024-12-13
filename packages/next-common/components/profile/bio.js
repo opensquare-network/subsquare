@@ -3,8 +3,7 @@ import { isPolkadotAddress } from "../../utils/viewfuncs";
 import Flex from "../styled/flex";
 import AccountLinks from "../links/accountLinks";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import AchainableProfile from "./achainableProfile";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChain } from "next-common/context/chain";
 import Copyable from "../copyable";
 import AssetInfo from "./assetInfo";
 import KintAssetInfo from "./assetInfo/kint";
@@ -91,7 +90,6 @@ const DisplayUserAddress = ({ address }) => {
 
 export default function Bio() {
   const { user, id } = usePageProps();
-  const { showAchainableLabels } = useChainSettings();
   const chain = useChain();
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
 
@@ -126,7 +124,6 @@ export default function Bio() {
           <AssetInfo address={address} />
         )}
       </Flex>
-      {showAchainableLabels && <AchainableProfile id={id} />}
     </Wrapper>
   );
 }
