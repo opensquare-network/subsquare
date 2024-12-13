@@ -19,7 +19,7 @@ import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import VirtualList from "next-common/components/dataList/virtualList";
-import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
+import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -99,7 +99,7 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
 
 function VotesList({ items = [], loading }) {
   const chainSettings = useChainSettings();
-  const isMobile = useIsMobileDevice();
+  const itemHeight = usePopupItemHeight();
 
   const columns = [
     {
@@ -146,7 +146,7 @@ function VotesList({ items = [], loading }) {
         loading={loading}
         columns={columns}
         rows={rows}
-        itemHeight={isMobile ? 112 : 52}
+        itemHeight={itemHeight}
         listHeight={395}
       />
     </PopupListWrapper>
