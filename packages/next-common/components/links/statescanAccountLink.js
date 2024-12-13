@@ -8,6 +8,7 @@ const statescanDomainMap = {
   [Chains.polkadotAssetHub]: "statemint",
   [Chains.westendAssetHub]: "westmint",
   [Chains.kusamaAssetHub]: "statemine",
+  [Chains.paseoAssetHub]: "paseo",
 };
 
 export default function StatescanAccountLink({ address }) {

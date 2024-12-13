@@ -4,6 +4,7 @@ const MenuGroups = {
   WestendAndParachains: "Westend and Parachains",
   Solochain: "Solochains",
   Testnet: "Testnets",
+  Paseo: "Paseo",
 };
 
 export default MenuGroups;

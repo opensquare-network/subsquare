@@ -10,17 +10,18 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 export default function CollectiveProxyCallPopup({ isMember }) {
   const { onClose } = usePopupParams();
   const api = useContextApi();
-  const { extrinsic, component: extrinsicComponent } = useExtrinsicField({
-    defaultSectionName: "dappStaking",
-  });
-  const disabled = !extrinsic || !isMember;
+  const { extrinsic: proposal, component: extrinsicComponent } =
+    useExtrinsicField({
+      defaultSectionName: "dappStaking",
+    });
+  const disabled = !proposal || !isMember;
 
   const getTxFunc = useCallback(() => {
-    if (!api || !extrinsic) {
+    if (!api || !proposal) {
       return;
     }
-    return api.tx.collectiveProxy.executeCall(extrinsic);
-  }, [api, extrinsic]);
+    return api.tx.collectiveProxy.executeCall(proposal);
+  }, [api, proposal]);
 
   return (
     <Popup

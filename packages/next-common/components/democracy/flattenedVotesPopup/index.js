@@ -106,7 +106,7 @@ function VotesList({ loading, items = [] }) {
         add={item.account}
         noTooltip
         maxWidth={276}
-        linkToVotesPage
+        link="/votes"
       />,
       <CapitalListItem
         key="capital"
