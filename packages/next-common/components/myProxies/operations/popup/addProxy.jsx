@@ -92,7 +92,17 @@ function PopupContent({ onClose }) {
   const delay = 0;
 
   const getTxFunc = useCallback(() => {
-    if (!api || !address || !proxyAccount) {
+    if (!api || !address) {
+      return;
+    }
+
+    if (!proxyType) {
+      dispatch(newErrorToast("The proxy type is required"));
+      return;
+    }
+
+    if (!proxyAccount) {
+      dispatch(newErrorToast("The proxy account is required"));
       return;
     }
 
