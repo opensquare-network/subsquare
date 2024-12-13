@@ -9,86 +9,129 @@ import { NewUSDxTreasuryReferendumInnerPopup } from "../newProposalQuickStart/cr
 import { NewRemarkReferendumInnerPopup } from "../newProposalQuickStart/createSystemRemarkProposalPopup";
 import { CancelReferendumInnerPopup } from "../newProposalQuickStart/cancelReferendumInnerPopup";
 import {
-  useCancelReferendumButton,
-  useSpendLocalTreasuryButton,
-  useNewRemarkButton,
-  useSpendUSDxTreasuryButton,
-  useKillReferendumButton,
-  useSpendDotOnAssetHubButton,
+  SpendLocalTreasuryButton,
+  SpendUSDxTreasuryButton,
+  SpendDotOnAssetHubButton,
+  NewRemarkButton,
+  CancelReferendumButton,
+  KillReferendumButton,
 } from "next-common/components/preImages/createPreimagePopup/templateButtons";
 import { KillReferendumInnerPopup } from "../newProposalQuickStart/killReferendumInnerPopup";
 import { SpendDotOnAssetHubReferendumInnerPopup } from "../newProposalQuickStart/spendDotOnAssetHubPopup";
+import ForwardPopupProvider, {
+  useForwardPopupContext,
+} from "next-common/context/forwardPopup";
+import { useChainSettings } from "next-common/context/chain";
 
-function SubmitProposalInnerPopup({ onClose }) {
-  const { period } = usePageProps();
-  const [preimageHash, setPreimageHash] = useState();
-  const [preimageLength, setPreimageLength] = useState();
+function SpendLocalTreasury() {
+  const { setForwardPopup } = useForwardPopupContext();
+  return (
+    <SpendLocalTreasuryButton
+      onClick={() => setForwardPopup(<NewTreasuryReferendumInnerPopup />)}
+    />
+  );
+}
 
-  const { showSpendLocalTreasuryPopup, localTreasuryButton } =
-    useSpendLocalTreasuryButton(false);
-  const { showSpendUSDxTreasuryPopup, usdxTreasuryButton } =
-    useSpendUSDxTreasuryButton(false);
-  const { showSpendDotOnAssetHubPopup, spendDotOnAssetHubButton } =
-    useSpendDotOnAssetHubButton();
+function SpendUSDxTreasury() {
+  const { setForwardPopup } = useForwardPopupContext();
+  const {
+    treasuryProposalTracks,
+    newProposalQuickStart: { usdxTreasuryProposal } = {},
+  } = useChainSettings();
 
-  const { showNewRemarkPopup, remarkButton } = useNewRemarkButton();
-  const { showCancelReferendumPopup, cancelReferendumButton } =
-    useCancelReferendumButton();
-  const { showKillReferendumPopup, killReferendumButton } =
-    useKillReferendumButton();
-
-  if (showSpendLocalTreasuryPopup) {
-    return <NewTreasuryReferendumInnerPopup onClose={onClose} />;
-  }
-
-  if (showSpendUSDxTreasuryPopup) {
-    return <NewUSDxTreasuryReferendumInnerPopup onClose={onClose} />;
-  }
-
-  if (showSpendDotOnAssetHubPopup) {
-    return <SpendDotOnAssetHubReferendumInnerPopup onClose={onClose} />;
-  }
-
-  if (showNewRemarkPopup) {
-    return <NewRemarkReferendumInnerPopup onClose={onClose} />;
-  }
-
-  if (showCancelReferendumPopup) {
-    return <CancelReferendumInnerPopup onClose={onClose} />;
-  }
-
-  if (showKillReferendumPopup) {
-    return <KillReferendumInnerPopup onClose={onClose} />;
+  if (!treasuryProposalTracks || !usdxTreasuryProposal) {
+    return null;
   }
 
   return (
-    <SubmitProposalPopupCommon
-      setPreimageHash={setPreimageHash}
-      setPreimageLength={setPreimageLength}
-      newProposalPopup={
-        <NewProposalInnerPopup
-          track={period}
-          preimageHash={preimageHash}
-          preimageLength={preimageLength}
-        />
+    <SpendUSDxTreasuryButton
+      onClick={() => setForwardPopup(<NewUSDxTreasuryReferendumInnerPopup />)}
+    />
+  );
+}
+
+function SpendDotOnAssetHub() {
+  const { setForwardPopup } = useForwardPopupContext();
+  const {
+    treasuryProposalTracks,
+    newProposalQuickStart: { spendDotOnAssetHubProposal } = {},
+  } = useChainSettings();
+
+  if (!treasuryProposalTracks || !spendDotOnAssetHubProposal) {
+    return null;
+  }
+
+  return (
+    <SpendDotOnAssetHubButton
+      onClick={() =>
+        setForwardPopup(<SpendDotOnAssetHubReferendumInnerPopup />)
       }
-    >
-      <QuickStart>
-        {localTreasuryButton}
-        {usdxTreasuryButton}
-        {spendDotOnAssetHubButton}
-        {remarkButton}
-        {cancelReferendumButton}
-        {killReferendumButton}
-      </QuickStart>
-    </SubmitProposalPopupCommon>
+    />
+  );
+}
+
+function NewRemark() {
+  const { setForwardPopup } = useForwardPopupContext();
+  return (
+    <NewRemarkButton
+      onClick={() => setForwardPopup(<NewRemarkReferendumInnerPopup />)}
+    />
+  );
+}
+
+function CancelReferendum() {
+  const { setForwardPopup } = useForwardPopupContext();
+  return (
+    <CancelReferendumButton
+      onClick={() => setForwardPopup(<CancelReferendumInnerPopup />)}
+    />
+  );
+}
+
+function KillReferendum() {
+  const { setForwardPopup } = useForwardPopupContext();
+  return (
+    <KillReferendumButton
+      onClick={() => setForwardPopup(<KillReferendumInnerPopup />)}
+    />
+  );
+}
+
+function ReferendaQuickStart() {
+  return (
+    <QuickStart>
+      <SpendLocalTreasury />
+      <SpendUSDxTreasury />
+      <SpendDotOnAssetHub />
+      <NewRemark />
+      <CancelReferendum />
+      <KillReferendum />
+    </QuickStart>
   );
 }
 
 export default function SubmitProposalPopup({ onClose }) {
+  const { period } = usePageProps();
+  const [preimageHash, setPreimageHash] = useState();
+  const [preimageLength, setPreimageLength] = useState();
+
   return (
     <SignerPopupWrapper onClose={onClose}>
-      <SubmitProposalInnerPopup />
+      <ForwardPopupProvider>
+        <SubmitProposalPopupCommon
+          setPreimageHash={setPreimageHash}
+          setPreimageLength={setPreimageLength}
+          newProposalPopup={
+            <NewProposalInnerPopup
+              track={period}
+              preimageHash={preimageHash}
+              preimageLength={preimageLength}
+            />
+          }
+        >
+          <ReferendaQuickStart />
+        </SubmitProposalPopupCommon>
+      </ForwardPopupProvider>
     </SignerPopupWrapper>
   );
 }

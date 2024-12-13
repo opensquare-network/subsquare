@@ -16,7 +16,7 @@ import {
 import KillReferendumPopup from "./killReferendumPopup";
 import { isCollectivesChain } from "next-common/utils/chain";
 import NewFellowshipTreasuryProposalPopup from "./newFellowshipTreasuryProposalPopup";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import SpendDotOnAssetHubPopup from "./spendDotOnAssetHubPopup";
 import ForwardPopupProvider, {
   useForwardPopupContext,
@@ -51,6 +51,15 @@ function FellowshipTreasurySpend() {
 
 function SpendUSDxTreasury() {
   const { setForwardPopup } = useForwardPopupContext();
+  const {
+    treasuryProposalTracks,
+    newProposalQuickStart: { usdxTreasuryProposal } = {},
+  } = useChainSettings();
+
+  if (!treasuryProposalTracks || !usdxTreasuryProposal) {
+    return null;
+  }
+
   return (
     <SpendUSDxTreasuryButton
       onClick={() => setForwardPopup(<NewUSDxTreasuryProposalPopup />)}
@@ -60,6 +69,15 @@ function SpendUSDxTreasury() {
 
 function SpendDotOnAssetHub() {
   const { setForwardPopup } = useForwardPopupContext();
+  const {
+    treasuryProposalTracks,
+    newProposalQuickStart: { spendDotOnAssetHubProposal } = {},
+  } = useChainSettings();
+
+  if (!treasuryProposalTracks || !spendDotOnAssetHubProposal) {
+    return null;
+  }
+
   return (
     <SpendDotOnAssetHubButton
       onClick={() => setForwardPopup(<SpendDotOnAssetHubPopup />)}
