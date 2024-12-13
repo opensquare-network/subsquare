@@ -12,6 +12,7 @@ import useAssetHubDotBalanceField from "./fields/useAssetHubDotBalanceField";
 import useAddressComboField from "./fields/useAddressComboField";
 import useValidFromField from "./fields/useValidFromField";
 import { useChainSettings } from "next-common/context/chain";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 const getAssetKindParam = () => {
   return {
@@ -119,7 +120,8 @@ function PopupContent() {
   );
 }
 
-export default function SpendDotOnAssetHubPopup({ onClose }) {
+export default function SpendDotOnAssetHubPopup() {
+  const { onClose } = usePopupParams();
   return (
     <Popup
       title="Spend DOT on AssetHub"

@@ -6,6 +6,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "./notePreimageButton";
 import useReferendumIndexField from "./fields/useReferendumIndexField";
 import { isNil } from "lodash-es";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 export function useCancelReferendumNotePreimageTx(referendumIndex) {
   const api = useContextApi();
@@ -24,7 +25,8 @@ export function useCancelReferendumNotePreimageTx(referendumIndex) {
   }, [api, referendumIndex]);
 }
 
-export default function CancelReferendumPopup({ onClose }) {
+export default function CancelReferendumPopup() {
+  const { onClose } = usePopupParams();
   const { value: referendumIndex, component: referendumIndexField } =
     useReferendumIndexField();
 

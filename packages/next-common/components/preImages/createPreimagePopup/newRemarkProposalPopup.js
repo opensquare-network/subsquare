@@ -5,6 +5,7 @@ import { useContextApi } from "next-common/context/api";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "./notePreimageButton";
 import useRemarkField from "./fields/useRemarkField";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 export function useRemarkNotePreimageTx(remark) {
   const api = useContextApi();
@@ -23,7 +24,8 @@ export function useRemarkNotePreimageTx(remark) {
   }, [api, remark]);
 }
 
-export default function NewRemarkProposalPopup({ onClose }) {
+export default function NewRemarkProposalPopup() {
+  const { onClose } = usePopupParams();
   const { value: remark, component: remarkField } = useRemarkField();
   const { notePreimageTx } = useRemarkNotePreimageTx(remark);
 

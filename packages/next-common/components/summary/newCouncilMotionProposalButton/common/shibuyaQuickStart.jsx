@@ -12,7 +12,7 @@ import DappStakingUnRegisterPopup from "../dappStakingUnRegisterPopup";
 import CollectiveProxyCallPopup from "../collectiveProxyCallPopup";
 import { useForwardPopupContext } from "next-common/context/forwardPopup";
 
-function ApproveTreasuryProposalButton({ isMember }) {
+function ApproveTreasuryProposal({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -27,7 +27,7 @@ function ApproveTreasuryProposalButton({ isMember }) {
   );
 }
 
-function RejectTreasuryProposalButton({ isMember }) {
+function RejectTreasuryProposal({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -42,7 +42,7 @@ function RejectTreasuryProposalButton({ isMember }) {
   );
 }
 
-function ExternalProposeMajorityButton({ isMember }) {
+function ExternalProposeMajority({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -55,7 +55,7 @@ function ExternalProposeMajorityButton({ isMember }) {
   );
 }
 
-function ExternalProposeDefaultButton({ isMember }) {
+function ExternalProposeDefault({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -68,7 +68,7 @@ function ExternalProposeDefaultButton({ isMember }) {
   );
 }
 
-function DappStakingRegisterButton({ isMember }) {
+function DappStakingRegister({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -81,7 +81,7 @@ function DappStakingRegisterButton({ isMember }) {
   );
 }
 
-function DappStakingUnRegisterButton({ isMember }) {
+function DappStakingUnRegister({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -94,7 +94,7 @@ function DappStakingUnRegisterButton({ isMember }) {
   );
 }
 
-function CollectiveProxyCallButton({ isMember }) {
+function CollectiveProxyCall({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -116,11 +116,11 @@ export function ShibuyaCommunityCouncilQuickStart({ isMember }) {
 
   return (
     <QuickStart>
-      <ApproveTreasuryProposalButton isMember={isMember} />
-      <RejectTreasuryProposalButton isMember={isMember} />
-      <DappStakingRegisterButton isMember={isMember} />
-      <DappStakingUnRegisterButton isMember={isMember} />
-      <CollectiveProxyCallButton isMember={isMember} />
+      <ApproveTreasuryProposal isMember={isMember} />
+      <RejectTreasuryProposal isMember={isMember} />
+      <DappStakingRegister isMember={isMember} />
+      <DappStakingUnRegister isMember={isMember} />
+      <CollectiveProxyCall isMember={isMember} />
     </QuickStart>
   );
 }
@@ -134,10 +134,10 @@ export function ShibuyaCouncilQuickStart({ isMember }) {
 
   return (
     <QuickStart>
-      <ApproveTreasuryProposalButton isMember={isMember} />
-      <RejectTreasuryProposalButton isMember={isMember} />
-      <ExternalProposeMajorityButton isMember={isMember} />
-      <ExternalProposeDefaultButton isMember={isMember} />
+      <ApproveTreasuryProposal isMember={isMember} />
+      <RejectTreasuryProposal isMember={isMember} />
+      <ExternalProposeMajority isMember={isMember} />
+      <ExternalProposeDefault isMember={isMember} />
     </QuickStart>
   );
 }

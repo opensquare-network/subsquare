@@ -12,6 +12,7 @@ import NotePreimageButton from "./notePreimageButton";
 import useUSDxBalanceField from "./fields/useUSDxBalanceField";
 import useAddressComboField from "./fields/useAddressComboField";
 import useValidFromField from "./fields/useValidFromField";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -134,7 +135,8 @@ function PopupContent() {
   );
 }
 
-export default function NewUSDxTreasuryProposalPopup({ onClose }) {
+export default function NewUSDxTreasuryProposalPopup() {
+  const { onClose } = usePopupParams();
   return (
     <Popup
       title="Create USDx Treasury Proposal"

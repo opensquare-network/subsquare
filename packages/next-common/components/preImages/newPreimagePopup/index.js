@@ -14,6 +14,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import { ExtrinsicLoading } from "next-common/components/popup/fields/extrinsicField";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -53,7 +54,8 @@ export function getState(api, proposal) {
   };
 }
 
-export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
+export function NewPreimageInnerPopup({ onCreated = noop }) {
+  const { onClose } = usePopupParams();
   const api = useContextApi();
   const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
     useState(EMPTY_PROPOSAL);
