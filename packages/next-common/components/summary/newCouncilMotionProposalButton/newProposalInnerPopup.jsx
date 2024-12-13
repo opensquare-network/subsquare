@@ -20,7 +20,8 @@ export default function NewCouncilMotionProposalInnerPopup({
   const router = useRouter();
   const pallet = useCollectivePallet();
   const api = useContextApi();
-  const { extrinsic, component: extrinsicComponent } = useExtrinsicField();
+  const { extrinsic: proposal, component: extrinsicComponent } =
+    useExtrinsicField();
 
   const [threshold, setThreshold] = useState(1);
   const { members } = useCollectiveMembers();
@@ -33,20 +34,20 @@ export default function NewCouncilMotionProposalInnerPopup({
   const thresholdValid = threshold > 0 && threshold <= members?.length;
 
   const loading = !api || !members?.length;
-  const disabled = !api || !thresholdValid || !extrinsic || !isMember;
+  const disabled = !api || !thresholdValid || !proposal || !isMember;
 
   const getTxFunc = useCallback(() => {
-    if (!api || !extrinsic) {
+    if (!api || !proposal) {
       return;
     }
 
     const params =
       api.tx[pallet].propose.meta.args.length === 3
-        ? [threshold, extrinsic, extrinsic.encodedLength]
-        : [threshold, extrinsic];
+        ? [threshold, proposal, proposal.encodedLength]
+        : [threshold, proposal];
 
     return api.tx[pallet].propose(...params);
-  }, [api, pallet, extrinsic, threshold]);
+  }, [api, pallet, proposal, threshold]);
 
   return (
     <Popup
