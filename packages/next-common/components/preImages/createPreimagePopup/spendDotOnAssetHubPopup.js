@@ -125,7 +125,6 @@ export default function SpendDotOnAssetHubPopup({ onClose }) {
       title="Spend DOT on AssetHub"
       className="!w-[640px]"
       onClose={onClose}
-      wide
     >
       <AssetHubApiProvider>
         <PopupContent />

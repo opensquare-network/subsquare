@@ -69,7 +69,7 @@ export function NewDemocracyProposalInnerPopup({
   const disabled = !preimageHash || !isValidPreimageHash(preimageHash);
 
   return (
-    <Popup wide title="New Proposal" className="!w-[640px]" onClose={onClose}>
+    <Popup title="New Proposal" className="!w-[640px]" onClose={onClose}>
       <SignerWithVotingBalance />
       <PreimageField
         preimageHash={preimageHash}

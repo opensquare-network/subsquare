@@ -79,7 +79,6 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
 
   return (
     <BaseVotesPopup
-      wide
       title="Calls"
       onClose={() => setShowVoteList(false)}
       extra={searchBtn}

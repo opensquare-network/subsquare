@@ -4,7 +4,7 @@ import NewPreimageSVG from "next-common/components/summary/newProposalButton/ico
 
 export default function MainPopup({ setShowNewPreimage, onClose, children }) {
   return (
-    <Popup wide className="!w-[640px]" title="New Preimage" onClose={onClose}>
+    <Popup className="!w-[640px]" title="New Preimage" onClose={onClose}>
       <div className="flex flex-col !mt-[24px] gap-[16px]">
         <ChoiceButton
           icon={<NewPreimageSVG />}

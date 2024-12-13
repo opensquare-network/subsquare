@@ -186,7 +186,6 @@ export default function AjunaSpendUSDxProposalPopup() {
         title="Spend treasury USDx token"
         className="!w-[640px]"
         onClose={onClose}
-        wide
       >
         <SignerWithVotingBalance />
         <USDxBalance

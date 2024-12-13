@@ -63,7 +63,6 @@ export function SpendDotOnAssetHubReferendumInnerPopup() {
       title="Spend DOT on Asset Hub"
       className="!w-[640px]"
       onClose={onClose}
-      wide
     >
       <AssetHubApiProvider>
         <PopupContent />

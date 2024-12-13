@@ -55,12 +55,7 @@ export function KillReferendumInnerPopup({
   }, [api, referendumIndex, enactment, proposalOrigin]);
 
   return (
-    <Popup
-      title="Kill a referendum"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Kill a referendum" className="!w-[640px]" onClose={onClose}>
       <SignerWithBalance />
       {referendumIndexField}
       {trackField}

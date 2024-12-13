@@ -15,11 +15,7 @@ export default function VoteDetailPopup({ vote, setShowVoteDetail }) {
   }
 
   return (
-    <BaseVotesPopup
-      wide
-      title="Vote Detail"
-      onClose={() => setShowVoteDetail(null)}
-    >
+    <BaseVotesPopup title="Vote Detail" onClose={() => setShowVoteDetail(null)}>
       {voteDetail}
     </BaseVotesPopup>
   );

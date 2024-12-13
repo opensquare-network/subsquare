@@ -54,7 +54,6 @@ export default function AjunaSpendLocalProposalPopup() {
       title="Spend treasury AJUN token"
       className="!w-[640px]"
       onClose={onClose}
-      wide
     >
       <SignerWithVotingBalance />
       {balanceField}

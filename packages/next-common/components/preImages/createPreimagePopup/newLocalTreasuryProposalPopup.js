@@ -50,7 +50,6 @@ export default function NewLocalTreasuryProposalPopup({ onClose }) {
       title="Create Treasury Proposal"
       className="!w-[640px]"
       onClose={onClose}
-      wide
     >
       <SignerWithBalance />
       {balanceField}

@@ -31,12 +31,7 @@ export default function CancelReferendumPopup({ onClose }) {
   const { notePreimageTx } = useCancelReferendumNotePreimageTx(referendumIndex);
 
   return (
-    <Popup
-      title="Cancel a referendum"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Cancel a referendum" className="!w-[640px]" onClose={onClose}>
       <SignerWithBalance />
       {referendumIndexField}
       <div className="flex justify-end">

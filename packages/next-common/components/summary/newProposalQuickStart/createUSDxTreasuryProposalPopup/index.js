@@ -75,7 +75,6 @@ export function NewUSDxTreasuryReferendumInnerPopup() {
       title="Create USDx Treasury Proposal"
       className="!w-[640px]"
       onClose={onClose}
-      wide
     >
       <AssetHubApiProvider>
         <PopupContent />
