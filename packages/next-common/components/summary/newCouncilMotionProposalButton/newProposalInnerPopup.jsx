@@ -12,11 +12,10 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import Tooltip from "next-common/components/tooltip";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
-export default function NewCouncilMotionProposalInnerPopup({
-  onClose,
-  isMember,
-}) {
+export default function NewCouncilMotionProposalInnerPopup({ isMember }) {
+  const { onClose } = usePopupParams();
   const router = useRouter();
   const pallet = useCollectivePallet();
   const api = useContextApi();

@@ -1,5 +1,4 @@
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 import ForwardPopupProvider from "next-common/context/forwardPopup";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
@@ -12,7 +11,7 @@ import {
   ShibuyaCouncilQuickStart,
 } from "./common/shibuyaQuickStart";
 
-function NewProposalPopupButton({ onClose, isMember }) {
+function NewProposalPopupButton({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -21,18 +20,14 @@ function NewProposalPopupButton({ onClose, isMember }) {
       description="Create a new proposal"
       onClick={() => {
         setForwardPopup(
-          <NewCouncilMotionProposalInnerPopup
-            onClose={onClose}
-            isMember={isMember}
-          />,
+          <NewCouncilMotionProposalInnerPopup isMember={isMember} />,
         );
       }}
     />
   );
 }
 
-export default function NewCouncilMotionProposalPopup() {
-  const { onClose } = usePopupParams();
+export default function NewCouncilMotionProposalPopup({ onClose }) {
   const { isMember } = useIsCollectiveMember();
 
   return (
@@ -45,13 +40,10 @@ export default function NewCouncilMotionProposalPopup() {
           onClose={onClose}
         >
           <div className="flex flex-col !mt-[24px] gap-[12px]">
-            <NewProposalPopupButton onClose={onClose} isMember={isMember} />
+            <NewProposalPopupButton isMember={isMember} />
           </div>
-          <ShibuyaCommunityCouncilQuickStart
-            onClose={onClose}
-            isMember={isMember}
-          />
-          <ShibuyaCouncilQuickStart onClose={onClose} isMember={isMember} />
+          <ShibuyaCommunityCouncilQuickStart isMember={isMember} />
+          <ShibuyaCouncilQuickStart isMember={isMember} />
         </Popup>
       </ForwardPopupProvider>
     </SignerPopupWrapper>
