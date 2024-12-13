@@ -62,6 +62,9 @@ const bifrostPolkadot = {
   modules: mergeChainModules({
     referenda: true,
     fellowship: true,
+    treasury: {
+      spends: true,
+    },
   }),
   integrations: {
     subscan: {
