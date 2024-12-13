@@ -3,7 +3,7 @@ import {
   usePopupParams,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -11,8 +11,7 @@ import { useContextApi } from "next-common/context/api";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import Signer from "next-common/components/popup/fields/signerField";
-import { useMultiAccountsDeps } from "../useSingleAccountAssets";
-import { fetchMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
+import useSubAssetBalance from "next-common/components/assets/useSubAssetBalance";
 
 function PopupContent() {
   const { asset, onClose } = usePopupParams();
@@ -32,8 +31,6 @@ function PopupContent() {
 
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
-
-  const { multiAccountKey } = useMultiAccountsDeps(address);
 
   const getTxFunc = useCallback(() => {
     if (!transferToAddress) {
@@ -64,10 +61,6 @@ function PopupContent() {
     getCheckedTransferAmount,
   ]);
 
-  const onInBlock = useCallback(() => {
-    dispatch(fetchMultiAccounts(multiAccountKey, api));
-  }, [dispatch, multiAccountKey, api]);
-
   return (
     <>
       <Signer />
@@ -78,7 +71,6 @@ function PopupContent() {
           title="Confirm"
           getTxFunc={getTxFunc}
           onClose={onClose}
-          onInBlock={onInBlock}
         />
       </div>
     </>
@@ -86,8 +78,22 @@ function PopupContent() {
 }
 
 export default function AssetTransferPopup(props) {
+  const { asset: initialAsset, address } = props;
+  const { result } = useSubAssetBalance(initialAsset.assetId, address);
+
+  const updatedProps = useMemo(() => {
+    const asset = result?.transferrable
+      ? { ...initialAsset, ...result }
+      : initialAsset;
+
+    return {
+      ...props,
+      asset,
+    };
+  }, [props, initialAsset, result]);
+
   return (
-    <PopupWithSigner title="Transfer" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Transfer" className="!w-[640px]" {...updatedProps}>
       <PopupContent />
     </PopupWithSigner>
   );

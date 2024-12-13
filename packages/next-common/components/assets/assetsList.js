@@ -1,29 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { AssetIconPlaceholder, SystemTransfer } from "@osn/icons/subsquare";
+import { useState, useEffect } from "react";
+import { SystemTransfer } from "@osn/icons/subsquare";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
-import BigNumber from "bignumber.js";
 import ListButton from "next-common/components/styled/listButton";
-import useKnownAssetHubAssetIcon, {
-  useNativeTokenIcon,
-} from "next-common/components/assets/known";
-import BalanceDisplay from "./balanceDisplay";
-import { isNil } from "lodash-es";
 import Tooltip from "../tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
-import { clearMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
-import { useDispatch } from "react-redux";
+import { useQueryAddressAssets } from "next-common/components/assets/useSubAssetBalance";
+import {
+  colToken,
+  colId,
+  colName,
+  useColTotal,
+  useColTransferrable,
+} from "next-common/components/assets/common/columns";
+import { useTotalCounts } from "next-common/components/assets/context/assetHubTabsProvider";
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
-function TransferButton({ asset }) {
+function TransferButton({ asset, address }) {
   const [showPopup, setShowPopup] = useState(false);
 
   let popup = null;
   if (asset.type !== "native") {
     popup = (
-      <AssetTransferPopup asset={asset} onClose={() => setShowPopup(false)} />
+      <AssetTransferPopup
+        asset={asset}
+        address={address}
+        onClose={() => setShowPopup(false)}
+      />
     );
   }
 
@@ -43,127 +47,44 @@ function TransferButton({ asset }) {
   );
 }
 
-export function TokenSymbol({ type, assetId, symbol }) {
-  const NativeAssetIcon = useNativeTokenIcon();
-  const Icon = useKnownAssetHubAssetIcon(assetId);
-  let AssetIcon = NativeAssetIcon;
-  if (type !== "native") {
-    AssetIcon = Icon || AssetIconPlaceholder;
-  }
-
-  return (
-    <div className="flex gap-[8px] items-center text14Medium text-textPrimary">
-      <AssetIcon width={24} height={24} /> {symbol}
-    </div>
-  );
+function useColTransfer(address) {
+  return {
+    name: "",
+    style: { textAlign: "right", width: "80px", minWidth: "80px" },
+    render: (item) => <TransferButton asset={item} address={address} />,
+  };
 }
-
-export function formatBalance(balance, decimals) {
-  return new BigNumber(balance)
-    .div(Math.pow(10, decimals))
-    .decimalPlaces(4, BigNumber.ROUND_FLOOR)
-    .toFormat({ decimalSeparator: ".", groupSeparator: ",", groupSize: 3 });
-}
-
-export function paddingDecimals(value, decimals) {
-  const [integerPart, fractionalPart = ""] = value.split(".");
-  if (fractionalPart.length < decimals) {
-    return `${integerPart}.${fractionalPart.padEnd(decimals, "0")}`;
-  }
-  return value;
-}
-
-export const colToken = {
-  name: "Token",
-  style: { textAlign: "left", width: "160px", minWidth: "160px" },
-  render: (item) => (
-    <TokenSymbol
-      key="token"
-      type={item.type}
-      assetId={item.assetId}
-      symbol={item.symbol}
-    />
-  ),
-};
-
-export const colId = {
-  name: "ID",
-  style: { textAlign: "left", width: "120px", minWidth: "120px" },
-  render: (item) => (
-    <span className="text14Medium text-textTertiary">
-      {isNil(item.assetId) ? "-" : `#${item.assetId}`}
-    </span>
-  ),
-};
-
-export const colName = {
-  name: "Name",
-  style: { textAlign: "left", minWidth: "256px" },
-  render: (item) => (
-    <div
-      key="name"
-      className="text14Medium text-textTertiary truncate max-w-[240px]"
-    >
-      {item.name}
-    </div>
-  ),
-};
-
-export const colTotal = {
-  name: "Total",
-  style: { textAlign: "right", width: "160px", minWidth: "160px" },
-  render: (item) => (
-    <span key="total" className="text14Medium text-textPrimary">
-      <BalanceDisplay
-        balance={formatBalance(item.balance || 0, item.decimals)}
-      />
-    </span>
-  ),
-};
-
-export const colTransferrable = {
-  name: "Transferrable",
-  style: { textAlign: "right", width: "160px", minWidth: "160px" },
-  render: (item) => (
-    <span key="transferrable" className="text14Medium text-textPrimary">
-      <BalanceDisplay
-        balance={formatBalance(item.transferrable || 0, item.decimals)}
-      />
-    </span>
-  ),
-};
-
-export const colTransfer = {
-  name: "",
-  style: { textAlign: "right", width: "80px", minWidth: "80px" },
-  render: (item) => <TransferButton asset={item} />,
-};
-
-const columnsDef = [
-  colToken,
-  colId,
-  colName,
-  colTotal,
-  colTransferrable,
-  colTransfer,
-];
 
 export default function AssetsList({ address }) {
-  const assets = useAssetHubTabsAssets(address);
-  const dispatch = useDispatch();
+  const { loading, assets } = useQueryAddressAssets(address);
+  const [totalCounts, setTotalCount] = useTotalCounts();
+  const colTotal = useColTotal(address);
+  const colTransferrable = useColTransferrable(address);
+  const colTransfer = useColTransfer(address);
 
   useEffect(() => {
-    return () => {
-      dispatch(clearMultiAccounts());
-    };
-  }, [dispatch]);
+    if (loading || assets?.length === totalCounts.assets) {
+      return;
+    }
+
+    setTotalCount("assets", assets?.length || 0);
+  }, [assets, setTotalCount, loading, totalCounts.assets]);
+
+  const columnsDef = [
+    colToken,
+    colId,
+    colName,
+    colTotal,
+    colTransferrable,
+    colTransfer,
+  ];
 
   return (
     <ScrollerX>
       <MapDataList
         columnsDef={columnsDef}
         data={assets}
-        loading={!assets}
+        loading={loading}
         noDataText="No current assets"
       />
     </ScrollerX>
