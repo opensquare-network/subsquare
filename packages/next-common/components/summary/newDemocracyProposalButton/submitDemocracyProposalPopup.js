@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { NewDemocracyProposalInnerPopup } from "../newDemocracyProposalPopup";
 import SubmitProposalPopupCommon, {
   ChoiceButton,
@@ -15,14 +15,12 @@ import ForwardPopupProvider, {
 
 function SpendTreasuryAjunToken() {
   const { setForwardPopup } = useForwardPopupContext();
-  const popup = useMemo(() => <AjunaSpendLocalProposalPopup />, []);
   return (
     <ChoiceButton
-      key="spend-treasury-ajun"
       name="Spend treasury AJUN token"
       description="Create a treasury spend of native token that is locally available"
       onClick={() => {
-        setForwardPopup(popup);
+        setForwardPopup(<AjunaSpendLocalProposalPopup />);
       }}
     />
   );
@@ -30,14 +28,12 @@ function SpendTreasuryAjunToken() {
 
 function AjunaSpendTreasuryUSDxToken() {
   const { setForwardPopup } = useForwardPopupContext();
-  const popup = useMemo(() => <AjunaSpendUSDxProposalPopup />, []);
   return (
     <ChoiceButton
-      key="spend-treasury-usdx"
       name="Spend treasury USDx token"
       description="Create a treasury spend of USDT/USDC token that is locally available"
       onClick={() => {
-        setForwardPopup(popup);
+        setForwardPopup(<AjunaSpendUSDxProposalPopup />);
       }}
     />
   );
@@ -48,6 +44,7 @@ function AjunaQuickStart() {
   if (!isAjunaChain(chain)) {
     return null;
   }
+
   return (
     <QuickStart>
       <SpendTreasuryAjunToken />
@@ -56,9 +53,10 @@ function AjunaQuickStart() {
   );
 }
 
-export function SubmitDemocracyProposalInnerPopup({ children }) {
+export function SubmitDemocracyProposalInnerPopup() {
   const [preimageHash, setPreimageHash] = useState();
   const [preimageLength, setPreimageLength] = useState();
+
   return (
     <SubmitProposalPopupCommon
       setPreimageHash={setPreimageHash}
@@ -71,18 +69,15 @@ export function SubmitDemocracyProposalInnerPopup({ children }) {
       }
     >
       <AjunaQuickStart />
-      {children}
     </SubmitProposalPopupCommon>
   );
 }
 
-export default function SubmitDemocracyProposalPopup({ onClose, children }) {
+export default function SubmitDemocracyProposalPopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
       <ForwardPopupProvider>
-        <SubmitDemocracyProposalInnerPopup>
-          {children}
-        </SubmitDemocracyProposalInnerPopup>
+        <SubmitDemocracyProposalInnerPopup />
       </ForwardPopupProvider>
     </SignerPopupWrapper>
   );
