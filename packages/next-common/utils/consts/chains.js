@@ -40,6 +40,7 @@ const Chains = {
   astar: "astar",
   zkverifyTestnet: "zkverify-testnet",
   paseo: "paseo",
+  paseoAssetHub: "paseo-assethub",
   ajuna: "ajuna",
   kusamaCoretime: "kusama-coretime",
   polkadotCoretime: "polkadot-coretime",
