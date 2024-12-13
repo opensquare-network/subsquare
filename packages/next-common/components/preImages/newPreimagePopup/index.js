@@ -98,12 +98,7 @@ export function NewPreimageInnerPopup({ onCreated = noop }) {
   }
 
   return (
-    <Popup
-      className="!w-[640px]"
-      title="New Preimage"
-      onClose={onClose}
-      maskClosable={false}
-    >
+    <Popup title="New Preimage" onClose={onClose} maskClosable={false}>
       <SignerWithVotingBalance />
       {extrinsicComponent}
       <TxSubmissionButton

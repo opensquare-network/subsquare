@@ -6,7 +6,6 @@ export default function RejectTreasuryProposalInnerPopup({ isMember }) {
   const { onClose } = usePopupParams();
   return (
     <Popup
-      className="!w-[640px]"
       title="Reject Treasury Proposal"
       maskClosable={false}
       onClose={onClose}

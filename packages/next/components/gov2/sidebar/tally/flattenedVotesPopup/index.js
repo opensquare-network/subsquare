@@ -60,7 +60,6 @@ export default function VotesPopup({
 
   return (
     <BaseVotesPopup
-      wide
       title="Flattened View"
       onClose={() => setShowVoteList(false)}
       extra={searchBtn}

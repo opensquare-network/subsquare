@@ -80,7 +80,7 @@ export default function FellowshipSalaryPayoutPopup({ onClose }) {
   const [tabId, setTabId] = useState("myself");
 
   return (
-    <PopupWithSigner title="Payout to" className="!w-[640px]" onClose={onClose}>
+    <PopupWithSigner title="Payout to" onClose={onClose}>
       <Tab selectedTabId={tabId} setSelectedTabId={setTabId} tabs={tabs} />
       {tabId === "myself" ? <SelfPayout /> : <OtherPayout />}
     </PopupWithSigner>

@@ -84,7 +84,7 @@ export function NewFellowshipProposalInnerPopup({
   ]);
 
   return (
-    <Popup wide title="New Proposal" onClose={onClose}>
+    <Popup title="New Proposal" onClose={onClose}>
       <SignerWithBalance />
       <DetailedFellowshipTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField

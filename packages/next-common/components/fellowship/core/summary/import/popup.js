@@ -36,7 +36,7 @@ function Content() {
 
 export default function FellowshipCoreImportPopup(props) {
   return (
-    <PopupWithSigner title="Import" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Import" {...props}>
       <Content />
     </PopupWithSigner>
   );

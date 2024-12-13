@@ -67,7 +67,7 @@ function PopupContent() {
 
 export default function EndorsePopup(props) {
   return (
-    <PopupWithSigner title="Tip" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Tip" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );

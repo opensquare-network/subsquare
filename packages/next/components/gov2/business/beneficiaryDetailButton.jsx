@@ -17,7 +17,7 @@ function BeneficiaryJsonView({ onClose }) {
   );
 
   return (
-    <Popup title="Beneficiary Detail" onClose={onClose} className="w-[650px]">
+    <Popup title="Beneficiary Detail" onClose={onClose}>
       <JsonView src={beneficiary} />
     </Popup>
   );

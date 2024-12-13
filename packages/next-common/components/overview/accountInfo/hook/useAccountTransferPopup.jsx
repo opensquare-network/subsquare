@@ -1,6 +1,9 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { usePopupParams, useSignerAccount } from "next-common/components/popupWithSigner/context";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useContextApi } from "next-common/context/api";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -84,7 +87,7 @@ function PopupContent() {
 
 function AccountTransferPopup(props) {
   return (
-    <PopupWithSigner title="Transfer" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Transfer" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );

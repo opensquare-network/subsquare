@@ -33,12 +33,7 @@ export default function KillReferendumPopup() {
   const { notePreimageTx } = useKillReferendumNotePreimageTx(referendumIndex);
 
   return (
-    <Popup
-      title="Kill a referendum"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Kill a referendum" onClose={onClose}>
       <SignerWithBalance />
       {referendumIndexField}
       <div className="flex justify-end">

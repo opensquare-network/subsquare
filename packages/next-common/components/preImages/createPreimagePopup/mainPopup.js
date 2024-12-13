@@ -18,7 +18,7 @@ function NewPreimageButton() {
 
 export default function MainPopup({ onClose, children }) {
   return (
-    <Popup wide className="!w-[640px]" title="New Preimage" onClose={onClose}>
+    <Popup title="New Preimage" onClose={onClose}>
       <div className="flex flex-col !mt-[24px] gap-[16px]">
         <NewPreimageButton />
       </div>

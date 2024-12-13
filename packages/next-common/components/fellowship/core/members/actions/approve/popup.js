@@ -97,7 +97,7 @@ function PopupContent({ member, onClose }) {
 
 export default function ApproveFellowshipMemberPopup({ member, onClose }) {
   return (
-    <PopupWithSigner title="Approve Fellowship Member" onClose={onClose} wide>
+    <PopupWithSigner title="Approve Fellowship Member" onClose={onClose}>
       <PopupContent member={member} onClose={onClose} />
     </PopupWithSigner>
   );

@@ -24,11 +24,7 @@ export default function CollectiveProxyCallPopup({ isMember }) {
   }, [api, proposal]);
 
   return (
-    <Popup
-      className="!w-[640px]"
-      title="Community proxy call"
-      onClose={onClose}
-    >
+    <Popup title="Community proxy call" onClose={onClose}>
       <SignerWithBalance />
       {extrinsicComponent}
       <div className="flex justify-end">

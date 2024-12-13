@@ -11,7 +11,10 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import Link from "next/link";
 import { useProxyTypeOptions } from "../../hooks/useProxyTypeOptions";
 import { useDispatch } from "react-redux";
-import { newErrorToast, newSuccessToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 export function DelayBlocksField({ value, setValue }) {
@@ -89,7 +92,17 @@ function PopupContent({ onClose }) {
   const delay = 0;
 
   const getTxFunc = useCallback(() => {
-    if (!api || !address || !proxyAccount) {
+    if (!api || !address) {
+      return;
+    }
+
+    if (!proxyType) {
+      dispatch(newErrorToast("The proxy type is required"));
+      return;
+    }
+
+    if (!proxyAccount) {
+      dispatch(newErrorToast("The proxy account is required"));
       return;
     }
 
@@ -124,12 +137,7 @@ function PopupContent({ onClose }) {
 
 export default function AddProxyPopup({ onClose }) {
   return (
-    <PopupWithSigner
-      title="Add a proxy"
-      onClose={onClose}
-      wide
-      className="!w-[640px]"
-    >
+    <PopupWithSigner title="Add a proxy" onClose={onClose}>
       <PopupContent onClose={onClose} />
     </PopupWithSigner>
   );

@@ -76,7 +76,6 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
 
   return (
     <BaseVotesPopup
-      wide
       title="Calls"
       onClose={() => setShowVoteList(false)}
       extra={searchBtn}

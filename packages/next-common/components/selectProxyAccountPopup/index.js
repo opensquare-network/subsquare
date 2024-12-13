@@ -7,7 +7,7 @@ import { GeneralProxiesProvider } from "next-common/context/proxy";
 export default function SelectProxyAccountPopup({ onClose, onSelect = noop }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Select Address" className="w-[640px]" onClose={onClose}>
+      <Popup title="Select Address" onClose={onClose}>
         <GeneralProxiesProvider>
           <div className="flex flex-col gap-[24px]">
             <ProxiedAccounts onSelect={onSelect} />

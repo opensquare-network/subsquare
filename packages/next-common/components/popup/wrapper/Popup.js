@@ -13,7 +13,6 @@ export default function Popup({
   onClose = noop,
   title,
   className = "",
-  wide,
   extra,
   maskClosable = true,
   children,
@@ -42,8 +41,7 @@ export default function Popup({
               <NeutralPanel
                 className={cn(
                   "relative mt-[12vh] mb-4",
-                  "w-[400px] max-w-full",
-                  wide && "sm:w-[480px]",
+                  "w-[640px] max-w-full",
                   "p-6 space-y-4",
                   className,
                 )}

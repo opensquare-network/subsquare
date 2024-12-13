@@ -13,7 +13,6 @@ export default function BeenDelegatedListPopup({
 }) {
   return (
     <Popup
-      wide
       title="Been Delegated"
       className="!w-[720px] max-h-screen overflow-y-scroll scrollbar-pretty max-sm:w-full"
       onClose={() => setShow(false)}
