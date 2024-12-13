@@ -4,7 +4,7 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import Popup from "next-common/components/popup/wrapper/Popup";
 import CouncilProposeButton from "./common/councilProposeButton";
 import Tooltip from "next-common/components/tooltip";
-import { useExtrinsicField } from "next-common/components/preImages/createPreimagePopup/fields/useExtrinsicField";
+import { useExtrinsicField } from "next-common/components/popup/fields/extrinsicField";
 
 export default function CollectiveProxyCallPopup({ isMember, onClose }) {
   const api = useContextApi();

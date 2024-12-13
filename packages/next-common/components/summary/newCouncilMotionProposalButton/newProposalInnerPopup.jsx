@@ -1,5 +1,5 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { useExtrinsicField } from "next-common/components/preImages/createPreimagePopup/fields/useExtrinsicField";
+import { useExtrinsicField } from "next-common/components/popup/fields/extrinsicField";
 import InputNumber from "next-common/components/inputNumber";
 import { LoadingContent } from "next-common/components/popup/loadingContent";
 import PopupLabel from "next-common/components/popup/label";

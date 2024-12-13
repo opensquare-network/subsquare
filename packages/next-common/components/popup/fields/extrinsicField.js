@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { useCallback, useState } from "react";
+import styled from "styled-components";
 import Extrinsic from "next-common/components/extrinsic";
 import { useContextApi } from "next-common/context/api";
 import PopupLabel from "next-common/components/popup/label";
@@ -16,7 +16,7 @@ const Bar = styled.div`
   );
 `;
 
-export default function ExtrinsicLoading() {
+export function ExtrinsicLoading() {
   return (
     <div className="flex flex-col">
       <Bar className="w-[80px]"></Bar>

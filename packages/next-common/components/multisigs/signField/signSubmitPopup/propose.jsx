@@ -1,6 +1,6 @@
 import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import CallTree from "next-common/components/proposal/callTree";
-import { ExtrinsicFieldWithLoading } from "next-common/components/preImages/createPreimagePopup/fields/useExtrinsicField";
+import { ExtrinsicFieldWithLoading } from "next-common/components/popup/fields/extrinsicField";
 
 const defaultSectionName = "system";
 const defaultMethodName = "setCode";

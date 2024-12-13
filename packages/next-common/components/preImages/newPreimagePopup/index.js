@@ -74,23 +74,25 @@ export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
     [api],
   );
 
-  let extrinsicComponent = (
-    <div>
-      <PopupLabel text="Propose" />
-      <Extrinsic
-        defaultSectionName="system"
-        defaultMethodName="setCode"
-        setValue={setProposal}
-      />
-      <ExtrinsicInfo
-        preimageHash={encodedHash}
-        preimageLength={encodedLength || 0}
-      />
-    </div>
-  );
+  let extrinsicComponent = null;
 
   if (!api) {
     extrinsicComponent = <ExtrinsicLoading />;
+  } else {
+    extrinsicComponent = (
+      <div>
+        <PopupLabel text="Propose" />
+        <Extrinsic
+          defaultSectionName="system"
+          defaultMethodName="setCode"
+          setValue={setProposal}
+        />
+        <ExtrinsicInfo
+          preimageHash={encodedHash}
+          preimageLength={encodedLength || 0}
+        />
+      </div>
+    );
   }
 
   return (
