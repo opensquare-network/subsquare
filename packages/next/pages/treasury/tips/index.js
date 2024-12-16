@@ -49,22 +49,6 @@ export default function TipsPage({ tips: ssrTips }) {
           seoInfo={seoInfo}
           title={seoInfo.title}
           summary={<TreasurySummary />}
-          summaryFooter={
-            !hideActionButtons &&
-            hasTips && (
-              <div className="flex justify-end">
-                <PrimaryButton
-                  size="small"
-                  iconLeft={
-                    <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
-                  }
-                  onClick={() => setShowPopup(true)}
-                >
-                  New Tip
-                </PrimaryButton>
-              </div>
-            )
-          }
           tabs={[
             {
               value: "tips",
@@ -83,6 +67,22 @@ export default function TipsPage({ tips: ssrTips }) {
             title="List"
             titleCount={tips.total}
             items={items}
+            titleExtra={
+              !hideActionButtons &&
+              hasTips && (
+                <div className="flex justify-end">
+                  <PrimaryButton
+                    size="small"
+                    iconLeft={
+                      <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
+                    }
+                    onClick={() => setShowPopup(true)}
+                  >
+                    New Tip
+                  </PrimaryButton>
+                </div>
+              )
+            }
             pagination={{
               page: tips.page,
               pageSize: tips.pageSize,
