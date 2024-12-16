@@ -1,6 +1,7 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import {
+  fellowshipParamsApi,
   getFellowshipReferendumCommentsUrl,
   getFellowshipReferendumUrl,
 } from "next-common/services/url";
@@ -49,6 +50,7 @@ const Gov2ReferendumCall = dynamicClientOnly(() =>
 
 function FellowshipContent() {
   const post = usePost();
+  const { fellowshipParams } = usePageProps();
 
   useSubReferendumInfo("fellowshipReferenda");
   const info = useReferendumInfo();
@@ -59,7 +61,7 @@ function FellowshipContent() {
 
   return (
     <MaybeSimaContent>
-      <CollectivesProvider section="fellowship">
+      <CollectivesProvider section="fellowship" params={fellowshipParams}>
         <ContentWithComment>
           <FellowshipReferendaDetail />
           <FellowshipReferendumSideBar />
@@ -174,6 +176,9 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
   const tracksProps = await fetchOpenGovTracksProps();
+  const { result: fellowshipParams = {} } = await nextApi.fetch(
+    fellowshipParamsApi,
+  );
 
   return {
     props: {
@@ -181,6 +186,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       comments: comments ?? EmptyList,
 
       ...tracksProps,
+      fellowshipParams,
     },
   };
 });
