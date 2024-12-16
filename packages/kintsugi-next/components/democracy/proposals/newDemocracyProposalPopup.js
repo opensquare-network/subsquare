@@ -3,7 +3,9 @@ import { SubmitDemocracyProposalInnerPopup } from "next-common/components/summar
 import { NewTreasuryReferendumInnerPopup } from "./quickStart/newTreasuryReferendumInnerPopup";
 import { SpendLocalTreasuryButton } from "next-common/components/preImages/createPreimagePopup/templateButtons";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import { useForwardPopupContext } from "next-common/context/forwardPopup";
+import ForwardPopupProvider, {
+  useForwardPopupContext,
+} from "next-common/context/forwardPopup";
 
 function SpendLocalTreasury() {
   const { setForwardPopup } = useForwardPopupContext();
@@ -22,18 +24,14 @@ function KintsugiDemocracyProposalQuickStart() {
   );
 }
 
-function NewDemocracyProposalInnerPopup() {
-  return (
-    <SubmitDemocracyProposalInnerPopup>
-      <KintsugiDemocracyProposalQuickStart />
-    </SubmitDemocracyProposalInnerPopup>
-  );
-}
-
 export default function NewDemocracyProposalPopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
-      <NewDemocracyProposalInnerPopup />
+      <ForwardPopupProvider>
+        <SubmitDemocracyProposalInnerPopup>
+          <KintsugiDemocracyProposalQuickStart />
+        </SubmitDemocracyProposalInnerPopup>
+      </ForwardPopupProvider>
     </SignerPopupWrapper>
   );
 }
