@@ -65,7 +65,6 @@ export function CancelReferendumInnerPopup({
       <div className="flex justify-end">
         <TxSubmissionButton
           getTxFunc={getTxFunc}
-          onClose={onClose}
           onInBlock={({ events }) => {
             const eventData = getEventData(events, "referenda", "Submitted");
             if (!eventData) {

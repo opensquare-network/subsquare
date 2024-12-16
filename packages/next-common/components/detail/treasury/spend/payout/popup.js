@@ -5,14 +5,12 @@ import { useContextApi } from "next-common/context/api";
 import { useOnchainData } from "next-common/context/post";
 import { isNil } from "lodash-es";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useTreasuryPallet } from "next-common/context/treasury";
 
 function Content() {
   const { component } = useSigner("Origin");
   const api = useContextApi();
   const { index } = useOnchainData() || {};
-  const { onClose } = usePopupParams();
   const treasuryPallet = useTreasuryPallet();
 
   const getTxFunc = useCallback(() => {
@@ -24,7 +22,7 @@ function Content() {
   return (
     <>
       {component}
-      <TxSubmissionButton title="Pay" getTxFunc={getTxFunc} onClose={onClose} />
+      <TxSubmissionButton title="Pay" getTxFunc={getTxFunc} />
     </>
   );
 }

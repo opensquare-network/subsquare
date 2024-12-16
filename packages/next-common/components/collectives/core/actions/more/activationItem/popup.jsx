@@ -8,7 +8,7 @@ import { useCoreFellowshipPallet } from "next-common/context/collectives/collect
 import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
 
 function Content() {
-  const { onClose, who, member } = usePopupParams();
+  const { who, member } = usePopupParams();
   const { component } = useSigner("Origin");
   const { isActive } = member.status;
   const targetActiveValue = !isActive;
@@ -28,7 +28,6 @@ function Content() {
       {component}
       <TxSubmissionButton
         getTxFunc={getTxFunc}
-        onClose={onClose}
         onInBlock={onInBlock}
         onFinalized={onInBlock}
       />

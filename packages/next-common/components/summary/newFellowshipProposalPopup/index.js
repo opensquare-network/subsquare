@@ -97,7 +97,6 @@ export function NewFellowshipProposalInnerPopup({
       <SubmissionDeposit pallet={pallet} />
       <TxSubmissionButton
         getTxFunc={getTxFunc}
-        onClose={onClose}
         disabled={disabled}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, pallet, "Submitted");

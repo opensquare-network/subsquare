@@ -8,7 +8,7 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
 function Content() {
-  const { onClose, referendumIndex, pallet = "referenda" } = usePopupParams();
+  const { referendumIndex, pallet = "referenda" } = usePopupParams();
   const { component } = useSigner("Origin");
   const api = useContextApi();
 
@@ -24,7 +24,7 @@ function Content() {
     <>
       {component}
       <ReferendumIndexRow referendumIndex={referendumIndex} />
-      <TxSubmissionButton getTxFunc={getTxFunc} onClose={onClose} />
+      <TxSubmissionButton getTxFunc={getTxFunc} />
     </>
   );
 }

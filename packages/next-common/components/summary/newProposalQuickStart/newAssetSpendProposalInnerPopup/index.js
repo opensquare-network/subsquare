@@ -16,7 +16,7 @@ import { useDefaultTrackId } from "../../newProposalPopup/useTrackDetail";
 import { useSubmissionDeposit } from "../common/useSubmissionDeposit";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import Tooltip from "next-common/components/tooltip";
-import { useAssetHubNativeTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/newFellowshipTreasuryProposalPopup";
+import { useAssetHubNativeTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/newFellowshipTreasuryProposalPopup";
 
 function CreateProposalSubmitButtonWithRankCheck({
   trackId,

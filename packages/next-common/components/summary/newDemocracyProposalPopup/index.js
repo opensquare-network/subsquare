@@ -84,7 +84,6 @@ export function NewDemocracyProposalInnerPopup({
       <SubmissionDeposit deposit={deposit} />{" "}
       <TxSubmissionButton
         getTxFunc={getTxFunc}
-        onClose={onClose}
         disabled={disabled}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, "democracy", "Proposed");

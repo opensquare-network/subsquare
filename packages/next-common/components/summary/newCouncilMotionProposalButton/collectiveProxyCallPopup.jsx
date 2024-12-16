@@ -5,8 +5,10 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import CouncilProposeButton from "./common/councilProposeButton";
 import Tooltip from "next-common/components/tooltip";
 import { useExtrinsicField } from "next-common/components/popup/fields/extrinsicField";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
-export default function CollectiveProxyCallPopup({ isMember, onClose }) {
+export default function CollectiveProxyCallPopup({ isMember }) {
+  const { onClose } = usePopupParams();
   const api = useContextApi();
   const { extrinsic: proposal, component: extrinsicComponent } =
     useExtrinsicField({

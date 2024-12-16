@@ -7,7 +7,7 @@ import { useSalaryFellowshipPallet } from "next-common/context/collectives/colle
 import { useCallback } from "react";
 
 function Content() {
-  const { onClose, onFinalized } = usePopupParams();
+  const { onFinalized } = usePopupParams();
   const api = useContextApi();
   const pallet = useSalaryFellowshipPallet();
 
@@ -24,7 +24,6 @@ function Content() {
       <TxSubmissionButton
         title="Confirm"
         getTxFunc={getTxFunc}
-        onClose={onClose}
         onFinalized={onFinalized}
       />
     </>
