@@ -8,6 +8,7 @@ import MailLink from "./mailLink";
 import WebLink from "./webLink";
 import ElementLink from "./elementLink";
 import TwitterLink from "./twitterLink";
+import ConditionalMimirIcon from "./conditionalMimirIcon";
 import useIdentity from "next-common/utils/hooks/useIdentity";
 import { useChain } from "next-common/context/chain";
 import CouncilorLink from "./councilorLink";
@@ -45,6 +46,7 @@ export default function AccountLinks({
       {riot && <ElementLink riot={riot} />}
       {twitter && <TwitterLink twitter={twitter} />}
       {showCouncilorLink && <CouncilorLink address={address} />}
+      <ConditionalMimirIcon address={address} />
     </Wrapper>
   );
 }
