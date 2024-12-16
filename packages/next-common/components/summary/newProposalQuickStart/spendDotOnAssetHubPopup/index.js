@@ -6,7 +6,7 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { useSpendDotOnAssetHubPreimageTx } from "next-common/components/preImages/createPreimagePopup/spendDotOnAssetHubPopup";
+import { useSpendDotOnAssetHubPreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/spendDotOnAssetHubPopup";
 import useAssetHubDotBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useAssetHubDotBalanceField";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
