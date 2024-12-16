@@ -11,7 +11,7 @@ import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 export default function TreasurySpendExpireCountdown() {
   const { meta, indexer } = useOnchainData() || {};
-  const { expireAt } = meta || {};
+  const { expireAt, validFrom } = meta || {};
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(expireAt - latestHeight);
   const { timestamp } = useBlockTimestamp(expireAt);
@@ -20,7 +20,9 @@ export default function TreasurySpendExpireCountdown() {
   if (
     isNil(expireAt) ||
     isNil(indexer?.blockHeight) ||
+    isNil(validFrom) ||
     isNil(latestHeight) ||
+    latestHeight < validFrom ||
     ["Paid", "Processed"].includes(state)
   ) {
     return null;
@@ -35,12 +37,11 @@ export default function TreasurySpendExpireCountdown() {
   }
 
   const text = `Expire in ${estimatedBlocksTime}`;
-
   return (
     <CountDownWrapper>
       <CountDown
-        numerator={latestHeight - indexer.blockHeight}
-        denominator={expireAt - indexer.blockHeight}
+        numerator={latestHeight - validFrom}
+        denominator={expireAt - validFrom}
         tooltipContent={text}
       />
       <span>{text}</span>
