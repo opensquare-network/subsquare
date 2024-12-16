@@ -1,9 +1,12 @@
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import MainPopup from "./mainPopup";
-import NewLocalTreasuryProposalPopup from "./newLocalTreasuryProposalPopup";
-import NewUSDxTreasuryProposalPopup from "./newUSDxTreasuryProposalPopup";
-import NewRemarkProposalPopup from "./newRemarkProposalPopup";
-import CancelReferendumPopup from "./cancelReferendumPopup";
+import NewLocalTreasuryProposalPopup from "./templates/newLocalTreasuryProposalPopup";
+import NewUSDxTreasuryProposalPopup from "./templates/newUSDxTreasuryProposalPopup";
+import NewRemarkProposalPopup from "./templates/newRemarkProposalPopup";
+import CancelReferendumPopup from "./templates/cancelReferendumPopup";
+import NewFellowshipTreasuryProposalPopup from "./templates/newFellowshipTreasuryProposalPopup";
+import SpendDotOnAssetHubPopup from "./templates/spendDotOnAssetHubPopup";
+import KillReferendumPopup from "./templates/killReferendumPopup";
 import {
   SpendLocalTreasuryButton,
   FellowshipTreasurySpendButton,
@@ -13,11 +16,8 @@ import {
   CancelReferendumButton,
   KillReferendumButton,
 } from "./templateButtons";
-import KillReferendumPopup from "./killReferendumPopup";
 import { isCollectivesChain } from "next-common/utils/chain";
-import NewFellowshipTreasuryProposalPopup from "./newFellowshipTreasuryProposalPopup";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import SpendDotOnAssetHubPopup from "./spendDotOnAssetHubPopup";
 import ForwardPopupProvider, {
   useForwardPopupContext,
 } from "next-common/context/forwardPopup";
@@ -96,6 +96,13 @@ function NewRemark() {
 
 function CancelReferendum() {
   const { setForwardPopup } = useForwardPopupContext();
+  const { newProposalQuickStart: { cancelReferendum } = {} } =
+    useChainSettings();
+
+  if (!cancelReferendum) {
+    return null;
+  }
+
   return (
     <CancelReferendumButton
       onClick={() => setForwardPopup(<CancelReferendumPopup />)}
@@ -105,6 +112,12 @@ function CancelReferendum() {
 
 function KillReferendum() {
   const { setForwardPopup } = useForwardPopupContext();
+  const { newProposalQuickStart: { killReferendum } = {} } = useChainSettings();
+
+  if (!killReferendum) {
+    return null;
+  }
+
   return (
     <KillReferendumButton
       onClick={() => setForwardPopup(<KillReferendumPopup />)}

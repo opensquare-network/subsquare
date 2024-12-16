@@ -3,36 +3,39 @@ import { useMemo } from "react";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import NotePreimageButton from "./notePreimageButton";
-import useRemarkField from "./fields/useRemarkField";
+import NotePreimageButton from "../notePreimageButton";
+import useReferendumIndexField from "../fields/useReferendumIndexField";
+import { isNil } from "lodash-es";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
-export function useRemarkNotePreimageTx(remark) {
+export function useKillReferendumNotePreimageTx(referendumIndex) {
   const api = useContextApi();
 
   return useMemo(() => {
-    if (!api || !remark) {
+    if (!api || isNil(referendumIndex)) {
       return {};
     }
 
     try {
-      const proposal = api.tx.system.remark(remark);
+      const proposal = api.tx.referenda.kill(referendumIndex);
       return getState(api, proposal);
     } catch (e) {
       return {};
     }
-  }, [api, remark]);
+  }, [api, referendumIndex]);
 }
 
-export default function NewRemarkProposalPopup() {
+export default function KillReferendumPopup() {
   const { onClose } = usePopupParams();
-  const { value: remark, component: remarkField } = useRemarkField();
-  const { notePreimageTx } = useRemarkNotePreimageTx(remark);
+  const { value: referendumIndex, component: referendumIndexField } =
+    useReferendumIndexField();
+
+  const { notePreimageTx } = useKillReferendumNotePreimageTx(referendumIndex);
 
   return (
-    <Popup title="New Remark Proposal" onClose={onClose}>
+    <Popup title="Kill a referendum" onClose={onClose}>
       <SignerWithBalance />
-      {remarkField}
+      {referendumIndexField}
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>

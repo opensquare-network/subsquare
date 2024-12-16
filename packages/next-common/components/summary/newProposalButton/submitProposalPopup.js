@@ -83,6 +83,13 @@ function NewRemark() {
 
 function CancelReferendum() {
   const { setForwardPopup } = useForwardPopupContext();
+  const { newProposalQuickStart: { cancelReferendum } = {} } =
+    useChainSettings();
+
+  if (!cancelReferendum) {
+    return null;
+  }
+
   return (
     <CancelReferendumButton
       onClick={() => setForwardPopup(<CancelReferendumInnerPopup />)}
@@ -92,6 +99,12 @@ function CancelReferendum() {
 
 function KillReferendum() {
   const { setForwardPopup } = useForwardPopupContext();
+  const { newProposalQuickStart: { killReferendum } = {} } = useChainSettings();
+
+  if (!killReferendum) {
+    return null;
+  }
+
   return (
     <KillReferendumButton
       onClick={() => setForwardPopup(<KillReferendumInnerPopup />)}

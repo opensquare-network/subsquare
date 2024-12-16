@@ -5,31 +5,40 @@ import { useContextApi } from "next-common/context/api";
 import { checkInputValue } from "next-common/utils";
 import { addressToPublicKey } from "next-common/utils/address";
 import { InfoMessage } from "next-common/components/setting/styled";
+import { getAssetBySymbol } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import NotePreimageButton from "./notePreimageButton";
-import useAssetHubDotBalanceField from "./fields/useAssetHubDotBalanceField";
-import useAddressComboField from "./fields/useAddressComboField";
-import useValidFromField from "./fields/useValidFromField";
-import { useChainSettings } from "next-common/context/chain";
+import NotePreimageButton from "../notePreimageButton";
+import useUSDxBalanceField from "../fields/useUSDxBalanceField";
+import useAddressComboField from "../fields/useAddressComboField";
+import useValidFromField from "../fields/useValidFromField";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
-const getAssetKindParam = () => {
+const getAssetKindParam = (assetId) => {
   return {
-    V4: {
+    V3: {
       location: {
         parents: 0,
         interior: {
-          X1: [
-            {
-              Parachain: 1000,
-            },
-          ],
+          X1: {
+            Parachain: 1000,
+          },
         },
       },
       assetId: {
-        parents: 1,
-        interior: "here",
+        Concrete: {
+          parents: 0,
+          interior: {
+            X2: [
+              {
+                PalletInstance: 50,
+              },
+              {
+                GeneralIndex: assetId,
+              },
+            ],
+          },
+        },
       },
     },
   };
@@ -37,28 +46,26 @@ const getAssetKindParam = () => {
 
 const getBeneficiaryParam = (beneficiary) => {
   return {
-    V4: {
+    V3: {
       parents: 0,
       interior: {
-        X1: [
-          {
-            AccountId32: {
-              network: null,
-              id: "0x" + addressToPublicKey(beneficiary),
-            },
+        X1: {
+          AccountId32: {
+            network: null,
+            id: "0x" + addressToPublicKey(beneficiary),
           },
-        ],
+        },
       },
     },
   };
 };
 
-export function useSpendDotOnAssetHubPreimageTx(
+export function useUSDxTreasuryNotePreimageTx(
   inputBalance,
   beneficiary,
   validFrom,
+  symbol,
 ) {
-  const { decimals } = useChainSettings();
   const api = useContextApi();
 
   return useMemo(() => {
@@ -66,16 +73,21 @@ export function useSpendDotOnAssetHubPreimageTx(
       return {};
     }
 
+    const asset = getAssetBySymbol(symbol);
+    if (!asset) {
+      throw new Error("Invalid asset");
+    }
+
     let bnValue;
     try {
-      bnValue = checkInputValue(inputBalance, decimals);
+      bnValue = checkInputValue(inputBalance, asset.decimals);
     } catch (err) {
       return {};
     }
 
     try {
       const proposal = api.tx.treasury.spend(
-        getAssetKindParam(),
+        getAssetKindParam(asset.id),
         bnValue.toFixed(),
         getBeneficiaryParam(beneficiary),
         validFrom ? parseInt(validFrom) : null,
@@ -86,26 +98,29 @@ export function useSpendDotOnAssetHubPreimageTx(
       console.error(e);
       return {};
     }
-  }, [api, inputBalance, beneficiary, validFrom, decimals]);
+  }, [api, inputBalance, beneficiary, validFrom, symbol]);
 }
 
 function PopupContent() {
-  const { value: inputBalance, component: balanceField } =
-    useAssetHubDotBalanceField();
+  const {
+    value: [inputBalance, symbol],
+    component: usdxBalanceField,
+  } = useUSDxBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
   const { value: validFrom, component: validFromField } = useValidFromField();
 
-  const { notePreimageTx } = useSpendDotOnAssetHubPreimageTx(
+  const { notePreimageTx } = useUSDxTreasuryNotePreimageTx(
     inputBalance,
     beneficiary,
     validFrom,
+    symbol,
   );
 
   return (
     <>
       <SignerWithBalance />
-      {balanceField}
+      {usdxBalanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}
         <InfoMessage>
@@ -120,10 +135,10 @@ function PopupContent() {
   );
 }
 
-export default function SpendDotOnAssetHubPopup() {
+export default function NewUSDxTreasuryProposalPopup() {
   const { onClose } = usePopupParams();
   return (
-    <Popup title="Spend DOT on AssetHub" onClose={onClose}>
+    <Popup title="Create USDx Treasury Proposal" onClose={onClose}>
       <AssetHubApiProvider>
         <PopupContent />
       </AssetHubApiProvider>

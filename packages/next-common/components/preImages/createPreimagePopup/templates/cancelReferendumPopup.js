@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import NotePreimageButton from "./notePreimageButton";
-import useReferendumIndexField from "./fields/useReferendumIndexField";
+import NotePreimageButton from "../notePreimageButton";
+import useReferendumIndexField from "../fields/useReferendumIndexField";
 import { isNil } from "lodash-es";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
