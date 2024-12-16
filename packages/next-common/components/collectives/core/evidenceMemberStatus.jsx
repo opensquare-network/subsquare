@@ -1,29 +1,26 @@
-import { useReferendumFellowshipMember } from "next-common/context/post/fellowship/useReferendumFellowshipMember";
-import CoreFellowshipMemberDemotionPeriod from "./member/demotionPeriod";
-import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
-import CoreFellowshipMemberPromotionPeriod from "./member/promotionPeriod";
 import { ArrowExternalLink } from "@osn/icons/subsquare";
-import { cn } from "next-common/utils";
+import FellowshipRank from "next-common/components/fellowship/rank";
 import Tooltip from "next-common/components/tooltip";
 import { AddressUser } from "next-common/components/user";
+import { cn } from "next-common/utils";
 import Link from "next/link";
-import FellowshipRank from "next-common/components/fellowship/rank";
+import CoreFellowshipMemberDemotionPeriod from "./member/demotionPeriod";
+import CoreFellowshipMemberPromotionPeriod from "./member/promotionPeriod";
 
-export default function FellowshipEvidenceMemberStatus() {
-  const { isLoading, member } = useReferendumFellowshipMember();
-  const params = useCoreFellowshipParams();
+export default function FellowshipEvidenceMemberStatus({
+  member,
+  isLoading,
+  params,
+}) {
+  if (isLoading || !member) {
+    return null;
+  }
 
   const {
     rank,
     address,
     status: { lastProof, lastPromotion } = {},
   } = member || {};
-
-  if (isLoading) {
-    return (
-      <div className="h-[66px] max-sm:h-[138px] bg-neutral200 rounded-lg" />
-    );
-  }
 
   return (
     <div
