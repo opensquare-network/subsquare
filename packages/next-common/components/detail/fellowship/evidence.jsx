@@ -1,3 +1,4 @@
+import FellowshipEvidenceMemberStatus from "next-common/components/collectives/core/evidenceMemberStatus";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import { useOnchainData } from "next-common/context/post";
@@ -9,6 +10,8 @@ function FellowshipReferendaDetailEvidenceImpl() {
   return (
     <div className="mt-4 space-y-4">
       <hr />
+
+      <FellowshipEvidenceMemberStatus />
 
       <FellowshipEvidenceContent
         wish={wish}
