@@ -1,27 +1,61 @@
-import { useState } from "react";
+import { useCallback } from "react";
 import { NewDemocracyProposalInnerPopup } from "../newDemocracyProposalPopup";
-import SubmitProposalPopupCommon from "../newProposalButton/common";
+import {
+  NewPreimageButton,
+  NewProposalFromPreimageButton,
+} from "../newProposalButton/common";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import ForwardPopupProvider from "next-common/context/forwardPopup";
+import ForwardPopupProvider, {
+  useForwardPopupContext,
+} from "next-common/context/forwardPopup";
 import { AjunaDemocracyProposalQuickStart } from "./ajuna/quickStart";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import { NewPreimageInnerPopup } from "next-common/components/preImages/newPreimagePopup";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
-export function SubmitDemocracyProposalInnerPopup({ children }) {
-  const [preimageHash, setPreimageHash] = useState();
-  const [preimageLength, setPreimageLength] = useState();
+function NewPreimage() {
+  const { setForwardPopup } = useForwardPopupContext();
+
+  const onPreimageCreated = useCallback(
+    ({ hash, length }) => {
+      setForwardPopup(
+        <NewDemocracyProposalInnerPopup
+          preimageHash={hash}
+          preimageLength={length}
+        />,
+      );
+    },
+    [setForwardPopup],
+  );
 
   return (
-    <SubmitProposalPopupCommon
-      setPreimageHash={setPreimageHash}
-      setPreimageLength={setPreimageLength}
-      newProposalPopup={
-        <NewDemocracyProposalInnerPopup
-          preimageHash={preimageHash}
-          preimageLength={preimageLength}
-        />
+    <NewPreimageButton
+      onClick={() =>
+        setForwardPopup(<NewPreimageInnerPopup onCreated={onPreimageCreated} />)
       }
-    >
+    />
+  );
+}
+
+function NewProposalFromPreImage() {
+  const { setForwardPopup } = useForwardPopupContext();
+  return (
+    <NewProposalFromPreimageButton
+      onClick={() => setForwardPopup(<NewDemocracyProposalInnerPopup />)}
+    />
+  );
+}
+
+export function SubmitDemocracyProposalInnerPopup({ children }) {
+  const onClose = usePopupParams();
+  return (
+    <Popup title="Submit Proposal" onClose={onClose}>
+      <div className="flex flex-col !mt-[24px] gap-[12px]">
+        <NewPreimage />
+        <NewProposalFromPreImage />
+      </div>
       {children}
-    </SubmitProposalPopupCommon>
+    </Popup>
   );
 }
 

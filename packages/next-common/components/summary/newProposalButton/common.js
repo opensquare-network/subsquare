@@ -1,11 +1,7 @@
-import { useCallback, useState } from "react";
-import Popup from "next-common/components/popup/wrapper/Popup";
 import { cn } from "next-common/utils";
 import NewPreimageSVG from "./icons/new-preimage.svg";
 import NewProposalSVG from "./icons/new-proposal.svg";
 import { ArrowRight } from "@osn/icons/subsquare";
-import { NewPreimageInnerPopup } from "next-common/components/preImages/newPreimagePopup";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 export function ChoiceButton({
   icon = null,
@@ -43,51 +39,24 @@ export function ChoiceButton({
   );
 }
 
-export default function SubmitProposalPopupCommon({
-  setPreimageHash,
-  setPreimageLength,
-  newProposalPopup,
-  children,
-}) {
-  const { onClose } = usePopupParams();
-  const [showNewPreimagePopup, setShowNewPreimagePopup] = useState(false);
-  const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
-
-  const onPreimageCreated = useCallback((preimageHash, preimageLength) => {
-    setPreimageHash(preimageHash);
-    setPreimageLength(preimageLength);
-    setShowNewPreimagePopup(false);
-    setShowNewProposalPopup(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (showNewPreimagePopup) {
-    return (
-      <NewPreimageInnerPopup onClose={onClose} onCreated={onPreimageCreated} />
-    );
-  }
-
-  if (showNewProposalPopup) {
-    return newProposalPopup;
-  }
-
+export function NewPreimageButton({ onClick }) {
   return (
-    <Popup title="Submit Proposal" onClose={onClose}>
-      <div className="flex flex-col !mt-[24px] gap-[12px]">
-        <ChoiceButton
-          icon={<NewPreimageSVG />}
-          name="New preimage"
-          description="Proposals can be submitted with preimage hash-only"
-          onClick={() => setShowNewPreimagePopup(true)}
-        />
-        <ChoiceButton
-          icon={<NewProposalSVG />}
-          name="I already have a preimage"
-          description="Copy preimage hash to continue submitting a proposal"
-          onClick={() => setShowNewProposalPopup(true)}
-        />
-      </div>
-      {children}
-    </Popup>
+    <ChoiceButton
+      icon={<NewPreimageSVG />}
+      name="New preimage"
+      description="Proposals can be submitted with preimage hash-only"
+      onClick={onClick}
+    />
+  );
+}
+
+export function NewProposalFromPreimageButton({ onClick }) {
+  return (
+    <ChoiceButton
+      icon={<NewProposalSVG />}
+      name="I already have a preimage"
+      description="Copy preimage hash to continue submitting a proposal"
+      onClick={onClick}
+    />
   );
 }
