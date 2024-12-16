@@ -1,9 +1,6 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import {
-  usePopupParams,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useContextApi } from "next-common/context/api";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -16,7 +13,6 @@ import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 function PopupContent() {
-  const { onClose } = usePopupParams();
   const { decimals, symbol } = useChainSettings();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
@@ -71,11 +67,7 @@ function PopupContent() {
       {curatorSelect}
       {feeField}
       <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          getTxFunc={getTxFunc}
-          onClose={onClose}
-        />
+        <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
       </div>
     </>
   );

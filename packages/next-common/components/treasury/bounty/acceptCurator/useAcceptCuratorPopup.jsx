@@ -1,7 +1,6 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
@@ -35,7 +34,6 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
   const { symbol, decimals } = useChainSettings();
   const { meta } = onchainData;
   const { curatorDeposit } = meta || {};
-  const { onClose } = usePopupParams();
   const api = useContextApi();
 
   const getTxFunc = useCallback(() => {
@@ -56,11 +54,7 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
         symbol={symbol}
       />
       <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          getTxFunc={getTxFunc}
-          onClose={onClose}
-        />
+        <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
       </div>
     </>
   );

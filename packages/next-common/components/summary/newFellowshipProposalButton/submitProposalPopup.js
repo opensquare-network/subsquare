@@ -100,7 +100,7 @@ function NewPreimage() {
   const { setForwardPopup } = useForwardPopupContext();
 
   const onPreimageCreated = useCallback(
-    ({ hash, length }) => {
+    (hash, length) => {
       setForwardPopup(
         <NewFellowshipProposalInnerPopup
           track={period}

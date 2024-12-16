@@ -89,7 +89,6 @@ export default function NewCouncilMotionProposalInnerPopup({ isMember }) {
               const [, proposalIndex] = eventData;
               router.push(`${router.pathname}/${proposalIndex}`);
             }}
-            onClose={onClose}
           />
         </Tooltip>
       </div>

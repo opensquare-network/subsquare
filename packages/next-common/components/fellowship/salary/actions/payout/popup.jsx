@@ -3,7 +3,6 @@ import Tab from "next-common/components/tab";
 import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import Beneficiary from "next-common/components/popupWithSigner/fields/beneficiary";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
@@ -22,7 +21,6 @@ const tabs = [
 ];
 
 function SelfPayout() {
-  const { onClose } = usePopupParams();
   const api = useContextApi();
   const pallet = useSalaryFellowshipPallet();
 
@@ -36,18 +34,13 @@ function SelfPayout() {
   return (
     <>
       <Signer />
-      <TxSubmissionButton
-        title="Confirm"
-        getTxFunc={getTxFunc}
-        onClose={onClose}
-      />
+      <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
     </>
   );
 }
 
 function OtherPayout() {
   const dispatch = useDispatch();
-  const { onClose } = usePopupParams();
   const [beneficiary, setBeneficiary] = useState("");
   const api = useContextApi();
   const pallet = useSalaryFellowshipPallet();
@@ -67,11 +60,7 @@ function OtherPayout() {
     <>
       <Signer />
       <Beneficiary setAddress={setBeneficiary} />
-      <TxSubmissionButton
-        title="Confirm"
-        getTxFunc={getTxFunc}
-        onClose={onClose}
-      />
+      <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
     </>
   );
 }

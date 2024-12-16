@@ -116,7 +116,7 @@ export function SignSubmitInnerPopup({
         disabled={isSubmitBtnDisabled}
         getTxFunc={getTxFunc}
         onFinalized={onFinalized}
-        onClose={isEmptyFunc(onCreated) ? onClose : undefined}
+        autoClose={isEmptyFunc(onCreated)}
         loading={isSubmitBtnLoading}
       />
     </Popup>

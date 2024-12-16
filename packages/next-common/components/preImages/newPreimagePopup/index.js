@@ -109,7 +109,7 @@ export function NewPreimageInnerPopup({ onCreated = noop }) {
           dispatch(incPreImagesTrigger());
         }}
         onFinalized={() => dispatch(incPreImagesTrigger())}
-        onClose={isEmptyFunc(onCreated) ? onClose : undefined}
+        autoClose={isEmptyFunc(onCreated)}
       />
     </Popup>
   );

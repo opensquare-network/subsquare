@@ -17,7 +17,7 @@ function NewPreimage() {
   const { setForwardPopup } = useForwardPopupContext();
 
   const onPreimageCreated = useCallback(
-    ({ hash, length }) => {
+    (hash, length) => {
       setForwardPopup(
         <NewDemocracyProposalInnerPopup
           preimageHash={hash}

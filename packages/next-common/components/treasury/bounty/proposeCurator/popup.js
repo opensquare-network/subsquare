@@ -9,7 +9,6 @@ import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import { useDispatch } from "react-redux";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
-import { usePopupOnClose } from "next-common/context/popup";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAutoSelectTreasuryTrackField from "next-common/components/summary/newProposalQuickStart/common/useAutoSelectTreasuryTrackField";
 import useEnactmentBlocksField from "next-common/components/summary/newProposalQuickStart/common/useEnactmentBlocksField";
@@ -26,7 +25,6 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 function PopupContent() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const onClose = usePopupOnClose();
   const { decimals, symbol } = useChainSettings();
   const api = useContextApi();
 
@@ -114,7 +112,6 @@ function PopupContent() {
             const [referendumIndex] = eventData;
             router.push(`/referenda/${referendumIndex}`);
           }}
-          onClose={onClose}
         />
       </div>
     </>

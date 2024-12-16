@@ -80,7 +80,7 @@ function ProxyTypeSelector({ proxyType, setProxyType }) {
 
 // TODO: delay options
 // TODO: advance settings
-function PopupContent({ onClose }) {
+function PopupContent() {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
@@ -126,11 +126,7 @@ function PopupContent({ onClose }) {
       {/* <AdvanceSettings>
           <DelayBlocksField value={delay} setValue={setDelay} />
         </AdvanceSettings> */}
-      <TxSubmissionButton
-        getTxFunc={getTxFunc}
-        onClose={onClose}
-        onFinalized={onFinalized}
-      />
+      <TxSubmissionButton getTxFunc={getTxFunc} onFinalized={onFinalized} />
     </div>
   );
 }

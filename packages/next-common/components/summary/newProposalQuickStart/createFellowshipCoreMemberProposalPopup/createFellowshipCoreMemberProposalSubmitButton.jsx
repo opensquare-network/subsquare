@@ -1,7 +1,6 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
 import { useListPageType } from "next-common/context/page";
-import { usePopupOnClose } from "next-common/context/popup";
 import { listPageCategory } from "next-common/utils/consts/business/category";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
@@ -27,7 +26,6 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   const myRankOk = me && me.rank >= 3;
 
   const api = useContextApi();
-  const onClose = usePopupOnClose();
   const router = useRouter();
   const listPageType = useListPageType();
   const section = useCollectivesSection();
@@ -75,7 +73,6 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
         disabled={disabled}
         title="Create Preimage"
         getTxFunc={getTxFunc}
-        onClose={onClose}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, referendaPallet, "Submitted");
           if (!eventData) {
