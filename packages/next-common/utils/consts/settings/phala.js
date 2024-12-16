@@ -119,6 +119,7 @@ const phala = {
   },
   multisigWallets: {
     signet: true,
+    mimir: true,
   },
 };
 

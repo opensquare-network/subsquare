@@ -95,6 +95,7 @@ const khala = {
   },
   multisigWallets: {
     signet: true,
+    mimir: true,
   },
 };
 

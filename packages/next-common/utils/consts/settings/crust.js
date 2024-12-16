@@ -103,6 +103,9 @@ const crust = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  multisigWallets: {
+    mimir: true,
+  },
 };
 
 export default crust;

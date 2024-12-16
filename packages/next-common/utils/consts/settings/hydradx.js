@@ -4,6 +4,7 @@ import Chains from "../chains";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
+import { mimir } from "../connect";
 
 const ProjectIconHydrationDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconHydrationDark"),
@@ -130,6 +131,7 @@ const hydradx = {
   ethereumNetwork,
   multisigWallets: {
     signet: true,
+    mimir: true,
   },
 };
 

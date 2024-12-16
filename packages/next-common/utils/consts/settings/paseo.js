@@ -114,6 +114,9 @@ const paseo = {
   },
   sima: true,
   ...themeVars,
+  multisigWallets: {
+    mimir: true,
+  },
 };
 
 export default paseo;

@@ -122,6 +122,7 @@ const acala = {
   },
   multisigWallets: {
     signet: true,
+    mimir: true,
   },
 };
 
