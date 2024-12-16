@@ -1,17 +1,31 @@
 import FellowshipEvidenceMemberStatus from "next-common/components/collectives/core/evidenceMemberStatus";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
-import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import {
+  useCoreFellowshipPallet,
+  useCoreFellowshipParams,
+} from "next-common/context/collectives/collectives";
 import { useOnchainData } from "next-common/context/post";
 import { useReferendumFellowshipCoreEvidence } from "next-common/context/post/fellowship/useReferendumFellowshipCoreEvidence";
+import { useReferendumFellowshipMember } from "next-common/context/post/fellowship/useReferendumFellowshipMember";
 
 function FellowshipReferendaDetailEvidenceImpl() {
+  const { isLoading, member } = useReferendumFellowshipMember();
+  const params = useCoreFellowshipParams();
   const { wish, evidence, loading } = useReferendumFellowshipCoreEvidence();
 
   return (
     <div className="mt-4 space-y-4">
       <hr />
 
-      <FellowshipEvidenceMemberStatus />
+      <h4 className="text14Bold text-textPrimary">
+        Evidence{wish && ` for ${wish}`}
+      </h4>
+
+      <FellowshipEvidenceMemberStatus
+        isLoading={isLoading}
+        member={member}
+        params={params}
+      />
 
       <FellowshipEvidenceContent
         wish={wish}
