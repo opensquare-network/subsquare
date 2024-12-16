@@ -4,10 +4,10 @@ import Tooltip from "next-common/components/tooltip";
 import { AddressUser } from "next-common/components/user";
 import { cn } from "next-common/utils";
 import Link from "next/link";
-import CoreFellowshipMemberDemotionPeriod from "./member/demotionPeriod";
-import CoreFellowshipMemberPromotionPeriod from "./member/promotionPeriod";
+import CoreFellowshipMemberDemotionPeriod from "../member/demotionPeriod";
+import CoreFellowshipMemberPromotionPeriod from "../member/promotionPeriod";
 
-export default function FellowshipEvidenceMemberStatus({
+export default function FellowshipEvidenceMemberStatusCard({
   member,
   isLoading,
   params,

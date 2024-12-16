@@ -1,4 +1,4 @@
-import FellowshipEvidenceMemberStatus from "next-common/components/collectives/core/evidenceMemberStatus";
+import FellowshipEvidenceMemberStatusCard from "next-common/components/collectives/core/evidenceContent/memberStatusCard";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 import {
   useCoreFellowshipPallet,
@@ -21,7 +21,7 @@ function FellowshipReferendaDetailEvidenceImpl() {
         Evidence{wish && ` for ${wish}`}
       </h4>
 
-      <FellowshipEvidenceMemberStatus
+      <FellowshipEvidenceMemberStatusCard
         isLoading={isLoading}
         member={member}
         params={params}
