@@ -14,6 +14,8 @@ import ForwardPopupProvider, {
 } from "next-common/context/forwardPopup";
 import { NewPreimageInnerPopup } from "next-common/components/preImages/newPreimagePopup";
 import Popup from "next-common/components/popup/wrapper/Popup";
+import { useChain } from "next-common/context/chain";
+import { isCollectivesChain } from "next-common/utils/chain";
 
 const NewRemarkReferendumInnerPopup = dynamic(() =>
   import("../newProposalQuickStart/createSystemRemarkProposalPopup").then(
@@ -84,7 +86,11 @@ function Spend() {
   );
 }
 
-function FellowshipProposalQuickStart() {
+function CollectivesProposalQuickStart() {
+  const chain = useChain();
+  if (!isCollectivesChain(chain)) {
+    return null;
+  }
   return (
     <QuickStart>
       <Promote />
@@ -142,7 +148,7 @@ export default function SubmitFellowshipProposalPopup({ onClose }) {
             <NewPreimage />
             <NewProposalFromPreImage />
           </div>
-          <FellowshipProposalQuickStart />
+          <CollectivesProposalQuickStart />
         </Popup>
       </ForwardPopupProvider>
     </SignerPopupWrapper>
