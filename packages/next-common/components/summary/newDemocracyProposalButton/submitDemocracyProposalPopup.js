@@ -47,7 +47,7 @@ function NewProposalFromPreImage() {
 }
 
 export function SubmitDemocracyProposalInnerPopup({ children }) {
-  const onClose = usePopupParams();
+  const { onClose } = usePopupParams();
   return (
     <Popup title="Submit Proposal" onClose={onClose}>
       <div className="flex flex-col !mt-[24px] gap-[12px]">
