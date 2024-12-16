@@ -9,7 +9,7 @@ import NewCouncilMotionProposalInnerPopup from "./newProposalInnerPopup";
 import {
   ShibuyaCommunityCouncilQuickStart,
   ShibuyaCouncilQuickStart,
-} from "./common/shibuyaQuickStart";
+} from "./shibuya/shibuyaQuickStart";
 
 function NewProposalPopupButton({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
