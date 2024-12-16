@@ -7,7 +7,7 @@ import { useMemo } from "react";
 
 export function useReferendumFellowshipMember() {
   const pallet = useCoreFellowshipPallet();
-  const { members } = useFellowshipCoreMembers();
+  const { members, loading: isMembersLoading } = useFellowshipCoreMembers();
 
   const onchainData = useOnchainData();
 
@@ -20,7 +20,7 @@ export function useReferendumFellowshipMember() {
   );
 
   const member = useMemo(() => {
-    if (isLoading) {
+    if (isLoading || isMembersLoading || !who) {
       return null;
     }
 
@@ -30,7 +30,7 @@ export function useReferendumFellowshipMember() {
       ...m,
       status: statusFromStorage || m?.status || {},
     };
-  }, [isLoading, members, statusFromStorage, who]);
+  }, [isLoading, isMembersLoading, members, statusFromStorage, who]);
 
   return {
     member,
