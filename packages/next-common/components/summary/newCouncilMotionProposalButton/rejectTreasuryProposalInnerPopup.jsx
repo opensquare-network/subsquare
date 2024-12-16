@@ -5,11 +5,7 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 export default function RejectTreasuryProposalInnerPopup({ isMember }) {
   const { onClose } = usePopupParams();
   return (
-    <Popup
-      title="Reject Treasury Proposal"
-      maskClosable={false}
-      onClose={onClose}
-    >
+    <Popup title="Reject Treasury Proposal" onClose={onClose}>
       <TreasuryProposalPopupContent
         onClose={onClose}
         isMember={isMember}
