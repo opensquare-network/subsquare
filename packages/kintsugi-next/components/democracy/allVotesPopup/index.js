@@ -107,7 +107,6 @@ function VotesList({ items = [], loading }) {
   const columns = [
     {
       name: "ACCOUNT",
-      style: { width: 176, textAlign: "left" },
     },
     {
       name: "VOTES",
@@ -117,13 +116,7 @@ function VotesList({ items = [], loading }) {
 
   const rows = items?.map?.((item) => {
     const row = [
-      <AddressUser
-        key="user"
-        add={item.account}
-        noTooltip
-        maxWidth={176}
-        link="/votes"
-      />,
+      <AddressUser key="user" add={item.account} noTooltip link="/votes" />,
       <ValueDisplay
         key="value"
         value={toPrecision(item.balance, chainSettings.decimals)}
