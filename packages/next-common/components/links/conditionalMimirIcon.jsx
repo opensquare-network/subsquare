@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useChain } from "../../context/chain";
 import { WalletMimirLight } from "@osn/icons/subsquare";
-import { useChainSettings } from "next-common/context/chain";
 import { usePathname } from "next/navigation";
 import useMultisigAddress from "next-common/hooks/useMultisigAddress";
 
@@ -22,18 +21,11 @@ function useIsMultiSigAccount(address) {
 
 export default function ConditionalMimirIcon({ address }) {
   const chain = useChain();
-  const chainSettings = useChainSettings();
   const pathname = usePathname();
   const isProfilePage = pathname.startsWith("/user");
   const { isMultiSigAccount, loading } = useIsMultiSigAccount(address);
 
-  if (
-    !isProfilePage ||
-    !address ||
-    loading ||
-    !isMultiSigAccount ||
-    !chainSettings?.multisigWallets?.mimir
-  ) {
+  if (!isProfilePage || !address || loading || !isMultiSigAccount) {
     return null;
   }
 
