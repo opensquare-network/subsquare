@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import PostTitle from "next-common/components/detail/common/Title";
-import TreasurySpendNavigation from "next-common/components/detail/treasury/spend/navigation";
+import TreasurySpendByGov2Navigation from "next-common/components/detail/treasury/spend/treasurySpendByGov2Navigation";
 import TreasurySpendPostMeta from "next-common/components/detail/treasury/spend/headerMeta";
 import TreasurySpendValidCountdown from "next-common/components/detail/treasury/spend/validCountdown";
 import TreasurySpendExpireCountdown from "next-common/components/detail/treasury/spend/expireCountDown";
@@ -16,7 +16,7 @@ export default function TreasurySpendDetail() {
       head={
         !isEditing && (
           <>
-            <TreasurySpendNavigation />
+            <TreasurySpendByGov2Navigation />
             <TreasurySpendValidCountdown />
             <TreasurySpendExpireCountdown />
           </>

@@ -12,13 +12,10 @@ import {
 import { usePost } from "next-common/context/post";
 
 export function DemocracyReferendaTreasurySpendNavigator({
-  treasuryProposals = [],
+  treasurySpendIndexes = [],
 }) {
-  const treasurySpends = treasuryProposals.filter(
-    (item) => item.method === "spendLocal",
-  );
-  return treasurySpends.map((item) => (
-    <TreasurySpendNavigator key={item.index} index={item.index} />
+  return treasurySpendIndexes.map((index) => (
+    <TreasurySpendNavigator key={index} index={index} />
   ));
 }
 
@@ -64,7 +61,7 @@ export default function ReferendumNavigation() {
         isLink={false}
       />
       <DemocracyReferendaTreasurySpendNavigator
-        treasuryProposals={referendum?.treasuryProposals}
+        treasurySpendIndexes={referendum?.treasurySpendIndexes}
       />
     </NavigationWrapper>
   );

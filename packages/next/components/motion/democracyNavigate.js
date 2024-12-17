@@ -87,7 +87,7 @@ export function ExternalTreasurySpendNavigator({ external }) {
   }
   return (
     <DemocracyReferendaTreasurySpendNavigator
-      treasuryProposals={external.referendum.treasuryProposals}
+      treasurySpendIndexes={external.referendum.treasurySpendIndexes}
     />
   );
 }

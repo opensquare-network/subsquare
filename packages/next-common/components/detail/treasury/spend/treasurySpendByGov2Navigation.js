@@ -5,7 +5,7 @@ import ReferendaReferendumLink from "next-common/components/detail/navigation/co
 import TriangleRight from "next-common/assets/imgs/icons/arrow-triangle-right.svg";
 import React from "react";
 
-export default function TreasurySpendNavigation() {
+export default function TreasurySpendByGov2Navigation() {
   const onchainData = useOnchainData();
   const { gov2Referendum, index } = onchainData;
   const hasReferendum = !isNil(gov2Referendum);
