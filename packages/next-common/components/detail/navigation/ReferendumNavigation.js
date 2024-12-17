@@ -11,6 +11,17 @@ import {
 } from "./navigators";
 import { usePost } from "next-common/context/post";
 
+export function DemocracyReferendaTreasurySpendNavigator({
+  treasuryProposals = [],
+}) {
+  const treasurySpends = treasuryProposals.filter(
+    (item) => item.method === "spendLocal",
+  );
+  return treasurySpends.map((item) => (
+    <TreasurySpendNavigator key={item.index} index={item.index} />
+  ));
+}
+
 export default function ReferendumNavigation() {
   const post = usePost();
 
@@ -30,32 +41,31 @@ export default function ReferendumNavigation() {
     return null;
   }
 
+  const referendum = post.onchainData;
+
   return (
     <NavigationWrapper>
-      {post?.onchainData?.motions?.map((motion, key) => (
+      {referendum?.motions?.map((motion, key) => (
         <CouncilMotionNavigator key={key} motion={motion} hasTriangle={false} />
       ))}
       <DemocracyExternalNavigator
         blockHeight={post.externalProposalIndexer?.blockHeight}
         hash={post.externalProposalHash}
       />
-      {post?.onchainData?.techCommMotions?.map((techCommMotion, key) => (
+      {referendum?.techCommMotions?.map((techCommMotion, key) => (
         <TechCommMotionNavigator motion={techCommMotion} key={key} />
       ))}
-
       {/* used for centrifuge/altair, they use council to fast_track external proposal */}
-      {post?.onchainData?.councilMotions?.map((motion, key) => (
+      {referendum?.councilMotions?.map((motion, key) => (
         <CouncilMotionNavigator key={key} motion={motion} hasTriangle={false} />
       ))}
-
       <ReferendumNavigationItem
         referendumIndex={post?.referendumIndex}
         isLink={false}
       />
-
-      {post?.onchainData?.treasuryProposals.map((item) => (
-        <TreasurySpendNavigator key={item.index} index={item.index} />
-      ))}
+      <DemocracyReferendaTreasurySpendNavigator
+        treasuryProposals={referendum?.treasuryProposals}
+      />
     </NavigationWrapper>
   );
 }

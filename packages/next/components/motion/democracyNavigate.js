@@ -5,6 +5,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import MotionNavigationItem from "./motionNavigationItem";
 import { NavigationWrapper } from "next-common/components/detail/navigation/navigators";
 import { useChain } from "next-common/context/chain";
+import { DemocracyReferendaTreasurySpendNavigator } from "next-common/components/detail/navigation/ReferendumNavigation";
 
 function MultiMotionNavigator({ motions = [], type, pageMotionId }) {
   const chain = useChain();
@@ -80,6 +81,17 @@ function DemocracyReferendumNavigator({ external }) {
   );
 }
 
+export function ExternalTreasurySpendNavigator({ external }) {
+  if (!external.referendum) {
+    return null;
+  }
+  return (
+    <DemocracyReferendaTreasurySpendNavigator
+      treasuryProposals={external.referendum.treasuryProposals}
+    />
+  );
+}
+
 export default function DemocracyNavigate({ motion }) {
   const chain = useChain();
   if (
@@ -110,6 +122,7 @@ export default function DemocracyNavigate({ motion }) {
         pageMotionId={motionId}
       />
       <DemocracyReferendumNavigator external={external} />
+      <ExternalTreasurySpendNavigator external={external} />
     </NavigationWrapper>
   );
 }
