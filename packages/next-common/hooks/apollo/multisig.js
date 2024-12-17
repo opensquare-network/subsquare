@@ -19,7 +19,7 @@ const defaultOptions = {
   },
 };
 
-if (chainSettings?.multisigWallets?.mimir) {
+if (chainSettings?.multisigWallets?.mimir && chainSettings?.multisigApiPrefix) {
   multisigClient = new ApolloClient({
     uri: getMultisigApiUrl(CHAIN),
     cache: new InMemoryCache(),

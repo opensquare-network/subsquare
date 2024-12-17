@@ -34,7 +34,8 @@ export default function AccountLinks({
   const showCouncilorLink =
     showCouncilorLinkProp && [Chains.polkadot, Chains.kusama].includes(chain);
 
-  const showConditionalMimirIcon = chainSettings?.multisigWallets?.mimir;
+  const showConditionalMimirIcon =
+    chainSettings?.multisigWallets?.mimir && chainSettings?.multisigApiPrefix;
 
   if (!address) {
     throw new Error("No address provided");
