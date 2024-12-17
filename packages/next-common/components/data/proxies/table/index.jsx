@@ -1,6 +1,7 @@
 import DataList from "next-common/components/dataList";
 import { isNil } from "lodash-es";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import ProxyExplorerTableColumns from "./columns"
 
 export default function ProxyExplorerTable() {
   const data = [];
@@ -19,7 +20,7 @@ export default function ProxyExplorerTable() {
 
       <DataList
         bordered
-        columns={[]}
+        columns={ProxyExplorerTableColumns}
         noDataText="No Data"
         rows={[]}
         loading={isLoading}
