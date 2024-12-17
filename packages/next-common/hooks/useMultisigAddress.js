@@ -20,13 +20,13 @@ export default function useMultisigAddress(address) {
   });
 
   useEffect(() => {
-    if (loading) {
+    if (loading || !address) {
       return;
     }
 
     const { multisigAddress } = data || {};
     setResult(multisigAddress);
-  }, [data, loading]);
+  }, [address, data, loading]);
 
   return {
     result,

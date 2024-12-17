@@ -37,7 +37,7 @@ export default function ConditionalMimirIcon({ address }) {
     return null;
   }
 
-  const href = `https://app.mimir.global/?address=${address}&network${chain}`;
+  const href = `https://app.mimir.global/?address=${address}&network=${chain}`;
 
   return (
     <a href={href} target="_blank" rel="noreferrer" className="cursor-pointer">
