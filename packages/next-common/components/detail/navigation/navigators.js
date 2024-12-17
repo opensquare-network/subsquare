@@ -109,6 +109,25 @@ export function TechCommMotionNavigator({ motion = {}, isLink = true }) {
   );
 }
 
+export function TreasurySpendNavigator({ index, isLink = true }) {
+  let link = <div>{`Treasury Spend #${index}`}</div>;
+
+  if (isLink) {
+    link = (
+      <Link href={`/treasury/spends/${index}`} legacyBehavior>
+        {`Treasury Spend #${index}`}
+      </Link>
+    );
+  }
+
+  return (
+    <div>
+      <TriangleRight />
+      {link}
+    </div>
+  );
+}
+
 export const NavigationWrapper = styled(NoticeWrapper)`
   > div {
     display: flex;

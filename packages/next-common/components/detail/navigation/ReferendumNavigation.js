@@ -7,6 +7,7 @@ import {
   NavigationWrapper,
   ReferendumNavigationItem,
   TechCommMotionNavigator,
+  TreasurySpendNavigator,
 } from "./navigators";
 import { usePost } from "next-common/context/post";
 
@@ -51,6 +52,10 @@ export default function ReferendumNavigation() {
         referendumIndex={post?.referendumIndex}
         isLink={false}
       />
+
+      {post?.onchainData?.treasuryProposals.map((item) => (
+        <TreasurySpendNavigator key={item.index} index={item.index} />
+      ))}
     </NavigationWrapper>
   );
 }
