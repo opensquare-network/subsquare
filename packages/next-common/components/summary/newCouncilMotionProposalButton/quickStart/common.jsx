@@ -1,18 +1,14 @@
-import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
-import { useChain } from "next-common/context/chain";
-import { isShibuyaChain } from "next-common/utils/chain";
+import { useForwardPopupContext } from "next-common/context/forwardPopup";
 import { ChoiceButton } from "../../newProposalButton/common";
 import ApproveTreasuryProposalInnerPopup from "../approveTreasuryProposalInnerPopup";
-import RejectTreasuryProposalInnerPopup from "../rejectTreasuryProposalInnerPopup";
-import { useCollectivePallet } from "next-common/context/collective";
-import ExternalProposeMajorityPopup from "../externalProposeMajorityPopup";
-import ExternalProposeDefaultPopup from "../externalProposeDefaultPopup";
+import CollectiveProxyCallPopup from "../collectiveProxyCallPopup";
 import DappStakingRegisterPopup from "../dappStakingRegisterPopup";
 import DappStakingUnRegisterPopup from "../dappStakingUnRegisterPopup";
-import CollectiveProxyCallPopup from "../collectiveProxyCallPopup";
-import { useForwardPopupContext } from "next-common/context/forwardPopup";
+import ExternalProposeDefaultPopup from "../externalProposeDefaultPopup";
+import ExternalProposeMajorityPopup from "../externalProposeMajorityPopup";
+import RejectTreasuryProposalInnerPopup from "../rejectTreasuryProposalInnerPopup";
 
-function ApproveTreasuryProposal({ isMember }) {
+export function ApproveTreasuryProposal({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -27,7 +23,7 @@ function ApproveTreasuryProposal({ isMember }) {
   );
 }
 
-function RejectTreasuryProposal({ isMember }) {
+export function RejectTreasuryProposal({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -42,7 +38,7 @@ function RejectTreasuryProposal({ isMember }) {
   );
 }
 
-function ExternalProposeMajority({ isMember }) {
+export function ExternalProposeMajority({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -55,7 +51,7 @@ function ExternalProposeMajority({ isMember }) {
   );
 }
 
-function ExternalProposeDefault({ isMember }) {
+export function ExternalProposeDefault({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -68,7 +64,7 @@ function ExternalProposeDefault({ isMember }) {
   );
 }
 
-function DappStakingRegister({ isMember }) {
+export function DappStakingRegister({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -81,7 +77,7 @@ function DappStakingRegister({ isMember }) {
   );
 }
 
-function DappStakingUnRegister({ isMember }) {
+export function DappStakingUnRegister({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -94,7 +90,7 @@ function DappStakingUnRegister({ isMember }) {
   );
 }
 
-function CollectiveProxyCall({ isMember }) {
+export function CollectiveProxyCall({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
@@ -104,40 +100,5 @@ function CollectiveProxyCall({ isMember }) {
         setForwardPopup(<CollectiveProxyCallPopup isMember={isMember} />);
       }}
     />
-  );
-}
-
-export function ShibuyaCommunityCouncilQuickStart({ isMember }) {
-  const chain = useChain();
-  const collectivePallet = useCollectivePallet();
-  if (!isShibuyaChain(chain) || "communityCouncil" !== collectivePallet) {
-    return null;
-  }
-
-  return (
-    <QuickStart>
-      <ApproveTreasuryProposal isMember={isMember} />
-      <RejectTreasuryProposal isMember={isMember} />
-      <DappStakingRegister isMember={isMember} />
-      <DappStakingUnRegister isMember={isMember} />
-      <CollectiveProxyCall isMember={isMember} />
-    </QuickStart>
-  );
-}
-
-export function ShibuyaCouncilQuickStart({ isMember }) {
-  const chain = useChain();
-  const collectivePallet = useCollectivePallet();
-  if (!isShibuyaChain(chain) || "council" !== collectivePallet) {
-    return null;
-  }
-
-  return (
-    <QuickStart>
-      <ApproveTreasuryProposal isMember={isMember} />
-      <RejectTreasuryProposal isMember={isMember} />
-      <ExternalProposeMajority isMember={isMember} />
-      <ExternalProposeDefault isMember={isMember} />
-    </QuickStart>
   );
 }

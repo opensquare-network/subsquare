@@ -6,10 +6,8 @@ import { useForwardPopupContext } from "next-common/context/forwardPopup";
 import { ChoiceButton } from "../newProposalButton/common";
 import NewPreimageSVG from "../newProposalButton/icons/new-preimage.svg";
 import NewCouncilMotionProposalInnerPopup from "./newProposalInnerPopup";
-import {
-  ShibuyaCommunityCouncilQuickStart,
-  ShibuyaCouncilQuickStart,
-} from "./shibuya/shibuyaQuickStart";
+import CommunityCouncilQuickStart from "./quickStart/communityCouncilQuickStart";
+import CouncilQuickStart from "./quickStart/councilQuickStart";
 
 function NewProposalPopupButton({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
@@ -37,8 +35,8 @@ export default function NewCouncilMotionProposalPopup({ onClose }) {
           <div className="flex flex-col !mt-[24px] gap-[12px]">
             <NewProposalPopupButton isMember={isMember} />
           </div>
-          <ShibuyaCommunityCouncilQuickStart isMember={isMember} />
-          <ShibuyaCouncilQuickStart isMember={isMember} />
+          <CommunityCouncilQuickStart isMember={isMember} />
+          <CouncilQuickStart isMember={isMember} />
         </Popup>
       </ForwardPopupProvider>
     </SignerPopupWrapper>

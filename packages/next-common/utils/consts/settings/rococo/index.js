@@ -79,7 +79,6 @@ const rococo = {
   },
   multisigWallets: {
     signet: true,
-    mimir: true,
   },
   treasuryProposalTracks: rococoTreasuryTracks,
   newProposalQuickStart: {
