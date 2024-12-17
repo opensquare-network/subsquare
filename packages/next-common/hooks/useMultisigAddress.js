@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { useMultisigQuery } from "next-common/hooks/apollo/multisig";
+import { useMultisigQuery } from "next-common/hooks/apollo";
 import { useEffect, useState } from "react";
 
 const GET_MULTISIG_ADDRESS = gql`

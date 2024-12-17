@@ -2,22 +2,12 @@ import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
 import { CHAIN } from "next-common/utils/constants";
 import getMultisigApiUrl from "next-common/services/multisig/url";
 import getChainSettings from "next-common/utils/consts/settings";
+import { defaultOptions } from "./common";
 
 const chainSettings = getChainSettings(CHAIN);
 
 /** @type {ApolloClient<InMemoryCache> | undefined} */
 export let multisigClient;
-
-const defaultOptions = {
-  watchQuery: {
-    fetchPolicy: "no-cache",
-    errorPolicy: "ignore",
-  },
-  query: {
-    fetchPolicy: "no-cache",
-    errorPolicy: "all",
-  },
-};
 
 if (chainSettings?.multisigWallets?.mimir && chainSettings?.multisigApiPrefix) {
   multisigClient = new ApolloClient({
