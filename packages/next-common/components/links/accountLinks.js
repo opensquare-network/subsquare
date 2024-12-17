@@ -8,10 +8,12 @@ import MailLink from "./mailLink";
 import WebLink from "./webLink";
 import ElementLink from "./elementLink";
 import TwitterLink from "./twitterLink";
+import ConditionalMimirIcon from "./conditionalMimirIcon";
 import useIdentity from "next-common/utils/hooks/useIdentity";
 import { useChain } from "next-common/context/chain";
 import CouncilorLink from "./councilorLink";
 import Chains from "next-common/utils/consts/chains";
+import { useChainSettings } from "next-common/context/chain";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -26,10 +28,14 @@ export default function AccountLinks({
 }) {
   const chain = useChain();
   const identity = useIdentity(address, chain);
+  const chainSettings = useChainSettings();
   const { email, riot, twitter, web } = identity?.info || {};
 
   const showCouncilorLink =
     showCouncilorLinkProp && [Chains.polkadot, Chains.kusama].includes(chain);
+
+  const showConditionalMimirIcon =
+    chainSettings?.multisigWallets?.mimir && chainSettings?.multisigApiPrefix;
 
   if (!address) {
     throw new Error("No address provided");
@@ -45,6 +51,7 @@ export default function AccountLinks({
       {riot && <ElementLink riot={riot} />}
       {twitter && <TwitterLink twitter={twitter} />}
       {showCouncilorLink && <CouncilorLink address={address} />}
+      {showConditionalMimirIcon && <ConditionalMimirIcon address={address} />}
     </Wrapper>
   );
 }

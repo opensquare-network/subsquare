@@ -1,16 +1,17 @@
 import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
 import { CHAIN } from "next-common/utils/constants";
+import getMultisigApiUrl from "next-common/services/multisig/url";
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultOptions } from "./common";
 
-const { modules } = getChainSettings(CHAIN);
+const chainSettings = getChainSettings(CHAIN);
 
 /** @type {ApolloClient<InMemoryCache> | undefined} */
-export let coretimeClient;
+export let multisigClient;
 
-if (modules?.coretime) {
-  coretimeClient = new ApolloClient({
-    uri: `https://${CHAIN}-gh-api.subsquare.io/graphql`,
+if (chainSettings?.multisigWallets?.mimir && chainSettings?.multisigApiPrefix) {
+  multisigClient = new ApolloClient({
+    uri: getMultisigApiUrl(CHAIN),
     cache: new InMemoryCache(),
     defaultOptions,
   });
@@ -19,7 +20,7 @@ if (modules?.coretime) {
 /**
  * @type {typeof useQuery}
  */
-export function useCoretimeQuery(query, options = {}, ...args) {
-  options.client = options.client || coretimeClient;
+export function useMultisigQuery(query, options = {}, ...args) {
+  options.client = options.client || multisigClient;
   return useQuery(query, options, ...args);
 }

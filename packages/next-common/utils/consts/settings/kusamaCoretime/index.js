@@ -44,6 +44,9 @@ const kusamaCoretime = {
       domain: "coretime-kusama",
     },
   },
+  multisigWallets: {
+    mimir: true,
+  },
 };
 
 export default kusamaCoretime;

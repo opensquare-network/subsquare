@@ -130,6 +130,7 @@ const hydradx = {
   ethereumNetwork,
   multisigWallets: {
     signet: true,
+    mimir: true,
   },
 };
 

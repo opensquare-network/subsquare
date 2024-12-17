@@ -28,6 +28,9 @@ const polkadotCoretime = {
       domain: "coretime-polkadot",
     },
   },
+  multisigWallets: {
+    mimir: true,
+  },
 };
 
 export default polkadotCoretime;

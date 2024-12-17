@@ -97,6 +97,9 @@ const collectives = {
       link: "https://github.com/polkadot-fellows/RFCs/issues",
     },
   },
+  multisigWallets: {
+    mimir: true,
+  },
   sima: true,
   ...polkadotThemeVars,
 };

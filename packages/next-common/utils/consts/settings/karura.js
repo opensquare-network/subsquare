@@ -121,6 +121,7 @@ const karura = {
   },
   multisigWallets: {
     signet: true,
+    mimir: true,
   },
 };
 
