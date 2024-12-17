@@ -15,7 +15,7 @@ import { useMultiAccountsDeps } from "../useSingleAccountAssets";
 import { fetchMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
 
 function PopupContent() {
-  const { asset, onClose } = usePopupParams();
+  const { asset } = usePopupParams();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
@@ -77,7 +77,6 @@ function PopupContent() {
         <TxSubmissionButton
           title="Confirm"
           getTxFunc={getTxFunc}
-          onClose={onClose}
           onInBlock={onInBlock}
         />
       </div>

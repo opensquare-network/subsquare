@@ -16,7 +16,7 @@ import { noop } from "lodash-es";
 import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 
 function PopupContent() {
-  const { tipHash, onClose, onInBlock = noop } = usePopupParams();
+  const { tipHash, onInBlock = noop } = usePopupParams();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
 
@@ -58,7 +58,6 @@ function PopupContent() {
       <TxSubmissionButton
         title="Endorse"
         getTxFunc={getTxFunc}
-        onClose={onClose}
         onInBlock={onInBlock}
       />
     </>

@@ -1,143 +1,73 @@
 import { ChoiceButton } from "next-common/components/summary/newProposalButton/common";
-import { useChainSettings } from "next-common/context/chain";
-import { useState } from "react";
 import { InfoPopoular } from "@osn/icons/subsquare";
 
-export function useFellowshipTreasurySpendButton() {
-  const [
-    showFellowshipTreasurySpendPopup,
-    setShowFellowshipTreasurySpendPopup,
-  ] = useState(false);
-
-  const fellowshipTreasurySpendButton = (
+export function FellowshipTreasurySpendButton({ onClick }) {
+  return (
     <ChoiceButton
       name="Fellowship treasury spend"
       description="Create a treasury spend of DOT from AssetHub fellowship treasury account"
-      onClick={() => setShowFellowshipTreasurySpendPopup(true)}
+      onClick={onClick}
     />
   );
-
-  return {
-    fellowshipTreasurySpendButton,
-    showFellowshipTreasurySpendPopup,
-  };
 }
 
-export function useSpendLocalTreasuryButton() {
-  const [showSpendLocalTreasuryPopup, setShowSpendLocalTreasuryPopup] =
-    useState(false);
-
-  const localTreasuryButton = (
+export function SpendLocalTreasuryButton({ onClick }) {
+  return (
     <ChoiceButton
       name="Treasury proposal local"
       description="Create a treasury spend of native token that is locally available"
-      onClick={() => setShowSpendLocalTreasuryPopup(true)}
+      onClick={onClick}
     />
   );
-
-  return {
-    localTreasuryButton,
-    showSpendLocalTreasuryPopup,
-  };
 }
 
-export function useSpendUSDxTreasuryButton() {
-  const [showSpendUSDxTreasuryPopup, setShowSpendUSDxTreasuryPopup] =
-    useState(false);
-  const {
-    treasuryProposalTracks,
-    newProposalQuickStart: { usdxTreasuryProposal } = {},
-  } = useChainSettings();
-
-  const usdxTreasuryButton = treasuryProposalTracks && usdxTreasuryProposal && (
+export function SpendUSDxTreasuryButton({ onClick }) {
+  return (
     <ChoiceButton
       name="USDx treasury proposal"
       description="Create a treasury spend with assets on AssetHub"
-      onClick={() => setShowSpendUSDxTreasuryPopup(true)}
+      onClick={onClick}
       buttonSuffix={<InfoPopoular className="w-4 h-4 ml-2" />}
     />
   );
-
-  return {
-    usdxTreasuryButton,
-    showSpendUSDxTreasuryPopup,
-  };
 }
 
-export function useSpendDotOnAssetHubButton() {
-  const [showSpendDotOnAssetHubPopup, setShowSpendDotOnAssetHubPopup] =
-    useState(false);
-  const {
-    treasuryProposalTracks,
-    newProposalQuickStart: { spendDotOnAssetHubProposal } = {},
-  } = useChainSettings();
-
-  const spendDotOnAssetHubButton = treasuryProposalTracks &&
-    spendDotOnAssetHubProposal && (
-      <ChoiceButton
-        name="Spend DOT on AssetHub"
-        description="Create a treasury spend with DOT asset on AssetHub"
-        onClick={() => setShowSpendDotOnAssetHubPopup(true)}
-      />
-    );
-
-  return {
-    spendDotOnAssetHubButton,
-    showSpendDotOnAssetHubPopup,
-  };
+export function SpendDotOnAssetHubButton({ onClick }) {
+  return (
+    <ChoiceButton
+      name="Spend DOT on AssetHub"
+      description="Create a treasury spend with DOT asset on AssetHub"
+      onClick={onClick}
+    />
+  );
 }
 
-export function useNewRemarkButton() {
-  const [showNewRemarkPopup, setShowNewRemarkPopup] = useState(false);
-
-  const remarkButton = (
+export function NewRemarkButton({ onClick }) {
+  return (
     <ChoiceButton
       name="Remark"
       description="Create a remark proposal"
-      onClick={() => setShowNewRemarkPopup(true)}
+      onClick={onClick}
     />
   );
-
-  return {
-    remarkButton,
-    showNewRemarkPopup,
-  };
 }
 
-export function useCancelReferendumButton() {
-  const [showCancelReferendumPopup, setShowCancelReferendumPopup] =
-    useState(false);
-  const { newProposalQuickStart: { cancelReferendum } = {} } =
-    useChainSettings();
-
-  const cancelReferendumButton = cancelReferendum && (
+export function CancelReferendumButton({ onClick }) {
+  return (
     <ChoiceButton
       name="Cancel a referendum"
       description="Cancel an ongoing referendum and returning the deposit"
-      onClick={() => setShowCancelReferendumPopup(true)}
+      onClick={onClick}
     />
   );
-
-  return {
-    cancelReferendumButton,
-    showCancelReferendumPopup,
-  };
 }
 
-export function useKillReferendumButton() {
-  const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
-  const { newProposalQuickStart: { killReferendum } = {} } = useChainSettings();
-
-  const killReferendumButton = killReferendum && (
+export function KillReferendumButton({ onClick }) {
+  return (
     <ChoiceButton
       name="Kill a referendum"
       description="Kill an ongoing referendum and the submission & decision deposits will be slashed"
-      onClick={() => setShowKillReferendumPopup(true)}
+      onClick={onClick}
     />
   );
-
-  return {
-    killReferendumButton,
-    showKillReferendumPopup,
-  };
 }

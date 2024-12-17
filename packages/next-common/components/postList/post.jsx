@@ -41,6 +41,7 @@ import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
 import PostListTreasuryAllSpends from "./treasuryAllSpends";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import PostListAISummary from "./aiSummary";
+import TreasurySpendsCountDown from "next-common/components/postList/treasury/spends/countdown";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -315,6 +316,8 @@ export default function Post({ data, href, type }) {
 
   if (businessCategory.democracyReferenda === type) {
     elapseIcon = <ReferendumElapse detail={data} />;
+  } else if (businessCategory.treasurySpends === type) {
+    elapseIcon = <TreasurySpendsCountDown data={data} />;
   }
 
   const commentsCount =

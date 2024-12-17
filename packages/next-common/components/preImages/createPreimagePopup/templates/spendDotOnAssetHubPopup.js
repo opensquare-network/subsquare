@@ -1,37 +1,35 @@
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
-import { useChainSettings } from "next-common/context/chain";
 import { useMemo } from "react";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
 import { checkInputValue } from "next-common/utils";
 import { addressToPublicKey } from "next-common/utils/address";
-import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
 import { InfoMessage } from "next-common/components/setting/styled";
-import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
-import NotePreimageButton from "./notePreimageButton";
-import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import { AssetHubApiProvider } from "next-common/context/assetHub";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import NotePreimageButton from "../notePreimageButton";
+import useAssetHubDotBalanceField from "../fields/useAssetHubDotBalanceField";
+import useAddressComboField from "../fields/useAddressComboField";
+import useValidFromField from "../fields/useValidFromField";
+import { useChainSettings } from "next-common/context/chain";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 const getAssetKindParam = () => {
   return {
-    V3: {
+    V4: {
       location: {
-        parents: 1,
+        parents: 0,
         interior: {
-          X1: {
-            Parachain: 1000,
-          },
+          X1: [
+            {
+              Parachain: 1000,
+            },
+          ],
         },
       },
       assetId: {
-        Concrete: {
-          parents: 1,
-          interior: {
-            here: null,
-          },
-        },
+        parents: 1,
+        interior: "here",
       },
     },
   };
@@ -39,27 +37,29 @@ const getAssetKindParam = () => {
 
 const getBeneficiaryParam = (beneficiary) => {
   return {
-    V3: {
+    V4: {
       parents: 0,
       interior: {
-        X1: {
-          AccountId32: {
-            network: null,
-            id: "0x" + addressToPublicKey(beneficiary),
+        X1: [
+          {
+            AccountId32: {
+              network: null,
+              id: "0x" + addressToPublicKey(beneficiary),
+            },
           },
-        },
+        ],
       },
     },
   };
 };
 
-export function useAssetHubNativeTreasuryNotePreimageTx(
+export function useSpendDotOnAssetHubPreimageTx(
   inputBalance,
   beneficiary,
   validFrom,
 ) {
-  const api = useContextApi();
   const { decimals } = useChainSettings();
+  const api = useContextApi();
 
   return useMemo(() => {
     if (!api || !inputBalance || !beneficiary) {
@@ -74,7 +74,7 @@ export function useAssetHubNativeTreasuryNotePreimageTx(
     }
 
     try {
-      const proposal = api.tx.fellowshipTreasury.spend(
+      const proposal = api.tx.treasury.spend(
         getAssetKindParam(),
         bnValue.toFixed(),
         getBeneficiaryParam(beneficiary),
@@ -89,21 +89,21 @@ export function useAssetHubNativeTreasuryNotePreimageTx(
   }, [api, inputBalance, beneficiary, validFrom, decimals]);
 }
 
-export default function NewFellowshipTreasuryProposalPopup() {
-  const { onClose } = usePopupParams();
-  const { value: inputBalance, component: balanceField } = useBalanceField();
+function PopupContent() {
+  const { value: inputBalance, component: balanceField } =
+    useAssetHubDotBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
   const { value: validFrom, component: validFromField } = useValidFromField();
 
-  const { notePreimageTx } = useAssetHubNativeTreasuryNotePreimageTx(
+  const { notePreimageTx } = useSpendDotOnAssetHubPreimageTx(
     inputBalance,
     beneficiary,
     validFrom,
   );
 
   return (
-    <Popup title="Create Treasury Proposal" onClose={onClose}>
+    <>
       <SignerWithBalance />
       {balanceField}
       <div className="flex flex-col gap-[8px]">
@@ -112,10 +112,21 @@ export default function NewFellowshipTreasuryProposalPopup() {
           Please input an AssetHub address as the beneficiary
         </InfoMessage>
       </div>
-      <AdvanceSettings>{validFromField}</AdvanceSettings>
+      {validFromField}
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>
+    </>
+  );
+}
+
+export default function SpendDotOnAssetHubPopup() {
+  const { onClose } = usePopupParams();
+  return (
+    <Popup title="Spend DOT on AssetHub" onClose={onClose}>
+      <AssetHubApiProvider>
+        <PopupContent />
+      </AssetHubApiProvider>
     </Popup>
   );
 }

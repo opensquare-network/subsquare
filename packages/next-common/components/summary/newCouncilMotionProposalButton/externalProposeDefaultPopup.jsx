@@ -4,7 +4,7 @@ import { useCollectivePallet } from "next-common/context/collective";
 import { useChain } from "next-common/context/chain";
 import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 
-export default function ExternalProposeDefaultPopup({ isMember, onClose }) {
+export default function ExternalProposeDefaultPopup({ isMember }) {
   const chain = useChain();
   const { members } = useCollectiveMembers();
   const pallet = useCollectivePallet();
@@ -18,7 +18,6 @@ export default function ExternalProposeDefaultPopup({ isMember, onClose }) {
     <ExternalProposeVoteThresholdPopup
       method="externalProposeDefault"
       isMember={isMember}
-      onClose={onClose}
       threshold={threshold}
     />
   );

@@ -17,7 +17,7 @@ const Wrapper = styled(GreyPanel)`
 `;
 
 function Content() {
-  const { onClose, who } = usePopupParams();
+  const { who } = usePopupParams();
   const { component } = useSigner("Origin");
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
@@ -41,7 +41,6 @@ function Content() {
       </div>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
-        onClose={onClose}
         onInBlock={onInBlock}
         onFinalized={onInBlock}
       />
