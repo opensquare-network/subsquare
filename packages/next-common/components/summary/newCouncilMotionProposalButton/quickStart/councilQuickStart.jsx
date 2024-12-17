@@ -8,12 +8,15 @@ import {
 import { useCollectivePallet } from "next-common/context/collective";
 import { useChain } from "next-common/context/chain";
 import { isShibuyaChain } from "next-common/utils/chain";
+import Chains from "next-common/utils/consts/chains";
 
 export default function CouncilQuickStart({ isMember }) {
   const chain = useChain();
   const collectivePallet = useCollectivePallet();
 
-  const isSupportedChain = isShibuyaChain(chain);
+  const isSupportedChain =
+    isShibuyaChain(chain) ||
+    [Chains.hydradx, Chains.phala, Chains.khala].includes(chain);
 
   if (!isSupportedChain || "council" !== collectivePallet) {
     return null;
