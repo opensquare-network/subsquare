@@ -6,6 +6,80 @@ import MotionNavigationItem from "./motionNavigationItem";
 import { NavigationWrapper } from "next-common/components/detail/navigation/navigators";
 import { useChain } from "next-common/context/chain";
 
+function MultiMotionNavigator({ motions = [], type, pageMotionId }) {
+  const chain = useChain();
+
+  return motions.map((item, index) => (
+    <div key={getUniqueMotionId(item, chain)}>
+      {index <= 0 ? null : <TriangleRight />}
+      <MotionNavigationItem
+        motion={item}
+        type={type}
+        pageMotionId={pageMotionId}
+      />
+    </div>
+  ));
+}
+
+function ExternalProposalNavigator({ external }) {
+  return (
+    <div>
+      <TriangleRight />
+      <Link
+        passHref={true}
+        href={`/democracy/externals/${external.indexer.blockHeight}_${external.proposalHash}`}
+      >
+        {`External #${external.proposalHash?.slice(0, 6)}`}
+      </Link>
+    </div>
+  );
+}
+
+function ExternalTechCommMotionNavigator({ external, pageMotionId }) {
+  if (external.techCommMotions?.length > 0) {
+    return (
+      <>
+        <TriangleRight />
+        <MultiMotionNavigator
+          motions={external.techCommMotions}
+          type={detailPageCategory.TECH_COMM_MOTION}
+          pageMotionId={pageMotionId}
+        />
+      </>
+    );
+  }
+}
+
+function ExternalCouncilMotionNavigator({ external, pageMotionId }) {
+  if (external.councilMotions?.length > 0) {
+    return (
+      <>
+        <TriangleRight />
+        <MultiMotionNavigator
+          motions={external.councilMotions}
+          type={detailPageCategory.COUNCIL_MOTION}
+          pageMotionId={pageMotionId}
+        />
+      </>
+    );
+  }
+}
+
+function DemocracyReferendumNavigator({ external }) {
+  const referendumIndex = external.referendumIndex;
+  if (referendumIndex === undefined) {
+    return null;
+  }
+  return (
+    <div>
+      <TriangleRight />
+      <Link href={`/democracy/referenda/${referendumIndex}`} legacyBehavior>
+        {`Referendum #${referendumIndex}`}
+      </Link>
+    </div>
+  );
+}
+
 export default function DemocracyNavigate({ motion }) {
   const chain = useChain();
   if (
@@ -19,79 +93,23 @@ export default function DemocracyNavigate({ motion }) {
   const external =
     motion.externalProposals?.[0] || motion.operateExternals?.[0];
 
-  const motions = external.motions || [];
-  const motionElements = motions.map((item, index) => {
-    return (
-      <div key={getUniqueMotionId(item, chain)}>
-        {index <= 0 ? null : <TriangleRight />}
-        <MotionNavigationItem
-          motion={item}
-          type={detailPageCategory.COUNCIL_MOTION}
-          pageMotionId={motionId}
-        />
-      </div>
-    );
-  });
-
-  const externalTechCommMotions = external.techCommMotions || [];
-  const externalTechCommMotionElements = externalTechCommMotions.map((item) => {
-    return (
-      <div key={getUniqueMotionId(item, chain)}>
-        <TriangleRight />
-        <MotionNavigationItem
-          motion={item}
-          type={detailPageCategory.TECH_COMM_MOTION}
-          pageMotionId={motionId}
-        />
-      </div>
-    );
-  });
-
-  const handleExternalCouncilMotions = external.councilMotions || [];
-  const handleExternalMotionElements = handleExternalCouncilMotions.map(
-    (item) => {
-      return (
-        <div key={getUniqueMotionId(item, chain)}>
-          <TriangleRight />
-          <MotionNavigationItem
-            motion={item}
-            type={detailPageCategory.COUNCIL_MOTION}
-            pageMotionId={motionId}
-          />
-        </div>
-      );
-    },
-  );
-
-  const referendumIndex = external.referendumIndex;
-
   return (
     <NavigationWrapper>
-      {motionElements}
-      <div>
-        <TriangleRight />
-        <Link
-          passHref={true}
-          href={`/democracy/externals/${external.indexer.blockHeight}_${external.proposalHash}`}
-        >
-          {`External #${external.proposalHash?.slice(0, 6)}`}
-        </Link>
-      </div>
-
-      {externalTechCommMotionElements.length > 0
-        ? externalTechCommMotionElements
-        : null}
-      {handleExternalMotionElements.length > 0
-        ? handleExternalMotionElements
-        : null}
-      {referendumIndex !== undefined && (
-        <div>
-          <TriangleRight />
-          <Link href={`/democracy/referenda/${referendumIndex}`} legacyBehavior>
-            {`Referendum #${referendumIndex}`}
-          </Link>
-        </div>
-      )}
+      <MultiMotionNavigator
+        motions={external.motions}
+        type={detailPageCategory.COUNCIL_MOTION}
+        pageMotionId={motionId}
+      />
+      <ExternalProposalNavigator external={external} />
+      <ExternalTechCommMotionNavigator
+        external={external}
+        pageMotionId={motionId}
+      />
+      <ExternalCouncilMotionNavigator
+        external={external}
+        pageMotionId={motionId}
+      />
+      <DemocracyReferendumNavigator external={external} />
     </NavigationWrapper>
   );
 }
