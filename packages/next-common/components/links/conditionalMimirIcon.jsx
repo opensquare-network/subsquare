@@ -1,60 +1,21 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useChain } from "../../context/chain";
 import { WalletMimirLight } from "@osn/icons/subsquare";
 import { useChainSettings } from "next-common/context/chain";
 import { usePathname } from "next/navigation";
-import getMultisigApiUrl from "next-common/services/multisig/url";
+import useMultisigAddress from "next-common/hooks/useMultisigAddress";
 
-// TODO: split query code.
 function useIsMultiSigAccount(address) {
   const [isMultiSigAccount, setIsMultiSigAccount] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const chain = useChain();
+  const { result, loading } = useMultisigAddress(address);
 
-  const fetchMultisigData = useCallback(async () => {
-    const url = getMultisigApiUrl(chain);
-
-    if (!address || !url) {
+  useEffect(() => {
+    if (loading) {
       return;
     }
 
-    setLoading(true);
-
-    try {
-      const response = await fetch(getMultisigApiUrl(chain), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          operationName: "GetMultisigAddress",
-          variables: { account: address },
-          query: `query GetMultisigAddress($account: String!) {
-                multisigAddress(account: $account) {
-                  signatories
-                }
-              }`,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-
-      const result = await response.json();
-      const { multisigAddress } = result?.data || {};
-
-      setIsMultiSigAccount(!!multisigAddress);
-    } catch (err) {
-      throw new Error("Error fetching multisig data");
-    } finally {
-      setLoading(false);
-    }
-  }, [address, chain]);
-
-  useEffect(() => {
-    fetchMultisigData();
-  }, [fetchMultisigData]);
+    setIsMultiSigAccount(!!result);
+  }, [loading, result]);
 
   return { isMultiSigAccount, loading };
 }
