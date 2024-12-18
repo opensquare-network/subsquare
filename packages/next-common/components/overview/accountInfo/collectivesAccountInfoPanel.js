@@ -1,4 +1,3 @@
-import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
 import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import CollectivesAccountInfo from "./components/collectiveAccountInfo";
@@ -13,8 +12,6 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
 
 export default function CollectivesAccountInfoPanel() {
-  useSubscribeAccount();
-
   const fellowshipMemberData = useMemberData();
   const ambassadorMemberData = useMemberData("ambassador");
   const { width } = useWindowSize();

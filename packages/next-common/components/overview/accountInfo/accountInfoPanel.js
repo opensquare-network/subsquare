@@ -7,7 +7,6 @@ import tw from "tailwind-styled-components";
 import { useRouter } from "next/router";
 import { addressEllipsis, cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
 import AccountBalances from "next-common/components/overview/accountInfo/components/accountBalances";
 import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
@@ -337,7 +336,5 @@ export function CommonAccountInfoPanel() {
 }
 
 export default function AccountInfoPanel() {
-  useSubscribeAccount();
-
   return <CommonAccountInfoPanel />;
 }
