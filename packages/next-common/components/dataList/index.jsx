@@ -18,6 +18,9 @@ export default function DataList({
   bordered = false,
   highlightedIndexes = [],
   renderItem = defaultRenderItem,
+  tree = false,
+  treeKey = "children",
+  treeData = [],
 }) {
   let content;
   const listRef = useRef();
@@ -26,6 +29,21 @@ export default function DataList({
 
   const [listOverflow, setListOverflow] = useState(false);
   const screenSize = useScreenSize();
+  const [expandedRows, setExpandedRows] = useState(new Set());
+
+  // Toggle row expansion (expand/collapse)
+  const toggleRowExpansion = (rowIdx) => {
+    setExpandedRows((prev) => {
+      const newExpandedRows = new Set(prev);
+      if (newExpandedRows.has(rowIdx)) {
+        newExpandedRows.delete(rowIdx);
+      } else {
+        newExpandedRows.add(rowIdx);
+      }
+      return newExpandedRows;
+    });
+  };
+
   function handleListOverflowSize() {
     const parentEl = listRef.current?.parentElement;
     const listEl = listRef.current;
@@ -91,6 +109,11 @@ export default function DataList({
         columnStyles={columnStyles}
         columns={columns}
         highlightedIndexes={highlightedIndexes}
+        tree={tree}
+        treeKey={treeKey}
+        treeData={treeData}
+        expandedRows={expandedRows}
+        toggleRowExpansion={toggleRowExpansion}
       />
     );
   }
@@ -150,4 +173,29 @@ export function MapDataList({ data, columnsDef, getRowKey, ...props }) {
   });
 
   return <DataList columns={columnsDef} rows={rows} {...props} />;
+}
+
+export function TreeMapDataList({
+  treeKey = "children",
+  data,
+  columnsDef,
+  getRowKey,
+  ...props
+}) {
+  const rows = (data || []).map((item, index) => {
+    const row = columnsDef.map(({ render }) => render(item));
+    row.key = getRowKey ? getRowKey(item) : index;
+    return row;
+  });
+
+  return (
+    <DataList
+      columns={columnsDef}
+      rows={rows}
+      {...props}
+      treeKey={treeKey}
+      treeData={data}
+      tree={true}
+    />
+  );
 }

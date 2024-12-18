@@ -1,4 +1,4 @@
-import { MapDataList } from "next-common/components/dataList";
+import { TreeMapDataList } from "next-common/components/dataList";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import TableColumns from "./columns";
 import { useAllProxiesContext } from "next-common/components/data/context/allProxies";
@@ -23,19 +23,19 @@ function TableHeader() {
 }
 
 export default function ProxyExplorerTable() {
-  // const { data, loading } = useAllProxiesContext();
-  // console.log("::::data, loading", data, loading);
   const { data, loading } = useAllProxiesContext();
 
   return (
     <div className="flex flex-col gap-y-4">
       <TableHeader />
-      <MapDataList
+      <TreeMapDataList
         bordered
         columnsDef={TableColumns}
         noDataText="No Data"
         data={data}
         loading={loading}
+        treeKey="items"
+        tree={true}
       />
     </div>
   );

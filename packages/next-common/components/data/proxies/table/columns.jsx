@@ -36,6 +36,14 @@ function DelayTime({ delay }) {
   );
 }
 
+function ProxiesCount({ items }) {
+  if (isNil(items)) {
+    return null;
+  }
+
+  return <span className="text14Medium">{items?.length || 0}</span>;
+}
+
 const TableColumns = [
   {
     name: "Delegator",
@@ -57,9 +65,7 @@ const TableColumns = [
   {
     name: "Proxies",
     className: "w-[200px] text-left",
-    render: (item) => (
-      <span className="text14Medium">{item?.items?.length || 0}</span>
-    ),
+    render: (item) => <ProxiesCount items={item?.items} />,
   },
 ];
 
