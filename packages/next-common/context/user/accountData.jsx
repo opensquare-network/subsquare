@@ -1,5 +1,5 @@
 import { useSubAccountData } from "next-common/hooks/account/useSubAccountData";
-import { extractAccountInfo } from "next-common/hooks/useAccountInfo";
+import { extractAccountInfo } from "next-common/utils/account/extractAccountInfo";
 import { existentialDepositSelector } from "next-common/store/reducers/chainSlice";
 import { createContext, useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
