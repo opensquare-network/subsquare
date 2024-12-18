@@ -7,17 +7,9 @@ import {
   NavigationWrapper,
   DemocracyReferendumNavigator,
   TechCommMotionNavigator,
-  TreasurySpendNavigator,
 } from "./navigators";
 import { usePost } from "next-common/context/post";
-
-export function DemocracyReferendaTreasurySpendNavigator({
-  treasurySpendIndexes = [],
-}) {
-  return treasurySpendIndexes.map((index) => (
-    <TreasurySpendNavigator key={index} index={index} />
-  ));
-}
+import { DemocracyReferendaTreasurySpendNavigator } from "./democracyNavigator";
 
 export default function ReferendumNavigation() {
   const post = usePost();
