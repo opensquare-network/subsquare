@@ -29,16 +29,16 @@ export function useSubAccountData(address) {
     let unsubBalanceAll;
     let unsubStakingInfo;
 
-    api.derive.balances
-      .all(address, (balanceAll) => {
+    api.derive?.balances
+      ?.all(address, (balanceAll) => {
         update({ balanceAll });
       })
       .then((unsub) => {
         unsubBalanceAll = unsub;
       });
 
-    api.derive.staking
-      .account(address, (stakingInfo) => {
+    api.derive?.staking
+      ?.account(address, (stakingInfo) => {
         update({ stakingInfo });
       })
       .then((unsub) => {
