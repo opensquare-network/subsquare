@@ -24,6 +24,7 @@ function TableHeader() {
 
 export default function ProxyExplorerTable() {
   // const { data, loading } = useAllProxiesContext();
+  // console.log("::::data, loading", data, loading);
   const { loading } = useAllProxiesContext();
 
   return (
