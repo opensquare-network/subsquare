@@ -20,7 +20,7 @@ export function useSubstrateAccounts({
 } = {}) {
   const dispatch = useDispatch();
   const isMounted = useMountedState();
-  const { chainType } = useChainSettings();
+  const { substrateThroughEthereumAddress, chainType } = useChainSettings();
   const { injectedWeb3, loading: loadingWeb3 } = useInjectedWeb3();
   const signetAccounts = useSignetAccounts();
   const [loading, setLoading] = useState(defaultLoading);
@@ -45,10 +45,11 @@ export function useSubstrateAccounts({
           const allAccounts = await walletExtension.accounts?.get();
 
           let filter = (item) => item.type !== "ethereum";
-          if (chainType === ChainTypes.ETHEREUM) {
+          if (
+            chainType === ChainTypes.ETHEREUM &&
+            substrateThroughEthereumAddress
+          ) {
             filter = (item) => item.type === "ethereum";
-          } else if (ChainTypes.MIXED === chainType) {
-            filter = () => true;
           }
 
           const extensionAccounts = (allAccounts || []).filter(filter);
@@ -74,7 +75,14 @@ export function useSubstrateAccounts({
         dispatch(newWarningToast(message));
       }
     },
-    [injectedWeb3, isMounted, onAccessGranted, dispatch, chainType],
+    [
+      injectedWeb3,
+      isMounted,
+      onAccessGranted,
+      dispatch,
+      chainType,
+      substrateThroughEthereumAddress,
+    ],
   );
 
   const loadSignetVault = useCallback(() => {

@@ -120,6 +120,7 @@ const laos = {
     navigationBorder: "var(--neutral300)",
   },
   chainType: ChainTypes.ETHEREUM,
+  substrateThroughEthereumAddress: true,
   ethereumNetwork,
 };
 

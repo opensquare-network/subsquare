@@ -5,15 +5,21 @@ import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import isMixedChain from "next-common/utils/isMixedChain";
 import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 import { ArrowCircleLeft } from "@osn/icons/subsquare";
-import isEvmChain from "next-common/utils/isEvmChain";
+import isEvmChain, {
+  isSupportSubstrateThroughEthereumAddress,
+} from "next-common/utils/isEvmChain";
 
 export default function WalletEVMOptions({ selectedWallet, onSelect = noop }) {
   const wallets = useEVMWallets();
   const { setView } = useWeb3WalletView();
 
+  const enableSubstrate =
+    isMixedChain() ||
+    (isEvmChain() && isSupportSubstrateThroughEthereumAddress());
+
   return (
     <div>
-      {(isMixedChain() || isEvmChain()) && (
+      {enableSubstrate && (
         <WalletOptionsWrapper className="mb-6">
           <WalletOption
             installed
