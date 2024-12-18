@@ -1,4 +1,4 @@
-import { noop, reject } from "lodash-es";
+import { noop } from "lodash-es";
 import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
 import { useSignetAccounts } from "next-common/context/signet";
@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
 import { withTimeout } from "next-common/utils/withTimeout";
 import { WALLET_TIMEOUT_ERROR_TEXT } from "next-common/utils/constants";
+import { useChainSettings } from "next-common/context/chain";
 
 export function useSubstrateAccounts({
   wallet,
@@ -19,6 +20,7 @@ export function useSubstrateAccounts({
 } = {}) {
   const dispatch = useDispatch();
   const isMounted = useMountedState();
+  const { chainType } = useChainSettings();
   const { injectedWeb3, loading: loadingWeb3 } = useInjectedWeb3();
   const signetAccounts = useSignetAccounts();
   const [loading, setLoading] = useState(defaultLoading);
@@ -40,10 +42,16 @@ export function useSubstrateAccounts({
       try {
         await withTimeout(async () => {
           const walletExtension = await extension.enable("subsquare");
-          const extensionAccounts = reject(
-            await walletExtension.accounts?.get(),
-            { type: ChainTypes.ETHEREUM },
-          );
+          const allAccounts = await walletExtension.accounts?.get();
+
+          let filter = (item) => item.type !== "ethereum";
+          if (chainType === ChainTypes.ETHEREUM) {
+            filter = (item) => item.type === "ethereum";
+          } else if (ChainTypes.MIXED === chainType) {
+            filter = () => true;
+          }
+
+          const extensionAccounts = (allAccounts || []).filter(filter);
 
           if (isMounted()) {
             setAccounts(
@@ -66,7 +74,7 @@ export function useSubstrateAccounts({
         dispatch(newWarningToast(message));
       }
     },
-    [injectedWeb3, isMounted, onAccessGranted, dispatch],
+    [injectedWeb3, isMounted, onAccessGranted, dispatch, chainType],
   );
 
   const loadSignetVault = useCallback(() => {

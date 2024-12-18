@@ -9,6 +9,7 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import isMixedChain from "next-common/utils/isMixedChain";
 import WalletOption from "../../walletOption";
 import { WalletOptionsWrapper } from "../styled";
+import isEvmChain from "next-common/utils/isEvmChain";
 
 export default function WalletSubstrateSingleSigOptions({
   selectedWallet,
@@ -64,7 +65,7 @@ export default function WalletSubstrateSingleSigOptions({
         );
       })}
 
-      {isMixedChain() && (
+      {(isMixedChain() || isEvmChain()) && (
         <WalletOption
           installed
           logo={<NetworkEthereumLight />}

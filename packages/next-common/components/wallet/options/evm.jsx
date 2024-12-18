@@ -5,6 +5,7 @@ import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import isMixedChain from "next-common/utils/isMixedChain";
 import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 import { ArrowCircleLeft } from "@osn/icons/subsquare";
+import isEvmChain from "next-common/utils/isEvmChain";
 
 export default function WalletEVMOptions({ selectedWallet, onSelect = noop }) {
   const wallets = useEVMWallets();
@@ -12,7 +13,7 @@ export default function WalletEVMOptions({ selectedWallet, onSelect = noop }) {
 
   return (
     <div>
-      {isMixedChain() && (
+      {(isMixedChain() || isEvmChain()) && (
         <WalletOptionsWrapper className="mb-6">
           <WalletOption
             installed
