@@ -15,17 +15,11 @@ const Context = createContext();
 export default function UserAccountDataProvider({ address, children }) {
   const chain = useChain();
 
-  if (isKintsugiChain(chain)) {
-    return (
-      <KintsugiAccountDataProvider address={address}>
-        {children}
-      </KintsugiAccountDataProvider>
-    );
-  }
+  const AccountProvider = isKintsugiChain(chain)
+    ? KintsugiAccountDataProvider
+    : AccountDataProvider;
 
-  return (
-    <AccountDataProvider address={address}>{children}</AccountDataProvider>
-  );
+  return <AccountProvider address={address}>{children}</AccountProvider>;
 }
 
 function AccountDataProvider({ address, children }) {
