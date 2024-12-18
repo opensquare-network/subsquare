@@ -1,29 +1,40 @@
 import DataList from "next-common/components/dataList";
-import { isNil } from "lodash-es";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import ProxyExplorerTableColumns from "./columns";
+import { useAllProxiesContext } from "next-common/components/data/context/allProxies";
 
-export default function ProxyExplorerTable() {
-  const data = [];
-  const isLoading = isNil(data);
+function TableHeader() {
+  const { total, loading } = useAllProxiesContext();
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <div>
       <TitleContainer>
         <span>
           List
-          <span className="text-textTertiary text14Medium ml-1">0</span>
+          <span className="text-textTertiary text14Medium ml-1">
+            {!loading && total}
+          </span>
         </span>
         {/* TODO: filter by current address */}
       </TitleContainer>
       {/* TODO: filter by identity name or address */}
+    </div>
+  );
+}
 
+export default function ProxyExplorerTable() {
+  // const { data, loading } = useAllProxiesContext();
+  const { loading } = useAllProxiesContext();
+
+  return (
+    <div className="flex flex-col gap-y-4">
+      <TableHeader />
       <DataList
         bordered
         columns={ProxyExplorerTableColumns}
         noDataText="No Data"
         rows={[]}
-        loading={isLoading}
+        loading={loading}
       />
     </div>
   );
