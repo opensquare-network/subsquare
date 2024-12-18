@@ -15,6 +15,7 @@ import { getMotionStateArgs } from "next-common/utils/collective/result";
 import { useEffect, useState } from "react";
 import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
+import { useChainSettings } from "next-common/context/chain";
 
 export function getReferendumPostTitleColumn() {
   return {
@@ -161,9 +162,10 @@ export function getRequestColumn() {
 }
 
 function SpendRequestAmount({ meta }) {
+  const chainSettings = useChainSettings();
   if (!isNil(meta)) {
     let { amount } = meta;
-    const asset = getAssetByMeta(meta);
+    const asset = getAssetByMeta(meta, chainSettings);
     if (!asset) {
       return "--";
     }

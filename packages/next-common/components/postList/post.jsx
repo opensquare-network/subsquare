@@ -191,8 +191,9 @@ function PostAmount({ amount, decimals, symbol }) {
 }
 
 export function TreasurySpendAmount({ meta }) {
+  const chainSettings = useChainSettings();
   const { amount } = meta;
-  const asset = getAssetByMeta(meta);
+  const asset = getAssetByMeta(meta, chainSettings);
   if (!asset) {
     return null;
   }

@@ -27,13 +27,13 @@ export default function TabsListItem({
       role={shouldSetA11yRole ? "button" : null}
       onClick={onClick}
       className={cn(
+        "flex items-center",
         !isFunctionLabel && !isStringLabel
           ? cn(
               "cursor-pointer",
               "pb-3",
               "text14Bold border-b-4 text-textPrimary whitespace-nowrap",
               "hover:text-theme500",
-              "flex items-center",
               className,
               active ? "border-theme500 text-theme500" : "border-transparent",
             )
