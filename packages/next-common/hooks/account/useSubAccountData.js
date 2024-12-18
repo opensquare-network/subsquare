@@ -1,5 +1,3 @@
-// useOnChainAccountData.js
-
 import { useContextApi } from "next-common/context/api";
 import useSubStorage from "../common/useSubStorage";
 import { useEffect, useMemo, useState } from "react";
