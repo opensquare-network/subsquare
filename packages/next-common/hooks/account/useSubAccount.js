@@ -3,7 +3,7 @@ import useSubStorage from "../common/useSubStorage";
 import { useEffect, useMemo, useState } from "react";
 import { every, values } from "lodash-es";
 
-export function useSubAccountData(address) {
+export function useSubAccount(address) {
   const [value, setValue] = useState(null);
 
   const api = useContextApi();

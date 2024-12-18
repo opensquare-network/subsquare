@@ -1,4 +1,4 @@
-import { useSubAccountData } from "next-common/hooks/account/useSubAccountData";
+import { useSubAccount } from "next-common/hooks/account/useSubAccount";
 import {
   extractAccountInfo,
   extractKintsugiAccountInfo,
@@ -6,7 +6,7 @@ import {
 import { existentialDepositSelector } from "next-common/store/reducers/chainSlice";
 import { createContext, useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
-import useSubKintsugiAccountData from "next-common/hooks/account/useSubKintsugiAccountData";
+import useSubKintsugiAccount from "next-common/hooks/account/useSubKintsugiAccount";
 import { useChain } from "../chain";
 import { isKintsugiChain } from "next-common/utils/chain";
 
@@ -23,12 +23,12 @@ export default function UserAccountDataProvider({ address, children }) {
 }
 
 function AccountDataProvider({ address, children }) {
-  const data = useSubAccountData(address);
+  const data = useSubAccount(address);
   return <Context.Provider value={data}>{children}</Context.Provider>;
 }
 
 function KintsugiAccountDataProvider({ address, children }) {
-  const data = useSubKintsugiAccountData(address);
+  const data = useSubKintsugiAccount(address);
   return <Context.Provider value={data}>{children}</Context.Provider>;
 }
 
