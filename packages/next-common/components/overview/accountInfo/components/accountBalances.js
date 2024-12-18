@@ -1,13 +1,6 @@
-import { useSelector } from "react-redux";
-import {
-  accountInfoSelector,
-  accountLockedBalanceSelector,
-  accountTotalBalanceSelector,
-  accountTransferrableBalanceSelector,
-  isLoadingAccountInfoSelector,
-} from "next-common/store/reducers/myOnChainData/account";
 import LoadableItem from "next-common/components/overview/accountInfo/components/loadableItem";
 import CollapsePanel from "./collapsePanel";
+import { useUserAccountInfo } from "next-common/context/user/accountData";
 
 function AccountBalanceItem({ value, title, isLoading }) {
   return (
@@ -25,12 +18,11 @@ function AccountBalanceItem({ value, title, isLoading }) {
 }
 
 export function TotalBalance() {
-  const isLoading = useSelector(isLoadingAccountInfoSelector);
-  const totalBalance = useSelector(accountTotalBalanceSelector);
+  const { info, isLoading } = useUserAccountInfo();
 
   return (
     <AccountBalanceItem
-      value={totalBalance}
+      value={info?.data?.total}
       isLoading={isLoading}
       title={"Total Balance"}
     />
@@ -38,12 +30,11 @@ export function TotalBalance() {
 }
 
 export function Transferrable() {
-  const isLoading = useSelector(isLoadingAccountInfoSelector);
-  const transferrable = useSelector(accountTransferrableBalanceSelector);
+  const { info, isLoading } = useUserAccountInfo();
 
   return (
     <AccountBalanceItem
-      value={transferrable}
+      value={info?.data?.transferrable}
       isLoading={isLoading}
       title="Transferrable"
     />
@@ -51,12 +42,11 @@ export function Transferrable() {
 }
 
 export function Reserved() {
-  const isLoading = useSelector(isLoadingAccountInfoSelector);
-  const accountInfo = useSelector(accountInfoSelector);
+  const { info, isLoading } = useUserAccountInfo();
 
   return (
     <AccountBalanceItem
-      value={accountInfo?.reserved}
+      value={info?.data?.reserved}
       isLoading={isLoading}
       title="Reserved"
     />
@@ -64,11 +54,14 @@ export function Reserved() {
 }
 
 export function Locked() {
-  const isLoading = useSelector(isLoadingAccountInfoSelector);
-  const locked = useSelector(accountLockedBalanceSelector);
+  const { info, isLoading } = useUserAccountInfo();
 
   return (
-    <AccountBalanceItem value={locked} isLoading={isLoading} title="Locked" />
+    <AccountBalanceItem
+      value={info?.data?.lockedBalance}
+      isLoading={isLoading}
+      title="Locked"
+    />
   );
 }
 
