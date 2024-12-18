@@ -55,14 +55,6 @@ function DataListBody(
           const isExpanded = expandedRows.has(idx);
           const children = tree ? treeData[idx][treeKey] : null;
 
-          console.log(
-            ":::::isExpanded, expandedRows, row, treeKey,",
-            isExpanded,
-            children,
-            row,
-            treeKey,
-          );
-
           return (
             <div key={idx}>
               <div className="flex items-center space-x-6">
