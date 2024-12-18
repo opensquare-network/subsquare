@@ -1,6 +1,6 @@
-import DataList from "next-common/components/dataList";
+import { MapDataList } from "next-common/components/dataList";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import ProxyExplorerTableColumns from "./columns";
+import TableColumns from "./columns";
 import { useAllProxiesContext } from "next-common/components/data/context/allProxies";
 
 function TableHeader() {
@@ -25,16 +25,16 @@ function TableHeader() {
 export default function ProxyExplorerTable() {
   // const { data, loading } = useAllProxiesContext();
   // console.log("::::data, loading", data, loading);
-  const { loading } = useAllProxiesContext();
+  const { data, loading } = useAllProxiesContext();
 
   return (
     <div className="flex flex-col gap-y-4">
       <TableHeader />
-      <DataList
+      <MapDataList
         bordered
-        columns={ProxyExplorerTableColumns}
+        columnsDef={TableColumns}
         noDataText="No Data"
-        rows={[]}
+        data={data}
         loading={loading}
       />
     </div>

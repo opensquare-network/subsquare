@@ -15,7 +15,7 @@ export function AllProxiesProvider({ children }) {
       value={{
         data,
         total,
-        loading: initialLoading && isTransformProxiesLoading,
+        loading: initialLoading || isTransformProxiesLoading,
       }}
     >
       {children}

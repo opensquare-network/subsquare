@@ -16,7 +16,7 @@ export default function useTransformProxiesData(data) {
         }
 
         acc[delegator].items.push({
-          delegate: delegatee,
+          delegatee,
           proxyType,
           delay,
         });
