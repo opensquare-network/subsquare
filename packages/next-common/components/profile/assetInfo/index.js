@@ -1,8 +1,18 @@
-import useAccountInfo from "next-common/hooks/useAccountInfo";
 import AssetDisplay from "./assetDisplay";
+import UserAccountDataProvider, {
+  useUserAccountInfo,
+} from "next-common/context/user/accountData";
 
 export default function AssetInfo({ address }) {
-  const accountInfo = useAccountInfo(address);
+  return (
+    <UserAccountDataProvider address={address}>
+      <AssetInfoImpl />
+    </UserAccountDataProvider>
+  );
+}
+
+function AssetInfoImpl() {
+  const { info: accountInfo } = useUserAccountInfo();
 
   if (!accountInfo) {
     return null;
