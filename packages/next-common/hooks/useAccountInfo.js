@@ -4,7 +4,7 @@ import { existentialDepositSelector } from "next-common/store/reducers/chainSlic
 import { useSelector } from "react-redux";
 import calcTransferable from "next-common/utils/account/transferable";
 
-function extractAccountInfo(accountData, existentialDeposit) {
+export function extractAccountInfo(accountData, existentialDeposit) {
   if (!accountData) {
     return null;
   }
