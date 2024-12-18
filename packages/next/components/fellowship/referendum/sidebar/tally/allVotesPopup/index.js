@@ -76,7 +76,7 @@ function VotesList({ items = [], loading }) {
         add={item.address}
         maxWidth={176}
         noTooltip
-        linkToVotesPage
+        link="/votes"
       />,
       item.votes,
     ];

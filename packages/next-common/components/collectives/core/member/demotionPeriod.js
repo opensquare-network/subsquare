@@ -58,6 +58,7 @@ export default function CoreFellowshipMemberDemotionPeriod({
   rank,
   params,
   showTitle = true,
+  className = "",
 }) {
   const { percentageValue, remainingBlocks, demotionPeriod } =
     useDemotionPeriod({ rank, lastProof, params });
@@ -73,6 +74,7 @@ export default function CoreFellowshipMemberDemotionPeriod({
       demotionPeriod={demotionPeriod}
       showTitle={showTitle}
       rank={rank}
+      className={className}
     />
   );
 }
@@ -83,6 +85,7 @@ function CoreFellowshipMemberDemotionPeriodImpl({
   demotionPeriod,
   showTitle,
   rank,
+  className = "",
 }) {
   const fgColor = useMemo(() => {
     return _getProgressBarColor(
@@ -93,7 +96,7 @@ function CoreFellowshipMemberDemotionPeriodImpl({
   }, [remainingBlocks, demotionPeriod]);
 
   return (
-    <CoreFellowshipMemberInfoWrapper>
+    <CoreFellowshipMemberInfoWrapper className={className}>
       {showTitle && (
         <CoreFellowshipMemberInfoTitle>
           {rank <= 0 ? "Offboard Timeout" : "Demotion Period"}

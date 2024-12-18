@@ -5,7 +5,6 @@ import Extrinsic from "next-common/components/extrinsic";
 import PopupLabel from "next-common/components/popup/label";
 import ExtrinsicInfo from "./info";
 import { useDispatch } from "react-redux";
-import Loading from "next-common/components/loading";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
@@ -14,6 +13,8 @@ import SignerWithVotingBalance from "next-common/components/signerPopup/signerWi
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
+import { ExtrinsicLoading } from "next-common/components/popup/fields/extrinsicField";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -53,13 +54,13 @@ export function getState(api, proposal) {
   };
 }
 
-export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
+export function NewPreimageInnerPopup({ onCreated = noop }) {
+  const { onClose } = usePopupParams();
   const api = useContextApi();
   const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
     useState(EMPTY_PROPOSAL);
   const disabled = !api || !notePreimageTx;
   const dispatch = useDispatch();
-  const isLoading = !api;
 
   const setProposal = useCallback(
     ({ isValid, data: tx }) => {
@@ -75,32 +76,31 @@ export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
     [api],
   );
 
+  let extrinsicComponent = null;
+
+  if (!api) {
+    extrinsicComponent = <ExtrinsicLoading />;
+  } else {
+    extrinsicComponent = (
+      <div>
+        <PopupLabel text="Propose" />
+        <Extrinsic
+          defaultSectionName="system"
+          defaultMethodName="setCode"
+          setValue={setProposal}
+        />
+        <ExtrinsicInfo
+          preimageHash={encodedHash}
+          preimageLength={encodedLength || 0}
+        />
+      </div>
+    );
+  }
+
   return (
-    <Popup
-      className="!w-[640px]"
-      title="New Preimage"
-      onClose={onClose}
-      maskClosable={false}
-    >
+    <Popup title="New Preimage" onClose={onClose} maskClosable={false}>
       <SignerWithVotingBalance />
-      {isLoading ? (
-        <div className="flex justify-center">
-          <Loading size={20} />
-        </div>
-      ) : (
-        <div>
-          <PopupLabel text="Propose" />
-          <Extrinsic
-            defaultSectionName="system"
-            defaultMethodName="setCode"
-            setValue={setProposal}
-          />
-          <ExtrinsicInfo
-            preimageHash={encodedHash}
-            preimageLength={encodedLength || 0}
-          />
-        </div>
-      )}
+      {extrinsicComponent}
       <TxSubmissionButton
         disabled={disabled}
         getTxFunc={() => notePreimageTx}
@@ -109,7 +109,7 @@ export function NewPreimageInnerPopup({ onClose, onCreated = noop }) {
           dispatch(incPreImagesTrigger());
         }}
         onFinalized={() => dispatch(incPreImagesTrigger())}
-        onClose={isEmptyFunc(onCreated) ? onClose : undefined}
+        autoClose={isEmptyFunc(onCreated)}
       />
     </Popup>
   );

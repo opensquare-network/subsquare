@@ -34,6 +34,7 @@ export default function CoreFellowshipMemberPromotionPeriod({
   rank,
   params = {},
   showTitle = true,
+  className = "",
 }) {
   const { percentageValue, remainingBlocks, promotionPeriod } =
     usePromotionPeriod({ lastPromotion, rank, params });
@@ -46,7 +47,7 @@ export default function CoreFellowshipMemberPromotionPeriod({
     percentageValue === 100 ? "var(--green500)" : "var(--neutral500)";
 
   return (
-    <CoreFellowshipMemberInfoWrapper>
+    <CoreFellowshipMemberInfoWrapper className={className}>
       {showTitle && (
         <CoreFellowshipMemberInfoTitle>
           Promotion Period

@@ -69,7 +69,7 @@ export function NewDemocracyProposalInnerPopup({
   const disabled = !preimageHash || !isValidPreimageHash(preimageHash);
 
   return (
-    <Popup wide title="New Proposal" className="!w-[640px]" onClose={onClose}>
+    <Popup title="New Proposal" onClose={onClose}>
       <SignerWithVotingBalance />
       <PreimageField
         preimageHash={preimageHash}
@@ -84,7 +84,6 @@ export function NewDemocracyProposalInnerPopup({
       <SubmissionDeposit deposit={deposit} />{" "}
       <TxSubmissionButton
         getTxFunc={getTxFunc}
-        onClose={onClose}
         disabled={disabled}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, "democracy", "Proposed");

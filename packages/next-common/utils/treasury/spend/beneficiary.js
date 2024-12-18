@@ -30,6 +30,8 @@ export default function getSpendBeneficiaryFromMeta(meta, chain) {
     return getSpendBeneficiaryFromMetaV3(v3, chain);
   } else if (v4) {
     return getSpendBeneficiaryFromMetaV4(v4, chain);
+  } else if (typeof meta?.beneficiary === "string") {
+    return meta?.beneficiary;
   }
 
   return null;

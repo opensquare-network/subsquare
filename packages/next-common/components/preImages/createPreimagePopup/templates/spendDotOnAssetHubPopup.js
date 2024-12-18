@@ -7,11 +7,12 @@ import { addressToPublicKey } from "next-common/utils/address";
 import { InfoMessage } from "next-common/components/setting/styled";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import NotePreimageButton from "./notePreimageButton";
-import useAssetHubDotBalanceField from "./fields/useAssetHubDotBalanceField";
-import useAddressComboField from "./fields/useAddressComboField";
-import useValidFromField from "./fields/useValidFromField";
+import NotePreimageButton from "../notePreimageButton";
+import useAssetHubDotBalanceField from "../fields/useAssetHubDotBalanceField";
+import useAddressComboField from "../fields/useAddressComboField";
+import useValidFromField from "../fields/useValidFromField";
 import { useChainSettings } from "next-common/context/chain";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 const getAssetKindParam = () => {
   return {
@@ -119,14 +120,10 @@ function PopupContent() {
   );
 }
 
-export default function SpendDotOnAssetHubPopup({ onClose }) {
+export default function SpendDotOnAssetHubPopup() {
+  const { onClose } = usePopupParams();
   return (
-    <Popup
-      title="Spend DOT on AssetHub"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Spend DOT on AssetHub" onClose={onClose}>
       <AssetHubApiProvider>
         <PopupContent />
       </AssetHubApiProvider>

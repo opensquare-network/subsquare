@@ -40,7 +40,6 @@ const westendAssetHub = {
   ...westendAssetHubThemeVars,
   multisigWallets: {
     signet: true,
-    mimir: true,
   },
   modules: {
     proxy: {

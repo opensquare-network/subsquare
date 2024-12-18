@@ -1,17 +1,12 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import BalanceField from "next-common/components/popup/fields/balanceField";
-import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import {
-  usePopupParams,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
-import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { toPrecision } from "next-common/utils";
 import { useCallback, useState } from "react";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 export function useAcceptCuratorPopup(pallet = "bounties", params = []) {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,13 +34,7 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
   const { symbol, decimals } = useChainSettings();
   const { meta } = onchainData;
   const { curatorDeposit } = meta || {};
-  const { onClose } = usePopupParams();
   const api = useContextApi();
-
-  const signerAccount = useSignerAccount();
-  const address = signerAccount?.realAddress;
-
-  const { value: balance, loading } = useSubBalanceInfo(address);
 
   const getTxFunc = useCallback(() => {
     if (!api?.tx?.[pallet]) {
@@ -57,11 +46,7 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
 
   return (
     <>
-      <Signer
-        balanceName="Available"
-        balance={balance?.balance}
-        isBalanceLoading={loading}
-      />
+      <SignerWithBalance />
       <BalanceField
         title="Curator Deposit"
         disabled
@@ -69,11 +54,7 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
         symbol={symbol}
       />
       <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          getTxFunc={getTxFunc}
-          onClose={onClose}
-        />
+        <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
       </div>
     </>
   );
@@ -81,7 +62,7 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
 
 function AcceptCuratorPopup(props) {
   return (
-    <PopupWithSigner title="Accept Curator" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Accept Curator" {...props}>
       <PopupContent pallet={props.pallet} params={props.params} />
     </PopupWithSigner>
   );

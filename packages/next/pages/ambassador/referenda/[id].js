@@ -1,6 +1,7 @@
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import {
+  ambassadorParamsApi,
   getAmbassadorReferendumCommentsUrl,
   getAmbassadorReferendumUrl,
 } from "next-common/services/url";
@@ -48,6 +49,7 @@ const Gov2ReferendumCall = dynamicClientOnly(() =>
 
 function AmbassadorContent() {
   const post = usePost();
+  const { ambassadorParams } = usePageProps();
 
   useSubReferendumInfo("ambassadorReferenda");
   const info = useReferendumInfo();
@@ -58,7 +60,7 @@ function AmbassadorContent() {
   return (
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
-        <CollectivesProvider section="ambassador">
+        <CollectivesProvider section="ambassador" params={ambassadorParams}>
           <ContentWithComment>
             <AmbassadorReferendaDetail />
             <FellowshipReferendumSideBar />
@@ -163,11 +165,16 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
 
+  const { result: ambassadorParams = {} } = await nextApi.fetch(
+    ambassadorParamsApi,
+  );
+
   return {
     props: {
       detail,
       comments: comments ?? EmptyList,
       ...tracksProps,
+      ambassadorParams,
     },
   };
 });

@@ -18,7 +18,7 @@ import filterTabs from "next-common/components/democracy/common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import VirtualList from "next-common/components/dataList/virtualList";
-import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
+import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 
 const BaseVotesPopup = dynamicPopup(() =>
   import("next-common/components/popup/baseVotesPopup"),
@@ -76,7 +76,6 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
 
   return (
     <BaseVotesPopup
-      wide
       title="Calls"
       onClose={() => setShowVoteList(false)}
       extra={searchBtn}
@@ -97,7 +96,7 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
 function VotesList({ items = [], loading }) {
   const post = usePost();
   const chainSettings = useChainSettings(post.indexer?.blockHeight);
-  const isMobile = useIsMobileDevice();
+  const itemHeight = usePopupItemHeight();
 
   const columns = [
     {
@@ -121,7 +120,7 @@ function VotesList({ items = [], loading }) {
         add={item.voter}
         noTooltip
         maxWidth={264}
-        linkToVotesPage
+        link="/votes"
       />,
       <VoteTime key="date">
         <ExplorerLink indexer={item.indexer}>
@@ -146,7 +145,7 @@ function VotesList({ items = [], loading }) {
         loading={loading}
         columns={columns}
         rows={rows}
-        itemHeight={isMobile ? 112 : 52}
+        itemHeight={itemHeight}
         listHeight={395}
       />
     </PopupListWrapper>

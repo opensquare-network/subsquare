@@ -10,8 +10,10 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
-export default function DappStakingUnRegisterPopup({ isMember, onClose }) {
+export default function DappStakingUnRegisterPopup({ isMember }) {
+  const { onClose } = usePopupParams();
   const dispatch = useDispatch();
   const api = useContextApi();
   const [contractAddress, setContractAddress] = useState("");
@@ -48,11 +50,7 @@ export default function DappStakingUnRegisterPopup({ isMember, onClose }) {
   }, [api, contractAddress, contractType, dispatch]);
 
   return (
-    <Popup
-      className="!w-[640px]"
-      title="Dapp staking registration"
-      onClose={onClose}
-    >
+    <Popup title="Dapp staking registration" onClose={onClose}>
       <SignerWithBalance />
       <div style={{ marginTop: "16px", marginBottom: "16px" }}>
         <ContractTypeTab

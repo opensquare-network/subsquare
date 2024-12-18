@@ -3,14 +3,17 @@ import Identity from "../Identity";
 import Link from "next/link";
 import DeletedAccount from "./deletedAccount";
 import UserDisplay from "./userDisplay";
-import { AvatarWrapper, LinkWrapper, UserWrapper } from "./styled";
+import { AvatarWrapper, UserWrapper } from "./styled";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import useAvatarInfo from "next-common/hooks/useAvatarInfo";
 import { AvatarDisplay } from "./avatarDisplay";
 
-function SystemUser({
+const SystemUer = memo(SystemUserImpl);
+export default SystemUer;
+
+function SystemUserImpl({
   user,
   showAvatar = true,
   fontSize = 14,
@@ -18,7 +21,7 @@ function SystemUser({
   maxWidth: propMaxWidth,
   noTooltip = false,
   color,
-  linkToVotesPage = false,
+  link = "",
   ellipsis = true,
 }) {
   const address = user?.address;
@@ -45,10 +48,7 @@ function SystemUser({
     />
   );
 
-  let linkUserPage = `/user/${displayAddress ?? user?.username}`;
-  if (linkToVotesPage) {
-    linkUserPage = `${linkUserPage}/votes`;
-  }
+  const linkUserPage = `/user/${displayAddress ?? user?.username}${link}`;
 
   const avatarSize = fontSize * (20 / 14);
 
@@ -64,13 +64,15 @@ function SystemUser({
           />
         </AvatarWrapper>
       )}
-      <Link href={linkUserPage} passHref legacyBehavior>
-        <LinkWrapper color={color} onClick={(e) => e.stopPropagation()}>
-          {userIdentity}
-        </LinkWrapper>
+      <Link
+        href={linkUserPage}
+        style={{ color }}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {userIdentity}
       </Link>
     </UserWrapper>
   );
 }
-
-export default memo(SystemUser);

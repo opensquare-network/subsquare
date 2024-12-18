@@ -14,7 +14,7 @@ import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import VirtualList from "next-common/components/dataList/virtualList";
-import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
+import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -60,7 +60,6 @@ export default function VotesPopup({
 
   return (
     <BaseVotesPopup
-      wide
       title="Flattened View"
       onClose={() => setShowVoteList(false)}
       extra={searchBtn}
@@ -80,7 +79,7 @@ export default function VotesPopup({
 
 function VotesList({ items = [], loading, tab }) {
   const chainSettings = useChainSettings();
-  const isMobile = useIsMobileDevice();
+  const itemHeight = usePopupItemHeight();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   const columns = [
@@ -107,7 +106,7 @@ function VotesList({ items = [], loading, tab }) {
         add={item.account}
         noTooltip
         maxWidth={276}
-        linkToVotesPage
+        link="/votes"
       />,
       <CapitalListItem
         key="capital"
@@ -131,7 +130,7 @@ function VotesList({ items = [], loading, tab }) {
           columns={columns}
           rows={rows}
           loading={loading}
-          itemHeight={isMobile ? 112 : 52}
+          itemHeight={itemHeight}
           listHeight={395}
         />
       </PopupListWrapper>

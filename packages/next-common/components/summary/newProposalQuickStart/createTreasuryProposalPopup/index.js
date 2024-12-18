@@ -4,7 +4,7 @@ import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { useLocalTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/newLocalTreasuryProposalPopup";
+import { useLocalTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/newLocalTreasuryProposalPopup";
 import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
@@ -24,12 +24,7 @@ export function NewTreasuryReferendumInnerPopup() {
     useLocalTreasuryNotePreimageTx(inputBalance, beneficiary);
 
   return (
-    <Popup
-      title="Create Treasury Proposal"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Create Treasury Proposal" onClose={onClose}>
       <SignerWithBalance />
       {balanceField}
       {beneficiaryField}

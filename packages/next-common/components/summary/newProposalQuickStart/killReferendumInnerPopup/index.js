@@ -55,12 +55,7 @@ export function KillReferendumInnerPopup({
   }, [api, referendumIndex, enactment, proposalOrigin]);
 
   return (
-    <Popup
-      title="Kill a referendum"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Kill a referendum" onClose={onClose}>
       <SignerWithBalance />
       {referendumIndexField}
       {trackField}
@@ -71,7 +66,6 @@ export function KillReferendumInnerPopup({
       <div className="flex justify-end">
         <TxSubmissionButton
           getTxFunc={getTxFunc}
-          onClose={onClose}
           onInBlock={({ events }) => {
             const eventData = getEventData(events, "referenda", "Submitted");
             if (!eventData) {

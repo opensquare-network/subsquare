@@ -9,10 +9,7 @@ import useSigner from "next-common/components/common/tx/useSigner";
 import Editor from "next-common/components/editor";
 import PopupLabel from "next-common/components/popup/label";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import {
-  usePopupParams,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -46,7 +43,6 @@ function WishChoice({ title, description, checked, onClick = noop }) {
 }
 
 function Content() {
-  const { onClose } = usePopupParams();
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
@@ -131,7 +127,6 @@ function Content() {
         loadingText={uploading ? "Uploading to IPFS..." : "Submitting..."}
         loading={uploading}
         getTxFunc={getTxFunc}
-        onClose={onClose}
       />
     </>
   );
@@ -139,7 +134,7 @@ function Content() {
 
 export default function SubmitEvidencePopup(props) {
   return (
-    <PopupWithSigner className="!w-[640px]" title="Submit Evidence" {...props}>
+    <PopupWithSigner title="Submit Evidence" {...props}>
       <Content />
     </PopupWithSigner>
   );

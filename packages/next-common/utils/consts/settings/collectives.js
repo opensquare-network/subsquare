@@ -75,7 +75,6 @@ const collectives = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasFellowshipParams: true,
-  showAchainableLabels: true,
   description: "Collectives on Polkadot network.",
   modules: mergeChainModules({
     fellowship: {
@@ -97,6 +96,9 @@ const collectives = {
     discussionsRFCs: {
       link: "https://github.com/polkadot-fellows/RFCs/issues",
     },
+  },
+  multisigWallets: {
+    mimir: true,
   },
   sima: true,
   ...polkadotThemeVars,

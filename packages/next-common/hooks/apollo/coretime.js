@@ -1,22 +1,12 @@
 import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
+import { defaultOptions } from "./common";
 
 const { modules } = getChainSettings(CHAIN);
 
 /** @type {ApolloClient<InMemoryCache> | undefined} */
 export let coretimeClient;
-
-const defaultOptions = {
-  watchQuery: {
-    fetchPolicy: "no-cache",
-    errorPolicy: "ignore",
-  },
-  query: {
-    fetchPolicy: "no-cache",
-    errorPolicy: "all",
-  },
-};
 
 if (modules?.coretime) {
   coretimeClient = new ApolloClient({

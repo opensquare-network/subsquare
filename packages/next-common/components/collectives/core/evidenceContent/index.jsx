@@ -54,15 +54,7 @@ export default function FellowshipEvidenceContent({
     );
   }
 
-  return (
-    <div className={cn("space-y-4", className)}>
-      <h4 className="text14Bold text-textPrimary">
-        Evidence{wish && ` for ${wish}`}
-      </h4>
-
-      {content}
-    </div>
-  );
+  return <div className={cn("space-y-4", className)}>{content}</div>;
 }
 
 function LoadingContent() {

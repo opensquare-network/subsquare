@@ -20,6 +20,11 @@ export default function NetworkOptions({ activeNode, setShow }) {
         setShow={setShow}
       />
       <NetworkOptionGroup
+        groupName={MenuGroups.Paseo}
+        activeNode={activeNode}
+        setShow={setShow}
+      />
+      <NetworkOptionGroup
         groupName={MenuGroups.Solochain}
         activeNode={activeNode}
         setShow={setShow}

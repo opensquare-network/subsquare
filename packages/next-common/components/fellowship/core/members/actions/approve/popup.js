@@ -28,7 +28,7 @@ export function getRetainTrackNameFromRank(rank) {
   }
 }
 
-function PopupContent({ member, onClose }) {
+function PopupContent({ member }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [enactment, setEnactment] = useState();
@@ -76,7 +76,6 @@ function PopupContent({ member, onClose }) {
       </InfoMessage>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
-        onClose={onClose}
         onInBlock={({ events }) => {
           const eventData = getEventData(
             events,
@@ -97,7 +96,7 @@ function PopupContent({ member, onClose }) {
 
 export default function ApproveFellowshipMemberPopup({ member, onClose }) {
   return (
-    <PopupWithSigner title="Approve Fellowship Member" onClose={onClose} wide>
+    <PopupWithSigner title="Approve Fellowship Member" onClose={onClose}>
       <PopupContent member={member} onClose={onClose} />
     </PopupWithSigner>
   );

@@ -5,9 +5,10 @@ import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { checkInputValue } from "next-common/utils";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import NotePreimageButton from "./notePreimageButton";
-import useBalanceField from "./fields/useBalanceField";
-import useAddressComboField from "./fields/useAddressComboField";
+import NotePreimageButton from "../notePreimageButton";
+import useBalanceField from "../fields/useBalanceField";
+import useAddressComboField from "../fields/useAddressComboField";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
   const api = useContextApi();
@@ -35,7 +36,8 @@ export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
   }, [api, inputBalance, beneficiary, decimals]);
 }
 
-export default function NewLocalTreasuryProposalPopup({ onClose }) {
+export default function NewLocalTreasuryProposalPopup() {
+  const { onClose } = usePopupParams();
   const { value: inputBalance, component: balanceField } = useBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
@@ -46,12 +48,7 @@ export default function NewLocalTreasuryProposalPopup({ onClose }) {
   );
 
   return (
-    <Popup
-      title="Create Treasury Proposal"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Create Treasury Proposal" onClose={onClose}>
       <SignerWithBalance />
       {balanceField}
       {beneficiaryField}

@@ -1,10 +1,6 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import {
-  usePopupParams,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useContextApi } from "next-common/context/api";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -15,6 +11,7 @@ import ExistentialDeposit from "next-common/components/popup/fields/existentialD
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { useChainSettings } from "next-common/context/chain";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 export function useAccountTransferPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +26,6 @@ export function useAccountTransferPopup() {
 }
 
 function PopupContent() {
-  const { onClose } = usePopupParams();
   const { decimals, symbol } = useChainSettings();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
@@ -68,18 +64,14 @@ function PopupContent() {
 
   return (
     <>
-      <Signer />
+      <SignerWithBalance />
       {transferToAddressField}
       {transferAmountField}
       <AdvanceSettings>
         <ExistentialDeposit destApi={api} title="Existential Deposit" />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          getTxFunc={getTxFunc}
-          onClose={onClose}
-        />
+        <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
       </div>
     </>
   );
@@ -87,7 +79,7 @@ function PopupContent() {
 
 function AccountTransferPopup(props) {
   return (
-    <PopupWithSigner title="Transfer" className="!w-[640px]" {...props}>
+    <PopupWithSigner title="Transfer" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );

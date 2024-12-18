@@ -7,7 +7,7 @@ import AdvanceSettings from "../common/advanceSettings";
 import BigNumber from "bignumber.js";
 import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { useUSDxTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/newUSDxTreasuryProposalPopup";
+import { useUSDxTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/newUSDxTreasuryProposalPopup";
 import useUSDxBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useUSDxBalanceField";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
@@ -71,12 +71,7 @@ function PopupContent() {
 export function NewUSDxTreasuryReferendumInnerPopup() {
   const { onClose } = usePopupParams();
   return (
-    <Popup
-      title="Create USDx Treasury Proposal"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Create USDx Treasury Proposal" onClose={onClose}>
       <AssetHubApiProvider>
         <PopupContent />
       </AssetHubApiProvider>

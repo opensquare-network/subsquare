@@ -88,6 +88,7 @@ const litentry = {
   modules: mergeChainModules({
     treasury: {
       tips: false,
+      spends: true,
     },
   }),
   integrations: {

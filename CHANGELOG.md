@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.4.3
+
+date: 2024-12-18
+
+- Add assethub support for paseo.
+- Set popup default width 640px.
+- Check type and address for add proxy popup.
+- Turn on treasury spends for bifrost polkadot.
+- Fix treasury spend meta with null `assetKind`.
+- Improve new tips button location.
+- Show demotion/promotion status on a fellowship membership referendum.
+- Refactor proposal quick start template.
+- Show valid/expiration count down on treasury spend list.
+- Enable treasury and democracy related council templates for hydration/phala/khala.
+- Show mimir icon on profile page for a multisig address.
+- Fix overview page crash by recent proposals.
+
+# 4.4.2
+
+date: 2024-12-13
+
+- Improve advanced switch component on popups.
+- Improve account panel visibility by loading.
+- [Medium] Refactor tabs component for better availability.
+- Fix network switch panel scroll on short screen.
+- Add chain key to `useSubStorage` hook to fix balance bug when switching between relay chain and sub spaces.
+- Add guard to fetch multisig data on bounty detail page.
+- Use statescan graphql API for multisig info query for polkadot/kusama/paseo.
+- Refactor `AddressUser` component for more flexible link passing.
+- Add a skeleton loading effect for extrinsic composition on popups.
+- Enlarge democracy vote popup width.
+- Refactor hook `useAddressVotingBalance` for better voting balance query.
+- Add democracy public proposal templates for Ajuna.
+- Archive basilisk council.
+- Fix balance on some popups.
+- Fellowship:
+    - Fix fellowship salary cycle detail page crash.
+    - Change timeline to feeds on profile page fellowship tab.
+- Remove achainable.
+- Set threshold of astar motion to be 100%.
+- Other code refactor and style fixes.
+
 # 4.4.1
 
 date: 2024-12-09

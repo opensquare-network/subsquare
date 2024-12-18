@@ -89,9 +89,10 @@ const paseo = {
   navLogoDark: ProjectLogoPaseoDark,
   navPreferDark: true,
   links,
-  group: MenuGroups.Testnet,
+  group: MenuGroups.Paseo,
   hasMultisig: true,
   multisigApiPrefix: "paseo",
+  graphqlApiSubDomain: "paseo-gh-api",
   postLabels: defaultPostLabels,
   description:
     "The new Polkadot testnet replacing Rococo. Paseo is decentralised, stable, and community run.",
@@ -106,12 +107,16 @@ const paseo = {
     council: false,
     democracy: false,
     technicalCommittee: false,
+    assethub: true,
   }),
   integrations: {
     subscan: true,
   },
   sima: true,
   ...themeVars,
+  multisigWallets: {
+    mimir: true,
+  },
 };
 
 export default paseo;

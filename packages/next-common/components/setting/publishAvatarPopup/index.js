@@ -116,7 +116,7 @@ function Content() {
 
 export default function PublishAvatarPopup(props) {
   return (
-    <PopupWithSigner title="Upload & Save" wide {...props}>
+    <PopupWithSigner title="Upload & Save" {...props}>
       <Content />
     </PopupWithSigner>
   );

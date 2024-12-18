@@ -4,8 +4,9 @@ import DemocracySummaryStakeInfo from "./democracySummaryStackInfo";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useLatestAddressVotingBalance } from "utils/hooks";
 import DemocracySummaryStakeButton from "./democracySummaryStakeButton";
-import useSubLockedBalance from "../../../hooks/democracy/useSubLockedBalance";
 import { useContextApi } from "next-common/context/api";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
+import WithAddress from "next-common/components/common/withAddress";
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,19 +16,36 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-export default function KintsugiDemocracyStaking() {
+function StakingContent() {
   const api = useContextApi();
   const realAddress = useRealAddress();
-  const [votingBalance] = useLatestAddressVotingBalance(api, realAddress);
-  const balance = useSubLockedBalance(realAddress);
+  const { balance: votingBalance, isLoading: isLoadingVotingBalance } =
+    useLatestAddressVotingBalance(api, realAddress);
+  const { result: rawBalance, loading: isLoadingLocked } = useSubStorage(
+    "escrow",
+    "locked",
+    [realAddress],
+  );
+
+  if (isLoadingVotingBalance || isLoadingLocked) {
+    return null;
+  }
 
   return (
     <Wrapper>
       <DemocracySummaryStakeInfo
         votingBalance={votingBalance}
-        balance={balance}
+        balance={rawBalance ? rawBalance.amount.toString() : null}
       />
       <DemocracySummaryStakeButton />
     </Wrapper>
+  );
+}
+
+export default function KintsugiDemocracyStaking() {
+  return (
+    <WithAddress>
+      <StakingContent />
+    </WithAddress>
   );
 }

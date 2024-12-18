@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import Identity from "../Identity";
 import Link from "next/link";
-import { AvatarWrapper, LinkWrapper, UserWrapper } from "./styled";
+import { AvatarWrapper, UserWrapper } from "./styled";
 import AddressDisplay from "./addressDisplay";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
@@ -11,6 +11,8 @@ import useAvatarInfo from "next-common/hooks/useAvatarInfo";
 import { AvatarDisplay } from "./avatarDisplay";
 import { useChain } from "next-common/context/chain";
 import { isAssetHubChain } from "next-common/utils/chain";
+import { isExternalLink } from "next-common/utils";
+import ExternalLink from "../externalLink";
 
 export function AddressUserImpl({
   className = "",
@@ -24,9 +26,8 @@ export function AddressUserImpl({
   noEvent = false,
   noTooltip = false,
   color,
-  linkToVotesPage = false,
   ellipsis = true,
-  externalLink,
+  link = "",
   addressClassName = "",
 }) {
   const chain = useChain();
@@ -52,33 +53,29 @@ export function AddressUserImpl({
     />
   );
 
-  let linkUserPage = `/user/${displayAddress}`;
-  if (isAssetHubChain(chain)) {
-    linkUserPage = `/assethub${linkUserPage}`;
-  }
-  if (linkToVotesPage) {
-    linkUserPage = `${linkUserPage}/votes`;
-  }
-
-  let userIdentityLink = (
-    <Link href={linkUserPage} passHref legacyBehavior>
-      <LinkWrapper color={color} onClick={(e) => e.stopPropagation()}>
-        {userIdentity}
-      </LinkWrapper>
-    </Link>
-  );
-
-  if (externalLink) {
+  let userIdentityLink;
+  if (isExternalLink(link)) {
     userIdentityLink = (
-      <LinkWrapper
-        href={externalLink}
-        target="_blank"
-        rel="noreferrer"
-        color={color}
-        onClick={(e) => e.stopPropagation()}
+      <ExternalLink externalIcon={false} href={link} style={{ color }}>
+        {userIdentity}
+      </ExternalLink>
+    );
+  } else {
+    let href = `/user/${displayAddress}${link}`;
+    if (isAssetHubChain(chain)) {
+      href = `/assethub${href}`;
+    }
+
+    userIdentityLink = (
+      <Link
+        href={href}
+        style={{ color }}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
       >
         {userIdentity}
-      </LinkWrapper>
+      </Link>
     );
   }
 
@@ -100,7 +97,7 @@ export function AddressUserImpl({
   );
 }
 
-function AddressUser({
+function AddressUserComp({
   className = "",
   add,
   showAvatar = true,
@@ -109,9 +106,8 @@ function AddressUser({
   maxWidth: propMaxWidth,
   noTooltip = false,
   color,
-  linkToVotesPage = false,
   ellipsis = true,
-  externalLink,
+  link = "",
   addressClassName = "",
 }) {
   const address = add;
@@ -137,12 +133,12 @@ function AddressUser({
       noEvent={noEvent}
       noTooltip={noTooltip}
       color={color}
-      linkToVotesPage={linkToVotesPage}
       ellipsis={ellipsis}
-      externalLink={externalLink}
+      link={link}
       addressClassName={addressClassName}
     />
   );
 }
 
-export default memo(AddressUser);
+const AddressUser = memo(AddressUserComp);
+export default AddressUser;

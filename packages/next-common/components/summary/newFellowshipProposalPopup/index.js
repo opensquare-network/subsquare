@@ -84,7 +84,7 @@ export function NewFellowshipProposalInnerPopup({
   ]);
 
   return (
-    <Popup wide title="New Proposal" onClose={onClose}>
+    <Popup title="New Proposal" onClose={onClose}>
       <SignerWithBalance />
       <DetailedFellowshipTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField
@@ -97,7 +97,6 @@ export function NewFellowshipProposalInnerPopup({
       <SubmissionDeposit pallet={pallet} />
       <TxSubmissionButton
         getTxFunc={getTxFunc}
-        onClose={onClose}
         disabled={disabled}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, pallet, "Submitted");

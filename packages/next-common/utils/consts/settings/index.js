@@ -38,6 +38,7 @@ import astar from "./astar";
 import { isNil } from "lodash-es";
 import zkverifyTestnet from "./zkverifyTestnet";
 import paseo from "./paseo";
+import paseoAssetHub from "./paseoAssetHub";
 import ajuna from "./ajuna";
 import kusamaCoretime from "./kusamaCoretime";
 import polkadotCoretime from "./polkadotCoretime";
@@ -85,6 +86,7 @@ const settingsMap = {
   shibuya,
   [zkverifyTestnet.value]: zkverifyTestnet,
   paseo,
+  [paseoAssetHub.value]: paseoAssetHub,
   ajuna,
   [polkadotCoretime.value]: polkadotCoretime,
   [kusamaCoretime.value]: kusamaCoretime,

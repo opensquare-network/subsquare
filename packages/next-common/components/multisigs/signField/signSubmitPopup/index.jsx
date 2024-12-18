@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState, useMemo } from "react";
-import Loading from "next-common/components/loading";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
@@ -12,14 +11,14 @@ import useWeight from "next-common/utils/hooks/common/useWeight";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  sortSignatories,
   fetchMultisigList10Times,
   fetchMultisigsCount10Times,
 } from "../../common";
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import PopupPropose from "./propose";
 import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
+import { sortAddresses } from "@polkadot/util-crypto";
 
 export function SignSubmitInnerPopup({
   onClose,
@@ -28,7 +27,6 @@ export function SignSubmitInnerPopup({
 }) {
   const api = useContextApi();
   const address = useRealAddress();
-  const isLoading = !api;
   const { threshold, signatories, when: maybeTimepoint, callHex } = multisig;
   const [isSubmitBtnLoading, setIsSubmitBtnLoading] = useState(false);
   const [call, setCall] = useState(null);
@@ -41,6 +39,7 @@ export function SignSubmitInnerPopup({
     maybeTimepoint?.height,
   );
   const { weight: maxWeight } = useWeight(call);
+  const { ss58Format } = useChainSettings();
 
   const isSubmitBtnDisabled = useMemo(() => {
     if (callHex) {
@@ -83,12 +82,21 @@ export function SignSubmitInnerPopup({
 
     return api.tx.multisig?.asMulti(
       threshold,
-      sortSignatories(otherSignatories),
+      sortAddresses(otherSignatories, ss58Format),
       encodedTimepoint,
       call,
       maxWeight,
     );
-  }, [api, address, threshold, signatories, maybeTimepoint, call, maxWeight]);
+  }, [
+    api,
+    address,
+    threshold,
+    signatories,
+    ss58Format,
+    maybeTimepoint,
+    call,
+    maxWeight,
+  ]);
 
   const onFinalized = () => {
     dispatch(newSuccessToast("Multisig status will be updated in seconds"));
@@ -101,25 +109,14 @@ export function SignSubmitInnerPopup({
   };
 
   return (
-    <Popup
-      className="!w-[640px]"
-      title="Multisig"
-      onClose={onClose}
-      maskClosable={false}
-    >
+    <Popup title="Multisig" onClose={onClose} maskClosable={false}>
       <SignerWithBalance />
-      {isLoading ? (
-        <div className="flex justify-center">
-          <Loading size={20} />
-        </div>
-      ) : (
-        <PopupPropose multisig={multisig} setValue={setValue} />
-      )}
+      <PopupPropose multisig={multisig} setValue={setValue} />
       <TxSubmissionButton
         disabled={isSubmitBtnDisabled}
         getTxFunc={getTxFunc}
         onFinalized={onFinalized}
-        onClose={isEmptyFunc(onCreated) ? onClose : undefined}
+        autoClose={isEmptyFunc(onCreated)}
         loading={isSubmitBtnLoading}
       />
     </Popup>

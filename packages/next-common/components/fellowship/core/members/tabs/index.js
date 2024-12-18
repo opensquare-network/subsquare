@@ -8,6 +8,7 @@ export default function FellowshipMemberTabs({
 }) {
   const tabs = [
     {
+      value: "members",
       label({ active }) {
         return (
           <>
@@ -27,6 +28,7 @@ export default function FellowshipMemberTabs({
       url: `/${section}/core`,
     },
     {
+      value: "candidates",
       label({ active }) {
         return (
           <>

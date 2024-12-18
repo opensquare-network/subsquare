@@ -49,12 +49,7 @@ export function NewTreasuryReferendumInnerPopup() {
   }, [dispatch, api, decimals, inputBalance, beneficiary]);
 
   return (
-    <Popup
-      title="Create Treasury Proposal"
-      className="!w-[640px]"
-      onClose={onClose}
-      wide
-    >
+    <Popup title="Create Treasury Proposal" onClose={onClose}>
       <SignerWithVotingBalance />
       {balanceField}
       {beneficiaryField}

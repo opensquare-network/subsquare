@@ -24,7 +24,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { usePost } from "next-common/context/post";
 import VirtualList from "next-common/components/dataList/virtualList";
-import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
+import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
@@ -96,7 +96,7 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
 function VotesList({ items = [], loading }) {
   const post = usePost();
   const chainSettings = useChainSettings(post.indexer?.blockHeight);
-  const isMobile = useIsMobileDevice();
+  const itemHeight = usePopupItemHeight();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   const [showDetail, setShowDetail] = useState(false);
@@ -127,7 +127,7 @@ function VotesList({ items = [], loading }) {
         add={item.account}
         noTooltip
         maxWidth={296}
-        linkToVotesPage
+        link="/votes"
       />,
       (item.directVoterDelegations || []).length,
       <ValueDisplay
@@ -156,7 +156,7 @@ function VotesList({ items = [], loading }) {
           columns={columns}
           rows={rows}
           loading={loading}
-          itemHeight={isMobile ? 112 : 52}
+          itemHeight={itemHeight}
           listHeight={395}
         />
       </PopupListWrapper>
