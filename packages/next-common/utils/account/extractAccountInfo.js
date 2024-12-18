@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import calcTransferable from "./transferable";
 
 export function extractAccountInfo(accountData, existentialDeposit) {
@@ -21,6 +22,27 @@ export function extractAccountInfo(accountData, existentialDeposit) {
       lockedBalance: lockedBalance?.toBigInt().toString(),
       bonded: stakingLedger?.active?.toBigInt().toString(),
     },
-    detail: accountData.account?.toJSON(),
+    detail: accountData.account?.toJSON?.(),
+  };
+}
+
+export function extractKintsugiAccountInfo(accountData, existentialDeposit) {
+  if (!accountData) {
+    return null;
+  }
+
+  return {
+    data: {
+      free: accountData.free?.toString(),
+      reserved: accountData.reserved?.toString(),
+      total: (
+        accountData.free?.toBigInt() + accountData.reserved?.toBigInt()
+      ).toString(),
+      transferrable: calcTransferable(accountData, existentialDeposit),
+      lockedBalance: BigNumber.max(
+        accountData.reserved,
+        accountData.frozen,
+      ).toString(),
+    },
   };
 }
