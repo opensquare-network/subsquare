@@ -134,9 +134,11 @@ export const NavigationWrapper = styled(NoticeWrapper)`
     align-items: center;
   }
 
-  > div > svg {
+  svg {
     margin-right: 8px;
-    fill: var(--textTertiary);
+    path {
+      fill: var(--textTertiary);
+    }
   }
 
   a {
