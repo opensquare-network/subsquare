@@ -5,7 +5,6 @@ import TriangleRight from "../../../assets/imgs/icons/arrow-triangle-right.svg";
 import { getMotionId, shortMotionId } from "../../../utils/motion";
 import styled from "styled-components";
 import { NoticeWrapper } from "../../styled/containers/titleContainer";
-import { useChain } from "../../../context/chain";
 
 export function ReferendumLink({ referendumIndex }) {
   return (
@@ -15,7 +14,11 @@ export function ReferendumLink({ referendumIndex }) {
   );
 }
 
-export function ReferendumNavigationItem({ referendumIndex, isLink = true }) {
+export function DemocracyReferendumNavigator({
+  referendumIndex,
+  isLink = true,
+  hasTriangle = true,
+}) {
   if (isNil(referendumIndex)) {
     return null;
   }
@@ -27,7 +30,7 @@ export function ReferendumNavigationItem({ referendumIndex, isLink = true }) {
 
   return (
     <div>
-      <TriangleRight />
+      {hasTriangle && <TriangleRight />}
       {item}
     </div>
   );
@@ -49,6 +52,7 @@ export function DemocracyExternalNavigator({
   blockHeight,
   hash = "",
   isLink = true,
+  hasTriangle = true,
 }) {
   let link = (
     <Link passHref={true} href={`/democracy/externals/${blockHeight}_${hash}`}>
@@ -62,37 +66,42 @@ export function DemocracyExternalNavigator({
 
   return (
     <div>
-      <TriangleRight />
+      {hasTriangle && <TriangleRight />}
       {link}
     </div>
   );
 }
 
-export function CouncilMotionNavigator({ motion, hasTriangle = true }) {
-  let triangle = hasTriangle ? <TriangleRight /> : null;
-  const chain = useChain();
+export function CouncilMotionNavigator({
+  motion,
+  isLink = true,
+  hasTriangle = true,
+}) {
+  let link = (
+    <Link href={`/council/motions/${getMotionId(motion)}`} legacyBehavior>
+      {`Motion #${shortMotionId(motion)}`}
+    </Link>
+  );
+
+  if (!isLink) {
+    link = `Tech. Comm. #${shortMotionId(motion)}`;
+  }
 
   return (
     <div>
-      {triangle}
-      <Link
-        href={`/council/motions/${getMotionId(motion, chain)}`}
-        legacyBehavior
-      >
-        {`Motion #${shortMotionId(motion)}`}
-      </Link>
+      {hasTriangle && <TriangleRight />}
+      {link}
     </div>
   );
 }
 
-export function TechCommMotionNavigator({ motion = {}, isLink = true }) {
-  const chain = useChain();
-
+export function TechCommMotionNavigator({
+  motion = {},
+  isLink = true,
+  hasTriangle = true,
+}) {
   let link = (
-    <Link
-      href={`/techcomm/proposals/${getMotionId(motion, chain)}`}
-      legacyBehavior
-    >
+    <Link href={`/techcomm/proposals/${getMotionId(motion)}`} legacyBehavior>
       {`Tech. Comm. #${shortMotionId(motion)}`}
     </Link>
   );
@@ -103,13 +112,17 @@ export function TechCommMotionNavigator({ motion = {}, isLink = true }) {
 
   return (
     <div>
-      <TriangleRight />
+      {hasTriangle && <TriangleRight />}
       {link}
     </div>
   );
 }
 
-export function TreasurySpendNavigator({ index, isLink = true }) {
+export function TreasurySpendNavigator({
+  index,
+  isLink = true,
+  hasTriangle = true,
+}) {
   let link = <div>{`Treasury Spend #${index}`}</div>;
 
   if (isLink) {
@@ -122,7 +135,7 @@ export function TreasurySpendNavigator({ index, isLink = true }) {
 
   return (
     <div>
-      <TriangleRight />
+      {hasTriangle && <TriangleRight />}
       {link}
     </div>
   );

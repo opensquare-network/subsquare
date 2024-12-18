@@ -5,7 +5,7 @@ import {
   DemocracyExternalNavigator,
   DemocracyProposalNavigator,
   NavigationWrapper,
-  ReferendumNavigationItem,
+  DemocracyReferendumNavigator,
   TechCommMotionNavigator,
   TreasurySpendNavigator,
 } from "./navigators";
@@ -26,7 +26,7 @@ export default function ReferendumNavigation() {
     return (
       <NavigationWrapper>
         <DemocracyProposalNavigator proposalIndex={post.proposalIndex} />
-        <ReferendumNavigationItem
+        <DemocracyReferendumNavigator
           referendumIndex={post?.referendumIndex}
           isLink={false}
         />
@@ -56,7 +56,7 @@ export default function ReferendumNavigation() {
       {referendum?.councilMotions?.map((motion, key) => (
         <CouncilMotionNavigator key={key} motion={motion} hasTriangle={false} />
       ))}
-      <ReferendumNavigationItem
+      <DemocracyReferendumNavigator
         referendumIndex={post?.referendumIndex}
         isLink={false}
       />
@@ -83,7 +83,7 @@ export function KintsugiReferendumNavigation() {
       {onchainData?.techCommMotions?.map((techCommMotion, key) => (
         <TechCommMotionNavigator motion={techCommMotion} key={key} />
       ))}
-      <ReferendumNavigationItem
+      <DemocracyReferendumNavigator
         referendumIndex={onchainData?.referendumIndex}
         isLink={false}
       />

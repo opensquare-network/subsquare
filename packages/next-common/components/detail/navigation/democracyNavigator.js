@@ -1,53 +1,51 @@
 import React from "react";
 import TriangleRight from "next-common/assets/imgs/icons/arrow-triangle-right.svg";
-import Link from "next/link";
-import {
-  getMotionId,
-  getUniqueMotionId,
-  shortMotionId,
-} from "next-common/utils/motion";
+import { getUniqueMotionId } from "next-common/utils/motion";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { useChain } from "next-common/context/chain";
-import { DemocracyReferendaTreasurySpendNavigator } from "next-common/components/detail/navigation/ReferendumNavigation";
+import {
+  CouncilMotionNavigator,
+  DemocracyExternalNavigator,
+  DemocracyReferendumNavigator,
+  TechCommMotionNavigator,
+  TreasurySpendNavigator,
+} from "./navigators";
 
-export function MotionNavigationItem({ motion, pageMotionId, type }) {
-  const chain = useChain();
-  const itemId = getUniqueMotionId(motion, chain);
-  const isPageMotion = itemId === pageMotionId;
-
-  const isTechComm = type === detailPageCategory.TECH_COMM_MOTION;
-  const isCouncilMotion = type === detailPageCategory.COUNCIL_MOTION;
-  if (!isTechComm && !isCouncilMotion) {
-    throw new Error(`Invalid motion type: ${type}`);
+export function MotionNavigator({
+  motion,
+  pageMotionId,
+  type,
+  hasTriangle = true,
+}) {
+  const isPageMotion = getUniqueMotionId(motion) === pageMotionId;
+  if (type === detailPageCategory.TECH_COMM_MOTION) {
+    return (
+      <TechCommMotionNavigator
+        motion={motion}
+        isLink={!isPageMotion}
+        hasTriangle={hasTriangle}
+      />
+    );
   }
-  const prefix = isTechComm ? "Tech. Comm." : isCouncilMotion ? "Motion" : "";
-  const text = `${prefix} #${shortMotionId(motion)}`;
-
-  if (isPageMotion) {
-    return text;
+  if (type === detailPageCategory.COUNCIL_MOTION) {
+    return (
+      <CouncilMotionNavigator
+        motion={motion}
+        isLink={!isPageMotion}
+        hasTriangle={hasTriangle}
+      />
+    );
   }
-
-  const linkId = getMotionId(motion);
-  const link = isTechComm
-    ? `/techcomm/proposals/${linkId}`
-    : `/council/motions/${linkId}`;
-  return (
-    <Link href={link} legacyBehavior>
-      {text}
-    </Link>
-  );
+  throw new Error(`Invalid motion type: ${type}`);
 }
 
 export function MultiMotionNavigator({ motions = [], type, pageMotionId }) {
-  const chain = useChain();
-
   return motions.map((item, index) => (
-    <div key={getUniqueMotionId(item, chain)}>
-      {index <= 0 ? null : <TriangleRight />}
-      <MotionNavigationItem
+    <div key={getUniqueMotionId(item)}>
+      <MotionNavigator
         motion={item}
         type={type}
         pageMotionId={pageMotionId}
+        hasTriangle={index > 0}
       />
     </div>
   ));
@@ -55,15 +53,10 @@ export function MultiMotionNavigator({ motions = [], type, pageMotionId }) {
 
 export function ExternalProposalNavigator({ external }) {
   return (
-    <div>
-      <TriangleRight />
-      <Link
-        passHref={true}
-        href={`/democracy/externals/${external.indexer.blockHeight}_${external.proposalHash}`}
-      >
-        {`External #${external.proposalHash?.slice(0, 6)}`}
-      </Link>
-    </div>
+    <DemocracyExternalNavigator
+      blockHeight={external.indexer.blockHeight}
+      hash={external.proposalHash}
+    />
   );
 }
 
@@ -97,19 +90,12 @@ export function ExternalCouncilMotionNavigator({ external, pageMotionId }) {
   }
 }
 
-export function DemocracyReferendumNavigator({ external }) {
+export function ExternalReferendumNavigator({ external }) {
   const referendumIndex = external.referendumIndex;
   if (referendumIndex === undefined) {
     return null;
   }
-  return (
-    <div>
-      <TriangleRight />
-      <Link href={`/democracy/referenda/${referendumIndex}`} legacyBehavior>
-        {`Referendum #${referendumIndex}`}
-      </Link>
-    </div>
-  );
+  return <DemocracyReferendumNavigator referendumIndex={referendumIndex} />;
 }
 
 export function ExternalTreasurySpendNavigator({ external }) {
@@ -121,4 +107,18 @@ export function ExternalTreasurySpendNavigator({ external }) {
       treasurySpendIndexes={external.referendum.treasurySpendIndexes}
     />
   );
+}
+
+export function DemocracyReferendaTreasurySpendNavigator({
+  treasurySpendIndexes = [],
+}) {
+  return treasurySpendIndexes.map((proposalIndex, i) => (
+    <div key={proposalIndex}>
+      <TreasurySpendNavigator
+        key={proposalIndex}
+        index={proposalIndex}
+        hasTriangle={i > 0}
+      />
+    </div>
+  ));
 }

@@ -3,7 +3,7 @@ import {
   CouncilMotionNavigator,
   DemocracyExternalNavigator,
   NavigationWrapper,
-  ReferendumNavigationItem,
+  DemocracyReferendumNavigator,
   TechCommMotionNavigator,
 } from "./navigators";
 import { usePost } from "next-common/context/post";
@@ -43,7 +43,7 @@ export default function ExternalNavigation() {
         <CouncilMotionNavigator key={key} motion={motion} />
       ))}
 
-      <ReferendumNavigationItem referendumIndex={post?.referendumIndex} />
+      <DemocracyReferendumNavigator referendumIndex={post?.referendumIndex} />
       <ExternalTreasurySpendNavigator external={external} />
     </NavigationWrapper>
   );

@@ -1,5 +1,3 @@
-import Link from "next/link";
-import TriangleRight from "next-common/assets/imgs/icons/arrow-triangle-right.svg";
 import { getUniqueMotionId } from "next-common/utils/motion";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { NavigationWrapper } from "next-common/components/detail/navigation/navigators";
@@ -8,24 +6,10 @@ import { DemocracyReferendaTreasurySpendNavigator } from "next-common/components
 import {
   ExternalCouncilMotionNavigator,
   ExternalProposalNavigator,
+  ExternalReferendumNavigator,
   ExternalTechCommMotionNavigator,
   MultiMotionNavigator,
 } from "next-common/components/detail/navigation/democracyNavigator";
-
-function DemocracyReferendumNavigator({ external }) {
-  const referendumIndex = external.referendumIndex;
-  if (referendumIndex === undefined) {
-    return null;
-  }
-  return (
-    <div>
-      <TriangleRight />
-      <Link href={`/democracy/referenda/${referendumIndex}`} legacyBehavior>
-        {`Referendum #${referendumIndex}`}
-      </Link>
-    </div>
-  );
-}
 
 export function ExternalTreasurySpendNavigator({ external }) {
   if (!external.referendum) {
@@ -67,7 +51,7 @@ export default function DemocracyNavigate({ motion }) {
         external={external}
         pageMotionId={motionId}
       />
-      <DemocracyReferendumNavigator external={external} />
+      <ExternalReferendumNavigator external={external} />
       <ExternalTreasurySpendNavigator external={external} />
     </NavigationWrapper>
   );
