@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.4.3
+
+date: 2024-12-18
+
+- Add assethub support for paseo.
+- Set popup default width 640px.
+- Check type and address for add proxy popup.
+- Turn on treasury spends for bifrost polkadot.
+- Fix treasury spend meta with null `assetKind`.
+- Improve new tips button location.
+- Show demotion/promotion status on a fellowship membership referendum.
+- Refactor proposal quick start template.
+- Show valid/expiration count down on treasury spend list.
+- Enable treasury and democracy related council templates for hydration/phala/khala.
+- Show mimir icon on profile page for a multisig address.
+- Fix overview page crash by recent proposals.
+
 # 4.4.2
 
 date: 2024-12-13
