@@ -26,13 +26,29 @@ export function useSubAccountData(address) {
       return;
     }
 
-    api.derive.balances.all(address, (balanceAll) => {
-      update({ balanceAll });
-    });
+    let unsubBalanceAll;
+    let unsubStakingInfo;
 
-    api.derive.staking.account(address, (stakingInfo) => {
-      update({ stakingInfo });
-    });
+    api.derive.balances
+      .all(address, (balanceAll) => {
+        update({ balanceAll });
+      })
+      .then((unsub) => {
+        unsubBalanceAll = unsub;
+      });
+
+    api.derive.staking
+      .account(address, (stakingInfo) => {
+        update({ stakingInfo });
+      })
+      .then((unsub) => {
+        unsubStakingInfo = unsub;
+      });
+
+    return () => {
+      unsubBalanceAll?.();
+      unsubStakingInfo?.();
+    };
   }, [account, address, api]);
 
   const data = useMemo(() => {
