@@ -7,18 +7,7 @@ import {
   TechCommMotionNavigator,
 } from "./navigators";
 import { usePost } from "next-common/context/post";
-import { DemocracyReferendaTreasurySpendNavigator } from "./ReferendumNavigation";
-
-export function ExternalTreasurySpendNavigator({ external }) {
-  if (!external.referendum) {
-    return null;
-  }
-  return (
-    <DemocracyReferendaTreasurySpendNavigator
-      treasurySpendIndexes={external.referendum.treasurySpendIndexes}
-    />
-  );
-}
+import { ExternalTreasurySpendNavigator } from "./democracyNavigator";
 
 export default function ExternalNavigation() {
   const post = usePost();

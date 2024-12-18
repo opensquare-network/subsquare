@@ -114,6 +114,7 @@ export function DemocracyReferendaTreasurySpendNavigator({
 }) {
   return treasurySpendIndexes.map((proposalIndex, i) => (
     <div key={proposalIndex}>
+      <TriangleRight />
       <TreasurySpendNavigator
         key={proposalIndex}
         index={proposalIndex}
