@@ -8,7 +8,7 @@ export function AllProxiesProvider({ children }) {
   const { proxies = [], loading: initialLoading } = useAllProxies();
   const total = proxies?.length || 0;
   const { result: data, loading: isTransformProxiesLoading } =
-    useTransformProxiesData(proxies);
+    useTransformProxiesData(proxies, initialLoading);
 
   return (
     <AllProxiesContext.Provider

@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 
-export default function useTransformProxiesData(data) {
+export default function useTransformProxiesData(data = [], initialLoading) {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState(null);
 
   useEffect(() => {
-    if (!data) {
+    if (initialLoading) {
       return;
     }
 
     const transformedData = Object.values(
-      data.reduce((acc, { delegator, delegatee, proxyType, delay }) => {
+      data?.reduce((acc, { delegator, delegatee, proxyType, delay }) => {
         if (!acc[delegator]) {
           acc[delegator] = { delegator, items: [] };
         }
@@ -26,7 +26,10 @@ export default function useTransformProxiesData(data) {
     );
 
     setResult(transformedData);
-    setLoading(false);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 300);
   }, [data]);
 
   return { result, loading };
