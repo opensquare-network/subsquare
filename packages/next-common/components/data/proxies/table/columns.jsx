@@ -3,6 +3,7 @@ import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDurati
 import Tooltip from "next-common/components/tooltip";
 import { isNil } from "lodash-es";
 import { cn } from "next-common/utils";
+import { SystemQuestion } from "@osn/icons/subsquare";
 
 function ProxyTypeTag({ proxyType, className }) {
   if (isNil(proxyType)) {
@@ -47,7 +48,12 @@ function ProxiesCount({ items }) {
 
 export const desktopColumns = [
   {
-    name: "Delegator",
+    name: (
+      <div className="inline-flex items-center space-x-1">
+        <span>Delegator</span>
+        <Tooltip content={"Account who set their proxies"} />
+      </div>
+    ),
     className: "min-w-[160px] text-left",
     render: (item) => (
       <AddressUser key="delegator" add={item.delegator || item.delegatee} />
