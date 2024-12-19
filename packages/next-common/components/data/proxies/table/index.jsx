@@ -28,10 +28,12 @@ function TableHeader() {
 }
 
 export default function ProxyExplorerTable() {
-  const [navCollapsed] = useNavCollapsed();
-  const { data, total, loading } = useAllProxiesContext();
-
+  const [total, setTotal] = useState(0);
   const [dataList, setDataList] = useState([]);
+
+  const [navCollapsed] = useNavCollapsed();
+  const { data, loading } = useAllProxiesContext();
+
   const { page, component: pageComponent } = usePaginationComponent(
     total,
     defaultPageSize,
@@ -41,6 +43,7 @@ export default function ProxyExplorerTable() {
     if (loading) {
       return;
     }
+    setTotal(data?.length);
 
     const startIndex = (page - 1) * defaultPageSize;
     const endIndex = startIndex + defaultPageSize;
