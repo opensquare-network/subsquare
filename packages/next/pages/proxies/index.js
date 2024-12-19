@@ -1,7 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import ProxyExplorer from "next-common/components/data/proxies";
-import ListLayout from "next-common/components/layout/ListLayout";
 
 export default function ProxiesPage() {
   const title = "Data";
