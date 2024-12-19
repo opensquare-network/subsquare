@@ -11,6 +11,8 @@ export default function DataListItem({
   columnClassNames,
   columnStyles,
   highlighted,
+  itemClassName,
+  descriptionClassName,
 }) {
   const { onClick } = row ?? {};
   const [navCollapsed] = useNavCollapsed();
@@ -25,6 +27,7 @@ export default function DataListItem({
         navCollapsed ? "max-sm:block" : "max-md:block",
         onClick && "cursor-pointer",
         "relative",
+        itemClassName,
         highlighted &&
           cn(
             "z-0",
@@ -48,12 +51,15 @@ export default function DataListItem({
         columns={columns}
         columnClassNames={columnClassNames}
         navCollapsed={navCollapsed}
+        descriptionClassName={descriptionClassName}
       />
     </div>
   );
 }
 
 function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
+  const rowItems = Array.isArray(row) ? row : Object.values(row);
+
   return (
     <div
       className={cn(
@@ -61,7 +67,7 @@ function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
         navCollapsed ? "max-sm:hidden" : "max-md:hidden",
       )}
     >
-      {row?.map((item, idx) => (
+      {rowItems?.map((item, idx) => (
         <div
           key={idx}
           className={columnClassNames[idx]}
@@ -74,7 +80,12 @@ function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
   );
 }
 
-function MobileContent({ row = [], columns, navCollapsed }) {
+function MobileContent({
+  row = [],
+  columns,
+  navCollapsed,
+  descriptionClassName,
+}) {
   const items = columns.map((col, idx) => {
     return {
       name: col.name,
@@ -127,7 +138,11 @@ function MobileContent({ row = [], columns, navCollapsed }) {
         )}
       </div>
 
-      <Descriptions bordered={false} items={descriptionItems} />
+      <Descriptions
+        bordered={false}
+        items={descriptionItems}
+        className={descriptionClassName}
+      />
     </div>
   );
 }
