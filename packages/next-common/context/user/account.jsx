@@ -12,34 +12,34 @@ import { isKintsugiChain } from "next-common/utils/chain";
 
 const Context = createContext();
 
-export default function UserAccountDataProvider({ address, children }) {
+export default function UserAccountProvider({ address, children }) {
   const chain = useChain();
 
-  const AccountProvider = isKintsugiChain(chain)
-    ? KintsugiAccountDataProvider
-    : AccountDataProvider;
+  const Provider = isKintsugiChain(chain)
+    ? KintsugiAccountProvider
+    : AccountProvider;
 
-  return <AccountProvider address={address}>{children}</AccountProvider>;
+  return <Provider address={address}>{children}</Provider>;
 }
 
-function AccountDataProvider({ address, children }) {
+function AccountProvider({ address, children }) {
   const data = useSubAccount(address);
   return <Context.Provider value={data}>{children}</Context.Provider>;
 }
 
-function KintsugiAccountDataProvider({ address, children }) {
+function KintsugiAccountProvider({ address, children }) {
   const data = useSubKintsugiAccount(address);
   return <Context.Provider value={data}>{children}</Context.Provider>;
 }
 
-export function useUserAccountData() {
+export function useUserAccount() {
   return useContext(Context);
 }
 
 export function useUserAccountInfo() {
   const chain = useChain();
   const existentialDeposit = useSelector(existentialDepositSelector);
-  const data = useUserAccountData();
+  const data = useUserAccount();
 
   const info = useMemo(() => {
     if (!data?.data) {

@@ -1,13 +1,13 @@
 import AssetDisplay from "./assetDisplay";
-import UserAccountDataProvider, {
+import UserAccountProvider, {
   useUserAccountInfo,
-} from "next-common/context/user/accountData";
+} from "next-common/context/user/account";
 
 export default function AssetInfo({ address }) {
   return (
-    <UserAccountDataProvider address={address}>
+    <UserAccountProvider address={address}>
       <AssetInfoImpl />
-    </UserAccountDataProvider>
+    </UserAccountProvider>
   );
 }
 

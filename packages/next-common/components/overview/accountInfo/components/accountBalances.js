@@ -1,6 +1,6 @@
 import LoadableItem from "next-common/components/overview/accountInfo/components/loadableItem";
 import CollapsePanel from "./collapsePanel";
-import { useUserAccountInfo } from "next-common/context/user/accountData";
+import { useUserAccountInfo } from "next-common/context/user/account";
 
 function AccountBalanceItem({ value, title, isLoading }) {
   return (
