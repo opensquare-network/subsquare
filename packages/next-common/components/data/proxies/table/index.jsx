@@ -30,7 +30,6 @@ function TableHeader() {
 export default function ProxyExplorerTable() {
   const [navCollapsed] = useNavCollapsed();
   const { data, total, loading } = useAllProxiesContext();
-  console.log("::::navCollapsed", navCollapsed);
 
   const [dataList, setDataList] = useState([]);
   const { page, component: pageComponent } = usePaginationComponent(
