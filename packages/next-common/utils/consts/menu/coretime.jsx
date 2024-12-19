@@ -7,7 +7,6 @@ import {
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export const coretimeMenu = {
-  isNew: true,
   name: "Coretime",
   value: "coretime",
   pathname: "/coretime",

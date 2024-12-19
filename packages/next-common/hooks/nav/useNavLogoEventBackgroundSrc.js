@@ -18,19 +18,33 @@ function lunarDateToSolarDate(y, m, d) {
 }
 
 /**
+ * new year
+ */
+const newYearDay = dayjs(`${nowDay.year()}-01-01`);
+const newYearEndDay = newYearDay.add(2, "day");
+const newYearEvent = {
+  name: "new-year",
+  filetype: "png",
+  startMonth: newYearDay.month() + 1,
+  startDate: newYearDay.date(),
+  endMonth: newYearEndDay.month() + 1,
+  endDate: newYearEndDay.date(),
+};
+
+/**
  * Chinese New Year
  */
-const newYearDay = lunarDateToSolarDate(nowDay.year(), 1, 1);
-// new year's eve
-const newYearsEveDay = newYearDay.add(-1, "day");
-const newYearEndDay = newYearDay.add(2, "day");
+const chineseNewYearDay = lunarDateToSolarDate(nowDay.year(), 1, 1);
+// Chinese new year's eve
+const chineseNewYearsEveDay = chineseNewYearDay.add(-1, "day");
+const chineseNewYearEndDay = chineseNewYearDay.add(2, "day");
 const chineseNewYearEvent = {
   name: "chinese-new-year",
   filetype: "png",
-  startMonth: newYearsEveDay.month() + 1,
-  startDate: newYearsEveDay.date(),
-  endMonth: newYearEndDay.month() + 1,
-  endDate: newYearEndDay.date(),
+  startMonth: chineseNewYearsEveDay.month() + 1,
+  startDate: chineseNewYearsEveDay.date(),
+  endMonth: chineseNewYearEndDay.month() + 1,
+  endDate: chineseNewYearEndDay.date(),
 };
 
 /**
@@ -139,6 +153,7 @@ const christmasEvent = {
 };
 
 const events = [
+  newYearEvent,
   chineseNewYearEvent,
   labourDayEvent,
   dragonBoatFestivalEvent,
