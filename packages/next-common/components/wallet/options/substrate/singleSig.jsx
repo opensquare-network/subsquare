@@ -6,12 +6,9 @@ import SubstrateWallet from "next-common/components/wallet/substrateWallet";
 import { useSubstrateWallets } from "next-common/hooks/connect/useSubstrateWallets";
 import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import isMixedChain from "next-common/utils/isMixedChain";
 import WalletOption from "../../walletOption";
 import { WalletOptionsWrapper } from "../styled";
-import isEvmChain, {
-  isSupportSubstrateThroughEthereumAddress,
-} from "next-common/utils/isEvmChain";
+import isShouldEnableSubstrateWallets from "next-common/utils/isShouldEnableSubstrateWallets";
 
 export default function WalletSubstrateSingleSigOptions({
   selectedWallet,
@@ -24,9 +21,7 @@ export default function WalletSubstrateSingleSigOptions({
     return null;
   }
 
-  const enableSubstrate =
-    isMixedChain() ||
-    (isEvmChain() && isSupportSubstrateThroughEthereumAddress());
+  const enableSubstrate = isShouldEnableSubstrateWallets();
 
   return (
     <WalletOptionsWrapper>
