@@ -10,6 +10,7 @@ import ApiProvider from "next-common/context/api";
 import { SignetContextProvider } from "./signet";
 import WagmiProvider from "./wagmi";
 import ReactQueryClientProvider from "./reactQuery";
+import UserAccountProvider from "./user/account";
 
 export default function GlobalProvider({
   user,
@@ -39,9 +40,13 @@ export default function GlobalProvider({
                   >
                     <PageProvider pageProperties={pageProperties}>
                       <ApiProvider>
-                        <SignetContextProvider>
-                          {children}
-                        </SignetContextProvider>
+                        <UserAccountProvider
+                          address={user?.proxyAddress || user?.address}
+                        >
+                          <SignetContextProvider>
+                            {children}
+                          </SignetContextProvider>
+                        </UserAccountProvider>
                       </ApiProvider>
                     </PageProvider>
                   </NavProvider>

@@ -1,49 +1,65 @@
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setMyAccountInfo } from "next-common/store/reducers/myOnChainData/account";
-import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
+import useSubStorage from "../common/useSubStorage";
+import { useEffect, useMemo, useState } from "react";
+import { every, values } from "lodash-es";
 
-export default function useSubscribeAccount() {
-  const realAddress = useRealAddress();
+export function useSubAccount(address) {
+  const [value, setValue] = useState(null);
+
   const api = useContextApi();
-  const dispatch = useDispatch();
+  const { result: account } = useSubStorage("system", "account", [address]);
+
+  function update(newVal) {
+    setValue((val) => {
+      return { ...val, ...newVal };
+    });
+  }
 
   useEffect(() => {
-    if (!api || !api.query.system?.account) {
+    if (account) {
+      update({ account });
+    }
+  }, [account]);
+
+  useEffect(() => {
+    if (!api || !address || !account) {
       return;
     }
 
-    let unsub;
-    api.query.system
-      .account(realAddress, (info) => {
-        const free = info.data.free.toString();
-        const reserved = info.data.reserved.toString();
-        let frozen;
-        if (info.data.frozen) {
-          frozen = info.data.frozen.toString();
-        } else if (info.data.miscFrozen && info.data.feeFrozen) {
-          frozen = BigNumber.max(
-            info.data.miscFrozen.toString(),
-            info.data.feeFrozen.toString(),
-          ).toString();
-        }
+    let unsubBalanceAll;
+    let unsubStakingInfo;
 
-        dispatch(
-          setMyAccountInfo({
-            free,
-            reserved,
-            frozen,
-          }),
-        );
+    api.derive?.balances
+      ?.all(address, (balanceAll) => {
+        update({ balanceAll });
       })
-      .then((result) => (unsub = result));
+      .then((unsub) => {
+        unsubBalanceAll = unsub;
+      });
+
+    api.derive?.staking
+      ?.account(address, (stakingInfo) => {
+        update({ stakingInfo });
+      })
+      .then((unsub) => {
+        unsubStakingInfo = unsub;
+      });
 
     return () => {
-      if (unsub) {
-        unsub();
-      }
+      unsubBalanceAll?.();
+      unsubStakingInfo?.();
     };
-  }, [api, realAddress, dispatch]);
+  }, [account, address, api]);
+
+  const data = useMemo(() => {
+    if (every(values(value), Boolean)) {
+      return value;
+    }
+
+    return null;
+  }, [value]);
+
+  const loading = data === null;
+
+  return { data, isLoading: loading };
 }
