@@ -3,7 +3,7 @@ import BaseLayout from "next-common/components/layout/baseLayout";
 import ProxyExplorer from "next-common/components/data/proxies";
 
 export default function ProxiesPage() {
-  const title = "Data";
+  const title = "Proxy Explorer";
   const seoInfo = { title, desc: title };
 
   return (
