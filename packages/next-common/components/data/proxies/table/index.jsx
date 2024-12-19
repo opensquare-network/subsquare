@@ -5,6 +5,8 @@ import { useAllProxiesContext } from "next-common/components/data/context/allPro
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useState } from "react";
+import { useNavCollapsed } from "next-common/context/nav";
+import { cn } from "next-common/utils";
 
 function TableHeader() {
   const { total, loading } = useAllProxiesContext();
@@ -26,7 +28,9 @@ function TableHeader() {
 }
 
 export default function ProxyExplorerTable() {
+  const [navCollapsed] = useNavCollapsed();
   const { data, total, loading } = useAllProxiesContext();
+  console.log("::::navCollapsed", navCollapsed);
 
   const [dataList, setDataList] = useState([]);
   const { page, component: pageComponent } = usePaginationComponent(
@@ -48,7 +52,7 @@ export default function ProxyExplorerTable() {
     <div className="flex flex-col gap-y-4">
       <TableHeader />
       <TreeMapDataList
-        className="max-sm:hidden"
+        className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
         bordered
         columnsDef={desktopColumns}
         noDataText="No Data"
@@ -61,7 +65,7 @@ export default function ProxyExplorerTable() {
       />
 
       <TreeMapDataList
-        className="hidden max-sm:block"
+        className={cn("hidden", navCollapsed ? "max-sm:block" : "max-md:block")}
         bordered
         columnsDef={mobileColumns}
         noDataText="No Data"

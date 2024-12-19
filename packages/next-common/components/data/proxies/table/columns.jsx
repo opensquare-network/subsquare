@@ -47,7 +47,7 @@ function ProxiesCount({ items }) {
 
 const userColumn = {
   name: "Delegator",
-  className: "text-left",
+  className: "min-w-[160px] text-left",
   render: (item) => (
     <AddressUser key="delegator" add={item.delegator || item.delegatee} />
   ),
