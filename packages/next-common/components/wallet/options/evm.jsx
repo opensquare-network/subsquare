@@ -2,17 +2,19 @@ import { noop } from "lodash-es";
 import WalletOption from "next-common/components/wallet/walletOption";
 import { WalletGroupTitle, WalletOptionsWrapper } from "./styled";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
-import isMixedChain from "next-common/utils/isMixedChain";
 import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 import { ArrowCircleLeft } from "@osn/icons/subsquare";
+import isShouldEnableSubstrateWallets from "next-common/utils/isShouldEnableSubstrateWallets";
 
 export default function WalletEVMOptions({ selectedWallet, onSelect = noop }) {
   const wallets = useEVMWallets();
   const { setView } = useWeb3WalletView();
 
+  const enableSubstrate = isShouldEnableSubstrateWallets();
+
   return (
     <div>
-      {isMixedChain() && (
+      {enableSubstrate && (
         <WalletOptionsWrapper className="mb-6">
           <WalletOption
             installed

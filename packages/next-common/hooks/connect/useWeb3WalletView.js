@@ -1,11 +1,13 @@
-import isEvmChain from "next-common/utils/isEvmChain";
+import isShouldEnableSubstrateWallets from "next-common/utils/isShouldEnableSubstrateWallets";
 import { createGlobalState } from "react-use";
 
 const VIEWS = {
   SUBSTRATE: "substrate",
   EVM: "evm",
 };
-const DEFAULT_VIEW = isEvmChain() ? VIEWS.EVM : VIEWS.SUBSTRATE;
+const DEFAULT_VIEW = isShouldEnableSubstrateWallets()
+  ? VIEWS.SUBSTRATE
+  : VIEWS.EVM;
 
 const useValueState = createGlobalState(DEFAULT_VIEW);
 

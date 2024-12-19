@@ -40,30 +40,16 @@ export async function prepareEthereum({ ethereum, onError, signerAddress }) {
     }
   }
 
-  if (ethereum?.isTalisman) {
-    if (
-      ethereum.selectedAddress &&
-      ethereum.selectedAddress?.toLowerCase() !== signerAddress.toLowerCase()
-    ) {
-      onError(
-        new Error(
-          `Please switch to correct account from ${walletName}: ${signerAddress}`,
-        ),
-      );
-      return false;
-    }
-  } else {
-    const accounts = await requestAccounts();
-    const walletSelectedAddress = accounts?.[0];
+  const accounts = await requestAccounts();
+  const walletSelectedAddress = accounts?.[0];
 
-    if (walletSelectedAddress?.toLowerCase() !== signerAddress.toLowerCase()) {
-      onError(
-        new Error(
-          `Please switch to correct account from ${walletName}: ${signerAddress}`,
-        ),
-      );
-      return false;
-    }
+  if (walletSelectedAddress?.toLowerCase() !== signerAddress.toLowerCase()) {
+    onError(
+      new Error(
+        `Please switch to correct account from ${walletName}: ${signerAddress}`,
+      ),
+    );
+    return false;
   }
 
   return true;
