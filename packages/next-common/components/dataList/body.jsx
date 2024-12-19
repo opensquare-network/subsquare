@@ -51,7 +51,7 @@ function DataListBody(
           ),
         )}
       {tree &&
-        rows.map((row, idx) => {
+        rows.map((_row, idx) => {
           const isExpanded = expandedRows.has(idx);
           const children = tree ? treeData[idx][treeKey] : null;
 

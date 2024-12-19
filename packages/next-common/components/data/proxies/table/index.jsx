@@ -2,6 +2,9 @@ import { TreeMapDataList } from "next-common/components/dataList";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import TableColumns from "./columns";
 import { useAllProxiesContext } from "next-common/components/data/context/allProxies";
+import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+import { defaultPageSize } from "next-common/utils/constants";
+import { useEffect, useState } from "react";
 
 function TableHeader() {
   const { total, loading } = useAllProxiesContext();
@@ -23,7 +26,23 @@ function TableHeader() {
 }
 
 export default function ProxyExplorerTable() {
-  const { data, loading } = useAllProxiesContext();
+  const { data, total, loading } = useAllProxiesContext();
+
+  const [dataList, setDataList] = useState([]);
+  const { page, component: pageComponent } = usePaginationComponent(
+    total,
+    defaultPageSize,
+  );
+
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    const startIndex = (page - 1) * defaultPageSize;
+    const endIndex = startIndex + defaultPageSize;
+    setDataList(data?.slice(startIndex, endIndex));
+  }, [data, page, loading]);
 
   return (
     <div className="flex flex-col gap-y-4">
@@ -32,11 +51,12 @@ export default function ProxyExplorerTable() {
         bordered
         columnsDef={TableColumns}
         noDataText="No Data"
-        data={data}
+        data={dataList}
         loading={loading}
         treeKey="items"
         tree={true}
       />
+      {total > 0 && pageComponent}
     </div>
   );
 }
