@@ -55,6 +55,8 @@ export default function ProxyExplorerTable() {
         loading={loading}
         treeKey="items"
         tree={true}
+        page={page}
+        pageSize={defaultPageSize}
       />
       {total > 0 && pageComponent}
     </div>
