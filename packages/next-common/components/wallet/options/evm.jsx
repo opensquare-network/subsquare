@@ -4,13 +4,13 @@ import { WalletGroupTitle, WalletOptionsWrapper } from "./styled";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 import { ArrowCircleLeft } from "@osn/icons/subsquare";
-import isShouldEnableSubstrateWallets from "next-common/utils/isShouldEnableSubstrateWallets";
+import shouldEnableSubstrateWallets from "next-common/utils/shouldEnableSubstrateWallets";
 
 export default function WalletEVMOptions({ selectedWallet, onSelect = noop }) {
   const wallets = useEVMWallets();
   const { setView } = useWeb3WalletView();
 
-  const enableSubstrate = isShouldEnableSubstrateWallets();
+  const enableSubstrate = shouldEnableSubstrateWallets();
 
   return (
     <div>

@@ -8,7 +8,7 @@ import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import WalletOption from "../../walletOption";
 import { WalletOptionsWrapper } from "../styled";
-import isShouldEnableEvmWallets from "next-common/utils/isShouldEnableEvmWallets";
+import shouldEnableEvmWallets from "next-common/utils/shouldEnableEvmWallets";
 
 export default function WalletSubstrateSingleSigOptions({
   selectedWallet,
@@ -21,7 +21,7 @@ export default function WalletSubstrateSingleSigOptions({
     return null;
   }
 
-  const enableEvm = isShouldEnableEvmWallets();
+  const enableEvm = shouldEnableEvmWallets();
 
   return (
     <WalletOptionsWrapper>
