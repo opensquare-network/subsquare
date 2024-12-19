@@ -12,3 +12,9 @@ export function isSupportSubstrateThroughEthereumAddress() {
   const settings = getChainSettings(chain);
   return settings?.substrateThroughEthereumAddress;
 }
+
+export function isDisabledEvmWallet() {
+  const chain = process.env.NEXT_PUBLIC_CHAIN;
+  const settings = getChainSettings(chain);
+  return settings?.disabledEvmWallet;
+}
