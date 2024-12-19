@@ -79,6 +79,7 @@ function DataListBody(
                       columnStyles={columnStyles}
                       columns={columns}
                       highlighted={highlightedIndexes.includes(idx)}
+                      descriptionClassName={"hidden"}
                     />
                   ),
                   idx,
@@ -89,25 +90,43 @@ function DataListBody(
               {/* Render children if expanded */}
               {isExpanded && children.length > 0 && (
                 <div className="pl-[54px] pb-4">
-                  {children.map((child, childIdx) => (
-                    <div
-                      key={childIdx}
-                      className="flex items-center space-x-1 py-1 text-textTertiary"
-                    >
-                      <span>↳ </span>
-                      {columns.map((column, colIdx) => (
-                        <div
-                          key={colIdx}
-                          className={cn(columnClassNames[colIdx], "flex-1")}
-                          style={columnStyles[colIdx]}
-                        >
-                          {column.render
-                            ? column.render(child)
-                            : child[column.dataKey]}
-                        </div>
-                      ))}
-                    </div>
-                  ))}
+                  {children.map((child, childIdx) => {
+                    const row = columns.map((column, colIdx) => (
+                      <div
+                        key={colIdx}
+                        className={cn(
+                          columnClassNames[colIdx],
+                          "flex-1",
+                          colIdx === 0 &&
+                            "inline-flex space-x-1 py-1 text-textTertiary",
+                        )}
+                        style={columnStyles[colIdx]}
+                      >
+                        {colIdx === 0 && <span>↳ </span>}
+                        {column.render
+                          ? column.render(child)
+                          : child[column.dataKey]}
+                      </div>
+                    ));
+
+                    return renderItem(
+                      () => (
+                        <DataListItem
+                          key={childIdx}
+                          row={row}
+                          columnClassNames={columnClassNames}
+                          columnStyles={columnStyles}
+                          columns={columns}
+                          itemClassName={"py-1"}
+                          highlighted={highlightedIndexes.includes(childIdx)}
+                          descriptionClassName={"pl-5 !mt-1"}
+                        />
+                      ),
+                      childIdx,
+                      [child],
+                      columns,
+                    );
+                  })}
                 </div>
               )}
             </div>

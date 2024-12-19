@@ -7,13 +7,14 @@ export default function Descriptions({
   title = "",
   items = [],
   bordered = true,
+  className,
 }) {
   if (!items?.length) {
     return null;
   }
 
   return (
-    <div className="descriptions w-full">
+    <div className={cn("descriptions w-full", className)}>
       {title && (
         <h3 className="m-0 mb-2 text14Bold text-textPrimary">{title}</h3>
       )}

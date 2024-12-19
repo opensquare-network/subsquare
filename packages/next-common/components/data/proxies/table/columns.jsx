@@ -2,14 +2,15 @@ import AddressUser from "next-common/components/user/addressUser";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 import Tooltip from "next-common/components/tooltip";
 import { isNil } from "lodash-es";
+import { cn } from "next-common/utils";
 
-function ProxyTypeTag({ proxyType }) {
+function ProxyTypeTag({ proxyType, className }) {
   if (isNil(proxyType)) {
     return null;
   }
 
   return (
-    <div className="flex items-center flex-col">
+    <div className={cn("flex items-start flex-col", className)}>
       <div className="flex rounded-[10px] text12Medium bg-green500 px-[8px] py-[2px]">
         <span className="text-textPrimaryContrast">{proxyType}</span>
       </div>
@@ -23,7 +24,7 @@ function DelayTime({ delay }) {
   }
 
   return (
-    <div className="inline-flex space-x-2 text14Medium text-textTertiary">
+    <div className="inline-flex items-end space-x-2 text14Medium text-textTertiary">
       <span>Delay</span>
       {delay > 0 ? (
         <Tooltip content={`Execution delay of ${formatTimeDuration(delay)}`}>
@@ -44,6 +45,32 @@ function ProxiesCount({ items }) {
   return <span className="text14Medium">{items?.length || 0}</span>;
 }
 
+const userColumn = {
+  name: "Delegator",
+  className: "text-left",
+  render: (item) => (
+    <AddressUser key="delegator" add={item.delegator || item.delegatee} />
+  ),
+};
+
+const proxyTypeColumn = {
+  name: "",
+  className: "w-[200px] text-left",
+  render: (item) => <ProxyTypeTag proxyType={item?.proxyType} />,
+};
+
+const delayColumn = {
+  name: "",
+  className: "w-[200px] text-left",
+  render: (item) => <DelayTime delay={item?.delay} />,
+};
+
+const proxiesCountColumn = {
+  name: "Proxies",
+  className: "w-[200px] text-left",
+  render: (item) => <ProxiesCount items={item?.items} />,
+};
+
 const mobileUserColumn = {
   name: "Delegator",
   className: "text-left",
@@ -55,30 +82,26 @@ const mobileUserColumn = {
   ),
 };
 
-const userColumn = {
-  name: "Delegator",
-  className: "text-left",
+const mobileProxyTypeColumn = {
+  name: "Type",
+  className: "text-right",
   render: (item) => (
-    <AddressUser key="delegator" add={item.delegator || item.delegatee} />
+    <ProxyTypeTag proxyType={item?.proxyType} className={"items-end"} />
   ),
 };
 
-const proxyTypeColumn = {
-  name: "Type",
-  className: "w-[200px]",
-  render: (item) => <ProxyTypeTag proxyType={item?.proxyType} />,
-};
-
-const delayColumn = {
+const mobileDelayColumn = {
   name: "Delay",
-  className: "w-[200px]",
-  render: (item) => <DelayTime delay={item?.delay} />,
-};
-
-const proxiesCountColumn = {
-  name: "Proxies",
-  className: "w-[200px] text-left",
-  render: (item) => <ProxiesCount items={item?.items} />,
+  className: "text-right",
+  render: (item) => (
+    <div className="inline-flex items-end space-x-2 text14Medium text-textTertiary">
+      {item?.delay > 0 ? (
+        <span className="text-textPrimary">{item?.delay}</span>
+      ) : (
+        <span>-</span>
+      )}
+    </div>
+  ),
 };
 
 export const desktopColumns = [
@@ -88,4 +111,8 @@ export const desktopColumns = [
   proxiesCountColumn,
 ];
 
-export const mobileColumns = [mobileUserColumn, proxyTypeColumn, delayColumn];
+export const mobileColumns = [
+  mobileUserColumn,
+  mobileProxyTypeColumn,
+  mobileDelayColumn,
+];
