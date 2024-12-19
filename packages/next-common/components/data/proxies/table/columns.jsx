@@ -44,29 +44,48 @@ function ProxiesCount({ items }) {
   return <span className="text14Medium">{items?.length || 0}</span>;
 }
 
-const TableColumns = [
-  {
-    name: "Delegator",
-    className: "text-left",
-    render: (item) => (
+const mobileUserColumn = {
+  name: "Delegator",
+  className: "text-left",
+  render: (item) => (
+    <>
       <AddressUser key="delegator" add={item.delegator || item.delegatee} />
-    ),
-  },
-  {
-    name: "",
-    className: "w-[200px] text-left",
-    render: (item) => <ProxyTypeTag proxyType={item?.proxyType} />,
-  },
-  {
-    name: "",
-    className: "w-[200px] text-left",
-    render: (item) => <DelayTime delay={item?.delay} />,
-  },
-  {
-    name: "Proxies",
-    className: "w-[200px] text-left",
-    render: (item) => <ProxiesCount items={item?.items} />,
-  },
+      <ProxiesCount items={item?.items} />
+    </>
+  ),
+};
+
+const userColumn = {
+  name: "Delegator",
+  className: "text-left",
+  render: (item) => (
+    <AddressUser key="delegator" add={item.delegator || item.delegatee} />
+  ),
+};
+
+const proxyTypeColumn = {
+  name: "Type",
+  className: "w-[200px]",
+  render: (item) => <ProxyTypeTag proxyType={item?.proxyType} />,
+};
+
+const delayColumn = {
+  name: "Delay",
+  className: "w-[200px]",
+  render: (item) => <DelayTime delay={item?.delay} />,
+};
+
+const proxiesCountColumn = {
+  name: "Proxies",
+  className: "w-[200px] text-left",
+  render: (item) => <ProxiesCount items={item?.items} />,
+};
+
+export const desktopColumns = [
+  userColumn,
+  proxyTypeColumn,
+  delayColumn,
+  proxiesCountColumn,
 ];
 
-export default TableColumns;
+export const mobileColumns = [mobileUserColumn, proxyTypeColumn, delayColumn];

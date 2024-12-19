@@ -1,6 +1,6 @@
 import { TreeMapDataList } from "next-common/components/dataList";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import TableColumns from "./columns";
+import { desktopColumns, mobileColumns } from "./columns";
 import { useAllProxiesContext } from "next-common/components/data/context/allProxies";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
@@ -48,8 +48,22 @@ export default function ProxyExplorerTable() {
     <div className="flex flex-col gap-y-4">
       <TableHeader />
       <TreeMapDataList
+        className="max-sm:hidden"
         bordered
-        columnsDef={TableColumns}
+        columnsDef={desktopColumns}
+        noDataText="No Data"
+        data={dataList}
+        loading={loading}
+        treeKey="items"
+        tree={true}
+        page={page}
+        pageSize={defaultPageSize}
+      />
+
+      <TreeMapDataList
+        className="hidden max-sm:block"
+        bordered
+        columnsDef={mobileColumns}
         noDataText="No Data"
         data={dataList}
         loading={loading}
