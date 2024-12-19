@@ -78,7 +78,7 @@ export default function useSubStorage(
   }, []);
 
   useEffect(() => {
-    if (!api) {
+    if (!api || isNil(pallet) || isNil(storage)) {
       return;
     }
 
