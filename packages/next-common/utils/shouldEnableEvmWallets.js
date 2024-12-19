@@ -1,6 +1,6 @@
-import isEvmChain, { isDisabledEvmWallet } from "./isEvmChain";
+import isEvmChain, { isEvmWalletDisabled } from "./isEvmChain";
 import isMixedChain from "./isMixedChain";
 
 export default function shouldEnableEvmWallets() {
-  return (isEvmChain() || isMixedChain()) && !isDisabledEvmWallet();
+  return (isEvmChain() || isMixedChain()) && !isEvmWalletDisabled();
 }

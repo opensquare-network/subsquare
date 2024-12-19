@@ -121,7 +121,7 @@ const laos = {
   },
   chainType: ChainTypes.ETHEREUM,
   substrateThroughEthereumAddress: true,
-  disabledEvmWallet: true,
+  disableEvmWallet: true,
   ethereumNetwork,
 };
 
