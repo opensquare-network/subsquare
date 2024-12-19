@@ -2,6 +2,7 @@ import { useContextApi } from "next-common/context/api";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createGlobalState } from "react-use";
 import { useChain } from "next-common/context/chain";
+import { isNil } from "lodash-es";
 
 const subs = {};
 
@@ -16,7 +17,6 @@ export default function useSubStorage(
   const contextApi = useContextApi();
   const { callback, api = contextApi } = options;
   const [cachedResult, setCachedResult] = useCachedResult();
-  const [loading, setLoading] = useState(true);
   const chain = useChain();
 
   const filteredParams = (Array.isArray(params) ? params : [params]).filter(
@@ -28,6 +28,8 @@ export default function useSubStorage(
       .join("-")}`;
   }, [chain, pallet, storage, filteredParams]);
   const result = cachedResult[key];
+
+  const [loading, setLoading] = useState(isNil(result) ? true : false);
 
   const subscribe = useCallback(async () => {
     if (!subs[key]) {
