@@ -40,6 +40,7 @@ const darwinia2 = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   chainType: ChainTypes.ETHEREUM,
+  substrateThroughEthereumAddress: true,
   ethereumNetwork: {
     chainId: "0x2e",
     chainName: "Darwinia2",
