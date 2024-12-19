@@ -1,11 +1,16 @@
-import isEvmChain from "next-common/utils/isEvmChain";
+import isEvmChain, {
+  isSupportSubstrateThroughEthereumAddress,
+} from "next-common/utils/isEvmChain";
 import { createGlobalState } from "react-use";
 
 const VIEWS = {
   SUBSTRATE: "substrate",
   EVM: "evm",
 };
-const DEFAULT_VIEW = isEvmChain() ? VIEWS.EVM : VIEWS.SUBSTRATE;
+const DEFAULT_VIEW =
+  isEvmChain() && !isSupportSubstrateThroughEthereumAddress()
+    ? VIEWS.EVM
+    : VIEWS.SUBSTRATE;
 
 const useValueState = createGlobalState(DEFAULT_VIEW);
 
