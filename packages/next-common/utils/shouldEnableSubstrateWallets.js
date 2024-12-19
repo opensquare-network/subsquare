@@ -2,6 +2,6 @@ import isEvmChain, {
   isSupportSubstrateThroughEthereumAddress,
 } from "./isEvmChain";
 
-export default function isShouldEnableSubstrateWallets() {
+export default function shouldEnableSubstrateWallets() {
   return !isEvmChain() || isSupportSubstrateThroughEthereumAddress();
 }

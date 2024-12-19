@@ -37,8 +37,8 @@ function SimaCommentContextMenu({ setIsEdit }) {
 function MaybeSimaCommentContextMenu({ setIsEdit }) {
   const comment = useComment();
   const ownComment = useIsOwnComment();
-  const isShouldUseSima = useShouldUseSima(comment);
-  if (isShouldUseSima) {
+  const shouldUseSima = useShouldUseSima(comment);
+  if (shouldUseSima) {
     return <SimaCommentContextMenu setIsEdit={setIsEdit} />;
   }
   return <CommentContextMenu editable={ownComment} setIsEdit={setIsEdit} />;

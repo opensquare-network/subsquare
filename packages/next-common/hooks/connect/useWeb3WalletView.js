@@ -1,11 +1,11 @@
-import isShouldEnableSubstrateWallets from "next-common/utils/isShouldEnableSubstrateWallets";
+import shouldEnableSubstrateWallets from "next-common/utils/shouldEnableSubstrateWallets";
 import { createGlobalState } from "react-use";
 
 const VIEWS = {
   SUBSTRATE: "substrate",
   EVM: "evm",
 };
-const DEFAULT_VIEW = isShouldEnableSubstrateWallets()
+const DEFAULT_VIEW = shouldEnableSubstrateWallets()
   ? VIEWS.SUBSTRATE
   : VIEWS.EVM;
 
