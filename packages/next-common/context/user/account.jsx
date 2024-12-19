@@ -1,14 +1,13 @@
 import { useSubAccount } from "next-common/hooks/account/useSubAccount";
+import useSubKintsugiAccount from "next-common/hooks/account/useSubKintsugiAccount";
 import {
   extractAccountInfo,
   extractKintsugiAccountInfo,
 } from "next-common/utils/account/extractAccountInfo";
-import { existentialDepositSelector } from "next-common/store/reducers/chainSlice";
-import { createContext, useContext, useMemo } from "react";
-import { useSelector } from "react-redux";
-import useSubKintsugiAccount from "next-common/hooks/account/useSubKintsugiAccount";
-import { useChain } from "../chain";
 import { isKintsugiChain } from "next-common/utils/chain";
+import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
+import { createContext, useContext, useMemo } from "react";
+import { useChain } from "../chain";
 
 const Context = createContext();
 
@@ -38,7 +37,7 @@ export function useUserAccount() {
 
 export function useUserAccountInfo() {
   const chain = useChain();
-  const existentialDeposit = useSelector(existentialDepositSelector);
+  const existentialDeposit = useQueryExistentialDeposit();
   const data = useUserAccount();
 
   const info = useMemo(() => {
