@@ -91,6 +91,7 @@ const astar = {
     subscan: true,
   },
   showNewTreasuryProposalButton: true,
+  sima: true,
   ...astarThemeVars,
 };
 
