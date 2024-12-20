@@ -1,18 +1,7 @@
-import { useState, useEffect } from "react";
-import { useMountedState } from "react-use";
-import Chains from "../consts/chains";
 import BigNumber from "bignumber.js";
-import { useChain } from "../../context/chain";
-
-const balanceMap = new Map();
-
-async function queryKintsugiBalance(api, address, chain) {
-  const token = Chains.kintsugi === chain ? "KINT" : "INTR";
-  const account = await api.query.tokens.accounts(address, { token });
-  return new BigNumber(account.free.toJSON())
-    .plus(account.reserved.toJSON())
-    .toString();
-}
+import { useChain, useSymbol } from "../../context/chain";
+import { isKintsugiChain } from "../chain";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 export async function querySystemAccountBalance(api, address) {
   const account = await api.query.system.account(address);
@@ -23,45 +12,33 @@ export async function querySystemAccountBalance(api, address) {
 
 export default function useAddressBalance(api, address) {
   const chain = useChain();
-  const isMounted = useMountedState();
-  const [balance, setBalance] = useState(0);
-  const [loadingBalance, setLoadingBalance] = useState(true);
+  const symbol = useSymbol();
 
-  useEffect(() => {
-    if (!address) {
-      return;
-    }
+  let pallet;
+  let storage;
+  let params;
+  if (isKintsugiChain(chain)) {
+    pallet = "tokens";
+    storage = "accounts";
+    params = [address, { token: symbol }];
+  } else {
+    pallet = "system";
+    storage = "account";
+    params = [address];
+  }
 
-    if (balanceMap.has(address)) {
-      setBalance(balanceMap.get(address));
-      setLoadingBalance(false);
-      return;
-    }
+  const { result, loading } = useSubStorage(pallet, storage, params, { api });
 
-    if (!api) {
-      return;
-    }
+  let balance = 0;
+  if (isKintsugiChain(chain)) {
+    balance = new BigNumber(result?.free?.toJSON() || 0)
+      .plus(result?.reserved?.toJSON() || 0)
+      .toString();
+  } else {
+    balance = new BigNumber(result?.data?.free?.toJSON() || 0)
+      .plus(result?.data?.reserved?.toJSON() || 0)
+      .toString();
+  }
 
-    let promise;
-    if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
-      promise = queryKintsugiBalance(api, address, chain);
-    } else {
-      promise = querySystemAccountBalance(api, address);
-    }
-
-    promise
-      .then((balance) => {
-        if (isMounted()) {
-          setBalance(balance);
-          balanceMap.set(address, balance);
-        }
-      })
-      .finally(() => {
-        if (isMounted()) {
-          setLoadingBalance(false);
-        }
-      });
-  }, [api, chain, address, isMounted]);
-
-  return [balance, loadingBalance];
+  return [balance, loading];
 }
