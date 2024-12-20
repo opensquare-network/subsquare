@@ -58,8 +58,6 @@ export default function DataListItem({
 }
 
 function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
-  const rowItems = Array.isArray(row) ? row : Object.values(row);
-
   return (
     <div
       className={cn(
@@ -67,7 +65,7 @@ function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
         navCollapsed ? "max-sm:hidden" : "max-md:hidden",
       )}
     >
-      {rowItems?.map((item, idx) => (
+      {row?.map((item, idx) => (
         <div
           key={idx}
           className={columnClassNames[idx]}

@@ -26,10 +26,7 @@ export default function useTransformProxiesData(data = [], initialLoading) {
     );
 
     setResult(transformedData);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 300);
+    setLoading(false);
   }, [data, initialLoading]);
 
   return { result, loading };
