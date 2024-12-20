@@ -19,8 +19,8 @@ function MyRelatedSwitch({ isOn, setIsOn }) {
 
 export default function useMyRelatedSwitch() {
   const router = useRouter();
-  const fellowshipCore = getRouterQuery(router, "my_related");
-  const isOn = fellowshipCore === "true";
+  const isMyRelated = getRouterQuery(router, "my_related");
+  const isOn = isMyRelated === "true";
 
   return {
     isOn,
