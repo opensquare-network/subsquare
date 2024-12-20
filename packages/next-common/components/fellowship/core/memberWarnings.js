@@ -71,14 +71,6 @@ function useDemotionExpirationCounts() {
           latestHeight,
         });
 
-        const willExpire = isDemotionAboutToExpire({
-          lastProof,
-          rank,
-          params,
-          blockTime,
-          latestHeight,
-        });
-
         if (expired) {
           const { expiredMembersCount, expiredCandidatesCount } = result;
           if (rank > 0) {
@@ -90,6 +82,14 @@ function useDemotionExpirationCounts() {
             };
           }
         }
+
+        const willExpire = isDemotionAboutToExpire({
+          lastProof,
+          rank,
+          params,
+          blockTime,
+          latestHeight,
+        });
 
         if (willExpire) {
           const { expiringMembersCount, expiringCandidatesCount } = result;
