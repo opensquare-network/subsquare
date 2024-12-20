@@ -1,4 +1,4 @@
-import { TreeMapDataList } from "next-common/components/dataList";
+import TreeMapDataList from "next-common/components/dataList/treeList";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { desktopColumns, mobileColumns } from "./columns";
 import { useAllProxiesContext } from "next-common/components/data/context/allProxies";
