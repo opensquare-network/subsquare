@@ -75,7 +75,7 @@ const shibuya = {
     subscan: true,
   },
   showNewTreasuryProposalButton: true,
-
+  sima: true,
   ...astarThemeVars,
 };
 
