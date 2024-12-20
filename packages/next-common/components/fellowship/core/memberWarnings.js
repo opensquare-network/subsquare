@@ -182,13 +182,13 @@ export default function MemberWarnings({ className }) {
     ),
     expiringMembersCount > 0 && (
       <>
-        {"The demotion period of "}
+        {"The demotion periods of "}
         <ShallowLink
           href={`/${section}/core?period=demotion_period_about_to_expire`}
         >
           {expiringMembersCount} members
         </ShallowLink>
-        {" expires in under 20 days."}
+        {" will expire in under 20 days."}
       </>
     ),
     expiringCandidatesCount > 0 &&
@@ -196,11 +196,10 @@ export default function MemberWarnings({ className }) {
 
     expiredMembersCount > 0 && (
       <>
-        {"The demotion period of "}
         <ShallowLink href={`/${section}/core?period=demotion_period_expired`}>
           {expiredMembersCount} members
         </ShallowLink>
-        {" is reached."}
+        {" can be demoted."}
       </>
     ),
     expiredCandidatesCount > 0 &&
