@@ -18,7 +18,7 @@ import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
-import Data from "./data";
+// import Data from "./data";
 
 export function getHomeMenu({
   summary = {},
