@@ -11,6 +11,7 @@ import {
 import { useCoreMembersWithRankContext } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
 import {
   isDemotionAboutToExpire,
+  isDemotionExpired,
   isPromotable,
 } from "next-common/utils/collective/demotionAndPromotion";
 import dynamic from "next/dynamic";
@@ -50,13 +51,25 @@ function useDemotionExpirationCounts() {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
 
-  const { members: membersCount, candidates: candidatesCount } = useMemo(() => {
+  const {
+    expiredMembersCount,
+    expiredCandidatesCount,
+    expiringMembersCount,
+    expiringCandidatesCount,
+  } = useMemo(() => {
     return (coreMembers || []).reduce(
       (result, coreMember) => {
         const {
           status: { lastProof },
           rank,
         } = coreMember;
+
+        const expired = isDemotionExpired({
+          lastProof,
+          rank,
+          params,
+          latestHeight,
+        });
 
         const willExpire = isDemotionAboutToExpire({
           lastProof,
@@ -66,24 +79,49 @@ function useDemotionExpirationCounts() {
           latestHeight,
         });
 
-        if (!willExpire) {
-          return result;
+        if (expired) {
+          const { expiredMembersCount, expiredCandidatesCount } = result;
+          if (rank > 0) {
+            return { ...result, expiredMembersCount: expiredMembersCount + 1 };
+          } else {
+            return {
+              ...result,
+              expiredCandidatesCount: expiredCandidatesCount + 1,
+            };
+          }
         }
 
-        const { members, candidates } = result;
-        if (rank > 0) {
-          return { members: members + 1, candidates };
-        } else {
-          return { members, candidates: candidates + 1 };
+        if (willExpire) {
+          const { expiringMembersCount, expiringCandidatesCount } = result;
+          if (rank > 0) {
+            return {
+              ...result,
+              expiringMembersCount: expiringMembersCount + 1,
+            };
+          } else {
+            return {
+              ...result,
+              expiringCandidatesCount: expiringCandidatesCount + 1,
+            };
+          }
         }
+
+        return result;
       },
-      { members: 0, candidates: 0 },
+      {
+        expiredMembersCount: 0,
+        expiredCandidatesCount: 0,
+        expiringMembersCount: 0,
+        expiringCandidatesCount: 0,
+      },
     );
   }, [coreMembers, latestHeight, blockTime, params]);
 
   return {
-    membersCount,
-    candidatesCount,
+    expiredMembersCount,
+    expiredCandidatesCount,
+    expiringMembersCount,
+    expiringCandidatesCount,
     isLoading,
   };
 }
@@ -114,8 +152,10 @@ function useEvidencesStat() {
 export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
   const {
-    membersCount,
-    candidatesCount,
+    expiredMembersCount,
+    expiredCandidatesCount,
+    expiringMembersCount,
+    expiringCandidatesCount,
     isLoading: isCheckingDemotion,
   } = useDemotionExpirationCounts();
 
@@ -142,19 +182,32 @@ export default function MemberWarnings({ className }) {
         .
       </>
     ),
-    membersCount > 0 && (
+    expiringMembersCount > 0 && (
       <>
         {"The demotion period of "}
         <ShallowLink
           href={`/${section}/core?period=demotion_period_about_to_expire`}
         >
-          {membersCount} members
+          {expiringMembersCount} members
         </ShallowLink>
         {" expires in under 20 days."}
       </>
     ),
-    candidatesCount > 0 &&
-      `${candidatesCount} candidates' offboard period is about to reached in under 20 days.`,
+    expiringCandidatesCount > 0 &&
+      `${expiringCandidatesCount} candidates' offboard period is about to reached in under 20 days.`,
+
+    expiredMembersCount > 0 && (
+      <>
+        {"The demotion period of "}
+        <ShallowLink href={`/${section}/core?period=demotion_period_expired`}>
+          {expiredMembersCount} members
+        </ShallowLink>
+        {" is reached."}
+      </>
+    ),
+    expiredCandidatesCount > 0 &&
+      `${expiredCandidatesCount} candidates' offboard period is reached.`,
+
     availablePromotionCount > 0 && (
       <>
         Promotions are available for{" "}
