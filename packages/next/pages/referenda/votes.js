@@ -6,14 +6,14 @@ import {
   ModuleTabProvider,
   Referenda,
 } from "next-common/components/profile/votingHistory/common";
-import ModuleVotes from "components/myvotes/moduleVotes";
+import ModuleVotes from "next-common/components/myvotes/moduleVotes";
 import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { cn } from "next-common/utils";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
-import { Title } from "components/myvotes/styled";
+import { Title } from "next-common/components/myvotes/styled";
 
 export function ReferendaVoteLayout({ children }) {
   return (

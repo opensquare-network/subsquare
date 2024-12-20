@@ -1,4 +1,4 @@
-import { flatten } from "lodash-es";
+import { find, flatten } from "lodash-es";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
@@ -103,10 +103,18 @@ function WithFilterPostList({
   pagination,
 }) {
   const { tracks } = usePageProps();
+  const voting = useSelector(myReferendaVotingSelector);
 
-  const items = (posts || []).map((item) =>
-    normalizeGov2ReferendaListItem(item, tracks),
-  );
+  const items = (posts || []).map((item) => {
+    const normalizedItem = normalizeGov2ReferendaListItem(item, tracks);
+    const trackVoting = find(voting, { trackId: item.track });
+
+    normalizedItem.vote = find(trackVoting?.votes, {
+      referendumIndex: item.referendumIndex,
+    })?.vote;
+
+    return normalizedItem;
+  });
 
   return (
     <PostList
