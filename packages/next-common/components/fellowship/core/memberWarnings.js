@@ -1,4 +1,4 @@
-import { isNil } from "lodash-es";
+import { isNil, partition } from "lodash-es";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
 import { useMemo } from "react";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
@@ -44,78 +44,76 @@ function useAvailablePromotionCount() {
   return { availablePromotionCount, isLoading };
 }
 
-function useDemotionExpirationCounts() {
-  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
-  const params = useCoreFellowshipParams();
-
+function useDemotionExpiringCount(members) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
+  const params = useCoreFellowshipParams();
 
-  const {
-    expiredMembersCount,
-    expiredCandidatesCount,
-    expiringMembersCount,
-    expiringCandidatesCount,
-  } = useMemo(() => {
-    return (coreMembers || []).reduce(
-      (result, coreMember) => {
-        const {
-          status: { lastProof },
-          rank,
-        } = coreMember;
+  return useMemo(() => {
+    return (members || []).reduce((result, coreMember) => {
+      const {
+        status: { lastProof },
+        rank,
+      } = coreMember;
 
-        const expired = isDemotionExpired({
-          lastProof,
-          rank,
-          params,
-          latestHeight,
-        });
-
-        if (expired) {
-          const { expiredMembersCount, expiredCandidatesCount } = result;
-          if (rank > 0) {
-            return { ...result, expiredMembersCount: expiredMembersCount + 1 };
-          } else {
-            return {
-              ...result,
-              expiredCandidatesCount: expiredCandidatesCount + 1,
-            };
-          }
-        }
-
-        const willExpire = isDemotionAboutToExpire({
+      if (
+        isDemotionAboutToExpire({
           lastProof,
           rank,
           params,
           blockTime,
           latestHeight,
-        });
+        })
+      ) {
+        return result + 1;
+      }
 
-        if (willExpire) {
-          const { expiringMembersCount, expiringCandidatesCount } = result;
-          if (rank > 0) {
-            return {
-              ...result,
-              expiringMembersCount: expiringMembersCount + 1,
-            };
-          } else {
-            return {
-              ...result,
-              expiringCandidatesCount: expiringCandidatesCount + 1,
-            };
-          }
-        }
+      return result;
+    }, 0);
+  }, [members, latestHeight, params, blockTime]);
+}
 
-        return result;
-      },
-      {
-        expiredMembersCount: 0,
-        expiredCandidatesCount: 0,
-        expiringMembersCount: 0,
-        expiringCandidatesCount: 0,
-      },
-    );
-  }, [coreMembers, latestHeight, blockTime, params]);
+function useDemotionExpiredCount(members) {
+  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const params = useCoreFellowshipParams();
+
+  return useMemo(() => {
+    return (members || []).reduce((result, coreMember) => {
+      const {
+        status: { lastProof },
+        rank,
+      } = coreMember;
+
+      if (isDemotionExpired({ lastProof, rank, params, latestHeight })) {
+        return result + 1;
+      }
+
+      return result;
+    }, 0);
+  }, [members, latestHeight, params]);
+}
+
+function useMemberDemotionExpirationCounts(members) {
+  const expiredMembersCount = useDemotionExpiredCount(members);
+  const expiringMembersCount = useDemotionExpiringCount(members);
+  return { expiredMembersCount, expiringMembersCount };
+}
+
+function useDemotionExpirationCounts() {
+  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
+
+  const [members, candidates] = useMemo(
+    () => partition(coreMembers, (m) => m.rank > 0),
+    [coreMembers],
+  );
+
+  const { expiredMembersCount, expiringMembersCount } =
+    useMemberDemotionExpirationCounts(members);
+
+  const {
+    expiredMembersCount: expiredCandidatesCount,
+    expiringMembersCount: expiringCandidatesCount,
+  } = useMemberDemotionExpirationCounts(candidates);
 
   return {
     expiredMembersCount,
