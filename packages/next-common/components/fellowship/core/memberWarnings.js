@@ -1,4 +1,4 @@
-import { isNil } from "lodash-es";
+import { isNil, partition } from "lodash-es";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
 import { useMemo } from "react";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
@@ -11,6 +11,7 @@ import {
 import { useCoreMembersWithRankContext } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
 import {
   isDemotionAboutToExpire,
+  isDemotionExpired,
   isPromotable,
 } from "next-common/utils/collective/demotionAndPromotion";
 import dynamic from "next/dynamic";
@@ -43,47 +44,82 @@ function useAvailablePromotionCount() {
   return { availablePromotionCount, isLoading };
 }
 
-function useDemotionExpirationCounts() {
-  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
-  const params = useCoreFellowshipParams();
-
+function useDemotionExpiringCount(members) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
+  const params = useCoreFellowshipParams();
 
-  const { members: membersCount, candidates: candidatesCount } = useMemo(() => {
-    return (coreMembers || []).reduce(
-      (result, coreMember) => {
-        const {
-          status: { lastProof },
-          rank,
-        } = coreMember;
+  return useMemo(() => {
+    return (members || []).reduce((result, coreMember) => {
+      const {
+        status: { lastProof },
+        rank,
+      } = coreMember;
 
-        const willExpire = isDemotionAboutToExpire({
+      if (
+        isDemotionAboutToExpire({
           lastProof,
           rank,
           params,
           blockTime,
           latestHeight,
-        });
+        })
+      ) {
+        return result + 1;
+      }
 
-        if (!willExpire) {
-          return result;
-        }
+      return result;
+    }, 0);
+  }, [members, latestHeight, params, blockTime]);
+}
 
-        const { members, candidates } = result;
-        if (rank > 0) {
-          return { members: members + 1, candidates };
-        } else {
-          return { members, candidates: candidates + 1 };
-        }
-      },
-      { members: 0, candidates: 0 },
-    );
-  }, [coreMembers, latestHeight, blockTime, params]);
+function useDemotionExpiredCount(members) {
+  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const params = useCoreFellowshipParams();
+
+  return useMemo(() => {
+    return (members || []).reduce((result, coreMember) => {
+      const {
+        status: { lastProof },
+        rank,
+      } = coreMember;
+
+      if (isDemotionExpired({ lastProof, rank, params, latestHeight })) {
+        return result + 1;
+      }
+
+      return result;
+    }, 0);
+  }, [members, latestHeight, params]);
+}
+
+function useMemberDemotionExpirationCounts(members) {
+  const expiredMembersCount = useDemotionExpiredCount(members);
+  const expiringMembersCount = useDemotionExpiringCount(members);
+  return { expiredMembersCount, expiringMembersCount };
+}
+
+function useDemotionExpirationCounts() {
+  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
+
+  const [members, candidates] = useMemo(
+    () => partition(coreMembers, (m) => m.rank > 0),
+    [coreMembers],
+  );
+
+  const { expiredMembersCount, expiringMembersCount } =
+    useMemberDemotionExpirationCounts(members);
+
+  const {
+    expiredMembersCount: expiredCandidatesCount,
+    expiringMembersCount: expiringCandidatesCount,
+  } = useMemberDemotionExpirationCounts(candidates);
 
   return {
-    membersCount,
-    candidatesCount,
+    expiredMembersCount,
+    expiredCandidatesCount,
+    expiringMembersCount,
+    expiringCandidatesCount,
     isLoading,
   };
 }
@@ -114,8 +150,10 @@ function useEvidencesStat() {
 export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
   const {
-    membersCount,
-    candidatesCount,
+    expiredMembersCount,
+    expiredCandidatesCount,
+    expiringMembersCount,
+    expiringCandidatesCount,
     isLoading: isCheckingDemotion,
   } = useDemotionExpirationCounts();
 
@@ -142,19 +180,32 @@ export default function MemberWarnings({ className }) {
         .
       </>
     ),
-    membersCount > 0 && (
+    expiringMembersCount > 0 && (
       <>
         {"The demotion period of "}
         <ShallowLink
           href={`/${section}/core?period=demotion_period_about_to_expire`}
         >
-          {membersCount} members
+          {expiringMembersCount} members
         </ShallowLink>
         {" expires in under 20 days."}
       </>
     ),
-    candidatesCount > 0 &&
-      `${candidatesCount} candidates' offboard period is about to reached in under 20 days.`,
+    expiringCandidatesCount > 0 &&
+      `${expiringCandidatesCount} candidates' offboard period is about to reached in under 20 days.`,
+
+    expiredMembersCount > 0 && (
+      <>
+        {"The demotion period of "}
+        <ShallowLink href={`/${section}/core?period=demotion_period_expired`}>
+          {expiredMembersCount} members
+        </ShallowLink>
+        {" is reached."}
+      </>
+    ),
+    expiredCandidatesCount > 0 &&
+      `${expiredCandidatesCount} candidates' offboard period is reached.`,
+
     availablePromotionCount > 0 && (
       <>
         Promotions are available for{" "}
