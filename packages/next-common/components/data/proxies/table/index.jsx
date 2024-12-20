@@ -7,9 +7,12 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
+import useFilterAllProxies from "next-common/components/data/hooks/useFilterAllProxies";
+import useMyRelatedSwitch from "next-common/components/data/hooks/useMyRelatedSwitch";
+import { useRouter } from "next/router";
 
-function TableHeader() {
-  const { total, loading } = useAllProxiesContext();
+function TableHeader({ total, loading }) {
+  const { component: MyRelatedSwitchComponent } = useMyRelatedSwitch();
 
   return (
     <div>
@@ -20,7 +23,7 @@ function TableHeader() {
             {!loading && total}
           </span>
         </span>
-        {/* TODO: filter by current address */}
+        {MyRelatedSwitchComponent}
       </TitleContainer>
       {/* TODO: filter by identity name or address */}
     </div>
@@ -28,36 +31,48 @@ function TableHeader() {
 }
 
 export default function ProxyExplorerTable() {
+  const router = useRouter();
   const [dataList, setDataList] = useState([]);
 
   const [navCollapsed] = useNavCollapsed();
-  const { data, total, loading } = useAllProxiesContext();
-
-  const { page, component: pageComponent } = usePaginationComponent(
-    total,
-    defaultPageSize,
+  const { data, loading } = useAllProxiesContext();
+  const { filteredProxies, total, isLoading } = useFilterAllProxies(
+    data,
+    loading,
   );
 
+  const {
+    page,
+    component: pageComponent,
+    setPage,
+  } = usePaginationComponent(total, defaultPageSize);
+
   useEffect(() => {
-    if (loading) {
+    if (isLoading) {
       return;
     }
 
     const startIndex = (page - 1) * defaultPageSize;
     const endIndex = startIndex + defaultPageSize;
-    setDataList(data?.slice(startIndex, endIndex));
-  }, [data, page, loading]);
+    setDataList(filteredProxies?.slice(startIndex, endIndex));
+  }, [filteredProxies, page, isLoading]);
+
+  useEffect(() => {
+    if (router.query) {
+      setPage(1);
+    }
+  }, [router.query, setPage]);
 
   return (
     <div className="flex flex-col gap-y-4">
-      <TableHeader />
+      <TableHeader total={total} loading={isLoading} />
       <TreeMapDataList
         className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
         bordered
         columnsDef={desktopColumns}
         noDataText="No Data"
         data={dataList}
-        loading={loading}
+        loading={isLoading}
         treeKey="items"
         tree={true}
         page={page}
@@ -70,7 +85,7 @@ export default function ProxyExplorerTable() {
         columnsDef={mobileColumns}
         noDataText="No Data"
         data={dataList}
-        loading={loading}
+        loading={isLoading}
         treeKey="items"
         tree={true}
         page={page}
