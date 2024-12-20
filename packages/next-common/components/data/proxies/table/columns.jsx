@@ -3,7 +3,6 @@ import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDurati
 import Tooltip from "next-common/components/tooltip";
 import { isNil } from "lodash-es";
 import { cn } from "next-common/utils";
-import { SystemQuestion } from "@osn/icons/subsquare";
 
 function ProxyTypeTag({ proxyType, className }) {
   if (isNil(proxyType)) {
