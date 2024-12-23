@@ -59,7 +59,7 @@ export default function Approve({ member }) {
   if (!myRankOk) {
     tooltipContent = "Only available to the members with rank >= 3";
   } else if (!referendaNotCreated) {
-    tooltipContent = "Approval referenda is already exist";
+    tooltipContent = `Referendum #${relatedReferenda[0].referendumIndex} is currently in progress`;
   }
 
   if (!canApprove) {

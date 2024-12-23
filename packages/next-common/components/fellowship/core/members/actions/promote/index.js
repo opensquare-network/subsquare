@@ -78,7 +78,7 @@ export default function Promote({ member }) {
   } else if (!promotionPeriodComplete) {
     tipContent = `Available after ${promotionPeriod - gone} blocks`;
   } else if (!referendaNotCreated) {
-    tipContent = "Promotion referenda is already exist";
+    tipContent = `Referendum #${relatedReferenda[0].referendumIndex} is currently in progress`;
   }
 
   if (!canPromote) {
