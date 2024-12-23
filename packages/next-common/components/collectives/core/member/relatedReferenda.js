@@ -21,7 +21,7 @@ function useRelatedReferenda(address, pallet) {
       if (section !== pallet) {
         return false;
       }
-      if (!["bump", "approve", "promote"].includes(method)) {
+      if (!["bump", "approve", "promote", "promoteFast"].includes(method)) {
         return false;
       }
 
