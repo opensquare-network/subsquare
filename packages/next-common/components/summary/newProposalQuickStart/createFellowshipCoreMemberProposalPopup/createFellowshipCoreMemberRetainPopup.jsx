@@ -8,8 +8,12 @@ import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import CreateFellowshipCoreMemberProposalSubmitButton from "./createFellowshipCoreMemberProposalSubmitButton";
 import { find } from "lodash-es";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
+import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
+import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
+import { useRelatedApprovalReferenda } from "next-common/components/fellowship/core/members/actions/approve";
+import { WarningMessage } from "next-common/components/setting/styled";
 
-export default function NewFellowshipCoreMemberRetainReferendumInnerPopup() {
+function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
   const { members } = useFellowshipCoreMembers();
 
   const { onClose } = usePopupParams();
@@ -20,6 +24,9 @@ export default function NewFellowshipCoreMemberRetainReferendumInnerPopup() {
     useEnactmentBlocksField();
   const targetMember = find(members, { address: who });
 
+  const relatedReferenda = useRelatedApprovalReferenda(who);
+  const referendaAlreadyCreated = relatedReferenda.length > 0;
+
   const atRank = targetMember?.rank;
 
   const trackName = getRetainTrackNameFromRank(atRank);
@@ -28,9 +35,25 @@ export default function NewFellowshipCoreMemberRetainReferendumInnerPopup() {
     <Popup title="New Retain Proposal" onClose={onClose}>
       {whoField}
       <RankField title="At Rank" rank={atRank} readOnly />
+      {referendaAlreadyCreated && (
+        <WarningMessage>
+          There is a retention{" "}
+          <a
+            className="underline"
+            target="_blank"
+            rel="noreferrer"
+            href={`/fellowship/referenda/${relatedReferenda[0].referendumIndex}`}
+          >
+            referendum #{relatedReferenda[0].referendumIndex}
+          </a>{" "}
+          is currently in progress
+        </WarningMessage>
+      )}
+
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
+          disabled={referendaAlreadyCreated}
           who={who}
           enactment={enactment}
           rank={atRank}
@@ -39,5 +62,14 @@ export default function NewFellowshipCoreMemberRetainReferendumInnerPopup() {
         />
       </div>
     </Popup>
+  );
+}
+
+export default function NewFellowshipCoreMemberRetainReferendumInnerPopup() {
+  const pallet = useReferendaFellowshipPallet();
+  return (
+    <ActiveReferendaProvider pallet={pallet}>
+      <NewFellowshipCoreMemberRetainReferendumInnerPopupImpl />
+    </ActiveReferendaProvider>
   );
 }

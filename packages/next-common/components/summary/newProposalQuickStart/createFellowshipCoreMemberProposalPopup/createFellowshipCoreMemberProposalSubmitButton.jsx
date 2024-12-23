@@ -12,6 +12,7 @@ import Tooltip from "next-common/components/tooltip";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 export default function CreateFellowshipCoreMemberProposalSubmitButton({
+  disabled,
   enactment,
   who,
   rank,
@@ -30,7 +31,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   const listPageType = useListPageType();
   const section = useCollectivesSection();
 
-  const disabled = !myRankOk || !who || !rank;
+  const buttonDisabled = disabled || !myRankOk || !who || !rank;
 
   let corePallet;
   let referendaPallet;
@@ -43,7 +44,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   }
 
   const getTxFunc = useCallback(async () => {
-    if (!api || disabled || !action) {
+    if (!api || buttonDisabled || !action) {
       return;
     }
 
@@ -55,7 +56,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
     );
   }, [
     api,
-    disabled,
+    buttonDisabled,
     action,
     corePallet,
     who,
@@ -70,7 +71,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
       content={!myRankOk && "Only available to the members with rank >= 3"}
     >
       <TxSubmissionButton
-        disabled={disabled}
+        disabled={buttonDisabled}
         title="Create Preimage"
         getTxFunc={getTxFunc}
         onInBlock={({ events }) => {

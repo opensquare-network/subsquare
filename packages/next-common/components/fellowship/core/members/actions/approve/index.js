@@ -10,7 +10,7 @@ import { useActiveReferenda } from "next-common/context/activeReferenda";
 
 const ApproveFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
 
-function useRelatedReferenda(address) {
+export function useRelatedApprovalReferenda(address) {
   const pallet = useCoreFellowshipPallet();
   const activeReferenda = useActiveReferenda();
   return useMemo(() => {
@@ -37,7 +37,7 @@ export default function Approve({ member }) {
   const [showApprovePopup, setShowApprovePopup] = useState(false);
   const address = useRealAddress();
   const { address: memberAddress } = member;
-  const relatedReferenda = useRelatedReferenda(memberAddress);
+  const relatedReferenda = useRelatedApprovalReferenda(memberAddress);
 
   const { members } = useFellowshipCoreMembers();
   const me = find(members, { address });
@@ -59,7 +59,7 @@ export default function Approve({ member }) {
   if (!myRankOk) {
     tooltipContent = "Only available to the members with rank >= 3";
   } else if (!referendaNotCreated) {
-    tooltipContent = "Retention referenda is already exist";
+    tooltipContent = "Approval referenda is already exist";
   }
 
   if (!canApprove) {

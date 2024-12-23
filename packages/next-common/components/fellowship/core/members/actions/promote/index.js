@@ -14,7 +14,7 @@ import { useCoreFellowshipPallet } from "next-common/context/collectives/collect
 
 const PromoteFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
 
-function useRelatedReferenda(address) {
+export function useRelatedPromotionReferenda(address) {
   const pallet = useCoreFellowshipPallet();
   const activeReferenda = useActiveReferenda();
   return useMemo(() => {
@@ -45,7 +45,7 @@ export default function Promote({ member }) {
     status: { lastPromotion } = {},
     address: memberAddress,
   } = member;
-  const relatedReferenda = useRelatedReferenda(memberAddress);
+  const relatedReferenda = useRelatedPromotionReferenda(memberAddress);
 
   const { members } = useFellowshipCoreMembers();
 
