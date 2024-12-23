@@ -1,11 +1,16 @@
 import { useState, useMemo } from "react";
 import useMyRelatedSwitch from "./useMyRelatedSwitch";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useAllProxiesSearch from "./useAllProxiesSearch";
+import useSearchByAddressIdentity from "./useSearchByAddressIdentity";
 
 export default function useFilterAllProxies(proxies = [], initialLoading) {
   const { isOn: isMyRelated } = useMyRelatedSwitch();
   const [isLoading, setIsLoading] = useState(false);
   const address = useRealAddress();
+
+  const { search = "" } = useAllProxiesSearch();
+  const searchedProxies = useSearchByAddressIdentity(search, proxies);
 
   const filteredProxies = useMemo(() => {
     setIsLoading(true);
@@ -14,7 +19,7 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
       return;
     }
 
-    let filteredProxies = proxies;
+    let filteredProxies = searchedProxies;
 
     if (isMyRelated) {
       filteredProxies = proxies.filter(({ delegator, items }) => {
@@ -30,7 +35,7 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
     });
 
     return filteredProxies;
-  }, [initialLoading, proxies, isMyRelated, address]);
+  }, [initialLoading, searchedProxies, isMyRelated, address, proxies]);
 
   return { filteredProxies, total: filteredProxies?.length, isLoading };
 }

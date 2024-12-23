@@ -10,10 +10,11 @@ import { cn } from "next-common/utils";
 import useFilterAllProxies from "next-common/components/data/hooks/useFilterAllProxies";
 import useMyRelatedSwitch from "next-common/components/data/hooks/useMyRelatedSwitch";
 import { useRouter } from "next/router";
-import useSearchByAddressIdentity, { searchBox } from "next-common/components/data/hooks/useSearchByAddressIdentity";
+import useAllProxiesSearch from "next-common/components/data/hooks/useAllProxiesSearch";
 
-function TableHeader({ total, loading, searchBox }) {
+function TableHeader({ total, loading }) {
   const { component: MyRelatedSwitchComponent } = useMyRelatedSwitch();
+  const { component: SearchBoxComponent } = useAllProxiesSearch();
 
   return (
     <div>
@@ -26,7 +27,7 @@ function TableHeader({ total, loading, searchBox }) {
         </span>
         {MyRelatedSwitchComponent}
       </TitleContainer>
-      {searchBox}
+      {SearchBoxComponent}
     </div>
   );
 }
@@ -34,16 +35,12 @@ function TableHeader({ total, loading, searchBox }) {
 export default function ProxyExplorerTable() {
   const router = useRouter();
   const [dataList, setDataList] = useState([]);
-
   const [navCollapsed] = useNavCollapsed();
   const { data, loading } = useAllProxiesContext();
   const { filteredProxies, total, isLoading } = useFilterAllProxies(
     data,
     loading,
   );
-
-  const { component: searchBox, result } = useSearchBar(filteredProxies);
-  console.log("::::filteredProxies", result);
 
   const {
     page,
@@ -60,7 +57,6 @@ export default function ProxyExplorerTable() {
     const endIndex = startIndex + defaultPageSize;
     setDataList(filteredProxies?.slice(startIndex, endIndex));
   }, [filteredProxies, page, isLoading]);
-  // console.log("::::dataList", dataList, filteredProxies, filteredProxiesRes);
 
   useEffect(() => {
     if (router.query) {
@@ -70,11 +66,7 @@ export default function ProxyExplorerTable() {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <TableHeader
-        total={total}
-        loading={isLoading}
-        searchBox={searchBox}
-      />
+      <TableHeader total={total} loading={isLoading} />
       <TreeMapDataList
         className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
         bordered
