@@ -1,43 +1,19 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { find } from "lodash-es";
 import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
-import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
-import { useActiveReferenda } from "next-common/context/activeReferenda";
+import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
 
 const ApproveFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
-
-export function useRelatedApprovalReferenda(address) {
-  const pallet = useCoreFellowshipPallet();
-  const activeReferenda = useActiveReferenda();
-  return useMemo(() => {
-    return activeReferenda.filter(({ call }) => {
-      if (!call) {
-        return false;
-      }
-
-      const { section, method } = call;
-      if (section !== pallet) {
-        return false;
-      }
-      if (!["approve"].includes(method)) {
-        return false;
-      }
-
-      const nameArg = call.args.find(({ name }) => name === "who");
-      return nameArg?.value === address;
-    });
-  }, [activeReferenda, address, pallet]);
-}
 
 export default function Approve({ member }) {
   const [showApprovePopup, setShowApprovePopup] = useState(false);
   const address = useRealAddress();
   const { address: memberAddress } = member;
-  const relatedReferenda = useRelatedApprovalReferenda(memberAddress);
+  const { relatedReferenda } = useRelatedRetentionReferenda(memberAddress);
 
   const { members } = useFellowshipCoreMembers();
   const me = find(members, { address });

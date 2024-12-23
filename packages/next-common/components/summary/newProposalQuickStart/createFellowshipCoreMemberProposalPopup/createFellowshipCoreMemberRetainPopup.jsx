@@ -10,8 +10,9 @@ import { find } from "lodash-es";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
-import { useRelatedApprovalReferenda } from "next-common/components/fellowship/core/members/actions/approve";
 import { WarningMessage } from "next-common/components/setting/styled";
+import Loading from "next-common/components/loading";
+import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
 
 function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
   const { members } = useFellowshipCoreMembers();
@@ -24,36 +25,49 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
     useEnactmentBlocksField();
   const targetMember = find(members, { address: who });
 
-  const relatedReferenda = useRelatedApprovalReferenda(who);
+  const { relatedReferenda, isLoading } = useRelatedRetentionReferenda(who);
   const referendaAlreadyCreated = relatedReferenda.length > 0;
 
   const atRank = targetMember?.rank;
 
   const trackName = getRetainTrackNameFromRank(atRank);
 
+  let warningMessage = null;
+
+  if (isLoading) {
+    warningMessage = (
+      <div className="flex justify-center py-[12px]">
+        <Loading size={20} />
+      </div>
+    );
+  }
+
+  if (referendaAlreadyCreated) {
+    warningMessage = (
+      <WarningMessage>
+        There is a retention{" "}
+        <a
+          className="underline"
+          target="_blank"
+          rel="noreferrer"
+          href={`/fellowship/referenda/${relatedReferenda[0].referendumIndex}`}
+        >
+          referendum #{relatedReferenda[0].referendumIndex}
+        </a>{" "}
+        currently in progress
+      </WarningMessage>
+    );
+  }
+
   return (
     <Popup title="New Retain Proposal" onClose={onClose}>
       {whoField}
       <RankField title="At Rank" rank={atRank} readOnly />
-      {referendaAlreadyCreated && (
-        <WarningMessage>
-          There is a retention{" "}
-          <a
-            className="underline"
-            target="_blank"
-            rel="noreferrer"
-            href={`/fellowship/referenda/${relatedReferenda[0].referendumIndex}`}
-          >
-            referendum #{relatedReferenda[0].referendumIndex}
-          </a>{" "}
-          is currently in progress
-        </WarningMessage>
-      )}
-
+      {warningMessage}
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
-          disabled={referendaAlreadyCreated}
+          disabled={isLoading || referendaAlreadyCreated}
           who={who}
           enactment={enactment}
           rank={atRank}

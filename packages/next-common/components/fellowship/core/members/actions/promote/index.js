@@ -3,39 +3,15 @@ import chainOrScanHeightSelector from "next-common/store/reducers/selectors/heig
 import { usePageProps } from "next-common/context/page";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
-import { useActiveReferenda } from "next-common/context/activeReferenda";
-import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
 
 const PromoteFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
-
-export function useRelatedPromotionReferenda(address) {
-  const pallet = useCoreFellowshipPallet();
-  const activeReferenda = useActiveReferenda();
-  return useMemo(() => {
-    return activeReferenda.filter(({ call }) => {
-      if (!call) {
-        return false;
-      }
-
-      const { section, method } = call;
-      if (section !== pallet) {
-        return false;
-      }
-      if (!["promote", "promoteFast"].includes(method)) {
-        return false;
-      }
-
-      const nameArg = call.args.find(({ name }) => name === "who");
-      return nameArg?.value === address;
-    });
-  }, [activeReferenda, address, pallet]);
-}
 
 export default function Promote({ member }) {
   const [showPromotePopup, setShowPromotePopup] = useState(false);
@@ -45,7 +21,7 @@ export default function Promote({ member }) {
     status: { lastPromotion } = {},
     address: memberAddress,
   } = member;
-  const relatedReferenda = useRelatedPromotionReferenda(memberAddress);
+  const { relatedReferenda } = useRelatedPromotionReferenda(memberAddress);
 
   const { members } = useFellowshipCoreMembers();
 

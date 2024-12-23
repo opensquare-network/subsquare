@@ -10,7 +10,8 @@ import { getTrackNameFromRank } from "next-common/components/fellowship/core/mem
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { WarningMessage } from "next-common/components/setting/styled";
-import { useRelatedPromotionReferenda } from "next-common/components/fellowship/core/members/actions/promote";
+import Loading from "next-common/components/loading";
+import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
 
 function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const { onClose } = usePopupParams();
@@ -24,31 +25,45 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
 
   const trackName = getTrackNameFromRank(toRank);
 
-  const relatedReferenda = useRelatedPromotionReferenda(who);
+  const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(who);
   const referendaAlreadyCreated = relatedReferenda.length > 0;
+
+  let warningMessage = null;
+
+  if (isLoading) {
+    warningMessage = (
+      <div className="flex justify-center py-[12px]">
+        <Loading size={20} />
+      </div>
+    );
+  }
+
+  if (referendaAlreadyCreated) {
+    warningMessage = (
+      <WarningMessage>
+        There is a promotion{" "}
+        <a
+          className="underline"
+          target="_blank"
+          rel="noreferrer"
+          href={`/fellowship/referenda/${relatedReferenda[0].referendumIndex}`}
+        >
+          referendum #{relatedReferenda[0].referendumIndex}
+        </a>{" "}
+        currently in progress
+      </WarningMessage>
+    );
+  }
 
   return (
     <Popup title="New Promote Proposal" onClose={onClose}>
       {whoField}
       <RankField title="To Rank" rank={toRank} setRank={setToRank} />
-      {referendaAlreadyCreated && (
-        <WarningMessage>
-          There is a promotion{" "}
-          <a
-            className="underline"
-            target="_blank"
-            rel="noreferrer"
-            href={`/fellowship/referenda/${relatedReferenda[0].referendumIndex}`}
-          >
-            referendum #{relatedReferenda[0].referendumIndex}
-          </a>{" "}
-          is currently in progress
-        </WarningMessage>
-      )}
+      {warningMessage}
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
-          disabled={referendaAlreadyCreated}
+          disabled={isLoading || referendaAlreadyCreated}
           tooltip
           who={who}
           enactment={enactment}
