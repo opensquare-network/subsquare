@@ -19,7 +19,6 @@ import { useCollectivesSection } from "next-common/context/collectives/collectiv
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { ReferendaWarningMessage } from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
-import Loading from "next-common/components/loading";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
 
 export function getTrackNameFromRank(rank) {
@@ -66,24 +65,6 @@ function PopupContent({ member }) {
   );
   const referendaAlreadyCreated = relatedReferenda.length > 0;
 
-  let warningMessage = null;
-
-  if (isLoading) {
-    warningMessage = (
-      <div className="flex justify-center py-[12px]">
-        <Loading size={20} />
-      </div>
-    );
-  }
-
-  if (referendaAlreadyCreated) {
-    warningMessage = (
-      <ReferendaWarningMessage
-        referendumIndex={relatedReferenda[0].referendumIndex}
-      />
-    );
-  }
-
   return (
     <>
       <SignerWithBalance />
@@ -103,7 +84,10 @@ function PopupContent({ member }) {
           </div>
         </span>
       </InfoMessage>
-      {warningMessage}
+      <ReferendaWarningMessage
+        isLoading={isLoading}
+        relatedReferenda={relatedReferenda}
+      />
       <AdvanceSettings>
         <EnactmentBlocks setEnactment={setEnactment} />
       </AdvanceSettings>

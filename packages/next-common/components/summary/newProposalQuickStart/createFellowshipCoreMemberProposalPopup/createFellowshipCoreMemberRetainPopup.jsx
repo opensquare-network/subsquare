@@ -10,7 +10,6 @@ import { find } from "lodash-es";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
-import Loading from "next-common/components/loading";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
 import { ReferendaWarningMessage } from "./common";
 
@@ -32,29 +31,14 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
 
   const trackName = getRetainTrackNameFromRank(atRank);
 
-  let warningMessage = null;
-
-  if (isLoading) {
-    warningMessage = (
-      <div className="flex justify-center py-[12px]">
-        <Loading size={20} />
-      </div>
-    );
-  }
-
-  if (referendaAlreadyCreated) {
-    warningMessage = (
-      <ReferendaWarningMessage
-        referendumIndex={relatedReferenda[0].referendumIndex}
-      />
-    );
-  }
-
   return (
     <Popup title="New Retain Proposal" onClose={onClose}>
       {whoField}
       <RankField title="At Rank" rank={atRank} readOnly />
-      {warningMessage}
+      <ReferendaWarningMessage
+        isLoading={isLoading}
+        relatedReferenda={relatedReferenda}
+      />
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
