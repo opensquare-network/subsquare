@@ -10,9 +10,9 @@ import { find } from "lodash-es";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
-import { WarningMessage } from "next-common/components/setting/styled";
 import Loading from "next-common/components/loading";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
+import { ReferendaWarningMessage } from "./common";
 
 function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
   const { members } = useFellowshipCoreMembers();
@@ -44,18 +44,9 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
 
   if (referendaAlreadyCreated) {
     warningMessage = (
-      <WarningMessage>
-        There is a retention{" "}
-        <a
-          className="underline"
-          target="_blank"
-          rel="noreferrer"
-          href={`/fellowship/referenda/${relatedReferenda[0].referendumIndex}`}
-        >
-          referendum #{relatedReferenda[0].referendumIndex}
-        </a>{" "}
-        currently in progress
-      </WarningMessage>
+      <ReferendaWarningMessage
+        referendumIndex={relatedReferenda[0].referendumIndex}
+      />
     );
   }
 

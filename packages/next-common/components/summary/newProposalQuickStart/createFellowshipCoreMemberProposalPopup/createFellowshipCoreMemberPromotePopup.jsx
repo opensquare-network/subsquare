@@ -9,9 +9,9 @@ import CreateFellowshipCoreMemberProposalSubmitButton from "./createFellowshipCo
 import { getTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
-import { WarningMessage } from "next-common/components/setting/styled";
 import Loading from "next-common/components/loading";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
+import { ReferendaWarningMessage } from "./common";
 
 function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const { onClose } = usePopupParams();
@@ -40,18 +40,9 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
 
   if (referendaAlreadyCreated) {
     warningMessage = (
-      <WarningMessage>
-        There is a promotion{" "}
-        <a
-          className="underline"
-          target="_blank"
-          rel="noreferrer"
-          href={`/fellowship/referenda/${relatedReferenda[0].referendumIndex}`}
-        >
-          referendum #{relatedReferenda[0].referendumIndex}
-        </a>{" "}
-        currently in progress
-      </WarningMessage>
+      <ReferendaWarningMessage
+        referendumIndex={relatedReferenda[0].referendumIndex}
+      />
     );
   }
 
