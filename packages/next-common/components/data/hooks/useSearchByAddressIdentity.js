@@ -8,25 +8,31 @@ async function fetchBatchIdentities(identityChain, accounts = []) {
     accounts.map(async (account) => {
       const identity = await fetchIdentity(identityChain, account);
       const display = getIdentityDisplay(identity);
+
       return { account, display: display?.toLowerCase() || null };
     }),
   );
+
   return results.reduce((acc, { account, display }) => {
-    if (display) acc[account] = display;
+    if (display) {
+      acc[account] = display;
+    }
+
     return acc;
   }, {});
 }
 
 export default function useSearchByAddressIdentity(
-  identitySearchInput = "",
-  fromAccounts = [],
+  searchValue = "",
+  allProxies = [],
 ) {
   const [identityMapping, setIdentityMapping] = useState({});
   const { identity: identityChain } = useChainSettings();
 
   useEffect(() => {
     const allAccounts = new Set();
-    fromAccounts?.forEach(({ delegator, items }) => {
+
+    allProxies?.forEach(({ delegator, items }) => {
       allAccounts.add(delegator);
       items.forEach(({ delegatee }) => allAccounts.add(delegatee));
     });
@@ -39,16 +45,15 @@ export default function useSearchByAddressIdentity(
     };
 
     fetchIdentities();
-  }, [fromAccounts, identityChain]);
+  }, [allProxies, identityChain]);
 
   return useMemo(() => {
-    const search = (identitySearchInput || "").toLowerCase();
-
+    const search = (searchValue || "").toLowerCase();
     if (!search) {
-      return fromAccounts;
+      return allProxies;
     }
 
-    return fromAccounts?.filter(({ delegator, items }) => {
+    return allProxies?.filter(({ delegator, items }) => {
       const addressMatch =
         delegator.toLowerCase().includes(search) ||
         items.some(({ delegatee }) => delegatee.toLowerCase().includes(search));
@@ -61,5 +66,5 @@ export default function useSearchByAddressIdentity(
 
       return addressMatch || identityMatch;
     });
-  }, [identitySearchInput, fromAccounts, identityMapping]);
+  }, [searchValue, allProxies, identityMapping]);
 }

@@ -8,7 +8,7 @@ import { SystemSearch } from "@osn/icons/subsquare";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  margin: 24px 0 !important;
+  margin: 16px 24px 0 !important;
   display: flex;
   border-radius: 8px;
   border: 1px solid var(--neutral400);

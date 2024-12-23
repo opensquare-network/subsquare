@@ -21,7 +21,7 @@ function TableHeader({ total, loading }) {
       <TitleContainer>
         <span>
           List
-          <span className="text-textTertiary text14Medium ml-1">
+          <span className="text-textTertiary text16Medium ml-1">
             {!loading && total}
           </span>
         </span>
