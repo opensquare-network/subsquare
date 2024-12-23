@@ -18,6 +18,9 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import { ReferendaWarningMessage } from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
+import Loading from "next-common/components/loading";
+import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
 
 export function getTrackNameFromRank(rank) {
   switch (process.env.NEXT_PUBLIC_CHAIN) {
@@ -58,6 +61,29 @@ function PopupContent({ member }) {
     );
   }, [api, toRank, trackName, memberAddress, enactment, dispatch]);
 
+  const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(
+    member?.address,
+  );
+  const referendaAlreadyCreated = relatedReferenda.length > 0;
+
+  let warningMessage = null;
+
+  if (isLoading) {
+    warningMessage = (
+      <div className="flex justify-center py-[12px]">
+        <Loading size={20} />
+      </div>
+    );
+  }
+
+  if (referendaAlreadyCreated) {
+    warningMessage = (
+      <ReferendaWarningMessage
+        referendumIndex={relatedReferenda[0].referendumIndex}
+      />
+    );
+  }
+
   return (
     <>
       <SignerWithBalance />
@@ -69,9 +95,6 @@ function PopupContent({ member }) {
         readOnly
       />
       <RankField title="To Rank" rank={toRank} setRank={setToRank} readOnly />
-      <AdvanceSettings>
-        <EnactmentBlocks setEnactment={setEnactment} />
-      </AdvanceSettings>
       <InfoMessage className="mb-4">
         <span>
           Will create a referendum in {trackName} track to promote{" "}
@@ -80,7 +103,12 @@ function PopupContent({ member }) {
           </div>
         </span>
       </InfoMessage>
+      {warningMessage}
+      <AdvanceSettings>
+        <EnactmentBlocks setEnactment={setEnactment} />
+      </AdvanceSettings>
       <TxSubmissionButton
+        disabled={isLoading || referendaAlreadyCreated}
         getTxFunc={getTxFunc}
         onInBlock={({ events }) => {
           const eventData = getEventData(
