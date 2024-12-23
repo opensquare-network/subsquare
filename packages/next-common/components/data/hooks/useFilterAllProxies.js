@@ -6,7 +6,7 @@ import useSearchByAddressIdentity from "./useSearchByAddressIdentity";
 
 export default function useFilterAllProxies(proxies = [], initialLoading) {
   const { isOn: isMyRelated } = useMyRelatedSwitch();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const address = useRealAddress();
 
   const { search = "" } = useAllProxiesSearch();
@@ -15,14 +15,14 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
   const filteredProxies = useMemo(() => {
     setIsLoading(true);
 
-    if (initialLoading || !proxies.length || !address) {
+    if (initialLoading || !address) {
       return;
     }
 
     let filteredProxies = searchedProxies;
 
     if (isMyRelated) {
-      filteredProxies = proxies.filter(({ delegator, items }) => {
+      filteredProxies = searchedProxies.filter(({ delegator, items }) => {
         return (
           delegator === address ||
           items.some(({ delegatee }) => delegatee === address)
@@ -35,7 +35,7 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
     });
 
     return filteredProxies;
-  }, [initialLoading, searchedProxies, isMyRelated, address, proxies]);
+  }, [initialLoading, searchedProxies, isMyRelated, address]);
 
   return { filteredProxies, total: filteredProxies?.length, isLoading };
 }
