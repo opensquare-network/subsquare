@@ -2,6 +2,12 @@ import { useChainSettings } from "next-common/context/chain";
 import { fetchIdentity } from "next-common/services/identity";
 import { getIdentityDisplay } from "next-common/utils/identity";
 import { useEffect, useMemo, useState } from "react";
+import {
+  addRouterQuery,
+  getRouterQuery,
+  removeRouterQuery,
+} from "next-common/utils/router";
+import { useRouter } from "next/router";
 import { SystemSearch } from "@osn/icons/subsquare";
 import styled from "styled-components";
 import { noop } from "lodash-es";
@@ -21,9 +27,10 @@ async function fetchBatchIdentities(identityChain, accounts = []) {
 }
 
 export default function useSearchByAddressIdentity(
-  identitySearch,
+  identitySearchInput,
   fromAccounts = [],
 ) {
+  const router = useRouter();
   const [identityMapping, setIdentityMapping] = useState({});
   const { identity: identityChain } = useChainSettings();
 
@@ -44,29 +51,38 @@ export default function useSearchByAddressIdentity(
     fetchIdentities();
   }, [fromAccounts, identityChain]);
 
+  useEffect(() => {
+    const querySearch = getRouterQuery(router, "search");
+    if (identitySearchInput !== querySearch) {
+      if (identitySearchInput) {
+        addRouterQuery(router, "search", identitySearchInput);
+      } else {
+        removeRouterQuery(router, "search");
+      }
+    }
+  }, [identitySearchInput, router]);
+
   return useMemo(() => {
-    if (!identitySearch) {
+    const search = (identitySearchInput || "").toLowerCase();
+
+    if (!search) {
       return fromAccounts;
     }
 
-    const lowerCaseSearch = identitySearch.toLowerCase();
-
     return fromAccounts.filter(({ delegator, items }) => {
       const addressMatch =
-        delegator.toLowerCase().includes(lowerCaseSearch) ||
-        items.some(({ delegatee }) =>
-          delegatee.toLowerCase().includes(lowerCaseSearch),
-        );
+        delegator.toLowerCase().includes(search) ||
+        items.some(({ delegatee }) => delegatee.toLowerCase().includes(search));
 
       const identityMatch =
-        identityMapping[delegator]?.includes(lowerCaseSearch) ||
+        identityMapping[delegator]?.includes(search) ||
         items.some(({ delegatee }) =>
-          identityMapping[delegatee]?.includes(lowerCaseSearch),
+          identityMapping[delegatee]?.includes(search),
         );
 
       return addressMatch || identityMatch;
     });
-  }, [identitySearch, fromAccounts, identityMapping]);
+  }, [identitySearchInput, fromAccounts, identityMapping]);
 }
 
 const Wrapper = styled.div`
@@ -89,11 +105,7 @@ const Input = styled.input`
   font-weight: 500;
 `;
 
-export function searchBox({ setSearch = noop }) {
-  const handleInputChange = (e) => {
-    setSearch(e.target.value);
-  };
-
+export function SearchBox({ setSearch = noop }) {
   return (
     <Wrapper>
       <div className="flex p-[8px] [&_path]:fill-textTertiary">
@@ -101,7 +113,7 @@ export function searchBox({ setSearch = noop }) {
       </div>
       <Input
         placeholder="Search by identity name or address"
-        onChange={handleInputChange}
+        onChange={(e) => setSearch(e.target.value)}
       />
     </Wrapper>
   );
