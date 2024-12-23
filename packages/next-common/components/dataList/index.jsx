@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { isNil } from "lodash-es";
-import { defaultPageSize } from "next-common/utils/constants";
 
 export default function DataList({
   columns = [],
@@ -22,8 +21,6 @@ export default function DataList({
   tree = false,
   treeKey = "children",
   treeData = [],
-  page = 1,
-  pageSize = defaultPageSize,
 }) {
   let content;
   const listRef = useRef();
@@ -49,7 +46,7 @@ export default function DataList({
 
   useEffect(() => {
     setExpandedRows(new Set());
-  }, [page, pageSize]);
+  }, [treeData]);
 
   function handleListOverflowSize() {
     const parentEl = listRef.current?.parentElement;
