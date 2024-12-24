@@ -17,47 +17,60 @@ import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { mergeMyVoteToFellowshipReferendaListItem } from "next-common/utils/gov2/list/mergeMyVoteToFellowshipReferendaListItem";
+import { useMyCollectivesVotes } from "next-common/hooks/referenda/useMyCollectivesVotes";
+import { usePageProps } from "next-common/context/page";
 
-export default function TrackPage({
-  posts,
-  title,
-  fellowshipTracks,
-  trackReferendaSummary,
-  period,
-}) {
-  const seoInfo = { title, desc: title };
-  const items = (posts.items || []).map((item) =>
-    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
-  );
-
+export default function TrackPage() {
   return (
     <CollectivesProvider section="fellowship">
-      <ListLayout
-        seoInfo={seoInfo}
-        title={`[${period.id}] Origin: ${period.origin}`}
-        description={period.description}
-        summary={
-          <Gov2TrackSummary
-            summary={trackReferendaSummary}
-            period={period}
-            titleExtra={`[${period.id}]`}
-          />
-        }
-      >
-        <PostList
-          title="List"
-          titleCount={posts.total}
-          titleExtra={<NewFellowshipProposalButton />}
-          category={businessCategory.fellowship}
-          items={items}
-          pagination={{
-            page: posts.page,
-            pageSize: posts.pageSize,
-            total: posts.total,
-          }}
-        />
-      </ListLayout>
+      <TrackPageImpl />
     </CollectivesProvider>
+  );
+}
+
+function TrackPageImpl() {
+  const { posts, title, fellowshipTracks, trackReferendaSummary, period } =
+    usePageProps();
+
+  const myVotes = useMyCollectivesVotes();
+
+  const seoInfo = { title, desc: title };
+
+  const items = (posts.items || []).map((item) => {
+    const normalizedItem = normalizeFellowshipReferendaListItem(
+      item,
+      fellowshipTracks,
+    );
+    return mergeMyVoteToFellowshipReferendaListItem(normalizedItem, myVotes);
+  });
+
+  return (
+    <ListLayout
+      seoInfo={seoInfo}
+      title={`[${period.id}] Origin: ${period.origin}`}
+      description={period.description}
+      summary={
+        <Gov2TrackSummary
+          summary={trackReferendaSummary}
+          period={period}
+          titleExtra={`[${period.id}]`}
+        />
+      }
+    >
+      <PostList
+        title="List"
+        titleCount={posts.total}
+        titleExtra={<NewFellowshipProposalButton />}
+        category={businessCategory.fellowship}
+        items={items}
+        pagination={{
+          page: posts.page,
+          pageSize: posts.pageSize,
+          total: posts.total,
+        }}
+      />
+    </ListLayout>
   );
 }
 

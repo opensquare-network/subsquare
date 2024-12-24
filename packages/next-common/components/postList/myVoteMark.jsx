@@ -11,16 +11,61 @@ import {
   Conviction,
   convictionToLockXNumber,
 } from "next-common/utils/referendumCommon";
+import { useListPageType } from "next-common/context/page";
+import { listPageCategory } from "next-common/utils/consts/business/category";
 
 export default function PostListMyVoteMark({ data }) {
-  const { decimals, symbol } = useChainSettings();
+  const chainSettings = useChainSettings();
   const { vote, delegations } = data?.myVote || {};
+  const type = useListPageType();
 
   if (isNil(vote)) {
     return null;
   }
 
   let items;
+  if (type === listPageCategory.FELLOWSHIP_REFERENDA) {
+    items = getFellowshipReferendaItems(vote);
+  } else if (type === listPageCategory.REFERENDA) {
+    items = getReferendaItems(vote, delegations, chainSettings);
+  }
+
+  if (isNil(items)) {
+    return null;
+  }
+
+  return (
+    <Tooltip
+      className="p-1"
+      content={
+        items?.length && (
+          <div>
+            {items?.map((item) => (
+              <div key={item.label}>
+                {item.label}: {item.value}
+              </div>
+            ))}
+          </div>
+        )
+      }
+    >
+      <div
+        className={cn(
+          "w-1.5 h-1.5 rounded-full",
+          vote.aye && "bg-green500",
+          vote.aye === false && "bg-red500",
+          (vote.isSplit || vote.isSplitAbstain) && "bg-neutral500",
+        )}
+      />
+    </Tooltip>
+  );
+}
+
+function getReferendaItems(vote, delegations, chainSettings) {
+  const { decimals, symbol } = chainSettings;
+
+  let items;
+
   if (vote.isSplit || vote.isSplitAbstain) {
     const conviction = convictionToLockXNumber(Conviction.None);
 
@@ -107,29 +152,18 @@ export default function PostListMyVoteMark({ data }) {
     ].filter(Boolean);
   }
 
-  return (
-    <Tooltip
-      className="p-1"
-      content={
-        items?.length && (
-          <div>
-            {items?.map((item) => (
-              <div key={item.label}>
-                {item.label}: {item.value}
-              </div>
-            ))}
-          </div>
-        )
-      }
-    >
-      <div
-        className={cn(
-          "w-1.5 h-1.5 rounded-full",
-          vote.aye && "bg-green500",
-          vote.aye === false && "bg-red500",
-          (vote.isSplit || vote.isSplitAbstain) && "bg-neutral500",
-        )}
-      />
-    </Tooltip>
-  );
+  return items;
+}
+
+function getFellowshipReferendaItems(vote) {
+  return [
+    {
+      label: "Vote",
+      value: vote?.aye === false ? "Nay" : "Aye",
+    },
+    {
+      label: "Votes",
+      value: vote.votes,
+    },
+  ];
 }
