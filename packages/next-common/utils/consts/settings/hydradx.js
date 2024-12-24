@@ -100,8 +100,10 @@ const hydradx = {
   multisigApiPrefix: "hydradx",
   description: "Making finance efficient, simple and unstoppable.",
   modules: mergeChainModules({
+    referenda: true,
     treasury: {
       bounties: false,
+      spends: true,
     },
   }),
   integrations: {
