@@ -7,7 +7,7 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import { startCase } from "lodash-es";
+import { find, startCase } from "lodash-es";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
@@ -18,6 +18,12 @@ import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normaliz
 import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
+import {
+  myReferendaDelegationsSelector,
+  myReferendaVotingSelector,
+} from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
+import { useSelector } from "react-redux";
+import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
 
 export default function TrackPage({
   posts,
@@ -27,11 +33,24 @@ export default function TrackPage({
   period,
   status,
 }) {
-  const router = useRouter();
+  useFetchMyReferendaVoting();
 
-  const items = (posts.items || []).map((item) =>
-    normalizeGov2ReferendaListItem(item, tracks),
-  );
+  const router = useRouter();
+  const voting = useSelector(myReferendaVotingSelector);
+  const delegations = useSelector(myReferendaDelegationsSelector);
+
+  const items = (posts.items || []).map((item) => {
+    const normalizedItem = normalizeGov2ReferendaListItem(item, tracks);
+    const trackVoting = find(voting, { trackId: item.track });
+    const trackDelegations = find(delegations, { trackId: item.track });
+
+    normalizedItem.vote = find(trackVoting?.votes, {
+      referendumIndex: item.referendumIndex,
+    })?.vote;
+    normalizedItem.delegations = trackDelegations;
+
+    return normalizedItem;
+  });
 
   function onStatusChange(item) {
     const q = router.query;
