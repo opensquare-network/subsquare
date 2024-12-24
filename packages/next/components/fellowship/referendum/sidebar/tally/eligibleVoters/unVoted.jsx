@@ -1,9 +1,42 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { NoData } from "./voted";
+import ListTable from "./listTable";
+import columns from "./columns";
+
+// mock data
+export const rows = [
+  {
+    rank: 1,
+    address: "14p4t6qgghkvnJiMVnxcXjQAG6hKUXfphQz2kTTPGxdQNyK2",
+    aye: null,
+    votes: 1,
+    className: "bg-neutral200",
+  },
+  {
+    rank: 6,
+    address: "14p4t6qgghkvnJiMVnxcXjQAG6hKUXfphQz2kTTPGxdQNyK2",
+    aye: null,
+    votes: 6,
+    className: "bg-neutral200",
+  },
+  {
+    rank: 2,
+    address: "14p4t6qgghkvnJiMVnxcXjQAG6hKUXfphQz2kTTPGxdQNyK2",
+    aye: null,
+    votes: 2,
+    className: "bg-neutral200",
+  },
+  {
+    rank: 5,
+    address: "14p4t6qgghkvnJiMVnxcXjQAG6hKUXfphQz2kTTPGxdQNyK2",
+    aye: null,
+    votes: 5,
+    className: "bg-neutral200",
+  },
+];
 
 export default function UnVoted() {
   const loading = false;
-  const total = 0;
+  const total = rows.length;
 
   return (
     <div>
@@ -16,9 +49,12 @@ export default function UnVoted() {
         </span>
       </TitleContainer>
 
-      {total === 0 && !loading && (
-        <NoData content={"All the voters have voted"} />
-      )}
+      <ListTable
+        rows={rows}
+        columns={columns}
+        loading={loading}
+        noDataText="All the voters have voted"
+      />
     </div>
   );
 }

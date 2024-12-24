@@ -14,7 +14,11 @@ function HeaderPrompt() {
 
 export default function EligibleVotersPopup({ setShowEligibleVoters }) {
   return (
-    <Popup title="Eligible Voters" onClose={() => setShowEligibleVoters(false)} className="h-[640px]">
+    <Popup
+      title="Eligible Voters"
+      onClose={() => setShowEligibleVoters(false)}
+      className="max-h-[640px] overflow-auto"
+    >
       <HeaderPrompt />
       <Voted />
       <UnVoted />
