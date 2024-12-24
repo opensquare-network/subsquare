@@ -1,12 +1,8 @@
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import Tooltip from "next-common/components/tooltip";
 
-export default function Period({ blocks = 0 }) {
+function PeriodCommon({ blocks = 0 }) {
   const estimatedBlocksTime = useEstimateBlocksTime(blocks);
-  if (blocks <= 0) {
-    return "∞";
-  }
-
   return (
     <div>
       <Tooltip side="top" content={`${blocks?.toLocaleString?.()} blocks`}>
@@ -14,4 +10,20 @@ export default function Period({ blocks = 0 }) {
       </Tooltip>
     </div>
   );
+}
+
+export function PromotionPeriod({ blocks = 0 }) {
+  if (blocks <= 0) {
+    return "-";
+  }
+
+  return <PeriodCommon blocks={blocks} />;
+}
+
+export default function Period({ blocks = 0 }) {
+  if (blocks <= 0) {
+    return "∞";
+  }
+
+  return <PeriodCommon blocks={blocks} />;
 }
