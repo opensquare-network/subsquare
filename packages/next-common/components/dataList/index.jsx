@@ -18,6 +18,9 @@ export default function DataList({
   bordered = false,
   highlightedIndexes = [],
   renderItem = defaultRenderItem,
+  tree = false,
+  treeKey = "children",
+  treeData = [],
 }) {
   let content;
   const listRef = useRef();
@@ -26,6 +29,29 @@ export default function DataList({
 
   const [listOverflow, setListOverflow] = useState(false);
   const screenSize = useScreenSize();
+  const [expandedRows, setExpandedRows] = useState(new Set());
+
+  // Toggle row expansion (expand/collapse)
+  const toggleRowExpansion = (rowIdx) => {
+    setExpandedRows((prev) => {
+      const newExpandedRows = new Set(prev);
+      if (newExpandedRows.has(rowIdx)) {
+        newExpandedRows.delete(rowIdx);
+      } else {
+        newExpandedRows.add(rowIdx);
+      }
+      return newExpandedRows;
+    });
+  };
+
+  useEffect(() => {
+    if (!tree || treeData.length === 0) {
+      return;
+    }
+
+    setExpandedRows(new Set());
+  }, [treeData, tree]);
+
   function handleListOverflowSize() {
     const parentEl = listRef.current?.parentElement;
     const listEl = listRef.current;
@@ -91,6 +117,11 @@ export default function DataList({
         columnStyles={columnStyles}
         columns={columns}
         highlightedIndexes={highlightedIndexes}
+        tree={tree}
+        treeKey={treeKey}
+        treeData={treeData}
+        expandedRows={expandedRows}
+        toggleRowExpansion={toggleRowExpansion}
       />
     );
   }
@@ -119,6 +150,7 @@ export default function DataList({
             "flex items-center pb-3",
             "border-b border-neutral300",
             navCollapsed ? "max-sm:hidden" : "max-md:hidden",
+            tree && "pl-[54px]",
           )}
         >
           {columns.map((column, idx) => (

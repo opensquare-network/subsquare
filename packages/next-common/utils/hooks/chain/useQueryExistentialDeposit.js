@@ -11,7 +11,7 @@ export default function useQueryExistentialDeposit() {
     }
 
     if (api.consts.balances?.existentialDeposit) {
-      setExistentialDeposit(api.consts.balances?.existentialDeposit.toNumber());
+      setExistentialDeposit(api.consts.balances?.existentialDeposit.toString());
     }
   }, [api]);
 

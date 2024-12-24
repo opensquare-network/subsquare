@@ -1,6 +1,7 @@
 import { cn } from "next-common/utils";
 import DataListItem from "./item";
 import { forwardRef } from "react";
+import TreeDataListBody from "./treeList/body";
 
 export default forwardRef(DataListBody);
 
@@ -16,6 +17,11 @@ function DataListBody(
     columnStyles = [],
     columns = [],
     highlightedIndexes = [],
+    tree,
+    treeKey,
+    treeData = [],
+    expandedRows,
+    toggleRowExpansion,
   },
   ref,
 ) {
@@ -28,20 +34,34 @@ function DataListBody(
         "divide-y divide-neutral300 border-b border-neutral300",
       )}
     >
-      {rows.map((row, idx) =>
-        renderItem(
-          ({ row }) => (
-            <DataListItem
-              row={row}
-              columnClassNames={columnClassNames}
-              columnStyles={columnStyles}
-              columns={columns}
-              highlighted={highlightedIndexes.includes(idx)}
-            />
+      {!tree &&
+        rows.map((_row, idx) =>
+          renderItem(
+            ({ row }) => (
+              <DataListItem
+                row={row}
+                columnClassNames={columnClassNames}
+                columnStyles={columnStyles}
+                columns={columns}
+                highlighted={highlightedIndexes.includes(idx)}
+              />
+            ),
+            idx,
+            rows,
           ),
-          idx,
-          rows,
-        ),
+        )}
+      {tree && (
+        <TreeDataListBody
+          rows={rows}
+          treeKey={treeKey}
+          treeData={treeData}
+          expandedRows={expandedRows}
+          toggleRowExpansion={toggleRowExpansion}
+          columnClassNames={columnClassNames}
+          columnStyles={columnStyles}
+          columns={columns}
+          highlightedIndexes={highlightedIndexes}
+        />
       )}
     </div>
   );

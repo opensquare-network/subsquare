@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.4.4
+
+date: 2024-12-23
+
+- [Medium] Support the workflow a treasury spend is approved by a democracy referendum.
+- Update navbar corner theme for Christmas and new year.
+- Remove coretime/assethub menu new tag.
+- Fix the USDT icon on the referendum detail page.
+- Integrate laos network.
+- Remove clearing votes limitation on account page for hydration.
+- Enable web3 mode for astar/shibuya.
+- [Refactor] Create a user balance context to hold user balance info to reduce redundant balance query.
+- [Fellowship] Add a warning on core page to show all members whose demotion periods are reached and can be demoted.
+- Fix tabs list component style.
+- Upgrade dependency to next.js.
+
 # 4.4.3
 
 date: 2024-12-18
