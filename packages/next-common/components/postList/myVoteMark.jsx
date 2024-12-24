@@ -52,8 +52,8 @@ export default function PostListMyVoteMark({ data }) {
       <div
         className={cn(
           "w-1.5 h-1.5 rounded-full",
-          vote.aye && "bg-green500",
-          vote.aye === false && "bg-red500",
+          (vote.aye || vote.isAye) && "bg-green500",
+          (vote.aye === false || vote.isAye === false) && "bg-red500",
           (vote.isSplit || vote.isSplitAbstain) && "bg-neutral500",
         )}
       />
@@ -159,7 +159,7 @@ function getFellowshipReferendaItems(vote) {
   return [
     {
       label: "Vote",
-      value: vote?.aye === false ? "Nay" : "Aye",
+      value: vote?.isAye === false ? "Nay" : "Aye",
     },
     {
       label: "Votes",
