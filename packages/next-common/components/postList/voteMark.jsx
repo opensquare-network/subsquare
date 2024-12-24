@@ -3,6 +3,7 @@ import Tooltip from "../tooltip";
 import { useChainSettings } from "next-common/context/chain";
 import { isNil } from "lodash-es";
 import BigNumber from "bignumber.js";
+import ValueDisplay from "../valueDisplay";
 
 export default function PostListVoteMark({ data }) {
   const { decimals, symbol } = useChainSettings();
@@ -29,7 +30,10 @@ export default function PostListVoteMark({ data }) {
       },
     ].filter(Boolean);
   } else {
+    const delegations = data?.delegations;
     const selfTotal = BigNumber(vote.balance).times(vote.conviction).toString();
+    const delegationsVotes = delegations?.votes || 0;
+    const total = BigNumber.sum(delegationsVotes, selfTotal);
 
     items = [
       {
@@ -38,21 +42,37 @@ export default function PostListVoteMark({ data }) {
       },
       {
         label: "Total",
-        value: "TODO",
+        value: (
+          <ValueDisplay value={toPrecision(total, decimals)} symbol={symbol} />
+        ),
       },
       {
         label: "Self",
-        value: `${Number(
-          toPrecision(selfTotal, decimals),
-        ).toLocaleString()} ${symbol} (${Number(
-          toPrecision(vote.balance, decimals),
-        ).toLocaleString()} ${symbol}*${vote.conviction}x)`,
+        value: (
+          <>
+            <ValueDisplay
+              value={toPrecision(selfTotal, decimals)}
+              symbol={symbol}
+            />
+            (
+            <ValueDisplay
+              value={toPrecision(vote.balance, decimals)}
+              symbol={symbol}
+            />
+            *{vote.conviction}x)
+          </>
+        ),
       },
-      {
+      !isNil(delegations) && {
         label: "Delegations",
-        value: "TODO",
+        value: (
+          <ValueDisplay
+            value={toPrecision(delegationsVotes, decimals)}
+            symbol={symbol}
+          />
+        ),
       },
-    ];
+    ].filter(Boolean);
   }
 
   return (

@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   isLoadingReferendaVotingSelector,
+  myReferendaDelegationsSelector,
   myReferendaVotingSelector,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
@@ -104,14 +105,17 @@ function WithFilterPostList({
 }) {
   const { tracks } = usePageProps();
   const voting = useSelector(myReferendaVotingSelector);
+  const delegations = useSelector(myReferendaDelegationsSelector);
 
   const items = (posts || []).map((item) => {
     const normalizedItem = normalizeGov2ReferendaListItem(item, tracks);
     const trackVoting = find(voting, { trackId: item.track });
+    const trackDelegations = find(delegations, { trackId: item.track });
 
     normalizedItem.vote = find(trackVoting?.votes, {
       referendumIndex: item.referendumIndex,
     })?.vote;
+    normalizedItem.delegations = trackDelegations;
 
     return normalizedItem;
   });
