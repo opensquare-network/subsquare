@@ -1,4 +1,4 @@
-import { find, flatten } from "lodash-es";
+import { flatten } from "lodash-es";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
@@ -15,6 +15,7 @@ import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 import { createStateContext, useAsync } from "react-use";
 import ReferendaListFilter from "./filter";
+import { mergeMyVoteToReferendaListItem } from "next-common/utils/gov2/list/mergeMyVoteToReferendaListItem";
 
 const [useUnVotedOnlyState, UnVotedOnlyStateProvider] =
   createStateContext(false);
@@ -109,15 +110,7 @@ function WithFilterPostList({
 
   const items = (posts || []).map((item) => {
     const normalizedItem = normalizeGov2ReferendaListItem(item, tracks);
-    const trackVoting = find(voting, { trackId: item.track });
-    const trackDelegations = find(delegations, { trackId: item.track });
-
-    normalizedItem.vote = find(trackVoting?.votes, {
-      referendumIndex: item.referendumIndex,
-    })?.vote;
-    normalizedItem.delegations = trackDelegations;
-
-    return normalizedItem;
+    return mergeMyVoteToReferendaListItem(normalizedItem, voting, delegations);
   });
 
   return (

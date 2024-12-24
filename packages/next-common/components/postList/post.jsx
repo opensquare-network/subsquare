@@ -42,7 +42,7 @@ import PostListTreasuryAllSpends from "./treasuryAllSpends";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import PostListAISummary from "./aiSummary";
 import TreasurySpendsCountDown from "next-common/components/postList/treasury/spends/countdown";
-import PostListVoteMark from "./voteMark";
+import PostListMyVoteMark from "./myVoteMark";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -425,7 +425,7 @@ export default function Post({ data, href, type }) {
           </Footer>
 
           <div className="flex items-center gap-x-2">
-            <PostListVoteMark data={data} category={type} />
+            <PostListMyVoteMark data={data} category={type} />
             {data.status && (
               <Tag
                 state={data.status}

@@ -7,7 +7,7 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import { find, startCase } from "lodash-es";
+import { startCase } from "lodash-es";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
@@ -24,6 +24,7 @@ import {
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { useSelector } from "react-redux";
 import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
+import { mergeMyVoteToReferendaListItem } from "next-common/utils/gov2/list/mergeMyVoteToReferendaListItem";
 
 export default function TrackPage({
   posts,
@@ -41,15 +42,7 @@ export default function TrackPage({
 
   const items = (posts.items || []).map((item) => {
     const normalizedItem = normalizeGov2ReferendaListItem(item, tracks);
-    const trackVoting = find(voting, { trackId: item.track });
-    const trackDelegations = find(delegations, { trackId: item.track });
-
-    normalizedItem.vote = find(trackVoting?.votes, {
-      referendumIndex: item.referendumIndex,
-    })?.vote;
-    normalizedItem.delegations = trackDelegations;
-
-    return normalizedItem;
+    return mergeMyVoteToReferendaListItem(normalizedItem, voting, delegations);
   });
 
   function onStatusChange(item) {

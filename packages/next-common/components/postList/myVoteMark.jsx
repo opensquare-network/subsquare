@@ -5,9 +5,9 @@ import { isNil } from "lodash-es";
 import BigNumber from "bignumber.js";
 import ValueDisplay from "../valueDisplay";
 
-export default function PostListVoteMark({ data }) {
+export default function PostListMyVoteMark({ data }) {
   const { decimals, symbol } = useChainSettings();
-  const vote = data?.vote;
+  const { vote, delegations } = data?.myVote || {};
 
   if (isNil(vote)) {
     return null;
@@ -45,10 +45,9 @@ export default function PostListVoteMark({ data }) {
       },
     ].filter(Boolean);
   } else {
-    const delegations = data?.delegations;
     const selfTotal = BigNumber(vote.balance).times(vote.conviction).toString();
     const delegationsVotes = delegations?.votes || 0;
-    const total = BigNumber.sum(delegationsVotes, selfTotal);
+    const total = BigNumber.sum(delegationsVotes, selfTotal).toString();
 
     items = [
       {
