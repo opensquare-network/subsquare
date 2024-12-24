@@ -1,6 +1,6 @@
-import { withCommonProps } from "next-common/lib";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import ProxyExplorer from "next-common/components/data/proxies";
+import { getServerSidePropsWithTracks } from "next-common/services/serverSide/serverSidePropsWithTracks";
 
 export default function ProxiesPage() {
   const title = "Proxy Explorer";
@@ -17,4 +17,4 @@ export default function ProxiesPage() {
   );
 }
 
-export const getServerSideProps = withCommonProps();
+export const getServerSideProps = getServerSidePropsWithTracks;
