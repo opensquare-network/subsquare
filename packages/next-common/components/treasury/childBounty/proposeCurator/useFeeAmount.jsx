@@ -12,7 +12,7 @@ function checkFeeAmount({ feeAmount, decimals, balance }) {
   }
 
   const amount = new BigNumber(feeAmount).times(Math.pow(10, decimals));
-  if (amount.isNaN() || amount.lte(0) || !amount.isInteger()) {
+  if (amount.isNaN() || amount.lt(0) || !amount.isInteger()) {
     throw new Error("Invalid fee");
   }
   if (balance && amount.gte(balance)) {
