@@ -45,6 +45,10 @@ export default function DataList({
   };
 
   useEffect(() => {
+    if (!tree || treeData.length === 0 || !expandedRows.size) {
+      return;
+    }
+
     setExpandedRows(new Set());
   }, [treeData]);
 
