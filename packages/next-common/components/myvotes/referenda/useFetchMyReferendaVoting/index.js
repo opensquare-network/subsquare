@@ -109,8 +109,6 @@ export default function useFetchMyReferendaVoting() {
     }
     queryVotesAndReferendaInfo(api, address)
       .then(({ voting, priors, delegations }) => {
-        // console.log(delegations);
-
         dispatch(setMyReferendaPriors(priors));
         dispatch(setMyReferendaVoting(voting));
         dispatch(setMyReferendaDelegations(delegations));
