@@ -10,6 +10,7 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
+import { useEstimateBlocksTime } from "next-common/utils/hooks";
 
 const PromoteFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
 
@@ -44,17 +45,20 @@ export default function Promote({ member }) {
   const gone = latestHeight - lastPromotion;
   const promotionPeriodComplete = gone >= promotionPeriod;
   const referendaNotCreated = relatedReferenda.length === 0;
+  const estimatedTime = useEstimateBlocksTime(promotionPeriod - gone);
 
   const canPromote = promotionPeriodComplete && myRankOk && referendaNotCreated;
 
   let tipContent = "";
-
   if (!myRankOk) {
     tipContent = "Only available to the members with rank >= 3";
   } else if (!promotionPeriodComplete) {
-    tipContent = `Available after ${promotionPeriod - gone} blocks`;
+    tipContent = `Promotion period is not reached`;
+    if (estimatedTime) {
+      tipContent = `${tipContent}, ${estimatedTime} remaining`;
+    }
   } else if (!referendaNotCreated) {
-    tipContent = `Referendum #${relatedReferenda[0].referendumIndex} is currently in progress`;
+    tipContent = `There are promotion referenda for this member on going`;
   }
 
   if (!canPromote) {
