@@ -18,15 +18,30 @@ export default function PostListVoteMark({ data }) {
     items = [
       {
         label: "Aye",
-        value: `${toPrecision(vote.ayeBalance, decimals)} ${symbol}`,
+        value: (
+          <ValueDisplay
+            value={toPrecision(vote.ayeBalance, decimals)}
+            symbol={symbol}
+          />
+        ),
       },
       {
         label: "Nay",
-        value: `${toPrecision(vote.nayBalance, decimals)} ${symbol}`,
+        value: (
+          <ValueDisplay
+            value={toPrecision(vote.nayBalance, decimals)}
+            symbol={symbol}
+          />
+        ),
       },
       !isNil(vote.abstainBalance) && {
         label: "Abstain",
-        value: `${toPrecision(vote.abstainBalance, decimals)} ${symbol}`,
+        value: (
+          <ValueDisplay
+            value={toPrecision(vote.abstainBalance, decimals)}
+            symbol={symbol}
+          />
+        ),
       },
     ].filter(Boolean);
   } else {
