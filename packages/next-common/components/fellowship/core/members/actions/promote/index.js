@@ -58,7 +58,7 @@ export default function Promote({ member }) {
       tipContent = `${tipContent}, ${estimatedTime} remaining`;
     }
   } else if (!isReferendaExisted) {
-    tipContent = `There are promotion referenda for this member on going`;
+    tipContent = "There are promotion referenda for this member on going";
   }
 
   if (!canPromote) {
