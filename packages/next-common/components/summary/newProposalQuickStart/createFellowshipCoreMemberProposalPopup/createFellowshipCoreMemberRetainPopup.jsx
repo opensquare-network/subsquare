@@ -25,7 +25,7 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
   const targetMember = find(members, { address: who });
 
   const { relatedReferenda, isLoading } = useRelatedRetentionReferenda(who);
-  const referendaAlreadyCreated = relatedReferenda.length > 0;
+  const isReferendaExisted = relatedReferenda.length > 0;
 
   const atRank = targetMember?.rank;
 
@@ -42,7 +42,7 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
-          disabled={isLoading || referendaAlreadyCreated}
+          disabled={isLoading || isReferendaExisted}
           who={who}
           enactment={enactment}
           rank={atRank}

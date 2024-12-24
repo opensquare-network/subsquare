@@ -25,7 +25,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const trackName = getTrackNameFromRank(toRank);
 
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(who);
-  const referendaAlreadyCreated = relatedReferenda.length > 0;
+  const isReferendaExisted = relatedReferenda.length > 0;
 
   return (
     <Popup title="New Promote Proposal" onClose={onClose}>
@@ -38,7 +38,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
-          disabled={isLoading || referendaAlreadyCreated}
+          disabled={isLoading || isReferendaExisted}
           tooltip
           who={who}
           enactment={enactment}
