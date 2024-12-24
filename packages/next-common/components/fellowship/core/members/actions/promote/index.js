@@ -10,7 +10,8 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
-import { useEstimateBlocksTime } from "next-common/utils/hooks";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import { estimateBlocksTime } from "next-common/utils";
 
 const PromoteFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
 
@@ -28,6 +29,7 @@ export default function Promote({ member }) {
 
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { fellowshipParams } = usePageProps();
+  const blockTime = useSelector(blockTimeSelector);
 
   if (rank >= 6) {
     return;
@@ -47,13 +49,13 @@ export default function Promote({ member }) {
   const promotionPeriodComplete = gone >= promotionPeriod;
   const isReferendaExisted = relatedReferenda.length === 0;
   const canPromote = promotionPeriodComplete && myRankOk && isReferendaExisted;
-  const estimatedTime = useEstimateBlocksTime(promotionPeriod - gone);
+  const estimatedTime = estimateBlocksTime(promotionPeriod - gone, blockTime);
 
   let tipContent = "";
   if (!myRankOk) {
     tipContent = "Only available to the members with rank >= 3";
   } else if (!promotionPeriodComplete) {
-    tipContent = `Promotion period is not reached`;
+    tipContent = "Promotion period is not reached";
     if (estimatedTime) {
       tipContent = `${tipContent}, ${estimatedTime} remaining`;
     }
