@@ -9,7 +9,7 @@ import {
 import { camelCase, upperFirst } from "lodash-es";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import useFetchMyReferendaVoting from "components/myvotes/referenda/useFetchMyReferendaVoting";
+import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { ReferendaList } from "next-common/components/referenda/list";
 

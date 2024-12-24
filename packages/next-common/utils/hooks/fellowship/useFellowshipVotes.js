@@ -31,7 +31,7 @@ function extractPollIndexAndAddress(storageKey = []) {
   };
 }
 
-function normalizeVotingRecord(optionalRecord) {
+export function normalizeVotingRecord(optionalRecord) {
   if (!optionalRecord.isSome) {
     return null;
   }
