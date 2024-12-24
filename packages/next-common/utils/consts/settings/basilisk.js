@@ -76,6 +76,7 @@ const basilisk = {
     referenda: true,
     treasury: {
       bounties: false,
+      spends: true,
     },
     council: {
       archived: true,
