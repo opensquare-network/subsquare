@@ -40,14 +40,14 @@ export default function Promote({ member }) {
   const me = find(members, { address });
   const myRankOk = me && me.rank >= 3;
 
-  const index = rankToIndex(rank);
+  const toRank = rank + 1;
+  const index = rankToIndex(toRank);
   const promotionPeriod = fellowshipParams.minPromotionPeriod[index];
   const gone = latestHeight - lastPromotion;
   const promotionPeriodComplete = gone >= promotionPeriod;
-  const referendaNotCreated = relatedReferenda.length === 0;
+  const isReferendaExisted = relatedReferenda.length === 0;
+  const canPromote = promotionPeriodComplete && myRankOk && isReferendaExisted;
   const estimatedTime = useEstimateBlocksTime(promotionPeriod - gone);
-
-  const canPromote = promotionPeriodComplete && myRankOk && referendaNotCreated;
 
   let tipContent = "";
   if (!myRankOk) {
@@ -57,7 +57,7 @@ export default function Promote({ member }) {
     if (estimatedTime) {
       tipContent = `${tipContent}, ${estimatedTime} remaining`;
     }
-  } else if (!referendaNotCreated) {
+  } else if (!isReferendaExisted) {
     tipContent = `There are promotion referenda for this member on going`;
   }
 
