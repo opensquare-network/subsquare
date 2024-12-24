@@ -7,17 +7,25 @@ import ProposeCurator from "next-common/components/treasury/childBounty/proposeC
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
+import { useMemo } from "react";
 
 export default function ChildBountySidebar() {
   const state = usePostState();
-  const isClaimable = ["PendingPayout", "Claimed"].includes(state);
   const { parentBountyId, index: childBountyId } = useOnchainData();
   const { result } = useSubStorage("childBounties", "childBounties", [
     parentBountyId,
     childBountyId,
   ]);
 
-  const { status } = result?.isSome && result?.unwrap?.() || {};
+  const { status } = (result?.isSome && result?.unwrap?.()) || {};
+
+  const isClaimable = useMemo(() => {
+    if (status?.isPendingPayout) {
+      return true;
+    }
+
+    return ["PendingPayout", "Claimed"].includes(state);
+  }, [state, status]);
 
   const showActionTip =
     status?.isCuratorProposed || status?.isPendingPayout || status?.isAdded;
