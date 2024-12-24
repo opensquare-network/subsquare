@@ -6,6 +6,7 @@ import {
   getRouterQuery,
   removeRouterQuery,
 } from "next-common/utils/router";
+import { isNil } from "lodash-es";
 
 function RankSelect({ ranks, rank, setRank, noneLabel }) {
   const options = (ranks || []).map((rank) => ({
@@ -27,8 +28,7 @@ function RankSelect({ ranks, rank, setRank, noneLabel }) {
         value={rank}
         options={options}
         onChange={(option) => {
-          const value = option.value === 0 ? "0" : option.value;
-          setRank(value);
+          setRank(option.value);
         }}
       />
     </div>
@@ -64,9 +64,9 @@ export function useRouterRankFilter(ranks = [], noneLabel = "All") {
         noneLabel={noneLabel}
         rank={rank}
         setRank={(rank) => {
-          rank
-            ? addRouterQuery(router, "rank", rank)
-            : removeRouterQuery(router, "rank");
+          isNil(rank)
+            ? removeRouterQuery(router, "rank")
+            : addRouterQuery(router, "rank", rank);
         }}
       />
     ),
