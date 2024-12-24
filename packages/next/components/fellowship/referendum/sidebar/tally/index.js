@@ -73,7 +73,7 @@ export default function FellowshipTally() {
         supportPercentage={supportPercentage}
       />
 
-      <Footer>
+      <Footer className="justify-end">
         <AllVotes />
         <EligibleVoters />
         {useVoteCall && <Calls />}
