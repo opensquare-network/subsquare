@@ -19,6 +19,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import { useApprovalPercentage, useSupportPercentage } from "next-common/context/post/gov2/percentage";
 import ConfirmationEstimation from "next-common/components/tally/confirmationEstimation";
+import EligibleVoters from "./eligibleVoters";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -72,8 +73,9 @@ export default function FellowshipTally() {
         supportPercentage={supportPercentage}
       />
 
-      <Footer>
+      <Footer className="justify-end">
         <AllVotes />
+        <EligibleVoters />
         {useVoteCall && <Calls />}
       </Footer>
     </SecondaryCardDetail>
