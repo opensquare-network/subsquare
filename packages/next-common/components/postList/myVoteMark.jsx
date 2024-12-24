@@ -1,9 +1,16 @@
+// packages/next-common/components/myvotes/referenda/normalizeVote.js
+// packages/next-common/components/myvotes/democracy/normalize.js
+
 import { cn, toPrecision } from "next-common/utils";
 import Tooltip from "../tooltip";
 import { useChainSettings } from "next-common/context/chain";
 import { isNil } from "lodash-es";
 import BigNumber from "bignumber.js";
 import ValueDisplay from "../valueDisplay";
+import {
+  Conviction,
+  convictionToLockXNumber,
+} from "next-common/utils/referendumCommon";
 
 export default function PostListMyVoteMark({ data }) {
   const { decimals, symbol } = useChainSettings();
@@ -14,13 +21,18 @@ export default function PostListMyVoteMark({ data }) {
   }
 
   let items;
-  if (vote.isSplitAbstain) {
+  if (vote.isSplit || vote.isSplitAbstain) {
+    const conviction = convictionToLockXNumber(Conviction.None);
+
     items = [
       {
         label: "Aye",
         value: (
           <ValueDisplay
-            value={toPrecision(vote.ayeBalance, decimals)}
+            value={toPrecision(
+              BigNumber(vote.ayeBalance).times(conviction),
+              decimals,
+            )}
             symbol={symbol}
           />
         ),
@@ -29,7 +41,10 @@ export default function PostListMyVoteMark({ data }) {
         label: "Nay",
         value: (
           <ValueDisplay
-            value={toPrecision(vote.nayBalance, decimals)}
+            value={toPrecision(
+              BigNumber(vote.nayBalance).times(conviction),
+              decimals,
+            )}
             symbol={symbol}
           />
         ),
@@ -38,7 +53,10 @@ export default function PostListMyVoteMark({ data }) {
         label: "Abstain",
         value: (
           <ValueDisplay
-            value={toPrecision(vote.abstainBalance, decimals)}
+            value={toPrecision(
+              BigNumber(vote.abstainBalance).times(conviction),
+              decimals,
+            )}
             symbol={symbol}
           />
         ),
@@ -107,9 +125,9 @@ export default function PostListMyVoteMark({ data }) {
       <div
         className={cn(
           "w-1.5 h-1.5 rounded-full",
-          vote?.aye && "bg-green500",
-          vote?.aye === false && "bg-red500",
-          vote?.isSplitAbstain && "bg-neutral500",
+          vote.aye && "bg-green500",
+          vote.aye === false && "bg-red500",
+          (vote.isSplit || vote.isSplitAbstain) && "bg-neutral500",
         )}
       />
     </Tooltip>
