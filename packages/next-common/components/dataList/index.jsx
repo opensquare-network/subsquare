@@ -45,8 +45,12 @@ export default function DataList({
   };
 
   useEffect(() => {
+    if (!tree || treeData.length === 0) {
+      return;
+    }
+
     setExpandedRows(new Set());
-  }, [treeData]);
+  }, [treeData, tree]);
 
   function handleListOverflowSize() {
     const parentEl = listRef.current?.parentElement;

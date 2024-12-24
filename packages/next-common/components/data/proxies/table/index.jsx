@@ -71,26 +71,18 @@ export default function ProxyExplorerTable() {
         className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
         bordered
         columnsDef={desktopColumns}
-        noDataText="No Data"
         data={dataList}
         loading={isLoading}
         treeKey="items"
-        tree={true}
-        page={page}
-        pageSize={defaultPageSize}
       />
 
       <TreeMapDataList
         className={cn("hidden", navCollapsed ? "max-sm:block" : "max-md:block")}
         bordered
         columnsDef={mobileColumns}
-        noDataText="No Data"
         data={dataList}
         loading={isLoading}
         treeKey="items"
-        tree={true}
-        page={page}
-        pageSize={defaultPageSize}
       />
       {total > 0 && pageComponent}
     </div>

@@ -5,6 +5,7 @@ export default function TreeMapDataList({
   data,
   columnsDef,
   getRowKey,
+  noDataText = "No Data",
   ...props
 }) {
   const rows = (data || []).map((item, index) => {
@@ -21,6 +22,7 @@ export default function TreeMapDataList({
       treeKey={treeKey}
       treeData={data}
       tree={true}
+      noDataText={noDataText}
     />
   );
 }
