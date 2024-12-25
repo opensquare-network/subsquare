@@ -20,6 +20,8 @@ import ShallowLink from "next-common/components/shallowLink";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemFilter } from "@osn/icons/subsquare";
+import { useRouter } from "next/router";
+import { cn } from "next-common/utils";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
@@ -150,6 +152,8 @@ function useEvidencesStat() {
 }
 
 export default function MemberWarnings({ className }) {
+  const router = useRouter();
+
   const { section } = useCollectivesContext();
   const {
     expiredMembersCount,
@@ -172,15 +176,21 @@ export default function MemberWarnings({ className }) {
     return null;
   }
 
+  const filterLinks = {
+    evidenceOnly: `/${section}/core?evidence_only=true`,
+    demotionPeriodAboutToExpire: `/${section}/core?period=demotion_period_about_to_expire`,
+    demotionPeriodExpired: `/${section}/core?period=demotion_period_expired`,
+    promotable: `/${section}/core?period=promotable`,
+  };
+
   const promptItems = [
     totalEvidences > 0 && (
       <>
         {evidencesToBeHandled} evidences to be handled in total{" "}
-        <ShallowLink
-          href={`/${section}/core?evidence_only=true`}
-          className="mx-1"
-        >
-          <PromptButton>{totalEvidences} evidences</PromptButton>
+        <ShallowLink href={filterLinks.evidenceOnly} className="mx-1">
+          <PromptButton isActive={router.asPath === filterLinks.evidenceOnly}>
+            {totalEvidences} evidences
+          </PromptButton>
         </ShallowLink>
         .
       </>
@@ -189,10 +199,14 @@ export default function MemberWarnings({ className }) {
       <>
         {"The demotion periods of "}
         <ShallowLink
-          href={`/${section}/core?period=demotion_period_about_to_expire`}
+          href={filterLinks.demotionPeriodAboutToExpire}
           className="mx-1"
         >
-          <PromptButton>{expiringMembersCount} members</PromptButton>
+          <PromptButton
+            isActive={router.asPath === filterLinks.demotionPeriodAboutToExpire}
+          >
+            {expiringMembersCount} members
+          </PromptButton>
         </ShallowLink>
         {" will expire in under 20 days."}
       </>
@@ -202,11 +216,12 @@ export default function MemberWarnings({ className }) {
 
     expiredMembersCount > 0 && (
       <>
-        <ShallowLink
-          href={`/${section}/core?period=demotion_period_expired`}
-          className="mr-1"
-        >
-          <PromptButton>{expiredMembersCount} members</PromptButton>
+        <ShallowLink href={filterLinks.demotionPeriodExpired} className="mr-1">
+          <PromptButton
+            isActive={router.asPath === filterLinks.demotionPeriodExpired}
+          >
+            {expiredMembersCount} members
+          </PromptButton>
         </ShallowLink>
         {" can be demoted."}
       </>
@@ -217,11 +232,10 @@ export default function MemberWarnings({ className }) {
     availablePromotionCount > 0 && (
       <>
         Promotions are available for{" "}
-        <ShallowLink
-          href={`/${section}/core?period=promotable`}
-          className="mx-1"
-        >
-          <PromptButton>{availablePromotionCount} members</PromptButton>
+        <ShallowLink href={filterLinks.promotable} className="mx-1">
+          <PromptButton isActive={router.asPath === filterLinks.promotable}>
+            {availablePromotionCount} members
+          </PromptButton>
         </ShallowLink>
         .
       </>
@@ -239,11 +253,19 @@ export default function MemberWarnings({ className }) {
   );
 }
 
-function PromptButton({ children }) {
+function PromptButton({ children, isActive }) {
   return (
     <SecondaryButton
       size="small"
-      iconLeft={<SystemFilter className="w-4 h-4 text-textTertiary" />}
+      iconLeft={
+        <SystemFilter
+          className={cn(
+            "w-4 h-4",
+            isActive ? "text-theme500" : "text-textTertiary",
+          )}
+        />
+      }
+      className={cn(isActive && "text-theme500")}
     >
       {children}
     </SecondaryButton>
