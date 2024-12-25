@@ -17,7 +17,10 @@ export default function PostListMyVoteMark({ data, category }) {
   let items;
   if (category === businessCategory.fellowship) {
     items = getMyVoteMarkFellowshipReferendaItems(vote);
-  } else if (category === businessCategory.openGovReferenda) {
+  } else if (
+    category === businessCategory.openGovReferenda ||
+    category === businessCategory.democracyReferenda
+  ) {
     items = getMyVoteMarkReferendaItems(vote, delegations, chainSettings);
   }
 

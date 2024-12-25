@@ -344,6 +344,11 @@ export default function Post({ data, href, type }) {
     businessCategory.ambassadorReferenda,
   ].includes(type);
 
+  const showVoteMark = [
+    businessCategory.democracyReferenda,
+    isGov2Referendum,
+  ].includes(type);
+
   return (
     <Wrapper>
       <ContentWrapper>
@@ -425,9 +430,7 @@ export default function Post({ data, href, type }) {
           </Footer>
 
           <div className="flex items-center gap-x-2">
-            {isGov2Referendum && (
-              <PostListMyVoteMark data={data} category={type} />
-            )}
+            {showVoteMark && <PostListMyVoteMark data={data} category={type} />}
             {data.status && (
               <Tag
                 state={data.status}
