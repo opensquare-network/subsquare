@@ -17,11 +17,9 @@ function useQueryMaxVoters() {
   }, [trackId, pallet]);
 
   const blockApi = useBlockApi(indexer?.blockHash);
-  const { value } = useCall(
-    blockApi?.query?.[pallet].memberCount,
-    [rank],
-    { cacheKey: `${pallet}-memberCount` },
-  );
+  const { value } = useCall(blockApi?.query?.[pallet].memberCount, [rank], {
+    cacheKey: `${pallet}-memberCount`,
+  });
 
   return value?.toString();
 }
