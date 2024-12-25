@@ -17,7 +17,7 @@ const rankColumn = {
   key: "rank",
   className: "w-[20px] block",
   style: { width: "20px" },
-  render: (_, row) => <FellowshipRankInfo key={"rank"} address={row.address} />,
+  render: (_, row) => <FellowshipRankInfo address={row.address} />,
 };
 
 const addressColumn = {
