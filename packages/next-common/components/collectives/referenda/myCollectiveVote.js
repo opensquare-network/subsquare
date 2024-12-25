@@ -1,5 +1,5 @@
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
-import { Title } from "@subsquare/next/components/myvotes/styled";
+import { Title } from "next-common/components/myvotes/styled";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useEffect, useState } from "react";
