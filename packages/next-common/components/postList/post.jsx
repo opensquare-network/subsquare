@@ -425,7 +425,9 @@ export default function Post({ data, href, type }) {
           </Footer>
 
           <div className="flex items-center gap-x-2">
-            <PostListMyVoteMark data={data} category={type} />
+            {isGov2Referendum && (
+              <PostListMyVoteMark data={data} category={type} />
+            )}
             {data.status && (
               <Tag
                 state={data.status}

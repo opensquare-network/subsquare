@@ -1,0 +1,53 @@
+import { isNil } from "lodash-es";
+import { useChainSettings } from "next-common/context/chain";
+import { cn } from "next-common/utils";
+import businessCategory from "next-common/utils/consts/business/category";
+import Tooltip from "../../tooltip";
+import { getMyVoteMarkFellowshipReferendaItems } from "./getMyVoteMarkFellowshipReferendaItems";
+import { getMyVoteMarkReferendaItems } from "./getMyVoteMarkReferendaItems";
+
+export default function PostListMyVoteMark({ data, category }) {
+  const chainSettings = useChainSettings();
+  const { vote, delegations } = data?.myVote || {};
+
+  if (isNil(vote)) {
+    return null;
+  }
+
+  let items;
+  if (category === businessCategory.fellowship) {
+    items = getMyVoteMarkFellowshipReferendaItems(vote);
+  } else if (category === businessCategory.openGovReferenda) {
+    items = getMyVoteMarkReferendaItems(vote, delegations, chainSettings);
+  }
+
+  if (isNil(items)) {
+    return null;
+  }
+
+  return (
+    <Tooltip
+      className="p-1"
+      content={
+        items?.length && (
+          <div>
+            {items?.map((item) => (
+              <div key={item.label}>
+                {item.label}: {item.value}
+              </div>
+            ))}
+          </div>
+        )
+      }
+    >
+      <div
+        className={cn(
+          "w-1.5 h-1.5 rounded-full",
+          (vote.aye || vote.isAye) && "bg-green500",
+          (vote.aye === false || vote.isAye === false) && "bg-red500",
+          (vote.isSplit || vote.isSplitAbstain) && "bg-neutral500",
+        )}
+      />
+    </Tooltip>
+  );
+}
