@@ -21,7 +21,7 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
 
     let filteredProxies = searchedProxies;
 
-    if (isMyRelated) {
+    if (isMyRelated && address) {
       filteredProxies = searchedProxies.filter(({ delegator, items }) => {
         return (
           delegator === address ||
@@ -35,7 +35,7 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
     });
 
     return filteredProxies;
-  }, [initialLoading, searchedProxies, isMyRelated]);
+  }, [initialLoading, searchedProxies, isMyRelated, address]);
 
   return { filteredProxies, total: filteredProxies?.length, isLoading };
 }
