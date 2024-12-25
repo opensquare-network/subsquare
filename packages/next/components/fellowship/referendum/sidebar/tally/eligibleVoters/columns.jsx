@@ -6,24 +6,22 @@ import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellows
 function FellowshipRankInfo({ address }) {
   const rank = useFellowshipMemberRank(address, "fellowshipCollective");
 
-  if (isNil(rank)) {
-    return null;
-  }
-
   return <FellowshipRank rank={rank} />;
 }
 
 const rankColumn = {
   key: "rank",
-  className: "w-[20px] block",
-  style: { width: "20px" },
-  render: (_, row) => <FellowshipRankInfo address={row.address} />,
+  className: "w-5",
+  render: (_, row) => (
+    <div className="w-5 h-5">
+      <FellowshipRankInfo address={row.address} />
+    </div>
+  ),
 };
 
 const addressColumn = {
   key: "address",
-  className: "text-left",
-  style: { minWidth: "140px" },
+  className: "text-left min-w-[140px]",
   render: (address) => <AddressUser add={address} />,
 };
 
