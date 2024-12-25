@@ -17,7 +17,7 @@ import { useChainSettings } from "../../context/chain";
 import { smcss } from "../../utils/responsive";
 import Gov2TrackTag from "../gov2/trackTag";
 import DecisionCountdown from "../gov2/postList/decisionCountdown";
-import { gov2State } from "../../utils/consts/state";
+import { gov2State, gov2VotingState } from "../../utils/consts/state";
 import ConfirmCountdown from "../gov2/postList/confirmCountdown";
 import ValueDisplay from "../valueDisplay";
 import ListPostTitle from "./postTitle";
@@ -345,7 +345,8 @@ export default function Post({ data, href, type }) {
   ].includes(type);
 
   const showVoteMark =
-    isGov2Referendum || businessCategory.democracyReferenda === type;
+    (isGov2Referendum || businessCategory.democracyReferenda === type) &&
+    gov2VotingState.includes(data?.status);
 
   return (
     <Wrapper>
