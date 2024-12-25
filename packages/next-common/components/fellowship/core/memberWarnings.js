@@ -18,6 +18,8 @@ import dynamic from "next/dynamic";
 import BillBoardPanel from "next-common/components/billBoardPanel";
 import ShallowLink from "next-common/components/shallowLink";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import SecondaryButton from "next-common/lib/button/secondary";
+import { SystemFilter } from "@osn/icons/subsquare";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
@@ -174,8 +176,11 @@ export default function MemberWarnings({ className }) {
     totalEvidences > 0 && (
       <>
         {evidencesToBeHandled} evidences to be handled in total{" "}
-        <ShallowLink href={`/${section}/core?evidence_only=true`}>
-          {totalEvidences} evidences
+        <ShallowLink
+          href={`/${section}/core?evidence_only=true`}
+          className="mx-1"
+        >
+          <PromptButton>{totalEvidences} evidences</PromptButton>
         </ShallowLink>
         .
       </>
@@ -185,8 +190,9 @@ export default function MemberWarnings({ className }) {
         {"The demotion periods of "}
         <ShallowLink
           href={`/${section}/core?period=demotion_period_about_to_expire`}
+          className="mx-1"
         >
-          {expiringMembersCount} members
+          <PromptButton>{expiringMembersCount} members</PromptButton>
         </ShallowLink>
         {" will expire in under 20 days."}
       </>
@@ -196,8 +202,11 @@ export default function MemberWarnings({ className }) {
 
     expiredMembersCount > 0 && (
       <>
-        <ShallowLink href={`/${section}/core?period=demotion_period_expired`}>
-          {expiredMembersCount} members
+        <ShallowLink
+          href={`/${section}/core?period=demotion_period_expired`}
+          className="mr-1"
+        >
+          <PromptButton>{expiredMembersCount} members</PromptButton>
         </ShallowLink>
         {" can be demoted."}
       </>
@@ -208,8 +217,11 @@ export default function MemberWarnings({ className }) {
     availablePromotionCount > 0 && (
       <>
         Promotions are available for{" "}
-        <ShallowLink href={`/${section}/core?period=promotable`}>
-          {availablePromotionCount} members
+        <ShallowLink
+          href={`/${section}/core?period=promotable`}
+          className="mx-1"
+        >
+          <PromptButton>{availablePromotionCount} members</PromptButton>
         </ShallowLink>
         .
       </>
@@ -224,5 +236,16 @@ export default function MemberWarnings({ className }) {
       }
       items={promptItems}
     />
+  );
+}
+
+function PromptButton({ children }) {
+  return (
+    <SecondaryButton
+      size="small"
+      iconLeft={<SystemFilter className="w-4 h-4 text-textTertiary" />}
+    >
+      {children}
+    </SecondaryButton>
   );
 }
