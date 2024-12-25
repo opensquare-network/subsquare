@@ -13,7 +13,6 @@ import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainD
 
 export default function DemocracyReferendaPage({ posts, chain, summary }) {
   useSubMyDemocracyVoting();
-
   const voting = useSelector(myDemocracyVotingSelector);
 
   const items = (posts.items || []).map((item) => {
