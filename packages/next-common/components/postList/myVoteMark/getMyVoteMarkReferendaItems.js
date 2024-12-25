@@ -57,7 +57,8 @@ export function getMyVoteMarkReferendaItems(vote, delegations, chainSettings) {
       },
     ].filter(Boolean);
   } else {
-    const selfTotal = BigNumber(vote.balance).times(vote.conviction).toString();
+    const conviction = convictionToLockXNumber(vote.conviction);
+    const selfTotal = BigNumber(vote.balance).times(conviction).toString();
     const delegationsVotes = delegations?.votes || 0;
     const total = BigNumber.sum(delegationsVotes, selfTotal).toString();
 
@@ -85,7 +86,7 @@ export function getMyVoteMarkReferendaItems(vote, delegations, chainSettings) {
               value={toPrecision(vote.balance, decimals)}
               symbol={symbol}
             />
-            *{vote.conviction}x)
+            *{conviction}x)
           </>
         ),
       },
