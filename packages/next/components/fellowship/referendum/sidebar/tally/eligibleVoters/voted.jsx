@@ -2,20 +2,13 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Divider from "next-common/components/styled/layout/divider";
 import ListTable from "./listTable";
 import columns from "./columns";
-import { useSelector } from "react-redux";
-import {
-  fellowshipVotesSelector,
-  isLoadingFellowshipVotesSelector,
-} from "next-common/store/reducers/fellowship/votes";
 
-export default function Voted() {
-  const { allAye, allNay } = useSelector(fellowshipVotesSelector);
-  const isLoadingVotes = useSelector(isLoadingFellowshipVotesSelector);
-  const votedRows = [...allAye, ...allNay]?.map((item) => {
+export default function Voted({ votedMembers, isLoading }) {
+  const votedRows = votedMembers?.map((item) => {
     return {
       address: item?.address,
       isAye: item?.isAye,
-      votes: item?.votes,
+      votes: item?.votes || 1, // todo
       className: item?.isAye ? "bg-green100" : "bg-red100",
     };
   });
@@ -28,7 +21,7 @@ export default function Voted() {
         <span>
           Voted
           <span className="text-textTertiary text14Medium ml-1">
-            {!isLoadingVotes && total}
+            {!isLoading && total}
           </span>
         </span>
       </TitleContainer>
@@ -36,7 +29,7 @@ export default function Voted() {
       <ListTable
         rows={votedRows}
         columns={columns}
-        loading={isLoadingVotes}
+        loading={isLoading}
         noDataText="No voter vote yet"
       />
 

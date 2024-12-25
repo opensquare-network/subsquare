@@ -2,6 +2,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import UnVoted from "./unVoted";
 import Voted from "./voted";
+import useCollectiveEligibleVoters from "next-common/utils/hooks/collectives/useCollectiveEligibleVoters";
 
 function HeaderPrompt() {
   return (
@@ -13,6 +14,9 @@ function HeaderPrompt() {
 }
 
 export default function EligibleVotersPopup({ setShowEligibleVoters }) {
+  const { votedMembers, unVotedMembers, isLoading } =
+    useCollectiveEligibleVoters();
+
   return (
     <Popup
       title="Eligible Voters"
@@ -20,8 +24,8 @@ export default function EligibleVotersPopup({ setShowEligibleVoters }) {
       className="max-h-[640px] overflow-auto"
     >
       <HeaderPrompt />
-      <Voted />
-      <UnVoted />
+      <Voted votedMembers={votedMembers} isLoading={isLoading} />
+      <UnVoted unVotedMembers={unVotedMembers} isLoading={isLoading} />
     </Popup>
   );
 }
