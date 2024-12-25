@@ -15,7 +15,7 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
   const filteredProxies = useMemo(() => {
     setIsLoading(true);
 
-    if (initialLoading || !address) {
+    if (initialLoading) {
       return;
     }
 
@@ -35,7 +35,7 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
     });
 
     return filteredProxies;
-  }, [initialLoading, searchedProxies, isMyRelated, address]);
+  }, [initialLoading, searchedProxies, isMyRelated]);
 
   return { filteredProxies, total: filteredProxies?.length, isLoading };
 }

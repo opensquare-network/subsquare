@@ -5,8 +5,14 @@ import {
   removeRouterQuery,
 } from "next-common/utils/router";
 import Toggle from "next-common/components/toggle";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function MyRelatedSwitch({ isOn, setIsOn }) {
+  const address = useRealAddress();
+  if (!address) {
+    return null;
+  }
+
   return (
     <div className="flex items-center gap-[8px]">
       <span className="text-textSecondary text12Medium whitespace-nowrap">
