@@ -21,11 +21,13 @@ export default function EligibleVotersPopup({ setShowEligibleVoters }) {
     <Popup
       title="Eligible Voters"
       onClose={() => setShowEligibleVoters(false)}
-      className="max-h-[640px] overflow-auto"
+      className="max-h-[640px]"
     >
       <HeaderPrompt />
-      <Voted votedMembers={votedMembers} isLoading={isLoading} />
-      <UnVoted unVotedMembers={unVotedMembers} isLoading={isLoading} />
+      <div className="max-h-[450px] overflow-auto">
+        <Voted votedMembers={votedMembers} isLoading={isLoading} />
+        <UnVoted unVotedMembers={unVotedMembers} isLoading={isLoading} />
+      </div>
     </Popup>
   );
 }
