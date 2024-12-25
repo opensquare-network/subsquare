@@ -21,11 +21,11 @@ export default function useSubscribeIdentityDeposit(address) {
           return;
         }
 
-        const displayName =
-          identity.unwrap()?.info?.display?.asRaw?.toHuman() || "";
+        const unwrapped = identity.unwrap();
+        const identityOf = Array.isArray(unwrapped) ? unwrapped[0] : unwrapped;
+        const displayName = identityOf?.info?.display?.asRaw?.toHuman() || "";
         setIdentityName(displayName);
-
-        setIdentityDeposit(identity.unwrap().deposit.toString() || "0");
+        setIdentityDeposit(identityOf.deposit.toString() || "0");
       })
       .then((result) => (unsub = result));
 
