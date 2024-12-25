@@ -43,6 +43,7 @@ import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import PostListAISummary from "./aiSummary";
 import TreasurySpendsCountDown from "next-common/components/postList/treasury/spends/countdown";
 import PostListMyVoteMark from "./myVoteMark";
+import { referendumState } from "next-common/utils/consts/referendum";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -345,8 +346,9 @@ export default function Post({ data, href, type }) {
   ].includes(type);
 
   const showVoteMark =
-    (isGov2Referendum || businessCategory.democracyReferenda === type) &&
-    gov2VotingState.includes(data?.status);
+    (isGov2Referendum && gov2VotingState.includes(data?.status)) ||
+    (businessCategory.democracyReferenda === type &&
+      data?.status === referendumState.Started);
 
   return (
     <Wrapper>
