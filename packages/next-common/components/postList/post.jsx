@@ -344,10 +344,8 @@ export default function Post({ data, href, type }) {
     businessCategory.ambassadorReferenda,
   ].includes(type);
 
-  const showVoteMark = [
-    businessCategory.democracyReferenda,
-    isGov2Referendum,
-  ].includes(type);
+  const showVoteMark =
+    isGov2Referendum || businessCategory.democracyReferenda === type;
 
   return (
     <Wrapper>
