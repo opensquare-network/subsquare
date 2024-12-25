@@ -9,43 +9,61 @@ import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
+import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import { estimateBlocksTime } from "next-common/utils";
 
 const PromoteFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
 
 export default function Promote({ member }) {
   const [showPromotePopup, setShowPromotePopup] = useState(false);
   const address = useRealAddress();
-  const { rank, status: { lastPromotion } = {} } = member;
+  const {
+    rank,
+    status: { lastPromotion } = {},
+    address: memberAddress,
+  } = member;
+  const { relatedReferenda } = useRelatedPromotionReferenda(memberAddress);
 
   const { members } = useFellowshipCoreMembers();
 
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { fellowshipParams } = usePageProps();
+  const blockTime = useSelector(blockTimeSelector);
 
   if (rank >= 6) {
     return;
   }
-  if (!CollectivesPromoteTracks[member?.rank + 1]) { // only show when we have the corresponding track
+  if (!CollectivesPromoteTracks[member?.rank + 1]) {
+    // only show when we have the corresponding track
     return null;
   }
 
   const me = find(members, { address });
   const myRankOk = me && me.rank >= 3;
 
-  const index = rankToIndex(rank);
+  const toRank = rank + 1;
+  const index = rankToIndex(toRank);
   const promotionPeriod = fellowshipParams.minPromotionPeriod[index];
   const gone = latestHeight - lastPromotion;
   const promotionPeriodComplete = gone >= promotionPeriod;
-  const canPromote = promotionPeriodComplete && myRankOk;
-  if (!canPromote) {
-    let tipContent = "";
+  const isReferendaExisted = relatedReferenda.length === 0;
+  const canPromote = promotionPeriodComplete && myRankOk && isReferendaExisted;
+  const estimatedTime = estimateBlocksTime(promotionPeriod - gone, blockTime);
 
-    if (!myRankOk) {
-      tipContent = "Only available to the members with rank >= 3";
-    } else if (!promotionPeriodComplete) {
-      tipContent = `Available after ${promotionPeriod - gone} blocks`;
+  let tipContent = "";
+  if (!myRankOk) {
+    tipContent = "Only available to the members with rank >= 3";
+  } else if (!promotionPeriodComplete) {
+    tipContent = "Promotion period is not reached";
+    if (estimatedTime) {
+      tipContent = `${tipContent}, ${estimatedTime} remaining`;
     }
+  } else if (!isReferendaExisted) {
+    tipContent = "There are promotion referenda for this member on going";
+  }
 
+  if (!canPromote) {
     return (
       <Tooltip content={tipContent}>
         <span className="text14Medium text-textDisabled">Promote</span>

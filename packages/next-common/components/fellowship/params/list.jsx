@@ -2,7 +2,9 @@ import DataList from "next-common/components/dataList";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
-import Period from "next-common/components/fellowship/params/period";
+import Period, {
+  PromotionPeriod,
+} from "next-common/components/fellowship/params/period";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
 const columns = [
@@ -52,7 +54,7 @@ export default function FellowshipParamsList({ rank, params }) {
         symbol={symbol}
       />,
       <Period key={`demotion-period-${idx}`} blocks={demotionPeriod[idx]} />,
-      <Period
+      <PromotionPeriod
         key={`min-promotion-period-${idx}`}
         blocks={minPromotionPeriod[idx]}
       />,
