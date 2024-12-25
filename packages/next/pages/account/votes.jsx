@@ -10,7 +10,7 @@ import {
 import { useChainSettings } from "next-common/context/chain";
 import { cn } from "next-common/utils";
 import AccountSubTabs from "next-common/components/overview/account/subTabs";
-import ModuleVotes from "components/myvotes/moduleVotes";
+import ModuleVotes from "next-common/components/myvotes/moduleVotes";
 
 function MyVoteLayout({ children }) {
   const {

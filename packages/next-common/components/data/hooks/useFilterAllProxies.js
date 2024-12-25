@@ -15,13 +15,13 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
   const filteredProxies = useMemo(() => {
     setIsLoading(true);
 
-    if (initialLoading || !address) {
+    if (initialLoading) {
       return;
     }
 
     let filteredProxies = searchedProxies;
 
-    if (isMyRelated) {
+    if (isMyRelated && address) {
       filteredProxies = searchedProxies.filter(({ delegator, items }) => {
         return (
           delegator === address ||

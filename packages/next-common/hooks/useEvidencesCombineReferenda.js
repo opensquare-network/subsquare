@@ -23,7 +23,7 @@ function useApproveAndPromoteReferenda() {
         if (section !== pallet) {
           return;
         }
-        if (!["approve", "promote"].includes(method)) {
+        if (!["approve", "promote", "promoteFast"].includes(method)) {
           return;
         }
 
