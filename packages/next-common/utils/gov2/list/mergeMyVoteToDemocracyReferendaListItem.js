@@ -1,22 +1,30 @@
-import { find } from "lodash-es";
+// packages/next-common/components/myvotes/democracy/useSubMyDemocracyVoting/index.js
 
-export function mergeMyVoteToDemocracyReferendaListItem(
-  item,
-  voting = [],
-  delegations,
-) {
+import { find, pick } from "lodash-es";
+
+export function mergeMyVoteToDemocracyReferendaListItem(item, voting = {}) {
   const myVote = {};
 
-  const vote = find(voting, {
-    referendumIndex: item.referendumIndex,
-  })?.vote;
+  const votes = voting.isDelegating ? voting.delegatedVotes : voting.votes;
+
+  const vote = find(votes, { referendumIndex: item.referendumIndex })?.vote;
 
   if (vote) {
-    myVote.vote = vote;
+    let resolvedVote;
+    if (voting.isDelegating) {
+      resolvedVote = {
+        ...vote,
+        ...pick(voting, ["balance", "conviction"]),
+      };
+    } else {
+      resolvedVote = vote;
+    }
+
+    myVote.vote = resolvedVote;
   }
 
-  if (delegations) {
-    myVote.delegations = delegations;
+  if (voting.delegations) {
+    myVote.delegations = voting.delegations;
   }
 
   item.myVote = myVote;
