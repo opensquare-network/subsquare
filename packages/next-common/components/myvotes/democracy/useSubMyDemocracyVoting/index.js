@@ -11,9 +11,15 @@ async function getDirectVotesInfo(voting, api) {
   const direct = voting.asDirect;
   const richVotes = await getDemocracyRichVotes(api, voting);
 
+  const delegations = {
+    votes: direct.delegations.votes.toString(),
+    capital: direct.delegations.capital.toString(),
+  };
+
   return {
     isDirect: true,
     votes: richVotes,
+    delegations,
     prior: normalizePrior(direct.prior),
   };
 }

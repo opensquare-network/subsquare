@@ -6,11 +6,20 @@ import businessCategory from "next-common/utils/consts/business/category";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import useSubMyDemocracyVoting from "next-common/components/myvotes/democracy/useSubMyDemocracyVoting";
+import { useSelector } from "react-redux";
+import { mergeMyVoteToDemocracyReferendaListItem } from "next-common/utils/gov2/list/mergeMyVoteToDemocracyReferendaListItem";
+import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 
 export default function DemocracyReferendaPage({ posts, chain, summary }) {
-  const items = (posts.items || []).map((item) =>
-    normalizeReferendaListItem(chain, item),
-  );
+  useSubMyDemocracyVoting();
+
+  const voting = useSelector(myDemocracyVotingSelector);
+
+  const items = (posts.items || []).map((item) => {
+    const normalizedItem = normalizeReferendaListItem(chain, item);
+    return mergeMyVoteToDemocracyReferendaListItem(normalizedItem, voting);
+  });
   const category = businessCategory.democracyReferenda;
   const seoInfo = {
     title: category,
