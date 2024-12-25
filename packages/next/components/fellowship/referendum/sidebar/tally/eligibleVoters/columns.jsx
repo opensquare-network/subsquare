@@ -1,11 +1,23 @@
 import AddressUser from "next-common/components/user/addressUser";
 import FellowshipRank from "next-common/components/fellowship/rank";
+import { isNil } from "lodash-es";
+import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
+
+function FellowshipRankInfo({ address }) {
+  const rank = useFellowshipMemberRank(address, "fellowshipCollective");
+
+  if (isNil(rank)) {
+    return null;
+  }
+
+  return <FellowshipRank rank={rank} />;
+}
 
 const rankColumn = {
   key: "rank",
   className: "w-[20px] block",
   style: { width: "20px" },
-  render: (rank) => <FellowshipRank rank={rank} />,
+  render: (_, row) => <FellowshipRankInfo key={"rank"} address={row.address} />,
 };
 
 const addressColumn = {
@@ -16,18 +28,18 @@ const addressColumn = {
 };
 
 const ayeColumn = {
-  key: "aye",
+  key: "isAye",
   className: "text-left w-[140px]",
-  render: (aye) => {
-    if (aye === 1) {
-      return <span className="text-green500">Aye</span>;
+  render: (isAye) => {
+    if (isNil(isAye)) {
+      return <span className="text-textDisabled">-</span>;
     }
 
-    if (aye === 0) {
-      return <span className="text-red500">Nay</span>;
-    }
-
-    return <span className="text-textDisabled">-</span>;
+    return isAye ? (
+      <span className="text-green500">Aye</span>
+    ) : (
+      <span className="text-red500">Nay</span>
+    );
   },
 };
 
