@@ -5,6 +5,10 @@ export function mergeMyVoteToReferendaListItem(
   voting = [],
   delegations = [],
 ) {
+  if (!voting.length && !delegations.length) {
+    return item;
+  }
+
   const myVote = {};
 
   const trackVoting = find(voting, { trackId: item.track });
@@ -14,9 +18,11 @@ export function mergeMyVoteToReferendaListItem(
     ? trackVoting?.delegatedVotes
     : trackVoting?.votes;
 
-  const vote = find(votes, {
-    referendumIndex: item.referendumIndex,
-  })?.vote;
+  if (!votes?.length) {
+    return item;
+  }
+
+  const vote = find(votes, { referendumIndex: item.referendumIndex })?.vote;
 
   if (vote) {
     myVote.vote = vote;

@@ -1,6 +1,10 @@
 import { find } from "lodash-es";
 
 export function mergeMyVoteToFellowshipReferendaListItem(item, votes = []) {
+  if (!votes.length) {
+    return item;
+  }
+
   const myVote = {};
 
   const vote = find(votes, {
