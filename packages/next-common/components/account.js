@@ -1,11 +1,6 @@
-import { useEffect } from "react";
 import styled from "styled-components";
-import { useState } from "react";
-import { encodeAddressToChain } from "../services/address";
-import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
 import { addressEllipsis } from "../utils";
-import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { allWallets } from "next-common/utils/consts/connect";
@@ -13,6 +8,7 @@ import { find } from "lodash-es";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { useConnectors } from "wagmi";
 import AddressAvatar from "./user/addressAvatar";
+import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 
 function WalletIcon({ wallet: walletName }) {
   const wallet = find(allWallets, { extensionName: walletName });
@@ -59,24 +55,12 @@ const NameWrapper = styled.div`
 `;
 
 export default function Account({ account, showFullAddress = false }) {
-  const { identity: identityChain } = useChainSettings();
-  const [identity, setIdentity] = useState(null);
-
+  const { identity, hasIdentity } = useIdentityInfo(account?.address);
   const address = normalizeAddress(account?.address);
   const maybeEvmAddress = tryConvertToEvmAddress(address);
   const wallet = account?.meta?.source;
 
   const isEthereum = account?.type === ChainTypes.ETHEREUM;
-
-  useEffect(() => {
-    setIdentity(null);
-    if (account?.address) {
-      fetchIdentity(
-        identityChain,
-        encodeAddressToChain(account.address, identityChain),
-      ).then((identity) => setIdentity(identity));
-    }
-  }, [account?.address, identityChain]);
 
   const addressHint = showFullAddress
     ? maybeEvmAddress
@@ -94,7 +78,7 @@ export default function Account({ account, showFullAddress = false }) {
       </AvatarWrapper>
       <NameWrapper className="truncate">
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
-        {identity && identity?.info?.status !== "NO_ID" ? (
+        {hasIdentity ? (
           <>
             <Identity identity={identity} />
             <div className="truncate">{addressHint}</div>

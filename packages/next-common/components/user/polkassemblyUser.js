@@ -21,7 +21,7 @@ function PolkassemblyUser({
   showAvatar = true,
 }) {
   const address = user?.address;
-  const [identity, hasIdentity] = useIdentityInfo(address);
+  const { identity, hasIdentity } = useIdentityInfo(address);
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
 
   if (!user) {
