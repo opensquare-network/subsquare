@@ -20,8 +20,8 @@ function AllVotes() {
       {showAllVotes && (
         <AllVotesPopup
           setShowVoteList={setShowAllVotes}
-          allAye={allAye}
-          allNay={allNay}
+          allAye={orderBy(allAye, ["votes"], ["desc"])}
+          allNay={orderBy(allNay, ["votes"], ["desc"])}
           isLoadingVotes={isLoadingVotes}
         />
       )}
