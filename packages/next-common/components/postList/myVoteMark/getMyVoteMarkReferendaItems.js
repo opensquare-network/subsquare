@@ -11,7 +11,7 @@ import {
 import ValueDisplay from "../../valueDisplay";
 
 export function getMyVoteMarkReferendaItems(myVote, chainSettings) {
-  const { vote } = myVote || {};
+  const { vote, isDelegating } = myVote || {};
 
   if (!vote) {
     return null;
@@ -22,7 +22,11 @@ export function getMyVoteMarkReferendaItems(myVote, chainSettings) {
   if (vote.isSplit || vote.isSplitAbstain) {
     items = getSplitOrSplitAbstainItems(myVote, chainSettings);
   } else {
-    items = getStandardItems(myVote, chainSettings);
+    if (isDelegating) {
+      items = getStandardDelegatingItems(myVote, chainSettings);
+    } else {
+      items = getStandardCastingItems(myVote, chainSettings);
+    }
   }
 
   return items;
@@ -73,25 +77,19 @@ function getSplitOrSplitAbstainItems(myVote, chainSettings) {
   ];
 }
 
-function getStandardItems(myVote, chainSettings) {
+function getStandardCastingItems(myVote, chainSettings) {
   const { decimals, symbol } = chainSettings;
-  const { vote, delegations, isDelegating } = myVote;
+  const { vote, delegations } = myVote;
 
   const conviction = convictionToLockXNumber(vote.conviction);
   const selfTotal = BigNumber(vote.balance).times(conviction).toString();
   const delegationsVotes = delegations?.votes || 0;
-  const hasDelegations = BigNumber(delegationsVotes).gt(0);
   const total = BigNumber.sum(delegationsVotes, selfTotal).toString();
 
   return [
     {
       label: "Vote",
-      value: (
-        <>
-          {vote?.aye === false ? "Nay" : "Aye"}
-          {isDelegating && "(Delegated)"}
-        </>
-      ),
+      value: `${vote?.aye === false ? "Nay" : "Aye"}`,
     },
     {
       label: "Total",
@@ -116,7 +114,7 @@ function getStandardItems(myVote, chainSettings) {
         </>
       ),
     },
-    hasDelegations && {
+    {
       label: "Delegations",
       value: (
         <ValueDisplay
@@ -125,5 +123,34 @@ function getStandardItems(myVote, chainSettings) {
         />
       ),
     },
-  ].filter(Boolean);
+  ];
+}
+
+function getStandardDelegatingItems(myVote, chainSettings) {
+  const { decimals, symbol } = chainSettings;
+  const { vote } = myVote;
+
+  const conviction = convictionToLockXNumber(vote.conviction);
+  const votes = BigNumber(vote.balance).times(conviction).toString();
+
+  return [
+    {
+      label: "Vote",
+      value: `${vote?.aye === false ? "Nay" : "Aye"}(Delegated)`,
+    },
+    {
+      label: "Votes",
+      value: (
+        <>
+          <ValueDisplay value={toPrecision(votes, decimals)} symbol={symbol} />
+          (
+          <ValueDisplay
+            value={toPrecision(vote.balance, decimals)}
+            symbol={symbol}
+          />
+          *{conviction}x)
+        </>
+      ),
+    },
+  ];
 }
