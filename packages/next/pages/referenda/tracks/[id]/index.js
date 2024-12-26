@@ -18,13 +18,7 @@ import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normaliz
 import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
-import {
-  myReferendaDelegationsSelector,
-  myReferendaVotingSelector,
-} from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
-import { useSelector } from "react-redux";
 import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
-import { mergeMyVoteToReferendaListItem } from "next-common/utils/gov2/list/mergeMyVoteToReferendaListItem";
 
 export default function TrackPage({
   posts,
@@ -37,13 +31,10 @@ export default function TrackPage({
   useFetchMyReferendaVoting();
 
   const router = useRouter();
-  const voting = useSelector(myReferendaVotingSelector);
-  const delegations = useSelector(myReferendaDelegationsSelector);
 
-  const items = (posts.items || []).map((item) => {
-    const normalizedItem = normalizeGov2ReferendaListItem(item, tracks);
-    return mergeMyVoteToReferendaListItem(normalizedItem, voting, delegations);
-  });
+  const items = (posts.items || []).map((item) =>
+    normalizeGov2ReferendaListItem(item, tracks),
+  );
 
   function onStatusChange(item) {
     const q = router.query;

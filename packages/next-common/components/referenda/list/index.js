@@ -8,14 +8,12 @@ import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   isLoadingReferendaVotingSelector,
-  myReferendaDelegationsSelector,
   myReferendaVotingSelector,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 import { createStateContext, useAsync } from "react-use";
 import ReferendaListFilter from "./filter";
-import { mergeMyVoteToReferendaListItem } from "next-common/utils/gov2/list/mergeMyVoteToReferendaListItem";
 
 const [useUnVotedOnlyState, UnVotedOnlyStateProvider] =
   createStateContext(false);
@@ -105,13 +103,10 @@ function WithFilterPostList({
   pagination,
 }) {
   const { tracks } = usePageProps();
-  const voting = useSelector(myReferendaVotingSelector);
-  const delegations = useSelector(myReferendaDelegationsSelector);
 
-  const items = (posts || []).map((item) => {
-    const normalizedItem = normalizeGov2ReferendaListItem(item, tracks);
-    return mergeMyVoteToReferendaListItem(normalizedItem, voting, delegations);
-  });
+  const items = (posts || []).map((item) =>
+    normalizeGov2ReferendaListItem(item, tracks),
+  );
 
   return (
     <PostList

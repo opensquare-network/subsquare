@@ -2,42 +2,67 @@
 // packages/next-common/components/myvotes/democracy/normalize.js
 
 import BigNumber from "bignumber.js";
-import { isNil } from "lodash-es";
+import { find, isNil } from "lodash-es";
+import { useChainSettings } from "next-common/context/chain";
+import {
+  myReferendaDelegationsSelector,
+  myReferendaVotingSelector,
+} from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { toPrecision } from "next-common/utils";
 import {
   Conviction,
   convictionToLockXNumber,
 } from "next-common/utils/referendumCommon";
+import { useSelector } from "react-redux";
 import ValueDisplay from "../../valueDisplay";
+import PostListMyVoteMarkTemplate from "./template";
 
-export function getMyVoteMarkReferendaItems(myVote, chainSettings) {
-  const { vote, isDelegating } = myVote || {};
+export default function PostListMyReferendaVoteMark({ data }) {
+  const voting = useSelector(myReferendaVotingSelector);
+  const delegations = useSelector(myReferendaDelegationsSelector);
 
+  if (!voting.length) {
+    return null;
+  }
+
+  const trackVoting = find(voting, { trackId: data.track });
+  if (!trackVoting) {
+    return null;
+  }
+
+  const isDelegating = trackVoting?.isDelegating;
+
+  const votes = isDelegating ? trackVoting?.delegatedVotes : trackVoting?.votes;
+  if (!votes?.length) {
+    return null;
+  }
+
+  const vote = find(votes, { referendumIndex: data.referendumIndex })?.vote;
   if (!vote) {
     return null;
   }
 
-  let items;
-
   if (vote.isSplit || vote.isSplitAbstain) {
-    items = getSplitOrSplitAbstainItems(myVote, chainSettings);
-  } else {
-    if (isDelegating) {
-      items = getStandardDelegatingItems(myVote, chainSettings);
-    } else {
-      items = getStandardCastingItems(myVote, chainSettings);
-    }
+    return <PostListMyReferendaSplitVoteMark vote={vote} />;
   }
 
-  return items;
+  if (isDelegating) {
+    return <PostListMyReferendaStandardDelegating vote={vote} />;
+  } else {
+    return (
+      <PostListMyReferendaStandardCasting
+        vote={vote}
+        delegations={delegations}
+      />
+    );
+  }
 }
 
-function getSplitOrSplitAbstainItems(myVote, chainSettings) {
-  const { decimals, symbol } = chainSettings;
+export function PostListMyReferendaSplitVoteMark({ vote }) {
+  const { decimals, symbol } = useChainSettings();
   const conviction = convictionToLockXNumber(Conviction.None);
-  const { vote } = myVote;
 
-  return [
+  const items = [
     {
       label: "Vote",
       value: vote.isSplitAbstain ? "SplitAbstain" : "Split",
@@ -79,18 +104,25 @@ function getSplitOrSplitAbstainItems(myVote, chainSettings) {
       ),
     },
   ];
+
+  return (
+    <PostListMyVoteMarkTemplate
+      items={items}
+      isSplit={vote.isSplit}
+      isSplitAbstain={vote.isSplitAbstain}
+    />
+  );
 }
 
-function getStandardCastingItems(myVote, chainSettings) {
-  const { decimals, symbol } = chainSettings;
-  const { vote, delegations } = myVote;
+export function PostListMyReferendaStandardCasting({ vote, delegations }) {
+  const { decimals, symbol } = useChainSettings();
 
   const conviction = convictionToLockXNumber(vote.conviction);
   const selfTotal = BigNumber(vote.balance).times(conviction).toString();
   const delegationsVotes = delegations?.votes || 0;
   const total = BigNumber.sum(delegationsVotes, selfTotal).toString();
 
-  return [
+  const items = [
     {
       label: "Vote",
       value: `${vote?.aye === false ? "Nay" : "Aye"}`,
@@ -128,16 +160,23 @@ function getStandardCastingItems(myVote, chainSettings) {
       ),
     },
   ];
+
+  return (
+    <PostListMyVoteMarkTemplate
+      items={items}
+      isAye={vote.aye === true}
+      isNay={vote.aye === false}
+    />
+  );
 }
 
-function getStandardDelegatingItems(myVote, chainSettings) {
-  const { decimals, symbol } = chainSettings;
-  const { vote } = myVote;
+export function PostListMyReferendaStandardDelegating({ vote }) {
+  const { decimals, symbol } = useChainSettings();
 
   const conviction = convictionToLockXNumber(vote.conviction);
   const votes = BigNumber(vote.balance).times(conviction).toString();
 
-  return [
+  const items = [
     {
       label: "Vote",
       value: `${vote?.aye === false ? "Nay" : "Aye"}(Delegated)`,
@@ -157,4 +196,12 @@ function getStandardDelegatingItems(myVote, chainSettings) {
       ),
     },
   ];
+
+  return (
+    <PostListMyVoteMarkTemplate
+      items={items}
+      isAye={vote.aye === true}
+      isNay={vote.aye === false}
+    />
+  );
 }

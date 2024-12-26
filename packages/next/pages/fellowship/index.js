@@ -23,7 +23,6 @@ import {
 } from "next-common/components/referenda/list";
 import FellowshipListLayout from "next-common/components/fellowship/fellowshipListLayout";
 import { useMyCollectivesVotes } from "next-common/hooks/referenda/useMyCollectivesVotes";
-import { mergeMyVoteToFellowshipReferendaListItem } from "next-common/utils/gov2/list/mergeMyVoteToFellowshipReferendaListItem";
 
 function useMyUnVotedReferendaPosts() {
   const [posts, setPosts] = useState();
@@ -70,15 +69,11 @@ function WithFilterPostList({
   const address = useRealAddress();
   const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useUnVotedOnlyState();
 
-  const myVotes = useMyCollectivesVotes();
+  useMyCollectivesVotes();
 
-  const items = (posts || []).map((item) => {
-    const normalized = normalizeFellowshipReferendaListItem(
-      item,
-      fellowshipTracks,
-    );
-    return mergeMyVoteToFellowshipReferendaListItem(normalized, myVotes);
-  });
+  const items = (posts || []).map((item) =>
+    normalizeFellowshipReferendaListItem(item, fellowshipTracks),
+  );
 
   return (
     <PostList
