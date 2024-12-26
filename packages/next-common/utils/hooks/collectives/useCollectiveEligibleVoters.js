@@ -4,7 +4,6 @@ import { useOnchainData } from "next-common/context/post";
 import { useEffect, useState } from "react";
 import { isNil } from "lodash";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
-import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
 import { useTrack } from "next-common/context/post/gov2/track";
 import { useSelector } from "react-redux";
@@ -60,8 +59,7 @@ export default function useCollectiveEligibleVoters() {
   const { referendumIndex } = useOnchainData();
 
   const { id: trackId } = useTrack();
-  const collectivePallet = useRankedCollectivePallet();
-  const minRank = getMinRankOfClass(trackId, collectivePallet);
+  const minRank = getMinRankOfClass(trackId, "fellowshipCollective");
 
   const { allAye, allNay } = useSelector(fellowshipVotesSelector);
   const isLoadingVotes = useSelector(isLoadingFellowshipVotesSelector);
