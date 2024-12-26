@@ -10,9 +10,9 @@ import nextApi from "next-common/services/nextApi";
 import { setDemocracyDelegatesTriggerUpdate } from "next-common/store/reducers/democracy/delegates";
 import { setReferendaDelegatesTriggerUpdate } from "next-common/store/reducers/referenda/delegates";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useUser } from "next-common/context/user";
 import EditorField from "next-common/components/popup/fields/editorField";
 import TextInputField from "next-common/components/popup/fields/textInputField";
+import { getRealField } from "next-common/sima/actions/common";
 
 export default function AnnouncementPublishPopup({
   title = "Publish Announcement",
@@ -20,8 +20,6 @@ export default function AnnouncementPublishPopup({
   myDelegation,
 }) {
   const dispatch = useDispatch();
-  const user = useUser();
-  const address = user?.address;
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
   const signMessage = useSignMessage();
@@ -60,22 +58,28 @@ export default function AnnouncementPublishPopup({
         return;
       }
 
+      let real;
+      if (signerAccount.proxyAddress) {
+        real = getRealField(signerAccount.proxyAddress);
+      }
+
       try {
         const entity = {
           action: "set-delegation-announcement",
           shortDescription,
           longDescription,
           timestamp: Date.now(),
+          real,
         };
         const signerWallet = signerAccount.meta.source;
         const signature = await signMessage(
           JSON.stringify(entity),
-          address,
+          signerAccount.address,
           signerWallet,
         );
         const data = {
           entity,
-          address,
+          address: signerAccount.address,
           signature,
           signerWallet,
         };
@@ -92,7 +96,6 @@ export default function AnnouncementPublishPopup({
     },
     [
       dispatch,
-      address,
       shortDescription,
       longDescription,
       signMessage,
