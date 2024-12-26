@@ -13,7 +13,7 @@ export default function EligibleVoters() {
         Eligible Voters
       </Button>
       {showEligibleVoters && (
-        <EligibleVotersPopup setShowEligibleVoters={setShowEligibleVoters} />
+        <EligibleVotersPopup onClose={() => setShowEligibleVoters(false)} />
       )}
     </>
   );

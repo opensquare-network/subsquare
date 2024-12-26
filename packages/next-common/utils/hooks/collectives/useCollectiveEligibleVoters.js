@@ -1,49 +1,30 @@
 import { useContextApi } from "next-common/context/api";
-import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { useOnchainData } from "next-common/context/post";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useEffect, useState } from "react";
-import { isNil } from "lodash";
+import { groupBy, orderBy } from "lodash-es";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
-import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
-import { useTrack } from "next-common/context/post/gov2/track";
 import { useSelector } from "react-redux";
 import {
   fellowshipVotesSelector,
   isLoadingFellowshipVotesSelector,
 } from "next-common/store/reducers/fellowship/votes";
+import useRankedCollectiveMinRank from "next-common/hooks/collectives/useRankedCollectiveMinRank";
 
-async function queryFellowshipCollectiveMembers(api, blockHeight) {
+async function queryFellowshipCollectiveMembers(api, blockHash) {
   let blockApi = api;
-  if (blockHeight) {
-    const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
+  if (blockHash) {
     blockApi = await api.at(blockHash);
   }
-  const voters = await blockApi.query.fellowshipCollective.members.entries();
-  return voters;
+  return await blockApi.query.fellowshipCollective.members.entries();
 }
 
-// Filter members by minimum rank
-function filterMinRankedMembers(members = [], minRank) {
-  return members.filter((member) => member?.rank >= minRank);
-}
-
-function groupVoters(members, allVotes) {
-  const votedMembers = [];
-  const unVotedMembers = [];
-
-  members.forEach((member) => {
-    const voter = Array.from(allVotes).find(
-      (item) => item.address === member.address,
-    );
-
-    if (voter) {
-      votedMembers.push({ ...member, isAye: voter?.isAye });
-    } else {
-      unVotedMembers.push(member);
-    }
-  });
-
-  return { votedMembers, unVotedMembers };
+function getMemberVotes(rank, minRank) {
+  if (rank < minRank) {
+    throw new Error(`Rank ${rank} is too low, and minimum rank is ${minRank}`);
+  }
+  const excess = rank - minRank;
+  const v = excess + 1;
+  return Math.floor((v * (v + 1)) / 2);
 }
 
 export default function useCollectiveEligibleVoters() {
@@ -55,51 +36,60 @@ export default function useCollectiveEligibleVoters() {
   });
   const [loading, setLoading] = useState(true);
 
-  const votingFinishHeight = useReferendumVotingFinishHeight();
-  const { referendumIndex } = useOnchainData();
-
-  const { id: trackId } = useTrack();
-  const minRank = getMinRankOfClass(trackId, "fellowshipCollective");
+  const votingFinishIndexer = useReferendumVotingFinishIndexer();
+  const minRank = useRankedCollectiveMinRank();
 
   const { allAye, allNay } = useSelector(fellowshipVotesSelector);
   const isLoadingVotes = useSelector(isLoadingFellowshipVotesSelector);
 
   useEffect(() => {
-    if (!api || isNil(referendumIndex) || isLoadingVotes) {
+    if (!api || isLoadingVotes) {
       return;
     }
 
     (async () => {
       setLoading(true);
       try {
-        const voterEntries = await queryFellowshipCollectiveMembers(
+        const memberEntries = await queryFellowshipCollectiveMembers(
           api,
-          votingFinishHeight,
+          votingFinishIndexer?.blockHash,
         );
-        const data = normalizeRankedCollectiveEntries(voterEntries);
+        const normalizedMembers =
+          normalizeRankedCollectiveEntries(memberEntries);
+        const voters = normalizedMembers.filter(
+          (member) => member?.rank >= minRank,
+        );
+        const sortedVoters = orderBy(voters, ["rank"], ["desc"]);
+        const votersWithPower = sortedVoters.map((m) => ({
+          ...m,
+          votes: getMemberVotes(m.rank, minRank),
+        }));
 
-        // Filter members by minimum rank
-        const minRankedMembers = filterMinRankedMembers(data, minRank);
+        const allVotes = [...allAye, ...allNay];
+        const votedSet = new Set(allVotes.map((i) => i.address));
+        const { true: votedMembers, false: unVotedMembers } = groupBy(
+          votersWithPower,
+          (member) => votedSet.has(member.address),
+        );
 
-        const allVotes = new Set([...allAye, ...allNay]);
-        const groupedVoters = groupVoters(minRankedMembers, allVotes);
-
-        setVoters(groupedVoters);
+        setVoters({
+          votedMembers: votedMembers.map((m) => {
+            const vote = allVotes.find((i) => i.address === m.address);
+            return {
+              ...m,
+              votes: vote.votes,
+              isAye: vote.isAye,
+            };
+          }),
+          unVotedMembers,
+        });
       } catch (error) {
-        throw new Error("Failed to fetch fellowship voters:", error);
+        console.error("Failed to fetch fellowship voters:", error);
       } finally {
         setLoading(false);
       }
     })();
-  }, [
-    api,
-    referendumIndex,
-    votingFinishHeight,
-    isLoadingVotes,
-    allAye,
-    allNay,
-    minRank,
-  ]);
+  }, [api, votingFinishIndexer, isLoadingVotes, allAye, allNay, minRank]);
 
   return {
     ...voters,
