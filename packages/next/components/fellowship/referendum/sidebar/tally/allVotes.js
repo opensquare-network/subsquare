@@ -6,6 +6,7 @@ import {
   isLoadingFellowshipVotesSelector,
 } from "next-common/store/reducers/fellowship/votes";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { orderBy } from "lodash-es";
 
 const AllVotesPopup = dynamicPopup(() => import("./allVotesPopup"));
 
