@@ -3,7 +3,7 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 import { isNil } from "lodash-es";
 import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
 
-function FellowshipRankInfo({ address }) {
+export function FellowshipRankInfo({ address }) {
   const rank = useFellowshipMemberRank(address, "fellowshipCollective");
 
   return <FellowshipRank rank={rank} />;

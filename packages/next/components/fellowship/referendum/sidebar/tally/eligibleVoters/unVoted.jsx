@@ -6,7 +6,7 @@ export default function UnVoted({ unVotedMembers, isLoading }) {
   const votedRows = unVotedMembers?.map((item) => {
     return {
       address: item?.address,
-      votes: item?.votes || 1, // todo
+      votes: item?.votes,
       className: "bg-neutral200",
     };
   });
