@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { useKnownAssetHubAssets } from "next-common/components/assets/known";
 import useAllAssetMetadata from "next-common/components/assets/context/assetMetadata";
 import {
@@ -9,6 +9,7 @@ import {
 } from "next-common/store/reducers/multiAccountsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { isNil } from "lodash-es";
+import { useChainSettings } from "next-common/context/chain";
 
 export function useMultiAccountsDeps(address) {
   const [allMetadata] = useAllAssetMetadata();
@@ -26,12 +27,26 @@ export default function useSingleAccountAssets(address) {
   const dispatch = useDispatch();
   const api = useContextApi();
   const { multiAccountKey, allMetadata } = useMultiAccountsDeps(address);
-
-  useEffect(() => {
-    dispatch(fetchMultiAccounts(multiAccountKey, api));
-  }, [dispatch, multiAccountKey, api]);
   const multiAccounts = useSelector(multiAccountsSelector);
   const knownAssetDefs = useKnownAssetHubAssets();
+  const { blockTime } = useChainSettings();
+
+  const fetchAssets = useCallback(async () => {
+    dispatch(fetchMultiAccounts(multiAccountKey, api));
+  }, [dispatch, multiAccountKey, api]);
+
+  useEffect(() => {
+    fetchAssets();
+
+    const interval = setInterval(
+      () => {
+        fetchAssets();
+      },
+      parseInt(blockTime) || 12000,
+    );
+
+    return () => clearInterval(interval);
+  }, [fetchAssets, blockTime]);
 
   return useMemo(() => {
     if (!allMetadata || !multiAccounts) {
