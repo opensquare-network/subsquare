@@ -58,18 +58,13 @@ export default function AnnouncementPublishPopup({
         return;
       }
 
-      let real;
-      if (signerAccount.proxyAddress) {
-        real = getRealField(signerAccount.proxyAddress);
-      }
-
       try {
         const entity = {
           action: "set-delegation-announcement",
           shortDescription,
           longDescription,
           timestamp: Date.now(),
-          real,
+          real: getRealField(signerAccount.proxyAddress),
         };
         const signerWallet = signerAccount.meta.source;
         const signature = await signMessage(
