@@ -51,7 +51,6 @@ export default function FellowshipTally() {
   const supportPercentage = useSupportPercentage(supportPerbill);
 
   const chain = useChain();
-  const isCollectives = isCollectivesChain(chain);
 
   return (
     <SecondaryCardDetail>
@@ -82,7 +81,7 @@ export default function FellowshipTally() {
 
       <Footer className="justify-end">
         <AllVotes />
-        {isCollectives && <EligibleVoters />}
+        {isCollectivesChain(chain) && <EligibleVoters />}
         {useVoteCall && <Calls />}
       </Footer>
     </SecondaryCardDetail>

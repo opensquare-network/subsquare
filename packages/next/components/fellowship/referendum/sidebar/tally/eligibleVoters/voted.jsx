@@ -8,7 +8,7 @@ export default function Voted({ votedMembers, isLoading }) {
     return {
       address: item?.address,
       isAye: item?.isAye,
-      votes: item?.votes || 1, // todo
+      votes: item?.votes,
       className: item?.isAye ? "bg-green100" : "bg-red100",
     };
   });
