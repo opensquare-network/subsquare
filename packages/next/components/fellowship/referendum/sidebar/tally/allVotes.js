@@ -6,6 +6,7 @@ import {
   isLoadingFellowshipVotesSelector,
 } from "next-common/store/reducers/fellowship/votes";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { orderBy } from "lodash-es";
 
 const AllVotesPopup = dynamicPopup(() => import("./allVotesPopup"));
 
@@ -20,8 +21,8 @@ export default function AllVotes() {
       {showAllVotes && (
         <AllVotesPopup
           setShowVoteList={setShowAllVotes}
-          allAye={allAye}
-          allNay={allNay}
+          allAye={orderBy(allAye, ["votes"], ["desc"])}
+          allNay={orderBy(allNay, ["votes"], ["desc"])}
           isLoadingVotes={isLoadingVotes}
         />
       )}

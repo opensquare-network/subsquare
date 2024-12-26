@@ -72,7 +72,7 @@ function VotesList({ items = [], loading }) {
   ];
 
   const rows = items.map((item) => {
-    const row = [
+    return [
       <FellowshipRankInfo
         key="rank"
         address={item.address}
@@ -87,8 +87,6 @@ function VotesList({ items = [], loading }) {
       />,
       item.votes,
     ];
-
-    return row;
   });
 
   return (

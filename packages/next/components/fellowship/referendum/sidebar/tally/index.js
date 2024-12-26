@@ -9,13 +9,13 @@ import SupportBar from "../../../../gov2/sidebar/tally/supportBar";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import VoteBar from "next-common/components/referenda/voteBar";
 import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowshipVotes";
-import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useOnchainData } from "next-common/context/post";
 import AllVotes from "./allVotes";
 import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
 import CurvePopupOpener from "next-common/components/gov2/referendum/curvePopup";
 import Calls from "./voteCalls";
-import { useChainSettings, useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import {
   useApprovalPercentage,
@@ -42,9 +42,9 @@ export default function FellowshipTally() {
   const approvalThreshold = useApprovalThreshold();
   const { useVoteCall } = useChainSettings();
 
-  const votingFinishHeight = useReferendumVotingFinishHeight();
+  const votingFinishIndexer = useReferendumVotingFinishIndexer();
   const { referendumIndex } = useOnchainData();
-  useFellowshipVotes(referendumIndex, votingFinishHeight);
+  useFellowshipVotes(referendumIndex, votingFinishIndexer);
   const supportPerbill = useFellowshipPerbill();
 
   const approvalPercentage = useApprovalPercentage(tally);

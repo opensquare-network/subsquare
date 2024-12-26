@@ -2,9 +2,11 @@ import AddressUser from "next-common/components/user/addressUser";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import { isNil } from "lodash-es";
 import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
+import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
 export function FellowshipRankInfo({ address }) {
-  const rank = useFellowshipMemberRank(address, "fellowshipCollective");
+  const collectivePallet = useRankedCollectivePallet();
+  const rank = useFellowshipMemberRank(address, collectivePallet);
 
   return <FellowshipRank rank={rank} />;
 }
