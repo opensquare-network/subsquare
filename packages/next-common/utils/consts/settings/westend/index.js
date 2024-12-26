@@ -47,6 +47,9 @@ const westend = {
     council: false,
     technicalCommittee: false,
     assethub: true,
+    proxy: {
+      provider: "chain",
+    },
   }),
   integrations: {
     subscan: true,

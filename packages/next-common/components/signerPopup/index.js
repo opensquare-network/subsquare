@@ -6,7 +6,12 @@ import { useSignerAccount } from "../popupWithSigner/context";
 import SignerWithBalance from "./signerWithBalance";
 import { noop } from "lodash-es";
 
-function PopupContent({ children, actionCallback, confirmText }) {
+function PopupContent({
+  children,
+  actionCallback,
+  confirmText,
+  noSwitchSigner,
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const signerAccount = useSignerAccount();
 
@@ -21,7 +26,7 @@ function PopupContent({ children, actionCallback, confirmText }) {
 
   return (
     <>
-      <SignerWithBalance />
+      <SignerWithBalance noSwitchSigner={noSwitchSigner} />
       {children}
       <PopupButtonWrapper>
         <PrimaryButton loading={isLoading} onClick={onConfirm}>
@@ -36,11 +41,16 @@ export default function SignerPopup({
   children,
   actionCallback = noop,
   confirmText = "Confirm",
+  noSwitchSigner,
   ...props
 }) {
   return (
     <PopupWithSigner {...props}>
-      <PopupContent actionCallback={actionCallback} confirmText={confirmText}>
+      <PopupContent
+        noSwitchSigner={noSwitchSigner}
+        actionCallback={actionCallback}
+        confirmText={confirmText}
+      >
         {children}
       </PopupContent>
     </PopupWithSigner>

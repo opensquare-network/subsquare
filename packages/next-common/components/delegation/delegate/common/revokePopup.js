@@ -1,6 +1,4 @@
 import React from "react";
-import PopupWithSigner from "next-common/components/popupWithSigner";
-import PrimaryButton from "next-common/lib/button/primary";
 import {
   Referenda,
   useModuleTab,
@@ -10,23 +8,16 @@ import nextApi from "next-common/services/nextApi";
 import { setDemocracyDelegatesTriggerUpdate } from "next-common/store/reducers/democracy/delegates";
 import { setReferendaDelegatesTriggerUpdate } from "next-common/store/reducers/referenda/delegates";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import {
-  usePopupParams,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
-import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
+import { getRealField } from "next-common/sima/actions/common";
+import SignerPopup from "next-common/components/signerPopup";
 
-function PopupContent({ children }) {
-  const { address, onClose } = usePopupParams();
+export default function RevokePopup({ address, onClose }) {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
   const signMessage = useSignMessage();
   const tab = useModuleTab();
   const module = tab === Referenda ? "referenda" : "democracy";
-  const signerAccount = useSignerAccount();
 
   const triggerUpdate = useCallback(() => {
     if (module === "referenda") {
@@ -36,60 +27,65 @@ function PopupContent({ children }) {
     }
   }, [dispatch, module]);
 
-  const revokeAnnouncement = useCallback(async () => {
-    try {
-      setIsLoading(true);
+  const revokeAnnouncement = useCallback(
+    async (signerAccount) => {
+      try {
+        const revokeByProxyAddress =
+          signerAccount.proxyAddress && address === signerAccount.proxyAddress;
 
-      const entity = {
-        action: "unset-delegation-announcement",
-        timestamp: Date.now(),
-      };
-      const signerWallet = signerAccount.meta.source;
-      const signature = await signMessage(
-        JSON.stringify(entity),
-        address,
-        signerWallet,
-      );
-      const data = {
-        entity,
-        address,
-        signature,
-        signerWallet,
-      };
-      const { error } = await nextApi.post(
-        "delegation/announcements/unset",
-        data,
-      );
-      if (error) {
-        dispatch(newErrorToast(error.message));
-        return;
+        const revokeBySignerAddress =
+          !signerAccount.proxyAddress && address === signerAccount.address;
+
+        if (!revokeByProxyAddress && !revokeBySignerAddress) {
+          dispatch(
+            newErrorToast(
+              "Current origin doesn't match the owner of announcement",
+            ),
+          );
+          return;
+        }
+
+        const entity = {
+          action: "unset-delegation-announcement",
+          timestamp: Date.now(),
+          real: getRealField(signerAccount.proxyAddress),
+        };
+        const signerWallet = signerAccount.meta.source;
+        const signature = await signMessage(
+          JSON.stringify(entity),
+          signerAccount.address,
+          signerWallet,
+        );
+
+        const data = {
+          entity,
+          address: signerAccount.address,
+          signature,
+          signerWallet,
+        };
+        const { error } = await nextApi.post(
+          "delegation/announcements/unset",
+          data,
+        );
+        if (error) {
+          dispatch(newErrorToast(error.message));
+          return;
+        }
+        triggerUpdate();
+        onClose();
+      } catch (e) {
+        dispatch(newErrorToast(e.message));
       }
-      triggerUpdate();
-      onClose();
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [dispatch, onClose, address, triggerUpdate, signerAccount, signMessage]);
-
-  return (
-    <>
-      <SignerWithBalance />
-      {children}
-      <PopupButtonWrapper>
-        <PrimaryButton loading={isLoading} onClick={revokeAnnouncement}>
-          Confirm
-        </PrimaryButton>
-      </PopupButtonWrapper>
-    </>
+    },
+    [dispatch, address, onClose, triggerUpdate, signMessage],
   );
-}
 
-export default function RevokePopup({ children, ...props }) {
   return (
-    <PopupWithSigner {...props}>
-      <PopupContent>{children}</PopupContent>
-    </PopupWithSigner>
+    <SignerPopup
+      title="Revoke"
+      onClose={onClose}
+      actionCallback={revokeAnnouncement}
+      noSwitchSigner
+    />
   );
 }
