@@ -118,7 +118,7 @@ function Select({
       className={cn(
         "text14Medium",
         className,
-        readOnly && "pointer-events-none",
+        readOnly && "pointer-events-none !bg-neutral200",
       )}
       ref={ref}
       disabled={disabled}
