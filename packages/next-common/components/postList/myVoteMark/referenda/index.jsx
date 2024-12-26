@@ -43,10 +43,12 @@ export default function PostListMyReferendaVoteMark({ data }) {
   if (isDelegating) {
     return <PostListMyReferendaStandardDelegatingVoteMark vote={vote} />;
   } else {
+    const trackDelegations = find(delegations, { trackId: data.track });
+
     return (
       <PostListMyReferendaStandardCastingVoteMark
         vote={vote}
-        delegations={delegations}
+        delegations={trackDelegations}
       />
     );
   }
