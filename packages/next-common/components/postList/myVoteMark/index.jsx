@@ -8,25 +8,28 @@ import { getMyVoteMarkReferendaItems } from "./getMyVoteMarkReferendaItems";
 
 export default function PostListMyVoteMark({ data, category }) {
   const chainSettings = useChainSettings();
-  const { vote, delegations } = data?.myVote || {};
 
-  if (isNil(vote)) {
+  const myVote = data?.myVote;
+
+  if (isNil(myVote)) {
     return null;
   }
 
   let items;
   if (category === businessCategory.fellowship) {
-    items = getMyVoteMarkFellowshipReferendaItems(vote);
+    items = getMyVoteMarkFellowshipReferendaItems(myVote);
   } else if (
     category === businessCategory.openGovReferenda ||
     category === businessCategory.democracyReferenda
   ) {
-    items = getMyVoteMarkReferendaItems(vote, delegations, chainSettings);
+    items = getMyVoteMarkReferendaItems(myVote, chainSettings);
   }
 
   if (isNil(items)) {
     return null;
   }
+
+  const vote = myVote?.vote;
 
   return (
     <Tooltip

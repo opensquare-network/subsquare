@@ -7,7 +7,7 @@ export function mergeMyVoteToDemocracyReferendaListItem(item, voting) {
     return item;
   }
 
-  const myVote = {};
+  const myVote = pick(voting, ["isDirect", "isDelegating"]);
 
   const votes = voting.isDelegating ? voting.delegatedVotes : voting.votes;
 
@@ -31,7 +31,7 @@ export function mergeMyVoteToDemocracyReferendaListItem(item, voting) {
     myVote.vote = resolvedVote;
   }
 
-  if (voting.delegations) {
+  if (voting.isDirect && voting.delegations) {
     myVote.delegations = voting.delegations;
   }
 

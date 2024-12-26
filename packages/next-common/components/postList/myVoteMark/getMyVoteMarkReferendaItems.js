@@ -10,8 +10,14 @@ import {
 } from "next-common/utils/referendumCommon";
 import ValueDisplay from "../../valueDisplay";
 
-export function getMyVoteMarkReferendaItems(vote, delegations, chainSettings) {
+export function getMyVoteMarkReferendaItems(myVote, chainSettings) {
   const { decimals, symbol } = chainSettings;
+
+  const { vote, delegations, isDelegating } = myVote || {};
+
+  if (!vote) {
+    return null;
+  }
 
   let items;
 
@@ -59,8 +65,8 @@ export function getMyVoteMarkReferendaItems(vote, delegations, chainSettings) {
   } else {
     const conviction = convictionToLockXNumber(vote.conviction);
     const selfTotal = BigNumber(vote.balance).times(conviction).toString();
-    const hasDelegations = !isNil(delegations);
     const delegationsVotes = delegations?.votes || 0;
+    const hasDelegations = BigNumber(delegationsVotes).gt(0);
     const total = BigNumber.sum(delegationsVotes, selfTotal).toString();
 
     items = [
@@ -69,7 +75,7 @@ export function getMyVoteMarkReferendaItems(vote, delegations, chainSettings) {
         value: (
           <>
             {vote?.aye === false ? "Nay" : "Aye"}
-            {hasDelegations && "(Delegated)"}
+            {isDelegating && "(Delegated)"}
           </>
         ),
       },

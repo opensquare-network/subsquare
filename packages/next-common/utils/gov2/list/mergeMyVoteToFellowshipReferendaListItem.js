@@ -5,11 +5,14 @@ export function mergeMyVoteToFellowshipReferendaListItem(item, votes = []) {
     return item;
   }
 
-  const myVote = {};
-
   const vote = find(votes, {
     referendumIndex: item.referendumIndex,
   });
+  if (!vote) {
+    return item;
+  }
+
+  const myVote = {};
 
   if (vote) {
     myVote.vote = vote;

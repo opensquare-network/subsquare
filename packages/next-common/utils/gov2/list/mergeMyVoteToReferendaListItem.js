@@ -1,4 +1,4 @@
-import { find } from "lodash-es";
+import { find, pick } from "lodash-es";
 
 export function mergeMyVoteToReferendaListItem(
   item,
@@ -9,10 +9,13 @@ export function mergeMyVoteToReferendaListItem(
     return item;
   }
 
-  const myVote = {};
-
   const trackVoting = find(voting, { trackId: item.track });
-  const trackDelegations = find(delegations, { trackId: item.track });
+
+  if (!trackVoting) {
+    return item;
+  }
+
+  const myVote = pick(trackVoting, ["isCasting", "isDelegating"]);
 
   const votes = trackVoting?.isDelegating
     ? trackVoting?.delegatedVotes
@@ -23,11 +26,11 @@ export function mergeMyVoteToReferendaListItem(
   }
 
   const vote = find(votes, { referendumIndex: item.referendumIndex })?.vote;
-
   if (vote) {
     myVote.vote = vote;
   }
 
+  const trackDelegations = find(delegations, { trackId: item.track });
   if (trackDelegations) {
     myVote.delegations = trackDelegations;
   }
