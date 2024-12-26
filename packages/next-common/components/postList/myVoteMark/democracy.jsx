@@ -3,11 +3,9 @@
 import { find, isNil, merge, pick } from "lodash-es";
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 import { useSelector } from "react-redux";
-import {
-  PostListMyReferendaSplitVoteMark,
-  PostListMyReferendaStandardCasting,
-  PostListMyReferendaStandardDelegating,
-} from "./referenda";
+import PostListMyReferendaStandardDelegatingVoteMark from "./referenda/delegating";
+import PostListMyReferendaSplitVoteMark from "./referenda/split";
+import PostListMyReferendaStandardCastingVoteMark from "./referenda/casting";
 
 export default function PostListMyDemocracyReferendaVoteMark({ data }) {
   const voting = useSelector(myDemocracyVotingSelector);
@@ -34,13 +32,13 @@ export default function PostListMyDemocracyReferendaVoteMark({ data }) {
 
   if (isDelegating) {
     return (
-      <PostListMyReferendaStandardDelegating
+      <PostListMyReferendaStandardDelegatingVoteMark
         vote={merge({}, vote, pick(voting, ["balance", "conviction"]))}
       />
     );
   } else {
     return (
-      <PostListMyReferendaStandardCasting
+      <PostListMyReferendaStandardCastingVoteMark
         vote={vote}
         delegations={voting.delegations}
       />
