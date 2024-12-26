@@ -65,17 +65,23 @@ export default function useCollectiveEligibleVoters() {
           votes: getMemberVotes(m.rank, minRank),
         }));
 
-        const votedVotersSet = new Set(
-          [...allAye, ...allNay].map((item) => item.address),
-        );
+        const allVotes = [...allAye, ...allNay];
+        const votedSet = new Set(allVotes.map((i) => i.address));
         const { true: votedMembers, false: unVotedMembers } = groupBy(
           votersWithPower,
-          (member) => votedVotersSet.has(member.address),
+          (member) => votedSet.has(member.address),
         );
 
         setVoters({
-          votedMembers: votedMembers.map((m) => ({ ...m, isAye: true })),
-          unVotedMembers: unVotedMembers.map((m) => ({ ...m, isAye: false })),
+          votedMembers: votedMembers.map((m) => {
+            const vote = allVotes.find((i) => i.address === m.address);
+            return {
+              ...m,
+              votes: vote.votes,
+              isAye: vote.isAye,
+            };
+          }),
+          unVotedMembers,
         });
       } catch (error) {
         console.error("Failed to fetch fellowship voters:", error);
