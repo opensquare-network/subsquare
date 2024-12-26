@@ -18,9 +18,11 @@ export default function BillBoardPanel({ className, icon, items = [] }) {
         {icon}
       </div>
 
-      <ul className="list-disc text14Medium text-textPrimary pl-6">
+      <ul className="list-disc text14Medium text-textPrimary pl-6 space-y-1">
         {items.map((item, index) => (
-          <li key={index}>{item}</li>
+          <li key={index}>
+            <div className="flex items-center">{item}</div>
+          </li>
         ))}
       </ul>
     </SecondaryCard>
