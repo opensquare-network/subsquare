@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Button } from "components/gov2/sidebar/tally/styled";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const EligibleVotersPopup = dynamicPopup(() => import("./popup"));
 
-export default function EligibleVoters() {
+function EligibleVoters() {
   const [showEligibleVoters, setShowEligibleVoters] = useState(false);
 
   return (
@@ -18,3 +18,5 @@ export default function EligibleVoters() {
     </>
   );
 }
+
+export default memo(EligibleVoters);
