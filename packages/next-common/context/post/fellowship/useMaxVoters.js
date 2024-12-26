@@ -5,6 +5,8 @@ export function getFellowshipMinRankOfClass(trackId) {
     return trackId - 8;
   } else if (trackId >= 21 && trackId <= 26) {
     return trackId - 18;
+  } else if (trackId >= 31 && trackId <= 33) {
+    return trackId - 28;
   } else {
     return Number.MAX_VALUE; // max rank
   }

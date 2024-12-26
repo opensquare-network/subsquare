@@ -13,8 +13,6 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
   const searchedProxies = useSearchByAddressIdentity(search, proxies);
 
   const filteredProxies = useMemo(() => {
-    setIsLoading(true);
-
     if (initialLoading) {
       return;
     }
