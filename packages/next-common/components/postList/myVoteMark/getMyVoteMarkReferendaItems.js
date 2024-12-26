@@ -39,6 +39,10 @@ function getSplitOrSplitAbstainItems(myVote, chainSettings) {
 
   return [
     {
+      label: "Vote",
+      value: vote.isSplitAbstain ? "SplitAbstain" : "Split",
+    },
+    {
       label: "Aye",
       value: (
         <ValueDisplay
