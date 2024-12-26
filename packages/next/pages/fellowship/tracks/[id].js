@@ -17,7 +17,6 @@ import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
-import { useMyCollectivesVotes } from "next-common/hooks/referenda/useMyCollectivesVotes";
 import { usePageProps } from "next-common/context/page";
 
 export default function TrackPage() {
@@ -31,8 +30,6 @@ export default function TrackPage() {
 function TrackPageImpl() {
   const { posts, title, fellowshipTracks, trackReferendaSummary, period } =
     usePageProps();
-
-  useMyCollectivesVotes();
 
   const seoInfo = { title, desc: title };
 
