@@ -28,7 +28,7 @@ export default function useVoteLockTime(
 
     const multiplier = Math.pow(2, conviction - 1);
     const blocks = (api.consts?.[module]?.voteLockingPeriod || 0) * multiplier;
-    const time = estimateBlocksTime(blocks, blockTime);
+    const time = estimateBlocksTime(blocks, blockTime, { showMonths: false });
     setTime(time);
 
     setIsLoading(false);
