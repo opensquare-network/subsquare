@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "../../store/reducers/chainSlice";
-import { estimateBlocksTime } from "..";
+import { estimateBlocksTimeInDays } from "..";
 import { useContextApi } from "next-common/context/api";
 
 export default function useVoteLockTime(
@@ -28,7 +28,7 @@ export default function useVoteLockTime(
 
     const multiplier = Math.pow(2, conviction - 1);
     const blocks = (api.consts?.[module]?.voteLockingPeriod || 0) * multiplier;
-    const time = estimateBlocksTime(blocks, blockTime, { showMonths: false });
+    const time = estimateBlocksTimeInDays(blocks, blockTime);
     setTime(time);
 
     setIsLoading(false);
