@@ -16,7 +16,7 @@ export default function SplitProxyMenuButton({
     <>
       <SplitMenuButton
         {...props}
-        onClick={onClick}
+        onClick={() => onClick()}
         dropdownMenuItems={[
           {
             icon: (
