@@ -18,7 +18,7 @@ export default function Announcement({ myDelegation }) {
   const { value: proxyAddressDelegation } = useAddressDelegation(proxyAddress);
 
   const onClickPublish = (proxyAddress) => {
-    setProxyAddress(proxyAddress || user.proxyAddress);
+    setProxyAddress(proxyAddress || user?.proxyAddress);
     setIsPopupOpen(true);
   };
 

@@ -1,30 +1,101 @@
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemSubtract } from "@osn/icons/subsquare";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useState } from "react";
-import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useCallback } from "react";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import nextApi from "next-common/services/nextApi";
+import { getRealField } from "next-common/sima/actions/common";
+import { setReferendaDelegatesTriggerUpdate } from "next-common/store/reducers/referenda/delegates";
+import { setDemocracyDelegatesTriggerUpdate } from "next-common/store/reducers/democracy/delegates";
+import { useDispatch } from "react-redux";
+import { useSignMessage } from "next-common/hooks/useSignMessage";
+import {
+  Referenda,
+  useModuleTab,
+} from "next-common/components/profile/votingHistory/common";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
-const RevokePopup = dynamicPopup(() => import("./revokePopup"));
+function RevokeContent({ address }) {
+  const dispatch = useDispatch();
+  const signerAccount = useSignerAccount();
+  const signMessage = useSignMessage();
+  const tab = useModuleTab();
+  const module = tab === Referenda ? "referenda" : "democracy";
 
-export function RevokeButton({ address }) {
-  const [showRevotePopup, setShowRevotePopup] = useState(false);
+  const triggerUpdate = useCallback(() => {
+    if (module === "referenda") {
+      dispatch(setReferendaDelegatesTriggerUpdate());
+    } else if (module === "democracy") {
+      dispatch(setDemocracyDelegatesTriggerUpdate());
+    }
+  }, [dispatch, module]);
+
+  const revokeAnnouncement = useCallback(async () => {
+    try {
+      const revokeByProxyAddress =
+        signerAccount.proxyAddress && address === signerAccount.proxyAddress;
+
+      const revokeBySignerAddress =
+        !signerAccount.proxyAddress && address === signerAccount.address;
+
+      if (!revokeByProxyAddress && !revokeBySignerAddress) {
+        dispatch(
+          newErrorToast(
+            "Current origin doesn't match the owner of announcement",
+          ),
+        );
+        return;
+      }
+
+      const entity = {
+        action: "unset-delegation-announcement",
+        timestamp: Date.now(),
+        real: getRealField(signerAccount.proxyAddress),
+      };
+      const signerWallet = signerAccount.meta.source;
+      const signature = await signMessage(
+        JSON.stringify(entity),
+        signerAccount.address,
+        signerWallet,
+      );
+
+      const data = {
+        entity,
+        address: signerAccount.address,
+        signature,
+        signerWallet,
+      };
+      const { error } = await nextApi.post(
+        "delegation/announcements/unset",
+        data,
+      );
+      if (error) {
+        dispatch(newErrorToast(error.message));
+        return;
+      }
+      triggerUpdate();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+    }
+  }, [dispatch, address, triggerUpdate, signerAccount, signMessage]);
 
   return (
-    <>
-      <SecondaryButton
-        size="small"
-        iconLeft={<SystemSubtract className="w-4 h-4" />}
-        onClick={() => setShowRevotePopup(true)}
-      >
-        Revoke
-      </SecondaryButton>
-      {showRevotePopup && (
-        <RevokePopup
-          address={address}
-          onClose={() => setShowRevotePopup(false)}
-        />
-      )}
-    </>
+    <SecondaryButton
+      size="small"
+      iconLeft={<SystemSubtract className="w-4 h-4" />}
+      onClick={() => revokeAnnouncement()}
+    >
+      Revoke
+    </SecondaryButton>
+  );
+}
+
+export function RevokeButton({ address }) {
+  return (
+    <SignerPopupWrapper>
+      <RevokeContent address={address} />
+    </SignerPopupWrapper>
   );
 }
 
