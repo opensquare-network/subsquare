@@ -14,6 +14,14 @@ const Context = createContext();
 export default function UserAccountProvider({ address, children }) {
   const chain = useChain();
 
+  if (!address) {
+    return (
+      <Context.Provider value={{ data: null, isLoading: false }}>
+        {children}
+      </Context.Provider>
+    );
+  }
+
   const Provider = isKintsugiChain(chain)
     ? KintsugiAccountProvider
     : AccountProvider;
