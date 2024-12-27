@@ -1,25 +1,13 @@
-import { useContextApi } from "next-common/context/api";
-import { useEffect, useState } from "react";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 export function useFellowshipMemberRank(
   address,
   pallet = "fellowshipCollective",
 ) {
-  const [rank, setRank] = useState(null);
-  const api = useContextApi();
-
-  useEffect(() => {
-    if (!api || !api.query[pallet]) {
-      return;
-    }
-
-    api.query[pallet].members(address).then((resp) => {
-      if (!resp.isNone) {
-        const json = resp.value.toJSON();
-        setRank(json.rank);
-      }
-    });
-  }, [api, address, pallet]);
-
-  return rank;
+  const { result } = useSubStorage(pallet, "members", [address]);
+  if (result && result.isSome) {
+    return result.unwrap().rank.toNumber();
+  } else {
+    return null;
+  }
 }

@@ -1,7 +1,7 @@
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 
 export default function usePopupItemHeight() {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   return width > 1024 ? 52 : 112;
 }

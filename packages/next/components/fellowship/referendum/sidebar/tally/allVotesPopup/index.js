@@ -7,6 +7,7 @@ import Pagination from "next-common/components/pagination";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
+import { FellowshipRankInfo } from "../eligibleVoters/columns";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -59,6 +60,7 @@ export default function VotesPopup({
 
 function VotesList({ items = [], loading }) {
   const columns = [
+    { name: "", style: { width: 40, textAlign: "center" } },
     {
       name: "ACCOUNT",
       style: { minWidth: 176, textAlign: "left" },
@@ -70,7 +72,12 @@ function VotesList({ items = [], loading }) {
   ];
 
   const rows = items.map((item) => {
-    const row = [
+    return [
+      <FellowshipRankInfo
+        key="rank"
+        address={item.address}
+        className="min-w-5"
+      />,
       <AddressUser
         key="user"
         add={item.address}
@@ -80,8 +87,6 @@ function VotesList({ items = [], loading }) {
       />,
       item.votes,
     ];
-
-    return row;
   });
 
   return (

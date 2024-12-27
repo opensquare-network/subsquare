@@ -15,11 +15,10 @@ import { isNil, isUndefined, noop } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
-import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
-import { useTrack } from "next-common/context/post/gov2/track";
 import Tooltip from "next-common/components/tooltip";
 import dynamic from "next/dynamic";
 import AllSpendsRequest from "./request/allSpendsRequest";
+import useRankedCollectiveMinRank from "next-common/hooks/collectives/useRankedCollectiveMinRank";
 
 const MyCollectiveVote = dynamic(
   () => import("next-common/components/collectives/referenda/myCollectiveVote"),
@@ -28,17 +27,11 @@ const MyCollectiveVote = dynamic(
   },
 );
 
-function useMinRank() {
-  const { id: trackId } = useTrack();
-  const collectivePallet = useRankedCollectivePallet();
-  return getMinRankOfClass(trackId, collectivePallet);
-}
-
 function CollectiveVote({ onClick = noop }) {
   const address = useRealAddress();
   const collectivePallet = useRankedCollectivePallet();
   const { rank, loading } = useSubCollectiveRank(address, collectivePallet);
-  const minRank = useMinRank();
+  const minRank = useRankedCollectiveMinRank();
   const disabled = !address || loading || isNil(rank) || rank < minRank;
   const text = loading ? "Checking permissions" : "Vote";
 

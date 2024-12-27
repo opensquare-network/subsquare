@@ -31,7 +31,7 @@ function extractPollIndexAndAddress(storageKey = []) {
   };
 }
 
-function normalizeVotingRecord(optionalRecord) {
+export function normalizeVotingRecord(optionalRecord) {
   if (!optionalRecord.isSome) {
     return null;
   }
@@ -45,10 +45,9 @@ function normalizeVotingRecord(optionalRecord) {
   };
 }
 
-async function query(api, targetPollIndex, blockHeight) {
+async function query(api, targetPollIndex, blockHash) {
   let blockApi = api;
-  if (blockHeight) {
-    const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
+  if (blockHash) {
     blockApi = await api.at(blockHash);
   }
 
@@ -74,7 +73,7 @@ async function query(api, targetPollIndex, blockHeight) {
   return normalized;
 }
 
-export default function useFellowshipVotes(pollIndex, blockHeight) {
+export default function useFellowshipVotes(pollIndex, indexer) {
   const api = useContextApi();
   const dispatch = useDispatch();
   const votesTrigger = useSelector(fellowshipVotesTriggerSelector);
@@ -88,7 +87,7 @@ export default function useFellowshipVotes(pollIndex, blockHeight) {
       dispatch(setIsLoadingFellowshipVotes(true));
     }
 
-    query(api, pollIndex, blockHeight)
+    query(api, pollIndex, indexer?.blockHash)
       .then((votes) => {
         const [allAye = [], allNay = []] = partition(votes, (v) => v.isAye);
         dispatch(setFellowshipVotes({ allAye, allNay }));
@@ -99,5 +98,5 @@ export default function useFellowshipVotes(pollIndex, blockHeight) {
       dispatch(clearFellowshipVotes());
       dispatch(clearFellowshipVotesTrigger());
     };
-  }, [api, pollIndex, blockHeight, votesTrigger, dispatch]);
+  }, [api, pollIndex, indexer, votesTrigger, dispatch]);
 }

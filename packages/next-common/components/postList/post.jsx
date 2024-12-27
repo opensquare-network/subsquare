@@ -17,7 +17,7 @@ import { useChainSettings } from "../../context/chain";
 import { smcss } from "../../utils/responsive";
 import Gov2TrackTag from "../gov2/trackTag";
 import DecisionCountdown from "../gov2/postList/decisionCountdown";
-import { gov2State } from "../../utils/consts/state";
+import { gov2State, gov2VotingState } from "../../utils/consts/state";
 import ConfirmCountdown from "../gov2/postList/confirmCountdown";
 import ValueDisplay from "../valueDisplay";
 import ListPostTitle from "./postTitle";
@@ -42,6 +42,8 @@ import PostListTreasuryAllSpends from "./treasuryAllSpends";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import PostListAISummary from "./aiSummary";
 import TreasurySpendsCountDown from "next-common/components/postList/treasury/spends/countdown";
+import PostListMyVoteMark from "./myVoteMark";
+import { referendumState } from "next-common/utils/consts/referendum";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -343,6 +345,11 @@ export default function Post({ data, href, type }) {
     businessCategory.ambassadorReferenda,
   ].includes(type);
 
+  const showVoteMark =
+    (isGov2Referendum && gov2VotingState.includes(data?.status)) ||
+    (businessCategory.democracyReferenda === type &&
+      data?.status === referendumState.Started);
+
   return (
     <Wrapper>
       <ContentWrapper>
@@ -422,14 +429,18 @@ export default function Post({ data, href, type }) {
 
             <PostListAISummary data={data} />
           </Footer>
-          {data.status && (
-            <Tag
-              state={data.status}
-              category={type}
-              args={stateArgs}
-              data={data}
-            />
-          )}
+
+          <div className="flex items-center gap-x-2">
+            {showVoteMark && <PostListMyVoteMark data={data} category={type} />}
+            {data.status && (
+              <Tag
+                state={data.status}
+                category={type}
+                args={stateArgs}
+                data={data}
+              />
+            )}
+          </div>
         </FooterWrapper>
       </ContentWrapper>
 

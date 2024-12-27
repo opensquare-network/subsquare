@@ -6,8 +6,11 @@ import businessCategory from "next-common/utils/consts/business/category";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import useSubMyDemocracyVoting from "next-common/components/myvotes/democracy/useSubMyDemocracyVoting";
 
 export default function DemocracyReferendaPage({ posts, chain, summary }) {
+  useSubMyDemocracyVoting();
+
   const items = (posts.items || []).map((item) =>
     normalizeReferendaListItem(chain, item),
   );
