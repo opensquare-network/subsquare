@@ -142,7 +142,7 @@ function ProfileAvatar({ address }) {
 }
 
 export default function Profile({ address }) {
-  const [identity, hasId] = useIdentityInfo(address);
+  const { identity, hasIdentity } = useIdentityInfo(address);
   const maybeEvmAddress = tryConvertToEvmAddress(address);
 
   return (
@@ -153,7 +153,7 @@ export default function Profile({ address }) {
         <div className="flex flex-col gap-2">
           <span className="text14Bold">Identity</span>
           <div className="bg-neutral200 py-[10px] px-[16px] text14Medium rounded-[8px]">
-            {hasId ? <Identity identity={identity} /> : "-"}
+            {hasIdentity ? <Identity identity={identity} /> : "-"}
           </div>
         </div>
         <div className="flex flex-col gap-2">

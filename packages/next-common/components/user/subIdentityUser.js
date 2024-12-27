@@ -16,7 +16,7 @@ function SubIdentityUser({
   link,
 }) {
   const address = add;
-  const [identity, hasIdentity] = useIdentityInfo(address);
+  const { identity, hasIdentity } = useIdentityInfo(address);
   const { isLoading, displayParent, display } = useSubIdentityDisplay(address);
 
   let subIdentity = identity;

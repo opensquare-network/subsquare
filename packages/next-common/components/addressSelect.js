@@ -1,18 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
-import { encodeAddressToChain } from "../services/address";
-import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
 import Caret from "./icons/caret";
 import { addressEllipsis } from "../utils";
 import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
-import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useClickAway } from "react-use";
+import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 
 const Wrapper = Relative;
 
@@ -105,28 +103,17 @@ const Item = styled(Flex)`
 `;
 
 function Account({ account }) {
-  const { identity: identityChain } = useChainSettings();
-  const [identity, setIdentity] = useState(null);
+  const { identity, hasIdentity } = useIdentityInfo(account?.address);
   const normalizedAddr = normalizeAddress(account?.address);
   const maybeEvmAddress = tryConvertToEvmAddress(normalizedAddr);
   const shortAddr = addressEllipsis(maybeEvmAddress);
-
-  useEffect(() => {
-    setIdentity(null);
-    if (account?.address) {
-      fetchIdentity(
-        identityChain,
-        encodeAddressToChain(account.address, identityChain),
-      ).then((identity) => setIdentity(identity));
-    }
-  }, [account?.address, identityChain]);
 
   return (
     <>
       <Avatar address={maybeEvmAddress} />
       <NameWrapper>
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
-        {identity && identity?.info?.status !== "NO_ID" ? (
+        {hasIdentity ? (
           <>
             <Identity identity={identity} />
             <div>{shortAddr}</div>

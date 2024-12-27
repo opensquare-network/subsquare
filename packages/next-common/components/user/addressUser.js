@@ -111,7 +111,7 @@ function AddressUserComp({
   addressClassName = "",
 }) {
   const address = add;
-  const [identity, hasIdentity] = useIdentityInfo(address);
+  const { identity, hasIdentity } = useIdentityInfo(address);
   const [avatar] = useAvatarInfo(address);
 
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
