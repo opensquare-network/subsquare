@@ -7,18 +7,21 @@ import {
   VotesGroupLabel,
   VotesInfoLine,
 } from "./styled";
+import WindowSizeProvider from "next-common/context/windowSize";
 
 export default function VotesInfo() {
   return (
-    <VotesGroup>
-      <VotesInfoLine>
-        <VotesGroupLabel>Votes</VotesGroupLabel>
-        <VotesGroupItems>
-          <NestedVotes />
-          <FlattenedVotes />
-          <CallsVotes />
-        </VotesGroupItems>
-      </VotesInfoLine>
-    </VotesGroup>
+    <WindowSizeProvider>
+      <VotesGroup>
+        <VotesInfoLine>
+          <VotesGroupLabel>Votes</VotesGroupLabel>
+          <VotesGroupItems>
+            <NestedVotes />
+            <FlattenedVotes />
+            <CallsVotes />
+          </VotesGroupItems>
+        </VotesInfoLine>
+      </VotesGroup>
+    </WindowSizeProvider>
   );
 }
