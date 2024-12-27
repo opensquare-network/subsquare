@@ -10,6 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { isNil } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
+import { useInterval } from "react-use";
 
 export function useMultiAccountsDeps(address) {
   const [allMetadata] = useAllAssetMetadata();
@@ -29,24 +30,13 @@ export default function useSingleAccountAssets(address) {
   const { multiAccountKey, allMetadata } = useMultiAccountsDeps(address);
   const multiAccounts = useSelector(multiAccountsSelector);
   const knownAssetDefs = useKnownAssetHubAssets();
+
   const { blockTime } = useChainSettings();
+  const pollInterval = parseInt(blockTime) || 12000;
 
-  const fetchAssets = useCallback(async () => {
+  useInterval(() => {
     dispatch(fetchMultiAccounts(multiAccountKey, api));
-  }, [dispatch, multiAccountKey, api]);
-
-  useEffect(() => {
-    fetchAssets();
-
-    const interval = setInterval(
-      () => {
-        fetchAssets();
-      },
-      parseInt(blockTime) || 12000,
-    );
-
-    return () => clearInterval(interval);
-  }, [fetchAssets, blockTime]);
+  }, pollInterval);
 
   return useMemo(() => {
     if (!allMetadata || !multiAccounts) {
