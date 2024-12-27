@@ -1,7 +1,7 @@
 import { useContextApi } from "next-common/context/api";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useEffect, useState } from "react";
-import { groupBy, orderBy } from "lodash-es";
+import { orderBy } from "lodash-es";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
 import { useSelector } from "react-redux";
 import {
@@ -67,11 +67,8 @@ export default function useCollectiveEligibleVoters() {
 
         const allVotes = [...allAye, ...allNay];
         const votedSet = new Set(allVotes.map((i) => i.address));
-        const { true: votedMembers, false: unVotedMembers } = groupBy(
-          votersWithPower,
-          (member) => votedSet.has(member.address),
-        );
-
+        const votedMembers = votersWithPower.filter((m) => votedSet.has(m));
+        const unVotedMembers = votersWithPower.filter((m) => !votedSet.has(m));
         setVoters({
           votedMembers: votedMembers.map((m) => {
             const vote = allVotes.find((i) => i.address === m.address);
