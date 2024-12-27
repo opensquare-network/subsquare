@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useDebounce } from "react-use";
 import Input from "next-common/components/input";
 import { SystemSearch } from "@osn/icons/subsquare";
+import { isNil } from "lodash-es";
 
-export default function useSearchAllAssets(list = []) {
+export default function useSearchAllAssets(list) {
   const [value, setValue] = useState("");
   const [debouncedValue, setDebouncedValue] = useState("");
 
@@ -19,12 +20,18 @@ export default function useSearchAllAssets(list = []) {
     setValue(e.target.value);
   };
 
-  const filteredList = list.filter(
-    (item) =>
-      item.symbol.toLowerCase().includes(debouncedValue.toLowerCase()) ||
-      item.name.toLowerCase().includes(debouncedValue.toLowerCase()) ||
-      item.assetId.toString().includes(debouncedValue),
-  );
+  const filteredList = useMemo(() => {
+    if (isNil(list)) {
+      return list;
+    }
+
+    return list.filter(
+      (item) =>
+        item.symbol.toLowerCase().includes(debouncedValue.toLowerCase()) ||
+        item.name.toLowerCase().includes(debouncedValue.toLowerCase()) ||
+        item.assetId.toString().includes(debouncedValue),
+    );
+  }, [list, debouncedValue]);
 
   return {
     result: filteredList,
