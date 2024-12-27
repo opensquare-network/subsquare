@@ -134,7 +134,7 @@ function AddressComboInput({
 }
 
 function AddressComboListItemAccount({ account }) {
-  const { identity } = useIdentityInfo(account.address);
+  const { identity, hasIdentity } = useIdentityInfo(account.address);
   const displayName = getIdentityDisplay(identity);
   const address = normalizeAddress(account.address);
   const addressHint = getAddressHint(address);
@@ -144,7 +144,7 @@ function AddressComboListItemAccount({ account }) {
       <Avatar address={account.address} size={40} />
       <NameWrapper>
         <IdentityName>
-          {identity && <IdentityIcon identity={identity} />}
+          {hasIdentity && <IdentityIcon identity={identity} />}
           <div className="line-clamp-1">{displayName || account.name}</div>
         </IdentityName>
         <div>{addressHint}</div>
@@ -153,11 +153,31 @@ function AddressComboListItemAccount({ account }) {
   );
 }
 
-function AddressComboCustomAddress({ address }) {
-  const { identity, isLoading } = useIdentityInfo(address);
-  const displayName = getIdentityDisplay(identity);
+function Identity({ identity, address }) {
   const addressHint = getAddressHint(address);
+  const displayName = getIdentityDisplay(identity);
+  return (
+    <>
+      <IdentityName className="truncate">
+        <IdentityIcon identity={identity} />
+        <div className="whitespace-nowrap truncate">{displayName}</div>
+      </IdentityName>
+      <div>{addressHint}</div>
+    </>
+  );
+}
+
+function NoIdentity({ address }) {
   const maybeEvmAddress = tryConvertToEvmAddress(address);
+  return (
+    <IdentityName className="truncate">
+      <div className="whitespace-nowrap truncate">{maybeEvmAddress}</div>
+    </IdentityName>
+  );
+}
+
+function AddressComboCustomAddress({ address }) {
+  const { identity, isLoading, hasIdentity } = useIdentityInfo(address);
 
   if (isLoading) {
     return <AddressInfoLoading address={address} />;
@@ -167,13 +187,11 @@ function AddressComboCustomAddress({ address }) {
     <>
       <Avatar address={address} size={40} />
       <NameWrapper className="truncate">
-        <IdentityName className="truncate">
-          {identity && <IdentityIcon identity={identity} />}
-          <div className="whitespace-nowrap truncate">
-            {displayName || maybeEvmAddress}
-          </div>
-        </IdentityName>
-        {identity && <div>{addressHint}</div>}
+        {hasIdentity ? (
+          <Identity identity={identity} address={address} />
+        ) : (
+          <NoIdentity address={address} />
+        )}
       </NameWrapper>
     </>
   );
