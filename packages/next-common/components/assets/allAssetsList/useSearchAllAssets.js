@@ -1,9 +1,19 @@
 import { useState } from "react";
+import { useDebounce } from "react-use";
 import Input from "next-common/components/input";
 import { SystemSearch } from "@osn/icons/subsquare";
 
 export default function useSearchAllAssets(list = []) {
   const [value, setValue] = useState("");
+  const [debouncedValue, setDebouncedValue] = useState("");
+
+  useDebounce(
+    () => {
+      setDebouncedValue(value);
+    },
+    500,
+    [value],
+  );
 
   const handleInputChange = (e) => {
     setValue(e.target.value);
@@ -11,9 +21,9 @@ export default function useSearchAllAssets(list = []) {
 
   const filteredList = list.filter(
     (item) =>
-      item.symbol.toLowerCase().includes(value.toLowerCase()) ||
-      item.name.toLowerCase().includes(value.toLowerCase()) ||
-      item.assetId.toString().includes(value),
+      item.symbol.toLowerCase().includes(debouncedValue.toLowerCase()) ||
+      item.name.toLowerCase().includes(debouncedValue.toLowerCase()) ||
+      item.assetId.toString().includes(debouncedValue),
   );
 
   return {
