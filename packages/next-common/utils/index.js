@@ -147,6 +147,15 @@ export const estimateBlocksTime = (blocks, blockTime) => {
   return formatTimeDuration(value, { withUnitSpace: true });
 };
 
+export const estimateBlocksTimeInDays = (blocks, blockTime) => {
+  if (!blockTime) {
+    return null;
+  }
+
+  const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
+  return formatTimeDuration(value, { withUnitSpace: true, showMonths: false });
+};
+
 export function isMotionEnded(motion) {
   const { state, name } = motion?.state || {};
   return ["Closed", "Approved", "Executed", "Disapproved"].includes(
