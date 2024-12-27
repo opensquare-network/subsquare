@@ -3,7 +3,10 @@ import { SystemSubtract } from "@osn/icons/subsquare";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback } from "react";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import nextApi from "next-common/services/nextApi";
 import { getRealField } from "next-common/sima/actions/common";
 import { setReferendaDelegatesTriggerUpdate } from "next-common/store/reducers/referenda/delegates";
@@ -74,6 +77,7 @@ function RevokeContent({ address }) {
         dispatch(newErrorToast(error.message));
         return;
       }
+      dispatch(newSuccessToast("Announcement revoked"));
       triggerUpdate();
     } catch (e) {
       dispatch(newErrorToast(e.message));

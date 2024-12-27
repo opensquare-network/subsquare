@@ -8,7 +8,10 @@ import { useSignMessage } from "next-common/hooks/useSignMessage";
 import nextApi from "next-common/services/nextApi";
 import { setDemocracyDelegatesTriggerUpdate } from "next-common/store/reducers/democracy/delegates";
 import { setReferendaDelegatesTriggerUpdate } from "next-common/store/reducers/referenda/delegates";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import EditorField from "next-common/components/popup/fields/editorField";
 import TextInputField from "next-common/components/popup/fields/textInputField";
 import { getRealField } from "next-common/sima/actions/common";
@@ -85,6 +88,7 @@ function PopupContent({ onClose, myDelegation, proxyAddress }) {
         dispatch(newErrorToast(error.message));
         return;
       }
+      dispatch(newSuccessToast("Announcement published"));
       triggerUpdate();
       onClose();
     } catch (e) {
