@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { isEqual } from "lodash-es";
 
 const multiAccountsSlice = createSlice({
   name: "multiAccounts",
@@ -7,6 +8,10 @@ const multiAccountsSlice = createSlice({
   },
   reducers: {
     setMultiAccounts(state, { payload }) {
+      if (isEqual(state.accounts, payload)) {
+        return;
+      }
+
       state.accounts = payload;
     },
   },
