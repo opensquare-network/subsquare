@@ -4,6 +4,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import SplitProxyMenuButton from "next-common/components/splitProxyMenuButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useAddressDelegation from "./useAddressDelegation";
+import { useUser } from "next-common/context/user";
 
 const AnnouncementPublishPopup = dynamicPopup(() =>
   import("../../PublishAnnouncementPopup"),
@@ -12,11 +13,12 @@ const AnnouncementPublishPopup = dynamicPopup(() =>
 export default function Announcement({ myDelegation }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [proxyAddress, setProxyAddress] = useState();
+  const user = useUser();
 
   const { value: proxyAddressDelegation } = useAddressDelegation(proxyAddress);
 
-  const onClickPublish = (realAddress) => {
-    setProxyAddress(realAddress);
+  const onClickPublish = (proxyAddress) => {
+    setProxyAddress(proxyAddress || user.proxyAddress);
     setIsPopupOpen(true);
   };
 

@@ -96,16 +96,19 @@ function AccountItem({ disabled, account, onClick }) {
   );
 }
 
-function OriginAddress() {
+export function OriginAddress({ selected, onSelect = noop }) {
   const onClose = usePopupOnClose();
-  const { signerAccount, setProxyAddress } = useSignerContext();
   const user = useUser();
   const extensionAccounts = useExtensionAccounts();
-  const account = extensionAccounts.find((item) =>
-    isSameAddress(item.address, user.address),
+  const account = useMemo(
+    () =>
+      extensionAccounts.find((item) =>
+        isSameAddress(item.address, user.address),
+      ),
+    [extensionAccounts, user.address],
   );
 
-  const disabled = !signerAccount.proxyAddress;
+  const disabled = selected === user.address;
 
   return (
     <div className="flex flex-col gap-[12px]">
@@ -114,7 +117,7 @@ function OriginAddress() {
         disabled={disabled}
         account={account}
         onClick={() => {
-          setProxyAddress();
+          onSelect();
           onClose();
         }}
       />
@@ -203,10 +206,13 @@ export default function SwitchSignerPopup({ onClose }) {
   return (
     <Popup title="Select Address" onClose={onClose}>
       <div className="flex flex-col gap-[24px]">
-        <OriginAddress />
+        <OriginAddress
+          selected={signerAccount.proxyAddress}
+          onSelect={() => setProxyAddress()}
+        />
         <ProxiedAccounts
           selected={signerAccount.proxyAddress}
-          onSelect={setProxyAddress}
+          onSelect={(proxyAddress) => setProxyAddress(proxyAddress)}
         />
       </div>
     </Popup>
