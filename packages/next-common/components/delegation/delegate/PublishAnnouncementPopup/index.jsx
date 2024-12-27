@@ -4,27 +4,30 @@ import {
   Referenda,
   useModuleTab,
 } from "next-common/components/profile/votingHistory/common";
-import SignerPopup from "next-common/components/signerPopup";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import nextApi from "next-common/services/nextApi";
 import { setDemocracyDelegatesTriggerUpdate } from "next-common/store/reducers/democracy/delegates";
 import { setReferendaDelegatesTriggerUpdate } from "next-common/store/reducers/referenda/delegates";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useUser } from "next-common/context/user";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import EditorField from "next-common/components/popup/fields/editorField";
 import TextInputField from "next-common/components/popup/fields/textInputField";
+import { getRealField } from "next-common/sima/actions/common";
+import PopupWithSigner from "next-common/components/popupWithSigner";
+import PrimaryButton from "next-common/lib/button/primary";
+import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
-export default function AnnouncementPublishPopup({
-  title = "Publish Announcement",
-  onClose,
-  myDelegation,
-}) {
+function PopupContent({ onClose, myDelegation, proxyAddress }) {
   const dispatch = useDispatch();
-  const user = useUser();
-  const address = user?.address;
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
   const signMessage = useSignMessage();
+  const [isLoading, setIsLoading] = useState(false);
+  const signerAccount = useSignerAccount();
+
   const tab = useModuleTab();
   const module = tab === Referenda ? "referenda" : "democracy";
 
@@ -53,62 +56,59 @@ export default function AnnouncementPublishPopup({
     }
   }, [dispatch, module]);
 
-  const handleSubmit = useCallback(
-    async (signerAccount) => {
-      if (!shortDescription) {
-        dispatch(newErrorToast("Short description is required"));
+  const handleSubmit = useCallback(async () => {
+    if (!shortDescription) {
+      dispatch(newErrorToast("Short description is required"));
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const entity = {
+        action: "set-delegation-announcement",
+        shortDescription,
+        longDescription,
+        timestamp: Date.now(),
+        real: getRealField(proxyAddress),
+      };
+      const signerWallet = signerAccount.meta.source;
+      const signature = await signMessage(
+        JSON.stringify(entity),
+        signerAccount.address,
+        signerWallet,
+      );
+      const data = {
+        entity,
+        address: signerAccount.address,
+        signature,
+        signerWallet,
+      };
+      const { error } = await nextApi.post("delegation/announcements", data);
+      if (error) {
+        dispatch(newErrorToast(error.message));
         return;
       }
-
-      try {
-        const entity = {
-          action: "set-delegation-announcement",
-          shortDescription,
-          longDescription,
-          timestamp: Date.now(),
-        };
-        const signerWallet = signerAccount.meta.source;
-        const signature = await signMessage(
-          JSON.stringify(entity),
-          address,
-          signerWallet,
-        );
-        const data = {
-          entity,
-          address,
-          signature,
-          signerWallet,
-        };
-        const { error } = await nextApi.post("delegation/announcements", data);
-        if (error) {
-          dispatch(newErrorToast(error.message));
-          return;
-        }
-        triggerUpdate();
-        onClose();
-      } catch (e) {
-        dispatch(newErrorToast(e.message));
-      }
-    },
-    [
-      dispatch,
-      address,
-      shortDescription,
-      longDescription,
-      signMessage,
-      onClose,
-      triggerUpdate,
-    ],
-  );
+      dispatch(newSuccessToast("Announcement published"));
+      triggerUpdate();
+      onClose();
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [
+    dispatch,
+    shortDescription,
+    longDescription,
+    signMessage,
+    onClose,
+    triggerUpdate,
+    proxyAddress,
+    signerAccount,
+  ]);
 
   return (
-    <SignerPopup
-      className="w-[800px] max-w-full"
-      title={title}
-      onClose={onClose}
-      actionCallback={handleSubmit}
-      maskClosable={false}
-    >
+    <>
       <TextInputField
         title="Short description"
         text={shortDescription}
@@ -119,6 +119,32 @@ export default function AnnouncementPublishPopup({
         content={longDescription}
         setContent={setLongDescription}
       />
-    </SignerPopup>
+      <PopupButtonWrapper>
+        <PrimaryButton loading={isLoading} onClick={handleSubmit}>
+          Confirm
+        </PrimaryButton>
+      </PopupButtonWrapper>
+    </>
+  );
+}
+
+export default function AnnouncementPublishPopup({
+  onClose,
+  myDelegation,
+  proxyAddress,
+}) {
+  return (
+    <PopupWithSigner
+      className="w-[800px] max-w-full"
+      title="Publish Announcement"
+      onClose={onClose}
+      maskClosable={false}
+    >
+      <PopupContent
+        myDelegation={myDelegation}
+        proxyAddress={proxyAddress}
+        onClose={onClose}
+      />
+    </PopupWithSigner>
   );
 }

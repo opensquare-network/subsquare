@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { MenuAnnouncement } from "@osn/icons/subsquare";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import PrimaryButton from "next-common/lib/button/primary";
+import SplitProxyMenuButton from "next-common/components/splitProxyMenuButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import useAddressDelegation from "./useAddressDelegation";
+import { useUser } from "next-common/context/user";
 
 const AnnouncementPublishPopup = dynamicPopup(() =>
   import("../../PublishAnnouncementPopup"),
@@ -10,6 +12,16 @@ const AnnouncementPublishPopup = dynamicPopup(() =>
 
 export default function Announcement({ myDelegation }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [proxyAddress, setProxyAddress] = useState();
+  const user = useUser();
+
+  const { value: proxyAddressDelegation } = useAddressDelegation(proxyAddress);
+
+  const onClickPublish = (proxyAddress) => {
+    setProxyAddress(proxyAddress || user?.proxyAddress);
+    setIsPopupOpen(true);
+  };
+
   return (
     <SecondaryCard className="flex flex-row gap-[16px] max-sm:flex-col">
       <div className="flex grow gap-[16px] sm:items-center max-sm:gap-[12px] max-sm:flex-col">
@@ -26,14 +38,17 @@ export default function Announcement({ myDelegation }) {
         </div>
       </div>
       <div className="flex items-center max-sm:justify-end">
-        <PrimaryButton onClick={() => setIsPopupOpen(true)}>
-          Publish
-        </PrimaryButton>
+        <SplitProxyMenuButton
+          action={"Publish"}
+          onClick={onClickPublish}
+          onClickAsProxy={onClickPublish}
+        />
       </div>
       {isPopupOpen && (
         <AnnouncementPublishPopup
           onClose={() => setIsPopupOpen(false)}
-          myDelegation={myDelegation}
+          myDelegation={proxyAddress ? proxyAddressDelegation : myDelegation}
+          proxyAddress={proxyAddress}
         />
       )}
     </SecondaryCard>
