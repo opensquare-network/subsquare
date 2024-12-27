@@ -67,8 +67,12 @@ export default function useCollectiveEligibleVoters() {
 
         const allVotes = [...allAye, ...allNay];
         const votedSet = new Set(allVotes.map((i) => i.address));
-        const votedMembers = votersWithPower.filter((m) => votedSet.has(m));
-        const unVotedMembers = votersWithPower.filter((m) => !votedSet.has(m));
+        const votedMembers = votersWithPower.filter((m) =>
+          votedSet.has(m.address),
+        );
+        const unVotedMembers = votersWithPower.filter(
+          (m) => !votedSet.has(m.address),
+        );
         setVoters({
           votedMembers: votedMembers.map((m) => {
             const vote = allVotes.find((i) => i.address === m.address);
