@@ -10,6 +10,7 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import AssetsList from "./assetsList";
 import { Title } from "../walletAssetList/index";
 import useAllAssets from "../useAllAssets";
+import useSearchAllAssets from "./useSearchAllAssets";
 
 function Summary({ assetsCount }) {
   return (
@@ -25,15 +26,19 @@ function Summary({ assetsCount }) {
 
 export default function AllAssetsList() {
   const chainSettings = useChainSettings();
-  const assets = useAllAssets();
+  const allAssets = useAllAssets();
+  const { result: filteredAssets, component: searchInput } =
+    useSearchAllAssets(allAssets);
+
   const pageSize = 25;
   const { page, component: pagination } = usePaginationComponent(
-    assets?.length || 0,
+    filteredAssets?.length || 0,
     pageSize,
   );
+
   const pagedAssets = useMemo(
-    () => assets?.slice((page - 1) * pageSize, page * pageSize),
-    [assets, page, pageSize],
+    () => filteredAssets?.slice((page - 1) * pageSize, page * pageSize),
+    [filteredAssets, page, pageSize],
   );
 
   return (
@@ -41,10 +46,14 @@ export default function AllAssetsList() {
       title={chainSettings.name}
       seoInfo={{ title: "" }}
       description={chainSettings.description}
-      summary={<Summary assetsCount={assets?.length} />}
+      summary={<Summary assetsCount={filteredAssets?.length} />}
     >
       <div className="flex flex-col gap-[16px]">
-        <Title assetsCount={assets?.length || 0} />
+        <div className="inline-flex w-full justify-between pr-6">
+          <Title assetsCount={filteredAssets?.length || 0} />
+          {searchInput}
+        </div>
+
         <SecondaryCard>
           <AssetsList assets={pagedAssets} />
           {pagination}
