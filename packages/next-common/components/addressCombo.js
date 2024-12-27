@@ -12,6 +12,7 @@ import IdentityIcon from "./Identity/identityIcon.js";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useClickAway } from "react-use";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
+import AddressInfoLoading from "./addressInfo";
 
 const Wrapper = Relative;
 
@@ -153,10 +154,14 @@ function AddressComboListItemAccount({ account }) {
 }
 
 function AddressComboCustomAddress({ address }) {
-  const { identity } = useIdentityInfo(address);
+  const { identity, isLoading } = useIdentityInfo(address);
   const displayName = getIdentityDisplay(identity);
   const addressHint = getAddressHint(address);
   const maybeEvmAddress = tryConvertToEvmAddress(address);
+
+  if (isLoading) {
+    return <AddressInfoLoading address={address} />;
+  }
 
   return (
     <>
