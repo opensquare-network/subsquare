@@ -9,6 +9,7 @@ import {
   setIsLoadingReferendaVoting,
   setMyReferendaPriors,
   setMyReferendaVoting,
+  setMyReferendaDelegations,
 } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 import getDelegatedVoting from "./delegation";
@@ -25,6 +26,11 @@ async function normalizeCastingVoting(api, trackId, votingOf) {
       vote: normalizeReferendaVote(accountVote),
     };
   });
+
+  const delegations = {
+    votes: casting.delegations.votes.toString(),
+    capital: casting.delegations.capital.toString(),
+  };
 
   const promises = [];
   for (const vote of votes) {
@@ -51,6 +57,7 @@ async function normalizeCastingVoting(api, trackId, votingOf) {
     isCasting: true,
     trackId,
     votes: normalizedVotes,
+    delegations,
     prior: normalizePrior(casting.prior),
   };
 }
@@ -59,6 +66,7 @@ async function queryVotesAndReferendaInfo(api, address) {
   const entries = await api.query.convictionVoting.votingFor.entries(address);
   const voting = [];
   const priors = [];
+  const delegations = [];
   for (const [storageKey, votingOf] of entries) {
     const trackId = storageKey.args[1].toNumber();
     if (votingOf.isDelegating) {
@@ -75,10 +83,14 @@ async function queryVotesAndReferendaInfo(api, address) {
         trackId,
         ...normalizePrior(votingOf.asCasting.prior),
       });
+      delegations.push({
+        trackId,
+        ...normalized.delegations,
+      });
     }
   }
 
-  return { voting, priors };
+  return { voting, priors, delegations };
 }
 
 export default function useFetchMyReferendaVoting() {
@@ -96,9 +108,10 @@ export default function useFetchMyReferendaVoting() {
       dispatch(setIsLoadingReferendaVoting(true));
     }
     queryVotesAndReferendaInfo(api, address)
-      .then(({ voting, priors }) => {
+      .then(({ voting, priors, delegations }) => {
         dispatch(setMyReferendaPriors(priors));
         dispatch(setMyReferendaVoting(voting));
+        dispatch(setMyReferendaDelegations(delegations));
       })
       .finally(() => {
         dispatch(setIsLoadingReferendaVoting(false));
