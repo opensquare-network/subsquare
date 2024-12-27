@@ -9,6 +9,7 @@ import ChainTypes from "next-common/utils/consts/chainTypes";
 import { useConnectors } from "wagmi";
 import AddressAvatar from "./user/addressAvatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
+import AddressInfoLoading from "./addressInfo";
 
 function WalletIcon({ wallet: walletName }) {
   const wallet = find(allWallets, { extensionName: walletName });
@@ -55,7 +56,9 @@ const NameWrapper = styled.div`
 `;
 
 export default function Account({ account, showFullAddress = false }) {
-  const { identity, hasIdentity } = useIdentityInfo(account?.address);
+  const { identity, hasIdentity, isLoading } = useIdentityInfo(
+    account?.address,
+  );
   const address = normalizeAddress(account?.address);
   const maybeEvmAddress = tryConvertToEvmAddress(address);
   const wallet = account?.meta?.source;
@@ -65,6 +68,10 @@ export default function Account({ account, showFullAddress = false }) {
   const addressHint = showFullAddress
     ? maybeEvmAddress
     : addressEllipsis(maybeEvmAddress);
+
+  if (isLoading) {
+    return <AddressInfoLoading address={address} />;
+  }
 
   return (
     <>
