@@ -153,26 +153,37 @@ function AddressComboListItemAccount({ account }) {
   );
 }
 
+function AvatarNameWrapper({ address, children }) {
+  return (
+    <>
+      <Avatar address={address} size={40} />
+      <NameWrapper className="truncate">{children}</NameWrapper>
+    </>
+  );
+}
+
 function Identity({ identity, address }) {
   const addressHint = getAddressHint(address);
   const displayName = getIdentityDisplay(identity);
   return (
-    <>
+    <AvatarNameWrapper address={address}>
       <IdentityName className="truncate">
         <IdentityIcon identity={identity} />
         <div className="whitespace-nowrap truncate">{displayName}</div>
       </IdentityName>
       <div>{addressHint}</div>
-    </>
+    </AvatarNameWrapper>
   );
 }
 
 function NoIdentity({ address }) {
   const maybeEvmAddress = tryConvertToEvmAddress(address);
   return (
-    <IdentityName className="truncate">
-      <div className="whitespace-nowrap truncate">{maybeEvmAddress}</div>
-    </IdentityName>
+    <AvatarNameWrapper address={address}>
+      <IdentityName className="truncate">
+        <div className="whitespace-nowrap truncate">{maybeEvmAddress}</div>
+      </IdentityName>
+    </AvatarNameWrapper>
   );
 }
 
@@ -183,18 +194,11 @@ function AddressComboCustomAddress({ address }) {
     return <AddressInfoLoading address={address} />;
   }
 
-  return (
-    <>
-      <Avatar address={address} size={40} />
-      <NameWrapper className="truncate">
-        {hasIdentity ? (
-          <Identity identity={identity} address={address} />
-        ) : (
-          <NoIdentity address={address} />
-        )}
-      </NameWrapper>
-    </>
-  );
+  if (hasIdentity) {
+    return <Identity identity={identity} address={address} />;
+  }
+
+  return <NoIdentity address={address} />;
 }
 
 function AddressComboHeader({
