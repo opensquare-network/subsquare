@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import useQueryMyProxied from "next-common/hooks/useQueryMyProxies";
 import useAllOnChainProxies from "next-common/hooks/useAllOnChainProxies";
 import { useUser } from "../user";
@@ -49,6 +49,11 @@ export function GeneralProxiesProvider({ children }) {
   const { modules: { proxy: { provider = "chain" } = {} } = {} } =
     useChainSettings();
 
+  const context = useContext(ProxiesContext);
+  if (context) {
+    return children;
+  }
+
   return provider === "server" ? (
     <ServerProxiesProvider>{children}</ServerProxiesProvider>
   ) : (
@@ -57,5 +62,5 @@ export function GeneralProxiesProvider({ children }) {
 }
 
 export function useMyProxied() {
-  return React.useContext(ProxiesContext);
+  return useContext(ProxiesContext);
 }
