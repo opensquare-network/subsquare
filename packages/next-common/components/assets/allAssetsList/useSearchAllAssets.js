@@ -4,8 +4,26 @@ import Input from "next-common/components/input";
 import { SystemSearch } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 
-export default function useSearchAllAssets(list) {
-  const [value, setValue] = useState("");
+export function SearchInput({ value, onChange }) {
+  return (
+    <Input
+      className="w-40 h-[30px] rounded-md bg-neutral100 inline-flex"
+      value={value}
+      onChange={onChange}
+      placeholder="Search for asset"
+      prefixClassName="!ml-1"
+      prefix={
+        <SystemSearch
+          width={20}
+          height={20}
+          className="[&_path]:fill-textTertiary"
+        />
+      }
+    />
+  );
+}
+
+export default function useSearchAllAssets(list, value) {
   const [debouncedValue, setDebouncedValue] = useState("");
 
   useDebounce(
@@ -15,10 +33,6 @@ export default function useSearchAllAssets(list) {
     500,
     [value],
   );
-
-  const handleInputChange = (e) => {
-    setValue(e.target.value);
-  };
 
   const filteredList = useMemo(() => {
     if (isNil(list)) {
@@ -33,23 +47,5 @@ export default function useSearchAllAssets(list) {
     );
   }, [list, debouncedValue]);
 
-  return {
-    result: filteredList,
-    component: (
-      <Input
-        className="w-40 h-[30px] rounded-md bg-neutral100 inline-flex"
-        value={value}
-        onChange={handleInputChange}
-        placeholder="Search for asset"
-        prefixClassName="!ml-1"
-        prefix={
-          <SystemSearch
-            width={20}
-            height={20}
-            className="[&_path]:fill-textTertiary"
-          />
-        }
-      />
-    ),
-  };
+  return filteredList;
 }
