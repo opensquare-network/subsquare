@@ -9,6 +9,7 @@ import FellowshipTreasuryOnAssetHub from "./fellowshipTreasuryOnAssetHub";
 import Loans from "./loans";
 import Bounties from "./bounties";
 import MythToken from "./mythToken";
+import Ambassador from "./ambassador";
 import CollapsePanel from "next-common/components/summary/polkadotTreasurySummary/common/collapsePanel";
 
 function PolkadotTreasurySummaryInContext() {
@@ -19,6 +20,7 @@ function PolkadotTreasurySummaryInContext() {
       <TreasuryOnHydration />
       <Bounties />
       <FellowshipTreasuryOnAssetHub />
+      <Ambassador />
       <Loans />
       <MythToken />
     </CollapsePanel>

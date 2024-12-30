@@ -13,6 +13,9 @@ import {
   useQueryBounties,
   useBountiesTotalBalance,
 } from "../hook/useQueryBountiesData";
+import useQueryAmbassadorBalance, {
+  AmbassadorAccount,
+} from "../hook/useQueryAmbassadorBalance";
 
 const PolkadotTreasurySummaryContext = createContext();
 
@@ -63,6 +66,11 @@ export function PolkadotTreasurySummaryProvider({ children }) {
     isLoading: isBountiesTotalBalanceLoading,
   } = useBountiesTotalBalance(bounties, api);
 
+  const {
+    balance: ambassadorUsdtBalance,
+    isLoading: isAmbassadorUsdtBalanceLoading,
+  } = useQueryAmbassadorBalance(AmbassadorAccount);
+
   const isDotTreasuryBalanceOnBountiesLoading =
     isQueryBountiesLoading || isBountiesTotalBalanceLoading;
 
@@ -88,6 +96,8 @@ export function PolkadotTreasurySummaryProvider({ children }) {
         bountiesCount,
         dotTreasuryBalanceOnBounties,
         isDotTreasuryBalanceOnBountiesLoading,
+        ambassadorUsdtBalance,
+        isAmbassadorUsdtBalanceLoading,
       }}
     >
       {children}
