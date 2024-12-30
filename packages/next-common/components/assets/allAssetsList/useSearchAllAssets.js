@@ -7,18 +7,12 @@ import { isNil } from "lodash-es";
 export function SearchInput({ value, onChange }) {
   return (
     <Input
-      className="w-40 h-[30px] rounded-md bg-neutral100 inline-flex"
+      className="h-[30px] flex rounded-md bg-neutral100"
       value={value}
       onChange={onChange}
       placeholder="Search for asset"
       prefixClassName="!ml-1"
-      prefix={
-        <SystemSearch
-          width={20}
-          height={20}
-          className="[&_path]:fill-textTertiary"
-        />
-      }
+      prefix={<SystemSearch className="text-textTertiary w-5 h-5" />}
     />
   );
 }

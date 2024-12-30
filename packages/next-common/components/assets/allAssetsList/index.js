@@ -54,7 +54,7 @@ export default function AllAssetsList() {
       summary={<Summary assetsCount={filteredAssets?.length} />}
     >
       <div className="flex flex-col gap-[16px]">
-        <div className="inline-flex w-full justify-between pr-6">
+        <div className="inline-flex w-full justify-between items-center pr-6">
           <Title assetsCount={filteredAssets?.length || 0} />
           <SearchInput
             value={searchValue}
