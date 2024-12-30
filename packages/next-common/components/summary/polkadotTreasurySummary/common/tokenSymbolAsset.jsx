@@ -11,7 +11,6 @@ export default function TokenSymbolAsset({ amount, symbol, valueClassName }) {
         symbol={symbol}
         className={cn("text12Medium text-textTertiary", valueClassName)}
         tooltipClassName={"inline-flex items-center"}
-        tooltipNumberWithComma={true}
       />
     </div>
   );

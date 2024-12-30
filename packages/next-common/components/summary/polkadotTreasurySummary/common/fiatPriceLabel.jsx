@@ -33,12 +33,7 @@ export default function FiatPriceLabel({
   return (
     <div>
       {!isNil(fiatPrice) && !isMYTHFiatPriceLoading && (
-        <ValueDisplay
-          value={totalPrice}
-          symbol={""}
-          prefix={"$"}
-          tooltipNumberWithComma={true}
-        />
+        <ValueDisplay value={totalPrice} symbol={""} prefix={"$"} />
       )}
     </div>
   );

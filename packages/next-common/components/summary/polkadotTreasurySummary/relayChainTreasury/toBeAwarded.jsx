@@ -13,7 +13,6 @@ export default function ToBeAwarded({ toBeAwarded }) {
       value={value}
       symbol={symbol}
       className={"text12Medium text-textPrimary"}
-      tooltipNumberWithComma={true}
     />
   );
 }

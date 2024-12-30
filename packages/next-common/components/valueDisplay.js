@@ -6,7 +6,6 @@ import {
 } from "../utils/viewfuncs";
 import { cn } from "next-common/utils";
 import BigNumber from "bignumber.js";
-import NumberWithComma from "next-common/components/numberWithComma";
 
 export default function ValueDisplay({
   value,
@@ -17,7 +16,6 @@ export default function ValueDisplay({
   prefix,
   tooltipClassName,
   showVerySmallNumber = false,
-  tooltipNumberWithComma = false,
 }) {
   let tooltipContent = `${value}${symbol ? " " + symbol : ""}`;
   const symbolContent = symbol && (
@@ -81,10 +79,6 @@ export default function ValueDisplay({
       {content}
     </span>
   );
-
-  if (tooltipNumberWithComma) {
-    tooltipContent = <NumberWithComma value={value} symbol={symbol} />;
-  }
 
   if (showTooltip) {
     container = (
