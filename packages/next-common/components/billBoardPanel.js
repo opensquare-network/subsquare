@@ -21,7 +21,7 @@ export default function BillBoardPanel({ className, icon, items = [] }) {
       <ul className="list-disc text14Medium text-textPrimary pl-6 space-y-1">
         {items.map((item, index) => (
           <li key={index}>
-            <div className="flex items-center">{item}</div>
+            <div className="flex items-center flex-wrap">{item}</div>
           </li>
         ))}
       </ul>

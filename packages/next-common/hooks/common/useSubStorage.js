@@ -29,7 +29,7 @@ export default function useSubStorage(
   }, [chain, pallet, storage, filteredParams]);
   const result = cachedResult[key];
 
-  const [loading, setLoading] = useState(isNil(result) ? true : false);
+  const [loading, setLoading] = useState(isNil(result));
 
   const subscribe = useCallback(async () => {
     if (!subs[key]) {

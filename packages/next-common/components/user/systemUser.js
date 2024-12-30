@@ -27,7 +27,7 @@ function SystemUserImpl({
   const address = user?.address;
   const displayAddress = tryConvertToEvmAddress(address);
 
-  const [identity, hasIdentity] = useIdentityInfo(address);
+  const { identity, hasIdentity } = useIdentityInfo(address);
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
   const [avatar] = useAvatarInfo(address);
 
