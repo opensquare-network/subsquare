@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.4.5
+
+date: 2024-12-30
+
+- [Medium] Support proxies data:
+    - Add a list to show all on chain proxies data.
+    - Support filtering proxies by identity and address.
+    - Support filtering proxies by my address.
+- Allow delegation announcement publish by a proxy account.
+- Enable referenda and treasury spends for hydration.
+- Refactor indexing scripts to scan an extrinsic and its corresponding events then another extrinsic. Previously we
+  first scan all events, then all extrinsics.
+- [Medium] Bounties:
+    - Correct the claim button visibility by checking on chain status.
+    - Allow 0 fee when proposing a curator for a bounty or child bounty.
+    - Fix the data indexing problem caused by all a child bounty lifecycle in one block. Write several scripts to fix
+      the history data.
+- Fellowship:
+    - Show eligible voters on fellowship referendum detail page.
+    - Improve members warning and filter components style on the core page.
+    - Fix rank select 0 value select.
+    - Fix promotion param value for index 0 on fellowship params page.
+    - Fix the `minRankOfClass` function for fellowship so the vote permission issue is fixed for referenda in
+      track [31, 33].
+    - Disable the rank input on the member approve/promotion popup.
+- Fix identity deposit.
+- Show my vote status for each referendum on the referenda list page.
+- Improve referenda votes popup style to fix the vote records jump issue.
+- Refresh assethub my assets by new block.
+- Only show how many days for voting lock period.
+- Support assets search by symbol/name/id on assethub all assets page.
+- Add loading effect for account/address box component.
+- Guard user account balance subscription by checking if the address is nil.
+- Add the ambassador part to the whole polkadot treasury.
+
 # 4.4.4
 
 date: 2024-12-23
