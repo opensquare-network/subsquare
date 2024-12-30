@@ -16,6 +16,7 @@ export default function NextBurn({ free = 0 }) {
         value={toPrecision(nextBurn, decimals)}
         symbol={symbol}
         className={"text12Medium text-textPrimary"}
+        tooltipNumberWithComma={true}
       />
     </div>
   );

@@ -24,6 +24,7 @@ export function MythTokenAsset({ balance, className }) {
         symbol={"MYTH"}
         className={cn("text12Medium text-textTertiary", className)}
         tooltipClassName={"inline-flex items-center"}
+        tooltipNumberWithComma={true}
       />
     </div>
   );

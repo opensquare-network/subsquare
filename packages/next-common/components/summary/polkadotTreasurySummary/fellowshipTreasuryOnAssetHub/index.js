@@ -31,6 +31,7 @@ function FellowshipTreasuryItemList({
           symbol={symbol}
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
+          tooltipNumberWithComma={true}
         />
       </SummaryLabelLinkItem>
       <SummaryLabelLinkItem
@@ -42,6 +43,7 @@ function FellowshipTreasuryItemList({
           symbol="USDt"
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
+          tooltipNumberWithComma={true}
         />
       </SummaryLabelLinkItem>
     </div>
