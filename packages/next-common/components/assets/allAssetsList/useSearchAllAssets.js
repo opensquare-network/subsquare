@@ -33,12 +33,17 @@ export default function useSearchAllAssets(list, value) {
       return list;
     }
 
-    return list.filter(
-      (item) =>
-        item.symbol.toLowerCase().includes(debouncedValue.toLowerCase()) ||
-        item.name.toLowerCase().includes(debouncedValue.toLowerCase()) ||
-        item.assetId.toString().includes(debouncedValue),
-    );
+    return list.filter((item) => {
+      const symbol = item?.symbol?.toLowerCase() || "";
+      const name = item?.name?.toLowerCase() || "";
+      const assetId = item?.assetId?.toString() || "";
+
+      return (
+        symbol.includes(debouncedValue.toLowerCase()) ||
+        name.includes(debouncedValue.toLowerCase()) ||
+        assetId.includes(debouncedValue)
+      );
+    });
   }, [list, debouncedValue]);
 
   return filteredList;
