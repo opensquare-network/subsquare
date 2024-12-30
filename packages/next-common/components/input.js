@@ -137,6 +137,7 @@ function Input(
     onFocus = noop,
     onBlur = noop,
     className,
+    prefixClassName,
     ...props
   },
   ref,
@@ -172,7 +173,7 @@ function Input(
         }}
         {...props}
       >
-        {prefix && <Prefix>{prefix}</Prefix>}
+        {prefix && <Prefix className={prefixClassName}>{prefix}</Prefix>}
 
         <InputWrapper
           ref={(el) => {
