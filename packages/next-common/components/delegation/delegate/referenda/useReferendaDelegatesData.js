@@ -7,7 +7,7 @@ import {
   referendaDelegatesSelector,
   referendaDelegatesTriggerUpdateSelector,
 } from "next-common/store/reducers/referenda/delegates";
-import { omit } from "lodash-es";
+import { isNil, omit } from "lodash-es";
 
 export function useReferendaDelegatesData({ page, sort, pageSize = 18 }) {
   const dispatch = useDispatch();
@@ -25,6 +25,13 @@ export function useReferendaDelegatesData({ page, sort, pageSize = 18 }) {
 
   useEffect(() => {
     const q = omit(router.query, ["sort", "page"]);
+    if (
+      (isNil(router.query.page) ? 1 : parseInt(router.query.page)) === page &&
+      (router.query.sort ?? "") === sort
+    ) {
+      return;
+    }
+
     if (page > 1) {
       q.page = page;
     }
@@ -33,8 +40,7 @@ export function useReferendaDelegatesData({ page, sort, pageSize = 18 }) {
     }
 
     router.push({ query: q }, null, { shallow: true });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sort, page, pageSize]);
+  }, [sort, page, pageSize, router]);
 
   return referendaDelegatesPageData;
 }
