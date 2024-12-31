@@ -61,12 +61,9 @@ function CurrencyInputImpl(
     });
 
     if (numericValue) {
-      let formattedValue = currencyInputUtils.formatValue(numericValue);
-
-      if (numericValue.indexOf(DECIMAL_SEPARATOR) >= 0) {
-        const [int, decimal] = numericValue.split(DECIMAL_SEPARATOR);
-        formattedValue = `${currencyInputUtils.formatValue(int)}.${decimal}`;
-      }
+      const formattedValue = currencyInputUtils.formatValue(numericValue, {
+        decimalSeparator: DECIMAL_SEPARATOR,
+      });
 
       setStateValue(formattedValue);
 

@@ -9,15 +9,15 @@ function count(str = "", char = "") {
   return Math.max(0, str.split(char).length - 1);
 }
 
-function cleanValue(value = "", { allowDecimals, decimalSeparator }) {
+function cleanValue(value = "", { allowDecimals, decimalSeparator } = {}) {
   return value.replace(
     new RegExp(`[^0-9${allowDecimals ? decimalSeparator : ""}]`, "g"),
     "",
   );
 }
 
-function formatValue(value = "") {
-  if (value.startsWith(".")) {
+function formatValue(value = "", { decimalSeparator } = {}) {
+  if (value.startsWith(decimalSeparator)) {
     value = "0" + value;
   }
 
@@ -26,7 +26,15 @@ function formatValue(value = "") {
     maximumFractionDigits: 20,
   });
 
-  return formatter.format(value);
+  let formatted;
+  if (value.indexOf(decimalSeparator) >= 0) {
+    const [int, decimal] = value.split(decimalSeparator);
+    formatted = `${formatter.format(int)}.${decimal}`;
+  } else {
+    formatted = formatter.format(value);
+  }
+
+  return formatted;
 }
 
 /**
