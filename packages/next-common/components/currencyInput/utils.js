@@ -1,28 +1,37 @@
-// modified, https://github.com/cchanxzy/react-currency-input-field/src/components/utils/repositionCursor.ts
+export const currencyInputUtils = {
+  formatValue,
+  repositionCursor,
+};
 
-import { formatValue } from "./formatValue";
+function count(str = "", char = "") {
+  return Math.max(0, str.split(char).length - 1);
+}
+
+function formatValue(value = "") {
+  if (value.startsWith(".")) {
+    value = "0" + value;
+  }
+
+  const formatter = new Intl.NumberFormat(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 20,
+  });
+
+  return formatter.format(value);
+}
 
 /**
  * Based on the last key stroke and the cursor position, update the value
  * and reposition the cursor to the right place
+ * @link https://github.com/cchanxzy/react-currency-input-field/src/components/utils/repositionCursor.ts
  */
-export function repositionCursor({
+function repositionCursor({
   selectionStart,
   value,
   lastKeyStroke,
   stateValue,
   groupSeparator,
 }) {
-  function countGroupSeparators(value) {
-    let count = 0;
-    for (let i = 0; i < value.length; i++) {
-      if (value[i] === groupSeparator) {
-        count += 1;
-      }
-    }
-    return count;
-  }
-
   let cursorPosition = selectionStart;
   let modifiedValue = value;
 
@@ -53,17 +62,17 @@ export function repositionCursor({
     ) {
       const [, decimal] = stateValue.split(".");
       const formattedDecimal = formatValue(decimal);
-      const count = countGroupSeparators(formattedDecimal);
+      const groupSeparators = count(formattedDecimal, groupSeparator);
 
-      cursorPosition -= count;
+      cursorPosition -= groupSeparators;
     }
 
     // if adding the . in anywhere, re-calculate the position
     if (lastKeyStroke === ".") {
       const rightString = stateValue.slice(cursorPosition);
-      const count = countGroupSeparators(rightString);
+      const groupSeparators = count(rightString, groupSeparator);
 
-      cursorPosition += count;
+      cursorPosition += groupSeparators;
     }
 
     modifiedValue = splitValue.join("");

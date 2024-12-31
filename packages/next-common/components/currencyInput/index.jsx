@@ -8,8 +8,7 @@ import {
   useState,
 } from "react";
 import Input from "../input";
-import { repositionCursor } from "./repositionCursor";
-import { formatValue } from "./formatValue";
+import { currencyInputUtils } from "./utils";
 
 const GROUP_SEPARATOR = ",";
 
@@ -46,13 +45,14 @@ function CurrencyInputImpl(
       return;
     }
 
-    const { modifiedValue, cursorPosition } = repositionCursor({
-      selectionStart,
-      value,
-      lastKeyStroke,
-      stateValue,
-      groupSeparator: GROUP_SEPARATOR,
-    });
+    const { modifiedValue, cursorPosition } =
+      currencyInputUtils.repositionCursor({
+        selectionStart,
+        value,
+        lastKeyStroke,
+        stateValue,
+        groupSeparator: GROUP_SEPARATOR,
+      });
 
     const numericValue = modifiedValue.replace(
       new RegExp(`[^0-9${allowDecimals ? "." : ""}]`, "g"),
@@ -60,11 +60,11 @@ function CurrencyInputImpl(
     );
 
     if (numericValue) {
-      let formattedValue = formatValue(numericValue);
+      let formattedValue = currencyInputUtils.formatValue(numericValue);
 
       if (numericValue.indexOf(".") >= 0) {
         const [int, decimal] = numericValue.split(".");
-        formattedValue = `${formatValue(int)}.${decimal}`;
+        formattedValue = `${currencyInputUtils.formatValue(int)}.${decimal}`;
       }
 
       setStateValue(formattedValue);
