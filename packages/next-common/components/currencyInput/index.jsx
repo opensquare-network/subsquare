@@ -26,6 +26,7 @@ function CurrencyInputImpl(
     onKeyDown,
     onChange,
     onValueChange,
+    ...props
   },
   ref,
 ) {
@@ -110,6 +111,7 @@ function CurrencyInputImpl(
       inputMode="decimal"
       value={stateValue}
       className={className}
+      {...props}
       onChange={handleOnChange}
       onKeyDown={handleOnKeyDown}
     />
