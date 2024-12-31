@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useChain } from "../../context/chain";
-import { WalletMimirLight } from "@osn/icons/subsquare";
 import { usePathname } from "next/navigation";
 import useMultisigAddress from "next-common/hooks/useMultisigAddress";
+import { LinkMimir } from "@osn/icons/subsquare";
+import IconLink from "./iconLink";
 
 function useIsMultiSigAccount(address) {
   const [isMultiSigAccount, setIsMultiSigAccount] = useState(false);
@@ -31,9 +32,5 @@ export default function ConditionalMimirIcon({ address }) {
 
   const href = `https://app.mimir.global/?address=${address}&network=${chain}`;
 
-  return (
-    <a href={href} target="_blank" rel="noreferrer" className="cursor-pointer">
-      <WalletMimirLight className="w-5 h-5" />
-    </a>
-  );
+  return <IconLink icon={<LinkMimir />} href={href} />;
 }
