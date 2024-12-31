@@ -19,7 +19,7 @@ export default CurrencyInput;
 function CurrencyInputImpl(
   {
     defaultValue = "",
-    // allowDecimals = true,
+    allowDecimals = true,
     className = "",
     onKeyDown,
     onChange,
@@ -54,7 +54,10 @@ function CurrencyInputImpl(
       groupSeparator: GROUP_SEPARATOR,
     });
 
-    const numericValue = modifiedValue.replace(/[^0-9.]/g, "");
+    const numericValue = modifiedValue.replace(
+      new RegExp(`[^0-9${allowDecimals ? "." : ""}]`, "g"),
+      "",
+    );
 
     if (numericValue) {
       let formattedValue = formatValue(numericValue);
