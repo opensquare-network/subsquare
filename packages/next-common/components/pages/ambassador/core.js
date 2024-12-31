@@ -10,6 +10,8 @@ import AmbassadorMemberCommon from "next-common/components/pages/ambassador/comm
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipMembersLoadable from "../fellowship/loadable";
 import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
+import MyAmbassadorMemberCard from "next-common/components/collectives/core/member/mine";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function AmbassadorCoreMembersPage() {
   const { ambassadorParams } = usePageProps();
@@ -23,6 +25,7 @@ export default function AmbassadorCoreMembersPage() {
 
 function AmbassadorCoreMembersPageInContext() {
   const { ambassadorParams } = usePageProps();
+  const realAddress = useRealAddress();
   const members = useFellowshipSortedCoreMembers();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
@@ -42,7 +45,7 @@ function AmbassadorCoreMembersPageInContext() {
 
   return (
     <FellowshipMembersLoadable>
-      <AmbassadorMemberCommon params={ambassadorParams}>
+      <AmbassadorMemberCommon>
         <div className="flex items-center justify-between mb-4 pr-6">
           <FellowshipMemberTabs members={members} section="ambassador" />
           {component}
@@ -50,13 +53,16 @@ function AmbassadorCoreMembersPageInContext() {
 
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>
-            {filteredMembers.map((member) => (
-              <AmbassadorCoreMemberCard
-                key={member.address}
-                member={member}
-                params={ambassadorParams}
-              />
-            ))}
+            <MyAmbassadorMemberCard />
+            {filteredMembers
+              .filter((m) => m.address !== realAddress)
+              .map((member) => (
+                <AmbassadorCoreMemberCard
+                  key={member.address}
+                  member={member}
+                  params={ambassadorParams}
+                />
+              ))}
           </FellowshipCoreMemberCardListContainer>
         ) : (
           <FellowshipMembersEmpty />
