@@ -6,7 +6,7 @@ import {
 } from "next-common/store/reducers/democracy/delegates";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { omit } from "lodash-es";
+import { isNil, omit } from "lodash-es";
 
 export function useDemocracyDelegatesData({ page, sort, pageSize = 18 }) {
   const dispatch = useDispatch();
@@ -24,7 +24,10 @@ export function useDemocracyDelegatesData({ page, sort, pageSize = 18 }) {
 
   useEffect(() => {
     const q = omit(router.query, ["sort", "page"]);
-    if ((q.page ?? 1) === page && (q.sort ?? "") === sort) {
+    if (
+      (isNil(router.query.page) ? 1 : parseInt(router.query.page)) === page &&
+      (router.query.sort ?? "") === sort
+    ) {
       return;
     }
 
