@@ -13,6 +13,7 @@ import { DelegateAvatar } from "../referenda/avatar";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import MineTag from "../common/mineTag";
 
 const ReferendaDelegateeDetailPopup = dynamicPopup(() =>
   import("./detailPopup"),
@@ -30,7 +31,9 @@ export default function DemocracyDelegateCard({
   const [detailOpen, setDetailOpen] = useState(false);
 
   return (
-    <SecondaryCard className="flex flex-col text-textPrimary">
+    <SecondaryCard className="flex flex-col text-textPrimary relative">
+      {address === realAddress && <MineTag />}
+
       <div className="flex justify-between">
         <DelegateAvatar address={address} />
 
