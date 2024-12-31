@@ -3,11 +3,10 @@ import ReferendaDelegateCard from "next-common/components/delegation/delegate/re
 import { AvatarContextProvider } from "next-common/context/avatar";
 import { useMemo } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useAddressDelegation from "../myDelegationSection/publicAnnouncement/useAddressDelegation";
+import { useMyReferendaDelegation } from "../myDelegationSection/publicAnnouncement/useAddressDelegation";
 
 function MyDelegationCard() {
-  const realAddress = useRealAddress();
-  const { value: myDelegation } = useAddressDelegation(realAddress);
+  const myDelegation = useMyReferendaDelegation();
   if (!myDelegation) {
     return null;
   }

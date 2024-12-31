@@ -3,11 +3,10 @@ import DemocracyDelegateCard from "./card";
 import { useMemo } from "react";
 import { AvatarContextProvider } from "next-common/context/avatar";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useAddressDelegation from "../myDelegationSection/publicAnnouncement/useAddressDelegation";
+import { useMyDemocracyDelegation } from "../myDelegationSection/publicAnnouncement/useAddressDelegation";
 
 function MyDelegationCard() {
-  const realAddress = useRealAddress();
-  const { value: myDelegation } = useAddressDelegation(realAddress);
+  const myDelegation = useMyDemocracyDelegation();
   if (!myDelegation) {
     return null;
   }
