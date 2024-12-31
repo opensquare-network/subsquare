@@ -25,6 +25,10 @@ export function useReferendaDelegatesData({ page, sort, pageSize = 18 }) {
 
   useEffect(() => {
     const q = omit(router.query, ["sort", "page"]);
+    if ((q.page ?? 1) === page && (q.sort ?? "") === sort) {
+      return;
+    }
+
     if (page > 1) {
       q.page = page;
     }
@@ -33,8 +37,7 @@ export function useReferendaDelegatesData({ page, sort, pageSize = 18 }) {
     }
 
     router.push({ query: q }, null, { shallow: true });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sort, page, pageSize]);
+  }, [sort, page, pageSize, router]);
 
   return referendaDelegatesPageData;
 }
