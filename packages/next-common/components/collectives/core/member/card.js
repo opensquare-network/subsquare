@@ -9,6 +9,8 @@ import CoreFellowshipMemberPromotionPeriod from "next-common/components/collecti
 import CoreFellowshipMemberEvidence from "next-common/components/collectives/core/member/evidence";
 import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
 import CoreFellowshipMemberRelatedReferenda from "./relatedReferenda";
+import MineTag from "next-common/components/delegation/delegate/common/mineTag";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function CoreFellowshipMemberCard({
   member,
@@ -16,11 +18,13 @@ export default function CoreFellowshipMemberCard({
   pallet,
   children,
 }) {
+  const realAddress = useRealAddress();
   const { address, rank } = member;
   const { isActive, lastPromotion, lastProof } = member.status;
 
   return (
-    <SecondaryCard>
+    <SecondaryCard className="relative">
+      {realAddress === address && <MineTag />}
       <div className="flex justify-between">
         <AvatarAndAddress address={address} isActive={isActive} />
         <FellowshipRank rank={rank} />
