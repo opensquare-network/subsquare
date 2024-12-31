@@ -10,9 +10,6 @@ import {
 import Input from "../input";
 import { currencyInputUtils } from "./utils";
 
-const GROUP_SEPARATOR = ",";
-const DECIMAL_SEPARATOR = ".";
-
 const CurrencyInput = forwardRef(CurrencyInputImpl);
 export default CurrencyInput;
 
@@ -45,7 +42,9 @@ function CurrencyInputImpl(
   }, [cursor, inputRef, changeCount]);
 
   function processChange(value, selectionStart) {
-    if (currencyInputUtils.count(value, DECIMAL_SEPARATOR) > 1) {
+    if (
+      currencyInputUtils.count(value, currencyInputUtils.DECIMAL_SEPARATOR) > 1
+    ) {
       return;
     }
 
@@ -55,17 +54,13 @@ function CurrencyInputImpl(
         value,
         lastKeyStroke,
         stateValue,
-        groupSeparator: GROUP_SEPARATOR,
       });
 
     const stringValue = currencyInputUtils.cleanValue(modifiedValue, {
       allowDecimals,
-      decimalSeparator: DECIMAL_SEPARATOR,
     });
 
-    const formattedValue = currencyInputUtils.formatValue(stringValue, {
-      decimalSeparator: DECIMAL_SEPARATOR,
-    });
+    const formattedValue = currencyInputUtils.formatValue(stringValue);
 
     if (cursorPosition !== null) {
       // Prevent cursor jumping
