@@ -18,12 +18,14 @@ export default CurrencyInput;
 
 function CurrencyInputImpl(
   {
+    id,
+    name,
     defaultValue = "",
     allowDecimals = true,
     className = "",
     onKeyDown,
     onChange,
-    // onValueChange,
+    onValueChange,
   },
   ref,
 ) {
@@ -55,28 +57,30 @@ function CurrencyInputImpl(
         groupSeparator: GROUP_SEPARATOR,
       });
 
-    const numericValue = currencyInputUtils.cleanValue(modifiedValue, {
+    const stringValue = currencyInputUtils.cleanValue(modifiedValue, {
       allowDecimals,
       decimalSeparator: DECIMAL_SEPARATOR,
     });
 
-    if (numericValue) {
-      const formattedValue = currencyInputUtils.formatValue(numericValue, {
-        decimalSeparator: DECIMAL_SEPARATOR,
+    const formattedValue = currencyInputUtils.formatValue(stringValue, {
+      decimalSeparator: DECIMAL_SEPARATOR,
+    });
+
+    if (cursorPosition !== null) {
+      // Prevent cursor jumping
+      const newCursor = cursorPosition + (formattedValue.length - value.length);
+
+      setCursor(newCursor);
+      setChangeCount((c) => c + 1);
+    }
+
+    setStateValue(formattedValue);
+
+    if (onValueChange) {
+      onValueChange(stringValue, name, {
+        value: stringValue,
+        formatted: formattedValue,
       });
-
-      setStateValue(formattedValue);
-
-      if (cursorPosition !== null) {
-        // Prevent cursor jumping
-        const newCursor =
-          cursorPosition + (formattedValue.length - value.length);
-
-        setCursor(newCursor);
-        setChangeCount((c) => c + 1);
-      }
-    } else {
-      setStateValue("");
     }
   }
 
@@ -100,6 +104,8 @@ function CurrencyInputImpl(
   return (
     <Input
       ref={inputRef}
+      id={id}
+      name={name}
       type="text"
       inputMode="decimal"
       value={stateValue}

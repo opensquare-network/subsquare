@@ -17,6 +17,10 @@ function cleanValue(value = "", { allowDecimals, decimalSeparator } = {}) {
 }
 
 function formatValue(value = "", { decimalSeparator } = {}) {
+  if (value === "") {
+    return "";
+  }
+
   if (value.startsWith(decimalSeparator)) {
     value = "0" + value;
   }
