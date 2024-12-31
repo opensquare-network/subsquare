@@ -11,6 +11,7 @@ import Input from "../input";
 import { currencyInputUtils } from "./utils";
 
 const GROUP_SEPARATOR = ",";
+const DECIMAL_SEPARATOR = ".";
 
 const CurrencyInput = forwardRef(CurrencyInputImpl);
 export default CurrencyInput;
@@ -41,7 +42,7 @@ function CurrencyInputImpl(
   }, [cursor, inputRef, changeCount]);
 
   function processChange(value, selectionStart) {
-    if (hasDuplicatedDots(value)) {
+    if (currencyInputUtils.count(value, DECIMAL_SEPARATOR) > 1) {
       return;
     }
 
@@ -54,16 +55,16 @@ function CurrencyInputImpl(
         groupSeparator: GROUP_SEPARATOR,
       });
 
-    const numericValue = modifiedValue.replace(
-      new RegExp(`[^0-9${allowDecimals ? "." : ""}]`, "g"),
-      "",
-    );
+    const numericValue = currencyInputUtils.cleanValue(modifiedValue, {
+      allowDecimals,
+      decimalSeparator: DECIMAL_SEPARATOR,
+    });
 
     if (numericValue) {
       let formattedValue = currencyInputUtils.formatValue(numericValue);
 
-      if (numericValue.indexOf(".") >= 0) {
-        const [int, decimal] = numericValue.split(".");
+      if (numericValue.indexOf(DECIMAL_SEPARATOR) >= 0) {
+        const [int, decimal] = numericValue.split(DECIMAL_SEPARATOR);
         formattedValue = `${currencyInputUtils.formatValue(int)}.${decimal}`;
       }
 
@@ -110,10 +111,4 @@ function CurrencyInputImpl(
       onKeyDown={handleOnKeyDown}
     />
   );
-}
-
-function hasDuplicatedDots(str = "") {
-  const firstDotIndex = str.indexOf(".");
-  const lastDotIndex = str.lastIndexOf(".");
-  return lastDotIndex !== firstDotIndex;
 }

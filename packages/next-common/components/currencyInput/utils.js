@@ -1,10 +1,19 @@
 export const currencyInputUtils = {
   formatValue,
   repositionCursor,
+  count,
+  cleanValue,
 };
 
 function count(str = "", char = "") {
   return Math.max(0, str.split(char).length - 1);
+}
+
+function cleanValue(value = "", { allowDecimals, decimalSeparator }) {
+  return value.replace(
+    new RegExp(`[^0-9${allowDecimals ? decimalSeparator : ""}]`, "g"),
+    "",
+  );
 }
 
 function formatValue(value = "") {
