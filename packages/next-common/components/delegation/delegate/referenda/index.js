@@ -67,7 +67,7 @@ export default function ReferendaDelegates() {
           {delegates <= 0 ? (
             <DelegateEmpty />
           ) : (
-            <Delegates delegates={delegates} />
+            <Delegates page={page} delegates={delegates} />
           )}
 
           <div className="mt-2">

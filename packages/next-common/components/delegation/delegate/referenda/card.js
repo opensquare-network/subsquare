@@ -11,6 +11,8 @@ import NewDelegateButton from "next-common/components/summary/allDelegation/newD
 import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "./avatar";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import MineTag from "../common/mineTag";
 
 const ReferendaDelegateeDetailPopup = dynamicPopup(() =>
   import("./detailPopup"),
@@ -20,6 +22,7 @@ export default function ReferendaDelegateCard({
   delegate = {},
   showDelegateButton = true,
 }) {
+  const realAddress = useRealAddress();
   const { address, manifesto, shortBio } = delegate;
 
   const shortDescription = shortBio || manifesto?.shortDescription;
@@ -27,7 +30,8 @@ export default function ReferendaDelegateCard({
   const [detailOpen, setDetailOpen] = useState(false);
 
   return (
-    <SecondaryCard className="flex flex-col text-textPrimary">
+    <SecondaryCard className="flex flex-col text-textPrimary relative">
+      {address === realAddress && <MineTag />}
       <div className="flex justify-between">
         <DelegateAvatar address={address} />
 

@@ -8,8 +8,19 @@ import {
   delegationDemocracyDelegatesAddressApi,
   delegationReferendaDelegatesAddressApi,
 } from "next-common/services/url";
-import { democracyDelegatesTriggerUpdateSelector } from "next-common/store/reducers/democracy/delegates";
-import { referendaDelegatesTriggerUpdateSelector } from "next-common/store/reducers/referenda/delegates";
+import {
+  democracyDelegatesTriggerUpdateSelector,
+  democracyMyDelegateSelector,
+  setDemocracyMyDelegate,
+} from "next-common/store/reducers/democracy/delegates";
+import {
+  referendaDelegatesTriggerUpdateSelector,
+  referendaMyDelegateSelector,
+  setReferendaMyDelegate,
+} from "next-common/store/reducers/referenda/delegates";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useAsync } from "react-use";
 
@@ -56,4 +67,48 @@ export default function useAddressDelegation(address) {
       }
     });
   }, [apiPath, triggerUpdate]);
+}
+
+export function useMyReferendaDelegation() {
+  const dispatch = useDispatch();
+  const realAddress = useRealAddress();
+  const triggerUpdate = useSelector(referendaDelegatesTriggerUpdateSelector);
+  const myDelegate = useSelector(referendaMyDelegateSelector);
+
+  useEffect(() => {
+    if (!realAddress) {
+      return null;
+    }
+    nextApi
+      .fetch(delegationReferendaDelegatesAddressApi(realAddress))
+      .then((resp) => {
+        if (resp.result) {
+          dispatch(setReferendaMyDelegate(resp.result));
+        }
+      });
+  }, [dispatch, realAddress, triggerUpdate]);
+
+  return myDelegate;
+}
+
+export function useMyDemocracyDelegation() {
+  const dispatch = useDispatch();
+  const realAddress = useRealAddress();
+  const triggerUpdate = useSelector(democracyDelegatesTriggerUpdateSelector);
+  const myDelegate = useSelector(democracyMyDelegateSelector);
+
+  useEffect(() => {
+    if (!realAddress) {
+      return null;
+    }
+    nextApi
+      .fetch(delegationDemocracyDelegatesAddressApi(realAddress))
+      .then((resp) => {
+        if (resp.result) {
+          dispatch(setDemocracyMyDelegate(resp.result));
+        }
+      });
+  }, [dispatch, realAddress, triggerUpdate]);
+
+  return myDelegate;
 }
