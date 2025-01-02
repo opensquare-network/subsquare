@@ -10,7 +10,7 @@ import AmbassadorMemberCommon from "next-common/components/pages/ambassador/comm
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipMembersLoadable from "../fellowship/loadable";
 import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useMembersWithSortMeToFirst from "../useMembersWIthSortMeToFirst";
 
 export default function AmbassadorCoreMembersPage() {
   const { ambassadorParams } = usePageProps();
@@ -24,7 +24,6 @@ export default function AmbassadorCoreMembersPage() {
 
 function AmbassadorCoreMembersPageInContext() {
   const { ambassadorParams } = usePageProps();
-  const realAddress = useRealAddress();
   const members = useFellowshipSortedCoreMembers();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
@@ -40,20 +39,7 @@ function AmbassadorCoreMembersPageInContext() {
     }
   }, [pageMembers, rank]);
 
-  const sortedFilteredMembers = useMemo(() => {
-    const members = filteredMembers || [];
-    // Move my member to the first, keep the order of other members
-    members.sort((a, b) => {
-      if (a.address === realAddress) {
-        return -1;
-      } else if (b.address === realAddress) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-    return members;
-  }, [filteredMembers, realAddress]);
+  const sortedFilteredMembers = useMembersWithSortMeToFirst(filteredMembers);
 
   const hasMembers = !!pageMembers.length;
 

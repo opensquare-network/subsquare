@@ -30,7 +30,7 @@ import {
   filterDemotionExpiredFn,
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useMembersWithSortMeToFirst from "../useMembersWIthSortMeToFirst";
 
 function useMembersFilter(members) {
   const ranks = [...new Set(members.map((m) => m.rank))];
@@ -109,7 +109,6 @@ function useMembersFilter(members) {
 }
 
 function FellowshipMembersPageInContext() {
-  const realAddress = useRealAddress();
   const members = useFellowshipSortedCoreMembers();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank > 0),
@@ -126,20 +125,7 @@ function FellowshipMembersPageInContext() {
     [members],
   );
 
-  const sortedFilteredMembers = useMemo(() => {
-    const members = filteredMembers || [];
-    // Move my member to the first, keep the order of other members
-    members.sort((a, b) => {
-      if (a.address === realAddress) {
-        return -1;
-      } else if (b.address === realAddress) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-    return members;
-  }, [filteredMembers, realAddress]);
+  const sortedFilteredMembers = useMembersWithSortMeToFirst(filteredMembers);
 
   return (
     <FellowshipMembersLoadable>
