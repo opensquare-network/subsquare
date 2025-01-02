@@ -10,7 +10,7 @@ import AmbassadorMemberCommon from "next-common/components/pages/ambassador/comm
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipMembersLoadable from "../fellowship/loadable";
 import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
-import useMembersWithSortMeToFirst from "../useMembersWIthSortMeToFirst";
+import useMembersWithMeAtFirst from "../useMembersWithMeAtFirst";
 
 export default function AmbassadorCoreMembersPage() {
   const { ambassadorParams } = usePageProps();
@@ -39,7 +39,7 @@ function AmbassadorCoreMembersPageInContext() {
     }
   }, [pageMembers, rank]);
 
-  const sortedFilteredMembers = useMembersWithSortMeToFirst(filteredMembers);
+  const sortedFilteredMembers = useMembersWithMeAtFirst(filteredMembers);
 
   const hasMembers = !!pageMembers.length;
 

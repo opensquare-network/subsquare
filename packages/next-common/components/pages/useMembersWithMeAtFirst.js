@@ -1,7 +1,7 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
 
-export default function useMembersWithSortMeToFirst(members) {
+export default function useMembersWithMeAtFirst(members) {
   const realAddress = useRealAddress();
 
   return useMemo(() => {
