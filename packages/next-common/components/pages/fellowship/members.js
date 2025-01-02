@@ -30,6 +30,7 @@ import {
   filterDemotionExpiredFn,
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
+import useMembersWithMeAtFirst from "../useMembersWithMeAtFirst";
 
 function useMembersFilter(members) {
   const ranks = [...new Set(members.map((m) => m.rank))];
@@ -124,6 +125,8 @@ function FellowshipMembersPageInContext() {
     [members],
   );
 
+  const sortedFilteredMembers = useMembersWithMeAtFirst(filteredMembers);
+
   return (
     <FellowshipMembersLoadable>
       <FellowshipMemberCommon>
@@ -139,7 +142,7 @@ function FellowshipMembersPageInContext() {
 
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>
-            {filteredMembers.map((member) => (
+            {sortedFilteredMembers.map((member) => (
               <FellowshipCoreMemberCard
                 key={member.address}
                 member={member}
