@@ -1,5 +1,5 @@
 import React from "react";
-import Input from "next-common/components/input";
+import CurrencyInput from "../../currencyInput";
 import PopupLabel from "next-common/components/popup/label";
 import { useChainSettings } from "../../../context/chain";
 
@@ -16,12 +16,13 @@ export default function BalanceField({
   return (
     <div>
       <PopupLabel text={title} tooltip={titleTooltip} />
-      <Input
-        type="text"
+      <CurrencyInput
         placeholder="0.00"
         disabled={isLoading || disabled}
         value={inputBalance}
-        onChange={(e) => setInputBalance(e.target.value.replace("。", "."))}
+        onValueChange={(value) => {
+          setInputBalance(value);
+        }}
         symbol={symbol || node.symbol}
       />
     </div>
