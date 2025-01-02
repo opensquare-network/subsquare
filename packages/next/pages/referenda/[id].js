@@ -9,7 +9,7 @@ import {
   gov2ReferendumsVoteStatsApi,
   gov2TracksApi,
 } from "next-common/services/url";
-import { CHAIN, EmptyList } from "next-common/utils/constants";
+import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import CheckUnFinalized from "components/gov2/checkUnFinalized";
@@ -21,7 +21,6 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { usePageProps } from "next-common/context/page";
 import { ReferendumContent } from "components/referenda/referendaContent";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
-import { ensurePolkassemblyPostContentUrl } from "next-common/utils/post";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -105,8 +104,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
   if (!detail) {
     return getNullDetailProps(id, { voteStats: {} });
   }
-
-  await ensurePolkassemblyPostContentUrl(detail, CHAIN);
 
   const comments = await fetchDetailComments(
     gov2ReferendumsCommentApi(detail?._id),
