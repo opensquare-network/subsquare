@@ -9,6 +9,7 @@ import {
 } from "react";
 import Input from "../input";
 import { currencyInputUtils } from "./utils";
+import { isNil } from "lodash-es";
 
 const CurrencyInput = forwardRef(CurrencyInputImpl);
 export default CurrencyInput;
@@ -17,7 +18,8 @@ function CurrencyInputImpl(
   {
     id,
     name,
-    defaultValue = "",
+    defaultValue,
+    value: userValue,
     allowDecimals = true,
     className = "",
     onKeyDown,
@@ -27,7 +29,13 @@ function CurrencyInputImpl(
   },
   ref,
 ) {
-  const [stateValue, setStateValue] = useState(defaultValue);
+  const [stateValue, setStateValue] = useState(
+    defaultValue
+      ? currencyInputUtils.formatValue(defaultValue)
+      : userValue
+      ? currencyInputUtils.formatValue(userValue)
+      : "",
+  );
   const [cursor, setCursor] = useState(0);
   const [changeCount, setChangeCount] = useState(0);
   const [lastKeyStroke, setLastKeyStroke] = useState(null);
@@ -40,6 +48,12 @@ function CurrencyInputImpl(
       inputRef.current.setSelectionRange(cursor, cursor);
     }
   }, [cursor, inputRef, changeCount]);
+
+  useEffect(() => {
+    if (isNil(userValue) && isNil(defaultValue)) {
+      setStateValue("");
+    }
+  }, [userValue, defaultValue]);
 
   function processChange(value, selectionStart) {
     if (
