@@ -127,6 +127,10 @@ function FellowshipMembersPageInContext() {
     [members],
   );
 
+  const hasMeInMemberList = filteredMembers?.some(
+    (m) => m.address === realAddress,
+  );
+
   return (
     <FellowshipMembersLoadable>
       <FellowshipMemberCommon>
@@ -142,7 +146,7 @@ function FellowshipMembersPageInContext() {
 
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>
-            <MyFellowshipMemberCard />
+            {hasMeInMemberList && <MyFellowshipMemberCard />}
             {filteredMembers
               .filter((m) => m.address !== realAddress)
               .map((member) => (
