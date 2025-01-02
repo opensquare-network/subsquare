@@ -41,6 +41,10 @@ function AmbassadorCoreMembersPageInContext() {
     }
   }, [pageMembers, rank]);
 
+  const hasMeInMemberList = filteredMembers?.some(
+    (m) => m.address === realAddress,
+  );
+
   const hasMembers = !!pageMembers.length;
 
   return (
@@ -53,7 +57,7 @@ function AmbassadorCoreMembersPageInContext() {
 
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>
-            <MyAmbassadorMemberCard />
+            {hasMeInMemberList && <MyAmbassadorMemberCard />}
             {filteredMembers
               .filter((m) => m.address !== realAddress)
               .map((member) => (
