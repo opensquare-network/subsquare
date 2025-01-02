@@ -168,3 +168,22 @@ export function isPostEdited(post) {
   }
   return post?.updatedAt !== post?.createdAt;
 }
+
+export async function ensurePolkassemblyPostContentUrl(post, chain) {
+  if (post?.dataSource === "polkassembly") {
+    const load = (await import("cheerio")).load;
+
+    const $ = load(post.content, { xml: true });
+    $("a").each((_, a) => {
+      const href = $(a).attr("href");
+      if (href && href.startsWith("..")) {
+        $(a).attr(
+          "href",
+          href.replace("..", `https://${chain}.polkassembly.io`),
+        );
+      }
+    });
+
+    post.content = $.html();
+  }
+}
