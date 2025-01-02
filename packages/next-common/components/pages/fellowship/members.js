@@ -30,7 +30,6 @@ import {
   filterDemotionExpiredFn,
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
-import MyFellowshipMemberCard from "next-common/components/fellowship/core/members/mine";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function useMembersFilter(members) {
@@ -127,9 +126,20 @@ function FellowshipMembersPageInContext() {
     [members],
   );
 
-  const hasMeInMemberList = filteredMembers?.some(
-    (m) => m.address === realAddress,
-  );
+  const sortedFilteredMembers = useMemo(() => {
+    const members = filteredMembers || [];
+    // Move my member to the first, keep the order of other members
+    members.sort((a, b) => {
+      if (a.address === realAddress) {
+        return -1;
+      } else if (b.address === realAddress) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return members;
+  }, [filteredMembers, realAddress]);
 
   return (
     <FellowshipMembersLoadable>
@@ -146,16 +156,13 @@ function FellowshipMembersPageInContext() {
 
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>
-            {hasMeInMemberList && <MyFellowshipMemberCard />}
-            {filteredMembers
-              .filter((m) => m.address !== realAddress)
-              .map((member) => (
-                <FellowshipCoreMemberCard
-                  key={member.address}
-                  member={member}
-                  params={params}
-                />
-              ))}
+            {sortedFilteredMembers.map((member) => (
+              <FellowshipCoreMemberCard
+                key={member.address}
+                member={member}
+                params={params}
+              />
+            ))}
           </FellowshipCoreMemberCardListContainer>
         ) : (
           <FellowshipMembersEmpty />

@@ -10,7 +10,6 @@ import AmbassadorMemberCommon from "next-common/components/pages/ambassador/comm
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipMembersLoadable from "../fellowship/loadable";
 import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
-import MyAmbassadorMemberCard from "next-common/components/collectives/core/member/mine";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function AmbassadorCoreMembersPage() {
@@ -41,9 +40,20 @@ function AmbassadorCoreMembersPageInContext() {
     }
   }, [pageMembers, rank]);
 
-  const hasMeInMemberList = filteredMembers?.some(
-    (m) => m.address === realAddress,
-  );
+  const sortedFilteredMembers = useMemo(() => {
+    const members = filteredMembers || [];
+    // Move my member to the first, keep the order of other members
+    members.sort((a, b) => {
+      if (a.address === realAddress) {
+        return -1;
+      } else if (b.address === realAddress) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return members;
+  }, [filteredMembers, realAddress]);
 
   const hasMembers = !!pageMembers.length;
 
@@ -57,16 +67,13 @@ function AmbassadorCoreMembersPageInContext() {
 
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>
-            {hasMeInMemberList && <MyAmbassadorMemberCard />}
-            {filteredMembers
-              .filter((m) => m.address !== realAddress)
-              .map((member) => (
-                <AmbassadorCoreMemberCard
-                  key={member.address}
-                  member={member}
-                  params={ambassadorParams}
-                />
-              ))}
+            {sortedFilteredMembers.map((member) => (
+              <AmbassadorCoreMemberCard
+                key={member.address}
+                member={member}
+                params={ambassadorParams}
+              />
+            ))}
           </FellowshipCoreMemberCardListContainer>
         ) : (
           <FellowshipMembersEmpty />
