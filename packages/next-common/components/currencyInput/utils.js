@@ -37,17 +37,10 @@ function formatValue(value = "") {
 
   let formatted;
   if (value.indexOf(DECIMAL_SEPARATOR) >= 0) {
-    const [int, decimal] = value.split(DECIMAL_SEPARATOR);
+    const [int, decimal = ""] = value.split(DECIMAL_SEPARATOR);
     const formattedInt = formatter.format(int);
 
-    let formattedDecimal;
-    if (decimal) {
-      formattedDecimal = formatter
-        .format(`0.${decimal}`)
-        .split(DECIMAL_SEPARATOR)[1];
-    }
-
-    formatted = [formattedInt, formattedDecimal].join(DECIMAL_SEPARATOR);
+    formatted = [formattedInt, decimal].join(DECIMAL_SEPARATOR);
   } else {
     formatted = formatter.format(value);
   }

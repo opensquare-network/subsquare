@@ -52,7 +52,11 @@ describe("formatValue", () => {
     expect(currencyInputUtils.formatValue("1234.5678")).toBe("1,234.5678");
   });
 
-  it("1234567.890 > 1,234,567.89", () => {
-    expect(currencyInputUtils.formatValue("1234567.890")).toBe("1,234,567.89");
+  it("ends with 0, 1230 > 1,230", () => {
+    expect(currencyInputUtils.formatValue("1230")).toBe("1,230");
+  });
+
+  it("ends with decimal 0, 1234567.890 > 1,234,567.890", () => {
+    expect(currencyInputUtils.formatValue("1234567.890")).toBe("1,234,567.890");
   });
 });
