@@ -21,7 +21,7 @@ import {
   Promotable,
   usePeriodSelectInDropdown,
 } from "./usePeriodSelect";
-import useEvidenceOnlySwitch from "./useEvidenceOnlySwitch";
+import { useEvidenceOnlySwitchInDropdown } from "./useEvidenceOnlySwitch";
 import useEvidenceOnlyFilterFn from "./useEvidenceOnlyFilterFn";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useSelector } from "react-redux";
@@ -42,7 +42,7 @@ function useMembersFilter(members) {
   const { periodFilter, component: periodFilterComponent } =
     usePeriodSelectInDropdown();
   const { isOn: isEvidenceOnly, component: evidenceOnlySwitch } =
-    useEvidenceOnlySwitch();
+    useEvidenceOnlySwitchInDropdown();
   const evidenceOnlyFilterFn = useEvidenceOnlyFilterFn();
   const params = useCoreFellowshipParams();
   const blockTime = useSelector(blockTimeSelector);
@@ -99,7 +99,7 @@ function useMembersFilter(members) {
   ]);
 
   const component = (
-    <DropdownFilter>
+    <DropdownFilter className="w-[240px]">
       {evidenceOnlySwitch}
       {periodFilterComponent}
       {rankFilterComponent}
