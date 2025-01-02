@@ -99,7 +99,7 @@ function useMembersFilter(members) {
   ]);
 
   const component = (
-    <DropdownFilter className="w-[240px]">
+    <DropdownFilter className="w-[320px]">
       {evidenceOnlySwitch}
       {periodFilterComponent}
       {rankFilterComponent}
