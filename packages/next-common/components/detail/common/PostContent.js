@@ -8,6 +8,7 @@ import { cn } from "next-common/utils";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
 import { Marked } from "marked";
+import { useChain } from "next-common/context/chain";
 
 const marked = new Marked();
 
@@ -17,6 +18,7 @@ const collapsedHeight = 640;
 const moreLessHeightThreshold = 2000;
 
 export default function PostContent({ post = {} }) {
+  const chain = useChain();
   const ref = useRef(null);
   const [showToggleButton, setShowToggleButton] = useState(false);
   // assume is long content by default to AVOID flicker
@@ -40,6 +42,12 @@ export default function PostContent({ post = {} }) {
 
       // strip all inline attributes
       postContent = sanitizeHtml(postContent || "");
+
+      // fix relative link url
+      postContent = postContent.replace(
+        /href=(['"])\.\./g,
+        (_, $1) => `href=${$1}https://${chain}.polkassembly.io`,
+      );
 
       content = <HtmlPreviewer content={postContent} />;
     } else {
