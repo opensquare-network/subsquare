@@ -36,13 +36,14 @@ import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter
 
 function useMembersFilter(members) {
   const ranks = [...new Set(members.map((m) => m.rank))];
+
   const { rank, component: rankFilterComponent } =
     useRankFilterInDropdown(ranks);
-
   const { periodFilter, component: periodFilterComponent } =
     usePeriodSelectInDropdown();
   const { isOn: isEvidenceOnly, component: evidenceOnlySwitch } =
     useEvidenceOnlySwitchInDropdown();
+
   const evidenceOnlyFilterFn = useEvidenceOnlyFilterFn();
   const params = useCoreFellowshipParams();
   const blockTime = useSelector(blockTimeSelector);
@@ -132,8 +133,6 @@ function FellowshipMembersPageInContext() {
   return (
     <FellowshipMembersLoadable>
       <FellowshipMemberCommon>
-        <MemberWarnings className="mb-[24px]" />
-
         <div className="flex flex-wrap max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between mb-4 pr-6">
           <FellowshipMemberTabs
             membersCount={membersCount}
@@ -141,6 +140,8 @@ function FellowshipMembersPageInContext() {
           />
           {memberFilters}
         </div>
+
+        <MemberWarnings className="mb-[24px]" />
 
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>

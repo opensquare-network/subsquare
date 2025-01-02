@@ -38,21 +38,7 @@ function RankSelect({ ranks, rank, setRank, noneLabel }) {
 
 function RankField({ ranks, rank, setRank, noneLabel }) {
   return (
-    <div className="text12Medium text-textPrimary flex items-center gap-x-2">
-      <div>Rank</div>
-      <RankSelect
-        ranks={ranks}
-        rank={rank}
-        setRank={setRank}
-        noneLabel={noneLabel}
-      />
-    </div>
-  );
-}
-
-function RankFieldInDropdown({ ranks, rank, setRank, noneLabel }) {
-  return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between text12Medium text-textPrimary gap-x-2">
       <span className="text12Medium text-textPrimary my-[12px]">Rank</span>
       <RankSelect
         ranks={ranks}
@@ -109,7 +95,7 @@ export function useRankFilterInDropdown(ranks = [], noneLabel = "All") {
   return {
     rank: committedFilter?.rank ? parseInt(committedFilter.rank) : null,
     component: (
-      <RankFieldInDropdown
+      <RankField
         ranks={ranks}
         noneLabel={noneLabel}
         rank={stagedFilter?.rank ? parseInt(stagedFilter.rank) : null}
