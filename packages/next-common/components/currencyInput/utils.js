@@ -39,10 +39,15 @@ function formatValue(value = "") {
   if (value.indexOf(DECIMAL_SEPARATOR) >= 0) {
     const [int, decimal] = value.split(DECIMAL_SEPARATOR);
     const formattedInt = formatter.format(int);
-    const [, formattedDecimal] = formatter
-      .format(`0.${decimal}`)
-      .split(DECIMAL_SEPARATOR);
-    formatted = `${formattedInt}.${formattedDecimal}`;
+
+    let formattedDecimal;
+    if (decimal) {
+      formattedDecimal = formatter
+        .format(`0.${decimal}`)
+        .split(DECIMAL_SEPARATOR)[1];
+    }
+
+    formatted = [formattedInt, formattedDecimal].join(DECIMAL_SEPARATOR);
   } else {
     formatted = formatter.format(value);
   }

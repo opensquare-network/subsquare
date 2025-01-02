@@ -44,6 +44,10 @@ describe("formatValue", () => {
     expect(currencyInputUtils.formatValue("1234.56.78")).toBe("1,234.56");
   });
 
+  it("ends with(.) 1234. > 1,234.", () => {
+    expect(currencyInputUtils.formatValue("1234.")).toBe("1,234.");
+  });
+
   it("1234.5678 > 1,234.5678", () => {
     expect(currencyInputUtils.formatValue("1234.5678")).toBe("1,234.5678");
   });
