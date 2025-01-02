@@ -7,6 +7,10 @@ import {
   removeRouterQuery,
 } from "next-common/utils/router";
 import { isNil } from "lodash-es";
+import {
+  useCommittedFilterState,
+  useStagedFilterState,
+} from "next-common/components/dropdownFilter/context";
 
 function RankSelect({ ranks, rank, setRank, noneLabel }) {
   const options = (ranks || []).map((rank) => ({
@@ -20,16 +24,41 @@ function RankSelect({ ranks, rank, setRank, noneLabel }) {
   });
 
   return (
+    <Select
+      className="w-20 text12Medium"
+      small
+      value={rank}
+      options={options}
+      onChange={(option) => {
+        setRank(option.value);
+      }}
+    />
+  );
+}
+
+function RankField({ ranks, rank, setRank, noneLabel }) {
+  return (
     <div className="text12Medium text-textPrimary flex items-center gap-x-2">
       <div>Rank</div>
-      <Select
-        className="w-20 text12Medium"
-        small
-        value={rank}
-        options={options}
-        onChange={(option) => {
-          setRank(option.value);
-        }}
+      <RankSelect
+        ranks={ranks}
+        rank={rank}
+        setRank={setRank}
+        noneLabel={noneLabel}
+      />
+    </div>
+  );
+}
+
+function RankFieldInDropdown({ ranks, rank, setRank, noneLabel }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text12Medium text-textPrimary my-[12px]">Rank</span>
+      <RankSelect
+        ranks={ranks}
+        rank={rank}
+        setRank={setRank}
+        noneLabel={noneLabel}
       />
     </div>
   );
@@ -41,7 +70,7 @@ export default function useRankFilter(ranks = [], noneLabel = "All") {
   return {
     rank,
     component: (
-      <RankSelect
+      <RankField
         ranks={ranks}
         noneLabel={noneLabel}
         rank={rank}
@@ -59,7 +88,7 @@ export function useRouterRankFilter(ranks = [], noneLabel = "All") {
   return {
     rank,
     component: (
-      <RankSelect
+      <RankField
         ranks={ranks}
         noneLabel={noneLabel}
         rank={rank}
@@ -67,6 +96,25 @@ export function useRouterRankFilter(ranks = [], noneLabel = "All") {
           isNil(rank)
             ? removeRouterQuery(router, "rank")
             : addRouterQuery(router, "rank", rank);
+        }}
+      />
+    ),
+  };
+}
+
+export function useRankFilterInDropdown(ranks = [], noneLabel = "All") {
+  const [stagedFilter, setStagedFilter] = useStagedFilterState();
+  const [committedFilter] = useCommittedFilterState();
+
+  return {
+    rank: committedFilter?.rank ? parseInt(committedFilter.rank) : null,
+    component: (
+      <RankFieldInDropdown
+        ranks={ranks}
+        noneLabel={noneLabel}
+        rank={stagedFilter?.rank ? parseInt(stagedFilter.rank) : null}
+        setRank={(rank) => {
+          setStagedFilter({ ...stagedFilter, rank });
         }}
       />
     ),
