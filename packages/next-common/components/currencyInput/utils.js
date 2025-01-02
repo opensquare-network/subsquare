@@ -40,7 +40,7 @@ function formatValue(value = "") {
     const [int, decimal = ""] = value.split(DECIMAL_SEPARATOR);
     const formattedInt = formatter.format(int);
 
-    formatted = [formattedInt, decimal].join(DECIMAL_SEPARATOR);
+    formatted = `${formattedInt}${DECIMAL_SEPARATOR}${decimal || ""}`;
   } else {
     formatted = formatter.format(value);
   }
