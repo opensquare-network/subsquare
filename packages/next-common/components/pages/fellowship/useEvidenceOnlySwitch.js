@@ -1,3 +1,7 @@
+import {
+  useCommittedFilterState,
+  useStagedFilterState,
+} from "next-common/components/dropdownFilter/context";
 import Toggle from "next-common/components/toggle";
 import {
   addRouterQuery,
@@ -8,8 +12,8 @@ import { useRouter } from "next/router";
 
 function EvidenceOnlySwitch({ isOn, setIsOn }) {
   return (
-    <div className="flex items-center gap-[8px]">
-      <span className="text-textSecondary text12Medium whitespace-nowrap">
+    <div className="flex grow items-center justify-between gap-[8px]">
+      <span className="text-textSecondary text12Medium whitespace-nowrap my-[12px]">
         Evidence Only
       </span>
       <Toggle size="small" isOn={isOn} onToggle={() => setIsOn(!isOn)} />
@@ -32,6 +36,26 @@ export default function useEvidenceOnlySwitch() {
             ? addRouterQuery(router, "evidence_only", "true")
             : removeRouterQuery(router, "evidence_only")
         }
+      />
+    ),
+  };
+}
+
+export function useEvidenceOnlySwitchInDropdown() {
+  const [stagedFilter, setStagedFilter] = useStagedFilterState();
+  const [committedFilter] = useCommittedFilterState();
+
+  return {
+    isOn: committedFilter?.evidence_only,
+    component: (
+      <EvidenceOnlySwitch
+        isOn={stagedFilter?.evidence_only}
+        setIsOn={(isOn) => {
+          setStagedFilter({
+            ...stagedFilter,
+            evidence_only: isOn,
+          });
+        }}
       />
     ),
   };
