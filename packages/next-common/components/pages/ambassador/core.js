@@ -10,6 +10,7 @@ import AmbassadorMemberCommon from "next-common/components/pages/ambassador/comm
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipMembersLoadable from "../fellowship/loadable";
 import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
+import useMembersWithMeAtFirst from "../useMembersWithMeAtFirst";
 
 export default function AmbassadorCoreMembersPage() {
   const { ambassadorParams } = usePageProps();
@@ -38,11 +39,13 @@ function AmbassadorCoreMembersPageInContext() {
     }
   }, [pageMembers, rank]);
 
+  const sortedFilteredMembers = useMembersWithMeAtFirst(filteredMembers);
+
   const hasMembers = !!pageMembers.length;
 
   return (
     <FellowshipMembersLoadable>
-      <AmbassadorMemberCommon params={ambassadorParams}>
+      <AmbassadorMemberCommon>
         <div className="flex items-center justify-between mb-4 pr-6">
           <FellowshipMemberTabs members={members} section="ambassador" />
           {component}
@@ -50,7 +53,7 @@ function AmbassadorCoreMembersPageInContext() {
 
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>
-            {filteredMembers.map((member) => (
+            {sortedFilteredMembers.map((member) => (
               <AmbassadorCoreMemberCard
                 key={member.address}
                 member={member}
