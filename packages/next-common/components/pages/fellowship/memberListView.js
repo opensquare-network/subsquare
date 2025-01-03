@@ -16,6 +16,7 @@ import { useCollectivesContext } from "next-common/context/collectives/collectiv
 import Period from "next-common/components/fellowship/params/period";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
 import { CoreFellowshipMemberRelatedReferendaContent } from "next-common/components/collectives/core/member/relatedReferenda";
+import { CoreFellowshipMemberSalaryContent } from "next-common/components/collectives/core/member/salary";
 
 const collectivesMemberColumns = [
   {
@@ -56,6 +57,11 @@ const collectivesMemberColumns = [
     width: 120,
     className: "ml-[64px]",
   },
+  {
+    name: "Salary",
+    width: 120,
+    className: "text-right",
+  },
 ];
 
 export function AddressCol({ address }) {
@@ -78,6 +84,8 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
 
   const rows = (members || []).map((member, idx) => {
     const { address, rank } = member;
+    const { isActive } = member.status;
+
     const demotionBlocks =
       rank <= 0 ? offboardTimeout : demotionPeriod[rankToIndex(rank)];
 
@@ -117,16 +125,25 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
           blocks={minPromotionPeriod[rank] || 0}
         />
       ),
-      <div key="evidence" className="flex flex-col text12Medium gap-[2px]">
+      <div key="evidence" className="flex flex-col text14Medium gap-[2px]">
         <CoreFellowshipMemberEvidenceContent
           member={member}
           pallet="fellowshipCore"
         />
       </div>,
-      <CoreFellowshipMemberRelatedReferendaContent
-        key="referenda"
-        address={address}
-        pallet="fellowshipCore"
+      <div key="referenda" className="text14Medium">
+        <CoreFellowshipMemberRelatedReferendaContent
+          address={address}
+          pallet="fellowshipCore"
+        />
+      </div>,
+
+      <CoreFellowshipMemberSalaryContent
+        key="salary"
+        className="text14Medium"
+        rank={rank}
+        isActive={isActive}
+        params={params}
       />,
     ];
   });
@@ -143,7 +160,5 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
 }
 
 export default function FellowshipMemberListView({ members }) {
-  // const params = useCoreFellowshipParams();
-
   return <CollectivesMemberTable members={members} isAllLoaded={true} />;
 }

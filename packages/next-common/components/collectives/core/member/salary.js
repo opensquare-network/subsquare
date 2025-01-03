@@ -3,7 +3,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 
-export default function CoreFellowshipMemberSalary({
+export function CoreFellowshipMemberSalaryContent({
+  className,
   rank,
   isActive,
   params = {},
@@ -13,6 +14,20 @@ export default function CoreFellowshipMemberSalary({
   const salary = getRankSalary(salaryArray, rank);
   const { symbol, decimals } = getSalaryAsset();
 
+  return (
+    <ValueDisplay
+      className={className}
+      value={toPrecision(salary, decimals)}
+      symbol={symbol}
+    />
+  );
+}
+
+export default function CoreFellowshipMemberSalary({
+  rank,
+  isActive,
+  params = {},
+}) {
   if (rank <= 0) {
     return null;
   }
@@ -22,10 +37,11 @@ export default function CoreFellowshipMemberSalary({
       <span className="text12Medium text-textTertiary mr-1 leading-4">
         Salary
       </span>
-      <ValueDisplay
+      <CoreFellowshipMemberSalaryContent
         className="text12Medium text-textSecondary leading-4"
-        value={toPrecision(salary, decimals)}
-        symbol={symbol}
+        rank={rank}
+        isActive={isActive}
+        params={params}
       />
     </div>
   );

@@ -53,12 +53,10 @@ export function CoreFellowshipMemberRelatedReferendaContent({
   if (relatedReferenda.length > 0) {
     return relatedReferenda.map(({ referendumIndex }, index) => (
       <Fragment key={index}>
-        {index !== 0 && (
-          <span className="text12Medium text-textTertiary">·</span>
-        )}
+        {index !== 0 && <span className="text-textTertiary">·</span>}
         <ReferendumTooltip referendumIndex={referendumIndex}>
           <Link href={`/${section}/referenda/${referendumIndex}`}>
-            <span className="cursor-pointer text-sapphire500 text12Medium">
+            <span className="cursor-pointer text-sapphire500">
               #{referendumIndex}
             </span>
           </Link>
@@ -67,7 +65,7 @@ export function CoreFellowshipMemberRelatedReferendaContent({
     ));
   }
 
-  return <span className="text-textDisabled text12Medium">-</span>;
+  return <span className="text-textDisabled">-</span>;
 }
 
 export default function CoreFellowshipMemberRelatedReferenda({
