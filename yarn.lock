@@ -2896,10 +2896,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.166.0":
-  version: 1.166.0
-  resolution: "@osn/icons@npm:1.166.0"
-  checksum: ad2e86a528b218637cc5746d256a34808a4b9b9f3dc9d6a061d40f7bae4598cff3f4d6ee324a9dd8a6d3c5b0c2ab9a4cfe7b1e2be634e242338e081515405d67
+"@osn/icons@npm:^1.168.0":
+  version: 1.168.0
+  resolution: "@osn/icons@npm:1.168.0"
+  checksum: 54c897cbc2447964c52532b053f2472359a64b14ae0b22f01937ed771e75052fd11064d0e554ad6ec638b893db7ff45c9104e187eeb955c94aef32c7805bee87
   languageName: node
   linkType: hard
 
@@ -5651,7 +5651,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.166.0
+    "@osn/icons": ^1.168.0
     "@polkadot/util-crypto": 13.2.2
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
@@ -5687,7 +5687,7 @@ __metadata:
     "@next/bundle-analyzer": ^14.2.4
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.166.0
+    "@osn/icons": ^1.168.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -13125,7 +13125,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.3.0
     "@mimirdev/apps-sdk": ^0.2.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.166.0
+    "@osn/icons": ^1.168.0
     "@osn/polkadot-react-identicon": ^1.0.8
     "@osn/previewer": ^2.0.0
     "@osn/provider-options": 1.1.0
