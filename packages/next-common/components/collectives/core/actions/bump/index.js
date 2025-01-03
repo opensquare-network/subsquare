@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useMemo, useState } from "react";
-import Popup from "./popup";
+import BumpFellowshipMemberPopup from "./popup";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
-export default function CoreFellowshipBump({ member }) {
-  const { address, rank, status: { lastProof } = {} } = member || {};
+export function useCanBump(member) {
+  const { rank, status: { lastProof } = {} } = member || {};
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const params = useCoreFellowshipParams();
   const demotionPeriod = useMemo(() => {
@@ -14,24 +14,42 @@ export default function CoreFellowshipBump({ member }) {
       ? params.offboardTimeout
       : params.demotionPeriod[rankToIndex(rank)];
   }, [rank, params]);
-  const canBump =
-    demotionPeriod > 0 && latestHeight >= lastProof + demotionPeriod;
+  return demotionPeriod > 0 && latestHeight >= lastProof + demotionPeriod;
+}
 
-  const [showPopup, setShowPopup] = useState(false);
+export function CoreFellowshipBumpButton({ member, onClick }) {
+  const canBump = useCanBump(member);
 
   if (!canBump) {
     return <span className="text14Medium text-textDisabled">Bump</span>;
   }
 
   return (
+    <span
+      className="text14Medium text-theme500 cursor-pointer"
+      onClick={onClick}
+    >
+      Bump
+    </span>
+  );
+}
+
+export default function CoreFellowshipBump({ member }) {
+  const { address } = member || {};
+  const [showPopup, setShowPopup] = useState(false);
+
+  return (
     <>
-      <span
-        className="text14Medium text-theme500 cursor-pointer"
+      <CoreFellowshipBumpButton
+        member={member}
         onClick={() => setShowPopup(true)}
-      >
-        Bump
-      </span>
-      {showPopup && <Popup who={address} onClose={() => setShowPopup(false)} />}
+      />
+      {showPopup && (
+        <BumpFellowshipMemberPopup
+          who={address}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
     </>
   );
 }

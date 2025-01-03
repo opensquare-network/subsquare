@@ -17,6 +17,7 @@ import Period from "next-common/components/fellowship/params/period";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
 import { CoreFellowshipMemberRelatedReferendaContent } from "next-common/components/collectives/core/member/relatedReferenda";
 import { CoreFellowshipMemberSalaryContent } from "next-common/components/collectives/core/member/salary";
+import MoreActions from "./moreActions";
 
 const collectivesMemberColumns = [
   {
@@ -25,6 +26,7 @@ const collectivesMemberColumns = [
   },
   {
     name: "Member",
+    width: 160,
     className: "",
   },
   {
@@ -60,6 +62,11 @@ const collectivesMemberColumns = [
   {
     name: "Salary",
     width: 120,
+    className: "text-right",
+  },
+  {
+    name: "",
+    width: 80,
     className: "text-right",
   },
 ];
@@ -145,6 +152,9 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
         isActive={isActive}
         params={params}
       />,
+      <div key="more">
+        <MoreActions member={member} />
+      </div>,
     ];
   });
 
