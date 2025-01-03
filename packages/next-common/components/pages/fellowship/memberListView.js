@@ -1,67 +1,69 @@
 import FellowshipRank from "next-common/components/fellowship/rank";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
+// import ValueDisplay from "next-common/components/valueDisplay";
+// import { toPrecision } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
 import { isNil } from "lodash-es";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
-import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
+// import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 import {
   FellowshipDemotionPeriodWithProgress,
   FellowshipPromotionPeriodWithProgress,
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+// import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import Period from "next-common/components/fellowship/params/period";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
 import { CoreFellowshipMemberRelatedReferendaContent } from "next-common/components/collectives/core/member/relatedReferenda";
 import { CoreFellowshipMemberSalaryContent } from "next-common/components/collectives/core/member/salary";
 import MoreActions from "./moreActions";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
 
 const collectivesMemberColumns = [
   {
     name: "Rank",
-    width: 80,
+    width: 60,
   },
   {
     name: "Member",
-    width: 160,
+    width: 140,
     className: "",
   },
-  {
-    name: "Active Salary",
-    width: 160,
-    className: "text-right",
-  },
-  {
-    name: "Passive Salary",
-    width: 160,
-    className: "text-right",
-  },
+  // {
+  //   name: "Active Salary",
+  //   width: 140,
+  //   className: "text-right",
+  // },
+  // {
+  //   name: "Passive Salary",
+  //   width: 140,
+  //   className: "text-right",
+  // },
   {
     name: "Demotion Period",
-    width: 160,
+    width: 140,
     className: "ml-[64px]",
   },
   {
-    name: "Min Promotion Period",
-    width: 160,
+    name: "Promotion Period",
+    width: 140,
     className: "ml-[64px]",
   },
   {
     name: "Evidence",
-    width: 120,
+    width: 100,
     className: "ml-[64px]",
   },
   {
     name: "Referenda",
-    width: 120,
+    width: 100,
     className: "ml-[64px]",
   },
   {
     name: "Salary",
-    width: 120,
+    width: 100,
     className: "text-right",
   },
   {
@@ -77,15 +79,16 @@ export function AddressCol({ address }) {
 }
 
 function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
+  const realAddress = useRealAddress();
   const { params = {}, section } = useCollectivesContext();
   const {
-    activeSalary = [],
-    passiveSalary = [],
+    // activeSalary = [],
+    // passiveSalary = [],
     demotionPeriod = [],
     minPromotionPeriod = [],
     offboardTimeout,
   } = params ?? {};
-  const { symbol, decimals } = getSalaryAsset();
+  // const { symbol, decimals } = getSalaryAsset();
 
   const isLoading = isNil(members) || !isAllLoaded;
 
@@ -96,19 +99,19 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
     const demotionBlocks =
       rank <= 0 ? offboardTimeout : demotionPeriod[rankToIndex(rank)];
 
-    return [
+    const row = [
       <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
       <AddressCol key={`address-row-${idx}`} address={address} />,
-      <ValueDisplay
-        key={`active-salary-${idx}`}
-        value={toPrecision(getRankSalary(activeSalary, rank), decimals)}
-        symbol={symbol}
-      />,
-      <ValueDisplay
-        key={`passive-salary-${idx}`}
-        value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
-        symbol={symbol}
-      />,
+      // <ValueDisplay
+      //   key={`active-salary-${idx}`}
+      //   value={toPrecision(getRankSalary(activeSalary, rank), decimals)}
+      //   symbol={symbol}
+      // />,
+      // <ValueDisplay
+      //   key={`passive-salary-${idx}`}
+      //   value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
+      //   symbol={symbol}
+      // />,
       section === "fellowship" ? (
         <FellowshipDemotionPeriodWithProgress
           key={`demotion-period-${idx}`}
@@ -156,6 +159,12 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
         <MoreActions member={member} />
       </div>,
     ];
+
+    if (address === realAddress) {
+      row.tag = <MineTagOnListView />;
+    }
+
+    return row;
   });
 
   return (

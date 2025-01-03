@@ -61,10 +61,11 @@ function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
   return (
     <div
       className={cn(
-        "datalist-desktop-item w-full flex items-center",
+        "relative datalist-desktop-item w-full flex items-center",
         navCollapsed ? "max-sm:hidden" : "max-md:hidden",
       )}
     >
+      {row.tag}
       {row?.map((item, idx) => (
         <div
           key={idx}
