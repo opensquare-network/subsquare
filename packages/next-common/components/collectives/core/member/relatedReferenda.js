@@ -43,16 +43,15 @@ function ReferendumTooltip({ referendumIndex, children }) {
   );
 }
 
-export default function CoreFellowshipMemberRelatedReferenda({
+export function CoreFellowshipMemberRelatedReferendaContent({
   address,
   pallet,
 }) {
   const relatedReferenda = useRelatedReferenda(address, pallet);
   const { section } = useCollectivesContext();
 
-  let referendaList = <span className="text-textDisabled text12Medium">-</span>;
   if (relatedReferenda.length > 0) {
-    referendaList = relatedReferenda.map(({ referendumIndex }, index) => (
+    return relatedReferenda.map(({ referendumIndex }, index) => (
       <Fragment key={index}>
         {index !== 0 && (
           <span className="text12Medium text-textTertiary">·</span>
@@ -68,13 +67,23 @@ export default function CoreFellowshipMemberRelatedReferenda({
     ));
   }
 
+  return <span className="text-textDisabled text12Medium">-</span>;
+}
+
+export default function CoreFellowshipMemberRelatedReferenda({
+  address,
+  pallet,
+}) {
   return (
     <CoreFellowshipMemberInfoWrapper>
       <CoreFellowshipMemberInfoTitle className="mb-0.5">
         Referenda
       </CoreFellowshipMemberInfoTitle>
       <div className="flex text12Medium gap-[4px] items-center truncate">
-        {referendaList}
+        <CoreFellowshipMemberRelatedReferendaContent
+          address={address}
+          pallet={pallet}
+        />
       </div>
     </CoreFellowshipMemberInfoWrapper>
   );

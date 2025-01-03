@@ -9,15 +9,11 @@ import AvatarAndAddress from "./avatarAndAddress";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import FellowshipEvidenceContent from "../evidenceContent";
 
-export default function CoreFellowshipMemberEvidence({
-  member,
-  pallet = "fellowshipCore",
-}) {
+export function CoreFellowshipMemberEvidenceContent({ member, pallet }) {
   const { address, rank } = member || {};
   const { isActive } = member?.status || {};
 
   const [detailOpen, setDetailOpen] = useState(false);
-
   const { loading, wish, evidence } = useSubCoreFellowshipEvidence(
     address,
     pallet,
@@ -29,7 +25,7 @@ export default function CoreFellowshipMemberEvidence({
     content = <FieldLoading size={16} />;
   } else if (evidence) {
     content = (
-      <div className="flex gap-[8px]">
+      <>
         <Tooltip content="Wish">
           <span className="text-textPrimary capitalize">{wish}</span>
         </Tooltip>
@@ -42,19 +38,13 @@ export default function CoreFellowshipMemberEvidence({
         >
           View Detail
         </span>
-      </div>
+      </>
     );
   }
 
   return (
     <>
-      <CoreFellowshipMemberInfoWrapper>
-        <CoreFellowshipMemberInfoTitle className="mb-0.5">
-          Evidence
-        </CoreFellowshipMemberInfoTitle>
-        <div className="flex text12Medium">{content}</div>
-      </CoreFellowshipMemberInfoWrapper>
-
+      {content}
       {detailOpen && (
         <Popup
           title="Evidence Detail"
@@ -77,6 +67,27 @@ export default function CoreFellowshipMemberEvidence({
           <FellowshipEvidenceContent wish={wish} evidence={evidence} />
         </Popup>
       )}
+    </>
+  );
+}
+
+export default function CoreFellowshipMemberEvidence({
+  member,
+  pallet = "fellowshipCore",
+}) {
+  return (
+    <>
+      <CoreFellowshipMemberInfoWrapper>
+        <CoreFellowshipMemberInfoTitle className="mb-0.5">
+          Evidence
+        </CoreFellowshipMemberInfoTitle>
+        <div className="flex text12Medium gap-[8px]">
+          <CoreFellowshipMemberEvidenceContent
+            member={member}
+            pallet={pallet}
+          />
+        </div>
+      </CoreFellowshipMemberInfoWrapper>
     </>
   );
 }

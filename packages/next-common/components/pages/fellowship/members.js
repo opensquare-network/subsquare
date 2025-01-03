@@ -52,7 +52,7 @@ function FellowshipMembersPageInContext() {
             membersCount={membersCount}
             candidatesCount={candidatesCount}
           />
-          <div className="flex items-center gap-[16px]">
+          <div className="flex items-center gap-[12px]">
             {memberFilters}
             <ViewModeSwitch viewMode={viewMode} setViewMode={setViewMode} />
           </div>
