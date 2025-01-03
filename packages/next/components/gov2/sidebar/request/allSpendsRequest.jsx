@@ -19,7 +19,8 @@ export default function AllSpendsRequest() {
   if (
     !onchain?.isTreasury &&
     !onchain?.isStableTreasury &&
-    isNil(onchain?.value)
+    isNil(onchain?.value) &&
+    (onchain.allSpends || []).length <= 0
   ) {
     return null;
   }
