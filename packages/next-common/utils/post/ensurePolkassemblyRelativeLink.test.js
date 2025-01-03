@@ -1,21 +1,18 @@
 /* eslint-disable quotes */
 import { describe, expect, it } from "vitest";
-import { ensurePolkassemblyRelativeLinkUrl } from "./ensurePolkassemblyRelativeLink";
+import { ensurePolkassemblyRelativeLink } from "./ensurePolkassemblyRelativeLink";
 
 describe("transform polkassembly relative link", () => {
   it("no href attr, replace nothing", () => {
     expect(
-      ensurePolkassemblyRelativeLinkUrl(
-        '<a class="pa-link">link</a>',
-        "polkadot",
-      ),
+      ensurePolkassemblyRelativeLink('<a class="pa-link">link</a>', "polkadot"),
     ).toBe('<a class="pa-link">link</a>');
   });
 
   it("relative post", () => {
     // double quotes
     expect(
-      ensurePolkassemblyRelativeLinkUrl(
+      ensurePolkassemblyRelativeLink(
         '<a class="pa-link" href="../post/2592" target="_blank">link</a>',
         "polkadot",
       ),
@@ -25,7 +22,7 @@ describe("transform polkassembly relative link", () => {
 
     // single quotes
     expect(
-      ensurePolkassemblyRelativeLinkUrl(
+      ensurePolkassemblyRelativeLink(
         "<a href='../post/2592'>link</a>",
         "polkadot",
       ),
@@ -34,7 +31,7 @@ describe("transform polkassembly relative link", () => {
 
   it("relative referenda", () => {
     expect(
-      ensurePolkassemblyRelativeLinkUrl(
+      ensurePolkassemblyRelativeLink(
         '<a href="../referenda/1357">link</a>',
         "polkadot",
       ),

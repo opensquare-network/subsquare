@@ -9,7 +9,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
 import { Marked } from "marked";
 import { useChain } from "next-common/context/chain";
-import { ensurePolkassemblyRelativeLinkUrl } from "next-common/utils/post/ensurePolkassemblyRelativeLink";
+import { ensurePolkassemblyRelativeLink } from "next-common/utils/post/ensurePolkassemblyRelativeLink";
 
 const marked = new Marked();
 
@@ -44,7 +44,7 @@ export default function PostContent({ post = {} }) {
       // strip all inline attributes
       postContent = sanitizeHtml(postContent || "");
 
-      postContent = ensurePolkassemblyRelativeLinkUrl(postContent, chain);
+      postContent = ensurePolkassemblyRelativeLink(postContent, chain);
 
       content = <HtmlPreviewer content={postContent} />;
     } else {
