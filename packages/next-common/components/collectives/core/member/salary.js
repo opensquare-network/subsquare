@@ -2,6 +2,7 @@ import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
+import Tooltip from "next-common/components/tooltip";
 
 export function CoreFellowshipMemberSalaryContent({
   className,
@@ -24,25 +25,47 @@ export function CoreFellowshipMemberSalaryContent({
 }
 
 export default function CoreFellowshipMemberSalary({
-  rank,
-  isActive,
+  className = "text14Medium",
+  member,
   params = {},
 }) {
+  const { rank } = member;
+  const { isActive } = member.status;
+
+  const { activeSalary = [], passiveSalary = [] } = params ?? {};
+  const { symbol, decimals } = getSalaryAsset();
+
   if (rank <= 0) {
     return null;
   }
 
   return (
-    <div className="bg-neutral200 rounded px-3 py-1.5 mt-3">
-      <span className="text12Medium text-textTertiary mr-1 leading-4">
-        Salary
-      </span>
+    <Tooltip
+      content={
+        <div>
+          <div className="flex gap-1">
+            <span>Active Salary: </span>
+            <span>
+              {toPrecision(getRankSalary(activeSalary, rank), decimals)}
+              &nbsp;{symbol}
+            </span>
+          </div>
+          <div className="flex gap-1">
+            <span>Passive Salary:</span>
+            <span>
+              {toPrecision(getRankSalary(passiveSalary, rank), decimals)}
+              &nbsp;{symbol}
+            </span>
+          </div>
+        </div>
+      }
+    >
       <CoreFellowshipMemberSalaryContent
-        className="text12Medium text-textSecondary leading-4"
+        className={className}
         rank={rank}
         isActive={isActive}
         params={params}
       />
-    </div>
+    </Tooltip>
   );
 }

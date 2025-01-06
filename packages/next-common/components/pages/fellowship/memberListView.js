@@ -1,25 +1,21 @@
 import FellowshipRank from "next-common/components/fellowship/rank";
-import { toPrecision } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
 import { isNil } from "lodash-es";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
-import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 import {
   FellowshipDemotionPeriodWithProgress,
   FellowshipPromotionPeriodWithProgress,
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import Period from "next-common/components/fellowship/params/period";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
 import { CoreFellowshipMemberRelatedReferendaContent } from "next-common/components/collectives/core/member/relatedReferenda";
-import { CoreFellowshipMemberSalaryContent } from "next-common/components/collectives/core/member/salary";
 import MoreActions from "./moreActions";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
-import Tooltip from "next-common/components/tooltip";
+import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
 
 const collectivesMemberColumns = [
   {
@@ -55,44 +51,6 @@ const collectivesMemberColumns = [
     className: "text-right",
   },
 ];
-
-function Salary({ member, params }) {
-  const { rank } = member;
-  const { isActive } = member.status;
-
-  const { activeSalary = [], passiveSalary = [] } = params ?? {};
-  const { symbol, decimals } = getSalaryAsset();
-
-  return (
-    <Tooltip
-      content={
-        <div>
-          <div className="flex gap-1">
-            <span>Active Salary: </span>
-            <span>
-              {toPrecision(getRankSalary(activeSalary, rank), decimals)}
-              &nbsp;{symbol}
-            </span>
-          </div>
-          <div className="flex gap-1">
-            <span>Passive Salary:</span>
-            <span>
-              {toPrecision(getRankSalary(passiveSalary, rank), decimals)}
-              &nbsp;{symbol}
-            </span>
-          </div>
-        </div>
-      }
-    >
-      <CoreFellowshipMemberSalaryContent
-        className="text14Medium"
-        rank={rank}
-        isActive={isActive}
-        params={params}
-      />
-    </Tooltip>
-  );
-}
 
 function EvidenceAndReferenda({ member }) {
   const { address } = member;
@@ -140,7 +98,11 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
     const row = [
       <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
       <AddressCol key={`address-row-${idx}`} address={address} />,
-      <Salary key="salary" member={member} params={params} />,
+      <CoreFellowshipMemberSalary
+        key="salary"
+        member={member}
+        params={params}
+      />,
       section === "fellowship" ? (
         <FellowshipDemotionPeriodWithProgress
           key={`demotion-period-${idx}`}
