@@ -33,7 +33,6 @@ const collectivesMemberColumns = [
   },
   {
     name: "Salary",
-    width: 100,
     className: "text-right",
   },
   // {
@@ -58,12 +57,7 @@ const collectivesMemberColumns = [
   },
   {
     name: "Evidence",
-    width: 100,
-    className: "ml-[64px]",
-  },
-  {
-    name: "Referenda",
-    width: 100,
+    width: 120,
     className: "ml-[64px]",
   },
   {
@@ -108,6 +102,27 @@ function Salary({ member, params }) {
         params={params}
       />
     </Tooltip>
+  );
+}
+
+function EvidenceAndReferenda({ member }) {
+  const { address } = member;
+
+  return (
+    <div key="evidence" className="flex flex-col text14Medium gap-[2px]">
+      <div className="flex gap-2">
+        <CoreFellowshipMemberEvidenceContent
+          member={member}
+          pallet="fellowshipCore"
+        />
+      </div>
+      <div className="text14Medium">
+        <CoreFellowshipMemberRelatedReferendaContent
+          address={address}
+          pallet="fellowshipCore"
+        />
+      </div>
+    </div>
   );
 }
 
@@ -160,19 +175,7 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
           blocks={minPromotionPeriod[rank] || 0}
         />
       ),
-      <div key="evidence" className="flex flex-col text14Medium gap-[2px]">
-        <CoreFellowshipMemberEvidenceContent
-          member={member}
-          pallet="fellowshipCore"
-        />
-      </div>,
-      <div key="referenda" className="text14Medium">
-        <CoreFellowshipMemberRelatedReferendaContent
-          address={address}
-          pallet="fellowshipCore"
-        />
-      </div>,
-
+      <EvidenceAndReferenda key="evidence" member={member} />,
       <div key="more">
         <MoreActions member={member} />
       </div>,

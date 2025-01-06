@@ -36,7 +36,7 @@ export function CoreFellowshipMemberEvidenceContent({ member, pallet }) {
             setDetailOpen(true);
           }}
         >
-          View Detail
+          Detail
         </span>
       </>
     );
