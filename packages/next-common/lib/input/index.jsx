@@ -77,7 +77,7 @@ function InputImpl(
           smallSize ? "text12Medium" : "text14Medium",
           "text-textPrimary",
           (prefix || pre) && "pl-0",
-          (suffix || post) && "pr-0",
+          (suffix || post || symbol) && "pr-0",
           "cursor-text",
           error && "border-red500",
           focus && "border-neutral500",
