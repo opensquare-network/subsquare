@@ -130,10 +130,14 @@ function Affix(props) {
     <div
       {...props}
       className={cn(
-        "px-[calc(var(--input-gap-x)/2)]",
+        "px-[var(--input-affix-gap-x)]",
         "cursor-default flex items-center",
         props?.className,
       )}
+      style={{
+        "--input-affix-gap-x": "calc(var(--input-gap-x) / 2)",
+        ...props?.style,
+      }}
     />
   );
 }
