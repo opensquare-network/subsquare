@@ -109,7 +109,7 @@ function EvidenceAndReferenda({ member }) {
   const { address } = member;
 
   return (
-    <div key="evidence" className="flex flex-col text14Medium gap-[2px]">
+    <div className="flex flex-col text14Medium gap-[2px] max-sm:items-end">
       <div className="flex gap-2">
         <CoreFellowshipMemberEvidenceContent
           member={member}
