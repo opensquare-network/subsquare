@@ -1,7 +1,9 @@
+// https://github.com/cchanxzy/react-currency-input-field/tree/main/src/components/utils
+
 const GROUP_SEPARATOR = ",";
 const DECIMAL_SEPARATOR = ".";
 
-export const currencyInputUtils = {
+export const numberInputUtils = {
   formatValue,
   repositionCursor,
   count,
