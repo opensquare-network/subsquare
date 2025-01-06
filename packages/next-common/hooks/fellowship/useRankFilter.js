@@ -13,7 +13,7 @@ import {
 } from "next-common/components/dropdownFilter/context";
 
 function RankSelect({ ranks, rank, setRank, noneLabel }) {
-  const options = (ranks || []).map((rank) => ({
+  const options = (ranks?.sort((a, b) => b - a) || []).map((rank) => ({
     label: String(rank),
     value: rank,
   }));
