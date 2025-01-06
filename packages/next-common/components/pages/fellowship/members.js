@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import FellowshipMembersLoadable from "next-common/components/pages/fellowship/loadable";
 import FellowshipMemberCommon from "next-common/components/pages/fellowship/common";
 import FellowshipMembersEmpty from "./empty";
-import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
 import { usePageProps } from "next-common/context/page";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import MemberWarnings from "next-common/components/fellowship/core/memberWarnings";
@@ -15,6 +14,7 @@ import ViewModeSwitch from "./viewModeSwitch";
 import useMembersFilter from "./useMemberFilter";
 import FellowshipMemberCardView from "./memberCardView";
 import FellowshipMemberListView from "./memberListView";
+import { handleFilterMembers } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 
 function FellowshipMembers({ viewMode, members }) {
   if (viewMode === "list") {
@@ -24,12 +24,22 @@ function FellowshipMembers({ viewMode, members }) {
   return <FellowshipMemberCardView members={members} />;
 }
 
-function FellowshipMembersPageInContext() {
+function useViewModeSwitch() {
   const [viewMode, setViewMode] = useState("list");
-  const members = useFellowshipSortedCoreMembers();
+  return {
+    viewMode,
+    component: <ViewModeSwitch viewMode={viewMode} setViewMode={setViewMode} />,
+  };
+}
+
+function FellowshipMembersPageInContext() {
+  const { fellowshipMembers } = usePageProps();
+  const { members: membersWithStatus } = handleFilterMembers(fellowshipMembers);
+
+  const { viewMode, component: viewModeSwitch } = useViewModeSwitch();
   const pageMembers = useMemo(
-    () => (members || []).filter((member) => member.rank > 0),
-    [members],
+    () => (membersWithStatus || []).filter((member) => member.rank > 0),
+    [membersWithStatus],
   );
 
   const { filteredMembers, component: memberFilters } =
@@ -38,8 +48,8 @@ function FellowshipMembersPageInContext() {
 
   const membersCount = filteredMembers?.length;
   const candidatesCount = useMemo(
-    () => (members || []).filter((member) => member.rank <= 0).length,
-    [members],
+    () => (membersWithStatus || []).filter((member) => member.rank <= 0).length,
+    [membersWithStatus],
   );
 
   const sortedFilteredMembers = useMembersWithMeAtFirst(filteredMembers);
@@ -54,7 +64,7 @@ function FellowshipMembersPageInContext() {
           />
           <div className="flex items-center gap-[12px] max-sm:pl-6">
             {memberFilters}
-            <ViewModeSwitch viewMode={viewMode} setViewMode={setViewMode} />
+            {viewModeSwitch}
           </div>
         </div>
 

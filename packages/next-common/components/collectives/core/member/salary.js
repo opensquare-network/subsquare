@@ -29,11 +29,15 @@ export default function CoreFellowshipMemberSalary({
   member,
   params = {},
 }) {
-  const { rank } = member;
-  const { isActive } = member.status;
+  const { rank, isFellowshipOnly } = member;
+  const { isActive } = member.status || {};
 
   const { activeSalary = [], passiveSalary = [] } = params ?? {};
   const { symbol, decimals } = getSalaryAsset();
+
+  if (!isFellowshipOnly) {
+    return <span className="text-textTertiary">-</span>;
+  }
 
   if (rank <= 0) {
     return null;
