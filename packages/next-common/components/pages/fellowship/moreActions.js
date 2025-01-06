@@ -1,6 +1,8 @@
 import { SystemMore } from "@osn/icons/subsquare";
 import { useCanBump } from "next-common/components/collectives/core/actions/bump";
 import BumpFellowshipMemberPopup from "next-common/components/collectives/core/actions/bump/popup";
+import ActivationPopup from "next-common/components/collectives/core/actions/more/activationItem/popup";
+import SubmitEvidencePopup from "next-common/components/collectives/core/actions/more/submitEvidenceItem/popup";
 import {
   useCanApprove,
   useShouldShowApproveButton,
@@ -13,8 +15,14 @@ import {
 import PromoteFellowshipMemberPopup from "next-common/components/fellowship/core/members/actions/promote/popup";
 import { OptionItem } from "next-common/components/internalDropdown/styled";
 import { cn } from "next-common/utils";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useRef, useState } from "react";
 import { useClickAway } from "react-use";
+
+function useIsMe(address) {
+  const realAddress = useRealAddress();
+  return address === realAddress;
+}
 
 function PromoteMenuItem({ member, setShowPromotePopup, setShowContextMenu }) {
   const { canPromote } = useCanPromote(member);
@@ -33,6 +41,7 @@ function PromoteMenuItem({ member, setShowPromotePopup, setShowContextMenu }) {
 
   return (
     <OptionItem
+      role="button"
       onClick={() => {
         setShowPromotePopup(true);
         setShowContextMenu(false);
@@ -60,6 +69,7 @@ function ApproveMenuItem({ member, setShowApprovePopup, setShowContextMenu }) {
 
   return (
     <OptionItem
+      role="button"
       onClick={() => {
         setShowApprovePopup(true);
         setShowContextMenu(false);
@@ -83,12 +93,63 @@ function BumpMenuItem({ member, setShowBumpPopup, setShowContextMenu }) {
 
   return (
     <OptionItem
+      role="button"
       onClick={() => {
         setShowBumpPopup(true);
         setShowContextMenu(false);
       }}
     >
       <span className="text14Medium text-textPrimary">Bump</span>
+    </OptionItem>
+  );
+}
+
+function SubmitEvidenceMenuItem({
+  member,
+  setShowSubmitEvidencePopup,
+  setShowContextMenu,
+}) {
+  const isMe = useIsMe(member.address);
+  if (!isMe) {
+    return null;
+  }
+
+  return (
+    <OptionItem
+      role="button"
+      onClick={() => {
+        setShowSubmitEvidencePopup(true);
+        setShowContextMenu(false);
+      }}
+    >
+      <span className="text14Medium text-textPrimary whitespace-nowrap">
+        Submit Evidence
+      </span>
+    </OptionItem>
+  );
+}
+
+function ActivationMenuItem({
+  member,
+  setShowActivationPopup,
+  setShowContextMenu,
+}) {
+  const isMe = useIsMe(member.address);
+  const { isActive } = member.status;
+
+  if (!isMe) {
+    return null;
+  }
+
+  return (
+    <OptionItem
+      role="button"
+      onClick={() => {
+        setShowActivationPopup(true);
+        setShowContextMenu(false);
+      }}
+    >
+      {isActive ? "Inactive" : "Active"}
     </OptionItem>
   );
 }
@@ -102,6 +163,8 @@ export default function MoreActions({ member }) {
   const [showBumpPopup, setShowBumpPopup] = useState(false);
   const [showApprovePopup, setShowApprovePopup] = useState(false);
   const [showPromotePopup, setShowPromotePopup] = useState(false);
+  const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
+  const [showActivationPopup, setShowActivationPopup] = useState(false);
 
   return (
     <div className="relative" ref={ref}>
@@ -137,6 +200,16 @@ export default function MoreActions({ member }) {
             setShowPromotePopup={setShowPromotePopup}
             setShowContextMenu={setShowContextMenu}
           />
+          <SubmitEvidenceMenuItem
+            member={member}
+            setShowSubmitEvidencePopup={setShowSubmitEvidencePopup}
+            setShowContextMenu={setShowContextMenu}
+          />
+          <ActivationMenuItem
+            member={member}
+            setShowActivationPopup={setShowActivationPopup}
+            setShowContextMenu={setShowContextMenu}
+          />
         </div>
       )}
       {showBumpPopup && (
@@ -155,6 +228,22 @@ export default function MoreActions({ member }) {
         <PromoteFellowshipMemberPopup
           who={address}
           onClose={() => setShowPromotePopup(false)}
+        />
+      )}
+      {showActivationPopup && (
+        <ActivationPopup
+          member={member}
+          who={member.address}
+          onClose={() => {
+            setShowActivationPopup(false);
+          }}
+        />
+      )}
+      {showSubmitEvidencePopup && (
+        <SubmitEvidencePopup
+          onClose={() => {
+            setShowSubmitEvidencePopup(false);
+          }}
         />
       )}
     </div>
