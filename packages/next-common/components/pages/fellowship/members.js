@@ -47,12 +47,12 @@ function FellowshipMembersPageInContext() {
   return (
     <FellowshipMembersLoadable>
       <FellowshipMemberCommon>
-        <div className="flex flex-wrap max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between mb-4 pr-6">
+        <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6">
           <FellowshipMemberTabs
             membersCount={membersCount}
             candidatesCount={candidatesCount}
           />
-          <div className="flex items-center gap-[12px]">
+          <div className="flex items-center gap-[12px] max-sm:pl-6">
             {memberFilters}
             <ViewModeSwitch viewMode={viewMode} setViewMode={setViewMode} />
           </div>
