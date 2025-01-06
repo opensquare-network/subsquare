@@ -169,6 +169,7 @@ export default function MoreActions({ member }) {
   return (
     <div className="relative" ref={ref}>
       <div
+        role="button"
         className={cn(
           "inline-flex p-[6px] cursor-pointer",
           "rounded-[4px] border-neutral400 border",
