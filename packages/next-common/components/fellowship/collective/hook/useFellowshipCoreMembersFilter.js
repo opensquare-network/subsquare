@@ -1,5 +1,5 @@
 import { isNil } from "lodash-es";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useFellowshipCoreOnlySwitch from "./useFellowshipCoreOnlySwitch";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
 import usePeriodSelect, {
@@ -17,6 +17,7 @@ import {
   filterDemotionExpiredFn,
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
+import { useContextApi } from "next-common/context/api";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -26,6 +27,42 @@ function useSingleMemberStatus(item) {
 
   return {
     status: member,
+    isLoading,
+  };
+}
+
+export function useMembersWithStatus(members) {
+  const api = useContextApi();
+  const [membersWithStatus, setMembersWithStatus] = useState(members);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setIsLoading(true);
+    Promise.all(
+      members.map(async (item) => {
+        const rawOptional = await api.query.fellowshipCore.member(item.address);
+        const status = rawOptional?.toJSON();
+        return {
+          ...item,
+          status,
+          isFellowshipOnly: !isNil(status),
+        };
+      }),
+    )
+      .then((result) => {
+        setMembersWithStatus(result);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [api, members]);
+
+  return {
+    membersWithStatus,
     isLoading,
   };
 }

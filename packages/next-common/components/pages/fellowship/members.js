@@ -14,7 +14,7 @@ import ViewModeSwitch from "./viewModeSwitch";
 import useMembersFilter from "./useMemberFilter";
 import FellowshipMemberCardView from "./memberCardView";
 import FellowshipMemberListView from "./memberListView";
-import { handleFilterMembers } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 
 function FellowshipMembers({ viewMode, members }) {
   if (viewMode === "list") {
@@ -34,7 +34,7 @@ function useViewModeSwitch() {
 
 function FellowshipMembersPageInContext() {
   const { fellowshipMembers } = usePageProps();
-  const { members: membersWithStatus } = handleFilterMembers(fellowshipMembers);
+  const { membersWithStatus } = useMembersWithStatus(fellowshipMembers);
 
   const { viewMode, component: viewModeSwitch } = useViewModeSwitch();
   const pageMembers = useMemo(
