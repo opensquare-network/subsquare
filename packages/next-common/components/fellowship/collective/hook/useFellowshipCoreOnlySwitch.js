@@ -1,3 +1,7 @@
+import {
+  useCommittedFilterState,
+  useStagedFilterState,
+} from "next-common/components/dropdownFilter/context";
 import Toggle from "next-common/components/toggle";
 import {
   addRouterQuery,
@@ -8,13 +12,33 @@ import { useRouter } from "next/router";
 
 function FellowshipCoreOnlySwitch({ isOn, setIsOn }) {
   return (
-    <div className="flex items-center gap-[8px]">
+    <div className="flex items-center justify-between gap-[8px]">
       <span className="text-textSecondary text12Medium whitespace-nowrap">
         Core only
       </span>
       <Toggle size="small" isOn={isOn} onToggle={() => setIsOn(!isOn)} />
     </div>
   );
+}
+
+export function useFellowshipCoreOnlySwitchInDropdown() {
+  const [stagedFilter, setStagedFilter] = useStagedFilterState();
+  const [committedFilter] = useCommittedFilterState();
+
+  return {
+    isOn: committedFilter?.fellowship_core_only,
+    component: (
+      <FellowshipCoreOnlySwitch
+        isOn={stagedFilter?.fellowship_core_only}
+        setIsOn={(isOn) => {
+          setStagedFilter({
+            ...stagedFilter,
+            fellowship_core_only: isOn,
+          });
+        }}
+      />
+    ),
+  };
 }
 
 export default function useFellowshipCoreOnlySwitch() {

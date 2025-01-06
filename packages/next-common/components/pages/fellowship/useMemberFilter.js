@@ -19,10 +19,13 @@ import {
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
 import { DropdownFilter } from "next-common/components/dropdownFilter";
+import { useFellowshipCoreOnlySwitchInDropdown } from "next-common/components/fellowship/collective/hook/useFellowshipCoreOnlySwitch";
 
 export default function useMembersFilter(members) {
   const ranks = [...new Set(members.map((m) => m.rank))];
 
+  const { isOn: isCoreOnly, component: coreOnlySwitch } =
+    useFellowshipCoreOnlySwitchInDropdown();
   const { rank, component: rankFilterComponent } =
     useRankFilterInDropdown(ranks);
   const { periodFilter, component: periodFilterComponent } =
@@ -68,6 +71,12 @@ export default function useMembersFilter(members) {
       filteredMembers = evidenceOnlyFilterFn(filteredMembers);
     }
 
+    if (isCoreOnly) {
+      filteredMembers = filteredMembers.filter(
+        (member) => member.isFellowshipOnly,
+      );
+    }
+
     if (isNil(rank)) {
       return filteredMembers;
     } else {
@@ -76,6 +85,7 @@ export default function useMembersFilter(members) {
   }, [
     members,
     periodFilter,
+    isCoreOnly,
     isEvidenceOnly,
     evidenceOnlyFilterFn,
     rank,
@@ -87,6 +97,7 @@ export default function useMembersFilter(members) {
 
   const component = (
     <DropdownFilter className="w-[320px]">
+      {coreOnlySwitch}
       {evidenceOnlySwitch}
       {periodFilterComponent}
       {rankFilterComponent}
