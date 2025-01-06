@@ -29,22 +29,11 @@ const collectivesMemberColumns = [
   {
     name: "Member",
     width: 140,
-    className: "",
   },
   {
     name: "Salary",
     className: "text-right",
   },
-  // {
-  //   name: "Active Salary",
-  //   width: 140,
-  //   className: "text-right",
-  // },
-  // {
-  //   name: "Passive Salary",
-  //   width: 140,
-  //   className: "text-right",
-  // },
   {
     name: "Demotion Period",
     width: 140,

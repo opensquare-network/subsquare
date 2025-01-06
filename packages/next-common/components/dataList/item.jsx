@@ -123,10 +123,11 @@ function MobileContent({
   return (
     <div
       className={cn(
-        "datalist-mobile-item space-y-3",
+        "relative datalist-mobile-item space-y-3",
         navCollapsed ? "sm:hidden sm:py-4" : "md:hidden md:py-4",
       )}
     >
+      {row.tag}
       <div>
         <div className="flex grow items-center justify-between">
           {first.value}

@@ -10,7 +10,7 @@ export default function MineTagOnCardView() {
 
 export function MineTagOnListView() {
   return (
-    <div className="absolute -left-[24px]">
+    <div className="absolute -left-[24px] max-sm:-top-[6px]">
       <MineTag />
     </div>
   );
