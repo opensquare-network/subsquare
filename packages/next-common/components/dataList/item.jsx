@@ -4,6 +4,8 @@ import Descriptions from "../Descriptions";
 import { last } from "lodash-es";
 import { isNil } from "lodash-es";
 import { useNavCollapsed } from "next-common/context/nav";
+import { useWindowSize } from "react-use";
+import { MD_SIZE, SM_SIZE } from "next-common/utils/responsive";
 
 export default function DataListItem({
   columns,
@@ -58,6 +60,14 @@ export default function DataListItem({
 }
 
 function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
+  const { width } = useWindowSize();
+  if (
+    (navCollapsed && width <= SM_SIZE) ||
+    (!navCollapsed && width <= MD_SIZE)
+  ) {
+    return null;
+  }
+
   return (
     <div
       className={cn(
@@ -85,6 +95,11 @@ function MobileContent({
   navCollapsed,
   descriptionClassName,
 }) {
+  const { width } = useWindowSize();
+  if ((navCollapsed && width > SM_SIZE) || (!navCollapsed && width > MD_SIZE)) {
+    return null;
+  }
+
   const items = columns.map((col, idx) => {
     return {
       name: col.name,
