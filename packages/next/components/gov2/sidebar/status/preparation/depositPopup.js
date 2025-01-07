@@ -1,7 +1,6 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePostOnChainData } from "next-common/context/post";
 import { useChainSettings } from "next-common/context/chain";
-import BalanceInput from "next-common/components/balanceInput";
 import { toPrecision } from "next-common/utils";
 import React, { useCallback } from "react";
 import PopupLabel from "next-common/components/popup/label";
@@ -11,6 +10,7 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useReferendaPallet } from "next-common/context/referenda/pallet";
+import CurrencyInput from "next-common/components/currencyInput";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -34,8 +34,8 @@ function PopupContent() {
       </div>
       <div>
         <PopupLabel text={"Decision Deposit"} />
-        <BalanceInput
-          disabled={true}
+        <CurrencyInput
+          disabled
           value={toPrecision(track.decisionDeposit, node.decimals)}
           symbol={node?.symbol}
         />

@@ -1,4 +1,4 @@
-import InputNumber from "next-common/components/inputNumber";
+import NumberInput from "next-common/lib/input/number";
 import { useCallback } from "react";
 
 export default function IntegerParam({ title, value, setValue }) {
@@ -24,7 +24,7 @@ export default function IntegerParam({ title, value, setValue }) {
   return (
     <>
       {title}
-      <InputNumber value={data ?? ""} setValue={_setValue} step={1} />;
+      <NumberInput value={data ?? ""} onValueChange={_setValue} />
     </>
   );
 }
