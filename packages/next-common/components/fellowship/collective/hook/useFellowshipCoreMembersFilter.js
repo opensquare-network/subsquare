@@ -33,8 +33,8 @@ function useSingleMemberStatus(item) {
 
 export function useMembersWithStatus(members) {
   const api = useContextApi();
-  const [membersWithStatus, setMembersWithStatus] = useState(members);
-  const [isLoading, setIsLoading] = useState(false);
+  const [membersWithStatus, setMembersWithStatus] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!api) {

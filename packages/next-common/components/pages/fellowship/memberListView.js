@@ -2,14 +2,12 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 import { useNavCollapsed } from "next-common/context/nav";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
-import { isNil } from "lodash-es";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import {
   FellowshipDemotionPeriodWithProgress,
   FellowshipPromotionPeriodWithProgress,
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
-import Period from "next-common/components/fellowship/params/period";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
 import {
   CoreFellowshipMemberRelatedReferendaContent,
@@ -23,6 +21,7 @@ import { memo, useMemo } from "react";
 import { AvatarAndAddressInListView } from "next-common/components/collectives/core/member/avatarAndAddress";
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import Tooltip from "next-common/components/tooltip";
 
 const collectivesMemberColumns = [
   {
@@ -112,6 +111,14 @@ export function EmptyCol() {
   return <span className="text-textTertiary">-</span>;
 }
 
+export function NonCoreMemberCol() {
+  return (
+    <Tooltip content="Not in core management system">
+      <EmptyCol />
+    </Tooltip>
+  );
+}
+
 function NonCoreMemberAddressCol({ address }) {
   return (
     <div className="flex items-center ml-[24px]">
@@ -120,87 +127,78 @@ function NonCoreMemberAddressCol({ address }) {
   );
 }
 
-function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
-  const realAddress = useRealAddress();
-  const { params = {}, section } = useCollectivesContext();
+function getCoreMemberRow({ idx, member, params }) {
+  const { address, rank } = member;
+  const { isActive } = member.status;
   const {
     demotionPeriod = [],
     minPromotionPeriod = [],
     offboardTimeout,
   } = params ?? {};
 
-  const isLoading = isNil(members) || !isAllLoaded;
+  const demotionBlocks =
+    rank <= 0 ? offboardTimeout : demotionPeriod[rankToIndex(rank)];
+
+  return [
+    <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
+    <AvatarAndAddressInListView
+      key={`address-row-${idx}`}
+      address={address}
+      isActive={isActive}
+    />,
+    <CoreFellowshipMemberSalary key="salary" member={member} params={params} />,
+    <FellowshipDemotionPeriodWithProgress
+      key={`demotion-period-${idx}`}
+      address={address}
+      rank={rank}
+      blocks={demotionBlocks}
+    />,
+    rank > 0 ? (
+      <FellowshipPromotionPeriodWithProgress
+        key={`min-promotion-period-${idx}`}
+        address={address}
+        rank={rank}
+        blocks={minPromotionPeriod[rank] || 0}
+      />
+    ) : (
+      <EmptyCol key={`min-promotion-period-${idx}`} />
+    ),
+    <EvidenceAndReferenda key="evidence" member={member} />,
+    <div key="more">
+      <MoreActions member={member} />
+    </div>,
+  ];
+}
+
+function getNonCoreMemberRow({ idx, member }) {
+  const { address, rank } = member;
+
+  return [
+    <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
+    <NonCoreMemberAddressCol key={`address-row-${idx}`} address={address} />,
+    <NonCoreMemberCol key="salary" />,
+    <NonCoreMemberCol key={`demotion-period-${idx}`} />,
+    <NonCoreMemberCol key={`min-promotion-period-${idx}`} />,
+    <EvidenceAndReferenda key="evidence" member={member} />,
+    <EmptyCol key="more" />,
+  ];
+}
+
+function CollectivesMemberTable({ members = [], isLoading = false }) {
+  const realAddress = useRealAddress();
+  const { params = {} } = useCollectivesContext();
 
   const rows = useMemo(
     () =>
       (members || []).map((member, idx) => {
-        const { address, rank, isFellowshipOnly } = member;
-
-        const demotionBlocks =
-          rank <= 0 ? offboardTimeout : demotionPeriod[rankToIndex(rank)];
+        const { address, isFellowshipOnly } = member;
 
         let row = [];
 
         if (isFellowshipOnly) {
-          const { isActive } = member.status;
-
-          row = [
-            <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
-            <AvatarAndAddressInListView
-              key={`address-row-${idx}`}
-              address={address}
-              isActive={isActive}
-            />,
-            <CoreFellowshipMemberSalary
-              key="salary"
-              member={member}
-              params={params}
-            />,
-            <FellowshipDemotionPeriodWithProgress
-              key={`demotion-period-${idx}`}
-              address={address}
-              rank={rank}
-              blocks={demotionBlocks}
-            />,
-            rank > 0 ? (
-              <FellowshipPromotionPeriodWithProgress
-                key={`min-promotion-period-${idx}`}
-                address={address}
-                rank={rank}
-                blocks={minPromotionPeriod[rank] || 0}
-              />
-            ) : (
-              <EmptyCol key={`min-promotion-period-${idx}`} />
-            ),
-            <EvidenceAndReferenda key="evidence" member={member} />,
-            <div key="more">
-              <MoreActions member={member} />
-            </div>,
-          ];
+          row = getCoreMemberRow({ idx, member, params });
         } else {
-          row = [
-            <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
-            <NonCoreMemberAddressCol
-              key={`address-row-${idx}`}
-              address={address}
-            />,
-            <EmptyCol key="salary" />,
-            section === "fellowship" ? (
-              <EmptyCol key={`demotion-period-${idx}`} />
-            ) : (
-              <Period key={`demotion-period-${idx}`} blocks={demotionBlocks} />
-            ),
-            section === "fellowship" ? (
-              <EmptyCol key={`min-promotion-period-${idx}`} />
-            ) : (
-              <Period
-                key={`min-promotion-period-${idx}`}
-                blocks={minPromotionPeriod[rank] || 0}
-              />
-            ),
-            <EvidenceAndReferenda key="evidence" member={member} />,
-            <EmptyCol key="more" />,
-          ];
+          row = getNonCoreMemberRow({ idx, member });
         }
 
         if (address === realAddress) {
@@ -209,15 +207,7 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
 
         return row;
       }),
-    [
-      members,
-      params,
-      realAddress,
-      section,
-      demotionPeriod,
-      minPromotionPeriod,
-      offboardTimeout,
-    ],
+    [members, params, realAddress],
   );
 
   return (
@@ -231,8 +221,8 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
   );
 }
 
-function FellowshipMemberListView({ members }) {
-  return <CollectivesMemberTable members={members} isAllLoaded={true} />;
+function FellowshipMemberListView({ members, isLoading = true }) {
+  return <CollectivesMemberTable members={members} isLoading={isLoading} />;
 }
 
 export default memo(FellowshipMemberListView);

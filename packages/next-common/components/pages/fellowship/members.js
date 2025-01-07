@@ -16,12 +16,12 @@ import FellowshipMemberCardView from "./memberCardView";
 import FellowshipMemberListView from "./memberListView";
 import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 
-function FellowshipMembers({ viewMode, members }) {
+function FellowshipMembers({ viewMode, members, isLoading }) {
   if (viewMode === "list") {
-    return <FellowshipMemberListView members={members} />;
+    return <FellowshipMemberListView members={members} isLoading={isLoading} />;
   }
 
-  return <FellowshipMemberCardView members={members} />;
+  return <FellowshipMemberCardView members={members} isLoading={isLoading} />;
 }
 
 function useViewModeSwitch() {
@@ -34,7 +34,8 @@ function useViewModeSwitch() {
 
 function FellowshipMembersPageInContext() {
   const { fellowshipMembers } = usePageProps();
-  const { membersWithStatus } = useMembersWithStatus(fellowshipMembers);
+  const { membersWithStatus, isLoading } =
+    useMembersWithStatus(fellowshipMembers);
 
   const { viewMode, component: viewModeSwitch } = useViewModeSwitch();
   const pageMembers = useMemo(
@@ -70,13 +71,14 @@ function FellowshipMembersPageInContext() {
 
         <MemberWarnings className="mb-[24px]" />
 
-        {hasMembers ? (
+        {!isLoading && !hasMembers ? (
+          <FellowshipMembersEmpty />
+        ) : (
           <FellowshipMembers
             viewMode={viewMode}
             members={sortedFilteredMembers}
+            isLoading={isLoading}
           />
-        ) : (
-          <FellowshipMembersEmpty />
         )}
       </FellowshipMemberCommon>
     </FellowshipMembersLoadable>
