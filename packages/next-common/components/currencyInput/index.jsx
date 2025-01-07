@@ -8,13 +8,5 @@ export default CurrencyInput;
  * @param {NumberInputProps} props
  */
 function CurrencyInputImpl(props, ref) {
-  return (
-    <NumberInput
-      ref={ref}
-      allowDecimals
-      controls={false}
-      stringMode
-      {...props}
-    />
-  );
+  return <NumberInput ref={ref} allowDecimals controls={false} {...props} />;
 }
