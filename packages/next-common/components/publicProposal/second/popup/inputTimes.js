@@ -1,9 +1,9 @@
 import { noop } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
-import InputNumber from "../../../inputNumber";
 import { Label, WarningMessage } from "../../../popup/styled";
 import useMaxDeposits from "../useMaxDeposits";
 import { useContextApi } from "next-common/context/api";
+import NumberInput from "next-common/lib/input/number";
 
 export default function SecondPopupInputTimes({
   times,
@@ -31,7 +31,7 @@ export default function SecondPopupInputTimes({
     <>
       <div>
         <Label>Times</Label>
-        <InputNumber value={times} setValue={setTimes} min={1} />
+        <NumberInput value={times} onValueChange={setTimes} />
       </div>
 
       {isOverLimit && (
