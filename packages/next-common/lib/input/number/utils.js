@@ -13,11 +13,11 @@ export const numberInputUtils = {
 };
 
 function count(str = "", char = "") {
-  return Math.max(0, str.split(char).length - 1);
+  return Math.max(0, String(str).split(char).length - 1);
 }
 
 function cleanValue(value = "", { allowDecimals = true } = {}) {
-  return value.replace(
+  return String(value).replace(
     new RegExp(`[^0-9${allowDecimals ? DECIMAL_SEPARATOR : ""}]`, "g"),
     "",
   );
@@ -28,7 +28,7 @@ function formatValue(value = "") {
     return "";
   }
 
-  if (value.startsWith(DECIMAL_SEPARATOR)) {
+  if (String(value).startsWith(DECIMAL_SEPARATOR)) {
     value = "0" + value;
   }
 
@@ -38,7 +38,7 @@ function formatValue(value = "") {
   });
 
   let formatted;
-  if (value.indexOf(DECIMAL_SEPARATOR) >= 0) {
+  if (String(value).indexOf(DECIMAL_SEPARATOR) >= 0) {
     const [int, decimal = ""] = value.split(DECIMAL_SEPARATOR);
     const formattedInt = formatter.format(int);
 
@@ -61,6 +61,8 @@ function repositionCursor({
   lastKeyStroke,
   stateValue,
 }) {
+  value = String(value);
+
   let cursorPosition = selectionStart;
   let modifiedValue = value;
 

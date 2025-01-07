@@ -29,10 +29,11 @@ function NumberInputImpl(
     suffix,
     className = "",
     onKeyDown,
+    onBlur,
     onChange,
     onValueChange,
     allowDecimals = false,
-    controls = false,
+    controls = true,
     keyboard = true,
     step = 1,
     min = 0,
@@ -57,7 +58,16 @@ function NumberInputImpl(
 
   if (controls) {
     suffix = (
-      <div className="flex flex-col h-full border-l border-neutral300 divide-y divide-neutral300 -mx-[var(--input-affix-gap-x)]">
+      <div
+        className={cn(
+          "flex flex-col",
+          "h-full",
+          "border-l border-neutral300 divide-y divide-neutral300",
+          "group-hover/number-input:border-neutral500 group-hover/number-input:divide-neutral500",
+          "group-data-[focus]/input:border-neutral500 group-data-[focus]/input:divide-neutral500",
+          "-mx-[var(--input-affix-gap-x)]",
+        )}
+      >
         <Stepper onClick={handleUp} />
         <Stepper down onClick={handleDown} />
       </div>
@@ -77,6 +87,8 @@ function NumberInputImpl(
   }, [userValue, defaultValue]);
 
   function processChange(value, selectionStart) {
+    value = String(value);
+
     if (numberInputUtils.count(value, numberInputUtils.DECIMAL_SEPARATOR) > 1) {
       return;
     }
@@ -143,6 +155,24 @@ function NumberInputImpl(
     onKeyDown?.(event);
   }
 
+  function handleOnBlur(event) {
+    const {
+      target: { value },
+    } = event;
+
+    let validValue = numberInputUtils.cleanValue(value);
+    if (BigNumber(validValue).gt(max)) {
+      validValue = max;
+    }
+    if (BigNumber(validValue).lt(min)) {
+      validValue = min;
+    }
+
+    processChange(validValue);
+
+    onBlur?.(event);
+  }
+
   function handleStep(difference) {
     if (inputRef.current) {
       let { value } = inputRef.current;
@@ -177,11 +207,12 @@ function NumberInputImpl(
       type="text"
       inputMode="decimal"
       value={stateValue}
-      className={className}
+      className={cn("group/number-input", className)}
       suffix={suffix}
       {...props}
       onChange={handleOnChange}
       onKeyDown={handleOnKeyDown}
+      onBlur={handleOnBlur}
     />
   );
 }
