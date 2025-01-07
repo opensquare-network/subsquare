@@ -9,7 +9,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
 import { Marked } from "marked";
 import { useChain } from "next-common/context/chain";
-import { ensurePolkassemblyRelativeLink } from "next-common/utils/polkassembly";
+import { ensurePolkassemblyRelativeLink } from "next-common/utils/polkassembly/ensurePolkassemblyRelativeLink";
 
 const marked = new Marked();
 

@@ -8,10 +8,7 @@ import { cn } from "next-common/utils";
 import { LinkPolkassembly } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
-import {
-  getPolkassemblyLink,
-  ensurePolkassemblyRelativeLink,
-} from "next-common/utils/polkassembly";
+import { getPolkassemblyLink } from "next-common/utils/polkassembly";
 import { useDetailType } from "next-common/context/page";
 import { usePost } from "next-common/context/post";
 import CommentItemTemplate from "next-common/components/comment/itemTemplate";
@@ -20,6 +17,7 @@ import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentUser from "./polkassemblyUser";
 import { useChain } from "next-common/context/chain";
+import { ensurePolkassemblyRelativeLink } from "next-common/utils/polkassembly/ensurePolkassemblyRelativeLink";
 
 function PolkassemblyCommentItemImpl({ isSecondLevel }) {
   const chain = useChain();

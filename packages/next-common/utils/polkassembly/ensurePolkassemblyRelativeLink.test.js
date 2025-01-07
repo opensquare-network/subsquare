@@ -1,6 +1,6 @@
 /* eslint-disable quotes */
 import { describe, expect, it } from "vitest";
-import { ensurePolkassemblyRelativeLink } from "./polkassembly";
+import { ensurePolkassemblyRelativeLink } from "./ensurePolkassemblyRelativeLink";
 
 describe("ensurePolkassemblyRelativeLink", () => {
   it("no href attr, replace nothing", () => {
