@@ -7,6 +7,19 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { useWindowSize } from "react-use";
 import { MD_SIZE, SM_SIZE } from "next-common/utils/responsive";
 
+function useIsNarrowView() {
+  const { width } = useWindowSize();
+  const [navCollapsed] = useNavCollapsed();
+  if (
+    (navCollapsed && width <= SM_SIZE) ||
+    (!navCollapsed && width <= MD_SIZE)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 export default function DataListItem({
   columns,
   row,
@@ -45,35 +58,27 @@ export default function DataListItem({
         row={row}
         columnClassNames={columnClassNames}
         columnStyles={columnStyles}
-        navCollapsed={navCollapsed}
       />
 
       <MobileContent
         row={row}
         columns={columns}
         columnClassNames={columnClassNames}
-        navCollapsed={navCollapsed}
         descriptionClassName={descriptionClassName}
       />
     </div>
   );
 }
 
-function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
-  const { width } = useWindowSize();
-  if (
-    (navCollapsed && width <= SM_SIZE) ||
-    (!navCollapsed && width <= MD_SIZE)
-  ) {
+function DesktopContent({ row, columnClassNames, columnStyles }) {
+  const isNarrowView = useIsNarrowView();
+  if (isNarrowView) {
     return null;
   }
 
   return (
     <div
-      className={cn(
-        "relative datalist-desktop-item w-full flex items-center",
-        navCollapsed ? "max-sm:hidden" : "max-md:hidden",
-      )}
+      className={cn("relative datalist-desktop-item w-full flex items-center")}
     >
       {row.tag}
       {row?.map((item, idx) => (
@@ -89,14 +94,10 @@ function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
   );
 }
 
-function MobileContent({
-  row = [],
-  columns,
-  navCollapsed,
-  descriptionClassName,
-}) {
-  const { width } = useWindowSize();
-  if ((navCollapsed && width > SM_SIZE) || (!navCollapsed && width > MD_SIZE)) {
+function MobileContent({ row = [], columns, descriptionClassName }) {
+  const [navCollapsed] = useNavCollapsed();
+  const isNarrowView = useIsNarrowView();
+  if (!isNarrowView) {
     return null;
   }
 
@@ -139,7 +140,7 @@ function MobileContent({
     <div
       className={cn(
         "relative datalist-mobile-item space-y-3",
-        navCollapsed ? "sm:hidden sm:py-4" : "md:hidden md:py-4",
+        navCollapsed ? "sm:py-4" : "md:py-4",
       )}
     >
       {row.tag}
