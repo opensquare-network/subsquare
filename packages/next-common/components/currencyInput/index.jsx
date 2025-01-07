@@ -7,5 +7,13 @@ const CurrencyInput = forwardRef(CurrencyInputImpl);
 export default CurrencyInput;
 
 function CurrencyInputImpl(props, ref) {
-  return <NumberInput ref={ref} allowDecimals controls={false} {...props} />;
+  return (
+    <NumberInput
+      ref={ref}
+      allowDecimals
+      controls={false}
+      stringMode
+      {...props}
+    />
+  );
 }
