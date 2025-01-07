@@ -68,6 +68,7 @@ function InputImpl(
           "--input-gap-y": smallSize ? "0.375rem" : "0.625rem",
         }}
         className={cn(
+          "group/input",
           "flex",
           "overflow-hidden",
           "border border-neutral400 hover:border-neutral500",
@@ -89,6 +90,7 @@ function InputImpl(
           inputRef.current?.focus?.();
           setFocus(true);
         }}
+        data-focus={focus || null}
       >
         {pre && <Addon className="border-r">{pre}</Addon>}
 
