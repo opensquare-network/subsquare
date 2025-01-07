@@ -3,6 +3,7 @@ import {
   useStagedFilterState,
 } from "next-common/components/dropdownFilter/context";
 import Toggle from "next-common/components/toggle";
+import Tooltip from "next-common/components/tooltip";
 import {
   addRouterQuery,
   getRouterQuery,
@@ -13,9 +14,13 @@ import { useRouter } from "next/router";
 function FellowshipCoreOnlySwitch({ isOn, setIsOn }) {
   return (
     <div className="flex items-center justify-between gap-[8px]">
-      <span className="text-textSecondary text12Medium whitespace-nowrap">
-        Core only
-      </span>
+      <div className="flex items-center gap-[4px]">
+        <span className="text-textPrimary text12Medium whitespace-nowrap">
+          Core Only
+        </span>
+        <Tooltip content="Show only fellowship core members" />
+      </div>
+
       <Toggle size="small" isOn={isOn} onToggle={() => setIsOn(!isOn)} />
     </div>
   );
