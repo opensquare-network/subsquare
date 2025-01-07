@@ -4,21 +4,7 @@ import Descriptions from "../Descriptions";
 import { last } from "lodash-es";
 import { isNil } from "lodash-es";
 import { useNavCollapsed } from "next-common/context/nav";
-import { useWindowSize } from "react-use";
-import { MD_SIZE, SM_SIZE } from "next-common/utils/responsive";
-
-function useIsNarrowView() {
-  const { width } = useWindowSize();
-  const [navCollapsed] = useNavCollapsed();
-  if (
-    (navCollapsed && width <= SM_SIZE) ||
-    (!navCollapsed && width <= MD_SIZE)
-  ) {
-    return true;
-  }
-
-  return false;
-}
+import useIsNarrowView from "next-common/hooks/useIsNarrowView";
 
 export default function DataListItem({
   columns,
@@ -31,6 +17,7 @@ export default function DataListItem({
 }) {
   const { onClick } = row ?? {};
   const [navCollapsed] = useNavCollapsed();
+  const isNarrowView = useIsNarrowView();
 
   return (
     <div
@@ -54,28 +41,25 @@ export default function DataListItem({
       )}
       onClick={onClick}
     >
-      <DesktopContent
-        row={row}
-        columnClassNames={columnClassNames}
-        columnStyles={columnStyles}
-      />
-
-      <MobileContent
-        row={row}
-        columns={columns}
-        columnClassNames={columnClassNames}
-        descriptionClassName={descriptionClassName}
-      />
+      {isNarrowView ? (
+        <MobileContent
+          row={row}
+          columns={columns}
+          columnClassNames={columnClassNames}
+          descriptionClassName={descriptionClassName}
+        />
+      ) : (
+        <DesktopContent
+          row={row}
+          columnClassNames={columnClassNames}
+          columnStyles={columnStyles}
+        />
+      )}
     </div>
   );
 }
 
 function DesktopContent({ row, columnClassNames, columnStyles }) {
-  const isNarrowView = useIsNarrowView();
-  if (isNarrowView) {
-    return null;
-  }
-
   return (
     <div
       className={cn("relative datalist-desktop-item w-full flex items-center")}
@@ -96,10 +80,6 @@ function DesktopContent({ row, columnClassNames, columnStyles }) {
 
 function MobileContent({ row = [], columns, descriptionClassName }) {
   const [navCollapsed] = useNavCollapsed();
-  const isNarrowView = useIsNarrowView();
-  if (!isNarrowView) {
-    return null;
-  }
 
   const items = columns.map((col, idx) => {
     return {
