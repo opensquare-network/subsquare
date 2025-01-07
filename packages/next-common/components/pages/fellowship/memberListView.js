@@ -16,6 +16,7 @@ import MoreActions from "./moreActions";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
 import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
+import { useMemo } from "react";
 
 const collectivesMemberColumns = [
   {
@@ -89,55 +90,67 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
 
   const isLoading = isNil(members) || !isAllLoaded;
 
-  const rows = (members || []).map((member, idx) => {
-    const { address, rank } = member;
+  const rows = useMemo(
+    () =>
+      (members || []).map((member, idx) => {
+        const { address, rank } = member;
 
-    const demotionBlocks =
-      rank <= 0 ? offboardTimeout : demotionPeriod[rankToIndex(rank)];
+        const demotionBlocks =
+          rank <= 0 ? offboardTimeout : demotionPeriod[rankToIndex(rank)];
 
-    const row = [
-      <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
-      <AddressCol key={`address-row-${idx}`} address={address} />,
-      <CoreFellowshipMemberSalary
-        key="salary"
-        member={member}
-        params={params}
-      />,
-      section === "fellowship" ? (
-        <FellowshipDemotionPeriodWithProgress
-          key={`demotion-period-${idx}`}
-          address={address}
-          rank={rank}
-          blocks={demotionBlocks}
-        />
-      ) : (
-        <Period key={`demotion-period-${idx}`} blocks={demotionBlocks} />
-      ),
-      section === "fellowship" ? (
-        <FellowshipPromotionPeriodWithProgress
-          key={`min-promotion-period-${idx}`}
-          address={address}
-          rank={rank}
-          blocks={minPromotionPeriod[rank] || 0}
-        />
-      ) : (
-        <Period
-          key={`min-promotion-period-${idx}`}
-          blocks={minPromotionPeriod[rank] || 0}
-        />
-      ),
-      <EvidenceAndReferenda key="evidence" member={member} />,
-      <div key="more">
-        <MoreActions member={member} />
-      </div>,
-    ];
+        const row = [
+          <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
+          <AddressCol key={`address-row-${idx}`} address={address} />,
+          <CoreFellowshipMemberSalary
+            key="salary"
+            member={member}
+            params={params}
+          />,
+          section === "fellowship" ? (
+            <FellowshipDemotionPeriodWithProgress
+              key={`demotion-period-${idx}`}
+              address={address}
+              rank={rank}
+              blocks={demotionBlocks}
+            />
+          ) : (
+            <Period key={`demotion-period-${idx}`} blocks={demotionBlocks} />
+          ),
+          section === "fellowship" ? (
+            <FellowshipPromotionPeriodWithProgress
+              key={`min-promotion-period-${idx}`}
+              address={address}
+              rank={rank}
+              blocks={minPromotionPeriod[rank] || 0}
+            />
+          ) : (
+            <Period
+              key={`min-promotion-period-${idx}`}
+              blocks={minPromotionPeriod[rank] || 0}
+            />
+          ),
+          <EvidenceAndReferenda key="evidence" member={member} />,
+          <div key="more">
+            <MoreActions member={member} />
+          </div>,
+        ];
 
-    if (address === realAddress) {
-      row.tag = <MineTagOnListView />;
-    }
+        if (address === realAddress) {
+          row.tag = <MineTagOnListView />;
+        }
 
-    return row;
-  });
+        return row;
+      }),
+    [
+      members,
+      params,
+      realAddress,
+      section,
+      demotionPeriod,
+      minPromotionPeriod,
+      offboardTimeout,
+    ],
+  );
 
   return (
     <DataList
