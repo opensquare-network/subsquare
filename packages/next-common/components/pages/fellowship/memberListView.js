@@ -180,7 +180,7 @@ function getNonCoreMemberRow({ idx, member }) {
     <NonCoreMemberCol key={`demotion-period-${idx}`} />,
     <NonCoreMemberCol key={`min-promotion-period-${idx}`} />,
     <EvidenceAndReferenda key="evidence" member={member} />,
-    <EmptyCol key="more" />,
+    <div key="more" />,
   ];
 }
 

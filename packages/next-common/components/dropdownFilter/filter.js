@@ -1,21 +1,31 @@
 import { useEffect, useRef } from "react";
 import { useClickAway } from "react-use";
 import { SystemFilter } from "@osn/icons/subsquare";
-import { OptionsPadRightWrapper } from "../select/styled";
+import {
+  OptionsPadLeftWrapper,
+  OptionsPadRightWrapper,
+} from "../select/styled";
 import SecondaryButton from "next-common/lib/button/secondary";
 import {
   useCommittedFilterState,
   useDropdownDisplayState,
   useStagedFilterState,
 } from "./context";
+import useIsNearLeft from "next-common/hooks/useIsNearLeft";
 
-function DropdownFilterPanel({ children }) {
+function DropdownFilterPanel({ filterRef, children }) {
   const [committedFilter] = useCommittedFilterState();
   const [, setStagedFilter] = useStagedFilterState();
 
   useEffect(() => {
     setStagedFilter(committedFilter);
   }, [committedFilter, setStagedFilter]);
+
+  const isNearLeft = useIsNearLeft(filterRef);
+
+  if (isNearLeft) {
+    return <OptionsPadLeftWrapper>{children}</OptionsPadLeftWrapper>;
+  }
 
   return <OptionsPadRightWrapper>{children}</OptionsPadRightWrapper>;
 }
@@ -42,7 +52,9 @@ export function DropdownFilterBase({ name = "Filter", children }) {
           )}
         </div>
       </SecondaryButton>
-      {showDropdown && <DropdownFilterPanel>{children}</DropdownFilterPanel>}
+      {showDropdown && (
+        <DropdownFilterPanel filterRef={ref}>{children}</DropdownFilterPanel>
+      )}
     </div>
   );
 }
