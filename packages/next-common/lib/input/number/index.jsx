@@ -32,7 +32,7 @@ function NumberInputImpl(
     onChange,
     onValueChange,
     allowDecimals = false,
-    controls = false,
+    controls = true,
     keyboard = true,
     step = 1,
     min = 0,
