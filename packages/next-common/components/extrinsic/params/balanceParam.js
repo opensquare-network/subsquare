@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import BalanceInput from "next-common/components/balanceInput";
+import CurrencyInput from "next-common/components/currencyInput";
 import { useChainSettings } from "next-common/context/chain";
 import { useEffect, useState } from "react";
 
@@ -30,8 +30,11 @@ export default function BalanceParam({ title, setValue }) {
   return (
     <>
       {title}
-
-      <BalanceInput value={inputText} setValue={setInputText} symbol={symbol} />
+      <CurrencyInput
+        value={inputText}
+        onValueChange={setInputText}
+        symbol={symbol}
+      />
     </>
   );
 }
