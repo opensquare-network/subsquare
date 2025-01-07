@@ -1,15 +1,16 @@
-import { ArrowDown, ArrowUp } from "@osn/icons/subsquare";
-import Input from "next-common/components/input";
+import { ArrowUp } from "@osn/icons/subsquare";
 import { useRef, useState } from "react";
 import { OptionsWrapper } from "../select/styled";
 import Option from "../select/option";
 import { useClickAway } from "react-use";
+import CurrencyInput from "../currencyInput";
+import { cn } from "next-common/utils";
 
 export default function SymbolSelectInput({
   symbolOptions,
   disabled,
   value,
-  onChange,
+  onValueChange,
   symbol,
   onSymbolChange,
 }) {
@@ -27,25 +28,21 @@ export default function SymbolSelectInput({
 
   return (
     <div className="relative">
-      <Input
-        type="text"
+      <CurrencyInput
         placeholder="0.00"
         disabled={disabled}
         value={value}
-        onChange={onChange}
-        symbol={
+        onValueChange={onValueChange}
+        post={
           <div
+            role="button"
             className="flex h-full items-center gap-[10px] cursor-pointer"
             ref={ref}
             onClick={handleShowOptions}
           >
             <span>{symbol}</span>
             <div className="inline-flex mr-[-6px]">
-              {showOptions ? (
-                <ArrowUp width={20} height={20} />
-              ) : (
-                <ArrowDown width={20} height={20} />
-              )}
+              <ArrowUp className={cn("w-4 h-4", showOptions && "rotate-180")} />
             </div>
           </div>
         }
