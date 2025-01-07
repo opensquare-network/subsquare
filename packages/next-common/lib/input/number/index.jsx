@@ -57,7 +57,16 @@ function NumberInputImpl(
 
   if (controls) {
     suffix = (
-      <div className="flex flex-col h-full border-l border-neutral300 divide-y divide-neutral300 -mx-[var(--input-affix-gap-x)]">
+      <div
+        className={cn(
+          "flex flex-col",
+          "h-full",
+          "border-l border-neutral300 divide-y divide-neutral300",
+          "group-hover/number-input:border-neutral500 group-hover/number-input:divide-neutral500",
+          "group-data-[focus]/input:border-neutral500 group-data-[focus]/input:divide-neutral500",
+          "-mx-[var(--input-affix-gap-x)]",
+        )}
+      >
         <Stepper onClick={handleUp} />
         <Stepper down onClick={handleDown} />
       </div>
@@ -177,7 +186,7 @@ function NumberInputImpl(
       type="text"
       inputMode="decimal"
       value={stateValue}
-      className={className}
+      className={cn("group/number-input", className)}
       suffix={suffix}
       {...props}
       onChange={handleOnChange}
