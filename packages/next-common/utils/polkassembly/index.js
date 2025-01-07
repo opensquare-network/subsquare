@@ -1,11 +1,11 @@
-import { detailPageCategory } from "./consts/business/category";
+import { detailPageCategory } from "../consts/business/category";
 import { flatten } from "lodash-es";
 import { encodeAddressToChain } from "next-common/services/address";
 import { addressEllipsis } from "next-common/utils";
 import { getMotionId } from "next-common/utils/motion";
 import { getTitle } from "next-common/utils/post";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
-import Chains from "./consts/chains";
+import Chains from "../consts/chains";
 
 export const PolkassemblyChains = [
   Chains.kusama,
