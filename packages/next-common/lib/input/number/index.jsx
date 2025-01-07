@@ -35,7 +35,6 @@ function NumberInputImpl(
     allowDecimals = false,
     controls = true,
     keyboard = true,
-    stringMode = false,
     step = 1,
     min = 0,
     max = Number.MAX_SAFE_INTEGER,
@@ -107,8 +106,6 @@ function NumberInputImpl(
       allowDecimals,
     });
 
-    const numberValue = stringValue ? BigNumber(stringValue).toNumber() : "";
-
     const formattedValue = numberInputUtils.formatValue(stringValue);
 
     if (cursorPosition !== null) {
@@ -122,11 +119,9 @@ function NumberInputImpl(
     setStateValue(formattedValue);
 
     if (onValueChange) {
-      const resultValue = stringMode ? stringValue : numberValue;
-      onValueChange(resultValue, name, {
+      onValueChange(stringValue, name, {
         value: stringValue,
         formatted: formattedValue,
-        number: numberValue,
       });
     }
   }
