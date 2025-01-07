@@ -29,6 +29,7 @@ function NumberInputImpl(
     suffix,
     className = "",
     onKeyDown,
+    onBlur,
     onChange,
     onValueChange,
     allowDecimals = false,
@@ -159,6 +160,24 @@ function NumberInputImpl(
     onKeyDown?.(event);
   }
 
+  function handleOnBlur(event) {
+    const {
+      target: { value },
+    } = event;
+
+    let validValue = numberInputUtils.cleanValue(value);
+    if (BigNumber(validValue).gt(max)) {
+      validValue = max;
+    }
+    if (BigNumber(validValue).lt(min)) {
+      validValue = min;
+    }
+
+    processChange(validValue);
+
+    onBlur?.(event);
+  }
+
   function handleStep(difference) {
     if (inputRef.current) {
       let { value } = inputRef.current;
@@ -198,6 +217,7 @@ function NumberInputImpl(
       {...props}
       onChange={handleOnChange}
       onKeyDown={handleOnKeyDown}
+      onBlur={handleOnBlur}
     />
   );
 }
