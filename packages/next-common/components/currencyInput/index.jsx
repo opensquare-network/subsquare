@@ -1,5 +1,3 @@
-// packages/next-common/components/balanceInput.js
-
 import NumberInput from "next-common/lib/input/number";
 import { forwardRef } from "react";
 
