@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { ensurePolkassemblyRelativeLink } from "./ensurePolkassemblyRelativeLink";
 
-describe("transform polkassembly relative link", () => {
+describe("ensurePolkassemblyRelativeLink", () => {
   it("no href attr, replace nothing", () => {
     expect(
       ensurePolkassemblyRelativeLink('<a class="pa-link">link</a>', "polkadot"),
