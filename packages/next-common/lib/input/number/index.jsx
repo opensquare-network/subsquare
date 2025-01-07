@@ -34,6 +34,7 @@ function NumberInputImpl(
     allowDecimals = false,
     controls = true,
     keyboard = true,
+    stringMode = false,
     step = 1,
     min = 0,
     max = Number.MAX_SAFE_INTEGER,
@@ -86,6 +87,8 @@ function NumberInputImpl(
   }, [userValue, defaultValue]);
 
   function processChange(value, selectionStart) {
+    value = String(value);
+
     if (numberInputUtils.count(value, numberInputUtils.DECIMAL_SEPARATOR) > 1) {
       return;
     }
@@ -103,6 +106,8 @@ function NumberInputImpl(
       allowDecimals,
     });
 
+    const numberValue = stringValue ? BigNumber(stringValue).toNumber() : "";
+
     const formattedValue = numberInputUtils.formatValue(stringValue);
 
     if (cursorPosition !== null) {
@@ -116,9 +121,11 @@ function NumberInputImpl(
     setStateValue(formattedValue);
 
     if (onValueChange) {
-      onValueChange(stringValue, name, {
+      const resultValue = stringMode ? stringValue : numberValue;
+      onValueChange(resultValue, name, {
         value: stringValue,
         formatted: formattedValue,
+        number: numberValue,
       });
     }
   }
