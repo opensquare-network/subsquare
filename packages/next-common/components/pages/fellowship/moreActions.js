@@ -14,6 +14,7 @@ import {
 } from "next-common/components/fellowship/core/members/actions/promote";
 import PromoteFellowshipMemberPopup from "next-common/components/fellowship/core/members/actions/promote/popup";
 import { OptionItem } from "next-common/components/internalDropdown/styled";
+import Tooltip from "next-common/components/tooltip";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useRef, useState } from "react";
@@ -25,7 +26,7 @@ function useIsMe(address) {
 }
 
 function PromoteMenuItem({ member, setShowPromotePopup, setShowContextMenu }) {
-  const { canPromote } = useCanPromote(member);
+  const { canPromote, reason } = useCanPromote(member);
   const shouldShow = useShouldShowPromoteButton(member);
   if (!shouldShow) {
     return null;
@@ -34,7 +35,9 @@ function PromoteMenuItem({ member, setShowPromotePopup, setShowContextMenu }) {
   if (!canPromote) {
     return (
       <OptionItem>
-        <span className="text14Medium text-textDisabled">Promote</span>
+        <Tooltip className="w-full text-left" content={reason}>
+          <span className="text14Medium text-textDisabled">Promote</span>
+        </Tooltip>
       </OptionItem>
     );
   }
@@ -53,7 +56,7 @@ function PromoteMenuItem({ member, setShowPromotePopup, setShowContextMenu }) {
 }
 
 function ApproveMenuItem({ member, setShowApprovePopup, setShowContextMenu }) {
-  const { canApprove } = useCanApprove(member);
+  const { canApprove, reason } = useCanApprove(member);
   const shouldShow = useShouldShowApproveButton(member);
   if (!shouldShow) {
     return null;
@@ -62,7 +65,9 @@ function ApproveMenuItem({ member, setShowApprovePopup, setShowContextMenu }) {
   if (!canApprove) {
     return (
       <OptionItem>
-        <span className="text14Medium text-textDisabled">Approve</span>
+        <Tooltip className="w-full text-left" content={reason}>
+          <span className="text14Medium text-textDisabled">Approve</span>
+        </Tooltip>
       </OptionItem>
     );
   }

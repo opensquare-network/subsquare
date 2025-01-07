@@ -1,34 +1,18 @@
-import { Fragment, useMemo } from "react";
+import { Fragment } from "react";
 import Link from "next/link";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
-import { useActiveReferenda } from "next-common/context/activeReferenda";
 import CoreFellowshipMemberInfoWrapper from "./infoWrapper";
 import CoreFellowshipMemberInfoTitle from "./title";
 import useFetch from "next-common/hooks/useFetch";
 import Tooltip from "next-common/components/tooltip";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
+import useRelatedReferenda from "next-common/hooks/fellowship/useRelatedReferenda";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
-function useRelatedReferenda(address, pallet) {
-  const activeReferenda = useActiveReferenda();
+const methods = ["bump", "approve", "promote", "promoteFast"];
 
-  return useMemo(() => {
-    return activeReferenda.filter(({ call }) => {
-      if (!call) {
-        return false;
-      }
-
-      const { section, method } = call;
-      if (section !== pallet) {
-        return false;
-      }
-      if (!["bump", "approve", "promote", "promoteFast"].includes(method)) {
-        return false;
-      }
-
-      const nameArg = call.args.find(({ name }) => name === "who");
-      return nameArg?.value === address;
-    });
-  }, [activeReferenda, address, pallet]);
+export function useFellowshipCoreRelatedReferenda(address) {
+  return useRelatedReferenda(address, methods);
 }
 
 function ReferendumTooltip({ referendumIndex, children }) {
@@ -44,11 +28,14 @@ function ReferendumTooltip({ referendumIndex, children }) {
 }
 
 export function CoreFellowshipMemberRelatedReferendaContent({
-  address,
-  pallet,
+  relatedReferenda,
+  isLoading,
 }) {
-  const relatedReferenda = useRelatedReferenda(address, pallet);
   const { section } = useCollectivesContext();
+
+  if (isLoading) {
+    return <FieldLoading size={16} />;
+  }
 
   if (relatedReferenda.length > 0) {
     return relatedReferenda.map(({ referendumIndex }, index) => (
@@ -72,6 +59,11 @@ export default function CoreFellowshipMemberRelatedReferenda({
   address,
   pallet,
 }) {
+  const { relatedReferenda, isLoading } = useFellowshipCoreRelatedReferenda(
+    address,
+    pallet,
+  );
+
   return (
     <CoreFellowshipMemberInfoWrapper>
       <CoreFellowshipMemberInfoTitle className="mb-0.5">
@@ -79,8 +71,8 @@ export default function CoreFellowshipMemberRelatedReferenda({
       </CoreFellowshipMemberInfoTitle>
       <div className="flex text12Medium gap-[4px] items-center truncate">
         <CoreFellowshipMemberRelatedReferendaContent
-          address={address}
-          pallet={pallet}
+          relatedReferenda={relatedReferenda}
+          isLoading={isLoading}
         />
       </div>
     </CoreFellowshipMemberInfoWrapper>

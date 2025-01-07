@@ -9,19 +9,20 @@ import AvatarAndAddress from "./avatarAndAddress";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import FellowshipEvidenceContent from "../evidenceContent";
 
-export function CoreFellowshipMemberEvidenceContent({ member, pallet }) {
+export function CoreFellowshipMemberEvidenceContent({
+  member,
+  isLoading,
+  wish,
+  evidence,
+}) {
   const { address, rank } = member || {};
   const { isActive } = member?.status || {};
 
   const [detailOpen, setDetailOpen] = useState(false);
-  const { loading, wish, evidence } = useSubCoreFellowshipEvidence(
-    address,
-    pallet,
-  );
 
   let content = <span className="text-textTertiary">-</span>;
 
-  if (loading) {
+  if (isLoading) {
     content = <FieldLoading size={16} />;
   } else if (evidence) {
     content = (
@@ -75,6 +76,12 @@ export default function CoreFellowshipMemberEvidence({
   member,
   pallet = "fellowshipCore",
 }) {
+  const { address } = member || {};
+  const { loading, wish, evidence } = useSubCoreFellowshipEvidence(
+    address,
+    pallet,
+  );
+
   return (
     <>
       <CoreFellowshipMemberInfoWrapper>
@@ -84,7 +91,9 @@ export default function CoreFellowshipMemberEvidence({
         <div className="flex text12Medium gap-[8px]">
           <CoreFellowshipMemberEvidenceContent
             member={member}
-            pallet={pallet}
+            isLoading={loading}
+            wish={wish}
+            evidence={evidence}
           />
         </div>
       </CoreFellowshipMemberInfoWrapper>

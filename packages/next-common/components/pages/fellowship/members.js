@@ -95,6 +95,12 @@ export default function FellowshipMembersPage() {
               evidence_only: false,
               period: "all",
               rank: null,
+              fellowship_core_only: true,
+            }}
+            emptyFilterValues={{
+              evidence_only: false,
+              period: "all",
+              rank: null,
               fellowship_core_only: false,
             }}
           >
