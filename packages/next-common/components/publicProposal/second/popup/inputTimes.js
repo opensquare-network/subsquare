@@ -6,13 +6,14 @@ import { useContextApi } from "next-common/context/api";
 import NumberInput from "next-common/lib/input/number";
 
 export default function SecondPopupInputTimes({
-  times,
+  times: _times,
   setTimes = noop,
   currentTimes = 0,
   setSubmitDisabled = noop,
 }) {
   const api = useContextApi();
   const maxDeposits = useMaxDeposits();
+  const times = useMemo(() => Number(_times), [_times]);
 
   const batchCallsLimit = useMemo(
     () => api?.consts?.utility?.batchedCallsLimit?.toNumber?.(),
