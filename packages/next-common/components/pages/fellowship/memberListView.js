@@ -16,7 +16,7 @@ import MoreActions from "./moreActions";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
 import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 
 const collectivesMemberColumns = [
   {
@@ -163,6 +163,8 @@ function CollectivesMemberTable({ members = [], isAllLoaded = true }) {
   );
 }
 
-export default function FellowshipMemberListView({ members }) {
+function FellowshipMemberListView({ members }) {
   return <CollectivesMemberTable members={members} isAllLoaded={true} />;
 }
+
+export default memo(FellowshipMemberListView);
