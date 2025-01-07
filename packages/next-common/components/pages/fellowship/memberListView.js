@@ -30,6 +30,7 @@ const collectivesMemberColumns = [
   {
     name: "Salary",
     className: "text-right",
+    minWidth: 120,
   },
   {
     name: "Demotion Period",
