@@ -226,13 +226,13 @@ export default function MoreActions({ member }) {
       )}
       {showApprovePopup && (
         <ApproveFellowshipMemberPopup
-          who={address}
+          member={member}
           onClose={() => setShowApprovePopup(false)}
         />
       )}
       {showPromotePopup && (
         <PromoteFellowshipMemberPopup
-          who={address}
+          member={member}
           onClose={() => setShowPromotePopup(false)}
         />
       )}
