@@ -1,6 +1,5 @@
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import { useMemo, useState } from "react";
-import FellowshipMembersLoadable from "next-common/components/pages/fellowship/loadable";
 import FellowshipMemberCommon from "next-common/components/pages/fellowship/common";
 import FellowshipMembersEmpty from "./empty";
 import { usePageProps } from "next-common/context/page";
@@ -56,32 +55,30 @@ function FellowshipMembersPageInContext() {
   const sortedFilteredMembers = useMembersWithMeAtFirst(filteredMembers);
 
   return (
-    <FellowshipMembersLoadable>
-      <FellowshipMemberCommon>
-        <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6">
-          <FellowshipMemberTabs
-            membersCount={membersCount}
-            candidatesCount={candidatesCount}
-          />
-          <div className="flex items-center gap-[12px] max-sm:pl-6">
-            {memberFilters}
-            {viewModeSwitch}
-          </div>
+    <FellowshipMemberCommon>
+      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6">
+        <FellowshipMemberTabs
+          membersCount={membersCount}
+          candidatesCount={candidatesCount}
+        />
+        <div className="flex items-center gap-[12px] max-sm:pl-6">
+          {memberFilters}
+          {viewModeSwitch}
         </div>
+      </div>
 
-        <MemberWarnings className="mb-[24px]" />
+      <MemberWarnings className="mb-[24px]" />
 
-        {!isLoading && !hasMembers ? (
-          <FellowshipMembersEmpty />
-        ) : (
-          <FellowshipMembers
-            viewMode={viewMode}
-            members={sortedFilteredMembers}
-            isLoading={isLoading}
-          />
-        )}
-      </FellowshipMemberCommon>
-    </FellowshipMembersLoadable>
+      {!isLoading && !hasMembers ? (
+        <FellowshipMembersEmpty />
+      ) : (
+        <FellowshipMembers
+          viewMode={viewMode}
+          members={sortedFilteredMembers}
+          isLoading={isLoading}
+        />
+      )}
+    </FellowshipMemberCommon>
   );
 }
 
