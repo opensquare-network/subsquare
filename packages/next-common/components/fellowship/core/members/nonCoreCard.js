@@ -5,9 +5,8 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 import Divider from "next-common/components/styled/layout/divider";
 import MineTag from "next-common/components/delegation/delegate/common/mineTag";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
 
-export default function NonCoreFellowshipMemberCard({ member, params }) {
+export default function NonCoreFellowshipMemberCard({ member }) {
   const realAddress = useRealAddress();
   const { address, rank } = member;
 
@@ -18,11 +17,7 @@ export default function NonCoreFellowshipMemberCard({ member, params }) {
         <AvatarAndAddress address={address} isActive={false} />
         <div className="flex flex-col items-end justify-between">
           <FellowshipRank rank={rank} />
-          <CoreFellowshipMemberSalary
-            className="text12Medium"
-            member={member}
-            params={params}
-          />
+          <span className="text-textTertiary">-</span>
         </div>
       </div>
       <Divider className="mt-4" />

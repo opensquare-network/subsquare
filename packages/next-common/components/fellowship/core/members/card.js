@@ -6,7 +6,7 @@ import NonCoreFellowshipMemberCard from "./nonCoreCard";
 export default function FellowshipCoreMemberCard({ member = {}, params = {} }) {
   const { isFellowshipOnly } = member;
   if (!isFellowshipOnly) {
-    return <NonCoreFellowshipMemberCard member={member} params={params} />;
+    return <NonCoreFellowshipMemberCard member={member} />;
   }
 
   return (
