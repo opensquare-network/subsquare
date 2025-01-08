@@ -50,7 +50,7 @@ export default function ExternalProposeVoteThresholdPopup({
         preimageHash={preimageHash}
         setPreimageHash={setPreimageHash}
         preimageLength={preimageLength}
-        setPreimageLength={preimageLength}
+        setPreimageLength={setPreimageLength}
       />
       <div className="flex justify-end">
         <Tooltip
