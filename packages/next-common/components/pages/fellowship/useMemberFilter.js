@@ -73,7 +73,7 @@ export default function useMembersFilter(members) {
 
     if (isCoreOnly) {
       filteredMembers = filteredMembers.filter(
-        (member) => member.isFellowshipOnly,
+        (member) => member.isFellowshipCoreMember,
       );
     }
 

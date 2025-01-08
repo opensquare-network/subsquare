@@ -44,6 +44,7 @@ function FellowshipCandidatesPageImpl() {
                 key={member.address}
                 member={member}
                 params={params}
+                isCandidate={true}
               />
             ))}
           </FellowshipCoreMemberCardListContainer>

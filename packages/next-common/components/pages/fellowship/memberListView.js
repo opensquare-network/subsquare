@@ -191,11 +191,11 @@ function CollectivesMemberTable({ members = [], isLoading = false }) {
   const rows = useMemo(
     () =>
       (members || []).map((member, idx) => {
-        const { address, isFellowshipOnly } = member;
+        const { address, isFellowshipCoreMember } = member;
 
         let row = [];
 
-        if (isFellowshipOnly) {
+        if (isFellowshipCoreMember) {
           row = getCoreMemberRow({ idx, member, params });
         } else {
           row = getNonCoreMemberRow({ idx, member });

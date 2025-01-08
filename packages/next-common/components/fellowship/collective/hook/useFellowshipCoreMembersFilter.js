@@ -49,7 +49,7 @@ export function useMembersWithStatus(members) {
         return {
           ...item,
           status,
-          isFellowshipOnly: !isNil(status),
+          isFellowshipCoreMember: !isNil(status),
         };
       }),
     )
@@ -74,7 +74,7 @@ export function handleFilterMembers(members) {
       ...item,
       status,
       isLoading,
-      isFellowshipOnly: !isNil(status) && !isLoading,
+      isFellowshipCoreMember: !isNil(status) && !isLoading,
     };
   });
   const isAllLoaded = membersWithStatus.every((item) => !item?.isLoading);
@@ -126,7 +126,7 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
 
     if (isFellowshipCoreOnly) {
       filteredMembers = filteredMembers.filter(
-        (member) => member.isFellowshipOnly,
+        (member) => member.isFellowshipCoreMember,
       );
     }
 
