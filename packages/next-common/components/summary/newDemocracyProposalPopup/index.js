@@ -75,7 +75,7 @@ export function NewDemocracyProposalInnerPopup({
         preimageHash={preimageHash}
         setPreimageHash={setPreimageHash}
         preimageLength={preimageLength}
-        setPreimageLength={preimageLength}
+        setPreimageLength={setPreimageLength}
       />
       <LockedBalance
         lockedBalance={lockedBalance}
