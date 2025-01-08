@@ -1,7 +1,7 @@
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 import PopupLabel from "../label";
 import Toggle from "next-common/components/toggle";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   InfoMessage,
@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import BigNumber from "bignumber.js";
 import { useDebounce } from "react-use";
+import NumberInput from "next-common/lib/input/number";
 
 const PROMPT_WIKI_LINK =
   "https://wiki.polkadot.network/docs/learn-guides-treasury#specifying-validfrom-optional";
@@ -69,13 +70,8 @@ export default function ValidFromField({ title = "", value, setValue }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
 
   useEffect(() => {
-    setValue(isEditable ? "" : "None");
+    setValue("");
   }, [isEditable, setValue]);
-
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value.trim();
-    setValue(inputValue);
-  };
 
   useDebounce(
     () => {
@@ -103,13 +99,17 @@ export default function ValidFromField({ title = "", value, setValue }) {
           setIsEditable={setIsEditable}
         />
       </div>
-      <Input
-        value={value}
-        placeholder={placeholder}
-        symbol="Block Height"
-        onChange={handleInputChange}
-        disabled={!isEditable}
-      />
+      {isEditable ? (
+        <NumberInput
+          value={value}
+          placeholder={placeholder}
+          symbol="Block Height"
+          onValueChange={setValue}
+          controls={false}
+        />
+      ) : (
+        <Input value="None" symbol="Block Height" disabled />
+      )}
       <ValidFromFieldPrompt isEditable={isEditable} />
       {shouldShowWarning && <ValidFromFieldWarning />}
     </div>

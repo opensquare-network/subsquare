@@ -2,7 +2,7 @@ import { formatBalance } from "next-common/components/assets/assetsList";
 import BalanceDisplay from "next-common/components/assets/balanceDisplay";
 import Loading from "next-common/components/loading";
 import PopupLabel from "../label";
-import Input from "next-common/components/input";
+import CurrencyInput from "next-common/components/currencyInput";
 import Tooltip from "next-common/components/tooltip";
 
 function MaxAmountHint({ title, value, isLoading, decimals }) {
@@ -45,11 +45,11 @@ export default function AmountInputWithHint({
   return (
     <div>
       <PopupLabel text={label} status={status} />
-      <Input
+      <CurrencyInput
         type="text"
         placeholder="0.00"
         value={inputAmount}
-        onChange={(e) => setInputAmount(e.target.value.replace("。", "."))}
+        onValueChange={setInputAmount}
         symbol={symbol}
       />
     </div>

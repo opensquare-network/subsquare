@@ -2,7 +2,7 @@ import { formatBalance } from "next-common/components/assets/assetsList";
 import BalanceDisplay from "next-common/components/assets/balanceDisplay";
 import Loading from "next-common/components/loading";
 import PopupLabel from "../label";
-import Input from "next-common/components/input";
+import CurrencyInput from "next-common/components/currencyInput";
 
 function TransferrableBalance({ value, isLoading, decimals }) {
   return (
@@ -39,11 +39,11 @@ export default function TransferAmount({
   return (
     <div>
       <PopupLabel text="Amount" status={balanceStatus} />
-      <Input
+      <CurrencyInput
         type="text"
         placeholder="0.00"
         value={transferAmount}
-        onChange={(e) => setTransferAmount(e.target.value.replace("。", "."))}
+        onValueChange={setTransferAmount}
         symbol={symbol}
       />
     </div>

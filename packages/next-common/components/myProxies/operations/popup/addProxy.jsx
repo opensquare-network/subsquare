@@ -6,7 +6,7 @@ import { useContextApi } from "next-common/context/api";
 // import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import Select from "next-common/components/select";
-import Input from "next-common/components/input";
+import NumberInput from "next-common/lib/input/number";
 import { InfoMessage } from "next-common/components/setting/styled";
 import Link from "next/link";
 import { useProxyTypeOptions } from "../../hooks/useProxyTypeOptions";
@@ -23,19 +23,15 @@ export function DelayBlocksField({ value, setValue }) {
   const PROMPT_CONTENT =
     "The proxy will announce its intended action immediately.";
 
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value.trim();
-    setValue(inputValue);
-  };
-
   return (
     <div>
       <span className="text-textPrimary">Delay Blocks</span>
-      <Input
+      <NumberInput
         className="mt-2"
         value={value}
         symbol="Blocks"
-        onChange={handleInputChange}
+        controls={false}
+        onValueChange={setValue}
       />
       <InfoMessage className="mt-2">
         <span className="text-textSecondary text14Medium">

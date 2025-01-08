@@ -1,4 +1,4 @@
-import Input from "next-common/components/input";
+import CurrencyInput from "next-common/components/currencyInput";
 import PopupLabel from "next-common/components/popup/label";
 import { useChainSettings } from "next-common/context/chain";
 
@@ -8,11 +8,11 @@ export default function LockedBalance({ lockedBalance, setLockedBalance }) {
   return (
     <div>
       <PopupLabel text="Locked Balance" />
-      <Input
+      <CurrencyInput
         value={lockedBalance}
         placeholder="0"
         symbol={symbol}
-        onChange={(e) => setLockedBalance(e.target.value)}
+        onValueChange={setLockedBalance}
       />
     </div>
   );
