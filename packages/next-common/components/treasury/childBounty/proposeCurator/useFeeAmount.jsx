@@ -2,7 +2,7 @@ import { formatBalance } from "next-common/components/assets/assetsList";
 import BalanceDisplay from "next-common/components/assets/balanceDisplay";
 import Loading from "next-common/components/loading";
 import PopupLabel from "next-common/components/popup/label";
-import Input from "next-common/components/input";
+import CurrencyInput from "next-common/components/currencyInput";
 import { useCallback, useState } from "react";
 import BigNumber from "bignumber.js";
 
@@ -47,13 +47,6 @@ function FeeAmount({
   feeAmount,
   setFeeAmount,
 }) {
-  const handleFeeChange = useCallback(
-    (e) => {
-      setFeeAmount(e.target.value.replace("。", "."));
-    },
-    [setFeeAmount],
-  );
-
   return (
     <div>
       <PopupLabel
@@ -69,11 +62,11 @@ function FeeAmount({
           )
         }
       />
-      <Input
+      <CurrencyInput
         type="text"
         placeholder="0.00"
         value={feeAmount}
-        onChange={handleFeeChange}
+        onValueChange={setFeeAmount}
         symbol={symbol}
       />
     </div>

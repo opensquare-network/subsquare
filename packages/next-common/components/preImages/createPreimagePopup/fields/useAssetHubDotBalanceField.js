@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toPrecision } from "next-common/utils";
 import { useQueryAssetHubTreasuryFree } from "next-common/components/summary/polkadotTreasurySummary/hook/useQueryAssetHubTreasuryFree";
 import { useChainSettings } from "next-common/context/chain";
-import Input from "next-common/components/input";
+import CurrencyInput from "next-common/components/currencyInput";
 import PopupLabel from "next-common/components/popup/label";
 import { StatemintTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { TreasuryBalance } from "./useUSDxBalanceField";
@@ -24,9 +24,9 @@ function AssetHubDotBalance({ inputBalance, setInputBalance }) {
           />
         }
       />
-      <Input
+      <CurrencyInput
         value={inputBalance}
-        onChange={(e) => setInputBalance(e.target.value.replace("。", "."))}
+        onValueChange={setInputBalance}
         symbol={symbol}
       />
     </div>
