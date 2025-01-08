@@ -18,7 +18,7 @@ function EvidenceOnlySwitch({ isOn, setIsOn }) {
         <span className="text-textPrimary text12Medium whitespace-nowrap my-[12px]">
           Evidence Only
         </span>
-        <Tooltip content="Show only evidence submitted members" />
+        <Tooltip content="Members who have on-chain evidence" />
       </div>
       <Toggle size="small" isOn={isOn} onToggle={() => setIsOn(!isOn)} />
     </div>

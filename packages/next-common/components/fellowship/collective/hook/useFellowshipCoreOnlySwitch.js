@@ -18,7 +18,7 @@ function FellowshipCoreOnlySwitch({ isOn, setIsOn }) {
         <span className="text-textPrimary text12Medium whitespace-nowrap">
           Core Only
         </span>
-        <Tooltip content="Show only fellowship core members" />
+        <Tooltip content="Members under the management system" />
       </div>
 
       <Toggle size="small" isOn={isOn} onToggle={() => setIsOn(!isOn)} />
