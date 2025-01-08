@@ -83,6 +83,9 @@ function NumberInputImpl(
   useEffect(() => {
     if (isNil(userValue) && isNil(defaultValue)) {
       setStateValue("");
+    } else if (!isNil(userValue)) {
+      const formattedValue = numberInputUtils.formatValue(userValue);
+      setStateValue(formattedValue);
     }
   }, [userValue, defaultValue]);
 
