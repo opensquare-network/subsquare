@@ -4,7 +4,7 @@ import CoreFellowshipMemberCard from "next-common/components/collectives/core/me
 import NonCoreFellowshipMemberCard from "./nonCoreCard";
 
 export default function FellowshipCoreMemberCard({
-  isCandidate = true,
+  isCandidate,
   member = {},
   params = {},
 }) {
