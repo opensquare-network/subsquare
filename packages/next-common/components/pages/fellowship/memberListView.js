@@ -17,7 +17,7 @@ import MoreActions from "./moreActions";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
 import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { AvatarAndAddressInListView } from "next-common/components/collectives/core/member/avatarAndAddress";
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import FieldLoading from "next-common/components/icons/fieldLoading";
@@ -221,7 +221,18 @@ function CollectivesMemberTable({ members = [], isLoading = false }) {
   );
 }
 
-function FellowshipMemberListView({ members, isLoading = true }) {
+function FellowshipMemberListView({
+  members: _members,
+  isLoading: _isLoading = true,
+}) {
+  const [members, setMembers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(_isLoading);
+    setMembers(_members);
+  }, [_members, _isLoading]);
+
   return <CollectivesMemberTable members={members} isLoading={isLoading} />;
 }
 
