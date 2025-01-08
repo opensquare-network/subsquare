@@ -113,7 +113,7 @@ export function EmptyCol() {
 
 export function NonCoreMemberCol() {
   return (
-    <Tooltip content="Not in core management system">
+    <Tooltip content="Not imported in the management system">
       <EmptyCol />
     </Tooltip>
   );

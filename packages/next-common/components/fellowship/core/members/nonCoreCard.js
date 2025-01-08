@@ -23,7 +23,7 @@ export default function NonCoreFellowshipMemberCard({ member }) {
       <Divider className="mt-4" />
       <div className="flex items-center justify-center h-[152px] mt-4">
         <span className="text14Medium text-textTertiary">
-          Not in core management system
+          Not imported in the management system
         </span>
       </div>
     </SecondaryCard>
