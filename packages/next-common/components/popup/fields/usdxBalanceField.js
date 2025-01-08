@@ -18,7 +18,7 @@ export default function USDxBalanceField({
         symbolOptions={["USDt", "USDC"]}
         disabled={isLoading}
         value={inputBalance}
-        onChange={(e) => setInputBalance(e.target.value.replace("。", "."))}
+        onValueChange={setInputBalance}
         symbol={symbol}
         onSymbolChange={setSymbol}
       />

@@ -1,7 +1,7 @@
 import React from "react";
-import BalanceInput from "../../../balanceInput";
 import Labeled from "../../../Labeled";
 import { useChainSettings } from "../../../../context/chain";
+import CurrencyInput from "next-common/components/currencyInput";
 
 export default function ProposalValue({ setValue }) {
   const { symbol } = useChainSettings();
@@ -11,7 +11,7 @@ export default function ProposalValue({ setValue }) {
       text={"Value"}
       tooltip={"The amount that will be allocated from the treasury pot"}
     >
-      <BalanceInput setValue={setValue} symbol={symbol} />
+      <CurrencyInput onValueChange={setValue} symbol={symbol} />
     </Labeled>
   );
 }

@@ -1,6 +1,5 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useExtrinsicField } from "next-common/components/popup/fields/extrinsicField";
-import InputNumber from "next-common/components/inputNumber";
 import { LoadingContent } from "next-common/components/popup/loadingContent";
 import PopupLabel from "next-common/components/popup/label";
 import Popup from "next-common/components/popup/wrapper/Popup";
@@ -10,9 +9,10 @@ import { useCollectivePallet } from "next-common/context/collective";
 import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Tooltip from "next-common/components/tooltip";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import NumberInput from "next-common/lib/input/number";
 
 export default function NewCouncilMotionProposalInnerPopup({ isMember }) {
   const { onClose } = usePopupParams();
@@ -22,7 +22,8 @@ export default function NewCouncilMotionProposalInnerPopup({ isMember }) {
   const { extrinsic: proposal, component: extrinsicComponent } =
     useExtrinsicField();
 
-  const [threshold, setThreshold] = useState(1);
+  const [_threshold, setThreshold] = useState(1);
+  const threshold = useMemo(() => Number(_threshold), [_threshold]);
   const { members } = useCollectiveMembers();
 
   const thresholdDefault = Math.floor(members?.length / 2) + 1;
@@ -55,9 +56,9 @@ export default function NewCouncilMotionProposalInnerPopup({ isMember }) {
       <LoadingContent isLoading={loading}>
         <div>
           <PopupLabel text="Threshold" />
-          <InputNumber
+          <NumberInput
             value={threshold || 1}
-            setValue={setThreshold}
+            onValueChange={setThreshold}
             min={1}
             max={members?.length}
           />

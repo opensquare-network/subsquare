@@ -4,12 +4,16 @@ const defaultWestendNodes = [
     url: "wss://westend-rpc.polkadot.io",
   },
   {
-    name: "OnFinality",
-    url: "wss://westend.api.onfinality.io/public-ws",
-  },
-  {
     name: "IBP1",
     url: "wss://rpc.ibp.network/westend",
+  },
+  {
+    name: "IBP2",
+    url: "wss://rpc.dotters.network/westend",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://westend.api.onfinality.io/public-ws",
   },
   {
     name: "Blockops",
@@ -22,10 +26,6 @@ const defaultWestendNodes = [
   {
     name: "Dwellir Tunisia",
     url: "wss://westend-rpc-tn.dwellir.com",
-  },
-  {
-    name: "IBP2",
-    url: "wss://rpc.dotters.network/westend",
   },
   {
     name: "LuckyFriday",

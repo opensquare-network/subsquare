@@ -4,16 +4,20 @@ const defaultPolkadotNodes = [
     url: "wss://rpc.polkadot.io",
   },
   {
-    name: "OnFinality",
-    url: "wss://polkadot.api.onfinality.io/public-ws",
-  },
-  {
     name: "IBP1",
     url: "wss://rpc.ibp.network/polkadot",
   },
   {
+    name: "IBP2",
+    url: "wss://polkadot.dotters.network",
+  },
+  {
     name: "SubQuery",
     url: "wss://polkadot.rpc.subquery.network/public/ws",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://polkadot.api.onfinality.io/public-ws",
   },
   {
     name: "Dwellir",
@@ -35,10 +39,6 @@ const defaultPolkadotNodes = [
   //   name: "Automata 1RPC",
   //   url: "wss://1rpc.io/dot",
   // },
-  {
-    name: "IBP2",
-    url: "wss://polkadot.dotters.network",
-  },
   {
     name: "RadiumBlock",
     url: "wss://polkadot.public.curie.radiumblock.co/ws",
