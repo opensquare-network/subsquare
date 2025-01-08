@@ -43,6 +43,7 @@ export default function CoreFellowshipMemberSalary({
     <Tooltip
       content={
         <div>
+          <div>This member is {isActive ? "active" : "passive"}</div>
           <div className="flex gap-1">
             <span>Active Salary: </span>
             <span>
