@@ -7,7 +7,7 @@ import CoreFellowshipMemberInfoLine from "next-common/components/collectives/cor
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import CoreFellowshipMemberEvidence from "next-common/components/collectives/core/member/evidence";
-import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
+import CoreFellowshipMemberSalary from "./salary";
 import CoreFellowshipMemberRelatedReferenda from "./relatedReferenda";
 import MineTag from "next-common/components/delegation/delegate/common/mineTag";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -27,7 +27,14 @@ export default function CoreFellowshipMemberCard({
       {realAddress === address && <MineTag />}
       <div className="flex justify-between">
         <AvatarAndAddress address={address} isActive={isActive} />
-        <FellowshipRank rank={rank} />
+        <div className="flex flex-col items-end justify-between">
+          <FellowshipRank rank={rank} />
+          <CoreFellowshipMemberSalary
+            className="text12Medium"
+            member={member}
+            params={params}
+          />
+        </div>
       </div>
       <Divider className="mt-4" />
       <div className="flex flex-col grow gap-4">
@@ -55,11 +62,6 @@ export default function CoreFellowshipMemberCard({
       </div>
 
       <Divider className="mt-4" />
-      <CoreFellowshipMemberSalary
-        rank={rank}
-        isActive={isActive}
-        params={params}
-      />
 
       {children}
     </SecondaryCard>

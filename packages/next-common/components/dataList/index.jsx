@@ -3,25 +3,28 @@ import { cn } from "next-common/utils";
 import NoData from "../noData";
 import DataListBody, { defaultRenderItem } from "./body";
 import { useDeepCompareEffect, useUpdateEffect } from "react-use";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { isNil } from "lodash-es";
 
-export default function DataList({
-  columns = [],
-  rows = [],
-  loading = false,
-  scrollToFirstRowOnChange = false,
-  className = "",
-  noDataText = "No current votes",
-  bordered = false,
-  highlightedIndexes = [],
-  renderItem = defaultRenderItem,
-  tree = false,
-  treeKey = "children",
-  treeData = [],
-}) {
+function DataList(
+  {
+    columns = [],
+    rows = [],
+    loading = false,
+    scrollToFirstRowOnChange = false,
+    className = "",
+    noDataText = "No current votes",
+    bordered = false,
+    highlightedIndexes = [],
+    renderItem = defaultRenderItem,
+    tree = false,
+    treeKey = "children",
+    treeData = [],
+  },
+  ref,
+) {
   let content;
   const listRef = useRef();
   const bodyRef = useRef();
@@ -128,6 +131,7 @@ export default function DataList({
 
   return (
     <div
+      ref={ref}
       className={cn(
         "w-full",
         "scrollbar-hidden",
@@ -183,3 +187,5 @@ export function MapDataList({ data, columnsDef, getRowKey, ...props }) {
 
   return <DataList columns={columnsDef} rows={rows} {...props} />;
 }
+
+export default forwardRef(DataList);

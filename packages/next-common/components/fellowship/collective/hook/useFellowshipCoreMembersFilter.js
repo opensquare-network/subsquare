@@ -1,5 +1,5 @@
 import { isNil } from "lodash-es";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useFellowshipCoreOnlySwitch from "./useFellowshipCoreOnlySwitch";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
 import usePeriodSelect, {
@@ -17,6 +17,7 @@ import {
   filterDemotionExpiredFn,
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
+import { useContextApi } from "next-common/context/api";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -30,6 +31,42 @@ function useSingleMemberStatus(item) {
   };
 }
 
+export function useMembersWithStatus(members) {
+  const api = useContextApi();
+  const [membersWithStatus, setMembersWithStatus] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setIsLoading(true);
+    Promise.all(
+      members.map(async (item) => {
+        const rawOptional = await api.query.fellowshipCore.member(item.address);
+        const status = rawOptional?.toJSON();
+        return {
+          ...item,
+          status,
+          isFellowshipCoreMember: !isNil(status),
+        };
+      }),
+    )
+      .then((result) => {
+        setMembersWithStatus(result);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [api, members]);
+
+  return {
+    membersWithStatus,
+    isLoading,
+  };
+}
+
 export function handleFilterMembers(members) {
   const membersWithStatus = members.map((item) => {
     const { status, isLoading } = useSingleMemberStatus(item);
@@ -37,7 +74,7 @@ export function handleFilterMembers(members) {
       ...item,
       status,
       isLoading,
-      isFellowshipOnly: !isNil(status) && !isLoading,
+      isFellowshipCoreMember: !isNil(status) && !isLoading,
     };
   });
   const isAllLoaded = membersWithStatus.every((item) => !item?.isLoading);
@@ -89,7 +126,7 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
 
     if (isFellowshipCoreOnly) {
       filteredMembers = filteredMembers.filter(
-        (member) => member.isFellowshipOnly,
+        (member) => member.isFellowshipCoreMember,
       );
     }
 

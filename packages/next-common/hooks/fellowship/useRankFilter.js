@@ -11,9 +11,10 @@ import {
   useCommittedFilterState,
   useStagedFilterState,
 } from "next-common/components/dropdownFilter/context";
+import { cn } from "next-common/utils";
 
-function RankSelect({ ranks, rank, setRank, noneLabel }) {
-  const options = (ranks || []).map((rank) => ({
+function RankSelect({ className, ranks, rank, setRank, noneLabel }) {
+  const options = (ranks?.sort((a, b) => b - a) || []).map((rank) => ({
     label: String(rank),
     value: rank,
   }));
@@ -25,7 +26,7 @@ function RankSelect({ ranks, rank, setRank, noneLabel }) {
 
   return (
     <Select
-      className="w-20 text12Medium"
+      className={cn("w-20 text12Medium", className)}
       small
       value={rank}
       options={options}
@@ -36,11 +37,12 @@ function RankSelect({ ranks, rank, setRank, noneLabel }) {
   );
 }
 
-function RankField({ ranks, rank, setRank, noneLabel }) {
+function RankField({ className, ranks, rank, setRank, noneLabel }) {
   return (
     <div className="flex items-center justify-between text12Medium text-textPrimary gap-x-2">
       <span className="text12Medium text-textPrimary my-[12px]">Rank</span>
       <RankSelect
+        className={className}
         ranks={ranks}
         rank={rank}
         setRank={setRank}
@@ -88,7 +90,7 @@ export function useRouterRankFilter(ranks = [], noneLabel = "All") {
   };
 }
 
-export function useRankFilterInDropdown(ranks = [], noneLabel = "All") {
+export function useRankFilterInDropdown(ranks = [], noneLabel = "All rank") {
   const [stagedFilter, setStagedFilter] = useStagedFilterState();
   const [committedFilter] = useCommittedFilterState();
 
@@ -96,6 +98,7 @@ export function useRankFilterInDropdown(ranks = [], noneLabel = "All") {
     rank: committedFilter?.rank ? parseInt(committedFilter.rank) : null,
     component: (
       <RankField
+        className="w-[144px]"
         ranks={ranks}
         noneLabel={noneLabel}
         rank={stagedFilter?.rank ? parseInt(stagedFilter.rank) : null}
