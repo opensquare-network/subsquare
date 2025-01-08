@@ -20,7 +20,7 @@ export default function useSubStorage(
   const chain = useChain();
 
   const filteredParams = (Array.isArray(params) ? params : [params]).filter(
-    Boolean,
+    (param) => !isNil(param),
   );
   const key = useMemo(() => {
     return `${chain}-${pallet}-${storage}-${filteredParams
