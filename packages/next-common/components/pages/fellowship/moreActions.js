@@ -15,6 +15,7 @@ import {
 import PromoteFellowshipMemberPopup from "next-common/components/fellowship/core/members/actions/promote/popup";
 import { OptionItem } from "next-common/components/internalDropdown/styled";
 import Tooltip from "next-common/components/tooltip";
+import useIsElementInLowerHalf from "next-common/hooks/useIsElementInLowerHalf";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useRef, useState } from "react";
@@ -159,7 +160,7 @@ function ActivationMenuItem({
   );
 }
 
-export default function MoreActions({ member }) {
+export default function MoreActions({ member, dataListRef }) {
   const { address } = member || {};
 
   const ref = useRef();
@@ -170,6 +171,7 @@ export default function MoreActions({ member }) {
   const [showPromotePopup, setShowPromotePopup] = useState(false);
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
   const [showActivationPopup, setShowActivationPopup] = useState(false);
+  const isInLowerHalf = useIsElementInLowerHalf(ref, dataListRef);
 
   return (
     <div className="relative" ref={ref}>
@@ -186,7 +188,8 @@ export default function MoreActions({ member }) {
       {showContextMenu && (
         <div
           className={cn(
-            "z-10 absolute right-0 top-[100%] p-[4px] w-[160px]",
+            "z-10 absolute right-0 p-[4px] w-[160px]",
+            isInLowerHalf ? "bottom-[calc(100%+6px)]" : "top-[calc(100%+6px)]",
             "rounded-[6px] border border-neutral200",
             "bg-neutral100 shadow-200",
           )}

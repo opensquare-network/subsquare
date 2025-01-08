@@ -17,7 +17,7 @@ import MoreActions from "./moreActions";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
 import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { AvatarAndAddressInListView } from "next-common/components/collectives/core/member/avatarAndAddress";
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import FieldLoading from "next-common/components/icons/fieldLoading";
@@ -127,7 +127,7 @@ function NonCoreMemberAddressCol({ address }) {
   );
 }
 
-function getCoreMemberRow({ idx, member, params }) {
+function getCoreMemberRow({ idx, member, params, dataListRef }) {
   const { address, rank } = member;
   const { isActive } = member.status;
   const {
@@ -165,7 +165,7 @@ function getCoreMemberRow({ idx, member, params }) {
     ),
     <EvidenceAndReferenda key="evidence" member={member} />,
     <div key="more">
-      <MoreActions member={member} />
+      <MoreActions member={member} dataListRef={dataListRef} />
     </div>,
   ];
 }
@@ -185,6 +185,7 @@ function getNonCoreMemberRow({ idx, member }) {
 }
 
 function CollectivesMemberTable({ members = [], isLoading = false }) {
+  const dataListRef = useRef();
   const realAddress = useRealAddress();
   const { params = {} } = useCollectivesContext();
 
@@ -196,7 +197,7 @@ function CollectivesMemberTable({ members = [], isLoading = false }) {
         let row = [];
 
         if (isFellowshipCoreMember) {
-          row = getCoreMemberRow({ idx, member, params });
+          row = getCoreMemberRow({ idx, member, params, dataListRef });
         } else {
           row = getNonCoreMemberRow({ idx, member });
         }
@@ -212,6 +213,7 @@ function CollectivesMemberTable({ members = [], isLoading = false }) {
 
   return (
     <DataList
+      ref={dataListRef}
       bordered
       columns={collectivesMemberColumns}
       noDataText="No Members"
