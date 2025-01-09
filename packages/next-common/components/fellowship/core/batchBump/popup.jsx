@@ -70,6 +70,18 @@ function Content({ expiredMembers, isLoading }) {
     [setSelected],
   );
 
+  const toggleAllSelection = useCallback(
+    (isAllSelected) => {
+      setSelected((prev) =>
+        expiredMembers.reduce((acc, member) => {
+          acc[member.address] = !isAllSelected;
+          return acc;
+        }, {}),
+      );
+    },
+    [expiredMembers],
+  );
+
   const selectedMembers = useMemo(
     () => expiredMembers.filter((member) => selected[member.address]),
     [expiredMembers, selected],
@@ -89,7 +101,11 @@ function Content({ expiredMembers, isLoading }) {
 
   const onInBlock = useCoreFellowshipUpdateFunc();
 
-  const columnsDef = useBatchBumpColumns(selected, toggleSelection);
+  const columnsDef = useBatchBumpColumns(
+    selected,
+    toggleSelection,
+    toggleAllSelection,
+  );
 
   return (
     <>

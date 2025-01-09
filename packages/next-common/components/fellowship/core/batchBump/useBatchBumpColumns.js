@@ -3,23 +3,37 @@ import Checkbox from "next-common/components/checkbox";
 import AddressUser from "next-common/components/user/addressUser";
 import FellowshipRank from "next-common/components/fellowship/rank";
 
-export default function useBatchBumpColumns(selected, toggleSelection) {
+export default function useBatchBumpColumns(
+  selected,
+  toggleSelection,
+  toggleAllSelection,
+) {
+  const allSelected = useMemo(
+    () => Object.values(selected).every((v) => v),
+    [selected],
+  );
+
   return useMemo(
     () => [
       {
         name: "Rank",
-        style: { textAlign: "left", width: "60px" },
+        className: "text-left w-16",
         render: (item) => <FellowshipRank rank={item.rank} />,
       },
       {
         name: "Member",
-        style: { textAlign: "left" },
+        className: "text-left",
         render: (item) => <AddressUser add={item.address} key={item.address} />,
       },
-      // TODO: toggle all into tableList
       {
-        name: "",
-        style: { textAlign: "right", width: "60px" },
+        name: (
+          <Checkbox
+            checked={allSelected}
+            onClick={() => toggleAllSelection(allSelected)}
+            className="w-4 h-4 cursor-pointer"
+          />
+        ),
+        className: "text-right w-16 inline-flex justify-end",
         render: (item) => (
           <Checkbox
             checked={selected[item.address]}
@@ -29,6 +43,6 @@ export default function useBatchBumpColumns(selected, toggleSelection) {
         ),
       },
     ],
-    [selected, toggleSelection],
+    [selected, toggleSelection, toggleAllSelection, allSelected],
   );
 }
