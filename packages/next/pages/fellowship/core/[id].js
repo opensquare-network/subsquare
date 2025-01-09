@@ -5,5 +5,5 @@ export default function FellowshipCore() {
 }
 
 export const getServerSideProps = getRedirectServerSideProps(
-  () => "/fellowship/members",
+  (id) => "/fellowship/members/" + id,
 );

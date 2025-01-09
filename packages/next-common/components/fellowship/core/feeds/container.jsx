@@ -43,7 +43,7 @@ export default function FellowshipCoreFeedsContainer({ feeds = {} }) {
       who: searchValue,
     };
     let query = objectToQueryString(queryObject);
-    router.push({ pathname: `/${section}/core/feeds`, query });
+    router.push({ pathname: `/${section}/members/feeds`, query });
     setLoading(true);
   };
 

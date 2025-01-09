@@ -43,7 +43,7 @@ export function useMembersWithStatus(members) {
 
     setIsLoading(true);
     Promise.all(
-      members.map(async (item) => {
+      (members || []).map(async (item) => {
         const rawOptional = await api.query.fellowshipCore.member(item.address);
         const status = rawOptional?.toJSON();
         return {

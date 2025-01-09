@@ -25,7 +25,7 @@ export default function FellowshipMemberTabs({
           </>
         );
       },
-      url: `/${section}/core`,
+      url: `/${section}/members`,
     },
     {
       value: "candidates",
@@ -45,7 +45,7 @@ export default function FellowshipMemberTabs({
           </>
         );
       },
-      url: `/${section}/core/candidates`,
+      url: `/${section}/members/candidates`,
     },
   ];
 
