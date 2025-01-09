@@ -2,7 +2,7 @@ import LegendItem from "../../legend/item";
 
 export default function ThresholdCurvesGov2TallyLegend() {
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center flex-wrap">
       <LegendItem color="var(--purple500)">Support</LegendItem>
       <LegendItem dashed color="var(--purple500)">
         Current Support
