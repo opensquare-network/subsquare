@@ -1,5 +1,5 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState, memo } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
@@ -12,8 +12,8 @@ import chainOrScanHeightSelector from "next-common/store/reducers/selectors/heig
 import { useSelector } from "react-redux";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { isDemotionExpired } from "next-common/utils/collective/demotionAndPromotion";
-import { StatisticsTitle } from "next-common/components/statistics/styled";
 import useBatchBumpColumns from "./useBatchBumpColumns";
+import { isEqual } from "lodash-es";
 
 function useDemotionExpiredMembers() {
   const { coreMembers, isLoading } = useCoreMembersWithRankContext();
@@ -25,9 +25,10 @@ function useDemotionExpiredMembers() {
 
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const params = useCoreFellowshipParams();
+  const expiredMembersRef = useRef([]);
 
   const expiredMembers = useMemo(() => {
-    return (members || []).filter((coreMember) => {
+    const newExpiredMembers = (members || []).filter((coreMember) => {
       const {
         status: { lastProof },
         rank,
@@ -35,6 +36,12 @@ function useDemotionExpiredMembers() {
 
       return isDemotionExpired({ lastProof, rank, params, latestHeight });
     });
+
+    if (!isEqual(newExpiredMembers, expiredMembersRef.current)) {
+      expiredMembersRef.current = newExpiredMembers;
+    }
+
+    return expiredMembersRef.current;
   }, [members, latestHeight, params]);
 
   return {
@@ -43,10 +50,9 @@ function useDemotionExpiredMembers() {
   };
 }
 
-function Content() {
+function Content({ expiredMembers, isLoading }) {
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
-  const { expiredMembers = [], isLoading } = useDemotionExpiredMembers();
   const [selected, setSelected] = useState(
     expiredMembers.reduce((acc, member) => {
       acc[member.address] = true;
@@ -87,12 +93,7 @@ function Content() {
 
   return (
     <>
-      <div className="inline-flex space-x-1">
-        <StatisticsTitle className="mb-0">Bumpable</StatisticsTitle>
-        <span className="text14Medium text-textTertiary">
-          {expiredMembers?.length}
-        </span>
-      </div>
+      <div className="inline-flex space-x-1"></div>
       <div className="max-h-[450px] overflow-auto">
         <ScrollerX>
           <MapDataList
@@ -114,10 +115,24 @@ function Content() {
   );
 }
 
+const PopupContent = memo(Content);
+
 export default function BatchBumpPopup(props) {
+  const { expiredMembers = [], isLoading } = useDemotionExpiredMembers();
+
   return (
-    <PopupWithSigner title="Bump Members" {...props}>
-      <Content />
+    <PopupWithSigner
+      title={
+        <span>
+          Bump Members
+          <span className="ml-1 text14Medium text-textTertiary">
+            {expiredMembers?.length}
+          </span>
+        </span>
+      }
+      {...props}
+    >
+      <PopupContent expiredMembers={expiredMembers} isLoading={isLoading} />
     </PopupWithSigner>
   );
 }

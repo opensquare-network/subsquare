@@ -6,18 +6,6 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 export default function useBatchBumpColumns(selected, toggleSelection) {
   return useMemo(
     () => [
-      // TODO: toggle all into tableList
-      {
-        name: "",
-        style: { textAlign: "left", width: "60px" },
-        render: (item) => (
-          <Checkbox
-            checked={selected[item.address]}
-            onClick={() => toggleSelection(item.address)}
-            className="w-4 h-4 cursor-pointer"
-          />
-        ),
-      },
       {
         name: "Rank",
         style: { textAlign: "left", width: "60px" },
@@ -27,6 +15,18 @@ export default function useBatchBumpColumns(selected, toggleSelection) {
         name: "Member",
         style: { textAlign: "left" },
         render: (item) => <AddressUser add={item.address} key={item.address} />,
+      },
+      // TODO: toggle all into tableList
+      {
+        name: "",
+        style: { textAlign: "right", width: "60px" },
+        render: (item) => (
+          <Checkbox
+            checked={selected[item.address]}
+            onClick={() => toggleSelection(item.address)}
+            className="w-4 h-4 cursor-pointer"
+          />
+        ),
       },
     ],
     [selected, toggleSelection],
