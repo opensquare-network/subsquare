@@ -14,6 +14,7 @@ import FellowshipCurveChart from "next-common/components/charts/thresholdCurve/f
 import Flex from "next-common/components/styled/flex";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import ConfirmationEstimation from "next-common/components/charts/thresholdCurve/gov2TallyPopup/confirmationEstimation";
+import ThresholdVotesCard from "../thresholdCards/votes";
 
 function PopupChartContent({ isFellowship = false }) {
   if (isFellowship) {
@@ -49,6 +50,8 @@ export default function ThresholdCurvesGov2TallyPopup({
           supportPerbill={supportPerbill}
           supportPercentage={supportPercentage}
         />
+
+        <ThresholdVotesCard />
       </Flex>
 
       <ConfirmationEstimation
