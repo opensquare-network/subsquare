@@ -21,6 +21,8 @@ import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialD
  * @description a base layout includes nav, header and footer
  */
 export default function BaseLayout({ children, seoInfo = {} }) {
+  console.log("BaseLayout", BaseLayout);
+
   const { sm } = useScreenSize();
   const [navCollapsed] = useNavCollapsed();
   useConnectApis();
@@ -30,6 +32,14 @@ export default function BaseLayout({ children, seoInfo = {} }) {
   useBlockTime(api);
   useSubscribeChainHead(api);
   useExistentialDeposit();
+  const addr = "118a1C8pkEuBcTuRPCHVh6JjaPm2Yq6vLK4CVKmMh3DXDjW";
+  const trackId = 0;
+  if (api) {
+    console.log("api", api.isConnected);
+    api.query.convictionVoting.votingFor(addr, trackId, (voting) => {
+      console.log("hello", voting?.toJSON()?.casting);
+    });
+  }
 
   useStoreDemocracyLockPeriod();
   useStoreConvictionVotingLockPeriod();
