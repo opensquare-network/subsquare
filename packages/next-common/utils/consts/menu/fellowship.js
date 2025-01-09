@@ -10,19 +10,19 @@ export const Names = {
   ...collectivesCommonNames,
 };
 
-function getFellowshipCoreMenu() {
+function getFellowshipMembersMenu() {
   const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
   if (!modules?.fellowship?.core) {
     return null;
   }
 
   return {
-    value: "fellowship-core",
-    name: Names.core,
-    pathname: "/fellowship/core",
+    value: "fellowship-members",
+    name: Names.members,
+    pathname: "/fellowship/members",
     extraMatchNavMenuActivePathnames: [
-      "/fellowship/core/params",
-      "/fellowship/core/feeds",
+      "/fellowship/members/params",
+      "/fellowship/members/feeds",
     ],
   };
 }
@@ -143,12 +143,7 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
     icon: <MenuFellowship />,
     pathname: "/fellowship",
     items: [
-      {
-        value: "fellowship-members",
-        name: Names.members,
-        pathname: "/fellowship/members",
-      },
-      getFellowshipCoreMenu(),
+      getFellowshipMembersMenu(),
       getFellowshipSalaryMenu(),
       getFellowshipStatisticsMenu(),
       dividerConfig,
