@@ -37,7 +37,7 @@ function Content() {
 
 export default function ActivationPopup(props) {
   return (
-    <PopupWithSigner title="Activation" {...props}  className="max-h-[640px]">
+    <PopupWithSigner title="Activation" {...props}>
       <Content />
     </PopupWithSigner>
   );
