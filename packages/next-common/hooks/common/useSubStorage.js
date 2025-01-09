@@ -24,7 +24,9 @@ export default function useSubStorage(
   );
   const key = useMemo(() => {
     return `${chain}-${pallet}-${storage}-${filteredParams
-      .map(JSON.stringify)
+      .map((param) =>
+        typeof param === "string" ? param : JSON.stringify(param),
+      )
       .join("-")}`;
   }, [chain, pallet, storage, filteredParams]);
   const result = cachedResult[key];
