@@ -22,7 +22,8 @@ function TabsListImpl(
   const listRef = useRef();
   const { width } = useWindowSize();
   const router = useRouter();
-  const [routePath] = router.asPath.split("?");
+  const routerPathWithQuery = router.asPath;
+  const [routePath] = routerPathWithQuery.split("?");
 
   useEffect(() => {
     if (listRef.current) {
@@ -58,13 +59,22 @@ function TabsListImpl(
 
           if (tab.url) {
             if (isNil(active)) {
-              if (tab.exactMatch === false) {
-                active = routePath.startsWith(tab.root || tab.url);
+              const anyMatch = (tab.noMatchUrls || []).some(
+                (url) => routerPathWithQuery === url,
+              );
+              if (anyMatch) {
+                active = false;
               } else {
-                const urls = [tab.url, tab.root, ...(tab.urls || [])].filter(
-                  Boolean,
-                );
-                active = urls.includes(routePath);
+                if (tab.exactMatch === false) {
+                  active = routePath.startsWith(tab.root || tab.url);
+                } else {
+                  const urls = [tab.url, tab.root, ...(tab.urls || [])].filter(
+                    Boolean,
+                  );
+                  active = urls.includes(
+                    tab.matchWithQuery ? routerPathWithQuery : routePath,
+                  );
+                }
               }
             }
           } else {
