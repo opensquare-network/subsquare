@@ -22,8 +22,11 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemFilter } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 import { cn } from "next-common/utils";
+import PrimaryButton from "next-common/lib/button/primary";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
+const BatchBumpPopup = dynamicPopup(() => import("./batchBumpPopup"));
 
 function useAvailablePromotionCount() {
   const latestHeight = useSelector(chainOrScanHeightSelector);
@@ -218,6 +221,7 @@ export default function MemberWarnings({ className }) {
           </PromptButton>
         </ShallowLink>
         {" can be demoted."}
+        <BatchBumpButton />
       </>
     ),
     expiredCandidatesCount > 0 &&
@@ -271,5 +275,26 @@ function PromptButton({ children, filterLink = "" }) {
     >
       {children}
     </SecondaryButton>
+  );
+}
+
+function BatchBumpButton() {
+  const [showBatchBump, setShowBatchBump] = useState(false);
+
+  return (
+    <>
+      <PrimaryButton
+        size="small"
+        onClick={() => {
+          setShowBatchBump(true);
+        }}
+        className="ml-1"
+      >
+        Bump All
+      </PrimaryButton>
+      {showBatchBump && (
+        <BatchBumpPopup onClose={() => setShowBatchBump(false)} />
+      )}
+    </>
   );
 }
