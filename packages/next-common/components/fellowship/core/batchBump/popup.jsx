@@ -1,7 +1,6 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
@@ -13,8 +12,8 @@ import chainOrScanHeightSelector from "next-common/store/reducers/selectors/heig
 import { useSelector } from "react-redux";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { isDemotionExpired } from "next-common/utils/collective/demotionAndPromotion";
-import { operationColumn, rankColumn, memberColumn } from "./columns";
 import { StatisticsTitle } from "next-common/components/statistics/styled";
+import useBatchBumpColumns from "./useBatchBumpColumns";
 
 function useDemotionExpiredMembers() {
   const { coreMembers, isLoading } = useCoreMembersWithRankContext();
@@ -45,20 +44,46 @@ function useDemotionExpiredMembers() {
 }
 
 function Content() {
-  const { who } = usePopupParams();
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
   const { expiredMembers = [], isLoading } = useDemotionExpiredMembers();
+  const [selected, setSelected] = useState(
+    expiredMembers.reduce((acc, member) => {
+      acc[member.address] = true;
+      return acc;
+    }, {}),
+  );
 
-  // TODO
+  const toggleSelection = useCallback(
+    (address) => {
+      setSelected((prev) => ({
+        ...prev,
+        [address]: !prev[address],
+      }));
+    },
+    [setSelected],
+  );
+
+  const selectedMembers = useMemo(
+    () => expiredMembers.filter((member) => selected[member.address]),
+    [expiredMembers, selected],
+  );
+
   const getTxFunc = useCallback(() => {
-    if (api && who) {
-      return api.tx[pallet].bump(who);
+    if (!api || selectedMembers?.length === 0) {
+      return;
     }
-  }, [api, pallet, who]);
+
+    const txs = selectedMembers.map((member) =>
+      api.tx[pallet].bump(member.address),
+    );
+
+    return txs.length > 1 ? api.tx.utility.batch(txs) : txs[0];
+  }, [api, pallet, selectedMembers]);
 
   const onInBlock = useCoreFellowshipUpdateFunc();
-  const columnsDef = [operationColumn, rankColumn, memberColumn];
+
+  const columnsDef = useBatchBumpColumns(selected, toggleSelection);
 
   return (
     <>
@@ -83,6 +108,7 @@ function Content() {
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}
         onFinalized={onInBlock}
+        disabled={selectedMembers?.length === 0}
       />
     </>
   );
