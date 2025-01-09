@@ -1,10 +1,12 @@
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { useMemo } from "react";
+import useCall from "next-common/utils/hooks/useCall";
+import { useContextApi } from "next-common/context/api";
 
-export default function useReferendaVotingBalance(api, address) {
-  const { loading, result } = useSubStorage("system", "account", [address], {
-    api,
-  });
+export default function useReferendaVotingBalance(address) {
+  const api = useContextApi();
+  const { value: result, loading } = useCall(api?.query?.system?.account, [
+    address,
+  ]);
 
   return useMemo(() => {
     if (loading || !result) {
@@ -14,7 +16,8 @@ export default function useReferendaVotingBalance(api, address) {
       };
     }
 
-    const balanceBig = result.data.free.toBigInt() + result.data.reserved.toBigInt();
+    const balanceBig =
+      result.data.free.toBigInt() + result.data.reserved.toBigInt();
     return {
       isLoading: loading,
       balance: balanceBig.toString(),

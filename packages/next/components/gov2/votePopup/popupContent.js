@@ -12,8 +12,13 @@ import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
 import VStack from "next-common/components/styled/vStack";
 import VoteTypeTab, { Aye, Nay, Split, SplitAbstain } from "./tab";
 import PrimaryButton from "next-common/lib/button/primary";
-import useSubMyReferendaVote, { getReferendaDirectVote } from "next-common/hooks/referenda/useSubMyReferendaVote";
-import { usePopupParams, useSignerAccount } from "next-common/components/popupWithSigner/context";
+import useSubMyReferendaVote, {
+  getReferendaDirectVote,
+} from "next-common/hooks/referenda/useSubMyReferendaVote";
+import {
+  usePopupParams,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import { LoadingPanel } from "components/referenda/popup/popupContent";
 import { normalizeOnchainVote } from "next-common/utils/vote";
 import { useShowVoteSuccessful } from "next-common/components/vote";
@@ -133,10 +138,8 @@ export default function PopupContent() {
   const signerAccount = useSignerAccount();
 
   const api = useContextApi();
-  const {
-    isLoading: votingIsLoading,
-    balance: votingBalance,
-  } = useReferendaVotingBalance(api, signerAccount?.realAddress);
+  const { isLoading: votingIsLoading, balance: votingBalance } =
+    useReferendaVotingBalance(signerAccount?.realAddress);
 
   const {
     vote: addressVote,
