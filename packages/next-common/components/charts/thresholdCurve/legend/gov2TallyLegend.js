@@ -11,6 +11,12 @@ export default function ThresholdCurvesGov2TallyLegend() {
       <LegendItem dashed color="var(--green500)">
         Current Approval
       </LegendItem>
+      <LegendItem square color="var(--green300)">
+        Aye
+      </LegendItem>
+      <LegendItem square color="var(--red300)">
+        Nay
+      </LegendItem>
     </div>
   );
 }
