@@ -12,8 +12,15 @@ import chainOrScanHeightSelector from "next-common/store/reducers/selectors/heig
 import { useSelector } from "react-redux";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { isDemotionExpired } from "next-common/utils/collective/demotionAndPromotion";
-import useBatchBumpColumns from "./useBatchBumpColumns";
+import {
+  rankColumn,
+  memberColumn,
+  operationDesktopColumnFunc,
+  operationMobileColumnFunc,
+} from "./columns";
 import { isEqual } from "lodash-es";
+import Checkbox from "next-common/components/checkbox";
+import Divider from "next-common/components/styled/layout/divider";
 
 function useDemotionExpiredMembers() {
   const { coreMembers, isLoading } = useCoreMembersWithRankContext();
@@ -72,7 +79,7 @@ function Content({ expiredMembers, isLoading }) {
 
   const toggleAllSelection = useCallback(
     (isAllSelected) => {
-      setSelected((prev) =>
+      setSelected(() =>
         expiredMembers.reduce((acc, member) => {
           acc[member.address] = !isAllSelected;
           return acc;
@@ -101,23 +108,45 @@ function Content({ expiredMembers, isLoading }) {
 
   const onInBlock = useCoreFellowshipUpdateFunc();
 
-  const columnsDef = useBatchBumpColumns(
-    selected,
-    toggleSelection,
-    toggleAllSelection,
-  );
+  const desktopColumnsDef = [
+    rankColumn,
+    memberColumn,
+    operationDesktopColumnFunc(selected, toggleSelection, toggleAllSelection),
+  ];
+
+  const mobileColumnsDef = [
+    rankColumn,
+    memberColumn,
+    operationMobileColumnFunc(selected, toggleSelection),
+  ];
+
+  const allSelected = Object.values(selected).every((v) => v);
 
   return (
     <>
-      <div className="inline-flex space-x-1"></div>
+      <div className="hidden max-sm:flex flex-col items-end">
+        <Checkbox
+          checked={allSelected}
+          onClick={() => toggleAllSelection(allSelected)}
+          className="w-4 h-4 cursor-pointer"
+        />
+      </div>
+      <Divider className="hidden max-sm:flex my-4" />
       <div className="max-h-[450px] overflow-auto">
         <ScrollerX>
           <MapDataList
-            columnsDef={columnsDef}
+            columnsDef={desktopColumnsDef}
             data={expiredMembers}
             loading={isLoading}
             noDataText="No members can be demoted."
-            className="max-h-[450px] overflow-auto"
+            className="max-sm:hidden max-h-[450px] overflow-auto"
+          />
+          <MapDataList
+            columnsDef={mobileColumnsDef}
+            data={expiredMembers}
+            loading={isLoading}
+            noDataText="No members can be demoted."
+            className="hidden max-sm:block max-h-[450px] overflow-auto"
           />
         </ScrollerX>
       </div>
