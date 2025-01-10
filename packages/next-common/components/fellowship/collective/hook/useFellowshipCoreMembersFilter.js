@@ -42,19 +42,18 @@ export function useMembersWithStatus(members) {
     }
 
     setIsLoading(true);
-    Promise.all(
-      (members || []).map(async (item) => {
-        const rawOptional = await api.query.fellowshipCore.member(item.address);
-        const status = rawOptional?.toJSON();
-        return {
-          ...item,
-          status,
-          isFellowshipCoreMember: !isNil(status),
-        };
-      }),
-    )
+    api.query.fellowshipCore.member
+      .multi(members.map((m) => m.address))
       .then((result) => {
-        setMembersWithStatus(result);
+        const membersWithStatus = members.map((item, index) => {
+          const status = result[index]?.toJSON();
+          return {
+            ...item,
+            status,
+            isFellowshipCoreMember: !isNil(status),
+          };
+        });
+        setMembersWithStatus(membersWithStatus);
       })
       .finally(() => {
         setIsLoading(false);
