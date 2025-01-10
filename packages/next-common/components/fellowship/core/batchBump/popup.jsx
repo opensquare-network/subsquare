@@ -5,7 +5,6 @@ import { useContextApi } from "next-common/context/api";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
 import { MapDataList } from "next-common/components/dataList";
-import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { useCoreMembersWithRankContext } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
 import { partition } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
@@ -132,23 +131,21 @@ function Content({ expiredMembers, isLoading }) {
         />
       </div>
       <Divider className="hidden max-sm:flex my-4" />
-      <div className="max-h-[450px] overflow-auto">
-        <ScrollerX>
-          <MapDataList
-            columnsDef={desktopColumnsDef}
-            data={expiredMembers}
-            loading={isLoading}
-            noDataText="No members can be demoted."
-            className="max-sm:hidden max-h-[450px] overflow-auto"
-          />
-          <MapDataList
-            columnsDef={mobileColumnsDef}
-            data={expiredMembers}
-            loading={isLoading}
-            noDataText="No members can be demoted."
-            className="hidden max-sm:block max-h-[450px] overflow-auto"
-          />
-        </ScrollerX>
+      <div className="max-h-[450px]">
+        <MapDataList
+          columnsDef={desktopColumnsDef}
+          data={expiredMembers}
+          loading={isLoading}
+          noDataText="No members can be demoted."
+          className="max-sm:hidden max-h-[450px] h-full overflow-auto"
+        />
+        <MapDataList
+          columnsDef={mobileColumnsDef}
+          data={expiredMembers}
+          loading={isLoading}
+          noDataText="No members can be demoted."
+          className="hidden max-sm:block max-h-[450px] h-full overflow-auto"
+        />
       </div>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
