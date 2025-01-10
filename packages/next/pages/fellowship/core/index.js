@@ -1,30 +1,9 @@
-import FellowshipMembersPage from "next-common/components/pages/fellowship/members";
-import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import {
-  fellowshipMembersApiUri,
-  fellowshipParamsApi,
-} from "next-common/services/url";
+import { getRedirectServerSideProps } from "next-common/services/serverSide";
 
-export default FellowshipMembersPage;
+export default function FellowshipCore() {
+  return "Please visit `/fellowship/members`";
+}
 
-export const getServerSideProps = withCommonProps(async () => {
-  const [
-    tracksProps,
-    { result: fellowshipParams = {} },
-    { result: fellowshipMembers = [] },
-  ] = await Promise.all([
-    fetchOpenGovTracksProps(),
-    nextApi.fetch(fellowshipParamsApi),
-    nextApi.fetch(fellowshipMembersApiUri),
-  ]);
-
-  return {
-    props: {
-      ...tracksProps,
-      fellowshipParams,
-      fellowshipMembers,
-    },
-  };
-});
+export const getServerSideProps = getRedirectServerSideProps(
+  () => "/fellowship/members",
+);
