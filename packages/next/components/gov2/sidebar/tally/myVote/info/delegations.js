@@ -26,7 +26,7 @@ function Delegations({ delegations }) {
       <div className="flex">
         <ValueDisplay
           className="text-textPrimary"
-          value={toPrecision(delegations.votes.toString(), decimals)}
+          value={toPrecision(delegations, decimals)}
           symbol={voteSymbol || symbol}
         />
       </div>
