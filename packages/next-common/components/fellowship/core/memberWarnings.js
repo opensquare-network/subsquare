@@ -151,6 +151,28 @@ function useEvidencesStat() {
   };
 }
 
+function MemberWarningsPanel({ className, isLoading, items }) {
+  const icon = (
+    <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
+  );
+
+  if (isLoading) {
+    return (
+      <BillBoardPanel className={className} icon={icon} isLoading={true} />
+    );
+  }
+
+  return (
+    <BillBoardPanel
+      className={className}
+      icon={
+        <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
+      }
+      items={items}
+    />
+  );
+}
+
 export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
   const {
@@ -178,7 +200,7 @@ export default function MemberWarnings({ className }) {
   };
 
   if (isEvidenceLoading || isCheckingDemotion || isPromotionLoading) {
-    return null;
+    return <MemberWarningsPanel className={className} isLoading={true} />;
   }
 
   const promptItems = [
@@ -225,15 +247,7 @@ export default function MemberWarnings({ className }) {
     ),
   ].filter(Boolean);
 
-  return (
-    <BillBoardPanel
-      className={className}
-      icon={
-        <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
-      }
-      items={promptItems}
-    />
-  );
+  return <MemberWarningsPanel className={className} items={promptItems} />;
 }
 
 function PromptButton({ children, filterLink = "" }) {
