@@ -40,9 +40,7 @@ export default function GlobalProvider({
                   >
                     <PageProvider pageProperties={pageProperties}>
                       <ApiProvider>
-                        <UserAccountProvider
-                          address={user?.proxyAddress || user?.address}
-                        >
+                        <UserAccountProvider>
                           <SignetContextProvider>
                             {children}
                           </SignetContextProvider>
