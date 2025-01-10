@@ -18,7 +18,9 @@ function VotePanel({ type, votes, delegations }) {
           {votes.map((vote, i) => (
             <VoteItem key={i} vote={vote} />
           ))}
-          {delegations && <Delegations delegations={delegations} />}
+          {delegations && (
+            <Delegations delegations={delegations.votes.toString()} />
+          )}
         </div>
 
         {isProxySet && <HintMessage>Votes of proxied account</HintMessage>}

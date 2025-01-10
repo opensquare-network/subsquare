@@ -152,16 +152,17 @@ export default function PopupContent() {
   );
 
   const getMyVoteAndShowSuccessful = useCallback(async () => {
-    const addressVote = await getReferendaDirectVote(
-      api,
-      signerAccount?.realAddress,
-      trackId,
-      referendumIndex,
-    );
-    if (!addressVote) {
-      return;
+    const { vote: addressVote, delegations } =
+      (await getReferendaDirectVote(
+        api,
+        signerAccount?.realAddress,
+        trackId,
+        referendumIndex,
+      )) || {};
+
+    if (addressVote) {
+      showVoteSuccessful(addressVote, delegations);
     }
-    showVoteSuccessful(addressVote);
   }, [
     api,
     trackId,
