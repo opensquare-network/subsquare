@@ -1,4 +1,3 @@
-import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
@@ -11,6 +10,7 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipMembersLoadable from "../fellowship/loadable";
 import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
 import useMembersWithMeAtFirst from "../useMembersWithMeAtFirst";
+import LegacyFellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs/legacy";
 
 export default function AmbassadorCoreMembersPage() {
   const { ambassadorParams } = usePageProps();
@@ -46,8 +46,8 @@ function AmbassadorCoreMembersPageInContext() {
   return (
     <FellowshipMembersLoadable>
       <AmbassadorMemberCommon>
-        <div className="flex items-center justify-between mb-4 pr-6">
-          <FellowshipMemberTabs members={members} section="ambassador" />
+        <div className="flex items-center justify-between mb-4 pr-6 h-[40px]">
+          <LegacyFellowshipMemberTabs members={members} section="ambassador" />
           {component}
         </div>
 

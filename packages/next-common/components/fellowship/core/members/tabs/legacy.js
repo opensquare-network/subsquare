@@ -1,7 +1,7 @@
 import TabsList from "next-common/components/tabs/list";
 
 // maybe used for fellowship and ambassador
-export default function FellowshipMemberTabs({
+export default function LegacyFellowshipMemberTabs({
   membersCount,
   candidatesCount,
   section = "fellowship",
@@ -25,9 +25,7 @@ export default function FellowshipMemberTabs({
           </>
         );
       },
-      url: `/${section}/members`,
-      noMatchUrls: [`/${section}/members?tab=candidates`],
-      shallow: true,
+      url: `/${section}/core`,
     },
     {
       value: "candidates",
@@ -47,9 +45,7 @@ export default function FellowshipMemberTabs({
           </>
         );
       },
-      url: `/${section}/members?tab=candidates`,
-      matchWithQuery: true,
-      shallow: true,
+      url: `/${section}/core/candidates`,
     },
   ];
 

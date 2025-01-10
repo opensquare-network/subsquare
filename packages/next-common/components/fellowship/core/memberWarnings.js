@@ -185,10 +185,10 @@ export default function MemberWarnings({ className }) {
   } = useEvidencesStat();
 
   const filterLinks = {
-    evidenceOnly: `/${section}/core?evidence_only=true`,
-    demotionPeriodAboutToExpire: `/${section}/core?period=demotion_period_about_to_expire`,
-    demotionPeriodExpired: `/${section}/core?period=demotion_period_expired`,
-    promotable: `/${section}/core?period=promotable`,
+    evidenceOnly: `/${section}/members?evidence_only=true`,
+    demotionPeriodAboutToExpire: `/${section}/members?period=demotion_period_about_to_expire`,
+    demotionPeriodExpired: `/${section}/members?period=demotion_period_expired`,
+    promotable: `/${section}/members?period=promotable`,
   };
 
   if (isEvidenceLoading || isCheckingDemotion || isPromotionLoading) {
