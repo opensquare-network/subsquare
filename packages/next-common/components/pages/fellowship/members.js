@@ -163,7 +163,6 @@ function FellowshipMembersPageInContext() {
   if (isCandidatesPage) {
     return (
       <FellowshipCandidatesTabPage
-        memberFilters={memberFilters}
         members={members}
         candidates={candidates}
         isLoading={isLoading}
@@ -175,6 +174,7 @@ function FellowshipMembersPageInContext() {
     <FellowshipMembersTabPage
       members={members}
       candidates={candidates}
+      memberFilters={memberFilters}
       isLoading={isLoading}
     />
   );
