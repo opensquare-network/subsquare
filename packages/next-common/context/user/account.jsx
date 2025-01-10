@@ -8,11 +8,13 @@ import { isKintsugiChain } from "next-common/utils/chain";
 import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
 import { createContext, useContext, useMemo } from "react";
 import { useChain } from "../chain";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const Context = createContext();
 
-export default function UserAccountProvider({ address, children }) {
+export default function UserAccountProvider({ children }) {
   const chain = useChain();
+  const address = useRealAddress();
 
   if (!address) {
     return (
