@@ -1,6 +1,12 @@
 import { useThemeSetting } from "next-common/context/theme";
 import { formatDays, formatHours } from "next-common/utils/timeFormat";
-import { noop } from "lodash-es";
+import { merge, noop } from "lodash-es";
+import { useChainSettings } from "next-common/context/chain";
+import { toPrecision } from "next-common/utils";
+import {
+  abbreviateBigNumber,
+  getEffectiveNumbers,
+} from "next-common/utils/viewfuncs";
 
 const commonConfig = {
   clip: false,
@@ -39,6 +45,31 @@ function getScaleOptions(maxTicks, scalesX = true, scalesY = true) {
           stepSize: 25,
           callback(val) {
             return val + "%";
+          },
+        },
+        grid: {
+          drawTicks: false,
+        },
+      },
+    },
+  };
+}
+
+function getVotesScaleOptions(chainSettings) {
+  const { decimals } = chainSettings || {};
+
+  return {
+    scales: {
+      y1: {
+        stacked: true,
+        position: "right",
+        min: 0,
+        grid: {
+          display: false,
+        },
+        ticks: {
+          callback(value) {
+            return abbreviateBigNumber(toPrecision(value, decimals));
           },
         },
       },
@@ -89,6 +120,16 @@ function getDetailConfig(labels, commonPluginsConfig, labelFunc) {
   };
 }
 
+function getDetailConfigWithVotesData(
+  labels,
+  commonPluginsConfig,
+  labelFunc,
+  chainSettings,
+) {
+  const config = getDetailConfig(labels, commonPluginsConfig, labelFunc);
+  return merge(config, getVotesScaleOptions(chainSettings));
+}
+
 const getNanValueShow = (value) =>
   !value ? "--" : `${Number(value).toFixed(2)}%`;
 
@@ -106,17 +147,39 @@ function handleTooltipLabel(tooltipItem, labelType, datasets) {
   return null;
 }
 
+function handleVoteTooltipLabel(tooltipItem, labelType, chainSettings) {
+  const { decimals, symbol } = chainSettings;
+  const { dataIndex, dataset } = tooltipItem;
+
+  let value = toPrecision(dataset.data[dataIndex], decimals);
+  if (Number(value) > 100000 || getEffectiveNumbers(value)?.length >= 11) {
+    value = `≈ ${abbreviateBigNumber(value, 2)}`;
+  }
+
+  return `${labelType}: ${value} ${symbol}`;
+}
+
 export default function useDetailPageOptions(labels = [], datasets) {
+  const chainSettings = useChainSettings();
   const commonPluginsConfig = useCommonPluginsConfig();
-  return getDetailConfig(labels, commonPluginsConfig, function (tooltipItem) {
-    const { dataset } = tooltipItem;
-    if (dataset.label === "Approval") {
-      return handleTooltipLabel(tooltipItem, "Approval", datasets);
-    } else if (dataset.label === "Support") {
-      return handleTooltipLabel(tooltipItem, "Support", datasets);
-    }
-    return null;
-  });
+  return getDetailConfigWithVotesData(
+    labels,
+    commonPluginsConfig,
+    function (tooltipItem) {
+      const { dataset } = tooltipItem;
+      if (dataset.label === "Approval") {
+        return handleTooltipLabel(tooltipItem, "Approval", datasets);
+      } else if (dataset.label === "Support") {
+        return handleTooltipLabel(tooltipItem, "Support", datasets);
+      } else if (dataset.label === "Aye") {
+        return handleVoteTooltipLabel(tooltipItem, "Aye", chainSettings);
+      } else if (dataset.label === "Nay") {
+        return handleVoteTooltipLabel(tooltipItem, "Nay", chainSettings);
+      }
+      return null;
+    },
+    chainSettings,
+  );
 }
 
 export function useDetailPageOptionsWithoutTallyHistory(labels = []) {
