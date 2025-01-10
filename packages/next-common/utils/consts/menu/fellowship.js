@@ -27,6 +27,19 @@ function getFellowshipMembersMenu() {
   };
 }
 
+function getNonCoreFellowshipMembersMenu() {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (modules?.fellowship?.core) {
+    return null;
+  }
+
+  return {
+    value: "fellowship-members",
+    name: Names.members,
+    pathname: "/fellowship/members",
+  };
+}
+
 function getFellowshipSalaryMenu() {
   const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
   if (!modules?.fellowship?.core) {
@@ -143,6 +156,7 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
     icon: <MenuFellowship />,
     pathname: "/fellowship",
     items: [
+      getNonCoreFellowshipMembersMenu(),
       getFellowshipMembersMenu(),
       getFellowshipSalaryMenu(),
       getFellowshipStatisticsMenu(),
