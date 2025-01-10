@@ -31,43 +31,18 @@ function SingleRowCheckBox({ onSelected, address, defaultValue }) {
   );
 }
 
-export const AllRowsCheckBox = ({
-  onSelected,
-  defaultValue,
-  expiredMembers,
-}) => {
-  const [selected, setSelected] = useState(defaultValue);
-
-  return (
-    <Checkbox
-      checked={selected}
-      onClick={() => {
-        const newSelections = expiredMembers.reduce((acc, member) => {
-          acc[member.address] = !selected;
-          return acc;
-        }, {});
-        setSelected(!selected);
-        onSelected(newSelections);
-      }}
-      className="w-4 h-4 cursor-pointer"
-    />
-  );
-};
-
 export const operationDesktopColumnFunc = (
   selected,
   onChange,
-  expiredMembers,
   allSelected,
+  toggleAllSelection,
 ) => {
   return {
     name: (
-      <AllRowsCheckBox
-        expiredMembers={expiredMembers}
-        defaultValue={allSelected}
-        onSelected={(newSelections) => {
-          onChange(newSelections);
-        }}
+      <Checkbox
+        checked={allSelected}
+        onClick={() => toggleAllSelection(allSelected)}
+        className="w-4 h-4 cursor-pointer"
       />
     ),
     className: "text-right w-16 inline-flex justify-end",
