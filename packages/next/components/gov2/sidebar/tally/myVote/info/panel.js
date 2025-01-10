@@ -5,8 +5,9 @@ import useIsProxySet from "next-common/hooks/useIsProxySet";
 import HintMessage from "next-common/components/styled/hintMessage";
 import MyVoteActions from "./actions";
 import { memo } from "react";
+import Delegations from "./delegations";
 
-function VotePanel({ type, votes }) {
+function VotePanel({ type, votes, delegations }) {
   const isProxySet = useIsProxySet();
 
   return (
@@ -17,6 +18,7 @@ function VotePanel({ type, votes }) {
           {votes.map((vote, i) => (
             <VoteItem key={i} vote={vote} />
           ))}
+          {delegations && <Delegations delegations={delegations} />}
         </div>
 
         {isProxySet && <HintMessage>Votes of proxied account</HintMessage>}

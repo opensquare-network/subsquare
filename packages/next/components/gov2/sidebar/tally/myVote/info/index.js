@@ -17,7 +17,12 @@ function CastingVoteInfo({ casting }) {
 
   const vote = voteItem[1];
   if (vote.isStandard) {
-    return <StandardVotePanel standard={vote.asStandard} />;
+    return (
+      <StandardVotePanel
+        standard={vote.asStandard}
+        delegations={casting.delegations}
+      />
+    );
   } else if (vote.isSplit) {
     return <SplitVotePanel split={vote.asSplit} />;
   } else if (vote.isSplitAbstain) {

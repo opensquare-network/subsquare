@@ -1,7 +1,7 @@
 import VotePanel from "./panel";
 import { memo } from "react";
 
-function StandardVotePanel({ standard }) {
+function StandardVotePanel({ standard, delegations }) {
   if (!standard) {
     throw new Error("No standard given for StandardVotePanel");
   }
@@ -14,7 +14,9 @@ function StandardVotePanel({ standard }) {
     conviction: vote.conviction.toNumber(),
   };
 
-  return <VotePanel type="Standard" votes={[normalized]}></VotePanel>;
+  return (
+    <VotePanel type="Standard" votes={[normalized]} delegations={delegations} />
+  );
 }
 
 export default memo(StandardVotePanel);

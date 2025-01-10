@@ -32,7 +32,7 @@ export function Aye() {
   return (
     <VoteTypeWrapper>
       <AyeIcon />
-      <VoteText style={{ color: "var(--green500)" }}>Aye</VoteText>
+      <VoteText>Aye</VoteText>
     </VoteTypeWrapper>
   );
 }
@@ -41,7 +41,7 @@ export function Nay() {
   return (
     <VoteTypeWrapper>
       <NayIcon />
-      <VoteText style={{ color: "var(--red500)" }}>Nay</VoteText>
+      <VoteText>Nay</VoteText>
     </VoteTypeWrapper>
   );
 }
@@ -50,7 +50,7 @@ export function Abstain() {
   return (
     <VoteTypeWrapper>
       <ColoredAbstainIcon />
-      <VoteText style={{ color: "var(--textTertiary)" }}>Abstain</VoteText>
+      <VoteText>Abstain</VoteText>
     </VoteTypeWrapper>
   );
 }
