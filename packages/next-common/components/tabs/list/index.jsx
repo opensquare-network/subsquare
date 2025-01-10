@@ -1,6 +1,6 @@
 import { cn } from "next-common/utils";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import TabsListItem from "./item";
+import _TabsListItem from "./item";
 import { useWindowSize } from "react-use";
 import { useRouter } from "next/router";
 import { find, isNil } from "lodash-es";
@@ -21,9 +21,6 @@ function TabsListImpl(
   const [showRight, setShowRight] = useState(true);
   const listRef = useRef();
   const { width } = useWindowSize();
-  const router = useRouter();
-  const routerPathWithQuery = router.asPath;
-  const [routePath] = routerPathWithQuery.split("?");
 
   useEffect(() => {
     if (listRef.current) {
@@ -54,44 +51,15 @@ function TabsListImpl(
         onScroll={onScroll}
         className="grow flex space-x-6 overflow-x-auto scrollbar-hidden"
       >
-        {tabs?.map((tab) => {
-          let active = tab.active;
-
-          if (tab.url) {
-            if (isNil(active)) {
-              const anyMatch = (tab.noMatchUrls || []).some(
-                (url) => routerPathWithQuery === url,
-              );
-              if (anyMatch) {
-                active = false;
-              } else {
-                if (tab.exactMatch === false) {
-                  active = routePath.startsWith(tab.root || tab.url);
-                } else {
-                  const urls = [tab.url, tab.root, ...(tab.urls || [])].filter(
-                    Boolean,
-                  );
-                  active = urls.includes(
-                    tab.matchWithQuery ? routerPathWithQuery : routePath,
-                  );
-                }
-              }
-            }
-          } else {
-            active = activeTabValue === tab.value;
-          }
-
-          return (
-            <TabsListItem
-              key={tab.value}
-              {...tab}
-              active={active}
-              onClick={() => {
-                onTabClick?.(tab);
-              }}
-            />
-          );
-        })}
+        {tabs?.map((tab) => (
+          <TabsListItem
+            key={tab.value}
+            tab={tab}
+            onClick={() => {
+              onTabClick?.(tab);
+            }}
+          />
+        ))}
       </div>
 
       {find(tabs, { value: activeTabValue })?.extra}
@@ -112,5 +80,45 @@ function GradientBlanket({ className = "", reversed = false }) {
         className,
       )}
     />
+  );
+}
+
+function isTabUrlMatchRouterPath(tab, router) {
+  const routerPathWithQuery = router.asPath;
+  const [routePath] = routerPathWithQuery.split("?");
+
+  const anyMatch = (tab.noMatchUrls || []).some(
+    (url) => routerPathWithQuery === url,
+  );
+
+  if (anyMatch) {
+    return false;
+  }
+
+  if (tab.exactMatch === false) {
+    return routePath.startsWith(tab.root || tab.url);
+  }
+
+  const urls = [tab.url, tab.root, ...(tab.urls || [])].filter(Boolean);
+  return urls.includes(tab.matchWithQuery ? routerPathWithQuery : routePath);
+}
+
+function isActiveTab(tab, activeTabValue, router) {
+  if (!tab.url) {
+    return activeTabValue === tab.value;
+  }
+
+  if (isNil(tab.active)) {
+    return isTabUrlMatchRouterPath(tab, router);
+  }
+
+  return tab.active;
+}
+
+function TabsListItem({ tab, activeTabValue, onClick }) {
+  const router = useRouter();
+  const active = isActiveTab(tab, activeTabValue, router);
+  return (
+    <_TabsListItem key={tab.value} {...tab} active={active} onClick={onClick} />
   );
 }
