@@ -3,7 +3,7 @@ import { memo } from "react";
 
 function StandardVotePanel({ standard }) {
   if (!standard) {
-    throw new Error(`No standard given for StandardVotePanel`);
+    throw new Error("No standard given for StandardVotePanel");
   }
 
   const { vote, balance } = standard;

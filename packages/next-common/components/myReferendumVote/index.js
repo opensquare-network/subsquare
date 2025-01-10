@@ -8,6 +8,7 @@ import HintMessage from "../styled/hintMessage";
 import useIsProxySet from "next-common/hooks/useIsProxySet";
 import { noop } from "lodash-es";
 import MyVoteTitle from "next-common/components/myReferendumVote/title";
+import { memo } from "react";
 
 export const LinkButton = tw(Link)`
   cursor-pointer
@@ -21,7 +22,7 @@ export const Button = tw.div`
   text-theme500
 `;
 
-export default function MyVoteCommon({
+function MyVoteCommon({
   votes,
   votesManagementPath,
   hasOnchainVote,
@@ -79,3 +80,5 @@ export default function MyVoteCommon({
     </SecondaryCardDetail>
   );
 }
+
+export default memo(MyVoteCommon);

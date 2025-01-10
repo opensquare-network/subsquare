@@ -31,7 +31,7 @@ const MemoCastingVoteInfo = memo(CastingVoteInfo);
 
 function DelegatingVoteInfo({ delegating }) {
   if (!delegating) {
-    throw new Error(`No delegating data for DelegatingVoteInfo`);
+    throw new Error("No delegating data for DelegatingVoteInfo");
   }
 
   const post = usePost();
@@ -47,7 +47,7 @@ function DelegatingVoteInfo({ delegating }) {
 
 const MemoDelegatingVoteInfo = memo(DelegatingVoteInfo);
 
-export default function VoteInfo() {
+export default function MyVoteOnActiveReferendum() {
   const [voting] = useSharedMyReferendumVote();
 
   if (!voting) {

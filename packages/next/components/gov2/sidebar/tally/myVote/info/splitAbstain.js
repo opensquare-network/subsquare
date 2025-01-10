@@ -3,7 +3,7 @@ import { memo } from "react";
 
 function SplitAbstainVotePanel({ splitAbstain }) {
   if (!splitAbstain) {
-    throw new Error(`No splitAbstain given for SplitAbstainVotePanel`);
+    throw new Error("No splitAbstain given for SplitAbstainVotePanel");
   }
 
   const { aye, nay, abstain } = splitAbstain;

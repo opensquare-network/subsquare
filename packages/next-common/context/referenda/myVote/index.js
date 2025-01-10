@@ -21,7 +21,7 @@ function DataUpdater({ trackId, address, children }) {
     api.query.convictionVoting.votingFor(address, trackId).then((voting) => {
       setMyVote(voting);
     });
-  }, [api, address, trackId, height]);
+  }, [api, address, trackId, height, setMyVote]);
 
   return children;
 }
