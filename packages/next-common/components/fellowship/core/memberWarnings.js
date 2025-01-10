@@ -162,15 +162,7 @@ function MemberWarningsPanel({ className, isLoading, items }) {
     );
   }
 
-  return (
-    <BillBoardPanel
-      className={className}
-      icon={
-        <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
-      }
-      items={items}
-    />
-  );
+  return <BillBoardPanel className={className} icon={icon} items={items} />;
 }
 
 export default function MemberWarnings({ className }) {
