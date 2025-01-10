@@ -158,7 +158,7 @@ function FellowshipMembersPageInContext() {
   );
 
   const isCandidatesPage =
-    router.asPath === "/fellowship/members?candidates=true";
+    router.asPath === "/fellowship/members?tab=candidates";
 
   if (isCandidatesPage) {
     return (

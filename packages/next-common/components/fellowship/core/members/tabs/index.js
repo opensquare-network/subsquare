@@ -26,7 +26,7 @@ export default function FellowshipMemberTabs({
         );
       },
       url: `/${section}/members`,
-      noMatchUrls: [`/${section}/members?candidates=true`],
+      noMatchUrls: [`/${section}/members?tab=candidates`],
       shallow: true,
     },
     {
@@ -47,7 +47,7 @@ export default function FellowshipMemberTabs({
           </>
         );
       },
-      url: `/${section}/members?candidates=true`,
+      url: `/${section}/members?tab=candidates`,
       matchWithQuery: true,
       shallow: true,
     },

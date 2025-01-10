@@ -18,7 +18,7 @@ function TabsListImpl(
   ref,
 ) {
   const [showLeft, setShowLeft] = useState(false);
-  const [showRight, setShowRight] = useState(true);
+  const [showRight, setShowRight] = useState(false);
   const listRef = useRef();
   const { width } = useWindowSize();
 
