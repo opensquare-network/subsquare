@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.4.6
+
+date: 2025-01-11
+
+- [Medium] Refactor NumberInput component and implement CurrencyInput.
+- Add comma to number view.
+- Highlight my card on the delegation panel.
+- Highlight my card on the fellowship core panel.
+- Fix festival event date check.
+- Update mimir icon
+- Adjust rpc nodes order for polkadot/westend
+- Improve request sidebar panel show condition check.
+- Fix polkassembly internal relative link url on post sync from polkassembly.
+- Upgrade dependency of next.js to 14.2.21.
+- Fix vote popup horizontal scroll.
+- Fix `useSubStorage` for storage that has multiple params.
+- Update lunar new year event image on navigation.
+- Fix connected user account context.
+- Refactor my vote on referendum detail page and show my delegations.
+
 # 4.4.5
 
 date: 2024-12-30
