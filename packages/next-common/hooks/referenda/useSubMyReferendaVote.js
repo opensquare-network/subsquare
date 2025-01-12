@@ -14,15 +14,20 @@ export async function getReferendaDirectVote(
     return;
   }
 
-  if (!jsonVoting.casting) {
+  const casting = jsonVoting.casting;
+  if (!casting) {
     return;
   }
 
-  const vote = (jsonVoting.casting.votes || []).find(
+  const vote = (casting.votes || []).find(
     (vote) => vote[0] === referendumIndex,
   )?.[1];
+  const delegations = casting.delegations.votes;
 
-  return vote;
+  return {
+    vote,
+    delegations,
+  };
 }
 
 export default function useSubMyReferendaVote(

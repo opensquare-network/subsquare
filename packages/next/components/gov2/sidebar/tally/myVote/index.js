@@ -1,67 +1,51 @@
-import { useSelector } from "react-redux";
-import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
-import MyVoteCommon from "next-common/components/myReferendumVote";
-import useMyVotes from "next-common/components/myReferendumVote/useMyVotes";
-import useSubMyReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
-import { usePost } from "next-common/context/post";
-import { normalizeOnchainVote } from "next-common/utils/vote";
-import { useState } from "react";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { isNil } from "lodash-es";
+import MyVoteOnFinishedReferendum from "./history";
+import { usePost } from "next-common/context/post";
+import MyReferendumVoteProvider, {
+  useSharedRemovePopupOpen,
+} from "next-common/context/referenda/myVote";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { Referenda } from "next-common/components/profile/votingHistory/common";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import MyVoteOnActiveReferendum from "./info";
 
 const RemoveReferendaVotePopup = dynamicPopup(() =>
   import("next-common/components/myReferendumVote/removeReferendaVotePopup"),
 );
 
-export default function MyVote() {
-  const [showRemovePopup, setShowRemoveVotePopup] = useState(false);
-
-  const allVotes = useSelector(allVotesSelector);
-  let votes = useMyVotes(allVotes);
-
-  const post = usePost();
-  const referendumIndex = post?.referendumIndex;
-  const trackId = post?.track;
-
-  const address = useRealAddress();
-  const { vote: onchainVote } = useSubMyReferendaVote(
-    trackId,
-    referendumIndex,
-    address,
-  );
-
+function MyVoteInner() {
   const finishHeight = useReferendumVotingFinishHeight();
-
-  let hasOnchainVote = false;
-  let normalizedOnchainVote = [];
-  if (onchainVote) {
-    normalizedOnchainVote = normalizeOnchainVote(onchainVote);
-    const isDelegating = !isNil(onchainVote.delegating);
-    hasOnchainVote = normalizedOnchainVote?.length > 0 && !isDelegating;
-  }
-
-  if (!finishHeight) {
-    votes = normalizedOnchainVote;
-  }
+  const [isRemovePopupOpen, setRemovePopupOpen] = useSharedRemovePopupOpen();
+  const post = usePost();
+  const trackId = post?.track;
+  const referendumIndex = post?.referendumIndex;
 
   return (
     <>
-      <MyVoteCommon
-        votesManagementPath={`/votes?type=${Referenda}`}
-        votes={votes}
-        hasOnchainVote={hasOnchainVote}
-        setShowRemoveVotePopup={setShowRemoveVotePopup}
-      />
-      {showRemovePopup && (
+      {finishHeight ? (
+        <MyVoteOnFinishedReferendum />
+      ) : (
+        <MyVoteOnActiveReferendum />
+      )}
+
+      {isRemovePopupOpen && (
         <RemoveReferendaVotePopup
           trackId={trackId}
           referendumIndex={referendumIndex}
-          onClose={() => setShowRemoveVotePopup(false)}
+          onClose={() => setRemovePopupOpen(false)}
         />
       )}
     </>
+  );
+}
+
+export default function MyVote() {
+  const post = usePost();
+  const trackId = post?.track;
+  const address = useRealAddress();
+
+  return (
+    <MyReferendumVoteProvider trackId={trackId} address={address}>
+      <MyVoteInner />
+    </MyReferendumVoteProvider>
   );
 }
