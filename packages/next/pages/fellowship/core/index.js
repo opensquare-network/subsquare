@@ -1,6 +1,9 @@
-import FellowshipMembersPage from "next-common/components/pages/fellowship/members";
-import getFellowshipParamsServerSideProps from "next-common/services/serverSide/fellowship/params";
+import { getRedirectServerSideProps } from "next-common/services/serverSide";
 
-export default FellowshipMembersPage;
+export default function FellowshipCore() {
+  return "Please visit `/fellowship/members`";
+}
 
-export const getServerSideProps = getFellowshipParamsServerSideProps;
+export const getServerSideProps = getRedirectServerSideProps(
+  () => "/fellowship/members",
+);

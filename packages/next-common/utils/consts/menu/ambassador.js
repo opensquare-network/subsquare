@@ -57,11 +57,11 @@ function getAmbassadorCoreMenu() {
 
   return {
     value: "ambassador-core",
-    name: Names.core,
-    pathname: "/ambassador/core",
+    name: Names.members,
+    pathname: "/ambassador/members",
     extraMatchNavMenuActivePathnames: [
-      "/ambassador/core/params",
-      "/ambassador/core/feeds",
+      "/ambassador/members/params",
+      "/ambassador/members/feeds",
     ],
   };
 }
@@ -93,11 +93,6 @@ export function getAmbassadorMenu(ambassadorTracks = [], currentTrackId) {
     icon: <MenuAmbassador />,
     pathname: "/ambassador",
     items: [
-      {
-        value: "ambassador-members",
-        name: Names.members,
-        pathname: "/ambassador/members",
-      },
       getAmbassadorCoreMenu(),
       getAmbassadorSalaryMenu(),
       dividerConfig,

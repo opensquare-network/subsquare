@@ -1,5 +1,5 @@
 import { isNil } from "lodash-es";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useFellowshipCoreOnlySwitch from "./useFellowshipCoreOnlySwitch";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
 import usePeriodSelect, {
@@ -8,7 +8,10 @@ import usePeriodSelect, {
   Promotable,
 } from "next-common/components/pages/fellowship/usePeriodSelect";
 import { useRouterRankFilter } from "next-common/hooks/fellowship/useRankFilter";
-import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
+import {
+  useCoreFellowshipPallet,
+  useCoreFellowshipParams,
+} from "next-common/context/collectives/collectives";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useSelector } from "react-redux";
 import useLatestHeightSnapshot from "./useLatestHeightSnapshot";
@@ -17,6 +20,7 @@ import {
   filterDemotionExpiredFn,
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
+import { useContextApi } from "next-common/context/api";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -30,6 +34,42 @@ function useSingleMemberStatus(item) {
   };
 }
 
+export function useMembersWithStatus(members) {
+  const api = useContextApi();
+  const pallet = useCoreFellowshipPallet();
+  const [membersWithStatus, setMembersWithStatus] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setIsLoading(true);
+    api.query[pallet].member
+      .multi(members.map((m) => m.address))
+      .then((result) => {
+        const membersWithStatus = members.map((item, index) => {
+          const status = result[index]?.toJSON();
+          return {
+            ...item,
+            status,
+            isFellowshipCoreMember: !isNil(status),
+          };
+        });
+        setMembersWithStatus(membersWithStatus);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [api, members, pallet]);
+
+  return {
+    membersWithStatus,
+    isLoading,
+  };
+}
+
 export function handleFilterMembers(members) {
   const membersWithStatus = members.map((item) => {
     const { status, isLoading } = useSingleMemberStatus(item);
@@ -37,7 +77,7 @@ export function handleFilterMembers(members) {
       ...item,
       status,
       isLoading,
-      isFellowshipOnly: !isNil(status) && !isLoading,
+      isFellowshipCoreMember: !isNil(status) && !isLoading,
     };
   });
   const isAllLoaded = membersWithStatus.every((item) => !item?.isLoading);
@@ -89,7 +129,7 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
 
     if (isFellowshipCoreOnly) {
       filteredMembers = filteredMembers.filter(
-        (member) => member.isFellowshipOnly,
+        (member) => member.isFellowshipCoreMember,
       );
     }
 

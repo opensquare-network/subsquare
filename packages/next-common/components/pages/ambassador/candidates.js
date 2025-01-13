@@ -1,7 +1,6 @@
 import { usePageProps } from "next-common/context/page";
 import { useMemo } from "react";
 import AmbassadorCoreCommon from "next-common/components/ambassador/core/common";
-import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import AmbassadorCoreMemberCard from "next-common/components/ambassador/core/members/card";
 import FellowshipMembersEmpty from "next-common/components/pages/fellowship/empty";
@@ -11,6 +10,7 @@ import CollectivesProvider, {
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import FellowshipMembersLoadable from "../fellowship/loadable";
 import useFellowshipSortedCoreMembers from "next-common/hooks/fellowship/core/useFellowshipSortedCoreMembers";
+import LegacyFellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs/legacy";
 
 export default function AmbassadorCandidatesPage() {
   const { ambassadorParams } = usePageProps();
@@ -36,8 +36,11 @@ function AmbassadorCandidatesPageImpl() {
     <FellowshipMembersLoadable>
       <ActiveReferendaProvider pallet="ambassadorReferenda">
         <AmbassadorCoreCommon>
-          <div className="mb-4 pr-6 leading-8">
-            <FellowshipMemberTabs members={members} section="ambassador" />
+          <div className="flex mb-4 pr-6 leading-8 h-[40px]">
+            <LegacyFellowshipMemberTabs
+              members={members}
+              section="ambassador"
+            />
           </div>
 
           {hasMembers ? (

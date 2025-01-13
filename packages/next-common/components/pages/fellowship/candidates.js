@@ -10,6 +10,7 @@ import CollectivesProvider, {
   useCollectivesContext,
 } from "next-common/context/collectives/collectives";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 
 export default function FellowshipCandidatesPage() {
   const { fellowshipParams } = usePageProps();
@@ -21,6 +22,29 @@ export default function FellowshipCandidatesPage() {
   );
 }
 
+function useFellowshipMembersData() {
+  const { fellowshipMembers } = usePageProps();
+  const { membersWithStatus } = useMembersWithStatus(fellowshipMembers);
+
+  const membersCount = useMemo(
+    () =>
+      (membersWithStatus || []).filter(
+        (member) => member.isFellowshipCoreMember,
+      ).length,
+    [membersWithStatus],
+  );
+
+  const candidatesCount = useMemo(
+    () => (membersWithStatus || []).filter((member) => member.rank <= 0).length,
+    [membersWithStatus],
+  );
+
+  return {
+    membersCount,
+    candidatesCount,
+  };
+}
+
 function FellowshipCandidatesPageImpl() {
   const { params } = useCollectivesContext();
   const { members } = useFellowshipCoreMembers();
@@ -29,12 +53,17 @@ function FellowshipCandidatesPageImpl() {
     [members],
   );
   const hasMembers = !!pageMembers.length;
+  const { membersCount, candidatesCount } = useFellowshipMembersData();
 
   return (
     <FellowshipMembersLoadable>
       <FellowshipMemberCommon>
         <div className="mb-4 pr-6 leading-8">
-          <FellowshipMemberTabs members={members} />
+          <FellowshipMemberTabs
+            members={members}
+            membersCount={membersCount}
+            candidatesCount={candidatesCount}
+          />
         </div>
 
         {hasMembers ? (
@@ -44,6 +73,7 @@ function FellowshipCandidatesPageImpl() {
                 key={member.address}
                 member={member}
                 params={params}
+                isCandidate={true}
               />
             ))}
           </FellowshipCoreMemberCardListContainer>

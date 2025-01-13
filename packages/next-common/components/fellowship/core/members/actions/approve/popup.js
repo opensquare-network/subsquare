@@ -14,7 +14,11 @@ import AddressUser from "next-common/components/user/addressUser";
 import RankField from "next-common/components/popup/fields/rankField";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Chains from "next-common/utils/consts/chains";
-import { useCollectivesSection } from "next-common/context/collectives/collectives";
+import {
+  useCollectivesSection,
+  useCoreFellowshipPallet,
+  useReferendaFellowshipPallet,
+} from "next-common/context/collectives/collectives";
 import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
@@ -40,19 +44,29 @@ function PopupContent({ member }) {
   const trackName = getRetainTrackNameFromRank(atRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
+  const referendaPallet = useReferendaFellowshipPallet();
+  const corePallet = useCoreFellowshipPallet();
 
   const getTxFunc = useCallback(async () => {
     if (!api || !memberAddress) {
       return;
     }
 
-    const proposal = api.tx.fellowshipCore.approve(memberAddress, atRank);
-    return api.tx.fellowshipReferenda.submit(
-      { FellowshipOrigins: trackName },
+    const proposal = api.tx[corePallet].approve(memberAddress, atRank);
+    return api.tx[referendaPallet].submit(
+      { FellowshipOrigins: trackName }, //TODO: not working for ambassador
       { Inline: proposal.method.toHex() },
       enactment,
     );
-  }, [api, atRank, trackName, memberAddress, enactment]);
+  }, [
+    api,
+    atRank,
+    trackName,
+    memberAddress,
+    enactment,
+    corePallet,
+    referendaPallet,
+  ]);
 
   const { relatedReferenda, isLoading } = useRelatedRetentionReferenda(
     member?.address,
@@ -89,11 +103,7 @@ function PopupContent({ member }) {
         disabled={isLoading || referendaAlreadyCreated}
         getTxFunc={getTxFunc}
         onInBlock={({ events }) => {
-          const eventData = getEventData(
-            events,
-            "fellowshipReferenda",
-            "Submitted",
-          );
+          const eventData = getEventData(events, referendaPallet, "Submitted");
           if (!eventData) {
             return;
           }
