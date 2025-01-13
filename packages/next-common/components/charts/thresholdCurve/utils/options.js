@@ -196,16 +196,18 @@ export default function useDetailPageOptions(labels = [], datasets) {
 
 export function useDetailPageOptionsWithoutTallyHistory(labels = []) {
   const commonPluginsConfig = useCommonPluginsConfig();
-  return getDetailConfig(labels, commonPluginsConfig, function (tooltipItem) {
-    const { dataset, parsed } = tooltipItem;
-    if (dataset.label === "Approval") {
-      const approvalValue = Number(parsed.y).toFixed(2);
-      return `Approval: ${approvalValue}%`;
-    } else if (dataset.label === "Support") {
-      const supportValue = Number(parsed.y).toFixed(2);
-      return `Support: ${supportValue}%`;
-    }
-    return null;
+  return getDetailConfig(labels, commonPluginsConfig, {
+    label(tooltipItem) {
+      const { dataset, parsed } = tooltipItem;
+      if (dataset.label === "Approval") {
+        const approvalValue = Number(parsed.y).toFixed(2);
+        return `Approval: ${approvalValue}%`;
+      } else if (dataset.label === "Support") {
+        const supportValue = Number(parsed.y).toFixed(2);
+        return `Support: ${supportValue}%`;
+      }
+      return null;
+    },
   });
 }
 
