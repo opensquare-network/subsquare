@@ -51,7 +51,7 @@ export default function ThresholdCurvesGov2TallyPopup({
           supportPercentage={supportPercentage}
         />
 
-        <ThresholdVotesCard />
+        {!isFellowship && <ThresholdVotesCard />}
       </Flex>
 
       <ConfirmationEstimation
