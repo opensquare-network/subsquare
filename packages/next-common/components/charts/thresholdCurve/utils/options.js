@@ -122,16 +122,6 @@ function getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks) {
   };
 }
 
-function getDetailConfigWithVotesData(
-  labels,
-  commonPluginsConfig,
-  tooltipCallbacks,
-  chainSettings,
-) {
-  const config = getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks);
-  return merge(config, getVotesScaleOptions(chainSettings));
-}
-
 const getNanValueShow = (value) =>
   !value ? "--" : `${Number(value).toFixed(2)}%`;
 
@@ -164,34 +154,41 @@ function handleVoteTooltipLabel(tooltipItem, labelType, chainSettings) {
 export default function useDetailPageOptions(labels = [], datasets) {
   const chainSettings = useChainSettings();
   const commonPluginsConfig = useCommonPluginsConfig();
-  return getDetailConfigWithVotesData(
-    labels,
-    commonPluginsConfig,
-    {
-      label(tooltipItem) {
-        const { dataset } = tooltipItem;
 
-        if (dataset.label === "Approval") {
-          return handleTooltipLabel(tooltipItem, "Approval", datasets);
-        } else if (dataset.label === "Support") {
-          return handleTooltipLabel(tooltipItem, "Support", datasets);
-        }
-        return null;
-      },
-      afterBody(context) {
-        const nayTooltipItem = find(context, { dataset: { label: "Nay" } });
-        const ayeTooltipItem = find(context, { dataset: { label: "Aye" } });
+  let config = getDetailConfig(labels, commonPluginsConfig, {
+    label(tooltipItem) {
+      const { dataset } = tooltipItem;
 
-        return [
-          ayeTooltipItem &&
-            handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
-          nayTooltipItem &&
-            handleVoteTooltipLabel(nayTooltipItem, "Nay", chainSettings),
-        ].filter(Boolean);
-      },
+      if (dataset.label === "Approval") {
+        return handleTooltipLabel(tooltipItem, "Approval", datasets);
+      } else if (dataset.label === "Support") {
+        return handleTooltipLabel(tooltipItem, "Support", datasets);
+      }
+      return null;
     },
-    chainSettings,
-  );
+    afterBody(context) {
+      const nayTooltipItem = find(context, { dataset: { label: "Nay" } });
+      const ayeTooltipItem = find(context, { dataset: { label: "Aye" } });
+
+      return [
+        ayeTooltipItem &&
+          handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
+        nayTooltipItem &&
+          handleVoteTooltipLabel(nayTooltipItem, "Nay", chainSettings),
+      ].filter(Boolean);
+    },
+  });
+
+  const ayeDataset = find(datasets, { label: "Aye" });
+  const nayDataset = find(datasets, { label: "Nay" });
+  const shouldShowVotesScale =
+    ayeDataset?.data.length > 0 || nayDataset?.data.length > 0;
+
+  if (shouldShowVotesScale) {
+    config = merge(config, getVotesScaleOptions(chainSettings));
+  }
+
+  return config;
 }
 
 export function useDetailPageOptionsWithoutTallyHistory(labels = []) {

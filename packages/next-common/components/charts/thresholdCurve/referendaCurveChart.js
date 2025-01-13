@@ -28,6 +28,7 @@ export default function ReferendaCurveChart() {
     historyAyesData,
     historyNaysData,
   } = useHistoryTallyValueData();
+
   const supportHistoryConfig = useSupportValueDatasetConfig(historySupportData);
   const approvalHistoryConfig =
     useApprovalValueDatasetConfig(historyApprovalData);
@@ -39,9 +40,9 @@ export default function ReferendaCurveChart() {
     supportCurveConfig,
     approvalHistoryConfig,
     supportHistoryConfig,
-    ayesHistoryConfig,
-    naysHistoryConfig,
-  ];
+    historyAyesData?.length && ayesHistoryConfig,
+    historyNaysData?.length && naysHistoryConfig,
+  ].filter(Boolean);
 
   const chartData = { labels, datasets };
   const options = useDetailPageOptions(labels, datasets);
