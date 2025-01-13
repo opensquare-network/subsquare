@@ -1,6 +1,6 @@
 import { useThemeSetting } from "next-common/context/theme";
 import { formatDays, formatHours } from "next-common/utils/timeFormat";
-import { find, merge, noop } from "lodash-es";
+import { find, merge } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import {
@@ -211,7 +211,7 @@ export function useDetailPageOptionsWithoutTallyHistory(labels = []) {
   });
 }
 
-export function useCurveChartOptions(labels = [], labelFunc = noop) {
+export function useCurveChartOptions(labels = [], tooltipCallbacks = {}) {
   const commonPluginsConfig = useCommonPluginsConfig();
-  return getDetailConfig(labels, commonPluginsConfig, labelFunc);
+  return getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks);
 }
