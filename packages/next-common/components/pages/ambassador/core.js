@@ -216,7 +216,7 @@ export default function AmbassadorMembersPage() {
   const { ambassadorParams } = usePageProps();
 
   return (
-    <CollectivesProvider params={ambassadorParams} section="fellowship">
+    <CollectivesProvider params={ambassadorParams} section="ambassador">
       <AllMemberEvidenceProvider>
         <CoreMembersWithRankProvider>
           <DropdownUrlFilterProvider
