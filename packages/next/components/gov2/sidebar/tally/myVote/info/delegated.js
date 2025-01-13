@@ -28,7 +28,7 @@ export default function DelegatedVotePanel({ delegating }) {
       target={delegating.target.toString()}
       balance={balance}
       conviction={conviction}
-      aye={vote.asStandard.isAye}
+      aye={vote.asStandard.vote.isAye}
     />
   );
 }
