@@ -31,14 +31,14 @@ export function useFellowshipCoreOnlySwitchInDropdown() {
   const [committedFilter] = useCommittedFilterState();
 
   return {
-    isOn: committedFilter?.fellowship_core_only,
+    isOn: committedFilter?.core_only,
     component: (
       <FellowshipCoreOnlySwitch
-        isOn={stagedFilter?.fellowship_core_only}
+        isOn={stagedFilter?.core_only}
         setIsOn={(isOn) => {
           setStagedFilter({
             ...stagedFilter,
-            fellowship_core_only: isOn,
+            core_only: isOn,
           });
         }}
       />
@@ -48,7 +48,7 @@ export function useFellowshipCoreOnlySwitchInDropdown() {
 
 export default function useFellowshipCoreOnlySwitch() {
   const router = useRouter();
-  const fellowshipCore = getRouterQuery(router, "fellowship_core_only");
+  const fellowshipCore = getRouterQuery(router, "core_only");
   const isOn = fellowshipCore === "true";
 
   return {
@@ -58,8 +58,8 @@ export default function useFellowshipCoreOnlySwitch() {
         isOn={isOn}
         setIsOn={(isOn) =>
           isOn
-            ? addRouterQuery(router, "fellowship_core_only", "true")
-            : removeRouterQuery(router, "fellowship_core_only")
+            ? addRouterQuery(router, "core_only", "true")
+            : removeRouterQuery(router, "core_only")
         }
       />
     ),

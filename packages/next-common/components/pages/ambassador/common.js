@@ -3,7 +3,7 @@ import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 
 export default function AmbassadorMemberCommon({ children }) {
   return (
-    <ActiveReferendaProvider pallet="ambassadorReferenda">
+    <ActiveReferendaProvider pallet="fellowshipReferenda">
       <AmbassadorCoreCommon>{children}</AmbassadorCoreCommon>
     </ActiveReferendaProvider>
   );

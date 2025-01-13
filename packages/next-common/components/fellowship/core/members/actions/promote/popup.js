@@ -15,7 +15,10 @@ import AddressUser from "next-common/components/user/addressUser";
 import Chains from "next-common/utils/consts/chains";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { getEventData } from "next-common/utils/sendTransaction";
-import { useCollectivesSection } from "next-common/context/collectives/collectives";
+import {
+  useCollectivesSection,
+  useCoreFellowshipPallet,
+} from "next-common/context/collectives/collectives";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { ReferendaWarningMessage } from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
@@ -41,6 +44,8 @@ function PopupContent({ member }) {
   const trackName = getTrackNameFromRank(toRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
+  const corePallet = useCoreFellowshipPallet();
+  const referendaPallet = useCoreFellowshipPallet();
 
   const getTxFunc = useCallback(async () => {
     if (!api || !memberAddress) {
@@ -52,13 +57,22 @@ function PopupContent({ member }) {
       return;
     }
 
-    const proposal = api.tx.fellowshipCore.promote(memberAddress, toRank);
-    return api.tx.fellowshipReferenda.submit(
-      { FellowshipOrigins: trackName },
+    const proposal = api.tx[corePallet].promote(memberAddress, toRank);
+    return api.tx[referendaPallet].submit(
+      { FellowshipOrigins: trackName }, // TODO: not working for ambassador
       { Inline: proposal.method.toHex() },
       enactment,
     );
-  }, [api, toRank, trackName, memberAddress, enactment, dispatch]);
+  }, [
+    api,
+    toRank,
+    trackName,
+    memberAddress,
+    enactment,
+    dispatch,
+    referendaPallet,
+    corePallet,
+  ]);
 
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(
     member?.address,
@@ -95,11 +109,7 @@ function PopupContent({ member }) {
         disabled={isLoading || referendaAlreadyCreated}
         getTxFunc={getTxFunc}
         onInBlock={({ events }) => {
-          const eventData = getEventData(
-            events,
-            "fellowshipReferenda",
-            "Submitted",
-          );
+          const eventData = getEventData(events, referendaPallet, "Submitted");
           if (!eventData) {
             return;
           }

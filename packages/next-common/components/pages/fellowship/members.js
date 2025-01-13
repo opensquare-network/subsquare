@@ -20,16 +20,23 @@ import { useRouter } from "next/router";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import { SystemLoading } from "@osn/icons/subsquare";
+import MoreActions from "./moreActions";
 
 function FellowshipMembers({ viewMode, members, isLoading }) {
   if (viewMode === "list") {
-    return <FellowshipMemberListView members={members} isLoading={isLoading} />;
+    return (
+      <FellowshipMemberListView
+        members={members}
+        isLoading={isLoading}
+        ActionsComponent={MoreActions}
+      />
+    );
   }
 
   return <FellowshipMemberCardView members={members} isLoading={isLoading} />;
 }
 
-function useViewModeSwitch() {
+export function useViewModeSwitch() {
   const [viewMode, setViewMode] = useState("list");
   return {
     viewMode,
@@ -192,13 +199,13 @@ export default function FellowshipMembersPage() {
               evidence_only: false,
               period: "all",
               rank: null,
-              fellowship_core_only: true,
+              core_only: true,
             }}
             emptyFilterValues={{
               evidence_only: false,
               period: "all",
               rank: null,
-              fellowship_core_only: false,
+              core_only: false,
             }}
           >
             <FellowshipMembersPageInContext />

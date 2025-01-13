@@ -19,7 +19,7 @@ export default function FellowshipCoreMemberCard({
       params={params}
       pallet="fellowshipCore"
     >
-      <Actions member={member} />
+      <Actions member={member} params={params} />
     </CoreFellowshipMemberCard>
   );
 }
