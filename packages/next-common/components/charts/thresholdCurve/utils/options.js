@@ -1,6 +1,6 @@
 import { useThemeSetting } from "next-common/context/theme";
 import { formatDays, formatHours } from "next-common/utils/timeFormat";
-import { merge, noop } from "lodash-es";
+import { find, merge, noop } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import {
@@ -101,7 +101,7 @@ export function title(values) {
   return result;
 }
 
-function getDetailConfig(labels, commonPluginsConfig, labelFunc) {
+function getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks) {
   return {
     ...commonConfig,
     ...getScaleOptions(labels.length, true, true),
@@ -111,10 +111,12 @@ function getDetailConfig(labels, commonPluginsConfig, labelFunc) {
         mode: "index",
         intersect: false,
         displayColors: false,
-        callbacks: {
-          title,
-          label: labelFunc,
-        },
+        callbacks: merge(
+          {
+            title,
+          },
+          tooltipCallbacks,
+        ),
       },
     },
   };
@@ -123,10 +125,10 @@ function getDetailConfig(labels, commonPluginsConfig, labelFunc) {
 function getDetailConfigWithVotesData(
   labels,
   commonPluginsConfig,
-  labelFunc,
+  tooltipCallbacks,
   chainSettings,
 ) {
-  const config = getDetailConfig(labels, commonPluginsConfig, labelFunc);
+  const config = getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks);
   return merge(config, getVotesScaleOptions(chainSettings));
 }
 
@@ -165,18 +167,26 @@ export default function useDetailPageOptions(labels = [], datasets) {
   return getDetailConfigWithVotesData(
     labels,
     commonPluginsConfig,
-    function (tooltipItem) {
-      const { dataset } = tooltipItem;
-      if (dataset.label === "Approval") {
-        return handleTooltipLabel(tooltipItem, "Approval", datasets);
-      } else if (dataset.label === "Support") {
-        return handleTooltipLabel(tooltipItem, "Support", datasets);
-      } else if (dataset.label === "Aye") {
-        return handleVoteTooltipLabel(tooltipItem, "Aye", chainSettings);
-      } else if (dataset.label === "Nay") {
-        return handleVoteTooltipLabel(tooltipItem, "Nay", chainSettings);
-      }
-      return null;
+    {
+      label(tooltipItem) {
+        const { dataset } = tooltipItem;
+
+        if (dataset.label === "Approval") {
+          return handleTooltipLabel(tooltipItem, "Approval", datasets);
+        } else if (dataset.label === "Support") {
+          return handleTooltipLabel(tooltipItem, "Support", datasets);
+        }
+        return null;
+      },
+      afterBody(context) {
+        const nayTooltipItem = find(context, { dataset: { label: "Nay" } });
+        const ayeTooltipItem = find(context, { dataset: { label: "Aye" } });
+
+        return [
+          handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
+          handleVoteTooltipLabel(nayTooltipItem, "Nay", chainSettings),
+        ];
+      },
     },
     chainSettings,
   );
