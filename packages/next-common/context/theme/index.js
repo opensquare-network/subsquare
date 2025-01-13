@@ -18,8 +18,11 @@ const ThemeModeContext = createContext({});
 export default function ThemeModeProvider({ children, defaultThemeMode }) {
   const [themeMode, setThemeMode] = useState(defaultThemeMode || "light");
 
+  const preferredColorScheme = usePreferredColorScheme();
+  const mode = themeMode === "system" ? preferredColorScheme : themeMode;
+
   return (
-    <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
+    <ThemeModeContext.Provider value={{ themeMode, setThemeMode, mode }}>
       <ThemeValueProvider>{children}</ThemeValueProvider>
     </ThemeModeContext.Provider>
   );
@@ -33,9 +36,7 @@ export default function ThemeModeProvider({ children, defaultThemeMode }) {
  * @returns {[Mode, SetThemeMode, ThemeMode]} mode is only `light` or `dark`, themeMode can be `light`, `dark` or `system`
  */
 export function useThemeMode() {
-  const { themeMode, setThemeMode } = useContext(ThemeModeContext);
-  const preferredColorScheme = usePreferredColorScheme();
-  const mode = themeMode === "system" ? preferredColorScheme : themeMode;
+  const { themeMode, setThemeMode, mode } = useContext(ThemeModeContext);
 
   /**
    * @type {SetThemeMode}
