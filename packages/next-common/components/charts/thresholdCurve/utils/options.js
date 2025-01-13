@@ -183,9 +183,11 @@ export default function useDetailPageOptions(labels = [], datasets) {
         const ayeTooltipItem = find(context, { dataset: { label: "Aye" } });
 
         return [
-          handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
-          handleVoteTooltipLabel(nayTooltipItem, "Nay", chainSettings),
-        ];
+          ayeTooltipItem &&
+            handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
+          nayTooltipItem &&
+            handleVoteTooltipLabel(nayTooltipItem, "Nay", chainSettings),
+        ].filter(Boolean);
       },
     },
     chainSettings,
