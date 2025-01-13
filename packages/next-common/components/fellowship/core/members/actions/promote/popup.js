@@ -18,6 +18,7 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import {
   useCollectivesSection,
   useCoreFellowshipPallet,
+  useReferendaFellowshipPallet,
 } from "next-common/context/collectives/collectives";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
@@ -45,7 +46,7 @@ function PopupContent({ member }) {
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
   const corePallet = useCoreFellowshipPallet();
-  const referendaPallet = useCoreFellowshipPallet();
+  const referendaPallet = useReferendaFellowshipPallet();
 
   const getTxFunc = useCallback(async () => {
     if (!api || !memberAddress) {
