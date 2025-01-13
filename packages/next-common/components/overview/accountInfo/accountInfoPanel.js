@@ -31,6 +31,7 @@ import { isNil } from "lodash-es";
 import SecondaryButton from "next-common/lib/button/secondary";
 import Link from "next/link";
 import Button from "next-common/lib/button";
+import FellowshipTodoList from "./components/fellowshipTodoList";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -327,6 +328,8 @@ export function CommonAccountInfoPanel() {
       <AccountHead width={width} />
       <Divider />
       <AccountBalances />
+      <Divider />
+      <FellowshipTodoList />
       <ExtensionUpdatePrompt />
       <AssetHubManagePrompt />
       <MultisigManagePrompt />
