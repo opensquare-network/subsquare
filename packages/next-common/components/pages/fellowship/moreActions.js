@@ -15,19 +15,23 @@ import {
 import PromoteFellowshipMemberPopup from "next-common/components/fellowship/core/members/actions/promote/popup";
 import { OptionItem } from "next-common/components/internalDropdown/styled";
 import Tooltip from "next-common/components/tooltip";
+import { useContainerRef } from "next-common/context/containerRef";
 import useIsElementInLowerHalf from "next-common/hooks/useIsElementInLowerHalf";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useRef, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import { useClickAway } from "react-use";
 
-function useIsMe(address) {
+export const ContextMenuStateContext = createContext();
+
+export function useIsMe(address) {
   const realAddress = useRealAddress();
   return address === realAddress;
 }
 
-function PromoteMenuItem({ member, setShowPromotePopup, setShowContextMenu }) {
-  const { canPromote, reason } = useCanPromote(member);
+export function PromoteMenuItem({ member, params, setShowPromotePopup }) {
+  const { setShowContextMenu } = useContext(ContextMenuStateContext);
+  const { canPromote, reason } = useCanPromote(member, params);
   const shouldShow = useShouldShowPromoteButton(member);
   if (!shouldShow) {
     return null;
@@ -56,7 +60,8 @@ function PromoteMenuItem({ member, setShowPromotePopup, setShowContextMenu }) {
   );
 }
 
-function ApproveMenuItem({ member, setShowApprovePopup, setShowContextMenu }) {
+export function ApproveMenuItem({ member, setShowApprovePopup }) {
+  const { setShowContextMenu } = useContext(ContextMenuStateContext);
   const { canApprove, reason } = useCanApprove(member);
   const shouldShow = useShouldShowApproveButton(member);
   if (!shouldShow) {
@@ -86,7 +91,8 @@ function ApproveMenuItem({ member, setShowApprovePopup, setShowContextMenu }) {
   );
 }
 
-function BumpMenuItem({ member, setShowBumpPopup, setShowContextMenu }) {
+export function BumpMenuItem({ member, setShowBumpPopup }) {
+  const { setShowContextMenu } = useContext(ContextMenuStateContext);
   const canBump = useCanBump(member);
 
   if (!canBump) {
@@ -110,11 +116,8 @@ function BumpMenuItem({ member, setShowBumpPopup, setShowContextMenu }) {
   );
 }
 
-function SubmitEvidenceMenuItem({
-  member,
-  setShowSubmitEvidencePopup,
-  setShowContextMenu,
-}) {
+export function SubmitEvidenceMenuItem({ member, setShowSubmitEvidencePopup }) {
+  const { setShowContextMenu } = useContext(ContextMenuStateContext);
   const isMe = useIsMe(member.address);
   if (!isMe) {
     return null;
@@ -135,11 +138,8 @@ function SubmitEvidenceMenuItem({
   );
 }
 
-function ActivationMenuItem({
-  member,
-  setShowActivationPopup,
-  setShowContextMenu,
-}) {
+export function ActivationMenuItem({ member, setShowActivationPopup }) {
+  const { setShowContextMenu } = useContext(ContextMenuStateContext);
   const isMe = useIsMe(member.address);
   const { isActive } = member.status;
 
@@ -160,67 +160,78 @@ function ActivationMenuItem({
   );
 }
 
-export default function MoreActions({ member, dataListRef }) {
-  const { address } = member || {};
-
+export function MoreActionsWrapper({ children }) {
+  const [showContextMenu, setShowContextMenu] = useState(false);
   const ref = useRef();
   useClickAway(ref, () => setShowContextMenu(false));
-  const [showContextMenu, setShowContextMenu] = useState(false);
+  const dataListRef = useContainerRef();
+  const isInLowerHalf = useIsElementInLowerHalf(ref, dataListRef);
+
+  return (
+    <ContextMenuStateContext.Provider
+      value={{ showContextMenu, setShowContextMenu }}
+    >
+      <div className="relative" ref={ref}>
+        <div
+          role="button"
+          className={cn(
+            "inline-flex p-[6px] cursor-pointer",
+            "rounded-[4px] border-neutral400 border",
+          )}
+          onClick={() => setShowContextMenu(true)}
+        >
+          <SystemMore className="w-[16px] h-[16px]" />
+        </div>
+        {showContextMenu && (
+          <div
+            className={cn(
+              "z-10 absolute right-0 p-[4px] w-[160px]",
+              isInLowerHalf
+                ? "bottom-[calc(100%+6px)]"
+                : "top-[calc(100%+6px)]",
+              "rounded-[6px] border border-neutral200",
+              "bg-neutral100 shadow-200",
+            )}
+          >
+            {children}
+          </div>
+        )}
+      </div>
+    </ContextMenuStateContext.Provider>
+  );
+}
+
+export default function MoreActions({ member, params }) {
+  const { address } = member || {};
+
   const [showBumpPopup, setShowBumpPopup] = useState(false);
   const [showApprovePopup, setShowApprovePopup] = useState(false);
   const [showPromotePopup, setShowPromotePopup] = useState(false);
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
   const [showActivationPopup, setShowActivationPopup] = useState(false);
-  const isInLowerHalf = useIsElementInLowerHalf(ref, dataListRef);
 
   return (
-    <div className="relative" ref={ref}>
-      <div
-        role="button"
-        className={cn(
-          "inline-flex p-[6px] cursor-pointer",
-          "rounded-[4px] border-neutral400 border",
-        )}
-        onClick={() => setShowContextMenu(true)}
-      >
-        <SystemMore className="w-[16px] h-[16px]" />
-      </div>
-      {showContextMenu && (
-        <div
-          className={cn(
-            "z-10 absolute right-0 p-[4px] w-[160px]",
-            isInLowerHalf ? "bottom-[calc(100%+6px)]" : "top-[calc(100%+6px)]",
-            "rounded-[6px] border border-neutral200",
-            "bg-neutral100 shadow-200",
-          )}
-        >
-          <BumpMenuItem
-            member={member}
-            setShowBumpPopup={setShowBumpPopup}
-            setShowContextMenu={setShowContextMenu}
-          />
-          <ApproveMenuItem
-            member={member}
-            setShowApprovePopup={setShowApprovePopup}
-            setShowContextMenu={setShowContextMenu}
-          />
-          <PromoteMenuItem
-            member={member}
-            setShowPromotePopup={setShowPromotePopup}
-            setShowContextMenu={setShowContextMenu}
-          />
-          <SubmitEvidenceMenuItem
-            member={member}
-            setShowSubmitEvidencePopup={setShowSubmitEvidencePopup}
-            setShowContextMenu={setShowContextMenu}
-          />
-          <ActivationMenuItem
-            member={member}
-            setShowActivationPopup={setShowActivationPopup}
-            setShowContextMenu={setShowContextMenu}
-          />
-        </div>
-      )}
+    <>
+      <MoreActionsWrapper>
+        <BumpMenuItem member={member} setShowBumpPopup={setShowBumpPopup} />
+        <ApproveMenuItem
+          member={member}
+          setShowApprovePopup={setShowApprovePopup}
+        />
+        <PromoteMenuItem
+          member={member}
+          params={params}
+          setShowPromotePopup={setShowPromotePopup}
+        />
+        <SubmitEvidenceMenuItem
+          member={member}
+          setShowSubmitEvidencePopup={setShowSubmitEvidencePopup}
+        />
+        <ActivationMenuItem
+          member={member}
+          setShowActivationPopup={setShowActivationPopup}
+        />
+      </MoreActionsWrapper>
       {showBumpPopup && (
         <BumpFellowshipMemberPopup
           who={address}
@@ -255,6 +266,6 @@ export default function MoreActions({ member, dataListRef }) {
           }}
         />
       )}
-    </div>
+    </>
   );
 }

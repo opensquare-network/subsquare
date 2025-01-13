@@ -8,7 +8,10 @@ import usePeriodSelect, {
   Promotable,
 } from "next-common/components/pages/fellowship/usePeriodSelect";
 import { useRouterRankFilter } from "next-common/hooks/fellowship/useRankFilter";
-import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
+import {
+  useCoreFellowshipPallet,
+  useCoreFellowshipParams,
+} from "next-common/context/collectives/collectives";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useSelector } from "react-redux";
 import useLatestHeightSnapshot from "./useLatestHeightSnapshot";
@@ -33,6 +36,7 @@ function useSingleMemberStatus(item) {
 
 export function useMembersWithStatus(members) {
   const api = useContextApi();
+  const pallet = useCoreFellowshipPallet();
   const [membersWithStatus, setMembersWithStatus] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -42,7 +46,7 @@ export function useMembersWithStatus(members) {
     }
 
     setIsLoading(true);
-    api.query.fellowshipCore.member
+    api.query[pallet].member
       .multi(members.map((m) => m.address))
       .then((result) => {
         const membersWithStatus = members.map((item, index) => {
@@ -58,7 +62,7 @@ export function useMembersWithStatus(members) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, members]);
+  }, [api, members, pallet]);
 
   return {
     membersWithStatus,

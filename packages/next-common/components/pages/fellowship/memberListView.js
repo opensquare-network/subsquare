@@ -7,13 +7,15 @@ import {
   FellowshipDemotionPeriodWithProgress,
   FellowshipPromotionPeriodWithProgress,
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import {
+  useCollectivesContext,
+  useCoreFellowshipPallet,
+} from "next-common/context/collectives/collectives";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
 import {
   CoreFellowshipMemberRelatedReferendaContent,
   useFellowshipCoreRelatedReferenda,
 } from "next-common/components/collectives/core/member/relatedReferenda";
-import MoreActions from "./moreActions";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
 import CoreFellowshipMemberSalary from "next-common/components/collectives/core/member/salary";
@@ -22,6 +24,7 @@ import { AvatarAndAddressInListView } from "next-common/components/collectives/c
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import Tooltip from "next-common/components/tooltip";
+import { ContainerRefProvider } from "next-common/context/containerRef";
 
 const collectivesMemberColumns = [
   {
@@ -60,7 +63,7 @@ const collectivesMemberColumns = [
 ];
 
 function EvidenceAndReferenda({ member }) {
-  const pallet = "fellowshipCore";
+  const pallet = useCoreFellowshipPallet();
   const { address } = member;
   const { relatedReferenda, isLoading: isLoadingRelatedReferenda } =
     useFellowshipCoreRelatedReferenda(address, pallet);
@@ -127,7 +130,7 @@ function NonCoreMemberAddressCol({ address }) {
   );
 }
 
-function getCoreMemberRow({ idx, member, params, dataListRef }) {
+function getCoreMemberRow({ idx, member, params, ActionsComponent }) {
   const { address, rank } = member;
   const { isActive } = member.status;
   const {
@@ -165,7 +168,7 @@ function getCoreMemberRow({ idx, member, params, dataListRef }) {
     ),
     <EvidenceAndReferenda key="evidence" member={member} />,
     <div key="more">
-      <MoreActions member={member} dataListRef={dataListRef} />
+      {ActionsComponent && <ActionsComponent member={member} params={params} />}
     </div>,
   ];
 }
@@ -184,7 +187,11 @@ function getNonCoreMemberRow({ idx, member }) {
   ];
 }
 
-function CollectivesMemberTable({ members = [], isLoading = false }) {
+function CollectivesMemberTable({
+  members = [],
+  isLoading = false,
+  ActionsComponent,
+}) {
   const dataListRef = useRef();
   const realAddress = useRealAddress();
   const { params = {} } = useCollectivesContext();
@@ -197,7 +204,12 @@ function CollectivesMemberTable({ members = [], isLoading = false }) {
         let row = [];
 
         if (isFellowshipCoreMember) {
-          row = getCoreMemberRow({ idx, member, params, dataListRef });
+          row = getCoreMemberRow({
+            idx,
+            member,
+            params,
+            ActionsComponent,
+          });
         } else {
           row = getNonCoreMemberRow({ idx, member });
         }
@@ -208,24 +220,27 @@ function CollectivesMemberTable({ members = [], isLoading = false }) {
 
         return row;
       }),
-    [members, params, realAddress],
+    [members, params, realAddress, ActionsComponent],
   );
 
   return (
-    <DataList
-      ref={dataListRef}
-      bordered
-      columns={collectivesMemberColumns}
-      noDataText="No Members"
-      rows={rows}
-      loading={isLoading}
-    />
+    <ContainerRefProvider ref={dataListRef}>
+      <DataList
+        ref={dataListRef}
+        bordered
+        columns={collectivesMemberColumns}
+        noDataText="No Members"
+        rows={rows}
+        loading={isLoading}
+      />
+    </ContainerRefProvider>
   );
 }
 
 function FellowshipMemberListView({
   members: _members,
   isLoading: _isLoading = true,
+  ActionsComponent,
 }) {
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -235,7 +250,13 @@ function FellowshipMemberListView({
     setMembers(_members);
   }, [_members, _isLoading]);
 
-  return <CollectivesMemberTable members={members} isLoading={isLoading} />;
+  return (
+    <CollectivesMemberTable
+      members={members}
+      isLoading={isLoading}
+      ActionsComponent={ActionsComponent}
+    />
+  );
 }
 
 export default memo(FellowshipMemberListView);

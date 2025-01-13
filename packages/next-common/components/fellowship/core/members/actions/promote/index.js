@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { usePageProps } from "next-common/context/page";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
@@ -30,7 +29,7 @@ export function useShouldShowPromoteButton(member) {
   return true;
 }
 
-export function useCanPromote(member) {
+export function useCanPromote(member, params) {
   const address = useRealAddress();
   const {
     rank,
@@ -42,7 +41,6 @@ export function useCanPromote(member) {
   const { members } = useFellowshipCoreMembers();
 
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  const { fellowshipParams } = usePageProps();
   const blockTime = useSelector(blockTimeSelector);
 
   const me = find(members, { address });
@@ -50,7 +48,7 @@ export function useCanPromote(member) {
 
   const toRank = rank + 1;
   const index = rankToIndex(toRank);
-  const promotionPeriod = fellowshipParams.minPromotionPeriod[index];
+  const promotionPeriod = params.minPromotionPeriod[index];
   const gone = latestHeight - lastPromotion;
   const promotionPeriodComplete = gone >= promotionPeriod;
   const isReferendaExisted = relatedReferenda.length === 0;
@@ -72,8 +70,12 @@ export function useCanPromote(member) {
   return { canPromote, reason };
 }
 
-export function CoreFellowshipPromoteButton({ member, onClick = noop }) {
-  const { canPromote, reason } = useCanPromote(member);
+export function CoreFellowshipPromoteButton({
+  member,
+  params,
+  onClick = noop,
+}) {
+  const { canPromote, reason } = useCanPromote(member, params);
 
   if (!canPromote) {
     return (
@@ -93,7 +95,7 @@ export function CoreFellowshipPromoteButton({ member, onClick = noop }) {
   );
 }
 
-export default function CoreFellowshipPromote({ member }) {
+export default function CoreFellowshipPromote({ member, params }) {
   const [showPromotePopup, setShowPromotePopup] = useState(false);
   const shouldShowButton = useShouldShowPromoteButton(member);
   if (!shouldShowButton) {
@@ -104,6 +106,7 @@ export default function CoreFellowshipPromote({ member }) {
     <>
       <CoreFellowshipPromoteButton
         member={member}
+        params={params}
         onClick={() => setShowPromotePopup(true)}
       />
       {showPromotePopup && (
