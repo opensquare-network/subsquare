@@ -30,3 +30,21 @@ export default function AvatarAndAddress({ address, isActive }) {
     </div>
   );
 }
+
+export function AvatarAndAddressInListView({ address, isActive }) {
+  const { section } = useCollectivesContext();
+
+  return (
+    <div className="flex items-center gap-x-[8px]">
+      <Tooltip content={isActive ? "Active" : "Inactive"}>
+        <SignalIndicator className="w-[16px] h-[16px]" active={isActive} />
+      </Tooltip>
+      <AddressUser
+        add={address}
+        fontSize={14}
+        className="[&_.identity]:!font-semibold"
+        link={`/${section}`}
+      />
+    </div>
+  );
+}

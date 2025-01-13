@@ -4,6 +4,7 @@ import Descriptions from "../Descriptions";
 import { last } from "lodash-es";
 import { isNil } from "lodash-es";
 import { useNavCollapsed } from "next-common/context/nav";
+import useIsNarrowView from "next-common/hooks/useIsNarrowView";
 
 export default function DataListItem({
   columns,
@@ -16,6 +17,7 @@ export default function DataListItem({
 }) {
   const { onClick } = row ?? {};
   const [navCollapsed] = useNavCollapsed();
+  const isNarrowView = useIsNarrowView();
 
   return (
     <div
@@ -39,32 +41,30 @@ export default function DataListItem({
       )}
       onClick={onClick}
     >
-      <DesktopContent
-        row={row}
-        columnClassNames={columnClassNames}
-        columnStyles={columnStyles}
-        navCollapsed={navCollapsed}
-      />
-
-      <MobileContent
-        row={row}
-        columns={columns}
-        columnClassNames={columnClassNames}
-        navCollapsed={navCollapsed}
-        descriptionClassName={descriptionClassName}
-      />
+      {isNarrowView ? (
+        <MobileContent
+          row={row}
+          columns={columns}
+          columnClassNames={columnClassNames}
+          descriptionClassName={descriptionClassName}
+        />
+      ) : (
+        <DesktopContent
+          row={row}
+          columnClassNames={columnClassNames}
+          columnStyles={columnStyles}
+        />
+      )}
     </div>
   );
 }
 
-function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
+function DesktopContent({ row, columnClassNames, columnStyles }) {
   return (
     <div
-      className={cn(
-        "datalist-desktop-item w-full flex items-center",
-        navCollapsed ? "max-sm:hidden" : "max-md:hidden",
-      )}
+      className={cn("relative datalist-desktop-item w-full flex items-center")}
     >
+      {row.tag}
       {row?.map((item, idx) => (
         <div
           key={idx}
@@ -78,12 +78,9 @@ function DesktopContent({ row, columnClassNames, columnStyles, navCollapsed }) {
   );
 }
 
-function MobileContent({
-  row = [],
-  columns,
-  navCollapsed,
-  descriptionClassName,
-}) {
+function MobileContent({ row = [], columns, descriptionClassName }) {
+  const [navCollapsed] = useNavCollapsed();
+
   const items = columns.map((col, idx) => {
     return {
       name: col.name,
@@ -122,10 +119,11 @@ function MobileContent({
   return (
     <div
       className={cn(
-        "datalist-mobile-item space-y-3",
-        navCollapsed ? "sm:hidden sm:py-4" : "md:hidden md:py-4",
+        "relative datalist-mobile-item space-y-3",
+        navCollapsed ? "sm:py-4" : "md:py-4",
       )}
     >
+      {row.tag}
       <div>
         <div className="flex grow items-center justify-between">
           {first.value}

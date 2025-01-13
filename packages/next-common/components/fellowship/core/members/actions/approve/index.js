@@ -9,8 +9,19 @@ import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelate
 
 const ApproveFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
 
-export default function Approve({ member }) {
-  const [showApprovePopup, setShowApprovePopup] = useState(false);
+export function useShouldShowApproveButton(member) {
+  if (member.rank <= 0) {
+    // no approve action for candidates
+    return false;
+  }
+  if (!CollectivesRetainTracks[member?.rank]) {
+    // only show when we have the corresponding track
+    return false;
+  }
+  return true;
+}
+
+export function useCanApprove(member) {
   const address = useRealAddress();
   const { address: memberAddress } = member;
   const { relatedReferenda } = useRelatedRetentionReferenda(memberAddress);
@@ -18,42 +29,57 @@ export default function Approve({ member }) {
   const { members } = useFellowshipCoreMembers();
   const me = find(members, { address });
 
-  if (member.rank <= 0) {
-    // no approve action for candidates
-    return null;
-  }
-  if (!CollectivesRetainTracks[member?.rank]) {
-    // only show when we have the corresponding track
-    return null;
-  }
-
   const myRankOk = me && me.rank >= 3;
   const referendaNotCreated = relatedReferenda.length === 0;
   const canApprove = myRankOk && referendaNotCreated;
 
-  let tooltipContent = "";
+  let reason = "";
   if (!myRankOk) {
-    tooltipContent = "Only available to the members with rank >= 3";
+    reason = "Only available to the members with rank >= 3";
   } else if (!referendaNotCreated) {
-    tooltipContent = "There are retention referenda for this member on going";
+    reason = "There are retention referenda for this member on going";
   }
+
+  return {
+    canApprove,
+    reason,
+  };
+}
+
+export function CoreFellowshipApproveButton({ member, onClick }) {
+  const { canApprove, reason } = useCanApprove(member);
 
   if (!canApprove) {
     return (
-      <Tooltip content={tooltipContent}>
+      <Tooltip content={reason}>
         <span className="text14Medium text-textDisabled">Approve</span>
       </Tooltip>
     );
   }
 
   return (
+    <span
+      className="text14Medium text-theme500 cursor-pointer"
+      onClick={onClick}
+    >
+      Approve
+    </span>
+  );
+}
+
+export default function CoreFellowshipApprove({ member }) {
+  const [showApprovePopup, setShowApprovePopup] = useState(false);
+  const shouldShowButton = useShouldShowApproveButton(member);
+  if (!shouldShowButton) {
+    return null;
+  }
+
+  return (
     <>
-      <span
-        className="text14Medium text-theme500 cursor-pointer"
+      <CoreFellowshipApproveButton
+        member={member}
         onClick={() => setShowApprovePopup(true)}
-      >
-        Approve
-      </span>
+      />
       {showApprovePopup && (
         <ApproveFellowshipMemberPopup
           member={member}

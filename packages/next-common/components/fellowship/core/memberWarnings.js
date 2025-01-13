@@ -1,6 +1,6 @@
 import { isNil, partition } from "lodash-es";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
@@ -152,6 +152,20 @@ function useEvidencesStat() {
   };
 }
 
+function MemberWarningsPanel({ className, isLoading, items }) {
+  const icon = (
+    <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
+  );
+
+  if (isLoading) {
+    return (
+      <BillBoardPanel className={className} icon={icon} isLoading={true} />
+    );
+  }
+
+  return <BillBoardPanel className={className} icon={icon} items={items} />;
+}
+
 export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
   const {
@@ -172,39 +186,32 @@ export default function MemberWarnings({ className }) {
   } = useEvidencesStat();
 
   const filterLinks = {
-    evidenceOnly: `/${section}/core?evidence_only=true`,
-    demotionPeriodAboutToExpire: `/${section}/core?period=demotion_period_about_to_expire`,
-    demotionPeriodExpired: `/${section}/core?period=demotion_period_expired`,
-    promotable: `/${section}/core?period=promotable`,
+    evidenceOnly: `/${section}/members?evidence_only=true`,
+    demotionPeriodAboutToExpire: `/${section}/members?period=demotion_period_about_to_expire`,
+    demotionPeriodExpired: `/${section}/members?period=demotion_period_expired`,
+    promotable: `/${section}/members?period=promotable`,
   };
 
   if (isEvidenceLoading || isCheckingDemotion || isPromotionLoading) {
-    return null;
+    return <MemberWarningsPanel className={className} isLoading={true} />;
   }
 
   const promptItems = [
     totalEvidences > 0 && (
       <>
         {evidencesToBeHandled} evidences to be handled in total{" "}
-        <ShallowLink href={filterLinks.evidenceOnly} className="mx-1">
-          <PromptButton filterLink={filterLinks.evidenceOnly}>
-            {totalEvidences} evidences
-          </PromptButton>
-        </ShallowLink>
+        <PromptButton filterLink={filterLinks.evidenceOnly}>
+          {totalEvidences} evidences
+        </PromptButton>
         .
       </>
     ),
     expiringMembersCount > 0 && (
       <>
         {"The demotion periods of "}
-        <ShallowLink
-          href={filterLinks.demotionPeriodAboutToExpire}
-          className="mx-1"
-        >
-          <PromptButton filterLink={filterLinks.demotionPeriodAboutToExpire}>
-            {expiringMembersCount} members
-          </PromptButton>
-        </ShallowLink>
+        <PromptButton filterLink={filterLinks.demotionPeriodAboutToExpire}>
+          {expiringMembersCount} members
+        </PromptButton>
         {" will expire in under 20 days."}
       </>
     ),
@@ -213,11 +220,9 @@ export default function MemberWarnings({ className }) {
 
     expiredMembersCount > 0 && (
       <>
-        <ShallowLink href={filterLinks.demotionPeriodExpired} className="mr-1">
-          <PromptButton filterLink={filterLinks.demotionPeriodExpired}>
-            {expiredMembersCount} members
-          </PromptButton>
-        </ShallowLink>
+        <PromptButton filterLink={filterLinks.demotionPeriodExpired}>
+          {expiredMembersCount} members
+        </PromptButton>
         {" can be demoted."}
         <BatchBump />
       </>
@@ -228,25 +233,15 @@ export default function MemberWarnings({ className }) {
     availablePromotionCount > 0 && (
       <>
         Promotions are available for{" "}
-        <ShallowLink href={filterLinks.promotable} className="mx-1">
-          <PromptButton filterLink={filterLinks.promotable}>
-            {availablePromotionCount} members
-          </PromptButton>
-        </ShallowLink>
+        <PromptButton filterLink={filterLinks.promotable}>
+          {availablePromotionCount} members
+        </PromptButton>
         .
       </>
     ),
   ].filter(Boolean);
 
-  return (
-    <BillBoardPanel
-      className={className}
-      icon={
-        <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
-      }
-      items={promptItems}
-    />
-  );
+  return <MemberWarningsPanel className={className} items={promptItems} />;
 }
 
 function PromptButton({ children, filterLink = "" }) {
@@ -254,24 +249,30 @@ function PromptButton({ children, filterLink = "" }) {
   const [flag, setFlag] = useState(false);
   const matched = router.asPath === filterLink;
   const isActive = flag && matched;
+  const currentPath = router.asPath.split("?")[0];
+  useEffect(() => {
+    setFlag(matched);
+  }, [matched]);
 
   return (
-    <SecondaryButton
-      size="small"
-      iconLeft={
-        <SystemFilter
-          className={cn(
-            "w-4 h-4",
-            isActive ? "text-theme500" : "text-textTertiary",
-          )}
-        />
-      }
-      className={cn(isActive && "text-theme500")}
-      onClick={() => {
-        setFlag(true);
-      }}
-    >
-      {children}
-    </SecondaryButton>
+    <ShallowLink href={isActive ? currentPath : filterLink} className="mx-1">
+      <SecondaryButton
+        size="small"
+        iconLeft={
+          <SystemFilter
+            className={cn(
+              "w-4 h-4",
+              isActive ? "text-theme500" : "text-textTertiary",
+            )}
+          />
+        }
+        className={cn(isActive && "text-theme500")}
+        onClick={() => {
+          setFlag(!flag);
+        }}
+      >
+        {children}
+      </SecondaryButton>
+    </ShallowLink>
   );
 }

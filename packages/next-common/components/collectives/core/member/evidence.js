@@ -9,27 +9,24 @@ import AvatarAndAddress from "./avatarAndAddress";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import FellowshipEvidenceContent from "../evidenceContent";
 
-export default function CoreFellowshipMemberEvidence({
+export function CoreFellowshipMemberEvidenceContent({
   member,
-  pallet = "fellowshipCore",
+  isLoading,
+  wish,
+  evidence,
 }) {
   const { address, rank } = member || {};
   const { isActive } = member?.status || {};
 
   const [detailOpen, setDetailOpen] = useState(false);
 
-  const { loading, wish, evidence } = useSubCoreFellowshipEvidence(
-    address,
-    pallet,
-  );
-
   let content = <span className="text-textTertiary">-</span>;
 
-  if (loading) {
+  if (isLoading) {
     content = <FieldLoading size={16} />;
   } else if (evidence) {
     content = (
-      <div className="flex gap-[8px]">
+      <>
         <Tooltip content="Wish">
           <span className="text-textPrimary capitalize">{wish}</span>
         </Tooltip>
@@ -40,21 +37,15 @@ export default function CoreFellowshipMemberEvidence({
             setDetailOpen(true);
           }}
         >
-          View Detail
+          Detail
         </span>
-      </div>
+      </>
     );
   }
 
   return (
     <>
-      <CoreFellowshipMemberInfoWrapper>
-        <CoreFellowshipMemberInfoTitle className="mb-0.5">
-          Evidence
-        </CoreFellowshipMemberInfoTitle>
-        <div className="flex text12Medium">{content}</div>
-      </CoreFellowshipMemberInfoWrapper>
-
+      {content}
       {detailOpen && (
         <Popup
           title="Evidence Detail"
@@ -77,6 +68,35 @@ export default function CoreFellowshipMemberEvidence({
           <FellowshipEvidenceContent wish={wish} evidence={evidence} />
         </Popup>
       )}
+    </>
+  );
+}
+
+export default function CoreFellowshipMemberEvidence({
+  member,
+  pallet = "fellowshipCore",
+}) {
+  const { address } = member || {};
+  const { loading, wish, evidence } = useSubCoreFellowshipEvidence(
+    address,
+    pallet,
+  );
+
+  return (
+    <>
+      <CoreFellowshipMemberInfoWrapper>
+        <CoreFellowshipMemberInfoTitle className="mb-0.5">
+          Evidence
+        </CoreFellowshipMemberInfoTitle>
+        <div className="flex text12Medium gap-[8px]">
+          <CoreFellowshipMemberEvidenceContent
+            member={member}
+            isLoading={loading}
+            wish={wish}
+            evidence={evidence}
+          />
+        </div>
+      </CoreFellowshipMemberInfoWrapper>
     </>
   );
 }

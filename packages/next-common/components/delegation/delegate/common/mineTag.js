@@ -1,12 +1,28 @@
 import { cn } from "next-common/utils";
 
-export default function MineTag() {
+export default function MineTagOnCardView() {
+  return (
+    <div className="absolute left-0 top-[24px]">
+      <MineTag />
+    </div>
+  );
+}
+
+export function MineTagOnListView() {
+  return (
+    <div className="absolute -left-[24px] max-sm:-top-[6px]">
+      <MineTag />
+    </div>
+  );
+}
+
+export function MineTag() {
   return (
     <div
       className={cn(
         "flex items-center justify-center",
         "bg-theme500 text-white",
-        "absolute left-0 top-[24px] h-[40px] w-[16px]",
+        "h-[40px] w-[16px]",
         "rounded-tr-[4px] rounded-br-[4px]",
       )}
     >

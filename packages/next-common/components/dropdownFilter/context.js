@@ -49,7 +49,7 @@ const CommittedFilterStateContext = createContext();
 function subtractObject(a, b) {
   return Object.fromEntries(
     Object.entries(a).filter(
-      ([key, value]) => value.toString() !== b[key].toString(),
+      ([key, value]) => value?.toString() !== b[key]?.toString(),
     ),
   );
 }
