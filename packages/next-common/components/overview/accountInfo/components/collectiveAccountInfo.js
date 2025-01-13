@@ -1,6 +1,5 @@
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import FieldLoading from "next-common/components/icons/fieldLoading";
 import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import DemotionRemainLabel from "next-common/components/profile/fellowship/demotionRemainLabel";
@@ -13,16 +12,8 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
 import AccountBalances from "./accountBalances";
 
-function MemberInfo({ data, isLoading }) {
-  if (isLoading) {
-    return <FieldLoading />;
-  }
-
+function MemberInfo({ data }) {
   const { collectiveMember, coreMember, coreParams } = data;
-
-  if (!collectiveMember || !coreMember || !coreParams) {
-    return <span className="text-textTertiary text16Bold">-</span>;
-  }
 
   return (
     <div className="flex flex-col gap-[16px] mt-1">
@@ -48,18 +39,40 @@ function MemberInfo({ data, isLoading }) {
 
 function FellowshipMember() {
   const { data, isLoading } = useFellowshipMemberData();
+
+  if (isLoading) {
+    return null;
+  }
+
+  const { collectiveMember, coreMember, coreParams } = data;
+
+  if (!collectiveMember || !coreMember || !coreParams) {
+    return null;
+  }
+
   return (
     <SummaryItem title="Fellowship">
-      <MemberInfo data={data} isLoading={isLoading} />
+      <MemberInfo data={data} />
     </SummaryItem>
   );
 }
 
 function AmbassadorMember() {
   const { data, isLoading } = useAmbassadorMemberData();
+
+  if (isLoading) {
+    return null;
+  }
+
+  const { collectiveMember, coreMember, coreParams } = data;
+
+  if (!collectiveMember || !coreMember || !coreParams) {
+    return null;
+  }
+
   return (
     <SummaryItem title="Ambassador">
-      <MemberInfo data={data} isLoading={isLoading} />
+      <MemberInfo data={data} />
     </SummaryItem>
   );
 }
