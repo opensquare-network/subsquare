@@ -7,7 +7,10 @@ import {
   FellowshipDemotionPeriodWithProgress,
   FellowshipPromotionPeriodWithProgress,
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import {
+  useCollectivesContext,
+  useCoreFellowshipPallet,
+} from "next-common/context/collectives/collectives";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
 import {
   CoreFellowshipMemberRelatedReferendaContent,
@@ -60,7 +63,7 @@ const collectivesMemberColumns = [
 ];
 
 function EvidenceAndReferenda({ member }) {
-  const pallet = "fellowshipCore";
+  const pallet = useCoreFellowshipPallet();
   const { address } = member;
   const { relatedReferenda, isLoading: isLoadingRelatedReferenda } =
     useFellowshipCoreRelatedReferenda(address, pallet);

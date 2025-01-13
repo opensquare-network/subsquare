@@ -48,8 +48,8 @@ export function useFellowshipCoreOnlySwitchInDropdown() {
 
 export default function useFellowshipCoreOnlySwitch() {
   const router = useRouter();
-  const fellowshipCore = getRouterQuery(router, "core_only");
-  const isOn = fellowshipCore === "true";
+  const isCoreOnly = getRouterQuery(router, "core_only");
+  const isOn = isCoreOnly === "true";
 
   return {
     isOn,
