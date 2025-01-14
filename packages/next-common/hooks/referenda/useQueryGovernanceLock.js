@@ -19,16 +19,10 @@ export default function useQueryGovernanceLock(address) {
       };
     }
 
-    const normalized = rawLocks.map((rawLock) => ({
-      trackId: rawLock[0].toNumber(),
-      locked: rawLock[1].toString(),
-    }));
-
-    const maxLockedValue = normalized.reduce(
-      (max, current) =>
-        new BigNumber(current.locked).gt(max) ? current.locked : max,
-      "0",
-    );
+    const maxLockedValue = rawLocks.reduce((max, rawLock) => {
+      const locked = rawLock[1].toString();
+      return new BigNumber(locked).gt(max) ? locked : max;
+    }, "0");
 
     return {
       isLoading: loading,
