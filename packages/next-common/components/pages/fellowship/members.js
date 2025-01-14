@@ -156,13 +156,15 @@ function FellowshipMembersPageInContext() {
   const { filteredMembers: members, component: memberFilters } =
     useMembersFilter(regularMembers);
 
-  const candidates = useMemo(
-    () =>
-      (membersWithStatus || []).filter(
-        (member) => member.rank <= 0 && member.isFellowshipCoreMember,
-      ),
-    [membersWithStatus],
-  );
+  const candidates = useMemo(() => {
+    if (!membersWithStatus) {
+      return null;
+    }
+
+    return (membersWithStatus || []).filter(
+      (member) => member.rank <= 0 && member.isFellowshipCoreMember,
+    );
+  }, [membersWithStatus]);
 
   const isCandidatesPage =
     router.asPath === "/fellowship/members?tab=candidates";
