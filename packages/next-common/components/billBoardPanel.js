@@ -24,7 +24,7 @@ function LoadingBar() {
     <div
       className={cn(
         "w-[320px] h-[20px] my-[4px] rounded-[4px]",
-        "bg-gradient-to-r from-[rgba(235,238,244,0.8)] to-[rgba(235,238,244,0.2)]",
+        "bg-gradient-to-r from-[rgba(235,238,244,0.8)] to-[rgba(235,238,244,0.2)] dark:from-[rgba(40,43,59,0.8)] dark:to-[rgba(40,43,59,0.2)]",
       )}
     />
   );
