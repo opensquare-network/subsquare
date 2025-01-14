@@ -24,7 +24,7 @@ export function useSubstrateWallets() {
     talisman,
     !isSubstrateThroughEvm && polkagate,
     !isSubstrateThroughEvm && polkagateSnap,
-    nova,
+    !isSubstrateThroughEvm && nova,
   ].filter(Boolean);
   let multiSigWallets = [];
 
