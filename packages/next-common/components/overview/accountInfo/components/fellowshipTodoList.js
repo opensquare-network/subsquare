@@ -1,7 +1,6 @@
 import SecondaryButton from "next-common/lib/button/secondary";
 import CollapsePanel, { AlwaysVisible } from "./collapsePanel";
 import { ArrowRight, MenuAsset, MenuFellowship } from "@osn/icons/subsquare";
-import { cn } from "next-common/utils";
 
 function Title() {
   return (
@@ -16,12 +15,11 @@ function Title() {
 function NavigateButton({ icon, href, children }) {
   return (
     <SecondaryButton
-      className={cn(
-        "text12Medium text-textPrimary p-[6px] h-[28px]",
-        "[&_svg_path]:fill-textTertiary [&_svg_path]:stroke-textTertiary",
-      )}
+      className="text12Medium text-textPrimary p-[6px] h-[28px] rounded-md"
       iconLeft={icon}
-      iconRight={<ArrowRight className="w-[16px] h-[16px]" />}
+      iconRight={
+        <ArrowRight className="w-[16px] h-[16px] [&_path]:stroke-textTertiary" />
+      }
       onClick={() => window.open(href, "_blank")}
     >
       {children}
@@ -32,7 +30,9 @@ function NavigateButton({ icon, href, children }) {
 function AllMembersButton() {
   return (
     <NavigateButton
-      icon={<MenuFellowship className="w-[16px] h-[16px]" />}
+      icon={
+        <MenuFellowship className="w-[16px] h-[16px] [&_path]:fill-textTertiary" />
+      }
       href="https://collectives.subsquare.io/fellowship/members"
     >
       All Members
@@ -43,7 +43,9 @@ function AllMembersButton() {
 function SalaryCyclesButton() {
   return (
     <NavigateButton
-      icon={<MenuAsset className="w-[16px] h-[16px]" />}
+      icon={
+        <MenuAsset className="w-[16px] h-[16px] [&_path]:fill-textTertiary" />
+      }
       href="https://collectives.subsquare.io/fellowship/salary"
     >
       Salary Cycles
