@@ -1,5 +1,4 @@
 import VoteValue from "components/referenda/popup/voteValue";
-import ReUseLocks from "next-common/components/vote/reUseLocks";
 
 export default function SplitAbstainVote({
   isLoading,
@@ -9,7 +8,6 @@ export default function SplitAbstainVote({
   setNayInputVoteBalance,
   abstainInputVoteBalance,
   setAbstainInputVoteBalance,
-  showReUseLocks,
 }) {
   return (
     <>
@@ -20,12 +18,6 @@ export default function SplitAbstainVote({
         inputVoteBalance={abstainInputVoteBalance}
         setInputVoteBalance={setAbstainInputVoteBalance}
       />
-      {showReUseLocks && (
-        <ReUseLocks
-          reUseGovLocks={setAbstainInputVoteBalance}
-          reUseAllLocks={setAbstainInputVoteBalance}
-        />
-      )}
       <VoteValue
         title="Aye Vote Value"
         titleTooltip=""

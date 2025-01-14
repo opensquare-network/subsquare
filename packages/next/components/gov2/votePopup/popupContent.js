@@ -61,14 +61,12 @@ function VotePanel({
     referendumIndex,
     isLoading,
     votingBalance,
-    showReUseLocks: true,
   });
   const { SplitAbstainVoteComponent, getSplitAbstainVoteTx } =
     useSplitAbstainVote({
       referendumIndex,
       isLoading,
       votingBalance,
-      showReUseLocks: true,
     });
 
   let voteComponent = null;

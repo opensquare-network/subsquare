@@ -10,7 +10,6 @@ export default function useSplitAbstainVote({
   referendumIndex,
   isLoading,
   votingBalance,
-  showReUseLocks,
 }) {
   const dispatch = useDispatch();
   const [ayeInputVoteBalance, setAyeInputVoteBalance] = useState("0");
@@ -28,7 +27,6 @@ export default function useSplitAbstainVote({
       setNayInputVoteBalance={setNayInputVoteBalance}
       abstainInputVoteBalance={abstainInputVoteBalance}
       setAbstainInputVoteBalance={setAbstainInputVoteBalance}
-      showReUseLocks={showReUseLocks}
     />
   );
 

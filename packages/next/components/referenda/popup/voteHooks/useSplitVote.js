@@ -11,7 +11,6 @@ export default function useSplitVote({
   referendumIndex,
   isLoading,
   votingBalance,
-  showReUseLocks,
 }) {
   const dispatch = useDispatch();
   const [ayeInputVoteBalance, setAyeInputVoteBalance] = useState("0");
@@ -26,7 +25,6 @@ export default function useSplitVote({
       setAyeInputVoteBalance={setAyeInputVoteBalance}
       nayInputVoteBalance={nayInputVoteBalance}
       setNayInputVoteBalance={setNayInputVoteBalance}
-      showReUseLocks={showReUseLocks}
     />
   );
 

@@ -10,7 +10,7 @@ const GovLocks = ({ reUseGovLocks }) => {
 
   const { balance, isLoading } = useQueryGovernanceLock(address);
 
-  if (isLoading || !balance) {
+  if (balance == 0 || isLoading) {
     return null;
   }
 

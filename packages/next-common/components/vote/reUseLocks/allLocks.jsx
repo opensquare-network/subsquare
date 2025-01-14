@@ -8,7 +8,7 @@ const AllLocks = ({ reUseAllLocks }) => {
   const { info, isLoading } = useUserAccountInfo();
   const lockedBalance = info?.data?.lockedBalance;
 
-  if (!lockedBalance || isLoading) {
+  if (lockedBalance == 0 || isLoading) {
     return null;
   }
 

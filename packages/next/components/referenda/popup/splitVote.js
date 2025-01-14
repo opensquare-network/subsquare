@@ -1,5 +1,4 @@
 import VoteValue from "./voteValue";
-import ReUseLocks from "next-common/components/vote/reUseLocks";
 
 export default function SplitVote({
   isLoading,
@@ -7,7 +6,6 @@ export default function SplitVote({
   setAyeInputVoteBalance,
   nayInputVoteBalance,
   setNayInputVoteBalance,
-  showReUseLocks,
 }) {
   return (
     <>
@@ -18,12 +16,6 @@ export default function SplitVote({
         inputVoteBalance={ayeInputVoteBalance}
         setInputVoteBalance={setAyeInputVoteBalance}
       />
-      {showReUseLocks && (
-        <ReUseLocks
-          reUseGovLocks={setAyeInputVoteBalance}
-          reUseAllLocks={setAyeInputVoteBalance}
-        />
-      )}
       <VoteValue
         title="Nay Vote Value"
         titleTooltip=""
@@ -31,12 +23,6 @@ export default function SplitVote({
         inputVoteBalance={nayInputVoteBalance}
         setInputVoteBalance={setNayInputVoteBalance}
       />
-      {showReUseLocks && (
-        <ReUseLocks
-          reUseGovLocks={setNayInputVoteBalance}
-          reUseAllLocks={setNayInputVoteBalance}
-        />
-      )}
     </>
   );
 }
