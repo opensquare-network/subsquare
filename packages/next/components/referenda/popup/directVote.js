@@ -1,6 +1,7 @@
 import Delegations from "./delegations";
 import VoteValue from "./voteValue";
 import Conviction from "./conviction";
+import ReUseLocks from "next-common/components/vote/reUseLocks";
 
 export default function DirectVote({
   module,
@@ -11,6 +12,7 @@ export default function DirectVote({
   setInputVoteBalance,
   voteLock,
   setVoteLock,
+  showReUseLocks = false,
 }) {
   const delegationsVotes = addressVoteDelegations?.votes;
 
@@ -25,6 +27,12 @@ export default function DirectVote({
         inputVoteBalance={inputVoteBalance}
         setInputVoteBalance={setInputVoteBalance}
       />
+      {showReUseLocks && (
+        <ReUseLocks
+          reUseGovLocks={setInputVoteBalance}
+          reUseAllLocks={setInputVoteBalance}
+        />
+      )}
       <Conviction
         balance={inputVoteBalance}
         module={module}
