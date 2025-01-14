@@ -13,7 +13,7 @@ function Title() {
   );
 }
 
-function NavigateButton({ icon, children }) {
+function NavigateButton({ icon, href, children }) {
   return (
     <SecondaryButton
       className={cn(
@@ -22,6 +22,7 @@ function NavigateButton({ icon, children }) {
       )}
       iconLeft={icon}
       iconRight={<ArrowRight className="w-[16px] h-[16px]" />}
+      onClick={() => window.open(href, "_blank")}
     >
       {children}
     </SecondaryButton>
@@ -30,7 +31,10 @@ function NavigateButton({ icon, children }) {
 
 function AllMembersButton() {
   return (
-    <NavigateButton icon={<MenuFellowship className="w-[16px] h-[16px]" />}>
+    <NavigateButton
+      icon={<MenuFellowship className="w-[16px] h-[16px]" />}
+      href="https://collectives.subsquare.io/fellowship/members"
+    >
       All Members
     </NavigateButton>
   );
@@ -38,7 +42,10 @@ function AllMembersButton() {
 
 function SalaryCyclesButton() {
   return (
-    <NavigateButton icon={<MenuAsset className="w-[16px] h-[16px]" />}>
+    <NavigateButton
+      icon={<MenuAsset className="w-[16px] h-[16px]" />}
+      href="https://collectives.subsquare.io/fellowship/salary"
+    >
       Salary Cycles
     </NavigateButton>
   );
