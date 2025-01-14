@@ -8,7 +8,6 @@ import {
   useCollectivesContext,
   useCoreFellowshipParams,
 } from "next-common/context/collectives/collectives";
-import { useCoreMembersWithRankContext } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
 import {
   isDemotionAboutToExpire,
   isDemotionExpired,
@@ -28,7 +27,7 @@ const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
 function useAvailablePromotionCount() {
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
+  const { members: coreMembers, isLoading } = useFellowshipCoreMembers();
   const params = useCoreFellowshipParams();
 
   const availablePromotionCount = useMemo(() => {
@@ -105,7 +104,7 @@ function useMemberDemotionExpirationCounts(members) {
 }
 
 function useDemotionExpirationCounts() {
-  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
+  const { members: coreMembers, isLoading } = useFellowshipCoreMembers();
 
   const [members, candidates] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
