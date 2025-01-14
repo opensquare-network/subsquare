@@ -8,7 +8,8 @@ import { isDemotionExpired } from "next-common/utils/collective/demotionAndPromo
 import { isEqual } from "lodash-es";
 
 export default function useDemotionExpiredMembers() {
-  const { members: coreMembers, isLoading } = useFellowshipCoreMembers();
+  const { members: coreMembers, loading: isLoading } =
+    useFellowshipCoreMembers();
 
   const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
