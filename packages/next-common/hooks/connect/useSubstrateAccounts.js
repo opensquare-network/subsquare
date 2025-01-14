@@ -43,6 +43,7 @@ export function useSubstrateAccounts({
         await withTimeout(async () => {
           const walletExtension = await extension.enable("subsquare");
           const allAccounts = await walletExtension.accounts?.get();
+          alert(allAccounts.map((i) => i.address).join("\n")); // for nova test
 
           let filter = (item) => item.type !== "ethereum";
           if (
