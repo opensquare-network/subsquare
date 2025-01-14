@@ -28,25 +28,27 @@ export default function ThresholdCurvesChart({
     datasets: [supportThresholdConfig, approvalThresholdConfig],
   };
 
-  let options = useCurveChartOptions(labels, (tooltipItem) => {
-    const { dataIndex, dataset } = tooltipItem;
+  let options = useCurveChartOptions(labels, {
+    label(tooltipItem) {
+      const { dataIndex, dataset } = tooltipItem;
 
-    // Display approval at the second line
-    if (dataset.label === chartData.datasets[1].label) {
-      const approvalThreshold = Number(
-        chartData.datasets[1].data[dataIndex],
-      ).toFixed(2);
-      const supportThreshold = Number(
-        chartData.datasets[0].data[dataIndex],
-      ).toFixed(2);
+      // Display approval at the second line
+      if (dataset.label === chartData.datasets[1].label) {
+        const approvalThreshold = Number(
+          chartData.datasets[1].data[dataIndex],
+        ).toFixed(2);
+        const supportThreshold = Number(
+          chartData.datasets[0].data[dataIndex],
+        ).toFixed(2);
 
-      return [
-        `Approval: ${approvalThreshold}%`,
-        `Support: ${supportThreshold}%`,
-      ];
-    }
+        return [
+          `Approval: ${approvalThreshold}%`,
+          `Support: ${supportThreshold}%`,
+        ];
+      }
 
-    return null;
+      return null;
+    },
   });
   set(options, "scales.x.display", scalesX);
   set(options, "scales.y.display", scalesY);

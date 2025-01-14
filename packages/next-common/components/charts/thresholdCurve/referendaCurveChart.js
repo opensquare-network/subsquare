@@ -2,13 +2,14 @@ import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/use
 import {
   useApprovalThresholdDatasetConfig,
   useApprovalValueDatasetConfig,
+  useAyesValueDatasetConfig,
+  useNaysValueDatasetConfig,
   useSupportThresholdDatasetConfig,
   useSupportValueDatasetConfig,
 } from "next-common/components/charts/thresholdCurve/utils/dataset";
 import useHistoryTallyValueData from "next-common/components/charts/thresholdCurve/useHistoryTallyValueData";
 import { Line } from "react-chartjs-2";
 import hoverLinePlugin from "next-common/components/charts/plugins/hoverLine";
-import React from "react";
 import useDetailPageOptions from "next-common/components/charts/thresholdCurve/utils/options";
 import { set } from "lodash-es";
 import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/useInnerPoints";
@@ -21,18 +22,27 @@ export default function ReferendaCurveChart() {
   const supportCurveConfig = useSupportThresholdDatasetConfig(supportData);
   const approvalCurveConfig = useApprovalThresholdDatasetConfig(approvalData);
 
-  const { historySupportData, historyApprovalData } =
-    useHistoryTallyValueData();
+  const {
+    historySupportData,
+    historyApprovalData,
+    historyAyesData,
+    historyNaysData,
+  } = useHistoryTallyValueData();
+
   const supportHistoryConfig = useSupportValueDatasetConfig(historySupportData);
   const approvalHistoryConfig =
     useApprovalValueDatasetConfig(historyApprovalData);
+  const ayesHistoryConfig = useAyesValueDatasetConfig(historyAyesData);
+  const naysHistoryConfig = useNaysValueDatasetConfig(historyNaysData);
 
   const datasets = [
     approvalCurveConfig,
     supportCurveConfig,
     approvalHistoryConfig,
     supportHistoryConfig,
-  ];
+    historyAyesData?.length && ayesHistoryConfig,
+    historyNaysData?.length && naysHistoryConfig,
+  ].filter(Boolean);
 
   const chartData = { labels, datasets };
   const options = useDetailPageOptions(labels, datasets);

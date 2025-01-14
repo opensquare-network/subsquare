@@ -1,18 +1,22 @@
 import { useCallback, useEffect } from "react";
 import { setNodeBlockHeight } from "../store/reducers/nodeSlice";
 import { useChainSettings } from "next-common/context/chain";
-import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
+import { fetchScanHeight } from "next-common/services/fetchScanHeight";
 
-export default function ScanStatusComponent({ children }) {
+export default function ScanStatusComponent({ children, scanHeight }) {
   const { blockTime } = useChainSettings();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (scanHeight) {
+      dispatch(setNodeBlockHeight(scanHeight));
+    }
+  }, [dispatch, scanHeight]);
+
   const fetchAndUpdateHeight = useCallback(async () => {
     // todo: we should update only on chain state and timeline
-    const { result: { value: scanHeight } = {} } = await nextApi.fetch(
-      "inspect/scan-height",
-    );
+    const scanHeight = await fetchScanHeight();
     dispatch(setNodeBlockHeight(scanHeight));
   }, [dispatch]);
 
