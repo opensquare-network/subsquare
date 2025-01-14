@@ -54,6 +54,7 @@ function VotePanel({
     addressVoteDelegations: addressVote?.delegations,
     isLoading,
     votingBalance,
+    showReUseLocks: true,
   });
   const { SplitVoteComponent, getSplitVoteTx } = useSplitVote({
     module: "convictionVoting",
@@ -62,7 +63,11 @@ function VotePanel({
     votingBalance,
   });
   const { SplitAbstainVoteComponent, getSplitAbstainVoteTx } =
-    useSplitAbstainVote({ referendumIndex, isLoading, votingBalance });
+    useSplitAbstainVote({
+      referendumIndex,
+      isLoading,
+      votingBalance,
+    });
 
   let voteComponent = null;
   let getVoteTx = null;
