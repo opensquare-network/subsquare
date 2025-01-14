@@ -3,12 +3,12 @@ import FellowshipCoreMembersSummary from "next-common/components/fellowship/core
 import AmbassadorSummaryActions from "next-common/components/ambassador/core/summary/actions";
 
 export default function AmbassadorCoreCommon({ children, ...props }) {
-  const title = "Ambassador Core";
+  const title = "Ambassador Members";
   const desc =
     "The core pallet controls the overall process of induction, promotion and demotion according to the ambassador rules and timelines, and handles the retention of evidence which members and candidates submit for these processes.";
   const seoInfo = { title, desc };
 
-  const corePath = "/ambassador/core";
+  const corePath = "/ambassador/members";
 
   return (
     <ListLayout
@@ -22,19 +22,19 @@ export default function AmbassadorCoreCommon({ children, ...props }) {
           value: "members",
           label: "Members",
           url: corePath,
-          urls: [corePath, "/ambassador/core/candidates"],
+          urls: [corePath, "/ambassador/members/candidates"],
           exactMatch: true,
         },
         {
           value: "params",
           label: "Params",
-          url: "/ambassador/core/params",
+          url: "/ambassador/members/params",
           exactMatch: true,
         },
         {
           value: "feeds",
           label: "Feeds",
-          url: "/ambassador/core/feeds",
+          url: "/ambassador/members/feeds",
           exactMatch: true,
         },
       ]}

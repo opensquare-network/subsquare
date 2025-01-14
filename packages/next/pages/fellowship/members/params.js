@@ -1,7 +1,7 @@
 import FellowshipCoreCommon from "next-common/components/fellowship/core/common";
 import FellowshipCoreParamsContainer from "next-common/components/fellowship/params/container";
 import CollectivesProvider from "next-common/context/collectives/collectives";
-import getFellowshipParamsServerSideProps from "next-common/services/serverSide/fellowship/params";
+import getFellowshipMembersServerSideProps from "next-common/services/serverSide/fellowship/members";
 
 export default function FellowshipCoreParamsPage({ fellowshipParams }) {
   return (
@@ -13,4 +13,4 @@ export default function FellowshipCoreParamsPage({ fellowshipParams }) {
   );
 }
 
-export const getServerSideProps = getFellowshipParamsServerSideProps;
+export const getServerSideProps = getFellowshipMembersServerSideProps;

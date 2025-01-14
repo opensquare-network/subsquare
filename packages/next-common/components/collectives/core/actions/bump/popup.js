@@ -48,7 +48,7 @@ function Content() {
   );
 }
 
-export default function Popup(props) {
+export default function BumpFellowshipMemberPopup(props) {
   return (
     <PopupWithSigner title="Bump" {...props}>
       <Content />

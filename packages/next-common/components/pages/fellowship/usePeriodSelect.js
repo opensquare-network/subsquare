@@ -1,3 +1,7 @@
+import {
+  useCommittedFilterState,
+  useStagedFilterState,
+} from "next-common/components/dropdownFilter/context";
 import Select from "next-common/components/select";
 import {
   addRouterQuery,
@@ -13,7 +17,7 @@ export const Promotable = "promotable";
 
 const options = [
   {
-    label: "All",
+    label: "All status",
     value: All,
   },
   {
@@ -35,12 +39,12 @@ const options = [
 
 function PeriodFilterSelect({ periodFilter, setPeriodFilter }) {
   return (
-    <div className="flex items-center gap-[8px]">
-      <span className="text12Medium text-textPrimary whitespace-nowrap">
+    <div className="flex items-center justify-between gap-[8px]">
+      <span className="text12Medium text-textPrimary whitespace-nowrap my-[12px]">
         Period Status
       </span>
       <Select
-        className="w-[160px] text12Medium"
+        className="w-[144px] text12Medium"
         optionsPadding="right"
         small
         value={periodFilter}
@@ -67,6 +71,23 @@ export default function usePeriodSelect() {
             ? removeRouterQuery(router, "period")
             : addRouterQuery(router, "period", period)
         }
+      />
+    ),
+  };
+}
+
+export function usePeriodSelectInDropdown() {
+  const [stagedFilter, setStagedFilter] = useStagedFilterState();
+  const [committedFilter] = useCommittedFilterState();
+
+  return {
+    periodFilter: committedFilter.period,
+    component: (
+      <PeriodFilterSelect
+        periodFilter={stagedFilter.period || All}
+        setPeriodFilter={(period) => {
+          setStagedFilter({ ...stagedFilter, period });
+        }}
       />
     ),
   };

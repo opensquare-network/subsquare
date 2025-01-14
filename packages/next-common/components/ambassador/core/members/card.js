@@ -2,11 +2,9 @@ import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCor
 import React, { useMemo } from "react";
 import CoreFellowshipMemberCard from "next-common/components/collectives/core/member/card";
 import Actions from "./actions";
+import NonCoreFellowshipMemberCard from "next-common/components/fellowship/core/members/nonCoreCard";
 
-export default function AmbassadorCoreMemberCard({
-  member: _member = {},
-  params = {},
-}) {
+function AmbassadorCoreMemberCard({ member: _member = {}, params = {} }) {
   const pallet = "ambassadorCore";
   const { member: statusFromStorage } = useSubCoreCollectivesMember(
     _member.address,
@@ -21,7 +19,20 @@ export default function AmbassadorCoreMemberCard({
 
   return (
     <CoreFellowshipMemberCard member={member} params={params} pallet={pallet}>
-      <Actions member={member} />
+      <Actions member={member} params={params} />
     </CoreFellowshipMemberCard>
   );
+}
+
+export default function AmbassadorMemberCard({
+  member = {},
+  params = {},
+  isCandidate,
+}) {
+  const { isFellowshipCoreMember } = member;
+  if (!isCandidate && !isFellowshipCoreMember) {
+    return <NonCoreFellowshipMemberCard member={member} />;
+  }
+
+  return <AmbassadorCoreMemberCard member={member} params={params} />;
 }
