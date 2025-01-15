@@ -4,9 +4,9 @@ const ContainerRefContext = React.createContext(null);
 
 export default ContainerRefContext;
 
-export function ContainerRefProvider({ children, ref }) {
+export function ContainerRefProvider({ children, containerRef }) {
   return (
-    <ContainerRefContext.Provider value={ref}>
+    <ContainerRefContext.Provider value={containerRef}>
       {children}
     </ContainerRefContext.Provider>
   );
