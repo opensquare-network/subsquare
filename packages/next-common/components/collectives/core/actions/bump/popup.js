@@ -50,7 +50,7 @@ function Content() {
 
 export default function BumpFellowshipMemberPopup(props) {
   return (
-    <PopupWithSigner title="Bump" {...props}>
+    <PopupWithSigner title="Demote" {...props}>
       <Content />
     </PopupWithSigner>
   );

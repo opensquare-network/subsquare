@@ -16,7 +16,7 @@ export default function BatchBump() {
         }}
         className="ml-1"
       >
-        Bump All
+        Demote All
       </PrimaryButton>
       {showBatchBump && (
         <BatchBumpPopup onClose={() => setShowBatchBump(false)} />

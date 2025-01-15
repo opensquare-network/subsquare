@@ -98,7 +98,7 @@ export function BumpMenuItem({ member, setShowBumpPopup }) {
   if (!canBump) {
     return (
       <OptionItem>
-        <span className="text14Medium text-textDisabled">Bump</span>
+        <span className="text14Medium text-textDisabled">Demote</span>
       </OptionItem>
     );
   }
@@ -111,7 +111,7 @@ export function BumpMenuItem({ member, setShowBumpPopup }) {
         setShowContextMenu(false);
       }}
     >
-      <span className="text14Medium text-textPrimary">Bump</span>
+      <span className="text14Medium text-textPrimary">Demote</span>
     </OptionItem>
   );
 }

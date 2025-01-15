@@ -21,7 +21,7 @@ export function CoreFellowshipBumpButton({ member, onClick }) {
   const canBump = useCanBump(member);
 
   if (!canBump) {
-    return <span className="text14Medium text-textDisabled">Bump</span>;
+    return <span className="text14Medium text-textDisabled">Demote</span>;
   }
 
   return (
@@ -29,7 +29,7 @@ export function CoreFellowshipBumpButton({ member, onClick }) {
       className="text14Medium text-theme500 cursor-pointer"
       onClick={onClick}
     >
-      Bump
+      Demote
     </span>
   );
 }

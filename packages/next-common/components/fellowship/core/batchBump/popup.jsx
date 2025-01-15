@@ -10,7 +10,7 @@ export default function BatchBumpPopup(props) {
     <PopupWithSigner
       title={
         <span>
-          Bump Members
+          Demote Members
           <TitleSuffix suffix={expiredMembers?.length} />
         </span>
       }
