@@ -9,9 +9,7 @@ function EligibleVoters() {
 
   return (
     <>
-      <Button onClick={() => setShowEligibleVoters(true)}>
-        Eligible Voters
-      </Button>
+      <Button onClick={() => setShowEligibleVoters(true)}>All votes</Button>
       {showEligibleVoters && (
         <EligibleVotersPopup onClose={() => setShowEligibleVoters(false)} />
       )}
