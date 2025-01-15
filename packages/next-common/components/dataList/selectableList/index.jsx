@@ -100,8 +100,6 @@ export default function SelectableList({
     <div
       className={cn(
         "w-full",
-        "scrollbar-hidden",
-        "overflow-auto",
         "text-textPrimary",
         "bg-neutral100",
         bordered &&
@@ -110,45 +108,51 @@ export default function SelectableList({
       )}
     >
       <div
+        className={cn(
+          "datalist-head",
+          "flex items-center pb-3",
+          "border-b border-neutral300",
+          "sticky top-0 bg-neutral100 z-10",
+        )}
+      >
+        {columns.map((column, idx) => (
+          <div
+            key={idx}
+            className={cn(
+              "text-textTertiary",
+              column.headClassName,
+              columnClassNames[idx],
+            )}
+            style={columnStyles[idx]}
+          >
+            {column.name}
+          </div>
+        ))}
+        {/* Check all */}
+        <Checkbox
+          checked={isAllSelected}
+          onClick={toggleAllSelection}
+          className="w-4 h-4 cursor-pointer"
+        />
+      </div>
+
+      <div
         ref={listRef}
         role="list"
-        className={cn("datalist", "w-full", listOverflow && "min-w-min")}
+        className={cn(
+          "datalist-body",
+          "w-full",
+          "overflow-y-auto scrollbar-hidden",
+          listOverflow && "min-w-min",
+          "max-h-[400px]",
+        )}
       >
-        <div
-          className={cn(
-            "datalist-head",
-            "flex items-center pb-3",
-            "border-b border-neutral300",
-          )}
-        >
-          {columns.map((column, idx) => (
-            <div
-              key={idx}
-              className={cn(
-                "text-textTertiary",
-                column.headClassName,
-                columnClassNames[idx],
-              )}
-              style={columnStyles[idx]}
-            >
-              {column.name}
-            </div>
-          ))}
-          {/* check all */}
-          <Checkbox
-            checked={isAllSelected}
-            onClick={toggleAllSelection}
-            className="w-4 h-4 cursor-pointer"
-          />
-        </div>
-
         <SelectableListBody
           loading={loading}
           rows={rows}
           columns={columns}
           noDataText={noDataText}
           highlightedIndexes={highlightedIndexes}
-          navCollapsed={navCollapsed}
           selectedRows={selectedRows}
           toggleRowSelection={toggleRowSelection}
         />

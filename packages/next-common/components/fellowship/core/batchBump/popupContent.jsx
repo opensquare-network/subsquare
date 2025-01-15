@@ -26,13 +26,13 @@ function PopupContent({ expiredMembers, isLoading }) {
 
   const onInBlock = useCoreFellowshipUpdateFunc();
 
-  const desktopColumnsDef = [rankColumn, memberColumn];
+  const columnsDef = [rankColumn, memberColumn];
 
   return (
     <>
       <div className="max-h-[450px]">
         <MapSelectableList
-          columnsDef={desktopColumnsDef}
+          columnsDef={columnsDef}
           data={expiredMembers}
           loading={isLoading}
           noDataText="No members can be demoted."

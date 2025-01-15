@@ -9,7 +9,6 @@ export default function SelectableListBody({
   columns,
   noDataText,
   highlightedIndexes = [],
-  navCollapsed,
   selectedRows = [],
   toggleRowSelection,
 }) {
@@ -43,7 +42,6 @@ export default function SelectableListBody({
                 "datalist-item group/datalist-item",
                 "w-full",
                 "flex items-center py-4",
-                navCollapsed ? "max-sm:block" : "max-md:block",
                 "relative",
                 columns[cellIdx]?.className,
                 columns[cellIdx]?.style && {
