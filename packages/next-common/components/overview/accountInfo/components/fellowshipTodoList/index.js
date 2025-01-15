@@ -2,6 +2,7 @@ import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import CollapsePanel, { AlwaysVisible } from "../collapsePanel";
 import EvidenceTodo from "./evidenceTodo";
 import NavigationButtons from "./navigationButtons";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 function Title() {
   return (
@@ -19,15 +20,17 @@ function TodoList({ children }) {
 
 export default function FellowshipTodoList() {
   return (
-    <CollectivesApiProvider>
-      <CollapsePanel labelItem={<Title />}>
-        <AlwaysVisible>
-          <NavigationButtons />
-        </AlwaysVisible>
-        <TodoList>
-          <EvidenceTodo />
-        </TodoList>
-      </CollapsePanel>
-    </CollectivesApiProvider>
+    <CollectivesProvider section="fellowship">
+      <CollectivesApiProvider>
+        <CollapsePanel labelItem={<Title />}>
+          <AlwaysVisible>
+            <NavigationButtons />
+          </AlwaysVisible>
+          <TodoList>
+            <EvidenceTodo />
+          </TodoList>
+        </CollapsePanel>
+      </CollectivesApiProvider>
+    </CollectivesProvider>
   );
 }
