@@ -13,6 +13,7 @@ export default function useStandardVote({
   addressVoteDelegations,
   isLoading,
   votingBalance,
+  showReUseLocks,
 }) {
   const dispatch = useDispatch();
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
@@ -30,6 +31,7 @@ export default function useStandardVote({
       setInputVoteBalance={setInputVoteBalance}
       voteLock={voteLock}
       setVoteLock={setVoteLock}
+      showReUseLocks={showReUseLocks}
     />
   );
 

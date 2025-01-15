@@ -108,7 +108,7 @@ function useDemotionExpirationCounts() {
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembers();
 
-  const [members, candidates] = useMemo(
+  const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
     [coreMembers],
   );
@@ -116,16 +116,9 @@ function useDemotionExpirationCounts() {
   const { expiredMembersCount, expiringMembersCount } =
     useMemberDemotionExpirationCounts(members);
 
-  const {
-    expiredMembersCount: expiredCandidatesCount,
-    expiringMembersCount: expiringCandidatesCount,
-  } = useMemberDemotionExpirationCounts(candidates);
-
   return {
     expiredMembersCount,
-    expiredCandidatesCount,
     expiringMembersCount,
-    expiringCandidatesCount,
     isLoading,
   };
 }
@@ -137,7 +130,7 @@ function useEvidencesStat() {
   const memberEvidences = useMemo(() => {
     return (evidences || []).filter((evidence) => {
       const m = (members || []).find((m) => m.address === evidence.who);
-      return m?.rank >= 0;
+      return m?.rank > 0;
     });
   }, [evidences, members]);
 
@@ -171,9 +164,7 @@ export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
   const {
     expiredMembersCount,
-    expiredCandidatesCount,
     expiringMembersCount,
-    expiringCandidatesCount,
     isLoading: isCheckingDemotion,
   } = useDemotionExpirationCounts();
 
@@ -216,9 +207,6 @@ export default function MemberWarnings({ className }) {
         {" will expire in under 20 days."}
       </>
     ),
-    expiringCandidatesCount > 0 &&
-      `${expiringCandidatesCount} candidates' offboard period is about to reached in under 20 days.`,
-
     expiredMembersCount > 0 && (
       <>
         <PromptButton filterLink={filterLinks.demotionPeriodExpired}>
@@ -228,9 +216,6 @@ export default function MemberWarnings({ className }) {
         <BatchBump />
       </>
     ),
-    expiredCandidatesCount > 0 &&
-      `${expiredCandidatesCount} candidates' offboard period is reached.`,
-
     availablePromotionCount > 0 && (
       <>
         Promotions are available for{" "}

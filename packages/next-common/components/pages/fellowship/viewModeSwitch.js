@@ -8,7 +8,7 @@ function ViewModeButton({ highlight, onClick, children }) {
       role="button"
       className={cn(
         "rounded-[4px] p-[4px] cursor-pointer",
-        highlight ? "bg-neutral100" : "[&_svg_path]:fill-textTertiary",
+        highlight ? "bg-neutral100 text-textPrimary" : "text-textTertiary",
       )}
       onClick={onClick}
     >

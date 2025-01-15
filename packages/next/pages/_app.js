@@ -55,6 +55,7 @@ function MyApp({ Component, pageProps }) {
     navCollapsed,
     navSubmenuVisible,
     pathname,
+    scanHeight,
     ...otherProps
   } = pageProps;
   return (
@@ -76,7 +77,7 @@ function MyApp({ Component, pageProps }) {
           pathname={pathname}
         >
           <SystemVersionUpgrade />
-          <ScanStatusComponent>
+          <ScanStatusComponent scanHeight={scanHeight}>
             <Component {...otherProps} />
           </ScanStatusComponent>
         </GlobalProvider>
