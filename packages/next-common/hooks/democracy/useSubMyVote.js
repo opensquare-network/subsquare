@@ -37,14 +37,21 @@ export async function getDemocracyDirectVote(api, address, referendumIndex) {
     return;
   }
 
-  if (!jsonVoting.direct) {
+  const direct = jsonVoting.direct;
+
+  if (!direct) {
     return;
   }
-  const vote = (jsonVoting.direct.votes || []).find(
+  const vote = (direct.votes || []).find(
     (vote) => vote[0] === referendumIndex,
   )?.[1];
 
-  return vote;
+  const delegations = direct.delegations.votes;
+
+  return {
+    vote,
+    delegations,
+  };
 }
 
 export default function useSubMyDemocracyVote(address) {

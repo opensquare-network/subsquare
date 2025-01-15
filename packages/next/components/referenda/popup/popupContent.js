@@ -146,15 +146,16 @@ export default function PopupContent() {
   } = useSubMyDemocracyVote(signerAccount?.realAddress);
 
   const getMyVoteAndShowSuccessful = useCallback(async () => {
-    const addressVote = await getDemocracyDirectVote(
-      api,
-      signerAccount?.realAddress,
-      referendumIndex,
-    );
-    if (!addressVote) {
-      return;
+    const { vote: addressVote, delegations } =
+      (await getDemocracyDirectVote(
+        api,
+        signerAccount?.realAddress,
+        referendumIndex,
+      )) || {};
+
+    if (addressVote) {
+      showVoteSuccessful(addressVote, delegations);
     }
-    showVoteSuccessful(addressVote);
   }, [api, referendumIndex, signerAccount?.realAddress, showVoteSuccessful]);
 
   let content = <LoadingPanel />;
