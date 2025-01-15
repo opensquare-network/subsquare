@@ -53,7 +53,7 @@ function DemotionAboutToExpireMessage({ section, rank }) {
   );
 }
 
-function DemotionPrompt({ section, lastProof, rank, params }) {
+export function useDemotionPeriodCheck({ lastProof, rank, params }) {
   const blockTime = useSelector(blockTimeSelector);
   const { percentageValue, remainingBlocks, demotionPeriod } =
     useDemotionPeriod({ rank, lastProof, params });
@@ -64,11 +64,26 @@ function DemotionPrompt({ section, lastProof, rank, params }) {
     .div(86400 * 1000)
     .toNumber();
 
+  const isDemotionExpiring = demotionPeriod > 0 && daysRemaining < 28;
+
+  return {
+    isDemotionExpired,
+    isDemotionExpiring,
+  };
+}
+
+function DemotionPrompt({ section, lastProof, rank, params }) {
+  const { isDemotionExpired, isDemotionExpiring } = useDemotionPeriodCheck({
+    lastProof,
+    rank,
+    params,
+  });
+
   if (isDemotionExpired) {
     return <DemotionExpiredMessage section={section} rank={rank} />;
   }
 
-  if (demotionPeriod > 0 && daysRemaining < 28) {
+  if (isDemotionExpiring) {
     return <DemotionAboutToExpireMessage section={section} rank={rank} />;
   }
 }

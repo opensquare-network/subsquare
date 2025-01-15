@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
-export default function useMemberData(section = "fellowship") {
+export default function useMemberData(section = "fellowship", api) {
   let corePallet;
   let collectivePallet;
 
@@ -22,6 +22,7 @@ export default function useMemberData(section = "fellowship") {
     "members",
     [address],
     {
+      api,
       callback: useCallback((rawOptional) => {
         setCollectiveMember(rawOptional.toJSON());
       }, []),
@@ -34,6 +35,7 @@ export default function useMemberData(section = "fellowship") {
     "member",
     [address],
     {
+      api,
       callback: useCallback((rawOptional) => {
         setCoreMember(rawOptional.toJSON());
       }, []),
@@ -46,6 +48,7 @@ export default function useMemberData(section = "fellowship") {
     "params",
     [],
     {
+      api,
       callback: useCallback((rawOptional) => {
         setCoreParams(rawOptional.toJSON());
       }, []),

@@ -12,7 +12,7 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
 
 export default function CollectivesAccountInfoPanel() {
-  const fellowshipMemberData = useMemberData();
+  const fellowshipMemberData = useMemberData("fellowship");
   const ambassadorMemberData = useMemberData("ambassador");
   const { width } = useWindowSize();
 
