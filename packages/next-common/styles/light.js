@@ -51,6 +51,8 @@ const light = {
   theme300: "var(--purple300)",
   theme500: "var(--purple500)",
   navigationBg: "var(--neutral100)",
+  navigationBgFrom: "var(--navigationBg)",
+  navigationBgTo: "var(--navigationBg)",
   navigationActive: "var(--neutral200)",
   navigationBorder: "var(--neutral300)",
   navigationText: "var(--textPrimary)",

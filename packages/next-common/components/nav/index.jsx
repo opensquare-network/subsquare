@@ -11,7 +11,6 @@ import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
 import { useEffect } from "react";
 import ChainLogo from "./logo";
 import Chains from "next-common/utils/consts/chains";
-import { useThemeSetting } from "next-common/context/theme";
 
 export default function Nav() {
   return (
@@ -57,7 +56,6 @@ w-6 h-6 bg-navigationActive rounded
 
 function NavDesktop() {
   const [navCollapsed, setNavCollapsed] = useNavCollapsed();
-  const { navigationBgFrom, navigationBgTo } = useThemeSetting();
 
   return (
     <nav
@@ -67,9 +65,7 @@ function NavDesktop() {
         "max-w-[300px] max-sm:hidden h-full overflow-y-scroll",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
         "scrollbar-hidden",
-        navigationBgFrom &&
-          navigationBgTo &&
-          `bg-[linear-gradient(180deg,${navigationBgFrom},${navigationBgTo})]`,
+        "bg-gradient-to-b from-navigationBgFrom to-navigationBgTo",
       )}
     >
       <div>
