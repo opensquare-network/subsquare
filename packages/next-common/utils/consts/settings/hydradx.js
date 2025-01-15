@@ -113,7 +113,7 @@ const hydradx = {
     theme100: "rgba(229,62,118,0.10)",
     theme300: "rgba(229,62,118,0.40)",
     theme500: "rgba(229,62,118,1)",
-    navigationBg: "rgba(2,6,25,1)",
+    navigationBg: "rgba(36,14,50,1)",
     navigationActive: "rgba(255,255,255,0.04)",
     navigationBorder: "rgba(255,255,255,0.08)",
     navigationText: "var(--textPrimaryContrast)",
