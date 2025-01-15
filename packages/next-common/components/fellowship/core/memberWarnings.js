@@ -8,7 +8,6 @@ import {
   useCollectivesContext,
   useCoreFellowshipParams,
 } from "next-common/context/collectives/collectives";
-import { useCoreMembersWithRankContext } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
 import {
   isDemotionAboutToExpire,
   isDemotionExpired,
@@ -22,12 +21,14 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemFilter } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 import { cn } from "next-common/utils";
+import BatchBump from "./batchBump";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
 function useAvailablePromotionCount() {
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
+  const { members: coreMembers, loading: isLoading } =
+    useFellowshipCoreMembers();
   const params = useCoreFellowshipParams();
 
   const availablePromotionCount = useMemo(() => {
@@ -104,7 +105,8 @@ function useMemberDemotionExpirationCounts(members) {
 }
 
 function useDemotionExpirationCounts() {
-  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
+  const { members: coreMembers, loading: isLoading } =
+    useFellowshipCoreMembers();
 
   const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
@@ -211,6 +213,7 @@ export default function MemberWarnings({ className }) {
           {expiredMembersCount} members
         </PromptButton>
         {" can be demoted."}
+        <BatchBump />
       </>
     ),
     availablePromotionCount > 0 && (

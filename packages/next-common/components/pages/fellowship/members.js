@@ -7,7 +7,6 @@ import CollectivesProvider, {
   useCollectivesContext,
 } from "next-common/context/collectives/collectives";
 import MemberWarnings from "next-common/components/fellowship/core/memberWarnings";
-import { CoreMembersWithRankProvider } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
 import { AllMemberEvidenceProvider } from "next-common/components/collectives/core/context/evidenceMemberContext";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 import useMembersWithMeAtFirst from "../useMembersWithMeAtFirst";
@@ -195,24 +194,22 @@ export default function FellowshipMembersPage() {
   return (
     <CollectivesProvider params={fellowshipParams} section="fellowship">
       <AllMemberEvidenceProvider>
-        <CoreMembersWithRankProvider>
-          <DropdownUrlFilterProvider
-            defaultFilterValues={{
-              evidence_only: false,
-              period: "all",
-              rank: null,
-              core_only: true,
-            }}
-            emptyFilterValues={{
-              evidence_only: false,
-              period: "all",
-              rank: null,
-              core_only: false,
-            }}
-          >
-            <FellowshipMembersPageInContext />
-          </DropdownUrlFilterProvider>
-        </CoreMembersWithRankProvider>
+        <DropdownUrlFilterProvider
+          defaultFilterValues={{
+            evidence_only: false,
+            period: "all",
+            rank: null,
+            core_only: true,
+          }}
+          emptyFilterValues={{
+            evidence_only: false,
+            period: "all",
+            rank: null,
+            core_only: false,
+          }}
+        >
+          <FellowshipMembersPageInContext />
+        </DropdownUrlFilterProvider>
       </AllMemberEvidenceProvider>
     </CollectivesProvider>
   );

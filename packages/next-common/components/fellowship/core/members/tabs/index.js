@@ -1,4 +1,5 @@
 import TabsList from "next-common/components/tabs/list";
+import TitleSuffix from "next-common/components/titleSuffix";
 
 // maybe used for fellowship and ambassador
 export default function FellowshipMemberTabs({
@@ -19,9 +20,7 @@ export default function FellowshipMemberTabs({
             >
               Members
             </span>
-            <span className="ml-1 text-textTertiary text14Medium">
-              {membersCount}
-            </span>
+            <TitleSuffix suffix={membersCount} />
           </>
         );
       },
@@ -41,9 +40,7 @@ export default function FellowshipMemberTabs({
             >
               Candidates
             </span>
-            <span className="ml-1 text-textTertiary text14Medium">
-              {candidatesCount}
-            </span>
+            <TitleSuffix suffix={candidatesCount} />
           </>
         );
       },
