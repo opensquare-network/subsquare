@@ -5,6 +5,7 @@ import {
   Header,
 } from "next-common/components/referenda/tally/styled";
 import Percentage from "next-common/components/referenda/tally/support/percentage";
+import TitleSuffix from "next-common/components/titleSuffix";
 
 export default function Support({ supportPerbill = 0, value = 0 }) {
   return (
@@ -12,9 +13,7 @@ export default function Support({ supportPerbill = 0, value = 0 }) {
       <Header>
         <ElectorateIcon />
         Support
-        <span className="ml-1 text-textTertiary text14Medium">
-          (<Percentage perbill={supportPerbill} />)
-        </span>
+        <TitleSuffix suffix={<Percentage perbill={supportPerbill} />} />
       </Header>
       <SymbolValue value={value} />
     </BorderedRow>

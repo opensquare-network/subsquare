@@ -1,6 +1,7 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import useDemotionExpiredMembers from "./useDemotionExpiredMembers";
 import PopupContent from "./popupContent";
+import TitleSuffix from "next-common/components/titleSuffix";
 
 export default function BatchBumpPopup(props) {
   const { expiredMembers = [], isLoading } = useDemotionExpiredMembers();
@@ -10,9 +11,7 @@ export default function BatchBumpPopup(props) {
       title={
         <span>
           Bump Members
-          <span className="ml-1 text14Medium text-textTertiary">
-            {expiredMembers?.length}
-          </span>
+          <TitleSuffix suffix={expiredMembers?.length} />
         </span>
       }
       {...props}
