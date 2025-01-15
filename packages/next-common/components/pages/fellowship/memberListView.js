@@ -224,7 +224,7 @@ function CollectivesMemberTable({
   );
 
   return (
-    <ContainerRefProvider ref={dataListRef}>
+    <ContainerRefProvider containerRef={dataListRef}>
       <DataList
         ref={dataListRef}
         bordered
