@@ -12,25 +12,8 @@ import ClickableText from "./clickableText";
 import { useState } from "react";
 import SubmitEvidencePopup from "next-common/components/collectives/core/actions/more/submitEvidenceItem/popup";
 
-function NoRetainEvidenceTodo() {
+function RetentionEvidenceSubmission() {
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
-  const address = useRealAddress();
-  const pallet = useCoreFellowshipPallet();
-  const api = useCollectivesApi();
-  const { loading, wish, evidence } = useSubCoreFellowshipEvidence(
-    address,
-    pallet,
-    api,
-  );
-
-  if (loading) {
-    return null;
-  }
-
-  if (wish && evidence) {
-    return null;
-  }
-
   return (
     <>
       <div className="flex items-center">
@@ -54,6 +37,31 @@ function NoRetainEvidenceTodo() {
   );
 }
 
+function DemotionRetentionReferendaTodo() {
+  // TODO: check if referenda created
+}
+
+function DemotionRetentionTodo() {
+  const address = useRealAddress();
+  const pallet = useCoreFellowshipPallet();
+  const api = useCollectivesApi();
+  const { loading, wish, evidence } = useSubCoreFellowshipEvidence(
+    address,
+    pallet,
+    api,
+  );
+
+  if (loading) {
+    return null;
+  }
+
+  if (wish?.toLowerCase() === "retention" && evidence) {
+    return <DemotionRetentionReferendaTodo wish={wish} evidence={evidence} />;
+  }
+
+  return <RetentionEvidenceSubmission />;
+}
+
 function DemotionExpiringTodo({ collectiveMember, coreMember, coreParams }) {
   const { isDemotionExpiring } = useDemotionPeriodCheck({
     lastProof: coreMember?.lastProof,
@@ -65,7 +73,7 @@ function DemotionExpiringTodo({ collectiveMember, coreMember, coreParams }) {
     return null;
   }
 
-  return <NoRetainEvidenceTodo />;
+  return <DemotionRetentionTodo />;
 }
 
 export default function EvidenceTodo() {
