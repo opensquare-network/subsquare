@@ -12,6 +12,7 @@ import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
 import { ReferendaWarningMessage } from "./common";
+import { useChain } from "next-common/context/chain";
 
 function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
   const { members } = useFellowshipCoreMembers();
@@ -29,7 +30,8 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
 
   const atRank = targetMember?.rank;
 
-  const trackName = getRetainTrackNameFromRank(atRank);
+  const chain = useChain();
+  const trackName = getRetainTrackNameFromRank(chain, atRank);
 
   return (
     <Popup title="New Retain Proposal" onClose={onClose}>

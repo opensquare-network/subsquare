@@ -12,8 +12,11 @@ import ClickableText from "./clickableText";
 import { useState } from "react";
 import SubmitEvidencePopup from "next-common/components/collectives/core/actions/more/submitEvidenceItem/popup";
 import useRelatedReferenda from "next-common/hooks/fellowship/useRelatedReferenda";
+import ApproveFellowshipMemberPopup from "next-common/components/fellowship/core/members/actions/approve/popup";
+import Chains from "next-common/utils/consts/chains";
 
 function RetentionEvidenceSubmissionTodo() {
+  const collectivesApi = useCollectivesApi();
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
   return (
     <>
@@ -29,6 +32,7 @@ function RetentionEvidenceSubmissionTodo() {
       </div>
       {showSubmitEvidencePopup && (
         <SubmitEvidencePopup
+          api={collectivesApi}
           onClose={() => {
             setShowSubmitEvidencePopup(false);
           }}
@@ -38,26 +42,44 @@ function RetentionEvidenceSubmissionTodo() {
   );
 }
 
-function RetentionReferendaCreationTodo() {
-  // TODO: Implement this component
+function RetentionReferendaCreationTodo({ rank }) {
+  const address = useRealAddress();
+  const collectivesApi = useCollectivesApi();
+  const [showApprovePopup, setShowApprovePopup] = useState(false);
+
   return (
-    <div className="flex items-center">
-      <TodoTag>Membership</TodoTag>
-      <div className="text-textPrimary text14Medium">
-        Your demotion period of membership is closing. Submit a referenda for
-        retention
+    <>
+      <div className="flex items-center">
+        <TodoTag>Membership</TodoTag>
+        <div className="text-textPrimary text14Medium">
+          Your demotion period of membership is closing.{" "}
+          <ClickableText onClick={() => setShowApprovePopup(true)}>
+            Submit a referenda
+          </ClickableText>{" "}
+          for retention
+        </div>
       </div>
-    </div>
+      {showApprovePopup && (
+        <ApproveFellowshipMemberPopup
+          api={collectivesApi}
+          chain={Chains.collectives}
+          member={{ address, rank }}
+          onClose={() => {
+            setShowApprovePopup(false);
+          }}
+        />
+      )}
+    </>
   );
 }
 
-function DemotionRetentionReferendaTodo() {
+function DemotionRetentionReferendaTodo({ rank }) {
   const address = useRealAddress();
   const { relatedReferenda, isLoading } = useRelatedReferenda(address, [
     "approve",
   ]);
 
-  if (!isLoading) {
+  if (isLoading) {
     return null;
   }
 
@@ -65,10 +87,10 @@ function DemotionRetentionReferendaTodo() {
     return null;
   }
 
-  return <RetentionReferendaCreationTodo />;
+  return <RetentionReferendaCreationTodo rank={rank} />;
 }
 
-function DemotionRetentionTodo() {
+function DemotionRetentionTodo({ rank }) {
   const address = useRealAddress();
   const pallet = useCoreFellowshipPallet();
   const api = useCollectivesApi();
@@ -83,7 +105,7 @@ function DemotionRetentionTodo() {
   }
 
   if (wish?.toLowerCase() === "retention" && evidence) {
-    return <DemotionRetentionReferendaTodo />;
+    return <DemotionRetentionReferendaTodo rank={rank} />;
   }
 
   return <RetentionEvidenceSubmissionTodo />;
@@ -100,7 +122,7 @@ function DemotionExpiringTodo({ collectiveMember, coreMember, coreParams }) {
     return null;
   }
 
-  return <DemotionRetentionTodo />;
+  return <DemotionRetentionTodo rank={collectiveMember?.rank} />;
 }
 
 export default function EvidenceTodo() {

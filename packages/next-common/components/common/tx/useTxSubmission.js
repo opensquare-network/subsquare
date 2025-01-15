@@ -13,9 +13,11 @@ export default function useTxSubmission({
   onInBlock = noop,
   onSubmitted = noop,
   onCancelled = noop,
+  api: customApi,
 }) {
   const dispatch = useDispatch();
-  const api = useContextApi();
+  const contextApi = useContextApi();
+  const api = customApi || contextApi;
   const signerAccount = useSignerAccount();
   const { sendTxFunc, isSubmitting } = useSendTransaction();
 

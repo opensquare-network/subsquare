@@ -23,9 +23,10 @@ import { CollectivesRetainTracks } from "next-common/components/fellowship/core/
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
 import { ReferendaWarningMessage } from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
+import { useChain } from "next-common/context/chain";
 
-export function getRetainTrackNameFromRank(rank) {
-  switch (process.env.NEXT_PUBLIC_CHAIN) {
+export function getRetainTrackNameFromRank(chain, rank) {
+  switch (chain) {
     case Chains.collectives:
     case Chains.westendCollectives:
       return CollectivesRetainTracks[rank];
@@ -34,14 +35,17 @@ export function getRetainTrackNameFromRank(rank) {
   }
 }
 
-function PopupContent({ member }) {
+function PopupContent({ member, api: customApi, chain: customChain }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [enactment, setEnactment] = useState();
-  const api = useContextApi();
+  const contextApi = useContextApi();
+  const api = customApi || contextApi;
   const extensionAccounts = useExtensionAccounts();
   const [atRank, setAtRank] = useState(member?.rank);
-  const trackName = getRetainTrackNameFromRank(atRank);
+  const defaultChain = useChain();
+  const chain = customChain || defaultChain;
+  const trackName = getRetainTrackNameFromRank(chain, atRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
   const referendaPallet = useReferendaFellowshipPallet();
@@ -111,15 +115,21 @@ function PopupContent({ member }) {
           router.push(`/${section}/referenda/${referendumIndex}`);
         }}
         onFinalized={() => dispatch(incPreImagesTrigger())}
+        api={api}
       />
     </>
   );
 }
 
-export default function ApproveFellowshipMemberPopup({ member, onClose }) {
+export default function ApproveFellowshipMemberPopup({
+  member,
+  onClose,
+  api,
+  chain,
+}) {
   return (
     <PopupWithSigner title="Approve Fellowship Member" onClose={onClose}>
-      <PopupContent member={member} onClose={onClose} />
+      <PopupContent member={member} onClose={onClose} api={api} chain={chain} />
     </PopupWithSigner>
   );
 }
