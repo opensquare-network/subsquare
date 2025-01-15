@@ -11,8 +11,9 @@ import {
 import ClickableText from "./clickableText";
 import { useState } from "react";
 import SubmitEvidencePopup from "next-common/components/collectives/core/actions/more/submitEvidenceItem/popup";
+import useRelatedReferenda from "next-common/hooks/fellowship/useRelatedReferenda";
 
-function RetentionEvidenceSubmission() {
+function RetentionEvidenceSubmissionTodo() {
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
   return (
     <>
@@ -37,8 +38,34 @@ function RetentionEvidenceSubmission() {
   );
 }
 
+function RetentionReferendaCreationTodo() {
+  // TODO: Implement this component
+  return (
+    <div className="flex items-center">
+      <TodoTag>Membership</TodoTag>
+      <div className="text-textPrimary text14Medium">
+        Your demotion period of membership is closing. Submit a referenda for
+        retention
+      </div>
+    </div>
+  );
+}
+
 function DemotionRetentionReferendaTodo() {
-  // TODO: check if referenda created
+  const address = useRealAddress();
+  const { relatedReferenda, isLoading } = useRelatedReferenda(address, [
+    "approve",
+  ]);
+
+  if (!isLoading) {
+    return null;
+  }
+
+  if (relatedReferenda.length > 0) {
+    return null;
+  }
+
+  return <RetentionReferendaCreationTodo />;
 }
 
 function DemotionRetentionTodo() {
@@ -56,10 +83,10 @@ function DemotionRetentionTodo() {
   }
 
   if (wish?.toLowerCase() === "retention" && evidence) {
-    return <DemotionRetentionReferendaTodo wish={wish} evidence={evidence} />;
+    return <DemotionRetentionReferendaTodo />;
   }
 
-  return <RetentionEvidenceSubmission />;
+  return <RetentionEvidenceSubmissionTodo />;
 }
 
 function DemotionExpiringTodo({ collectiveMember, coreMember, coreParams }) {

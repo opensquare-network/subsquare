@@ -5,8 +5,8 @@ const ActiveReferendaContext = createContext();
 
 export default ActiveReferendaContext;
 
-export function ActiveReferendaProvider({ pallet, children }) {
-  const { activeReferenda, isLoading } = useOnChainActiveReferenda(pallet);
+export function ActiveReferendaProvider({ pallet, children, api }) {
+  const { activeReferenda, isLoading } = useOnChainActiveReferenda(pallet, api);
 
   return (
     <ActiveReferendaContext.Provider value={{ activeReferenda, isLoading }}>

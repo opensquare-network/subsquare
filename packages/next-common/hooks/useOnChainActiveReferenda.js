@@ -31,8 +31,9 @@ async function extractActiveReferenda(api, entries) {
   return referenda.filter(Boolean);
 }
 
-export function useOnChainActiveReferenda(pallet) {
-  const api = useContextApi();
+export function useOnChainActiveReferenda(pallet, customApi) {
+  const contextApi = useContextApi();
+  const api = customApi || contextApi;
   const [activeReferenda, setActiveReferenda] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
