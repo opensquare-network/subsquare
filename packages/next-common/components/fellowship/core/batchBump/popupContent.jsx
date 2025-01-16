@@ -30,26 +30,34 @@ function PopupContent({ expiredMembers, isLoading }) {
     return txs.length > 1 ? api.tx.utility.batch(txs) : txs[0];
   }, [api, pallet, selectedRows, expiredMembers]);
 
-  const onFinalized = useCallback(async () => {
+  const updateMembers = useCallback(async () => {
     try {
-      const memberCount = selectedRows?.length || 0;
-      if (memberCount === 0) {
-        return;
-      }
-
-      dispatch(
-        newSuccessToast(
-          `${memberCount} ${
-            memberCount > 1 ? "members" : "member"
-          } demoted successfully`,
-        ),
-      );
-
       await fetchFellowshipCoreMembers2Times(fetch);
     } catch (error) {
       throw new Error("Failed to update fellowship core members:", error);
     }
-  }, [dispatch, fetch, selectedRows]);
+  }, [fetch]);
+
+  const onInBlock = useCallback(async () => {
+    await updateMembers();
+  }, [updateMembers]);
+
+  const onFinalized = useCallback(async () => {
+    const memberCount = selectedRows?.length || 0;
+    if (memberCount === 0) {
+      return;
+    }
+
+    dispatch(
+      newSuccessToast(
+        `${memberCount} ${
+          memberCount > 1 ? "members" : "member"
+        } demoted successfully`,
+      ),
+    );
+
+    await updateMembers();
+  }, [dispatch, updateMembers, selectedRows]);
 
   const columnsDef = [rankColumn, memberColumn];
 
@@ -68,6 +76,7 @@ function PopupContent({ expiredMembers, isLoading }) {
       </div>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
+        onInBlock={onInBlock}
         onFinalized={onFinalized}
         disabled={selectedRows?.length === 0}
       />
