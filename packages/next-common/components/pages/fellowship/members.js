@@ -3,9 +3,7 @@ import { useMemo, useState } from "react";
 import FellowshipMemberCommon from "next-common/components/pages/fellowship/common";
 import FellowshipMembersEmpty from "./empty";
 import { usePageProps } from "next-common/context/page";
-import CollectivesProvider, {
-  useCollectivesContext,
-} from "next-common/context/collectives/collectives";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 import MemberWarnings from "next-common/components/fellowship/core/memberWarnings";
 import { AllMemberEvidenceProvider } from "next-common/components/collectives/core/context/evidenceMemberContext";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
@@ -16,18 +14,21 @@ import FellowshipMemberCardView from "./memberCardView";
 import FellowshipMemberListView from "./memberListView";
 import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import { useRouter } from "next/router";
-import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
-import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
-import { SystemLoading } from "@osn/icons/subsquare";
 import MoreActions from "./moreActions";
 
-function FellowshipMembers({ viewMode, members, isLoading }) {
+function FellowshipMembers({
+  viewMode,
+  members,
+  isLoading,
+  isCandidate = false,
+}) {
   if (viewMode === "list") {
     return (
       <FellowshipMemberListView
         members={members}
         isLoading={isLoading}
         ActionsComponent={MoreActions}
+        isCandidate={isCandidate}
       />
     );
   }
@@ -43,35 +44,12 @@ export function useViewModeSwitch() {
   };
 }
 
-function FellowshipCandidatesCardList({ candidates, isLoading }) {
-  const hasMembers = candidates?.length > 0;
-  const { params } = useCollectivesContext();
-
-  if (isLoading) {
-    return (
-      <SystemLoading className="my-6 [&_path]:stroke-textTertiary mx-auto" />
-    );
-  }
-
-  if (!isLoading && !hasMembers) {
-    return <FellowshipMembersEmpty />;
-  }
-
-  return (
-    <FellowshipCoreMemberCardListContainer>
-      {candidates.map((member) => (
-        <FellowshipCoreMemberCard
-          key={member.address}
-          member={member}
-          params={params}
-          isCandidate={true}
-        />
-      ))}
-    </FellowshipCoreMemberCardListContainer>
-  );
-}
-
-function FellowshipMembersCardList({ viewMode, isLoading, members }) {
+function FellowshipMembersCardList({
+  viewMode,
+  isLoading,
+  members,
+  isCandidate,
+}) {
   const hasMembers = members?.length > 0;
   const sortedMembers = useMembersWithMeAtFirst(members);
 
@@ -84,6 +62,7 @@ function FellowshipMembersCardList({ viewMode, isLoading, members }) {
       viewMode={viewMode}
       members={sortedMembers}
       isLoading={isLoading}
+      isCandidate={isCandidate}
     />
   );
 }
@@ -124,6 +103,8 @@ function FellowshipMembersTabPage({
 }
 
 function FellowshipCandidatesTabPage({ members, candidates, isLoading }) {
+  const { viewMode, component: viewModeSwitch } = useViewModeSwitch();
+
   const membersCount = members?.length;
   const candidatesCount = candidates?.length;
 
@@ -134,10 +115,16 @@ function FellowshipCandidatesTabPage({ members, candidates, isLoading }) {
           membersCount={membersCount}
           candidatesCount={candidatesCount}
         />
+        <div className="flex items-center gap-[12px] max-sm:pl-6">
+          {/* TODO: {memberFilters} */}
+          {viewModeSwitch}
+        </div>
       </div>
-      <FellowshipCandidatesCardList
-        candidates={candidates}
+      <FellowshipMembersCardList
+        viewMode={viewMode}
+        members={candidates}
         isLoading={isLoading}
+        isCandidate
       />
     </FellowshipMemberCommon>
   );
