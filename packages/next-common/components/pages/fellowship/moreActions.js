@@ -17,6 +17,7 @@ import { OptionItem } from "next-common/components/internalDropdown/styled";
 import Tooltip from "next-common/components/tooltip";
 import { useContainerRef } from "next-common/context/containerRef";
 import useIsElementInLowerHalf from "next-common/hooks/useIsElementInLowerHalf";
+import Button from "next-common/lib/button";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { createContext, useContext, useRef, useState } from "react";
@@ -94,24 +95,27 @@ export function ApproveMenuItem({ member, setShowApprovePopup }) {
 export function BumpMenuItem({ member, setShowBumpPopup }) {
   const { setShowContextMenu } = useContext(ContextMenuStateContext);
   const canBump = useCanBump(member);
-
-  if (!canBump) {
-    return (
-      <OptionItem>
-        <span className="text14Medium text-textDisabled">Demote</span>
-      </OptionItem>
-    );
-  }
+  const { rank } = member || {};
 
   return (
     <OptionItem
-      role="button"
       onClick={() => {
+        if (!canBump) {
+          return;
+        }
+
         setShowBumpPopup(true);
         setShowContextMenu(false);
       }}
     >
-      <span className="text14Medium text-textPrimary">Demote</span>
+      <Button
+        className={`border-0 p-0 h-auto ${
+          canBump ? "text-theme500" : "text-textDisabled"
+        }`}
+        disabled={!canBump}
+      >
+        {rank <= 0 ? "Offboard" : "Demote"}
+      </Button>
     </OptionItem>
   );
 }
@@ -202,7 +206,7 @@ export function MoreActionsWrapper({ children }) {
 }
 
 export default function MoreActions({ member, params }) {
-  const { address } = member || {};
+  const { address, rank } = member || {};
 
   const [showBumpPopup, setShowBumpPopup] = useState(false);
   const [showApprovePopup, setShowApprovePopup] = useState(false);
@@ -213,7 +217,6 @@ export default function MoreActions({ member, params }) {
   return (
     <>
       <MoreActionsWrapper>
-        <BumpMenuItem member={member} setShowBumpPopup={setShowBumpPopup} />
         <ApproveMenuItem
           member={member}
           setShowApprovePopup={setShowApprovePopup}
@@ -231,10 +234,12 @@ export default function MoreActions({ member, params }) {
           member={member}
           setShowActivationPopup={setShowActivationPopup}
         />
+        <BumpMenuItem member={member} setShowBumpPopup={setShowBumpPopup} />
       </MoreActionsWrapper>
       {showBumpPopup && (
         <BumpFellowshipMemberPopup
           who={address}
+          isCandidate={rank <= 0}
           onClose={() => setShowBumpPopup(false)}
         />
       )}
