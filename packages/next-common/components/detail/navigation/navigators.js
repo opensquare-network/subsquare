@@ -79,12 +79,12 @@ export function CouncilMotionNavigator({
 }) {
   let link = (
     <Link href={`/council/motions/${getMotionId(motion)}`} legacyBehavior>
-      {`Motion #${shortMotionId(motion)}`}
+      {`Council #${shortMotionId(motion)}`}
     </Link>
   );
 
   if (!isLink) {
-    link = `Tech. Comm. #${shortMotionId(motion)}`;
+    link = `Council #${shortMotionId(motion)}`;
   }
 
   return (
