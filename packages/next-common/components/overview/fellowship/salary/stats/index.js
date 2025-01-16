@@ -10,7 +10,7 @@ import SalaryStatsRegistrationItem from "next-common/components/fellowship/salar
 import SalaryStatsUnregisteredItem from "next-common/components/fellowship/salary/cycles/summary/unregisteredItem";
 import SalaryStatsTimeRemainItem from "next-common/components/fellowship/salary/cycles/summary/timeRemainItem";
 import SummaryItem from "next-common/components/summary/layout/item";
-import { useFellowshipSalaryStats } from "../../../../../hooks/fellowship/salary/useFellowshipSalaryStats";
+import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 
 export function DesktopPlaceHolderItem() {
   const [navCollapsed] = useNavCollapsed();
