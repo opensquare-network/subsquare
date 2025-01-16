@@ -16,7 +16,7 @@ export default function DelegationStatus({ delegatingTarget }) {
 
   return (
     <Wrapper>
-      <span className="text-textTertiary text14Medium">Delegated vote by</span>
+      <span className="text-textTertiary text14Medium">Delegate</span>
       <AddressUser add={delegatingTarget} showAvatar={false} maxWidth={133} />
     </Wrapper>
   );
