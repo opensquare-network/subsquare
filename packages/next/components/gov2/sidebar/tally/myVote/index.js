@@ -12,8 +12,7 @@ const RemoveReferendaVotePopup = dynamicPopup(() =>
   import("next-common/components/myReferendumVote/removeReferendaVotePopup"),
 );
 
-function MyVoteInner() {
-  const finishHeight = useReferendumVotingFinishHeight();
+function MyActiveVoteInner() {
   const [isRemovePopupOpen, setRemovePopupOpen] = useSharedRemovePopupOpen();
   const post = usePost();
   const trackId = post?.track;
@@ -21,12 +20,7 @@ function MyVoteInner() {
 
   return (
     <>
-      {finishHeight ? (
-        <MyVoteOnFinishedReferendum />
-      ) : (
-        <MyVoteOnActiveReferendum />
-      )}
-
+      <MyVoteOnActiveReferendum />
       {isRemovePopupOpen && (
         <RemoveReferendaVotePopup
           trackId={trackId}
@@ -42,10 +36,17 @@ export default function MyVote() {
   const post = usePost();
   const trackId = post?.track;
   const address = useRealAddress();
+  const finishHeight = useReferendumVotingFinishHeight();
 
   return (
-    <MyReferendumVoteProvider trackId={trackId} address={address}>
-      <MyVoteInner />
-    </MyReferendumVoteProvider>
+    <>
+      {finishHeight ? (
+        <MyVoteOnFinishedReferendum />
+      ) : (
+        <MyReferendumVoteProvider trackId={trackId} address={address}>
+          <MyActiveVoteInner />
+        </MyReferendumVoteProvider>
+      )}
+    </>
   );
 }
