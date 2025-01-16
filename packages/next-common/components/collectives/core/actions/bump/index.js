@@ -36,7 +36,7 @@ export function CoreFellowshipBumpButton({ member, onClick }) {
 }
 
 export default function CoreFellowshipBump({ member }) {
-  const { address } = member || {};
+  const { address, rank } = member || {};
   const [showPopup, setShowPopup] = useState(false);
 
   return (
@@ -47,6 +47,7 @@ export default function CoreFellowshipBump({ member }) {
       />
       {showPopup && (
         <BumpFellowshipMemberPopup
+          isCandidate={rank <= 0}
           who={address}
           onClose={() => setShowPopup(false)}
         />
