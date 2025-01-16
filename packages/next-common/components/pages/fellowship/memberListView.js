@@ -237,6 +237,18 @@ function getNonCoreMemberRow({ idx, member }) {
   ];
 }
 
+function getNonCandidateCoreMemberRow({ idx, member }) {
+  const { address, rank } = member;
+
+  return [
+    <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
+    <NonCoreMemberAddressCol key={`address-row-${idx}`} address={address} />,
+    <NonCoreMemberCol key={`offboard-timeout-${idx}`} />,
+    <EvidenceAndReferenda key="evidence" member={member} />,
+    <div key="more" />,
+  ];
+}
+
 function CollectivesMemberTable({
   members = [],
   isLoading = false,
@@ -280,9 +292,15 @@ function CollectivesMemberTable({
 
   const candidateRows = useMemo(() => {
     return members.map((member, idx) => {
-      const { address } = member;
+      const { address, isFellowshipCoreMember } = member;
 
-      const row = getCandidateRow({ idx, member, params, ActionsComponent });
+      let row = [];
+
+      if (isFellowshipCoreMember) {
+        row = getCandidateRow({ idx, member, params, ActionsComponent });
+      } else {
+        row = getNonCandidateCoreMemberRow({ idx, member });
+      }
 
       if (address === realAddress) {
         row.tag = <MineTagOnListView />;
