@@ -16,6 +16,6 @@ export default function getExternalProposalHash(call) {
     return null;
   }
 
-  const { hash, len } = args[0]?.value?.lookup;
+  const { hash, len } = args[0]?.value?.lookup || {};
   return { hash, len };
 }
