@@ -1,6 +1,8 @@
 import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
 import normalizeCall from "next-common/components/democracy/metadata/normalize";
+import getExternalProposalHash from "next-common/components/collective/call/external";
+import { isNil } from "lodash-es";
 
 async function queryPreimage(api, hash, len, blockHash) {
   let blockApi = api;
@@ -26,26 +28,9 @@ export default function useExternalPreimage(call, blockHash) {
   const api = useContextApi();
   const [preimage, setPreimage] = useState(null);
 
-  if (!call) {
-    return null;
-  }
-
-  const { section, method, args = [] } = call;
-  if ("democracy" !== section) {
-    return null;
-  }
-
-  if (!["externalProposeMajority"].includes(method)) {
-    return null;
-  }
-
-  if (!args[0]?.value?.lookup) {
-    return null;
-  }
-
-  const { hash, len } = args[0]?.value?.lookup;
+  const { hash, len } = getExternalProposalHash(call) || {};
   useEffect(() => {
-    if (!api) {
+    if (!api || !hash || isNil(len)) {
       return;
     }
 
