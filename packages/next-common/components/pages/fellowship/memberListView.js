@@ -25,6 +25,7 @@ import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCo
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import Tooltip from "next-common/components/tooltip";
 import { ContainerRefProvider } from "next-common/context/containerRef";
+import { isSameAddress } from "next-common/utils";
 
 const rankColumn = {
   name: "Rank",
@@ -281,7 +282,7 @@ function CollectivesMemberTable({
           row = getNonCoreMemberRow({ idx, member });
         }
 
-        if (address === realAddress) {
+        if (isSameAddress(address, realAddress)) {
           row.tag = <MineTagOnListView />;
         }
 
@@ -302,7 +303,7 @@ function CollectivesMemberTable({
         row = getNonCandidateCoreMemberRow({ idx, member });
       }
 
-      if (address === realAddress) {
+      if (isSameAddress(address, realAddress)) {
         row.tag = <MineTagOnListView />;
       }
 
