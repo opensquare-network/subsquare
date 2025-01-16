@@ -9,6 +9,7 @@ import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
 
 const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
   import("next-common/components/fellowship/salary/actions/payout/popup"),
@@ -20,8 +21,10 @@ export default function FellowshipSalaryPayout() {
   const { members } = useFellowshipCollectiveMembers();
   const memberAddrs = (members || []).map((item) => item.address);
   const isCollectiveMember = memberAddrs.includes(address);
+  const { isLoading: isLoadingClaimant, claimant } =
+    useMySalaryClaimantFromContext();
 
-  const { cycleStart } = useFellowshipSalaryStats() || {};
+  const { cycleStart, cycleIndex } = useFellowshipSalaryStats() || {};
 
   const { registrationPeriod } = useSalaryFellowshipPeriods();
   const payoutStart = cycleStart + registrationPeriod || null;
@@ -29,7 +32,15 @@ export default function FellowshipSalaryPayout() {
   const isStarted =
     !isNil(latestHeight) && !isNil(payoutStart) && latestHeight >= payoutStart;
 
-  const disabled = !address || !isStarted || !isCollectiveMember;
+  const paid =
+    claimant && claimant.status?.attempted && claimant.lastActive >= cycleIndex;
+  const disabled =
+    !address ||
+    !isStarted ||
+    !isCollectiveMember ||
+    isLoadingClaimant ||
+    !claimant ||
+    paid;
   let tooltipText = null;
   if (!address) {
     tooltipText = "Connect your address please";
@@ -37,6 +48,12 @@ export default function FellowshipSalaryPayout() {
     tooltipText = "Not a collective member";
   } else if (!isStarted) {
     tooltipText = "The payout period is not started";
+  } else if (isLoadingClaimant) {
+    tooltipText = "Checking your payment status";
+  } else if (!claimant) {
+    return "Please import yourself first";
+  } else if (paid) {
+    tooltipText = "Your salary has been paid";
   }
 
   if (disabled) {
