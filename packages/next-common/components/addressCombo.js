@@ -133,7 +133,7 @@ function AddressComboInput({
   );
 }
 
-function AddressComboListItemAccount({ account }) {
+export function AddressComboListItemAccount({ account }) {
   const { identity, hasIdentity } = useIdentityInfo(account.address);
   const displayName = getIdentityDisplay(identity);
   const address = normalizeAddress(account.address);
@@ -201,7 +201,7 @@ function AddressComboCustomAddress({ address }) {
   return <NoIdentity address={address} />;
 }
 
-function AddressComboHeader({
+export function AddressComboHeader({
   inputAddress,
   setInputAddress,
   onBlur,

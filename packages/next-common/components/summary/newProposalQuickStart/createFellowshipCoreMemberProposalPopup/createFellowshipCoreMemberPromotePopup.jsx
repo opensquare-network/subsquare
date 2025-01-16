@@ -1,7 +1,7 @@
 import RankField from "next-common/components/popup/fields/rankField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import useFellowshipMemberFiled from "next-common/components/preImages/createPreimagePopup/fields/useFellowshipMemberFiled";
 import { useState } from "react";
 import AdvanceSettings from "../common/advanceSettings";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
@@ -14,7 +14,7 @@ import { ReferendaWarningMessage } from "./common";
 
 function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const { onClose } = usePopupParams();
-  const { value: who, component: whoField } = useAddressComboField({
+  const { value: who, component: whoField } = useFellowshipMemberFiled({
     title: "Who",
   });
   const { value: enactment, component: enactmentField } =
