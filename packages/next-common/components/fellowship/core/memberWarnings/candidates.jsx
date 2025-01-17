@@ -36,7 +36,7 @@ export default function MemberCandidatesWarnings({ className }) {
     totalEvidences > 0 && (
       <>
         {evidencesToBeHandled} evidences to be handled in total{" "}
-        <PromptButton filterLink={filterLinks.evidenceOnly}>
+        <PromptButton isCandidate filterLink={filterLinks.evidenceOnly}>
           {totalEvidences} evidences
         </PromptButton>
         .
@@ -45,7 +45,7 @@ export default function MemberCandidatesWarnings({ className }) {
     closingMembersCount > 0 && (
       <>
         The offboard period for
-        <PromptButton filterLink={filterLinks[OffboardClosing]}>
+        <PromptButton isCandidate filterLink={filterLinks[OffboardClosing]}>
           {closingMembersCount} candidates
         </PromptButton>
         is approaching.
@@ -53,7 +53,7 @@ export default function MemberCandidatesWarnings({ className }) {
     ),
     expiredMembersCount && (
       <>
-        <PromptButton filterLink={filterLinks.offboardExpired}>
+        <PromptButton isCandidate filterLink={filterLinks.offboardExpired}>
           {expiredMembersCount} candidates
         </PromptButton>
         can be offboarded.

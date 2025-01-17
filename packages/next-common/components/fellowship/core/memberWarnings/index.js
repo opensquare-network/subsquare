@@ -234,12 +234,19 @@ export default function MemberWarnings({ className }) {
   return <MemberWarningsPanel className={className} items={promptItems} />;
 }
 
-export function PromptButton({ children, filterLink = "" }) {
+export function PromptButton({
+  children,
+  filterLink = "",
+  isCandidate = false,
+}) {
   const router = useRouter();
   const [flag, setFlag] = useState(false);
   const matched = router.asPath === filterLink;
   const isActive = flag && matched;
-  const currentPath = router.asPath.split("?")[0];
+  let currentPath = router.asPath.split("?")[0];
+  if (isCandidate) {
+    currentPath = `${currentPath}?tab=candidates`;
+  }
   useEffect(() => {
     setFlag(matched);
   }, [matched]);
