@@ -78,7 +78,7 @@ export function useDemotionExpiringCount(members) {
   }, [members, latestHeight, params, blockTime]);
 }
 
-function useDemotionExpiredCount(members) {
+export function useDemotionExpiredCount(members) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const params = useCoreFellowshipParams();
 
