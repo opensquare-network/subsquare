@@ -22,8 +22,9 @@ function SelectHeader({
   address,
   edit,
 }) {
-  const selectedAccount = accounts.find(
-    (item) => normalizeAddress(item.address) === address,
+  const selectedAccount = useMemo(
+    () => accounts.find((item) => normalizeAddress(item.address) === address),
+    [accounts, address],
   );
 
   if (edit) {
@@ -52,21 +53,19 @@ function SelectHeader({
 function SelectOptions({ accounts, address, onSelect }) {
   return (
     <div className="absolute w-full mt-1 bg-neutral100 shadow-200 border border-neutral300 rounded-md max-h-80 overflow-y-auto z-10 py-2">
-      {(accounts || []).map((item, index) => {
-        return (
-          <div
-            key={index}
-            className={cn(
-              "flex items-center gap-4 px-4 py-2 cursor-pointer hover:bg-neutral200",
-              item.address === address && "bg-neutral200",
-            )}
-            onClick={() => onSelect(item)}
-          >
-            <AddressComboListItemAccount account={item} />
-            <FellowshipRank rank={item.rank} />
-          </div>
-        );
-      })}
+      {accounts.map((item) => (
+        <div
+          key={item.address}
+          className={cn(
+            "flex items-center gap-4 px-4 py-2 cursor-pointer hover:bg-neutral200",
+            item.address === address && "bg-neutral200",
+          )}
+          onClick={() => onSelect(item)}
+        >
+          <AddressComboListItemAccount account={item} />
+          <FellowshipRank rank={item.rank} />
+        </div>
+      ))}
     </div>
   );
 }
@@ -84,29 +83,32 @@ export default function FellowshipMemberSelector({
   const { members, loading } = useFellowshipCoreMembers();
 
   const accounts = useMemo(() => {
-    if (loading || !members) {
-      return [];
-    }
-
-    return members?.filter((m) => m.rank > 0).sort((a, b) => a.rank - b.rank);
+    if (loading || !members) return [];
+    return members.filter((m) => m.rank > 0).sort((a, b) => a.rank - b.rank);
   }, [members, loading]);
 
   const [show, setShow] = useState(false);
   const [inputAddress, setInputAddress] = useState(
-    tryConvertToEvmAddress(address) || "",
+    () => tryConvertToEvmAddress(address) || "",
   );
   const ref = useRef();
+
   useClickAway(ref, () => setShow(false));
 
-  const isValidAddress =
-    isAddress(address) ||
-    normalizeAddress(address) ||
-    isEthereumAddress(address);
+  const isValidAddress = useMemo(
+    () =>
+      isAddress(address) ||
+      normalizeAddress(address) ||
+      isEthereumAddress(address),
+    [address],
+  );
+
   const [edit, setEdit] = useState(!isValidAddress);
 
-  const isFellowshipMember = useMemo(() => {
-    return isFellowshipMemberAddress(accounts, address);
-  }, [accounts, address]);
+  const isFellowshipMember = useMemo(
+    () => isFellowshipMemberAddress(accounts, address),
+    [accounts, address],
+  );
 
   useEffect(() => {
     setIsAvailableMember(!address || isFellowshipMember);
@@ -114,13 +116,9 @@ export default function FellowshipMemberSelector({
 
   const onBlur = () => {
     const isAddr = isAddress(inputAddress);
-    if (!isAddr) {
-      setAddress();
-      return;
-    }
-
     const ss58Addr = normalizeAddress(inputAddress);
-    if (!ss58Addr) {
+
+    if (!isAddr || !ss58Addr) {
       setAddress();
       return;
     }
@@ -159,10 +157,10 @@ export default function FellowshipMemberSelector({
           address={address}
           edit={edit}
         />
-        {(accounts || []).length > 0 && (
+        {accounts.length > 0 && (
           <span
             onClick={(e) => {
-              setShow(!show);
+              setShow((prevShow) => !prevShow);
               e.stopPropagation();
             }}
           >
@@ -170,7 +168,7 @@ export default function FellowshipMemberSelector({
           </span>
         )}
       </div>
-      {show && (accounts || []).length > 0 && (
+      {show && accounts.length > 0 && (
         <SelectOptions
           accounts={accounts}
           address={address}

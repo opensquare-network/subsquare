@@ -134,10 +134,14 @@ export function AddressComboInput({
 }
 
 export function AddressComboListItemAccount({ account }) {
-  const { identity, hasIdentity } = useIdentityInfo(account.address);
+  const { identity, hasIdentity, isLoading } = useIdentityInfo(account.address);
   const displayName = getIdentityDisplay(identity);
   const address = normalizeAddress(account.address);
   const addressHint = getAddressHint(address);
+
+  if (isLoading) {
+    return <AddressInfoLoading address={address} />;
+  }
 
   return (
     <>
