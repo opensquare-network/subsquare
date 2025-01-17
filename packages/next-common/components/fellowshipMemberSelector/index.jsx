@@ -1,6 +1,5 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
-import { partition } from "lodash-es";
 import { isAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import Caret from "../icons/caret";
 import { cn } from "next-common/utils";
@@ -9,14 +8,50 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useClickAway } from "react-use";
 import FellowshipRank from "../fellowship/rank";
 import {
-  AddressComboHeader,
   AddressComboListItemAccount,
+  AddressComboCustomAddress,
+  AddressComboInput,
 } from "next-common/components/addressCombo";
 
-// TODO: child components UX / UI
-function AddressComboListOptions({ accounts, address, onSelect }) {
+function SelectHeader({
+  inputAddress,
+  setInputAddress,
+  onBlur,
+  placeholder,
+  accounts,
+  address,
+  edit,
+}) {
+  const selectedAccount = accounts.find(
+    (item) => normalizeAddress(item.address) === address,
+  );
+
+  if (edit) {
+    return (
+      <AddressComboInput
+        inputAddress={inputAddress}
+        setInputAddress={setInputAddress}
+        onBlur={onBlur}
+        placeholder={placeholder}
+      />
+    );
+  }
+
+  if (selectedAccount) {
+    return (
+      <>
+        <AddressComboListItemAccount account={selectedAccount} />
+        <FellowshipRank rank={selectedAccount.rank} />
+      </>
+    );
+  }
+
+  return <AddressComboCustomAddress address={address} />;
+}
+
+function SelectOptions({ accounts, address, onSelect }) {
   return (
-    <div className="absolute w-full mt-1 bg-neutral100 shadow-200 border border-neutral300 rounded-md max-h-80 overflow-y-auto z-10">
+    <div className="absolute w-full mt-1 bg-neutral100 shadow-200 border border-neutral300 rounded-md max-h-80 overflow-y-auto z-10 py-2">
       {(accounts || []).map((item, index) => {
         return (
           <div
@@ -36,10 +71,14 @@ function AddressComboListOptions({ accounts, address, onSelect }) {
   );
 }
 
+function isFellowshipMemberAddress(members = [], address) {
+  return members?.some((item) => item.address === address);
+}
+
 export default function FellowshipMemberSelector({
   address,
   setAddress,
-  readOnly = false,
+  setIsAvailableMember,
   placeholder = "Please fill the address or select another one...",
 }) {
   const { members, loading } = useFellowshipCoreMembers();
@@ -64,6 +103,14 @@ export default function FellowshipMemberSelector({
     normalizeAddress(address) ||
     isEthereumAddress(address);
   const [edit, setEdit] = useState(!isValidAddress);
+
+  const isFellowshipMember = useMemo(() => {
+    return isFellowshipMemberAddress(accounts, address);
+  }, [accounts, address]);
+
+  useEffect(() => {
+    setIsAvailableMember(!address || isFellowshipMember);
+  }, [address, isFellowshipMember, setIsAvailableMember]);
 
   const onBlur = () => {
     const isAddr = isAddress(inputAddress);
@@ -96,17 +143,14 @@ export default function FellowshipMemberSelector({
   return (
     <div ref={ref} className="relative">
       <div
-        className={cn(
-          "flex items-center bg-neutral100 border border-neutral400 rounded-md h-14 px-4 cursor-pointer",
-          readOnly && "pointer-events-none",
-        )}
+        className="flex items-center bg-neutral100 border border-neutral400 rounded-md space-x-3 h-14 px-4 cursor-pointer"
         onClick={() => {
           setShow(true);
           setEdit(true);
           setTimeout(() => ref.current.querySelector("input")?.focus(), 100);
         }}
       >
-        <AddressComboHeader
+        <SelectHeader
           inputAddress={inputAddress}
           setInputAddress={setInputAddress}
           onBlur={onBlur}
@@ -115,7 +159,7 @@ export default function FellowshipMemberSelector({
           address={address}
           edit={edit}
         />
-        {(accounts || []).length > 0 && !readOnly && (
+        {(accounts || []).length > 0 && (
           <span
             onClick={(e) => {
               setShow(!show);
@@ -127,15 +171,11 @@ export default function FellowshipMemberSelector({
         )}
       </div>
       {show && (accounts || []).length > 0 && (
-        <AddressComboListOptions
+        <SelectOptions
           accounts={accounts}
           address={address}
           onSelect={onSelect}
         />
-      )}
-
-      {address && !isValidAddress && (
-        <div className="mt-2  tex14Medium">Please fill a valid address</div>
       )}
     </div>
   );

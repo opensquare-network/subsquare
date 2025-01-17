@@ -6,13 +6,16 @@ export default function useFellowshipMemberFiled({
   defaultAddress = "",
 } = {}) {
   const [beneficiary, setBeneficiary] = useState(defaultAddress);
+  const [isAvailableMember, setIsAvailableMember] = useState(true);
 
   return {
     value: beneficiary,
+    isAvailableMember,
     component: (
       <FellowshipMemberFiled
         title={title}
         setAddress={setBeneficiary}
+        setIsAvailableMember={setIsAvailableMember}
         defaultAddress={defaultAddress}
         placeholder="Please fill the address or select another one..."
       />

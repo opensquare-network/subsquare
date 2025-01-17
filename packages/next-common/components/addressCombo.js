@@ -114,7 +114,7 @@ function getAddressHint(address) {
   return addressHint;
 }
 
-function AddressComboInput({
+export function AddressComboInput({
   inputAddress,
   setInputAddress,
   onBlur,
@@ -187,7 +187,7 @@ function NoIdentity({ address }) {
   );
 }
 
-function AddressComboCustomAddress({ address }) {
+export function AddressComboCustomAddress({ address }) {
   const { identity, isLoading, hasIdentity } = useIdentityInfo(address);
 
   if (isLoading) {
@@ -201,7 +201,7 @@ function AddressComboCustomAddress({ address }) {
   return <NoIdentity address={address} />;
 }
 
-export function AddressComboHeader({
+function AddressComboHeader({
   inputAddress,
   setInputAddress,
   onBlur,

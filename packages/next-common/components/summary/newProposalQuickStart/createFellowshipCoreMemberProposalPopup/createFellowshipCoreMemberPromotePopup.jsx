@@ -11,10 +11,24 @@ import { useReferendaFellowshipPallet } from "next-common/context/collectives/co
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
 import { ReferendaWarningMessage } from "./common";
+import WarningInfoPanel from "next-common/components/summary/styled/warningInfoPanel";
+
+export function NotAvailableMemberPrompt() {
+  return (
+    <WarningInfoPanel className="justify-center">
+      Please fill the fellowship member address that eligible for retention or
+      promotion
+    </WarningInfoPanel>
+  );
+}
 
 function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const { onClose } = usePopupParams();
-  const { value: who, component: whoField } = useFellowshipMemberFiled({
+  const {
+    value: who,
+    isAvailableMember,
+    component: whoField,
+  } = useFellowshipMemberFiled({
     title: "Who",
   });
   const { value: enactment, component: enactmentField } =
@@ -35,10 +49,11 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}
       />
+      {!isAvailableMember && <NotAvailableMemberPrompt />}
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
-          disabled={isLoading || isReferendaExisted}
+          disabled={isLoading || isReferendaExisted || !isAvailableMember}
           tooltip
           who={who}
           enactment={enactment}
