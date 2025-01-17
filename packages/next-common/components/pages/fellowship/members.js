@@ -15,6 +15,7 @@ import FellowshipMemberListView from "./memberListView";
 import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import { useRouter } from "next/router";
 import MoreActions from "./moreActions";
+import useCandidatesFilter from "./useCandidatesFilter";
 
 function FellowshipMembers({
   viewMode,
@@ -102,7 +103,12 @@ function FellowshipMembersTabPage({
   );
 }
 
-function FellowshipCandidatesTabPage({ members, candidates, isLoading }) {
+function FellowshipCandidatesTabPage({
+  members,
+  candidates,
+  isLoading,
+  memberFilters,
+}) {
   const { viewMode, component: viewModeSwitch } = useViewModeSwitch();
 
   const membersCount = members?.length;
@@ -116,7 +122,7 @@ function FellowshipCandidatesTabPage({ members, candidates, isLoading }) {
           candidatesCount={candidatesCount}
         />
         <div className="flex items-center gap-[12px] max-sm:pl-6">
-          {/* TODO: {memberFilters} */}
+          {memberFilters}
           {viewModeSwitch}
         </div>
       </div>
@@ -132,6 +138,8 @@ function FellowshipCandidatesTabPage({ members, candidates, isLoading }) {
 
 function FellowshipMembersPageInContext() {
   const router = useRouter();
+  const isCandidatesPage = router.query.tab === "candidates";
+
   const { fellowshipMembers } = usePageProps();
   const { membersWithStatus, isLoading } =
     useMembersWithStatus(fellowshipMembers);
@@ -142,18 +150,15 @@ function FellowshipMembersPageInContext() {
   const { filteredMembers: members, component: memberFilters } =
     useMembersFilter(regularMembers);
 
-  const candidates = useMemo(() => {
+  const regularCandidates = useMemo(() => {
     if (!membersWithStatus) {
-      return null;
+      return [];
     }
 
-    return (membersWithStatus || []).filter(
-      (member) => member.rank <= 0 && member.isFellowshipCoreMember,
-    );
+    return (membersWithStatus || []).filter((member) => member.rank <= 0);
   }, [membersWithStatus]);
-
-  const isCandidatesPage =
-    router.asPath === "/fellowship/members?tab=candidates";
+  const { filteredMembers: candidates, component: candidateFilters } =
+    useCandidatesFilter(regularCandidates);
 
   if (isCandidatesPage) {
     return (
@@ -161,6 +166,7 @@ function FellowshipMembersPageInContext() {
         members={members}
         candidates={candidates}
         isLoading={isLoading}
+        memberFilters={candidateFilters}
       />
     );
   }
