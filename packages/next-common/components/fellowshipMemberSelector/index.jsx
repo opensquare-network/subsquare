@@ -16,7 +16,7 @@ import {
 // TODO: child components UX / UI
 function AddressComboListOptions({ accounts, address, onSelect }) {
   return (
-    <div className="absolute w-full mt-1 bg-neutral100 shadow-200 border border-neutral300 rounded-md max-h-[80px] overflow-y-auto z-10">
+    <div className="absolute w-full mt-1 bg-neutral100 shadow-200 border border-neutral300 rounded-md max-h-80 overflow-y-auto z-10">
       {(accounts || []).map((item, index) => {
         return (
           <div
@@ -42,11 +42,15 @@ export default function FellowshipMemberSelector({
   readOnly = false,
   placeholder = "Please fill the address or select another one...",
 }) {
-  const { members: coreMembers } = useFellowshipCoreMembers();
-  const [accounts] = useMemo(
-    () => partition(coreMembers, (m) => m.rank > 0),
-    [coreMembers],
-  );
+  const { members, loading } = useFellowshipCoreMembers();
+
+  const accounts = useMemo(() => {
+    if (loading || !members) {
+      return [];
+    }
+
+    return members?.filter((m) => m.rank > 0).sort((a, b) => a.rank - b.rank);
+  }, [members, loading]);
 
   const [show, setShow] = useState(false);
   const [inputAddress, setInputAddress] = useState(
@@ -93,7 +97,7 @@ export default function FellowshipMemberSelector({
     <div ref={ref} className="relative">
       <div
         className={cn(
-          "flex items-center bg-neutral100 border-none border-neutral400 rounded-md h-14 px-4 cursor-pointer",
+          "flex items-center bg-neutral100 border border-neutral400 rounded-md h-14 px-4 cursor-pointer",
           readOnly && "pointer-events-none",
         )}
         onClick={() => {
