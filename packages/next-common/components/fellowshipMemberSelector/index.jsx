@@ -84,7 +84,7 @@ export default function FellowshipMemberSelector({
 
   const accounts = useMemo(() => {
     if (loading || !members) return [];
-    return members.filter((m) => m.rank > 0).sort((a, b) => a.rank - b.rank);
+    return members.filter((m) => m.rank > 0).sort((a, b) => b.rank - a.rank);
   }, [members, loading]);
 
   const [show, setShow] = useState(false);
