@@ -21,7 +21,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemFilter } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 import { cn } from "next-common/utils";
-import BatchBump from "./batchBump";
+import BatchBump from "../batchBump";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
@@ -146,7 +146,7 @@ function useEvidencesStat() {
   };
 }
 
-function MemberWarningsPanel({ className, isLoading, items }) {
+export function MemberWarningsPanel({ className, isLoading, items }) {
   const icon = (
     <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
   );
