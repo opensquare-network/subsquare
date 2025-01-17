@@ -1,7 +1,7 @@
 import RankField from "next-common/components/popup/fields/rankField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import useFellowshipMemberFiled from "next-common/components/preImages/createPreimagePopup/fields/useFellowshipMemberFiled";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import AdvanceSettings from "../common/advanceSettings";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
@@ -12,12 +12,17 @@ import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
 import { ReferendaWarningMessage } from "./common";
+import { NotAvailableMemberPrompt } from "./createFellowshipCoreMemberPromotePopup";
 
 function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
   const { members } = useFellowshipCoreMembers();
 
   const { onClose } = usePopupParams();
-  const { value: who, component: whoField } = useAddressComboField({
+  const {
+    value: who,
+    isAvailableMember,
+    component: whoField,
+  } = useFellowshipMemberFiled({
     title: "Who",
   });
   const { value: enactment, component: enactmentField } =
@@ -39,10 +44,11 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}
       />
+      {!isAvailableMember && <NotAvailableMemberPrompt />}
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
-          disabled={isLoading || isReferendaExisted}
+          disabled={isLoading || isReferendaExisted || !isAvailableMember}
           who={who}
           enactment={enactment}
           rank={atRank}
