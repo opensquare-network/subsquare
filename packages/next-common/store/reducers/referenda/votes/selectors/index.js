@@ -2,6 +2,7 @@ import { name } from "../consts";
 import { createSelector } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
 import { flatten } from "lodash-es";
+import { isSameAddress } from "next-common/utils";
 
 export const votesTriggerSelector = (state) => state[name].votesTrigger;
 export const allVotesSelector = (state) => state[name].allVotes;
@@ -91,8 +92,8 @@ export const normalizedNestedVote = (vote, delegations) => {
     };
   }
 
-  let directVoterDelegations = delegations.filter(
-    (delegationVote) => delegationVote.target === vote.account,
+  let directVoterDelegations = delegations.filter((delegationVote) =>
+    isSameAddress(delegationVote.target, vote.account),
   );
   const allDelegationVotes = directVoterDelegations.reduce((result, d) => {
     return new BigNumber(result).plus(d.votes).toString();

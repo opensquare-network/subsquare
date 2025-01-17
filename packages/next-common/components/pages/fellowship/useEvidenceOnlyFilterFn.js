@@ -1,8 +1,10 @@
 import { useAllMemberEvidenceContext } from "next-common/components/collectives/core/context/evidenceMemberContext";
+import { isAddressInGroup } from "next-common/utils";
 import { useCallback } from "react";
 
 export default function useEvidenceOnlyFilterFn() {
   const { evidences, isLoading } = useAllMemberEvidenceContext();
+  const evidenceOwners = evidences?.map((evidence) => evidence.who);
 
   return useCallback(
     (members) => {
@@ -10,9 +12,9 @@ export default function useEvidenceOnlyFilterFn() {
         return members;
       }
       return members.filter((member) =>
-        evidences.some((evidence) => evidence.who === member.address),
+        isAddressInGroup(member.address, evidenceOwners),
       );
     },
-    [evidences, isLoading],
+    [evidenceOwners, isLoading],
   );
 }

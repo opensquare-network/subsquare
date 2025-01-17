@@ -108,7 +108,7 @@ export function OriginAddress({ selected, onSelect = noop }) {
     [extensionAccounts, user.address],
   );
 
-  const disabled = selected === user.address;
+  const disabled = isSameAddress(selected, user.address);
 
   return (
     <div className="flex flex-col gap-[12px]">
@@ -178,7 +178,7 @@ export function ProxiedAccounts({ selected, onSelect = noop }) {
           <ProxyAddress
             key={index}
             proxyInfo={proxy}
-            disabled={selected === proxy.delegator}
+            disabled={isSameAddress(selected, proxy.delegator)}
             onClick={() => {
               onSelect(proxy.delegator);
               onClose();

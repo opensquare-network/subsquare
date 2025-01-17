@@ -5,7 +5,7 @@ import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import { isAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
-import { addressEllipsis, cn } from "../utils";
+import { addressEllipsis, cn, isSameAddress } from "../utils";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
 import IdentityIcon from "./Identity/identityIcon.js";
@@ -106,7 +106,7 @@ function getAddressHint(address) {
     const maybeEvmAddress = tryConvertToEvmAddress(address);
 
     addressHint = addressEllipsis(maybeEvmAddress);
-    if (maybeEvmAddress !== address) {
+    if (!isSameAddress(maybeEvmAddress, address)) {
       addressHint += ` (${addressEllipsis(address)})`;
     }
   }
@@ -210,8 +210,8 @@ function AddressComboHeader({
   address,
   edit,
 }) {
-  const selectedAccount = accounts.find(
-    (item) => normalizeAddress(item.address) === address,
+  const selectedAccount = accounts.find((item) =>
+    isSameAddress(normalizeAddress(item.address), address),
   );
 
   if (edit) {
@@ -240,7 +240,7 @@ function AddressComboListOptions({ accounts, address, onSelect }) {
           <Item
             key={index}
             onClick={() => onSelect(item)}
-            selected={item.address === address}
+            selected={isSameAddress(item.address, address)}
           >
             <AddressComboListItemAccount account={item} />
           </Item>

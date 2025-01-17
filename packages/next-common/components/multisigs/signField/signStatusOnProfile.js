@@ -1,5 +1,5 @@
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import { isSameAddress } from "next-common/utils";
+import { isAddressInGroup } from "next-common/utils";
 import {
   ApprovedTooltip,
   NotApprovedTooltip,
@@ -9,9 +9,7 @@ import { ProfilePageGuard } from "next-common/components/multisigs/signField/rou
 export default function SignStatusOnProfile({ multisig }) {
   const profileAddress = useProfileAddress();
   const { approvals = [] } = multisig || {};
-  const isApproved = approvals.some((item) =>
-    isSameAddress(item, profileAddress),
-  );
+  const isApproved = isAddressInGroup(profileAddress, approvals);
 
   return (
     <ProfilePageGuard>

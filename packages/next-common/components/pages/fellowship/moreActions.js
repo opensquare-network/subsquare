@@ -18,7 +18,7 @@ import Tooltip from "next-common/components/tooltip";
 import { useContainerRef } from "next-common/context/containerRef";
 import useIsElementInLowerHalf from "next-common/hooks/useIsElementInLowerHalf";
 import Button from "next-common/lib/button";
-import { cn } from "next-common/utils";
+import { cn, isSameAddress } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { createContext, useContext, useRef, useState } from "react";
 import { useClickAway } from "react-use";
@@ -27,7 +27,7 @@ export const ContextMenuStateContext = createContext();
 
 export function useIsMe(address) {
   const realAddress = useRealAddress();
-  return address === realAddress;
+  return isSameAddress(address, realAddress);
 }
 
 export function PromoteMenuItem({ member, params, setShowPromotePopup }) {

@@ -4,6 +4,7 @@ import { AvatarContextProvider } from "next-common/context/avatar";
 import { useMemo } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMyReferendaDelegation } from "../myDelegationSection/publicAnnouncement/useAddressDelegation";
+import { isSameAddress } from "next-common/utils";
 
 function MyDelegationCard() {
   const myDelegation = useMyReferendaDelegation();
@@ -28,7 +29,9 @@ export default function Delegates({ page, delegates = [] }) {
       <MemberCardListContainer>
         {page === 1 && <MyDelegationCard />}
         {delegates
-          .filter((item) => page !== 1 || item.address !== realAddress)
+          .filter(
+            (item) => page !== 1 || !isSameAddress(item.address, realAddress),
+          )
           .map((delegate, idx) => (
             <ReferendaDelegateCard key={idx} delegate={delegate} />
           ))}

@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
 import { name } from "../consts";
+import { isSameAddress } from "next-common/utils";
 
 export const allVotesSelector = (state) => state[name].allVotes;
 export const showVotesNumberSelector = createSelector(
@@ -45,7 +46,7 @@ export const nestedVotesSelector = createSelector(
       }
 
       const directVoterDelegations = delegations.filter((delegationVote) => {
-        return delegationVote.target === vote.account;
+        return isSameAddress(delegationVote.target, vote.account);
       });
       const allDelegationVotes = directVoterDelegations.reduce((result, d) => {
         return new BigNumber(result).plus(d.votes).toString();

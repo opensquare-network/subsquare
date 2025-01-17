@@ -2,6 +2,7 @@ import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { useMemo } from "react";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import { useAllMemberEvidenceContext } from "next-common/components/collectives/core/context/evidenceMemberContext";
+import { isSameAddress } from "next-common/utils";
 
 function useApproveAndPromoteReferenda() {
   const pallet = useCoreFellowshipPallet();
@@ -56,8 +57,8 @@ export default function useEvidencesCombineReferenda() {
     }
 
     return evidences.map((evidence) => {
-      const referendum = referenda.find(
-        (referendum) => evidence.who === referendum.who,
+      const referendum = referenda.find((referendum) =>
+        isSameAddress(evidence.who, referendum.who),
       );
 
       return {

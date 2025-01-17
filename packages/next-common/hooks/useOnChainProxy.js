@@ -1,5 +1,6 @@
 import { useContextApi } from "next-common/context/api";
 import { useUser } from "next-common/context/user";
+import { isSameAddress } from "next-common/utils";
 import useCall from "next-common/utils/hooks/useCall";
 import { useMemo } from "react";
 
@@ -12,8 +13,8 @@ export default function useOnChainProxyInfo(address) {
       return null;
     }
     const [proxies] = proxyInfo;
-    return (proxies || []).find(
-      (proxy) => proxy.delegate.toString() === user?.address,
+    return (proxies || []).find((proxy) =>
+      isSameAddress(proxy.delegate.toString(), user?.address),
     );
   }, [proxyInfo, user]);
 }

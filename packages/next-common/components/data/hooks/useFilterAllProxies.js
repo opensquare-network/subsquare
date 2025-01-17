@@ -3,6 +3,7 @@ import useMyRelatedSwitch from "./useMyRelatedSwitch";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useAllProxiesSearch from "./useAllProxiesSearch";
 import useSearchByAddressIdentity from "./useSearchByAddressIdentity";
+import { isSameAddress } from "next-common/utils";
 
 export default function useFilterAllProxies(proxies = [], initialLoading) {
   const { isOn: isMyRelated } = useMyRelatedSwitch();
@@ -22,8 +23,8 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
     if (isMyRelated && address) {
       filteredProxies = searchedProxies.filter(({ delegator, items }) => {
         return (
-          delegator === address ||
-          items.some(({ delegatee }) => delegatee === address)
+          isSameAddress(delegator, address) ||
+          items.some(({ delegatee }) => isSameAddress(delegatee, address))
         );
       });
     }

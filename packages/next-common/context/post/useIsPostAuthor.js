@@ -2,7 +2,7 @@ import { useUser } from "../user";
 import { usePost } from "./index";
 import { useDetailType } from "../page";
 import { useEffect, useState } from "react";
-import { isSameAddress } from "next-common/utils";
+import { isAddressInGroup, isSameAddress } from "next-common/utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export function useIsPostAuthor() {
@@ -21,9 +21,7 @@ export function useIsPostAuthor() {
         setIsAuthor(post.author?.username === user.username);
       }
     } else {
-      setIsAuthor(
-        post?.authors?.some((address) => isSameAddress(address, user.address)),
-      );
+      setIsAuthor(isAddressInGroup(user.address, post.authors));
     }
   }, [user, type, post]);
 

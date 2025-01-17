@@ -10,6 +10,7 @@ import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import { isSameAddress } from "next-common/utils";
 
 const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
   import("next-common/components/fellowship/salary/actions/register/popup"),
@@ -19,7 +20,7 @@ function useMySalary() {
   const { section } = useCollectivesContext();
   const { members } = useFellowshipCollectiveMembers();
   const address = useRealAddress();
-  const member = members.find((m) => m.address === address);
+  const member = members.find((m) => isSameAddress(m.address, address));
   const { fellowshipParams, ambassadorParams } = usePageProps();
 
   let params;

@@ -19,6 +19,7 @@ import {
 } from "next-common/components/profile/votingHistory/common";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useMyProxied } from "next-common/context/proxy";
+import { isAddressInGroup, isSameAddress } from "next-common/utils";
 
 function RevokeContent({ address }) {
   const dispatch = useDispatch();
@@ -36,7 +37,9 @@ function RevokeContent({ address }) {
   }, [dispatch, module]);
 
   const revokeAnnouncement = useCallback(async () => {
-    const proxyAddress = address !== signerAccount.address ? address : null;
+    const proxyAddress = !isSameAddress(address, signerAccount.address)
+      ? address
+      : null;
 
     try {
       const entity = {
@@ -93,11 +96,10 @@ export function RevokeButton({ address }) {
 
 export default function DetailButtons({ address }) {
   const realAddress = useRealAddress();
-  const isMyDelegate = address === realAddress;
+  const isMyDelegate = isSameAddress(address, realAddress);
   const { proxies } = useMyProxied();
-  const isMyProxiedDelegate = proxies.some(
-    (proxy) => proxy.delegator === address,
-  );
+  const delegators = proxies?.map((proxy) => proxy.delegator);
+  const isMyProxiedDelegate = isAddressInGroup(address, delegators);
 
   return (
     (isMyDelegate || isMyProxiedDelegate) && (
