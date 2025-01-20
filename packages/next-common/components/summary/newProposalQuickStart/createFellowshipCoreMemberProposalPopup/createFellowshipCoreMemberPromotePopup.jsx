@@ -38,7 +38,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
     useEnactmentBlocksField();
 
   const targetMember = find(members, { address: who });
-  const toRank = targetMember?.rank;
+  const toRank = targetMember?.rank ? targetMember?.rank + 1 : "";
 
   const trackName = getTrackNameFromRank(toRank);
 
