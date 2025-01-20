@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
@@ -14,8 +14,10 @@ import {
 } from "next-common/utils/collective/demotionAndPromotion";
 import { ONE_DAY } from "next-common/utils/constants";
 import BigNumber from "bignumber.js";
+import { useChainSettings } from "next-common/context/chain";
 
 const days20 = 20 * ONE_DAY;
+const days30 = 30 * ONE_DAY;
 
 export function useDemotionPeriod({ rank, lastProof, params }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
@@ -41,14 +43,21 @@ export function useDemotionPeriod({ rank, lastProof, params }) {
   }, [rank, lastProof, params, latestHeight]);
 }
 
-function _getProgressBarColor(remainingBlocks, blockTime, demotionPeriod) {
+function _getProgressBarColor(
+  rank,
+  remainingBlocks,
+  blockTime,
+  demotionPeriod,
+) {
   const halfPeriod = demotionPeriod / 2;
   const remainingTime = new BigNumber(blockTime).multipliedBy(remainingBlocks);
+  const days = rank <= 0 ? days30 : days20;
+
   if (remainingBlocks >= halfPeriod) {
     return "var(--green500)";
-  } else if (remainingTime.gt(days20) && remainingBlocks < halfPeriod) {
+  } else if (remainingTime.gt(days) && remainingBlocks < halfPeriod) {
     return "var(--orange500)";
-  } else if (remainingTime.lte(days20)) {
+  } else if (remainingTime.lte(days)) {
     return "var(--red500)";
   }
 }
@@ -87,13 +96,15 @@ function CoreFellowshipMemberDemotionPeriodImpl({
   rank,
   className = "",
 }) {
+  const { blockTime } = useChainSettings();
   const fgColor = useMemo(() => {
     return _getProgressBarColor(
+      rank,
       remainingBlocks,
-      remainingBlocks,
+      blockTime,
       demotionPeriod,
     );
-  }, [remainingBlocks, demotionPeriod]);
+  }, [rank, remainingBlocks, blockTime, demotionPeriod]);
 
   return (
     <CoreFellowshipMemberInfoWrapper className={className}>
