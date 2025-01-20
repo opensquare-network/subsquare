@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import RankField from "next-common/components/popup/fields/rankField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
@@ -13,9 +14,21 @@ import { useReferendaFellowshipPallet } from "next-common/context/collectives/co
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
 import { ReferendaWarningMessage } from "./common";
 import { NotAvailableMemberPrompt } from "./createFellowshipCoreMemberPromotePopup";
+import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
 
 function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
-  const { members } = useFellowshipCoreMembers();
+  const { members, loading } = useFellowshipCoreMembers();
+  const filteredMembers = useMemo(() => {
+    if (loading || !members) {
+      return [];
+    }
+
+    return members
+      .filter(
+        (member) => member.rank > 0 && CollectivesRetainTracks[member.rank],
+      )
+      .sort((a, b) => b.rank - a.rank);
+  }, [members, loading]);
 
   const { onClose } = usePopupParams();
   const {
@@ -24,7 +37,8 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
     component: whoField,
   } = useFellowshipMemberFiled({
     title: "Who",
-    type: "atRank",
+    members: filteredMembers,
+    loading,
   });
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField();

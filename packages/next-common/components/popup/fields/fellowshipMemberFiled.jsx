@@ -7,7 +7,8 @@ export default function FellowshipMemberFiled({
   defaultAddress,
   setAddress,
   setIsAvailableMember,
-  type,
+  loading,
+  members,
 }) {
   const [targetAddress, setTargetAddress] = useState(defaultAddress);
 
@@ -22,7 +23,8 @@ export default function FellowshipMemberFiled({
         address={targetAddress}
         setAddress={setTargetAddress}
         setIsAvailableMember={setIsAvailableMember}
-        type={type}
+        members={members}
+        loading={loading}
       />
     </div>
   );

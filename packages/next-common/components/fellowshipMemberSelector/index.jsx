@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { isAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import Caret from "../icons/caret";
 import { cn } from "next-common/utils";
@@ -18,13 +17,13 @@ function SelectHeader({
   setInputAddress,
   onBlur,
   placeholder,
-  accounts,
+  members,
   address,
   edit,
 }) {
   const selectedAccount = useMemo(
-    () => accounts.find((item) => normalizeAddress(item.address) === address),
-    [accounts, address],
+    () => members.find((item) => normalizeAddress(item.address) === address),
+    [members, address],
   );
 
   if (edit) {
@@ -50,10 +49,10 @@ function SelectHeader({
   return <AddressComboCustomAddress address={address} />;
 }
 
-function SelectOptions({ accounts, address, onSelect }) {
+function SelectOptions({ members, address, onSelect }) {
   return (
     <div className="absolute w-full mt-1 bg-neutral100 shadow-200 border border-neutral300 rounded-md max-h-80 overflow-y-auto z-10 py-2">
-      {accounts.map((item) => (
+      {members.map((item) => (
         <div
           key={item.address}
           className={cn(
@@ -78,22 +77,9 @@ export default function FellowshipMemberSelector({
   address,
   setAddress,
   setIsAvailableMember,
-  type,
+  members,
   placeholder = "Please fill the address or select another one...",
 }) {
-  const { members, loading } = useFellowshipCoreMembers();
-
-  const accounts = useMemo(() => {
-    if (loading || !members) {
-      return [];
-    }
-
-    const filterCondition = (m) =>
-      type === "toRank" ? m.rank >= 0 && m.rank < 6 : m.rank > 0 && m.rank <= 6;
-
-    return members.filter(filterCondition).sort((a, b) => b.rank - a.rank);
-  }, [members, loading, type]);
-
   const [show, setShow] = useState(false);
   const [inputAddress, setInputAddress] = useState(
     () => tryConvertToEvmAddress(address) || "",
@@ -113,8 +99,8 @@ export default function FellowshipMemberSelector({
   const [edit, setEdit] = useState(!isValidAddress);
 
   const isFellowshipMember = useMemo(
-    () => isFellowshipMemberAddress(accounts, address),
-    [accounts, address],
+    () => isFellowshipMemberAddress(members, address),
+    [members, address],
   );
 
   useEffect(() => {
@@ -160,11 +146,11 @@ export default function FellowshipMemberSelector({
           setInputAddress={setInputAddress}
           onBlur={onBlur}
           placeholder={placeholder}
-          accounts={accounts}
+          members={members}
           address={address}
           edit={edit}
         />
-        {accounts.length > 0 && (
+        {members.length > 0 && (
           <span
             onClick={(e) => {
               setShow((prevShow) => !prevShow);
@@ -175,9 +161,9 @@ export default function FellowshipMemberSelector({
           </span>
         )}
       </div>
-      {show && accounts.length > 0 && (
+      {show && members.length > 0 && (
         <SelectOptions
-          accounts={accounts}
+          members={members}
           address={address}
           onSelect={onSelect}
         />
