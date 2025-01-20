@@ -33,10 +33,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
     }
 
     return members
-      .filter(
-        (member) =>
-          member.rank < 6 && CollectivesPromoteTracks[member.rank + 1],
-      )
+      .filter((member) => CollectivesPromoteTracks[member.rank + 1])
       .sort((a, b) => b.rank - a.rank);
   }, [members, loading]);
 

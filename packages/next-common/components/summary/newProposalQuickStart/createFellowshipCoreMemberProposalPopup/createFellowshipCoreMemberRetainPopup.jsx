@@ -24,9 +24,7 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
     }
 
     return members
-      .filter(
-        (member) => member.rank > 0 && CollectivesRetainTracks[member.rank],
-      )
+      .filter((member) => CollectivesRetainTracks[member.rank])
       .sort((a, b) => b.rank - a.rank);
   }, [members, loading]);
 
