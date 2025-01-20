@@ -16,7 +16,7 @@ function MyRelatedSwitch({ isOn, setIsOn }) {
   return (
     <div className="flex items-center gap-[8px]">
       <span className="text-textSecondary text12Medium whitespace-nowrap">
-        My related
+        My Related
       </span>
       <Toggle size="small" isOn={isOn} onToggle={() => setIsOn(!isOn)} />
     </div>
