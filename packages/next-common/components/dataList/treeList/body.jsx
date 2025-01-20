@@ -21,11 +21,11 @@ export default function TreeDataListBody({
       <div key={idx}>
         <div className="flex items-center space-x-6">
           {children && (
-            <div className="flex-1 justify-center border border-neutral400 rounded-[4px] cursor-pointer p-[2px]">
+            <div className="flex-1 justify-center border border-neutral400 rounded-[4px] cursor-pointer p-[5px]">
               <ArrowUp
                 role="button"
                 className={cn(
-                  "[&_path]:stroke-textPrimary",
+                  "[&_path]:stroke-textPrimary w-4 h-4",
                   !isExpanded && "rotate-180",
                 )}
                 onClick={() => toggleRowExpansion(idx)}
@@ -45,7 +45,7 @@ export default function TreeDataListBody({
 
         {/* Render children if expanded */}
         {isExpanded && children.length > 0 && (
-          <div className="pl-[54px] pb-4">
+          <div className="pl-[62px] pb-4">
             {children.map((child, childIdx) => {
               const row = columns.map((column, colIdx) => (
                 <div
@@ -71,7 +71,7 @@ export default function TreeDataListBody({
                   columnClassNames={columnClassNames}
                   columnStyles={columnStyles}
                   columns={columns}
-                  itemClassName={"py-1"}
+                  itemClassName={"py-1 pb-0"}
                   descriptionClassName={"pl-5 !mt-1"}
                   highlighted={highlightedIndexes.includes(childKey)}
                 />
