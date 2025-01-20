@@ -3,13 +3,14 @@ import { useCallback } from "react";
 import { noop } from "lodash-es";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
+import { useSharedPopupOpenState } from "next-common/context/popup/switch";
 
 export default function RemoveDemocracyVotePopup({
   referendumIndex,
-  onClose,
   onInBlock = noop,
 }) {
   const api = useContextApi();
+  const [, setSharedPopupOpen] = useSharedPopupOpenState();
 
   const getTxFunc = useCallback(async () => {
     return api.tx.democracy.removeVote(referendumIndex);
@@ -19,7 +20,7 @@ export default function RemoveDemocracyVotePopup({
     <SimpleTxPopup
       title="Remove Vote"
       getTxFunc={getTxFunc}
-      onClose={onClose}
+      onClose={() => setSharedPopupOpen(false)}
       onInBlock={onInBlock}
       noSwitchSigner
     />
