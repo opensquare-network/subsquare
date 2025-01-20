@@ -1,11 +1,9 @@
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import FellowshipMemberCommon from "next-common/components/pages/fellowship/common";
 import FellowshipMembersEmpty from "./empty";
 import { usePageProps } from "next-common/context/page";
-import CollectivesProvider, {
-  useCollectivesContext,
-} from "next-common/context/collectives/collectives";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 import MemberWarnings from "next-common/components/fellowship/core/memberWarnings";
 import { AllMemberEvidenceProvider } from "next-common/components/collectives/core/context/evidenceMemberContext";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
@@ -16,18 +14,24 @@ import FellowshipMemberCardView from "./memberCardView";
 import FellowshipMemberListView from "./memberListView";
 import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import { useRouter } from "next/router";
-import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
-import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
-import { SystemLoading } from "@osn/icons/subsquare";
 import MoreActions from "./moreActions";
+import useCandidatesFilter from "./useCandidatesFilter";
+import MemberCandidatesWarnings from "next-common/components/fellowship/core/memberWarnings/candidates";
+import { filter, partition } from "lodash-es";
 
-function FellowshipMembers({ viewMode, members, isLoading }) {
+function FellowshipMembers({
+  viewMode,
+  members,
+  isLoading,
+  isCandidate = false,
+}) {
   if (viewMode === "list") {
     return (
       <FellowshipMemberListView
         members={members}
         isLoading={isLoading}
         ActionsComponent={MoreActions}
+        isCandidate={isCandidate}
       />
     );
   }
@@ -43,35 +47,12 @@ export function useViewModeSwitch() {
   };
 }
 
-function FellowshipCandidatesCardList({ candidates, isLoading }) {
-  const hasMembers = candidates?.length > 0;
-  const { params } = useCollectivesContext();
-
-  if (isLoading) {
-    return (
-      <SystemLoading className="my-6 [&_path]:stroke-textTertiary mx-auto" />
-    );
-  }
-
-  if (!isLoading && !hasMembers) {
-    return <FellowshipMembersEmpty />;
-  }
-
-  return (
-    <FellowshipCoreMemberCardListContainer>
-      {candidates.map((member) => (
-        <FellowshipCoreMemberCard
-          key={member.address}
-          member={member}
-          params={params}
-          isCandidate={true}
-        />
-      ))}
-    </FellowshipCoreMemberCardListContainer>
-  );
-}
-
-function FellowshipMembersCardList({ viewMode, isLoading, members }) {
+function FellowshipMembersCardList({
+  viewMode,
+  isLoading,
+  members,
+  isCandidate,
+}) {
   const hasMembers = members?.length > 0;
   const sortedMembers = useMembersWithMeAtFirst(members);
 
@@ -84,27 +65,26 @@ function FellowshipMembersCardList({ viewMode, isLoading, members }) {
       viewMode={viewMode}
       members={sortedMembers}
       isLoading={isLoading}
+      isCandidate={isCandidate}
     />
   );
 }
 
 function FellowshipMembersTabPage({
   members,
-  candidates,
   memberFilters,
   isLoading,
+  coreMembersCount,
+  coreCandidatesCount,
 }) {
   const { viewMode, component: viewModeSwitch } = useViewModeSwitch();
-
-  const membersCount = members?.length;
-  const candidatesCount = candidates?.length;
 
   return (
     <FellowshipMemberCommon>
       <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6 h-[28px]">
         <FellowshipMemberTabs
-          membersCount={membersCount}
-          candidatesCount={candidatesCount}
+          membersCount={members?.length ?? coreMembersCount}
+          candidatesCount={coreCandidatesCount}
         />
         <div className="flex items-center gap-[12px] max-sm:pl-6">
           {memberFilters}
@@ -123,67 +103,109 @@ function FellowshipMembersTabPage({
   );
 }
 
-function FellowshipCandidatesTabPage({ members, candidates, isLoading }) {
-  const membersCount = members?.length;
-  const candidatesCount = candidates?.length;
+function FellowshipCandidatesTabPage({
+  candidates,
+  isLoading,
+  memberFilters,
+  coreMembersCount,
+  coreCandidatesCount,
+}) {
+  const { viewMode, component: viewModeSwitch } = useViewModeSwitch();
 
   return (
     <FellowshipMemberCommon>
       <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6 h-[28px]">
         <FellowshipMemberTabs
-          membersCount={membersCount}
-          candidatesCount={candidatesCount}
+          membersCount={coreMembersCount}
+          candidatesCount={candidates?.length ?? coreCandidatesCount}
         />
+        <div className="flex items-center gap-[12px] max-sm:pl-6">
+          {memberFilters}
+          {viewModeSwitch}
+        </div>
       </div>
-      <FellowshipCandidatesCardList
-        candidates={candidates}
+
+      <MemberCandidatesWarnings className="mb-6" members={candidates} />
+
+      <FellowshipMembersCardList
+        viewMode={viewMode}
+        members={candidates}
         isLoading={isLoading}
+        isCandidate
       />
     </FellowshipMemberCommon>
   );
 }
 
-function FellowshipMembersPageInContext() {
-  const router = useRouter();
-  const { fellowshipMembers } = usePageProps();
-  const { membersWithStatus, isLoading } =
-    useMembersWithStatus(fellowshipMembers);
-  const regularMembers = useMemo(
-    () => (membersWithStatus || []).filter((member) => member.rank > 0),
-    [membersWithStatus],
-  );
-  const { filteredMembers: members, component: memberFilters } =
-    useMembersFilter(regularMembers);
-
-  const candidates = useMemo(() => {
-    if (!membersWithStatus) {
-      return null;
-    }
-
-    return (membersWithStatus || []).filter(
-      (member) => member.rank <= 0 && member.isFellowshipCoreMember,
-    );
-  }, [membersWithStatus]);
-
-  const isCandidatesPage =
-    router.asPath === "/fellowship/members?tab=candidates";
-
-  if (isCandidatesPage) {
-    return (
-      <FellowshipCandidatesTabPage
-        members={members}
-        candidates={candidates}
-        isLoading={isLoading}
-      />
-    );
-  }
+function FellowshipMembersPageInContext({
+  isLoading,
+  members,
+  coreMembersCount,
+  coreCandidatesCount,
+}) {
+  const { filteredMembers, component: memberFilters } =
+    useMembersFilter(members);
 
   return (
     <FellowshipMembersTabPage
-      members={members}
-      candidates={candidates}
+      members={filteredMembers}
       memberFilters={memberFilters}
       isLoading={isLoading}
+      coreMembersCount={coreMembersCount}
+      coreCandidatesCount={coreCandidatesCount}
+    />
+  );
+}
+
+function FellowshipCandidatesPageInContext({
+  isLoading,
+  candidates,
+  coreMembersCount,
+  coreCandidatesCount,
+}) {
+  const { filteredMembers: filteredCandidates, component: candidateFilters } =
+    useCandidatesFilter(candidates);
+
+  return (
+    <FellowshipCandidatesTabPage
+      candidates={filteredCandidates}
+      isLoading={isLoading}
+      memberFilters={candidateFilters}
+      coreMembersCount={coreMembersCount}
+      coreCandidatesCount={coreCandidatesCount}
+    />
+  );
+}
+
+function FellowshipMembersInContext() {
+  const { fellowshipMembers } = usePageProps();
+  const { membersWithStatus, isLoading } =
+    useMembersWithStatus(fellowshipMembers);
+
+  const router = useRouter();
+  const isCandidatesPage = router.query.tab === "candidates";
+
+  const [members, candidates] = partition(membersWithStatus, (m) => m.rank > 0);
+  const coreMembersCount = filter(members, {
+    isFellowshipCoreMember: true,
+  }).length;
+  const coreCandidatesCount = filter(candidates, {
+    isFellowshipCoreMember: true,
+  }).length;
+
+  return isCandidatesPage ? (
+    <FellowshipCandidatesPageInContext
+      isLoading={isLoading}
+      candidates={candidates}
+      coreMembersCount={coreMembersCount}
+      coreCandidatesCount={coreCandidatesCount}
+    />
+  ) : (
+    <FellowshipMembersPageInContext
+      isLoading={isLoading}
+      members={members}
+      coreMembersCount={coreMembersCount}
+      coreCandidatesCount={coreCandidatesCount}
     />
   );
 }
@@ -208,7 +230,7 @@ export default function FellowshipMembersPage() {
             core_only: false,
           }}
         >
-          <FellowshipMembersPageInContext />
+          <FellowshipMembersInContext />
         </DropdownUrlFilterProvider>
       </AllMemberEvidenceProvider>
     </CollectivesProvider>

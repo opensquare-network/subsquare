@@ -112,8 +112,8 @@ export function useCouncilMotionBusinessData() {
         ["Threshold", external.voteThreshold],
       ]);
 
-      if (external.preImage) {
-        business.push([
+      if (external.preImage && business.length > 0) {
+        business[0].push([
           [
             <Proposal
               key="call"

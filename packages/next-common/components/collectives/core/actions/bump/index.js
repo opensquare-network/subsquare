@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import BumpFellowshipMemberPopup from "./popup";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
+import Button from "next-common/lib/button";
 
 export function useCanBump(member) {
   const { rank, status: { lastProof } = {} } = member || {};
@@ -19,23 +20,23 @@ export function useCanBump(member) {
 
 export function CoreFellowshipBumpButton({ member, onClick }) {
   const canBump = useCanBump(member);
-
-  if (!canBump) {
-    return <span className="text14Medium text-textDisabled">Demote</span>;
-  }
+  const { rank } = member || {};
 
   return (
-    <span
-      className="text14Medium text-theme500 cursor-pointer"
+    <Button
+      className={`border-0 p-0 h-auto ${
+        canBump ? "text-theme500" : "text-textDisabled"
+      }`}
       onClick={onClick}
+      disabled={!canBump}
     >
-      Demote
-    </span>
+      {rank <= 0 ? "Offboard" : "Demote"}
+    </Button>
   );
 }
 
 export default function CoreFellowshipBump({ member }) {
-  const { address } = member || {};
+  const { address, rank } = member || {};
   const [showPopup, setShowPopup] = useState(false);
 
   return (
@@ -46,6 +47,7 @@ export default function CoreFellowshipBump({ member }) {
       />
       {showPopup && (
         <BumpFellowshipMemberPopup
+          isCandidate={rank <= 0}
           who={address}
           onClose={() => setShowPopup(false)}
         />
