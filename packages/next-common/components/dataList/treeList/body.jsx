@@ -45,7 +45,7 @@ export default function TreeDataListBody({
 
         {/* Render children if expanded */}
         {isExpanded && children.length > 0 && (
-          <div className="pl-[62px] pb-4">
+          <div className="pl-[60px] pb-4">
             {children.map((child, childIdx) => {
               const row = columns.map((column, colIdx) => (
                 <div
