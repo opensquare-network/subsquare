@@ -4,6 +4,7 @@ import FellowshipMemberFiled from "next-common/components/popup/fields/fellowshi
 export default function useFellowshipMemberFiled({
   title = "Who",
   defaultAddress = "",
+  type = "toRank",
 } = {}) {
   const [beneficiary, setBeneficiary] = useState(defaultAddress);
   const [isAvailableMember, setIsAvailableMember] = useState(true);
@@ -14,6 +15,7 @@ export default function useFellowshipMemberFiled({
     component: (
       <FellowshipMemberFiled
         title={title}
+        type={type}
         setAddress={setBeneficiary}
         setIsAvailableMember={setIsAvailableMember}
         defaultAddress={defaultAddress}

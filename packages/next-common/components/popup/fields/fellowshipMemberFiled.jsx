@@ -7,6 +7,7 @@ export default function FellowshipMemberFiled({
   defaultAddress,
   setAddress,
   setIsAvailableMember,
+  type,
 }) {
   const [targetAddress, setTargetAddress] = useState(defaultAddress);
 
@@ -21,6 +22,7 @@ export default function FellowshipMemberFiled({
         address={targetAddress}
         setAddress={setTargetAddress}
         setIsAvailableMember={setIsAvailableMember}
+        type={type}
       />
     </div>
   );

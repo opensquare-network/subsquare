@@ -78,14 +78,21 @@ export default function FellowshipMemberSelector({
   address,
   setAddress,
   setIsAvailableMember,
+  type,
   placeholder = "Please fill the address or select another one...",
 }) {
   const { members, loading } = useFellowshipCoreMembers();
 
   const accounts = useMemo(() => {
-    if (loading || !members) return [];
-    return members.filter((m) => m.rank >= 0 && m.rank < 6).sort((a, b) => b.rank - a.rank);
-  }, [members, loading]);
+    if (loading || !members) {
+      return [];
+    }
+
+    const filterCondition = (m) =>
+      type === "toRank" ? m.rank >= 0 && m.rank < 6 : m.rank > 0 && m.rank <= 6;
+
+    return members.filter(filterCondition).sort((a, b) => b.rank - a.rank);
+  }, [members, loading, type]);
 
   const [show, setShow] = useState(false);
   const [inputAddress, setInputAddress] = useState(

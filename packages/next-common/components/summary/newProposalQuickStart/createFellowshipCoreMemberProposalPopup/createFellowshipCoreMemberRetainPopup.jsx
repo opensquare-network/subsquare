@@ -24,6 +24,7 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
     component: whoField,
   } = useFellowshipMemberFiled({
     title: "Who",
+    type: "atRank",
   });
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField();

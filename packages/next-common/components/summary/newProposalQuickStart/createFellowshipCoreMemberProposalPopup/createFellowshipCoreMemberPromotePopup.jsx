@@ -30,6 +30,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
     component: whoField,
   } = useFellowshipMemberFiled({
     title: "Who",
+    type: "toRank",
   });
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField();
