@@ -2,7 +2,6 @@ import RankField from "next-common/components/popup/fields/rankField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import useFellowshipMemberFiled from "next-common/components/preImages/createPreimagePopup/fields/useFellowshipMemberFiled";
-import { useState } from "react";
 import AdvanceSettings from "../common/advanceSettings";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import CreateFellowshipCoreMemberProposalSubmitButton from "./createFellowshipCoreMemberProposalSubmitButton";
