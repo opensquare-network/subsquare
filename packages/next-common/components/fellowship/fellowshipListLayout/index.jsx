@@ -1,5 +1,6 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
+import FellowshipTrackSelect from "./trackSelect";
 
 export default function FellowshipListLayout({ fellowshipSummary, children }) {
   const title = "Fellowship Referenda";
@@ -9,6 +10,7 @@ export default function FellowshipListLayout({ fellowshipSummary, children }) {
     <ListLayout
       seoInfo={seoInfo}
       title={title}
+      titleExtra={<FellowshipTrackSelect />}
       description="All active and history referenda in various tracks."
       summary={<Gov2Summary summary={fellowshipSummary} />}
       tabs={[

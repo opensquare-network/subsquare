@@ -17,6 +17,7 @@ import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import FellowshipTrackSelect from "next-common/components/fellowship/fellowshipListLayout/trackSelect";
 
 export default function TrackPage({
   posts,
@@ -35,6 +36,7 @@ export default function TrackPage({
       <ListLayout
         seoInfo={seoInfo}
         title={`[${period.id}] Origin: ${period.origin}`}
+        titleExtra={<FellowshipTrackSelect />}
         description={period.description}
         summary={
           <Gov2TrackSummary
