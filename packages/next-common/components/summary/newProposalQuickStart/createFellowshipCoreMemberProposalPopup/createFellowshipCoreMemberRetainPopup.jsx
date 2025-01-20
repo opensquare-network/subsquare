@@ -1,7 +1,8 @@
+import { useMemo } from "react";
 import RankField from "next-common/components/popup/fields/rankField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import useFellowshipMemberFiled from "next-common/components/preImages/createPreimagePopup/fields/useFellowshipMemberFiled";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import AdvanceSettings from "../common/advanceSettings";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
@@ -12,13 +13,30 @@ import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
 import { ReferendaWarningMessage } from "./common";
+import { NotAvailableMemberPrompt } from "./createFellowshipCoreMemberPromotePopup";
+import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
 
 function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
-  const { members } = useFellowshipCoreMembers();
+  const { members, loading } = useFellowshipCoreMembers();
+  const filteredMembers = useMemo(() => {
+    if (loading || !members) {
+      return [];
+    }
+
+    return members
+      .filter((member) => CollectivesRetainTracks[member.rank])
+      .sort((a, b) => b.rank - a.rank);
+  }, [members, loading]);
 
   const { onClose } = usePopupParams();
-  const { value: who, component: whoField } = useAddressComboField({
+  const {
+    value: who,
+    isAvailableMember,
+    component: whoField,
+  } = useFellowshipMemberFiled({
     title: "Who",
+    members: filteredMembers,
+    loading,
   });
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField();
@@ -39,10 +57,11 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}
       />
+      {!isAvailableMember && <NotAvailableMemberPrompt />}
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
-          disabled={isLoading || isReferendaExisted}
+          disabled={isLoading || isReferendaExisted || !isAvailableMember}
           who={who}
           enactment={enactment}
           rank={atRank}
