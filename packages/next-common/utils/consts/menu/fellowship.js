@@ -1,8 +1,7 @@
-import { startCase, sumBy } from "lodash-es";
+import { sumBy } from "lodash-es";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
-import dividerConfig from "next-common/utils/consts/menu/common/divider";
 import { isCollectivesChain } from "next-common/utils/chain";
 
 export const Names = {
@@ -70,26 +69,7 @@ function getFellowshipStatisticsMenu() {
   };
 }
 
-function getFellowshipReferendaMenu(
-  fellowshipTracks = [],
-  currentTrackId,
-  totalActiveCount,
-) {
-  const resolveFellowshipTrackItem = (track) => {
-    return {
-      value: track.id,
-      name: startCase(track.name),
-      pathname: `/fellowship/tracks/${track.id}`,
-      activeCount: track.activeCount,
-      icon: `[${track.id}]`,
-      extraMatchNavMenuActivePathnames: [
-        track.id === currentTrackId && "/fellowship/referenda/[id]",
-      ].filter(Boolean),
-    };
-  };
-
-  const trackItems = fellowshipTracks.map(resolveFellowshipTrackItem);
-
+function getFellowshipReferendaMenu(totalActiveCount) {
   return {
     value: "fellowship-referenda",
     name: "Referenda",
@@ -98,20 +78,8 @@ function getFellowshipReferendaMenu(
       "/fellowship/referenda/statistics",
       "/fellowship/tracks/[id]",
     ],
-    items: [
-      {
-        value: "all",
-        name: Names.all,
-        pathname: "/fellowship",
-        extraMatchNavMenuActivePathnames: [
-          "/fellowship",
-          "/fellowship/referenda/statistics",
-        ],
-        activeCount: totalActiveCount,
-        excludeToSumActives: true,
-      },
-      ...trackItems,
-    ],
+    activeCount: totalActiveCount,
+    pathname: "/fellowship",
   };
 }
 
@@ -135,7 +103,7 @@ function getFellowshipTreasuryMenu(overviewSummary) {
   };
 }
 
-export function getFellowshipMenu(overviewSummary, currentTrackId) {
+export function getFellowshipMenu(overviewSummary) {
   const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks || [];
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
 
@@ -148,14 +116,9 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
       getNonCoreFellowshipMembersMenu(),
       getFellowshipMembersMenu(),
       getFellowshipSalaryMenu(),
+      getFellowshipReferendaMenu(totalActiveCount),
       getFellowshipTreasuryMenu(overviewSummary),
       getFellowshipStatisticsMenu(),
-      dividerConfig,
-      getFellowshipReferendaMenu(
-        fellowshipTracks,
-        currentTrackId,
-        totalActiveCount,
-      ),
     ].filter(Boolean),
   };
 
