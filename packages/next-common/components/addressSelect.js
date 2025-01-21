@@ -46,6 +46,8 @@ const Select = styled(Flex)`
 const NameWrapper = styled.div`
   color: var(--textPrimary);
   flex-grow: 1;
+  width: 100%;
+  overflow: hidden;
   > :first-child {
     font-size: 14px;
     font-weight: 500;
@@ -114,16 +116,13 @@ function Account({ account }) {
       <NameWrapper>
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
         {hasIdentity ? (
-          <>
-            <Identity identity={identity} />
-            <div>{shortAddr}</div>
-          </>
+          <Identity identity={identity} />
         ) : (
-          <>
-            <div>{account?.name || shortAddr}</div>
-            <div>{shortAddr ?? "--"}</div>
-          </>
+          <div>{account?.name || shortAddr}</div>
         )}
+        <div className="overflow-hidden whitespace-nowrap overflow-ellipsis">
+          {account?.address}
+        </div>
       </NameWrapper>
     </>
   );
