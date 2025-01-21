@@ -97,14 +97,14 @@ function Select({
   };
 
   const displayValue = useMemo(() => {
-    const item = filteredOptions.find((option) => option.value === value);
+    const item = options.find((option) => option.value === value);
     return (
       <div className="flex items-center">
         {item?.icon && <div className="mr-2 flex">{item.icon}</div>}
         {item?.displayValue || item?.label || item?.text}
       </div>
     );
-  }, [filteredOptions, value]);
+  }, [options, value]);
 
   let DropdownOptionsWrapper = OptionsWrapper;
   if (optionsPadding === "left") {
@@ -147,7 +147,7 @@ function Select({
       </SelectInner>
 
       {showOptions && (
-        <DropdownOptionsWrapper>
+        <DropdownOptionsWrapper className="select-option-wrapper">
           {search && (
             <>
               <SearchInput
