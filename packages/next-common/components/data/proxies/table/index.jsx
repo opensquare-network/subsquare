@@ -11,6 +11,7 @@ import useFilterAllProxies from "next-common/components/data/hooks/useFilterAllP
 import useMyRelatedSwitch from "next-common/components/data/hooks/useMyRelatedSwitch";
 import { useRouter } from "next/router";
 import useAllProxiesSearch from "next-common/components/data/hooks/useAllProxiesSearch";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 
 function TableHeader({ total, loading }) {
   const { component: MyRelatedSwitchComponent } = useMyRelatedSwitch();
@@ -67,24 +68,27 @@ export default function ProxyExplorerTable() {
   return (
     <div className="flex flex-col gap-y-4">
       <TableHeader total={total} loading={isLoading} />
-      <TreeMapDataList
-        className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
-        bordered
-        columnsDef={desktopColumns}
-        data={dataList}
-        loading={isLoading}
-        treeKey="items"
-      />
+      <SecondaryCard className="space-y-2">
+        <TreeMapDataList
+          className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
+          columnsDef={desktopColumns}
+          data={dataList}
+          loading={isLoading}
+          treeKey="items"
+        />
 
-      <TreeMapDataList
-        className={cn("hidden", navCollapsed ? "max-sm:block" : "max-md:block")}
-        bordered
-        columnsDef={mobileColumns}
-        data={dataList}
-        loading={isLoading}
-        treeKey="items"
-      />
-      {total > 0 && pageComponent}
+        <TreeMapDataList
+          className={cn(
+            "hidden",
+            navCollapsed ? "max-sm:block" : "max-md:block",
+          )}
+          columnsDef={mobileColumns}
+          data={dataList}
+          loading={isLoading}
+          treeKey="items"
+        />
+        {total > 0 && pageComponent}
+      </SecondaryCard>
     </div>
   );
 }

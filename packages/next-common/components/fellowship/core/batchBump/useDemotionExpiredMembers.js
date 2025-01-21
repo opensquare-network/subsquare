@@ -7,13 +7,16 @@ import { useCoreFellowshipParams } from "next-common/context/collectives/collect
 import { isDemotionExpired } from "next-common/utils/collective/demotionAndPromotion";
 import { isEqual } from "lodash-es";
 
-export default function useDemotionExpiredMembers() {
+export default function useDemotionExpiredMembers({
+  isCandidate = false,
+} = {}) {
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembers();
 
   const [members] = useMemo(
-    () => partition(coreMembers, (m) => m.rank > 0),
-    [coreMembers],
+    () =>
+      partition(coreMembers, (m) => (isCandidate ? m.rank <= 0 : m.rank > 0)),
+    [coreMembers, isCandidate],
   );
 
   const latestHeight = useSelector(chainOrScanHeightSelector);
