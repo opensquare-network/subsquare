@@ -31,7 +31,7 @@ export default function Ambassador() {
           <FiatPriceLabel usdtBalance={ambassadorUsdtBalance} />
           <TokenSymbolAsset
             amount={toPrecision(ambassadorUsdtBalance, SYMBOL_DECIMALS.USDT)}
-            symbol="USDt"
+            symbol="USDT"
           />
         </div>
       </LoadableContent>
