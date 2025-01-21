@@ -4,7 +4,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import React, { useCallback } from "react";
 import PopupLabel from "next-common/components/popup/label";
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 import nextApi from "next-common/services/nextApi";
 import { Label, LabelWrapper } from "next-common/components/post/styled";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
