@@ -44,7 +44,7 @@ export default function MemberCandidatesWarnings({ className }) {
     ),
     closingMembersCount > 0 && (
       <>
-        The offboard period for
+        The offboard period of
         <PromptButton isCandidate filterLink={filterLinks[OffboardClosing]}>
           {closingMembersCount} candidates
         </PromptButton>
