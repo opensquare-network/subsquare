@@ -134,6 +134,19 @@ function getFellowshipTreasuryMenu(overviewSummary) {
     ],
     activeCount: fellowshipTreasurySpends.active || 0,
     pathname: "/fellowship/treasury/spends",
+    hideItemsOnMenu: true,
+    items: [
+      {
+        value: "fellowship-treasury-spends",
+        name: Names.treasurySpends,
+        pathname: "/fellowship/treasury/spends",
+        extraMatchNavMenuActivePathnames: [
+          "/fellowship/treasury/spends",
+          "/fellowship/treasury/spends/[id]",
+        ],
+        activeCount: fellowshipTreasurySpends.active || 0,
+      },
+    ],
   };
 }
 
