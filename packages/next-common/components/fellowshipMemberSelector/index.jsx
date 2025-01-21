@@ -41,7 +41,9 @@ function SelectHeader({
     return (
       <>
         <AddressComboListItemAccount account={selectedAccount} />
-        <FellowshipRank rank={selectedAccount.rank} />
+        <div className="w-5 h-5">
+          <FellowshipRank rank={selectedAccount.rank} />
+        </div>
       </>
     );
   }
@@ -56,13 +58,15 @@ function SelectOptions({ members, address, onSelect }) {
         <div
           key={item.address}
           className={cn(
-            "flex items-center gap-4 px-4 py-2 cursor-pointer hover:bg-neutral200",
+            "w-full flex items-center gap-4 px-4 py-2 cursor-pointer hover:bg-neutral200",
             item.address === address && "bg-neutral200",
           )}
           onClick={() => onSelect(item)}
         >
           <AddressComboListItemAccount account={item} />
-          <FellowshipRank rank={item.rank} />
+          <div className="w-5 h-5">
+            <FellowshipRank rank={item.rank} />
+          </div>
         </div>
       ))}
     </div>

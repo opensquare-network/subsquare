@@ -31,6 +31,8 @@ const Select = styled(Flex)`
 const NameWrapper = styled.div`
   color: var(--textPrimary);
   flex-grow: 1;
+  width: 100%;
+  overflow: hidden;
   > :first-child {
     font-size: 14px;
     font-weight: 500;
@@ -148,10 +150,12 @@ export function AddressComboListItemAccount({ account }) {
       <Avatar address={account.address} size={40} />
       <NameWrapper>
         <IdentityName>
-          {hasIdentity && <IdentityIcon identity={identity} />}
+          {hasIdentity ? <IdentityIcon identity={identity} /> : addressHint}
           <div className="line-clamp-1">{displayName || account.name}</div>
         </IdentityName>
-        <div>{addressHint}</div>
+        <div className="flex-1 w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
+          {address}
+        </div>
       </NameWrapper>
     </>
   );
