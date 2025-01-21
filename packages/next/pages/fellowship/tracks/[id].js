@@ -18,6 +18,8 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipTrackSelect from "next-common/components/fellowship/fellowshipListLayout/trackSelect";
+import { isCollectivesChain } from "next-common/utils/chain";
+import { useChain } from "next-common/context/chain";
 
 export default function TrackPage({
   posts,
@@ -26,6 +28,8 @@ export default function TrackPage({
   trackReferendaSummary,
   period,
 }) {
+  const chain = useChain();
+
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
     normalizeFellowshipReferendaListItem(item, fellowshipTracks),
@@ -36,7 +40,7 @@ export default function TrackPage({
       <ListLayout
         seoInfo={seoInfo}
         title={`[${period.id}] Origin: ${period.origin}`}
-        titleExtra={<FellowshipTrackSelect />}
+        titleExtra={isCollectivesChain(chain) && <FellowshipTrackSelect />}
         description={period.description}
         summary={
           <Gov2TrackSummary
