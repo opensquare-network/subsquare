@@ -55,7 +55,7 @@ function InputImpl(
           setPasswordVisible(!passwordVisible);
         }}
       >
-        <Icon className="w-4 h-4" />
+        <Icon className="w-4 h-4 text-textTertiary" />
       </button>
     );
   }
