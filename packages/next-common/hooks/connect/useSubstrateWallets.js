@@ -9,19 +9,23 @@ import {
   mimir,
   signet,
 } from "next-common/utils/consts/connect";
-import isEvmChain from "next-common/utils/isEvmChain";
+import isEvmChain, {
+  isSupportSubstrateThroughEthereumAddress,
+} from "next-common/utils/isEvmChain";
 
 export function useSubstrateWallets() {
   const chainSettings = useChainSettings();
+  const isSubstrateThroughEvm =
+    isEvmChain() && isSupportSubstrateThroughEthereumAddress();
 
   let singleSigWallets = [
     polkadotJs,
-    subWallet,
+    !isSubstrateThroughEvm && subWallet,
     talisman,
-    polkagate,
-    polkagateSnap,
-    nova,
-  ];
+    !isSubstrateThroughEvm && polkagate,
+    !isSubstrateThroughEvm && polkagateSnap,
+    !isSubstrateThroughEvm && nova,
+  ].filter(Boolean);
   let multiSigWallets = [];
 
   if (isEvmChain()) {

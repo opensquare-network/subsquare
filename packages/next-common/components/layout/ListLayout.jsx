@@ -55,7 +55,7 @@ export default function ListLayout({
 
   const listHeader = (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between w-full max-sm:flex-col-reverse max-sm:gap-y-3">
         <h3 className="text20Bold text-textPrimary">{title}</h3>
         {titleExtra}
       </div>
