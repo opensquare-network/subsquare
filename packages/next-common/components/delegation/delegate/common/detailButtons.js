@@ -1,7 +1,7 @@
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemSubtract } from "@osn/icons/subsquare";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import {
   newErrorToast,
@@ -98,7 +98,10 @@ export default function DetailButtons({ address }) {
   const realAddress = useRealAddress();
   const isMyDelegate = isSameAddress(address, realAddress);
   const { proxies } = useMyProxied();
-  const delegators = proxies?.map((proxy) => proxy.delegator);
+  const delegators = useMemo(
+    () => proxies?.map((proxy) => proxy.delegator),
+    [proxies],
+  );
   const isMyProxiedDelegate = isAddressInGroup(address, delegators);
 
   return (
