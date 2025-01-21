@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import Input from "../input";
+import Input from "next-common/lib/input";
 import EditInput from "../editInput";
 import { useMountedState } from "react-use";
 import ToggleText from "../uploadBanner/toggleText";

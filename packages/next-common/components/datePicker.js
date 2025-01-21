@@ -6,7 +6,7 @@ import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
 import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
 import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
-import Input from "./input";
+import NumberInput from "next-common/lib/input/number";
 import PrimaryButton from "next-common/lib/button/primary";
 import Popup from "./popup/wrapper/Popup";
 const CaretWrapper = styled.div`
@@ -267,32 +267,30 @@ export default function DatePicker({
                     </span>
                   </FlexBetween>
                   <TimeWrapper>
-                    <Input
+                    <NumberInput
                       className="input"
-                      type="number"
+                      controls={false}
                       value={hour}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value);
+                      onValueChange={(value) => {
                         if (0 <= value && value < 24) {
                           setHour(value.toString());
                         }
-                        if (e.target.value === "") {
+                        if (value === "") {
                           setHour("");
                         }
                       }}
                       placeholder="00"
                     />
                     <span>:</span>
-                    <Input
+                    <NumberInput
                       className="input"
-                      type="number"
+                      controls={false}
                       value={minute}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value);
+                      onValueChange={(value) => {
                         if (0 <= value && value < 60) {
                           setMinute(value.toString());
                         }
-                        if (e.target.value === "") {
+                        if (value === "") {
                           setMinute("");
                         }
                       }}

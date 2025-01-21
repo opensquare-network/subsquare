@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Input from "../input";
+import Input from "next-common/lib/input";
 import nextApi from "../../services/nextApi";
 import {
   newErrorToast,
