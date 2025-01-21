@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { addressToEvm, evmToAddress } from "@polkadot/util-crypto";
 import { getContextConnectedAccount } from "next-common/context/connectedAccount";
 import getChainSettings from "./consts/settings";
+import { isSameAddress } from ".";
 
 const substrateToEvmAddressMap = {};
 
@@ -20,7 +21,7 @@ export function substrateToEvmAddress(address) {
   const connectedAccount = getContextConnectedAccount();
   if (
     connectedAccount &&
-    connectedAccount?.address === address &&
+    isSameAddress(connectedAccount?.address, address) &&
     connectedAccount?.evmAddress
   ) {
     return connectedAccount?.evmAddress;
@@ -39,7 +40,7 @@ export function checkIfShouldConvertToEvmAddress(address) {
   const connectedAccount = getContextConnectedAccount();
   return (
     connectedAccount &&
-    connectedAccount?.address === address &&
+    isSameAddress(connectedAccount?.address, address) &&
     connectedAccount?.evmAddress
   );
 }

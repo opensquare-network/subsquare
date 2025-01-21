@@ -1,5 +1,6 @@
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { useUser } from "next-common/context/user";
+import { isSameAddress } from "next-common/utils";
 import { useCallback } from "react";
 
 export function isLinkedToSimaDiscussion(post) {
@@ -26,7 +27,7 @@ export function useFindMyUpVote() {
 
       return (reactions || []).find((r) =>
         r.dataSource === "sima"
-          ? r.proposer === connectedAccount?.address
+          ? isSameAddress(r.proposer, connectedAccount?.address)
           : r.user?.username === user?.username,
       );
     },

@@ -5,7 +5,7 @@ import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import Identity from "./Identity";
 import Caret from "./icons/caret";
-import { addressEllipsis } from "../utils";
+import { addressEllipsis, isSameAddress } from "../utils";
 import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
@@ -185,7 +185,7 @@ export default function AddressSelect({
               }}
               item={item}
               selected={
-                item.address === selectedAccount?.address &&
+                isSameAddress(item.address, selectedAccount?.address) &&
                 item.meta?.source === selectedAccount.meta?.source
               }
             />

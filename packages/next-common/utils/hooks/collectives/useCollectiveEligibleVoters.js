@@ -9,6 +9,8 @@ import {
   isLoadingFellowshipVotesSelector,
 } from "next-common/store/reducers/fellowship/votes";
 import useRankedCollectiveMinRank from "next-common/hooks/collectives/useRankedCollectiveMinRank";
+import { isSameAddress } from "next-common/utils";
+import { encodeAddress } from "@polkadot/util-crypto";
 
 async function queryFellowshipCollectiveMembers(api, blockHash) {
   let blockApi = api;
@@ -66,16 +68,18 @@ export default function useCollectiveEligibleVoters() {
         }));
 
         const allVotes = [...allAye, ...allNay];
-        const votedSet = new Set(allVotes.map((i) => i.address));
+        const votedSet = new Set(allVotes.map((i) => encodeAddress(i.address)));
         const votedMembers = votersWithPower.filter((m) =>
-          votedSet.has(m.address),
+          votedSet.has(encodeAddress(m.address)),
         );
         const unVotedMembers = votersWithPower.filter(
-          (m) => !votedSet.has(m.address),
+          (m) => !votedSet.has(encodeAddress(m.address)),
         );
         setVoters({
           votedMembers: votedMembers.map((m) => {
-            const vote = allVotes.find((i) => i.address === m.address);
+            const vote = allVotes.find((i) =>
+              isSameAddress(i.address, m.address),
+            );
             return {
               ...m,
               votes: vote.votes,

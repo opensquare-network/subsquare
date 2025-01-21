@@ -13,6 +13,7 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import Signer from "next-common/components/popup/fields/signerField";
 import { useMultiAccountsDeps } from "../useSingleAccountAssets";
 import { fetchMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
+import { isSameAddress } from "next-common/utils";
 
 function PopupContent() {
   const { asset } = usePopupParams();
@@ -41,7 +42,7 @@ function PopupContent() {
       return;
     }
 
-    if (transferToAddress === address) {
+    if (isSameAddress(transferToAddress, address)) {
       dispatch(newErrorToast("Cannot transfer to self"));
       return;
     }

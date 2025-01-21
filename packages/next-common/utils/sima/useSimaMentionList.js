@@ -4,6 +4,7 @@ import { flatten, uniq } from "lodash-es";
 import { useChain } from "../../context/chain";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { tryConvertToEvmAddress } from "../mixedChainUtil";
+import { isSameAddress } from "..";
 
 export function getCommentProposers(comments) {
   const addresses = [
@@ -29,7 +30,7 @@ export default function useSimaMentionList(post, comments) {
       post.proposer,
       ...(post.authors || []),
       ...getCommentProposers(comments),
-    ].filter((addr) => addr !== connectedAccount?.address);
+    ].filter((addr) => !isSameAddress(addr, connectedAccount?.address));
 
     Promise.all(
       uniq(proposers).map(async (addr) => {

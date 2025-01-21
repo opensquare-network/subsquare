@@ -1,5 +1,5 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { isSameAddress } from "next-common/utils";
+import { isAddressInGroup, isSameAddress } from "next-common/utils";
 import {
   ApprovedTooltip,
   NotApprovedTooltip,
@@ -8,9 +8,9 @@ import {
 export default function SignatoryStatus({ multisig }) {
   const realAddress = useRealAddress();
   const { approvals = [], state, depositor } = multisig || {};
-  const isApproved = approvals.some((item) => isSameAddress(item, realAddress));
+  const isApproved = isAddressInGroup(realAddress, approvals);
   const isMultisigFinished = state?.name !== "Approving"; // state is Executed or Cancelled
-  const isDepositor = depositor === realAddress;
+  const isDepositor = isSameAddress(depositor, realAddress);
 
   if (isMultisigFinished || (!isDepositor && isApproved)) {
     return isApproved ? <ApprovedTooltip /> : <NotApprovedTooltip />;

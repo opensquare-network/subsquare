@@ -15,6 +15,9 @@ import FellowshipMemberListView from "./memberListView";
 import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import { useRouter } from "next/router";
 import MoreActions from "./moreActions";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
+import SimpleFellowshipMembersPage from "./simpleMembers";
 import useCandidatesFilter from "./useCandidatesFilter";
 import MemberCandidatesWarnings from "next-common/components/fellowship/core/memberWarnings/candidates";
 import { filter, partition } from "lodash-es";
@@ -210,7 +213,7 @@ function FellowshipMembersInContext() {
   );
 }
 
-export default function FellowshipMembersPage() {
+function CollectivesFellowshipMembersPage() {
   const { fellowshipParams } = usePageProps();
 
   return (
@@ -235,4 +238,14 @@ export default function FellowshipMembersPage() {
       </AllMemberEvidenceProvider>
     </CollectivesProvider>
   );
+}
+
+export default function FellowshipMembersPage() {
+  const chain = useChain();
+
+  if (chain === Chains.collectives) {
+    return <CollectivesFellowshipMembersPage />;
+  }
+
+  return <SimpleFellowshipMembersPage />;
 }

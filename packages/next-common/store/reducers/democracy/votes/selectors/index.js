@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
 import { name } from "../consts";
+import { isSameAddress } from "next-common/utils";
 
 export const allVotesSelector = (state) => state[name].allVotes;
 export const showVotesNumberSelector = createSelector(
@@ -9,25 +10,23 @@ export const showVotesNumberSelector = createSelector(
 );
 export const votesTriggerSelector = (state) => state[name].votesTrigger;
 
-export const allAyeSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.aye);
-};
+export const allAyeSelector = createSelector(allVotesSelector, (allVotes) =>
+  (allVotes || []).filter((v) => v.aye),
+);
 
-export const allNaySelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => !v.aye);
-};
+export const allNaySelector = createSelector(allVotesSelector, (allVotes) =>
+  (allVotes || []).filter((v) => !v.aye),
+);
 
-export const allDirectVotesSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => !v.isDelegating);
-};
+export const allDirectVotesSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => (allVotes || []).filter((v) => !v.isDelegating),
+);
 
-export const allDelegationVotesSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.isDelegating);
-};
+export const allDelegationVotesSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => (allVotes || []).filter((v) => v.isDelegating),
+);
 
 export const nestedVotesSelector = createSelector(
   allDirectVotesSelector,
@@ -45,7 +44,7 @@ export const nestedVotesSelector = createSelector(
       }
 
       const directVoterDelegations = delegations.filter((delegationVote) => {
-        return delegationVote.target === vote.account;
+        return isSameAddress(delegationVote.target, vote.account);
       });
       const allDelegationVotes = directVoterDelegations.reduce((result, d) => {
         return new BigNumber(result).plus(d.votes).toString();

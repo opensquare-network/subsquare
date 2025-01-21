@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
+import { isSameAddress } from "next-common/utils";
 
 export default function useMyVotedCollectiveReferenda() {
   const api = useContextApi();
@@ -23,7 +24,7 @@ export default function useMyVotedCollectiveReferenda() {
               args: [referendumIndex, voterAddress],
             },
           ] = item;
-          const isMyVote = voterAddress.toJSON() === address;
+          const isMyVote = isSameAddress(voterAddress.toJSON(), address);
           return [referendumIndex.toNumber(), isMyVote];
         })
         .filter(([, isMyVote]) => isMyVote)

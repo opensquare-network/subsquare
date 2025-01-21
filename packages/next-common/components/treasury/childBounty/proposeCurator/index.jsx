@@ -5,6 +5,7 @@ import { useOnchainData } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { isSameAddress } from "next-common/utils";
 
 function useSubParentBountyData(bountyIndex) {
   const { result, loading } = useSubStorage("bounties", "bounties", [
@@ -37,7 +38,7 @@ function useSubChildBountyIsAdded(parentBountyId, index) {
 
 function isParentBountyCurator(status = {}, address) {
   for (const item of Object.values(status)) {
-    if (item?.curator && item.curator === address) {
+    if (item?.curator && isSameAddress(item.curator, address)) {
       return true;
     }
   }

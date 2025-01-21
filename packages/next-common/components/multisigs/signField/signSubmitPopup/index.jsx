@@ -19,6 +19,7 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import PopupPropose from "./propose";
 import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import { sortAddresses } from "@polkadot/util-crypto";
+import { isSameAddress } from "next-common/utils";
 
 export function SignSubmitInnerPopup({
   onClose,
@@ -76,7 +77,9 @@ export function SignSubmitInnerPopup({
     }
 
     setIsSubmitBtnLoading(false);
-    const otherSignatories = signatories.filter((item) => item !== address);
+    const otherSignatories = signatories.filter(
+      (item) => !isSameAddress(item, address),
+    );
 
     const encodedTimepoint = api.createType("Timepoint", maybeTimepoint);
 

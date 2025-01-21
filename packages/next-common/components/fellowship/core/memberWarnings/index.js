@@ -20,7 +20,7 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemFilter } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
-import { cn } from "next-common/utils";
+import { cn, isSameAddress } from "next-common/utils";
 import BatchBump from "../batchBump";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
@@ -128,7 +128,11 @@ export function useEvidencesStat(members) {
 
   const memberEvidences = useMemo(() => {
     return (evidences || []).filter((evidence) => {
-      return (members || []).findIndex((m) => m.address === evidence.who) > -1;
+      return (
+        (members || []).findIndex((m) =>
+          isSameAddress(m.address, evidence.who),
+        ) > -1
+      );
     });
   }, [evidences, members]);
 

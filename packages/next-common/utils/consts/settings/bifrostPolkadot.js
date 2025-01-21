@@ -45,7 +45,7 @@ const bifrostPolkadot = {
   decimals: 12,
   blockTime: 12000,
   hasElections: false,
-  ss58Format: 6,
+  ss58Format: 0,
   endpoints: DEFAULT_NODES,
   avatar: ProjectIconBifrostPolkadotLight,
   darkAvatar: ProjectIconBifrostPolkadotDark,

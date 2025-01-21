@@ -40,8 +40,8 @@ export async function fetchOpenGovTracksProps() {
 
   return {
     summary,
-    tracks: tracks || null,
-    fellowshipTracks,
-    ambassadorTracks,
+    tracks: tracks ?? [],
+    fellowshipTracks: fellowshipTracks ?? [],
+    ambassadorTracks: ambassadorTracks ?? [],
   };
 }

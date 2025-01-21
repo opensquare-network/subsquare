@@ -3,6 +3,7 @@ import useQueryMyProxied from "next-common/hooks/useQueryMyProxies";
 import useAllOnChainProxies from "next-common/hooks/useAllOnChainProxies";
 import { useUser } from "../user";
 import { useChainSettings } from "../chain";
+import { isSameAddress } from "next-common/utils";
 
 const ProxiesContext = React.createContext(null);
 
@@ -28,7 +29,8 @@ export function OnChainProxiesProvider({ children }) {
   const myProxied = useMemo(
     () =>
       allProxies.filter(
-        (proxy) => proxy.delegatee === user?.address && proxy.delay === 0,
+        (proxy) =>
+          isSameAddress(proxy.delegatee, user?.address) && proxy.delay === 0,
       ),
     [allProxies, user?.address],
   );

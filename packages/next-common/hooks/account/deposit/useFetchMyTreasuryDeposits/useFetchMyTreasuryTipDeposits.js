@@ -5,6 +5,7 @@ import BigNumber from "bignumber.js";
 import { setTipDeposits } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
 import { useChainSettings } from "next-common/context/chain";
 import { useContextApi } from "next-common/context/api";
+import { isSameAddress } from "next-common/utils";
 
 export async function queryAddressDeposits(api, address) {
   const entries = await api.query.tips.tips.entries();
@@ -17,7 +18,7 @@ export async function queryAddressDeposits(api, address) {
     const storage = optionalStorage.unwrap();
     const finder = storage.finder.toString();
     const deposit = storage.deposit.toString();
-    if (new BigNumber(deposit).lte(0) || finder !== address) {
+    if (new BigNumber(deposit).lte(0) || !isSameAddress(finder, address)) {
       return result;
     }
 

@@ -6,6 +6,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useContextApi } from "next-common/context/api";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { isSameAddress } from "next-common/utils";
 
 export default function NewChildBountyButton() {
   const address = useRealAddress();
@@ -43,7 +44,7 @@ export default function NewChildBountyButton() {
   let disabled = false;
   let disabledTooltip = "";
 
-  const isCurator = curator === address;
+  const isCurator = isSameAddress(curator, address);
   const maxActiveChildBountyCount =
     api?.consts.childBounties.maxActiveChildBountyCount.toNumber() ||
     Number.MAX_VALUE;

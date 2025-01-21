@@ -1,7 +1,7 @@
 import Copyable from "next-common/components/copyable";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { cn, toPrecision } from "next-common/utils";
+import { cn, isSameAddress, toPrecision } from "next-common/utils";
 import DetailButton from "next-common/components/detailButton";
 import DotSplitter from "next-common/components/dotSplitter";
 import UnnoteButton from "./unnoteButton";
@@ -42,7 +42,7 @@ export function Deposit({
 
   const unnote = count === 0 &&
     status.toLowerCase() === "unrequested" &&
-    realAddress === who && (
+    isSameAddress(realAddress, who) && (
       <>
         <DotSplitter />
         <UnnoteButton hash={hash} onInBlock={onUnnoteInBlock} />

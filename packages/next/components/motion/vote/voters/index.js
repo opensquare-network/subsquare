@@ -10,7 +10,7 @@ import styled from "styled-components";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import AddressUser from "next-common/components/user/addressUser";
 import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
-import { isMotionEnded } from "next-common/utils";
+import { isMotionEnded, isSameAddress } from "next-common/utils";
 import usePrime from "next-common/utils/hooks/usePrime";
 
 const TipperList = styled.div`
@@ -66,7 +66,7 @@ export default function Voters() {
           <TipperItem key={index}>
             <VoterAddr>
               <AddressUser add={voter} fontSize={12} />
-              {voter === prime && <PrimeAddressMark />}
+              {isSameAddress(voter, prime) && <PrimeAddressMark />}
             </VoterAddr>
             <AyeNay isAye={approve} />
           </TipperItem>
