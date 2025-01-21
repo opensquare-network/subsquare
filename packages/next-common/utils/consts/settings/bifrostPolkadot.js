@@ -64,6 +64,8 @@ const bifrostPolkadot = {
     fellowship: true,
     treasury: {
       spends: true,
+      bounties: false,
+      tips: false,
     },
   }),
   integrations: {

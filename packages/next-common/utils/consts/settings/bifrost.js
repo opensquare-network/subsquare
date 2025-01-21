@@ -91,6 +91,11 @@ const bifrost = {
   modules: mergeChainModules({
     referenda: true,
     fellowship: true,
+    treasury: {
+      spends: true,
+      bounties: false,
+      tips: false,
+    },
   }),
   integrations: {
     subscan: {
