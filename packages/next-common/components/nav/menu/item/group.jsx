@@ -37,6 +37,11 @@ export default function NavMenuItemGroup({
 
   function toggleChildMenu() {
     if (collapsed) {
+      const defaultPagePath = menu.items[0]?.pathname;
+      if (defaultPagePath) {
+        router.push(defaultPagePath);
+      }
+
       return;
     }
 
