@@ -1,17 +1,16 @@
 import { useState, useMemo } from "react";
 import { useDebounce } from "react-use";
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 import { SystemSearch } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 
 export function SearchInput({ value, onChange }) {
   return (
     <Input
-      className="h-[30px] flex rounded-md bg-neutral100"
+      size="small"
       value={value}
       onChange={onChange}
       placeholder="Search for asset"
-      prefixClassName="!ml-1"
       prefix={<SystemSearch className="text-textTertiary w-5 h-5" />}
     />
   );

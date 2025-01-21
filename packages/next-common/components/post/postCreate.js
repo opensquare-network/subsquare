@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import Input from "../input";
+import Input from "next-common/lib/input";
 import nextApi from "../../services/nextApi";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
@@ -135,7 +135,7 @@ export default function PostCreate() {
 
   return (
     <Wrapper>
-      <TitleContainer className="!px-0">New Post</TitleContainer>
+      <TitleContainer className="!px-0">New Post123</TitleContainer>
       <LabelWrapper>
         <Label>Title</Label>
         <ToggleText

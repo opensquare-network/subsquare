@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import PopupLabel from "../label";
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 import { startCase } from "lodash-es";
 import { useAsync } from "react-use";
 import nextApi from "next-common/services/nextApi";
