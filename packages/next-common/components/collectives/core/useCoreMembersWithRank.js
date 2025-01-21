@@ -21,13 +21,13 @@ export default function useCoreMembersWithRank() {
 
     Promise.all([
       api.query[collectivePallet]?.members.entries(),
-      api.query[corePallet].member.entries(),
+      api.query[corePallet]?.member.entries(),
     ])
       .then(([collectiveEntries, coreEntries]) => {
         const collectiveMembers =
           normalizeRankedCollectiveEntries(collectiveEntries);
 
-        const normalizedMembers = coreEntries.map(
+        const normalizedMembers = (coreEntries || []).map(
           ([storageKey, memberStatus]) => {
             const address = storageKey.args[0].toString();
             return {

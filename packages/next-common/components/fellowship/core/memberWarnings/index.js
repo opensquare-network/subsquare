@@ -21,7 +21,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemFilter } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 import { cn, isSameAddress } from "next-common/utils";
-import BatchBump from "./batchBump";
+import BatchBump from "../batchBump";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
