@@ -64,8 +64,12 @@ function InputImpl(
     <div>
       <div
         style={{
-          "--input-gap-x": smallSize ? "0.75rem" : "1rem",
-          "--input-gap-y": smallSize ? "0.375rem" : "0.625rem",
+          "--input-gap-x": smallSize
+            ? "calc(0.75rem - 1px)"
+            : "calc(1rem - 1px)",
+          "--input-gap-y": smallSize
+            ? "calc(0.375rem - 1px)"
+            : "calc(0.625rem - 1px)",
         }}
         className={cn(
           "group/input",
