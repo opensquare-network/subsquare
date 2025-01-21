@@ -88,12 +88,14 @@ export default function Account({ account, showFullAddress = false }) {
         {hasIdentity ? (
           <>
             <Identity identity={identity} />
-            <div className="truncate">{addressHint}</div>
+            <div className="truncate">{account?.address}</div>
           </>
         ) : (
           <>
-            <div className="text-textPrimary">{account?.name}</div>
-            <div className="truncate">{addressHint ?? "--"}</div>
+            <div className="text-textPrimary">
+              {account?.name || addressHint}
+            </div>
+            <div className="truncate">{account?.address}</div>
           </>
         )}
       </NameWrapper>
