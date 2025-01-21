@@ -24,6 +24,8 @@ function InputImpl(
     onBlur = noop,
     symbol,
     type = "text",
+    onValueChange = noop,
+    onChange = noop,
     ...props
   },
   ref,
@@ -117,6 +119,10 @@ function InputImpl(
           {...props}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
+          onChange={(event) => {
+            onChange(event);
+            onValueChange(event.target.value);
+          }}
         />
 
         {suffix && <Affix>{suffix}</Affix>}
