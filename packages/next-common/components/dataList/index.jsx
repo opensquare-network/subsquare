@@ -8,7 +8,10 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { isNil } from "lodash-es";
 
-function DataList(
+const DataList = forwardRef(DataListImpl);
+export default DataList;
+
+function DataListImpl(
   {
     columns = [],
     rows = [],
@@ -187,5 +190,3 @@ export function MapDataList({ data, columnsDef, getRowKey, ...props }) {
 
   return <DataList columns={columnsDef} rows={rows} {...props} />;
 }
-
-export default forwardRef(DataList);
