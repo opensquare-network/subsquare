@@ -15,6 +15,7 @@ import WarningInfoPanel from "next-common/components/summary/styled/warningInfoP
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
+import { isNil } from "lodash-es";
 
 export function NotAvailableMemberPrompt() {
   return (
@@ -51,7 +52,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
     useEnactmentBlocksField();
 
   const targetMember = find(members, { address: who });
-  const toRank = targetMember?.rank ? targetMember?.rank + 1 : "";
+  const toRank = !isNil(targetMember?.rank) ? targetMember?.rank + 1 : "";
 
   const trackName = getTrackNameFromRank(toRank);
 
