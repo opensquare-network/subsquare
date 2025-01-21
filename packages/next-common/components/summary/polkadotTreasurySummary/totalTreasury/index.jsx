@@ -124,7 +124,7 @@ export default function TotalTreasury() {
               <TokenSymbolAsset
                 type={""}
                 amount={toPrecision(totalUsdtBalance, SYMBOL_DECIMALS.USDT)}
-                symbol={"USDt"}
+                symbol={"USDT"}
                 valueClassName={"text-textSecondary"}
               />
             </TokenWrappper>

@@ -130,7 +130,7 @@ export default function AjunaSpendUSDxProposalPopup() {
   const api = useContextApi();
   const { onClose } = usePopupParams();
   const [inputBalance, setInputBalance] = useState("");
-  const [symbol, setSymbol] = useState("USDt");
+  const [symbol, setSymbol] = useState("USDT");
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
   const { value: validFrom, component: validFromField } = useValidFromField();

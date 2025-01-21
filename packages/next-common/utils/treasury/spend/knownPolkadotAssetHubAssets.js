@@ -7,7 +7,7 @@ export const KnownPolkadotAssetHubAssets = [
   {
     type: "asset",
     assetId: 1984,
-    symbol: "USDt",
+    symbol: "USDT",
     decimals: 6,
   },
   {

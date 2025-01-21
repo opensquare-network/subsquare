@@ -72,7 +72,7 @@ export default function TreasuryOnHydration() {
             />
             <TokenSymbolAsset
               amount={toPrecision(usdc, SYMBOL_DECIMALS.USDC)}
-              symbol="USDt"
+              symbol="USDT"
             />
             <AddressLinks />
           </div>

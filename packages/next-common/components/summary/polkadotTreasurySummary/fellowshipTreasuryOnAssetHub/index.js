@@ -39,7 +39,7 @@ function FellowshipTreasuryItemList({
       >
         <ValueDisplay
           value={toPrecision(fellowshipSalaryUsdtBalance, SYMBOL_DECIMALS.USDT)}
-          symbol="USDt"
+          symbol="USDT"
           className={"text12Medium text-textPrimary"}
           tooltipClassName={"inline-flex items-center"}
         />
