@@ -14,10 +14,9 @@ export const showVotesNumberSelector = createSelector(
   },
 );
 
-export const allAyeSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.aye);
-};
+export const allAyeSelector = createSelector(allVotesSelector, (allVotes) => {
+  return (allVotes || []).filter((v) => v.aye);
+});
 
 export const allAyeDelegationVotesSelector = createSelector(
   allAyeSelector,
@@ -33,10 +32,9 @@ export const allAyeDirectVotesSelector = createSelector(
   },
 );
 
-export const allNaySelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.aye === false);
-};
+export const allNaySelector = createSelector(allVotesSelector, (allVotes) => {
+  return (allVotes || []).filter((v) => v.aye === false);
+});
 
 export const allNayDelegationVotesSelector = createSelector(
   allNaySelector,
@@ -52,10 +50,12 @@ export const allNayDirectVotesSelector = createSelector(
   },
 );
 
-export const allAbstainSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.isAbstain);
-};
+export const allAbstainSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => {
+    return (allVotes || []).filter((v) => v.isAbstain);
+  },
+);
 
 export const allAbstainDelegationVotesSelector = createSelector(
   allAbstainSelector,
@@ -71,15 +71,19 @@ export const allAbstainDirectVotesSelector = createSelector(
   },
 );
 
-export const allDirectVotesSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => !v.isDelegating);
-};
+export const allDirectVotesSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => {
+    return (allVotes || []).filter((v) => !v.isDelegating);
+  },
+);
 
-export const allDelegationVotesSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.isDelegating);
-};
+export const allDelegationVotesSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => {
+    return (allVotes || []).filter((v) => v.isDelegating);
+  },
+);
 
 export const normalizedNestedVote = (vote, delegations) => {
   if (!vote.isStandard) {

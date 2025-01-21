@@ -10,25 +10,23 @@ export const showVotesNumberSelector = createSelector(
 );
 export const votesTriggerSelector = (state) => state[name].votesTrigger;
 
-export const allAyeSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.aye);
-};
+export const allAyeSelector = createSelector(allVotesSelector, (allVotes) =>
+  (allVotes || []).filter((v) => v.aye),
+);
 
-export const allNaySelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => !v.aye);
-};
+export const allNaySelector = createSelector(allVotesSelector, (allVotes) =>
+  (allVotes || []).filter((v) => !v.aye),
+);
 
-export const allDirectVotesSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => !v.isDelegating);
-};
+export const allDirectVotesSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => (allVotes || []).filter((v) => !v.isDelegating),
+);
 
-export const allDelegationVotesSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.isDelegating);
-};
+export const allDelegationVotesSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => (allVotes || []).filter((v) => v.isDelegating),
+);
 
 export const nestedVotesSelector = createSelector(
   allDirectVotesSelector,
