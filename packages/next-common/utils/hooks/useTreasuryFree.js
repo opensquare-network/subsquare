@@ -5,6 +5,7 @@ import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
 import { useTreasuryPallet } from "next-common/context/treasury";
 import { encodeAddressToChain } from "next-common/services/address";
+import isEvmChain from "next-common/utils/isEvmChain";
 
 const EMPTY_U8A_32 = new Uint8Array(32);
 
@@ -37,7 +38,11 @@ export function useTreasuryAccount(api) {
         : "py/trsry",
       EMPTY_U8A_32,
     ).subarray(0, 32);
-    setAccount(encodeAddressToChain(treasuryAccount, chain));
+    if (isEvmChain()) {
+      setAccount(treasuryAccount);
+    } else {
+      setAccount(encodeAddressToChain(treasuryAccount, chain));
+    }
   }, [api, chain, pallet]);
 
   return account;
