@@ -41,7 +41,7 @@ function SelectHeader({
     return (
       <>
         <AddressComboListItemAccount account={selectedAccount} />
-        <div className="w-5 h-5">
+        <div className="w-5 h-5 flex">
           <FellowshipRank rank={selectedAccount.rank} />
         </div>
       </>
@@ -64,7 +64,7 @@ function SelectOptions({ members, address, onSelect }) {
           onClick={() => onSelect(item)}
         >
           <AddressComboListItemAccount account={item} />
-          <div className="w-5 h-5">
+          <div className="w-5 h-5 flex">
             <FellowshipRank rank={item.rank} />
           </div>
         </div>
