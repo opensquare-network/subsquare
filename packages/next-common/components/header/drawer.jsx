@@ -93,7 +93,7 @@ export default function SidebarAccount() {
 
   return (
     <Wrapper>
-      <SearchInput shortcut={false} inputType="search" />
+      <SearchInput shortcut={false} type="search" />
 
       <Title>NETWORK</Title>
       <NetworkSwitch activeNode={node} />

@@ -7,7 +7,7 @@ import { cn } from "next-common/utils";
 
 const googleq = "https://google.com/search?q=";
 
-export default function SearchInput({ shortcut = true, inputType }) {
+export default function SearchInput({ shortcut = true, type }) {
   const chain = useChain();
   const [value, setValue] = useState("");
   const inputRef = useRef();
@@ -43,8 +43,8 @@ export default function SearchInput({ shortcut = true, inputType }) {
       suffix={
         shortcut && <SearchInputShortcut focus={focus} inputRef={inputRef} />
       }
-      inputType={inputType}
-      enterkeyhint="Search"
+      type={type}
+      enterKeyHint="Search"
     />
   );
 }
