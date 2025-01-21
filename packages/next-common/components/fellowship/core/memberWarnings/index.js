@@ -49,7 +49,7 @@ function useAvailablePromotionCount() {
   return { availablePromotionCount, isLoading };
 }
 
-function useDemotionExpiringCount(members) {
+export function useDemotionExpiringCount(members) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
   const params = useCoreFellowshipParams();
@@ -78,7 +78,7 @@ function useDemotionExpiringCount(members) {
   }, [members, latestHeight, params, blockTime]);
 }
 
-function useDemotionExpiredCount(members) {
+export function useDemotionExpiredCount(members) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const params = useCoreFellowshipParams();
 
@@ -123,16 +123,16 @@ function useDemotionExpirationCounts() {
   };
 }
 
-function useEvidencesStat() {
+export function useEvidencesStat(members) {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
-  const { members } = useFellowshipCoreMembers();
 
   const memberEvidences = useMemo(() => {
     return (evidences || []).filter((evidence) => {
-      const m = (members || []).find((m) =>
-        isSameAddress(m.address, evidence.who),
+      return (
+        (members || []).findIndex((m) =>
+          isSameAddress(m.address, evidence.who),
+        ) > -1
       );
-      return m?.rank > 0;
     });
   }, [evidences, members]);
 
@@ -148,7 +148,7 @@ function useEvidencesStat() {
   };
 }
 
-function MemberWarningsPanel({ className, isLoading, items }) {
+export function MemberWarningsPanel({ className, isLoading, items }) {
   const icon = (
     <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
   );
@@ -164,6 +164,12 @@ function MemberWarningsPanel({ className, isLoading, items }) {
 
 export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
+  const { members: coreMembers } = useFellowshipCoreMembers();
+  const [members] = useMemo(
+    () => partition(coreMembers, (m) => m.rank > 0),
+    [coreMembers],
+  );
+
   const {
     expiredMembersCount,
     expiringMembersCount,
@@ -177,7 +183,7 @@ export default function MemberWarnings({ className }) {
     totalEvidences,
     evidencesToBeHandled,
     isLoading: isEvidenceLoading,
-  } = useEvidencesStat();
+  } = useEvidencesStat(members);
 
   const filterLinks = {
     evidenceOnly: `/${section}/members?evidence_only=true`,
@@ -232,12 +238,19 @@ export default function MemberWarnings({ className }) {
   return <MemberWarningsPanel className={className} items={promptItems} />;
 }
 
-function PromptButton({ children, filterLink = "" }) {
+export function PromptButton({
+  children,
+  filterLink = "",
+  isCandidate = false,
+}) {
   const router = useRouter();
   const [flag, setFlag] = useState(false);
   const matched = router.asPath === filterLink;
   const isActive = flag && matched;
-  const currentPath = router.asPath.split("?")[0];
+  let currentPath = router.asPath.split("?")[0];
+  if (isCandidate) {
+    currentPath = `${currentPath}?tab=candidates`;
+  }
   useEffect(() => {
     setFlag(matched);
   }, [matched]);

@@ -124,25 +124,14 @@ function getFellowshipTreasuryMenu(overviewSummary) {
   const fellowshipTreasurySpends =
     overviewSummary?.fellowshipTreasurySpends || {};
   return {
-    value: "fellowship-treasury",
-    name: Names.treasury,
+    value: "fellowship-treasury-spends",
+    name: Names.treasurySpends,
     extraMatchNavMenuActivePathnames: [
       "/fellowship/treasury/spends",
       "/fellowship/treasury/spends/[id]",
     ],
     activeCount: fellowshipTreasurySpends.active || 0,
-    items: [
-      {
-        value: "fellowship-treasury-spends",
-        name: Names.treasurySpends,
-        pathname: "/fellowship/treasury/spends",
-        extraMatchNavMenuActivePathnames: [
-          "/fellowship/treasury/spends",
-          "/fellowship/treasury/spends/[id]",
-        ],
-        activeCount: fellowshipTreasurySpends.active || 0,
-      },
-    ],
+    pathname: "/fellowship/treasury/spends",
   };
 }
 
@@ -159,6 +148,7 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
       getNonCoreFellowshipMembersMenu(),
       getFellowshipMembersMenu(),
       getFellowshipSalaryMenu(),
+      getFellowshipTreasuryMenu(overviewSummary),
       getFellowshipStatisticsMenu(),
       dividerConfig,
       getFellowshipReferendaMenu(
@@ -166,9 +156,6 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
         currentTrackId,
         totalActiveCount,
       ),
-      dividerConfig,
-
-      getFellowshipTreasuryMenu(overviewSummary),
     ].filter(Boolean),
   };
 

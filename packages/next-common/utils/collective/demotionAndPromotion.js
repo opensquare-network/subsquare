@@ -3,6 +3,7 @@ import { ONE_DAY } from "../constants";
 import rankToIndex from "../fellowship/rankToIndex";
 
 const days20 = 20 * ONE_DAY;
+const days30 = 30 * ONE_DAY;
 
 export function getDemotionPeriod(rank, params) {
   return rank <= 0
@@ -50,7 +51,9 @@ export function isDemotionAboutToExpire({
   return (
     demotionPeriod > 0 &&
     remainingBlocks > 0 &&
-    new BigNumber(blockTime).multipliedBy(remainingBlocks).lte(days20)
+    new BigNumber(blockTime)
+      .multipliedBy(remainingBlocks)
+      .lte(rank <= 0 ? days30 : days20)
   );
 }
 

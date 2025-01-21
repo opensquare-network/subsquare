@@ -87,18 +87,16 @@ const laos = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  // hasMultisig: true,
-  // multisigApiPrefix: "laos",
   description:
     "The universal Layer-1 for digital assets across all blockchains.",
   modules: mergeChainModules({
     treasury: {
-      bounties: false,
+      bounties: true,
       tips: false,
     },
   }),
   integrations: {
-    subscan: true,
+    statescan: true,
   },
   cssVarsLight: {
     theme100: "rgba(218,132,90,0.10)",

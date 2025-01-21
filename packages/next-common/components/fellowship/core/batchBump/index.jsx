@@ -4,7 +4,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const BatchBumpPopup = dynamicPopup(() => import("./popup"));
 
-export default function BatchBump() {
+export default function BatchBump({ isCandidate }) {
   const [showBatchBump, setShowBatchBump] = useState(false);
 
   return (
@@ -16,10 +16,13 @@ export default function BatchBump() {
         }}
         className="ml-1"
       >
-        Demote All
+        {isCandidate ? "Offboard" : "Demote"} All
       </PrimaryButton>
       {showBatchBump && (
-        <BatchBumpPopup onClose={() => setShowBatchBump(false)} />
+        <BatchBumpPopup
+          isCandidate={isCandidate}
+          onClose={() => setShowBatchBump(false)}
+        />
       )}
     </>
   );

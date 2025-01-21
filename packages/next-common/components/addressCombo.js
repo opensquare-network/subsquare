@@ -114,7 +114,7 @@ function getAddressHint(address) {
   return addressHint;
 }
 
-function AddressComboInput({
+export function AddressComboInput({
   inputAddress,
   setInputAddress,
   onBlur,
@@ -133,11 +133,15 @@ function AddressComboInput({
   );
 }
 
-function AddressComboListItemAccount({ account }) {
-  const { identity, hasIdentity } = useIdentityInfo(account.address);
+export function AddressComboListItemAccount({ account }) {
+  const { identity, hasIdentity, isLoading } = useIdentityInfo(account.address);
   const displayName = getIdentityDisplay(identity);
   const address = normalizeAddress(account.address);
   const addressHint = getAddressHint(address);
+
+  if (isLoading) {
+    return <AddressInfoLoading address={address} />;
+  }
 
   return (
     <>
@@ -187,7 +191,7 @@ function NoIdentity({ address }) {
   );
 }
 
-function AddressComboCustomAddress({ address }) {
+export function AddressComboCustomAddress({ address }) {
   const { identity, isLoading, hasIdentity } = useIdentityInfo(address);
 
   if (isLoading) {
