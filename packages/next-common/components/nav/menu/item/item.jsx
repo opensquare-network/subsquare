@@ -48,7 +48,7 @@ export default function NavMenuItemItem({
     );
   }
 
-  if (items?.length) {
+  if (items?.length && !item?.hideItemsOnMenu) {
     return (
       <NavMenuItemGroup
         menu={item}

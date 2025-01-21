@@ -1,4 +1,4 @@
-import { sumBy } from "lodash-es";
+import { startCase, sumBy } from "lodash-es";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
@@ -69,7 +69,26 @@ function getFellowshipStatisticsMenu() {
   };
 }
 
-function getFellowshipReferendaMenu(totalActiveCount) {
+function getFellowshipReferendaMenu(
+  fellowshipTracks = [],
+  currentTrackId,
+  totalActiveCount,
+) {
+  const resolveFellowshipTrackItem = (track) => {
+    return {
+      value: track.id,
+      name: startCase(track.name),
+      pathname: `/fellowship/tracks/${track.id}`,
+      activeCount: track.activeCount,
+      icon: `[${track.id}]`,
+      extraMatchNavMenuActivePathnames: [
+        track.id === currentTrackId && "/fellowship/referenda/[id]",
+      ].filter(Boolean),
+    };
+  };
+
+  const trackItems = fellowshipTracks.map(resolveFellowshipTrackItem);
+
   return {
     value: "fellowship-referenda",
     name: "Referenda",
@@ -80,6 +99,21 @@ function getFellowshipReferendaMenu(totalActiveCount) {
     ],
     activeCount: totalActiveCount,
     pathname: "/fellowship",
+    hideItemsOnMenu: true,
+    items: [
+      {
+        value: "all",
+        name: Names.all,
+        pathname: "/fellowship",
+        extraMatchNavMenuActivePathnames: [
+          "/fellowship",
+          "/fellowship/referenda/statistics",
+        ],
+        activeCount: totalActiveCount,
+        excludeToSumActives: true,
+      },
+      ...trackItems,
+    ],
   };
 }
 
@@ -103,7 +137,7 @@ function getFellowshipTreasuryMenu(overviewSummary) {
   };
 }
 
-export function getFellowshipMenu(overviewSummary) {
+export function getFellowshipMenu(overviewSummary, currentTrackId) {
   const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks || [];
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
 
@@ -116,7 +150,11 @@ export function getFellowshipMenu(overviewSummary) {
       getNonCoreFellowshipMembersMenu(),
       getFellowshipMembersMenu(),
       getFellowshipSalaryMenu(),
-      getFellowshipReferendaMenu(totalActiveCount),
+      getFellowshipReferendaMenu(
+        fellowshipTracks,
+        currentTrackId,
+        totalActiveCount,
+      ),
       getFellowshipTreasuryMenu(overviewSummary),
       getFellowshipStatisticsMenu(),
     ].filter(Boolean),
