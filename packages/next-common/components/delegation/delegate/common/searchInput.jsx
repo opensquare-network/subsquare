@@ -1,6 +1,6 @@
 import { MenuDelegation } from "@osn/icons/subsquare";
 import { noop } from "lodash-es";
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 
 export default function DelegationSearchInput({
   address = "",

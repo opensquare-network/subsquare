@@ -5,6 +5,7 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 import Divider from "next-common/components/styled/layout/divider";
 import MineTag from "next-common/components/delegation/delegate/common/mineTag";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { isSameAddress } from "next-common/utils";
 
 export default function NonCoreFellowshipMemberCard({ member }) {
   const realAddress = useRealAddress();
@@ -12,7 +13,7 @@ export default function NonCoreFellowshipMemberCard({ member }) {
 
   return (
     <SecondaryCard className="relative">
-      {realAddress === address && <MineTag />}
+      {isSameAddress(realAddress, address) && <MineTag />}
       <div className="flex justify-between">
         <AvatarAndAddress address={address} isActive={false} />
         <div className="flex flex-col items-end justify-between">

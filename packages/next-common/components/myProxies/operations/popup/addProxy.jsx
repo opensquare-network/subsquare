@@ -16,6 +16,7 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { isSameAddress } from "next-common/utils";
 
 export function DelayBlocksField({ value, setValue }) {
   const PROXY_WIKI_LINK =
@@ -102,7 +103,7 @@ function PopupContent() {
       return;
     }
 
-    if (address === proxyAccount) {
+    if (isSameAddress(address, proxyAccount)) {
       dispatch(newErrorToast("Cannot set yourself as proxy"));
       return;
     }

@@ -34,8 +34,15 @@ export function calcDataFromTallyHistory(
 ) {
   let historySupportData = [];
   let historyApprovalData = [];
+  let historyAyesData = [];
+  let historyNaysData = [];
   if (!tallyHistory || !decidingSince || isEmpty(tallyHistory)) {
-    return { historySupportData, historyApprovalData };
+    return {
+      historySupportData,
+      historyApprovalData,
+      historyAyesData,
+      historyNaysData,
+    };
   }
 
   const oneHour = 3600 * 1000;
@@ -52,6 +59,8 @@ export function calcDataFromTallyHistory(
     let { currentSupport, currentApprove } = calcFromOneTallyData(tally.tally);
     historySupportData.push(currentSupport);
     historyApprovalData.push(currentApprove);
+    historyAyesData.push(tally.tally.ayes);
+    historyNaysData.push(tally.tally.nays);
     iterHeight += blockStep;
   }
 
@@ -62,9 +71,16 @@ export function calcDataFromTallyHistory(
     );
     historySupportData.push(currentSupport);
     historyApprovalData.push(currentApprove);
+    historyAyesData.push(lastTally.tally.ayes);
+    historyNaysData.push(lastTally.tally.nays);
   }
 
-  return { historySupportData, historyApprovalData };
+  return {
+    historySupportData,
+    historyApprovalData,
+    historyAyesData,
+    historyNaysData,
+  };
 }
 
 export default function useHistoryTallyValueData() {

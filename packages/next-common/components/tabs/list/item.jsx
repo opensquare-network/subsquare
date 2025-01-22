@@ -3,6 +3,7 @@ import Tooltip from "next-common/components/tooltip";
 import { cn, isExternalLink } from "next-common/utils";
 import Link from "next/link";
 import { isValidElement } from "react";
+import TitleSuffix from "next-common/components/titleSuffix";
 
 /**
  * @param {TabsListItem} props
@@ -42,11 +43,7 @@ export default function TabsListItem({
     >
       <>
         {isFunction(label) ? label({ active }) : label}
-        {!!activeCount && (
-          <span className="ml-1 text-textTertiary text14Medium">
-            {activeCount}
-          </span>
-        )}
+        {!!activeCount && <TitleSuffix suffix={activeCount} />}
         {labelExtra}
       </>
     </div>

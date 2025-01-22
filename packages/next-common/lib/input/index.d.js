@@ -7,5 +7,6 @@
  * error?: React.ReactNode
  * size?: 'small'
  * symbol?: string
+ * onValueChange?: (value: string) => void
  * }} InputProps
  */

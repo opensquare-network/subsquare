@@ -54,6 +54,7 @@ function TabsListImpl(
         {tabs?.map((tab) => (
           <TabsListItem
             key={tab.value}
+            activeTabValue={activeTabValue}
             tab={tab}
             onClick={() => {
               onTabClick?.(tab);

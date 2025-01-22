@@ -11,11 +11,10 @@ import VoteBar from "next-common/components/referenda/voteBar";
 import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowshipVotes";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useOnchainData } from "next-common/context/post";
-import AllVotes from "./allVotes";
 import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
 import CurvePopupOpener from "next-common/components/gov2/referendum/curvePopup";
 import Calls from "./voteCalls";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import {
   useApprovalPercentage,
@@ -23,7 +22,6 @@ import {
 } from "next-common/context/post/gov2/percentage";
 import ConfirmationEstimation from "next-common/components/tally/confirmationEstimation";
 import EligibleVoters from "./eligibleVoters";
-import { isCollectivesChain } from "next-common/utils/chain";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -49,8 +47,6 @@ export default function FellowshipTally() {
 
   const approvalPercentage = useApprovalPercentage(tally);
   const supportPercentage = useSupportPercentage(supportPerbill);
-
-  const chain = useChain();
 
   return (
     <SecondaryCardDetail>
@@ -80,8 +76,7 @@ export default function FellowshipTally() {
       />
 
       <Footer className="justify-end">
-        <AllVotes />
-        {isCollectivesChain(chain) && <EligibleVoters />}
+        <EligibleVoters />
         {useVoteCall && <Calls />}
       </Footer>
     </SecondaryCardDetail>

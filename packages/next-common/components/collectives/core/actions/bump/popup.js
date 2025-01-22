@@ -48,9 +48,12 @@ function Content() {
   );
 }
 
-export default function BumpFellowshipMemberPopup(props) {
+export default function BumpFellowshipMemberPopup({
+  isCandidate = false,
+  ...props
+}) {
   return (
-    <PopupWithSigner title="Bump" {...props}>
+    <PopupWithSigner title={isCandidate ? "Offboard" : "Demote"} {...props}>
       <Content />
     </PopupWithSigner>
   );

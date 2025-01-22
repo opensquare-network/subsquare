@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useMountedState } from "react-use";
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 import EditInput from "next-common/sima/components/editInput";
 import { usePost, usePostTitle } from "next-common/context/post";
 import FormItem from "next-common/components/form/item";

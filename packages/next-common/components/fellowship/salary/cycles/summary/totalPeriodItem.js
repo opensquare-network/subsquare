@@ -12,7 +12,7 @@ export default function SalaryStatsTotalPeriodItem({ cycleStart }) {
   const cyclePeriodData = useCalcPeriodBlocks(totalCyclePeriod, cycleStart);
   const [totalPeriodDay] = chunk(cyclePeriodData.totalPeriodTime.split(" "), 2);
 
-  const suffix = (
+  const suffix = isNil(totalCyclePeriod) ? null : (
     <FellowshipTotalPeriodCountdown
       className="absolute top-0 right-0"
       percentage={cyclePeriodData.gonePercentage}

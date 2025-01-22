@@ -7,6 +7,7 @@ import { useComment } from "../../context";
 import { useMemo } from "react";
 import { SplitVoteTag, StandardVoteTag } from "../referendaVoteTag";
 import { useGetAddressVotesDataFn } from "next-common/hooks/useAddressVotesData";
+import { isSameAddress } from "next-common/utils";
 
 export default function DemocracyReferendaVoteTag() {
   const comment = useComment();
@@ -16,7 +17,10 @@ export default function DemocracyReferendaVoteTag() {
 
   const user = comment?.author;
   const votes = useMemo(
-    () => (allVotes || []).filter((item) => item.account === user?.address),
+    () =>
+      (allVotes || []).filter((item) =>
+        isSameAddress(item.account, user?.address),
+      ),
     [allVotes, user?.address],
   );
 

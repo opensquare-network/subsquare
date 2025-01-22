@@ -5,7 +5,7 @@ import Flex from "./styled/flex";
 import Relative from "./styled/relative";
 import { isAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
-import { addressEllipsis, cn } from "../utils";
+import { addressEllipsis, cn, isSameAddress } from "../utils";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
 import IdentityIcon from "./Identity/identityIcon.js";
@@ -31,6 +31,8 @@ const Select = styled(Flex)`
 const NameWrapper = styled.div`
   color: var(--textPrimary);
   flex-grow: 1;
+  width: 100%;
+  overflow: hidden;
   > :first-child {
     font-size: 14px;
     font-weight: 500;
@@ -106,7 +108,7 @@ function getAddressHint(address) {
     const maybeEvmAddress = tryConvertToEvmAddress(address);
 
     addressHint = addressEllipsis(maybeEvmAddress);
-    if (maybeEvmAddress !== address) {
+    if (!isSameAddress(maybeEvmAddress, address)) {
       addressHint += ` (${addressEllipsis(address)})`;
     }
   }
@@ -114,7 +116,7 @@ function getAddressHint(address) {
   return addressHint;
 }
 
-function AddressComboInput({
+export function AddressComboInput({
   inputAddress,
   setInputAddress,
   onBlur,
@@ -133,21 +135,33 @@ function AddressComboInput({
   );
 }
 
-function AddressComboListItemAccount({ account }) {
-  const { identity, hasIdentity } = useIdentityInfo(account.address);
+export function AddressComboListItemAccount({ account }) {
+  const { identity, hasIdentity, isLoading } = useIdentityInfo(account.address);
   const displayName = getIdentityDisplay(identity);
   const address = normalizeAddress(account.address);
   const addressHint = getAddressHint(address);
+
+  if (isLoading) {
+    return <AddressInfoLoading address={address} />;
+  }
 
   return (
     <>
       <Avatar address={account.address} size={40} />
       <NameWrapper>
         <IdentityName>
-          {hasIdentity && <IdentityIcon identity={identity} />}
-          <div className="line-clamp-1">{displayName || account.name}</div>
+          {hasIdentity ? (
+            <>
+              <IdentityIcon identity={identity} />
+              <div className="line-clamp-1">{displayName || account.name}</div>
+            </>
+          ) : (
+            displayName || account.name || addressHint
+          )}
         </IdentityName>
-        <div>{addressHint}</div>
+        <div className="flex-1 w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
+          {address}
+        </div>
       </NameWrapper>
     </>
   );
@@ -187,7 +201,7 @@ function NoIdentity({ address }) {
   );
 }
 
-function AddressComboCustomAddress({ address }) {
+export function AddressComboCustomAddress({ address }) {
   const { identity, isLoading, hasIdentity } = useIdentityInfo(address);
 
   if (isLoading) {
@@ -210,8 +224,8 @@ function AddressComboHeader({
   address,
   edit,
 }) {
-  const selectedAccount = accounts.find(
-    (item) => normalizeAddress(item.address) === address,
+  const selectedAccount = accounts.find((item) =>
+    isSameAddress(normalizeAddress(item.address), address),
   );
 
   if (edit) {
@@ -240,7 +254,7 @@ function AddressComboListOptions({ accounts, address, onSelect }) {
           <Item
             key={index}
             onClick={() => onSelect(item)}
-            selected={item.address === address}
+            selected={isSameAddress(item.address, address)}
           >
             <AddressComboListItemAccount account={item} />
           </Item>

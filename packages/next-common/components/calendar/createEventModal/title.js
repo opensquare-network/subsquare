@@ -1,11 +1,11 @@
 import React from "react";
 import Labeled from "../../../components/Labeled";
-import LineInput from "../../lineInput";
+import Input from "next-common/lib/input";
 
 export default function Title({ setValue }) {
   return (
     <Labeled text={"Title"}>
-      <LineInput placeholder="Please fill the title..." setValue={setValue} />
+      <Input placeholder="Please fill the title..." onValueChange={setValue} />
     </Labeled>
   );
 }

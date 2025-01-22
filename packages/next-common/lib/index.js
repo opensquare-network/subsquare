@@ -12,6 +12,7 @@ import fetchUserStatus from "next-common/lib/fetchUserStatus";
 import { adminsApi } from "next-common/services/url";
 import nextApi from "next-common/services/nextApi";
 import { getConnectedAccount } from "next-common/services/serverSide/getConnectedAccount";
+import { fetchScanHeight } from "next-common/services/fetchScanHeight";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -39,11 +40,13 @@ export function withCommonProps(
       { result: user },
       { result: userStatus },
       { result: admins },
+      scanHeight,
     ] = await Promise.all([
       getServerSideProps(context),
       fetchProfile(context),
       fetchUserStatus(context),
       nextApi.fetch(adminsApi),
+      fetchScanHeight(),
     ]);
 
     if (context.resolvedUrl?.startsWith("/settings/") && !user) {
@@ -69,6 +72,7 @@ export function withCommonProps(
         navSubmenuVisible: navSubmenuVisible || "{}",
         ...listPageProperties,
         ...detailPageProperties,
+        scanHeight,
         pageProperties: {
           ...listPageProperties,
           ...detailPageProperties,

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 import { useMountedState } from "react-use";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";

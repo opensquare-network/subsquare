@@ -1,4 +1,4 @@
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 import PopupLabel from "next-common/components/popup/label";
 
 export default function PreimageField({

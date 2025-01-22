@@ -77,7 +77,7 @@ const bifrost = {
   decimals: 12,
   blockTime: 12000,
   hasElections: false,
-  ss58Format: 6,
+  ss58Format: 0,
   endpoints: DEFAULT_BIFROST_NODES,
   avatar: ProjectIconBifrostKusamaLight,
   darkAvatar: ProjectIconBifrostKusamaDark,
@@ -91,6 +91,11 @@ const bifrost = {
   modules: mergeChainModules({
     referenda: true,
     fellowship: true,
+    treasury: {
+      spends: true,
+      bounties: false,
+      tips: false,
+    },
   }),
   integrations: {
     subscan: {

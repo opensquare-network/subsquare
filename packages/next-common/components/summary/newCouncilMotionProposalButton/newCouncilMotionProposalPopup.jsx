@@ -13,7 +13,7 @@ function NewProposalPopupButton({ isMember }) {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
-      icon={<NewPreimageSVG />}
+      icon={<NewPreimageSVG className="mr-1" />}
       name="New common"
       description="Create a new proposal"
       onClick={() => {

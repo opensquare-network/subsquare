@@ -4,7 +4,6 @@ import { usePageProps } from "next-common/context/page";
 import CollectivesProvider, {
   useCollectivesContext,
 } from "next-common/context/collectives/collectives";
-import { CoreMembersWithRankProvider } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
 import { AllMemberEvidenceProvider } from "next-common/components/collectives/core/context/evidenceMemberContext";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 import useMembersWithMeAtFirst from "../useMembersWithMeAtFirst";
@@ -218,20 +217,18 @@ export default function AmbassadorMembersPage() {
   return (
     <CollectivesProvider params={ambassadorParams} section="ambassador">
       <AllMemberEvidenceProvider>
-        <CoreMembersWithRankProvider>
-          <DropdownUrlFilterProvider
-            defaultFilterValues={{
-              rank: null,
-              core_only: true,
-            }}
-            emptyFilterValues={{
-              rank: null,
-              core_only: false,
-            }}
-          >
-            <AmbassadorMembersPageInContext />
-          </DropdownUrlFilterProvider>
-        </CoreMembersWithRankProvider>
+        <DropdownUrlFilterProvider
+          defaultFilterValues={{
+            rank: null,
+            core_only: true,
+          }}
+          emptyFilterValues={{
+            rank: null,
+            core_only: false,
+          }}
+        >
+          <AmbassadorMembersPageInContext />
+        </DropdownUrlFilterProvider>
       </AllMemberEvidenceProvider>
     </CollectivesProvider>
   );

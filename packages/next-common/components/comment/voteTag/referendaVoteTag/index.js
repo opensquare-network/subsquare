@@ -8,7 +8,7 @@ import Tooltip from "next-common/components/tooltip";
 import SplitVoteTooltipContent from "./splitVoteTooltipContent";
 import SplitAbstainVoteTooltipContent from "./splitAbstainTooltipContent";
 import StandardVoteTooltipContent from "./standardVoteTooltipContent";
-import { cn } from "next-common/utils";
+import { cn, isSameAddress } from "next-common/utils";
 import { useMemo } from "react";
 import { useGetAddressVotesDataFn } from "next-common/hooks/useAddressVotesData";
 
@@ -99,7 +99,10 @@ export default function ReferendaVoteTag() {
 
   const user = comment?.author;
   const votes = useMemo(
-    () => (allVotes || []).filter((item) => item.account === user?.address),
+    () =>
+      (allVotes || []).filter((item) =>
+        isSameAddress(item.account, user?.address),
+      ),
     [allVotes, user?.address],
   );
 

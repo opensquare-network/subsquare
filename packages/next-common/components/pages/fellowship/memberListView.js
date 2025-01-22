@@ -25,41 +25,67 @@ import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCo
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import Tooltip from "next-common/components/tooltip";
 import { ContainerRefProvider } from "next-common/context/containerRef";
+import { isSameAddress } from "next-common/utils";
+
+const rankColumn = {
+  name: "Rank",
+  width: 60,
+};
+
+const memberColumn = {
+  name: "Member",
+  width: 140,
+};
+
+const salaryColumn = {
+  name: "Salary",
+  className: "text-right",
+  minWidth: 120,
+};
+
+const demotionPeriodColumn = {
+  name: "Demotion Period",
+  width: 140,
+  className: "ml-[64px]",
+};
+
+const promotionPeriodColumn = {
+  name: "Promotion Period",
+  width: 140,
+  className: "ml-[64px]",
+};
+
+const evidenceColumn = {
+  name: "Evidence",
+  width: 120,
+  className: "ml-[64px]",
+};
+
+const actionsColumn = {
+  name: "",
+  width: 80,
+  className: "text-right",
+};
 
 const collectivesMemberColumns = [
+  rankColumn,
+  memberColumn,
+  salaryColumn,
+  demotionPeriodColumn,
+  promotionPeriodColumn,
+  evidenceColumn,
+  actionsColumn,
+];
+
+const collectivesCandidateColumns = [
+  rankColumn,
+  { name: "Candidate" },
   {
-    name: "Rank",
-    width: 60,
+    name: "Offboard Timeout",
+    width: 180,
   },
-  {
-    name: "Member",
-    width: 140,
-  },
-  {
-    name: "Salary",
-    className: "text-right",
-    minWidth: 120,
-  },
-  {
-    name: "Demotion Period",
-    width: 140,
-    className: "ml-[64px]",
-  },
-  {
-    name: "Promotion Period",
-    width: 140,
-    className: "ml-[64px]",
-  },
-  {
-    name: "Evidence",
-    width: 120,
-    className: "ml-[64px]",
-  },
-  {
-    name: "",
-    width: 80,
-    className: "text-right",
-  },
+  evidenceColumn,
+  actionsColumn,
 ];
 
 function EvidenceAndReferenda({ member }) {
@@ -173,6 +199,31 @@ function getCoreMemberRow({ idx, member, params, ActionsComponent }) {
   ];
 }
 
+function getCandidateRow({ idx, member, params, ActionsComponent }) {
+  const { address, rank } = member;
+  const { isActive } = member.status;
+  const { offboardTimeout } = params ?? {};
+
+  return [
+    <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
+    <AvatarAndAddressInListView
+      key={`address-row-${idx}`}
+      address={address}
+      isActive={isActive}
+    />,
+    <FellowshipDemotionPeriodWithProgress
+      key={`demotion-period-${idx}`}
+      address={address}
+      rank={rank}
+      blocks={offboardTimeout}
+    />,
+    <EvidenceAndReferenda key="evidence" member={member} />,
+    <div key="more">
+      {ActionsComponent && <ActionsComponent member={member} params={params} />}
+    </div>,
+  ];
+}
+
 function getNonCoreMemberRow({ idx, member }) {
   const { address, rank } = member;
 
@@ -187,16 +238,33 @@ function getNonCoreMemberRow({ idx, member }) {
   ];
 }
 
+function getNonCandidateCoreMemberRow({ idx, member }) {
+  const { address, rank } = member;
+
+  return [
+    <FellowshipRank key={`rank-row-${idx}`} rank={rank} />,
+    <NonCoreMemberAddressCol key={`address-row-${idx}`} address={address} />,
+    <NonCoreMemberCol key={`offboard-timeout-${idx}`} />,
+    <EvidenceAndReferenda key="evidence" member={member} />,
+    <div key="more" />,
+  ];
+}
+
 function CollectivesMemberTable({
   members = [],
   isLoading = false,
   ActionsComponent,
+  isCandidate,
 }) {
   const dataListRef = useRef();
   const realAddress = useRealAddress();
   const { params = {} } = useCollectivesContext();
 
-  const rows = useMemo(
+  const columns = isCandidate
+    ? collectivesCandidateColumns
+    : collectivesMemberColumns;
+
+  const memberRows = useMemo(
     () =>
       (members || []).map((member, idx) => {
         const { address, isFellowshipCoreMember } = member;
@@ -214,7 +282,7 @@ function CollectivesMemberTable({
           row = getNonCoreMemberRow({ idx, member });
         }
 
-        if (address === realAddress) {
+        if (isSameAddress(address, realAddress)) {
           row.tag = <MineTagOnListView />;
         }
 
@@ -223,12 +291,34 @@ function CollectivesMemberTable({
     [members, params, realAddress, ActionsComponent],
   );
 
+  const candidateRows = useMemo(() => {
+    return members.map((member, idx) => {
+      const { address, isFellowshipCoreMember } = member;
+
+      let row = [];
+
+      if (isFellowshipCoreMember) {
+        row = getCandidateRow({ idx, member, params, ActionsComponent });
+      } else {
+        row = getNonCandidateCoreMemberRow({ idx, member });
+      }
+
+      if (isSameAddress(address, realAddress)) {
+        row.tag = <MineTagOnListView />;
+      }
+
+      return row;
+    });
+  }, [members, realAddress, params, ActionsComponent]);
+
+  const rows = isCandidate ? candidateRows : memberRows;
+
   return (
-    <ContainerRefProvider ref={dataListRef}>
+    <ContainerRefProvider containerRef={dataListRef}>
       <DataList
         ref={dataListRef}
         bordered
-        columns={collectivesMemberColumns}
+        columns={columns}
         noDataText="No Members"
         rows={rows}
         loading={isLoading}
@@ -241,6 +331,7 @@ function FellowshipMemberListView({
   members: _members,
   isLoading: _isLoading = true,
   ActionsComponent,
+  isCandidate = false,
 }) {
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -255,6 +346,7 @@ function FellowshipMemberListView({
       members={members}
       isLoading={isLoading}
       ActionsComponent={ActionsComponent}
+      isCandidate={isCandidate}
     />
   );
 }

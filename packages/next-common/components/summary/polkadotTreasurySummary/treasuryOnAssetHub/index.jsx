@@ -30,7 +30,7 @@ function TreasurySummary({
             usdtTreasuryBalanceOnAssetHub,
             SYMBOL_DECIMALS.USDT,
           )}
-          symbol="USDt"
+          symbol="USDT"
         />
       </div>
     </div>

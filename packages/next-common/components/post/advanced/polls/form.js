@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import Input from "../../../input";
+import Input from "next-common/lib/input";
 import Select from "../../../select";
 import Toggle from "../../../toggle";
 import InputOptions from "./inputOptions";

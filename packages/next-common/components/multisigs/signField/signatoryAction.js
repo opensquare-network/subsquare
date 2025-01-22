@@ -3,7 +3,7 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import SignCancel from "next-common/components/multisigs/signField/signCancel";
 import SignSubmit from "next-common/components/multisigs/signField/signSubmit";
 import SignApprove from "next-common/components/multisigs/signField/signApprove";
-import { isSameAddress } from "next-common/utils";
+import { isAddressInGroup, isSameAddress } from "next-common/utils";
 
 function MultisigApprovingGuard({ state, children }) {
   if (state !== "Approving") {
@@ -23,8 +23,8 @@ export default function SignatoryAction({ multisig = {} }) {
   } = multisig || {};
   const realAddress = useRealAddress();
   const isSignatory = signatories.includes(realAddress);
-  const isApproved = approvals.some((item) => isSameAddress(item, realAddress));
-  const isDepositor = depositor === realAddress;
+  const isApproved = isAddressInGroup(realAddress, approvals);
+  const isDepositor = isSameAddress(depositor, realAddress);
   if (!isSignatory || (isApproved && !isDepositor)) {
     return null;
   }

@@ -5,6 +5,6 @@ export const AmbassadorAccount =
   "13wa8ddUNUhXnGeTrjYH8hYXF2jNdCJvgcADJakNvtNdGozX";
 
 export default function useQueryAmbassadorBalance() {
-  const asset = getAssetBySymbol("USDt");
+  const asset = getAssetBySymbol("USDT");
   return useQueryAssetHubAssets(asset.id, AmbassadorAccount);
 }

@@ -1,5 +1,6 @@
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import { isSameAddress } from "next-common/utils";
 import { useMemo } from "react";
 
 export default function useRelatedReferenda(address, methods) {
@@ -20,7 +21,7 @@ export default function useRelatedReferenda(address, methods) {
       }
 
       const nameArg = call.args.find(({ name }) => name === "who");
-      return nameArg?.value === address;
+      return isSameAddress(nameArg?.value, address);
     });
   }, [activeReferenda, address, pallet, methods]);
 

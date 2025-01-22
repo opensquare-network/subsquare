@@ -24,7 +24,7 @@ export default function EligibleVotersPopup({ onClose = noop }) {
     useCollectiveEligibleVoters();
 
   return (
-    <Popup title="Eligible Voters" onClose={onClose} className="max-h-[640px]">
+    <Popup title="All votes" onClose={onClose} className="max-h-[640px]">
       <HeaderPrompt />
       <div className="max-h-[450px] overflow-auto">
         <Voted votedMembers={votedMembers} isLoading={isLoading} />

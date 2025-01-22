@@ -1,30 +1,13 @@
-import React, { useRef, useState } from "react";
-import styled from "styled-components";
-import InputOrigin from "../input";
+import { useRef, useState } from "react";
+import Input from "next-common/lib/input";
 import { useChain } from "../../context/chain";
 import SearchInputShortcut from "./searchInputShortcut";
 import { SystemSearch } from "@osn/icons/subsquare";
-
-const Wrapper = styled.div``;
-
-const Input = styled(InputOrigin)`
-  height: 40px;
-  background-color: var(--neutral200);
-  border-color: var(--neutral200) !important;
-
-  &:hover {
-    border-color: var(--neutral400) !important;
-  }
-
-  &:has([data-focus="true"]) {
-    background-color: var(--neutral100) !important;
-    border-color: var(--neutral500) !important;
-  }
-`;
+import { cn } from "next-common/utils";
 
 const googleq = "https://google.com/search?q=";
 
-export default function SearchInput({ shortcut = true, inputType }) {
+export default function SearchInput({ shortcut = true, type }) {
   const chain = useChain();
   const [value, setValue] = useState("");
   const inputRef = useRef();
@@ -39,27 +22,29 @@ export default function SearchInput({ shortcut = true, inputType }) {
   }
 
   return (
-    <Wrapper>
-      <Input
-        ref={inputRef}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Search on SubSquare"
-        onKeyDown={(event) => {
-          if (event.code === "Enter" || event.keyCode === 13) {
-            event.preventDefault();
-            handleSearch();
-          }
-        }}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        prefix={<SystemSearch className="[&_path]:fill-textTertiary" />}
-        suffix={
-          shortcut && <SearchInputShortcut focus={focus} inputRef={inputRef} />
+    <Input
+      className={cn(
+        "bg-neutral200 border-neutral200",
+        "data-[focus]:bg-neutral100 data-[focus]:border-neutral500",
+      )}
+      ref={inputRef}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      placeholder="Search on SubSquare"
+      onKeyDown={(event) => {
+        if (event.code === "Enter" || event.keyCode === 13) {
+          event.preventDefault();
+          handleSearch();
         }
-        inputType={inputType}
-        enterkeyhint="Search"
-      />
-    </Wrapper>
+      }}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+      prefix={<SystemSearch className="[&_path]:fill-textTertiary" />}
+      suffix={
+        shortcut && <SearchInputShortcut focus={focus} inputRef={inputRef} />
+      }
+      type={type}
+      enterKeyHint="Search"
+    />
   );
 }

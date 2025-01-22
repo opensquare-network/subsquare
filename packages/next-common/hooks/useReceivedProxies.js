@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import useAllServerProxies from "next-common/hooks/useAllServerProxies";
 import useAllOnChainProxies from "next-common/hooks/useAllOnChainProxies";
+import { isSameAddress } from "next-common/utils";
 
 export default function useReceivedProxies(address) {
   const { proxies: serverProxies, loading: serverLoading } =
@@ -28,7 +29,7 @@ export default function useReceivedProxies(address) {
   }, [serverProxies, serverLoading, onChainProxies, onChainLoading]);
 
   const receivedProxies = useMemo(() => {
-    return proxies.filter((item) => item?.delegatee === address);
+    return proxies.filter((item) => isSameAddress(item?.delegatee, address));
   }, [proxies, address]);
 
   return { proxies: receivedProxies, loading };

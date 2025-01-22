@@ -7,6 +7,7 @@ import { SystemLoading } from "@osn/icons/subsquare";
 export default function FellowshipMemberCardView({
   members: _members,
   isLoading: _isLoading,
+  isCandidate = false,
 }) {
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +32,7 @@ export default function FellowshipMemberCardView({
           key={member.address}
           member={member}
           params={params}
+          isCandidate={isCandidate}
         />
       ))}
     </FellowshipCoreMemberCardListContainer>

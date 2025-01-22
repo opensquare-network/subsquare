@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import tw from "tailwind-styled-components";
 
 const CommonOptionWrapper = tw.div`
-  z-[999999]
+  z-40
   absolute
   top-[calc(100%+4px)]
   bg-neutral100

@@ -1,4 +1,6 @@
 import TabsList from "next-common/components/tabs/list";
+import TitleSuffix from "next-common/components/titleSuffix";
+import { useRouter } from "next/router";
 
 // maybe used for fellowship and ambassador
 export default function FellowshipMemberTabs({
@@ -6,6 +8,9 @@ export default function FellowshipMemberTabs({
   candidatesCount,
   section = "fellowship",
 }) {
+  const router = useRouter();
+  const isCandidate = router.query.tab === "candidates";
+
   const tabs = [
     {
       value: "members",
@@ -19,14 +24,12 @@ export default function FellowshipMemberTabs({
             >
               Members
             </span>
-            <span className="ml-1 text-textTertiary text14Medium">
-              {membersCount}
-            </span>
+            <TitleSuffix suffix={membersCount} />
           </>
         );
       },
       url: `/${section}/members`,
-      noMatchUrls: [`/${section}/members?tab=candidates`],
+      active: !isCandidate,
       shallow: true,
     },
     {
@@ -41,14 +44,12 @@ export default function FellowshipMemberTabs({
             >
               Candidates
             </span>
-            <span className="ml-1 text-textTertiary text14Medium">
-              {candidatesCount}
-            </span>
+            <TitleSuffix suffix={candidatesCount} />
           </>
         );
       },
       url: `/${section}/members?tab=candidates`,
-      matchWithQuery: true,
+      active: isCandidate,
       shallow: true,
     },
   ];

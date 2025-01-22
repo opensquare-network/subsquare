@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import Input from "../input";
+import Input from "next-common/lib/input";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";

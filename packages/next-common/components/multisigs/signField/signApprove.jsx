@@ -14,6 +14,7 @@ import {
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
+import { isSameAddress } from "next-common/utils";
 
 export const Wrapper = styled.div`
   display: inline-flex;
@@ -54,7 +55,9 @@ export default function SignApprove({ multisig = {} }) {
       return;
     }
 
-    const otherSignatories = signatories.filter((item) => item !== address);
+    const otherSignatories = signatories.filter(
+      (item) => !isSameAddress(item, address),
+    );
     const maxWeight = {
       refTime: 0,
       proofSize: 0,

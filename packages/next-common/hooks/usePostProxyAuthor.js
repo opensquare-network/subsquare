@@ -1,6 +1,6 @@
 import { usePost } from "next-common/context/post";
 import { useMyProxied } from "next-common/context/proxy";
-import { isSameAddress } from "next-common/utils";
+import { isAddressInGroup, isSameAddress } from "next-common/utils";
 
 export default function usePostProxyAuthor() {
   const { proxies } = useMyProxied();
@@ -13,9 +13,7 @@ export default function usePostProxyAuthor() {
     if (isSameAddress(p.delegator, post.proposer)) {
       return true;
     }
-    return (post.authors || []).some((postAuthor) =>
-      isSameAddress(p.delegator, postAuthor),
-    );
+    return isAddressInGroup(p.delegator, post.authors);
   });
 
   return proxy?.delegator;

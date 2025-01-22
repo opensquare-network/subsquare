@@ -17,7 +17,7 @@ export default function UnVoted({ unVotedMembers, isLoading }) {
     <div>
       <TitleContainer className="text14Bold px-0 pb-3">
         <span>
-          Un-voted
+          Not yet voted
           <span className="text-textTertiary text14Medium ml-1">
             {!isLoading && total}
           </span>

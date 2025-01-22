@@ -8,7 +8,6 @@ import {
   useCollectivesContext,
   useCoreFellowshipParams,
 } from "next-common/context/collectives/collectives";
-import { useCoreMembersWithRankContext } from "next-common/components/collectives/core/context/coreMembersWithRankContext";
 import {
   isDemotionAboutToExpire,
   isDemotionExpired,
@@ -21,13 +20,15 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemFilter } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
-import { cn } from "next-common/utils";
+import { cn, isSameAddress } from "next-common/utils";
+import BatchBump from "../batchBump";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
 function useAvailablePromotionCount() {
   const latestHeight = useSelector(chainOrScanHeightSelector);
-  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
+  const { members: coreMembers, loading: isLoading } =
+    useFellowshipCoreMembers();
   const params = useCoreFellowshipParams();
 
   const availablePromotionCount = useMemo(() => {
@@ -48,7 +49,7 @@ function useAvailablePromotionCount() {
   return { availablePromotionCount, isLoading };
 }
 
-function useDemotionExpiringCount(members) {
+export function useDemotionExpiringCount(members) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const blockTime = useSelector(blockTimeSelector);
   const params = useCoreFellowshipParams();
@@ -77,7 +78,7 @@ function useDemotionExpiringCount(members) {
   }, [members, latestHeight, params, blockTime]);
 }
 
-function useDemotionExpiredCount(members) {
+export function useDemotionExpiredCount(members) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const params = useCoreFellowshipParams();
 
@@ -104,9 +105,10 @@ function useMemberDemotionExpirationCounts(members) {
 }
 
 function useDemotionExpirationCounts() {
-  const { coreMembers, isLoading } = useCoreMembersWithRankContext();
+  const { members: coreMembers, loading: isLoading } =
+    useFellowshipCoreMembers();
 
-  const [members, candidates] = useMemo(
+  const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
     [coreMembers],
   );
@@ -114,28 +116,23 @@ function useDemotionExpirationCounts() {
   const { expiredMembersCount, expiringMembersCount } =
     useMemberDemotionExpirationCounts(members);
 
-  const {
-    expiredMembersCount: expiredCandidatesCount,
-    expiringMembersCount: expiringCandidatesCount,
-  } = useMemberDemotionExpirationCounts(candidates);
-
   return {
     expiredMembersCount,
-    expiredCandidatesCount,
     expiringMembersCount,
-    expiringCandidatesCount,
     isLoading,
   };
 }
 
-function useEvidencesStat() {
+export function useEvidencesStat(members) {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
-  const { members } = useFellowshipCoreMembers();
 
   const memberEvidences = useMemo(() => {
     return (evidences || []).filter((evidence) => {
-      const m = (members || []).find((m) => m.address === evidence.who);
-      return m?.rank >= 0;
+      return (
+        (members || []).findIndex((m) =>
+          isSameAddress(m.address, evidence.who),
+        ) > -1
+      );
     });
   }, [evidences, members]);
 
@@ -151,7 +148,7 @@ function useEvidencesStat() {
   };
 }
 
-function MemberWarningsPanel({ className, isLoading, items }) {
+export function MemberWarningsPanel({ className, isLoading, items }) {
   const icon = (
     <MenuHorn className="[&_path]:fill-theme500" width={24} height={24} />
   );
@@ -167,11 +164,15 @@ function MemberWarningsPanel({ className, isLoading, items }) {
 
 export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
+  const { members: coreMembers } = useFellowshipCoreMembers();
+  const [members] = useMemo(
+    () => partition(coreMembers, (m) => m.rank > 0),
+    [coreMembers],
+  );
+
   const {
     expiredMembersCount,
-    expiredCandidatesCount,
     expiringMembersCount,
-    expiringCandidatesCount,
     isLoading: isCheckingDemotion,
   } = useDemotionExpirationCounts();
 
@@ -182,7 +183,7 @@ export default function MemberWarnings({ className }) {
     totalEvidences,
     evidencesToBeHandled,
     isLoading: isEvidenceLoading,
-  } = useEvidencesStat();
+  } = useEvidencesStat(members);
 
   const filterLinks = {
     evidenceOnly: `/${section}/members?evidence_only=true`,
@@ -214,20 +215,15 @@ export default function MemberWarnings({ className }) {
         {" will expire in under 20 days."}
       </>
     ),
-    expiringCandidatesCount > 0 &&
-      `${expiringCandidatesCount} candidates' offboard period is about to reached in under 20 days.`,
-
     expiredMembersCount > 0 && (
       <>
         <PromptButton filterLink={filterLinks.demotionPeriodExpired}>
           {expiredMembersCount} members
         </PromptButton>
         {" can be demoted."}
+        <BatchBump />
       </>
     ),
-    expiredCandidatesCount > 0 &&
-      `${expiredCandidatesCount} candidates' offboard period is reached.`,
-
     availablePromotionCount > 0 && (
       <>
         Promotions are available for{" "}
@@ -242,12 +238,19 @@ export default function MemberWarnings({ className }) {
   return <MemberWarningsPanel className={className} items={promptItems} />;
 }
 
-function PromptButton({ children, filterLink = "" }) {
+export function PromptButton({
+  children,
+  filterLink = "",
+  isCandidate = false,
+}) {
   const router = useRouter();
   const [flag, setFlag] = useState(false);
   const matched = router.asPath === filterLink;
   const isActive = flag && matched;
-  const currentPath = router.asPath.split("?")[0];
+  let currentPath = router.asPath.split("?")[0];
+  if (isCandidate) {
+    currentPath = `${currentPath}?tab=candidates`;
+  }
   useEffect(() => {
     setFlag(matched);
   }, [matched]);

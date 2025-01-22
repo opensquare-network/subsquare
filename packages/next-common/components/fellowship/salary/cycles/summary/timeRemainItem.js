@@ -16,6 +16,10 @@ export default function SalaryStatsTimeRemainItem() {
   const payoutStart = cycleStart + registrationPeriod || null;
   const payoutPeriodData = useCalcPeriodBlocks(payoutPeriod, payoutStart);
 
+  if (!stats) {
+    return null;
+  }
+
   return (
     <SummaryItem>
       <div className="space-y-1">

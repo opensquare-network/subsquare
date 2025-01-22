@@ -27,7 +27,7 @@ export default function DemocracyNavigate({ motion }) {
   return (
     <NavigationWrapper>
       <MultiMotionNavigator
-        motions={external.motions}
+        motions={external?.motions}
         type={detailPageCategory.COUNCIL_MOTION}
         pageMotionId={motionId}
       />

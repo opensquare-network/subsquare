@@ -2,6 +2,7 @@ import { name } from "../consts";
 import { createSelector } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
 import { flatten } from "lodash-es";
+import { isSameAddress } from "next-common/utils";
 
 export const votesTriggerSelector = (state) => state[name].votesTrigger;
 export const allVotesSelector = (state) => state[name].allVotes;
@@ -13,10 +14,9 @@ export const showVotesNumberSelector = createSelector(
   },
 );
 
-export const allAyeSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.aye);
-};
+export const allAyeSelector = createSelector(allVotesSelector, (allVotes) => {
+  return (allVotes || []).filter((v) => v.aye);
+});
 
 export const allAyeDelegationVotesSelector = createSelector(
   allAyeSelector,
@@ -32,10 +32,9 @@ export const allAyeDirectVotesSelector = createSelector(
   },
 );
 
-export const allNaySelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.aye === false);
-};
+export const allNaySelector = createSelector(allVotesSelector, (allVotes) => {
+  return (allVotes || []).filter((v) => v.aye === false);
+});
 
 export const allNayDelegationVotesSelector = createSelector(
   allNaySelector,
@@ -51,10 +50,12 @@ export const allNayDirectVotesSelector = createSelector(
   },
 );
 
-export const allAbstainSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.isAbstain);
-};
+export const allAbstainSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => {
+    return (allVotes || []).filter((v) => v.isAbstain);
+  },
+);
 
 export const allAbstainDelegationVotesSelector = createSelector(
   allAbstainSelector,
@@ -70,15 +71,19 @@ export const allAbstainDirectVotesSelector = createSelector(
   },
 );
 
-export const allDirectVotesSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => !v.isDelegating);
-};
+export const allDirectVotesSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => {
+    return (allVotes || []).filter((v) => !v.isDelegating);
+  },
+);
 
-export const allDelegationVotesSelector = (state) => {
-  const allVotes = state[name].allVotes || [];
-  return allVotes.filter((v) => v.isDelegating);
-};
+export const allDelegationVotesSelector = createSelector(
+  allVotesSelector,
+  (allVotes) => {
+    return (allVotes || []).filter((v) => v.isDelegating);
+  },
+);
 
 export const normalizedNestedVote = (vote, delegations) => {
   if (!vote.isStandard) {
@@ -91,8 +96,8 @@ export const normalizedNestedVote = (vote, delegations) => {
     };
   }
 
-  let directVoterDelegations = delegations.filter(
-    (delegationVote) => delegationVote.target === vote.account,
+  let directVoterDelegations = delegations.filter((delegationVote) =>
+    isSameAddress(delegationVote.target, vote.account),
   );
   const allDelegationVotes = directVoterDelegations.reduce((result, d) => {
     return new BigNumber(result).plus(d.votes).toString();

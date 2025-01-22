@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { isSameAddress } from "next-common/utils";
+import { isAddressInGroup } from "next-common/utils";
 import { SystemImportMember } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
@@ -18,12 +18,11 @@ export default function Import() {
   const realAddress = useRealAddress();
 
   const canImport = useMemo(() => {
-    const isCollectiveMembers = (collectiveMembers || []).some((m) =>
-      isSameAddress(m.address, realAddress),
+    const isCollectiveMembers = isAddressInGroup(
+      realAddress,
+      collectiveMembers,
     );
-    const isCoreMembers = (coreMembers || []).some((m) =>
-      isSameAddress(m.address, realAddress),
-    );
+    const isCoreMembers = isAddressInGroup(realAddress, coreMembers);
     return isCollectiveMembers && !isCoreMembers;
   }, [collectiveMembers, coreMembers, realAddress]);
 
