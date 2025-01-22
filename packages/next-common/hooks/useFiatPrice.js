@@ -57,6 +57,26 @@ export default function useFiatPrice() {
   };
 }
 
+export function useFiatPriceSnapshot() {
+  const chain = useChain();
+
+  const [getTreasuries, { data, loading }] =
+    useDoTreasuryEcoLazyQuery(GET_TREASURIES);
+
+  useEffect(() => {
+    getTreasuries();
+  }, [getTreasuries]);
+
+  const treasury = find(data?.treasuries, {
+    chain: CHAIN_VALUE_TREASURY_MAP[chain] || chain,
+  });
+
+  return {
+    price: treasury?.price,
+    loading,
+  };
+}
+
 export function useFiatPriceBySymbol(symbol) {
   const [getPrice, { data, loading }] = useDoTreasuryEcoLazyQuery(GET_PRICE);
 
