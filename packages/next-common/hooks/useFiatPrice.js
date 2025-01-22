@@ -65,7 +65,7 @@ export function useFiatPriceSnapshot() {
 
   useEffect(() => {
     getTreasuries();
-  }, []);
+  }, [getTreasuries]);
 
   const treasury = find(data?.treasuries, {
     chain: CHAIN_VALUE_TREASURY_MAP[chain] || chain,
