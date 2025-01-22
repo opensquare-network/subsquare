@@ -1,7 +1,7 @@
 import { useChainSettings } from "next-common/context/chain";
 import { Button, LinkButton } from "next-common/components/myReferendumVote";
 import { Referenda } from "next-common/components/profile/votingHistory/common";
-import { useSharedRemovePopupOpen } from "next-common/context/referenda/myVote";
+import { useSharedPopupOpenState } from "next-common/context/popup/switch";
 
 export default function MyVoteActions({ remove = true }) {
   const {
@@ -9,7 +9,7 @@ export default function MyVoteActions({ remove = true }) {
   } = useChainSettings();
   const hasDemocracyModule = democracy && !democracy?.archived;
   const hasVotesManagement = hasReferenda || hasDemocracyModule;
-  const [, setRemovePopupOpen] = useSharedRemovePopupOpen();
+  const [, setPopupOpen] = useSharedPopupOpenState();
 
   return (
     <div className="flex justify-end gap-[16px]">
@@ -18,9 +18,7 @@ export default function MyVoteActions({ remove = true }) {
           <span>Manage My Votes</span>
         </LinkButton>
       )}
-      {remove && (
-        <Button onClick={() => setRemovePopupOpen(true)}>Remove</Button>
-      )}
+      {remove && <Button onClick={() => setPopupOpen(true)}>Remove</Button>}
     </div>
   );
 }
