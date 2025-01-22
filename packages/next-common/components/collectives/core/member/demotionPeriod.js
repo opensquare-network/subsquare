@@ -19,28 +19,38 @@ import { useChainSettings } from "next-common/context/chain";
 const days20 = 20 * ONE_DAY;
 const days30 = 30 * ONE_DAY;
 
-export function useDemotionPeriod({ rank, lastProof, params }) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
-  return useMemo(() => {
-    const demotionPeriod = getDemotionPeriod(rank, params);
-    if (demotionPeriod <= 0) {
-      return {
-        percentageValue: 0,
-        remainingBlocks: null,
-        demotionPeriod,
-      };
-    }
-
-    const gone = latestHeight - lastProof;
-    const percentageValue = getGoneBlocksPercentage(gone, demotionPeriod);
-    const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);
-
+export function getDemotionPeriodProgress({
+  rank,
+  lastProof,
+  params,
+  latestHeight,
+}) {
+  const demotionPeriod = getDemotionPeriod(rank, params);
+  if (demotionPeriod <= 0) {
     return {
-      percentageValue,
-      remainingBlocks,
+      percentageValue: 0,
+      remainingBlocks: null,
       demotionPeriod,
     };
-  }, [rank, lastProof, params, latestHeight]);
+  }
+
+  const gone = latestHeight - lastProof;
+  const percentageValue = getGoneBlocksPercentage(gone, demotionPeriod);
+  const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);
+
+  return {
+    percentageValue,
+    remainingBlocks,
+    demotionPeriod,
+  };
+}
+
+export function useDemotionPeriod({ rank, lastProof, params }) {
+  const latestHeight = useSelector(chainOrScanHeightSelector);
+  return useMemo(
+    () => getDemotionPeriodProgress({ rank, lastProof, params, latestHeight }),
+    [rank, lastProof, params, latestHeight],
+  );
 }
 
 function _getProgressBarColor(

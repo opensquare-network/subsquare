@@ -1,8 +1,7 @@
-import { useCallback, useState } from "react";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useEffect, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
-export default function useMemberData(section = "fellowship", api) {
+export async function getMemberData({ section = "fellowship", api, address }) {
   let corePallet;
   let collectivePallet;
 
@@ -14,63 +13,38 @@ export default function useMemberData(section = "fellowship", api) {
     collectivePallet = "ambassadorCollective";
   }
 
-  const address = useRealAddress();
-
-  const [collectiveMember, setCollectiveMember] = useState();
-  const { loading: isCollectiveMemberLoading } = useSubStorage(
-    collectivePallet,
-    "members",
-    [address],
-    {
-      api,
-      callback: useCallback((rawOptional) => {
-        setCollectiveMember(rawOptional.toJSON());
-      }, []),
-    },
-  );
-
-  const [coreMember, setCoreMember] = useState();
-  const { loading: isCoreMemberLoading } = useSubStorage(
-    corePallet,
-    "member",
-    [address],
-    {
-      api,
-      callback: useCallback((rawOptional) => {
-        setCoreMember(rawOptional.toJSON());
-      }, []),
-    },
-  );
-
-  const [coreParams, setCoreParams] = useState();
-  const { loading: isCoreParamsLoading } = useSubStorage(
-    corePallet,
-    "params",
-    [],
-    {
-      api,
-      callback: useCallback((rawOptional) => {
-        setCoreParams(rawOptional.toJSON());
-      }, []),
-    },
-  );
-
-  const isLoading =
-    isCollectiveMemberLoading || isCoreMemberLoading || isCoreParamsLoading;
-
-  if (isLoading) {
-    return {
-      data: null,
-      isLoading: true,
-    };
-  }
+  const [collectiveMember, coreMember, coreParams] = await Promise.all([
+    api.query[collectivePallet].members(address),
+    api.query[corePallet].member(address),
+    api.query[corePallet].params(),
+  ]);
 
   return {
-    data: {
-      collectiveMember,
-      coreMember,
-      coreParams,
-    },
+    collectiveMember: collectiveMember.toJSON(),
+    coreMember: coreMember.toJSON(),
+    coreParams: coreParams.toJSON(),
+  };
+}
+
+export default function useMemberData(section = "fellowship", api) {
+  const address = useRealAddress();
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!api || !address) {
+      return;
+    }
+
+    setIsLoading(true);
+    getMemberData({ section, api, address }).then((data) => {
+      setData(data);
+      setIsLoading(false);
+    });
+  }, [address, api, section]);
+
+  return {
+    data,
     isLoading,
   };
 }

@@ -3,19 +3,27 @@ import {
   useCollectivesApi,
 } from "next-common/context/collectives/api";
 import CollapsePanel, { AlwaysVisible } from "../collapsePanel";
-import EvidenceTodo from "./evidenceTodo";
+import ToDoItems from "./todoItems";
 import NavigationButtons from "./navigationButtons";
 import CollectivesProvider, {
   useReferendaFellowshipPallet,
 } from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
+import {
+  FellowshipToDoListProvider,
+  useFellowshipTodoListData,
+} from "./context";
 
 function Title() {
+  const { todo } = useFellowshipTodoListData();
+  const todoItemCount = Object.entries(todo).filter(
+    ([, shouldShow]) => shouldShow,
+  ).length;
   return (
     <div className="flex gap-1 text14Medium text-textTertiary">
       <span>Fellowship To-do List</span>
       <span>·</span>
-      <span>0</span>
+      <span>{todoItemCount}</span>
     </div>
   );
 }
@@ -29,14 +37,16 @@ function FellowshipTodoListImpl() {
   const referendaPallet = useReferendaFellowshipPallet();
   return (
     <ActiveReferendaProvider pallet={referendaPallet} api={collectivesApi}>
-      <CollapsePanel labelItem={<Title />}>
-        <AlwaysVisible>
-          <NavigationButtons />
-        </AlwaysVisible>
-        <TodoList>
-          <EvidenceTodo />
-        </TodoList>
-      </CollapsePanel>
+      <FellowshipToDoListProvider>
+        <CollapsePanel labelItem={<Title />}>
+          <AlwaysVisible>
+            <NavigationButtons />
+          </AlwaysVisible>
+          <TodoList>
+            <ToDoItems />
+          </TodoList>
+        </CollapsePanel>
+      </FellowshipToDoListProvider>
     </ActiveReferendaProvider>
   );
 }
