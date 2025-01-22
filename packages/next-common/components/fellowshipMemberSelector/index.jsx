@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { isAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import Caret from "../icons/caret";
 import { cn } from "next-common/utils";
@@ -52,15 +52,17 @@ function SelectHeader({
   return <AddressComboCustomAddress address={address} />;
 }
 
-function SelectOptions({ members, address, onSelect }) {
+function SelectOptions({ members, address, onSelect, highlightedIndex }) {
   return (
     <div className="absolute w-full mt-1 bg-neutral100 shadow-200 border border-neutral300 rounded-md max-h-80 overflow-y-auto z-10 py-2">
-      {members.map((item) => (
+      {members.map((item, index) => (
         <div
           key={item.address}
           className={cn(
-            "w-full flex items-center gap-4 px-4 py-2 cursor-pointer hover:bg-neutral200",
+            `option-item-${index}`,
+            "w-full flex items-center gap-4 px-4 py-2 cursor-pointer",
             item.address === address && "bg-neutral200",
+            index === highlightedIndex && "bg-neutral300",
           )}
           onClick={() => onSelect(item)}
         >
@@ -89,6 +91,7 @@ export default function FellowshipMemberSelector({
   const [inputAddress, setInputAddress] = useState(
     () => tryConvertToEvmAddress(address) || "",
   );
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const ref = useRef();
 
   useClickAway(ref, () => setShow(false));
@@ -127,16 +130,57 @@ export default function FellowshipMemberSelector({
     setEdit(false);
   };
 
-  const onSelect = (item) => {
-    const ss58Address = normalizeAddress(item.address);
-    const maybeEvmAddress = tryConvertToEvmAddress(ss58Address);
-    setAddress(ss58Address);
-    setInputAddress(maybeEvmAddress);
-    setEdit(false);
-    setShow(false);
-  };
+  const onSelect = useCallback(
+    (item) => {
+      const ss58Address = normalizeAddress(item.address);
+      const maybeEvmAddress = tryConvertToEvmAddress(ss58Address);
+      setAddress(ss58Address);
+      setInputAddress(maybeEvmAddress);
+      setEdit(false);
+      setShow(false);
+    },
+    [setAddress, setInputAddress, setEdit, setShow],
+  );
 
   const searchedResult = useSearchFellowshipMember(inputAddress, members);
+
+  useEffect(() => {
+    if (!show || highlightedIndex < 0) return;
+
+    const optionElement = document.querySelector(
+      `.option-item-${highlightedIndex}`,
+    );
+    if (optionElement) {
+      optionElement.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [highlightedIndex, show]);
+
+  useEffect(() => {
+    if (!show) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowDown") {
+        setHighlightedIndex((prevIndex) =>
+          prevIndex < searchedResult.length - 1 ? prevIndex + 1 : prevIndex,
+        );
+      } else if (e.key === "ArrowUp") {
+        setHighlightedIndex((prevIndex) =>
+          prevIndex > 0 ? prevIndex - 1 : prevIndex,
+        );
+      } else if (e.key === "Enter" && highlightedIndex >= 0) {
+        onSelect(searchedResult[highlightedIndex]);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [show, highlightedIndex, searchedResult, onSelect]);
 
   return (
     <div ref={ref} className="relative">
@@ -173,6 +217,7 @@ export default function FellowshipMemberSelector({
           members={searchedResult}
           address={address}
           onSelect={onSelect}
+          highlightedIndex={highlightedIndex}
         />
       )}
     </div>
