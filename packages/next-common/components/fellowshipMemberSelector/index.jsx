@@ -11,6 +11,7 @@ import {
   AddressComboCustomAddress,
   AddressComboInput,
 } from "next-common/components/addressCombo";
+import useSearchFellowshipMember from "./useSearchFellowshipMember";
 
 function SelectHeader({
   inputAddress,
@@ -135,6 +136,8 @@ export default function FellowshipMemberSelector({
     setShow(false);
   };
 
+  const searchedResult = useSearchFellowshipMember(inputAddress, members);
+
   return (
     <div ref={ref} className="relative">
       <div
@@ -150,11 +153,11 @@ export default function FellowshipMemberSelector({
           setInputAddress={setInputAddress}
           onBlur={onBlur}
           placeholder={placeholder}
-          members={members}
+          members={searchedResult}
           address={address}
           edit={edit}
         />
-        {members.length > 0 && (
+        {searchedResult.length > 0 && (
           <span
             onClick={(e) => {
               setShow((prevShow) => !prevShow);
@@ -165,9 +168,9 @@ export default function FellowshipMemberSelector({
           </span>
         )}
       </div>
-      {show && members.length > 0 && (
+      {show && searchedResult.length > 0 && (
         <SelectOptions
-          members={members}
+          members={searchedResult}
           address={address}
           onSelect={onSelect}
         />
