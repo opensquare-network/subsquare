@@ -35,7 +35,7 @@ export default function CollapsePanel({
       </SecondaryButton>
 
       <div
-        className={cn("flex flex-col ml-[12px] w-[240px]", labelItemClassName)}
+        className={cn("flex flex-col ml-[12px] w-[300px]", labelItemClassName)}
       >
         {labelItem}
         {isCollapsed && children}
