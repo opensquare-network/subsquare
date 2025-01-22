@@ -1,5 +1,6 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { omit } from "lodash-es";
+import { isSameAddress } from "next-common/utils";
 
 function completeSplitVotes(votes) {
   const splitVotes = [...votes];
@@ -56,7 +57,9 @@ export default function useMyVotes(allVotes) {
     return [];
   }
 
-  let votes = allVotes?.filter((item) => item.account === realAddress);
+  let votes = allVotes?.filter((item) =>
+    isSameAddress(item.account, realAddress),
+  );
   if (!votes || votes.length === 0) {
     return [];
   }

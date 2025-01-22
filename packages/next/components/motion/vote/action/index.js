@@ -4,6 +4,9 @@ import styled from "styled-components";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 import PrimaryButton from "next-common/lib/button/primary";
 import Close from "./close";
+import { useDetailType } from "next-common/context/page";
+import { useMemo } from "react";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const Description = styled.div`
   font-size: 12px;
@@ -21,6 +24,16 @@ export default function Action({ setShowPopup }) {
   const motionIsFinal = isMotionEnded(onchainData);
 
   const { isMember: userCanVote } = useIsCollectiveMember();
+  const type = useDetailType();
+  const memberTitle = useMemo(() => {
+    if (detailPageCategory.TECH_COMM_MOTION === type) {
+      return "tech.comm.";
+    } else if (detailPageCategory.COUNCIL_MOTION === type) {
+      return "council";
+    } else {
+      return "collective";
+    }
+  }, [type]);
 
   if (motionIsFinal) {
     return <Description>This vote has been closed.</Description>;
@@ -36,7 +49,7 @@ export default function Action({ setShowPopup }) {
   } else {
     action = (
       <Description>
-        Only council members can vote, no account found from the council.{" "}
+        Only {memberTitle} members can vote, no account found from the council.{" "}
         <span onClick={() => setShowPopup(true)}>Still vote</span>
       </Description>
     );

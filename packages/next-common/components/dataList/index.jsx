@@ -178,6 +178,8 @@ function DataList(
   );
 }
 
+const ForwardRefDataList = forwardRef(DataList);
+
 export function MapDataList({ data, columnsDef, getRowKey, ...props }) {
   const rows = (data || []).map((item, index) => {
     const row = columnsDef.map(({ render }) => render(item));
@@ -185,7 +187,7 @@ export function MapDataList({ data, columnsDef, getRowKey, ...props }) {
     return row;
   });
 
-  return <DataList columns={columnsDef} rows={rows} {...props} />;
+  return <ForwardRefDataList columns={columnsDef} rows={rows} {...props} />;
 }
 
-export default forwardRef(DataList);
+export default ForwardRefDataList;

@@ -18,6 +18,7 @@ import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 import { wrapWithProxy } from "next-common/utils/sendTransaction";
 import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
 import { useCollectivePallet } from "next-common/context/collective";
+import { isSameAddress } from "next-common/utils";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -39,8 +40,8 @@ export default function PopupContent() {
   const pallet = useCollectivePallet();
   const { isMember: canVote, loading: isMemberLoading } =
     useIsCollectiveMember();
-  const currentVote = votes.find(
-    (item) => item[0] === signerAccount?.realAddress,
+  const currentVote = votes.find((item) =>
+    isSameAddress(item[0], signerAccount?.realAddress),
   );
 
   const getMyVoteAndShowSuccessful = useCallback(async () => {
@@ -48,8 +49,8 @@ export default function PopupContent() {
       return;
     }
 
-    const currentVote = votes.find(
-      (item) => item[0] === signerAccount?.realAddress,
+    const currentVote = votes.find((item) =>
+      isSameAddress(item[0], signerAccount?.realAddress),
     );
     if (currentVote) {
       showVoteSuccessful(currentVote);

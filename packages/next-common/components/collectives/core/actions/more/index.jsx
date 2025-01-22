@@ -3,7 +3,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useRef, useState } from "react";
 import { useClickAway } from "react-use";
 import { SystemMore } from "@osn/icons/subsquare";
-import { cn } from "next-common/utils";
+import { cn, isSameAddress } from "next-common/utils";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import ActivationItem from "./activationItem";
 import SubmitEvidenceItem from "./submitEvidenceItem";
@@ -20,7 +20,7 @@ export default function More({ member }) {
   const [showActivationPopup, setShowActivationPopup] = useState(false);
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
 
-  const isMe = member.address === realAddress;
+  const isMe = isSameAddress(member.address, realAddress);
 
   function hideMenu() {
     setShowMenu(false);

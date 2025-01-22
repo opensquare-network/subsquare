@@ -226,7 +226,7 @@ export function isSameAddress(addr1, addr2) {
 }
 
 export function isAddressInGroup(addr, addresses = []) {
-  return addresses.some((item) => isSameAddress(addr, item));
+  return addresses?.some((item) => isSameAddress(addr, item));
 }
 
 export function isExternalLink(url = "") {

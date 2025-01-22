@@ -8,7 +8,7 @@ function NewPreimageButton() {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
-      icon={<NewPreimageSVG />}
+      icon={<NewPreimageSVG className="mr-1" />}
       name="New preimage"
       description="Create a new preimage"
       onClick={() => setForwardPopup(<NewPreimageInnerPopup />)}

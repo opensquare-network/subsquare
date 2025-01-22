@@ -12,7 +12,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import Loading from "../../loading";
 import { Info } from "../styled";
 import { useDetailType } from "../../../context/page";
-import Input from "../../input";
+import Input from "next-common/lib/input";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 import tw from "tailwind-styled-components";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";

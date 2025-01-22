@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import Input from "../input";
+import Input from "next-common/lib/input";
 import ErrorText from "../ErrorText";
 import nextApi from "../../services/nextApi";
 import { newSuccessToast } from "../../store/reducers/toastSlice";
@@ -186,7 +186,7 @@ export default function NotificationEmail({ isOn, setIsOn }) {
                 disabled={!isWeb3User}
                 placeholder="Please fill Email..."
                 defaultValue={inputEmail}
-                post={emailVerified}
+                suffix={emailVerified}
                 onChange={(e) => {
                   setInputEmail(e.target.value);
                   setResendErrors();

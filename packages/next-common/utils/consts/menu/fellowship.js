@@ -2,7 +2,6 @@ import { startCase, sumBy } from "lodash-es";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
-import dividerConfig from "next-common/utils/consts/menu/common/divider";
 import { isCollectivesChain } from "next-common/utils/chain";
 
 export const Names = {
@@ -98,6 +97,9 @@ function getFellowshipReferendaMenu(
       "/fellowship/referenda/statistics",
       "/fellowship/tracks/[id]",
     ],
+    activeCount: totalActiveCount,
+    pathname: "/fellowship",
+    hideItemsOnMenu: isCollectivesChain(process.env.NEXT_PUBLIC_CHAIN),
     items: [
       {
         value: "all",
@@ -124,13 +126,15 @@ function getFellowshipTreasuryMenu(overviewSummary) {
   const fellowshipTreasurySpends =
     overviewSummary?.fellowshipTreasurySpends || {};
   return {
-    value: "fellowship-treasury",
-    name: Names.treasury,
+    value: "fellowship-treasury-spends",
+    name: Names.treasurySpends,
     extraMatchNavMenuActivePathnames: [
       "/fellowship/treasury/spends",
       "/fellowship/treasury/spends/[id]",
     ],
     activeCount: fellowshipTreasurySpends.active || 0,
+    pathname: "/fellowship/treasury/spends",
+    hideItemsOnMenu: true,
     items: [
       {
         value: "fellowship-treasury-spends",
@@ -159,16 +163,13 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
       getNonCoreFellowshipMembersMenu(),
       getFellowshipMembersMenu(),
       getFellowshipSalaryMenu(),
-      getFellowshipStatisticsMenu(),
-      dividerConfig,
       getFellowshipReferendaMenu(
         fellowshipTracks,
         currentTrackId,
         totalActiveCount,
       ),
-      dividerConfig,
-
       getFellowshipTreasuryMenu(overviewSummary),
+      getFellowshipStatisticsMenu(),
     ].filter(Boolean),
   };
 

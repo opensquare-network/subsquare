@@ -48,7 +48,7 @@ function USDxBalance({ inputBalance, setInputBalance, symbol, setSymbol }) {
 
 export default function useUSDxBalanceField() {
   const [inputBalance, setInputBalance] = useState("");
-  const [symbol, setSymbol] = useState("USDt");
+  const [symbol, setSymbol] = useState("USDT");
 
   return {
     value: [inputBalance, symbol],

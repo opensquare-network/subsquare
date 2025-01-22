@@ -81,9 +81,7 @@ const DisplayUserAddress = ({ address }) => {
       <Copyable copyText={maybeEvmAddress}>
         <Tertiary>{maybeEvmAddress}</Tertiary>
       </Copyable>
-      {!isEthereumAddress(maybeEvmAddress) && (
-        <AccountLinks address={maybeEvmAddress} />
-      )}
+      <AccountLinks address={maybeEvmAddress} />
     </AddressWrapper>
   );
 };

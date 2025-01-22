@@ -39,7 +39,7 @@ export function PolkadotTreasurySummaryProvider({ children }) {
   const {
     balance: fellowshipSalaryUsdtBalance,
     isLoading: isFellowshipSalaryUsdtBalanceLoading,
-  } = useQueryFellowshipSalaryBalance("USDt");
+  } = useQueryFellowshipSalaryBalance("USDT");
 
   const {
     free: dotTreasuryBalanceOnAssetHub,
@@ -49,7 +49,7 @@ export function PolkadotTreasurySummaryProvider({ children }) {
   const {
     balance: usdtTreasuryBalanceOnAssetHub,
     isLoading: isUsdtTreasuryBalanceOnAssetHubLoading,
-  } = useTreasuryAccountAssetBalance("USDt");
+  } = useTreasuryAccountAssetBalance("USDT");
 
   const {
     balance: usdcTreasuryBalanceOnAssetHub,
@@ -89,7 +89,7 @@ export function PolkadotTreasurySummaryProvider({ children }) {
         isUsdtTreasuryBalanceOnAssetHubLoading,
         usdcTreasuryBalanceOnAssetHub,
         isUsdcTreasuryBalanceOnAssetHubLoading,
-        loanCentrifugeUsdcBalance: 3000000000000,
+        loanCentrifugeUsdcBalance: 1500000000000,
         loanBifrostDotBalance: 5000000000000000,
         loadPendulumDotBalance: 500000000000000,
         loanHydrationDotBalance: 10000000000000000,

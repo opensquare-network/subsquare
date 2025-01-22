@@ -11,6 +11,7 @@ import CoreFellowshipMemberSalary from "./salary";
 import CoreFellowshipMemberRelatedReferenda from "./relatedReferenda";
 import MineTag from "next-common/components/delegation/delegate/common/mineTag";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { isSameAddress } from "next-common/utils";
 
 export default function CoreFellowshipMemberCard({
   member,
@@ -24,7 +25,7 @@ export default function CoreFellowshipMemberCard({
 
   return (
     <SecondaryCard className="relative">
-      {realAddress === address && <MineTag />}
+      {isSameAddress(realAddress, address) && <MineTag />}
       <div className="flex justify-between">
         <AvatarAndAddress address={address} isActive={isActive} />
         <div className="flex flex-col items-end justify-between">

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 export const StatemintAssets = [
   {
     id: 1984,
-    symbol: "USDt",
+    symbol: "USDT",
     decimals: 6,
   },
   {

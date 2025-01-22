@@ -8,7 +8,7 @@ import {
   useSignerAccount,
 } from "./popupWithSigner/context";
 import { useUser } from "next-common/context/user";
-import { addressEllipsis } from "next-common/utils";
+import { addressEllipsis, isSameAddress } from "next-common/utils";
 import SwitchSignerPopup from "./switchSignerPopup";
 import useOnChainProxyInfo from "next-common/hooks/useOnChainProxy";
 import { useMyProxied } from "next-common/context/proxy";
@@ -41,8 +41,8 @@ function useOriginAccount() {
     return null;
   }
 
-  const originAccountFromExtension = extensionAccounts.find(
-    (account) => account.address === originAccount.address,
+  const originAccountFromExtension = extensionAccounts.find((account) =>
+    isSameAddress(account.address, originAccount.address),
   );
 
   if (originAccountFromExtension) {
@@ -132,8 +132,8 @@ export default function MaybeProxySigner({ noSwitch }) {
 export function ConnectedAccountSigner() {
   const user = useUser();
   const extensionAccounts = useExtensionAccounts();
-  const originAccount = extensionAccounts.find(
-    (item) => item.address === user?.address,
+  const originAccount = extensionAccounts.find((item) =>
+    isSameAddress(item.address, user?.address),
   );
 
   return (
