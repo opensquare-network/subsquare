@@ -27,7 +27,7 @@ function AccountBalanceFiatValue({ value, className }) {
     .dividedBy(Math.pow(10, decimals))
     .multipliedBy(price);
 
-  const isShowValue = !loading && !isNaN(fiatValue);
+  const isShowValue = !loading && !isNaN(fiatValue) && value != 0;
 
   if (isMobile && !isShowValue) {
     return null;
