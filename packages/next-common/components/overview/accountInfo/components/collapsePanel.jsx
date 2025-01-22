@@ -5,7 +5,11 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { cn } from "next-common/utils";
 
-export default function CollapsePanel({ children, labelItem }) {
+export default function CollapsePanel({
+  children,
+  labelItem,
+  labelItemClassName = "",
+}) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { width } = useWindowSize();
 
@@ -30,13 +34,15 @@ export default function CollapsePanel({ children, labelItem }) {
         />
       </SecondaryButton>
 
-      <div className="flex flex-col ml-[12px] w-[240px]">
+      <div
+        className={cn("flex flex-col ml-[12px] w-[240px]", labelItemClassName)}
+      >
         {labelItem}
         {isCollapsed && children}
       </div>
     </div>
   ) : (
-    <div className="flex flex-col">
+    <div className={cn("flex flex-col", labelItemClassName)}>
       <div>{labelItem}</div>
       <div>{children}</div>
     </div>
