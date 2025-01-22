@@ -27,9 +27,9 @@ function AccountBalanceFiatValue({ value, className }) {
     .dividedBy(Math.pow(10, decimals))
     .multipliedBy(price);
 
-  const showValue = !loading && fiatValue && value != 0;
+  const isShowValue = !loading && !isNaN(fiatValue);
 
-  if (isMobile && !showValue) {
+  if (isMobile && !isShowValue) {
     return null;
   }
 
@@ -41,9 +41,7 @@ function AccountBalanceFiatValue({ value, className }) {
         className,
       )}
     >
-      {showValue
-        ? `${!!(value && price) && "≈"} $${abbreviateBigNumber(fiatValue)}`
-        : ""}
+      {isShowValue && `≈ $${abbreviateBigNumber(fiatValue)}`}
     </div>
   );
 }
