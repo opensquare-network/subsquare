@@ -1,7 +1,7 @@
 import LoadableItem from "next-common/components/overview/accountInfo/components/loadableItem";
 import CollapsePanel from "./collapsePanel";
 import { useUserAccountInfo } from "next-common/context/user/account";
-import useFiatPrice from "next-common/hooks/useFiatPrice";
+import { useFiatPriceSnapshot } from "next-common/hooks/useFiatPrice";
 import BigNumber from "bignumber.js";
 import { abbreviateBigNumber } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -19,7 +19,7 @@ function useIsMobile() {
 }
 
 function AccountBalanceFiatValue({ value, className }) {
-  const { price, loading } = useFiatPrice();
+  const { price, loading } = useFiatPriceSnapshot();
   const { decimals } = useChainSettings();
   const isMobile = useIsMobile();
 
