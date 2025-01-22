@@ -6,61 +6,79 @@ import BigNumber from "bignumber.js";
 import { abbreviateBigNumber } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
+import WindowSizeProvider, {
+  useWindowWidthContext,
+} from "next-common/context/windowSize";
+import { useChainSettings } from "next-common/context/chain";
+
+function useIsMobile() {
+  const [navCollapsed] = useNavCollapsed();
+  const width = useWindowWidthContext();
+
+  return (navCollapsed && width < 768) || (!navCollapsed && width < 1024);
+}
 
 function AccountBalanceFiatValue({ value, className }) {
   const { price, loading } = useFiatPrice();
-  const fiatValue = BigNumber(value).multipliedBy(price);
-  const [navCollapsed] = useNavCollapsed();
+  const { decimals } = useChainSettings();
+  const isMobile = useIsMobile();
+
+  const fiatValue = BigNumber(value)
+    .dividedBy(Math.pow(10, decimals))
+    .multipliedBy(price);
+
+  const showValue = !loading && fiatValue && value != 0;
+
+  if (isMobile && !showValue) {
+    return null;
+  }
 
   return (
     <div
       className={cn(
         "min-w-[100px] text14Medium text-textTertiary whitespace-nowrap",
-        navCollapsed
-          ? "max-sm:w-full max-sm:justify-end max-sm:text12Medium"
-          : "max-md:w-full max-md:justify-end max-md:text12Medium",
+        isMobile && "w-full justify-end text12Medium",
         className,
       )}
     >
-      {Number(value) === 0 || loading
-        ? ""
-        : `${!!(value && price) && "≈"} ${abbreviateBigNumber(fiatValue)}`}
+      {showValue
+        ? `${!!(value && price) && "≈"} $${abbreviateBigNumber(fiatValue)}`
+        : ""}
     </div>
   );
 }
 
 function AccountBalanceItem({ value, title, isLoading }) {
-  const [navCollapsed] = useNavCollapsed();
+  const isMobile = useIsMobile();
 
   return (
-    <>
+    <div
+      className={cn(
+        "group",
+        "[&:not(:last-child)]:mb-1",
+        "flex items-center",
+        isMobile && "w-full inline-flex flex-col",
+      )}
+    >
       <div className="inline-flex items-center w-full gap-4">
         <LoadableItem
           value={value}
           isLoading={isLoading}
           title={title}
           className={"inline-flex flex-row items-center justify-between"}
-          titleClassName={
-            "mb-0 text14Medium text-textTertiary flex-1 min-w-[90px]"
-          }
+          titleClassName={"mb-0 text14Medium text-textTertiary flex-1 w-[90px]"}
           valueClassName="text14Medium min-w-[100px] ml-5 inline-flex justify-end"
         />
         <AccountBalanceFiatValue
           value={value}
-          className={cn(
-            "inline-flex",
-            navCollapsed ? "max-sm:hidden" : "max-md:hidden",
-          )}
+          className={cn("inline-flex", isMobile && "hidden")}
         />
       </div>
       <AccountBalanceFiatValue
         value={value}
-        className={cn(
-          "hidden",
-          navCollapsed ? "max-sm:inline-flex" : "max-md:inline-flex",
-        )}
+        className={cn("hidden", isMobile && "inline-flex")}
       />
-    </>
+    </div>
   );
 }
 
@@ -114,10 +132,12 @@ export function Locked() {
 
 export default function AccountBalances() {
   return (
-    <CollapsePanel labelItem={<TotalBalance />} labelItemClassName="space-y-1">
-      <Transferrable />
-      <Reserved />
-      <Locked />
-    </CollapsePanel>
+    <WindowSizeProvider>
+      <CollapsePanel labelItem={<TotalBalance />}>
+        <Transferrable />
+        <Reserved />
+        <Locked />
+      </CollapsePanel>
+    </WindowSizeProvider>
   );
 }
