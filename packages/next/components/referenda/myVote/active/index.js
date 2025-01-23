@@ -4,14 +4,13 @@ import { usePost } from "next-common/context/post";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import DirectVoteInfo from "./direct";
+import MyDelegatingVote from "./delegating";
 
 const RemoveDemocracyVotePopup = dynamicPopup(() =>
   import("next-common/components/myReferendumVote/removeDemocracyVotePopup"),
 );
 
 export function MyVoteOnActiveReferendumByType() {
-  // const post = usePost();
-  // const referendumIndex = post?.referendumIndex;
   const realAddress = useRealAddress();
 
   const { result: votingOf, loading } = useSubStorage(
@@ -25,7 +24,7 @@ export function MyVoteOnActiveReferendumByType() {
   } else if (votingOf.isDirect) {
     return <DirectVoteInfo direct={votingOf.asDirect} />;
   } else if (votingOf.isDelegating) {
-    // todo: show delegating vote
+    return <MyDelegatingVote delegating={votingOf.asDelegating} />;
   } else {
     return null;
   }
