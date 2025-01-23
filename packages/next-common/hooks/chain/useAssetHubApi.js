@@ -1,7 +1,7 @@
 import { getAssetHubApi } from "next-common/utils/assetHub";
 import { useEffect, useState } from "react";
 
-let nowApi;
+let nowApi = null;
 
 export function useAssetHubApi() {
   const [api, setApi] = useState(nowApi);
