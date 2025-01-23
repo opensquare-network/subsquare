@@ -11,6 +11,7 @@ import { TreasuryProvider } from "next-common/context/treasury";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
+import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
 
 export default function BountiesPage({ bounties, chain }) {
   const chainSettings = useChainSettings();
@@ -53,6 +54,7 @@ export default function BountiesPage({ bounties, chain }) {
             category={category}
             title="List"
             titleCount={bounties.total}
+            titleExtra={<NewBountyButton />}
             items={items}
             pagination={{
               page: bounties.page,
