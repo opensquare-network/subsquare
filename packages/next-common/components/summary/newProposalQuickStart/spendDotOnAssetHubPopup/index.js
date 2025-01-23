@@ -4,7 +4,6 @@ import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
 import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
-import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useSpendDotOnAssetHubPreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/spendDotOnAssetHubPopup";
 import useAssetHubDotBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useAssetHubDotBalanceField";
@@ -60,9 +59,7 @@ export function SpendDotOnAssetHubReferendumInnerPopup() {
   const { onClose } = usePopupParams();
   return (
     <Popup title="Spend DOT on Asset Hub" onClose={onClose}>
-      <AssetHubApiProvider>
-        <PopupContent />
-      </AssetHubApiProvider>
+      <PopupContent />
     </Popup>
   );
 }

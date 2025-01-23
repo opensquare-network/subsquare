@@ -1,4 +1,4 @@
-import { useAssetHubApi } from "next-common/context/assetHub";
+import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import useCall from "next-common/utils/hooks/useCall";
 
 export default function useQueryAssetHubAssets(assetId, address) {

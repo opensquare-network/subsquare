@@ -1,4 +1,4 @@
-import { useAssetHubApi } from "next-common/context/assetHub";
+import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import useQueryAllAssetMetadata from "next-common/hooks/assets/useQueryAllAssetMetadata";
 import { createStateContext } from "react-use";
 import { useEffect } from "react";
