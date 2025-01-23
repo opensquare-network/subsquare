@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toPrecision } from "next-common/utils";
-import { useQueryAssetHubTreasuryFree } from "next-common/components/summary/polkadotTreasurySummary/hook/useQueryAssetHubTreasuryFree";
+import { useQueryAssetHubTreasuryFree } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryAssetHubTreasuryFree";
 import { useChainSettings } from "next-common/context/chain";
 import CurrencyInput from "next-common/components/currencyInput";
 import PopupLabel from "next-common/components/popup/label";
