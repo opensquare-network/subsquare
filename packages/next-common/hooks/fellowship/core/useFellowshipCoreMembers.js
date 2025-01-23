@@ -16,12 +16,13 @@ let fetching = false;
 const useLoading = createGlobalState(fetching);
 const useCachedMembers = createGlobalState({});
 
-export default function useFellowshipCoreMembers() {
+export default function useFellowshipCoreMembers(customApi) {
   const { section } = useCollectivesContext();
   const corePallet = useCoreFellowshipPallet();
   const collectivePallet = useRankedCollectivePallet();
 
-  const api = useContextApi();
+  const contextApi = useContextApi();
+  const api = customApi || contextApi;
   const [cachedMembers, setCachedMembers] = useCachedMembers();
   const [loading, setLoading] = useLoading();
 

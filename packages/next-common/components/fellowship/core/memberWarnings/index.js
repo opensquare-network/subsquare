@@ -78,24 +78,29 @@ export function useDemotionExpiringCount(members) {
   }, [members, latestHeight, params, blockTime]);
 }
 
+export function getDemotionExpiredCount({ members, latestHeight, params }) {
+  return (members || []).reduce((result, coreMember) => {
+    const {
+      status: { lastProof },
+      rank,
+    } = coreMember;
+
+    if (isDemotionExpired({ lastProof, rank, params, latestHeight })) {
+      return result + 1;
+    }
+
+    return result;
+  }, 0);
+}
+
 export function useDemotionExpiredCount(members) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const params = useCoreFellowshipParams();
 
-  return useMemo(() => {
-    return (members || []).reduce((result, coreMember) => {
-      const {
-        status: { lastProof },
-        rank,
-      } = coreMember;
-
-      if (isDemotionExpired({ lastProof, rank, params, latestHeight })) {
-        return result + 1;
-      }
-
-      return result;
-    }, 0);
-  }, [members, latestHeight, params]);
+  return useMemo(
+    () => getDemotionExpiredCount({ members, latestHeight, params }),
+    [members, latestHeight, params],
+  );
 }
 
 function useMemberDemotionExpirationCounts(members) {

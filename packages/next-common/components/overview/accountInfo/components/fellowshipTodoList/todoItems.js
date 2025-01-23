@@ -7,6 +7,7 @@ import SubmitEvidencePopup from "next-common/components/collectives/core/actions
 import ApproveFellowshipMemberPopup from "next-common/components/fellowship/core/members/actions/approve/popup";
 import Chains from "next-common/utils/consts/chains";
 import { useFellowshipTodoListData } from "./context";
+import BatchBumpPopup from "next-common/components/fellowship/core/batchBump/popup";
 
 function RetentionEvidenceSubmissionTodo() {
   const collectivesApi = useCollectivesApi();
@@ -66,14 +67,46 @@ function RetentionReferendaCreationTodo({ rank }) {
   );
 }
 
-export default function ToDoItems() {
-  const { todo } = useFellowshipTodoListData();
-  const { showEvidenceSubmissionInfo, showApproveReferendaCreationInfo } = todo;
+function DemotedBumpAllTodo({ expiredMembersCount }) {
+  const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
 
   return (
     <>
-      {showEvidenceSubmissionInfo && <RetentionEvidenceSubmissionTodo />}
-      {showApproveReferendaCreationInfo && <RetentionReferendaCreationTodo />}
+      <div className="flex items-center">
+        <TodoTag>Membership</TodoTag>
+        <div className="text-textPrimary text14Medium">
+          {expiredMembersCount} members can be demoted.
+          <ClickableText onClick={() => setShowBumpAllPopup(true)}>
+            Bump all
+          </ClickableText>
+        </div>
+      </div>
+      {showBumpAllPopup && (
+        <BatchBumpPopup
+          onClose={() => {
+            setShowBumpAllPopup(false);
+          }}
+        />
+      )}
+    </>
+  );
+}
+
+export default function ToDoItems() {
+  const { todo, expiredMembersCount } = useFellowshipTodoListData();
+  const {
+    showEvidenceSubmissionTodo,
+    showApproveReferendaCreationTodo,
+    showDemotedBumpAllTodo,
+  } = todo;
+
+  return (
+    <>
+      {showEvidenceSubmissionTodo && <RetentionEvidenceSubmissionTodo />}
+      {showApproveReferendaCreationTodo && <RetentionReferendaCreationTodo />}
+      {showDemotedBumpAllTodo && (
+        <DemotedBumpAllTodo expiredMembersCount={expiredMembersCount} />
+      )}
     </>
   );
 }

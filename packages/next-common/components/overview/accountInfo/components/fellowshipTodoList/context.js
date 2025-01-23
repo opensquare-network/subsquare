@@ -1,6 +1,6 @@
 import { useCollectivesApi } from "next-common/context/collectives/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { getMemberData } from "../../hook/useMemberData";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useSelector } from "react-redux";
@@ -9,10 +9,13 @@ import { getDemotionPeriodProgress } from "next-common/components/collectives/co
 import { checkDemotionPeriodExpiration } from "../collectivesDemotionPrompt";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import useRelatedReferenda from "next-common/hooks/fellowship/useRelatedReferenda";
+import { partition } from "lodash-es";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import { getDemotionExpiredCount } from "next-common/components/fellowship/core/memberWarnings";
 
 const FellowshipToDoListContext = createContext();
 
-function FellowshipToDoListProvider({ children }) {
+function useMyDemotionTodo() {
   const api = useCollectivesApi();
   const corePallet = useCoreFellowshipPallet();
   const address = useRealAddress();
@@ -24,11 +27,11 @@ function FellowshipToDoListProvider({ children }) {
     isLoading: isRelatedApprovedReferendaLoading,
   } = useRelatedReferenda(address, ["approve"]);
 
-  const [showEvidenceSubmissionInfo, setShowEvidenceSubmissionInfo] =
+  const [showEvidenceSubmissionTodo, setshowEvidenceSubmissionTodo] =
     useState(false);
   const [
-    showApproveReferendaCreationInfo,
-    setShowApproveReferendaCreationInfo,
+    showApproveReferendaCreationTodo,
+    setshowApproveReferendaCreationTodo,
   ] = useState(false);
 
   useEffect(() => {
@@ -36,7 +39,6 @@ function FellowshipToDoListProvider({ children }) {
       return;
     }
 
-    setIsLoading(true);
     (async () => {
       const memberData = await getMemberData({
         section: "fellowship",
@@ -66,7 +68,7 @@ function FellowshipToDoListProvider({ children }) {
       const evidence = await api.query[corePallet]?.memberEvidence(address);
       const data = evidence?.toJSON();
       if (!data) {
-        setShowEvidenceSubmissionInfo(true);
+        setshowEvidenceSubmissionTodo(true);
         return;
       }
 
@@ -80,7 +82,7 @@ function FellowshipToDoListProvider({ children }) {
           return;
         }
         // Should show RetentionReferendaCreationTodo
-        setShowApproveReferendaCreationInfo(true);
+        setshowApproveReferendaCreationTodo(true);
       }
     })().then(() => {
       setIsLoading(false);
@@ -95,16 +97,96 @@ function FellowshipToDoListProvider({ children }) {
     relatedApproveReferenda,
   ]);
 
+  return {
+    todo: {
+      showEvidenceSubmissionTodo,
+      showApproveReferendaCreationTodo,
+    },
+    isLoading,
+  };
+}
+
+function useCoreFellowshipParams(api) {
+  const corePallet = useCoreFellowshipPallet();
+  const [params, setParams] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+    (async () => {
+      const params = await api.query[corePallet].params();
+      setParams(params.toJSON());
+      setIsLoading(false);
+    })();
+  }, [api, corePallet]);
+  return { params, isLoading };
+}
+
+function useDemotedBumpAllTodo() {
+  const api = useCollectivesApi();
+  const { members: coreMembers, loading: isLoading } =
+    useFellowshipCoreMembers(api);
+  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const { params, isLoading: isParamsLoading } = useCoreFellowshipParams(api);
+
+  const [members] = useMemo(
+    () => partition(coreMembers, (m) => m.rank > 0),
+    [coreMembers],
+  );
+
+  if (isParamsLoading) {
+    return { todo: { showDemotedBumpAllTodo: false }, isLoading: true };
+  }
+
+  const expiredMembersCount = getDemotionExpiredCount({
+    members,
+    latestHeight,
+    params,
+  });
+
+  return {
+    todo: {
+      showDemotedBumpAllTodo: expiredMembersCount > 0,
+    },
+    expiredMembersCount,
+    isLoading,
+  };
+}
+
+function FellowshipToDoListProvider({ children }) {
+  const {
+    todo: { showEvidenceSubmissionTodo, showApproveReferendaCreationTodo },
+    isLoading: isMyDemotionTodoLoading,
+  } = useMyDemotionTodo();
+  const {
+    todo: { showDemotedBumpAllTodo },
+    isLoading: isDemotedBumpAllLoading,
+    expiredMembersCount,
+  } = useDemotedBumpAllTodo();
+
+  const data = useMemo(
+    () => ({
+      todo: {
+        showEvidenceSubmissionTodo,
+        showApproveReferendaCreationTodo,
+        showDemotedBumpAllTodo,
+      },
+      expiredMembersCount,
+      isLoading: isMyDemotionTodoLoading || isDemotedBumpAllLoading,
+    }),
+    [
+      showEvidenceSubmissionTodo,
+      showApproveReferendaCreationTodo,
+      showDemotedBumpAllTodo,
+      expiredMembersCount,
+      isMyDemotionTodoLoading,
+      isDemotedBumpAllLoading,
+    ],
+  );
+
   return (
-    <FellowshipToDoListContext.Provider
-      value={{
-        todo: {
-          showEvidenceSubmissionInfo,
-          showApproveReferendaCreationInfo,
-        },
-        isLoading,
-      }}
-    >
+    <FellowshipToDoListContext.Provider value={data}>
       {children}
     </FellowshipToDoListContext.Provider>
   );
