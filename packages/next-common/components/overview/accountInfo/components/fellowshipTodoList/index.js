@@ -14,17 +14,18 @@ import {
   useFellowshipTodoListData,
 } from "./context";
 import { CollectivesBlockHeightProvider } from "./collectives";
+import Loading from "next-common/components/loading";
 
 function Title() {
-  const { todo } = useFellowshipTodoListData();
+  const { todo, isLoading } = useFellowshipTodoListData();
   const todoItemCount = Object.entries(todo).filter(
     ([, shouldShow]) => shouldShow,
   ).length;
   return (
-    <div className="flex gap-1 text14Medium text-textTertiary">
+    <div className="flex items-center gap-1 text14Medium text-textTertiary">
       <span>Fellowship To-do List</span>
       <span>·</span>
-      <span>{todoItemCount}</span>
+      {isLoading ? <Loading size={16} /> : <span>{todoItemCount}</span>}
     </div>
   );
 }

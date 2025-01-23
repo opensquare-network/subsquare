@@ -82,7 +82,15 @@ function DemotedBumpAllTodo({ expiredMembersCount }) {
       <div className="flex items-center">
         <TodoTag>Membership</TodoTag>
         <div className="text-textPrimary text14Medium">
-          {expiredMembersCount} members can be demoted.&nbsp;
+          <a
+            className="text-theme500 cursor-pointer"
+            target="_blank"
+            rel="noreferrer"
+            href="https://collectives.subsquare.io/fellowship/members?period=demotion_period_expired"
+          >
+            {expiredMembersCount} members
+          </a>
+          &nbsp;can be demoted.&nbsp;
           <ClickableText onClick={() => setShowBumpAllPopup(true)}>
             Bump all
           </ClickableText>
