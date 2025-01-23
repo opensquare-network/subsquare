@@ -1,77 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { isAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import Caret from "../icons/caret";
-import { cn } from "next-common/utils";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useClickAway } from "react-use";
-import FellowshipRank from "../fellowship/rank";
-import {
-  AddressComboListItemAccount,
-  AddressComboCustomAddress,
-  AddressComboInput,
-} from "next-common/components/addressCombo";
-
-function SelectHeader({
-  inputAddress,
-  setInputAddress,
-  onBlur,
-  placeholder,
-  members,
-  address,
-  edit,
-}) {
-  const selectedAccount = useMemo(
-    () => members.find((item) => normalizeAddress(item.address) === address),
-    [members, address],
-  );
-
-  if (edit) {
-    return (
-      <AddressComboInput
-        inputAddress={inputAddress}
-        setInputAddress={setInputAddress}
-        onBlur={onBlur}
-        placeholder={placeholder}
-      />
-    );
-  }
-
-  if (selectedAccount) {
-    return (
-      <>
-        <AddressComboListItemAccount account={selectedAccount} />
-        <div className="w-5 h-5 flex">
-          <FellowshipRank rank={selectedAccount.rank} />
-        </div>
-      </>
-    );
-  }
-
-  return <AddressComboCustomAddress address={address} />;
-}
-
-function SelectOptions({ members, address, onSelect }) {
-  return (
-    <div className="absolute w-full mt-1 bg-neutral100 shadow-200 border border-neutral300 rounded-md max-h-80 overflow-y-auto z-10 py-2">
-      {members.map((item) => (
-        <div
-          key={item.address}
-          className={cn(
-            "w-full flex items-center gap-4 px-4 py-2 cursor-pointer hover:bg-neutral200",
-            item.address === address && "bg-neutral200",
-          )}
-          onClick={() => onSelect(item)}
-        >
-          <AddressComboListItemAccount account={item} />
-          <div className="w-5 h-5 flex">
-            <FellowshipRank rank={item.rank} />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
+import useSearchFellowshipMember from "./useSearchFellowshipMember";
+import SelectOptions from "./options";
+import SelectHeader from "./header";
+import useHighlightedOption from "./useHighlightedOption";
 
 function isFellowshipMemberAddress(members = [], address) {
   return members?.some((item) => item.address === address);
@@ -126,14 +62,39 @@ export default function FellowshipMemberSelector({
     setEdit(false);
   };
 
-  const onSelect = (item) => {
-    const ss58Address = normalizeAddress(item.address);
-    const maybeEvmAddress = tryConvertToEvmAddress(ss58Address);
-    setAddress(ss58Address);
-    setInputAddress(maybeEvmAddress);
-    setEdit(false);
-    setShow(false);
-  };
+  const onSelect = useCallback(
+    (item) => {
+      if (!item) {
+        return;
+      }
+
+      const ss58Address = normalizeAddress(item.address);
+      const maybeEvmAddress = tryConvertToEvmAddress(ss58Address);
+      setAddress(ss58Address);
+      setInputAddress(maybeEvmAddress);
+      setEdit(false);
+      setShow(false);
+    },
+    [setAddress, setInputAddress, setEdit, setShow],
+  );
+
+  const searchedResult = useSearchFellowshipMember(inputAddress, members);
+  const { highlightedIndex, handleKeyDown } = useHighlightedOption(
+    searchedResult,
+    onSelect,
+  );
+
+  useEffect(() => {
+    if (!show) {
+      return;
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [show, handleKeyDown]);
 
   return (
     <div ref={ref} className="relative">
@@ -150,11 +111,11 @@ export default function FellowshipMemberSelector({
           setInputAddress={setInputAddress}
           onBlur={onBlur}
           placeholder={placeholder}
-          members={members}
+          members={searchedResult}
           address={address}
           edit={edit}
         />
-        {members.length > 0 && (
+        {searchedResult.length > 0 && (
           <span
             onClick={(e) => {
               setShow((prevShow) => !prevShow);
@@ -165,11 +126,12 @@ export default function FellowshipMemberSelector({
           </span>
         )}
       </div>
-      {show && members.length > 0 && (
+      {show && searchedResult.length > 0 && (
         <SelectOptions
-          members={members}
+          members={searchedResult}
           address={address}
           onSelect={onSelect}
+          highlightedIndex={highlightedIndex}
         />
       )}
     </div>
