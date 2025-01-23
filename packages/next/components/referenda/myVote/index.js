@@ -12,6 +12,8 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Democracy } from "next-common/components/profile/votingHistory/common";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import MyVoteOnFinishedDemocracyReferendum from "./finished";
+import MyVoteOnActiveReferendum from "./active";
+import PopupOpenStateProvider from "next-common/context/popup/switch";
 
 const RemoveDemocracyVotePopup = dynamicPopup(() =>
   import("next-common/components/myReferendumVote/removeDemocracyVotePopup"),
@@ -66,6 +68,10 @@ export default function NewMyVote() {
   if (finishHeight) {
     return <MyVoteOnFinishedDemocracyReferendum />;
   } else {
-    return <MyVoteOld />;
+    return (
+      <PopupOpenStateProvider>
+        <MyVoteOnActiveReferendum />
+      </PopupOpenStateProvider>
+    );
   }
 }
