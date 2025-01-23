@@ -1,6 +1,6 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import Link from "next/link";
-import { usePolkadotTreasurySummary } from "../context";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
@@ -45,7 +45,7 @@ export default function TreasuryOnAssetHub() {
     isUsdtTreasuryBalanceOnAssetHubLoading,
     usdcTreasuryBalanceOnAssetHub,
     isUsdcTreasuryBalanceOnAssetHubLoading,
-  } = usePolkadotTreasurySummary();
+  } = usePolkadotTreasury();
 
   const isLoading =
     isDotTreasuryBalanceOnAssetHubLoading ||

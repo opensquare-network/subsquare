@@ -1,6 +1,6 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryLabelLinkItem from "../common/summaryLabelLinkItem";
-import { usePolkadotTreasurySummary } from "../context";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import SummaryItem from "next-common/components/summary/layout/item";
 import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
@@ -54,7 +54,7 @@ export default function FellowshipTreasuryOnAssetHub() {
     isFellowshipTreasuryDotBalanceLoading,
     fellowshipSalaryUsdtBalance,
     isFellowshipSalaryUsdtBalanceLoading,
-  } = usePolkadotTreasurySummary();
+  } = usePolkadotTreasury();
 
   return (
     <SummaryItem title="Fellowship">

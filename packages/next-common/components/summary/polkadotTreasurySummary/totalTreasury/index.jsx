@@ -3,7 +3,7 @@ import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
 import LoadableContent from "next-common/components/common/loadableContent";
-import { usePolkadotTreasurySummary } from "../context";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
@@ -43,7 +43,7 @@ export default function TotalTreasury() {
     isDotTreasuryBalanceOnBountiesLoading,
     ambassadorUsdtBalance,
     isAmbassadorUsdtBalanceLoading,
-  } = usePolkadotTreasurySummary();
+  } = usePolkadotTreasury();
 
   const {
     dot: hydrationTreasuryDot,

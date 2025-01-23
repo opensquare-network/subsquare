@@ -10,13 +10,13 @@ import NextBurn from "./nextBurn";
 import SpendPeriod from "./spendPeriod";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
-import { usePolkadotTreasurySummary } from "../context";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 
 export default function RelayChainTreasury() {
   const {
     dotTreasuryBalanceOnRelayChain,
     isDotTreasuryBalanceOnRelayChainLoading,
-  } = usePolkadotTreasurySummary();
+  } = usePolkadotTreasury();
 
   const summary = useSpendPeriodSummary();
   const toBeAwarded = useToBeAwarded();
