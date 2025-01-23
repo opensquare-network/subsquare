@@ -1,23 +1,24 @@
 import BigNumber from "bignumber.js";
+import Labeled from "next-common/components/Labeled";
 import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
-import EditorField from "next-common/components/popup/fields/editorField";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
+import Input from "next-common/lib/input";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { fromPrecision, toPrecision } from "next-common/utils";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 
 export default function NewBountyPopup({ onClose }) {
   const router = useRouter();
   const { decimals, symbol } = useChainSettings();
   const api = useContextApi();
   const dispatch = useDispatch();
-  const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("");
+  const [inputAmount, setInputAmount] = useState("");
+  const [inputTitle, setInputTitle] = useState("");
 
   const {
     dotTreasuryBalanceOnBounties: bountiesBalance,
@@ -25,7 +26,7 @@ export default function NewBountyPopup({ onClose }) {
   } = usePolkadotTreasury();
 
   const getTxFunc = useCallback(async () => {
-    const balance = BigNumber(fromPrecision(amount, decimals));
+    const balance = BigNumber(fromPrecision(inputAmount, decimals));
 
     const bountyValueMinimum =
       api.consts.bounties.bountyValueMinimum.toString();
@@ -51,8 +52,8 @@ export default function NewBountyPopup({ onClose }) {
       return;
     }
 
-    return api.tx.bounties.proposeBounty(balance.toString(), description);
-  }, [amount, decimals, api, bountiesBalance, description, dispatch]);
+    return api.tx.bounties.proposeBounty(balance.toString(), inputTitle);
+  }, [inputAmount, decimals, api, bountiesBalance, inputTitle, dispatch]);
 
   return (
     <SimpleTxPopup
@@ -76,15 +77,17 @@ export default function NewBountyPopup({ onClose }) {
         decimals={decimals}
         symbol={symbol}
         hintSymbol={symbol}
-        inputAmount={amount}
-        setInputAmount={setAmount}
+        inputAmount={inputAmount}
+        setInputAmount={setInputAmount}
       />
 
-      <EditorField
-        title="Description"
-        content={description}
-        setContent={setDescription}
-      />
+      <Labeled text="Title">
+        <Input
+          placeholder="Please fill the title..."
+          value={inputTitle}
+          onValueChange={setInputTitle}
+        />
+      </Labeled>
     </SimpleTxPopup>
   );
 }
