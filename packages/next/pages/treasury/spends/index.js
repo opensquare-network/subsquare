@@ -8,6 +8,7 @@ import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury
 import { TreasuryProvider } from "next-common/context/treasury";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
+import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
 
 export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const { items, total, page, pageSize } = pagedSpends;
@@ -25,18 +26,20 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
 
   return (
     <TreasuryProvider>
-      <ListLayout
-        seoInfo={seoInfo}
-        title={category}
-        summary={treasurySummaryPanel}
-      >
-        <PostList
-          category={category}
-          titleCount={total}
-          items={spends}
-          pagination={{ page, pageSize, total }}
-        />
-      </ListLayout>
+      <PolkadotTreasuryProvider>
+        <ListLayout
+          seoInfo={seoInfo}
+          title={category}
+          summary={treasurySummaryPanel}
+        >
+          <PostList
+            category={category}
+            titleCount={total}
+            items={spends}
+            pagination={{ page, pageSize, total }}
+          />
+        </ListLayout>
+      </PolkadotTreasuryProvider>
     </TreasuryProvider>
   );
 }
