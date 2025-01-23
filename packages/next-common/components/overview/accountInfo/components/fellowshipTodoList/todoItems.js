@@ -8,6 +8,9 @@ import ApproveFellowshipMemberPopup from "next-common/components/fellowship/core
 import Chains from "next-common/utils/consts/chains";
 import { useFellowshipTodoListData } from "./context";
 import BatchBumpPopup from "next-common/components/fellowship/core/batchBump/popup";
+import { ApiProviderWithApi } from "next-common/context/api";
+import CollectivesProvider from "next-common/context/collectives/collectives";
+import { useCoreFellowshipParams } from "./collectives";
 
 function RetentionEvidenceSubmissionTodo() {
   const collectivesApi = useCollectivesApi();
@@ -68,6 +71,8 @@ function RetentionReferendaCreationTodo({ rank }) {
 }
 
 function DemotedBumpAllTodo({ expiredMembersCount }) {
+  const api = useCollectivesApi();
+  const { params } = useCoreFellowshipParams(api);
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
 
   return (
@@ -75,18 +80,22 @@ function DemotedBumpAllTodo({ expiredMembersCount }) {
       <div className="flex items-center">
         <TodoTag>Membership</TodoTag>
         <div className="text-textPrimary text14Medium">
-          {expiredMembersCount} members can be demoted.
+          {expiredMembersCount} members can be demoted.&nbsp;
           <ClickableText onClick={() => setShowBumpAllPopup(true)}>
             Bump all
           </ClickableText>
         </div>
       </div>
       {showBumpAllPopup && (
-        <BatchBumpPopup
-          onClose={() => {
-            setShowBumpAllPopup(false);
-          }}
-        />
+        <ApiProviderWithApi api={api}>
+          <CollectivesProvider section="fellowship" params={params}>
+            <BatchBumpPopup
+              onClose={() => {
+                setShowBumpAllPopup(false);
+              }}
+            />
+          </CollectivesProvider>
+        </ApiProviderWithApi>
       )}
     </>
   );

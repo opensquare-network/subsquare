@@ -85,7 +85,13 @@ export function getDemotionExpiredCount({ members, latestHeight, params }) {
       rank,
     } = coreMember;
 
-    if (isDemotionExpired({ lastProof, rank, params, latestHeight })) {
+    const isExpired = isDemotionExpired({
+      lastProof,
+      rank,
+      params,
+      latestHeight,
+    });
+    if (isExpired) {
       return result + 1;
     }
 

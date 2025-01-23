@@ -13,6 +13,7 @@ import {
   FellowshipToDoListProvider,
   useFellowshipTodoListData,
 } from "./context";
+import { CollectivesBlockHeightProvider } from "./collectives";
 
 function Title() {
   const { todo } = useFellowshipTodoListData();
@@ -55,7 +56,9 @@ export default function FellowshipTodoList() {
   return (
     <CollectivesProvider section="fellowship">
       <CollectivesApiProvider>
-        <FellowshipTodoListImpl />
+        <CollectivesBlockHeightProvider>
+          <FellowshipTodoListImpl />
+        </CollectivesBlockHeightProvider>
       </CollectivesApiProvider>
     </CollectivesProvider>
   );
