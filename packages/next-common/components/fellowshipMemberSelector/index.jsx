@@ -132,6 +132,10 @@ export default function FellowshipMemberSelector({
 
   const onSelect = useCallback(
     (item) => {
+      if (!item) {
+        return;
+      }
+
       const ss58Address = normalizeAddress(item.address);
       const maybeEvmAddress = tryConvertToEvmAddress(ss58Address);
       setAddress(ss58Address);
