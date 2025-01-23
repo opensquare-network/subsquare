@@ -1,7 +1,7 @@
 import { getHydrationApi } from "next-common/utils/hydration";
 import { useEffect, useState } from "react";
 
-let nowApi;
+let nowApi = null;
 
 export function useHydrationApi() {
   const [api, setApi] = useState(nowApi);

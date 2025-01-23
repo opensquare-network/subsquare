@@ -11,7 +11,7 @@ import { useReferendaFellowshipPallet } from "next-common/context/collectives/co
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
 import { ReferendaWarningMessage } from "./common";
-import WarningInfoPanel from "next-common/components/summary/styled/warningInfoPanel";
+import ErrorInfoPanel from "next-common/components/summary/styled/errorInfoPanel";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
@@ -19,10 +19,9 @@ import { isNil } from "lodash-es";
 
 export function NotAvailableMemberPrompt() {
   return (
-    <WarningInfoPanel className="justify-center">
-      Please fill the fellowship member address that eligible for retention or
-      promotion
-    </WarningInfoPanel>
+    <ErrorInfoPanel className="">
+      The address currently filled is not a fellowship member
+    </ErrorInfoPanel>
   );
 }
 

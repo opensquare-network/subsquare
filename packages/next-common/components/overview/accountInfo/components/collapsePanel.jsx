@@ -30,7 +30,7 @@ export default function CollapsePanel({ children, labelItem }) {
         />
       </SecondaryButton>
 
-      <div className="flex flex-col ml-[12px] w-[240px]">
+      <div className="flex flex-col ml-[12px] w-[300px]">
         {labelItem}
         {isCollapsed && children}
       </div>

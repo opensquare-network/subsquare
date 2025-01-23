@@ -16,7 +16,7 @@ function MemberInfo({ data }) {
   const { collectiveMember, coreMember, coreParams } = data;
 
   return (
-    <div className="flex flex-col gap-[16px] mt-1">
+    <div className="flex flex-col gap-1">
       <div className="flex items-center gap-[8px] ">
         <FellowshipRank rank={collectiveMember?.rank} />
         {FELLOWSHIP_RANK_LEVEL_NAMES[collectiveMember?.rank]}

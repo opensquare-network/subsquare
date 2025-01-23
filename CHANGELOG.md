@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.4.7
+
+date: 2025-01-22
+
+- Fellowship
+    - [Big] New members page.
+    - Only show the popup with eligible voters on the referendum detail page.
+    - Demote all features.
+    - Show commenters' vote info on the referendum detail page.
+    - Improve member selection component on fellowship referenda templates.
+    - Disable payout button when a member has claimed his/her salary.
+    - Add filter panel for candidates page.
+    - Simplify menus for fellowship and only show spends and referenda instead of a group of menus. Put tracks selection
+      on the referenda page.
+- [Medium] Support ss58 address format change and apply it for bifrost.
+- Disable bounties and tips for bifrost.
+- Show votes on the threshold curve chart on the OpenGov referendum detail page.
+- Utility UI: support users to fast input the locked balance for voting.
+- Show delegations on the democracy vote feedback popup.
+- Update theme for laos and hydration.
+- Correct navigation and vote prompt text on the council motion page.
+- Not subscribe my vote on finished referendum page to reduce network load.
+- Show the external preimage view on a council page if it proposes an external proposal.
+- Fix the business call component gap on the council motion page.
+- Correct the loan to centrifuge as $1.5M.
+- Enable bounties for LAOS network.
+- Fix treasury balance for chains with EVM address.
+- Show social links for chains with EVM address.
+- Take place of old input components with the new ones.
+- Make collapsed menu clickable and redirect users to default pages.
+- Optimize the origin/account component to cover more cases.
+- Hide unsupported wallets for LAOS network.
+- Tweak UIs and small fixes.
+- Upgrade dependencies.
+
 # 4.4.6
 
 date: 2025-01-11
