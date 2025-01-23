@@ -5,7 +5,6 @@ import { useContextApi } from "next-common/context/api";
 import { checkInputValue } from "next-common/utils";
 import { addressToPublicKey } from "next-common/utils/address";
 import { InfoMessage } from "next-common/components/setting/styled";
-import { AssetHubApiProvider } from "next-common/context/assetHub";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "../notePreimageButton";
 import useAssetHubDotBalanceField from "../fields/useAssetHubDotBalanceField";
@@ -124,9 +123,7 @@ export default function SpendDotOnAssetHubPopup() {
   const { onClose } = usePopupParams();
   return (
     <Popup title="Spend DOT on AssetHub" onClose={onClose}>
-      <AssetHubApiProvider>
-        <PopupContent />
-      </AssetHubApiProvider>
+      <PopupContent />
     </Popup>
   );
 }

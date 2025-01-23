@@ -1,4 +1,4 @@
-import { useHydrationApi } from "next-common/context/hydration";
+import { useHydrationApi } from "next-common/hooks/chain/useHydrationApi";
 import useCall from "next-common/utils/hooks/useCall";
 import bigAdd from "next-common/utils/math/bigAdd";
 
