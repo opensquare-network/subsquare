@@ -9,6 +9,7 @@ import { isEqual } from "lodash-es";
 
 export default function useDemotionExpiredMembers({
   isCandidate = false,
+  blockHeight,
 } = {}) {
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembers();
@@ -19,7 +20,9 @@ export default function useDemotionExpiredMembers({
     [coreMembers, isCandidate],
   );
 
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const defaultLatestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = blockHeight || defaultLatestHeight;
+
   const params = useCoreFellowshipParams();
   const expiredMembersRef = useRef([]);
 

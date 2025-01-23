@@ -11,6 +11,7 @@ import BatchBumpPopup from "next-common/components/fellowship/core/batchBump/pop
 import { ApiProviderWithApi } from "next-common/context/api";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { useCoreFellowshipParams } from "./collectives";
+import { useBlockHeight } from "next-common/context/blockHeight";
 
 function RetentionEvidenceSubmissionTodo() {
   const collectivesApi = useCollectivesApi();
@@ -74,6 +75,7 @@ function DemotedBumpAllTodo({ expiredMembersCount }) {
   const api = useCollectivesApi();
   const { params } = useCoreFellowshipParams(api);
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
+  const { blockHeight } = useBlockHeight();
 
   return (
     <>
@@ -90,6 +92,7 @@ function DemotedBumpAllTodo({ expiredMembersCount }) {
         <ApiProviderWithApi api={api}>
           <CollectivesProvider section="fellowship" params={params}>
             <BatchBumpPopup
+              blockHeight={blockHeight}
               onClose={() => {
                 setShowBumpAllPopup(false);
               }}

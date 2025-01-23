@@ -11,10 +11,8 @@ import useRelatedReferenda from "next-common/hooks/fellowship/useRelatedReferend
 import { partition } from "lodash-es";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { getDemotionExpiredCount } from "next-common/components/fellowship/core/memberWarnings";
-import {
-  useCollectivesBlockHeight,
-  useCoreFellowshipParams,
-} from "./collectives";
+import { useCoreFellowshipParams } from "./collectives";
+import { useBlockHeight } from "next-common/context/blockHeight";
 
 const FellowshipToDoListContext = createContext();
 
@@ -24,17 +22,17 @@ function useMyDemotionTodo() {
   const address = useRealAddress();
   const [isLoading, setIsLoading] = useState(true);
   const blockTime = useSelector(blockTimeSelector);
-  const { blockHeight: latestHeight } = useCollectivesBlockHeight();
+  const { blockHeight: latestHeight } = useBlockHeight();
   const {
     relatedReferenda: relatedApproveReferenda,
     isLoading: isRelatedApprovedReferendaLoading,
   } = useRelatedReferenda(address, ["approve"]);
 
-  const [showEvidenceSubmissionTodo, setshowEvidenceSubmissionTodo] =
+  const [showEvidenceSubmissionTodo, setShowEvidenceSubmissionTodo] =
     useState(false);
   const [
     showApproveReferendaCreationTodo,
-    setshowApproveReferendaCreationTodo,
+    setShowApproveReferendaCreationTodo,
   ] = useState(false);
 
   useEffect(() => {
@@ -71,7 +69,7 @@ function useMyDemotionTodo() {
       const evidence = await api.query[corePallet]?.memberEvidence(address);
       const data = evidence?.toJSON();
       if (!data) {
-        setshowEvidenceSubmissionTodo(true);
+        setShowEvidenceSubmissionTodo(true);
         return;
       }
 
@@ -85,7 +83,7 @@ function useMyDemotionTodo() {
           return;
         }
         // Should show RetentionReferendaCreationTodo
-        setshowApproveReferendaCreationTodo(true);
+        setShowApproveReferendaCreationTodo(true);
       }
     })().then(() => {
       setIsLoading(false);
@@ -113,7 +111,7 @@ function useDemotedBumpAllTodo() {
   const api = useCollectivesApi();
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembers(api);
-  const { blockHeight: latestHeight } = useCollectivesBlockHeight();
+  const { blockHeight: latestHeight } = useBlockHeight();
   const { params, isLoading: isParamsLoading } = useCoreFellowshipParams(api);
 
   const [members] = useMemo(
