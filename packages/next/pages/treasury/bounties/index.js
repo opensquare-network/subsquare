@@ -10,6 +10,7 @@ import { fetchList } from "next-common/services/list";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
+import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
 
 export default function BountiesPage({ bounties, chain }) {
   const chainSettings = useChainSettings();
@@ -28,37 +29,39 @@ export default function BountiesPage({ bounties, chain }) {
 
   return (
     <TreasuryProvider>
-      <ListLayout
-        seoInfo={seoInfo}
-        title={category}
-        summary={treasurySummaryPanel}
-        tabs={[
-          {
-            value: "bounties",
-            label: "Bounties",
-            url: "/treasury/bounties",
-          },
-          chainSettings.integrations?.doTreasury && {
-            value: "statistics",
-            label: "Statistics",
-            url: `https://dotreasury.com/${lowerCase(
-              chainSettings.symbol,
-            )}/bounties`,
-          },
-        ].filter(Boolean)}
-      >
-        <PostList
-          category={category}
-          title="List"
-          titleCount={bounties.total}
-          items={items}
-          pagination={{
-            page: bounties.page,
-            pageSize: bounties.pageSize,
-            total: bounties.total,
-          }}
-        />
-      </ListLayout>
+      <PolkadotTreasuryProvider>
+        <ListLayout
+          seoInfo={seoInfo}
+          title={category}
+          summary={treasurySummaryPanel}
+          tabs={[
+            {
+              value: "bounties",
+              label: "Bounties",
+              url: "/treasury/bounties",
+            },
+            chainSettings.integrations?.doTreasury && {
+              value: "statistics",
+              label: "Statistics",
+              url: `https://dotreasury.com/${lowerCase(
+                chainSettings.symbol,
+              )}/bounties`,
+            },
+          ].filter(Boolean)}
+        >
+          <PostList
+            category={category}
+            title="List"
+            titleCount={bounties.total}
+            items={items}
+            pagination={{
+              page: bounties.page,
+              pageSize: bounties.pageSize,
+              total: bounties.total,
+            }}
+          />
+        </ListLayout>
+      </PolkadotTreasuryProvider>
     </TreasuryProvider>
   );
 }
