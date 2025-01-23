@@ -162,10 +162,10 @@ export default function FellowshipMemberSelector({
     }
   }, [highlightedIndex, show]);
 
-  useEffect(() => {
-    if (!show) return;
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (!show) return;
 
-    const handleKeyDown = (e) => {
       if (e.key === "ArrowDown") {
         setHighlightedIndex((prevIndex) =>
           prevIndex < searchedResult.length - 1 ? prevIndex + 1 : prevIndex,
@@ -177,14 +177,19 @@ export default function FellowshipMemberSelector({
       } else if (e.key === "Enter" && highlightedIndex >= 0) {
         onSelect(searchedResult[highlightedIndex]);
       }
-    };
+    },
+    [show, highlightedIndex, searchedResult, onSelect],
+  );
+
+  useEffect(() => {
+    if (!show) return;
 
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [show, highlightedIndex, searchedResult, onSelect]);
+  }, [show, highlightedIndex, searchedResult, onSelect, handleKeyDown]);
 
   return (
     <div ref={ref} className="relative">
