@@ -9,6 +9,7 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
 import { isPolkadotChain } from "next-common/utils/chain";
+import FellowshipFinanceOverview from "./fellowship/finance";
 
 export default function Overview() {
   const chain = useChain();
@@ -25,6 +26,12 @@ export default function Overview() {
 
       <WithPallet pallet="treasury">
         {isPolkadotChain(chain) ? <PolkadotTreasuryStats /> : <TreasuryStats />}
+      </WithPallet>
+
+      <WithPallet pallet="fellowshipTreasury">
+        <WithPallet pallet="fellowshipSalary">
+          <FellowshipFinanceOverview />
+        </WithPallet>
       </WithPallet>
 
       <WithPallet pallet="fellowshipSalary">
