@@ -11,7 +11,7 @@ export default function useQueryFellowshipSalaryBalance(symbol) {
 
   let salaryAccount = null;
 
-  if (chain === Chains.polkadot) {
+  if (chain === Chains.polkadot || chain === Chains.collectives) {
     salaryAccount = StatemintFellowShipSalaryAccount;
   }
 

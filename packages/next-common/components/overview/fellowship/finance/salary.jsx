@@ -1,14 +1,16 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
 import LoadableContent from "next-common/components/common/loadableContent";
-import DotTokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/dotTokenSymbolAsset";
 import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
-import { StatemintFellowShipSalaryAccount } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryFellowshipSalaryBalance";
+import useQueryFellowshipSalaryBalance, {
+  StatemintFellowShipSalaryAccount,
+} from "next-common/context/treasury/polkadotTreasury/hooks/useQueryFellowshipSalaryBalance";
+import { toPrecision } from "next-common/utils";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/tokenSymbolAsset";
 
 export default function FellowshipSalary() {
-  // TODO: fetch data
-  const isLoading = false;
-  const dot = 123456789;
+  const { balance, isLoading } = useQueryFellowshipSalaryBalance("USDT");
 
   const Title = (
     <>
@@ -28,10 +30,13 @@ export default function FellowshipSalary() {
       <LoadableContent isLoading={isLoading}>
         <div className="flex flex-col gap-[4px]">
           <div>
-            <FiatPriceLabel free={dot} />
+            <FiatPriceLabel usdtBalance={balance} />
           </div>
           <div className="flex flex-col gap-y-1 !ml-0">
-            <DotTokenSymbolAsset free={dot} />
+            <TokenSymbolAsset
+              amount={toPrecision(balance, SYMBOL_DECIMALS.USDT)}
+              symbol="USDT"
+            />
           </div>
         </div>
       </LoadableContent>

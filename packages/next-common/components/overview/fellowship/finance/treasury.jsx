@@ -4,11 +4,25 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import DotTokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/dotTokenSymbolAsset";
 import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
 import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
+import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
+
+function useFetchFellowshipTreasuryBalance() {
+  const api = useAssetHubApi();
+  const { result, loading } = useSubStorage(
+    "system",
+    "account",
+    [StatemintFellowShipTreasuryAccount],
+    {
+      api,
+    },
+  );
+
+  return { balance: result?.data?.free?.toString() || 0, loading };
+}
 
 export default function FellowshipTreasury() {
-  // TODO: fetch data
-  const isLoading = false;
-  const dot = 123456789;
+  const { balance, loading } = useFetchFellowshipTreasuryBalance();
 
   const Title = (
     <>
@@ -25,13 +39,13 @@ export default function FellowshipTreasury() {
 
   return (
     <SummaryItem title={Title}>
-      <LoadableContent isLoading={isLoading}>
+      <LoadableContent isLoading={loading}>
         <div className="flex flex-col gap-[4px]">
           <div>
-            <FiatPriceLabel free={dot} />
+            <FiatPriceLabel free={balance} />
           </div>
           <div className="flex flex-col gap-y-1 !ml-0">
-            <DotTokenSymbolAsset free={dot} />
+            <DotTokenSymbolAsset free={balance} />
           </div>
         </div>
       </LoadableContent>
