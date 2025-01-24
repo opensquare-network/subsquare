@@ -15,7 +15,6 @@ export default function TxSubmissionButton({
   onInBlock = noop,
   onSubmitted = noop,
   autoClose = true,
-  api,
 }) {
   const onClose = usePopupOnClose();
   const { isSubmitting, doSubmit } = useTxSubmission({
@@ -28,7 +27,6 @@ export default function TxSubmissionButton({
       }
       onSubmitted();
     },
-    api,
   });
 
   const isLoading = isSubmitting || loading;

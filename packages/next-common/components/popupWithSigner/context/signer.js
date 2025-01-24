@@ -12,7 +12,6 @@ import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
 import { useContextApi } from "next-common/context/api";
 import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
-import { usePopupParams } from "./params";
 
 export const SignerContext = createContext();
 
@@ -56,8 +55,7 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   const user = useUser();
   const userAddress = user?.address;
   const [proxyAddress, setProxyAddress] = useState(user?.proxyAddress);
-  const contextApi = useContextApi();
-  const { api = contextApi } = usePopupParams();
+  const api = useContextApi();
   const setSigner = useSetSigner();
   const signerAccount = useMemo(() => {
     if (!userAddress) {

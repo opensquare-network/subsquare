@@ -126,7 +126,6 @@ function Content() {
         loadingText={uploading ? "Uploading to IPFS..." : "Submitting..."}
         loading={uploading}
         getTxFunc={getTxFunc}
-        api={api}
       />
     </>
   );

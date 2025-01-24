@@ -113,7 +113,6 @@ function PopupContent({ member }) {
           router.push(`/${section}/referenda/${referendumIndex}`);
         }}
         onFinalized={() => dispatch(incPreImagesTrigger())}
-        api={api}
       />
     </>
   );
