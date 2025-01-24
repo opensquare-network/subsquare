@@ -1,12 +1,10 @@
 import BigNumber from "bignumber.js";
 import CurrencyInput from "next-common/components/currencyInput";
 import Labeled from "next-common/components/Labeled";
-import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
-import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import useBountyBond from "next-common/hooks/treasury/bounty/useBountyBond";
 import Input from "next-common/lib/input";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -23,11 +21,6 @@ export default function NewBountyPopup({ onClose }) {
   const dispatch = useDispatch();
   const [inputAmount, setInputAmount] = useState("");
   const [inputDescription, setInputDescription] = useState("");
-
-  const {
-    dotTreasuryBalanceOnBounties: bountiesBalance,
-    isDotTreasuryBalanceOnBountiesLoading: isLoading,
-  } = usePolkadotTreasury();
 
   const { bond } = useBountyBond(inputDescription);
 
@@ -49,17 +42,8 @@ export default function NewBountyPopup({ onClose }) {
       return;
     }
 
-    if (balance.gt(bountiesBalance)) {
-      dispatch(
-        newErrorToast(
-          "Bounty value must not be greater than available balance",
-        ),
-      );
-      return;
-    }
-
     return api.tx.bounties.proposeBounty(balance.toString(), inputDescription);
-  }, [inputAmount, decimals, api, bountiesBalance, inputDescription, dispatch]);
+  }, [inputAmount, decimals, api, inputDescription, dispatch]);
 
   return (
     <SimpleTxPopup
@@ -76,17 +60,14 @@ export default function NewBountyPopup({ onClose }) {
         router.push(`/treasury/bounties/${bountyId}`);
       }}
     >
-      <AmountInputWithHint
-        label="Value"
-        hintLabel="Bounties"
-        maxAmount={bountiesBalance}
-        isLoading={isLoading}
-        decimals={decimals}
-        symbol={symbol}
-        hintSymbol={symbol}
-        inputAmount={inputAmount}
-        setInputAmount={setInputAmount}
-      />
+      <Labeled text="Value">
+        <CurrencyInput
+          placeholder="0"
+          symbol={symbol}
+          value={inputAmount}
+          onValueChange={setInputAmount}
+        />
+      </Labeled>
 
       <Labeled text="Description">
         <Input
