@@ -99,3 +99,20 @@ export function useFiatPriceBySymbol(symbol) {
     isLoading: loading,
   };
 }
+
+export function useFiatPriceBySymbolSnapshot(symbol) {
+  const [getPrice, { data, loading }] = useDoTreasuryEcoLazyQuery(GET_PRICE);
+
+  useEffect(() => {
+    getPrice({ variables: { symbol } });
+  }, [getPrice]);
+
+  const price = find(data?.prices, {
+    symbol,
+  });
+
+  return {
+    price: price?.price ?? 0,
+    isLoading: loading,
+  };
+}
