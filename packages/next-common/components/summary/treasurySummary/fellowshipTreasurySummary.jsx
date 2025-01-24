@@ -1,7 +1,7 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import { useAssetHubApi } from "next-common/context/assetHub";
+import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import BalanceWithFiat from "./balanceWithFiat";
 import { AvailableItem, ToBeAwardedItem } from ".";
 import { useContextApi } from "next-common/context/api";

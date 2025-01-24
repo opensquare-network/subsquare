@@ -1,12 +1,12 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import SummaryLabelLinkItem from "../common/summaryLabelLinkItem";
-import { usePolkadotTreasurySummary } from "../context";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import SummaryItem from "next-common/components/summary/layout/item";
 import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
-import { StatemintFellowShipSalaryAccount } from "../hook/useQueryFellowshipSalaryBalance";
+import { StatemintFellowShipSalaryAccount } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryFellowshipSalaryBalance";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 
@@ -54,7 +54,7 @@ export default function FellowshipTreasuryOnAssetHub() {
     isFellowshipTreasuryDotBalanceLoading,
     fellowshipSalaryUsdtBalance,
     isFellowshipSalaryUsdtBalanceLoading,
-  } = usePolkadotTreasurySummary();
+  } = usePolkadotTreasury();
 
   return (
     <SummaryItem title="Fellowship">

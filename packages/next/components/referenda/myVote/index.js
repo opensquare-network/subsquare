@@ -11,12 +11,15 @@ import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Democracy } from "next-common/components/profile/votingHistory/common";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import MyVoteOnFinishedDemocracyReferendum from "./finished";
+import MyVoteOnActiveReferendum from "./active";
+import PopupOpenStateProvider from "next-common/context/popup/switch";
 
 const RemoveDemocracyVotePopup = dynamicPopup(() =>
   import("next-common/components/myReferendumVote/removeDemocracyVotePopup"),
 );
 
-export default function MyVote() {
+export function MyVoteOld() {
   const post = usePost();
   const referendumIndex = post?.referendumIndex;
   const [showRemovePopup, setShowRemoveVotePopup] = useState(false);
@@ -57,4 +60,18 @@ export default function MyVote() {
       )}
     </>
   );
+}
+
+export default function NewMyVote() {
+  const finishHeight = useDemocracyVoteFinishedHeight();
+
+  if (finishHeight) {
+    return <MyVoteOnFinishedDemocracyReferendum />;
+  } else {
+    return (
+      <PopupOpenStateProvider>
+        <MyVoteOnActiveReferendum />
+      </PopupOpenStateProvider>
+    );
+  }
 }

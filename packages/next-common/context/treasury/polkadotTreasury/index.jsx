@@ -1,30 +1,25 @@
-import { createContext, useContext } from "react";
+import { useContextApi } from "next-common/context/api";
 import useQueryAssetHubAssets from "next-common/hooks/assetHub/useQueryAssetHubAssets";
-import { useQueryAssetHubTreasuryFree } from "../hook/useQueryAssetHubTreasuryFree";
 import {
-  StatemintTreasuryAccount,
   getAssetBySymbol,
   StatemintFellowShipTreasuryAccount,
+  StatemintTreasuryAccount,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
-import { useContextApi } from "next-common/context/api";
-import useQueryFellowshipSalaryBalance from "../hook/useQueryFellowshipSalaryBalance";
-import {
-  useQueryBounties,
-  useBountiesTotalBalance,
-} from "../hook/useQueryBountiesData";
+import { createContext, useContext } from "react";
 import useQueryAmbassadorBalance, {
   AmbassadorAccount,
-} from "../hook/useQueryAmbassadorBalance";
+} from "./hooks/useQueryAmbassadorBalance";
+import { useQueryAssetHubTreasuryFree } from "./hooks/useQueryAssetHubTreasuryFree";
+import {
+  useBountiesTotalBalance,
+  useQueryBounties,
+} from "./hooks/useQueryBountiesData";
+import useQueryFellowshipSalaryBalance from "./hooks/useQueryFellowshipSalaryBalance";
 
-const PolkadotTreasurySummaryContext = createContext();
+const PolkadotTreasuryContext = createContext();
 
-function useTreasuryAccountAssetBalance(symbol) {
-  const asset = getAssetBySymbol(symbol);
-  return useQueryAssetHubAssets(asset.id, StatemintTreasuryAccount);
-}
-
-export function PolkadotTreasurySummaryProvider({ children }) {
+export default function PolkadotTreasuryProvider({ children }) {
   const api = useContextApi();
   const {
     free: dotTreasuryBalanceOnRelayChain,
@@ -75,7 +70,7 @@ export function PolkadotTreasurySummaryProvider({ children }) {
     isQueryBountiesLoading || isBountiesTotalBalanceLoading;
 
   return (
-    <PolkadotTreasurySummaryContext.Provider
+    <PolkadotTreasuryContext.Provider
       value={{
         dotTreasuryBalanceOnRelayChain,
         isDotTreasuryBalanceOnRelayChainLoading,
@@ -101,10 +96,15 @@ export function PolkadotTreasurySummaryProvider({ children }) {
       }}
     >
       {children}
-    </PolkadotTreasurySummaryContext.Provider>
+    </PolkadotTreasuryContext.Provider>
   );
 }
 
-export function usePolkadotTreasurySummary() {
-  return useContext(PolkadotTreasurySummaryContext);
+function useTreasuryAccountAssetBalance(symbol) {
+  const asset = getAssetBySymbol(symbol);
+  return useQueryAssetHubAssets(asset.id, StatemintTreasuryAccount);
+}
+
+export function usePolkadotTreasury() {
+  return useContext(PolkadotTreasuryContext);
 }

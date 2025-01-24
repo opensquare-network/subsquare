@@ -1,16 +1,16 @@
 import LoadableContent from "next-common/components/common/loadableContent";
-import { usePolkadotTreasurySummary } from "../context";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import SummaryItem from "next-common/components/summary/layout/item";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
-import { AmbassadorAccount } from "../hook/useQueryAmbassadorBalance";
+import { AmbassadorAccount } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryAmbassadorBalance";
 import Link from "next/link";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 
 export default function Ambassador() {
   const { ambassadorUsdtBalance, isAmbassadorUsdtBalanceLoading } =
-    usePolkadotTreasurySummary();
+    usePolkadotTreasury();
 
   return (
     <SummaryItem

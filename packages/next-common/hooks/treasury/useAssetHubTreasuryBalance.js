@@ -1,4 +1,4 @@
-import { useAssetHubApi } from "next-common/context/assetHub";
+import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import { useEffect, useState } from "react";

@@ -6,7 +6,6 @@ import FellowshipTreasurySummary from "next-common/components/summary/treasurySu
 import PostList from "next-common/components/postList";
 import { normalizeFellowshipTreasurySpendListItem } from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
 import { TreasuryProvider } from "next-common/context/treasury";
-import { AssetHubApiProvider } from "next-common/context/assetHub";
 
 export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const { items, total, page, pageSize } = pagedSpends;
@@ -17,22 +16,20 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const seoInfo = { title: category, desc: category };
 
   return (
-    <AssetHubApiProvider>
-      <TreasuryProvider pallet="fellowshipTreasury">
-        <ListLayout
-          seoInfo={seoInfo}
-          title={category}
-          summary={<FellowshipTreasurySummary />}
-        >
-          <PostList
-            category={category}
-            titleCount={total}
-            items={spends}
-            pagination={{ page, pageSize, total }}
-          />
-        </ListLayout>
-      </TreasuryProvider>
-    </AssetHubApiProvider>
+    <TreasuryProvider pallet="fellowshipTreasury">
+      <ListLayout
+        seoInfo={seoInfo}
+        title={category}
+        summary={<FellowshipTreasurySummary />}
+      >
+        <PostList
+          category={category}
+          titleCount={total}
+          items={spends}
+          pagination={{ page, pageSize, total }}
+        />
+      </ListLayout>
+    </TreasuryProvider>
   );
 }
 
