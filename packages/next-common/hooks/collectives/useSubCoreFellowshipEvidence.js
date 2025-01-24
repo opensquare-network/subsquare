@@ -4,10 +4,8 @@ import { useEffect, useState } from "react";
 export default function useSubCoreFellowshipEvidence(
   address,
   pallet = "fellowshipCore",
-  customApi,
 ) {
-  const contextApi = useContextApi();
-  const api = customApi || contextApi;
+  const api = useContextApi();
   const [wish, setWish] = useState("");
   const [evidence, setEvidence] = useState("");
   const [loading, setLoading] = useState(true);
