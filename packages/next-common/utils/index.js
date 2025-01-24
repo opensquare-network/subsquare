@@ -59,6 +59,10 @@ export function toPrecision(value, decimals = 0, fixed) {
   }
 }
 
+export function fromPrecision(value, decimals = 0) {
+  return BigNumber(value).times(Math.pow(10, decimals)).toString();
+}
+
 export function toPrecisionNumber(value, decimals = 0) {
   return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toNumber();
 }
