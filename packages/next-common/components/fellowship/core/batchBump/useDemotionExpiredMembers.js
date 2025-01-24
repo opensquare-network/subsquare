@@ -3,7 +3,7 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import { partition } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
-import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useFellowshipCoreMember";
+import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
 import { isDemotionExpired } from "next-common/utils/collective/demotionAndPromotion";
 import { isEqual } from "lodash-es";
 

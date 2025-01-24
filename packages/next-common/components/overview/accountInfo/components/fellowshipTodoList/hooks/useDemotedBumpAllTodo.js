@@ -4,7 +4,7 @@ import { partition } from "lodash-es";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { getDemotionExpiredCount } from "next-common/components/fellowship/core/memberWarnings";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useFellowshipCoreMember";
+import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
 
 export default function useDemotedBumpAllTodo() {
   const { members: coreMembers, loading: isLoading } =
