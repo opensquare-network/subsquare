@@ -21,7 +21,7 @@ export default function DemotedBumpAllTodo({ expiredMembersCount }) {
           </a>
           &nbsp;can be demoted.&nbsp;
           <ClickableText onClick={() => setShowBumpAllPopup(true)}>
-            Bump all
+            Demote all
           </ClickableText>
         </div>
       </div>
