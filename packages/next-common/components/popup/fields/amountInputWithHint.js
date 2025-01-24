@@ -5,7 +5,7 @@ import PopupLabel from "../label";
 import CurrencyInput from "next-common/components/currencyInput";
 import Tooltip from "next-common/components/tooltip";
 
-function MaxAmountHint({ title, value, isLoading, decimals, symbol }) {
+function MaxAmountHint({ title, value, isLoading, decimals }) {
   return (
     <div className="flex gap-[8px] items-center mb-[8px]">
       <span className="text12Medium text-textTertiary leading-none">
@@ -14,10 +14,7 @@ function MaxAmountHint({ title, value, isLoading, decimals, symbol }) {
       {isLoading ? (
         <Loading size={12} />
       ) : (
-        <span>
-          <BalanceDisplay balance={formatBalance(value, decimals)} />
-          <span className="text-textPrimary ml-1">{symbol}</span>
-        </span>
+        <BalanceDisplay balance={formatBalance(value, decimals)} />
       )}
     </div>
   );
@@ -27,7 +24,6 @@ export default function AmountInputWithHint({
   label = "Amount",
   hintLabel = "Available",
   hintTooltip = "",
-  hintSymbol,
   maxAmount,
   decimals,
   symbol,
@@ -42,7 +38,6 @@ export default function AmountInputWithHint({
         value={maxAmount}
         isLoading={isLoading}
         decimals={decimals}
-        symbol={hintSymbol}
       />
     </Tooltip>
   );
