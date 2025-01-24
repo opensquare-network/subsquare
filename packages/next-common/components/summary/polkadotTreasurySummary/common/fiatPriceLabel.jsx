@@ -2,7 +2,8 @@ import { useChainSettings } from "next-common/context/chain";
 import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
-import useFiatPrice, {
+import {
+  useFiatPriceSnapshot,
   useFiatPriceBySymbol,
 } from "next-common/hooks/useFiatPrice";
 import { toPrecision } from "next-common/utils";
@@ -14,7 +15,7 @@ export default function FiatPriceLabel({
   usdtBalance = 0,
   mythTokenBalance = 0,
 }) {
-  const { price: fiatPrice } = useFiatPrice();
+  const { price: fiatPrice } = useFiatPriceSnapshot();
   const { decimals } = useChainSettings();
   const { price: MYTHFiatPrice, isLoading: isMYTHFiatPriceLoading } =
     useFiatPriceBySymbol("MYTH");
