@@ -11,6 +11,7 @@ import useBountyBond from "next-common/hooks/treasury/bounty/useBountyBond";
 import Input from "next-common/lib/input";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { fromPrecision, toPrecision } from "next-common/utils";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -65,13 +66,14 @@ export default function NewBountyPopup({ onClose }) {
       title="New Bounty"
       onClose={onClose}
       getTxFunc={getTxFunc}
-      onInBlock={async () => {
-        const bountyId = await api.query.bounties.bountyCount();
-        if (bountyId.isEmpty) {
+      onInBlock={async ({ events }) => {
+        const eventData = getEventData(events, "bounties", "BountyProposed");
+        if (!eventData) {
           return;
         }
 
-        router.push(`/treasury/bounties/${bountyId.toNumber()}`);
+        const [bountyId] = eventData;
+        router.push(`/treasury/bounties/${bountyId}`);
       }}
     >
       <AmountInputWithHint
