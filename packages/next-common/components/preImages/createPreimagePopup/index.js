@@ -16,7 +16,7 @@ import {
   CancelReferendumButton,
   KillReferendumButton,
 } from "./templateButtons";
-import { isCollectivesChain } from "next-common/utils/chain";
+import { isCollectivesChain, isShibuyaChain } from "next-common/utils/chain";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import ForwardPopupProvider, {
   useForwardPopupContext,
@@ -129,9 +129,8 @@ function ProposalTemplateQuickStart() {
   const chain = useChain();
   return (
     <QuickStart>
-      {isCollectivesChain(chain) ? (
-        <FellowshipTreasurySpend />
-      ) : (
+      {isCollectivesChain(chain) && <FellowshipTreasurySpend />}
+      {!isCollectivesChain(chain) && !isShibuyaChain(chain) && (
         <SpendLocalTreasury />
       )}
       <SpendUSDxTreasury />
