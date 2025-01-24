@@ -3,11 +3,11 @@ import RecentProposals from "./recentProposals";
 import { useChain } from "next-common/context/chain";
 import TreasuryStats from "./treasuryStats";
 import WithPallet from "next-common/components/common/withPallet";
-import FellowshipSalaryOverview from "next-common/components/overview/fellowship/salary/overview";
+// import FellowshipSalaryOverview from "next-common/components/overview/fellowship/salary/overview";
 import MembersInduction from "./fellowship/membersInduction";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import PolkadotTreasuryStats from "./polkadotTreasuryStats";
-import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
+// import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
 import { isPolkadotChain } from "next-common/utils/chain";
 import FellowshipFinanceOverview from "./fellowship/finance";
 
@@ -34,13 +34,13 @@ export default function Overview() {
         </WithPallet>
       </WithPallet>
 
-      <WithPallet pallet="fellowshipSalary">
+      {/* <WithPallet pallet="fellowshipSalary">
         <FellowshipSalaryOverview />
       </WithPallet>
 
       <WithPallet pallet="fellowshipTreasury">
         <FellowshipTreasuryStats />
-      </WithPallet>
+      </WithPallet> */}
 
       <div>
         <RecentProposals />
