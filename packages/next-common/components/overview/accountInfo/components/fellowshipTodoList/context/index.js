@@ -1,56 +1,46 @@
-import { createContext, useContext, useMemo } from "react";
-import useMyDemotionTodo from "../hooks/useMyDemotionTodo";
-import useDemotedBumpAllTodo from "../hooks/useDemotedBumpAllTodo";
+import { useMemo } from "react";
+import DemotionTodoProvider, { useDemotionTodoData } from "./demotionTodo";
+import MyDemotionTodoProvider, {
+  useMyDemotionTodoData,
+} from "./myDemotionTodo";
 
-const FellowshipTodoListContext = createContext();
+export function FellowshipTodoListProvider({ children }) {
+  return (
+    <DemotionTodoProvider>
+      <MyDemotionTodoProvider>{children}</MyDemotionTodoProvider>
+    </DemotionTodoProvider>
+  );
+}
 
-function FellowshipTodoListProvider({ children }) {
+export function useFellowshipTodoListLoading() {
+  const { isLoading: isMyDemotionTodoLoading } = useMyDemotionTodoData();
+  const { isLoading: isDemotedBumpAllLoading } = useDemotionTodoData();
+  return isMyDemotionTodoLoading || isDemotedBumpAllLoading;
+}
+
+export function useFellowshipTodoList() {
   const {
     todo: { showEvidenceSubmissionTodo, showApproveReferendaCreationTodo },
-    isLoading: isMyDemotionTodoLoading,
-    myRank,
-  } = useMyDemotionTodo();
+  } = useMyDemotionTodoData();
   const {
     todo: { showDemotedBumpAllTodo },
-    isLoading: isDemotedBumpAllLoading,
-    expiredMembersCount,
-  } = useDemotedBumpAllTodo();
+  } = useDemotionTodoData();
 
-  const data = useMemo(
+  return useMemo(
     () => ({
-      todo: {
-        showEvidenceSubmissionTodo,
-        showApproveReferendaCreationTodo,
-        showDemotedBumpAllTodo,
-      },
-      myRank,
-      expiredMembersCount,
-      isLoading: isMyDemotionTodoLoading || isDemotedBumpAllLoading,
+      showEvidenceSubmissionTodo,
+      showApproveReferendaCreationTodo,
+      showDemotedBumpAllTodo,
     }),
     [
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
       showDemotedBumpAllTodo,
-      expiredMembersCount,
-      isMyDemotionTodoLoading,
-      isDemotedBumpAllLoading,
-      myRank,
     ],
   );
-
-  return (
-    <FellowshipTodoListContext.Provider value={data}>
-      {children}
-    </FellowshipTodoListContext.Provider>
-  );
 }
 
-function useFellowshipTodoListData() {
-  return useContext(FellowshipTodoListContext);
+export function useFellowshipTodoListCount() {
+  const todo = useFellowshipTodoList();
+  return Object.values(todo).filter(Boolean).length;
 }
-
-export {
-  FellowshipTodoListContext,
-  FellowshipTodoListProvider,
-  useFellowshipTodoListData,
-};

@@ -7,20 +7,19 @@ import CollectivesProvider, {
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import {
   FellowshipTodoListProvider,
-  useFellowshipTodoListData,
+  useFellowshipTodoListCount,
+  useFellowshipTodoListLoading,
 } from "./context";
 import Loading from "next-common/components/loading";
 
 function Title() {
-  const { todo, isLoading } = useFellowshipTodoListData();
-  const todoItemCount = Object.entries(todo).filter(
-    ([, shouldShow]) => shouldShow,
-  ).length;
+  const isLoading = useFellowshipTodoListLoading();
+  const count = useFellowshipTodoListCount();
   return (
     <div className="flex items-center gap-1 text14Medium text-textTertiary">
       <span>Fellowship To-do List</span>
       <span>·</span>
-      {isLoading ? <Loading size={16} /> : <span>{todoItemCount}</span>}
+      {isLoading ? <Loading size={16} /> : <span>{count}</span>}
     </div>
   );
 }
