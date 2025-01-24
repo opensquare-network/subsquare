@@ -22,6 +22,7 @@ import { useCommentActions } from "next-common/sima/context/commentActions";
 import { usePost } from "next-common/context/post";
 import { getRealField } from "next-common/sima/actions/common";
 import useIsCommentProxyAuthor from "next-common/hooks/useIsCommentProxyAuthor";
+import { useRouter } from "next/router";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -77,6 +78,7 @@ function CommentItemImpl({
   reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
 }) {
+  const router = useRouter();
   const post = usePost();
   const comment = useComment();
   const refCommentTree = useRef();
@@ -120,6 +122,7 @@ function CommentItemImpl({
         }),
       };
       setComments(newComments);
+      router.replace(router.asPath);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comments, setComments, comment._id]);
