@@ -1,5 +1,5 @@
 import CollapsePanel, { AlwaysVisible } from "../collapsePanel";
-import ToDoItems from "./todoItems";
+import TodoList from "./todoList";
 import NavigationButtons from "./navigationButtons";
 import CollectivesProvider, {
   useReferendaFellowshipPallet,
@@ -25,10 +25,6 @@ function Title() {
   );
 }
 
-function TodoList({ children }) {
-  return <div className="flex flex-col mt-[16px] gap-[4px]">{children}</div>;
-}
-
 function FellowshipTodoListImpl() {
   const referendaPallet = useReferendaFellowshipPallet();
   return (
@@ -38,9 +34,7 @@ function FellowshipTodoListImpl() {
           <AlwaysVisible>
             <NavigationButtons />
           </AlwaysVisible>
-          <TodoList>
-            <ToDoItems />
-          </TodoList>
+          <TodoList />
         </CollapsePanel>
       </FellowshipToDoListProvider>
     </ActiveReferendaProvider>
