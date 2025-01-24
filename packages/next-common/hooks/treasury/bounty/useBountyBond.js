@@ -5,9 +5,9 @@ import BigNumber from "bignumber.js";
 export default function useBountyBond(title) {
   const api = useContextApi();
   const bountyDepositBase =
-    api?.consts?.bounties?.bountyDepositBase?.toNumber();
+    api?.consts?.bounties?.bountyDepositBase?.toString();
   const dataDepositPerByte =
-    api?.consts?.bounties?.dataDepositPerByte?.toNumber();
+    api?.consts?.bounties?.dataDepositPerByte?.toString();
 
   const [bond, setBond] = useState(bountyDepositBase || 0);
   const [isLoading, setIsLoading] = useState(true);
