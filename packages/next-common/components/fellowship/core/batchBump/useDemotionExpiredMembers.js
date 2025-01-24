@@ -10,7 +10,7 @@ import { isEqual } from "lodash-es";
 export default function useDemotionExpiredMembers({
   isCandidate = false,
 } = {}) {
-  const { members: coreMembers, loading: isLoading } =
+  const { members: coreMembers, loading: isMembersLoading } =
     useFellowshipCoreMembers();
 
   const [members] = useMemo(
@@ -47,6 +47,6 @@ export default function useDemotionExpiredMembers({
 
   return {
     expiredMembers,
-    isLoading,
+    isLoading: isMembersLoading || isParamsLoading,
   };
 }

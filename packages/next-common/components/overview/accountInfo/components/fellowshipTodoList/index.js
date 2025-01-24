@@ -6,7 +6,7 @@ import CollectivesProvider, {
 } from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import {
-  FellowshipToDoListProvider,
+  FellowshipTodoListProvider,
   useFellowshipTodoListData,
 } from "./context";
 import Loading from "next-common/components/loading";
@@ -29,14 +29,14 @@ function FellowshipTodoListImpl() {
   const referendaPallet = useReferendaFellowshipPallet();
   return (
     <ActiveReferendaProvider pallet={referendaPallet}>
-      <FellowshipToDoListProvider>
+      <FellowshipTodoListProvider>
         <CollapsePanel labelItem={<Title />}>
           <AlwaysVisible>
             <NavigationButtons />
           </AlwaysVisible>
           <TodoList />
         </CollapsePanel>
-      </FellowshipToDoListProvider>
+      </FellowshipTodoListProvider>
     </ActiveReferendaProvider>
   );
 }
