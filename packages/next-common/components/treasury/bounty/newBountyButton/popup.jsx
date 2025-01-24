@@ -21,14 +21,14 @@ export default function NewBountyPopup({ onClose }) {
   const api = useContextApi();
   const dispatch = useDispatch();
   const [inputAmount, setInputAmount] = useState("");
-  const [inputTitle, setInputTitle] = useState("");
+  const [inputDescription, setInputDescription] = useState("");
 
   const {
     dotTreasuryBalanceOnBounties: bountiesBalance,
     isDotTreasuryBalanceOnBountiesLoading: isLoading,
   } = usePolkadotTreasury();
 
-  const { bond } = useBountyBond(inputTitle);
+  const { bond } = useBountyBond(inputDescription);
 
   const getTxFunc = useCallback(async () => {
     const balance = BigNumber(fromPrecision(inputAmount, decimals));
@@ -57,8 +57,8 @@ export default function NewBountyPopup({ onClose }) {
       return;
     }
 
-    return api.tx.bounties.proposeBounty(balance.toString(), inputTitle);
-  }, [inputAmount, decimals, api, bountiesBalance, inputTitle, dispatch]);
+    return api.tx.bounties.proposeBounty(balance.toString(), inputDescription);
+  }, [inputAmount, decimals, api, bountiesBalance, inputDescription, dispatch]);
 
   return (
     <SimpleTxPopup
@@ -86,11 +86,11 @@ export default function NewBountyPopup({ onClose }) {
         setInputAmount={setInputAmount}
       />
 
-      <Labeled text="Title">
+      <Labeled text="Description">
         <Input
-          placeholder="Please fill the title..."
-          value={inputTitle}
-          onValueChange={setInputTitle}
+          placeholder="Please fill the description..."
+          value={inputDescription}
+          onValueChange={setInputDescription}
         />
       </Labeled>
 
