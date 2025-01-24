@@ -1,10 +1,13 @@
 import BigNumber from "bignumber.js";
+import CurrencyInput from "next-common/components/currencyInput";
 import Labeled from "next-common/components/Labeled";
 import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
+import useBountyBond from "next-common/hooks/treasury/bounty/useBountyBond";
 import Input from "next-common/lib/input";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { fromPrecision, toPrecision } from "next-common/utils";
@@ -24,6 +27,8 @@ export default function NewBountyPopup({ onClose }) {
     dotTreasuryBalanceOnBounties: bountiesBalance,
     isDotTreasuryBalanceOnBountiesLoading: isLoading,
   } = usePolkadotTreasury();
+
+  const { bond } = useBountyBond(inputTitle);
 
   const getTxFunc = useCallback(async () => {
     const balance = BigNumber(fromPrecision(inputAmount, decimals));
@@ -88,6 +93,16 @@ export default function NewBountyPopup({ onClose }) {
           onValueChange={setInputTitle}
         />
       </Labeled>
+
+      <AdvanceSettings>
+        <Labeled text="Bounty Bond">
+          <CurrencyInput
+            disabled
+            value={toPrecision(bond, decimals)}
+            symbol={symbol}
+          />
+        </Labeled>
+      </AdvanceSettings>
     </SimpleTxPopup>
   );
 }
