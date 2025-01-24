@@ -1,4 +1,3 @@
-import { useCollectivesApi } from "next-common/context/collectives/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { getMemberData } from "../../hook/useMemberData";
@@ -11,18 +10,21 @@ import useRelatedReferenda from "next-common/hooks/fellowship/useRelatedReferend
 import { partition } from "lodash-es";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { getDemotionExpiredCount } from "next-common/components/fellowship/core/memberWarnings";
-import { useCoreFellowshipParams } from "./collectives";
-import { useBlockHeight } from "next-common/context/blockHeight";
+import { useContextApi } from "next-common/context/api";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useFellowshipCoreMember";
 
 const FellowshipToDoListContext = createContext();
 
 function useMyDemotionTodo() {
-  const api = useCollectivesApi();
+  const api = useContextApi();
   const corePallet = useCoreFellowshipPallet();
   const address = useRealAddress();
   const [isLoading, setIsLoading] = useState(true);
+  const [myRank, setMyRank] = useState(null);
   const blockTime = useSelector(blockTimeSelector);
-  const { blockHeight: latestHeight } = useBlockHeight();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
+
   const {
     relatedReferenda: relatedApproveReferenda,
     isLoading: isRelatedApprovedReferendaLoading,
@@ -51,6 +53,8 @@ function useMyDemotionTodo() {
       const lastProof = coreMember?.lastProof;
       const rank = collectiveMember?.rank;
       const params = coreParams;
+
+      setMyRank(rank);
 
       const { percentageValue, remainingBlocks, demotionPeriod } =
         getDemotionPeriodProgress({ rank, params, lastProof, latestHeight });
@@ -103,16 +107,16 @@ function useMyDemotionTodo() {
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
     },
+    myRank,
     isLoading,
   };
 }
 
 function useDemotedBumpAllTodo() {
-  const api = useCollectivesApi();
   const { members: coreMembers, loading: isLoading } =
-    useFellowshipCoreMembers(api);
-  const { blockHeight: latestHeight } = useBlockHeight();
-  const { params, isLoading: isParamsLoading } = useCoreFellowshipParams(api);
+    useFellowshipCoreMembers();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const { params, isLoading: isParamsLoading } = useCoreFellowshipParams();
 
   const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
@@ -142,6 +146,7 @@ function FellowshipToDoListProvider({ children }) {
   const {
     todo: { showEvidenceSubmissionTodo, showApproveReferendaCreationTodo },
     isLoading: isMyDemotionTodoLoading,
+    myRank,
   } = useMyDemotionTodo();
   const {
     todo: { showDemotedBumpAllTodo },
@@ -156,6 +161,7 @@ function FellowshipToDoListProvider({ children }) {
         showApproveReferendaCreationTodo,
         showDemotedBumpAllTodo,
       },
+      myRank,
       expiredMembersCount,
       isLoading: isMyDemotionTodoLoading || isDemotedBumpAllLoading,
     }),
@@ -166,6 +172,7 @@ function FellowshipToDoListProvider({ children }) {
       expiredMembersCount,
       isMyDemotionTodoLoading,
       isDemotedBumpAllLoading,
+      myRank,
     ],
   );
 

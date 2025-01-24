@@ -1,7 +1,3 @@
-import {
-  CollectivesApiProvider,
-  useCollectivesApi,
-} from "next-common/context/collectives/api";
 import CollapsePanel, { AlwaysVisible } from "../collapsePanel";
 import ToDoItems from "./todoItems";
 import NavigationButtons from "./navigationButtons";
@@ -13,7 +9,6 @@ import {
   FellowshipToDoListProvider,
   useFellowshipTodoListData,
 } from "./context";
-import { CollectivesBlockHeightProvider } from "./collectives";
 import Loading from "next-common/components/loading";
 
 function Title() {
@@ -35,10 +30,9 @@ function TodoList({ children }) {
 }
 
 function FellowshipTodoListImpl() {
-  const collectivesApi = useCollectivesApi();
   const referendaPallet = useReferendaFellowshipPallet();
   return (
-    <ActiveReferendaProvider pallet={referendaPallet} api={collectivesApi}>
+    <ActiveReferendaProvider pallet={referendaPallet}>
       <FellowshipToDoListProvider>
         <CollapsePanel labelItem={<Title />}>
           <AlwaysVisible>
@@ -56,11 +50,7 @@ function FellowshipTodoListImpl() {
 export default function FellowshipTodoList() {
   return (
     <CollectivesProvider section="fellowship">
-      <CollectivesApiProvider>
-        <CollectivesBlockHeightProvider>
-          <FellowshipTodoListImpl />
-        </CollectivesBlockHeightProvider>
-      </CollectivesApiProvider>
+      <FellowshipTodoListImpl />
     </CollectivesProvider>
   );
 }

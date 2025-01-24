@@ -35,16 +35,14 @@ export function getRetainTrackNameFromRank(chain, rank) {
   }
 }
 
-function PopupContent({ member, api: customApi, chain: customChain }) {
+function PopupContent({ member }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [enactment, setEnactment] = useState();
-  const contextApi = useContextApi();
-  const api = customApi || contextApi;
+  const api = useContextApi();
   const extensionAccounts = useExtensionAccounts();
   const [atRank, setAtRank] = useState(member?.rank);
-  const defaultChain = useChain();
-  const chain = customChain || defaultChain;
+  const chain = useChain();
   const trackName = getRetainTrackNameFromRank(chain, atRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
@@ -121,15 +119,10 @@ function PopupContent({ member, api: customApi, chain: customChain }) {
   );
 }
 
-export default function ApproveFellowshipMemberPopup({
-  member,
-  onClose,
-  api,
-  chain,
-}) {
+export default function ApproveFellowshipMemberPopup({ member, onClose }) {
   return (
     <PopupWithSigner title="Approve Fellowship Member" onClose={onClose}>
-      <PopupContent member={member} onClose={onClose} api={api} chain={chain} />
+      <PopupContent member={member} onClose={onClose} />
     </PopupWithSigner>
   );
 }

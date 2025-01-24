@@ -1,20 +1,13 @@
 import TodoTag from "./todoTag";
-import { useCollectivesApi } from "next-common/context/collectives/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import ClickableText from "./clickableText";
 import { useState } from "react";
 import SubmitEvidencePopup from "next-common/components/collectives/core/actions/more/submitEvidenceItem/popup";
 import ApproveFellowshipMemberPopup from "next-common/components/fellowship/core/members/actions/approve/popup";
-import Chains from "next-common/utils/consts/chains";
 import { useFellowshipTodoListData } from "./context";
 import BatchBumpPopup from "next-common/components/fellowship/core/batchBump/popup";
-import { ApiProviderWithApi } from "next-common/context/api";
-import CollectivesProvider from "next-common/context/collectives/collectives";
-import { useCoreFellowshipParams } from "./collectives";
-import { useBlockHeight } from "next-common/context/blockHeight";
 
 function RetentionEvidenceSubmissionTodo() {
-  const collectivesApi = useCollectivesApi();
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
   return (
     <>
@@ -30,7 +23,6 @@ function RetentionEvidenceSubmissionTodo() {
       </div>
       {showSubmitEvidencePopup && (
         <SubmitEvidencePopup
-          api={collectivesApi}
           onClose={() => {
             setShowSubmitEvidencePopup(false);
           }}
@@ -42,7 +34,6 @@ function RetentionEvidenceSubmissionTodo() {
 
 function RetentionReferendaCreationTodo({ rank }) {
   const address = useRealAddress();
-  const collectivesApi = useCollectivesApi();
   const [showApprovePopup, setShowApprovePopup] = useState(false);
 
   return (
@@ -59,8 +50,6 @@ function RetentionReferendaCreationTodo({ rank }) {
       </div>
       {showApprovePopup && (
         <ApproveFellowshipMemberPopup
-          api={collectivesApi}
-          chain={Chains.collectives}
           member={{ address, rank }}
           onClose={() => {
             setShowApprovePopup(false);
@@ -72,10 +61,7 @@ function RetentionReferendaCreationTodo({ rank }) {
 }
 
 function DemotedBumpAllTodo({ expiredMembersCount }) {
-  const api = useCollectivesApi();
-  const { params } = useCoreFellowshipParams(api);
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
-  const { blockHeight } = useBlockHeight();
 
   return (
     <>
@@ -97,23 +83,18 @@ function DemotedBumpAllTodo({ expiredMembersCount }) {
         </div>
       </div>
       {showBumpAllPopup && (
-        <ApiProviderWithApi api={api}>
-          <CollectivesProvider section="fellowship" params={params}>
-            <BatchBumpPopup
-              blockHeight={blockHeight}
-              onClose={() => {
-                setShowBumpAllPopup(false);
-              }}
-            />
-          </CollectivesProvider>
-        </ApiProviderWithApi>
+        <BatchBumpPopup
+          onClose={() => {
+            setShowBumpAllPopup(false);
+          }}
+        />
       )}
     </>
   );
 }
 
 export default function ToDoItems() {
-  const { todo, expiredMembersCount } = useFellowshipTodoListData();
+  const { todo, expiredMembersCount, myRank } = useFellowshipTodoListData();
   const {
     showEvidenceSubmissionTodo,
     showApproveReferendaCreationTodo,
@@ -123,7 +104,9 @@ export default function ToDoItems() {
   return (
     <>
       {showEvidenceSubmissionTodo && <RetentionEvidenceSubmissionTodo />}
-      {showApproveReferendaCreationTodo && <RetentionReferendaCreationTodo />}
+      {showApproveReferendaCreationTodo && (
+        <RetentionReferendaCreationTodo rank={myRank} />
+      )}
       {showDemotedBumpAllTodo && (
         <DemotedBumpAllTodo expiredMembersCount={expiredMembersCount} />
       )}

@@ -9,10 +9,7 @@ import useSigner from "next-common/components/common/tx/useSigner";
 import Editor from "next-common/components/editor";
 import PopupLabel from "next-common/components/popup/label";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import {
-  usePopupParams,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -53,8 +50,7 @@ function Content() {
   const [evidence, setEvidence] = useState("");
   const [wish, setWish] = useState("retention");
   const { uploading, upload } = useUploadToIpfs();
-  const contextApi = useContextApi();
-  const { api = contextApi } = usePopupParams();
+  const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
 
   const getTxFunc = useCallback(async () => {

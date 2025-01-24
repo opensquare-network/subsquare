@@ -10,6 +10,7 @@ import useMemberData from "./hook/useMemberData";
 import MemberDataProvider from "./context/memberDataContext";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
+import FellowshipTodoList from "./components/fellowshipTodoList";
 
 export default function CollectivesAccountInfoPanel() {
   const fellowshipMemberData = useMemberData("fellowship");
@@ -29,8 +30,9 @@ export default function CollectivesAccountInfoPanel() {
         <ProxyTip />
         <AccountHead width={width} />
         <Divider />
-
         <CollectivesAccountInfo />
+        <Divider />
+        <FellowshipTodoList />
 
         <ExtensionUpdatePrompt />
         <AccountPanelScrollPrompt />

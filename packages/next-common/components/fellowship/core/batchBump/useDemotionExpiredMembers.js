@@ -3,13 +3,12 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import { partition } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
-import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
+import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useFellowshipCoreMember";
 import { isDemotionExpired } from "next-common/utils/collective/demotionAndPromotion";
 import { isEqual } from "lodash-es";
 
 export default function useDemotionExpiredMembers({
   isCandidate = false,
-  blockHeight,
 } = {}) {
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembers();
@@ -20,14 +19,17 @@ export default function useDemotionExpiredMembers({
     [coreMembers, isCandidate],
   );
 
-  const defaultLatestHeight = useSelector(chainOrScanHeightSelector);
-  const latestHeight = blockHeight || defaultLatestHeight;
+  const latestHeight = useSelector(chainOrScanHeightSelector);
 
-  const params = useCoreFellowshipParams();
+  const { params, isLoading: isParamsLoading } = useCoreFellowshipParams();
   const expiredMembersRef = useRef([]);
 
   const expiredMembers = useMemo(() => {
     const newExpiredMembers = (members || []).filter((coreMember) => {
+      if (isParamsLoading) {
+        return false;
+      }
+
       const {
         status: { lastProof },
         rank,
@@ -41,7 +43,7 @@ export default function useDemotionExpiredMembers({
     }
 
     return expiredMembersRef.current;
-  }, [members, latestHeight, params]);
+  }, [members, latestHeight, params, isParamsLoading]);
 
   return {
     expiredMembers,

@@ -25,13 +25,12 @@ import { AssetHubApiProvider } from "next-common/context/assetHub";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
 import SecondaryButton from "next-common/lib/button/secondary";
 import Link from "next/link";
 import Button from "next-common/lib/button";
-import FellowshipTodoList from "./components/fellowshipTodoList";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -317,7 +316,6 @@ export function AccountHead({ width }) {
 
 export function CommonAccountInfoPanel() {
   const { width } = useWindowSize();
-  const chain = useChain();
 
   if (isNil(width)) {
     return null;
@@ -329,12 +327,6 @@ export function CommonAccountInfoPanel() {
       <AccountHead width={width} />
       <Divider />
       <AccountBalances />
-      {chain === Chains.polkadot && (
-        <>
-          <Divider />
-          <FellowshipTodoList />
-        </>
-      )}
       <ExtensionUpdatePrompt />
       <AssetHubManagePrompt />
       <MultisigManagePrompt />
