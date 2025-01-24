@@ -3,7 +3,7 @@ import Link from "next/link";
 import LoadableContent from "next-common/components/common/loadableContent";
 import DotTokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/dotTokenSymbolAsset";
 import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
-import { StatemintFellowShipSalaryAccount } from "next-common/components/summary/polkadotTreasurySummary/hook/useQueryFellowshipSalaryBalance";
+import { StatemintFellowShipSalaryAccount } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryFellowshipSalaryBalance";
 
 export default function FellowshipSalary() {
   // TODO: fetch data
