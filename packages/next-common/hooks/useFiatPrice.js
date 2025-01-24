@@ -105,7 +105,7 @@ export function useFiatPriceBySymbolSnapshot(symbol) {
 
   useEffect(() => {
     getPrice({ variables: { symbol } });
-  }, [getPrice]);
+  }, [getPrice, symbol]);
 
   const price = find(data?.prices, {
     symbol,
