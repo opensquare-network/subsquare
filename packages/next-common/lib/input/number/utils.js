@@ -1,30 +1,34 @@
 // https://github.com/cchanxzy/react-currency-input-field/tree/main/src/components/utils
 
+const GROUP_SEPARATOR = ",";
+const DECIMAL_SEPARATOR = ".";
+
 export const numberInputUtils = {
   formatValue,
   repositionCursor,
   count,
   cleanValue,
-  getLocaleConfig,
+  GROUP_SEPARATOR,
+  DECIMAL_SEPARATOR,
 };
 
 function count(str = "", char = "") {
   return Math.max(0, String(str).split(char).length - 1);
 }
 
-function cleanValue(value = "", { allowDecimals = true, decimalSeparator }) {
+function cleanValue(value = "", { allowDecimals = true } = {}) {
   return String(value).replace(
-    new RegExp(`[^0-9${allowDecimals ? decimalSeparator : ""}]`, "g"),
+    new RegExp(`[^0-9${allowDecimals ? DECIMAL_SEPARATOR : ""}]`, "g"),
     "",
   );
 }
 
-function formatValue(value = "", { decimalSeparator }) {
+function formatValue(value = "") {
   if (value === "") {
     return "";
   }
 
-  if (String(value).startsWith(decimalSeparator)) {
+  if (String(value).startsWith(DECIMAL_SEPARATOR)) {
     value = "0" + value;
   }
 
@@ -34,11 +38,11 @@ function formatValue(value = "", { decimalSeparator }) {
   });
 
   let formatted;
-  if (String(value).indexOf(decimalSeparator) >= 0) {
-    const [int, decimal = ""] = value.split(decimalSeparator);
+  if (String(value).indexOf(DECIMAL_SEPARATOR) >= 0) {
+    const [int, decimal = ""] = value.split(DECIMAL_SEPARATOR);
     const formattedInt = formatter.format(int);
 
-    formatted = `${formattedInt}${decimalSeparator}${decimal || ""}`;
+    formatted = `${formattedInt}${DECIMAL_SEPARATOR}${decimal || ""}`;
   } else {
     formatted = formatter.format(value);
   }
@@ -56,8 +60,6 @@ function repositionCursor({
   value,
   lastKeyStroke,
   stateValue,
-  groupSeparator,
-  decimalSeparator,
 }) {
   value = String(value);
 
@@ -69,7 +71,7 @@ function repositionCursor({
     // if cursor is to right of groupSeparator and backspace pressed, delete the character to the left of the separator and reposition the cursor
     if (
       lastKeyStroke === "Backspace" &&
-      stateValue[cursorPosition] === groupSeparator
+      stateValue[cursorPosition] === GROUP_SEPARATOR
     ) {
       splitValue.splice(cursorPosition - 1, 1);
       cursorPosition -= 1;
@@ -78,28 +80,28 @@ function repositionCursor({
     // if cursor is to left of groupSeparator and delete pressed, delete the character to the right of the separator and reposition the cursor
     if (
       lastKeyStroke === "Delete" &&
-      stateValue[cursorPosition] === groupSeparator
+      stateValue[cursorPosition] === GROUP_SEPARATOR
     ) {
       splitValue.splice(cursorPosition, 1);
       cursorPosition += 1;
     }
 
-    // if deleting the .(decimal separator) , re-calculate the position
+    // if deleting the . , re-calculate the position
     if (
       (lastKeyStroke === "Backspace" || lastKeyStroke === "Delete") &&
-      stateValue[cursorPosition] === decimalSeparator
+      stateValue[cursorPosition] === "."
     ) {
-      const [, decimal] = stateValue.split(decimalSeparator);
-      const formattedDecimal = formatValue(decimal, { decimalSeparator });
-      const groupSeparators = count(formattedDecimal, groupSeparator);
+      const [, decimal] = stateValue.split(".");
+      const formattedDecimal = formatValue(decimal);
+      const groupSeparators = count(formattedDecimal, GROUP_SEPARATOR);
 
       cursorPosition -= groupSeparators;
     }
 
-    // if adding the .(decimal separator) in anywhere, re-calculate the position
-    if (lastKeyStroke === decimalSeparator) {
+    // if adding the . in anywhere, re-calculate the position
+    if (lastKeyStroke === ".") {
       const rightString = stateValue.slice(cursorPosition);
-      const groupSeparators = count(rightString, groupSeparator);
+      const groupSeparators = count(rightString, GROUP_SEPARATOR);
 
       cursorPosition += groupSeparators;
     }
@@ -110,21 +112,4 @@ function repositionCursor({
   }
 
   return { modifiedValue, cursorPosition: selectionStart };
-}
-
-function getLocaleConfig() {
-  let groupSeparator = "";
-  let decimalSeparator = "";
-  const numberFormatter = new Intl.NumberFormat();
-
-  const parts = numberFormatter.formatToParts(1000.1);
-  parts.forEach((part) => {
-    if (part.type === "group") {
-      groupSeparator = part.value;
-    } else if (part.type === "decimal") {
-      decimalSeparator = part.value;
-    }
-  });
-
-  return { groupSeparator, decimalSeparator };
 }

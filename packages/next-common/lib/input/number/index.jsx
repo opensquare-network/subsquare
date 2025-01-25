@@ -42,17 +42,11 @@ function NumberInputImpl(
   },
   ref,
 ) {
-  const localeConfig = numberInputUtils.getLocaleConfig();
-
   const [stateValue, setStateValue] = useState(
     defaultValue
-      ? numberInputUtils.formatValue(defaultValue, {
-          decimalSeparator: localeConfig.decimalSeparator,
-        })
+      ? numberInputUtils.formatValue(defaultValue)
       : userValue
-      ? numberInputUtils.formatValue(userValue, {
-          decimalSeparator: localeConfig.decimalSeparator,
-        })
+      ? numberInputUtils.formatValue(userValue)
       : "",
   );
   const [cursor, setCursor] = useState(0);
@@ -90,17 +84,15 @@ function NumberInputImpl(
     if (isNil(userValue) && isNil(defaultValue)) {
       setStateValue("");
     } else if (!isNil(userValue)) {
-      const formattedValue = numberInputUtils.formatValue(userValue, {
-        decimalSeparator: localeConfig.decimalSeparator,
-      });
+      const formattedValue = numberInputUtils.formatValue(userValue);
       setStateValue(formattedValue);
     }
-  }, [userValue, defaultValue, localeConfig.decimalSeparator]);
+  }, [userValue, defaultValue]);
 
   function processChange(value, selectionStart) {
     value = String(value);
 
-    if (numberInputUtils.count(value, localeConfig.decimalSeparator) > 1) {
+    if (numberInputUtils.count(value, numberInputUtils.DECIMAL_SEPARATOR) > 1) {
       return;
     }
 
@@ -110,19 +102,14 @@ function NumberInputImpl(
         value,
         lastKeyStroke,
         stateValue,
-        groupSeparator: localeConfig.groupSeparator,
-        decimalSeparator: localeConfig.decimalSeparator,
       },
     );
 
     const stringValue = numberInputUtils.cleanValue(modifiedValue, {
       allowDecimals,
-      decimalSeparator: localeConfig.decimalSeparator,
     });
 
-    const formattedValue = numberInputUtils.formatValue(stringValue, {
-      decimalSeparator: localeConfig.decimalSeparator,
-    });
+    const formattedValue = numberInputUtils.formatValue(stringValue);
 
     if (cursorPosition !== null) {
       // Prevent cursor jumping
@@ -176,9 +163,7 @@ function NumberInputImpl(
       target: { value },
     } = event;
 
-    let validValue = numberInputUtils.cleanValue(value, {
-      decimalSeparator: localeConfig.decimalSeparator,
-    });
+    let validValue = numberInputUtils.cleanValue(value);
     if (BigNumber(validValue).gt(max)) {
       validValue = max;
     }
@@ -194,11 +179,7 @@ function NumberInputImpl(
   function handleStep(difference) {
     if (inputRef.current) {
       let { value } = inputRef.current;
-      value =
-        numberInputUtils.cleanValue(value, {
-          allowDecimals,
-          decimalSeparator: localeConfig.decimalSeparator,
-        }) || "0";
+      value = numberInputUtils.cleanValue(value, { allowDecimals }) || "0";
       const newValue = BigNumber(value).plus(difference).toString();
 
       if (BigNumber(newValue).gt(max)) {
