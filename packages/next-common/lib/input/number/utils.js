@@ -32,7 +32,7 @@ function formatValue(value = "") {
     value = "0" + value;
   }
 
-  const formatter = new Intl.NumberFormat(undefined, {
+  const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 20,
   });
