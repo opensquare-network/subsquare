@@ -66,7 +66,7 @@ const links = [
   },
   {
     name: "discord",
-    url: "https://www.acala.gg/",
+    url: "https://discord.gg/Tm3bkvP9Ku",
   },
   {
     name: "github",
