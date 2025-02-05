@@ -3,14 +3,10 @@ import { useReferendumVotingFinishIndexer } from "next-common/context/post/refer
 import { useEffect, useState } from "react";
 import { orderBy } from "lodash-es";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
-import { useSelector } from "react-redux";
-import {
-  fellowshipVotesSelector,
-  isLoadingFellowshipVotesSelector,
-} from "next-common/store/reducers/fellowship/votes";
 import useRankedCollectiveMinRank from "next-common/hooks/collectives/useRankedCollectiveMinRank";
 import { isSameAddress } from "next-common/utils";
 import { encodeAddress } from "@polkadot/util-crypto";
+import { useFellowshipVotesContext } from "next-common/context/collectives/fellowshipVotes";
 
 async function queryFellowshipCollectiveMembers(api, blockHash) {
   let blockApi = api;
@@ -41,8 +37,10 @@ export default function useCollectiveEligibleVoters() {
   const votingFinishIndexer = useReferendumVotingFinishIndexer();
   const minRank = useRankedCollectiveMinRank();
 
-  const { allAye, allNay } = useSelector(fellowshipVotesSelector);
-  const isLoadingVotes = useSelector(isLoadingFellowshipVotesSelector);
+  const {
+    votes: { allAye, allNay },
+    isLoading: isLoadingVotes,
+  } = useFellowshipVotesContext();
 
   useEffect(() => {
     if (!api || isLoadingVotes) {
@@ -50,7 +48,6 @@ export default function useCollectiveEligibleVoters() {
     }
 
     (async () => {
-      setLoading(true);
       try {
         const memberEntries = await queryFellowshipCollectiveMembers(
           api,

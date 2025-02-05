@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import { Button } from "components/gov2/sidebar/tally/styled";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import FellowshipVotesProvider from "next-common/context/collectives/fellowshipVotes";
 
 const EligibleVotersPopup = dynamicPopup(() => import("./popup"));
 
@@ -11,7 +12,9 @@ function EligibleVoters() {
     <>
       <Button onClick={() => setShowEligibleVoters(true)}>All votes</Button>
       {showEligibleVoters && (
-        <EligibleVotersPopup onClose={() => setShowEligibleVoters(false)} />
+        <FellowshipVotesProvider>
+          <EligibleVotersPopup onClose={() => setShowEligibleVoters(false)} />
+        </FellowshipVotesProvider>
       )}
     </>
   );
