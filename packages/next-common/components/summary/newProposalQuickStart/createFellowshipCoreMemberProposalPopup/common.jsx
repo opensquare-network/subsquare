@@ -1,5 +1,10 @@
+import { getTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 import Loading from "next-common/components/loading";
-import { WarningMessage } from "next-common/components/setting/styled";
+import {
+  InfoMessage,
+  WarningMessage,
+} from "next-common/components/setting/styled";
+import { AddressUser } from "next-common/components/user";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 export function ReferendaWarningMessage({ isLoading, relatedReferenda }) {
@@ -30,5 +35,19 @@ export function ReferendaWarningMessage({ isLoading, relatedReferenda }) {
       </a>{" "}
       currently in progress
     </WarningMessage>
+  );
+}
+
+export function ReferendaApproveMessage({ toRank, who }) {
+  if (!toRank || !who) {
+    return null;
+  }
+
+  return (
+    <InfoMessage className="flex-wrap gap-x-2">
+      Will create a referendum in {getTrackNameFromRank(toRank)} track to
+      approve
+      <AddressUser add={who} />
+    </InfoMessage>
   );
 }

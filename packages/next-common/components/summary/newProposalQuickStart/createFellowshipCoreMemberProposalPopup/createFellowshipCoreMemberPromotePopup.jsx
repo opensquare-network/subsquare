@@ -10,7 +10,7 @@ import { getTrackNameFromRank } from "next-common/components/fellowship/core/mem
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
-import { ReferendaWarningMessage } from "./common";
+import { ReferendaWarningMessage, ReferendaApproveMessage } from "./common";
 import ErrorInfoPanel from "next-common/components/summary/styled/errorInfoPanel";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { find } from "lodash-es";
@@ -62,6 +62,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
     <Popup title="New Promote Proposal" onClose={onClose}>
       {whoField}
       <RankField title="To Rank" rank={toRank} readOnly />
+      <ReferendaApproveMessage toRank={toRank} who={who} />
       <ReferendaWarningMessage
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}
