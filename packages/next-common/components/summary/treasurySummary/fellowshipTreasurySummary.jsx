@@ -15,7 +15,7 @@ import {
   useTreasuryPallet,
 } from "next-common/context/treasury";
 import Tooltip from "next-common/components/tooltip";
-import useFiatPrice from "next-common/hooks/useFiatPrice";
+import { useFiatPriceSnapshot } from "next-common/hooks/useFiatPrice";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 
@@ -128,7 +128,7 @@ function FellowshipTreasuryAvailableItem({ price }) {
 }
 
 export default function FellowshipTreasurySummary() {
-  const { price } = useFiatPrice();
+  const { price } = useFiatPriceSnapshot();
 
   return (
     <ActiveReferendaProvider pallet="fellowshipReferenda">
