@@ -8,13 +8,10 @@ export const StatemintFellowShipSalaryAccount =
 
 export default function useQueryFellowshipSalaryBalance(symbol) {
   const chain = useChain();
-
-  let salaryAccount = null;
-
-  if (chain === Chains.polkadot || chain === Chains.collectives) {
-    salaryAccount = StatemintFellowShipSalaryAccount;
+  if (![Chains.polkadot, Chains.collectives].includes(chain)) {
+    throw new Error(`Not in correct chain to query fellowship salary balance`);
   }
 
   const asset = getAssetBySymbol(symbol);
-  return useQueryAssetHubAssets(asset.id, salaryAccount);
+  return useQueryAssetHubAssets(asset.id, StatemintFellowShipSalaryAccount);
 }
