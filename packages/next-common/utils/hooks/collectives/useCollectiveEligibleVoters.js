@@ -11,6 +11,7 @@ import {
 import useRankedCollectiveMinRank from "next-common/hooks/collectives/useRankedCollectiveMinRank";
 import { isSameAddress } from "next-common/utils";
 import { encodeAddress } from "@polkadot/util-crypto";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 
 async function queryFellowshipCollectiveMembers(api, blockHash) {
   let blockApi = api;
@@ -31,6 +32,7 @@ function getMemberVotes(rank, minRank) {
 
 export default function useCollectiveEligibleVoters() {
   const api = useContextApi();
+  const currentHeight = useSelector(latestHeightSelector);
 
   const [voters, setVoters] = useState({
     votedMembers: [],
@@ -94,7 +96,15 @@ export default function useCollectiveEligibleVoters() {
         setLoading(false);
       }
     })();
-  }, [api, votingFinishIndexer, isLoadingVotes, allAye, allNay, minRank]);
+  }, [
+    api,
+    votingFinishIndexer,
+    isLoadingVotes,
+    allAye,
+    allNay,
+    minRank,
+    currentHeight,
+  ]);
 
   return {
     ...voters,
