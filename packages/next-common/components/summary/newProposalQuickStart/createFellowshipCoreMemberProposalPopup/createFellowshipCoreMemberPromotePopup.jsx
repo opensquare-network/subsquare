@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import RankField from "next-common/components/popup/fields/rankField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
@@ -16,6 +16,7 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import { isNil } from "lodash-es";
+import ReferendaOptions from "next-common/components/popup/fields/referendaOptions";
 
 export function NotAvailableMemberPrompt() {
   return (
@@ -58,6 +59,9 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(who);
   const isReferendaExisted = relatedReferenda.length > 0;
 
+  const [checkDeposit, setCheckDeposit] = useState(true);
+  const [checkVoteAye, setCheckVoteAye] = useState(true);
+
   return (
     <Popup title="New Promote Proposal" onClose={onClose}>
       {whoField}
@@ -68,6 +72,12 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
         relatedReferenda={relatedReferenda}
       />
       {!isAvailableMember && <NotAvailableMemberPrompt />}
+      <ReferendaOptions
+        checkDeposit={checkDeposit}
+        onCheckDeposit={() => setCheckDeposit(!checkDeposit)}
+        checkVoteAye={checkVoteAye}
+        onCheckVoteAye={() => setCheckVoteAye(!checkVoteAye)}
+      />
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
@@ -78,6 +88,8 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
           rank={toRank}
           action="promote"
           trackName={trackName}
+          checkDeposit={checkDeposit}
+          checkVoteAye={checkVoteAye}
         />
       </div>
     </Popup>
