@@ -6,7 +6,7 @@ import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollec
 import useRankedCollectiveMinRank from "next-common/hooks/collectives/useRankedCollectiveMinRank";
 import { isSameAddress } from "next-common/utils";
 import { encodeAddress } from "@polkadot/util-crypto";
-import { useFellowshipVotesContext } from "next-common/context/collectives/votes";
+import { useFellowshipVotesContext } from "next-common/context/collectives/fellowshipVotes";
 
 async function queryFellowshipCollectiveMembers(api, blockHash) {
   let blockApi = api;
