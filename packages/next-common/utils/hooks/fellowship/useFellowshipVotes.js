@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { isNil } from "lodash-es";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,7 +10,6 @@ import {
 } from "next-common/store/reducers/fellowship/votes";
 import { partition } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 
 /**
  * // Fellowship voting storage: (pollIndex, address, VoteRecord)
@@ -46,7 +45,7 @@ export function normalizeVotingRecord(optionalRecord) {
   };
 }
 
-async function query(api, targetPollIndex, blockHash) {
+export async function query(api, targetPollIndex, blockHash) {
   let blockApi = api;
   if (blockHash) {
     blockApi = await api.at(blockHash);
@@ -100,36 +99,4 @@ export default function useFellowshipVotes(pollIndex, indexer) {
       dispatch(clearFellowshipVotesTrigger());
     };
   }, [api, pollIndex, indexer, votesTrigger, dispatch]);
-}
-
-export function useSubFellowshipVotes(pollIndex, indexer) {
-  const api = useContextApi();
-  const votesTrigger = useSelector(fellowshipVotesTriggerSelector);
-  const [fellowshipVotes, setFellowshipVotes] = useState({
-    allAye: [],
-    allNay: [],
-  });
-  const [isLoading, setIsLoading] = useState(true);
-  const currentHeight = useSelector(latestHeightSelector);
-
-  useEffect(() => {
-    if (!api || isNil(pollIndex)) {
-      return;
-    }
-
-    if (votesTrigger <= 1) {
-      setIsLoading(true);
-    }
-
-    query(api, pollIndex, indexer?.blockHash)
-      .then((votes) => {
-        const [allAye = [], allNay = []] = partition(votes, (v) => v.isAye);
-        setFellowshipVotes({ allAye, allNay });
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [api, pollIndex, indexer, votesTrigger, currentHeight]);
-
-  return { votes: fellowshipVotes, isLoading };
 }
