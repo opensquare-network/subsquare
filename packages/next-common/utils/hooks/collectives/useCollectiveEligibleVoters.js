@@ -3,15 +3,10 @@ import { useReferendumVotingFinishIndexer } from "next-common/context/post/refer
 import { useEffect, useState } from "react";
 import { orderBy } from "lodash-es";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
-import { useSelector } from "react-redux";
-import {
-  fellowshipVotesSelector,
-  isLoadingFellowshipVotesSelector,
-} from "next-common/store/reducers/fellowship/votes";
 import useRankedCollectiveMinRank from "next-common/hooks/collectives/useRankedCollectiveMinRank";
 import { isSameAddress } from "next-common/utils";
 import { encodeAddress } from "@polkadot/util-crypto";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import { useFellowshipVotesContext } from "next-common/context/collectives/votes";
 
 async function queryFellowshipCollectiveMembers(api, blockHash) {
   let blockApi = api;
@@ -32,7 +27,6 @@ function getMemberVotes(rank, minRank) {
 
 export default function useCollectiveEligibleVoters() {
   const api = useContextApi();
-  const currentHeight = useSelector(latestHeightSelector);
 
   const [voters, setVoters] = useState({
     votedMembers: [],
@@ -43,8 +37,10 @@ export default function useCollectiveEligibleVoters() {
   const votingFinishIndexer = useReferendumVotingFinishIndexer();
   const minRank = useRankedCollectiveMinRank();
 
-  const { allAye, allNay } = useSelector(fellowshipVotesSelector);
-  const isLoadingVotes = useSelector(isLoadingFellowshipVotesSelector);
+  const {
+    votes: { allAye, allNay },
+    isLoading: isLoadingVotes,
+  } = useFellowshipVotesContext();
 
   useEffect(() => {
     if (!api || isLoadingVotes) {
@@ -52,7 +48,6 @@ export default function useCollectiveEligibleVoters() {
     }
 
     (async () => {
-      setLoading(true);
       try {
         const memberEntries = await queryFellowshipCollectiveMembers(
           api,
@@ -96,15 +91,7 @@ export default function useCollectiveEligibleVoters() {
         setLoading(false);
       }
     })();
-  }, [
-    api,
-    votingFinishIndexer,
-    isLoadingVotes,
-    allAye,
-    allNay,
-    minRank,
-    currentHeight,
-  ]);
+  }, [api, votingFinishIndexer, isLoadingVotes, allAye, allNay, minRank]);
 
   return {
     ...voters,
