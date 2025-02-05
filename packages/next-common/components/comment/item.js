@@ -122,7 +122,10 @@ function CommentItemImpl({
         }),
       };
       setComments(newComments);
-      router.replace(router.asPath);
+
+      const scrollPosition = window.scrollY;
+      await router.replace(router.asPath);
+      window.scrollTo(0, scrollPosition);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comments, setComments, comment._id]);
