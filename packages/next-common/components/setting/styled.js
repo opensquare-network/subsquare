@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { GreyPanel } from "../styled/containers/greyPanel";
+import tw from "tailwind-styled-components";
 
 export const Wrapper = styled.div`
   @media screen and (max-width: 1024px) {
@@ -77,12 +78,6 @@ export const WarningMessage = styled.div`
   line-height: 140%;
 `;
 
-export const InfoMessage = styled(GreyPanel)`
-  padding: 10px 16px;
-
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-
-  color: var(--textSecondary);
+export const InfoMessage = tw(GreyPanel)`
+  text14Medium text-textSecondary px-4 py-2.5
 `;
