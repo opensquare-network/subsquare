@@ -15,7 +15,6 @@ import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
-import MultisigManagePrompt from "./components/multisigManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -326,7 +325,6 @@ export function CommonAccountInfoPanel() {
       <AccountBalances />
       <ExtensionUpdatePrompt />
       <AssetHubManagePrompt />
-      <MultisigManagePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
