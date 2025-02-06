@@ -33,6 +33,10 @@ export const colorStyle = {
     backgroundColor: "var(--gray100)",
     color: "var(--gray500)",
   },
+  [PromptTypes.GLOBAL]: {
+    backgroundColor: "var(--theme500)",
+    color: "var(--textPrimaryContrast)",
+  },
 };
 
 export default function ScrollPrompt({ prompts }) {
