@@ -1,12 +1,10 @@
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { SystemClose } from "@osn/icons/subsquare";
-import { colorStyle } from "next-common/components/scrollPrompt";
 import { isNil } from "lodash-es";
 
 export default function Notification({
   cacheKey,
-  type,
   children,
   expires = 15,
 }) {

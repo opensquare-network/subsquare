@@ -1,5 +1,4 @@
 import Notification from "./notification";
-import { PromptTypes } from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useMemo } from "react";
 import Link from "next/link";
