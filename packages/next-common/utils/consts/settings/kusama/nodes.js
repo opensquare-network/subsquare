@@ -4,16 +4,20 @@ const defaultKusamaNodes = [
     url: "wss://kusama-rpc.polkadot.io",
   },
   {
-    name: "OnFinality",
-    url: "wss://kusama.api.onfinality.io/public-ws",
-  },
-  {
     name: "IBP1",
     url: "wss://rpc.ibp.network/kusama",
   },
   {
     name: "SubQuery",
     url: "wss://kusama.rpc.subquery.network/public/ws",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://kusama.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Helixstreet",
+    url: "wss://rpc-kusama.helixstreet.io",
   },
   {
     name: "Dwellir",
