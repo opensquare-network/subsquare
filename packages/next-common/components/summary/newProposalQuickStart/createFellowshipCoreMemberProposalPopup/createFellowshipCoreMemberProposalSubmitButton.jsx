@@ -9,7 +9,10 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { find } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
-import { useCollectivesSection } from "next-common/context/collectives/collectives";
+import {
+  useCollectivesSection,
+  useRankedCollectivePallet,
+} from "next-common/context/collectives/collectives";
 
 export default function CreateFellowshipCoreMemberProposalSubmitButton({
   disabled,
@@ -18,6 +21,8 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   rank,
   action = "",
   trackName,
+  checkDecisionDeposit = false,
+  checkVoteAye = false,
 }) {
   const { members } = useFellowshipCoreMembers();
   const signerAccount = useSignerAccount();
@@ -27,9 +32,11 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   const myRankOk = me && me.rank >= 3;
 
   const api = useContextApi();
+
   const router = useRouter();
   const listPageType = useListPageType();
   const section = useCollectivesSection();
+  const collectivePallet = useRankedCollectivePallet();
 
   const buttonDisabled = disabled || !myRankOk || !who || !rank;
 
@@ -49,11 +56,27 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
     }
 
     const proposal = api.tx[corePallet][action](who, rank);
-    return api.tx[referendaPallet].submit(
+    const submitTx = api.tx[referendaPallet].submit(
       { FellowshipOrigins: trackName },
       { Inline: proposal.method.toHex() },
       enactment,
     );
+
+    const referendumCount = await api.query[referendaPallet].referendumCount();
+    const targetReferendumIndex = referendumCount.toNumber();
+
+    const optionsTxs = [
+      checkDecisionDeposit &&
+        api.tx[referendaPallet].placeDecisionDeposit(targetReferendumIndex),
+      checkVoteAye &&
+        api.tx[collectivePallet].vote(targetReferendumIndex, true),
+    ].filter(Boolean);
+
+    if (optionsTxs.length) {
+      return api.tx.utility.batch([submitTx, ...optionsTxs]);
+    }
+
+    return submitTx;
   }, [
     api,
     buttonDisabled,
@@ -62,8 +85,11 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
     who,
     rank,
     referendaPallet,
+    collectivePallet,
     trackName,
     enactment,
+    checkDecisionDeposit,
+    checkVoteAye,
   ]);
 
   return (
@@ -71,7 +97,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
       content={!myRankOk && "Only available to the members with rank >= 3"}
     >
       <TxSubmissionButton
-        disabled={buttonDisabled}
+        // disabled={buttonDisabled}
         title="Create Preimage"
         getTxFunc={getTxFunc}
         onInBlock={({ events }) => {
