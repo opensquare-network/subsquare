@@ -17,6 +17,8 @@ import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import { isNil } from "lodash-es";
 import ReferendaOptions from "next-common/components/popup/fields/referendaOptions";
+import { useContextApi } from "next-common/context/api";
+import { rankToPromoteTrack } from "next-common/utils/fellowship/rankToTrack";
 
 export function NotAvailableMemberPrompt() {
   return (
@@ -27,6 +29,9 @@ export function NotAvailableMemberPrompt() {
 }
 
 function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
+  const api = useContextApi();
+  const pallet = useReferendaFellowshipPallet();
+
   const { members, loading } = useFellowshipCoreMembers();
   const filteredMembers = useMemo(() => {
     if (loading || !members) {
@@ -61,6 +66,24 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
 
   const [checkDeposit, setCheckDeposit] = useState(true);
   const [checkVoteAye, setCheckVoteAye] = useState(true);
+  // TODO: extract as a hook: useTrackDecisionDeposit
+  const depositValue = useMemo(() => {
+    if (!api) {
+      return 0;
+    }
+
+    const tracks = api.consts[pallet].tracks.toJSON();
+    const track = find(
+      tracks,
+      (track) => track[0] === rankToPromoteTrack(toRank),
+    );
+
+    if (!track) {
+      return 0;
+    }
+
+    return track[1].decisionDeposit.toString();
+  }, [api, pallet, toRank]);
 
   return (
     <Popup title="New Promote Proposal" onClose={onClose}>
@@ -72,12 +95,15 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
         relatedReferenda={relatedReferenda}
       />
       {!isAvailableMember && <NotAvailableMemberPrompt />}
-      <ReferendaOptions
-        checkDeposit={checkDeposit}
-        onCheckDeposit={() => setCheckDeposit(!checkDeposit)}
-        checkVoteAye={checkVoteAye}
-        onCheckVoteAye={() => setCheckVoteAye(!checkVoteAye)}
-      />
+      {!!who && !!toRank && (
+        <ReferendaOptions
+          depositValue={depositValue}
+          checkDeposit={checkDeposit}
+          onCheckDeposit={() => setCheckDeposit(!checkDeposit)}
+          checkVoteAye={checkVoteAye}
+          onCheckVoteAye={() => setCheckVoteAye(!checkVoteAye)}
+        />
+      )}
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton

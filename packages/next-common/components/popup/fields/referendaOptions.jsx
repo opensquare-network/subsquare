@@ -1,21 +1,19 @@
-import SecondaryButton from "next-common/lib/button/secondary";
-import PopupLabel from "../label";
-import Checkbox from "next-common/components/checkbox";
-import { useChainSettings } from "next-common/context/chain";
-import { useContextApi } from "next-common/context/api";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
 import { SystemVoteAye } from "@osn/icons/subsquare";
+import Checkbox from "next-common/components/checkbox";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { useChainSettings } from "next-common/context/chain";
+import SecondaryButton from "next-common/lib/button/secondary";
+import { toPrecision } from "next-common/utils";
+import PopupLabel from "../label";
 
 export default function ReferendaOptions({
+  depositValue = 0,
   checkDeposit = false,
   onCheckDeposit,
   checkVoteAye = false,
   onCheckVoteAye,
 }) {
   const { decimals, symbol } = useChainSettings();
-  const api = useContextApi();
-  const deposit = api?.consts?.balances?.existentialDeposit?.toString() || 0;
 
   return (
     <div>
@@ -29,7 +27,7 @@ export default function ReferendaOptions({
               <ValueDisplay
                 showTooltip={false}
                 className="[&_.value-display-symbol]:text-inherit"
-                value={toPrecision(deposit, decimals)}
+                value={toPrecision(depositValue, decimals)}
                 symbol={symbol}
               />
             </>
