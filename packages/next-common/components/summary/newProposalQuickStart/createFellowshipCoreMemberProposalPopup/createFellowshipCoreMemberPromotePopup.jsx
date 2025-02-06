@@ -61,7 +61,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(who);
   const isReferendaExisted = relatedReferenda.length > 0;
 
-  const [checkDeposit, setCheckDeposit] = useState(true);
+  const [checkDecisionDeposit, setCheckDecisionDeposit] = useState(true);
   const [checkVoteAye, setCheckVoteAye] = useState(true);
   const decisionDeposit = useFellowshipTrackDecisionDeposit(
     rankToPromoteTrack(toRank),
@@ -79,9 +79,11 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
       {!isAvailableMember && <NotAvailableMemberPrompt />}
       {!!who && !!toRank && (
         <ReferendaOptions
-          depositValue={decisionDeposit}
-          checkDeposit={checkDeposit}
-          onCheckDeposit={() => setCheckDeposit(!checkDeposit)}
+          decisionDepositValue={decisionDeposit}
+          checkDecisionDeposit={checkDecisionDeposit}
+          onCheckDecisionDeposit={() =>
+            setCheckDecisionDeposit(!checkDecisionDeposit)
+          }
           checkVoteAye={checkVoteAye}
           onCheckVoteAye={() => setCheckVoteAye(!checkVoteAye)}
         />
@@ -96,7 +98,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
           rank={toRank}
           action="promote"
           trackName={trackName}
-          checkDeposit={checkDeposit}
+          checkDecisionDeposit={checkDecisionDeposit}
           checkVoteAye={checkVoteAye}
         />
       </div>

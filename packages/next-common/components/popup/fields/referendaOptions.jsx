@@ -7,9 +7,9 @@ import { toPrecision } from "next-common/utils";
 import PopupLabel from "../label";
 
 export default function ReferendaOptions({
-  depositValue = 0,
-  checkDeposit = false,
-  onCheckDeposit,
+  decisionDepositValue = 0,
+  checkDecisionDeposit = false,
+  onCheckDecisionDeposit,
   checkVoteAye = false,
   onCheckVoteAye,
 }) {
@@ -27,13 +27,13 @@ export default function ReferendaOptions({
               <ValueDisplay
                 showTooltip={false}
                 className="[&_.value-display-symbol]:text-inherit"
-                value={toPrecision(depositValue, decimals)}
+                value={toPrecision(decisionDepositValue, decimals)}
                 symbol={symbol}
               />
             </>
           }
-          checked={checkDeposit}
-          onClick={onCheckDeposit}
+          checked={checkDecisionDeposit}
+          onClick={onCheckDecisionDeposit}
         />
         <Option
           label={
