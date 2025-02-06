@@ -31,7 +31,7 @@ function ManageLink({ manageContent }) {
   );
 }
 
-function MultisigManageNotification() {
+export default function MultisigManageNotification() {
   const realAddress = useRealAddress();
   const myMultisigsCount = useSelector(myMultisigsCountSelector) || 0;
   const myMultisigs = useSelector(myMultisigsSelector);
@@ -74,8 +74,4 @@ function MultisigManageNotification() {
   ]);
 
   return promptContent;
-}
-
-export default function GlobalNotification() {
-  return <MultisigManageNotification />;
 }
