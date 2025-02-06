@@ -15,6 +15,7 @@ import Editor, { useEditorUploading } from "next-common/components/editor";
 import { getContentField } from "next-common/utils/sima/utils";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import AdvancedForm from "next-common/components/post/advanced/form";
+import { useChain } from "next-common/context/chain";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -67,6 +68,7 @@ export default function SimaPostCreate() {
   const advancedForm = useRef();
   const [isAdvanced, setIsAdvanced] = useState(false);
   const [formValue, setFormValue] = useState({});
+  const chain = useChain();
 
   const createPost = async () => {
     setCreating(true);
@@ -79,7 +81,19 @@ export default function SimaPostCreate() {
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
-      const { result, error } = await nextApi.post("sima/discussions", data);
+
+      const { result, error } = await nextApi.post(
+        "sima/discussions",
+        {
+          ...data,
+          chain,
+          title,
+          content,
+          contentType,
+          ...formValue,
+        },
+        { credentials: "include" },
+      );
       if (error) {
         if (error.data) {
           setErrors(error);
