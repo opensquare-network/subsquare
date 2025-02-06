@@ -3,9 +3,8 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { SystemClose } from "@osn/icons/subsquare";
 import { colorStyle } from "next-common/components/scrollPrompt";
 import { isNil } from "lodash-es";
-import { cn } from "next-common/utils";
 
-export default function Prompt({ cacheKey, type, children, expires = 15, className = "" }) {
+export default function Prompt({ cacheKey, type, children, expires = 15 }) {
   const [visible, setVisible] = useCookieValue(cacheKey, true);
 
   if (!visible) {
@@ -14,7 +13,7 @@ export default function Prompt({ cacheKey, type, children, expires = 15, classNa
 
   return (
     <GreyPanel
-      className={cn("text14Medium py-2.5 px-4 justify-between", className)}
+      className="text14Medium py-2.5 px-4 justify-between"
       style={colorStyle[type]}
     >
       <div>{children}</div>
