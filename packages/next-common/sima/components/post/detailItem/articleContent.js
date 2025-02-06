@@ -10,6 +10,7 @@ import PostDataSource from "next-common/components/postDataSource";
 import Appendant from "./appendant";
 import NonEdited from "next-common/components/detail/common/NonEdited";
 import { noop } from "lodash-es";
+import Poll from "next-common/components/poll";
 
 const Wrapper = styled.div`
   :hover {
@@ -69,6 +70,13 @@ export default function ArticleContent({ className = "", setIsEdit = noop }) {
         <>
           <Divider className="mb-4" />
           <NonEdited setIsEdit={setIsEdit} />
+        </>
+      )}
+
+      {post.poll && (
+        <>
+          <Divider margin={16} />
+          <Poll />
         </>
       )}
 
