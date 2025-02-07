@@ -48,6 +48,7 @@ function PopupContent({ member }) {
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
   const referendaPallet = useReferendaFellowshipPallet();
+  const action = "promote";
 
   const decisionDeposit = useFellowshipTrackDecisionDeposit(
     rankToPromoteTrack(toRank),
@@ -58,7 +59,7 @@ function PopupContent({ member }) {
   const submitTxFunc = useFellowshipCoreMemberProposalSubmitTx({
     rank: toRank,
     who: memberAddress,
-    action: "promote",
+    action,
     trackName,
     enactment,
     checkDecisionDeposit: referendaOptions.checkDecisionDeposit,
@@ -94,7 +95,7 @@ function PopupContent({ member }) {
         rank={toRank}
         who={memberAddress}
         trackName={trackName}
-        action="promote"
+        action={action}
       />
       <ReferendaWarningMessage
         isLoading={isLoading}
