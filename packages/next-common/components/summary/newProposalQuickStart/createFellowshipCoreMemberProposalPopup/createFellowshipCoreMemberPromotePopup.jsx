@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import RankField from "next-common/components/popup/fields/rankField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
@@ -16,9 +16,9 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import { isNil } from "lodash-es";
-import ReferendaOptions from "next-common/components/popup/fields/referendaOptions";
 import { rankToPromoteTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
+import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
 
 export function NotAvailableMemberPrompt() {
   return (
@@ -61,11 +61,11 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(who);
   const isReferendaExisted = relatedReferenda.length > 0;
 
-  const [checkDecisionDeposit, setCheckDecisionDeposit] = useState(true);
-  const [checkVoteAye, setCheckVoteAye] = useState(true);
   const decisionDeposit = useFellowshipTrackDecisionDeposit(
     rankToPromoteTrack(toRank),
   );
+  const { value: referendaOptions, component: referendaOptionsField } =
+    useReferendaOptionsField(decisionDeposit);
 
   return (
     <Popup title="New Promote Proposal" onClose={onClose}>
@@ -77,17 +77,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
         relatedReferenda={relatedReferenda}
       />
       {!isAvailableMember && <NotAvailableMemberPrompt />}
-      {!!who && !!toRank && (
-        <ReferendaOptions
-          decisionDepositValue={decisionDeposit}
-          checkDecisionDeposit={checkDecisionDeposit}
-          onCheckDecisionDeposit={() =>
-            setCheckDecisionDeposit(!checkDecisionDeposit)
-          }
-          checkVoteAye={checkVoteAye}
-          onCheckVoteAye={() => setCheckVoteAye(!checkVoteAye)}
-        />
-      )}
+      {!!who && !!toRank && referendaOptionsField}
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
@@ -98,8 +88,8 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
           rank={toRank}
           action="promote"
           trackName={trackName}
-          checkDecisionDeposit={checkDecisionDeposit}
-          checkVoteAye={checkVoteAye}
+          checkDecisionDeposit={referendaOptions.checkDecisionDeposit}
+          checkVoteAye={referendaOptions.checkVoteAye}
         />
       </div>
     </Popup>
