@@ -1,4 +1,3 @@
-import { getTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 import Loading from "next-common/components/loading";
 import {
   InfoMessage,
@@ -38,14 +37,14 @@ export function ReferendaWarningMessage({ isLoading, relatedReferenda }) {
   );
 }
 
-export function ReferendaActionMessage({ rank, who, action = "" }) {
+export function ReferendaActionMessage({ rank, who, trackName, action = "" }) {
   if (!rank || !who) {
     return null;
   }
 
   return (
     <InfoMessage className="flex-wrap gap-x-2">
-      Will create a referendum in {getTrackNameFromRank(rank)} track to {action}
+      Will create a referendum in {trackName} track to {action}
       <AddressUser add={who} />
     </InfoMessage>
   );

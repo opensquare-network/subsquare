@@ -95,6 +95,7 @@ function PopupContent({ member }) {
       <ReferendaActionMessage
         rank={toRank}
         who={memberAddress}
+        trackName={trackName}
         action="promote"
       />
       <ReferendaWarningMessage

@@ -62,7 +62,12 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
     <Popup title="New Retain Proposal" onClose={onClose}>
       {whoField}
       <RankField title="At Rank" rank={atRank} readOnly />
-      <ReferendaActionMessage rank={atRank} who={who} action="approve" />
+      <ReferendaActionMessage
+        rank={atRank}
+        who={who}
+        trackName={trackName}
+        action="approve"
+      />
       <ReferendaWarningMessage
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}

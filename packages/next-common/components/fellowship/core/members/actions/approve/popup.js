@@ -88,6 +88,7 @@ function PopupContent({ member }) {
       <ReferendaActionMessage
         rank={atRank}
         who={memberAddress}
+        trackName={trackName}
         action="approve"
       />
       <ReferendaWarningMessage
