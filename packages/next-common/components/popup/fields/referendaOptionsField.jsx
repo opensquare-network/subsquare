@@ -6,7 +6,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { toPrecision } from "next-common/utils";
 import PopupLabel from "../label";
 
-export default function ReferendaOptions({
+export default function ReferendaOptionsField({
   decisionDepositValue = 0,
   checkDecisionDeposit = false,
   onCheckDecisionDeposit,
