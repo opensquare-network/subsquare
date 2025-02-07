@@ -38,15 +38,14 @@ export function ReferendaWarningMessage({ isLoading, relatedReferenda }) {
   );
 }
 
-export function ReferendaApproveMessage({ toRank, who }) {
-  if (!toRank || !who) {
+export function ReferendaActionMessage({ rank, who, action = "" }) {
+  if (!rank || !who) {
     return null;
   }
 
   return (
     <InfoMessage className="flex-wrap gap-x-2">
-      Will create a referendum in {getTrackNameFromRank(toRank)} track to
-      approve
+      Will create a referendum in {getTrackNameFromRank(rank)} track to {action}
       <AddressUser add={who} />
     </InfoMessage>
   );
