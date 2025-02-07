@@ -67,7 +67,7 @@ export function Locked() {
 
 export default function AccountBalances() {
   return (
-    <CollapsePanel labelItem={<TotalBalance />}>
+    <CollapsePanel className="w-[240px]" labelItem={<TotalBalance />}>
       <Transferrable />
       <Reserved />
       <Locked />

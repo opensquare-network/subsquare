@@ -1,11 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ArrowTriangleDown } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { cn } from "next-common/utils";
 
-export default function CollapsePanel({ children, labelItem }) {
+export const AlwaysVisible = ({ children }) => children;
+
+export default function CollapsePanel({ className, children, labelItem }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { width } = useWindowSize();
 
@@ -14,6 +16,10 @@ export default function CollapsePanel({ children, labelItem }) {
   if (isNil(width)) {
     return null;
   }
+
+  const alwaysVisibleContent = React.Children.toArray(children).filter(
+    (child) => React.isValidElement(child) && child.type === AlwaysVisible,
+  );
 
   return width > 768 ? (
     <div className="flex">
@@ -30,9 +36,9 @@ export default function CollapsePanel({ children, labelItem }) {
         />
       </SecondaryButton>
 
-      <div className="flex flex-col ml-[12px] w-[240px]">
+      <div className={cn("flex flex-col ml-[12px]", className)}>
         {labelItem}
-        {isCollapsed && children}
+        {isCollapsed ? children : alwaysVisibleContent}
       </div>
     </div>
   ) : (

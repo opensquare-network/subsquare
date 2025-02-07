@@ -1,4 +1,4 @@
-import { useCallback, useState, memo } from "react";
+import { useCallback, useState, memo, useEffect } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
@@ -14,6 +14,9 @@ function PopupContent({ expiredMembers, isLoading }) {
   const pallet = useCoreFellowshipPallet();
   const defaultSelected = expiredMembers?.map((_, index) => index);
   const [selectedRows, setSelectedRows] = useState(defaultSelected);
+  useEffect(() => {
+    setSelectedRows(defaultSelected);
+  }, [defaultSelected]);
 
   const dispatch = useDispatch();
   const { fetch } = useFellowshipCoreMembers();

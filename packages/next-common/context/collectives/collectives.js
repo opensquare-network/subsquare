@@ -24,7 +24,7 @@ export function useCollectivesSection() {
 }
 
 export function useCoreFellowshipPallet() {
-  const { section } = useContext(CollectivesContext);
+  const section = useCollectivesSection();
   if ("ambassador" === section) {
     return "ambassadorCore";
   } else if ("fellowship" === section) {
@@ -35,7 +35,7 @@ export function useCoreFellowshipPallet() {
 }
 
 export function useRankedCollectivePallet() {
-  const { section } = useContext(CollectivesContext);
+  const section = useCollectivesSection();
   if ("ambassador" === section) {
     return "ambassadorCollective";
   } else if ("fellowship" === section) {
@@ -48,7 +48,7 @@ export function useRankedCollectivePallet() {
 }
 
 export function useSalaryFellowshipPallet() {
-  const { section } = useContext(CollectivesContext);
+  const section = useCollectivesSection();
   if ("ambassador" === section) {
     return "ambassadorSalary";
   } else if ("fellowship" === section) {
@@ -59,7 +59,7 @@ export function useSalaryFellowshipPallet() {
 }
 
 export function useReferendaFellowshipPallet() {
-  const { section } = useContext(CollectivesContext);
+  const section = useCollectivesSection();
   if ("ambassador" === section) {
     return "ambassadorReferenda";
   } else if ("fellowship" === section) {

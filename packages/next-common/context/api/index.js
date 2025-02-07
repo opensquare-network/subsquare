@@ -49,7 +49,11 @@ export default function ApiProvider({ children }) {
     }
   }, [currentEndpoint, chain, dispatch, endpoints, candidateNodes, nowApi]);
 
-  return <ApiContext.Provider value={nowApi}>{children}</ApiContext.Provider>;
+  return <ApiProviderWithApi api={nowApi}>{children}</ApiProviderWithApi>;
+}
+
+export function ApiProviderWithApi({ children, api }) {
+  return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>;
 }
 
 /**

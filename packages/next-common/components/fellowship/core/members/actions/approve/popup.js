@@ -23,9 +23,10 @@ import { CollectivesRetainTracks } from "next-common/components/fellowship/core/
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
 import { ReferendaWarningMessage } from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
+import { useChain } from "next-common/context/chain";
 
-export function getRetainTrackNameFromRank(rank) {
-  switch (process.env.NEXT_PUBLIC_CHAIN) {
+export function getRetainTrackNameFromRank(chain, rank) {
+  switch (chain) {
     case Chains.collectives:
     case Chains.westendCollectives:
       return CollectivesRetainTracks[rank];
@@ -41,7 +42,8 @@ function PopupContent({ member }) {
   const api = useContextApi();
   const extensionAccounts = useExtensionAccounts();
   const [atRank, setAtRank] = useState(member?.rank);
-  const trackName = getRetainTrackNameFromRank(atRank);
+  const chain = useChain();
+  const trackName = getRetainTrackNameFromRank(chain, atRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
   const referendaPallet = useReferendaFellowshipPallet();
