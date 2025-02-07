@@ -18,6 +18,14 @@ export default function TodoList() {
   const { expiredMembersCount } = useDemotionTodoData();
   const { myRank } = useMyDemotionTodoData();
 
+  if (
+    !showEvidenceSubmissionTodo &&
+    !showApproveReferendaCreationTodo &&
+    !showDemotedBumpAllTodo
+  ) {
+    return null;
+  }
+
   return (
     <TodoListWrapper>
       {showEvidenceSubmissionTodo && <RetentionEvidenceSubmissionTodo />}
