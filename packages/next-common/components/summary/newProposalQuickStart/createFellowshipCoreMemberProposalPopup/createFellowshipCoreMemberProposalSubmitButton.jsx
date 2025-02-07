@@ -88,7 +88,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
       content={!myRankOk && "Only available to the members with rank >= 3"}
     >
       <TxSubmissionButton
-        // disabled={buttonDisabled}
+        disabled={buttonDisabled}
         title="Create Preimage"
         getTxFunc={getTxFunc}
         onInBlock={({ events }) => {
