@@ -1,7 +1,5 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
-import { useListPageType } from "next-common/context/page";
-import { listPageCategory } from "next-common/utils/consts/business/category";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
@@ -11,7 +9,9 @@ import { find } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import {
   useCollectivesSection,
+  useCoreFellowshipPallet,
   useRankedCollectivePallet,
+  useReferendaFellowshipPallet,
 } from "next-common/context/collectives/collectives";
 
 export default function CreateFellowshipCoreMemberProposalSubmitButton({
@@ -34,21 +34,12 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   const api = useContextApi();
 
   const router = useRouter();
-  const listPageType = useListPageType();
   const section = useCollectivesSection();
+  const corePallet = useCoreFellowshipPallet();
+  const referendaPallet = useReferendaFellowshipPallet();
   const collectivePallet = useRankedCollectivePallet();
 
   const buttonDisabled = disabled || !myRankOk || !who || !rank;
-
-  let corePallet;
-  let referendaPallet;
-  if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
-    corePallet = "fellowshipCore";
-    referendaPallet = "fellowshipReferenda";
-  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
-    corePallet = "ambassadorCore";
-    referendaPallet = "ambassadorReferenda";
-  }
 
   const getTxFunc = useCallback(async () => {
     if (!api || buttonDisabled || !action) {
