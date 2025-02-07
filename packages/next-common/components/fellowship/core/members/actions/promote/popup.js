@@ -10,8 +10,6 @@ import { useDispatch } from "react-redux";
 import EnactmentBlocks from "next-common/components/summary/newProposalPopup/enactmentBlocks";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
-import { InfoMessage } from "next-common/components/setting/styled";
-import AddressUser from "next-common/components/user/addressUser";
 import Chains from "next-common/utils/consts/chains";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { getEventData } from "next-common/utils/sendTransaction";
@@ -22,7 +20,10 @@ import {
 } from "next-common/context/collectives/collectives";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
-import { ReferendaWarningMessage } from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
+import {
+  ReferendaActionMessage,
+  ReferendaWarningMessage,
+} from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
 
 export function getTrackNameFromRank(rank) {
@@ -91,14 +92,11 @@ function PopupContent({ member }) {
         readOnly
       />
       <RankField title="To Rank" rank={toRank} setRank={setToRank} readOnly />
-      <InfoMessage className="mb-4">
-        <span>
-          Will create a referendum in {trackName} track to promote{" "}
-          <div className="inline-flex relative top-[5px]">
-            <AddressUser add={memberAddress} />
-          </div>
-        </span>
-      </InfoMessage>
+      <ReferendaActionMessage
+        rank={toRank}
+        who={memberAddress}
+        action="promote"
+      />
       <ReferendaWarningMessage
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}

@@ -9,8 +9,6 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import EnactmentBlocks from "next-common/components/summary/newProposalPopup/enactmentBlocks";
 import { useRouter } from "next/router";
-import { InfoMessage } from "next-common/components/setting/styled";
-import AddressUser from "next-common/components/user/addressUser";
 import RankField from "next-common/components/popup/fields/rankField";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Chains from "next-common/utils/consts/chains";
@@ -22,7 +20,10 @@ import {
 import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
-import { ReferendaWarningMessage } from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
+import {
+  ReferendaActionMessage,
+  ReferendaWarningMessage,
+} from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
 
 export function getRetainTrackNameFromRank(rank) {
   switch (process.env.NEXT_PUBLIC_CHAIN) {
@@ -84,14 +85,11 @@ function PopupContent({ member }) {
         readOnly
       />
       <RankField title="At Rank" rank={atRank} setRank={setAtRank} readOnly />
-      <InfoMessage className="mb-4">
-        <span>
-          Will create a referendum in {trackName} track to approve{" "}
-          <div className="inline-flex relative top-[5px]">
-            <AddressUser add={memberAddress} />
-          </div>
-        </span>
-      </InfoMessage>
+      <ReferendaActionMessage
+        rank={atRank}
+        who={memberAddress}
+        action="approve"
+      />
       <ReferendaWarningMessage
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}
