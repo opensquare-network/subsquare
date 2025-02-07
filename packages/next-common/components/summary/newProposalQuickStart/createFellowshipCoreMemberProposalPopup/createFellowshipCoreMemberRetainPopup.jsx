@@ -12,7 +12,7 @@ import { getRetainTrackNameFromRank } from "next-common/components/fellowship/co
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
-import { ReferendaWarningMessage } from "./common";
+import { ReferendaActionMessage, ReferendaWarningMessage } from "./common";
 import { NotAvailableMemberPrompt } from "./createFellowshipCoreMemberPromotePopup";
 import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
 import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
@@ -62,6 +62,7 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
     <Popup title="New Retain Proposal" onClose={onClose}>
       {whoField}
       <RankField title="At Rank" rank={atRank} readOnly />
+      <ReferendaActionMessage rank={atRank} who={who} action="approve" />
       <ReferendaWarningMessage
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}
