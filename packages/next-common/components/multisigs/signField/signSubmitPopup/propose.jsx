@@ -4,8 +4,12 @@ import { useMultisigSignContext } from "./context";
 
 export default function PopupPropose() {
   const {
-    multisig: { callHex },
+    multisig: { callHex, when },
   } = useMultisigSignContext();
 
-  return callHex ? <ProposeTree /> : <ProposeExtrinsicWithToggleTabs />;
+  return callHex ? (
+    <ProposeTree callHex={callHex} when={when} />
+  ) : (
+    <ProposeExtrinsicWithToggleTabs />
+  );
 }

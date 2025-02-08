@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import Input from "next-common/lib/input";
-import { isNil } from "lodash-es";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import ProposeTree from "./proposeTree";
 import { useContextApi } from "next-common/context/api";
@@ -8,22 +7,20 @@ import { useMultisigSignContext } from "./context";
 
 export default function ProposeWithInputHex() {
   const {
-    multisig: { callHash },
+    multisig: { callHash, when },
+    setValue,
   } = useMultisigSignContext();
 
   const [inputHex, setInputHex] = useState("");
-  const [isMatchToCallHex, setIsMatchToCallHex] = useState(false);
   const api = useContextApi();
 
-  useEffect(() => {
-    if (!api || !callHash || isNil(inputHex)) {
-      return;
+  const inputCallHash = useMemo(() => {
+    if (!api || !inputHex) {
+      return "";
     }
 
-    const transferredCallHash = api?.registry?.hash(inputHex)?.toHex() || "";
-
-    setIsMatchToCallHex(transferredCallHash === callHash);
-  }, [api, callHash, inputHex]);
+    return api?.registry?.hash(inputHex)?.toHex() || "";
+  }, [inputHex, api]);
 
   return (
     <div className="flex flex-col space-y-2">
@@ -33,9 +30,11 @@ export default function ProposeWithInputHex() {
         value={inputHex}
         onChange={(e) => setInputHex(e.target.value)}
       />
-      {isMatchToCallHex && <ProposeTree />}
+      {inputCallHash === callHash && (
+        <ProposeTree callHex={inputHex} when={when} setValue={setValue} />
+      )}
 
-      {!isMatchToCallHex && inputHex && (
+      {inputCallHash !== callHash && inputHex && (
         <GreyPanel className="justify-start gap-x-2 text14Medium py-2.5 px-4 max-w-full text-red500 bg-red100">
           Call hex does not match the existing call hash
         </GreyPanel>
