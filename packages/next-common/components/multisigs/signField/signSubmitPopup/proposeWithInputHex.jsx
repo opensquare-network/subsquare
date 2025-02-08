@@ -5,7 +5,7 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import ProposeTree from "./proposeTree";
 import { useContextApi } from "next-common/context/api";
 
-export default function ProposeWithInputHex({ callHash, when }) {
+export default function ProposeWithInputHex({ callHash, when, setValue }) {
   const [inputHex, setInputHex] = useState("");
   const [isMatchToCallHex, setIsMatchToCallHex] = useState(false);
   const api = useContextApi();
@@ -28,7 +28,7 @@ export default function ProposeWithInputHex({ callHash, when }) {
         value={inputHex}
         onChange={(e) => setInputHex(e.target.value)}
       />
-      {isMatchToCallHex && <ProposeTree callHex={inputHex} when={when} />}
+      {isMatchToCallHex && <ProposeTree callHex={inputHex} when={when} setValue={setValue} />}
 
       {!isMatchToCallHex && inputHex && (
         <GreyPanel className="justify-start gap-x-2 text14Medium py-2.5 px-4 max-w-full text-red500 bg-red100">

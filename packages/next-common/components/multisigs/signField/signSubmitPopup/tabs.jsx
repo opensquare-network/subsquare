@@ -25,7 +25,7 @@ export default function ProposeExtrinsicWithToggleTabs({ setValue, callHash, whe
         setSelectedTabId={setSelectedTabId}
       />
       {selectedTabId === "input" ? (
-        <ProposeWithInputHex callHash={callHash} when={when} />
+        <ProposeWithInputHex callHash={callHash} when={when} setValue={setValue} />
       ) : (
         <ProposeWithExtrinsic setValue={setValue} />
       )}
