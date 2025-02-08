@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import { useAsync } from "react-use";
+import { CacheProvider, useCache } from "./cache";
 
 const BatchContext = createContext();
 
@@ -50,6 +51,40 @@ export function BatchProvider({ batchExecFn, children }) {
     <BatchContext.Provider value={{ handleInBatch }}>
       {children}
     </BatchContext.Provider>
+  );
+}
+
+function CachedBatchImpl({ children }) {
+  const { getCacheItem, setCacheItem } = useCache();
+  const { handleInBatch } = useContext(BatchContext);
+
+  const handleInCache = useCallback(
+    async (key) => {
+      const cached = getCacheItem(key);
+      if (cached) {
+        return cached;
+      }
+      const result = await handleInBatch(key);
+      setCacheItem(key, result);
+      return result;
+    },
+    [handleInBatch, getCacheItem, setCacheItem],
+  );
+
+  return (
+    <BatchContext.Provider value={{ handleInBatch: handleInCache }}>
+      {children}
+    </BatchContext.Provider>
+  );
+}
+
+export function CachedBatchProvider({ batchExecFn, children }) {
+  return (
+    <CacheProvider>
+      <BatchProvider batchExecFn={batchExecFn}>
+        <CachedBatchImpl>{children}</CachedBatchImpl>
+      </BatchProvider>
+    </CacheProvider>
   );
 }
 

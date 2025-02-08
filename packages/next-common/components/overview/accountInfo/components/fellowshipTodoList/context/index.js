@@ -3,11 +3,14 @@ import DemotionTodoProvider, { useDemotionTodoData } from "./demotionTodo";
 import MyDemotionTodoProvider, {
   useMyDemotionTodoData,
 } from "./myDemotionTodo";
+import ReferendaTodoProvider, { useReferendaTodoData } from "./referendaTodo";
 
 export function FellowshipTodoListProvider({ children }) {
   return (
     <DemotionTodoProvider>
-      <MyDemotionTodoProvider>{children}</MyDemotionTodoProvider>
+      <MyDemotionTodoProvider>
+        <ReferendaTodoProvider>{children}</ReferendaTodoProvider>
+      </MyDemotionTodoProvider>
     </DemotionTodoProvider>
   );
 }
@@ -25,17 +28,22 @@ export function useFellowshipTodoList() {
   const {
     todo: { showDemotedBumpAllTodo },
   } = useDemotionTodoData();
+  const {
+    todo: { showReferendaTodo },
+  } = useReferendaTodoData();
 
   return useMemo(
     () => ({
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
       showDemotedBumpAllTodo,
+      showReferendaTodo,
     }),
     [
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
       showDemotedBumpAllTodo,
+      showReferendaTodo,
     ],
   );
 }

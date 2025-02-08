@@ -4,6 +4,8 @@ import RetentionReferendaCreationTodo from "./retentionReferendaCreationTodo";
 import DemotedBumpAllTodo from "./demotedBumpAllTodo";
 import { useDemotionTodoData } from "../context/demotionTodo";
 import { useMyDemotionTodoData } from "../context/myDemotionTodo";
+import ReferendaTodo from "./referendaTodo";
+import { useReferendaTodoData } from "../context/referendaTodo";
 
 function TodoListWrapper({ children }) {
   return <div className="flex flex-col mt-[16px] gap-[4px]">{children}</div>;
@@ -14,14 +16,23 @@ export default function TodoList() {
     showEvidenceSubmissionTodo,
     showApproveReferendaCreationTodo,
     showDemotedBumpAllTodo,
+    showReferendaTodo,
   } = useFellowshipTodoList();
   const { expiredMembersCount } = useDemotionTodoData();
   const { myRank } = useMyDemotionTodoData();
+  const {
+    countOfTotalReferenda,
+    countOfEligibleReferenda,
+    referendaToVote,
+    referendaVotes,
+    myRank: myCollectiveRank,
+  } = useReferendaTodoData();
 
   if (
     !showEvidenceSubmissionTodo &&
     !showApproveReferendaCreationTodo &&
-    !showDemotedBumpAllTodo
+    !showDemotedBumpAllTodo &&
+    !showReferendaTodo
   ) {
     return null;
   }
@@ -34,6 +45,15 @@ export default function TodoList() {
       )}
       {showDemotedBumpAllTodo && (
         <DemotedBumpAllTodo expiredMembersCount={expiredMembersCount} />
+      )}
+      {showReferendaTodo && (
+        <ReferendaTodo
+          countOfTotalReferenda={countOfTotalReferenda}
+          countOfEligibleReferenda={countOfEligibleReferenda}
+          referendaToVote={referendaToVote}
+          referendaVotes={referendaVotes}
+          myRank={myCollectiveRank}
+        />
       )}
     </TodoListWrapper>
   );
