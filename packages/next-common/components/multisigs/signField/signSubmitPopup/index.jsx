@@ -20,6 +20,7 @@ import PopupPropose from "./propose";
 import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
+import MultisigSignProvider from "./context";
 
 export function SignSubmitInnerPopup({
   onClose,
@@ -114,14 +115,16 @@ export function SignSubmitInnerPopup({
   return (
     <Popup title="Multisig" onClose={onClose} maskClosable={false}>
       <SignerWithBalance />
-      <PopupPropose multisig={multisig} setValue={setValue} />
-      <TxSubmissionButton
-        disabled={isSubmitBtnDisabled}
-        getTxFunc={getTxFunc}
-        onFinalized={onFinalized}
-        autoClose={isEmptyFunc(onCreated)}
-        loading={isSubmitBtnLoading}
-      />
+      <MultisigSignProvider multisig={multisig} setValue={setValue}>
+        <PopupPropose />
+        <TxSubmissionButton
+          disabled={isSubmitBtnDisabled}
+          getTxFunc={getTxFunc}
+          onFinalized={onFinalized}
+          autoClose={isEmptyFunc(onCreated)}
+          loading={isSubmitBtnLoading}
+        />
+      </MultisigSignProvider>
     </Popup>
   );
 }

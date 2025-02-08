@@ -1,16 +1,11 @@
 import ProposeExtrinsicWithToggleTabs from "./tabs";
 import ProposeTree from "./proposeTree";
+import { useMultisigSignContext } from "./context";
 
-export default function PopupPropose({ multisig, setValue }) {
-  const { callHex, when, callHash } = multisig;
+export default function PopupPropose() {
+  const {
+    multisig: { callHex },
+  } = useMultisigSignContext();
 
-  return callHex ? (
-    <ProposeTree callHex={callHex} when={when} />
-  ) : (
-    <ProposeExtrinsicWithToggleTabs
-      setValue={setValue}
-      callHash={callHash}
-      when={when}
-    />
-  );
+  return callHex ? <ProposeTree /> : <ProposeExtrinsicWithToggleTabs />;
 }

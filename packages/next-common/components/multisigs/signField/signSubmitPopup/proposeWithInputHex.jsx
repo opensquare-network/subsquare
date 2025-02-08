@@ -4,8 +4,13 @@ import { isNil } from "lodash-es";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import ProposeTree from "./proposeTree";
 import { useContextApi } from "next-common/context/api";
+import { useMultisigSignContext } from "./context";
 
-export default function ProposeWithInputHex({ callHash, when, setValue }) {
+export default function ProposeWithInputHex() {
+  const {
+    multisig: { callHash },
+  } = useMultisigSignContext();
+
   const [inputHex, setInputHex] = useState("");
   const [isMatchToCallHex, setIsMatchToCallHex] = useState(false);
   const api = useContextApi();
@@ -28,7 +33,7 @@ export default function ProposeWithInputHex({ callHash, when, setValue }) {
         value={inputHex}
         onChange={(e) => setInputHex(e.target.value)}
       />
-      {isMatchToCallHex && <ProposeTree callHex={inputHex} when={when} setValue={setValue} />}
+      {isMatchToCallHex && <ProposeTree />}
 
       {!isMatchToCallHex && inputHex && (
         <GreyPanel className="justify-start gap-x-2 text14Medium py-2.5 px-4 max-w-full text-red500 bg-red100">

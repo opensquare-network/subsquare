@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Tab from "next-common/components/tab";
 import ProposeWithInputHex from "./proposeWithInputHex";
 import ProposeWithExtrinsic from "./proposeWithExtrinsic";
+import { useMultisigSignContext } from "./context";
 
-export default function ProposeExtrinsicWithToggleTabs({
-  setValue,
-  callHash,
-  when,
-}) {
+export default function ProposeExtrinsicWithToggleTabs() {
+  const {
+    multisig: { callHash, when },
+    setValue,
+  } = useMultisigSignContext();
+
   const tabs = [
     {
       tabId: "input",
