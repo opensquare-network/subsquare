@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tab from "next-common/components/tab";
 import ProposeWithInputHex from "./proposeWithInputHex";
 import ProposeWithExtrinsic from "./proposeWithExtrinsic";
 
-export default function ProposeExtrinsicWithToggleTabs({ setValue, callHash, when }) {
+export default function ProposeExtrinsicWithToggleTabs({
+  setValue,
+  callHash,
+  when,
+}) {
   const tabs = [
     {
       tabId: "input",
@@ -22,10 +26,17 @@ export default function ProposeExtrinsicWithToggleTabs({ setValue, callHash, whe
       <Tab
         tabs={tabs}
         selectedTabId={selectedTabId}
-        setSelectedTabId={setSelectedTabId}
+        setSelectedTabId={(id) => {
+          setSelectedTabId(id);
+          setValue({ isValid: false, data: {} });
+        }}
       />
       {selectedTabId === "input" ? (
-        <ProposeWithInputHex callHash={callHash} when={when} setValue={setValue} />
+        <ProposeWithInputHex
+          callHash={callHash}
+          when={when}
+          setValue={setValue}
+        />
       ) : (
         <ProposeWithExtrinsic setValue={setValue} />
       )}
