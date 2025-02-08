@@ -3,7 +3,7 @@ import Tab from "next-common/components/tab";
 import ProposeWithInputHex from "./proposeWithInputHex";
 import ProposeWithExtrinsic from "./proposeWithExtrinsic";
 
-export default function ProposeExtrinsicWithToggleTabs({ setValue, callHex, when }) {
+export default function ProposeExtrinsicWithToggleTabs({ setValue, callHash, when }) {
   const tabs = [
     {
       tabId: "input",
@@ -25,7 +25,7 @@ export default function ProposeExtrinsicWithToggleTabs({ setValue, callHex, when
         setSelectedTabId={setSelectedTabId}
       />
       {selectedTabId === "input" ? (
-        <ProposeWithInputHex callHex={callHex} when={when} />
+        <ProposeWithInputHex callHash={callHash} when={when} />
       ) : (
         <ProposeWithExtrinsic setValue={setValue} />
       )}

@@ -3,21 +3,22 @@ import Input from "next-common/lib/input";
 import { isNil } from "lodash-es";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import ProposeTree from "./proposeTree";
+import { useContextApi } from "next-common/context/api";
 
-// TODO: decode callHex to call data.(useCallFromHex)
-// check if inputHex is not match callHex
-export default function ProposeWithInputHex({ callHex, when }) {
+export default function ProposeWithInputHex({ callHash, when }) {
   const [inputHex, setInputHex] = useState("");
-  const [isNotMatchCallHex, setIsNotMatchCallHex] = useState(false);
+  const [isMatchToCallHex, setIsMatchToCallHex] = useState(false);
+  const api = useContextApi();
 
   useEffect(() => {
-    if (isNil(inputHex)) {
-      setIsNotMatchCallHex(false);
+    if (!api || !callHash || isNil(inputHex)) {
       return;
     }
 
-    setIsNotMatchCallHex(inputHex !== callHex);
-  }, [inputHex, callHex]);
+    const transferredCallHash = api?.registry?.hash(inputHex)?.toHex() || "";
+
+    setIsMatchToCallHex(transferredCallHash === callHash);
+  }, [api, callHash, inputHex]);
 
   return (
     <div className="flex flex-col space-y-2">
@@ -27,12 +28,12 @@ export default function ProposeWithInputHex({ callHex, when }) {
         value={inputHex}
         onChange={(e) => setInputHex(e.target.value)}
       />
-      {isNotMatchCallHex ? (
+      {isMatchToCallHex && <ProposeTree callHex={inputHex} when={when} />}
+
+      {!isMatchToCallHex && inputHex && (
         <GreyPanel className="justify-start gap-x-2 text14Medium py-2.5 px-4 max-w-full text-red500 bg-red100">
           Call hex does not match the existing call hash
         </GreyPanel>
-      ) : (
-        <ProposeTree callHex={inputHex} when={when} />
       )}
     </div>
   );
