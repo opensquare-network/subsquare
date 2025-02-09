@@ -36,7 +36,7 @@ export default function ProposeWithInputHex() {
 
       {inputCallHash !== callHash && inputHex && (
         <GreyPanel className="justify-start gap-x-2 text14Medium py-2.5 px-4 max-w-full text-red500 bg-red100">
-          Call hex does not match the existing call hash
+          Invalid call hex
         </GreyPanel>
       )}
     </div>
