@@ -20,8 +20,16 @@ const defaultPolkadotNodes = [
     url: "wss://polkadot.api.onfinality.io/public-ws",
   },
   {
+    name: "Permanence DAO EU",
+    url: "wss://polkadot.rpc.permanence.io",
+  },
+  {
     name: "Dwellir",
     url: "wss://polkadot-rpc.dwellir.com",
+  },
+  {
+    name: "Helixstreet",
+    url: "wss://rpc-polkadot.helixstreet.io",
   },
   {
     name: "Allnodes",
