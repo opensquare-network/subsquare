@@ -1,11 +1,11 @@
 import { isNil } from "lodash-es";
 import { useCallback, useState } from "react";
 import { getCookie, setCookie } from "../../utils/viewfuncs/cookies";
-import { BIND_TO_ACCOUNT_CACHE_KEY } from "next-common/utils/constants";
+import { ADDRESS_CACHE_KEYS } from "next-common/utils/constants";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function getCacheKey(key, address) {
-  return BIND_TO_ACCOUNT_CACHE_KEY.includes(key) && address
+  return ADDRESS_CACHE_KEYS.includes(key) && address
     ? `${address}-${key}`
     : key;
 }
