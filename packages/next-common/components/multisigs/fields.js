@@ -141,16 +141,5 @@ export function Status({ name, args = {}, updateAt }) {
     }
   }
 
-  const textComponent = (
-    <span className={cn("text14Medium", textColor)}>{name}</span>
-  );
-
-  if (updateAt) {
-    return (
-      <ExplorerLink indexer={updateAt} style={{ display: "inline" }}>
-        {textComponent}
-      </ExplorerLink>
-    );
-  }
-  return textComponent;
+  return <span className={cn("text14Medium", textColor)}>{name}</span>;
 }
