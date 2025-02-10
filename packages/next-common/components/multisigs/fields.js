@@ -4,7 +4,6 @@ import { useState } from "react";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import ExplorerLink from "next-common/components/links/explorerLink";
 import AddressUser from "next-common/components/user/addressUser";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { sortAddresses } from "@polkadot/util-crypto";
@@ -121,7 +120,7 @@ export const MultisigStatus = {
   Executed: "Executed",
 };
 
-export function Status({ name, args = {}, updateAt }) {
+export function Status({ name, args = {} }) {
   let textColor = "";
   switch (name) {
     case MultisigStatus.Approving: {
