@@ -5,12 +5,14 @@ import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFello
 import { getDemotionExpiredCount } from "next-common/components/fellowship/core/memberWarnings";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
+import useNonHookMemo from "next-common/hooks/useNonHookMemo";
 
 export default function useDemotedBumpAllTodo() {
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembers();
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { params, isLoading: isParamsLoading } = useCoreFellowshipParams();
+  const memo = useNonHookMemo();
 
   const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
@@ -18,7 +20,10 @@ export default function useDemotedBumpAllTodo() {
   );
 
   if (isParamsLoading) {
-    return { todo: { showDemotedBumpAllTodo: false }, isLoading: true };
+    return {
+      todo: { showDemotedBumpAllTodo: false },
+      isLoading: true,
+    };
   }
 
   const expiredMembersCount = getDemotionExpiredCount({
@@ -27,11 +32,14 @@ export default function useDemotedBumpAllTodo() {
     params,
   });
 
-  return {
-    todo: {
-      showDemotedBumpAllTodo: expiredMembersCount > 0,
-    },
-    expiredMembersCount,
-    isLoading,
-  };
+  return memo(
+    () => ({
+      todo: {
+        showDemotedBumpAllTodo: expiredMembersCount > 0,
+      },
+      expiredMembersCount,
+      isLoading,
+    }),
+    [expiredMembersCount, isLoading],
+  );
 }

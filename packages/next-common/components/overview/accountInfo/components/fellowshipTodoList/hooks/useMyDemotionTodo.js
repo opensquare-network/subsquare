@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useState } from "react";
 import { getMemberData } from "../../../hook/useMemberData";
@@ -96,12 +97,20 @@ export default function useMyDemotionTodo() {
     relatedApproveReferenda,
   ]);
 
-  return {
-    todo: {
+  return useMemo(
+    () => ({
+      todo: {
+        showEvidenceSubmissionTodo,
+        showApproveReferendaCreationTodo,
+      },
+      myRank,
+      isLoading,
+    }),
+    [
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
-    },
-    myRank,
-    isLoading,
-  };
+      myRank,
+      isLoading,
+    ],
+  );
 }
