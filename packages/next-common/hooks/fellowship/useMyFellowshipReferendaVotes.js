@@ -4,7 +4,10 @@ import { useRankedCollectivePallet } from "next-common/context/collectives/colle
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useState } from "react";
 
-export default function useMyFellowshipReferendaVotes(referendumIndexes = []) {
+export default function useMyFellowshipReferendaVotes(
+  referendumIndexes = [],
+  trigger,
+) {
   const api = useContextApi();
   const address = useRealAddress();
   const collectivePallet = useRankedCollectivePallet();
@@ -27,7 +30,7 @@ export default function useMyFellowshipReferendaVotes(referendumIndexes = []) {
       setReferendaVotes(myReferendaVotes);
       setIsLoading(false);
     });
-  }, [api, collectivePallet, address, referendumIndexes]);
+  }, [api, collectivePallet, address, referendumIndexes, trigger]);
 
   return {
     referendaVotes,

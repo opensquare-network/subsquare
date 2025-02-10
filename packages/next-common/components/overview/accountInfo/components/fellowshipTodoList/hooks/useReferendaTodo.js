@@ -6,7 +6,7 @@ import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVot
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 
-export default function useReferendaTodo() {
+export default function useReferendaTodo(trigger) {
   const { activeReferenda, isLoading: isLoadingActiveReferenda } =
     useActiveReferendaContext();
 
@@ -34,7 +34,7 @@ export default function useReferendaTodo() {
   );
 
   const { referendaVotes, isLoading: isLoadingVotes } =
-    useMyFellowshipReferendaVotes(myEligibleReferendaIndexes);
+    useMyFellowshipReferendaVotes(myEligibleReferendaIndexes, trigger);
 
   const referendaToVote = useMemo(() => {
     const voted = referendaVotes.map((r) => r.referendumIndex);

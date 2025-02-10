@@ -5,6 +5,7 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import { useCallback } from "react";
+import { useReferendaTodoData } from "../../context/referendaTodo";
 
 function IconButton({ icon, onClick }) {
   return (
@@ -48,15 +49,18 @@ export function VoteButtons({ referendumIndex }) {
     },
     [api, collectivePallet, referendumIndex],
   );
+  const { refresh } = useReferendaTodoData();
 
   const { doSubmit: doSubmitAye, isSubmitting: isSubmittingAye } =
     useTxSubmission({
       getTxFunc: () => getTxFunc(true),
+      onInBlock: refresh,
     });
 
   const { doSubmit: doSubmitNay, isSubmitting: isSubmittingNay } =
     useTxSubmission({
       getTxFunc: () => getTxFunc(false),
+      onInBlock: refresh,
     });
 
   const isSubmitting = isSubmittingAye || isSubmittingNay;
