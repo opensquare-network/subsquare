@@ -128,6 +128,18 @@ export const CACHE_KEY = {
   multisigPromptVisible: "multisig-management-prompt-visible",
 };
 
+export const BIND_TO_ACCOUNT_CACHE_KEY = [
+  CACHE_KEY.delegationPromptVisible,
+  CACHE_KEY.setAvatarPromptVisible,
+  CACHE_KEY.fellowshipDemotionExpiredVisible,
+  CACHE_KEY.fellowshipDemotionExpireRemindVisible,
+  CACHE_KEY.ambassadorDemotionExpiredVisible,
+  CACHE_KEY.ambassadorDemotionExpireRemindVisible,
+  CACHE_KEY.extensionUpdateMetadata,
+  CACHE_KEY.assetHubPromptVisible,
+  CACHE_KEY.multisigPromptVisible,
+];
+
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
 /**
  * @deprecated use `CHAIN`
