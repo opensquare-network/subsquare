@@ -2,27 +2,30 @@ import AddressComboField from "next-common/components/popup/fields/addressComboF
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useContextApi } from "next-common/context/api";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { getEventData } from "next-common/utils/sendTransaction";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import EnactmentBlocks from "next-common/components/summary/newProposalPopup/enactmentBlocks";
 import { useRouter } from "next/router";
-import { InfoMessage } from "next-common/components/setting/styled";
-import AddressUser from "next-common/components/user/addressUser";
 import RankField from "next-common/components/popup/fields/rankField";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Chains from "next-common/utils/consts/chains";
 import {
   useCollectivesSection,
-  useCoreFellowshipPallet,
   useReferendaFellowshipPallet,
 } from "next-common/context/collectives/collectives";
 import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
-import { ReferendaWarningMessage } from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
+import {
+  ReferendaActionMessage,
+  ReferendaWarningMessage,
+} from "next-common/components/summary/newProposalQuickStart/createFellowshipCoreMemberProposalPopup/common";
+import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
+import { rankToRetainTrack } from "next-common/utils/fellowship/rankToTrack";
+import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
+import { useFellowshipCoreMemberProposalSubmitTx } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 
 export function getRetainTrackNameFromRank(rank) {
   switch (process.env.NEXT_PUBLIC_CHAIN) {
@@ -38,35 +41,29 @@ function PopupContent({ member }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [enactment, setEnactment] = useState();
-  const api = useContextApi();
   const extensionAccounts = useExtensionAccounts();
   const [atRank, setAtRank] = useState(member?.rank);
   const trackName = getRetainTrackNameFromRank(atRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
   const referendaPallet = useReferendaFellowshipPallet();
-  const corePallet = useCoreFellowshipPallet();
+  const action = "approve";
 
-  const getTxFunc = useCallback(async () => {
-    if (!api || !memberAddress) {
-      return;
-    }
+  const decisionDeposit = useFellowshipTrackDecisionDeposit(
+    rankToRetainTrack(atRank),
+  );
+  const { value: referendaOptions, component: referendaOptionsField } =
+    useReferendaOptionsField(decisionDeposit);
 
-    const proposal = api.tx[corePallet].approve(memberAddress, atRank);
-    return api.tx[referendaPallet].submit(
-      { FellowshipOrigins: trackName }, //TODO: not working for ambassador
-      { Inline: proposal.method.toHex() },
-      enactment,
-    );
-  }, [
-    api,
-    atRank,
+  const submitTxFunc = useFellowshipCoreMemberProposalSubmitTx({
+    rank: atRank,
+    who: memberAddress,
+    action,
     trackName,
-    memberAddress,
     enactment,
-    corePallet,
-    referendaPallet,
-  ]);
+    checkDecisionDeposit: referendaOptions.checkDecisionDeposit,
+    checkVoteAye: referendaOptions.checkVoteAye,
+  });
 
   const { relatedReferenda, isLoading } = useRelatedRetentionReferenda(
     member?.address,
@@ -84,24 +81,25 @@ function PopupContent({ member }) {
         readOnly
       />
       <RankField title="At Rank" rank={atRank} setRank={setAtRank} readOnly />
-      <InfoMessage className="mb-4">
-        <span>
-          Will create a referendum in {trackName} track to approve{" "}
-          <div className="inline-flex relative top-[5px]">
-            <AddressUser add={memberAddress} />
-          </div>
-        </span>
-      </InfoMessage>
+      <ReferendaActionMessage
+        rank={atRank}
+        who={memberAddress}
+        trackName={trackName}
+        action={action}
+      />
       <ReferendaWarningMessage
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}
       />
+      {!!memberAddress && !!atRank && referendaOptionsField}
       <AdvanceSettings>
         <EnactmentBlocks setEnactment={setEnactment} />
       </AdvanceSettings>
       <TxSubmissionButton
         disabled={isLoading || referendaAlreadyCreated}
-        getTxFunc={getTxFunc}
+        getTxFunc={() => {
+          return submitTxFunc;
+        }}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, referendaPallet, "Submitted");
           if (!eventData) {
