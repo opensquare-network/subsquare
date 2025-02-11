@@ -13,6 +13,7 @@ export default function SignSubmit({ multisig = {} }) {
     <Wrapper>
       <Tooltip content="Approve">
         <SystemSignature
+          role="button"
           className="w-4 h-4"
           onClick={() => setIsShowSignSubmitPopup(true)}
         />
