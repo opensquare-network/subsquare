@@ -11,6 +11,7 @@ import { SignetContextProvider } from "./signet";
 import WagmiProvider from "./wagmi";
 import ReactQueryClientProvider from "./reactQuery";
 import UserAccountProvider from "./user/account";
+import WalletConnectProvider from "./walletconnect";
 
 export default function GlobalProvider({
   user,
@@ -40,11 +41,13 @@ export default function GlobalProvider({
                   >
                     <PageProvider pageProperties={pageProperties}>
                       <ApiProvider>
-                        <UserAccountProvider>
-                          <SignetContextProvider>
-                            {children}
-                          </SignetContextProvider>
-                        </UserAccountProvider>
+                        <WalletConnectProvider>
+                          <UserAccountProvider>
+                            <SignetContextProvider>
+                              {children}
+                            </SignetContextProvider>
+                          </UserAccountProvider>
+                        </WalletConnectProvider>
                       </ApiProvider>
                     </PageProvider>
                   </NavProvider>
