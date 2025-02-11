@@ -39,7 +39,7 @@ function formatValue(value = "") {
 
   let formatted;
   if (String(value).indexOf(DECIMAL_SEPARATOR) >= 0) {
-    const [int, decimal = ""] = value.split(DECIMAL_SEPARATOR);
+    const [int, decimal = ""] = String(value).split(DECIMAL_SEPARATOR);
     const formattedInt = formatter.format(int);
 
     formatted = `${formattedInt}${DECIMAL_SEPARATOR}${decimal || ""}`;
