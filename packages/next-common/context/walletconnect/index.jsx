@@ -188,7 +188,7 @@ export default function WalletConnectProvider({ children }) {
   }
 
   // Initiate a new Wallet Connect session, if not already wcInitialized
-  const initializeWcSession = async () => {
+  async function initializeWcSession() {
     if (wcInitialized) {
       let wcSession;
       if (wcProvider.current?.session) {
@@ -201,10 +201,10 @@ export default function WalletConnectProvider({ children }) {
       return wcSession;
     }
     return null;
-  };
+  }
 
   // Handle `approval()` by summoning a new modal and initiating a new Wallet Connect session
-  const initializeNewSession = async () => {
+  async function initializeNewSession() {
     if (!wcInitialized) {
       return;
     }
@@ -226,7 +226,7 @@ export default function WalletConnectProvider({ children }) {
     }
 
     return newWcSession;
-  };
+  }
 
   // Disconnect from current session
   async function disconnectWcSession() {
