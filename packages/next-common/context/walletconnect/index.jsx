@@ -6,7 +6,7 @@ import { getSdkError } from "@walletconnect/utils";
 import dayjs from "dayjs";
 import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { useChain, useChainSettings } from "../chain";
+import { useChain } from "../chain";
 
 // FIXME: use company project id
 // `projectId` is configured on `https://cloud.walletconnect.com/`
@@ -32,7 +32,6 @@ export function useWalletConnect() {
 export default function WalletConnectProvider({ children }) {
   const chain = useChain();
   const chainInfo = useChainInfo();
-  const { description } = useChainSettings();
 
   // The WalletConnect provider
   const wcProvider = useRef(null);
@@ -55,16 +54,16 @@ export default function WalletConnectProvider({ children }) {
   // Store the set of chain id the most recent session is connected to
   const sessionChain = useRef();
 
+  const caip = chainInfo
+    ? chainInfo?.genesisHash.substring(2).substring(0, 32)
+    : null;
+
+  const chainId = caip ? `${chain}:${caip}` : null;
+
   // Init WalletConnect provider & modal, and update as wcInitialized
   async function initProvider() {
     const provider = await UniversalProvider.init({
       projectId,
-      metadata: {
-        name: "Subsquare",
-        description,
-        url: `https://${chain}.subsquare.io/`,
-        // icons: ['https://staking.polkadot.cloud/img/wc-icon.png'],
-      },
       relayUrl: "wss://relay.walletconnect.com",
     });
 
@@ -97,12 +96,8 @@ export default function WalletConnectProvider({ children }) {
     // Update most recent connected chain
     sessionChain.current = chain;
 
-    const caips = [
-      `polkadot:${chainInfo?.genesisHash.substring(2).substring(0, 32)}`,
-    ];
-
     // If there are no chains connected, return early
-    if (!caips.length) {
+    if (!caip) {
       return;
     }
 
@@ -112,14 +107,14 @@ export default function WalletConnectProvider({ children }) {
 
     const namespaces = {
       polkadot: {
+        chains: [chainId],
         methods: ["polkadot_signTransaction", "polkadot_signMessage"],
-        chains: caips,
         events: ["chainChanged", "accountsChanged"],
       },
     };
 
     const connectConfig = {
-      optionalNamespaces: namespaces,
+      requiredNamespaces: namespaces,
     };
 
     // If no pairing topic or session exists, go ahead and create one, and store meta data for
@@ -163,12 +158,9 @@ export default function WalletConnectProvider({ children }) {
     }
     // Update most recent connected chains
     sessionChain.current = chain;
-    const caips = [
-      `polkadot:${chainInfo?.genesisHash.substring(2).substring(0, 32)}`,
-    ];
 
     // If there are no chains connected, return early
-    if (!caips.length) {
+    if (!caip) {
       return;
     }
     const topic = wcProvider.current.session?.topic;
@@ -177,7 +169,7 @@ export default function WalletConnectProvider({ children }) {
         topic,
         namespaces: {
           polkadot: {
-            chains: caips,
+            chains: [chainId],
             accounts: [],
             methods: ["polkadot_signTransaction", "polkadot_signMessage"],
             events: ["chainChanged", "accountsChanged"],
@@ -255,12 +247,9 @@ export default function WalletConnectProvider({ children }) {
       return { signature: "0x" };
     }
     const topic = wcProvider.current.session.topic;
-    const caip = `polkadot:${chainInfo?.genesisHash
-      .substring(2)
-      .substring(0, 32)}`;
 
     return await wcProvider.current.client.request({
-      chainId: caip,
+      chainId,
       topic,
       request: {
         method: "polkadot_signTransaction",
@@ -283,8 +272,6 @@ export default function WalletConnectProvider({ children }) {
     const walletConnectAccounts = Object.values(wcSession.namespaces)
       .map((namespace) => namespace.accounts)
       .flat();
-
-    const caip = chainInfo?.genesisHash.substring(2).substring(0, 32);
 
     // Only get accounts for the currently selected `caip`
     let filteredAccounts = walletConnectAccounts.filter((wcAccount) => {
