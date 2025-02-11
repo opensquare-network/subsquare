@@ -258,6 +258,7 @@ export default function WalletConnectProvider({ children }) {
     const caip = `polkadot:${chainInfo?.genesisHash
       .substring(2)
       .substring(0, 32)}`;
+
     return await wcProvider.current.client.request({
       chainId: caip,
       topic,
