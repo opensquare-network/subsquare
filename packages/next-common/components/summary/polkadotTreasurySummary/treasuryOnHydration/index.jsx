@@ -5,7 +5,7 @@ import {
   PolkadotTreasuryOnHydrationAccount1,
   PolkadotTreasuryOnHydrationAccount2,
 } from "../hook/useQueryHydrationTreasuryBalances";
-import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
+import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
@@ -65,7 +65,7 @@ export default function TreasuryOnHydration() {
             <FiatPriceLabel free={dot} usdcBalance={usdc} usdtBalance={usdt} />
           </div>
           <div className="flex flex-col gap-y-1 !ml-0">
-            <DotTokenSymbolAsset free={dot} />
+            <NativeTokenSymbolAsset free={dot} />
             <TokenSymbolAsset
               amount={toPrecision(usdt, SYMBOL_DECIMALS.USDT)}
               symbol="USDC"
