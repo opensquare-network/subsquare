@@ -20,9 +20,9 @@ const multisigSlice = createSlice({
   },
 });
 
-export const myMultisigsSelector = (state) => state.multisig.myMultisigs;
+export const myMultisigsSelector = (state) => state?.multisig?.myMultisigs;
 export const myMultisigsCountSelector = (state) =>
-  state.multisig.myMultisigsCount;
+  state?.multisig?.myMultisigsCount;
 
 export const { setMyMultisigs, setMyMultisigsCount } = multisigSlice.actions;
 
