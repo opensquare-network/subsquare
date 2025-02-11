@@ -1,13 +1,12 @@
 // polkadot-cloud/polkadot-staking-dashboard/packages/app/src/contexts/WalletConnect/index.tsx
 
-import UniversalProvider from "@walletconnect/universal-provider";
-import { createContext, useEffect, useRef, useState } from "react";
-import { useChain } from "../chain";
-import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import { WalletConnectModal } from "@walletconnect/modal";
+import UniversalProvider from "@walletconnect/universal-provider";
 import { getSdkError } from "@walletconnect/utils";
 import dayjs from "dayjs";
-import { useContextApi } from "../api";
+import useChainInfo from "next-common/hooks/connect/useChainInfo";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { useChain, useChainSettings } from "../chain";
 
 // FIXME: use company project id
 // `projectId` is configured on `https://cloud.walletconnect.com/`
@@ -26,10 +25,14 @@ export const defaultWalletConnect = {
 
 const WalletConnectContext = createContext(defaultWalletConnect);
 
+export function useWalletConnect() {
+  return useContext(WalletConnectContext);
+}
+
 export default function WalletConnectProvider({ children }) {
-  const api = useContextApi();
   const chain = useChain();
-  const { genesisHash } = useChainInfo();
+  const chainInfo = useChainInfo();
+  const { description } = useChainSettings();
 
   // The WalletConnect provider
   const wcProvider = useRef(null);
@@ -57,10 +60,9 @@ export default function WalletConnectProvider({ children }) {
     const provider = await UniversalProvider.init({
       projectId,
       metadata: {
-        name: "Polkadot Staking Dashboard",
-        description:
-          "A fully featured dashboard for Polkadot staking and nomination pools",
-        // url: 'https://staking.polkadot.cloud/',
+        name: "Subsquare",
+        description,
+        url: `https://${chain}.subsquare.io/`,
         // icons: ['https://staking.polkadot.cloud/img/wc-icon.png'],
       },
       relayUrl: "wss://relay.walletconnect.com",
@@ -95,7 +97,9 @@ export default function WalletConnectProvider({ children }) {
     // Update most recent connected chain
     sessionChain.current = chain;
 
-    const caips = [`polkadot:${genesisHash.substring(2).substring(0, 32)}`];
+    const caips = [
+      `polkadot:${chainInfo?.genesisHash.substring(2).substring(0, 32)}`,
+    ];
 
     // If there are no chains connected, return early
     if (!caips.length) {
@@ -159,7 +163,9 @@ export default function WalletConnectProvider({ children }) {
     }
     // Update most recent connected chains
     sessionChain.current = chain;
-    const caips = [`polkadot:${genesisHash.substring(2).substring(0, 32)}`];
+    const caips = [
+      `polkadot:${chainInfo?.genesisHash.substring(2).substring(0, 32)}`,
+    ];
 
     // If there are no chains connected, return early
     if (!caips.length) {
@@ -249,7 +255,9 @@ export default function WalletConnectProvider({ children }) {
       return { signature: "0x" };
     }
     const topic = wcProvider.current.session.topic;
-    const caip = `polkadot:${genesisHash.substring(2).substring(0, 32)}`;
+    const caip = `polkadot:${chainInfo?.genesisHash
+      .substring(2)
+      .substring(0, 32)}`;
     return await wcProvider.current.client.request({
       chainId: caip,
       topic,
@@ -275,7 +283,7 @@ export default function WalletConnectProvider({ children }) {
       .map((namespace) => namespace.accounts)
       .flat();
 
-    const caip = genesisHash.substring(2).substring(0, 32);
+    const caip = chainInfo?.genesisHash.substring(2).substring(0, 32);
 
     // Only get accounts for the currently selected `caip`
     let filteredAccounts = walletConnectAccounts.filter((wcAccount) => {
@@ -303,11 +311,11 @@ export default function WalletConnectProvider({ children }) {
   // Initially, all active chains (in all tabs) must be connected and ready for the initial provider
   // connection
   useEffect(() => {
-    if (!pairingInitiated.current && wcInitialized && api) {
+    if (!pairingInitiated.current && wcInitialized) {
       connectProvider();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wcInitialized, api]);
+  }, [wcInitialized]);
 
   // Reconnect provider to a new session if a new connected chain is added, or when the provider is
   // set. This can only happen once pairing has been initiated. Doing this will require approval
@@ -316,13 +324,12 @@ export default function WalletConnectProvider({ children }) {
     if (
       pairingInitiated.current &&
       wcInitialized &&
-      api &&
       sessionChain.current !== chain
     ) {
       connectProvider();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain, api]);
+  }, [chain]);
 
   return (
     <WalletConnectContext.Provider
