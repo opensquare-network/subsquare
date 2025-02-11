@@ -5,7 +5,7 @@ const AssetIconKsm = dynamic(() => import("@osn/icons/subsquare/AssetIconKsm"));
 const knownKusamaAssetHubAssets = [
   {
     symbol: "KSM",
-    assetId: 0,
+    assetId: 1234,
     icon: AssetIconKsm,
   },
 ];
