@@ -11,6 +11,7 @@ const WalletTypes = {
   PHANTOM: "phantom",
   OKX_WALLET: "okx wallet",
   COINBASE_WALLET: "coinbase wallet",
+  WALLET_CONNECT: "wallet connect",
 };
 
 export default WalletTypes;

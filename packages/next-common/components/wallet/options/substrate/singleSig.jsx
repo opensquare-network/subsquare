@@ -9,6 +9,7 @@ import WalletTypes from "next-common/utils/consts/walletTypes";
 import WalletOption from "../../walletOption";
 import { WalletOptionsWrapper } from "../styled";
 import shouldEnableEvmWallets from "next-common/utils/shouldEnableEvmWallets";
+import WalletConnectWallet from "../../walletConnectWallet";
 
 export default function WalletSubstrateSingleSigOptions({
   selectedWallet,
@@ -51,6 +52,12 @@ export default function WalletSubstrateSingleSigOptions({
               }}
               selected={selected}
             />
+          );
+        }
+
+        if (wallet.extensionName === WalletTypes.WALLET_CONNECT) {
+          return (
+            <WalletConnectWallet key={wallet.extensionName} wallet={wallet} />
           );
         }
 
