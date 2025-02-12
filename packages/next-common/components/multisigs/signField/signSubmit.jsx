@@ -10,13 +10,11 @@ export default function SignSubmit({ multisig = {} }) {
   const [isShowSignSubmitPopup, setIsShowSignSubmitPopup] = useState(false);
 
   return (
-    <Wrapper>
+    <>
       <Tooltip content="Approve">
-        <SystemSignature
-          role="button"
-          className="w-4 h-4"
-          onClick={() => setIsShowSignSubmitPopup(true)}
-        />
+        <Wrapper onClick={() => setIsShowSignSubmitPopup(true)}>
+          <SystemSignature role="button" className="w-4 h-4" />
+        </Wrapper>
       </Tooltip>
       {isShowSignSubmitPopup && (
         <SignSubmitPopup
@@ -24,6 +22,6 @@ export default function SignSubmit({ multisig = {} }) {
           multisig={multisig}
         />
       )}
-    </Wrapper>
+    </>
   );
 }
