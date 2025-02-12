@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useChain } from "../chain";
+import { normalizedSubstrateAccounts } from "next-common/utils/substrate";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 // FIXME: use company project id
 // `projectId` is configured on `https://cloud.walletconnect.com/`
@@ -27,6 +29,26 @@ const WalletConnectContext = createContext(defaultWalletConnect);
 
 export function useWalletConnect() {
   return useContext(WalletConnectContext);
+}
+
+export function useWalletConnectAccounts() {
+  const { fetchAddresses } = useWalletConnect();
+  const [accounts, setAccounts] = useState([]);
+
+  useEffect(() => {
+    fetchAddresses().then((addresses) => {
+      setAccounts(
+        normalizedSubstrateAccounts(
+          addresses.map((address) => {
+            return { address };
+          }),
+          WalletTypes.WALLETCONNECT,
+        ),
+      );
+    });
+  }, [fetchAddresses]);
+
+  return accounts;
 }
 
 export default function WalletConnectProvider({ children }) {
