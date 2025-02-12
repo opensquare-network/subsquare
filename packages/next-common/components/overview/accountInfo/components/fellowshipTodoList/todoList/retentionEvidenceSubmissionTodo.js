@@ -2,9 +2,18 @@ import { useState } from "react";
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import SubmitEvidencePopup from "next-common/components/collectives/core/actions/more/submitEvidenceItem/popup";
+import { useMyDemotionTodoData } from "../context/myDemotionTodo";
 
 export default function RetentionEvidenceSubmissionTodo() {
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
+  const {
+    todo: { showEvidenceSubmissionTodo },
+  } = useMyDemotionTodoData();
+
+  if (!showEvidenceSubmissionTodo) {
+    return null;
+  }
+
   return (
     <>
       <div className="flex items-center">
