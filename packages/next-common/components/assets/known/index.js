@@ -22,9 +22,13 @@ export function useKnownAssetHubAssets() {
 
 const assetHubChainNativeTokenIconMap = {
   [Chains.polkadotAssetHub]: AssetIconDot,
+  [Chains.polkadot]: AssetIconDot,
   [Chains.westendAssetHub]: AssetIconWnd,
+  [Chains.westend]: AssetIconWnd,
   [Chains.kusamaAssetHub]: AssetIconKsm,
+  [Chains.kusama]: AssetIconKsm,
   [Chains.paseoAssetHub]: AssetIconPas,
+  [Chains.paseo]: AssetIconPas,
 };
 
 export function useNativeTokenIcon() {

@@ -11,6 +11,7 @@ export default function NativeTokenSymbolAsset({ free = 0, valueClassName }) {
       amount={value}
       symbol={symbol}
       valueClassName={valueClassName}
+      type="native"
     />
   );
 }
