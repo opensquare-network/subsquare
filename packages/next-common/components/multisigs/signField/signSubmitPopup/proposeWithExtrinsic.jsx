@@ -16,7 +16,7 @@ function CallHash({ callHash }) {
       <TitleContainer className="text14Bold px-0 pb-2">
         Call Hash
       </TitleContainer>
-      <GreyPanel className="justify-start gap-x-2 text14Medium text-textPrimary py-2.5 px-4 max-w-full">
+      <GreyPanel className="justify-start break-all gap-x-2 text14Medium text-textPrimary py-2.5 px-4 max-w-full">
         {callHash}
       </GreyPanel>
     </div>
