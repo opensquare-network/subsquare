@@ -2,7 +2,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import KusamaTreasurySummary from "next-common/components/summary/kusamaTreasurySummary";
 import { TreasuryProvider } from "next-common/context/treasury";
-import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
+import KusamaTreasuryProvider from "next-common/context/treasury/kusamaTreasury";
 
 export default function KusamaTreasuryStats() {
   return (
@@ -10,9 +10,9 @@ export default function KusamaTreasuryStats() {
       <TitleContainer className="mb-4">Treasury Stats</TitleContainer>
       <SecondaryCard>
         <TreasuryProvider>
-          <PolkadotTreasuryProvider>
+          <KusamaTreasuryProvider>
             <KusamaTreasurySummary />
-          </PolkadotTreasuryProvider>
+          </KusamaTreasuryProvider>
         </TreasuryProvider>
       </SecondaryCard>
     </div>
