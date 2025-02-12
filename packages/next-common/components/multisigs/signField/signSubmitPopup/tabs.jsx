@@ -33,15 +33,19 @@ export default function ProposeExtrinsicWithToggleTabs() {
           setValue({ isValid: false, data: {} });
         }}
       />
-      {selectedTabId === "input" ? (
+
+      <div className={selectedTabId === "set" && "hidden"}>
         <ProposeWithInputHex
           callHash={callHash}
           when={when}
           setValue={setValue}
         />
-      ) : (
+      </div>
+
+      {/* todo: validate data again */}
+      <div className={selectedTabId === "input" && "hidden"}>
         <ProposeWithExtrinsic setValue={setValue} />
-      )}
+      </div>
     </div>
   );
 }
