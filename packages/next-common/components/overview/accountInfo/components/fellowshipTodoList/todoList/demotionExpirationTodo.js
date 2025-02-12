@@ -2,16 +2,13 @@ import { useState } from "react";
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import BatchBumpPopup from "next-common/components/fellowship/core/batchBump/popup";
-import { useDemotionTodoData } from "../context/demotionTodo";
+import { useDemotionExpirationTodoData } from "../context/demotionExpirationTodo";
 
-export default function DemotedBumpAllTodo() {
+export default function DemotionExpirationTodo() {
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
-  const {
-    todo: { showDemotedBumpAllTodo },
-    expiredMembersCount,
-  } = useDemotionTodoData();
+  const { expiredMembersCount } = useDemotionExpirationTodoData();
 
-  if (!showDemotedBumpAllTodo) {
+  if (expiredMembersCount === 0) {
     return null;
   }
 

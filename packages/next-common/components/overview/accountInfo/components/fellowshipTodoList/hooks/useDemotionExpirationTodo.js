@@ -6,7 +6,7 @@ import { getDemotionExpiredCount } from "next-common/components/fellowship/core/
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
 
-export default function useDemotedBumpAllTodo() {
+export default function useDemotionExpirationTodo() {
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembers();
   const latestHeight = useSelector(chainOrScanHeightSelector);
@@ -18,7 +18,7 @@ export default function useDemotedBumpAllTodo() {
   );
 
   if (isParamsLoading) {
-    return { todo: { showDemotedBumpAllTodo: false }, isLoading: true };
+    return { todo: { showDemotionExpirationTodo: false }, isLoading: true };
   }
 
   const expiredMembersCount = getDemotionExpiredCount({
@@ -28,9 +28,6 @@ export default function useDemotedBumpAllTodo() {
   });
 
   return {
-    todo: {
-      showDemotedBumpAllTodo: expiredMembersCount > 0,
-    },
     expiredMembersCount,
     isLoading,
   };

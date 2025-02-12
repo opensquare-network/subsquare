@@ -1,20 +1,23 @@
 import { useMemo } from "react";
-import DemotionTodoProvider, { useDemotionTodoData } from "./demotionTodo";
+import DemotionExpirationTodoProvider, {
+  useDemotionExpirationTodoData,
+} from "./demotionExpirationTodo";
 import MyDemotionTodoProvider, {
   useMyDemotionTodoData,
 } from "./myDemotionTodo";
 
 export function FellowshipTodoListProvider({ children }) {
   return (
-    <DemotionTodoProvider>
+    <DemotionExpirationTodoProvider>
       <MyDemotionTodoProvider>{children}</MyDemotionTodoProvider>
-    </DemotionTodoProvider>
+    </DemotionExpirationTodoProvider>
   );
 }
 
 export function useFellowshipTodoListLoading() {
   const { isLoading: isMyDemotionTodoLoading } = useMyDemotionTodoData();
-  const { isLoading: isDemotedBumpAllLoading } = useDemotionTodoData();
+  const { isLoading: isDemotedBumpAllLoading } =
+    useDemotionExpirationTodoData();
   return isMyDemotionTodoLoading || isDemotedBumpAllLoading;
 }
 
@@ -22,20 +25,18 @@ export function useFellowshipTodoList() {
   const {
     todo: { showEvidenceSubmissionTodo, showApproveReferendaCreationTodo },
   } = useMyDemotionTodoData();
-  const {
-    todo: { showDemotedBumpAllTodo },
-  } = useDemotionTodoData();
+  const { expiredMembersCount } = useDemotionExpirationTodoData();
 
   return useMemo(
     () => ({
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
-      showDemotedBumpAllTodo,
+      showDemotionExpirationTodo: expiredMembersCount > 0,
     }),
     [
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
-      showDemotedBumpAllTodo,
+      expiredMembersCount,
     ],
   );
 }
