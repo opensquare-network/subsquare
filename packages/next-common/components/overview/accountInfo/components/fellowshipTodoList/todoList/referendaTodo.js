@@ -8,7 +8,6 @@ export default function ReferendaTodo({
   countOfEligibleReferenda = 0,
   referendaToVote = [],
   referendaVotes = [],
-  myRank,
 }) {
   const [showReferendaToVotePopup, setShowReferendaToVotePopup] =
     useState(false);
@@ -42,7 +41,6 @@ export default function ReferendaTodo({
         <ReferendaToVotePopup
           referendaToVote={referendaToVote}
           referendaVotes={referendaVotes}
-          myRank={myRank}
           onClose={() => {
             setShowReferendaToVotePopup(false);
           }}

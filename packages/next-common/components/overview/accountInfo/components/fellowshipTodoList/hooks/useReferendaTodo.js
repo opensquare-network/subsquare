@@ -55,7 +55,6 @@ export default function useReferendaTodo(trigger) {
     countOfEligibleReferenda,
     referendaToVote,
     referendaVotes,
-    myRank: 2,
     isLoading: isLoadingActiveReferenda || isLoadingVotes || isLoadingMyRank,
   };
 }

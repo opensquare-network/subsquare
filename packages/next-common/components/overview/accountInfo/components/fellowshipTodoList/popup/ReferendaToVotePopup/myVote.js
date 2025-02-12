@@ -1,9 +1,8 @@
 import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 export default function MyVote({ vote }) {
-  const { myRank } = usePopupParams();
   const isAye = vote.vote.isAye;
+  const votes = isAye ? vote.vote.asAye.toNumber() : vote.vote.asNay.toNumber();
   return (
     <div className="flex items-center gap-[8px]">
       {isAye ? (
@@ -13,7 +12,7 @@ export default function MyVote({ vote }) {
       )}
       <span className="text14Medium">
         {isAye ? "Aye" : "Nay"}
-        <span className="text-textTertiary">({myRank})</span>
+        <span className="text-textTertiary">({votes})</span>
       </span>
     </div>
   );

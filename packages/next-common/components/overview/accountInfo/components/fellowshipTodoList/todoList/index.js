@@ -25,7 +25,6 @@ export default function TodoList() {
     countOfEligibleReferenda,
     referendaToVote,
     referendaVotes,
-    myRank: myCollectiveRank,
   } = useReferendaTodoData();
 
   if (
@@ -52,7 +51,6 @@ export default function TodoList() {
           countOfEligibleReferenda={countOfEligibleReferenda}
           referendaToVote={referendaToVote}
           referendaVotes={referendaVotes}
-          myRank={myCollectiveRank}
         />
       )}
     </TodoListWrapper>
