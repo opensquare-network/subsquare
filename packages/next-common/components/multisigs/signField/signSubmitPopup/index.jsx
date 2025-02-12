@@ -21,6 +21,7 @@ import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
 import MultisigSignProvider from "./context";
+import { getState } from "next-common/components/preImages/newPreimagePopup";
 
 export function SignSubmitInnerPopup({
   onClose,
@@ -42,6 +43,7 @@ export function SignSubmitInnerPopup({
   );
   const { weight: maxWeight } = useWeight(call);
   const { ss58Format } = useChainSettings();
+  const [callHash, setCallHash] = useState(null);
 
   const isSubmitBtnDisabled = useMemo(() => {
     if (callHex) {
@@ -61,10 +63,13 @@ export function SignSubmitInnerPopup({
     ({ isValid, data }) => {
       if (!api || !isValid) {
         setCall(null);
+        setCallHash(null);
         return;
       }
 
       if (data) {
+        const state = getState(api, data);
+        setCallHash(state?.encodedHash);
         setCall(data.method);
       }
     },
@@ -115,7 +120,11 @@ export function SignSubmitInnerPopup({
   return (
     <Popup title="Multisig" onClose={onClose} maskClosable={false}>
       <SignerWithBalance />
-      <MultisigSignProvider multisig={multisig} setValue={setValue}>
+      <MultisigSignProvider
+        multisig={multisig}
+        setValue={setValue}
+        callHash={callHash}
+      >
         <PopupPropose />
         <TxSubmissionButton
           disabled={isSubmitBtnDisabled}
