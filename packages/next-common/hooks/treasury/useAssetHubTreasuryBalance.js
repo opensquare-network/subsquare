@@ -25,6 +25,9 @@ export const StatemintTreasuryAccount =
 export const StatemintFellowShipTreasuryAccount =
   "16VcQSRcMFy6ZHVjBvosKmo7FKqTb8ZATChDYo8ibutzLnos";
 
+export const KusamaAssetHubAccount =
+  "HWZmQq6zMMk7TxixHfseFT2ewicT6UofPa68VCn3gkXrdJF";
+
 export default function useAssetHubTreasuryBalance(symbol) {
   const chain = useChain();
 

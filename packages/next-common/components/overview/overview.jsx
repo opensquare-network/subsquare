@@ -8,12 +8,24 @@ import MembersInduction from "./fellowship/membersInduction";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 // import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
-import { isPolkadotChain } from "next-common/utils/chain";
+import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import FellowshipFinanceOverview from "./fellowship/finance";
+import KusamaTreasuryStats from "./kusamaTreasuryStats";
+
+function ConditionTreasuryStats() {
+  const chain = useChain();
+  if (isPolkadotChain(chain)) {
+    return <PolkadotTreasuryStats />;
+  }
+
+  if (isKusamaChain(chain)) {
+    return <KusamaTreasuryStats />;
+  }
+
+  return <TreasuryStats />;
+}
 
 export default function Overview() {
-  const chain = useChain();
-
   return (
     <div className="space-y-6">
       <AccountInfo />
@@ -25,7 +37,7 @@ export default function Overview() {
       </WithPallet>
 
       <WithPallet pallet="treasury">
-        {isPolkadotChain(chain) ? <PolkadotTreasuryStats /> : <TreasuryStats />}
+        <ConditionTreasuryStats />
       </WithPallet>
 
       <WithPallet pallet="fellowshipTreasury">

@@ -1,7 +1,7 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
 import LoadableContent from "next-common/components/common/loadableContent";
-import DotTokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/dotTokenSymbolAsset";
+import NativeTokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/nativeTokenSymbolAsset";
 import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
 import { StatemintFellowShipTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
@@ -45,7 +45,7 @@ export default function FellowshipTreasury() {
             <FiatPriceLabel free={balance} />
           </div>
           <div className="flex flex-col gap-y-1 !ml-0">
-            <DotTokenSymbolAsset free={balance} />
+            <NativeTokenSymbolAsset free={balance} />
           </div>
         </div>
       </LoadableContent>
