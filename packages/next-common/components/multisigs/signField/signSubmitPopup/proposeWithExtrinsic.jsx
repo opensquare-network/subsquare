@@ -2,6 +2,8 @@ import { ExtrinsicFieldWithLoading } from "next-common/components/popup/fields/e
 import { useMultisigSignContext } from "./context";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { InvalidCallPrompt } from "./proposeWithInputHex";
+import { useMemo } from "react";
 
 const defaultSectionName = "system";
 const defaultMethodName = "setCode";
@@ -24,7 +26,15 @@ function CallHash({ callHash }) {
 }
 
 export default function ProposeWithExtrinsic() {
-  const { setValue, callHash } = useMultisigSignContext();
+  const {
+    setValue,
+    callHash,
+    multisig: { callHash: originalCallHash },
+  } = useMultisigSignContext();
+
+  const isCallNotMatch = useMemo(() => {
+    return callHash !== originalCallHash && callHash;
+  }, [callHash, originalCallHash]);
 
   return (
     <div className="flex flex-col space-y-4">
@@ -35,6 +45,7 @@ export default function ProposeWithExtrinsic() {
         setValue={setValue}
       />
       <CallHash callHash={callHash} />
+      {isCallNotMatch && <InvalidCallPrompt content="Invalid call" />}
     </div>
   );
 }

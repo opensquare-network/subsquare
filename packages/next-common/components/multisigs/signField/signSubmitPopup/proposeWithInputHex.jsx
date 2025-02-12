@@ -5,6 +5,14 @@ import ProposeTree from "./proposeTree";
 import { useContextApi } from "next-common/context/api";
 import { useMultisigSignContext } from "./context";
 
+export function InvalidCallPrompt({ content }) {
+  return (
+    <GreyPanel className="justify-start gap-x-2 text14Medium py-2.5 px-4 max-w-full text-red500 bg-red100">
+      {content}
+    </GreyPanel>
+  );
+}
+
 export default function ProposeWithInputHex() {
   const {
     multisig: { callHash, when },
@@ -35,9 +43,7 @@ export default function ProposeWithInputHex() {
       )}
 
       {inputCallHash !== callHash && inputHex && (
-        <GreyPanel className="justify-start gap-x-2 text14Medium py-2.5 px-4 max-w-full text-red500 bg-red100">
-          Invalid call hex
-        </GreyPanel>
+        <InvalidCallPrompt content="Invalid call hex" />
       )}
     </div>
   );
