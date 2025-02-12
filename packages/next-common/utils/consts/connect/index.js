@@ -105,7 +105,7 @@ export const coinbaseWallet = {
 };
 
 export const walletConnect = {
-  extensionName: WalletTypes.WALLET_CONNECT,
+  extensionName: WalletTypes.WALLETCONNECT,
   title: "WalletConnect",
   installUrl: "https://walletconnect.network/",
   logo: WalletWalletconnect,
