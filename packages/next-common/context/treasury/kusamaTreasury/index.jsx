@@ -14,7 +14,7 @@ export default function KusamaTreasuryProvider({ children }) {
   } = useTreasuryFree(api);
 
   const {
-    balance: nativeTreasuryBalanceOnAssetHub,
+    free: nativeTreasuryBalanceOnAssetHub,
     isLoading: isNativeTreasuryBalanceOnAssetHubLoading,
   } = useQueryAssetHubTreasuryFree(KusamaAssetHubAccount);
 
