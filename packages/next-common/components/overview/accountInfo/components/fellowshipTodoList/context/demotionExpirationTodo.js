@@ -1,12 +1,17 @@
 import { createContext, useContext } from "react";
-import useDemotionExpirationTodo from "../hooks/useDemotionExpirationTodo";
+import useDemotionExpirationCount from "../hooks/useDemotionExpirationCount";
 
 export const DemotionExpirationTodoContext = createContext();
 
 export default function DemotionExpirationTodoProvider({ children }) {
-  const demotionExpirationTodoData = useDemotionExpirationTodo();
+  const { expiredMembersCount, isLoading } = useDemotionExpirationCount();
   return (
-    <DemotionExpirationTodoContext.Provider value={demotionExpirationTodoData}>
+    <DemotionExpirationTodoContext.Provider
+      value={{
+        expiredMembersCount,
+        isLoading,
+      }}
+    >
       {children}
     </DemotionExpirationTodoContext.Provider>
   );
