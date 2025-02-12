@@ -1,11 +1,12 @@
 import { useEffect, useState, useMemo } from "react";
-import { getProfileCategories } from "next-common/utils/consts/profile/index";
+import { getProfileCategories } from "next-common/utils/consts/profile";
 import { useRouter } from "next/router";
 import { useChain } from "next-common/context/chain";
 import List from "./list";
 import Categories from "./categories";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 const getCategoryByRoute = (route, categories = []) => {
   let category;
@@ -108,6 +109,28 @@ export default function Posted() {
     firstCategory,
     secondCategory,
   ]);
+
+  if ("fellowship" === secondCategory.id) {
+    return (
+      <>
+        <Categories
+          categories={categories}
+          setFirstCategory={setFirstCategory}
+          setSecondCategory={setSecondCategory}
+          firstCategory={firstCategory}
+          secondCategory={secondCategory}
+          overview={overview}
+        />
+        <CollectivesProvider section="fellowship">
+          <List
+            key={secondCategory.categoryId}
+            id={id}
+            secondCategory={secondCategory}
+          />
+        </CollectivesProvider>
+      </>
+    );
+  }
 
   return (
     <>

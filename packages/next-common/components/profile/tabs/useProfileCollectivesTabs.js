@@ -1,33 +1,38 @@
 import { useChain } from "next-common/context/chain";
-import { usePageProps } from "next-common/context/page";
 import { isCollectivesChain } from "next-common/utils/chain";
-import { useCollectivesContext } from "../../../context/collectives/collectives";
-import { useCollectivesMemberContext } from "next-common/context/collectives/member";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
 
 export function useProfileCollectivesTabs() {
   const chain = useChain();
-  const { id: address } = usePageProps();
-  const { section } = useCollectivesContext();
-  const { member } = useCollectivesMemberContext();
+  const address = useProfileAddress();
+  const { member: fellowshipMember } = useSubFellowshipCoreMember(address);
+  const { member: ambassadorMember } = useSubFellowshipCoreMember(
+    address,
+    "ambassadorCore",
+  );
 
   if (!isCollectivesChain(chain)) {
     return [];
   }
 
-  return [
-    section === "fellowship" &&
-      member && {
-        label: "Fellowship",
-        value: "fellowship",
-        url: `/user/${address}/fellowship`,
-        exactMatch: false,
-      },
-    section === "ambassador" &&
-      member && {
-        label: "Ambassador",
-        value: "ambassador",
-        url: `/user/${address}/ambassador`,
-        exactMatch: false,
-      },
-  ].filter(Boolean);
+  const tabs = [];
+  if (fellowshipMember) {
+    tabs.push({
+      label: "Fellowship",
+      value: "fellowship",
+      url: `/user/${address}/fellowship`,
+      exactMatch: false,
+    });
+  }
+  if (ambassadorMember) {
+    tabs.push({
+      label: "Ambassador",
+      value: "ambassador",
+      url: `/user/${address}/ambassador`,
+      exactMatch: false,
+    });
+  }
+
+  return tabs;
 }
