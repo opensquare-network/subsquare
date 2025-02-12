@@ -9,7 +9,6 @@ async function getFellowshipReferendaPosts(indexes = []) {
   }
 
   const q = `referendum_index=${indexes.join(",")}`;
-  // fixme: we should set timeout for any fetch
   const { result: items } = await nextApi.fetch(
     `fellowship/referenda?simple=1&${q}`,
   );
