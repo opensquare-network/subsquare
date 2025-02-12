@@ -32,14 +32,14 @@ function formatValue(value = "") {
     value = "0" + value;
   }
 
-  const formatter = new Intl.NumberFormat(undefined, {
+  const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 20,
   });
 
   let formatted;
   if (String(value).indexOf(DECIMAL_SEPARATOR) >= 0) {
-    const [int, decimal = ""] = value.split(DECIMAL_SEPARATOR);
+    const [int, decimal = ""] = String(value).split(DECIMAL_SEPARATOR);
     const formattedInt = formatter.format(int);
 
     formatted = `${formattedInt}${DECIMAL_SEPARATOR}${decimal || ""}`;

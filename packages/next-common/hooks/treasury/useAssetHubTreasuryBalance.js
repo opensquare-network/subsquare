@@ -1,4 +1,4 @@
-import { useAssetHubApi } from "next-common/context/assetHub";
+import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import { useEffect, useState } from "react";
@@ -24,6 +24,9 @@ export const StatemintTreasuryAccount =
 
 export const StatemintFellowShipTreasuryAccount =
   "16VcQSRcMFy6ZHVjBvosKmo7FKqTb8ZATChDYo8ibutzLnos";
+
+export const KusamaAssetHubAccount =
+  "HWZmQq6zMMk7TxixHfseFT2ewicT6UofPa68VCn3gkXrdJF";
 
 export default function useAssetHubTreasuryBalance(symbol) {
   const chain = useChain();

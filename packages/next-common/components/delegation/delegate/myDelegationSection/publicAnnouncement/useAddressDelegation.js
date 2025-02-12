@@ -77,7 +77,7 @@ export function useMyReferendaDelegation() {
 
   useEffect(() => {
     if (!realAddress) {
-      return null;
+      return;
     }
     nextApi
       .fetch(delegationReferendaDelegatesAddressApi(realAddress))
@@ -99,7 +99,7 @@ export function useMyDemocracyDelegation() {
 
   useEffect(() => {
     if (!realAddress) {
-      return null;
+      return;
     }
     nextApi
       .fetch(delegationDemocracyDelegatesAddressApi(realAddress))

@@ -1,5 +1,4 @@
-import Prompt from "./prompt";
-import { PromptTypes } from "next-common/components/scrollPrompt";
+import Notification from "./notification";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useMemo } from "react";
 import Link from "next/link";
@@ -32,7 +31,7 @@ function ManageLink({ manageContent }) {
   );
 }
 
-export default function MultisigManagePrompt() {
+export default function MultisigManageNotification() {
   const realAddress = useRealAddress();
   const myMultisigsCount = useSelector(myMultisigsCountSelector) || 0;
   const myMultisigs = useSelector(myMultisigsSelector);
@@ -60,15 +59,12 @@ export default function MultisigManagePrompt() {
     const transactionContent = myMultisigsCount > 1 ? "multisigs" : "multisig";
 
     return (
-      <Prompt
-        cacheKey={CACHE_KEY.multisigPromptVisible}
-        type={PromptTypes.NEUTRAL}
-      >
+      <Notification cacheKey={CACHE_KEY.multisigPromptVisible}>
         You have {myMultisigsCount} active {transactionContent}, &nbsp;
         {needApprovalCount} of &nbsp;
         {manageContent} need your approval.
         {!isAccountMultisigPage && <ManageLink manageContent={manageContent} />}
-      </Prompt>
+      </Notification>
     );
   }, [
     myMultisigsCount,

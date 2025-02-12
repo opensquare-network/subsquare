@@ -16,6 +16,7 @@ import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useS
 import useConnectApis from "next-common/services/chain/apis/useConnectApis";
 import { useContextApi } from "next-common/context/api";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
+import GlobalNotification from "next-common/components/globalNotification";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -57,6 +58,8 @@ export default function BaseLayout({ children, seoInfo = {} }) {
               <Header />
             </div>
           )}
+
+          <GlobalNotification />
 
           <section className="flex flex-col flex-1">{children}</section>
 

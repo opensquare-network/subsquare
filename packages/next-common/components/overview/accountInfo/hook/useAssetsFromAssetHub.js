@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
 import { useAssetHubMetadata } from "../context/assetHubMetadataContext";
-import { useAssetHubApi } from "next-common/context/assetHub";
+import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
 
 export default function useAssetsFromAssetHub() {

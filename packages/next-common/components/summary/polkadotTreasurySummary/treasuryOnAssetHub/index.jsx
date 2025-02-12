@@ -1,8 +1,8 @@
 import LoadableContent from "next-common/components/common/loadableContent";
 import Link from "next/link";
-import { usePolkadotTreasurySummary } from "../context";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
-import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
+import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import SummaryItem from "next-common/components/summary/layout/item";
 import { StatemintTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
@@ -17,7 +17,7 @@ function TreasurySummary({
   return (
     <div className="flex flex-col gap-[4px]">
       <div className="!ml-0 flex flex-col gap-y-1">
-        <DotTokenSymbolAsset free={dotTreasuryBalanceOnAssetHub} />
+        <NativeTokenSymbolAsset free={dotTreasuryBalanceOnAssetHub} />
         <TokenSymbolAsset
           amount={toPrecision(
             usdcTreasuryBalanceOnAssetHub,
@@ -45,7 +45,7 @@ export default function TreasuryOnAssetHub() {
     isUsdtTreasuryBalanceOnAssetHubLoading,
     usdcTreasuryBalanceOnAssetHub,
     isUsdcTreasuryBalanceOnAssetHubLoading,
-  } = usePolkadotTreasurySummary();
+  } = usePolkadotTreasury();
 
   const isLoading =
     isDotTreasuryBalanceOnAssetHubLoading ||

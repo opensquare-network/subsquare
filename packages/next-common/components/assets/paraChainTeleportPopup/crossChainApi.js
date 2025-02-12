@@ -5,7 +5,7 @@ import teleportFromRelayChainToParaChain, {
 } from "./teleportFromRelayChainToParaChain";
 import teleportFromParaChainToRelayChain from "./teleportFromParaChainToRelayChain";
 import { useCallback } from "react";
-import { useAssetHubApi } from "next-common/context/assetHub";
+import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import { useChain } from "next-common/context/chain";
 import { isRelayChain } from "next-common/utils/chain";
 import { useRelayChain } from "next-common/hooks/useRelayChain";

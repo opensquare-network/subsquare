@@ -22,6 +22,7 @@ export const Wrapper = styled.div`
   padding: 6px;
   border-radius: 4px;
   border: 1px solid var(--neutral400);
+
   ${(p) =>
     p.disabled &&
     css`
@@ -104,10 +105,10 @@ export default function SignApprove({ multisig = {} }) {
   }, [isSubmitting]);
 
   return (
-    <Wrapper disabled={isDisabled}>
-      <Tooltip content="Approve">
-        <SystemSignature className="w-4 h-4" onClick={doSubmit} />
-      </Tooltip>
-    </Wrapper>
+    <Tooltip content="Approve">
+      <Wrapper disabled={isDisabled} onClick={doSubmit}>
+        <SystemSignature role="button" className="w-4 h-4" />
+      </Wrapper>
+    </Tooltip>
   );
 }

@@ -10,19 +10,21 @@ import { getTrackNameFromRank } from "next-common/components/fellowship/core/mem
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
-import { ReferendaWarningMessage } from "./common";
-import WarningInfoPanel from "next-common/components/summary/styled/warningInfoPanel";
+import { ReferendaWarningMessage, ReferendaActionMessage } from "./common";
+import ErrorInfoPanel from "next-common/components/summary/styled/errorInfoPanel";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import { isNil } from "lodash-es";
+import { rankToPromoteTrack } from "next-common/utils/fellowship/rankToTrack";
+import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
+import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
 
 export function NotAvailableMemberPrompt() {
   return (
-    <WarningInfoPanel className="justify-center">
-      Please fill the fellowship member address that eligible for retention or
-      promotion
-    </WarningInfoPanel>
+    <ErrorInfoPanel className="">
+      The address currently filled is not a fellowship member
+    </ErrorInfoPanel>
   );
 }
 
@@ -59,15 +61,28 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(who);
   const isReferendaExisted = relatedReferenda.length > 0;
 
+  const decisionDeposit = useFellowshipTrackDecisionDeposit(
+    rankToPromoteTrack(toRank),
+  );
+  const { value: referendaOptions, component: referendaOptionsField } =
+    useReferendaOptionsField(decisionDeposit);
+
   return (
     <Popup title="New Promote Proposal" onClose={onClose}>
       {whoField}
       <RankField title="To Rank" rank={toRank} readOnly />
+      <ReferendaActionMessage
+        rank={toRank}
+        who={who}
+        trackName={trackName}
+        action="promote"
+      />
       <ReferendaWarningMessage
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}
       />
       {!isAvailableMember && <NotAvailableMemberPrompt />}
+      {!!who && !!toRank && referendaOptionsField}
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
@@ -78,6 +93,8 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
           rank={toRank}
           action="promote"
           trackName={trackName}
+          checkDecisionDeposit={referendaOptions.checkDecisionDeposit}
+          checkVoteAye={referendaOptions.checkVoteAye}
         />
       </div>
     </Popup>

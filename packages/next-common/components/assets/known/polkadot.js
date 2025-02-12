@@ -13,7 +13,6 @@ const AssetIconUsdc = dynamic(() =>
 const AssetIconUsdt = dynamic(() =>
   import("@osn/icons/subsquare/AssetIconUsdt"),
 );
-const AssetIconDot = dynamic(() => import("@osn/icons/subsquare/AssetIconDot"));
 
 const knownPolkadotAssetHubAssets = [
   {
@@ -40,11 +39,6 @@ const knownPolkadotAssetHubAssets = [
     symbol: "PINK",
     assetId: 23,
     icon: AssetIconPink,
-  },
-  {
-    symbol: "DOT",
-    assetId: 3,
-    icon: AssetIconDot,
   },
 ];
 

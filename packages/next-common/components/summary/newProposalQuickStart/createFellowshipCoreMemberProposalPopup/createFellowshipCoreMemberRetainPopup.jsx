@@ -12,10 +12,13 @@ import { getRetainTrackNameFromRank } from "next-common/components/fellowship/co
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
-import { ReferendaWarningMessage } from "./common";
 import { useChain } from "next-common/context/chain";
+import { ReferendaActionMessage, ReferendaWarningMessage } from "./common";
 import { NotAvailableMemberPrompt } from "./createFellowshipCoreMemberPromotePopup";
 import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
+import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
+import { rankToRetainTrack } from "next-common/utils/fellowship/rankToTrack";
+import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
 
 function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
   const { members, loading } = useFellowshipCoreMembers();
@@ -51,15 +54,28 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
   const chain = useChain();
   const trackName = getRetainTrackNameFromRank(chain, atRank);
 
+  const decisionDeposit = useFellowshipTrackDecisionDeposit(
+    rankToRetainTrack(atRank),
+  );
+  const { value: referendaOptions, component: referendaOptionsField } =
+    useReferendaOptionsField(decisionDeposit);
+
   return (
     <Popup title="New Retain Proposal" onClose={onClose}>
       {whoField}
       <RankField title="At Rank" rank={atRank} readOnly />
+      <ReferendaActionMessage
+        rank={atRank}
+        who={who}
+        trackName={trackName}
+        action="approve"
+      />
       <ReferendaWarningMessage
         isLoading={isLoading}
         relatedReferenda={relatedReferenda}
       />
       {!isAvailableMember && <NotAvailableMemberPrompt />}
+      {!!who && !!atRank && referendaOptionsField}
       <AdvanceSettings>{enactmentField}</AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
@@ -69,6 +85,8 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
           rank={atRank}
           action="approve"
           trackName={trackName}
+          checkDecisionDeposit={referendaOptions.checkDecisionDeposit}
+          checkVoteAye={referendaOptions.checkVoteAye}
         />
       </div>
     </Popup>

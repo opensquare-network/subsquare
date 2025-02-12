@@ -1,9 +1,9 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next/link";
 import LoadableContent from "next-common/components/common/loadableContent";
-import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
+import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import { usePolkadotTreasurySummary } from "../context";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import Tooltip from "next-common/components/tooltip";
 
 const TARGET_LINK = "https://polkadot.subsquare.io/treasury/bounties";
@@ -13,7 +13,7 @@ export default function Bounties() {
     bountiesCount,
     dotTreasuryBalanceOnBounties: dot,
     isDotTreasuryBalanceOnBountiesLoading: isLoading,
-  } = usePolkadotTreasurySummary();
+  } = usePolkadotTreasury();
 
   const Title = (
     <>
@@ -44,7 +44,7 @@ export default function Bounties() {
             <FiatPriceLabel free={dot} />
           </div>
           <div className="flex flex-col gap-y-1 !ml-0">
-            <DotTokenSymbolAsset free={dot} />
+            <NativeTokenSymbolAsset free={dot} />
           </div>
         </div>
       </LoadableContent>

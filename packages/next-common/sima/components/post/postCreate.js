@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -11,9 +11,10 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useUser } from "next-common/context/user";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import Editor from "next-common/components/editor";
+import Editor, { useEditorUploading } from "next-common/components/editor";
 import { getContentField } from "next-common/utils/sima/utils";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
+import AdvancedForm from "next-common/components/post/advanced/form";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -62,6 +63,10 @@ export default function SimaPostCreate() {
   );
   const [errors, setErrors] = useState();
   const signSimaMessage = useSignSimaMessage();
+  const [editorUploading] = useEditorUploading();
+  const advancedForm = useRef();
+  const [isAdvanced, setIsAdvanced] = useState(false);
+  const [formValue, setFormValue] = useState({});
 
   const createPost = async () => {
     setCreating(true);
@@ -74,7 +79,15 @@ export default function SimaPostCreate() {
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
-      const { result, error } = await nextApi.post("sima/discussions", data);
+
+      const { result, error } = await nextApi.post(
+        "sima/discussions",
+        {
+          ...data,
+          ...formValue,
+        },
+        { credentials: "include" },
+      );
       if (error) {
         if (error.data) {
           setErrors(error);
@@ -94,7 +107,17 @@ export default function SimaPostCreate() {
     }
   };
 
-  const isDisableCreate = !title || !content;
+  const isEmpty = title === "" || content === "" || content === "<p><br></p>";
+
+  const isDisableCreate = useMemo(() => {
+    let result = true;
+    const validatePass = isAdvanced
+      ? advancedForm.current?.validateForm()
+      : true;
+    result = isEmpty || !validatePass || editorUploading;
+
+    return result;
+  }, [isEmpty, isAdvanced, editorUploading]);
 
   return (
     <Wrapper>
@@ -129,6 +152,15 @@ export default function SimaPostCreate() {
       {errors?.data?.content?.[0] && (
         <ErrorText>{errors?.data?.content?.[0]}</ErrorText>
       )}
+
+      <AdvancedForm
+        isAdvanced={isAdvanced}
+        setIsAdvanced={setIsAdvanced}
+        ref={advancedForm}
+        disabled={creating}
+        formValue={formValue}
+        setFormValue={setFormValue}
+      />
 
       <ButtonWrapper>
         <PrimaryButton

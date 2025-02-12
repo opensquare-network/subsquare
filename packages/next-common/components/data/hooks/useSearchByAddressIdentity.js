@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { isAddress } from "@polkadot/util-crypto";
 import { useDebounce } from "react-use";
 
-async function fetchBatchIdentities(identityChain, accounts = []) {
+export async function fetchBatchIdentities(identityChain, accounts = []) {
   const results = await Promise.all(
     accounts.map(async (account) => {
       const identity = await fetchIdentity(identityChain, account);

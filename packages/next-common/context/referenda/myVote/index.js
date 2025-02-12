@@ -3,10 +3,9 @@ import { useContextApi } from "next-common/context/api";
 import { useEffect } from "react";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useSelector } from "react-redux";
+import PopupOpenStateProvider from "next-common/context/popup/switch";
 
 const [useSharedMyReferendumVote, Provider] = createStateContext(null);
-const [useSharedRemovePopupOpen, RemovePopupOpenProvider] =
-  createStateContext(false);
 
 function DataUpdater({ trackId, address, children }) {
   const api = useContextApi();
@@ -32,14 +31,14 @@ export default function MyReferendumVoteProvider({
   children,
 }) {
   return (
-    <RemovePopupOpenProvider>
+    <PopupOpenStateProvider>
       <Provider>
         <DataUpdater trackId={trackId} address={address}>
           {children}
         </DataUpdater>
       </Provider>
-    </RemovePopupOpenProvider>
+    </PopupOpenStateProvider>
   );
 }
 
-export { useSharedMyReferendumVote, useSharedRemovePopupOpen };
+export { useSharedMyReferendumVote };
