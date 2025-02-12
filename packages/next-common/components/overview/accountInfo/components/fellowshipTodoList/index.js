@@ -29,7 +29,7 @@ function FellowshipTodoListImpl() {
   return (
     <ActiveReferendaProvider pallet={referendaPallet}>
       <FellowshipTodoListProvider>
-        <CollapsePanel labelItem={<Title />}>
+        <CollapsePanel labelItem={<Title />} defaultCollapsed={false}>
           <AlwaysVisible>
             <NavigationButtons />
           </AlwaysVisible>
