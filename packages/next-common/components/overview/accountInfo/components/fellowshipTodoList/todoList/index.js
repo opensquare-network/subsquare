@@ -2,8 +2,6 @@ import { useFellowshipTodoListCount } from "../context";
 import RetentionEvidenceSubmissionTodo from "./retentionEvidenceSubmissionTodo";
 import RetentionReferendaCreationTodo from "./retentionReferendaCreationTodo";
 import DemotedBumpAllTodo from "./demotedBumpAllTodo";
-import { useDemotionTodoData } from "../context/demotionTodo";
-import { useMyDemotionTodoData } from "../context/myDemotionTodo";
 
 function TodoListWrapper({ children }) {
   const count = useFellowshipTodoListCount();
@@ -14,14 +12,11 @@ function TodoListWrapper({ children }) {
 }
 
 export default function TodoList() {
-  const { expiredMembersCount } = useDemotionTodoData();
-  const { myRank } = useMyDemotionTodoData();
-
   return (
     <TodoListWrapper>
       <RetentionEvidenceSubmissionTodo />
-      <RetentionReferendaCreationTodo rank={myRank} />
-      <DemotedBumpAllTodo expiredMembersCount={expiredMembersCount} />
+      <RetentionReferendaCreationTodo />
+      <DemotedBumpAllTodo />
     </TodoListWrapper>
   );
 }

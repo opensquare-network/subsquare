@@ -5,11 +5,12 @@ import ClickableText from "./clickableText";
 import ApproveFellowshipMemberPopup from "next-common/components/fellowship/core/members/actions/approve/popup";
 import { useMyDemotionTodoData } from "../context/myDemotionTodo";
 
-export default function RetentionReferendaCreationTodo({ rank }) {
+export default function RetentionReferendaCreationTodo() {
   const address = useRealAddress();
   const [showApprovePopup, setShowApprovePopup] = useState(false);
   const {
     todo: { showApproveReferendaCreationTodo },
+    myRank,
   } = useMyDemotionTodoData();
 
   if (!showApproveReferendaCreationTodo) {
@@ -30,7 +31,7 @@ export default function RetentionReferendaCreationTodo({ rank }) {
       </div>
       {showApprovePopup && (
         <ApproveFellowshipMemberPopup
-          member={{ address, rank }}
+          member={{ address, rank: myRank }}
           onClose={() => {
             setShowApprovePopup(false);
           }}

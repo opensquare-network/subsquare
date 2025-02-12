@@ -4,10 +4,11 @@ import ClickableText from "./clickableText";
 import BatchBumpPopup from "next-common/components/fellowship/core/batchBump/popup";
 import { useDemotionTodoData } from "../context/demotionTodo";
 
-export default function DemotedBumpAllTodo({ expiredMembersCount }) {
+export default function DemotedBumpAllTodo() {
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
   const {
     todo: { showDemotedBumpAllTodo },
+    expiredMembersCount,
   } = useDemotionTodoData();
 
   if (!showDemotedBumpAllTodo) {
