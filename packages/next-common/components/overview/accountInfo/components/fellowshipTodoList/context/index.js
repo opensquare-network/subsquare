@@ -5,11 +5,14 @@ import DemotionExpirationTodoProvider, {
 import MyDemotionTodoProvider, {
   useMyDemotionTodoData,
 } from "./myDemotionTodo";
+import ReferendaTodoProvider, { useReferendaTodoData } from "./referendaTodo";
 
 export function FellowshipTodoListProvider({ children }) {
   return (
     <DemotionExpirationTodoProvider>
-      <MyDemotionTodoProvider>{children}</MyDemotionTodoProvider>
+      <MyDemotionTodoProvider>
+        <ReferendaTodoProvider>{children}</ReferendaTodoProvider>
+      </MyDemotionTodoProvider>
     </DemotionExpirationTodoProvider>
   );
 }
@@ -26,17 +29,20 @@ export function useFellowshipTodoList() {
     todo: { showEvidenceSubmissionTodo, showApproveReferendaCreationTodo },
   } = useMyDemotionTodoData();
   const { expiredMembersCount } = useDemotionExpirationTodoData();
+  const { referendaToVote } = useReferendaTodoData();
 
   return useMemo(
     () => ({
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
       showDemotionExpirationTodo: expiredMembersCount > 0,
+      showReferendaTodo: referendaToVote?.length > 0,
     }),
     [
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
       expiredMembersCount,
+      referendaToVote,
     ],
   );
 }

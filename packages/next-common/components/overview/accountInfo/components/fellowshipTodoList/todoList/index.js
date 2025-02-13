@@ -2,6 +2,7 @@ import { useFellowshipTodoListCount } from "../context";
 import RetentionEvidenceSubmissionTodo from "./retentionEvidenceSubmissionTodo";
 import RetentionReferendaCreationTodo from "./retentionReferendaCreationTodo";
 import DemotionExpirationTodo from "./demotionExpirationTodo";
+import ReferendaTodo from "./referendaTodo";
 
 function TodoListWrapper({ children }) {
   const count = useFellowshipTodoListCount();
@@ -17,6 +18,7 @@ export default function TodoList() {
       <RetentionEvidenceSubmissionTodo />
       <RetentionReferendaCreationTodo />
       <DemotionExpirationTodo />
+      <ReferendaTodo />
     </TodoListWrapper>
   );
 }
