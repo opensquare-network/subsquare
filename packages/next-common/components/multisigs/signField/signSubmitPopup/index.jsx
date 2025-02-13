@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useWeight from "next-common/utils/hooks/common/useWeight";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
@@ -22,11 +20,7 @@ import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
 import MultisigSignProvider, { useMultisigSignContext } from "./context";
 
-export function SignSubmitInnerPopup({
-  onClose,
-  onCreated = noop,
-  multisig = {},
-}) {
+export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
   const api = useContextApi();
   const address = useRealAddress();
   const { threshold, signatories, when: maybeTimepoint, callHex } = multisig;
@@ -107,26 +101,17 @@ export function SignSubmitInnerPopup({
         disabled={!isValid}
         getTxFunc={getTxFunc}
         onFinalized={onFinalized}
-        autoClose={isEmptyFunc(onCreated)}
         loading={isSubmitBtnLoading}
       />
     </Popup>
   );
 }
 
-export default function SignSubmitPopup({
-  onClose,
-  onCreated = noop,
-  multisig = {},
-}) {
+export default function SignSubmitPopup({ onClose, multisig = {} }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
       <MultisigSignProvider multisig={multisig}>
-        <SignSubmitInnerPopup
-          onClose={onClose}
-          onCreated={onCreated}
-          multisig={multisig}
-        />
+        <SignSubmitInnerPopup onClose={onClose} multisig={multisig} />
       </MultisigSignProvider>
     </SignerPopupWrapper>
   );
