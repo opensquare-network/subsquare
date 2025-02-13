@@ -71,6 +71,10 @@ export function isPaseoAssetHubChain(chain) {
   return [Chains.paseoAssetHub].includes(chain);
 }
 
+export function isLaosChain(chain) {
+  return [Chains.laos].includes(chain);
+}
+
 export function getAssetHubChain(chain) {
   if (isAssetHubChain(chain)) {
     return chain;
