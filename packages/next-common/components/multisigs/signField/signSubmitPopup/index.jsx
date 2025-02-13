@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { noop } from "lodash-es";
+import { useCallback, useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useWeight from "next-common/utils/hooks/common/useWeight";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
@@ -20,18 +18,18 @@ import PopupPropose from "./propose";
 import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
-import MultisigSignProvider from "./context";
+import MultisigSignProvider, { useMultisigSignContext } from "./context";
 
-export function SignSubmitInnerPopup({
-  onClose,
-  onCreated = noop,
-  multisig = {},
-}) {
+export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
   const api = useContextApi();
   const address = useRealAddress();
   const { threshold, signatories, when: maybeTimepoint, callHex } = multisig;
   const [isSubmitBtnLoading, setIsSubmitBtnLoading] = useState(false);
-  const [call, setCall] = useState(null);
+
+  const { formType, setFormType, callDataMap, setCallData } =
+    useMultisigSignContext();
+  const { callData: call, isValid } = callDataMap[formType] || {};
+
   const dispatch = useDispatch();
   const myMultisigs = useSelector(myMultisigsSelector);
   const { page = 1 } = myMultisigs || {};
@@ -43,37 +41,19 @@ export function SignSubmitInnerPopup({
   const { weight: maxWeight } = useWeight(call);
   const { ss58Format } = useChainSettings();
 
-  const isSubmitBtnDisabled = useMemo(() => {
-    if (callHex) {
-      return isLoadingRawCall || !maxWeight;
-    }
-
-    return !call || !maxWeight;
-  }, [callHex, call, maxWeight, isLoadingRawCall]);
-
+  // call tree popup with callHex
   useEffect(() => {
-    if (callHex && !isLoadingRawCall) {
-      setCall(rawCall);
+    if (!setFormType || !setCallData || !callHex || isLoadingRawCall) {
+      return;
     }
-  }, [callHex, rawCall, isLoadingRawCall]);
 
-  const setValue = useCallback(
-    ({ isValid, data }) => {
-      if (!api || !isValid) {
-        setCall(null);
-        return;
-      }
-
-      if (data) {
-        setCall(data.method);
-      }
-    },
-    [api],
-  );
+    setFormType("tree");
+    setCallData("tree", { callData: rawCall, isValid: true });
+  }, [callHex, rawCall, isLoadingRawCall, setFormType, setCallData]);
 
   const getTxFunc = useCallback(() => {
     setIsSubmitBtnLoading(true);
-    if (!api || !address || !call || !maxWeight) {
+    if (!api || !address || !call || !maxWeight || !isValid) {
       return;
     }
 
@@ -100,6 +80,7 @@ export function SignSubmitInnerPopup({
     maybeTimepoint,
     call,
     maxWeight,
+    isValid,
   ]);
 
   const onFinalized = () => {
@@ -115,32 +96,23 @@ export function SignSubmitInnerPopup({
   return (
     <Popup title="Multisig" onClose={onClose} maskClosable={false}>
       <SignerWithBalance />
-      <MultisigSignProvider multisig={multisig} setValue={setValue}>
-        <PopupPropose />
-        <TxSubmissionButton
-          disabled={isSubmitBtnDisabled}
-          getTxFunc={getTxFunc}
-          onFinalized={onFinalized}
-          autoClose={isEmptyFunc(onCreated)}
-          loading={isSubmitBtnLoading}
-        />
-      </MultisigSignProvider>
+      <PopupPropose />
+      <TxSubmissionButton
+        disabled={!isValid}
+        getTxFunc={getTxFunc}
+        onFinalized={onFinalized}
+        loading={isSubmitBtnLoading}
+      />
     </Popup>
   );
 }
 
-export default function SignSubmitPopup({
-  onClose,
-  onCreated = noop,
-  multisig = {},
-}) {
+export default function SignSubmitPopup({ onClose, multisig = {} }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
-      <SignSubmitInnerPopup
-        onClose={onClose}
-        onCreated={onCreated}
-        multisig={multisig}
-      />
+      <MultisigSignProvider multisig={multisig}>
+        <SignSubmitInnerPopup onClose={onClose} multisig={multisig} />
+      </MultisigSignProvider>
     </SignerPopupWrapper>
   );
 }
