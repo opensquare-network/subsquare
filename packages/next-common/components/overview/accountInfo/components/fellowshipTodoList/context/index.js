@@ -1,9 +1,12 @@
 import { useMemo } from "react";
 import DemotionExpirationTodoProvider, {
   useDemotionExpirationTodoData,
+  useShouldShowDemotionExpirationTodo,
 } from "./demotionExpirationTodo";
 import MyDemotionTodoProvider, {
   useMyDemotionTodoData,
+  useShouldShowRetentionEvidenceSubmissionTodo,
+  useShouldShowRetentionReferendaCreationTodo,
 } from "./myDemotionTodo";
 
 export function FellowshipTodoListProvider({ children }) {
@@ -22,21 +25,22 @@ export function useFellowshipTodoListLoading() {
 }
 
 export function useFellowshipTodoList() {
-  const {
-    todo: { showEvidenceSubmissionTodo, showApproveReferendaCreationTodo },
-  } = useMyDemotionTodoData();
-  const { expiredMembersCount } = useDemotionExpirationTodoData();
+  const showEvidenceSubmissionTodo =
+    useShouldShowRetentionEvidenceSubmissionTodo();
+  const showApproveReferendaCreationTodo =
+    useShouldShowRetentionReferendaCreationTodo();
+  const showDemotionExpirationTodo = useShouldShowDemotionExpirationTodo();
 
   return useMemo(
     () => ({
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
-      showDemotionExpirationTodo: expiredMembersCount > 0,
+      showDemotionExpirationTodo,
     }),
     [
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
-      expiredMembersCount,
+      showDemotionExpirationTodo,
     ],
   );
 }

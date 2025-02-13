@@ -20,3 +20,8 @@ export default function DemotionExpirationTodoProvider({ children }) {
 export function useDemotionExpirationTodoData() {
   return useContext(DemotionExpirationTodoContext);
 }
+
+export function useShouldShowDemotionExpirationTodo() {
+  const { expiredMembersCount } = useDemotionExpirationTodoData();
+  return expiredMembersCount > 0;
+}

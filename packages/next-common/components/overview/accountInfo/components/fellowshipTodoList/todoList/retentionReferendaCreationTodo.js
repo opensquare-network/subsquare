@@ -3,17 +3,18 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import ApproveFellowshipMemberPopup from "next-common/components/fellowship/core/members/actions/approve/popup";
-import { useMyDemotionTodoData } from "../context/myDemotionTodo";
+import {
+  useMyDemotionTodoData,
+  useShouldShowRetentionReferendaCreationTodo,
+} from "../context/myDemotionTodo";
 
 export default function RetentionReferendaCreationTodo() {
   const address = useRealAddress();
   const [showApprovePopup, setShowApprovePopup] = useState(false);
-  const {
-    todo: { showApproveReferendaCreationTodo },
-    myRank,
-  } = useMyDemotionTodoData();
+  const show = useShouldShowRetentionReferendaCreationTodo();
+  const { myRank } = useMyDemotionTodoData();
 
-  if (!showApproveReferendaCreationTodo) {
+  if (!show) {
     return null;
   }
 
