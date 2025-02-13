@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useContextApi } from "next-common/context/api";
 
 export async function getMemberData({ section = "fellowship", api, address }) {
   let corePallet;
@@ -26,7 +27,8 @@ export async function getMemberData({ section = "fellowship", api, address }) {
   };
 }
 
-export default function useMemberData(section = "fellowship", api) {
+export default function useMemberData(section = "fellowship") {
+  const api = useContextApi();
   const address = useRealAddress();
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +39,7 @@ export default function useMemberData(section = "fellowship", api) {
     }
 
     setIsLoading(true);
-    getMemberData({ section, api, address }).then((data) => {
+    getMemberData({ api, section, address }).then((data) => {
       setData(data);
       setIsLoading(false);
     });
