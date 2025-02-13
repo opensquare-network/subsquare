@@ -1,4 +1,4 @@
-import { useWalletConnectAccounts } from "next-common/context/walletconnect";
+import { useWalletConnectAccounts } from "next-common/hooks/connect/useWalletConnectAccounts";
 import MaybeSignerConnected from "./maybeSignerConnected";
 
 export default function MaybeWalletConnectSigner({ children }) {
