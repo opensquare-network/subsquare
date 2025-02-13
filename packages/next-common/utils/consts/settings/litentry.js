@@ -41,23 +41,23 @@ const links = [
   },
   {
     name: "twitter",
-    url: "https://twitter.com/litentry",
+    url: "https://x.com/heimaNetwork",
   },
   {
     name: "medium",
-    url: "https://medium.com/litentry",
+    url: "https://heima-network.medium.com/",
   },
   {
     name: "telegram",
-    url: "https://t.me/litentry",
+    url: "https://t.me/heimaNetwork",
   },
   {
     name: "discord",
-    url: "https://discord.gg/6KxSqDPgWh",
+    url: "https://discord.com/invite/heimanetwork",
   },
   {
     name: "github",
-    url: "https://github.com/litentry",
+    url: "https://github.com/litentry/heima",
   },
   {
     name: "youtube",
