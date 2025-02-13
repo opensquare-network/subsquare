@@ -1,4 +1,4 @@
-// polkadot-cloud/polkadot-staking-dashboard/packages/app/src/contexts/WalletConnect/index.tsx
+// https://github.com/polkadot-cloud/polkadot-staking-dashboard/blob/main/packages/app/src/contexts/WalletConnect/index.tsx
 
 import { WalletConnectModal } from "@walletconnect/modal";
 import UniversalProvider from "@walletconnect/universal-provider";
@@ -7,12 +7,13 @@ import dayjs from "dayjs";
 import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useChain } from "../chain";
-import { normalizedSubstrateAccounts } from "next-common/utils/substrate";
-import WalletTypes from "next-common/utils/consts/walletTypes";
+import { useConnectedAccountContext } from "../connectedAccount";
 
 // FIXME: use company project id
 // `projectId` is configured on `https://cloud.walletconnect.com/`
 const projectId = "16c4de5fd6fec3e0f3b6bdf2a67f2160";
+
+const relayUrl = "wss://relay.walletconnect.com";
 
 export const defaultWalletConnect = {
   connectProvider: () => Promise.resolve(),
@@ -31,29 +32,24 @@ export function useWalletConnect() {
   return useContext(WalletConnectContext);
 }
 
-export function useWalletConnectAccounts() {
-  const { fetchAddresses } = useWalletConnect();
-  const [accounts, setAccounts] = useState([]);
+function useWalletConnectCaip() {
+  const chainInfo = useChainInfo();
 
-  useEffect(() => {
-    fetchAddresses().then((addresses) => {
-      setAccounts(
-        normalizedSubstrateAccounts(
-          addresses.map((address) => {
-            return { address };
-          }),
-          WalletTypes.WALLETCONNECT,
-        ),
-      );
-    });
-  }, [fetchAddresses]);
+  return chainInfo
+    ? chainInfo?.genesisHash.substring(2).substring(0, 32)
+    : null;
+}
 
-  return accounts;
+function useWalletConnectChainId() {
+  const caip = useWalletConnectCaip();
+  const chain = useChain();
+
+  return caip ? `${chain}:${caip}` : null;
 }
 
 export default function WalletConnectProvider({ children }) {
   const chain = useChain();
-  const chainInfo = useChainInfo();
+  const { disconnect: disconnectAccount } = useConnectedAccountContext();
 
   // The WalletConnect provider
   const wcProvider = useRef(null);
@@ -76,17 +72,15 @@ export default function WalletConnectProvider({ children }) {
   // Store the set of chain id the most recent session is connected to
   const sessionChain = useRef();
 
-  const caip = chainInfo
-    ? chainInfo?.genesisHash.substring(2).substring(0, 32)
-    : null;
+  const caip = useWalletConnectCaip();
 
-  const chainId = caip ? `${chain}:${caip}` : null;
+  const chainId = useWalletConnectChainId();
 
   // Init WalletConnect provider & modal, and update as wcInitialized
   async function initProvider() {
     const provider = await UniversalProvider.init({
       projectId,
-      relayUrl: "wss://relay.walletconnect.com",
+      relayUrl,
     });
 
     const modal = new WalletConnectModal({
@@ -98,6 +92,7 @@ export default function WalletConnectProvider({ children }) {
     // Subscribe to session delete
     wcProvider.current.on("session_delete", () => {
       disconnectWcSession();
+      disconnectAccount();
     });
 
     wcModal.current = modal;
