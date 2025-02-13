@@ -32,15 +32,17 @@ export default function GlobalProvider({
         <ThemeModeProvider defaultThemeMode={themeMode}>
           <ChainProvider chain={chain}>
             <UserProvider user={user} userStatus={userStatus}>
-              <ConnectedAccountProvider connectedAccount={connectedAccount}>
-                <AdminProvider admins={admins}>
-                  <NavProvider
-                    navCollapsed={navCollapsed}
-                    navSubmenuVisible={navSubmenuVisible}
-                    pathname={pathname}
-                  >
-                    <PageProvider pageProperties={pageProperties}>
-                      <ApiProvider>
+              <AdminProvider admins={admins}>
+                <NavProvider
+                  navCollapsed={navCollapsed}
+                  navSubmenuVisible={navSubmenuVisible}
+                  pathname={pathname}
+                >
+                  <PageProvider pageProperties={pageProperties}>
+                    <ApiProvider>
+                      <ConnectedAccountProvider
+                        connectedAccount={connectedAccount}
+                      >
                         <WalletConnectProvider>
                           <UserAccountProvider>
                             <SignetContextProvider>
@@ -48,11 +50,11 @@ export default function GlobalProvider({
                             </SignetContextProvider>
                           </UserAccountProvider>
                         </WalletConnectProvider>
-                      </ApiProvider>
-                    </PageProvider>
-                  </NavProvider>
-                </AdminProvider>
-              </ConnectedAccountProvider>
+                      </ConnectedAccountProvider>
+                    </ApiProvider>
+                  </PageProvider>
+                </NavProvider>
+              </AdminProvider>
             </UserProvider>
           </ChainProvider>
         </ThemeModeProvider>
