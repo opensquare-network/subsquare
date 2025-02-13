@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import Input from "next-common/lib/input";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import ProposeTree from "./proposeTree";
@@ -14,13 +14,13 @@ export function InvalidCallPrompt({ content }) {
 }
 
 export default function ProposeWithInputHex() {
-  const {
-    multisig: { callHash, when },
-    setValue,
-  } = useMultisigSignContext();
-
-  const [inputHex, setInputHex] = useState("");
   const api = useContextApi();
+  const [inputHex, setInputHex] = useState("");
+
+  const {
+    setCallData,
+    multisig: { callHash, when },
+  } = useMultisigSignContext();
 
   const inputCallHash = useMemo(() => {
     if (!api || !inputHex) {
@@ -30,6 +30,30 @@ export default function ProposeWithInputHex() {
     return api?.registry?.hash(inputHex)?.toHex() || "";
   }, [inputHex, api]);
 
+  const isMatchCallHash = useMemo(
+    () => inputCallHash === callHash,
+    [inputCallHash, callHash],
+  );
+
+  const setValue = useCallback(
+    ({ isValid, data }) => {
+      if (!api || !setCallData) {
+        return;
+      }
+
+      setCallData("input", { callData: data, isValid });
+    },
+    [api, setCallData],
+  );
+
+  useEffect(() => {
+    if (isMatchCallHash) {
+      return;
+    }
+
+    setValue({ isValid: false, data: null });
+  }, [inputCallHash, callHash, setValue, isMatchCallHash]);
+
   return (
     <div className="flex flex-col space-y-2">
       <div className="text14Bold">Call Hex</div>
@@ -38,11 +62,11 @@ export default function ProposeWithInputHex() {
         value={inputHex}
         onChange={(e) => setInputHex(e.target.value)}
       />
-      {inputCallHash === callHash && (
+      {isMatchCallHash && (
         <ProposeTree callHex={inputHex} when={when} setValue={setValue} />
       )}
 
-      {inputCallHash !== callHash && inputHex && (
+      {!isMatchCallHash && inputHex && (
         <InvalidCallPrompt content="Invalid call hex" />
       )}
     </div>

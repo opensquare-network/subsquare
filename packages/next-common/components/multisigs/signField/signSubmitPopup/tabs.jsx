@@ -1,14 +1,10 @@
-import { useState } from "react";
 import Tab from "next-common/components/tab";
 import ProposeWithInputHex from "./proposeWithInputHex";
 import ProposeWithExtrinsic from "./proposeWithExtrinsic";
 import { useMultisigSignContext } from "./context";
 
 export default function ProposeExtrinsicWithToggleTabs() {
-  const {
-    multisig: { callHash, when },
-    setValue,
-  } = useMultisigSignContext();
+  const { formType, setFormType } = useMultisigSignContext();
 
   const tabs = [
     {
@@ -21,30 +17,20 @@ export default function ProposeExtrinsicWithToggleTabs() {
     },
   ];
 
-  const [selectedTabId, setSelectedTabId] = useState(tabs[0].tabId);
-
   return (
     <div className="flex flex-col gap-[8px]">
       <Tab
         tabs={tabs}
-        selectedTabId={selectedTabId}
-        setSelectedTabId={(id) => {
-          setSelectedTabId(id);
-          setValue({ isValid: false, data: {} });
-        }}
+        selectedTabId={formType}
+        setSelectedTabId={setFormType}
       />
 
-      <div className={selectedTabId === "set" && "hidden"}>
-        <ProposeWithInputHex
-          callHash={callHash}
-          when={when}
-          setValue={setValue}
-        />
+      <div className={formType === "set" ? "hidden" : ""}>
+        <ProposeWithInputHex />
       </div>
 
-      {/* todo: validate data again */}
-      <div className={selectedTabId === "input" && "hidden"}>
-        <ProposeWithExtrinsic setValue={setValue} />
+      <div className={formType === "input" ? "hidden" : ""}>
+        <ProposeWithExtrinsic />
       </div>
     </div>
   );
