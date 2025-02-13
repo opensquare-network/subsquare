@@ -9,14 +9,14 @@ import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import NextBurn from "./nextBurn";
 import SpendPeriod from "./spendPeriod";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
-import { usePolkadotTreasurySummary } from "../context";
+import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 
 export default function RelayChainTreasury() {
   const {
     dotTreasuryBalanceOnRelayChain,
     isDotTreasuryBalanceOnRelayChainLoading,
-  } = usePolkadotTreasurySummary();
+  } = usePolkadotTreasury();
 
   const summary = useSpendPeriodSummary();
   const toBeAwarded = useToBeAwarded();
@@ -34,7 +34,7 @@ export default function RelayChainTreasury() {
           <FiatPriceLabel free={dotTreasuryBalanceOnRelayChain} />
           <div className="!ml-0 flex flex-col gap-y-1">
             <div>
-              <DotTokenSymbolAsset free={dotTreasuryBalanceOnRelayChain} />
+              <NativeTokenSymbolAsset free={dotTreasuryBalanceOnRelayChain} />
             </div>
             <SummaryLabelItem label={"To be awarded"}>
               <ToBeAwarded toBeAwarded={toBeAwarded} />

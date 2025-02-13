@@ -1,5 +1,4 @@
 import Chains from "../chains";
-import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
@@ -7,13 +6,17 @@ import { litentryBlockHeightSettings } from "./blockHeightSettings/litentry";
 import { mergeChainModules } from "./common/modules";
 
 const ProjectIconLitentryDark = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectIconLitentryDark"),
+  import("@osn/icons/subsquare/ProjectIconHeimaDark"),
 );
 const ProjectIconLitentryLight = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectIconLitentryLight"),
+  import("@osn/icons/subsquare/ProjectIconHeimaLight"),
 );
 const ProjectLogoLitentryDark = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoLitentryDark"),
+  import("@osn/icons/subsquare/ProjectLogoHeima"),
+);
+
+const ProjectLogoLitentryLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoHeima"),
 );
 
 const DEFAULT_LITENTRY_NODES = [
@@ -34,7 +37,7 @@ const DEFAULT_LITENTRY_NODES = [
 const links = [
   {
     name: "website",
-    url: "https://litentry.com",
+    url: "https://www.heima.network/",
   },
   {
     name: "twitter",
@@ -64,9 +67,9 @@ const links = [
 
 const litentry = {
   value: Chains.litentry,
-  name: capitalize(Chains.litentry),
+  name: "Heima",
   identity: Chains.polkadot,
-  symbol: "LIT",
+  symbol: "HEI",
   decimals: 18,
   blockTime: 12000,
   hasElections: false,
@@ -74,7 +77,7 @@ const litentry = {
   endpoints: DEFAULT_LITENTRY_NODES,
   avatar: ProjectIconLitentryLight,
   darkAvatar: ProjectIconLitentryDark,
-  navLogo: ProjectLogoLitentryDark,
+  navLogo: ProjectLogoLitentryLight,
   navLogoDark: ProjectLogoLitentryDark,
   navPreferDark: true,
   links,
@@ -84,7 +87,7 @@ const litentry = {
   hasMultisig: true,
   multisigApiPrefix: "litentry",
   description:
-    "The Litentry identity Hub allows you to aggregate your personal data from blockchains and platforms to manage granular access to dApps. Exist in a digital world without KYC. Get Maximum Privacy & Authorization Control. Share Interoperable Verifiable Credentials. Use Multi-chain Data from Web3 + Web2 Platforms",
+    "Heima Network is a chain abstraction infrastructure designed to enable users to unify all blockchains through a single account.",
   modules: mergeChainModules({
     treasury: {
       tips: false,
@@ -95,20 +98,20 @@ const litentry = {
     statescan: true,
   },
   cssVarsLight: {
-    theme100: "rgba(21,184,135,0.10)",
-    theme300: "rgba(21,184,135,0.40)",
-    theme500: "rgba(21,184,135,1)",
-    navigationBg: "rgba(0,0,0,1)",
-    navigationActive: "rgba(255,255,255,0.10)",
-    navigationBorder: "rgba(255,255,255,0.12)",
+    theme100: "rgba(104,192,102,0.10)",
+    theme300: "rgba(104,192,102,0.40)",
+    theme500: "rgba(104,192,102,1)",
+    navigationBg: "rgba(10,55,59,1)",
+    navigationActive: "rgba(255,255,255,0.04)",
+    navigationBorder: "rgba(255,255,255,0.06)",
     navigationText: "var(--textPrimaryContrast)",
     navigationTextTertiary: "var(--textTertiaryContrast)",
     navigationIcon: "var(--textSecondaryContrast)",
   },
   cssVarsDark: {
-    theme100: "rgba(21,184,135,0.10)",
-    theme300: "rgba(21,184,135,0.40)",
-    theme500: "rgba(21,184,135,1)",
+    theme100: "rgba(104,192,102,0.10)",
+    theme300: "rgba(104,192,102,0.40)",
+    theme500: "rgba(104,192,102,1)",
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",

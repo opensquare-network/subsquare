@@ -1,15 +1,15 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { useContextApi } from "next-common/context/api";
-import { useListPageType } from "next-common/context/page";
-import { listPageCategory } from "next-common/utils/consts/business/category";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { find } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
-import { useCollectivesSection } from "next-common/context/collectives/collectives";
+import {
+  useCollectivesSection,
+  useReferendaFellowshipPallet,
+} from "next-common/context/collectives/collectives";
+import { useFellowshipCoreMemberProposalSubmitTx } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 
 export default function CreateFellowshipCoreMemberProposalSubmitButton({
   disabled,
@@ -18,6 +18,8 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   rank,
   action = "",
   trackName,
+  checkDecisionDeposit = false,
+  checkVoteAye = false,
 }) {
   const { members } = useFellowshipCoreMembers();
   const signerAccount = useSignerAccount();
@@ -26,45 +28,21 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
 
   const myRankOk = me && me.rank >= 3;
 
-  const api = useContextApi();
   const router = useRouter();
-  const listPageType = useListPageType();
   const section = useCollectivesSection();
+  const referendaPallet = useReferendaFellowshipPallet();
 
   const buttonDisabled = disabled || !myRankOk || !who || !rank;
 
-  let corePallet;
-  let referendaPallet;
-  if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
-    corePallet = "fellowshipCore";
-    referendaPallet = "fellowshipReferenda";
-  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
-    corePallet = "ambassadorCore";
-    referendaPallet = "ambassadorReferenda";
-  }
-
-  const getTxFunc = useCallback(async () => {
-    if (!api || buttonDisabled || !action) {
-      return;
-    }
-
-    const proposal = api.tx[corePallet][action](who, rank);
-    return api.tx[referendaPallet].submit(
-      { FellowshipOrigins: trackName },
-      { Inline: proposal.method.toHex() },
-      enactment,
-    );
-  }, [
-    api,
-    buttonDisabled,
-    action,
-    corePallet,
-    who,
+  const submitTxFunc = useFellowshipCoreMemberProposalSubmitTx({
     rank,
-    referendaPallet,
+    who,
+    action,
     trackName,
     enactment,
-  ]);
+    checkDecisionDeposit,
+    checkVoteAye,
+  });
 
   return (
     <Tooltip
@@ -73,7 +51,9 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
       <TxSubmissionButton
         disabled={buttonDisabled}
         title="Create Preimage"
-        getTxFunc={getTxFunc}
+        getTxFunc={() => {
+          return submitTxFunc;
+        }}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, referendaPallet, "Submitted");
           if (!eventData) {

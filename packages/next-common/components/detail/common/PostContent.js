@@ -36,10 +36,13 @@ export default function PostContent({ post = {} }) {
 
   let content;
   if (post.contentType === "markdown") {
-    let postContent = post.content;
-
     if (post.dataSource === "polkassembly") {
-      postContent = marked.parse(post.content || "", { breaks: true });
+      let postContent = marked.parse(
+        post.polkassemblyContentHtml || post.content || "",
+        {
+          breaks: true,
+        },
+      );
 
       // strip all inline attributes
       postContent = sanitizeHtml(postContent || "");
@@ -50,7 +53,7 @@ export default function PostContent({ post = {} }) {
     } else {
       content = (
         <MarkdownPreviewer
-          content={postContent}
+          content={post.content}
           markedOptions={{
             breaks: true,
           }}

@@ -7,8 +7,13 @@ import { cn } from "next-common/utils";
 
 export const AlwaysVisible = ({ children }) => children;
 
-export default function CollapsePanel({ className, children, labelItem }) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+export default function CollapsePanel({
+  defaultCollapsed = true,
+  className,
+  children,
+  labelItem,
+}) {
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const { width } = useWindowSize();
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
@@ -38,7 +43,7 @@ export default function CollapsePanel({ className, children, labelItem }) {
 
       <div className={cn("flex flex-col ml-[12px]", className)}>
         {labelItem}
-        {isCollapsed ? children : alwaysVisibleContent}
+        {isCollapsed ? alwaysVisibleContent : children}
       </div>
     </div>
   ) : (

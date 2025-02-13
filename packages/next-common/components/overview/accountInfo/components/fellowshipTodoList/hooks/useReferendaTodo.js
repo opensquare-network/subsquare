@@ -43,14 +43,10 @@ export default function useReferendaTodo(trigger) {
     );
   }, [myEligibleReferenda, referendaVotes]);
 
-  const showReferendaTodo = referendaToVote.length > 0;
   const countOfTotalReferenda = activeReferenda?.length || 0;
   const countOfEligibleReferenda = myEligibleReferenda?.length || 0;
 
   return {
-    todo: {
-      showReferendaTodo,
-    },
     countOfTotalReferenda,
     countOfEligibleReferenda,
     referendaToVote,

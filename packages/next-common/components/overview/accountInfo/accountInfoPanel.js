@@ -15,13 +15,11 @@ import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
-import MultisigManagePrompt from "./components/multisigManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
-import { AssetHubApiProvider } from "next-common/context/assetHub";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
@@ -286,11 +284,9 @@ export function AccountHead({ width }) {
             <TransferButton />
           </OnlyChains>
           <OnlyChains chains={relayChainTeleportEnabledChains}>
-            <AssetHubApiProvider>
-              <CollectivesApiProvider>
-                <TeleportButton />
-              </CollectivesApiProvider>
-            </AssetHubApiProvider>
+            <CollectivesApiProvider>
+              <TeleportButton />
+            </CollectivesApiProvider>
           </OnlyChains>
           <OnlyChains chains={paraChainTeleportEnabledChains}>
             <RelayChainApiProvider>
@@ -329,7 +325,6 @@ export function CommonAccountInfoPanel() {
       <AccountBalances />
       <ExtensionUpdatePrompt />
       <AssetHubManagePrompt />
-      <MultisigManagePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );

@@ -6,7 +6,7 @@ import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
-import { usePolkadotTreasurySummary } from "../context";
+import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 
 function LoansItemList() {
   const {
@@ -14,7 +14,7 @@ function LoansItemList() {
     loanBifrostDotBalance,
     loadPendulumDotBalance,
     loanHydrationDotBalance,
-  } = usePolkadotTreasurySummary();
+  } = usePolkadotTreasury();
 
   const { decimals, symbol } = useChainSettings();
   const bifrostDotAmount = toPrecision(loanBifrostDotBalance || 0, decimals);
@@ -80,7 +80,7 @@ export default function Loans() {
     loanBifrostDotBalance,
     loadPendulumDotBalance,
     loanHydrationDotBalance,
-  } = usePolkadotTreasurySummary();
+  } = usePolkadotTreasury();
 
   return (
     <SummaryItem title="Loans">

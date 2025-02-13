@@ -1,5 +1,7 @@
 import { useMemo } from "react";
-import DemotionTodoProvider, { useDemotionTodoData } from "./demotionTodo";
+import DemotionExpirationTodoProvider, {
+  useDemotionExpirationTodoData,
+} from "./demotionExpirationTodo";
 import MyDemotionTodoProvider, {
   useMyDemotionTodoData,
 } from "./myDemotionTodo";
@@ -7,17 +9,18 @@ import ReferendaTodoProvider, { useReferendaTodoData } from "./referendaTodo";
 
 export function FellowshipTodoListProvider({ children }) {
   return (
-    <DemotionTodoProvider>
+    <DemotionExpirationTodoProvider>
       <MyDemotionTodoProvider>
         <ReferendaTodoProvider>{children}</ReferendaTodoProvider>
       </MyDemotionTodoProvider>
-    </DemotionTodoProvider>
+    </DemotionExpirationTodoProvider>
   );
 }
 
 export function useFellowshipTodoListLoading() {
   const { isLoading: isMyDemotionTodoLoading } = useMyDemotionTodoData();
-  const { isLoading: isDemotedBumpAllLoading } = useDemotionTodoData();
+  const { isLoading: isDemotedBumpAllLoading } =
+    useDemotionExpirationTodoData();
   return isMyDemotionTodoLoading || isDemotedBumpAllLoading;
 }
 
@@ -25,25 +28,21 @@ export function useFellowshipTodoList() {
   const {
     todo: { showEvidenceSubmissionTodo, showApproveReferendaCreationTodo },
   } = useMyDemotionTodoData();
-  const {
-    todo: { showDemotedBumpAllTodo },
-  } = useDemotionTodoData();
-  const {
-    todo: { showReferendaTodo },
-  } = useReferendaTodoData();
+  const { expiredMembersCount } = useDemotionExpirationTodoData();
+  const { referendaToVote } = useReferendaTodoData();
 
   return useMemo(
     () => ({
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
-      showDemotedBumpAllTodo,
-      showReferendaTodo,
+      showDemotionExpirationTodo: expiredMembersCount > 0,
+      showReferendaTodo: referendaToVote?.length > 0,
     }),
     [
       showEvidenceSubmissionTodo,
       showApproveReferendaCreationTodo,
-      showDemotedBumpAllTodo,
-      showReferendaTodo,
+      expiredMembersCount,
+      referendaToVote,
     ],
   );
 }

@@ -1,5 +1,9 @@
 import Loading from "next-common/components/loading";
-import { WarningMessage } from "next-common/components/setting/styled";
+import {
+  InfoMessage,
+  WarningMessage,
+} from "next-common/components/setting/styled";
+import { AddressUser } from "next-common/components/user";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 export function ReferendaWarningMessage({ isLoading, relatedReferenda }) {
@@ -30,5 +34,18 @@ export function ReferendaWarningMessage({ isLoading, relatedReferenda }) {
       </a>{" "}
       currently in progress
     </WarningMessage>
+  );
+}
+
+export function ReferendaActionMessage({ rank, who, trackName, action = "" }) {
+  if (!rank || !who) {
+    return null;
+  }
+
+  return (
+    <InfoMessage className="flex-wrap gap-x-2">
+      Will create a referendum in {trackName} track to {action}
+      <AddressUser add={who} />
+    </InfoMessage>
   );
 }

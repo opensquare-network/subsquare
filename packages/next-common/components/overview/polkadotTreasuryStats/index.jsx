@@ -2,21 +2,18 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import PolkadotTreasurySummary from "next-common/components/summary/polkadotTreasurySummary";
 import { TreasuryProvider } from "next-common/context/treasury";
-import { AssetHubApiProvider } from "next-common/context/assetHub";
-import { HydrationApiProvider } from "next-common/context/hydration";
+import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
 
 export default function PolkadotTreasuryStats() {
   return (
     <div>
       <TitleContainer className="mb-4">Treasury Stats</TitleContainer>
       <SecondaryCard>
-        <AssetHubApiProvider>
-          <HydrationApiProvider>
-            <TreasuryProvider>
-              <PolkadotTreasurySummary />
-            </TreasuryProvider>
-          </HydrationApiProvider>
-        </AssetHubApiProvider>
+        <TreasuryProvider>
+          <PolkadotTreasuryProvider>
+            <PolkadotTreasurySummary />
+          </PolkadotTreasuryProvider>
+        </TreasuryProvider>
       </SecondaryCard>
     </div>
   );

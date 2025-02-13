@@ -2,7 +2,6 @@ import TotalTreasury from "./totalTreasury";
 import RelayChainTreasury from "./relayChainTreasury";
 import TreasuryOnAssetHub from "./treasuryOnAssetHub";
 import TreasuryOnHydration from "./treasuryOnHydration";
-import { PolkadotTreasurySummaryProvider } from "./context";
 import { TreasuryOnHydrationProvider } from "./context/treasuryOnHydration";
 import { MythTokenAssetsProvider } from "./context/mythTokenAssets";
 import FellowshipTreasuryOnAssetHub from "./fellowshipTreasuryOnAssetHub";
@@ -29,12 +28,10 @@ function PolkadotTreasurySummaryInContext() {
 
 export default function PolkadotTreasurySummary() {
   return (
-    <PolkadotTreasurySummaryProvider>
-      <TreasuryOnHydrationProvider>
-        <MythTokenAssetsProvider>
-          <PolkadotTreasurySummaryInContext />
-        </MythTokenAssetsProvider>
-      </TreasuryOnHydrationProvider>
-    </PolkadotTreasurySummaryProvider>
+    <TreasuryOnHydrationProvider>
+      <MythTokenAssetsProvider>
+        <PolkadotTreasurySummaryInContext />
+      </MythTokenAssetsProvider>
+    </TreasuryOnHydrationProvider>
   );
 }

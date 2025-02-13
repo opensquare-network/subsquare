@@ -115,15 +115,18 @@ function useMemberDemotionExpirationCounts(members) {
   return { expiredMembersCount, expiringMembersCount };
 }
 
-function useDemotionExpirationCounts() {
+export function useEligibleFellowshipCoreMembers() {
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembers();
-
   const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
     [coreMembers],
   );
+  return { members, isLoading };
+}
 
+function useDemotionExpirationCounts() {
+  const { members, loading: isLoading } = useEligibleFellowshipCoreMembers();
   const { expiredMembersCount, expiringMembersCount } =
     useMemberDemotionExpirationCounts(members);
 
@@ -175,11 +178,7 @@ export function MemberWarningsPanel({ className, isLoading, items }) {
 
 export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
-  const { members: coreMembers } = useFellowshipCoreMembers();
-  const [members] = useMemo(
-    () => partition(coreMembers, (m) => m.rank > 0),
-    [coreMembers],
-  );
+  const { members } = useEligibleFellowshipCoreMembers();
 
   const {
     expiredMembersCount,

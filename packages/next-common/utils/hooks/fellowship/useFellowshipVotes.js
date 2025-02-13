@@ -45,7 +45,7 @@ export function normalizeVotingRecord(optionalRecord) {
   };
 }
 
-async function query(api, targetPollIndex, blockHash) {
+export async function query(api, targetPollIndex, blockHash) {
   let blockApi = api;
   if (blockHash) {
     blockApi = await api.at(blockHash);

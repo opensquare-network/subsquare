@@ -21,9 +21,9 @@ export default function LoadableItem({
         {title}
       </span>
       <LoadableContent isLoading={isLoading}>
-        <span className={cn("text-textPrimary text16Bold", valueClassName)}>
+        <div className={cn("text-textPrimary text16Bold", valueClassName)}>
           <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />
-        </span>
+        </div>
       </LoadableContent>
     </div>
   );

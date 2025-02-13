@@ -2,15 +2,17 @@ import { useState } from "react";
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import ReferendaToVotePopup from "../popup/ReferendaToVotePopup";
+import { useReferendaTodoData } from "../context/referendaTodo";
 
-export default function ReferendaTodo({
-  countOfTotalReferenda = 0,
-  countOfEligibleReferenda = 0,
-  referendaToVote = [],
-  referendaVotes = [],
-}) {
+export default function ReferendaTodo() {
   const [showReferendaToVotePopup, setShowReferendaToVotePopup] =
     useState(false);
+  const {
+    countOfTotalReferenda = 0,
+    countOfEligibleReferenda = 0,
+    referendaToVote = [],
+    referendaVotes = [],
+  } = useReferendaTodoData();
 
   if (!referendaToVote || referendaToVote.length === 0) {
     return null;
