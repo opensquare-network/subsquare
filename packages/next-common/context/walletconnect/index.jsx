@@ -6,7 +6,7 @@ import { getSdkError } from "@walletconnect/utils";
 import dayjs from "dayjs";
 import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { useChain } from "../chain";
+import { useChain, useChainSettings } from "../chain";
 import { useConnectedAccountContext } from "../connectedAccount";
 
 // FIXME: use company project id
@@ -49,6 +49,7 @@ function useWalletConnectChainId() {
 
 export default function WalletConnectProvider({ children }) {
   const chain = useChain();
+  const { description } = useChainSettings();
   const { disconnect: disconnectAccount } = useConnectedAccountContext();
 
   // The WalletConnect provider
@@ -81,6 +82,12 @@ export default function WalletConnectProvider({ children }) {
     const provider = await UniversalProvider.init({
       projectId,
       relayUrl,
+      metadata: {
+        name: "Subsquare",
+        description,
+        url: `https://${chain}.subsquare.io`,
+        icons: [`https://${chain}.subsquare.io/favicon.ico`],
+      },
     });
 
     const modal = new WalletConnectModal({
