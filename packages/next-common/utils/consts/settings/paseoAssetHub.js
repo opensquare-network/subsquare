@@ -43,6 +43,7 @@ const paseoAssetHub = {
   darkAvatar: NetworkIconPaseoAssetHub,
   endpoints,
   noScan: true,
+  multisigApiPrefix: null,
   integrations: {
     statescan: true,
     subscan: {
