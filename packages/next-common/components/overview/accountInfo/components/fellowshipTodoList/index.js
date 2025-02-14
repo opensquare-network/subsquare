@@ -5,16 +5,17 @@ import CollectivesProvider, {
   useReferendaFellowshipPallet,
 } from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
-import {
-  FellowshipTodoListProvider,
-  useFellowshipTodoListCount,
-  useFellowshipTodoListLoading,
-} from "./context";
 import Loading from "next-common/components/loading";
+import MyEvidenceProvider from "./context/myEvidence";
+import MyMemberDataProvider from "./context/myMemberDataProvider";
+import MyDemotionExpirationProvider from "./context/myDemotionExpirationProvider";
+import useTodoListCount from "./hooks/useTodoListCount";
+import useTodoListLoading from "./hooks/useTodoListLoading";
+import DemotionExpirationCountProvider from "./context/demotionExpirationCount";
 
 function Title() {
-  const isLoading = useFellowshipTodoListLoading();
-  const count = useFellowshipTodoListCount();
+  const isLoading = useTodoListLoading();
+  const count = useTodoListCount();
   return (
     <div className="flex items-center gap-1 text14Medium text-textTertiary">
       <span>Fellowship To-do List</span>
@@ -28,14 +29,20 @@ function FellowshipTodoListImpl() {
   const referendaPallet = useReferendaFellowshipPallet();
   return (
     <ActiveReferendaProvider pallet={referendaPallet}>
-      <FellowshipTodoListProvider>
-        <CollapsePanel labelItem={<Title />} defaultCollapsed={false}>
-          <AlwaysVisible>
-            <NavigationButtons />
-          </AlwaysVisible>
-          <TodoList />
-        </CollapsePanel>
-      </FellowshipTodoListProvider>
+      <MyEvidenceProvider>
+        <MyMemberDataProvider>
+          <MyDemotionExpirationProvider>
+            <DemotionExpirationCountProvider>
+              <CollapsePanel labelItem={<Title />} defaultCollapsed={false}>
+                <AlwaysVisible>
+                  <NavigationButtons />
+                </AlwaysVisible>
+                <TodoList />
+              </CollapsePanel>
+            </DemotionExpirationCountProvider>
+          </MyDemotionExpirationProvider>
+        </MyMemberDataProvider>
+      </MyEvidenceProvider>
     </ActiveReferendaProvider>
   );
 }
