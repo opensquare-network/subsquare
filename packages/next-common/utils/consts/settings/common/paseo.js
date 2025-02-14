@@ -9,7 +9,7 @@ const ProjectLogoPaseoLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoPaseoLight"),
 );
 
-export const links = [
+export const paseoLinks = [
   {
     name: "twitter",
     url: "https://twitter.com/PaseoNetwork",
@@ -20,7 +20,7 @@ export const links = [
   },
 ];
 
-export const themeVars = {
+export const paseoThemeVars = {
   cssVarsLight: {
     theme100: "rgba(38,219,141,0.10)",
     theme300: "rgba(38,219,141,0.40)",

@@ -1,6 +1,10 @@
 import dynamic from "next/dynamic";
 import Chains from "../chains";
-import { links, themeVars, paseoCommonSettings } from "./common/paseo";
+import {
+  paseoLinks,
+  paseoThemeVars,
+  paseoCommonSettings,
+} from "./common/paseo";
 
 const ProjectIconPaseoAssetHub = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoAssethub"),
@@ -42,8 +46,8 @@ const paseoAssetHub = {
     "System parachain on Paseo network for creating and sending tokens and NFTs.",
   avatar: ProjectIconPaseoAssetHub,
   darkAvatar: NetworkIconPaseoAssetHub,
-  links,
-  ...themeVars,
+  links: paseoLinks,
+  ...paseoThemeVars,
   endpoints,
   noScan: true,
   integrations: {

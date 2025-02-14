@@ -3,7 +3,11 @@ import capitalize from "../../capitalize";
 import dynamic from "next/dynamic";
 import { defaultPostLabels } from "./common";
 import { mergeChainModules } from "./common/modules";
-import { links, themeVars, paseoCommonSettings } from "./common/paseo";
+import {
+  paseoLinks,
+  paseoThemeVars,
+  paseoCommonSettings,
+} from "./common/paseo";
 
 const ProjectIconPaseoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoDark"),
@@ -44,7 +48,7 @@ const paseo = {
   avatar: ProjectIconPaseoLight,
   darkAvatar: ProjectIconPaseoDark,
   navPreferDark: true,
-  links,
+  links: paseoLinks,
   hasMultisig: true,
   multisigApiPrefix: "paseo",
   graphqlApiSubDomain: "paseo-gh-api",
@@ -68,7 +72,7 @@ const paseo = {
     subscan: true,
   },
   sima: true,
-  ...themeVars,
+  ...paseoThemeVars,
   multisigWallets: {
     mimir: true,
   },
