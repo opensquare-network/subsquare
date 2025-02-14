@@ -41,7 +41,7 @@ export const themeVars = {
     navigationBorder: "var(--neutral300)",
   },
 };
-export const commonSettings = {
+export const paseoCommonSettings = {
   identity: Chains.paseo,
   symbol: "PAS",
   decimals: 10,

@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Chains from "../chains";
-import { links, themeVars, commonSettings } from "./common/paseo";
+import { links, themeVars, paseoCommonSettings } from "./common/paseo";
 
 const ProjectIconPaseoAssetHub = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoAssethub"),
@@ -34,7 +34,7 @@ const endpoints = [
 ];
 
 const paseoAssetHub = {
-  ...commonSettings,
+  ...paseoCommonSettings,
   value: Chains.paseoAssetHub,
   name: "Asset Hub",
   blockTime: 12000,

@@ -1,10 +1,9 @@
 import Chains from "../chains";
 import capitalize from "../../capitalize";
-import MenuGroups from "./menuGroups";
 import dynamic from "next/dynamic";
 import { defaultPostLabels } from "./common";
 import { mergeChainModules } from "./common/modules";
-import { links, themeVars, commonSettings } from "./common/paseo";
+import { links, themeVars, paseoCommonSettings } from "./common/paseo";
 
 const ProjectIconPaseoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoDark"),
@@ -37,7 +36,7 @@ const nodes = [
 ];
 
 const paseo = {
-  ...commonSettings,
+  ...paseoCommonSettings,
   value: Chains.paseo,
   name: capitalize(Chains.paseo),
   blockTime: 6000,
