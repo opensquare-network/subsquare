@@ -13,6 +13,8 @@ import { SystemProfile } from "@osn/icons/subsquare";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
 import { AddressUser, SystemUser } from "../user";
 import { useAccountMenu } from "./useAccountMenu.js";
+import { walletConnect } from "next-common/utils/consts/connect/index.js";
+import { useWalletConnect } from "next-common/context/walletconnect/index.jsx";
 
 const Wrapper = Relative;
 
@@ -61,7 +63,8 @@ function ProfileMenuItem({ onClick }) {
 export default function HeaderAccount() {
   const user = useUser();
   const isLoggedIn = useIsLoggedIn();
-  const { disconnect: disconnectAccount } = useConnectedAccountContext();
+  const { disconnect: disconnectAccount, connectedAccount } =
+    useConnectedAccountContext();
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -69,6 +72,7 @@ export default function HeaderAccount() {
   const isMounted = useMountedState();
   const { openLoginPopup } = useLoginPopup();
   const menu = useAccountMenu();
+  const { disconnectWcSession } = useWalletConnect();
 
   useClickAway(ref, () => setShow(false));
 
@@ -81,6 +85,10 @@ export default function HeaderAccount() {
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
       await disconnectAccount();
+
+      if (connectedAccount?.wallet === walletConnect.extensionName) {
+        disconnectWcSession();
+      }
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
