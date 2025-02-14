@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import useMyDemotionPeriodExpiration from "../hooks/useMyDemotionPeriodExpiration";
-import { useContextMyMemberData } from "./myMemberDataProvider";
+import { useContextMyMemberData } from "./myMemberData";
 
 export const MyDemotionExpirationContext = createContext();
 

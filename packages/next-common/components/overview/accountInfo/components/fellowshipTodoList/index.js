@@ -7,8 +7,8 @@ import CollectivesProvider, {
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import Loading from "next-common/components/loading";
 import MyEvidenceProvider from "./context/myEvidence";
-import MyMemberDataProvider from "./context/myMemberDataProvider";
-import MyDemotionExpirationProvider from "./context/myDemotionExpirationProvider";
+import MyMemberDataProvider from "./context/myMemberData";
+import MyDemotionExpirationProvider from "./context/myDemotionExpiration";
 import useTodoListCount from "./hooks/useTodoListCount";
 import useTodoListLoading from "./hooks/useTodoListLoading";
 import DemotionExpirationCountProvider from "./context/demotionExpirationCount";

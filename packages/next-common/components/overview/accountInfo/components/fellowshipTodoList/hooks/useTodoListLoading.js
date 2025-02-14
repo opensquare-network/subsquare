@@ -1,6 +1,6 @@
 import { useContextDemotionExpirationCount } from "../context/demotionExpirationCount";
 import { useContextMyEvidence } from "../context/myEvidence";
-import { useContextMyMemberData } from "../context/myMemberDataProvider";
+import { useContextMyMemberData } from "../context/myMemberData";
 
 function useMyDemotionTodoLoading() {
   const { isLoading: isMyMemberDataLoading } = useContextMyMemberData();

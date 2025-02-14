@@ -1,4 +1,4 @@
-import { useContextMyDemotionExpiration } from "../context/myDemotionExpirationProvider";
+import { useContextMyDemotionExpiration } from "../context/myDemotionExpiration";
 import { useContextMyEvidence } from "../context/myEvidence";
 
 export function useShouldShowRetentionEvidenceSubmissionTodo() {
