@@ -20,14 +20,14 @@ export default function useFellowshipSalaryCycleData(
       registrationPeriodData?.gonePercentage > 0 &&
       registrationPeriodData?.gonePercentage < 100
     ) {
-      return registrationPeriodData;
+      return { data: registrationPeriodData, label: "Registration" };
     }
 
     if (
       payoutPeriodData?.gonePercentage > 0 &&
       payoutPeriodData?.gonePercentage < 100
     ) {
-      return payoutPeriodData;
+      return { data: payoutPeriodData, label: "Payout" };
     }
 
     return null;
