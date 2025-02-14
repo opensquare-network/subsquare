@@ -16,7 +16,7 @@ function LoansItem() {
     <div className="flex flex-col gap-[4px]">
       <SummaryLabelLinkItem
         label="Hydration"
-        href="https://kusama.subscan.io/account/HzdD44pR43GWAbpfhuKnbLAZJFJp7htBZFeRFSCMJMmHmzB"
+        href="https://kusama.subsquare.io/referenda/490"
       >
         <ValueDisplay
           value={hydrationKsmAmount}
