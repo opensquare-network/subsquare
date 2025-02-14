@@ -21,6 +21,7 @@ export default function TotalTreasury() {
     isNativeTreasuryBalanceOnRelayChainLoading,
     nativeTreasuryBalanceOnAssetHub,
     isNativeTreasuryBalanceOnAssetHubLoading,
+    loansHydrationNativeBalance,
   } = useKusamaTreasuryContext();
 
   const isTotalAssetsLoading =
@@ -31,6 +32,7 @@ export default function TotalTreasury() {
     nativeTreasuryBalanceOnRelayChain || 0,
   )
     .plus(nativeTreasuryBalanceOnAssetHub || 0)
+    .plus(loansHydrationNativeBalance)
     .toString();
 
   return (

@@ -25,6 +25,7 @@ export default function KusamaTreasuryProvider({ children }) {
         isNativeTreasuryBalanceOnRelayChainLoading,
         nativeTreasuryBalanceOnAssetHub,
         isNativeTreasuryBalanceOnAssetHubLoading,
+        loansHydrationNativeBalance: 33333000000000000,
       }}
     >
       {children}
