@@ -305,7 +305,7 @@ export default function WalletConnectProvider({ children }) {
   async function fetchAddresses() {
     // Retrieve a new session or get current one
     const wcSession = await initializeWcSession();
-    if (wcSession === null) {
+    if (!wcSession) {
       return [];
     }
 
