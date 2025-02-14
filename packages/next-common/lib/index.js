@@ -72,7 +72,7 @@ export function withCommonProps(
         navSubmenuVisible: navSubmenuVisible || "{}",
         ...listPageProperties,
         ...detailPageProperties,
-        scanHeight,
+        scanHeight: scanHeight ?? null,
         pageProperties: {
           ...listPageProperties,
           ...detailPageProperties,
