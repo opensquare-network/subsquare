@@ -62,6 +62,7 @@ function MultiSpends({ spends }) {
         <AssetIcon
           key={spend.symbol}
           symbol={spend.symbol}
+          type={spend?.type}
           className={cn("w-5 h-5", idx > 0 && "-ml-2")}
         />
       ))}
