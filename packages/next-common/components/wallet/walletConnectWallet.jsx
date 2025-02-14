@@ -12,6 +12,10 @@ export default function WalletConnectWallet({ wallet }) {
     closeLoginPopup();
 
     fetchAddresses().then((addresses) => {
+      if (!addresses.length) {
+        return;
+      }
+
       web3Login({
         account: { address: addresses[0] },
         wallet: wallet.extensionName,
