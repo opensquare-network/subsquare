@@ -10,7 +10,6 @@ import { setProfileTransfers } from "next-common/store/reducers/profile/transfer
 import { setProfileIdentityTimeline } from "next-common/store/reducers/profile/identityTimeline";
 import useProfileAddress from "./useProfileAddress";
 import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
-import CollectivesProvider from "next-common/context/collectives/collectives";
 import CollectivesMemberProvider from "next-common/context/collectives/member";
 
 function ProfilePageImpl() {
@@ -47,19 +46,11 @@ export default function ProfilePage() {
     address,
     "ambassadorCore",
   );
-
   const member = fellowshipMember || ambassadorMember || null;
-  const section = fellowshipMember
-    ? "fellowship"
-    : ambassadorMember
-    ? "ambassador"
-    : null;
 
   return (
-    <CollectivesProvider section={section}>
-      <CollectivesMemberProvider member={member}>
-        <ProfilePageImpl />
-      </CollectivesMemberProvider>
-    </CollectivesProvider>
+    <CollectivesMemberProvider member={member}>
+      <ProfilePageImpl />
+    </CollectivesMemberProvider>
   );
 }

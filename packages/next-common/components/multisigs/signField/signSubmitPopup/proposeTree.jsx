@@ -11,11 +11,7 @@ export default function ProposeTree({ callHex, when, setValue = noop }) {
       return;
     }
 
-    setValue({ isValid: !isLoading, data: { method: call } });
-
-    return () => {
-      setValue({ isValid: false, data: {} });
-    };
+    setValue({ isValid: !isLoading, data: call });
   }, [call, isLoading, setValue]);
 
   return <CallTree call={call} isLoading={isLoading} />;

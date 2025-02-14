@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.4.8
+
+date: 2025-02-13
+
+- Show fiat value on account panel.
+- Add a context to store popup open state.
+- Enable users to create a new bounty.
+- Fellowship
+    - Add placing decision deposit and voting aye options when creating a new referendum.
+    - Enable keyboard up/down to select members on fellowship referenda template.
+    - Add a new panel on overview page to show fellowship finance which include treasury, salary pool and cycle status.
+    - Update a referendum votes every time when the popup is open.
+- Refactor my vote on a democracy referendum detail page.
+- Refactor polkadot treasury with context.
+- Fix: not return null in useEffect.
+- Hide local treasury spend preimage template for astar/shibuya.
+- Update acala/karura discord link.
+- Refresh post detail page after new comment.
+- Support poll for SIMA spec discussion post.
+- Update RPC nodes for polkadot/kusama.
+- Fix treasury proposals page 500 error.
+- Improve multisig final submission by supporting users to input call hex data.
+- Remove link from multisig status field.
+- Rebrand litentry to heima.
+- Add a conspicuous notification panel and show multisig notifications on it.
+- Improve AI summary generation process. We support DeepSeek, OpenAI and Kimi now.
+- Refactor native and asset icon hook, and fix invalid icon.
+- Support bifrost ss58 format change.
+- Fix styles and code refactor.
+
 # 4.4.7
 
 date: 2025-01-22

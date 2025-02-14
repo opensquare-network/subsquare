@@ -6,8 +6,8 @@ import {
   AssetIconWnd,
   AssetIconKsm,
   AssetIconPas,
+  AssetIconPlaceholder,
 } from "@osn/icons/subsquare";
-import { Fragment } from "react";
 
 const knownAssetHubAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: knownPolkadotAssetHubAssets,
@@ -35,7 +35,7 @@ const assetHubChainNativeTokenIconMap = {
 
 export function useNativeTokenIcon() {
   const chain = useChain();
-  return assetHubChainNativeTokenIconMap[chain] || Fragment;
+  return assetHubChainNativeTokenIconMap[chain] || AssetIconPlaceholder;
 }
 
 export default function useKnownAssetHubAssetIcon(assetId) {
