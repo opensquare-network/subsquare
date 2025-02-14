@@ -13,7 +13,7 @@ import CollapsePanel from "next-common/components/summary/polkadotTreasurySummar
 
 function PolkadotTreasurySummaryInContext() {
   return (
-    <CollapsePanel labelItem={<TotalTreasury />}>
+    <CollapsePanel className="w-[240px]" labelItem={<TotalTreasury />}>
       <RelayChainTreasury />
       <TreasuryOnAssetHub />
       <TreasuryOnHydration />
