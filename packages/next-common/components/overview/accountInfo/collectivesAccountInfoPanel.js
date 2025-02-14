@@ -1,7 +1,6 @@
 import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import CollectivesAccountInfo from "./components/collectiveAccountInfo";
-import CollectivesDemotionPrompt from "./components/collectivesDemotionPrompt";
 import { AccountHead, ProxyTip } from "./accountInfoPanel";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
@@ -36,7 +35,6 @@ export default function CollectivesAccountInfoPanel() {
 
         <ExtensionUpdatePrompt />
         <AccountPanelScrollPrompt />
-        <CollectivesDemotionPrompt />
         <CollectivesSalaryWarnings />
       </NeutralPanel>
     </MemberDataProvider>
