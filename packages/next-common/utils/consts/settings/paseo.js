@@ -46,7 +46,6 @@ const paseo = {
   darkAvatar: ProjectIconPaseoDark,
   navPreferDark: true,
   links,
-  group: MenuGroups.Paseo,
   hasMultisig: true,
   multisigApiPrefix: "paseo",
   graphqlApiSubDomain: "paseo-gh-api",

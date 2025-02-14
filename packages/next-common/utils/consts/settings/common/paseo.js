@@ -1,5 +1,6 @@
 import Chains from "../../chains";
 import dynamic from "next/dynamic";
+import MenuGroups from "../menuGroups";
 
 const ProjectLogoPaseoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectLogoPaseoDark"),
@@ -47,4 +48,5 @@ export const commonSettings = {
   ss58Format: 0,
   navLogo: ProjectLogoPaseoLight,
   navLogoDark: ProjectLogoPaseoDark,
+  group: MenuGroups.Paseo,
 };
