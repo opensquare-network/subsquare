@@ -258,6 +258,23 @@ export default function WalletConnectProvider({ children }) {
     setWcSessionActive(false);
   }
 
+  // Attempt to sign a message and receive a signature
+  async function signWcMessage(params) {
+    if (!wcProvider.current || !wcProvider.current.session?.topic) {
+      return { signature: "0x" };
+    }
+    const topic = wcProvider.current.session.topic;
+
+    return await wcProvider.current.client.request({
+      chainId,
+      topic,
+      request: {
+        method: "polkadot_signMessage",
+        params,
+      },
+    });
+  }
+
   // Attempt to sign a transaction and receive a signature
   async function signWcTx(payload) {
     if (!wcProvider.current || !wcProvider.current.session?.topic) {
@@ -346,6 +363,7 @@ export default function WalletConnectProvider({ children }) {
         wcInitialized,
         wcSessionActive,
         fetchAddresses,
+        signWcMessage,
         signWcTx,
       }}
     >
