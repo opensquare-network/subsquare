@@ -16,6 +16,5 @@ export default async function fetchAndNormalizeVotes(
   const delegationVotes = extractDelegations(mapped, trackId, directVotes);
   const all = [...directVotes, ...delegationVotes];
   const filtered = all.filter((vote) => BigNumber(vote.votes) > 0);
-  console.log("filtered", filtered);
   return sortVotes(filtered);
 }
