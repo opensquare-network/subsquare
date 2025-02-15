@@ -108,7 +108,7 @@ export default function useVotesFromServer(referendumIndex) {
       }
       return [...result, vote];
     }, []);
-
-    dispatch(setAllVotes(sortVotes(allVotes)));
+    const filteredVotes = allVotes.filter((vote) => BigInt(vote.votes) > 0);
+    dispatch(setAllVotes(sortVotes(filteredVotes)));
   }, [votes, reduxVotes, dispatch]);
 }
