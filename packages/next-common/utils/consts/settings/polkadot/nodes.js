@@ -7,10 +7,10 @@ const defaultPolkadotNodes = [
     name: "IBP1",
     url: "wss://rpc.ibp.network/polkadot",
   },
-  {
-    name: "IBP2",
-    url: "wss://polkadot.dotters.network",
-  },
+  // {
+  //   name: "IBP2",
+  //   url: "wss://polkadot.dotters.network",
+  // },
   {
     name: "SubQuery",
     url: "wss://polkadot.rpc.subquery.network/public/ws",
