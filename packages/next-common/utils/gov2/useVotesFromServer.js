@@ -117,6 +117,10 @@ export function useFetchVotesFromServer(referendumIndex) {
           setLoaded(true);
         }
       });
+
+    return () => {
+      setLoaded(false);
+    };
   }, [votingFinishedHeight, height, referendumIndex, dispatch]);
 }
 
