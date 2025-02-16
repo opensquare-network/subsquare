@@ -121,14 +121,8 @@ export function useFetchVotesFromServer(referendumIndex) {
     return () => {
       setLoaded(false);
     };
-  }, [
-    votingFinishedHeight,
-    height,
-    referendumIndex,
-    dispatch,
-    loaded,
-    setLoaded,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [votingFinishedHeight, height, referendumIndex, dispatch, setLoaded]);
 }
 
 export default function useVotesFromServer(referendumIndex) {
