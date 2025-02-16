@@ -9,7 +9,6 @@ import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
-import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
@@ -47,8 +46,8 @@ export function ReferendumDetailMultiTabs() {
 export function ReferendumContent() {
   const dispatch = useDispatch();
   useSubReferendumInfo();
-  const onchainData = useOnchainData();
-  useFetchVotes(onchainData);
+  // const onchainData = useOnchainData();
+  // useFetchVotes(onchainData);
 
   useEffect(() => {
     return () => {
