@@ -2,11 +2,11 @@ import { useState } from "react";
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import SubmitEvidencePopup from "next-common/components/collectives/core/actions/more/submitEvidenceItem/popup";
-import { useShouldShowRetentionEvidenceSubmissionTodo } from "../hooks/useShouldShowRetentionEvidenceSubmissionTodo";
+import useShouldShowMemberEvidenceSubmissionTodo from "../hooks/useShouldShowMemberEvidenceSubmissionTodo";
 
 export default function RetentionEvidenceSubmissionTodo() {
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
-  const show = useShouldShowRetentionEvidenceSubmissionTodo();
+  const show = useShouldShowMemberEvidenceSubmissionTodo();
 
   if (!show) {
     return null;

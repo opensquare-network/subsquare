@@ -1,12 +1,17 @@
-import { useShouldShowDemotionExpirationTodo } from "./useShouldShowDemotionExpirationTodo";
-import { useShouldShowRetentionEvidenceSubmissionTodo } from "./useShouldShowRetentionEvidenceSubmissionTodo";
+import useShouldShowDemotionExpirationTodo from "./useShouldShowDemotionExpirationTodo";
+import useShouldShowMemberEvidenceSubmissionTodo from "./useShouldShowMemberEvidenceSubmissionTodo";
+import useShouldShowMembershipReferendaTodoForLowerRank from "./useShouldShowMembershipReferendaTodoForLowerRank";
 
 export default function useTodoListCount() {
   const showEvidenceSubmissionTodo =
-    useShouldShowRetentionEvidenceSubmissionTodo();
+    useShouldShowMemberEvidenceSubmissionTodo();
   const showDemotionExpirationTodo = useShouldShowDemotionExpirationTodo();
+  const showMembershipReferendaTodoForLowerRank =
+    useShouldShowMembershipReferendaTodoForLowerRank();
 
-  return [showEvidenceSubmissionTodo, showDemotionExpirationTodo].filter(
-    Boolean,
-  ).length;
+  return [
+    showEvidenceSubmissionTodo,
+    showDemotionExpirationTodo,
+    showMembershipReferendaTodoForLowerRank,
+  ].filter(Boolean).length;
 }

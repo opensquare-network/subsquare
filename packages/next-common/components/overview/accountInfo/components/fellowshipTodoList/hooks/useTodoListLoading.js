@@ -1,11 +1,13 @@
 import { useContextDemotionExpirationCount } from "../context/demotionExpirationCount";
+import { useContextMyMembershipReferenda } from "../context/myMembershipReferenda";
+import { useContextMyDemotionExpiration } from "../context/myDemotionExpiration";
 import { useContextMyEvidence } from "../context/myEvidence";
-import { useContextMyMemberData } from "../context/myMemberData";
 
 function useMyDemotionTodoLoading() {
-  const { isLoading: isMyMemberDataLoading } = useContextMyMemberData();
+  const { isLoading: isMyDemotionExpirationLoading } =
+    useContextMyDemotionExpiration();
   const { isLoading: isMyEvidenceLoading } = useContextMyEvidence();
-  return isMyMemberDataLoading || isMyEvidenceLoading;
+  return isMyDemotionExpirationLoading || isMyEvidenceLoading;
 }
 
 function useMyDemotionExpirationTodoLoading() {
@@ -13,9 +15,28 @@ function useMyDemotionExpirationTodoLoading() {
   return isLoading;
 }
 
+function useMembershipReferendaTodoForLowerRankLoading() {
+  const { isLoading: isMyDemotionExpirationLoading } =
+    useContextMyDemotionExpiration();
+  const { isLoading: isMyEvidenceLoading } = useContextMyEvidence();
+  const { isLoading: isMyMembershipReferendaLoading } =
+    useContextMyMembershipReferenda();
+  return (
+    isMyDemotionExpirationLoading ||
+    isMyEvidenceLoading ||
+    isMyMembershipReferendaLoading
+  );
+}
+
 export default function useTodoListLoading() {
   const isMyDemotionTodoLoading = useMyDemotionTodoLoading();
   const isMyDemotionExpirationTodoLoading =
     useMyDemotionExpirationTodoLoading();
-  return isMyDemotionTodoLoading || isMyDemotionExpirationTodoLoading;
+  const isMembershipReferendaTodoForLowerRankLoading =
+    useMembershipReferendaTodoForLowerRankLoading();
+  return (
+    isMyDemotionTodoLoading ||
+    isMyDemotionExpirationTodoLoading ||
+    isMembershipReferendaTodoForLowerRankLoading
+  );
 }

@@ -18,3 +18,8 @@ export default function MyMemberDataProvider({ children }) {
 export function useContextMyMemberData() {
   return useContext(MyMemberDataContext);
 }
+
+export function useContextMyRank() {
+  const { memberData } = useContextMyMemberData();
+  return memberData?.collectiveMember?.rank;
+}

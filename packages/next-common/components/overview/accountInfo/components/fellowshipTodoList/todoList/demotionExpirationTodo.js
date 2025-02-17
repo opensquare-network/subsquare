@@ -2,7 +2,7 @@ import { useState } from "react";
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import BatchBumpPopup from "next-common/components/fellowship/core/batchBump/popup";
-import { useShouldShowDemotionExpirationTodo } from "../hooks/useShouldShowDemotionExpirationTodo";
+import useShouldShowDemotionExpirationTodo from "../hooks/useShouldShowDemotionExpirationTodo";
 import { useContextDemotionExpirationCount } from "../context/demotionExpirationCount";
 
 export default function DemotionExpirationTodo() {
