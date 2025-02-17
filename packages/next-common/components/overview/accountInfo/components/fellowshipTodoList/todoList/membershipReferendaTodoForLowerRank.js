@@ -64,15 +64,15 @@ export default function MembershipReferendaTodoForLowerRank() {
       <div className="flex items-center">
         <TodoTag>Membership</TodoTag>
         <div className="text-textPrimary text14Medium">
-          You have an on-chain{" "}
+          You have an on-chain &nbsp;
           <ClickableText onClick={() => setShowEvidenceDetailPopup(true)}>
             evidence
           </ClickableText>{" "}
-          and you can contact{" "}
+          &nbsp; with no referenda and you can contact{" "}
           <ClickableText onClick={() => setShowEligibleMembersPopup(true)}>
             eligible members
           </ClickableText>
-          .
+          &nbsp; to handle it.
         </div>
       </div>
       {showEvidenceDetailPopup && (
