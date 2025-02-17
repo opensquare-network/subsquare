@@ -1,17 +1,30 @@
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import { useContextMyEvidence } from "../context/myEvidence";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { EvidenceDetailPopup } from "next-common/components/collectives/core/member/evidence";
 import { useContextMyMemberData } from "../context/myMemberData";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useShouldShowRetentionReferendaTodoForLowerRank from "../hooks/useShouldShowRetentionReferendaTodoForLowerRank";
+import UserListPopup from "./userListPopup";
+import useCoreMembersWithRank from "next-common/components/collectives/core/useCoreMembersWithRank";
+
+function useEligibleMembers() {
+  const { members, isLoading } = useCoreMembersWithRank();
+  const eligibleMembers = useMemo(() => {
+    return members.filter((member) => member.rank >= 3);
+  }, [members]);
+  return { eligibleMembers, isLoading };
+}
 
 export default function RetentionReferendaTodoForLowerRank() {
   const address = useRealAddress();
   const [showEvidenceDetailPopup, setShowEvidenceDetailPopup] = useState(false);
+  const [showEligibleMembersPopup, setShowEligibleMembersPopup] =
+    useState(false);
   const { evidence } = useContextMyEvidence();
   const { memberData } = useContextMyMemberData();
+  const { eligibleMembers, isLoading } = useEligibleMembers();
   const show = useShouldShowRetentionReferendaTodoForLowerRank();
   if (!show) {
     return null;
@@ -32,7 +45,10 @@ export default function RetentionReferendaTodoForLowerRank() {
             evidence
           </ClickableText>{" "}
           and you can contact{" "}
-          <ClickableText onClick={() => {}}>eligible members</ClickableText>.
+          <ClickableText onClick={() => setShowEligibleMembersPopup(true)}>
+            eligible members
+          </ClickableText>
+          .
         </div>
       </div>
       {showEvidenceDetailPopup && (
@@ -43,6 +59,13 @@ export default function RetentionReferendaTodoForLowerRank() {
           wish={wish}
           evidence={evidenceData}
           onClose={() => setShowEvidenceDetailPopup(false)}
+        />
+      )}
+      {showEligibleMembersPopup && (
+        <UserListPopup
+          users={eligibleMembers}
+          isLoading={isLoading}
+          onClose={() => setShowEligibleMembersPopup(false)}
         />
       )}
     </>
