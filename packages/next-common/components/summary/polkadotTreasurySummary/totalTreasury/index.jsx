@@ -1,7 +1,7 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
-import DotTokenSymbolAsset from "../common/dotTokenSymbolAsset";
+import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
@@ -105,7 +105,7 @@ export default function TotalTreasury() {
             )}
           >
             <TokenWrappper>
-              <DotTokenSymbolAsset
+              <NativeTokenSymbolAsset
                 free={totalDotBalance}
                 valueClassName={"text-textSecondary"}
               />

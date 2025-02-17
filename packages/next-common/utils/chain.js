@@ -60,7 +60,12 @@ export function isPolkadotChain(chain) {
 }
 
 export function isRelayChain(chain) {
-  return [Chains.polkadot, Chains.kusama, Chains.westend].includes(chain);
+  return [
+    Chains.polkadot,
+    Chains.kusama,
+    Chains.westend,
+    Chains.paseo,
+  ].includes(chain);
 }
 
 export function isPaseoChain(chain) {
@@ -69,6 +74,10 @@ export function isPaseoChain(chain) {
 
 export function isPaseoAssetHubChain(chain) {
   return [Chains.paseoAssetHub].includes(chain);
+}
+
+export function isLaosChain(chain) {
+  return [Chains.laos].includes(chain);
 }
 
 export function getAssetHubChain(chain) {
@@ -80,6 +89,8 @@ export function getAssetHubChain(chain) {
     return Chains.kusamaAssetHub;
   } else if (isWestendChain(chain)) {
     return Chains.westendAssetHub;
+  } else if (isPaseoChain(chain)) {
+    return Chains.paseoAssetHub;
   }
 
   const relayChain = getRelayChain(chain);

@@ -90,7 +90,7 @@ function Spend({
       )}
     >
       <div className="flex items-center gap-x-2">
-        <AssetIcon symbol={symbol} className="w-4 h-4" />
+        <AssetIcon symbol={symbol} className="w-4 h-4" type={type} />
         <TreasurySpendValueDisplay
           className="flex gap-x-2 items-center text14Medium"
           amount={amount}

@@ -18,8 +18,10 @@ function SalaryCycleCountdown({ percentage, remain }) {
 
 export default function SalaryCycleStatus() {
   const fellowshipSalaryStats = useFellowshipSalaryStats();
-  const { gonePercentage, remainBlocks } =
+  const { data, label = "" } =
     useFellowshipSalaryCycleData(fellowshipSalaryStats) || {};
+
+  const { gonePercentage, remainBlocks } = data || {};
 
   if (isNil(gonePercentage) || isNil(remainBlocks)) {
     return null;
@@ -27,7 +29,7 @@ export default function SalaryCycleStatus() {
 
   return (
     <div className="inline-flex space-x-2 items-center">
-      <div className="text16Bold text-textPrimary">Registration</div>
+      <div className="text16Bold text-textPrimary">{label}</div>
       <SalaryCycleCountdown percentage={gonePercentage} remain={remainBlocks} />
     </div>
   );

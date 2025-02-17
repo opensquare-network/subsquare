@@ -67,10 +67,10 @@ export default function SignCancel({ multisig = {} }) {
   }, [isSubmitting]);
 
   return (
-    <Wrapper disabled={isDisabled}>
-      <Tooltip content="Cancel">
-        <SystemClose role="button" className="w-4 h-4" onClick={doSubmit} />
-      </Tooltip>
-    </Wrapper>
+    <Tooltip content="Cancel">
+      <Wrapper disabled={isDisabled} onClick={doSubmit}>
+        <SystemClose role="button" className="w-4 h-4" />
+      </Wrapper>
+    </Tooltip>
   );
 }

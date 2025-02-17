@@ -6,6 +6,7 @@ import {
   AssetIconWnd,
   AssetIconKsm,
   AssetIconPas,
+  AssetIconPlaceholder,
 } from "@osn/icons/subsquare";
 
 const knownAssetHubAssetsMap = Object.freeze({
@@ -22,14 +23,19 @@ export function useKnownAssetHubAssets() {
 
 const assetHubChainNativeTokenIconMap = {
   [Chains.polkadotAssetHub]: AssetIconDot,
+  [Chains.polkadot]: AssetIconDot,
+  [Chains.collectives]: AssetIconDot,
   [Chains.westendAssetHub]: AssetIconWnd,
+  [Chains.westend]: AssetIconWnd,
   [Chains.kusamaAssetHub]: AssetIconKsm,
+  [Chains.kusama]: AssetIconKsm,
   [Chains.paseoAssetHub]: AssetIconPas,
+  [Chains.paseo]: AssetIconPas,
 };
 
 export function useNativeTokenIcon() {
   const chain = useChain();
-  return assetHubChainNativeTokenIconMap[chain] || null;
+  return assetHubChainNativeTokenIconMap[chain] || AssetIconPlaceholder;
 }
 
 export default function useKnownAssetHubAssetIcon(assetId) {

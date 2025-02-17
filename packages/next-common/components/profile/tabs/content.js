@@ -13,6 +13,7 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import ProfileFellowshipCore from "../fellowship/core";
 import ProfileFellowshipSalary from "../fellowship/salary";
 import ProfileProxy from "../proxy";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
@@ -34,16 +35,30 @@ export default function useProfileTabContent() {
     return <ProfileIdentityTimeline />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
     return <ProfileAssets />;
-  } else if (
-    pathname === `/user/${maybeEvmAddress}/fellowship` ||
-    pathname === `/user/${maybeEvmAddress}/ambassador`
-  ) {
-    return <ProfileFellowshipCore />;
-  } else if (
-    pathname === `/user/${maybeEvmAddress}/fellowship/salary` ||
-    pathname === `/user/${maybeEvmAddress}/ambassador/salary`
-  ) {
-    return <ProfileFellowshipSalary />;
+  } else if (pathname === `/user/${maybeEvmAddress}/fellowship`) {
+    return (
+      <CollectivesProvider section="fellowship">
+        <ProfileFellowshipCore />
+      </CollectivesProvider>
+    );
+  } else if (pathname === `/user/${maybeEvmAddress}/ambassador`) {
+    return (
+      <CollectivesProvider section="ambassador">
+        <ProfileFellowshipCore />
+      </CollectivesProvider>
+    );
+  } else if (pathname === `/user/${maybeEvmAddress}/fellowship/salary`) {
+    return (
+      <CollectivesProvider section="fellowship">
+        <ProfileFellowshipSalary />
+      </CollectivesProvider>
+    );
+  } else if (pathname === `/user/${maybeEvmAddress}/ambassador/salary`) {
+    return (
+      <CollectivesProvider section="ambassador">
+        <ProfileFellowshipSalary />
+      </CollectivesProvider>
+    );
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {
     return <Posted />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/proxies`)) {
