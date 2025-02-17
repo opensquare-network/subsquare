@@ -41,10 +41,7 @@ export function useUserContext() {
 
 export function useUser() {
   const { user } = useUserContext();
-  return {
-    ...user,
-    address: "12aoZXwbUzsv3z5HF5HCrtEwBJYCeKne6rYsxFEKDZ86Wdv8",
-  };
+  return user;
 }
 
 export function useSetUser() {
