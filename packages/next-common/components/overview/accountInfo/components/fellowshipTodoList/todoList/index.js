@@ -2,7 +2,10 @@ import RetentionEvidenceSubmissionTodo from "./retentionEvidenceSubmissionTodo";
 import DemotionExpirationTodo from "./demotionExpirationTodo";
 import useTodoListCount from "../hooks/useTodoListCount";
 import MembershipReferendaTodoForLowerRank from "./membershipReferendaTodoForLowerRank";
-import { useContextMyRank } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myMemberData";
+import {
+  useContextMyMemberData,
+  useContextMyRank,
+} from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myMemberData";
 
 function TodoListWrapper({ children }) {
   const count = useTodoListCount();
@@ -22,10 +25,22 @@ function OnlyLowRankMembers({ children }) {
   return children;
 }
 
+function OnlyMembers({ children }) {
+  const memberData = useContextMyMemberData();
+  const { collectiveMember } = memberData || {};
+  if (!collectiveMember) {
+    return null;
+  }
+
+  return children;
+}
+
 export default function TodoList() {
   return (
     <TodoListWrapper>
-      <RetentionEvidenceSubmissionTodo />
+      <OnlyMembers>
+        <RetentionEvidenceSubmissionTodo />
+      </OnlyMembers>
       <DemotionExpirationTodo />
       <OnlyLowRankMembers>
         <MembershipReferendaTodoForLowerRank />
