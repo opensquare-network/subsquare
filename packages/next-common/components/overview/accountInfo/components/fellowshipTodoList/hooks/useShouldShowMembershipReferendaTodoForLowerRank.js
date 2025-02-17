@@ -19,7 +19,7 @@ export default function useShouldShowMembershipReferendaTodoForLowerRank() {
   }
 
   const noMembershipReferenda = !myMembershipReferenda?.length;
-  const canCreateReferenda = myRank < 3;
+  const canNotCreateReferenda = myRank < 3;
 
-  return noMembershipReferenda && !canCreateReferenda;
+  return noMembershipReferenda && canNotCreateReferenda;
 }
