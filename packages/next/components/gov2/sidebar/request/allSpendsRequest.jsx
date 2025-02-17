@@ -64,7 +64,7 @@ function Spend({ assetKind, amount, symbol, type }) {
 
   return (
     <div className="flex items-center gap-x-2">
-      <AssetIcon symbol={symbol} className="w-4 h-4" />
+      <AssetIcon symbol={symbol} className="w-4 h-4" type={type} />
       <TreasurySpendValueDisplay
         type={type}
         amount={amount}

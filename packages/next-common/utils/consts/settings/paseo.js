@@ -1,21 +1,19 @@
 import Chains from "../chains";
 import capitalize from "../../capitalize";
-import MenuGroups from "./menuGroups";
 import dynamic from "next/dynamic";
 import { defaultPostLabels } from "./common";
 import { mergeChainModules } from "./common/modules";
+import {
+  paseoLinks,
+  paseoThemeVars,
+  paseoCommonSettings,
+} from "./common/paseo";
 
 const ProjectIconPaseoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoDark"),
 );
 const ProjectIconPaseoLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoLight"),
-);
-const ProjectLogoPaseoDark = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoPaseoDark"),
-);
-const ProjectLogoPaseoLight = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoPaseoLight"),
 );
 
 const nodes = [
@@ -41,55 +39,16 @@ const nodes = [
   },
 ];
 
-const links = [
-  {
-    name: "twitter",
-    url: "https://twitter.com/PaseoNetwork",
-  },
-  {
-    name: "github",
-    url: "https://github.com/paseo-network/.github",
-  },
-];
-
-const themeVars = {
-  cssVarsLight: {
-    theme100: "rgba(38,219,141,0.10)",
-    theme300: "rgba(38,219,141,0.40)",
-    theme500: "rgba(38,219,141,1)",
-    navigationBg: "rgba(5,5,6,1)",
-    navigationActive: "rgba(255,255,255,0.08)",
-    navigationBorder: "rgba(255,255,255,0.10)",
-    navigationText: "var(--textPrimaryContrast)",
-    navigationTextTertiary: "var(--textTertiaryContrast)",
-    navigationIcon: "var(--textSecondaryContrast)",
-  },
-  cssVarsDark: {
-    theme100: "rgba(38,219,141,0.10)",
-    theme300: "rgba(38,219,141,0.40)",
-    theme500: "rgba(38,219,141,1)",
-    navigationBg: "rgba(33,36,51,1)",
-    navigationActive: "rgba(38,41,56,1)",
-    navigationBorder: "var(--neutral300)",
-  },
-};
-
 const paseo = {
+  ...paseoCommonSettings,
   value: Chains.paseo,
   name: capitalize(Chains.paseo),
-  identity: Chains.paseo,
-  symbol: "PAS",
-  decimals: 10,
   blockTime: 6000,
-  ss58Format: 0,
   endpoints: nodes,
   avatar: ProjectIconPaseoLight,
   darkAvatar: ProjectIconPaseoDark,
-  navLogo: ProjectLogoPaseoLight,
-  navLogoDark: ProjectLogoPaseoDark,
   navPreferDark: true,
-  links,
-  group: MenuGroups.Paseo,
+  links: paseoLinks,
   hasMultisig: true,
   multisigApiPrefix: "paseo",
   graphqlApiSubDomain: "paseo-gh-api",
@@ -113,7 +72,7 @@ const paseo = {
     subscan: true,
   },
   sima: true,
-  ...themeVars,
+  ...paseoThemeVars,
   multisigWallets: {
     mimir: true,
   },
