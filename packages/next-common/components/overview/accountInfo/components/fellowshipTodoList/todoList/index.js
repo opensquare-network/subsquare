@@ -26,7 +26,7 @@ function OnlyLowRankMembers({ children }) {
 }
 
 function OnlyMembers({ children }) {
-  const memberData = useContextMyMemberData();
+  const { memberData } = useContextMyMemberData();
   const { collectiveMember } = memberData || {};
   if (!collectiveMember) {
     return null;
