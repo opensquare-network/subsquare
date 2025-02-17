@@ -55,9 +55,6 @@ export default function WalletConnectProvider({ children }) {
   // The WalletConnect provider
   const wcProvider = useRef(null);
 
-  // The WalletConnect modal handler
-  const wcModal = useRef(null);
-
   // Track whether pairing has been initiated
   const pairingInitiated = useRef(false);
 
@@ -90,13 +87,6 @@ export default function WalletConnectProvider({ children }) {
       },
     });
 
-    const modal = new WalletConnectModal({
-      projectId,
-      themeVariables: {
-        "--wcm-z-index": 1500,
-      },
-    });
-
     wcProvider.current = provider;
 
     // Subscribe to session delete
@@ -105,7 +95,6 @@ export default function WalletConnectProvider({ children }) {
       disconnectAccount();
     });
 
-    wcModal.current = modal;
     setWcInitialized(true);
   }
 
@@ -199,16 +188,23 @@ export default function WalletConnectProvider({ children }) {
       return;
     }
 
+    const modal = new WalletConnectModal({
+      projectId,
+      themeVariables: {
+        "--wcm-z-index": 1500,
+      },
+    });
+
     // Summon Wallet Connect modal that presents QR Code
     if (wcMeta?.uri) {
-      wcModal.current.openModal({ uri: wcMeta.uri });
+      modal.openModal({ uri: wcMeta.uri });
     }
 
     // Get session from approval
     const newWcSession = await wcMeta?.approval();
 
     // Close modal on approval completion
-    wcModal.current.closeModal();
+    modal.closeModal();
 
     // Update session data in provider
     if (wcProvider.current) {
