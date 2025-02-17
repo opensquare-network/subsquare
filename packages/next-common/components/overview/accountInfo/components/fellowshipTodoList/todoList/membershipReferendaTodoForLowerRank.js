@@ -17,23 +17,47 @@ function useEligibleMembers() {
   return { eligibleMembers, isLoading };
 }
 
-export default function MembershipReferendaTodoForLowerRank() {
+function EvidencePopup({ onClose }) {
   const address = useRealAddress();
-  const [showEvidenceDetailPopup, setShowEvidenceDetailPopup] = useState(false);
-  const [showEligibleMembersPopup, setShowEligibleMembersPopup] =
-    useState(false);
   const { evidence } = useContextMyEvidence();
   const { memberData } = useContextMyMemberData();
-  const { eligibleMembers, isLoading } = useEligibleMembers();
-  const show = useShouldShowMembershipReferendaTodoForLowerRank();
-  if (!show) {
-    return null;
-  }
 
   const { collectiveMember, coreMember } = memberData;
   const rank = collectiveMember?.rank;
   const isActive = coreMember?.isActive;
   const [wish, evidenceData] = evidence.toJSON();
+
+  return (
+    <EvidenceDetailPopup
+      address={address}
+      rank={rank}
+      isActive={isActive}
+      wish={wish}
+      evidence={evidenceData}
+      onClose={onClose}
+    />
+  );
+}
+
+function EligibleMemberPopup({ onClose }) {
+  const { eligibleMembers, isLoading } = useEligibleMembers();
+  return (
+    <UserListPopup
+      users={eligibleMembers}
+      isLoading={isLoading}
+      onClose={onClose}
+    />
+  );
+}
+
+export default function MembershipReferendaTodoForLowerRank() {
+  const [showEvidenceDetailPopup, setShowEvidenceDetailPopup] = useState(false);
+  const [showEligibleMembersPopup, setShowEligibleMembersPopup] =
+    useState(false);
+  const show = useShouldShowMembershipReferendaTodoForLowerRank();
+  if (!show) {
+    return null;
+  }
 
   return (
     <>
@@ -52,19 +76,10 @@ export default function MembershipReferendaTodoForLowerRank() {
         </div>
       </div>
       {showEvidenceDetailPopup && (
-        <EvidenceDetailPopup
-          address={address}
-          rank={rank}
-          isActive={isActive}
-          wish={wish}
-          evidence={evidenceData}
-          onClose={() => setShowEvidenceDetailPopup(false)}
-        />
+        <EvidencePopup onClose={() => setShowEvidenceDetailPopup(false)} />
       )}
       {showEligibleMembersPopup && (
-        <UserListPopup
-          users={eligibleMembers}
-          isLoading={isLoading}
+        <EligibleMemberPopup
           onClose={() => setShowEligibleMembersPopup(false)}
         />
       )}
