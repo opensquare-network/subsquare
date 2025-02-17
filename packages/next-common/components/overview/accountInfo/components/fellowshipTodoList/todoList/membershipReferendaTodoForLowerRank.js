@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { EvidenceDetailPopup } from "next-common/components/collectives/core/member/evidence";
 import { useContextMyMemberData } from "../context/myMemberData";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useShouldShowRetentionReferendaTodoForLowerRank from "../hooks/useShouldShowRetentionReferendaTodoForLowerRank";
+import useShouldShowMembershipReferendaTodoForLowerRank from "../hooks/useShouldShowMembershipReferendaTodoForLowerRank";
 import UserListPopup from "./userListPopup";
 import useCoreMembersWithRank from "next-common/components/collectives/core/useCoreMembersWithRank";
 
@@ -17,7 +17,7 @@ function useEligibleMembers() {
   return { eligibleMembers, isLoading };
 }
 
-export default function RetentionReferendaTodoForLowerRank() {
+export default function MembershipReferendaTodoForLowerRank() {
   const address = useRealAddress();
   const [showEvidenceDetailPopup, setShowEvidenceDetailPopup] = useState(false);
   const [showEligibleMembersPopup, setShowEligibleMembersPopup] =
@@ -25,7 +25,7 @@ export default function RetentionReferendaTodoForLowerRank() {
   const { evidence } = useContextMyEvidence();
   const { memberData } = useContextMyMemberData();
   const { eligibleMembers, isLoading } = useEligibleMembers();
-  const show = useShouldShowRetentionReferendaTodoForLowerRank();
+  const show = useShouldShowMembershipReferendaTodoForLowerRank();
   if (!show) {
     return null;
   }

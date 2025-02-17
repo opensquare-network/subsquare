@@ -1,12 +1,12 @@
-import { useContextMyApproveReferenda } from "../context/myApproveReferenda";
+import { useContextMyMembershipReferenda } from "../context/myMembershipReferenda";
 import { useContextMyDemotionExpiration } from "../context/myDemotionExpiration";
 import { useContextMyEvidence } from "../context/myEvidence";
 import { useContextMyRank } from "../context/myMemberData";
 
-export default function useShouldShowRetentionReferendaTodoForLowerRank() {
+export default function useShouldShowMembershipReferendaTodoForLowerRank() {
   const { isDemotionExpiring } = useContextMyDemotionExpiration();
   const { evidence } = useContextMyEvidence();
-  const { myApproveReferenda } = useContextMyApproveReferenda();
+  const { myMembershipReferenda } = useContextMyMembershipReferenda();
   const myRank = useContextMyRank();
 
   if (!isDemotionExpiring || !evidence) {
@@ -18,10 +18,8 @@ export default function useShouldShowRetentionReferendaTodoForLowerRank() {
     return false;
   }
 
-  const [wish] = data;
-  const hasRetentionEvidence = wish?.toLowerCase() === "retention";
-  const noApproveReferenda = !myApproveReferenda?.length;
+  const noMembershipReferenda = !myMembershipReferenda?.length;
   const canCreateReferenda = myRank < 3;
 
-  return hasRetentionEvidence && noApproveReferenda && !canCreateReferenda;
+  return noMembershipReferenda && !canCreateReferenda;
 }

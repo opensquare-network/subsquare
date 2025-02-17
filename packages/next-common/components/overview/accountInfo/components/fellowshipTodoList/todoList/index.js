@@ -1,7 +1,7 @@
 import RetentionEvidenceSubmissionTodo from "./retentionEvidenceSubmissionTodo";
 import DemotionExpirationTodo from "./demotionExpirationTodo";
 import useTodoListCount from "../hooks/useTodoListCount";
-import RetentionReferendaTodoForLowerRank from "./retentionReferendaTodoForLowerRank";
+import MembershipReferendaTodoForLowerRank from "./membershipReferendaTodoForLowerRank";
 
 function TodoListWrapper({ children }) {
   const count = useTodoListCount();
@@ -16,7 +16,7 @@ export default function TodoList() {
     <TodoListWrapper>
       <RetentionEvidenceSubmissionTodo />
       <DemotionExpirationTodo />
-      <RetentionReferendaTodoForLowerRank />
+      <MembershipReferendaTodoForLowerRank />
     </TodoListWrapper>
   );
 }

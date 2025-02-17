@@ -12,7 +12,7 @@ import MyDemotionExpirationProvider from "./context/myDemotionExpiration";
 import useTodoListCount from "./hooks/useTodoListCount";
 import useTodoListLoading from "./hooks/useTodoListLoading";
 import DemotionExpirationCountProvider from "./context/demotionExpirationCount";
-import MyApproveReferendaProvider from "./context/myApproveReferenda";
+import MyMembershipReferendaProvider from "./context/myMembershipReferenda";
 
 function Title() {
   const isLoading = useTodoListLoading();
@@ -34,14 +34,14 @@ function FellowshipTodoListImpl() {
         <MyMemberDataProvider>
           <MyDemotionExpirationProvider>
             <DemotionExpirationCountProvider>
-              <MyApproveReferendaProvider>
+              <MyMembershipReferendaProvider>
                 <CollapsePanel labelItem={<Title />} defaultCollapsed={false}>
                   <AlwaysVisible>
                     <NavigationButtons />
                   </AlwaysVisible>
                   <TodoList />
                 </CollapsePanel>
-              </MyApproveReferendaProvider>
+              </MyMembershipReferendaProvider>
             </DemotionExpirationCountProvider>
           </MyDemotionExpirationProvider>
         </MyMemberDataProvider>

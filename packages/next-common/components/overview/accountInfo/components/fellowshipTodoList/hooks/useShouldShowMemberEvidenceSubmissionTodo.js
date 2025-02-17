@@ -1,7 +1,7 @@
 import { useContextMyDemotionExpiration } from "../context/myDemotionExpiration";
 import { useContextMyEvidence } from "../context/myEvidence";
 
-export default function useShouldShowRetentionEvidenceSubmissionTodo() {
+export default function useShouldShowMemberEvidenceSubmissionTodo() {
   const { isDemotionExpiring } = useContextMyDemotionExpiration();
   const { evidence } = useContextMyEvidence();
   return isDemotionExpiring && (!evidence || !evidence.toJSON());
