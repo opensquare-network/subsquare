@@ -317,20 +317,6 @@ export default function WalletConnectProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wcInitialized]);
 
-  // Reconnect provider to a new session if a new connected chain is added, or when the provider is
-  // set. This can only happen once pairing has been initiated. Doing this will require approval
-  // from the user again
-  useEffect(() => {
-    if (
-      pairingInitiated.current &&
-      wcInitialized &&
-      sessionChain.current !== chain
-    ) {
-      connectProvider();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain]);
-
   return (
     <WalletConnectContext.Provider
       value={{
