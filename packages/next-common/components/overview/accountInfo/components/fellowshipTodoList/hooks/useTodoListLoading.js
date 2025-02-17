@@ -2,6 +2,7 @@ import { useContextDemotionExpirationCount } from "../context/demotionExpiration
 import { useContextMyMembershipReferenda } from "../context/myMembershipReferenda";
 import { useContextMyDemotionExpiration } from "../context/myDemotionExpiration";
 import { useContextMyEvidence } from "../context/myEvidence";
+import { useContextCoreParams } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreParams";
 
 function useMyDemotionTodoLoading() {
   const { isLoading: isMyDemotionExpirationLoading } =
@@ -34,9 +35,12 @@ export default function useTodoListLoading() {
     useMyDemotionExpirationTodoLoading();
   const isMembershipReferendaTodoForLowerRankLoading =
     useMembershipReferendaTodoForLowerRankLoading();
+  const { isLoading: isLoadingCoreParams } = useContextCoreParams();
+
   return (
     isMyDemotionTodoLoading ||
     isMyDemotionExpirationTodoLoading ||
-    isMembershipReferendaTodoForLowerRankLoading
+    isMembershipReferendaTodoForLowerRankLoading ||
+    isLoadingCoreParams
   );
 }

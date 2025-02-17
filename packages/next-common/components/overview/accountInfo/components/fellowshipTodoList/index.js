@@ -1,52 +1,43 @@
 import CollapsePanel, { AlwaysVisible } from "../collapsePanel";
 import TodoList from "./todoList";
 import NavigationButtons from "./navigationButtons";
-import CollectivesProvider, {
-  useReferendaFellowshipPallet,
-} from "next-common/context/collectives/collectives";
-import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
-import Loading from "next-common/components/loading";
-import MyEvidenceProvider from "./context/myEvidence";
-import MyMemberDataProvider from "./context/myMemberData";
-import MyDemotionExpirationProvider from "./context/myDemotionExpiration";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 import useTodoListCount from "./hooks/useTodoListCount";
 import useTodoListLoading from "./hooks/useTodoListLoading";
-import DemotionExpirationCountProvider from "./context/demotionExpirationCount";
-import MyMembershipReferendaProvider from "./context/myMembershipReferenda";
+import FellowshipTodoProviders from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context";
+import LoadableContent, {
+  LoadStyles,
+} from "next-common/components/common/loadableContent";
 
 function Title() {
   const isLoading = useTodoListLoading();
   const count = useTodoListCount();
+
   return (
     <div className="flex items-center gap-1 text14Medium text-textTertiary">
       <span>Fellowship To-do List</span>
       <span>·</span>
-      {isLoading ? <Loading size={16} /> : <span>{count}</span>}
+      <LoadableContent
+        size={16}
+        isLoading={isLoading}
+        style={LoadStyles.CIRCLE}
+      >
+        <span>{count}</span>
+      </LoadableContent>
     </div>
   );
 }
 
 function FellowshipTodoListImpl() {
-  const referendaPallet = useReferendaFellowshipPallet();
   return (
-    <ActiveReferendaProvider pallet={referendaPallet}>
-      <MyEvidenceProvider>
-        <MyMemberDataProvider>
-          <MyDemotionExpirationProvider>
-            <DemotionExpirationCountProvider>
-              <MyMembershipReferendaProvider>
-                <CollapsePanel labelItem={<Title />} defaultCollapsed={false}>
-                  <AlwaysVisible>
-                    <NavigationButtons />
-                  </AlwaysVisible>
-                  <TodoList />
-                </CollapsePanel>
-              </MyMembershipReferendaProvider>
-            </DemotionExpirationCountProvider>
-          </MyDemotionExpirationProvider>
-        </MyMemberDataProvider>
-      </MyEvidenceProvider>
-    </ActiveReferendaProvider>
+    <FellowshipTodoProviders>
+      <CollapsePanel labelItem={<Title />} defaultCollapsed={false}>
+        <AlwaysVisible>
+          <NavigationButtons />
+        </AlwaysVisible>
+        <TodoList />
+      </CollapsePanel>
+    </FellowshipTodoProviders>
   );
 }
 
