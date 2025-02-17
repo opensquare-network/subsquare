@@ -92,6 +92,9 @@ export default function WalletConnectProvider({ children }) {
 
     const modal = new WalletConnectModal({
       projectId,
+      themeVariables: {
+        "--wcm-z-index": 1500,
+      },
     });
 
     wcProvider.current = provider;
