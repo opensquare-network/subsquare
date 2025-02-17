@@ -12,7 +12,9 @@ import useCoreMembersWithRank from "next-common/components/collectives/core/useC
 function useEligibleMembers() {
   const { members, isLoading } = useCoreMembersWithRank();
   const eligibleMembers = useMemo(() => {
-    return members.filter((member) => member.rank >= 3);
+    const eligibleMembers = members.filter((member) => member.rank >= 3);
+    eligibleMembers.sort((a, b) => b.rank - a.rank);
+    return eligibleMembers;
   }, [members]);
   return { eligibleMembers, isLoading };
 }
