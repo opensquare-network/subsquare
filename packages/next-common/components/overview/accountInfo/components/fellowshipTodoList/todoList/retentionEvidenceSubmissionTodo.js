@@ -7,7 +7,6 @@ import useShouldShowMemberEvidenceSubmissionTodo from "../hooks/useShouldShowMem
 export default function RetentionEvidenceSubmissionTodo() {
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
   const show = useShouldShowMemberEvidenceSubmissionTodo();
-
   if (!show) {
     return null;
   }

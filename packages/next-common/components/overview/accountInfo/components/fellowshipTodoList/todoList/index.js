@@ -6,12 +6,23 @@ import {
   useContextMyMemberData,
   useContextMyRank,
 } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myMemberData";
+import useTodoListLoading from "next-common/components/overview/accountInfo/components/fellowshipTodoList/hooks/useTodoListLoading";
 
-function TodoListWrapper({ children }) {
+function MakeSureLoaded({ children }) {
+  const isLoading = useTodoListLoading();
+  if (isLoading) {
+    return null;
+  }
+
+  return children;
+}
+
+function HasTodo({ children }) {
   const count = useTodoListCount();
   if (count === 0) {
     return null;
   }
+
   return <div className="flex flex-col mt-[16px] gap-[4px]">{children}</div>;
 }
 
@@ -37,14 +48,16 @@ function OnlyMembers({ children }) {
 
 export default function TodoList() {
   return (
-    <TodoListWrapper>
-      <OnlyMembers>
-        <RetentionEvidenceSubmissionTodo />
-      </OnlyMembers>
-      <DemotionExpirationTodo />
-      <OnlyLowRankMembers>
-        <MembershipReferendaTodoForLowerRank />
-      </OnlyLowRankMembers>
-    </TodoListWrapper>
+    <MakeSureLoaded>
+      <HasTodo>
+        <OnlyMembers>
+          <RetentionEvidenceSubmissionTodo />
+        </OnlyMembers>
+        <DemotionExpirationTodo />
+        <OnlyLowRankMembers>
+          <MembershipReferendaTodoForLowerRank />
+        </OnlyLowRankMembers>
+      </HasTodo>
+    </MakeSureLoaded>
   );
 }
