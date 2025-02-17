@@ -174,35 +174,6 @@ export default function WalletConnectProvider({ children }) {
     }
   }
 
-  // Update session namespaces. NOTE: This method is currently not in use due to a
-  // default chain error upon reconnecting to the session
-  async function updateWcSession() {
-    if (!wcInitialized) {
-      return;
-    }
-    // Update most recent connected chains
-    sessionChain.current = chain;
-
-    // If there are no chains connected, return early
-    if (!caip) {
-      return;
-    }
-    const topic = wcProvider.current.session?.topic;
-    if (topic) {
-      await wcProvider.current.client.update({
-        topic,
-        namespaces: {
-          polkadot: {
-            chains: [chainId],
-            accounts: [],
-            methods: ["polkadot_signTransaction", "polkadot_signMessage"],
-            events: ["chainChanged", "accountsChanged"],
-          },
-        },
-      });
-    }
-  }
-
   // Initiate a new Wallet Connect session, if not already wcInitialized
   async function initializeWcSession() {
     if (wcInitialized) {
@@ -365,7 +336,6 @@ export default function WalletConnectProvider({ children }) {
       value={{
         connectProvider,
         initializeWcSession,
-        updateWcSession,
         disconnectWcSession,
         wcInitialized,
         wcSessionActive,
