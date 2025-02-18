@@ -21,6 +21,9 @@ const projectId = "16c4de5fd6fec3e0f3b6bdf2a67f2160";
 const relayUrl = "wss://relay.walletconnect.com";
 
 export const defaultWalletConnect = {
+  /** @type {UniversalProvider} */
+  provider: null,
+  /** @type {import('@walletconnect/types').SessionTypes.Struct} */
   session: null,
   connect: () => Promise.resolve(),
   disconnect: () => Promise.resolve(),
@@ -58,16 +61,13 @@ export default function WalletConnectProvider({ children }) {
   const caip = useWalletConnectCaip();
   const chainId = useWalletConnectChainId();
 
-  /** @type {[UniversalProvider, React.Dispatch<any>]} */
-  const [provider, setProvider] = useState(null);
+  const [provider, setProvider] = useState(defaultWalletConnect.provider);
 
-  /** @type {[import('@walletconnect/types').SessionTypes.Struct, React.Dispatch<any>]} */
   const [session, setSession] = useState(defaultWalletConnect.session);
 
-  /** @type {[typeof session, React.Dispatch<any>]} */
   const [walletConnectSession, setWalletConnectSession] = useLocalStorage(
     CACHE_KEY.walletConnectSession,
-    null,
+    session,
   );
   useEffect(() => {
     if (walletConnectSession) {
@@ -247,6 +247,7 @@ export default function WalletConnectProvider({ children }) {
   return (
     <WalletConnectContext.Provider
       value={{
+        provider,
         session,
         connect,
         disconnect,
