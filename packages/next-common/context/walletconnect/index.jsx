@@ -211,7 +211,9 @@ export default function WalletConnectProvider({ children }) {
 
       provider.client.on("session_expire", (event) => {
         event;
-        // console.log("client", "session_expire", event);
+        // TODO: handle session expire
+        // https://docs.reown.com/walletkit/best-practices#session-request-expiry
+        // 7 days by default
       });
     }
 
