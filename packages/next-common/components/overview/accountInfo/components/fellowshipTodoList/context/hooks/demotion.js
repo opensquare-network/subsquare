@@ -1,31 +1,21 @@
 import { useContextCoreParams } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreParams";
 import {
-  useContextMyMemberData,
-  useContextMyRank,
-} from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myMemberData";
-import {
   getDemotionPeriod,
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
 import { FELLOWSHIP_DEMOTION_WARNING_BLOCKS } from "next-common/utils/consts/fellowship/demotion";
+import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 
 export function useDemotionCommonData() {
   const { params: coreParams } = useContextCoreParams();
-  const rank = useContextMyRank();
+  const member = useContextMyMember();
+  const { rank, status: { lastProof } = {} } = member || {};
   const demotionPeriod = getDemotionPeriod(rank, coreParams);
-  const { memberData } = useContextMyMemberData();
-
-  const {
-    memberData: {
-      coreMember: { lastProof },
-    },
-  } = useContextMyMemberData();
 
   return {
     demotionPeriod,
-    memberData,
     lastProof,
   };
 }

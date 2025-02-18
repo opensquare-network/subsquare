@@ -3,11 +3,11 @@ import ClickableText from "./clickableText";
 import { useContextMyEvidence } from "../context/myEvidence";
 import { useMemo, useState } from "react";
 import { EvidenceDetailPopup } from "next-common/components/collectives/core/member/evidence";
-import { useContextMyMemberData } from "../context/myMemberData";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useShouldShowMembershipReferendaTodoForLowerRank from "../hooks/useShouldShowMembershipReferendaTodoForLowerRank";
 import UserListPopup from "./userListPopup";
 import useCoreMembersWithRank from "next-common/components/collectives/core/useCoreMembersWithRank";
+import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 
 function useEligibleMembers() {
   const { members, isLoading } = useCoreMembersWithRank();
@@ -22,11 +22,9 @@ function useEligibleMembers() {
 function EvidencePopup({ onClose }) {
   const address = useRealAddress();
   const { evidence } = useContextMyEvidence();
-  const { memberData } = useContextMyMemberData();
+  const member = useContextMyMember();
+  const { rank, status: { isActive } = {} } = member || {};
 
-  const { collectiveMember, coreMember } = memberData;
-  const rank = collectiveMember?.rank;
-  const isActive = coreMember?.isActive;
   const [wish, evidenceData] = evidence.toJSON();
 
   return (

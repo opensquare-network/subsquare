@@ -1,11 +1,10 @@
 import RetentionEvidenceSubmissionTodo from "./retentionEvidenceSubmissionTodo";
 import DemotionExpirationTodo from "./demotionExpirationTodo";
 import MembershipReferendaTodoForLowerRank from "./membershipReferendaTodoForLowerRank";
-import {
-  useContextMyMemberData,
-  useContextMyRank,
-} from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myMemberData";
 import useTodoListLoading from "next-common/components/overview/accountInfo/components/fellowshipTodoList/hooks/useTodoListLoading";
+import useContextMyMember, {
+  useContextIsMember,
+} from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 
 function MakeSureLoaded({ children }) {
   const isLoading = useTodoListLoading();
@@ -17,9 +16,10 @@ function MakeSureLoaded({ children }) {
 }
 
 function OnlyLowRankMembers({ children }) {
-  const myRank = useContextMyRank();
+  const member = useContextMyMember();
+  const { rank } = member;
   // todo: ambassador may have a different rank threshold
-  if (myRank < 3) {
+  if (rank >= 3) {
     return null;
   }
 
@@ -27,9 +27,8 @@ function OnlyLowRankMembers({ children }) {
 }
 
 function OnlyMembers({ children }) {
-  const { memberData } = useContextMyMemberData();
-  const { collectiveMember } = memberData || {};
-  if (!collectiveMember) {
+  const isMember = useContextIsMember();
+  if (!isMember) {
     return null;
   }
 
