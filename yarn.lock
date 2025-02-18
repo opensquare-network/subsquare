@@ -6809,7 +6809,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/modal@npm:2.7.0, @walletconnect/modal@npm:^2.7.0":
+"@walletconnect/modal@npm:2.7.0":
   version: 2.7.0
   resolution: "@walletconnect/modal@npm:2.7.0"
   dependencies:
@@ -13227,7 +13227,6 @@ __metadata:
     "@tanstack/react-query": ^5.32.0
     "@types/lodash-es": ^4.17.12
     "@types/marked": ^6.0.0
-    "@walletconnect/modal": ^2.7.0
     "@walletconnect/universal-provider": ^2.18.0
     "@walletconnect/utils": ^2.18.0
     bignumber.js: ^9.0.2
@@ -13256,6 +13255,7 @@ __metadata:
     md5: ^2.3.0
     multiformats: ^13.1.0
     next: ^14.2.21
+    qrcode: ^1.5.4
     query-string: ^9.0.0
     quick-lru: ^7.0.0
     react: ^18.2.0
@@ -14371,6 +14371,19 @@ __metadata:
   bin:
     qrcode: bin/qrcode
   checksum: 9a8a20a0a9cb1d15de8e7b3ffa214e8b6d2a8b07655f25bd1b1d77f4681488f84d7bae569870c0652872d829d5f8ac4922c27a6bd14c13f0e197bf07b28dead7
+  languageName: node
+  linkType: hard
+
+"qrcode@npm:^1.5.4":
+  version: 1.5.4
+  resolution: "qrcode@npm:1.5.4"
+  dependencies:
+    dijkstrajs: ^1.0.1
+    pngjs: ^5.0.0
+    yargs: ^15.3.1
+  bin:
+    qrcode: bin/qrcode
+  checksum: 0a162822e12c02b0333315462fd4ccad22255002130f86806773be7592aec5ef295efaffa3eb148cbf00e290839c7b610f63b0d62a0c5efc5bc52a68f4189684
   languageName: node
   linkType: hard
 

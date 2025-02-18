@@ -72,7 +72,7 @@ export default function HeaderAccount() {
   const isMounted = useMountedState();
   const { openLoginPopup } = useLoginPopup();
   const menu = useAccountMenu();
-  const { disconnectWcSession } = useWalletConnect();
+  const { disconnect: disconnectWc } = useWalletConnect();
 
   useClickAway(ref, () => setShow(false));
 
@@ -87,7 +87,7 @@ export default function HeaderAccount() {
       await disconnectAccount();
 
       if (connectedAccount?.wallet === walletConnect.extensionName) {
-        disconnectWcSession();
+        disconnectWc();
       }
     } else if (item.pathname) {
       await router.push(item.pathname);
