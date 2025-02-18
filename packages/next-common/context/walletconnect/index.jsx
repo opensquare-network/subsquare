@@ -125,12 +125,15 @@ export default function WalletConnectProvider({ children }) {
       return;
     }
 
-    await provider.client.disconnect({
-      topic: session.topic,
-      reason: getSdkError("USER_DISCONNECTED"),
-    });
+    try {
+      await provider.client.disconnect({
+        topic: session.topic,
+        reason: getSdkError("USER_DISCONNECTED"),
+      });
+    } catch (error) {
+      console.error(error);
+    }
 
-    setProvider(null);
     setSession(null);
     setWalletConnectSession(null);
   }, [provider, session, setWalletConnectSession]);
@@ -212,13 +215,13 @@ export default function WalletConnectProvider({ children }) {
   useEffect(() => {
     if (provider) {
       provider.on("disconnect", () => {
-        setProvider(null);
         setSession(null);
         setWalletConnectSession(null);
         disconnectAccount();
       });
 
-      provider.client.on("session_expire", () => {
+      provider.client.on("session_expire", (event) => {
+        event;
         // console.log("client", "session_expire", event);
       });
     }
