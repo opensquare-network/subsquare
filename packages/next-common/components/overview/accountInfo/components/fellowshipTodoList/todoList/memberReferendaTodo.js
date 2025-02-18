@@ -1,23 +1,13 @@
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import { useContextMyEvidence } from "../context/myEvidence";
-import { useMemo, useState } from "react";
+import { useContext, useState } from "react";
 import { EvidenceDetailPopup } from "next-common/components/collectives/core/member/evidence";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useHasMemberReferendaTodo from "../hooks/useHasMemberReferendaTodo";
 import UserListPopup from "./userListPopup";
-import useCoreMembersWithRank from "next-common/components/collectives/core/useCoreMembersWithRank";
 import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
-
-function useEligibleMembers() {
-  const { members, isLoading } = useCoreMembersWithRank();
-  const eligibleMembers = useMemo(() => {
-    const eligibleMembers = members.filter((member) => member.rank >= 3);
-    eligibleMembers.sort((a, b) => b.rank - a.rank);
-    return eligibleMembers;
-  }, [members]);
-  return { eligibleMembers, isLoading };
-}
+import { MembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/members";
 
 function EvidencePopup({ onClose }) {
   const address = useRealAddress();
@@ -40,13 +30,10 @@ function EvidencePopup({ onClose }) {
 }
 
 function EligibleMemberPopup({ onClose }) {
-  const { eligibleMembers, isLoading } = useEligibleMembers();
+  const { members, isLoading } = useContext(MembersContext);
+
   return (
-    <UserListPopup
-      users={eligibleMembers}
-      isLoading={isLoading}
-      onClose={onClose}
-    />
+    <UserListPopup users={members} isLoading={isLoading} onClose={onClose} />
   );
 }
 

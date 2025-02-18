@@ -7,7 +7,12 @@ export default function MembersProvider({ children }) {
   const { members, loading: isLoading } = useEligibleFellowshipCoreMembers();
 
   return (
-    <MembersContext.Provider value={{ members, isLoading }}>
+    <MembersContext.Provider
+      value={{
+        members: (members || []).sort((a, b) => b.rank - a.rank),
+        isLoading,
+      }}
+    >
       {children}
     </MembersContext.Provider>
   );
