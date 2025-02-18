@@ -1,21 +1,34 @@
 import RetentionEvidenceSubmissionTodo from "./retentionEvidenceSubmissionTodo";
 import DemotionExpirationTodo from "./demotionExpirationTodo";
-import useTodoListCount from "../hooks/useTodoListCount";
-import MembershipReferendaTodoForLowerRank from "./membershipReferendaTodoForLowerRank";
-import { useContextMyRank } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myMemberData";
+import MemberReferendaTodo from "./memberReferendaTodo";
+import useTodoListLoading from "next-common/components/overview/accountInfo/components/fellowshipTodoList/hooks/useTodoListLoading";
+import useContextMyMember, {
+  useContextIsMember,
+} from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 
-function TodoListWrapper({ children }) {
-  const count = useTodoListCount();
-  if (count === 0) {
+function MakeSureLoaded({ children }) {
+  const isLoading = useTodoListLoading();
+  if (isLoading) {
     return null;
   }
-  return <div className="flex flex-col mt-[16px] gap-[4px]">{children}</div>;
+
+  return children;
 }
 
-function OnlyLowRankMembers({ children }) {
-  const myRank = useContextMyRank();
+export function OnlyLowRankMembers({ children }) {
+  const member = useContextMyMember();
+  const { rank } = member;
   // todo: ambassador may have a different rank threshold
-  if (myRank < 3) {
+  if (rank >= 3) {
+    return null;
+  }
+
+  return children;
+}
+
+function OnlyMembers({ children }) {
+  const isMember = useContextIsMember();
+  if (!isMember) {
     return null;
   }
 
@@ -24,12 +37,12 @@ function OnlyLowRankMembers({ children }) {
 
 export default function TodoList() {
   return (
-    <TodoListWrapper>
-      <RetentionEvidenceSubmissionTodo />
+    <MakeSureLoaded>
+      <OnlyMembers>
+        <RetentionEvidenceSubmissionTodo />
+        <MemberReferendaTodo />
+      </OnlyMembers>
       <DemotionExpirationTodo />
-      <OnlyLowRankMembers>
-        <MembershipReferendaTodoForLowerRank />
-      </OnlyLowRankMembers>
-    </TodoListWrapper>
+    </MakeSureLoaded>
   );
 }

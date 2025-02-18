@@ -1,42 +1,20 @@
-import { useContextDemotionExpirationCount } from "../context/demotionExpirationCount";
 import { useContextMyMembershipReferenda } from "../context/myMembershipReferenda";
-import { useContextMyDemotionExpiration } from "../context/myDemotionExpiration";
 import { useContextMyEvidence } from "../context/myEvidence";
+import { useContextCoreParams } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreParams";
+import { useContext } from "react";
+import { MembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/members";
 
-function useMyDemotionTodoLoading() {
-  const { isLoading: isMyDemotionExpirationLoading } =
-    useContextMyDemotionExpiration();
-  const { isLoading: isMyEvidenceLoading } = useContextMyEvidence();
-  return isMyDemotionExpirationLoading || isMyEvidenceLoading;
-}
-
-function useMyDemotionExpirationTodoLoading() {
-  const { isLoading } = useContextDemotionExpirationCount();
-  return isLoading;
-}
-
-function useMembershipReferendaTodoForLowerRankLoading() {
-  const { isLoading: isMyDemotionExpirationLoading } =
-    useContextMyDemotionExpiration();
+export default function useTodoListLoading() {
   const { isLoading: isMyEvidenceLoading } = useContextMyEvidence();
   const { isLoading: isMyMembershipReferendaLoading } =
     useContextMyMembershipReferenda();
-  return (
-    isMyDemotionExpirationLoading ||
-    isMyEvidenceLoading ||
-    isMyMembershipReferendaLoading
-  );
-}
+  const { isLoading: isLoadingCoreParams } = useContextCoreParams();
+  const { isLoading: isLoadingMembers } = useContext(MembersContext);
 
-export default function useTodoListLoading() {
-  const isMyDemotionTodoLoading = useMyDemotionTodoLoading();
-  const isMyDemotionExpirationTodoLoading =
-    useMyDemotionExpirationTodoLoading();
-  const isMembershipReferendaTodoForLowerRankLoading =
-    useMembershipReferendaTodoForLowerRankLoading();
   return (
-    isMyDemotionTodoLoading ||
-    isMyDemotionExpirationTodoLoading ||
-    isMembershipReferendaTodoForLowerRankLoading
+    isMyEvidenceLoading ||
+    isMyMembershipReferendaLoading ||
+    isLoadingCoreParams ||
+    isLoadingMembers
   );
 }

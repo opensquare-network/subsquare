@@ -1,23 +1,19 @@
 import { useContextMyMembershipReferenda } from "../context/myMembershipReferenda";
 import { useContextMyEvidence } from "../context/myEvidence";
-import { useContextMyRank } from "../context/myMemberData";
+import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 
-export default function useShouldShowMembershipReferendaTodoForLowerRank() {
+export default function useHasMemberReferendaTodo() {
   const { evidence } = useContextMyEvidence();
   const { myMembershipReferenda } = useContextMyMembershipReferenda();
-  const myRank = useContextMyRank();
+  const member = useContextMyMember();
+  const { rank } = member;
 
-  if (!evidence) {
-    return false;
-  }
-
-  const data = evidence.toJSON();
-  if (!data) {
+  if (!evidence || evidence.isNone) {
     return false;
   }
 
   const noMembershipReferenda = !myMembershipReferenda?.length;
-  const canNotCreateReferenda = myRank < 3;
+  const canNotCreateReferenda = rank < 3;
 
   return noMembershipReferenda && canNotCreateReferenda;
 }

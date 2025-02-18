@@ -22,6 +22,6 @@ const defaultOptions = {
 /**
  * @type {dynamic}
  */
-export default function dynamicPopup(dynamicOptions, options) {
+export default function dynamicPopup(dynamicOptions, options = {}) {
   return dynamicClientOnly(dynamicOptions, { ...defaultOptions, ...options });
 }

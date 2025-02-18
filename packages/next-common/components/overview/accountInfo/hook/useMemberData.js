@@ -14,16 +14,14 @@ export async function getMemberData({ section = "fellowship", api, address }) {
     collectivePallet = "ambassadorCollective";
   }
 
-  const [collectiveMember, coreMember, coreParams] = await Promise.all([
+  const [collectiveMember, coreMember] = await Promise.all([
     api.query[collectivePallet].members(address),
     api.query[corePallet].member(address),
-    api.query[corePallet].params(),
   ]);
 
   return {
     collectiveMember: collectiveMember.toJSON(),
     coreMember: coreMember.toJSON(),
-    coreParams: coreParams.toJSON(),
   };
 }
 
@@ -39,10 +37,13 @@ export default function useMemberData(section = "fellowship") {
     }
 
     setIsLoading(true);
-    getMemberData({ api, section, address }).then((data) => {
-      setData(data);
-      setIsLoading(false);
-    });
+    getMemberData({ api, section, address })
+      .then((data) => {
+        setData(data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [address, api, section]);
 
   return {

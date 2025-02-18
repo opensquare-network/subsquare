@@ -1,10 +1,18 @@
 import { createContext, useContext } from "react";
-import useMyMemberEvidence from "../hooks/useMyMemberEvidence";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 const MyEvidenceContext = createContext();
 
 export default function MyEvidenceProvider({ children }) {
-  const { evidence, isLoading } = useMyMemberEvidence();
+  const address = useRealAddress();
+  const corePallet = useCoreFellowshipPallet();
+  const { result: evidence, loading: isLoading } = useSubStorage(
+    corePallet,
+    "memberEvidence",
+    [address],
+  );
 
   return (
     <MyEvidenceContext.Provider value={{ evidence, isLoading }}>

@@ -1,32 +1,24 @@
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import { useContextMyEvidence } from "../context/myEvidence";
-import { useMemo, useState } from "react";
-import { EvidenceDetailPopup } from "next-common/components/collectives/core/member/evidence";
-import { useContextMyMemberData } from "../context/myMemberData";
+import { useContext, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useShouldShowMembershipReferendaTodoForLowerRank from "../hooks/useShouldShowMembershipReferendaTodoForLowerRank";
-import UserListPopup from "./userListPopup";
-import useCoreMembersWithRank from "next-common/components/collectives/core/useCoreMembersWithRank";
+import useHasMemberReferendaTodo from "../hooks/useHasMemberReferendaTodo";
+import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
+import { MembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/members";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-function useEligibleMembers() {
-  const { members, isLoading } = useCoreMembersWithRank();
-  const eligibleMembers = useMemo(() => {
-    const eligibleMembers = members.filter((member) => member.rank >= 3);
-    eligibleMembers.sort((a, b) => b.rank - a.rank);
-    return eligibleMembers;
-  }, [members]);
-  return { eligibleMembers, isLoading };
-}
+const UserListPopup = dynamicPopup(() => import("./userListPopup"));
+const EvidenceDetailPopup = dynamicPopup(() =>
+  import("next-common/components/collectives/core/member/evidence"),
+);
 
 function EvidencePopup({ onClose }) {
   const address = useRealAddress();
   const { evidence } = useContextMyEvidence();
-  const { memberData } = useContextMyMemberData();
+  const member = useContextMyMember();
+  const { rank, status: { isActive } = {} } = member || {};
 
-  const { collectiveMember, coreMember } = memberData;
-  const rank = collectiveMember?.rank;
-  const isActive = coreMember?.isActive;
   const [wish, evidenceData] = evidence.toJSON();
 
   return (
@@ -42,22 +34,19 @@ function EvidencePopup({ onClose }) {
 }
 
 function EligibleMemberPopup({ onClose }) {
-  const { eligibleMembers, isLoading } = useEligibleMembers();
+  const { members, isLoading } = useContext(MembersContext);
+
   return (
-    <UserListPopup
-      users={eligibleMembers}
-      isLoading={isLoading}
-      onClose={onClose}
-    />
+    <UserListPopup users={members} isLoading={isLoading} onClose={onClose} />
   );
 }
 
-export default function MembershipReferendaTodoForLowerRank() {
+export default function MemberReferendaTodo() {
   const [showEvidenceDetailPopup, setShowEvidenceDetailPopup] = useState(false);
   const [showEligibleMembersPopup, setShowEligibleMembersPopup] =
     useState(false);
-  const show = useShouldShowMembershipReferendaTodoForLowerRank();
-  if (!show) {
+  const hasTodo = useHasMemberReferendaTodo();
+  if (!hasTodo) {
     return null;
   }
 

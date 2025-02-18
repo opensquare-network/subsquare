@@ -12,6 +12,7 @@ export default function useCoreFellowshipParams() {
     if (!api) {
       return;
     }
+
     api.query[corePallet].params().then((params) => {
       setParams(params.toJSON());
       setIsLoading(false);
