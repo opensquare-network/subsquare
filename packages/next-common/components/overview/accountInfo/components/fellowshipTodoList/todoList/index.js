@@ -17,7 +17,7 @@ function MakeSureLoaded({ children }) {
   return children;
 }
 
-function HasTodo({ children }) {
+export function HasTodo({ children }) {
   const count = useTodoListCount();
   if (count === 0) {
     return null;
@@ -49,15 +49,15 @@ function OnlyMembers({ children }) {
 export default function TodoList() {
   return (
     <MakeSureLoaded>
-      <HasTodo>
-        <OnlyMembers>
-          <RetentionEvidenceSubmissionTodo />
-        </OnlyMembers>
-        <DemotionExpirationTodo />
-        <OnlyLowRankMembers>
-          <MembershipReferendaTodoForLowerRank />
-        </OnlyLowRankMembers>
-      </HasTodo>
+      {/*<HasTodo>*/}
+      <OnlyMembers>
+        <RetentionEvidenceSubmissionTodo />
+      </OnlyMembers>
+      <DemotionExpirationTodo />
+      <OnlyLowRankMembers>
+        <MembershipReferendaTodoForLowerRank />
+      </OnlyLowRankMembers>
+      {/*</HasTodo>*/}
     </MakeSureLoaded>
   );
 }

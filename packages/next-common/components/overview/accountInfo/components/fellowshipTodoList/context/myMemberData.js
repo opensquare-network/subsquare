@@ -24,6 +24,11 @@ export function useContextIsLoadingMyMemberData() {
   return isLoading;
 }
 
+export function useContextIsMember() {
+  const { memberData } = useContextMyMemberData();
+  return !!memberData?.collectiveMember;
+}
+
 export function useContextMyRank() {
   const { memberData } = useContextMyMemberData();
   return memberData?.collectiveMember?.rank;

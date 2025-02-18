@@ -9,7 +9,7 @@ import LoadableContent, {
   LoadStyles,
 } from "next-common/components/common/loadableContent";
 
-function TodoCount() {
+export function TodoCount() {
   const count = useTodoListCount();
   return <span>{count}</span>;
 }
@@ -20,13 +20,13 @@ function Title() {
   return (
     <div className="flex items-center gap-1 text14Medium text-textTertiary">
       <span>Fellowship To-do List</span>
-      <span>·</span>
+      {/*<span>·</span>*/}
       <LoadableContent
         size={16}
         isLoading={isLoading}
         style={LoadStyles.CIRCLE}
       >
-        <TodoCount />
+        {/*<TodoCount />*/}
       </LoadableContent>
     </div>
   );

@@ -15,6 +15,7 @@ export function useDemotionCommonData() {
   const { params: coreParams } = useContextCoreParams();
   const rank = useContextMyRank();
   const demotionPeriod = getDemotionPeriod(rank, coreParams);
+  const { memberData } = useContextMyMemberData();
 
   const {
     memberData: {
@@ -24,6 +25,7 @@ export function useDemotionCommonData() {
 
   return {
     demotionPeriod,
+    memberData,
     lastProof,
   };
 }

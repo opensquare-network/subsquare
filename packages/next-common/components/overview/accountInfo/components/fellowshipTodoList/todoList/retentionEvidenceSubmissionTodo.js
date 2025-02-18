@@ -2,12 +2,14 @@ import { useState } from "react";
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import SubmitEvidencePopup from "next-common/components/collectives/core/actions/more/submitEvidenceItem/popup";
-import useShouldShowMemberEvidenceSubmissionTodo from "../hooks/useShouldShowMemberEvidenceSubmissionTodo";
+import { useIsDemotionClosing } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/demotion";
+import { useContextMyEvidence } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myEvidence";
 
 export default function RetentionEvidenceSubmissionTodo() {
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
-  const show = useShouldShowMemberEvidenceSubmissionTodo();
-  if (!show) {
+  const isDemotionClosing = useIsDemotionClosing();
+  const { evidence } = useContextMyEvidence();
+  if (!isDemotionClosing && evidence && evidence.isNone) {
     return null;
   }
 
