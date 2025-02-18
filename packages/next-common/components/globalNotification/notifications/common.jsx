@@ -2,11 +2,13 @@ import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { SystemClose } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
+import { cn } from "next-common/utils";
 
 export default function CommonNotification({
   cacheKey,
   children,
   expires = 15,
+  className = "",
 }) {
   const [visible, setVisible] = useCookieValue(cacheKey, true);
 
@@ -15,10 +17,15 @@ export default function CommonNotification({
   }
 
   return (
-    <div className="w-full bg-theme500 flex justify-center">
+    <div className={cn("w-full bg-theme500 flex justify-center", className)}>
       <div className="px-6 py-2.5 mx-auto max-w-[1200px] max-sm:px-0 flex-1">
         <div className="w-full px-6">
-          <GreyPanel className="flex justify-between items-start flex-row bg-theme500 text14Medium rounded-none text-textPrimaryContrast">
+          <GreyPanel
+            className={cn(
+              "flex justify-between items-start flex-row bg-theme500 text14Medium rounded-none text-textPrimaryContrast",
+              className,
+            )}
+          >
             <div className="flex-1 justify-center items-center text-center">
               {children}
             </div>
