@@ -20,6 +20,5 @@ export default function MembersProvider({ children }) {
 }
 
 export function useContextMembers() {
-  const data = useContext(MembersContext);
-  return data?.members;
+  return useContext(MembersContext);
 }

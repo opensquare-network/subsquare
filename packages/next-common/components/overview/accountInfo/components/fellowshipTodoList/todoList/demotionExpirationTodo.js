@@ -4,10 +4,7 @@ import ClickableText from "./clickableText";
 import useDemotionExpiredMembers from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/expired";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-// todo: write a dedicate bump popup for todo. Refresh members data after action
-const BatchBumpPopup = dynamicPopup(() =>
-  import("next-common/components/fellowship/core/batchBump/popup"),
-);
+const BatchBumpPopup = dynamicPopup(() => import("./bumpAllPopup"));
 
 export default function DemotionExpirationTodo() {
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);

@@ -5,7 +5,7 @@ import { isSameAddress } from "next-common/utils";
 
 export default function useContextMyMember() {
   const realAddress = useRealAddress();
-  const members = useContextMembers();
+  const { members } = useContextMembers();
 
   return useMemo(
     () => (members || []).find((m) => isSameAddress(m.address, realAddress)),
