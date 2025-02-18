@@ -138,17 +138,6 @@ export default function WalletConnectProvider({ children }) {
     setWalletConnectSession(null);
   }, [provider, session, setWalletConnectSession]);
 
-  const disconnectPairing = useCallback(async () => {
-    if (!provider || !session) {
-      return;
-    }
-
-    await provider.client.disconnect({
-      topic: session.pairingTopic,
-      reason: getSdkError("USER_DISCONNECTED"),
-    });
-  }, [provider, session]);
-
   const fetchAddresses = useCallback(async () => {
     if (!provider || !session) {
       return [];
@@ -251,7 +240,6 @@ export default function WalletConnectProvider({ children }) {
         session,
         connect,
         disconnect,
-        disconnectPairing,
         fetchAddresses,
         signWcMessage,
         signWcTx,
