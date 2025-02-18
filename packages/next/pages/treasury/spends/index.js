@@ -54,7 +54,7 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { status } = context.query;
-  const query = status && { status };
+  const query = status ? { status } : {};
   const spends = await fetchList("treasury/spends", context, query);
   const tracksProps = await fetchOpenGovTracksProps();
 
