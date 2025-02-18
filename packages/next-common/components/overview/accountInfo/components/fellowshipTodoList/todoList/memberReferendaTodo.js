@@ -2,12 +2,16 @@ import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
 import { useContextMyEvidence } from "../context/myEvidence";
 import { useContext, useState } from "react";
-import { EvidenceDetailPopup } from "next-common/components/collectives/core/member/evidence";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useHasMemberReferendaTodo from "../hooks/useHasMemberReferendaTodo";
-import UserListPopup from "./userListPopup";
 import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 import { MembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/members";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const UserListPopup = dynamicPopup(() => import("./userListPopup"));
+const EvidenceDetailPopup = dynamicPopup(() =>
+  import("next-common/components/collectives/core/member/evidence"),
+);
 
 function EvidencePopup({ onClose }) {
   const address = useRealAddress();
