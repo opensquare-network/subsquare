@@ -1,6 +1,6 @@
 import RetentionEvidenceSubmissionTodo from "./retentionEvidenceSubmissionTodo";
 import DemotionExpirationTodo from "./demotionExpirationTodo";
-import MembershipReferendaTodoForLowerRank from "./membershipReferendaTodoForLowerRank";
+import MemberReferendaTodo from "./memberReferendaTodo";
 import useTodoListLoading from "next-common/components/overview/accountInfo/components/fellowshipTodoList/hooks/useTodoListLoading";
 import useContextMyMember, {
   useContextIsMember,
@@ -15,7 +15,7 @@ function MakeSureLoaded({ children }) {
   return children;
 }
 
-function OnlyLowRankMembers({ children }) {
+export function OnlyLowRankMembers({ children }) {
   const member = useContextMyMember();
   const { rank } = member;
   // todo: ambassador may have a different rank threshold
@@ -38,15 +38,11 @@ function OnlyMembers({ children }) {
 export default function TodoList() {
   return (
     <MakeSureLoaded>
-      {/*<HasTodo>*/}
       <OnlyMembers>
         <RetentionEvidenceSubmissionTodo />
+        <MemberReferendaTodo />
       </OnlyMembers>
       <DemotionExpirationTodo />
-      <OnlyLowRankMembers>
-        <MembershipReferendaTodoForLowerRank />
-      </OnlyLowRankMembers>
-      {/*</HasTodo>*/}
     </MakeSureLoaded>
   );
 }

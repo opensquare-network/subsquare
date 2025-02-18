@@ -2,7 +2,7 @@ import { useContextMyMembershipReferenda } from "../context/myMembershipReferend
 import { useContextMyEvidence } from "../context/myEvidence";
 import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 
-export default function useShouldShowMembershipReferendaTodoForLowerRank() {
+export default function useHasMemberReferendaTodo() {
   const { evidence } = useContextMyEvidence();
   const { myMembershipReferenda } = useContextMyMembershipReferenda();
   const member = useContextMyMember();

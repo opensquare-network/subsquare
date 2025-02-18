@@ -4,7 +4,7 @@ import { useContextMyEvidence } from "../context/myEvidence";
 import { useMemo, useState } from "react";
 import { EvidenceDetailPopup } from "next-common/components/collectives/core/member/evidence";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useShouldShowMembershipReferendaTodoForLowerRank from "../hooks/useShouldShowMembershipReferendaTodoForLowerRank";
+import useHasMemberReferendaTodo from "../hooks/useHasMemberReferendaTodo";
 import UserListPopup from "./userListPopup";
 import useCoreMembersWithRank from "next-common/components/collectives/core/useCoreMembersWithRank";
 import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
@@ -50,12 +50,12 @@ function EligibleMemberPopup({ onClose }) {
   );
 }
 
-export default function MembershipReferendaTodoForLowerRank() {
+export default function MemberReferendaTodo() {
   const [showEvidenceDetailPopup, setShowEvidenceDetailPopup] = useState(false);
   const [showEligibleMembersPopup, setShowEligibleMembersPopup] =
     useState(false);
-  const show = useShouldShowMembershipReferendaTodoForLowerRank();
-  if (!show) {
+  const hasTodo = useHasMemberReferendaTodo();
+  if (!hasTodo) {
     return null;
   }
 
