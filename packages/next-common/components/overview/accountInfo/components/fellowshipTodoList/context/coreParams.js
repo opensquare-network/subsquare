@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
 
-const CoreParamsContext = createContext({});
+export const CoreParamsContext = createContext({});
 
 export default function CoreParamsProvider({ children }) {
   const { params, isLoading } = useCoreFellowshipParams();

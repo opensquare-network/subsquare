@@ -5,23 +5,26 @@ import MyMemberDataProvider from "next-common/components/overview/accountInfo/co
 import DemotionExpirationCountProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/demotionExpirationCount";
 import MyMembershipReferendaProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myMembershipReferenda";
 import CoreParamsProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreParams";
+import MembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/members";
 
 export default function FellowshipTodoProviders({ children }) {
   const referendaPallet = useReferendaFellowshipPallet();
 
   return (
-    <ActiveReferendaProvider pallet={referendaPallet}>
-      <CoreParamsProvider>
-        <MyEvidenceProvider>
-          <MyMemberDataProvider>
-            <DemotionExpirationCountProvider>
-              <MyMembershipReferendaProvider>
-                {children}
-              </MyMembershipReferendaProvider>
-            </DemotionExpirationCountProvider>
-          </MyMemberDataProvider>
-        </MyEvidenceProvider>
-      </CoreParamsProvider>
-    </ActiveReferendaProvider>
+    <MembersProvider>
+      <ActiveReferendaProvider pallet={referendaPallet}>
+        <CoreParamsProvider>
+          <MyEvidenceProvider>
+            <MyMemberDataProvider>
+              <DemotionExpirationCountProvider>
+                <MyMembershipReferendaProvider>
+                  {children}
+                </MyMembershipReferendaProvider>
+              </DemotionExpirationCountProvider>
+            </MyMemberDataProvider>
+          </MyEvidenceProvider>
+        </CoreParamsProvider>
+      </ActiveReferendaProvider>
+    </MembersProvider>
   );
 }
