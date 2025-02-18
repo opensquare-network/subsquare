@@ -3,7 +3,11 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { SystemClose } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 
-export default function Notification({ cacheKey, children, expires = 15 }) {
+export default function CommonNotification({
+  cacheKey,
+  children,
+  expires = 15,
+}) {
   const [visible, setVisible] = useCookieValue(cacheKey, true);
 
   if (!visible) {
