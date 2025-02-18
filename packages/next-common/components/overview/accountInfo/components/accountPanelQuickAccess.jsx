@@ -18,9 +18,8 @@ function ProxyButton() {
   const {
     modules: { proxy },
   } = useChainSettings();
-  const router = useRouter();
 
-  if (router.pathname.startsWith("/account") || !proxy) {
+  if (!proxy) {
     return null;
   }
 
@@ -39,9 +38,8 @@ function ProxyButton() {
 
 function MultisigButton() {
   const { hasMultisig } = useChainSettings();
-  const router = useRouter();
 
-  if (router.pathname.startsWith("/account") || !hasMultisig) {
+  if (!hasMultisig) {
     return null;
   }
 
@@ -59,6 +57,12 @@ function MultisigButton() {
 }
 
 export default function AccountPanelQuickAccess() {
+  const router = useRouter();
+
+  if (router.pathname.startsWith("/account")) {
+    return null;
+  }
+
   return (
     <div className="flex items-center space-x-2 ml-[52px]">
       <ProxyButton />
