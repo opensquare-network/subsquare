@@ -23,7 +23,7 @@ function Skeleton() {
 
 export default function LoginWeb3WalletConnect() {
   const { setView } = useWeb3WalletView();
-  const { connect, session } = useWalletConnect();
+  const { connect, session, provider } = useWalletConnect();
   const [qrCode, setQrCode] = useState(null);
   const [uri, setUri] = useState(null);
   const [web3Login] = useWeb3Login();
@@ -77,7 +77,16 @@ export default function LoginWeb3WalletConnect() {
   }, [accounts, web3Login]);
 
   useUnmount(() => {
-    // disconnectPairing();
+    if (provider) {
+      if (!session) {
+        const pairing = provider.client.pairing.getAll().find((p) => p.topic);
+        if (pairing) {
+          provider.client.pairing.core.pairing.disconnect({
+            topic: pairing.topic,
+          });
+        }
+      }
+    }
   });
 
   return (
@@ -97,11 +106,11 @@ export default function LoginWeb3WalletConnect() {
 
       <div className="flex justify-center">
         <div
-          className="rounded-xl border border-neutral300"
+          className="rounded-xl border border-neutral300 overflow-hidden"
           style={{ width: SIZE + 16, height: SIZE + 16 }}
         >
           {qrCode ? (
-            <div className="p-4">
+            <div className="p-4 bg-white">
               <img src={qrCode} alt="qrcode" />
             </div>
           ) : (
