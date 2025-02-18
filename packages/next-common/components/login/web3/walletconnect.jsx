@@ -12,12 +12,12 @@ import qrcode from "qrcode";
 import { useEffect, useState } from "react";
 import { useInterval, useUnmount } from "react-use";
 
-const SIZE = 300;
+const SIZE = 200;
 const REFRESH_QRCODE_INTERVAL = 4 * 60 * 1000; // 4 minutes
 
 function Skeleton() {
   return (
-    <div className="w-full h-full rounded-md bg-gradient-to-r from-neutral200 to-neutral200 " />
+    <div className="w-full h-full rounded-lg bg-gradient-to-r from-neutral300-80 to-neutral300-20 " />
   );
 }
 
@@ -58,7 +58,7 @@ export default function LoginWeb3WalletConnect() {
       .toDataURL(uri, {
         width: SIZE,
         height: SIZE,
-        scale: 6,
+        margin: 0,
       })
       .then(setQrCode);
   }, [uri]);
@@ -96,9 +96,14 @@ export default function LoginWeb3WalletConnect() {
       <WalletGroupTitle>Scan With Your Phone</WalletGroupTitle>
 
       <div className="flex justify-center">
-        <div style={{ width: SIZE, height: SIZE }}>
+        <div
+          className="rounded-xl border border-neutral300"
+          style={{ width: SIZE + 16, height: SIZE + 16 }}
+        >
           {qrCode ? (
-            <img src={qrCode} alt="qrcode" className="rounded-md" />
+            <div className="p-4">
+              <img src={qrCode} alt="qrcode" />
+            </div>
           ) : (
             <Skeleton />
           )}
