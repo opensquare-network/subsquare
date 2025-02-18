@@ -1,6 +1,5 @@
 import RetentionEvidenceSubmissionTodo from "./retentionEvidenceSubmissionTodo";
 import DemotionExpirationTodo from "./demotionExpirationTodo";
-import useTodoListCount from "../hooks/useTodoListCount";
 import MembershipReferendaTodoForLowerRank from "./membershipReferendaTodoForLowerRank";
 import {
   useContextMyMemberData,
@@ -15,15 +14,6 @@ function MakeSureLoaded({ children }) {
   }
 
   return children;
-}
-
-export function HasTodo({ children }) {
-  const count = useTodoListCount();
-  if (count === 0) {
-    return null;
-  }
-
-  return <div className="flex flex-col mt-[16px] gap-[4px]">{children}</div>;
 }
 
 function OnlyLowRankMembers({ children }) {

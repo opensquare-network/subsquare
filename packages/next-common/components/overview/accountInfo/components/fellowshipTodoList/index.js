@@ -2,17 +2,11 @@ import CollapsePanel, { AlwaysVisible } from "../collapsePanel";
 import TodoList from "./todoList";
 import NavigationButtons from "./navigationButtons";
 import CollectivesProvider from "next-common/context/collectives/collectives";
-import useTodoListCount from "./hooks/useTodoListCount";
 import useTodoListLoading from "./hooks/useTodoListLoading";
 import FellowshipTodoProviders from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context";
 import LoadableContent, {
   LoadStyles,
 } from "next-common/components/common/loadableContent";
-
-export function TodoCount() {
-  const count = useTodoListCount();
-  return <span>{count}</span>;
-}
 
 function Title() {
   const isLoading = useTodoListLoading();
