@@ -4,10 +4,10 @@ import { useStagedFilterState } from "next-common/components/dropdownFilter/cont
 
 const treasurySpendStatusOptions = [
   { value: "", label: "All" },
-  { value: "Approved", label: "Approved" },
-  { value: "Paid", label: "Paid" },
-  { value: "Processed", label: "Processed" },
-  { value: "Voided", label: "Voided" },
+  { value: "approved", label: "Approved" },
+  { value: "paid", label: "Paid" },
+  { value: "processed", label: "Processed" },
+  { value: "voided", label: "Voided" },
 ];
 
 function TreasurySpendStatusSelect() {
