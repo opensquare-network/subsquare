@@ -1,36 +1,29 @@
-import DataTabsProvider, { useDataTabsContext } from "./context/tabs";
 import DataBaseLayout from "./common/baseLayout";
 import CommonTabs from "./common/tabs";
 import ProxyExplorer from "./proxies";
 import VestingExplorer from "./vesting";
 
-function renderActiveTabContent(activeTab) {
-  if (activeTab === "proxy") {
-    return <ProxyExplorer />;
-  } else if (activeTab === "vesting") {
-    return <VestingExplorer />;
-  }
-}
-
-function DataPageContent() {
-  const { activeTab, setActiveTab, tabs } = useDataTabsContext();
-
+function DataPageWithLayout({ children }) {
   return (
     <DataBaseLayout>
-      <CommonTabs
-        tabs={tabs}
-        selectedTabId={activeTab}
-        setSelectedTabId={setActiveTab}
-      />
-      {renderActiveTabContent(activeTab)}
+      <CommonTabs />
+      {children}
     </DataBaseLayout>
   );
 }
 
-export default function Data() {
+export function DataProxies() {
   return (
-    <DataTabsProvider>
-      <DataPageContent />
-    </DataTabsProvider>
+    <DataPageWithLayout>
+      <ProxyExplorer />
+    </DataPageWithLayout>
+  );
+}
+
+export function DataVesting() {
+  return (
+    <DataPageWithLayout>
+      <VestingExplorer />
+    </DataPageWithLayout>
   );
 }
