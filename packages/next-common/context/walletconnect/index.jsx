@@ -65,15 +65,20 @@ export default function WalletConnectProvider({ children }) {
 
   const [session, setSession] = useState(defaultWalletConnect.session);
 
-  const [walletConnectSession, setWalletConnectSession] = useLocalStorage(
+  const [cachedSession, setCachedSession] = useLocalStorage(
     CACHE_KEY.walletConnectSession,
     session,
   );
   useEffect(() => {
-    if (walletConnectSession) {
-      setSession(walletConnectSession);
+    if (cachedSession) {
+      setSession(cachedSession);
     }
-  }, [walletConnectSession]);
+  }, [cachedSession]);
+
+  const clearSession = useCallback(() => {
+    setSession(null);
+    setCachedSession(null);
+  }, [setCachedSession, setSession]);
 
   // Init WalletConnect provider
   useEffect(() => {
@@ -113,12 +118,12 @@ export default function WalletConnectProvider({ children }) {
       .then((result) => {
         result.approval().then((session) => {
           setSession(session);
-          setWalletConnectSession(session);
+          setCachedSession(session);
         });
 
         return result;
       });
-  }, [chainId, provider, setWalletConnectSession]);
+  }, [chainId, provider, setCachedSession]);
 
   const disconnect = useCallback(async () => {
     if (!provider || !session) {
@@ -134,9 +139,8 @@ export default function WalletConnectProvider({ children }) {
       console.error(error);
     }
 
-    setSession(null);
-    setWalletConnectSession(null);
-  }, [provider, session, setWalletConnectSession]);
+    clearSession();
+  }, [provider, session, clearSession]);
 
   const fetchAddresses = useCallback(async () => {
     if (!provider || !session) {
@@ -204,8 +208,7 @@ export default function WalletConnectProvider({ children }) {
   useEffect(() => {
     if (provider) {
       provider.on("disconnect", () => {
-        setSession(null);
-        setWalletConnectSession(null);
+        clearSession();
         disconnectAccount();
       });
 
@@ -222,7 +225,19 @@ export default function WalletConnectProvider({ children }) {
         provider.client.removeAllListeners();
       }
     };
-  }, [disconnectAccount, provider, setWalletConnectSession]);
+  }, [clearSession, disconnectAccount, provider]);
+
+  // If web closed, mobile wallet do disconnect, next time open web, clear session and disconnect account
+  useEffect(() => {
+    if (provider && cachedSession) {
+      const active = provider.client.session.get(cachedSession.topic);
+      if (!active) {
+        clearSession();
+        disconnectAccount();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [provider, clearSession, disconnectAccount]);
 
   // TODO: check expiry, session2.expiry
   // If a session has been connected to, check if it has not expired. If it has, disconnect from
