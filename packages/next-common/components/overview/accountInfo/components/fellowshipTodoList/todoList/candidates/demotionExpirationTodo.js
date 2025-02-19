@@ -8,8 +8,8 @@ const CandidateBatchBumpPopup = dynamicPopup(() => import("./bumpAllPopup"));
 
 export default function CandidateDemotionExpirationTodo() {
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
-  const { expiredMembers } = useDemotionExpiredCandidates();
-  if (!expiredMembers?.length) {
+  const { members } = useDemotionExpiredCandidates();
+  if (!members?.length) {
     return null;
   }
 
@@ -24,7 +24,7 @@ export default function CandidateDemotionExpirationTodo() {
             rel="noreferrer"
             href="https://collectives.subsquare.io/fellowship/members?tab=candidates&period=offboard_expired"
           >
-            {expiredMembers.length} candidates
+            {members.length} candidates
           </a>
           &nbsp;can be offboard.&nbsp;
           <ClickableText onClick={() => setShowBumpAllPopup(true)}>

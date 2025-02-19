@@ -3,16 +3,16 @@ import { useContextMembers } from "../members";
 import { partition } from "lodash-es";
 
 function useGroupingCoreMembers() {
-  const { members, isLoading } = useContextMembers();
-  const [eligibles, candidates] = useMemo(
-    () => partition(members, (m) => m.rank > 0),
-    [members],
+  const { members: allMembers, isLoading } = useContextMembers();
+  const [members, candidates] = useMemo(
+    () => partition(allMembers, (m) => m.rank > 0),
+    [allMembers],
   );
-  return { eligibles, candidates, isLoading };
+  return { members, candidates, isLoading };
 }
 
-export function useEligibleCoreMembers() {
-  const { eligibles: members, isLoading } = useGroupingCoreMembers();
+export function useNonCandidateCoreMembers() {
+  const { members, isLoading } = useGroupingCoreMembers();
   return { members, isLoading };
 }
 

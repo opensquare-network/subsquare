@@ -4,19 +4,19 @@ import TitleSuffix from "next-common/components/titleSuffix";
 import { useDemotionExpiredCandidates } from "../../context/hooks/expired";
 
 export default function CandidateBatchBumpPopup(props) {
-  const { expiredMembers, isLoading } = useDemotionExpiredCandidates();
+  const { members, isLoading } = useDemotionExpiredCandidates();
 
   return (
     <PopupWithSigner
       title={
         <span>
           Offboard Candidates
-          <TitleSuffix suffix={expiredMembers?.length} />
+          <TitleSuffix suffix={members?.length} />
         </span>
       }
       {...props}
     >
-      <PopupContent expiredMembers={expiredMembers} isLoading={isLoading} />
+      <PopupContent expiredMembers={members} isLoading={isLoading} />
     </PopupWithSigner>
   );
 }
