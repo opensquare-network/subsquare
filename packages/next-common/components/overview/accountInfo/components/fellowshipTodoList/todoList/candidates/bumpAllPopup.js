@@ -1,10 +1,10 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import PopupContent from "next-common/components/fellowship/core/batchBump/popupContent";
 import TitleSuffix from "next-common/components/titleSuffix";
-import { useDemotionExpiredCandidateMembers } from "../../context/hooks/expired";
+import { useDemotionExpiredCandidates } from "../../context/hooks/expired";
 
 export default function CandidateBatchBumpPopup(props) {
-  const { expiredMembers, isLoading } = useDemotionExpiredCandidateMembers();
+  const { expiredMembers, isLoading } = useDemotionExpiredCandidates();
 
   return (
     <PopupWithSigner

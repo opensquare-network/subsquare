@@ -23,7 +23,7 @@ export function useDemotionExpiredMembers() {
   return useDemotionExpired({ members, isMembersLoading });
 }
 
-export function useDemotionExpiredCandidateMembers() {
+export function useDemotionExpiredCandidates() {
   const { members, isLoading: isMembersLoading } = useCandidateCoreMembers();
   return useDemotionExpired({ members, isMembersLoading });
 }
