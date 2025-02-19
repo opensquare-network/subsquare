@@ -4,7 +4,6 @@ import { useEligibleFellowshipCoreMembers } from "next-common/components/fellows
 export const MembersContext = createContext({});
 
 export default function MembersProvider({ children }) {
-  // todo: update members data after dump action
   const { members, loading: isLoading } = useEligibleFellowshipCoreMembers();
 
   return (

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
-import useExpiredMembers from "../hooks/useExpiredMembers";
+import useDemotionExpiredMembers from "../context/hooks/expired";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const BatchBumpPopup = dynamicPopup(() => import("./bumpAllPopup"));
 
 export default function DemotionExpirationTodo() {
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
-  const { expiredMembers } = useExpiredMembers();
+  const { expiredMembers } = useDemotionExpiredMembers();
   if (!expiredMembers?.length) {
     return null;
   }
