@@ -3,8 +3,10 @@ import DemotionExpirationTodo from "./demotionExpirationTodo";
 import MemberReferendaTodo from "./memberReferendaTodo";
 import useTodoListLoading from "next-common/components/overview/accountInfo/components/fellowshipTodoList/hooks/useTodoListLoading";
 import useContextMyMember, {
-  useContextIsMember,
+  useIsCandidate,
+  useIsMember,
 } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
+import CandidateDemotionExpirationTodo from "./candidates/demotionExpirationTodo";
 
 function MakeSureLoaded({ children }) {
   const isLoading = useTodoListLoading();
@@ -26,9 +28,18 @@ export function OnlyLowRankMembers({ children }) {
   return children;
 }
 
-function OnlyMembers({ children }) {
-  const isMember = useContextIsMember();
+function OnlyMember({ children }) {
+  const isMember = useIsMember();
   if (!isMember) {
+    return null;
+  }
+
+  return children;
+}
+
+export function OnlyCandidate({ children }) {
+  const isCandidate = useIsCandidate();
+  if (!isCandidate) {
     return null;
   }
 
@@ -38,11 +49,12 @@ function OnlyMembers({ children }) {
 export default function TodoList() {
   return (
     <MakeSureLoaded>
-      <OnlyMembers>
+      <OnlyMember>
         <RetentionEvidenceSubmissionTodo />
         <MemberReferendaTodo />
-      </OnlyMembers>
+      </OnlyMember>
       <DemotionExpirationTodo />
+      <CandidateDemotionExpirationTodo />
     </MakeSureLoaded>
   );
 }

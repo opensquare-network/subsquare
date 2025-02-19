@@ -1,7 +1,7 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useContextMembers } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/members";
 import { useMemo } from "react";
 import { isSameAddress } from "next-common/utils";
+import { useContextMembers } from "../members";
 
 export default function useContextMyMember() {
   const realAddress = useRealAddress();
@@ -13,7 +13,12 @@ export default function useContextMyMember() {
   );
 }
 
-export function useContextIsMember() {
+export function useIsMember() {
   const member = useContextMyMember();
-  return !!member;
+  return member && member.rank > 0;
+}
+
+export function useIsCandidate() {
+  const member = useContextMyMember();
+  return member && member.rank === 0;
 }
