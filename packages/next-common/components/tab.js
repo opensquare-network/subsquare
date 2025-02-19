@@ -6,6 +6,7 @@ export default function Tab({
   selectedTabId,
   setSelectedTabId,
   className = "",
+  btnClassName = "",
 }) {
   if (!tabs || !tabs.length) {
     return null;
@@ -34,6 +35,7 @@ export default function Tab({
             selectedTabId === tabId &&
               "!text-textPrimary bg-neutral100 shadow-100 rounded",
             "tab-item",
+            btnClassName,
           )}
           onClick={() => setSelectedTabId(tabId)}
         >

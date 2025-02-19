@@ -13,7 +13,6 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
-import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
@@ -23,12 +22,11 @@ import Chains from "next-common/utils/consts/chains";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
-import { useChainSettings } from "next-common/context/chain";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
-import SecondaryButton from "next-common/lib/button/secondary";
 import Link from "next/link";
 import Button from "next-common/lib/button";
+import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -50,12 +48,6 @@ const SystemSetting = dynamic(
 );
 const SystemTransfer = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemTransfer),
-);
-const MenuProxy = dynamic(
-  import("@osn/icons/subsquare").then((mod) => mod.MenuProxy),
-);
-const ArrowRight = dynamic(
-  import("@osn/icons/subsquare").then((mod) => mod.ArrowRight),
 );
 
 const DisplayUserAvatar = () => {
@@ -230,31 +222,6 @@ function ParaChainTeleportButton() {
   );
 }
 
-function ProxyButton() {
-  const {
-    modules: { proxy },
-  } = useChainSettings();
-  const router = useRouter();
-
-  if (router.pathname.startsWith("/account") || !proxy) {
-    return null;
-  }
-
-  return (
-    <div className="flex items-center px-[52px]">
-      <Link href="/account/proxies">
-        <SecondaryButton
-          size="small"
-          iconLeft={<MenuProxy className="w-4 h-4 text-textTertiary" />}
-          iconRight={<ArrowRight className="w-4 h-4 text-textTertiary" />}
-        >
-          Proxy
-        </SecondaryButton>
-      </Link>
-    </div>
-  );
-}
-
 const transferEnabledChains = [
   Chains.polkadot,
   Chains.kusama,
@@ -277,7 +244,7 @@ export function AccountHead({ width }) {
       >
         <div className="flex flex-col gap-2">
           <Account />
-          <ProxyButton />
+          <AccountPanelQuickAccess />
         </div>
         <div className="flex gap-[16px] items-center">
           <OnlyChains chains={transferEnabledChains}>
@@ -323,7 +290,6 @@ export function CommonAccountInfoPanel() {
       <AccountHead width={width} />
       <Divider />
       <AccountBalances />
-      <ExtensionUpdatePrompt />
       <AssetHubManagePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
