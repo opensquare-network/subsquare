@@ -1,6 +1,5 @@
 import UniversalProvider from "@walletconnect/universal-provider";
 import { getSdkError } from "@walletconnect/utils";
-// import dayjs from "dayjs";
 import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import {
   createContext,
@@ -13,6 +12,8 @@ import { useChain, useChainSettings } from "../chain";
 import { useConnectedAccountContext } from "../connectedAccount";
 import { useLocalStorage } from "react-use";
 import { CACHE_KEY } from "next-common/utils/constants";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 // FIXME: use company project id
 // `projectId` is configured on `https://cloud.walletconnect.com/`
@@ -54,6 +55,7 @@ function useWalletConnectChainId() {
 }
 
 export default function WalletConnectProvider({ children }) {
+  const dispatch = useDispatch();
   const chain = useChain();
   const { description } = useChainSettings();
   const { disconnect: disconnectAccount } = useConnectedAccountContext();
@@ -212,11 +214,16 @@ export default function WalletConnectProvider({ children }) {
         disconnectAccount();
       });
 
-      provider.client.on("session_expire", (event) => {
-        event;
-        // TODO: handle session expire
-        // https://docs.reown.com/walletkit/best-practices#session-request-expiry
-        // 7 days by default
+      // if session expired, clear session and disconnect account
+      // https://docs.reown.com/walletkit/best-practices#session-request-expiry
+      provider.client.on("session_expire", () => {
+        dispatch(
+          newErrorToast(
+            "Session expired, please connect to WalletConnect again",
+          ),
+        );
+        clearSession();
+        disconnectAccount();
       });
     }
 
@@ -225,7 +232,7 @@ export default function WalletConnectProvider({ children }) {
         provider.client.removeAllListeners();
       }
     };
-  }, [clearSession, disconnectAccount, provider]);
+  }, [clearSession, disconnectAccount, dispatch, provider]);
 
   // If web closed, mobile wallet do disconnect, next time open web, clear session and disconnect account
   useEffect(() => {
@@ -238,17 +245,6 @@ export default function WalletConnectProvider({ children }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [provider, clearSession, disconnectAccount]);
-
-  // TODO: check expiry, session2.expiry
-  // If a session has been connected to, check if it has not expired. If it has, disconnect from
-  // the session (user will need to manually connect to a new session in the UI)
-  // if (expiry) {
-  //   const nowUnix = dayjs().unix();
-  //   if (nowUnix > expiry) {
-  //     disconnectWcSession();
-  //     expired = true;
-  //   }
-  // }
 
   return (
     <WalletConnectContext.Provider
