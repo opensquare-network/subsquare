@@ -15,9 +15,7 @@ import { CACHE_KEY } from "next-common/utils/constants";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-// FIXME: use company project id
-// `projectId` is configured on `https://cloud.walletconnect.com/`
-const projectId = "16c4de5fd6fec3e0f3b6bdf2a67f2160";
+const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
 const relayUrl = "wss://relay.walletconnect.com";
 
