@@ -14,6 +14,7 @@ export const All = "all";
 export const DemotionPeriodAboutToExpire = "demotion_period_about_to_expire";
 export const DemotionPeriodExpired = "demotion_period_expired";
 export const OffboardClosing = "offboard_closing";
+export const OffboardExpired = "offboard_expired";
 export const Promotable = "promotable";
 
 const options = [
@@ -46,6 +47,10 @@ const candidateOptions = [
   {
     label: "Offboard closing",
     value: OffboardClosing,
+  },
+  {
+    label: "Offboard expired",
+    value: OffboardExpired,
   },
 ].map(({ label, value }) => ({
   label,

@@ -1,14 +1,14 @@
 import { useState } from "react";
-import TodoTag from "./todoTag";
-import ClickableText from "./clickableText";
-import { useDemotionExpiredMembers } from "../context/hooks/expired";
+import TodoTag from "../todoTag";
+import ClickableText from "../clickableText";
+import { useDemotionExpiredCandidateMembers } from "../../context/hooks/expired";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const BatchBumpPopup = dynamicPopup(() => import("./bumpAllPopup"));
+const CandidateBatchBumpPopup = dynamicPopup(() => import("./bumpAllPopup"));
 
-export default function DemotionExpirationTodo() {
+export default function CandidateDemotionExpirationTodo() {
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
-  const { expiredMembers } = useDemotionExpiredMembers();
+  const { expiredMembers } = useDemotionExpiredCandidateMembers();
   if (!expiredMembers?.length) {
     return null;
   }
@@ -22,18 +22,18 @@ export default function DemotionExpirationTodo() {
             className="text-theme500 cursor-pointer"
             target="_blank"
             rel="noreferrer"
-            href="https://collectives.subsquare.io/fellowship/members?period=demotion_period_expired"
+            href="https://collectives.subsquare.io/fellowship/members?tab=candidates&period=offboard_expired"
           >
             {expiredMembers.length} members
           </a>
-          &nbsp;can be demoted.&nbsp;
+          &nbsp;can be offboard.&nbsp;
           <ClickableText onClick={() => setShowBumpAllPopup(true)}>
-            Demote all
+            Offboard all
           </ClickableText>
         </div>
       </div>
       {showBumpAllPopup && (
-        <BatchBumpPopup onClose={() => setShowBumpAllPopup(false)} />
+        <CandidateBatchBumpPopup onClose={() => setShowBumpAllPopup(false)} />
       )}
     </>
   );

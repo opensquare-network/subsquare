@@ -1,9 +1,8 @@
-import { useContextMembers } from "../members";
 import { useContextCoreParams } from "../coreParams";
 import { useFilterExpiredMembers } from "next-common/components/fellowship/core/batchBump/useDemotionExpiredMembers";
+import { useCandidateCoreMembers, useEligibleCoreMembers } from "./members";
 
-export default function useDemotionExpiredMembers() {
-  const { members, isLoading: isMembersLoading } = useContextMembers();
+function useDemotionExpired({ members, isMembersLoading }) {
   const { params, isLoading: isParamsLoading } = useContextCoreParams();
 
   const expiredMembers = useFilterExpiredMembers({
@@ -17,4 +16,14 @@ export default function useDemotionExpiredMembers() {
     expiredMembers,
     isLoading: isMembersLoading || isParamsLoading,
   };
+}
+
+export function useDemotionExpiredMembers() {
+  const { members, isLoading: isMembersLoading } = useEligibleCoreMembers();
+  return useDemotionExpired({ members, isMembersLoading });
+}
+
+export function useDemotionExpiredCandidateMembers() {
+  const { members, isLoading: isMembersLoading } = useCandidateCoreMembers();
+  return useDemotionExpired({ members, isMembersLoading });
 }

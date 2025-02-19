@@ -1,15 +1,15 @@
 import { createContext, useContext } from "react";
-import { useEligibleFellowshipCoreMembers } from "next-common/components/fellowship/core/memberWarnings";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
 export const MembersContext = createContext({});
 
 export default function MembersProvider({ children }) {
-  const { members, loading: isLoading } = useEligibleFellowshipCoreMembers();
+  const { members, loading: isLoading } = useFellowshipCoreMembers();
 
   return (
     <MembersContext.Provider
       value={{
-        members: (members || []).sort((a, b) => b.rank - a.rank),
+        members,
         isLoading,
       }}
     >
