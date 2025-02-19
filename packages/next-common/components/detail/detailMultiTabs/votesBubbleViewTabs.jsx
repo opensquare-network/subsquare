@@ -1,5 +1,5 @@
-import Tab from "../../tab";
 import { createGlobalState } from "react-use";
+import CommonMultiTabs from "./common";
 
 const tabs = [
   {
@@ -18,12 +18,13 @@ export default function VotesBubbleViewTabs() {
   const [view, setView] = useVotesBubbleView();
 
   return (
-    <Tab
+    <CommonMultiTabs
       selectedTabId={view}
       setSelectedTabId={(id) => {
         setView(id);
       }}
       tabs={tabs}
+      label="Votes Bubble"
     />
   );
 }
