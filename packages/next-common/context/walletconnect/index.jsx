@@ -47,9 +47,7 @@ function useWalletConnectCaip() {
 
 function useWalletConnectChainId() {
   const caip = useWalletConnectCaip();
-  const chain = useChain();
-
-  return caip ? `${chain}:${caip}` : null;
+  return caip ? `polkadot:${caip}` : null;
 }
 
 export default function WalletConnectProvider({ children }) {
@@ -107,7 +105,7 @@ export default function WalletConnectProvider({ children }) {
 
     return await provider.client
       .connect({
-        requiredNamespaces: {
+        optionalNamespaces: {
           polkadot: {
             chains: [chainId],
             methods: ["polkadot_signTransaction", "polkadot_signMessage"],
