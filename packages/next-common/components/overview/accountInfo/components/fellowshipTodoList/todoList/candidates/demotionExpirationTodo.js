@@ -24,7 +24,7 @@ export default function CandidateDemotionExpirationTodo() {
             rel="noreferrer"
             href="https://collectives.subsquare.io/fellowship/members?tab=candidates&period=offboard_expired"
           >
-            {expiredMembers.length} members
+            {expiredMembers.length} candidates
           </a>
           &nbsp;can be offboard.&nbsp;
           <ClickableText onClick={() => setShowBumpAllPopup(true)}>
