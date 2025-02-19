@@ -13,12 +13,12 @@ export default function useContextMyMember() {
   );
 }
 
-export function useIsEligibleMember() {
+export function useIsMember() {
   const member = useContextMyMember();
   return member && member.rank > 0;
 }
 
-export function useIsCandidateMember() {
+export function useIsCandidate() {
   const member = useContextMyMember();
   return member && member.rank === 0;
 }
