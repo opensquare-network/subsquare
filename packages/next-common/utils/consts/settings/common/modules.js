@@ -42,6 +42,7 @@ const base = {
   proxy: {
     provider: "server",
   },
+  vesting: false,
 };
 
 /**

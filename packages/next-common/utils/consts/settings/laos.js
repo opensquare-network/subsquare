@@ -94,6 +94,7 @@ const laos = {
       bounties: true,
       tips: false,
     },
+    vesting: true,
   }),
   integrations: {
     statescan: true,

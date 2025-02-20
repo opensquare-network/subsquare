@@ -75,6 +75,7 @@ const polkadot = {
     },
     coretime: true,
     assethub: true,
+    vesting: true,
   }),
   integrations: {
     doTreasury: true,

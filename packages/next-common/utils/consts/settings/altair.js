@@ -66,6 +66,7 @@ const altair = {
       tips: false,
     },
     technicalCommittee: false,
+    vesting: true,
   }),
   integrations: {
     subscan: true,

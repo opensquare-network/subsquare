@@ -93,6 +93,7 @@ const litentry = {
       tips: false,
       spends: true,
     },
+    vesting: true,
   }),
   integrations: {
     statescan: true,

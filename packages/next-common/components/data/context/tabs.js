@@ -1,19 +1,39 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import getChainSettings from "next-common/utils/consts/settings";
+import { CHAIN } from "next-common/utils/constants";
 
 const TabsContext = createContext(null);
 
-const TABS = [
-  { tabId: "/proxies", tabTitle: "Proxy", pageTitle: "Proxy Explorer" },
-  { tabId: "/vesting", tabTitle: "Vesting", pageTitle: "Vesting Explorer" },
-];
+function generateTabs() {
+  const { modules } = getChainSettings(CHAIN);
+
+  let TABS = [];
+  if (modules?.proxy) {
+    TABS.push({
+      tabId: "/proxies",
+      tabTitle: "Proxy",
+      pageTitle: "Proxy Explorer",
+    });
+  }
+
+  if (modules?.vesting) {
+    TABS.push({
+      tabId: "/vesting",
+      tabTitle: "Vesting",
+      pageTitle: "Vesting Explorer",
+    });
+  }
+  return TABS;
+}
 
 export default function DataTabsProvider({ children }) {
   const router = useRouter();
   const pathName = router.pathname;
+  const tabs = generateTabs();
 
   const [activeTab, setActiveTab] = useState(pathName);
-  const title = TABS.find((tab) => tab.tabId === activeTab)?.pageTitle;
+  const title = tabs.find((tab) => tab.tabId === activeTab)?.pageTitle;
 
   useEffect(() => {
     if (pathName === activeTab) {
@@ -24,7 +44,7 @@ export default function DataTabsProvider({ children }) {
   }, [pathName, activeTab]);
 
   return (
-    <TabsContext.Provider value={{ tabs: TABS, activeTab, title }}>
+    <TabsContext.Provider value={{ tabs, activeTab, title }}>
       {children}
     </TabsContext.Provider>
   );
