@@ -21,7 +21,7 @@ export default function useQueryVestingOnChainData() {
         perBlock: value?.toJSON()?.[0]?.perBlock,
         locked: value?.toJSON()?.[0]?.locked,
       };
-    });
+    }).sort((a, b) => b.startingBlock - a.startingBlock);
 
     setData(results);
     setIsLoading(false);

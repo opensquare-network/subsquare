@@ -2,6 +2,12 @@ import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
+import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import Tooltip from "next-common/components/tooltip";
+import { useSelector } from "react-redux";
+import { isNil } from "lodash-es";
+import { useChain } from "next-common/context/chain";
+import Link from "next/link";
 
 function Balance({ value }) {
   const { decimals, symbol } = useChainSettings();
@@ -12,6 +18,24 @@ function Balance({ value }) {
       value={toPrecision(value, decimals)}
       symbol={symbol}
     />
+  );
+}
+
+function StartingBlock({ startingBlock }) {
+  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const content = startingBlock.toLocaleString();
+  const currentChain = useChain();
+
+  if (isNil(latestHeight) || startingBlock > latestHeight) {
+    return <Tooltip content="Not started">{content}</Tooltip>;
+  }
+
+  const domain = `https://${currentChain}.statescan.io/#`;
+
+  return (
+    <Link className="text-theme500" href={`${domain}/blocks/${startingBlock}`}>
+      {content}
+    </Link>
   );
 }
 
@@ -26,7 +50,9 @@ const startingBlockColumn = {
   key: "startingBlock",
   name: "Starting Block",
   style: { textAlign: "left", width: "120px", minWidth: "120px" },
-  render: ({ startingBlock }) => <div>{startingBlock}</div>,
+  render: ({ startingBlock }) => (
+    <StartingBlock startingBlock={startingBlock} />
+  ),
 };
 
 const perBlockColumn = {
