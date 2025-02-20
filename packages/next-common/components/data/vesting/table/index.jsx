@@ -8,7 +8,8 @@ import { MapDataList } from "next-common/components/dataList";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { useRouter } from "next/router";
 import useFilterAllVesting from "../hooks/useFilterAllVesting";
-import TableHeader from "next-common/components/data/common/TableHeader";
+import TableHeader from "next-common/components/data/common/tableHeader";
+import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 
 export default function VestingExplorerTable() {
   const { data, isLoading: loading } = useQueryVestingData();
@@ -43,18 +44,20 @@ export default function VestingExplorerTable() {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <TableHeader total={total} loading={isLoading} />
-      <SecondaryCard className="space-y-2">
-        <ScrollerX>
-          <MapDataList
-            columnsDef={columns}
-            data={dataList}
-            loading={isLoading}
-            noDataText="No data"
-          />
-        </ScrollerX>
-        {total > 0 && pageComponent}
-      </SecondaryCard>
+      <DropdownUrlFilterProvider defaultFilterValues={{ my_related: null }}>
+        <TableHeader total={total} loading={isLoading} />
+        <SecondaryCard className="space-y-2">
+          <ScrollerX>
+            <MapDataList
+              columnsDef={columns}
+              data={dataList}
+              loading={isLoading}
+              noDataText="No data"
+            />
+          </ScrollerX>
+          {total > 0 && pageComponent}
+        </SecondaryCard>
+      </DropdownUrlFilterProvider>
     </div>
   );
 }

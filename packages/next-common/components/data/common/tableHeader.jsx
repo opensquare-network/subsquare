@@ -1,6 +1,7 @@
 import useMyRelatedSwitch from "next-common/components/data/common/useMyRelatedSwitch";
 import useSearchComponent from "next-common/components/data/common/useSearchComponent";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { DropdownFilter } from "next-common/components/dropdownFilter";
 
 export default function TableHeader({ total, loading }) {
   const { component: MyRelatedSwitchComponent } = useMyRelatedSwitch();
@@ -15,7 +16,9 @@ export default function TableHeader({ total, loading }) {
             {!loading && total}
           </span>
         </span>
-        {MyRelatedSwitchComponent}
+        <DropdownFilter className="w-[320px]">
+          {MyRelatedSwitchComponent}
+        </DropdownFilter>
       </TitleContainer>
       {SearchBoxComponent}
     </div>

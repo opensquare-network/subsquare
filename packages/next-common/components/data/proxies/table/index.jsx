@@ -9,7 +9,8 @@ import { cn } from "next-common/utils";
 import useFilterAllProxies from "next-common/components/data/proxies/hooks/useFilterAllProxies";
 import { useRouter } from "next/router";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import TableHeader from "next-common/components/data/common/TableHeader";
+import TableHeader from "next-common/components/data/common/tableHeader";
+import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 
 export default function ProxyExplorerTable() {
   const router = useRouter();
@@ -45,28 +46,30 @@ export default function ProxyExplorerTable() {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <TableHeader total={total} loading={isLoading} />
-      <SecondaryCard className="space-y-2">
-        <TreeMapDataList
-          className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
-          columnsDef={desktopColumns}
-          data={dataList}
-          loading={isLoading}
-          treeKey="items"
-        />
+      <DropdownUrlFilterProvider defaultFilterValues={{ my_related: null }}>
+        <TableHeader total={total} loading={isLoading} />
+        <SecondaryCard className="space-y-2">
+          <TreeMapDataList
+            className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
+            columnsDef={desktopColumns}
+            data={dataList}
+            loading={isLoading}
+            treeKey="items"
+          />
 
-        <TreeMapDataList
-          className={cn(
-            "hidden",
-            navCollapsed ? "max-sm:block" : "max-md:block",
-          )}
-          columnsDef={mobileColumns}
-          data={dataList}
-          loading={isLoading}
-          treeKey="items"
-        />
-        {total > 0 && pageComponent}
-      </SecondaryCard>
+          <TreeMapDataList
+            className={cn(
+              "hidden",
+              navCollapsed ? "max-sm:block" : "max-md:block",
+            )}
+            columnsDef={mobileColumns}
+            data={dataList}
+            loading={isLoading}
+            treeKey="items"
+          />
+          {total > 0 && pageComponent}
+        </SecondaryCard>
+      </DropdownUrlFilterProvider>
     </div>
   );
 }
