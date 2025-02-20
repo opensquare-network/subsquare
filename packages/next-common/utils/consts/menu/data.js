@@ -5,6 +5,7 @@ const Data = {
   value: "data",
   pathname: "/proxies",
   icon: <MenuData />,
+  extraMatchNavMenuActivePathnames: ["/proxies", "/vesting"],
   children: [
     {
       name: "Proxies",
