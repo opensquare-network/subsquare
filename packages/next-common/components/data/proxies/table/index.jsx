@@ -1,5 +1,4 @@
 import TreeMapDataList from "next-common/components/dataList/treeList";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { desktopColumns, mobileColumns } from "./columns";
 import { useAllProxiesContext } from "next-common/components/data/context/allProxies";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
@@ -7,31 +6,10 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
-import useFilterAllProxies from "next-common/components/data/hooks/useFilterAllProxies";
-import useMyRelatedSwitch from "next-common/components/data/hooks/useMyRelatedSwitch";
+import useFilterAllProxies from "next-common/components/data/proxies/hooks/useFilterAllProxies";
 import { useRouter } from "next/router";
-import useAllProxiesSearch from "next-common/components/data/hooks/useAllProxiesSearch";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-
-function TableHeader({ total, loading }) {
-  const { component: MyRelatedSwitchComponent } = useMyRelatedSwitch();
-  const { component: SearchBoxComponent } = useAllProxiesSearch();
-
-  return (
-    <div>
-      <TitleContainer>
-        <span>
-          List
-          <span className="text-textTertiary text16Medium ml-1">
-            {!loading && total}
-          </span>
-        </span>
-        {MyRelatedSwitchComponent}
-      </TitleContainer>
-      {SearchBoxComponent}
-    </div>
-  );
-}
+import TableHeader from "next-common/components/data/common/TableHeader";
 
 export default function ProxyExplorerTable() {
   const router = useRouter();

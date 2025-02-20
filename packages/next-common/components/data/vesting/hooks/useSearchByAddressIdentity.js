@@ -2,11 +2,11 @@ import { useChainSettings } from "next-common/context/chain";
 import { useEffect, useMemo, useState } from "react";
 import { isAddress } from "@polkadot/util-crypto";
 import { useDebounce } from "react-use";
-import { fetchBatchIdentities } from "next-common/components/data/proxies/hooks/useSearchByAddressIdentity";
+import fetchBatchIdentities from "../../common/fetchBatchIdentities";
 
-export default function useSearchFellowshipMember(
+export default function useSearchByAddressIdentity(
   searchValue = "",
-  members = [],
+  allItems = [],
 ) {
   const [identityMapping, setIdentityMapping] = useState({});
   const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
@@ -21,35 +21,39 @@ export default function useSearchFellowshipMember(
   );
 
   useEffect(() => {
-    const allAccounts = new Set();
-
-    members?.forEach(({ address }) => {
-      allAccounts.add(address);
-    });
-
-    const accountList = Array.from(allAccounts);
+    const allAddresses = allItems?.map((item) => item.address);
 
     const fetchIdentities = async () => {
-      const identities = await fetchBatchIdentities(identityChain, accountList);
+      const identities = await fetchBatchIdentities(
+        identityChain,
+        allAddresses,
+      );
       setIdentityMapping(identities);
     };
 
     fetchIdentities();
-  }, [members, identityChain]);
+  }, [allItems, identityChain]);
 
   return useMemo(() => {
     const search = (debouncedSearchValue || "").toLowerCase();
 
     if (!search) {
-      return members;
+      return allItems;
     }
 
     if (isAddress(debouncedSearchValue)) {
-      return members?.filter(({ address }) => address.toLowerCase() === search);
+      return allItems?.filter(
+        ({ address }) =>
+          address.toLowerCase() === debouncedSearchValue.toLowerCase(),
+      );
     }
 
-    return members?.filter(({ address }) => {
-      return identityMapping[address]?.includes(search);
+    return allItems?.filter(({ address }) => {
+      const identityMatch = identityMapping[address]
+        ?.toLowerCase()
+        .includes(search);
+
+      return identityMatch;
     });
-  }, [debouncedSearchValue, members, identityMapping]);
+  }, [debouncedSearchValue, allItems, identityMapping]);
 }

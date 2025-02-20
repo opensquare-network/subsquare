@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useCall from "next-common/utils/hooks/useCall";
 import { useContextApi } from "next-common/context/api";
 
-export default function useQueryVestingOnChainData() {
+export default function useQueryVestingData() {
   const api = useContextApi();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState(null);
