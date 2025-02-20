@@ -6,28 +6,28 @@ import CoreParamsProvider from "next-common/components/overview/accountInfo/comp
 import CoreMembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreMembers";
 import SalaryStatsProvider from "./salaryStats";
 import MySalaryClaimantProvider from "./mySalaryClaimant";
-import CollectivesMemberProvider from "next-common/context/collectives/member";
+import CollectivesMembersProvider from "./collectivesMember";
 
 export default function FellowshipTodoProviders({ children }) {
   const referendaPallet = useReferendaFellowshipPallet();
 
   return (
-    <CoreMembersProvider>
-      <ActiveReferendaProvider pallet={referendaPallet}>
-        <CoreParamsProvider>
-          <CollectivesMemberProvider>
-            <SalaryStatsProvider>
-              <MySalaryClaimantProvider>
-                <MyEvidenceProvider>
-                  <MyMembershipReferendaProvider>
+    <ActiveReferendaProvider pallet={referendaPallet}>
+      <CollectivesMembersProvider>
+        <CoreMembersProvider>
+          <CoreParamsProvider>
+            <MyEvidenceProvider>
+              <MyMembershipReferendaProvider>
+                <SalaryStatsProvider>
+                  <MySalaryClaimantProvider>
                     {children}
-                  </MyMembershipReferendaProvider>
-                </MyEvidenceProvider>
-              </MySalaryClaimantProvider>
-            </SalaryStatsProvider>
-          </CollectivesMemberProvider>
-        </CoreParamsProvider>
-      </ActiveReferendaProvider>
-    </CoreMembersProvider>
+                  </MySalaryClaimantProvider>
+                </SalaryStatsProvider>
+              </MyMembershipReferendaProvider>
+            </MyEvidenceProvider>
+          </CoreParamsProvider>
+        </CoreMembersProvider>
+      </CollectivesMembersProvider>
+    </ActiveReferendaProvider>
   );
 }

@@ -8,14 +8,17 @@ import { useContextSalaryStats } from "../salaryStats";
 import { useContextCoreParams } from "../coreParams";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
-export function useContextMyCoreMember() {
+function useMyMemberData(members) {
   const realAddress = useRealAddress();
-  const { members } = useContextCoreMembers();
-
   return useMemo(
     () => (members || []).find((m) => isSameAddress(m.address, realAddress)),
     [realAddress, members],
   );
+}
+
+export function useContextMyCoreMember() {
+  const { members } = useContextCoreMembers();
+  return useMyMemberData(members);
 }
 
 export function useIsCoreMember() {
@@ -29,13 +32,8 @@ export function useIsCoreCandidate() {
 }
 
 export function useContextMyCollectivesMember() {
-  const realAddress = useRealAddress();
   const { members } = useContextCollectivesMembers();
-
-  return useMemo(
-    () => (members || []).find((m) => isSameAddress(m.address, realAddress)),
-    [realAddress, members],
-  );
+  return useMyMemberData(members);
 }
 
 export function useIsCollectivesMember() {
@@ -49,12 +47,12 @@ export function useIsImported() {
 }
 
 export function useIsSalaryRegistered() {
-  const status = useContextSalaryStats();
+  const salaryStats = useContextSalaryStats();
   const { claimant } = useContextMySalaryClaimant();
-  if (!status || !claimant) {
+  if (!salaryStats || !claimant) {
     return false;
   }
-  return claimant.lastActive >= status?.cycleIndex;
+  return claimant.lastActive >= salaryStats.cycleIndex;
 }
 
 export function useMySalary() {
