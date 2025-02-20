@@ -53,12 +53,11 @@ function useWalletConnectChainId() {
 export default function WalletConnectProvider({ children }) {
   const dispatch = useDispatch();
   const chain = useChain();
-  const { description } = useChainSettings();
+  const { description, wallets } = useChainSettings();
   const { disconnect: disconnectAccount } = useConnectedAccountContext();
 
   const caip = useWalletConnectCaip();
   const chainId = useWalletConnectChainId();
-
   const [provider, setProvider] = useState(defaultWalletConnect.provider);
 
   const [session, setSession] = useState(defaultWalletConnect.session);
@@ -95,8 +94,10 @@ export default function WalletConnectProvider({ children }) {
       setProvider(provider);
     }
 
-    init();
-  }, [chain, description]);
+    if (wallets?.walletconnect !== false) {
+      init();
+    }
+  }, [chain, description, wallets]);
 
   const connect = useCallback(async () => {
     if (!provider) {
