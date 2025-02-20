@@ -6,11 +6,11 @@ import {
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
 import { FELLOWSHIP_DEMOTION_WARNING_BLOCKS } from "next-common/utils/consts/fellowship/demotion";
-import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
+import { useContextMyCoreMember } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 
 export function useDemotionCommonData() {
   const { params: coreParams } = useContextCoreParams();
-  const member = useContextMyMember();
+  const member = useContextMyCoreMember();
   const { rank, status: { lastProof } = {} } = member || {};
   const demotionPeriod = getDemotionPeriod(rank, coreParams);
 

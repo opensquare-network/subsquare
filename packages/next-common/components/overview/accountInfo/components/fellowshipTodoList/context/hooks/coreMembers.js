@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { useContextMembers } from "../members";
+import { useContextCoreMembers } from "../coreMembers";
 import { partition } from "lodash-es";
 
 function useGroupingCoreMembers() {
-  const { members: allMembers, isLoading } = useContextMembers();
+  const { members: allMembers, isLoading } = useContextCoreMembers();
   const [members, candidates] = useMemo(
     () => partition(allMembers, (m) => m.rank > 0),
     [allMembers],

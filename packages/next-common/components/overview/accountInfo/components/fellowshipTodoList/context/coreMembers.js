@@ -1,23 +1,23 @@
 import { createContext, useContext } from "react";
 import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
-export const MembersContext = createContext({});
+export const CoreMembersContext = createContext({});
 
-export default function MembersProvider({ children }) {
+export default function CoreMembersProvider({ children }) {
   const { members, loading: isLoading } = useFellowshipCoreMembers();
 
   return (
-    <MembersContext.Provider
+    <CoreMembersContext.Provider
       value={{
         members,
         isLoading,
       }}
     >
       {children}
-    </MembersContext.Provider>
+    </CoreMembersContext.Provider>
   );
 }
 
-export function useContextMembers() {
-  return useContext(MembersContext);
+export function useContextCoreMembers() {
+  return useContext(CoreMembersContext);
 }
