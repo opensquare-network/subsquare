@@ -6,8 +6,6 @@ import chainOrScanHeightSelector from "next-common/store/reducers/selectors/heig
 import Tooltip from "next-common/components/tooltip";
 import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
-import { useChain } from "next-common/context/chain";
-import Link from "next/link";
 
 function Balance({ value }) {
   const { decimals, symbol } = useChainSettings();
@@ -24,19 +22,12 @@ function Balance({ value }) {
 function StartingBlock({ startingBlock }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const content = startingBlock.toLocaleString();
-  const currentChain = useChain();
 
   if (isNil(latestHeight) || startingBlock > latestHeight) {
     return <Tooltip content="Not started">{content}</Tooltip>;
   }
 
-  const domain = `https://${currentChain}.statescan.io/#`;
-
-  return (
-    <Link className="text-theme500" href={`${domain}/blocks/${startingBlock}`}>
-      {content}
-    </Link>
-  );
+  return <div className="text-theme500">{content}</div>;
 }
 
 const addressColumn = {
@@ -49,7 +40,7 @@ const addressColumn = {
 const startingBlockColumn = {
   key: "startingBlock",
   name: "Starting Block",
-  style: { textAlign: "left", width: "120px", minWidth: "120px" },
+  style: { textAlign: "right", width: "120px", minWidth: "120px" },
   render: ({ startingBlock }) => (
     <StartingBlock startingBlock={startingBlock} />
   ),
@@ -69,11 +60,23 @@ const lockedColumn = {
   render: ({ locked }) => <Balance value={locked} />,
 };
 
+const unlockableColumn = {
+  key: "unlockable",
+  name: "Unlockable",
+  style: { textAlign: "right", width: "160px", minWidth: "160px" },
+  render: ({ unlockableBalance, unlockablePercentage }) => (
+    <Tooltip content={<Balance value={unlockableBalance} />}>
+      {unlockablePercentage}%
+    </Tooltip>
+  ),
+};
+
 const columns = [
   addressColumn,
+  lockedColumn,
   startingBlockColumn,
   perBlockColumn,
-  lockedColumn,
+  unlockableColumn,
 ];
 
 export default columns;
