@@ -56,7 +56,9 @@ export default function useQueryVestingData() {
 
     setData(results);
     setIsLoading(false);
-  }, [value, loaded, latestHeight]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, loaded]);
 
   return {
     data,
