@@ -58,7 +58,7 @@ export function useIsSalaryRegistered() {
 export function useMySalary() {
   const collectivesMember = useContextMyCollectivesMember();
   const coreMember = useContextMyCoreMember();
-  const params = useContextCoreParams();
+  const { params } = useContextCoreParams();
 
   if (!collectivesMember || !coreMember) {
     return 0;
