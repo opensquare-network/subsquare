@@ -8,8 +8,8 @@ const useCachedResult = createGlobalState({});
 
 export default function useBlockPreimage(hash, blockHash) {
   const api = useBlockApi(blockHash);
-  const [cachedResult, setCachedResult] = useCachedResult();
-  const result = cachedResult[hash];
+  const [cachedResult, setCachedResult] = useCachedResult({});
+  const result = cachedResult[hash] || null;
   const [loading, setLoading] = useState(isNil(result));
 
   useEffect(() => {
@@ -20,8 +20,10 @@ export default function useBlockPreimage(hash, blockHash) {
     setLoading(true);
     queryPreimageAtBlock(api, hash)
       .then((raw) => {
-        const proposal = api.registry.createType("Proposal", raw);
-        setCachedResult((val) => ({ ...val, [hash]: proposal }));
+        if (raw) {
+          const proposal = api.registry.createType("Proposal", raw);
+          setCachedResult((val) => ({ ...val, [hash]: proposal }));
+        }
       })
       .finally(() => setLoading(false));
   }, [api, hash, setCachedResult]);
