@@ -114,10 +114,13 @@ export default function WalletConnectProvider({ children }) {
         },
       })
       .then((result) => {
-        result.approval().then((session) => {
-          setSession(session);
-          setCachedSession(session);
-        });
+        result
+          .approval()
+          .then((session) => {
+            setSession(session);
+            setCachedSession(session);
+          })
+          .catch(console.error);
 
         return result;
       });
