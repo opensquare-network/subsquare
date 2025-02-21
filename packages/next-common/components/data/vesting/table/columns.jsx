@@ -25,10 +25,14 @@ function StartingBlock({ startingBlock }) {
   const content = startingBlock.toLocaleString();
 
   if (isNil(latestHeight) || startingBlock > latestHeight) {
-    return <Tooltip content="Not started">{content}</Tooltip>;
+    return (
+      <Tooltip content="Not started">
+        <span className="text-textTertiary">{content}</span>
+      </Tooltip>
+    );
   }
 
-  return <div className="text-theme500">{content}</div>;
+  return <div className="text-textPrimary">{content}</div>;
 }
 
 const addressColumn = {
@@ -41,7 +45,7 @@ const addressColumn = {
 const startingBlockColumn = {
   key: "startingBlock",
   name: "Starting Block",
-  style: { textAlign: "right", width: "120px", minWidth: "120px" },
+  style: { textAlign: "right", width: "160px", minWidth: "160px" },
   render: ({ startingBlock }) => (
     <StartingBlock startingBlock={startingBlock} />
   ),

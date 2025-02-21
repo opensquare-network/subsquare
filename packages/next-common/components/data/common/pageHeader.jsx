@@ -7,7 +7,7 @@ import Link from "next/link";
 function PolkadotWikiLink({ href }) {
   return (
     <Tooltip content="Polkadot Wiki" className="ml-2 hover:cursor-pointer">
-      <Link href={href}>
+      <Link href={href} target="_blank">
         <ArrowExternalLinkWiki
           width={16}
           height={16}
