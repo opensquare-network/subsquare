@@ -4,19 +4,34 @@ import { useContextApi } from "next-common/context/api";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
+import BigNumber from "bignumber.js";
 
 function getUnlockableData(latestHeight, startingBlock, perBlock, locked) {
   if (isNil(latestHeight) || startingBlock > latestHeight) {
-    return { unlockableBalance: 0, unlockablePercentage: 0 };
+    return { unlockableBalance: "0", unlockablePercentage: "0.00" };
   }
 
-  const unlockableBalance = (latestHeight - startingBlock) * perBlock;
+  const bnLatestHeight = new BigNumber(latestHeight);
+  const bnStartingBlock = new BigNumber(startingBlock);
+  const bnPerBlock = new BigNumber(perBlock);
+  const bnLocked = new BigNumber(locked);
 
-  const unlockablePercentage = Number(
-    (unlockableBalance / (locked + unlockableBalance)) * 100,
-  ).toFixed(2);
+  const unlockableBalance = BigNumber.max(
+    0,
+    BigNumber.min(
+      bnLocked,
+      bnLatestHeight.minus(bnStartingBlock).multipliedBy(bnPerBlock),
+    ),
+  );
 
-  return { unlockableBalance, unlockablePercentage };
+  const unlockablePercentage = bnLocked.isZero()
+    ? "0.00"
+    : unlockableBalance.dividedBy(bnLocked).multipliedBy(100).toFixed(2);
+
+  return {
+    unlockableBalance: unlockableBalance.toString(),
+    unlockablePercentage,
+  };
 }
 
 export default function useQueryVestingData() {
@@ -34,6 +49,7 @@ export default function useQueryVestingData() {
 
     const results = (value || [])
       .map(([storageKey, value]) => {
+        const address = storageKey?.args[0]?.toString();
         const { startingBlock, perBlock, locked } = value?.toJSON()?.[0] || {};
         const { unlockableBalance, unlockablePercentage } = getUnlockableData(
           latestHeight,
@@ -43,7 +59,7 @@ export default function useQueryVestingData() {
         );
 
         return {
-          address: storageKey?.args[0]?.toString(),
+          address,
           startingBlock,
           perBlock,
           locked,
