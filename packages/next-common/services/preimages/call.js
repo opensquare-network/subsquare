@@ -21,7 +21,7 @@ async function getHexByRestful(hash) {
 }
 
 export default async function getCallByPreimageHash(api, hash) {
-  let hex = await getHexByRestful(api, hash);
+  let hex = await getHexByRestful(hash);
   if (!hex) {
     const call = await queryPreimageAtBlock(api, hash);
     hex = call.toHex();
