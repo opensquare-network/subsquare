@@ -4,13 +4,18 @@ import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/cor
 export const CollectivesMembersContext = createContext({});
 
 export default function CollectivesMembersProvider({ children }) {
-  const { members, loading: isLoading } = useFellowshipCollectiveMembers();
+  const {
+    members,
+    loading: isLoading,
+    fetch,
+  } = useFellowshipCollectiveMembers();
 
   return (
     <CollectivesMembersContext.Provider
       value={{
         members,
         isLoading,
+        fetch,
       }}
     >
       {children}

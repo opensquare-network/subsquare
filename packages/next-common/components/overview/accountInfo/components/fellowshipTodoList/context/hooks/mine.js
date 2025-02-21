@@ -1,7 +1,7 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
 import { isSameAddress } from "next-common/utils";
-import { useContextCoreMembers } from "../coreMembers";
+import { useContextCoreMembersWithRank } from "./coreMembers";
 import { useContextCollectivesMembers } from "../collectivesMember";
 import { useContextMySalaryClaimant } from "../mySalaryClaimant";
 import { useContextSalaryStats } from "../salaryStats";
@@ -17,7 +17,7 @@ function useMyMemberData(members) {
 }
 
 export function useContextMyCoreMember() {
-  const { members } = useContextCoreMembers();
+  const { members } = useContextCoreMembersWithRank();
   return useMyMemberData(members);
 }
 
