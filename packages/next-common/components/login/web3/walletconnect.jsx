@@ -115,7 +115,7 @@ export default function LoginWeb3WalletConnect() {
               Recommend Use
             </span>
             <WalletSubwallet className="inline-block" />
-            <span className="text14Bold">SubWallet</span>
+            <span className="text14Bold text-textPrimary">SubWallet</span>
           </div>
         </div>
       </div>
