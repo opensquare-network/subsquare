@@ -4,6 +4,7 @@ import CollectivesAccountInfo from "./components/collectiveAccountInfo";
 import CollectivesDemotionPrompt from "./components/collectivesDemotionPrompt";
 import { AccountHead, ProxyTip } from "./accountInfoPanel";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
+import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import CollectivesSalaryWarnings from "./components/collectivesSalaryWarnings";
 import useMemberData from "./hook/useMemberData";
 import MemberDataProvider from "./context/memberDataContext";
@@ -31,6 +32,7 @@ export default function CollectivesAccountInfoPanel() {
 
         <CollectivesAccountInfo />
 
+        <ExtensionUpdatePrompt />
         <AccountPanelScrollPrompt />
         <CollectivesDemotionPrompt />
         <CollectivesSalaryWarnings />
