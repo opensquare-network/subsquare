@@ -1,5 +1,5 @@
-import Tab from "next-common/components/tab";
 import { createGlobalState } from "react-use";
+import CommonMultiTabs from "./common";
 
 const timelineTabs = [
   {
@@ -22,12 +22,13 @@ export default function TimelineModeTabs() {
   const [timelineMode, setTimelineMode] = useTimelineMode();
 
   return (
-    <Tab
+    <CommonMultiTabs
+      tabs={timelineTabs}
       selectedTabId={timelineMode}
       setSelectedTabId={(id) => {
         setTimelineMode(id);
       }}
-      tabs={timelineTabs}
+      label="Timeline"
     />
   );
 }

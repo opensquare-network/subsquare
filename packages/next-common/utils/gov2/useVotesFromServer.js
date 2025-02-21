@@ -4,6 +4,9 @@ import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllVotes } from "next-common/store/reducers/referenda/votes";
 import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
+import { createGlobalState } from "react-use";
 
 function extractSplitVotes(vote = {}) {
   const { account, ayeBalance, ayeVotes, nayBalance, nayVotes } = vote;
@@ -82,6 +85,46 @@ function extractSplitAbstainVotes(vote = {}) {
   return result;
 }
 
+const useGlobalVotesLoadedMark = createGlobalState(false);
+
+export function useFetchVotesFromServer(referendumIndex) {
+  const votingFinishedHeight = useReferendumVotingFinishHeight();
+  const height = useSelector(latestHeightSelector);
+  const [loaded, setLoaded] = useGlobalVotesLoadedMark();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (votingFinishedHeight && loaded) {
+      return;
+    }
+
+    nextApi
+      .fetch(`gov2/referenda/${referendumIndex}/votes`)
+      .then(({ result: votes }) => {
+        const allVotes = (votes || []).reduce((result, vote) => {
+          if (vote.isSplit) {
+            return [...result, ...extractSplitVotes(vote)];
+          } else if (vote.isSplitAbstain) {
+            return [...result, ...extractSplitAbstainVotes(vote)];
+          }
+          return [...result, vote];
+        }, []);
+
+        const filteredVotes = allVotes.filter((vote) => BigInt(vote.votes) > 0);
+        dispatch(setAllVotes(sortVotes(filteredVotes)));
+
+        if (!loaded) {
+          setLoaded(true);
+        }
+      });
+
+    return () => {
+      setLoaded(false);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [votingFinishedHeight, height, referendumIndex, dispatch, setLoaded]);
+}
+
 export default function useVotesFromServer(referendumIndex) {
   const [votes, setVotes] = useState();
   const dispatch = useDispatch();
@@ -108,7 +151,7 @@ export default function useVotesFromServer(referendumIndex) {
       }
       return [...result, vote];
     }, []);
-
-    dispatch(setAllVotes(sortVotes(allVotes)));
+    const filteredVotes = allVotes.filter((vote) => BigInt(vote.votes) > 0);
+    dispatch(setAllVotes(sortVotes(filteredVotes)));
   }, [votes, reduxVotes, dispatch]);
 }

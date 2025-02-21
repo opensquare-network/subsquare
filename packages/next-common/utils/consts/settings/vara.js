@@ -100,6 +100,7 @@ const vara = {
     },
     council: false,
     technicalCommittee: false,
+    vesting: true,
   }),
   integrations: {
     subscan: true,

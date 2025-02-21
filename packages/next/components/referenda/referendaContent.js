@@ -9,9 +9,9 @@ import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
-import useFetchVotes from "next-common/utils/gov2/useFetchVotes";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import ReferendumCallProvider from "next-common/context/referenda/call";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
@@ -35,7 +35,13 @@ export function ReferendumDetailMultiTabs() {
 
   return (
     <DetailMultiTabs
-      call={proposal?.call && <Gov2ReferendumCall />}
+      call={
+        proposal?.call && (
+          <ReferendumCallProvider>
+            <Gov2ReferendumCall />
+          </ReferendumCallProvider>
+        )
+      }
       metadata={<Gov2ReferendumMetadata info={info} />}
       timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
       votesBubble={<Gov2ReferendaVotesBubble />}
@@ -47,8 +53,8 @@ export function ReferendumDetailMultiTabs() {
 export function ReferendumContent() {
   const dispatch = useDispatch();
   useSubReferendumInfo();
-  const onchainData = useOnchainData();
-  useFetchVotes(onchainData);
+  // const onchainData = useOnchainData();
+  // useFetchVotes(onchainData);
 
   useEffect(() => {
     return () => {

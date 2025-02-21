@@ -9,6 +9,9 @@ import { TreasuryProvider } from "next-common/context/treasury";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
+import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
+import TreasurySpendFilter from "next-common/components/treasury/spends/treasurySpendFilter";
+import { upperFirst } from "lodash-es";
 
 export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const { items, total, page, pageSize } = pagedSpends;
@@ -32,12 +35,18 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
           title={category}
           summary={treasurySummaryPanel}
         >
-          <PostList
-            category={category}
-            titleCount={total}
-            items={spends}
-            pagination={{ page, pageSize, total }}
-          />
+          <DropdownUrlFilterProvider
+            defaultFilterValues={{ status: "" }}
+            shallow={false}
+          >
+            <PostList
+              category={category}
+              titleCount={total}
+              items={spends}
+              pagination={{ page, pageSize, total }}
+              titleExtra={<TreasurySpendFilter />}
+            />
+          </DropdownUrlFilterProvider>
         </ListLayout>
       </PolkadotTreasuryProvider>
     </TreasuryProvider>
@@ -45,7 +54,9 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const spends = await fetchList("treasury/spends", context);
+  const { status } = context.query;
+  const query = status ? { status: upperFirst(status) } : {};
+  const spends = await fetchList("treasury/spends", context, query);
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {

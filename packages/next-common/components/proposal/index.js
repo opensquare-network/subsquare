@@ -13,7 +13,6 @@ import { InfoDocs } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
 import ProposalChildCalls from "./childCalls";
-import usePreImageCallFromProposal from "./preImage";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
@@ -222,8 +221,6 @@ export default function Proposal({
   title = "Call",
   call = {},
   preImageHash,
-  preImageHex,
-  indexer,
   shorten,
   proposalIndex,
   motionIndex,
@@ -231,9 +228,6 @@ export default function Proposal({
 }) {
   const chain = useChain();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
-
-  const { call: rawCall, isLoading: isLoadingRawCall } =
-    usePreImageCallFromProposal({ preImageHash, preImageHex, indexer });
 
   const tableViewData = convertProposalForTableView(call, chain);
   const jsonViewData = convertProposalForJsonView(call, chain);
@@ -290,8 +284,6 @@ export default function Proposal({
           tableViewData={dataTableData}
           jsonViewData={jsonViewData}
           hasTreeViewData={!!preImageHash}
-          rawCall={rawCall || call}
-          isLoadingRawCall={isLoadingRawCall}
           setShow={setDetailPopupVisible}
         />
       )}

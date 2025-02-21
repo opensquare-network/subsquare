@@ -2995,10 +2995,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.171.0":
-  version: 1.171.0
-  resolution: "@osn/icons@npm:1.171.0"
-  checksum: 829f76b31bb2852540a9ac04d1dcda2281927cff1247f3df70fac89d0de9bcfddd87ae37243193365e78cf5288366fc77d30a6424016604697f10135a44e3cc7
+"@osn/icons@npm:^1.172.0":
+  version: 1.172.0
+  resolution: "@osn/icons@npm:1.172.0"
+  checksum: d23011f9fdf7f8263ecd4caa3d145271a21dac1e2e39c3905f24162d51ce115f79aecf3d4cefdfc0c9bb9cac738d2e819ef5daf21626e3a4c94b70bc074721b5
   languageName: node
   linkType: hard
 
@@ -5835,7 +5835,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.171.0
+    "@osn/icons": ^1.172.0
     "@polkadot/util-crypto": 13.2.2
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
@@ -5871,7 +5871,7 @@ __metadata:
     "@next/bundle-analyzer": ^14.2.4
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.171.0
+    "@osn/icons": ^1.172.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -9556,8 +9556,8 @@ __metadata:
   linkType: hard
 
 "elliptic@npm:^6.5.7":
-  version: 6.6.0
-  resolution: "elliptic@npm:6.6.0"
+  version: 6.6.1
+  resolution: "elliptic@npm:6.6.1"
   dependencies:
     bn.js: ^4.11.9
     brorand: ^1.1.0
@@ -9566,7 +9566,7 @@ __metadata:
     inherits: ^2.0.4
     minimalistic-assert: ^1.0.1
     minimalistic-crypto-utils: ^1.0.1
-  checksum: e912349b883e694bfe65005214237a470c9a098a6ba36fd24396d0ab07feb399920c0738aeed1aed6cf5dca9c64fd479e212faed3a75c9d81453671ef0de5157
+  checksum: 27b14a52f68bbbc0720da259f712cb73e953f6d2047958cd02fb0d0ade2e83849dc39fb4af630889c67df8817e24237428cf59c4f4c07700f755b401149a7375
   languageName: node
   linkType: hard
 
@@ -13207,7 +13207,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.3.0
     "@mimirdev/apps-sdk": ^0.2.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.171.0
+    "@osn/icons": ^1.172.0
     "@osn/polkadot-react-identicon": ^1.0.10
     "@osn/previewer": ^2.0.0
     "@osn/provider-options": 1.1.0

@@ -14,7 +14,7 @@ function MyRelatedSwitch({ isOn, setIsOn }) {
   }
 
   return (
-    <div className="flex items-center gap-[8px]">
+    <div className="flex items-center justify-between gap-[8px]">
       <span className="text-textSecondary text12Medium whitespace-nowrap">
         My Related
       </span>

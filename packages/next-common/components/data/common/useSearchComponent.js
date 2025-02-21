@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { SystemSearch } from "@osn/icons/subsquare";
 import Input from "next-common/lib/input";
 
-export default function useAllProxiesSearch() {
+export default function useSearchComponent() {
   const router = useRouter();
 
   const querySearch = getRouterQuery(router, "search");

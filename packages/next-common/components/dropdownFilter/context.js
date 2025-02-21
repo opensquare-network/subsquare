@@ -76,7 +76,7 @@ function CommittedFilterStateProvider({ children }) {
   );
 }
 
-function UrlFilterStateProvider({ children }) {
+function UrlFilterStateProvider({ children, shallow }) {
   const router = useRouter();
   const defaultFilterValues = useDefaultFilterValues();
   const emptyFilterValues = useEmptyFilterValues();
@@ -111,10 +111,10 @@ function UrlFilterStateProvider({ children }) {
           },
         },
         undefined,
-        { shallow: true },
+        { shallow },
       );
     },
-    [router, otherFilters, emptyFilterValues, defaultFilterValues],
+    [router, otherFilters, emptyFilterValues, defaultFilterValues, shallow],
   );
 
   return (
@@ -147,6 +147,7 @@ function DropdownUrlFilterProvider({
   defaultFilterValues,
   emptyFilterValues,
   children,
+  shallow = true,
 }) {
   return (
     <DropdownDisplayStateProvider>
@@ -154,7 +155,7 @@ function DropdownUrlFilterProvider({
         defaultFilterValues={defaultFilterValues}
         emptyFilterValues={emptyFilterValues}
       >
-        <UrlFilterStateProvider>
+        <UrlFilterStateProvider shallow={shallow}>
           <StagedFilterStateProvider>{children}</StagedFilterStateProvider>
         </UrlFilterStateProvider>
       </DefaultFilterValuesProvider>

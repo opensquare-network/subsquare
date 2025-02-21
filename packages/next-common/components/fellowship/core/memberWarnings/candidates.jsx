@@ -6,7 +6,10 @@ import {
   useDemotionExpiringCount,
   useEvidencesStat,
 } from ".";
-import { OffboardClosing } from "next-common/components/pages/fellowship/usePeriodSelect";
+import {
+  OffboardClosing,
+  OffboardExpired,
+} from "next-common/components/pages/fellowship/usePeriodSelect";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import BatchBump from "../batchBump";
 
@@ -29,7 +32,7 @@ export default function MemberCandidatesWarnings({ className }) {
   const filterLinks = {
     evidenceOnly: `/${section}/members?tab=candidates&evidence_only=true`,
     [OffboardClosing]: `/${section}/members?tab=candidates&period=offboard_closing`,
-    offboardExpired: `/${section}/members?tab=candidates&period=offboard_expired`,
+    [OffboardExpired]: `/${section}/members?tab=candidates&period=offboard_expired`,
   };
 
   const promptItems = [
@@ -53,7 +56,7 @@ export default function MemberCandidatesWarnings({ className }) {
     ),
     expiredMembersCount && (
       <>
-        <PromptButton isCandidate filterLink={filterLinks.offboardExpired}>
+        <PromptButton isCandidate filterLink={filterLinks[OffboardExpired]}>
           {expiredMembersCount} candidates
         </PromptButton>
         can be offboarded.

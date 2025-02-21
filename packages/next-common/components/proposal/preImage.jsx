@@ -44,10 +44,14 @@ const parseGov2PreImageCall = (bytes, api) => {
 };
 
 const parseDemocracyPreImageCall = (bytes, api) => {
-  return api.registry.createType("Proposal", bytes);
+  try {
+    return api.registry.createType("Proposal", bytes);
+  } catch (e) {
+    return null;
+  }
 };
 
-function parsePreImageCall(proposalHex, api) {
+export function parsePreImageCall(proposalHex, api) {
   try {
     return api.registry.createType("Proposal", proposalHex);
   } catch (e) {
