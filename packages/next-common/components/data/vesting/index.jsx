@@ -4,7 +4,7 @@ import CommonHeader from "../common/header";
 export default function VestingExplorer() {
   return (
     <>
-      <CommonHeader />
+      <CommonHeader href="https://wiki.polkadot.network/docs/learn-transactions#vested-transfers" />
       <VestingExplorerTable />
     </>
   );

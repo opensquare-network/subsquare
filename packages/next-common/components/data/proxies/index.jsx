@@ -6,7 +6,7 @@ export default function ProxyExplorer() {
   return (
     <>
       <AllProxiesProvider>
-        <CommonHeader />
+        <CommonHeader href="https://wiki.polkadot.network/docs/learn-proxies" />
         <ProxyExplorerTable />
       </AllProxiesProvider>
     </>
