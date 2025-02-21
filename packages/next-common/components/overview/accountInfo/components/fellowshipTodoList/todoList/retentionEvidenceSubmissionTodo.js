@@ -1,9 +1,15 @@
 import { useState } from "react";
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
-import SubmitEvidencePopup from "next-common/components/collectives/core/actions/more/submitEvidenceItem/popup";
 import { useIsDemotionClosing } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/demotion";
 import { useContextMyEvidence } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myEvidence";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const SubmitEvidencePopup = dynamicPopup(() =>
+  import(
+    "next-common/components/collectives/core/actions/more/submitEvidenceItem/popup"
+  ),
+);
 
 export default function RetentionEvidenceSubmissionTodo() {
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);

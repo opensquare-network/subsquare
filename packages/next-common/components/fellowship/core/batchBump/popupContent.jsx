@@ -4,12 +4,10 @@ import { useContextApi } from "next-common/context/api";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import { rankColumn, memberColumn } from "./columns";
 import { MapSelectableList } from "next-common/components/dataList/selectableList";
-import fetchFellowshipCoreMembers2Times from "./fetchFellowshipCoreMembers2Times";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
-function PopupContent({ expiredMembers, isLoading }) {
+function PopupContent({ expiredMembers, isLoading, onInBlock, onFinalized }) {
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
   const defaultSelected = useMemo(
@@ -22,7 +20,6 @@ function PopupContent({ expiredMembers, isLoading }) {
   }, [defaultSelected]);
 
   const dispatch = useDispatch();
-  const { fetch } = useFellowshipCoreMembers();
 
   const getTxFunc = useCallback(() => {
     if (!api || selectedRows?.length === 0) {
@@ -36,19 +33,7 @@ function PopupContent({ expiredMembers, isLoading }) {
     return txs.length > 1 ? api.tx.utility.batch(txs) : txs[0];
   }, [api, pallet, selectedRows, expiredMembers]);
 
-  const updateMembers = useCallback(async () => {
-    try {
-      await fetchFellowshipCoreMembers2Times(fetch);
-    } catch (error) {
-      throw new Error("Failed to update fellowship core members:", error);
-    }
-  }, [fetch]);
-
-  const onInBlock = useCallback(async () => {
-    await updateMembers();
-  }, [updateMembers]);
-
-  const onFinalized = useCallback(async () => {
+  const _onFinalized = useCallback(async () => {
     const memberCount = selectedRows?.length || 0;
     if (memberCount === 0) {
       return;
@@ -62,8 +47,10 @@ function PopupContent({ expiredMembers, isLoading }) {
       ),
     );
 
-    await updateMembers();
-  }, [dispatch, updateMembers, selectedRows]);
+    if (onFinalized) {
+      await onFinalized();
+    }
+  }, [dispatch, selectedRows, onFinalized]);
 
   const columnsDef = [rankColumn, memberColumn];
 
@@ -83,7 +70,7 @@ function PopupContent({ expiredMembers, isLoading }) {
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}
-        onFinalized={onFinalized}
+        onFinalized={_onFinalized}
         disabled={selectedRows?.length === 0}
       />
     </>

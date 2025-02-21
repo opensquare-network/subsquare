@@ -1,11 +1,11 @@
 import { useContextMyMembershipReferenda } from "../context/myMembershipReferenda";
 import { useContextMyEvidence } from "../context/myEvidence";
-import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
+import { useContextMyCoreMember } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 
 export default function useHasMemberReferendaTodo() {
   const { evidence } = useContextMyEvidence();
   const { myMembershipReferenda } = useContextMyMembershipReferenda();
-  const member = useContextMyMember();
+  const member = useContextMyCoreMember();
   const { rank } = member;
 
   if (!evidence || evidence.isNone) {

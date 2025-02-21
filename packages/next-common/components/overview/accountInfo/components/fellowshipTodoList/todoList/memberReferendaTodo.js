@@ -4,8 +4,8 @@ import { useContextMyEvidence } from "../context/myEvidence";
 import { useContext, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useHasMemberReferendaTodo from "../hooks/useHasMemberReferendaTodo";
-import useContextMyMember from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
-import { MembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/members";
+import { useContextMyCoreMember } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
+import { CoreMembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const UserListPopup = dynamicPopup(() => import("./userListPopup"));
@@ -16,7 +16,7 @@ const EvidenceDetailPopup = dynamicPopup(() =>
 function EvidencePopup({ onClose }) {
   const address = useRealAddress();
   const { evidence } = useContextMyEvidence();
-  const member = useContextMyMember();
+  const member = useContextMyCoreMember();
   const { rank, status: { isActive } = {} } = member || {};
 
   const [wish, evidenceData] = evidence.toJSON();
@@ -34,7 +34,7 @@ function EvidencePopup({ onClose }) {
 }
 
 function EligibleMemberPopup({ onClose }) {
-  const { members, isLoading } = useContext(MembersContext);
+  const { members, isLoading } = useContext(CoreMembersContext);
 
   return (
     <UserListPopup users={members} isLoading={isLoading} onClose={onClose} />
