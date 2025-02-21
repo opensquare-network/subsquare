@@ -10,6 +10,7 @@ import {
 } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 import CandidateDemotionExpirationTodo from "./candidates/demotionExpirationTodo";
 import SalaryRegistrationTodo from "./salaryRegistrationTodo";
+import SalaryPayoutTodo from "./salaryPayoutTodo";
 
 function MakeSureLoaded({ children }) {
   const isLoading = useTodoListLoading();
@@ -69,6 +70,7 @@ export default function TodoList() {
       <CandidateDemotionExpirationTodo />
       <OnlyCollectivesMember>
         <SalaryRegistrationTodo />
+        <SalaryPayoutTodo />
       </OnlyCollectivesMember>
     </MakeSureLoaded>
   );

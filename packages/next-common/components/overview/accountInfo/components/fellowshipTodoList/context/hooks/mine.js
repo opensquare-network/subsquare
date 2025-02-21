@@ -55,6 +55,17 @@ export function useIsSalaryRegistered() {
   return claimant.lastActive >= salaryStats.cycleIndex;
 }
 
+export function useIsSalaryPaid() {
+  const salaryStats = useContextSalaryStats();
+  const { claimant } = useContextMySalaryClaimant();
+  if (!salaryStats || !claimant) {
+    return false;
+  }
+  return (
+    claimant.status?.attempted && claimant.lastActive >= salaryStats.cycleIndex
+  );
+}
+
 export function useMySalary() {
   const collectivesMember = useContextMyCollectivesMember();
   const coreMember = useContextMyCoreMember();
