@@ -67,6 +67,7 @@ const bifrostPolkadot = {
       bounties: false,
       tips: false,
     },
+    vesting: true,
   }),
   integrations: {
     subscan: {

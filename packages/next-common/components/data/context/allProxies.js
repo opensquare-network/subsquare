@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
-import useAllProxies from "../hooks/useAllProxies";
-import useTransformProxiesData from "next-common/components/data/hooks/useTransformProxiesData";
+import useAllProxies from "../proxies/hooks/useAllProxies";
+import useTransformProxiesData from "next-common/components/data/proxies/hooks/useTransformProxiesData";
 
 const AllProxiesContext = createContext(null);
 

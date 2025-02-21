@@ -72,6 +72,7 @@ const zeitgeist = {
       tips: false,
     },
     advisoryCommittee: true,
+    vesting: true,
   }),
   integrations: {
     subscan: true,

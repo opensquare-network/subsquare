@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
-import useMyRelatedSwitch from "./useMyRelatedSwitch";
+import useMyRelatedSwitch from "../../common/useMyRelatedSwitch";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useAllProxiesSearch from "./useAllProxiesSearch";
+import useSearchComponent from "../../common/useSearchComponent";
 import useSearchByAddressIdentity from "./useSearchByAddressIdentity";
 import { isSameAddress } from "next-common/utils";
 
@@ -10,7 +10,7 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
   const [isLoading, setIsLoading] = useState(true);
   const address = useRealAddress();
 
-  const { search = "" } = useAllProxiesSearch();
+  const { search = "" } = useSearchComponent();
   const searchedProxies = useSearchByAddressIdentity(search, proxies);
 
   const filteredProxies = useMemo(() => {
