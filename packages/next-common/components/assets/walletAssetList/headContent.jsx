@@ -6,6 +6,7 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import AccountLinks from "next-common/components/links/accountLinks";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import { ProxyTip } from "next-common/components/overview/accountInfo/accountInfoPanel.js";
+import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 import AddressUser from "next-common/components/user/addressUser";
 
 export default function HeadContent() {
@@ -41,6 +42,7 @@ export default function HeadContent() {
         </div>
       </div>
       <ProxyTip />
+      <ExtensionUpdatePrompt />
     </div>
   );
 }
