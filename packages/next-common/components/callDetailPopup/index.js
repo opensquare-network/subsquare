@@ -4,19 +4,23 @@ import CallTree from "next-common/components/proposal/callTree";
 import Tab from "next-common/components/tab";
 import InnerDataTable from "next-common/components/table/innerDataTable";
 import dynamic from "next/dynamic";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { useLocalStorage } from "react-use";
+import { ReferendumCallContext } from "next-common/context/referenda/call";
 
 const JsonView = dynamic(() => import("next-common/components/jsonView"), {
   ssr: false,
 });
 
+function CallTreeOnReferendum() {
+  const { call, isLoading } = useContext(ReferendumCallContext);
+  return <CallTree call={call} isLoading={isLoading} />;
+}
+
 export default function CallDetailPopup({
   tableViewData,
   jsonViewData,
   hasTreeViewData = true,
-  rawCall,
-  isLoadingRawCall,
   setShow,
 }) {
   const hasTableData = !!tableViewData;
@@ -55,9 +59,7 @@ export default function CallDetailPopup({
         selectedTabId={selectedTabId}
         setSelectedTabId={setSelectedTabId}
       />
-      {selectedTabId === "tree" && (
-        <CallTree call={rawCall} isLoading={isLoadingRawCall} />
-      )}
+      {selectedTabId === "tree" && <CallTreeOnReferendum />}
       {selectedTabId === "table" && (
         <ArgsWrapper className="wrapper text-textPrimary">
           <InnerDataTable data={tableViewData} />

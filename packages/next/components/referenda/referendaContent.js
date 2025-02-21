@@ -38,10 +38,7 @@ export function ReferendumDetailMultiTabs() {
     <DetailMultiTabs
       call={
         proposal?.call && (
-          <ReferendumCallProvider
-            hash={onchainData?.proposalHash}
-            blockHash={onchainData?.indexer?.blockHash}
-          >
+          <ReferendumCallProvider>
             <Gov2ReferendumCall />
           </ReferendumCallProvider>
         )
