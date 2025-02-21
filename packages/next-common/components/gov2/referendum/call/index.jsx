@@ -28,8 +28,6 @@ export default function Gov2ReferendumCall() {
             key={"call"}
             call={inlineCall?.call}
             preImageHash={preImageHash}
-            preImageHex={inlineCall?.hex}
-            indexer={onchainData?.indexer}
           />,
         ]
       : null,
