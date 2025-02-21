@@ -36,7 +36,7 @@ export default function SalaryRegistrationTodo() {
       <div className="flex items-center">
         <TodoTag>Salary</TodoTag>
         <div className="text-textPrimary text14Medium">
-          Your salary cycle is in the registration period,&nbsp;
+          The salary cycle is in the registration period,&nbsp;
           <ClickableText onClick={() => setShowRegisterPopup(true)}>
             Register now
           </ClickableText>
