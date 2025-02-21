@@ -1,12 +1,19 @@
 import { useMemo } from "react";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
-import { OffboardClosing, usePeriodSelectInDropdown } from "./usePeriodSelect";
+import {
+  OffboardClosing,
+  OffboardExpired,
+  usePeriodSelectInDropdown,
+} from "./usePeriodSelect";
 import { useEvidenceOnlySwitchInDropdown } from "./useEvidenceOnlySwitch";
 import useEvidenceOnlyFilterFn from "./useEvidenceOnlyFilterFn";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useSelector } from "react-redux";
 import useLatestHeightSnapshot from "next-common/components/fellowship/collective/hook/useLatestHeightSnapshot";
-import { filterDemotionAboutToExpireFn } from "next-common/components/pages/fellowship/periodFilters";
+import {
+  filterDemotionAboutToExpireFn,
+  filterDemotionExpiredFn,
+} from "next-common/components/pages/fellowship/periodFilters";
 import { DropdownFilter } from "next-common/components/dropdownFilter";
 import { useFellowshipCoreOnlySwitchInDropdown } from "next-common/components/fellowship/collective/hook/useFellowshipCoreOnlySwitch";
 
@@ -36,6 +43,12 @@ export default function useCandidatesFilter(members) {
         filteredMembers,
         params,
         blockTime,
+        latestHeight,
+      );
+    } else if (periodFilter === OffboardExpired) {
+      filteredMembers = filterDemotionExpiredFn(
+        filteredMembers,
+        params,
         latestHeight,
       );
     }
