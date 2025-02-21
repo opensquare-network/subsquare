@@ -55,6 +55,25 @@ export function useIsSalaryRegistered() {
   return claimant.lastActive >= salaryStats.cycleIndex;
 }
 
+export function useIsSalaryPayout() {
+  const salaryStats = useContextSalaryStats();
+  const { claimant } = useContextMySalaryClaimant();
+  if (!salaryStats || !claimant) {
+    return false;
+  }
+
+  const isRegisteredPayout =
+    claimant.status?.registered &&
+    claimant.lastActive === salaryStats.cycleIndex;
+
+  const isUnRegisteredPayout =
+    ((claimant.status && "nothing" in claimant.status) ||
+      claimant.status?.attempted) &&
+    claimant.lastActive < salaryStats.cycleIndex;
+
+  return isRegisteredPayout || isUnRegisteredPayout;
+}
+
 export function useMySalary() {
   const collectivesMember = useContextMyCollectivesMember();
   const coreMember = useContextMyCoreMember();
