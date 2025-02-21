@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useIsSalaryPayoutPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
-import { useIsImported, useIsSalaryPaid } from "../context/hooks/mine";
+import { useIsImported, useIsSalaryPayout } from "../context/hooks/mine";
 import { useContextSalaryStats } from "../context/salaryStats";
 import ClickableText from "./clickableText";
 import TodoTag from "./todoTag";
@@ -15,9 +15,9 @@ export default function SalaryPayoutTodo() {
   const salaryStats = useContextSalaryStats();
   const isInPayoutPeriod = useIsSalaryPayoutPeriod(salaryStats);
   const isImported = useIsImported();
-  const isSalaryPaid = useIsSalaryPaid();
+  const isSalaryPayout = useIsSalaryPayout();
 
-  if (!isInPayoutPeriod || !isImported || isSalaryPaid) {
+  if (!isInPayoutPeriod || !isImported || !isSalaryPayout) {
     return null;
   }
 
