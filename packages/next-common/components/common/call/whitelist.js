@@ -1,12 +1,22 @@
 import Copyable from "next-common/components/copyable";
-import React from "react";
 
-export default function extractWhitelistCallHash(call = {}) {
-  const { section, method, args = [] } = call;
-  if ("whitelist" !== section || "whitelistCall" !== method) {
+function WhitelistCallHashList({ callHashs }) {
+  return callHashs?.map((callHash, index) => (
+    <Copyable key={index}>{callHash}</Copyable>
+  ));
+}
+
+export default function extractWhitelistCallHash(callHashs = []) {
+  if (callHashs?.length === 0) {
     return [];
   }
 
-  const callHash = args[0].value;
-  return [["Whitelist Call Hash", <Copyable key="hash">{callHash}</Copyable>]];
+  return [
+    [
+      "Whitelist Call Hash",
+      <div className="flex flex-col" key="whitelistCallHash">
+        <WhitelistCallHashList callHashs={callHashs} />
+      </div>,
+    ],
+  ];
 }
