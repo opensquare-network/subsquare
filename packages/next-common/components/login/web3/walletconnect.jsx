@@ -1,4 +1,4 @@
-import { ArrowCircleLeft } from "@osn/icons/subsquare";
+import { ArrowCircleLeft, WalletSubwallet } from "@osn/icons/subsquare";
 import {
   WalletGroupTitle,
   WalletOptionsWrapper,
@@ -105,17 +105,18 @@ export default function LoginWeb3WalletConnect() {
       <WalletGroupTitle>Scan With Your Phone</WalletGroupTitle>
 
       <div className="flex justify-center">
-        <div
-          className="rounded-xl border border-neutral300 overflow-hidden"
-          style={{ width: SIZE + 16, height: SIZE + 16 }}
-        >
-          {qrCode ? (
-            <div className="p-4 bg-white">
-              <img src={qrCode} alt="qrcode" />
-            </div>
-          ) : (
-            <Skeleton />
-          )}
+        <div className="rounded-xl border border-neutral300 overflow-hidden p-4">
+          <div className="" style={{ width: SIZE, height: SIZE }}>
+            {qrCode ? <img src={qrCode} alt="qrcode" /> : <Skeleton />}
+          </div>
+
+          <div className="mt-4 inline-flex items-center gap-x-1">
+            <span className="text12Medium text-textTertiary">
+              Recommend Use
+            </span>
+            <WalletSubwallet className="inline-block" />
+            <span className="text14Bold">SubWallet</span>
+          </div>
         </div>
       </div>
     </div>
