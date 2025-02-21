@@ -15,7 +15,7 @@ import useReferendaIssuance from "next-common/hooks/referenda/useReferendaIssuan
 import CurvePopupOpener from "next-common/components/gov2/referendum/curvePopup";
 import VotesInfo from "./votesInfo";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
-import useVotesFromServer from "next-common/utils/gov2/useVotesFromServer";
+import { useFetchVotesFromServer } from "next-common/utils/gov2/useVotesFromServer";
 import useFetchReferendaTallyHistory from "next-common/utils/hooks/referenda/useFetchReferendaTallyHistory";
 import ConfirmationEstimation from "next-common/components/tally/confirmationEstimation";
 import {
@@ -31,7 +31,7 @@ const Title = styled(TitleContainer)`
 
 export default function Gov2Tally() {
   const { referendumIndex } = useOnchainData();
-  useVotesFromServer(referendumIndex);
+  useFetchVotesFromServer(referendumIndex);
   useSubActiveIssuance();
   const tally = useReferendumTally();
   const approvalThreshold = useApprovalThreshold();
