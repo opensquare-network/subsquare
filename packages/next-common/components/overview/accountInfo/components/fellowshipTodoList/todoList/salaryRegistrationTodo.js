@@ -7,8 +7,12 @@ import {
 import { useContextSalaryStats } from "../context/salaryStats";
 import ClickableText from "./clickableText";
 import TodoTag from "./todoTag";
-import FellowshipSalaryRegisterPopup from "next-common/components/fellowship/salary/actions/register/popup";
 import { useState } from "react";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/actions/register/popup"),
+);
 
 export default function SalaryRegistrationTodo() {
   const [showRegisterPopup, setShowRegisterPopup] = useState(false);
@@ -32,7 +36,7 @@ export default function SalaryRegistrationTodo() {
       <div className="flex items-center">
         <TodoTag>Salary</TodoTag>
         <div className="text-textPrimary text14Medium">
-          Fellowship salary is opening for registration,&nbsp;
+          Your salary cycle is in the registration period,&nbsp;
           <ClickableText onClick={() => setShowRegisterPopup(true)}>
             Register now
           </ClickableText>
