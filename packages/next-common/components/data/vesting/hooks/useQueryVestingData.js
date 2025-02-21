@@ -67,8 +67,19 @@ export default function useQueryVestingData() {
           unlockablePercentage,
         };
       })
-      .sort((a, b) => b.unlockablePercentage - a.unlockablePercentage)
-      .sort((a, b) => a.startingBlock - b.startingBlock);
+      .sort((a, b) => {
+        const percA = new BigNumber(a.unlockablePercentage || "0.00");
+        const percB = new BigNumber(b.unlockablePercentage || "0.00");
+        const percCompare = percB.comparedTo(percA);
+
+        if (percCompare !== 0) {
+          return percCompare;
+        }
+
+        const startA = new BigNumber(a.startingBlock || "0");
+        const startB = new BigNumber(b.startingBlock || "0");
+        return startA.comparedTo(startB);
+      });
 
     setData(results);
     setIsLoading(false);
