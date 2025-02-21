@@ -1,12 +1,12 @@
 import ProxyExplorerTable from "./table";
 import { AllProxiesProvider } from "next-common/components/data/context/allProxies";
-import CommonHeader from "../common/header";
+import PageHeader from "../common/pageHeader";
 
 export default function ProxyExplorer() {
   return (
     <>
       <AllProxiesProvider>
-        <CommonHeader href="https://wiki.polkadot.network/docs/learn-proxies" />
+        <PageHeader href="https://wiki.polkadot.network/docs/learn-proxies" />
         <ProxyExplorerTable />
       </AllProxiesProvider>
     </>

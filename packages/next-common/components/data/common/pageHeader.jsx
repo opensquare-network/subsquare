@@ -17,7 +17,7 @@ function PolkadotWikiLink({ href }) {
     </Tooltip>
   );
 }
-export default function CommonHeader({ href = "" }) {
+export default function PageHeader({ href = "" }) {
   const { title = "" } = useDataTabsContext();
 
   return (

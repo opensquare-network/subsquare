@@ -1,10 +1,10 @@
 import VestingExplorerTable from "./table";
-import CommonHeader from "../common/header";
+import PageHeader from "../common/pageHeader";
 
 export default function VestingExplorer() {
   return (
     <>
-      <CommonHeader href="https://wiki.polkadot.network/docs/learn-transactions#vested-transfers" />
+      <PageHeader href="https://wiki.polkadot.network/docs/learn-transactions#vested-transfers" />
       <VestingExplorerTable />
     </>
   );
