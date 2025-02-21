@@ -3,12 +3,12 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useContextApi } from "next-common/context/api";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
-import { isNil } from "lodash-es";
+import { isNil, isInteger } from "lodash-es";
 import BigNumber from "bignumber.js";
 
 function getUnlockableData(latestHeight, startingBlock, perBlock, locked) {
   if (isNil(latestHeight) || startingBlock > latestHeight) {
-    return { unlockableBalance: "0", unlockablePercentage: "0.00" };
+    return { unlockableBalance: "0", unlockablePercentage: "0" };
   }
 
   const bnLatestHeight = new BigNumber(latestHeight);
@@ -24,9 +24,13 @@ function getUnlockableData(latestHeight, startingBlock, perBlock, locked) {
     ),
   );
 
-  const unlockablePercentage = bnLocked.isZero()
-    ? "0.00"
-    : unlockableBalance.dividedBy(bnLocked).multipliedBy(100).toFixed(2);
+  const rawPercentage = bnLocked.isZero()
+    ? new BigNumber(0)
+    : unlockableBalance.dividedBy(bnLocked).multipliedBy(100);
+
+  const unlockablePercentage = isInteger(rawPercentage.toNumber())
+    ? rawPercentage.toFixed(0)
+    : rawPercentage.toFixed(2);
 
   return {
     unlockableBalance: unlockableBalance.toString(),
@@ -68,8 +72,8 @@ export default function useQueryVestingData() {
         };
       })
       .sort((a, b) => {
-        const percA = new BigNumber(a.unlockablePercentage || "0.00");
-        const percB = new BigNumber(b.unlockablePercentage || "0.00");
+        const percA = new BigNumber(a.unlockablePercentage || "0");
+        const percB = new BigNumber(b.unlockablePercentage || "0");
         const percCompare = percB.comparedTo(percA);
 
         if (percCompare !== 0) {

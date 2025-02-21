@@ -7,7 +7,7 @@ import Tooltip from "next-common/components/tooltip";
 import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
 
-function Balance({ value }) {
+function Balance({ value, className = "" }) {
   const { decimals, symbol } = useChainSettings();
 
   return (
@@ -15,6 +15,7 @@ function Balance({ value }) {
       key="value"
       value={toPrecision(value, decimals)}
       symbol={symbol}
+      className={className}
     />
   );
 }
@@ -60,7 +61,7 @@ const lockedColumn = {
   render: ({ locked }) => <Balance value={locked} />,
 };
 
-const unlockableColumn = {
+const desktopUnlockableColumn = {
   key: "unlockable",
   name: "Unlockable",
   style: { textAlign: "right", width: "160px", minWidth: "160px" },
@@ -71,12 +72,35 @@ const unlockableColumn = {
   ),
 };
 
-const columns = [
+const mobileUnlockableColumn = {
+  key: "unlockable",
+  name: "Unlockable",
+  style: { textAlign: "right", width: "160px", minWidth: "160px" },
+  render: ({ unlockableBalance, unlockablePercentage }) => (
+    <div className="flex flex-wrap flex-col items-end">
+      <p>{unlockablePercentage}%</p>
+      {Number(unlockablePercentage) !== 0 && (
+        <Balance
+          value={unlockableBalance}
+          className="text12Medium text-textTertiary"
+        />
+      )}
+    </div>
+  ),
+};
+
+export const desktopColumns = [
   addressColumn,
   lockedColumn,
   startingBlockColumn,
   perBlockColumn,
-  unlockableColumn,
+  desktopUnlockableColumn,
 ];
 
-export default columns;
+export const mobileColumns = [
+  addressColumn,
+  lockedColumn,
+  startingBlockColumn,
+  perBlockColumn,
+  mobileUnlockableColumn,
+];
