@@ -67,10 +67,11 @@ export function useIsSalaryPayout() {
     claimant.lastActive === salaryStats.cycleIndex;
 
   const isUnRegisteredPayout =
-    (!claimant.status || claimant.status?.attempted) &&
+    ((claimant.status && "nothing" in claimant.status) ||
+      claimant.status?.attempted) &&
     claimant.lastActive < salaryStats.cycleIndex;
 
-  return isRegisteredPayout && isUnRegisteredPayout;
+  return isRegisteredPayout || isUnRegisteredPayout;
 }
 
 export function useMySalary() {
