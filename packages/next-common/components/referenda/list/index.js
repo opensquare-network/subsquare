@@ -1,43 +1,18 @@
-import { flatten } from "lodash-es";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
 import businessCategory from "next-common/utils/consts/business/category";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
 import { usePageProps } from "next-common/context/page";
 import { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import {
-  isLoadingReferendaVotingSelector,
-  myReferendaVotingSelector,
-} from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 import { createStateContext, useAsync } from "react-use";
 import ReferendaListFilter from "./filter";
-
-const [useUnVotedOnlyState, UnVotedOnlyStateProvider] =
-  createStateContext(false);
-
-export { useUnVotedOnlyState, UnVotedOnlyStateProvider };
+import useMyVotedReferenda from "next-common/hooks/referenda/useMyVotedReferenda";
+import { UnVotedOnlyProvider, useUnVotedOnlyContext } from "./unVotedContext";
 
 const [useIsTreasuryState, IsTreasuryStateProvider] = createStateContext(false);
 export { useIsTreasuryState };
-
-function useMyVotedReferenda() {
-  const voting = useSelector(myReferendaVotingSelector);
-  const isLoading = useSelector(isLoadingReferendaVotingSelector);
-  const myVotedReferenda = useMemo(() => {
-    return flatten(
-      voting.map((item) =>
-        (item.votes || []).map((vote) => vote.referendumIndex),
-      ),
-    );
-  }, [voting]);
-  return {
-    myVotedReferenda,
-    isLoading,
-  };
-}
 
 function useUnVotedActiveReferenda() {
   const { activeReferenda, isLoadingActiveReferenda } =
@@ -195,12 +170,8 @@ export function FullReferendaList() {
 }
 
 function ReferendaListImpl() {
-  const [isShowUnVotedOnly] = useUnVotedOnlyState();
-  return isShowUnVotedOnly ? (
-    <UnVotedOnlyReferendaList />
-  ) : (
-    <FullReferendaList />
-  );
+  const { unVotedOnly } = useUnVotedOnlyContext();
+  return unVotedOnly ? <UnVotedOnlyReferendaList /> : <FullReferendaList />;
 }
 
 export function ReferendaList() {
@@ -208,9 +179,9 @@ export function ReferendaList() {
 
   return (
     <IsTreasuryStateProvider initialValue={isTreasury === "true"}>
-      <UnVotedOnlyStateProvider>
+      <UnVotedOnlyProvider>
         <ReferendaListImpl />
-      </UnVotedOnlyStateProvider>
+      </UnVotedOnlyProvider>
     </IsTreasuryStateProvider>
   );
 }
