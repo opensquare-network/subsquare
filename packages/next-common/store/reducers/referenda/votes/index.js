@@ -40,13 +40,16 @@ export const fetchReferendaVotes =
   (api, trackId, referendumIndex) => async (dispatch) => {
     dispatch(setLoading(true));
 
-    const sortedVotes = await fetchAndNormalizeVotes(
-      api,
-      trackId,
-      referendumIndex,
-    );
-    dispatch(setAllVotes(sortedVotes));
-    dispatch(setLoading(false));
+    try {
+      const sortedVotes = await fetchAndNormalizeVotes(
+        api,
+        trackId,
+        referendumIndex,
+      );
+      dispatch(setAllVotes(sortedVotes));
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
 export default referendaVotesSlice.reducer;

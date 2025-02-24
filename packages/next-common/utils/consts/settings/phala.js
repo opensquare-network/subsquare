@@ -94,6 +94,7 @@ const phala = {
     treasury: {
       childBounties: true,
     },
+    vesting: true,
   }),
   integrations: {
     subscan: true,

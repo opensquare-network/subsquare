@@ -2,7 +2,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { useEffect, useMemo, useState } from "react";
 import { isAddress } from "@polkadot/util-crypto";
 import { useDebounce } from "react-use";
-import { fetchBatchIdentities } from "next-common/components/data/hooks/useSearchByAddressIdentity";
+import fetchBatchIdentities from "next-common/components/data/common/fetchBatchIdentities";
 
 export default function useSearchFellowshipMember(
   searchValue = "",

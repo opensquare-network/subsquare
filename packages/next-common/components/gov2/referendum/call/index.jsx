@@ -15,6 +15,12 @@ export default function Gov2ReferendumCall() {
   const inlineCall = onchainData?.inlineCall || {};
   const preImageHash = onchainData?.proposalHash;
 
+  const whitelistDispatchedHashes =
+    onchainData?.whitelistDispatchedHashes || [];
+  const whitelistHashes = onchainData?.whitelistedHashes || [];
+  const whitelistCallHashes =
+    whitelistDispatchedHashes?.concat(whitelistHashes);
+
   const data = [
     onchainData?.proposalHash
       ? [
@@ -28,8 +34,6 @@ export default function Gov2ReferendumCall() {
             key={"call"}
             call={inlineCall?.call}
             preImageHash={preImageHash}
-            preImageHex={inlineCall?.hex}
-            indexer={onchainData?.indexer}
           />,
         ]
       : null,
@@ -52,7 +56,7 @@ export default function Gov2ReferendumCall() {
   data.push(
     ...[
       ...extractRemarkMetaFields(proposal?.call || inlineCall?.call),
-      ...extractWhitelistCallHash(proposal?.call),
+      ...extractWhitelistCallHash(whitelistCallHashes),
       ...extractFellowshipPromote(proposal?.call || inlineCall?.call),
       ...extractFellowshipApprove(proposal?.call || inlineCall?.call),
     ],

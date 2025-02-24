@@ -47,7 +47,7 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.preimages && preImages,
-    modules?.proxy && Data,
+    (modules?.proxy || modules?.vesting) && Data,
     ...(integrationsMenu.length
       ? [{ type: "divider" }, ...integrationsMenu]
       : []),

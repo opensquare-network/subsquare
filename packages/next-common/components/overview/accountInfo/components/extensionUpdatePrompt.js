@@ -1,5 +1,6 @@
 import { useContextApi } from "next-common/context/api";
-import CommonNotification from "./common";
+import Prompt from "./prompt";
+import { PromptTypes } from "next-common/components/scrollPrompt";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { useInjectedWeb3Extension } from "next-common/hooks/connect/useInjectedWeb3Extension";
 import { CACHE_KEY } from "next-common/utils/constants";
@@ -57,7 +58,7 @@ function checkPropertiesChange(api, extension) {
   return false;
 }
 
-export default function ExtensionUpdateNotification() {
+export default function ExtensionUpdatePrompt() {
   const api = useContextApi();
   const connectedAccount = useConnectedAccount();
   const [isNeedUpdate, setIsNeedUpdate] = useState();
@@ -126,9 +127,9 @@ export default function ExtensionUpdateNotification() {
   }
 
   return (
-    <CommonNotification
+    <Prompt
       cacheKey={CACHE_KEY.extensionUpdateMetadata}
-      className={"bg-orange500"}
+      type={PromptTypes.WARNING}
     >
       The extension can be updated with the latest chain metadata and
       properties.&nbsp;
@@ -139,6 +140,6 @@ export default function ExtensionUpdateNotification() {
       >
         Update
       </span>
-    </CommonNotification>
+    </Prompt>
   );
 }

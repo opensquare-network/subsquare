@@ -3,6 +3,7 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import CollectivesAccountInfo from "./components/collectiveAccountInfo";
 import { AccountHead, ProxyTip } from "./accountInfoPanel";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
+import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import CollectivesSalaryWarnings from "./components/collectivesSalaryWarnings";
 import useMemberData from "./hook/useMemberData";
 import MemberDataProvider from "./context/memberDataContext";
@@ -32,6 +33,7 @@ export default function CollectivesAccountInfoPanel() {
         <Divider />
         <FellowshipTodoList />
 
+        <ExtensionUpdatePrompt />
         <AccountPanelScrollPrompt />
         <CollectivesSalaryWarnings />
       </NeutralPanel>

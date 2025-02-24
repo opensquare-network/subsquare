@@ -86,6 +86,7 @@ const astar = {
     communityCouncil: true,
     communityTreasury: true,
     technicalCommittee: true,
+    vesting: true,
   }),
   integrations: {
     subscan: true,
