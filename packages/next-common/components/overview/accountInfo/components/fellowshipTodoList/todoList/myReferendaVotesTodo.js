@@ -8,14 +8,18 @@ import {
   useMyVotedCollectiveReferenda,
 } from "../context/hooks/votes";
 
-export default function MyReferendaVotesTodo() {
-  const router = useRouter();
+function useMyUnVotedReferenda() {
   const { myVotedReferenda } = useMyVotedCollectiveReferenda();
   const { referendaICanVote } = useCollectiveActiveReferendaICanVote();
-  const myUnVotedReferenda = useMemo(
+  return useMemo(
     () => difference(referendaICanVote, myVotedReferenda),
     [referendaICanVote, myVotedReferenda],
   );
+}
+
+export default function MyReferendaVotesTodo() {
+  const router = useRouter();
+  const myUnVotedReferenda = useMyUnVotedReferenda();
 
   if (!myUnVotedReferenda?.length) {
     return null;
