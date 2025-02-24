@@ -26,7 +26,7 @@ export default function SalaryPayoutTodo() {
       <div className="flex items-center">
         <TodoTag>Salary</TodoTag>
         <div className="text-textPrimary text14Medium">
-          The salary cycle is in the payout period,&nbsp;
+          The salary cycle is in the payout period.&nbsp;
           <ClickableText onClick={() => setShowPayoutPopup(true)}>
             Claim now
           </ClickableText>
