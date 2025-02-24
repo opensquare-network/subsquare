@@ -1,10 +1,7 @@
-import { useRouter } from "next/router";
-import ClickableText from "./clickableText";
 import TodoTag from "./todoTag";
 import { useMyUnVotedReferenda } from "../context/hooks/votes";
 
 export default function MyReferendaVotesTodo() {
-  const router = useRouter();
   const myUnVotedReferenda = useMyUnVotedReferenda();
 
   if (!myUnVotedReferenda?.length) {
@@ -16,9 +13,14 @@ export default function MyReferendaVotesTodo() {
       <TodoTag>Referenda</TodoTag>
       <div className="text-textPrimary text14Medium">
         You have&nbsp;
-        <ClickableText onClick={() => router.push("/fellowship?unvoted=true")}>
+        <a
+          className="text-theme500 cursor-pointer"
+          target="_blank"
+          rel="noreferrer"
+          href="https://collectives.subsquare.io/fellowship?unvoted=true"
+        >
           {myUnVotedReferenda.length} unvoted
-        </ClickableText>
+        </a>
         &nbsp;referenda.
       </div>
     </div>
