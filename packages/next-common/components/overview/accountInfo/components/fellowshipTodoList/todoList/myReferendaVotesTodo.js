@@ -1,21 +1,7 @@
-import { useMemo } from "react";
-import { difference } from "lodash-es";
 import { useRouter } from "next/router";
 import ClickableText from "./clickableText";
 import TodoTag from "./todoTag";
-import {
-  useCollectiveActiveReferendaICanVote,
-  useMyVotedCollectiveReferenda,
-} from "../context/hooks/votes";
-
-function useMyUnVotedReferenda() {
-  const { myVotedReferenda } = useMyVotedCollectiveReferenda();
-  const { referendaICanVote } = useCollectiveActiveReferendaICanVote();
-  return useMemo(
-    () => difference(referendaICanVote, myVotedReferenda),
-    [referendaICanVote, myVotedReferenda],
-  );
-}
+import { useMyUnVotedReferenda } from "../context/hooks/votes";
 
 export default function MyReferendaVotesTodo() {
   const router = useRouter();

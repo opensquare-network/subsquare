@@ -5,6 +5,7 @@ import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { useContextMyCollectivesMember } from "./mine";
 import { useContextCollectivesMembers } from "../collectivesMember";
 import { useFilterReferendaByRank } from "next-common/hooks/referenda/useMyUnVotedCollectiveReferenda";
+import { difference } from "lodash-es";
 
 export function useMyVotedCollectiveReferenda() {
   const { votes: allVotes, isLoading } = useContextCollectivesReferendaVotes();
@@ -44,4 +45,13 @@ export function useCollectiveActiveReferendaICanVote() {
     referendaICanVote,
     isLoading,
   };
+}
+
+export function useMyUnVotedReferenda() {
+  const { myVotedReferenda } = useMyVotedCollectiveReferenda();
+  const { referendaICanVote } = useCollectiveActiveReferendaICanVote();
+  return useMemo(
+    () => difference(referendaICanVote, myVotedReferenda),
+    [referendaICanVote, myVotedReferenda],
+  );
 }
