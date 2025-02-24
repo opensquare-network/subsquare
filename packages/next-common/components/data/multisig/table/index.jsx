@@ -31,8 +31,12 @@ export default function MultisigExplorerTable() {
     setPage,
   } = usePaginationComponent(totalCount, defaultPageSize);
 
+  const searchAccount = useMemo(() => {
+    return isMyRelated ? userAddress : search;
+  }, [isMyRelated]);
+
   const { data, loading: isLoading } = useQueryAllMultisigData(
-    isMyRelated ? userAddress : search,
+    searchAccount,
     page,
     defaultPageSize,
   );
@@ -41,20 +45,21 @@ export default function MultisigExplorerTable() {
     if (data?.offset === 0 && data?.multisigs.length === 0) {
       return 0;
     }
-
     return data?.total || 0;
   }, [data]);
 
   useEffect(() => {
+    setLoading(true);
+  }, [page]);
+
+  useEffect(() => {
     if (isLoading) {
-      setLoading(true);
       return;
     }
-
-    setTotalCount(data?.total);
-    setDataList(data?.multisigs);
+    setTotalCount(total);
+    setDataList(data?.multisigs || []);
     setLoading(false);
-  }, [data, isLoading]);
+  }, [data, isLoading, total]);
 
   useEffect(() => {
     if (router.query) {
