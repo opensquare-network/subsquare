@@ -27,7 +27,7 @@ function generateTabs() {
 
   if (hasMultisig) {
     TABS.push({
-      tabId: "/multisig",
+      tabId: "/multisigs",
       tabTitle: "Multisig",
       pageTitle: "Multisig Explorer",
     });
