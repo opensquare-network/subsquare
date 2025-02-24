@@ -8,7 +8,7 @@ import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 import { createStateContext, useAsync } from "react-use";
 import ReferendaListFilter from "./filter";
-import useMyVotedReferenda from "next-common/hooks/referenda/useMyVotedReferenda";
+import useMyReferendaVotes from "next-common/hooks/referenda/useMyReferendaVotes";
 import { UnVotedOnlyProvider, useUnVotedOnlyContext } from "./unVotedContext";
 
 const [useIsTreasuryState, IsTreasuryStateProvider] = createStateContext(false);
@@ -19,7 +19,7 @@ function useUnVotedActiveReferenda() {
     useActiveReferendaContext();
 
   const { myVotedReferenda, isLoading: isLoadingMyVotedReferenda } =
-    useMyVotedReferenda();
+    useMyReferendaVotes();
 
   const isLoading = isLoadingActiveReferenda || isLoadingMyVotedReferenda;
 

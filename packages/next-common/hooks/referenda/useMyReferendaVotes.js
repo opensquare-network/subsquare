@@ -6,7 +6,7 @@ import {
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
-export default function useMyVotedReferenda() {
+export default function useMyReferendaVotes() {
   const voting = useSelector(myReferendaVotingSelector);
   const isLoading = useSelector(isLoadingReferendaVotingSelector);
   const myVotedReferenda = useMemo(() => {

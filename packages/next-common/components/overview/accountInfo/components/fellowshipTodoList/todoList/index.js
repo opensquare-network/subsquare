@@ -11,7 +11,7 @@ import {
 import CandidateDemotionExpirationTodo from "./candidates/demotionExpirationTodo";
 import SalaryRegistrationTodo from "./salaryRegistrationTodo";
 import SalaryPayoutTodo from "./salaryPayoutTodo";
-import MyUnVotedReferendaTodo from "./myUnVotedReferendaTodo";
+import MyReferendaVotesTodo from "./myReferendaVotesTodo";
 
 function MakeSureLoaded({ children }) {
   const isLoading = useTodoListLoading();
@@ -72,7 +72,7 @@ export default function TodoList() {
       <OnlyCollectivesMember>
         <SalaryRegistrationTodo />
         <SalaryPayoutTodo />
-        <MyUnVotedReferendaTodo />
+        <MyReferendaVotesTodo />
       </OnlyCollectivesMember>
     </MakeSureLoaded>
   );

@@ -6,6 +6,7 @@ import { CoreMembersContext } from "next-common/components/overview/accountInfo/
 import { useContextCollectivesMembers } from "../context/collectivesMember";
 import { useContextMySalaryClaimant } from "../context/mySalaryClaimant";
 import { useContextSalaryStats } from "../context/salaryStats";
+import { useContextCollectivesReferendaVotes } from "../context/collectivesVotes";
 
 export default function useTodoListLoading() {
   const { isLoading: isMyEvidenceLoading } = useContextMyEvidence();
@@ -16,6 +17,8 @@ export default function useTodoListLoading() {
   const { isLoading: isLoadingCollectivesMembers } =
     useContextCollectivesMembers();
   const { isLoading: isLoadingClaimant } = useContextMySalaryClaimant();
+  const { isLoading: isLoadingCollectivesVotes } =
+    useContextCollectivesReferendaVotes();
   const salaryStats = useContextSalaryStats();
 
   return (
@@ -25,6 +28,7 @@ export default function useTodoListLoading() {
     isLoadingCoreMembers ||
     isLoadingCollectivesMembers ||
     isLoadingClaimant ||
+    isLoadingCollectivesVotes ||
     !salaryStats
   );
 }
