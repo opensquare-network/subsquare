@@ -8,6 +8,8 @@ export default function MyReferendaVotesTodo() {
     return null;
   }
 
+  const isPlurality = (myUnVotedReferenda || []).length > 1;
+
   return (
     <div className="flex items-center">
       <TodoTag>Referenda</TodoTag>
@@ -19,9 +21,9 @@ export default function MyReferendaVotesTodo() {
           rel="noreferrer"
           href="/fellowship?unvoted=true"
         >
-          {myUnVotedReferenda.length} unvoted
+          {myUnVotedReferenda.length} {isPlurality ? "referenda" : "referendum"}
         </a>
-        &nbsp;referenda.
+        &nbsp;to vote.
       </div>
     </div>
   );
