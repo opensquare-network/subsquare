@@ -22,7 +22,7 @@ export default function DemotionExpirationTodo() {
             className="text-theme500 cursor-pointer"
             target="_blank"
             rel="noreferrer"
-            href="https://collectives.subsquare.io/fellowship/members?period=demotion_period_expired"
+            href="/fellowship/members?period=demotion_period_expired"
           >
             {members.length} members
           </a>

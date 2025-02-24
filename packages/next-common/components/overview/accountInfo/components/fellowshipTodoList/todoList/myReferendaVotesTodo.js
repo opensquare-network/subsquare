@@ -17,7 +17,7 @@ export default function MyReferendaVotesTodo() {
           className="text-theme500 cursor-pointer"
           target="_blank"
           rel="noreferrer"
-          href="https://collectives.subsquare.io/fellowship?unvoted=true"
+          href="/fellowship?unvoted=true"
         >
           {myUnVotedReferenda.length} unvoted
         </a>
