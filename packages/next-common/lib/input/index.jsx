@@ -115,6 +115,7 @@ function InputImpl(
             "outline-none",
             "py-[var(--input-gap-y)]",
             "placeholder:text-textDisabled",
+            "font-medium",
           )}
           {...props}
           onFocus={handleOnFocus}
