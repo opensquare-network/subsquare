@@ -1,5 +1,5 @@
 import { useContextMyMembershipReferenda } from "../context/myMembershipReferenda";
-import { useContextMyEvidence } from "../context/myEvidence";
+import { useContextMyEvidence } from "../context/hooks/evidence";
 import { useContextCoreParams } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreParams";
 import { useContext } from "react";
 import { CoreMembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreMembers";

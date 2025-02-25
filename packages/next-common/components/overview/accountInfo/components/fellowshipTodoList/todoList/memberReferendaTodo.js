@@ -1,6 +1,6 @@
 import TodoTag from "./todoTag";
 import ClickableText from "./clickableText";
-import { useContextMyEvidence } from "../context/myEvidence";
+import { useContextMyEvidence } from "../context/hooks/evidence";
 import { useContext, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useHasMemberReferendaTodo from "../hooks/useHasMemberReferendaTodo";
@@ -19,7 +19,7 @@ function EvidencePopup({ onClose }) {
   const member = useContextMyCoreMember();
   const { rank, status: { isActive } = {} } = member || {};
 
-  const [wish, evidenceData] = evidence.toJSON();
+  const [wish, evidenceData] = evidence;
 
   return (
     <EvidenceDetailPopup

@@ -1,6 +1,5 @@
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
-import MyEvidenceProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myEvidence";
 import MyMembershipReferendaProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/myMembershipReferenda";
 import CoreParamsProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreParams";
 import CoreMembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreMembers";
@@ -19,17 +18,15 @@ export default function FellowshipTodoProviders({ children }) {
         <CoreMembersProvider>
           <CoreParamsProvider>
             <AllMemberEvidenceProvider>
-              <MyEvidenceProvider>
-                <MyMembershipReferendaProvider>
-                  <SalaryStatsProvider>
-                    <MySalaryClaimantProvider>
-                      <CollectivesReferendaVotesProvider>
-                        {children}
-                      </CollectivesReferendaVotesProvider>
-                    </MySalaryClaimantProvider>
-                  </SalaryStatsProvider>
-                </MyMembershipReferendaProvider>
-              </MyEvidenceProvider>
+              <MyMembershipReferendaProvider>
+                <SalaryStatsProvider>
+                  <MySalaryClaimantProvider>
+                    <CollectivesReferendaVotesProvider>
+                      {children}
+                    </CollectivesReferendaVotesProvider>
+                  </MySalaryClaimantProvider>
+                </SalaryStatsProvider>
+              </MyMembershipReferendaProvider>
             </AllMemberEvidenceProvider>
           </CoreParamsProvider>
         </CoreMembersProvider>
