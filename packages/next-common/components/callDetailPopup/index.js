@@ -6,14 +6,14 @@ import InnerDataTable from "next-common/components/table/innerDataTable";
 import dynamic from "next/dynamic";
 import { useContext, useMemo } from "react";
 import { useLocalStorage } from "react-use";
-import { ReferendumCallContext } from "next-common/context/referenda/call";
+import { RawCallContext } from "next-common/context/call/raw";
 
 const JsonView = dynamic(() => import("next-common/components/jsonView"), {
   ssr: false,
 });
 
 function CallTreeOnReferendum() {
-  const { call, isLoading } = useContext(ReferendumCallContext);
+  const { call, isLoading } = useContext(RawCallContext);
   return <CallTree call={call} isLoading={isLoading} />;
 }
 
