@@ -17,6 +17,7 @@ import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
 import useInitMimir from "next-common/hooks/useInitMimir";
+import { useReportOnClientError } from "next-common/hooks/useReportOnClientError";
 
 NProgress.configure({
   minimum: 0.3,
@@ -44,6 +45,7 @@ function MyApp({ Component, pageProps }) {
   }
 
   useInitMimir();
+  useReportOnClientError();
 
   const {
     connectedAccount,
