@@ -1,4 +1,4 @@
-import columns from "./columns";
+import { desktopColumns, mobileColumns } from "./columns";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useMemo, useState } from "react";
@@ -11,8 +11,11 @@ import useMyRelatedSwitch from "../../common/useMyRelatedSwitch";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSearchComponent from "../../common/useSearchComponent";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { useNavCollapsed } from "next-common/context/nav";
+import { cn } from "next-common/utils";
 
 export default function MultisigExplorerTable() {
+  const [navCollapsed] = useNavCollapsed();
   const router = useRouter();
   const [dataList, setDataList] = useState([]);
   const { isOn: isMyRelated, component: MyRelatedSwitchComponent } =
@@ -33,7 +36,7 @@ export default function MultisigExplorerTable() {
 
   const searchAccount = useMemo(() => {
     return isMyRelated ? userAddress : search;
-  }, [isMyRelated]);
+  }, [isMyRelated, userAddress, search]);
 
   const { data, loading: isLoading } = useQueryAllMultisigData(
     searchAccount,
@@ -84,7 +87,19 @@ export default function MultisigExplorerTable() {
       <SecondaryCard className="space-y-2">
         <ScrollerX>
           <MapDataList
-            columnsDef={columns}
+            className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
+            columnsDef={desktopColumns}
+            data={dataList}
+            loading={loading}
+            noDataText="No data"
+          />
+
+          <MapDataList
+            className={cn(
+              "hidden",
+              navCollapsed ? "max-sm:block" : "max-md:block",
+            )}
+            columnsDef={mobileColumns}
             data={dataList}
             loading={loading}
             noDataText="No data"

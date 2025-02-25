@@ -26,7 +26,7 @@ const multisigAddressColumn = {
   render: ({ address }) => <AddressUser add={address} maxWidth={200} />,
 };
 
-const callColumn = {
+const desktopCallColumn = {
   name: "Call",
   style: { textAlign: "left", minWidth: "256px" },
   key: "call",
@@ -60,16 +60,39 @@ const statusColumn = {
   name: "Status",
   style: { textAlign: "right", width: "160px", minWidth: "160px" },
   key: "status",
+  isCustomStatus: true,
   render: (item) => <Status name={item.state.name} args={item.state.args} />,
 };
 
-const columns = [
+const mobileCallColumn = {
+  name: "Call",
+  style: { textAlign: "right", minWidth: "256px" },
+  key: "call",
+  render: (item) => (
+    <Call
+      when={item.when}
+      call={item.call}
+      callHash={item.callHash}
+      callHex={item.callHex}
+      right
+    />
+  ),
+};
+
+export const desktopColumns = [
   whenColumn,
   multisigAddressColumn,
-  callColumn,
+  desktopCallColumn,
   approvingColumn,
   signatoriesColumn,
   statusColumn,
 ];
 
-export default columns;
+export const mobileColumns = [
+  whenColumn,
+  multisigAddressColumn,
+  mobileCallColumn,
+  approvingColumn,
+  signatoriesColumn,
+  statusColumn,
+];

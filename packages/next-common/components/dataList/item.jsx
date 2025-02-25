@@ -85,6 +85,7 @@ function MobileContent({ row = [], columns, descriptionClassName }) {
     return {
       name: col.name,
       value: row?.[idx],
+      isCustomStatus: col?.isCustomStatus || false,
     };
   });
 
@@ -94,7 +95,7 @@ function MobileContent({ row = [], columns, descriptionClassName }) {
 
   const statusIdx = findLastIndex(
     items,
-    (item) => item.name?.toLowerCase?.() === "status",
+    (item) => item.name?.toLowerCase?.() === "status" && !item?.isCustomStatus,
   );
   const hasStatus = statusIdx > -1;
 
