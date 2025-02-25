@@ -12,6 +12,7 @@ import CandidateDemotionExpirationTodo from "./candidates/demotionExpirationTodo
 import SalaryRegistrationTodo from "./salaryRegistrationTodo";
 import SalaryPayoutTodo from "./salaryPayoutTodo";
 import MyReferendaVotesTodo from "./myReferendaVotesTodo";
+import MemberEvidencesTodo from "./memberEvidencesTodo";
 
 function MakeSureLoaded({ children }) {
   const isLoading = useTodoListLoading();
@@ -27,6 +28,17 @@ export function OnlyLowRankMembers({ children }) {
   const { rank } = member;
   // todo: ambassador may have a different rank threshold
   if (rank >= 3) {
+    return null;
+  }
+
+  return children;
+}
+
+export function OnlyHighRankMembers({ children }) {
+  const member = useContextMyCoreMember();
+  const { rank } = member;
+  // todo: ambassador may have a different rank threshold
+  if (rank < 3) {
     return null;
   }
 
@@ -73,6 +85,9 @@ export default function TodoList() {
         <SalaryRegistrationTodo />
         <SalaryPayoutTodo />
         <MyReferendaVotesTodo />
+        <OnlyHighRankMembers>
+          <MemberEvidencesTodo />
+        </OnlyHighRankMembers>
       </OnlyCollectivesMember>
     </MakeSureLoaded>
   );

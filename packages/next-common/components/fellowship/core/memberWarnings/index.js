@@ -137,27 +137,26 @@ function useDemotionExpirationCounts() {
   };
 }
 
-export function useEvidencesStat(members) {
+export function useTodoEvidences(members) {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
+  const memberEvidences = useMemo(
+    () =>
+      (evidences || []).filter(
+        (evidence) =>
+          (members || []).findIndex((m) =>
+            isSameAddress(m.address, evidence.who),
+          ) > -1,
+      ),
+    [evidences, members],
+  );
 
-  const memberEvidences = useMemo(() => {
-    return (evidences || []).filter((evidence) => {
-      return (
-        (members || []).findIndex((m) =>
-          isSameAddress(m.address, evidence.who),
-        ) > -1
-      );
-    });
-  }, [evidences, members]);
-
-  const totalEvidences = (memberEvidences || []).length || 0;
-  const evidencesToBeHandled = (memberEvidences || []).filter((evidence) =>
+  const toBeHandled = (memberEvidences || []).filter((evidence) =>
     isNil(evidence.referendumIndex),
-  ).length;
+  );
 
   return {
-    totalEvidences,
-    evidencesToBeHandled,
+    all: memberEvidences,
+    toBeHandled,
     isLoading,
   };
 }
@@ -190,10 +189,10 @@ export default function MemberWarnings({ className }) {
     useAvailablePromotionCount();
 
   const {
-    totalEvidences,
-    evidencesToBeHandled,
+    all: allEvidences,
+    toBeHandled: toBeHandledEvidences,
     isLoading: isEvidenceLoading,
-  } = useEvidencesStat(members);
+  } = useTodoEvidences(members);
 
   const filterLinks = {
     evidenceOnly: `/${section}/members?evidence_only=true`,
@@ -207,11 +206,11 @@ export default function MemberWarnings({ className }) {
   }
 
   const promptItems = [
-    totalEvidences > 0 && (
+    allEvidences?.length > 0 && (
       <>
-        {evidencesToBeHandled} evidences to be handled in total{" "}
+        {toBeHandledEvidences?.length} evidences to be handled in total{" "}
         <PromptButton filterLink={filterLinks.evidenceOnly}>
-          {totalEvidences} evidences
+          {allEvidences?.length} evidences
         </PromptButton>
         .
       </>
