@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Error from "next/error";
 import { CHAIN } from "next-common/utils/constants";
-import { reportError } from "next-common/services/reportError";
+import { reportClientError } from "next-common/services/reportClientError";
 
 function ErrorPage({ statusCode, err, isServerError, reqUrl }) {
   useEffect(() => {
@@ -15,7 +15,7 @@ function ErrorPage({ statusCode, err, isServerError, reqUrl }) {
         stack: err.stack,
       };
 
-      reportError(errorData);
+      reportClientError(errorData);
     }
   }, [err, isServerError, reqUrl, statusCode]);
 

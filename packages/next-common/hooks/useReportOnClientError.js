@@ -1,8 +1,8 @@
-import { reportError } from "next-common/services/reportError";
+import { reportClientError } from "next-common/services/reportClientError";
 import { CHAIN } from "next-common/utils/constants";
 import { useEffect } from "react";
 
-export function useReportOnError() {
+export function useReportOnClientError() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.onerror = (message, _source, _lineno, _colno, error) => {
@@ -14,7 +14,7 @@ export function useReportOnError() {
           stack: error?.stack,
         };
 
-        reportError(errorData);
+        reportClientError(errorData);
       };
     }
   }, []);
