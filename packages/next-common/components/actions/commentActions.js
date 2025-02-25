@@ -138,7 +138,7 @@ export default function CommentActions({
     <>
       <div className="flex items-center justify-between">
         <Wrapper className="space-x-4">
-          <ReplyButton onReply={startReply} noHover={!user || ownComment} />
+          <ReplyButton onReply={startReply} noHover={!user} />
           <ThumbsUp
             count={reactions?.length}
             noHover={!user || ownComment}

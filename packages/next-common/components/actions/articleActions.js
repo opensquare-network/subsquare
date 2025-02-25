@@ -89,7 +89,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
     <div className="mt-4">
       <div className="flex items-center justify-between">
         <Wrapper className="space-x-4">
-          <ReplyButton onReply={focusEditor} noHover={!user || isAuthor} />
+          <ReplyButton onReply={focusEditor} noHover={!user} />
           <ThumbsUp
             count={post?.reactions?.length}
             noHover={!user || isAuthor}
