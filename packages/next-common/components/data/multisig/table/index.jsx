@@ -13,6 +13,7 @@ import useSearchComponent from "../../common/useSearchComponent";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
+import { isNil } from "lodash-es";
 
 export default function MultisigExplorerTable() {
   const [navCollapsed] = useNavCollapsed();
@@ -40,7 +41,7 @@ export default function MultisigExplorerTable() {
 
   const { data, loading: isLoading } = useQueryAllMultisigData(
     searchAccount,
-    page,
+    page - 1,
     defaultPageSize,
   );
 
@@ -56,11 +57,12 @@ export default function MultisigExplorerTable() {
   }, [page]);
 
   useEffect(() => {
-    if (isLoading) {
+    if (isLoading || isNil(data)) {
       return;
     }
+
     setTotalCount(total);
-    setDataList(data?.multisigs || []);
+    setDataList(data?.multisigs);
     setLoading(false);
   }, [data, isLoading, total]);
 

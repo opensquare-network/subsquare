@@ -34,14 +34,14 @@ const GET_ALL_MULTISIGS = gql`
   }
 `;
 
-export default function useQueryAllMultisigData(account = "", page, pageSize) {
+export default function useQueryAllMultisigData(account = "", offset, limit) {
   const [isLoading, setIsLoading] = useState(true);
-  const [multisigs, setMyMultisigs] = useState([]);
+  const [multisigs, setMultisigs] = useState(null);
   const { data, loading } = useMultisigQuery(GET_ALL_MULTISIGS, {
     variables: {
       account,
-      offset: page - 1,
-      limit: pageSize,
+      offset,
+      limit,
     },
   });
 
@@ -51,9 +51,9 @@ export default function useQueryAllMultisigData(account = "", page, pageSize) {
       return;
     }
 
-    setMyMultisigs(data?.multisigs);
+    setMultisigs(data?.multisigs || []);
     setIsLoading(false);
-  }, [loading, data, account, page, pageSize]);
+  }, [loading, data, account, offset, limit]);
 
   return {
     data: multisigs,
