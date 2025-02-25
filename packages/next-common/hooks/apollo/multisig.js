@@ -14,7 +14,7 @@ const chainSettings = getChainSettings(CHAIN);
 /** @type {ApolloClient<InMemoryCache> | undefined} */
 export let multisigClient;
 
-if (chainSettings?.multisigWallets?.mimir && chainSettings?.multisigApiPrefix) {
+if (chainSettings?.multisigApiPrefix) {
   multisigClient = new ApolloClient({
     uri: getMultisigApiUrl(CHAIN),
     cache: new InMemoryCache(),
