@@ -1,5 +1,4 @@
 import { useContextMyMembershipReferenda } from "../context/myMembershipReferenda";
-import { useContextMyEvidence } from "../context/hooks/evidence";
 import { useContextCoreParams } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreParams";
 import { useContext } from "react";
 import { CoreMembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreMembers";
@@ -10,7 +9,6 @@ import { useContextCollectivesReferendaVotes } from "../context/collectivesVotes
 import { useAllMemberEvidenceContext } from "next-common/components/collectives/core/context/evidenceMemberContext";
 
 export default function useTodoListLoading() {
-  const { isLoading: isMyEvidenceLoading } = useContextMyEvidence();
   const { isLoading: isMyMembershipReferendaLoading } =
     useContextMyMembershipReferenda();
   const { isLoading: isLoadingCoreParams } = useContextCoreParams();
@@ -25,7 +23,6 @@ export default function useTodoListLoading() {
   const salaryStats = useContextSalaryStats();
 
   return (
-    isMyEvidenceLoading ||
     isMyMembershipReferendaLoading ||
     isLoadingCoreParams ||
     isLoadingCoreMembers ||
