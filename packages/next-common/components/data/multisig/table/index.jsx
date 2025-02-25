@@ -14,7 +14,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
-import { addRouterQuery, removeRouterQuery } from "next-common/utils/router";
+import { addRouterQuery } from "next-common/utils/router";
 
 export default function MultisigExplorerTable() {
   const [navCollapsed] = useNavCollapsed();
