@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
-import { useMultisigQuery } from "next-common/hooks/apollo";
+import { useMultisigLazyQuery } from "next-common/hooks/apollo";
 import { useState, useEffect } from "react";
+import { isAddress } from "@polkadot/util-crypto";
 
 const GET_ALL_MULTISIGS = gql`
   query GetAllMultisigs($account: String!, $limit: Int!, $offset: Int!) {
@@ -37,13 +38,24 @@ const GET_ALL_MULTISIGS = gql`
 export default function useQueryAllMultisigData(account = "", offset, limit) {
   const [isLoading, setIsLoading] = useState(true);
   const [multisigs, setMultisigs] = useState(null);
-  const { data, loading } = useMultisigQuery(GET_ALL_MULTISIGS, {
-    variables: {
-      account,
-      offset,
-      limit,
-    },
-  });
+  const [getMultisigs, { data, loading }] =
+    useMultisigLazyQuery(GET_ALL_MULTISIGS);
+
+  useEffect(() => {
+    if (account !== "" && !isAddress(account)) {
+      setIsLoading(false);
+      setMultisigs({ multisigs: [], total: 0 });
+      return;
+    }
+
+    getMultisigs({
+      variables: {
+        account,
+        offset,
+        limit,
+      },
+    });
+  }, [account, offset, limit, getMultisigs]);
 
   useEffect(() => {
     if (loading) {
@@ -51,9 +63,9 @@ export default function useQueryAllMultisigData(account = "", offset, limit) {
       return;
     }
 
-    setMultisigs(data?.multisigs || []);
+    setMultisigs(data?.multisigs);
     setIsLoading(false);
-  }, [loading, data, account, offset, limit]);
+  }, [loading, data]);
 
   return {
     data: multisigs,
