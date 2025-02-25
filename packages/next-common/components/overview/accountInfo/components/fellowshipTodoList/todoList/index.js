@@ -12,7 +12,7 @@ import CandidateDemotionExpirationTodo from "./candidates/demotionExpirationTodo
 import SalaryRegistrationTodo from "./salaryRegistrationTodo";
 import SalaryPayoutTodo from "./salaryPayoutTodo";
 import MyReferendaVotesTodo from "./myReferendaVotesTodo";
-import CreateMembershipReferendaTodo from "./createMembershipReferendaTodo";
+import MemberEvidencesTodo from "./memberEvidencesTodo";
 
 function MakeSureLoaded({ children }) {
   const isLoading = useTodoListLoading();
@@ -86,7 +86,7 @@ export default function TodoList() {
         <SalaryPayoutTodo />
         <MyReferendaVotesTodo />
         <OnlyHighRankMembers>
-          <CreateMembershipReferendaTodo />
+          <MemberEvidencesTodo />
         </OnlyHighRankMembers>
       </OnlyCollectivesMember>
     </MakeSureLoaded>

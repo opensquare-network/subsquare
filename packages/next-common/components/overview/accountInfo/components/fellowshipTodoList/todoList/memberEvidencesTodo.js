@@ -2,7 +2,7 @@ import { useEvidencesStat } from "next-common/components/fellowship/core/memberW
 import TodoTag from "./todoTag";
 import { useNonCandidateCoreMembers } from "../context/hooks/coreMembers";
 
-export default function CreateMembershipReferendaTodo() {
+export default function MemberEvidencesTodo() {
   const { members } = useNonCandidateCoreMembers();
   const { totalEvidences, evidencesToBeHandled } = useEvidencesStat(members);
 
