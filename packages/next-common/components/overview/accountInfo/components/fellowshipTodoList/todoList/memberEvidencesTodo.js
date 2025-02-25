@@ -1,12 +1,13 @@
-import { useEvidencesStat } from "next-common/components/fellowship/core/memberWarnings";
+import { useTodoEvidences } from "next-common/components/fellowship/core/memberWarnings";
 import TodoTag from "./todoTag";
 import { useNonCandidateCoreMembers } from "../context/hooks/coreMembers";
 
 export default function MemberEvidencesTodo() {
   const { members } = useNonCandidateCoreMembers();
-  const { totalEvidences, evidencesToBeHandled } = useEvidencesStat(members);
+  const { all: allEvidences, toBeHandled: toBeHandledEvidences } =
+    useTodoEvidences(members);
 
-  if (!evidencesToBeHandled) {
+  if (!toBeHandledEvidences?.length) {
     return null;
   }
 
@@ -14,14 +15,14 @@ export default function MemberEvidencesTodo() {
     <div className="flex items-center">
       <TodoTag>Membership</TodoTag>
       <div className="text-textPrimary text14Medium">
-        {evidencesToBeHandled} evidences to be handled in total&nbsp;
+        {toBeHandledEvidences?.length} evidences to be handled in total&nbsp;
         <a
           className="text-theme500 cursor-pointer"
           target="_blank"
           rel="noreferrer"
           href="/fellowship/members?evidence_only=true"
         >
-          {totalEvidences} evidences
+          {allEvidences?.length} evidences
         </a>
         .
       </div>
