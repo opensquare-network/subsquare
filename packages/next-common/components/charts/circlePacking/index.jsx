@@ -7,6 +7,7 @@
 import * as d3 from "d3";
 import { noop } from "lodash-es";
 import { Fragment, useEffect, useMemo, useState } from "react";
+import { useMountedState } from "react-use";
 
 export default function CirclePacking({
   data,
@@ -18,7 +19,7 @@ export default function CirclePacking({
   renderBubbleContent = noop,
   onReady = noop,
 }) {
-  const [isFirst, setIsFirst] = useState(true);
+  const isMounted = useMountedState();
   const [nodes, setNodes] = useState([]);
   useEffect(() => {
     if (!width || !height) {
@@ -59,12 +60,10 @@ export default function CirclePacking({
   }, [nodes]);
 
   useEffect(() => {
-    if (allBubbles.length && isFirst) {
+    if (isMounted()) {
       onReady();
-      setIsFirst(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFirst, allBubbles]);
+  }, [isMounted, onReady]);
 
   return (
     <svg width={width} height={height}>
