@@ -5,6 +5,7 @@ import { createGlobalState } from "react-use";
 import { isNil } from "lodash-es";
 import { parsePreImageCall } from "next-common/components/proposal/preImage";
 import getCallByPreimageHash from "next-common/services/preimages/call";
+import RawCallProvider from "next-common/context/call/raw";
 
 const useCachedResult = createGlobalState({});
 
@@ -50,8 +51,8 @@ export default function ReferendumCallProvider({ children }) {
   const { call, isLoading } = useReferendumCall();
 
   return (
-    <ReferendumCallContext.Provider value={{ call, isLoading }}>
+    <RawCallProvider call={call} isLoading={isLoading}>
       {children}
-    </ReferendumCallContext.Provider>
+    </RawCallProvider>
   );
 }
