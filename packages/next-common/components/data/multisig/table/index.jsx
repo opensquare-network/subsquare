@@ -14,6 +14,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
+import { addRouterQuery, removeRouterQuery } from "next-common/utils/router";
 
 export default function MultisigExplorerTable() {
   const [navCollapsed] = useNavCollapsed();
@@ -29,11 +30,10 @@ export default function MultisigExplorerTable() {
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const {
-    page,
-    component: pageComponent,
-    setPage,
-  } = usePaginationComponent(totalCount, defaultPageSize);
+  const { page, component: pageComponent } = usePaginationComponent(
+    totalCount,
+    defaultPageSize,
+  );
 
   const searchAccount = useMemo(() => {
     return isMyRelated ? userAddress : search;
@@ -67,10 +67,14 @@ export default function MultisigExplorerTable() {
   }, [data, isLoading, total]);
 
   useEffect(() => {
-    if (router.query) {
-      setPage(1);
-    }
-  }, [router.query, setPage]);
+    addRouterQuery(router, "page", 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.search]);
+
+  useEffect(() => {
+    addRouterQuery(router, "page", page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   return (
     <div className="flex flex-col gap-y-4">
