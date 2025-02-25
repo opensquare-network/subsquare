@@ -19,8 +19,8 @@ export default function MultisigExplorerTable() {
   const [navCollapsed] = useNavCollapsed();
   const router = useRouter();
   const [dataList, setDataList] = useState([]);
-  const { isOn: isMyRelated, component: MyRelatedSwitchComponent } =
-    useMyRelatedSwitch();
+  // component: MyRelatedSwitchComponent
+  const { isOn: isMyRelated } = useMyRelatedSwitch();
   const { search = "", component: SearchBoxComponent } = useSearchComponent({
     isMyRelated,
     placeholder: "Search by address",
@@ -82,7 +82,7 @@ export default function MultisigExplorerTable() {
               {!loading && total}
             </span>
           </span>
-          {MyRelatedSwitchComponent}
+          {/* {MyRelatedSwitchComponent} */}
         </TitleContainer>
         {SearchBoxComponent}
       </div>
