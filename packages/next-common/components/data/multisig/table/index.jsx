@@ -41,7 +41,7 @@ export default function MultisigExplorerTable() {
 
   const { data, loading: isLoading } = useQueryAllMultisigData(
     searchAccount,
-    page - 1,
+    (page - 1) * defaultPageSize,
     defaultPageSize,
   );
 
