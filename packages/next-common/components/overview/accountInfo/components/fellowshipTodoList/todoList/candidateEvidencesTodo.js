@@ -1,10 +1,10 @@
 import { useTodoEvidences } from "next-common/components/fellowship/core/memberWarnings";
 import TodoTag from "./todoTag";
-import { useNonCandidateCoreMembers } from "../context/hooks/coreMembers";
+import { useCandidateCoreMembers } from "../context/hooks/coreMembers";
 import pluralize from "pluralize";
 
-export default function MemberEvidencesTodo() {
-  const { members } = useNonCandidateCoreMembers();
+export default function CandidateEvidencesTodo() {
+  const { members } = useCandidateCoreMembers();
   const { all: allEvidences, toBeHandled: toBeHandledEvidences } =
     useTodoEvidences(members);
 
@@ -19,15 +19,15 @@ export default function MemberEvidencesTodo() {
     <div className="flex items-center">
       <TodoTag>Membership</TodoTag>
       <div className="text-textPrimary text14Medium">
-        {toBeHandledCount} member&apos;s&nbsp;
+        {toBeHandledCount} candidate&apos;s&nbsp;
         {pluralize("evidence", toBeHandledCount)} to be handled in total&nbsp;
         <a
           className="text-theme500 cursor-pointer"
           target="_blank"
           rel="noreferrer"
-          href="/fellowship/members?evidence_only=true"
+          href="/fellowship/members?tab=candidates&evidence_only=true"
         >
-          {total} member&apos;s {pluralize("evidence", total)}
+          {total} candidate&apos;s {pluralize("evidence", total)}
         </a>
         .
       </div>

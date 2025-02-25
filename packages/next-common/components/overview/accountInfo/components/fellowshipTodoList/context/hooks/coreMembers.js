@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useContextCoreMembers } from "../coreMembers";
-import { partition } from "lodash-es";
 import { useContextCollectivesMembers } from "../collectivesMember";
 
 export function useContextCoreMembersWithRank() {
@@ -29,10 +28,11 @@ export function useContextCoreMembersWithRank() {
 
 function useGroupingCoreMembers() {
   const { members: allMembers, isLoading } = useContextCoreMembersWithRank();
-  const [members, candidates] = useMemo(
-    () => partition(allMembers, (m) => m.rank > 0),
-    [allMembers],
-  );
+  const [members, candidates] = useMemo(() => {
+    const candidates = allMembers.filter((m) => m.rank === 0);
+    const members = allMembers.filter((m) => m.rank > 0);
+    return [members, candidates];
+  }, [allMembers]);
   return { members, candidates, isLoading };
 }
 
