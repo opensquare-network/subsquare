@@ -139,7 +139,6 @@ function useDemotionExpirationCounts() {
 
 export function useEvidencesStat(members) {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
-
   const memberEvidences = useMemo(() => {
     return (evidences || []).filter((evidence) => {
       return (
