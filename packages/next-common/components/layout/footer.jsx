@@ -9,23 +9,9 @@ import {
   FooterLogoDark,
 } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
+import { CONTACT_LINKS } from "next-common/utils/constants";
 
 export default function Footer() {
-  const contactLinks = [
-    {
-      name: "Element",
-      link: "https://app.element.io/#/room/#opensquare:matrix.org",
-    },
-    {
-      name: "GitHub",
-      link: "https://github.com/opensquare-network/subsquare/issues",
-    },
-    {
-      name: "Email",
-      link: "mailto:yongfeng@opensquare.network",
-    },
-  ];
-
   return (
     <div
       className={cn(
@@ -48,7 +34,7 @@ export default function Footer() {
 
       <div className={cn("flex items-center gap-x-6", "max-sm:flex-col")}>
         <ul className={cn("flex", "text14Medium", "max-sm:mt-2.5")}>
-          {contactLinks.map((contact) => (
+          {CONTACT_LINKS.map((contact) => (
             <li
               key={contact.name}
               className="after:content-['·'] after:mx-2 after:text-textTertiary after:last:hidden"
