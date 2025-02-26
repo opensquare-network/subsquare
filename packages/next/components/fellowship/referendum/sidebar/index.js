@@ -19,6 +19,7 @@ import Tooltip from "next-common/components/tooltip";
 import dynamic from "next/dynamic";
 import AllSpendsRequest from "./request/allSpendsRequest";
 import useRankedCollectiveMinRank from "next-common/hooks/collectives/useRankedCollectiveMinRank";
+import FellowshipReferendumCleanupPoll from "next-common/components/fellowship/referenda/cleanupPoll";
 
 const MyCollectiveVote = dynamic(
   () => import("next-common/components/collectives/referenda/myCollectiveVote"),
@@ -85,6 +86,7 @@ export default function FellowshipReferendumSideBar() {
           />
         )}
       </VoteSuccessfulProvider>
+      <FellowshipReferendumCleanupPoll />
       <InlineWrapper>
         <HowOpenGovWorks anchor="polkadot-fellowship" />
       </InlineWrapper>
