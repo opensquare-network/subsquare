@@ -13,7 +13,6 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
-import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
@@ -291,7 +290,6 @@ export function CommonAccountInfoPanel() {
       <AccountHead width={width} />
       <Divider />
       <AccountBalances />
-      <ExtensionUpdatePrompt />
       <AssetHubManagePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
