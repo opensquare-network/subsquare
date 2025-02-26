@@ -171,18 +171,3 @@ export const NAV_MENU_TYPE = {
   subspace: "subspace",
   archived: "archived",
 };
-
-export const CONTACT_LINKS = [
-  {
-    name: "Element",
-    link: "https://app.element.io/#/room/#opensquare:matrix.org",
-  },
-  {
-    name: "GitHub",
-    link: "https://github.com/opensquare-network/subsquare/issues",
-  },
-  {
-    name: "Email",
-    link: "mailto:yongfeng@opensquare.network",
-  },
-];
