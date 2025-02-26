@@ -125,7 +125,7 @@ export default function ExtensionUpdatePrompt() {
   }
 
   return (
-    <GreyPanel className="w-full bg-orange100 text-orange500 px-6 py-4 text14Medium mb-4">
+    <GreyPanel className="w-[calc(100%+50px)] right-[25px] relative rounded-none bg-orange100 text-orange500 px-6 py-4 text14Medium mb-4">
       <div>
         The extension needs to be updated with the latest chain properties in
         order to display the correct information for the chain you are connected
