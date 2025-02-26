@@ -6,11 +6,22 @@ import {
 import { useRouter } from "next/router";
 import { SystemSearch } from "@osn/icons/subsquare";
 import Input from "next-common/lib/input";
+import { useEffect } from "react";
 
-export default function useSearchComponent() {
+export default function useSearchComponent(params) {
+  const {
+    isMyRelated = false,
+    placeholder = "Search by identity name or address",
+  } = params || {};
+
   const router = useRouter();
-
   const querySearch = getRouterQuery(router, "search");
+
+  useEffect(() => {
+    if (isMyRelated) {
+      removeRouterQuery(router, "search");
+    }
+  }, [isMyRelated, router]);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -22,16 +33,17 @@ export default function useSearchComponent() {
   };
 
   return {
-    search: querySearch,
+    search: isMyRelated ? "" : querySearch,
     component: (
       <Input
         className="mt-4 mx-6"
         prefix={
           <SystemSearch width={24} height={24} className="text-textTertiary" />
         }
-        placeholder="Search by identity name or address"
-        defaultValue={querySearch || ""}
+        placeholder={placeholder}
+        value={querySearch || ""}
         onChange={handleInputChange}
+        disabled={isMyRelated}
       />
     ),
   };

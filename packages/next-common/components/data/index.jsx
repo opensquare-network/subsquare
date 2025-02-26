@@ -2,6 +2,7 @@ import DataBaseLayout from "./common/baseLayout";
 import CommonTabs from "./common/tabs";
 import ProxyExplorer from "./proxies";
 import VestingExplorer from "./vesting";
+import MultisigExplorer from "./multisig";
 
 function DataPageWithLayout({ children }) {
   return (
@@ -24,6 +25,14 @@ export function DataVesting() {
   return (
     <DataPageWithLayout>
       <VestingExplorer />
+    </DataPageWithLayout>
+  );
+}
+
+export function DataMultisig() {
+  return (
+    <DataPageWithLayout>
+      <MultisigExplorer />
     </DataPageWithLayout>
   );
 }

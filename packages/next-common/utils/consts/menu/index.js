@@ -26,7 +26,7 @@ export function getHomeMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  const { modules } = getChainSettings(CHAIN);
+  const { modules, hasMultisig = false } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
     modules?.assethub && assetHubMenu,
@@ -47,7 +47,7 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.preimages && preImages,
-    (modules?.proxy || modules?.vesting) && Data,
+    (modules?.proxy || modules?.vesting || hasMultisig) && Data,
     ...(integrationsMenu.length
       ? [{ type: "divider" }, ...integrationsMenu]
       : []),

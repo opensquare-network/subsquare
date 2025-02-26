@@ -6,7 +6,7 @@ import { CHAIN } from "next-common/utils/constants";
 const TabsContext = createContext(null);
 
 function generateTabs() {
-  const { modules } = getChainSettings(CHAIN);
+  const { modules, hasMultisig } = getChainSettings(CHAIN);
 
   let TABS = [];
   if (modules?.proxy) {
@@ -24,6 +24,15 @@ function generateTabs() {
       pageTitle: "Vesting Explorer",
     });
   }
+
+  if (hasMultisig) {
+    TABS.push({
+      tabId: "/multisigs",
+      tabTitle: "Multisig",
+      pageTitle: "Multisig Explorer",
+    });
+  }
+
   return TABS;
 }
 

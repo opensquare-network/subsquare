@@ -5,6 +5,7 @@ import {
 } from "next-common/components/proposal";
 import { useChain } from "next-common/context/chain";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import RawCallProvider from "next-common/context/call/raw";
 
 const CallDetailPopup = dynamicPopup(() =>
   import("next-common/components/callDetailPopup"),
@@ -21,12 +22,12 @@ export default function CallPopup({ call, callHex, blockHeight, setShow }) {
   const jsonViewData = convertProposalForJsonView(call, chain);
 
   return (
-    <CallDetailPopup
-      tableViewData={tableViewData}
-      jsonViewData={jsonViewData}
-      rawCall={rawCall}
-      isLoadingRawCall={isLoadingRawCall}
-      setShow={setShow}
-    />
+    <RawCallProvider call={rawCall} isLoading={isLoadingRawCall}>
+      <CallDetailPopup
+        tableViewData={tableViewData}
+        jsonViewData={jsonViewData}
+        setShow={setShow}
+      />
+    </RawCallProvider>
   );
 }
