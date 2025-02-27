@@ -20,7 +20,7 @@ export default function Signer({
 
   return (
     <div>
-      <ExtensionUpdatePrompt />
+      <ExtensionUpdatePrompt isWithCache={false} />
 
       {noBalance ? (
         <PopupLabel text={title || "Origin"} />

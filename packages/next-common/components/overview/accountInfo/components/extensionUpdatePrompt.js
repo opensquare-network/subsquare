@@ -1,6 +1,9 @@
 import { useContextApi } from "next-common/context/api";
+import Prompt from "./prompt";
+import { PromptTypes } from "next-common/components/scrollPrompt";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { useInjectedWeb3Extension } from "next-common/hooks/connect/useInjectedWeb3Extension";
+import { CACHE_KEY } from "next-common/utils/constants";
 import { useCallback, useEffect, useState } from "react";
 import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
@@ -56,7 +59,23 @@ function checkPropertiesChange(api, extension) {
   return false;
 }
 
-export default function ExtensionUpdatePrompt() {
+function PromptContent({ onUpdateMeta }) {
+  return (
+    <div>
+      The extension can be updated with the latest chain metadata and
+      properties.&nbsp;
+      <span
+        role="button"
+        className="cursor-pointer underline"
+        onClick={onUpdateMeta}
+      >
+        Update
+      </span>
+    </div>
+  );
+}
+
+export default function ExtensionUpdatePrompt({ isWithCache = true }) {
   const api = useContextApi();
   const connectedAccount = useConnectedAccount();
   const [isNeedUpdate, setIsNeedUpdate] = useState();
@@ -124,20 +143,20 @@ export default function ExtensionUpdatePrompt() {
     return null;
   }
 
+  if (isWithCache) {
+    return (
+      <Prompt
+        cacheKey={CACHE_KEY.extensionUpdateMetadata}
+        type={PromptTypes.WARNING}
+      >
+        <PromptContent onUpdateMeta={() => updateMeta(chainInfo)} />
+      </Prompt>
+    );
+  }
+
   return (
     <GreyPanel className="w-[calc(100%+50px)] right-[25px] relative rounded-none bg-orange100 text-orange500 px-6 py-4 text14Medium mb-4">
-      <div>
-        The extension needs to be updated with the latest chain properties in
-        order to display the correct information for the chain you are connected
-        to.&nbsp;
-        <span
-          role="button"
-          className="cursor-pointer underline font-bold"
-          onClick={() => updateMeta(chainInfo)}
-        >
-          Update Metadata
-        </span>
-      </div>
+      <PromptContent onUpdateMeta={() => updateMeta(chainInfo)} />
     </GreyPanel>
   );
 }
