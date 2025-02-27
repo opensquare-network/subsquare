@@ -12,6 +12,7 @@ import { getRetainTrackNameFromRank } from "next-common/components/fellowship/co
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
+import { useChain } from "next-common/context/chain";
 import { ReferendaActionMessage, ReferendaWarningMessage } from "./common";
 import { NotAvailableMemberPrompt } from "./createFellowshipCoreMemberPromotePopup";
 import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
@@ -50,7 +51,8 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
 
   const atRank = targetMember?.rank;
 
-  const trackName = getRetainTrackNameFromRank(atRank);
+  const chain = useChain();
+  const trackName = getRetainTrackNameFromRank(chain, atRank);
 
   const decisionDeposit = useFellowshipTrackDecisionDeposit(
     rankToRetainTrack(atRank),

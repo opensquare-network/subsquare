@@ -78,24 +78,35 @@ export function useDemotionExpiringCount(members) {
   }, [members, latestHeight, params, blockTime]);
 }
 
+export function getDemotionExpiredCount({ members, latestHeight, params }) {
+  return (members || []).reduce((result, coreMember) => {
+    const {
+      status: { lastProof },
+      rank,
+    } = coreMember;
+
+    const isExpired = isDemotionExpired({
+      lastProof,
+      rank,
+      params,
+      latestHeight,
+    });
+    if (isExpired) {
+      return result + 1;
+    }
+
+    return result;
+  }, 0);
+}
+
 export function useDemotionExpiredCount(members) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const params = useCoreFellowshipParams();
 
-  return useMemo(() => {
-    return (members || []).reduce((result, coreMember) => {
-      const {
-        status: { lastProof },
-        rank,
-      } = coreMember;
-
-      if (isDemotionExpired({ lastProof, rank, params, latestHeight })) {
-        return result + 1;
-      }
-
-      return result;
-    }, 0);
-  }, [members, latestHeight, params]);
+  return useMemo(
+    () => getDemotionExpiredCount({ members, latestHeight, params }),
+    [members, latestHeight, params],
+  );
 }
 
 function useMemberDemotionExpirationCounts(members) {
@@ -104,15 +115,18 @@ function useMemberDemotionExpirationCounts(members) {
   return { expiredMembersCount, expiringMembersCount };
 }
 
-function useDemotionExpirationCounts() {
+export function useEligibleFellowshipCoreMembers() {
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembers();
-
   const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
     [coreMembers],
   );
+  return { members, isLoading };
+}
 
+function useDemotionExpirationCounts() {
+  const { members, loading: isLoading } = useEligibleFellowshipCoreMembers();
   const { expiredMembersCount, expiringMembersCount } =
     useMemberDemotionExpirationCounts(members);
 
@@ -123,27 +137,26 @@ function useDemotionExpirationCounts() {
   };
 }
 
-export function useEvidencesStat(members) {
+export function useTodoEvidences(members) {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
+  const memberEvidences = useMemo(
+    () =>
+      (evidences || []).filter(
+        (evidence) =>
+          (members || []).findIndex((m) =>
+            isSameAddress(m.address, evidence.who),
+          ) > -1,
+      ),
+    [evidences, members],
+  );
 
-  const memberEvidences = useMemo(() => {
-    return (evidences || []).filter((evidence) => {
-      return (
-        (members || []).findIndex((m) =>
-          isSameAddress(m.address, evidence.who),
-        ) > -1
-      );
-    });
-  }, [evidences, members]);
-
-  const totalEvidences = (memberEvidences || []).length || 0;
-  const evidencesToBeHandled = (memberEvidences || []).filter((evidence) =>
+  const toBeHandled = (memberEvidences || []).filter((evidence) =>
     isNil(evidence.referendumIndex),
-  ).length;
+  );
 
   return {
-    totalEvidences,
-    evidencesToBeHandled,
+    all: memberEvidences,
+    toBeHandled,
     isLoading,
   };
 }
@@ -164,11 +177,7 @@ export function MemberWarningsPanel({ className, isLoading, items }) {
 
 export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
-  const { members: coreMembers } = useFellowshipCoreMembers();
-  const [members] = useMemo(
-    () => partition(coreMembers, (m) => m.rank > 0),
-    [coreMembers],
-  );
+  const { members } = useEligibleFellowshipCoreMembers();
 
   const {
     expiredMembersCount,
@@ -180,10 +189,10 @@ export default function MemberWarnings({ className }) {
     useAvailablePromotionCount();
 
   const {
-    totalEvidences,
-    evidencesToBeHandled,
+    all: allEvidences,
+    toBeHandled: toBeHandledEvidences,
     isLoading: isEvidenceLoading,
-  } = useEvidencesStat(members);
+  } = useTodoEvidences(members);
 
   const filterLinks = {
     evidenceOnly: `/${section}/members?evidence_only=true`,
@@ -197,11 +206,11 @@ export default function MemberWarnings({ className }) {
   }
 
   const promptItems = [
-    totalEvidences > 0 && (
+    allEvidences?.length > 0 && (
       <>
-        {evidencesToBeHandled} evidences to be handled in total{" "}
+        {toBeHandledEvidences?.length} evidences to be handled in total{" "}
         <PromptButton filterLink={filterLinks.evidenceOnly}>
-          {totalEvidences} evidences
+          {allEvidences?.length} evidences
         </PromptButton>
         .
       </>
