@@ -20,6 +20,7 @@ export default function ConnectedUserOrigin({
   return (
     <div>
       <ExtensionUpdatePrompt isWithCache={false} />
+
       {noBalance ? (
         <PopupLabel text={title || "Origin"} />
       ) : (
