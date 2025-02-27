@@ -46,23 +46,28 @@ function useFellowshipReferendumVotes(pollIndex) {
   };
 }
 
-export default function FellowshipReferendumPollCleanupProvider({ children }) {
+export function useReferendumCleanupPollUpdate() {
+  const { fetchVotes } = useFellowshipReferendumVotes();
+  return fetchVotes;
+}
+
+export default function ReferendumCleanupPollProvider({ children }) {
   const finishedIndexer = useReferendumVotingFinishIndexer();
   const isFinished = !isNil(finishedIndexer);
-  const { referendumIndex } = useOnchainData();
+  const { referendumIndex: pollIndex } = useOnchainData();
 
   const { votes, fetchVotes, isLoading } =
-    useFellowshipReferendumVotes(referendumIndex);
+    useFellowshipReferendumVotes(pollIndex);
 
   return (
     <CleanupPollContext.Provider
-      value={{ isFinished, votes, fetchVotes, isLoading }}
+      value={{ isFinished, votes, fetchVotes, isLoading, pollIndex }}
     >
       {children}
     </CleanupPollContext.Provider>
   );
 }
 
-export function useFellowshipReferendumCleanupPoll() {
+export function useReferendumCleanupPoll() {
   return useContext(CleanupPollContext);
 }
