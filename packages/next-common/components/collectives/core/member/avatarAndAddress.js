@@ -42,7 +42,6 @@ export function AvatarAndAddressInListView({ address, isActive }) {
       <AddressUser
         add={address}
         fontSize={14}
-        className="[&_.identity]:!font-semibold"
         link={`/${section}`}
       />
     </div>
