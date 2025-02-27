@@ -1,5 +1,5 @@
 import Button from "next-common/lib/button";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useMemo } from "react";
 import Tooltip from "next-common/components/tooltip";
 import ReferendumCleanupPollProvider, {
   useReferendumCleanupPoll,
@@ -19,15 +19,20 @@ function CleanupPollButton() {
   const api = useContextApi();
   const pallet = useRankedCollectivePallet();
 
+  const hideButton = useMemo(() => {
+    return (
+      !isFinished || votes.length === 0 || isLoading || !address || !pollIndex
+    );
+  }, [isFinished, votes, isLoading, address, pollIndex]);
+
   const getTxFunc = useCallback(() => {
-    if (!api || !address || !pollIndex || votes.length === 0 || !pallet) {
+    if (!api || !pallet) {
       return;
     }
-
     setIsDisabled(true);
 
     return api?.tx?.[pallet]?.cleanupPoll(pollIndex, votes.length);
-  }, [api, address, pollIndex, votes, pallet]);
+  }, [api, pallet, pollIndex, votes]);
 
   const onInBlock = useReferendumCleanupPollUpdate();
 
@@ -37,7 +42,7 @@ function CleanupPollButton() {
     onCancelled: () => setIsDisabled(false),
   });
 
-  if (!isFinished || votes.length === 0 || isLoading || !address) {
+  if (hideButton) {
     return null;
   }
 
