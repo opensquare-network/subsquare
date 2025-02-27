@@ -66,7 +66,7 @@ function MakesureReferendumFinishedGuard({ children }) {
   const finishedIndexer = useReferendumVotingFinishIndexer();
   const { referendumIndex } = useOnchainData();
 
-  if (isNil(finishedIndexer) || !referendumIndex) {
+  if (isNil(finishedIndexer) || isNil(referendumIndex)) {
     return null;
   }
 
