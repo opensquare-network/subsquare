@@ -10,8 +10,8 @@ import { useOnchainData } from "next-common/context/post";
 import { useContextApi } from "next-common/context/api";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
+import getChainSettings from "next-common/utils/consts/settings";
 
 const ReferendumVotingContext = createContext();
 
@@ -28,7 +28,6 @@ function useFellowshipReferendumVotes() {
     }
 
     try {
-      setIsLoading(true);
       const votes = await api?.query?.[pallet]?.voting?.entries(pollIndex);
       setFellowshipVotes(votes);
     } catch (error) {
@@ -50,27 +49,22 @@ function useFellowshipReferendumVotes() {
   };
 }
 
-export function useReferendumVotingUpdate() {
-  const { fetch } = useFellowshipReferendumVotes();
-  const { blockTime: settingBlockTime } = useChainSettings();
+export async function fetchFellowshipReferendumVotes2Times(fetch) {
+  const blockTime =
+    getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
+    defaultBlockTime;
 
-  return useCallback(async () => {
-    const blockTime = settingBlockTime || defaultBlockTime;
-
-    const timers = [1, 2];
-    // eslint-disable-next-line no-unused-vars
-    for (const timer of timers) {
-      await fetch();
-      await sleep(blockTime);
-    }
-  }, [settingBlockTime, fetch]);
+  for (let i = 0; i < 2; i++) {
+    await fetch();
+    await sleep(blockTime);
+  }
 }
 
 export default function ReferendumVotingProvider({ children }) {
-  const { votes, isLoading } = useFellowshipReferendumVotes();
+  const { votes, isLoading, fetch } = useFellowshipReferendumVotes();
 
   return (
-    <ReferendumVotingContext.Provider value={{ votes, isLoading }}>
+    <ReferendumVotingContext.Provider value={{ votes, isLoading, fetch }}>
       {children}
     </ReferendumVotingContext.Provider>
   );

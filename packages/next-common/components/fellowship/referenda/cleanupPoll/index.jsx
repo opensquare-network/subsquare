@@ -3,7 +3,7 @@ import { useCallback, useState, useMemo } from "react";
 import Tooltip from "next-common/components/tooltip";
 import ReferendumVotingProvider, {
   useReferendumVoting,
-  useReferendumVotingUpdate,
+  fetchFellowshipReferendumVotes2Times,
 } from "next-common/context/fellowship/referendumVoting";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
@@ -13,14 +13,20 @@ import { useRankedCollectivePallet } from "next-common/context/collectives/colle
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { isNil } from "lodash-es";
 import { useOnchainData } from "next-common/context/post";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+
+const successToastContent =
+  "Votes in storage have been cleaned up. This button will disappear in a few seconds.";
 
 function CleanupPollButton() {
-  const { votes, isLoading } = useReferendumVoting();
+  const { votes, isLoading, fetch } = useReferendumVoting();
   const { referendumIndex: pollIndex } = useOnchainData();
   const address = useRealAddress();
   const [isDisabled, setIsDisabled] = useState(false);
   const api = useContextApi();
   const pallet = useRankedCollectivePallet();
+  const dispatch = useDispatch();
 
   const isCleanupEnabled = useMemo(() => {
     return votes?.length > 0 && !isLoading && address;
@@ -35,7 +41,12 @@ function CleanupPollButton() {
     return api?.tx?.[pallet]?.cleanupPoll(pollIndex, votes.length);
   }, [api, pallet, pollIndex, votes]);
 
-  const onInBlock = useReferendumVotingUpdate();
+  const onInBlock = () => {
+    dispatch(newSuccessToast(successToastContent));
+    fetchFellowshipReferendumVotes2Times(fetch).then(() => {
+      // updated 2 time, do nothing
+    });
+  };
 
   const { doSubmit } = useTxSubmission({
     getTxFunc,
