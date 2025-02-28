@@ -49,6 +49,10 @@ function AccountBalanceFiatValue({ value, className }) {
 function AccountBalanceItem({ value, title, isLoading }) {
   const isMobile = useIsMobile();
 
+  if (!isLoading && isNaN(value)) {
+    return null;
+  }
+
   return (
     <div
       className={cn(
