@@ -26,7 +26,7 @@ function MakeSureLoaded({ children }) {
 
 export function OnlyLowRankMembers({ children }) {
   const member = useContextMyCoreMember();
-  const { rank } = member;
+  const { rank } = member || {};
   // todo: ambassador may have a different rank threshold
   if (rank >= 3) {
     return null;
@@ -37,7 +37,7 @@ export function OnlyLowRankMembers({ children }) {
 
 export function OnlyHighRankMembers({ children }) {
   const member = useContextMyCoreMember();
-  const { rank } = member;
+  const { rank } = member || {};
   // todo: ambassador may have a different rank threshold
   if (rank < 3) {
     return null;
