@@ -1,3 +1,3 @@
-import Page404 from "next-common/components/pages/404";
+import Page404 from "@subsquare/next/pages/404";
 
 export default Page404;
