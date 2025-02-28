@@ -1,3 +1,17 @@
-import Page404 from "next-common/components/pages/404";
+import { Img404Dark, Img404Light } from "@osn/icons/subsquare";
+import ErrorLayout from "next-common/components/layout/errorLayout";
 
-export default Page404;
+export default function Page404() {
+  return (
+    <ErrorLayout
+      icon={
+        <>
+          <Img404Light className="dark:hidden" />
+          <Img404Dark className="dark dark:block" />
+        </>
+      }
+      title="404 Page Not Found"
+      description="You may mistyped the url or the page has been moved"
+    />
+  );
+}
