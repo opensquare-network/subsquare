@@ -12,7 +12,7 @@ import { fetchFellowshipReferendumVotes2Times } from "next-common/context/fellow
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 const successToastContent =
-  "Votes in storage have been cleaned up. This button will disappear in a few seconds.";
+  "Votes in storage have been cleaned up successfully.";
 
 function Content() {
   const { onClose } = usePopupParams();
