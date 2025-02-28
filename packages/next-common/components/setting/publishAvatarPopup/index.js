@@ -18,6 +18,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import { refreshAvatar } from "next-common/hooks/useAvatarInfo";
 import { getRealField } from "next-common/sima/actions/common";
+import { noop } from "lodash-es";
 
 export function useAvatarSubmission(imageFile, proxyAddress) {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ export function useAvatarSubmission(imageFile, proxyAddress) {
         },
       );
       if (uploadError) {
-        return false;
+        throw new Error(uploadError.message);
       }
       const { cid } = uploadResult;
 
@@ -70,7 +71,7 @@ export function useAvatarSubmission(imageFile, proxyAddress) {
             "Failed to save user's avatar cid: " + saveUserAvatarError.message,
           ),
         );
-        return false;
+        throw new Error(saveUserAvatarError.message);
       }
 
       refreshAvatar(address);
@@ -80,7 +81,7 @@ export function useAvatarSubmission(imageFile, proxyAddress) {
       if (e.message !== "Cancelled") {
         dispatch(newErrorToast(e.message));
       }
-      return false;
+      throw e;
     } finally {
       setIsLoading(false);
     }
@@ -106,12 +107,13 @@ function Content() {
   const { uploading, isLoading, submitAvatar } = useAvatarSubmission(imageFile);
   const router = useRouter();
 
-  const onSave = useCallback(async () => {
-    const success = await submitAvatar();
-    if (success) {
-      onClose();
-      router.replace(router.asPath);
-    }
+  const onSave = useCallback(() => {
+    submitAvatar()
+      .then(() => {
+        onClose();
+        router.replace(router.asPath);
+      })
+      .catch(noop);
   }, [submitAvatar, onClose, router]);
 
   return (

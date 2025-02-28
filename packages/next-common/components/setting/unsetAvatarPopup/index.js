@@ -17,6 +17,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import { refreshAvatar } from "next-common/hooks/useAvatarInfo";
 import { getRealField } from "next-common/sima/actions/common";
+import { noop } from "lodash-es";
 
 export function useAvatarUnset(proxyAddress) {
   const dispatch = useDispatch();
@@ -56,18 +57,16 @@ export function useAvatarUnset(proxyAddress) {
             "Failed to remove user's avatar: " + unsetUserAvatarError.message,
           ),
         );
-        return false;
+        throw new Error(unsetUserAvatarError.message);
       }
 
       refreshAvatar(address);
       dispatch(newSuccessToast("Avatar removed successfully"));
-
-      return true;
     } catch (e) {
       if (e.message !== "Cancelled") {
         dispatch(newErrorToast(e.message));
       }
-      return false;
+      throw e;
     } finally {
       setIsLoading(false);
     }
@@ -90,12 +89,13 @@ function Content() {
   const router = useRouter();
   const { isLoading, unsetAvatar } = useAvatarUnset();
 
-  const onUnset = useCallback(async () => {
-    const success = await unsetAvatar();
-    if (success) {
-      onClose();
-      router.replace(router.asPath);
-    }
+  const onUnset = useCallback(() => {
+    unsetAvatar()
+      .then(() => {
+        onClose();
+        router.replace(router.asPath);
+      })
+      .catch(noop);
   }, [unsetAvatar, onClose, router]);
 
   return (

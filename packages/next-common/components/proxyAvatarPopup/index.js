@@ -15,6 +15,7 @@ import { useAvatarSubmission } from "../setting/publishAvatarPopup";
 import { useAvatarUnset } from "next-common/components/setting/unsetAvatarPopup";
 import { useAsync } from "react-use";
 import nextApi from "next-common/services/nextApi";
+import { noop } from "lodash-es";
 
 function SaveButton({ proxyAddress, imageFile, refresh }) {
   const { isLoading, submitAvatar } = useAvatarSubmission(
@@ -22,11 +23,8 @@ function SaveButton({ proxyAddress, imageFile, refresh }) {
     proxyAddress,
   );
 
-  const onSave = useCallback(async () => {
-    const success = await submitAvatar();
-    if (success) {
-      refresh();
-    }
+  const onSave = useCallback(() => {
+    submitAvatar().then(refresh).catch(noop);
   }, [submitAvatar, refresh]);
 
   return (
@@ -44,11 +42,8 @@ function SaveButton({ proxyAddress, imageFile, refresh }) {
 function UnsetButton({ proxyAddress, avatarCid, refresh }) {
   const { isLoading, unsetAvatar } = useAvatarUnset(proxyAddress);
 
-  const onUnset = useCallback(async () => {
-    const success = await unsetAvatar();
-    if (success) {
-      refresh();
-    }
+  const onUnset = useCallback(() => {
+    unsetAvatar().then(refresh).catch(noop);
   }, [unsetAvatar, refresh]);
 
   return (
