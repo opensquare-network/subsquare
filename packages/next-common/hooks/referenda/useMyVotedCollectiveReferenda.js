@@ -1,39 +1,22 @@
-import { useEffect, useState } from "react";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useContextApi } from "next-common/context/api";
-import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
+import { useMemo } from "react";
 import { isSameAddress } from "next-common/utils";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useCollectivesReferendaVotes from "./useCollectivesReferendaVotes";
+
+export function useFilterMyVotes(votes) {
+  const address = useRealAddress();
+  return useMemo(
+    () => (votes || []).filter(({ voter }) => isSameAddress(voter, address)),
+    [votes, address],
+  );
+}
 
 export default function useMyVotedCollectiveReferenda() {
-  const api = useContextApi();
-  const address = useRealAddress();
-  const [myVotedReferenda, setMyVotedReferenda] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const pallet = useRankedCollectivePallet();
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    api.query[pallet].voting.entries().then((data) => {
-      const result = data
-        .map((item) => {
-          const [
-            {
-              args: [referendumIndex, voterAddress],
-            },
-          ] = item;
-          const isMyVote = isSameAddress(voterAddress.toJSON(), address);
-          return [referendumIndex.toNumber(), isMyVote];
-        })
-        .filter(([, isMyVote]) => isMyVote)
-        .map(([referendumIndex]) => referendumIndex);
-
-      setMyVotedReferenda(result);
-      setIsLoading(false);
-    });
-  }, [api, pallet, address]);
-
+  const { votes: allVotes, isLoading } = useCollectivesReferendaVotes();
+  const myVotes = useFilterMyVotes(allVotes);
+  const myVotedReferenda = useMemo(
+    () => (myVotes || []).map(({ referendumIndex }) => referendumIndex),
+    [myVotes],
+  );
   return { myVotedReferenda, isLoading };
 }

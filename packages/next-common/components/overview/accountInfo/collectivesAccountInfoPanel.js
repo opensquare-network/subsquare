@@ -1,7 +1,6 @@
 import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import CollectivesAccountInfo from "./components/collectiveAccountInfo";
-import CollectivesDemotionPrompt from "./components/collectivesDemotionPrompt";
 import { AccountHead, ProxyTip } from "./accountInfoPanel";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
@@ -10,9 +9,10 @@ import useMemberData from "./hook/useMemberData";
 import MemberDataProvider from "./context/memberDataContext";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
+import FellowshipTodoList from "./components/fellowshipTodoList";
 
 export default function CollectivesAccountInfoPanel() {
-  const fellowshipMemberData = useMemberData();
+  const fellowshipMemberData = useMemberData("fellowship");
   const ambassadorMemberData = useMemberData("ambassador");
   const { width } = useWindowSize();
 
@@ -29,12 +29,12 @@ export default function CollectivesAccountInfoPanel() {
         <ProxyTip />
         <AccountHead width={width} />
         <Divider />
-
         <CollectivesAccountInfo />
+        <Divider />
+        <FellowshipTodoList />
 
         <ExtensionUpdatePrompt />
         <AccountPanelScrollPrompt />
-        <CollectivesDemotionPrompt />
         <CollectivesSalaryWarnings />
       </NeutralPanel>
     </MemberDataProvider>

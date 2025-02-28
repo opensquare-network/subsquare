@@ -4,16 +4,12 @@ import Flex from "../styled/flex";
 import DotreasuryAccountLink from "./dotreasuryAccountLink";
 import StatescanAccountLink from "./statescanAccountLink";
 import SubScanAccountLink from "./subscanAccountLink";
-import MailLink from "./mailLink";
-import WebLink from "./webLink";
-import ElementLink from "./elementLink";
-import TwitterLink from "./twitterLink";
 import ConditionalMimirIcon from "./conditionalMimirIcon";
-import useIdentity from "next-common/utils/hooks/useIdentity";
 import { useChain } from "next-common/context/chain";
 import CouncilorLink from "./councilorLink";
 import Chains from "next-common/utils/consts/chains";
 import { useChainSettings } from "next-common/context/chain";
+import IdentityInfoLinks from "./identityInfoLinks";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -27,9 +23,7 @@ export default function AccountLinks({
   showCouncilorLink: showCouncilorLinkProp = true,
 }) {
   const chain = useChain();
-  const identity = useIdentity(address, chain);
   const chainSettings = useChainSettings();
-  const { email, riot, twitter, web } = identity?.info || {};
 
   const showCouncilorLink =
     showCouncilorLinkProp && [Chains.polkadot, Chains.kusama].includes(chain);
@@ -46,10 +40,7 @@ export default function AccountLinks({
       <StatescanAccountLink address={address} />
       <DotreasuryAccountLink address={address} />
       <SubScanAccountLink address={address} />
-      {email && <MailLink email={email} />}
-      {web && <WebLink website={web} />}
-      {riot && <ElementLink riot={riot} />}
-      {twitter && <TwitterLink twitter={twitter} />}
+      <IdentityInfoLinks address={address} />
       {showCouncilorLink && <CouncilorLink address={address} />}
       {showConditionalMimirIcon && <ConditionalMimirIcon address={address} />}
     </Wrapper>
