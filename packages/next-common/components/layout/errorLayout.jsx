@@ -34,7 +34,7 @@ export default function ErrorLayout({ icon, title, description }) {
         </div>
 
         <Link href="/">
-          <SecondaryButton>Go Back Home</SecondaryButton>
+          <SecondaryButton>Home Page</SecondaryButton>
         </Link>
 
         <div className="flex flex-col items-center gap-y-2">
