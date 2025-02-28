@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import Avatar from "next-common/components/avatar";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -16,40 +16,62 @@ import { useAvatarUnset } from "next-common/components/setting/unsetAvatarPopup"
 import { useAsync } from "react-use";
 import nextApi from "next-common/services/nextApi";
 
-function SaveButton({ proxyAddress, imageFile }) {
+function SaveButton({ proxyAddress, imageFile, refresh }) {
   const { isLoading, submitAvatar } = useAvatarSubmission(
     imageFile,
     proxyAddress,
   );
+
+  const onSave = useCallback(async () => {
+    const success = await submitAvatar();
+    if (success) {
+      refresh();
+    }
+  }, [submitAvatar, refresh]);
 
   return (
     <PrimaryButton
       size="small"
       disabled={!imageFile}
       loading={isLoading}
-      onClick={submitAvatar}
+      onClick={onSave}
     >
       Save
     </PrimaryButton>
   );
 }
 
-function UnsetButton({ proxyAddress, avatarCid }) {
+function UnsetButton({ proxyAddress, avatarCid, refresh }) {
   const { isLoading, unsetAvatar } = useAvatarUnset(proxyAddress);
+
+  const onUnset = useCallback(async () => {
+    const success = await unsetAvatar();
+    if (success) {
+      refresh();
+    }
+  }, [unsetAvatar, refresh]);
 
   return (
     <PrimaryButton
       size="small"
       disabled={!avatarCid}
       loading={isLoading}
-      onClick={unsetAvatar}
+      onClick={onUnset}
     >
       Unset
     </PrimaryButton>
   );
 }
 
-function ProfileAvatar({ address, proxyUser }) {
+function ProfileAvatar({ address }) {
+  const [trigger, setTrigger] = useState(0);
+  const refresh = useCallback(() => setTrigger((prev) => prev + 1), []);
+  const { value } = useAsync(
+    () => nextApi.fetch(`users/${address}`),
+    [address, trigger],
+  );
+  const proxyUser = value?.result;
+
   const [imageFile, setImageFile] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
 
@@ -82,10 +104,15 @@ function ProfileAvatar({ address, proxyUser }) {
       </div>
       <div className="flex justify-center">
         <div className="flex gap-[10px]">
-          <SaveButton proxyAddress={address} imageFile={imageFile} />
+          <SaveButton
+            proxyAddress={address}
+            imageFile={imageFile}
+            refresh={refresh}
+          />
           <UnsetButton
             proxyAddress={address}
             avatarCid={proxyUser?.avatarCid}
+            refresh={refresh}
           />
         </div>
       </div>
@@ -145,21 +172,11 @@ function ProxyAccount({ address }) {
 }
 
 export default function ProxyAvatarPopup({ proxyAddress, ...props }) {
-  const { value } = useAsync(
-    () => nextApi.fetch(`users/${proxyAddress}`),
-    [proxyAddress],
-  );
-
-  const proxyUser = value?.result;
-  if (!proxyUser) {
-    return null;
-  }
-
   return (
     <SignerPopupWrapper>
       <Popup title="Set Avatar As Proxy" {...props}>
         <div className="flex flex-col gap-[24px] text-textPrimary">
-          <ProfileAvatar address={proxyAddress} proxyUser={proxyUser} />
+          <ProfileAvatar address={proxyAddress} />
           <ProxyAccount address={proxyAddress} />
         </div>
       </Popup>

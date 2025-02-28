@@ -56,16 +56,18 @@ export function useAvatarUnset(proxyAddress) {
             "Failed to remove user's avatar: " + unsetUserAvatarError.message,
           ),
         );
-        return;
+        return false;
       }
 
       refreshAvatar(address);
       dispatch(newSuccessToast("Avatar removed successfully"));
+
+      return true;
     } catch (e) {
-      if (e.message === "Cancelled") {
-        return;
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
       }
-      dispatch(newErrorToast(e.message));
+      return false;
     } finally {
       setIsLoading(false);
     }
