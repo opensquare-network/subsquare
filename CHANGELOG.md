@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.5.0
+
+date: 2025-02-28
+
+- Fellowship
+    - [Big] Show fellowship todo list on account panel.
+    - Fix candidates offboard expiration filter.
+    - Show ambassador referenda count on collectives overview page.
+    - Support cleaning up poll for fellowship referenda.
+- Show extension update warning on popups which require signing.
+- Show loans to hydration and assethub assets on kusama treasury panel.
+- Refactor native asset icon setting to fix DOT icon on assethub.
+- Fix chain settings for paseo and paseo assethub.
+- Fix teleport between paseo and assethub.
+- Add status filter for treasury spends.
+- Add a shortcut button on account panel to account multisig tab data.
+- Improve the view of switch component under referendum detail tabs.
+- Refactor call data provider on referendum detail page.
+- [Medium] Show on-chain vesting data and multisig on data section.
+- Referendum detail
+    - Query referendum votes only from server due to performance reason.
+    - Show the white list call hash on referendum detail page call tab if the referendum is to whitelist a call.
+    - Allow users to reply their self comments.
+- Send notifications to OpenSquare team when there are page errors.
+- Customize error(500) and 404 page.
+- Support avatar setting as a proxy.
+- Update dependencies and fix styles.
+
 # 4.4.8
 
 date: 2025-02-13
