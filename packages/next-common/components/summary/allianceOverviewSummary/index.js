@@ -6,18 +6,30 @@ import SummaryItem from "next-common/components/summary/layout/item";
 export default function AllianceOverviewSummary() {
   const { summary } = usePageProps();
 
-  const { fellowshipReferenda, allianceMotions, allianceAnnouncements } =
-    summary ?? {};
+  const {
+    fellowshipReferenda,
+    ambassadorReferenda,
+    allianceMotions,
+    allianceAnnouncements,
+  } = summary ?? {};
 
   return (
     <SummaryLayout>
       <SummaryItem title="Fellowship Referenda">
         <ActiveValue
           href={"/fellowship"}
-          tooltip="Active referenda"
+          tooltip="Active fellowship referenda"
           value={fellowshipReferenda?.active || 0}
         />
       </SummaryItem>
+      <SummaryItem title="Ambassador Referenda">
+        <ActiveValue
+          href={"/ambassador"}
+          tooltip="Active ambassador referenda"
+          value={ambassadorReferenda?.active || 0}
+        />
+      </SummaryItem>
+
       <SummaryItem title="Alliance Motions">
         <ActiveValue
           href={"/alliance/motions"}
