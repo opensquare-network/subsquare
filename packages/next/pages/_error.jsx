@@ -1,8 +1,26 @@
-import React, { useEffect } from "react";
-import Error from "next/error";
-import { CHAIN } from "next-common/utils/constants";
+import { ImgErrorDark, ImgErrorLight } from "@osn/icons/subsquare";
+import ErrorLayout from "next-common/components/layout/errorLayout";
 import { reportClientError } from "next-common/services/reportClientError";
+import { CHAIN } from "next-common/utils/constants";
+import { useEffect } from "react";
 
+function getErrorReason(statusCode) {
+  const reasons = {
+    500: {
+      title: "Internal Server Error",
+      description:
+        "The server encountered an error and could not complete your request",
+    },
+  };
+
+  return (
+    reasons[statusCode] || {
+      title: "Application Error",
+      description:
+        "A client-side exception has occurred (see the browser console for more information)",
+    }
+  );
+}
 function ErrorPage({ statusCode, err, isServerError, reqUrl }) {
   useEffect(() => {
     if (err) {
@@ -19,7 +37,20 @@ function ErrorPage({ statusCode, err, isServerError, reqUrl }) {
     }
   }, [err, isServerError, reqUrl, statusCode]);
 
-  return <Error statusCode={statusCode} />;
+  const { title, description } = getErrorReason(statusCode);
+
+  return (
+    <ErrorLayout
+      icon={
+        <>
+          <ImgErrorLight className="dark:hidden" />
+          <ImgErrorDark className="hidden dark:block" />
+        </>
+      }
+      title={`${statusCode} ${title}`}
+      description={description}
+    />
+  );
 }
 
 ErrorPage.getInitialProps = async ({ req, res, err }) => {

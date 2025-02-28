@@ -50,7 +50,6 @@ function Content() {
   const [evidence, setEvidence] = useState("");
   const [wish, setWish] = useState("retention");
   const { uploading, upload } = useUploadToIpfs();
-
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
 

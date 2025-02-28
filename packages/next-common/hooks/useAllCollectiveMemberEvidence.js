@@ -20,7 +20,7 @@ export default function useAllCollectiveMemberEvidence() {
         } = key;
         return {
           who: who.toJSON(),
-          evidence: value.toHuman(),
+          evidence: value.toJSON(),
         };
       });
       setEvidences(result);

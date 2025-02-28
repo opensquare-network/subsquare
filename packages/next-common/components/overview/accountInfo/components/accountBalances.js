@@ -49,6 +49,10 @@ function AccountBalanceFiatValue({ value, className }) {
 function AccountBalanceItem({ value, title, isLoading }) {
   const isMobile = useIsMobile();
 
+  if (!isLoading && isNaN(value)) {
+    return null;
+  }
+
   return (
     <div
       className={cn(
@@ -131,7 +135,7 @@ export function Locked() {
 export default function AccountBalances() {
   return (
     <WindowSizeProvider>
-      <CollapsePanel labelItem={<TotalBalance />}>
+      <CollapsePanel className="w-[300px]" labelItem={<TotalBalance />}>
         <Transferrable />
         <Reserved />
         <Locked />

@@ -4,7 +4,7 @@ import {
   PromptButton,
   useDemotionExpiredCount,
   useDemotionExpiringCount,
-  useEvidencesStat,
+  useTodoEvidences,
 } from ".";
 import {
   OffboardClosing,
@@ -22,10 +22,10 @@ export default function MemberCandidatesWarnings({ className }) {
   const expiredMembersCount = useDemotionExpiredCount(members);
   const closingMembersCount = useDemotionExpiringCount(members);
   const {
-    totalEvidences,
-    evidencesToBeHandled,
+    all: allEvidences,
+    toBeHandled: toBeHandledEvidences,
     isLoading: isEvidencesLoading,
-  } = useEvidencesStat(members);
+  } = useTodoEvidences(members);
 
   const isLoading = isMembersLoading || isEvidencesLoading;
 
@@ -36,11 +36,11 @@ export default function MemberCandidatesWarnings({ className }) {
   };
 
   const promptItems = [
-    totalEvidences > 0 && (
+    allEvidences?.length > 0 && (
       <>
-        {evidencesToBeHandled} evidences to be handled in total{" "}
+        {toBeHandledEvidences?.length} evidences to be handled in total{" "}
         <PromptButton isCandidate filterLink={filterLinks.evidenceOnly}>
-          {totalEvidences} evidences
+          {allEvidences?.length} evidences
         </PromptButton>
         .
       </>

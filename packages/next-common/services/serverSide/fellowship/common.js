@@ -31,7 +31,7 @@ export function withFellowshipSalaryCommonProps(fn = noop) {
       {
         props: {
           ...tracksProps,
-          fellowshipMembers,
+          fellowshipMembers: fellowshipMembers ?? null,
           fellowshipParams,
           fellowshipSalaryClaimants,
           activeCycle,

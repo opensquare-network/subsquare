@@ -18,9 +18,9 @@ import { useEffect, useMemo, useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import {
-  UnVotedOnlyStateProvider,
-  useUnVotedOnlyState,
-} from "next-common/components/referenda/list";
+  UnVotedOnlyProvider,
+  useUnVotedOnlyContext,
+} from "next-common/components/referenda/list/unVotedContext";
 import FellowshipListLayout from "next-common/components/fellowship/fellowshipListLayout";
 
 function useMyUnVotedReferendaPosts() {
@@ -66,7 +66,7 @@ function WithFilterPostList({
 }) {
   const { fellowshipTracks } = usePageProps();
   const address = useRealAddress();
-  const [isShowUnVotedOnly, setIsShowUnVotedOnly] = useUnVotedOnlyState();
+  const { unVotedOnly, setUnVotedOnly } = useUnVotedOnlyContext();
 
   const items = (posts || []).map((item) =>
     normalizeFellowshipReferendaListItem(item, fellowshipTracks),
@@ -82,8 +82,8 @@ function WithFilterPostList({
             <UnVotedOnlyOption
               tooltip="Only referenda I can but haven't voted"
               isLoading={isUnVotedOnlyLoading}
-              isOn={isShowUnVotedOnly}
-              setIsOn={setIsShowUnVotedOnly}
+              isOn={unVotedOnly}
+              setIsOn={setUnVotedOnly}
             />
           )}
           <NewFellowshipProposalButton />
@@ -166,15 +166,15 @@ function FullList() {
 }
 
 function ReferendaListImpl() {
-  const [isShowUnVotedOnly] = useUnVotedOnlyState();
-  return isShowUnVotedOnly ? <UnVotedOnlyList /> : <FullList />;
+  const { unVotedOnly } = useUnVotedOnlyContext();
+  return unVotedOnly ? <UnVotedOnlyList /> : <FullList />;
 }
 
 function ReferendaList() {
   return (
-    <UnVotedOnlyStateProvider>
+    <UnVotedOnlyProvider>
       <ReferendaListImpl />
-    </UnVotedOnlyStateProvider>
+    </UnVotedOnlyProvider>
   );
 }
 

@@ -35,6 +35,7 @@ import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import ReferendumCallProvider from "next-common/context/referenda/call";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -66,7 +67,13 @@ function FellowshipContent() {
           <FellowshipReferendaDetail />
           <FellowshipReferendumSideBar />
           <DetailMultiTabs
-            call={(proposal?.call || proposal.inline) && <Gov2ReferendumCall />}
+            call={
+              (proposal?.call || proposal.inline) && (
+                <ReferendumCallProvider>
+                  <Gov2ReferendumCall />
+                </ReferendumCallProvider>
+              )
+            }
             metadata={
               <Gov2ReferendumMetadata
                 info={info}

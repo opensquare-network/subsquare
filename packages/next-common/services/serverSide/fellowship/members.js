@@ -20,7 +20,7 @@ const getFellowshipMembersServerSideProps = withCommonProps(async () => {
   return {
     props: {
       ...tracksProps,
-      fellowshipMembers,
+      fellowshipMembers: fellowshipMembers ?? null,
       fellowshipParams,
     },
   };

@@ -8,7 +8,8 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import UnVotedOnlyOption from "../unVotedOnlyOption";
-import { useIsTreasuryState, useUnVotedOnlyState } from ".";
+import { useIsTreasuryState } from ".";
+import { useUnVotedOnlyContext } from "./unVotedContext";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import TreasuryOnlyOption from "../treasuryOnlyOption";
 import { usePageProps } from "next-common/context/page";
@@ -20,7 +21,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
   const router = useRouter();
 
   const address = useRealAddress();
-  const [unVotedOnly, setUnVotedOnly] = useUnVotedOnlyState();
+  const { unVotedOnly, setUnVotedOnly } = useUnVotedOnlyContext();
   const [isTreasury, setIsTreasury] = useIsTreasuryState();
 
   const [open, setOpen] = useState(false);

@@ -14,3 +14,15 @@ export function useIsInSalaryRegistrationPeriod(status) {
   const { cycleStart } = status;
   return cycleStart + registrationPeriod > latestHeight;
 }
+
+export function useIsSalaryPayoutPeriod(status) {
+  const { registrationPeriod } = useSalaryFellowshipPeriods();
+  const latestHeight = useSelector(chainOrScanHeightSelector);
+
+  if (isNil(latestHeight) || isNil(status) || isNil(registrationPeriod)) {
+    return false;
+  }
+
+  const { cycleStart } = status;
+  return cycleStart + registrationPeriod <= latestHeight;
+}
