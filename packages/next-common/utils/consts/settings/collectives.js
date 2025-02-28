@@ -77,10 +77,6 @@ const collectives = {
   hasFellowshipParams: true,
   description: "Collectives on Polkadot network.",
   modules: mergeChainModules({
-    proxy: {
-      provider: "chain",
-    },
-
     fellowship: {
       core: true,
     },
