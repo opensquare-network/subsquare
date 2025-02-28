@@ -18,7 +18,7 @@ export default function ProxyAvatar() {
     <>
       <div className="flex justify-between items-center">
         <span className="text14Medium text-textPrimary">
-          You can customize avatars for the proxied accounts
+          You can set avatars for your proxied accounts
         </span>
         <SecondaryButton
           size="small"
