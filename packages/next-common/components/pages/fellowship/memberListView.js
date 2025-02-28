@@ -34,13 +34,13 @@ const rankColumn = {
 
 const memberColumn = {
   name: "Member",
-  width: 140,
+  className: "min-w-[140px]",
 };
 
 const salaryColumn = {
   name: "Salary",
   className: "text-right",
-  minWidth: 120,
+  width: 120,
 };
 
 const demotionPeriodColumn = {
