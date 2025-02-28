@@ -9,8 +9,16 @@ import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { createGlobalState } from "react-use";
 
 function extractSplitVotes(vote = {}) {
-  const { account, ayeBalance, ayeVotes, nayBalance, nayVotes } = vote;
+  const {
+    referendumIndex,
+    account,
+    ayeBalance,
+    ayeVotes,
+    nayBalance,
+    nayVotes,
+  } = vote;
   const common = {
+    referendumIndex,
     account,
     isDelegating: false,
     isSplit: true,
@@ -39,6 +47,7 @@ function extractSplitVotes(vote = {}) {
 
 function extractSplitAbstainVotes(vote = {}) {
   const {
+    referendumIndex,
     account,
     ayeBalance,
     ayeVotes,
@@ -48,6 +57,7 @@ function extractSplitAbstainVotes(vote = {}) {
     abstainVotes,
   } = vote;
   const common = {
+    referendumIndex,
     account,
     isDelegating: false,
     isSplitAbstain: true,
@@ -110,7 +120,10 @@ export function useFetchVotesFromServer(referendumIndex) {
           return [...result, vote];
         }, []);
 
-        const filteredVotes = allVotes.filter((vote) => BigInt(vote.votes) > 0);
+        const filteredVotes = allVotes.filter(
+          (vote) =>
+            BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes) > 0,
+        );
         dispatch(setAllVotes(sortVotes(filteredVotes)));
 
         if (!loaded) {
@@ -151,7 +164,9 @@ export default function useVotesFromServer(referendumIndex) {
       }
       return [...result, vote];
     }, []);
-    const filteredVotes = allVotes.filter((vote) => BigInt(vote.votes) > 0);
+    const filteredVotes = allVotes.filter(
+      (vote) => BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes) > 0,
+    );
     dispatch(setAllVotes(sortVotes(filteredVotes)));
   }, [votes, reduxVotes, dispatch]);
 }
