@@ -28,7 +28,7 @@ function CleanupPollButton() {
   const pallet = useRankedCollectivePallet();
   const dispatch = useDispatch();
 
-  const isCleanupEnabled = useMemo(() => {
+  const isShowCleanup = useMemo(() => {
     return votes?.length > 0 && !isLoading && address;
   }, [votes, isLoading, address]);
 
@@ -54,7 +54,7 @@ function CleanupPollButton() {
     onCancelled: () => setIsDisabled(false),
   });
 
-  if (!isCleanupEnabled) {
+  if (!isShowCleanup) {
     return null;
   }
 
