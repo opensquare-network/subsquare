@@ -7,7 +7,7 @@ export default function Page404() {
       icon={
         <>
           <Img404Light className="dark:hidden" />
-          <Img404Dark className="dark dark:block" />
+          <Img404Dark className="hidden dark:block" />
         </>
       }
       title="404 Page Not Found"
