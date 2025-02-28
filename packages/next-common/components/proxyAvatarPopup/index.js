@@ -115,52 +115,63 @@ function ProfileAvatar({ address }) {
   );
 }
 
-function ProxyAccount({ address }) {
-  const { proxies } = useMyProxied();
+function IdentityInfo({ address }) {
   const { identity, hasIdentity } = useIdentityInfo(address);
 
   const maybeEvmAddress = tryConvertToEvmAddress(address);
   const addressHint = addressEllipsis(maybeEvmAddress);
+
+  return (
+    <div className="flex flex-col h-[40px] justify-center truncate">
+      {hasIdentity ? (
+        <>
+          <Identity identity={identity} />
+          <div className="text12Medium text-textTertiary truncate">
+            {address}
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="text14Medium text-textPrimary">{addressHint}</div>
+          <div className="text12Medium text-textTertiary truncate">
+            {address}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function ProxyType({ address }) {
+  const { proxies } = useMyProxied();
   const proxyInfo = (proxies || []).find(
     (proxy) => proxy.delegator === address,
   );
 
+  return (
+    <div className="ml-[64px]">
+      <div
+        className={cn(
+          "border-neutral300 border-t py-[12px]",
+          "text12Medium text-textSecondary",
+        )}
+      >
+        Proxy type: {proxyInfo?.proxyType}
+      </div>
+    </div>
+  );
+}
+
+function ProxyAccount({ address }) {
   return (
     <div className="flex flex-col gap-[12px]">
       <span className="text14Bold text-textPrimary">Proxied Account</span>
       <div className="flex flex-col rounded-[8px] bg-neutral200">
         <div className="flex gap-[12px] m-[12px]">
           <AddressAvatar address={address} size={40} />
-          <div className="flex flex-col h-[40px] justify-center truncate">
-            {hasIdentity ? (
-              <>
-                <Identity identity={identity} />
-                <div className="text12Medium text-textTertiary truncate">
-                  {address}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="text14Medium text-textPrimary">
-                  {addressHint}
-                </div>
-                <div className="text12Medium text-textTertiary truncate">
-                  {address}
-                </div>
-              </>
-            )}
-          </div>
+          <IdentityInfo address={address} />
         </div>
-        <div className="ml-[64px]">
-          <div
-            className={cn(
-              "border-neutral300 border-t py-[12px]",
-              "text12Medium text-textSecondary",
-            )}
-          >
-            Proxy type: {proxyInfo?.proxyType}
-          </div>
-        </div>
+        <ProxyType address={address} />
       </div>
     </div>
   );
