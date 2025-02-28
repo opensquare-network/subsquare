@@ -1,5 +1,4 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
@@ -10,6 +9,7 @@ import { useOnchainData } from "next-common/context/post";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { fetchFellowshipReferendumVotes2Times } from "next-common/context/fellowship/referendumVoting";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 const successToastContent =
   "Votes in storage have been cleaned up. This button will disappear in a few seconds.";
@@ -39,7 +39,7 @@ function Content() {
 
   return (
     <>
-      <Signer />
+      <SignerWithBalance />
       <TxSubmissionButton
         title="Confirm"
         getTxFunc={getTxFunc}
