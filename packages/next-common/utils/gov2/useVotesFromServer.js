@@ -122,7 +122,7 @@ export function useFetchVotesFromServer(referendumIndex) {
 
         const filteredVotes = allVotes.filter(
           (vote) =>
-            BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes) > 0,
+            BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes || 0) > 0,
         );
         dispatch(setAllVotes(sortVotes(filteredVotes)));
 
