@@ -1,10 +1,10 @@
 import { reportClientError } from "next-common/services/reportClientError";
-import { CHAIN } from "next-common/utils/constants";
+import { CHAIN, IS_PRODUCTION } from "next-common/utils/constants";
 import { useEffect } from "react";
 
 export function useReportOnClientError() {
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && IS_PRODUCTION) {
       window.onerror = (message, _source, _lineno, _colno, error) => {
         const errorData = {
           chain: CHAIN,
