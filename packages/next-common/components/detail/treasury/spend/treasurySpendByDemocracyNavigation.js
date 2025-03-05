@@ -19,11 +19,14 @@ export default function TreasurySpendByDemocracyNavigation() {
   }
 
   const external = onchainData?.democracyExternalDetail;
+  if (!external) {
+    return null;
+  }
 
   return (
     <NavigationWrapper>
       <MultiMotionNavigator
-        motions={external.motions}
+        motions={external?.motions}
         type={detailPageCategory.COUNCIL_MOTION}
       />
       <ExternalProposalNavigator external={external} />
