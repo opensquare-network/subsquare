@@ -1,8 +1,13 @@
 import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { useUserAccountInfo } from "next-common/context/user/account";
+import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import { cn } from "next-common/utils";
 
 function CollapsePanel({ children }) {
-  return <div className="w-[300px]">{children}</div>;
+  const isMobile = useIsMobile();
+  return (
+    <div className={cn(isMobile ? "w-full" : "w-[300px]")}>{children}</div>
+  );
 }
 
 function TotalBalance() {
