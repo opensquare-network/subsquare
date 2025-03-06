@@ -11,7 +11,11 @@ describe("pass time", () => {
     expect(formatTimeAgo(dayjs().subtract(365, "day"))).toBe("1yr ago");
   });
   it("a year 2 months 3 days ago", () => {
-    expect(formatTimeAgo(dayjs().subtract(425, "day"))).toBe("1yr ago");
+    expect(
+      formatTimeAgo(dayjs().subtract(425, "day"), {
+        slice: 2,
+      }),
+    ).toBe("1yr 2mos ago");
   });
 
   it("3 months ago", () => {
@@ -25,7 +29,9 @@ describe("pass time", () => {
     expect(formatTimeAgo(dayjs().subtract(30, "day"))).toBe("1mo ago");
   });
   it("1 month 14 days ago", () => {
-    expect(formatTimeAgo(dayjs().subtract(44, "day"))).toBe("1mo ago");
+    expect(formatTimeAgo(dayjs().subtract(44, "day"), { slice: 2 })).toBe(
+      "1mo 14d ago",
+    );
   });
 
   it("3 days ago", () => {
