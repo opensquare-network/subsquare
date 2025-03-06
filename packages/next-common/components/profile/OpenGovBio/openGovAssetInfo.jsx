@@ -5,6 +5,7 @@ import {
 import { useUserAccountInfo } from "next-common/context/user/account";
 import { cn } from "next-common/utils";
 import CollapsePanel from "next-common/components/overview/accountInfo/components/collapsePanel";
+import Divider from "next-common/components/styled/layout/divider";
 
 function TotalBalance() {
   const { info, isLoading } = useUserAccountInfo();
@@ -54,18 +55,25 @@ function Locked() {
   );
 }
 
-export default function OpenGovAssetInfo() {
+export default function OpenGovAssetInfo({ address }) {
   const isMobile = useIsMobile();
 
+  if (!address) {
+    return null;
+  }
+
   return (
-    <CollapsePanel
-      className={cn(isMobile ? "w-full" : "w-[300px]")}
-      btnClassName="mx-0"
-      labelItem={<TotalBalance />}
-    >
-      <Transferrable />
-      <Reserved />
-      <Locked />
-    </CollapsePanel>
+    <>
+      <Divider className="my-4 w-full" />
+      <CollapsePanel
+        className={cn(isMobile ? "w-full" : "w-[300px]")}
+        btnClassName="mx-0"
+        labelItem={<TotalBalance />}
+      >
+        <Transferrable />
+        <Reserved />
+        <Locked />
+      </CollapsePanel>
+    </>
   );
 }

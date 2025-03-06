@@ -3,7 +3,6 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
 import FellowshipTagInfo from "../fellowshipTagInfo";
 import { DisplayUserAvatar, DisplayUser, DisplayUserAddress } from "../bio";
-import Divider from "next-common/components/styled/layout/divider";
 import OpenGovAssetInfo from "./openGovAssetInfo";
 import WindowSizeProvider from "next-common/context/windowSize";
 import UserAccountProvider from "next-common/context/user/account";
@@ -15,29 +14,32 @@ function OpenGovBioContent() {
   const { user, id } = usePageProps();
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
+  const shouldAlignCenter = isMobile || !address;
 
   return (
     <UserAccountProvider address={address}>
       <div
         className={cn(
           "w-full flex flex-col px-0 py-6 mt-0  gap-4",
-          isMobile ? "items-center" : "items-start",
+          shouldAlignCenter ? "items-center" : "items-start",
         )}
       >
         <DisplayUserAvatar address={address} user={user} />
         <div
           className={cn(
-            "flex-1 mt-0 flex-wrap w-full",
-            isMobile ? "justify-center" : "justify-start",
+            "flex mt-0 flex-wrap w-full",
+            shouldAlignCenter ? "justify-center" : "justify-start",
           )}
         >
           <DisplayUser
             id={id}
-            className={cn("flex", isMobile ? "justify-center" : "")}
+            className={cn("flex", shouldAlignCenter ? "justify-center" : "")}
           />
           <DisplayUserAddress
             address={address}
-            className={cn(isMobile ? "!items-center" : "flex-1 !items-start")}
+            className={cn(
+              shouldAlignCenter ? "!items-center" : "flex-1 !items-start",
+            )}
           />
 
           <FellowshipTagInfo address={address} />
@@ -47,9 +49,7 @@ function OpenGovBioContent() {
             type="ambassador"
           />
 
-          <Divider className="my-4 w-full" />
-
-          <OpenGovAssetInfo />
+          <OpenGovAssetInfo address={address} />
         </div>
       </div>
     </UserAccountProvider>
