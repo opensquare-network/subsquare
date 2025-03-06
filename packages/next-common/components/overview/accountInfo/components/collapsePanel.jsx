@@ -10,6 +10,7 @@ export const AlwaysVisible = ({ children }) => children;
 export default function CollapsePanel({
   defaultCollapsed = true,
   className,
+  btnClassName,
   children,
   labelItem,
 }) {
@@ -30,7 +31,7 @@ export default function CollapsePanel({
     <div className="flex">
       <SecondaryButton
         size="small"
-        className="w-5 h-5 mx-2.5 p-0"
+        className={cn("w-5 h-5 mx-2.5 p-0", btnClassName)}
         onClick={toggleCollapse}
       >
         <ArrowTriangleDown

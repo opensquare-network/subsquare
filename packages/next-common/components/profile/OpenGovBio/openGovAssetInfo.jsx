@@ -1,14 +1,10 @@
-import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
+import {
+  AccountBalanceItem,
+  useIsMobile,
+} from "next-common/components/overview/accountInfo/components/accountBalances";
 import { useUserAccountInfo } from "next-common/context/user/account";
-import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
-
-function CollapsePanel({ children }) {
-  const isMobile = useIsMobile();
-  return (
-    <div className={cn(isMobile ? "w-full" : "w-[300px]")}>{children}</div>
-  );
-}
+import CollapsePanel from "next-common/components/overview/accountInfo/components/collapsePanel";
 
 function TotalBalance() {
   const { info, isLoading } = useUserAccountInfo();
@@ -59,9 +55,14 @@ function Locked() {
 }
 
 export default function OpenGovAssetInfo() {
+  const isMobile = useIsMobile();
+
   return (
-    <CollapsePanel>
-      <TotalBalance />
+    <CollapsePanel
+      className={cn(isMobile ? "w-full" : "w-[300px]")}
+      btnClassName="mx-0"
+      labelItem={<TotalBalance />}
+    >
       <Transferrable />
       <Reserved />
       <Locked />
