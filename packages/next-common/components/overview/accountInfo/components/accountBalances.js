@@ -11,7 +11,7 @@ import WindowSizeProvider, {
 } from "next-common/context/windowSize";
 import { useChainSettings } from "next-common/context/chain";
 
-function useIsMobile() {
+export function useIsMobile() {
   const [navCollapsed] = useNavCollapsed();
   const width = useWindowWidthContext();
 
@@ -46,7 +46,7 @@ function AccountBalanceFiatValue({ value, className }) {
   );
 }
 
-function AccountBalanceItem({ value, title, isLoading }) {
+export function AccountBalanceItem({ value, title, isLoading }) {
   const isMobile = useIsMobile();
 
   if (!isLoading && isNaN(value)) {
