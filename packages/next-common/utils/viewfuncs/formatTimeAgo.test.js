@@ -144,3 +144,27 @@ describe("unknown time", () => {
     expect(formatTimeAgo(false)).toBe("unknown time");
   });
 });
+
+describe("specific date tests", () => {
+  const specificDate = new Date("2025-03-02");
+
+  it("from specific date", () => {
+    expect(formatTimeAgo(dayjs(specificDate))).toBe("4d ago");
+  });
+
+  it("30 days before specific date", () => {
+    expect(formatTimeAgo(dayjs(specificDate).subtract(30, "day"))).toBe(
+      "1mo ago",
+    );
+  });
+
+  it("60 days after specific date", () => {
+    expect(formatTimeAgo(dayjs(specificDate).add(60, "day"))).toBe("in 1mo");
+  });
+
+  it("2 years before specific date", () => {
+    expect(formatTimeAgo(dayjs(specificDate).subtract(730, "day"))).toBe(
+      "2yrs ago",
+    );
+  });
+});
