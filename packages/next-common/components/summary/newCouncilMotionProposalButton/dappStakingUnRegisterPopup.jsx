@@ -11,6 +11,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 
 export default function DappStakingUnRegisterPopup({ isMember }) {
   const { onClose } = usePopupParams();
@@ -18,6 +19,8 @@ export default function DappStakingUnRegisterPopup({ isMember }) {
   const api = useContextApi();
   const [contractAddress, setContractAddress] = useState("");
   const [contractType, setContractType] = useState(EVM);
+  const { members } = useCollectiveMembers();
+  const threshold = Math.ceil((members?.length * 4) / 5);
 
   const disabled = !contractAddress;
 
@@ -70,7 +73,11 @@ export default function DappStakingUnRegisterPopup({ isMember }) {
           }
           className="inline"
         >
-          <CouncilProposeButton disabled={disabled} getTxFunc={getTxFunc} />
+          <CouncilProposeButton
+            threshold={threshold}
+            disabled={disabled}
+            getTxFunc={getTxFunc}
+          />
         </Tooltip>
       </div>
     </Popup>

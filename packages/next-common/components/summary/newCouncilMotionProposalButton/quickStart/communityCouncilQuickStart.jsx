@@ -1,6 +1,9 @@
 import { QuickStart } from "next-common/components/preImages/createPreimagePopup";
 import { useChain } from "next-common/context/chain";
-import { useCollectivePallet } from "next-common/context/collective";
+import {
+  collectivePallets,
+  useCollectivePallet,
+} from "next-common/context/collective";
 import {
   ApproveTreasuryProposal,
   CollectiveProxyCall,
@@ -16,7 +19,10 @@ export default function CommunityCouncilQuickStart({ isMember }) {
 
   const isSupportedChain = isShibuyaChain(chain);
 
-  if (!isSupportedChain || "communityCouncil" !== collectivePallet) {
+  if (
+    !isSupportedChain ||
+    collectivePallets.communityCouncil !== collectivePallet
+  ) {
     return null;
   }
 
