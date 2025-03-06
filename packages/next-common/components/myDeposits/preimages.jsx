@@ -382,7 +382,7 @@ function UnnoteButton({ hash, count, deposit, status }) {
 
   const enabled =
     count === 0 &&
-    status.toLowerCase() === "unrequested" &&
+    status?.toLowerCase?.() === "unrequested" &&
     isSameAddress(realAddress, who);
 
   return (
