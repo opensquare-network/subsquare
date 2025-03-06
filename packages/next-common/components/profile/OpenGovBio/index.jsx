@@ -7,6 +7,8 @@ import Divider from "next-common/components/styled/layout/divider";
 import OpenGovAssetInfo from "./openGovAssetInfo";
 import WindowSizeProvider from "next-common/context/windowSize";
 
+import UserAccountProvider from "next-common/context/user/account";
+
 // TODO: responsive
 export default function OpenGovBio() {
   const { user, id } = usePageProps();
@@ -15,28 +17,30 @@ export default function OpenGovBio() {
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
 
   return (
-    <WindowSizeProvider>
-      <div className="w-full flex flex-col  px-0 py-6 mt-0  gap-4">
-        <DisplayUserAvatar address={address} user={user} />
-        <div className="flex-1 justify-start items-start mt-0 flex-wrap w-full">
-          <DisplayUser id={id} />
-          <DisplayUserAddress
-            address={address}
-            className="flex-1 !items-start"
-          />
+    <UserAccountProvider address={address}>
+      <WindowSizeProvider>
+        <div className="w-full flex flex-col  px-0 py-6 mt-0  gap-4">
+          <DisplayUserAvatar address={address} user={user} />
+          <div className="flex-1 justify-start items-start mt-0 flex-wrap w-full">
+            <DisplayUser id={id} />
+            <DisplayUserAddress
+              address={address}
+              className="flex-1 !items-start"
+            />
 
-          <FellowshipTagInfo address={address} />
-          <FellowshipTagInfo
-            address={address}
-            pallet="ambassadorCollective"
-            type="ambassador"
-          />
+            <FellowshipTagInfo address={address} />
+            <FellowshipTagInfo
+              address={address}
+              pallet="ambassadorCollective"
+              type="ambassador"
+            />
 
-          <Divider className="my-4 w-full" />
+            <Divider className="my-4 w-full" />
 
-          <OpenGovAssetInfo />
+            <OpenGovAssetInfo />
+          </div>
         </div>
-      </div>
-    </WindowSizeProvider>
+      </WindowSizeProvider>
+    </UserAccountProvider>
   );
 }

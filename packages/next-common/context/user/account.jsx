@@ -12,11 +12,12 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const Context = createContext();
 
-export default function UserAccountProvider({ children }) {
+export default function UserAccountProvider({ children, address = "" }) {
   const chain = useChain();
-  const address = useRealAddress();
+  const connectedAddress = useRealAddress();
+  const realAddress = address || connectedAddress;
 
-  if (!address) {
+  if (!realAddress) {
     return (
       <Context.Provider value={{ data: null, isLoading: false }}>
         {children}
@@ -28,7 +29,7 @@ export default function UserAccountProvider({ children }) {
     ? KintsugiAccountProvider
     : AccountProvider;
 
-  return <Provider address={address}>{children}</Provider>;
+  return <Provider address={realAddress}>{children}</Provider>;
 }
 
 function AccountProvider({ address, children }) {
