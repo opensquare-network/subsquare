@@ -7,7 +7,10 @@ import TreasurySpendPostMeta from "next-common/components/detail/treasury/spend/
 import TreasurySpendValidCountdown from "next-common/components/detail/treasury/spend/validCountdown";
 import TreasurySpendExpireCountdown from "next-common/components/detail/treasury/spend/expireCountDown";
 import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
-import TreasurySpendByDemocracyNavigation from "./treasurySpendByDemocracyNavigation";
+import {
+  TreasurySpendByDemocracyExternalNavigation,
+  TreasurySpendByDemocracyProposalNavigation,
+} from "./treasurySpendByDemocracyNavigation";
 
 export default function TreasurySpendDetail() {
   const isEditing = useSelector(isEditingPostSelector);
@@ -17,7 +20,8 @@ export default function TreasurySpendDetail() {
       head={
         !isEditing && (
           <>
-            <TreasurySpendByDemocracyNavigation />
+            <TreasurySpendByDemocracyProposalNavigation />
+            <TreasurySpendByDemocracyExternalNavigation />
             <TreasurySpendByGov2Navigation />
             <TreasurySpendValidCountdown />
             <TreasurySpendExpireCountdown />

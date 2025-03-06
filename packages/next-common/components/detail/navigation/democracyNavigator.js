@@ -109,6 +109,17 @@ export function ExternalTreasurySpendNavigator({ external }) {
   );
 }
 
+export function PublicProposalTreasurySpendNavigator({ publicProposal }) {
+  if (!publicProposal.referendum) {
+    return null;
+  }
+  return (
+    <DemocracyReferendaTreasurySpendNavigator
+      treasurySpendIndexes={publicProposal.referendum.treasurySpendIndexes}
+    />
+  );
+}
+
 export function DemocracyReferendaTreasurySpendNavigator({
   treasurySpendIndexes = [],
 }) {
