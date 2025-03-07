@@ -13,6 +13,8 @@ import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "../user/avatarDisplay";
 import FellowshipTagInfo from "./fellowshipTagInfo";
+import { useChainSettings } from "next-common/context/chain";
+import OpenGovBio from "./OpenGovBio";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -48,7 +50,7 @@ const Tertiary = styled.span`
   color: var(--textTertiary);
 `;
 
-const DisplayUserAvatar = ({ address, user }) => (
+export const DisplayUserAvatar = ({ address, user }) => (
   <AvatarDisplay
     avatarCid={user?.avatarCid}
     address={address}
@@ -57,13 +59,14 @@ const DisplayUserAvatar = ({ address, user }) => (
   />
 );
 
-const DisplayUser = ({ id }) => {
+export const DisplayUser = ({ id, className = "" }) => {
   if (isPolkadotAddress(id) || isEthereumAddress(id)) {
     return (
       <AddressUser
         add={id}
         showAvatar={false}
         addressClassName={"!text16Bold"}
+        className={className}
       />
     );
   }
@@ -71,13 +74,13 @@ const DisplayUser = ({ id }) => {
   return <Username>{id}</Username>;
 };
 
-const DisplayUserAddress = ({ address }) => {
+export const DisplayUserAddress = ({ address, className = "" }) => {
   if (!address) {
     return null;
   }
   const maybeEvmAddress = tryConvertToEvmAddress(address);
   return (
-    <AddressWrapper>
+    <AddressWrapper className={className}>
       <Copyable copyText={maybeEvmAddress}>
         <Tertiary>{maybeEvmAddress}</Tertiary>
       </Copyable>
@@ -86,7 +89,7 @@ const DisplayUserAddress = ({ address }) => {
   );
 };
 
-export default function Bio() {
+function NormalBio() {
   const { user, id } = usePageProps();
   const chain = useChain();
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
@@ -124,4 +127,14 @@ export default function Bio() {
       </Flex>
     </Wrapper>
   );
+}
+
+export default function Bio() {
+  const { modules } = useChainSettings();
+
+  if (modules?.referenda) {
+    return <OpenGovBio />;
+  }
+
+  return <NormalBio />;
 }

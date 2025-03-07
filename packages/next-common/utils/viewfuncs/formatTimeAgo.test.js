@@ -146,7 +146,9 @@ describe("unknown time", () => {
 });
 
 describe("specific date tests", () => {
-  const specificDate = new Date("2025-03-02");
+  const now = new Date().getTime();
+  const daySeconds = 60 * 60 * 24;
+  const specificDate = new Date(now - 4 * daySeconds * 1000);
 
   it("from specific date", () => {
     expect(formatTimeAgo(dayjs(specificDate))).toBe("4d ago");
