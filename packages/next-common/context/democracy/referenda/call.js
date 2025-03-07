@@ -3,15 +3,14 @@ import { useOnchainData } from "next-common/context/post";
 import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import { createGlobalState } from "react-use";
 import { isNil } from "lodash-es";
-import { parsePreImageCall } from "next-common/components/proposal/preImage";
 import getCallByPreimageHash from "next-common/services/preimages/call";
 import RawCallProvider from "next-common/context/call/raw";
 
 const useCachedResult = createGlobalState({});
 
-function useReferendumCall() {
+function useDemocracyReferendumCall() {
   const onchainData = useOnchainData();
-  const { inlineCall, proposalHash: hash, indexer } = onchainData || {};
+  const { hash, indexer } = onchainData;
   const api = useBlockApi(indexer?.blockHash);
 
   const [cachedResult, setCachedResult] = useCachedResult({});
@@ -19,25 +18,17 @@ function useReferendumCall() {
   const [loading, setLoading] = useState(isNil(result));
 
   useEffect(() => {
-    if (!api) {
+    if (!api || !hash) {
       return;
     }
 
-    if (inlineCall?.hex) {
-      setCachedResult((val) => ({
-        ...val,
-        [hash]: parsePreImageCall(inlineCall.hex, api),
-      }));
-    } else {
-      getCallByPreimageHash(api, hash)
-        .then((result) => {
-          setCachedResult((val) => ({ ...val, [hash]: result }));
-        })
-        .finally(() => setLoading(false));
-    }
-
-    setLoading(false);
-  }, [api, hash, inlineCall, setCachedResult]);
+    setLoading(true);
+    getCallByPreimageHash(api, hash)
+      .then((result) => {
+        setCachedResult((val) => ({ ...val, [hash]: result }));
+      })
+      .finally(() => setLoading(false));
+  }, [api, hash, setCachedResult]);
 
   return {
     isLoading: loading,
@@ -45,8 +36,8 @@ function useReferendumCall() {
   };
 }
 
-export default function ReferendumCallProvider({ children }) {
-  const { call, isLoading } = useReferendumCall();
+export default function DemocracyReferendumCallProvider({ children }) {
+  const { call, isLoading } = useDemocracyReferendumCall();
 
   return (
     <RawCallProvider call={call} isLoading={isLoading}>
