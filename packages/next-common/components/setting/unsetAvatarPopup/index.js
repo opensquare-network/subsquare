@@ -60,7 +60,7 @@ export function useAvatarUnset(proxyAddress) {
         throw new Error(unsetUserAvatarError.message);
       }
 
-      refreshAvatar(address);
+      refreshAvatar(proxyAddress || address);
       dispatch(newSuccessToast("Avatar removed successfully"));
     } catch (e) {
       if (e.message !== "Cancelled") {
