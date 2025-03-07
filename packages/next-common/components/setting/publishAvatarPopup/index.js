@@ -74,7 +74,7 @@ export function useAvatarSubmission(imageFile, proxyAddress) {
         throw new Error(saveUserAvatarError.message);
       }
 
-      refreshAvatar(address);
+      refreshAvatar(proxyAddress || address);
       dispatch(newSuccessToast("Avatar updated successfully"));
       return true;
     } catch (e) {
