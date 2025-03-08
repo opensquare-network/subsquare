@@ -49,6 +49,7 @@ export function useSetSigner() {
         return;
       }
 
+      alert("before call extension.enable");
       try {
         const wallet = await extension.enable("subsquare");
         alert(
@@ -64,6 +65,7 @@ export function useSetSigner() {
       } catch (error) {
         alert(error.message);
       }
+      alert("after call extension.enable");
     },
     [injectedWeb3],
   );
