@@ -51,6 +51,7 @@ export function useSetSigner() {
 
       const wallet = await extension.enable("subsquare");
       if (wallet) {
+        alert("call setSigner");
         api?.setSigner(wallet.signer);
       }
     },
