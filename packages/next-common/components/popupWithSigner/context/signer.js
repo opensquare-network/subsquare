@@ -38,6 +38,13 @@ export function useSetSigner() {
         account.meta?.source,
         injectedWeb3,
       );
+      alert(
+        JSON.stringify({
+          hasExtension: !!extension,
+          source: account.meta?.source,
+          injected: Object.keys(injectedWeb3),
+        }),
+      );
       if (!extension) {
         return;
       }
