@@ -49,10 +49,20 @@ export function useSetSigner() {
         return;
       }
 
-      const wallet = await extension.enable("subsquare");
-      if (wallet) {
-        alert("call setSigner", { api: !!api, signer: !!wallet.signer });
-        api?.setSigner(wallet.signer);
+      try {
+        const wallet = await extension.enable("subsquare");
+        alert(
+          JSON.stringify({
+            api: !!api,
+            wallet: !!wallet,
+            signer: !!wallet?.signer,
+          }),
+        );
+        if (wallet) {
+          api?.setSigner(wallet.signer);
+        }
+      } catch (error) {
+        alert(error.message);
       }
     },
     [injectedWeb3],
