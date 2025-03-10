@@ -59,12 +59,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const tracksProps = await fetchOpenGovTracksProps();
 
-  const [{ result: posts }] = await Promise.all([
-    nextApi.fetch("fellowship/applications", {
-      page,
-      pageSize,
-    }),
-  ]);
+  const { result: posts } = await nextApi.fetch("fellowship/applications", {
+    page,
+    pageSize,
+  });
 
   return {
     props: {
