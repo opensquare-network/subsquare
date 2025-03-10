@@ -1,10 +1,7 @@
 import { ArrowExternalLinkWiki } from "@osn/icons/subsquare";
-import Identity from "next-common/components/Identity";
 import AddressAvatar from "next-common/components/user/addressAvatar";
-import useIdentityInfo from "next-common/hooks/useIdentityInfo";
-import { addressEllipsis } from "next-common/utils";
+import IdentityInfo from "./identityInfo";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import Input from "next-common/lib/input";
 import { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -56,33 +53,6 @@ function Info() {
         Once an application is pre-approved, the applicant becomes eligible for
         induction to the Fellowship.
       </span>
-    </div>
-  );
-}
-
-function IdentityInfo({ address }) {
-  const { identity, hasIdentity } = useIdentityInfo(address);
-
-  const maybeEvmAddress = tryConvertToEvmAddress(address);
-  const addressHint = addressEllipsis(maybeEvmAddress);
-
-  return (
-    <div className="flex flex-col h-[40px] justify-center truncate">
-      {hasIdentity ? (
-        <>
-          <Identity identity={identity} />
-          <div className="text12Medium text-textTertiary truncate">
-            {address}
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="text14Medium text-textPrimary">{addressHint}</div>
-          <div className="text12Medium text-textTertiary truncate">
-            {address}
-          </div>
-        </>
-      )}
     </div>
   );
 }

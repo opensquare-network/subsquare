@@ -9,6 +9,10 @@ import { isPostEdited } from "next-common/utils/post";
 import Tabs from "next-common/components/tabs";
 import ContentSummary from "next-common/components//contentSummary";
 import PostDataSource from "next-common/components//postDataSource";
+import AddressAvatar from "next-common/components/user/addressAvatar";
+import IdentityInfo from "./identityInfo";
+import CollectivesProvider from "next-common/context/collectives/collectives";
+import Induct from "./induct";
 
 const Wrapper = styled.div`
   :hover {
@@ -17,6 +21,23 @@ const Wrapper = styled.div`
     }
   }
 `;
+
+function Applicant({ address }) {
+  return (
+    <div className="flex flex-col gap-[16px]">
+      <span className="text14Bold">Applicant</span>
+      <div className="flex justify-between items-center rounded-[8px] border border-neutral400 p-[12px]">
+        <div className="flex gap-[12px]">
+          <AddressAvatar address={address} size={40} />
+          <IdentityInfo address={address} />
+        </div>
+        <CollectivesProvider>
+          <Induct address={address} />
+        </CollectivesProvider>
+      </div>
+    </div>
+  );
+}
 
 export default function ArticleContent({ setIsEdit, className = "" }) {
   const post = usePost();
@@ -69,6 +90,8 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
               {postContent}
             </>
           )}
+          <Divider className="my-4" />
+          <Applicant address={post.applicant} />
         </div>
       )}
 
