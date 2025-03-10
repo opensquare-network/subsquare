@@ -8,6 +8,7 @@ import {
   nova,
   mimir,
   signet,
+  walletConnect,
 } from "next-common/utils/consts/connect";
 import isEvmChain, {
   isSupportSubstrateThroughEthereumAddress,
@@ -25,6 +26,7 @@ export function useSubstrateWallets() {
     !isSubstrateThroughEvm && polkagate,
     !isSubstrateThroughEvm && polkagateSnap,
     !isSubstrateThroughEvm && nova,
+    walletConnect,
   ].filter(Boolean);
   let multiSigWallets = [];
 
