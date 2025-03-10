@@ -8,6 +8,7 @@ import WindowSizeProvider from "next-common/context/windowSize";
 import UserAccountProvider from "next-common/context/user/account";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
+import VotesPowerPanel from "./votesPower";
 
 function OpenGovBioContent() {
   const isMobile = useIsMobile();
@@ -48,6 +49,7 @@ function OpenGovBioContent() {
             pallet="ambassadorCollective"
             type="ambassador"
           />
+          <VotesPowerPanel address={address} />
 
           <OpenGovAssetInfo address={address} />
         </div>
