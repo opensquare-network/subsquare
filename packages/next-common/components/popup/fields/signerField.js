@@ -5,7 +5,6 @@ import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
 import MaybeProxySigner from "../../signer";
-import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 
 export default function Signer({
   title = "Origin",
@@ -20,8 +19,6 @@ export default function Signer({
 
   return (
     <div>
-      <ExtensionUpdatePrompt isWithCache={false} />
-
       {noBalance ? (
         <PopupLabel text={title || "Origin"} />
       ) : (
