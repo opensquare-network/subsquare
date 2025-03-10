@@ -5,7 +5,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
+import normalizeFellowshipApplicationListItem from "next-common/utils/viewfuncs/fellowshipApplication/normalizeFellowshipApplicationListItem";
 import PrimaryButton from "next-common/lib/button/primary";
 import { SystemPlus } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
@@ -29,7 +29,7 @@ export default function FellowshipApplicationsPage({ posts }) {
   const title = "Fellowship Applications";
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
-    normalizeDiscussionListItem(item),
+    normalizeFellowshipApplicationListItem(item),
   );
 
   return (
@@ -42,7 +42,7 @@ export default function FellowshipApplicationsPage({ posts }) {
         title="List"
         titleCount={posts.total}
         titleExtra={<NewFellowshipApplicationButton />}
-        category={businessCategory.fellowshipApplication}
+        category={businessCategory.fellowshipApplications}
         items={items}
         pagination={{
           page: posts.page,
@@ -59,12 +59,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const tracksProps = await fetchOpenGovTracksProps();
 
-  const [{ result: posts }] = await Promise.all([
-    nextApi.fetch("fellowship/applications", {
-      page,
-      pageSize,
-    }),
-  ]);
+  const { result: posts } = await nextApi.fetch("fellowship/applications", {
+    page,
+    pageSize,
+  });
 
   return {
     props: {
