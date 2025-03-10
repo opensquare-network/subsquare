@@ -150,6 +150,25 @@ function getFellowshipTreasuryMenu(overviewSummary) {
   };
 }
 
+function getFellowshipApplicationsMenu(overviewSummary) {
+  if (!isCollectivesChain(process.env.NEXT_PUBLIC_CHAIN)) {
+    return null;
+  }
+
+  const fellowshipApplications = overviewSummary?.fellowshipApplications || {};
+
+  return {
+    value: "fellowship-applications",
+    name: Names.applications,
+    pathname: "/fellowship/applications",
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship/applications",
+      "/fellowship/applications/[id]",
+    ],
+    activeCount: fellowshipApplications.active || 0,
+  };
+}
+
 export function getFellowshipMenu(overviewSummary, currentTrackId) {
   const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks || [];
   const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
@@ -169,6 +188,7 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
         totalActiveCount,
       ),
       getFellowshipTreasuryMenu(overviewSummary),
+      getFellowshipApplicationsMenu(overviewSummary),
       getFellowshipStatisticsMenu(),
     ].filter(Boolean),
   };
