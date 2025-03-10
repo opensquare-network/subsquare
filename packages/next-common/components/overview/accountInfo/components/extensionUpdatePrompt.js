@@ -78,7 +78,9 @@ function PromptContent({ onUpdateMeta }) {
 export default function ExtensionUpdatePrompt({ isWithCache = true }) {
   const api = useContextApi();
   const connectedAccount = useConnectedAccount();
-  const [isNeedUpdate, setIsNeedUpdate] = useState();
+  const [
+    isNeedUpdate, //setIsNeedUpdate
+  ] = useState();
   const { injectedWeb3Extension, loading: isLoadingInjectedWeb3Extension } =
     useInjectedWeb3Extension(connectedAccount?.wallet);
   const chainInfo = useChainInfo();
@@ -104,13 +106,13 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
       return;
     }
 
-    injectedWeb3Extension
-      .enable("subsquare")
-      .then(async (extension) => {
-        const isNeedUpdate = await checkNeedUpdate(api, extension);
-        setIsNeedUpdate(isNeedUpdate);
-      })
-      .catch(console.error);
+    // injectedWeb3Extension
+    //   .enable("subsquare")
+    //   .then(async (extension) => {
+    //     const isNeedUpdate = await checkNeedUpdate(api, extension);
+    //     setIsNeedUpdate(isNeedUpdate);
+    //   })
+    //   .catch(console.error);
   }, [
     api,
     checkNeedUpdate,
