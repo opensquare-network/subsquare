@@ -5,7 +5,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
+import normalizeFellowshipApplicationListItem from "next-common/utils/viewfuncs/fellowshipApplication/normalizeFellowshipApplicationListItem";
 import PrimaryButton from "next-common/lib/button/primary";
 import { SystemPlus } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
@@ -29,7 +29,7 @@ export default function FellowshipApplicationsPage({ posts }) {
   const title = "Fellowship Applications";
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
-    normalizeDiscussionListItem(item),
+    normalizeFellowshipApplicationListItem(item),
   );
 
   return (
