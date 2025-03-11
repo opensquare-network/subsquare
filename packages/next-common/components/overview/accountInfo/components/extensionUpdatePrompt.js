@@ -95,13 +95,18 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
     alert("checkNeedUpdate");
     try {
       const known = await extension.metadata.get();
+      alert({ known: !!known });
       const current =
         known.find(({ genesisHash }) => api.genesisHash.eq(genesisHash)) ||
         null;
+      alert(JSON.stringify({ current: !!current }));
       alert(
         JSON.stringify({
-          current: !current,
           specVersion: api.runtimeVersion.specVersion.gtn(current?.specVersion),
+        }),
+      );
+      alert(
+        JSON.stringify({
           currentSpecVersion: checkPropertiesChange(api, extension),
         }),
       );
