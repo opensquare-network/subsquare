@@ -161,6 +161,7 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
 
         const isOk = await extension.metadata.provide(def);
         alert("after metadata.provide");
+        alert({ isOk });
 
         if (isOk) {
           cacheProperties(api, connectedAccount?.wallet, injectedWeb3Extension);
