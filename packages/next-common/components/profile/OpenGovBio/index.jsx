@@ -21,39 +21,46 @@ function OpenGovBioContent() {
     <UserAccountProvider address={address}>
       <div
         className={cn(
-          "w-full flex flex-col px-0 py-6 mt-0  gap-4",
-          shouldAlignCenter ? "items-center" : "items-start",
+          "grid gap-[16px]",
+          isMobile ? "grid-cols-1" : "grid-cols-2",
         )}
       >
-        <DisplayUserAvatar address={address} user={user} />
         <div
           className={cn(
-            "flex mt-0 flex-wrap w-full",
-            shouldAlignCenter ? "justify-center" : "justify-start",
+            "w-full flex flex-col px-0 pt-6 mt-0 gap-4",
+            shouldAlignCenter ? "items-center" : "items-start",
           )}
         >
-          <DisplayUser
-            id={id}
-            className={cn("flex", shouldAlignCenter ? "justify-center" : "")}
-          />
-          <DisplayUserAddress
-            address={address}
+          <DisplayUserAvatar address={address} user={user} />
+          <div
             className={cn(
-              shouldAlignCenter ? "!items-center" : "flex-1 !items-start",
+              "flex mt-0 flex-wrap w-full",
+              shouldAlignCenter ? "justify-center" : "justify-start",
             )}
-          />
+          >
+            <DisplayUser
+              id={id}
+              className={cn("flex", shouldAlignCenter ? "justify-center" : "")}
+            />
+            <DisplayUserAddress
+              address={address}
+              className={cn(
+                shouldAlignCenter ? "!items-center" : "flex-1 !items-start",
+              )}
+            />
 
-          <FellowshipTagInfo address={address} />
-          <FellowshipTagInfo
-            address={address}
-            pallet="ambassadorCollective"
-            type="ambassador"
-          />
-          <VotesPowerPanel address={address} />
-
-          <OpenGovAssetInfo address={address} />
+            <FellowshipTagInfo address={address} />
+            <FellowshipTagInfo
+              address={address}
+              pallet="ambassadorCollective"
+              type="ambassador"
+            />
+          </div>
         </div>
+
+        <VotesPowerPanel address={address} />
       </div>
+      <OpenGovAssetInfo address={address} />
     </UserAccountProvider>
   );
 }
