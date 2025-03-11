@@ -34,21 +34,18 @@ export default function useQueryVotesPower(address = "") {
       : "0";
 
     if (!votingValue) {
-      return { selfBalance, maxDelegations: null, trackId: null };
+      return { selfBalance, maxDelegations: null, tracks: 0 };
     }
 
-    let maxDelegations = 0;
-    let maxDelegationsTrackId = null;
+    let maxDelegations = new BigNumber(0);
 
-    for (const [storageKey, votingOf] of votingValue) {
-      const trackId = storageKey.args[1].toNumber();
+    for (const [, votingOf] of votingValue) {
       if (votingOf.isCasting) {
         const votes = new BigNumber(
           votingOf.asCasting.delegations.votes.toString(),
         );
         if (votes.isGreaterThan(maxDelegations)) {
           maxDelegations = votes;
-          maxDelegationsTrackId = trackId;
         }
       }
     }
@@ -57,12 +54,11 @@ export default function useQueryVotesPower(address = "") {
       maxDelegations || 0,
     );
 
-    // TODO: track name
     return {
       selfBalance,
       maxDelegations: maxDelegations.toString(),
-      votesPower,
-      trackId: maxDelegationsTrackId,
+      votesPower: votesPower.toString(),
+      tracks: (votingValue || []).length,
     };
   }, [api, address, votingValue, isVotingLoaded, isBalanceLoaded, accountInfo]);
 

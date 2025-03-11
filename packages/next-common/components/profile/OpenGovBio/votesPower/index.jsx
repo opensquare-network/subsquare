@@ -27,7 +27,7 @@ export default function OpenGovVotesPower({ address }) {
     selfBalance = 0,
     maxDelegations = 0,
     votesPower = 0,
-    trackId = null,
+    tracks = 0,
   } = result || {};
 
   return (
@@ -69,7 +69,7 @@ export default function OpenGovVotesPower({ address }) {
           </DataItem>
           <div className="text12Medium text-textDisabled">·</div>
           <DataItem label="Tracks">
-            <span>{trackId}</span>
+            <span>{tracks}</span>
           </DataItem>
         </GreyPanel>
       </GreyPanel>
