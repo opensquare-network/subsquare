@@ -3,18 +3,69 @@ import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import BigNumber from "bignumber.js";
 
-export default function useQueryVotesPower(address = "") {
+function useQueryAccountBalance(address) {
   const api = useContextApi();
+  const { value: accountInfo, loaded: isBalanceLoaded } = useCall(
+    api?.query?.system?.account,
+    [address],
+  );
 
+  return { accountInfo, isBalanceLoaded };
+}
+
+function useQueryVotingData(address) {
+  const api = useContextApi();
   const { value: votingValue, loaded: isVotingLoaded } = useCall(
     api?.query?.convictionVoting?.votingFor?.entries,
     [address],
   );
 
-  const { value: accountInfo, loaded: isBalanceLoaded } = useCall(
-    api?.query?.system?.account,
-    [address],
-  );
+  return { votingValue, isVotingLoaded };
+}
+
+function getSelfBalance(accountInfo) {
+  const selfBalanceRaw = accountInfo?.data?.free?.toString();
+  if (!selfBalanceRaw || isNaN(selfBalanceRaw)) {
+    return "0";
+  }
+
+  return new BigNumber(selfBalanceRaw).multipliedBy(6).toString();
+}
+
+function getMaxDelegations(votingValue) {
+  if (!votingValue) {
+    return null;
+  }
+
+  let maxDelegations = new BigNumber(0);
+
+  for (const [, votingOf] of votingValue) {
+    if (votingOf.isCasting) {
+      const votesRaw = votingOf.asCasting.delegations.votes.toString();
+      if (!isNaN(votesRaw)) {
+        const votes = new BigNumber(votesRaw);
+        if (votes.isGreaterThan(maxDelegations)) {
+          maxDelegations = votes;
+        }
+      }
+    }
+  }
+
+  return maxDelegations.toString();
+}
+
+function getVotesPower(selfBalance, maxDelegations) {
+  return new BigNumber(selfBalance || 0).plus(maxDelegations || 0).toString();
+}
+
+function getTracks(votingValue) {
+  return (votingValue || []).length;
+}
+
+export default function useQueryVotesPower(address = "") {
+  const api = useContextApi();
+  const { accountInfo, isBalanceLoaded } = useQueryAccountBalance(address);
+  const { votingValue, isVotingLoaded } = useQueryVotingData(address);
 
   const result = useMemo(() => {
     if (
@@ -28,37 +79,16 @@ export default function useQueryVotesPower(address = "") {
       return null;
     }
 
-    const selfBalanceRaw = accountInfo?.data?.free?.toString();
-    const selfBalance = selfBalanceRaw
-      ? new BigNumber(selfBalanceRaw).multipliedBy(6).toString()
-      : "0";
-
-    if (!votingValue) {
-      return { selfBalance, maxDelegations: null, tracks: 0 };
-    }
-
-    let maxDelegations = new BigNumber(0);
-
-    for (const [, votingOf] of votingValue) {
-      if (votingOf.isCasting) {
-        const votes = new BigNumber(
-          votingOf.asCasting.delegations.votes.toString(),
-        );
-        if (votes.isGreaterThan(maxDelegations)) {
-          maxDelegations = votes;
-        }
-      }
-    }
-
-    const votesPower = new BigNumber(selfBalance || 0).plus(
-      maxDelegations || 0,
-    );
+    const selfBalance = getSelfBalance(accountInfo);
+    const maxDelegations = getMaxDelegations(votingValue);
+    const votesPower = getVotesPower(selfBalance, maxDelegations);
+    const tracks = getTracks(votingValue);
 
     return {
       selfBalance,
-      maxDelegations: maxDelegations.toString(),
-      votesPower: votesPower.toString(),
-      tracks: (votingValue || []).length,
+      maxDelegations,
+      votesPower,
+      tracks,
     };
   }, [api, address, votingValue, isVotingLoaded, isBalanceLoaded, accountInfo]);
 
