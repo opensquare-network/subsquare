@@ -104,18 +104,16 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
       return;
     }
 
-    setTimeout(() => {
-      injectedWeb3Extension
-        .enable("subsquare")
-        .then(async (extension) => {
-          alert("ExtensionUpdatePrompt: extension enabled");
-          const isNeedUpdate = await checkNeedUpdate(api, extension);
-          alert("checkNeedUpdate finished");
+    injectedWeb3Extension
+      .enable("subsquare")
+      .then(async (extension) => {
+        alert("ExtensionUpdatePrompt: extension enabled");
+        const isNeedUpdate = await checkNeedUpdate(api, extension);
+        alert("checkNeedUpdate finished");
 
-          setIsNeedUpdate(isNeedUpdate);
-        })
-        .catch(console.error);
-    }, 1000);
+        setIsNeedUpdate(isNeedUpdate);
+      })
+      .catch(console.error);
   }, [
     api,
     checkNeedUpdate,
