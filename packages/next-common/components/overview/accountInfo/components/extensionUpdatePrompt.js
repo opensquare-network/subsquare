@@ -102,7 +102,8 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
       alert(JSON.stringify({ current: !!current }));
       alert(
         JSON.stringify({
-          specVersion: api.runtimeVersion.specVersion.gtn(current?.specVersion),
+          specVersion1: api.runtimeVersion.specVersion.toString(),
+          specVersion2: current?.specVersion.toString(),
         }),
       );
       alert(
