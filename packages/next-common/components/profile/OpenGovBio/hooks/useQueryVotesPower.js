@@ -33,42 +33,58 @@ function getSelfBalance(accountInfo) {
   return new BigNumber(selfBalanceRaw).multipliedBy(6).toString();
 }
 
-function getMaxDelegationsAndTracks(votingValue) {
+function getVotesPower(selfBalance, maxDelegations) {
+  return new BigNumber(selfBalance || 0).plus(maxDelegations || 0).toString();
+}
+
+function getMaxDelegations(votingValue) {
   if (!votingValue) {
-    return { maxDelegations: null, tracks: null };
+    return null;
   }
 
   let maxDelegations = null;
+
+  for (const [, votingOf] of votingValue) {
+    if (!votingOf.isCasting) {
+      return null;
+    }
+
+    const votesRaw = votingOf?.asCasting?.delegations?.votes?.toString() || "0";
+    const votes = new BigNumber(votesRaw);
+    if (maxDelegations === null || votes.isGreaterThan(maxDelegations)) {
+      maxDelegations = votes;
+    }
+  }
+
+  return maxDelegations ? maxDelegations.toString() : null;
+}
+
+function getTracks(votingValue, maxDelegations) {
+  if (!votingValue || !maxDelegations) {
+    return null;
+  }
+
+  const maxDelegationsBN = new BigNumber(maxDelegations);
+  if (maxDelegationsBN.isZero()) {
+    return null;
+  }
+
   const tracksWithMaxDelegations = new Set();
 
   for (const [storageKey, votingOf] of votingValue) {
     const trackId = storageKey.args[1]?.toNumber();
-    if (!isNil(trackId) && votingOf.isCasting) {
-      const votesRaw = votingOf.asCasting.delegations.votes.toString();
-      if (!isNaN(votesRaw)) {
-        const votes = new BigNumber(votesRaw);
-        if (maxDelegations === null || votes.isGreaterThan(maxDelegations)) {
-          maxDelegations = votes;
-          tracksWithMaxDelegations.clear();
-          tracksWithMaxDelegations.add(trackId);
-        } else if (votes.isEqualTo(maxDelegations)) {
-          tracksWithMaxDelegations.add(trackId);
-        }
-      }
+    if (isNil(trackId) || !votingOf.isCasting) {
+      return null;
+    }
+
+    const votesRaw = votingOf?.asCasting?.delegations?.votes?.toString() || "0";
+    const votes = new BigNumber(votesRaw);
+    if (votes.isEqualTo(maxDelegationsBN)) {
+      tracksWithMaxDelegations.add(trackId);
     }
   }
 
-  const maxDelegationsStr = maxDelegations ? maxDelegations.toString() : null;
-  const tracks =
-    maxDelegations && !maxDelegations.isZero()
-      ? tracksWithMaxDelegations.size
-      : null;
-
-  return { maxDelegations: maxDelegationsStr, tracks };
-}
-
-function getVotesPower(selfBalance, maxDelegations) {
-  return new BigNumber(selfBalance || 0).plus(maxDelegations || 0).toString();
+  return tracksWithMaxDelegations.size || null;
 }
 
 export default function useQueryVotesPower(address = "") {
@@ -89,7 +105,8 @@ export default function useQueryVotesPower(address = "") {
     }
 
     const selfBalance = getSelfBalance(accountInfo);
-    const { maxDelegations, tracks } = getMaxDelegationsAndTracks(votingValue);
+    const maxDelegations = getMaxDelegations(votingValue);
+    const tracks = getTracks(votingValue, maxDelegations);
     const votesPower = getVotesPower(selfBalance, maxDelegations);
 
     return {
