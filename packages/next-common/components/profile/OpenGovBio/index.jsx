@@ -6,7 +6,7 @@ import { DisplayUserAvatar, DisplayUser, DisplayUserAddress } from "../bio";
 import OpenGovAssetInfo from "./openGovAssetInfo";
 import WindowSizeProvider from "next-common/context/windowSize";
 import UserAccountProvider from "next-common/context/user/account";
-import { useIsMobile } from "next-common/components/overview/accountInfoPanel/components/accountBalances";
+import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
 
