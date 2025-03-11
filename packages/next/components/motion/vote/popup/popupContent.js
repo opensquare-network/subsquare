@@ -87,6 +87,7 @@ export default function PopupContent() {
       }
 
       setLoadingState(approve ? VoteEnum.Aye : VoteEnum.Nay);
+
       await sendTxFunc({
         api,
         tx,
