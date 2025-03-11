@@ -6,16 +6,55 @@ import { DisplayUserAvatar, DisplayUser, DisplayUserAddress } from "../bio";
 import OpenGovAssetInfo from "./openGovAssetInfo";
 import WindowSizeProvider from "next-common/context/windowSize";
 import UserAccountProvider from "next-common/context/user/account";
-import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import { useIsMobile } from "next-common/components/overview/accountInfoPanel/components/accountBalances";
 import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
+
+function AccountInfoPanel({ address, id, user }) {
+  const isMobile = useIsMobile();
+  const shouldAlignCenter = isMobile || !address;
+
+  return (
+    <div
+      className={cn(
+        "w-full flex flex-col px-0 pt-6 mt-0 gap-4",
+        shouldAlignCenter ? "items-center" : "items-start",
+      )}
+    >
+      <DisplayUserAvatar address={address} user={user} />
+      <div
+        className={cn(
+          "flex mt-0 flex-wrap w-full",
+          shouldAlignCenter ? "justify-center" : "justify-start",
+        )}
+      >
+        <DisplayUser
+          id={id}
+          className={cn("flex", shouldAlignCenter ? "justify-center" : "")}
+        />
+        <DisplayUserAddress
+          address={address}
+          className={cn(
+            shouldAlignCenter ? "!items-center" : "flex-1 !items-start",
+          )}
+        />
+
+        <FellowshipTagInfo address={address} />
+        <FellowshipTagInfo
+          address={address}
+          pallet="ambassadorCollective"
+          type="ambassador"
+        />
+      </div>
+    </div>
+  );
+}
 
 function OpenGovBioContent() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
-  const shouldAlignCenter = isMobile || !address;
 
   return (
     <UserAccountProvider address={address}>
@@ -25,39 +64,7 @@ function OpenGovBioContent() {
           isMobile ? "grid-cols-1" : "grid-cols-2",
         )}
       >
-        <div
-          className={cn(
-            "w-full flex flex-col px-0 pt-6 mt-0 gap-4",
-            shouldAlignCenter ? "items-center" : "items-start",
-          )}
-        >
-          <DisplayUserAvatar address={address} user={user} />
-          <div
-            className={cn(
-              "flex mt-0 flex-wrap w-full",
-              shouldAlignCenter ? "justify-center" : "justify-start",
-            )}
-          >
-            <DisplayUser
-              id={id}
-              className={cn("flex", shouldAlignCenter ? "justify-center" : "")}
-            />
-            <DisplayUserAddress
-              address={address}
-              className={cn(
-                shouldAlignCenter ? "!items-center" : "flex-1 !items-start",
-              )}
-            />
-
-            <FellowshipTagInfo address={address} />
-            <FellowshipTagInfo
-              address={address}
-              pallet="ambassadorCollective"
-              type="ambassador"
-            />
-          </div>
-        </div>
-
+        <AccountInfoPanel address={address} id={id} user={user} />
         <VotesPowerPanel address={address} />
       </div>
       <OpenGovAssetInfo address={address} />
