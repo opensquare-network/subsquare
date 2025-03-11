@@ -39,24 +39,24 @@ function getVotesPower(selfBalance, maxDelegations) {
 
 function getMaxDelegations(votingValue) {
   if (!votingValue) {
-    return null;
+    return 0;
   }
 
-  let maxDelegations = null;
+  let maxDelegations = 0;
 
   for (const [, votingOf] of votingValue) {
     if (!votingOf.isCasting) {
-      return null;
+      return;
     }
 
     const votesRaw = votingOf?.asCasting?.delegations?.votes?.toString() || "0";
     const votes = new BigNumber(votesRaw);
-    if (maxDelegations === null || votes.isGreaterThan(maxDelegations)) {
+    if (votes.isGreaterThan(maxDelegations)) {
       maxDelegations = votes;
     }
   }
 
-  return maxDelegations ? maxDelegations.toString() : null;
+  return maxDelegations;
 }
 
 function getTracks(votingValue, maxDelegations) {
