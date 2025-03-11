@@ -3,14 +3,14 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  // useEffect,
   useMemo,
   useState,
 } from "react";
 import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
-import { useContextApi } from "next-common/context/api";
+// import { useContextApi } from "next-common/context/api";
 import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
 
 export const SignerContext = createContext();
@@ -75,8 +75,8 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   const user = useUser();
   const userAddress = user?.address;
   const [proxyAddress, setProxyAddress] = useState(user?.proxyAddress);
-  const api = useContextApi();
-  const setSigner = useSetSigner();
+  // const api = useContextApi();
+  // const setSigner = useSetSigner();
   const signerAccount = useMemo(() => {
     if (!userAddress) {
       return;
@@ -95,12 +95,12 @@ export function SignerContextProvider({ children, extensionAccounts }) {
     };
   }, [extensionAccounts, userAddress, proxyAddress]);
 
-  useEffect(() => {
-    if (!api || !signerAccount) {
-      return;
-    }
-    setSigner(api, signerAccount);
-  }, [setSigner, api, signerAccount]);
+  // useEffect(() => {
+  //   if (!api || !signerAccount) {
+  //     return;
+  //   }
+  //   setSigner(api, signerAccount);
+  // }, [setSigner, api, signerAccount]);
 
   return (
     <SignerContext.Provider
