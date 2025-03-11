@@ -16,10 +16,7 @@ import { useChainSettings } from "next-common/context/chain";
 import useSubMyDemocracyVote, {
   getKintDemocracyDirectVote,
 } from "../../../hooks/democracy/useSubMyDemocracyVote";
-import {
-  useSetSigner,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
@@ -29,7 +26,6 @@ function PopupContent() {
   const { referendumIndex, onClose } = usePopupParams();
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
-  const setSigner = useSetSigner();
   const showVoteSuccessful = useShowVoteSuccessful();
 
   const { sendTxFunc, isSubmitting } = useSendTransaction();
@@ -104,7 +100,6 @@ function PopupContent() {
 
       setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
 
-      setSigner(api, signerAccount);
       await sendTxFunc({
         api,
         tx,
@@ -126,7 +121,6 @@ function PopupContent() {
       sendTxFunc,
       node,
       showErrorToast,
-      setSigner,
     ],
   );
 

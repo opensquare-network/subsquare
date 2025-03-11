@@ -1,9 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import {
-  useSetSigner,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { noop } from "lodash-es";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { wrapWithProxy } from "next-common/utils/sendTransaction";
@@ -21,7 +18,6 @@ export default function useTxSubmission({
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const { sendTxFunc, isSubmitting } = useSendTransaction();
-  const setSigner = useSetSigner();
 
   const doSubmit = useCallback(async () => {
     if (!api) {
@@ -50,7 +46,6 @@ export default function useTxSubmission({
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
-    setSigner(api, signerAccount);
     await sendTxFunc({
       api,
       tx,
@@ -69,7 +64,6 @@ export default function useTxSubmission({
     onInBlock,
     onFinalized,
     onCancelled,
-    setSigner,
   ]);
 
   return {
