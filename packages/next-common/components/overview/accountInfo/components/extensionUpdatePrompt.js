@@ -158,6 +158,11 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
       try {
         const extension = await injectedWeb3Extension.enable("subsquare");
         alert("after injectedWeb3Extension.enable");
+        alert(
+          JSON.stringify({
+            def,
+          }),
+        );
 
         const isOk = await extension.metadata.provide(def);
         alert("after metadata.provide");
