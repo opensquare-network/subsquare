@@ -76,8 +76,8 @@
     "styled-components": "^5.3.9",
     "tailwind-merge": "^1.14.0",
     "tailwind-styled-components": "^2.2.0",
-    "viem": "^2.16.1",
-    "wagmi": "^2.12.17"
+    "viem": "^2.23.3",
+    "wagmi": "^2.14.11"
   },
   "devDependencies": {
     "@osn/eslint-config": "^1.0.2",
