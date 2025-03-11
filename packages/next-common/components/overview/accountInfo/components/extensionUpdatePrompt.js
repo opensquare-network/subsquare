@@ -7,6 +7,8 @@ import { CACHE_KEY } from "next-common/utils/constants";
 import { useCallback, useEffect, useState } from "react";
 import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 function getPropertyStoreKey(genesisHash) {
   return `properties:${genesisHash.toHex()}`;
@@ -76,6 +78,7 @@ function PromptContent({ onUpdateMeta }) {
 }
 
 export default function ExtensionUpdatePrompt({ isWithCache = true }) {
+  const dispatch = useDispatch();
   const api = useContextApi();
   const connectedAccount = useConnectedAccount();
   const [isNeedUpdate, setIsNeedUpdate] = useState();
@@ -133,10 +136,10 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
           setTriggerCheck((v) => v + 1);
         }
       } catch (e) {
-        console.error(e);
+        dispatch(newErrorToast(e.message));
       }
     },
-    [api, injectedWeb3Extension, connectedAccount?.wallet],
+    [api, injectedWeb3Extension, connectedAccount?.wallet, dispatch],
   );
 
   if (!isNeedUpdate) {
