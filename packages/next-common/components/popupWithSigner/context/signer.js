@@ -3,14 +3,12 @@ import {
   createContext,
   useCallback,
   useContext,
-  // useEffect,
   useMemo,
   useState,
 } from "react";
 import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
-// import { useContextApi } from "next-common/context/api";
 import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
 
 export const SignerContext = createContext();
@@ -38,34 +36,18 @@ export function useSetSigner() {
         account.meta?.source,
         injectedWeb3,
       );
-      alert(
-        JSON.stringify({
-          hasExtension: !!extension,
-          source: account.meta?.source,
-          injected: Object.keys(injectedWeb3),
-        }),
-      );
       if (!extension) {
         return;
       }
 
-      alert("before call extension.enable");
       try {
         const wallet = await extension.enable("subsquare");
-        alert(
-          JSON.stringify({
-            api: !!api,
-            wallet: !!wallet,
-            signer: !!wallet?.signer,
-          }),
-        );
         if (wallet) {
           api?.setSigner(wallet.signer);
         }
       } catch (error) {
-        alert(error.message);
+        console.error(error.message);
       }
-      alert("after call extension.enable");
     },
     [injectedWeb3],
   );
@@ -75,8 +57,6 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   const user = useUser();
   const userAddress = user?.address;
   const [proxyAddress, setProxyAddress] = useState(user?.proxyAddress);
-  // const api = useContextApi();
-  // const setSigner = useSetSigner();
   const signerAccount = useMemo(() => {
     if (!userAddress) {
       return;
@@ -94,13 +74,6 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       realAddress: proxyAddress || userAddress,
     };
   }, [extensionAccounts, userAddress, proxyAddress]);
-
-  // useEffect(() => {
-  //   if (!api || !signerAccount) {
-  //     return;
-  //   }
-  //   setSigner(api, signerAccount);
-  // }, [setSigner, api, signerAccount]);
 
   return (
     <SignerContext.Provider

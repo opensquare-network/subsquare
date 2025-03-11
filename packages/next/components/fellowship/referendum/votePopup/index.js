@@ -11,6 +11,7 @@ import CurrentVote from "./currentVote";
 import VStack from "next-common/components/styled/vStack";
 import {
   usePopupParams,
+  useSetSigner,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
@@ -34,6 +35,7 @@ function PopupContent() {
   );
 
   const signerAccount = useSignerAccount();
+  const setSigner = useSetSigner();
 
   const api = useContextApi();
   const node = useChainSettings();
@@ -90,6 +92,8 @@ function PopupContent() {
       }
 
       setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
+
+      setSigner(api, signerAccount);
       await sendTxFunc({
         api,
         tx,
@@ -112,6 +116,7 @@ function PopupContent() {
       isSubmitting,
       showErrorToast,
       node,
+      setSigner,
     ],
   );
 

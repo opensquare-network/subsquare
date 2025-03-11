@@ -107,10 +107,7 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
     injectedWeb3Extension
       .enable("subsquare")
       .then(async (extension) => {
-        alert("ExtensionUpdatePrompt: extension enabled");
         const isNeedUpdate = await checkNeedUpdate(api, extension);
-        alert("checkNeedUpdate finished");
-
         setIsNeedUpdate(isNeedUpdate);
       })
       .catch(console.error);

@@ -9,6 +9,7 @@ import styled from "styled-components";
 import useIsCollectiveMember from "next-common/utils/hooks/collectives/useIsCollectiveMember";
 import {
   usePopupParams,
+  useSetSigner,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
@@ -31,6 +32,7 @@ export default function PopupContent() {
   const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
+  const setSigner = useSetSigner();
   const showVoteSuccessful = useShowVoteSuccessful();
   const { sendTxFunc, isSubmitting } = useSendTransaction();
   const votes = useCollectiveMotionVotes();
@@ -87,6 +89,8 @@ export default function PopupContent() {
       }
 
       setLoadingState(approve ? VoteEnum.Aye : VoteEnum.Nay);
+
+      setSigner(api, signerAccount);
       await sendTxFunc({
         api,
         tx,
@@ -107,6 +111,7 @@ export default function PopupContent() {
       onClose,
       isSubmitting,
       showErrorToast,
+      setSigner,
     ],
   );
 

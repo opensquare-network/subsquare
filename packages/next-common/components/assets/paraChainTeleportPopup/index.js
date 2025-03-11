@@ -82,8 +82,8 @@ function PopupContent() {
     const account = extensionAccounts.find((item) =>
       isSameAddress(item.address, address),
     );
-    setSigner(sourceApi, account);
 
+    setSigner(sourceApi, account);
     await sendTxFunc({
       api: sourceApi,
       tx,
