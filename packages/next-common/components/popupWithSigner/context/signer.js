@@ -10,12 +10,15 @@ import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
 import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 export const SignerContext = createContext();
 
 export default SignerContext;
 
 export function useSetSigner() {
+  const dispatch = useDispatch();
   const { injectedWeb3 } = useInjectedWeb3();
 
   return useCallback(
@@ -46,10 +49,10 @@ export function useSetSigner() {
           api?.setSigner(wallet.signer);
         }
       } catch (error) {
-        console.error(error.message);
+        dispatch(newErrorToast(error.message));
       }
     },
-    [injectedWeb3],
+    [injectedWeb3, dispatch],
   );
 }
 
