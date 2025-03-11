@@ -93,22 +93,27 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
     }
 
     alert("checkNeedUpdate");
-    const known = await extension.metadata.get();
-    const current =
-      known.find(({ genesisHash }) => api.genesisHash.eq(genesisHash)) || null;
-    alert(
-      JSON.stringify({
-        current: !current,
-        specVersion: api.runtimeVersion.specVersion.gtn(current?.specVersion),
-        currentSpecVersion: checkPropertiesChange(api, extension),
-      }),
-    );
+    try {
+      const known = await extension.metadata.get();
+      const current =
+        known.find(({ genesisHash }) => api.genesisHash.eq(genesisHash)) ||
+        null;
+      alert(
+        JSON.stringify({
+          current: !current,
+          specVersion: api.runtimeVersion.specVersion.gtn(current?.specVersion),
+          currentSpecVersion: checkPropertiesChange(api, extension),
+        }),
+      );
 
-    return (
-      !current ||
-      api.runtimeVersion.specVersion.gtn(current?.specVersion) ||
-      checkPropertiesChange(api, extension)
-    );
+      return (
+        !current ||
+        api.runtimeVersion.specVersion.gtn(current?.specVersion) ||
+        checkPropertiesChange(api, extension)
+      );
+    } catch (e) {
+      alert(e.message);
+    }
   }, []);
 
   useEffect(() => {
