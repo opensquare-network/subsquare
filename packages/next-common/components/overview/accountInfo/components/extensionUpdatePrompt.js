@@ -124,13 +124,20 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
 
   const updateMeta = useCallback(
     async (def) => {
+      alert("updateMeta");
       if (!injectedWeb3Extension) {
         return;
       }
 
+      alert("before injectedWeb3Extension.enable");
+
       try {
         const extension = await injectedWeb3Extension.enable("subsquare");
+        alert("after injectedWeb3Extension.enable");
+
         const isOk = await extension.metadata.provide(def);
+        alert("after metadata.provide");
+
         if (isOk) {
           cacheProperties(api, connectedAccount?.wallet, injectedWeb3Extension);
           setTriggerCheck((v) => v + 1);
