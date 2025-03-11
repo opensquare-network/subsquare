@@ -161,10 +161,11 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
 
         const isOk = await extension.metadata.provide(def);
         alert("after metadata.provide");
-        alert({ isOk });
 
         if (isOk) {
+          alert("trigger1");
           cacheProperties(api, connectedAccount?.wallet, injectedWeb3Extension);
+          alert("trigger1");
           setTriggerCheck((v) => v + 1);
         }
       } catch (e) {
