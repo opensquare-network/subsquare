@@ -92,9 +92,18 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
       return false;
     }
 
+    alert("checkNeedUpdate");
     const known = await extension.metadata.get();
     const current =
       known.find(({ genesisHash }) => api.genesisHash.eq(genesisHash)) || null;
+    alert(
+      JSON.stringify({
+        current: !current,
+        specVersion: api.runtimeVersion.specVersion.gtn(current?.specVersion),
+        currentSpecVersion: checkPropertiesChange(api, extension),
+      }),
+    );
+
     return (
       !current ||
       api.runtimeVersion.specVersion.gtn(current?.specVersion) ||
@@ -103,14 +112,18 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
   }, []);
 
   useEffect(() => {
+    alert("useEffect");
     if (!api || isLoadingInjectedWeb3Extension || !injectedWeb3Extension) {
       return;
     }
+    alert("before injectedWeb3Extension.enable");
 
     injectedWeb3Extension
       .enable("subsquare")
       .then(async (extension) => {
+        alert(JSON.stringify({ extension: !!extension }));
         const isNeedUpdate = await checkNeedUpdate(api, extension);
+        alert(JSON.stringify({ isNeedUpdate }));
         setIsNeedUpdate(isNeedUpdate);
       })
       .catch(console.error);
