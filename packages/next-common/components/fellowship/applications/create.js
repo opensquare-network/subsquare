@@ -130,6 +130,7 @@ export default function CreateFellowshipApplication() {
           content,
           contentType,
           applicant: address,
+          proposer: address,
         },
         { credentials: "include" },
       );
