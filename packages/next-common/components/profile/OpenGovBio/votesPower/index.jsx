@@ -8,6 +8,7 @@ import { SystemQuestion } from "@osn/icons/subsquare";
 import { useTheme } from "styled-components";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
+import { isNil } from "lodash-es";
 
 function DataItem({ label, children }) {
   return (
@@ -40,7 +41,7 @@ export default function OpenGovVotesPower({ address }) {
     selfBalance = 0,
     maxDelegations = 0,
     votesPower = 0,
-    tracks = 0,
+    tracks = null,
   } = result || {};
 
   const backgroundImage = isDark
@@ -86,11 +87,15 @@ export default function OpenGovVotesPower({ address }) {
               symbol={symbol}
             />
           </DataItem>
-          <SplitSymbol />
-          <div className="inline-flex items-center space-x-1">
-            <span>{tracks}</span>
-            <span className="text12Medium text-textTertiary">Tracks</span>
-          </div>
+          {!isNil(tracks) && (
+            <>
+              <SplitSymbol />
+              <div className="inline-flex items-center space-x-1">
+                <span>{tracks}</span>
+                <span className="text12Medium text-textTertiary">Tracks</span>
+              </div>
+            </>
+          )}
         </GreyPanel>
       </GreyPanel>
     </>

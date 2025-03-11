@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import BigNumber from "bignumber.js";
+import { isNil } from "lodash-es";
 
 function useQueryAccountBalance(address) {
   const api = useContextApi();
@@ -32,34 +33,42 @@ function getSelfBalance(accountInfo) {
   return new BigNumber(selfBalanceRaw).multipliedBy(6).toString();
 }
 
-function getMaxDelegations(votingValue) {
+function getMaxDelegationsAndTracks(votingValue) {
   if (!votingValue) {
-    return null;
+    return { maxDelegations: null, tracks: null };
   }
 
-  let maxDelegations = new BigNumber(0);
+  let maxDelegations = null;
+  const tracksWithMaxDelegations = new Set();
 
-  for (const [, votingOf] of votingValue) {
-    if (votingOf.isCasting) {
+  for (const [storageKey, votingOf] of votingValue) {
+    const trackId = storageKey.args[1]?.toNumber();
+    if (!isNil(trackId) && votingOf.isCasting) {
       const votesRaw = votingOf.asCasting.delegations.votes.toString();
       if (!isNaN(votesRaw)) {
         const votes = new BigNumber(votesRaw);
-        if (votes.isGreaterThan(maxDelegations)) {
+        if (maxDelegations === null || votes.isGreaterThan(maxDelegations)) {
           maxDelegations = votes;
+          tracksWithMaxDelegations.clear();
+          tracksWithMaxDelegations.add(trackId);
+        } else if (votes.isEqualTo(maxDelegations)) {
+          tracksWithMaxDelegations.add(trackId);
         }
       }
     }
   }
 
-  return maxDelegations.toString();
+  const maxDelegationsStr = maxDelegations ? maxDelegations.toString() : null;
+  const tracks =
+    maxDelegations && !maxDelegations.isZero()
+      ? tracksWithMaxDelegations.size
+      : null;
+
+  return { maxDelegations: maxDelegationsStr, tracks };
 }
 
 function getVotesPower(selfBalance, maxDelegations) {
   return new BigNumber(selfBalance || 0).plus(maxDelegations || 0).toString();
-}
-
-function getTracks(votingValue) {
-  return (votingValue || []).length;
 }
 
 export default function useQueryVotesPower(address = "") {
@@ -80,9 +89,8 @@ export default function useQueryVotesPower(address = "") {
     }
 
     const selfBalance = getSelfBalance(accountInfo);
-    const maxDelegations = getMaxDelegations(votingValue);
+    const { maxDelegations, tracks } = getMaxDelegationsAndTracks(votingValue);
     const votesPower = getVotesPower(selfBalance, maxDelegations);
-    const tracks = getTracks(votingValue);
 
     return {
       selfBalance,
