@@ -2,15 +2,12 @@ import { useMemo } from "react";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import BigNumber from "bignumber.js";
+import { useUserAccountInfo } from "next-common/context/user/account";
 
-function useQueryAccountBalance(address) {
-  const api = useContextApi();
-  const { value: accountInfo, loaded: isBalanceLoaded } = useCall(
-    api?.query?.system?.account,
-    [address],
-  );
+function useQuerySelfBalance() {
+  const { info, isLoading } = useUserAccountInfo();
 
-  return { accountInfo, isBalanceLoaded };
+  return { selfBalance: info?.data?.total?.toString() || "0", isLoading };
 }
 
 function useQueryVotingData(address) {
@@ -21,15 +18,6 @@ function useQueryVotingData(address) {
   );
 
   return { votingValue, isVotingLoaded };
-}
-
-function getSelfBalance(accountInfo) {
-  const selfBalanceRaw = accountInfo?.data?.free?.toString();
-  if (!selfBalanceRaw || isNaN(selfBalanceRaw)) {
-    return "0";
-  }
-
-  return selfBalanceRaw || "0";
 }
 
 function getVotesPower(selfBalance, maxDelegations) {
@@ -62,7 +50,7 @@ function getMaxDelegations(votingValue) {
 
 export default function useQueryVotesPower(address = "") {
   const api = useContextApi();
-  const { accountInfo, isBalanceLoaded } = useQueryAccountBalance(address);
+  const { selfBalance, isLoading: isBalanceLoading } = useQuerySelfBalance();
   const { votingValue, isVotingLoaded } = useQueryVotingData(address);
 
   const result = useMemo(() => {
@@ -70,14 +58,12 @@ export default function useQueryVotesPower(address = "") {
       !api ||
       !address ||
       !isVotingLoaded ||
-      !isBalanceLoaded ||
-      !api.query.convictionVoting ||
-      !api.query.system
+      isBalanceLoading ||
+      !api.query.convictionVoting
     ) {
       return null;
     }
 
-    const selfBalance = getSelfBalance(accountInfo);
     const maxDelegations = getMaxDelegations(votingValue);
     const votesPower = getVotesPower(selfBalance, maxDelegations);
 
@@ -86,10 +72,17 @@ export default function useQueryVotesPower(address = "") {
       maxDelegations,
       votesPower,
     };
-  }, [api, address, votingValue, isVotingLoaded, isBalanceLoaded, accountInfo]);
+  }, [
+    api,
+    address,
+    isVotingLoaded,
+    isBalanceLoading,
+    votingValue,
+    selfBalance,
+  ]);
 
   return {
     result,
-    isLoading: !(isVotingLoaded && isBalanceLoaded),
+    isLoading: !isVotingLoaded || isBalanceLoading,
   };
 }
