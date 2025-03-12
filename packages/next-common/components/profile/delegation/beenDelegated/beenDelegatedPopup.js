@@ -7,7 +7,7 @@ import DelegationSummary from "next-common/components/summary/democracyBeenDeleg
 import useProfileAddress from "../../useProfileAddress";
 
 const StyledPopup = styled(BaseVotesPopup)`
-  width: 610px;
+  width: 640px;
 `;
 
 function TrackBeenDelegatedPopupList({
