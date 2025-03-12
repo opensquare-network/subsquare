@@ -29,11 +29,13 @@ function getSelfBalance(accountInfo) {
     return "0";
   }
 
-  return new BigNumber(selfBalanceRaw).multipliedBy(6).toString();
+  return selfBalanceRaw || "0";
 }
 
 function getVotesPower(selfBalance, maxDelegations) {
-  return new BigNumber(selfBalance || 0).plus(maxDelegations || 0).toString();
+  const maxVotingBySelfBalance = new BigNumber(selfBalance).multipliedBy(6);
+
+  return maxVotingBySelfBalance.plus(maxDelegations || 0).toString();
 }
 
 function getMaxDelegations(votingValue) {
