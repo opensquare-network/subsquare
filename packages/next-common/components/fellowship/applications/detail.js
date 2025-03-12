@@ -7,6 +7,8 @@ import ArticleContent from "./articleContent";
 import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
 function DetailItem() {
   const post = usePost();
@@ -31,8 +33,12 @@ function DetailItem() {
 
 export default function ApplicationDetail() {
   return (
-    <ContentWithComment>
-      <DetailItem />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <DetailItem />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
