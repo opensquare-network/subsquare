@@ -6,6 +6,15 @@ import { MapDataList } from "next-common/components/dataList";
 import Track from "next-common/components/referenda/track/trackTag";
 import { useMaybeServerAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useState } from "react";
+import DetailButton from "next-common/components/detailButton";
+
+const BeenDelegatedPopup = dynamicPopup(() =>
+  import(
+    "next-common/components/profile/delegation/beenDelegated/beenDelegatedPopup"
+  ),
+);
 
 function VotesValue({ value }) {
   const { symbol, decimals } = useChainSettings();
@@ -46,8 +55,30 @@ export default function OpenGovVotesPowerDetailList() {
   const { address } = useOpenGovVotesPowerContext();
   const { isLoading, beenDelegatedList: dataList } =
     useMaybeServerAllBeenDelegatedList(address);
+  const [showTrackPopup, setShowTrackPopup] = useState(false);
+  const [popupTrack, setPopupTrack] = useState(null);
 
-  const columnsDef = [TrackColumn, DelegatorsColumn, VotesColumn];
+  const TrackDetailColumn = {
+    name: "",
+    className: "text-right w-20",
+    render(data) {
+      return (
+        <DetailButton
+          onClick={() => {
+            setPopupTrack(data?.track?.id);
+            setShowTrackPopup(true);
+          }}
+        />
+      );
+    },
+  };
+
+  const columnsDef = [
+    TrackColumn,
+    DelegatorsColumn,
+    VotesColumn,
+    TrackDetailColumn,
+  ];
 
   return (
     <>
@@ -60,6 +91,13 @@ export default function OpenGovVotesPowerDetailList() {
           noDataText="No been delegated"
         />
       </div>
+      {showTrackPopup && (
+        <BeenDelegatedPopup
+          track={popupTrack}
+          beenDelegatedList={dataList}
+          setShow={setShowTrackPopup}
+        />
+      )}
     </>
   );
 }
