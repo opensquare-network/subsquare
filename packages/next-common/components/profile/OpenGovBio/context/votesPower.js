@@ -5,12 +5,7 @@ const OpenGovVotesPowerContext = createContext();
 
 export default function OpenGovVotesPowerProvider({ children, address }) {
   const { result, isLoading } = useQueryVotesPower(address);
-  const {
-    selfBalance = 0,
-    maxDelegations = 0,
-    votesPower = 0,
-    tracks = null,
-  } = result || {};
+  const { selfBalance = 0, maxDelegations = 0, votesPower = 0 } = result || {};
 
   return (
     <OpenGovVotesPowerContext.Provider
@@ -20,7 +15,6 @@ export default function OpenGovVotesPowerProvider({ children, address }) {
         selfBalance,
         maxDelegations,
         votesPower,
-        tracks,
       }}
     >
       {children}

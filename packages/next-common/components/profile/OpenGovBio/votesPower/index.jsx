@@ -2,7 +2,6 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
-import { isNil } from "lodash-es";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import VotesPowerDetail from "./detail";
@@ -61,23 +60,6 @@ function MaxDelegations() {
   );
 }
 
-function MaxDelegationsTracks() {
-  const { tracks } = useOpenGovVotesPowerContext();
-  if (isNil(tracks)) {
-    return null;
-  }
-
-  return (
-    <>
-      <SplitSymbol />
-      <div className="inline-flex items-center space-x-1">
-        <span>{tracks}</span>
-        <span className="text12Medium text-textTertiary">Tracks</span>
-      </div>
-    </>
-  );
-}
-
 function OpenGovVotesPowerInContext() {
   const { isLoading, address } = useOpenGovVotesPowerContext();
   const [detailOpen, setDetailOpen] = useState(false);
@@ -95,7 +77,6 @@ function OpenGovVotesPowerInContext() {
             <SeleBalance />
             <SplitSymbol />
             <MaxDelegations />
-            <MaxDelegationsTracks />
           </GreyPanel>
           <VotesPowerDetail setDetailOpen={setDetailOpen} />
         </div>

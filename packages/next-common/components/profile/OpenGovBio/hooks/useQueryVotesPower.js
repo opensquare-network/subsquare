@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import BigNumber from "bignumber.js";
-import { isNil } from "lodash-es";
 
 function useQueryAccountBalance(address) {
   const api = useContextApi();
@@ -59,34 +58,6 @@ function getMaxDelegations(votingValue) {
   return maxDelegations;
 }
 
-function getTracks(votingValue, maxDelegations) {
-  if (!votingValue || !maxDelegations) {
-    return null;
-  }
-
-  const maxDelegationsBN = new BigNumber(maxDelegations);
-  if (maxDelegationsBN.isZero()) {
-    return null;
-  }
-
-  const tracksWithMaxDelegations = new Set();
-
-  for (const [storageKey, votingOf] of votingValue) {
-    const trackId = storageKey.args[1]?.toNumber();
-    if (isNil(trackId) || !votingOf.isCasting) {
-      return null;
-    }
-
-    const votesRaw = votingOf?.asCasting?.delegations?.votes?.toString() || "0";
-    const votes = new BigNumber(votesRaw);
-    if (votes.isEqualTo(maxDelegationsBN)) {
-      tracksWithMaxDelegations.add(trackId);
-    }
-  }
-
-  return tracksWithMaxDelegations.size || null;
-}
-
 export default function useQueryVotesPower(address = "") {
   const api = useContextApi();
   const { accountInfo, isBalanceLoaded } = useQueryAccountBalance(address);
@@ -106,14 +77,12 @@ export default function useQueryVotesPower(address = "") {
 
     const selfBalance = getSelfBalance(accountInfo);
     const maxDelegations = getMaxDelegations(votingValue);
-    const tracks = getTracks(votingValue, maxDelegations);
     const votesPower = getVotesPower(selfBalance, maxDelegations);
 
     return {
       selfBalance,
       maxDelegations,
       votesPower,
-      tracks,
     };
   }, [api, address, votingValue, isVotingLoaded, isBalanceLoaded, accountInfo]);
 
