@@ -265,6 +265,7 @@ function AddressComboListOptions({ accounts, address, onSelect }) {
 }
 
 export default function AddressCombo({
+  className,
   accounts,
   address,
   setAddress,
@@ -326,7 +327,7 @@ export default function AddressCombo({
   return (
     <Wrapper ref={ref}>
       <Select
-        className={cn(readOnly && "pointer-events-none")}
+        className={cn(className, readOnly && "pointer-events-none")}
         onClick={() => {
           setShow(true);
           setEdit(true);

@@ -1,6 +1,4 @@
 import { ArrowExternalLinkWiki } from "@osn/icons/subsquare";
-import AddressAvatar from "next-common/components/user/addressAvatar";
-import IdentityInfo from "./identityInfo";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Input from "next-common/lib/input";
 import { useState } from "react";
@@ -11,6 +9,9 @@ import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
+import AddressCombo from "next-common/components/addressCombo";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 
 function PageTitle() {
   return (
@@ -57,14 +58,18 @@ function Info() {
   );
 }
 
-function Applicant({ address }) {
+function Applicant({ address, setAddress }) {
+  const extensionAccounts = useExtensionAccounts();
+
   return (
     <div className="flex flex-col gap-[8px]">
       <span className="text14Bold">Applicant</span>
-      <div className="flex rounded-[8px] border border-neutral400 gap-[12px] p-[12px]">
-        <AddressAvatar address={address} size={40} />
-        <IdentityInfo address={address} />
-      </div>
+      <AddressCombo
+        className="!p-[12px] !h-auto !rounded-[8px]"
+        address={address}
+        setAddress={setAddress}
+        accounts={extensionAccounts}
+      />
     </div>
   );
 }
@@ -105,10 +110,11 @@ function ApplicationContent({
   );
 }
 
-export default function CreateFellowshipApplication() {
+function CreateFellowshipApplicationImpl() {
   const router = useRouter();
   const dispatch = useDispatch();
   const address = useRealAddress();
+  const [applicantAddress, setApplicantAddress] = useState(address);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState("markdown");
@@ -129,7 +135,7 @@ export default function CreateFellowshipApplication() {
           title,
           content,
           contentType,
-          applicant: address,
+          applicant: applicantAddress,
           proposer: address,
         },
         { credentials: "include" },
@@ -150,7 +156,7 @@ export default function CreateFellowshipApplication() {
     <div className="flex flex-col gap-[16px]">
       <PageTitle />
       <Info />
-      <Applicant address={address} />
+      <Applicant address={applicantAddress} setAddress={setApplicantAddress} />
       <ApplicationTitle title={title} setTitle={setTitle} />
       <ApplicationContent
         content={content}
@@ -164,5 +170,13 @@ export default function CreateFellowshipApplication() {
         </PrimaryButton>
       </div>
     </div>
+  );
+}
+
+export default function CreateFellowshipApplication() {
+  return (
+    <SignerPopupWrapper>
+      <CreateFellowshipApplicationImpl />
+    </SignerPopupWrapper>
   );
 }
