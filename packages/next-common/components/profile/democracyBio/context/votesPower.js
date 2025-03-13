@@ -5,7 +5,7 @@ const DemocracyVotesPowerContext = createContext();
 
 export default function DemocracyVotesPowerProvider({ children, address }) {
   const { result, isLoading } = useQueryVotesPower(address);
-  const { selfBalance = 0, maxDelegations = 0, votesPower = 0 } = result || {};
+  const { selfBalance = 0, delegations = 0, votesPower = 0 } = result || {};
 
   return (
     <DemocracyVotesPowerContext.Provider
@@ -13,7 +13,7 @@ export default function DemocracyVotesPowerProvider({ children, address }) {
         address,
         isLoading,
         selfBalance,
-        maxDelegations,
+        delegations,
         votesPower,
       }}
     >

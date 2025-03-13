@@ -14,15 +14,15 @@ function useQueryMaxDelegations(address) {
   const api = useContextApi();
   const { value, loaded } = useCall(api?.query?.democracy?.votingOf, [address]);
 
-  const maxDelegations = value?.toJSON()?.direct?.delegations?.votes || "0";
+  const delegations = value?.toJSON()?.direct?.delegations?.votes || "0";
 
-  return { maxDelegations, loaded };
+  return { delegations, loaded };
 }
 
 export default function useQueryVotesPower(address = "") {
   const api = useContextApi();
   const { selfBalance, isLoading: isBalanceLoading } = useQuerySelfBalance();
-  const { maxDelegations, loaded: isMaxDelegationsLoaded } =
+  const { delegations, loaded: isMaxDelegationsLoaded } =
     useQueryMaxDelegations(address);
 
   const result = useMemo(() => {
@@ -36,11 +36,11 @@ export default function useQueryVotesPower(address = "") {
       return null;
     }
 
-    const votesPower = getVotesPower(selfBalance, maxDelegations);
+    const votesPower = getVotesPower(selfBalance, delegations);
 
     return {
       selfBalance,
-      maxDelegations,
+      delegations,
       votesPower,
     };
   }, [
@@ -48,7 +48,7 @@ export default function useQueryVotesPower(address = "") {
     address,
     isMaxDelegationsLoaded,
     isBalanceLoading,
-    maxDelegations,
+    delegations,
     selfBalance,
   ]);
 

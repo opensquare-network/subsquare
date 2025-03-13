@@ -28,13 +28,13 @@ function SeleBalance() {
 }
 
 function MaxDelegations() {
-  const { maxDelegations } = useDemocracyVotesPowerContext();
+  const { delegations } = useDemocracyVotesPowerContext();
   const { decimals, symbol } = useChainSettings();
 
   return (
-    <DataItem label="Max Delegations">
+    <DataItem label="Delegations">
       <ValueDisplay
-        value={toPrecision(maxDelegations, decimals)}
+        value={toPrecision(delegations, decimals)}
         symbol={symbol}
       />
     </DataItem>

@@ -8,7 +8,7 @@ import { Label } from "next-common/components/profile/OpenGovBio/votesPower/deta
 
 export default function DemocracyVotesPowerDetailInfo({ delegatorCount }) {
   const { symbol, decimals } = useChainSettings();
-  const { selfBalance, maxDelegations } = useDemocracyVotesPowerContext();
+  const { selfBalance, delegations } = useDemocracyVotesPowerContext();
 
   const items = [
     {
@@ -44,7 +44,7 @@ export default function DemocracyVotesPowerDetailInfo({ delegatorCount }) {
       value: (
         <ValueDisplay
           symbol={symbol}
-          value={toPrecision(maxDelegations, decimals)}
+          value={toPrecision(delegations, decimals)}
         />
       ),
     },
