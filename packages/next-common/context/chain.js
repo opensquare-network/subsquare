@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo } from "react";
 import getChainSettings from "../utils/consts/settings";
+import Chains from "next-common/utils/consts/chains";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
 
@@ -11,6 +12,11 @@ export default function ChainProvider({ chain, children }) {
 
 export function useChain() {
   return useContext(ChainContext);
+}
+
+export function useIsKintsugi() {
+  const chain = useChain();
+  return [Chains.kintsugi, Chains.interlay].includes(chain);
 }
 
 export function useChainSettings(blockHeight = null) {
