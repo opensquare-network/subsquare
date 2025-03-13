@@ -11,7 +11,7 @@ export default function NotFellowshipMember() {
 
   return (
     <BaseLayout>
-      <div className="flex items-center justify-center grow mx-[16px]">
+      <div className="flex items-center justify-center grow px-[16px]">
         <div className="flex flex-col items-center gap-[24px]">
           <ImgNotMemberLight />
           <div className="flex flex-col gap-[8px] items-center">
