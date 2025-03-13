@@ -13,7 +13,7 @@ import {
 } from "next-common/components/profile/OpenGovBio/votesPower";
 import DemocracyVotesPowerDetail from "./detail";
 
-function SeleBalance() {
+function SelfBalance() {
   const { selfBalance } = useDemocracyVotesPowerContext();
   const { decimals, symbol } = useChainSettings();
 
@@ -51,10 +51,14 @@ function DemocracyVotesPowerInContext() {
   return (
     <>
       <VotesPowerPanelWrapper>
-        <VotesPowerContent isLoading={isLoading} votesPower={votesPower} />
+        <VotesPowerContent
+          isLoading={isLoading}
+          votesPower={votesPower}
+          isReferenda={false}
+        />
         <div className="flex flex-row items-start space-x-2">
           <GreyPanel className="flex flex-row items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap">
-            <SeleBalance />
+            <SelfBalance />
             <SplitSymbol />
             <MaxDelegations />
           </GreyPanel>

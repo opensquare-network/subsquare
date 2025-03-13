@@ -7,7 +7,11 @@ export default function DemocracyVotesPowerDetailHeader() {
 
   return (
     <VotesPowerPanelWrapper>
-      <VotesPowerContent isLoading={isLoading} votesPower={votesPower} />
+      <VotesPowerContent
+        isLoading={isLoading}
+        votesPower={votesPower}
+        isReferenda={false}
+      />
     </VotesPowerPanelWrapper>
   );
 }

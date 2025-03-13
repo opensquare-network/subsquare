@@ -5,19 +5,24 @@ import Tooltip from "next-common/components/tooltip";
 import { SystemQuestion } from "@osn/icons/subsquare";
 import { useOpenGovVotesPowerContext } from "../context/votesPower";
 
-export function VotesPowerContent({ votesPower, isLoading }) {
+export function VotesPowerContent({
+  votesPower,
+  isLoading,
+  isReferenda = true,
+}) {
   const { decimals, symbol } = useChainSettings();
 
   if (isLoading) {
     return null;
   }
 
+  const tooltipText = `Votes Power = Self Balance * 6 + ${
+    isReferenda ? "Max " : ""
+  }Delegations`;
+
   return (
     <div className="flex flex-col justify-center items-center py-4 gap-y-1">
-      <Tooltip
-        content={"Votes Power = Self Balance * 6 + Max Delegations"}
-        className="space-x-1"
-      >
+      <Tooltip content={tooltipText} className="space-x-1">
         <span className="text12Medium text-textTertiary">Votes Power</span>
         <SystemQuestion className="inline-flex w-4 h-4 cursor-pointer [&_path]:fill-textTertiary" />
       </Tooltip>
