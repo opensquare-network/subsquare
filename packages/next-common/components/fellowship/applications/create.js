@@ -4,14 +4,17 @@ import Input from "next-common/lib/input";
 import { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import Editor from "next-common/components/editor";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
+import {
+  useExtensionAccounts,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import AddressCombo from "next-common/components/addressCombo";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import { useSignMessage } from "next-common/hooks/useSignMessage";
 
 function PageTitle() {
   return (
@@ -119,26 +122,38 @@ function CreateFellowshipApplicationImpl() {
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState("markdown");
   const [loading, setLoading] = useState(false);
-  const { ensureLogin } = useEnsureLogin();
+  const signerAccount = useSignerAccount();
+  const signMessage = useSignMessage();
 
   const createApplication = async () => {
     setLoading(true);
 
     try {
-      if (!(await ensureLogin())) {
-        return;
-      }
+      const entity = {
+        action: "apply-for-fellowship-member",
+        title,
+        content,
+        contentType,
+        applicant: applicantAddress,
+        timestamp: Date.now(),
+      };
+      const address = signerAccount?.address;
+      const signerWallet = signerAccount?.meta.source;
+      const signature = await signMessage(
+        JSON.stringify(entity),
+        address,
+        signerWallet,
+      );
+      const data = {
+        entity,
+        address,
+        signature,
+        signerWallet,
+      };
 
       const { result, error } = await nextApi.post(
         "fellowship/applications",
-        {
-          title,
-          content,
-          contentType,
-          applicant: applicantAddress,
-          proposer: address,
-        },
-        { credentials: "include" },
+        data,
       );
 
       if (error) {
@@ -146,7 +161,12 @@ function CreateFellowshipApplicationImpl() {
         return;
       }
 
-      router.push(`/fellowship/applications/${result.applicationUid}`);
+      router.push(`/fellowship/applications/${result.applicationCid}`);
+    } catch (e) {
+      if (e.message === "Cancelled") {
+        return;
+      }
+      dispatch(newErrorToast(e.message));
     } finally {
       setLoading(false);
     }

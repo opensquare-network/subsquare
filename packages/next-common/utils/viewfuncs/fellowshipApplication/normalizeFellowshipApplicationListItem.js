@@ -1,8 +1,7 @@
 export default function normalizeFellowshipApplicationListItem(item) {
   return {
     ...item,
-    index: item.applicationUid,
     time: item.lastActivityAt,
-    detailLink: `/fellowship/applications/${item.applicationUid}`,
+    detailLink: `/fellowship/applications/${item.applicationCid}`,
   };
 }

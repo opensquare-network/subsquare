@@ -1,8 +1,9 @@
+import React from "react";
 import { isNil } from "lodash-es";
 import ReasonLink from "../reasonLink";
 import Link from "next/link";
 import { cn, isExternalLink } from "next-common/utils";
-import React from "react";
+
 export default function ListPostTitle({
   data = {},
   href,
