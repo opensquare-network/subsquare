@@ -5,9 +5,8 @@ import Tooltip from "next-common/components/tooltip";
 import { SystemQuestion } from "@osn/icons/subsquare";
 import { useOpenGovVotesPowerContext } from "../context/votesPower";
 
-export default function VotesPowerValueDisplay() {
+export function VotesPowerContent({ votesPower, isLoading }) {
   const { decimals, symbol } = useChainSettings();
-  const { votesPower, isLoading } = useOpenGovVotesPowerContext();
 
   if (isLoading) {
     return null;
@@ -29,4 +28,10 @@ export default function VotesPowerValueDisplay() {
       />
     </div>
   );
+}
+
+export default function VotesPowerValueDisplay() {
+  const { votesPower, isLoading } = useOpenGovVotesPowerContext();
+
+  return <VotesPowerContent votesPower={votesPower} isLoading={isLoading} />;
 }

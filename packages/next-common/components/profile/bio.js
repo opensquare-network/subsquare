@@ -15,6 +15,7 @@ import { AvatarDisplay } from "../user/avatarDisplay";
 import FellowshipTagInfo from "./fellowshipTagInfo";
 import { useChainSettings } from "next-common/context/chain";
 import OpenGovBio from "./OpenGovBio";
+import DemocracyBio from "./democracyBio";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -131,9 +132,14 @@ function NormalBio() {
 
 export default function Bio() {
   const { modules } = useChainSettings();
+  const hasDemocracy = modules?.democracy && !modules?.democracy?.archived;
 
   if (modules?.referenda) {
     return <OpenGovBio />;
+  }
+
+  if (hasDemocracy) {
+    return <DemocracyBio />;
   }
 
   return <NormalBio />;

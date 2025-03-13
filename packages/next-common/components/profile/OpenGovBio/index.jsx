@@ -10,7 +10,7 @@ import { useIsMobile } from "next-common/components/overview/accountInfo/compone
 import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
 
-function AccountInfoPanel({ address, id, user }) {
+export function AccountInfoPanel({ address, id, user }) {
   const isMobile = useIsMobile();
   const shouldAlignCenter = isMobile || !address;
 

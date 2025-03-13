@@ -15,7 +15,7 @@ const OpenGovVotesPowerDetailPopup = dynamicPopup(() =>
   import("./detail/detailPopup"),
 );
 
-function DataItem({ label, children }) {
+export function DataItem({ label, children }) {
   return (
     <div className="inline-flex gap-1 items-center space-x-1">
       <span className="text12Medium text-textTertiary">{label}</span>
@@ -24,7 +24,7 @@ function DataItem({ label, children }) {
   );
 }
 
-function SplitSymbol() {
+export function SplitSymbol() {
   return (
     <div className="text12Medium text-textDisabled mx-2 flex items-center">
       ·
