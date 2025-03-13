@@ -1,21 +1,14 @@
-import { InfoAsset, InfoUserVote } from "@osn/icons/subsquare";
+import { InfoAsset, InfoUserVote, InfoUsers } from "@osn/icons/subsquare";
 import Descriptions from "next-common/components/Descriptions";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import { useOpenGovVotesPowerContext } from "../../context/votesPower";
+import { useDemocracyVotesPowerContext } from "../../context/votesPower";
+import { Label } from "next-common/components/profile/OpenGovBio/votesPower/detail/info";
 
-export function Label({ children }) {
-  return (
-    <span className="flex items-center gap-x-2 [&_svg]:w-5 [&_svg]:h-5 [&_svg]:text-textTertiary">
-      {children}
-    </span>
-  );
-}
-
-export default function OpenGovVotesPowerDetailInfo() {
+export default function DemocracyVotesPowerDetailInfo({ delegatorCount }) {
   const { symbol, decimals } = useChainSettings();
-  const { selfBalance, maxDelegations } = useOpenGovVotesPowerContext();
+  const { selfBalance, maxDelegations } = useDemocracyVotesPowerContext();
 
   const items = [
     {
@@ -35,8 +28,17 @@ export default function OpenGovVotesPowerDetailInfo() {
     {
       label: (
         <Label>
+          <InfoUsers />
+          Delegators
+        </Label>
+      ),
+      value: <div>{delegatorCount}</div>,
+    },
+    {
+      label: (
+        <Label>
           <InfoAsset />
-          Max Delegations
+          Delegations
         </Label>
       ),
       value: (

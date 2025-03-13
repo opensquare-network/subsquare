@@ -20,7 +20,7 @@ function useQueryVotingData(address) {
   return { votingValue, isVotingLoaded };
 }
 
-function getVotesPower(selfBalance, maxDelegations) {
+export function getVotesPower(selfBalance, maxDelegations) {
   const maxVotingBySelfBalance = new BigNumber(selfBalance).multipliedBy(6);
 
   return maxVotingBySelfBalance.plus(maxDelegations || 0).toString();
