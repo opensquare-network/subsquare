@@ -9,16 +9,26 @@ import normalizeFellowshipApplicationListItem from "next-common/utils/viewfuncs/
 import PrimaryButton from "next-common/lib/button/primary";
 import { SystemPlus } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 function NewFellowshipApplicationButton({ disabled }) {
   const router = useRouter();
+  const { ensureConnect } = useEnsureLogin();
+
+  const newApplication = useCallback(async () => {
+    const connectedAccount = await ensureConnect();
+    if (connectedAccount) {
+      router.push("/fellowship/applications/create");
+    }
+  }, [router, ensureConnect]);
 
   return (
     <PrimaryButton
       size="small"
       disabled={disabled}
       iconLeft={<SystemPlus className="w-4 h-4" />}
-      onClick={() => router.push("/fellowship/applications/create")}
+      onClick={newApplication}
     >
       New Application
     </PrimaryButton>
