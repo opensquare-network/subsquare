@@ -1,11 +1,12 @@
 // fellowship member detail page
 import { isAddress } from "@polkadot/util-crypto";
 import useFellowshipMemberDetailAddr from "next-common/hooks/collectives/member/detail";
-import NotFellowshipMember from "next-common/components/pages/fellowship/member/notFellowshipMember";
+import NotFellowshipMember from "next-common/components/pages/notFellowshipMember";
 import { usePageProps } from "next-common/context/page";
 import { isSameAddress } from "next-common/utils";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
-export default function FellowshipMemberPage() {
+function FellowshipMemberPageImpl() {
   const address = useFellowshipMemberDetailAddr();
   const { fellowshipMembers = [] } = usePageProps();
 
@@ -18,10 +19,17 @@ export default function FellowshipMemberPage() {
   );
 
   if (!member) {
-    return `${address} is not a member`;
-    // todo: show not member view
+    return <NotFellowshipMember />;
   } else {
     return `${address} is a member`;
     // todo: show member view
   }
+}
+
+export default function FellowshipMemberPage() {
+  return (
+    <CollectivesProvider section="fellowship">
+      <FellowshipMemberPageImpl />
+    </CollectivesProvider>
+  );
 }
