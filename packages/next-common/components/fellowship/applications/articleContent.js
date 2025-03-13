@@ -13,6 +13,12 @@ import AddressAvatar from "next-common/components/user/addressAvatar";
 import IdentityInfo from "./identityInfo";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import Induct from "./induct";
+import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
+import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
+import FellowshipRank from "../rank";
+import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
+import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
+import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
 
 const Wrapper = styled.div`
   :hover {
@@ -22,19 +28,70 @@ const Wrapper = styled.div`
   }
 `;
 
-function Applicant({ address }) {
+function NotInductedApplicant({ address }) {
   return (
-    <div className="flex flex-col gap-[16px]">
-      <span className="text14Bold">Applicant</span>
-      <div className="flex justify-between items-center rounded-[8px] border border-neutral400 p-[12px]">
+    <div className="flex justify-between items-center rounded-[8px] border border-neutral400 p-[16px]">
+      <div className="flex gap-[16px]">
+        <AddressAvatar address={address} size={40} />
+        <IdentityInfo address={address} />
+      </div>
+      <CollectivesProvider>
+        <Induct address={address} />
+      </CollectivesProvider>
+    </div>
+  );
+}
+
+function InductedApplicant({ address, member, rank }) {
+  const { params, isLoading } = useCoreFellowshipParams();
+  if (isLoading) {
+    return null;
+  }
+
+  return (
+    <div className="flex justify-between items-center rounded-[8px] border border-neutral400 p-[16px]">
+      <div className="flex items-center gap-[16px]">
+        <FellowshipRank rank={rank} />
         <div className="flex gap-[12px]">
           <AddressAvatar address={address} size={40} />
           <IdentityInfo address={address} />
         </div>
-        <CollectivesProvider>
-          <Induct address={address} />
-        </CollectivesProvider>
       </div>
+      <div className="flex gap-[16px]">
+        <CoreFellowshipMemberDemotionPeriod
+          {...member}
+          rank={rank}
+          params={params}
+        />
+        {rank > 0 && (
+          <CoreFellowshipMemberPromotionPeriod
+            {...member}
+            rank={rank}
+            params={params}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Applicant({ address }) {
+  const { member, isLoading: isMemberLoading } =
+    useSubFellowshipCoreMember(address);
+  const { rank, isLoading: isRankLoading } = useSubCollectiveRank(address);
+
+  if (isMemberLoading || isRankLoading) {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-col gap-[16px]">
+      <span className="text14Bold">Applicant</span>
+      {member ? (
+        <InductedApplicant address={address} member={member} rank={rank} />
+      ) : (
+        <NotInductedApplicant address={address} />
+      )}
     </div>
   );
 }
@@ -91,7 +148,9 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
             </>
           )}
           <Divider className="my-4" />
-          <Applicant address={post.applicant} />
+          <CollectivesProvider>
+            <Applicant address={post.applicant} />
+          </CollectivesProvider>
         </div>
       )}
 
