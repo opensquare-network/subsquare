@@ -8,6 +8,7 @@ import { useContextApi } from "next-common/context/api";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
 
 function InductButton({ address }) {
   const dispatch = useDispatch();
@@ -45,7 +46,22 @@ function InductButton({ address }) {
   );
 }
 
+function NotConnected() {
+  return (
+    <Tooltip content={"Connect with address first"}>
+      <PrimaryButton size="small" disabled={true}>
+        Induct
+      </PrimaryButton>
+    </Tooltip>
+  );
+}
+
 export default function Induct({ address }) {
+  const connectedAccount = useConnectedAccount();
+  if (!connectedAccount) {
+    return <NotConnected />;
+  }
+
   return (
     <SignerPopupWrapper>
       <InductButton address={address} />
