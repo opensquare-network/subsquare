@@ -155,11 +155,13 @@ export default function MemberActiveStatus({ address }) {
   }
 
   const isMine = isSameAddress(myAddress, address);
-  return isMine ? (
-    <SignerPopupWrapper>
-      <MyActiveStatus address={address} member={member} />
-    </SignerPopupWrapper>
-  ) : (
-    <OthersActiveStatus member={member} />
-  );
+  if (isMine) {
+    return (
+      <SignerPopupWrapper>
+        <MyActiveStatus address={address} member={member} />
+      </SignerPopupWrapper>
+    );
+  }
+
+  return <OthersActiveStatus member={member} />;
 }
