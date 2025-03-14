@@ -20,7 +20,7 @@ export default function FellowshipMember({ address }) {
         <FellowshipMemberBreadcrumb address={address} />
         <div
           className={cn(
-            "flex gap-[24px]",
+            "flex gap-[24px] items-start",
             navCollapsed ? "max-sm:flex-col" : "max-md:flex-col",
           )}
         >
@@ -31,7 +31,7 @@ export default function FellowshipMember({ address }) {
             )}
             address={address}
           />
-          <div className="flex flex-col gap-[24px] grow">
+          <div className={cn("flex flex-col gap-[24px] w-full")}>
             <Membership />
             <OnchainEvidence />
             <Referenda />

@@ -4,7 +4,7 @@ import { addressEllipsis } from "next-common/utils";
 
 export default function FellowshipMemberBreadcrumb({ address }) {
   return (
-    <div className="px-[48px] py-[24px]">
+    <div className="px-[48px] pb-[24px]">
       <BreadcrumbWrapper>
         <Breadcrumb
           items={[
