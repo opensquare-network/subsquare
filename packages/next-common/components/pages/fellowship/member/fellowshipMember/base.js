@@ -9,6 +9,7 @@ import {
 } from "next-common/context/collectives/collectives";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { addressEllipsis } from "next-common/utils";
+import MemberActiveStatus from "./memberActiveStatus";
 
 function Address({ address }) {
   return (
@@ -27,14 +28,15 @@ export default function MemberBaseInfo({ address }) {
   const pallet = useRankedCollectivePallet();
 
   return (
-    <div className="flex flex-col items-center p-[24px] pt-[16px] gap-[16px]">
+    <div className="flex flex-col items-center p-[24px] pt-[16px] gap-[16px] w-full">
       <Avatar address={address} size={56} />
-      <div className="flex flex-col items-center gap-[4px]">
+      <div className="flex flex-col items-center gap-[4px] text-textPrimary">
         <Identity identity={identity} />
         <Address address={address} />
         <AccountLinks address={address} />
       </div>
       <FellowshipTagInfo address={address} pallet={pallet} type={section} />
+      <MemberActiveStatus address={address} />
     </div>
   );
 }
