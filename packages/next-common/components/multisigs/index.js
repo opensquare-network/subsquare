@@ -1,6 +1,7 @@
 import MultisigsList from "./multisigsList";
 import AccountSubTabs from "next-common/components/overview/account/subTabs";
 import WithPageWidth from "next-common/components/common/withPageWidth";
+import { CallPopupProvider } from "./context/callPopupContext";
 
 export default function Multisigs() {
   return (
@@ -10,7 +11,9 @@ export default function Multisigs() {
           <AccountSubTabs className="mx-6" />
         </div>
         <WithPageWidth>
-          <MultisigsList />
+          <CallPopupProvider>
+            <MultisigsList />
+          </CallPopupProvider>
         </WithPageWidth>
       </div>
     </div>
