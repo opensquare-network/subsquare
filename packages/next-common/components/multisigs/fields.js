@@ -6,19 +6,35 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import AddressUser from "next-common/components/user/addressUser";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { useCallPopup } from "./context/callPopupContext";
+import { isNil } from "lodash-es";
 
 export function When({ height, index }) {
   const chain = useChain();
   const { integrations } = useChainSettings();
-  if (!integrations?.subscan) {
+
+  if (
+    (!integrations?.statescan && !integrations?.subscan) ||
+    isNil(height) ||
+    isNil(index)
+  ) {
     return null;
   }
 
-  const domain = integrations.subscan.domain || chain;
+  let baseUrl = null;
+
+  if (integrations?.statescan) {
+    baseUrl = `https://${
+      integrations?.statescan?.domain || chain
+    }.statescan.io/#/extrinsics`;
+  } else if (integrations?.subscan) {
+    baseUrl = `https://${
+      integrations?.subscan?.domain || chain
+    }.subscan.io/extrinsic`;
+  }
 
   return (
     <ExternalLink
-      href={`https://${domain}.subscan.io/extrinsic/${height}-${index}`}
+      href={`${baseUrl}/${height}-${index}`}
       className="hover:!underline flex cursor-pointer gap-[4px] text-textPrimary"
       externalIcon={false}
     >
