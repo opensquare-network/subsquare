@@ -1,7 +1,9 @@
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
-import FellowshipTagInfo from "../fellowshipTagInfo";
+import FellowshipTagInfo, {
+  FellowshipTagInfoWrapper,
+} from "../fellowshipTagInfo";
 import { DisplayUserAvatar, DisplayUser, DisplayUserAddress } from "../bio";
 import OpenGovAssetInfo from "./openGovAssetInfo";
 import WindowSizeProvider from "next-common/context/windowSize";
@@ -42,12 +44,16 @@ function OpenGovBioContent() {
             )}
           />
 
-          <FellowshipTagInfo address={address} />
-          <FellowshipTagInfo
-            address={address}
-            pallet="ambassadorCollective"
-            type="ambassador"
-          />
+          <FellowshipTagInfoWrapper>
+            <FellowshipTagInfo address={address} />
+          </FellowshipTagInfoWrapper>
+          <FellowshipTagInfoWrapper>
+            <FellowshipTagInfo
+              address={address}
+              pallet="ambassadorCollective"
+              type="ambassador"
+            />
+          </FellowshipTagInfoWrapper>
 
           <OpenGovAssetInfo address={address} />
         </div>

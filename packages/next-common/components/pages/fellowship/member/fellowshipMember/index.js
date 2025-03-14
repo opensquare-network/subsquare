@@ -26,7 +26,7 @@ export default function FellowshipMember({ address }) {
         >
           <MemberInfoCard
             className={cn(
-              "w-[320px]",
+              "w-[320px] min-w-[320px]",
               navCollapsed ? "max-sm:w-full" : "max-md:w-full",
             )}
             address={address}
