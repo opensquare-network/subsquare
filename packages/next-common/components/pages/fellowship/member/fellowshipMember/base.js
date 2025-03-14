@@ -1,15 +1,14 @@
 import Avatar from "next-common/components/avatar";
 import CopyButton from "next-common/components/copyButton";
-import Identity from "next-common/components/Identity";
 import AccountLinks from "next-common/components/links/accountLinks";
 import FellowshipTagInfo from "next-common/components/profile/fellowshipTagInfo";
 import {
   useCollectivesSection,
   useRankedCollectivePallet,
 } from "next-common/context/collectives/collectives";
-import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { addressEllipsis } from "next-common/utils";
 import MemberActiveStatus from "./memberActiveStatus";
+import { AddressUser } from "next-common/components/user";
 
 function Address({ address }) {
   return (
@@ -23,7 +22,6 @@ function Address({ address }) {
 }
 
 export default function MemberBaseInfo({ address }) {
-  const { identity } = useIdentityInfo(address);
   const section = useCollectivesSection();
   const pallet = useRankedCollectivePallet();
 
@@ -31,7 +29,7 @@ export default function MemberBaseInfo({ address }) {
     <div className="flex flex-col items-center p-[24px] pt-[16px] gap-[16px] w-full">
       <Avatar address={address} size={56} />
       <div className="flex flex-col items-center gap-[4px] text-textPrimary">
-        <Identity identity={identity} />
+        <AddressUser showAvatar={false} add={address} />
         <Address address={address} />
         <AccountLinks address={address} />
       </div>
