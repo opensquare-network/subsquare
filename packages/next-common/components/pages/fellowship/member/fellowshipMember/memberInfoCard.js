@@ -1,5 +1,6 @@
 import Avatar from "next-common/components/avatar";
 import AccountLinks from "next-common/components/links/accountLinks";
+import { cn } from "next-common/utils";
 
 function BaseInfo({ address }) {
   return (
@@ -17,9 +18,14 @@ function BaseInfo({ address }) {
   );
 }
 
-export default function MemberInfoCard({ address }) {
+export default function MemberInfoCard({ className, address }) {
   return (
-    <div className="flex justify-center p-[24px] w-[320px] bg-neutral100 rounded-[16px]">
+    <div
+      className={cn(
+        "flex justify-center p-[24px] bg-neutral100 rounded-[16px]",
+        className,
+      )}
+    >
       <BaseInfo address={address} />
     </div>
   );
