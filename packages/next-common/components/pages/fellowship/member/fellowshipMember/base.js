@@ -10,6 +10,17 @@ import {
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { addressEllipsis } from "next-common/utils";
 
+function Address({ address }) {
+  return (
+    <div className="flex items-center gap-[8px]">
+      <span className="text12Medium text-textTertiary">
+        {addressEllipsis(address)}
+      </span>
+      <CopyButton copyText={address} size={16} />
+    </div>
+  );
+}
+
 export default function MemberBaseInfo({ address }) {
   const { identity } = useIdentityInfo(address);
   const section = useCollectivesSection();
@@ -20,12 +31,7 @@ export default function MemberBaseInfo({ address }) {
       <Avatar address={address} size={56} />
       <div className="flex flex-col items-center gap-[4px]">
         <Identity identity={identity} />
-        <div className="flex items-center gap-[8px]">
-          <span className="text12Medium text-textTertiary">
-            {addressEllipsis(address)}
-          </span>
-          <CopyButton copyText={address} size={16} />
-        </div>
+        <Address address={address} />
         <AccountLinks address={address} />
       </div>
       <FellowshipTagInfo address={address} pallet={pallet} type={section} />
