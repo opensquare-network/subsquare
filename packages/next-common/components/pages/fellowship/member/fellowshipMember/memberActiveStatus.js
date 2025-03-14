@@ -41,6 +41,7 @@ const ActiveButtonWrapper = tw.div`
 function ActiveButton({ children, highlight, onClick }) {
   return (
     <div
+      role="button"
       className={cn(
         "flex flex-1 items-center justify-center gap-[4px] rounded-[4px] p-[4px] grow",
         highlight && "bg-neutral100",
