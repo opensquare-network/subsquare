@@ -13,6 +13,8 @@ import MobileList from "next-common/components/multisigs/mobile";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { CallPopupProvider } from "next-common/components/multisigs/context/callPopupContext";
+import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
 
 function Multisigs() {
   const { width } = useWindowSize();
@@ -53,6 +55,7 @@ function Multisigs() {
         <MobileList multisigs={multisigs} isLoading={isLoading} />
       )}
       {pageComponent}
+      <CallPopupInContext />
     </ListCard>
   );
 }
@@ -60,7 +63,9 @@ function Multisigs() {
 export default function ProfileMultisigs() {
   return (
     <WithPageWidth>
-      <Multisigs />
+      <CallPopupProvider>
+        <Multisigs />
+      </CallPopupProvider>
     </WithPageWidth>
   );
 }

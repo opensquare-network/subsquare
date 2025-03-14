@@ -1,15 +1,12 @@
 import Copyable from "next-common/components/copyable";
 import { cn, textEllipsis } from "next-common/utils";
-import { useState } from "react";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import AddressUser from "next-common/components/user/addressUser";
-import dynamicPopup from "next-common/lib/dynamic/popup";
 import { sortAddresses } from "@polkadot/util-crypto";
+import { useCallPopup } from "./context/callPopupContext";
 import { isNil } from "lodash-es";
-
-const CallPopup = dynamicPopup(() => import("./callPopup"));
 
 export function When({ height, index }) {
   const chain = useChain();
@@ -47,7 +44,16 @@ export function When({ height, index }) {
 }
 
 export function Call({ when, callHash, call, callHex, right = false }) {
-  const [showPopup, setShowPopup] = useState(false);
+  const { setShowPopup, setCallPopupData } = useCallPopup();
+
+  const handleClick = () => {
+    setCallPopupData({
+      call,
+      callHex,
+      blockHeight: when.height,
+    });
+    setShowPopup(true);
+  };
 
   return (
     <div className={cn("flex flex-col")}>
@@ -57,7 +63,7 @@ export function Call({ when, callHash, call, callHex, right = false }) {
             "cursor-pointer text14Medium hover:underline",
             right ? "text-right" : "",
           )}
-          onClick={() => setShowPopup(true)}
+          onClick={handleClick}
         >
           {call?.section}.{call?.method}
         </span>
@@ -73,14 +79,6 @@ export function Call({ when, callHash, call, callHex, right = false }) {
           {textEllipsis(callHash, 6, 4)}
         </span>
       </Copyable>
-      {showPopup && (
-        <CallPopup
-          call={call}
-          callHex={callHex}
-          blockHeight={when.height}
-          setShow={setShowPopup}
-        />
-      )}
     </div>
   );
 }

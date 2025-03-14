@@ -11,6 +11,7 @@ import {
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { ListCard } from "next-common/components/overview/styled";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
 
 export default function MultisigsList() {
   const { width } = useWindowSize();
@@ -43,6 +44,7 @@ export default function MultisigsList() {
         <MobileList multisigs={multisigs} isLoading={isLoading} />
       )}
       {pageComponent}
+      <CallPopupInContext />
     </ListCard>
   );
 }
