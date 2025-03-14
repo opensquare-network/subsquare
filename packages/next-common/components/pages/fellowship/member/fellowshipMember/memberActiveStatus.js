@@ -70,7 +70,7 @@ function SetActiveButton({ highlight }) {
 
   return (
     <ActiveButton highlight={highlight} onClick={highlight ? null : doSubmit}>
-      {highlight && <SystemSignalActive size={16} />}
+      {highlight && <SystemSignalActive className="w-[16px]" />}
       <span
         className={cn(
           "text12Medium",
@@ -100,7 +100,7 @@ function SetInactiveButton({ highlight }) {
 
   return (
     <ActiveButton highlight={highlight} onClick={highlight ? null : doSubmit}>
-      {highlight && <SystemSignalInactive size={16} />}
+      {highlight && <SystemSignalInactive className="w-[16px]" />}
       <span
         className={cn(
           "text12Medium",
@@ -129,7 +129,7 @@ function OthersActiveStatus({ member }) {
     return (
       <ActiveButtonWrapper>
         <ActiveButton highlight={true}>
-          <SystemSignalActive size={16} />
+          <SystemSignalActive className="w-[16px]" />
           <span className="text12Medium text-textPrimary">Active</span>
         </ActiveButton>
       </ActiveButtonWrapper>
@@ -139,7 +139,7 @@ function OthersActiveStatus({ member }) {
   return (
     <ActiveButtonWrapper>
       <ActiveButton>
-        <SystemSignalInactive size={16} />
+        <SystemSignalInactive className="w-[16px]" />
         <span className="text12Medium text-textPrimary">Inactive</span>
       </ActiveButton>
     </ActiveButtonWrapper>
