@@ -51,6 +51,7 @@ export const detailPageCategory = {
   TREASURY_TIP: "treasury/tips",
   GOV2_REFERENDUM: "referenda",
   FELLOWSHIP_REFERENDUM: "fellowship/referenda",
+  FELLOWSHIP_MEMBER: "fellowship/members",
   FELLOWSHIP_SALARY_CYCLES: "fellowship/salary/cycles",
   AMBASSADOR_REFERENDUM: "ambassador/referenda",
   AMBASSADOR_SALARY_CYCLES: "ambassador/salary/cycles",

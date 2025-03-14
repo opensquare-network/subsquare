@@ -5,6 +5,7 @@ import NotFellowshipMember from "next-common/components/pages/notFellowshipMembe
 import { usePageProps } from "next-common/context/page";
 import { isSameAddress } from "next-common/utils";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import FellowshipMember from "./fellowshipMember";
 
 function FellowshipMemberPageImpl() {
   const address = useFellowshipMemberDetailAddr();
@@ -20,10 +21,9 @@ function FellowshipMemberPageImpl() {
 
   if (!member) {
     return <NotFellowshipMember />;
-  } else {
-    return `${address} is a member`;
-    // todo: show member view
   }
+
+  return <FellowshipMember address={address} />;
 }
 
 export default function FellowshipMemberPage() {
