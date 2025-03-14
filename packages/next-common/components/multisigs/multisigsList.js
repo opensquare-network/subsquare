@@ -11,10 +11,7 @@ import {
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { ListCard } from "next-common/components/overview/styled";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
-import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useCallPopup } from "./context/callPopupContext";
-
-const CallPopup = dynamicPopup(() => import("./callPopup"));
+import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
 
 export default function MultisigsList() {
   const { width } = useWindowSize();
@@ -28,7 +25,6 @@ export default function MultisigsList() {
     total,
     pageSize,
   );
-  const { showPopup, callPopupData, setShowPopup } = useCallPopup();
 
   const fetchMyMultisigsData = useCallback(() => {
     if (realAddress) {
@@ -48,14 +44,7 @@ export default function MultisigsList() {
         <MobileList multisigs={multisigs} isLoading={isLoading} />
       )}
       {pageComponent}
-      {showPopup && (
-        <CallPopup
-          call={callPopupData?.call}
-          callHex={callPopupData?.callHex}
-          blockHeight={callPopupData?.blockHeight}
-          setShow={setShowPopup}
-        />
-      )}
+      <CallPopupInContext />
     </ListCard>
   );
 }
