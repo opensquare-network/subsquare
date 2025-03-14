@@ -9,7 +9,7 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import { useContextApi } from "next-common/context/api";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
-import { cn } from "next-common/utils";
+import { cn, isSameAddress } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback } from "react";
 import tw from "tailwind-styled-components";
@@ -154,7 +154,7 @@ export default function MemberActiveStatus({ address }) {
     return null;
   }
 
-  const isMine = myAddress === address;
+  const isMine = isSameAddress(myAddress, address);
   return isMine ? (
     <SignerPopupWrapper>
       <MyActiveStatus address={address} member={member} />
