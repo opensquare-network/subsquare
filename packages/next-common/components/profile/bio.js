@@ -112,12 +112,16 @@ function NormalBio() {
         <DisplayUser id={id} />
         <DisplayUserAddress address={address} />
 
-        <FellowshipTagInfo address={address} />
-        <FellowshipTagInfo
-          address={address}
-          pallet="ambassadorCollective"
-          type="ambassador"
-        />
+        <div className="flex items-center mb-2 mt-4">
+          <FellowshipTagInfo address={address} />
+        </div>
+        <div className="flex items-center mb-2 mt-4">
+          <FellowshipTagInfo
+            address={address}
+            pallet="ambassadorCollective"
+            type="ambassador"
+          />
+        </div>
 
         {isKintsugi ? (
           <KintAssetInfo address={address} />
