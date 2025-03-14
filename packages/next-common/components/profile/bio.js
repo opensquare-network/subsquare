@@ -12,7 +12,9 @@ import AddressUser from "../user/addressUser";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "../user/avatarDisplay";
-import FellowshipTagInfo from "./fellowshipTagInfo";
+import FellowshipTagInfo, {
+  FellowshipTagInfoWrapper,
+} from "./fellowshipTagInfo";
 import { useChainSettings } from "next-common/context/chain";
 import OpenGovBio from "./OpenGovBio";
 
@@ -112,16 +114,16 @@ function NormalBio() {
         <DisplayUser id={id} />
         <DisplayUserAddress address={address} />
 
-        <div className="flex items-center mb-2 mt-4">
+        <FellowshipTagInfoWrapper>
           <FellowshipTagInfo address={address} />
-        </div>
-        <div className="flex items-center mb-2 mt-4">
+        </FellowshipTagInfoWrapper>
+        <FellowshipTagInfoWrapper>
           <FellowshipTagInfo
             address={address}
             pallet="ambassadorCollective"
             type="ambassador"
           />
-        </div>
+        </FellowshipTagInfoWrapper>
 
         {isKintsugi ? (
           <KintAssetInfo address={address} />
