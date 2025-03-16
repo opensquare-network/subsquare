@@ -5,7 +5,6 @@ import { createGlobalState } from "react-use";
 import { isNil } from "lodash-es";
 import getCallByPreimageHash from "next-common/services/preimages/call";
 import RawCallProvider from "next-common/context/call/raw";
-import preimage from "next-common/store/reducers/profile/deposits/preimage";
 
 const useCachedResult = createGlobalState({});
 
@@ -13,17 +12,21 @@ function useDemocracyReferendumCall() {
   const onchainData = useOnchainData();
   const { indexer } = onchainData;
   const hash = useMemo(() => {
-    const { hash: preimageHash } = preimage;
-    if (preimageHash) {
-      return preimageHash;
+    const { preimage, meta } = onchainData;
+    if (preimage?.hash) {
+      return preimage.hash;
+    } else if (meta?.proposalHash) {
+      return meta.proposalHash;
     }
 
     const { hash } = onchainData;
-    if (typeof hash === "string") {
+    if (!hash) {
+      return null;
+    } else if (typeof hash === "string") {
       return hash;
-    } else if (hash.lookup?.hash) {
+    } else if (hash?.lookup?.hash) {
       return hash.lookup.hash;
-    } else if (hash.legacy?.hash) {
+    } else if (hash?.legacy?.hash) {
       return hash.legacy.hash;
     }
   }, [onchainData]);
