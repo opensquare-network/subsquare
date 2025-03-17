@@ -16,6 +16,7 @@ import FellowshipTagInfo from "./fellowshipTagInfo";
 import { useChainSettings } from "next-common/context/chain";
 import OpenGovBio from "./OpenGovBio";
 import DemocracyBio from "./democracyBio";
+import { cn } from "next-common/utils";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -60,13 +61,13 @@ export const DisplayUserAvatar = ({ address, user }) => (
   />
 );
 
-export const DisplayUser = ({ id, className = "" }) => {
+export const DisplayUser = ({ id, className = "", addressClassName = "" }) => {
   if (isPolkadotAddress(id) || isEthereumAddress(id)) {
     return (
       <AddressUser
         add={id}
         showAvatar={false}
-        addressClassName={"!text16Bold"}
+        addressClassName={cn("!text16Bold", addressClassName)}
         className={className}
       />
     );
