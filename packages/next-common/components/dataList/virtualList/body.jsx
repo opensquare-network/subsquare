@@ -22,12 +22,12 @@ export default function VirtualListBody({
   const bodyRef = useRef();
 
   useDeepCompareEffect(() => {
-    if (scrollToFirstRowOnChange && bodyRef.current) {
+    if (scrollToFirstRowOnChange && bodyRef?.current) {
       requestAnimationFrame(() => {
-        bodyRef.current.scrollTo(0, 0);
+        bodyRef?.current?.scrollTo(0, 0);
       });
     }
-  }, [rows]);
+  }, [rows, bodyRef]);
 
   const renderRow = ({ index, style }) => {
     const row = rows[index];
