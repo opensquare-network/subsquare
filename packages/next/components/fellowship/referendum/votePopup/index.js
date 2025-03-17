@@ -90,6 +90,7 @@ function PopupContent() {
       }
 
       setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
+
       await sendTxFunc({
         api,
         tx,

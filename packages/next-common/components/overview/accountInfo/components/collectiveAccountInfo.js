@@ -13,7 +13,7 @@ import { isNil } from "lodash-es";
 import AccountBalances from "./accountBalances";
 
 function MemberInfo({ data }) {
-  const { collectiveMember, coreMember, coreParams } = data;
+  const { collectiveMember, coreMember, coreParams } = data || {};
 
   return (
     <div className="flex flex-col gap-1">
@@ -44,7 +44,7 @@ function FellowshipMember() {
     return null;
   }
 
-  const { collectiveMember, coreMember, coreParams } = data;
+  const { collectiveMember, coreMember, coreParams } = data || {};
 
   if (!collectiveMember || !coreMember || !coreParams) {
     return null;
@@ -64,7 +64,7 @@ function AmbassadorMember() {
     return null;
   }
 
-  const { collectiveMember, coreMember, coreParams } = data;
+  const { collectiveMember, coreMember, coreParams } = data || {};
 
   if (!collectiveMember || !coreMember || !coreParams) {
     return null;

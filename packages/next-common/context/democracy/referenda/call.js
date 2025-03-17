@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useOnchainData } from "next-common/context/post";
 import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import { createGlobalState } from "react-use";
@@ -10,7 +10,26 @@ const useCachedResult = createGlobalState({});
 
 function useDemocracyReferendumCall() {
   const onchainData = useOnchainData();
-  const { hash, indexer } = onchainData;
+  const { indexer } = onchainData;
+  const hash = useMemo(() => {
+    const { preimage, meta } = onchainData;
+    if (preimage?.hash) {
+      return preimage.hash;
+    } else if (meta?.proposalHash) {
+      return meta.proposalHash;
+    }
+
+    const { hash } = onchainData;
+    if (!hash) {
+      return null;
+    } else if (typeof hash === "string") {
+      return hash;
+    } else if (hash?.lookup?.hash) {
+      return hash.lookup.hash;
+    } else if (hash?.legacy?.hash) {
+      return hash.legacy.hash;
+    }
+  }, [onchainData]);
   const api = useBlockApi(indexer?.blockHash);
 
   const [cachedResult, setCachedResult] = useCachedResult({});

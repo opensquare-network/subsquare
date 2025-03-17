@@ -108,7 +108,7 @@ function FellowshipDemotionPrompt() {
     return null;
   }
 
-  const { collectiveMember, coreMember, coreParams } = data;
+  const { collectiveMember, coreMember, coreParams } = data || {};
 
   if (!collectiveMember || !coreMember || !coreParams) {
     return null;
@@ -131,7 +131,7 @@ function AmbassadorDemotionPrompt() {
     return null;
   }
 
-  const { collectiveMember, coreMember, coreParams } = data;
+  const { collectiveMember, coreMember, coreParams } = data || {};
 
   if (!collectiveMember || !coreMember || !coreParams) {
     return null;

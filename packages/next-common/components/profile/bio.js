@@ -3,7 +3,7 @@ import { isPolkadotAddress } from "../../utils/viewfuncs";
 import Flex from "../styled/flex";
 import AccountLinks from "../links/accountLinks";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import { useChain } from "next-common/context/chain";
+import { useChain, useIsKintsugi } from "next-common/context/chain";
 import Copyable from "../copyable";
 import AssetInfo from "./assetInfo";
 import KintAssetInfo from "./assetInfo/kint";
@@ -17,6 +17,7 @@ import FellowshipTagInfo, {
 } from "./fellowshipTagInfo";
 import { useChainSettings } from "next-common/context/chain";
 import OpenGovBio from "./OpenGovBio";
+import DemocracyBio from "./democracyBio";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -137,9 +138,15 @@ function NormalBio() {
 
 export default function Bio() {
   const { modules } = useChainSettings();
+  const hasDemocracy = modules?.democracy && !modules?.democracy?.archived;
+  const isKintsugi = useIsKintsugi();
 
-  if (modules?.referenda) {
+  if (isKintsugi) {
+    return <NormalBio />;
+  } else if (modules?.referenda) {
     return <OpenGovBio />;
+  } else if (hasDemocracy) {
+    return <DemocracyBio />;
   }
 
   return <NormalBio />;

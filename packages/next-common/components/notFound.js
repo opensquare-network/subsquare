@@ -25,7 +25,7 @@ export default function NotFound() {
         />
       </svg>
       <H2>Page Not Found</H2>
-      <P>You may have mistyped the address or the page may have moved.</P>
+      <P>You may have mistyped the URL or the page may have moved.</P>
     </Wrapper>
   );
 }
