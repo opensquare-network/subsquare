@@ -31,12 +31,12 @@ export function CoreFellowshipMemberEvidenceContent({
         </Tooltip>
         <span
           role="button"
-          className="text-theme500"
+          className="text-theme500 text12Medium inline-flex items-center"
           onClick={() => {
             setDetailOpen(true);
           }}
         >
-          Detail
+          Evidence
         </span>
       </>
     );
@@ -103,7 +103,7 @@ export default function CoreFellowshipMemberEvidence({
     <>
       <CoreFellowshipMemberInfoWrapper>
         <CoreFellowshipMemberInfoTitle className="mb-0.5">
-          Evidence
+          Wish
         </CoreFellowshipMemberInfoTitle>
         <div className="flex text12Medium gap-[8px]">
           <CoreFellowshipMemberEvidenceContent
