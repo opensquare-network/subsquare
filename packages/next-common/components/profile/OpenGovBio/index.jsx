@@ -17,8 +17,8 @@ export function AccountInfoPanel({ address, id, user }) {
   return (
     <div
       className={cn(
-        "w-full flex flex-col px-0 pt-6 mt-0 gap-4",
-        shouldAlignCenter ? "items-center" : "items-start",
+        "w-full flex px-0 pt-6 mt-0 gap-4",
+        shouldAlignCenter ? "flex-col items-center" : "flex-row items-start",
       )}
     >
       <DisplayUserAvatar address={address} user={user} />
@@ -31,11 +31,14 @@ export function AccountInfoPanel({ address, id, user }) {
         <DisplayUser
           id={id}
           className={cn("flex", shouldAlignCenter ? "justify-center" : "")}
+          addressClassName="!text14Medium"
         />
         <DisplayUserAddress
           address={address}
           className={cn(
-            shouldAlignCenter ? "!items-center" : "flex-1 !items-start",
+            shouldAlignCenter
+              ? "!items-center text-center"
+              : "flex-1 !items-start",
           )}
         />
 
