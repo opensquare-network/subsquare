@@ -3,7 +3,6 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
-import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
 import { toPrecision } from "next-common/utils";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
@@ -25,33 +24,48 @@ function NotImportedSalary() {
   );
 }
 
-function MemberSalary({ address, member }) {
+function LastPayment() {
   const { lastSalaryPayment } = usePageProps();
-  const { isActive } = member || {};
-  const { params, isLoading: isParamLoading } = useCoreFellowshipParams();
-  const { rank, isLoading: isRankLoading } = useSubCollectiveRank(address);
+  const { paidIndexer } = lastSalaryPayment || {};
 
-  if (isParamLoading || isRankLoading) {
+  if (!paidIndexer) {
     return null;
   }
 
-  const { activeSalary = [], passiveSalary = [] } = params ?? {};
+  return (
+    <span className="text12Medium text-textTertiary">
+      Last payment <Duration time={paidIndexer.blockTime} />
+    </span>
+  );
+}
+
+function SalaryValue({ salary }) {
   const { symbol, decimals } = getSalaryAsset();
+  return (
+    <span className="text16Bold text-textPrimary">
+      <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />
+    </span>
+  );
+}
+
+function MemberSalary({ address, member }) {
+  const { fellowshipParams } = usePageProps();
+  const { isActive } = member || {};
+  const { rank, isLoading: isRankLoading } = useSubCollectiveRank(address);
+
+  if (isRankLoading) {
+    return null;
+  }
+
+  const { activeSalary = [], passiveSalary = [] } = fellowshipParams ?? {};
   const salaryTable = isActive ? activeSalary : passiveSalary;
   const salary = getRankSalary(salaryTable, rank);
-  const { paidIndexer } = lastSalaryPayment || {};
 
   return (
     <Wrapper>
       <span className="text14Medium text-textTertiary">Salary</span>
-      <span className="text16Bold text-textPrimary">
-        <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />
-      </span>
-      {paidIndexer && (
-        <span className="text12Medium text-textTertiary">
-          Last payment <Duration time={paidIndexer.blockTime} />
-        </span>
-      )}
+      <SalaryValue salary={salary} />
+      <LastPayment />
     </Wrapper>
   );
 }
