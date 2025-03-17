@@ -84,12 +84,12 @@ function FellowshipMembersTabPage({
 
   return (
     <FellowshipMemberCommon>
-      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6 h-[28px]">
+      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6">
         <FellowshipMemberTabs
           membersCount={members?.length ?? coreMembersCount}
           candidatesCount={coreCandidatesCount}
         />
-        <div className="flex items-center gap-[12px] max-sm:pl-6">
+        <div className="flex items-center gap-[12px] max-md:pl-6">
           {memberFilters}
           {viewModeSwitch}
         </div>
@@ -117,12 +117,12 @@ function FellowshipCandidatesTabPage({
 
   return (
     <FellowshipMemberCommon>
-      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6 h-[28px]">
+      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6">
         <FellowshipMemberTabs
           membersCount={coreMembersCount}
           candidatesCount={candidates?.length ?? coreCandidatesCount}
         />
-        <div className="flex items-center gap-[12px] max-sm:pl-6">
+        <div className="flex items-center gap-[12px] max-md:pl-6">
           {memberFilters}
           {viewModeSwitch}
         </div>
