@@ -1,4 +1,6 @@
+import Duration from "next-common/components/duration";
 import ValueDisplay from "next-common/components/valueDisplay";
+import { usePageProps } from "next-common/context/page";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
 import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
@@ -24,6 +26,7 @@ function NotImportedSalary() {
 }
 
 function MemberSalary({ address, member }) {
+  const { lastSalaryPayment } = usePageProps();
   const { isActive } = member || {};
   const { params, isLoading: isParamLoading } = useCoreFellowshipParams();
   const { rank, isLoading: isRankLoading } = useSubCollectiveRank(address);
@@ -36,6 +39,7 @@ function MemberSalary({ address, member }) {
   const { symbol, decimals } = getSalaryAsset();
   const salaryTable = isActive ? activeSalary : passiveSalary;
   const salary = getRankSalary(salaryTable, rank);
+  const { paidIndexer } = lastSalaryPayment || {};
 
   return (
     <Wrapper>
@@ -43,9 +47,11 @@ function MemberSalary({ address, member }) {
       <span className="text16Bold text-textPrimary">
         <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />
       </span>
-      <span className="text12Medium text-textTertiary">
-        Last payment 20d ago
-      </span>
+      {paidIndexer && (
+        <span className="text12Medium text-textTertiary">
+          Last payment <Duration time={paidIndexer.blockTime} />
+        </span>
+      )}
     </Wrapper>
   );
 }

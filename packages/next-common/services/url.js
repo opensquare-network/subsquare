@@ -70,6 +70,9 @@ export const fellowshipSalaryCycleUnregisteredPaymentsApi = (index) =>
 export const fellowshipSalaryCycleFeedsApi = (index) =>
   `fellowship/salary/cycles/${index}/feeds`;
 
+export const fellowshipMemberLastSalaryPaymentApi = (address) =>
+  `fellowship/salary/address/${address}/last_payment`;
+
 export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
 export const fellowshipSalaryFeedsApi = "fellowship/salary/feeds";
 export const fellowshipSalaryPaymentsApi = "fellowship/salary/payments";
