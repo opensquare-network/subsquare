@@ -1,9 +1,18 @@
 import { useRouter } from "next/router";
-import { ImgNotMemberLight } from "@osn/icons/subsquare";
+import { ImgNotMemberLight, ImgNotMemberDark } from "@osn/icons/subsquare";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 import { upperFirst } from "lodash-es";
+
+function ImgNotMember() {
+  return (
+    <>
+      <ImgNotMemberLight className="dark:hidden" />
+      <ImgNotMemberDark className="hidden dark:block" />
+    </>
+  );
+}
 
 export default function NotFellowshipMember() {
   const router = useRouter();
@@ -13,7 +22,7 @@ export default function NotFellowshipMember() {
     <BaseLayout>
       <div className="flex items-center justify-center grow px-[16px]">
         <div className="flex flex-col items-center gap-[24px]">
-          <ImgNotMemberLight />
+          <ImgNotMember />
           <div className="flex flex-col gap-[8px] items-center">
             <h1 className="text-textPrimary text20Bold">
               Not a {upperFirst(section)} member

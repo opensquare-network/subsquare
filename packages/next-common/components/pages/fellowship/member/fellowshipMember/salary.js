@@ -1,4 +1,11 @@
+import Duration from "next-common/components/duration";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { usePageProps } from "next-common/context/page";
+import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
+import { toPrecision } from "next-common/utils";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 
 function Wrapper({ children }) {
   return (
@@ -17,14 +24,48 @@ function NotImportedSalary() {
   );
 }
 
-function MemberSalary() {
+function LastPayment() {
+  const { lastSalaryPayment } = usePageProps();
+  const { paidIndexer } = lastSalaryPayment || {};
+
+  if (!paidIndexer) {
+    return null;
+  }
+
+  return (
+    <span className="text12Medium text-textTertiary">
+      Last payment <Duration time={paidIndexer.blockTime} />
+    </span>
+  );
+}
+
+function SalaryValue({ salary }) {
+  const { symbol, decimals } = getSalaryAsset();
+  return (
+    <span className="text16Bold text-textPrimary">
+      <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />
+    </span>
+  );
+}
+
+function MemberSalary({ address, member }) {
+  const { fellowshipParams } = usePageProps();
+  const { isActive } = member || {};
+  const { rank, isLoading: isRankLoading } = useSubCollectiveRank(address);
+
+  if (isRankLoading) {
+    return null;
+  }
+
+  const { activeSalary = [], passiveSalary = [] } = fellowshipParams ?? {};
+  const salaryTable = isActive ? activeSalary : passiveSalary;
+  const salary = getRankSalary(salaryTable, rank);
+
   return (
     <Wrapper>
       <span className="text14Medium text-textTertiary">Salary</span>
-      <span className="text16Bold text-textPrimary">≈16.67K USDT</span>
-      <span className="text12Medium text-textTertiary">
-        Last payment 20d ago
-      </span>
+      <SalaryValue salary={salary} />
+      <LastPayment />
     </Wrapper>
   );
 }
@@ -40,5 +81,5 @@ export default function Salary({ address }) {
     return <NotImportedSalary />;
   }
 
-  return <MemberSalary />;
+  return <MemberSalary address={address} member={member} />;
 }
