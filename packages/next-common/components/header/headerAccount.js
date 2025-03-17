@@ -13,6 +13,7 @@ import { SystemProfile } from "@osn/icons/subsquare";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
 import { AddressUser, SystemUser } from "../user";
 import { useAccountMenu } from "./useAccountMenu.js";
+import Divider from "next-common/components/styled/layout/divider";
 
 const Wrapper = Relative;
 
@@ -21,7 +22,7 @@ const Menu = styled.div`
   position: absolute;
   right: 0;
   margin-top: 4px;
-  padding: 8px;
+  padding: 8px 0;
   z-index: 999999;
   background: var(--neutral100);
   border-width: 1px;
@@ -32,7 +33,7 @@ const Menu = styled.div`
 `;
 
 const Item = styled(Flex)`
-  min-width: 160px;
+  min-width: 192px;
   cursor: pointer;
   padding: 0 12px;
   height: 36px;
@@ -78,6 +79,7 @@ export default function HeaderAccount() {
     }
   }, [windowSize]);
 
+  // TODO: show switch account popup
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
       await disconnectAccount();
@@ -123,6 +125,7 @@ export default function HeaderAccount() {
             {user?.address && <ProfileMenuItem onClick={openUserProfile} />}
             {menu?.map((item, index) => (
               <Fragment key={index}>
+                {item?.value === "switch" && <Divider className="my-2" />}
                 <Item onClick={() => handleAccountMenu(item)}>
                   {item.icon}
                   <span>{item.name}</span>
