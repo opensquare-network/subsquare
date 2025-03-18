@@ -1,8 +1,4 @@
 import Popup from "next-common/components/popup/wrapper/Popup";
-import {
-  AllAccountsProvider,
-  useAllAccounts,
-} from "next-common/components/wallet/allAccounts";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Divider from "next-common/components/styled/layout/divider";
 import { SystemWallet, SystemSearch } from "@osn/icons/subsquare";
@@ -11,6 +7,9 @@ import { useUser } from "next-common/context/user";
 import Input from "next-common/lib/input";
 import { useState } from "react";
 import useSearchAccounts from "./useSearchAccounts";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
+// import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 
 function PopupTitle() {
   return (
@@ -29,12 +28,8 @@ function SubTitle() {
   );
 }
 
-function AccountList({ isLoading = false, accounts = [] }) {
+function AccountList({ accounts = [] }) {
   const user = useUser();
-
-  if (isLoading) {
-    return null;
-  }
 
   // TODO: switch account
   // const onClick = (user) => {
@@ -93,7 +88,7 @@ function PopupContent() {
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
   };
-  const { accounts, isLoading } = useAllAccounts();
+  const accounts = useExtensionAccounts();
   const filteredAccounts = useSearchAccounts(searchValue, accounts);
 
   return (
@@ -107,14 +102,14 @@ function PopupContent() {
         value={searchValue}
         onChange={handleInputChange}
       />
-      <AccountList isLoading={isLoading} accounts={filteredAccounts} />
+      <AccountList accounts={filteredAccounts} />
     </div>
   );
 }
 
 export default function SwitchWeb3({ onClose, onOpenLogin }) {
   return (
-    <AllAccountsProvider>
+    <SignerPopupWrapper>
       <Popup
         title={<PopupTitle />}
         showCloseIcon={false}
@@ -125,6 +120,6 @@ export default function SwitchWeb3({ onClose, onOpenLogin }) {
         <TextDivider />
         <ChangeWallet onClick={onOpenLogin} />
       </Popup>
-    </AllAccountsProvider>
+    </SignerPopupWrapper>
   );
 }
