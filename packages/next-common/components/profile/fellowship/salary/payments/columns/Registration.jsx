@@ -2,7 +2,7 @@ import { SystemVoteAbstain, SystemVoteAye } from "@osn/icons/subsquare";
 
 export function useProfileFellowshipSalaryPaymentRegistrationColumn(props) {
   return {
-    name: "isRegistered",
+    name: "Registration",
     width: 160,
     className: "text-right",
     cellRender(data) {

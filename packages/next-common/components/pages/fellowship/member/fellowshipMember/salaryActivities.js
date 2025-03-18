@@ -57,8 +57,8 @@ function FellowshipSalaryCard() {
       ),
     },
     {
-      label: "Timeline",
-      value: "timeline",
+      label: "Feeds",
+      value: "feeds",
       content: <ProfileFellowshipSalaryFeeds />,
     },
   ];
