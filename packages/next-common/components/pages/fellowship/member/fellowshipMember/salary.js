@@ -6,11 +6,17 @@ import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCor
 import { toPrecision } from "next-common/utils";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
+import {
+  BorderedRow,
+  Header,
+  Value,
+} from "next-common/components/referenda/tally/styled";
+import { InfoAsset, InfoDocs } from "@osn/icons/subsquare";
 
 function Wrapper({ children }) {
   return (
     <div className="flex flex-col w-full pt-[24px] border-t border-neutral300 gap-[12px]">
-      <div className="flex flex-col items-center gap-[4px]">{children}</div>
+      {children}
     </div>
   );
 }
@@ -18,8 +24,10 @@ function Wrapper({ children }) {
 function NotImportedSalary() {
   return (
     <Wrapper>
-      <span className="text14Medium text-textTertiary">Salary</span>
-      <span className="text16Bold text-textTertiary">-</span>
+      <div className="flex flex-col items-center gap-[4px]">
+        <span className="text14Medium text-textTertiary">Salary</span>
+        <span className="text16Bold text-textTertiary">-</span>
+      </div>
     </Wrapper>
   );
 }
@@ -48,8 +56,47 @@ function SalaryValue({ salary }) {
   );
 }
 
+function TotalPaid({ totalPaid }) {
+  const { decimals, symbol } = getSalaryAsset();
+  return (
+    <BorderedRow>
+      <Header>
+        <InfoAsset className="w-[20px] h-[20px]" />
+        Total Paid
+      </Header>
+      <Value>
+        <ValueDisplay
+          value={toPrecision(totalPaid, decimals)}
+          symbol={symbol}
+        />
+      </Value>
+    </BorderedRow>
+  );
+}
+
+function JoinedCycles({ joinedCycles }) {
+  return (
+    <BorderedRow>
+      <Header>
+        <InfoDocs className="w-[20px] h-[20px]" />
+        Joined Cycles
+      </Header>
+      <Value>{joinedCycles}</Value>
+    </BorderedRow>
+  );
+}
+
+function Statistics({ totalPaid, joinedCycles }) {
+  return (
+    <div className="flex flex-col w-full [&_svg_path]:fill-textTertiary">
+      <TotalPaid totalPaid={totalPaid} />
+      <JoinedCycles joinedCycles={joinedCycles} />
+    </div>
+  );
+}
+
 function MemberSalary({ address, member }) {
-  const { fellowshipParams } = usePageProps();
+  const { fellowshipParams, claimantCycleStats } = usePageProps();
   const { isActive } = member || {};
   const { rank, isLoading: isRankLoading } = useSubCollectiveRank(address);
 
@@ -63,9 +110,15 @@ function MemberSalary({ address, member }) {
 
   return (
     <Wrapper>
-      <span className="text14Medium text-textTertiary">Salary</span>
-      <SalaryValue salary={salary} />
-      <LastPayment />
+      <div className="flex flex-col items-center gap-[4px]">
+        <span className="text14Medium text-textTertiary">Salary</span>
+        <SalaryValue salary={salary} />
+        <LastPayment />
+      </div>
+      <Statistics
+        totalPaid={claimantCycleStats?.totalSalary || 0}
+        joinedCycles={claimantCycleStats?.cycles || 0}
+      />
     </Wrapper>
   );
 }

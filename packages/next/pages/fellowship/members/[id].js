@@ -5,6 +5,7 @@ import {
   fellowshipMemberLastSalaryPaymentApi,
   fellowshipMembersApiUri,
   fellowshipParamsApi,
+  fellowshipStatisticsMemberApi,
 } from "next-common/services/url";
 import FellowshipMemberPage from "next-common/components/pages/fellowship/member";
 
@@ -18,11 +19,13 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: fellowshipMembers },
     { result: fellowshipParams = {} },
     { result: lastSalaryPayment = {} },
+    { result: claimantCycleStats = {} },
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
     nextApi.fetch(fellowshipMembersApiUri),
     nextApi.fetch(fellowshipParamsApi),
     nextApi.fetch(fellowshipMemberLastSalaryPaymentApi(id)),
+    nextApi.fetch(fellowshipStatisticsMemberApi(id)),
   ]);
 
   return {
@@ -32,6 +35,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       fellowshipMembers: fellowshipMembers ?? null,
       fellowshipParams,
       lastSalaryPayment,
+      claimantCycleStats,
     },
   };
 });
