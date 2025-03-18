@@ -34,7 +34,7 @@ export default function Membership() {
   return (
     <WindowSizeProvider>
       <SecondaryCard>
-        <CardTitle>Membership</CardTitle>
+        <CardTitle>Status</CardTitle>
 
         {isLoading ? (
           <MembershipLoading />
@@ -177,9 +177,9 @@ function NotImported() {
 function MembershipLoading() {
   return (
     <>
-      <CoretimeSalePanelChartSkeleton className="h-5 w-1/6" />
+      <CoretimeSalePanelChartSkeleton className="h-5" />
       <CoretimeSalePanelChartSkeleton className="h-5 mt-2" />
-      <CoretimeSalePanelChartSkeleton className="h-5 mt-2" />
+      <CoretimeSalePanelChartSkeleton className="h-5 w-1/2 mt-2" />
     </>
   );
 }
