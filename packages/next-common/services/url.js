@@ -26,6 +26,8 @@ export const gov2ReferendaHistoryWhalesApi = "gov2/referenda/history-whales";
 
 // fellowship
 export const fellowshipReferenda = "fellowship/referenda/";
+export const fellowshipMemberHeatmapApi = (address) =>
+  `fellowship/referenda/members/${address}/heatmap`;
 
 export const getFellowshipReferendumUrl = (id) => `${fellowshipReferenda}${id}`;
 export const getFellowshipReferendumCommentsUrl = (id) =>

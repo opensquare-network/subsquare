@@ -3,8 +3,11 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { CardTitle } from "./styled";
 import { useAsync } from "react-use";
 import nextApi from "next-common/services/nextApi";
-import { fellowshipReferendumsApi } from "next-common/services/url";
-import { useState } from "react";
+import {
+  fellowshipMemberHeatmapApi,
+  fellowshipReferendumsApi,
+} from "next-common/services/url";
+import { useMemo, useState } from "react";
 import Loading from "next-common/components/loading";
 
 function Square({ className, children }) {
@@ -67,7 +70,35 @@ function LegendBar() {
   );
 }
 
-function Heatmap() {}
+function Heatmap({ heatmap, referendaCount }) {
+  const heatmapData = useMemo(() => {
+    const data = {};
+    heatmap?.forEach((item) => {
+      data[item.referendumIndex] = item;
+    });
+    return data;
+  }, [heatmap]);
+
+  return (
+    <div className="flex justify-center">
+      <div className="flex gap-[6px] flex-wrap">
+        {Array.from({ length: referendaCount }).map((_, index) => {
+          const item = heatmapData[index];
+          if (!item) {
+            return <NotEligibleSquare key={index} />;
+          }
+          if (!item.isVoted) {
+            return <NoVoteSquare key={index} />;
+          }
+          if (item.vote.isAye) {
+            return <AyeSquare key={index} />;
+          }
+          return <NaySquare key={index} />;
+        })}
+      </div>
+    </div>
+  );
+}
 
 function LoadingCard() {
   return (
@@ -89,21 +120,25 @@ function NoReferenda() {
   );
 }
 
-export default function ReferendaActivities() {
+export default function ReferendaActivities({ address }) {
   const [page] = useState(1);
-  const { value, loading } = useAsync(async () => {
-    return await nextApi.fetch(fellowshipReferendumsApi, {
-      page,
-      pageSize: 25,
-      simple: true,
-    });
-  }, [page]);
+  const { value: { result: referenda } = {}, loading: isReferendaLoading } =
+    useAsync(async () => {
+      return await nextApi.fetch(fellowshipReferendumsApi, {
+        page,
+        pageSize: 25,
+        simple: true,
+      });
+    }, [page]);
+  const { value: { result: heatmap } = {}, loading: isHeatmapLoading } =
+    useAsync(async () => {
+      return await nextApi.fetch(fellowshipMemberHeatmapApi(address));
+    }, [address]);
 
-  if (loading) {
+  if (isReferendaLoading && isHeatmapLoading) {
     return <LoadingCard />;
   }
 
-  const { result: referenda } = value || {};
   if (!referenda || referenda.total === 0) {
     return <NoReferenda />;
   }
@@ -112,7 +147,7 @@ export default function ReferendaActivities() {
     <SecondaryCard>
       <div className="flex flex-col gap-[16px]">
         <CardTitle>Attendance</CardTitle>
-        <Heatmap />
+        <Heatmap heatmap={heatmap} referendaCount={referenda?.total} />
         <LegendBar />
         <CardTitle>History</CardTitle>
       </div>

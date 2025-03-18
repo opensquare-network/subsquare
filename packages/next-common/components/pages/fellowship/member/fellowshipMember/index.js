@@ -36,7 +36,7 @@ export default function FellowshipMember({ address }) {
           >
             <Membership />
             <OnchainEvidence />
-            <MemberActivities />
+            <MemberActivities address={address} />
           </div>
         </div>
       </div>
