@@ -1,6 +1,11 @@
 import { cn } from "next-common/utils";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { CardTitle } from "./styled";
+import { useAsync } from "react-use";
+import nextApi from "next-common/services/nextApi";
+import { fellowshipReferendumsApi } from "next-common/services/url";
+import { useState } from "react";
+import Loading from "next-common/components/loading";
 
 function Square({ className, children }) {
   return (
@@ -62,11 +67,52 @@ function LegendBar() {
   );
 }
 
+function Heatmap() {}
+
+function LoadingCard() {
+  return (
+    <SecondaryCard>
+      <div className="flex justify-center p-[16px]">
+        <Loading size={20} />
+      </div>
+    </SecondaryCard>
+  );
+}
+
+function NoReferenda() {
+  return (
+    <SecondaryCard>
+      <div className="py-[16px] text-center">
+        <span className="text14Medium text-textTertiary">No referenda yet</span>
+      </div>
+    </SecondaryCard>
+  );
+}
+
 export default function ReferendaActivities() {
+  const [page] = useState(1);
+  const { value, loading } = useAsync(async () => {
+    return await nextApi.fetch(fellowshipReferendumsApi, {
+      page,
+      pageSize: 25,
+      simple: true,
+    });
+  }, [page]);
+
+  if (loading) {
+    return <LoadingCard />;
+  }
+
+  const { result: referenda } = value || {};
+  if (!referenda || referenda.total === 0) {
+    return <NoReferenda />;
+  }
+
   return (
     <SecondaryCard>
       <div className="flex flex-col gap-[16px]">
         <CardTitle>Attendance</CardTitle>
+        <Heatmap />
         <LegendBar />
         <CardTitle>History</CardTitle>
       </div>

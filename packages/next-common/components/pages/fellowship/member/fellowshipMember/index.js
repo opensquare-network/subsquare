@@ -1,11 +1,11 @@
+import { cn } from "next-common/utils";
+import { useNavCollapsed } from "next-common/context/nav";
 import ContentLayout from "next-common/components/layout/contentLayout";
 import MemberInfoCard from "./memberInfoCard";
 import FellowshipMemberBreadcrumb from "./fellowshipMemberBreadcrumb";
 import Membership from "./membership";
 import OnchainEvidence from "./onchainEvidence";
 import MemberActivities from "./memberActivities";
-import { useNavCollapsed } from "next-common/context/nav";
-import { cn } from "next-common/utils";
 
 export default function FellowshipMember({ address }) {
   const [navCollapsed] = useNavCollapsed();
