@@ -19,6 +19,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import Period from "next-common/components/fellowship/params/period";
 import { cn } from "next-common/utils";
 import WindowSizeProvider from "next-common/context/windowSize";
+import CoretimeSalePanelChartSkeleton from "next-common/components/coretime/salePanel/chart/skeleton";
 
 export default function Membership() {
   const { fellowshipMembers, id, fellowshipParams } = usePageProps();
@@ -35,7 +36,9 @@ export default function Membership() {
       <SecondaryCard>
         <CardTitle>Membership</CardTitle>
 
-        {activeMember ? (
+        {isLoading ? (
+          <MembershipLoading />
+        ) : activeMember ? (
           <div className="gap-y-4 flex flex-col">
             <ProfileFellowshipStatisticsInfoImpl
               rank={activeMember?.rank}
@@ -168,5 +171,15 @@ function NotImported() {
         Not imported in the management system
       </span>
     </div>
+  );
+}
+
+function MembershipLoading() {
+  return (
+    <>
+      <CoretimeSalePanelChartSkeleton className="h-5 w-1/6" />
+      <CoretimeSalePanelChartSkeleton className="h-5 mt-2" />
+      <CoretimeSalePanelChartSkeleton className="h-5 mt-2" />
+    </>
   );
 }
