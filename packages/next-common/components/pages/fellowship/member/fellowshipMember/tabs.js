@@ -5,36 +5,45 @@ import TabsList from "next-common/components/tabs/list";
 const Label = tw.button`
   text16Bold
   text-textTertiary
+  capitalize
 `;
+
+export const TabItems = {
+  Referenda: "referenda",
+  Core: "core",
+  Salary: "salary",
+};
+
+function TabTitle({ isActive, children }) {
+  return (
+    <Label className={cn(isActive && "text-textPrimary")}>{children}</Label>
+  );
+}
 
 export default function Tabs({ activeTabValue, setActiveTabValue }) {
   const tabs = [
     {
-      value: "referenda",
+      value: TabItems.Referenda,
       label: (
-        <Label
-          className={cn(activeTabValue === "referenda" && "text-textPrimary")}
-        >
-          Referenda
-        </Label>
+        <TabTitle isActive={activeTabValue === TabItems.Referenda}>
+          {TabItems.Referenda}
+        </TabTitle>
       ),
     },
     {
-      value: "core",
+      value: TabItems.Core,
       label: (
-        <Label className={cn(activeTabValue === "core" && "text-textPrimary")}>
-          Core
-        </Label>
+        <TabTitle isActive={activeTabValue === TabItems.Core}>
+          {TabItems.Core}
+        </TabTitle>
       ),
     },
     {
-      value: "salary",
+      value: TabItems.Salary,
       label: (
-        <Label
-          className={cn(activeTabValue === "salary" && "text-textPrimary")}
-        >
-          Salary
-        </Label>
+        <TabTitle isActive={activeTabValue === TabItems.Salary}>
+          {TabItems.Salary}
+        </TabTitle>
       ),
     },
   ];
