@@ -44,10 +44,6 @@ function MemberFellowshipSalaryPayments({ setPaymentsCount }) {
   );
 }
 
-function MemberFellowshipSalaryFeeds() {
-  return <ProfileFellowshipSalaryFeeds />;
-}
-
 function FellowshipSalaryCard() {
   const [paymentsCount, setPaymentsCount] = useState();
 
@@ -63,7 +59,7 @@ function FellowshipSalaryCard() {
     {
       label: "Timeline",
       value: "timeline",
-      content: <MemberFellowshipSalaryFeeds />,
+      content: <ProfileFellowshipSalaryFeeds />,
     },
   ];
 
