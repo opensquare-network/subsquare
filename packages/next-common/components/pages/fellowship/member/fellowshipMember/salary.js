@@ -116,7 +116,7 @@ function MemberSalary({ address, member }) {
         <LastPayment />
       </div>
       <Statistics
-        totalPaid={claimantCycleStats?.salary || 0}
+        totalPaid={claimantCycleStats?.totalSalary || 0}
         joinedCycles={claimantCycleStats?.cycles || 0}
       />
     </Wrapper>
