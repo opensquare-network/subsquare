@@ -14,6 +14,7 @@ import { useConnectedAccountContext } from "next-common/context/connectedAccount
 import { AddressUser, SystemUser } from "../user";
 import { useAccountMenu } from "./useAccountMenu.js";
 import Divider from "next-common/components/styled/layout/divider";
+import SwitchWeb3 from "next-common/components/switchWeb3";
 
 const Wrapper = Relative;
 
@@ -70,6 +71,7 @@ export default function HeaderAccount() {
   const isMounted = useMountedState();
   const { openLoginPopup } = useLoginPopup();
   const menu = useAccountMenu();
+  const [showSwitchAccount, setShowSwitchAccount] = useState(true);
 
   useClickAway(ref, () => setShow(false));
 
@@ -79,10 +81,11 @@ export default function HeaderAccount() {
     }
   }, [windowSize]);
 
-  // TODO: show switch account popup
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
       await disconnectAccount();
+    } else if (item.value === "switch") {
+      setShowSwitchAccount(true);
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
@@ -135,6 +138,17 @@ export default function HeaderAccount() {
           </Menu>
         )}
       </Wrapper>
+      {showSwitchAccount && (
+        <SwitchWeb3
+          onClose={() => {
+            setShowSwitchAccount(false);
+          }}
+          onOpenLogin={() => {
+            openLoginPopup();
+            setShowSwitchAccount(false);
+          }}
+        />
+      )}
     </>
   );
 }
