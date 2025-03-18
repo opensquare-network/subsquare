@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import Duration from "next-common/components/duration";
 import { useToggle } from "react-use";
 
-export function useProfileFellowshipSalaryPaymentTimeAgeColumn() {
+export function useProfileFellowshipSalaryPaymentTimeAgeColumn(props) {
   const [isTime, toggleIsTime] = useToggle(true);
 
   return {
@@ -25,5 +25,6 @@ export function useProfileFellowshipSalaryPaymentTimeAgeColumn() {
         </div>
       );
     },
+    ...props,
   };
 }

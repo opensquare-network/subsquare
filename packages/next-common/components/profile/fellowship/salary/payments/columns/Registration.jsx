@@ -1,8 +1,8 @@
 import { SystemVoteAbstain, SystemVoteAye } from "@osn/icons/subsquare";
 
-export function useProfileFellowshipSalaryPaymentRegistrationColumn() {
+export function useProfileFellowshipSalaryPaymentRegistrationColumn(props) {
   return {
-    name: "Registration",
+    name: "isRegistered",
     width: 160,
     className: "text-right",
     cellRender(data) {
@@ -12,5 +12,6 @@ export function useProfileFellowshipSalaryPaymentRegistrationColumn() {
         <SystemVoteAbstain className="inline-block w-4 h-4" />
       );
     },
+    ...props,
   };
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export function useProfileFellowshipSalaryPaymentCycleColumn() {
+export function useProfileFellowshipSalaryPaymentCycleColumn(props = {}) {
   return {
     name: "Cycle",
     width: 80,
@@ -15,5 +15,6 @@ export function useProfileFellowshipSalaryPaymentCycleColumn() {
         </Link>
       );
     },
+    ...props,
   };
 }

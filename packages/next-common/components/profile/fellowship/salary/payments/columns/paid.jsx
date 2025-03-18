@@ -2,7 +2,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
 
-export function useProfileFellowshipSalaryPaymentPaidColumn() {
+export function useProfileFellowshipSalaryPaymentPaidColumn(props = {}) {
   const { decimals, symbol } = getSalaryAsset();
 
   return {
@@ -18,5 +18,6 @@ export function useProfileFellowshipSalaryPaymentPaidColumn() {
         />
       );
     },
+    ...props,
   };
 }

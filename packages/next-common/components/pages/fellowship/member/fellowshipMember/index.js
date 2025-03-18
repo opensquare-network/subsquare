@@ -3,7 +3,7 @@ import MemberInfoCard from "./memberInfoCard";
 import FellowshipMemberBreadcrumb from "./fellowshipMemberBreadcrumb";
 import Membership from "./membership";
 import OnchainEvidence from "./onchainEvidence";
-import Referenda from "./referenda";
+import MemberActivities from "./memberActivities";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 
@@ -31,10 +31,12 @@ export default function FellowshipMember({ address }) {
             )}
             address={address}
           />
-          <div className={cn("flex flex-col gap-[24px] w-full")}>
+          <div
+            className={cn("flex flex-col gap-[24px]", "w-full overflow-hidden")}
+          >
             <Membership />
             <OnchainEvidence />
-            <Referenda />
+            <MemberActivities />
           </div>
         </div>
       </div>
