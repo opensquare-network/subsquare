@@ -71,7 +71,7 @@ export default function HeaderAccount() {
   const isMounted = useMountedState();
   const { openLoginPopup } = useLoginPopup();
   const menu = useAccountMenu();
-  const [showSwitchAccount, setShowSwitchAccount] = useState(true);
+  const [showSwitchAccount, setShowSwitchAccount] = useState(false);
 
   useClickAway(ref, () => setShow(false));
 
