@@ -66,7 +66,7 @@ function AccountList({ accounts = [] }) {
 
 function ChangeWallet({ onClick }) {
   return (
-    <div className="w-full grid grid-cols-2">
+    <div className="w-full grid grid-cols-2 max-sm:grid-cols-1">
       <div
         role="button"
         onClick={onClick}
@@ -115,7 +115,7 @@ function PopupContent() {
   );
 }
 
-export default function SwitchWeb3({ onClose, onOpenLogin }) {
+export default function SwitchAccount({ onClose, onOpenLogin }) {
   return (
     <SignerPopupWrapper>
       <Popup

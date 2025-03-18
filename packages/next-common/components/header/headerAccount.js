@@ -14,7 +14,7 @@ import { useConnectedAccountContext } from "next-common/context/connectedAccount
 import { AddressUser, SystemUser } from "../user";
 import { useAccountMenu } from "./useAccountMenu.js";
 import Divider from "next-common/components/styled/layout/divider";
-import SwitchWeb3 from "next-common/components/switchWeb3";
+import SwitchAccount from "next-common/components/switchAccount";
 
 const Wrapper = Relative;
 
@@ -139,7 +139,7 @@ export default function HeaderAccount() {
         )}
       </Wrapper>
       {showSwitchAccount && (
-        <SwitchWeb3
+        <SwitchAccount
           onClose={() => {
             setShowSwitchAccount(false);
           }}
