@@ -12,6 +12,7 @@ import {
   getPromotionPeriod,
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
+import { cn } from "next-common/utils";
 
 export function usePromotionPeriod({ lastPromotion, rank, params = {} }) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
@@ -35,6 +36,8 @@ export default function CoreFellowshipMemberPromotionPeriod({
   params = {},
   showTitle = true,
   className = "",
+  titleClassName = "",
+  progressClassName = "",
 }) {
   const { percentageValue, remainingBlocks, promotionPeriod } =
     usePromotionPeriod({ lastPromotion, rank, params });
@@ -49,7 +52,7 @@ export default function CoreFellowshipMemberPromotionPeriod({
   return (
     <CoreFellowshipMemberInfoWrapper className={className}>
       {showTitle && (
-        <CoreFellowshipMemberInfoTitle>
+        <CoreFellowshipMemberInfoTitle className={titleClassName}>
           Promotion Period
         </CoreFellowshipMemberInfoTitle>
       )}
@@ -60,7 +63,7 @@ export default function CoreFellowshipMemberPromotionPeriod({
         }
       >
         <Progress
-          className="h-1"
+          className={cn("h-1", progressClassName)}
           percentage={percentageValue}
           bg="var(--neutral200)"
           fg={fgColor}
