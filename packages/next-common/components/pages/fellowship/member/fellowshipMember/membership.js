@@ -35,20 +35,24 @@ export default function Membership() {
       <SecondaryCard>
         <CardTitle>Membership</CardTitle>
 
-        <div className="gap-y-4 flex flex-col">
-          <ProfileFellowshipStatisticsInfoImpl
-            rank={activeMember?.rank}
-            isRankLoading={isLoading || isNil(activeMember)}
-          />
+        {activeMember ? (
+          <div className="gap-y-4 flex flex-col">
+            <ProfileFellowshipStatisticsInfoImpl
+              rank={activeMember?.rank}
+              isRankLoading={isLoading || isNil(activeMember)}
+            />
 
-          <Divider />
+            <Divider />
 
-          <PeriodProgress
-            fellowshipParams={fellowshipParams}
-            activeMember={activeMember}
-            isLoading={isLoading || isNil(activeMember)}
-          />
-        </div>
+            <PeriodProgress
+              fellowshipParams={fellowshipParams}
+              activeMember={activeMember}
+              isLoading={isLoading || isNil(activeMember)}
+            />
+          </div>
+        ) : (
+          <NotImported />
+        )}
       </SecondaryCard>
     </WindowSizeProvider>
   );
@@ -153,6 +157,16 @@ function PeriodProgress({ activeMember, fellowshipParams, isLoading }) {
           </span>
         </LoadableContent>
       </div>
+    </div>
+  );
+}
+
+function NotImported() {
+  return (
+    <div className="py-[16px] text-center">
+      <span className="text14Medium text-textTertiary">
+        Not imported in the management system
+      </span>
     </div>
   );
 }
