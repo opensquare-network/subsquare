@@ -67,12 +67,11 @@ function ChangeWallet({ onClick }) {
       <div
         role="button"
         onClick={onClick}
-        className="flex items-center space-x-1 pl-3 pr-4 py-2.5 border border-neutral400 rounded-lg"
+        className="flex items-center space-x-3 pl-3 pr-4 py-2.5 border border-neutral400 rounded-lg"
       >
-        <SystemWallet className="w-6 h-6" />
+        <SystemWallet className="w-6 h-6 text-textSecondary" />
         <span className="text14Bold text-textPrimary">Change Wallet</span>
       </div>
-      <div></div>
     </div>
   );
 }
@@ -116,7 +115,12 @@ function PopupContent() {
 export default function SwitchWeb3({ onClose, onOpenLogin }) {
   return (
     <AllAccountsProvider>
-      <Popup title={<PopupTitle />} onClose={onClose} className="p-12">
+      <Popup
+        title={<PopupTitle />}
+        showCloseIcon={false}
+        onClose={onClose}
+        className="p-12"
+      >
         <PopupContent />
         <TextDivider />
         <ChangeWallet onClick={onOpenLogin} />
