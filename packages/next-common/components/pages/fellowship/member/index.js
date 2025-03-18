@@ -9,13 +9,13 @@ import FellowshipMember from "./fellowshipMember";
 
 function FellowshipMemberPageImpl() {
   const address = useFellowshipMemberDetailAddr();
-  const { fellowshipMembers = [] } = usePageProps();
+  const { fellowshipMembers } = usePageProps();
 
   if (!isAddress(address)) {
     return <NotFellowshipMember />;
   }
 
-  const member = fellowshipMembers.find((m) =>
+  const member = (fellowshipMembers || []).find((m) =>
     isSameAddress(m.address, address),
   );
 
