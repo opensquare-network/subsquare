@@ -81,9 +81,7 @@ export default function AccountItem({
           {addressEllipsis(maybeEvmAddress)}
         </Copyable>
       </div>
-      {suffix ? (
-        suffix
-      ) : (
+      {suffix || (
         <ArrowRight className="w-5 h-5 text-textTertiary cursor-pointer absolute right-2.5" />
       )}
     </div>

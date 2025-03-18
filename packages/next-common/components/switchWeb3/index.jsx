@@ -5,11 +5,12 @@ import { SystemWallet, SystemSearch } from "@osn/icons/subsquare";
 import AccountItem, { ConnectedAccountItem } from "./accountItem";
 import { useUser } from "next-common/context/user";
 import Input from "next-common/lib/input";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import useSearchAccounts from "./useSearchAccounts";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
-// import { useConnectedAccountContext } from "next-common/context/connectedAccount";
+import { useConnectedAccountContext } from "next-common/context/connectedAccount";
+import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 
 function PopupTitle() {
   return (
@@ -30,16 +31,23 @@ function SubTitle() {
 
 function AccountList({ accounts = [] }) {
   const user = useUser();
+  const [web3Login] = useWeb3Login();
+  const { lastConnectedAccount } = useConnectedAccountContext();
 
-  // TODO: switch account
-  // const onClick = (user) => {
-  //   console.log(":::user", user);
-  // };
+  const onClick = useCallback(
+    async (account) => {
+      await web3Login({
+        account,
+        wallet: lastConnectedAccount?.wallet,
+      });
+    },
+    [web3Login, lastConnectedAccount?.wallet],
+  );
 
   return (
     <div className="text14Medium text-textSecondary space-y-3">
       <SubTitle />
-      {accounts.map((account) => {
+      {accounts?.map((account) => {
         if (account?.address === user?.address) {
           return <ConnectedAccountItem user={user} key={account?.address} />;
         }
@@ -48,7 +56,7 @@ function AccountList({ accounts = [] }) {
           <AccountItem
             user={account}
             key={account?.address}
-            // onClick={onClick}
+            onClick={onClick}
           />
         );
       })}
