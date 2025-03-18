@@ -10,6 +10,7 @@ import AccountItem, { ConnectedAccountItem } from "./accountItem";
 import { useUser } from "next-common/context/user";
 import Input from "next-common/lib/input";
 import { useState } from "react";
+import useSearchAccounts from "./useSearchAccounts";
 
 function PopupTitle() {
   return (
@@ -28,9 +29,8 @@ function SubTitle() {
   );
 }
 
-function SelectAccounts() {
+function AccountList({ isLoading = false, accounts = [] }) {
   const user = useUser();
-  const { accounts, isLoading } = useAllAccounts();
 
   if (isLoading) {
     return null;
@@ -44,8 +44,11 @@ function SelectAccounts() {
   return (
     <div className="text14Medium text-textSecondary space-y-3">
       <SubTitle />
-      <ConnectedAccountItem user={user} />
       {accounts.map((account) => {
+        if (account?.address === user?.address) {
+          return <ConnectedAccountItem user={user} key={account?.address} />;
+        }
+
         return (
           <AccountItem
             user={account}
@@ -88,10 +91,11 @@ function TextDivider() {
 
 function PopupContent() {
   const [searchValue, setSearchValue] = useState(null);
-  // TOOD: Search
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
   };
+  const { accounts, isLoading } = useAllAccounts();
+  const filteredAccounts = useSearchAccounts(searchValue, accounts);
 
   return (
     <div className="space-y-6">
@@ -104,7 +108,7 @@ function PopupContent() {
         value={searchValue}
         onChange={handleInputChange}
       />
-      <SelectAccounts />
+      <AccountList isLoading={isLoading} accounts={filteredAccounts} />
     </div>
   );
 }
