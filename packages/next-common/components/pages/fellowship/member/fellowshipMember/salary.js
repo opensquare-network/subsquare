@@ -57,7 +57,7 @@ function SalaryValue({ salary }) {
 }
 
 function TotalPaid({ totalPaid }) {
-  const { decimals, symbol } = getSalaryAsset();
+  const { decimals } = getSalaryAsset();
   return (
     <BorderedRow>
       <Header>
@@ -65,10 +65,7 @@ function TotalPaid({ totalPaid }) {
         Total Paid
       </Header>
       <Value>
-        <ValueDisplay
-          value={toPrecision(totalPaid, decimals)}
-          symbol={symbol}
-        />
+        <ValueDisplay value={toPrecision(totalPaid, decimals)} prefix="$" />
       </Value>
     </BorderedRow>
   );
