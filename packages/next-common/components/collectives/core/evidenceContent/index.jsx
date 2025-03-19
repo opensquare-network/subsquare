@@ -9,18 +9,25 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import { noop } from "lodash-es";
+import { useEffect } from "react";
 
 export default function FellowshipEvidenceContent({
   loading,
   wish,
   evidence,
   className = "",
+  onFetchStatusChange = noop,
+  rawContent = "",
+  showExternalLink = true,
 }) {
   const notFound = !wish && !evidence;
 
   let content;
 
-  if (loading) {
+  if (rawContent) {
+    content = <MarkdownPreviewer content={rawContent} />;
+  } else if (loading) {
     content = <LoadingContent />;
   } else if (notFound) {
     content = (
@@ -36,20 +43,25 @@ export default function FellowshipEvidenceContent({
 
     content = (
       <>
-        <GreyPanel className="justify-center gap-x-2 text14Medium text-textPrimary py-2.5 px-4 max-w-full">
-          <div className="line-clamp-1 break-all">{cid}</div>
-          <Tooltip content="IPFS Link">
-            <ExternalLink
-              href={getIpfsLink(cid)}
-              externalIcon={false}
-              className="text-textTertiary hover:text-textSecondary"
-            >
-              <SystemLink className="w-4 h-4" />
-            </ExternalLink>
-          </Tooltip>
-        </GreyPanel>
+        {showExternalLink && (
+          <GreyPanel className="justify-center gap-x-2 text14Medium text-textPrimary py-2.5 px-4 max-w-full">
+            <div className="line-clamp-1 break-all">{cid}</div>
+            <Tooltip content="IPFS Link">
+              <ExternalLink
+                href={getIpfsLink(cid)}
+                externalIcon={false}
+                className="text-textTertiary hover:text-textSecondary"
+              >
+                <SystemLink className="w-4 h-4" />
+              </ExternalLink>
+            </Tooltip>
+          </GreyPanel>
+        )}
 
-        <IpfsEvidenceContent cid={cid} />
+        <IpfsEvidenceContent
+          cid={cid}
+          onFetchStatusChange={onFetchStatusChange}
+        />
       </>
     );
   }
@@ -66,8 +78,16 @@ function LoadingContent() {
   );
 }
 
-function IpfsEvidenceContent({ cid }) {
+function IpfsEvidenceContent({ cid, onFetchStatusChange = noop }) {
   const { value, loading, error } = useIpfsContent(cid);
+
+  useEffect(() => {
+    onFetchStatusChange({
+      value,
+      loading,
+      error,
+    });
+  }, [value, loading, error, onFetchStatusChange]);
 
   if (loading) {
     return <LoadingContent />;

@@ -2,7 +2,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { AddressUser } from "next-common/components/user";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import Divider from "next-common/components/styled/layout/divider";
-import FellowshipEvidenceContentLoadOrRawContent from "next-common/components/collectives/core/evidenceContent/loadOrRawContent";
+import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 
 export default function WishDetail({
   activeMember,
@@ -25,11 +25,12 @@ export default function WishDetail({
 
       <Divider />
 
-      <FellowshipEvidenceContentLoadOrRawContent
+      <FellowshipEvidenceContent
         key="detail-content"
         wish={wish}
         evidence={evidence}
         rawContent={ifpsContent}
+        showExternalLink={false}
       />
     </div>
   );

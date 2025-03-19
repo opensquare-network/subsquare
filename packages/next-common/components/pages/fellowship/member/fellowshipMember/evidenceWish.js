@@ -16,7 +16,7 @@ import { useState } from "react";
 import WishDetail from "next-common/components/pages/fellowship/member/fellowshipMember/wishDetail";
 import { cn } from "next-common/utils";
 import { useTheme } from "styled-components";
-import FellowshipEvidenceContentLoadOrRawContent from "next-common/components/collectives/core/evidenceContent/loadOrRawContent";
+import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 
 export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
@@ -120,7 +120,7 @@ function OnchainEvidenceContent({ evidence, wish }) {
           },
         )}
       >
-        <FellowshipEvidenceContentLoadOrRawContent
+        <FellowshipEvidenceContent
           wish={wish}
           evidence={evidence}
           showExternalLink={false}
