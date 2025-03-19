@@ -17,6 +17,10 @@ import WishDetail from "next-common/components/pages/fellowship/member/fellowshi
 import { cn } from "next-common/utils";
 import { useTheme } from "styled-components";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
+import {
+  CoreFellowshipMemberRelatedReferendaContent,
+  useFellowshipCoreRelatedReferenda,
+} from "next-common/components/collectives/core/member/relatedReferenda";
 
 export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
@@ -48,11 +52,7 @@ function BlockEvidenceOrEmpty({ wish, evidence, address, activeMember }) {
         activeMember={activeMember}
         address={address}
       />
-      <OnchainEvidenceStatisticsInfoImpl
-        wish={wish}
-        address={address}
-        pallet="fellowshipCore"
-      />
+      <OnchainEvidenceStatisticsInfoImpl wish={wish} address={address} />
       <OnchainEvidenceContent evidence={evidence} wish={wish} />
     </>
   ) : (
@@ -60,11 +60,9 @@ function BlockEvidenceOrEmpty({ wish, evidence, address, activeMember }) {
   );
 }
 
-function OnchainEvidenceStatisticsInfoImpl({ wish }) {
-  // const { relatedReferenda, isLoading } = useFellowshipCoreRelatedReferenda(
-  //   address,
-  //   pallet,
-  // );
+function OnchainEvidenceStatisticsInfoImpl({ wish, address }) {
+  const { relatedReferenda, isLoading } =
+    useFellowshipCoreRelatedReferenda(address);
 
   return (
     <SummaryLayout className="mt-4">
@@ -73,11 +71,10 @@ function OnchainEvidenceStatisticsInfoImpl({ wish }) {
       </SummaryItem>
       <SummaryItem title="Related Referendum">
         <LoadableContent>
-          {/* <CoreFellowshipMemberRelatedReferendaContent
+          <CoreFellowshipMemberRelatedReferendaContent
             relatedReferenda={relatedReferenda}
             isLoading={isLoading}
-          /> */}
-          <span className="text-textTertiary text16Bold">-</span>
+          />
         </LoadableContent>
       </SummaryItem>
       {/* <SummaryItem title="My Votes">
