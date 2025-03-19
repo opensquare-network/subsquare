@@ -2,7 +2,7 @@ import { isNil } from "lodash-es";
 import { useCallback, useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import MobileFellowshipVotesList from "next-common/components/profile/votingHistory/mobile/fellowshipVotesList";
+import MobileFellowshipVotesList from "./mobileFellowshipVotesList";
 import FellowshipVotesList from "next-common/components/profile/votingHistory/fellowshipVotesList";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useCommittedFilterState } from "next-common/components/dropdownFilter/context";
@@ -64,29 +64,26 @@ export default function FellowshipMemberVotes({ address }) {
     return null;
   }
 
-  const listContent =
-    width > 1024 ? (
-      <FellowshipVotesList
-        data={data}
-        isLoading={isLoading}
-        fetchData={fetchData}
-        setShowVoteDetail={setShowVoteDetail}
-        page={page}
-      />
-    ) : (
-      <MobileFellowshipVotesList
-        data={data}
-        isLoading={isLoading}
-        fetchData={fetchData}
-        setShowVoteDetail={setShowVoteDetail}
-        page={page}
-      />
-    );
-
   return (
     <>
       <ModuleTabContext.Provider value={{ selectedTabId: Fellowship }}>
-        {listContent}
+        {width > 1024 ? (
+          <FellowshipVotesList
+            data={data}
+            isLoading={isLoading}
+            fetchData={fetchData}
+            setShowVoteDetail={setShowVoteDetail}
+            page={page}
+          />
+        ) : (
+          <MobileFellowshipVotesList
+            data={data}
+            isLoading={isLoading}
+            fetchData={fetchData}
+            setShowVoteDetail={setShowVoteDetail}
+            page={page}
+          />
+        )}
       </ModuleTabContext.Provider>
 
       {showVoteDetail !== null && (
