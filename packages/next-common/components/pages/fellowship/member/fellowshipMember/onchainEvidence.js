@@ -1,19 +1,63 @@
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { CardTitle } from "./styled";
+import { usePageProps } from "next-common/context/page";
+import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
+import CollectivesProvider from "next-common/context/collectives/collectives";
+import Tabs from "next-common/components/tabs";
+import { useState } from "react";
+import { cn } from "next-common/utils";
+import EvidenceWish from "next-common/components/pages/fellowship/member/fellowshipMember/evidenceWish";
 
-function NoEvidence() {
+export default function OnchainEvidence() {
+  const { fellowshipParams } = usePageProps();
+
   return (
-    <div className="py-[16px] text-center">
-      <span className="text14Medium text-textTertiary">No evidence yet</span>
+    <ActiveReferendaProvider pallet="fellowshipReferenda">
+      <CollectivesProvider params={fellowshipParams} section="fellowship">
+        <div>
+          <OnchainEvidenceTabs />
+          <EvidenceWish />
+        </div>
+      </CollectivesProvider>
+    </ActiveReferendaProvider>
+  );
+}
+
+function TabTitle({ active, children }) {
+  return (
+    <div
+      className={cn(
+        "text16Bold",
+        active ? "text-textPrimary" : "text-textTertiary",
+      )}
+    >
+      {children}
     </div>
   );
 }
 
-export default function OnchainEvidence() {
+function OnchainEvidenceTabs() {
+  const [activeTabValue, setActiveTabValue] = useState("Wish");
+
+  const tabs = [
+    {
+      value: "Wish",
+      label: <TabTitle active={activeTabValue === "Wish"}>Wish</TabTitle>,
+      content: null,
+    },
+    {
+      value: "History",
+      label: <TabTitle active={activeTabValue === "History"}>History</TabTitle>,
+      content: null,
+    },
+  ];
+
   return (
-    <SecondaryCard>
-      <CardTitle>On-chain Evidence</CardTitle>
-      <NoEvidence />
-    </SecondaryCard>
+    <div className="px-6">
+      <Tabs
+        tabs={tabs}
+        activeTabValue={activeTabValue}
+        tabsListDivider={false}
+        onTabClick={(tab) => setActiveTabValue(tab.value)}
+      />
+    </div>
   );
 }
