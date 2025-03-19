@@ -40,14 +40,7 @@ export default function AccountItem({
         className,
       )}
     >
-      <AddressComboListItemAccount
-        account={user}
-        customAvatar={
-          <>
-            <ArrowRight className="w-5 h-5 text-textTertiary cursor-pointer" />
-          </>
-        }
-      />
+      <AddressComboListItemAccount account={user} />
       {suffix || (
         <ArrowRight className="w-5 h-5 text-textTertiary cursor-pointer" />
       )}
