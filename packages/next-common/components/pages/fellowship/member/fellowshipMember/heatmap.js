@@ -1,6 +1,7 @@
 import { cn } from "next-common/utils";
 import { useMemo } from "react";
 import Tooltip from "next-common/components/tooltip";
+import Link from "next/link";
 
 function Square({ className, children }) {
   return (
@@ -62,6 +63,28 @@ export function LegendBar() {
   );
 }
 
+function HeatmapItemTooltip({ referendumIndex, item }) {
+  return (
+    <div>
+      <div>
+        Referendum{" "}
+        <Link className="underline" href={`/fellowship/${referendumIndex}`}>
+          #{referendumIndex}
+        </Link>
+      </div>
+      <div>
+        {!item
+          ? "Not Eligible"
+          : item?.isVoted
+          ? item.vote.isAye
+            ? "Vote: Aye"
+            : "Vote: Nay"
+          : "No Vote"}
+      </div>
+    </div>
+  );
+}
+
 export default function Heatmap({ heatmap, referendumCount }) {
   const heatmapData = useMemo(() => {
     const data = {};
@@ -77,15 +100,20 @@ export default function Heatmap({ heatmap, referendumCount }) {
         {Array.from({ length: referendumCount }).map((_, index) => {
           const item = heatmapData[index];
           return (
-            <Tooltip content={`Referendum #${index}`} key={index}>
+            <Tooltip
+              key={index}
+              content={
+                <HeatmapItemTooltip referendumIndex={index} item={item} />
+              }
+            >
               {!item ? (
-                <NotEligibleSquare key={index} />
+                <NotEligibleSquare />
               ) : !item.isVoted ? (
-                <NoVoteSquare key={index} />
+                <NoVoteSquare />
               ) : item.vote.isAye ? (
-                <AyeSquare key={index} />
+                <AyeSquare />
               ) : (
-                <NaySquare key={index} />
+                <NaySquare />
               )}
             </Tooltip>
           );

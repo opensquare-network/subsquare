@@ -11,6 +11,7 @@ import { defaultFilterValues } from "next-common/components/profile/votingHistor
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import Heatmap, { LegendBar } from "./heatmap";
+import Tooltip from "next-common/components/tooltip";
 
 function LoadingCard() {
   return (
@@ -32,6 +33,29 @@ function NoReferenda() {
   );
 }
 
+function AttendancePercentage({ heatmap }) {
+  const totalEligible = heatmap.length;
+  const totalVoted = useMemo(
+    () => heatmap.filter((item) => item.isVoted).length,
+    [heatmap],
+  );
+  const percentage = totalEligible > 0 ? totalVoted / totalEligible : 0;
+  return (
+    <Tooltip
+      content={
+        <div>
+          <div>Total Referenda(Eligible): {totalEligible}</div>
+          <div>Voted: {totalVoted}</div>
+        </div>
+      }
+    >
+      <span className="text-textTertiary">{`${(percentage * 100).toFixed(
+        2,
+      )}%`}</span>
+    </Tooltip>
+  );
+}
+
 export default function ReferendaActivities({ address }) {
   const api = useContextApi();
   const { value: referendumCount, loaded: isReferendumCountLoaded } = useCall(
@@ -42,17 +66,6 @@ export default function ReferendaActivities({ address }) {
     useAsync(async () => {
       return await nextApi.fetch(fellowshipMemberHeatmapApi(address));
     }, [address]);
-
-  const attendancePercentage = useMemo(() => {
-    if (isHeatmapLoading || !isReferendumCountLoaded) {
-      return 0;
-    }
-    if (referendumCount === 0 || !heatmap || heatmap.length === 0) {
-      return 0;
-    }
-    const totalVoted = heatmap.filter((item) => item.isVoted).length;
-    return (totalVoted / referendumCount) * 100;
-  }, [heatmap, referendumCount, isReferendumCountLoaded, isHeatmapLoading]);
 
   if (!isReferendumCountLoaded || isHeatmapLoading) {
     return <LoadingCard />;
@@ -66,10 +79,7 @@ export default function ReferendaActivities({ address }) {
     <SecondaryCard>
       <div className="flex flex-col gap-[16px]">
         <CardTitle>
-          Attendance{" "}
-          <span className="text-textTertiary">
-            {attendancePercentage.toFixed(2)}%
-          </span>
+          Attendance <AttendancePercentage heatmap={heatmap} />
         </CardTitle>
         <Heatmap heatmap={heatmap} referendumCount={referendumCount} />
         <LegendBar />
