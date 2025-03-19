@@ -92,7 +92,7 @@ function TextDivider() {
 }
 
 function PopupContent() {
-  const [searchValue, setSearchValue] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
   };
