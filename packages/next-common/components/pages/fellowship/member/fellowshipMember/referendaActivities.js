@@ -9,6 +9,7 @@ import {
 } from "next-common/services/url";
 import { useMemo, useState } from "react";
 import Loading from "next-common/components/loading";
+import Tooltip from "next-common/components/tooltip";
 
 function Square({ className, children }) {
   return (
@@ -84,16 +85,19 @@ function Heatmap({ heatmap, referendaCount }) {
       <div className="flex gap-[6px] flex-wrap">
         {Array.from({ length: referendaCount }).map((_, index) => {
           const item = heatmapData[index];
-          if (!item) {
-            return <NotEligibleSquare key={index} />;
-          }
-          if (!item.isVoted) {
-            return <NoVoteSquare key={index} />;
-          }
-          if (item.vote.isAye) {
-            return <AyeSquare key={index} />;
-          }
-          return <NaySquare key={index} />;
+          return (
+            <Tooltip content={`Referendum #${index}`} key={index}>
+              {!item ? (
+                <NotEligibleSquare key={index} />
+              ) : !item.isVoted ? (
+                <NoVoteSquare key={index} />
+              ) : item.vote.isAye ? (
+                <AyeSquare key={index} />
+              ) : (
+                <NaySquare key={index} />
+              )}
+            </Tooltip>
+          );
         })}
       </div>
     </div>
