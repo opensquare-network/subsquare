@@ -49,7 +49,7 @@ function AccountList({ accounts = [] }) {
       <SubTitle />
       {accounts?.map((account) => {
         if (account?.address === user?.address) {
-          return <ConnectedAccountItem user={user} key={account?.address} />;
+          return <ConnectedAccountItem user={account} key={account?.address} />;
         }
 
         return (
