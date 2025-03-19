@@ -1,8 +1,16 @@
 import { cn } from "next-common/utils";
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
+import {
+  BatchProvider,
+  BatchResultCacher,
+  useValueFromBatchResult,
+} from "next-common/context/batch";
+import nextApi from "next-common/services/nextApi";
+import { isEmpty } from "lodash-es";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 function Square({ className, children }) {
   return (
@@ -64,16 +72,57 @@ export function LegendBar() {
   );
 }
 
-function HeatmapItemTooltip({ referendumIndex, item }) {
+export async function getFellowshipReferendaPosts(indexes = []) {
+  if (isEmpty(indexes)) {
+    return [];
+  }
+  const q = indexes.join(",");
+  const { result } = await nextApi.fetch(
+    `fellowship/referenda?simple=1&referendum_index=${q}`,
+  );
+  return result || [];
+}
+
+function ReferendaTitleProvider({ children }) {
+  const fetchReferendaList = useCallback(async (referendumIndexes) => {
+    const posts = await getFellowshipReferendaPosts(referendumIndexes);
+    const referendaMap = Object.fromEntries(
+      posts.map((item) => [item.referendumIndex, item]),
+    );
+    return referendumIndexes.map((i) => referendaMap[i]);
+  }, []);
+
+  return (
+    <BatchProvider delay={200} batchExecFn={fetchReferendaList}>
+      <BatchResultCacher>{children}</BatchResultCacher>
+    </BatchProvider>
+  );
+}
+
+function ReferendumTitle({ referendumIndex }) {
   const section = useCollectivesSection();
+  const { value, loading } = useValueFromBatchResult(referendumIndex);
+
+  return (
+    <div className="flex items-center">
+      Referendum&nbsp;
+      <Link className="underline" href={`/${section}/${referendumIndex}`}>
+        #{referendumIndex}
+      </Link>
+      &nbsp;
+      {loading ? (
+        <FieldLoading size={16} />
+      ) : (
+        value?.title && <span>- {value?.title}</span>
+      )}
+    </div>
+  );
+}
+
+function HeatmapItemTooltip({ referendumIndex, item }) {
   return (
     <div>
-      <div>
-        Referendum{" "}
-        <Link className="underline" href={`/${section}/${referendumIndex}`}>
-          #{referendumIndex}
-        </Link>
-      </div>
+      <ReferendumTitle referendumIndex={referendumIndex} />
       <div>
         {!item
           ? "Not Eligible"
@@ -99,30 +148,32 @@ export default function Heatmap({ heatmap, referendumCount }) {
   }, [heatmap]);
 
   return (
-    <div className="flex justify-center">
-      <div className="flex gap-[6px] flex-wrap">
-        {Array.from({ length: referendumCount }).map((_, index) => {
-          const item = heatmapData[index];
-          return (
-            <Tooltip
-              key={index}
-              content={
-                <HeatmapItemTooltip referendumIndex={index} item={item} />
-              }
-            >
-              {!item ? (
-                <NotEligibleSquare />
-              ) : !item.isVoted ? (
-                <NoVoteSquare />
-              ) : item.vote.isAye ? (
-                <AyeSquare />
-              ) : (
-                <NaySquare />
-              )}
-            </Tooltip>
-          );
-        })}
+    <ReferendaTitleProvider>
+      <div className="flex justify-center">
+        <div className="flex gap-[6px] flex-wrap">
+          {Array.from({ length: referendumCount }).map((_, index) => {
+            const item = heatmapData[index];
+            return (
+              <Tooltip
+                key={index}
+                content={
+                  <HeatmapItemTooltip referendumIndex={index} item={item} />
+                }
+              >
+                {!item ? (
+                  <NotEligibleSquare />
+                ) : !item.isVoted ? (
+                  <NoVoteSquare />
+                ) : item.vote.isAye ? (
+                  <AyeSquare />
+                ) : (
+                  <NaySquare />
+                )}
+              </Tooltip>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </ReferendaTitleProvider>
   );
 }
