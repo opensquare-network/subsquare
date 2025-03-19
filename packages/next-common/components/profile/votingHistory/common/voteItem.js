@@ -26,7 +26,9 @@ const ColoredAbstainIcon = styled(AbstainIcon)`
   }
 `;
 
-const VoteText = styled.span``;
+const VoteText = styled.span`
+  color: var(--textPrimary);
+`;
 
 export function Aye() {
   return (

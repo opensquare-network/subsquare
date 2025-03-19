@@ -10,6 +10,9 @@ import {
 import { useMemo, useState } from "react";
 import Loading from "next-common/components/loading";
 import Tooltip from "next-common/components/tooltip";
+import FellowshipMemberVotes from "./fellowshipMemberVotes";
+import { DropdownFilterProvider } from "next-common/components/dropdownFilter/context";
+import { defaultFilterValues } from "next-common/components/profile/votingHistory/voteFilter";
 
 function Square({ className, children }) {
   return (
@@ -154,6 +157,9 @@ export default function ReferendaActivities({ address }) {
         <Heatmap heatmap={heatmap} referendaCount={referenda?.total} />
         <LegendBar />
         <CardTitle>History</CardTitle>
+        <DropdownFilterProvider defaultFilterValues={defaultFilterValues}>
+          <FellowshipMemberVotes address={address} />
+        </DropdownFilterProvider>
       </div>
     </SecondaryCard>
   );
