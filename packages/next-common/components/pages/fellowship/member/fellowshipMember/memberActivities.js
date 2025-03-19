@@ -15,7 +15,7 @@ export default function MemberActivities() {
         />
       </div>
       {activeTabValue === TabItems.Referenda && <ReferendaActivities />}
-      {activeTabValue === TabItems.Core && <CoreActivities />}
+      {activeTabValue === TabItems.Membership && <CoreActivities />}
       {activeTabValue === TabItems.Salary && <SalaryActivities />}
     </div>
   );
