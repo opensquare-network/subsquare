@@ -119,7 +119,7 @@ function ReferendumTitle({ referendumIndex }) {
       &nbsp;
       {loading ? (
         <FieldLoading size={16} />
-      ) : !value?.title ? (
+      ) : value?.title ? (
         <span>· {value?.title}</span>
       ) : (
         <span>
