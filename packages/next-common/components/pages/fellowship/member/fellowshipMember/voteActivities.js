@@ -6,8 +6,6 @@ import { fellowshipMemberHeatmapApi } from "next-common/services/url";
 import { useMemo } from "react";
 import Loading from "next-common/components/loading";
 import FellowshipMemberVotes from "./fellowshipMemberVotes";
-import { DropdownFilterProvider } from "next-common/components/dropdownFilter/context";
-import { defaultFilterValues } from "next-common/components/profile/votingHistory/voteFilter";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import Heatmap, { LegendBar } from "./heatmap";
@@ -88,9 +86,7 @@ export default function VoteActivities() {
         <Heatmap heatmap={heatmap} referendumCount={referendumCount} />
         <LegendBar />
         <CardTitle>History</CardTitle>
-        <DropdownFilterProvider defaultFilterValues={defaultFilterValues}>
-          <FellowshipMemberVotes address={address} />
-        </DropdownFilterProvider>
+        <FellowshipMemberVotes address={address} />
       </div>
     </SecondaryCard>
   );
