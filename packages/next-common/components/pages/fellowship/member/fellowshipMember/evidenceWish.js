@@ -183,7 +183,7 @@ function WishDetailPopup({ onClose, wish, evidence, ifpsContent }) {
 function NoEvidence() {
   return (
     <div className="py-[16px] text-center">
-      <span className="text14Medium text-textTertiary">No evidence yet</span>
+      <span className="text14Medium text-textTertiary">No wish yet</span>
     </div>
   );
 }
