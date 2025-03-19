@@ -11,6 +11,9 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
+import NoData from "next-common/components/noData";
+import WindowSizeProvider from "next-common/context/windowSize";
+import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 
 function PopupTitle() {
   return (
@@ -29,10 +32,17 @@ function SubTitle() {
   );
 }
 
-function AccountList({ accounts = [] }) {
+function Empty() {
+  return (
+    <NoData showIcon={false} text="No results found" className={"py-2.5"} />
+  );
+}
+
+function AccountList({ accounts = [], isEmpty = false }) {
   const user = useUser();
   const [web3Login] = useWeb3Login();
   const { lastConnectedAccount } = useConnectedAccountContext();
+  const isMobile = useIsMobile();
 
   const onClick = useCallback(
     async (account) => {
@@ -44,9 +54,15 @@ function AccountList({ accounts = [] }) {
     [web3Login, lastConnectedAccount?.wallet],
   );
 
+  if (isEmpty) {
+    return <Empty />;
+  }
+
   return (
-    <div className="text14Medium text-textSecondary space-y-3">
-      <SubTitle />
+    <div
+      className="text14Medium text-textSecondary space-y-3 overflow-y-auto"
+      style={{ maxHeight: `calc(76vh - ${isMobile ? 312 : 360}px)` }}
+    >
       {accounts?.map((account) => {
         if (account?.address === user?.address) {
           return <ConnectedAccountItem user={account} key={account?.address} />;
@@ -81,7 +97,7 @@ function ChangeWallet({ onClick }) {
 
 function TextDivider() {
   return (
-    <div className="w-full flex items-center justify-center mt-6">
+    <div className="w-full flex items-center justify-center">
       <Divider className="flex-1" />
       <span className="text12Medium text-textTertiary mx-4">
         Can&apos;t find your account?
@@ -99,10 +115,10 @@ function PopupContent() {
   const accounts = useExtensionAccounts();
   const filteredAccounts = useSearchAccounts(searchValue, accounts);
 
+  const isEmpty = searchValue && filteredAccounts?.length === 0;
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 flex-1">
       <Input
-        className="mt-4"
         prefix={
           <SystemSearch width={24} height={24} className="text-textTertiary" />
         }
@@ -110,24 +126,30 @@ function PopupContent() {
         value={searchValue}
         onChange={handleInputChange}
       />
-      <AccountList accounts={filteredAccounts} />
+      <div className="space-y-3 flex-1 overflow-hidden">
+        <SubTitle />
+        <AccountList accounts={filteredAccounts} isEmpty={isEmpty} />
+      </div>
     </div>
   );
 }
 
 export default function SwitchAccount({ onClose, onOpenLogin }) {
   return (
-    <SignerPopupWrapper>
-      <Popup
-        title={<PopupTitle />}
-        showCloseIcon={false}
-        onClose={onClose}
-        className="p-12 max-sm:!p-6"
-      >
-        <PopupContent />
-        <TextDivider />
-        <ChangeWallet onClick={onOpenLogin} />
-      </Popup>
-    </SignerPopupWrapper>
+    <WindowSizeProvider>
+      <SignerPopupWrapper>
+        <Popup
+          title={<PopupTitle />}
+          showCloseIcon={false}
+          onClose={onClose}
+          className="flex flex-col space-y-6 p-12 !mb-0 max-sm:!p-6 max-h-[76vh]"
+          style={{ maxWidth: "76vh" }}
+        >
+          <PopupContent />
+          <TextDivider />
+          <ChangeWallet onClick={onOpenLogin} />
+        </Popup>
+      </SignerPopupWrapper>
+    </WindowSizeProvider>
   );
 }
