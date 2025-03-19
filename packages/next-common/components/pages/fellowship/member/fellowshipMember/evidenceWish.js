@@ -16,11 +16,13 @@ import { useState } from "react";
 import WishDetail from "next-common/components/pages/fellowship/member/fellowshipMember/wishDetail";
 import { cn } from "next-common/utils";
 import { useTheme } from "styled-components";
-import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
+import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
 import {
   CoreFellowshipMemberRelatedReferendaContent,
   useFellowshipCoreRelatedReferenda,
 } from "next-common/components/collectives/core/member/relatedReferenda";
+import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
+import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 
 export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
@@ -96,10 +98,13 @@ function OnchainEvidenceRetentionBar({ activeMember, address }) {
   );
 }
 
-function OnchainEvidenceContent({ evidence, wish }) {
+function OnchainEvidenceContent({ evidence }) {
   const [detailVisible, setDetailVisible] = useState(false);
-  const [ifpsContent, setIfpsContent] = useState(null);
   const { isDark } = useTheme();
+
+  const cid = getCidByEvidence(evidence);
+  const { value: ifpsContent, loading, error } = useIpfsContent(cid);
+
   return (
     <>
       <Divider className="mt-4" />
@@ -117,13 +122,13 @@ function OnchainEvidenceContent({ evidence, wish }) {
           },
         )}
       >
-        <FellowshipEvidenceContent
-          wish={wish}
-          evidence={evidence}
-          showExternalLink={false}
-          className="flex-1 absolute left-4 right-4 top-4"
-          onFetchStatusChange={({ value }) => setIfpsContent(value)}
-        />
+        <div className="flex-1 absolute left-4 right-4 top-4">
+          <IpfsEvidenceRawContent
+            loading={loading}
+            value={ifpsContent}
+            error={error}
+          />
+        </div>
         <Button
           className={cn(
             "absolute top-4 right-4 bg-theme500 text-textPrimaryContrast hidden",
@@ -137,8 +142,6 @@ function OnchainEvidenceContent({ evidence, wish }) {
         {detailVisible && (
           <WishDetailPopup
             onClose={() => setDetailVisible(false)}
-            wish={wish}
-            evidence={evidence}
             ifpsContent={ifpsContent}
           />
         )}
@@ -157,7 +160,7 @@ function OnchainEvidenceLoading() {
   );
 }
 
-function WishDetailPopup({ onClose, wish, evidence, ifpsContent }) {
+function WishDetailPopup({ onClose, ifpsContent }) {
   const { id: address, fellowshipMembers } = usePageProps();
 
   const activeMember = fellowshipMembers.find(
@@ -169,8 +172,6 @@ function WishDetailPopup({ onClose, wish, evidence, ifpsContent }) {
       <WishDetail
         address={address}
         activeMember={activeMember}
-        wish={wish}
-        evidence={evidence}
         ifpsContent={ifpsContent}
       />
     </Popup>
