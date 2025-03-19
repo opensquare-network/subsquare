@@ -12,6 +12,7 @@ import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import Heatmap, { LegendBar } from "./heatmap";
 import Tooltip from "next-common/components/tooltip";
+import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 
 function LoadingCard() {
   return (
@@ -58,8 +59,9 @@ function AttendancePercentage({ heatmap }) {
 
 export default function ReferendaActivities({ address }) {
   const api = useContextApi();
+  const referendaPallet = useReferendaFellowshipPallet();
   const { value: referendumCount, loaded: isReferendumCountLoaded } = useCall(
-    api?.query?.fellowshipReferenda?.referendumCount,
+    api?.query?.[referendaPallet]?.referendumCount,
     [],
   );
   const { value: { result: heatmap } = {}, loading: isHeatmapLoading } =
@@ -71,7 +73,7 @@ export default function ReferendaActivities({ address }) {
     return <LoadingCard />;
   }
 
-  if (referendumCount === 0) {
+  if (!referendumCount) {
     return <NoReferenda />;
   }
 
