@@ -3,16 +3,15 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { CardTitle } from "./styled";
 import { useAsync } from "react-use";
 import nextApi from "next-common/services/nextApi";
-import {
-  fellowshipMemberHeatmapApi,
-  fellowshipReferendumsApi,
-} from "next-common/services/url";
-import { useMemo, useState } from "react";
+import { fellowshipMemberHeatmapApi } from "next-common/services/url";
+import { useMemo } from "react";
 import Loading from "next-common/components/loading";
 import Tooltip from "next-common/components/tooltip";
 import FellowshipMemberVotes from "./fellowshipMemberVotes";
 import { DropdownFilterProvider } from "next-common/components/dropdownFilter/context";
 import { defaultFilterValues } from "next-common/components/profile/votingHistory/voteFilter";
+import { useContextApi } from "next-common/context/api";
+import useCall from "next-common/utils/hooks/useCall";
 
 function Square({ className, children }) {
   return (
@@ -74,7 +73,7 @@ function LegendBar() {
   );
 }
 
-function Heatmap({ heatmap, referendaCount }) {
+function Heatmap({ heatmap, referendumCount }) {
   const heatmapData = useMemo(() => {
     const data = {};
     heatmap?.forEach((item) => {
@@ -86,7 +85,7 @@ function Heatmap({ heatmap, referendaCount }) {
   return (
     <div className="flex justify-center">
       <div className="flex gap-[6px] flex-wrap">
-        {Array.from({ length: referendaCount }).map((_, index) => {
+        {Array.from({ length: referendumCount }).map((_, index) => {
           const item = heatmapData[index];
           return (
             <Tooltip content={`Referendum #${index}`} key={index}>
@@ -128,33 +127,45 @@ function NoReferenda() {
 }
 
 export default function ReferendaActivities({ address }) {
-  const [page] = useState(1);
-  const { value: { result: referenda } = {}, loading: isReferendaLoading } =
-    useAsync(async () => {
-      return await nextApi.fetch(fellowshipReferendumsApi, {
-        page,
-        pageSize: 25,
-        simple: true,
-      });
-    }, [page]);
+  const api = useContextApi();
+  const { value: referendumCount, loaded: isReferendumCountLoaded } = useCall(
+    api?.query?.fellowshipReferenda?.referendumCount,
+    [],
+  );
   const { value: { result: heatmap } = {}, loading: isHeatmapLoading } =
     useAsync(async () => {
       return await nextApi.fetch(fellowshipMemberHeatmapApi(address));
     }, [address]);
 
-  if (isReferendaLoading && isHeatmapLoading) {
+  const attendancePercentage = useMemo(() => {
+    if (isHeatmapLoading || !isReferendumCountLoaded) {
+      return 0;
+    }
+    if (referendumCount === 0 || !heatmap || heatmap.length === 0) {
+      return 0;
+    }
+    const totalVoted = heatmap.filter((item) => item.isVoted).length;
+    return (totalVoted / referendumCount) * 100;
+  }, [heatmap, referendumCount, isReferendumCountLoaded, isHeatmapLoading]);
+
+  if (!isReferendumCountLoaded || isHeatmapLoading) {
     return <LoadingCard />;
   }
 
-  if (!referenda || referenda.total === 0) {
+  if (referendumCount === 0) {
     return <NoReferenda />;
   }
 
   return (
     <SecondaryCard>
       <div className="flex flex-col gap-[16px]">
-        <CardTitle>Attendance</CardTitle>
-        <Heatmap heatmap={heatmap} referendaCount={referenda?.total} />
+        <CardTitle>
+          Attendance{" "}
+          <span className="text-textTertiary">
+            {attendancePercentage.toFixed(2)}%
+          </span>
+        </CardTitle>
+        <Heatmap heatmap={heatmap} referendumCount={referendumCount} />
         <LegendBar />
         <CardTitle>History</CardTitle>
         <DropdownFilterProvider defaultFilterValues={defaultFilterValues}>
