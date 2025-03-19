@@ -3,6 +3,7 @@ import ErrorLayout from "next-common/components/layout/errorLayout";
 import { reportClientError } from "next-common/services/reportClientError";
 import { CHAIN } from "next-common/utils/constants";
 import { useEffect } from "react";
+import fetchProfile from "next-common/lib/fetchProfile";
 
 function getErrorReason(statusCode) {
   const reasons = {
@@ -21,12 +22,14 @@ function getErrorReason(statusCode) {
     }
   );
 }
-function ErrorPage({ statusCode, err, isServerError, reqUrl }) {
+
+function ErrorPage({ statusCode, err, isServerError, reqUrl, user }) {
   useEffect(() => {
     if (err) {
       const errorData = {
         chain: CHAIN,
         url: typeof window !== "undefined" ? window.location.href : reqUrl,
+        address: user?.address,
         code: statusCode,
         error: err.message,
         source: isServerError ? "server" : "client",
@@ -35,7 +38,7 @@ function ErrorPage({ statusCode, err, isServerError, reqUrl }) {
 
       reportClientError(errorData);
     }
-  }, [err, isServerError, reqUrl, statusCode]);
+  }, [err, isServerError, reqUrl, statusCode, user]);
 
   const { title, description } = getErrorReason(statusCode);
 
@@ -54,6 +57,7 @@ function ErrorPage({ statusCode, err, isServerError, reqUrl }) {
 }
 
 ErrorPage.getInitialProps = async ({ req, res, err }) => {
+  const { result: user } = await fetchProfile(req);
   const statusCode = res?.statusCode || err?.statusCode;
 
   return {
@@ -61,6 +65,7 @@ ErrorPage.getInitialProps = async ({ req, res, err }) => {
     err,
     isServerError: !!res,
     reqUrl: req?.url,
+    user,
   };
 };
 
