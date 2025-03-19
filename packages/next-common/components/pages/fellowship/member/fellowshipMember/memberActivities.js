@@ -4,8 +4,8 @@ import CoreActivities from "./coreActivities";
 import SalaryActivities from "./salaryActivities";
 import ReferendaActivities from "./referendaActivities";
 
-export default function MemberActivities({ address }) {
-  const [activeTabValue, setActiveTabValue] = useState(TabItems.Salary);
+export default function MemberActivities() {
+  const [activeTabValue, setActiveTabValue] = useState(TabItems.Referenda);
   return (
     <div>
       <div className="mb-[16px]">
@@ -14,9 +14,7 @@ export default function MemberActivities({ address }) {
           setActiveTabValue={setActiveTabValue}
         />
       </div>
-      {activeTabValue === TabItems.Referenda && (
-        <ReferendaActivities address={address} />
-      )}
+      {activeTabValue === TabItems.Referenda && <ReferendaActivities />}
       {activeTabValue === TabItems.Core && <CoreActivities />}
       {activeTabValue === TabItems.Salary && <SalaryActivities />}
     </div>
