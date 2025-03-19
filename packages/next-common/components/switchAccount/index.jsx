@@ -122,7 +122,7 @@ export default function SwitchAccount({ onClose, onOpenLogin }) {
         title={<PopupTitle />}
         showCloseIcon={false}
         onClose={onClose}
-        className="p-12"
+        className="p-12 max-sm:!p-6"
       >
         <PopupContent />
         <TextDivider />
