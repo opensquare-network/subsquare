@@ -77,7 +77,7 @@ function OnchainEvidenceStatisticsInfoImpl({ wish }) {
             relatedReferenda={relatedReferenda}
             isLoading={isLoading}
           /> */}
-          -
+          <span className="text-textTertiary text16Bold">-</span>
         </LoadableContent>
       </SummaryItem>
       {/* <SummaryItem title="My Votes">
@@ -110,10 +110,13 @@ function OnchainEvidenceContent({ evidence, wish }) {
 
       <GreyPanel
         className={cn(
-          "flex relative h-60 overflow-hidden after:h-28 after:block after:absolute after:bg-gradient-to-b after:from-[rgba(246,247,250,0)] after:via-[rgba(246,247,250,0.8)] after:to-[#F6F7FA] after:w-full after:bottom-0",
+          "flex relative h-12 overflow-hidden after:h-28  after:hidden after:bg-gradient-to-b after:from-[rgba(246,247,250,0)] after:via-[rgba(246,247,250,0.8)] after:to-[#F6F7FA] after:absolute after:w-full after:bottom-0",
           {
             "after:bg-gradient-to-b after:from-[rgba(30,33,48,0.00)] after:via-[rgba(30,33,48,0.80)] after:to-[#1E2130]":
-              isDark,
+              isDark && !!ifpsContent,
+          },
+          {
+            "h-60 after:block": !!ifpsContent,
           },
         )}
       >
@@ -165,7 +168,7 @@ function WishDetailPopup({ onClose, wish, evidence, ifpsContent }) {
   );
 
   return (
-    <Popup title="Wish Detail" onClose={onClose}>
+    <Popup title="Wish Detail" className="w-[800px]" onClose={onClose}>
       <WishDetail
         address={address}
         activeMember={activeMember}

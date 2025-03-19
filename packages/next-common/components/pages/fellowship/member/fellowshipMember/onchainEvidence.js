@@ -43,11 +43,6 @@ function OnchainEvidenceTabs() {
       label: <TabTitle active={activeTabValue === "Wish"}>Wish</TabTitle>,
       content: null,
     },
-    {
-      value: "History",
-      label: <TabTitle active={activeTabValue === "History"}>History</TabTitle>,
-      content: null,
-    },
   ];
 
   return (
