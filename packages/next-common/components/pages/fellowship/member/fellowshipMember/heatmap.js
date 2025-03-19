@@ -9,8 +9,9 @@ import {
   useValueFromBatchResult,
 } from "next-common/context/batch";
 import nextApi from "next-common/services/nextApi";
-import { isEmpty } from "lodash-es";
+import { isEmpty, startCase } from "lodash-es";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import { usePageProps } from "next-common/context/page";
 
 function Square({ className, children }) {
   return (
@@ -100,20 +101,30 @@ function ReferendaTitleProvider({ children }) {
 }
 
 function ReferendumTitle({ referendumIndex }) {
+  const { fellowshipTracks } = usePageProps();
   const section = useCollectivesSection();
   const { value, loading } = useValueFromBatchResult(referendumIndex);
+  const trackId = value?.track;
+  const referendumTrack = useMemo(
+    () => fellowshipTracks.find((track) => track.id === trackId),
+    [trackId, fellowshipTracks],
+  );
 
   return (
     <div className="flex items-center">
-      Referendum&nbsp;
+      Referendum:&nbsp;
       <Link className="underline" href={`/${section}/${referendumIndex}`}>
         #{referendumIndex}
       </Link>
       &nbsp;
       {loading ? (
         <FieldLoading size={16} />
+      ) : !value?.title ? (
+        <span>· {value?.title}</span>
       ) : (
-        value?.title && <span>- {value?.title}</span>
+        <span>
+          · [{startCase(referendumTrack?.name)}] Referendum #{referendumIndex}
+        </span>
       )}
     </div>
   );
