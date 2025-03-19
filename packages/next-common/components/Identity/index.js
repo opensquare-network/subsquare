@@ -19,9 +19,7 @@ export default function Identity({
   const shouldShowTooltip = maxWidth || ellipsis;
 
   return (
-    <div
-      className={cn("identity", "text14Medium", "flex items-center", className)}
-    >
+    <div className={cn("identity", "flex items-center", className)}>
       <IdentityIcon identity={identity} className="mr-1" />
       <Tooltip
         content={shouldShowTooltip ? displayName : null}
