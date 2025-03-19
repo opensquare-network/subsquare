@@ -2,6 +2,7 @@ import { cn } from "next-common/utils";
 import { useMemo } from "react";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 function Square({ className, children }) {
   return (
@@ -64,11 +65,12 @@ export function LegendBar() {
 }
 
 function HeatmapItemTooltip({ referendumIndex, item }) {
+  const section = useCollectivesSection();
   return (
     <div>
       <div>
         Referendum{" "}
-        <Link className="underline" href={`/fellowship/${referendumIndex}`}>
+        <Link className="underline" href={`/${section}/${referendumIndex}`}>
           #{referendumIndex}
         </Link>
       </div>
@@ -81,6 +83,8 @@ function HeatmapItemTooltip({ referendumIndex, item }) {
             : "Vote: Nay"
           : "No Vote"}
       </div>
+      {item?.isVoted && <div>Rank: {item.rank}</div>}
+      {item?.isVoted && <div>Votes: {item.vote.votes}</div>}
     </div>
   );
 }

@@ -2,10 +2,10 @@ import Tabs, { TabItems } from "./tabs";
 import { useState } from "react";
 import CoreActivities from "./coreActivities";
 import SalaryActivities from "./salaryActivities";
-import ReferendaActivities from "./referendaActivities";
+import VoteActivities from "./voteActivities";
 
 export default function MemberActivities() {
-  const [activeTabValue, setActiveTabValue] = useState(TabItems.Referenda);
+  const [activeTabValue, setActiveTabValue] = useState(TabItems.Votes);
   return (
     <div>
       <div className="mb-[16px]">
@@ -14,7 +14,7 @@ export default function MemberActivities() {
           setActiveTabValue={setActiveTabValue}
         />
       </div>
-      {activeTabValue === TabItems.Referenda && <ReferendaActivities />}
+      {activeTabValue === TabItems.Votes && <VoteActivities />}
       {activeTabValue === TabItems.Core && <CoreActivities />}
       {activeTabValue === TabItems.Salary && <SalaryActivities />}
     </div>

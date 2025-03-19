@@ -51,14 +51,14 @@ function AttendancePercentage({ heatmap }) {
         </div>
       }
     >
-      <span className="text-textTertiary">{`${(percentage * 100).toFixed(
-        2,
-      )}%`}</span>
+      <span className="text14Medium text-textTertiary">{`${(
+        percentage * 100
+      ).toFixed(2)}%`}</span>
     </Tooltip>
   );
 }
 
-export default function ReferendaActivities() {
+export default function VoteActivities() {
   const { id: address } = usePageProps();
   const api = useContextApi();
   const referendaPallet = useReferendaFellowshipPallet();
@@ -81,10 +81,10 @@ export default function ReferendaActivities() {
 
   return (
     <SecondaryCard>
+      <CardTitle>
+        Participation Rate <AttendancePercentage heatmap={heatmap} />
+      </CardTitle>
       <div className="flex flex-col gap-[16px]">
-        <CardTitle>
-          Attendance <AttendancePercentage heatmap={heatmap} />
-        </CardTitle>
         <Heatmap heatmap={heatmap} referendumCount={referendumCount} />
         <LegendBar />
         <CardTitle>History</CardTitle>
