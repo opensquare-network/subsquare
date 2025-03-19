@@ -5,7 +5,6 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import MobileFellowshipVotesList from "./mobileFellowshipVotesList";
 import FellowshipVotesList from "next-common/components/profile/votingHistory/fellowshipVotesList";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useCommittedFilterState } from "next-common/components/dropdownFilter/context";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 import {
   ModuleTabContext,
@@ -23,8 +22,6 @@ export default function FellowshipMemberVotes({ address }) {
   const { width } = useWindowSize();
   const [showVoteDetail, setShowVoteDetail] = useState(null);
   const section = useCollectivesSection();
-  const [voteFilter] = useCommittedFilterState();
-  const { type: voteType } = voteFilter || {};
 
   const fetchData = useCallback(
     (page, pageSize) => {
@@ -38,10 +35,6 @@ export default function FellowshipMemberVotes({ address }) {
         includesTitle: 1,
       };
 
-      if (voteType) {
-        query.type = voteType;
-      }
-
       nextApi
         .fetch(`users/${address}/${section}/votes`, query)
         .then(({ result }) => {
@@ -53,7 +46,7 @@ export default function FellowshipMemberVotes({ address }) {
           setIsLoading(false);
         });
     },
-    [address, section, voteType],
+    [address, section],
   );
 
   useEffect(() => {
