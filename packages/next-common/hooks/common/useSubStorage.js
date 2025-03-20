@@ -1,5 +1,5 @@
 import { useContextApi } from "next-common/context/api";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { createGlobalState } from "react-use";
 import { useChain } from "next-common/context/chain";
 import { isNil } from "lodash-es";
@@ -31,53 +31,43 @@ export default function useSubStorage(
   }, [chain, pallet, storage, filteredParams]);
   const result = cachedResult[key];
 
-  const [loading, setLoading] = useState(isNil(result));
+  const loading = isNil(result);
 
   const subscribe = useCallback(async () => {
-    if (!subs[key]) {
-      subs[key] = {
-        unsub: null,
-        count: 0,
-      };
-    } else {
+    if (subs[key]) {
       subs[key].count++;
-      setLoading(false);
       return;
     }
+
+    subs[key] = {
+      unsub: null,
+      count: 1,
+    };
 
     const queryStorage = api?.query[pallet]?.[storage];
     if (!queryStorage) {
-      setLoading(false);
       return;
     }
 
-    try {
-      subs[key].unsub = await queryStorage(
-        ...filteredParams,
-        (subscribeResult) => {
-          callback?.(subscribeResult);
-
-          setCachedResult((val) => {
-            return {
-              ...val,
-              [key]: subscribeResult,
-            };
-          });
-        },
-      );
-    } finally {
-      setLoading(false);
-    }
+    subs[key].unsub = await queryStorage(
+      ...filteredParams,
+      (subscribeResult) => {
+        setCachedResult((val) => {
+          return {
+            ...val,
+            [key]: subscribeResult,
+          };
+        });
+      },
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, pallet, storage, ...filteredParams, key, callback]);
 
   useEffect(() => {
     if (result && callback) {
       callback(result);
-      setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [result, callback]);
 
   useEffect(() => {
     if (!api || isNil(pallet) || isNil(storage)) {

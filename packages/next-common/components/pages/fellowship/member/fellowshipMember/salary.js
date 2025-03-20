@@ -95,7 +95,7 @@ function Statistics({ totalPaid, joinedCycles }) {
 function MemberSalary({ address, member }) {
   const { fellowshipParams, claimantCycleStats } = usePageProps();
   const { isActive } = member || {};
-  const { rank, isLoading: isRankLoading } = useSubCollectiveRank(address);
+  const { rank, loading: isRankLoading } = useSubCollectiveRank(address);
 
   if (isRankLoading) {
     return null;
