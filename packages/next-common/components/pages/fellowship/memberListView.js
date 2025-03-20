@@ -9,6 +9,7 @@ import {
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
 import {
   useCollectivesContext,
+  useCollectivesSection,
   useCoreFellowshipPallet,
 } from "next-common/context/collectives/collectives";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
@@ -159,10 +160,11 @@ function NonCoreMemberAddressCol({ address }) {
 }
 
 function DetailButton({ address }) {
+  const section = useCollectivesSection();
   const router = useRouter();
   return (
     <NavigateToDetailButton
-      onClick={() => router.push(`/fellowship/members/${address}`)}
+      onClick={() => router.push(`/${section}/members/${address}`)}
     />
   );
 }
