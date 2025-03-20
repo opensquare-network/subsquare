@@ -4,7 +4,6 @@ import {
   FellowshipVoteItem,
 } from "next-common/components/profile/votingHistory/common";
 import Loading from "next-common/components/loading";
-import Pagination from "next-common/components/pagination";
 
 function ItemHeader({ vote }) {
   return (
@@ -33,7 +32,7 @@ function FellowshipVoteListItem({ vote, showVoteTag }) {
   );
 }
 
-export default function MobileFellowshipVotesList({ data, fetchData, page }) {
+export default function MobileFellowshipVotesList({ data }) {
   if (!data) {
     return (
       <div className="flex justify-center w-full my-[16px]">
@@ -51,25 +50,14 @@ export default function MobileFellowshipVotesList({ data, fetchData, page }) {
   }
 
   return (
-    <>
-      <div className="flex flex-col gap-[16px] text14Medium">
-        {(data?.items || []).map((item) => (
-          <FellowshipVoteListItem
-            key={item.referendumIndex}
-            vote={item}
-            showVoteTag
-          />
-        ))}
-      </div>
-      <Pagination
-        {...data}
-        page={page}
-        onPageChange={(e, page) => {
-          e.stopPropagation();
-          e.preventDefault();
-          fetchData(page, data?.pageSize);
-        }}
-      />
-    </>
+    <div className="flex flex-col gap-[16px] text14Medium">
+      {(data?.items || []).map((item) => (
+        <FellowshipVoteListItem
+          key={item.referendumIndex}
+          vote={item}
+          showVoteTag
+        />
+      ))}
+    </div>
   );
 }

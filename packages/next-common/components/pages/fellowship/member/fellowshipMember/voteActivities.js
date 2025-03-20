@@ -85,8 +85,10 @@ export default function VoteActivities() {
       <div className="flex flex-col gap-[16px]">
         <Heatmap heatmap={heatmap} referendumCount={referendumCount} />
         <LegendBar />
-        <CardTitle>History</CardTitle>
-        <FellowshipMemberVotes address={address} />
+        <div>
+          <CardTitle>History</CardTitle>
+          <FellowshipMemberVotes address={address} />
+        </div>
       </div>
     </SecondaryCard>
   );

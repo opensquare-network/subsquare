@@ -4,31 +4,24 @@ import nextApi from "next-common/services/nextApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import MobileFellowshipVotesList from "./mobileFellowshipVotesList";
 import FellowshipVotesList from "next-common/components/profile/votingHistory/fellowshipVotesList";
-import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 import {
   ModuleTabContext,
   Fellowship,
 } from "next-common/components/profile/votingHistory/common";
-
-const VoteDetailPopup = dynamicPopup(() =>
-  import("next-common/components/profile/votingHistory/voteDetailPopup"),
-);
+import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 
 export default function FellowshipMemberVotes({ address }) {
   const [data, setData] = useState();
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const { page, component: paginationComponent } = usePaginationComponent(
+    data?.total || 0,
+    data?.pageSize || 25,
+  );
   const { width } = useWindowSize();
-  const [showVoteDetail, setShowVoteDetail] = useState(null);
   const section = useCollectivesSection();
 
   const fetchData = useCallback(
     (page, pageSize) => {
-      setPage(page);
-
-      setIsLoading(true);
-
       const query = {
         page,
         pageSize,
@@ -41,50 +34,27 @@ export default function FellowshipMemberVotes({ address }) {
           if (result) {
             setData(result);
           }
-        })
-        .finally(() => {
-          setIsLoading(false);
         });
     },
     [address, section],
   );
 
   useEffect(() => {
-    fetchData(1, 25);
-  }, [fetchData]);
+    fetchData(page, 25);
+  }, [fetchData, page]);
 
   if (isNil(width)) {
     return null;
   }
 
   return (
-    <>
-      <ModuleTabContext.Provider value={{ selectedTabId: Fellowship }}>
-        {width > 1024 ? (
-          <FellowshipVotesList
-            data={data}
-            isLoading={isLoading}
-            fetchData={fetchData}
-            setShowVoteDetail={setShowVoteDetail}
-            page={page}
-          />
-        ) : (
-          <MobileFellowshipVotesList
-            data={data}
-            isLoading={isLoading}
-            fetchData={fetchData}
-            setShowVoteDetail={setShowVoteDetail}
-            page={page}
-          />
-        )}
-      </ModuleTabContext.Provider>
-
-      {showVoteDetail !== null && (
-        <VoteDetailPopup
-          vote={showVoteDetail}
-          setShowVoteDetail={setShowVoteDetail}
-        />
+    <ModuleTabContext.Provider value={{ selectedTabId: Fellowship }}>
+      {width > 1024 ? (
+        <FellowshipVotesList data={data} />
+      ) : (
+        <MobileFellowshipVotesList data={data} />
       )}
-    </>
+      {paginationComponent}
+    </ModuleTabContext.Provider>
   );
 }
