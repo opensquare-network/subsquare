@@ -13,7 +13,12 @@ import usePaginationComponent from "next-common/components/pagination/usePaginat
 
 const DEFAULT_PAGE_SIZE = 24;
 
-const ProfileFellowshipCoreEvidence = ({ setEvidenceCount }) => {
+const ProfileFellowshipCoreEvidence = ({
+  setEvidenceCount,
+  className = "",
+  popupTitle = "",
+  noDateText = "",
+}) => {
   const { id: address } = usePageProps();
   const [total, setTotal] = useState(0);
   const { page, component: pageComponent } = usePaginationComponent(
@@ -55,7 +60,12 @@ const ProfileFellowshipCoreEvidence = ({ setEvidenceCount }) => {
       {loading ? (
         <SystemLoading className="w-5 h-5 mt-4 mb-2 mx-auto text-textDisabled" />
       ) : (
-        <EvidenceList rows={rows} />
+        <EvidenceList
+          rows={rows}
+          className={className}
+          popupTitle={popupTitle}
+          noDateText={noDateText}
+        />
       )}
       {pageComponent}
     </div>

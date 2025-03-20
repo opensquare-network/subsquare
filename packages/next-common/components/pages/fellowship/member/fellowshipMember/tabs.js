@@ -10,7 +10,7 @@ const Label = tw.button`
 
 export const TabItems = {
   Votes: "votes",
-  Core: "core",
+  Membership: "membership",
   Salary: "salary",
 };
 
@@ -31,10 +31,10 @@ export default function Tabs({ activeTabValue, setActiveTabValue }) {
       ),
     },
     {
-      value: TabItems.Core,
+      value: TabItems.Membership,
       label: (
-        <TabTitle isActive={activeTabValue === TabItems.Core}>
-          {TabItems.Core}
+        <TabTitle isActive={activeTabValue === TabItems.Membership}>
+          {TabItems.Membership}
         </TabTitle>
       ),
     },
