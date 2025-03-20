@@ -61,7 +61,7 @@ export default function useSubStorage(
       },
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, pallet, storage, ...filteredParams, key, callback]);
+  }, [api, pallet, storage, ...filteredParams, key]);
 
   useEffect(() => {
     if (result && callback) {
