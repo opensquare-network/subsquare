@@ -37,7 +37,7 @@ export default function CollapsePanel({
         <ArrowTriangleDown
           className={cn(
             "w-3 h-3 text-textSecondary",
-            isCollapsed && "rotate-180",
+            !isCollapsed && "rotate-180",
           )}
         />
       </SecondaryButton>

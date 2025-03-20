@@ -59,7 +59,7 @@ const promotionPeriodColumn = {
 };
 
 const evidenceColumn = {
-  name: "Evidence",
+  name: "Wish",
   width: 120,
   className: "ml-[48px]",
 };
