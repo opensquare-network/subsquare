@@ -48,19 +48,19 @@ const salaryColumn = {
 
 const demotionPeriodColumn = {
   name: "Demotion Period",
-  width: 140,
+  width: 120,
   className: "ml-[48px]",
 };
 
 const promotionPeriodColumn = {
   name: "Promotion Period",
-  width: 140,
+  width: 120,
   className: "ml-[48px]",
 };
 
 const evidenceColumn = {
   name: "Wish",
-  width: 120,
+  width: 160,
   className: "ml-[48px]",
 };
 
