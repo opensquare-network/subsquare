@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, Fragment } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import NetworkSwitch from "next-common/components/header/networkSwitch";
@@ -10,19 +10,20 @@ import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
-import SystemUser from "../user/systemUser";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useAccountMenu } from "./useAccountMenu";
+import Divider from "next-common/components/styled/layout/divider";
+import SwitchAccount from "next-common/components/switchAccount";
+import AddressUser from "next-common/components/user/addressUser";
 
 const Wrapper = styled.div``;
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  color: var(--textTertiary);
-  margin-bottom: 16px;
-  margin-top: 24px;
+  font-size: 14px;
+  color: var(--textPrimary);
+  margin-bottom: 8px;
+  margin-top: 16px;
   :first-child {
     margin-top: 0;
   }
@@ -50,24 +51,25 @@ const Item = styled(Flex)`
   }
 `;
 
-const UserWrapper = styled(Flex)`
-  border: 1px solid var(--neutral400);
-  border-radius: 8px;
-  padding: 0 12px;
-  height: 40px;
-  font-weight: 500;
-  margin-bottom: 8px;
-  > :first-child {
-    margin-right: 8px;
-  }
-`;
-
 function ProfileMenuItem({ onClick }) {
   return (
     <Item onClick={onClick}>
       <Profile />
-      <span>Profile</span>
+      <span className="text14Medium text-textPrimary">Profile</span>
     </Item>
+  );
+}
+
+function ConnectedAccount({ user }) {
+  if (!user?.address) {
+    return null;
+  }
+
+  return (
+    <div className="flex items-center justify-between rounded-lg bg-neutral200 border-none h-10 mb-2 pl-2 pr-4">
+      <AddressUser add={user?.address} key={user?.address} />
+      <span className="text12Medium text-textTertiary">Connected</span>
+    </div>
   );
 }
 
@@ -78,10 +80,13 @@ export default function SidebarAccount() {
   const { openLoginPopup } = useLoginPopup();
   const { disconnect: disconnectAccount } = useConnectedAccountContext();
   const accountMenu = useAccountMenu();
+  const [showSwitchAccount, setShowSwitchAccount] = useState(false);
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
       await disconnectAccount();
+    } else if (item.value === "switch") {
+      setShowSwitchAccount(true);
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
@@ -109,17 +114,31 @@ export default function SidebarAccount() {
       )}
       {user && (
         <div>
-          <UserWrapper>
-            <SystemUser user={user} noEvent />
-          </UserWrapper>
+          <ConnectedAccount user={user} />
           {user.address && <ProfileMenuItem onClick={openUserProfile} />}
           {accountMenu.map((item, index) => (
-            <Item key={index} onClick={() => handleAccountMenu(item)}>
-              {item.icon}
-              <span>{item.name}</span>
-            </Item>
+            <Fragment key={index}>
+              {item?.value === "switch" && <Divider className="my-2" />}
+              <Item onClick={() => handleAccountMenu(item)}>
+                {item.icon}
+                <span className="text14Medium text-textPrimary">
+                  {item.name}
+                </span>
+              </Item>
+            </Fragment>
           ))}
         </div>
+      )}
+      {showSwitchAccount && (
+        <SwitchAccount
+          onClose={() => {
+            setShowSwitchAccount(false);
+          }}
+          onOpenLogin={() => {
+            openLoginPopup();
+            setShowSwitchAccount(false);
+          }}
+        />
       )}
     </Wrapper>
   );

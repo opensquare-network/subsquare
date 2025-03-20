@@ -14,11 +14,13 @@ export default function CopyButton({ copyText = "", size = 16 }) {
 
   return (
     <Wrapper
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         copy(copyText);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       }}
+      role="button"
     >
       <Tooltip content={copied ? "Copied" : "Copy"} keepTooltipOpenAfterClick>
         {copied ? (
