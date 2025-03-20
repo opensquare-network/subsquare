@@ -1,12 +1,37 @@
 import { useContextApi } from "next-common/context/api";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { createGlobalState } from "react-use";
 import { useChain } from "next-common/context/chain";
 import { isNil } from "lodash-es";
 
 const subs = {};
 
-const useCachedResult = createGlobalState({});
+const useCachedState = createGlobalState({});
+
+function useCachedResult(key) {
+  const [cachedState, setCachedState] = useCachedState();
+  const { loading = true, result = undefined } = cachedState[key] || {};
+
+  const setResult = useCallback(
+    (result) =>
+      setCachedState((val) => ({ ...val, [key]: { result, loading: false } })),
+    [key, setCachedState],
+  );
+
+  const cleanup = useCallback(() => {
+    setCachedState((val) => {
+      delete val[key];
+      return val;
+    });
+  }, [key, setCachedState]);
+
+  return {
+    loading,
+    result,
+    setResult,
+    cleanup,
+  };
+}
 
 export default function useSubStorage(
   pallet,
@@ -16,7 +41,6 @@ export default function useSubStorage(
 ) {
   const contextApi = useContextApi();
   const { callback, api = contextApi } = options;
-  const [cachedResult, setCachedResult] = useCachedResult();
   const chain = useChain();
 
   const filteredParams = (Array.isArray(params) ? params : [params]).filter(
@@ -29,55 +53,44 @@ export default function useSubStorage(
       )
       .join("-")}`;
   }, [chain, pallet, storage, filteredParams]);
-  const result = cachedResult[key];
 
-  const [loading, setLoading] = useState(isNil(result));
+  const { loading, result, setResult, cleanup } = useCachedResult(key);
 
-  const subscribe = useCallback(async () => {
-    if (!subs[key]) {
+  const subscribe = useCallback(
+    async () => {
+      if (subs[key]) {
+        subs[key].count++;
+        return;
+      }
+
       subs[key] = {
         unsub: null,
-        count: 0,
+        count: 1,
       };
-    } else {
-      subs[key].count++;
-      setLoading(false);
-      return;
-    }
 
-    const queryStorage = api?.query[pallet]?.[storage];
-    if (!queryStorage) {
-      setLoading(false);
-      return;
-    }
+      const queryStorage = api?.query[pallet]?.[storage];
+      if (!queryStorage) {
+        setResult();
+        return;
+      }
 
-    try {
-      subs[key].unsub = await queryStorage(
-        ...filteredParams,
-        (subscribeResult) => {
-          callback?.(subscribeResult);
-
-          setCachedResult((val) => {
-            return {
-              ...val,
-              [key]: subscribeResult,
-            };
-          });
-        },
-      );
-    } finally {
-      setLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, pallet, storage, ...filteredParams, key, callback]);
+      try {
+        subs[key].unsub = await queryStorage(
+          ...filteredParams,
+          (subscribeResult) => setResult(subscribeResult),
+        );
+      } catch (e) {
+        setResult();
+      }
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [api, pallet, storage, key, setResult, ...filteredParams],
+  );
 
   useEffect(() => {
     if (result && callback) {
       callback(result);
-      setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [result, callback]);
 
   useEffect(() => {
     if (!api || isNil(pallet) || isNil(storage)) {
@@ -94,15 +107,11 @@ export default function useSubStorage(
           subs[key].unsub?.();
           delete subs[key];
 
-          setCachedResult((val) => {
-            delete val[key];
-            return val;
-          });
+          cleanup();
         }
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, key, subscribe]);
+  }, [api, key, subscribe, pallet, storage, cleanup]);
 
   return { loading, result };
 }

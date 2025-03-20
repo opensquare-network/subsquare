@@ -20,12 +20,12 @@ const collectivesMemberColumns = [
   {
     name: "Demotion Period",
     width: 160,
-    className: "ml-[64px]",
+    className: "ml-[48px]",
   },
   {
     name: "Min Promotion Period",
     width: 160,
-    className: "ml-[64px]",
+    className: "ml-[48px]",
   },
 ];
 

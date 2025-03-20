@@ -9,6 +9,7 @@ import {
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
 import {
   useCollectivesContext,
+  useCollectivesSection,
   useCoreFellowshipPallet,
 } from "next-common/context/collectives/collectives";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
@@ -26,6 +27,8 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import Tooltip from "next-common/components/tooltip";
 import { ContainerRefProvider } from "next-common/context/containerRef";
 import { isSameAddress } from "next-common/utils";
+import NavigateToDetailButton from "next-common/components/navigateToDetailButton";
+import { useRouter } from "next/router";
 
 const rankColumn = {
   name: "Rank",
@@ -46,19 +49,19 @@ const salaryColumn = {
 const demotionPeriodColumn = {
   name: "Demotion Period",
   width: 140,
-  className: "ml-[64px]",
+  className: "ml-[48px]",
 };
 
 const promotionPeriodColumn = {
   name: "Promotion Period",
   width: 140,
-  className: "ml-[64px]",
+  className: "ml-[48px]",
 };
 
 const evidenceColumn = {
   name: "Wish",
   width: 120,
-  className: "ml-[64px]",
+  className: "ml-[48px]",
 };
 
 const actionsColumn = {
@@ -156,6 +159,16 @@ function NonCoreMemberAddressCol({ address }) {
   );
 }
 
+function DetailButton({ address }) {
+  const section = useCollectivesSection();
+  const router = useRouter();
+  return (
+    <NavigateToDetailButton
+      onClick={() => router.push(`/${section}/members/${address}`)}
+    />
+  );
+}
+
 function getCoreMemberRow({ idx, member, params, ActionsComponent }) {
   const { address, rank } = member;
   const { isActive } = member.status;
@@ -193,8 +206,9 @@ function getCoreMemberRow({ idx, member, params, ActionsComponent }) {
       <EmptyCol key={`min-promotion-period-${idx}`} />
     ),
     <EvidenceAndReferenda key="evidence" member={member} />,
-    <div key="more">
+    <div key="more" className="flex gap-[12px]">
       {ActionsComponent && <ActionsComponent member={member} params={params} />}
+      <DetailButton address={address} />
     </div>,
   ];
 }
@@ -218,8 +232,9 @@ function getCandidateRow({ idx, member, params, ActionsComponent }) {
       blocks={offboardTimeout}
     />,
     <EvidenceAndReferenda key="evidence" member={member} />,
-    <div key="more">
+    <div key="more" className="flex gap-[12px]">
       {ActionsComponent && <ActionsComponent member={member} params={params} />}
+      <DetailButton address={address} />
     </div>,
   ];
 }

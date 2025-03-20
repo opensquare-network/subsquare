@@ -180,7 +180,7 @@ export function MoreActionsWrapper({ children }) {
           role="button"
           className={cn(
             "inline-flex p-[6px] cursor-pointer",
-            "rounded-[4px] border-neutral400 border",
+            "rounded-[4px] border-neutral400 hover:border-neutral500 border",
           )}
           onClick={() => setShowContextMenu(true)}
         >
