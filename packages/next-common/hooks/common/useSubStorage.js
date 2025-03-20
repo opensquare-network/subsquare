@@ -6,7 +6,32 @@ import { isNil } from "lodash-es";
 
 const subs = {};
 
-const useCachedResult = createGlobalState({});
+const useCachedState = createGlobalState({});
+
+function useCachedResult(key) {
+  const [cachedState, setCachedState] = useCachedState();
+  const { loading = true, result = undefined } = cachedState[key] || {};
+
+  const setResult = useCallback(
+    (result) =>
+      setCachedState((val) => ({ ...val, [key]: { result, loading: false } })),
+    [key, setCachedState],
+  );
+
+  const cleanup = useCallback(() => {
+    setCachedState((val) => {
+      delete val[key];
+      return val;
+    });
+  }, [key, setCachedState]);
+
+  return {
+    loading,
+    result,
+    setResult,
+    cleanup,
+  };
+}
 
 export default function useSubStorage(
   pallet,
@@ -16,7 +41,6 @@ export default function useSubStorage(
 ) {
   const contextApi = useContextApi();
   const { callback, api = contextApi } = options;
-  const [cachedResult, setCachedResult] = useCachedResult();
   const chain = useChain();
 
   const filteredParams = (Array.isArray(params) ? params : [params]).filter(
@@ -29,39 +53,38 @@ export default function useSubStorage(
       )
       .join("-")}`;
   }, [chain, pallet, storage, filteredParams]);
-  const result = cachedResult[key];
 
-  const loading = isNil(result);
+  const { loading, result, setResult, cleanup } = useCachedResult(key);
 
-  const subscribe = useCallback(async () => {
-    if (subs[key]) {
-      subs[key].count++;
-      return;
-    }
+  const subscribe = useCallback(
+    async () => {
+      if (subs[key]) {
+        subs[key].count++;
+        return;
+      }
 
-    subs[key] = {
-      unsub: null,
-      count: 1,
-    };
+      subs[key] = {
+        unsub: null,
+        count: 1,
+      };
 
-    const queryStorage = api?.query[pallet]?.[storage];
-    if (!queryStorage) {
-      return;
-    }
+      const queryStorage = api?.query[pallet]?.[storage];
+      if (!queryStorage) {
+        setResult();
+        return;
+      }
 
-    subs[key].unsub = await queryStorage(
-      ...filteredParams,
-      (subscribeResult) => {
-        setCachedResult((val) => {
-          return {
-            ...val,
-            [key]: subscribeResult,
-          };
-        });
-      },
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, pallet, storage, ...filteredParams, key]);
+      try {
+        subs[key].unsub = await queryStorage(
+          ...filteredParams,
+          (subscribeResult) => setResult(subscribeResult),
+        );
+      } catch (e) {
+        setResult();
+      }
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [api, pallet, storage, key, setResult, ...filteredParams],
+  );
 
   useEffect(() => {
     if (result && callback) {
@@ -84,15 +107,11 @@ export default function useSubStorage(
           subs[key].unsub?.();
           delete subs[key];
 
-          setCachedResult((val) => {
-            delete val[key];
-            return val;
-          });
+          cleanup();
         }
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, key, subscribe]);
+  }, [api, key, subscribe, pallet, storage, cleanup]);
 
   return { loading, result };
 }
