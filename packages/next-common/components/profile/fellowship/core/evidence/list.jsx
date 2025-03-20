@@ -75,7 +75,7 @@ const EvidenceItem = ({ row, popupTitle = "" }) => {
 
       {open && (
         <Popup
-          title={popupTitle || "Evidence Detail"}
+          title={popupTitle || "Evidence For " + (row.wish || "")}
           className="w-[800px] max-w-full"
           onClose={() => {
             setOpen(false);

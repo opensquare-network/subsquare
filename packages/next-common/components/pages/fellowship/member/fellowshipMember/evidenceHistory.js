@@ -9,7 +9,6 @@ export default function EvidenceHistory() {
         setEvidenceCount={noop}
         className="grid-cols-2"
         noDateText="No evidences"
-        popupTitle="Wish Detail"
       />
     </SecondaryCard>
   );
