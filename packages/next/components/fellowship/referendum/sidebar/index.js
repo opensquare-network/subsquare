@@ -7,7 +7,6 @@ import { gov2VotingState } from "next-common/utils/consts/state";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import Popup from "../votePopup";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useChainSettings } from "next-common/context/chain";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
@@ -62,10 +61,25 @@ function CollectiveVote({ onClick = noop }) {
   );
 }
 
+function LoginGuard({ children }) {
+  const address = useRealAddress();
+  const minRank = useRankedCollectiveMinRank();
+  if (!address) {
+    return (
+      <Tooltip content={`Only members with rank >= ${minRank} can vote`}>
+        <PrimaryButton style={{ width: "100%" }} disabled={true}>
+          Vote
+        </PrimaryButton>
+      </Tooltip>
+    );
+  } else {
+    return children;
+  }
+}
+
 export default function FellowshipReferendumSideBar() {
   const post = usePost();
   const [showVote, setShowVote] = useState(false);
-  const { hideActionButtons } = useChainSettings();
   const referendumIndex = post?.referendumIndex;
   const isVoting = gov2VotingState.includes(post?.state?.name);
 
@@ -75,8 +89,10 @@ export default function FellowshipReferendumSideBar() {
       <Gov2Status />
       <FellowshipTally />
       <MyCollectiveVote />
-      {isVoting && !hideActionButtons && (
-        <CollectiveVote onClick={() => setShowVote(true)} />
+      {isVoting && (
+        <LoginGuard>
+          <CollectiveVote onClick={() => setShowVote(true)} />
+        </LoginGuard>
       )}
       <VoteSuccessfulProvider VoteSuccessfulPopup={VoteSuccessfulPopup}>
         {showVote && (

@@ -22,6 +22,7 @@ function SelfBalance() {
       <ValueDisplay
         value={toPrecision(selfBalance, decimals)}
         symbol={symbol}
+        className="text12Medium"
       />
     </DataItem>
   );
@@ -36,6 +37,7 @@ function MaxDelegations() {
       <ValueDisplay
         value={toPrecision(delegations, decimals)}
         symbol={symbol}
+        className="text12Medium"
       />
     </DataItem>
   );
@@ -56,8 +58,8 @@ function DemocracyVotesPowerInContext() {
           votesPower={votesPower}
           isReferenda={false}
         />
-        <div className="flex flex-row items-start space-x-2">
-          <GreyPanel className="flex flex-row items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap">
+        <div className="flex flex-row items-start space-x-2 w-full gap-y-2">
+          <GreyPanel className="flex flex-row items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap flex-1 gap-y-1">
             <SelfBalance />
             <SplitSymbol />
             <MaxDelegations />

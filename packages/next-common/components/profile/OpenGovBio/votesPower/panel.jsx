@@ -14,7 +14,7 @@ export default function VotesPowerPanelWrapper({ children }) {
   return (
     <GreyPanel
       className={cn(
-        "flex flex-col bg-neutral100 justify-end text14Medium text-textPrimary p-4 pb-0 max-w-full rounded-[12px] gap-y-4",
+        "flex flex-col bg-neutral100 justify-end text14Medium text-textPrimary p-3 pb-0 max-w-full rounded-[12px] gap-y-2",
         isMobile ? "mt-0" : "mt-6",
       )}
       style={{
