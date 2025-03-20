@@ -9,7 +9,7 @@ const Label = tw.button`
 `;
 
 export const TabItems = {
-  Referenda: "referenda",
+  Votes: "votes",
   Membership: "membership",
   Salary: "salary",
 };
@@ -23,10 +23,10 @@ function TabTitle({ isActive, children }) {
 export default function Tabs({ activeTabValue, setActiveTabValue }) {
   const tabs = [
     {
-      value: TabItems.Referenda,
+      value: TabItems.Votes,
       label: (
-        <TabTitle isActive={activeTabValue === TabItems.Referenda}>
-          {TabItems.Referenda}
+        <TabTitle isActive={activeTabValue === TabItems.Votes}>
+          {TabItems.Votes}
         </TabTitle>
       ),
     },
