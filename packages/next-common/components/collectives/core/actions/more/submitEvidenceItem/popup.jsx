@@ -5,7 +5,6 @@ import {
 import { noop } from "lodash-es";
 import { CID } from "multiformats";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import useSigner from "next-common/components/common/tx/useSigner";
 import Editor from "next-common/components/editor";
 import PopupLabel from "next-common/components/popup/label";
 import PopupWithSigner from "next-common/components/popupWithSigner";
@@ -14,9 +13,21 @@ import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { cn } from "next-common/utils";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import { FellowshipRankInfo } from "next-common/components/fellowship/rank";
+import useFellowshipEvidenceTemplate from "./useFellowshipEvidenceTemplate";
+import ConnectedUserOrigin from "next-common/components/popup/fields/connectedUserOriginField";
+
+function TemplatePrompt() {
+  return (
+    <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary">
+      Please follow the evidence template to fill in the content.
+    </GreyPanel>
+  );
+}
 
 function WishChoice({ title, description, checked, onClick = noop }) {
   return (
@@ -46,16 +57,42 @@ function Content() {
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
-  const { component } = useSigner("Address");
-  const [evidence, setEvidence] = useState("");
   const [wish, setWish] = useState("retention");
   const { uploading, upload } = useUploadToIpfs();
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
 
+  const retentionTemplate = useFellowshipEvidenceTemplate("retention");
+  const promotionTemplate = useFellowshipEvidenceTemplate("promotion");
+  const [retentionEvidence, setRetentionEvidence] = useState("");
+  const [promotionEvidence, setPromotionEvidence] = useState("");
+
+  useEffect(() => {
+    if (retentionTemplate && !retentionEvidence) {
+      setRetentionEvidence(retentionTemplate);
+    }
+  }, [retentionTemplate, retentionEvidence]);
+
+  useEffect(() => {
+    if (promotionTemplate && !promotionEvidence) {
+      setPromotionEvidence(promotionTemplate);
+    }
+  }, [promotionTemplate, promotionEvidence]);
+
+  const currentEvidence =
+    wish === "retention" ? retentionEvidence : promotionEvidence;
+
+  const handleEvidenceChange = (newContent) => {
+    if (wish === "retention") {
+      setRetentionEvidence(newContent);
+    } else {
+      setPromotionEvidence(newContent);
+    }
+  };
+
   const getTxFunc = useCallback(async () => {
     const { error, result } = await upload(
-      new File([evidence], `evidence-${address}-${wish}.txt`, {
+      new File([currentEvidence], `evidence-${address}-${wish}.txt`, {
         type: "text/plain",
       }),
       {
@@ -77,11 +114,18 @@ function Content() {
 
     const hexDigest = "0x" + Buffer.from(digest).toString("hex");
     return api.tx[pallet]?.submitEvidence(wish, hexDigest);
-  }, [upload, evidence, address, wish, api.tx, pallet, dispatch]);
+  }, [upload, currentEvidence, address, wish, api.tx, pallet, dispatch]);
 
   return (
     <>
-      {component}
+      <ConnectedUserOrigin
+        title="Account"
+        extra={
+          <div className="w-5 h-5">
+            <FellowshipRankInfo address={address} />
+          </div>
+        }
+      />
       <div>
         <PopupLabel
           text={
@@ -105,6 +149,7 @@ function Content() {
           />
         </div>
       </div>
+      <TemplatePrompt />
       <div>
         <PopupLabel
           text={
@@ -114,10 +159,10 @@ function Content() {
           }
         />
         <Editor
-          value={evidence}
-          onChange={setEvidence}
+          value={currentEvidence}
+          onChange={handleEvidenceChange}
           contentType={"markdown"}
-          minHeight={100}
+          minHeight={300}
         />
       </div>
 
@@ -133,7 +178,11 @@ function Content() {
 
 export default function SubmitEvidencePopup(props) {
   return (
-    <PopupWithSigner title="Submit Evidence" {...props}>
+    <PopupWithSigner
+      title="Submit Evidence"
+      {...props}
+      className="w-[800px] max-sm:w-auto"
+    >
       <Content />
     </PopupWithSigner>
   );

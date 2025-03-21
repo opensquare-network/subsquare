@@ -1,5 +1,7 @@
 import { isNil } from "lodash-es";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
+import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
+import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
 export default function FellowshipRank({ rank }) {
   if (isNil(rank)) {
@@ -17,4 +19,11 @@ export default function FellowshipRank({ rank }) {
       {rank}
     </span>
   );
+}
+
+export function FellowshipRankInfo({ address }) {
+  const collectivePallet = useRankedCollectivePallet();
+  const rank = useFellowshipMemberRank(address, collectivePallet);
+
+  return <FellowshipRank rank={rank} />;
 }
