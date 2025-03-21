@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 const BaseTemplate = `
 
@@ -52,8 +53,11 @@ Below are some examples on how to write an argument for:
 - [ ] Comment(s): 
 `;
 
-export default function useFellowshipEvidenceTemplate(wish, address) {
+export default function useFellowshipEvidenceTemplate(wish) {
+  const signerAccount = useSignerAccount();
   const collectivePallet = useRankedCollectivePallet();
+  const address = signerAccount?.realAddress;
+  const name = signerAccount?.meta?.name || address || "Name of the proposer";
   const rank = useFellowshipMemberRank(address, collectivePallet);
 
   return useMemo(() => {
@@ -72,11 +76,9 @@ export default function useFellowshipEvidenceTemplate(wish, address) {
     const tableSection = `
 |                 |                                                                                             |
 | --------------- | ------------------------------------------------------------------------------------------- |
-| **Report Date** | ${formattedDate}                                             |
-| **Submitted by**| ${
-      address || "Name of the proposer"
-    }                                                                    |`;
+| **Report Date** | Date of submission (${formattedDate})                                             |
+| **Submitted by**| ${name}                                                                    |`;
 
     return `${titleText} ${tableSection} ${BaseTemplate}`;
-  }, [rank, wish, address]);
+  }, [rank, wish, address, name]);
 }

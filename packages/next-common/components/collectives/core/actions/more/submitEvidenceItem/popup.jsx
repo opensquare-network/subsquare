@@ -62,7 +62,7 @@ function Content() {
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
 
-  const template = useFellowshipEvidenceTemplate(wish, address);
+  const template = useFellowshipEvidenceTemplate(wish);
   const [evidence, setEvidence] = useState(template);
 
   useEffect(() => {
