@@ -66,7 +66,7 @@ export default function MemberCandidatesWarnings({ className }) {
           {allPromotionEvidences?.length}{" "}
           {pluralize("candidate", allPromotionEvidences?.length)}
         </PromptButton>
-        wish to get promoted
+        {allPromotionEvidences?.length > 1 ? "wish" : "wishes"} to get promoted
         {toBeHandledPromotionEvidences?.length === 0
           ? "."
           : `, and ${
@@ -84,8 +84,9 @@ export default function MemberCandidatesWarnings({ className }) {
           {allRetentionEvidences?.length}{" "}
           {pluralize("candidate", allRetentionEvidences?.length)}
         </PromptButton>
-        wish to retain{" "}
-        {allRetentionEvidences?.length > 1 ? "their ranks" : "his/her rank"}
+        {allRetentionEvidences?.length > 1
+          ? "wish to retain their ranks"
+          : "wishes to retain his/her rank"}
         {toBeHandledRetentionEvidences?.length === 0
           ? "."
           : `, and ${
