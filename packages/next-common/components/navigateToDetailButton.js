@@ -1,13 +1,11 @@
 import { ArrowRight } from "@osn/icons/subsquare";
-import { useCollectivesSection } from "next-common/context/collectives/collectives";
 import { cn } from "next-common/utils";
 import Link from "next/link";
 
-export default function NavigateToDetailButton({ address }) {
-  const section = useCollectivesSection();
+export default function NavigateToDetailButton({ href }) {
   return (
     <Link
-      href={`/${section}/members/${address}`}
+      href={href}
       className={cn(
         "cursor-pointer p-[6px]",
         "rounded-[4px] border border-neutral400 hover:border-neutral500",

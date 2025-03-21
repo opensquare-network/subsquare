@@ -9,6 +9,7 @@ import {
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
 import {
   useCollectivesContext,
+  useCollectivesSection,
   useCoreFellowshipPallet,
 } from "next-common/context/collectives/collectives";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
@@ -157,6 +158,11 @@ function NonCoreMemberAddressCol({ address }) {
   );
 }
 
+function DetailButton({ address }) {
+  const section = useCollectivesSection();
+  return <NavigateToDetailButton href={`/${section}/members/${address}`} />;
+}
+
 function getCoreMemberRow({ idx, member, params, ActionsComponent }) {
   const { address, rank } = member;
   const { isActive } = member.status;
@@ -196,7 +202,7 @@ function getCoreMemberRow({ idx, member, params, ActionsComponent }) {
     <EvidenceAndReferenda key="evidence" member={member} />,
     <div key="more" className="flex gap-[12px]">
       {ActionsComponent && <ActionsComponent member={member} params={params} />}
-      <NavigateToDetailButton address={address} />
+      <DetailButton address={address} />
     </div>,
   ];
 }
@@ -222,7 +228,7 @@ function getCandidateRow({ idx, member, params, ActionsComponent }) {
     <EvidenceAndReferenda key="evidence" member={member} />,
     <div key="more" className="flex gap-[12px]">
       {ActionsComponent && <ActionsComponent member={member} params={params} />}
-      <NavigateToDetailButton address={address} />
+      <DetailButton address={address} />
     </div>,
   ];
 }
