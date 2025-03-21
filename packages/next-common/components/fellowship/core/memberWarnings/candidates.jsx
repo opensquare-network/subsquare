@@ -62,7 +62,10 @@ export default function MemberCandidatesWarnings({ className }) {
   const promptItems = [
     allPromotionEvidences?.length > 0 && (
       <>
-        <PromptButton filterLink={filterLinks.promotionEvidenceOnly}>
+        <PromptButton
+          isCandidate
+          filterLink={filterLinks.promotionEvidenceOnly}
+        >
           {allPromotionEvidences?.length}{" "}
           {pluralize("candidate", allPromotionEvidences?.length)}
         </PromptButton>
@@ -80,7 +83,10 @@ export default function MemberCandidatesWarnings({ className }) {
     ),
     allRetentionEvidences?.length > 0 && (
       <>
-        <PromptButton filterLink={filterLinks.retentionEvidenceOnly}>
+        <PromptButton
+          isCandidate
+          filterLink={filterLinks.retentionEvidenceOnly}
+        >
           {allRetentionEvidences?.length}{" "}
           {pluralize("candidate", allRetentionEvidences?.length)}
         </PromptButton>
