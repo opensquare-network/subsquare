@@ -1,5 +1,4 @@
 import useColumns from "next-common/components/styledList/useColumns";
-import Pagination from "next-common/components/pagination";
 import DetailButton from "next-common/components/detailButton";
 import { PostTitle, ReferendumTag } from "./common";
 import { useChain } from "next-common/context/chain";
@@ -10,12 +9,7 @@ import VoteForCell from "./common/voteForCell";
 import SelfVotesCell from "./common/selfVotesCell";
 import TotalVotesCell from "./common/totalVotes";
 
-export default function VotesList({
-  data,
-  fetchData,
-  setShowVoteDetail,
-  page,
-}) {
+export default function VotesList({ data, setShowVoteDetail }) {
   const chain = useChain();
   const isKintsugi = isKintsugiChain(chain);
 
@@ -83,19 +77,8 @@ export default function VotesList({
   });
 
   return (
-    <>
-      <ScrollerX>
-        <DataList loading={!data} columns={columns} rows={rows} />
-      </ScrollerX>
-      <Pagination
-        {...data}
-        page={page}
-        onPageChange={(e, page) => {
-          e.stopPropagation();
-          e.preventDefault();
-          fetchData(page, data?.pageSize);
-        }}
-      />
-    </>
+    <ScrollerX>
+      <DataList loading={!data} columns={columns} rows={rows} />
+    </ScrollerX>
   );
 }

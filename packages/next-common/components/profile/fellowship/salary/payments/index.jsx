@@ -18,7 +18,7 @@ import { useProfileFellowshipSalaryPaymentTimeAgeColumn } from "./columns/timeAg
 import { useState } from "react";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
-export default function ProfileFellowshipSalaryPayments({ setPaymentsCount }) {
+export function FellowshipSalaryPayments({ setPaymentsCount, columns }) {
   const { id: address } = usePageProps();
   const router = useRouter();
   const [page, setPage] = useState(parseInt(router.query.page || 1));
@@ -30,24 +30,6 @@ export default function ProfileFellowshipSalaryPayments({ setPaymentsCount }) {
   } else if (section === "ambassador") {
     paymentsApi = ambassadorSalaryPaymentsApi;
   }
-
-  const cycleColumn = useProfileFellowshipSalaryPaymentCycleColumn();
-  const rankColumn = useProfileFellowshipSalaryPaymentRankColumn();
-  const beneficiaryColumn =
-    useProfileFellowshipSalaryPaymentBeneficiaryColumn();
-  const timeAgeColumn = useProfileFellowshipSalaryPaymentTimeAgeColumn();
-  const registrationColumn =
-    useProfileFellowshipSalaryPaymentRegistrationColumn();
-  const paidColumn = useProfileFellowshipSalaryPaymentPaidColumn();
-
-  const columns = [
-    cycleColumn,
-    rankColumn,
-    beneficiaryColumn,
-    timeAgeColumn,
-    registrationColumn,
-    paidColumn,
-  ];
 
   const { value, loading } = useAsync(async () => {
     if (!paymentsApi) {
@@ -90,5 +72,32 @@ export default function ProfileFellowshipSalaryPayments({ setPaymentsCount }) {
         shallow
       />
     </div>
+  );
+}
+
+export default function ProfileFellowshipSalaryPayments({ setPaymentsCount }) {
+  const cycleColumn = useProfileFellowshipSalaryPaymentCycleColumn();
+  const rankColumn = useProfileFellowshipSalaryPaymentRankColumn();
+  const beneficiaryColumn =
+    useProfileFellowshipSalaryPaymentBeneficiaryColumn();
+  const timeAgeColumn = useProfileFellowshipSalaryPaymentTimeAgeColumn();
+  const registrationColumn =
+    useProfileFellowshipSalaryPaymentRegistrationColumn();
+  const paidColumn = useProfileFellowshipSalaryPaymentPaidColumn();
+
+  const columns = [
+    cycleColumn,
+    rankColumn,
+    beneficiaryColumn,
+    timeAgeColumn,
+    registrationColumn,
+    paidColumn,
+  ];
+
+  return (
+    <FellowshipSalaryPayments
+      setPaymentsCount={setPaymentsCount}
+      columns={columns}
+    />
   );
 }
