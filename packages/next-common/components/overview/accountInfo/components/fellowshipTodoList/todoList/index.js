@@ -75,22 +75,24 @@ export function OnlyCollectivesMember({ children }) {
 
 export default function TodoList() {
   return (
-    <MakeSureLoaded>
-      <OnlyCoreMember>
-        <RetentionEvidenceSubmissionTodo />
-        <MemberReferendaTodo />
-      </OnlyCoreMember>
-      <DemotionExpirationTodo />
-      <CandidateDemotionExpirationTodo />
-      <OnlyCollectivesMember>
-        <SalaryRegistrationTodo />
-        <SalaryPayoutTodo />
-        <MyReferendaVotesTodo />
-        <OnlyHighRankMembers>
-          <MemberEvidencesTodo />
-          <CandidateEvidencesTodo />
-        </OnlyHighRankMembers>
-      </OnlyCollectivesMember>
-    </MakeSureLoaded>
+    <div className="mt-[16px]">
+      <MakeSureLoaded>
+        <OnlyCoreMember>
+          <RetentionEvidenceSubmissionTodo />
+          <MemberReferendaTodo />
+        </OnlyCoreMember>
+        <DemotionExpirationTodo />
+        <CandidateDemotionExpirationTodo />
+        <OnlyCollectivesMember>
+          <SalaryRegistrationTodo />
+          <SalaryPayoutTodo />
+          <MyReferendaVotesTodo />
+          <OnlyHighRankMembers>
+            <MemberEvidencesTodo />
+            <CandidateEvidencesTodo />
+          </OnlyHighRankMembers>
+        </OnlyCollectivesMember>
+      </MakeSureLoaded>
+    </div>
   );
 }
