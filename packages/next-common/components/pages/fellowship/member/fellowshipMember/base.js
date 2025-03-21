@@ -31,6 +31,7 @@ export default function MemberBaseInfo({ address }) {
       <div className="flex flex-col items-center gap-[4px] text-textPrimary">
         <AddressUser
           className="text16Bold"
+          addressClassName="text16Bold"
           fontSize={16}
           showAvatar={false}
           add={address}
