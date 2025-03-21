@@ -17,6 +17,7 @@ export default function Popup({
   maskClosable = true,
   children,
   container,
+  showCloseIcon = true,
 }) {
   const [zOverlay] = useState(z);
   const [zContent] = useState(z + 1);
@@ -56,11 +57,13 @@ export default function Popup({
                     </Dialog.Title>
                     <div className="flex items-center gap-[12px]">
                       {extra}
-                      <SystemClose
-                        className="w-[20px] h-[20px] text-textTertiary"
-                        role="button"
-                        onClick={onClose}
-                      />
+                      {showCloseIcon && (
+                        <SystemClose
+                          className="w-[20px] h-[20px] text-textTertiary"
+                          role="button"
+                          onClick={onClose}
+                        />
+                      )}
                     </div>
                   </div>
                 )}

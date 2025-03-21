@@ -6,7 +6,7 @@ function Title({ isWeb3 = true }) {
   return (
     <h3 className="text20Bold text-textPrimary">
       <span>{isWeb3 ? "Connect" : "Login"} with </span>
-      <span className="text-theme500">{isWeb3 ? "Address" : "Account"}</span>
+      <span className="text-theme500">{isWeb3 ? "Wallet" : "Account"}</span>
     </h3>
   );
 }
