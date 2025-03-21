@@ -28,7 +28,6 @@ import Tooltip from "next-common/components/tooltip";
 import { ContainerRefProvider } from "next-common/context/containerRef";
 import { isSameAddress } from "next-common/utils";
 import NavigateToDetailButton from "next-common/components/navigateToDetailButton";
-import { useRouter } from "next/router";
 
 const rankColumn = {
   name: "Rank",
@@ -161,12 +160,7 @@ function NonCoreMemberAddressCol({ address }) {
 
 function DetailButton({ address }) {
   const section = useCollectivesSection();
-  const router = useRouter();
-  return (
-    <NavigateToDetailButton
-      onClick={() => router.push(`/${section}/members/${address}`)}
-    />
-  );
+  return <NavigateToDetailButton href={`/${section}/members/${address}`} />;
 }
 
 function getCoreMemberRow({ idx, member, params, ActionsComponent }) {
