@@ -19,7 +19,7 @@ import { useCoreFellowshipPallet } from "next-common/context/collectives/collect
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { FellowshipRankInfo } from "next-common/components/fellowship/rank";
 import useFellowshipEvidenceTemplate from "./useFellowshipEvidenceTemplate";
-import ConnectedUserOrigin from "next-common/components/popup/fields/connectedUserOrigin";
+import ConnectedUserOrigin from "next-common/components/popup/fields/connectedUserOriginField";
 
 function TemplatePrompt() {
   return (
