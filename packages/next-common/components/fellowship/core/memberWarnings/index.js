@@ -22,6 +22,7 @@ import { SystemFilter } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 import { cn, isSameAddress } from "next-common/utils";
 import BatchBump from "../batchBump";
+import pluralize from "pluralize";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
@@ -241,9 +242,11 @@ export default function MemberWarnings({ className }) {
   const promptItems = [
     allEvidences?.length > 0 && (
       <>
-        {toBeHandledEvidences?.length} evidences to be handled in total{" "}
+        {toBeHandledEvidences?.length}{" "}
+        {pluralize("evidence", toBeHandledEvidences?.length)} to be handled in
+        total{" "}
         <PromptButton filterLink={filterLinks.evidenceOnly}>
-          {allEvidences?.length} evidences
+          {allEvidences?.length} {pluralize("evidence", allEvidences?.length)}
         </PromptButton>
         .
       </>
@@ -251,26 +254,39 @@ export default function MemberWarnings({ className }) {
     allPromotionEvidences?.length > 0 && (
       <>
         <PromptButton filterLink={filterLinks.promotionEvidenceOnly}>
-          {allPromotionEvidences?.length} members
+          {allPromotionEvidences?.length}{" "}
+          {pluralize("member", allPromotionEvidences?.length)}
         </PromptButton>
-        wish to get promoted, {toBeHandledPromotionEvidences?.length} of them
-        need to be handled.
+        wish to get promoted,{" "}
+        {allPromotionEvidences?.length > 1
+          ? `${toBeHandledPromotionEvidences?.length} of them ${
+              toBeHandledPromotionEvidences?.length > 1 ? "need" : "needs"
+            }`
+          : "it needs"}{" "}
+        to be handled.
       </>
     ),
     allRetentionEvidences?.length > 0 && (
       <>
         <PromptButton filterLink={filterLinks.retentionEvidenceOnly}>
-          {allRetentionEvidences?.length} members
+          {allRetentionEvidences?.length}{" "}
+          {pluralize("member", allRetentionEvidences?.length)}
         </PromptButton>
-        wish to retain their ranks, {toBeHandledRetentionEvidences?.length} of
-        them need to be handled.
+        wish to retain{" "}
+        {allRetentionEvidences?.length > 1 ? "their ranks" : "his/her rank"},{" "}
+        {allRetentionEvidences?.length > 1
+          ? `${toBeHandledRetentionEvidences?.length} of them ${
+              toBeHandledRetentionEvidences?.length > 1 ? "need" : "needs"
+            }`
+          : "it needs"}{" "}
+        to be handled.
       </>
     ),
     expiringMembersCount > 0 && (
       <>
         {"The demotion periods of "}
         <PromptButton filterLink={filterLinks.demotionPeriodAboutToExpire}>
-          {expiringMembersCount} members
+          {expiringMembersCount} {pluralize("member", expiringMembersCount)}
         </PromptButton>
         {" will expire in under 20 days."}
       </>
@@ -278,7 +294,7 @@ export default function MemberWarnings({ className }) {
     expiredMembersCount > 0 && (
       <>
         <PromptButton filterLink={filterLinks.demotionPeriodExpired}>
-          {expiredMembersCount} members
+          {expiredMembersCount} {pluralize("member", expiredMembersCount)}
         </PromptButton>
         {" can be demoted."}
         <BatchBump />
@@ -288,7 +304,8 @@ export default function MemberWarnings({ className }) {
       <>
         Promotions are available for{" "}
         <PromptButton filterLink={filterLinks.promotable}>
-          {availablePromotionCount} members
+          {availablePromotionCount}{" "}
+          {pluralize("member", availablePromotionCount)}
         </PromptButton>
         .
       </>
