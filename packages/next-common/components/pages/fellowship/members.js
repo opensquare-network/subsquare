@@ -222,12 +222,14 @@ function CollectivesFellowshipMembersPage() {
         <DropdownUrlFilterProvider
           defaultFilterValues={{
             evidence_only: false,
+            wish: "all",
             period: "all",
             rank: null,
             core_only: true,
           }}
           emptyFilterValues={{
             evidence_only: false,
+            wish: "all",
             period: "all",
             rank: null,
             core_only: false,
