@@ -175,6 +175,17 @@ export function MemberWarningsPanel({ className, isLoading, items }) {
   return <BillBoardPanel className={className} icon={icon} items={items} />;
 }
 
+function useFilterEvidenceByWish(evidences, wish) {
+  return useMemo(
+    () =>
+      (evidences || []).filter(({ evidence }) => {
+        const [_wish] = evidence;
+        return _wish.toLowerCase() === wish.toLowerCase();
+      }),
+    [evidences, wish],
+  );
+}
+
 export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
   const { members } = useEligibleFellowshipCoreMembers();
@@ -194,8 +205,30 @@ export default function MemberWarnings({ className }) {
     isLoading: isEvidenceLoading,
   } = useTodoEvidences(members);
 
+  const allPromotionEvidences = useFilterEvidenceByWish(
+    allEvidences,
+    "promotion",
+  );
+
+  const toBeHandledPromotionEvidences = useFilterEvidenceByWish(
+    toBeHandledEvidences,
+    "promotion",
+  );
+
+  const allRetentionEvidences = useFilterEvidenceByWish(
+    allEvidences,
+    "retention",
+  );
+
+  const toBeHandledRetentionEvidences = useFilterEvidenceByWish(
+    toBeHandledEvidences,
+    "retention",
+  );
+
   const filterLinks = {
     evidenceOnly: `/${section}/members?evidence_only=true`,
+    promotionEvidenceOnly: `/${section}/members?evidence_only=true&wish=promotion`,
+    retentionEvidenceOnly: `/${section}/members?evidence_only=true&wish=retention`,
     demotionPeriodAboutToExpire: `/${section}/members?period=demotion_period_about_to_expire`,
     demotionPeriodExpired: `/${section}/members?period=demotion_period_expired`,
     promotable: `/${section}/members?period=promotable`,
@@ -213,6 +246,24 @@ export default function MemberWarnings({ className }) {
           {allEvidences?.length} evidences
         </PromptButton>
         .
+      </>
+    ),
+    allPromotionEvidences?.length > 0 && (
+      <>
+        <PromptButton filterLink={filterLinks.promotionEvidenceOnly}>
+          {allPromotionEvidences?.length} members
+        </PromptButton>
+        wish to get promoted, {toBeHandledPromotionEvidences?.length} of them
+        need to be handled.
+      </>
+    ),
+    allRetentionEvidences?.length > 0 && (
+      <>
+        <PromptButton filterLink={filterLinks.retentionEvidenceOnly}>
+          {allRetentionEvidences?.length} members
+        </PromptButton>
+        wish to retain their ranks, {toBeHandledRetentionEvidences?.length} of
+        them need to be handled.
       </>
     ),
     expiringMembersCount > 0 && (
