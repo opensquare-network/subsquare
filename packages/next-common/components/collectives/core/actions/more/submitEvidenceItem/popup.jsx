@@ -13,13 +13,13 @@ import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { cn } from "next-common/utils";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { FellowshipRankInfo } from "next-common/components/fellowship/rank";
+import useFellowshipEvidenceTemplate from "./useFellowshipEvidenceTemplate";
 import ConnectedUserOrigin from "next-common/components/popup/fields/connectedUserOriginField";
-import useEvidenceContent from "./useEvidenceContent";
 
 function TemplatePrompt() {
   return (
@@ -62,11 +62,37 @@ function Content() {
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
 
-  const { currentContent, handleContentChange } = useEvidenceContent(wish);
+  const retentionTemplate = useFellowshipEvidenceTemplate("retention");
+  const promotionTemplate = useFellowshipEvidenceTemplate("promotion");
+  const [retentionEvidence, setRetentionEvidence] = useState("");
+  const [promotionEvidence, setPromotionEvidence] = useState("");
+
+  useEffect(() => {
+    if (retentionTemplate && !retentionEvidence) {
+      setRetentionEvidence(retentionTemplate);
+    }
+  }, [retentionTemplate, retentionEvidence]);
+
+  useEffect(() => {
+    if (promotionTemplate && !promotionEvidence) {
+      setPromotionEvidence(promotionTemplate);
+    }
+  }, [promotionTemplate, promotionEvidence]);
+
+  const currentEvidence =
+    wish === "retention" ? retentionEvidence : promotionEvidence;
+
+  const handleEvidenceChange = (newContent) => {
+    if (wish === "retention") {
+      setRetentionEvidence(newContent);
+    } else {
+      setPromotionEvidence(newContent);
+    }
+  };
 
   const getTxFunc = useCallback(async () => {
     const { error, result } = await upload(
-      new File([currentContent], `evidence-${address}-${wish}.txt`, {
+      new File([currentEvidence], `evidence-${address}-${wish}.txt`, {
         type: "text/plain",
       }),
       {
@@ -88,7 +114,7 @@ function Content() {
 
     const hexDigest = "0x" + Buffer.from(digest).toString("hex");
     return api.tx[pallet]?.submitEvidence(wish, hexDigest);
-  }, [upload, currentContent, address, wish, api.tx, pallet, dispatch]);
+  }, [upload, currentEvidence, address, wish, api.tx, pallet, dispatch]);
 
   return (
     <>
@@ -133,10 +159,10 @@ function Content() {
           }
         />
         <Editor
-          value={currentContent}
-          onChange={handleContentChange}
+          value={currentEvidence}
+          onChange={handleEvidenceChange}
           contentType={"markdown"}
-          minHeight={100}
+          minHeight={300}
         />
       </div>
 
