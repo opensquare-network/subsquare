@@ -99,9 +99,11 @@ export default function MemberCandidatesWarnings({ className }) {
     ),
     allEvidences?.length > 0 && (
       <>
-        {toBeHandledEvidences?.length} evidences to be handled in total{" "}
+        {toBeHandledEvidences?.length}{" "}
+        {pluralize("evidence", toBeHandledEvidences?.length)} to be handled in
+        total{" "}
         <PromptButton isCandidate filterLink={filterLinks.evidenceOnly}>
-          {allEvidences?.length} evidences
+          {allEvidences?.length} {pluralize("evidence", allEvidences?.length)}
         </PromptButton>
         .
       </>
@@ -110,7 +112,7 @@ export default function MemberCandidatesWarnings({ className }) {
       <>
         The offboard period of
         <PromptButton isCandidate filterLink={filterLinks[OffboardClosing]}>
-          {closingMembersCount} candidates
+          {closingMembersCount} {pluralize("candidate", closingMembersCount)}
         </PromptButton>
         is approaching.
       </>
@@ -118,7 +120,7 @@ export default function MemberCandidatesWarnings({ className }) {
     expiredMembersCount && (
       <>
         <PromptButton isCandidate filterLink={filterLinks[OffboardExpired]}>
-          {expiredMembersCount} candidates
+          {expiredMembersCount} {pluralize("candidate", expiredMembersCount)}
         </PromptButton>
         can be offboarded.
         <BatchBump isCandidate />
