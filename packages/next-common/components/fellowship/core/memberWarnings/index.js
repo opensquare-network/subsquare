@@ -257,7 +257,7 @@ export default function MemberWarnings({ className }) {
           {allPromotionEvidences?.length}{" "}
           {pluralize("member", allPromotionEvidences?.length)}
         </PromptButton>
-        wish to get promoted,{" "}
+        wish to get promoted, and{" "}
         {allPromotionEvidences?.length > 1
           ? `${toBeHandledPromotionEvidences?.length} of them ${
               toBeHandledPromotionEvidences?.length > 1 ? "need" : "needs"
@@ -273,7 +273,8 @@ export default function MemberWarnings({ className }) {
           {pluralize("member", allRetentionEvidences?.length)}
         </PromptButton>
         wish to retain{" "}
-        {allRetentionEvidences?.length > 1 ? "their ranks" : "his/her rank"},{" "}
+        {allRetentionEvidences?.length > 1 ? "their ranks" : "his/her rank"},
+        and{" "}
         {allRetentionEvidences?.length > 1
           ? `${toBeHandledRetentionEvidences?.length} of them ${
               toBeHandledRetentionEvidences?.length > 1 ? "need" : "needs"
