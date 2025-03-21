@@ -60,11 +60,11 @@ function TotalPaid({ totalPaid }) {
   const { decimals } = getSalaryAsset();
   return (
     <BorderedRow>
-      <Header>
+      <Header className="text14Medium">
         <InfoAsset className="w-[20px] h-[20px]" />
         Total Paid
       </Header>
-      <Value>
+      <Value className="text14Medium">
         <ValueDisplay value={toPrecision(totalPaid, decimals)} prefix="$" />
       </Value>
     </BorderedRow>
@@ -74,11 +74,11 @@ function TotalPaid({ totalPaid }) {
 function JoinedCycles({ joinedCycles }) {
   return (
     <BorderedRow>
-      <Header>
+      <Header className="text14Medium">
         <InfoDocs className="w-[20px] h-[20px]" />
         Joined Cycles
       </Header>
-      <Value>{joinedCycles}</Value>
+      <Value className="text14Medium">{joinedCycles}</Value>
     </BorderedRow>
   );
 }
