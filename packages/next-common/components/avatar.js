@@ -30,6 +30,7 @@ const Wrapper = styled.span`
 
 const ImgWrapper = styled.img`
   border-radius: ${(props) => props.size / 2}px;
+  max-width: ${(props) => props.size}px;
 `;
 
 export default function Avatar({ address, size = 24 }) {
