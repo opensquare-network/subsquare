@@ -176,7 +176,7 @@ export function MemberWarningsPanel({ className, isLoading, items }) {
   return <BillBoardPanel className={className} icon={icon} items={items} />;
 }
 
-function useFilterEvidenceByWish(evidences, wish) {
+export function useFilterEvidenceByWish(evidences, wish) {
   return useMemo(
     () =>
       (evidences || []).filter(({ evidence }) => {
