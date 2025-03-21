@@ -13,6 +13,7 @@ export default function ConnectedUserOrigin({
   symbol,
   balance,
   isBalanceLoading,
+  extra = null,
 }) {
   const node = useChainSettings();
   const noBalance = isNil(balance) && isNil(isBalanceLoading);
@@ -32,7 +33,7 @@ export default function ConnectedUserOrigin({
           symbol={symbol || node.symbol}
         />
       )}
-      <ConnectedAccountSigner />
+      <ConnectedAccountSigner extra={extra} />
     </div>
   );
 }

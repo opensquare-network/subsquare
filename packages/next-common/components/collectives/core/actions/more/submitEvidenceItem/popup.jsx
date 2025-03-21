@@ -5,7 +5,6 @@ import {
 import { noop } from "lodash-es";
 import { CID } from "multiformats";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import useSigner from "next-common/components/common/tx/useSigner";
 import Editor from "next-common/components/editor";
 import PopupLabel from "next-common/components/popup/label";
 import PopupWithSigner from "next-common/components/popupWithSigner";
@@ -19,9 +18,8 @@ import { useDispatch } from "react-redux";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { FellowshipRankInfo } from "next-common/components/fellowship/rank";
-import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
-import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import useFellowshipEvidenceTemplate from "./useFellowshipEvidenceTemplate";
+import ConnectedUserOrigin from "next-common/components/popup/fields/connectedUserOrigin";
 
 function TemplatePrompt() {
   return (
@@ -59,15 +57,12 @@ function Content() {
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
-  const { component } = useSigner("Address");
   const [wish, setWish] = useState("retention");
   const { uploading, upload } = useUploadToIpfs();
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
-  const collectivePallet = useRankedCollectivePallet();
-  const rank = useFellowshipMemberRank(address, collectivePallet);
 
-  const template = useFellowshipEvidenceTemplate(rank, wish, address);
+  const template = useFellowshipEvidenceTemplate(wish, address);
   const [evidence, setEvidence] = useState(template);
 
   useEffect(() => {
@@ -102,13 +97,14 @@ function Content() {
 
   return (
     <>
-      <div className="relative">
-        {component}
-        {/* TODO: new signer comp */}
-        <div className="absolute right-0 h-[67px] flex items-center">
-          <FellowshipRankInfo address={address} />
-        </div>
-      </div>
+      <ConnectedUserOrigin
+        title="Account"
+        extra={
+          <div className="w-5 h-5">
+            <FellowshipRankInfo address={address} />
+          </div>
+        }
+      />
       <div>
         <PopupLabel
           text={

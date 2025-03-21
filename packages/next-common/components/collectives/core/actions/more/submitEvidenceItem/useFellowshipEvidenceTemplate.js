@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
+import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
 const BaseTemplate = `
 
@@ -50,19 +52,22 @@ Below are some examples on how to write an argument for:
 - [ ] Comment(s): 
 `;
 
-export default function useFellowshipEvidenceTemplate(rank, wish, address) {
+export default function useFellowshipEvidenceTemplate(wish, address) {
+  const collectivePallet = useRankedCollectivePallet();
+  const rank = useFellowshipMemberRank(address, collectivePallet);
+
   return useMemo(() => {
-    if (!rank || !wish) {
+    if (!rank || !wish || !address) {
       return null;
     }
+
+    const timestamp = new Date().getTime();
+    const formattedDate = formatTime(timestamp, "YYYY/MM/DD");
 
     const titleText =
       wish === "retention"
         ? `# Argument-0000: Retention at Rank ${rank || "____"}`
         : `# Argument-0000: Promotion to Rank ${rank + 1 || "____"}`;
-
-    const timestamp = new Date().getTime();
-    const formattedDate = formatTime(timestamp, "YYYY/MM/DD");
 
     const tableSection = `
 |                 |                                                                                             |
