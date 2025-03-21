@@ -98,7 +98,7 @@ function OnchainEvidenceRetentionBar({ activeMember, address }) {
   );
 }
 
-function OnchainEvidenceContent({ evidence }) {
+function OnchainEvidenceContent({ evidence, wish }) {
   const [detailVisible, setDetailVisible] = useState(false);
   const { isDark } = useTheme();
 
@@ -108,7 +108,7 @@ function OnchainEvidenceContent({ evidence }) {
   return (
     <>
       <Divider className="mt-4" />
-      <CardTitle className="mt-4">Content</CardTitle>
+      <CardTitle className="mt-4">Evidence</CardTitle>
 
       <GreyPanel
         className={cn(
@@ -137,12 +137,13 @@ function OnchainEvidenceContent({ evidence }) {
           size="small"
           onClick={() => setDetailVisible(true)}
         >
-          View Wish
+          View Evidence
         </Button>
         {detailVisible && (
           <WishDetailPopup
             onClose={() => setDetailVisible(false)}
             ifpsContent={ifpsContent}
+            wish={wish}
           />
         )}
       </GreyPanel>
@@ -160,7 +161,7 @@ function OnchainEvidenceLoading() {
   );
 }
 
-function WishDetailPopup({ onClose, ifpsContent }) {
+function WishDetailPopup({ onClose, ifpsContent, wish }) {
   const { id: address, fellowshipMembers } = usePageProps();
 
   const activeMember = fellowshipMembers.find(
@@ -168,7 +169,11 @@ function WishDetailPopup({ onClose, ifpsContent }) {
   );
 
   return (
-    <Popup title="Wish Detail" className="w-[800px]" onClose={onClose}>
+    <Popup
+      title={"Evidence For " + (wish || "")}
+      className="w-[800px]"
+      onClose={onClose}
+    >
       <WishDetail
         address={address}
         activeMember={activeMember}
