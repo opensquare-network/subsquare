@@ -14,47 +14,22 @@ import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { cn } from "next-common/utils";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import { FellowshipRankInfo } from "next-common/components/fellowship/rank";
+import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
+import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
+import useFellowshipEvidenceTemplate from "./useFellowshipEvidenceTemplate";
 
-// default Fellowship Evidence template
-const fellowshipEvidenceTemplate = `# Argument-0000: Retention at/Promotion to Rank ____
-
-## Member details
-- Date of initial induction:
-- Date of last report: 
-- Area(s) of Expertise/Interest: 
-
-## Reporting period
-- Start date: YYYY/MM/DD
-- End date: YYYY/MM/DD
-
-## Argument
-*Explain why your contributions in relation to the Polkadot SDK are worthy of retention/promotion. Refer to the terms in Section 6 of the [Manifesto](https://github.com/polkadot-fellows/manifesto/blob/main/manifesto.pdf) and provide links to relevant content (i.e code, articles, media, etc.) to show that you are meeting all the requirements.*
-
-Below are some examples on how to write an argument for:
-- Retention: [Rank 1](https://collectives.subsquare.io/fellowship/referenda/289), [Rank 2](https://collectives.subsquare.io/fellowship/referenda/282), [Rank 3](https://collectives.subsquare.io/fellowship/referenda/244)
-- Promotion [Rank 1](https://collectives.subsquare.io/fellowship/referenda/272), [Rank 2](https://collectives.subsquare.io/fellowship/referenda/306), [Rank 3](https://collectives.subsquare.io/fellowship/referenda/255).
-
-## Voting record
-*Provide your voting record in relation to required thresholds for your rank.* 
-
-|  Ranks | Activity thresholds | Agreement thresholds | Member's voting activities | Comments |
-|---|---|---|---|---|
-|III|70%   |100%  |I have voted on x out of xx referenda in which I was eligible to vote (i.e xx % voting activity). Out of xx referenda in which members of higher ranks were in complete agreement, I have voted in line with the consensus x times (i.e xx % voting agreement).  |*This is an example.* |
-|I  |90%   |N/A   |   |  |
-|II |80%   |N/A   |   |  |
-|III|70%   |100%  |   |  |
-|IV |60%   |90%   |   |  |
-|V  |50%   |80%   |   |  |
-|VI |40%   |70%   |   |  |
-
-## Misc
-
-- [ ] Question(s): 
-- [ ] Concern(s): 
-- [ ] Comment(s): `;
+function TemplatePrompt() {
+  return (
+    <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary">
+      Please follow the evidence template to fill in the content.
+    </GreyPanel>
+  );
+}
 
 function WishChoice({ title, description, checked, onClick = noop }) {
   return (
@@ -85,22 +60,19 @@ function Content() {
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
   const { component } = useSigner("Address");
-  const [evidence, setEvidence] = useState("");
   const [wish, setWish] = useState("retention");
-  const [template, setTemplate] = useState("");
   const { uploading, upload } = useUploadToIpfs();
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
+  const collectivePallet = useRankedCollectivePallet();
+  const rank = useFellowshipMemberRank(address, collectivePallet);
 
-  const handleTemplateChange = (e) => {
-    const value = e.target.value;
-    setTemplate(value);
-    if (value === "fellowship") {
-      setEvidence(fellowshipEvidenceTemplate);
-    } else {
-      setEvidence("");
-    }
-  };
+  const template = useFellowshipEvidenceTemplate(rank, wish, address);
+  const [evidence, setEvidence] = useState(template);
+
+  useEffect(() => {
+    setEvidence(template);
+  }, [template]);
 
   const getTxFunc = useCallback(async () => {
     const { error, result } = await upload(
@@ -130,7 +102,13 @@ function Content() {
 
   return (
     <>
-      {component}
+      <div className="relative">
+        {component}
+        {/* TODO: new signer comp */}
+        <div className="absolute right-0 h-[67px] flex items-center">
+          <FellowshipRankInfo address={address} />
+        </div>
+      </div>
       <div>
         <PopupLabel
           text={
@@ -154,6 +132,7 @@ function Content() {
           />
         </div>
       </div>
+      <TemplatePrompt />
       <div>
         <PopupLabel
           text={
@@ -162,16 +141,6 @@ function Content() {
             </span>
           }
         />
-        <div className="mb-2">
-          <select
-            value={template}
-            onChange={handleTemplateChange}
-            className="w-full p-2 border border-neutral400 rounded-[4px] text14Medium text-textPrimary"
-          >
-            <option value="">Use template (Optional)</option>
-            <option value="fellowship">Fellowship Evidence Template</option>
-          </select>
-        </div>
         <Editor
           value={evidence}
           onChange={setEvidence}
@@ -192,7 +161,11 @@ function Content() {
 
 export default function SubmitEvidencePopup(props) {
   return (
-    <PopupWithSigner title="Submit Evidence" {...props}>
+    <PopupWithSigner
+      title="Submit Evidence"
+      {...props}
+      className="w-[800px] max-sm:w-auto"
+    >
       <Content />
     </PopupWithSigner>
   );
