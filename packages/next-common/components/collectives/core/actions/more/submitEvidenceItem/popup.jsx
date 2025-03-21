@@ -13,13 +13,13 @@ import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { cn } from "next-common/utils";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { FellowshipRankInfo } from "next-common/components/fellowship/rank";
-import useFellowshipEvidenceTemplate from "./useFellowshipEvidenceTemplate";
 import ConnectedUserOrigin from "next-common/components/popup/fields/connectedUserOriginField";
+import useEvidenceContent from "./useEvidenceContent";
 
 function TemplatePrompt() {
   return (
@@ -62,16 +62,11 @@ function Content() {
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
 
-  const template = useFellowshipEvidenceTemplate(wish);
-  const [evidence, setEvidence] = useState(template);
-
-  useEffect(() => {
-    setEvidence(template);
-  }, [template]);
+  const { currentContent, handleContentChange } = useEvidenceContent(wish);
 
   const getTxFunc = useCallback(async () => {
     const { error, result } = await upload(
-      new File([evidence], `evidence-${address}-${wish}.txt`, {
+      new File([currentContent], `evidence-${address}-${wish}.txt`, {
         type: "text/plain",
       }),
       {
@@ -93,7 +88,7 @@ function Content() {
 
     const hexDigest = "0x" + Buffer.from(digest).toString("hex");
     return api.tx[pallet]?.submitEvidence(wish, hexDigest);
-  }, [upload, evidence, address, wish, api.tx, pallet, dispatch]);
+  }, [upload, currentContent, address, wish, api.tx, pallet, dispatch]);
 
   return (
     <>
@@ -138,10 +133,10 @@ function Content() {
           }
         />
         <Editor
-          value={evidence}
-          onChange={setEvidence}
+          value={currentContent}
+          onChange={handleContentChange}
           contentType={"markdown"}
-          minHeight={300}
+          minHeight={100}
         />
       </div>
 
