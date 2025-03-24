@@ -6,7 +6,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import CoreFellowshipMemberInfoLine from "next-common/components/collectives/core/member/line";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
-import CoreFellowshipMemberEvidence from "next-common/components/collectives/core/member/evidence";
+import { CoreFellowshipMemberEvidence } from "next-common/components/collectives/core/member/evidence";
 import CoreFellowshipMemberSalary from "./salary";
 import CoreFellowshipMemberRelatedReferenda from "./relatedReferenda";
 import MineTag from "next-common/components/delegation/delegate/common/mineTag";

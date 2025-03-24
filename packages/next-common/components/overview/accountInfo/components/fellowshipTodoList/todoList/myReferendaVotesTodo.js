@@ -1,19 +1,20 @@
-import TodoTag from "./todoTag";
+import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import { useMyUnVotedReferenda } from "../context/hooks/votes";
+import { useHasMyReferendaVotesTodo } from "../hooks/useHasTodo";
 
 export default function MyReferendaVotesTodo() {
   const myUnVotedReferenda = useMyUnVotedReferenda();
-
-  if (!myUnVotedReferenda?.length) {
+  const hasTodo = useHasMyReferendaVotesTodo();
+  if (!hasTodo) {
     return null;
   }
 
   const isPlurality = (myUnVotedReferenda || []).length > 1;
 
   return (
-    <div className="flex items-center">
+    <TodoWrapper>
       <TodoTag>Referenda</TodoTag>
-      <div className="text-textPrimary text14Medium">
+      <TodoContent>
         You have&nbsp;
         <a
           className="text-theme500 cursor-pointer"
@@ -24,7 +25,7 @@ export default function MyReferendaVotesTodo() {
           {myUnVotedReferenda.length} {isPlurality ? "referenda" : "referendum"}
         </a>
         &nbsp;to vote.
-      </div>
-    </div>
+      </TodoContent>
+    </TodoWrapper>
   );
 }

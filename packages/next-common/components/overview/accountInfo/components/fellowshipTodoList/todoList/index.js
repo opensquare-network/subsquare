@@ -14,6 +14,7 @@ import SalaryPayoutTodo from "./salaryPayoutTodo";
 import MyReferendaVotesTodo from "./myReferendaVotesTodo";
 import MemberEvidencesTodo from "./memberEvidencesTodo";
 import CandidateEvidencesTodo from "./candidateEvidencesTodo";
+import useHasTodo from "../hooks/useHasTodo";
 
 function MakeSureLoaded({ children }) {
   const isLoading = useTodoListLoading();
@@ -73,9 +74,14 @@ export function OnlyCollectivesMember({ children }) {
   return children;
 }
 
-export default function TodoList() {
+function TodoListWithDataLoaded() {
+  const hasTodo = useHasTodo();
+  if (!hasTodo) {
+    return null;
+  }
+
   return (
-    <MakeSureLoaded>
+    <div className="flex flex-col mt-[16px] gap-[4px] max-sm:gap-[8px]">
       <OnlyCoreMember>
         <RetentionEvidenceSubmissionTodo />
         <MemberReferendaTodo />
@@ -91,6 +97,14 @@ export default function TodoList() {
           <CandidateEvidencesTodo />
         </OnlyHighRankMembers>
       </OnlyCollectivesMember>
+    </div>
+  );
+}
+
+export default function TodoList() {
+  return (
+    <MakeSureLoaded>
+      <TodoListWithDataLoaded />
     </MakeSureLoaded>
   );
 }
