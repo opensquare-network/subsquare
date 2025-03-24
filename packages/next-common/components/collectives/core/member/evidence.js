@@ -59,7 +59,7 @@ export function CoreFellowshipMemberEvidenceContent({
   );
 }
 
-export function EvidenceDetailPopup({
+export default function EvidenceDetailPopup({
   address,
   rank,
   isActive,
@@ -89,7 +89,7 @@ export function EvidenceDetailPopup({
   );
 }
 
-export default function CoreFellowshipMemberEvidence({
+export function CoreFellowshipMemberEvidence({
   member,
   pallet = "fellowshipCore",
 }) {

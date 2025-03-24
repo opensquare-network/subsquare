@@ -74,7 +74,7 @@ export function OnlyCollectivesMember({ children }) {
   return children;
 }
 
-export default function TodoList() {
+function TodoListWithDataLoaded() {
   const hasTodo = useHasTodo();
   if (!hasTodo) {
     return null;
@@ -82,23 +82,29 @@ export default function TodoList() {
 
   return (
     <div className="flex flex-col mt-[16px] gap-[4px]">
-      <MakeSureLoaded>
-        <OnlyCoreMember>
-          <RetentionEvidenceSubmissionTodo />
-          <MemberReferendaTodo />
-        </OnlyCoreMember>
-        <DemotionExpirationTodo />
-        <CandidateDemotionExpirationTodo />
-        <OnlyCollectivesMember>
-          <SalaryRegistrationTodo />
-          <SalaryPayoutTodo />
-          <MyReferendaVotesTodo />
-          <OnlyHighRankMembers>
-            <MemberEvidencesTodo />
-            <CandidateEvidencesTodo />
-          </OnlyHighRankMembers>
-        </OnlyCollectivesMember>
-      </MakeSureLoaded>
+      <OnlyCoreMember>
+        <RetentionEvidenceSubmissionTodo />
+        <MemberReferendaTodo />
+      </OnlyCoreMember>
+      <DemotionExpirationTodo />
+      <CandidateDemotionExpirationTodo />
+      <OnlyCollectivesMember>
+        <SalaryRegistrationTodo />
+        <SalaryPayoutTodo />
+        <MyReferendaVotesTodo />
+        <OnlyHighRankMembers>
+          <MemberEvidencesTodo />
+          <CandidateEvidencesTodo />
+        </OnlyHighRankMembers>
+      </OnlyCollectivesMember>
     </div>
+  );
+}
+
+export default function TodoList() {
+  return (
+    <MakeSureLoaded>
+      <TodoListWithDataLoaded />
+    </MakeSureLoaded>
   );
 }

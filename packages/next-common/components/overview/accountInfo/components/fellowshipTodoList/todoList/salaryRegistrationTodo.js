@@ -19,7 +19,7 @@ export default function SalaryRegistrationTodo() {
     <>
       <div className="flex items-center">
         <TodoTag>Salary</TodoTag>
-        <div className="flex text-textPrimary text14Medium items-center">
+        <div className="flex flex-wrap text-textPrimary text14Medium items-center">
           The salary cycle is in the registration period,&nbsp;
           <ActionButton onClick={() => setShowRegisterPopup(true)}>
             Register now

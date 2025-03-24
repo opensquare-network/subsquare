@@ -28,12 +28,12 @@ export function useHasMemberReferendaTodo() {
   const { evidence } = useContextMyEvidence();
   const { myMembershipReferenda } = useContextMyMembershipReferenda();
   const member = useContextMyCoreMember();
-  const { rank } = member;
 
-  if (!evidence) {
+  if (!member || !evidence) {
     return false;
   }
 
+  const { rank } = member;
   const noMembershipReferenda = !myMembershipReferenda?.length;
   const canNotCreateReferenda = rank < 3;
 

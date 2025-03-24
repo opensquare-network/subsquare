@@ -19,7 +19,7 @@ export default function DemotionExpirationTodo() {
     <>
       <div className="flex items-center">
         <TodoTag>Membership</TodoTag>
-        <div className="flex text-textPrimary text14Medium items-center">
+        <div className="flex flex-wrap text-textPrimary text14Medium items-center">
           <a
             className="text-theme500 cursor-pointer"
             target="_blank"

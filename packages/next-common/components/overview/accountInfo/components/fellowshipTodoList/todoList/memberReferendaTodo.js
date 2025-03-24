@@ -54,16 +54,16 @@ export default function MemberReferendaTodo() {
     <>
       <div className="flex items-center">
         <TodoTag>Membership</TodoTag>
-        <div className="flex text-textPrimary text14Medium items-center">
-          You have an on-chain &nbsp;
+        <div className="flex flex-wrap text-textPrimary text14Medium items-center">
+          You have an on-chain&nbsp;
           <ActionButton onClick={() => setShowEvidenceDetailPopup(true)}>
             evidence
-          </ActionButton>{" "}
-          &nbsp; with no referenda and you can contact{" "}
+          </ActionButton>
+          &nbsp;with no referenda and you can contact&nbsp;
           <ActionButton onClick={() => setShowEligibleMembersPopup(true)}>
             eligible members
           </ActionButton>
-          &nbsp; to handle it.
+          &nbsp;to handle it.
         </div>
       </div>
       {showEvidenceDetailPopup && (
