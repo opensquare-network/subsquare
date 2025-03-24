@@ -11,6 +11,7 @@ import { SignetContextProvider } from "./signet";
 import WagmiProvider from "./wagmi";
 import ReactQueryClientProvider from "./reactQuery";
 import UserAccountProvider from "./user/account";
+import PageLoadingProvider from "./pageLoading";
 
 export default function GlobalProvider({
   user,
@@ -31,25 +32,27 @@ export default function GlobalProvider({
         <ThemeModeProvider defaultThemeMode={themeMode}>
           <ChainProvider chain={chain}>
             <UserProvider user={user} userStatus={userStatus}>
-              <ConnectedAccountProvider connectedAccount={connectedAccount}>
-                <AdminProvider admins={admins}>
-                  <NavProvider
-                    navCollapsed={navCollapsed}
-                    navSubmenuVisible={navSubmenuVisible}
-                    pathname={pathname}
-                  >
-                    <PageProvider pageProperties={pageProperties}>
-                      <ApiProvider>
-                        <UserAccountProvider>
-                          <SignetContextProvider>
-                            {children}
-                          </SignetContextProvider>
-                        </UserAccountProvider>
-                      </ApiProvider>
-                    </PageProvider>
-                  </NavProvider>
-                </AdminProvider>
-              </ConnectedAccountProvider>
+              <PageLoadingProvider>
+                <ConnectedAccountProvider connectedAccount={connectedAccount}>
+                  <AdminProvider admins={admins}>
+                    <NavProvider
+                      navCollapsed={navCollapsed}
+                      navSubmenuVisible={navSubmenuVisible}
+                      pathname={pathname}
+                    >
+                      <PageProvider pageProperties={pageProperties}>
+                        <ApiProvider>
+                          <UserAccountProvider>
+                            <SignetContextProvider>
+                              {children}
+                            </SignetContextProvider>
+                          </UserAccountProvider>
+                        </ApiProvider>
+                      </PageProvider>
+                    </NavProvider>
+                  </AdminProvider>
+                </ConnectedAccountProvider>
+              </PageLoadingProvider>
             </UserProvider>
           </ChainProvider>
         </ThemeModeProvider>

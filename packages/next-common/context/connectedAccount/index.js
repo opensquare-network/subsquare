@@ -5,6 +5,7 @@ import { fetchAndUpdateUser, logoutUser, useUserContext } from "../user";
 import { useLocalStorage } from "react-use";
 import { clearMyMultisigsData } from "next-common/store/reducers/multisigSlice";
 import { useDispatch } from "react-redux";
+import { usePageLoading } from "next-common/context/pageLoading";
 
 const ConnectedAccountContext = createContext(null);
 
@@ -24,6 +25,7 @@ export function ConnectedAccountProvider({
     CACHE_KEY.lastConnectedAccount,
   );
   const dispatch = useDispatch();
+  const { setPageLoading } = usePageLoading();
 
   const saveConnectedAccount = useCallback((account) => {
     savedConnectedAccount = account;
@@ -49,12 +51,25 @@ export function ConnectedAccountProvider({
 
   const connect = useCallback(
     async (account) => {
-      await disconnect();
-      saveConnectedAccount(account);
-      saveLastConnectedAccount(account);
-      await fetchAndUpdateUser(userContext);
+      try {
+        setPageLoading(true);
+        await disconnect();
+        saveConnectedAccount(account);
+        saveLastConnectedAccount(account);
+        await fetchAndUpdateUser(userContext);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setPageLoading(false);
+      }
     },
-    [disconnect, saveLastConnectedAccount, saveConnectedAccount, userContext],
+    [
+      disconnect,
+      saveLastConnectedAccount,
+      saveConnectedAccount,
+      userContext,
+      setPageLoading,
+    ],
   );
 
   return (
