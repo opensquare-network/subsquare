@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.6.0
+
+date: 2025-03-24
+
+- Fellowship
+    - [Big] Fellowship member detail page.
+    - Support fellowship evidence template.
+    - Add wish(promotion/retention) filter on members page.
+    - Improve member evidence description as wish.
+    - Add login guard for fellowship referenda vote.
+- Support switching accounts.
+- Fix treasury spend navigation with democracy referenda.
+- Fix council motion threshold for astar dapp staking motions.
+- [Medium] Refactor profile user info panel and show votes power.
+- Guard preimage status name on my deposits page.
+- Fix avatar refresh after setting for a proxy address.
+- Fix `formatTimeAgo` test case.
+- Add call context provider to various detail page call tab.
+- Fix extension update warnings with NOVA wallet.
+- Support new tracks data structure to fix page crash.
+- Add user info in error report data.
+- Fix not found treasury spends page.
+- Fix call popup disappear after multisig list update.
+- Fix multisig table `when` column for litentry.
+- Fix user identity font.
+- Upgrade dependencies and refactor.
+
 # 4.5.0
 
 date: 2025-02-28
