@@ -34,14 +34,20 @@ function getMaxDelegations(votingValue) {
   let maxDelegations = 0;
 
   for (const [, votingOf] of votingValue) {
-    if (!votingOf.isCasting) {
-      return;
-    }
-
-    const votesRaw = votingOf?.asCasting?.delegations?.votes?.toString() || "0";
-    const votes = new BigNumber(votesRaw);
-    if (votes.isGreaterThan(maxDelegations)) {
-      maxDelegations = votes;
+    if (votingOf.isCasting) {
+      const votesRaw =
+        votingOf?.asCasting?.delegations?.votes?.toString() || "0";
+      const votes = new BigNumber(votesRaw);
+      if (votes.isGreaterThan(maxDelegations)) {
+        maxDelegations = votes;
+      }
+    } else if (votingOf.isDelegating) {
+      const votesRaw =
+        votingOf?.asDelegating?.delegations?.votes?.toString() || "0";
+      const votes = new BigNumber(votesRaw);
+      if (votes.isGreaterThan(maxDelegations)) {
+        maxDelegations = votes;
+      }
     }
   }
 
