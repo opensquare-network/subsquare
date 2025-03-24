@@ -1,4 +1,4 @@
-import TodoTag from "./todoTag";
+import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import ActionButton from "./actionButton";
@@ -17,15 +17,15 @@ export default function SalaryRegistrationTodo() {
 
   return (
     <>
-      <div className="flex items-center">
+      <TodoWrapper>
         <TodoTag>Salary</TodoTag>
-        <div className="flex flex-wrap text-textPrimary text14Medium items-center">
+        <TodoContent>
           The salary cycle is in the registration period,&nbsp;
           <ActionButton onClick={() => setShowRegisterPopup(true)}>
             Register now
           </ActionButton>
-        </div>
-      </div>
+        </TodoContent>
+      </TodoWrapper>
       {showRegisterPopup && (
         <FellowshipSalaryRegisterPopup
           onClose={() => setShowRegisterPopup(false)}

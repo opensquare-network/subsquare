@@ -1,4 +1,4 @@
-import TodoTag from "./todoTag";
+import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import ActionButton from "./actionButton";
 import { useContextMyEvidence } from "../context/hooks/evidence";
 import { useContext, useState } from "react";
@@ -52,9 +52,9 @@ export default function MemberReferendaTodo() {
 
   return (
     <>
-      <div className="flex items-center">
+      <TodoWrapper>
         <TodoTag>Membership</TodoTag>
-        <div className="flex flex-wrap text-textPrimary text14Medium items-center">
+        <TodoContent>
           You have an on-chain&nbsp;
           <ActionButton onClick={() => setShowEvidenceDetailPopup(true)}>
             evidence
@@ -64,8 +64,8 @@ export default function MemberReferendaTodo() {
             eligible members
           </ActionButton>
           &nbsp;to handle it.
-        </div>
-      </div>
+        </TodoContent>
+      </TodoWrapper>
       {showEvidenceDetailPopup && (
         <EvidencePopup onClose={() => setShowEvidenceDetailPopup(false)} />
       )}

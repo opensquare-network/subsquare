@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TodoTag from "../todoTag";
+import { TodoContent, TodoTag, TodoWrapper } from "../styled";
 import { useDemotionExpiredCandidates } from "../../context/hooks/expired";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import ActionButton from "../actionButton";
@@ -17,9 +17,9 @@ export default function CandidateDemotionExpirationTodo() {
 
   return (
     <>
-      <div className="flex items-center">
+      <TodoWrapper>
         <TodoTag>Membership</TodoTag>
-        <div className="text-textPrimary text14Medium">
+        <TodoContent>
           <a
             className="text-theme500 cursor-pointer"
             target="_blank"
@@ -32,8 +32,8 @@ export default function CandidateDemotionExpirationTodo() {
           <ActionButton onClick={() => setShowBumpAllPopup(true)}>
             Offboard all
           </ActionButton>
-        </div>
-      </div>
+        </TodoContent>
+      </TodoWrapper>
       {showBumpAllPopup && (
         <CandidateBatchBumpPopup onClose={() => setShowBumpAllPopup(false)} />
       )}

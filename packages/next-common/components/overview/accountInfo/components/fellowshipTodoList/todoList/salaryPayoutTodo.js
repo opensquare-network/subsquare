@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TodoTag from "./todoTag";
+import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import ActionButton from "./actionButton";
 import { useHasSalaryPayoutTodo } from "../hooks/useHasTodo";
@@ -17,15 +17,15 @@ export default function SalaryPayoutTodo() {
 
   return (
     <>
-      <div className="flex items-center">
+      <TodoWrapper>
         <TodoTag>Salary</TodoTag>
-        <div className="flex flex-wrap text-textPrimary text14Medium items-center">
+        <TodoContent>
           The salary cycle is in the payout period.&nbsp;
           <ActionButton onClick={() => setShowPayoutPopup(true)}>
             Claim now
           </ActionButton>
-        </div>
-      </div>
+        </TodoContent>
+      </TodoWrapper>
       {showPayoutPopup && (
         <FellowshipSalaryPayoutPopup
           onClose={() => setShowPayoutPopup(false)}

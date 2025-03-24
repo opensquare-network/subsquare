@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TodoTag from "./todoTag";
+import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import ActionButton from "./actionButton";
 import { useHasRetentionEvidenceSubmissionTodo } from "../hooks/useHasTodo";
@@ -19,16 +19,16 @@ export default function RetentionEvidenceSubmissionTodo() {
 
   return (
     <>
-      <div className="flex items-center">
+      <TodoWrapper>
         <TodoTag>Membership</TodoTag>
-        <div className="flex flex-wrap text-textPrimary text14Medium items-center">
-          Your demotion period of membership is closing.{" "}
+        <TodoContent>
+          <span>Your demotion period of membership is closing.&nbsp;</span>
           <ActionButton onClick={() => setShowSubmitEvidencePopup(true)}>
             Submit your evidence
-          </ActionButton>{" "}
-          for retention
-        </div>
-      </div>
+          </ActionButton>
+          &nbsp; for retention.
+        </TodoContent>
+      </TodoWrapper>
       {showSubmitEvidencePopup && (
         <SubmitEvidencePopup
           onClose={() => {
