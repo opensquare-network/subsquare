@@ -1,9 +1,9 @@
 import TodoTag from "./todoTag";
-import ClickableText from "./clickableText";
+import ActionButton from "./actionButton";
 import { useContextMyEvidence } from "../context/hooks/evidence";
 import { useContext, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useHasMemberReferendaTodo from "../hooks/useHasMemberReferendaTodo";
+import { useHasMemberReferendaTodo } from "../hooks/useHasTodo";
 import { useContextMyCoreMember } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 import { CoreMembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -54,15 +54,15 @@ export default function MemberReferendaTodo() {
     <>
       <div className="flex items-center">
         <TodoTag>Membership</TodoTag>
-        <div className="text-textPrimary text14Medium">
+        <div className="flex text-textPrimary text14Medium items-center">
           You have an on-chain &nbsp;
-          <ClickableText onClick={() => setShowEvidenceDetailPopup(true)}>
+          <ActionButton onClick={() => setShowEvidenceDetailPopup(true)}>
             evidence
-          </ClickableText>{" "}
+          </ActionButton>{" "}
           &nbsp; with no referenda and you can contact{" "}
-          <ClickableText onClick={() => setShowEligibleMembersPopup(true)}>
+          <ActionButton onClick={() => setShowEligibleMembersPopup(true)}>
             eligible members
-          </ClickableText>
+          </ActionButton>
           &nbsp; to handle it.
         </div>
       </div>

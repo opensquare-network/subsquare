@@ -1,15 +1,17 @@
 import { useState } from "react";
 import TodoTag from "../todoTag";
-import ClickableText from "../clickableText";
 import { useDemotionExpiredCandidates } from "../../context/hooks/expired";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import ActionButton from "../actionButton";
+import { useHasCandidateDemotionExpirationTodo } from "../../hooks/useHasTodo";
 
 const CandidateBatchBumpPopup = dynamicPopup(() => import("./bumpAllPopup"));
 
 export default function CandidateDemotionExpirationTodo() {
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
   const { members } = useDemotionExpiredCandidates();
-  if (!members?.length) {
+  const hasTodo = useHasCandidateDemotionExpirationTodo();
+  if (!hasTodo) {
     return null;
   }
 
@@ -27,9 +29,9 @@ export default function CandidateDemotionExpirationTodo() {
             {members.length} candidates
           </a>
           &nbsp;can be offboard.&nbsp;
-          <ClickableText onClick={() => setShowBumpAllPopup(true)}>
+          <ActionButton onClick={() => setShowBumpAllPopup(true)}>
             Offboard all
-          </ClickableText>
+          </ActionButton>
         </div>
       </div>
       {showBumpAllPopup && (

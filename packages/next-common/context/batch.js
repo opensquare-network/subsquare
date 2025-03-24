@@ -53,7 +53,7 @@ export function BatchProvider({ delay = 0, batchExecFn, children }) {
   );
 }
 
-export function BatchResultCacher({ children }) {
+function BatchResultCacher({ children }) {
   const [cachedResults] = useState(new Map());
   const { handleInBatch: _handleInBatch } = useContext(BatchContext);
 
@@ -74,6 +74,14 @@ export function BatchResultCacher({ children }) {
     <BatchContext.Provider value={{ handleInBatch }}>
       {children}
     </BatchContext.Provider>
+  );
+}
+
+export function CachedBatchProvider({ delay = 0, batchExecFn, children }) {
+  return (
+    <BatchProvider delay={delay} batchExecFn={batchExecFn}>
+      <BatchResultCacher>{children}</BatchResultCacher>
+    </BatchProvider>
   );
 }
 

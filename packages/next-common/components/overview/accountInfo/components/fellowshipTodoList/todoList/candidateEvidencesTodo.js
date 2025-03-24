@@ -2,18 +2,19 @@ import { useTodoEvidences } from "next-common/components/fellowship/core/memberW
 import TodoTag from "./todoTag";
 import { useCandidateCoreMembers } from "../context/hooks/coreMembers";
 import pluralize from "pluralize";
+import { useHasCandidateEvidencesTodo } from "../hooks/useHasTodo";
 
 export default function CandidateEvidencesTodo() {
   const { members } = useCandidateCoreMembers();
   const { all: allEvidences, toBeHandled: toBeHandledEvidences } =
     useTodoEvidences(members);
+  const hasTodo = useHasCandidateEvidencesTodo();
+  if (!hasTodo) {
+    return null;
+  }
 
   const toBeHandledCount = toBeHandledEvidences?.length;
   const total = allEvidences?.length;
-
-  if (!toBeHandledCount) {
-    return null;
-  }
 
   return (
     <div className="flex items-center">

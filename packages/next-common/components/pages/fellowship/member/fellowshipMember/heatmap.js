@@ -4,8 +4,7 @@ import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 import {
-  BatchProvider,
-  BatchResultCacher,
+  CachedBatchProvider,
   useValueFromBatchResult,
 } from "next-common/context/batch";
 import nextApi from "next-common/services/nextApi";
@@ -94,9 +93,9 @@ function ReferendaTitleProvider({ children }) {
   }, []);
 
   return (
-    <BatchProvider delay={200} batchExecFn={fetchReferendaList}>
-      <BatchResultCacher>{children}</BatchResultCacher>
-    </BatchProvider>
+    <CachedBatchProvider delay={200} batchExecFn={fetchReferendaList}>
+      {children}
+    </CachedBatchProvider>
   );
 }
 

@@ -1,15 +1,17 @@
 import { useState } from "react";
 import TodoTag from "./todoTag";
-import ClickableText from "./clickableText";
 import { useDemotionExpiredMembers } from "../context/hooks/expired";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import ActionButton from "./actionButton";
+import { useHasDemotionExpirationTodo } from "../hooks/useHasTodo";
 
 const BatchBumpPopup = dynamicPopup(() => import("./bumpAllPopup"));
 
 export default function DemotionExpirationTodo() {
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
   const { members } = useDemotionExpiredMembers();
-  if (!members?.length) {
+  const hasTodo = useHasDemotionExpirationTodo();
+  if (!hasTodo) {
     return null;
   }
 
@@ -17,7 +19,7 @@ export default function DemotionExpirationTodo() {
     <>
       <div className="flex items-center">
         <TodoTag>Membership</TodoTag>
-        <div className="text-textPrimary text14Medium">
+        <div className="flex text-textPrimary text14Medium items-center">
           <a
             className="text-theme500 cursor-pointer"
             target="_blank"
@@ -27,9 +29,9 @@ export default function DemotionExpirationTodo() {
             {members.length} members
           </a>
           &nbsp;can be demoted.&nbsp;
-          <ClickableText onClick={() => setShowBumpAllPopup(true)}>
+          <ActionButton onClick={() => setShowBumpAllPopup(true)}>
             Demote all
-          </ClickableText>
+          </ActionButton>
         </div>
       </div>
       {showBumpAllPopup && (

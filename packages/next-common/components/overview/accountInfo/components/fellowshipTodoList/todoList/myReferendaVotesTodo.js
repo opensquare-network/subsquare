@@ -1,10 +1,11 @@
 import TodoTag from "./todoTag";
 import { useMyUnVotedReferenda } from "../context/hooks/votes";
+import { useHasMyReferendaVotesTodo } from "../hooks/useHasTodo";
 
 export default function MyReferendaVotesTodo() {
   const myUnVotedReferenda = useMyUnVotedReferenda();
-
-  if (!myUnVotedReferenda?.length) {
+  const hasTodo = useHasMyReferendaVotesTodo();
+  if (!hasTodo) {
     return null;
   }
 
