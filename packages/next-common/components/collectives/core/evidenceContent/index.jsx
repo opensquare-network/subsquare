@@ -69,6 +69,12 @@ function LoadingContent() {
 function IpfsEvidenceContent({ cid }) {
   const { value, loading, error } = useIpfsContent(cid);
 
+  return (
+    <IpfsEvidenceRawContent value={value} loading={loading} error={error} />
+  );
+}
+
+export function IpfsEvidenceRawContent({ value, loading, error }) {
   if (loading) {
     return <LoadingContent />;
   }

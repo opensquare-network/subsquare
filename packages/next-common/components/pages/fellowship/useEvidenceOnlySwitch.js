@@ -58,6 +58,7 @@ export function useEvidenceOnlySwitchInDropdown() {
           setStagedFilter({
             ...stagedFilter,
             evidence_only: isOn,
+            wish: "all",
           });
         }}
       />
