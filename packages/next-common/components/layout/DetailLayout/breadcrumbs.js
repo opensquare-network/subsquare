@@ -15,7 +15,11 @@ export function Breadcrumbs({ breadcrumbs, hasSidebar }) {
         navCollapsed ? "max-md:max-w-full" : "max-lg:max-w-full",
       )}
     >
-      <Breadcrumb items={breadcrumbs} />
+      {breadcrumbs?.length > 0 ? (
+        <Breadcrumb items={breadcrumbs} />
+      ) : (
+        breadcrumbs
+      )}
     </div>
   );
 }
