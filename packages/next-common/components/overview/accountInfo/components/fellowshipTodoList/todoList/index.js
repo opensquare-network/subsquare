@@ -81,7 +81,7 @@ function TodoListWithDataLoaded() {
   }
 
   return (
-    <div className="flex flex-col mt-[16px] gap-[4px]">
+    <div className="flex flex-col mt-[16px] gap-[4px] max-sm:gap-[8px]">
       <OnlyCoreMember>
         <RetentionEvidenceSubmissionTodo />
         <MemberReferendaTodo />
