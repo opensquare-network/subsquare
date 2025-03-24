@@ -34,12 +34,14 @@ function getMaxDelegations(votingValue) {
   let maxDelegations = 0;
 
   for (const [, votingOf] of votingValue) {
-    if (!votingOf.isCasting) {
-      return;
+    let votesRaw = "0";
+    if (votingOf.isCasting) {
+      votesRaw = votingOf?.asCasting?.delegations?.votes?.toString() || "0";
+    } else if (votingOf.isDelegating) {
+      votesRaw = votingOf?.asDelegating?.delegations?.votes?.toString() || "0";
     }
-
-    const votesRaw = votingOf?.asCasting?.delegations?.votes?.toString() || "0";
     const votes = new BigNumber(votesRaw);
+
     if (votes.isGreaterThan(maxDelegations)) {
       maxDelegations = votes;
     }
