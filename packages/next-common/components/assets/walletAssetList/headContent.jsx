@@ -29,7 +29,7 @@ export default function HeadContent() {
             add={address}
             maxWidth={176}
             showAvatar={false}
-            addressClassName={"!text16Bold"}
+            className="text16Bold text-textPrimary"
           />
           <Copyable copyText={maybeEvmAddress}>
             <span className="text14Medium text-textTertiary">

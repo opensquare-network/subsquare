@@ -3,7 +3,7 @@ import Flex from "../styled/flex";
 
 export const AvatarWrapper = styled(Flex)`
   display: flex;
-  margin-right: ${(p) => (p.fontSize <= 12 ? "4px" : "8px")};
+  margin-right: ${1 / 3}rem;
   svg {
     circle:first-child {
       fill: var(--neutral200);
@@ -19,18 +19,6 @@ export const UserWrapper = styled(Flex)`
     }
   }
 
-  a,
-  div {
-    ${(p) =>
-      p.color
-        ? css`
-            color: ${p.color};
-          `
-        : css`
-            color: var(--textPrimary);
-          `}
-  }
-
   ${(p) =>
     p.noEvent &&
     css`
@@ -40,9 +28,9 @@ export const UserWrapper = styled(Flex)`
 
 export const AvatarImg = styled.img`
   border-radius: 50%;
-  width: ${(p) => p.size}px;
-  height: ${(p) => p.size}px;
-  min-width: ${(p) => p.size}px;
-  min-height: ${(p) => p.size}px;
+  width: ${(p) => p.size};
+  height: ${(p) => p.size};
+  min-width: ${(p) => p.size};
+  min-height: ${(p) => p.size};
   object-fit: cover;
 `;

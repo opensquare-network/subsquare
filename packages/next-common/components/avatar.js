@@ -22,21 +22,22 @@ const Wrapper = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  border-radius: ${(props) => props.size / 2}px;
+  width: ${(props) => props.size};
+  height: ${(props) => props.size};
+  border-radius: calc(${(props) => props.size} / 2);
   background-color: var(--neutral200);
 `;
 
 const ImgWrapper = styled.img`
-  border-radius: ${(props) => props.size / 2}px;
-  max-width: ${(props) => props.size}px;
+  width: ${(props) => props.size};
+  max-width: ${(props) => props.size};
+  height: ${(props) => props.size};
+  border-radius: calc(${(props) => props.size} / 2);
 `;
 
-export default function Avatar({ address, size = 24 }) {
+export default function Avatar({ address, size = "24px" }) {
   const themeObj = useThemeSetting();
   const theme = "polkadot";
-  const avatarSize = (size / 10) * 9;
   const addressAvatarMap = useAddressAvatarMap();
 
   const [avatarCid] = useAvatarInfo(address);
@@ -51,13 +52,7 @@ export default function Avatar({ address, size = 24 }) {
   if (image) {
     return (
       <Wrapper size={size}>
-        <ImgWrapper
-          size={avatarSize}
-          src={image}
-          width={avatarSize}
-          height={avatarSize}
-          alt={maybeEvmAddress}
-        />
+        <ImgWrapper size={size} src={image} alt={maybeEvmAddress} />
       </Wrapper>
     );
   }
@@ -66,10 +61,8 @@ export default function Avatar({ address, size = 24 }) {
     return (
       <Wrapper size={size}>
         <ImgWrapper
-          size={avatarSize}
+          size={size}
           src={makeBlockie(maybeEvmAddress)}
-          width={avatarSize}
-          height={avatarSize}
           alt={maybeEvmAddress}
         />
       </Wrapper>

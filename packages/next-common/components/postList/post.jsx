@@ -151,13 +151,12 @@ const BannerWrapper = styled.div`
 function PostUser({ data, type }) {
   const { sm } = useScreenSize();
   const userMaxWidth = sm ? 160 : 240;
-  const userFontSize = 12;
 
   if (type === businessCategory.polkassemblyDiscussions) {
     return (
       <PolkassemblyUser
         user={data?.author}
-        fontSize={userFontSize}
+        className="text12Medium text-textPrimary"
         maxWidth={userMaxWidth}
       />
     );
@@ -167,7 +166,7 @@ function PostUser({ data, type }) {
     return (
       <SystemUser
         user={data?.author}
-        fontSize={userFontSize}
+        className="text12Medium"
         maxWidth={userMaxWidth}
       />
     );
@@ -176,7 +175,7 @@ function PostUser({ data, type }) {
   return (
     <AddressUser
       add={data.address || data.proposer}
-      fontSize={userFontSize}
+      className="text12Medium"
       maxWidth={userMaxWidth}
     />
   );

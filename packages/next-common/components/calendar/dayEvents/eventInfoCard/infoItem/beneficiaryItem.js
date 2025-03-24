@@ -8,7 +8,7 @@ export default function BeneficiaryItem({ beneficiary }) {
       <span>Beneficiary:</span>
       <AddressUser
         add={beneficiary}
-        fontSize={12}
+        className="text12Medium text-textPrimary"
         showAvatar={false}
         color="var(--sapphire500)"
       />

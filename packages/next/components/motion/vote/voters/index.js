@@ -65,7 +65,10 @@ export default function Voters() {
         {votes.map(([voter, approve], index) => (
           <TipperItem key={index}>
             <VoterAddr>
-              <AddressUser add={voter} fontSize={12} />
+              <AddressUser
+                add={voter}
+                className="text12Medium text-textPrimary"
+              />
               {isSameAddress(voter, prime) && <PrimeAddressMark />}
             </VoterAddr>
             <AyeNay isAye={approve} />

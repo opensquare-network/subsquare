@@ -11,9 +11,7 @@ export default function WishDetail({ activeMember, address, ifpsContent }) {
         <FellowshipRank rank={activeMember?.rank} />
         <AddressUser
           add={address}
-          fontSize={22}
-          className="ml-[0.625rem]"
-          addressClassName="!text14Medium"
+          className="text14Medium text-textPrimary ml-[0.625rem] text-[22px]"
         />
       </SecondaryCard>
 

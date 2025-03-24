@@ -8,7 +8,7 @@ export default function ProposerItem({ proposer }) {
       <span>Proposer:</span>
       <AddressUser
         add={proposer}
-        fontSize={12}
+        className="text12Medium text-textPrimary"
         showAvatar={false}
         color="var(--sapphire500)"
       />

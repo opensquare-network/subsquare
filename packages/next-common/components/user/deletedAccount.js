@@ -5,7 +5,7 @@ import Flex from "../styled/flex";
 const Wrapper = styled(Flex)`
   font-weight: 500;
   word-break: break-all;
-  font-size: ${(props) => props.fontSize}px;
+  font-size: 1em;
   color: var(--textSecondary);
   > svg {
     width: 20px;
@@ -20,9 +20,9 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function DeletedAccount({ fontSize }) {
+export default function DeletedAccount() {
   return (
-    <Wrapper fontSize={fontSize}>
+    <Wrapper>
       <AvatarDeleted />
       [Deleted Account]
     </Wrapper>

@@ -23,8 +23,7 @@ export default function AvatarAndAddress({ address, isActive }) {
       <AddressUser
         add={address}
         showAvatar={false}
-        fontSize={14}
-        className="[&_.identity]:!font-semibold"
+        className="text14Medium text-textPrimary [&_.identity]:!font-semibold"
         link={`/${section}`}
       />
     </div>
@@ -41,7 +40,7 @@ export function AvatarAndAddressInListView({ address, isActive }) {
       </Tooltip>
       <AddressUser
         add={address}
-        fontSize={14}
+        className="text14Medium text-textPrimary"
         link={`/${section}`}
       />
     </div>

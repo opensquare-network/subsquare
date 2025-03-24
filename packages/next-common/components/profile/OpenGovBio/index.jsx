@@ -32,8 +32,10 @@ export function AccountInfoPanel({ address, id, user }) {
       >
         <DisplayUser
           id={id}
-          className={cn("flex", shouldAlignCenter ? "justify-center" : "")}
-          addressClassName="!text14Medium"
+          className={cn(
+            "flex text14Medium",
+            shouldAlignCenter ? "justify-center" : "",
+          )}
         />
         <DisplayUserAddress
           address={address}

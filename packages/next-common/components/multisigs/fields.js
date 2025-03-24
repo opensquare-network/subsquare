@@ -95,9 +95,7 @@ function AddressesTooltip({ addresses = [] }) {
           <AddressUser
             add={address}
             ellipsis={false}
-            color="var(--textPrimaryContrast)"
-            addressClassName="!text-textPrimaryContrast"
-            fontSize={12}
+            className="text12Medium text-textPrimaryContrast"
           />
         </li>
       ))}
