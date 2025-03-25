@@ -86,13 +86,13 @@ export default function LoginWeb3EVM() {
           <div>
             <PrimaryButton
               className="w-full"
-              loading={web3Loading}
               onClick={() => {
                 web3Login({
                   account: selectedAccount,
                   wallet: metamask.extensionName,
                 });
               }}
+              disabled={web3Loading}
             >
               Next
             </PrimaryButton>
