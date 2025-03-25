@@ -11,7 +11,11 @@ export default function SimaThumbUpList({ reactions }) {
     <GreyWrapper style={{ marginTop: 10 }}>
       {reactions.map((r, index) => (
         <GreyItem key={index}>
-          <AddressUser add={r.proposer} fontSize={12} showAvatar={false} />
+          <AddressUser
+            add={r.proposer}
+            className="text12Medium text-textPrimary"
+            showAvatar={false}
+          />
         </GreyItem>
       ))}
     </GreyWrapper>

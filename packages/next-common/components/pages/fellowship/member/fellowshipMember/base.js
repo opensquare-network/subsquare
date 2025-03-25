@@ -30,9 +30,7 @@ export default function MemberBaseInfo({ address }) {
       <Avatar address={address} size={56} />
       <div className="flex flex-col items-center gap-[4px] text-textPrimary">
         <AddressUser
-          className="text16Bold"
-          addressClassName="text16Bold"
-          fontSize={16}
+          className="text16Bold text-textPrimary"
           showAvatar={false}
           add={address}
         />

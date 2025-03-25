@@ -53,8 +53,7 @@ function ReferendumItemBar({ referendumIndex, color, status }) {
           Proposer:&nbsp;
           <AddressUser
             add={referendumInfo.proposer}
-            color="var(--textPrimaryContrast)"
-            fontSize={12}
+            className="text12Medium text-[var(--textPrimaryContrast)]"
           />
         </div>
       )}

@@ -54,7 +54,7 @@ export default function PolkassemblyActions({ reactions, extraActions }) {
               <GreyItem key={index}>
                 <PolkassemblyUser
                   user={r.user}
-                  fontSize={12}
+                  className="text12Medium text-textPrimary"
                   showAvatar={false}
                 />
               </GreyItem>

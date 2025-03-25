@@ -36,7 +36,7 @@ function Content() {
       <div>
         <PopupLabel text="Who" />
         <Wrapper>
-          <AddressUser add={who} fontSize={14} />
+          <AddressUser add={who} className="text14Medium text-textPrimary" />
         </Wrapper>
       </div>
       <TxSubmissionButton

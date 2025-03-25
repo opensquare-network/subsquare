@@ -42,7 +42,11 @@ function WhoCanEdit() {
       <span className="mr-3 text-textPrimary">Who can edit?</span>
       {post?.authors?.map((author) => (
         <GreyItem key={author}>
-          <AddressUser add={author} showAvatar={false} fontSize={12} />
+          <AddressUser
+            add={author}
+            showAvatar={false}
+            className="text12Medium text-textPrimary"
+          />
         </GreyItem>
       ))}
     </GreyWrapper>

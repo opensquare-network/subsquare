@@ -38,7 +38,7 @@ export default function BountyAcceptCuratorButton({
           <div className="flex items-center gap-x-2">
             Only{" "}
             <AddressUser
-              addressClassName="!text-textPrimaryContrast"
+              className="text14Medium text-textPrimaryContrast"
               add={curator}
               noEvent
             />

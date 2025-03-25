@@ -15,9 +15,17 @@ export default function ThumbUpList({ reactions }) {
         .map((r, index) => (
           <GreyItem key={index}>
             {r.dataSource === "sima" ? (
-              <AddressUser add={r.proposer} fontSize={12} showAvatar={false} />
+              <AddressUser
+                add={r.proposer}
+                className="text12Medium text-textPrimary"
+                showAvatar={false}
+              />
             ) : (
-              <SystemUser user={r.user} fontSize={12} showAvatar={false} />
+              <SystemUser
+                user={r.user}
+                className="text12Medium text-textPrimary"
+                showAvatar={false}
+              />
             )}
           </GreyItem>
         ))}

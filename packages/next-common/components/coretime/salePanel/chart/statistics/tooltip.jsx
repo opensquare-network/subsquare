@@ -41,8 +41,7 @@ export default function CoretimeSalePanelChartStatisticsTooltip({
             <span className="mr-1">Who:</span>
             <AddressUser
               add={data.who}
-              fontSize={12}
-              addressClassName="!text12Medium !text-textPrimaryContrast"
+              className="text12Medium text-textPrimaryContrast"
               noEvent
               noTooltip
             />
