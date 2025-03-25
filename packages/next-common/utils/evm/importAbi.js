@@ -220,6 +220,6 @@ export async function getFileNameByContractAddress(contractAddress) {
       loadedAbi[contractAddress] = res;
     }
 
-    return res.abi;
+    return res;
   }
 }
