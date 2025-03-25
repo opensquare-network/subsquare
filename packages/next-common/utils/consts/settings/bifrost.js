@@ -94,7 +94,6 @@ const bifrost = {
     treasury: {
       spends: true,
       bounties: false,
-      tips: false,
     },
     vesting: true,
   }),
