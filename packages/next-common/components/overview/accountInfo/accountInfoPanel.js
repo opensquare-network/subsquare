@@ -126,7 +126,10 @@ export function ProxyTip() {
         <span className="text14Medium text-textSecondary">
           Set as a proxy to
         </span>
-        <AddressUser add={proxyAddress} className="text14Medium" />
+        <AddressUser
+          add={proxyAddress}
+          className="text14Medium text-textPrimary"
+        />
       </div>
       <span className="text14Medium text-textSecondary">
         , all your transactions will be submitted on behalf of this proxy

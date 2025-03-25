@@ -40,10 +40,13 @@ export default function Avatar({ address, size = "24px" }) {
   const theme = "polkadot";
   const addressAvatarMap = useAddressAvatarMap();
 
+  const normalizedSize = typeof size === "number" ? `${size}px` : size;
+  const avatarSize = `calc(${normalizedSize} / 10 * 9)`;
+
   const [avatarCid] = useAvatarInfo(address);
 
   if (avatarCid) {
-    return <AvatarImg src={getIpfsLink(avatarCid)} size={size} />;
+    return <AvatarImg src={getIpfsLink(avatarCid)} size={normalizedSize} />;
   }
 
   const maybeEvmAddress = tryConvertToEvmAddress(address);
@@ -51,17 +54,17 @@ export default function Avatar({ address, size = "24px" }) {
   const image = addressAvatarMap?.get(maybeEvmAddress);
   if (image) {
     return (
-      <Wrapper size={size}>
-        <ImgWrapper size={size} src={image} alt={maybeEvmAddress} />
+      <Wrapper size={normalizedSize}>
+        <ImgWrapper size={avatarSize} src={image} alt={maybeEvmAddress} />
       </Wrapper>
     );
   }
 
   if (isEthereumAddress(maybeEvmAddress)) {
     return (
-      <Wrapper size={size}>
+      <Wrapper size={normalizedSize}>
         <ImgWrapper
-          size={size}
+          size={avatarSize}
           src={makeBlockie(maybeEvmAddress)}
           alt={maybeEvmAddress}
         />
@@ -73,12 +76,12 @@ export default function Avatar({ address, size = "24px" }) {
     return (
       <StyledIdenticon
         value={address}
-        size={size}
+        size={normalizedSize}
         theme={theme}
         themeObj={themeObj}
       />
     );
   }
 
-  return <SystemAvatarDefault width={size} height={size} />;
+  return <SystemAvatarDefault width={normalizedSize} height={normalizedSize} />;
 }

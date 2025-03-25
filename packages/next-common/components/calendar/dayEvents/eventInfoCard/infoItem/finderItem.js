@@ -8,9 +8,8 @@ export default function FinderItem({ finder }) {
       <span>Finder:</span>
       <AddressUser
         add={finder}
-        className="text12Medium text-textPrimary"
+        className="text12Medium text-[var(--sapphire500)]"
         showAvatar={false}
-        color="var(--sapphire500)"
       />
     </ItemWrapper>
   );

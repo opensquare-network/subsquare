@@ -166,7 +166,7 @@ function PostUser({ data, type }) {
     return (
       <SystemUser
         user={data?.author}
-        className="text12Medium"
+        className="text12Medium text-textPrimary"
         maxWidth={userMaxWidth}
       />
     );
@@ -175,7 +175,7 @@ function PostUser({ data, type }) {
   return (
     <AddressUser
       add={data.address || data.proposer}
-      className="text12Medium"
+      className="text12Medium text-textPrimary"
       maxWidth={userMaxWidth}
     />
   );

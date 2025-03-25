@@ -28,7 +28,7 @@ export function UnStyledIdentity({ identity, maxWidth, ellipsis = false }) {
 export default function Identity({
   identity,
   maxWidth,
-  className = "text14Medium",
+  className = "text14Medium text-textPrimary",
   ellipsis,
 }) {
   return (
