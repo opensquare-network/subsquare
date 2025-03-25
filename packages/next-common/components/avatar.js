@@ -24,7 +24,7 @@ const Wrapper = styled.span`
   justify-content: center;
   width: ${(props) => props.size};
   height: ${(props) => props.size};
-  border-radius: calc(${(props) => props.size} / 2);
+  border-radius: 50%;
   background-color: var(--neutral200);
 `;
 
@@ -32,7 +32,7 @@ const ImgWrapper = styled.img`
   width: ${(props) => props.size};
   max-width: ${(props) => props.size};
   height: ${(props) => props.size};
-  border-radius: calc(${(props) => props.size} / 2);
+  border-radius: 50%;
 `;
 
 export default function Avatar({ address, size = "24px" }) {
@@ -40,7 +40,7 @@ export default function Avatar({ address, size = "24px" }) {
   const theme = "polkadot";
   const addressAvatarMap = useAddressAvatarMap();
 
-  const normalizedSize = typeof size === "number" ? `${size}px` : size;
+  const normalizedSize = isNaN(size) ? size : `${size}px`;
   const avatarSize = `calc(${normalizedSize} / 10 * 9)`;
 
   const [avatarCid] = useAvatarInfo(address);
