@@ -3,7 +3,7 @@ import Flex from "../styled/flex";
 
 export const AvatarWrapper = styled(Flex)`
   display: flex;
-  margin-right: ${1 / 3}rem;
+  margin-right: clamp(4px, 1rem - 12px, 8px);
   svg {
     circle:first-child {
       fill: var(--neutral200);
