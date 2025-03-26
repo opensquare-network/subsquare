@@ -1,4 +1,4 @@
-export const contractAddressMapiing = {
+export const contractAddressMap = {
   "0x8c5e657ca8879ada34555130f3be255ae47558b5": {
     address: "0x8c5E657CA8879ada34555130F3Be255ae47558B5",
     name: "ACLManager-Hydration",
@@ -209,25 +209,24 @@ const loadedAbi = {};
 
 export async function getFileNameByContractAddress(contractAddress) {
   let res;
-  const fileName = contractAddressMapiing[contractAddress]?.name;
-  if (fileName) {
-    if (loadedAbi[contractAddress]) {
-      res = loadedAbi[contractAddress];
-    } else {
-      res = fetch(
-        `https://cdn.jsdelivr.net/gh/opensquare-network/hydration-abi/slim/${fileName}.json`,
-      );
-      loadedAbi[contractAddress] = res;
-    }
-
-    try {
-      let resp = await loadedAbi[contractAddress];
-      const clone = await resp.clone();
-      res = await clone.json();
-    } catch (error) {
-      /* empty */
-    }
-
-    return res;
+  const fileName = contractAddressMap[contractAddress]?.name;
+  if (!fileName) return;
+  if (loadedAbi[contractAddress]) {
+    res = loadedAbi[contractAddress];
+  } else {
+    res = fetch(
+      `https://cdn.jsdelivr.net/gh/opensquare-network/hydration-abi/slim/${fileName}.json`,
+    );
+    loadedAbi[contractAddress] = res;
   }
+
+  try {
+    let resp = await loadedAbi[contractAddress];
+    const clone = await resp.clone();
+    res = await clone.json();
+  } catch (error) {
+    /* empty */
+  }
+
+  return res;
 }

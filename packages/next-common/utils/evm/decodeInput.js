@@ -58,7 +58,6 @@ export async function decodeInput(data, contractAddress) {
 function getParamType(input) {
   if (!input?.type) return "unknown";
 
-  // 处理元组类型
   if (input.type.includes("tuple")) {
     const components = input.components.map((comp) => comp.type).join(",");
     return input.type.includes("[]") ? `(${components})[]` : `(${components})`;

@@ -7,12 +7,13 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { decodeInput } from "next-common/utils/evm/decodeInput";
-import { contractAddressMapiing } from "next-common/utils/evm/importAbi";
+import { contractAddressMap } from "next-common/utils/evm/importAbi";
 import { useState } from "react";
 import { useAsync } from "react-use";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import WindowSizeProvider from "next-common/context/windowSize";
 import styled from "styled-components";
+import { isObject } from "lodash-es";
 
 const CallDetailPopup = dynamicPopup(() => import("../../../callDetailPopup"));
 
@@ -72,7 +73,7 @@ export default function EvmCallInputDecode({ evmCallInputs }) {
 function EvmCallInputDecodeItem({ input, target }) {
   const isMobile = useIsMobile();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
-  const name = contractAddressMapiing[target]?.name;
+  const name = contractAddressMap[target]?.name;
   const { value, error, loading } = useAsync(
     async () => await decodeInput(input, target),
   );
@@ -124,42 +125,53 @@ function EvmCallInputDecodeItem({ input, target }) {
 }
 
 export function extractEvmInputsWithContext(data) {
+  const validContractAddresses = Object.keys(contractAddressMap);
   const results = [];
-  const allContractAddress = Object.keys(contractAddressMapiing);
 
-  function recurse(obj) {
-    if (obj && typeof obj === "object" && !Array.isArray(obj)) {
-      if (obj.section === "evm" && obj.args) {
-        let targetAddress = "";
-        let inputValue = "";
+  function findEvmInputs(item) {
+    if (!isObject(item)) {
+      return;
+    }
 
-        for (const arg of obj.args) {
-          if (arg.name === "target") {
-            targetAddress = arg.value;
-          }
-          if (arg.name === "input") {
-            inputValue = arg.value;
-          }
-        }
+    if (Array.isArray(item)) {
+      item.forEach(findEvmInputs);
+      return;
+    }
 
-        if (targetAddress && inputValue) {
-          results.push({
-            target: targetAddress,
-            input: inputValue,
-          });
-        }
-      }
-
-      for (const value of Object.values(obj)) {
-        recurse(value);
-      }
-    } else if (Array.isArray(obj)) {
-      for (const item of obj) {
-        recurse(item);
+    if (isEvmSection(item)) {
+      const evmInput = extractTargetAndInput(item.args);
+      if (evmInput && isValidContractAddress(evmInput.target)) {
+        results.push(evmInput);
       }
     }
+
+    Object.values(item).forEach(findEvmInputs);
   }
 
-  recurse(data);
-  return results.filter(({ target }) => allContractAddress.includes(target));
+  function isEvmSection(item) {
+    return item.section === "evm" && Array.isArray(item.args);
+  }
+
+  function extractTargetAndInput(args) {
+    let target = "";
+    let input = "";
+
+    for (const arg of args) {
+      if (arg.name === "target") {
+        target = arg.value;
+      }
+      if (arg.name === "input") {
+        input = arg.value;
+      }
+    }
+
+    return target && input ? { target, input } : null;
+  }
+
+  function isValidContractAddress(address) {
+    return validContractAddresses.includes(address);
+  }
+
+  findEvmInputs(data);
+  return results;
 }

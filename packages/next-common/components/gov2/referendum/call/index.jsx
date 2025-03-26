@@ -11,6 +11,7 @@ import extractFellowshipApprove from "next-common/components/common/call/fellows
 import EvmCallInputDecode, {
   extractEvmInputsWithContext,
 } from "next-common/components/gov2/referendum/call/evmCallDecode";
+import isHydradx from "next-common/utils/isHydradx";
 
 export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
@@ -24,9 +25,9 @@ export default function Gov2ReferendumCall() {
   const whitelistCallHashes =
     whitelistDispatchedHashes?.concat(whitelistHashes);
 
-  const evmCallInputs = extractEvmInputsWithContext(
-    proposal?.call || inlineCall?.call,
-  );
+  const evmCallInputs = isHydradx()
+    ? extractEvmInputsWithContext(proposal?.call || inlineCall?.call)
+    : [];
 
   const data = [
     onchainData?.proposalHash
