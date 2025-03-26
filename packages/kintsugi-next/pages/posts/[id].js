@@ -42,7 +42,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
-  const { result: summary } = await nextApi.fetch("summary");
+  const { result: summary } = await nextApi.fetch("overview/summary");
 
   const comments = await fetchDetailComments(
     `posts/${detail._id}/comments`,
