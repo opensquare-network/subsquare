@@ -208,16 +208,13 @@ export const contractAddressMap = {
 const loadedAbi = {};
 
 export async function getFileNameByContractAddress(contractAddress) {
-  let res;
   const fileName = contractAddressMap[contractAddress]?.name;
+  let res = loadedAbi[contractAddress];
   if (!fileName) return;
-  if (loadedAbi[contractAddress]) {
-    res = loadedAbi[contractAddress];
-  } else {
-    res = fetch(
+  if (!res) {
+    loadedAbi[contractAddress] = fetch(
       `https://cdn.jsdelivr.net/gh/opensquare-network/hydration-abi/slim/${fileName}.json`,
     );
-    loadedAbi[contractAddress] = res;
   }
 
   try {
