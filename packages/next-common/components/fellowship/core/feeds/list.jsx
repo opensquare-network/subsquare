@@ -3,7 +3,10 @@ import { orderBy } from "lodash-es";
 import FellowshipFeedSuffix from "next-common/components/fellowship/feeds/suffix";
 import FellowshipFeedsPanel from "next-common/components/fellowship/feeds/list";
 
-export function createFellowshipCoreFeedsRows(feeds, { showUserInfo = true }) {
+export function createFellowshipCoreFeedsRows(
+  feeds,
+  { showUserInfo = true } = {},
+) {
   const orderedItems = orderBy(
     feeds || [],
     ["indexer.blockHeight", "indexer.eventIndex"],
