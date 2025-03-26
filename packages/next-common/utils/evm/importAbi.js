@@ -214,10 +214,18 @@ export async function getFileNameByContractAddress(contractAddress) {
     if (loadedAbi[contractAddress]) {
       res = loadedAbi[contractAddress];
     } else {
-      res = await import(
-        `https://cdn.jsdelivr.net/gh/opensquare-network/hydration-abi/slim/${fileName}.json`
+      res = fetch(
+        `https://cdn.jsdelivr.net/gh/opensquare-network/hydration-abi/slim/${fileName}.json`,
       );
       loadedAbi[contractAddress] = res;
+    }
+
+    try {
+      let resp = await loadedAbi[contractAddress];
+      const clone = await resp.clone();
+      res = await clone.json();
+    } catch (error) {
+      /* empty */
     }
 
     return res;

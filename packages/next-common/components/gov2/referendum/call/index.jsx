@@ -8,6 +8,9 @@ import extractRemarkMetaFields from "next-common/components/common/call/remarks"
 import extractWhitelistCallHash from "next-common/components/common/call/whitelist";
 import extractFellowshipPromote from "next-common/components/common/call/fellowshipPromote";
 import extractFellowshipApprove from "next-common/components/common/call/fellowshipApprove";
+import EvmCallInputDecode, {
+  extractEvmInputsWithContext,
+} from "next-common/components/gov2/referendum/call/evmCallDecode";
 
 export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
@@ -20,6 +23,10 @@ export default function Gov2ReferendumCall() {
   const whitelistHashes = onchainData?.whitelistedHashes || [];
   const whitelistCallHashes =
     whitelistDispatchedHashes?.concat(whitelistHashes);
+
+  const evmCallInputs = extractEvmInputsWithContext(
+    proposal?.call || inlineCall?.call,
+  );
 
   const data = [
     onchainData?.proposalHash
@@ -45,6 +52,12 @@ export default function Gov2ReferendumCall() {
             shorten={proposal?.shorten}
             preImageHash={preImageHash}
           />,
+        ]
+      : null,
+    evmCallInputs.length > 0
+      ? [
+          "EVM Calls",
+          <EvmCallInputDecode key="EVM Calls" evmCallInputs={evmCallInputs} />,
         ]
       : null,
   ].filter(Boolean);
