@@ -1,3 +1,5 @@
+"use client";
+
 import { InfoDocs } from "@osn/icons/subsquare";
 import { CommonTag } from "next-common/components/tags/state/styled";
 import Tooltip from "next-common/components/tooltip";
