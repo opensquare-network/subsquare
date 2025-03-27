@@ -4,21 +4,21 @@ import { EmptyList } from "next-common/utils/constants";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ApplicationDetail from "next-common/components/fellowship/applications/detail";
+import FellowshipApplicationBreadcrumb from "next-common/components/fellowship/applications/fellowshipApplicationBreadcrumb";
 
 export default function FellowshipApplicationDetailPage({ detail }) {
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
       <DetailLayout
+        breadcrumbs={<FellowshipApplicationBreadcrumb />}
         seoInfo={{
           title: detail?.title,
           desc,
-          ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
         <ApplicationDetail />
