@@ -60,8 +60,12 @@ export default function MemberCandidatesWarnings({ className }) {
   };
 
   const promptItems = [
-    allPromotionEvidences?.length > 0 && (
+    toBeHandledPromotionEvidences?.length > 0 && (
       <>
+        {`⚠️ ${toBeHandledPromotionEvidences?.length} ${pluralize(
+          "wish",
+          toBeHandledPromotionEvidences?.length,
+        )} for promotion from `}
         <PromptButton
           isCandidate
           filterLink={filterLinks.promotionEvidenceOnly}
@@ -69,20 +73,16 @@ export default function MemberCandidatesWarnings({ className }) {
           {allPromotionEvidences?.length}{" "}
           {pluralize("candidate", allPromotionEvidences?.length)}
         </PromptButton>
-        {allPromotionEvidences?.length > 1 ? "wish" : "wishes"} to get promoted
-        {toBeHandledPromotionEvidences?.length === 0
-          ? "."
-          : `, and ${
-              allPromotionEvidences?.length > 1
-                ? `${toBeHandledPromotionEvidences?.length} of them ${
-                    toBeHandledPromotionEvidences?.length > 1 ? "need" : "needs"
-                  }`
-                : "it needs"
-            } to be handled.`}
+        {toBeHandledPromotionEvidences?.length === 1 ? "needs" : "need"}
+        {" to be handled."}
       </>
     ),
-    allRetentionEvidences?.length > 0 && (
+    toBeHandledRetentionEvidences?.length > 0 && (
       <>
+        {`⚠️ ${toBeHandledRetentionEvidences?.length} ${pluralize(
+          "wish",
+          toBeHandledRetentionEvidences?.length,
+        )} for retention from `}
         <PromptButton
           isCandidate
           filterLink={filterLinks.retentionEvidenceOnly}
@@ -90,29 +90,18 @@ export default function MemberCandidatesWarnings({ className }) {
           {allRetentionEvidences?.length}{" "}
           {pluralize("candidate", allRetentionEvidences?.length)}
         </PromptButton>
-        {allRetentionEvidences?.length > 1
-          ? "wish to retain their ranks"
-          : "wishes to retain his/her rank"}
-        {toBeHandledRetentionEvidences?.length === 0
-          ? "."
-          : `, and ${
-              allRetentionEvidences?.length > 1
-                ? `${toBeHandledRetentionEvidences?.length} of them ${
-                    toBeHandledRetentionEvidences?.length > 1 ? "need" : "needs"
-                  }`
-                : "it needs"
-            } to be handled.`}
+        {toBeHandledRetentionEvidences?.length === 1 ? "needs" : "need"}
+        {" to be handled."}
       </>
     ),
-    allEvidences?.length > 0 && (
+    toBeHandledEvidences?.length > 0 && (
       <>
-        {toBeHandledEvidences?.length}{" "}
-        {pluralize("evidence", toBeHandledEvidences?.length)} to be handled in
-        total{" "}
+        {`⚠️ ${toBeHandledEvidences?.length} out of `}
         <PromptButton isCandidate filterLink={filterLinks.evidenceOnly}>
           {allEvidences?.length} {pluralize("evidence", allEvidences?.length)}
         </PromptButton>
-        .
+        {toBeHandledEvidences?.length === 1 ? "needs" : "need"}
+        {" to be handled."}
       </>
     ),
     closingMembersCount > 0 && (
