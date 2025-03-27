@@ -209,21 +209,25 @@ const loadedAbi = {};
 
 export async function getFileNameByContractAddress(contractAddress) {
   const fileName = contractAddressMap[contractAddress]?.name;
-  let res = loadedAbi[contractAddress];
-  if (!fileName) return;
-  if (!res) {
-    loadedAbi[contractAddress] = fetch(
+  if (!fileName) {
+    return null;
+  }
+
+  let request = loadedAbi[contractAddress];
+  if (!request) {
+    request = fetch(
       `https://cdn.jsdelivr.net/gh/opensquare-network/hydration-abi/slim/${fileName}.json`,
     );
+    loadedAbi[contractAddress] = request;
   }
 
   try {
-    let resp = await loadedAbi[contractAddress];
-    const clone = await resp.clone();
-    res = await clone.json();
+    let resp = await request;
+    const respClone = await resp.clone();
+    return await respClone.json();
   } catch (error) {
     /* empty */
   }
 
-  return res;
+  return null;
 }
