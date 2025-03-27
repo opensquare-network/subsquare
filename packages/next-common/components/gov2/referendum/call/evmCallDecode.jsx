@@ -4,12 +4,10 @@ import { InfoDocs } from "@osn/icons/subsquare";
 import { CommonTag } from "next-common/components/tags/state/styled";
 import Tooltip from "next-common/components/tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { decodeInput } from "next-common/utils/evm/decodeInput";
 import { contractAddressMap } from "next-common/utils/evm/importAbi";
 import { useState } from "react";
-import { useAsync } from "react-use";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import WindowSizeProvider from "next-common/context/windowSize";
 import styled from "styled-components";
@@ -33,22 +31,22 @@ export default function EvmCallInputDecode({ evmCallInputs }) {
     <WindowSizeProvider>
       <div className="flex flex-col">
         <div className="flex flex-col gap-y-2">
-          {evmCallInputs.slice(0, separateNumber).map((item) => (
+          {evmCallInputs.slice(0, separateNumber).map((item, index) => (
             <EvmCallInputDecodeItem
-              key={item.target + item.input}
-              input={item.input}
-              target={item.target}
+              key={"always" + index}
+              decode={item.decodeResult}
+              contractAddress={item.contractAddress}
             />
           ))}
           {showMore &&
             shouldCollapsed &&
             evmCallInputs
               ?.slice(separateNumber)
-              .map((item) => (
+              .map((item, index) => (
                 <EvmCallInputDecodeItem
-                  key={item.target + item.input}
-                  input={item.input}
-                  target={item.target}
+                  key={"sometimes" + index}
+                  decode={item.decodeResult}
+                  contractAddress={item.contractAddress}
                 />
               ))}
         </div>
@@ -70,21 +68,12 @@ export default function EvmCallInputDecode({ evmCallInputs }) {
   );
 }
 
-function EvmCallInputDecodeItem({ input, target }) {
+function EvmCallInputDecodeItem({ decode, contractAddress }) {
   const isMobile = useIsMobile();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
-  const name = contractAddressMap[target]?.name;
-  const { value, error, loading } = useAsync(
-    async () => await decodeInput(input, target),
-  );
+  const name = contractAddressMap[contractAddress]?.name;
 
-  const [decode, success] = value ?? [];
-
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (error) {
+  if (!decode) {
     return null;
   }
 
@@ -95,24 +84,22 @@ function EvmCallInputDecodeItem({ input, target }) {
       })}
     >
       <NameTag>{name}</NameTag>
-      {success && <span className="text-textTertiary text14Medium">·</span>}
-      {success && (
-        <div className="flex gap-2">
-          <NameTag>{decode?.method}</NameTag>
-          <Tooltip content="Call Detail">
-            <InfoDocs
-              role="button"
-              className={cn(
-                "w-4 h-4 relative top-[0.5px]",
-                "[&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary",
-                "[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary",
-              )}
-              onClick={() => setDetailPopupVisible(true)}
-            />
-          </Tooltip>
-        </div>
-      )}
-      {detailPopupVisible && success && (
+      <span className="text-textTertiary text14Medium">·</span>
+      <div className="flex gap-2">
+        <NameTag>{decode?.method}</NameTag>
+        <Tooltip content="Call Detail">
+          <InfoDocs
+            role="button"
+            className={cn(
+              "w-4 h-4 relative top-[0.5px]",
+              "[&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary",
+              "[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary",
+            )}
+            onClick={() => setDetailPopupVisible(true)}
+          />
+        </Tooltip>
+      </div>
+      {detailPopupVisible && (
         <CallDetailPopup
           tableViewData={decode}
           jsonViewData={decode}
@@ -124,11 +111,11 @@ function EvmCallInputDecodeItem({ input, target }) {
   );
 }
 
-export function extractEvmInputsWithContext(data) {
+export async function extractEvmInputsWithContext(data) {
   const validContractAddresses = Object.keys(contractAddressMap);
   const results = [];
 
-  function findEvmInputs(item) {
+  async function findEvmInputs(item) {
     if (!isObject(item)) {
       return;
     }
@@ -139,9 +126,9 @@ export function extractEvmInputsWithContext(data) {
     }
 
     if (isEvmSection(item)) {
-      const evmInput = extractTargetAndInput(item.args);
-      if (evmInput && isValidContractAddress(evmInput.target)) {
-        results.push(evmInput);
+      const result = await extractTargetAndInput(item.args);
+      if (result) {
+        results.push(result);
       }
     }
 
@@ -152,7 +139,7 @@ export function extractEvmInputsWithContext(data) {
     return item.section === "evm" && Array.isArray(item.args);
   }
 
-  function extractTargetAndInput(args) {
+  async function extractTargetAndInput(args) {
     let target = "";
     let input = "";
 
@@ -163,9 +150,25 @@ export function extractEvmInputsWithContext(data) {
       if (arg.name === "input") {
         input = arg.value;
       }
+      if (target && input) {
+        break;
+      }
     }
 
-    return target && input ? { target, input } : null;
+    if (!isValidContractAddress(target)) {
+      return null;
+    }
+
+    const [decodeResult, isSuccess] = await decodeInput(input, target);
+
+    if (!isSuccess) {
+      return null;
+    }
+
+    return {
+      decodeResult,
+      contractAddress: target,
+    };
   }
 
   function isValidContractAddress(address) {

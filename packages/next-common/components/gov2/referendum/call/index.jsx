@@ -12,6 +12,7 @@ import EvmCallInputDecode, {
   extractEvmInputsWithContext,
 } from "next-common/components/gov2/referendum/call/evmCallDecode";
 import isHydradx from "next-common/utils/isHydradx";
+import { useAsync } from "react-use";
 
 export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
@@ -25,9 +26,11 @@ export default function Gov2ReferendumCall() {
   const whitelistCallHashes =
     whitelistDispatchedHashes?.concat(whitelistHashes);
 
-  const evmCallInputs = isHydradx()
-    ? extractEvmInputsWithContext(proposal?.call || inlineCall?.call)
-    : [];
+  const { value: evmCallInputs = [] } = useAsync(async () => {
+    return isHydradx()
+      ? await extractEvmInputsWithContext(proposal?.call || inlineCall?.call)
+      : [];
+  });
 
   const data = [
     onchainData?.proposalHash

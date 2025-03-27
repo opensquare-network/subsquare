@@ -4,8 +4,9 @@ import { getFileNameByContractAddress } from "./importAbi";
 const IMPL_ABI = "0xac611e17f191312003e9b13483ddf1384cc6f1ef";
 
 export async function decodeInput(data, contractAddress) {
+  const errorResult = [data, false];
   if (!data || typeof data !== "string") {
-    return [data, false];
+    return errorResult;
   }
 
   try {
@@ -51,9 +52,9 @@ export async function decodeInput(data, contractAddress) {
       }
     }
 
-    return [data, false];
+    return errorResult;
   } catch (err) {
-    return [data, false];
+    return errorResult;
   }
 }
 
