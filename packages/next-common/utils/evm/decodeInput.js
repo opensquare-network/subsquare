@@ -12,7 +12,9 @@ export async function decodeInput(data, contractAddress) {
     const abi = await Promise.all([
       getFileNameByContractAddress(contractAddress),
       getFileNameByContractAddress(IMPL_ABI),
-    ]).then((abis) => abis?.flat());
+    ])
+      .then((abis) => abis?.filter(Boolean))
+      .then((abis) => abis?.flat());
 
     const parsedAbi = typeof abi === "string" ? JSON.parse(abi) : abi;
     const iface = new Interface(parsedAbi);
@@ -45,7 +47,7 @@ export async function decodeInput(data, contractAddress) {
           true,
         ];
       } catch {
-        continue;
+        /* empty */
       }
     }
 
