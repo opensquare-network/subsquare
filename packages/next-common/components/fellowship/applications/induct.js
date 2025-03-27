@@ -9,8 +9,11 @@ import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
+import nextApi from "next-common/services/nextApi";
+import { usePost } from "next-common/context/post";
 
 function InductButton({ address }) {
+  const post = usePost();
   const dispatch = useDispatch();
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
@@ -22,12 +25,18 @@ function InductButton({ address }) {
     }
   }, [api, address, pallet]);
 
-  const { doSubmit } = useTxSubmission({
-    getTxFunc,
-    onInBlock: () => {
-      dispatch(newSuccessToast("Inducted"));
-    },
-  });
+  const onInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Inducted"));
+    nextApi
+      .patch(`fellowship/applications/${post._id}/refresh-status`)
+      .then(({ error }) => {
+        if (error) {
+          console.error(error);
+        }
+      });
+  }, [dispatch, post?._id]);
+
+  const { doSubmit } = useTxSubmission({ getTxFunc, onInBlock });
 
   return (
     <>
