@@ -8,7 +8,7 @@ import extractRemarkMetaFields from "next-common/components/common/call/remarks"
 import extractWhitelistCallHash from "next-common/components/common/call/whitelist";
 import extractFellowshipPromote from "next-common/components/common/call/fellowshipPromote";
 import extractFellowshipApprove from "next-common/components/common/call/fellowshipApprove";
-import EvmCallInputDecode, {
+import EvmCallDecodeViewList, {
   extractEvmInputsWithContext,
 } from "next-common/components/gov2/referendum/call/evmCallDecode";
 import isHydradx from "next-common/utils/isHydradx";
@@ -26,7 +26,7 @@ export default function Gov2ReferendumCall() {
   const whitelistCallHashes =
     whitelistDispatchedHashes?.concat(whitelistHashes);
 
-  const { value: evmCallInputs = [] } = useAsync(async () => {
+  const { value: evmCallDecodes = [] } = useAsync(async () => {
     return isHydradx()
       ? await extractEvmInputsWithContext(proposal?.call || inlineCall?.call)
       : [];
@@ -58,10 +58,13 @@ export default function Gov2ReferendumCall() {
           />,
         ]
       : null,
-    evmCallInputs.length > 0
+    evmCallDecodes.length > 0
       ? [
           "EVM Calls",
-          <EvmCallInputDecode key="EVM Calls" evmCallInputs={evmCallInputs} />,
+          <EvmCallDecodeViewList
+            key="EVM Calls"
+            evmCallDecodes={evmCallDecodes}
+          />,
         ]
       : null,
   ].filter(Boolean);

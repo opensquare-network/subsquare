@@ -23,16 +23,16 @@ const NameTag = styled(CommonTag)`
   white-space: nowrap;
 `;
 
-export default function EvmCallInputDecode({ evmCallInputs }) {
+export default function EvmCallDecodeViewList({ evmCallDecodes }) {
   const [showMore, setShowMore] = useState(false);
-  const shouldCollapsed = evmCallInputs?.length > separateNumber;
+  const shouldCollapsed = evmCallDecodes?.length > separateNumber;
 
   return (
     <WindowSizeProvider>
       <div className="flex flex-col">
         <div className="flex flex-col gap-y-2">
-          {evmCallInputs.slice(0, separateNumber).map((item, index) => (
-            <EvmCallInputDecodeItem
+          {evmCallDecodes.slice(0, separateNumber).map((item, index) => (
+            <EvmCallDecodeViewItem
               key={"always" + index}
               decode={item.decodeResult}
               contractAddress={item.contractAddress}
@@ -40,10 +40,10 @@ export default function EvmCallInputDecode({ evmCallInputs }) {
           ))}
           {showMore &&
             shouldCollapsed &&
-            evmCallInputs
+            evmCallDecodes
               ?.slice(separateNumber)
               .map((item, index) => (
-                <EvmCallInputDecodeItem
+                <EvmCallDecodeViewItem
                   key={"sometimes" + index}
                   decode={item.decodeResult}
                   contractAddress={item.contractAddress}
@@ -68,10 +68,10 @@ export default function EvmCallInputDecode({ evmCallInputs }) {
   );
 }
 
-function EvmCallInputDecodeItem({ decode, contractAddress }) {
+function EvmCallDecodeViewItem({ decode, contractAddress }) {
   const isMobile = useIsMobile();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
-  const name = contractAddressMap[contractAddress]?.name;
+  const contractName = contractAddressMap[contractAddress]?.name;
 
   if (!decode) {
     return null;
@@ -83,7 +83,7 @@ function EvmCallInputDecodeItem({ decode, contractAddress }) {
         "flex-wrap": isMobile,
       })}
     >
-      <NameTag>{name}</NameTag>
+      <NameTag>{contractName}</NameTag>
       <span className="text-textTertiary text14Medium">·</span>
       <div className="flex gap-2">
         <NameTag>{decode?.method}</NameTag>
@@ -113,7 +113,7 @@ function EvmCallInputDecodeItem({ decode, contractAddress }) {
 
 export async function extractEvmInputsWithContext(data) {
   const validContractAddresses = Object.keys(contractAddressMap);
-  const results = [];
+  const decodeResults = [];
 
   async function findEvmInputs(item) {
     if (!isObject(item)) {
@@ -128,7 +128,7 @@ export async function extractEvmInputsWithContext(data) {
     if (isEvmSection(item)) {
       const result = await extractTargetAndInput(item.args);
       if (result) {
-        results.push(result);
+        decodeResults.push(result);
       }
     }
 
@@ -176,5 +176,5 @@ export async function extractEvmInputsWithContext(data) {
   }
 
   findEvmInputs(data);
-  return results;
+  return decodeResults;
 }

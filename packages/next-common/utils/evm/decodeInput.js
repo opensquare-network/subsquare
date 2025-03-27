@@ -10,20 +10,21 @@ export async function decodeInput(data, contractAddress) {
   }
 
   try {
-    const abi = await Promise.all([
+    const mergedAbi = await Promise.all([
       getFileNameByContractAddress(contractAddress),
       getFileNameByContractAddress(IMPL_ABI),
     ])
       .then((abis) => abis?.filter(Boolean))
       .then((abis) => abis?.flat());
 
-    const parsedAbi = typeof abi === "string" ? JSON.parse(abi) : abi;
-    const iface = new Interface(parsedAbi);
+    const parsedMergedAbi =
+      typeof mergedAbi === "string" ? JSON.parse(mergedAbi) : mergedAbi;
+    const iface = new Interface(parsedMergedAbi);
 
     data = data.trim();
     const methodId = data.slice(2, 10);
 
-    for (const func of parsedAbi) {
+    for (const func of parsedMergedAbi) {
       try {
         if (func.type !== "function") continue;
 
