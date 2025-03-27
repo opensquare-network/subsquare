@@ -1,23 +1,11 @@
 import { cn } from "next-common/utils";
 
-export default function Username({
-  username,
-  fontSize,
-  maxWidth,
-  color,
-  addressClassName = "",
-}) {
+export default function Username({ username, maxWidth }) {
   return (
     <div
-      className={cn(
-        "text14Medium !text-textPrimary",
-        maxWidth ? "truncate" : "break-all",
-        addressClassName,
-      )}
+      className={cn(maxWidth ? "truncate" : "break-all")}
       style={{
-        fontSize,
         maxWidth,
-        color,
       }}
     >
       {username}

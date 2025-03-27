@@ -67,7 +67,13 @@ const DisplayUser = () => {
   const user = useUser();
   const address = user?.address;
   if (isPolkadotAddress(address) || isEthereumAddress(address)) {
-    return <AddressUser add={address} showAvatar={false} fontSize={14} />;
+    return (
+      <AddressUser
+        add={address}
+        showAvatar={false}
+        className="text14Medium text-textPrimary"
+      />
+    );
   }
 
   return <div className="text-textPrimary text14Bold">{user?.username}</div>;
@@ -120,7 +126,10 @@ export function ProxyTip() {
         <span className="text14Medium text-textSecondary">
           Set as a proxy to
         </span>
-        <AddressUser add={proxyAddress} fontSize={14} />
+        <AddressUser
+          add={proxyAddress}
+          className="text14Medium text-textPrimary"
+        />
       </div>
       <span className="text14Medium text-textSecondary">
         , all your transactions will be submitted on behalf of this proxy

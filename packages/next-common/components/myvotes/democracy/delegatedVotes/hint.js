@@ -15,7 +15,11 @@ export default function DelegationHint({ style = {} }) {
       }}
     >
       You are delegating votes to &nbsp;
-      <AddressUser add={target} fontSize={12} link="/votes" />
+      <AddressUser
+        add={target}
+        className="text12Medium text-textPrimary"
+        link="/votes"
+      />
     </HintMessage>
   );
 }

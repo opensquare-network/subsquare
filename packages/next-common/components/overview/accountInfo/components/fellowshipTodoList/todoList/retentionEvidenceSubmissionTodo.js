@@ -1,9 +1,8 @@
 import { useState } from "react";
-import TodoTag from "./todoTag";
-import ClickableText from "./clickableText";
-import { useIsDemotionClosing } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/demotion";
-import { useContextMyEvidence } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/evidence";
+import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import ActionButton from "./actionButton";
+import { useHasRetentionEvidenceSubmissionTodo } from "../hooks/useHasTodo";
 
 const SubmitEvidencePopup = dynamicPopup(() =>
   import(
@@ -13,25 +12,23 @@ const SubmitEvidencePopup = dynamicPopup(() =>
 
 export default function RetentionEvidenceSubmissionTodo() {
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
-  const isDemotionClosing = useIsDemotionClosing();
-  const { evidence } = useContextMyEvidence();
-
-  if (!isDemotionClosing && !evidence) {
+  const hasTodo = useHasRetentionEvidenceSubmissionTodo();
+  if (!hasTodo) {
     return null;
   }
 
   return (
     <>
-      <div className="flex items-center">
+      <TodoWrapper>
         <TodoTag>Membership</TodoTag>
-        <div className="text-textPrimary text14Medium">
-          Your demotion period of membership is closing.{" "}
-          <ClickableText onClick={() => setShowSubmitEvidencePopup(true)}>
+        <TodoContent>
+          <span>Your demotion period of membership is closing.&nbsp;</span>
+          <ActionButton onClick={() => setShowSubmitEvidencePopup(true)}>
             Submit your evidence
-          </ClickableText>{" "}
-          for retention
-        </div>
-      </div>
+          </ActionButton>
+          &nbsp; for retention.
+        </TodoContent>
+      </TodoWrapper>
       {showSubmitEvidencePopup && (
         <SubmitEvidencePopup
           onClose={() => {

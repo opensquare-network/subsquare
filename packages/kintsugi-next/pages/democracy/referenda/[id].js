@@ -172,7 +172,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
 
-  const { result: summary } = await nextApi.fetch("summary");
+  const { result: summary } = await nextApi.fetch("overview/summary");
 
   return {
     props: {

@@ -1,9 +1,9 @@
-import TodoTag from "./todoTag";
-import ClickableText from "./clickableText";
+import { TodoContent, TodoTag, TodoWrapper } from "./styled";
+import ActionButton from "./actionButton";
 import { useContextMyEvidence } from "../context/hooks/evidence";
 import { useContext, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useHasMemberReferendaTodo from "../hooks/useHasMemberReferendaTodo";
+import { useHasMemberReferendaTodo } from "../hooks/useHasTodo";
 import { useContextMyCoreMember } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 import { CoreMembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -52,20 +52,20 @@ export default function MemberReferendaTodo() {
 
   return (
     <>
-      <div className="flex items-center">
+      <TodoWrapper>
         <TodoTag>Membership</TodoTag>
-        <div className="text-textPrimary text14Medium">
-          You have an on-chain &nbsp;
-          <ClickableText onClick={() => setShowEvidenceDetailPopup(true)}>
+        <TodoContent>
+          You have an on-chain&nbsp;
+          <ActionButton onClick={() => setShowEvidenceDetailPopup(true)}>
             evidence
-          </ClickableText>{" "}
-          &nbsp; with no referenda and you can contact{" "}
-          <ClickableText onClick={() => setShowEligibleMembersPopup(true)}>
+          </ActionButton>
+          &nbsp;with no referenda and you can contact&nbsp;
+          <ActionButton onClick={() => setShowEligibleMembersPopup(true)}>
             eligible members
-          </ClickableText>
-          &nbsp; to handle it.
-        </div>
-      </div>
+          </ActionButton>
+          &nbsp;to handle it.
+        </TodoContent>
+      </TodoWrapper>
       {showEvidenceDetailPopup && (
         <EvidencePopup onClose={() => setShowEvidenceDetailPopup(false)} />
       )}

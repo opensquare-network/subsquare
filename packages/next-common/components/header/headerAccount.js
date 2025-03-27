@@ -13,6 +13,8 @@ import { SystemProfile } from "@osn/icons/subsquare";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
 import { AddressUser, SystemUser } from "../user";
 import { useAccountMenu } from "./useAccountMenu.js";
+import Divider from "next-common/components/styled/layout/divider";
+import SwitchAccount from "next-common/components/switchAccount";
 
 const Wrapper = Relative;
 
@@ -21,7 +23,7 @@ const Menu = styled.div`
   position: absolute;
   right: 0;
   margin-top: 4px;
-  padding: 8px;
+  padding: 8px 0;
   z-index: 999999;
   background: var(--neutral100);
   border-width: 1px;
@@ -32,7 +34,7 @@ const Menu = styled.div`
 `;
 
 const Item = styled(Flex)`
-  min-width: 160px;
+  min-width: 192px;
   cursor: pointer;
   padding: 0 12px;
   height: 36px;
@@ -69,6 +71,7 @@ export default function HeaderAccount() {
   const isMounted = useMountedState();
   const { openLoginPopup } = useLoginPopup();
   const menu = useAccountMenu();
+  const [showSwitchAccount, setShowSwitchAccount] = useState(false);
 
   useClickAway(ref, () => setShow(false));
 
@@ -81,6 +84,8 @@ export default function HeaderAccount() {
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
       await disconnectAccount();
+    } else if (item.value === "switch") {
+      setShowSwitchAccount(true);
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
@@ -123,6 +128,7 @@ export default function HeaderAccount() {
             {user?.address && <ProfileMenuItem onClick={openUserProfile} />}
             {menu?.map((item, index) => (
               <Fragment key={index}>
+                {item?.value === "switch" && <Divider className="my-2" />}
                 <Item onClick={() => handleAccountMenu(item)}>
                   {item.icon}
                   <span>{item.name}</span>
@@ -132,6 +138,17 @@ export default function HeaderAccount() {
           </Menu>
         )}
       </Wrapper>
+      {showSwitchAccount && (
+        <SwitchAccount
+          onClose={() => {
+            setShowSwitchAccount(false);
+          }}
+          onOpenLogin={() => {
+            openLoginPopup();
+            setShowSwitchAccount(false);
+          }}
+        />
+      )}
     </>
   );
 }

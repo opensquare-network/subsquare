@@ -45,6 +45,12 @@ export function useMembersWithStatus(members) {
       return;
     }
 
+    if (!members || !members.length) {
+      setMembersWithStatus([]);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     api.query[pallet].member
       .multi(members.map((m) => m.address))

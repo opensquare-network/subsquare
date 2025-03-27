@@ -8,9 +8,7 @@ import ProfileFellowshipSalaryFeeds from "./feeds";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import ProfileFellowshipStatisticsInfo from "../statisticsInfo";
 
-export default function ProfileFellowshipSalary() {
-  const { section } = useCollectivesContext();
-
+export function FellowshipSalaryCard() {
   const [paymentsCount, setPaymentsCount] = useState();
 
   const tabs = [
@@ -32,6 +30,20 @@ export default function ProfileFellowshipSalary() {
   const [activeTabValue, setActiveTabValue] = useState(tabs[0].value);
 
   return (
+    <Tabs
+      tabs={tabs}
+      activeTabValue={activeTabValue}
+      onTabClick={(tab) => {
+        setActiveTabValue(tab.value);
+      }}
+    />
+  );
+}
+
+export default function ProfileFellowshipSalary() {
+  const { section } = useCollectivesContext();
+
+  return (
     <div className="space-y-6">
       <div className="space-y-4">
         <ProfileFellowshipMemberInfo section={section} />
@@ -42,13 +54,7 @@ export default function ProfileFellowshipSalary() {
         <ProfileFellowshipModuleTabs />
 
         <NeutralPanel className="p-6">
-          <Tabs
-            tabs={tabs}
-            activeTabValue={activeTabValue}
-            onTabClick={(tab) => {
-              setActiveTabValue(tab.value);
-            }}
-          />
+          <FellowshipSalaryCard />
         </NeutralPanel>
       </div>
     </div>

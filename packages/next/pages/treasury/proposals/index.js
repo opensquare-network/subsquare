@@ -16,6 +16,14 @@ import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
 
+function MaybePolkadotTreasuryProvider({ children }) {
+  return isPolkadotChain() ? (
+    <PolkadotTreasuryProvider>{children}</PolkadotTreasuryProvider>
+  ) : (
+    children
+  );
+}
+
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
@@ -39,7 +47,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
 
   return (
     <TreasuryProvider pallet={pallet}>
-      <PolkadotTreasuryProvider>
+      <MaybePolkadotTreasuryProvider>
         <ListLayout
           seoInfo={seoInfo}
           title={category}
@@ -76,7 +84,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
             }}
           />
         </ListLayout>
-      </PolkadotTreasuryProvider>
+      </MaybePolkadotTreasuryProvider>
     </TreasuryProvider>
   );
 }

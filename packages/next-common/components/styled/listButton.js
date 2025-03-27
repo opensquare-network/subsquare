@@ -6,6 +6,9 @@ const ListButton = styled.div`
   padding: 6px;
   border-radius: 4px;
   border: 1px solid var(--neutral400);
+  &:hover {
+    border-color: var(--neutral500);
+  }
   svg path {
     fill: var(--textPrimary);
   }

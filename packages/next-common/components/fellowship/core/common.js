@@ -27,12 +27,6 @@ export default function FellowshipCoreCommon({ children, ...props }) {
           exactMatch: true,
         },
         {
-          value: "params",
-          label: "Params",
-          url: "/fellowship/members/params",
-          exactMatch: true,
-        },
-        {
           value: "feeds",
           label: "Feeds",
           url: "/fellowship/members/feeds",

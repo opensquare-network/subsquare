@@ -4,6 +4,7 @@ import {
   PromptButton,
   useDemotionExpiredCount,
   useDemotionExpiringCount,
+  useFilterEvidenceByWish,
   useTodoEvidences,
 } from ".";
 import {
@@ -12,6 +13,7 @@ import {
 } from "next-common/components/pages/fellowship/usePeriodSelect";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import BatchBump from "../batchBump";
+import pluralize from "pluralize";
 
 export default function MemberCandidatesWarnings({ className }) {
   const { section } = useCollectivesContext();
@@ -27,29 +29,86 @@ export default function MemberCandidatesWarnings({ className }) {
     isLoading: isEvidencesLoading,
   } = useTodoEvidences(members);
 
+  const allPromotionEvidences = useFilterEvidenceByWish(
+    allEvidences,
+    "promotion",
+  );
+
+  const toBeHandledPromotionEvidences = useFilterEvidenceByWish(
+    toBeHandledEvidences,
+    "promotion",
+  );
+
+  const allRetentionEvidences = useFilterEvidenceByWish(
+    allEvidences,
+    "retention",
+  );
+
+  const toBeHandledRetentionEvidences = useFilterEvidenceByWish(
+    toBeHandledEvidences,
+    "retention",
+  );
+
   const isLoading = isMembersLoading || isEvidencesLoading;
 
   const filterLinks = {
     evidenceOnly: `/${section}/members?tab=candidates&evidence_only=true`,
+    promotionEvidenceOnly: `/${section}/members?tab=candidates&evidence_only=true&wish=promotion`,
+    retentionEvidenceOnly: `/${section}/members?tab=candidates&evidence_only=true&wish=retention`,
     [OffboardClosing]: `/${section}/members?tab=candidates&period=offboard_closing`,
     [OffboardExpired]: `/${section}/members?tab=candidates&period=offboard_expired`,
   };
 
   const promptItems = [
-    allEvidences?.length > 0 && (
+    toBeHandledPromotionEvidences?.length > 0 && (
       <>
-        {toBeHandledEvidences?.length} evidences to be handled in total{" "}
-        <PromptButton isCandidate filterLink={filterLinks.evidenceOnly}>
-          {allEvidences?.length} evidences
+        {`⚠️ ${toBeHandledPromotionEvidences?.length} ${pluralize(
+          "wish",
+          toBeHandledPromotionEvidences?.length,
+        )} for promotion from `}
+        <PromptButton
+          isCandidate
+          filterLink={filterLinks.promotionEvidenceOnly}
+        >
+          {allPromotionEvidences?.length}{" "}
+          {pluralize("candidate", allPromotionEvidences?.length)}
         </PromptButton>
-        .
+        {toBeHandledPromotionEvidences?.length === 1 ? "needs" : "need"}
+        {" to be handled."}
+      </>
+    ),
+    toBeHandledRetentionEvidences?.length > 0 && (
+      <>
+        {`⚠️ ${toBeHandledRetentionEvidences?.length} ${pluralize(
+          "wish",
+          toBeHandledRetentionEvidences?.length,
+        )} for retention from `}
+        <PromptButton
+          isCandidate
+          filterLink={filterLinks.retentionEvidenceOnly}
+        >
+          {allRetentionEvidences?.length}{" "}
+          {pluralize("candidate", allRetentionEvidences?.length)}
+        </PromptButton>
+        {toBeHandledRetentionEvidences?.length === 1 ? "needs" : "need"}
+        {" to be handled."}
+      </>
+    ),
+    toBeHandledEvidences?.length > 0 && (
+      <>
+        {`⚠️ ${toBeHandledEvidences?.length} out of `}
+        <PromptButton isCandidate filterLink={filterLinks.evidenceOnly}>
+          {allEvidences?.length} {pluralize("evidence", allEvidences?.length)}
+        </PromptButton>
+        {toBeHandledEvidences?.length === 1 ? "needs" : "need"}
+        {" to be handled."}
       </>
     ),
     closingMembersCount > 0 && (
       <>
         The offboard period of
         <PromptButton isCandidate filterLink={filterLinks[OffboardClosing]}>
-          {closingMembersCount} candidates
+          {closingMembersCount} {pluralize("candidate", closingMembersCount)}
         </PromptButton>
         is approaching.
       </>
@@ -57,7 +116,7 @@ export default function MemberCandidatesWarnings({ className }) {
     expiredMembersCount && (
       <>
         <PromptButton isCandidate filterLink={filterLinks[OffboardExpired]}>
-          {expiredMembersCount} candidates
+          {expiredMembersCount} {pluralize("candidate", expiredMembersCount)}
         </PromptButton>
         can be offboarded.
         <BatchBump isCandidate />

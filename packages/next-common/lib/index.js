@@ -43,7 +43,7 @@ export function withCommonProps(
       scanHeight,
     ] = await Promise.all([
       getServerSideProps(context),
-      fetchProfile(context),
+      fetchProfile(context?.req),
       fetchUserStatus(context),
       nextApi.fetch(adminsApi),
       fetchScanHeight(),

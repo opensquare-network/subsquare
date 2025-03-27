@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useOnchainData } from "next-common/context/post";
 import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import { createGlobalState } from "react-use";
@@ -8,8 +8,6 @@ import getCallByPreimageHash from "next-common/services/preimages/call";
 import RawCallProvider from "next-common/context/call/raw";
 
 const useCachedResult = createGlobalState({});
-
-export const ReferendumCallContext = createContext(null);
 
 function useReferendumCall() {
   const onchainData = useOnchainData();

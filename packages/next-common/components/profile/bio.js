@@ -3,7 +3,7 @@ import { isPolkadotAddress } from "../../utils/viewfuncs";
 import Flex from "../styled/flex";
 import AccountLinks from "../links/accountLinks";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import { useChain } from "next-common/context/chain";
+import { useChain, useIsKintsugi } from "next-common/context/chain";
 import Copyable from "../copyable";
 import AssetInfo from "./assetInfo";
 import KintAssetInfo from "./assetInfo/kint";
@@ -12,9 +12,13 @@ import AddressUser from "../user/addressUser";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "../user/avatarDisplay";
-import FellowshipTagInfo from "./fellowshipTagInfo";
+import FellowshipTagInfo, {
+  FellowshipTagInfoWrapper,
+} from "./fellowshipTagInfo";
 import { useChainSettings } from "next-common/context/chain";
 import OpenGovBio from "./OpenGovBio";
+import DemocracyBio from "./democracyBio";
+import { cn } from "next-common/utils";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -65,8 +69,7 @@ export const DisplayUser = ({ id, className = "" }) => {
       <AddressUser
         add={id}
         showAvatar={false}
-        addressClassName={"!text16Bold"}
-        className={className}
+        className={cn("text16Bold text-textPrimary", className)}
       />
     );
   }
@@ -112,12 +115,16 @@ function NormalBio() {
         <DisplayUser id={id} />
         <DisplayUserAddress address={address} />
 
-        <FellowshipTagInfo address={address} />
-        <FellowshipTagInfo
-          address={address}
-          pallet="ambassadorCollective"
-          type="ambassador"
-        />
+        <FellowshipTagInfoWrapper>
+          <FellowshipTagInfo address={address} />
+        </FellowshipTagInfoWrapper>
+        <FellowshipTagInfoWrapper>
+          <FellowshipTagInfo
+            address={address}
+            pallet="ambassadorCollective"
+            type="ambassador"
+          />
+        </FellowshipTagInfoWrapper>
 
         {isKintsugi ? (
           <KintAssetInfo address={address} />
@@ -131,9 +138,15 @@ function NormalBio() {
 
 export default function Bio() {
   const { modules } = useChainSettings();
+  const hasDemocracy = modules?.democracy && !modules?.democracy?.archived;
+  const isKintsugi = useIsKintsugi();
 
-  if (modules?.referenda) {
+  if (isKintsugi) {
+    return <NormalBio />;
+  } else if (modules?.referenda) {
     return <OpenGovBio />;
+  } else if (hasDemocracy) {
+    return <DemocracyBio />;
   }
 
   return <NormalBio />;

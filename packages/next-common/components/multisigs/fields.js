@@ -1,27 +1,40 @@
 import Copyable from "next-common/components/copyable";
 import { cn, textEllipsis } from "next-common/utils";
-import { useState } from "react";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import AddressUser from "next-common/components/user/addressUser";
-import dynamicPopup from "next-common/lib/dynamic/popup";
 import { sortAddresses } from "@polkadot/util-crypto";
-
-const CallPopup = dynamicPopup(() => import("./callPopup"));
+import { useCallPopup } from "./context/callPopupContext";
+import { isNil } from "lodash-es";
 
 export function When({ height, index }) {
   const chain = useChain();
   const { integrations } = useChainSettings();
-  if (!integrations?.subscan) {
+
+  if (
+    (!integrations?.statescan && !integrations?.subscan) ||
+    isNil(height) ||
+    isNil(index)
+  ) {
     return null;
   }
 
-  const domain = integrations.subscan.domain || chain;
+  let baseUrl = null;
+
+  if (integrations?.statescan) {
+    baseUrl = `https://${
+      integrations?.statescan?.domain || chain
+    }.statescan.io/#/extrinsics`;
+  } else if (integrations?.subscan) {
+    baseUrl = `https://${
+      integrations?.subscan?.domain || chain
+    }.subscan.io/extrinsic`;
+  }
 
   return (
     <ExternalLink
-      href={`https://${domain}.subscan.io/extrinsic/${height}-${index}`}
+      href={`${baseUrl}/${height}-${index}`}
       className="hover:!underline flex cursor-pointer gap-[4px] text-textPrimary"
       externalIcon={false}
     >
@@ -31,7 +44,16 @@ export function When({ height, index }) {
 }
 
 export function Call({ when, callHash, call, callHex, right = false }) {
-  const [showPopup, setShowPopup] = useState(false);
+  const { setShowPopup, setCallPopupData } = useCallPopup();
+
+  const handleClick = () => {
+    setCallPopupData({
+      call,
+      callHex,
+      blockHeight: when.height,
+    });
+    setShowPopup(true);
+  };
 
   return (
     <div className={cn("flex flex-col")}>
@@ -41,7 +63,7 @@ export function Call({ when, callHash, call, callHex, right = false }) {
             "cursor-pointer text14Medium hover:underline",
             right ? "text-right" : "",
           )}
-          onClick={() => setShowPopup(true)}
+          onClick={handleClick}
         >
           {call?.section}.{call?.method}
         </span>
@@ -57,14 +79,6 @@ export function Call({ when, callHash, call, callHex, right = false }) {
           {textEllipsis(callHash, 6, 4)}
         </span>
       </Copyable>
-      {showPopup && (
-        <CallPopup
-          call={call}
-          callHex={callHex}
-          blockHeight={when.height}
-          setShow={setShowPopup}
-        />
-      )}
     </div>
   );
 }
@@ -81,9 +95,7 @@ function AddressesTooltip({ addresses = [] }) {
           <AddressUser
             add={address}
             ellipsis={false}
-            color="var(--textPrimaryContrast)"
-            addressClassName="!text-textPrimaryContrast"
-            fontSize={12}
+            className="text12Medium text-textPrimaryContrast"
           />
         </li>
       ))}

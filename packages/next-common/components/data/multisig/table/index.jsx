@@ -15,6 +15,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
 import { addRouterQuery } from "next-common/utils/router";
+import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
 
 export default function MultisigExplorerTable() {
   const [navCollapsed] = useNavCollapsed();
@@ -113,6 +114,7 @@ export default function MultisigExplorerTable() {
         </ScrollerX>
         {total > 0 && pageComponent}
       </SecondaryCard>
+      <CallPopupInContext />
     </div>
   );
 }

@@ -24,7 +24,7 @@ export default function CollectivesSalaryWarnings() {
 function CollectivesSalaryFellowshipWarningsImpl() {
   const { data, isLoading } = useFellowshipMemberData();
 
-  if (isLoading || isNil(data.coreMember)) {
+  if (isLoading || isNil(data?.coreMember)) {
     return null;
   }
 
@@ -38,7 +38,7 @@ function CollectivesSalaryFellowshipWarningsImpl() {
 function CollectivesSalaryAmbassadorWarningsImpl() {
   const { data, isLoading } = useAmbassadorMemberData();
 
-  if (isLoading || isNil(data.coreMember)) {
+  if (isLoading || isNil(data?.coreMember)) {
     return null;
   }
 

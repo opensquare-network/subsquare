@@ -18,25 +18,61 @@ const FellowshipCoreFeedsCompareParamsChangesPopup = dynamicPopup(() =>
 export default function FellowshipCoreFeedsListEvent({
   feed = {},
   className = "",
+  showUserInfo = true,
 }) {
   const event = feed?.event;
 
   const [comparePopupVisible, setComparePopupVisible] = useState(false);
 
   const EVENT_CONTENTS = {
-    ActiveChanged: <FellowshipCoreFeedsActiveEvent feed={feed} />,
-    Demoted: <FellowshipCoreFeedsDemotedEvent feed={feed} />,
-    Imported: <FellowshipCoreFeedsImportedEvent feed={feed} />,
-    Inducted: <FellowshipCoreFeedsInductedEvent feed={feed} />,
-    Offboarded: <FellowshipCoreFeedsOffboardedEvent feed={feed} />,
+    ActiveChanged: (
+      <FellowshipCoreFeedsActiveEvent feed={feed} showUserInfo={showUserInfo} />
+    ),
+    Demoted: (
+      <FellowshipCoreFeedsDemotedEvent
+        feed={feed}
+        showUserInfo={showUserInfo}
+      />
+    ),
+    Imported: (
+      <FellowshipCoreFeedsImportedEvent
+        feed={feed}
+        showUserInfo={showUserInfo}
+      />
+    ),
+    Inducted: (
+      <FellowshipCoreFeedsInductedEvent
+        feed={feed}
+        showUserInfo={showUserInfo}
+      />
+    ),
+    Offboarded: (
+      <FellowshipCoreFeedsOffboardedEvent
+        feed={feed}
+        showUserInfo={showUserInfo}
+      />
+    ),
     ParamsChanged: (
       <FellowshipCoreFeedsParamsChangedEvent
         setComparePopupVisible={setComparePopupVisible}
+        showUserInfo={showUserInfo}
       />
     ),
-    Promoted: <FellowshipCoreFeedsPromotedEvent feed={feed} />,
-    Proven: <FellowshipCoreFeedsProvenEvent feed={feed} />,
-    Requested: <FellowshipCoreFeedsRequestedEvent feed={feed} />,
+    Promoted: (
+      <FellowshipCoreFeedsPromotedEvent
+        feed={feed}
+        showUserInfo={showUserInfo}
+      />
+    ),
+    Proven: (
+      <FellowshipCoreFeedsProvenEvent feed={feed} showUserInfo={showUserInfo} />
+    ),
+    Requested: (
+      <FellowshipCoreFeedsRequestedEvent
+        feed={feed}
+        showUserInfo={showUserInfo}
+      />
+    ),
   };
 
   const content = EVENT_CONTENTS[event];

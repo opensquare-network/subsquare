@@ -7,28 +7,15 @@ import Username from "./username";
 
 export default function AddressDisplay({
   address,
-  fontSize,
-  color,
   maxWidth,
   ellipsis,
   noTooltip,
-  addressClassName = "",
 }) {
   const knownAddr = KNOWN_ADDR_MATCHERS.map((matcher) => matcher(address)).find(
     Boolean,
   );
 
   const username = knownAddr || (ellipsis ? addressEllipsis(address) : address);
-
-  const name = (
-    <Username
-      username={username}
-      fontSize={fontSize}
-      color={color}
-      maxWidth={maxWidth}
-      addressClassName={addressClassName}
-    />
-  );
 
   return (
     <div className="flex items-center gap-[4px]">
@@ -39,10 +26,10 @@ export default function AddressDisplay({
       )}
       {maxWidth && !noTooltip ? (
         <Tooltip content={address}>
-          <div>{name}</div>
+          <Username username={username} maxWidth={maxWidth} />
         </Tooltip>
       ) : (
-        name
+        <Username username={username} maxWidth={maxWidth} />
       )}
     </div>
   );

@@ -13,7 +13,7 @@ const BatchContext = createContext();
 
 export default BatchContext;
 
-export function BatchProvider({ batchExecFn, children }) {
+export function BatchProvider({ delay = 0, batchExecFn, children }) {
   const [pending] = useState(new Map());
 
   const delayExec = useMemo(
@@ -31,8 +31,8 @@ export function BatchProvider({ batchExecFn, children }) {
             }
           })
           .catch(() => {});
-      }, 0),
-    [pending, batchExecFn],
+      }, delay),
+    [pending, batchExecFn, delay],
   );
 
   const handleInBatch = useCallback(
@@ -50,6 +50,38 @@ export function BatchProvider({ batchExecFn, children }) {
     <BatchContext.Provider value={{ handleInBatch }}>
       {children}
     </BatchContext.Provider>
+  );
+}
+
+function BatchResultCacher({ children }) {
+  const [cachedResults] = useState(new Map());
+  const { handleInBatch: _handleInBatch } = useContext(BatchContext);
+
+  const handleInBatch = useCallback(
+    async (key) => {
+      if (cachedResults.has(key)) {
+        return cachedResults.get(key);
+      }
+      const result = await _handleInBatch(key);
+      cachedResults.set(key, result);
+
+      return result;
+    },
+    [_handleInBatch, cachedResults],
+  );
+
+  return (
+    <BatchContext.Provider value={{ handleInBatch }}>
+      {children}
+    </BatchContext.Provider>
+  );
+}
+
+export function CachedBatchProvider({ delay = 0, batchExecFn, children }) {
+  return (
+    <BatchProvider delay={delay} batchExecFn={batchExecFn}>
+      <BatchResultCacher>{children}</BatchResultCacher>
+    </BatchProvider>
   );
 }
 

@@ -3,14 +3,9 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import { useNavCollapsed } from "next-common/context/nav";
 import useBreadcrumbs from "next-common/components/layout/DetailLayout/useBreadcrumbs";
 
-export default function Breadcrumbs({ breadcrumbs, hasSidebar }) {
+export function Breadcrumbs({ breadcrumbs, hasSidebar }) {
   const [navCollapsed] = useNavCollapsed();
-  const defaultBreadcrumbs = useBreadcrumbs();
-  if (!breadcrumbs && !defaultBreadcrumbs) {
-    return null;
-  }
 
-  const finalBreadcrumbs = breadcrumbs || defaultBreadcrumbs;
   return (
     <div
       className={cn(
@@ -20,11 +15,21 @@ export default function Breadcrumbs({ breadcrumbs, hasSidebar }) {
         navCollapsed ? "max-md:max-w-full" : "max-lg:max-w-full",
       )}
     >
-      {finalBreadcrumbs?.length > 0 ? (
-        <Breadcrumb items={finalBreadcrumbs} />
+      {breadcrumbs?.length > 0 ? (
+        <Breadcrumb items={breadcrumbs} />
       ) : (
         breadcrumbs
       )}
     </div>
   );
+}
+
+export default function BreadcrumbsWithDefault({ breadcrumbs, hasSidebar }) {
+  const defaultBreadcrumbs = useBreadcrumbs();
+  if (!breadcrumbs && !defaultBreadcrumbs) {
+    return null;
+  }
+
+  const finalBreadcrumbs = breadcrumbs || defaultBreadcrumbs;
+  return <Breadcrumbs breadcrumbs={finalBreadcrumbs} hasSidebar={hasSidebar} />;
 }

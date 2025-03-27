@@ -183,7 +183,12 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
   const val = value.toJSON();
 
   if (accountTypes.includes(type)) {
-    valueComponent = <AddressUser add={val.id || val} fontSize={12} />;
+    valueComponent = (
+      <AddressUser
+        add={val.id || val}
+        className="text12Medium text-textPrimary"
+      />
+    );
   } else if (
     balanceTypes.includes(typeName) &&
     shouldShowBalance(chain, section, method)

@@ -135,11 +135,30 @@ export function AddressComboInput({
   );
 }
 
-export function AddressComboListItemAccount({ account }) {
-  const { identity, hasIdentity, isLoading } = useIdentityInfo(account.address);
+export function IdentityDisplay({ address, name }) {
+  const { identity, hasIdentity } = useIdentityInfo(address);
   const displayName = getIdentityDisplay(identity);
-  const address = normalizeAddress(account.address);
   const addressHint = getAddressHint(address);
+
+  return (
+    <IdentityName>
+      {hasIdentity ? (
+        <>
+          <IdentityIcon identity={identity} />
+          <div className="line-clamp-1">{displayName || name}</div>
+        </>
+      ) : (
+        <div className="line-clamp-1 text-textPrimary">
+          {displayName || name || addressHint}
+        </div>
+      )}
+    </IdentityName>
+  );
+}
+
+export function AddressComboListItemAccount({ account }) {
+  const { isLoading } = useIdentityInfo(account.address);
+  const address = normalizeAddress(account.address);
 
   if (isLoading) {
     return <AddressInfoLoading address={address} />;
@@ -149,16 +168,7 @@ export function AddressComboListItemAccount({ account }) {
     <>
       <Avatar address={account.address} size={40} />
       <NameWrapper>
-        <IdentityName>
-          {hasIdentity ? (
-            <>
-              <IdentityIcon identity={identity} />
-              <div className="line-clamp-1">{displayName || account.name}</div>
-            </>
-          ) : (
-            displayName || account.name || addressHint
-          )}
-        </IdentityName>
+        <IdentityDisplay address={account.address} name={account?.name} />
         <div className="flex-1 w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
           {address}
         </div>
