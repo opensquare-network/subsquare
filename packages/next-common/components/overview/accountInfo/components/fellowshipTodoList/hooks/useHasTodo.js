@@ -11,7 +11,10 @@ import {
   useCandidateCoreMembers,
   useNonCandidateCoreMembers,
 } from "../context/hooks/coreMembers";
-import { useTodoEvidences } from "next-common/components/fellowship/core/memberWarnings";
+import {
+  useFilterEvidenceByWish,
+  useTodoEvidences,
+} from "next-common/components/fellowship/core/memberWarnings";
 import {
   useDemotionExpiredCandidates,
   useDemotionExpiredMembers,
@@ -60,6 +63,16 @@ export function useHasMemberEvidencesTodo() {
   const { members } = useNonCandidateCoreMembers();
   const { toBeHandled: toBeHandledEvidences } = useTodoEvidences(members);
   return !!toBeHandledEvidences?.length;
+}
+
+export function useHasMemberPromotionEvidencesTodo() {
+  const { members } = useNonCandidateCoreMembers();
+  const { all: allEvidence } = useTodoEvidences(members);
+  const allPromotionEvidences = useFilterEvidenceByWish(
+    allEvidence,
+    "Promotion",
+  );
+  return !!allPromotionEvidences?.length;
 }
 
 export function useHasMyReferendaVotesTodo() {
