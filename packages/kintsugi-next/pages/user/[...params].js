@@ -13,7 +13,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     await Promise.all([
       nextApi.fetch(`users/${id}/counts`),
       nextApi.fetch(`users/${id}`),
-      nextApi.fetch("summary"),
+      nextApi.fetch("overview/summary"),
     ]);
 
   return {
