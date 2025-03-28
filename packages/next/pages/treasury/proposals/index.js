@@ -14,7 +14,6 @@ import {
 import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
-import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
