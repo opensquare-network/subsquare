@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import SelectedSVG from "./selected.svg";
 import pluralize from "pluralize";
 import { cn } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,6 +43,10 @@ const Divider = styled.div`
 
 const Info = styled.span`
   color: var(--textTertiary);
+`;
+
+const InfoTooltip = styled(Tooltip)`
+  cursor: pointer;
 `;
 
 export default function DropDownList({
@@ -91,7 +96,13 @@ export default function DropDownList({
             }}
           >
             <TrackName disabled={o.disabled}>{o.label}</TrackName>
-            <Info>{o.info}</Info>
+            {o.disabled && o.info && o.tooltipContent ? (
+              <InfoTooltip content={o.tooltipContent}>
+                <Info>{o.info}</Info>
+              </InfoTooltip>
+            ) : (
+              <Info>{o.info}</Info>
+            )}
             {selected && !o.disabled && <SelectedSVG />}
           </ListItem>
         );
