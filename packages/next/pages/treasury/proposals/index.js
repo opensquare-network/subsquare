@@ -3,7 +3,7 @@ import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
@@ -17,7 +17,8 @@ import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/com
 import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
 
 function MaybePolkadotTreasuryProvider({ children }) {
-  return isPolkadotChain() ? (
+  const chain = useChain();
+  return isPolkadotChain(chain) ? (
     <PolkadotTreasuryProvider>{children}</PolkadotTreasuryProvider>
   ) : (
     children
