@@ -67,6 +67,11 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
       return;
     }
 
+    if (!targetAddress) {
+      showErrorToast("Please select a target address");
+      return;
+    }
+
     if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
       showErrorToast(
         "Target address cannot be same with the delegator address",
