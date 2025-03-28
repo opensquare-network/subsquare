@@ -130,7 +130,9 @@ function PanelContent() {
   return (
     <div className="text14Medium text-textSecondary flex-1">
       <PanelHeader subTitle={data?.shortDescription} />
-      <PanelLongDescription description={data?.longDescription} />
+      {data?.longDescription && (
+        <PanelLongDescription description={data?.longDescription} />
+      )}
     </div>
   );
 }
