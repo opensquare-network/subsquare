@@ -36,6 +36,7 @@ export default function VoteBubbleContent({ node, sizeField }) {
             ellipsis={false}
             link="/votes"
             className={cn(
+              "text14Medium",
               node.data.aye && "text-[var(--green500)]",
               node.data.aye === false && "text-[var(--red500)]",
               node.data.isAbstain && "text-[var(--textSecondary)]",
