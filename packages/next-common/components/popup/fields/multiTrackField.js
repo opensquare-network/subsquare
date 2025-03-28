@@ -33,10 +33,20 @@ export default function MultiTrack({
 
     return (myVotingTuple || []).reduce((result, [storageKey, voting]) => {
       const trackId = storageKey.args[1].toNumber();
+      const disableTooltipContent =
+        "You have voted or delegated your votes to others in this track";
       if (voting.isDelegating) {
-        result[trackId] = { disabled: true, info: "Delegated" };
+        result[trackId] = {
+          disabled: true,
+          info: "Delegated",
+          tooltipContent: disableTooltipContent,
+        };
       } else if (voting.isCasting && voting.asCasting.votes.length > 0) {
-        result[trackId] = { disabled: true, info: "Voted" };
+        result[trackId] = {
+          disabled: true,
+          info: "Voted",
+          tooltipContent: disableTooltipContent,
+        };
       }
 
       return result;
@@ -46,7 +56,7 @@ export default function MultiTrack({
   const options = useMemo(() => {
     return tracks.map((track) => {
       const { id, name } = track;
-      const { disabled, info } = myVotes[id] || {};
+      const { disabled, info, tooltipContent } = myVotes[id] || {};
       const label = startCase(name);
       const value = id;
       return {
@@ -54,6 +64,7 @@ export default function MultiTrack({
         value,
         disabled,
         info,
+        tooltipContent,
       };
     });
   }, [tracks, myVotes]);
