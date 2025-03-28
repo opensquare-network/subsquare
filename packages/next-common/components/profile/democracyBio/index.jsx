@@ -8,6 +8,15 @@ import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
 import { AccountInfoPanel } from "next-common/components/profile/OpenGovBio";
 import AssetInfo from "next-common/components/profile/OpenGovBio/openGovAssetInfo";
+import DelegationGuidanceProvider from "next-common/components/profile/delegationGuidance/context/delegationGuidanceContext";
+import dynamic from "next/dynamic";
+
+const DelegationGuidance = dynamic(
+  () => import("next-common/components/profile/delegationGuidance"),
+  {
+    ssr: false,
+  },
+);
 
 function DemocracyBioContent() {
   const isMobile = useIsMobile();
@@ -27,6 +36,9 @@ function DemocracyBioContent() {
         <VotesPowerPanel address={address} />
       </div>
       <AssetInfo address={address} />
+      <DelegationGuidanceProvider pallet="democracy">
+        <DelegationGuidance />
+      </DelegationGuidanceProvider>
     </UserAccountProvider>
   );
 }
