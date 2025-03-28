@@ -40,7 +40,9 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const treasuryProposalListUrl = useTreasuryProposalListUrl(pallet);
 
   const treasurySummaryPanel = isPolkadotChain(chain) ? (
-    <PolkadotTreasuryStatsOnProposal />
+    <PolkadotTreasuryProvider>
+      <PolkadotTreasuryStatsOnProposal />
+    </PolkadotTreasuryProvider>
   ) : (
     <TreasurySummary />
   );
