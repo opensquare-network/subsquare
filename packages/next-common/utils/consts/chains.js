@@ -34,6 +34,7 @@ const Chains = {
   bifrostPolkadot: "bifrost-polkadot",
   polkadotAssetHub: "polkadot-assethub",
   westendAssetHub: "westend-assethub",
+  westendAssetHubNext: "westend-assethub-next",
   kusamaAssetHub: "kusama-assethub",
   vara: "vara",
   shibuya: "shibuya",
