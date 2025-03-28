@@ -6,7 +6,7 @@ import { SystemPlus } from "@osn/icons/subsquare";
 import { useState } from "react";
 import Divider from "next-common/components/styled/layout/divider";
 import { MarkdownPreviewer } from "@osn/previewer";
-import { useDelegationGuidanceContext } from "./context/delegationGuidanceContext";
+import { useDelegationGuideContext } from "./context/DelegationGuideContext";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { cn } from "next-common/utils";
@@ -21,7 +21,7 @@ const DemocracyDelegatePopup = dynamicPopup(() =>
 );
 
 function TargetDelegatePopup({ setShowDelegatePopup }) {
-  const { pallet } = useDelegationGuidanceContext();
+  const { pallet } = useDelegationGuideContext();
   const defaultTargetAddress = useProfileAddress();
 
   if (!pallet) {
@@ -125,7 +125,7 @@ function PanelLongDescription({ description }) {
 }
 
 function PanelContent() {
-  const { data } = useDelegationGuidanceContext();
+  const { data } = useDelegationGuideContext();
 
   return (
     <div className="text14Medium text-textSecondary flex-1">
@@ -137,7 +137,7 @@ function PanelContent() {
   );
 }
 
-export default function DelegationGuidancePanel() {
+export default function DelegationGuidePanel() {
   const isMobile = useIsMobile();
 
   return (

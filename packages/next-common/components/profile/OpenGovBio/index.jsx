@@ -11,11 +11,11 @@ import UserAccountProvider from "next-common/context/user/account";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
-import DelegationGuidanceProvider from "next-common/components/profile/delegationGuidance/context/delegationGuidanceContext";
+import DelegationGuideProvider from "next-common/components/profile/delegationGuide/context/DelegationGuideContext";
 import dynamic from "next/dynamic";
 
-const DelegationGuidance = dynamic(
-  () => import("next-common/components/profile/delegationGuidance"),
+const DelegationGuide = dynamic(
+  () => import("next-common/components/profile/delegationGuide"),
   {
     ssr: false,
   },
@@ -88,9 +88,9 @@ function OpenGovBioContent() {
         <VotesPowerPanel address={address} />
       </div>
       <OpenGovAssetInfo address={address} />
-      <DelegationGuidanceProvider pallet="referenda">
-        <DelegationGuidance />
-      </DelegationGuidanceProvider>
+      <DelegationGuideProvider pallet="referenda">
+        <DelegationGuide />
+      </DelegationGuideProvider>
     </UserAccountProvider>
   );
 }

@@ -1,16 +1,16 @@
 import { useContext, createContext } from "react";
 import useDelegationAnnouncement from "../hooks/useDelegationAnnouncement";
 
-const DelegationGuidanceContext = createContext();
+const DelegationGuideContext = createContext();
 
-export default function DelegationGuidanceProvider({
+export default function DelegationGuideProvider({
   children,
   pallet = "referenda",
 }) {
   const { data, isLoading } = useDelegationAnnouncement(pallet);
 
   return (
-    <DelegationGuidanceContext.Provider
+    <DelegationGuideContext.Provider
       value={{
         data,
         isLoading,
@@ -18,11 +18,11 @@ export default function DelegationGuidanceProvider({
       }}
     >
       {children}
-    </DelegationGuidanceContext.Provider>
+    </DelegationGuideContext.Provider>
   );
 }
 
-export function useDelegationGuidanceContext() {
-  const context = useContext(DelegationGuidanceContext);
+export function useDelegationGuideContext() {
+  const context = useContext(DelegationGuideContext);
   return context || {};
 }
