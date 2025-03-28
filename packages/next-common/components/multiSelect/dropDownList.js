@@ -45,10 +45,6 @@ const Info = styled.span`
   color: var(--textTertiary);
 `;
 
-const InfoTooltip = styled(Tooltip)`
-  cursor: pointer;
-`;
-
 export default function DropDownList({
   itemName,
   options,
@@ -95,14 +91,14 @@ export default function DropDownList({
               toggleSelect(o.value);
             }}
           >
-            <TrackName disabled={o.disabled}>{o.label}</TrackName>
-            {o.disabled && o.info && o.tooltipContent ? (
-              <InfoTooltip content={o.tooltipContent}>
-                <Info>{o.info}</Info>
-              </InfoTooltip>
+            {o.disabled && o.info && o.label && o.tooltipContent ? (
+              <Tooltip content={o.tooltipContent}>
+                <TrackName disabled={o.disabled}>{o.label}</TrackName>
+              </Tooltip>
             ) : (
-              <Info>{o.info}</Info>
+              <TrackName disabled={o.disabled}>{o.label}</TrackName>
             )}
+            <Info>{o.info}</Info>
             {selected && !o.disabled && <SelectedSVG />}
           </ListItem>
         );
