@@ -3,12 +3,12 @@ import westendAssetHubNextNodes from "./endpoints";
 import dynamic from "next/dynamic";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
-import { westendAssetHubThemeVars } from "next-common/utils/consts/settings/westendAssetHub/theme";
+import { westendAssetHubNextThemeVars } from "./theme";
 import westend from "../westend";
 import { mergeChainModules } from "../common/modules";
 
-const ProjectIconWestendAssethub = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectIconWestendAssethub"),
+const ProjectIconWestendAssethubNext = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconWestendAssethubNext"),
 );
 
 const name = Chains.westendAssetHubNext;
@@ -22,11 +22,11 @@ const westendAssetHubNext = {
   ss58Format: 42,
   blockTime: 12000,
   endpoints: westendAssetHubNextNodes,
-  avatar: ProjectIconWestendAssethub,
-  darkAvatar: ProjectIconWestendAssethub,
+  avatar: ProjectIconWestendAssethubNext,
+  darkAvatar: ProjectIconWestendAssethubNext,
   navLogo: westend.navLogo,
   navLogoDark: westend.navLogoDark,
-  networkIcon: ProjectIconWestendAssethub,
+  networkIcon: ProjectIconWestendAssethubNext,
   group: MenuGroups.WestendAndParachains,
   links: polkadotLinks,
   noScan: true,
@@ -34,7 +34,7 @@ const westendAssetHubNext = {
     statescan: { domain: "assethub-next-westend" },
   },
   description: "Asset Hub Next for Westend",
-  ...westendAssetHubThemeVars,
+  ...westendAssetHubNextThemeVars,
   multisigWallets: {
     signet: true,
   },
