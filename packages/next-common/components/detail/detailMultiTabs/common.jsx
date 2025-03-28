@@ -8,7 +8,7 @@ export default function CommonMultiTabs({
 }) {
   return (
     <div className="w-full flex justify-between items-center">
-      <span className="text14Bold">{label}</span>
+      <span className="text14Bold text-textPrimary">{label}</span>
       <Tab
         selectedTabId={selectedTabId}
         setSelectedTabId={setSelectedTabId}
