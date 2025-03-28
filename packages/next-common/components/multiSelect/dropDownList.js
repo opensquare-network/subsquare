@@ -79,7 +79,7 @@ export default function DropDownList({
       <Divider />
       {options?.map((o) => {
         const selected = selectedValues.includes(o.value);
-        return (
+        const listItem = (
           <ListItem
             key={o.value}
             selected={selected}
@@ -91,16 +91,16 @@ export default function DropDownList({
               toggleSelect(o.value);
             }}
           >
-            {o.disabled && o.info && o.label && o.tooltipContent ? (
-              <Tooltip content={o.tooltipContent}>
-                <TrackName disabled={o.disabled}>{o.label}</TrackName>
-              </Tooltip>
-            ) : (
-              <TrackName disabled={o.disabled}>{o.label}</TrackName>
-            )}
+            <TrackName disabled={o.disabled}>{o.label}</TrackName>
             <Info>{o.info}</Info>
             {selected && !o.disabled && <SelectedSVG />}
           </ListItem>
+        );
+
+        return o.disabled && o.info && o.label && o.tooltipContent ? (
+          <Tooltip content={o.tooltipContent}>{listItem}</Tooltip>
+        ) : (
+          listItem
         );
       })}
     </Wrapper>
