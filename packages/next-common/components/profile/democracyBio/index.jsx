@@ -8,7 +8,7 @@ import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
 import { AccountInfoPanel } from "next-common/components/profile/OpenGovBio";
 import AssetInfo from "next-common/components/profile/OpenGovBio/openGovAssetInfo";
-import DelegationGuideProvider from "next-common/components/profile/delegationGuide/context/DelegationGuideContext";
+import DelegationGuideProvider from "next-common/components/profile/delegationGuide/context/delegationGuideContext";
 import dynamic from "next/dynamic";
 
 const DelegationGuide = dynamic(

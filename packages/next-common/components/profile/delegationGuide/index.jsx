@@ -1,5 +1,5 @@
 import DelegationGuidePanel from "./panel";
-import { useDelegationGuideContext } from "./context/DelegationGuideContext";
+import { useDelegationGuideContext } from "./context/delegationGuideContext";
 import { isNil } from "lodash-es";
 
 function DelegationGuideWithNullGuard({ children }) {

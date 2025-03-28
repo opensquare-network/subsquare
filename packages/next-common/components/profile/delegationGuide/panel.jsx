@@ -6,7 +6,7 @@ import { SystemPlus } from "@osn/icons/subsquare";
 import { useState } from "react";
 import Divider from "next-common/components/styled/layout/divider";
 import { MarkdownPreviewer } from "@osn/previewer";
-import { useDelegationGuideContext } from "./context/DelegationGuideContext";
+import { useDelegationGuideContext } from "./context/delegationGuideContext";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { cn } from "next-common/utils";
