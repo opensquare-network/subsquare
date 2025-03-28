@@ -34,6 +34,7 @@ function ChainName() {
 
 const BrandingHintMap = {
   [Chains.westendAssetHub]: "Westend Asset Hub Management",
+  [Chains.westendAssetHubNext]: "Westend Asset Hub Next Management",
 };
 
 const getBrandingHint = (chain) => {
