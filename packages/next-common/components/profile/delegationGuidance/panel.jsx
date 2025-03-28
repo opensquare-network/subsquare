@@ -9,6 +9,8 @@ import { MarkdownPreviewer } from "@osn/previewer";
 import { useDelegationGuidanceContext } from "./context/delegationGuidanceContext";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { cn } from "next-common/utils";
+import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 
 const ReferendaDelegatePopup = dynamicPopup(() =>
   import("next-common/components/gov2/delegatePopup"),
@@ -35,14 +37,20 @@ function TargetDelegatePopup({ setShowDelegatePopup }) {
     );
   }
 
-  return <DemocracyDelegatePopup />;
+  return (
+    <DemocracyDelegatePopup
+      defaultTargetAddress={defaultTargetAddress}
+      onClose={() => setShowDelegatePopup(false)}
+    />
+  );
 }
 
-function DelegateButton() {
+function DelegateAction() {
+  const isMobile = useIsMobile();
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
 
   return (
-    <>
+    <div className={cn(isMobile && "w-full flex justify-end")}>
       <PrimaryButton
         className="p-2 pr-4"
         onClick={() => setShowDelegatePopup(true)}
@@ -53,7 +61,7 @@ function DelegateButton() {
       {showDelegatePopup && (
         <TargetDelegatePopup setShowDelegatePopup={setShowDelegatePopup} />
       )}
-    </>
+    </div>
   );
 }
 
@@ -116,7 +124,6 @@ function PanelLongDescription({ description }) {
   );
 }
 
-// TODO: responsive
 function PanelContent() {
   const { data } = useDelegationGuidanceContext();
 
@@ -129,11 +136,21 @@ function PanelContent() {
 }
 
 export default function DelegationGuidancePanel() {
+  const isMobile = useIsMobile();
+
   return (
-    <GreyPanel className="bg-neutral100 border border-neutral300 rounded-lg shadow-100 outline-theme500 justify-start !items-start gap-x-3 text14Medium text-textSecondary p-6 max-w-full">
+    <GreyPanel
+      className={cn(
+        "max-w-full p-6",
+        "text14Medium text-textSecondary",
+        "flex-row justify-start !items-start gap-x-3",
+        "bg-neutral100 border border-neutral300 rounded-lg shadow-100 outline-theme500",
+        isMobile && "flex-col gap-y-3",
+      )}
+    >
       <PanelPrefix />
       <PanelContent />
-      <DelegateButton />
+      <DelegateAction />
     </GreyPanel>
   );
 }
