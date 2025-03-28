@@ -16,6 +16,7 @@ export function getTreasuryMenu(summary) {
     modules: { treasury },
   } = getChainSettings(CHAIN);
 
+  const archived = treasury?.archived;
   const activeTreasuryProposals = summary?.treasuryProposals?.active || 0;
   const activeTreasurySpends = summary?.treasurySpends?.active || 0;
   const activeBounties = summary?.bounties?.active || 0;
@@ -32,6 +33,7 @@ export function getTreasuryMenu(summary) {
     name: Names.treasury,
     icon: <MenuTreasury />,
     pathname: "/treasury",
+    archived,
     activeCount: totalActiveCount,
     items: [
       treasury?.spends && {
@@ -40,6 +42,7 @@ export function getTreasuryMenu(summary) {
         pathname: "/treasury/spends",
         extraMatchNavMenuActivePathnames: ["/treasury/spends/[id]"],
         activeCount: activeTreasurySpends,
+        archived: treasury?.spends?.archived,
       },
       treasury?.proposals && {
         value: "proposals",

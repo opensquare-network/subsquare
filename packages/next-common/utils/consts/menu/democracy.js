@@ -10,8 +10,10 @@ export const Names = {
 };
 
 export function getDemocracyMenu(summary) {
-  const { modules } = getChainSettings(CHAIN);
-  const archived = modules?.democracy?.archived;
+  const {
+    modules: { democracy },
+  } = getChainSettings(CHAIN);
+  const archived = democracy?.archived;
 
   const activeReferenda = summary?.referenda?.active || 0;
   const activePublicProposals = summary?.publicProposals?.active || 0;
@@ -42,13 +44,15 @@ export function getDemocracyMenu(summary) {
         activeCount: activePublicProposals,
         pathname: "/democracy/proposals",
         extraMatchNavMenuActivePathnames: ["/democracy/proposals/[id]"],
+        archived: democracy?.publicProposals?.archived,
       },
-      modules?.democracy?.externalProposals && {
+      democracy?.externalProposals && {
         value: "democracyExternals",
         name: Names.democracyExternals,
         activeCount: activeExternalProposals,
         pathname: "/democracy/externals",
         extraMatchNavMenuActivePathnames: ["/democracy/externals/[id]"],
+        archived: democracy?.externalProposals?.archived,
       },
     ].filter(Boolean),
   };

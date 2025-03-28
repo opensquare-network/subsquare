@@ -66,6 +66,15 @@ const bifrostPolkadot = {
       spends: true,
       bounties: false,
       tips: false,
+      archived: true,
+    },
+    democracy: {
+      publicProposals: {
+        archived: true,
+      },
+      externalProposals: {
+        archived: true,
+      },
     },
     vesting: true,
   }),

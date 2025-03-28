@@ -95,8 +95,18 @@ const bifrost = {
       spends: true,
       bounties: false,
       tips: false,
+      archived: true,
     },
     vesting: true,
+    democracy: {
+      referenda: true,
+      publicProposals: {
+        archived: true,
+      },
+      externalProposals: {
+        archived: true,
+      },
+    },
   }),
   integrations: {
     subscan: {
