@@ -91,13 +91,13 @@ const bifrost = {
   modules: mergeChainModules({
     referenda: true,
     fellowship: true,
+    vesting: true,
     treasury: {
       spends: true,
       bounties: false,
       tips: false,
       archived: true,
     },
-    vesting: true,
     democracy: {
       referenda: true,
       publicProposals: {
@@ -106,6 +106,13 @@ const bifrost = {
       externalProposals: {
         archived: true,
       },
+      archived: true,
+    },
+    council: {
+      archived: true,
+    },
+    technicalCommittee: {
+      archived: true,
     },
   }),
   integrations: {
