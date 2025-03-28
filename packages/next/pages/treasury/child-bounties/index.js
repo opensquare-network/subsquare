@@ -2,16 +2,14 @@ import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
 import { toTreasuryChildBountyListItem } from "next-common/utils/viewfuncs";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { lowerCase } from "lodash-es";
+import { isNil, lowerCase } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
-import { isNil } from "lodash-es";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
-import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
 
 export default function ChildBountiesPage({ bounties }) {
   const chainSettings = useChainSettings();
@@ -31,39 +29,37 @@ export default function ChildBountiesPage({ bounties }) {
 
   return (
     <TreasuryProvider>
-      <PolkadotTreasuryProvider>
-        <ListLayout
-          seoInfo={seoInfo}
-          title={category}
-          summary={treasurySummaryPanel}
-          tabs={[
-            {
-              value: "child_bounties",
-              label: "Child Bounties",
-              url: "/treasury/child-bounties",
-            },
-            chainSettings.integrations?.doTreasury && {
-              value: "statistics",
-              label: "Statistics",
-              url: `https://dotreasury.com/${lowerCase(
-                chainSettings.symbol,
-              )}/child-bounties`,
-            },
-          ].filter(Boolean)}
-        >
-          <PostList
-            category={category}
-            title="List"
-            titleCount={bounties.total}
-            items={items}
-            pagination={{
-              page: bounties.page,
-              pageSize: bounties.pageSize,
-              total: bounties.total,
-            }}
-          />
-        </ListLayout>
-      </PolkadotTreasuryProvider>
+      <ListLayout
+        seoInfo={seoInfo}
+        title={category}
+        summary={treasurySummaryPanel}
+        tabs={[
+          {
+            value: "child_bounties",
+            label: "Child Bounties",
+            url: "/treasury/child-bounties",
+          },
+          chainSettings.integrations?.doTreasury && {
+            value: "statistics",
+            label: "Statistics",
+            url: `https://dotreasury.com/${lowerCase(
+              chainSettings.symbol,
+            )}/child-bounties`,
+          },
+        ].filter(Boolean)}
+      >
+        <PostList
+          category={category}
+          title="List"
+          titleCount={bounties.total}
+          items={items}
+          pagination={{
+            page: bounties.page,
+            pageSize: bounties.pageSize,
+            total: bounties.total,
+          }}
+        />
+      </ListLayout>
     </TreasuryProvider>
   );
 }
