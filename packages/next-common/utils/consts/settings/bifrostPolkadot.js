@@ -68,6 +68,15 @@ const bifrostPolkadot = {
       tips: false,
     },
     vesting: true,
+    democracy: {
+      archived: true,
+    },
+    council: {
+      archived: true,
+    },
+    technicalCommittee: {
+      archived: true,
+    },
   }),
   integrations: {
     subscan: {
