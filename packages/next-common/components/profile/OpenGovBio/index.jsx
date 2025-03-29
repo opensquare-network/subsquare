@@ -11,6 +11,15 @@ import UserAccountProvider from "next-common/context/user/account";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
+import DelegationGuideProvider from "next-common/components/profile/delegationGuide/context/delegationGuideContext";
+import dynamic from "next/dynamic";
+
+const DelegationGuide = dynamic(
+  () => import("next-common/components/profile/delegationGuide"),
+  {
+    ssr: false,
+  },
+);
 
 export function AccountInfoPanel({ address, id, user }) {
   const isMobile = useIsMobile();
@@ -79,6 +88,9 @@ function OpenGovBioContent() {
         <VotesPowerPanel address={address} />
       </div>
       <OpenGovAssetInfo address={address} />
+      <DelegationGuideProvider pallet="referenda">
+        <DelegationGuide />
+      </DelegationGuideProvider>
     </UserAccountProvider>
   );
 }
