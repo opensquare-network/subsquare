@@ -135,7 +135,7 @@ export default function PostCreate() {
 
   return (
     <Wrapper>
-      <TitleContainer className="!px-0">New Post123</TitleContainer>
+      <TitleContainer className="!px-0">New Post</TitleContainer>
       <LabelWrapper>
         <Label>Title</Label>
         <ToggleText
