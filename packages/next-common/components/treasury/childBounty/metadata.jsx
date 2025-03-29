@@ -55,6 +55,7 @@ export default function Meta() {
           <SideInfoItemName>Value</SideInfoItemName>
           <SideInfoItemValue>
             <ValueDisplay
+              className={" font-medium"}
               value={toPrecision(onChain.meta?.value ?? 0, decimals)}
               symbol={symbol}
             />
