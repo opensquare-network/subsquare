@@ -3,7 +3,7 @@ import { MenuDelegation } from "@osn/icons/subsquare";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import PrimaryButton from "next-common/lib/button/primary";
 import { SystemPlus } from "@osn/icons/subsquare";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Divider from "next-common/components/styled/layout/divider";
 import { MarkdownPreviewer } from "@osn/previewer";
 import { useDelegationGuideContext } from "./context/delegationGuideContext";
@@ -11,6 +11,8 @@ import useProfileAddress from "next-common/components/profile/useProfileAddress"
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { cn } from "next-common/utils";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 const ReferendaDelegatePopup = dynamicPopup(() =>
   import("next-common/components/gov2/delegatePopup"),
@@ -24,6 +26,12 @@ function TargetDelegatePopup({ setShowDelegatePopup }) {
   const { pallet } = useDelegationGuideContext();
   const defaultTargetAddress = useProfileAddress();
 
+  const dispatch = useDispatch();
+
+  const onDelegateInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Delegate success"));
+  }, [dispatch]);
+
   if (!pallet) {
     return null;
   }
@@ -33,6 +41,7 @@ function TargetDelegatePopup({ setShowDelegatePopup }) {
       <ReferendaDelegatePopup
         defaultTargetAddress={defaultTargetAddress}
         onClose={() => setShowDelegatePopup(false)}
+        onInBlock={onDelegateInBlock}
       />
     );
   }
@@ -41,6 +50,7 @@ function TargetDelegatePopup({ setShowDelegatePopup }) {
     <DemocracyDelegatePopup
       defaultTargetAddress={defaultTargetAddress}
       onClose={() => setShowDelegatePopup(false)}
+      onInBlock={onDelegateInBlock}
     />
   );
 }
