@@ -7,6 +7,7 @@ const statescanDomainMap = {
   [Chains.development]: "gov2",
   [Chains.polkadotAssetHub]: "statemint",
   [Chains.westendAssetHub]: "westmint",
+  [Chains.westendAssetHubNext]: "assethub-next-westend",
   [Chains.kusamaAssetHub]: "statemine",
   [Chains.paseoAssetHub]: "paseo",
 };
