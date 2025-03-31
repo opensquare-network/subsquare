@@ -15,7 +15,7 @@ const name = Chains.westendAssetHubNext;
 
 const westendAssetHubNext = {
   value: name,
-  name: "Asset Hub Next",
+  name: "Westend Next",
   identity: Chains.westend,
   symbol: "WND",
   decimals: 12,
@@ -33,7 +33,7 @@ const westendAssetHubNext = {
   integrations: {
     statescan: { domain: "assethub-next-westend" },
   },
-  description: "Asset Hub Next for Westend",
+  description: "Westend is the primary test network of Polkadot.",
   ...westendAssetHubNextThemeVars,
   multisigWallets: {
     signet: true,

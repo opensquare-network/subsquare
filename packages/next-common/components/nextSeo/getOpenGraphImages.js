@@ -22,9 +22,8 @@ const CHAIN_COVER_FILENAMES_MAP = {
     small: "westend-asset-hub-small.jpg",
   },
   [Chains.westendAssetHubNext]: {
-    //TODO:
-    large: "westend-asset-hub.jpg",
-    small: "westend-asset-hub-small.jpg",
+    large: "westend.jpg",
+    small: "westend-small.jpg",
   },
   [Chains.litentry]: {
     large: "heima.jpg",

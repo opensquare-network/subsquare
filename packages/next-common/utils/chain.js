@@ -42,7 +42,6 @@ export function isAssetHubChain(chain) {
   return [
     Chains.polkadotAssetHub,
     Chains.westendAssetHub,
-    Chains.westendAssetHubNext,
     Chains.kusamaAssetHub,
     Chains.paseoAssetHub,
   ].includes(chain);
