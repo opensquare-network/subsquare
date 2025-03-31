@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ogTrackerApi from "./../../services/OgTrackerApi";
+import ogTrackerApi from "./../../services/ogTrackerApi";
 import { usePageProps } from "next-common/context/page";
 
 export const useReferendaReportDetail = () => {
