@@ -11,8 +11,10 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import nextApi from "next-common/services/nextApi";
 import { usePost } from "next-common/context/post";
+import { useRouter } from "next/router";
 
 function InductButton({ address }) {
+  const router = useRouter();
   const post = usePost();
   const dispatch = useDispatch();
   const api = useContextApi();
@@ -34,7 +36,8 @@ function InductButton({ address }) {
           console.error(error);
         }
       });
-  }, [dispatch, post?._id]);
+    router.replace(router.asPath);
+  }, [dispatch, router, post?._id]);
 
   const { doSubmit } = useTxSubmission({ getTxFunc, onInBlock });
 

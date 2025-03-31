@@ -19,6 +19,8 @@ import FellowshipRank from "../rank";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
+import Tooltip from "next-common/components/tooltip";
+import PrimaryButton from "next-common/lib/button/primary";
 
 const Wrapper = styled.div`
   :hover {
@@ -42,12 +44,41 @@ function NotInductedApplicant({ address }) {
   );
 }
 
-function InductedApplicant({ address, member, rank }) {
+function MemberPeriod({ member, rank }) {
   const { params, isLoading } = useCoreFellowshipParams();
   if (isLoading) {
     return null;
   }
 
+  return (
+    <div className="flex gap-[16px]">
+      <CoreFellowshipMemberDemotionPeriod
+        {...member}
+        rank={rank}
+        params={params}
+      />
+      {rank > 0 && (
+        <CoreFellowshipMemberPromotionPeriod
+          {...member}
+          rank={rank}
+          params={params}
+        />
+      )}
+    </div>
+  );
+}
+
+function Inducted() {
+  return (
+    <Tooltip content={"Member has been inducted"}>
+      <PrimaryButton size="small" disabled={true}>
+        Inducted
+      </PrimaryButton>
+    </Tooltip>
+  );
+}
+
+function InductedApplicant({ address, member, rank }) {
   return (
     <div className="flex justify-between items-center rounded-[8px] border border-neutral400 p-[16px]">
       <div className="flex items-center gap-[16px]">
@@ -57,25 +88,13 @@ function InductedApplicant({ address, member, rank }) {
           <IdentityInfo address={address} />
         </div>
       </div>
-      <div className="flex gap-[16px]">
-        <CoreFellowshipMemberDemotionPeriod
-          {...member}
-          rank={rank}
-          params={params}
-        />
-        {rank > 0 && (
-          <CoreFellowshipMemberPromotionPeriod
-            {...member}
-            rank={rank}
-            params={params}
-          />
-        )}
-      </div>
+      {member ? <MemberPeriod member={member} rank={rank} /> : <Inducted />}
     </div>
   );
 }
 
 function Applicant({ address }) {
+  const post = usePost();
   const { member, isLoading: isMemberLoading } =
     useSubFellowshipCoreMember(address);
   const { rank, isLoading: isRankLoading } = useSubCollectiveRank(address);
@@ -87,7 +106,7 @@ function Applicant({ address }) {
   return (
     <div className="flex flex-col gap-[16px]">
       <span className="text14Bold">Applicant</span>
-      {member ? (
+      {post.status === "inducted" ? (
         <InductedApplicant address={address} member={member} rank={rank} />
       ) : (
         <NotInductedApplicant address={address} />
