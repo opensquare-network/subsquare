@@ -78,7 +78,15 @@ function Inducted() {
   );
 }
 
-function InductedApplicant({ address, member, rank }) {
+function InductedApplicant({ address }) {
+  const { member, isLoading: isMemberLoading } =
+    useSubFellowshipCoreMember(address);
+  const { rank, isLoading: isRankLoading } = useSubCollectiveRank(address);
+
+  if (isMemberLoading || isRankLoading) {
+    return null;
+  }
+
   return (
     <div className="flex justify-between items-center rounded-[8px] border border-neutral400 p-[16px]">
       <div className="flex items-center gap-[16px]">
@@ -95,19 +103,11 @@ function InductedApplicant({ address, member, rank }) {
 
 function Applicant({ address }) {
   const post = usePost();
-  const { member, isLoading: isMemberLoading } =
-    useSubFellowshipCoreMember(address);
-  const { rank, isLoading: isRankLoading } = useSubCollectiveRank(address);
-
-  if (isMemberLoading || isRankLoading) {
-    return null;
-  }
-
   return (
     <div className="flex flex-col gap-[16px]">
       <span className="text14Bold">Applicant</span>
       {post.status === "inducted" ? (
-        <InductedApplicant address={address} member={member} rank={rank} />
+        <InductedApplicant address={address} />
       ) : (
         <NotInductedApplicant address={address} />
       )}
