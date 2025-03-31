@@ -13,6 +13,7 @@ import { cn } from "next-common/utils";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import DelegationInfo from "./delegationInfo";
 
 const ReferendaDelegatePopup = dynamicPopup(() =>
   import("next-common/components/gov2/delegatePopup"),
@@ -154,15 +155,22 @@ export default function DelegationGuidePanel() {
     <GreyPanel
       className={cn(
         "max-w-full p-6",
-        "text14Medium text-textSecondary",
-        "flex-row justify-start !items-start gap-x-3",
+        "text14Medium text-textSecondary flex flex-col",
         "bg-neutral100 border border-neutral300 rounded-lg shadow-100 outline-theme500",
-        isMobile && "flex-col gap-y-3",
       )}
     >
-      <PanelPrefix />
-      <PanelContent />
-      <DelegateAction />
+      <div
+        className={cn(
+          "w-full",
+          "flex flex-row justify-start !items-start gap-x-3",
+          isMobile && "flex-col gap-y-3",
+        )}
+      >
+        <PanelPrefix />
+        <PanelContent />
+        <DelegateAction />
+      </div>
+      <DelegationInfo />
     </GreyPanel>
   );
 }
