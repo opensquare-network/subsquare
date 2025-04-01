@@ -23,6 +23,7 @@ import {
   useIsInSalaryRegistrationPeriod,
   useIsSalaryPayoutPeriod,
 } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
+import { useMemberPromotions, useMemberRetention } from "./evidence";
 
 export function useHasMemberReferendaTodo() {
   const { evidence } = useContextMyEvidence();
@@ -94,6 +95,16 @@ export function useHasSalaryRegistrationTodo() {
   );
 }
 
+export function useHasMemberPromotionTodo() {
+  const allPromotionEvidences = useMemberPromotions();
+  return allPromotionEvidences?.length > 0;
+}
+
+export function useHasMemberRetentionTodo() {
+  const allRetentionEvidences = useMemberRetention();
+  return allRetentionEvidences?.length > 0;
+}
+
 export default function useHasTodo() {
   const hasMemberReferendaTodo = useHasMemberReferendaTodo();
   const hasCandidateEvidencesTodo = useHasCandidateEvidencesTodo();
@@ -106,6 +117,8 @@ export default function useHasTodo() {
     useHasRetentionEvidenceSubmissionTodo();
   const hasSalaryPayoutTodo = useHasSalaryPayoutTodo();
   const hasSalaryRegistrationTodo = useHasSalaryRegistrationTodo();
+  const hasMemberPromotionTodo = useHasMemberPromotionTodo();
+  const hasMemberRetentionTodo = useHasMemberRetentionTodo();
 
   return (
     hasMemberReferendaTodo ||
@@ -116,6 +129,8 @@ export default function useHasTodo() {
     hasMyReferendaVotesTodo ||
     hasRetentionEvidenceSubmissionTodo ||
     hasSalaryPayoutTodo ||
-    hasSalaryRegistrationTodo
+    hasSalaryRegistrationTodo ||
+    hasMemberPromotionTodo ||
+    hasMemberRetentionTodo
   );
 }
