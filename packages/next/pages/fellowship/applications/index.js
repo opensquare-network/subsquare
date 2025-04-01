@@ -46,7 +46,7 @@ export default function FellowshipApplicationsPage({ posts }) {
     <ListLayout
       seoInfo={seoInfo}
       title="Applications"
-      description="Applying for a chance to be part of the Polkadot technical fellowship"
+      description="Applications to join fellowship"
     >
       <PostList
         title="List"
