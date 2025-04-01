@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.6.1
+
+date: 2025-04-01
+
+- Fellowship
+    - [Medium] Support fellowship new member application.
+    - Improve fellowship members filter text.
+- [Medium] Show delegation panel on user profile page if this user has delegation announcement.
+- Refactor user identity component for easier style customization.
+- Refactor chain settings in backend and the related APIs.
+- Add tooltip for disabled tracks on delegation popup.
+- Refactor scope for `PolkadotTreasuryProvider`.
+- Archive democracy, council and technical committee for bifrost.
+- Remove inactive networks from menu.
+- Upgrade dependencies.
+- Fix styles and bug fixes.
+
 # 4.6.0
 
 date: 2025-03-24
