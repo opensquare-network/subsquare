@@ -30,11 +30,11 @@ function Info() {
         their application:
       </p>
       <ul className="list-disc pl-[22px]">
-        <li> Background information of the applicant</li>
+        <li>Background information of the applicant</li>
         <li>Motivation(s) for applying to the Polkadot Technical Fellowship</li>
         <li>Area(s) of interest in relation to the Polkadot ecosystem.</li>
-        <li> Contribution(s) to Polkadot SDK (if any)</li>
-        <li> Link to the GitHub profile of the applicant</li>
+        <li>Contribution(s) to Polkadot SDK (if any)</li>
+        <li>Link to the GitHub profile of the applicant</li>
         <li>
           <span className="text-theme500">
             Polkadot address with a verified on-chain identity
