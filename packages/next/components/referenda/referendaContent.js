@@ -26,10 +26,7 @@ const Timeline = dynamicClientOnly(() => import("components/gov2/timeline"));
 const Gov2ReferendaVotesBubble = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/votesBubble"),
 );
-const ReferendumReport = dynamicClientOnly(() =>
-  import("components/referenda/report"),
-);
-
+const ReferendumReport = dynamicClientOnly(() => import("../referenda/report"));
 export function ReferendumDetailMultiTabs() {
   const post = usePost();
   const info = useReferendumInfo();

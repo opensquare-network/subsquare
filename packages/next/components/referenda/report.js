@@ -3,7 +3,7 @@ import Flex from "next-common/components/styled/flex";
 import KvList from "next-common/components/listInfo/kvList";
 import ExternalLink from "next-common/components/externalLink";
 import WarningInfoPanel from "next-common/components/summary/styled/warningInfoPanel";
-import { useReferendaReportDetail } from "next-common/hooks/referenda/useReportData";
+import useReferendumDetail from "next-common/hooks/referenda/useReferendumDetail";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import {
@@ -63,7 +63,7 @@ const TaskItem = ({ task }) => {
 };
 
 export default function ReferendumReport() {
-  const { detail, loading } = useReferendaReportDetail();
+  const { detail, loading } = useReferendumDetail();
   if (loading) {
     return (
       <div className="flex items-center justify-center gap-x-2 text-textTertiary text14Medium">
@@ -81,9 +81,9 @@ export default function ReferendumReport() {
     );
   }
 
-  const externalLink = `${process.env.NEXT_PUBLIC_OGTRACKER_SITE_URL}/${
-    detail.track || "all"
-  }/${detail.refnum}`;
+  const externalLink = `https://app.ogtracker.io/${detail.track || "all"}/${
+    detail.refnum
+  }`;
 
   return (
     <>
