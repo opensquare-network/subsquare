@@ -22,38 +22,29 @@ function PageTitle() {
   );
 }
 
-function BulletPoint({ className, children }) {
-  return (
-    <div className="flex items-center">
-      <div className="w-[4px] h-[4px] bg-textSecondary rounded-full mx-[4px]"></div>
-      <span className={className}>{children}</span>
-    </div>
-  );
-}
-
 function Info() {
   return (
     <div className="flex flex-col rounded-[8px] bg-neutral200 py-[10px] px-[16px] text14Medium text-textSecondary leading-[20px]">
-      <span className="text14Bold">
+      <p className="text14Bold">
         As a minimum, applicants need to provide the following information in
         their application:
-      </span>
-      <BulletPoint> Background information of the applicant</BulletPoint>
-      <BulletPoint>
-        Motivation(s) for applying to the Polkadot Technical Fellowship
-      </BulletPoint>
-      <BulletPoint>
-        Area(s) of interest in relation to the Polkadot ecosystem.
-      </BulletPoint>
-      <BulletPoint> Contribution(s) to Polkadot SDK (if any)</BulletPoint>
-      <BulletPoint> Link to the GitHub profile of the applicant</BulletPoint>
-      <BulletPoint className="text-theme500">
-        Polkadot address with a verified on-chain identity
-      </BulletPoint>
-      <span>
+      </p>
+      <ul className="list-disc pl-[22px]">
+        <li> Background information of the applicant</li>
+        <li>Motivation(s) for applying to the Polkadot Technical Fellowship</li>
+        <li>Area(s) of interest in relation to the Polkadot ecosystem.</li>
+        <li> Contribution(s) to Polkadot SDK (if any)</li>
+        <li> Link to the GitHub profile of the applicant</li>
+        <li>
+          <span className="text-theme500">
+            Polkadot address with a verified on-chain identity
+          </span>
+        </li>
+      </ul>
+      <p>
         Once an application is pre-approved, the applicant becomes eligible for
         induction to the Fellowship.
-      </span>
+      </p>
     </div>
   );
 }
