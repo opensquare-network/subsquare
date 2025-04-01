@@ -20,6 +20,8 @@ export function useIsPostAuthor() {
       } else {
         setIsAuthor(post.author?.username === user.username);
       }
+    } else if (type === detailPageCategory.FELLOWSHIP_APPLICATION) {
+      setIsAuthor(isSameAddress(post.proposer, user.address));
     } else {
       setIsAuthor(isAddressInGroup(user.address, post.authors));
     }

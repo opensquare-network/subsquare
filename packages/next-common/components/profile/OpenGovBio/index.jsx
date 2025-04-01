@@ -13,6 +13,8 @@ import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
 import DelegationGuideProvider from "next-common/components/profile/delegationGuide/context/delegationGuideContext";
 import dynamic from "next/dynamic";
+import Relatives from "next-common/components/profile/relatives";
+import ReferendaDelegationProvider from "next-common/components/profile/delegationGuide/context/referendaDelegationContext";
 
 const DelegationGuide = dynamic(
   () => import("next-common/components/profile/delegationGuide"),
@@ -55,6 +57,8 @@ export function AccountInfoPanel({ address, id, user }) {
           )}
         />
 
+        <Relatives />
+
         <FellowshipTagInfoWrapper>
           <FellowshipTagInfo address={address} />
         </FellowshipTagInfoWrapper>
@@ -89,7 +93,9 @@ function OpenGovBioContent() {
       </div>
       <OpenGovAssetInfo address={address} />
       <DelegationGuideProvider pallet="referenda">
-        <DelegationGuide />
+        <ReferendaDelegationProvider>
+          <DelegationGuide />
+        </ReferendaDelegationProvider>
       </DelegationGuideProvider>
     </UserAccountProvider>
   );

@@ -18,6 +18,7 @@ import {
 } from "./democracy";
 import { Gov2ReferendaTag } from "./gov2";
 import AnnouncementTag from "./announcement";
+import FellowshipApplicationTag from "./fellowshipApplication";
 
 const categoryTagMap = {
   [businessCategory.treasuryProposals]: TreasuryTag,
@@ -84,6 +85,9 @@ const categoryTagMap = {
 
   [businessCategory.fellowshipTreasurySpends]: SpendTag,
   [detailPageCategory.FELLOWSHIP_TREASURY_SPEND]: SpendTag,
+
+  [businessCategory.fellowshipApplications]: FellowshipApplicationTag,
+  [detailPageCategory.FELLOWSHIP_APPLICATION]: FellowshipApplicationTag,
 };
 
 export default function Tag({ category, state, link, args }) {
