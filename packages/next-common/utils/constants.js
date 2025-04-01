@@ -6,14 +6,11 @@ import bifrost from "./consts/settings/bifrost";
 import acala from "./consts/settings/acala";
 import interlay from "./consts/settings/interlay";
 import kintsugi from "./consts/settings/kintsugi";
-import khala from "./consts/settings/khala";
 import phala from "./consts/settings/phala";
 import centrifuge from "./consts/settings/centrifuge";
 // import kabocha from "./consts/settings/kabocha";
 import crust from "./consts/settings/crust";
 import litentry from "./consts/settings/litentry";
-import zeitgeist from "./consts/settings/zeitgeist";
-import altair from "./consts/settings/altair";
 import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
@@ -45,7 +42,6 @@ export const nodes = [
   kusamaAssetHub,
   acala,
   ajuna,
-  altair,
   astar,
   basilisk,
   bifrost,
@@ -61,7 +57,6 @@ export const nodes = [
   interlay,
   // kabocha,
   karura,
-  khala,
   kintsugi,
   laos,
   litentry,
@@ -71,7 +66,6 @@ export const nodes = [
   // polkadex,
   // rococo,
   shibuya,
-  zeitgeist,
   vara,
   zkverifyTestnet,
   paseo,
