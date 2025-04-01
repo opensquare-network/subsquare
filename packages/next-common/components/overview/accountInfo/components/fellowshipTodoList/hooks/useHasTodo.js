@@ -23,7 +23,10 @@ import {
   useIsInSalaryRegistrationPeriod,
   useIsSalaryPayoutPeriod,
 } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
-import { useMemberPromotions, useMemberRetention } from "./evidence";
+import {
+  useMemberPromotionEvidences,
+  useMemberRetentionEvidences,
+} from "./evidence";
 
 export function useHasMemberReferendaTodo() {
   const { evidence } = useContextMyEvidence();
@@ -96,13 +99,13 @@ export function useHasSalaryRegistrationTodo() {
 }
 
 export function useHasMemberPromotionTodo() {
-  const allPromotionEvidences = useMemberPromotions();
-  return allPromotionEvidences?.length > 0;
+  const memberPromotionEvidences = useMemberPromotionEvidences();
+  return memberPromotionEvidences?.length > 0;
 }
 
 export function useHasMemberRetentionTodo() {
-  const allRetentionEvidences = useMemberRetention();
-  return allRetentionEvidences?.length > 0;
+  const memberRetentionEvidence = useMemberRetentionEvidences();
+  return memberRetentionEvidence?.length > 0;
 }
 
 export default function useHasTodo() {

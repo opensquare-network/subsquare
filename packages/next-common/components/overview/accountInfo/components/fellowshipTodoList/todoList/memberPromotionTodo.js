@@ -3,14 +3,14 @@ import ActionButton from "./actionButton";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import MemberPromotionPopup from "./memberPromotionPopup";
 import pluralize from "pluralize";
-import { useMemberPromotions } from "../hooks/evidence";
+import { useMemberPromotionEvidences } from "../hooks/evidence";
 
 export default function MemberPromotionTodo() {
   const [showMemberPromotionPopup, setShowMemberPromotionPopup] =
     useState(false);
-  const promotions = useMemberPromotions();
+  const memberPromotionEvidences = useMemberPromotionEvidences();
 
-  const count = promotions?.length || 0;
+  const count = memberPromotionEvidences?.length || 0;
   if (count === 0) {
     return null;
   }
@@ -34,7 +34,7 @@ export default function MemberPromotionTodo() {
       </TodoContent>
       {showMemberPromotionPopup && (
         <MemberPromotionPopup
-          promotions={promotions}
+          promotions={memberPromotionEvidences}
           onClose={() => setShowMemberPromotionPopup(false)}
         />
       )}

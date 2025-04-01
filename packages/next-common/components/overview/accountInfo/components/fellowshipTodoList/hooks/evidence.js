@@ -15,12 +15,12 @@ function useAllMemberEvidences() {
   return allEvidences;
 }
 
-export function useMemberPromotions() {
+export function useMemberPromotionEvidences() {
   const allEvidences = useAllMemberEvidences();
   return useFilterEvidenceByWish(allEvidences, "promotion");
 }
 
-export function useMemberRetention() {
+export function useMemberRetentionEvidences() {
   const allEvidences = useAllMemberEvidences();
   return useFilterEvidenceByWish(allEvidences, "retention");
 }

@@ -3,15 +3,15 @@ import ActionButton from "./actionButton";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import MemberRetentionPopup from "./memberRetentionPopup";
 import pluralize from "pluralize";
-import { useMemberRetention } from "../hooks/evidence";
+import { useMemberRetentionEvidences } from "../hooks/evidence";
 
 export default function MemberRetentionTodo() {
   const [showMemberRetentionPopup, setShowMemberRetentionPopup] =
     useState(false);
 
-  const retentions = useMemberRetention();
+  const memberRetentionEvidences = useMemberRetentionEvidences();
 
-  const count = retentions?.length || 0;
+  const count = memberRetentionEvidences?.length || 0;
   if (count === 0) {
     return null;
   }
@@ -35,7 +35,7 @@ export default function MemberRetentionTodo() {
       </TodoContent>
       {showMemberRetentionPopup && (
         <MemberRetentionPopup
-          retentions={retentions}
+          retentions={memberRetentionEvidences}
           onClose={() => setShowMemberRetentionPopup(false)}
         />
       )}
