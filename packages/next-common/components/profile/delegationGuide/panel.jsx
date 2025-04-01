@@ -13,6 +13,8 @@ import { cn } from "next-common/utils";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import DelegationInfo from "./delegationInfo";
+import { useReferendaDelegationContext } from "./context/referendaDelegationContext";
 
 const ReferendaDelegatePopup = dynamicPopup(() =>
   import("next-common/components/gov2/delegatePopup"),
@@ -21,6 +23,25 @@ const ReferendaDelegatePopup = dynamicPopup(() =>
 const DemocracyDelegatePopup = dynamicPopup(() =>
   import("next-common/components/democracy/delegatePopup"),
 );
+
+function ReferendaDelegatePopupInContext({
+  onDelegateInBlock,
+  setShowDelegatePopup,
+}) {
+  const defaultTargetAddress = useProfileAddress();
+  const { fetch } = useReferendaDelegationContext();
+
+  return (
+    <ReferendaDelegatePopup
+      defaultTargetAddress={defaultTargetAddress}
+      onClose={() => setShowDelegatePopup(false)}
+      onInBlock={() => {
+        onDelegateInBlock();
+        fetch();
+      }}
+    />
+  );
+}
 
 function TargetDelegatePopup({ setShowDelegatePopup }) {
   const { pallet } = useDelegationGuideContext();
@@ -38,10 +59,9 @@ function TargetDelegatePopup({ setShowDelegatePopup }) {
 
   if (pallet === "referenda") {
     return (
-      <ReferendaDelegatePopup
-        defaultTargetAddress={defaultTargetAddress}
-        onClose={() => setShowDelegatePopup(false)}
-        onInBlock={onDelegateInBlock}
+      <ReferendaDelegatePopupInContext
+        onDelegateInBlock={onDelegateInBlock}
+        setShowDelegatePopup={setShowDelegatePopup}
       />
     );
   }
@@ -154,15 +174,22 @@ export default function DelegationGuidePanel() {
     <GreyPanel
       className={cn(
         "max-w-full p-6",
-        "text14Medium text-textSecondary",
-        "flex-row justify-start !items-start gap-x-3",
+        "text14Medium text-textSecondary flex flex-col",
         "bg-neutral100 border border-neutral300 rounded-lg shadow-100 outline-theme500",
-        isMobile && "flex-col gap-y-3",
       )}
     >
-      <PanelPrefix />
-      <PanelContent />
-      <DelegateAction />
+      <div
+        className={cn(
+          "w-full",
+          "flex flex-row justify-start !items-start gap-x-3",
+          isMobile && "flex-col gap-y-3",
+        )}
+      >
+        <PanelPrefix />
+        <PanelContent />
+        <DelegateAction />
+      </div>
+      <DelegationInfo />
     </GreyPanel>
   );
 }
