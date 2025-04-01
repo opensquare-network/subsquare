@@ -36,8 +36,8 @@ function ViewEvidence({ evidence, who }) {
       {detailOpen && (
         <EvidenceDetailPopup
           address={who}
-          rank={rankMember.rank}
-          isActive={coreMember.status.isActive}
+          rank={rankMember?.rank}
+          isActive={coreMember?.status.isActive}
           wish={evidence[0]}
           evidence={evidence[1]}
           onClose={() => setDetailOpen(false)}
@@ -54,7 +54,11 @@ function Rank({ address }) {
     [collectiveMembers, address],
   );
 
-  return <FellowshipRank rank={rankMember.rank} />;
+  if (!rankMember) {
+    return null;
+  }
+
+  return <FellowshipRank rank={rankMember?.rank} />;
 }
 
 export const rankColumn = {
