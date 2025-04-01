@@ -53,7 +53,7 @@ const TaskItem = ({ task }) => {
   return (
     <SecondaryCardDetail className="!p-4">
       <Flex className="justify-between align-top">
-        <div className="text-textPrimary text-sm flex-shrink mr-4">
+        <div className="text-textPrimary font-medium text-sm flex-shrink mr-4">
           {task.title}
         </div>
         <ReportTaskState status={task.status} />
@@ -100,10 +100,20 @@ export default function ReferendumReport() {
             "Status",
             <>
               <ReportStateIcon status={detail.status} />
-              <span className="">{detail.status}</span>
+              <span className="text14Medium text-textPrimary">
+                {detail.status}
+              </span>
             </>,
           ],
-          ["Category", detail.category],
+          [
+            "Category",
+            <>
+              <span className="text14Medium text-textPrimary">
+                {detail.category}
+              </span>
+              ,
+            </>,
+          ],
         ]}
         showFold={true}
       />

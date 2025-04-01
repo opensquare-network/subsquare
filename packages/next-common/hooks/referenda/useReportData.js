@@ -23,7 +23,6 @@ export const useReferendaReportDetail = () => {
         },
       )
       .then(async ({ result }) => {
-        setDetail(result?.[0]);
         const detail = result?.[0];
         const tasks = detail ? await getReportTask(detail.id) : [];
         setDetail({ ...detail, tasks });

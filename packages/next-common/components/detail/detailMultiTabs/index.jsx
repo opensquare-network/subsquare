@@ -63,10 +63,14 @@ export default function DetailMultiTabs({
       label: "Statistics",
       content: <div className="space-y-4">{statistics}</div>,
     },
-    report&&{
-      value:"report",
+    report && {
+      value: "report",
       label: "Report",
-      activeCount: <span className="ml-2 rounded-full py-0.5 px-2 text12Medium text-theme500 bg-theme100">new</span>,
+      activeCount: (
+        <span className="ml-1 rounded-full py-0.5 px-2 text12Medium text-theme500 bg-theme100">
+          new
+        </span>
+      ),
       content: <div className="space-y-4">{report}</div>,
     },
   ].filter(Boolean);
