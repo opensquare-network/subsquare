@@ -24,14 +24,14 @@ const fetchReferendumDetail = async (referendumIndex) => {
     )
     .then(async ({ result }) => {
       const detail = result?.[0];
-      const tasks = detail ? await fetchReferendumTasks(detail.id) : [];
+      if (!detail?.id) {
+        return null;
+      }
+      const tasks = await fetchReferendumTasks(detail.id);
       return { ...detail, tasks };
     });
 };
 const fetchReferendumTasks = async (proposalId) => {
-  if (!proposalId) {
-    return [];
-  }
   const { result: tasks } = await ogTrackerApi.fetch(
     "tasks?",
     { proposal_id: `eq.${proposalId}`, select: "*" },

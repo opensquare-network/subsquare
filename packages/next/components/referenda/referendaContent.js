@@ -12,6 +12,7 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import ReferendumCallProvider from "next-common/context/referenda/call";
+import useReferendumDetail from "next-common/hooks/referenda/useReferendumDetail";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
@@ -32,6 +33,7 @@ export function ReferendumDetailMultiTabs() {
   const info = useReferendumInfo();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
+  const referendumDetailForOGTrack = useReferendumDetail();
 
   return (
     <DetailMultiTabs
@@ -46,7 +48,11 @@ export function ReferendumDetailMultiTabs() {
       timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
       votesBubble={<Gov2ReferendaVotesBubble />}
       statistics={<ProposalAddress />}
-      report={<ReferendumReport />}
+      report={
+        referendumDetailForOGTrack.detail && (
+          <ReferendumReport detail={referendumDetailForOGTrack.detail} />
+        )
+      }
     />
   );
 }

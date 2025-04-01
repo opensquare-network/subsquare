@@ -2,16 +2,12 @@ import Tooltip from "next-common/components/tooltip";
 import Flex from "next-common/components/styled/flex";
 import KvList from "next-common/components/listInfo/kvList";
 import ExternalLink from "next-common/components/externalLink";
-import WarningInfoPanel from "next-common/components/summary/styled/warningInfoPanel";
-import useReferendumDetail from "next-common/hooks/referenda/useReferendumDetail";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import {
   SystemTaskDelivered,
   SystemTaskInProgress,
   SystemTaskFlagged,
-  SystemWarning,
-  SystemLoading,
 } from "@osn/icons/subsquare";
 
 const ReportStateIcon = ({ status }) => {
@@ -62,25 +58,7 @@ const TaskItem = ({ task }) => {
   );
 };
 
-export default function ReferendumReport() {
-  const { detail, loading } = useReferendumDetail();
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center gap-x-2 text-textTertiary text14Medium">
-        <SystemLoading className="w-5 h-5" />
-        Fetching...
-      </div>
-    );
-  }
-  if (!detail?.id) {
-    return (
-      <WarningInfoPanel className="justify-center">
-        <SystemWarning className="w-5 h-5" />
-        {"Warning: can't fetch the content."}
-      </WarningInfoPanel>
-    );
-  }
-
+export default function ReferendumReport({ detail }) {
   const externalLink = `https://app.ogtracker.io/${detail.track || "all"}/${
     detail.refnum
   }`;
@@ -99,10 +77,10 @@ export default function ReferendumReport() {
           [
             "Status",
             <>
-              <ReportStateIcon status={detail.status} />
-              <span className="text14Medium text-textPrimary">
+              <span className="text14Medium text-textPrimary mr-2">
                 {detail.status}
               </span>
+              <ReportStateIcon status={detail.status} />
             </>,
           ],
           [
@@ -111,7 +89,6 @@ export default function ReferendumReport() {
               <span className="text14Medium text-textPrimary">
                 {detail.category}
               </span>
-              ,
             </>,
           ],
         ]}
