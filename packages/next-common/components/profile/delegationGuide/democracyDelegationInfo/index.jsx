@@ -34,11 +34,12 @@ export default function DemocracyDelegationInfo() {
         <Tooltip
           content={
             <>
-              <div>
+              <span>
                 Capital:&nbsp;
                 <ValueDisplay value={votesDisplay} symbol={symbol} />
-              </div>
-              <div>Conviction:&nbsp;{conviction}x</div>
+              </span>
+              <br />
+              <span>Conviction:&nbsp;{conviction}x</span>
             </>
           }
         >

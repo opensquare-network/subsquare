@@ -14,6 +14,7 @@ import { useIsMobile } from "next-common/components/overview/accountInfo/compone
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import DelegationInfo from "./delegationInfo";
+import { useReferendaDelegationContext } from "./context/referendaDelegationContext";
 
 const ReferendaDelegatePopup = dynamicPopup(() =>
   import("next-common/components/gov2/delegatePopup"),
@@ -22,6 +23,25 @@ const ReferendaDelegatePopup = dynamicPopup(() =>
 const DemocracyDelegatePopup = dynamicPopup(() =>
   import("next-common/components/democracy/delegatePopup"),
 );
+
+function ReferendaDelegatePopupInContext({
+  onDelegateInBlock,
+  setShowDelegatePopup,
+}) {
+  const defaultTargetAddress = useProfileAddress();
+  const { fetch } = useReferendaDelegationContext();
+
+  return (
+    <ReferendaDelegatePopup
+      defaultTargetAddress={defaultTargetAddress}
+      onClose={() => setShowDelegatePopup(false)}
+      onInBlock={() => {
+        onDelegateInBlock();
+        fetch();
+      }}
+    />
+  );
+}
 
 function TargetDelegatePopup({ setShowDelegatePopup }) {
   const { pallet } = useDelegationGuideContext();
@@ -39,10 +59,9 @@ function TargetDelegatePopup({ setShowDelegatePopup }) {
 
   if (pallet === "referenda") {
     return (
-      <ReferendaDelegatePopup
-        defaultTargetAddress={defaultTargetAddress}
-        onClose={() => setShowDelegatePopup(false)}
-        onInBlock={onDelegateInBlock}
+      <ReferendaDelegatePopupInContext
+        onDelegateInBlock={onDelegateInBlock}
+        setShowDelegatePopup={setShowDelegatePopup}
       />
     );
   }

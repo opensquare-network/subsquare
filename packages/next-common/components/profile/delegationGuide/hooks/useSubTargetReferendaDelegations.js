@@ -1,76 +1,74 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import BigNumber from "bignumber.js";
 import { extractAddressAndTrackId } from "next-common/utils/gov2/utils";
 import { convictionToLockXNumber } from "next-common/utils/referendumCommon";
+import useCall from "next-common/utils/hooks/useCall";
+import { useChainSettings } from "next-common/context/chain";
+import { defaultBlockTime } from "next-common/utils/constants";
+import { sleep } from "next-common/utils";
 
 export default function useSubTargetReferendaDelegations() {
   const address = useRealAddress();
   const api = useContextApi();
   const profileAddress = useProfileAddress();
-  const [result, setResult] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [trigger, setTrigger] = useState(0);
+  const { blockTime } = useChainSettings();
+  const timer = blockTime || defaultBlockTime;
 
-  useEffect(() => {
-    if (!api || !address || !profileAddress) {
-      return;
+  const fetch = useCallback(async () => {
+    for (let i = 0; i < 3; i++) {
+      setTrigger((prev) => prev + 1);
+      await sleep(timer);
+    }
+  }, [timer]);
+
+  const { value: votingEntries, loaded } = useCall(
+    api?.query.convictionVoting.votingFor.entries,
+    [address],
+    { trigger },
+  );
+
+  const result = useMemo(() => {
+    if (!votingEntries || !profileAddress) {
+      return [];
     }
 
-    setIsLoading(true);
-    let unsub;
+    const targetDelegations = votingEntries.reduce(
+      (result, [storageKey, votingOf]) => {
+        if (votingOf.isDelegating) {
+          const asDelegating = votingOf.asDelegating;
+          const target = asDelegating.target.toString();
 
-    api.query.convictionVoting.votingFor
-      .entries(address, (votingEntries) => {
-        const targetDelegations = votingEntries.reduce(
-          (result, [storageKey, votingOf]) => {
-            if (votingOf.isDelegating) {
-              const asDelegating = votingOf.asDelegating;
-              const target = asDelegating.target.toString();
-
-              if (target !== profileAddress) {
-                return result;
-              }
-
-              const { trackId } = extractAddressAndTrackId(storageKey);
-              const balance = asDelegating.balance.toString();
-              const conviction = asDelegating.conviction.toNumber();
-              const votes = new BigNumber(balance)
-                .times(convictionToLockXNumber(conviction))
-                .toString();
-
-              result.push({
-                trackId,
-                balance,
-                conviction,
-                target,
-                votes,
-              });
-            }
-
+          if (target !== profileAddress) {
             return result;
-          },
-          [],
-        );
+          }
 
-        setResult(targetDelegations);
-        setIsLoading(false);
-      })
-      .then((unsubFn) => {
-        unsub = unsubFn;
-      })
-      .catch((error) => {
-        console.error(error);
-        setIsLoading(false);
-      });
+          const { trackId } = extractAddressAndTrackId(storageKey);
+          const balance = asDelegating.balance.toString();
+          const conviction = asDelegating.conviction.toNumber();
+          const votes = new BigNumber(balance)
+            .times(convictionToLockXNumber(conviction))
+            .toString();
 
-    return () => {
-      if (unsub) {
-        unsub();
-      }
-    };
-  }, [api, address, profileAddress]);
+          result.push({
+            trackId,
+            balance,
+            conviction,
+            target,
+            votes,
+          });
+        }
 
-  return { result, isLoading };
+        return result;
+      },
+      [],
+    );
+
+    return (targetDelegations || [])?.sort((a, b) => a.trackId - b.trackId);
+  }, [votingEntries, profileAddress]);
+
+  return { result, isLoading: !loaded, fetch };
 }

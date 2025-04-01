@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { NoDelegationInfo, CommonDelegationInfoPanel } from "../delegationInfo";
-import useSubTargetReferendaDelegations from "../hooks/useSubTargetReferendaDelegations";
 import DelegationDetailButton from "next-common/components/profile/OpenGovBio/votesPower/detail";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useReferendaDelegationContext } from "../context/referendaDelegationContext";
 
 const MyOpenGovDelegationInfoPopup = dynamicPopup(() => import("./popup"));
 
 export default function OpenGovDelegationInfo() {
-  const { result, isLoading } = useSubTargetReferendaDelegations();
+  const { result, isLoading } = useReferendaDelegationContext();
   const [detailOpen, setDetailOpen] = useState(false);
 
   if (isLoading) {
@@ -25,7 +25,7 @@ export default function OpenGovDelegationInfo() {
           suffix={<DelegationDetailButton setDetailOpen={setDetailOpen} />}
         >
           <span>
-            You are delegating your votes to this account on
+            You are delegating your votes to this account in
             <span className="text-textSecondary mx-1">{result?.length}</span>
             tracks.
           </span>
