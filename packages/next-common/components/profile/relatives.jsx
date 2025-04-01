@@ -24,7 +24,12 @@ export default function Relatives() {
         Relatives
       </Button>
       {popupVisibled && (
-        <RelativesPopup onClose={() => setPopupVisbled(false)} />
+        <RelativesPopup
+          signatoryList={[]}
+          proxiedList={[]}
+          receivedList={[]}
+          onClose={() => setPopupVisbled(false)}
+        />
       )}
     </>
   );
