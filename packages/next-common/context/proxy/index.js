@@ -64,5 +64,5 @@ export function GeneralProxiesProvider({ children }) {
 }
 
 export function useMyProxied() {
-  return useContext(ProxiesContext);
+  return useContext(ProxiesContext) || {};
 }
