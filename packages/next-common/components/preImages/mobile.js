@@ -117,7 +117,7 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
         length={
           isStatusLoaded ? (
             <span className="text-textPrimary">
-              {preimage.proposalLength?.toJSON()?.toLocaleString()}
+              {preimage.proposalLength?.toNumber()?.toLocaleString()}
             </span>
           ) : (
             <FieldLoading />
