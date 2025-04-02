@@ -10,6 +10,7 @@ import UserNode from "./userNode";
 import StatusEdge from "./statusEdge";
 import { arrowMarker } from "next-common/components/relationshipPopup/arrowMarker";
 import styled from "styled-components";
+import { calculateNodePositionsHorizontal } from "next-common/utils/calculateNodePositionsHorizontal";
 
 const nodeTypes = {
   user: UserNode,
@@ -38,7 +39,11 @@ export default function Relationship({
   nodes: initialNodes,
   edges: initialEdges,
 }) {
-  const [nodes] = useNodesState(initialNodes);
+  const calculatedNodes = calculateNodePositionsHorizontal(
+    initialNodes,
+    initialEdges,
+  );
+  const [nodes] = useNodesState(calculatedNodes);
   const [edges] = useEdgesState(initialEdges);
   return (
     <div className="h-[512px] border border-neutral300 rounded-lg overflow-hidden">

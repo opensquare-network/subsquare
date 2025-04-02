@@ -1,9 +1,9 @@
 import { Handle, Position } from "@xyflow/react";
 import {
-  DisplayUser,
   DisplayUserAddress,
   DisplayUserAvatar,
 } from "next-common/components/profile/bio";
+import AddressUser from "next-common/components/user/addressUser";
 import Tooltip from "next-common/components/tooltip";
 import { cn } from "next-common/utils";
 import Link from "next/link";
@@ -22,7 +22,13 @@ export default function UserNode({ data }) {
       <DisplayUserAvatar address={data?.address} user={{}} size={40} />
       <div className="flex-1">
         <div className="flex items-center justify-between">
-          <DisplayUser id={data?.address} className={cn("flex text14Medium")} />
+          <AddressUser
+            add={data?.address || ""}
+            className={cn("flex text14Medium")}
+            maxWidth={200}
+            showAvatar={false}
+            noTooltip
+          />
           {data.isPure && (
             <Tooltip
               content={
