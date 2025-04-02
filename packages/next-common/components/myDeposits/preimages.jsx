@@ -64,7 +64,7 @@ function createPreimageRow(
       <FieldLoading />
     ),
     isStatusLoaded ? (
-      preimage.proposalLength?.toJSON()?.toLocaleString()
+      preimage.proposalLength?.toNumber()?.toLocaleString()
     ) : (
       <FieldLoading />
     ),
@@ -347,7 +347,7 @@ function MobileListItem({
       length={
         isStatusLoaded ? (
           <span className="text-textPrimary">
-            {preimage.proposalLength?.toJSON()?.toLocaleString()}
+            {preimage.proposalLength?.toNumber()?.toLocaleString()}
           </span>
         ) : (
           <FieldLoading />

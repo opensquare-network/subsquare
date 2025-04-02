@@ -1,11 +1,10 @@
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import { useMyUnVotedReferenda } from "../context/hooks/votes";
-import { useHasMyReferendaVotesTodo } from "../hooks/useHasTodo";
 
 export default function MyReferendaVotesTodo() {
   const myUnVotedReferenda = useMyUnVotedReferenda();
-  const hasTodo = useHasMyReferendaVotesTodo();
-  if (!hasTodo) {
+
+  if (!myUnVotedReferenda?.length) {
     return null;
   }
 

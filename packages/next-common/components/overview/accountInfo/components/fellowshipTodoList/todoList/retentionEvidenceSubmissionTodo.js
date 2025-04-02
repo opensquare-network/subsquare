@@ -2,7 +2,8 @@ import { useState } from "react";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import ActionButton from "./actionButton";
-import { useHasRetentionEvidenceSubmissionTodo } from "../hooks/useHasTodo";
+import { useIsDemotionClosing } from "../context/hooks/demotion";
+import { useContextMyEvidence } from "../context/hooks/evidence";
 
 const SubmitEvidencePopup = dynamicPopup(() =>
   import(
@@ -12,8 +13,10 @@ const SubmitEvidencePopup = dynamicPopup(() =>
 
 export default function RetentionEvidenceSubmissionTodo() {
   const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
-  const hasTodo = useHasRetentionEvidenceSubmissionTodo();
-  if (!hasTodo) {
+  const isDemotionClosing = useIsDemotionClosing();
+  const { evidence } = useContextMyEvidence();
+
+  if (!isDemotionClosing || !evidence) {
     return null;
   }
 

@@ -2,7 +2,9 @@ import { useState } from "react";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import ActionButton from "./actionButton";
-import { useHasSalaryPayoutTodo } from "../hooks/useHasTodo";
+import { useContextSalaryStats } from "../context/salaryStats";
+import { useIsSalaryPayoutPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
+import { useIsImported, useIsSalaryPayout } from "../context/hooks/mine";
 
 const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
   import("next-common/components/fellowship/salary/actions/payout/popup"),
@@ -10,8 +12,12 @@ const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
 
 export default function SalaryPayoutTodo() {
   const [showPayoutPopup, setShowPayoutPopup] = useState(false);
-  const hasTodo = useHasSalaryPayoutTodo();
-  if (!hasTodo) {
+  const salaryStats = useContextSalaryStats();
+  const isInPayoutPeriod = useIsSalaryPayoutPeriod(salaryStats);
+  const isImported = useIsImported();
+  const isSalaryPayout = useIsSalaryPayout();
+
+  if (!isInPayoutPeriod || !isImported || !isSalaryPayout) {
     return null;
   }
 
