@@ -13,13 +13,34 @@ const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
 `;
 
+function UserAvatar({ address, showSignatories = false }) {
+  if (!address) {
+    return null;
+  }
+
+  const avatar = <DisplayUserAvatar address={address} user={{}} size={40} />;
+
+  if (!showSignatories) {
+    return avatar;
+  }
+
+  return (
+    <div className="relative flex">
+      {avatar}
+      <span className="text-textPrimaryContrast text12Medium inline-block rounded-xl bg-theme500 absolute bottom-0 left-1/2 -translate-x-1/2 px-[0.375rem] box-border">
+        3/4
+      </span>
+    </div>
+  );
+}
+
 export default function UserNode({ data }) {
   if (!data?.address) {
     return null;
   }
   return (
-    <NodeWrap className="bg-neutral100 p-3 rounded-xl border border-neutral300 flex gap-x-3 w-60">
-      <DisplayUserAvatar address={data?.address} user={{}} size={40} />
+    <NodeWrap className="bg-neutral100 p-3 rounded-xl border border-neutral300 flex gap-x-3 w-60 items-center">
+      <UserAvatar address={data?.address} showSignatories />
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <AddressUser
