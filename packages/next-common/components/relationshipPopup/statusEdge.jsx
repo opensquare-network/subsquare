@@ -7,11 +7,14 @@ import {
 import { DisplayUser } from "next-common/components/profile/bio";
 import { indications } from "next-common/components/relationshipPopup/indications";
 import Tooltip from "next-common/components/tooltip";
+import { rootNodeId } from "next-common/hooks/useConversionRelationshipNode";
 import styled from "styled-components";
 
 const EdgeLabel = styled.div`
   position: absolute;
 `;
+
+const lineConvergeWidth = 30;
 
 export default function StatusEdge({
   id,
@@ -25,14 +28,22 @@ export default function StatusEdge({
   source,
   target,
 }) {
-  const [edgePath, labelX, labelY] = getSmoothStepPath({
+  const onRootNodeRight = rootNodeId === source;
+  const edgePathCenterX = onRootNodeRight
+    ? sourceX + lineConvergeWidth
+    : targetX - lineConvergeWidth;
+
+  const [edgePath, labelX, labelY, offsetX, offsetY] = getSmoothStepPath({
     sourceX,
     sourceY,
     sourcePosition,
     targetX,
     targetY,
     targetPosition,
+    centerX: edgePathCenterX,
   });
+
+  // console.log(sourceX, targetX, sourcePosition, targetPosition, source, target);
 
   const edgeTheme = indications.find((item) => item.name === data?.type);
   const sourceNode = useNodesData(source);
@@ -41,6 +52,12 @@ export default function StatusEdge({
   if (!edgeTheme) {
     return null;
   }
+
+  let labelOffsetX = labelX > 0 ? labelX - offsetX : labelX + offsetX;
+  if (onRootNodeRight) {
+    labelOffsetX = labelX + offsetX - lineConvergeWidth;
+  }
+  const labelOffsetY = sourceY > 0 ? labelY + offsetY : labelY - offsetY;
 
   return (
     <>
@@ -55,7 +72,9 @@ export default function StatusEdge({
         <EdgeLabel
           className="h-5 rounded-[0.625rem] text12Medium leading-5 overflow-hidden flex border box-border items-center"
           style={{
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+            transform: `translate(-50%, -50%) translate(${
+              labelOffsetX + lineConvergeWidth / 2
+            }px,${labelOffsetY}px)`,
             pointerEvents: "all",
             borderColor: edgeTheme.color,
           }}
@@ -106,12 +125,12 @@ function TooltipsContent({ type, ...rest }) {
   return null;
 }
 
-function SignatoryTipContent({ source }) {
+function SignatoryTipContent({ source, target }) {
   return (
     <div className="flex gap-x-1 items-center">
       <DisplayUser id={source} className="flex text12Medium text-white" />
       <span>is one of the signatories of the multisig account</span>
-      <span>Vault#2</span>
+      <DisplayUser id={target} className="flex text12Medium text-white" />
     </div>
   );
 }

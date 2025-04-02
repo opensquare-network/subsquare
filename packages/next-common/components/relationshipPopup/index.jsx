@@ -9,15 +9,8 @@ export default function RelationshipPopup({
   title = "Relatives",
   className = "",
   onClose = noop,
-  signatoryList = [],
-  proxiedList = [],
-  receivedList = [],
 }) {
-  const { nodes, edges } = useConversionRelationshipNode({
-    signatoryList,
-    proxiedList,
-    receivedList,
-  });
+  const { isLoading, nodes, edges } = useConversionRelationshipNode();
 
   return (
     <Popup
@@ -25,7 +18,7 @@ export default function RelationshipPopup({
       title={title}
       onClose={onClose}
     >
-      <Relationship nodes={nodes} edges={edges} />
+      <Relationship loading={isLoading} nodes={nodes} edges={edges} />
       <Indications />
     </Popup>
   );

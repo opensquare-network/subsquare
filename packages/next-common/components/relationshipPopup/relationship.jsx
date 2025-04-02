@@ -1,15 +1,18 @@
 import {
   Background,
   ReactFlow,
-  Controls,
   useNodesState,
   useEdgesState,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import UserNode from "./userNode";
 import StatusEdge from "./statusEdge";
+import ControlTool from "./controlTool";
+import tw from "tailwind-styled-components";
 import { arrowMarker } from "next-common/components/relationshipPopup/arrowMarker";
-import styled from "styled-components";
+import { calculateNodePositionsHorizontal } from "next-common/utils/calculateNodePositionsHorizontal";
+import Loading from "next-common/components/loading";
+import { useEffect } from "react";
 
 const nodeTypes = {
   user: UserNode,
@@ -19,42 +22,72 @@ const edgeTypes = {
   statusedge: StatusEdge,
 };
 
-const ControlsStyled = styled(Controls)`
-  row-gap: 8px;
-  box-shadow: none;
-  button {
-    border-radius: 6px;
-    background-color: var(--neutral100);
-    border: 1px solid var(--neutral400);
-    box-shadow: var(--shadow100);
-    color: var(--textPrimary);
-    width: 32px;
-    height: 32px;
-    padding: 0;
-  }
+const RelationshipWraper = tw.div`
+  h-[512px]
+  border
+  border-neutral300
+  rounded-lg
+  overflow-hidden
+  bg-neutral200
 `;
 
 export default function Relationship({
   nodes: initialNodes,
   edges: initialEdges,
+  loading = false,
 }) {
-  const [nodes] = useNodesState(initialNodes);
-  const [edges] = useEdgesState(initialEdges);
+  const calculatedNodes = calculateNodePositionsHorizontal(
+    initialNodes,
+    initialEdges,
+  );
+
+  if (loading) {
+    return (
+      <RelationshipWraper className="flex items-center justify-center">
+        <Loading size={32} className="margin-auto" />
+      </RelationshipWraper>
+    );
+  }
+
   return (
-    <div className="h-[512px] border border-neutral300 rounded-lg overflow-hidden">
+    <RelationshipWraper>
+      <RelationshipFlow
+        calculatedNodes={calculatedNodes}
+        initialEdges={initialEdges}
+      />
+    </RelationshipWraper>
+  );
+}
+
+function RelationshipFlow({ calculatedNodes, initialEdges }) {
+  const [nodes, setNodes, onNodesChange] = useNodesState(calculatedNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  useEffect(() => {
+    setNodes(calculatedNodes);
+  }, [calculatedNodes, setNodes]);
+
+  useEffect(() => {
+    setEdges(initialEdges);
+  }, [initialEdges, setEdges]);
+
+  return (
+    nodes.length > 0 && (
       <ReactFlow
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
+        nodesDraggable={false}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
         attributionPosition="bottom-left"
-        style={{ backgroundColor: "var(--neutral200)" }}
       >
         <Background />
-        <ControlsStyled position="bottom-right" showInteractive={false} />
+        <ControlTool />
         {arrowMarker}
       </ReactFlow>
-    </div>
+    )
   );
 }
