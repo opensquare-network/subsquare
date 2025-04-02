@@ -3,15 +3,14 @@ import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import { useDemotionExpiredMembers } from "../context/hooks/expired";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import ActionButton from "./actionButton";
-import { useHasDemotionExpirationTodo } from "../hooks/useHasTodo";
 
 const BatchBumpPopup = dynamicPopup(() => import("./bumpAllPopup"));
 
 export default function DemotionExpirationTodo() {
   const [showBumpAllPopup, setShowBumpAllPopup] = useState(false);
   const { members } = useDemotionExpiredMembers();
-  const hasTodo = useHasDemotionExpirationTodo();
-  if (!hasTodo) {
+
+  if (!members?.length) {
     return null;
   }
 
