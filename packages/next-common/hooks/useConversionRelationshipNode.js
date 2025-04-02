@@ -2,10 +2,10 @@ import {
   useFetchMyProfileProxies,
   useFetchReceivedProfileProxies,
 } from "next-common/hooks/profile/useFetchProfileProxies";
-import { useParams } from "next/navigation";
 import useMultisigAddress from "next-common/hooks/useMultisigAddress";
 import useSignatoryMultisig from "next-common/hooks/useSignatoryMultisig";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
 
 export const rootNodeId = "rootNode";
 
@@ -162,8 +162,7 @@ function createRootNode(address, multisigAddress) {
 }
 
 export default function useConversionRelationshipNode() {
-  const { params } = useParams();
-  const [address] = params ?? {};
+  const address = useProfileAddress();
   const proxies = useFetchMyProfileProxies();
   const receivedProxies = useFetchReceivedProfileProxies();
   const multisigAddress = useMultisigAddress(address);
