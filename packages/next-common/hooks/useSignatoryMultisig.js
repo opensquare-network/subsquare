@@ -32,8 +32,8 @@ export default function useSignatoryMultisig(address) {
       return;
     }
 
-    const { multisigAddress } = data || {};
-    setResult(multisigAddress);
+    const { multisigAddresses } = data || {};
+    setResult(multisigAddresses);
   }, [address, data, loading]);
 
   return {
