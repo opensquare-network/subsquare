@@ -9,7 +9,12 @@ function DelegationGuideWithNullGuard({ children }) {
   const realAddress = useRealAddress();
   const profileAddress = useProfileAddress();
 
-  if (realAddress === profileAddress || isLoading || isNil(data)) {
+  if (
+    realAddress === profileAddress ||
+    isLoading ||
+    isNil(data) ||
+    (isNil(data?.longDescription) && isNil(data?.shortDescription))
+  ) {
     return null;
   }
 
