@@ -3,6 +3,7 @@ import { useDelegationGuideContext } from "./context/delegationGuideContext";
 import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { isSameAddress } from "next-common/utils";
 
 function DelegationGuideWithNullGuard({ children }) {
   const { data, isLoading } = useDelegationGuideContext();
@@ -10,7 +11,7 @@ function DelegationGuideWithNullGuard({ children }) {
   const profileAddress = useProfileAddress();
 
   if (
-    realAddress === profileAddress ||
+    isSameAddress(realAddress, profileAddress) ||
     isLoading ||
     isNil(data) ||
     (isNil(data?.longDescription) && isNil(data?.shortDescription))
