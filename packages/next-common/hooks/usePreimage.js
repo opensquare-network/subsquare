@@ -101,17 +101,18 @@ export default function usePreimage(hashOrBounded) {
     () => [
       resultPreimageFor
         ? optBytes
-          ? createResult(resultPreimageFor, optBytes)
+          ? createResult(api, resultPreimageFor, optBytes)
           : resultPreimageFor
         : resultPreimageHash
         ? inlineData
-          ? createResult(resultPreimageHash, inlineData)
+          ? createResult(api, resultPreimageHash, inlineData)
           : resultPreimageHash
         : undefined,
       isStatusLoaded,
       isBytesLoaded,
     ],
     [
+      api,
       inlineData,
       optBytes,
       resultPreimageHash,
