@@ -38,7 +38,7 @@ function UserAvatar({ address, badge }) {
 const HandleWraper = tw(Handle)`
 !min-w-0 !w-0 !border-0
 ${(p) => {
-  let topClass = p.top ? "!top-1/3" : "!top-2/3";
+  let topClass = p.location === "top" ? "!top-1/3" : "!top-2/3";
   let isOnlyHandle = p.size <= 1;
   return isOnlyHandle ? "!top-1/2" : topClass;
 }}
@@ -100,7 +100,7 @@ export default function UserNode({ data }) {
         id="targetProxy"
         size={targetHandleTypeSize}
         position={Position.Left}
-        top
+        location="top"
       />
       <HandleWraper
         type="target"
@@ -113,7 +113,7 @@ export default function UserNode({ data }) {
         size={sourceHandleTypeSize}
         id="sourceProxy"
         position={Position.Right}
-        top
+        location="top"
       />
       <HandleWraper
         type="source"

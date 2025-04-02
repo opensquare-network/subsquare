@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const ArrowRight = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.ArrowRight),
@@ -10,7 +11,7 @@ const ArrowRight = dynamic(
 const SystemRelatives = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemRelatives),
 );
-const RelativesPopup = dynamic(() => import("../relationshipPopup"));
+const RelativesPopup = dynamicPopup(() => import("../relationshipPopup"));
 
 function RelativesWithNullGuard({ children }) {
   const chain = useChain();
