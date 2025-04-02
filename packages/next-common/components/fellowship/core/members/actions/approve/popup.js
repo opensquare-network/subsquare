@@ -99,9 +99,7 @@ function PopupContent({ member }) {
       </AdvanceSettings>
       <TxSubmissionButton
         disabled={isLoading || referendaAlreadyCreated}
-        getTxFunc={() => {
-          return submitTxFunc;
-        }}
+        getTxFunc={submitTxFunc}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, referendaPallet, "Submitted");
           if (!eventData) {

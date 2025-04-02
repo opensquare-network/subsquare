@@ -72,7 +72,7 @@ function PopupContent({ member }) {
       return;
     }
 
-    return submitTxFunc;
+    return await submitTxFunc();
   }, [toRank, submitTxFunc, dispatch]);
 
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(

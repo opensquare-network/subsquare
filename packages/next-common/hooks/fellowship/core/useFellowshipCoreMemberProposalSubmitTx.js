@@ -14,6 +14,7 @@ export function useFellowshipCoreMemberProposalSubmitTx({
   enactment,
   checkDecisionDeposit = false,
   checkVoteAye = false,
+  voteAye = true,
 } = {}) {
   const api = useContextApi();
 
@@ -21,7 +22,7 @@ export function useFellowshipCoreMemberProposalSubmitTx({
   const referendaPallet = useReferendaFellowshipPallet();
   const collectivePallet = useRankedCollectivePallet();
 
-  const getTxFunc = useCallback(async () => {
+  return useCallback(async () => {
     if (!api || !action || !who || !rank) {
       return;
     }
@@ -43,7 +44,7 @@ export function useFellowshipCoreMemberProposalSubmitTx({
         checkDecisionDeposit &&
           api.tx[referendaPallet].placeDecisionDeposit(targetReferendumIndex),
         checkVoteAye &&
-          api.tx[collectivePallet].vote(targetReferendumIndex, true),
+          api.tx[collectivePallet].vote(targetReferendumIndex, voteAye),
       ].filter(Boolean);
 
       return api.tx.utility.batch([submitTx, ...optionsTxs]);
@@ -61,8 +62,7 @@ export function useFellowshipCoreMemberProposalSubmitTx({
     enactment,
     checkDecisionDeposit,
     checkVoteAye,
+    voteAye,
     collectivePallet,
   ]);
-
-  return getTxFunc();
 }

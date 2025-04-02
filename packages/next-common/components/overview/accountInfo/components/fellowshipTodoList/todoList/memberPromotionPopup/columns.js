@@ -6,6 +6,9 @@ import { useContextCollectivesMembers } from "../../context/collectivesMember";
 import { useContextCoreMembers } from "../../context/coreMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import FellowshipRank from "next-common/components/fellowship/rank";
+import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
+import CreateReferendumAndVoteButton from "./createReferendumAndVoteButton";
+import useCollectiveMember from "../../hooks/useCollectiveMember";
 
 const EvidenceDetailPopup = dynamicPopup(() =>
   import("next-common/components/collectives/core/member/evidence"),
@@ -48,17 +51,12 @@ function ViewEvidence({ evidence, who }) {
 }
 
 function Rank({ address }) {
-  const { members: collectiveMembers } = useContextCollectivesMembers();
-  const rankMember = useMemo(
-    () => collectiveMembers.find((m) => m.address === address),
-    [collectiveMembers, address],
-  );
-
-  if (!rankMember) {
+  const member = useCollectiveMember(address);
+  if (!member) {
     return null;
   }
 
-  return <FellowshipRank rank={rankMember?.rank} />;
+  return <FellowshipRank rank={member?.rank} />;
 }
 
 export const rankColumn = {
@@ -96,6 +94,30 @@ export const referendumColumn = {
       >
         #{item.referendumIndex}
       </Link>
+    );
+  },
+};
+
+export const voteColumn = {
+  key: "vote",
+  name: "Vote",
+  style: { width: "80px" },
+  render: (item) => {
+    return (
+      <div className="flex gap-[12px]">
+        <CreateReferendumAndVoteButton
+          referendumIndex={item.referendumIndex}
+          voteAye={false}
+        >
+          <SystemVoteNay className="w-[16px]" />
+        </CreateReferendumAndVoteButton>
+        <CreateReferendumAndVoteButton
+          referendumIndex={item.referendumIndex}
+          voteAye={true}
+        >
+          <SystemVoteAye className="w-[16px]" />
+        </CreateReferendumAndVoteButton>
+      </div>
     );
   },
 };
