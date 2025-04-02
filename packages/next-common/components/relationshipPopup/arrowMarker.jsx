@@ -6,6 +6,7 @@ const generateArrowMarker = (id, color) => {
     <marker
       id={id}
       viewBox="0 0 10 10"
+      key={id}
       refX="10"
       refY="5"
       markerUnits="strokeWidth"
