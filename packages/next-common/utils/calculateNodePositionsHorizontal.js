@@ -2,9 +2,9 @@ export function calculateNodePositionsHorizontal(
   nodes,
   edges,
   nodeWidth = 240,
-  nodeHeight = 100,
-  horizontalGap = 150,
-  verticalGap = 75,
+  nodeHeight = 80,
+  horizontalGap = 240,
+  verticalGap = 20,
 ) {
   const nodeMap = createNodeMap(nodes);
   const levels = assignLevels(nodes, edges);

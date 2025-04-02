@@ -2865,10 +2865,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.179.0":
-  version: 1.179.0
-  resolution: "@osn/icons@npm:1.179.0"
-  checksum: 760f09d892dbf557ab1a3b176c435fb4fea5e374def9101cd81c51b1f62fdec3ec28c1e1fc80b8daca41e3bfb4fa6dd0bfd75de1d3bcf5166d104a22c53e9eac
+"@osn/icons@npm:^1.181.0":
+  version: 1.181.0
+  resolution: "@osn/icons@npm:1.181.0"
+  checksum: 7c2f637351aededf72a97fbe1953681a0158f2e6eeae2bef91558bccbd07bdd5ad493011411ec24219c742feac8dbc7bbf28295e4dc3de965f10c422590aecf1
   languageName: node
   linkType: hard
 
@@ -13001,7 +13001,7 @@ __metadata:
     "@mimirdev/apps-inject": ^0.3.0
     "@mimirdev/apps-sdk": ^0.2.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.179.0
+    "@osn/icons": ^1.181.0
     "@osn/polkadot-react-identicon": ^1.0.10
     "@osn/previewer": ^2.0.0
     "@osn/provider-options": 1.1.0
