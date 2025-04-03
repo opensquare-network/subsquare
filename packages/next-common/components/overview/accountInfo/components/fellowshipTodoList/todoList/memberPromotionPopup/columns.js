@@ -10,7 +10,8 @@ import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 import CreateReferendumAndVoteButton from "./createReferendumAndVoteButton";
 import useCollectiveMember from "../../hooks/useCollectiveMember";
 import Tooltip from "next-common/components/tooltip";
-import useSubAddressReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
+import { useSubFellowshipVote } from "next-common/utils/hooks/fellowship/useFellowshipVote";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const EvidenceDetailPopup = dynamicPopup(() =>
   import("next-common/components/collectives/core/member/evidence"),
@@ -104,8 +105,9 @@ function VoteButtons({ who, referendumIndex, action }) {
   const member = useCollectiveMember(who);
   const rank = member?.rank;
   const hasReferendum = !isNil(referendumIndex);
-  const myVote = useSubAddressReferendaVote(0, referendumIndex, who); //TODO: use trackId
-  const isVoted = !!myVote;
+  const realAddress = useRealAddress();
+  const { result: myVote } = useSubFellowshipVote(referendumIndex, realAddress);
+  const isVoted = myVote?.isSome;
 
   let tooltipContent = "";
   let disabled = false;
