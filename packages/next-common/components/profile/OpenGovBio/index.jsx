@@ -22,6 +22,13 @@ const DelegationGuide = dynamic(
   },
 );
 
+const Relatives = dynamic(
+  () => import("next-common/components/profile/relatives"),
+  {
+    ssr: false,
+  },
+);
+
 export function AccountInfoPanel({ address, id, user }) {
   const isMobile = useIsMobile();
   const shouldAlignCenter = isMobile || !address;
@@ -55,6 +62,8 @@ export function AccountInfoPanel({ address, id, user }) {
               : "flex-1 !items-start",
           )}
         />
+
+        <Relatives />
 
         <FellowshipTagInfoWrapper>
           <FellowshipTagInfo address={address} />

@@ -166,3 +166,9 @@ export const NAV_MENU_TYPE = {
   subspace: "subspace",
   archived: "archived",
 };
+
+export const RELATIONSHIP_NODE_TYPE = {
+  Signatory: "Signatory",
+  Proxied: "Proxied",
+  Received: "Received",
+};
