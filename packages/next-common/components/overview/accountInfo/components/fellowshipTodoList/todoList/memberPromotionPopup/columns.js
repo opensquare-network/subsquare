@@ -118,10 +118,10 @@ function VoteButtons({ who, referendumIndex, action }) {
       tooltipContent = "You have already voted";
       disabled = true;
     }
-  } else if (rank === 0 && action === "approve") {
+  } else if (rank <= 0 && action === "approve") {
     tooltipContent = "Can't retain for rank 0";
     disabled = true;
-  } else if (rank === 6 && action === "promote") {
+  } else if (rank >= 6 && action === "promote") {
     tooltipContent =
       "Cannot promote because the member is already at the highest rank";
     disabled = true;
