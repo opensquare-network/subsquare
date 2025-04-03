@@ -5,7 +5,6 @@ import {
 } from "next-common/components/profile/bio";
 import AddressUser from "next-common/components/user/addressUser";
 import Tooltip from "next-common/components/tooltip";
-import { cn } from "next-common/utils";
 import Link from "next/link";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
@@ -53,6 +52,7 @@ export default function UserNode({ data }) {
   const targetHandleTypeSize = new Set(
     targetConnections.map((item) => item.targetHandle),
   ).size;
+
   if (!data?.address) {
     return null;
   }
@@ -64,7 +64,7 @@ export default function UserNode({ data }) {
         <div className="flex items-center justify-between h-6">
           <AddressUser
             add={data?.address || ""}
-            className={cn("flex text14Medium text-textPrimary")}
+            className={"flex text14Medium text-textPrimary"}
             maxWidth={200}
             showAvatar={false}
             noTooltip
