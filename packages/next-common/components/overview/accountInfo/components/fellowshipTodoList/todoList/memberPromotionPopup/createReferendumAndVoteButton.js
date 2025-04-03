@@ -6,7 +6,7 @@ import useCollectiveMember from "../../hooks/useCollectiveMember";
 import { useFellowshipCoreMemberProposalSubmitTx } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 import { useChain } from "next-common/context/chain";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import { isNil } from "lodash-es";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
@@ -34,13 +34,14 @@ function CreateReferendumAndVoteButtonImpl({
   const member = useCollectiveMember(address);
   const trackName = useTrackNameFromAction(action, member?.rank);
   const collectivePallet = useRankedCollectivePallet();
+  const [enactment] = useState({ after: 100 });
 
   const createAndVoteTxFunc = useFellowshipCoreMemberProposalSubmitTx({
     rank: member?.rank,
     who: address,
     action,
     trackName,
-    enactment: null,
+    enactment,
     checkDecisionDeposit: true,
     checkVoteAye: true,
     voteAye,
