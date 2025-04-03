@@ -128,6 +128,7 @@ function createSignatoryMultisigRelationship(rootNode, signatoryMultisig = []) {
     edgeIdPrefix: "root-signatoryMultisig",
     nodeDataMapper: (item) => ({
       address: item.address,
+      badge: createBadge(item),
     }),
     edgeDataMapper: () => ({
       type: RELATIONSHIP_NODE_TYPE.Signatory,
@@ -142,13 +143,6 @@ function createSignatoryMultisigRelationship(rootNode, signatoryMultisig = []) {
 }
 
 function createRootNode(address, multisigAddress) {
-  let badge = "";
-  const multisigResult = multisigAddress.result;
-
-  if (multisigResult) {
-    badge = `${multisigResult.threshold}/${multisigResult.signatories.length}`;
-  }
-
   return {
     id: rootNodeId,
     sourcePosition: "right",
@@ -156,9 +150,17 @@ function createRootNode(address, multisigAddress) {
     type: "user",
     data: {
       address,
-      badge,
+      badge: createBadge(multisigAddress.result),
     },
   };
+}
+
+function createBadge(multisig) {
+  let badge = "";
+  if (multisig && multisig.signatories) {
+    badge = `${multisig.threshold}/${multisig.signatories.length}`;
+  }
+  return badge;
 }
 
 export default function useConversionRelationshipNode() {
