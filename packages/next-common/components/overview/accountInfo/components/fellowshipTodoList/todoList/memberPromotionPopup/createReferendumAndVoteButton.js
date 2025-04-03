@@ -19,7 +19,10 @@ function useTrackNameFromAction(action, currentMemberRank) {
   if (action === "approve") {
     return getRetainTrackNameFromRank(chain, currentMemberRank);
   } else if (action === "promote") {
-    return getPromoteTrackNameFromRank(chain, currentMemberRank + 1);
+    return getPromoteTrackNameFromRank(
+      chain,
+      Math.min(currentMemberRank + 1, 6),
+    );
   }
 
   throw new Error("Unsupported action");
