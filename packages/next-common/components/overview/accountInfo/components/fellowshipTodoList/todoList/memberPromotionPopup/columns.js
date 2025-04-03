@@ -102,10 +102,12 @@ export const referendumColumn = {
 };
 
 function VoteButtons({ who, referendumIndex, action }) {
-  const member = useCollectiveMember(who);
-  const rank = member?.rank;
-  const hasReferendum = !isNil(referendumIndex);
   const realAddress = useRealAddress();
+  const me = useCollectiveMember(realAddress);
+  const myRank = me?.rank;
+  const targetMember = useCollectiveMember(who);
+  const rank = targetMember?.rank;
+  const hasReferendum = !isNil(referendumIndex);
   const { result: myVote } = useSubFellowshipVote(referendumIndex, realAddress);
   const isVoted = myVote?.isSome;
 
@@ -116,7 +118,7 @@ function VoteButtons({ who, referendumIndex, action }) {
       tooltipContent = "You have already voted";
       disabled = true;
     }
-  } else if (rank >= 3) {
+  } else if (myRank >= 3) {
     tooltipContent = "Create a new referendum and vote";
     disabled = false;
   } else {
