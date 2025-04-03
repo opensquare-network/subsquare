@@ -130,6 +130,7 @@ function createMultisigAddressRelationship(rootNode, address = []) {
     edgeIdPrefix: "root-multisigAddress",
     nodeDataMapper: (item) => ({
       address: item,
+      badge: <BadgeInfo address={item} />,
     }),
     edgeDataMapper: () => ({
       type: RELATIONSHIP_NODE_TYPE.Signatory,
