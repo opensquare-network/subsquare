@@ -26,7 +26,7 @@ import {
 import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
 import { rankToRetainTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
-import { useFellowshipCoreMemberProposalSubmitTx } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 
 export function getRetainTrackNameFromRank(chain, rank) {
   switch (chain) {
@@ -57,7 +57,7 @@ function PopupContent({ member }) {
   const { value: referendaOptions, component: referendaOptionsField } =
     useReferendaOptionsField(decisionDeposit);
 
-  const submitTxFunc = useFellowshipCoreMemberProposalSubmitTx({
+  const getTxFunc = useFellowshipProposalSubmissionTxFunc({
     rank: atRank,
     who: memberAddress,
     action,
@@ -99,7 +99,7 @@ function PopupContent({ member }) {
       </AdvanceSettings>
       <TxSubmissionButton
         disabled={isLoading || referendaAlreadyCreated}
-        getTxFunc={submitTxFunc}
+        getTxFunc={getTxFunc}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, referendaPallet, "Submitted");
           if (!eventData) {

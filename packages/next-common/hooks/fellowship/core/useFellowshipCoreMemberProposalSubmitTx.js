@@ -7,7 +7,7 @@ import {
 } from "next-common/context/collectives/collectives";
 import { useCallback } from "react";
 
-export function useFellowshipCoreMemberProposalSubmitTx({
+export function useFellowshipProposalSubmissionTxFunc({
   rank,
   who,
   action,

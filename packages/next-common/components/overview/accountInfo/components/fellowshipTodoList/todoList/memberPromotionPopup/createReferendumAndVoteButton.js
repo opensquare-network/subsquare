@@ -1,7 +1,7 @@
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SecondaryButton from "next-common/lib/button/secondary";
-import { useFellowshipCoreMemberProposalSubmitTx } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 import { useChain } from "next-common/context/chain";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
 import { useCallback, useState } from "react";
@@ -41,7 +41,7 @@ function CreateReferendumAndVoteButtonImpl({
   const [enactment] = useState({ after: 100 });
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
 
-  const createAndVoteTxFunc = useFellowshipCoreMemberProposalSubmitTx({
+  const getCreateAndVoteTxFunc = useFellowshipProposalSubmissionTxFunc({
     rank,
     who: address,
     action,
@@ -57,7 +57,7 @@ function CreateReferendumAndVoteButtonImpl({
   }, [api, collectivePallet, referendumIndex, voteAye]);
 
   const { doSubmit: doSubmitCreateAndVote } = useTxSubmission({
-    getTxFunc: createAndVoteTxFunc,
+    getTxFunc: getCreateAndVoteTxFunc,
     onInBlock: () => {
       dispatch(newSuccessToast("Vote successfully"));
       fetchActiveReferenda();
