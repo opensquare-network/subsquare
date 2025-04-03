@@ -1,8 +1,6 @@
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import { useUser } from "next-common/context/user";
 import SecondaryButton from "next-common/lib/button/secondary";
-import useCollectiveMember from "../../hooks/useCollectiveMember";
 import { useFellowshipCoreMemberProposalSubmitTx } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 import { useChain } from "next-common/context/chain";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
@@ -11,6 +9,9 @@ import { useContextApi } from "next-common/context/api";
 import { isNil } from "lodash-es";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
+import { cn } from "next-common/utils";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 function useTrackNameFromAction(action, currentMemberRank) {
   const chain = useChain();
@@ -25,19 +26,21 @@ function useTrackNameFromAction(action, currentMemberRank) {
 
 function CreateReferendumAndVoteButtonImpl({
   address,
+  rank,
   referendumIndex,
   action = "promote",
   voteAye,
+  disabled,
   children,
 }) {
+  const dispatch = useDispatch();
   const api = useContextApi();
-  const member = useCollectiveMember(address);
-  const trackName = useTrackNameFromAction(action, member?.rank);
+  const trackName = useTrackNameFromAction(action, rank);
   const collectivePallet = useRankedCollectivePallet();
   const [enactment] = useState({ after: 100 });
 
   const createAndVoteTxFunc = useFellowshipCoreMemberProposalSubmitTx({
-    rank: member?.rank,
+    rank,
     who: address,
     action,
     trackName,
@@ -53,15 +56,22 @@ function CreateReferendumAndVoteButtonImpl({
 
   const { doSubmit: doSubmitCreateAndVote } = useTxSubmission({
     getTxFunc: createAndVoteTxFunc,
+    onInBlock: () => {
+      dispatch(newSuccessToast("Vote successfully"));
+    },
   });
 
   const { doSubmit: doSubmitVote } = useTxSubmission({
     getTxFunc: voteTxFunc,
+    onInBlock: () => {
+      dispatch(newSuccessToast("Vote successfully"));
+    },
   });
 
   return (
     <SecondaryButton
-      className="p-[6px]"
+      disabled={disabled}
+      className={cn("p-[6px]", disabled && "[&_svg_path]:stroke-textDisabled")}
       size="small"
       onClick={isNil(referendumIndex) ? doSubmitCreateAndVote : doSubmitVote}
     >
@@ -70,26 +80,10 @@ function CreateReferendumAndVoteButtonImpl({
   );
 }
 
-export default function CreateReferendumAndVoteButton({
-  address,
-  referendumIndex,
-  action,
-  voteAye,
-  children,
-}) {
-  const user = useUser();
-  if (!user) {
-    return null; //TODO:
-  }
-
+export default function CreateReferendumAndVoteButton({ children, ...props }) {
   return (
     <SignerPopupWrapper>
-      <CreateReferendumAndVoteButtonImpl
-        address={address}
-        referendumIndex={referendumIndex}
-        action={action}
-        voteAye={voteAye}
-      >
+      <CreateReferendumAndVoteButtonImpl {...props}>
         {children}
       </CreateReferendumAndVoteButtonImpl>
     </SignerPopupWrapper>

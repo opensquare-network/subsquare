@@ -9,6 +9,8 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 import CreateReferendumAndVoteButton from "./createReferendumAndVoteButton";
 import useCollectiveMember from "../../hooks/useCollectiveMember";
+import Tooltip from "next-common/components/tooltip";
+import useSubAddressReferendaVote from "next-common/hooks/referenda/useSubMyReferendaVote";
 
 const EvidenceDetailPopup = dynamicPopup(() =>
   import("next-common/components/collectives/core/member/evidence"),
@@ -99,24 +101,54 @@ export const referendumColumn = {
 };
 
 function VoteButtons({ who, referendumIndex, action }) {
+  const member = useCollectiveMember(who);
+  const rank = member?.rank;
+  const hasReferendum = !isNil(referendumIndex);
+  const myVote = useSubAddressReferendaVote(0, referendumIndex, who); //TODO: use trackId
+  const isVoted = !!myVote;
+
+  let tooltipContent = "";
+  let disabled = false;
+  if (hasReferendum) {
+    if (isVoted) {
+      tooltipContent = "You have already voted";
+      disabled = true;
+    }
+  } else if (rank >= 3) {
+    tooltipContent = "Create a new referendum and vote";
+    disabled = false;
+  } else {
+    tooltipContent = "Only rank >=3 can create a referendum and then vote";
+    disabled = true;
+  }
+
   return (
     <div className="flex gap-[12px]">
-      <CreateReferendumAndVoteButton
-        address={who}
-        referendumIndex={referendumIndex}
-        action={action}
-        voteAye={false}
-      >
-        <SystemVoteNay className="w-[16px]" />
-      </CreateReferendumAndVoteButton>
-      <CreateReferendumAndVoteButton
-        address={who}
-        referendumIndex={referendumIndex}
-        action={action}
-        voteAye={true}
-      >
-        <SystemVoteAye className="w-[16px]" />
-      </CreateReferendumAndVoteButton>
+      <Tooltip content={tooltipContent}>
+        <CreateReferendumAndVoteButton
+          address={who}
+          rank={rank}
+          referendumIndex={referendumIndex}
+          action={action}
+          voteAye={false}
+          disabled={disabled}
+        >
+          <SystemVoteNay className="w-[16px]" />
+        </CreateReferendumAndVoteButton>
+      </Tooltip>
+
+      <Tooltip content={tooltipContent}>
+        <CreateReferendumAndVoteButton
+          address={who}
+          rank={rank}
+          referendumIndex={referendumIndex}
+          action={action}
+          voteAye={true}
+          disabled={disabled}
+        >
+          <SystemVoteAye className="w-[16px]" />
+        </CreateReferendumAndVoteButton>
+      </Tooltip>
     </div>
   );
 }
