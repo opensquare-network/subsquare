@@ -33,7 +33,7 @@ export default function StatusEdge({
     ? sourceX + lineConvergeWidth
     : targetX - lineConvergeWidth;
 
-  const [edgePath, labelX, labelY, offsetX, offsetY] = getSmoothStepPath({
+  const [edgePath, labelX] = getSmoothStepPath({
     sourceX,
     sourceY,
     sourcePosition,
@@ -51,11 +51,12 @@ export default function StatusEdge({
     return null;
   }
 
-  let labelOffsetX = labelX > 0 ? labelX - offsetX : labelX + offsetX;
+  let labelOffsetX = targetX - sourceX / 2 - lineConvergeWidth / 2;
+  let labelOffsetY = sourceY;
   if (onRootNodeRight) {
-    labelOffsetX = labelX + offsetX - lineConvergeWidth;
+    labelOffsetX = targetX - sourceX + labelX / 2 - lineConvergeWidth / 2;
+    labelOffsetY = targetY;
   }
-  const labelOffsetY = sourceY > 0 ? labelY + offsetY : labelY - offsetY;
 
   return (
     <>
@@ -74,7 +75,7 @@ export default function StatusEdge({
               labelOffsetX + lineConvergeWidth / 2
             }px,${labelOffsetY}px)`,
             pointerEvents: "all",
-            borderColor: edgeTheme.color,
+            backgroundColor: edgeTheme.color,
           }}
         >
           <Tooltip

@@ -3,6 +3,8 @@ import {
   ReactFlow,
   useNodesState,
   useEdgesState,
+  ReactFlowProvider,
+  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import UserNode from "./userNode";
@@ -50,22 +52,26 @@ export default function Relationship({
   }
 
   return (
-    <RelationshipWraper>
-      <RelationshipFlow
-        calculatedNodes={calculatedNodes}
-        initialEdges={initialEdges}
-      />
-    </RelationshipWraper>
+    <ReactFlowProvider>
+      <RelationshipWraper>
+        <RelationshipFlow
+          calculatedNodes={calculatedNodes}
+          initialEdges={initialEdges}
+        />
+      </RelationshipWraper>
+    </ReactFlowProvider>
   );
 }
 
 function RelationshipFlow({ calculatedNodes, initialEdges }) {
+  const reactFlow = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState(calculatedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   useEffect(() => {
     setNodes(calculatedNodes);
-  }, [calculatedNodes, setNodes]);
+    reactFlow.fitView();
+  }, [calculatedNodes, setNodes, reactFlow]);
 
   useEffect(() => {
     setEdges(initialEdges);
