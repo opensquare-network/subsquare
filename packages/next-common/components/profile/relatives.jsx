@@ -24,7 +24,7 @@ function RelativesWithNullGuard({ children }) {
 }
 
 export default function Relatives() {
-  const [popupVisibled, setPopupVisbled] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   return (
     <RelativesWithNullGuard>
@@ -33,13 +33,11 @@ export default function Relatives() {
         className="border-neutral400 text-textPrimary mt-4"
         iconRight={<ArrowRight className="w-4 h-4 text-textTertiary" />}
         iconLeft={<SystemRelatives className="w-4 h-4 text-textTertiary" />}
-        onClick={() => setPopupVisbled(true)}
+        onClick={() => setIsPopupOpen(true)}
       >
         Relatives
       </Button>
-      {popupVisibled && (
-        <RelativesPopup onClose={() => setPopupVisbled(false)} />
-      )}
+      {isPopupOpen && <RelativesPopup onClose={() => setIsPopupOpen(false)} />}
     </RelativesWithNullGuard>
   );
 }
