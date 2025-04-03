@@ -54,7 +54,7 @@ export default function StatusEdge({
   let labelOffsetX = targetX - sourceX / 2 - lineConvergeWidth / 2;
   let labelOffsetY = sourceY;
   if (onRootNodeRight) {
-    labelOffsetX = targetX - sourceX + labelX / 2 - lineConvergeWidth / 2;
+    labelOffsetX = targetX - (targetX - labelX) / 2 - lineConvergeWidth / 2;
     labelOffsetY = targetY;
   }
 

@@ -64,7 +64,7 @@ export default function UserNode({ data }) {
         <div className="flex items-center justify-between h-6">
           <AddressUser
             add={data?.address || ""}
-            className={cn("flex text14Medium")}
+            className={cn("flex text14Medium text-textPrimary")}
             maxWidth={200}
             showAvatar={false}
             noTooltip

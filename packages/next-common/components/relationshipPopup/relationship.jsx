@@ -15,6 +15,7 @@ import { arrowMarker } from "next-common/components/relationshipPopup/arrowMarke
 import { calculateNodePositionsHorizontal } from "next-common/utils/calculateNodePositionsHorizontal";
 import Loading from "next-common/components/loading";
 import { useEffect } from "react";
+import { useTheme } from "styled-components";
 
 const nodeTypes = {
   user: UserNode,
@@ -64,6 +65,7 @@ export default function Relationship({
 }
 
 function RelationshipFlow({ calculatedNodes, initialEdges }) {
+  const { isDark } = useTheme();
   const reactFlow = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState(calculatedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -85,6 +87,7 @@ function RelationshipFlow({ calculatedNodes, initialEdges }) {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
+        colorMode={isDark ? "dark" : "light"}
         nodesDraggable={false}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
