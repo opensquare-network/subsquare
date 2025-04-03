@@ -62,7 +62,6 @@ function createProxiesRelationship(rootNode, proxies = []) {
     nodeDataMapper: (item) => ({
       address: item.delegatee,
       value: item.type,
-      isPure: item.isPure,
     }),
     edgeDataMapper: (data) => ({
       type: RELATIONSHIP_NODE_TYPE.Proxied,
