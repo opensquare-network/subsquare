@@ -84,9 +84,9 @@ function TodoListWithDataLoaded() {
       </OnlyCoreMember>
       <DemotionExpirationTodo />
       <CandidateDemotionExpirationTodo />
-      <MemberPromotionTodo />
-      <MemberRetentionTodo />
       <OnlyCollectivesMember>
+        <MemberPromotionTodo />
+        <MemberRetentionTodo />
         <SalaryRegistrationTodo />
         <SalaryPayoutTodo />
         <MyReferendaVotesTodo />
