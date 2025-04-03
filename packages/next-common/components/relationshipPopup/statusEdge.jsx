@@ -43,8 +43,6 @@ export default function StatusEdge({
     centerX: edgePathCenterX,
   });
 
-  // console.log(sourceX, targetX, sourcePosition, targetPosition, source, target);
-
   const edgeTheme = indications.find((item) => item.name === data?.type);
   const sourceNode = useNodesData(source);
   const targetNode = useNodesData(target);

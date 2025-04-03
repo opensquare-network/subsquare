@@ -61,7 +61,7 @@ export default function UserNode({ data }) {
     <NodeWrap className="bg-neutral100 p-3 rounded-xl border border-neutral300 flex gap-x-3 w-60 items-center">
       <UserAvatar address={data?.address} badge={data.badge} />
       <div className="flex-1">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between h-6">
           <AddressUser
             add={data?.address || ""}
             className={cn("flex text14Medium")}
