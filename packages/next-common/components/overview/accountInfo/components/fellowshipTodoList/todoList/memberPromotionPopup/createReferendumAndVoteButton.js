@@ -14,6 +14,7 @@ import { useRankedCollectivePallet } from "next-common/context/collectives/colle
 function CreateReferendumAndVoteButtonImpl({
   address,
   referendumIndex,
+  action = "promote",
   voteAye,
   children,
 }) {
@@ -26,7 +27,7 @@ function CreateReferendumAndVoteButtonImpl({
   const createAndVoteTxFunc = useFellowshipCoreMemberProposalSubmitTx({
     rank: member?.rank,
     who: address,
-    action: "promote",
+    action,
     trackName,
     enactment: null,
     checkDecisionDeposit: true,
@@ -58,7 +59,9 @@ function CreateReferendumAndVoteButtonImpl({
 }
 
 export default function CreateReferendumAndVoteButton({
+  address,
   referendumIndex,
+  action,
   voteAye,
   children,
 }) {
@@ -70,7 +73,9 @@ export default function CreateReferendumAndVoteButton({
   return (
     <SignerPopupWrapper>
       <CreateReferendumAndVoteButtonImpl
+        address={address}
         referendumIndex={referendumIndex}
+        action={action}
         voteAye={voteAye}
       >
         {children}

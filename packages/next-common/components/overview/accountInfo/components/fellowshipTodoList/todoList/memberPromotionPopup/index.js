@@ -5,7 +5,7 @@ import {
   evidenceColumn,
   rankColumn,
   referendumColumn,
-  voteColumn,
+  votePromoteColumn,
 } from "./columns";
 
 const columnsDef = [
@@ -13,7 +13,7 @@ const columnsDef = [
   addressColumn,
   evidenceColumn,
   referendumColumn,
-  voteColumn,
+  votePromoteColumn,
 ];
 
 function MemberPromotionContent({ promotions }) {

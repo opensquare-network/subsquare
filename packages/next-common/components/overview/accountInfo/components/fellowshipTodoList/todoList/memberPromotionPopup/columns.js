@@ -98,26 +98,51 @@ export const referendumColumn = {
   },
 };
 
-export const voteColumn = {
+function VoteButtons({ who, referendumIndex, action }) {
+  return (
+    <div className="flex gap-[12px]">
+      <CreateReferendumAndVoteButton
+        address={who}
+        referendumIndex={referendumIndex}
+        action={action}
+        voteAye={false}
+      >
+        <SystemVoteNay className="w-[16px]" />
+      </CreateReferendumAndVoteButton>
+      <CreateReferendumAndVoteButton
+        address={who}
+        referendumIndex={referendumIndex}
+        action={action}
+        voteAye={true}
+      >
+        <SystemVoteAye className="w-[16px]" />
+      </CreateReferendumAndVoteButton>
+    </div>
+  );
+}
+
+export const votePromoteColumn = {
   key: "vote",
   name: "Vote",
   style: { width: "80px" },
-  render: (item) => {
-    return (
-      <div className="flex gap-[12px]">
-        <CreateReferendumAndVoteButton
-          referendumIndex={item.referendumIndex}
-          voteAye={false}
-        >
-          <SystemVoteNay className="w-[16px]" />
-        </CreateReferendumAndVoteButton>
-        <CreateReferendumAndVoteButton
-          referendumIndex={item.referendumIndex}
-          voteAye={true}
-        >
-          <SystemVoteAye className="w-[16px]" />
-        </CreateReferendumAndVoteButton>
-      </div>
-    );
-  },
+  render: (item) => (
+    <VoteButtons
+      who={item.who}
+      referendumIndex={item.referendumIndex}
+      action="promote"
+    />
+  ),
+};
+
+export const voteRetainColumn = {
+  key: "vote",
+  name: "Vote",
+  style: { width: "80px" },
+  render: (item) => (
+    <VoteButtons
+      who={item.who}
+      referendumIndex={item.referendumIndex}
+      action="approve"
+    />
+  ),
 };

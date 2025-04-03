@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import {
   useCoreFellowshipPallet,
@@ -23,7 +24,7 @@ export function useFellowshipCoreMemberProposalSubmitTx({
   const collectivePallet = useRankedCollectivePallet();
 
   return useCallback(async () => {
-    if (!api || !action || !who || !rank) {
+    if (!api || !action || !who || isNil(rank)) {
       return;
     }
 
