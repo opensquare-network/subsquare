@@ -72,12 +72,17 @@ function RelationshipFlow({ calculatedNodes, initialEdges }) {
 
   useEffect(() => {
     setNodes(calculatedNodes);
-    reactFlow.fitView();
-  }, [calculatedNodes, setNodes, reactFlow]);
+  }, [calculatedNodes, setNodes]);
 
   useEffect(() => {
     setEdges(initialEdges);
   }, [initialEdges, setEdges]);
+
+  useEffect(() => {
+    if (nodes.length !== calculatedNodes.length) {
+      reactFlow.fitView();
+    }
+  }, [nodes, calculatedNodes, reactFlow]);
 
   return (
     nodes.length > 0 && (
