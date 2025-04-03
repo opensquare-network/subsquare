@@ -4,7 +4,7 @@ import { usePageProps } from "next-common/context/page";
 import FellowshipTagInfo, {
   FellowshipTagInfoWrapper,
 } from "../fellowshipTagInfo";
-import { DisplayUserAvatar, DisplayUser, DisplayUserAddress } from "../bio";
+import { DisplayUser, DisplayUserAddress } from "../bio";
 import OpenGovAssetInfo from "./openGovAssetInfo";
 import WindowSizeProvider from "next-common/context/windowSize";
 import UserAccountProvider from "next-common/context/user/account";
@@ -29,7 +29,7 @@ const Relatives = dynamic(
   },
 );
 
-export function AccountInfoPanel({ address, id, user }) {
+export function AccountInfoPanel({ address, id }) {
   const isMobile = useIsMobile();
   const shouldAlignCenter = isMobile || !address;
 
@@ -40,7 +40,6 @@ export function AccountInfoPanel({ address, id, user }) {
         shouldAlignCenter ? "flex-col items-center" : "flex-row items-start",
       )}
     >
-      <DisplayUserAvatar address={address} user={user} />
       <div
         className={cn(
           "flex mt-0 flex-wrap w-full",

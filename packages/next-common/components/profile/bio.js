@@ -108,7 +108,6 @@ function NormalBio() {
 
   return (
     <Wrapper>
-      <DisplayUserAvatar address={address} user={user} />
       <Flex
         style={{
           flexDirection: "column",
