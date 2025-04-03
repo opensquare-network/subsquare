@@ -14,7 +14,7 @@ import tw from "tailwind-styled-components";
 import { arrowMarker } from "next-common/components/relationshipPopup/arrowMarker";
 import { calculateNodePositionsHorizontal } from "next-common/utils/calculateNodePositionsHorizontal";
 import Loading from "next-common/components/loading";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 
 const nodeTypes = {
@@ -67,6 +67,7 @@ export default function Relationship({
 function RelationshipFlow({ calculatedNodes, initialEdges }) {
   const { isDark } = useTheme();
   const reactFlow = useReactFlow();
+  const [prevNodeLength, setPrevNodeLength] = useState(0);
   const [nodes, setNodes, onNodesChange] = useNodesState(calculatedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -79,10 +80,12 @@ function RelationshipFlow({ calculatedNodes, initialEdges }) {
   }, [initialEdges, setEdges]);
 
   useEffect(() => {
-    if (nodes.length !== calculatedNodes.length) {
+    const len = nodes.length;
+    if (len !== prevNodeLength) {
       reactFlow.fitView();
     }
-  }, [nodes, calculatedNodes, reactFlow]);
+    setPrevNodeLength(len);
+  }, [nodes, prevNodeLength, reactFlow]);
 
   return (
     nodes.length > 0 && (
