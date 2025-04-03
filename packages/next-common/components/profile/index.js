@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import ListLayout from "next-common/components/layout/ListLayout";
 import Bio from "./bio";
 import useProfileTabs from "next-common/components/profile/tabs";
-import ProfileBreadcrumbs from "next-common/components/profile/breadcrumbs";
 import useProfileTabContent from "next-common/components/profile/tabs/content";
 import useFetchProfileData from "next-common/components/profile/useFetchProfileData";
 import { useDispatch } from "react-redux";
@@ -11,6 +10,7 @@ import { setProfileIdentityTimeline } from "next-common/store/reducers/profile/i
 import useProfileAddress from "./useProfileAddress";
 import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
 import CollectivesMemberProvider from "next-common/context/collectives/member";
+import ProfileHeader from "./header";
 
 function ProfilePageImpl() {
   useFetchProfileData();
@@ -22,7 +22,7 @@ function ProfilePageImpl() {
     <ListLayout
       header={
         <>
-          <ProfileBreadcrumbs />
+          <ProfileHeader />
           <Bio />
         </>
       }
