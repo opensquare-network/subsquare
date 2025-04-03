@@ -59,10 +59,15 @@ function createProxiesRelationship(rootNode, proxies = []) {
     items: proxies,
     nodeIdPrefix: "proxie",
     edgeIdPrefix: "root-proxies",
-    nodeDataMapper: (item) => ({
-      address: item.delegatee,
-      value: item.type,
-    }),
+    nodeDataMapper: (item) => {
+      if (rootNode?.data?.address === item.delegator && item.isPure) {
+        rootNode.data.isPure = true;
+      }
+      return {
+        address: item.delegatee,
+        value: item.type,
+      };
+    },
     edgeDataMapper: (data) => ({
       type: RELATIONSHIP_NODE_TYPE.Proxied,
       name: "Proxy",
