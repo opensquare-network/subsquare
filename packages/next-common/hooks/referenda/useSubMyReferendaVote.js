@@ -30,7 +30,7 @@ export async function getReferendaDirectVote(
   };
 }
 
-export default function useSubMyReferendaVote(
+export default function useSubAddressReferendaVote(
   trackId,
   referendumIndex,
   address,

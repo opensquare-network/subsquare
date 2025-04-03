@@ -26,9 +26,9 @@ import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelate
 import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
 import { rankToPromoteTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
-import { useFellowshipCoreMemberProposalSubmitTx } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 
-export function getTrackNameFromRank(rank) {
+export function getPromoteTrackNameFromRank(rank) {
   switch (process.env.NEXT_PUBLIC_CHAIN) {
     case Chains.collectives:
     case Chains.westendCollectives:
@@ -44,7 +44,7 @@ function PopupContent({ member }) {
   const [enactment, setEnactment] = useState();
   const extensionAccounts = useExtensionAccounts();
   const [toRank, setToRank] = useState(member?.rank + 1);
-  const trackName = getTrackNameFromRank(toRank);
+  const trackName = getPromoteTrackNameFromRank(toRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
   const referendaPallet = useReferendaFellowshipPallet();
@@ -56,7 +56,7 @@ function PopupContent({ member }) {
   const { value: referendaOptions, component: referendaOptionsField } =
     useReferendaOptionsField(decisionDeposit);
 
-  const submitTxFunc = useFellowshipCoreMemberProposalSubmitTx({
+  const _getTxFunc = useFellowshipProposalSubmissionTxFunc({
     rank: toRank,
     who: memberAddress,
     action,
@@ -72,8 +72,8 @@ function PopupContent({ member }) {
       return;
     }
 
-    return submitTxFunc;
-  }, [toRank, submitTxFunc, dispatch]);
+    return await _getTxFunc();
+  }, [toRank, _getTxFunc, dispatch]);
 
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(
     member?.address,

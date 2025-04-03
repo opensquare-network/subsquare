@@ -12,7 +12,7 @@ import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
 import VStack from "next-common/components/styled/vStack";
 import VoteTypeTab, { Aye, Nay, Split, SplitAbstain } from "./tab";
 import PrimaryButton from "next-common/lib/button/primary";
-import useSubMyReferendaVote, {
+import useSubAddressReferendaVote, {
   getReferendaDirectVote,
 } from "next-common/hooks/referenda/useSubMyReferendaVote";
 import {
@@ -150,7 +150,7 @@ export default function PopupContent() {
     vote: addressVote,
     isLoading: addressVoteIsLoading,
     isLoaded: addressVoteIsLoaded,
-  } = useSubMyReferendaVote(
+  } = useSubAddressReferendaVote(
     trackId,
     referendumIndex,
     signerAccount?.realAddress,

@@ -5,6 +5,7 @@ import {
   evidenceColumn,
   rankColumn,
   referendumColumn,
+  voteRetainColumn,
 } from "../memberPromotionPopup/columns";
 
 const columnsDef = [
@@ -12,6 +13,7 @@ const columnsDef = [
   addressColumn,
   evidenceColumn,
   referendumColumn,
+  voteRetainColumn,
 ];
 
 function MemberRetentionsContent({ retentions }) {

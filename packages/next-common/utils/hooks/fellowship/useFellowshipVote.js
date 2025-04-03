@@ -3,6 +3,7 @@ import { useMountedState } from "react-use";
 import { getFellowshipVote } from "../../gov2/getFellowshipVote";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 export default function useFellowshipVote(referendumIndex, address) {
   const api = useContextApi();
@@ -29,4 +30,9 @@ export default function useFellowshipVote(referendumIndex, address) {
   }, [api, referendumIndex, address, isMounted, collectivePallet]);
 
   return { vote, isLoading };
+}
+
+export function useSubFellowshipVote(referendumIndex, address) {
+  const collectivePallet = useRankedCollectivePallet();
+  return useSubStorage(collectivePallet, "voting", [referendumIndex, address]);
 }

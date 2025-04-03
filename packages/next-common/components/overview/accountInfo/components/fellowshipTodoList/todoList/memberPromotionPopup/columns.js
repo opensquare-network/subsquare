@@ -6,6 +6,12 @@ import { useContextCollectivesMembers } from "../../context/collectivesMember";
 import { useContextCoreMembers } from "../../context/coreMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import FellowshipRank from "next-common/components/fellowship/rank";
+import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
+import CreateReferendumAndVoteButton from "./createReferendumAndVoteButton";
+import useCollectiveMember from "../../hooks/useCollectiveMember";
+import Tooltip from "next-common/components/tooltip";
+import { useSubFellowshipVote } from "next-common/utils/hooks/fellowship/useFellowshipVote";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const EvidenceDetailPopup = dynamicPopup(() =>
   import("next-common/components/collectives/core/member/evidence"),
@@ -48,17 +54,12 @@ function ViewEvidence({ evidence, who }) {
 }
 
 function Rank({ address }) {
-  const { members: collectiveMembers } = useContextCollectivesMembers();
-  const rankMember = useMemo(
-    () => collectiveMembers.find((m) => m.address === address),
-    [collectiveMembers, address],
-  );
-
-  if (!rankMember) {
+  const member = useCollectiveMember(address);
+  if (!member) {
     return null;
   }
 
-  return <FellowshipRank rank={rankMember?.rank} />;
+  return <FellowshipRank rank={member?.rank} />;
 }
 
 export const rankColumn = {
@@ -98,4 +99,93 @@ export const referendumColumn = {
       </Link>
     );
   },
+};
+
+function VoteButtons({ who, referendumIndex, action }) {
+  const realAddress = useRealAddress();
+  const me = useCollectiveMember(realAddress);
+  const myRank = me?.rank;
+  const targetMember = useCollectiveMember(who);
+  const rank = targetMember?.rank;
+  const hasReferendum = !isNil(referendumIndex);
+  const { result: myVote } = useSubFellowshipVote(referendumIndex, realAddress);
+  const isVoted = myVote?.isSome;
+
+  let tooltipContent = "";
+  let disabled = false;
+  if (hasReferendum) {
+    if (isVoted) {
+      tooltipContent = "You have already voted";
+      disabled = true;
+    }
+  } else if (rank <= 0 && action === "approve") {
+    tooltipContent = "Can't retain for rank 0";
+    disabled = true;
+  } else if (rank >= 6 && action === "promote") {
+    tooltipContent =
+      "Cannot promote because the member is already at the highest rank";
+    disabled = true;
+  } else if (myRank >= 3) {
+    tooltipContent = "Create a new referendum and vote";
+    disabled = false;
+  } else {
+    tooltipContent = "Only rank >=3 can create a referendum and then vote";
+    disabled = true;
+  }
+
+  return (
+    <div className="flex gap-[12px]">
+      <Tooltip content={tooltipContent}>
+        <CreateReferendumAndVoteButton
+          address={who}
+          rank={rank}
+          referendumIndex={referendumIndex}
+          action={action}
+          voteAye={false}
+          disabled={disabled}
+        >
+          <SystemVoteNay className="w-[16px]" />
+        </CreateReferendumAndVoteButton>
+      </Tooltip>
+
+      <Tooltip content={tooltipContent}>
+        <CreateReferendumAndVoteButton
+          address={who}
+          rank={rank}
+          referendumIndex={referendumIndex}
+          action={action}
+          voteAye={true}
+          disabled={disabled}
+        >
+          <SystemVoteAye className="w-[16px]" />
+        </CreateReferendumAndVoteButton>
+      </Tooltip>
+    </div>
+  );
+}
+
+export const votePromoteColumn = {
+  key: "vote",
+  name: "Vote",
+  style: { width: "80px" },
+  render: (item) => (
+    <VoteButtons
+      who={item.who}
+      referendumIndex={item.referendumIndex}
+      action="promote"
+    />
+  ),
+};
+
+export const voteRetainColumn = {
+  key: "vote",
+  name: "Vote",
+  style: { width: "80px" },
+  render: (item) => (
+    <VoteButtons
+      who={item.who}
+      referendumIndex={item.referendumIndex}
+      action="approve"
+    />
+  ),
 };

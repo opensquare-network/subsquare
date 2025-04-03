@@ -9,7 +9,7 @@ import {
   useCollectivesSection,
   useReferendaFellowshipPallet,
 } from "next-common/context/collectives/collectives";
-import { useFellowshipCoreMemberProposalSubmitTx } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 
 export default function CreateFellowshipCoreMemberProposalSubmitButton({
   disabled,
@@ -34,7 +34,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
 
   const buttonDisabled = disabled || !myRankOk || !who || !rank;
 
-  const submitTxFunc = useFellowshipCoreMemberProposalSubmitTx({
+  const getTxFunc = useFellowshipProposalSubmissionTxFunc({
     rank,
     who,
     action,
@@ -51,9 +51,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
       <TxSubmissionButton
         disabled={buttonDisabled}
         title="Create Preimage"
-        getTxFunc={() => {
-          return submitTxFunc;
-        }}
+        getTxFunc={getTxFunc}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, referendaPallet, "Submitted");
           if (!eventData) {
