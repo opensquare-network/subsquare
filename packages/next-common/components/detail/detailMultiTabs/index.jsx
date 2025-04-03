@@ -5,6 +5,7 @@ import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import TimelineModeTabs from "./timelineModeTabs";
 import { useRouter } from "next/router";
+import { isPolkadotChain } from "next-common/utils/chain";
 
 export default function DetailMultiTabs({
   call,
@@ -16,6 +17,7 @@ export default function DetailMultiTabs({
   timelineCount,
   votesBubble,
   statistics,
+  report,
 }) {
   const router = useRouter();
   const timelineData = useTimelineData();
@@ -62,6 +64,17 @@ export default function DetailMultiTabs({
       label: "Statistics",
       content: <div className="space-y-4">{statistics}</div>,
     },
+    isPolkadotChain(chain) &&
+      report && {
+        value: "report",
+        label: "Report",
+        activeCount: (
+          <span className="ml-1 rounded-full py-0.5 px-2 text12Medium text-theme500 bg-theme100">
+            new
+          </span>
+        ),
+        content: <div className="space-y-4">{report}</div>,
+      },
   ].filter(Boolean);
 
   const activeTabValue = router.query.tab || tabs[0].value;
