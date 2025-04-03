@@ -23,7 +23,7 @@ const Menu = styled.div`
   position: absolute;
   right: 0;
   margin-top: 4px;
-  padding: 8px 0;
+  padding: 8px 8px;
   z-index: 999999;
   background: var(--neutral100);
   border-width: 1px;
@@ -34,9 +34,9 @@ const Menu = styled.div`
 `;
 
 const Item = styled(Flex)`
-  min-width: 192px;
+  min-width: 240px;
   cursor: pointer;
-  padding: 0 12px;
+  padding: 0 8px;
   height: 36px;
   border-radius: 8px;
   font-size: 14px;
