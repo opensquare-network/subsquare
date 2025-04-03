@@ -7,11 +7,13 @@ import {
   AssetIconKsm,
   AssetIconPas,
   AssetIconPlaceholder,
+  AssetIconBwnd,
 } from "@osn/icons/subsquare";
 
 const knownAssetHubAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: knownPolkadotAssetHubAssets,
   [Chains.westendAssetHub]: [],
+  [Chains.westendAssetHubNext]: [],
   [Chains.kusamaAssetHub]: [],
   [Chains.paseoAssetHub]: [],
 });
@@ -26,6 +28,7 @@ const assetHubChainNativeTokenIconMap = {
   [Chains.polkadot]: AssetIconDot,
   [Chains.collectives]: AssetIconDot,
   [Chains.westendAssetHub]: AssetIconWnd,
+  [Chains.westendAssetHubNext]: AssetIconBwnd,
   [Chains.westend]: AssetIconWnd,
   [Chains.kusamaAssetHub]: AssetIconKsm,
   [Chains.kusama]: AssetIconKsm,

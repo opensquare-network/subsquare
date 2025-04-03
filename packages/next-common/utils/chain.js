@@ -23,7 +23,7 @@ export function isPolkadotAssetHubChain(chain) {
 }
 
 export function isWestendAssetHubChain(chain) {
-  return [Chains.westendAssetHub].includes(chain);
+  return [Chains.westendAssetHub, Chains.westendAssetHubNext].includes(chain);
 }
 
 export function isWestendChain(chain) {
