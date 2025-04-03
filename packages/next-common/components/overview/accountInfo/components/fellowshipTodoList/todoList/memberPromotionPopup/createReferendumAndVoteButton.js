@@ -12,6 +12,7 @@ import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/c
 import { cn } from "next-common/utils";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 
 function useTrackNameFromAction(action, currentMemberRank) {
   const chain = useChain();
@@ -38,6 +39,7 @@ function CreateReferendumAndVoteButtonImpl({
   const trackName = useTrackNameFromAction(action, rank);
   const collectivePallet = useRankedCollectivePallet();
   const [enactment] = useState({ after: 100 });
+  const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
 
   const createAndVoteTxFunc = useFellowshipCoreMemberProposalSubmitTx({
     rank,
@@ -58,6 +60,7 @@ function CreateReferendumAndVoteButtonImpl({
     getTxFunc: createAndVoteTxFunc,
     onInBlock: () => {
       dispatch(newSuccessToast("Vote successfully"));
+      fetchActiveReferenda();
     },
   });
 
