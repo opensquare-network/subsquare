@@ -8,7 +8,7 @@ import {
 import NodeSignalIcon from "./nodeSignalIcon";
 import { useDispatch } from "react-redux";
 import { noop } from "lodash-es";
-
+import NodeSelectedIcon from "./nodeSelectedIcon";
 export default function NodeOptions({
   small,
   currentNodeSetting,
@@ -37,8 +37,9 @@ export default function NodeOptions({
             key={idx}
             role="button"
             className={cn(
-              "flex items-center gap-x-2",
-              "py-1.5 px-3",
+              "flex items-center justify-between",
+              "min-w-[272px]",
+              "py-1.5 px-2",
               "rounded-lg",
               "text-textPrimary text14Medium",
               "whitespace-nowrap",
@@ -52,11 +53,14 @@ export default function NodeOptions({
               setShow(false);
             }}
           >
-            <NodeSignalIcon delay={node?.delay} />
-            <div>{node?.name}</div>
-            <div>
-              {node?.delay && !isNaN(node?.delay) ? `${node.delay} ms` : ""}
+            <div className="flex items-center gap-x-2"> 
+              <NodeSignalIcon delay={node?.delay} />
+              <div>{node?.name}</div>
+              <div className="text-textPrimary text12Medium text-textTertiary">
+                {node?.delay && !isNaN(node?.delay) ? `${node.delay} ms` : ""}
+              </div>
             </div>
+            <NodeSelectedIcon className="ml-2" selected={active} />
           </div>
         );
       })}
