@@ -6,7 +6,7 @@ import useFellowshipMemberFiled from "next-common/components/preImages/createPre
 import AdvanceSettings from "../common/advanceSettings";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import CreateFellowshipCoreMemberProposalSubmitButton from "./createFellowshipCoreMemberProposalSubmitButton";
-import { getTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
+import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
@@ -56,7 +56,7 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const targetMember = find(members, { address: who });
   const toRank = !isNil(targetMember?.rank) ? targetMember?.rank + 1 : "";
 
-  const trackName = getTrackNameFromRank(toRank);
+  const trackName = getPromoteTrackNameFromRank(toRank);
 
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(who);
   const isReferendaExisted = relatedReferenda.length > 0;

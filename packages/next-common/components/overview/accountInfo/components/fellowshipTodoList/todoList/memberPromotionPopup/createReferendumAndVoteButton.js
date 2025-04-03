@@ -10,6 +10,18 @@ import { useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import { isNil } from "lodash-es";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
+import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
+
+function useTrackNameFromAction(action, currentMemberRank) {
+  const chain = useChain();
+  if (action === "approve") {
+    return getRetainTrackNameFromRank(chain, currentMemberRank);
+  } else if (action === "promote") {
+    return getPromoteTrackNameFromRank(chain, currentMemberRank + 1);
+  }
+
+  throw new Error("Unsupported action");
+}
 
 function CreateReferendumAndVoteButtonImpl({
   address,
@@ -19,9 +31,8 @@ function CreateReferendumAndVoteButtonImpl({
   children,
 }) {
   const api = useContextApi();
-  const chain = useChain();
   const member = useCollectiveMember(address);
-  const trackName = getRetainTrackNameFromRank(chain, member?.rank);
+  const trackName = useTrackNameFromAction(action, member?.rank);
   const collectivePallet = useRankedCollectivePallet();
 
   const createAndVoteTxFunc = useFellowshipCoreMemberProposalSubmitTx({
