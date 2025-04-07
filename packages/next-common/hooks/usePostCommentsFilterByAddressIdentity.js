@@ -32,8 +32,7 @@ export default function usePostCommentsFilterByAddressIdentity(
         setLoadingAddressIdentity(true);
         let identities = await fetchIdentities(chain, accountList);
         setIdentities(identities);
-        setLoadingAddressIdentity(false);
-      } catch (e) {
+      } finally {
         setLoadingAddressIdentity(false);
       }
     })();
