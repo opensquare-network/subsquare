@@ -28,7 +28,7 @@ export default function ProfileHeaderWithBanner() {
     >
       <div
         className={cn(
-          "px-12 py-6 mx-auto max-w-[1200px] max-sm:px-6 relative top-[48px]",
+          "px-12 mx-auto max-w-[1200px] max-sm:px-6 relative top-[72px]",
           isMobile && "flex justify-center",
         )}
       >

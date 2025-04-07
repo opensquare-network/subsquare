@@ -85,7 +85,8 @@ export default function ProfileLayout({
     <BaseLayout
       seoInfo={seoInfo}
       contentStyle={{
-        backgroundImage: "linear-gradient(180deg, rgba(253, 253, 253, 1), rgba(246, 247, 250, 1))",
+        backgroundImage:
+          "linear-gradient(180deg, rgba(253, 253, 253, 1), rgba(246, 247, 250, 1))",
       }}
     >
       {pageHeader && (
@@ -94,7 +95,12 @@ export default function ProfileLayout({
         </div>
       )}
       <div className="border-b border-neutral300">
-        <div className={cn("px-12 py-6 mx-auto max-w-[1200px]", "max-sm:px-6")}>
+        <div
+          className={cn(
+            "px-12 py-4 mt-[48px] mx-auto max-w-[1200px]",
+            "max-sm:px-6",
+          )}
+        >
           {header || listHeader}
         </div>
 

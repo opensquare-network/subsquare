@@ -77,11 +77,14 @@ export const DisplayUser = ({ id, className = "" }) => {
   return <Username>{id}</Username>;
 };
 
+// TODO: responsive
 export const DisplayUserAddress = ({
   address,
   className = "",
   showLinks = true,
   ellipsisAddress = false,
+  extra = null,
+  accountLinksClassName = "",
 }) => {
   if (!address) {
     return null;
@@ -93,7 +96,10 @@ export const DisplayUserAddress = ({
       <Copyable copyText={maybeEvmAddress}>
         <Tertiary>{displayAddress}</Tertiary>
       </Copyable>
-      {showLinks && <AccountLinks address={maybeEvmAddress} />}
+      <div className={cn("inline-flex items-center", accountLinksClassName)}>
+        {showLinks && <AccountLinks address={maybeEvmAddress} />}
+        {extra}
+      </div>
     </AddressWrapper>
   );
 };

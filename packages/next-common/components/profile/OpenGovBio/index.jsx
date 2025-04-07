@@ -14,6 +14,7 @@ import VotesPowerPanel from "./votesPower";
 import DelegationGuideProvider from "next-common/components/profile/delegationGuide/context/delegationGuideContext";
 import dynamic from "next/dynamic";
 import ReferendaDelegationProvider from "next-common/components/profile/delegationGuide/context/referendaDelegationContext";
+import { VerticalDivider } from "next-common/components/styled/layout/divider";
 
 const DelegationGuide = dynamic(
   () => import("next-common/components/profile/delegationGuide"),
@@ -36,7 +37,7 @@ export function AccountInfoPanel({ address, id }) {
   return (
     <div
       className={cn(
-        "w-full flex px-0 pt-6 mt-0 gap-4",
+        "w-full flex px-0  mt-0 gap-4",
         shouldAlignCenter ? "flex-col items-center" : "flex-row items-start",
       )}
     >
@@ -60,9 +61,13 @@ export function AccountInfoPanel({ address, id }) {
               ? "!items-center text-center"
               : "flex-1 !items-start",
           )}
+          extra={
+            <>
+              <VerticalDivider height={13} margin={16} />
+              <Relatives />
+            </>
+          }
         />
-
-        <Relatives />
 
         <FellowshipTagInfoWrapper>
           <FellowshipTagInfo address={address} />
