@@ -8,9 +8,25 @@ import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 
 export const rootNodeId = "rootNode";
-
 const nodeInitialWidth = 240;
 const nodeInitialHeight = 80;
+
+function createBadge(multisig) {
+  let badge = "";
+  if (multisig && multisig.signatories) {
+    badge = `${multisig.threshold}/${multisig.signatories.length}`;
+  }
+  return badge;
+}
+
+function BadgeInfo({ address }) {
+  const { result, loading } = useMultisigAddress(address);
+  if (!result || loading) {
+    return null;
+  }
+
+  return <span>{createBadge(result)}</span>;
+}
 
 function createRelationship({
   rootNode,
@@ -71,6 +87,7 @@ function createProxiesRelationship(rootNode, proxies = []) {
       return {
         address: item.delegatee,
         value: item.type,
+        badge: <BadgeInfo address={item.delegatee} />,
       };
     },
     edgeDataMapper: (data) => ({
@@ -95,6 +112,7 @@ function createReceivedProxiesRelationship(rootNode, receivedProxies = []) {
       address: item.delegator,
       value: item.type,
       isPure: item.isPure,
+      badge: <BadgeInfo address={item.delegator} />,
     }),
     edgeDataMapper: (data) => ({
       type: RELATIONSHIP_NODE_TYPE.Received,
@@ -116,6 +134,7 @@ function createMultisigAddressRelationship(rootNode, address = []) {
     edgeIdPrefix: "root-multisigAddress",
     nodeDataMapper: (item) => ({
       address: item,
+      badge: <BadgeInfo address={item} />,
     }),
     edgeDataMapper: () => ({
       type: RELATIONSHIP_NODE_TYPE.Signatory,
@@ -164,14 +183,6 @@ function createRootNode(address, multisigAddress) {
       badge: createBadge(multisigAddress.result),
     },
   };
-}
-
-function createBadge(multisig) {
-  let badge = "";
-  if (multisig && multisig.signatories) {
-    badge = `${multisig.threshold}/${multisig.signatories.length}`;
-  }
-  return badge;
 }
 
 export default function useConversionRelationshipNode() {
