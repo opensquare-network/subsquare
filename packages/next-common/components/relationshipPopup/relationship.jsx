@@ -1,3 +1,4 @@
+"use client";
 import {
   Background,
   ReactFlow,
@@ -16,6 +17,7 @@ import { calculateNodePositionsHorizontal } from "next-common/utils/calculateNod
 import Loading from "next-common/components/loading";
 import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
 
 const nodeTypes = {
   user: UserNode,
@@ -65,6 +67,7 @@ export default function Relationship({
 }
 
 function RelationshipFlow({ calculatedNodes, initialEdges }) {
+  const address = useProfileAddress();
   const { isDark } = useTheme();
   const reactFlow = useReactFlow();
   const [prevNodeLength, setPrevNodeLength] = useState(0);
@@ -90,6 +93,7 @@ function RelationshipFlow({ calculatedNodes, initialEdges }) {
   return (
     nodes.length > 0 && (
       <ReactFlow
+        key={`${address}-${nodes.length}-${edges.length}`}
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}

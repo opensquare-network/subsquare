@@ -9,6 +9,9 @@ import useProfileAddress from "next-common/components/profile/useProfileAddress"
 
 export const rootNodeId = "rootNode";
 
+const nodeInitialWidth = 240;
+const nodeInitialHeight = 80;
+
 function createRelationship({
   rootNode,
   items = [],
@@ -35,6 +38,8 @@ function createRelationship({
       targetPosition: "left",
       type: "user",
       data: nodeDataMapper(item),
+      width: nodeInitialWidth,
+      height: nodeInitialHeight,
     });
   });
 
@@ -152,6 +157,8 @@ function createRootNode(address, multisigAddress) {
     sourcePosition: "right",
     targetPosition: "left",
     type: "user",
+    width: nodeInitialWidth,
+    height: nodeInitialHeight,
     data: {
       address,
       badge: createBadge(multisigAddress.result),
