@@ -13,6 +13,7 @@ import { normalizeAddress } from "next-common/utils/address";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import { isEthereumAddress } from "@polkadot/util-crypto";
+import usePostCommentsFilterByAddressIdentity from "./usePostCommentsFilterByAddressIdentity";
 
 function isDeletedComment(comment) {
   return comment?.content?.trim?.() !== "[Deleted]";
@@ -34,6 +35,15 @@ export function usePostCommentsFilteredData() {
 
   const [, setCommentsMerging] = usePostCommentsMerging();
   const [mergedComments, setMergedComments] = useState(commentsData);
+
+  const accountList = useMemo(() => {
+    let accounts = commentsData?.items.map(({ author }) => author?.address);
+    
+    return Array.isArray(accounts) ? Array.from(accounts) : [];
+  }, [commentsData]);
+
+  const { identities, isCommentWithIdenticalAddress, loadingAddressIdentity } =
+    usePostCommentsFilterByAddressIdentity(accountList);
 
   useEffect(() => {
     setCommentsMerging(
@@ -80,7 +90,11 @@ export function usePostCommentsFilteredData() {
 
           const normalizedAddress = normalizeAddress(address);
           try {
-            item.balance = await getAddressVotingBalance(chain, api, normalizedAddress);
+            item.balance = await getAddressVotingBalance(
+              chain,
+              api,
+              normalizedAddress,
+            );
           } catch (e) {
             console.error(e);
           }
@@ -131,6 +145,10 @@ export function usePostCommentsFilteredData() {
         flag = flag && !!getAddressVotesData(item?.author?.address);
       }
 
+      if (filterParams.show_on_chain_identities_only) {
+        flag = flag && isCommentWithIdenticalAddress(item, identities);
+      }
+
       if (filterParams.hide_0) {
         if (has(item, "balance")) {
           flag = flag && !is0Balance(item);
@@ -154,10 +172,22 @@ export function usePostCommentsFilteredData() {
     }
 
     return data;
-  }, [filterParams, mergedComments, getAddressVotesData, isDVAddress]);
+  }, [
+    mergedComments,
+    filterParams.comments_sort_by,
+    filterParams.hide_deleted,
+    filterParams.show_dv_only,
+    filterParams.show_voters_only,
+    filterParams.hide_0,
+    isDVAddress,
+    getAddressVotesData,
+    isCommentWithIdenticalAddress,
+    identities,
+    filterParams.show_on_chain_identities_only,
+  ]);
 
   return {
     commentsData: filteredComments,
-    loading: commentsLoading,
+    loading: commentsLoading || loadingAddressIdentity,
   };
 }
