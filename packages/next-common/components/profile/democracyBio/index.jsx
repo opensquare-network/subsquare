@@ -6,8 +6,11 @@ import UserAccountProvider from "next-common/context/user/account";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
-import { AccountInfoPanel } from "next-common/components/profile/OpenGovBio";
-import AssetInfo from "next-common/components/profile/OpenGovBio/openGovAssetInfo";
+import {
+  AccountInfoPanel,
+  RightPanelContainer,
+} from "next-common/components/profile/OpenGovBio";
+import AssetInfo from "next-common/components/profile/bio/assetInfo";
 import DelegationGuideProvider from "next-common/components/profile/delegationGuide/context/delegationGuideContext";
 import dynamic from "next/dynamic";
 
@@ -33,9 +36,11 @@ function DemocracyBioContent() {
         )}
       >
         <AccountInfoPanel address={address} id={id} user={user} />
-        <VotesPowerPanel address={address} />
+        <RightPanelContainer>
+          <AssetInfo address={address} />
+          <VotesPowerPanel address={address} />
+        </RightPanelContainer>
       </div>
-      <AssetInfo address={address} />
       <DelegationGuideProvider pallet="democracy">
         <DelegationGuide />
       </DelegationGuideProvider>

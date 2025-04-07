@@ -4,7 +4,7 @@ import { SystemMenu } from "@osn/icons/subsquare";
 export default function VotesPowerDetail({ setDetailOpen }) {
   return (
     <SecondaryButton
-      className="w-7 h-7 p-0 flex-shrink-0"
+      className="w-7 h-7 p-0 flex-shrink-0 absolute top-3 right-3"
       size="small"
       onClick={() => {
         setDetailOpen(true);

@@ -5,7 +5,7 @@ import { useChainSettings } from "next-common/context/chain";
 import DemocracyVotesPowerProvider, {
   useDemocracyVotesPowerContext,
 } from "../context/votesPower";
-import VotesPowerPanelWrapper from "next-common/components/profile/OpenGovBio/votesPower/panel";
+import CommonPanel from "next-common/components/profile/bio/commonPanel";
 import { VotesPowerContent } from "next-common/components/profile/OpenGovBio/votesPower/valueDisplay";
 import {
   SplitSymbol,
@@ -52,7 +52,7 @@ function DemocracyVotesPowerInContext() {
 
   return (
     <>
-      <VotesPowerPanelWrapper>
+      <CommonPanel>
         <VotesPowerContent
           isLoading={isLoading}
           votesPower={votesPower}
@@ -66,7 +66,7 @@ function DemocracyVotesPowerInContext() {
           </GreyPanel>
           <DemocracyVotesPowerDetail />
         </div>
-      </VotesPowerPanelWrapper>
+      </CommonPanel>
     </>
   );
 }

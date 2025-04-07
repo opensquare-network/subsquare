@@ -5,7 +5,7 @@ import FellowshipTagInfo, {
   FellowshipTagInfoWrapper,
 } from "../fellowshipTagInfo";
 import { DisplayUser, DisplayUserAddress } from "../bio";
-import OpenGovAssetInfo from "./openGovAssetInfo";
+import AssetInfo from "next-common/components/profile/bio/assetInfo";
 import WindowSizeProvider from "next-common/context/windowSize";
 import UserAccountProvider from "next-common/context/user/account";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
@@ -84,6 +84,21 @@ export function AccountInfoPanel({ address, id }) {
   );
 }
 
+export function RightPanelContainer({ children }) {
+  const isMobile = useIsMobile();
+
+  return (
+    <div
+      className={cn(
+        "grid gap-[16px]",
+        isMobile ? "grid-cols-1" : "grid-cols-2",
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
 function OpenGovBioContent() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
@@ -99,9 +114,11 @@ function OpenGovBioContent() {
         )}
       >
         <AccountInfoPanel address={address} id={id} user={user} />
-        <VotesPowerPanel address={address} />
+        <RightPanelContainer>
+          <AssetInfo address={address} />
+          <VotesPowerPanel address={address} />
+        </RightPanelContainer>
       </div>
-      <OpenGovAssetInfo address={address} />
       <DelegationGuideProvider pallet="referenda">
         <ReferendaDelegationProvider>
           <DelegationGuide />

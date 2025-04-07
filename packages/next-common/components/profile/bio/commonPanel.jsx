@@ -1,7 +1,8 @@
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useTheme } from "styled-components";
+import { cn } from "next-common/utils";
 
-export default function CommonPanel({ children }) {
+export default function CommonPanel({ children, className = "" }) {
   const { isDark } = useTheme();
 
   const backgroundImage = isDark
@@ -10,9 +11,10 @@ export default function CommonPanel({ children }) {
 
   return (
     <GreyPanel
-      className={
-        "flex flex-col bg-neutral100 justify-end text14Medium text-textPrimary p-3 pb-0 max-w-full rounded-[12px] gap-y-2"
-      }
+      className={cn(
+        "flex flex-col bg-neutral100 justify-end text14Medium text-textPrimary p-3 pb-0 max-w-full rounded-[12px] gap-y-2",
+        className,
+      )}
       style={{
         backgroundImage,
       }}

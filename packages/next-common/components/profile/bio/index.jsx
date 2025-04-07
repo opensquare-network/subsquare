@@ -1,23 +1,23 @@
 import styled from "styled-components";
-import { isPolkadotAddress } from "../../utils/viewfuncs";
-import Flex from "../styled/flex";
-import AccountLinks from "../links/accountLinks";
+import { isPolkadotAddress } from "../../../utils/viewfuncs";
+import Flex from "../../styled/flex";
+import AccountLinks from "../../links/accountLinks";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { useChain, useIsKintsugi } from "next-common/context/chain";
-import Copyable from "../copyable";
-import AssetInfo from "./assetInfo";
-import KintAssetInfo from "./assetInfo/kint";
+import Copyable from "../../copyable";
+import AssetInfo from "next-common/components/profile/bio/assetInfo";
+import KintAssetInfo from "../assetInfo/kint";
 import Chains from "next-common/utils/consts/chains";
-import AddressUser from "../user/addressUser";
+import AddressUser from "../../user/addressUser";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import { AvatarDisplay } from "../user/avatarDisplay";
+import { AvatarDisplay } from "../../user/avatarDisplay";
 import FellowshipTagInfo, {
   FellowshipTagInfoWrapper,
-} from "./fellowshipTagInfo";
+} from "../fellowshipTagInfo";
 import { useChainSettings } from "next-common/context/chain";
-import OpenGovBio from "./OpenGovBio";
-import DemocracyBio from "./democracyBio";
+import OpenGovBio from "../OpenGovBio";
+import DemocracyBio from "../democracyBio";
 import { addressEllipsis, cn } from "next-common/utils";
 
 const Wrapper = styled.div`
