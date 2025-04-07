@@ -12,7 +12,7 @@ export default function usePostCommentsFilterByAddressIdentity(
 
   const fetchIdentities = useRefCallback(async (chain, accountList) => {
     const identities = await fetchBatchIdentities(chain, accountList);
-    
+
     return identities;
   });
 
@@ -28,10 +28,14 @@ export default function usePostCommentsFilterByAddressIdentity(
 
   useEffect(() => {
     (async () => {
-      setLoadingAddressIdentity(true);
-      let identities = await fetchIdentities(chain, accountList);
-      setIdentities(identities);
-      setLoadingAddressIdentity(false);
+      try {
+        setLoadingAddressIdentity(true);
+        let identities = await fetchIdentities(chain, accountList);
+        setIdentities(identities);
+        setLoadingAddressIdentity(false);
+      } catch (e) {
+        setLoadingAddressIdentity(false);
+      }
     })();
   }, [accountList, chain, fetchIdentities]);
 
