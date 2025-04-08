@@ -207,12 +207,14 @@ export default function WalletConnectProvider({ children }) {
     [chainId, provider, session],
   );
 
+  const disconnectCombination = useCallback(() => {
+    clearSession();
+    disconnectAccount();
+  }, [clearSession, disconnectAccount]);
+
   useEffect(() => {
     if (provider) {
-      provider.on("disconnect", () => {
-        clearSession();
-        disconnectAccount();
-      });
+      provider.on("disconnect", disconnectCombination);
 
       // if session expired, clear session and disconnect account
       // https://docs.reown.com/walletkit/best-practices#session-request-expiry
@@ -222,29 +224,28 @@ export default function WalletConnectProvider({ children }) {
             "Session expired, please connect to WalletConnect again",
           ),
         );
-        clearSession();
-        disconnectAccount();
+        disconnectCombination();
       });
     }
 
     return () => {
       if (provider) {
+        provider.off("disconnect", disconnectCombination);
         provider.client.removeAllListeners();
       }
     };
-  }, [clearSession, disconnectAccount, dispatch, provider]);
+  }, [disconnectCombination, dispatch, provider]);
 
   // If web closed, mobile wallet do disconnect, next time open web, clear session and disconnect account
   useEffect(() => {
     if (provider && cachedSession) {
       const active = provider.client.session.get(cachedSession.topic);
       if (!active) {
-        clearSession();
-        disconnectAccount();
+        disconnectCombination();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provider, clearSession, disconnectAccount]);
+  }, [provider, disconnectCombination]);
 
   return (
     <WalletConnectContext.Provider
