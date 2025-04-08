@@ -183,11 +183,11 @@ function VoteButtons({ who, referendumIndex, action }) {
   if (hasReferendum) {
     // do nothing
   } else if (rank <= 0 && action === "approve") {
-    tooltipContent = "Can't retain for rank 0";
+    tooltipContent = "Rank retention is not allowed for candidates";
     disabled = true;
   } else if (rank >= 6 && action === "promote") {
     tooltipContent =
-      "Cannot promote because the member is already at the highest rank";
+      "There are no corresponding tracks to promote members with rank >= 6";
     disabled = true;
   } else if (myRank >= 3) {
     tooltipContent = "Create a new referendum and vote";
