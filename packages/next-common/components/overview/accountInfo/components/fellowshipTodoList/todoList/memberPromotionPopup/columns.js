@@ -104,7 +104,7 @@ function ReferendaTooltip({ referendumIndex, children }) {
       content={
         <div>
           <div>
-            Referendum:{" "}
+            Title:{" "}
             {value.title ||
               `[${startCase(
                 referendumTrack?.name,
