@@ -1,16 +1,13 @@
 import { cn } from "next-common/utils";
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
-import {
-  CachedBatchProvider,
-  useValueFromBatchResult,
-} from "next-common/context/batch";
-import nextApi from "next-common/services/nextApi";
-import { isEmpty, startCase } from "lodash-es";
+import { useValueFromBatchResult } from "next-common/context/batch";
+import { startCase } from "lodash-es";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { usePageProps } from "next-common/context/page";
+import { ReferendaTitleProvider } from "next-common/context/fellowshipReferenda";
 
 function Square({ className, children }) {
   return (
@@ -69,33 +66,6 @@ export function LegendBar() {
         </LegendItem>
       </div>
     </div>
-  );
-}
-
-export async function getFellowshipReferendaPosts(indexes = []) {
-  if (isEmpty(indexes)) {
-    return [];
-  }
-  const q = indexes.join(",");
-  const { result } = await nextApi.fetch(
-    `fellowship/referenda?simple=1&referendum_index=${q}`,
-  );
-  return result || [];
-}
-
-export function ReferendaTitleProvider({ children }) {
-  const fetchReferendaList = useCallback(async (referendumIndexes) => {
-    const posts = await getFellowshipReferendaPosts(referendumIndexes);
-    const referendaMap = Object.fromEntries(
-      posts.map((item) => [item.referendumIndex, item]),
-    );
-    return referendumIndexes.map((i) => referendaMap[i]);
-  }, []);
-
-  return (
-    <CachedBatchProvider delay={200} batchExecFn={fetchReferendaList}>
-      {children}
-    </CachedBatchProvider>
   );
 }
 

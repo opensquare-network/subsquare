@@ -28,7 +28,7 @@ function MemberPromotionTodoImpl({ promotionEvidences, memberOrCandidate }) {
         >
           {count} {pluralize(memberOrCandidate, count)}
         </a>
-        &nbsp;wish to get promoted.&nbsp;{" "}
+        &nbsp;{count === 1 ? "wishes" : "wish"} to get promoted.&nbsp;{" "}
         <ActionButton onClick={() => setShowMemberPromotionPopup(true)}>
           Check All
         </ActionButton>

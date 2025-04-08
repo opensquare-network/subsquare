@@ -46,7 +46,7 @@ export default function CreatePromotionReferendaAndVotePopup({
   });
 
   const getCreateAndVoteTxFunc = useFellowshipProposalSubmissionTxFunc({
-    rank,
+    rank: toRank,
     who: address,
     action,
     trackName,
