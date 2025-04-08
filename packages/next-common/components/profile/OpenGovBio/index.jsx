@@ -33,7 +33,7 @@ const Relatives = dynamic(
 
 export function AccountInfoPanel({ address, id }) {
   const isMobile = useIsMobile();
-  const shouldAlignCenter = isMobile || !address;
+  const shouldAlignCenter = isMobile;
 
   return (
     <div
@@ -72,7 +72,7 @@ export function AccountInfoPanel({ address, id }) {
             ) : null
           }
         />
-        {isMobile && (
+        {isMobile && address && (
           <div className="mt-4 mb-1">
             <Relatives />
           </div>
@@ -119,8 +119,9 @@ function OpenGovBioContent() {
     <UserAccountProvider address={address}>
       <div
         className={cn(
-          "grid gap-[16px] grid-cols-2",
+          "grid grid-cols-2",
           isMobile ? "max-lg:grid-cols-1" : "max-md:grid-cols-1",
+          address && "gap-[16px]",
         )}
       >
         <AccountInfoPanel address={address} id={id} user={user} />
@@ -129,11 +130,13 @@ function OpenGovBioContent() {
           <VotesPowerPanel address={address} />
         </RightPanelContainer>
       </div>
-      <DelegationGuideProvider pallet="referenda">
-        <ReferendaDelegationProvider>
-          <DelegationGuide />
-        </ReferendaDelegationProvider>
-      </DelegationGuideProvider>
+      {address && (
+        <DelegationGuideProvider pallet="referenda">
+          <ReferendaDelegationProvider>
+            <DelegationGuide />
+          </ReferendaDelegationProvider>
+        </DelegationGuideProvider>
+      )}
     </UserAccountProvider>
   );
 }
