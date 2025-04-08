@@ -1,6 +1,5 @@
 import ProfileAssets from "next-common/components/profile/assets";
 import Bio from "next-common/components/profile/bio";
-import ProfileBreadcrumbs from "next-common/components/profile/breadcrumbs";
 import { useProfileAssetHubTabs } from "next-common/components/profile/tabs/useProfileAssetHubTabs";
 import ApiProvider from "next-common/context/api";
 import ChainProvider from "next-common/context/chain";
