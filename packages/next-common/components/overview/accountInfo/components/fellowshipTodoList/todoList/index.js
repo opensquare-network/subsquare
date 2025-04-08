@@ -81,12 +81,6 @@ export function OnlyCollectivesMember({ children }) {
 function TodoListWithDataLoaded() {
   return (
     <div className="flex flex-col gap-[4px] max-sm:gap-[8px]">
-      <OnlyCoreMember>
-        <RetentionEvidenceSubmissionTodo />
-        <MemberReferendaTodo />
-      </OnlyCoreMember>
-      <DemotionExpirationTodo />
-      <CandidateDemotionExpirationTodo />
       <OnlyCollectivesMember>
         <MemberPromotionTodo />
         <CandidatePromotionTodo />
@@ -99,6 +93,12 @@ function TodoListWithDataLoaded() {
           <CandidateEvidencesTodo />
         </OnlyHighRankMembers>
       </OnlyCollectivesMember>
+      <OnlyCoreMember>
+        <RetentionEvidenceSubmissionTodo />
+        <MemberReferendaTodo />
+      </OnlyCoreMember>
+      <DemotionExpirationTodo />
+      <CandidateDemotionExpirationTodo />
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default function MemberRetentionTodo() {
         >
           {count} {pluralize("member", count)}
         </a>
-        &nbsp;want to retain their ranks.&nbsp;{" "}
+        &nbsp;wish to retain their ranks.&nbsp;{" "}
         <ActionButton onClick={() => setShowMemberRetentionPopup(true)}>
           Check All
         </ActionButton>
