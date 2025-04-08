@@ -17,12 +17,10 @@ import { useChainSettings } from "next-common/context/chain";
 import OpenGovBio from "../OpenGovBio";
 import DemocracyBio from "../democracyBio";
 import { addressEllipsis, cn } from "next-common/utils";
-import {
-  AccountInfoPanel,
-  RightPanelContainer,
-} from "next-common/components/profile/OpenGovBio";
+import RightPanelContainer from "next-common/components/profile/bio/rightPanelContainer";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import UserAccountProvider from "next-common/context/user/account";
+import AccountInfoPanel from "next-common/components/profile/bio/accountInfoPanel";
 
 const Username = styled.span`
   font-weight: 700;

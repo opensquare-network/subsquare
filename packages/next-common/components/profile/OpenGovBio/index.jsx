@@ -1,8 +1,6 @@
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
-import FellowshipTagInfo from "../fellowshipTagInfo";
-import { DisplayUser, DisplayUserAddress } from "../bio";
 import AssetInfo from "next-common/components/profile/bio/assetInfo";
 import WindowSizeProvider from "next-common/context/windowSize";
 import UserAccountProvider from "next-common/context/user/account";
@@ -12,9 +10,8 @@ import VotesPowerPanel from "./votesPower";
 import DelegationGuideProvider from "next-common/components/profile/delegationGuide/context/delegationGuideContext";
 import dynamic from "next/dynamic";
 import ReferendaDelegationProvider from "next-common/components/profile/delegationGuide/context/referendaDelegationContext";
-import { VerticalDivider } from "next-common/components/styled/layout/divider";
-import { useNavCollapsed } from "next-common/context/nav";
-import { useIsKintsugi } from "next-common/context/chain";
+import AccountInfoPanel from "next-common/components/profile/bio/accountInfoPanel";
+import RightPanelContainer from "next-common/components/profile/bio/rightPanelContainer";
 
 const DelegationGuide = dynamic(
   () => import("next-common/components/profile/delegationGuide"),
@@ -23,94 +20,6 @@ const DelegationGuide = dynamic(
   },
 );
 
-const Relatives = dynamic(
-  () => import("next-common/components/profile/relatives"),
-  {
-    ssr: false,
-  },
-);
-
-export function AccountInfoPanel({ address, id }) {
-  const isMobile = useIsMobile();
-  const shouldAlignCenter = isMobile;
-  const isKintsugi = useIsKintsugi();
-
-  return (
-    <div
-      className={cn(
-        "w-full flex px-0 mt-0 gap-4",
-        shouldAlignCenter ? "flex-col items-center" : "flex-row items-start",
-      )}
-    >
-      <div
-        className={cn(
-          "flex mt-0 flex-wrap w-full",
-          shouldAlignCenter ? "justify-center" : "justify-start",
-          isMobile && "py-2",
-        )}
-      >
-        <DisplayUser
-          id={id}
-          className={cn(
-            "flex text14Medium",
-            shouldAlignCenter ? "justify-center" : "",
-          )}
-        />
-        <DisplayUserAddress
-          address={address}
-          className={cn(
-            shouldAlignCenter
-              ? "!items-center text-center"
-              : "flex-1 !items-start",
-          )}
-          extra={
-            !isMobile && !isKintsugi ? (
-              <>
-                <VerticalDivider height={13} margin={16} />
-                <Relatives />
-                <FellowshipTagInfo address={address} />
-                <FellowshipTagInfo
-                  address={address}
-                  pallet="ambassadorCollective"
-                  type="ambassador"
-                />
-              </>
-            ) : null
-          }
-        />
-        {isMobile && address && (
-          <div className="mt-4 mb-1">
-            <Relatives />
-            <FellowshipTagInfo address={address} />
-            <FellowshipTagInfo
-              address={address}
-              pallet="ambassadorCollective"
-              type="ambassador"
-            />
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export function RightPanelContainer({ children, className = "" }) {
-  const [navCollapsed] = useNavCollapsed();
-
-  return (
-    <div
-      className={cn(
-        "grid gap-[16px]",
-        "grid-cols-2",
-        navCollapsed ? "max-[1200px]:grid-cols-1" : "max-[1425px]:grid-cols-1",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
-}
-
 function OpenGovBioContent() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
@@ -118,7 +27,7 @@ function OpenGovBioContent() {
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
 
   return (
-    <UserAccountProvider address={address}>
+    <>
       <div
         className={cn(
           "grid grid-cols-2",
@@ -128,7 +37,9 @@ function OpenGovBioContent() {
       >
         <AccountInfoPanel address={address} id={id} user={user} />
         <RightPanelContainer>
-          <AssetInfo address={address} />
+          <UserAccountProvider address={address}>
+            <AssetInfo address={address} />
+          </UserAccountProvider>
           <VotesPowerPanel address={address} />
         </RightPanelContainer>
       </div>
@@ -139,7 +50,7 @@ function OpenGovBioContent() {
           </ReferendaDelegationProvider>
         </DelegationGuideProvider>
       )}
-    </UserAccountProvider>
+    </>
   );
 }
 
