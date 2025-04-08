@@ -27,9 +27,10 @@ import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/
 import { rankToPromoteTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
 import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import { useChain } from "next-common/context/chain";
 
-export function getPromoteTrackNameFromRank(rank) {
-  switch (process.env.NEXT_PUBLIC_CHAIN) {
+export function getPromoteTrackNameFromRank(chain, rank) {
+  switch (chain) {
     case Chains.collectives:
     case Chains.westendCollectives:
       return CollectivesPromoteTracks[rank];
@@ -44,7 +45,8 @@ function PopupContent({ member }) {
   const [enactment, setEnactment] = useState();
   const extensionAccounts = useExtensionAccounts();
   const [toRank, setToRank] = useState(member?.rank + 1);
-  const trackName = getPromoteTrackNameFromRank(toRank);
+  const chain = useChain();
+  const trackName = getPromoteTrackNameFromRank(chain, toRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
   const referendaPallet = useReferendaFellowshipPallet();

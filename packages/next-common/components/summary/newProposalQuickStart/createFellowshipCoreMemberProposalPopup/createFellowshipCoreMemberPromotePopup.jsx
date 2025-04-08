@@ -19,6 +19,7 @@ import { isNil } from "lodash-es";
 import { rankToPromoteTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
 import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
+import { useChain } from "next-common/context/chain";
 
 export function NotAvailableMemberPrompt() {
   return (
@@ -56,7 +57,8 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const targetMember = find(members, { address: who });
   const toRank = !isNil(targetMember?.rank) ? targetMember?.rank + 1 : "";
 
-  const trackName = getPromoteTrackNameFromRank(toRank);
+  const chain = useChain();
+  const trackName = getPromoteTrackNameFromRank(chain, toRank);
 
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(who);
   const isReferendaExisted = relatedReferenda.length > 0;

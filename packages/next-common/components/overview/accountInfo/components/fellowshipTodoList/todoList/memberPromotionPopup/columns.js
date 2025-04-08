@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { isNil } from "lodash-es";
+import { isNil, startCase } from "lodash-es";
 import { useMemo, useState } from "react";
 import { AddressUser } from "next-common/components/user";
 import { useContextCollectivesMembers } from "../../context/collectivesMember";
@@ -12,6 +12,10 @@ import useCollectiveMember from "../../hooks/useCollectiveMember";
 import Tooltip from "next-common/components/tooltip";
 import { useSubFellowshipVote } from "next-common/utils/hooks/fellowship/useFellowshipVote";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { cn } from "next-common/utils";
+import { useValueFromBatchResult } from "next-common/context/batch";
+import { usePageProps } from "next-common/context/page";
+import Loading from "next-common/components/loading";
 
 const EvidenceDetailPopup = dynamicPopup(() =>
   import("next-common/components/collectives/core/member/evidence"),
@@ -82,6 +86,39 @@ export const evidenceColumn = {
   render: (item) => <ViewEvidence {...item} />,
 };
 
+function ReferendaTooltip({ referendumIndex, children }) {
+  const { fellowshipTracks } = usePageProps();
+  const { value, loading } = useValueFromBatchResult(referendumIndex);
+  const trackId = value?.track;
+  const referendumTrack = useMemo(
+    () => fellowshipTracks.find((track) => track.id === trackId),
+    [trackId, fellowshipTracks],
+  );
+
+  if (loading) {
+    return <Tooltip content={<Loading size={16} />}>{children}</Tooltip>;
+  }
+
+  return (
+    <Tooltip
+      content={
+        <div>
+          <div>
+            Referendum:{" "}
+            {value.title ||
+              `[${startCase(
+                referendumTrack?.name,
+              )}] Referendum #${referendumIndex}`}
+          </div>
+          <div>Comments: {value.commentsCount || 0}</div>
+        </div>
+      }
+    >
+      {children}
+    </Tooltip>
+  );
+}
+
 export const referendumColumn = {
   key: "referenda",
   name: "Referenda",
@@ -91,15 +128,47 @@ export const referendumColumn = {
       return <span className="text-textTertiary">-</span>;
     }
     return (
-      <Link
-        className="text-sapphire500"
-        href={`/fellowship/${item.referendumIndex}`}
-      >
-        #{item.referendumIndex}
-      </Link>
+      <ReferendaTooltip referendumIndex={item.referendumIndex}>
+        <Link
+          className="text-sapphire500"
+          href={`/fellowship/${item.referendumIndex}`}
+        >
+          #{item.referendumIndex}
+        </Link>
+      </ReferendaTooltip>
     );
   },
 };
+
+function MyVote({ referendumIndex }) {
+  const realAddress = useRealAddress();
+  const { result: myVote } = useSubFellowshipVote(referendumIndex, realAddress);
+  const vote = myVote?.toJSON();
+
+  if (!vote) {
+    return null;
+  }
+
+  const tooltipContent = (
+    <ul>
+      <li>Vote: {"aye" in vote ? "Aye" : "Nay"}</li>
+      <li>Votes: {"aye" in vote ? vote.aye : vote.nay}</li>
+    </ul>
+  );
+
+  return (
+    <Tooltip content={tooltipContent}>
+      <div className="p-[4px]">
+        <div
+          className={cn(
+            "w-[6px] h-[6px] rounded-full",
+            vote.aye ? "bg-green500" : "bg-red500",
+          )}
+        />
+      </div>
+    </Tooltip>
+  );
+}
 
 function VoteButtons({ who, referendumIndex, action }) {
   const realAddress = useRealAddress();
@@ -108,16 +177,11 @@ function VoteButtons({ who, referendumIndex, action }) {
   const targetMember = useCollectiveMember(who);
   const rank = targetMember?.rank;
   const hasReferendum = !isNil(referendumIndex);
-  const { result: myVote } = useSubFellowshipVote(referendumIndex, realAddress);
-  const isVoted = myVote?.isSome;
 
   let tooltipContent = "";
   let disabled = false;
   if (hasReferendum) {
-    if (isVoted) {
-      tooltipContent = "You have already voted";
-      disabled = true;
-    }
+    // do nothing
   } else if (rank <= 0 && action === "approve") {
     tooltipContent = "Can't retain for rank 0";
     disabled = true;
@@ -134,7 +198,9 @@ function VoteButtons({ who, referendumIndex, action }) {
   }
 
   return (
-    <div className="flex gap-[12px]">
+    <div className="flex gap-[12px] h-[31px] items-center justify-end">
+      <MyVote referendumIndex={referendumIndex} />
+
       <Tooltip content={tooltipContent}>
         <CreateReferendumAndVoteButton
           address={who}
@@ -167,7 +233,7 @@ function VoteButtons({ who, referendumIndex, action }) {
 export const votePromoteColumn = {
   key: "vote",
   name: "Vote",
-  style: { width: "80px" },
+  style: { width: "100px" },
   render: (item) => (
     <VoteButtons
       who={item.who}
@@ -180,7 +246,7 @@ export const votePromoteColumn = {
 export const voteRetainColumn = {
   key: "vote",
   name: "Vote",
-  style: { width: "80px" },
+  style: { width: "100px" },
   render: (item) => (
     <VoteButtons
       who={item.who}

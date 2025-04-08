@@ -28,7 +28,11 @@ function MemberPromotionContent({ promotions }) {
 
 export default function MemberPromotionPopup({ promotions, onClose }) {
   return (
-    <PopupWithSigner title="Member Promotion" onClose={onClose}>
+    <PopupWithSigner
+      className="w-[800px]"
+      title="Member Promotion"
+      onClose={onClose}
+    >
       <MemberPromotionContent promotions={promotions} />
     </PopupWithSigner>
   );

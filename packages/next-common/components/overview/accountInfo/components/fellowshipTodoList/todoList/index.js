@@ -14,7 +14,10 @@ import SalaryPayoutTodo from "./salaryPayoutTodo";
 import MyReferendaVotesTodo from "./myReferendaVotesTodo";
 import MemberEvidencesTodo from "./memberEvidencesTodo";
 import CandidateEvidencesTodo from "./candidateEvidencesTodo";
-import MemberPromotionTodo from "./memberPromotionTodo";
+import {
+  CandidatePromotionTodo,
+  MemberPromotionTodo,
+} from "./memberPromotionTodo";
 import MemberRetentionTodo from "./memberRetentionTodo";
 
 function MakeSureLoaded({ children }) {
@@ -86,6 +89,7 @@ function TodoListWithDataLoaded() {
       <CandidateDemotionExpirationTodo />
       <OnlyCollectivesMember>
         <MemberPromotionTodo />
+        <CandidatePromotionTodo />
         <MemberRetentionTodo />
         <SalaryRegistrationTodo />
         <SalaryPayoutTodo />

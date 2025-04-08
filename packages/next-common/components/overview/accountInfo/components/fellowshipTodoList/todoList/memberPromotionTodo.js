@@ -3,14 +3,15 @@ import ActionButton from "./actionButton";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import MemberPromotionPopup from "./memberPromotionPopup";
 import pluralize from "pluralize";
-import { useMemberPromotionEvidences } from "../hooks/evidence";
+import {
+  useCandidatePromotionEvidences,
+  useMemberPromotionEvidences,
+} from "../hooks/evidence";
 
-export default function MemberPromotionTodo() {
+function MemberPromotionTodoImpl({ promotionEvidences, memberOrCandidate }) {
   const [showMemberPromotionPopup, setShowMemberPromotionPopup] =
     useState(false);
-  const memberPromotionEvidences = useMemberPromotionEvidences();
-
-  const count = memberPromotionEvidences?.length || 0;
+  const count = promotionEvidences?.length || 0;
   if (count === 0) {
     return null;
   }
@@ -25,7 +26,7 @@ export default function MemberPromotionTodo() {
           rel="noreferrer"
           href="/fellowship/members?evidence_only=true&wish=promotion"
         >
-          {count} {pluralize("member", count)}
+          {count} {pluralize(memberOrCandidate, count)}
         </a>
         &nbsp;want to get promoted.&nbsp;{" "}
         <ActionButton onClick={() => setShowMemberPromotionPopup(true)}>
@@ -34,10 +35,30 @@ export default function MemberPromotionTodo() {
       </TodoContent>
       {showMemberPromotionPopup && (
         <MemberPromotionPopup
-          promotions={memberPromotionEvidences}
+          promotions={promotionEvidences}
           onClose={() => setShowMemberPromotionPopup(false)}
         />
       )}
     </TodoWrapper>
+  );
+}
+
+export function MemberPromotionTodo() {
+  const memberPromotionEvidences = useMemberPromotionEvidences();
+  return (
+    <MemberPromotionTodoImpl
+      promotionEvidences={memberPromotionEvidences}
+      memberOrCandidate="member"
+    />
+  );
+}
+
+export function CandidatePromotionTodo() {
+  const candidatePromotionEvidences = useCandidatePromotionEvidences();
+  return (
+    <MemberPromotionTodoImpl
+      promotionEvidences={candidatePromotionEvidences}
+      memberOrCandidate="candidate"
+    />
   );
 }

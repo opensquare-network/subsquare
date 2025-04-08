@@ -83,7 +83,7 @@ export async function getFellowshipReferendaPosts(indexes = []) {
   return result || [];
 }
 
-function ReferendaTitleProvider({ children }) {
+export function ReferendaTitleProvider({ children }) {
   const fetchReferendaList = useCallback(async (referendumIndexes) => {
     const posts = await getFellowshipReferendaPosts(referendumIndexes);
     const referendaMap = Object.fromEntries(

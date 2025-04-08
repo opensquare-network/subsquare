@@ -28,7 +28,11 @@ function MemberRetentionsContent({ retentions }) {
 
 export default function MemberRetentionPopup({ retentions, onClose }) {
   return (
-    <PopupWithSigner title="Member Retention" onClose={onClose}>
+    <PopupWithSigner
+      className="w-[800px]"
+      title="Member Retention"
+      onClose={onClose}
+    >
       <MemberRetentionsContent retentions={retentions} />
     </PopupWithSigner>
   );
