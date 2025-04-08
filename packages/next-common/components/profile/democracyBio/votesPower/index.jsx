@@ -8,7 +8,11 @@ import DemocracyVotesPowerProvider, {
 import CommonPanel from "next-common/components/profile/bio/commonPanel";
 import { VotesPowerContent } from "next-common/components/profile/OpenGovBio/votesPower/valueDisplay";
 import { DataItem } from "next-common/components/profile/OpenGovBio/votesPower";
-import DemocracyVotesPowerDetail from "./detail";
+import { SystemMenu } from "@osn/icons/subsquare";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useState } from "react";
+
+const DemocracyVotesPowerDetailPopup = dynamicPopup(() => import("./detail"));
 
 function SelfBalance() {
   const { selfBalance } = useDemocracyVotesPowerContext();
@@ -42,6 +46,7 @@ function MaxDelegations() {
 
 function DemocracyVotesPowerInContext() {
   const { isLoading, votesPower, address } = useDemocracyVotesPowerContext();
+  const [detailOpen, setDetailOpen] = useState(false);
 
   if (!address || isLoading) {
     return null;
@@ -49,7 +54,11 @@ function DemocracyVotesPowerInContext() {
 
   return (
     <>
-      <CommonPanel>
+      <CommonPanel
+        className="relative h-[116px] overflow-hidden"
+        onExtraBtnClick={setDetailOpen}
+        extra={<SystemMenu className="w-4 h-4" />}
+      >
         <VotesPowerContent
           isLoading={isLoading}
           votesPower={votesPower}
@@ -60,9 +69,11 @@ function DemocracyVotesPowerInContext() {
             <SelfBalance />
             <MaxDelegations />
           </GreyPanel>
-          <DemocracyVotesPowerDetail />
         </div>
       </CommonPanel>
+      {detailOpen && (
+        <DemocracyVotesPowerDetailPopup setDetailOpen={setDetailOpen} />
+      )}
     </>
   );
 }

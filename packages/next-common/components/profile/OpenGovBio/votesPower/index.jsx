@@ -12,7 +12,7 @@ import VotesPowerValueDisplay from "./valueDisplay";
 import { SystemMenu } from "@osn/icons/subsquare";
 
 const OpenGovVotesPowerDetailPopup = dynamicPopup(() =>
-  import("./detail/detailPopup"),
+  import("./detail"),
 );
 
 export function DataItem({ label, children }) {
