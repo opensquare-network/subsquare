@@ -25,10 +25,6 @@ function FellowshipTagInfoImpl({ address, pallet, type }) {
   );
 }
 
-export const FellowshipTagInfoWrapper = tw.div`
-  flex items-center mb-2 mt-4
-`;
-
 export default function FellowshipTagInfo({
   address,
   pallet = "fellowshipCollective",

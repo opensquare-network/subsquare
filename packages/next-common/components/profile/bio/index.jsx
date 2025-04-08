@@ -12,22 +12,16 @@ import AddressUser from "../../user/addressUser";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { AvatarDisplay } from "../../user/avatarDisplay";
-import FellowshipTagInfo, {
-  FellowshipTagInfoWrapper,
-} from "../fellowshipTagInfo";
 import { useChainSettings } from "next-common/context/chain";
 import OpenGovBio from "../OpenGovBio";
 import DemocracyBio from "../democracyBio";
 import { addressEllipsis, cn } from "next-common/utils";
-
-const Wrapper = styled.div`
-  padding: 24px 0;
-  margin-top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-`;
+import {
+  AccountInfoPanel,
+  RightPanelContainer,
+} from "next-common/components/profile/OpenGovBio";
+import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import UserAccountProvider from "next-common/context/user/account";
 
 const Username = styled.span`
   font-weight: 700;
@@ -77,7 +71,6 @@ export const DisplayUser = ({ id, className = "" }) => {
   return <Username>{id}</Username>;
 };
 
-// TODO: responsive
 export const DisplayUserAddress = ({
   address,
   className = "",
@@ -105,6 +98,7 @@ export const DisplayUserAddress = ({
 };
 
 function NormalBio() {
+  const isMobile = useIsMobile();
   const { user, id } = usePageProps();
   const chain = useChain();
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
@@ -113,37 +107,24 @@ function NormalBio() {
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
 
   return (
-    <Wrapper>
-      <Flex
-        style={{
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: 0,
-          flexWrap: "wrap",
-          width: "100%",
-        }}
-      >
-        <DisplayUser id={id} />
-        <DisplayUserAddress address={address} />
+    <div
+      className={cn(
+        "grid gap-[16px] grid-cols-1",
+        isMobile ? "grid-cols-1" : "grid-cols-2",
+      )}
+    >
+      <AccountInfoPanel address={address} id={id} user={user} />
 
-        <FellowshipTagInfoWrapper>
-          <FellowshipTagInfo address={address} />
-        </FellowshipTagInfoWrapper>
-        <FellowshipTagInfoWrapper>
-          <FellowshipTagInfo
-            address={address}
-            pallet="ambassadorCollective"
-            type="ambassador"
-          />
-        </FellowshipTagInfoWrapper>
-
-        {isKintsugi ? (
-          <KintAssetInfo address={address} />
-        ) : (
-          <AssetInfo address={address} />
-        )}
-      </Flex>
-    </Wrapper>
+      {isKintsugi ? (
+        <KintAssetInfo address={address} />
+      ) : (
+        <RightPanelContainer className="grid-cols-1">
+          <UserAccountProvider address={address}>
+            <AssetInfo address={address} />
+          </UserAccountProvider>
+        </RightPanelContainer>
+      )}
+    </div>
   );
 }
 

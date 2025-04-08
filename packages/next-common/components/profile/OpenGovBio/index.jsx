@@ -68,6 +68,12 @@ export function AccountInfoPanel({ address, id }) {
               <>
                 <VerticalDivider height={13} margin={16} />
                 <Relatives />
+                <FellowshipTagInfo address={address} />
+                <FellowshipTagInfo
+                  address={address}
+                  pallet="ambassadorCollective"
+                  type="ambassador"
+                />
               </>
             ) : null
           }
@@ -75,25 +81,20 @@ export function AccountInfoPanel({ address, id }) {
         {isMobile && address && (
           <div className="mt-4 mb-1">
             <Relatives />
+            <FellowshipTagInfo address={address} />
+            <FellowshipTagInfo
+              address={address}
+              pallet="ambassadorCollective"
+              type="ambassador"
+            />
           </div>
         )}
-
-        <FellowshipTagInfoWrapper>
-          <FellowshipTagInfo address={address} />
-        </FellowshipTagInfoWrapper>
-        <FellowshipTagInfoWrapper>
-          <FellowshipTagInfo
-            address={address}
-            pallet="ambassadorCollective"
-            type="ambassador"
-          />
-        </FellowshipTagInfoWrapper>
       </div>
     </div>
   );
 }
 
-export function RightPanelContainer({ children }) {
+export function RightPanelContainer({ children, className = "" }) {
   const [navCollapsed] = useNavCollapsed();
 
   return (
@@ -102,6 +103,7 @@ export function RightPanelContainer({ children }) {
         "grid gap-[16px]",
         "grid-cols-2",
         navCollapsed ? "max-[1200px]:grid-cols-1" : "max-[1425px]:grid-cols-1",
+        className,
       )}
     >
       {children}

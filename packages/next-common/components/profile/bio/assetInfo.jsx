@@ -10,6 +10,7 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
 function TotalBalance({ symbol, decimals }) {
   const { info } = useUserAccountInfo();
+
   const value = info?.data?.total || 0;
 
   return (
