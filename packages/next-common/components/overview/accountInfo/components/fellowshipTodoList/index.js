@@ -1,5 +1,4 @@
 import CollapsePanel, { AlwaysVisible } from "../collapsePanel";
-import TodoList from "./todoList";
 import NavigationButtons from "./navigationButtons";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import useTodoListLoading from "./hooks/useTodoListLoading";
@@ -7,6 +6,9 @@ import FellowshipTodoProviders from "next-common/components/overview/accountInfo
 import LoadableContent, {
   LoadStyles,
 } from "next-common/components/common/loadableContent";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const TodoList = dynamicPopup(() => import("./todoList"));
 
 function Title() {
   const isLoading = useTodoListLoading();

@@ -131,7 +131,7 @@ export const referendumColumn = {
       <ReferendaTooltip referendumIndex={item.referendumIndex}>
         <Link
           className="text-sapphire500"
-          href={`/fellowship/${item.referendumIndex}`}
+          href={`/fellowship/referenda/${item.referendumIndex}`}
         >
           #{item.referendumIndex}
         </Link>

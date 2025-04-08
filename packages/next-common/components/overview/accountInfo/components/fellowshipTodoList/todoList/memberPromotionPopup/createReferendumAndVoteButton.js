@@ -10,8 +10,12 @@ import { cn } from "next-common/utils";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
-import CreatePromotionReferendaAndVotePopup from "../createPromotionReferendaAndVotePopup";
 import useTrackNameFromAction from "./useTrackNameFromAction";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
+  import("../createPromotionReferendaAndVotePopup"),
+);
 
 function CreateReferendumAndVoteButtonImpl({
   address,

@@ -1,12 +1,16 @@
 import { useState } from "react";
 import ActionButton from "./actionButton";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
-import MemberPromotionPopup from "./memberPromotionPopup";
 import pluralize from "pluralize";
 import {
   useCandidatePromotionEvidences,
   useMemberPromotionEvidences,
 } from "../hooks/evidence";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const MemberPromotionPopup = dynamicPopup(() =>
+  import("./memberPromotionPopup"),
+);
 
 function MemberPromotionTodoImpl({ promotionEvidences, memberOrCandidate }) {
   const [showMemberPromotionPopup, setShowMemberPromotionPopup] =
