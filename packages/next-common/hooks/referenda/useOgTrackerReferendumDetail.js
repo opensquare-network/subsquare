@@ -44,7 +44,7 @@ const fetchReferendumTasks = async (proposalId) => {
   return tasks || [];
 };
 
-const useReferendumDetail = () => {
+const useOgTrackerReferendumDetail = () => {
   const { id: referendumIndex } = usePageProps();
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -67,4 +67,4 @@ const useReferendumDetail = () => {
   };
 };
 
-export default useReferendumDetail;
+export default useOgTrackerReferendumDetail;
