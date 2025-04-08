@@ -18,7 +18,7 @@ import FellowshipTagInfo, {
 import { useChainSettings } from "next-common/context/chain";
 import OpenGovBio from "./OpenGovBio";
 import DemocracyBio from "./democracyBio";
-import { cn } from "next-common/utils";
+import { addressEllipsis, cn } from "next-common/utils";
 
 const Wrapper = styled.div`
   padding: 24px 0;
@@ -54,12 +54,12 @@ const Tertiary = styled.span`
   color: var(--textTertiary);
 `;
 
-export const DisplayUserAvatar = ({ address, user }) => (
+export const DisplayUserAvatar = ({ address, user, size = 48 }) => (
   <AvatarDisplay
     avatarCid={user?.avatarCid}
     address={address}
     emailMd5={user?.emailMd5}
-    size={48}
+    size={size}
   />
 );
 
@@ -77,17 +77,23 @@ export const DisplayUser = ({ id, className = "" }) => {
   return <Username>{id}</Username>;
 };
 
-export const DisplayUserAddress = ({ address, className = "" }) => {
+export const DisplayUserAddress = ({
+  address,
+  className = "",
+  showLinks = true,
+  ellipsisAddress = false,
+}) => {
   if (!address) {
     return null;
   }
   const maybeEvmAddress = tryConvertToEvmAddress(address);
+  const displayAddress = ellipsisAddress ? addressEllipsis(address) : address;
   return (
     <AddressWrapper className={className}>
       <Copyable copyText={maybeEvmAddress}>
-        <Tertiary>{maybeEvmAddress}</Tertiary>
+        <Tertiary>{displayAddress}</Tertiary>
       </Copyable>
-      <AccountLinks address={maybeEvmAddress} />
+      {showLinks && <AccountLinks address={maybeEvmAddress} />}
     </AddressWrapper>
   );
 };

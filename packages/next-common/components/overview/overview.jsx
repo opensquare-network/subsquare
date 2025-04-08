@@ -1,4 +1,3 @@
-import AccountInfo from "./accountInfo";
 import RecentProposals from "./recentProposals";
 import { useChain } from "next-common/context/chain";
 import TreasuryStats from "./treasuryStats";
@@ -9,8 +8,14 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 // import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
-import FellowshipFinanceOverview from "./fellowship/finance";
 import KusamaTreasuryStats from "./kusamaTreasuryStats";
+import dynamic from "next/dynamic";
+
+const AccountInfo = dynamic(() => import("./accountInfo"), { ssr: false });
+const FellowshipFinanceOverview = dynamic(
+  () => import("./fellowship/finance"),
+  { ssr: false },
+);
 
 function ConditionTreasuryStats() {
   const chain = useChain();

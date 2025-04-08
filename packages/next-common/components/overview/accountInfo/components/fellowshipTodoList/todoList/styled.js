@@ -1,6 +1,8 @@
 export function TodoWrapper({ children }) {
   return (
-    <div className="flex max-sm:flex-col max-sm:justify-start">{children}</div>
+    <div className="first:mt-[16px] flex max-sm:flex-col max-sm:justify-start">
+      {children}
+    </div>
   );
 }
 

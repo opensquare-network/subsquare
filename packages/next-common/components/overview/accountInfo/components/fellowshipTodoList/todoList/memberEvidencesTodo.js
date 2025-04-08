@@ -2,14 +2,13 @@ import pluralize from "pluralize";
 import { useTodoEvidences } from "next-common/components/fellowship/core/memberWarnings";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import { useNonCandidateCoreMembers } from "../context/hooks/coreMembers";
-import { useHasMemberEvidencesTodo } from "../hooks/useHasTodo";
 
 export default function MemberEvidencesTodo() {
   const { members } = useNonCandidateCoreMembers();
   const { all: allEvidences, toBeHandled: toBeHandledEvidences } =
     useTodoEvidences(members);
-  const hasTodo = useHasMemberEvidencesTodo();
-  if (!hasTodo) {
+
+  if (!toBeHandledEvidences?.length) {
     return null;
   }
 
