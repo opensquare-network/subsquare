@@ -15,6 +15,7 @@ import DelegationGuideProvider from "next-common/components/profile/delegationGu
 import dynamic from "next/dynamic";
 import ReferendaDelegationProvider from "next-common/components/profile/delegationGuide/context/referendaDelegationContext";
 import { VerticalDivider } from "next-common/components/styled/layout/divider";
+import { useNavCollapsed } from "next-common/context/nav";
 
 const DelegationGuide = dynamic(
   () => import("next-common/components/profile/delegationGuide"),
@@ -37,7 +38,7 @@ export function AccountInfoPanel({ address, id }) {
   return (
     <div
       className={cn(
-        "w-full flex px-0  mt-0 gap-4",
+        "w-full flex px-0 mt-0 gap-4",
         shouldAlignCenter ? "flex-col items-center" : "flex-row items-start",
       )}
     >
@@ -45,6 +46,7 @@ export function AccountInfoPanel({ address, id }) {
         className={cn(
           "flex mt-0 flex-wrap w-full",
           shouldAlignCenter ? "justify-center" : "justify-start",
+          isMobile && "py-2",
         )}
       >
         <DisplayUser
@@ -62,12 +64,19 @@ export function AccountInfoPanel({ address, id }) {
               : "flex-1 !items-start",
           )}
           extra={
-            <>
-              <VerticalDivider height={13} margin={16} />
-              <Relatives />
-            </>
+            !isMobile ? (
+              <>
+                <VerticalDivider height={13} margin={16} />
+                <Relatives />
+              </>
+            ) : null
           }
         />
+        {isMobile && (
+          <div className="mt-4 mb-1">
+            <Relatives />
+          </div>
+        )}
 
         <FellowshipTagInfoWrapper>
           <FellowshipTagInfo address={address} />
@@ -85,13 +94,14 @@ export function AccountInfoPanel({ address, id }) {
 }
 
 export function RightPanelContainer({ children }) {
-  const isMobile = useIsMobile();
+  const [navCollapsed] = useNavCollapsed();
 
   return (
     <div
       className={cn(
         "grid gap-[16px]",
-        isMobile ? "grid-cols-1" : "grid-cols-2",
+        "grid-cols-2",
+        navCollapsed ? "max-[1200px]:grid-cols-1" : "max-[1425px]:grid-cols-1",
       )}
     >
       {children}

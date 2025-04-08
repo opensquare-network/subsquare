@@ -7,10 +7,7 @@ import DemocracyVotesPowerProvider, {
 } from "../context/votesPower";
 import CommonPanel from "next-common/components/profile/bio/commonPanel";
 import { VotesPowerContent } from "next-common/components/profile/OpenGovBio/votesPower/valueDisplay";
-import {
-  SplitSymbol,
-  DataItem,
-} from "next-common/components/profile/OpenGovBio/votesPower";
+import { DataItem } from "next-common/components/profile/OpenGovBio/votesPower";
 import DemocracyVotesPowerDetail from "./detail";
 
 function SelfBalance() {
@@ -59,9 +56,8 @@ function DemocracyVotesPowerInContext() {
           isReferenda={false}
         />
         <div className="flex flex-row items-start space-x-2 w-full gap-y-2">
-          <GreyPanel className="flex flex-row items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap flex-1 gap-y-1">
+          <GreyPanel className="w-full flex flex-col items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap gap-y-1">
             <SelfBalance />
-            <SplitSymbol />
             <MaxDelegations />
           </GreyPanel>
           <DemocracyVotesPowerDetail />

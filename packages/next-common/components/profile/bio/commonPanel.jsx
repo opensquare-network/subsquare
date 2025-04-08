@@ -28,7 +28,7 @@ export default function CommonPanel({
       {extra && (
         <div
           role="button"
-          className="absolute right-3 top-3 w-7 h-7 flex items-center justify-center shrink-0 border border-neutral400 rounded-[8px] cursor-pointer bg-neutral100"
+          className="absolute right-4 top-4 w-7 h-7 flex items-center justify-center shrink-0 border border-neutral400 rounded-[8px] cursor-pointer bg-neutral100"
           onClick={onExtraBtnClick}
         >
           {extra}

@@ -17,17 +17,9 @@ const OpenGovVotesPowerDetailPopup = dynamicPopup(() =>
 
 export function DataItem({ label, children }) {
   return (
-    <div className="inline-flex gap-1 items-center space-x-1 leading-none">
+    <div className="w-full gap-1 flex justify-between items-center space-x-1 leading-none">
       <span className="text12Medium text-textTertiary">{label}</span>
       {children}
-    </div>
-  );
-}
-
-export function SplitSymbol() {
-  return (
-    <div className="text12Medium text-textDisabled mx-2 flex items-center">
-      ·
     </div>
   );
 }
@@ -79,9 +71,8 @@ function OpenGovVotesPowerInContext() {
       >
         <VotesPowerValueDisplay />
         <div className="flex flex-row items-start space-x-2 w-full gap-y-2">
-          <GreyPanel className="flex flex-row items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap gap-y-1">
+          <GreyPanel className="w-full flex flex-col items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap gap-y-1">
             <SeleBalance />
-            <SplitSymbol />
             <MaxDelegations />
           </GreyPanel>
         </div>
