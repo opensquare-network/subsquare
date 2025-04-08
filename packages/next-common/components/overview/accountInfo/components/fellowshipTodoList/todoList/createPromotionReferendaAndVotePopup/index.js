@@ -8,14 +8,16 @@ import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
-import useTrackNameFromAction from "../memberPromotionPopup/useTrackNameFromAction";
+import useTrackNameFromAction from "../memberPromotionPopup/voteButtons/useTrackNameFromAction";
 import PrimaryButton from "next-common/lib/button/primary";
 
-function RankField({ rank, setRank = noop }) {
-  const options = [1, 2, 3].map((r) => ({
-    text: r,
-    value: r,
-  }));
+function RankField({ minRank, rank, setRank = noop }) {
+  const options = [1, 2, 3]
+    .filter((r) => r > minRank)
+    .map((r) => ({
+      text: r,
+      value: r,
+    }));
   return (
     <CommonSelectField
       title="To Rank"
@@ -67,7 +69,12 @@ export default function CreatePromotionReferendaAndVotePopup({
   return (
     <PopupWithSigner title="New Promote Referendum" onClose={onClose}>
       {whoField}
-      <RankField title="To Rank" rank={toRank} setRank={setToRank} />
+      <RankField
+        title="To Rank"
+        minRank={rank}
+        rank={toRank}
+        setRank={setToRank}
+      />
       <div className="flex justify-end">
         <PrimaryButton
           disabled={!who || !toRank}

@@ -6,16 +6,13 @@ import { useContextCollectivesMembers } from "../../context/collectivesMember";
 import { useContextCoreMembers } from "../../context/coreMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import FellowshipRank from "next-common/components/fellowship/rank";
-import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
-import CreateReferendumAndVoteButton from "./createReferendumAndVoteButton";
 import useCollectiveMember from "../../hooks/useCollectiveMember";
 import Tooltip from "next-common/components/tooltip";
-import { useSubFellowshipVote } from "next-common/utils/hooks/fellowship/useFellowshipVote";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { cn } from "next-common/utils";
 import { useValueFromBatchResult } from "next-common/context/batch";
 import { usePageProps } from "next-common/context/page";
 import Loading from "next-common/components/loading";
+import VoteButtonsWithoutReferendum from "./voteButtons/voteButtonsWithoutReferendum";
+import ReferendumVoteButtons from "./voteButtons/referendumVoteButtons";
 
 const EvidenceDetailPopup = dynamicPopup(() =>
   import("next-common/components/collectives/core/member/evidence"),
@@ -140,118 +137,26 @@ export const referendumColumn = {
   },
 };
 
-function MyVote({ referendumIndex }) {
-  const realAddress = useRealAddress();
-  const { result: myVote } = useSubFellowshipVote(referendumIndex, realAddress);
-  const vote = myVote?.toJSON();
-
-  if (!vote) {
-    return null;
-  }
-
-  const tooltipContent = (
-    <ul>
-      <li>Vote: {"aye" in vote ? "Aye" : "Nay"}</li>
-      <li>Votes: {"aye" in vote ? vote.aye : vote.nay}</li>
-    </ul>
-  );
-
-  return (
-    <Tooltip content={tooltipContent}>
-      <div className="p-[4px]">
-        <div
-          className={cn(
-            "w-[6px] h-[6px] rounded-full",
-            vote.aye ? "bg-green500" : "bg-red500",
-          )}
-        />
-      </div>
-    </Tooltip>
-  );
-}
-
-function VoteButtons({ who, referendumIndex, action }) {
-  const realAddress = useRealAddress();
-  const me = useCollectiveMember(realAddress);
-  const myRank = me?.rank;
-  const targetMember = useCollectiveMember(who);
-  const rank = targetMember?.rank;
-  const hasReferendum = !isNil(referendumIndex);
-
-  let tooltipContent = "";
-  let disabled = false;
-  if (hasReferendum) {
-    // do nothing
-  } else if (rank <= 0 && action === "approve") {
-    tooltipContent = "Rank retention is not allowed for candidates";
-    disabled = true;
-  } else if (rank >= 6 && action === "promote") {
-    tooltipContent =
-      "There are no corresponding tracks to promote members with rank >= 6";
-    disabled = true;
-  } else if (myRank >= 3) {
-    tooltipContent = "Create a new referendum and vote";
-    disabled = false;
-  } else {
-    tooltipContent = "Only rank >=3 can create a referendum and then vote";
-    disabled = true;
-  }
-
-  return (
-    <div className="flex gap-[12px] h-[31px] items-center justify-end">
-      <MyVote referendumIndex={referendumIndex} />
-
-      <Tooltip content={tooltipContent}>
-        <CreateReferendumAndVoteButton
-          address={who}
-          rank={rank}
-          referendumIndex={referendumIndex}
-          action={action}
-          voteAye={false}
-          disabled={disabled}
-        >
-          <SystemVoteNay className="w-[16px]" />
-        </CreateReferendumAndVoteButton>
-      </Tooltip>
-
-      <Tooltip content={tooltipContent}>
-        <CreateReferendumAndVoteButton
-          address={who}
-          rank={rank}
-          referendumIndex={referendumIndex}
-          action={action}
-          voteAye={true}
-          disabled={disabled}
-        >
-          <SystemVoteAye className="w-[16px]" />
-        </CreateReferendumAndVoteButton>
-      </Tooltip>
-    </div>
-  );
-}
-
 export const votePromoteColumn = {
   key: "vote",
   name: "Vote",
   style: { width: "100px" },
-  render: (item) => (
-    <VoteButtons
-      who={item.who}
-      referendumIndex={item.referendumIndex}
-      action="promote"
-    />
-  ),
+  render: (item) =>
+    isNil(item.referendumIndex) ? (
+      <VoteButtonsWithoutReferendum who={item.who} action="promote" />
+    ) : (
+      <ReferendumVoteButtons referendumIndex={item.referendumIndex} />
+    ),
 };
 
 export const voteRetainColumn = {
   key: "vote",
   name: "Vote",
   style: { width: "100px" },
-  render: (item) => (
-    <VoteButtons
-      who={item.who}
-      referendumIndex={item.referendumIndex}
-      action="approve"
-    />
-  ),
+  render: (item) =>
+    isNil(item.referendumIndex) ? (
+      <VoteButtonsWithoutReferendum who={item.who} action="approve" />
+    ) : (
+      <ReferendumVoteButtons referendumIndex={item.referendumIndex} />
+    ),
 };

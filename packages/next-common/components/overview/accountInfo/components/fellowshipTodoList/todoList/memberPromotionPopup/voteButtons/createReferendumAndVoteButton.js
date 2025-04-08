@@ -1,26 +1,22 @@
+import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+import { cn } from "next-common/utils";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
-import { useCallback, useState } from "react";
-import { useContextApi } from "next-common/context/api";
-import { isNil } from "lodash-es";
-import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
-import { cn } from "next-common/utils";
-import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import useTrackNameFromAction from "./useTrackNameFromAction";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
-  import("../createPromotionReferendaAndVotePopup"),
+  import("../../createPromotionReferendaAndVotePopup"),
 );
 
 function CreateReferendumAndVoteButtonImpl({
   address,
   rank,
-  referendumIndex,
   action = "promote",
   voteAye,
   disabled,
@@ -31,9 +27,7 @@ function CreateReferendumAndVoteButtonImpl({
     setShowCreatePromotionReferendaAndVotePopup,
   ] = useState(false);
   const dispatch = useDispatch();
-  const api = useContextApi();
   const trackName = useTrackNameFromAction(action, rank);
-  const collectivePallet = useRankedCollectivePallet();
   const [enactment] = useState({ after: 100 });
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
 
@@ -47,10 +41,6 @@ function CreateReferendumAndVoteButtonImpl({
     checkVoteAye: true,
     voteAye,
   });
-
-  const voteTxFunc = useCallback(() => {
-    return api.tx[collectivePallet].vote(referendumIndex, voteAye);
-  }, [api, collectivePallet, referendumIndex, voteAye]);
 
   const { doSubmit: doSubmitCreateAndVote } = useTxSubmission({
     getTxFunc: getCreateAndVoteTxFunc,
@@ -68,13 +58,6 @@ function CreateReferendumAndVoteButtonImpl({
     doSubmitCreateAndVote();
   }, [action, rank, doSubmitCreateAndVote]);
 
-  const { doSubmit: doSubmitVote } = useTxSubmission({
-    getTxFunc: voteTxFunc,
-    onInBlock: () => {
-      dispatch(newSuccessToast("Vote successfully"));
-    },
-  });
-
   return (
     <>
       <SecondaryButton
@@ -84,7 +67,7 @@ function CreateReferendumAndVoteButtonImpl({
           disabled && "[&_svg_path]:stroke-textDisabled",
         )}
         size="small"
-        onClick={isNil(referendumIndex) ? createReferendaAndVote : doSubmitVote}
+        onClick={createReferendaAndVote}
       >
         {children}
       </SecondaryButton>
