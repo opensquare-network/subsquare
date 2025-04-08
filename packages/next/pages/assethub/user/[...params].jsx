@@ -1,4 +1,3 @@
-import ListLayout from "next-common/components/layout/ListLayout";
 import ProfileAssets from "next-common/components/profile/assets";
 import Bio from "next-common/components/profile/bio";
 import ProfileBreadcrumbs from "next-common/components/profile/breadcrumbs";
@@ -12,6 +11,8 @@ import multiAccountsSlice from "next-common/store/reducers/multiAccountsSlice";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import { Provider } from "react-redux";
+import ProfileHeaderWithBanner from "next-common/components/profile/header";
+import ProfileLayout from "next-common/components/layout/ProfileLayout";
 
 const isAssetHubSupported = !!getChainSettings(CHAIN).modules?.assethub;
 
@@ -49,16 +50,16 @@ function AssetHubUserPageImpl() {
   const tabs = useProfileAssetHubTabs();
 
   return (
-    <ListLayout
+    <ProfileLayout
+      pageHeader={<ProfileHeaderWithBanner />}
       header={
         <>
-          <ProfileBreadcrumbs />
           <Bio />
         </>
       }
       tabs={tabs}
     >
       <ProfileAssets />
-    </ListLayout>
+    </ProfileLayout>
   );
 }
