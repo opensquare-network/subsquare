@@ -4,7 +4,7 @@
   --borderColor-muted: var(--neutral400);
 
   -webkit-font-smoothing: initial;
-
+  font-weight: 400;
   /* block level */
   h6 {
     color: var(--textSecondary);
