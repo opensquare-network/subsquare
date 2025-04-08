@@ -73,7 +73,7 @@ function OpenGovVotesPowerInContext() {
   return (
     <>
       <CommonPanel
-        className=""
+        className="relative h-[116px] overflow-hidden"
         onExtraBtnClick={setDetailOpen}
         extra={<SystemMenu className="w-4 h-4" />}
       >
