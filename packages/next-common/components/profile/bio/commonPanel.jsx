@@ -1,8 +1,14 @@
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useTheme } from "styled-components";
 import { cn } from "next-common/utils";
+import { noop } from "lodash-es";
 
-export default function CommonPanel({ children, className = "" }) {
+export default function CommonPanel({
+  children,
+  className = "",
+  extra = null,
+  onExtraBtnClick = noop,
+}) {
   const { isDark } = useTheme();
 
   const backgroundImage = isDark
@@ -12,13 +18,22 @@ export default function CommonPanel({ children, className = "" }) {
   return (
     <GreyPanel
       className={cn(
-        "flex flex-col bg-neutral100 justify-end text14Medium text-textPrimary p-3 pb-0 max-w-full rounded-[12px] gap-y-2",
+        "flex flex-col bg-neutral100 text14Medium text-textPrimary p-4 pb-0 max-w-full rounded-[12px] gap-y-2",
         className,
       )}
       style={{
         backgroundImage,
       }}
     >
+      {extra && (
+        <div
+          role="button"
+          className="right-3 top-3 w-7 h-7 flex items-center justify-center shrink-0 border border-neutral400 rounded-[8px] cursor-pointer bg-neutral100"
+          onClick={onExtraBtnClick}
+        >
+          {extra}
+        </div>
+      )}
       {children}
     </GreyPanel>
   );

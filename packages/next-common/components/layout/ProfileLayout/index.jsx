@@ -99,7 +99,7 @@ export default function ProfileLayout({
       <div>
         <div
           className={cn(
-            "px-12 py-4 mt-[48px] mx-auto max-w-[1200px]",
+            "px-12 py-4 pb-6 mt-[48px] mx-auto max-w-[1200px]",
             "max-sm:px-6",
           )}
         >
@@ -114,7 +114,7 @@ export default function ProfileLayout({
       </div>
 
       <div className="flex-1">
-        <div className={cn("px-6 py-6 mx-auto max-w-[1200px]", "max-sm:px-0")}>
+        <div className={cn("px-6 py-4 mx-auto max-w-[1200px]", "max-sm:px-0")}>
           {children}
         </div>
       </div>

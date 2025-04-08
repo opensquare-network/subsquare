@@ -21,7 +21,7 @@ export function VotesPowerContent({
   }Delegations`;
 
   return (
-    <div className="flex flex-1 flex-col justify-center items-center gap-y-1">
+    <div className="flex flex-col justify-center items-center gap-y-1">
       <Tooltip content={tooltipText} className="space-x-1 leading-none">
         <span className="text12Medium text-textTertiary">Votes Power</span>
         <SystemQuestion className="inline-flex w-4 h-4 cursor-pointer [&_path]:fill-textTertiary" />

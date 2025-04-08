@@ -4,12 +4,12 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import VotesPowerDetail from "./detail";
 import OpenGovVotesPowerProvider, {
   useOpenGovVotesPowerContext,
 } from "../context/votesPower";
 import CommonPanel from "next-common/components/profile/bio/commonPanel";
 import VotesPowerValueDisplay from "./valueDisplay";
+import { SystemMenu } from "@osn/icons/subsquare";
 
 const OpenGovVotesPowerDetailPopup = dynamicPopup(() =>
   import("./detail/detailPopup"),
@@ -72,15 +72,18 @@ function OpenGovVotesPowerInContext() {
 
   return (
     <>
-      <CommonPanel className="relative">
+      <CommonPanel
+        className=""
+        onExtraBtnClick={setDetailOpen}
+        extra={<SystemMenu className="w-4 h-4" />}
+      >
         <VotesPowerValueDisplay />
         <div className="flex flex-row items-start space-x-2 w-full gap-y-2">
-          <GreyPanel className="flex flex-row items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap flex-1 gap-y-1">
+          <GreyPanel className="flex flex-row items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap gap-y-1">
             <SeleBalance />
             <SplitSymbol />
             <MaxDelegations />
           </GreyPanel>
-          <VotesPowerDetail setDetailOpen={setDetailOpen} />
         </div>
       </CommonPanel>
       {detailOpen && (

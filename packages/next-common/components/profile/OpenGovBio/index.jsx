@@ -109,8 +109,8 @@ function OpenGovBioContent() {
     <UserAccountProvider address={address}>
       <div
         className={cn(
-          "grid gap-[16px]",
-          isMobile ? "grid-cols-1" : "grid-cols-2",
+          "grid gap-[16px] grid-cols-2",
+          isMobile ? "max-lg:grid-cols-1" : "max-md:grid-cols-1",
         )}
       >
         <AccountInfoPanel address={address} id={id} user={user} />

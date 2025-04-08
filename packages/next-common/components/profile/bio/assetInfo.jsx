@@ -92,14 +92,11 @@ export default function CommonAssetInfo({ address }) {
   }
 
   return (
-    <CommonPanel className="relative">
-      <div
-        role="button"
-        className="absolute right-3 top-3 w-7 h-7 flex items-center justify-center shrink-0 border border-neutral400 rounded-[8px] cursor-pointer bg-neutral100"
-        onClick={toggleCollapse}
-      >
-        <Icon className="w-5 h-5 [&_path]:stroke-textPrimary" />
-      </div>
+    <CommonPanel
+      className="relative"
+      onExtraBtnClick={toggleCollapse}
+      extra={<Icon className="w-5 h-5 [&_path]:stroke-textPrimary" />}
+    >
       <div className="flex flex-1 flex-col items-center gap-y-1">
         <TotalBalance symbol={symbol} decimals={decimals} />
       </div>
