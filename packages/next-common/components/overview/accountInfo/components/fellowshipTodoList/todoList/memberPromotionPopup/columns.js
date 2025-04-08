@@ -35,7 +35,7 @@ function ViewEvidence({ evidence, who }) {
     <>
       <div
         role="button"
-        className="text-theme500"
+        className="inline-block text-theme500"
         onClick={() => setDetailOpen(true)}
       >
         View Detail
