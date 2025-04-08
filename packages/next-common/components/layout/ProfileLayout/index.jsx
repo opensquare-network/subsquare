@@ -96,7 +96,7 @@ export default function ProfileLayout({
           {pageHeader}
         </div>
       )}
-      <div className="border-b border-neutral300">
+      <div>
         <div
           className={cn(
             "px-12 py-4 mt-[48px] mx-auto max-w-[1200px]",
