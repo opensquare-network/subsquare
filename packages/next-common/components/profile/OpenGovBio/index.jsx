@@ -1,9 +1,7 @@
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
-import FellowshipTagInfo, {
-  FellowshipTagInfoWrapper,
-} from "../fellowshipTagInfo";
+import FellowshipTagInfo from "../fellowshipTagInfo";
 import { DisplayUser, DisplayUserAddress } from "../bio";
 import AssetInfo from "next-common/components/profile/bio/assetInfo";
 import WindowSizeProvider from "next-common/context/windowSize";
