@@ -11,10 +11,12 @@ import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
+import { walletConnect } from "next-common/utils/consts/connect/index.js";
 import { useAccountMenu } from "./useAccountMenu";
 import Divider from "next-common/components/styled/layout/divider";
 import SwitchAccount from "next-common/components/switchAccount";
 import AddressUser from "next-common/components/user/addressUser";
+import { useWalletConnect } from "next-common/context/walletconnect";
 
 const Wrapper = styled.div``;
 
@@ -78,13 +80,18 @@ export default function SidebarAccount() {
   const router = useRouter();
   const node = useChainSettings();
   const { openLoginPopup } = useLoginPopup();
-  const { disconnect: disconnectAccount } = useConnectedAccountContext();
+  const { disconnect: disconnectAccount, connectedAccount } =
+    useConnectedAccountContext();
   const accountMenu = useAccountMenu();
   const [showSwitchAccount, setShowSwitchAccount] = useState(false);
+  const { disconnect: disconnectWc } = useWalletConnect();
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
       await disconnectAccount();
+      if (connectedAccount?.wallet === walletConnect.extensionName) {
+        disconnectWc();
+      }
     } else if (item.value === "switch") {
       setShowSwitchAccount(true);
     } else if (item.pathname) {
