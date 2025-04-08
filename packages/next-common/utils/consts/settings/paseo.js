@@ -68,6 +68,7 @@ const paseo = {
     technicalCommittee: false,
     assethub: true,
     vesting: true,
+    parachain: true,
   }),
   integrations: {
     subscan: true,

@@ -63,6 +63,7 @@ const kusama = {
     coretime: true,
     assethub: true,
     vesting: true,
+    parachain: true,
   }),
   integrations: {
     doTreasury: true,
