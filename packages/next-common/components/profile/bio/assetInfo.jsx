@@ -7,11 +7,13 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import useKintAccountInfo from "next-common/hooks/useKintAccountInfo";
+import BigNumber from "bignumber.js";
+import { isNil } from "lodash-es";
 
-function TotalBalance({ symbol, decimals }) {
-  const { info } = useUserAccountInfo();
-
+function TotalBalance({ info }) {
   const value = info?.data?.total || 0;
+  const { symbol, decimals } = useChainSettings();
 
   return (
     <div className="flex flex-col justify-center items-center w-full gap-1">
@@ -29,51 +31,6 @@ function TotalBalance({ symbol, decimals }) {
   );
 }
 
-function Transferrable({ symbol, decimals }) {
-  const { info } = useUserAccountInfo();
-
-  return (
-    <ValueDisplay
-      value={toPrecision(info?.data?.transferrable || 0, decimals)}
-      symbol={symbol}
-      className="text12Medium"
-    />
-  );
-}
-
-function Reserved({ symbol, decimals }) {
-  const { info } = useUserAccountInfo();
-
-  return (
-    <ValueDisplay
-      value={toPrecision(info?.data?.reserved || 0, decimals)}
-      symbol={symbol}
-      className="text12Medium"
-    />
-  );
-}
-
-function Locked({ symbol, decimals }) {
-  const { info } = useUserAccountInfo();
-
-  return (
-    <ValueDisplay
-      value={toPrecision(info?.data?.lockedBalance || 0, decimals)}
-      symbol={symbol}
-      className="text12Medium"
-    />
-  );
-}
-
-function ValueItem({ children, title }) {
-  return (
-    <div className="w-full inline-flex justify-between items-center">
-      <span className="text12Medium text-textTertiary">{title}</span>
-      {children}
-    </div>
-  );
-}
-
 function ValueWrapper({ children }) {
   return (
     <GreyPanel className="flex flex-col bg-neutral200 py-1.5 px-3 justify-between items-center w-full gap-1">
@@ -82,11 +39,32 @@ function ValueWrapper({ children }) {
   );
 }
 
-export default function CommonAssetInfo({ address }) {
+function AssetItem({ value, title }) {
+  const { symbol, decimals } = useChainSettings();
+
+  return (
+    <div className="w-full inline-flex justify-between items-center">
+      <span className="text12Medium text-textTertiary">{title}</span>
+      <ValueDisplay
+        value={toPrecision(value || 0, decimals)}
+        symbol={symbol}
+        className="text12Medium"
+      />
+    </div>
+  );
+}
+
+const isEmpty = (value) => !value || new BigNumber(value).isZero();
+
+function CommonAssetInfo({ address, info }) {
   const { symbol, decimals } = useChainSettings();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
   const Icon = isCollapsed ? ArrowUp : ArrowDown;
+
+  const showTransferrable = !isNil(info?.data?.transferrable);
+  const showBonded = !isEmpty(info?.data?.bonded);
+  const showLocked = !isEmpty(info?.data?.lockedBalance);
 
   if (!address) {
     return null;
@@ -99,25 +77,49 @@ export default function CommonAssetInfo({ address }) {
       extra={<Icon className="w-5 h-5 [&_path]:stroke-textPrimary" />}
     >
       <div className="flex flex-1 flex-col items-center gap-y-1">
-        <TotalBalance symbol={symbol} decimals={decimals} />
+        <TotalBalance symbol={symbol} decimals={decimals} info={info} />
       </div>
       <div className="flex w-full space-y-1">
         <ValueWrapper>
-          <ValueItem title="Transferable">
-            <Transferrable symbol={symbol} decimals={decimals} />
-          </ValueItem>
+          {showTransferrable ? (
+            <AssetItem
+              value={info?.data?.transferrable}
+              title="Transferrable"
+            />
+          ) : (
+            <AssetItem value={info?.data?.free} title="Free" />
+          )}
+
           {isCollapsed && (
             <>
-              <ValueItem title="Reserved">
-                <Reserved symbol={symbol} decimals={decimals} />
-              </ValueItem>
-              <ValueItem title="Locked">
-                <Locked symbol={symbol} decimals={decimals} />
-              </ValueItem>
+              {showBonded && (
+                <AssetItem value={info?.data?.bonded} title="Bonded" />
+              )}
+              <AssetItem value={info?.data?.reserved} title="Reserved" />
+
+              {showLocked && (
+                <AssetItem value={info?.data?.lockedBalance} title="Locked" />
+              )}
             </>
           )}
         </ValueWrapper>
       </div>
     </CommonPanel>
   );
+}
+
+export default function AssetInfo({ address }) {
+  const { info } = useUserAccountInfo();
+
+  return <CommonAssetInfo address={address} info={info} />;
+}
+
+export function KintAssetInfo({ address }) {
+  const info = useKintAccountInfo(address);
+
+  if (!info) {
+    return null;
+  }
+
+  return <CommonAssetInfo address={address} info={info} />;
 }

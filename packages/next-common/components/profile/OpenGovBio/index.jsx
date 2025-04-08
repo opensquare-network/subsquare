@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import ReferendaDelegationProvider from "next-common/components/profile/delegationGuide/context/referendaDelegationContext";
 import { VerticalDivider } from "next-common/components/styled/layout/divider";
 import { useNavCollapsed } from "next-common/context/nav";
+import { useIsKintsugi } from "next-common/context/chain";
 
 const DelegationGuide = dynamic(
   () => import("next-common/components/profile/delegationGuide"),
@@ -32,6 +33,7 @@ const Relatives = dynamic(
 export function AccountInfoPanel({ address, id }) {
   const isMobile = useIsMobile();
   const shouldAlignCenter = isMobile;
+  const isKintsugi = useIsKintsugi();
 
   return (
     <div
@@ -62,7 +64,7 @@ export function AccountInfoPanel({ address, id }) {
               : "flex-1 !items-start",
           )}
           extra={
-            !isMobile ? (
+            !isMobile && !isKintsugi ? (
               <>
                 <VerticalDivider height={13} margin={16} />
                 <Relatives />

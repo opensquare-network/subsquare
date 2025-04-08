@@ -5,8 +5,9 @@ import AccountLinks from "../../links/accountLinks";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { useChain, useIsKintsugi } from "next-common/context/chain";
 import Copyable from "../../copyable";
-import AssetInfo from "next-common/components/profile/bio/assetInfo";
-import KintAssetInfo from "../assetInfo/kint";
+import AssetInfo, {
+  KintAssetInfo,
+} from "next-common/components/profile/bio/assetInfo";
 import Chains from "next-common/utils/consts/chains";
 import AddressUser from "../../user/addressUser";
 import { usePageProps } from "next-common/context/page";
