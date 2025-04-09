@@ -7,6 +7,7 @@ import {
   referendumColumn,
   votePromoteColumn,
 } from "./columns";
+import ExtensionUpdatePrompt from "../../../extensionUpdatePrompt";
 
 const columnsDef = [
   rankColumn,
@@ -33,6 +34,7 @@ export default function MemberPromotionPopup({ promotions, onClose }) {
       title="Member Promotion"
       onClose={onClose}
     >
+      <ExtensionUpdatePrompt isWithCache={false} />
       <MemberPromotionContent promotions={promotions} />
     </PopupWithSigner>
   );
