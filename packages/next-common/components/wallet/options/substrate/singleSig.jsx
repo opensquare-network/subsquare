@@ -57,7 +57,14 @@ export default function WalletSubstrateSingleSigOptions({
 
         if (wallet.extensionName === WalletTypes.WALLETCONNECT) {
           return (
-            <WalletConnectWallet key={wallet.extensionName} wallet={wallet} />
+            <WalletConnectWallet
+              key={wallet.extensionName}
+              wallet={wallet}
+              onClick={() => {
+                onSelect(wallet);
+              }}
+              selected={selected}
+            />
           );
         }
 
