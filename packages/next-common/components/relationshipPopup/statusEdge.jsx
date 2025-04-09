@@ -117,7 +117,7 @@ function TooltipsContent({ type, ...rest }) {
     return <MultisigTipContent {...rest} />;
   }
 
-  if (type === "Proxied" || type === "Received") {
+  if (type === "Proxy") {
     return <ProxyTipContent {...rest} />;
   }
 

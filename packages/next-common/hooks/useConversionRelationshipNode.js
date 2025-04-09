@@ -92,7 +92,7 @@ function createProxiesRelationship(rootNode, proxies = []) {
       };
     },
     edgeDataMapper: (data) => ({
-      type: RELATIONSHIP_NODE_TYPE.Proxied,
+      type: RELATIONSHIP_NODE_TYPE.Proxy,
       name: "Proxy",
       value: data.value,
     }),
@@ -116,7 +116,7 @@ function createReceivedProxiesRelationship(rootNode, receivedProxies = []) {
       badge: <BadgeInfo address={item.delegator} />,
     }),
     edgeDataMapper: (data) => ({
-      type: RELATIONSHIP_NODE_TYPE.Received,
+      type: RELATIONSHIP_NODE_TYPE.Proxy,
       name: "Proxy",
       value: data.value,
     }),

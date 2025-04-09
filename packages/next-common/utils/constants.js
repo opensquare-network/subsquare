@@ -169,7 +169,6 @@ export const NAV_MENU_TYPE = {
 
 export const RELATIONSHIP_NODE_TYPE = {
   Multisig: "Multisig",
-  Proxied: "Proxied",
-  Received: "Received",
+  Proxy: "Proxy",
   Identity: "Identity",
 };

@@ -2,8 +2,7 @@ import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 
 export const indications = [
   { name: RELATIONSHIP_NODE_TYPE.Multisig, color: "var(--theme500)" },
-  { name: RELATIONSHIP_NODE_TYPE.Proxied, color: "var(--green500)" },
-  { name: RELATIONSHIP_NODE_TYPE.Received, color: "var(--purple500)" },
+  { name: RELATIONSHIP_NODE_TYPE.Proxy, color: "var(--green500)" },
   { name: RELATIONSHIP_NODE_TYPE.Identity, color: "var(--blue500)" },
 ];
 
