@@ -9,6 +9,7 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import useTrackNameFromAction from "./useTrackNameFromAction";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import Tooltip from "next-common/components/tooltip";
 
 const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
   import("../../createPromotionReferendaAndVotePopup"),
@@ -20,6 +21,7 @@ function CreateReferendumAndVoteButtonImpl({
   action = "promote",
   voteAye,
   disabled,
+  tooltip,
   children,
 }) {
   const [
@@ -60,17 +62,19 @@ function CreateReferendumAndVoteButtonImpl({
 
   return (
     <>
-      <SecondaryButton
-        disabled={disabled}
-        className={cn(
-          "p-[6px]",
-          disabled && "[&_svg_path]:stroke-textDisabled",
-        )}
-        size="small"
-        onClick={createReferendaAndVote}
-      >
-        {children}
-      </SecondaryButton>
+      <Tooltip content={tooltip}>
+        <SecondaryButton
+          disabled={disabled}
+          className={cn(
+            "p-[6px]",
+            disabled && "[&_svg_path]:stroke-textDisabled",
+          )}
+          size="small"
+          onClick={createReferendaAndVote}
+        >
+          {children}
+        </SecondaryButton>
+      </Tooltip>
       {showCreatePromotionReferendaAndVotePopup && (
         <CreatePromotionReferendaAndVotePopup
           rank={rank}

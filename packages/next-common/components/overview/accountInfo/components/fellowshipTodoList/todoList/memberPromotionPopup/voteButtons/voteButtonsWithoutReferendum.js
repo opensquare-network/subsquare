@@ -1,7 +1,6 @@
 import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 import CreateReferendumAndVoteButton from "./createReferendumAndVoteButton";
 import useCollectiveMember from "../../../hooks/useCollectiveMember";
-import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function VoteButtonsWithoutReferendum({ who, action }) {
@@ -30,29 +29,27 @@ export default function VoteButtonsWithoutReferendum({ who, action }) {
 
   return (
     <div className="flex gap-[12px] h-[31px] items-center justify-end">
-      <Tooltip content={tooltipContent}>
-        <CreateReferendumAndVoteButton
-          address={who}
-          rank={rank}
-          action={action}
-          voteAye={false}
-          disabled={disabled}
-        >
-          <SystemVoteNay className="w-[16px]" />
-        </CreateReferendumAndVoteButton>
-      </Tooltip>
+      <CreateReferendumAndVoteButton
+        address={who}
+        rank={rank}
+        action={action}
+        voteAye={false}
+        disabled={disabled}
+        tooltip={tooltipContent}
+      >
+        <SystemVoteNay className="w-[16px]" />
+      </CreateReferendumAndVoteButton>
 
-      <Tooltip content={tooltipContent}>
-        <CreateReferendumAndVoteButton
-          address={who}
-          rank={rank}
-          action={action}
-          voteAye={true}
-          disabled={disabled}
-        >
-          <SystemVoteAye className="w-[16px]" />
-        </CreateReferendumAndVoteButton>
-      </Tooltip>
+      <CreateReferendumAndVoteButton
+        address={who}
+        rank={rank}
+        action={action}
+        voteAye={true}
+        disabled={disabled}
+        tooltip={tooltipContent}
+      >
+        <SystemVoteAye className="w-[16px]" />
+      </CreateReferendumAndVoteButton>
     </div>
   );
 }
