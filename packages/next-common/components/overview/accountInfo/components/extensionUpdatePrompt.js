@@ -6,6 +6,10 @@ import { useInjectedWeb3Extension } from "next-common/hooks/connect/useInjectedW
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCallback, useEffect, useState } from "react";
 import useChainInfo from "next-common/hooks/connect/useChainInfo";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import { createGlobalState } from "react-use";
+
+const useIsNeedUpdate = createGlobalState(false);
 
 function getPropertyStoreKey(genesisHash) {
   return `properties:${genesisHash.toHex()}`;
@@ -58,10 +62,26 @@ function checkPropertiesChange(api, extension) {
   return false;
 }
 
-export default function ExtensionUpdatePrompt() {
+function PromptContent({ onUpdateMeta }) {
+  return (
+    <div>
+      The extension can be updated with the latest chain metadata and
+      properties.&nbsp;
+      <span
+        role="button"
+        className="cursor-pointer underline"
+        onClick={onUpdateMeta}
+      >
+        Update
+      </span>
+    </div>
+  );
+}
+
+export default function ExtensionUpdatePrompt({ isWithCache = true }) {
   const api = useContextApi();
   const connectedAccount = useConnectedAccount();
-  const [isNeedUpdate, setIsNeedUpdate] = useState();
+  const [isNeedUpdate, setIsNeedUpdate] = useIsNeedUpdate();
   const { injectedWeb3Extension, loading: isLoadingInjectedWeb3Extension } =
     useInjectedWeb3Extension(connectedAccount?.wallet);
   const chainInfo = useChainInfo();
@@ -100,6 +120,7 @@ export default function ExtensionUpdatePrompt() {
     injectedWeb3Extension,
     isLoadingInjectedWeb3Extension,
     triggerCheck,
+    setIsNeedUpdate,
   ]);
 
   const updateMeta = useCallback(
@@ -126,20 +147,20 @@ export default function ExtensionUpdatePrompt() {
     return null;
   }
 
-  return (
-    <Prompt
-      cacheKey={CACHE_KEY.extensionUpdateMetadata}
-      type={PromptTypes.WARNING}
-    >
-      The extension can be updated with the latest chain metadata and
-      properties.&nbsp;
-      <span
-        role="button"
-        className="cursor-pointer underline"
-        onClick={() => updateMeta(chainInfo)}
+  if (isWithCache) {
+    return (
+      <Prompt
+        cacheKey={CACHE_KEY.extensionUpdateMetadata}
+        type={PromptTypes.WARNING}
       >
-        Update
-      </span>
-    </Prompt>
+        <PromptContent onUpdateMeta={() => updateMeta(chainInfo)} />
+      </Prompt>
+    );
+  }
+
+  return (
+    <GreyPanel className="w-[calc(100%+50px)] right-[25px] relative rounded-none bg-orange100 text-orange500 px-6 py-4 text14Medium mb-4">
+      <PromptContent onUpdateMeta={() => updateMeta(chainInfo)} />
+    </GreyPanel>
   );
 }

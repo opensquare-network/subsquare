@@ -16,11 +16,11 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import Signer from "next-common/components/popup/fields/signerField";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import { refreshAvatar } from "next-common/hooks/useAvatarInfo";
+import { getRealField } from "next-common/sima/actions/common";
+import { noop } from "lodash-es";
 
-function Content() {
-  const { onClose } = usePopupParams();
+export function useAvatarUnset(proxyAddress) {
   const dispatch = useDispatch();
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const signMessage = useSignMessage();
   const signerAccount = useSignerAccount();
@@ -31,6 +31,7 @@ function Content() {
       const entity = {
         action: "unset-avatar",
         timestamp: Date.now(),
+        real: getRealField(proxyAddress),
       };
       const address = signerAccount?.address;
       const signerWallet = signerAccount?.meta.source;
@@ -56,30 +57,46 @@ function Content() {
             "Failed to remove user's avatar: " + unsetUserAvatarError.message,
           ),
         );
-        return;
+        throw new Error(unsetUserAvatarError.message);
       }
 
-      refreshAvatar(address);
+      refreshAvatar(proxyAddress || address);
       dispatch(newSuccessToast("Avatar removed successfully"));
-
-      onClose();
-      router.replace(router.asPath);
     } catch (e) {
-      if (e.message === "Cancelled") {
-        return;
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
       }
-      dispatch(newErrorToast(e.message));
+      throw e;
     } finally {
       setIsLoading(false);
     }
   }, [
     dispatch,
-    onClose,
-    router,
     signMessage,
     signerAccount?.address,
     signerAccount?.meta.source,
+    proxyAddress,
   ]);
+
+  return {
+    isLoading,
+    unsetAvatar,
+  };
+}
+
+function Content() {
+  const { onClose } = usePopupParams();
+  const router = useRouter();
+  const { isLoading, unsetAvatar } = useAvatarUnset();
+
+  const onUnset = useCallback(() => {
+    unsetAvatar()
+      .then(() => {
+        onClose();
+        router.replace(router.asPath);
+      })
+      .catch(noop);
+  }, [unsetAvatar, onClose, router]);
 
   return (
     <>
@@ -88,7 +105,7 @@ function Content() {
         <LoadingPrimaryButton
           loading={isLoading}
           loadingText="Saving..."
-          onClick={unsetAvatar}
+          onClick={onUnset}
         >
           Confirm
         </LoadingPrimaryButton>

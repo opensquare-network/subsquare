@@ -9,6 +9,24 @@ import {
 import SettingLayout from "next-common/components/layout/settingLayout";
 import { useIsWeb3User, useUser } from "next-common/context/user";
 import Profile from "../profile";
+import ProxyAvatar from "../proxyAvatar";
+import {
+  GeneralProxiesProvider,
+  useMyProxied,
+} from "next-common/context/proxy";
+
+function ProxyAvatarSection() {
+  const { proxies, isLoading } = useMyProxied();
+  if (isLoading || !proxies || !proxies.length) {
+    return null;
+  }
+
+  return (
+    <ContentWrapper>
+      <ProxyAvatar />
+    </ContentWrapper>
+  );
+}
 
 export default function Web3Account() {
   const user = useUser();
@@ -30,9 +48,14 @@ export default function Web3Account() {
     <SettingLayout>
       <SettingSection>
         <TitleContainer>Profile</TitleContainer>
-        <ContentWrapper>
-          <Profile address={address} />
-        </ContentWrapper>
+        <div className="flex flex-col gap-[16px]">
+          <ContentWrapper>
+            <Profile address={address} />
+          </ContentWrapper>
+          <GeneralProxiesProvider>
+            <ProxyAvatarSection />
+          </GeneralProxiesProvider>
+        </div>
       </SettingSection>
       <SettingSection>
         <TitleContainer>Logout</TitleContainer>

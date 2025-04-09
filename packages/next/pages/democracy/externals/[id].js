@@ -16,6 +16,7 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import DemocracyReferendumCallProvider from "next-common/context/democracy/referenda/call";
 
 const Business = dynamicClientOnly(() =>
   import("components/external/business"),
@@ -48,12 +49,14 @@ function DemocracyExternalContent() {
         <DetailMultiTabs
           call={
             call && (
-              <DemocracyExternalProposalCall
-                call={call}
-                shorten={external.preImage.shorten}
-                motionIndex={external.motionIndex}
-                referendumIndex={external.referendumIndex}
-              />
+              <DemocracyReferendumCallProvider>
+                <DemocracyExternalProposalCall
+                  call={call}
+                  shorten={external.preImage.shorten}
+                  motionIndex={external.motionIndex}
+                  referendumIndex={external.referendumIndex}
+                />
+              </DemocracyReferendumCallProvider>
             )
           }
           business={<Business external={detail?.onchainData} />}

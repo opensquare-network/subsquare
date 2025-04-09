@@ -12,17 +12,15 @@ function FellowshipTagInfoImpl({ address, pallet, type }) {
   }
 
   return (
-    <div className="flex items-center mb-2 mt-4">
-      <CommonTag
-        className="py-1"
-        style={{
-          color: getRankColor(rank),
-          backgroundColor: getRankColor(rank, 0.1),
-        }}
-      >
-        {upperFirst(type)} #{rank}
-      </CommonTag>
-    </div>
+    <CommonTag
+      className="py-1"
+      style={{
+        color: getRankColor(rank),
+        backgroundColor: getRankColor(rank, 0.1),
+      }}
+    >
+      {upperFirst(type)} #{rank}
+    </CommonTag>
   );
 }
 

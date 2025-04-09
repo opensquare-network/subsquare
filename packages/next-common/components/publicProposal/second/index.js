@@ -122,7 +122,11 @@ export default function Second({
         <SecondsList>
           {showData.map((address, index) => (
             <SecondItem key={index}>
-              <AddressUser add={address} fontSize={12} maxWidth={148} />
+              <AddressUser
+                add={address}
+                className="text12Medium text-textPrimary"
+                maxWidth={148}
+              />
               <Tooltip
                 content={`${new BigNumber(depositRequired)
                   .times(secondsCount[address])

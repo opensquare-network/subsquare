@@ -14,7 +14,10 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAsync } from "react-use";
 
-export default function ProfileFellowshipCoreFeeds() {
+export default function ProfileFellowshipCoreFeeds({
+  showUserInfo = true,
+  noDataText = "",
+}) {
   const { id: address } = usePageProps();
   const router = useRouter();
   const [page, setPage] = useState(parseInt(router.query.page || 1));
@@ -41,14 +44,14 @@ export default function ProfileFellowshipCoreFeeds() {
     return resp?.result;
   }, [page, address, feedsApi]);
 
-  const rows = createFellowshipCoreFeedsRows(value?.items);
+  const rows = createFellowshipCoreFeedsRows(value?.items, { showUserInfo });
 
   return (
     <div>
       {loading ? (
         <SystemLoading className="w-5 h-5 mt-4 mb-2 mx-auto text-textDisabled" />
       ) : (
-        <FellowshipFeedItems rows={rows} noDataText="No data" />
+        <FellowshipFeedItems rows={rows} noDataText={noDataText || "No data"} />
       )}
 
       <Pagination

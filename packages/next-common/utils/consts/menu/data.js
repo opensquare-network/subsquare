@@ -5,7 +5,7 @@ const Data = {
   value: "data",
   pathname: "/proxies",
   icon: <MenuData />,
-  extraMatchNavMenuActivePathnames: ["/proxies", "/vesting"],
+  extraMatchNavMenuActivePathnames: ["/proxies", "/vesting", "/multisigs"],
   children: [
     {
       name: "Proxies",
@@ -16,6 +16,11 @@ const Data = {
       name: "Vesting",
       value: "vesting",
       pathname: "/vesting",
+    },
+    {
+      name: "Multisigs",
+      value: "multisig",
+      pathname: "/multisigs",
     },
   ],
 };

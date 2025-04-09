@@ -14,7 +14,6 @@ import {
 import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
-import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
@@ -39,44 +38,42 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
 
   return (
     <TreasuryProvider pallet={pallet}>
-      <PolkadotTreasuryProvider>
-        <ListLayout
-          seoInfo={seoInfo}
-          title={category}
-          summary={treasurySummaryPanel}
-          tabs={[
-            {
-              value: "proposals",
-              label: "Proposals",
-              url: treasuryProposalListUrl,
-            },
-            integrations?.doTreasury && {
-              value: "statistics",
-              label: "Statistics",
-              url: `https://${chain}.dotreasury.com`,
-            },
-          ].filter(Boolean)}
-        >
-          <PostList
-            titleExtra={
-              showNewTreasuryProposalButton && (
-                <div className="flex justify-end">
-                  <NewTreasuryProposal />
-                </div>
-              )
-            }
-            category={category}
-            title="List"
-            titleCount={proposals.total}
-            items={items}
-            pagination={{
-              page: proposals.page,
-              pageSize: proposals.pageSize,
-              total: proposals.total,
-            }}
-          />
-        </ListLayout>
-      </PolkadotTreasuryProvider>
+      <ListLayout
+        seoInfo={seoInfo}
+        title={category}
+        summary={treasurySummaryPanel}
+        tabs={[
+          {
+            value: "proposals",
+            label: "Proposals",
+            url: treasuryProposalListUrl,
+          },
+          integrations?.doTreasury && {
+            value: "statistics",
+            label: "Statistics",
+            url: `https://${chain}.dotreasury.com`,
+          },
+        ].filter(Boolean)}
+      >
+        <PostList
+          titleExtra={
+            showNewTreasuryProposalButton && (
+              <div className="flex justify-end">
+                <NewTreasuryProposal />
+              </div>
+            )
+          }
+          category={category}
+          title="List"
+          titleCount={proposals.total}
+          items={items}
+          pagination={{
+            page: proposals.page,
+            pageSize: proposals.pageSize,
+            total: proposals.total,
+          }}
+        />
+      </ListLayout>
     </TreasuryProvider>
   );
 }

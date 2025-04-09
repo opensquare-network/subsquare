@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import Identity from "../Identity";
+import { UnStyledIdentity } from "../Identity";
 import Link from "next/link";
 import { AvatarWrapper, UserWrapper } from "./styled";
 import AddressDisplay from "./addressDisplay";
@@ -15,48 +15,40 @@ import { isExternalLink } from "next-common/utils";
 import ExternalLink from "../externalLink";
 
 export function AddressUserImpl({
-  className = "",
+  className,
   address,
   identity,
   hasIdentity,
   avatar,
   maxWidth,
   showAvatar = true,
-  fontSize = 14,
   noEvent = false,
   noTooltip = false,
-  color,
   ellipsis = true,
   link = "",
-  addressClassName = "",
 }) {
   const chain = useChain();
   const displayAddress = tryConvertToEvmAddress(address);
 
   const userIdentity = hasIdentity ? (
-    <Identity
+    <UnStyledIdentity
       identity={identity}
-      fontSize={fontSize}
       maxWidth={maxWidth}
       ellipsis={ellipsis}
-      addressClassName={addressClassName}
     />
   ) : (
     <AddressDisplay
       address={displayAddress}
-      fontSize={fontSize}
-      color={color}
       maxWidth={maxWidth}
       noTooltip={noTooltip}
       ellipsis={ellipsis}
-      addressClassName={addressClassName}
     />
   );
 
   let userIdentityLink;
   if (isExternalLink(link)) {
     userIdentityLink = (
-      <ExternalLink externalIcon={false} href={link} style={{ color }}>
+      <ExternalLink externalIcon={false} href={link}>
         {userIdentity}
       </ExternalLink>
     );
@@ -69,7 +61,6 @@ export function AddressUserImpl({
     userIdentityLink = (
       <Link
         href={href}
-        style={{ color }}
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -79,16 +70,14 @@ export function AddressUserImpl({
     );
   }
 
-  const avatarSize = fontSize * (20 / 14);
-
   return (
-    <UserWrapper noEvent={noEvent} color={color} className={className}>
+    <UserWrapper noEvent={noEvent} className={className}>
       {showAvatar && (
-        <AvatarWrapper fontSize={fontSize}>
+        <AvatarWrapper>
           <AvatarDisplay
             address={displayAddress}
             avatarCid={avatar}
-            size={avatarSize}
+            size={`${20 / 14}em`}
           />
         </AvatarWrapper>
       )}
@@ -98,17 +87,14 @@ export function AddressUserImpl({
 }
 
 function AddressUserComp({
-  className = "",
+  className = "text14Medium text-textPrimary",
   add,
   showAvatar = true,
-  fontSize = 14,
   noEvent = false,
   maxWidth: propMaxWidth,
   noTooltip = false,
-  color,
   ellipsis = true,
   link = "",
-  addressClassName = "",
 }) {
   const address = add;
   const { identity, hasIdentity } = useIdentityInfo(address);
@@ -117,7 +103,7 @@ function AddressUserComp({
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
 
   if (!address) {
-    return <DeletedAccount fontSize={fontSize} />;
+    return <DeletedAccount />;
   }
 
   return (
@@ -129,13 +115,10 @@ function AddressUserComp({
       avatar={avatar}
       maxWidth={maxWidth}
       showAvatar={showAvatar}
-      fontSize={fontSize}
       noEvent={noEvent}
       noTooltip={noTooltip}
-      color={color}
       ellipsis={ellipsis}
       link={link}
-      addressClassName={addressClassName}
     />
   );
 }

@@ -7,7 +7,7 @@ import Pagination from "next-common/components/pagination";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
-import { FellowshipRankInfo } from "../eligibleVoters/columns";
+import { FellowshipRankInfo } from "next-common/components/fellowship/rank";
 
 export default function VotesPopup({
   setShowVoteList,

@@ -86,14 +86,13 @@ export default function LoginWeb3Substrate() {
         <div className="mt-3">
           <PrimaryButton
             className="w-full"
-            loading={web3Loading}
             onClick={() => {
               web3Login({
                 account: selectedAccount,
                 wallet: selectedWallet?.extensionName,
               });
             }}
-            disabled={!selectedAccount}
+            disabled={web3Loading}
           >
             Next
           </PrimaryButton>

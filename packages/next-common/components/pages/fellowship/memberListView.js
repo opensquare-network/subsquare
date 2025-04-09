@@ -9,6 +9,7 @@ import {
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
 import {
   useCollectivesContext,
+  useCollectivesSection,
   useCoreFellowshipPallet,
 } from "next-common/context/collectives/collectives";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
@@ -26,6 +27,7 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import Tooltip from "next-common/components/tooltip";
 import { ContainerRefProvider } from "next-common/context/containerRef";
 import { isSameAddress } from "next-common/utils";
+import NavigateToDetailButton from "next-common/components/navigateToDetailButton";
 
 const rankColumn = {
   name: "Rank",
@@ -34,31 +36,31 @@ const rankColumn = {
 
 const memberColumn = {
   name: "Member",
-  width: 140,
+  className: "min-w-[140px]",
 };
 
 const salaryColumn = {
   name: "Salary",
   className: "text-right",
-  minWidth: 120,
+  width: 120,
 };
 
 const demotionPeriodColumn = {
   name: "Demotion Period",
-  width: 140,
-  className: "ml-[64px]",
+  width: 120,
+  className: "ml-[48px]",
 };
 
 const promotionPeriodColumn = {
   name: "Promotion Period",
-  width: 140,
-  className: "ml-[64px]",
+  width: 120,
+  className: "ml-[48px]",
 };
 
 const evidenceColumn = {
-  name: "Evidence",
-  width: 120,
-  className: "ml-[64px]",
+  name: "Wish",
+  width: 160,
+  className: "ml-[48px]",
 };
 
 const actionsColumn = {
@@ -156,6 +158,11 @@ function NonCoreMemberAddressCol({ address }) {
   );
 }
 
+function DetailButton({ address }) {
+  const section = useCollectivesSection();
+  return <NavigateToDetailButton href={`/${section}/members/${address}`} />;
+}
+
 function getCoreMemberRow({ idx, member, params, ActionsComponent }) {
   const { address, rank } = member;
   const { isActive } = member.status;
@@ -193,8 +200,9 @@ function getCoreMemberRow({ idx, member, params, ActionsComponent }) {
       <EmptyCol key={`min-promotion-period-${idx}`} />
     ),
     <EvidenceAndReferenda key="evidence" member={member} />,
-    <div key="more">
+    <div key="more" className="flex gap-[12px]">
       {ActionsComponent && <ActionsComponent member={member} params={params} />}
+      <DetailButton address={address} />
     </div>,
   ];
 }
@@ -218,8 +226,9 @@ function getCandidateRow({ idx, member, params, ActionsComponent }) {
       blocks={offboardTimeout}
     />,
     <EvidenceAndReferenda key="evidence" member={member} />,
-    <div key="more">
+    <div key="more" className="flex gap-[12px]">
       {ActionsComponent && <ActionsComponent member={member} params={params} />}
+      <DetailButton address={address} />
     </div>,
   ];
 }

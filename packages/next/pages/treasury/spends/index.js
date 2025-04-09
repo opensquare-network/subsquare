@@ -8,7 +8,6 @@ import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury
 import { TreasuryProvider } from "next-common/context/treasury";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
-import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 import TreasurySpendFilter from "next-common/components/treasury/spends/treasurySpendFilter";
 import { upperFirst } from "lodash-es";
@@ -29,26 +28,24 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
 
   return (
     <TreasuryProvider>
-      <PolkadotTreasuryProvider>
-        <ListLayout
-          seoInfo={seoInfo}
-          title={category}
-          summary={treasurySummaryPanel}
+      <ListLayout
+        seoInfo={seoInfo}
+        title={category}
+        summary={treasurySummaryPanel}
+      >
+        <DropdownUrlFilterProvider
+          defaultFilterValues={{ status: "" }}
+          shallow={false}
         >
-          <DropdownUrlFilterProvider
-            defaultFilterValues={{ status: "" }}
-            shallow={false}
-          >
-            <PostList
-              category={category}
-              titleCount={total}
-              items={spends}
-              pagination={{ page, pageSize, total }}
-              titleExtra={<TreasurySpendFilter />}
-            />
-          </DropdownUrlFilterProvider>
-        </ListLayout>
-      </PolkadotTreasuryProvider>
+          <PostList
+            category={category}
+            titleCount={total}
+            items={spends}
+            pagination={{ page, pageSize, total }}
+            titleExtra={<TreasurySpendFilter />}
+          />
+        </DropdownUrlFilterProvider>
+      </ListLayout>
     </TreasuryProvider>
   );
 }

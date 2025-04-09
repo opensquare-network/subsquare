@@ -13,6 +13,7 @@ import { DemocracyReferendaTreasurySpendNavigator } from "./democracyNavigator";
 
 export default function ReferendumNavigation() {
   const post = usePost();
+  const referendum = post.onchainData;
 
   if (!isNil(post.proposalIndex)) {
     return (
@@ -22,6 +23,9 @@ export default function ReferendumNavigation() {
           referendumIndex={post?.referendumIndex}
           isLink={false}
         />
+        <DemocracyReferendaTreasurySpendNavigator
+          treasurySpendIndexes={referendum?.treasurySpendIndexes}
+        />
       </NavigationWrapper>
     );
   }
@@ -29,8 +33,6 @@ export default function ReferendumNavigation() {
   if (isNil(post.externalProposalHash)) {
     return null;
   }
-
-  const referendum = post.onchainData;
 
   return (
     <NavigationWrapper>

@@ -61,12 +61,14 @@ export default function CoreFellowshipMemberSalary({
         </div>
       }
     >
-      <CoreFellowshipMemberSalaryContent
-        className={className}
-        rank={rank}
-        isActive={isActive}
-        params={params}
-      />
+      <span className="text-textPrimary">
+        <CoreFellowshipMemberSalaryContent
+          className={className}
+          rank={rank}
+          isActive={isActive}
+          params={params}
+        />
+      </span>
     </Tooltip>
   );
 }

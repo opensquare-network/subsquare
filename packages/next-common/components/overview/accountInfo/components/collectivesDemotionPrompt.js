@@ -53,22 +53,50 @@ function DemotionAboutToExpireMessage({ section, rank }) {
   );
 }
 
-function DemotionPrompt({ section, lastProof, rank, params }) {
-  const blockTime = useSelector(blockTimeSelector);
-  const { percentageValue, remainingBlocks, demotionPeriod } =
-    useDemotionPeriod({ rank, lastProof, params });
-
+export function checkDemotionPeriodExpiration({
+  percentageValue,
+  blockTime,
+  remainingBlocks,
+  demotionPeriod,
+}) {
   const isDemotionExpired = percentageValue === 100;
   const daysRemaining = new BigNumber(blockTime)
     .multipliedBy(remainingBlocks)
     .div(86400 * 1000)
     .toNumber();
 
+  const isDemotionExpiring = demotionPeriod > 0 && daysRemaining < 28;
+
+  return {
+    isDemotionExpired,
+    isDemotionExpiring,
+  };
+}
+
+export function useDemotionPeriodCheck({ lastProof, rank, params }) {
+  const blockTime = useSelector(blockTimeSelector);
+  const { percentageValue, remainingBlocks, demotionPeriod } =
+    useDemotionPeriod({ rank, lastProof, params });
+  return checkDemotionPeriodExpiration({
+    percentageValue,
+    blockTime,
+    remainingBlocks,
+    demotionPeriod,
+  });
+}
+
+function DemotionPrompt({ section, lastProof, rank, params }) {
+  const { isDemotionExpired, isDemotionExpiring } = useDemotionPeriodCheck({
+    lastProof,
+    rank,
+    params,
+  });
+
   if (isDemotionExpired) {
     return <DemotionExpiredMessage section={section} rank={rank} />;
   }
 
-  if (demotionPeriod > 0 && daysRemaining < 28) {
+  if (isDemotionExpiring) {
     return <DemotionAboutToExpireMessage section={section} rank={rank} />;
   }
 }
@@ -80,7 +108,7 @@ function FellowshipDemotionPrompt() {
     return null;
   }
 
-  const { collectiveMember, coreMember, coreParams } = data;
+  const { collectiveMember, coreMember, coreParams } = data || {};
 
   if (!collectiveMember || !coreMember || !coreParams) {
     return null;
@@ -103,7 +131,7 @@ function AmbassadorDemotionPrompt() {
     return null;
   }
 
-  const { collectiveMember, coreMember, coreParams } = data;
+  const { collectiveMember, coreMember, coreParams } = data || {};
 
   if (!collectiveMember || !coreMember || !coreParams) {
     return null;

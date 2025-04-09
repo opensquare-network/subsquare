@@ -7,6 +7,23 @@ import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVot
 import useSubCollectiveRank from "../collectives/useSubCollectiveRank";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
+export function useFilterReferendaByRank({ activeReferenda, rank, isLoading }) {
+  const collectivePallet = useRankedCollectivePallet();
+  const referendaICanVote = useMemo(() => {
+    if (isLoading) {
+      return [];
+    }
+    return (activeReferenda || [])
+      .filter(({ trackId }) => {
+        let minRank = getMinRankOfClass(trackId, collectivePallet);
+        return rank >= minRank;
+      })
+      .map(({ referendumIndex }) => referendumIndex);
+  }, [collectivePallet, activeReferenda, isLoading, rank]);
+
+  return referendaICanVote;
+}
+
 function useCollectiveActiveReferendaICanVote() {
   const { activeReferenda, isLoading: isLoadingActiveReferenda } =
     useCollectiveActiveReferenda();
@@ -20,18 +37,11 @@ function useCollectiveActiveReferendaICanVote() {
 
   const isLoading = isLoadingActiveReferenda || isLoadingMyRank;
 
-  const referendaICanVote = useMemo(() => {
-    if (isLoading) {
-      return;
-    }
-
-    return activeReferenda
-      .filter(({ trackId }) => {
-        let minRank = getMinRankOfClass(trackId, collectivePallet);
-        return myRank >= minRank;
-      })
-      .map(({ referendumIndex }) => referendumIndex);
-  }, [collectivePallet, activeReferenda, isLoading, myRank]);
+  const referendaICanVote = useFilterReferendaByRank({
+    activeReferenda,
+    rank: myRank,
+    isLoading,
+  });
 
   return {
     referendaICanVote,

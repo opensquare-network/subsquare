@@ -18,6 +18,7 @@ import {
 import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
+import { useChain } from "next-common/context/chain";
 import {
   ReferendaActionMessage,
   ReferendaWarningMessage,
@@ -25,10 +26,10 @@ import {
 import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
 import { rankToRetainTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
-import { useFellowshipCoreMemberProposalSubmitTx } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 
-export function getRetainTrackNameFromRank(rank) {
-  switch (process.env.NEXT_PUBLIC_CHAIN) {
+export function getRetainTrackNameFromRank(chain, rank) {
+  switch (chain) {
     case Chains.collectives:
     case Chains.westendCollectives:
       return CollectivesRetainTracks[rank];
@@ -43,7 +44,8 @@ function PopupContent({ member }) {
   const [enactment, setEnactment] = useState();
   const extensionAccounts = useExtensionAccounts();
   const [atRank, setAtRank] = useState(member?.rank);
-  const trackName = getRetainTrackNameFromRank(atRank);
+  const chain = useChain();
+  const trackName = getRetainTrackNameFromRank(chain, atRank);
   const [memberAddress, setMemberAddress] = useState(member?.address);
   const section = useCollectivesSection();
   const referendaPallet = useReferendaFellowshipPallet();
@@ -55,7 +57,7 @@ function PopupContent({ member }) {
   const { value: referendaOptions, component: referendaOptionsField } =
     useReferendaOptionsField(decisionDeposit);
 
-  const submitTxFunc = useFellowshipCoreMemberProposalSubmitTx({
+  const getTxFunc = useFellowshipProposalSubmissionTxFunc({
     rank: atRank,
     who: memberAddress,
     action,
@@ -97,9 +99,7 @@ function PopupContent({ member }) {
       </AdvanceSettings>
       <TxSubmissionButton
         disabled={isLoading || referendaAlreadyCreated}
-        getTxFunc={() => {
-          return submitTxFunc;
-        }}
+        getTxFunc={getTxFunc}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, referendaPallet, "Submitted");
           if (!eventData) {

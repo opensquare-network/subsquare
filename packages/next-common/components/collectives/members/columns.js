@@ -14,18 +14,18 @@ const collectivesMemberColumns = [
   },
   {
     name: "Passive Salary",
-    width: 160,
+    width: 120,
     className: "text-right",
   },
   {
     name: "Demotion Period",
-    width: 160,
-    className: "ml-[64px]",
+    width: 120,
+    className: "ml-[48px]",
   },
   {
     name: "Min Promotion Period",
     width: 160,
-    className: "ml-[64px]",
+    className: "ml-[48px]",
   },
 ];
 

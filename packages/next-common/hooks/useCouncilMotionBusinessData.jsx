@@ -7,12 +7,25 @@ import AddressUser from "next-common/components/user/addressUser";
 import Proposal from "next-common/components/proposal";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import useBlockPreimage from "next-common/hooks/preimages/useBlockPreimage";
+import RawCallProvider from "next-common/context/call/raw";
 
 function getTreasuryProposalLink(type, proposalIndex) {
   if (type === detailPageCategory.COMMUNITY_MOTION) {
     return `/community-treasury/proposals/${proposalIndex}`;
   }
   return `/treasury/proposals/${proposalIndex}`;
+}
+
+function ExternalCall({ preimage, blockHash }) {
+  const { hash } = preimage || {};
+  const { preimage: call, isLoading } = useBlockPreimage(hash, blockHash);
+
+  return (
+    <RawCallProvider call={call} isLoading={isLoading}>
+      <Proposal key="call" call={preimage.call} preImageHash={preimage.hash} />,
+    </RawCallProvider>
+  );
 }
 
 export function useCouncilMotionBusinessData() {
@@ -115,10 +128,10 @@ export function useCouncilMotionBusinessData() {
       if (external.preImage && business.length > 0) {
         business[0].push([
           [
-            <Proposal
+            <ExternalCall
               key="call"
-              call={external.preImage.call}
-              preImageHash={external.preImage.hash}
+              preimage={external?.preImage}
+              blockHash={external?.indexer?.blockHash}
             />,
           ],
         ]);

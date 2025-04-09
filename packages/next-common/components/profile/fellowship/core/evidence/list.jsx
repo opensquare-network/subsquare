@@ -43,7 +43,7 @@ const SubSquareLinks = ({ referenda }) => {
   return "";
 };
 
-const EvidenceItem = ({ row }) => {
+const EvidenceItem = ({ row, popupTitle = "" }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -75,7 +75,7 @@ const EvidenceItem = ({ row }) => {
 
       {open && (
         <Popup
-          title="Evidence Detail"
+          title={popupTitle || "Evidence For " + (row.wish || "")}
           className="w-[800px] max-w-full"
           onClose={() => {
             setOpen(false);
@@ -89,10 +89,15 @@ const EvidenceItem = ({ row }) => {
   );
 };
 
-const EvidenceList = ({ rows }) => {
+const EvidenceList = ({
+  rows,
+  className = "",
+  popupTitle = "",
+  noDateText = "",
+}) => {
   const [navCollapsed] = useNavCollapsed();
   if (rows.length === 0) {
-    return <NoData showIcon={false} text="No evidence" />;
+    return <NoData showIcon={false} text={noDateText || "No evidence"} />;
   }
   return (
     <div>
@@ -101,10 +106,11 @@ const EvidenceList = ({ rows }) => {
           "grid grid-cols-3 gap-4",
           !navCollapsed && "max-md:grid-cols-2",
           "max-sm:grid-cols-1",
+          className,
         )}
       >
         {rows.map((row) => (
-          <EvidenceItem key={row._id} row={row} />
+          <EvidenceItem key={row._id} row={row} popupTitle={popupTitle} />
         ))}
       </div>
     </div>

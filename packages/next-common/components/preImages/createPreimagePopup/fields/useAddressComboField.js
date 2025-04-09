@@ -5,19 +5,21 @@ import { useState } from "react";
 export default function useAddressComboField({
   title = "Beneficiary",
   defaultAddress = "",
+  readOnly,
 } = {}) {
-  const [beneficiary, setBeneficiary] = useState(defaultAddress);
+  const [address, setAddress] = useState(defaultAddress);
   const extensionAccounts = useExtensionAccounts();
 
   return {
-    value: beneficiary,
+    value: address,
     component: (
       <AddressComboField
         title={title}
-        defaultAddress={beneficiary}
+        defaultAddress={address}
         extensionAccounts={extensionAccounts}
-        setAddress={setBeneficiary}
+        setAddress={setAddress}
         placeholder="Please fill the address or select another one..."
+        readOnly={readOnly}
       />
     ),
   };

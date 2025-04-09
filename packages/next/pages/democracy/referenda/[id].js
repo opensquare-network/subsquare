@@ -28,6 +28,7 @@ import { referendumStatusSelector } from "next-common/store/reducers/referendumS
 import { useContextApi } from "next-common/context/api";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import DemocracyReferendumCallProvider from "next-common/context/democracy/referenda/call";
 
 const Timeline = dynamicClientOnly(() =>
   import("components/referenda/timeline"),
@@ -81,11 +82,13 @@ function ReferendumContent() {
         <DetailMultiTabs
           call={
             (call || inlineCall) && (
-              <ReferendumCall
-                call={call || inlineCall}
-                shorten={post?.onchainData?.preImage?.shorten}
-                onchainData={post?.onchainData}
-              />
+              <DemocracyReferendumCallProvider>
+                <ReferendumCall
+                  call={call || inlineCall}
+                  shorten={post?.onchainData?.preImage?.shorten}
+                  onchainData={post?.onchainData}
+                />
+              </DemocracyReferendumCallProvider>
             )
           }
           metadata={

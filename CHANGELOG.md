@@ -2,6 +2,78 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.6.1
+
+date: 2025-04-01
+
+- Fellowship
+    - [Medium] Support fellowship new member application.
+    - Improve fellowship members filter text.
+- [Medium] Show delegation panel on user profile page if this user has delegation announcement.
+- Refactor user identity component for easier style customization.
+- Refactor chain settings in backend and the related APIs.
+- Add tooltip for disabled tracks on delegation popup.
+- Refactor scope for `PolkadotTreasuryProvider`.
+- Archive democracy, council and technical committee for bifrost.
+- Remove inactive networks from menu.
+- Upgrade dependencies.
+- Fix styles and bug fixes.
+
+# 4.6.0
+
+date: 2025-03-24
+
+- Fellowship
+    - [Big] Fellowship member detail page.
+    - Support fellowship evidence template.
+    - Add wish(promotion/retention) filter on members page.
+    - Improve member evidence description as wish.
+    - Add login guard for fellowship referenda vote.
+- Support switching accounts.
+- Fix treasury spend navigation with democracy referenda.
+- Fix council motion threshold for astar dapp staking motions.
+- [Medium] Refactor profile user info panel and show votes power.
+- Guard preimage status name on my deposits page.
+- Fix avatar refresh after setting for a proxy address.
+- Fix `formatTimeAgo` test case.
+- Add call context provider to various detail page call tab.
+- Fix extension update warnings with NOVA wallet.
+- Support new tracks data structure to fix page crash.
+- Add user info in error report data.
+- Fix not found treasury spends page.
+- Fix call popup disappear after multisig list update.
+- Fix multisig table `when` column for litentry.
+- Fix user identity font.
+- Upgrade dependencies and refactor.
+
+# 4.5.0
+
+date: 2025-02-28
+
+- Fellowship
+    - [Big] Show fellowship todo list on account panel.
+    - Fix candidates offboard expiration filter.
+    - Show ambassador referenda count on collectives overview page.
+    - Support cleaning up poll for fellowship referenda.
+- Show extension update warning on popups which require signing.
+- Show loans to hydration and assethub assets on kusama treasury panel.
+- Refactor native asset icon setting to fix DOT icon on assethub.
+- Fix chain settings for paseo and paseo assethub.
+- Fix teleport between paseo and assethub.
+- Add status filter for treasury spends.
+- Add a shortcut button on account panel to account multisig tab data.
+- Improve the view of switch component under referendum detail tabs.
+- Refactor call data provider on referendum detail page.
+- [Medium] Show on-chain vesting data and multisig on data section.
+- Referendum detail
+    - Query referendum votes only from server due to performance reason.
+    - Show the white list call hash on referendum detail page call tab if the referendum is to whitelist a call.
+    - Allow users to reply their self comments.
+- Send notifications to OpenSquare team when there are page errors.
+- Customize error(500) and 404 page.
+- Support avatar setting as a proxy.
+- Update dependencies and fix styles.
+
 # 4.4.8
 
 date: 2025-02-13

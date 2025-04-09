@@ -19,10 +19,10 @@ export default function ExplorerLink({ indexer = {}, style = {}, children }) {
   }
 
   let LinkComponent = Fragment;
-  if (integrations?.subscan) {
-    LinkComponent = SubScanLink;
-  } else if (integrations?.statescan) {
+  if (integrations?.statescan) {
     LinkComponent = StatescanLink;
+  } else if (integrations?.subscan) {
+    LinkComponent = SubScanLink;
   } else if (integrations?.polkascan) {
     LinkComponent = PolkascanLink;
   }

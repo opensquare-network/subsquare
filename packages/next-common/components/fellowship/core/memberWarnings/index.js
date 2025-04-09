@@ -22,6 +22,7 @@ import { SystemFilter } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
 import { cn, isSameAddress } from "next-common/utils";
 import BatchBump from "../batchBump";
+import pluralize from "pluralize";
 
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
@@ -78,24 +79,35 @@ export function useDemotionExpiringCount(members) {
   }, [members, latestHeight, params, blockTime]);
 }
 
+export function getDemotionExpiredCount({ members, latestHeight, params }) {
+  return (members || []).reduce((result, coreMember) => {
+    const {
+      status: { lastProof },
+      rank,
+    } = coreMember;
+
+    const isExpired = isDemotionExpired({
+      lastProof,
+      rank,
+      params,
+      latestHeight,
+    });
+    if (isExpired) {
+      return result + 1;
+    }
+
+    return result;
+  }, 0);
+}
+
 export function useDemotionExpiredCount(members) {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const params = useCoreFellowshipParams();
 
-  return useMemo(() => {
-    return (members || []).reduce((result, coreMember) => {
-      const {
-        status: { lastProof },
-        rank,
-      } = coreMember;
-
-      if (isDemotionExpired({ lastProof, rank, params, latestHeight })) {
-        return result + 1;
-      }
-
-      return result;
-    }, 0);
-  }, [members, latestHeight, params]);
+  return useMemo(
+    () => getDemotionExpiredCount({ members, latestHeight, params }),
+    [members, latestHeight, params],
+  );
 }
 
 function useMemberDemotionExpirationCounts(members) {
@@ -104,15 +116,18 @@ function useMemberDemotionExpirationCounts(members) {
   return { expiredMembersCount, expiringMembersCount };
 }
 
-function useDemotionExpirationCounts() {
+export function useEligibleFellowshipCoreMembers() {
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembers();
-
   const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
     [coreMembers],
   );
+  return { members, isLoading };
+}
 
+function useDemotionExpirationCounts() {
+  const { members, loading: isLoading } = useEligibleFellowshipCoreMembers();
   const { expiredMembersCount, expiringMembersCount } =
     useMemberDemotionExpirationCounts(members);
 
@@ -123,27 +138,26 @@ function useDemotionExpirationCounts() {
   };
 }
 
-export function useEvidencesStat(members) {
+export function useTodoEvidences(members) {
   const { evidences, isLoading } = useEvidencesCombineReferenda();
+  const memberEvidences = useMemo(
+    () =>
+      (evidences || []).filter(
+        (evidence) =>
+          (members || []).findIndex((m) =>
+            isSameAddress(m.address, evidence.who),
+          ) > -1,
+      ),
+    [evidences, members],
+  );
 
-  const memberEvidences = useMemo(() => {
-    return (evidences || []).filter((evidence) => {
-      return (
-        (members || []).findIndex((m) =>
-          isSameAddress(m.address, evidence.who),
-        ) > -1
-      );
-    });
-  }, [evidences, members]);
-
-  const totalEvidences = (memberEvidences || []).length || 0;
-  const evidencesToBeHandled = (memberEvidences || []).filter((evidence) =>
+  const toBeHandled = (memberEvidences || []).filter((evidence) =>
     isNil(evidence.referendumIndex),
-  ).length;
+  );
 
   return {
-    totalEvidences,
-    evidencesToBeHandled,
+    all: memberEvidences,
+    toBeHandled,
     isLoading,
   };
 }
@@ -162,13 +176,20 @@ export function MemberWarningsPanel({ className, isLoading, items }) {
   return <BillBoardPanel className={className} icon={icon} items={items} />;
 }
 
+export function useFilterEvidenceByWish(evidences, wish) {
+  return useMemo(
+    () =>
+      (evidences || []).filter(({ evidence }) => {
+        const [_wish] = evidence;
+        return _wish.toLowerCase() === wish.toLowerCase();
+      }),
+    [evidences, wish],
+  );
+}
+
 export default function MemberWarnings({ className }) {
   const { section } = useCollectivesContext();
-  const { members: coreMembers } = useFellowshipCoreMembers();
-  const [members] = useMemo(
-    () => partition(coreMembers, (m) => m.rank > 0),
-    [coreMembers],
-  );
+  const { members } = useEligibleFellowshipCoreMembers();
 
   const {
     expiredMembersCount,
@@ -180,13 +201,35 @@ export default function MemberWarnings({ className }) {
     useAvailablePromotionCount();
 
   const {
-    totalEvidences,
-    evidencesToBeHandled,
+    all: allEvidences,
+    toBeHandled: toBeHandledEvidences,
     isLoading: isEvidenceLoading,
-  } = useEvidencesStat(members);
+  } = useTodoEvidences(members);
+
+  const allPromotionEvidences = useFilterEvidenceByWish(
+    allEvidences,
+    "promotion",
+  );
+
+  const toBeHandledPromotionEvidences = useFilterEvidenceByWish(
+    toBeHandledEvidences,
+    "promotion",
+  );
+
+  const allRetentionEvidences = useFilterEvidenceByWish(
+    allEvidences,
+    "retention",
+  );
+
+  const toBeHandledRetentionEvidences = useFilterEvidenceByWish(
+    toBeHandledEvidences,
+    "retention",
+  );
 
   const filterLinks = {
     evidenceOnly: `/${section}/members?evidence_only=true`,
+    promotionEvidenceOnly: `/${section}/members?evidence_only=true&wish=promotion`,
+    retentionEvidenceOnly: `/${section}/members?evidence_only=true&wish=retention`,
     demotionPeriodAboutToExpire: `/${section}/members?period=demotion_period_about_to_expire`,
     demotionPeriodExpired: `/${section}/members?period=demotion_period_expired`,
     promotable: `/${section}/members?period=promotable`,
@@ -197,20 +240,49 @@ export default function MemberWarnings({ className }) {
   }
 
   const promptItems = [
-    totalEvidences > 0 && (
+    toBeHandledPromotionEvidences?.length > 0 && (
       <>
-        {evidencesToBeHandled} evidences to be handled in total{" "}
-        <PromptButton filterLink={filterLinks.evidenceOnly}>
-          {totalEvidences} evidences
+        {`⚠️ ${toBeHandledPromotionEvidences?.length} ${pluralize(
+          "wish",
+          toBeHandledPromotionEvidences?.length,
+        )} for promotion from `}
+        <PromptButton filterLink={filterLinks.promotionEvidenceOnly}>
+          {allPromotionEvidences?.length}{" "}
+          {pluralize("member", allPromotionEvidences?.length)}
         </PromptButton>
-        .
+        {toBeHandledPromotionEvidences?.length === 1 ? "needs" : "need"}
+        {" to be handled."}
+      </>
+    ),
+    toBeHandledRetentionEvidences?.length > 0 && (
+      <>
+        {`⚠️ ${toBeHandledRetentionEvidences?.length} ${pluralize(
+          "wish",
+          toBeHandledRetentionEvidences?.length,
+        )} for retention from `}
+        <PromptButton filterLink={filterLinks.retentionEvidenceOnly}>
+          {allRetentionEvidences?.length}{" "}
+          {pluralize("member", allRetentionEvidences?.length)}
+        </PromptButton>
+        {toBeHandledRetentionEvidences?.length === 1 ? "needs" : "need"}
+        {" to be handled."}
+      </>
+    ),
+    toBeHandledEvidences?.length > 0 && (
+      <>
+        {`⚠️ ${toBeHandledEvidences?.length} out of `}
+        <PromptButton filterLink={filterLinks.evidenceOnly}>
+          {allEvidences?.length} {pluralize("evidence", allEvidences?.length)}
+        </PromptButton>
+        {toBeHandledEvidences?.length === 1 ? "needs" : "need"}
+        {" to be handled."}
       </>
     ),
     expiringMembersCount > 0 && (
       <>
         {"The demotion periods of "}
         <PromptButton filterLink={filterLinks.demotionPeriodAboutToExpire}>
-          {expiringMembersCount} members
+          {expiringMembersCount} {pluralize("member", expiringMembersCount)}
         </PromptButton>
         {" will expire in under 20 days."}
       </>
@@ -218,7 +290,7 @@ export default function MemberWarnings({ className }) {
     expiredMembersCount > 0 && (
       <>
         <PromptButton filterLink={filterLinks.demotionPeriodExpired}>
-          {expiredMembersCount} members
+          {expiredMembersCount} {pluralize("member", expiredMembersCount)}
         </PromptButton>
         {" can be demoted."}
         <BatchBump />
@@ -228,7 +300,8 @@ export default function MemberWarnings({ className }) {
       <>
         Promotions are available for{" "}
         <PromptButton filterLink={filterLinks.promotable}>
-          {availablePromotionCount} members
+          {availablePromotionCount}{" "}
+          {pluralize("member", availablePromotionCount)}
         </PromptButton>
         .
       </>

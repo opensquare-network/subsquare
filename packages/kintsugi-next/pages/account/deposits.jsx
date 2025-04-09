@@ -15,7 +15,7 @@ export default function AccountDepositsPage() {
 }
 
 export const getServerSideProps = withCommonProps(async () => {
-  const { result: summary } = await nextApi.fetch("summary");
+  const { result: summary } = await nextApi.fetch("overview/summary");
 
   return {
     props: {

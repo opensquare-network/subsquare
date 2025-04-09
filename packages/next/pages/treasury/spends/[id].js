@@ -36,6 +36,7 @@ function TreasurySpendContent() {
   const detail = usePost();
   const timelineData = useTreasurySpendTimelineData(detail?.onchainData);
   const isTimelineCompact = useIsTimelineCompact();
+  useSubscribePostDetail(detail?.index);
 
   return (
     <MaybeSimaContent>
@@ -62,8 +63,6 @@ function ProposalContentWithNullGuard({ detailApiPath, children }) {
   const { id } = usePageProps();
   const detail = usePost();
   const treasuryPallet = useTreasuryPallet();
-
-  useSubscribePostDetail(detail?.index);
 
   if (!detail) {
     return (

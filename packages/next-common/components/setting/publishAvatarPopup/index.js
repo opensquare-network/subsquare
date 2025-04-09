@@ -17,11 +17,11 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import Signer from "next-common/components/popup/fields/signerField";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import { refreshAvatar } from "next-common/hooks/useAvatarInfo";
+import { getRealField } from "next-common/sima/actions/common";
+import { noop } from "lodash-es";
 
-function Content() {
-  const { imageFile, onClose } = usePopupParams();
+export function useAvatarSubmission(imageFile, proxyAddress) {
   const dispatch = useDispatch();
-  const router = useRouter();
   const { uploading, upload } = useUploadToIpfs();
   const [isLoading, setIsLoading] = useState(false);
   const signMessage = useSignMessage();
@@ -37,7 +37,7 @@ function Content() {
         },
       );
       if (uploadError) {
-        return;
+        throw new Error(uploadError.message);
       }
       const { cid } = uploadResult;
 
@@ -45,6 +45,7 @@ function Content() {
         action: "set-avatar",
         CID: cid,
         timestamp: Date.now(),
+        real: getRealField(proxyAddress),
       };
       const address = signerAccount?.address;
       const signerWallet = signerAccount?.meta.source;
@@ -70,19 +71,17 @@ function Content() {
             "Failed to save user's avatar cid: " + saveUserAvatarError.message,
           ),
         );
-        return;
+        throw new Error(saveUserAvatarError.message);
       }
 
-      refreshAvatar(address);
+      refreshAvatar(proxyAddress || address);
       dispatch(newSuccessToast("Avatar updated successfully"));
-
-      onClose();
-      router.replace(router.asPath);
+      return true;
     } catch (e) {
-      if (e.message === "Cancelled") {
-        return;
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
       }
-      dispatch(newErrorToast(e.message));
+      throw e;
     } finally {
       setIsLoading(false);
     }
@@ -93,9 +92,29 @@ function Content() {
     signerAccount?.meta.source,
     signMessage,
     dispatch,
-    onClose,
-    router,
+    proxyAddress,
   ]);
+
+  return {
+    uploading,
+    isLoading,
+    submitAvatar,
+  };
+}
+
+function Content() {
+  const { imageFile, onClose } = usePopupParams();
+  const { uploading, isLoading, submitAvatar } = useAvatarSubmission(imageFile);
+  const router = useRouter();
+
+  const onSave = useCallback(() => {
+    submitAvatar()
+      .then(() => {
+        onClose();
+        router.replace(router.asPath);
+      })
+      .catch(noop);
+  }, [submitAvatar, onClose, router]);
 
   return (
     <>
@@ -105,7 +124,7 @@ function Content() {
         <LoadingPrimaryButton
           loading={isLoading}
           loadingText={uploading ? "Uploading..." : "Saving..."}
-          onClick={submitAvatar}
+          onClick={onSave}
         >
           Confirm
         </LoadingPrimaryButton>

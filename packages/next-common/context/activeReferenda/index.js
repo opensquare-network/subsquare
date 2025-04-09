@@ -6,10 +6,13 @@ const ActiveReferendaContext = createContext();
 export default ActiveReferendaContext;
 
 export function ActiveReferendaProvider({ pallet, children }) {
-  const { activeReferenda, isLoading } = useOnChainActiveReferenda(pallet);
+  const { activeReferenda, isLoading, fetch } =
+    useOnChainActiveReferenda(pallet);
 
   return (
-    <ActiveReferendaContext.Provider value={{ activeReferenda, isLoading }}>
+    <ActiveReferendaContext.Provider
+      value={{ activeReferenda, isLoading, fetch }}
+    >
       {children}
     </ActiveReferendaContext.Provider>
   );

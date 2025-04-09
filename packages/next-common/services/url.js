@@ -26,6 +26,8 @@ export const gov2ReferendaHistoryWhalesApi = "gov2/referenda/history-whales";
 
 // fellowship
 export const fellowshipReferenda = "fellowship/referenda/";
+export const fellowshipMemberHeatmapApi = (address) =>
+  `fellowship/referenda/members/${address}/heatmap`;
 
 export const getFellowshipReferendumUrl = (id) => `${fellowshipReferenda}${id}`;
 export const getFellowshipReferendumCommentsUrl = (id) =>
@@ -70,6 +72,9 @@ export const fellowshipSalaryCycleUnregisteredPaymentsApi = (index) =>
 export const fellowshipSalaryCycleFeedsApi = (index) =>
   `fellowship/salary/cycles/${index}/feeds`;
 
+export const fellowshipMemberLastSalaryPaymentApi = (address) =>
+  `fellowship/salary/address/${address}/last_payment`;
+
 export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
 export const fellowshipSalaryFeedsApi = "fellowship/salary/feeds";
 export const fellowshipSalaryPaymentsApi = "fellowship/salary/payments";
@@ -79,6 +84,9 @@ export const fellowshipStatisticsCyclesApi =
   "fellowship/statistics/salary/cycles";
 export const fellowshipStatisticsMembersApi =
   "fellowship/statistics/salary/members";
+export const fellowshipStatisticsMemberApi = (address) =>
+  `fellowship/statistics/salary/members/${address}`;
+
 export const fellowshipStatisticsRanksApi =
   "fellowship/statistics/salary/ranks";
 export const fellowshipStatisticsMembershipApi =

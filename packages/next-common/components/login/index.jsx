@@ -9,7 +9,7 @@ function Title({ isWeb3 = true, isWalletConnectView = false }) {
 
   if (isWeb3) {
     action = "Connect";
-    type = "Address";
+    type = "Wallet";
 
     if (isWalletConnectView) {
       type = "WalletConnect";

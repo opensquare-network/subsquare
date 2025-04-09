@@ -15,10 +15,9 @@ export function CoreFellowshipMemberEvidenceContent({
   wish,
   evidence,
 }) {
+  const [detailOpen, setDetailOpen] = useState(false);
   const { address, rank } = member || {};
   const { isActive } = member?.status || {};
-
-  const [detailOpen, setDetailOpen] = useState(false);
 
   let content = <span className="text-textTertiary">-</span>;
 
@@ -32,12 +31,12 @@ export function CoreFellowshipMemberEvidenceContent({
         </Tooltip>
         <span
           role="button"
-          className="text-theme500"
+          className="text-theme500 text12Medium inline-flex items-center"
           onClick={() => {
             setDetailOpen(true);
           }}
         >
-          Detail
+          Evidence
         </span>
       </>
     );
@@ -47,32 +46,50 @@ export function CoreFellowshipMemberEvidenceContent({
     <>
       {content}
       {detailOpen && (
-        <Popup
-          title="Evidence Detail"
-          className="w-[800px] max-w-full"
-          onClose={() => {
-            setDetailOpen(false);
-          }}
-        >
-          <div>
-            <div className="mt-3">
-              <div className="flex justify-between">
-                <AvatarAndAddress address={address} isActive={isActive} />
-                <FellowshipRank rank={rank} />
-              </div>
-            </div>
-          </div>
-
-          <hr />
-
-          <FellowshipEvidenceContent wish={wish} evidence={evidence} />
-        </Popup>
+        <EvidenceDetailPopup
+          address={address}
+          rank={rank}
+          isActive={isActive}
+          wish={wish}
+          evidence={evidence}
+          onClose={() => setDetailOpen(false)}
+        />
       )}
     </>
   );
 }
 
-export default function CoreFellowshipMemberEvidence({
+export default function EvidenceDetailPopup({
+  address,
+  rank,
+  isActive,
+  wish,
+  evidence,
+  onClose,
+}) {
+  return (
+    <Popup
+      title="Evidence Detail"
+      className="w-[800px] max-w-full"
+      onClose={onClose}
+    >
+      <div>
+        <div className="mt-3">
+          <div className="flex justify-between">
+            <AvatarAndAddress address={address} isActive={isActive} />
+            <FellowshipRank rank={rank} />
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <FellowshipEvidenceContent wish={wish} evidence={evidence} />
+    </Popup>
+  );
+}
+
+export function CoreFellowshipMemberEvidence({
   member,
   pallet = "fellowshipCore",
 }) {
@@ -86,7 +103,7 @@ export default function CoreFellowshipMemberEvidence({
     <>
       <CoreFellowshipMemberInfoWrapper>
         <CoreFellowshipMemberInfoTitle className="mb-0.5">
-          Evidence
+          Wish
         </CoreFellowshipMemberInfoTitle>
         <div className="flex text12Medium gap-[8px]">
           <CoreFellowshipMemberEvidenceContent

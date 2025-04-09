@@ -19,6 +19,7 @@ import { usePageProps } from "next-common/context/page";
 import useIsDemocracyProposalFinished from "next-common/hooks/democracy/proposal/useIsDemocracyProposalFinished";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import DemocracyReferendumCallProvider from "next-common/context/democracy/referenda/call";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/publicProposal/metadata"),
@@ -64,12 +65,14 @@ function PublicProposalContent() {
         <DetailMultiTabs
           call={
             call && (
-              <DemocracyPublicProposalCall
-                call={call}
-                shorten={publicProposal.preImage?.shorten}
-                proposalIndex={publicProposal.proposalIndex}
-                referendumIndex={publicProposal.referendumIndex}
-              />
+              <DemocracyReferendumCallProvider>
+                <DemocracyPublicProposalCall
+                  call={call}
+                  shorten={publicProposal.preImage?.shorten}
+                  proposalIndex={publicProposal.proposalIndex}
+                  referendumIndex={publicProposal.referendumIndex}
+                />
+              </DemocracyReferendumCallProvider>
             )
           }
           metadata={<Metadata publicProposal={post?.onchainData} />}

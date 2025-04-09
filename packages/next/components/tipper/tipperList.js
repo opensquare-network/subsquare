@@ -52,7 +52,7 @@ function Items({ tips, windowWidth }) {
         <TipperItem key={address}>
           <AddressUser
             add={address}
-            fontSize={12}
+            className="text12Medium text-textPrimary"
             {...(windowWidth > 1024 ? { maxWidth: 150 } : {})}
           />
           <div>
@@ -67,9 +67,11 @@ function Items({ tips, windowWidth }) {
 function Threshold({ tipsLength }) {
   const tipThreshold = useTipThreshold();
 
-  return <Statistics>
-    {tipsLength}/{tipThreshold}
-  </Statistics>;
+  return (
+    <Statistics>
+      {tipsLength}/{tipThreshold}
+    </Statistics>
+  );
 }
 
 export default function TipperList({ tipHash }) {
@@ -82,7 +84,7 @@ export default function TipperList({ tipHash }) {
       <StatisticTitleContainer className="!px-0">
         <Flex>
           <span>Tippers</span>
-          <Threshold tipsLength={tips.length}/>
+          <Threshold tipsLength={tips.length} />
         </Flex>
       </StatisticTitleContainer>
       <Items tips={tips} windowWidth={windowWidth} />

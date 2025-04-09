@@ -1,4 +1,7 @@
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import {
+  useSetSigner,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import isEvmChain from "next-common/utils/isEvmChain";
 import isMixedChain from "next-common/utils/isMixedChain";
@@ -83,6 +86,7 @@ export function useSendTransaction() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
+  const setSigner = useSetSigner();
   const { sdk: signetSdk } = useSignetSdk();
 
   const { signWcTx } = useWalletConnect();
@@ -97,6 +101,23 @@ export function useSendTransaction() {
       onFinalized = noop,
       onCancelled = noop,
     }) => {
+      if (!api) {
+        dispatch(newErrorToast("Chain api cannot be empty"));
+        return;
+      }
+
+      if (!signerAccount) {
+        dispatch(newErrorToast("Signer account not found"));
+        return;
+      }
+
+      try {
+        await setSigner(api, signerAccount);
+      } catch (e) {
+        dispatch(newErrorToast(e.message));
+        return;
+      }
+
       const noWaitForFinalized = isEmptyFunc(onFinalized);
       const totalSteps = noWaitForFinalized ? 2 : 3;
       const toastId = newToastId();
@@ -254,7 +275,7 @@ export function useSendTransaction() {
         setIsSubmitting(false);
       }
     },
-    [buildPayload, dispatch, signWcTx, signerAccount, signetSdk],
+    [buildPayload, dispatch, signWcTx, signerAccount, signetSdk, setSigner],
   );
 
   return {

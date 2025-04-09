@@ -11,14 +11,14 @@ import WindowSizeProvider, {
 } from "next-common/context/windowSize";
 import { useChainSettings } from "next-common/context/chain";
 
-function useIsMobile() {
+export function useIsMobile() {
   const [navCollapsed] = useNavCollapsed();
   const width = useWindowWidthContext();
 
   return (navCollapsed && width < 768) || (!navCollapsed && width < 1024);
 }
 
-function AccountBalanceFiatValue({ value, className }) {
+export function AccountBalanceFiatValue({ value, className }) {
   const { price, loading } = useFiatPriceSnapshot();
   const { decimals } = useChainSettings();
   const isMobile = useIsMobile();
@@ -46,8 +46,12 @@ function AccountBalanceFiatValue({ value, className }) {
   );
 }
 
-function AccountBalanceItem({ value, title, isLoading }) {
+export function AccountBalanceItem({ value, title, isLoading, className }) {
   const isMobile = useIsMobile();
+
+  if (!isLoading && isNaN(value)) {
+    return null;
+  }
 
   return (
     <div
@@ -56,6 +60,7 @@ function AccountBalanceItem({ value, title, isLoading }) {
         "[&:not(:last-child)]:mb-1",
         "flex items-center",
         isMobile && "w-full inline-flex flex-col",
+        className,
       )}
     >
       <div className="inline-flex items-center w-full gap-4">
@@ -131,7 +136,7 @@ export function Locked() {
 export default function AccountBalances() {
   return (
     <WindowSizeProvider>
-      <CollapsePanel labelItem={<TotalBalance />}>
+      <CollapsePanel className="w-[300px]" labelItem={<TotalBalance />}>
         <Transferrable />
         <Reserved />
         <Locked />

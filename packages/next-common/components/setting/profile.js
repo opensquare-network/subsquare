@@ -16,7 +16,7 @@ const PublishAvatarPopup = dynamicPopup(() => import("./publishAvatarPopup"));
 
 const UnsetAvatarPopup = dynamicPopup(() => import("./unsetAvatarPopup"));
 
-function EditAvatar({ setImageFile, setImageDataUrl }) {
+export function EditAvatar({ setImageFile, setImageDataUrl }) {
   const inputEl = useRef();
 
   const handleSelectFile = () => {

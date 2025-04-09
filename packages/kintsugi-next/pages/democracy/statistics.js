@@ -51,7 +51,7 @@ export default function DemocracyStatisticsPage({ turnout, summary }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const [{ result: turnout }, { result: summary }] = await Promise.all([
     nextApi.fetch("democracy/referenda/turnout"),
-    nextApi.fetch("summary"),
+    nextApi.fetch("overview/summary"),
   ]);
 
   return {

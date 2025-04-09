@@ -4,9 +4,10 @@ import useSigner from "next-common/components/common/tx/useSigner";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useSalaryFellowshipPallet } from "next-common/context/collectives/collectives";
-import useClaimantsFellowshipUpdateFunc from "next-common/hooks/fellowship/salary/useClaimantsUpdateFunc";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 
 function Content() {
+  const { onInBlock, onFinalized } = usePopupParams();
   const { component } = useSigner();
   const api = useContextApi();
   const pallet = useSalaryFellowshipPallet();
@@ -17,15 +18,13 @@ function Content() {
     }
   }, [api, pallet]);
 
-  const onInBlock = useClaimantsFellowshipUpdateFunc();
-
   return (
     <>
       {component}
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}
-        onFinalized={onInBlock}
+        onFinalized={onFinalized}
       />
     </>
   );

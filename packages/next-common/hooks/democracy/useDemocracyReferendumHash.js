@@ -2,7 +2,7 @@
 
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import { usePost, useTimelineData } from "next-common/context/post";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 
@@ -12,7 +12,21 @@ export function useDemocracyReferendumHash() {
   const onchainData = post?.onchainData;
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
-  const proposalHash = referendumStatus?.proposalHash || onchainData?.hash;
+  const statusHash = referendumStatus?.proposalHash;
+  const onchainDataHash = onchainData?.hash;
+  const proposalHash = useMemo(() => {
+    if (statusHash) {
+      return statusHash;
+    } else if (typeof onchainDataHash === "string") {
+      return onchainDataHash;
+    } else if (onchainDataHash?.lookup) {
+      return onchainDataHash.lookup.hash;
+    } else if (onchainDataHash?.legacy) {
+      return onchainDataHash.legacy.hash;
+    } else {
+      return null;
+    }
+  }, [statusHash, onchainDataHash]);
   const preImage = onchainData?.preImage;
 
   const { hash: inlineHash } = useInlineCall(timeline, proposal);

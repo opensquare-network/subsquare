@@ -1,11 +1,7 @@
 import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
 import ConnectedUserOrigin from "next-common/components/popup/fields/connectedUserOriginField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import {
-  useExtensionAccounts,
-  usePopupParams,
-  useSetSigner,
-} from "next-common/components/popupWithSigner/context";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useUser } from "next-common/context/user";
@@ -15,7 +11,6 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { isSameAddress } from "next-common/utils";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
@@ -38,12 +33,9 @@ function PopupContent() {
   });
   const { sendTxFunc, isSubmitting } = useSendTransaction();
 
-  const setSigner = useSetSigner();
-
   const user = useUser();
   const address = user?.address;
   const dispatch = useDispatch();
-  const extensionAccounts = useExtensionAccounts();
   const {
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
@@ -79,11 +71,6 @@ function PopupContent() {
       return;
     }
 
-    const account = extensionAccounts.find((item) =>
-      isSameAddress(item.address, address),
-    );
-    setSigner(sourceApi, account);
-
     await sendTxFunc({
       api: sourceApi,
       tx,
@@ -92,16 +79,7 @@ function PopupContent() {
         dispatch(newSuccessToast("Teleport successfully"));
       },
     });
-  }, [
-    sourceApi,
-    dispatch,
-    extensionAccounts,
-    address,
-    getTxFunc,
-    setSigner,
-    sendTxFunc,
-    onClose,
-  ]);
+  }, [sourceApi, dispatch, getTxFunc, sendTxFunc, onClose]);
 
   return (
     <>

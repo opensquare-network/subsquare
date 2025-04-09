@@ -62,7 +62,7 @@ function _Button(props, ref) {
       ) : (
         <>
           {iconLeft && (
-            <span className="icon-left inline-flex mr-1">{iconLeft}</span>
+            <span className="icon-left inline-flex mr-3">{iconLeft}</span>
           )}
           {children}
           {iconRight && (

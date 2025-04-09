@@ -1,12 +1,20 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ArrowTriangleDown } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { cn } from "next-common/utils";
 
-export default function CollapsePanel({ children, labelItem }) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+export const AlwaysVisible = ({ children }) => children;
+
+export default function CollapsePanel({
+  defaultCollapsed = true,
+  className,
+  btnClassName,
+  children,
+  labelItem,
+}) {
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const { width } = useWindowSize();
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
@@ -15,24 +23,28 @@ export default function CollapsePanel({ children, labelItem }) {
     return null;
   }
 
+  const alwaysVisibleContent = React.Children.toArray(children).filter(
+    (child) => React.isValidElement(child) && child.type === AlwaysVisible,
+  );
+
   return width > 768 ? (
     <div className="flex">
       <SecondaryButton
         size="small"
-        className="w-5 h-5 mx-2.5 p-0"
+        className={cn("w-5 h-5 mx-2.5 p-0", btnClassName)}
         onClick={toggleCollapse}
       >
         <ArrowTriangleDown
           className={cn(
             "w-3 h-3 text-textSecondary",
-            isCollapsed && "rotate-180",
+            !isCollapsed && "rotate-180",
           )}
         />
       </SecondaryButton>
 
-      <div className="flex flex-col ml-[12px] w-[300px]">
+      <div className={cn("flex flex-col ml-[12px]", className)}>
         {labelItem}
-        {isCollapsed && children}
+        {isCollapsed ? alwaysVisibleContent : children}
       </div>
     </div>
   ) : (

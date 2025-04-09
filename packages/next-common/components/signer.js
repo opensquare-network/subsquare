@@ -129,7 +129,7 @@ export default function MaybeProxySigner({ noSwitch }) {
   );
 }
 
-export function ConnectedAccountSigner() {
+export function ConnectedAccountSigner({ extra = null }) {
   const user = useUser();
   const extensionAccounts = useExtensionAccounts();
   const originAccount = extensionAccounts.find((item) =>
@@ -145,6 +145,7 @@ export function ConnectedAccountSigner() {
           ) : (
             <EmptyAccount />
           )}
+          {extra}
         </div>
       </div>
     </Wrapper>

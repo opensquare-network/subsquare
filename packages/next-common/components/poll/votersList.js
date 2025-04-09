@@ -45,8 +45,7 @@ export default function VoterList({ voters }) {
           <SystemUser
             user={user}
             showAvatar={false}
-            fontSize={12}
-            color={"#506176"}
+            className="text12Medium text-[#506176]"
           />
         </GreyItem>
       ))}

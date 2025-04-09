@@ -61,7 +61,7 @@ function useCreatePreimageRow(
       <FieldLoading />
     ),
     isStatusLoaded ? (
-      preimage.proposalLength?.toJSON()?.toLocaleString()
+      preimage.proposalLength?.toNumber()?.toLocaleString()
     ) : (
       <FieldLoading />
     ),

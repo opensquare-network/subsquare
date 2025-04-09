@@ -54,8 +54,7 @@ export default function ReferendaDelegateCard({
         <AddressUser
           add={address}
           showAvatar={false}
-          fontSize={14}
-          className="[&_.identity]:!font-semibold"
+          className="text14Medium text-textPrimary [&_.identity]:!font-semibold"
           ellipsis
         />
       </div>

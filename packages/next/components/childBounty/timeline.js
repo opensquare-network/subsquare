@@ -19,9 +19,11 @@ export default function ChildBountyTimeline({ onchainData }) {
             ...args,
             parentBountyId: (
               <Anchor href={`/treasury/bounties/${args.parentBountyId}`}>
-                {" "}
-                {args.parentBountyId}{" "}
+                {args.parentBountyId}
               </Anchor>
+            ),
+            description: (
+              <span className="font-medium">{args.description}</span>
             ),
             value: <SymbolBalance value={args.value} />,
           };
