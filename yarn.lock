@@ -4227,7 +4227,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/apps-config@npm:^0.153.1":
+"@polkadot/apps-config@npm:latest":
   version: 0.153.1
   resolution: "@polkadot/apps-config@npm:0.153.1"
   dependencies:
@@ -15998,7 +15998,7 @@ __metadata:
     "@osn/react-cmdk": ^1.2.1
     "@osn/rich-text-editor": ^0.7.2
     "@polkadot/api": 15.9.1
-    "@polkadot/apps-config": ^0.153.1
+    "@polkadot/apps-config": latest
     "@polkadot/extension-dapp": 0.58.6
     "@polkadot/util": ^13.4.3
     "@polkadot/util-crypto": 13.4.3
