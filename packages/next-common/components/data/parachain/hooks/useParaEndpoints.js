@@ -15,20 +15,33 @@ export function useParachainInfo({ search = "" }) {
     const chainDetails = [];
     const unknowChains = [];
     paraIds?.forEach((paraId) => {
+      const idHuman = paraId.toHuman();
       const numId = bnToBn(paraId).toNumber();
       const chainEndPoints = getEndpoints(numId);
       if (chainEndPoints.length > 0) {
         const [info] = chainEndPoints;
-        chainDetails.push({ id: numId, info, endpoints: chainEndPoints });
+        chainDetails.push({
+          id: numId,
+          idHuman,
+          paraId,
+          info,
+          endpoints: chainEndPoints,
+        });
       } else {
-        unknowChains.push({ id: numId, info: {}, endpoints: chainEndPoints });
+        unknowChains.push({
+          id: numId,
+          idHuman,
+          paraId,
+          info: {},
+          endpoints: chainEndPoints,
+        });
       }
     });
     return [...chainDetails, ...unknowChains];
   }, [paraIds]);
 
   const filterData = useMemo(() => {
-    return tableData?.filter(({ id, info }) => {
+    return tableData?.filter(({ id, idHuman, info }) => {
       if (search === "") {
         return true;
       }
@@ -36,7 +49,8 @@ export function useParachainInfo({ search = "" }) {
         const name = info?.text?.toLowerCase() || "";
         if (
           id.toString().includes(search) ||
-          name.includes(search.toLowerCase())
+          name.includes(search.toLowerCase()) ||
+          idHuman.includes(search)
         ) {
           return true;
         }
