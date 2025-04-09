@@ -1,6 +1,6 @@
 import { useContextApi } from "next-common/context/api";
 import { extractReferendumCall } from "next-common/utils/preimage";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 async function extractActiveReferenda(api, entries) {
   const referenda = await Promise.all(
@@ -36,11 +36,10 @@ export function useOnChainActiveReferenda(pallet) {
   const [activeReferenda, setActiveReferenda] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  const fetch = useCallback(() => {
     if (!api || !api.query?.[pallet]) {
       return;
     }
-
     api.query[pallet].referendumInfoFor
       .entries()
       .then((entries) => extractActiveReferenda(api, entries))
@@ -50,5 +49,9 @@ export function useOnChainActiveReferenda(pallet) {
       });
   }, [api, pallet]);
 
-  return { activeReferenda, isLoading };
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { activeReferenda, isLoading, fetch };
 }

@@ -14,7 +14,10 @@ import SalaryPayoutTodo from "./salaryPayoutTodo";
 import MyReferendaVotesTodo from "./myReferendaVotesTodo";
 import MemberEvidencesTodo from "./memberEvidencesTodo";
 import CandidateEvidencesTodo from "./candidateEvidencesTodo";
-import MemberPromotionTodo from "./memberPromotionTodo";
+import {
+  CandidatePromotionTodo,
+  MemberPromotionTodo,
+} from "./memberPromotionTodo";
 import MemberRetentionTodo from "./memberRetentionTodo";
 
 function MakeSureLoaded({ children }) {
@@ -78,14 +81,9 @@ export function OnlyCollectivesMember({ children }) {
 function TodoListWithDataLoaded() {
   return (
     <div className="flex flex-col gap-[4px] max-sm:gap-[8px]">
-      <OnlyCoreMember>
-        <RetentionEvidenceSubmissionTodo />
-        <MemberReferendaTodo />
-      </OnlyCoreMember>
-      <DemotionExpirationTodo />
-      <CandidateDemotionExpirationTodo />
       <OnlyCollectivesMember>
         <MemberPromotionTodo />
+        <CandidatePromotionTodo />
         <MemberRetentionTodo />
         <SalaryRegistrationTodo />
         <SalaryPayoutTodo />
@@ -95,6 +93,12 @@ function TodoListWithDataLoaded() {
           <CandidateEvidencesTodo />
         </OnlyHighRankMembers>
       </OnlyCollectivesMember>
+      <OnlyCoreMember>
+        <RetentionEvidenceSubmissionTodo />
+        <MemberReferendaTodo />
+      </OnlyCoreMember>
+      <DemotionExpirationTodo />
+      <CandidateDemotionExpirationTodo />
     </div>
   );
 }

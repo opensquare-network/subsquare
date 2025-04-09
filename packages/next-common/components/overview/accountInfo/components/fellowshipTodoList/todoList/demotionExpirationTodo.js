@@ -29,7 +29,7 @@ export default function DemotionExpirationTodo() {
           </a>
           &nbsp;can be demoted.&nbsp;
           <ActionButton onClick={() => setShowBumpAllPopup(true)}>
-            Demote all
+            Demote All
           </ActionButton>
         </TodoContent>
       </TodoWrapper>

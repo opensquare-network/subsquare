@@ -7,6 +7,9 @@ import { CACHE_KEY } from "next-common/utils/constants";
 import { useCallback, useEffect, useState } from "react";
 import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import { createGlobalState } from "react-use";
+
+const useIsNeedUpdate = createGlobalState(false);
 
 function getPropertyStoreKey(genesisHash) {
   return `properties:${genesisHash.toHex()}`;
@@ -78,7 +81,7 @@ function PromptContent({ onUpdateMeta }) {
 export default function ExtensionUpdatePrompt({ isWithCache = true }) {
   const api = useContextApi();
   const connectedAccount = useConnectedAccount();
-  const [isNeedUpdate, setIsNeedUpdate] = useState();
+  const [isNeedUpdate, setIsNeedUpdate] = useIsNeedUpdate();
   const { injectedWeb3Extension, loading: isLoadingInjectedWeb3Extension } =
     useInjectedWeb3Extension(connectedAccount?.wallet);
   const chainInfo = useChainInfo();
@@ -117,6 +120,7 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
     injectedWeb3Extension,
     isLoadingInjectedWeb3Extension,
     triggerCheck,
+    setIsNeedUpdate,
   ]);
 
   const updateMeta = useCallback(

@@ -1,16 +1,21 @@
 import { useState } from "react";
 import ActionButton from "./actionButton";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
-import MemberPromotionPopup from "./memberPromotionPopup";
 import pluralize from "pluralize";
-import { useMemberPromotionEvidences } from "../hooks/evidence";
+import {
+  useCandidatePromotionEvidences,
+  useMemberPromotionEvidences,
+} from "../hooks/evidence";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-export default function MemberPromotionTodo() {
+const MemberPromotionPopup = dynamicPopup(() =>
+  import("./memberPromotionPopup"),
+);
+
+function MemberPromotionTodoImpl({ promotionEvidences, memberOrCandidate }) {
   const [showMemberPromotionPopup, setShowMemberPromotionPopup] =
     useState(false);
-  const memberPromotionEvidences = useMemberPromotionEvidences();
-
-  const count = memberPromotionEvidences?.length || 0;
+  const count = promotionEvidences?.length || 0;
   if (count === 0) {
     return null;
   }
@@ -25,19 +30,39 @@ export default function MemberPromotionTodo() {
           rel="noreferrer"
           href="/fellowship/members?evidence_only=true&wish=promotion"
         >
-          {count} {pluralize("member", count)}
+          {count} {pluralize(memberOrCandidate, count)}
         </a>
-        &nbsp;want to get promoted.&nbsp;{" "}
+        &nbsp;{count === 1 ? "wishes" : "wish"} to get promoted.&nbsp;{" "}
         <ActionButton onClick={() => setShowMemberPromotionPopup(true)}>
           Check All
         </ActionButton>
       </TodoContent>
       {showMemberPromotionPopup && (
         <MemberPromotionPopup
-          promotions={memberPromotionEvidences}
+          promotions={promotionEvidences}
           onClose={() => setShowMemberPromotionPopup(false)}
         />
       )}
     </TodoWrapper>
+  );
+}
+
+export function MemberPromotionTodo() {
+  const memberPromotionEvidences = useMemberPromotionEvidences();
+  return (
+    <MemberPromotionTodoImpl
+      promotionEvidences={memberPromotionEvidences}
+      memberOrCandidate="member"
+    />
+  );
+}
+
+export function CandidatePromotionTodo() {
+  const candidatePromotionEvidences = useCandidatePromotionEvidences();
+  return (
+    <MemberPromotionTodoImpl
+      promotionEvidences={candidatePromotionEvidences}
+      memberOrCandidate="candidate"
+    />
   );
 }

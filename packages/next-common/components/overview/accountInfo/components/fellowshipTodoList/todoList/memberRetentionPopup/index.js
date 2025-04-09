@@ -5,13 +5,16 @@ import {
   evidenceColumn,
   rankColumn,
   referendumColumn,
+  voteRetainColumn,
 } from "../memberPromotionPopup/columns";
+import ExtensionUpdatePrompt from "../../../extensionUpdatePrompt";
 
 const columnsDef = [
   rankColumn,
   addressColumn,
   evidenceColumn,
   referendumColumn,
+  voteRetainColumn,
 ];
 
 function MemberRetentionsContent({ retentions }) {
@@ -26,7 +29,12 @@ function MemberRetentionsContent({ retentions }) {
 
 export default function MemberRetentionPopup({ retentions, onClose }) {
   return (
-    <PopupWithSigner title="Member Retention" onClose={onClose}>
+    <PopupWithSigner
+      className="w-[800px]"
+      title="Member Retention"
+      onClose={onClose}
+    >
+      <ExtensionUpdatePrompt isWithCache={false} />
       <MemberRetentionsContent retentions={retentions} />
     </PopupWithSigner>
   );

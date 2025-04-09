@@ -2,25 +2,34 @@ import {
   useFilterEvidenceByWish,
   useTodoEvidences,
 } from "next-common/components/fellowship/core/memberWarnings";
-import { useContextCoreMembersWithRank } from "../context/hooks/coreMembers";
-import { useMemo } from "react";
+import {
+  useCandidateCoreMembers,
+  useNonCandidateCoreMembers,
+} from "../context/hooks/coreMembers";
 
-function useAllMemberEvidences() {
-  const { members } = useContextCoreMembersWithRank();
-  const membersOrCandidates = useMemo(
-    () => (members || []).filter((m) => m.rank >= 0),
-    [members],
-  );
-  const { all: allEvidences } = useTodoEvidences(membersOrCandidates);
-  return allEvidences;
+function useMemberEvidences() {
+  const { members } = useNonCandidateCoreMembers();
+  const { all } = useTodoEvidences(members);
+  return all;
+}
+
+function useCandidateEvidences() {
+  const { members } = useCandidateCoreMembers();
+  const { all } = useTodoEvidences(members);
+  return all;
 }
 
 export function useMemberPromotionEvidences() {
-  const allEvidences = useAllMemberEvidences();
-  return useFilterEvidenceByWish(allEvidences, "promotion");
+  const allMemberEvidences = useMemberEvidences();
+  return useFilterEvidenceByWish(allMemberEvidences, "promotion");
+}
+
+export function useCandidatePromotionEvidences() {
+  const allCandidateEvidences = useCandidateEvidences();
+  return useFilterEvidenceByWish(allCandidateEvidences, "promotion");
 }
 
 export function useMemberRetentionEvidences() {
-  const allEvidences = useAllMemberEvidences();
-  return useFilterEvidenceByWish(allEvidences, "retention");
+  const allMemberEvidences = useMemberEvidences();
+  return useFilterEvidenceByWish(allMemberEvidences, "retention");
 }
