@@ -109,7 +109,11 @@ function CommonAssetInfo({ address, info }) {
 }
 
 export default function AssetInfo({ address }) {
-  const { info } = useUserAccountInfo();
+  const { info, isLoading } = useUserAccountInfo();
+
+  if (isLoading) {
+    return null;
+  }
 
   return <CommonAssetInfo address={address} info={info} />;
 }
