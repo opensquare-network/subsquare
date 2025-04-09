@@ -6,6 +6,7 @@ import useMultisigAddress from "next-common/hooks/useMultisigAddress";
 import useSignatoryMultisig from "next-common/hooks/useSignatoryMultisig";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import useFetchIdentityInfo from "next-common/hooks/profile/useFetchIdentityInfo";
 
 export const rootNodeId = "rootNode";
 const nodeInitialWidth = 240;
@@ -170,6 +171,52 @@ function createSignatoryMultisigRelationship(rootNode, signatoryMultisig = []) {
   });
 }
 
+function createPrimaryRelationship(rootNode, address = []) {
+  return createRelationship({
+    rootNode,
+    items: address,
+    nodeIdPrefix: "primaryAccount",
+    edgeIdPrefix: "root-primaryAccount",
+    nodeDataMapper: (item) => ({
+      address: item,
+      badge: <BadgeInfo address={item} />,
+    }),
+    edgeDataMapper: () => ({
+      type: RELATIONSHIP_NODE_TYPE.PrimarySubs,
+      value: "Primary",
+      name: "Identity",
+    }),
+    sourceKey: "node",
+    targetKey: rootNodeId,
+    sourceHandle: "sourceSubs",
+    targetHandle: "targetPrimary",
+  });
+}
+
+function createSubsRelationship(rootNode, subs = []) {
+  const address = subs?.[0]?.[1] || [];
+
+  return createRelationship({
+    rootNode,
+    items: address,
+    nodeIdPrefix: "subsAccount",
+    edgeIdPrefix: "root-subsAccount",
+    nodeDataMapper: (item) => ({
+      address: item,
+      badge: <BadgeInfo address={item} />,
+    }),
+    edgeDataMapper: () => ({
+      type: RELATIONSHIP_NODE_TYPE.PrimarySubs,
+      value: "Subs",
+      name: "Identity",
+    }),
+    sourceKey: rootNodeId,
+    targetKey: "node",
+    sourceHandle: "sourceSubs",
+    targetHandle: "targetPrimary",
+  });
+}
+
 function createRootNode(address, multisigAddress) {
   return {
     id: rootNodeId,
@@ -191,12 +238,14 @@ export default function useConversionRelationshipNode() {
   const receivedProxies = useFetchReceivedProfileProxies();
   const multisigAddress = useMultisigAddress(address);
   const signatoryMultisig = useSignatoryMultisig(address);
+  const identityInfo = useFetchIdentityInfo(address);
 
   const isLoading =
     proxies.isLoading ||
     receivedProxies.isLoading ||
     multisigAddress.loading ||
-    signatoryMultisig.loading;
+    signatoryMultisig.loading ||
+    identityInfo.isLoading;
 
   const rootNode = createRootNode(address, multisigAddress);
 
@@ -215,6 +264,14 @@ export default function useConversionRelationshipNode() {
       signatoryMultisig.result?.multisigAddresses,
     );
 
+  const { nodes: primaryNodes, edges: primaryEdges } =
+    createPrimaryRelationship(rootNode, [identityInfo?.data?.info?.parent]);
+
+  const { nodes: subsNodes, edges: subsEdges } = createSubsRelationship(
+    rootNode,
+    [identityInfo?.data?.subs],
+  );
+
   return {
     isLoading,
     nodes: [
@@ -223,12 +280,16 @@ export default function useConversionRelationshipNode() {
       ...receivedproxiesNodes,
       ...multisigNodes,
       ...signatoriesNodes,
+      ...primaryNodes,
+      ...subsNodes,
     ],
     edges: [
       ...proxiesEdges,
       ...receivedProxiesEdges,
       ...multisigEdges,
       ...signatoriesEdges,
+      ...primaryEdges,
+      ...subsEdges,
     ],
   };
 }

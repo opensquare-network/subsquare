@@ -171,4 +171,5 @@ export const RELATIONSHIP_NODE_TYPE = {
   Signatory: "Signatory",
   Proxied: "Proxied",
   Received: "Received",
+  PrimarySubs: "Primary/Subs",
 };

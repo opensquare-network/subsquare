@@ -109,6 +109,12 @@ export default function UserNode({ data }) {
         position={Position.Left}
       />
       <HandleWraper
+        type="target"
+        id="targetPrimary"
+        size={targetHandleTypeSize}
+        position={Position.Left}
+      />
+      <HandleWraper
         type="source"
         size={sourceHandleTypeSize}
         id="sourceProxy"
@@ -119,6 +125,12 @@ export default function UserNode({ data }) {
         type="source"
         size={sourceHandleTypeSize}
         id="sourceMultisig"
+        position={Position.Right}
+      />
+      <HandleWraper
+        type="source"
+        size={sourceHandleTypeSize}
+        id="sourceSubs"
         position={Position.Right}
       />
     </NodeWrap>

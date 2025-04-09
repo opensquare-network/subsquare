@@ -4,6 +4,7 @@ export const indications = [
   { name: RELATIONSHIP_NODE_TYPE.Signatory, color: "var(--theme500)" },
   { name: RELATIONSHIP_NODE_TYPE.Proxied, color: "var(--green500)" },
   { name: RELATIONSHIP_NODE_TYPE.Received, color: "var(--purple500)" },
+  { name: RELATIONSHIP_NODE_TYPE.PrimarySubs, color: "var(--blue500)" },
 ];
 
 export default function Indications() {

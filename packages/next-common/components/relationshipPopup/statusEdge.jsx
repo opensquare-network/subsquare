@@ -121,6 +121,10 @@ function TooltipsContent({ type, ...rest }) {
     return <ProxiedTipContent {...rest} />;
   }
 
+  if (type === "Primary/Subs") {
+    return <IdentityTipContent {...rest} />;
+  }
+
   return null;
 }
 
@@ -141,6 +145,26 @@ function ProxiedTipContent({ source, target, value = "" }) {
       <span>can submit extrinsics on behalf of</span>
       <DisplayUser id={target} className="flex text12Medium text-white" />
       <span>with proxy type `{value}`</span>
+    </div>
+  );
+}
+
+function IdentityTipContent({ source, target, value }) {
+  if (value === "Subs") {
+    return (
+      <div className="flex gap-x-1 items-center">
+        <DisplayUser id={target} className="flex text12Medium text-white" />
+        <span>is the sub account of</span>
+        <DisplayUser id={source} className="flex text12Medium text-white" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex gap-x-1 items-center">
+      <DisplayUser id={source} className="flex text12Medium text-white" />
+      <span>is the primary account of</span>
+      <DisplayUser id={target} className="flex text12Medium text-white" />
     </div>
   );
 }
