@@ -144,7 +144,7 @@ function ProxyTipContent({ source, target, value = "" }) {
       <DisplayUser id={source} className="flex text12Medium text-white" />
       <span>can submit extrinsics on behalf of</span>
       <DisplayUser id={target} className="flex text12Medium text-white" />
-      <span>with proxy type `{value}`</span>
+      <span>with proxy type {value}</span>
     </div>
   );
 }
@@ -154,7 +154,7 @@ function IdentityTipContent({ source, target, value }) {
     return (
       <div className="flex gap-x-1 items-center">
         <DisplayUser id={target} className="flex text12Medium text-white" />
-        <span>is the sub account of</span>
+        <span>has a sub identity of</span>
         <DisplayUser id={source} className="flex text12Medium text-white" />
       </div>
     );
@@ -163,7 +163,7 @@ function IdentityTipContent({ source, target, value }) {
   return (
     <div className="flex gap-x-1 items-center">
       <DisplayUser id={source} className="flex text12Medium text-white" />
-      <span>is the parent account of</span>
+      <span>has the parent identity of</span>
       <DisplayUser id={target} className="flex text12Medium text-white" />
     </div>
   );
