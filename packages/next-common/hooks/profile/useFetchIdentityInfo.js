@@ -46,7 +46,7 @@ export default function useFetchIdentityInfo() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [identityApi]);
 
   return {
     data: value,

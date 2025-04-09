@@ -240,7 +240,7 @@ export default function useConversionRelationshipNode() {
   const receivedProxies = useFetchReceivedProfileProxies();
   const multisigAddress = useMultisigAddress(address);
   const signatoryMultisig = useSignatoryMultisig(address);
-  const identityInfo = useFetchIdentityInfo(address);
+  const identityInfo = useFetchIdentityInfo();
 
   const isLoading =
     proxies.isLoading ||
