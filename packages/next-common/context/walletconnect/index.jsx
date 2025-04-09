@@ -10,10 +10,13 @@ import {
 } from "react";
 import { useChain, useChainSettings } from "../chain";
 import { useConnectedAccountContext } from "../connectedAccount";
-import { useLocalStorage } from "react-use";
+import { useLocalStorage, useAsyncFn } from "react-use";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newWarningToast,
+} from "next-common/store/reducers/toastSlice";
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
@@ -24,6 +27,7 @@ export const defaultWalletConnect = {
   provider: null,
   /** @type {import('@walletconnect/types').SessionTypes.Struct} */
   session: null,
+  disconnectLoading: false,
   connect: () => Promise.resolve(),
   disconnect: () => Promise.resolve(),
   fetchAddresses: () => Promise.resolve([]),
@@ -59,7 +63,6 @@ export default function WalletConnectProvider({ children }) {
   const caip = useWalletConnectCaip();
   const chainId = useWalletConnectChainId();
   const [provider, setProvider] = useState(defaultWalletConnect.provider);
-
   const [session, setSession] = useState(defaultWalletConnect.session);
 
   const [cachedSession, setCachedSession] = useLocalStorage(
@@ -76,6 +79,11 @@ export default function WalletConnectProvider({ children }) {
     setSession(null);
     setCachedSession(null);
   }, [setCachedSession, setSession]);
+
+  const disconnectCombination = useCallback(async () => {
+    clearSession();
+    await disconnectAccount();
+  }, [clearSession, disconnectAccount]);
 
   // Init WalletConnect provider
   useEffect(() => {
@@ -121,14 +129,22 @@ export default function WalletConnectProvider({ children }) {
             setSession(session);
             setCachedSession(session);
           })
-          .catch(console.error);
+          .catch((error) => {
+            const isUserRefused = error.code === 5000;
+            const isUnsupportedChains = error.code === 5100;
+            if ((isUserRefused || isUnsupportedChains) && error.message) {
+              dispatch(newWarningToast(error.message));
+            }
+            console.error(error);
+          });
 
         return result;
       });
-  }, [chainId, provider, setCachedSession]);
+  }, [chainId, provider, setCachedSession, dispatch]);
 
-  const disconnect = useCallback(async () => {
+  const [{ loading: disconnectLoading }, disconnect] = useAsyncFn(async () => {
     if (!provider || !session) {
+      await disconnectCombination();
       return;
     }
 
@@ -137,12 +153,11 @@ export default function WalletConnectProvider({ children }) {
         topic: session.topic,
         reason: getSdkError("USER_DISCONNECTED"),
       });
+      await disconnectCombination();
     } catch (error) {
       console.error(error);
     }
-
-    clearSession();
-  }, [provider, session, clearSession]);
+  }, [provider, session, disconnectCombination]);
 
   const fetchAddresses = useCallback(async () => {
     if (!provider || !session) {
@@ -207,10 +222,12 @@ export default function WalletConnectProvider({ children }) {
     [chainId, provider, session],
   );
 
-  const disconnectCombination = useCallback(() => {
-    clearSession();
-    disconnectAccount();
-  }, [clearSession, disconnectAccount]);
+  const onSessionExpire = useCallback(() => {
+    dispatch(
+      newErrorToast("Session expired, please connect to WalletConnect again"),
+    );
+    disconnectCombination();
+  }, [disconnectCombination, dispatch]);
 
   useEffect(() => {
     if (provider) {
@@ -218,23 +235,17 @@ export default function WalletConnectProvider({ children }) {
 
       // if session expired, clear session and disconnect account
       // https://docs.reown.com/walletkit/best-practices#session-request-expiry
-      provider.client.on("session_expire", () => {
-        dispatch(
-          newErrorToast(
-            "Session expired, please connect to WalletConnect again",
-          ),
-        );
-        disconnectCombination();
-      });
+      provider.client.on("session_expire", onSessionExpire);
     }
 
     return () => {
       if (provider) {
         provider.off("disconnect", disconnectCombination);
+        provider.client.off("session_expire", onSessionExpire);
         provider.client.removeAllListeners();
       }
     };
-  }, [disconnectCombination, dispatch, provider]);
+  }, [disconnectCombination, onSessionExpire, provider]);
 
   // If web closed, mobile wallet do disconnect, next time open web, clear session and disconnect account
   useEffect(() => {
@@ -257,6 +268,7 @@ export default function WalletConnectProvider({ children }) {
         fetchAddresses,
         signWcMessage,
         signWcTx,
+        disconnectLoading,
       }}
     >
       {children}

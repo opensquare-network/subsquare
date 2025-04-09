@@ -17,6 +17,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import SwitchAccount from "next-common/components/switchAccount";
 import AddressUser from "next-common/components/user/addressUser";
 import { useWalletConnect } from "next-common/context/walletconnect";
+import Loading from "next-common/components/loading";
 
 const Wrapper = styled.div``;
 
@@ -88,9 +89,10 @@ export default function SidebarAccount() {
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      await disconnectAccount();
       if (connectedAccount?.wallet === walletConnect.extensionName) {
-        disconnectWc();
+        await disconnectWc();
+      } else {
+        await disconnectAccount();
       }
     } else if (item.value === "switch") {
       setShowSwitchAccount(true);
@@ -131,6 +133,7 @@ export default function SidebarAccount() {
                 <span className="text14Medium text-textPrimary">
                   {item.name}
                 </span>
+                <WalletConnectDisconnectLoading type={item.value} />
               </Item>
             </Fragment>
           ))}
@@ -149,4 +152,12 @@ export default function SidebarAccount() {
       )}
     </Wrapper>
   );
+}
+
+export function WalletConnectDisconnectLoading({ type }) {
+  const { disconnectLoading } = useWalletConnect();
+  if (!disconnectLoading || type !== "logout") {
+    return null;
+  }
+  return <Loading size={16} />;
 }

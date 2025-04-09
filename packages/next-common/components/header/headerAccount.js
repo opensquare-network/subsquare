@@ -17,6 +17,7 @@ import { walletConnect } from "next-common/utils/consts/connect/index.js";
 import { useWalletConnect } from "next-common/context/walletconnect/index.jsx";
 import Divider from "next-common/components/styled/layout/divider";
 import SwitchAccount from "next-common/components/switchAccount";
+import { WalletConnectDisconnectLoading } from "next-common/components/header/drawer.jsx";
 
 const Wrapper = Relative;
 
@@ -87,10 +88,10 @@ export default function HeaderAccount() {
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      await disconnectAccount();
-
       if (connectedAccount?.wallet === walletConnect.extensionName) {
-        disconnectWc();
+        await disconnectWc();
+      } else {
+        await disconnectAccount();
       }
     } else if (item.value === "switch") {
       setShowSwitchAccount(true);
@@ -140,6 +141,7 @@ export default function HeaderAccount() {
                 <Item onClick={() => handleAccountMenu(item)}>
                   {item.icon}
                   <span>{item.name}</span>
+                  <WalletConnectDisconnectLoading type={item.value} />
                 </Item>
               </Fragment>
             ))}
