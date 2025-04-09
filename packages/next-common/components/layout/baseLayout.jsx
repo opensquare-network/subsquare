@@ -21,7 +21,11 @@ import GlobalNotification from "next-common/components/globalNotification";
 /**
  * @description a base layout includes nav, header and footer
  */
-export default function BaseLayout({ children, seoInfo = {} }) {
+export default function BaseLayout({
+  children,
+  seoInfo = {},
+  contentStyle = {},
+}) {
   const { sm } = useScreenSize();
   const [navCollapsed] = useNavCollapsed();
   useConnectApis();
@@ -52,6 +56,7 @@ export default function BaseLayout({ children, seoInfo = {} }) {
               : "max-w-[calc(100%-300px)]",
             "max-sm:max-w-full",
           )}
+          style={contentStyle}
         >
           {!sm && (
             <div className="sticky top-0 z-50 max-sm:hidden">

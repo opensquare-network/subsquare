@@ -5,13 +5,14 @@ import { useChainSettings } from "next-common/context/chain";
 import DemocracyVotesPowerProvider, {
   useDemocracyVotesPowerContext,
 } from "../context/votesPower";
-import VotesPowerPanelWrapper from "next-common/components/profile/OpenGovBio/votesPower/panel";
+import CommonPanel from "next-common/components/profile/bio/commonPanel";
 import { VotesPowerContent } from "next-common/components/profile/OpenGovBio/votesPower/valueDisplay";
-import {
-  SplitSymbol,
-  DataItem,
-} from "next-common/components/profile/OpenGovBio/votesPower";
-import DemocracyVotesPowerDetail from "./detail";
+import { DataItem } from "next-common/components/profile/OpenGovBio/votesPower";
+import { SystemMenu } from "@osn/icons/subsquare";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useState } from "react";
+
+const DemocracyVotesPowerDetailPopup = dynamicPopup(() => import("./detail"));
 
 function SelfBalance() {
   const { selfBalance } = useDemocracyVotesPowerContext();
@@ -45,6 +46,7 @@ function MaxDelegations() {
 
 function DemocracyVotesPowerInContext() {
   const { isLoading, votesPower, address } = useDemocracyVotesPowerContext();
+  const [detailOpen, setDetailOpen] = useState(false);
 
   if (!address || isLoading) {
     return null;
@@ -52,21 +54,26 @@ function DemocracyVotesPowerInContext() {
 
   return (
     <>
-      <VotesPowerPanelWrapper>
+      <CommonPanel
+        className="relative h-[116px] overflow-hidden"
+        onExtraBtnClick={setDetailOpen}
+        extra={<SystemMenu className="w-4 h-4" />}
+      >
         <VotesPowerContent
           isLoading={isLoading}
           votesPower={votesPower}
           isReferenda={false}
         />
         <div className="flex flex-row items-start space-x-2 w-full gap-y-2">
-          <GreyPanel className="flex flex-row items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap flex-1 gap-y-1">
+          <GreyPanel className="w-full flex flex-col items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap gap-y-1">
             <SelfBalance />
-            <SplitSymbol />
             <MaxDelegations />
           </GreyPanel>
-          <DemocracyVotesPowerDetail />
         </div>
-      </VotesPowerPanelWrapper>
+      </CommonPanel>
+      {detailOpen && (
+        <DemocracyVotesPowerDetailPopup setDetailOpen={setDetailOpen} />
+      )}
     </>
   );
 }

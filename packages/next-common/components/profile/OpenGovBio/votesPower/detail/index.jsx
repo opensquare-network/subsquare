@@ -1,16 +1,22 @@
-import SecondaryButton from "next-common/lib/button/secondary";
-import { SystemMenu } from "@osn/icons/subsquare";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import OpenGovVotesPowerDetailHeader from "./header";
+import OpenGovVotesPowerDetailInfo from "./info";
+import OpenGovVotesPowerDetailList from "./table";
+import Divider from "next-common/components/styled/layout/divider";
 
-export default function VotesPowerDetail({ setDetailOpen }) {
+export default function OpenGovVotesPowerDetailPopup({ setDetailOpen }) {
   return (
-    <SecondaryButton
-      className="w-7 h-7 p-0 flex-shrink-0"
-      size="small"
-      onClick={() => {
-        setDetailOpen(true);
+    <Popup
+      title="Votes Power Detail"
+      className="w-[640px] max-w-full"
+      onClose={() => {
+        setDetailOpen(false);
       }}
     >
-      <SystemMenu className="w-4 h-4" />
-    </SecondaryButton>
+      <OpenGovVotesPowerDetailHeader />
+      <OpenGovVotesPowerDetailInfo />
+      <Divider className="!my-0" />
+      <OpenGovVotesPowerDetailList />
+    </Popup>
   );
 }

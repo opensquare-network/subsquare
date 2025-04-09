@@ -1,11 +1,7 @@
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
-import FellowshipTagInfo, {
-  FellowshipTagInfoWrapper,
-} from "../fellowshipTagInfo";
-import { DisplayUserAvatar, DisplayUser, DisplayUserAddress } from "../bio";
-import OpenGovAssetInfo from "./openGovAssetInfo";
+import AssetInfo from "next-common/components/profile/bio/assetInfo";
 import WindowSizeProvider from "next-common/context/windowSize";
 import UserAccountProvider from "next-common/context/user/account";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
@@ -14,6 +10,8 @@ import VotesPowerPanel from "./votesPower";
 import DelegationGuideProvider from "next-common/components/profile/delegationGuide/context/delegationGuideContext";
 import dynamic from "next/dynamic";
 import ReferendaDelegationProvider from "next-common/components/profile/delegationGuide/context/referendaDelegationContext";
+import AccountInfoPanel from "next-common/components/profile/bio/accountInfoPanel";
+import RightPanelContainer from "next-common/components/profile/bio/rightPanelContainer";
 
 const DelegationGuide = dynamic(
   () => import("next-common/components/profile/delegationGuide"),
@@ -22,64 +20,6 @@ const DelegationGuide = dynamic(
   },
 );
 
-const Relatives = dynamic(
-  () => import("next-common/components/profile/relatives"),
-  {
-    ssr: false,
-  },
-);
-
-export function AccountInfoPanel({ address, id, user }) {
-  const isMobile = useIsMobile();
-  const shouldAlignCenter = isMobile || !address;
-
-  return (
-    <div
-      className={cn(
-        "w-full flex px-0 pt-6 mt-0 gap-4",
-        shouldAlignCenter ? "flex-col items-center" : "flex-row items-start",
-      )}
-    >
-      <DisplayUserAvatar address={address} user={user} />
-      <div
-        className={cn(
-          "flex mt-0 flex-wrap w-full",
-          shouldAlignCenter ? "justify-center" : "justify-start",
-        )}
-      >
-        <DisplayUser
-          id={id}
-          className={cn(
-            "flex text14Medium",
-            shouldAlignCenter ? "justify-center" : "",
-          )}
-        />
-        <DisplayUserAddress
-          address={address}
-          className={cn(
-            shouldAlignCenter
-              ? "!items-center text-center"
-              : "flex-1 !items-start",
-          )}
-        />
-
-        <Relatives />
-
-        <FellowshipTagInfoWrapper>
-          <FellowshipTagInfo address={address} />
-        </FellowshipTagInfoWrapper>
-        <FellowshipTagInfoWrapper>
-          <FellowshipTagInfo
-            address={address}
-            pallet="ambassadorCollective"
-            type="ambassador"
-          />
-        </FellowshipTagInfoWrapper>
-      </div>
-    </div>
-  );
-}
-
 function OpenGovBioContent() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
@@ -87,23 +27,30 @@ function OpenGovBioContent() {
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
 
   return (
-    <UserAccountProvider address={address}>
+    <>
       <div
         className={cn(
-          "grid gap-[16px]",
-          isMobile ? "grid-cols-1" : "grid-cols-2",
+          "grid grid-cols-2",
+          isMobile ? "max-lg:grid-cols-1" : "max-md:grid-cols-1",
+          address && "gap-[16px]",
         )}
       >
         <AccountInfoPanel address={address} id={id} user={user} />
-        <VotesPowerPanel address={address} />
+        <RightPanelContainer>
+          <UserAccountProvider address={address}>
+            <AssetInfo address={address} />
+          </UserAccountProvider>
+          <VotesPowerPanel address={address} />
+        </RightPanelContainer>
       </div>
-      <OpenGovAssetInfo address={address} />
-      <DelegationGuideProvider pallet="referenda">
-        <ReferendaDelegationProvider>
-          <DelegationGuide />
-        </ReferendaDelegationProvider>
-      </DelegationGuideProvider>
-    </UserAccountProvider>
+      {address && (
+        <DelegationGuideProvider pallet="referenda">
+          <ReferendaDelegationProvider>
+            <DelegationGuide />
+          </ReferendaDelegationProvider>
+        </DelegationGuideProvider>
+      )}
+    </>
   );
 }
 

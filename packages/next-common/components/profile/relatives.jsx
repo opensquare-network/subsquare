@@ -30,7 +30,7 @@ export default function Relatives() {
     <RelativesWithNullGuard>
       <Button
         size="small"
-        className="border-neutral400 text-textPrimary mt-4"
+        className="border-neutral400 text-textPrimary"
         iconRight={<ArrowRight className="w-4 h-4 text-textTertiary" />}
         iconLeft={<SystemRelatives className="w-4 h-4 text-textTertiary" />}
         onClick={() => setIsPopupOpen(true)}

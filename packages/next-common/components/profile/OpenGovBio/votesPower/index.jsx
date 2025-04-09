@@ -4,30 +4,22 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import VotesPowerDetail from "./detail";
 import OpenGovVotesPowerProvider, {
   useOpenGovVotesPowerContext,
 } from "../context/votesPower";
-import VotesPowerPanelWrapper from "./panel";
+import CommonPanel from "next-common/components/profile/bio/commonPanel";
 import VotesPowerValueDisplay from "./valueDisplay";
+import { SystemMenu } from "@osn/icons/subsquare";
 
 const OpenGovVotesPowerDetailPopup = dynamicPopup(() =>
-  import("./detail/detailPopup"),
+  import("./detail"),
 );
 
 export function DataItem({ label, children }) {
   return (
-    <div className="inline-flex gap-1 items-center space-x-1 leading-none">
+    <div className="w-full gap-1 flex justify-between items-center space-x-1 leading-none">
       <span className="text12Medium text-textTertiary">{label}</span>
       {children}
-    </div>
-  );
-}
-
-export function SplitSymbol() {
-  return (
-    <div className="text12Medium text-textDisabled mx-2 flex items-center">
-      ·
     </div>
   );
 }
@@ -72,17 +64,19 @@ function OpenGovVotesPowerInContext() {
 
   return (
     <>
-      <VotesPowerPanelWrapper>
+      <CommonPanel
+        className="relative h-[116px] overflow-hidden"
+        onExtraBtnClick={setDetailOpen}
+        extra={<SystemMenu className="w-4 h-4" />}
+      >
         <VotesPowerValueDisplay />
         <div className="flex flex-row items-start space-x-2 w-full gap-y-2">
-          <GreyPanel className="flex flex-row items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap flex-1 gap-y-1">
+          <GreyPanel className="w-full flex flex-col items-center bg-neutral200 px-3 py-1.5 rounded-[4px] flex-wrap gap-y-1">
             <SeleBalance />
-            <SplitSymbol />
             <MaxDelegations />
           </GreyPanel>
-          <VotesPowerDetail setDetailOpen={setDetailOpen} />
         </div>
-      </VotesPowerPanelWrapper>
+      </CommonPanel>
       {detailOpen && (
         <OpenGovVotesPowerDetailPopup setDetailOpen={setDetailOpen} />
       )}
