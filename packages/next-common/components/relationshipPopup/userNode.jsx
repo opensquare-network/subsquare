@@ -91,7 +91,7 @@ function SelfNode({ data }) {
           <UserAvatar address={data?.address} badge={data.badge} />
         </div>
       </div>
-      <div className="p-4 pt-2 mt-5">
+      <div className="px-4 py-2 mt-5">
         <div className="flex items-center justify-between h-5">
           <AddressLabelWithBadge data={data} />
         </div>
