@@ -8,7 +8,7 @@ import { useWalletConnect } from "next-common/context/walletconnect";
 import { useWalletConnectAccounts } from "next-common/hooks/connect/useWalletConnectAccounts";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
-import qrcode from "qrcode";
+import { toDataURL as QrcodeToDataURL } from "qrcode";
 import { useEffect, useState } from "react";
 import { useInterval, useUnmount } from "react-use";
 
@@ -54,13 +54,11 @@ export default function LoginWeb3WalletConnect() {
       return;
     }
 
-    qrcode
-      .toDataURL(uri, {
-        width: SIZE,
-        height: SIZE,
-        margin: 0,
-      })
-      .then(setQrCode);
+    QrcodeToDataURL(uri, {
+      width: SIZE,
+      height: SIZE,
+      margin: 0,
+    }).then(setQrCode);
   }, [uri]);
 
   useEffect(() => {
