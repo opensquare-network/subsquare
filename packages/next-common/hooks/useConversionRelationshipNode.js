@@ -171,7 +171,9 @@ function createSignatoryMultisigRelationship(rootNode, signatoryMultisig = []) {
   });
 }
 
-function createPrimaryRelationship(rootNode, address = []) {
+function createPrimaryRelationship(rootNode, parent = null) {
+  const address = parent ? [parent] : [];
+
   return createRelationship({
     rootNode,
     items: address,
@@ -194,7 +196,7 @@ function createPrimaryRelationship(rootNode, address = []) {
 }
 
 function createSubsRelationship(rootNode, subs = []) {
-  const address = subs?.[0]?.[1] || [];
+  const address = subs?.[1] || [];
 
   return createRelationship({
     rootNode,
@@ -265,11 +267,11 @@ export default function useConversionRelationshipNode() {
     );
 
   const { nodes: primaryNodes, edges: primaryEdges } =
-    createPrimaryRelationship(rootNode, [identityInfo?.data?.info?.parent]);
+    createPrimaryRelationship(rootNode, identityInfo?.data?.info?.parent);
 
   const { nodes: subsNodes, edges: subsEdges } = createSubsRelationship(
     rootNode,
-    [identityInfo?.data?.subs],
+    identityInfo?.data?.subs,
   );
 
   return {
