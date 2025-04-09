@@ -113,22 +113,22 @@ export default function StatusEdge({
 }
 
 function TooltipsContent({ type, ...rest }) {
-  if (type === "Signatory") {
-    return <SignatoryTipContent {...rest} />;
+  if (type === "Multisig") {
+    return <MultisigTipContent {...rest} />;
   }
 
   if (type === "Proxied" || type === "Received") {
-    return <ProxiedTipContent {...rest} />;
+    return <ProxyTipContent {...rest} />;
   }
 
-  if (type === "Primary/Subs") {
+  if (type === "Identity") {
     return <IdentityTipContent {...rest} />;
   }
 
   return null;
 }
 
-function SignatoryTipContent({ source, target }) {
+function MultisigTipContent({ source, target }) {
   return (
     <div className="flex gap-x-1 items-center">
       <DisplayUser id={source} className="flex text12Medium text-white" />
@@ -138,7 +138,7 @@ function SignatoryTipContent({ source, target }) {
   );
 }
 
-function ProxiedTipContent({ source, target, value = "" }) {
+function ProxyTipContent({ source, target, value = "" }) {
   return (
     <div className="flex gap-x-1 items-center">
       <DisplayUser id={source} className="flex text12Medium text-white" />
@@ -150,7 +150,7 @@ function ProxiedTipContent({ source, target, value = "" }) {
 }
 
 function IdentityTipContent({ source, target, value }) {
-  if (value === "Subs") {
+  if (value === "Sub") {
     return (
       <div className="flex gap-x-1 items-center">
         <DisplayUser id={target} className="flex text12Medium text-white" />
@@ -163,7 +163,7 @@ function IdentityTipContent({ source, target, value }) {
   return (
     <div className="flex gap-x-1 items-center">
       <DisplayUser id={source} className="flex text12Medium text-white" />
-      <span>is the primary account of</span>
+      <span>is the parent account of</span>
       <DisplayUser id={target} className="flex text12Medium text-white" />
     </div>
   );

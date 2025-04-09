@@ -110,7 +110,7 @@ export default function UserNode({ data }) {
       />
       <HandleWraper
         type="target"
-        id="targetPrimary"
+        id="targetParent"
         size={targetHandleTypeSize}
         position={Position.Left}
       />
@@ -130,7 +130,7 @@ export default function UserNode({ data }) {
       <HandleWraper
         type="source"
         size={sourceHandleTypeSize}
-        id="sourceSubs"
+        id="sourceSub"
         position={Position.Right}
       />
     </NodeWrap>

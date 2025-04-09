@@ -138,7 +138,7 @@ function createMultisigAddressRelationship(rootNode, address = []) {
       badge: <BadgeInfo address={item} />,
     }),
     edgeDataMapper: () => ({
-      type: RELATIONSHIP_NODE_TYPE.Signatory,
+      type: RELATIONSHIP_NODE_TYPE.Multisig,
       value: "Signatory",
       name: "Multisig",
     }),
@@ -160,7 +160,7 @@ function createSignatoryMultisigRelationship(rootNode, signatoryMultisig = []) {
       badge: createBadge(item),
     }),
     edgeDataMapper: () => ({
-      type: RELATIONSHIP_NODE_TYPE.Signatory,
+      type: RELATIONSHIP_NODE_TYPE.Multisig,
       value: "Signatory",
       name: "Multisig",
     }),
@@ -171,7 +171,7 @@ function createSignatoryMultisigRelationship(rootNode, signatoryMultisig = []) {
   });
 }
 
-function createPrimaryRelationship(rootNode, parent = null) {
+function createParentRelationship(rootNode, parent = null) {
   const address = parent ? [parent] : [];
 
   return createRelationship({
@@ -184,18 +184,18 @@ function createPrimaryRelationship(rootNode, parent = null) {
       badge: <BadgeInfo address={item} />,
     }),
     edgeDataMapper: () => ({
-      type: RELATIONSHIP_NODE_TYPE.PrimarySubs,
-      value: "Primary",
+      type: RELATIONSHIP_NODE_TYPE.Identity,
+      value: "Parent",
       name: "Identity",
     }),
     sourceKey: "node",
     targetKey: rootNodeId,
-    sourceHandle: "sourceSubs",
-    targetHandle: "targetPrimary",
+    sourceHandle: "sourceSub",
+    targetHandle: "targetParent",
   });
 }
 
-function createSubsRelationship(rootNode, subs = []) {
+function createSubRelationship(rootNode, subs = []) {
   const address = subs?.[1] || [];
 
   return createRelationship({
@@ -208,14 +208,14 @@ function createSubsRelationship(rootNode, subs = []) {
       badge: <BadgeInfo address={item} />,
     }),
     edgeDataMapper: () => ({
-      type: RELATIONSHIP_NODE_TYPE.PrimarySubs,
-      value: "Subs",
+      type: RELATIONSHIP_NODE_TYPE.Identity,
+      value: "Sub",
       name: "Identity",
     }),
     sourceKey: rootNodeId,
     targetKey: "node",
-    sourceHandle: "sourceSubs",
-    targetHandle: "targetPrimary",
+    sourceHandle: "sourceSub",
+    targetHandle: "targetParent",
   });
 }
 
@@ -266,10 +266,10 @@ export default function useConversionRelationshipNode() {
       signatoryMultisig.result?.multisigAddresses,
     );
 
-  const { nodes: primaryNodes, edges: primaryEdges } =
-    createPrimaryRelationship(rootNode, identityInfo?.data?.info?.parent);
+  const { nodes: parentNodes, edges: parentEdges } =
+    createParentRelationship(rootNode, identityInfo?.data?.info?.parent);
 
-  const { nodes: subsNodes, edges: subsEdges } = createSubsRelationship(
+  const { nodes: subNodes, edges: subEdges } = createSubRelationship(
     rootNode,
     identityInfo?.data?.subs,
   );
@@ -282,16 +282,16 @@ export default function useConversionRelationshipNode() {
       ...receivedproxiesNodes,
       ...multisigNodes,
       ...signatoriesNodes,
-      ...primaryNodes,
-      ...subsNodes,
+      ...parentNodes,
+      ...subNodes,
     ],
     edges: [
       ...proxiesEdges,
       ...receivedProxiesEdges,
       ...multisigEdges,
       ...signatoriesEdges,
-      ...primaryEdges,
-      ...subsEdges,
+      ...parentEdges,
+      ...subEdges,
     ],
   };
 }
