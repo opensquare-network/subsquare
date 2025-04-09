@@ -7,7 +7,7 @@ import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumIn
 import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import ReferendumDetailMultiTabs from "./referendumDetailMultiTabs";
+import ReferendumDetailMultiTabs from "../tabs/referendumDetailMultiTabs";
 
 export function ReferendumContent() {
   const dispatch = useDispatch();
