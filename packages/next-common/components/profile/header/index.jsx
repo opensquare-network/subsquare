@@ -6,25 +6,24 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 
-function resolveBannersRepoFilepathUrl(filename) {
+export function useProfileBannerUrl() {
+  const { isDark } = useTheme();
+  const filename = `imgBannerProfile${isDark ? "Dark" : "Light"}.webp`;
+
   return `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
 }
 
 export default function ProfileHeaderWithBanner() {
-  const { isDark } = useTheme();
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
-
-  const imgSrc = resolveBannersRepoFilepathUrl(
-    `imgBannerProfile${isDark ? "Dark" : "Light"}.webp`,
-  );
+  const bannerUrl = useProfileBannerUrl();
 
   return (
     <div
       className={cn("bg-no-repeat bg-cover", "w-full h-[120px] relative")}
-      style={{ backgroundImage: `url(${imgSrc})` }}
+      style={{ backgroundImage: `url(${bannerUrl})` }}
     >
       <div
         className={cn(
