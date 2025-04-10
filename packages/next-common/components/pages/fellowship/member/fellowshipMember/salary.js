@@ -17,6 +17,7 @@ import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useFellowshipMemberDetailAddr from "next-common/hooks/collectives/member/detail";
 import Register from "next-common/components/fellowship/members/detail/actions/register";
+import Payout from "next-common/components/fellowship/members/detail/actions/payout";
 
 function Wrapper({ children }) {
   return (
@@ -141,6 +142,7 @@ function MemberSalary({ address, member }) {
       <MyActionsComponentGuard>
         <ActionsWrapper>
           <Register />
+          <Payout />
         </ActionsWrapper>
       </MyActionsComponentGuard>
     </Wrapper>
