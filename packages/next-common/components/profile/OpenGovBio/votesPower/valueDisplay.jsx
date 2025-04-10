@@ -4,6 +4,7 @@ import { useChainSettings } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import { SystemQuestion } from "@osn/icons/subsquare";
 import { useOpenGovVotesPowerContext } from "../context/votesPower";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 export function VotesPowerContent({
   votesPower,
@@ -11,10 +12,6 @@ export function VotesPowerContent({
   isReferenda = true,
 }) {
   const { decimals, symbol } = useChainSettings();
-
-  if (isLoading) {
-    return null;
-  }
 
   const tooltipText = `Votes Power = Self Balance * 6 + ${
     isReferenda ? "Max " : ""
@@ -26,11 +23,15 @@ export function VotesPowerContent({
         <span className="text12Medium text-textTertiary">Votes Power</span>
         <SystemQuestion className="inline-flex w-4 h-4 cursor-pointer [&_path]:fill-textTertiary" />
       </Tooltip>
-      <ValueDisplay
-        value={toPrecision(votesPower, decimals)}
-        symbol={symbol}
-        className="text16Bold"
-      />
+      {isLoading ? (
+        <FieldLoading />
+      ) : (
+        <ValueDisplay
+          value={toPrecision(votesPower, decimals)}
+          symbol={symbol}
+          className="text16Bold"
+        />
+      )}
     </div>
   );
 }

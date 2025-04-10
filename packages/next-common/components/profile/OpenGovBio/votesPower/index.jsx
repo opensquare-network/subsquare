@@ -10,10 +10,9 @@ import OpenGovVotesPowerProvider, {
 import CommonPanel from "next-common/components/profile/bio/commonPanel";
 import VotesPowerValueDisplay from "./valueDisplay";
 import { SystemMenu } from "@osn/icons/subsquare";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
-const OpenGovVotesPowerDetailPopup = dynamicPopup(() =>
-  import("./detail"),
-);
+const OpenGovVotesPowerDetailPopup = dynamicPopup(() => import("./detail"));
 
 export function DataItem({ label, children }) {
   return (
@@ -25,40 +24,48 @@ export function DataItem({ label, children }) {
 }
 
 function SeleBalance() {
-  const { selfBalance } = useOpenGovVotesPowerContext();
+  const { selfBalance, isLoading } = useOpenGovVotesPowerContext();
   const { decimals, symbol } = useChainSettings();
 
   return (
     <DataItem label="Self Balance">
-      <ValueDisplay
-        value={toPrecision(selfBalance, decimals)}
-        symbol={symbol}
-        className="text12Medium"
-      />
+      {isLoading ? (
+        <FieldLoading size={16} />
+      ) : (
+        <ValueDisplay
+          value={toPrecision(selfBalance, decimals)}
+          symbol={symbol}
+          className="text12Medium"
+        />
+      )}
     </DataItem>
   );
 }
 
 function MaxDelegations() {
-  const { maxDelegations } = useOpenGovVotesPowerContext();
+  const { maxDelegations, isLoading } = useOpenGovVotesPowerContext();
   const { decimals, symbol } = useChainSettings();
 
   return (
     <DataItem label="Max Delegations">
-      <ValueDisplay
-        value={toPrecision(maxDelegations, decimals)}
-        symbol={symbol}
-        className="text12Medium"
-      />
+      {isLoading ? (
+        <FieldLoading size={16} />
+      ) : (
+        <ValueDisplay
+          value={toPrecision(maxDelegations, decimals)}
+          symbol={symbol}
+          className="text12Medium"
+        />
+      )}
     </DataItem>
   );
 }
 
 function OpenGovVotesPowerInContext() {
-  const { isLoading, address } = useOpenGovVotesPowerContext();
+  const { address } = useOpenGovVotesPowerContext();
   const [detailOpen, setDetailOpen] = useState(false);
 
-  if (!address || isLoading) {
+  if (!address) {
     return null;
   }
 
