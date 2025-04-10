@@ -21,13 +21,12 @@ import RegistrationAndPayoutActionsContext, {
   useRegistrationAndPayoutJudgementInfoFromContext,
 } from "next-common/context/fellowship/registrationAndPayoutActions.js";
 
-const FellowshipSalaryRegisterPopup = dynamicPopup(
-  () =>
-    import("next-common/components/fellowship/salary/actions/register/popup"),
+const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/actions/register/popup"),
 );
 
-const FellowshipSalaryPayoutPopup = dynamicPopup(
-  () => import("next-common/components/fellowship/salary/actions/payout/popup"),
+const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/actions/payout/popup"),
 );
 
 function Wrapper({ children }) {
@@ -144,7 +143,6 @@ const Register = React.memo(function Register({ className = "" }) {
 
   let disabled =
     !status ||
-    !memberAddrs.includes(address) ||
     !isRegistrationPeriod ||
     !claimant ||
     mySalary <= 0 ||
@@ -155,8 +153,6 @@ const Register = React.memo(function Register({ className = "" }) {
       return "Not in registration period";
     } else if (!address) {
       return "Connect your address please";
-    } else if (!memberAddrs.includes(address)) {
-      return "Not a collective member";
     } else if (!claimant) {
       return "Please import yourself first";
     } else if (mySalary <= 0) {
