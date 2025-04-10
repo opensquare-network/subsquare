@@ -11,35 +11,44 @@ import { DataItem } from "next-common/components/profile/OpenGovBio/votesPower";
 import { SystemMenu } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useState } from "react";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 const DemocracyVotesPowerDetailPopup = dynamicPopup(() => import("./detail"));
 
 function SelfBalance() {
-  const { selfBalance } = useDemocracyVotesPowerContext();
+  const { selfBalance, isLoading } = useDemocracyVotesPowerContext();
   const { decimals, symbol } = useChainSettings();
 
   return (
     <DataItem label="Self Balance">
-      <ValueDisplay
-        value={toPrecision(selfBalance, decimals)}
-        symbol={symbol}
-        className="text12Medium"
-      />
+      {isLoading ? (
+        <FieldLoading size={16} />
+      ) : (
+        <ValueDisplay
+          value={toPrecision(selfBalance, decimals)}
+          symbol={symbol}
+          className="text12Medium"
+        />
+      )}
     </DataItem>
   );
 }
 
 function MaxDelegations() {
-  const { delegations } = useDemocracyVotesPowerContext();
+  const { delegations, isLoading } = useDemocracyVotesPowerContext();
   const { decimals, symbol } = useChainSettings();
 
   return (
     <DataItem label="Delegations">
-      <ValueDisplay
-        value={toPrecision(delegations, decimals)}
-        symbol={symbol}
-        className="text12Medium"
-      />
+      {isLoading ? (
+        <FieldLoading size={16} />
+      ) : (
+        <ValueDisplay
+          value={toPrecision(delegations, decimals)}
+          symbol={symbol}
+          className="text12Medium"
+        />
+      )}
     </DataItem>
   );
 }
@@ -48,7 +57,7 @@ function DemocracyVotesPowerInContext() {
   const { isLoading, votesPower, address } = useDemocracyVotesPowerContext();
   const [detailOpen, setDetailOpen] = useState(false);
 
-  if (!address || isLoading) {
+  if (!address) {
     return null;
   }
 
