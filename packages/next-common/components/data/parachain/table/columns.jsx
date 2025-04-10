@@ -42,7 +42,7 @@ const LinksColumn = ({ id }) => {
     <>
       <div className="flex items-center  justify-between">
         <div className="w-[240px] flex items-center  gap-3 text-textTertiary">
-          {externalLink.map(({ type, link }) => {
+          {externalLink?.map(({ type, link }) => {
             const Icon = iconMap[type];
             return (
               <ExternalLink
@@ -106,7 +106,7 @@ export const MobileTable = ({ tableData }) => {
                 Related Links
               </div>
               <div className="flex gap-x-3 text-textTertiary">
-                {externalLink.map(({ type, link }) => {
+                {externalLink?.map(({ type, link }) => {
                   const Icon = iconMap[type];
                   return (
                     <ExternalLink

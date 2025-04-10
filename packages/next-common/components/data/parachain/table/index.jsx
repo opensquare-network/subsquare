@@ -8,7 +8,7 @@ import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { useRouter } from "next/router";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
-import { useParachainInfo } from "../hooks/useParaEndpoints";
+import { useParachainInfo } from "../hooks/useParachainInfo";
 import useSearchComponent from "../../common/useSearchComponent";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { SystemLoading } from "@osn/icons/subsquare";
