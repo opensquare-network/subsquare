@@ -4,7 +4,7 @@ import { useChainSettings } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import { SystemQuestion } from "@osn/icons/subsquare";
 import { useOpenGovVotesPowerContext } from "../context/votesPower";
-import FieldLoading from "next-common/components/icons/fieldLoading";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 export function VotesPowerContent({
   votesPower,
@@ -23,15 +23,13 @@ export function VotesPowerContent({
         <span className="text12Medium text-textTertiary">Votes Power</span>
         <SystemQuestion className="inline-flex w-4 h-4 cursor-pointer [&_path]:fill-textTertiary" />
       </Tooltip>
-      {isLoading ? (
-        <FieldLoading />
-      ) : (
+      <LoadableContent isLoading={isLoading}>
         <ValueDisplay
           value={toPrecision(votesPower, decimals)}
           symbol={symbol}
           className="text16Bold"
         />
-      )}
+      </LoadableContent>
     </div>
   );
 }

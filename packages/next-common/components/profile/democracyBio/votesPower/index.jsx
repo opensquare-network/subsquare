@@ -11,7 +11,7 @@ import { DataItem } from "next-common/components/profile/OpenGovBio/votesPower";
 import { SystemMenu } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useState } from "react";
-import FieldLoading from "next-common/components/icons/fieldLoading";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 const DemocracyVotesPowerDetailPopup = dynamicPopup(() => import("./detail"));
 
@@ -21,15 +21,13 @@ function SelfBalance() {
 
   return (
     <DataItem label="Self Balance">
-      {isLoading ? (
-        <FieldLoading size={16} />
-      ) : (
+      <LoadableContent isLoading={isLoading} size={16}>
         <ValueDisplay
           value={toPrecision(selfBalance, decimals)}
           symbol={symbol}
           className="text12Medium"
         />
-      )}
+      </LoadableContent>
     </DataItem>
   );
 }
@@ -40,15 +38,13 @@ function MaxDelegations() {
 
   return (
     <DataItem label="Delegations">
-      {isLoading ? (
-        <FieldLoading size={16} />
-      ) : (
+      <LoadableContent isLoading={isLoading} size={16}>
         <ValueDisplay
           value={toPrecision(delegations, decimals)}
           symbol={symbol}
           className="text12Medium"
         />
-      )}
+      </LoadableContent>
     </DataItem>
   );
 }

@@ -10,7 +10,7 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import useKintAccountInfo from "next-common/hooks/useKintAccountInfo";
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
-import FieldLoading from "next-common/components/icons/fieldLoading";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 function TotalBalance({ info, isLoading }) {
   const value = info?.data?.total || 0;
@@ -19,15 +19,13 @@ function TotalBalance({ info, isLoading }) {
   return (
     <div className="flex flex-col justify-center items-center w-full gap-1">
       <span className="text12Medium text-textTertiary">Total Balance</span>
-      {isLoading ? (
-        <FieldLoading />
-      ) : (
+      <LoadableContent isLoading={isLoading}>
         <ValueDisplay
           value={toPrecision(value, decimals)}
           symbol={symbol}
           className="text16Bold"
         />
-      )}
+      </LoadableContent>
       <AccountBalanceFiatValue
         value={value}
         className="inline-flex justify-center items-center text12Medium"
@@ -49,18 +47,17 @@ function AssetItem({ value, title, isLoading }) {
 
   return (
     <div className="w-full inline-flex justify-between items-center h-4">
-      <span className="text12Medium text-textTertiary">
-        {isLoading ? <FieldLoading size={16} /> : title}
-      </span>
-      {isLoading ? (
-        <FieldLoading size={16} />
-      ) : (
+      <LoadableContent isLoading={isLoading} size={16}>
+        <span className="text12Medium text-textTertiary">{title}</span>
+      </LoadableContent>
+
+      <LoadableContent isLoading={isLoading} size={16}>
         <ValueDisplay
           value={toPrecision(value || 0, decimals)}
           symbol={symbol}
           className="text12Medium"
         />
-      )}
+      </LoadableContent>
     </div>
   );
 }

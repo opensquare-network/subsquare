@@ -10,7 +10,7 @@ import OpenGovVotesPowerProvider, {
 import CommonPanel from "next-common/components/profile/bio/commonPanel";
 import VotesPowerValueDisplay from "./valueDisplay";
 import { SystemMenu } from "@osn/icons/subsquare";
-import FieldLoading from "next-common/components/icons/fieldLoading";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 const OpenGovVotesPowerDetailPopup = dynamicPopup(() => import("./detail"));
 
@@ -29,15 +29,13 @@ function SeleBalance() {
 
   return (
     <DataItem label="Self Balance">
-      {isLoading ? (
-        <FieldLoading size={16} />
-      ) : (
+      <LoadableContent isLoading={isLoading} size={16}>
         <ValueDisplay
           value={toPrecision(selfBalance, decimals)}
           symbol={symbol}
           className="text12Medium"
         />
-      )}
+      </LoadableContent>
     </DataItem>
   );
 }
@@ -48,15 +46,13 @@ function MaxDelegations() {
 
   return (
     <DataItem label="Max Delegations">
-      {isLoading ? (
-        <FieldLoading size={16} />
-      ) : (
+      <LoadableContent isLoading={isLoading} size={16}>
         <ValueDisplay
           value={toPrecision(maxDelegations, decimals)}
           symbol={symbol}
           className="text12Medium"
         />
-      )}
+      </LoadableContent>
     </DataItem>
   );
 }
