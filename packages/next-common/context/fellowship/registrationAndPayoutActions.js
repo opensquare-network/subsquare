@@ -10,7 +10,7 @@ const RegistrationAndPayoutActionsContext = createContext({
 });
 
 export default function RegistrationAndPayoutActionsProvider({ children }) {
-  const { address, memberAddrs, claimant, isLoading, status } =
+  const { address, claimant, isLoading, status } =
     useRegistrationAndPayoutCommonInfo();
 
   const isRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
@@ -20,47 +20,27 @@ export default function RegistrationAndPayoutActionsProvider({ children }) {
   const registrationJudgementInfo = useMemo(
     () => ({
       address,
-      memberAddrs,
       claimant,
       status,
       isRegistrationPeriod,
       mySalary,
       onInBlock,
     }),
-    [
-      address,
-      claimant,
-      isRegistrationPeriod,
-      memberAddrs,
-      mySalary,
-      onInBlock,
-      status,
-    ],
+    [address, claimant, isRegistrationPeriod, mySalary, onInBlock, status],
   );
 
   const isStarted = useIsSalaryPayoutStarted(status);
-  const isCollectiveMember = memberAddrs.includes(address);
   const { cycleIndex } = status || {};
 
   const payoutJudgementInfo = useMemo(
     () => ({
       address,
-      memberAddrs,
       claimant,
       isLoading,
       isStarted,
-      isCollectiveMember,
       cycleIndex,
     }),
-    [
-      address,
-      claimant,
-      cycleIndex,
-      isCollectiveMember,
-      isLoading,
-      isStarted,
-      memberAddrs,
-    ],
+    [address, claimant, cycleIndex, isLoading, isStarted],
   );
 
   return (

@@ -204,25 +204,17 @@ const Payout = React.memo(function Payout({ className = "" }) {
     claimant,
     isLoading: isLoadingClaimant,
     isStarted,
-    isCollectiveMember,
     cycleIndex,
   } = payoutJudgementInfo;
 
   const paid =
     claimant && claimant.status?.attempted && claimant.lastActive >= cycleIndex;
   const disabled =
-    !address ||
-    !isStarted ||
-    !isCollectiveMember ||
-    isLoadingClaimant ||
-    !claimant ||
-    paid;
+    !address || !isStarted || isLoadingClaimant || !claimant || paid;
 
   let tooltipText = null;
   if (!address) {
     tooltipText = "Connect your address please";
-  } else if (!isCollectiveMember) {
-    tooltipText = "Not a collective member";
   } else if (!isStarted) {
     tooltipText = "The payout period is not started";
   } else if (isLoadingClaimant) {
