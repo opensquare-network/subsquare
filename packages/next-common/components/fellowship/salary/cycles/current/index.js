@@ -7,6 +7,7 @@ import FellowshipSalaryPayout from "next-common/components/fellowship/salary/act
 import FellowshipSalaryMyStatus from "../myStatus";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import { isNil } from "lodash-es";
+import RegistrationAndPayoutActionsProvider from "next-common/context/fellowship/registrationAndPayoutActions";
 
 export default function FellowshipSalaryActiveCycle() {
   const stats = useFellowshipSalaryStats();
@@ -29,8 +30,10 @@ export default function FellowshipSalaryActiveCycle() {
 
           <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
             <FellowshipSalaryStatsActiveCycleDetailLink />
-            <FellowshipSalaryRegister />
-            <FellowshipSalaryPayout />
+            <RegistrationAndPayoutActionsProvider>
+              <FellowshipSalaryRegister />
+              <FellowshipSalaryPayout />
+            </RegistrationAndPayoutActionsProvider>
           </div>
         </div>
       </SecondaryCard>

@@ -1,75 +1,35 @@
 import SecondaryButton from "next-common/lib/button/secondary";
-import React, { useEffect, useMemo, useState } from "react";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
-import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
+import React, { useMemo, useState } from "react";
 import Tooltip from "next-common/components/tooltip";
-import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
-import { usePageProps } from "next-common/context/page";
-import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
-import { isSameAddress } from "next-common/utils";
-import useClaimantsFellowshipUpdateFunc from "next-common/hooks/fellowship/salary/useClaimantsUpdateFunc";
+import { useRegistrationAndPayoutJudgementInfoFromContext } from "next-common/context/fellowship/registrationAndPayoutActions";
 
-const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
-  import("next-common/components/fellowship/salary/actions/register/popup"),
+const FellowshipSalaryRegisterPopup = dynamicPopup(
+  () =>
+    import("next-common/components/fellowship/salary/actions/register/popup"),
 );
 
-function useMySalary() {
-  const { section } = useCollectivesContext();
-  const { members } = useFellowshipCollectiveMembers();
-  const address = useRealAddress();
-  const member = members.find((m) => isSameAddress(m.address, address));
-  const { fellowshipParams, ambassadorParams } = usePageProps();
-
-  let params;
-  if (section === "fellowship") {
-    params = fellowshipParams;
-  } else if (section === "ambassador") {
-    params = ambassadorParams;
-  }
-
-  const { member: coreMember, isLoading } = useMySalaryClaimantFromContext();
-  if (!member || !coreMember || isLoading) {
-    return 0;
-  }
-
-  const { activeSalary = [], passiveSalary = [] } = params || {};
-  const rank = member.rank;
-  const { isActive } = coreMember || {};
-  const salaryArray = isActive ? activeSalary : passiveSalary;
-  return salaryArray[rankToIndex(rank)];
-}
-
 export default function FellowshipSalaryRegister() {
-  const [disabled, setDisabled] = useState(true);
-  const address = useRealAddress();
-  const { members } = useFellowshipCollectiveMembers();
-  const memberAddrs = (members || []).map((item) => item.address);
-  const { claimant } = useMySalaryClaimantFromContext();
   const [showPopup, setShowPopup] = useState(false);
-  const status = useFellowshipSalaryStats();
+  const { registrationJudgementInfo } =
+    useRegistrationAndPayoutJudgementInfoFromContext();
+  const {
+    isRegistrationPeriod,
+    address,
+    memberAddrs,
+    claimant,
+    mySalary,
+    onInBlock,
+    status,
+  } = registrationJudgementInfo;
 
-  const isRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
-  const mySalary = useMySalary();
-  const onInBlock = useClaimantsFellowshipUpdateFunc();
-
-  useEffect(() => {
-    if (
-      !status ||
-      !memberAddrs.includes(address) ||
-      !isRegistrationPeriod ||
-      !claimant ||
-      mySalary <= 0 ||
-      claimant.lastActive >= status.cycleIndex
-    ) {
-      setDisabled(true);
-    } else {
-      setDisabled(false);
-    }
-  }, [isRegistrationPeriod, address, memberAddrs, status, claimant, mySalary]);
+  let disabled =
+    !status ||
+    !memberAddrs.includes(address) ||
+    !isRegistrationPeriod ||
+    !claimant ||
+    mySalary <= 0 ||
+    claimant.lastActive >= status.cycleIndex;
 
   const tooltipText = useMemo(() => {
     if (!isRegistrationPeriod) {
