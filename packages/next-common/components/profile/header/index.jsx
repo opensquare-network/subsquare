@@ -31,7 +31,7 @@ export default function ProfileHeaderWithBanner() {
           isMobile && "flex justify-center",
         )}
       >
-        <div className="w-[96px] h-[96px] rounded-[100px] border border-neutral300">
+        <div className="w-[96px] h-[96px] rounded-[100px] border border-neutral300 bg-neutral100">
           <DisplayUserAvatar address={address} size={94} />
         </div>
       </div>
