@@ -11,10 +11,9 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import { isSameAddress } from "next-common/utils";
-import useClaimantsFellowshipUpdateFunc from "next-common/hooks/fellowship/salary/useClaimantsUpdateFunc";
 
-const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
-  import("next-common/components/fellowship/salary/actions/register/popup"),
+const FellowshipSalaryRegisterPopup = dynamicPopup(
+  () => import("next-common/components/fellowship/salary/actions/register/popup"),
 );
 
 function useMySalary() {
@@ -54,7 +53,6 @@ export default function FellowshipSalaryRegister() {
 
   const isRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
   const mySalary = useMySalary();
-  const onInBlock = useClaimantsFellowshipUpdateFunc();
 
   useEffect(() => {
     if (
@@ -108,11 +106,7 @@ export default function FellowshipSalaryRegister() {
         </SecondaryButton>
       </Tooltip>
       {showPopup && (
-        <FellowshipSalaryRegisterPopup
-          onClose={() => setShowPopup(false)}
-          onInBlock={onInBlock}
-          onFinalized={onInBlock}
-        />
+        <FellowshipSalaryRegisterPopup onClose={() => setShowPopup(false)} />
       )}
     </>
   );
