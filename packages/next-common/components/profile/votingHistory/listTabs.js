@@ -75,7 +75,7 @@ export default function ListTabs() {
             setActiveTabValue(tab.value);
           }}
           tabsListDivider={false}
-          tabsListClassName="mr-6"
+          tabsListClassName="mr-6 h-7"
         />
       </DropdownFilterProvider>
     </div>
