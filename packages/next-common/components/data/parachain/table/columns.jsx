@@ -161,11 +161,14 @@ export const tableColumns = [
               href={subsquareLink}
               target="_blank"
               className={
-                "w-7 h-7 border border-[#ebeef4] rounded  text-[#1E2134] cursor-pointer"
+                "border border-neutral400 rounded-[4px] cursor-pointer p-[5px]"
               }
               rel="noreferrer"
             >
-              <ArrowRight />
+              <ArrowRight
+                role="button"
+                className={"[&_path]:stroke-textPrimary w-4 h-4"}
+              />
             </a>
           ) : null}
         </div>

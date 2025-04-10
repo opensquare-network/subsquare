@@ -7,7 +7,7 @@ export default function CommonTabs() {
   const router = useRouter();
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="w-full flex justify-center items-center px-6">
       <Tab
         selectedTabId={activeTab}
         setSelectedTabId={(id) => {
@@ -16,8 +16,8 @@ export default function CommonTabs() {
           }
           router.push(id);
         }}
-        className="h-9 rounded-[22px] p-1"
-        btnClassName="w-auto px-[9.5px] md:px-[26.5px]  px-4 py-2 rounded-[18px] "
+        className="h-9 rounded-[22px] p-1 w-full md:w-auto"
+        btnClassName="w-auto md:w-[120px]  py-2 rounded-[18px] "
         tabs={tabs}
       />
     </div>
