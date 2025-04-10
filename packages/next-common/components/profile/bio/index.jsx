@@ -63,6 +63,7 @@ export const DisplayUser = ({ id, className = "" }) => {
         add={id}
         showAvatar={false}
         className={cn("text16Bold text-textPrimary", className)}
+        identityIconClassName="w-4 h-4"
       />
     );
   }

@@ -48,7 +48,7 @@ function AssetItem({ value, title, isLoading }) {
   const { symbol, decimals } = useChainSettings();
 
   return (
-    <div className="w-full inline-flex justify-between items-center">
+    <div className="w-full inline-flex justify-between items-center h-4">
       <span className="text12Medium text-textTertiary">
         {isLoading ? <FieldLoading size={16} /> : title}
       </span>
