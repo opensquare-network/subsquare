@@ -10,19 +10,22 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import useKintAccountInfo from "next-common/hooks/useKintAccountInfo";
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
+import LoadableContent from "next-common/components/common/loadableContent";
 
-function TotalBalance({ info }) {
+function TotalBalance({ info, isLoading }) {
   const value = info?.data?.total || 0;
   const { symbol, decimals } = useChainSettings();
 
   return (
     <div className="flex flex-col justify-center items-center w-full gap-1">
       <span className="text12Medium text-textTertiary">Total Balance</span>
-      <ValueDisplay
-        value={toPrecision(value, decimals)}
-        symbol={symbol}
-        className="text16Bold"
-      />
+      <LoadableContent isLoading={isLoading}>
+        <ValueDisplay
+          value={toPrecision(value, decimals)}
+          symbol={symbol}
+          className="text16Bold"
+        />
+      </LoadableContent>
       <AccountBalanceFiatValue
         value={value}
         className="inline-flex justify-center items-center text12Medium"
@@ -33,30 +36,35 @@ function TotalBalance({ info }) {
 
 function ValueWrapper({ children }) {
   return (
-    <GreyPanel className="flex flex-col bg-neutral200 py-1.5 px-3 justify-between items-center w-full gap-1">
+    <GreyPanel className="flex flex-col bg-neutral200 py-1.5 px-3 justify-between items-center w-full gap-1 rounded-[4px]">
       {children}
     </GreyPanel>
   );
 }
 
-function AssetItem({ value, title }) {
+function AssetItem({ value, title, isLoading }) {
   const { symbol, decimals } = useChainSettings();
 
   return (
-    <div className="w-full inline-flex justify-between items-center">
-      <span className="text12Medium text-textTertiary">{title}</span>
-      <ValueDisplay
-        value={toPrecision(value || 0, decimals)}
-        symbol={symbol}
-        className="text12Medium"
-      />
+    <div className="w-full inline-flex justify-between items-center h-4">
+      <LoadableContent isLoading={isLoading} size={16}>
+        <span className="text12Medium text-textTertiary">{title}</span>
+      </LoadableContent>
+
+      <LoadableContent isLoading={isLoading} size={16}>
+        <ValueDisplay
+          value={toPrecision(value || 0, decimals)}
+          symbol={symbol}
+          className="text12Medium"
+        />
+      </LoadableContent>
     </div>
   );
 }
 
 const isEmpty = (value) => !value || new BigNumber(value).isZero();
 
-function CommonAssetInfo({ address, info }) {
+function CommonAssetInfo({ address, isLoading = false, info }) {
   const { symbol, decimals } = useChainSettings();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
@@ -77,7 +85,12 @@ function CommonAssetInfo({ address, info }) {
       extra={<Icon className="w-5 h-5 [&_path]:stroke-textPrimary" />}
     >
       <div className="flex flex-1 flex-col items-center gap-y-1">
-        <TotalBalance symbol={symbol} decimals={decimals} info={info} />
+        <TotalBalance
+          symbol={symbol}
+          decimals={decimals}
+          info={info}
+          isLoading={isLoading}
+        />
       </div>
       <div className="flex w-full space-y-1">
         <ValueWrapper>
@@ -85,20 +98,37 @@ function CommonAssetInfo({ address, info }) {
             <AssetItem
               value={info?.data?.transferrable}
               title="Transferrable"
+              isLoading={isLoading}
             />
           ) : (
-            <AssetItem value={info?.data?.free} title="Free" />
+            <AssetItem
+              value={info?.data?.free}
+              title="Free"
+              isLoading={isLoading}
+            />
           )}
 
           {isCollapsed && (
             <>
               {showBonded && (
-                <AssetItem value={info?.data?.bonded} title="Bonded" />
+                <AssetItem
+                  value={info?.data?.bonded}
+                  title="Bonded"
+                  isLoading={isLoading}
+                />
               )}
-              <AssetItem value={info?.data?.reserved} title="Reserved" />
+              <AssetItem
+                value={info?.data?.reserved}
+                title="Reserved"
+                isLoading={isLoading}
+              />
 
               {showLocked && (
-                <AssetItem value={info?.data?.lockedBalance} title="Locked" />
+                <AssetItem
+                  value={info?.data?.lockedBalance}
+                  title="Locked"
+                  isLoading={isLoading}
+                />
               )}
             </>
           )}
@@ -111,19 +141,15 @@ function CommonAssetInfo({ address, info }) {
 export default function AssetInfo({ address }) {
   const { info, isLoading } = useUserAccountInfo();
 
-  if (isLoading) {
-    return null;
-  }
-
-  return <CommonAssetInfo address={address} info={info} />;
+  return (
+    <CommonAssetInfo address={address} isLoading={isLoading} info={info} />
+  );
 }
 
 export function KintAssetInfo({ address }) {
-  const info = useKintAccountInfo(address);
+  const { info, isLoading } = useKintAccountInfo(address);
 
-  if (!info) {
-    return null;
-  }
-
-  return <CommonAssetInfo address={address} info={info} />;
+  return (
+    <CommonAssetInfo address={address} isLoading={isLoading} info={info} />
+  );
 }

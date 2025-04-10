@@ -3,7 +3,12 @@ import Tooltip from "../tooltip";
 import { getIdentityDisplay } from "next-common/utils/identity";
 import { cn } from "next-common/utils";
 
-export function UnStyledIdentity({ identity, maxWidth, ellipsis = false }) {
+export function UnStyledIdentity({
+  identity,
+  maxWidth,
+  ellipsis = false,
+  identityIconClassName = "",
+}) {
   if (!identity || identity?.info?.status === "NO_ID") {
     return null;
   }
@@ -13,7 +18,11 @@ export function UnStyledIdentity({ identity, maxWidth, ellipsis = false }) {
 
   return (
     <div className="flex items-center identity">
-      <IdentityIcon identity={identity} className="mr-1" />
+      <IdentityIcon
+        identity={identity}
+        className="mr-1"
+        iconClassName={identityIconClassName}
+      />
       <Tooltip
         content={shouldShowTooltip ? displayName : null}
         className={cn(shouldShowTooltip && "!line-clamp-1 break-all")}
@@ -30,6 +39,7 @@ export default function Identity({
   maxWidth,
   className = "text14Medium text-textPrimary",
   ellipsis,
+  identityIconClassName = "",
 }) {
   return (
     <div className={className}>
@@ -37,6 +47,7 @@ export default function Identity({
         identity={identity}
         maxWidth={maxWidth}
         ellipsis={ellipsis}
+        iconClassName={identityIconClassName}
       />
     </div>
   );

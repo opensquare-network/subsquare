@@ -15,7 +15,12 @@ function DotreasuryAccountLink({ address }) {
   const chainSetting = getChainSettings(chain);
   const dotreasuryHref = `https://dotreasury.com/${chainSetting.symbol}/users/${address}`;
 
-  return <IconLink href={dotreasuryHref} icon={<DotreasurySVG />} />;
+  return (
+    <IconLink
+      href={dotreasuryHref}
+      icon={<DotreasurySVG className="w-5 h-5" />}
+    />
+  );
 }
 
 export default DotreasuryAccountLink;
