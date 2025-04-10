@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const Wrapper = styled.a`
-  width: ${({ size }) => size}px;
-  height: ${({ size }) => size}px;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
   display: inline-flex;
   cursor: pointer;
   svg path {
@@ -15,9 +15,9 @@ const Wrapper = styled.a`
   }
 `;
 
-export default function IconLink({ icon, href, size = 20 }) {
+export default function IconLink({ icon, href, width = 20, height = 24 }) {
   return (
-    <Wrapper size={size} href={href} target="_blank" rel="noreferrer">
+    <Wrapper width={width} height={height} href={href} target="_blank" rel="noreferrer">
       {icon}
     </Wrapper>
   );

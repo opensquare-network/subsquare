@@ -12,7 +12,7 @@ import { useChainSettings } from "next-common/context/chain";
 import IdentityInfoLinks from "./identityInfoLinks";
 
 const Wrapper = styled(Flex)`
-  height: 20px;
+  height: 24px;
   > :not(:first-child) {
     margin-left: 12px;
   }
