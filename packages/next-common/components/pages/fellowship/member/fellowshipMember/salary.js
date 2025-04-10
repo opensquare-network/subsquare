@@ -4,7 +4,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
-import { toPrecision } from "next-common/utils";
+import { isSameAddress, toPrecision } from "next-common/utils";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 import {
@@ -18,14 +18,14 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import Tooltip from "next-common/components/tooltip";
 import SecondaryButton from "next-common/lib/button/secondary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useFellowshipMemberDetailAddr from "next-common/hooks/collectives/member/detail";
 
-const FellowshipSalaryRegisterPopup = dynamicPopup(
-  () =>
-    import("next-common/components/fellowship/salary/actions/register/popup"),
+const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/actions/register/popup"),
 );
 
-const FellowshipSalaryPayoutPopup = dynamicPopup(
-  () => import("next-common/components/fellowship/salary/actions/payout/popup"),
+const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/actions/payout/popup"),
 );
 
 function Wrapper({ children }) {
@@ -189,7 +189,6 @@ function MemberSalary({ address, member }) {
   const { fellowshipParams, claimantCycleStats } = usePageProps();
   const { isActive } = member || {};
   const { rank, loading: isRankLoading } = useSubCollectiveRank(address);
-  const currentUserAddress = useRealAddress();
 
   if (isRankLoading) {
     return null;
@@ -210,14 +209,24 @@ function MemberSalary({ address, member }) {
         totalPaid={claimantCycleStats?.totalSalary || 0}
         joinedCycles={claimantCycleStats?.cycles || 0}
       />
-      {currentUserAddress === address && (
+      <MyActionsComponentGuard>
         <ActionsWrapper>
           <Register />
           <Payout />
         </ActionsWrapper>
-      )}
+      </MyActionsComponentGuard>
     </Wrapper>
   );
+}
+
+function MyActionsComponentGuard({ children }) {
+  const currentUserAddress = useRealAddress();
+  const address = useFellowshipMemberDetailAddr();
+  if (isSameAddress(currentUserAddress, address)) {
+    return children;
+  } else {
+    return null;
+  }
 }
 
 export default function Salary({ address }) {
