@@ -21,7 +21,6 @@ body {
   transition: 0.3s ease;
   position: relative;
   font-weight: 500;
-  -webkit-font-smoothing:antialiased;
 }
 
 a {
