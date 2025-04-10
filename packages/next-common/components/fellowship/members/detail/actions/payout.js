@@ -60,4 +60,4 @@ function Payout({ className = "" }) {
   );
 }
 
-export default Payout;
+export default React.memo(Payout);
