@@ -6,6 +6,7 @@ import Indications from "./indications";
 import Relationship from "./relationship";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useMemo } from "react";
+import RelationshipProvider from "next-common/context/relationship";
 
 function NoRelationshipsTip() {
   return (
@@ -36,9 +37,11 @@ export default function RelationshipPopup({
       title={title}
       onClose={onClose}
     >
-      {showNoRelationshipsTip && <NoRelationshipsTip />}
-      <Relationship loading={isLoading} nodes={nodes} edges={edges} />
-      <Indications />
+      <RelationshipProvider isLoading={isLoading} nodes={nodes} edges={edges}>
+        {showNoRelationshipsTip && <NoRelationshipsTip />}
+        <Relationship />
+        <Indications />
+      </RelationshipProvider>
     </Popup>
   );
 }
