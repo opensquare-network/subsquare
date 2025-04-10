@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Duration from "next-common/components/duration";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
@@ -14,19 +14,9 @@ import {
 } from "next-common/components/referenda/tally/styled";
 import { InfoAsset, InfoDocs } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import dynamicPopup from "next-common/lib/dynamic/popup";
-import Tooltip from "next-common/components/tooltip";
-import SecondaryButton from "next-common/lib/button/secondary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useFellowshipMemberDetailAddr from "next-common/hooks/collectives/member/detail";
-
-const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
-  import("next-common/components/fellowship/salary/actions/register/popup"),
-);
-
-const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
-  import("next-common/components/fellowship/salary/actions/payout/popup"),
-);
+import Register from "next-common/components/fellowship/members/detail/actions/register";
 
 function Wrapper({ children }) {
   return (
@@ -35,39 +25,6 @@ function Wrapper({ children }) {
     </div>
   );
 }
-
-const Register = React.memo(function Register({ className = "" }) {
-  const [showPopup, setShowPopup] = useState(false);
-
-  return (
-    <>
-      <Tooltip content={"init"}>
-        <SecondaryButton
-          size="small"
-          className={cn(
-            "border-none",
-            "text14Medium",
-            "p-0",
-            // !disabled && "!text-theme500",
-            className,
-          )}
-          disabled={false}
-          onClick={() => setShowPopup(true)}
-        >
-          Register
-        </SecondaryButton>
-      </Tooltip>
-
-      {showPopup && (
-        <FellowshipSalaryRegisterPopup
-          onClose={() => setShowPopup(false)}
-          // onInBlock={onInBlock}
-          // onFinalized={onInBlock}
-        />
-      )}
-    </>
-  );
-});
 
 function ActionsWrapper({ children, className = "" }) {
   return (
@@ -85,34 +42,6 @@ function ActionsWrapper({ children, className = "" }) {
     </div>
   );
 }
-
-const Payout = React.memo(function Payout({ className = "" }) {
-  const [showPopup, setShowPopup] = useState(false);
-
-  return (
-    <>
-      <Tooltip content={"init"}>
-        <SecondaryButton
-          size="small"
-          className={cn(
-            "border-none",
-            "text14Medium",
-            "p-0",
-            // !disabled && "!text-theme500",
-            className,
-          )}
-          disabled={false}
-          onClick={() => setShowPopup(true)}
-        >
-          Payout
-        </SecondaryButton>
-      </Tooltip>
-      {showPopup && (
-        <FellowshipSalaryPayoutPopup onClose={() => setShowPopup(false)} />
-      )}
-    </>
-  );
-});
 
 function NotImportedSalary() {
   return (
@@ -212,7 +141,6 @@ function MemberSalary({ address, member }) {
       <MyActionsComponentGuard>
         <ActionsWrapper>
           <Register />
-          <Payout />
         </ActionsWrapper>
       </MyActionsComponentGuard>
     </Wrapper>
