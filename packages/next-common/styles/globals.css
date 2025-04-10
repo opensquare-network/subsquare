@@ -20,6 +20,7 @@ body {
   -webkit-font-smoothing: antialiased;
   transition: 0.3s ease;
   position: relative;
+  font-weight: 500;
 }
 
 a {
