@@ -38,7 +38,7 @@ function TotalBalance({ info, isLoading }) {
 
 function ValueWrapper({ children }) {
   return (
-    <GreyPanel className="flex flex-col bg-neutral200 py-1.5 px-3 justify-between items-center w-full gap-1">
+    <GreyPanel className="flex flex-col bg-neutral200 py-1.5 px-3 justify-between items-center w-full gap-1 rounded-[4px]">
       {children}
     </GreyPanel>
   );
