@@ -150,11 +150,9 @@ export default function AssetInfo({ address }) {
 }
 
 export function KintAssetInfo({ address }) {
-  const info = useKintAccountInfo(address);
+  const { info, isLoading } = useKintAccountInfo(address);
 
-  if (!info) {
-    return null;
-  }
-
-  return <CommonAssetInfo address={address} info={info} />;
+  return (
+    <CommonAssetInfo address={address} isLoading={isLoading} info={info} />
+  );
 }
