@@ -4,8 +4,8 @@ import {
   LinkWebsite,
   LinkTwitter,
   LinkDiscord,
+  ParachainIconDefault,
 } from "@osn/icons/subsquare";
-import ParaChainDefaultIcon from "next-common/assets/icons/chain/parachain-default.svg";
 import parachainConfig from "next-common/utils/parachainConfig";
 import ExternalLink from "next-common/components/externalLink";
 
@@ -21,7 +21,7 @@ const NameColumn = ({ info }) => {
         {ui?.logo?.startsWith("data:") ? (
           <img src={ui.logo} alt={ui.identityIcon} />
         ) : (
-          <ParaChainDefaultIcon className="w-5 h-5" />
+          <ParachainIconDefault className="w-5 h-5" />
         )}
       </div>
       <span className="text14Medium">{info?.text || "Unknown"}</span>
@@ -79,7 +79,7 @@ export const MobileTable = ({ tableData }) => {
                   {ui?.logo?.startsWith("data:") ? (
                     <img width={24} src={ui.logo} alt={ui.identityIcon} />
                   ) : (
-                    <ParaChainDefaultIcon />
+                    <ParachainIconDefault />
                   )}
                 </div>
                 <span className="text16Medium">{info?.text || "Unknown"}</span>
