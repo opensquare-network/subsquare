@@ -3,6 +3,9 @@ import IconLink from "./iconLink";
 
 export default function ElementLink({ riot }) {
   return (
-    <IconLink icon={<LinkElement />} href={`https://matrix.to/#/${riot}`} />
+    <IconLink
+      icon={<LinkElement className="w-5 h-5" />}
+      href={`https://matrix.to/#/${riot}`}
+    />
   );
 }

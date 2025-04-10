@@ -18,6 +18,7 @@ import Loading from "next-common/components/loading";
 import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { useRelationshipNodes } from "next-common/context/relationship";
 
 const nodeTypes = {
   user: UserNode,
@@ -36,11 +37,12 @@ const RelationshipWraper = tw.div`
   bg-neutral200
 `;
 
-export default function Relationship({
-  nodes: initialNodes,
-  edges: initialEdges,
-  loading = false,
-}) {
+export default function Relationship() {
+  const {
+    nodes: initialNodes,
+    edges: initialEdges,
+    isLoading: loading,
+  } = useRelationshipNodes();
   const calculatedNodes = calculateNodePositionsHorizontal(
     initialNodes,
     initialEdges,
@@ -83,7 +85,7 @@ function RelationshipFlow({ calculatedNodes, initialEdges }) {
   }, [initialEdges, setEdges]);
 
   useEffect(() => {
-    const len = nodes.length;
+    const len = nodes.filter((item) => !item.hidden).length;
     if (len !== prevNodeLength) {
       reactFlow.fitView();
     }

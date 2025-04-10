@@ -6,11 +6,12 @@ import Indications from "./indications";
 import Relationship from "./relationship";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useMemo } from "react";
+import RelationshipProvider from "next-common/context/relationship";
 
 function NoRelationshipsTip() {
   return (
     <GreyPanel className="justify-start gap-x-2 text14Medium text-textSecondary py-2.5 px-4 max-w-full">
-      This account has no relationships with proxy and multisig.
+      This account has no relationships with proxy, multisig and identity.
     </GreyPanel>
   );
 }
@@ -36,9 +37,11 @@ export default function RelationshipPopup({
       title={title}
       onClose={onClose}
     >
-      {showNoRelationshipsTip && <NoRelationshipsTip />}
-      <Relationship loading={isLoading} nodes={nodes} edges={edges} />
-      <Indications />
+      <RelationshipProvider isLoading={isLoading} nodes={nodes} edges={edges}>
+        {showNoRelationshipsTip && <NoRelationshipsTip />}
+        <Relationship />
+        <Indications />
+      </RelationshipProvider>
     </Popup>
   );
 }

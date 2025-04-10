@@ -32,5 +32,5 @@ export default function ConditionalMimirIcon({ address }) {
 
   const href = `https://app.mimir.global/?address=${address}&network=${chain}`;
 
-  return <IconLink icon={<LinkMimir />} href={href} />;
+  return <IconLink icon={<LinkMimir className="w-5 h-5" />} href={href} />;
 }
