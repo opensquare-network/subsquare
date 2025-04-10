@@ -1,17 +1,15 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Tooltip from "next-common/components/tooltip";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { cn } from "next-common/utils";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
-import { usePageProps } from "next-common/context/page";
 import useSalaryClaimant from "next-common/hooks/fellowship/salary/useSalaryClaimant";
-import useClaimantsFellowshipUpdateFunc from "next-common/hooks/fellowship/salary/useClaimantsUpdateFunc";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useFellowshipMemberDetailAddr from "next-common/hooks/collectives/member/detail";
 
-const FellowshipSalaryRegisterPopup = dynamicPopup(
-  () => import("next-common/components/fellowship/salary/actions/register/popup"),
+const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/actions/register/popup"),
 );
 
 function Register({ className = "" }) {
@@ -19,10 +17,8 @@ function Register({ className = "" }) {
   const [disabled, setDisabled] = useState(true);
   const status = useFellowshipSalaryStats();
   const isRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
-  const { id } = usePageProps();
-  const { claimant } = useSalaryClaimant(id);
-  const address = useRealAddress();
-  const onInBlock = useClaimantsFellowshipUpdateFunc();
+  const address = useFellowshipMemberDetailAddr();
+  const { claimant } = useSalaryClaimant(address);
 
   useEffect(() => {
     if (
@@ -35,13 +31,11 @@ function Register({ className = "" }) {
     } else {
       setDisabled(false);
     }
-  }, [isRegistrationPeriod, address, status, claimant]);
+  }, [isRegistrationPeriod, status, claimant]);
 
   const tooltipText = useMemo(() => {
     if (!isRegistrationPeriod) {
       return "Not in registration period";
-    } else if (!address) {
-      return "Connect your address please";
     } else if (!claimant) {
       return "Please import yourself first";
     } else if (claimant.lastActive >= status?.cycleIndex) {
@@ -49,7 +43,7 @@ function Register({ className = "" }) {
     }
 
     return null;
-  }, [isRegistrationPeriod, address, claimant, status?.cycleIndex]);
+  }, [isRegistrationPeriod, claimant, status?.cycleIndex]);
 
   return (
     <>
@@ -71,11 +65,7 @@ function Register({ className = "" }) {
       </Tooltip>
 
       {showPopup && (
-        <FellowshipSalaryRegisterPopup
-          onClose={() => setShowPopup(false)}
-          onInBlock={onInBlock}
-          onFinalized={onInBlock}
-        />
+        <FellowshipSalaryRegisterPopup onClose={() => setShowPopup(false)} />
       )}
     </>
   );
