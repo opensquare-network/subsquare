@@ -20,6 +20,7 @@ import { cn } from "next-common/utils";
 import RegistrationAndPayoutActionsContext, {
   useRegistrationAndPayoutJudgementInfoFromContext,
 } from "next-common/context/fellowship/registrationAndPayoutActions.js";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const FellowshipSalaryRegisterPopup = dynamicPopup(
   () =>
@@ -273,7 +274,7 @@ function MemberSalary({ address, member }) {
   const { fellowshipParams, claimantCycleStats } = usePageProps();
   const { isActive } = member || {};
   const { rank, loading: isRankLoading } = useSubCollectiveRank(address);
-
+  const currentUserAddress = useRealAddress();
   if (isRankLoading) {
     return null;
   }
@@ -294,10 +295,12 @@ function MemberSalary({ address, member }) {
         joinedCycles={claimantCycleStats?.cycles || 0}
       />
       <RegistrationAndPayoutActionsContext>
-        <ActionsWrapper>
-          <Register />
-          <Payout />
-        </ActionsWrapper>
+        {currentUserAddress === address && (
+          <ActionsWrapper>
+            <Register />
+            <Payout />
+          </ActionsWrapper>
+        )}
       </RegistrationAndPayoutActionsContext>
     </Wrapper>
   );
