@@ -94,13 +94,20 @@ export function useRelationshipNodes() {
   }, [relationshipsByType, context.excludedIndications]);
 
   return {
-    nodes: context.nodes.map((item) => {
-      return {
-        ...item,
-        hidden: hiddenNodesIds.includes(item.id),
-      };
+    nodes: context.nodes
+      .map((item) => {
+        return {
+          ...item,
+          hidden: hiddenNodesIds.includes(item.id),
+        };
+      })
+      .filter((item) => !item.hidden),
+    edges: context.edges.filter((edge) => {
+      return (
+        !hiddenNodesIds.includes(edge.source) &&
+        !hiddenNodesIds.includes(edge.target)
+      );
     }),
-    edges: context.edges,
     isLoading: context.isLoading,
   };
 }
