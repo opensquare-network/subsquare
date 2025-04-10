@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { useTimelineData } from "next-common/context/post";
 import { useRouter } from "next/router";
 import Tabs from "next-common/components/tabs";
+import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 
 const Business = dynamicClientOnly(() =>
   import("components/external/business"),
@@ -60,7 +61,12 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
         value: "timeline",
         label: "Timeline",
         activeCount: timelineData?.length,
-        content: <Timeline />,
+        content: (
+          <div>
+            <TimelineModeTabs />
+            <Timeline />
+          </div>
+        ),
       },
     ].filter(Boolean);
     const [defaultTab] = tabs;

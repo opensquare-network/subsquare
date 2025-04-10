@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import Tabs from "next-common/components/tabs";
 import { useRouter } from "next/router";
 import { useTimelineData } from "next-common/context/post";
+import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/publicProposal/metadata"),
@@ -50,7 +51,12 @@ export default function DemocracyPublicProposalsDetailMultiTabs() {
         value: "timeline",
         label: "Timeline",
         activeCount: timelineData?.length,
-        content: <Timeline />,
+        content: (
+          <div>
+            <TimelineModeTabs />
+            <Timeline />
+          </div>
+        ),
       },
     ].filter(Boolean);
     const [defaultTab] = tabs;
