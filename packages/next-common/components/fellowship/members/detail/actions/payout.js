@@ -20,8 +20,7 @@ function Payout({ className = "" }) {
   const { cycleIndex } = status || {};
   const isStarted = useIsSalaryPayoutPeriod(status);
 
-  const paid =
-    claimant && claimant.status?.attempted && claimant.lastActive >= cycleIndex;
+  const paid = claimant.status?.attempted && claimant.lastActive >= cycleIndex;
   const disabled = !isStarted || isLoadingClaimant || !claimant || paid;
 
   let tooltipText = null;
@@ -29,8 +28,6 @@ function Payout({ className = "" }) {
     tooltipText = "The payout period is not started";
   } else if (isLoadingClaimant) {
     tooltipText = "Checking your payment status";
-  } else if (!claimant) {
-    tooltipText = "Please import yourself first";
   } else if (paid) {
     tooltipText = "Your salary has been paid";
   }

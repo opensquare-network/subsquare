@@ -24,7 +24,6 @@ function Register({ className = "" }) {
     if (
       !status ||
       !isRegistrationPeriod ||
-      !claimant ||
       claimant.lastActive >= status.cycleIndex
     ) {
       setDisabled(true);
