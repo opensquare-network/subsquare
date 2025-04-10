@@ -133,7 +133,6 @@ const Register = React.memo(function Register({ className = "" }) {
   const {
     isRegistrationPeriod,
     address,
-    memberAddrs,
     claimant,
     mySalary,
     onInBlock,
@@ -163,14 +162,7 @@ const Register = React.memo(function Register({ className = "" }) {
     }
 
     return null;
-  }, [
-    isRegistrationPeriod,
-    address,
-    memberAddrs,
-    claimant,
-    mySalary,
-    status?.cycleIndex,
-  ]);
+  }, [isRegistrationPeriod, address, claimant, mySalary, status?.cycleIndex]);
 
   return (
     <>
