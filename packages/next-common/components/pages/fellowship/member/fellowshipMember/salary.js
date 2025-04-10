@@ -3,7 +3,6 @@ import Duration from "next-common/components/duration";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
-import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
 import { isSameAddress, toPrecision } from "next-common/utils";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
@@ -17,6 +16,8 @@ import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useFellowshipMemberDetailAddr from "next-common/hooks/collectives/member/detail";
 import Register from "next-common/components/fellowship/members/detail/actions/register";
+import Payout from "next-common/components/fellowship/members/detail/actions/payout";
+import useSalaryClaimant from "next-common/hooks/fellowship/salary/useSalaryClaimant";
 
 function Wrapper({ children }) {
   return (
@@ -141,6 +142,7 @@ function MemberSalary({ address, member }) {
       <MyActionsComponentGuard>
         <ActionsWrapper>
           <Register />
+          <Payout />
         </ActionsWrapper>
       </MyActionsComponentGuard>
     </Wrapper>
@@ -158,15 +160,15 @@ function MyActionsComponentGuard({ children }) {
 }
 
 export default function Salary({ address }) {
-  const { member, isLoading } = useSubCoreCollectivesMember(address);
+  const { claimant, isLoading } = useSalaryClaimant(address);
 
   if (isLoading) {
     return null;
   }
 
-  if (!member) {
+  if (!claimant) {
     return <NotImportedSalary />;
   }
 
-  return <MemberSalary address={address} member={member} />;
+  return <MemberSalary address={address} member={claimant} />;
 }
