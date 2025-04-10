@@ -8,6 +8,9 @@ import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { useProfileBannerUrl } from "next-common/components/profile/header";
+import { cn } from "next-common/utils";
 
 const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
@@ -43,7 +46,89 @@ ${(p) => {
 }}
 `;
 
+function AddressLabelWithBadge({ data }) {
+  return (
+    <>
+      <AddressUser
+        add={data?.address || ""}
+        className="flex text14Medium text-textPrimary"
+        maxWidth={200}
+        showAvatar={false}
+        noTooltip
+      />
+      {data.isPure && (
+        <Tooltip
+          content={
+            <Link
+              className="underline relative z-20"
+              style={{ pointerEvents: "all" }}
+              href="https://wiki.polkadot.network/learn/learn-proxies-pure/"
+              target="_blank"
+            >
+              Pure Proxy↗
+            </Link>
+          }
+        >
+          <span className="inline-block h-5 leading-5 bg-neutral200 text-textSecondary text12Medium px-2 rounded-[0.625rem]">
+            Pure
+          </span>
+        </Tooltip>
+      )}
+    </>
+  );
+}
+
+function SelfNode({ data }) {
+  const bannerUrl = useProfileBannerUrl();
+
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <div
+        className="bg-no-repeat bg-cover w-60 h-[40px] rounded-t-[12px]"
+        style={{ backgroundImage: `url(${bannerUrl})` }}
+      >
+        <div className="w-full relative top-[20px] flex justify-center">
+          <UserAvatar address={data?.address} badge={data.badge} />
+        </div>
+      </div>
+      <div className="px-4 py-2 mt-5">
+        <div className="flex items-center justify-between h-5">
+          <AddressLabelWithBadge data={data} />
+        </div>
+        <DisplayUserAddress
+          showLinks={false}
+          address={data?.address}
+          className="flex-1 items-center [&>*]:flex [&>*]:items-center"
+          ellipsisAddress
+        />
+      </div>
+    </div>
+  );
+}
+
+function RelativeUserNode({ data }) {
+  return (
+    <>
+      <UserAvatar address={data?.address} badge={data.badge} />
+      <div className="flex-1">
+        <div className="flex items-center justify-between h-6">
+          <AddressLabelWithBadge data={data} />
+        </div>
+        <DisplayUserAddress
+          showLinks={false}
+          address={data?.address}
+          className="flex-1 !items-start [&>*]:flex [&>*]:items-center"
+          ellipsisAddress
+        />
+      </div>
+    </>
+  );
+}
+
 export default function UserNode({ data }) {
+  const profileAddress = useProfileAddress();
+  const isSelf = profileAddress === data?.address;
+
   const sourceConnections = useNodeConnections({ handleType: "source" });
   const targetConnections = useNodeConnections({ handleType: "target" });
   const sourceHandleTypeSize = new Set(
@@ -58,43 +143,14 @@ export default function UserNode({ data }) {
   }
 
   return (
-    <NodeWrap className="bg-neutral100 p-3 rounded-xl border border-neutral300 flex gap-x-3 w-60 items-center">
-      <UserAvatar address={data?.address} badge={data.badge} />
-      <div className="flex-1">
-        <div className="flex items-center justify-between h-6">
-          <AddressUser
-            add={data?.address || ""}
-            className={"flex text14Medium text-textPrimary"}
-            maxWidth={200}
-            showAvatar={false}
-            noTooltip
-          />
-          {data.isPure && (
-            <Tooltip
-              content={
-                <Link
-                  className="underline relative z-20"
-                  style={{ pointerEvents: "all" }}
-                  href="https://wiki.polkadot.network/learn/learn-proxies-pure/"
-                  target="_blank"
-                >
-                  Pure Proxy↗
-                </Link>
-              }
-            >
-              <span className="inline-block h-5 leading-5 bg-neutral200 text-textSecondary text12Medium px-2 rounded-[0.625rem]">
-                Pure
-              </span>
-            </Tooltip>
-          )}
-        </div>
-        <DisplayUserAddress
-          showLinks={false}
-          address={data?.address}
-          className="flex-1 !items-start [&>*]:flex [&>*]:items-center"
-          ellipsisAddress
-        />
-      </div>
+    <NodeWrap
+      className={cn(
+        "bg-neutral100 p-3 rounded-xl border border-neutral300 flex gap-x-3 w-60 items-center",
+        isSelf && "p-0",
+      )}
+    >
+      {isSelf ? <SelfNode data={data} /> : <RelativeUserNode data={data} />}
+
       <HandleWraper
         type="target"
         id="targetProxy"
@@ -109,6 +165,12 @@ export default function UserNode({ data }) {
         position={Position.Left}
       />
       <HandleWraper
+        type="target"
+        id="targetParent"
+        size={targetHandleTypeSize}
+        position={Position.Left}
+      />
+      <HandleWraper
         type="source"
         size={sourceHandleTypeSize}
         id="sourceProxy"
@@ -119,6 +181,12 @@ export default function UserNode({ data }) {
         type="source"
         size={sourceHandleTypeSize}
         id="sourceMultisig"
+        position={Position.Right}
+      />
+      <HandleWraper
+        type="source"
+        size={sourceHandleTypeSize}
+        id="sourceSub"
         position={Position.Right}
       />
     </NodeWrap>

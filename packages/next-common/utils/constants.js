@@ -168,7 +168,7 @@ export const NAV_MENU_TYPE = {
 };
 
 export const RELATIONSHIP_NODE_TYPE = {
-  Signatory: "Signatory",
-  Proxied: "Proxied",
-  Received: "Received",
+  Multisig: "Multisig",
+  Proxy: "Proxy",
+  Identity: "Identity",
 };

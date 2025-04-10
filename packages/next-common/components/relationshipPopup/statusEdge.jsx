@@ -113,18 +113,22 @@ export default function StatusEdge({
 }
 
 function TooltipsContent({ type, ...rest }) {
-  if (type === "Signatory") {
-    return <SignatoryTipContent {...rest} />;
+  if (type === "Multisig") {
+    return <MultisigTipContent {...rest} />;
   }
 
-  if (type === "Proxied" || type === "Received") {
-    return <ProxiedTipContent {...rest} />;
+  if (type === "Proxy") {
+    return <ProxyTipContent {...rest} />;
+  }
+
+  if (type === "Identity") {
+    return <IdentityTipContent {...rest} />;
   }
 
   return null;
 }
 
-function SignatoryTipContent({ source, target }) {
+function MultisigTipContent({ source, target }) {
   return (
     <div className="flex gap-x-1 items-center">
       <DisplayUser id={source} className="flex text12Medium text-white" />
@@ -134,13 +138,33 @@ function SignatoryTipContent({ source, target }) {
   );
 }
 
-function ProxiedTipContent({ source, target, value = "" }) {
+function ProxyTipContent({ source, target, value = "" }) {
   return (
     <div className="flex gap-x-1 items-center">
       <DisplayUser id={source} className="flex text12Medium text-white" />
       <span>can submit extrinsics on behalf of</span>
       <DisplayUser id={target} className="flex text12Medium text-white" />
-      <span>with proxy type `{value}`</span>
+      <span>with proxy type {value}</span>
+    </div>
+  );
+}
+
+function IdentityTipContent({ source, target, value }) {
+  if (value === "Sub") {
+    return (
+      <div className="flex gap-x-1 items-center">
+        <DisplayUser id={target} className="flex text12Medium text-white" />
+        <span>has a sub identity of</span>
+        <DisplayUser id={source} className="flex text12Medium text-white" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex gap-x-1 items-center">
+      <DisplayUser id={source} className="flex text12Medium text-white" />
+      <span>has the parent identity of</span>
+      <DisplayUser id={target} className="flex text12Medium text-white" />
     </div>
   );
 }
