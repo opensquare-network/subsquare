@@ -1,9 +1,10 @@
+import React from "react";
 import Duration from "next-common/components/duration";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
-import { toPrecision } from "next-common/utils";
+import { isSameAddress, toPrecision } from "next-common/utils";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 import {
@@ -12,11 +13,32 @@ import {
   Value,
 } from "next-common/components/referenda/tally/styled";
 import { InfoAsset, InfoDocs } from "@osn/icons/subsquare";
+import { cn } from "next-common/utils";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useFellowshipMemberDetailAddr from "next-common/hooks/collectives/member/detail";
+import Register from "next-common/components/fellowship/members/detail/actions/register";
 
 function Wrapper({ children }) {
   return (
     <div className="flex flex-col w-full pt-[24px] border-t border-neutral300 gap-[12px]">
       {children}
+    </div>
+  );
+}
+
+function ActionsWrapper({ children, className = "" }) {
+  return (
+    <div
+      className={cn(
+        "flex",
+        "justify-end",
+        "items-center",
+        "mt-2",
+        "gap-x-4",
+        className,
+      )}
+    >
+      {React.Children.map(children, (child) => React.cloneElement(child))}
     </div>
   );
 }
@@ -116,8 +138,23 @@ function MemberSalary({ address, member }) {
         totalPaid={claimantCycleStats?.totalSalary || 0}
         joinedCycles={claimantCycleStats?.cycles || 0}
       />
+      <MyActionsComponentGuard>
+        <ActionsWrapper>
+          <Register />
+        </ActionsWrapper>
+      </MyActionsComponentGuard>
     </Wrapper>
   );
+}
+
+function MyActionsComponentGuard({ children }) {
+  const currentUserAddress = useRealAddress();
+  const address = useFellowshipMemberDetailAddr();
+  if (isSameAddress(currentUserAddress, address)) {
+    return children;
+  } else {
+    return null;
+  }
 }
 
 export default function Salary({ address }) {
