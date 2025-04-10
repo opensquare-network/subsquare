@@ -31,17 +31,6 @@ function TreasurySpendContent() {
         <TreasurySpendDetail />
         <TreasurySpendPayout />
         <TreasurySpeedsDetailMultiTabs />
-        {/* <DetailMultiTabs
-          metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
-          timeline={
-            <Timeline
-              data={timelineData}
-              indent={false}
-              compact={isTimelineCompact}
-            />
-          }
-          timelineCount={timelineData.length}
-        /> */}
       </ContentWithComment>
     </MaybeSimaContent>
   );

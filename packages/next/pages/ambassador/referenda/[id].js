@@ -9,11 +9,7 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { EmptyList } from "next-common/utils/constants";
-import {
-  PostProvider,
-  useOnchainData,
-  usePost,
-} from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -22,10 +18,7 @@ import AmbassadorBreadcrumb from "next-common/components/ambassador/breadcrumb";
 import { useTrack } from "next-common/context/post/gov2/track";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
-import React from "react";
 import AmbassadorReferendaDetail from "next-common/components/detail/ambassador";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -33,28 +26,13 @@ import { OffChainArticleActionsProvider } from "next-common/noSima/context/artic
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
-import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
-
-const Gov2ReferendumMetadata = dynamicClientOnly(() =>
-  import("next-common/components/gov2/referendum/metadata"),
-);
-
-const Timeline = dynamicClientOnly(() =>
-  import("../../../components/gov2/timeline"),
-);
-
-const Gov2ReferendumCall = dynamicClientOnly(() =>
-  import("next-common/components/gov2/referendum/call"),
-);
+import AmbassadorReferendaDetailMultiTabs from "components/tabs/ambassadorReferendaDetailMultiTabs";
 
 function AmbassadorContent() {
   const post = usePost();
   const { ambassadorParams } = usePageProps();
 
   useSubReferendumInfo("ambassadorReferenda");
-  const info = useReferendumInfo();
-  const onchainData = useOnchainData();
-  const proposal = onchainData?.proposal ?? {};
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
@@ -64,18 +42,7 @@ function AmbassadorContent() {
           <ContentWithComment>
             <AmbassadorReferendaDetail />
             <FellowshipReferendumSideBar />
-            <DetailMultiTabs
-              call={
-                (proposal?.call || proposal.inline) && <Gov2ReferendumCall />
-              }
-              metadata={
-                <Gov2ReferendumMetadata
-                  info={info}
-                  pallet="fellowshipReferenda"
-                />
-              }
-              timeline={<Timeline trackInfo={post?.onchainData?.trackInfo} />}
-            />
+            <AmbassadorReferendaDetailMultiTabs />
           </ContentWithComment>
         </CollectivesProvider>
       </OffChainCommentActionsProvider>
