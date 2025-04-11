@@ -6,7 +6,7 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import EditAvatarIconButton from "next-common/components/editAvatarIconButton";
-import useCanSetProfileAvatar from "next-common/hooks/profile/useCanSetProfileAvatar";
+import useProfileAvatarPermissions from "next-common/hooks/profile/useProfileAvatarPermissions";
 export function useProfileBannerUrl() {
   const { isDark } = useTheme();
   const filename = `imgBannerProfile${isDark ? "Dark" : "Light"}.webp`;
@@ -17,7 +17,7 @@ export function useProfileBannerUrl() {
 export default function ProfileHeaderWithBanner() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
-  const canSetAvatar = useCanSetProfileAvatar();
+  const { isSelf, isProxyAccount } = useProfileAvatarPermissions();
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
   const bannerUrl = useProfileBannerUrl();
@@ -35,7 +35,9 @@ export default function ProfileHeaderWithBanner() {
       >
         <div className="w-[96px] h-[96px] rounded-[100px] border border-neutral300 bg-neutral100 relative">
           <DisplayUserAvatar address={address} size={94} />
-          {canSetAvatar && <EditAvatarIconButton />}
+          {(isSelf || isProxyAccount) && (
+            <EditAvatarIconButton isProxy={isProxyAccount} />
+          )}
         </div>
       </div>
     </div>

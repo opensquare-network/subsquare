@@ -4,17 +4,17 @@ import useProfileAddress from "next-common/components/profile/useProfileAddress"
 import { isSameAddress } from "next-common/utils";
 import { useContextApi } from "next-common/context/api";
 
-export default function useCanSetProfileAvatar() {
+export default function useProfileAvatarPermissions() {
   const profileAddress = useProfileAddress();
   const realAddress = useRealAddress();
   const api = useContextApi();
+
+  const [isProxyAccount, setIsProxyAccount] = useState(false);
 
   const isSelf = useMemo(
     () => isSameAddress(realAddress, profileAddress),
     [realAddress, profileAddress],
   );
-
-  const [isProxyAccount, setIsProxyAccount] = useState(false);
 
   useEffect(() => {
     if (
@@ -45,13 +45,9 @@ export default function useCanSetProfileAvatar() {
 
   return useMemo(() => {
     if (!realAddress || !profileAddress) {
-      return false;
+      return { isSelf: false, isProxyAccount: false };
     }
 
-    if (isSelf) {
-      return true;
-    }
-
-    return isProxyAccount;
+    return { isSelf, isProxyAccount };
   }, [realAddress, profileAddress, isSelf, isProxyAccount]);
 }
