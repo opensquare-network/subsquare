@@ -16,7 +16,7 @@ const PublishAvatarPopup = dynamicPopup(() => import("./publishAvatarPopup"));
 
 const UnsetAvatarPopup = dynamicPopup(() => import("./unsetAvatarPopup"));
 
-export function EditAvatar({ setImageFile, setImageDataUrl }) {
+export function EditAvatar({ setImageFile, setImageDataUrl, children = null }) {
   const inputEl = useRef();
 
   const handleSelectFile = () => {
@@ -54,26 +54,29 @@ export function EditAvatar({ setImageFile, setImageDataUrl }) {
     }
   };
 
+  const child = children || (
+    <div
+      className={cn(
+        "absolute bottom-0 right-0",
+        "flex justify-center items-center",
+        "bg-neutral100 border border-neutral400 rounded-full w-[32px] h-[32px]",
+        "cursor-pointer",
+      )}
+    >
+      <SystemEdit2 className="w-[16px] h-[16px]" />
+    </div>
+  );
+
   return (
     <>
-      <div
-        className={cn(
-          "absolute bottom-0 right-0",
-          "flex justify-center items-center",
-          "bg-neutral100 border border-neutral400 rounded-full w-[32px] h-[32px]",
-          "cursor-pointer",
-        )}
-        onClick={handleSelectFile}
-      >
-        <SystemEdit2 className="w-[16px] h-[16px]" />
-        <input
-          className="hidden"
-          type="file"
-          ref={inputEl}
-          accept="image/*"
-          onChange={onSelectFile}
-        />
-      </div>
+      <div onClick={handleSelectFile}>{child}</div>
+      <input
+        className="hidden"
+        type="file"
+        ref={inputEl}
+        accept="image/*"
+        onChange={onSelectFile}
+      />
     </>
   );
 }
