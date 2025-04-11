@@ -20,6 +20,12 @@ function MemberPromotionTodoImpl({ promotionEvidences, memberOrCandidate }) {
     return null;
   }
 
+  let href = {
+    member: "/fellowship/members?evidence_only=true&wish=promotion",
+    candidate:
+      "/fellowship/members?tab=candidates&evidence_only=true&wish=promotion",
+  }[memberOrCandidate];
+
   return (
     <TodoWrapper>
       <TodoTag>Membership</TodoTag>
@@ -28,7 +34,7 @@ function MemberPromotionTodoImpl({ promotionEvidences, memberOrCandidate }) {
           className="text-theme500 cursor-pointer"
           target="_blank"
           rel="noreferrer"
-          href="/fellowship/members?evidence_only=true&wish=promotion"
+          href={href}
         >
           {count} {pluralize(memberOrCandidate, count)}
         </a>
