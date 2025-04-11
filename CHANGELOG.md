@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.6.2
+
+date: 2025-04-11
+
+- [Big] Enable users to use profile page as their landing page
+    - Show relationships(proxy, multisig, identity) of the profile address with a flow chart.
+    - Show delegation panel on profile page for users who have delegation announcement.
+    - Profile page components redesign and layout refactor.
+- Fellowship
+    - [Medium] Add promotion/retention wishes todo for members and candidates.
+    - Implement salary register and payout on fellowship member detail page.
+- Add attributes to make profile posted tabs recognized by vimium.
+- Dynamic import some components that don't need SSR.
+- Add a new tab on referendum detail page to show report from OG tracker.
+- Enable comments filtering by on-chain identity.
+- Add HDX icon for hydration asset.
+- Decode EVM call for hydration.
+- Update zkverify testnet.
+- Upgrade dependency to @polkadot/api.
+- Upgrade dependency to vite.
+- Set global font weight to 500.
+- Code refactor and other style fixes.
+
 # 4.6.1
 
 date: 2025-04-01
