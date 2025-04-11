@@ -13,8 +13,8 @@ import { useCollectivesContext } from "next-common/context/collectives/collectiv
 import { isSameAddress } from "next-common/utils";
 import useClaimantsFellowshipUpdateFunc from "next-common/hooks/fellowship/salary/useClaimantsUpdateFunc";
 
-const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
-  import("next-common/components/fellowship/salary/actions/register/popup"),
+const FellowshipSalaryRegisterPopup = dynamicPopup(
+  () => import("next-common/components/fellowship/salary/actions/register/popup"),
 );
 
 function useMySalary() {
