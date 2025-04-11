@@ -54,7 +54,7 @@ export function EditAvatar({ setImageFile, setImageDataUrl, children = null }) {
     }
   };
 
-  const child = children || (
+  let child = (
     <div
       className={cn(
         "absolute bottom-0 right-0",
@@ -62,14 +62,19 @@ export function EditAvatar({ setImageFile, setImageDataUrl, children = null }) {
         "bg-neutral100 border border-neutral400 rounded-full w-[32px] h-[32px]",
         "cursor-pointer",
       )}
+      onClick={handleSelectFile}
     >
       <SystemEdit2 className="w-[16px] h-[16px]" />
     </div>
   );
 
+  if (children) {
+    child = <div onClick={handleSelectFile}>{children}</div>;
+  }
+
   return (
     <>
-      <div onClick={handleSelectFile}>{child}</div>
+      {child}
       <input
         className="hidden"
         type="file"
