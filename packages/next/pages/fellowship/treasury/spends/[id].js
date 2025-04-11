@@ -5,46 +5,20 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { EmptyList } from "next-common/utils/constants";
-import { usePost } from "next-common/context/post";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import FellowshipTreasurySpendDetail from "next-common/components/detail/fellowship/treasury/spend";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTreasurySpendTimelineData";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
 import { CommonSpendPageWrapper } from "pages/treasury/spends/[id]";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-
-const TreasurySpendMetadata = dynamicClientOnly(() =>
-  import("next-common/components/detail/treasury/spend/metadata"),
-);
-
-const Timeline = dynamicClientOnly(() =>
-  import("next-common/components/timeline"),
-);
+import FellowshipTreasurySpeedsDetailMultiTabs from "components/tabs/fellowshipTreasurySpeedsDetailMultiTabs";
 
 function TreasurySpendContent() {
-  const detail = usePost();
-  const timelineData = useTreasurySpendTimelineData(detail?.onchainData);
-  const isTimelineCompact = useIsTimelineCompact();
-
   return (
     <MaybeSimaContent>
       <ContentWithComment>
         <FellowshipTreasurySpendDetail />
         <TreasurySpendPayout />
-        <DetailMultiTabs
-          metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
-          timeline={
-            <Timeline
-              data={timelineData}
-              indent={false}
-              compact={isTimelineCompact}
-            />
-          }
-          timelineCount={timelineData.length}
-        />
+        <FellowshipTreasurySpeedsDetailMultiTabs />
       </ContentWithComment>
     </MaybeSimaContent>
   );

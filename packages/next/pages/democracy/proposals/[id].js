@@ -10,26 +10,14 @@ import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useIsDemocracyProposalFinished from "next-common/hooks/democracy/proposal/useIsDemocracyProposalFinished";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import DemocracyReferendumCallProvider from "next-common/context/democracy/referenda/call";
-
-const Metadata = dynamicClientOnly(() =>
-  import("next-common/components/publicProposal/metadata"),
-);
-const DemocracyPublicProposalCall = dynamicClientOnly(() =>
-  import("next-common/components/publicProposal/call"),
-);
-const Timeline = dynamicClientOnly(() =>
-  import("components/publicProposal/timeline"),
-);
+import DemocracyPublicProposalsDetailMultiTabs from "components/tabs/democracyPublicProposalsDetailMultiTabs";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -50,8 +38,6 @@ function PublicProposalContent() {
     ? lastTimelineBlockHeight - 1
     : undefined;
 
-  const call = publicProposal?.preImage?.call || publicProposal?.call;
-
   return (
     <MaybeSimaContent>
       <ContentWithComment>
@@ -62,22 +48,7 @@ function PublicProposalContent() {
           hasCanceled={hasCanceled}
           atBlockHeight={secondsAtBlockHeight}
         />
-        <DetailMultiTabs
-          call={
-            call && (
-              <DemocracyReferendumCallProvider>
-                <DemocracyPublicProposalCall
-                  call={call}
-                  shorten={publicProposal.preImage?.shorten}
-                  proposalIndex={publicProposal.proposalIndex}
-                  referendumIndex={publicProposal.referendumIndex}
-                />
-              </DemocracyReferendumCallProvider>
-            )
-          }
-          metadata={<Metadata publicProposal={post?.onchainData} />}
-          timeline={<Timeline />}
-        />
+        <DemocracyPublicProposalsDetailMultiTabs />
       </ContentWithComment>
     </MaybeSimaContent>
   );

@@ -9,7 +9,6 @@ import CheckUnFinalized from "components/childBounty/checkUnFinalized";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -17,17 +16,9 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { useOnchainData } from "next-common/context/post";
-
-const Metadata = dynamicClientOnly(() =>
-  import("next-common/components/treasury/bounty/metadata"),
-);
-
-const Timeline = dynamicClientOnly(() =>
-  import("components/childBounty/timeline"),
-);
+import TreasuryChildBountiesDetailMultiTabs from "components/tabs/treasuryChildBountiesDetailMultiTabs";
 
 function ChildBountyContent() {
   const post = usePost();
@@ -39,16 +30,7 @@ function ChildBountyContent() {
         <ContentWithComment>
           <ChildBountyDetail />
           <ChildBountySidebar />
-          <DetailMultiTabs
-            metadata={
-              <Metadata
-                id={post?.index}
-                meta={post?.onchainData?.meta}
-                address={post?.onchainData?.address}
-              />
-            }
-            timeline={<Timeline onchainData={post?.onchainData} />}
-          />
+          <TreasuryChildBountiesDetailMultiTabs />
         </ContentWithComment>
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>

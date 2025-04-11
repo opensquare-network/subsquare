@@ -9,7 +9,6 @@ import CheckUnFinalized from "components/tip/checkUnFinalized";
 import TipDetail from "next-common/components/detail/treasury/tip";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
@@ -18,17 +17,13 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { TreasuryProvider } from "next-common/context/treasury";
 import CollectiveProvider, {
   collectivePallets,
 } from "next-common/context/collective";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
-
-const Metadata = dynamicClientOnly(() => import("components/tip/metadata"));
-
-const Timeline = dynamicClientOnly(() => import("components/tip/timeline"));
+import TreasuryTipsDetailMultiTabs from "components/tabs/treasuryTipsDetailMultiTabs";
 
 function TreasuryTipContent() {
   const post = usePost();
@@ -40,10 +35,7 @@ function TreasuryTipContent() {
         <ContentWithComment>
           <TipDetail />
           <Tipper />
-          <DetailMultiTabs
-            metadata={<Metadata tip={post?.onchainData} />}
-            timeline={<Timeline tip={post?.onchainData} />}
-          />
+          <TreasuryTipsDetailMultiTabs />
         </ContentWithComment>
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>

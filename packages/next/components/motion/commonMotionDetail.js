@@ -9,26 +9,13 @@ import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import MotionHead from "./head";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
-
-const Business = dynamicClientOnly(() => import("./business"));
-
-const Metadata = dynamicClientOnly(() => import("./metadata"));
-
-const Timeline = dynamicClientOnly(() => import("./timeline"));
-
-const CollectiveCall = dynamicClientOnly(() =>
-  import("next-common/components/collective/call"),
-);
+import MotionDetailMultiTabs from "components/tabs/motionDetailMultiTabs";
 
 export default function CommonMotionDetail({ head }) {
   const type = useDetailType();
   const postDispatch = usePostDispatch();
   const post = usePost();
-  const motionBusinessData = useCouncilMotionBusinessData();
 
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
@@ -49,20 +36,7 @@ export default function CommonMotionDetail({ head }) {
         <MaybeSimaDiscussionArticleContent />
       </DetailContentBase>
       <MotionSideBar motionHash={post.hash} motionIndex={post.motionIndex} />
-      <DetailMultiTabs
-        call={
-          post?.onchainData?.proposal && (
-            <CollectiveCall call={post.onchainData.proposal} />
-          )
-        }
-        business={
-          !!motionBusinessData?.length && (
-            <Business motion={post?.onchainData} />
-          )
-        }
-        metadata={<Metadata />}
-        timeline={<Timeline />}
-      />
+      <MotionDetailMultiTabs />
     </>
   );
 }

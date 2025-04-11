@@ -12,10 +12,6 @@ import { usePageProps } from "next-common/context/page";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import TreasurySpendDetail from "next-common/components/detail/treasury/spend";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTreasurySpendTimelineData";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import {
@@ -23,19 +19,10 @@ import {
   useTreasuryPallet,
 } from "next-common/context/treasury";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-
-const TreasurySpendMetadata = dynamicClientOnly(() =>
-  import("next-common/components/detail/treasury/spend/metadata"),
-);
-
-const Timeline = dynamicClientOnly(() =>
-  import("next-common/components/timeline"),
-);
+import TreasurySpeedsDetailMultiTabs from "components/tabs/treasurySpeedsDetailMultiTabs";
 
 function TreasurySpendContent() {
   const detail = usePost();
-  const timelineData = useTreasurySpendTimelineData(detail?.onchainData);
-  const isTimelineCompact = useIsTimelineCompact();
   useSubscribePostDetail(detail?.index);
 
   return (
@@ -43,17 +30,7 @@ function TreasurySpendContent() {
       <ContentWithComment>
         <TreasurySpendDetail />
         <TreasurySpendPayout />
-        <DetailMultiTabs
-          metadata={<TreasurySpendMetadata spend={detail?.onchainData} />}
-          timeline={
-            <Timeline
-              data={timelineData}
-              indent={false}
-              compact={isTimelineCompact}
-            />
-          }
-          timelineCount={timelineData.length}
-        />
+        <TreasurySpeedsDetailMultiTabs />
       </ContentWithComment>
     </MaybeSimaContent>
   );

@@ -8,18 +8,13 @@ import { getBannerUrl } from "next-common/utils/banner";
 import NonNullPost from "next-common/components/nonNullPost";
 import DetailItem from "../../../components/detailItem";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-
-const AnnouncementTimeline = dynamicClientOnly(() =>
-  import("next-common/components/alliance/announcement/timeline"),
-);
+import AllianceAnnouncementsDetailMultiTabs from "components/tabs/allianceAnnouncementsDetailMultiTabs";
 
 function AnnouncementContent() {
   const detail = usePost();
@@ -31,9 +26,7 @@ function AnnouncementContent() {
       <OffChainCommentActionsProvider>
         <ContentWithComment>
           <DetailItem />
-          <DetailMultiTabs
-            timeline={<AnnouncementTimeline data={detail?.onchainData} />}
-          />
+          <AllianceAnnouncementsDetailMultiTabs />
         </ContentWithComment>
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>
