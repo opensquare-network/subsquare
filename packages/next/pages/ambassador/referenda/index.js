@@ -13,12 +13,16 @@ import normalizeAmbassadorReferendaListItem from "next-common/utils/gov2/list/no
 import PostList from "next-common/components/postList";
 import businessCategory from "next-common/utils/consts/business/category";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { isCollectivesChain } from "next-common/utils/chain";
+import AmbassadorTrackSelect from "next-common/components/ambassador/ambassadorListLayout/trackSelect";
+import { useChain } from "next-common/context/chain";
 
 export default function AmbassadorReferendaPage({
   posts,
   ambassadorTracksDetail: detailedTracks,
   ambassadorSummary,
 }) {
+  const chain = useChain();
   const title = "Ambassador Referenda";
   const seoInfo = { title, desc: title };
 
@@ -33,6 +37,7 @@ export default function AmbassadorReferendaPage({
         title={title}
         description="All active and history ambassador referenda in various tracks."
         summary={<Gov2Summary summary={ambassadorSummary} />}
+        titleExtra={isCollectivesChain(chain) && <AmbassadorTrackSelect />}
       >
         <PostList
           title="List"
