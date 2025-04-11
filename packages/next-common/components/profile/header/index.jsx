@@ -5,6 +5,10 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import EditAvatarIconButton from "next-common/components/editAvatarIconButton";
+import AvatarPermissionsProvider, {
+  useAvatarPermissionsContext,
+} from "next-common/components/profile/header/context/avatarPermissionsContext";
 
 export function useProfileBannerUrl() {
   const { isDark } = useTheme();
@@ -13,9 +17,10 @@ export function useProfileBannerUrl() {
   return `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
 }
 
-export default function ProfileHeaderWithBanner() {
+function ProfileHeaderWithBannerInContext() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
+  const { isSelf, isProxyAccount } = useAvatarPermissionsContext();
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
   const bannerUrl = useProfileBannerUrl();
@@ -31,10 +36,19 @@ export default function ProfileHeaderWithBanner() {
           isMobile && "flex justify-center",
         )}
       >
-        <div className="w-[96px] h-[96px] rounded-[100px] border border-neutral300 bg-neutral100">
+        <div className="w-[96px] h-[96px] rounded-[100px] border border-neutral300 bg-neutral100 relative">
           <DisplayUserAvatar address={address} size={94} />
+          {(isSelf || isProxyAccount) && <EditAvatarIconButton />}
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProfileHeaderWithBanner() {
+  return (
+    <AvatarPermissionsProvider>
+      <ProfileHeaderWithBannerInContext />
+    </AvatarPermissionsProvider>
   );
 }
