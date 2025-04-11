@@ -44,9 +44,13 @@ export default function AvatarEditPopupContent({ isProxy = false }) {
   return (
     <>
       {isProxy && (
-        <GreyPanel className="text14Medium text-purple500 py-2.5 px-4 max-w-full bg-purple100 gap-x-2">
+        <GreyPanel className="text14Medium text-purple500 py-2.5 px-4 max-w-full bg-purple100 !block">
           You are setting avatar for
-          <AddressUser showAvatar={false} add={address} />
+          <AddressUser
+            showAvatar={false}
+            add={address}
+            className="!inline-block mx-2 text-textPrimary !text14Medium"
+          />
           as a proxy account.
         </GreyPanel>
       )}

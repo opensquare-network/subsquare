@@ -36,7 +36,10 @@ export default function ProfileHeaderWithBanner() {
         <div className="w-[96px] h-[96px] rounded-[100px] border border-neutral300 bg-neutral100 relative">
           <DisplayUserAvatar address={address} size={94} />
           {(isSelf || isProxyAccount) && (
-            <EditAvatarIconButton isProxy={isProxyAccount} />
+            <EditAvatarIconButton
+              title={"Set Avatar" + (isProxyAccount ? " As Proxy" : "")}
+              isProxy={isProxyAccount}
+            />
           )}
         </div>
       </div>
