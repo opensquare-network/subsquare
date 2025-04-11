@@ -1,7 +1,6 @@
 import { startCase, sumBy } from "lodash-es";
 import { MenuAmbassador } from "@osn/icons/subsquare";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
-import dividerConfig from "next-common/utils/consts/menu/common/divider";
 import getChainSettings from "next-common/utils/consts/settings";
 import { isCollectivesChain } from "next-common/utils/chain";
 
@@ -35,7 +34,7 @@ function getAmbassadorReferendaMenu(
       value: "ambassador-referenda",
       name: "Referenda",
       pathname: "/ambassador/referenda",
-      activeCount:totalActiveCount,
+      activeCount: totalActiveCount,
       extraMatchNavMenuActivePathnames: [
         "/ambassador",
         "/ambassador/tracks/[id]",
@@ -110,7 +109,6 @@ export function getAmbassadorMenu(ambassadorTracks = [], currentTrackId) {
     items: [
       getAmbassadorCoreMenu(),
       getAmbassadorSalaryMenu(),
-      dividerConfig,
       getAmbassadorReferendaMenu(
         ambassadorTracks,
         currentTrackId,
