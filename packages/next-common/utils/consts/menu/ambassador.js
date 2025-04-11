@@ -3,6 +3,7 @@ import { MenuAmbassador } from "@osn/icons/subsquare";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
 import dividerConfig from "next-common/utils/consts/menu/common/divider";
 import getChainSettings from "next-common/utils/consts/settings";
+import { isCollectivesChain } from "next-common/utils/chain";
 
 export const Names = {
   ambassador: "AMBASSADOR",
@@ -28,6 +29,20 @@ function getAmbassadorReferendaMenu(
   };
 
   const trackItems = ambassadorTracks.map(resolveAmbassadorTrackItem);
+
+  if (isCollectivesChain(process.env.NEXT_PUBLIC_CHAIN)) {
+    return {
+      value: "ambassador-referenda",
+      name: "Referenda",
+      pathname: "/ambassador/referenda",
+      activeCount:totalActiveCount,
+      extraMatchNavMenuActivePathnames: [
+        "/ambassador",
+        "/ambassador/tracks/[id]",
+      ],
+      hideItemsOnMenu: true,
+    };
+  }
 
   return {
     value: "ambassador-referenda",
