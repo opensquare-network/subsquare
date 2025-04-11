@@ -21,7 +21,7 @@ import { useBountyStatus } from "next-common/components/treasury/bounty/useBount
 import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { gov2TracksApi } from "next-common/services/url";
-import BountyDetailMultiTabs from "../../../components/bounty/bountyDetailMultiTabs";
+import TreasuryBountiesDetailMultiTabs from "components/tabs/treasuryBountiesDetailMultiTabs";
 
 function useBountyCurator(bountyIndex) {
   const status = useBountyStatus(bountyIndex);
@@ -50,7 +50,7 @@ function BountyContent() {
           <ContentWithComment>
             <BountyDetail />
             <BountySidebar />
-            <BountyDetailMultiTabs />
+            <TreasuryBountiesDetailMultiTabs />
           </ContentWithComment>
         </CuratorProvider>
       </OffChainCommentActionsProvider>

@@ -1,32 +1,29 @@
-import { usePost } from "next-common/context/post";
-import useBountyTimelineData from "./useBountyTimelineData";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
-import { usePageProps } from "next-common/context/page";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import Tabs from "next-common/components/tabs";
-import { useMemo } from "react";
-import { useTimelineData } from "next-common/context/post";
 import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import { useRouter } from "next/router";
+import { useMemo } from "react";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { usePost } from "next-common/context/post";
+import { usePageProps } from "next-common/context/page";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
+import useBountyTimelineData from "components/bounty/useBountyTimelineData";
 
-const ChildBountiesTable = dynamicClientOnly(() =>
-  import("./childBountiesTable"),
-);
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/bounty/metadata"),
 );
 const Timeline = dynamicClientOnly(() =>
   import("next-common/components/timeline"),
 );
+const ChildBountiesTable = dynamicClientOnly(() =>
+  import("components/bounty/childBountiesTable"),
+);
 
-export default function BountyDetailMultiTabs() {
-  const { childBounties } = usePageProps();
-  const detail = usePost();
-  const timelineData = useTimelineData();
-
-  const bountyTimelineData = useBountyTimelineData(detail?.onchainData);
-  const isTimelineCompact = useIsTimelineCompact();
+export default function TreasuryBountiesDetailMultiTabs() {
   const router = useRouter();
+  const detail = usePost();
+  const { childBounties } = usePageProps();
+  const isTimelineCompact = useIsTimelineCompact();
+  const timelineData = useBountyTimelineData(detail?.onchainData);
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -50,7 +47,7 @@ export default function BountyDetailMultiTabs() {
       {
         value: "timeline",
         label: "Timeline",
-        activeCount: bountyTimelineData.length || timelineData?.length,
+        activeCount: timelineData?.length,
         content: (
           <div>
             <TimelineModeTabs />
@@ -62,7 +59,6 @@ export default function BountyDetailMultiTabs() {
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
-    bountyTimelineData.length,
     childBounties,
     detail?.bountyIndex,
     detail.onchainData?.address,
@@ -72,7 +68,7 @@ export default function BountyDetailMultiTabs() {
     timelineData,
   ]);
 
-  function onTabClick(tab) {
+  function handleTabClick(tab) {
     router.replace(
       {
         query: {
@@ -89,8 +85,8 @@ export default function BountyDetailMultiTabs() {
     <div>
       <Tabs
         activeTabValue={activeTabValue}
+        onTabClick={handleTabClick}
         tabs={tabs}
-        onTabClick={onTabClick}
       />
     </div>
   );
