@@ -29,7 +29,7 @@ export default function AllianceAnnouncementsDetailMultiTabs() {
           </div>
         ),
       },
-    ].filter(Boolean);
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [detail?.onchainData, router.query.tab, timelineData?.length]);

@@ -43,7 +43,7 @@ export default function TreasuryChildBountiesDetailMultiTabs() {
           </div>
         ),
       },
-    ].filter(Boolean);
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [post?.index, post?.onchainData, router.query.tab, timelineData?.length]);

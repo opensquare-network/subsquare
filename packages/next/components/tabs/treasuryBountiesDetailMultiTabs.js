@@ -27,12 +27,16 @@ export default function TreasuryBountiesDetailMultiTabs() {
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
-      !!childBounties.total && {
-        value: "child_bounties",
-        label: "Child Bounties",
-        activeCount: childBounties.total,
-        content: <ChildBountiesTable {...{ childBounties }} />,
-      },
+      ...(childBounties.total
+        ? [
+            {
+              value: "child_bounties",
+              label: "Child Bounties",
+              activeCount: childBounties.total,
+              content: <ChildBountiesTable {...{ childBounties }} />,
+            },
+          ]
+        : []),
       {
         value: "metadata",
         label: "Metadata",
@@ -55,7 +59,7 @@ export default function TreasuryBountiesDetailMultiTabs() {
           </div>
         ),
       },
-    ].filter(Boolean);
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [

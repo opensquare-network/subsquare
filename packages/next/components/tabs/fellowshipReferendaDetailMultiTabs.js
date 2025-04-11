@@ -28,17 +28,19 @@ export default function FellowshipReferendaDetailMultiTabs() {
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
-      proposal?.call ||
-        (proposal.inline && {
-          value: "call",
-          label: "Call",
-          content: (
-            <ReferendumCallProvider>
-              <Gov2ReferendumCall />
-            </ReferendumCallProvider>
-          ),
-        }),
-
+      ...(proposal?.call || proposal.inline
+        ? [
+            {
+              value: "call",
+              label: "Call",
+              content: (
+                <ReferendumCallProvider>
+                  <Gov2ReferendumCall />
+                </ReferendumCallProvider>
+              ),
+            },
+          ]
+        : []),
       {
         value: "metadata",
         label: "Metadata",
@@ -58,7 +60,7 @@ export default function FellowshipReferendaDetailMultiTabs() {
           </div>
         ),
       },
-    ].filter(Boolean);
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
@@ -69,6 +71,8 @@ export default function FellowshipReferendaDetailMultiTabs() {
     router.query.tab,
     timelineData?.length,
   ]);
+
+  // console.log(tabs);
 
   function handleTabClick(tab) {
     router.replace(

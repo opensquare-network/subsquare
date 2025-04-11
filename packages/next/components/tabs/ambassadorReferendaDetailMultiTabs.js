@@ -29,11 +29,15 @@ export default function AmbassadorReferendaDetailMultiTabs() {
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
-      (proposal?.call || proposal.inline) && {
-        value: "call",
-        label: "Call",
-        content: <Gov2ReferendumCall />,
-      },
+      ...(proposal?.call || proposal.inline
+        ? [
+            {
+              value: "call",
+              label: "Call",
+              content: <Gov2ReferendumCall />,
+            },
+          ]
+        : []),
 
       {
         value: "metadata",

@@ -41,17 +41,21 @@ export default function ReferendumDetailMultiTabs() {
   const referendumDetailForOGTrack = useOgTrackerReferendumDetail();
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
-      proposal?.call && {
-        value: "call",
-        label: "Call",
-        content: (
-          <>
-            <ReferendumCallProvider>
-              <Gov2ReferendumCall />
-            </ReferendumCallProvider>
-          </>
-        ),
-      },
+      ...(proposal?.call
+        ? [
+            {
+              value: "call",
+              label: "Call",
+              content: (
+                <>
+                  <ReferendumCallProvider>
+                    <Gov2ReferendumCall />
+                  </ReferendumCallProvider>
+                </>
+              ),
+            },
+          ]
+        : []),
       {
         value: "metadata",
         label: "Metadata",
@@ -91,23 +95,28 @@ export default function ReferendumDetailMultiTabs() {
           </div>
         ),
       },
-      isPolkadotChain(chain) &&
-        referendumDetailForOGTrack.detail && {
-          value: "report",
-          label: "Report",
-          lazy: true,
-          activeCount: (
-            <span className="ml-1 rounded-full py-0.5 px-2 text12Medium text-theme500 bg-theme100">
-              new
-            </span>
-          ),
-          content: (
-            <div className="space-y-4">
-              <ReferendumReport detail={referendumDetailForOGTrack.detail} />
-            </div>
-          ),
-        },
-    ].filter(Boolean);
+      ...(isPolkadotChain(chain) && referendumDetailForOGTrack.detail
+        ? [
+            {
+              value: "report",
+              label: "Report",
+              lazy: true,
+              activeCount: (
+                <span className="ml-1 rounded-full py-0.5 px-2 text12Medium text-theme500 bg-theme100">
+                  new
+                </span>
+              ),
+              content: (
+                <div className="space-y-4">
+                  <ReferendumReport
+                    detail={referendumDetailForOGTrack.detail}
+                  />
+                </div>
+              ),
+            },
+          ]
+        : []),
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [

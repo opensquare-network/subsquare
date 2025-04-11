@@ -93,7 +93,7 @@ export default function DemocracyReferendaDetailMultiTabs() {
           </div>
         ),
       },
-    ].filter(Boolean);
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [

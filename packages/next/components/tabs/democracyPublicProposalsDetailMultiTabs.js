@@ -28,20 +28,24 @@ export default function DemocracyPublicProposalsDetailMultiTabs() {
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
-      call && {
-        value: "call",
-        label: "Call",
-        content: (
-          <DemocracyReferendumCallProvider>
-            <DemocracyPublicProposalCall
-              call={call}
-              shorten={publicProposal.preImage?.shorten}
-              proposalIndex={publicProposal.proposalIndex}
-              referendumIndex={publicProposal.referendumIndex}
-            />
-          </DemocracyReferendumCallProvider>
-        ),
-      },
+      ...(call
+        ? [
+            {
+              value: "call",
+              label: "Call",
+              content: (
+                <DemocracyReferendumCallProvider>
+                  <DemocracyPublicProposalCall
+                    call={call}
+                    shorten={publicProposal.preImage?.shorten}
+                    proposalIndex={publicProposal.proposalIndex}
+                    referendumIndex={publicProposal.referendumIndex}
+                  />
+                </DemocracyReferendumCallProvider>
+              ),
+            },
+          ]
+        : []),
       {
         value: "metadata",
         label: "Metadata",
@@ -58,7 +62,7 @@ export default function DemocracyPublicProposalsDetailMultiTabs() {
           </div>
         ),
       },
-    ].filter(Boolean);
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [

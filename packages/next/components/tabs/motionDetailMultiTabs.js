@@ -21,16 +21,24 @@ export default function MotionDetailMultiTabs() {
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
-      !!motionBusinessData?.length && {
-        value: "business",
-        label: "Business",
-        content: <Business motion={post?.onchainData} />,
-      },
-      post?.onchainData?.proposal && {
-        value: "call",
-        label: "Call",
-        content: <CollectiveCall call={post.onchainData.proposal} />,
-      },
+      ...(motionBusinessData?.length
+        ? [
+            {
+              value: "business",
+              label: "Business",
+              content: <Business motion={post?.onchainData} />,
+            },
+          ]
+        : []),
+      ...(post?.onchainData?.proposal
+        ? [
+            {
+              value: "call",
+              label: "Call",
+              content: <CollectiveCall call={post.onchainData.proposal} />,
+            },
+          ]
+        : []),
       { value: "metadata", label: "Metadata", content: <Metadata /> },
       {
         value: "timeline",
@@ -44,7 +52,7 @@ export default function MotionDetailMultiTabs() {
           </div>
         ),
       },
-    ].filter(Boolean);
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [

@@ -44,7 +44,7 @@ export default function TreasurySpeedsDetailMultiTabs() {
           </div>
         ),
       },
-    ].filter(Boolean);
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [detail?.onchainData, isTimelineCompact, router.query.tab, timelineData]);

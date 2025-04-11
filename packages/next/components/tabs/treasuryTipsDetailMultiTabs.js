@@ -33,7 +33,7 @@ export default function TreasuryTipsDetailMultiTabs() {
           </div>
         ),
       },
-    ].filter(Boolean);
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [post?.onchainData, router.query.tab, timelineData?.length]);

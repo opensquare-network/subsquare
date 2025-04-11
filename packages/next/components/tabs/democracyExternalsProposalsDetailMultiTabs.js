@@ -38,20 +38,24 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
         label: "Business",
         content: <Business external={detail?.onchainData} />,
       },
-      call && {
-        value: "call",
-        label: "Call",
-        content: (
-          <DemocracyReferendumCallProvider>
-            <DemocracyExternalProposalCall
-              call={call}
-              shorten={external.preImage.shorten}
-              motionIndex={external.motionIndex}
-              referendumIndex={external.referendumIndex}
-            />
-          </DemocracyReferendumCallProvider>
-        ),
-      },
+      ...(call
+        ? [
+            {
+              value: "call",
+              label: "Call",
+              content: (
+                <DemocracyReferendumCallProvider>
+                  <DemocracyExternalProposalCall
+                    call={call}
+                    shorten={external.preImage.shorten}
+                    motionIndex={external.motionIndex}
+                    referendumIndex={external.referendumIndex}
+                  />
+                </DemocracyReferendumCallProvider>
+              ),
+            },
+          ]
+        : []),
       {
         value: "metadata",
         label: "Metadata",
@@ -68,7 +72,7 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
           </div>
         ),
       },
-    ].filter(Boolean);
+    ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
