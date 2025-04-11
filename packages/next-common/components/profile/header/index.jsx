@@ -38,11 +38,7 @@ function ProfileHeaderWithBannerInContext() {
       >
         <div className="w-[96px] h-[96px] rounded-[100px] border border-neutral300 bg-neutral100 relative">
           <DisplayUserAvatar address={address} size={94} />
-          {(isSelf || isProxyAccount) && (
-            <EditAvatarIconButton
-              title={"Set Avatar" + (isProxyAccount ? " As Proxy" : "")}
-            />
-          )}
+          {(isSelf || isProxyAccount) && <EditAvatarIconButton />}
         </div>
       </div>
     </div>

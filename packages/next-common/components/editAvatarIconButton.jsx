@@ -6,7 +6,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const AvatarEditPopup = dynamicPopup(() => import("./avatarEditPopup"));
 
-export default function EditAvatarIconButton({ children = null }) {
+export default function EditAvatarIconButton() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   return (
     <>
@@ -20,7 +20,6 @@ export default function EditAvatarIconButton({ children = null }) {
           onClick={() => setIsPopupOpen(true)}
         >
           <SystemEdit2 className="w-[16px] h-[16px]" />
-          {children}
         </div>
       </Tooltip>
       {isPopupOpen && <AvatarEditPopup onClose={() => setIsPopupOpen(false)} />}
