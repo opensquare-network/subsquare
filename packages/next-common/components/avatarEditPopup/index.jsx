@@ -10,7 +10,7 @@ export default function AvatarEditPopup({
   return (
     <SignerPopupWrapper>
       <Popup title={title} onClose={onClose}>
-        <AvatarEditPopupContent />
+        <AvatarEditPopupContent closePopup={onClose} />
       </Popup>
     </SignerPopupWrapper>
   );

@@ -12,8 +12,9 @@ import { AvatarImg } from "next-common/components/user/styled";
 import useAvatarInfo from "next-common/hooks/useAvatarInfo";
 import { useAvatarUnset } from "next-common/components/setting/unsetAvatarPopup";
 import { useAvatarPermissionsContext } from "next-common/components/profile/header/context/avatarPermissionsContext";
+import { noop } from "lodash-es";
 
-export default function AvatarEditPopupContent() {
+export default function AvatarEditPopupContent({ closePopup = noop }) {
   const { isProxyAccount: isProxy } = useAvatarPermissionsContext();
   const address = useProfileAddress();
   const proxyAddress = isProxy ? address : null;
@@ -36,11 +37,19 @@ export default function AvatarEditPopupContent() {
   const { isLoading: unsetLoading, unsetAvatar } = useAvatarUnset(proxyAddress);
 
   const save = () => {
-    submitAvatar();
+    submitAvatar()
+      .then(() => {
+        closePopup();
+      })
+      .catch(noop);
   };
 
   const reset = () => {
-    unsetAvatar();
+    unsetAvatar()
+      .then(() => {
+        closePopup();
+      })
+      .catch(noop);
   };
 
   return (
