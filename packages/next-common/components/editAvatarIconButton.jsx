@@ -6,10 +6,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const AvatarEditPopup = dynamicPopup(() => import("./avatarEditPopup"));
 
-export default function EditAvatarIconButton({
-  children = null,
-  isProxy = false,
-}) {
+export default function EditAvatarIconButton({ children = null }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   return (
     <>
@@ -26,12 +23,7 @@ export default function EditAvatarIconButton({
           {children}
         </div>
       </Tooltip>
-      {isPopupOpen && (
-        <AvatarEditPopup
-          isProxy={isProxy}
-          onClose={() => setIsPopupOpen(false)}
-        />
-      )}
+      {isPopupOpen && <AvatarEditPopup onClose={() => setIsPopupOpen(false)} />}
     </>
   );
 }

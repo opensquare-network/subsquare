@@ -11,8 +11,10 @@ import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { AvatarImg } from "next-common/components/user/styled";
 import useAvatarInfo from "next-common/hooks/useAvatarInfo";
 import { useAvatarUnset } from "next-common/components/setting/unsetAvatarPopup";
+import { useAvatarPermissionsContext } from "next-common/components/profile/header/context/avatarPermissionsContext";
 
-export default function AvatarEditPopupContent({ isProxy = false }) {
+export default function AvatarEditPopupContent() {
+  const { isProxyAccount: isProxy } = useAvatarPermissionsContext();
   const address = useProfileAddress();
   const proxyAddress = isProxy ? address : null;
 

@@ -6,7 +6,10 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import EditAvatarIconButton from "next-common/components/editAvatarIconButton";
-import useProfileAvatarPermissions from "next-common/hooks/profile/useProfileAvatarPermissions";
+import AvatarPermissionsProvider, {
+  useAvatarPermissionsContext,
+} from "next-common/components/profile/header/context/avatarPermissionsContext";
+
 export function useProfileBannerUrl() {
   const { isDark } = useTheme();
   const filename = `imgBannerProfile${isDark ? "Dark" : "Light"}.webp`;
@@ -14,10 +17,10 @@ export function useProfileBannerUrl() {
   return `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
 }
 
-export default function ProfileHeaderWithBanner() {
+function ProfileHeaderWithBannerInContext() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
-  const { isSelf, isProxyAccount } = useProfileAvatarPermissions();
+  const { isSelf, isProxyAccount } = useAvatarPermissionsContext();
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
   const bannerUrl = useProfileBannerUrl();
@@ -38,11 +41,18 @@ export default function ProfileHeaderWithBanner() {
           {(isSelf || isProxyAccount) && (
             <EditAvatarIconButton
               title={"Set Avatar" + (isProxyAccount ? " As Proxy" : "")}
-              isProxy={isProxyAccount}
             />
           )}
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProfileHeaderWithBanner() {
+  return (
+    <AvatarPermissionsProvider>
+      <ProfileHeaderWithBannerInContext />
+    </AvatarPermissionsProvider>
   );
 }
