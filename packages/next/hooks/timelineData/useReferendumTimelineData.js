@@ -66,7 +66,7 @@ function makeReferendumTimelineData(timeline, trackInfo) {
   });
 }
 
-export function useReferendumTimelineData() {
+export default function useReferendumTimelineData() {
   const timeline = useTimelineData();
   const onchainData = useOnchainData();
   const timelineData = useMemo(() => {
