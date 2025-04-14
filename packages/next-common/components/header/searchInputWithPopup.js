@@ -4,6 +4,7 @@ import SearchInputShortcut from "./searchInputShortcut";
 import { SystemSearch } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import useRefCallback from "next-common/hooks/useRefCallback";
+import SearchPopup from "next-common/components/header/search/popup";
 
 function SearchInputWithPopup({ shortcut = true, type }) {
   const [value, setValue] = useState("");
@@ -32,7 +33,10 @@ function SearchInputWithPopup({ shortcut = true, type }) {
             handleSearch();
           }
         }}
-        onFocus={() => setFocus(true)}
+        onFocus={() => {
+          setFocus(true);
+          setShowSearchPopup(true);
+        }}
         onBlur={() => setFocus(false)}
         prefix={<SystemSearch className="[&_path]:fill-textTertiary" />}
         suffix={
@@ -52,7 +56,9 @@ function SearchInputWithPopup({ shortcut = true, type }) {
         type={type}
         enterKeyHint="Search"
       />
-      {showSearchPopup && <></>}
+      {showSearchPopup && (
+        <SearchPopup onClose={() => setShowSearchPopup(false)} />
+      )}
     </>
   );
 }
