@@ -173,6 +173,7 @@ function createMultisigAddressRelationship(rootNode, address = []) {
     nodeDataMapper: (item) => ({
       address: item,
       badge: <BadgeInfo address={item} />,
+      pure: <DynamicPureProxy address={item} />,
     }),
     edgeDataMapper: () => ({
       type: RELATIONSHIP_NODE_TYPE.Multisig,
@@ -195,6 +196,7 @@ function createSignatoryMultisigRelationship(rootNode, signatoryMultisig = []) {
     nodeDataMapper: (item) => ({
       address: item.address,
       badge: createBadge(item),
+      pure: <DynamicPureProxy address={item} />,
     }),
     edgeDataMapper: () => ({
       type: RELATIONSHIP_NODE_TYPE.Multisig,
