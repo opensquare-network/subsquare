@@ -12,7 +12,7 @@ import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
 
 export const rootNodeId = "rootNode";
-const nodeInitialWidth = 240;
+const nodeInitialWidth = 280;
 const nodeInitialHeight = 80;
 
 function createBadge(multisig) {
