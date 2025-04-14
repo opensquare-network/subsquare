@@ -22,6 +22,7 @@ import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
 import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
+import polkadotPeople from "next-common/utils/consts/settings/polkadotPeople";
 import westendAssetHub from "next-common/utils/consts/settings/westendAssetHub";
 import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
 import shibuya from "next-common/utils/consts/settings/shibuya";
@@ -38,6 +39,7 @@ const optionalNodes =
 export const nodes = [
   polkadot,
   polkadotAssetHub,
+  polkadotPeople,
   kusama,
   kusamaAssetHub,
   acala,

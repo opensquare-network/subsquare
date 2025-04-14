@@ -44,6 +44,7 @@ import kusamaCoretime from "./kusamaCoretime";
 import polkadotCoretime from "./polkadotCoretime";
 import laos from "./laos";
 import laosTestnet from "./laosTestnet";
+import polkadotPeople from "./polkadotPeople";
 
 const settingsMap = {
   polkadot,
@@ -89,6 +90,7 @@ const settingsMap = {
   [paseoAssetHub.value]: paseoAssetHub,
   ajuna,
   [polkadotCoretime.value]: polkadotCoretime,
+  [polkadotPeople.value]: polkadotPeople,
   [kusamaCoretime.value]: kusamaCoretime,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };

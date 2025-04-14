@@ -22,6 +22,10 @@ export function isPolkadotAssetHubChain(chain) {
   return [Chains.polkadotAssetHub].includes(chain);
 }
 
+export function isPolkadotPeopleChain(chain) {
+  return [Chains.polkadotPeople].includes(chain);
+}
+
 export function isWestendAssetHubChain(chain) {
   return [Chains.westendAssetHub].includes(chain);
 }
@@ -32,6 +36,10 @@ export function isWestendChain(chain) {
 
 export function isKusamaAssetHubChain(chain) {
   return [Chains.kusamaAssetHub].includes(chain);
+}
+
+export function isKusamaPeopleChain(chain) {
+  return [Chains.kusamaPeople].includes(chain);
 }
 
 export function isKusamaChain(chain) {
@@ -45,6 +53,10 @@ export function isAssetHubChain(chain) {
     Chains.kusamaAssetHub,
     Chains.paseoAssetHub,
   ].includes(chain);
+}
+
+export function isPeopleChain(chain) {
+  return [Chains.polkadotPeople].includes(chain);
 }
 
 export function isAjunaChain(chain) {
@@ -114,6 +126,10 @@ export function getRelayChain(chain) {
     return Chains.paseo;
   } else if (isCollectivesChain(chain)) {
     return Chains.polkadot;
+  } else if (isPolkadotPeopleChain()) {
+    return Chains.polkadot;
+  } else if (isKusamaPeopleChain()) {
+    return Chains.kusama;
   }
 
   throw new Error("Unsupported relay chain");

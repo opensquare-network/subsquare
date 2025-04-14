@@ -18,6 +18,7 @@ import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
+import { peopleMenu } from "./people";
 import Data from "./data";
 
 export function getHomeMenu({
@@ -31,6 +32,7 @@ export function getHomeMenu({
   const integrationsMenu = [
     modules?.assethub && assetHubMenu,
     modules?.coretime && coretimeMenu,
+    modules?.people && peopleMenu,
   ].filter(Boolean);
 
   return [

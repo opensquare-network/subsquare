@@ -44,6 +44,7 @@ const Chains = {
   ajuna: "ajuna",
   kusamaCoretime: "kusama-coretime",
   polkadotCoretime: "polkadot-coretime",
+  polkadotPeople: "polkadot-people",
   laos: "laos",
   laosTestnet: "laos-testnet",
 };
