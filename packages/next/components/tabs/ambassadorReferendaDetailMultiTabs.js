@@ -25,7 +25,7 @@ export default function AmbassadorReferendaDetailMultiTabs() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const timelineData = useReferendumTimelineData();
-  const { component: timeLineTabSwitchComponent, timelineModeIsCompact } =
+  const { component: timeLineTabSwitchComponent, isCompact } =
     useTimelineTabSwitch();
 
   const { tabs, activeTabValue } = useMemo(() => {
@@ -54,7 +54,7 @@ export default function AmbassadorReferendaDetailMultiTabs() {
         content: (
           <div>
             {timeLineTabSwitchComponent}
-            <Timeline data={timelineData} compact={timelineModeIsCompact} />
+            <Timeline data={timelineData} compact={isCompact} />
           </div>
         ),
       },
@@ -67,7 +67,7 @@ export default function AmbassadorReferendaDetailMultiTabs() {
     proposal.inline,
     router.query.tab,
     timeLineTabSwitchComponent,
-    timelineModeIsCompact,
+    isCompact,
     timelineData,
   ]);
 

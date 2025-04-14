@@ -26,7 +26,7 @@ export default function FellowshipReferendaDetailMultiTabs() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
 
-  const { component: timeLineTabSwitchComponent, timelineModeIsCompact } =
+  const { component: timeLineTabSwitchComponent, isCompact } =
     useTimelineTabSwitch();
   const timelineData = useReferendumTimelineData();
 
@@ -59,7 +59,7 @@ export default function FellowshipReferendaDetailMultiTabs() {
         content: (
           <div>
             {timeLineTabSwitchComponent}
-            <Timeline data={timelineData} compact={timelineModeIsCompact} />
+            <Timeline data={timelineData} compact={isCompact} />
           </div>
         ),
       },
@@ -72,7 +72,7 @@ export default function FellowshipReferendaDetailMultiTabs() {
     proposal.inline,
     router.query.tab,
     timeLineTabSwitchComponent,
-    timelineModeIsCompact,
+    isCompact,
     timelineData,
   ]);
 

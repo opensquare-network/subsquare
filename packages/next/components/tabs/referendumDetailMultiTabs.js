@@ -39,7 +39,7 @@ export default function ReferendumDetailMultiTabs() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const referendumDetailForOGTrack = useOgTrackerReferendumDetail();
-  const { component: timeLineTabSwitchComponent, timelineModeIsCompact } =
+  const { component: timeLineTabSwitchComponent, isCompact } =
     useTimelineTabSwitch();
   const timelineData = useReferendumTimelineData();
 
@@ -72,7 +72,7 @@ export default function ReferendumDetailMultiTabs() {
         content: (
           <div>
             {timeLineTabSwitchComponent}
-            <Timeline data={timelineData} compact={timelineModeIsCompact} />
+            <Timeline data={timelineData} compact={isCompact} />
           </div>
         ),
       },
@@ -130,7 +130,7 @@ export default function ReferendumDetailMultiTabs() {
     referendumDetailForOGTrack.detail,
     router.query.tab,
     timeLineTabSwitchComponent,
-    timelineModeIsCompact,
+    isCompact,
     timelineData,
   ]);
 

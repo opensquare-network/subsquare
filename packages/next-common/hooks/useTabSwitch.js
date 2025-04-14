@@ -38,7 +38,7 @@ export function useTimelineTabSwitch() {
   const [timelineMode, setTimelineMode] = useTimelineMode();
   return {
     mode: timelineMode,
-    timelineModeIsCompact: timelineMode == "compact",
+    isCompact: timelineMode == "compact",
     component: (
       <TabSwitchWithTitle
         label="Timeline"
