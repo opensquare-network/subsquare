@@ -5,7 +5,7 @@ import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo
 import { useOnchainData } from "next-common/context/post";
 import ReferendumCallProvider from "next-common/context/referenda/call";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-import { useTimelineSwitch } from "next-common/hooks/useSwitch";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "hooks/timelineData";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
@@ -26,8 +26,8 @@ export default function FellowshipReferendaDetailMultiTabs() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
 
-  const { component: timeLineSwitchComponent, timeModeIsCompact } =
-    useTimelineSwitch();
+  const { component: timeLineTabSwitchComponent, timelineModeIsCompact } =
+    useTimelineTabSwitch();
   const timelineData = useReferendumTimelineData();
 
   const { tabs, activeTabValue } = useMemo(() => {
@@ -58,8 +58,8 @@ export default function FellowshipReferendaDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            {timeLineSwitchComponent}
-            <Timeline data={timelineData} compact={timeModeIsCompact} />
+            {timeLineTabSwitchComponent}
+            <Timeline data={timelineData} compact={timelineModeIsCompact} />
           </div>
         ),
       },
@@ -71,8 +71,8 @@ export default function FellowshipReferendaDetailMultiTabs() {
     proposal?.call,
     proposal.inline,
     router.query.tab,
-    timeLineSwitchComponent,
-    timeModeIsCompact,
+    timeLineTabSwitchComponent,
+    timelineModeIsCompact,
     timelineData,
   ]);
 

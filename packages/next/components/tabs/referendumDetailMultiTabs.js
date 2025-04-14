@@ -10,7 +10,7 @@ import { isPolkadotChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import { useRouter } from "next/router";
-import { useTimelineSwitch } from "next-common/hooks/useSwitch";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "hooks/timelineData";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
@@ -39,8 +39,8 @@ export default function ReferendumDetailMultiTabs() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const referendumDetailForOGTrack = useOgTrackerReferendumDetail();
-  const { component: timeLineSwitchComponent, timeModeIsCompact } =
-    useTimelineSwitch();
+  const { component: timeLineTabSwitchComponent, timelineModeIsCompact } =
+    useTimelineTabSwitch();
   const timelineData = useReferendumTimelineData();
 
   const { tabs, activeTabValue } = useMemo(() => {
@@ -71,8 +71,8 @@ export default function ReferendumDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            {timeLineSwitchComponent}
-            <Timeline data={timelineData} compact={timeModeIsCompact} />
+            {timeLineTabSwitchComponent}
+            <Timeline data={timelineData} compact={timelineModeIsCompact} />
           </div>
         ),
       },
@@ -129,8 +129,8 @@ export default function ReferendumDetailMultiTabs() {
     proposal?.call,
     referendumDetailForOGTrack.detail,
     router.query.tab,
-    timeLineSwitchComponent,
-    timeModeIsCompact,
+    timeLineTabSwitchComponent,
+    timelineModeIsCompact,
     timelineData,
   ]);
 

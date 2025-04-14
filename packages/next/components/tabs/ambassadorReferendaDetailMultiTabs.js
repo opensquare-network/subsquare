@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { useOnchainData } from "next-common/context/post";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
-import { useTimelineSwitch } from "next-common/hooks/useSwitch";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "hooks/timelineData";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
@@ -25,8 +25,8 @@ export default function AmbassadorReferendaDetailMultiTabs() {
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const timelineData = useReferendumTimelineData();
-  const { component: timeLineSwitchComponent, timeModeIsCompact } =
-    useTimelineSwitch();
+  const { component: timeLineTabSwitchComponent, timelineModeIsCompact } =
+    useTimelineTabSwitch();
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -53,8 +53,8 @@ export default function AmbassadorReferendaDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            {timeLineSwitchComponent}
-            <Timeline data={timelineData} compact={timeModeIsCompact} />
+            {timeLineTabSwitchComponent}
+            <Timeline data={timelineData} compact={timelineModeIsCompact} />
           </div>
         ),
       },
@@ -66,8 +66,8 @@ export default function AmbassadorReferendaDetailMultiTabs() {
     proposal?.call,
     proposal.inline,
     router.query.tab,
-    timeLineSwitchComponent,
-    timeModeIsCompact,
+    timeLineTabSwitchComponent,
+    timelineModeIsCompact,
     timelineData,
   ]);
 
