@@ -1,12 +1,15 @@
 import {
   useFetchMyProfileProxies,
   useFetchReceivedProfileProxies,
+  useIsPureProxy,
 } from "next-common/hooks/profile/useFetchProfileProxies";
 import useMultisigAddress from "next-common/hooks/useMultisigAddress";
 import useSignatoryMultisig from "next-common/hooks/useSignatoryMultisig";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import useFetchIdentityInfo from "next-common/hooks/profile/useFetchIdentityInfo";
+import Tooltip from "next-common/components/tooltip";
+import Link from "next/link";
 
 export const rootNodeId = "rootNode";
 const nodeInitialWidth = 240;
@@ -27,6 +30,38 @@ function BadgeInfo({ address }) {
   }
 
   return <span>{createBadge(result)}</span>;
+}
+
+function PureProxy({ className = "" }) {
+  return (
+    <Tooltip
+      content={
+        <Link
+          className="underline relative z-20"
+          style={{ pointerEvents: "all" }}
+          href="https://wiki.polkadot.network/learn/learn-proxies-pure/"
+          target="_blank"
+        >
+          Pure Proxy↗
+        </Link>
+      }
+      className={className}
+    >
+      <span className="inline-block h-5 leading-5 bg-neutral200 text-textSecondary text12Medium px-2 rounded-[0.625rem]">
+        Pure
+      </span>
+    </Tooltip>
+  );
+}
+
+function DynamicPureProxy({ address }) {
+  const { isPure, loading } = useIsPureProxy(address);
+
+  if (!isPure || loading) {
+    return null;
+  }
+
+  return <PureProxy />;
 }
 
 function createRelationship({
@@ -83,7 +118,9 @@ function createProxiesRelationship(rootNode, proxies = []) {
     edgeIdPrefix: "root-proxies",
     nodeDataMapper: (item) => {
       if (rootNode?.data?.address === item.delegator && item.isPure) {
-        rootNode.data.isPure = true;
+        rootNode.data.pure = (
+          <PureProxy className="inline-flex absolute h-5 right-2 top-2" />
+        );
       }
       return {
         address: item.delegatee,
@@ -112,8 +149,8 @@ function createReceivedProxiesRelationship(rootNode, receivedProxies = []) {
     nodeDataMapper: (item) => ({
       address: item.delegator,
       value: item.type,
-      isPure: item.isPure,
       badge: <BadgeInfo address={item.delegator} />,
+      pure: <PureProxy />,
     }),
     edgeDataMapper: (data) => ({
       type: RELATIONSHIP_NODE_TYPE.Proxy,
@@ -182,6 +219,7 @@ function createParentRelationship(rootNode, parent = null) {
     nodeDataMapper: (item) => ({
       address: item,
       badge: <BadgeInfo address={item} />,
+      pure: <DynamicPureProxy address={item} />,
     }),
     edgeDataMapper: () => ({
       type: RELATIONSHIP_NODE_TYPE.Identity,
@@ -206,6 +244,7 @@ function createSubRelationship(rootNode, subs = []) {
     nodeDataMapper: (item) => ({
       address: item,
       badge: <BadgeInfo address={item} />,
+      pure: <DynamicPureProxy address={item} />,
     }),
     edgeDataMapper: () => ({
       type: RELATIONSHIP_NODE_TYPE.Identity,
@@ -266,8 +305,10 @@ export default function useConversionRelationshipNode() {
       signatoryMultisig.result?.multisigAddresses,
     );
 
-  const { nodes: parentNodes, edges: parentEdges } =
-    createParentRelationship(rootNode, identityInfo?.data?.info?.parent);
+  const { nodes: parentNodes, edges: parentEdges } = createParentRelationship(
+    rootNode,
+    identityInfo?.data?.info?.parent,
+  );
 
   const { nodes: subNodes, edges: subEdges } = createSubRelationship(
     rootNode,

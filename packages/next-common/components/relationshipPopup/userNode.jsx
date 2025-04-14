@@ -4,8 +4,6 @@ import {
   DisplayUserAvatar,
 } from "next-common/components/profile/bio";
 import AddressUser from "next-common/components/user/addressUser";
-import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
@@ -58,32 +56,6 @@ function AddressLabel({ data }) {
   );
 }
 
-function PureBadge({ data, className = "" }) {
-  if (!data?.isPure) {
-    return null;
-  }
-
-  return (
-    <Tooltip
-      content={
-        <Link
-          className="underline relative z-20"
-          style={{ pointerEvents: "all" }}
-          href="https://wiki.polkadot.network/learn/learn-proxies-pure/"
-          target="_blank"
-        >
-          Pure Proxy↗
-        </Link>
-      }
-      className={className}
-    >
-      <span className="inline-block h-5 leading-5 bg-neutral200 text-textSecondary text12Medium px-2 rounded-[0.625rem]">
-        Pure
-      </span>
-    </Tooltip>
-  );
-}
-
 function SelfNode({ data }) {
   const bannerUrl = useProfileBannerUrl();
 
@@ -93,11 +65,7 @@ function SelfNode({ data }) {
         className="bg-no-repeat bg-cover w-60 h-[40px] rounded-t-[12px]"
         style={{ backgroundImage: `url(${bannerUrl})` }}
       >
-        <PureBadge
-          data={data}
-          className="inline-flex absolute h-5 right-2 top-2"
-        />
-
+        {data?.pure}
         <div className="w-full relative top-[20px] flex justify-center">
           <UserAvatar address={data?.address} badge={data.badge} />
         </div>
@@ -124,7 +92,7 @@ function RelativeUserNode({ data }) {
       <div className="flex-1">
         <div className="flex items-center justify-between h-6">
           <AddressLabel data={data} />
-          <PureBadge data={data} />
+          {data?.pure}
         </div>
         <DisplayUserAddress
           showLinks={false}
