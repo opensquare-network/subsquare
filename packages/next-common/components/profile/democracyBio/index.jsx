@@ -37,8 +37,8 @@ function DemocracyBioContent() {
         <RightPanelContainer>
           <UserAccountProvider address={address}>
             <AssetInfo address={address} />
+            <VotesPowerPanel address={address} />
           </UserAccountProvider>
-          <VotesPowerPanel address={address} />
         </RightPanelContainer>
       </div>
       <DelegationGuideProvider pallet="democracy">
