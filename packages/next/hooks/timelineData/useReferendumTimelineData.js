@@ -1,13 +1,11 @@
-import Timeline from "next-common/components/timeline";
+import { useMemo } from "react";
 import { startCase } from "lodash-es";
-import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import SymbolBalance from "next-common/components/values/symbolBalance";
-import { useTimelineData } from "next-common/context/post";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
-import { useEffect, useState } from "react";
 import AddressUser from "next-common/components/user/addressUser";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
+import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
+import { useOnchainData, useTimelineData } from "next-common/context/post";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const getTimelineData = (args, method, trackInfo) => {
   switch (method) {
@@ -53,7 +51,7 @@ const getTimelineData = (args, method, trackInfo) => {
   return args;
 };
 
-export function makeReferendumTimelineData(timeline, trackInfo) {
+function makeReferendumTimelineData(timeline, trackInfo) {
   return (timeline || []).map((item) => {
     return {
       time: formatTime(item.indexer.blockTime),
@@ -68,15 +66,11 @@ export function makeReferendumTimelineData(timeline, trackInfo) {
   });
 }
 
-export default function ReferendumTimeline({ trackInfo }) {
+export default function useReferendumTimelineData() {
   const timeline = useTimelineData();
-  const [timelineData, setTimelineData] = useState([]);
-  useEffect(
-    () => setTimelineData(makeReferendumTimelineData(timeline, trackInfo)),
-    [timeline, trackInfo],
-  );
-
-  const isTimelineCompact = useIsTimelineCompact();
-
-  return <Timeline data={timelineData} compact={isTimelineCompact} />;
+  const onchainData = useOnchainData();
+  const timelineData = useMemo(() => {
+    return makeReferendumTimelineData(timeline, onchainData?.trackInfo);
+  }, [onchainData.trackInfo, timeline]);
+  return timelineData;
 }
