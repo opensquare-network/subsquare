@@ -12,6 +12,7 @@ import {
   WalletPhantom,
   WalletOkx,
   WalletCoinbase,
+  WalletWalletconnect,
 } from "@osn/icons/subsquare";
 
 export const polkadotJs = {
@@ -103,6 +104,13 @@ export const coinbaseWallet = {
   logo: WalletCoinbase,
 };
 
+export const walletConnect = {
+  extensionName: WalletTypes.WALLETCONNECT,
+  title: "WalletConnect",
+  installUrl: "https://walletconnect.network/",
+  logo: WalletWalletconnect,
+};
+
 export const allWallets = [
   polkadotJs,
   subWallet,
@@ -116,4 +124,5 @@ export const allWallets = [
   phantom,
   okxWallet,
   coinbaseWallet,
+  walletConnect,
 ];
