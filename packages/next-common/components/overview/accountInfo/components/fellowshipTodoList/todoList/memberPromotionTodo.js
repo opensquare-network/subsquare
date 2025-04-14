@@ -1,18 +1,20 @@
 import { useState } from "react";
 import ActionButton from "./actionButton";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
-import pluralize from "pluralize";
 import {
   useCandidatePromotionEvidences,
   useMemberPromotionEvidences,
 } from "../hooks/evidence";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import usePromotionWishesOfNeedingMyVote from "next-common/components/overview/accountInfo/components/fellowshipTodoList/hooks/usePromotionWishesOfNeedingMyVote";
 
 const MemberPromotionPopup = dynamicPopup(() =>
   import("./memberPromotionPopup"),
 );
 
 function MemberPromotionTodoImpl({ promotionEvidences, memberOrCandidate }) {
+  const promotionWishesOfNeedingMyVote =
+    usePromotionWishesOfNeedingMyVote(promotionEvidences);
   const [showMemberPromotionPopup, setShowMemberPromotionPopup] =
     useState(false);
   const count = promotionEvidences?.length || 0;
@@ -30,23 +32,29 @@ function MemberPromotionTodoImpl({ promotionEvidences, memberOrCandidate }) {
     <TodoWrapper>
       <TodoTag>Membership</TodoTag>
       <TodoContent>
+        <span>{promotionWishesOfNeedingMyVote.length} of</span>
         <a
           className="text-theme500 cursor-pointer"
           target="_blank"
           rel="noreferrer"
           href={href}
         >
-          {count} {pluralize(memberOrCandidate, count)}
+          <span>
+            &nbsp;{count} {memberOrCandidate}
+          </span>
         </a>
-        {/* TODO,init */}
-        &nbsp;{count === 1 ? "wishes" : "wish"} to get promoted.&nbsp;{" "}
+        <span>
+          <span>&nbsp;promotion&nbsp;</span>
+          {count > 1 ? "wishes" : "wish"}
+          &nbsp;needs your vote.&nbsp;
+        </span>
         <ActionButton onClick={() => setShowMemberPromotionPopup(true)}>
           Check All
         </ActionButton>
       </TodoContent>
       {showMemberPromotionPopup && (
         <MemberPromotionPopup
-          promotions={promotionEvidences}
+          promotions={promotionWishesOfNeedingMyVote}
           onClose={() => setShowMemberPromotionPopup(false)}
         />
       )}
