@@ -60,9 +60,9 @@ function SelfNode({ data }) {
   const bannerUrl = useProfileBannerUrl();
 
   return (
-    <div className="w-full flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <div
-        className="bg-no-repeat bg-cover w-full h-[40px] rounded-t-[12px]"
+        className="bg-no-repeat bg-cover w-60 h-[40px] rounded-t-[12px]"
         style={{ backgroundImage: `url(${bannerUrl})` }}
       >
         {data?.pure}
@@ -125,7 +125,7 @@ export default function UserNode({ data }) {
   return (
     <NodeWrap
       className={cn(
-        "bg-neutral100 p-3 rounded-xl border border-neutral300 flex gap-x-3 w-70 items-center",
+        "bg-neutral100 p-3 rounded-xl border border-neutral300 flex gap-x-3 w-60 items-center",
         isSelf && "p-0",
       )}
     >
