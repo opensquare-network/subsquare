@@ -3,7 +3,7 @@ import HeaderAccount from "./headerAccount";
 import NetworkSwitch from "./networkSwitch";
 import NodeSwitch from "./nodeSwitch";
 // import SearchInput from "./searchInput";
-import SearchInputWithPopup from "./searchInputWithPopup.js";
+import SearchInputWithPopup from "./searchInputWithPopup";
 export default function Header() {
   const chainSettings = useChainSettings();
 

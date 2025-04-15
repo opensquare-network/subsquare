@@ -1,5 +1,5 @@
 import { memo } from "react";
-import DataList from "next-common/components/dataList";
+import CommonList from "next-common/components/header/search/common/commonList";
 import { MenuReferenda } from "@osn/icons/subsquare";
 
 const ReferendaItem = memo(function ItemContent({ row }) {
@@ -18,25 +18,6 @@ const ReferendaItem = memo(function ItemContent({ row }) {
     </div>
   );
 });
-
-function CommonList({ data, isLoading, title, ItemBox }) {
-  return (
-    <div className="pt-2">
-      <p className="h-9 pl-4 flex items-center text12Medium text-textTertiary">
-        {title}
-      </p>
-      <DataList
-        columns={[]}
-        rows={data}
-        loading={isLoading}
-        renderItem={(DataListItem, idx, rows) => <ItemBox row={rows[idx]} />}
-        className="max-h-[450px] overflow-auto"
-        contentClassName="border-0 divide-y-0"
-        titleClassName="border-0 pb-0"
-      />
-    </div>
-  );
-}
 
 function ReferendaList({ data, isLoading }) {
   return (
