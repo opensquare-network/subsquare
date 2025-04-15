@@ -12,10 +12,10 @@ import { defaultOptions } from "./common";
 const chainSettings = getChainSettings(CHAIN);
 
 /** @type {ApolloClient<InMemoryCache> | undefined} */
-export let proxyClient;
+export let peopleIdentityClient;
 
 if (chainSettings?.graphqlApiSubDomain) {
-  proxyClient = new ApolloClient({
+  peopleIdentityClient = new ApolloClient({
     uri: getPeopleIdentityApiUrl(CHAIN),
     cache: new InMemoryCache(),
     defaultOptions,
@@ -26,7 +26,7 @@ if (chainSettings?.graphqlApiSubDomain) {
  * @type {typeof useQuery}
  */
 export function usePeopleIdentityQuery(query, options = {}, ...args) {
-  options.client = options.client || proxyClient;
+  options.client = options.client || peopleIdentityClient;
   return useQuery(query, options, ...args);
 }
 
@@ -35,6 +35,6 @@ export function usePeopleIdentityQuery(query, options = {}, ...args) {
  * @type {typeof useLazyQuery}
  */
 export function usePeopleIdentityLazyQuery(query, options = {}, ...args) {
-  options.client = options.client || proxyClient;
+  options.client = options.client || peopleIdentityClient;
   return useLazyQuery(query, options, ...args);
 }
