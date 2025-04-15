@@ -7,7 +7,8 @@ import { commonReducers } from "next-common/store/reducers";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import RelayInfoProvider from "next-common/context/relayInfo";
-import BaseLayout from "next-common/components/layout/baseLayout";
+import ListLayout from "next-common/components/layout/ListLayout";
+import ChainSocialLinks from "next-common/components/chain/socialLinks";
 
 const isPeopleSupported = !!getChainSettings(CHAIN).modules?.people;
 
@@ -43,10 +44,25 @@ export default function PeopleIdentitiesPage() {
 function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
 
+  const tabs = [
+    {
+      value: "identities",
+      label: "Identities",
+      url: "/people/identities",
+      exactMatch: false,
+    },
+  ];
+
   return (
-    <BaseLayout title="Identities" description={description}>
+    <ListLayout
+      title="Identities"
+      description={description}
+      headContent={<ChainSocialLinks />}
+      summary={<div>Identities</div>}
+      tabs={tabs}
+    >
       <div className="space-y-6">People identities</div>
-    </BaseLayout>
+    </ListLayout>
   );
 }
 
