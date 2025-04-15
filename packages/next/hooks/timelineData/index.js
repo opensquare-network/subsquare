@@ -4,3 +4,4 @@ export { default as useDemocracyExternalProposalTimelineData } from "./useDemocr
 export { default as useDemocracyPublicProposalTimelineData } from "./useDemocracyPublicProposalTimelineData";
 export { default as useDemocracyReferendaProposalTimelineData } from "./useDemocracyReferendaProposalTimelineData";
 export { default as useMotionTimelineData } from "./useMotionTimelineData";
+export { default as useTreasuryChildBountiesTimelineData } from "./useTreasuryChildBountiesTimelineData";
