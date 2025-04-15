@@ -11,7 +11,9 @@ function CommonList({ data, isLoading, title, ItemBox }) {
         columns={[]}
         rows={data}
         loading={isLoading}
-        renderItem={(DataListItem, idx, rows) => <ItemBox row={rows[idx]} />}
+        renderItem={(DataListItem, idx, rows) => (
+          <ItemBox key={idx} row={rows[idx]} />
+        )}
         className="max-h-[450px] overflow-auto"
         contentClassName="border-0 divide-y-0"
         titleClassName="border-0 pb-0"
