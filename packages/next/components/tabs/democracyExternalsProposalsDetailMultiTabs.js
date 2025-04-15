@@ -2,10 +2,10 @@ import { usePost } from "next-common/context/post";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import DemocracyReferendumCallProvider from "next-common/context/democracy/referenda/call";
 import { useMemo } from "react";
-import { useTimelineData } from "next-common/context/post";
 import { useRouter } from "next/router";
 import Tabs from "next-common/components/tabs";
-import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
+import { useDemocracyExternalProposalTimelineData } from "hooks/timelineData";
 
 const Business = dynamicClientOnly(() =>
   import("components/external/business"),
@@ -20,16 +20,17 @@ const DemocracyExternalProposalCall = dynamicClientOnly(() =>
 );
 
 const Timeline = dynamicClientOnly(() =>
-  import("components/external/timeline"),
+  import("next-common/components/timeline"),
 );
 
 export default function DemocracyExternalsProposalsDetailMultiTabs() {
   const detail = usePost();
   const router = useRouter();
-  const timelineData = useTimelineData();
+  const timelineData = useDemocracyExternalProposalTimelineData();
 
   const external = detail?.onchainData || {};
   const call = external?.preImage?.call;
+  const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -67,8 +68,8 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            <TimelineModeTabs />
-            <Timeline />
+            {timeLineTabSwitch}
+            <Timeline data={timelineData} compact={isCompact} />
           </div>
         ),
       },
@@ -81,8 +82,10 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
     external.motionIndex,
     external.preImage.shorten,
     external.referendumIndex,
+    isCompact,
     router.query.tab,
-    timelineData?.length,
+    timeLineTabSwitch,
+    timelineData,
   ]);
 
   function onTabClick(tab) {
