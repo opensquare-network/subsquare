@@ -12,6 +12,8 @@ import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import IdentityIcon from "next-common/components/Identity/identityIcon";
+import IdentitiesTable from "./table";
+
 const isPeopleSupported = !!getChainSettings(CHAIN).modules?.people;
 
 let chain;
@@ -63,7 +65,9 @@ function PeopleOverviewPageImpl() {
       summary={<IdentitiesSummary directCount={2312} subCount={2312} />}
       tabs={tabs}
     >
-      <div className="space-y-6">People identities</div>
+      <div className="space-y-6">
+        <IdentitiesTable />
+      </div>
     </ListLayout>
   );
 }
@@ -93,6 +97,7 @@ function IdentitiesSummary({
         },
       ]
     : [];
+
   return (
     <SummaryLayout className={className}>
       <SummaryItem title="Direct Identities">
