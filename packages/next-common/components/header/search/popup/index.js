@@ -1,9 +1,9 @@
 import Popup from "next-common/components/popup/wrapper/Popup";
-// import LoadingEditor from "next-common/components/editor/loading";
 import { cn } from "next-common/utils";
 import React, { useState } from "react";
 import ReminderInput from "next-common/components/header/search/popup/reminderInput";
 import InputInSearchPopup from "next-common/components/header/search/popup/input";
+import LoadingSkeleton from "next-common/components/header/search/popup/loadingSkeleton";
 
 function Wrapper({ children, className = "" }) {
   return (
@@ -37,7 +37,7 @@ function SearchPopup({ onClose }) {
         )}
         {loading && (
           <Wrapper>
-            <></>
+            <LoadingSkeleton />
           </Wrapper>
         )}
       </div>
