@@ -5,3 +5,4 @@ export { default as useDemocracyPublicProposalTimelineData } from "./useDemocrac
 export { default as useDemocracyReferendaProposalTimelineData } from "./useDemocracyReferendaProposalTimelineData";
 export { default as useMotionTimelineData } from "./useMotionTimelineData";
 export { default as useTreasuryChildBountiesTimelineData } from "./useTreasuryChildBountiesTimelineData";
+export { default as useTreasuryTipsTimelineData } from "./useTreasuryTipsTimelineData";
