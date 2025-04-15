@@ -22,7 +22,7 @@ if (isPeopleSupported) {
   });
 }
 
-export default function CoretimePage() {
+export default function PeoplePage() {
   if (!isPeopleSupported) {
     return null;
   }
