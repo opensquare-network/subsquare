@@ -36,6 +36,7 @@ const polkadotPeople = {
       url: "wss://people-polkadot.public.curie.radiumblock.co/ws",
     },
   ],
+  noScan: true,
   integrations: {
     statescan: true,
     subscan: {
