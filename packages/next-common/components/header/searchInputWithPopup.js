@@ -26,7 +26,7 @@ function SearchInputWithPopup({ shortcut = true, type }) {
         ref={inputRef}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Search on SubSquare"
+        placeholder="Search Referenda on SubSquare"
         onKeyDown={(event) => {
           if (event.code === "Enter" || event.keyCode === 13) {
             event.preventDefault();

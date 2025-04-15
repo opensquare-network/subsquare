@@ -24,7 +24,7 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
       onChange={(e) => {
         setSearchValue(e.target.value);
       }}
-      placeholder="Search on SubSquare"
+      placeholder="Search Referenda on SubSquare"
       onKeyDown={(event) => {
         if (event.code === "Enter" || event.keyCode === 13) {
           event.preventDefault();
