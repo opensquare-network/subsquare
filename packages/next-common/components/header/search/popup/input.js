@@ -9,6 +9,7 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
   searchValue,
   onClose = () => {},
   setSearchValue,
+  handleSearch,
 }) {
   return (
     <Input
@@ -27,6 +28,7 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
       onKeyDown={(event) => {
         if (event.code === "Enter" || event.keyCode === 13) {
           event.preventDefault();
+          handleSearch();
         }
       }}
       prefix={<SystemSearch className="[&_path]:fill-textTertiary" />}

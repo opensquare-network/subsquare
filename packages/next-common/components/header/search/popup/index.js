@@ -4,6 +4,10 @@ import React, { useState } from "react";
 import ReminderInput from "next-common/components/header/search/popup/reminderInput";
 import InputInSearchPopup from "next-common/components/header/search/popup/input";
 import LoadingSkeleton from "next-common/components/header/search/popup/loadingSkeleton";
+import ReferendaList from "next-common/components/header/search/popup/referenda/index";
+import useRefCallback from "next-common/hooks/useRefCallback";
+import { isNil } from "lodash-es";
+import NoResult from "next-common/components/header/search/popup/noResult";
 
 function Wrapper({ children, className = "" }) {
   return (
@@ -17,8 +21,35 @@ function Wrapper({ children, className = "" }) {
 
 function SearchPopup({ onClose }) {
   const [searchValue, setSearchValue] = useState("");
-  // eslint-disable-next-line no-unused-vars
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
+
+  const fetchData = useRefCallback(async () => {
+    setLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setData([
+        {
+          index: 234,
+          title: "I am the title, you can look at me!",
+          content: "hello world, i am the content",
+        },
+        {
+          index: 235,
+          title: "I am the title, you can look at me! 235",
+          content: "hello world, i am the content 235",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  const handleSearch = useRefCallback(() => {
+    if (!searchValue) return;
+    setData(null);
+    fetchData();
+  });
 
   return (
     <Popup className="p-0" onClose={onClose}>
@@ -27,10 +58,14 @@ function SearchPopup({ onClose }) {
           <InputInSearchPopup
             searchValue={searchValue}
             setSearchValue={setSearchValue}
-            onClose={onClose}
+            onClose={() => {
+              onClose();
+              setData(null);
+            }}
+            handleSearch={handleSearch}
           />
         </Wrapper>
-        {!searchValue && !loading && (
+        {isNil(data) && !loading && (
           <Wrapper>
             <ReminderInput />
           </Wrapper>
@@ -40,6 +75,8 @@ function SearchPopup({ onClose }) {
             <LoadingSkeleton />
           </Wrapper>
         )}
+        {data?.length > 0 && <ReferendaList data={data} />}
+        {data?.length === 0 && <NoResult />}
       </div>
     </Popup>
   );

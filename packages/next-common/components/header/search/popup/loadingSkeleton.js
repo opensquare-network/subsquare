@@ -23,8 +23,7 @@ const SkeletonItem = ({ className = "" }) => {
 
 const LoadingSkeleton = React.memo(function LoadingSkeleton() {
   return (
-    //TODO: animate-pulse， Whether to add a pulse
-    <div className="w-full">
+    <div className="w-full animate-pulse">
       <Wrapper>
         <SkeletonItem className="w-[20%]" />
       </Wrapper>

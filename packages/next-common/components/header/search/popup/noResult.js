@@ -3,7 +3,7 @@ import React from "react";
 import { ImgNoResultsLight, ImgNoResultsDark } from "@osn/icons/subsquare";
 import { useTheme } from "styled-components";
 
-const NoResut = React.memo(function NoResut({ className = "" }) {
+const NoResult = React.memo(function NoResut({ className = "" }) {
   const { isDark } = useTheme();
   return (
     <div
@@ -32,4 +32,4 @@ const NoResut = React.memo(function NoResut({ className = "" }) {
   );
 });
 
-export default NoResut;
+export default NoResult;
