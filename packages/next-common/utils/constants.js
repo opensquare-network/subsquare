@@ -25,6 +25,7 @@ import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub
 import polkadotPeople from "next-common/utils/consts/settings/polkadotPeople";
 import westendAssetHub from "next-common/utils/consts/settings/westendAssetHub";
 import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
+import kusamaPeople from "next-common/utils/consts/settings/kusamaPeople";
 import shibuya from "next-common/utils/consts/settings/shibuya";
 import astar from "next-common/utils/consts/settings/astar";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
@@ -42,6 +43,7 @@ export const nodes = [
   polkadotPeople,
   kusama,
   kusamaAssetHub,
+  kusamaPeople,
   acala,
   ajuna,
   astar,

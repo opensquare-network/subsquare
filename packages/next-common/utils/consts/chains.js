@@ -43,6 +43,7 @@ const Chains = {
   paseoAssetHub: "paseo-assethub",
   ajuna: "ajuna",
   kusamaCoretime: "kusama-coretime",
+  kusamaPeople: "kusama-people",
   polkadotCoretime: "polkadot-coretime",
   polkadotPeople: "polkadot-people",
   laos: "laos",

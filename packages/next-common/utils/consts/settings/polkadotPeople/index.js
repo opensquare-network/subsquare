@@ -8,6 +8,7 @@ const ProjectIconPolkadotPeople = dynamic(() =>
 
 const polkadotPeople = {
   ...polkadot,
+  name: "People",
   value: Chains.polkadotPeople,
   description:
     "A comprehensive view of identity management and social interaction activities within the ecosystem.",
@@ -15,15 +16,28 @@ const polkadotPeople = {
   darkAvatar: ProjectIconPolkadotPeople,
   endpoints: [
     {
-      name: "Parity",
-      url: "wss://polkadot-people-rpc.polkadot.io",
+      name: "IBP1",
+      url: "wss://sys.ibp.network/people-polkadot",
     },
     {
       name: "IBP2",
       url: "wss://people-polkadot.dotters.network",
     },
+    {
+      name: "LuckyFriday",
+      url: "wss://rpc-people-polkadot.luckyfriday.io",
+    },
+    {
+      name: "Parity",
+      url: "wss://polkadot-people-rpc.polkadot.io",
+    },
+    {
+      name: "RadiumBlock",
+      url: "wss://people-polkadot.public.curie.radiumblock.co/ws",
+    },
   ],
   integrations: {
+    statescan: true,
     subscan: {
       domain: "people-polkadot",
     },

@@ -62,6 +62,7 @@ const kusama = {
     },
     coretime: true,
     assethub: true,
+    people: true,
     vesting: true,
   }),
   integrations: {
