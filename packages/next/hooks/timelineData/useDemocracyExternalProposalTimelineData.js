@@ -37,6 +37,7 @@ function makeExternalTimelineData(timeline) {
   });
 }
 
+// Logic sourced from components/external/timeline
 export default function useDemocracyExternalProposalTimelineData() {
   const timeline = useTimelineData();
   return useMemo(() => makeExternalTimelineData(timeline), [timeline]);

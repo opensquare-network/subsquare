@@ -39,6 +39,7 @@ function makePublicProposalTimelineData(timeline) {
   return timelineData;
 }
 
+// Logic sourced from components/publicProposal/timeline
 export default function useDemocracyPublicProposalTimelineData() {
   const timeline = useTimelineData();
   return useMemo(() => makePublicProposalTimelineData(timeline), [timeline]);

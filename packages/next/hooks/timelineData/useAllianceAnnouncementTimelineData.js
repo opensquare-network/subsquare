@@ -16,6 +16,7 @@ function getData(item) {
   return args;
 }
 
+// Logic sourced from next-common/components/alliance/announcement/timeline
 export default function useAllianceAnnouncementTimelineData() {
   const type = useDetailType();
   const { timeline = [], motion } = usePost();
