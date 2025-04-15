@@ -15,8 +15,8 @@ export const peopleMenu = {
   type: NAV_MENU_TYPE.subspace,
   items: [
     {
-      name: "My Identity",
-      value: "people",
+      name: "Overview",
+      value: "overview",
       pathname: "/people",
       icon: <MenuAuthorities />,
     },

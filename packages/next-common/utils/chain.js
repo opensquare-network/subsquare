@@ -126,9 +126,9 @@ export function getRelayChain(chain) {
     return Chains.paseo;
   } else if (isCollectivesChain(chain)) {
     return Chains.polkadot;
-  } else if (isPolkadotPeopleChain()) {
+  } else if (isPolkadotPeopleChain(chain)) {
     return Chains.polkadot;
-  } else if (isKusamaPeopleChain()) {
+  } else if (isKusamaPeopleChain(chain)) {
     return Chains.kusama;
   }
 
