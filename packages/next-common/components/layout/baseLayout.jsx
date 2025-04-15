@@ -56,7 +56,6 @@ export default function BaseLayout({
               : "max-w-[calc(100%-300px)]",
             "max-sm:max-w-full",
           )}
-          style={contentStyle}
         >
           {!sm && (
             <div className="sticky top-0 z-50 max-sm:hidden">
@@ -66,7 +65,9 @@ export default function BaseLayout({
 
           <GlobalNotification />
 
-          <section className="flex flex-col flex-1">{children}</section>
+          <section className="flex flex-col flex-1" style={contentStyle}>
+            {children}
+          </section>
 
           <footer>
             <Footer />
