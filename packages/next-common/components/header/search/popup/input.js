@@ -1,7 +1,7 @@
 import { cn } from "next-common/utils";
 import Input from "next-common/lib/input";
 import React, { useEffect } from "react";
-import { SystemSearch } from "@osn/icons/subsquare";
+import { SystemSearch, SystemClose } from "@osn/icons/subsquare";
 import SecondaryButton from "next-common/lib/button/secondary";
 
 const InputInSearchPopup = React.memo(function InputInSearchPopup({
@@ -44,12 +44,13 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
       suffix={
         <SecondaryButton
           size="small"
+          className="border-0 w-10 h-10"
           onClick={() => {
             onClose();
             setSearchValue("");
           }}
         >
-          Close
+          <SystemClose className="w-5 h-5 [&_path]:fill-textTertiary" />
         </SecondaryButton>
       }
       enterKeyHint="Search"
