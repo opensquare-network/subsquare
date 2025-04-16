@@ -17,11 +17,14 @@ import {
 } from "next-common/context/post/fellowship/useMaxVoters";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
-function RankOption({ rank, myRank }) {
+function useRequiredRankToPromote(rank) {
   const collectivePallet = useRankedCollectivePallet();
   const trackId = getTrackToPromoteRank(rank);
-  const requiredRank = getMinRankOfClass(trackId, collectivePallet);
+  return getMinRankOfClass(trackId, collectivePallet);
+}
 
+function RankOption({ rank, myRank }) {
+  const requiredRank = useRequiredRankToPromote(rank);
   if (requiredRank <= myRank) {
     return rank;
   }
@@ -66,7 +69,7 @@ export default function CreatePromotionReferendaAndVotePopup({
   const action = toRank > rank + 1 ? "promoteFast" : "promote";
   const trackName = useTrackNameFromAction(action, rank);
   const [enactment] = useState({ after: 100 });
-  const collectivePallet = useRankedCollectivePallet();
+  const requiredRank = useRequiredRankToPromote(toRank);
 
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
   const { value: address, component: whoField } = useAddressComboField({
@@ -96,9 +99,6 @@ export default function CreatePromotionReferendaAndVotePopup({
 
   let disabled = !who || !toRank;
   let tooltipContent = "";
-  const trackId = getTrackToPromoteRank(toRank);
-  const requiredRank = getMinRankOfClass(trackId, collectivePallet);
-
   if (requiredRank > myRank) {
     disabled = true;
     tooltipContent = `Only rank >=${requiredRank} can create a referendum and then vote`;
