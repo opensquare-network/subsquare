@@ -10,7 +10,7 @@
     "lint": "next lint --dir ."
   },
   "dependencies": {
-    "@next/env": "^13.3.0",
+    "@next/env": "15.3.0",
     "@osn/icons": "latest",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
@@ -21,7 +21,7 @@
     "http-proxy": "^1.18.1",
     "localforage": "^1.10.0",
     "lodash-es": "^4.17.21",
-    "next": "^14.2.25",
+    "next": "15.3.0",
     "next-common": "workspace:*",
     "nprogress": "^0.2.0",
     "pluralize": "^8.0.0",
@@ -37,11 +37,11 @@
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^14.2.4",
+    "@next/bundle-analyzer": "15.3.0",
     "@osn/eslint-config": "^1.0.2",
     "@types/lodash-es": "^4.17.12",
     "eslint": "^8.44.0",
-    "eslint-config-next": "^13.3.0",
+    "eslint-config-next": "15.3.0",
     "raw-loader": "^4.0.2"
   }
 }
