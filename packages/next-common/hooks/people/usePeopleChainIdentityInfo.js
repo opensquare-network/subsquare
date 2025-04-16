@@ -1,29 +1,35 @@
 import { queryPeopleIdentitiesInfo } from "next-common/services/gql/identity";
 import { useCallback, useState, useEffect } from "react";
 
+const INIT_DATA = {
+  directCount: 0,
+  subCount: 0,
+  verifiedCount: 0,
+  unverifiedCount: 0,
+  erroneousCount: 0,
+};
+
 export default function usePeopleChainIdentityInfo() {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(INIT_DATA);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
 
     try {
-      const directResult = await queryPeopleIdentitiesInfo({
-        identityType: "DIRECT",
-      });
-      const subResult = await queryPeopleIdentitiesInfo({
-        identityType: "SUB",
-      });
-      const verifiedResult = await queryPeopleIdentitiesInfo({
-        verificationStatus: "VERIFIED",
-      });
-      const unverifiedResult = await queryPeopleIdentitiesInfo({
-        verificationStatus: "UNVERIFIED",
-      });
-      const erroneousResult = await queryPeopleIdentitiesInfo({
-        verificationStatus: "ERRONEOUS",
-      });
+      const [
+        directResult,
+        subResult,
+        verifiedResult,
+        unverifiedResult,
+        erroneousResult,
+      ] = await Promise.all([
+        queryPeopleIdentitiesInfo({ identityType: "DIRECT" }),
+        queryPeopleIdentitiesInfo({ identityType: "SUB" }),
+        queryPeopleIdentitiesInfo({ verificationStatus: "VERIFIED" }),
+        queryPeopleIdentitiesInfo({ verificationStatus: "UNVERIFIED" }),
+        queryPeopleIdentitiesInfo({ verificationStatus: "ERRONEOUS" }),
+      ]);
 
       setData({
         directCount: directResult?.data?.total || 0,
@@ -34,13 +40,7 @@ export default function usePeopleChainIdentityInfo() {
       });
     } catch (e) {
       console.error(e);
-      setData({
-        directCount: 0,
-        subCount: 0,
-        verifiedCount: 0,
-        unverifiedCount: 0,
-        erroneousCount: 0,
-      });
+      setData(INIT_DATA);
     } finally {
       setIsLoading(false);
     }
