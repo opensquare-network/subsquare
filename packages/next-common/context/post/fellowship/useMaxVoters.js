@@ -1,9 +1,17 @@
-export function getTrackToRetainRank(rank) {
-  return 11 + rank;
+export function getTrackToRetainAtRank(rank) {
+  if (rank >= 1 && rank <= 6) {
+    return 11 + rank - 1;
+  }
+
+  throw new Error("Invalid rank to get track for retention");
 }
 
-export function getTrackToPromoteRank(rank) {
-  return 21 + rank;
+export function getTrackToPromoteToRank(rank) {
+  if (rank >= 1 && rank <= 6) {
+    return 21 + rank - 1;
+  }
+
+  throw new Error("Invalid rank to get track for promotion");
 }
 
 export function getTrackToFastPromoteRank(rank) {

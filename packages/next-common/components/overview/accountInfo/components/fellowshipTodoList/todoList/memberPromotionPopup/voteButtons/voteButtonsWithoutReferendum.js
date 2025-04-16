@@ -4,8 +4,8 @@ import useCollectiveMember from "../../../hooks/useCollectiveMember";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import {
   getMinRankOfClass,
-  getTrackToPromoteRank,
-  getTrackToRetainRank,
+  getTrackToPromoteToRank,
+  getTrackToRetainAtRank,
 } from "next-common/context/post/fellowship/useMaxVoters";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
@@ -31,14 +31,14 @@ export default function VoteButtonsWithoutReferendum({ who, action }) {
     disabled = true;
   } else {
     if (action === "approve") {
-      const trackId = getTrackToRetainRank(rank);
+      const trackId = getTrackToRetainAtRank(rank);
       const requiredRank = getMinRankOfClass(trackId, collectivePallet);
       if (requiredRank > myRank) {
         tooltipContent = `Only rank >= ${requiredRank} can create a referendum and then vote`;
         disabled = true;
       }
     } else if (action === "promote") {
-      const trackId = getTrackToPromoteRank(rank + 1);
+      const trackId = getTrackToPromoteToRank(rank + 1);
       const requiredRank = getMinRankOfClass(trackId, collectivePallet);
       if (requiredRank > myRank) {
         tooltipContent = `Only rank >= ${requiredRank} can create a referendum and then vote`;

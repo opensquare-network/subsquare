@@ -13,13 +13,13 @@ import PrimaryButton from "next-common/lib/button/primary";
 import Tooltip from "next-common/components/tooltip";
 import {
   getMinRankOfClass,
-  getTrackToPromoteRank,
+  getTrackToPromoteToRank,
 } from "next-common/context/post/fellowship/useMaxVoters";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
 function useRequiredRankToPromote(rank) {
   const collectivePallet = useRankedCollectivePallet();
-  const trackId = getTrackToPromoteRank(rank);
+  const trackId = getTrackToPromoteToRank(rank);
   return getMinRankOfClass(trackId, collectivePallet);
 }
 
