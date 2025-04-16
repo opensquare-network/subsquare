@@ -66,6 +66,7 @@ function makeReferendumTimelineData(timeline, trackInfo) {
   });
 }
 
+// Logic sourced from components/gov2/timeline
 export default function useReferendumTimelineData() {
   const timeline = useTimelineData();
   const onchainData = useOnchainData();
