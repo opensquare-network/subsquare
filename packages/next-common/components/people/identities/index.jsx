@@ -7,7 +7,6 @@ import IdentityIcon from "next-common/components/Identity/identityIcon";
 import IdentitiesTable from "./table";
 import usePeopleChainIdentityInfo from "next-common/hooks/people/usePeopleChainIdentityInfo";
 import LoadableContent from "next-common/components/common/loadableContent";
-import { TitleExtra } from "next-common/components/overview";
 
 export function PeopleIdentitiesPageImpl() {
   const { description } = useChainSettings();
@@ -24,7 +23,6 @@ export function PeopleIdentitiesPageImpl() {
   return (
     <ListLayout
       title="Identities"
-      titleExtra={<TitleExtra />}
       description={description}
       headContent={<ChainSocialLinks />}
       summary={<IdentitiesSummary />}
