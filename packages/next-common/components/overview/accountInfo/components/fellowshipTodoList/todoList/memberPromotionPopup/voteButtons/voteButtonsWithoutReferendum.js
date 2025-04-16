@@ -20,8 +20,18 @@ export default function VoteButtonsWithoutReferendum({ who, action }) {
       "There are no corresponding tracks to promote members with rank >= 6";
     disabled = true;
   } else if (myRank >= 3) {
-    tooltipContent = "Create a new referendum and vote";
-    disabled = false;
+    if (rank > myRank && action === "approve") {
+      tooltipContent = `Only rank >=${rank} can create a referendum and then vote`;
+      disabled = true;
+    } else if (rank >= myRank && action === "promote") {
+      tooltipContent = `Only rank >=${
+        rank + 1
+      } can create a referendum and then vote`;
+      disabled = true;
+    } else {
+      tooltipContent = "Create a new referendum and vote";
+      disabled = false;
+    }
   } else {
     tooltipContent = "Only rank >=3 can create a referendum and then vote";
     disabled = true;
@@ -32,6 +42,7 @@ export default function VoteButtonsWithoutReferendum({ who, action }) {
       <CreateReferendumAndVoteButton
         address={who}
         rank={rank}
+        myRank={myRank}
         action={action}
         voteAye={false}
         disabled={disabled}
@@ -43,6 +54,7 @@ export default function VoteButtonsWithoutReferendum({ who, action }) {
       <CreateReferendumAndVoteButton
         address={who}
         rank={rank}
+        myRank={myRank}
         action={action}
         voteAye={true}
         disabled={disabled}

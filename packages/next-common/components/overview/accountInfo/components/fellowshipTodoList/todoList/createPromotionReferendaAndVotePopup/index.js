@@ -10,14 +10,30 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import useTrackNameFromAction from "../memberPromotionPopup/voteButtons/useTrackNameFromAction";
 import PrimaryButton from "next-common/lib/button/primary";
+import Tooltip from "next-common/components/tooltip";
 
-function RankField({ minRank, rank, setRank = noop }) {
+function RankOption({ rank, maxRank }) {
+  if (rank <= maxRank) {
+    return rank;
+  }
+  return (
+    <Tooltip
+      className="w-full"
+      content={`Only rank >=${rank} can create a referendum and then vote`}
+    >
+      <div className="text-textTertiary">{rank}</div>
+    </Tooltip>
+  );
+}
+
+function RankField({ minRank, maxRank, rank, setRank = noop }) {
   const options = [1, 2, 3]
     .filter((r) => r > minRank)
     .map((r) => ({
-      text: r,
+      text: <RankOption rank={r} maxRank={maxRank} />,
       value: r,
     }));
+
   return (
     <CommonSelectField
       title="To Rank"
@@ -32,6 +48,7 @@ export default function CreatePromotionReferendaAndVotePopup({
   who,
   voteAye,
   rank,
+  myRank,
   onClose,
 }) {
   const dispatch = useDispatch();
@@ -66,22 +83,29 @@ export default function CreatePromotionReferendaAndVotePopup({
     },
   });
 
+  let disabled = !who || !toRank;
+  let tooltipContent = "";
+  if (toRank > myRank) {
+    disabled = true;
+    tooltipContent = `Only rank >=${toRank} can create a referendum and then vote`;
+  }
+
   return (
     <PopupWithSigner title="New Promote Referendum" onClose={onClose}>
       {whoField}
       <RankField
         title="To Rank"
         minRank={rank}
+        maxRank={myRank}
         rank={toRank}
         setRank={setToRank}
       />
       <div className="flex justify-end">
-        <PrimaryButton
-          disabled={!who || !toRank}
-          onClick={doSubmitCreateAndVote}
-        >
-          Create & Vote
-        </PrimaryButton>
+        <Tooltip content={tooltipContent}>
+          <PrimaryButton disabled={disabled} onClick={doSubmitCreateAndVote}>
+            Create & Vote
+          </PrimaryButton>
+        </Tooltip>
       </div>
     </PopupWithSigner>
   );

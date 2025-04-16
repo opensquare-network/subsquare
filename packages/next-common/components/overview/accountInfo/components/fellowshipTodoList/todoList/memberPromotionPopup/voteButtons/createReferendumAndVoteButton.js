@@ -18,6 +18,7 @@ const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
 function CreateReferendumAndVoteButtonImpl({
   address,
   rank,
+  myRank,
   action = "promote",
   voteAye,
   disabled,
@@ -78,6 +79,7 @@ function CreateReferendumAndVoteButtonImpl({
       {showCreatePromotionReferendaAndVotePopup && (
         <CreatePromotionReferendaAndVotePopup
           rank={rank}
+          myRank={myRank}
           who={address}
           onClose={() => setShowCreatePromotionReferendaAndVotePopup(false)}
         />
