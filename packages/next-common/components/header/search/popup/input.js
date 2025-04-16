@@ -1,6 +1,6 @@
 import { cn } from "next-common/utils";
 import Input from "next-common/lib/input";
-import React from "react";
+import React, { useEffect } from "react";
 import { SystemSearch } from "@osn/icons/subsquare";
 import SecondaryButton from "next-common/lib/button/secondary";
 
@@ -11,6 +11,14 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
   setSearchValue,
   handleSearch,
 }) {
+  const inputRef = React.useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   return (
     <Input
       className={cn(
@@ -20,6 +28,7 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
         "h-[40px]",
         className,
       )}
+      ref={inputRef}
       value={searchValue}
       onChange={(e) => {
         setSearchValue(e.target.value);
