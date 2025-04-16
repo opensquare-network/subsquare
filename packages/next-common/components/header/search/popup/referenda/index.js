@@ -1,5 +1,7 @@
 import { memo } from "react";
-import CommonList from "next-common/components/header/search/common/commonList";
+import CommonList, {
+  SearchType,
+} from "next-common/components/header/search/common/commonList";
 import { MenuReferenda } from "@osn/icons/subsquare";
 
 const ReferendaItem = memo(function ItemContent({ row }) {
@@ -21,13 +23,15 @@ const ReferendaItem = memo(function ItemContent({ row }) {
   );
 });
 
-function ReferendaList({ data, isLoading }) {
+function ReferendaList({ data, isLoading, onClose }) {
   return (
     <CommonList
       data={data}
       isLoading={isLoading}
       title="Referenda"
       ItemBox={ReferendaItem}
+      searchType={SearchType.REFERENDA}
+      onClose={onClose}
     />
   );
 }

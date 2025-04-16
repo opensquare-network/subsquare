@@ -9,7 +9,6 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
   searchValue,
   onClose = () => {},
   setSearchValue,
-  handleSearch,
 }) {
   const inputRef = React.useRef(null);
 
@@ -34,12 +33,6 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
         setSearchValue(e.target.value);
       }}
       placeholder="Search Referenda on SubSquare"
-      onKeyDown={(event) => {
-        if (event.code === "Enter" || event.keyCode === 13) {
-          event.preventDefault();
-          handleSearch();
-        }
-      }}
       prefix={<SystemSearch className="[&_path]:fill-textTertiary" />}
       suffix={
         <SecondaryButton

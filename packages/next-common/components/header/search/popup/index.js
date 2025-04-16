@@ -54,7 +54,6 @@ function SearchPopup({ onClose }) {
               onClose();
               setReferenda(null);
             }}
-            handleSearch={handleSearch}
           />
         </Wrapper>
         {isNil(referenda) && !isLoading && (
@@ -67,7 +66,9 @@ function SearchPopup({ onClose }) {
             <LoadingSkeleton />
           </Wrapper>
         )}
-        {referenda?.length > 0 && <ReferendaList data={referenda} />}
+        {referenda?.length > 0 && (
+          <ReferendaList data={referenda} onClose={onClose} />
+        )}
         {referenda?.length === 0 && !isLoading && <NoResult />}
       </div>
     </Popup>
