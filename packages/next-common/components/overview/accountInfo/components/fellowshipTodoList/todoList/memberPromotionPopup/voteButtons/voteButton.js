@@ -43,7 +43,7 @@ function VoteButtonImpl({ referendumIndex, voteAye, children }) {
       );
       disabled = requiredRank > rank;
       if (disabled) {
-        tooltipContent = `Only rank >= ${requiredRank} can vote on this proposal`;
+        tooltipContent = `Only rank >= ${requiredRank} can vote`;
       }
     } catch (e) {
       console.error(e);

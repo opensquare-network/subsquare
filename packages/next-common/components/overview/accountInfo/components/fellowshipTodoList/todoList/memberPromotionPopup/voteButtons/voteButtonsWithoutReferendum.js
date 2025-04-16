@@ -34,14 +34,14 @@ export default function VoteButtonsWithoutReferendum({ who, action }) {
       const trackId = getTrackToRetainRank(rank);
       const requiredRank = getMinRankOfClass(trackId, collectivePallet);
       if (requiredRank > myRank) {
-        tooltipContent = `Only rank >=${requiredRank} can create a referendum and then vote`;
+        tooltipContent = `Only rank >= ${requiredRank} can create a referendum and then vote`;
         disabled = true;
       }
     } else if (action === "promote") {
       const trackId = getTrackToPromoteRank(rank + 1);
       const requiredRank = getMinRankOfClass(trackId, collectivePallet);
       if (requiredRank > myRank) {
-        tooltipContent = `Only rank >=${requiredRank} can create a referendum and then vote`;
+        tooltipContent = `Only rank >= ${requiredRank} can create a referendum and then vote`;
         disabled = true;
       }
     }
