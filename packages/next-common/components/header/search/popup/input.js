@@ -49,7 +49,7 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
             setSearchValue("");
           }}
         >
-          ESC
+          Close
         </SecondaryButton>
       }
       enterKeyHint="Search"
