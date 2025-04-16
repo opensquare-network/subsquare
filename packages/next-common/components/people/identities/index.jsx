@@ -68,7 +68,10 @@ function IdentitiesSummary({ className = "" }) {
         </LoadableContent>
         <div className="flex flex-col gap-y-0.5 mt-1">
           {IdentityList.map((item) => (
-            <div key={item.identity.info.status} className="flex gap-x-2">
+            <div
+              key={item.identity.info.status}
+              className="flex gap-x-2 items-center"
+            >
               <IdentityIcon identity={item.identity} />
               <span className="text-textTertiary text12Medium">
                 {item.lanel}
