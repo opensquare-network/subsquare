@@ -2,9 +2,8 @@ import dynamic from "next/dynamic";
 import Chains from "../../chains";
 import kusama from "../kusama";
 
-// TODO: ProjectIconKusamaPeople
 const ProjectIconkusamaPeople = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectIconPolkadotPeople"),
+  import("@osn/icons/subsquare/ProjectIconKusamaPeople"),
 );
 
 const kusamaPeople = {
