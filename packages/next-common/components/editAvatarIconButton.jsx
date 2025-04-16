@@ -19,7 +19,7 @@ export default function EditAvatarIconButton() {
           )}
           onClick={() => setIsPopupOpen(true)}
         >
-          <SystemEdit2 className="w-[16px] h-[16px]" />
+          <SystemEdit2 className="w-[16px] h-[16px] text-textPrimary" />
         </div>
       </Tooltip>
       {isPopupOpen && <AvatarEditPopup onClose={() => setIsPopupOpen(false)} />}
