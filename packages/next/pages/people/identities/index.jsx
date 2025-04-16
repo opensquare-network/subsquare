@@ -13,7 +13,9 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import IdentityIcon from "next-common/components/Identity/identityIcon";
 import IdentitiesTable from "./table";
-
+import usePeopleChainIdentityInfo from "next-common/hooks/people/usePeopleChainIdentityInfo";
+import LoadableContent from "next-common/components/common/loadableContent";
+import { TitleExtra } from "next-common/components/overview";
 const isPeopleSupported = !!getChainSettings(CHAIN).modules?.people;
 
 let chain;
@@ -60,9 +62,10 @@ function PeopleOverviewPageImpl() {
   return (
     <ListLayout
       title="Identities"
+      titleExtra={<TitleExtra />}
       description={description}
       headContent={<ChainSocialLinks />}
-      summary={<IdentitiesSummary directCount={2312} subCount={2312} />}
+      summary={<IdentitiesSummary />}
       tabs={tabs}
     >
       <div className="space-y-6">
@@ -72,28 +75,25 @@ function PeopleOverviewPageImpl() {
   );
 }
 
-function IdentitiesSummary({
-  className = "",
-  directCount,
-  subCount,
-  identityDetail,
-}) {
+function IdentitiesSummary({ className = "" }) {
+  const { data: identityDetail, isLoading } = usePeopleChainIdentityInfo();
+
   const IdentityList = identityDetail
     ? [
         {
           identity: { info: { status: "VERIFIED" } },
           lanel: "Verified",
-          count: directCount,
+          count: identityDetail?.directCount,
         },
         {
-          identity: { info: { status: "LINKED" } },
+          identity: { info: { status: "NOT_VERIFIED" } },
           lanel: "Not verified",
-          count: subCount,
+          count: identityDetail?.unverifiedCount,
         },
         {
           identity: { info: { status: "ERRONEOUS" } },
           lanel: "Erroneous",
-          count: subCount,
+          count: identityDetail?.erroneousCount,
         },
       ]
     : [];
@@ -101,7 +101,9 @@ function IdentitiesSummary({
   return (
     <SummaryLayout className={className}>
       <SummaryItem title="Direct Identities">
-        {directCount}
+        <LoadableContent isLoading={isLoading}>
+          {identityDetail?.directCount}
+        </LoadableContent>
         <div className="flex flex-col gap-y-0.5 mt-1">
           {IdentityList.map((item) => (
             <div key={item.identity.info.status} className="flex gap-x-2">
@@ -110,13 +112,19 @@ function IdentitiesSummary({
                 {item.lanel}
               </span>
               <span className="text-textPrimary text12Medium">
-                {item.count}
+                <LoadableContent isLoading={isLoading}>
+                  {item.count}
+                </LoadableContent>
               </span>
             </div>
           ))}
         </div>
       </SummaryItem>
-      <SummaryItem title="Sub Identities">{subCount}</SummaryItem>
+      <SummaryItem title="Sub Identities">
+        <LoadableContent isLoading={isLoading}>
+          {identityDetail?.subCount}
+        </LoadableContent>
+      </SummaryItem>
     </SummaryLayout>
   );
 }
