@@ -23,7 +23,7 @@ function useReferendaSearchResults() {
       results?.map((item) => ({
         index: item?.referendumIndex ?? 0,
         title: item?.title ?? "-",
-        content: item?.contentSummary ?? "-",
+        content: item?.contentSummary?.summary ?? "-",
       })) ?? null
     );
   }, [results]);
