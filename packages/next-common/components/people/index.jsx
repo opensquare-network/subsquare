@@ -1,4 +1,3 @@
-import { withCommonProps } from "next-common/lib";
 import { useChainSettings } from "next-common/context/chain";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -67,17 +66,3 @@ function PeopleOverviewContent() {
     </div>
   );
 }
-
-export const getServerSideProps = async (ctx) => {
-  if (!isPeopleSupported) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return withCommonProps(async () => {
-    return {
-      props: {},
-    };
-  })(ctx);
-};
