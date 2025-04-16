@@ -6,7 +6,7 @@ import InputInSearchPopup from "next-common/components/header/search/popup/input
 import LoadingSkeleton from "next-common/components/header/search/popup/loadingSkeleton";
 import ReferendaList from "next-common/components/header/search/popup/referenda/index";
 import useRefCallback from "next-common/hooks/useRefCallback";
-import { isNil, debounce, throttle } from "lodash-es";
+import { isNil, throttle } from "lodash-es";
 import NoResult from "next-common/components/header/search/popup/noResult";
 import useReferendaSearchResults from "next-common/components/header/hooks/useReferendaSearchResults";
 
@@ -31,7 +31,7 @@ function SearchPopup({ onClose }) {
     fetch(searchValue);
   });
 
-  const debouncedSearch = useRefCallback(
+  const throttleSearch = useRefCallback(
     throttle((value) => {
       if (value.length > 2) {
         handleSearch();
@@ -40,8 +40,8 @@ function SearchPopup({ onClose }) {
   );
 
   React.useEffect(() => {
-    debouncedSearch(searchValue);
-  }, [searchValue, debouncedSearch]);
+    throttleSearch(searchValue);
+  }, [searchValue, throttleSearch]);
 
   return (
     <Popup className="p-0" onClose={onClose}>
