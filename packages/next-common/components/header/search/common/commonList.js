@@ -21,7 +21,7 @@ function CommonList({ data, isLoading, title, ItemBox, searchType, onClose }) {
         e.preventDefault();
         setSelectedIndex((prev) => (prev - 1 + data?.length) % data?.length);
       } else if (e.key === "Enter" && selectedIndex !== -1) {
-        if (searchType === SearchType.REFERENDA) {
+        if (searchType === SearchType.REFERENDA && selectedIndex !== -1) {
           const item = data[selectedIndex];
           onClose?.();
           router.push(`/${searchType}/${item.index}`);
