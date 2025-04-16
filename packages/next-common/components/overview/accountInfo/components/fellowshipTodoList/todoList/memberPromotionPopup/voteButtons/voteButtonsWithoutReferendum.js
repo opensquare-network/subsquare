@@ -23,7 +23,7 @@ export default function VoteButtonsWithoutReferendum({ who, action }) {
     if (rank > myRank && action === "approve") {
       tooltipContent = `Only rank >=${rank} can create a referendum and then vote`;
       disabled = true;
-    } else if (rank >= myRank && action === "promote") {
+    } else if (rank + 1 > myRank && action === "promote") {
       tooltipContent = `Only rank >=${
         rank + 1
       } can create a referendum and then vote`;
