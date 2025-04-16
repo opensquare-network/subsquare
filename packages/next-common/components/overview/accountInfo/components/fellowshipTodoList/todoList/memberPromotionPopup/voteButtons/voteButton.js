@@ -63,10 +63,14 @@ function VoteButtonImpl({ referendumIndex, voteAye, children }) {
   let disabled = false;
   let tooltipContent = "";
   if (!isReferendaPostLoading && referendumPost) {
-    const requiredRank = getRequireRankFromTrack(referendumPost.track);
-    disabled = requiredRank > rank;
-    if (disabled) {
-      tooltipContent = `Only rank >= ${requiredRank} can vote on this proposal`;
+    try {
+      const requiredRank = getRequireRankFromTrack(referendumPost.track);
+      disabled = requiredRank > rank;
+      if (disabled) {
+        tooltipContent = `Only rank >= ${requiredRank} can vote on this proposal`;
+      }
+    } catch (e) {
+      console.error(e);
     }
   }
 
