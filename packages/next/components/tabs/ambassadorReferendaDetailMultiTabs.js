@@ -1,17 +1,19 @@
 import Tabs from "next-common/components/tabs";
-import { useTimelineData } from "next-common/context/post";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
-import { useOnchainData, usePost } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
+import { useReferendumTimelineData } from "hooks/timelineData";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
 );
 
-const Timeline = dynamicClientOnly(() => import("components/gov2/timeline"));
+const Timeline = dynamicClientOnly(() =>
+  import("next-common/components/timeline"),
+);
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
@@ -19,13 +21,12 @@ const Gov2ReferendumCall = dynamicClientOnly(() =>
 
 export default function AmbassadorReferendaDetailMultiTabs() {
   const router = useRouter();
-  const timelineData = useTimelineData();
-
-  const post = usePost();
-
   const info = useReferendumInfo();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
+  const timelineData = useReferendumTimelineData();
+  const { component: timeLineTabSwitchComponent, isCompact } =
+    useTimelineTabSwitch();
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -52,9 +53,8 @@ export default function AmbassadorReferendaDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            <TimelineModeTabs />
-
-            <Timeline trackInfo={post?.onchainData?.trackInfo} />
+            {timeLineTabSwitchComponent}
+            <Timeline data={timelineData} compact={isCompact} />
           </div>
         ),
       },
@@ -63,11 +63,12 @@ export default function AmbassadorReferendaDetailMultiTabs() {
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
     info,
-    post?.onchainData?.trackInfo,
     proposal?.call,
     proposal.inline,
     router.query.tab,
-    timelineData?.length,
+    timeLineTabSwitchComponent,
+    isCompact,
+    timelineData,
   ]);
 
   function handleTabClick(tab) {

@@ -29,7 +29,7 @@ function DemocracyBioContent() {
     <>
       <div
         className={cn(
-          "grid gap-[16px]",
+          "px-6 grid gap-[16px]",
           isMobile ? "grid-cols-1" : "grid-cols-2",
         )}
       >

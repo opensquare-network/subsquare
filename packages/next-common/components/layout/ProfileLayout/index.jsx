@@ -87,8 +87,8 @@ export default function ProfileLayout({
       seoInfo={seoInfo}
       contentStyle={{
         backgroundImage: isDark
-          ? "linear-gradient(180deg, rgba(30, 33, 48, 0.80) 0%, rgba(30, 33, 48, 0.00) 100%)"
-          : "linear-gradient(180deg, rgba(246, 247, 250, 0.80) 0%, rgba(246, 247, 250, 0.00) 100%)",
+          ? "linear-gradient(180deg, #212433 0%, #1E2130 100%)"
+          : "linear-gradient(180deg, #FDFDFD 0%, #F6F7FA 100%)",
       }}
     >
       {pageHeader && (
@@ -99,7 +99,7 @@ export default function ProfileLayout({
       <div>
         <div
           className={cn(
-            "px-12 py-4 pb-6 mt-[48px] mx-auto max-w-[1200px]",
+            "px-6 py-4 pb-6 mt-[48px] mx-auto max-w-[1200px]",
             "max-sm:px-6",
           )}
         >

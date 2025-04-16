@@ -4,8 +4,6 @@ import {
   DisplayUserAvatar,
 } from "next-common/components/profile/bio";
 import AddressUser from "next-common/components/user/addressUser";
-import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
@@ -46,35 +44,15 @@ ${(p) => {
 }}
 `;
 
-function AddressLabelWithBadge({ data }) {
+function AddressLabel({ data }) {
   return (
-    <>
-      <AddressUser
-        add={data?.address || ""}
-        className="flex text14Medium text-textPrimary"
-        maxWidth={200}
-        showAvatar={false}
-        noTooltip
-      />
-      {data.isPure && (
-        <Tooltip
-          content={
-            <Link
-              className="underline relative z-20"
-              style={{ pointerEvents: "all" }}
-              href="https://wiki.polkadot.network/learn/learn-proxies-pure/"
-              target="_blank"
-            >
-              Pure Proxy↗
-            </Link>
-          }
-        >
-          <span className="inline-block h-5 leading-5 bg-neutral200 text-textSecondary text12Medium px-2 rounded-[0.625rem]">
-            Pure
-          </span>
-        </Tooltip>
-      )}
-    </>
+    <AddressUser
+      add={data?.address || ""}
+      className="flex text14Medium text-textPrimary"
+      maxWidth={200}
+      showAvatar={false}
+      noTooltip
+    />
   );
 }
 
@@ -87,13 +65,14 @@ function SelfNode({ data }) {
         className="bg-no-repeat bg-cover w-60 h-[40px] rounded-t-[12px]"
         style={{ backgroundImage: `url(${bannerUrl})` }}
       >
+        {data?.pure}
         <div className="w-full relative top-[20px] flex justify-center">
           <UserAvatar address={data?.address} badge={data.badge} />
         </div>
       </div>
       <div className="px-4 py-2 mt-5">
         <div className="flex items-center justify-between h-5">
-          <AddressLabelWithBadge data={data} />
+          <AddressLabel data={data} />
         </div>
         <DisplayUserAddress
           showLinks={false}
@@ -112,7 +91,8 @@ function RelativeUserNode({ data }) {
       <UserAvatar address={data?.address} badge={data.badge} />
       <div className="flex-1">
         <div className="flex items-center justify-between h-6">
-          <AddressLabelWithBadge data={data} />
+          <AddressLabel data={data} />
+          {data?.pure}
         </div>
         <DisplayUserAddress
           showLinks={false}
