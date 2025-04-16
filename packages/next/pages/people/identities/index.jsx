@@ -7,8 +7,13 @@ import { commonReducers } from "next-common/store/reducers";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import RelayInfoProvider from "next-common/context/relayInfo";
-import { PeopleIdentitiesPageImpl } from "next-common/components/people/identities";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
 const isPeopleSupported = !!getChainSettings(CHAIN).modules?.people;
+
+const PeopleIdentitiesPageImpl = dynamicClientOnly(() =>
+  import("next-common/components/people/identities"),
+);
 
 let chain;
 let store;

@@ -1,7 +1,5 @@
 import { withCommonProps } from "next-common/lib";
 import { useChainSettings } from "next-common/context/chain";
-import { CHAIN } from "next-common/utils/constants";
-import getChainSettings from "next-common/utils/consts/settings";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import NoWalletConnected from "next-common/components/assets/noWalletConnected";
@@ -12,9 +10,8 @@ import Tabs from "next-common/components/tabs";
 import { useState } from "react";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import PrimaryButton from "next-common/lib/button/primary";
-export const isPeopleSupported = !!getChainSettings(CHAIN).modules?.people;
 
-export function PeopleOverviewPageImpl() {
+export default function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
   const realAddress = useRealAddress();
 

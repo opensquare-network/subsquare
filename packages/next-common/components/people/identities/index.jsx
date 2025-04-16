@@ -8,7 +8,7 @@ import IdentitiesTable from "./table";
 import usePeopleChainIdentityInfo from "next-common/hooks/people/usePeopleChainIdentityInfo";
 import LoadableContent from "next-common/components/common/loadableContent";
 
-export function PeopleIdentitiesPageImpl() {
+export default function PeopleIdentitiesPageImpl() {
   const { description } = useChainSettings();
 
   const tabs = [
