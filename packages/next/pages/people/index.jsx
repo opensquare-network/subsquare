@@ -1,15 +1,15 @@
-import { withCommonProps } from "next-common/lib";
-import { createStore } from "next-common/store";
-import ChainProvider, { useChainSettings } from "next-common/context/chain";
-import ApiProvider from "next-common/context/api";
-import { Provider } from "react-redux";
-import { commonReducers } from "next-common/store/reducers";
+import {
+  isPeopleSupported,
+  PeopleOverviewPageImpl,
+} from "next-common/components/people";
 import { CHAIN } from "next-common/utils/constants";
-import getChainSettings from "next-common/utils/consts/settings";
+import { createStore } from "next-common/store";
+import { commonReducers } from "next-common/store/reducers";
+import { withCommonProps } from "next-common/lib";
 import RelayInfoProvider from "next-common/context/relayInfo";
-import BaseLayout from "next-common/components/layout/baseLayout";
-
-const isPeopleSupported = !!getChainSettings(CHAIN).modules?.people;
+import ApiProvider from "next-common/context/api";
+import ChainProvider from "next-common/context/chain";
+import { Provider } from "react-redux";
 
 let chain;
 let store;
@@ -37,16 +37,6 @@ export default function PeoplePage() {
         </ChainProvider>
       </Provider>
     </RelayInfoProvider>
-  );
-}
-
-function PeopleOverviewPageImpl() {
-  const { description } = useChainSettings();
-
-  return (
-    <BaseLayout title="Identities" description={description}>
-      <div className="space-y-6">People</div>
-    </BaseLayout>
   );
 }
 
