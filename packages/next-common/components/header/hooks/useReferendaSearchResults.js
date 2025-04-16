@@ -22,8 +22,8 @@ function useReferendaSearchResults() {
     return (
       results?.map((item) => ({
         index: item?.referendumIndex ?? 0,
-        title: item?.title ?? "- -",
-        content: item?.contentSummary ?? "- -",
+        title: item?.title ?? "-",
+        content: item?.contentSummary ?? "-",
       })) ?? null
     );
   }, [results]);
