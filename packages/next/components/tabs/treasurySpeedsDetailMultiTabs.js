@@ -1,11 +1,10 @@
 import Tabs from "next-common/components/tabs";
-import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
 import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTreasurySpendTimelineData";
-import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 
 const TreasurySpendMetadata = dynamicClientOnly(() =>
   import("next-common/components/detail/treasury/spend/metadata"),
@@ -19,7 +18,7 @@ export default function TreasurySpeedsDetailMultiTabs() {
   const detail = usePost();
   const timelineData = useTreasurySpendTimelineData(detail?.onchainData);
   const router = useRouter();
-  const isTimelineCompact = useIsTimelineCompact();
+  const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -34,20 +33,22 @@ export default function TreasurySpeedsDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            <TimelineModeTabs />
+            {timeLineTabSwitch}
 
-            <Timeline
-              data={timelineData}
-              indent={false}
-              compact={isTimelineCompact}
-            />
+            <Timeline data={timelineData} indent={false} compact={isCompact} />
           </div>
         ),
       },
     ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
-  }, [detail?.onchainData, isTimelineCompact, router.query.tab, timelineData]);
+  }, [
+    detail?.onchainData,
+    isCompact,
+    router.query.tab,
+    timeLineTabSwitch,
+    timelineData,
+  ]);
 
   function handleTabClick(tab) {
     router.replace(
