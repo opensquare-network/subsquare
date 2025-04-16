@@ -11,7 +11,7 @@ const ReferendaItem = memo(function ItemContent({ row }) {
       </p>
       <p className="pl-2 flex flex-col  justify-between">
         <span className="text14Medium text-textPrimary line-clamp-1">
-          {`#${index}`} {title}
+          {`#${index}`}&nbsp;·&nbsp;{title}
         </span>
         <span className="text12Medium text-textTertiary line-clamp-1">
           {content}
