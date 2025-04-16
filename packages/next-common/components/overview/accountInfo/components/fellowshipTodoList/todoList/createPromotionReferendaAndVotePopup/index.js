@@ -11,26 +11,36 @@ import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import useTrackNameFromAction from "../memberPromotionPopup/voteButtons/useTrackNameFromAction";
 import PrimaryButton from "next-common/lib/button/primary";
 import Tooltip from "next-common/components/tooltip";
+import {
+  getMinRankOfClass,
+  getTrackToPromoteRank,
+} from "next-common/context/post/fellowship/useMaxVoters";
+import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
-function RankOption({ rank, maxRank }) {
-  if (rank <= maxRank) {
+function RankOption({ rank, myRank }) {
+  const collectivePallet = useRankedCollectivePallet();
+  const trackId = getTrackToPromoteRank(rank);
+  const requiredRank = getMinRankOfClass(trackId, collectivePallet);
+
+  if (requiredRank <= myRank) {
     return rank;
   }
+
   return (
     <Tooltip
       className="w-full"
-      content={`Only rank >=${rank} can create a referendum and then vote`}
+      content={`Only rank >=${requiredRank} can create a referendum and then vote`}
     >
       <div className="text-textTertiary">{rank}</div>
     </Tooltip>
   );
 }
 
-function RankField({ minRank, maxRank, rank, setRank = noop }) {
+function RankField({ minRank, myRank, rank, setRank = noop }) {
   const options = [1, 2, 3]
     .filter((r) => r > minRank)
     .map((r) => ({
-      text: <RankOption rank={r} maxRank={maxRank} />,
+      text: <RankOption rank={r} myRank={myRank} />,
       value: r,
     }));
 
@@ -56,6 +66,7 @@ export default function CreatePromotionReferendaAndVotePopup({
   const action = toRank > rank + 1 ? "promoteFast" : "promote";
   const trackName = useTrackNameFromAction(action, rank);
   const [enactment] = useState({ after: 100 });
+  const collectivePallet = useRankedCollectivePallet();
 
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
   const { value: address, component: whoField } = useAddressComboField({
@@ -85,9 +96,12 @@ export default function CreatePromotionReferendaAndVotePopup({
 
   let disabled = !who || !toRank;
   let tooltipContent = "";
-  if (toRank > myRank) {
+  const trackId = getTrackToPromoteRank(toRank);
+  const requiredRank = getMinRankOfClass(trackId, collectivePallet);
+
+  if (requiredRank > myRank) {
     disabled = true;
-    tooltipContent = `Only rank >=${toRank} can create a referendum and then vote`;
+    tooltipContent = `Only rank >=${requiredRank} can create a referendum and then vote`;
   }
 
   return (
@@ -96,7 +110,7 @@ export default function CreatePromotionReferendaAndVotePopup({
       <RankField
         title="To Rank"
         minRank={rank}
-        maxRank={myRank}
+        myRank={myRank}
         rank={toRank}
         setRank={setToRank}
       />

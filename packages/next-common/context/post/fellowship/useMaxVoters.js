@@ -1,3 +1,15 @@
+export function getTrackToRetainRank(rank) {
+  return 11 + rank;
+}
+
+export function getTrackToPromoteRank(rank) {
+  return 21 + rank;
+}
+
+export function getTrackToFastPromoteRank(rank) {
+  return 31 + rank;
+}
+
 export function getFellowshipMinRankOfClass(trackId) {
   if (trackId <= 9) {
     return trackId;
