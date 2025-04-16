@@ -14,7 +14,7 @@ export default function EditAvatarIconButton() {
         <div
           className={cn(
             "flex justify-center items-center",
-            "bg-neutral100 border border-neutral400 rounded-full w-[32px] h-[32px]",
+            "bg-neutral100 border border-neutral400 rounded-md w-[28px] h-[28px]",
             "cursor-pointer",
           )}
           onClick={() => setIsPopupOpen(true)}
