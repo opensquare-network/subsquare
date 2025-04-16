@@ -3,14 +3,14 @@ import { getRetainTrackNameFromRank } from "next-common/components/fellowship/co
 import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 import getFastPromoteTrackNameFromRank from "./getFastPromoteTrackNameFromRank";
 
-export default function useTrackNameFromAction(action, currentMemberRank) {
+export default function useTrackNameFromAction(action, targetRank) {
   const chain = useChain();
   if (action === "approve") {
-    return getRetainTrackNameFromRank(chain, currentMemberRank);
+    return getRetainTrackNameFromRank(chain, targetRank);
   } else if (action === "promote") {
-    return getPromoteTrackNameFromRank(chain, currentMemberRank + 1);
+    return getPromoteTrackNameFromRank(chain, targetRank);
   } else if (action === "promoteFast") {
-    return getFastPromoteTrackNameFromRank(chain, currentMemberRank + 1);
+    return getFastPromoteTrackNameFromRank(chain, targetRank);
   }
 
   throw new Error("Unsupported action");

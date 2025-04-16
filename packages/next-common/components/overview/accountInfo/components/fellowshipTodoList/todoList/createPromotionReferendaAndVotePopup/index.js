@@ -67,7 +67,7 @@ export default function CreatePromotionReferendaAndVotePopup({
   const dispatch = useDispatch();
   const [toRank, setToRank] = useState(rank + 1);
   const action = toRank > rank + 1 ? "promoteFast" : "promote";
-  const trackName = useTrackNameFromAction(action, rank);
+  const trackName = useTrackNameFromAction(action, toRank);
   const [enactment] = useState({ after: 100 });
   const requiredRank = useRequiredRankToPromote(toRank);
 
