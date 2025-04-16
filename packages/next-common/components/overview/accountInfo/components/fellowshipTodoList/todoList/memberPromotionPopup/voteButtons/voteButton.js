@@ -11,34 +11,7 @@ import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellows
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useValueFromBatchResult } from "next-common/context/batch";
 import Tooltip from "next-common/components/tooltip";
-
-const mapTrackToRank = {
-  11: 1, // Retain At 1 Dan
-  12: 2,
-  13: 3,
-  14: 4,
-  15: 5,
-  16: 6,
-
-  21: 1, // Promote To 1 Dan
-  22: 2,
-  23: 3,
-  24: 4,
-  25: 5,
-  26: 6,
-
-  31: 1, // Fast Promote To 1 Dan
-  32: 2,
-  33: 3,
-};
-
-function getRequireRankFromTrack(trackId) {
-  if (trackId in mapTrackToRank) {
-    return mapTrackToRank[trackId];
-  }
-
-  throw new Error(`Cannot get rank from trackId: ${trackId}`);
-}
+import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
 
 function VoteButtonImpl({ referendumIndex, voteAye, children }) {
   const dispatch = useDispatch();
@@ -64,7 +37,10 @@ function VoteButtonImpl({ referendumIndex, voteAye, children }) {
   let tooltipContent = "";
   if (!isReferendaPostLoading && referendumPost) {
     try {
-      const requiredRank = getRequireRankFromTrack(referendumPost.track);
+      const requiredRank = getMinRankOfClass(
+        referendumPost.track,
+        collectivePallet,
+      );
       disabled = requiredRank > rank;
       if (disabled) {
         tooltipContent = `Only rank >= ${requiredRank} can vote on this proposal`;
