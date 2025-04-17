@@ -13,18 +13,22 @@ import PrimaryButton from "next-common/lib/button/primary";
 import Tooltip from "next-common/components/tooltip";
 import {
   getMinRankOfClass,
+  getTrackToFastPromoteToRank,
   getTrackToPromoteToRank,
 } from "next-common/context/post/fellowship/useMaxVoters";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
-function useRequiredRankToPromote(rank) {
+function useRequiredRankToPromoteMemberFromRankToRank(fromRank, toRank) {
   const collectivePallet = useRankedCollectivePallet();
-  const trackId = getTrackToPromoteToRank(rank);
+  let trackId = getTrackToPromoteToRank(toRank);
+  if (toRank - fromRank > 1) {
+    trackId = getTrackToFastPromoteToRank(toRank);
+  }
   return getMinRankOfClass(trackId, collectivePallet);
 }
 
 function RankOption({ rank, myRank }) {
-  const requiredRank = useRequiredRankToPromote(rank);
+  const requiredRank = useRequiredRankToPromoteMemberFromRankToRank(rank);
   if (requiredRank <= myRank) {
     return rank;
   }
@@ -69,7 +73,7 @@ export default function CreatePromotionReferendaAndVotePopup({
   const action = toRank > rank + 1 ? "promoteFast" : "promote";
   const trackName = useTrackNameFromAction(action, toRank);
   const [enactment] = useState({ after: 100 });
-  const requiredRank = useRequiredRankToPromote(toRank);
+  const requiredRank = useRequiredRankToPromoteMemberFromRankToRank(toRank);
 
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
   const { value: address, component: whoField } = useAddressComboField({

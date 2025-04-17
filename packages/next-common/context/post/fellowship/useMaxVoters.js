@@ -14,8 +14,12 @@ export function getTrackToPromoteToRank(rank) {
   throw new Error("Invalid rank to get track for promotion");
 }
 
-export function getTrackToFastPromoteRank(rank) {
-  return 31 + rank;
+export function getTrackToFastPromoteToRank(rank) {
+  if (rank >= 1 && rank <= 3) {
+    return 31 + rank - 1;
+  }
+
+  throw new Error("Invalid rank to get track for fast promotion");
 }
 
 export function getFellowshipMinRankOfClass(trackId) {
