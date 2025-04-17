@@ -1,4 +1,4 @@
-import { SystemLoading, SystemTinyCircle } from "@osn/icons/subsquare";
+import { SystemTinyCircle, SystemTinyCircleLoader } from "@osn/icons/subsquare";
 
 export default function CircleStepper({ steps, currentStep = 0, loading }) {
   return (
@@ -18,7 +18,7 @@ export default function CircleStepper({ steps, currentStep = 0, loading }) {
               />
               <div className="w-3 h-3">
                 {loading && index === currentStep ? (
-                  <SystemLoading className="w-3 h-3 text-theme500" />
+                  <SystemTinyCircleLoader className="w-3 h-3 animate-spin text-theme500" />
                 ) : (
                   <SystemTinyCircle
                     className={` ${
