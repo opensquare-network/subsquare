@@ -20,7 +20,7 @@ export default function CreatePromotionReferendumAndVoteButtons({ who }) {
       "There are no corresponding tracks to promote members with rank >= 6";
     disabled = true;
   } else if (myRank < 3) {
-    tooltipContent = "Only rank >=3 can create a referendum and then vote";
+    tooltipContent = "Only rank >= 3 can create a referendum and then vote";
     disabled = true;
   } else {
     const trackId = getTrackToPromoteToRank(currentRank + 1);
