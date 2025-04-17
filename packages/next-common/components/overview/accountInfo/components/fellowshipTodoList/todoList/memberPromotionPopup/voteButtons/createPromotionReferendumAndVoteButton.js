@@ -24,10 +24,8 @@ function CreateReferendumAndVoteButtonImpl({
   tooltip,
   children,
 }) {
-  const [
-    showCreatePromotionReferendaAndVotePopup,
-    setShowCreatePromotionReferendaAndVotePopup,
-  ] = useState(false);
+  const [showMaybeFastPromotePopup, setShowMaybeFastPromotePopup] =
+    useState(false);
   const dispatch = useDispatch();
   const currentRank = useMemberRank(who);
 
@@ -58,7 +56,7 @@ function CreateReferendumAndVoteButtonImpl({
 
   const createReferendaAndVote = useCallback(() => {
     if (currentRank < 3) {
-      setShowCreatePromotionReferendaAndVotePopup(true);
+      setShowMaybeFastPromotePopup(true);
       return;
     }
     doSubmitCreateAndVote();
@@ -79,10 +77,11 @@ function CreateReferendumAndVoteButtonImpl({
           {children}
         </SecondaryButton>
       </Tooltip>
-      {showCreatePromotionReferendaAndVotePopup && (
+      {showMaybeFastPromotePopup && (
         <CreatePromotionReferendaAndVotePopup
           who={who}
-          onClose={() => setShowCreatePromotionReferendaAndVotePopup(false)}
+          voteAye={voteAye}
+          onClose={() => setShowMaybeFastPromotePopup(false)}
         />
       )}
     </>
