@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { NewProposalInnerPopup } from "../newProposalPopup";
 import { usePageProps } from "next-common/context/page";
 import { NewPreimageButton, NewProposalFromPreimageButton } from "./common";
-import { useForwardPopupContext } from "next-common/context/forwardPopup";
 import { useNewPrerimageForm } from "next-common/components/preImages/newPreimagePopup";
 import { useStepContainer } from "next-common/context/stepContainer";
 import CircleStepper from "next-common/components/step";
@@ -46,6 +44,7 @@ const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
   });
 
   return {
+    disabled,
     isLoading,
     form: component,
     button: button,
@@ -94,15 +93,44 @@ function NewPreimageContent() {
   );
 }
 
-function NewProposalFromPreImage() {
+const NewProposalContent = () => {
   const { period } = usePageProps();
-  const { setForwardPopup } = useForwardPopupContext();
+  const { goBack } = useStepContainer();
+  const {
+    isLoading: proposalLoading,
+    form: proposalForm,
+    button: proposalButton,
+    disabled,
+  } = useCreateProposal({
+    track: period,
+  });
+
   return (
-    <NewProposalFromPreimageButton
-      onClick={() => setForwardPopup(<NewProposalInnerPopup track={period} />)}
-    />
+    <>
+      <CircleStepper
+        steps={[
+          {
+            id: "provideInfo",
+            label: "Provide the Info",
+          },
+          { id: "newReferendum", label: "New Referendum" },
+        ]}
+        currentStep={disabled ? 0 : 1}
+        loading={proposalLoading}
+      />
+      <div>{proposalForm}</div>
+      <div className="flex justify-between">
+        <Button
+          className="border-neutral400 hover:border-neutral500"
+          onClick={goBack}
+        >
+          Previous
+        </Button>
+        {proposalButton}
+      </div>
+    </>
   );
-}
+};
 
 export default function CreateFormPreImage() {
   const { goNext } = useStepContainer();
@@ -117,7 +145,14 @@ export default function CreateFormPreImage() {
           });
         }}
       />
-      <NewProposalFromPreImage />
+      <NewProposalFromPreimageButton
+        onClick={() => {
+          goNext({
+            title: "New Preimage",
+            component: NewProposalContent,
+          });
+        }}
+      />
     </div>
   );
 }
