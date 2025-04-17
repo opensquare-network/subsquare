@@ -21,10 +21,28 @@ const ReferendaItem = memo(function ItemContent({ row, searchType, onClose }) {
           <MenuReferenda className="w-6 h-6 [&_path]:fill-textTertiary" />
         </p>
         <p className="pl-2 flex flex-col justify-between min-w-0 flex-1">
-          <span className="text14Medium text-textPrimary line-clamp-1">
+          <span
+            className="text14Medium text-textPrimary"
+            style={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 1,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
             {`#${index}`}&nbsp;·&nbsp;{title}
           </span>
-          <span className="text12Medium text-textTertiary line-clamp-1">
+          <span
+            className="text12Medium text-textTertiary"
+            style={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 1,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
             {content}
           </span>
         </p>
