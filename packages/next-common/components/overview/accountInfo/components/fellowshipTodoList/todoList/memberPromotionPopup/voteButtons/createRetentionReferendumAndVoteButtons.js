@@ -19,7 +19,7 @@ export default function CreateRetentionReferendumAndVoteButtons({ who }) {
     tooltipContent = "Rank retention is not allowed for candidates";
     disabled = true;
   } else if (myRank < 3) {
-    tooltipContent = "Only rank >=3 can create a referendum and then vote";
+    tooltipContent = "Only rank >= 3 can create a referendum and then vote";
     disabled = true;
   } else {
     const trackId = getTrackToRetainAtRank(currentRank);

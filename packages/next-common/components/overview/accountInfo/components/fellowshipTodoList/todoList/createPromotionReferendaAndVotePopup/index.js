@@ -68,7 +68,7 @@ export default function CreatePromotionReferendaAndVotePopup({
   let tooltipContent = "";
   if (requiredRank > myRank) {
     disabled = true;
-    tooltipContent = `Only rank >=${requiredRank} can create a referendum and then vote`;
+    tooltipContent = `Only rank >= ${requiredRank} can create a referendum and then vote`;
   }
 
   return (

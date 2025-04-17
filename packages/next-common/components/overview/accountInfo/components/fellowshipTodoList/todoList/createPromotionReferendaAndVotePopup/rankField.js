@@ -14,7 +14,7 @@ function RankOption({ currentRank, optionRank }) {
   return (
     <Tooltip
       className="w-full"
-      content={`Only rank >=${requiredRank} can create a referendum and then vote`}
+      content={`Only rank >= ${requiredRank} can create a referendum and then vote`}
     >
       <div className="text-textTertiary">{optionRank}</div>
     </Tooltip>
