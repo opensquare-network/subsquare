@@ -8,6 +8,17 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
   const [deposit, setDeposit] = useState("0");
   const [isLoading, setIsLoading] = useState(false);
 
+  const fields = [
+    "display",
+    "legal",
+    "web",
+    "email",
+    "twitter",
+    "matrix",
+    "discord",
+    "github",
+  ];
+
   const calculateTotalDeposit = useCallback(
     (basicDeposit, byteDeposit, info) => {
       if (!basicDeposit || !byteDeposit) return "0";
@@ -18,16 +29,11 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
         }
 
         const registry = new TypeRegistry();
-        const formattedInfo = {
-          display: info.display ? { Raw: info.display } : { None: null },
-          legal: info.legal ? { Raw: info.legal } : { None: null },
-          web: info.web ? { Raw: info.web } : { None: null },
-          email: info.email ? { Raw: info.email } : { None: null },
-          twitter: info.twitter ? { Raw: info.twitter } : { None: null },
-          matrix: info.matrix ? { Raw: info.matrix } : { None: null },
-          discord: info.discord ? { Raw: info.discord } : { None: null },
-          github: info.github ? { Raw: info.github } : { None: null },
-        };
+
+        const formattedInfo = fields.reduce((result, field) => {
+          result[field] = info[field] ? { Raw: info[field] } : { None: null };
+          return result;
+        }, {});
 
         const encoded = createType(
           registry,
