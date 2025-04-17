@@ -50,7 +50,7 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
         return "0";
       }
     },
-    [],
+    [fields],
   );
 
   const fetchDeposits = useCallback(async () => {
