@@ -18,7 +18,7 @@ import {
 } from "next-common/context/post/fellowship/useMaxVoters";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 
-function useRequiredRankToPromoteMemberFromRankToRank(fromRank, toRank) {
+function useRequiredRankToPromoteMember(fromRank, toRank) {
   const collectivePallet = useRankedCollectivePallet();
   let trackId = getTrackToPromoteToRank(toRank);
   if (toRank - fromRank > 1) {
@@ -27,10 +27,10 @@ function useRequiredRankToPromoteMemberFromRankToRank(fromRank, toRank) {
   return getMinRankOfClass(trackId, collectivePallet);
 }
 
-function RankOption({ rank, myRank }) {
-  const requiredRank = useRequiredRankToPromoteMemberFromRankToRank(rank);
+function RankOption({ fromRank, toRank, myRank }) {
+  const requiredRank = useRequiredRankToPromoteMember(fromRank, toRank);
   if (requiredRank <= myRank) {
-    return rank;
+    return toRank;
   }
 
   return (
@@ -38,24 +38,24 @@ function RankOption({ rank, myRank }) {
       className="w-full"
       content={`Only rank >=${requiredRank} can create a referendum and then vote`}
     >
-      <div className="text-textTertiary">{rank}</div>
+      <div className="text-textTertiary">{toRank}</div>
     </Tooltip>
   );
 }
 
-function RankField({ minRank, myRank, rank, setRank = noop }) {
+function RankField({ fromRank, myRank, toRank, setToRank = noop }) {
   const options = [1, 2, 3]
-    .filter((r) => r > minRank)
+    .filter((r) => r > fromRank)
     .map((r) => ({
-      text: <RankOption rank={r} myRank={myRank} />,
+      text: <RankOption fromRank={fromRank} toRank={r} myRank={myRank} />,
       value: r,
     }));
 
   return (
     <CommonSelectField
       title="To Rank"
-      value={rank}
-      setValue={setRank}
+      value={toRank}
+      setValue={setToRank}
       options={options}
     />
   );
@@ -73,7 +73,7 @@ export default function CreatePromotionReferendaAndVotePopup({
   const action = toRank > rank + 1 ? "promoteFast" : "promote";
   const trackName = useTrackNameFromAction(action, toRank);
   const [enactment] = useState({ after: 100 });
-  const requiredRank = useRequiredRankToPromoteMemberFromRankToRank(toRank);
+  const requiredRank = useRequiredRankToPromoteMember(rank, toRank);
 
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
   const { value: address, component: whoField } = useAddressComboField({
@@ -113,10 +113,10 @@ export default function CreatePromotionReferendaAndVotePopup({
       {whoField}
       <RankField
         title="To Rank"
-        minRank={rank}
+        fromRank={rank}
         myRank={myRank}
-        rank={toRank}
-        setRank={setToRank}
+        toRank={toRank}
+        setToRank={setToRank}
       />
       <div className="flex justify-end">
         <Tooltip content={tooltipContent}>
