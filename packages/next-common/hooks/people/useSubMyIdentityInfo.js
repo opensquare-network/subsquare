@@ -1,60 +1,61 @@
-import { useEffect, useState } from "react";
-import { useContextApi } from "next-common/context/api";
+import { useMemo } from "react";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
-function convertIdentityInfo(identityInfo) {
-  if (!identityInfo) {
+const InitIdentityInfo = {
+  display: null,
+  legal: null,
+  email: null,
+  matrix: null,
+  web: null,
+  twitter: null,
+  github: null,
+  discord: null,
+};
+
+const extractRaw = (field) => {
+  if (!field || field === "None") {
     return null;
   }
 
+  return field?.Raw || field || null;
+};
+
+function convertIdentityInfo(identity) {
+  const unwrapped = identity.unwrap();
+  const identityOf = Array.isArray(unwrapped) ? unwrapped[0] : unwrapped;
+  const info = identityOf?.info?.toHuman() || {};
+
   return {
-    display: identityInfo?.display?.Raw || null,
-    legal: identityInfo?.legal,
-    email: identityInfo?.email?.Raw || null,
-    matrix: identityInfo?.matrix?.Raw || null,
-    web: identityInfo?.web,
-    twitter: identityInfo?.twitter,
-    github: identityInfo?.github,
-    discord: identityInfo?.discord,
+    display: extractRaw(info?.display),
+    legal: extractRaw(info?.legal),
+    email: extractRaw(info?.email),
+    matrix: extractRaw(info?.matrix),
+    web: extractRaw(info?.web),
+    twitter: extractRaw(info?.twitter),
+    github: extractRaw(info?.github),
+    discord: extractRaw(info?.discord),
   };
 }
 
-export default function useSubMyIdentityInfo(address) {
-  const api = useContextApi();
-  const [identityDeposit, setIdentityDeposit] = useState(null);
-  const [identityInfo, setIdentityInfo] = useState(null);
+export default function useSubMyIdentityInfo() {
+  const address = useRealAddress();
+  const { result, loading: isLoading } = useSubStorage(
+    "identity",
+    "identityOf",
+    [address],
+  );
 
-  useEffect(() => {
-    if (!api || !address || !api.query.identity?.identityOf) {
-      return;
+  const identity = useMemo(() => {
+    if (!result || result?.isNone) {
+      return InitIdentityInfo;
     }
 
-    let unsub;
-    api.query.identity
-      .identityOf(address, (identity) => {
-        if (!identity || identity.isNone) {
-          setIdentityDeposit(0);
-          return;
-        }
-
-        const unwrapped = identity.unwrap();
-        const identityOf = Array.isArray(unwrapped) ? unwrapped[0] : unwrapped;
-        const indentityInfo = identityOf?.info?.toHuman() || "";
-        const convertedInfo = convertIdentityInfo(indentityInfo);
-
-        setIdentityInfo(convertedInfo);
-        setIdentityDeposit(identityOf.deposit.toString() || "0");
-      })
-      .then((result) => (unsub = result));
-
-    return () => {
-      if (unsub) {
-        unsub();
-      }
-    };
-  }, [api, address]);
+    return convertIdentityInfo(result);
+  }, [result]);
 
   return {
-    identityInfo,
-    identityDeposit,
+    isLoading,
+    result: identity,
   };
 }
