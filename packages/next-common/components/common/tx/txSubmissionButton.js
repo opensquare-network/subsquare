@@ -47,3 +47,49 @@ export default function TxSubmissionButton({
     </div>
   );
 }
+
+export function useTxSubmissionButton({
+  loading = false,
+  loadingText,
+  disabled = false,
+  getTxFunc = noop,
+  title = "Submit",
+  onFinalized = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  autoClose = true,
+}) {
+  const onClose = usePopupOnClose();
+  const { isSubmitting, doSubmit } = useTxSubmission({
+    getTxFunc,
+    onFinalized,
+    onInBlock,
+    onSubmitted: () => {
+      if (autoClose) {
+        onClose();
+      }
+      onSubmitted();
+    },
+  });
+
+  const isLoading = isSubmitting || loading;
+
+  return {
+    isLoading,
+    component: (
+      <div className="flex justify-end">
+        {isLoading && loadingText ? (
+          <LoadingButton>{loadingText}</LoadingButton>
+        ) : (
+          <PrimaryButton
+            loading={isLoading}
+            onClick={doSubmit}
+            disabled={disabled}
+          >
+            {title}
+          </PrimaryButton>
+        )}
+      </div>
+    ),
+  };
+}
