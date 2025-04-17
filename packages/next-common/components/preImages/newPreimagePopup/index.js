@@ -122,3 +122,51 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
     </SignerPopupWrapper>
   );
 }
+
+export function useNewPrerimageForm() {
+  const api = useContextApi();
+  const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
+    useState(EMPTY_PROPOSAL);
+
+  const setProposal = useCallback(
+    ({ isValid, data: tx }) => {
+      if (!api) {
+        return;
+      }
+      if (!isValid) {
+        return setState(EMPTY_PROPOSAL);
+      }
+      const state = getState(api, tx);
+      setState(state);
+    },
+    [api],
+  );
+
+  let extrinsicComponent = null;
+
+  if (!api) {
+    extrinsicComponent = <ExtrinsicLoading />;
+  } else {
+    extrinsicComponent = (
+      <div>
+        <PopupLabel text="Propose" />
+        <Extrinsic
+          defaultSectionName="system"
+          defaultMethodName="setCode"
+          setValue={setProposal}
+        />
+        <ExtrinsicInfo
+          preimageHash={encodedHash}
+          preimageLength={encodedLength || 0}
+        />
+      </div>
+    );
+  }
+
+  return {
+    encodedHash,
+    encodedLength,
+    notePreimageTx,
+    component: extrinsicComponent,
+  };
+}
