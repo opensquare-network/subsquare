@@ -7,9 +7,10 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
-import useTrackNameFromAction from "./useTrackNameFromAction";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import Tooltip from "next-common/components/tooltip";
+import { useChain } from "next-common/context/chain";
+import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 
 const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
   import("../../createPromotionReferendaAndVotePopup"),
@@ -17,9 +18,7 @@ const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
 
 function CreateReferendumAndVoteButtonImpl({
   address,
-  rank,
-  myRank,
-  action = "promote",
+  currentRank,
   voteAye,
   disabled,
   tooltip,
@@ -30,17 +29,17 @@ function CreateReferendumAndVoteButtonImpl({
     setShowCreatePromotionReferendaAndVotePopup,
   ] = useState(false);
   const dispatch = useDispatch();
-  const trackName = useTrackNameFromAction(
-    action,
-    action === "approve" ? rank : rank + 1,
-  );
+
+  const chain = useChain();
+  const trackName = getPromoteTrackNameFromRank(chain, currentRank + 1);
+
   const [enactment] = useState({ after: 100 });
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
 
   const getCreateAndVoteTxFunc = useFellowshipProposalSubmissionTxFunc({
-    rank,
+    rank: currentRank + 1,
     who: address,
-    action,
+    action: "promote",
     trackName,
     enactment,
     checkDecisionDeposit: true,
@@ -57,12 +56,12 @@ function CreateReferendumAndVoteButtonImpl({
   });
 
   const createReferendaAndVote = useCallback(() => {
-    if (action === "promote" && rank < 3) {
+    if (currentRank < 3) {
       setShowCreatePromotionReferendaAndVotePopup(true);
       return;
     }
     doSubmitCreateAndVote();
-  }, [action, rank, doSubmitCreateAndVote]);
+  }, [currentRank, doSubmitCreateAndVote]);
 
   return (
     <>
@@ -81,8 +80,7 @@ function CreateReferendumAndVoteButtonImpl({
       </Tooltip>
       {showCreatePromotionReferendaAndVotePopup && (
         <CreatePromotionReferendaAndVotePopup
-          rank={rank}
-          myRank={myRank}
+          currentRank={currentRank}
           who={address}
           onClose={() => setShowCreatePromotionReferendaAndVotePopup(false)}
         />
@@ -91,7 +89,10 @@ function CreateReferendumAndVoteButtonImpl({
   );
 }
 
-export default function CreateReferendumAndVoteButton({ children, ...props }) {
+export default function CreatePromotionReferendumAndVoteButton({
+  children,
+  ...props
+}) {
   return (
     <SignerPopupWrapper>
       <CreateReferendumAndVoteButtonImpl {...props}>
