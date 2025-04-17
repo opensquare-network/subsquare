@@ -11,14 +11,14 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import Tooltip from "next-common/components/tooltip";
 import { useChain } from "next-common/context/chain";
 import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
+import useMemberRank from "./useMemberRank";
 
 const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
   import("../../createPromotionReferendaAndVotePopup"),
 );
 
 function CreateReferendumAndVoteButtonImpl({
-  address,
-  currentRank,
+  who,
   voteAye,
   disabled,
   tooltip,
@@ -29,6 +29,7 @@ function CreateReferendumAndVoteButtonImpl({
     setShowCreatePromotionReferendaAndVotePopup,
   ] = useState(false);
   const dispatch = useDispatch();
+  const currentRank = useMemberRank(who);
 
   const chain = useChain();
   const trackName = getPromoteTrackNameFromRank(chain, currentRank + 1);
@@ -38,7 +39,7 @@ function CreateReferendumAndVoteButtonImpl({
 
   const getCreateAndVoteTxFunc = useFellowshipProposalSubmissionTxFunc({
     rank: currentRank + 1,
-    who: address,
+    who,
     action: "promote",
     trackName,
     enactment,
@@ -80,8 +81,7 @@ function CreateReferendumAndVoteButtonImpl({
       </Tooltip>
       {showCreatePromotionReferendaAndVotePopup && (
         <CreatePromotionReferendaAndVotePopup
-          currentRank={currentRank}
-          who={address}
+          who={who}
           onClose={() => setShowCreatePromotionReferendaAndVotePopup(false)}
         />
       )}

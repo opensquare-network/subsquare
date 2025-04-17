@@ -1,18 +1,17 @@
 import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 import CreateRetentionReferendumAndVoteButton from "./createRetentionReferendumAndVoteButton";
-import useCollectiveMember from "../../../hooks/useCollectiveMember";
 import {
   getMinRankOfClass,
   getTrackToRetainAtRank,
 } from "next-common/context/post/fellowship/useMaxVoters";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import useMyRank from "./useMyRank";
+import useMemberRank from "./useMemberRank";
 
 export default function CreateRetentionReferendumAndVoteButtons({ who }) {
   const collectivePallet = useRankedCollectivePallet();
   const myRank = useMyRank();
-  const targetMember = useCollectiveMember(who);
-  const currentRank = targetMember?.rank;
+  const currentRank = useMemberRank(who);
 
   let tooltipContent = "Create a new referendum and vote";
   let disabled = false;
@@ -34,8 +33,7 @@ export default function CreateRetentionReferendumAndVoteButtons({ who }) {
   return (
     <div className="flex gap-[12px] h-[31px] items-center justify-end">
       <CreateRetentionReferendumAndVoteButton
-        address={who}
-        currentRank={currentRank}
+        who={who}
         voteAye={false}
         disabled={disabled}
         tooltip={tooltipContent}
@@ -44,8 +42,7 @@ export default function CreateRetentionReferendumAndVoteButtons({ who }) {
       </CreateRetentionReferendumAndVoteButton>
 
       <CreateRetentionReferendumAndVoteButton
-        address={who}
-        currentRank={currentRank}
+        who={who}
         voteAye={true}
         disabled={disabled}
         tooltip={tooltipContent}

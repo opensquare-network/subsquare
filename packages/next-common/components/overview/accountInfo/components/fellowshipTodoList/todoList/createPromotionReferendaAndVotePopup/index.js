@@ -14,14 +14,16 @@ import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/c
 import getFastPromoteTrackNameFromRank from "../memberPromotionPopup/voteButtons/getFastPromoteTrackNameFromRank";
 import useRequiredRankToPromoteMember from "./useRequiredRankToPromoteMember";
 import RankField from "./rankField";
+import useMemberRank from "../memberPromotionPopup/voteButtons/useMemberRank";
 
 export default function CreatePromotionReferendaAndVotePopup({
   who,
   voteAye,
-  currentRank,
   onClose,
 }) {
   const dispatch = useDispatch();
+  const currentRank = useMemberRank(who);
+
   const chain = useChain();
   const [toRank, setToRank] = useState(currentRank + 1);
 

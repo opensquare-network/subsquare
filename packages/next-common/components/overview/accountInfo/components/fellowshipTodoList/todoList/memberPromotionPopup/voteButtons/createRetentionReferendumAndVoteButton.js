@@ -10,16 +10,17 @@ import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import Tooltip from "next-common/components/tooltip";
 import { useChain } from "next-common/context/chain";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
+import useMemberRank from "./useMemberRank";
 
 function CreateReferendumAndVoteButtonImpl({
-  address,
-  currentRank,
+  who,
   voteAye,
   disabled,
   tooltip,
   children,
 }) {
   const dispatch = useDispatch();
+  const currentRank = useMemberRank(who);
   const chain = useChain();
   const trackName = getRetainTrackNameFromRank(chain, currentRank);
 
@@ -28,7 +29,7 @@ function CreateReferendumAndVoteButtonImpl({
 
   const getCreateAndVoteTxFunc = useFellowshipProposalSubmissionTxFunc({
     rank: currentRank,
-    who: address,
+    who,
     action: "approve",
     trackName,
     enactment,
