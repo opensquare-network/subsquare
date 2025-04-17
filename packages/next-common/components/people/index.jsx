@@ -15,9 +15,19 @@ import { Account } from "next-common/components/overview/accountInfo/accountInfo
 import { cn } from "next-common/utils";
 import { SystemEdit2, SystemClose } from "@osn/icons/subsquare";
 import Divider from "next-common/components/styled/layout/divider";
-
+import SubIdentitiesTable from "./subTable";
+import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
+import tw from "tailwind-styled-components";
+import RightWrapper from "next-common/components/rightWraper";
 const SetIdentityPopup = dynamicPopup(
   () => import("next-common/components/setIdentityPopup"),
+  {
+    ssr: false,
+  },
+);
+
+const RequestJudgementPopup = dynamicPopup(
+  () => import("next-common/components/requestJudgementPopup"),
   {
     ssr: false,
   },
@@ -44,12 +54,12 @@ function PeopleOverviewContent() {
     {
       value: "direct-identity",
       label: "Direct Identity",
-      content: <DirectIdentity />,
+      content: <DirectIdentityImpl />,
     },
     {
       value: "sub-identities",
       label: "Sub Identities",
-      content: <SubIdentityEmpty />,
+      content: <SubIdentitiesTable />,
     },
   ];
 
@@ -73,6 +83,17 @@ function PeopleOverviewContent() {
   );
 }
 
+function DirectIdentityImpl() {
+  const { result: subMyIdentityInfo } = useSubMyIdentityInfo();
+
+  const isEmpty =
+    Object.values(subMyIdentityInfo ?? {}).filter(Boolean).length === 0;
+  if (!isEmpty) {
+    return <DirectIdentity subMyIdentityInfo={subMyIdentityInfo} />;
+  }
+  return <DirectIdentityEmpty />;
+}
+
 export function DirectIdentityEmpty() {
   const [showSetIdentityPopup, setShowSetIdentityPopup] = useState(false);
   return (
@@ -80,12 +101,15 @@ export function DirectIdentityEmpty() {
       <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary">
         No identity is set for the connected account.
       </GreyPanel>
-      <PrimaryButton
-        className="w-auto"
-        onClick={() => setShowSetIdentityPopup(true)}
-      >
-        Set Identity
-      </PrimaryButton>
+      <RightWrapper>
+        <PrimaryButton
+          className="w-auto"
+          onClick={() => setShowSetIdentityPopup(true)}
+        >
+          Set Identity
+        </PrimaryButton>
+      </RightWrapper>
+
       {showSetIdentityPopup && (
         <SetIdentityPopup onClose={() => setShowSetIdentityPopup(false)} />
       )}
@@ -103,8 +127,10 @@ export function SubIdentityEmpty() {
   );
 }
 
-export function DirectIdentity() {
+export function DirectIdentity({ subMyIdentityInfo }) {
   const [showSetIdentityPopup, setShowSetIdentityPopup] = useState(false);
+  const [showRequestJudgementPopup, setShowRequestJudgementPopup] =
+    useState(false);
 
   return (
     <>
@@ -137,36 +163,58 @@ export function DirectIdentity() {
         <SetIdentityPopup onClose={() => setShowSetIdentityPopup(false)} />
       )}
       <Divider className="my-4" />
-      <PropList />
+      <PropList subMyIdentityInfo={subMyIdentityInfo} />
       <Divider className="my-4" />
-      <div className="flex justify-end">
-        <SecondaryButton className="w-auto">Request Judgement</SecondaryButton>
-      </div>
+      <RightWrapper>
+        <SecondaryButton
+          className="w-auto"
+          onClick={() => setShowRequestJudgementPopup(true)}
+        >
+          Request Judgement
+        </SecondaryButton>
+      </RightWrapper>
+      {showRequestJudgementPopup && (
+        <RequestJudgementPopup
+          onClose={() => setShowRequestJudgementPopup(false)}
+        />
+      )}
     </>
   );
 }
 
-function PropList() {
+const PropListWrapper = tw.div`
+space-y-2 ml-14
+`;
+
+const PropListLabel = tw.div`
+text14Medium text-textTertiary w-60
+`;
+
+const PropListValue = tw.div`
+text14Medium text-textPrimary
+`;
+
+function PropList({ subMyIdentityInfo }) {
   const list = [
-    { label: "Display Name", value: "-" },
-    { label: "Legal Name", value: "-" },
-    { label: "Email", value: "-" },
-    { label: "Website", value: "-" },
-    { label: "Twitter", value: "-" },
-    { label: "Discord", value: "-" },
-    { label: "Matrix Name", value: "-" },
-    { label: "Github Name", value: "-" },
+    { label: "Display Name", valueKey: "display" },
+    { label: "Legal Name", valueKey: "legal" },
+    { label: "Email", valueKey: "email" },
+    { label: "Website", valueKey: "web" },
+    { label: "Twitter", valueKey: "twitter" },
+    { label: "Discord", valueKey: "discord" },
+    { label: "Matrix Name", valueKey: "matrix" },
+    { label: "Github Name", valueKey: "github" },
   ];
   return (
-    <div className="space-y-2 ml-14">
+    <PropListWrapper className="space-y-2 ml-14">
       {list.map((item) => (
         <div key={item.label} className="flex">
-          <div className="text14Medium text-textTertiary w-60">
-            {item.label}
-          </div>
-          <div className="text14Medium text-textPrimary">{item.value}</div>
+          <PropListLabel>{item.label}</PropListLabel>
+          <PropListValue>
+            {subMyIdentityInfo[item.valueKey] ?? "-"}
+          </PropListValue>
         </div>
       ))}
-    </div>
+    </PropListWrapper>
   );
 }
