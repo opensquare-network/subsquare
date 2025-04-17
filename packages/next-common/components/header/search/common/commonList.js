@@ -7,7 +7,15 @@ export const SearchType = {
   //others
 };
 
-function CommonList({ data, isLoading, title, ItemBox, searchType, onClose }) {
+function CommonList({
+  data,
+  isLoading,
+  title,
+  ItemBox,
+  searchType,
+  onClose,
+  isMobile,
+}) {
   const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const listContainerRef = useRef(null);
@@ -70,7 +78,9 @@ function CommonList({ data, isLoading, title, ItemBox, searchType, onClose }) {
             <ItemBox row={rows[idx]} />
           </div>
         )}
-        className="max-h-[525px] overflow-auto"
+        className={`max-h-[525px] overflow-auto ${
+          isMobile ? "h-[calc(75vh-115px)] w-[calc(100vw-48px)]" : ""
+        }`}
         contentClassName="border-0 divide-y-0 px-2"
         titleClassName="border-0 pb-0"
       />

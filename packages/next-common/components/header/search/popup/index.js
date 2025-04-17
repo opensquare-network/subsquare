@@ -20,7 +20,7 @@ function Wrapper({ children, className = "" }) {
   );
 }
 
-function SearchPopup({ onClose }) {
+function SearchPopup({ onClose, isMobile }) {
   const [searchValue, setSearchValue] = useState("");
   const { referenda, fetch, isLoading, setReferenda } =
     useReferendaSearchResults();
@@ -70,9 +70,15 @@ function SearchPopup({ onClose }) {
     };
   }, [searchValue, setReferenda, throttleSearch]);
 
+  const mobilesStyles = "w-[calc(100vw-48px)] h-[75vh]";
+  const desktopStyles = "w-[960px] h-[640px]";
+
   return (
-    <Popup className="p-0" onClose={onClose}>
-      <div className="w-full min-w-full h-[640px] flex flex-col">
+    <Popup
+      className={`p-0 ${isMobile ? mobilesStyles : desktopStyles}`}
+      onClose={onClose}
+    >
+      <div className="flex flex-col w-full">
         <Wrapper className="border-b border-neutral300 h-[56px] py-2">
           <InputInSearchPopup
             searchValue={searchValue}
@@ -85,7 +91,7 @@ function SearchPopup({ onClose }) {
         </Wrapper>
         {isNil(referenda) && !isLoading && (
           <Wrapper>
-            <ReminderInput />
+            <ReminderInput isMobile={isMobile} />
           </Wrapper>
         )}
         {isLoading && (
@@ -94,10 +100,14 @@ function SearchPopup({ onClose }) {
           </Wrapper>
         )}
         {Array.isArray(referenda) && referenda.length > 0 && (
-          <ReferendaList data={referenda} onClose={onClose} />
+          <ReferendaList
+            data={referenda}
+            onClose={onClose}
+            isMobile={isMobile}
+          />
         )}
         {Array.isArray(referenda) && referenda.length === 0 && !isLoading && (
-          <NoResult />
+          <NoResult isMobile={isMobile} />
         )}
       </div>
     </Popup>

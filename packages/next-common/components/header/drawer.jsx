@@ -104,7 +104,7 @@ export default function SidebarAccount() {
   return (
     <Wrapper>
       {hasReferenda ? (
-        <SearchInputWithPopup type="search" />
+        <SearchInputWithPopup shortcut={false} type="search" />
       ) : (
         <SearchInput shortcut={false} type="search" />
       )}

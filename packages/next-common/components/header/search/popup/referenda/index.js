@@ -18,9 +18,9 @@ const ReferendaItem = memo(function ItemContent({ row, searchType, onClose }) {
     >
       <div className="border-0! flex  hover:bg-neutral200 h-[60px] px-2 py-2">
         <p>
-          <MenuReferenda className="w-6 h-6" />
+          <MenuReferenda className="w-6 h-6 [&_path]:fill-textTertiary" />
         </p>
-        <p className="pl-2 flex flex-col  justify-between">
+        <p className="pl-2 flex flex-col justify-between min-w-0 flex-1">
           <span className="text14Medium text-textPrimary line-clamp-1">
             {`#${index}`}&nbsp;·&nbsp;{title}
           </span>
@@ -33,9 +33,10 @@ const ReferendaItem = memo(function ItemContent({ row, searchType, onClose }) {
   );
 });
 
-function ReferendaList({ data, isLoading, onClose }) {
+function ReferendaList({ data, isLoading, onClose, isMobile }) {
   return (
     <CommonList
+      isMobile={isMobile}
       data={data}
       isLoading={isLoading}
       title="Referenda"

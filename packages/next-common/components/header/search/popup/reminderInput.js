@@ -3,7 +3,10 @@ import React from "react";
 import { ImgSearchLight, ImgSearchDark } from "@osn/icons/subsquare";
 import { useTheme } from "styled-components";
 
-const ReminderInput = React.memo(function ReminderInput({ className = "" }) {
+const ReminderInput = React.memo(function ReminderInput({
+  className = "",
+  isMobile,
+}) {
   const { isDark } = useTheme();
   return (
     <div
@@ -15,6 +18,7 @@ const ReminderInput = React.memo(function ReminderInput({ className = "" }) {
         "justify-center",
         "items-center",
         className,
+        isMobile ? "h-[calc(75vh-56px)]" : "",
       )}
     >
       <p className="flex flex-col items-center pb-4">
@@ -27,7 +31,7 @@ const ReminderInput = React.memo(function ReminderInput({ className = "" }) {
         <span className="mt-2 font-bold h-5 text14Medium text-center text-textPrimary">
           Type your search item in the box
         </span>
-        <span className="h-5 text14Medium  text-center text-textTertiary">
+        <span className="px-2 h-5 text14Medium  text-center text-textTertiary">
           Search for proposals of referenda, treasury, and more
         </span>
       </p>

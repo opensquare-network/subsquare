@@ -3,7 +3,7 @@ import React from "react";
 import { ImgNoResultsLight, ImgNoResultsDark } from "@osn/icons/subsquare";
 import { useTheme } from "styled-components";
 
-const NoResult = React.memo(function NoResut({ className = "" }) {
+const NoResult = React.memo(function NoResut({ className = "", isMobile }) {
   const { isDark } = useTheme();
   return (
     <div
@@ -15,6 +15,7 @@ const NoResult = React.memo(function NoResut({ className = "" }) {
         "justify-center",
         "items-center",
         className,
+        isMobile ? "h-[calc(75vh-56px)]" : "",
       )}
     >
       <p className="flex flex-col items-center pb-4">
