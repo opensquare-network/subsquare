@@ -62,7 +62,7 @@ export default function CreatePromotionReferendaAndVotePopup({
     },
   });
 
-  let disabled = !who || !toRank;
+  let disabled = !address || !toRank;
   let tooltipContent = "";
   if (requiredRank > myRank) {
     disabled = true;
