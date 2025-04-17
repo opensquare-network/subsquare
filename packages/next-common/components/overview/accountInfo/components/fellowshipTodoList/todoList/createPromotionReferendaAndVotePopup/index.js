@@ -22,22 +22,22 @@ export default function CreatePromotionReferendaAndVotePopup({
   onClose,
 }) {
   const dispatch = useDispatch();
-  const currentRank = useMemberRank(who);
-
-  const chain = useChain();
-  const [toRank, setToRank] = useState(currentRank + 1);
-
-  const [enactment] = useState({ after: 100 });
-  const requiredRank = useRequiredRankToPromoteMember(currentRank, toRank);
-  const myRank = useMyRank();
 
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
-  const { value: address, component: whoField } = useAddressComboField({
+  const { component: whoField } = useAddressComboField({
     title: "Who",
     defaultAddress: who,
     readOnly: true,
   });
 
+  const currentRank = useMemberRank(who);
+  const [toRank, setToRank] = useState(currentRank + 1);
+  const [enactment] = useState({ after: 100 });
+
+  const requiredRank = useRequiredRankToPromoteMember(currentRank, toRank);
+  const myRank = useMyRank();
+
+  const chain = useChain();
   const action = toRank > currentRank + 1 ? "promoteFast" : "promote";
   let trackName = getPromoteTrackNameFromRank(chain, toRank);
   if (action === "promoteFast") {
@@ -46,7 +46,7 @@ export default function CreatePromotionReferendaAndVotePopup({
 
   const getCreateAndVoteTxFunc = useFellowshipProposalSubmissionTxFunc({
     rank: toRank,
-    who: address,
+    who,
     action,
     trackName,
     enactment,
@@ -64,7 +64,7 @@ export default function CreatePromotionReferendaAndVotePopup({
     },
   });
 
-  let disabled = !address || !toRank;
+  let disabled = !who || !toRank;
   let tooltipContent = "";
   if (requiredRank > myRank) {
     disabled = true;
