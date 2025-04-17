@@ -8,17 +8,6 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
   const [deposit, setDeposit] = useState("0");
   const [isLoading, setIsLoading] = useState(false);
 
-  const fields = [
-    "display",
-    "legal",
-    "web",
-    "email",
-    "twitter",
-    "matrix",
-    "discord",
-    "github",
-  ];
-
   const calculateTotalDeposit = useCallback(
     (basicDeposit, byteDeposit, info) => {
       if (!basicDeposit || !byteDeposit) return "0";
@@ -29,6 +18,16 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
         }
 
         const registry = new TypeRegistry();
+        const fields = [
+          "display",
+          "legal",
+          "web",
+          "email",
+          "twitter",
+          "matrix",
+          "discord",
+          "github",
+        ];
 
         const formattedInfo = fields.reduce((result, field) => {
           result[field] = info[field] ? { Raw: info[field] } : { None: null };
@@ -50,7 +49,7 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
         return "0";
       }
     },
-    [fields],
+    [],
   );
 
   const fetchDeposits = useCallback(async () => {
