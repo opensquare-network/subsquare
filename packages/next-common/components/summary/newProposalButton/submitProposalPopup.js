@@ -9,6 +9,10 @@ import ForwardPopupProvider, {
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { NewPreimageInnerPopup } from "next-common/components/preImages/newPreimagePopup";
 import ReferendaProposalQuickStart from "./referendaProposalQuickStart";
+import {
+  useStepContainer,
+  StepContainerProvider,
+} from "next-common/context/stepContainer";
 
 function NewPreimage() {
   const { period } = usePageProps();
@@ -50,14 +54,46 @@ export default function SubmitProposalPopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
       <ForwardPopupProvider>
-        <Popup title="Submit Proposal" onClose={onClose}>
-          <div className="flex flex-col !mt-[24px] gap-[12px]">
-            <NewPreimage />
-            <NewProposalFromPreImage />
-          </div>
-          <ReferendaProposalQuickStart />
-        </Popup>
+        <StepContainerProvider
+          list={[
+            {
+              title: "Submit Proposal",
+              component: SubmitProposal,
+            },
+          ]}
+        >
+          <PopupContent onClose={onClose} />
+        </StepContainerProvider>
       </ForwardPopupProvider>
     </SignerPopupWrapper>
+  );
+}
+const PopupContent = ({ onClose }) => {
+  const { currentStep, closeAll } = useStepContainer();
+  const { title, component: CurrentComponent } = currentStep || {};
+
+  return (
+    <Popup
+      title={title}
+      onClose={() => {
+        onClose();
+        closeAll();
+      }}
+    >
+      <CurrentComponent />
+    </Popup>
+  );
+};
+
+function SubmitProposal() {
+  return (
+    <>
+      <ReferendaProposalQuickStart />
+      <div className="flex flex-col gap-[12px]">
+        <h6 className="text-textPrimary text14Bold ">Create from a Preimage</h6>
+        <NewPreimage />
+        <NewProposalFromPreImage />
+      </div>
+    </>
   );
 }
