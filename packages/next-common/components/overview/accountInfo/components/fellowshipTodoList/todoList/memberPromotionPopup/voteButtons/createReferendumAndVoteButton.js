@@ -30,7 +30,10 @@ function CreateReferendumAndVoteButtonImpl({
     setShowCreatePromotionReferendaAndVotePopup,
   ] = useState(false);
   const dispatch = useDispatch();
-  const trackName = useTrackNameFromAction(action, rank);
+  const trackName = useTrackNameFromAction(
+    action,
+    action === "approve" ? rank : rank + 1,
+  );
   const [enactment] = useState({ after: 100 });
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
 
