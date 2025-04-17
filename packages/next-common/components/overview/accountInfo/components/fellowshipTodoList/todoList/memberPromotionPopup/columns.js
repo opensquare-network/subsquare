@@ -96,6 +96,10 @@ function ReferendaTooltip({ referendumIndex, children }) {
     return <Tooltip content={<Loading size={16} />}>{children}</Tooltip>;
   }
 
+  if (!value) {
+    return children;
+  }
+
   return (
     <Tooltip
       content={
@@ -140,7 +144,7 @@ export const referendumColumn = {
 export const votePromoteColumn = {
   key: "vote",
   name: "Vote",
-  style: { width: "100px" },
+  style: { width: "100px", textAlign: "right" },
   render: (item) =>
     isNil(item.referendumIndex) ? (
       <VoteButtonsWithoutReferendum who={item.who} action="promote" />
@@ -152,7 +156,7 @@ export const votePromoteColumn = {
 export const voteRetainColumn = {
   key: "vote",
   name: "Vote",
-  style: { width: "100px" },
+  style: { width: "100px", textAlign: "right" },
   render: (item) =>
     isNil(item.referendumIndex) ? (
       <VoteButtonsWithoutReferendum who={item.who} action="approve" />
