@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import nextApi from "next-common/services/nextApi";
 import useRefCallback from "next-common/hooks/useRefCallback";
+import { markdownToText } from "next-common/components/header/search/utils";
 
 function useReferendaSearchResults() {
   const [results, setResults] = useState(null);
@@ -23,7 +24,9 @@ function useReferendaSearchResults() {
       results?.map((item) => ({
         index: item?.referendumIndex ?? 0,
         title: item?.title ?? "-",
-        content: item?.contentSummary?.summary ?? "-",
+        content: item?.contentSummary?.summary
+          ? markdownToText(item?.contentSummary?.summary)
+          : "-",
       })) ?? null
     );
   }, [results]);
