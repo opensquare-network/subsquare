@@ -70,7 +70,7 @@ function SearchPopup({ onClose, isMobile }) {
     };
   }, [searchValue, setReferenda, throttleSearch]);
 
-  const mobilesStyles = "w-[calc(100vw-48px)] h-[75vh]";
+  const mobilesStyles = "w-[calc(100vw-48px)] h-[80vh]";
   const desktopStyles = "w-[960px] h-[640px]";
 
   return (
