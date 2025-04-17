@@ -93,8 +93,9 @@ export default function CreatePromotionReferendaAndVotePopup({
     voteAye,
   });
 
-  const { doSubmit: doSubmitCreateAndVote } = useTxSubmission({
+  const { doSubmit: doSubmitCreateAndVote, isSubmitting } = useTxSubmission({
     getTxFunc: getCreateAndVoteTxFunc,
+    onSubmitted: onClose,
     onInBlock: () => {
       dispatch(newSuccessToast("Vote successfully"));
       fetchActiveReferenda();
@@ -120,7 +121,11 @@ export default function CreatePromotionReferendaAndVotePopup({
       />
       <div className="flex justify-end">
         <Tooltip content={tooltipContent}>
-          <PrimaryButton disabled={disabled} onClick={doSubmitCreateAndVote}>
+          <PrimaryButton
+            disabled={disabled}
+            loading={isSubmitting}
+            onClick={doSubmitCreateAndVote}
+          >
             Create & Vote
           </PrimaryButton>
         </Tooltip>
