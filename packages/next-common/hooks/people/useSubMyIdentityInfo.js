@@ -10,6 +10,7 @@ function convertIdentityInfo(identityInfo) {
     display: identityInfo?.display?.Raw || null,
     legal: identityInfo?.legal,
     email: identityInfo?.email?.Raw || null,
+    matrix: identityInfo?.matrix?.Raw || null,
     web: identityInfo?.web,
     twitter: identityInfo?.twitter,
     github: identityInfo?.github,
