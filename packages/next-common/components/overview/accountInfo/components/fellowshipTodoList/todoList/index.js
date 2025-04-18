@@ -14,10 +14,8 @@ import SalaryPayoutTodo from "./salaryPayoutTodo";
 import MyReferendaVotesTodo from "./myReferendaVotesTodo";
 import MemberEvidencesTodo from "./memberEvidencesTodo";
 import CandidateEvidencesTodo from "./candidateEvidencesTodo";
-import {
-  CandidatePromotionTodo,
-  MemberPromotionTodo,
-} from "./memberPromotionTodo";
+import { CandidatePromotionTodo } from "./candidatePromotionTodo";
+import { MemberPromotionTodo } from "./memberPromotionTodo";
 import MemberRetentionTodo from "./memberRetentionTodo";
 
 function MakeSureLoaded({ children }) {
