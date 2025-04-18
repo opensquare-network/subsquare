@@ -16,6 +16,7 @@ const useCreatePrimage = () => {
   } = useNewPrerimageForm();
   const [preimage, setPreimage] = useState(null);
   const { isLoading, component } = useTxSubmissionButton({
+    loadingText: "Submit",
     getTxFunc: () => notePreimageTx,
     disabled: !notePreimageTx,
     onInBlock: () => {
@@ -38,6 +39,7 @@ const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
   const { getTxFunc, disabled, onInBlock, component } =
     useNewProposalInnerPopupContent({ track, preimageHash, preimageLength });
   const { isLoading, component: button } = useTxSubmissionButton({
+    loadingText: "Submit",
     getTxFunc,
     disabled,
     onInBlock,
@@ -80,9 +82,20 @@ function NewPreimageContent() {
         loading={isLoading || proposalLoading}
       />
       <div>{!preimageData ? form : proposalForm}</div>
+      {preimageData ? (
+        <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
+          After submitting the transaction, you&apos;ll be redirected to the
+          referendum detail page to edit content.
+        </div>
+      ) : null}
       <div className="flex justify-between">
         <Button
-          className="border-neutral400 hover:border-neutral500"
+          className={`border-neutral400 hover:border-neutral500 ${
+            proposalLoading || isLoading
+              ? " cursor-not-allowed text-textDisabled border-neutral300"
+              : ""
+          }`}
+          disabled={proposalLoading || isLoading}
           onClick={goBack}
         >
           Previous
@@ -119,9 +132,20 @@ const NewProposalContent = () => {
         loading={proposalLoading}
       />
       <div>{proposalForm}</div>
+      {!disabled ? (
+        <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
+          After submitting the transaction, you&apos;ll be redirected to the
+          referendum detail page to edit content.
+        </div>
+      ) : null}
       <div className="flex justify-between">
         <Button
-          className="border-neutral400 hover:border-neutral500"
+          className={`border-neutral400 hover:border-neutral500 ${
+            proposalLoading
+              ? " cursor-not-allowed text-textDisabled border-neutral300"
+              : ""
+          }`}
+          disabled={proposalLoading}
           onClick={goBack}
         >
           Previous

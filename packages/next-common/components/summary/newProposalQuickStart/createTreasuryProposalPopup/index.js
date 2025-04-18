@@ -100,7 +100,12 @@ export function NewTreasuryReferendumInnerPopupContent() {
       ) : null}
       <div className="flex justify-between">
         <Button
-          className="border-neutral400 hover:border-neutral500"
+          className={`border-neutral400 hover:border-neutral500 ${
+            isLoading
+              ? " cursor-not-allowed text-textDisabled border-neutral300"
+              : ""
+          }`}
+          disabled={isLoading}
           onClick={goBack}
         >
           Previous
