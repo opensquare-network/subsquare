@@ -15,9 +15,11 @@ const twThemeVariables = Object.keys(light).reduce((value, key) => {
 module.exports = {
   darkMode: "class",
   content: [
-    resolve("./packages/next/**/*.{html,js,jsx}"),
-    resolve("./packages/kintsugi-next/**/*.{html,js,jsx}"),
-    resolve("./packages/next-common/**/*.{html,js,jsx}"),
+    resolve("./packages/next/**/*.{html,js,ts,jsx,tsx,}"),
+    resolve("./packages/next-common/**/*.{html,js,ts,jsx,tsx}"),
+    resolve("./packages/kintsugi-next/**/*.{html,js,ts,jsx,tsx}"),
+    resolve("./packages/next/pages/**/*.{js,jsx,ts,tsx}"), //Add pages explicitly
+    "!**/node_modules/**", //exclude node_modules of all packages
   ],
   theme: {
     screens: {

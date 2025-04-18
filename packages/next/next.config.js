@@ -10,6 +10,8 @@ const config = {
       transform: "@osn/icons/subsquare/{{member}}",
     },
   },
+  allowedDevOrigins: ["127.0.0.1"],
+  compress: true,
   compiler: {
     styledComponents: {
       ssr: true,
