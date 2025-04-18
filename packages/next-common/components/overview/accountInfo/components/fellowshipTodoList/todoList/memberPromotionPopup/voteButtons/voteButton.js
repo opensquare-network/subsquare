@@ -12,6 +12,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubFellowshipReferendum from "next-common/hooks/collectives/useSubFellowshipReferendum";
 import Tooltip from "next-common/components/tooltip";
 import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
+import { isNil } from "lodash-es";
 
 function VoteButtonImpl({ referendumIndex, voteAye, children }) {
   const dispatch = useDispatch();
@@ -37,13 +38,13 @@ function VoteButtonImpl({ referendumIndex, voteAye, children }) {
   let tooltipContent = "";
   if (!isReferendumInfoLoading && referendumInfo) {
     try {
-      const optInfo = referendumInfo.unwrap();
-      const info = optInfo?.asOngoing;
-      const track = info?.track;
-      const requiredRank = getMinRankOfClass(track, collectivePallet);
-      disabled = requiredRank > rank;
-      if (disabled) {
-        tooltipContent = `Only rank >= ${requiredRank} can vote`;
+      const track = referendumInfo.unwrap()?.asOngoing?.track;
+      if (!isNil(track)) {
+        const requiredRank = getMinRankOfClass(track, collectivePallet);
+        disabled = requiredRank > rank;
+        if (disabled) {
+          tooltipContent = `Only rank >= ${requiredRank} can vote`;
+        }
       }
     } catch (e) {
       console.error(e);

@@ -34,8 +34,7 @@ export function useRetainAndVoteTaskCount(items) {
     let count = 0;
 
     for (const member of members) {
-      const data = member.unwrap();
-      const rank = data?.rank?.toNumber();
+      const rank = member.unwrap()?.rank?.toNumber();
       if (isNil(rank) || rank === 0) {
         continue;
       }
@@ -84,8 +83,7 @@ export function usePromoteAndVoteTaskCount(items) {
     let count = 0;
 
     for (const member of members) {
-      const data = member.unwrap();
-      const rank = data?.rank?.toNumber();
+      const rank = member.unwrap()?.rank?.toNumber();
       if (isNil(rank)) {
         continue;
       }
@@ -134,9 +132,10 @@ export function useVoteTaskCount(items) {
     let count = 0;
 
     for (const referendum of referendums) {
-      const data = referendum.unwrap();
-      const ongoing = data?.asOngoing;
-      const track = ongoing?.track;
+      const track = referendum.unwrap()?.asOngoing?.track;
+      if (isNil(track)) {
+        continue;
+      }
       const requiredRank = getMinRankOfClass(track, collectivePallet);
       if (requiredRank > myRank) {
         continue;
