@@ -9,7 +9,7 @@ import { useRankedCollectivePallet } from "next-common/context/collectives/colle
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useValueFromBatchResult } from "next-common/context/batch";
+import useSubFellowshipReferendum from "next-common/hooks/collectives/useSubFellowshipReferendum";
 import Tooltip from "next-common/components/tooltip";
 import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
 
@@ -19,8 +19,8 @@ function VoteButtonImpl({ referendumIndex, voteAye, children }) {
   const collectivePallet = useRankedCollectivePallet();
   const realAddress = useRealAddress();
   const rank = useFellowshipMemberRank(realAddress, collectivePallet);
-  const { value: referendumPost, loading: isReferendaPostLoading } =
-    useValueFromBatchResult(referendumIndex);
+  const { result: referendumInfo, loading: isReferendumInfoLoading } =
+    useSubFellowshipReferendum(referendumIndex);
 
   const voteTxFunc = useCallback(() => {
     return api.tx[collectivePallet].vote(referendumIndex, voteAye);
@@ -35,12 +35,12 @@ function VoteButtonImpl({ referendumIndex, voteAye, children }) {
 
   let disabled = false;
   let tooltipContent = "";
-  if (!isReferendaPostLoading && referendumPost) {
+  if (!isReferendumInfoLoading && referendumInfo) {
     try {
-      const requiredRank = getMinRankOfClass(
-        referendumPost.track,
-        collectivePallet,
-      );
+      const optInfo = referendumInfo.unwrap();
+      const info = optInfo?.asOngoing;
+      const track = info?.track;
+      const requiredRank = getMinRankOfClass(track, collectivePallet);
       disabled = requiredRank > rank;
       if (disabled) {
         tooltipContent = `Only rank >= ${requiredRank} can vote`;
