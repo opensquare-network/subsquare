@@ -5,13 +5,21 @@ import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { Account } from "next-common/components/overview/accountInfo/accountInfoPanel";
 import { cn } from "next-common/utils";
-import { SystemEdit2, SystemClose } from "@osn/icons/subsquare";
+import { SystemEdit2 } from "@osn/icons/subsquare";
 import Divider from "next-common/components/styled/layout/divider";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
 import { AddressUser } from "next-common/components/user";
+import { useContextApi } from "next-common/context/api";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
+import RemoveButton from "next-common/components/removeButton";
+import Tooltip from "next-common/components/tooltip";
 
 const SetIdentityPopup = dynamicPopup(
   () => import("next-common/components/setIdentityPopup"),
@@ -33,7 +41,11 @@ export default function DirectIdentityImpl() {
   const isEmpty =
     Object.values(subMyIdentityInfo ?? {}).filter(Boolean).length === 0;
   if (!isEmpty) {
-    return <DirectIdentity subMyIdentityInfo={subMyIdentityInfo} />;
+    return (
+      <SignerPopupWrapper>
+        <DirectIdentity subMyIdentityInfo={subMyIdentityInfo} />
+      </SignerPopupWrapper>
+    );
   }
   return <DirectIdentityEmpty />;
 }
@@ -67,6 +79,26 @@ export function DirectIdentity({ subMyIdentityInfo }) {
     useState(false);
 
   const { type, parent } = useMyIdentityType();
+  const api = useContextApi();
+  const dispatch = useDispatch();
+  const address = useRealAddress();
+
+  const getTxFunc = useCallback(() => {
+    if (!api || !api?.tx?.identity || !address) {
+      return;
+    }
+
+    return api.tx.identity.clearIdentity();
+  }, [api, address]);
+
+  const onInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Clear identity successfully"));
+  }, [dispatch]);
+
+  const { doSubmit, isSubmitting } = useTxSubmission({
+    getTxFunc,
+    onInBlock,
+  });
 
   const isSubIdentity = type === "sub";
 
@@ -89,17 +121,13 @@ export function DirectIdentity({ subMyIdentityInfo }) {
             )}
             onClick={() => setShowSetIdentityPopup(true)}
           >
-            <SystemEdit2 className="w-[16px] h-[16px]" />
+            <Tooltip content="Edit">
+              <SystemEdit2 className="w-[16px] h-[16px]" />
+            </Tooltip>
           </div>
-          <div
-            className={cn(
-              "flex justify-center items-center",
-              "bg-neutral100 border border-neutral400 rounded-md w-[28px] h-[28px]",
-              "cursor-pointer",
-            )}
-          >
-            <SystemClose className="w-[16px] h-[16px]" />
-          </div>
+          <Tooltip content="Clear">
+            <RemoveButton disabled={isSubmitting} onClick={doSubmit} />
+          </Tooltip>
         </div>
       </div>
 
