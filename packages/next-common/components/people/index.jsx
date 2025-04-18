@@ -1,7 +1,5 @@
-import { withCommonProps } from "next-common/lib";
+import { useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
-import { CHAIN } from "next-common/utils/constants";
-import getChainSettings from "next-common/utils/consts/settings";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import NoWalletConnected from "next-common/components/assets/noWalletConnected";
@@ -9,12 +7,10 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import { AccountImpl } from "next-common/components/layout/AccountLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Tabs from "next-common/components/tabs";
-import { useState } from "react";
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
-import PrimaryButton from "next-common/lib/button/primary";
-export const isPeopleSupported = !!getChainSettings(CHAIN).modules?.people;
-
-export function PeopleOverviewPageImpl() {
+import DirectIdentityImpl from "./overview/directIdentity";
+import SubIdentitiesImpl from "./overview/subIdentities";
+import { useRouter } from "next/router";
+export default function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
   const realAddress = useRealAddress();
 
@@ -29,30 +25,34 @@ export function PeopleOverviewPageImpl() {
 }
 
 function PeopleOverviewContent() {
-  const [activeTabValue, setActiveTabValue] = useState("direct-identity");
-
+  const router = useRouter();
+  const [activeTabValue, setActiveTabValue] = useState(
+    router.query.tab || "direct-identity",
+  );
   const tabs = [
     {
       value: "direct-identity",
       label: "Direct Identity",
-      content: (
-        <div className="space-y-4">
-          <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary">
-            No identity is set for the connected account.
-          </GreyPanel>
-          <PrimaryButton className="w-auto">Set Identity</PrimaryButton>
-        </div>
-      ),
+      content: <DirectIdentityImpl />,
     },
     {
       value: "sub-identities",
       label: "Sub Identities",
-      content: <div>Sub Identities</div>,
+      content: <SubIdentitiesImpl />,
     },
   ];
 
   function handleTabClick(tab) {
     setActiveTabValue(tab.value);
+    router.replace(
+      {
+        query: {
+          tab: tab.value,
+        },
+      },
+      null,
+      { shallow: true },
+    );
   }
 
   return (
@@ -70,17 +70,3 @@ function PeopleOverviewContent() {
     </div>
   );
 }
-
-export const getServerSideProps = async (ctx) => {
-  if (!isPeopleSupported) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return withCommonProps(async () => {
-    return {
-      props: {},
-    };
-  })(ctx);
-};

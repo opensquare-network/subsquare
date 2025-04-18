@@ -79,7 +79,7 @@ const DisplayUser = () => {
   return <div className="text-textPrimary text14Bold">{user?.username}</div>;
 };
 
-function Account() {
+export function Account() {
   const user = useUser();
   const maybeEvmAddress = tryConvertToEvmAddress(user?.address);
 

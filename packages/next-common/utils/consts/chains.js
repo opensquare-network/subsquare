@@ -46,6 +46,7 @@ const Chains = {
   kusamaPeople: "kusama-people",
   polkadotCoretime: "polkadot-coretime",
   polkadotPeople: "polkadot-people",
+  paseoPeople: "paseo-people",
   laos: "laos",
   laosTestnet: "laos-testnet",
 };
