@@ -124,3 +124,83 @@ export function NewProposalInnerPopup({
     </Popup>
   );
 }
+export function useNewProposalInnerPopupContent({
+  track: _track,
+  preimageHash: _preimageHash,
+  preimageLength: _preimageLength,
+}) {
+  const api = useContextApi();
+  const router = useRouter();
+
+  const [trackId, setTrackId] = useState(_track?.id);
+  const proposalOrigin = useReferendaProposalOrigin(trackId);
+
+  const [enactment, setEnactment] = useState();
+  const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
+  const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
+
+  useEffect(() => {
+    setTrackId(_track?.id);
+    setPreimageHash(_preimageHash);
+    setPreimageLength(_preimageLength);
+  }, [_track, _preimageHash, _preimageLength]);
+
+  const track = useTrackDetail(trackId);
+
+  const disabled =
+    isNil(trackId) ||
+    isNil(enactment) ||
+    !preimageHash ||
+    !isValidPreimageHash(preimageHash) ||
+    !preimageLength;
+
+  const length = usePreimageLength(preimageHash);
+  useEffect(() => {
+    if (length) {
+      setPreimageLength(length);
+    }
+  }, [length]);
+
+  const getTxFunc = useCallback(() => {
+    if (!api) {
+      return;
+    }
+
+    return api.tx.referenda.submit(
+      proposalOrigin,
+      {
+        Lookup: {
+          hash: preimageHash,
+          len: parseInt(preimageLength),
+        },
+      },
+      enactment,
+    );
+  }, [api, proposalOrigin, preimageHash, preimageLength, enactment]);
+  return {
+    getTxFunc,
+    disabled,
+    onInBlock: ({ events }) => {
+      const eventData = getEventData(events, "referenda", "Submitted");
+      if (!eventData) {
+        return;
+      }
+      const [referendumIndex] = eventData;
+      router.push(`/referenda/${referendumIndex}`);
+    },
+    component: (
+      <>
+        <SignerWithBalance />
+        <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
+        <PreimageField
+          preimageHash={preimageHash}
+          preimageLength={preimageLength}
+          setPreimageHash={setPreimageHash}
+          setPreimageLength={setPreimageLength}
+        />
+        <EnactmentBlocks track={track} setEnactment={setEnactment} />
+        <SubmissionDeposit />
+      </>
+    ),
+  };
+}

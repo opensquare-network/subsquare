@@ -10,11 +10,15 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import { useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useReferendaProposalOrigin } from "../../newProposalPopup";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import TxSubmissionButton, {
+  useTxSubmissionButton,
+} from "next-common/components/common/tx/txSubmissionButton";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { usePageProps } from "next-common/context/page";
-
+import { useStepContainer } from "next-common/context/stepContainer";
+import Button from "next-common/lib/button";
+import CircleStepper from "next-common/components/step";
 function useReferendumCancellerTrackID() {
   const { tracks } = usePageProps();
   const track = tracks.find((item) => item.name === "referendum_canceller");
@@ -84,5 +88,82 @@ export default function CancelReferendumPopup({ referendumIndex, onClose }) {
     <SignerPopupWrapper onClose={onClose}>
       <CancelReferendumInnerPopup referendumIndex={referendumIndex} />;
     </SignerPopupWrapper>
+  );
+}
+
+export function CancelReferendumInnerPopupContent() {
+  const router = useRouter();
+  const api = useContextApi();
+  const { value: referendumIndex, component: referendumIndexField } =
+    useReferendumIndexField({});
+  const referendumCancellerTrackId = useReferendumCancellerTrackID();
+  const { value: trackId, component: trackField } = useTrackField(
+    referendumCancellerTrackId,
+  );
+  const { value: enactment, component: enactmentField } =
+    useEnactmentBlocksField(trackId);
+  const proposalOrigin = useReferendaProposalOrigin(trackId);
+
+  const getTxFunc = useCallback(async () => {
+    if (!api) {
+      return;
+    }
+
+    const proposal = api.tx.referenda.cancel(referendumIndex);
+    return api.tx.referenda.submit(
+      proposalOrigin,
+      { Inline: proposal.method.toHex() },
+      enactment,
+    );
+  }, [api, referendumIndex, proposalOrigin, enactment]);
+  const { goBack } = useStepContainer();
+  const { isLoading, component: submitButton } = useTxSubmissionButton({
+    getTxFunc,
+    onInBlock: ({ events }) => {
+      const eventData = getEventData(events, "referenda", "Submitted");
+      if (!eventData) {
+        return;
+      }
+      const [referendumIndex] = eventData;
+      router.push(`/referenda/${referendumIndex}`);
+    },
+  });
+
+  return (
+    <>
+      <CircleStepper
+        steps={[
+          {
+            id: "provideInfo",
+            label: "Provide the Info",
+          },
+          { id: "newReferendum", label: "New Referendum" },
+        ]}
+        currentStep={!referendumIndex ? 0 : 1}
+        loading={isLoading}
+      />
+      <SignerWithBalance />
+      {referendumIndexField}
+      {trackField}
+      <AdvanceSettings>
+        {enactmentField}
+        <SubmissionDeposit />
+      </AdvanceSettings>
+      {referendumIndex ? (
+        <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
+          After submitting the transaction, you&apos;ll be redirected to the
+          referendum detail page to edit content.
+        </div>
+      ) : null}
+      <div className="flex justify-between">
+        <Button
+          className="border-neutral400 hover:border-neutral500"
+          onClick={goBack}
+        >
+          Previous
+        </Button>
+        {submitButton}
+      </div>
+    </>
   );
 }
