@@ -11,6 +11,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useState } from "react";
 import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
+import { AddressUser } from "next-common/components/user";
 
 const SetIdentityPopup = dynamicPopup(
   () => import("next-common/components/setIdentityPopup"),
@@ -65,12 +66,18 @@ export function DirectIdentity({ subMyIdentityInfo }) {
   const [showRequestJudgementPopup, setShowRequestJudgementPopup] =
     useState(false);
 
-  const { result: myIdentityType } = useMyIdentityType();
+  const { type, parent } = useMyIdentityType();
 
-  console.info(myIdentityType);
+  const isSubIdentity = type === "sub";
 
   return (
     <>
+      {isSubIdentity && (
+        <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary mb-4">
+          Currently displayed as the sub identity of{" "}
+          <AddressUser className="ml-1.5" add={parent} showAvatar={false} />.
+        </GreyPanel>
+      )}
       <div className="flex justify-between gap-2">
         <Account />
         <div className="flex items-center gap-2">
@@ -102,6 +109,23 @@ export function DirectIdentity({ subMyIdentityInfo }) {
       <Divider className="my-4" />
       <PropList subMyIdentityInfo={subMyIdentityInfo} />
       <Divider className="my-4" />
+      {isSubIdentity && (
+        <>
+          <PropListWrapper className="space-y-2 ml-14">
+            <div className="flex">
+              <PropListLabel>Parent</PropListLabel>
+              <PropListValue>
+                <AddressUser
+                  className="ml-1.5"
+                  add={parent}
+                  showAvatar={false}
+                />
+              </PropListValue>
+            </div>
+          </PropListWrapper>
+          <Divider className="my-4" />
+        </>
+      )}
       <RightWrapper>
         <SecondaryButton
           className="w-auto"

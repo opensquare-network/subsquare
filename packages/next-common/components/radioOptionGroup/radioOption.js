@@ -3,7 +3,6 @@ import AddressUser from "next-common/components/user/addressUser";
 import RadioButton from "./radioButton";
 import Divider from "next-common/components/styled/layout/divider";
 import tw from "tailwind-styled-components";
-import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 export default function RadioOption({ checked, label, onClick = noop }) {
   return (
     <div className="flex gap-2 cursor-pointer" onClick={onClick}>
@@ -50,7 +49,7 @@ export function RequestJudgementRadioOption({
       <RadioOptionHeader>
         <div className="flex items-center flex-1">
           <RadioOptionIndex>#{judgement.index}</RadioOptionIndex>
-          <AddressUser add={judgement.address} size={20} user={{}} />
+          <AddressUser add={judgement.account} size={20} user={{}} />
         </div>
         <RadioButton checked={checked} />
       </RadioOptionHeader>
@@ -58,13 +57,7 @@ export function RequestJudgementRadioOption({
       <RadioOptionFooter>
         <RadioOptionItem>
           <span>Fee</span>
-          <RadioOptionValue>{judgement.fee}</RadioOptionValue>
-        </RadioOptionItem>
-        <RadioOptionItem>
-          <span>Latest Judgement</span>
-          <RadioOptionValue>
-            {formatTimeAgo(judgement.latestJudgement)}
-          </RadioOptionValue>
+          <RadioOptionValue>{judgement.fee} DOT</RadioOptionValue>
         </RadioOptionItem>
       </RadioOptionFooter>
     </RadioOptionWrapper>

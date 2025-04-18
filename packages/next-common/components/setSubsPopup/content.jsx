@@ -5,13 +5,28 @@ import { useContextApi } from "next-common/context/api";
 import PrimaryButton from "next-common/lib/button/primary";
 import RightWrapper from "next-common/components/rightWraper";
 import { SystemPlus } from "@osn/icons/subsquare";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { SubItem } from "./subItem";
+import useSubscribeMySubIdentities from "next-common/hooks/people/useSubscribeMySubIdentities";
+import LoadableContent from "../common/loadableContent";
 
 export default function SetIdentityPopupContent() {
   const api = useContextApi();
   const [subsMap, setSubsMap] = useState({});
   const [subsOrder, setSubsOrder] = useState([]);
+  const { subs, isLoading } = useSubscribeMySubIdentities();
+
+  useEffect(() => {
+    if (subs) {
+      setSubsMap(
+        subs.reduce((acc, [address, subName]) => {
+          acc[address] = { address, name: subName };
+          return acc;
+        }, {}),
+      );
+      setSubsOrder(subs.map(([address]) => address));
+    }
+  }, [subs]);
 
   const addSub = useCallback(() => {
     const id = Date.now().toString();
@@ -57,15 +72,17 @@ export default function SetIdentityPopupContent() {
     <div className="space-y-4">
       <Signer balance={0} isBalanceLoading={false} symbol="DOT" />
 
-      {subsOrder.map((id) => (
-        <SubItem
-          key={id}
-          subId={id}
-          sub={subsMap[id]}
-          updateSubField={updateSubField}
-          onRemove={removeSub}
-        />
-      ))}
+      <LoadableContent isLoading={isLoading}>
+        {subsOrder.map((id) => (
+          <SubItem
+            key={id}
+            subId={id}
+            sub={subsMap[id]}
+            updateSubField={updateSubField}
+            onRemove={removeSub}
+          />
+        ))}
+      </LoadableContent>
 
       <RightWrapper
         className="flex gap-x-1 text-theme500 cursor-pointer items-center text14Medium"

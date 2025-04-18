@@ -3,10 +3,17 @@ import RadioOptionGroup, {
   RadioOptionGroupType,
 } from "next-common/components/radioOptionGroup";
 import PrimaryButton from "next-common/lib/button/primary";
-
+import useRegistrars from "next-common/hooks/people/useRegistrars";
 import { useState } from "react";
+import LoadableContent from "../common/loadableContent";
+import { useChainSettings } from "next-common/context/chain";
+import { toPrecision } from "next-common/utils";
+
 export default function RequestJudgementPopupContent() {
-  const [value, setValue] = useState("yes");
+  const [value, setValue] = useState();
+  const chainSettings = useChainSettings();
+  const { registrars, isLoading } = useRegistrars();
+
   return (
     <div className="flex flex-col gap-y-4">
       <Signer
@@ -17,36 +24,23 @@ export default function RequestJudgementPopupContent() {
       />
 
       <div className="text14Bold text-textPrimary">Select a Registrar</div>
-      <RadioOptionGroup
-        type={RadioOptionGroupType.REQUEST_JUDGEMENT}
-        className="gap-y-3"
-        options={[
-          {
-            label: "Yes",
-            value: "yes",
+      <LoadableContent isLoading={isLoading}>
+        <RadioOptionGroup
+          type={RadioOptionGroupType.REQUEST_JUDGEMENT}
+          className="gap-y-3"
+          options={(registrars ?? []).map((registrar) => ({
+            value: registrar.account,
             judgement: {
-              index: 0,
-              address: "13yib1rAjadXd1Hm3GuTNkWRq16U99PEQMExKbVqRRBNVMp",
-              fee: "0 DOT",
-              latestJudgement: new Date(),
+              ...registrar,
+              fee: toPrecision(registrar.fee, chainSettings.decimals),
             },
-          },
-          {
-            label: "No",
-            value: "no",
-            judgement: {
-              index: 1,
-              address: "13yib1rAjadXd1Hm3GuTNkWRq16U99PEQMExKbVqRRBNVMp",
-              fee: "0 DOT",
-              latestJudgement: new Date(),
-            },
-          },
-        ]}
-        selected={value}
-        setSelected={setValue}
-      />
+          }))}
+          selected={value}
+          setSelected={setValue}
+        />
+      </LoadableContent>
       <div className="flex justify-end">
-        <PrimaryButton className="w-auto" onClick={() => {}}>
+        <PrimaryButton className="w-auto" onClick={() => {}} disabled={!value}>
           Submit
         </PrimaryButton>
       </div>

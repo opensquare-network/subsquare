@@ -2,15 +2,15 @@ import Signer from "next-common/components/popup/fields/signerField";
 import TextInputField from "next-common/components/popup/fields/textInputField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useSetIdentityDeposit from "next-common/hooks/people/useSetIdentityDeposit";
-import { useContextApi } from "next-common/context/api";
 import PrimaryButton from "next-common/lib/button/primary";
 import RightWrapper from "next-common/components/rightWraper";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { toPrecision } from "next-common/utils";
-import useApiProperties from "next-common/hooks/useApiProperties";
 import PopupLabel from "next-common/components/popup/label";
 import CurrencyInput from "next-common/components/currencyInput";
 import LoadableContent from "next-common/components/common/loadableContent";
+import { useChainSettings } from "next-common/context/chain";
+import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
 const fields = [
   {
     title: "Display Name",
@@ -43,9 +43,15 @@ const fields = [
 ];
 
 export default function SetIdentityPopupContent() {
-  const api = useContextApi();
-  const { decimals } = useApiProperties(api);
+  const chainSettings = useChainSettings();
   const [identityInfo, setIdentityInfo] = useState({});
+  const { result: subMyIdentityInfo } = useSubMyIdentityInfo();
+
+  useEffect(() => {
+    if (subMyIdentityInfo) {
+      setIdentityInfo(subMyIdentityInfo);
+    }
+  }, [subMyIdentityInfo]);
 
   const updateIdentityInfo = useCallback((key, value) => {
     setIdentityInfo((prev) => ({ ...prev, [key]: value }));
@@ -69,7 +75,9 @@ export default function SetIdentityPopupContent() {
           <PopupLabel text="Deposit" />
           <CurrencyInput
             disabled
-            value={isLoading ? "" : toPrecision(deposit || 0, decimals)}
+            value={
+              isLoading ? "" : toPrecision(deposit || 0, chainSettings.decimals)
+            }
             prefix={<LoadableContent isLoading={isLoading} />}
             symbol="DOT"
           />
