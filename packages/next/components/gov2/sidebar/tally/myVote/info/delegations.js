@@ -10,7 +10,7 @@ const VoteTypeWrapper = tw.div`flex gap-[8px] items-center`;
 
 function Label() {
   return (
-    <VoteTypeWrapper>
+    <VoteTypeWrapper className="text-textPrimary">
       <ElectorateIcon />
       <span>Delegations</span>
     </VoteTypeWrapper>
