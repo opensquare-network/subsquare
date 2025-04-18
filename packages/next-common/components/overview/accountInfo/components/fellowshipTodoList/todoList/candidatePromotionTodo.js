@@ -4,6 +4,7 @@ import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import pluralize from "pluralize";
 import { useCandidatePromotionEvidences } from "../hooks/evidence";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useMyPromotionTaskCount } from "./myTaskCount";
 
 const MemberPromotionPopup = dynamicPopup(() =>
   import("./memberPromotionPopup"),
@@ -11,26 +12,30 @@ const MemberPromotionPopup = dynamicPopup(() =>
 
 export function CandidatePromotionTodo() {
   const candidatePromotionEvidences = useCandidatePromotionEvidences();
+  const myTaskCount = useMyPromotionTaskCount(candidatePromotionEvidences);
   const [showMemberPromotionPopup, setShowMemberPromotionPopup] =
     useState(false);
-  const count = candidatePromotionEvidences?.length || 0;
-  if (count === 0) {
+
+  if (myTaskCount <= 0) {
     return null;
   }
+
+  const total = candidatePromotionEvidences?.length || 0;
 
   return (
     <TodoWrapper>
       <TodoTag>Membership</TodoTag>
       <TodoContent>
+        {myTaskCount} of&nbsp;
         <a
           className="text-theme500 cursor-pointer"
           target="_blank"
           rel="noreferrer"
           href="/fellowship/members?tab=candidates&evidence_only=true&wish=promotion"
         >
-          {count} {pluralize("candidate", count)}
+          {total} candidate promotion {pluralize("wish", total)}
         </a>
-        &nbsp;{count === 1 ? "wishes" : "wish"} to get promoted.&nbsp;{" "}
+        &nbsp;{myTaskCount === 1 ? "needs" : "need"} your vote.&nbsp;
         <ActionButton onClick={() => setShowMemberPromotionPopup(true)}>
           Check All
         </ActionButton>
