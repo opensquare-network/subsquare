@@ -57,7 +57,10 @@ function SearchInputWithPopup({ shortcut = true, type }) {
         enterKeyHint="Search"
       />
       {showSearchPopup && (
-        <SearchPopup onClose={() => setShowSearchPopup(false)} />
+        <SearchPopup
+          isMobile={!shortcut}
+          onClose={() => setShowSearchPopup(false)}
+        />
       )}
     </>
   );

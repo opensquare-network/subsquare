@@ -6,7 +6,7 @@ import InputInSearchPopup from "next-common/components/header/search/popup/input
 import LoadingSkeleton from "next-common/components/header/search/popup/loadingSkeleton";
 import ReferendaList from "next-common/components/header/search/popup/referenda/index";
 import useRefCallback from "next-common/hooks/useRefCallback";
-import { isNil, throttle } from "lodash-es";
+import { isNil } from "lodash-es";
 import NoResult from "next-common/components/header/search/popup/noResult";
 import useReferendaSearchResults from "next-common/components/header/hooks/useReferendaSearchResults";
 
@@ -20,72 +20,68 @@ function Wrapper({ children, className = "" }) {
   );
 }
 
-function SearchPopup({ onClose }) {
+function SearchPopup({ onClose, isMobile }) {
   const [searchValue, setSearchValue] = useState("");
-  const { referenda, fetch, isLoading, setReferenda } =
+  const { referenda, fetch, isLoading, clearResults } =
     useReferendaSearchResults();
 
   const handleSearch = useRefCallback(() => {
     if (!searchValue) return;
-    setReferenda(null);
     fetch(searchValue);
   });
 
-  const throttleTimer = React.useRef();
-  const throttleSearch = useRefCallback(
-    throttle(
-      (value) => {
-        if (value.length > 2) {
-          handleSearch();
-        }
-      },
-      1000,
-      { leading: true, trailing: false },
-    ),
-  );
+  const searchTimerRef = React.useRef(null);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    if (searchValue.length === 0) {
-      setReferenda(null);
-      if (throttleTimer.current) {
-        clearTimeout(throttleTimer.current);
-        throttleTimer.current = null;
-      }
-      abortController.abort();
-      return;
+  const debouncedSearch = useRefCallback((value) => {
+    if (searchTimerRef.current) {
+      clearTimeout(searchTimerRef.current);
     }
 
-    throttleTimer.current = setTimeout(() => {
-      throttleSearch(searchValue);
-    }, 300);
+    searchTimerRef.current = setTimeout(() => {
+      if (value.length > 2) {
+        handleSearch();
+      }
+    }, 350);
+  });
+
+  useEffect(() => {
+    if (searchValue.length === 0) {
+      clearResults();
+      return;
+    }
+    if (searchValue.length > 2) {
+      debouncedSearch(searchValue);
+    }
 
     return () => {
-      if (throttleTimer.current) {
-        clearTimeout(throttleTimer.current);
+      if (searchTimerRef.current) {
+        clearTimeout(searchTimerRef.current);
       }
-      abortController.abort();
-      setReferenda(null);
     };
-  }, [searchValue, setReferenda, throttleSearch]);
+  }, [searchValue, clearResults, debouncedSearch]);
+
+  const mobilesStyles = "w-[calc(100vw-48px)] h-[80vh]";
+  const desktopStyles = "w-[960px] h-[640px]";
 
   return (
-    <Popup className="p-0" onClose={onClose}>
-      <div className="w-full min-w-full h-[640px] flex flex-col">
+    <Popup
+      className={`p-0 ${isMobile ? mobilesStyles : desktopStyles}`}
+      onClose={onClose}
+    >
+      <div className="flex flex-col w-full">
         <Wrapper className="border-b border-neutral300 h-[56px] py-2">
           <InputInSearchPopup
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             onClose={() => {
               onClose();
-              setReferenda(null);
+              clearResults();
             }}
           />
         </Wrapper>
-        {isNil(referenda) && !isLoading && (
+        {isNil(referenda) && !isLoading && searchValue.length === 0 && (
           <Wrapper>
-            <ReminderInput />
+            <ReminderInput isMobile={isMobile} />
           </Wrapper>
         )}
         {isLoading && (
@@ -93,12 +89,17 @@ function SearchPopup({ onClose }) {
             <LoadingSkeleton />
           </Wrapper>
         )}
-        {Array.isArray(referenda) && referenda.length > 0 && (
-          <ReferendaList data={referenda} onClose={onClose} />
+        {Array.isArray(referenda) && referenda.length > 0 && !isLoading && (
+          <ReferendaList
+            data={referenda}
+            onClose={onClose}
+            isMobile={isMobile}
+          />
         )}
-        {Array.isArray(referenda) && referenda.length === 0 && !isLoading && (
-          <NoResult />
-        )}
+        {Array.isArray(referenda) &&
+          referenda.length === 0 &&
+          !isLoading &&
+          searchValue.length > 2 && <NoResult isMobile={isMobile} />}
       </div>
     </Popup>
   );
