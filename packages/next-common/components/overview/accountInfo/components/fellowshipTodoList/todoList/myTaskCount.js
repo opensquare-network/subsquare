@@ -11,6 +11,7 @@ import {
   getMinRankOfClass,
   getTrackToRetainAtRank,
 } from "next-common/context/post/fellowship/useMaxVoters";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export function useRetainAndVoteTaskCount(items) {
   const api = useContextApi();
@@ -111,6 +112,7 @@ export function usePromoteAndVoteTaskCount(items) {
 }
 
 export function useVoteTaskCount(items) {
+  const address = useRealAddress();
   const api = useContextApi();
   const myRank = useMyRank();
   const referendaPallet = useReferendaFellowshipPallet();
@@ -129,9 +131,21 @@ export function useVoteTaskCount(items) {
       referendaPallet
     ].referendumInfoFor.multi(referendumIndexes);
 
+    const myVotes = await api.query[collectivePallet].voting.multi(
+      referendumIndexes.map((referendumIndex) => [referendumIndex, address]),
+    );
+
     let count = 0;
 
-    for (const referendum of referendums) {
+    for (let i = 0; i < referendumIndexes.length; i++) {
+      const myVote = myVotes[i];
+
+      // Skip referendums already voted
+      if (myVote?.isSome) {
+        continue;
+      }
+
+      const referendum = referendums[i];
       const track = referendum.unwrap()?.asOngoing?.track;
       if (isNil(track)) {
         continue;
@@ -144,7 +158,7 @@ export function useVoteTaskCount(items) {
     }
 
     return count;
-  }, [api, referendaPallet, collectivePallet, items, myRank]);
+  }, [api, referendaPallet, collectivePallet, items, address, myRank]);
 
   useEffect(() => {
     if (!api) {
