@@ -62,7 +62,7 @@ export default function RequestJudgementPopupContent() {
           setSelected={setValue}
         />
       </LoadableContent>
-      <TxSubmissionButton getTxFunc={getTxFunc} onInBlock={onInBlock} />
+      <TxSubmissionButton disabled={!value} getTxFunc={getTxFunc} onInBlock={onInBlock} />
     </div>
   );
 }
