@@ -2,14 +2,21 @@ import AddressComboField from "next-common/components/popup/fields/addressComboF
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemSubtract } from "@osn/icons/subsquare";
 import TextInputField from "next-common/components/popup/fields/textInputField";
+import Tooltip from "../tooltip";
 
-export function SubItem({ subId, sub, updateSubField, onRemove }) {
+export function SubItem({
+  subId,
+  sub,
+  updateSubField,
+  onRemove,
+  extensionAccounts,
+}) {
   return (
     <div className="flex gap-x-4">
       <AddressComboField
         comboClassName="w-[290px] !rounded-lg"
         size="small"
-        extensionAccounts={[]}
+        extensionAccounts={extensionAccounts}
         defaultAddress={sub.address}
         setAddress={(value) => {
           if (value !== sub.address) {
@@ -27,14 +34,16 @@ export function SubItem({ subId, sub, updateSubField, onRemove }) {
           }
         }}
       />
-      <SecondaryButton
-        className="w-10 h-10 mt-5"
-        onClick={() => {
-          onRemove(subId);
-        }}
-      >
-        <SystemSubtract className="w-4 h-4" />
-      </SecondaryButton>
+      <Tooltip content="Remove" className="mt-5">
+        <SecondaryButton
+          className="w-10 h-10 !px-0"
+          onClick={() => {
+            onRemove(subId);
+          }}
+        >
+          <SystemSubtract className="w-6 h-6" />
+        </SecondaryButton>
+      </Tooltip>
     </div>
   );
 }

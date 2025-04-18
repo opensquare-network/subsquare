@@ -19,7 +19,7 @@ export default function RequestJudgementPopupContent() {
       <Signer
         balance={0}
         isBalanceLoading={false}
-        symbol="DOT"
+        symbol={chainSettings.symbol}
         className="[& .label-text]:text14Bold"
       />
 

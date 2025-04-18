@@ -1,7 +1,5 @@
-import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
 import Signer from "next-common/components/popup/fields/signerField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
-import { useContextApi } from "next-common/context/api";
 import PrimaryButton from "next-common/lib/button/primary";
 import RightWrapper from "next-common/components/rightWraper";
 import { SystemPlus } from "@osn/icons/subsquare";
@@ -9,12 +7,19 @@ import { useState, useCallback, useMemo, useEffect } from "react";
 import { SubItem } from "./subItem";
 import useSubscribeMySubIdentities from "next-common/hooks/people/useSubscribeMySubIdentities";
 import LoadableContent from "../common/loadableContent";
+import { useExtensionAccounts } from "../popupWithSigner/context";
+import CurrencyInput from "../currencyInput";
+import { toPrecision } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
+import useSetSubsDeposit from "next-common/hooks/people/useSetSubsDeposit";
 
 export default function SetIdentityPopupContent() {
-  const api = useContextApi();
+  const chainSettings = useChainSettings();
   const [subsMap, setSubsMap] = useState({});
   const [subsOrder, setSubsOrder] = useState([]);
   const { subs, isLoading } = useSubscribeMySubIdentities();
+  const extensionAccounts = useExtensionAccounts();
+  const { deposit, isLoading: isDepositLoading } = useSetSubsDeposit();
 
   useEffect(() => {
     if (subs) {
@@ -70,7 +75,11 @@ export default function SetIdentityPopupContent() {
 
   return (
     <div className="space-y-4">
-      <Signer balance={0} isBalanceLoading={false} symbol="DOT" />
+      <Signer
+        balance={0}
+        isBalanceLoading={false}
+        symbol={chainSettings.symbol}
+      />
 
       <LoadableContent isLoading={isLoading}>
         {subsOrder.map((id) => (
@@ -80,6 +89,7 @@ export default function SetIdentityPopupContent() {
             sub={subsMap[id]}
             updateSubField={updateSubField}
             onRemove={removeSub}
+            extensionAccounts={extensionAccounts}
           />
         ))}
       </LoadableContent>
@@ -93,7 +103,16 @@ export default function SetIdentityPopupContent() {
       </RightWrapper>
 
       <AdvanceSettings>
-        <ExistentialDeposit destApi={api} title="Deposit" />
+        <CurrencyInput
+          disabled
+          value={
+            isDepositLoading
+              ? ""
+              : toPrecision(deposit || 0, chainSettings.decimals)
+          }
+          prefix={<LoadableContent isLoading={isDepositLoading} />}
+          symbol={chainSettings.symbol}
+        />
       </AdvanceSettings>
 
       <RightWrapper>
