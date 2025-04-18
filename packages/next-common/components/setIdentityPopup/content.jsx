@@ -2,7 +2,6 @@ import Signer from "next-common/components/popup/fields/signerField";
 import TextInputField from "next-common/components/popup/fields/textInputField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useSetIdentityDeposit from "next-common/hooks/people/useSetIdentityDeposit";
-import PrimaryButton from "next-common/lib/button/primary";
 import RightWrapper from "next-common/components/rightWraper";
 import { useState, useCallback, useEffect } from "react";
 import { toPrecision } from "next-common/utils";
@@ -11,6 +10,12 @@ import CurrencyInput from "next-common/components/currencyInput";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { useChainSettings } from "next-common/context/chain";
 import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { useContextApi } from "next-common/context/api";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { formatIdentityInfo } from "next-common/components/people/common";
+
 const fields = [
   {
     title: "Display Name",
@@ -46,6 +51,8 @@ export default function SetIdentityPopupContent() {
   const chainSettings = useChainSettings();
   const [identityInfo, setIdentityInfo] = useState({});
   const { result: subMyIdentityInfo } = useSubMyIdentityInfo();
+  const api = useContextApi();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (subMyIdentityInfo) {
@@ -58,6 +65,20 @@ export default function SetIdentityPopupContent() {
   }, []);
 
   const { deposit, isLoading } = useSetIdentityDeposit(identityInfo);
+
+  const getTxFunc = useCallback(() => {
+    if (!api || !api?.tx?.identity) {
+      return;
+    }
+
+    const info = formatIdentityInfo(identityInfo);
+
+    return api.tx.identity.setIdentity(info);
+  }, [identityInfo, api]);
+
+  const onInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Set identity successfully"));
+  }, [dispatch]);
 
   return (
     <div className="space-y-4">
@@ -84,9 +105,11 @@ export default function SetIdentityPopupContent() {
         </div>
       </AdvanceSettings>
       <RightWrapper>
-        <PrimaryButton className="w-auto" onClick={() => {}}>
-          Set Identity
-        </PrimaryButton>
+        <TxSubmissionButton
+          title="Set Identity"
+          getTxFunc={getTxFunc}
+          onInBlock={onInBlock}
+        />
       </RightWrapper>
     </div>
   );
