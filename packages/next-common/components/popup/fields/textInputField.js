@@ -6,11 +6,16 @@ export default function TextInputField({
   text,
   setText,
   className,
+  disabled = false,
 }) {
   return (
     <div className={className}>
       <PopupLabel text={title} />
-      <InputText value={text} setValue={setText} />
+      <InputText
+        value={text}
+        setValue={setText}
+        disabled={disabled}
+      />
     </div>
   );
 }

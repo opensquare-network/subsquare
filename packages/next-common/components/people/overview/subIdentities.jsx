@@ -30,7 +30,7 @@ export default function SubIdentitiesImpl() {
       ) : (
         <>
           <SubIdentitiesTable />
-          <RightWrapper>
+          <RightWrapper className="mt-4">
             <PrimaryButton
               className="w-auto"
               onClick={() => setShowSetSubsPopup(true)}

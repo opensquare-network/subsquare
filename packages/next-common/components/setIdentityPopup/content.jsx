@@ -82,7 +82,11 @@ export default function SetIdentityPopupContent() {
 
   return (
     <div className="space-y-4">
-      <Signer balance={0} isBalanceLoading={false} symbol="DOT" />
+      <Signer
+        balance={0}
+        isBalanceLoading={false}
+        symbol={chainSettings.symbol}
+      />
       {fields.map((field) => (
         <TextInputField
           key={field.key}
@@ -100,7 +104,7 @@ export default function SetIdentityPopupContent() {
               isLoading ? "" : toPrecision(deposit || 0, chainSettings.decimals)
             }
             prefix={<LoadableContent isLoading={isLoading} />}
-            symbol="DOT"
+            symbol={chainSettings.symbol}
           />
         </div>
       </AdvanceSettings>

@@ -1,6 +1,5 @@
 import Signer from "next-common/components/popup/fields/signerField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
-import PrimaryButton from "next-common/lib/button/primary";
 import RightWrapper from "next-common/components/rightWraper";
 import { SystemPlus } from "@osn/icons/subsquare";
 import { useState, useCallback, useMemo, useEffect } from "react";
@@ -12,8 +11,14 @@ import CurrencyInput from "../currencyInput";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import useSetSubsDeposit from "next-common/hooks/people/useSetSubsDeposit";
+import { useContextApi } from "next-common/context/api";
+import TxSubmissionButton from "../common/tx/txSubmissionButton";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 export default function SetIdentityPopupContent() {
+  const api = useContextApi();
+  const dispatch = useDispatch();
   const chainSettings = useChainSettings();
   const [subsMap, setSubsMap] = useState({});
   const [subsOrder, setSubsOrder] = useState([]);
@@ -61,17 +66,31 @@ export default function SetIdentityPopupContent() {
     }));
   }, []);
 
-  const submit = useCallback(async (subs) => {
-    try {
-      console.info(subs);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
   const submitIsDisabled = useMemo(() => {
     return hasEmptySub(subsMap);
   }, [subsMap]);
+
+  const getTxFunc = useCallback(() => {
+    if (!api || !api?.tx?.identity) {
+      return;
+    }
+
+    const subs = Object.values(subsMap).filter(
+      (sub) => sub.address && sub.name,
+    );
+
+    if (!subs.length) {
+      return;
+    }
+
+    return api.tx.identity.setSubs(
+      subs.map((sub) => [sub.address, { Raw: sub.name }]),
+    );
+  }, [api, subsMap]);
+
+  const onInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Submit subs successfully"));
+  }, [dispatch]);
 
   return (
     <div className="space-y-4">
@@ -116,13 +135,12 @@ export default function SetIdentityPopupContent() {
       </AdvanceSettings>
 
       <RightWrapper>
-        <PrimaryButton
-          className="w-auto"
-          onClick={submit}
+        <TxSubmissionButton
           disabled={submitIsDisabled}
-        >
-          Set Identity
-        </PrimaryButton>
+          title="Submit"
+          getTxFunc={getTxFunc}
+          onInBlock={onInBlock}
+        />
       </RightWrapper>
     </div>
   );
