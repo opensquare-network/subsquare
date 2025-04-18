@@ -1,49 +1,35 @@
-import { useState, useEffect } from "react";
-import { useContextApi } from "next-common/context/api";
+import { useMemo } from "react";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 export default function useRegistrars() {
-  const api = useContextApi();
-  const [registrars, setRegistrars] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { result, loading: isLoading } = useSubStorage(
+    "identity",
+    "registrars",
+    [],
+  );
 
-  useEffect(() => {
-    if (!api || !api.query?.identity) {
-      setRegistrars([]);
-      return;
+  const registrars = useMemo(() => {
+    if (!result) {
+      return [];
     }
 
-    setIsLoading(true);
+    return (result || [])
+      .map((registrar, index) => {
+        if (registrar?.isNone) {
+          return null;
+        }
 
-    api.query.identity
-      ?.registrars()
-      .then((registrarsData) => {
-        const formattedRegistrars = (registrarsData || [])
-          ?.map((registrar, index) => {
-            if (registrar?.isNone) {
-              return null;
-            }
+        const { account, fee, fields } = registrar.unwrap();
 
-            const { account, fee, fields } = registrar.unwrap();
-
-            return {
-              index,
-              account: account?.toJSON(),
-              fee: fee?.toString(),
-              fields: fields?.toString(),
-            };
-          })
-          .filter((registrar) => registrar !== null);
-
-        setRegistrars(formattedRegistrars);
+        return {
+          index,
+          account: account?.toJSON(),
+          fee: fee?.toString(),
+          fields: fields?.toString(),
+        };
       })
-      .catch((e) => {
-        console.error("Failed to query or process registrars:", e);
-        setRegistrars([]);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [api]);
+      .filter((registrar) => registrar !== null);
+  }, [result]);
 
   return { registrars, isLoading };
 }
