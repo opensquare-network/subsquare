@@ -1,19 +1,22 @@
 import Tabs from "next-common/components/tabs";
-import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
-import useTreasuryTimelineData from "../treasuryProposal/useTimelineData";
+import { useTreasuryTipsTimelineData } from "hooks/timelineData";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 
 const Metadata = dynamicClientOnly(() => import("components/tip/metadata"));
 
-const Timeline = dynamicClientOnly(() => import("components/tip/timeline"));
+const Timeline = dynamicClientOnly(() =>
+  import("next-common/components/timeline"),
+);
 
 export default function TreasuryTipsDetailMultiTabs() {
   const post = usePost();
-  const timelineData = useTreasuryTimelineData(post?.onchainData);
+  const timelineData = useTreasuryTipsTimelineData();
   const router = useRouter();
+  const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -28,15 +31,21 @@ export default function TreasuryTipsDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            <TimelineModeTabs />
-            <Timeline tip={post?.onchainData} />
+            {timeLineTabSwitch}
+            <Timeline data={timelineData} compact={isCompact} />
           </div>
         ),
       },
     ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
-  }, [post?.onchainData, router.query.tab, timelineData?.length]);
+  }, [
+    isCompact,
+    post?.onchainData,
+    router.query.tab,
+    timeLineTabSwitch,
+    timelineData,
+  ]);
 
   function handleTabClick(tab) {
     router.replace(

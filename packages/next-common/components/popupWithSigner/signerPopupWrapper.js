@@ -8,6 +8,7 @@ import CanBeAnyWalletSigner from "./canBeAnyWalletSigner";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { PopupParamsProvider, usePopupParams } from "./context";
 import LoginPopup from "next-common/components/login/popup";
+import MaybeWalletConnectSigner from "./maybeWalletConnectSigner";
 
 function PopupImpl({ children }) {
   const user = useUser();
@@ -29,6 +30,10 @@ function PopupImpl({ children }) {
 
   if (lastConnectedAccount?.wallet === WalletTypes.SIGNET) {
     return <MaybeSignetSigner>{children}</MaybeSignetSigner>;
+  }
+
+  if (lastConnectedAccount?.wallet === WalletTypes.WALLETCONNECT) {
+    return <MaybeWalletConnectSigner>{children}</MaybeWalletConnectSigner>;
   }
 
   return <MaybePolkadotSigner>{children}</MaybePolkadotSigner>;

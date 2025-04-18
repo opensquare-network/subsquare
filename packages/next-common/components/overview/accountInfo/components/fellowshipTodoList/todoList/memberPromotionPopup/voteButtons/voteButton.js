@@ -7,11 +7,20 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useValueFromBatchResult } from "next-common/context/batch";
+import Tooltip from "next-common/components/tooltip";
+import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
 
-function VoteButtonImpl({ referendumIndex, voteAye, disabled, children }) {
+function VoteButtonImpl({ referendumIndex, voteAye, children }) {
   const dispatch = useDispatch();
   const api = useContextApi();
   const collectivePallet = useRankedCollectivePallet();
+  const realAddress = useRealAddress();
+  const rank = useFellowshipMemberRank(realAddress, collectivePallet);
+  const { value: referendumPost, loading: isReferendaPostLoading } =
+    useValueFromBatchResult(referendumIndex);
 
   const voteTxFunc = useCallback(() => {
     return api.tx[collectivePallet].vote(referendumIndex, voteAye);
@@ -24,15 +33,37 @@ function VoteButtonImpl({ referendumIndex, voteAye, disabled, children }) {
     },
   });
 
+  let disabled = false;
+  let tooltipContent = "";
+  if (!isReferendaPostLoading && referendumPost) {
+    try {
+      const requiredRank = getMinRankOfClass(
+        referendumPost.track,
+        collectivePallet,
+      );
+      disabled = requiredRank > rank;
+      if (disabled) {
+        tooltipContent = `Only rank >= ${requiredRank} can vote`;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return (
-    <SecondaryButton
-      disabled={disabled}
-      className={cn("p-[6px]", disabled && "[&_svg_path]:stroke-textDisabled")}
-      size="small"
-      onClick={doSubmitVote}
-    >
-      {children}
-    </SecondaryButton>
+    <Tooltip content={tooltipContent}>
+      <SecondaryButton
+        disabled={disabled}
+        className={cn(
+          "p-[6px]",
+          disabled && "[&_svg_path]:stroke-textDisabled",
+        )}
+        size="small"
+        onClick={doSubmitVote}
+      >
+        {children}
+      </SecondaryButton>
+    </Tooltip>
   );
 }
 

@@ -4,11 +4,13 @@ import { useRouter } from "next/router";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
-import { useTimelineData } from "next-common/context/post";
-import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
+import { useMotionTimelineData } from "hooks/timelineData";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 
 const Metadata = dynamicClientOnly(() => import("../motion/metadata"));
-const Timeline = dynamicClientOnly(() => import("../motion/timeline"));
+const Timeline = dynamicClientOnly(() =>
+  import("next-common/components/timeline"),
+);
 const Business = dynamicClientOnly(() => import("../motion/business"));
 const CollectiveCall = dynamicClientOnly(() =>
   import("next-common/components/collective/call"),
@@ -17,7 +19,8 @@ export default function MotionDetailMultiTabs() {
   const router = useRouter();
   const post = usePost();
   const motionBusinessData = useCouncilMotionBusinessData();
-  const timelineData = useTimelineData();
+  const timelineData = useMotionTimelineData();
+  const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -46,9 +49,9 @@ export default function MotionDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            <TimelineModeTabs />
+            {timeLineTabSwitch}
 
-            <Timeline />
+            <Timeline data={timelineData} indent={false} compact={isCompact} />
           </div>
         ),
       },
@@ -56,10 +59,12 @@ export default function MotionDetailMultiTabs() {
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
+    isCompact,
     motionBusinessData?.length,
     post.onchainData,
     router.query.tab,
-    timelineData?.length,
+    timeLineTabSwitch,
+    timelineData,
   ]);
 
   function onTabClick(tab) {

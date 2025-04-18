@@ -11,11 +11,14 @@ import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
+import { walletConnect } from "next-common/utils/consts/connect/index.js";
 import { useAccountMenu } from "./useAccountMenu";
 import Divider from "next-common/components/styled/layout/divider";
 import SwitchAccount from "next-common/components/switchAccount";
 import AddressUser from "next-common/components/user/addressUser";
 import SearchInputWithPopup from "./searchInputWithPopup";
+import { useWalletConnect } from "next-common/context/walletconnect";
+import Loading from "next-common/components/loading";
 
 const Wrapper = styled.div``;
 
@@ -79,9 +82,11 @@ export default function SidebarAccount() {
   const router = useRouter();
   const node = useChainSettings();
   const { openLoginPopup } = useLoginPopup();
-  const { disconnect: disconnectAccount } = useConnectedAccountContext();
+  const { disconnect: disconnectAccount, connectedAccount } =
+    useConnectedAccountContext();
   const accountMenu = useAccountMenu();
   const [showSwitchAccount, setShowSwitchAccount] = useState(false);
+  const { disconnect: disconnectWc } = useWalletConnect();
   const chainSettings = useChainSettings();
   const {
     modules: { referenda: hasReferenda },
@@ -89,7 +94,11 @@ export default function SidebarAccount() {
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      await disconnectAccount();
+      if (connectedAccount?.wallet === walletConnect.extensionName) {
+        await disconnectWc();
+      } else {
+        await disconnectAccount();
+      }
     } else if (item.value === "switch") {
       setShowSwitchAccount(true);
     } else if (item.pathname) {
@@ -133,6 +142,7 @@ export default function SidebarAccount() {
                 <span className="text14Medium text-textPrimary">
                   {item.name}
                 </span>
+                <WalletConnectDisconnectLoading type={item.value} />
               </Item>
             </Fragment>
           ))}
@@ -151,4 +161,12 @@ export default function SidebarAccount() {
       )}
     </Wrapper>
   );
+}
+
+export function WalletConnectDisconnectLoading({ type }) {
+  const { disconnectLoading } = useWalletConnect();
+  if (!disconnectLoading || type !== "logout") {
+    return null;
+  }
+  return <Loading size={16} />;
 }

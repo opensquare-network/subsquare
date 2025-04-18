@@ -1,19 +1,21 @@
 import Tabs from "next-common/components/tabs";
-import { useTimelineData } from "next-common/context/post";
-import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
+import { useAllianceAnnouncementTimelineData } from "hooks/timelineData";
 
-const AnnouncementTimeline = dynamicClientOnly(() =>
-  import("next-common/components/alliance/announcement/timeline"),
+const Timeline = dynamicClientOnly(() =>
+  import("next-common/components/timeline"),
 );
 
 export default function AllianceAnnouncementsDetailMultiTabs() {
   const router = useRouter();
-  const timelineData = useTimelineData();
   const detail = usePost();
+  const timelineData = useAllianceAnnouncementTimelineData();
+  const { component: timeLineTabSwitchComponent, isCompact } =
+    useTimelineTabSwitch();
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -23,16 +25,25 @@ export default function AllianceAnnouncementsDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            <TimelineModeTabs />
-
-            <AnnouncementTimeline data={detail?.onchainData} />
+            {timeLineTabSwitchComponent}
+            <Timeline
+              data={detail?.onchainData}
+              indent={false}
+              compace={isCompact}
+            />
           </div>
         ),
       },
     ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
-  }, [detail?.onchainData, router.query.tab, timelineData?.length]);
+  }, [
+    detail?.onchainData,
+    isCompact,
+    router.query.tab,
+    timeLineTabSwitchComponent,
+    timelineData?.length,
+  ]);
 
   function handleTabClick(tab) {
     router.replace(

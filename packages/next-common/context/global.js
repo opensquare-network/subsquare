@@ -12,6 +12,7 @@ import WagmiProvider from "./wagmi";
 import ReactQueryClientProvider from "./reactQuery";
 import UserAccountProvider from "./user/account";
 import PageLoadingProvider from "./pageLoading";
+import WalletConnectProvider from "./walletconnect";
 
 export default function GlobalProvider({
   user,
@@ -33,25 +34,29 @@ export default function GlobalProvider({
           <ChainProvider chain={chain}>
             <UserProvider user={user} userStatus={userStatus}>
               <PageLoadingProvider>
-                <ConnectedAccountProvider connectedAccount={connectedAccount}>
-                  <AdminProvider admins={admins}>
-                    <NavProvider
-                      navCollapsed={navCollapsed}
-                      navSubmenuVisible={navSubmenuVisible}
-                      pathname={pathname}
-                    >
-                      <PageProvider pageProperties={pageProperties}>
-                        <ApiProvider>
-                          <UserAccountProvider>
-                            <SignetContextProvider>
-                              {children}
-                            </SignetContextProvider>
-                          </UserAccountProvider>
-                        </ApiProvider>
-                      </PageProvider>
-                    </NavProvider>
-                  </AdminProvider>
-                </ConnectedAccountProvider>
+                <AdminProvider admins={admins}>
+                  <NavProvider
+                    navCollapsed={navCollapsed}
+                    navSubmenuVisible={navSubmenuVisible}
+                    pathname={pathname}
+                  >
+                    <PageProvider pageProperties={pageProperties}>
+                      <ApiProvider>
+                        <ConnectedAccountProvider
+                          connectedAccount={connectedAccount}
+                        >
+                          <WalletConnectProvider>
+                            <UserAccountProvider>
+                              <SignetContextProvider>
+                                {children}
+                              </SignetContextProvider>
+                            </UserAccountProvider>
+                          </WalletConnectProvider>
+                        </ConnectedAccountProvider>
+                      </ApiProvider>
+                    </PageProvider>
+                  </NavProvider>
+                </AdminProvider>
               </PageLoadingProvider>
             </UserProvider>
           </ChainProvider>

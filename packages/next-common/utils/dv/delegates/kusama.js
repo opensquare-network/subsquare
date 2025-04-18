@@ -1,4 +1,9 @@
-import { cohort2TrackIds, cohort3TrackIds, treasuryTrackIds } from "./common";
+import {
+  cohort2TrackIds,
+  cohort3TrackIds,
+  cohort4TrackIds,
+  treasuryTrackIds,
+} from "./common";
 
 export const kusamaDvDelegates = [
   {
@@ -82,37 +87,63 @@ export const kusamaDvDelegates = [
   {
     address: "JHTfbt39EL1CcbKteN6hG5L5pWo9XWi9XFiyuS9q24cAc8u", // KusDAO
     slots: [
-      { start: 25732465, end: null, trackIds: cohort3TrackIds }, // cohort 3
+      { start: 25732465, end: 27921177, trackIds: cohort3TrackIds }, // cohort 3
+      { start: 27921178, end: null, trackIds: cohort4TrackIds }, // cohort 4
     ],
   },
   {
     address: "Hgm7ELPfRmPKbHgGZCYEZGTjJX8VicXEnFKec7YAeFgAd4d", // Polkadot Hungary
     slots: [
-      { start: 25732465, end: null, trackIds: cohort3TrackIds }, // cohort 3
+      { start: 25732465, end: 27921177, trackIds: cohort3TrackIds }, // cohort 3
+      { start: 27921178, end: null, trackIds: cohort4TrackIds }, // cohort 4
     ],
   },
   {
     address: "DCZyhphXsRLcW84G9WmWEXtAA8DKGtVGSFZLJYty8Ajjyfa", // ChaosDao OpenGov
     slots: [
-      { start: 25732403, end: null, trackIds: cohort3TrackIds }, // cohort 3
+      { start: 25732403, end: 27921177, trackIds: cohort3TrackIds }, // cohort 3
     ],
   },
   {
     address: "EPrEfsCZQtKt3Cp3vx6BSE4d9ACxMWTN2E5kQBRe612WpL2", // Lucky Friday Labs
     slots: [
-      { start: 25732403, end: null, trackIds: cohort3TrackIds }, // cohort 3
+      { start: 25732403, end: 27921177, trackIds: cohort3TrackIds }, // cohort 3
     ],
   },
   {
     address: "HcEbeTviCK33EddVN3mfJ6WymWLyKfFuekjhjn5PFirjJ5F", // SAXEMBERG Governance
     slots: [
-      { start: 25732529, end: null, trackIds: cohort3TrackIds }, // cohort 3
+      { start: 25732529, end: 27921225, trackIds: cohort3TrackIds }, // cohort 3
     ],
   },
   {
     address: "HYmYudY1cxN6XyY98dd82TckYF2YiPFc6sXmHqMoKifGAje", // Le Nexus
     slots: [
-      { start: 25732529, end: null, trackIds: cohort3TrackIds }, // cohort 3
+      { start: 25732529, end: 27921225, trackIds: cohort3TrackIds }, // cohort 3
+    ],
+  },
+  {
+    address: "ELCdsyWFNC7twEeBcQvdpCmpJhGBgiVeWtaKqRqXGn5ATiA", // PERMANENCE DAO/DV
+    slots: [
+      { start: 27921280, end: null, trackIds: cohort4TrackIds }, // cohort 4
+    ],
+  },
+  {
+    address: "EwWrc8UZxaLE8WqCHkygUWAz1PxLc1Jdgzq1kMd8Ac7hKqF", // JAM Implementers DAO
+    slots: [
+      { start: 27921529, end: null, trackIds: cohort4TrackIds }, // cohort 4
+    ],
+  },
+  {
+    address: "E3Ra4aGnmZGGtGaLsoCqjtJowT1qDvuLNEwB8t74M1UQrWM", // Trustless Core
+    slots: [
+      { start: 27921516, end: null, trackIds: cohort4TrackIds }, // cohort 4
+    ],
+  },
+  {
+    address: "DaCSCEQBRmMaBLRQQ5y7swdtfRzjcsewVgCCmngeigwLiax", // Polkaworld
+    slots: [
+      { start: 27921459, end: null, trackIds: cohort4TrackIds }, // cohort 4
     ],
   },
 ];

@@ -4,8 +4,8 @@ import DemocracyReferendumCallProvider from "next-common/context/democracy/refer
 import { useMemo } from "react";
 import Tabs from "next-common/components/tabs";
 import { useRouter } from "next/router";
-import { useTimelineData } from "next-common/context/post";
-import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
+import { useDemocracyPublicProposalTimelineData } from "hooks/timelineData";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/publicProposal/metadata"),
@@ -14,17 +14,18 @@ const DemocracyPublicProposalCall = dynamicClientOnly(() =>
   import("next-common/components/publicProposal/call"),
 );
 const Timeline = dynamicClientOnly(() =>
-  import("components/publicProposal/timeline"),
+  import("next-common/components/timeline"),
 );
 
 export default function DemocracyPublicProposalsDetailMultiTabs() {
   const post = usePost();
-  const timelineData = useTimelineData();
+  const timelineData = useDemocracyPublicProposalTimelineData();
 
   const router = useRouter();
 
   const publicProposal = post?.onchainData;
   const call = publicProposal?.preImage?.call || publicProposal?.call;
+  const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -57,8 +58,8 @@ export default function DemocracyPublicProposalsDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            <TimelineModeTabs />
-            <Timeline />
+            {timeLineTabSwitch}
+            <Timeline data={timelineData} compact={isCompact} />
           </div>
         ),
       },
@@ -67,12 +68,14 @@ export default function DemocracyPublicProposalsDetailMultiTabs() {
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
     call,
+    isCompact,
     post?.onchainData,
     publicProposal.preImage?.shorten,
     publicProposal.proposalIndex,
     publicProposal.referendumIndex,
     router.query.tab,
-    timelineData?.length,
+    timeLineTabSwitch,
+    timelineData,
   ]);
 
   function onTabClick(tab) {

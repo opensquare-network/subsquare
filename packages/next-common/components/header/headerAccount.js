@@ -13,8 +13,11 @@ import { SystemProfile } from "@osn/icons/subsquare";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
 import { AddressUser, SystemUser } from "../user";
 import { useAccountMenu } from "./useAccountMenu.js";
+import { walletConnect } from "next-common/utils/consts/connect/index.js";
+import { useWalletConnect } from "next-common/context/walletconnect/index.jsx";
 import Divider from "next-common/components/styled/layout/divider";
 import SwitchAccount from "next-common/components/switchAccount";
+import { WalletConnectDisconnectLoading } from "next-common/components/header/drawer.jsx";
 
 const Wrapper = Relative;
 
@@ -63,7 +66,8 @@ function ProfileMenuItem({ onClick }) {
 export default function HeaderAccount() {
   const user = useUser();
   const isLoggedIn = useIsLoggedIn();
-  const { disconnect: disconnectAccount } = useConnectedAccountContext();
+  const { disconnect: disconnectAccount, connectedAccount } =
+    useConnectedAccountContext();
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -71,6 +75,7 @@ export default function HeaderAccount() {
   const isMounted = useMountedState();
   const { openLoginPopup } = useLoginPopup();
   const menu = useAccountMenu();
+  const { disconnect: disconnectWc } = useWalletConnect();
   const [showSwitchAccount, setShowSwitchAccount] = useState(false);
 
   useClickAway(ref, () => setShow(false));
@@ -83,7 +88,11 @@ export default function HeaderAccount() {
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      await disconnectAccount();
+      if (connectedAccount?.wallet === walletConnect.extensionName) {
+        await disconnectWc();
+      } else {
+        await disconnectAccount();
+      }
     } else if (item.value === "switch") {
       setShowSwitchAccount(true);
     } else if (item.pathname) {
@@ -132,6 +141,7 @@ export default function HeaderAccount() {
                 <Item onClick={() => handleAccountMenu(item)}>
                   {item.icon}
                   <span>{item.name}</span>
+                  <WalletConnectDisconnectLoading type={item.value} />
                 </Item>
               </Fragment>
             ))}

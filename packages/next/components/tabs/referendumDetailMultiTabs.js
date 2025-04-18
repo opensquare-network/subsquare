@@ -1,17 +1,17 @@
-import { useOnchainData, usePost } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
 import { useMemo } from "react";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
-import TimelineModeTabs from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import VotesBubbleViewTabs from "next-common/components/detail/detailMultiTabs/votesBubbleViewTabs";
 import Tabs from "next-common/components/tabs";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import ReferendumCallProvider from "next-common/context/referenda/call";
 import useOgTrackerReferendumDetail from "next-common/hooks/referenda/useOgTrackerReferendumDetail";
 import { isPolkadotChain } from "next-common/utils/chain";
-import { useTimelineData } from "next-common/context/post";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import { useRouter } from "next/router";
+import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
+import { useReferendumTimelineData } from "hooks/timelineData";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
@@ -22,23 +22,27 @@ const ProposalAddress = dynamicClientOnly(() =>
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
 );
-const Timeline = dynamicClientOnly(() => import("components/gov2/timeline"));
+const Timeline = dynamicClientOnly(() =>
+  import("next-common/components/timeline"),
+);
 const Gov2ReferendaVotesBubble = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/votesBubble"),
 );
 const ReferendumReport = dynamicClientOnly(() => import("../referenda/report"));
 
 export default function ReferendumDetailMultiTabs() {
-  const timelineData = useTimelineData();
   const chain = useChain();
   const hasVotesViewTabs = ![Chains.kintsugi, Chains.interlay].includes(chain);
   const router = useRouter();
 
-  const post = usePost();
   const info = useReferendumInfo();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const referendumDetailForOGTrack = useOgTrackerReferendumDetail();
+  const { component: timeLineTabSwitchComponent, isCompact } =
+    useTimelineTabSwitch();
+  const timelineData = useReferendumTimelineData();
+
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
       ...(proposal?.call
@@ -67,9 +71,8 @@ export default function ReferendumDetailMultiTabs() {
         activeCount: timelineData?.length,
         content: (
           <div>
-            <TimelineModeTabs />
-
-            <Timeline trackInfo={post?.onchainData?.trackInfo} />
+            {timeLineTabSwitchComponent}
+            <Timeline data={timelineData} compact={isCompact} />
           </div>
         ),
       },
@@ -123,11 +126,12 @@ export default function ReferendumDetailMultiTabs() {
     chain,
     hasVotesViewTabs,
     info,
-    post?.onchainData?.trackInfo,
     proposal?.call,
     referendumDetailForOGTrack.detail,
     router.query.tab,
-    timelineData?.length,
+    timeLineTabSwitchComponent,
+    isCompact,
+    timelineData,
   ]);
 
   function onTabClick(tab) {

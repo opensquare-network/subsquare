@@ -46,6 +46,8 @@ const dark = {
   neutral200: "#1E2130",
   neutral200alpha: "#1E213080",
   neutral300: "#282B3B",
+  "neutral300-80": "rgba(40,43,59,0.8)",
+  "neutral300-20": "rgba(40,43,59,0.2)",
   neutral400: "rgba(54,58,77,1)",
   neutral500: "rgba(87,92,114,1)",
   tooltipBg: "rgba(0,0,0,0.800)",
