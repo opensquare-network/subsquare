@@ -11,6 +11,7 @@ import Tooltip from "next-common/components/tooltip";
 import { useChain } from "next-common/context/chain";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
 import useMemberRank from "./useMemberRank";
+import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 
 function CreateReferendumAndVoteButtonImpl({
   who,
@@ -26,6 +27,7 @@ function CreateReferendumAndVoteButtonImpl({
 
   const [enactment] = useState({ after: 100 });
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
+  const { triggerMyVotesChanged } = useMyVotesChangedContext();
 
   const getCreateAndVoteTxFunc = useFellowshipProposalSubmissionTxFunc({
     rank: currentRank,
@@ -43,6 +45,7 @@ function CreateReferendumAndVoteButtonImpl({
     onInBlock: () => {
       dispatch(newSuccessToast("Vote successfully"));
       fetchActiveReferenda();
+      triggerMyVotesChanged();
     },
   });
 

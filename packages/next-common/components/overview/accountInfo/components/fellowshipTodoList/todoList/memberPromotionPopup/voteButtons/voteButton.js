@@ -9,9 +9,11 @@ import { useRankedCollectivePallet } from "next-common/context/collectives/colle
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useValueFromBatchResult } from "next-common/context/batch";
+import useSubFellowshipReferendum from "next-common/hooks/collectives/useSubFellowshipReferendum";
 import Tooltip from "next-common/components/tooltip";
 import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
+import { isNil } from "lodash-es";
+import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 
 function VoteButtonImpl({ referendumIndex, voteAye, children }) {
   const dispatch = useDispatch();
@@ -19,8 +21,9 @@ function VoteButtonImpl({ referendumIndex, voteAye, children }) {
   const collectivePallet = useRankedCollectivePallet();
   const realAddress = useRealAddress();
   const rank = useFellowshipMemberRank(realAddress, collectivePallet);
-  const { value: referendumPost, loading: isReferendaPostLoading } =
-    useValueFromBatchResult(referendumIndex);
+  const { result: referendumInfo, loading: isReferendumInfoLoading } =
+    useSubFellowshipReferendum(referendumIndex);
+  const { triggerMyVotesChanged } = useMyVotesChangedContext();
 
   const voteTxFunc = useCallback(() => {
     return api.tx[collectivePallet].vote(referendumIndex, voteAye);
@@ -30,20 +33,21 @@ function VoteButtonImpl({ referendumIndex, voteAye, children }) {
     getTxFunc: voteTxFunc,
     onInBlock: () => {
       dispatch(newSuccessToast("Vote successfully"));
+      triggerMyVotesChanged();
     },
   });
 
   let disabled = false;
   let tooltipContent = "";
-  if (!isReferendaPostLoading && referendumPost) {
+  if (!isReferendumInfoLoading && referendumInfo) {
     try {
-      const requiredRank = getMinRankOfClass(
-        referendumPost.track,
-        collectivePallet,
-      );
-      disabled = requiredRank > rank;
-      if (disabled) {
-        tooltipContent = `Only rank >= ${requiredRank} can vote`;
+      const track = referendumInfo.unwrap()?.asOngoing?.track;
+      if (!isNil(track)) {
+        const requiredRank = getMinRankOfClass(track, collectivePallet);
+        disabled = requiredRank > rank;
+        if (disabled) {
+          tooltipContent = `Only rank >= ${requiredRank} can vote`;
+        }
       }
     } catch (e) {
       console.error(e);
