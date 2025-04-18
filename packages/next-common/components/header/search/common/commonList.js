@@ -79,7 +79,7 @@ function CommonList({
           </div>
         )}
         className={`max-h-[525px] overflow-auto ${
-          isMobile ? "h-[calc(75vh-115px)] w-[calc(100vw-48px)]" : ""
+          isMobile ? "h-[calc(80vh-115px)]" : ""
         }`}
         contentClassName="border-0 divide-y-0 px-2"
         titleClassName="border-0 pb-0"

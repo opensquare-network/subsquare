@@ -18,7 +18,7 @@ const ReminderInput = React.memo(function ReminderInput({
         "justify-center",
         "items-center",
         className,
-        isMobile ? "h-[calc(75vh-56px)]" : "",
+        isMobile ? "h-[calc(80vh-56px)]" : "",
       )}
     >
       <p className="flex flex-col items-center pb-4">
