@@ -12,12 +12,14 @@ import {
   getTrackToRetainAtRank,
 } from "next-common/context/post/fellowship/useMaxVoters";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useMyVotesChangedContext } from "../context/myVotesChanged";
 
 export function useRetainAndVoteTaskCount(items) {
   const api = useContextApi();
   const myRank = useMyRank();
   const collectivePallet = useRankedCollectivePallet();
   const [count, setCount] = useState(0);
+  const { myVotesChangeTimes } = useMyVotesChangedContext();
 
   const calculateCount = useCallback(async () => {
     if (myRank < 3) {
@@ -57,7 +59,7 @@ export function useRetainAndVoteTaskCount(items) {
     calculateCount().then((count) => {
       setCount(count);
     });
-  }, [calculateCount, api]);
+  }, [calculateCount, api, myVotesChangeTimes]);
 
   return count;
 }
@@ -67,6 +69,7 @@ export function usePromoteAndVoteTaskCount(items) {
   const myRank = useMyRank();
   const collectivePallet = useRankedCollectivePallet();
   const [count, setCount] = useState(0);
+  const { myVotesChangeTimes } = useMyVotesChangedContext();
 
   const calculateCount = useCallback(async () => {
     if (myRank < 3) {
@@ -106,7 +109,7 @@ export function usePromoteAndVoteTaskCount(items) {
     calculateCount().then((count) => {
       setCount(count);
     });
-  }, [calculateCount, api]);
+  }, [calculateCount, api, myVotesChangeTimes]);
 
   return count;
 }
@@ -118,6 +121,7 @@ export function useVoteTaskCount(items) {
   const referendaPallet = useReferendaFellowshipPallet();
   const collectivePallet = useRankedCollectivePallet();
   const [count, setCount] = useState(0);
+  const { myVotesChangeTimes } = useMyVotesChangedContext();
 
   const calculateCount = useCallback(async () => {
     const referendumIndexes = [];
@@ -146,7 +150,7 @@ export function useVoteTaskCount(items) {
       }
 
       const referendum = referendums[i];
-      const track = referendum.unwrap()?.asOngoing?.track;
+      const track = referendum?.unwrap()?.asOngoing?.track;
       if (isNil(track)) {
         continue;
       }
@@ -167,7 +171,7 @@ export function useVoteTaskCount(items) {
     calculateCount().then((count) => {
       setCount(count);
     });
-  }, [calculateCount, api]);
+  }, [calculateCount, api, myVotesChangeTimes]);
 
   return count;
 }
