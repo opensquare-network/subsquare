@@ -121,10 +121,11 @@ export function AddressComboInput({
   setInputAddress,
   onBlur,
   placeholder,
+  avatarSize = 40,
 }) {
   return (
     <>
-      <Avatar address={inputAddress} size={40} />
+      <Avatar address={inputAddress} size={avatarSize} />
       <Input
         value={inputAddress}
         onChange={(e) => setInputAddress(e.target.value)}
@@ -233,6 +234,7 @@ function AddressComboHeader({
   accounts,
   address,
   edit,
+  size = "default",
 }) {
   const selectedAccount = accounts.find((item) =>
     isSameAddress(normalizeAddress(item.address), address),
@@ -245,6 +247,7 @@ function AddressComboHeader({
         setInputAddress={setInputAddress}
         onBlur={onBlur}
         placeholder={placeholder}
+        avatarSize={size === "default" ? 40 : 24}
       />
     );
   }
@@ -281,6 +284,7 @@ export default function AddressCombo({
   setAddress,
   allowInvalidAddress = false,
   readOnly = false,
+  size = "default",
   placeholder = "Please fill the address or select another one...",
 }) {
   const [show, setShow] = useState(false);
@@ -337,7 +341,11 @@ export default function AddressCombo({
   return (
     <Wrapper ref={ref}>
       <Select
-        className={cn(className, readOnly && "pointer-events-none")}
+        className={cn(
+          className,
+          readOnly && "pointer-events-none",
+          size === "small" && "!h-10",
+        )}
         onClick={() => {
           setShow(true);
           setEdit(true);
@@ -352,6 +360,7 @@ export default function AddressCombo({
           accounts={accounts}
           address={address}
           edit={edit}
+          size={size}
         />
         {(accounts || []).length > 0 && !readOnly && (
           <span
