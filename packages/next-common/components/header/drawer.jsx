@@ -16,6 +16,7 @@ import { useAccountMenu } from "./useAccountMenu";
 import Divider from "next-common/components/styled/layout/divider";
 import SwitchAccount from "next-common/components/switchAccount";
 import AddressUser from "next-common/components/user/addressUser";
+import SearchInputWithPopup from "./searchInputWithPopup";
 import { useWalletConnect } from "next-common/context/walletconnect";
 import Loading from "next-common/components/loading";
 
@@ -86,6 +87,10 @@ export default function SidebarAccount() {
   const accountMenu = useAccountMenu();
   const [showSwitchAccount, setShowSwitchAccount] = useState(false);
   const { disconnect: disconnectWc } = useWalletConnect();
+  const chainSettings = useChainSettings();
+  const {
+    modules: { referenda: hasReferenda },
+  } = chainSettings;
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
@@ -107,7 +112,11 @@ export default function SidebarAccount() {
 
   return (
     <Wrapper>
-      <SearchInput shortcut={false} type="search" />
+      {hasReferenda ? (
+        <SearchInputWithPopup shortcut={false} type="search" />
+      ) : (
+        <SearchInput shortcut={false} type="search" />
+      )}
 
       <Title>NETWORK</Title>
       <NetworkSwitch activeNode={node} />

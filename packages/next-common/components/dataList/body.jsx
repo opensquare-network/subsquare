@@ -22,6 +22,7 @@ function DataListBody(
     treeData = [],
     expandedRows,
     toggleRowExpansion,
+    contentClassName = "",
   },
   ref,
 ) {
@@ -32,6 +33,7 @@ function DataListBody(
         "datalist-body group/datalist-body",
         "scrollbar-pretty",
         "divide-y divide-neutral300 border-b border-neutral300",
+        contentClassName,
       )}
     >
       {!tree &&
