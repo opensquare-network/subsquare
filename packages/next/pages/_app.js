@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
-
 import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
 import "next-common/styles/tailwind.css";
@@ -44,6 +43,15 @@ function MyApp({ Component, pageProps }) {
   }
 
   useInitMimir();
+
+  const [showChild, setShowChild] = useState(false);
+
+  useEffect(() => {
+    setShowChild(true);
+  }, []);
+  if (!showChild || typeof window === "undefined") {
+    return <></>;
+  }
 
   const {
     connectedAccount,
