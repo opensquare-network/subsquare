@@ -9,12 +9,8 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Tabs from "next-common/components/tabs";
 import DirectIdentityImpl from "./overview/directIdentity";
 import { useRouter } from "next/router";
+import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
 import UserAccountProvider from "next-common/context/user/account";
-import {
-  usePeopleIdentityContext,
-  PeopleIdentityProvider,
-} from "next-common/context/people/identity";
-
 export default function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
   const realAddress = useRealAddress();
@@ -23,11 +19,9 @@ export default function PeopleOverviewPageImpl() {
     return <NoWalletConnected />;
   }
   return (
-    <PeopleIdentityProvider>
-      <BaseLayout title="Identities" description={description}>
-        <PeopleOverviewContent />
-      </BaseLayout>
-    </PeopleIdentityProvider>
+    <BaseLayout title="Identities" description={description}>
+      <PeopleOverviewContent />
+    </BaseLayout>
   );
 }
 
@@ -37,8 +31,7 @@ function PeopleOverviewContent() {
   const [activeTabValue, setActiveTabValue] = useState(
     router.query.tab || "direct-identity",
   );
-  const { identityInfo: subMyIdentityInfo, isLoading } =
-    usePeopleIdentityContext(realAddress);
+  const { result: subMyIdentityInfo, isLoading } = useSubMyIdentityInfo();
 
   const isEmpty =
     Object.values(subMyIdentityInfo ?? {}).filter(Boolean).length === 0;

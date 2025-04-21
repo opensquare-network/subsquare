@@ -2,7 +2,6 @@ import IdentityIcon from "./identityIcon";
 import Tooltip from "../tooltip";
 import { getIdentityDisplay } from "next-common/utils/identity";
 import { cn } from "next-common/utils";
-import { usePeopleIdentityContext } from "next-common/context/people/identity";
 
 export function UnStyledIdentity({
   identity,
@@ -10,15 +9,11 @@ export function UnStyledIdentity({
   ellipsis = false,
   identityIconClassName = "",
 }) {
-  const { identityInfo } = usePeopleIdentityContext(identity?.address);
-
-  const customDisplayName = identityInfo?.display;
-  
   if (!identity || identity?.info?.status === "NO_ID") {
     return null;
   }
 
-  const displayName = customDisplayName ?? getIdentityDisplay(identity);
+  const displayName = getIdentityDisplay(identity);
   const shouldShowTooltip = maxWidth || ellipsis;
 
   return (

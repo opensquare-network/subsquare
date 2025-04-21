@@ -13,7 +13,6 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useClickAway } from "react-use";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import AddressInfoLoading from "./addressInfo";
-import { usePeopleIdentityContext } from "next-common/context/people/identity";
 
 const Wrapper = Relative;
 
@@ -139,9 +138,7 @@ export function AddressComboInput({
 
 export function IdentityDisplay({ address, name }) {
   const { identity, hasIdentity } = useIdentityInfo(address);
-  const { identityInfo } = usePeopleIdentityContext(address);
-  const customDisplayName = identityInfo?.display;
-  const displayName = customDisplayName ?? getIdentityDisplay(identity);
+  const displayName = getIdentityDisplay(identity);
   const addressHint = getAddressHint(address);
 
   return (
