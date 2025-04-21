@@ -119,7 +119,7 @@ export function DirectIdentity({ subMyIdentityInfo }) {
         </GreyPanel>
       )}
       <div className="flex justify-between gap-2">
-        <Account customDisplayName={subMyIdentityInfo?.display} />
+        <Account />
         <div className="flex items-center gap-2 text-textPrimary">
           <div
             className={cn(

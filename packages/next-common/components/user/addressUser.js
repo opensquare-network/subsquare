@@ -27,7 +27,6 @@ export function AddressUserImpl({
   ellipsis = true,
   link = "",
   identityIconClassName = "",
-  customDisplayName = "",
 }) {
   const chain = useChain();
   const displayAddress = tryConvertToEvmAddress(address);
@@ -38,7 +37,6 @@ export function AddressUserImpl({
       maxWidth={maxWidth}
       ellipsis={ellipsis}
       identityIconClassName={identityIconClassName}
-      customDisplayName={customDisplayName}
     />
   ) : (
     <AddressDisplay
@@ -100,7 +98,6 @@ function AddressUserComp({
   ellipsis = true,
   link = "",
   identityIconClassName = "",
-  customDisplayName = "",
 }) {
   const address = add;
   const { identity, hasIdentity } = useIdentityInfo(address);
@@ -126,7 +123,6 @@ function AddressUserComp({
       ellipsis={ellipsis}
       link={link}
       identityIconClassName={identityIconClassName}
-      customDisplayName={customDisplayName}
     />
   );
 }

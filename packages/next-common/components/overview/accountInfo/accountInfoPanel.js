@@ -63,7 +63,7 @@ const DisplayUserAvatar = () => {
   );
 };
 
-const DisplayUser = ({ customDisplayName = "" }) => {
+const DisplayUser = () => {
   const user = useUser();
   const address = user?.address;
   if (isPolkadotAddress(address) || isEthereumAddress(address)) {
@@ -72,7 +72,6 @@ const DisplayUser = ({ customDisplayName = "" }) => {
         add={address}
         showAvatar={false}
         className="text14Medium text-textPrimary"
-        customDisplayName={customDisplayName}
       />
     );
   }
@@ -80,7 +79,7 @@ const DisplayUser = ({ customDisplayName = "" }) => {
   return <div className="text-textPrimary text14Bold">{user?.username}</div>;
 };
 
-export function Account({ customDisplayName = "" }) {
+export function Account() {
   const user = useUser();
   const maybeEvmAddress = tryConvertToEvmAddress(user?.address);
 
@@ -88,7 +87,7 @@ export function Account({ customDisplayName = "" }) {
     <div className="flex gap-[12px]">
       <DisplayUserAvatar />
       <div className="flex flex-col">
-        <DisplayUser customDisplayName={customDisplayName} />
+        <DisplayUser />
         <Copyable className="max-md:hidden text-textTertiary text14Medium inline-flex items-center">
           {maybeEvmAddress}
         </Copyable>
