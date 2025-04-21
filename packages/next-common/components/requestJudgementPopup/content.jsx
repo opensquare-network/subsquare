@@ -12,6 +12,18 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { isEmpty } from "lodash-es";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import Loading from "../loading";
+import styled from "styled-components";
+
+const StyledSignerWithBalance = styled.div`
+  > div {
+    > div:first-child > div {
+      font-size: 14px !important;
+      &:first-child {
+        font-weight: bold !important;
+      }
+    }
+  }
+`;
 
 export default function RequestJudgementPopupContent() {
   const [value, setValue] = useState();
@@ -39,7 +51,9 @@ export default function RequestJudgementPopupContent() {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <SignerWithBalance />
+      <StyledSignerWithBalance>
+        <SignerWithBalance />
+      </StyledSignerWithBalance>
       <div className="text14Bold text-textPrimary">Select a Registrar</div>
 
       {isLoading ? (
