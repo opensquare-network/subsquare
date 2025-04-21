@@ -46,8 +46,6 @@ export default function useSubMyIdentityInfo() {
     [address],
   );
 
-  
-
   const identity = useMemo(() => {
     if (!result || result?.isNone) {
       return InitIdentityInfo;
