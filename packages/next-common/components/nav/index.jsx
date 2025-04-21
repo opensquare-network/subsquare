@@ -19,13 +19,14 @@ export default function Nav() {
 
   return (
     <>
-      {!isMobileDevice && (
+      {isMobileDevice ? (
+        <NavMobile />
+      ) : (
         <>
           <NavDesktop />
           <NavMobile />
         </>
       )}
-      {isMobileDevice && <NavMobile />}
     </>
   );
 }
