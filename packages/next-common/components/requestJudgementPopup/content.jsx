@@ -15,7 +15,7 @@ import { isEmpty } from "lodash-es";
 
 export default function RequestJudgementPopupContent() {
   const [value, setValue] = useState();
-  const chainSettings = useChainSettings();
+  const { symbol, decimals } = useChainSettings();
   const { registrars, isLoading } = useRegistrars();
   const api = useContextApi();
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ export default function RequestJudgementPopupContent() {
       <Signer
         balance={0}
         isBalanceLoading={false}
-        symbol={chainSettings.symbol}
+        symbol={symbol}
         className="[& .label-text]:text14Bold"
       />
 
@@ -55,14 +55,19 @@ export default function RequestJudgementPopupContent() {
             value: registrar.account,
             judgement: {
               ...registrar,
-              fee: toPrecision(registrar.fee, chainSettings.decimals),
+              fee: toPrecision(registrar.fee, decimals),
+              symbol,
             },
           }))}
           selected={value}
           setSelected={setValue}
         />
       </LoadableContent>
-      <TxSubmissionButton disabled={!value} getTxFunc={getTxFunc} onInBlock={onInBlock} />
+      <TxSubmissionButton
+        disabled={!value}
+        getTxFunc={getTxFunc}
+        onInBlock={onInBlock}
+      />
     </div>
   );
 }

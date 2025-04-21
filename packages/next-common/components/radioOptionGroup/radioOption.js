@@ -3,6 +3,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import RadioButton from "./radioButton";
 import Divider from "next-common/components/styled/layout/divider";
 import tw from "tailwind-styled-components";
+
 export default function RadioOption({ checked, label, onClick = noop }) {
   return (
     <div className="flex gap-2 cursor-pointer" onClick={onClick}>
@@ -57,7 +58,9 @@ export function RequestJudgementRadioOption({
       <RadioOptionFooter>
         <RadioOptionItem>
           <span>Fee</span>
-          <RadioOptionValue>{judgement.fee} DOT</RadioOptionValue>
+          <RadioOptionValue>
+            {judgement.fee} {judgement.symbol}
+          </RadioOptionValue>
         </RadioOptionItem>
       </RadioOptionFooter>
     </RadioOptionWrapper>
