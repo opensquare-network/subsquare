@@ -55,10 +55,6 @@ export function isAssetHubChain(chain) {
   ].includes(chain);
 }
 
-export function isPeopleChain(chain) {
-  return [Chains.polkadotPeople].includes(chain);
-}
-
 export function isAjunaChain(chain) {
   return [Chains.ajuna].includes(chain);
 }
@@ -77,6 +73,14 @@ export function isRelayChain(chain) {
     Chains.kusama,
     Chains.westend,
     Chains.paseo,
+  ].includes(chain);
+}
+
+export function isPeopleChain(chain) {
+  return [
+    Chains.polkadotPeople,
+    Chains.kusamaPeople,
+    Chains.paseoPeople,
   ].includes(chain);
 }
 
