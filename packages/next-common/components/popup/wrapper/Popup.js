@@ -36,7 +36,7 @@ export default function Popup({
   }, []);
 
   const isMobileDevice = useDetectDevice();
-  const pcClassName = `relative w-[640px] space-y-4 ${computerClassName}`;
+  const pcClassName = `relative w-[640px] max-w-full space-y-4 ${computerClassName}`;
   const mClassName = `${mobileClassName ? mobileClassName : pcClassName}`;
 
   return (
