@@ -6,8 +6,15 @@ import { cn } from "next-common/utils";
 import { SystemClose } from "@osn/icons/subsquare";
 import CommonPopupProvider from "next-common/context/popup";
 import PopupContainer from "./container";
+import useDetectDevice from "next-common/components/header/hooks/useDetectDevice";
 
 let z = 999;
+
+export const PopupSize = {
+  NORMAL: "normal",
+  MIDDLE: "middle",
+  LARGE: "large",
+};
 
 export default function Popup({
   onClose = noop,
@@ -18,12 +25,19 @@ export default function Popup({
   children,
   container,
   showCloseIcon = true,
+  size = null,
+  mobileClassName = "",
+  computerClassName = "",
 }) {
   const [zOverlay] = useState(z);
   const [zContent] = useState(z + 1);
   useEffect(() => {
     z++;
   }, []);
+
+  const isMobileDevice = useDetectDevice();
+  const pcClassName = `relative w-[640px] space-y-4 ${computerClassName}`;
+  const mClassName = `${mobileClassName ? mobileClassName : pcClassName}`;
 
   return (
     <CommonPopupProvider onClose={onClose}>
@@ -41,10 +55,18 @@ export default function Popup({
             >
               <NeutralPanel
                 className={cn(
-                  "relative mt-[12vh] mb-4",
-                  "w-[640px] max-w-full",
-                  "p-6 space-y-4",
+                  "mt-[12vh] mb-4 p-6",
+                  isMobileDevice ? mClassName : pcClassName,
                   className,
+                  size && !isMobileDevice
+                    ? size === PopupSize.NORMAL
+                      ? "w-[640px]"
+                      : size === PopupSize.MIDDLE
+                      ? "w-[800px]"
+                      : size === PopupSize.LARGE
+                      ? "w-[960px]"
+                      : ""
+                    : "",
                 )}
                 style={{
                   zIndex: zContent,
