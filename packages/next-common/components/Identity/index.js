@@ -8,12 +8,13 @@ export function UnStyledIdentity({
   maxWidth,
   ellipsis = false,
   identityIconClassName = "",
+  customDisplayName = "",
 }) {
   if (!identity || identity?.info?.status === "NO_ID") {
     return null;
   }
 
-  const displayName = getIdentityDisplay(identity);
+  const displayName = customDisplayName || getIdentityDisplay(identity);
   const shouldShowTooltip = maxWidth || ellipsis;
 
   return (
