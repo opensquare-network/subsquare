@@ -29,7 +29,7 @@ function PeopleOverviewContent() {
   const [activeTabValue, setActiveTabValue] = useState(
     router.query.tab || "direct-identity",
   );
-  const { result: subMyIdentityInfo } = useSubMyIdentityInfo();
+  const { result: subMyIdentityInfo, isLoading } = useSubMyIdentityInfo();
 
   const isEmpty =
     Object.values(subMyIdentityInfo ?? {}).filter(Boolean).length === 0;
@@ -42,6 +42,7 @@ function PeopleOverviewContent() {
         <DirectIdentityImpl
           isEmpty={isEmpty}
           identityInfo={subMyIdentityInfo}
+          isLoading={isLoading}
         />
       ),
     },

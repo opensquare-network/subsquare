@@ -4,6 +4,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { Account } from "next-common/components/overview/accountInfo/accountInfoPanel";
 import { cn } from "next-common/utils";
+import Loading from "next-common/components/loading";
 import { SystemEdit2 } from "@osn/icons/subsquare";
 import Divider from "next-common/components/styled/layout/divider";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -34,7 +35,19 @@ const RequestJudgementPopup = dynamicPopup(
   },
 );
 
-export default function DirectIdentityImpl({ isEmpty, identityInfo }) {
+export default function DirectIdentityImpl({
+  isEmpty,
+  identityInfo,
+  isLoading,
+}) {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Loading size="24" />
+      </div>
+    );
+  }
+
   if (!isEmpty) {
     return (
       <SignerPopupWrapper>
@@ -107,7 +120,7 @@ export function DirectIdentity({ subMyIdentityInfo }) {
       )}
       <div className="flex justify-between gap-2">
         <Account />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 text-textPrimary">
           <div
             className={cn(
               "flex justify-center items-center",
