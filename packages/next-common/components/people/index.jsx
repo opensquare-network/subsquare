@@ -9,8 +9,9 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Tabs from "next-common/components/tabs";
 import DirectIdentityImpl from "./overview/directIdentity";
 import { useRouter } from "next/router";
-import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
 import UserAccountProvider from "next-common/context/user/account";
+import { usePeopleIdentityContext } from "next-common/context/people/identity";
+
 export default function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
   const realAddress = useRealAddress();
@@ -31,7 +32,8 @@ function PeopleOverviewContent() {
   const [activeTabValue, setActiveTabValue] = useState(
     router.query.tab || "direct-identity",
   );
-  const { result: subMyIdentityInfo, isLoading } = useSubMyIdentityInfo();
+  const { identityInfo: subMyIdentityInfo, isLoading } =
+    usePeopleIdentityContext(realAddress);
 
   const isEmpty =
     Object.values(subMyIdentityInfo ?? {}).filter(Boolean).length === 0;
